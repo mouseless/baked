@@ -90,5 +90,5 @@ jobs:
           git config user.name 'github-actions'
           git config user.email 'github-actions@users.noreply.github.com'
           git add -A
-          git commit -m 'deploy docs to github pages'
+          git commit -m 'deploy docs v${{ needs.generate-docs.outputs.version }}'
           git push -f
