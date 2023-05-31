@@ -6,22 +6,22 @@ on:
     branches:
       - main
 jobs:
-  # remove-label:
-  #   # Remove when not in release branch
-  #   name: Remove Label
-  #   if: github.event.label.name == 'Publish' && github.event_name == 'pull_request' && startsWith(github.head_ref, 'issue/') == false
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions-ecosystem/action-remove-labels@v1
-  #       name: Remove Publish Label
-  #       with:
-  #         labels: 'Publish'
+  remove-label:
+    # Remove when not in release branch
+    name: Remove Label
+    if: github.event.label.name == 'Publish' && github.event_name == 'pull_request' && startsWith(github.head_ref, 'release/') == false
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions-ecosystem/action-remove-labels@v1
+        name: Remove Publish Label
+        with:
+          labels: 'Publish'
 
   check-version:
     # Start publish when in release branch
     # This job fetches current version from Directory.Build.props and checks if this version already pushed to nuget
     name: Check Version
-    if: github.event.label.name == 'Publish' && github.event_name == 'pull_request' # && startsWith(github.head_ref, 'issue/') == true
+    if: github.event.label.name == 'Publish' && github.event_name == 'pull_request' && startsWith(github.head_ref, 'release/') == true
     runs-on: ubuntu-latest
     outputs:
       # Version number that is parsed from Directory.Build.props
