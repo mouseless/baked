@@ -1,0 +1,48 @@
+# Project root relative to this config file
+projectRoot: ../../
+
+# Log settings
+log:
+  debug: false # Enable debug logs
+  quiet: false # Disable logs completely
+
+# Tasks to run in given order
+tasks:
+  - clean:
+      directories:
+        - ./.theme/.public
+        - ./.theme/.temp
+        - ./.theme/content
+  - touch:
+      path: ./.theme/.env.local
+
+  # process and move markdowns to content
+  - extractDiagrams:
+      source: ./
+      target: ./.theme/.temp
+  - rename:
+      source: ./.theme/.temp
+      find: README.md
+      replace: index.md
+  - replaceContent:
+      extension: .md
+      source: ./.theme/.temp
+      oldText: README.md
+      newText: index.md
+  - move:
+      extension: .md
+      source: ./.theme/.temp
+      target: ./.theme/content
+
+  # copy all assets to .public
+  - copy:
+      source: ./.theme/public
+      target: ./.theme/.public
+  - copy:
+      extension: .png
+      source: ./
+      target: ./.theme/.public
+  - move:
+      extension: .png
+      source: ./.theme/.temp
+      target: ./.theme/.public
