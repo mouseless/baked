@@ -38,7 +38,7 @@ const sort = {
 </script>
 <style scoped lang="scss">
 header, article {
-  max-width: 1000px;
+  max-width: 1768px;
   margin: auto;
   padding: 0 10px;
 }

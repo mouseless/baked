@@ -23,7 +23,18 @@ components.
 
 ## Diagrams
 
+### Vertical
+
 ```mermaid
-flowchart
-    A --> B
+flowchart TB
+    A --> B --> C
+    B --> D
+```
+
+### Horizontal
+
+```mermaid
+flowchart LR
+    A --> B --> C
+    B --> D
 ```

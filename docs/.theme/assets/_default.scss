@@ -1,0 +1,9 @@
+p {
+  &:has(.diagram) {
+    text-align: center;
+    background-color: $color_bg_box;
+    border: solid 2px $color_bg_box_border;
+    border-radius: 10px;
+    padding: 30px 0px 18px 0px;
+  }
+}

@@ -21,16 +21,15 @@ tasks:
       source: ./
       target: ./.theme/.temp
       config:
-        backgroundColor: '#000000'
+        backgroundColor: '#111111'
         theme: base
-        outputFormat: 'svg'
-        deviceScaleFactor: 1
+        deviceScaleFactor: 1.5
         themeVariables:
           primaryColor: '#fa465b'
           primaryTextColor: '#fff'
           primaryBorderColor': '#7c0000'
           lineColor: '#b3b3b3'
-          secondaryColor: '#000000'
+          secondaryColor: '#111111'
           secondaryTextColor: '#b3b3b3'
           tertiaryColor: '#fff'
   - rename:
@@ -56,6 +55,6 @@ tasks:
       source: ./
       target: ./.theme/.public
   - move:
-      extension: .svg
+      extension: .png
       source: ./.theme/.temp
       target: ./.theme/.public
