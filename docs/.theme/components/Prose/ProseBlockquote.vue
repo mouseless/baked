@@ -69,19 +69,19 @@ blockquote {
   }
 
   &.info {
-    @include box($color_bg_box_info);
+    @include box($color-bg-box-info);
   }
   &.warning {
-    @include box($color_bg_box_warning);
+    @include box($color-bg-box-warning);
   }
   &.tip {
-    @include box($color_bg_box_tip);
+    @include box($color-bg-box-tip);
   }
   &.danger {
-    @include box($color_bg_box_danger);
+    @include box($color-bg-box-danger);
   }
   &.default {
-    @include box($color_bg_box_default);
+    @include box($color-bg-box-default);
   }
 }
 </style>

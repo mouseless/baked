@@ -66,3 +66,10 @@ flowchart LR
 1. is
    1. ordered
    1. list
+
+## Tables
+
+| Col 1  | Col 2  |
+| ---    | ---    |
+| Cell 1 | Cell 2 |
+| Cell 3 | Cell 4 |

@@ -1,14 +1,14 @@
 body {
- color: $color_fg;
+ color: $color-fg;
 }
 
 h1, h2, h3, h4, h5, h6 {
- color: $color_brand;
+ color: $color-brand;
 }
 
 @mixin box {
-  background-color: $color_bg_box;
-  border: solid 2px $color_bg_box_border;
+  background-color: $color-bg-box;
+  border: solid 2px $color-bg-box-border;
   border-radius: 10px;
 }
 
@@ -21,10 +21,10 @@ p {
 }
 
 code {
-  background-color: $color_bg_code;
+  background-color: $color-bg-code;
   border-radius: 5px;
   padding: 0.2em 0.4em;
-  color: $color_fg_code;
+  color: $color-fg-code;
 }
 
 pre {
@@ -46,5 +46,54 @@ ul, ol {
     ul, ol {
       margin-top: 0.2em;
     }
+  }
+}
+
+table {
+  border-spacing: 0;
+  width: 100%;
+
+  @mixin border($properties...) {
+    @each $property in $properties {
+      border-#{$property}: 2px solid $color-table-border;
+    }
+  }
+
+  @mixin radius($properties...) {
+    @each $property in $properties {
+      border-#{$property}: {
+        left-radius: 10px;
+        right-radius: 10px;
+      }
+    }
+  }
+
+  @include border(top, right, left, bottom);
+  @include radius(top, bottom);
+
+  tr {
+    td, th {
+      @include border(bottom);
+
+      padding: 1vh 1vw;
+    }
+
+    th {
+      color: $color-brand;
+    }
+
+    &:nth-child(2n-1) td {
+      background-color: darken($color-table-border, 5%);
+    }
+
+    &:last-child {
+      td {
+        border-bottom: 0;
+      }
+    }
+  }
+
+  * {
+    text-align: left;
   }
 }
