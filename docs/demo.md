@@ -54,3 +54,15 @@ flowchart LR
     A --> B --> C
     B --> D
 ```
+
+## Lists
+
+- This
+- is
+- unordered
+  - list
+
+1. This
+1. is
+   1. ordered
+   1. list

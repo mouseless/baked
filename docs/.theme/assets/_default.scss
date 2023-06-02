@@ -36,3 +36,15 @@ pre {
     padding: 0;
   }
 }
+
+ul, ol {
+  padding-inline-start: 1.2em;
+
+  li {
+    margin-bottom: 0.2em;
+
+    ul, ol {
+      margin-top: 0.2em;
+    }
+  }
+}
