@@ -55,6 +55,10 @@ flowchart LR
     B --> D
 ```
 
+## Horizontal Ruler
+
+---
+
 ## Links
 
 This is an [internal Link](./README.md). This is an [external Link](https://github.com/mouseless/do).

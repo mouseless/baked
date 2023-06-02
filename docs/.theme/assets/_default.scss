@@ -97,3 +97,7 @@ table {
     text-align: left;
   }
 }
+
+hr {
+  border: solid 1px $color-table-border;
+}
