@@ -3,7 +3,9 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
- color: $color-brand;
+ &, code {
+   color: $color-brand;
+ }
 }
 
 @mixin box {
@@ -25,6 +27,12 @@ code {
   border-radius: 5px;
   padding: 0.2em 0.4em;
   color: $color-fg-code;
+}
+
+blockquote {
+  pre {
+    margin-right: 3em;
+  }
 }
 
 pre {

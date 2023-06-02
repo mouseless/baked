@@ -4,7 +4,9 @@
       v-if="type.icon"
       :class="[ 'fa', type.icon ]"
     />
-    <component :is="() => body" />
+    <div>
+      <component :is="() => body" />
+    </div>
   </blockquote>
 </template>
 <script setup>
@@ -56,6 +58,10 @@ blockquote {
   i {
     padding-top: 1.2em;
     padding-right: 1em;
+  }
+
+  div {
+    width: 100%;
   }
 
   @mixin box($color) {
