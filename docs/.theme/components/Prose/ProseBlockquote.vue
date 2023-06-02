@@ -1,5 +1,9 @@
 <template>
-  <blockquote :class="type">
+  <blockquote :class="type.class">
+    <i
+      v-if="type.icon"
+      :class="[ 'fa', type.icon ]"
+    />
     <component :is="() => body" />
   </blockquote>
 </template>
@@ -17,14 +21,15 @@ const firstLine = computed(() => {
 });
 
 const types = {
-  ":information_source:": "info",
-  ":warning:": "warning",
-  ":bulb:": "success",
-  ":x:": "danger"
+  ":information_source:": { class: "info", icon: "fa-circle-info" },
+  ":warning:": { class: "warning", icon: "fa-warning" },
+  ":bulb:": { class: "tip", icon: "fa-lightbulb" },
+  ":x:": { class: "danger", icon: "fa-circle-xmark" },
+  default: { class: "default" }
 };
 
 const type = computed(() => {
-  return types[firstLine.value] ?? "default";
+  return types[firstLine.value] ?? types.default;
 });
 
 const body = computed(() => {
@@ -37,25 +42,46 @@ const body = computed(() => {
   return result;
 });
 </script>
-<style scoped>
+<style lang="scss" scoped>
 blockquote {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
   padding-left: 1em;
-  border-left: solid 5px;
-  margin-left: 1em;
-}
-.info {
-  border-color: lightblue;
-}
-.warning {
-  border-color: orange;
-}
-.success {
-  border-color: lightgreen;
-}
-.danger {
-  border-color: red;
-}
-.default {
-  border-color: lightgray;
+  border: solid 2px;
+  border-radius: 10px;
+  margin: 15px 0px;
+
+  i {
+    padding-top: 1.2em;
+    padding-right: 1em;
+  }
+
+  @mixin box($color) {
+    border-color: lighten($color, 10%);
+    background-color: $color;
+    color: lighten($color, 75%);
+
+    i {
+      color: lighten($color, 50%);
+    }
+  }
+
+  &.info {
+    @include box($color_bg_box_info);
+  }
+  &.warning {
+    @include box($color_bg_box_warning);
+  }
+  &.tip {
+    @include box($color_bg_box_tip);
+  }
+  &.danger {
+    @include box($color_bg_box_danger);
+  }
+  &.default {
+    @include box($color_bg_box_default);
+  }
 }
 </style>

@@ -21,6 +21,8 @@ components.
 >
 > this is error
 
+> this is pure blockquote
+
 ## Diagrams
 
 ### Vertical
