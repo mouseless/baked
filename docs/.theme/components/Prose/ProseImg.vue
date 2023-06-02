@@ -5,7 +5,6 @@
     :width="width"
     :height="height"
     :class="[ alt ]"
-    @load="onImgLoad"
   >
 </template>
 <script setup lang="ts">
