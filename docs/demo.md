@@ -23,6 +23,20 @@ components.
 
 > this is pure blockquote
 
+## Code Blocks
+
+This is a `code` within a paragraph.
+
+```csharp
+public class DoDemo
+{
+    public void SayHello()
+    {
+        Console.WriteLine("Hello Do");
+    }
+}
+```
+
 ## Diagrams
 
 ### Vertical

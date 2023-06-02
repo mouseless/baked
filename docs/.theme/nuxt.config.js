@@ -75,6 +75,24 @@ export default defineNuxtConfig({
       remarkPlugins: {
         "remark-emoji": false
       }
+    },
+    highlight: {
+      // Theme used in all color schemes.
+      theme: "dark-plus",
+      preload: [
+        "diff",
+        "ts",
+        "js",
+        "css",
+        "java",
+        "markdown",
+        "sql",
+        "xml",
+        "json",
+        "csharp",
+        "md",
+        "bash"
+      ]
     }
   },
   router: {

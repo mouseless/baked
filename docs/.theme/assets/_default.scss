@@ -1,9 +1,38 @@
+body {
+ color: $color_fg;
+}
+
+h1, h2, h3, h4, h5, h6 {
+ color: $color_brand;
+}
+
+@mixin box {
+  background-color: $color_bg_box;
+  border: solid 2px $color_bg_box_border;
+  border-radius: 10px;
+}
+
 p {
   &:has(.diagram) {
+    @include box;
     text-align: center;
-    background-color: $color_bg_box;
-    border: solid 2px $color_bg_box_border;
-    border-radius: 10px;
     padding: 30px 0px 18px 0px;
+  }
+}
+
+code {
+  background-color: $color_bg_code;
+  border-radius: 5px;
+  padding: 0.2em 0.4em;
+  color: $color_fg_code;
+}
+
+pre {
+  @include box;
+
+  padding: 1.2em;
+
+  code {
+    padding: 0;
   }
 }
