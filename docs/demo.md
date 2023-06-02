@@ -1,5 +1,8 @@
 # Demo
 
+This is a demo page that showcases usages of all types of documentation
+components.
+
 ## Alert Boxes
 
 > :bulb:
@@ -17,3 +20,10 @@
 > :x:
 >
 > this is error
+
+## Diagrams
+
+```mermaid
+flowchart
+    A --> B
+```
