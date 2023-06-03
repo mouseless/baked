@@ -25,6 +25,9 @@
         </ContentQuery>
       </nav>
     </header>
+    <nav>
+      Menu Coming...
+    </nav>
     <article>
       <slot />
     </article>
