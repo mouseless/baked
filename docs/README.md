@@ -1,7 +1,5 @@
-# Do
+# Welcome
 
-Welcome.
-
-Do will be an opinionated framework for .NET.
+There will be a well designed opinionated framework for .NET.
 
 Stay tuned.
