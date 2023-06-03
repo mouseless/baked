@@ -3,7 +3,7 @@
     <header>
       <div class="logo">
         <NuxtLink to="/">
-          <img class="mouseless logo">
+          <img class="do logo">
         </NuxtLink>
       </div>
       <nav>
@@ -49,6 +49,25 @@ article {
 
 div.logo {
   margin: 20px 0px;
+
+  img.do {
+    &:is(.logo),
+    &:is(.logo:is(.full)) {
+      height: 25px;
+      content: url(./logo-full-primary.svg);
+      display: inline-block;
+    }
+
+    &:is(.logo:is(.mark)) {
+      content: url(./logo-mark-primary.svg);
+    }
+
+    @media (max-width: 800px) {
+      &:is(.logo) {
+        height: 15px;
+      }
+    }
+  }
 }
 
 nav a {
