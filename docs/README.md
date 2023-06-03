@@ -1,3 +1,7 @@
 # Do
 
-To do or not to do... the logo
+Welcome.
+
+Do will be an opinionated framework for .NET.
+
+Stay tuned.
