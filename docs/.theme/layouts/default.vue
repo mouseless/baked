@@ -1,33 +1,31 @@
 <template>
   <div>
-    <header>
-      <div class="logo">
-        <NuxtLink to="/">
-          <img class="do logo">
-        </NuxtLink>
-      </div>
-      <nav>
-        <ContentQuery
-          v-slot="{ data: menus }"
-          path="/"
-          :only="[ '_path', 'title', 'position' ]"
-          :where="{ _dir: { $eq: '' }, _path: { $ne: '/' }, position: { $exists: true } }"
-          :sort="sort"
-        >
-          <NuxtLink
-            v-for="menu in menus"
-            :key="menu.title"
-            :to="menu._path == $route.path ? '' : menu._path"
-            :class="menu.position < 100 ? 'left' : 'right'"
-          >
-            {{ menu.title }}
+    <div class="top">
+      <header>
+        <div class="logo">
+          <NuxtLink to="/">
+            <img class="do logo">
           </NuxtLink>
-        </ContentQuery>
-      </nav>
-    </header>
-    <nav>
-      Menu Coming...
-    </nav>
+        </div>
+        <nav>
+          <ContentQuery
+            v-slot="{ data: menus }"
+            path="/"
+            :only="[ '_path', 'title', 'position' ]"
+            :where="{ _dir: { $eq: '' }, _path: { $ne: '/' }, position: { $exists: true } }"
+            :sort="sort"
+          >
+            <NuxtLink
+              v-for="menu in menus"
+              :key="menu.title"
+              :to="menu._path == $route.path ? '' : menu._path"
+            >
+              {{ menu.title }}
+            </NuxtLink>
+          </ContentQuery>
+        </nav>
+      </header>
+    </div>
     <article>
       <slot />
     </article>
@@ -40,10 +38,21 @@ const sort = {
 };
 </script>
 <style scoped lang="scss">
+div.top {
+  @include border(bottom);
+}
+
 header, article {
   max-width: 1768px;
   margin: auto;
   padding: 0 10px;
+}
+
+header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
 
 article {
@@ -53,41 +62,42 @@ article {
 div.logo {
   margin: 20px 0px;
 
-  img.do {
-    &:is(.logo),
-    &:is(.logo:is(.full)) {
-      height: 25px;
-      content: url(./logo-full-primary.svg);
-      display: inline-block;
-    }
+  a:has(img.logo) {
+    display: block;
+    height: 25px;
 
-    &:is(.logo:is(.mark)) {
-      content: url(./logo-mark-primary.svg);
-    }
+    img.do {
+      &:is(.logo),
+      &:is(.logo:is(.full)) {
+        height: 25px;
+        content: url(./logo-full-primary.svg);
+        display: inline-block;
+      }
 
-    @media (max-width: 800px) {
-      &:is(.logo) {
-        height: 15px;
+      &:is(.logo:is(.mark)) {
+        content: url(./logo-mark-primary.svg);
+      }
+
+      @media (max-width: 800px) {
+        &:is(.logo) {
+          height: 15px;
+        }
       }
     }
   }
 }
 
 nav a {
-  margin: 5px;
+  margin: 10px;
+  text-decoration: none;
+
+  &:hover, &:not([href]) {
+    color: $color-brand;
+  }
+
   @media (max-width: 800px) {
     & {
       display: block;
-    }
-  }
-}
-
-a.left+a.right {
-  padding-left: 10px;
-  @media (max-width: 800px) {
-    & {
-      padding-top: 10px;
-      padding-left: 0px;
     }
   }
 }

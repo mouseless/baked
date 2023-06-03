@@ -1,3 +1,8 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
 body {
  color: $color-fg;
 }
@@ -8,15 +13,10 @@ h1, h2, h3, h4, h5, h6 {
  }
 }
 
-@mixin box {
-  background-color: $color-bg-box;
-  border: solid 2px $color-bg-box-border;
-  border-radius: 10px;
-}
-
 p {
   &:has(.diagram) {
     @include box;
+
     text-align: center;
     padding: 30px 0px 18px 0px;
   }
@@ -61,23 +61,8 @@ table {
   border-spacing: 0;
   width: 100%;
 
-  @mixin border($properties...) {
-    @each $property in $properties {
-      border-#{$property}: 2px solid $color-table-border;
-    }
-  }
-
-  @mixin radius($properties...) {
-    @each $property in $properties {
-      border-#{$property}: {
-        left-radius: 10px;
-        right-radius: 10px;
-      }
-    }
-  }
-
-  @include border(top, right, left, bottom);
-  @include radius(top, bottom);
+  @include border();
+  @include radius();
 
   tr {
     td, th {
@@ -91,7 +76,7 @@ table {
     }
 
     &:nth-child(2n-1) td {
-      background-color: darken($color-table-border, 5%);
+      background-color: darken($color-border, 5%);
     }
 
     &:last-child {
@@ -107,5 +92,5 @@ table {
 }
 
 hr {
-  border: solid 1px $color-table-border;
+  @include border();
 }
