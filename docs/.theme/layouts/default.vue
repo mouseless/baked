@@ -3,7 +3,7 @@
     <header>
       <div class="logo">
         <NuxtLink to="/">
-          <img class="mouseless logo">
+          <img class="do logo">
         </NuxtLink>
       </div>
       <nav>
