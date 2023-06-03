@@ -16,6 +16,9 @@
     "local": "npx http-server .output/public -p 3000",
     "preparation": "npx eslint . && npx cross-var node -r dotenv/config prebuild dotenv_config_path=.env.$npm_config_env"
   },
+  "dependencies": {
+    "@nuxtjs/fontawesome": "^1.1.2"
+  },
   "devDependencies": {
     "@mermaid-js/mermaid-cli": "^10.1.0",
     "@nuxt/content": "^2.5.2",

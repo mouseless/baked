@@ -49,6 +49,11 @@ export default defineNuxtConfig({
         {
           rel: "stylesheet",
           type: "text/css",
+          href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+        },
+        {
+          rel: "stylesheet",
+          type: "text/css",
           href: "https://mouseless.github.io/brand/assets/css/primary.css"
         }
       ]
@@ -70,6 +75,24 @@ export default defineNuxtConfig({
       remarkPlugins: {
         "remark-emoji": false
       }
+    },
+    highlight: {
+      // Theme used in all color schemes.
+      theme: "dark-plus",
+      preload: [
+        "diff",
+        "ts",
+        "js",
+        "css",
+        "java",
+        "markdown",
+        "sql",
+        "xml",
+        "json",
+        "csharp",
+        "md",
+        "bash"
+      ]
     }
   },
   router: {

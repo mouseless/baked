@@ -20,6 +20,18 @@ tasks:
   - extractDiagrams:
       source: ./
       target: ./.theme/.temp
+      config:
+        backgroundColor: '#111111'
+        theme: base
+        deviceScaleFactor: 1.5
+        themeVariables:
+          primaryColor: '#fa465b'
+          primaryTextColor: '#fff'
+          primaryBorderColor': '#7c0000'
+          lineColor: '#b3b3b3'
+          secondaryColor: '#111111'
+          secondaryTextColor: '#b3b3b3'
+          tertiaryColor: '#fff'
   - rename:
       source: ./.theme/.temp
       find: README.md
