@@ -67,12 +67,6 @@ div.logo {
         height: 25px;
         display: inline-block;
       }
-
-      @media (max-width: 800px) {
-        &:is(.logo) {
-          height: 15px;
-        }
-      }
     }
   }
 }
@@ -84,12 +78,6 @@ nav a {
 
   &:hover, &:not([href]) {
     color: $color-brand;
-  }
-
-  @media (max-width: 800px) {
-    & {
-      display: block;
-    }
   }
 }
 </style>

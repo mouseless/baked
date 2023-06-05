@@ -58,11 +58,7 @@ nav {
     color: $color-passive;
     margin-bottom: 0.25em;
 
-    &:not([href]) {
-      color: $color-brand;
-    }
-
-    &:hover {
+    &:not([href]), &:hover {
       color: $color-brand;
     }
   }
