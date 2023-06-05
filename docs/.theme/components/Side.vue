@@ -50,6 +50,7 @@ function sorter(
 <style lang="scss" scoped>
 nav {
   margin-top: 1.5em;
+  margin-right: 4em;
 
   .menu {
     font-size: 90%;

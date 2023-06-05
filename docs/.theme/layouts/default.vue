@@ -29,7 +29,7 @@
       "side content"
       "side content";
   grid-template-rows: 65px 1fr;
-  grid-template-columns: 350px;
+  grid-template-columns: 250px;
 }
 
 .side {
