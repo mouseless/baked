@@ -17,20 +17,28 @@
           <NuxtLink
             v-for="menu in menus"
             :key="menu.title"
-            :to="menu._path == $route.path ? '' : menu._path"
+            :to="menu._path == root ? '' : menu._path"
           >
             {{ menu.title }}
           </NuxtLink>
         </ContentQuery>
+        <NuxtLink
+          :to="runtimeConfig.public.githubURL"
+          target="_blank"
+        >
+          <i class="fa-brands fa-github" />
+        </NuxtLink>
       </nav>
     </header>
   </div>
 </template>
 <script lang="ts" setup>
-const sort = {
-  position: 1,
-  $numeric: true
-};
+import { useRoute, useRuntimeConfig } from "#imports";
+
+const runtimeConfig = useRuntimeConfig();
+const route = useRoute();
+const root = computed(() => `/${route.path.split("/")[1]}`);
+const sort = { position: 1, $numeric: true };
 </script>
 <style lang="scss" scoped>
 div.top {
@@ -72,6 +80,7 @@ div.logo {
 nav a {
   margin: 10px;
   text-decoration: none;
+  color: $color-passive;
 
   &:hover, &:not([href]) {
     color: $color-brand;

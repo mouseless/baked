@@ -12,7 +12,8 @@ export default defineNuxtConfig({
           depth: 0
         }
       },
-      baseURL: process.env.BASE_URL
+      baseURL: process.env.BASE_URL,
+      githubURL: "https://github.com/mouseless/do"
     }
   },
   app: {

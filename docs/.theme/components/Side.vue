@@ -32,7 +32,6 @@ watch(root, async () => {
     .find();
 
   menus.value = [index, ...sections];
-  console.log(menus.value);
 });
 
 const setRoot = (path: string) => root.value = `/${path.split("/")[1]}`;
@@ -56,7 +55,7 @@ nav {
     font-size: 90%;
     display: block;
     text-decoration: none;
-    color: gray;
+    color: $color-passive;
     margin-bottom: 0.25em;
 
     &:not([href]) {
