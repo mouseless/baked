@@ -7,6 +7,17 @@ body {
  color: $color-fg;
 }
 
+img.do {
+  &:is(.logo),
+  &:is(.logo:is(.full)) {
+    content: url(/logo-full-primary.svg);
+  }
+
+  &:is(.logo:is(.mark)) {
+    content: url(/logo-mark-primary.svg);
+  }
+}
+
 h1, h2, h3, h4, h5, h6 {
  &, code {
    color: $color-brand;
