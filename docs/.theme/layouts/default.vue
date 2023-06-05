@@ -2,7 +2,7 @@
   <div>
     <Header />
     <div v-if="$route.path === '/'">
-      <article>
+      <article class="full">
         <slot />
       </article>
     </div>
@@ -18,14 +18,17 @@
   </div>
 </template>
 <style lang="scss" scoped>
-.content {
+.content, .full {
   width: $width-page;
+  margin: auto;
+}
+
+.content {
   display: grid;
   grid-template-areas:
       "side content"
       "side content";
   grid-template-rows: 65px 1fr;
-  margin: auto;
   grid-template-columns: 350px;
 }
 
