@@ -15,6 +15,7 @@
         <slot />
       </article>
     </div>
+    <Footer />
   </div>
 </template>
 <style lang="scss" scoped>

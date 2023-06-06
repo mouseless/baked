@@ -1,10 +1,11 @@
 <template>
-  <div class="top">
-    <header>
+  <div class="bottom">
+    <footer>
       <div class="logo">
         <NuxtLink to="/">
-          <img class="do logo">
+          <img class="do logo white">
         </NuxtLink>
+        <span>Copyright (c) 2023 Mouseless</span>
       </div>
       <nav>
         <ContentQuery
@@ -26,10 +27,10 @@
           :to="`https://github.com${runtimeConfig.public.githubURL}`"
           target="_blank"
         >
-          <i class="fa-brands fa-github" />
+          <i class="fa-brands fa-github" /> {{ runtimeConfig.public.githubURL }}
         </NuxtLink>
       </nav>
-    </header>
+    </footer>
   </div>
 </template>
 <script lang="ts" setup>
@@ -41,18 +42,26 @@ const root = computed(() => `/${route.path.split("/")[1]}`);
 const sort = { position: 1, $numeric: true };
 </script>
 <style lang="scss" scoped>
-div.top {
-  @include border(bottom);
+div.bottom {
+  @include border(top);
+  margin-top: 4em;
 }
 
-header {
+footer {
+  font-size: smaller;
   max-width: $width-page;
   margin: auto;
+  margin-top: 1em;
+  margin-bottom: 1em;
   padding: 0 10px;
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
+
+  &, & * {
+    color: $color-passive;
+  }
 }
 
 div.logo {
@@ -60,24 +69,40 @@ div.logo {
 
   a:has(img.logo) {
     display: block;
-    height: 25px;
+    height: 15px;
 
     img.do {
       &:is(.logo) {
-        height: 25px;
+        height: 15px;
         display: inline-block;
+        opacity: 0.5;
       }
     }
   }
+
+  span {
+    display: inline-block;
+    margin-top: 1em;
+  }
 }
 
-nav a {
-  margin: 10px;
-  text-decoration: none;
-  color: $color-passive;
+nav {
+  text-align: right;
 
-  &:hover, &:not([href]) {
-    color: $color-brand;
+  a {
+    margin: 5px;
+    text-decoration: none;
+    display: block;
+
+    &:not([href]) {
+      color: darken($color-passive, 15%);
+    }
+
+    &:hover:is([href]) {
+      &, & i {
+        color: $color-brand;
+      }
+    }
   }
 }
 </style>
