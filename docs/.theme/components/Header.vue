@@ -46,7 +46,7 @@ div.top {
 }
 
 header {
-  width: $width-page;
+  max-width: $width-page;
   margin: auto;
   padding: 0 10px;
   display: flex;

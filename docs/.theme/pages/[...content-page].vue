@@ -6,7 +6,7 @@
       <div class="container">
         <ContentRenderer
           :value="doc"
-          class="content"
+          class="content toc-root"
         />
         <Toc
           v-if="doc.body.toc.links.length > 0"

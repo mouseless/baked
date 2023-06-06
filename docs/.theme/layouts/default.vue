@@ -19,7 +19,7 @@
 </template>
 <style lang="scss" scoped>
 .content, .full {
-  width: $width-page;
+  max-width: $width-page;
   margin: auto;
 }
 
