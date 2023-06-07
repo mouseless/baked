@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <h4><a href="#">{{ title }}</a></h4>
+    <h4><a href="#">On This Page</a></h4>
     <ul>
       <li
         v-for="link in value.links"
@@ -34,7 +34,6 @@ import type { Toc } from "@nuxt/content/dist/runtime/types";
 import { onMounted, onBeforeUnmount } from "#imports";
 
 defineProps<{
-  title: string
   value: Toc
 }>();
 
@@ -111,7 +110,8 @@ nav {
   align-self: start;
   top: 1.5em;
   width: 250px;
-  margin: 1.5em 1em;
+  margin: 0 1em;
+  margin-top: 2.5em;
   font-size: 80%;
 
   h4 {

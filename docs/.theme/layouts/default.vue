@@ -22,6 +22,7 @@
 .content, .full {
   max-width: $width-page;
   margin: auto;
+  margin-top: 1em;
 }
 
 .content {

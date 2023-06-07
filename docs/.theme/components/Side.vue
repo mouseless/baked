@@ -57,10 +57,10 @@ function sorter(
 </script>
 <style lang="scss" scoped>
 nav {
-  margin-top: 1.5em;
   position: sticky;
   align-self: start;
   top: 1.5em;
+  margin-top: 2.5em;
 
   .menu {
     font-size: 90%;
