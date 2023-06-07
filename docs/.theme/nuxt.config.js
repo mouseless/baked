@@ -12,13 +12,29 @@ export default defineNuxtConfig({
           depth: 0
         }
       },
-      baseURL: process.env.BASE_URL
+      baseURL: process.env.BASE_URL,
+      githubURL: "/mouseless/do"
     }
   },
   app: {
     baseURL: process.env.BASE_URL,
     head: {
       meta: [
+        {
+          hid: "og:type",
+          property: "og:type",
+          content: "website"
+        },
+        {
+          hid: "og:locale",
+          property: "og:locale",
+          content: "en_US"
+        },
+        {
+          hid: "og:site_name",
+          property: "og:site_name",
+          content: "Do"
+        },
         {
           hid: "og:description",
           property: "og:description",
@@ -63,7 +79,7 @@ export default defineNuxtConfig({
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: "@import \"@/assets/variables.scss\";"
+          additionalData: "@import \"@/assets/variables.scss\"; @import \"@/assets/mixins.scss\";"
         }
       }
     }

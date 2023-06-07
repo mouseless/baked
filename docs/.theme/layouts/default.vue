@@ -1,91 +1,44 @@
 <template>
   <div>
-    <header>
-      <div class="logo">
-        <NuxtLink to="/">
-          <img class="do logo">
-        </NuxtLink>
-      </div>
-      <nav>
-        <ContentQuery
-          v-slot="{ data: menus }"
-          path="/"
-          :only="[ '_path', 'title', 'position' ]"
-          :where="{ _dir: { $eq: '' }, _path: { $ne: '/' }, position: { $exists: true } }"
-          :sort="sort"
-        >
-          <NuxtLink
-            v-for="menu in menus"
-            :key="menu.title"
-            :to="menu._path == $route.path ? '' : menu._path"
-            :class="menu.position < 100 ? 'left' : 'right'"
-          >
-            {{ menu.title }}
-          </NuxtLink>
-        </ContentQuery>
-      </nav>
-    </header>
-    <article>
-      <slot />
-    </article>
+    <Header />
+    <div v-if="$route.path === '/'">
+      <article class="full">
+        <slot />
+      </article>
+    </div>
+    <div
+      v-else
+      class="content"
+    >
+      <Side class="side" />
+      <article>
+        <slot />
+      </article>
+    </div>
+    <Footer />
   </div>
 </template>
-<script setup lang="ts">
-const sort = {
-  position: 1,
-  $numeric: true
-};
-</script>
-<style scoped lang="scss">
-header, article {
-  max-width: 1768px;
+<style lang="scss" scoped>
+.content, .full {
+  max-width: $width-page;
   margin: auto;
-  padding: 0 10px;
+  margin-top: 1em;
+}
+
+.content {
+  display: grid;
+  grid-template-areas:
+      "side content"
+      "side content";
+  grid-template-rows: 65px 1fr;
+  grid-template-columns: 250px;
+}
+
+.side {
+  grid-area: side;
 }
 
 article {
-  padding-top: 10px;
-}
-
-div.logo {
-  margin: 20px 0px;
-
-  img.do {
-    &:is(.logo),
-    &:is(.logo:is(.full)) {
-      height: 25px;
-      content: url(./logo-full-primary.svg);
-      display: inline-block;
-    }
-
-    &:is(.logo:is(.mark)) {
-      content: url(./logo-mark-primary.svg);
-    }
-
-    @media (max-width: 800px) {
-      &:is(.logo) {
-        height: 15px;
-      }
-    }
-  }
-}
-
-nav a {
-  margin: 5px;
-  @media (max-width: 800px) {
-    & {
-      display: block;
-    }
-  }
-}
-
-a.left+a.right {
-  padding-left: 10px;
-  @media (max-width: 800px) {
-    & {
-      padding-top: 10px;
-      padding-left: 0px;
-    }
-  }
+  grid-area: content;
 }
 </style>

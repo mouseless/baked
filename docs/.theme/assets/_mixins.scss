@@ -1,0 +1,28 @@
+@mixin border($properties...) {
+  @if length($properties) == 0 {
+    $properties: top, left, bottom, right;
+  }
+
+  @each $property in $properties {
+    border-#{$property}: solid 2px $color-border;
+  }
+}
+
+@mixin radius($properties...) {
+  @if length($properties) == 0 {
+    $properties: top, bottom;
+  }
+
+  @each $property in $properties {
+    border-#{$property}: {
+      left-radius: 10px;
+      right-radius: 10px;
+    }
+  }
+}
+
+@mixin box {
+  background-color: $color-bg-box;
+  @include border();
+  @include radius();
+}

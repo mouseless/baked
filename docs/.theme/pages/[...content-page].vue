@@ -1,7 +1,18 @@
 <template>
   <ContentDoc v-if="!trailingSlash">
+    <template #default="{ doc }">
+      <div class="container">
+        <ContentRenderer
+          :value="doc"
+          class="content toc-root"
+        />
+        <Toc
+          v-if="doc.body.toc.links.length > 0"
+          :value="doc.body.toc"
+        />
+      </div>
+    </template>
     <template #not-found>
-      <!-- To avoid duplicate og meta data -->
       <ContentDoc path="/not-found" :head="false" />
     </template>
   </ContentDoc>
@@ -22,3 +33,20 @@ onMounted(async () => {
   }
 });
 </script>
+<style lang="scss" scoped>
+.container {
+  display: flex;
+
+  .content {
+    width: 100%;
+    margin: 0 4em;
+  }
+}
+</style>
+<style lang="scss">
+.full {
+  .content {
+    margin: 0 !important;
+  }
+}
+</style>
