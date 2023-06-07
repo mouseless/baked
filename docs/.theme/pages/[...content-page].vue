@@ -1,7 +1,5 @@
 <template>
-  <ContentDoc
-    v-if="!trailingSlash"
-  >
+  <ContentDoc v-if="!trailingSlash">
     <template #default="{ doc }">
       <div class="container">
         <ContentRenderer
@@ -43,6 +41,13 @@ onMounted(async () => {
   .content {
     width: 100%;
     margin: 0 4em;
+  }
+}
+</style>
+<style lang="scss">
+.full {
+  .content {
+    margin: 0 !important;
   }
 }
 </style>

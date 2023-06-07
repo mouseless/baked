@@ -13,11 +13,23 @@
 </template>
 <script lang="ts" setup>
 import type { ParsedContent } from "@nuxt/content/dist/runtime/types";
-import { useRoute, watch, queryContent } from "#imports";
+import { computed, useRoute, watch, queryContent } from "#imports";
 
 const route = useRoute();
-const root = ref<string>("");
-const menus = ref<Pick<ParsedContent, string>[]>([]);
+const root = computed(() => `/${route.path.split("/")[1]}`);
+
+const index = await queryContent(root.value)
+  .where({ _path: { $eq: root.value } })
+  .only(["_path", "title", "position"])
+  .findOne();
+
+const sections = await queryContent(root.value)
+  .where({ _path: { $ne: root.value } })
+  .only(["_path", "title", "position"])
+  .sort(sorter(index.sort))
+  .find();
+
+const menus = ref<Pick<ParsedContent, string>[]>([index, ...sections]);
 
 watch(root, async () => {
   const index = await queryContent(root.value)
@@ -33,10 +45,6 @@ watch(root, async () => {
 
   menus.value = [index, ...sections];
 });
-
-const setRoot = (path: string) => root.value = `/${path.split("/")[1]}`;
-setRoot(route.path);
-watch(route, newRoute => setRoot(newRoute.path));
 
 function sorter(
   { by = "position", order = "asc" } = { }
