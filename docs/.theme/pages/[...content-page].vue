@@ -10,6 +10,7 @@
         />
         <Toc
           v-if="doc.body.toc.links.length > 0"
+          :title="doc.title"
           :value="doc.body.toc"
         />
       </div>

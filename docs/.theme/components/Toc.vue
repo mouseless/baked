@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <h4><a href="#">ON THIS PAGE</a></h4>
+    <h4><a href="#">{{ title }}</a></h4>
     <ul>
       <li
         v-for="link in value.links"
@@ -8,9 +8,7 @@
       >
         <NuxtLink
           :to="`#${link.id}`"
-          :class="{
-            active: link.id === activeSectionId
-          }"
+          :class="{ active: link.id === activeSectionId }"
         >
           {{ link.text }}
         </NuxtLink>
@@ -21,9 +19,7 @@
           >
             <NuxtLink
               :to="`#${child.id}`"
-              :class="{
-                active: child.id === activeSectionId
-              }"
+              :class="{ active: child.id === activeSectionId }"
             >
               {{ child.text }}
             </NuxtLink>
@@ -38,6 +34,7 @@ import type { Toc } from "@nuxt/content/dist/runtime/types";
 import { onMounted, onBeforeUnmount } from "#imports";
 
 defineProps<{
+  title: string
   value: Toc
 }>();
 
@@ -121,10 +118,23 @@ nav {
   h4 {
     margin-top: 0;
     margin-bottom: 0.25em;
+    text-transform: uppercase;
 
     a {
       color: $color-brand;
-      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  a {
+    color: $color-passive;
+    text-decoration: none;
+
+    &:hover {
+      color: $color-brand;
     }
   }
 
@@ -139,12 +149,6 @@ nav {
       a {
         display: inline-block;
         margin-top: 0.25em;
-        text-decoration: none;
-        color: $color-passive;
-
-        &:hover, &.active {
-          color: $color-brand;
-        }
 
         &.active:before {
           position: absolute;

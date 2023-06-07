@@ -5,7 +5,7 @@
         <NuxtLink to="/">
           <img class="do logo white">
         </NuxtLink>
-        <span>Copyright (c) 2023 Mouseless</span>
+        <span>Copyright (c) 2023 Mouseless - MIT License</span>
       </div>
       <nav>
         <ContentQuery
@@ -18,7 +18,8 @@
           <NuxtLink
             v-for="menu in menus"
             :key="menu.title"
-            :to="menu._path == root ? '' : menu._path"
+            :to="menu._path"
+            :class="{ active: menu._path === root }"
           >
             {{ menu.title }}
           </NuxtLink>
@@ -94,11 +95,7 @@ nav {
     text-decoration: none;
     display: block;
 
-    &:not([href]) {
-      color: darken($color-passive, 15%);
-    }
-
-    &:hover:is([href]) {
+    &:hover {
       &, & i {
         color: $color-brand;
       }

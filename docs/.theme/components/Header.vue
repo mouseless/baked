@@ -17,7 +17,8 @@
           <NuxtLink
             v-for="menu in menus"
             :key="menu.title"
-            :to="menu._path == root ? '' : menu._path"
+            :to="menu._path"
+            :class="{ active: menu._path === root }"
           >
             {{ menu.title }}
           </NuxtLink>
@@ -80,7 +81,7 @@ nav a {
     color: $color-brand;
   }
 
-  &:not([href]) {
+  &.active {
     @include border(bottom);
     border-bottom-color: $color-brand;
     padding-bottom: 22px;
