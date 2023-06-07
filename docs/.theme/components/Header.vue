@@ -44,7 +44,8 @@ div.top {
 }
 
 header {
-  max-width: $width-page;
+  @include width;
+
   margin: auto;
   padding: 0 10px;
   display: flex;

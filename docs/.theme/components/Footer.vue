@@ -45,8 +45,9 @@ div.bottom {
 }
 
 footer {
+  @include width;
+
   font-size: smaller;
-  max-width: $width-page;
   margin: auto;
   margin-top: 1em;
   margin-bottom: 1em;

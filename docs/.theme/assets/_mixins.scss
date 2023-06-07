@@ -26,3 +26,23 @@
   @include border();
   @include radius();
 }
+
+@mixin width {
+  max-width: $width-page;
+
+  @media (max-width: $width-page) {
+    max-width: $width-page-l;
+  }
+
+  @media (max-width: $width-page-l) {
+    max-width: $width-page-m;
+  }
+
+  @media (max-width: $width-page-m) {
+    max-width: $width-page-s;
+  }
+
+  @media (max-width: $width-page-s) {
+    max-width: 80%;
+  }
+}

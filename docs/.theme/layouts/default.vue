@@ -20,7 +20,8 @@
 </template>
 <style lang="scss" scoped>
 .content, .full {
-  max-width: $width-page;
+  @include width;
+
   margin: auto;
   margin-top: 1em;
 }

@@ -114,11 +114,6 @@ nav {
   margin-top: 2.5em;
   font-size: 80%;
 
-  @media(max-width: 1280px) {
-    width: 150px;
-    font-size: 60%;
-  }
-
   h4 {
     margin-top: 0;
     margin-bottom: 0.25em;
