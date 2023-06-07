@@ -21,6 +21,21 @@ export default defineNuxtConfig({
     head: {
       meta: [
         {
+          hid: "og:type",
+          property: "og:type",
+          content: "website"
+        },
+        {
+          hid: "og:locale",
+          property: "og:locale",
+          content: "en_US"
+        },
+        {
+          hid: "og:site_name",
+          property: "og:site_name",
+          content: "Do"
+        },
+        {
           hid: "og:description",
           property: "og:description",
           content: "An opinionated framework for .NET"
