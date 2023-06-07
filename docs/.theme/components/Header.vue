@@ -76,8 +76,14 @@ nav a {
   text-decoration: none;
   color: $color-passive;
 
-  &:hover, &:not([href]) {
+  &:hover {
     color: $color-brand;
+  }
+
+  &:not([href]) {
+    @include border(bottom);
+    border-bottom-color: $color-brand;
+    padding-bottom: 22px;
   }
 }
 </style>
