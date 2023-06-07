@@ -7,22 +7,14 @@
         </NuxtLink>
       </div>
       <nav>
-        <ContentQuery
-          v-slot="{ data: menus }"
-          path="/"
-          :only="[ '_path', 'title', 'position' ]"
-          :where="{ _dir: { $eq: '' }, _path: { $ne: '/' }, position: { $exists: true } }"
-          :sort="sort"
+        <NuxtLink
+          v-for="menu in menus"
+          :key="menu.title"
+          :to="menu._path"
+          :class="{ active: menu._path === root }"
         >
-          <NuxtLink
-            v-for="menu in menus"
-            :key="menu.title"
-            :to="menu._path"
-            :class="{ active: menu._path === root }"
-          >
-            {{ menu.title }}
-          </NuxtLink>
-        </ContentQuery>
+          {{ menu.title }}
+        </NuxtLink>
         <NuxtLink
           :to="`https://github.com${runtimeConfig.public.githubURL}`"
           target="_blank"
@@ -39,7 +31,12 @@ import { useRoute, useRuntimeConfig } from "#imports";
 const runtimeConfig = useRuntimeConfig();
 const route = useRoute();
 const root = computed(() => `/${route.path.split("/")[1]}`);
-const sort = { position: 1, $numeric: true };
+
+const menus = await queryContent("/")
+  .only(["_path", "title", "position"])
+  .where({ _dir: { $eq: "" }, _path: { $ne: "/" }, position: { $exists: true } })
+  .sort({ position: 1, $numeric: true })
+  .find();
 </script>
 <style lang="scss" scoped>
 div.top {
