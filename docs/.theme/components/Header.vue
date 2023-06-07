@@ -75,7 +75,7 @@ div.logo {
 nav a {
   margin: 10px;
   text-decoration: none;
-  color: $color-passive;
+  color: $color-fg-passive;
 
   &:hover {
     color: $color-brand;

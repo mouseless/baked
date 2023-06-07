@@ -3,9 +3,9 @@
     <NuxtLink
       v-for="menu in menus"
       :key="menu.title"
-      :to="menu._path == $route.path ? '' : menu._path"
+      :to="menu._path"
       class="menu"
-      :class="menu._path == root ? 'top' : ''"
+      :class="{ active: menu._path == $route.path }"
     >
       {{ menu.title }}
     </NuxtLink>
@@ -50,22 +50,26 @@ function sorter(
 <style lang="scss" scoped>
 nav {
   margin-top: 1.5em;
-  margin-right: 4em;
+  position: sticky;
+  align-self: start;
+  top: 1.5em;
 
   .menu {
     font-size: 90%;
     display: block;
     text-decoration: none;
-    color: $color-passive;
-    margin-bottom: 0.25em;
+    color: $color-fg-passive;
 
-    &:not([href]), &:hover {
+    border-radius: 5px;
+    padding: 10px;
+
+    &:hover {
       color: $color-brand;
     }
-  }
 
-  .top {
-    font-weight: bold;
+    &.active {
+      background-color: $color-border;
+    }
   }
 }
 </style>

@@ -42,6 +42,7 @@ onMounted(async () => {
 
   .content {
     width: 100%;
+    margin: 0 4em;
   }
 }
 </style>

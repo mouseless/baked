@@ -111,8 +111,7 @@ nav {
   align-self: start;
   top: 1.5em;
   width: 250px;
-  margin-top: 1.5em;
-  margin-left: 4em;
+  margin: 1.5em 1em;
   font-size: 80%;
 
   h4 {
@@ -130,7 +129,7 @@ nav {
   }
 
   a {
-    color: $color-passive;
+    color: $color-fg-passive;
     text-decoration: none;
 
     &:hover {

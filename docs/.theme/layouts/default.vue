@@ -39,6 +39,5 @@
 
 article {
   grid-area: content;
-  padding: 0 10px;
 }
 </style>
