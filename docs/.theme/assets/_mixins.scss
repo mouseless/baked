@@ -30,7 +30,7 @@
 @mixin width {
   max-width: calc($width-page - $width-tolerance);
   box-sizing: border-box;
-  min-width: 270px;
+  min-width: $width-page-min;
 
   @media (max-width: $width-page) {
     max-width: calc($width-page-l - $width-tolerance);

@@ -146,7 +146,7 @@ hr {
   @include border();
 }
 
-@media(max-width: $width-page-l) {
+@media (max-width: $width-page-l) {
   h2 {
     scroll-margin-top: 2em;
   }

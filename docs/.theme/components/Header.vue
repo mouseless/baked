@@ -156,4 +156,10 @@ nav a {
     }
   }
 }
+
+@media (max-width: $width-page-s) {
+  nav {
+    width: calc($width-page-min - 2em);
+  }
+}
 </style>

@@ -98,4 +98,18 @@ nav {
     }
   }
 }
+
+@media (max-width: $width-page-s) {
+  footer {
+    display: block;
+
+    nav {
+      text-align: left;
+
+      a {
+        margin-left: 0;
+      }
+    }
+  }
+}
 </style>
