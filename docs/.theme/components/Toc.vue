@@ -127,25 +127,6 @@ nav {
   margin-top: 2.5em;
   font-size: 80%;
 
-  h4 {
-    margin-top: 0;
-    margin-bottom: 0.25em;
-    text-transform: uppercase;
-
-    a {
-      color: $color-brand;
-    }
-  }
-
-  a {
-    color: $color-fg-passive;
-    text-decoration: none;
-
-    &:hover {
-      color: $color-brand;
-    }
-  }
-
   ul {
     margin: 0;
     padding-left: 0;
@@ -155,8 +136,15 @@ nav {
       list-style: none;
 
       a {
+        color: $color-fg-passive;
+        text-decoration: none;
+        cursor: pointer;
         display: inline-block;
         margin-top: 0.25em;
+
+        &:hover {
+          color: $color-brand;
+        }
 
         &.active:before {
           position: absolute;
@@ -181,24 +169,19 @@ nav {
   }
 }
 
-@media(max-width: $width-page-l) {
+@media (max-width: $width-page-l) {
   nav {
-    align-self: end;
     text-align: right;
     width: 100%;
     top: 0;
     background-color: $color-bg-body;
     margin: 0;
     box-shadow: 0 5px 5px 0 $color-bg-body;
+    margin-bottom: -2.5em;
 
     h4 a {
-      display: block;
-      cursor: pointer;
-      padding: 1.5em;
-
-      &:hover {
-        text-decoration: underline;
-      }
+      display: inline-block;
+      padding-right: 0;
     }
 
     & > ul {

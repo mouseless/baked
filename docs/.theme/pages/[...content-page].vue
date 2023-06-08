@@ -5,6 +5,7 @@
         <ContentRenderer
           :value="doc"
           class="content toc-root"
+          :class="{ 'no-toc': doc.body.toc.links <= 0 }"
         />
         <Toc
           v-if="doc.body.toc.links.length > 0"
@@ -51,6 +52,16 @@ onMounted(async () => {
     .content {
       margin: 0;
     }
+
+    .no-toc {
+      margin-top: 1em;
+    }
+  }
+}
+
+@media (max-width: $width-page-m) {
+  .container {
+    margin-left: 0;
   }
 }
 </style>
@@ -60,4 +71,13 @@ onMounted(async () => {
     margin: 0 !important;
   }
 }
+
+@media (max-width: $width-page-l) {
+  .full {
+    .container {
+      margin-left: 0;
+    }
+  }
+}
+
 </style>
