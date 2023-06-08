@@ -111,7 +111,7 @@ nav a {
   }
 }
 
-@media (max-width: $width-page-l) {
+@media (max-width: $width-page-m) {
   a.bars {
     display: block;
   }
