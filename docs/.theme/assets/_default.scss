@@ -36,6 +36,14 @@ h1 {
   font-size: 40px;
 }
 
+h2 {
+  scroll-margin-top: 0.5em;
+}
+
+h3 {
+  scroll-margin-top: 1em;
+}
+
 p {
   line-height: 1.75em;
 
@@ -123,5 +131,13 @@ hr {
 @media(max-width: $width-page-l) {
   h1 {
     margin-top: 10px;
+  }
+
+  h2 {
+    scroll-margin-top: 3em;
+  }
+
+  h3 {
+    scroll-margin-top: 4em;
   }
 }

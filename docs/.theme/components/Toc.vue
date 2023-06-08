@@ -54,7 +54,7 @@ function toggle() { shown.value = !shown.value; }
 function close() { shown.value = false; }
 
 onMounted(() => {
-  observer = new IntersectionObserver(onIntersection, { root: document });
+  observer = new IntersectionObserver(onIntersection, { root: document, rootMargin: "-75px" });
 
   const sectionCounts: { [id:string]: number } = { };
   const sectionIndices: { [id:string]: number } = { };
@@ -80,8 +80,8 @@ onMounted(() => {
     }
 
     for(const { entry, id } of entriesWithId) {
+      sectionCounts[id] ||= 0;
       if(entry.isIntersecting) {
-        sectionCounts[id] ||= 0;
         sectionCounts[id] += 1;
       } else {
         sectionCounts[id] -= 1;
