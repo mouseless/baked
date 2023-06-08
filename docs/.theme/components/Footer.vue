@@ -51,7 +51,6 @@ footer {
   margin: auto;
   margin-top: 1em;
   margin-bottom: 1em;
-  padding: 0 10px;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
