@@ -119,3 +119,9 @@ table {
 hr {
   @include border();
 }
+
+@media(max-width: $width-page-l) {
+  h1 {
+    margin-top: 10px;
+  }
+}

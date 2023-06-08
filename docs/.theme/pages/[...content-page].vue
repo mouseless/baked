@@ -42,6 +42,17 @@ onMounted(async () => {
     margin: 0 4em;
   }
 }
+
+@media (max-width: $width-page-l) {
+  .container {
+    flex-direction: column-reverse;
+    margin-left: 4em;
+
+    .content {
+      margin: 0;
+    }
+  }
+}
 </style>
 <style lang="scss">
 .full {
