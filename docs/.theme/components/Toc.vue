@@ -1,7 +1,7 @@
 <template>
   <nav>
-    <h4><a href="#">On This Page</a></h4>
-    <ul>
+    <h4><a @click="toggle">On This Page</a></h4>
+    <ul :class="{ active: shown }">
       <li
         v-for="link in value.links"
         :key="link.id"
@@ -9,6 +9,7 @@
         <NuxtLink
           :to="`#${link.id}`"
           :class="{ active: link.id === activeSectionId }"
+          @click="close"
         >
           {{ link.text }}
         </NuxtLink>
@@ -20,11 +21,19 @@
             <NuxtLink
               :to="`#${child.id}`"
               :class="{ active: child.id === activeSectionId }"
+              @click="close"
             >
               {{ child.text }}
             </NuxtLink>
           </li>
         </ul>
+      </li>
+      <li>
+        <a
+          class="return-to-top"
+          href="#"
+          @click="close"
+        >Return to top</a>
       </li>
     </ul>
   </nav>
@@ -39,9 +48,13 @@ defineProps<{
 
 let observer: IntersectionObserver;
 const activeSectionId = ref<string>("");
+const shown = ref<boolean>(false);
+
+function toggle() { shown.value = !shown.value; }
+function close() { shown.value = false; }
 
 onMounted(() => {
-  observer = new IntersectionObserver(onIntersection, { root: document });
+  observer = new IntersectionObserver(onIntersection, { root: document, rootMargin: "-75px" });
 
   const sectionCounts: { [id:string]: number } = { };
   const sectionIndices: { [id:string]: number } = { };
@@ -67,8 +80,8 @@ onMounted(() => {
     }
 
     for(const { entry, id } of entriesWithId) {
+      sectionCounts[id] ||= 0;
       if(entry.isIntersecting) {
-        sectionCounts[id] ||= 0;
         sectionCounts[id] += 1;
       } else {
         sectionCounts[id] -= 1;
@@ -114,29 +127,6 @@ nav {
   margin-top: 2.5em;
   font-size: 80%;
 
-  h4 {
-    margin-top: 0;
-    margin-bottom: 0.25em;
-    text-transform: uppercase;
-
-    a {
-      color: $color-brand;
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-  }
-
-  a {
-    color: $color-fg-passive;
-    text-decoration: none;
-
-    &:hover {
-      color: $color-brand;
-    }
-  }
-
   ul {
     margin: 0;
     padding-left: 0;
@@ -146,8 +136,15 @@ nav {
       list-style: none;
 
       a {
+        color: $color-fg-passive;
+        text-decoration: none;
+        cursor: pointer;
         display: inline-block;
         margin-top: 0.25em;
+
+        &:hover {
+          color: $color-brand;
+        }
 
         &.active:before {
           position: absolute;
@@ -158,12 +155,48 @@ nav {
           @include radius();
           width: 3px;
         }
+
+        &.return-to-top {
+          margin-top: 0.50em;
+        }
       }
 
       ul {
         margin-bottom: 0.25em;
         padding-left: 1em;
       }
+    }
+  }
+}
+
+@media (max-width: $width-page-l) {
+  nav {
+    text-align: right;
+    width: 100%;
+    top: 0;
+    background-color: $color-bg-body;
+    margin: 0;
+    box-shadow: 0 5px 5px 0 $color-bg-body;
+    margin-bottom: -2.5em;
+
+    h4 a {
+      display: inline-block;
+      padding-right: 0;
+    }
+
+    & > ul {
+      @include box;
+      display: none;
+      text-align: left;
+      padding: 1em;
+
+      &.active {
+        display: block;
+      }
+    }
+
+    ul li a.active:before {
+      left: 0em;
     }
   }
 }

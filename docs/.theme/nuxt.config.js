@@ -20,6 +20,11 @@ export default defineNuxtConfig({
     baseURL: process.env.BASE_URL,
     head: {
       meta: [
+        { charset: "utf-8" },
+        {
+          name: "viewport",
+          content: "width=device-width, initial-scale=1"
+        },
         {
           hid: "og:type",
           property: "og:type",

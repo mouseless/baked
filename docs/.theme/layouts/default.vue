@@ -20,7 +20,8 @@
 </template>
 <style lang="scss" scoped>
 .content, .full {
-  max-width: $width-page;
+  @include width;
+
   margin: auto;
   margin-top: 1em;
 }
@@ -40,5 +41,22 @@
 
 article {
   grid-area: content;
+}
+
+@media (max-width: $width-page-l) {
+  .content {
+    margin-top: 0;
+  }
+}
+
+@media (max-width: $width-page-m) {
+  .side {
+    z-index: 2;
+    grid-column-end: content;
+  }
+
+  article {
+    grid-column-start: side;
+  }
 }
 </style>

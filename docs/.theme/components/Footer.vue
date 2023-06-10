@@ -45,12 +45,12 @@ div.bottom {
 }
 
 footer {
+  @include width;
+
   font-size: smaller;
-  max-width: $width-page;
   margin: auto;
   margin-top: 1em;
   margin-bottom: 1em;
-  padding: 0 10px;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -94,6 +94,20 @@ nav {
     &:hover {
       &, & i {
         color: $color-brand;
+      }
+    }
+  }
+}
+
+@media (max-width: $width-page-s) {
+  footer {
+    display: block;
+
+    nav {
+      text-align: left;
+
+      a {
+        margin-left: 0;
       }
     }
   }

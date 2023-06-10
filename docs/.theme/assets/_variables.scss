@@ -1,10 +1,16 @@
-$width-page: 1768px;
+$width-tolerance: 50px;
+$width-page: 1768px + $width-tolerance;
+$width-page-l: 1280px + $width-tolerance;
+$width-page-m: 1024px + $width-tolerance;
+$width-page-s: 768px + $width-tolerance;
+$width-page-min: 270px;
 
 $color-brand: #fa465b;
 $color-border: #222222;
 $color-fg-passive: #9b9b9b;
 $color-fg: #cccccc;
 $color-fg-code: #cfcfcf;
+$color-bg-body: #000000;
 $color-bg-code: #323232;
 $color-bg-box: #111111;
 $color-bg-box-info: #001c78;
