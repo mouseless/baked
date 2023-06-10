@@ -13,3 +13,14 @@ within 2-3 months. Check out our documentation site for more information
 [do.mouseless.codes](https://do.mouseless.codes)
 
 Stay tuned.
+
+
+## Project Structure
+
+- `/docs` is for all the documentation. It is a single website that documents
+  every package `Do` has.
+- `/samples` is for sample projects.
+- `/src` includes all source code that we ship as nuget packages.
+- `/test` includes test automation
+  - `/integration` includes e2e full apps per app types.
+  - `/unit` includes unit test projects per nuget package.
