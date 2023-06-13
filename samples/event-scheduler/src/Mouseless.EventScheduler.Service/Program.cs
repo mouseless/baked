@@ -1,6 +1,11 @@
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDo(c => c
+    .Service()
+);
+
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+app.UseDo();
 
 app.Run();

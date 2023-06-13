@@ -1,3 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.App.Ref" Version="6.0.18" />
+    <ItemGroup>
+
 </Project>
