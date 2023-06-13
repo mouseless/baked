@@ -14,7 +14,6 @@ within 2-3 months. Check out our documentation site for more information
 
 Stay tuned.
 
-
 ## Project Structure
 
 - `/docs` is for all the documentation. It is a single website that documents
@@ -22,5 +21,5 @@ Stay tuned.
 - `/samples` is for sample projects.
 - `/src` includes all source code that we ship as nuget packages.
 - `/test` includes test automation
-  - `/integration` includes e2e full apps per app types.
+  - `/integration` includes e2e test projects per app types.
   - `/unit` includes unit test projects per nuget package.

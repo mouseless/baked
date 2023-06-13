@@ -1,15 +1,30 @@
 <Project>
 
-    <PropertyGroup>
-        <Product>Do</Product>
-        <Version>0.0.0</Version>
-        <Authors>Mouseless</Authors>
-        <Company>Mouseless</Company>
-        <Copyright>Copyright (c) 2023 Mouseless</Copyright>
-        <PackageIcon>icon.png</PackageIcon>
-        <PackageLicenseFile>LICENSE</PackageLicenseFile>
-        <PackageProjectUrl>https://do.mouseless.codes</PackageProjectUrl>
-        <PackageReleaseNotes>https://do.mouseless.codes/release-notes</PackageReleaseNotes>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <LangVersion>10.0</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <EnablePackageValidation>true</EnablePackageValidation>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Using Include="System.Linq" />
+    <Using Include="System.Collections" />
+    <Using Include="System.Collections.Generic" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <Product>Do</Product>
+    <Version>0.0.0</Version>
+    <Authors>Mouseless</Authors>
+    <Company>Mouseless</Company>
+    <Copyright>Copyright (c) 2023 Mouseless</Copyright>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageProjectUrl>https://do.mouseless.codes</PackageProjectUrl>
+    <PackageReleaseNotes>https://do.mouseless.codes/release-notes</PackageReleaseNotes>
+  </PropertyGroup>
 
 </Project>

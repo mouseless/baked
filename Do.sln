@@ -3,6 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2F297832-93E6-4750-9141-818873A769F6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "blueprint", "blueprint", "{CDC3A00A-52BD-4CDA-B7D7-1FCFC5DD1CEE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Do.Blueprint.Service", "src\blueprint\Do.Blueprint.Service\Do.Blueprint.Service.csproj", "{AAF123F9-BEAB-42D0-84AD-DFBD6CE7A9A9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -10,5 +16,15 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AAF123F9-BEAB-42D0-84AD-DFBD6CE7A9A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAF123F9-BEAB-42D0-84AD-DFBD6CE7A9A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAF123F9-BEAB-42D0-84AD-DFBD6CE7A9A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAF123F9-BEAB-42D0-84AD-DFBD6CE7A9A9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CDC3A00A-52BD-4CDA-B7D7-1FCFC5DD1CEE} = {2F297832-93E6-4750-9141-818873A769F6}
+		{AAF123F9-BEAB-42D0-84AD-DFBD6CE7A9A9} = {CDC3A00A-52BD-4CDA-B7D7-1FCFC5DD1CEE}
 	EndGlobalSection
 EndGlobal
