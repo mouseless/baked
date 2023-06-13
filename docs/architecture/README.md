@@ -29,17 +29,17 @@ Each layer in DO introduces a new technology, such as a database server, web
 server or a framework, to your application architecture. These layers are named
 after their concept or protocol it introduces.
 
-For example, `Do.Http` introduces _HTTP_ protocol as a layer through the
-`ASP.NET Core` framework. Also, `Do.Database` introduces _ORM_ concept as a
-layer through the `EF Core` framework.
+> :bulb:
+>
+> For example, `Do.Http` introduces _HTTP_ protocol as a layer through the
+> `ASP.NET Core` framework. Also, `Do.Database` introduces _ORM_ concept as a
+> layer through the `EF Core` framework.
 
 ```mermaid
 flowchart
   H[[Http]]
   D((Domain))
   DB[(Database)]
-
-  H --> D --> DB
 ```
 
 But your domain objects would not just be exposed as API endpoints and mapped
@@ -51,12 +51,16 @@ to the technology it uses. This API may contain a bunch of helper classes
 and/or façade methods that makes it easy to build a certain type of
 configuration, but they do __not__ have opinions upfront.
 
-Another perspective to define whether a component is a layer or not is that, if
-it introduces an internal system component like a database, message queue
-server, web server, a framework; then it is a layer. If it is a cloud service
-that your software depends on, then it should __not__ be a layer. External
-system components are defined as feature implementations (adapters) which we'll
-cover in the next section.
+> :information_source:
+>
+> Another perspective to define whether a component is a layer or not is that;
+>
+> If it introduces an internal system component like a database, message queue
+> server, web server, a framework; then it __is__ a layer.
+>
+> If it is a cloud service that your software depends on, then it should
+> __not__ be a layer. External system components are defined as feature
+> implementations (adapters) which we'll cover in the next section.
 
 ## Feature
 
@@ -65,61 +69,97 @@ software components. Different domains require different types of abilities.
 Every feature consists of two parts; abstraction (port) and implementation
 (adapter).
 
-A feature can have only one abstraction, but it can have more than one
-implementations.
+### Abstraction
 
-For example, `Do.Fs` represents file system feature that provides an API to
-your domain logic to read/write files. `Do.Fs.Local` and `Do.Fs.AwsS3` are to
-different implementations that provides the same functionality through
-different system components.
+An abstraction is the library that contains all common classes, interfaces,
+attributes, if any, for a feature. It is the only accessible part of a feature
+from the domain layer or from other feature implementations.
 
-Features are named after the ability they introduce. Proper names are `Do.Fs`,
-`Do.Sql`, `Do.Nosql`, `Do.Logging`, `Do.Auth` etc.
-
-So with the features a sample architecture looks like this;
+> :information_source:
+>
+> Features can have only one abstraction and they are named after the ability
+> they introduce, e.g. `Do.Fs`, `Do.Sql`, `Do.Nosql`, `Do.Logging`, `Do.Auth`
+> etc.
 
 ```mermaid
-flowchart LR
+flowchart
   subgraph Layers
-    direction TB
-
     H[[Http]]
     D((Domain))
     DB[(Database)]
-
-    H --> D --> DB
   end
 
-  subgraph FA[Feature Abstractions]
-    direction LR
-    A(Api)
-    S(Sql)
+  subgraph Features
+    subgraph Abstraction
+      A(Api)
+      S(Sql)
+    end
   end
 
-  subgraph FI[Feature Implementations]
-    direction LR
-    AR(Api.Rest)
-    SE(Sql.EfCore)
-  end
-
-  FI --implements--> FA
-  Layers -.uses.-> FA
-  FI -.configures.-> Layers
+  D -.uses.-> A
+  D -.uses.-> S
 ```
-
-### Abstraction
-
-Abstraction library contains all common classes, interfaces, attributes for a
-feature. It is the only accessible part of a feature from the domain layer.
 
 ### Implementation
 
-- Feature Impl may depend on layer(s) and other feature.abstraction(s) as well
-  as its own feature.abstraction (Adapter)
-  - a feature implementation would require a layer, or a feature strictly
-  - or it might optionally use a layer or a feature and works well without them
-    as well
-  - a feature implementation is named after its design or technology e.g.
-    Do.Auth.Auth0, Do.Fs.Aws, Do.Sql.EfCore?, Do.PubSub.RabbitMq?
-  - might introduce an external system component like auth0, keycloak, aws s3
-    etc.
+This is the adapter part of a feature which provides implementation(s) for
+interfaces in the abstraction part as well as opinionated configurations using
+corresponding layer's configuration API.
+
+> :information_source:
+>
+> A feature might configure more than one layer to achieve its functionality.
+
+Features may have more than one implementation and each implementation is named
+after its identifying design or technology, e.g. `Do.Api.Rest`,
+`Do.Auth.Auth0`, `Do.Fs.Aws`, `Do.Sql.EfCore`.
+
+> :bulb:
+>
+> `Do.Fs` represents file system feature that provides an API to your domain
+> logic to read/write files. `Do.Fs.Local` and `Do.Fs.AwsS3` are two different
+> implementations that provides the same functionality through different system
+> components.
+
+Feature implementations are bridges that connects layers with opinionated
+configuration to the domain layer. Now our sample architecture is finally
+complete;
+
+```mermaid
+flowchart TB
+  subgraph Layers
+    H[[Http]]
+    D((Domain))
+    DB[(Database)]
+  end
+
+  subgraph Features
+    subgraph Abstraction
+      A(Api)
+      S(Sql)
+    end
+
+    subgraph Implementation
+      AR(Api.Rest)
+      SE(Sql.EfCore)
+    end
+  end
+
+  H -.configured by.-> AR
+  A --implemented by--> AR
+  D -.uses.-> A
+  D -.uses.-> S
+  S --implemented by--> SE
+  DB -.configured by.-> SE
+```
+
+#### Dependencies
+
+It is possible for a feature to depend on another one. If this is the case,
+then it uses the abstraction of that other feature. Direct dependency between
+features is forbidden.
+
+A feature might depend on a layer or another feature strictly. In this case, an
+application must have dependent features and layers in order to add depending
+feature. Mostly, this dependency is soft, which means you can add that feature
+even if your application doesn't have its dependent features or layers.
