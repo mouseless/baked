@@ -21,5 +21,4 @@ Stay tuned.
 - `/samples` is for sample projects.
 - `/src` includes all source code that we ship as nuget packages.
 - `/test` includes test automation
-  - `/integration` includes e2e test projects per app types.
-  - `/unit` includes unit test projects per nuget package.
+  - `/blueprints` includes e2e test projects per blueprint.

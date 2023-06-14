@@ -1,4 +1,4 @@
-using Do.Kernel;
+using Do.Blueprints.Service;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -10,5 +10,4 @@ public static class ServiceCollectionExtensions
 
         return source;
     }
-
 }

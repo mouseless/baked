@@ -1,4 +1,4 @@
-﻿namespace Do.Kernel;
+﻿namespace Do.Blueprints.Service;
 
 public class Builder
 {
