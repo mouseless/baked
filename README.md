@@ -16,9 +16,11 @@ Stay tuned.
 
 ## Project Structure
 
-- `/docs` is for all the documentation. It is a single website that documents
-  every package `Do` has.
-- `/samples` is for sample projects.
-- `/src` includes all source code that we ship as nuget packages.
-- `/test` includes test automation
-  - `/blueprints` includes e2e test projects per blueprint.
+- `/docs`: Documentation site. It is a single website that documents every
+  package.
+- `/samples`: sample projects are here. Each project should be in its own
+  folder.
+- `/src`: all source code that we ship as nuget packages
+  - `/blueprints`: blueprint projects
+- `/test`: test automation projects
+  - `/blueprints`: e2e test projects per blueprint.

@@ -1,0 +1,45 @@
+name: Project - Regular Checks
+on:
+  pull_request:
+    branches:
+      - main
+      - 'epic/**'
+    paths:
+      - 'src/**'
+      - 'test/**'
+      - 'Do.sln'
+      - 'Directory.Build.props'
+
+jobs:
+  # outputs matrix json so that windows is only added when head branch is a release branch
+  prepare:
+    name: Prepare
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ env.MATRIX }}
+    env:
+      MATRIX: '{ "os": [ "ubuntu-latest" ] }'
+      COLON: ':'
+    steps:
+      - name: Windows
+        id: windows
+        if: startsWith(github.head_ref, 'release/') == true
+        run: echo "MATRIX={ \"os\"$COLON [ \"ubuntu-latest\", \"windows-latest\" ] }" >> $GITHUB_ENV
+  build:
+    name: Build
+    needs: Prepare
+    outputs:
+      matrix: ${{ needs.prepare.outputs.matrix }}
+    strategy:
+      max-parallel: 2
+      matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: |
+            6.0.x
+      - name: Build Solution
+        run: dotnet build -c Release
