@@ -2,9 +2,12 @@ namespace Microsoft.AspNetCore.Builder;
 
 public static class ApplicationBuilderExtensions
 {
-    public static WebApplication UseDo(this WebApplication source)
+    public static IApplicationBuilder UseDo(this IApplicationBuilder source)
     {
-        source.MapGet("/", () => "Hello World!");
+        if (source is WebApplication web)
+        {
+            web.MapGet("/", () => "Hello World!");
+        }
 
         return source;
     }

@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\src\blueprint\Do.Blueprint.Service.csproj" />
+    <ProjectReference Include="..\..\..\..\src\blueprint\Do.Blueprint.Service\Do.Blueprint.Service.csproj" />
   </ItemGroup>
 
 </Project>

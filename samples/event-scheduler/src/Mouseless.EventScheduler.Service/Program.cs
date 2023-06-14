@@ -1,6 +1,6 @@
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDo(c => c
+builder.Services.AddDo(build => build
     .Service()
 );
 
