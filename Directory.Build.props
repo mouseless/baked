@@ -26,6 +26,8 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageProjectUrl>https://do.mouseless.codes</PackageProjectUrl>
     <PackageReleaseNotes>https://do.mouseless.codes/release-notes</PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/mouseless/do.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
 </Project>
