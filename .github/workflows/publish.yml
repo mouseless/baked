@@ -26,9 +26,9 @@ jobs:
     outputs:
       # Version number that is parsed from Directory.Build.props
       version: ${{ steps.parse.outputs.version }}
-      # Flag to indicate a new version should be built or not.
-      #   true means it was already published
-      #   false means pack & push is required
+      # Flag to indicate a new version should be built or not;
+      # - true means it was already published
+      # - false means pack & push is required
       action: ${{ steps.check.outputs.action }}
     steps:
       - uses: actions/checkout@v3
@@ -42,6 +42,66 @@ jobs:
           version=$(cat Directory.Build.props | sed -n '/<Version>/p' | sed '/[ <>a-zA-Z\/]/ s///g')
           # value of $version is set as a step output
           echo "version="$version >> $GITHUB_OUTPUT
+      - name: Check Version in NuGet
+        id: check
+        run: |
+          if wget -q --method=HEAD https://api.nuget.org/v3-flatcontainer/Do.Blueprints.Service/${{ steps.parse.outputs.version }}/Do.Blueprints.Service.nuspec;
+           then
+            echo "action=nothing" >> $GITHUB_OUTPUT
+           else
+            echo "action=pack" >> $GITHUB_OUTPUT
+
+  pack-projects:
+    name: Pack Projects
+    needs: check-version
+    # should only run when this version does not exist in nuget
+    # use contains to check for action value, == operator does not work probably because some space chars in the value
+    if: contains(needs.check-version.outputs.action, 'pack')
+    strategy:
+      matrix:
+        project: [ 'Do.Blueprints.Service' ]
+        include:
+          - project: 'Do.Blueprints.Service'
+            folder: 'blueprints'
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ needs.check-version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: |
+            6.0.x
+      - name: Pack
+        run: |
+          dotnet pack "src/${{ matrix.folder }}/${{ matrix.project }}/${{ matrix.project }}.csproj" \
+            -o "packages" \
+            -c Release
+      - name: Upload Package
+        uses: actions/upload-artifact@v3
+        with:
+          name: package-${{ matrix.project }}
+          path: packages/${{ matrix.project }}.${{ needs.check-version.outputs.version }}.nupkg
+  push-packages:
+    name: Push Packages
+    needs: pack-projects
+    strategy:
+      matrix:
+        project: [ 'Do.Blueprints.Service' ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Package
+        uses: actions/download-artifact@v3
+        with:
+          name: package-${{ matrix.project }}
+      - name: Push
+        run: |
+          dotnet nuget push "${{ matrix.project }}.${{ needs.pack-projects.outputs.version }}.nupkg" \
+            -s https://api.nuget.org/v3/index.json \
+            -k ${{ secrets.NUGET_API_KEY }} \
+            --skip-duplicate \
+            -t 3600
 
   generate-docs:
     needs: check-version
