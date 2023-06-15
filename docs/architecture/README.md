@@ -54,9 +54,9 @@ flowchart
 > :information_source:
 >
 > `Domain` differs from other layers like `Http` and `Database`. It is a
-> special kind of layer that processes your domain assemblies so that it can
-> create an application schema out of your domain objects so that they can be
-> used in creating configuration, conventions and/or generating source code.
+> special kind of layer that processes your domain assemblies to create an
+> application schema out of your domain objects so that they can be used in
+> creating configuration, conventions and/or generating source code.
 
 But your domain objects would not just be exposed as API endpoints and mapped
 onto a relational database. For that, we need to be able to configure those
