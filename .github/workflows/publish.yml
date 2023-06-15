@@ -51,6 +51,7 @@ jobs:
             echo "action=nothing" >> $GITHUB_OUTPUT
            else
             echo "action=pack" >> $GITHUB_OUTPUT
+          fi
 
   pack-projects:
     name: Pack Projects
