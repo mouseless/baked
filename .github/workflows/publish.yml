@@ -5,6 +5,7 @@ on:
       - labeled
     branches:
       - main
+      - 'epic/**'
 jobs:
   remove-label:
     # Remove when not in release branch
@@ -50,6 +51,7 @@ jobs:
             echo "action=nothing" >> $GITHUB_OUTPUT
            else
             echo "action=pack" >> $GITHUB_OUTPUT
+          fi
 
   pack-projects:
     name: Pack Projects
@@ -63,6 +65,7 @@ jobs:
         include:
           - project: 'Do.Blueprints.Service'
             folder: 'blueprints'
+            package: 'do-blueprints-service'
     runs-on: ubuntu-latest
     outputs:
       version: ${{ needs.check-version.outputs.version }}
@@ -81,23 +84,23 @@ jobs:
       - name: Upload Package
         uses: actions/upload-artifact@v3
         with:
-          name: package-${{ matrix.project }}
-          path: packages/${{ matrix.project }}.${{ needs.check-version.outputs.version }}.nupkg
+          name: package-${{ matrix.package }}
+          path: packages/${{ matrix.package }}.${{ needs.check-version.outputs.version }}.nupkg
   push-packages:
     name: Push Packages
     needs: pack-projects
     strategy:
       matrix:
-        project: [ 'Do.Blueprints.Service' ]
+        package: [ 'do-blueprints-service' ]
     runs-on: ubuntu-latest
     steps:
       - name: Download Package
         uses: actions/download-artifact@v3
         with:
-          name: package-${{ matrix.project }}
+          name: package-${{ matrix.package }}
       - name: Push
         run: |
-          dotnet nuget push "${{ matrix.project }}.${{ needs.pack-projects.outputs.version }}.nupkg" \
+          dotnet nuget push "${{ matrix.package }}.${{ needs.pack-projects.outputs.version }}.nupkg" \
             -s https://api.nuget.org/v3/index.json \
             -k ${{ secrets.NUGET_API_KEY }} \
             --skip-duplicate \
