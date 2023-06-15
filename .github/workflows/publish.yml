@@ -5,7 +5,7 @@ on:
       - labeled
     branches:
       - main
-      - 'epic/**/
+      - 'epic/**'
 jobs:
   remove-label:
     # Remove when not in release branch
