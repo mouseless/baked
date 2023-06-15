@@ -5,7 +5,7 @@
     <Title>DO / Blueprints / Service</Title>
     <Description>DO is an opinionated framework for .NET. This is a blueprint package that brings together all the features one needs for a simple service application.</Description>
     <PackageId>Do.Blueprints.Service</PackageId>
-    <PackageTags>do;framework;service</PackageTags>
+    <PackageTags>do;blueprint;service</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
