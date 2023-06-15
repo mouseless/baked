@@ -10,6 +10,11 @@ causing any repetitive work. To achieve this we need to break down an
 application into its individual components such as features, layers and domain
 logic.
 
+> :information_source:
+>
+> DO is inspired by [Clean Architecture][], but it has its own approach to the
+> concept.
+
 Let's dive into each type of software component to have a better understanding
 of how DO is structured.
 
@@ -174,3 +179,5 @@ flowchart TB
   S --implemented by--> SE
   DB -.configured by.-> SE
 ```
+
+[Clean Architecture]:https://learn.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures#clean-architecture
