@@ -8,8 +8,8 @@
   >
 </template>
 <script setup lang="ts">
-import { withBase } from "ufo";
-import { useRuntimeConfig, computed } from "#imports";
+import { joinURL, withBase } from "ufo";
+import { useRuntimeConfig, computed, useRoute } from "#imports";
 
 const props = withDefaults(defineProps<{
   src: string,
@@ -23,12 +23,24 @@ const props = withDefaults(defineProps<{
   height: undefined
 });
 
+const route = useRoute();
+
 const refinedSrc = computed(() => {
-  if(props.src?.startsWith("/") && !props.src.startsWith("//")) {
-    return withBase(props.src, useRuntimeConfig().app.baseURL);
+  let src = props.src;
+
+  if(src?.startsWith("./README")) {
+    src = joinURL(route.path, src);
   }
 
-  return props.src;
-});
+  if(src?.startsWith("/") && !src.startsWith("//")) {
+    src = withBase(src, useRuntimeConfig().app.baseURL);
+  }
 
+  return src;
+});
 </script>
+<style lang="scss" scoped>
+img {
+  max-width: 100%;
+}
+</style>

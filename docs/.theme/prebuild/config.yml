@@ -31,7 +31,7 @@ tasks:
           lineColor: '#b3b3b3'
           secondaryColor: '#111111'
           secondaryTextColor: '#b3b3b3'
-          tertiaryColor: '#fff'
+          tertiaryColor: '#222222'
   - rename:
       source: ./.theme/.temp
       find: README.md

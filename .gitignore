@@ -8,3 +8,7 @@
 
 # log file
 *.log*
+
+# dotnet build files
+obj/
+bin/
