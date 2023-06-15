@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <Product>Do</Product>
+    <Product>DO</Product>
     <Version>0.0.0</Version>
     <Authors>Mouseless</Authors>
     <Company>Mouseless</Company>
