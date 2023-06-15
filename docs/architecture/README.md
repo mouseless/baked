@@ -48,7 +48,7 @@ layers so that they know how to interpret your domain objects.
 
 This is why every layer comes with its own configuration API that is specific
 to the technology it uses. This API may contain a bunch of helper classes
-and/or façade methods that makes it easy to build a certain type of
+and/or facade methods that makes it easy to build a certain type of
 configuration, but they do __not__ have opinions upfront.
 
 > :information_source:
