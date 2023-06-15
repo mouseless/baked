@@ -1,4 +1,4 @@
-![](./docs/.theme/public/logo-full-primary.svg)
+![](https://do.mouseless.codes/logo-readme.png)
 
 DO is an opinionated framework for .NET.
 
@@ -13,14 +13,3 @@ within 2-3 months. Check out our documentation site for more information
 [do.mouseless.codes](https://do.mouseless.codes)
 
 Stay tuned.
-
-## Project Structure
-
-- `/docs`: Documentation site. It is a single website that documents every
-  package.
-- `/samples`: sample projects are here. Each project should be in its own
-  folder.
-- `/src`: all source code that we ship as nuget packages
-  - `/blueprints`: blueprint projects
-- `/test`: test automation projects
-  - `/blueprints`: e2e test projects per blueprint.

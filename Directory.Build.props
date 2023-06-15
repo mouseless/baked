@@ -23,6 +23,7 @@
     <Copyright>Copyright (c) 2023 Mouseless</Copyright>
     <PackageIcon>icon.png</PackageIcon>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageProjectUrl>https://do.mouseless.codes</PackageProjectUrl>
     <PackageReleaseNotes>https://do.mouseless.codes/release-notes</PackageReleaseNotes>
   </PropertyGroup>
