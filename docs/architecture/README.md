@@ -4,10 +4,14 @@ position: 3
 
 # Architecture
 
-DO is designed to have a simple feature and layer system that enables us to
-create software with any architectural style. Core idea is to have good
-separation of concerns without causing any repetitive work. To achieve this we
-need to break down an application into its individual components.
+DO is designed to be a framework that allows us to build software with any
+architectural style. Core idea is to have good separation of concerns without
+causing any repetitive work. To achieve this we need to break down an
+application into its individual components such as features, layers and domain
+logic.
+
+Let's dive into each type of software component to have a better understanding
+of how DO is structured.
 
 ## Domain
 
@@ -42,6 +46,13 @@ flowchart
   DB[(Database)]
 ```
 
+> :information_source:
+>
+> `Domain` differs from other layers like `Http` and `Database`. It is a
+> special kind of layer that processes your domain assemblies so that it can
+> create an application schema out of your domain objects so that they can be
+> used in creating configuration, conventions and/or generating source code.
+
 But your domain objects would not just be exposed as API endpoints and mapped
 onto a relational database. For that, we need to be able to configure those
 layers so that they know how to interpret your domain objects.
@@ -65,9 +76,8 @@ configuration, but they do __not__ have opinions upfront.
 ## Feature
 
 A feature is an ability for a domain logic to use in order to access other
-software components. Different domains require different types of abilities.
-Every feature consists of two parts; abstraction (port) and implementation
-(adapter).
+software components. Every feature consists of two parts; abstraction (port)
+and implementation (adapter).
 
 ### Abstraction
 
