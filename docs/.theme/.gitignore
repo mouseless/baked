@@ -1,0 +1,19 @@
+# Dependency directories
+node_modules/
+
+# Nuxt build
+.nuxt
+.nitro
+.cache
+.output
+
+# Nuxt generate
+dist
+
+# env files
+.env.local
+
+# prebuild files
+.public
+.temp
+content
