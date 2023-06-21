@@ -3,6 +3,7 @@
   <Import Project="..\Directory.Build.props" />
 
   <PropertyGroup>
+    <RootNamespace>Do</RootNamespace>
     <EnablePackageValidation>true</EnablePackageValidation>
   </PropertyGroup>
 
