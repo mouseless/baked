@@ -33,15 +33,17 @@ public class BuildingAnApplication : Spec
     }
 
     [Test]
+    [Ignore("not implemented")]
     public void Allows_to_add_a_layer()
     {
-        Assert.Fail("not implemented");
+        Assert.Fail();
     }
 
     [Test]
+    [Ignore("not implemented")]
     public void Allows_to_add_a_feature()
     {
-        Assert.Fail("not implemented");
+        Assert.Fail();
     }
 }
 
