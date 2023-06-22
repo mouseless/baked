@@ -8,7 +8,7 @@
     }
   },
   "profiles": {
-    "Do.Blueprints.Service.Test": {
+    "Do.Test.Blueprints.Service": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

@@ -2,5 +2,5 @@
 
 public interface IBanner
 {
-   void Print();
+    void Print();
 }

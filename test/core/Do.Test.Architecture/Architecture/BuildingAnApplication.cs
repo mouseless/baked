@@ -1,7 +1,7 @@
 ﻿using Do.Architecture;
 using Do.Branding;
 
-namespace Do.Test;
+namespace Do.Test.Architecture;
 
 public class BuildingAnApplication : Spec
 {
