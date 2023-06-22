@@ -28,8 +28,14 @@ Build.Application
 > `Do` is automatically added as a global using so that you can directly make a
 > call to `Build.Application`.
 
-Notice that DO does not allow you to use `build.Services.Add` `app.Use` methods
-directly. We made this design decision because the order of `Add`/`Use` calls
-depends on the features you need to use. Since DO comes with a set of features
-already added, it may cause unexpected behaviour. To add a new feature to a DO
-application, you need to make use of feature/layer system.
+## Adding Features
+
+To add a new feature to an application, you need to make use of feature / layer
+system.
+
+> :warning:
+>
+> Notice that it does not allow you to use `build.Services.Add` or `app.Use`
+> methods directly. We made this design decision because the order of
+> `Add`/`Use` calls depends on the features you need to use. Since DO comes
+> with a set of features already added, it may cause unexpected behaviour.

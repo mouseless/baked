@@ -11,7 +11,7 @@ public class Build
 
     public Build(IBanner banner) => _banner = banner;
 
-    public IRunnable As(Action<object> build)
+    public IRunnable As(Action<Application> build)
     {
         _banner.Print();
 

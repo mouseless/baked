@@ -1,7 +1,7 @@
 ﻿using Do.Architecture;
 using Do.Branding;
 
-namespace Do.Test.Architecture;
+namespace Do.Test.Architecture.Application;
 
 public class BuildingAnApplication : Spec
 {
@@ -31,35 +31,4 @@ public class BuildingAnApplication : Spec
 
         mockBanner.Verify(b => b.Print());
     }
-
-    [Test]
-    [Ignore("not implemented")]
-    public void Allows_to_add_a_layer()
-    {
-        Assert.Fail();
-    }
-
-    [Test]
-    [Ignore("not implemented")]
-    public void Allows_to_add_a_feature()
-    {
-        Assert.Fail();
-    }
 }
-
-/*
-
-Build.Application
-    .As(app =>
-    {
-        app.Layers.AddDomain();
-        app.Layers.AddMonitoring();
-        app.Layers.AddRdbms();
-
-        app.Features.AddAuthentication(c => c.JwtBearer());
-        app.Features.AddLogging(c => c.Default());
-        app.Features.AddDomainObjects(c => c.UseAssemblies("Do.Domain.Test*"));
-    })
-    .Run();
-
-*/
