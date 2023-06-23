@@ -5,11 +5,11 @@ public class PrintingBanner : Spec
     [Test]
     public void It_prints_banner_prior_to_build()
     {
-        var mockBanner = MockMe.ABanner();
-        var build = GiveMe.ABuild(banner: mockBanner.Object);
+        var banner = MockMe.ABanner();
+        var build = GiveMe.ABuild(banner: banner);
 
         build.As(_ => { });
 
-        mockBanner.VerifyPrinted();
+        banner.VerifyPrinted();
     }
 }

@@ -2,5 +2,6 @@ namespace Do.Architecture;
 
 public interface ILayer
 {
-    void Initialize(object context);
+    void Configure(object context);
+    object GetConfigurationTarget();
 }

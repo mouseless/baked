@@ -33,44 +33,52 @@ Build.Application
 To add a new extension to an application, you need to make use of feature /
 layer system.
 
-> :warning:
->
-> Notice that it does not allow you to use `build.Services.Add` or `app.Use`
-> methods directly. We made this design decision because the order of
-> `Add`/`Use` calls depends on the features you need to use. Since DO comes
-> with a set of features already added, it may cause unexpected behaviour.
+DO does not allow you to use `build.Services.Add` or `app.Use` methods
+directly. This is a design decision to avoid any unexpected behaviour because
+the order of extensions may require a special attention as in [Enabling
+Cors][].
 
 `As` method provides an `Application` instance with `Layers` and `Features`
-properties. Using these properties you may add needed extensions to your
+properties. Using these properties you may add needed extensions into your
 application.
-
-### Layers
-
-Layers introduce new technologies into your application without any options to
-configure;
-
-```csharp
-Build.Application
-    .As(app =>
-    {
-        app.Layers.AddDomain();
-        app.Layers.AddHttp();
-        app.Layers.AddDatabase();
-    });
-```
 
 > :information_source:
 >
-> Layers come with extension methods exposed directly in `Do` namespace so that
-> you can see your layer options without adding an extra `using`.
+> Layers and features come with extension methods exposed directly in `Do`
+> namespace so that you can see options without adding an extra `using`.
+
+### Layers
+
+Layers can be added without any options to configure;
+
+```csharp
+app.Layers.AddDomain();
+app.Layers.AddHttp();
+app.Layers.AddDatabase();
+```
 
 To configure a layer, you need to add a feature mentioned in the next section.
 More on layers can be found at [Layer](layer.md).
 
 ### Features
 
-> TBD
+Features are added using one of the implementations available in given
+configurator;
+
+```csharp
+app.Features.AddApi(c => c.Rest());
+app.Features.AddSql(c => c.EfCore());
+```
+
+An implementation may ask for additional options within its configurator
+method;
+
+```csharp
+app.Features.AddSql(c => c.EfCore(primaryKeyPrefix: "PK_"))
+```
 
 ## Running an Application
 
 > TBD
+
+[Enabling Cors]:https://learn.microsoft.com/en-us/aspnet/core/security/cors#enable-cors

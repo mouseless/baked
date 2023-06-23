@@ -3,39 +3,63 @@ namespace Do.Test.Architecture.Application;
 public class AddingExtensions : Spec
 {
     [Test]
-    public void Builder_allows_to_add_a_new_layer()
+    public void Layer_is_added_without_any_options()
     {
-        var mockLayer1 = MockMe.ALayer();
-        var mockLayer2 = MockMe.ALayer();
         var build = GiveMe.ABuild();
+        var layer1 = MockMe.ALayer();
+        var layer2 = MockMe.ALayer();
 
         var app = build.As(app =>
         {
-            app.Layers.Add(mockLayer1.Object);
-            app.Layers.Add(mockLayer2.Object);
+            app.Layers.Add(layer1);
+            app.Layers.Add(layer2);
         });
 
         app.Run();
 
-        mockLayer1.VerifyInitialized();
-        mockLayer2.VerifyInitialized();
+        layer1.VerifyInitialized();
+        layer2.VerifyInitialized();
     }
 
     [Test]
-    [Ignore("not implemented")]
-    public void Allows_to_add_a_feature()
+    public void Feature_is_added_to_configure_layers()
     {
-        /*
-        Build.Application
-            .As(app =>
-            {
-                app.Features.AddAuthentication(c => c.JwtBearer());
-                app.Features.AddLogging(c => c.Default());
-                app.Features.AddDomainObjects(c => c.UseAssemblies("Do.Domain.Test*"));
-            })
-            .Run();
-        */
+        var build = GiveMe.ABuild();
+        var layer = MockMe.ALayer();
+        var feature1 = MockMe.AFeature();
+        var feature2 = MockMe.AFeature();
 
-        Assert.Fail();
+        var app = build.As(app =>
+        {
+            app.Layers.Add(layer);
+
+            app.Features.Add(feature1);
+            app.Features.Add(feature2);
+        });
+
+        app.Run();
+
+        feature1.VerifyInitialized();
+        feature2.VerifyInitialized();
+    }
+
+    [Test]
+    public void Feature_configures_target_configurations_of_the_layers()
+    {
+        var build = GiveMe.ABuild();
+        var configurationTarget = new object();
+        var layer = MockMe.ALayer(configurationTarget: configurationTarget);
+        var feature = MockMe.AFeature();
+
+        var app = build.As(app =>
+        {
+            app.Layers.Add(layer);
+
+            app.Features.Add(feature);
+        });
+
+        app.Run();
+
+        feature.VerifyConfigures(configurationTarget);
     }
 }

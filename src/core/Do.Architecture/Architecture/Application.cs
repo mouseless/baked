@@ -4,33 +4,36 @@ public class Application : IRunnable
 {
     List<string> Phases { get; } = new();
     public List<ILayer> Layers { get; } = new();
+    public List<IFeature> Features { get; } = new();
 
     void IRunnable.Run()
     {
-        foreach (var layer in Layers)
-        {
-            layer.Initialize(new());
-        }
-
         /*
         // this context will have service collection, application builder, application etc.
         var context = new ApplicationContext();
+        */
 
-        // configure phases
-        foreach (var layer in Layers.List)
+        foreach (var layer in Layers)
         {
-            layer.ConfigurePhases(Phases);
+            layer.Configure(Phases);
         }
 
+        /*
         // apply phases
         foreach (var phase in Phases)
         {
-            using (phase.Initialize(context))
+            using (phase.Begin(context))
             {
-                foreach (var layer in Layers.List)
-                {
-                    layer.ApplyPhase(phase.Name, context);
-                }
+        */
+        foreach (var layer in Layers)
+        {
+            var configurationTarget = layer.GetConfigurationTarget(/* phase */);
+            foreach (var feature in Features)
+            {
+                feature.Configure(configurationTarget);
+            }
+        }
+        /*
             }
         }
         */
