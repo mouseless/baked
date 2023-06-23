@@ -3,10 +3,16 @@ namespace Do.Architecture;
 public class Application : IRunnable
 {
     List<string> Phases { get; } = new();
-    public Layers Layers { get; } = new();
+    public List<ILayer> Layers { get; } = new();
 
     void IRunnable.Run()
     {
+        foreach (var layer in Layers)
+        {
+            layer.Initialize(new());
+        }
+
+        /*
         // this context will have service collection, application builder, application etc.
         var context = new ApplicationContext();
 
@@ -27,5 +33,6 @@ public class Application : IRunnable
                 }
             }
         }
+        */
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Do.Architecture;
-using Do.Branding;
 
 namespace Do.Test.Architecture.Application;
 
@@ -19,16 +18,5 @@ public class BuildingAnApplication : Spec
         var actual = build.As(_ => { });
 
         Assert.That(actual, Is.InstanceOf<IRunnable>());
-    }
-
-    [Test]
-    public void It_prints_banner_prior_to_build()
-    {
-        var mockBanner = new Mock<IBanner>();
-        var build = GiveMe.ABuild(banner: mockBanner.Object);
-
-        build.As(_ => { });
-
-        mockBanner.Verify(b => b.Print());
     }
 }

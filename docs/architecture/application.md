@@ -28,10 +28,10 @@ Build.Application
 > `Do` is automatically added as a global using so that you can directly make a
 > call to `Build.Application`.
 
-## Adding Features
+## Adding Extensions
 
-To add a new feature to an application, you need to make use of feature / layer
-system.
+To add a new extension to an application, you need to make use of feature /
+layer system.
 
 > :warning:
 >
@@ -39,3 +39,38 @@ system.
 > methods directly. We made this design decision because the order of
 > `Add`/`Use` calls depends on the features you need to use. Since DO comes
 > with a set of features already added, it may cause unexpected behaviour.
+
+`As` method provides an `Application` instance with `Layers` and `Features`
+properties. Using these properties you may add needed extensions to your
+application.
+
+### Layers
+
+Layers introduce new technologies into your application without any options to
+configure;
+
+```csharp
+Build.Application
+    .As(app =>
+    {
+        app.Layers.AddDomain();
+        app.Layers.AddHttp();
+        app.Layers.AddDatabase();
+    });
+```
+
+> :information_source:
+>
+> Layers come with extension methods exposed directly in `Do` namespace so that
+> you can see your layer options without adding an extra `using`.
+
+To configure a layer, you need to add a feature mentioned in the next section.
+More on layers can be found at [Layer](layer.md).
+
+### Features
+
+> TBD
+
+## Running an Application
+
+> TBD

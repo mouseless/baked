@@ -2,13 +2,16 @@
 
 public abstract class Spec
 {
-    protected Stubber GiveMe { get; private set; } = default!;
+    public Stubber GiveMe { get; private set; } = default!;
+    public Mocker MockMe { get; private set; } = default!;
 
     [SetUp]
     public virtual void SetUp()
     {
-        GiveMe = new();
+        GiveMe = new(this);
+        MockMe = new(this);
     }
 
-    public sealed class Stubber { }
+    public sealed record Stubber(Spec Spec);
+    public sealed record Mocker(Spec spec);
 }
