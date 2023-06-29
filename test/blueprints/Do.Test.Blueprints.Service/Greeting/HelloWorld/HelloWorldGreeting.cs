@@ -4,7 +4,7 @@ namespace Do.Test.Blueprints.Service.Greeting.HelloWorld;
 
 public class HelloWorldGreeting : IFeature
 {
-    public void Configure(object target)
+    public void Configure(ConfigurationTarget target)
     {
         target.ConfigureEndpointRouteBuilder(route =>
         {

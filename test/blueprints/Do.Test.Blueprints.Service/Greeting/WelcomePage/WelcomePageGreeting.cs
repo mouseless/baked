@@ -11,7 +11,7 @@ public class WelcomePageGreeting : IFeature
         Path = path;
     }
 
-    public void Configure(object target)
+    public void Configure(ConfigurationTarget target)
     {
         target.ConfigureApplicationBuilder(app =>
         {

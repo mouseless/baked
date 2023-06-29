@@ -1,5 +1,4 @@
 using Do.Architecture;
-using Do.DependencyInjection;
 
 namespace Do.Test.Blueprints.Service.Web;
 
@@ -9,29 +8,24 @@ public class WebLayer : ILayer
     {
         yield return new CreateBuilder();
         yield return new Build();
+        yield return new Route();
         yield return new Run();
     }
 
-    public IApplicationBuilder Builder { get; } = default!;
-
-    public ILayerTarget? GetConfigurationTarget(ApplicationContext context, IPhase phase)
-    {
-        if (phase == nameof(Run))
+    public ConfigurationTarget GetConfigurationTarget(ApplicationContext context) =>
+        context.Phase switch
         {
-            var target = context.Get<WebApplication>();
-
-            return new LayerTarget<IApplicationBuilder>(target);
-        }
-
-        return null;
-    }
+            Build => ConfigurationTarget.Create<IApplicationBuilder>(context.Get<WebApplication>()),
+            Route => ConfigurationTarget.Create<IEndpointRouteBuilder>(context.Get<WebApplication>()),
+            _ => ConfigurationTarget.Empty
+        };
 
     public class CreateBuilder : IPhase
     {
-        public string Name => nameof(Build);
-        public Priority Priority => Priority.High;
+        public PhaseOrder Order => PhaseOrder.Earliest;
 
-        public bool IsReady(ApplicationContext context) => true;
+        public bool CanInitialize(ApplicationContext context) =>
+            true;
 
         public void Initialize(ApplicationContext context)
         {
@@ -44,32 +38,40 @@ public class WebLayer : ILayer
 
     public class Build : IPhase
     {
-        public string Name => nameof(Build);
-        public Priority Priority => Priority.Low;
+        public PhaseOrder Order => PhaseOrder.Latest;
 
-        public bool IsReady(ApplicationContext context) =>
+        public bool CanInitialize(ApplicationContext context) =>
             context.Has<WebApplicationBuilder>();
 
         public void Initialize(ApplicationContext context)
         {
-            var build = context.Remove<WebApplicationBuilder>();
+            var build = context.Get<WebApplicationBuilder>();
             var app = build.Build();
 
             context.Add(app);
         }
     }
 
+    public class Route : IPhase
+    {
+        public PhaseOrder Order => PhaseOrder.Normal;
+
+        public bool CanInitialize(ApplicationContext context) =>
+            context.Has<WebApplication>();
+
+        public void Initialize(ApplicationContext context) { }
+    }
+
     public class Run : IPhase
     {
-        public string Name => nameof(Run);
-        public Priority Priority => Priority.Low;
+        public PhaseOrder Order => PhaseOrder.Latest;
 
-        public bool IsReady(ApplicationContext context) =>
+        public bool CanInitialize(ApplicationContext context) =>
             context.Has<WebApplication>();
 
         public void Initialize(ApplicationContext context)
         {
-            var app = context.Remove<WebApplication>();
+            var app = context.Get<WebApplication>();
 
             app.Run();
         }

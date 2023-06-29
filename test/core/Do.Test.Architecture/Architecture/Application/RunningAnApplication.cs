@@ -48,4 +48,8 @@ public class RunningAnApplication : Spec
     [Test]
     [Ignore("not implemented")]
     public void When_more_than_one_phase_is_ready_at_the_same_time__they_are_initialized_according_to_their_priorities() => Assert.Fail();
+
+    [Test]
+    [Ignore("not implemented")]
+    public void Layers_with_earliest_and_latest_priority__cannot_have_another_one_with_same_priority() => Assert.Fail();
 }
