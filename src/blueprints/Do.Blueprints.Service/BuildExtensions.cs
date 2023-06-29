@@ -12,11 +12,6 @@ public static class BuildExtensions
 
         return source.As(app =>
             {
-                /*
-                var builder = WebApplication.CreateBuilder();
-                var app = builder.Build();
-                */
-
                 configure(app);
             });
     }

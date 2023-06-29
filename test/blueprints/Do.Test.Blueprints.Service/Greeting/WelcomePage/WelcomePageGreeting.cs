@@ -13,9 +13,9 @@ public class WelcomePageGreeting : IFeature
 
     public void Configure(object target)
     {
-        if (target is WebApplication app)
+        target.ConfigureApplicationBuilder(app =>
         {
             app.UseWelcomePage(Path);
-        }
+        });
     }
 }

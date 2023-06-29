@@ -6,9 +6,9 @@ public class HelloWorldGreeting : IFeature
 {
     public void Configure(object target)
     {
-        if (target is WebApplication app)
+        target.ConfigureEndpointRouteBuilder(route =>
         {
-            app.MapGet("/", () => "Hello World!");
-        }
+            route.MapGet("/", () => "Hello World!");
+        });
     }
 }

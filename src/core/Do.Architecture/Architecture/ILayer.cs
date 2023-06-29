@@ -2,6 +2,6 @@ namespace Do.Architecture;
 
 public interface ILayer
 {
-    void Configure(object context);
+    void Configure(List<string> phases);
     object GetConfigurationTarget();
 }

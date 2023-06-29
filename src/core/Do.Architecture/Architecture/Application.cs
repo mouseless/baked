@@ -22,19 +22,17 @@ public class Application : IRunnable
         // apply phases
         foreach (var phase in Phases)
         {
-            using (phase.Begin(context))
-            {
+            phase.Initialize(context);
         */
         foreach (var layer in Layers)
         {
-            var target = layer.GetConfigurationTarget(/* phase */);
+            var target = layer.GetConfigurationTarget(/* context, phase */);
             foreach (var feature in Features)
             {
                 feature.Configure(target);
             }
         }
         /*
-            }
         }
         */
     }
