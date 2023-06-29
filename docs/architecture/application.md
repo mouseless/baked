@@ -67,14 +67,14 @@ configurator;
 
 ```csharp
 app.Features.AddApi(c => c.Rest());
-app.Features.AddSql(c => c.EfCore());
+app.Features.AddOrm(c => c.EfCore());
 ```
 
 An implementation may ask for additional options within its configurator
 method;
 
 ```csharp
-app.Features.AddSql(c => c.EfCore(primaryKeyPrefix: "PK_"))
+app.Features.AddOrm(c => c.EfCore(primaryKeyPrefix: "PK_"))
 ```
 
 ## Running an Application

@@ -89,7 +89,7 @@ from the domain layer or from other feature implementations.
 > :information_source:
 >
 > Each feature has only one abstraction, named after the ability it introduces,
-> e.g. `Do.Fs`, `Do.Sql`, `Do.Nosql`, `Do.Logging`, `Do.Auth` etc.
+> e.g. `Do.Fs`, `Do.Orm`, `Do.Nosql`, `Do.Logging`, `Do.Auth` etc.
 
 ```mermaid
 flowchart
@@ -102,12 +102,12 @@ flowchart
   subgraph Features
     subgraph Abstraction
       A(Api)
-      S(Sql)
+      O(Orm)
     end
   end
 
   D -.uses.-> A
-  D -.uses.-> S
+  D -.uses.-> O
 ```
 
 ### Implementation
@@ -123,7 +123,7 @@ layer.
 
 Features may have multiple implementations, each named after its corresponding
 design or technology, e.g. `Do.Api.Rest`, `Do.Auth.Auth0`, `Do.Fs.Aws`,
-`Do.Sql.EfCore`.
+`Do.Orm.EfCore`.
 
 > :bulb:
 >
@@ -159,21 +159,21 @@ flowchart TB
   subgraph Features
     subgraph Abstraction
       A(Api)
-      S(Sql)
+      O(Orm)
     end
 
     subgraph Implementation
       AR(Api.Rest)
-      SE(Sql.EfCore)
+      OE(Orm.EfCore)
     end
   end
 
   H -.configured by.-> AR
   A --implemented by--> AR
   D -.uses.-> A
-  D -.uses.-> S
-  S --implemented by--> SE
-  DB -.configured by.-> SE
+  D -.uses.-> O
+  O --implemented by--> OE
+  DB -.configured by.-> OE
 ```
 
 [Clean Architecture]:https://learn.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures#clean-architecture

@@ -27,10 +27,10 @@ public class Application : IRunnable
         */
         foreach (var layer in Layers)
         {
-            var configurationTarget = layer.GetConfigurationTarget(/* phase */);
+            var target = layer.GetConfigurationTarget(/* phase */);
             foreach (var feature in Features)
             {
-                feature.Configure(configurationTarget);
+                feature.Configure(target);
             }
         }
         /*

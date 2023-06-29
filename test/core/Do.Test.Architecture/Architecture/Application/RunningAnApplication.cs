@@ -1,10 +1,25 @@
 namespace Do.Test.Architecture.Application;
 
-public class RunningAnApplication
+public class RunningAnApplication : Spec
 {
     [Test]
-    [Ignore("not implemented")]
-    public void Application_uses_layers_to_get_its_phases_configured() => Assert.Fail();
+    public void Application_uses_layers_to_get_its_phases_configured()
+    {
+        /*
+        var build = GiveMe.ABuild();
+        var phase = MockMe.APhase();
+        var layer = MockMe.ALayer(thatConfigures: phase);
+
+        var app = build.As(app =>
+        {
+            app.Layers.Add(layer);
+        });
+
+        app.Run();
+        */
+
+        Assert.Fail("not implemented");
+    }
 
     [Test]
     [Ignore("not implemented")]
