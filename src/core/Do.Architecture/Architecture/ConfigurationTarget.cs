@@ -21,4 +21,11 @@ public class ConfigurationTarget
 
         configuration((T)_target);
     }
+
+    public override bool Equals(object? obj) =>
+        obj is ConfigurationTarget target &&
+       EqualityComparer<Type>.Default.Equals(_expectedType, target._expectedType) &&
+       EqualityComparer<object?>.Default.Equals(_target, target._target);
+
+    public override int GetHashCode() => HashCode.Combine(_expectedType, _target);
 }

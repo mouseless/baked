@@ -36,16 +36,18 @@ public static class ArchitectureSpecExtensions
     {
         var result = new Mock<ILayer>();
 
+        result.Setup(l => l.GetPhases()).Returns(Enumerable.Empty<IPhase>());
+
         if (configurationTarget != null)
         {
-            result.Setup(l => l.GetConfigurationTarget()).Returns(configurationTarget);
+            result.Setup(l => l.GetConfigurationTarget(It.IsAny<ApplicationContext>())).Returns(ConfigurationTarget.Create(configurationTarget));
         }
 
         return result.Object;
     }
 
     public static void VerifyInitialized(this ILayer source) =>
-        Mock.Get(source).Verify(l => l.Configure(It.IsAny<object>()));
+        Mock.Get(source).Verify(l => l.GetPhases());
 
     #endregion
 
@@ -55,10 +57,10 @@ public static class ArchitectureSpecExtensions
         new Mock<IFeature>().Object;
 
     public static void VerifyInitialized(this IFeature source) =>
-        source.VerifyConfigures(It.IsAny<object>());
+        Mock.Get(source).Verify(f => f.Configure(It.IsAny<ConfigurationTarget>()));
 
     public static void VerifyConfigures(this IFeature source, object configurationTarget) =>
-        Mock.Get(source).Verify(f => f.Configure(configurationTarget ?? It.IsAny<object>()));
+        Mock.Get(source).Verify(f => f.Configure(ConfigurationTarget.Create(configurationTarget)));
 
     #endregion
 }
