@@ -16,10 +16,10 @@ public class Application : IRunnable
         }
 
         // find and remove ready phases, iterate until all phases are applied
-        // foreach (var phase in Phases)
+        foreach (var phase in Phases)
         {
             // context.Phase = phase;
-            // phase.Initialize(context);
+            phase.Initialize(context);
 
             foreach (var layer in Layers)
             {

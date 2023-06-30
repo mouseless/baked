@@ -14,7 +14,7 @@ public class ConfigurationTarget
         _target = target;
     }
 
-    public void Apply<T>(Action<T> configuration)
+    public void Configure<T>(Action<T> configuration)
     {
         if (_target is null) { return; }
         if (_expectedType != typeof(T)) { return; }

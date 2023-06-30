@@ -5,20 +5,24 @@ public class RunningAnApplication : Spec
     [Test]
     public void Application_collects_phases_from_all_layers()
     {
-        /*
         var build = GiveMe.ABuild();
-        var phase = MockMe.APhase();
-        var layer = MockMe.ALayer(thatConfigures: phase);
+        var phase1 = MockMe.APhase();
+        var phase2 = MockMe.APhase();
+        var phase3 = MockMe.APhase();
+        var layer1 = MockMe.ALayer(phases: new[] { phase1, phase2 });
+        var layer2 = MockMe.ALayer(phase: phase3);
 
         var app = build.As(app =>
         {
-            app.Layers.Add(layer);
+            app.Layers.Add(layer1);
+            app.Layers.Add(layer2);
         });
 
         app.Run();
-        */
 
-        Assert.Fail("not implemented");
+        phase1.VerifyInitialized();
+        phase2.VerifyInitialized();
+        phase3.VerifyInitialized();
     }
 
     [Test]
@@ -39,7 +43,7 @@ public class RunningAnApplication : Spec
 
     [Test]
     [Ignore("not implemented")]
-    public void Application_context_can_get__chech_or_remove_objects_via_their_type() => Assert.Fail();
+    public void Application_context_can_get_or_check_objects_via_their_type() => Assert.Fail();
 
     [Test]
     [Ignore("not implemented")]
@@ -51,5 +55,5 @@ public class RunningAnApplication : Spec
 
     [Test]
     [Ignore("not implemented")]
-    public void Layers_with_earliest_and_latest_priority__cannot_have_another_one_with_same_priority() => Assert.Fail();
+    public void Only_one_phase_can_have_earliest_and_latest_priorities_at_the_same_time() => Assert.Fail();
 }

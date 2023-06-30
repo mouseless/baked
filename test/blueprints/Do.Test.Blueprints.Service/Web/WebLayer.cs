@@ -13,7 +13,7 @@ public class WebLayer : ILayer
     }
 
     public ConfigurationTarget GetConfigurationTarget(ApplicationContext context) =>
-        context.Phase switch
+        context.CurrentPhase switch
         {
             Build => ConfigurationTarget.Create<IApplicationBuilder>(context.Get<WebApplication>()),
             Route => ConfigurationTarget.Create<IEndpointRouteBuilder>(context.Get<WebApplication>()),

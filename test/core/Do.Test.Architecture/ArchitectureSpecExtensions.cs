@@ -31,12 +31,16 @@ public static class ArchitectureSpecExtensions
     #region Layer
 
     public static ILayer ALayer(this Spec.Mocker source,
-        object? configurationTarget = default
+        object? configurationTarget = default,
+        IPhase? phase = default,
+        IPhase[]? phases = default
     )
     {
+        phases ??= new[] { phase ?? source.APhase() };
+
         var result = new Mock<ILayer>();
 
-        result.Setup(l => l.GetPhases()).Returns(Enumerable.Empty<IPhase>());
+        result.Setup(l => l.GetPhases()).Returns(phases);
 
         if (configurationTarget != null)
         {
@@ -48,6 +52,16 @@ public static class ArchitectureSpecExtensions
 
     public static void VerifyInitialized(this ILayer source) =>
         Mock.Get(source).Verify(l => l.GetPhases());
+
+    #endregion
+
+    #region Phase
+
+    public static IPhase APhase(this Spec.Mocker source) =>
+        new Mock<IPhase>().Object;
+
+    public static void VerifyInitialized(this IPhase source) =>
+        Mock.Get(source).Verify(p => p.Initialize(It.IsAny<ApplicationContext>()));
 
     #endregion
 

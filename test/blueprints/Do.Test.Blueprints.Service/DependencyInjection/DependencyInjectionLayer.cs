@@ -12,7 +12,7 @@ public class DependencyInjectionLayer : ILayer
     public IServiceCollection ServiceCollection { get; internal set; } = default!;
 
     public ConfigurationTarget GetConfigurationTarget(ApplicationContext context) =>
-        context.Phase switch
+        context.CurrentPhase switch
         {
             AddServices => ConfigurationTarget.Create(context.Get<IServiceCollection>()),
             _ => ConfigurationTarget.Empty

@@ -13,5 +13,5 @@ public abstract class Spec
     }
 
     public sealed record Stubber(Spec Spec);
-    public sealed record Mocker(Spec spec);
+    public sealed record Mocker(Spec Spec);
 }

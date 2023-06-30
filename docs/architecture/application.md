@@ -79,6 +79,53 @@ app.Features.AddOrm(c => c.EfCore(primaryKeyPrefix: "PK_"))
 
 ## Running an Application
 
+Applications run in phases, for example an ASP.NET Core application typically
+runs in 3 phases;
+
+```mermaid
+flowchart LR
+    CB(Create Builder)
+    B(Build)
+    R(Run)
+
+    CB --> B --> R
+```
+
+These phases come from the layers added to the application using `GetPhases()`
+method of `ILayer`. In the above example, `WebLayer` (ASP.NET Core) introduced
+these three phases.
+
+At the beginning of each phase, application initializes it by providing an
+`ApplicationContext` instance so that each phase can add/get certain objects
+to/from the context, such as `IServiceCollection`, `IApplicationBuilder`,
+`IEndpointRouteBuilder` etc.
+
+```mermaid
+flowchart TB
+    subgraph AR[ ]
+        direction LR
+
+        CB(Create Builder)
+        B(Build)
+        R(Run)
+
+        CB --> B --> R
+    end
+
+    AC[[Application Context]]
+
+    AR -.- AC
+```
+
+As mentioned [earlier](./README.md), layers provide features with things to
+configure. For this to happen, application asks every layer what to configure
+at each phase.  If a layer has something to get configured at a phase, such as
+the `IApplicationBuilder` at the _Build_ phase, it returns that object in
+`ILayer.GetConfigurationTarget()` where application passes it to all of the
+features through `IFeature.Configure()`.
+
+### Order of Phases
+
 > TBD
 
 [Enabling Cors]:https://learn.microsoft.com/en-us/aspnet/core/security/cors#enable-cors
