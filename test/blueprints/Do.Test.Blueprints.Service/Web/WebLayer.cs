@@ -12,8 +12,8 @@ public class WebLayer : ILayer
         yield return new Run();
     }
 
-    public ConfigurationTarget GetConfigurationTarget(ApplicationContext context) =>
-        context.CurrentPhase switch
+    public ConfigurationTarget GetConfigurationTarget(IPhase phase, ApplicationContext context) =>
+        phase switch
         {
             Build => ConfigurationTarget.Create<IApplicationBuilder>(context.Get<WebApplication>()),
             Route => ConfigurationTarget.Create<IEndpointRouteBuilder>(context.Get<WebApplication>()),

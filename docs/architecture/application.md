@@ -19,7 +19,7 @@ Build.Application
     .As(app =>
     {
         ...
-    });
+    })
     .Run();
 ```
 
@@ -53,7 +53,7 @@ Layers can be added without any options to configure;
 
 ```csharp
 app.Layers.AddDomain();
-app.Layers.AddHttp();
+app.Layers.AddWeb();
 app.Layers.AddDatabase();
 ```
 
@@ -79,8 +79,19 @@ app.Features.AddOrm(c => c.EfCore(primaryKeyPrefix: "PK_"))
 
 ## Running an Application
 
-Applications run in phases, for example an ASP.NET Core application typically
-runs in 3 phases;
+To run an application you need to call `Run()` method after building it.
+
+```csharp
+Build.Application
+    .As(app =>
+    {
+        app.Layers.AddWeb();
+    })
+    .Run();
+```
+
+Application runs in phases provided by its layers. For example an ASP.NET Core
+application typically runs in 3 phases;
 
 ```mermaid
 flowchart LR
@@ -91,12 +102,11 @@ flowchart LR
     CB --> B --> R
 ```
 
-These phases come from the layers added to the application using `GetPhases()`
-method of `ILayer`. In the above example, `WebLayer` (ASP.NET Core) introduced
-these three phases.
+These phases come from layers using `GetPhases()` method of `ILayer`. In the
+above example, `WebLayer` (ASP.NET Core) introduced these three phases.
 
 At the beginning of each phase, application initializes it by providing an
-`ApplicationContext` instance so that each phase can add/get certain objects
+`ApplicationContext` instance. This way each phase can add/get certain objects
 to/from the context, such as `IServiceCollection`, `IApplicationBuilder`,
 `IEndpointRouteBuilder` etc.
 
@@ -119,10 +129,61 @@ flowchart TB
 
 As mentioned [earlier](./README.md), layers provide features with things to
 configure. For this to happen, application asks every layer what to configure
-at each phase.  If a layer has something to get configured at a phase, such as
+at each phase. If a layer has something to get configured at a phase, such as
 the `IApplicationBuilder` at the _Build_ phase, it returns that object in
 `ILayer.GetConfigurationTarget()` where application passes it to all of the
 features through `IFeature.Configure()`.
+
+Below sequence diagram showcases how application runs in phases. In this
+diagram there are two layers (`A` and `B`) and two features (`X` and `Y`), each
+layer having one phase;
+
+```mermaid
+sequenceDiagram
+    participant APP as Application
+    participant LA as Layer A
+    participant LB as Layer B
+    participant PA as Phase A
+    participant PB as Phase B
+    participant FX as Feature X
+    participant FY as Feature Y
+
+    autonumber
+
+    APP ->>+ LA: GetPhases()
+    LA -->>- APP: Phase A
+    APP ->>+ LB: GetPhases()
+    LB -->>- APP: Phase B
+
+    APP ->>+ PA: Initialize
+    APP ->>+ LA: GetConfigurationTarget()
+    APP ->> FX: Configure Layer A in Phase A
+    APP ->> FY: Configure Layer A in Phase A
+    LA -->>- APP: End of Layer A in Phase A
+    APP ->>+ LB: GetConfigurationTarget()
+    APP ->> FX: Configure Layer B in Phase A
+    APP ->> FY: Configure Layer B in Phase A
+    LB -->>- APP: End of Layer B in Phase A
+    PA -->>-APP: End of Phase A
+
+    APP ->>+ PB: Initialize
+    APP ->>+ LA: GetConfigurationTarget()
+    APP ->> FX: Configure Layer A in Phase B
+    APP ->> FY: Configure Layer A in Phase B
+    LA -->>- APP: End of Layer A in Phase B
+    APP ->>+ LB: GetConfigurationTarget()
+    APP ->> FX: Configure Layer B in Phase B
+    APP ->> FY: Configure Layer B in Phase B
+    LB -->>- APP: End of Layer B in Phase B
+    PB -->>-APP: End of Phase B
+```
+
+> :information_source:
+>
+> A layer doesn't necessarily introduce new phases to application, but all
+> phases are applied to all layers. For example, `WebLayer`  introduces _Build_
+> phase which is applied to `Domain`, `Web` and `Database` layers to allow them
+> provide their configuration target specific to the _Build_ phase.
 
 ### Order of Phases
 

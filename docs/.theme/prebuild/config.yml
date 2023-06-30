@@ -32,6 +32,7 @@ tasks:
           secondaryColor: '#111111'
           secondaryTextColor: '#b3b3b3'
           tertiaryColor: '#222222'
+          activationBkgColor: '#fa465b'
   - rename:
       source: ./.theme/.temp
       find: README.md
