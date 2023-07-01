@@ -8,12 +8,14 @@ public static class ArchitectureSpecExtensions
     #region Build
 
     public static Build ABuild(this Spec.Stubber source,
-        IBanner? banner = default
+        IBanner? banner = default,
+        ApplicationContext? context = default
     )
     {
         banner ??= source.Spec.MockMe.ABanner();
+        context ??= new();
 
-        return new(banner);
+        return new(banner, () => new(context));
     }
 
     #endregion
@@ -24,17 +26,32 @@ public static class ArchitectureSpecExtensions
         ILayer? layer = default,
         ILayer[]? layers = default,
         IFeature? feature = default,
-        IFeature[]? features = default
+        IFeature[]? features = default,
+        ApplicationContext? context = default
     )
     {
         layers ??= new[] { layer ?? source.Spec.MockMe.ALayer() };
         features ??= new[] { feature ?? source.Spec.MockMe.AFeature() };
 
-        return source.ABuild().As(app =>
+        return source.ABuild(context: context).As(app =>
         {
             app.Layers.AddRange(layers);
             app.Features.AddRange(features);
         });
+    }
+
+    #endregion
+
+    #region ApplicationContext
+
+    public static ApplicationContext AnApplicationContext(this Spec.Stubber source) => new();
+    public static ApplicationContext AnApplicationContext<T>(this Spec.Stubber source, T content) where T : notnull
+    {
+        var result = source.AnApplicationContext();
+
+        result.Add(content);
+
+        return result;
     }
 
     #endregion
@@ -114,6 +131,9 @@ public static class ArchitectureSpecExtensions
 
     public static void VerifyInitialized(this IPhase source) =>
         Mock.Get(source).Verify(p => p.Initialize(It.IsAny<ApplicationContext>()));
+
+    public static void VerifyInitialized(this IPhase source, ApplicationContext context) =>
+        Mock.Get(source).Verify(p => p.Initialize(context));
 
     #endregion
 

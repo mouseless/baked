@@ -53,16 +53,40 @@ public class RunningAnApplication : Spec
     }
 
     [Test]
-    [Ignore("not implemented")]
-    public void Application_provides_phases_with_a_context() => Assert.Fail();
+    public void Application_provides_phases_with_a_context()
+    {
+        var phase = MockMe.APhase();
+        var layer = MockMe.ALayer(phase: phase);
+
+        var context = GiveMe.AnApplicationContext();
+        var app = GiveMe.AnApplication(
+            context: context,
+            layer: layer
+        );
+
+        app.Run();
+
+        phase.VerifyInitialized(context: context);
+    }
 
     [Test]
-    [Ignore("not implemented")]
-    public void Application_context_allows_phases_to_add_objects() => Assert.Fail();
+    public void Application_context_allows_phases_to_add_objects()
+    {
+        var context = GiveMe.AnApplicationContext();
+
+        context.Add(this);
+
+        Assert.That(context.Has<RunningAnApplication>(), Is.True);
+    }
 
     [Test]
-    [Ignore("not implemented")]
-    public void Application_context_can_get_or_check_objects_via_their_type() => Assert.Fail();
+    public void Application_context_can_check_or_get_objects_via_their_type()
+    {
+        var context = GiveMe.AnApplicationContext(content: this);
+
+        Assert.That(context.Has<RunningAnApplication>(), Is.True);
+        Assert.That(context.Get<RunningAnApplication>(), Is.EqualTo(this));
+    }
 
     [Test]
     [Ignore("not implemented")]

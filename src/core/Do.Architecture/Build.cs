@@ -5,17 +5,22 @@ namespace Do;
 
 public class Build
 {
-    public static Build Application => new(new DoBanner());
+    public static Build Application => new(new DoBanner(), () => new(new()));
 
     readonly IBanner _banner;
+    readonly Func<Application> _newApplication;
 
-    public Build(IBanner banner) => _banner = banner;
+    public Build(IBanner banner, Func<Application> newApplication)
+    {
+        _banner = banner;
+        _newApplication = newApplication;
+    }
 
     public IRunnable As(Action<Application> build)
     {
         _banner.Print();
 
-        var result = new Application();
+        var result = _newApplication();
 
         build(result);
 

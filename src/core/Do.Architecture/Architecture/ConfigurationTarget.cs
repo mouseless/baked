@@ -5,10 +5,10 @@ public class ConfigurationTarget
     public static readonly ConfigurationTarget Empty = new(typeof(object), null);
     public static ConfigurationTarget Create<T>(T target) => new(typeof(T), target);
 
-    private readonly Type _expectedType;
-    private readonly object? _target;
+    readonly Type _expectedType;
+    readonly object? _target;
 
-    private ConfigurationTarget(Type expectedType, object? target)
+    ConfigurationTarget(Type expectedType, object? target)
     {
         _expectedType = expectedType;
         _target = target;

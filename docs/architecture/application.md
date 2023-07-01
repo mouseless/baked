@@ -134,9 +134,9 @@ the `IApplicationBuilder` at the _Build_ phase, it returns that object in
 `ILayer.GetConfigurationTarget()` where application passes it to all of the
 features through `IFeature.Configure()`.
 
-Below sequence diagram showcases how application runs in phases. In this
-diagram there are two layers (`A` and `B`) and two features (`X` and `Y`), each
-layer having one phase;
+Below sequence diagram showcases how an application runs in phases. In this
+diagram there are two layers (`A` and `B`), each having one phase, and two
+features (`X` and `Y`);
 
 ```mermaid
 sequenceDiagram
@@ -180,10 +180,11 @@ sequenceDiagram
 
 > :information_source:
 >
-> A layer doesn't necessarily introduce new phases to application, but all
-> phases are applied to all layers. For example, `WebLayer`  introduces _Build_
-> phase which is applied to `Domain`, `Web` and `Database` layers to allow them
-> provide their configuration target specific to the _Build_ phase.
+> A layer doesn't necessarily introduce new phases to an application, but all
+> phases are applied to all layers nevertheless. For example, `WebLayer`
+> introduces _Build_ phase which is applied to `Domain`, `Web` and `Database`
+> layers to allow them provide their configuration targets specific to the
+> _Build_ phase.
 
 ### Order of Phases
 
