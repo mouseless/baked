@@ -130,10 +130,8 @@ public class RunningAnApplication : Spec
     [TestCase(PhaseOrder.Latest)]
     public void Only_one_phase_can_have_earliest_and_latest_priorities_at_the_same_time(PhaseOrder order)
     {
-        var phases = new List<string>();
-
-        var phaseA = MockMe.APhase(onInitialize: () => phases.Add("phase a"), order: order);
-        var phaseB = MockMe.APhase(onInitialize: () => phases.Add("phase b"), order: order);
+        var phaseA = MockMe.APhase(order: order);
+        var phaseB = MockMe.APhase(order: order);
         var layer = MockMe.ALayer(phases: new[] { phaseA, phaseB });
 
         var app = GiveMe.AnApplication(layer: layer);
@@ -142,6 +140,13 @@ public class RunningAnApplication : Spec
     }
 
     [Test]
-    [Ignore("not implemented")]
-    public void When_a_phase_never_gets_ready_it_gives_error() => Assert.Fail();
+    public void When_a_phase_never_gets_ready_it_gives_error()
+    {
+        var phase = MockMe.APhase(canInitialize: () => false);
+        var layer = MockMe.ALayer(phase: phase);
+
+        var app = GiveMe.AnApplication(layer: layer);
+
+        Assert.That(() => app.Run(), Throws.TypeOf<CannotProceedException>());
+    }
 }

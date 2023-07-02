@@ -6,7 +6,5 @@ public class ApplyingPhases
     [Ignore("not implemented")]
     public void To_be_analysed() => Assert.Fail();
 
-    // layers should be able to do things before, during and after phases
-    // phase codes should be forced to be organized per phase
-    // - "if phase name" style results otherwise
+    // layers should be able to do things before, after phases
 }

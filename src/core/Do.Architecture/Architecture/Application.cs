@@ -32,11 +32,13 @@ public class Application
 
     public void Run()
     {
-        var retryCount = 0;
         var phases = new List<IPhase>(_phases);
+        int lastPhaseCount;
 
         do
         {
+            lastPhaseCount = phases.Count;
+
             var orderOfLastInitializedPhase = PhaseOrder.Normal;
             var initializedPhases = new HashSet<IPhase>();
 
@@ -61,7 +63,7 @@ public class Application
 
             phases.RemoveAll(p => initializedPhases.Contains(p));
 
-            if (retryCount++ > 100) { throw new InvalidOperationException("max retry count exceeded"); }
+            if (phases.Count == lastPhaseCount) { throw new CannotProceedException(phases); }
         } while (phases.Count > 0);
     }
 
