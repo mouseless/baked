@@ -115,13 +115,16 @@ public static class ArchitectureSpecExtensions
 
     public static IPhase APhase(this Spec.Mocker source,
         Action? onInitialize = default,
-        Func<bool>? canInitialize = default
+        Func<bool>? canInitialize = default,
+        PhaseOrder order = PhaseOrder.Normal
     )
     {
         onInitialize ??= () => { };
         canInitialize ??= () => true;
 
         var result = new Mock<IPhase>();
+
+        result.Setup(p => p.Order).Returns(order);
 
         result
             .Setup(p => p.Initialize(It.IsAny<ApplicationContext>()))

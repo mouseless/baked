@@ -17,13 +17,26 @@ public class Application : IRunnable
             phases.AddRange(layer.GetPhases());
         }
 
+        phases.Sort((l, r) => l.Order - r.Order);
+
         var retryCount = 0;
         do
         {
+            var lastOrder = PhaseOrder.Normal;
             var retry = new HashSet<IPhase>();
             foreach (var phase in phases)
             {
-                if (!phase.Initialize(_context))
+                if (lastOrder == phase.Order &&
+                    lastOrder is PhaseOrder.Earliest or PhaseOrder.Latest)
+                {
+                    throw new PhaseOrderException(lastOrder, phases);
+                }
+
+                lastOrder = phase.Order;
+
+                var initialized = phase.Initialize(_context);
+
+                if (!initialized)
                 {
                     retry.Add(phase);
                     continue;

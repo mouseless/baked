@@ -1,3 +1,5 @@
+using Do.Architecture;
+
 namespace Do.Test.Architecture.Application;
 
 public class RunningAnApplication : Spec
@@ -108,12 +110,36 @@ public class RunningAnApplication : Spec
     }
 
     [Test]
-    [Ignore("not implemented")]
-    public void When_more_than_one_phase_is_ready_at_the_same_time__they_are_initialized_according_to_their_priorities() => Assert.Fail();
+    public void When_more_than_one_phase_is_ready_at_the_same_time__they_are_initialized_according_to_their_priorities()
+    {
+        var phases = new List<string>();
 
-    [Test]
-    [Ignore("not implemented")]
-    public void Only_one_phase_can_have_earliest_and_latest_priorities_at_the_same_time() => Assert.Fail();
+        var phaseA = MockMe.APhase(onInitialize: () => phases.Add("phase a"), order: PhaseOrder.Late);
+        var phaseB = MockMe.APhase(onInitialize: () => phases.Add("phase b"), order: PhaseOrder.Early);
+        var layer = MockMe.ALayer(phases: new[] { phaseA, phaseB });
+
+        var app = GiveMe.AnApplication(layer: layer);
+
+        app.Run();
+
+        Assert.That(phases[0], Is.EqualTo("phase b"));
+        Assert.That(phases[1], Is.EqualTo("phase a"));
+    }
+
+    [TestCase(PhaseOrder.Earliest)]
+    [TestCase(PhaseOrder.Latest)]
+    public void Only_one_phase_can_have_earliest_and_latest_priorities_at_the_same_time(PhaseOrder order)
+    {
+        var phases = new List<string>();
+
+        var phaseA = MockMe.APhase(onInitialize: () => phases.Add("phase a"), order: order);
+        var phaseB = MockMe.APhase(onInitialize: () => phases.Add("phase b"), order: order);
+        var layer = MockMe.ALayer(phases: new[] { phaseA, phaseB });
+
+        var app = GiveMe.AnApplication(layer: layer);
+
+        Assert.That(() => app.Run(), Throws.TypeOf<PhaseOrderException>());
+    }
 
     [Test]
     [Ignore("not implemented")]
