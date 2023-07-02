@@ -1,60 +1,79 @@
 namespace Do.Architecture;
 
-public class Application : IRunnable
+public class Application
 {
     readonly ApplicationContext _context;
 
     public Application(ApplicationContext context) => _context = context;
 
-    public List<ILayer> Layers { get; } = new();
-    public List<IFeature> Features { get; } = new();
+    readonly List<ILayer> _layers = new();
+    readonly List<IFeature> _features = new();
+    readonly List<IPhase> _phases = new();
 
-    void IRunnable.Run()
+    internal Application With(ApplicationDescriptor descriptor)
     {
-        var phases = new List<IPhase>();
-        foreach (var layer in Layers)
+        _layers.AddRange(descriptor.Layers);
+        _features.AddRange(descriptor.Features);
+
+        FillPhases();
+
+        return this;
+    }
+
+    void FillPhases()
+    {
+        foreach (var layer in _layers)
         {
-            phases.AddRange(layer.GetPhases());
+            _phases.AddRange(layer.GetPhases());
         }
 
-        phases.Sort((l, r) => l.Order - r.Order);
+        _phases.Sort((l, r) => l.Order - r.Order);
+    }
 
+    public void Run()
+    {
         var retryCount = 0;
+        var phases = new List<IPhase>(_phases);
+
         do
         {
-            var lastOrder = PhaseOrder.Normal;
-            var retry = new HashSet<IPhase>();
+            var orderOfLastInitializedPhase = PhaseOrder.Normal;
+            var initializedPhases = new HashSet<IPhase>();
+
             foreach (var phase in phases)
             {
-                if (lastOrder == phase.Order &&
-                    lastOrder is PhaseOrder.Earliest or PhaseOrder.Latest)
-                {
-                    throw new PhaseOrderException(lastOrder, phases);
-                }
-
-                lastOrder = phase.Order;
-
                 var initialized = phase.Initialize(_context);
 
-                if (!initialized)
+                if (!initialized) { continue; }
+
+                initializedPhases.Add(phase);
+
+                if (orderOfLastInitializedPhase is PhaseOrder.Earliest or PhaseOrder.Latest &&
+                    orderOfLastInitializedPhase == phase.Order)
                 {
-                    retry.Add(phase);
-                    continue;
+                    throw new PhaseOrderException(orderOfLastInitializedPhase, initializedPhases);
                 }
 
-                foreach (var layer in Layers)
-                {
-                    var target = layer.GetConfigurationTarget(phase, _context);
-                    foreach (var feature in Features)
-                    {
-                        feature.Configure(target);
-                    }
-                }
+                Apply(phase);
+
+                orderOfLastInitializedPhase = phase.Order;
             }
 
-            phases.RemoveAll(p => !retry.Contains(p));
+            phases.RemoveAll(p => initializedPhases.Contains(p));
 
             if (retryCount++ > 100) { throw new InvalidOperationException("max retry count exceeded"); }
         } while (phases.Count > 0);
+    }
+
+    void Apply(IPhase phase)
+    {
+        foreach (var layer in _layers)
+        {
+            var target = layer.GetConfigurationTarget(phase, _context);
+            foreach (var feature in _features)
+            {
+                feature.Configure(target);
+            }
+        }
     }
 }

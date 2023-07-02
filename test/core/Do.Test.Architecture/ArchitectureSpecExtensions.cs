@@ -22,7 +22,7 @@ public static class ArchitectureSpecExtensions
 
     #region Application
 
-    public static IRunnable AnApplication(this Spec.Stubber source,
+    public static Application AnApplication(this Spec.Stubber source,
         ILayer? layer = default,
         ILayer[]? layers = default,
         IFeature? feature = default,

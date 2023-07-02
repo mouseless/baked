@@ -4,8 +4,8 @@ namespace Do;
 
 public static class BuildExtensions
 {
-    public static IRunnable AsService(this Build source,
-        Action<Application>? configure = default
+    public static Application AsService(this Build source,
+        Action<ApplicationDescriptor>? configure = default
     )
     {
         configure ??= _ => { };

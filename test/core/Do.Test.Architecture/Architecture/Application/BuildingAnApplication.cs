@@ -1,6 +1,4 @@
-﻿using Do.Architecture;
-
-namespace Do.Test.Architecture.Application;
+﻿namespace Do.Test.Architecture.Application;
 
 public class BuildingAnApplication : Spec
 {
@@ -17,6 +15,6 @@ public class BuildingAnApplication : Spec
 
         var actual = build.As(_ => { });
 
-        Assert.That(actual, Is.InstanceOf<IRunnable>());
+        Assert.That(actual, Is.InstanceOf<Do.Architecture.Application>());
     }
 }

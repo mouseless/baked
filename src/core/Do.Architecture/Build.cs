@@ -16,14 +16,14 @@ public class Build
         _newApplication = newApplication;
     }
 
-    public IRunnable As(Action<Application> build)
+    public Application As(Action<ApplicationDescriptor> build)
     {
         _banner.Print();
 
-        var result = _newApplication();
+        var descriptor = new ApplicationDescriptor();
 
-        build(result);
+        build(descriptor);
 
-        return result;
+        return _newApplication().With(descriptor);
     }
 }
