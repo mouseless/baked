@@ -89,8 +89,23 @@ public class RunningAnApplication : Spec
     }
 
     [Test]
-    [Ignore("not implemented")]
-    public void Application_resolves_which_phase_to_initialize_automatically_by_checking_if_context_is_ready_for_them() => Assert.Fail();
+    public void Application_resolves_which_phase_to_initialize_automatically_by_checking_if_they_are_ready()
+    {
+        var phases = new List<string>();
+
+        var phaseA = MockMe.APhase(onInitialize: () => phases.Add("phase a"), canInitialize: () => phases.Contains("phase b"));
+        var phaseB = MockMe.APhase(onInitialize: () => phases.Add("phase b"), canInitialize: () => phases.Contains("phase c"));
+        var phaseC = MockMe.APhase(onInitialize: () => phases.Add("phase c"));
+        var layer = MockMe.ALayer(phases: new[] { phaseA, phaseB, phaseC });
+
+        var app = GiveMe.AnApplication(layer: layer);
+
+        app.Run();
+
+        Assert.That(phases[0], Is.EqualTo("phase c"));
+        Assert.That(phases[1], Is.EqualTo("phase b"));
+        Assert.That(phases[2], Is.EqualTo("phase a"));
+    }
 
     [Test]
     [Ignore("not implemented")]
@@ -99,4 +114,8 @@ public class RunningAnApplication : Spec
     [Test]
     [Ignore("not implemented")]
     public void Only_one_phase_can_have_earliest_and_latest_priorities_at_the_same_time() => Assert.Fail();
+
+    [Test]
+    [Ignore("not implemented")]
+    public void When_a_phase_never_gets_ready_it_gives_error() => Assert.Fail();
 }

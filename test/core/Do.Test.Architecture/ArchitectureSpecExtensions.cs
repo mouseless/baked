@@ -114,17 +114,19 @@ public static class ArchitectureSpecExtensions
     #region Phase
 
     public static IPhase APhase(this Spec.Mocker source,
-        Action? onInitialize = default
+        Action? onInitialize = default,
+        Func<bool>? canInitialize = default
     )
     {
+        onInitialize ??= () => { };
+        canInitialize ??= () => true;
+
         var result = new Mock<IPhase>();
 
-        if (onInitialize != default)
-        {
-            result
-                .Setup(p => p.Initialize(It.IsAny<ApplicationContext>()))
-                .Callback((ApplicationContext _) => onInitialize());
-        }
+        result
+            .Setup(p => p.Initialize(It.IsAny<ApplicationContext>()))
+            .Callback((ApplicationContext _) => { if (canInitialize()) { onInitialize(); } })
+            .Returns((ApplicationContext _) => canInitialize());
 
         return result.Object;
     }

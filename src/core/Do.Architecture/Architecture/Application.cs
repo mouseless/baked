@@ -6,30 +6,42 @@ public class Application : IRunnable
 
     public Application(ApplicationContext context) => _context = context;
 
-    List<IPhase> Phases { get; } = new();
     public List<ILayer> Layers { get; } = new();
     public List<IFeature> Features { get; } = new();
 
     void IRunnable.Run()
     {
+        var phases = new List<IPhase>();
         foreach (var layer in Layers)
         {
-            Phases.AddRange(layer.GetPhases());
+            phases.AddRange(layer.GetPhases());
         }
 
-        // find and remove ready phases, iterate until all phases are applied
-        foreach (var phase in Phases)
+        var retryCount = 0;
+        do
         {
-            phase.Initialize(_context);
-
-            foreach (var layer in Layers)
+            var retry = new HashSet<IPhase>();
+            foreach (var phase in phases)
             {
-                var target = layer.GetConfigurationTarget(phase, _context);
-                foreach (var feature in Features)
+                if (!phase.Initialize(_context))
                 {
-                    feature.Configure(target);
+                    retry.Add(phase);
+                    continue;
+                }
+
+                foreach (var layer in Layers)
+                {
+                    var target = layer.GetConfigurationTarget(phase, _context);
+                    foreach (var feature in Features)
+                    {
+                        feature.Configure(target);
+                    }
                 }
             }
-        }
+
+            phases.RemoveAll(p => !retry.Contains(p));
+
+            if (retryCount++ > 100) { throw new InvalidOperationException("max retry count exceeded"); }
+        } while (phases.Count > 0);
     }
 }
