@@ -33,11 +33,9 @@ public class Application
     public void Run()
     {
         var phases = new List<IPhase>(_phases);
-
         while (phases.Count > 0)
         {
             var phasesOfThisIteration = phases.Where(p => p.CanInitialize(_context)).ToList();
-
             if (!phasesOfThisIteration.Any()) { throw new CannotProceedException(phases); }
 
             VerifyOrderOccursAtMostOnce(PhaseOrder.Earliest, phasesOfThisIteration);

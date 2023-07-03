@@ -5,7 +5,7 @@ Build.Application
             app.Layers.AddDependencyInjection();
             app.Layers.AddWeb();
 
-            app.Features.AddGreeting(c => c.HelloWorld());
+            app.Features.AddGreeting(c => c.WelcomePage());
         }
     )
     .Run();

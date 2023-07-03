@@ -243,7 +243,7 @@ treatment. Only one phase is allowed to have _earliest_ and _latest_ order for
 the same iteration.
 
 Assume there are two phases with _earliest_ order and they are ready to get
-initialized at the same iteration. In this case application will throw a
+initialized at the same iteration. In this case application will throw an
 `OverlappingPhaseException` and execution will stop. If you see this exception,
 it means you need to reorder phases so that they don't overlap, or you might
 change their readiness so that they run in their own iteration.

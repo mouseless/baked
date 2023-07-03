@@ -10,13 +10,10 @@ public class DependencyInjectionLayer : ILayer
         yield return new AddServices();
     }
 
-    public IServiceCollection ServiceCollection { get; internal set; } = default!;
-
     public ConfigurationTarget GetConfigurationTarget(IPhase phase, ApplicationContext context) =>
         phase switch
         {
             AddServices => ConfigurationTarget.Create(context.Get<IServiceCollection>()),
             _ => ConfigurationTarget.Empty
         };
-
 }

@@ -6,10 +6,14 @@ position: 2
 
 > TBD
 
-## Applying Phases
+## Adding Phases
 
 > TBD
 
-## Configuring Phases
+## Configuring Layers
+
+> TBD
+
+## Conventions
 
 > TBD

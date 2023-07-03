@@ -4,17 +4,33 @@ public class ConfiguringLayers
 {
     [Test]
     [Ignore("not implemented")]
-    public void Layers_provide_configuration_targets_per_phase() => Assert.Fail();
+    public void Every_layer_provides_a_configuration_context_per_phase() => Assert.Fail();
 
     [Test]
     [Ignore("not implemented")]
-    public void When_layer_provides_no_target_for_a_phase__then_features_skip_that_layer_for_that_phase() => Assert.Fail();
+    public void When_layer_provides_no_context_in_a_phase__then_it_is_skipped_for_that_phase() => Assert.Fail();
 
     [Test]
     [Ignore("not implemented")]
-    public void Layer_configuration_target_may_configure_more_than_one_type_at_once() => Assert.Fail();
+    public void Configuration_context_may_restrict_a_configuration_object_into_one_of_its_interfaces() => Assert.Fail();
 
     [Test]
     [Ignore("not implemented")]
-    public void Layer_configuration_target_may_hide_a_type_for_a_phase() => Assert.Fail();
+    public void A_layer_can_make_a_configuration_context_do_stuff_before_being_applied_to_features() => Assert.Fail();
+
+    [Test]
+    [Ignore("not implemented")]
+    public void A_layer_can_make_a_configuration_context_do_stuff_after_being_applied_to_features() => Assert.Fail();
+
+    [Test]
+    [Ignore("not implemented")]
+    public void Configuration_context_is_designed_to_have_extension_methods_to_be_used_by_features() => Assert.Fail();
+
+    [Test]
+    [Ignore("not implemented")]
+    public void A_configuration_context_applies_given_action_only_when_given_type_matches_current_target_type() => Assert.Fail();
+
+    [Test]
+    [Ignore("not implemented")]
+    public void A_layer_may_provide_a_configuration_context_up_to_three_targets() => Assert.Fail();
 }
