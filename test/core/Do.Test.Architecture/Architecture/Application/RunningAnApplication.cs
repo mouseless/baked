@@ -126,6 +126,16 @@ public class RunningAnApplication : Spec
         Assert.That(phases[1], Is.EqualTo("phase a"));
     }
 
+    [Test]
+    public void There_are_five_phase_order_values()
+    {
+        Assert.That((int)PhaseOrder.Earliest, Is.EqualTo(1));
+        Assert.That((int)PhaseOrder.Early, Is.EqualTo(2));
+        Assert.That((int)PhaseOrder.Normal, Is.EqualTo(3));
+        Assert.That((int)PhaseOrder.Late, Is.EqualTo(4));
+        Assert.That((int)PhaseOrder.Latest, Is.EqualTo(5));
+    }
+
     [TestCase(PhaseOrder.Earliest)]
     [TestCase(PhaseOrder.Latest)]
     public void Only_one_phase_can_have_earliest_and_latest_priorities_at_the_same_time(PhaseOrder order)
@@ -136,7 +146,7 @@ public class RunningAnApplication : Spec
 
         var app = GiveMe.AnApplication(layer: layer);
 
-        Assert.That(() => app.Run(), Throws.TypeOf<PhaseOrderException>());
+        Assert.That(() => app.Run(), Throws.TypeOf<OverlappingPhaseException>());
     }
 
     [Test]

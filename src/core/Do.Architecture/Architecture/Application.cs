@@ -33,38 +33,34 @@ public class Application
     public void Run()
     {
         var phases = new List<IPhase>(_phases);
-        int lastPhaseCount;
 
-        do
+        while (phases.Count > 0)
         {
-            lastPhaseCount = phases.Count;
+            var phasesOfThisIteration = phases.Where(p => p.CanInitialize(_context)).ToList();
 
-            var orderOfLastInitializedPhase = PhaseOrder.Normal;
-            var initializedPhases = new HashSet<IPhase>();
+            if (!phasesOfThisIteration.Any()) { throw new CannotProceedException(phases); }
 
-            foreach (var phase in phases)
+            VerifyOrderOccursAtMostOnce(PhaseOrder.Earliest, phasesOfThisIteration);
+            VerifyOrderOccursAtMostOnce(PhaseOrder.Latest, phasesOfThisIteration);
+
+            foreach (var phase in phasesOfThisIteration)
             {
-                var initialized = phase.Initialize(_context);
-
-                if (!initialized) { continue; }
-
-                initializedPhases.Add(phase);
-
-                if (orderOfLastInitializedPhase is PhaseOrder.Earliest or PhaseOrder.Latest &&
-                    orderOfLastInitializedPhase == phase.Order)
-                {
-                    throw new PhaseOrderException(orderOfLastInitializedPhase, initializedPhases);
-                }
+                phase.Initialize(_context);
 
                 Apply(phase);
-
-                orderOfLastInitializedPhase = phase.Order;
             }
 
-            phases.RemoveAll(p => initializedPhases.Contains(p));
+            phases = phases.Except(phasesOfThisIteration).ToList();
+        }
+    }
 
-            if (phases.Count == lastPhaseCount) { throw new CannotProceedException(phases); }
-        } while (phases.Count > 0);
+    void VerifyOrderOccursAtMostOnce(PhaseOrder order, IEnumerable<IPhase> phases)
+    {
+        var phasesWithOrder = phases.Where(p => p.Order == order);
+        if (phasesWithOrder.Count() > 1)
+        {
+            throw new OverlappingPhaseException(order, phasesWithOrder);
+        }
     }
 
     void Apply(IPhase phase)

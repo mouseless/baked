@@ -4,5 +4,6 @@ public interface IPhase
 {
     PhaseOrder Order { get; }
 
-    bool Initialize(ApplicationContext context);
+    bool CanInitialize(ApplicationContext context);
+    void Initialize(ApplicationContext context);
 }

@@ -6,5 +6,6 @@ public class AddServices : IPhase
 {
     public PhaseOrder Order => PhaseOrder.Earliest;
 
-    public bool Initialize(ApplicationContext context) => context.Has<IServiceCollection>();
+    public bool CanInitialize(ApplicationContext context) => context.Has<IServiceCollection>();
+    public void Initialize(ApplicationContext _) { }
 }

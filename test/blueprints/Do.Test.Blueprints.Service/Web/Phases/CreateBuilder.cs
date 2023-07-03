@@ -6,13 +6,12 @@ public class CreateBuilder : IPhase
 {
     public PhaseOrder Order => PhaseOrder.Earliest;
 
-    public bool Initialize(ApplicationContext context)
+    public bool CanInitialize(ApplicationContext _) => true;
+    public void Initialize(ApplicationContext context)
     {
         var build = WebApplication.CreateBuilder();
 
         context.Add(build);
         context.Add(build.Services);
-
-        return true;
     }
 }

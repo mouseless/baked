@@ -6,14 +6,11 @@ public class Run : IPhase
 {
     public PhaseOrder Order => PhaseOrder.Latest;
 
-    public bool Initialize(ApplicationContext context)
+    public bool CanInitialize(ApplicationContext context) => context.Has<WebApplication>();
+    public void Initialize(ApplicationContext context)
     {
-        if (!context.Has<WebApplication>()) { return false; }
-
         var app = context.Get<WebApplication>();
 
         app.Run();
-
-        return true;
     }
 }

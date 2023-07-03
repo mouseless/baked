@@ -6,15 +6,12 @@ public class BuildApp : IPhase
 {
     public PhaseOrder Order => PhaseOrder.Latest;
 
-    public bool Initialize(ApplicationContext context)
+    public bool CanInitialize(ApplicationContext context) => context.Has<WebApplicationBuilder>();
+    public void Initialize(ApplicationContext context)
     {
-        if (!context.Has<WebApplicationBuilder>()) { return false; }
-
         var build = context.Get<WebApplicationBuilder>();
         var app = build.Build();
 
         context.Add(app);
-
-        return true;
     }
 }
