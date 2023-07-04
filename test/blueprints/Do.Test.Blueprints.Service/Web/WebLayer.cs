@@ -3,9 +3,9 @@ using Do.Test.Blueprints.Service.Web.Phases;
 
 namespace Do.Test.Blueprints.Service.Web;
 
-public class WebLayer : ILayer
+public class WebLayer : LayerBase
 {
-    public IEnumerable<IPhase> GetPhases()
+    protected override IEnumerable<IPhase> GetPhases()
     {
         yield return new CreateBuilder();
         yield return new BuildApp();
@@ -13,12 +13,11 @@ public class WebLayer : ILayer
         yield return new Run();
     }
 
-    public ConfigurationTarget GetConfigurationTarget(IPhase phase, ApplicationContext context) =>
+    protected override ConfigurationTarget GetConfigurationTarget(IPhase phase, ApplicationContext context) =>
         phase switch
         {
             BuildApp => ConfigurationTarget.Create<IApplicationBuilder>(context.Get<WebApplication>()),
             MapRoutes => ConfigurationTarget.Create<IEndpointRouteBuilder>(context.Get<WebApplication>()),
             _ => ConfigurationTarget.Empty
         };
-
 }

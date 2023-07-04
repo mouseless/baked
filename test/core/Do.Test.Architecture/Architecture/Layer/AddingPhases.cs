@@ -1,10 +1,40 @@
-﻿namespace Do.Test.Architecture.Layer;
+﻿using Do.Architecture;
 
-public class AddingPhases
+namespace Do.Test.Architecture.Layer;
+
+public class AddingPhases : Spec
 {
+    public class NoPhaseLayer : LayerBase { }
+
     [Test]
-    [Ignore("not implemented")]
-    public void Layers_are_asked_to_add_new_phases() => Assert.Fail();
+    public void Layer_returns_no_phases_by_default()
+    {
+        ILayer layer = new NoPhaseLayer();
+        var phases = layer.GetPhases();
+
+        Assert.That(phases, Has.Exactly(0).Items);
+    }
+
+    public class TwoPhaseLayer : LayerBase
+    {
+        protected override IEnumerable<IPhase> GetPhases()
+        {
+            yield return new Phase();
+            yield return new Phase();
+        }
+    }
+
+    public class Phase : PhaseBase { }
+
+    [Test]
+    public void Layer_overrides_base_method_to_add_new_phases()
+    {
+        ILayer layer = new TwoPhaseLayer();
+        var phases = layer.GetPhases();
+
+        Assert.That(phases, Has.Exactly(2).Items);
+        Assert.That(phases, Has.All.TypeOf<Phase>());
+    }
 
     [Test]
     [Ignore("not implemented")]
@@ -20,17 +50,6 @@ public class AddingPhases
 }
 
 /*
-public class OnePhaseLayer : LayerBase<AddServices>
-{
-}
-
-public class TwoPhaseLayer : LayerBase<PhaseA, PhaseB>
-{
-}
-
-support up to 3 (?) phases
-
-
 public class NoDependency : PhaseBase
 {
     public override PhaseOrder Order => PhaseOrder.Early;

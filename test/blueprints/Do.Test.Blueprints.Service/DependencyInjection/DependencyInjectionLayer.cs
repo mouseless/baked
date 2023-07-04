@@ -3,14 +3,14 @@ using Do.Test.Blueprints.Service.DependencyInjection.Phases;
 
 namespace Do.Test.Blueprints.Service.DependencyInjection;
 
-public class DependencyInjectionLayer : ILayer
+public class DependencyInjectionLayer : LayerBase
 {
-    public IEnumerable<IPhase> GetPhases()
+    protected override IEnumerable<IPhase> GetPhases()
     {
         yield return new AddServices();
     }
 
-    public ConfigurationTarget GetConfigurationTarget(IPhase phase, ApplicationContext context) =>
+    protected override ConfigurationTarget GetConfigurationTarget(IPhase phase, ApplicationContext context) =>
         phase switch
         {
             AddServices => ConfigurationTarget.Create(context.Get<IServiceCollection>()),

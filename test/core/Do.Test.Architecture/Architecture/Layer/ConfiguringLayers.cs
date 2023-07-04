@@ -16,11 +16,11 @@ public class ConfiguringLayers
 
     [Test]
     [Ignore("not implemented")]
-    public void A_layer_can_make_a_configuration_context_do_stuff_before_being_applied_to_features() => Assert.Fail();
+    public void A_layer_can_make_a_configuration_context_do_stuff_before_and_after_being_configured_by_features() => Assert.Fail();
 
     [Test]
     [Ignore("not implemented")]
-    public void A_layer_can_make_a_configuration_context_do_stuff_after_being_applied_to_features() => Assert.Fail();
+    public void A_layer_can_make_a_configuration_context_do_stuff_before_and_after_phase_is_applied_to_layers_and_features() => Assert.Fail();
 
     [Test]
     [Ignore("not implemented")]
@@ -34,3 +34,33 @@ public class ConfiguringLayers
     [Ignore("not implemented")]
     public void A_layer_may_provide_a_configuration_context_up_to_three_targets() => Assert.Fail();
 }
+
+/*
+
+ public class LayerA : LayerBase<PhaseX, PhaseY>
+ {
+    public LayerAConfigurationX ConfigX { get; } = new();
+    public LayerAConfigurationY ConfigY { get; } = new();
+
+    protected override ILayerContext GetContext(PhaseX phase, ApplicationContext context) =>
+        LayerContext
+            .Create(ConfigX)
+            .OnBeforePhase(() => context
+                .Get<IServiceCollection>()
+                .AddLayerAStuff()
+            )
+            .OnAfterPhase(() => context
+                .Get<IServiceCollection>()
+                .ConfigureLayerA(ConfigX)
+            );
+
+    protected override ILayerContext GetContext(PhaseY phase, ApplicationContext context) =>
+        LayerContext
+            .Create(ConfigY)
+            .OnAfter(() => context
+                .Get<IApplicationBuilder>()
+                .UseLayerA(ConfigY)
+            );
+ }
+
+ */
