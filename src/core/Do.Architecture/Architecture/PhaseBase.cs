@@ -2,7 +2,8 @@ namespace Do.Architecture;
 
 public abstract class PhaseBase : IPhase
 {
-    PhaseOrder _order;
+    readonly PhaseOrder _order;
+
     protected PhaseBase(PhaseOrder order = PhaseOrder.Normal) => _order = order;
 
     protected virtual ApplicationContext Context { get; private set; } = default!;

@@ -29,6 +29,6 @@ Collective. It is, and will always be, free and open source.
 ## Naming Conventions
 
 - Use documentation heading names for text fixtures
-  - ⛔ Wrong => `AddExtenstionTest`
+  - ⛔ Wrong => `AddExtensionTest`
   - ✅ Correct => `AddingExtensions`
 - Use `Extensions` suffix for static extension classes

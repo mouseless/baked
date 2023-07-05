@@ -5,8 +5,8 @@ position: 1
 # Application
 
 `Application` acts as a container object for all the domain objects, features
-and layers of the software you develop. This object is built through a bunch of
-extensible builder classes and methods.
+and layers of the software you develop. This object can be built through
+provided builder classes and methods.
 
 ## Building an Application
 
@@ -30,7 +30,7 @@ Build.Application
 
 ## Adding Extensions
 
-To add a new extension to an application, you need to make use of feature /
+To add a new extension to an application, you need to make use of the feature /
 layer system.
 
 DO does not allow you to use `build.Services.Add` or `app.Use` methods
@@ -38,8 +38,8 @@ directly. This is a design decision to avoid any unexpected behaviour because
 the order of extensions may require a special attention as in [Enabling
 Cors][].
 
-`As` method provides an `ApplicationDescriptor` instance with `Layers` and
-`Features` properties. Using these properties you may add desired extensions
+`As` method provides an `ApplicationDescriptor` instance that has `Layers` and
+`Features` properties. Using these properties, you can add desired extensions
 into your application.
 
 > :information_source:
@@ -49,7 +49,7 @@ into your application.
 
 ### Layers
 
-Layers can be added without any options to configure;
+Layers are added without any options to configure;
 
 ```csharp
 app.Layers.AddDomain();
