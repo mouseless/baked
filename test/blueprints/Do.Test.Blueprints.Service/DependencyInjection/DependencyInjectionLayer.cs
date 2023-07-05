@@ -1,5 +1,4 @@
 using Do.Architecture;
-using Do.Test.Blueprints.Service.DependencyInjection.Phases;
 
 namespace Do.Test.Blueprints.Service.DependencyInjection;
 
@@ -16,4 +15,11 @@ public class DependencyInjectionLayer : LayerBase
             AddServices => ConfigurationTarget.Create(context.Get<IServiceCollection>()),
             _ => ConfigurationTarget.Empty
         };
+
+    public class AddServices : PhaseBase<IServiceCollection>
+    {
+        public AddServices() : base(PhaseOrder.Earliest) { }
+
+        protected override void Initialize(IServiceCollection _) { }
+    }
 }

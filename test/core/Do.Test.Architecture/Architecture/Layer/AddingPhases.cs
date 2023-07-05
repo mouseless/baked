@@ -36,47 +36,88 @@ public class AddingPhases : Spec
         Assert.That(phases, Has.All.TypeOf<Phase>());
     }
 
-    [Test]
-    [Ignore("not implemented")]
-    public void Phases_have_initialization_before_getting_applied() => Assert.Fail();
-
-    [Test]
-    [Ignore("not implemented")]
-    public void Phases_may_depend_on_one_or_more_objects_to_appear_in_context() => Assert.Fail();
-
-    [Test]
-    [Ignore("not implemented")]
-    public void Phases_can_run_earlier_or_later_than_normal() => Assert.Fail();
-}
-
-/*
-public class NoDependency : PhaseBase
-{
-    public override PhaseOrder Order => PhaseOrder.Early;
-
-    public override Initialize(IServiceCollection serviceCollection)
+    public class InitializedPhase : PhaseBase
     {
+        protected override void Initialize()
+        {
+            Context.Add("test");
+        }
+    }
 
+    [Test]
+    public void Phases_have_initialization_step_before_getting_applied_so_that_they_prepare_and_add_objects_to_application_context()
+    {
+        var context = GiveMe.AnApplicationContext();
+
+        IPhase phase = new InitializedPhase();
+
+        phase.Initialize(context);
+
+        Assert.That(context.Has<string>(), Is.True);
+        Assert.That(context.Get<string>(), Is.EqualTo("test"));
+    }
+
+    public class OneDependencyPhase : PhaseBase<string>
+    {
+        protected override void Initialize(string dependency) =>
+            Context.Add(0);
+    }
+
+    public class TwoDependencyPhase : PhaseBase<string, int>
+    {
+        protected override void Initialize(string dependency1, int dependency2) =>
+            Context.Add(true);
+    }
+
+    public class ThreeDependencyPhase : PhaseBase<string, int, bool>
+    {
+        protected override void Initialize(string dependency1, int dependency2, bool dependency3) =>
+            Context.Add('a');
+    }
+
+    [Test]
+    public void Phases_may_depend_on_one_or_more_objects_to_appear_in_context()
+    {
+        var context = GiveMe.AnApplicationContext();
+
+        IPhase initializing = new InitializedPhase();
+        IPhase oneDependency = new OneDependencyPhase();
+        IPhase twoDependency = new TwoDependencyPhase();
+        IPhase threeDependency = new ThreeDependencyPhase();
+
+        Assert.That(initializing.CanInitialize(context), Is.True);
+        Assert.That(oneDependency.CanInitialize(context), Is.False);
+
+        initializing.Initialize(context);
+
+        Assert.That(oneDependency.CanInitialize(context), Is.True);
+        Assert.That(twoDependency.CanInitialize(context), Is.False);
+
+        oneDependency.Initialize(context);
+
+        Assert.That(twoDependency.CanInitialize(context), Is.True);
+        Assert.That(threeDependency.CanInitialize(context), Is.False);
+
+        twoDependency.Initialize(context);
+
+        Assert.That(threeDependency.CanInitialize(context), Is.True);
+
+        threeDependency.Initialize(context);
+
+        Assert.That(context.Get<char>(), Is.EqualTo('a'));
+    }
+
+    public class OrderedPhase : PhaseBase
+    {
+        public OrderedPhase(PhaseOrder order) : base(order) { }
+    }
+
+    [TestCase(PhaseOrder.Early)]
+    [TestCase(PhaseOrder.Late)]
+    public void Phases_can_run_earlier_or_later_than_normal(PhaseOrder order)
+    {
+        IPhase phase = new OrderedPhase(order);
+
+        Assert.That(phase.Order, Is.EqualTo(order));
     }
 }
-
-public class OneDependency : PhaseBase<IServiceCollection>
-{
-    public override PhaseOrder Order => PhaseOrder.Early;
-
-    public override Initialize(IServiceCollection serviceCollection)
-    {
-
-    }
-}
-
-public class TwoDependencies : PhaseBase<WebApplicationBuilder, IServiceCollection>
-{
-    public override Initialize(WebApplicationBuilder build, IServiceCollection serviceCollection)
-    {
-
-    }
-}
-
-support up to 3 dependencies
-*/

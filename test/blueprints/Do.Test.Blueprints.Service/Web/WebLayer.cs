@@ -1,5 +1,4 @@
 using Do.Architecture;
-using Do.Test.Blueprints.Service.Web.Phases;
 
 namespace Do.Test.Blueprints.Service.Web;
 
@@ -20,4 +19,41 @@ public class WebLayer : LayerBase
             MapRoutes => ConfigurationTarget.Create<IEndpointRouteBuilder>(context.Get<WebApplication>()),
             _ => ConfigurationTarget.Empty
         };
+
+    public class CreateBuilder : PhaseBase
+    {
+        public CreateBuilder() : base(PhaseOrder.Earliest) { }
+
+        protected override void Initialize()
+        {
+            var build = WebApplication.CreateBuilder();
+
+            Context.Add(build);
+            Context.Add(build.Services);
+        }
+    }
+
+    public class BuildApp : PhaseBase<WebApplicationBuilder>
+    {
+        public BuildApp() : base(PhaseOrder.Latest) { }
+
+        protected override void Initialize(WebApplicationBuilder build)
+        {
+            var app = build.Build();
+
+            Context.Add(app);
+        }
+    }
+
+    public class MapRoutes : PhaseBase<WebApplication>
+    {
+        protected override void Initialize(WebApplication _) { }
+    }
+
+    public class Run : PhaseBase<WebApplication>
+    {
+        public Run() : base(PhaseOrder.Latest) { }
+
+        protected override void Initialize(WebApplication app) => app.Run();
+    }
 }
