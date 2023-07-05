@@ -62,4 +62,12 @@ public class AddingExtensions : Spec
 
         feature.VerifyConfigures(configurationTarget);
     }
+
+    [Test]
+    [Ignore("not implemented")]
+    public void Layers_may_provide_multiple_configuration_targets() => Assert.Fail();
+
+    [Test]
+    [Ignore("not implemented")]
+    public void Configuration_targets_do_stuff_before_and_after_being_configured_by_features() => Assert.Fail();
 }

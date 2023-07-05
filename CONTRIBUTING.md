@@ -15,3 +15,20 @@ Collective. It is, and will always be, free and open source.
 - `/test`: test automation projects
   - `/blueprints`: e2e test projects per blueprint package
   - `/core`: unit test projects per package
+
+## Coding Standards
+
+- Use `_` prefix for private fields
+  - ⛔ Wrong => `int id;`
+  - ✅ Correct => `int _id;`
+- Don't use access modifier when they are default
+  - ⛔ Wrong => `private int _id;`
+  - ✅ Correct => `int _id;`
+- Don't use `[TestFixture]` attribute, nunit runs tests without it anyway
+
+## Naming Conventions
+
+- Use documentation heading names for text fixtures
+  - ⛔ Wrong => `AddExtenstionTest`
+  - ✅ Correct => `AddingExtensions`
+- Use `Extensions` suffix for static extension classes
