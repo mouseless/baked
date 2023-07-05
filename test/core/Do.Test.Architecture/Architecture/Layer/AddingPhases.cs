@@ -1,4 +1,4 @@
-﻿using Do.Architecture;
+using Do.Architecture;
 
 namespace Do.Test.Architecture.Layer;
 
@@ -19,12 +19,13 @@ public class AddingPhases : Spec
     {
         protected override IEnumerable<IPhase> GetPhases()
         {
-            yield return new Phase();
-            yield return new Phase();
+            yield return new DoA();
+            yield return new DoB();
         }
-    }
 
-    public class Phase : PhaseBase { }
+        public class DoA : PhaseBase { }
+        public class DoB : PhaseBase { }
+    }
 
     [Test]
     public void Layer_overrides_base_method_to_add_new_phases()
@@ -33,7 +34,8 @@ public class AddingPhases : Spec
         var phases = layer.GetPhases();
 
         Assert.That(phases, Has.Exactly(2).Items);
-        Assert.That(phases, Has.All.TypeOf<Phase>());
+        Assert.That(phases, Has.One.TypeOf<TwoPhaseLayer.DoA>());
+        Assert.That(phases, Has.One.TypeOf<TwoPhaseLayer.DoB>());
     }
 
     public class InitializedPhase : PhaseBase
@@ -85,22 +87,22 @@ public class AddingPhases : Spec
         IPhase twoDependency = new TwoDependencyPhase();
         IPhase threeDependency = new ThreeDependencyPhase();
 
-        Assert.That(initializing.CanInitialize(context), Is.True);
-        Assert.That(oneDependency.CanInitialize(context), Is.False);
+        Assert.That(initializing.IsReady(context), Is.True);
+        Assert.That(oneDependency.IsReady(context), Is.False);
 
         initializing.Initialize(context);
 
-        Assert.That(oneDependency.CanInitialize(context), Is.True);
-        Assert.That(twoDependency.CanInitialize(context), Is.False);
+        Assert.That(oneDependency.IsReady(context), Is.True);
+        Assert.That(twoDependency.IsReady(context), Is.False);
 
         oneDependency.Initialize(context);
 
-        Assert.That(twoDependency.CanInitialize(context), Is.True);
-        Assert.That(threeDependency.CanInitialize(context), Is.False);
+        Assert.That(twoDependency.IsReady(context), Is.True);
+        Assert.That(threeDependency.IsReady(context), Is.False);
 
         twoDependency.Initialize(context);
 
-        Assert.That(threeDependency.CanInitialize(context), Is.True);
+        Assert.That(threeDependency.IsReady(context), Is.True);
 
         threeDependency.Initialize(context);
 

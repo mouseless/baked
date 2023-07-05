@@ -99,8 +99,8 @@ public class RunningAnApplication : Spec
     {
         var phases = new List<string>();
 
-        var phaseA = MockMe.APhase(onInitialize: () => phases.Add("phase a"), canInitialize: () => phases.Contains("phase b"));
-        var phaseB = MockMe.APhase(onInitialize: () => phases.Add("phase b"), canInitialize: () => phases.Contains("phase c"));
+        var phaseA = MockMe.APhase(onInitialize: () => phases.Add("phase a"), isReady: () => phases.Contains("phase b"));
+        var phaseB = MockMe.APhase(onInitialize: () => phases.Add("phase b"), isReady: () => phases.Contains("phase c"));
         var phaseC = MockMe.APhase(onInitialize: () => phases.Add("phase c"));
         var layer = MockMe.ALayer(phases: new[] { phaseA, phaseB, phaseC });
 
@@ -156,7 +156,7 @@ public class RunningAnApplication : Spec
     [Test]
     public void When_a_phase_never_gets_ready_it_gives_error()
     {
-        var phase = MockMe.APhase(canInitialize: () => false);
+        var phase = MockMe.APhase(isReady: () => false);
         var layer = MockMe.ALayer(phase: phase);
 
         var app = GiveMe.AnApplication(layer: layer);

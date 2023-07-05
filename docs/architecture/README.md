@@ -34,9 +34,9 @@ basic definition of what a domain is, but we need to clarify what a layer is.
 
 ## Layer
 
-Each layer in DO introduces a new technology, such as a database server, web
-server or a framework, into your application architecture. These layers are
-named after their concept or protocol they introduce.
+Each layer in DO introduces a new technology, such as a database server,
+message queue server or a framework, into your application architecture. These
+layers are named after the domain of their technology.
 
 ```mermaid
 flowchart
@@ -45,9 +45,9 @@ flowchart
   DB[(Database)]
 ```
 
-In this example, `Do.Web` introduces _HTTP_ protocol as a layer through the
-`ASP.NET Core` framework. Also, `Do.Database` introduces _ORM_ concept as a
-layer through the `EF Core` framework.
+In this example, `Do.Web` introduces the concept of web as a layer through the
+`ASP.NET Core` technology. Also, `Do.Database` introduces the concept of
+relational databases as a layer through the `EF Core` framework.
 
 > :information_source:
 >
@@ -60,17 +60,17 @@ But your domain objects would not just be exposed as API endpoints and mapped
 onto a relational database. For that, we need to be able to configure those
 layers so that they know how to interpret your domain objects.
 
-This is why every layer comes with its own configuration API that is specific
-to the technology it uses. This API may contain a bunch of helper classes
+This is why every layer comes with its own configuration that is specific to
+the technology it uses. This configuration may contain a set of helper classes
 and/or facade methods that makes it easy to build a certain type of
 configuration, but they do __not__ have opinions upfront.
 
-Another perspective to define whether a component is a layer or not is that;
+In other words;
 
 - If it introduces an internal system component like a database, message queue
   server, web server, a framework; then it __is__ a layer.
 
-- If it is a cloud service that your software depends on, then it should
+- If it is an external system component such as a cloud service, then it should
   __not__ be a layer. External system components are defined as feature
   implementations (adapters) which we'll cover in the next section.
 
@@ -88,7 +88,7 @@ from the domain layer or from other feature implementations.
 
 > :information_source:
 >
-> Each feature has only one abstraction, named after the ability it introduces,
+> Each feature has only one abstraction, named after the ability it provides,
 > e.g. `Do.Fs`, `Do.Orm`, `Do.Nosql`, `Do.Logging`, `Do.Auth` etc.
 
 ```mermaid

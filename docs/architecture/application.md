@@ -91,7 +91,7 @@ Build.Application
 ```
 
 Application runs in phases provided by its layers. For example an ASP.NET Core
-application typically runs in 3 phases;
+application typically runs in three phases;
 
 ```mermaid
 flowchart LR
@@ -134,9 +134,9 @@ the `IApplicationBuilder` at the _Build_ phase, it returns that object in
 `ILayer.GetConfigurationTarget()` where application passes it to all of the
 features through `IFeature.Configure()`.
 
-Below sequence diagram showcases how an application runs in phases. In this
-diagram there are two layers (`A` and `B`), each having one phase, and two
-features (`X` and `Y`);
+Below sequence diagram shows how an application runs in phases. In this diagram
+there are two layers (`A` and `B`), each having one phase, and two features
+(`X` and `Y`);
 
 ```mermaid
 sequenceDiagram
@@ -190,9 +190,9 @@ sequenceDiagram
 
 Initialization order of phases are determined by;
 
-1. Return value of `IPhase.CanInitialize()` method
-1. Value of `IPhase.Order` property
-1. In the order they are added
+1. Readiness of a phase through `IPhase.IsReady()` method,
+1. Value of `IPhase.Order` property,
+1. And the order they are added to the application.
 
 Application checks if a phase is ready and if it is not, application keeps it
 for the next iteration of initializations.
@@ -200,7 +200,7 @@ for the next iteration of initializations.
 A phase makes use of given application context to determine if it is ready to
 be initialized or not. For example, `Run` phase looks for `WebApplication` in
 the given context. If it does not, phase decides not to initialize. This way
-application knows that `Run` phase is not ready until some other phase, e.g.
+application knows that `Run` phase is not ready until some other phase, e.g.,
 `Build` phase, adds `WebApplication` to the context.
 
 ```mermaid
@@ -227,8 +227,13 @@ flowchart LR
     WA -.-> R
 ```
 
+> :information_source:
+>
+> All phases need to initialize. Application will cause a
+> `CannotProceedException` if any of the phases never gets initialized.
+
 When two phases are ready to be initialized at the same iteration, application
-sorts them by their `Order` property. A phase order can have 5 values;
+sorts them by their `Order` property. A phase can have the following orders;
 
 1. Earliest
 1. Early
@@ -237,20 +242,22 @@ sorts them by their `Order` property. A phase order can have 5 values;
 1. Latest
 
 Application may have any number of phases with the same order at the same
-iteration. In this case they will get initialized in the order they are
-provided from layers. However _Earliest_ and _Latest_ values have a special
-treatment. Only one phase is allowed to have _earliest_ and _latest_ order for
-the same iteration.
+iteration. So in that case, they will initialize in the order they are provided
+from layers.
 
-Assume there are two phases with _earliest_ order and they are ready to get
-initialized at the same iteration. In this case application will throw an
+#### Earliest and Latest Phases
+
+There should be only one _earliest_ phase and one _latest_ phase per iteration.
+If there are multiple _earliest_ or _latest_ phases, application will throw an
 `OverlappingPhaseException` and execution will stop. If you see this exception,
 it means you need to reorder phases so that they don't overlap, or you might
 change their readiness so that they run in their own iteration.
 
-> :information_source:
->
-> All phases need to get initialized. Application will cause a
-> `CannotProceedException` if any of the phases never gets initialized.
+These special values ensures certain phases are initialized firstly or lastly.
+For example, the first phase of `WebLayer`, _Create Builder_, adds
+`WebApplicationBuilder` to the application context, which should be the first
+thing to be done when running an application. To ensure this, _Create Builder_
+should be able to declare itself to be the only _earliest_ phase of its
+iteration.
 
 [Enabling Cors]:https://learn.microsoft.com/en-us/aspnet/core/security/cors#enable-cors
