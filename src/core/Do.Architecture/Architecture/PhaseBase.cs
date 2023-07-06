@@ -12,8 +12,20 @@ public abstract class PhaseBase : IPhase
     protected virtual void Initialize() { }
 
     PhaseOrder IPhase.Order => _order;
-    bool IPhase.IsReady(ApplicationContext context) { Context = context; return IsReady(); }
-    void IPhase.Initialize(ApplicationContext context) { Context = context; Initialize(); }
+
+    bool IPhase.IsReady(ApplicationContext context)
+    {
+        Context = context;
+
+        return IsReady();
+    }
+
+    void IPhase.Initialize(ApplicationContext context)
+    {
+        Context = context;
+
+        Initialize();
+    }
 }
 
 public abstract class PhaseBase<T> : PhaseBase

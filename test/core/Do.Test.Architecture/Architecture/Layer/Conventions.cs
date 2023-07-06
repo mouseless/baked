@@ -16,5 +16,9 @@ public class Conventions
 
     [Test]
     [Ignore("not implemented")]
-    public void Phases_are_defined_as_verbs_in_Phases_namespace_under_layers_namespace() => Assert.Fail();
+    public void Phases_are_nested_classes_defined_under_their_layers() => Assert.Fail();
+
+    [Test]
+    [Ignore("not implemented")]
+    public void Phase_names_follow_method_naming_conventions() => Assert.Fail();
 }

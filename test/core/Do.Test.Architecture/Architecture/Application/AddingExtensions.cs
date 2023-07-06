@@ -65,9 +65,9 @@ public class AddingExtensions : Spec
 
     [Test]
     [Ignore("not implemented")]
-    public void Layers_may_provide_multiple_configuration_targets() => Assert.Fail();
+    public void Layers_can_provide_multiple_configuration_targets() => Assert.Fail();
 
     [Test]
     [Ignore("not implemented")]
-    public void Configuration_targets_do_stuff_before_and_after_being_configured_by_features() => Assert.Fail();
+    public void Layers_are_skipped_when_they_provide_no_configuration_target() => Assert.Fail();
 }

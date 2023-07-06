@@ -1,10 +1,24 @@
-using Do.Architecture;
+﻿using Do.Architecture;
 using Do.Branding;
 
 namespace Do.Test;
 
 public static class ArchitectureSpecExtensions
 {
+    #region Object
+
+    public static T An<T>(this Spec.Stubber source) => source.A<T>();
+    public static T A<T>(this Spec.Stubber source)
+    {
+        var result = Activator.CreateInstance(typeof(T));
+
+        Assume.That(result, Is.Not.Null);
+
+        return (T)result!;
+    }
+
+    #endregion
+
     #region Build
 
     public static Build ABuild(this Spec.Stubber source,
@@ -84,15 +98,15 @@ public static class ArchitectureSpecExtensions
         if (configurationTarget != default)
         {
             result
-                .Setup(l => l.GetConfigurationTarget(It.IsAny<IPhase>(), It.IsAny<ApplicationContext>()))
-                .Returns(ConfigurationTarget.Create(configurationTarget));
+                .Setup(l => l.GetContext(It.IsAny<IPhase>(), It.IsAny<ApplicationContext>()))
+                .Returns(new PhaseContext(ConfigurationTarget.Create(configurationTarget)));
         }
 
         if (onApplyPhase != default)
         {
             result
-                .Setup(l => l.GetConfigurationTarget(It.IsAny<IPhase>(), It.IsAny<ApplicationContext>()))
-                .Returns(ConfigurationTarget.Empty)
+                .Setup(l => l.GetContext(It.IsAny<IPhase>(), It.IsAny<ApplicationContext>()))
+                .Returns(PhaseContext.Empty)
                 .Callback((IPhase _, ApplicationContext _) => onApplyPhase());
         }
 
@@ -104,7 +118,7 @@ public static class ArchitectureSpecExtensions
 
     public static void VerifyApplied(this ILayer source, IPhase phase) =>
         Mock.Get(source)
-            .Verify(l => l.GetConfigurationTarget(
+            .Verify(l => l.GetContext(
                 phase,
                 It.IsAny<ApplicationContext>()
             ));

@@ -2,7 +2,7 @@ using Do.Architecture;
 
 namespace Do.Test.Blueprints.Service.Web;
 
-public class WebLayer : LayerBase
+public class WebLayer : LayerBase<WebLayer.BuildApp, WebLayer.MapRoutes>
 {
     protected override IEnumerable<IPhase> GetPhases()
     {
@@ -12,13 +12,11 @@ public class WebLayer : LayerBase
         yield return new Run();
     }
 
-    protected override ConfigurationTarget GetConfigurationTarget(IPhase phase, ApplicationContext context) =>
-        phase switch
-        {
-            BuildApp => ConfigurationTarget.Create<IApplicationBuilder>(context.Get<WebApplication>()),
-            MapRoutes => ConfigurationTarget.Create<IEndpointRouteBuilder>(context.Get<WebApplication>()),
-            _ => ConfigurationTarget.Empty
-        };
+    protected override PhaseContext GetContext(BuildApp phase) =>
+        phase.CreateContext<IApplicationBuilder>(Context.Get<WebApplication>());
+
+    protected override PhaseContext GetContext(MapRoutes phase) =>
+        phase.CreateContext<IEndpointRouteBuilder>(Context.Get<WebApplication>());
 
     public class CreateBuilder : PhaseBase
     {

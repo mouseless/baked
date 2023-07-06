@@ -1,4 +1,4 @@
-namespace Do.Architecture;
+﻿namespace Do.Architecture;
 
 public class Application
 {
@@ -63,13 +63,21 @@ public class Application
 
     void Apply(IPhase phase)
     {
-        foreach (var layer in _layers)
+        var contexts = _layers.Select(layer => layer.GetContext(phase, _context)).ToList();
+
+        foreach (var context in contexts)
         {
-            var target = layer.GetConfigurationTarget(phase, _context);
             foreach (var feature in _features)
             {
-                feature.Configure(target);
+                feature.Configure(context.ConfigurationTarget);
             }
         }
+
+        /*
+        foreach (var disposable in contexts.OfType<IDisposable>())
+        {
+            disposable.Dispose();
+        }
+        */
     }
 }

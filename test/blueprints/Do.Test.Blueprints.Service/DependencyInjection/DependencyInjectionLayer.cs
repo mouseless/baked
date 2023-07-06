@@ -2,19 +2,15 @@ using Do.Architecture;
 
 namespace Do.Test.Blueprints.Service.DependencyInjection;
 
-public class DependencyInjectionLayer : LayerBase
+public class DependencyInjectionLayer : LayerBase<DependencyInjectionLayer.AddServices>
 {
     protected override IEnumerable<IPhase> GetPhases()
     {
         yield return new AddServices();
     }
 
-    protected override ConfigurationTarget GetConfigurationTarget(IPhase phase, ApplicationContext context) =>
-        phase switch
-        {
-            AddServices => ConfigurationTarget.Create(context.Get<IServiceCollection>()),
-            _ => ConfigurationTarget.Empty
-        };
+    protected override PhaseContext GetContext(AddServices phase) =>
+        phase.CreateContext(Context.Get<IServiceCollection>());
 
     public class AddServices : PhaseBase<IServiceCollection>
     {

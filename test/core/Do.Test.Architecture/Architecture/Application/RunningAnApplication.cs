@@ -56,7 +56,7 @@ public class RunningAnApplication : Spec
 
     [Test]
     [Ignore("not implemented")]
-    public void Configuration_targets_do_stuff_before_and_after_phase_is_applied() => Assert.Fail();
+    public void Phase_contexts_should_be_disposed_after_phase_is_applied() => Assert.Fail();
 
     [Test]
     public void Application_provides_phases_with_a_context()
