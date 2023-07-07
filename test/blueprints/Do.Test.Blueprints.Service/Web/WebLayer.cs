@@ -2,21 +2,20 @@ using Do.Architecture;
 
 namespace Do.Test.Blueprints.Service.Web;
 
-public class WebLayer : LayerBase<WebLayer.BuildApp, WebLayer.MapRoutes>
+public class WebLayer : LayerBase<WebLayer.Build>
 {
     protected override IEnumerable<IPhase> GetPhases()
     {
         yield return new CreateBuilder();
-        yield return new BuildApp();
-        yield return new MapRoutes();
+        yield return new Build();
         yield return new Run();
     }
 
-    protected override PhaseContext GetContext(BuildApp phase) =>
-        phase.CreateContext<IApplicationBuilder>(Context.Get<WebApplication>());
-
-    protected override PhaseContext GetContext(MapRoutes phase) =>
-        phase.CreateContext<IEndpointRouteBuilder>(Context.Get<WebApplication>());
+    protected override PhaseContext GetContext(Build phase) =>
+        phase.CreateContextBuilder()
+            .Add<IApplicationBuilder>(Context.Get<WebApplication>())
+            .Add<IEndpointRouteBuilder>(Context.Get<WebApplication>())
+            .Build();
 
     public class CreateBuilder : PhaseBase
     {
@@ -31,9 +30,9 @@ public class WebLayer : LayerBase<WebLayer.BuildApp, WebLayer.MapRoutes>
         }
     }
 
-    public class BuildApp : PhaseBase<WebApplicationBuilder>
+    public class Build : PhaseBase<WebApplicationBuilder>
     {
-        public BuildApp() : base(PhaseOrder.Latest) { }
+        public Build() : base(PhaseOrder.Latest) { }
 
         protected override void Initialize(WebApplicationBuilder build)
         {
@@ -41,11 +40,6 @@ public class WebLayer : LayerBase<WebLayer.BuildApp, WebLayer.MapRoutes>
 
             Context.Add(app);
         }
-    }
-
-    public class MapRoutes : PhaseBase<WebApplication>
-    {
-        protected override void Initialize(WebApplication _) { }
     }
 
     public class Run : PhaseBase<WebApplication>

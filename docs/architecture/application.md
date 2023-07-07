@@ -158,23 +158,23 @@ sequenceDiagram
 
     APP ->>+ PA: Initialize
     APP ->>+ LA: GetContext()
+    APP ->>+ LB: GetContext()
     APP ->> FX: Configure Layer A in Phase A
     APP ->> FY: Configure Layer A in Phase A
-    LA -->>- APP: End of Layer A in Phase A
-    APP ->>+ LB: GetContext()
     APP ->> FX: Configure Layer B in Phase A
     APP ->> FY: Configure Layer B in Phase A
+    LA -->>- APP: End of Layer A in Phase A
     LB -->>- APP: End of Layer B in Phase A
     PA -->>-APP: End of Phase A
 
     APP ->>+ PB: Initialize
     APP ->>+ LA: GetContext()
+    APP ->>+ LB: GetContext()
     APP ->> FX: Configure Layer A in Phase B
     APP ->> FY: Configure Layer A in Phase B
-    LA -->>- APP: End of Layer A in Phase B
-    APP ->>+ LB: GetContext()
     APP ->> FX: Configure Layer B in Phase B
     APP ->> FY: Configure Layer B in Phase B
+    LA -->>- APP: End of Layer A in Phase B
     LB -->>- APP: End of Layer B in Phase B
     PB -->>-APP: End of Phase B
 ```
