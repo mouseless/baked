@@ -1,12 +1,12 @@
-﻿using Do.Architecture;
+using Do.Architecture;
 
 namespace Do.Test.Blueprints.Service.Greeting.HelloWorld;
 
 public class HelloWorldGreeting : IFeature
 {
-    public void Configure(ConfigurationTarget target)
+    public void Configure(LayerConfigurator configurator)
     {
-        target.ConfigureEndpointRouteBuilder(route =>
+        configurator.ConfigureEndpointRouteBuilder(route =>
         {
             route.MapGet("/", () => "Hello World!");
         });

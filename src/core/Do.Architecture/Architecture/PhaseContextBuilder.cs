@@ -2,16 +2,16 @@ namespace Do.Architecture;
 
 public class PhaseContextBuilder
 {
-    readonly List<ConfigurationTarget> _targets = new();
+    readonly List<LayerConfigurator> _configurators = new();
     Action? _onDispose;
 
-    public PhaseContextBuilder Add<TTarget>(TTarget target) { _targets.Add(ConfigurationTarget.Create(target)); return this; }
-    public PhaseContextBuilder Add<TTarget1, TTarget2>(TTarget1 target1, TTarget2 target2) { _targets.Add(ConfigurationTarget.Create((target1, target2))); return this; }
-    public PhaseContextBuilder Add<TTarget1, TTarget2, TTarget3>(TTarget1 target1, TTarget2 target2, TTarget3 target3) { _targets.Add(ConfigurationTarget.Create((target1, target2, target3))); return this; }
+    public PhaseContextBuilder Add<TTarget>(TTarget target) { _configurators.Add(LayerConfigurator.Create(target)); return this; }
+    public PhaseContextBuilder Add<TTarget1, TTarget2>(TTarget1 target1, TTarget2 target2) { _configurators.Add(LayerConfigurator.Create(target1, target2)); return this; }
+    public PhaseContextBuilder Add<TTarget1, TTarget2, TTarget3>(TTarget1 target1, TTarget2 target2, TTarget3 target3) { _configurators.Add(LayerConfigurator.Create(target1, target2, target3)); return this; }
 
     public PhaseContextBuilder OnDispose(Action? onDispose) { _onDispose = onDispose; return this; }
 
-    public PhaseContext Build() => new(_targets) { OnDispose = _onDispose };
+    public PhaseContext Build() => new(_configurators) { OnDispose = _onDispose };
 }
 
 public static class PhaseContextBuilderExtensions

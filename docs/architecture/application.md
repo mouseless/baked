@@ -130,9 +130,10 @@ flowchart TB
 As mentioned [earlier](./README.md), layers provide features with things to
 configure. For this to happen, application asks every layer what to configure
 at each phase. If a layer has something to get configured at a phase, such as
-the `IApplicationBuilder` at the _Build_ phase, it returns that object in
-`ILayer.GetConfigurationTarget()` where application passes it to all of the
-features through `IFeature.Configure()`.
+the `IApplicationBuilder` at the _Build_ phase, it returns that object within a
+phase context in `ILayer.GetContext()`. Using this phase context, application
+passes the provided object(s) to all of the features through
+`IFeature.Configure()`.
 
 Below sequence diagram shows how an application runs in phases. In this diagram
 there are two layers (`A` and `B`), each having one phase, and two features
@@ -156,22 +157,22 @@ sequenceDiagram
     LB -->>- APP: Phase B
 
     APP ->>+ PA: Initialize
-    APP ->>+ LA: GetConfigurationTarget()
+    APP ->>+ LA: GetContext()
     APP ->> FX: Configure Layer A in Phase A
     APP ->> FY: Configure Layer A in Phase A
     LA -->>- APP: End of Layer A in Phase A
-    APP ->>+ LB: GetConfigurationTarget()
+    APP ->>+ LB: GetContext()
     APP ->> FX: Configure Layer B in Phase A
     APP ->> FY: Configure Layer B in Phase A
     LB -->>- APP: End of Layer B in Phase A
     PA -->>-APP: End of Phase A
 
     APP ->>+ PB: Initialize
-    APP ->>+ LA: GetConfigurationTarget()
+    APP ->>+ LA: GetContext()
     APP ->> FX: Configure Layer A in Phase B
     APP ->> FY: Configure Layer A in Phase B
     LA -->>- APP: End of Layer A in Phase B
-    APP ->>+ LB: GetConfigurationTarget()
+    APP ->>+ LB: GetContext()
     APP ->> FX: Configure Layer B in Phase B
     APP ->> FY: Configure Layer B in Phase B
     LB -->>- APP: End of Layer B in Phase B
@@ -183,8 +184,8 @@ sequenceDiagram
 > A layer doesn't necessarily introduce new phases to an application, but all
 > phases are applied to all layers nevertheless. For example, `WebLayer`
 > introduces _Build_ phase which is applied to `Domain`, `Web` and `Database`
-> layers to allow them provide their configuration targets specific to the
-> _Build_ phase.
+> layers to allow them provide their configuration specific to the _Build_
+> phase.
 
 ### Order of Phases
 

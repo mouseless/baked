@@ -97,7 +97,7 @@ public static class ArchitectureSpecExtensions
     #region Layer
 
     public static ILayer ALayer(this Spec.Mocker source,
-        object? configurationTarget = default,
+        object? target = default,
         IPhase? phase = default,
         IPhase[]? phases = default,
         Action? onApplyPhase = default
@@ -109,11 +109,11 @@ public static class ArchitectureSpecExtensions
 
         result.Setup(l => l.GetPhases()).Returns(phases);
 
-        if (configurationTarget != default)
+        if (target != default)
         {
             result
                 .Setup(l => l.GetContext(It.IsAny<IPhase>(), It.IsAny<ApplicationContext>()))
-                .Returns(new PhaseContextBuilder().Add(configurationTarget).Build());
+                .Returns(new PhaseContextBuilder().Add(target).Build());
         }
 
         if (onApplyPhase != default)
@@ -244,10 +244,10 @@ public static class ArchitectureSpecExtensions
         new Mock<IFeature>().Object;
 
     public static void VerifyInitialized(this IFeature source) =>
-        Mock.Get(source).Verify(f => f.Configure(It.IsAny<ConfigurationTarget>()));
+        Mock.Get(source).Verify(f => f.Configure(It.IsAny<LayerConfigurator>()));
 
-    public static void VerifyConfigures(this IFeature source, object configurationTarget) =>
-        Mock.Get(source).Verify(f => f.Configure(ConfigurationTarget.Create(configurationTarget)));
+    public static void VerifyConfigures<TTarget>(this IFeature source, TTarget target) =>
+        Mock.Get(source).Verify(f => f.Configure(LayerConfigurator.Create(target)));
 
     #endregion
 }

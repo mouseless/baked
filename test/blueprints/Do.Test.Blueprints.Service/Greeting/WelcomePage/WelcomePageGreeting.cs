@@ -11,9 +11,9 @@ public class WelcomePageGreeting : IFeature
         Path = path;
     }
 
-    public void Configure(ConfigurationTarget target)
+    public void Configure(LayerConfigurator configurator)
     {
-        target.ConfigureApplicationBuilder(app =>
+        configurator.ConfigureApplicationBuilder(app =>
         {
             app.UseWelcomePage(Path);
         });
