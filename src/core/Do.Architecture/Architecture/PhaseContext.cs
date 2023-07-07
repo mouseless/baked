@@ -26,3 +26,19 @@ public static class PhaseContextExtensions
         Action? onDispose = default
     ) => new(ConfigurationTarget.Create((target1, target2, target3))) { OnDispose = onDispose };
 }
+
+public class PhaseContextBuilder
+{
+    public PhaseContextBuilder Add<TTarget>(TTarget target) => this;
+    public PhaseContextBuilder Add<TTarget1, TTarget2>(TTarget1 target1, TTarget2 target2) => this;
+    public PhaseContextBuilder Add<TTarget1, TTarget2, TTarget3>(TTarget1 target1, TTarget2 target2, TTarget3 target3) => this;
+
+    public PhaseContextBuilder OnDispose(Action onDispose) => this;
+
+    public PhaseContext Build() => throw new NotImplementedException();
+}
+
+public static class PhaseContextBuilderExtensions
+{
+    public static PhaseContextBuilder CreateContextBuilder(this IPhase source) => new();
+}
