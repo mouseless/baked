@@ -35,7 +35,7 @@ public class WebLayer : LayerBase<WebLayer.Build>
 
         protected override void Initialize(WebApplicationBuilder build, IServiceCollection services)
         {
-            foreach(var service in services)
+            foreach (var service in services)
             {
                 build.Services.Add(service);
             }
