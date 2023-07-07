@@ -105,7 +105,7 @@ public class AddingPhases : Spec
 
         threeDependency.Initialize(context);
 
-        Assert.That(context.Get<char>(), Is.EqualTo('a'));
+        context.ShouldHave('a');
     }
 
     public class OrderedPhase : PhaseBase

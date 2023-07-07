@@ -64,7 +64,6 @@ public class Application
     void Apply(IPhase phase)
     {
         var contexts = _layers.Select(layer => layer.GetContext(phase, _context)).ToList();
-
         foreach (var context in contexts)
         {
             foreach (var configurator in context.Configurators)
