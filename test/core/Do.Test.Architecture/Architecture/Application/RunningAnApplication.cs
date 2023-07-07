@@ -55,8 +55,18 @@ public class RunningAnApplication : Spec
     }
 
     [Test]
-    [Ignore("not implemented")]
-    public void Phase_contexts_should_be_disposed_after_phase_is_applied() => Assert.Fail();
+    public void Phase_contexts_should_be_disposed_after_phase_is_applied()
+    {
+        var disposed = false;
+        var phaseContext = GiveMe.APhaseContext(onDispose: () => disposed = true);
+        var layer = MockMe.ALayer(phaseContext: phaseContext);
+
+        var app = GiveMe.AnApplication(layer: layer);
+
+        app.Run();
+
+        Assert.That(disposed, Is.True, "Phase didn't get disposed");
+    }
 
     [Test]
     public void Application_provides_phases_with_a_context()

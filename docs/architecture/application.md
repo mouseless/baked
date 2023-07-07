@@ -133,7 +133,7 @@ at each phase. If a layer has something to get configured at a phase, such as
 the `IApplicationBuilder` at the _Build_ phase, it returns that object within a
 phase context in `ILayer.GetContext()`. Using this phase context, application
 passes the provided object(s) to all of the features through
-`IFeature.Configure()`.
+`IFeature.Configure()`. Phase contexts are disposed at the end of their phase.
 
 Below sequence diagram shows how an application runs in phases. In this diagram
 there are two layers (`A` and `B`), each having one phase, and two features

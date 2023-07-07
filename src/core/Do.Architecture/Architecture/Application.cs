@@ -75,11 +75,9 @@ public class Application
             }
         }
 
-        /*
-        foreach (var disposable in contexts.OfType<IDisposable>())
+        foreach (var context in contexts.Cast<IDisposable>())
         {
-            disposable.Dispose();
+            context.Dispose();
         }
-        */
     }
 }

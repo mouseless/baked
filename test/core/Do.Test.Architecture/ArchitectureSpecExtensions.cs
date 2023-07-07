@@ -1,3 +1,4 @@
+using System.Reflection;
 using Do.Architecture;
 using Do.Branding;
 
@@ -12,7 +13,7 @@ public static class ArchitectureSpecExtensions
     {
         var result = Activator.CreateInstance(typeof(T));
 
-        Assume.That(result, Is.Not.Null);
+        Assert.That(result, Is.Not.Null);
 
         return (T)result!;
     }
@@ -98,25 +99,27 @@ public static class ArchitectureSpecExtensions
 
     public static ILayer ALayer(this Spec.Mocker source,
         object? target = default,
+        object[]? targets = default,
+        PhaseContext? phaseContext = default,
         IPhase? phase = default,
         IPhase[]? phases = default,
         Action? onApplyPhase = default
     )
     {
-        target ??= new object();
+        phaseContext ??= source.Spec.GiveMe.APhaseContext(target: target, targets: targets);
         phases ??= new[] { phase ?? source.APhase() };
 
         var result = new Mock<ILayer>();
 
         result.Setup(l => l.GetPhases()).Returns(phases);
 
-        var getContextSetup = result
+        var setupGetContext = result
             .Setup(l => l.GetContext(It.IsAny<IPhase>(), It.IsAny<ApplicationContext>()))
-            .Returns(new PhaseContextBuilder().Add(target).Build());
+            .Returns(phaseContext);
 
         if (onApplyPhase != default)
         {
-            getContextSetup.Callback((IPhase _, ApplicationContext _) => onApplyPhase());
+            setupGetContext.Callback((IPhase _, ApplicationContext _) => onApplyPhase());
         }
 
         return result.Object;
@@ -169,6 +172,32 @@ public static class ArchitectureSpecExtensions
     #endregion
 
     #region PhaseContext
+
+    public static PhaseContext APhaseContext(this Spec.Stubber source,
+        object? target = default,
+        object[]? targets = default,
+        Action? onDispose = default
+    )
+    {
+        targets ??= new[] { target ?? new() };
+        onDispose ??= () => { };
+
+        var configurators = new List<LayerConfigurator>();
+        foreach (var t in targets)
+        {
+            var create = typeof(LayerConfigurator)
+                .GetMethods(BindingFlags.Static | BindingFlags.Public)
+                .FirstOrDefault(c => c.Name == nameof(LayerConfigurator.Create) && c.GetGenericArguments().Length == 1);
+            Assert.That(create, Is.Not.Null);
+
+            var configurator = create!.MakeGenericMethod(t.GetType()).Invoke(null, new[] { t });
+            Assert.That(configurator, Is.Not.Null);
+
+            configurators.Add((LayerConfigurator)configurator!);
+        }
+
+        return new(configurators) { OnDispose = onDispose };
+    }
 
     public static void ShouldConfigureTarget<TTarget>(this PhaseContext source, TTarget expected)
     {
@@ -243,6 +272,9 @@ public static class ArchitectureSpecExtensions
 
     public static void VerifyConfigures<TTarget>(this IFeature source, TTarget target) =>
         Mock.Get(source).Verify(f => f.Configure(LayerConfigurator.Create(target)));
+
+    public static void VerifyConfiguresNothing(this IFeature source) =>
+        Mock.Get(source).Verify(f => f.Configure(It.IsAny<LayerConfigurator>()), Times.Never());
 
     #endregion
 }
