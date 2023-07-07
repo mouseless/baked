@@ -256,7 +256,7 @@ public void Configure(LayerConfigurator configurator)
         // configure one by one
     });
 
-    configurator.Configure((Configuration1 configuration2) =>
+    configurator.Configure((Configuration2 configuration2) =>
     {
         // configure one by one
     });
@@ -278,7 +278,7 @@ public class LayerX : LayerBase<AddServices>
 {
     Configuration1 _configuration1 = new();
     Configuration2 _configuration2 = new();
-    Configuration2 _configuration3 = new();
+    Configuration3 _configuration3 = new();
 
     protected override PhaseContext GetContext(AddServices phase) =>
         phase.CreateContextBuilder()
