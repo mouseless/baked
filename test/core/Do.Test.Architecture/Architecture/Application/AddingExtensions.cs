@@ -47,8 +47,7 @@ public class AddingExtensions : Spec
     public void Feature_configures_target_configurations_of_the_layers()
     {
         var build = GiveMe.ABuild();
-        var target = new object();
-        var layer = MockMe.ALayer(target: target);
+        var layer = MockMe.ALayer(target: "text");
         var feature = MockMe.AFeature();
 
         var app = build.As(app =>
@@ -60,7 +59,7 @@ public class AddingExtensions : Spec
 
         app.Run();
 
-        feature.VerifyConfigures(target);
+        feature.VerifyConfigures("text");
     }
 
     [Test]

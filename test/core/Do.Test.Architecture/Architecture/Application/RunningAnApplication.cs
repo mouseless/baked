@@ -65,7 +65,7 @@ public class RunningAnApplication : Spec
 
         app.Run();
 
-        Assert.That(disposed, Is.True, "Phase didn't get disposed");
+        Assert.That(disposed, Is.True, "Phase context didn't get disposed");
     }
 
     [Test]
