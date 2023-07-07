@@ -2,8 +2,6 @@ namespace Do.Architecture;
 
 public class ConfigurationTarget
 {
-    public static readonly ConfigurationTarget Empty = new(typeof(object), null);
-
     public static ConfigurationTarget Create<T>(T target) => new(typeof(T), target);
 
     readonly Type _expectedType;
@@ -42,11 +40,4 @@ public class ConfigurationTarget
 
         configuration(t1, t2, t3);
     }
-
-    public override bool Equals(object? obj) =>
-        obj is ConfigurationTarget target &&
-       EqualityComparer<Type>.Default.Equals(_expectedType, target._expectedType) &&
-       EqualityComparer<object?>.Default.Equals(_target, target._target);
-
-    public override int GetHashCode() => HashCode.Combine(_expectedType, _target);
 }

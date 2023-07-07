@@ -67,9 +67,12 @@ public class Application
 
         foreach (var context in contexts)
         {
-            foreach (var feature in _features)
+            foreach (var configurator in context.Configurators)
             {
-                feature.Configure(context.ConfigurationTarget);
+                foreach (var feature in _features)
+                {
+                    feature.Configure(configurator);
+                }
             }
         }
 

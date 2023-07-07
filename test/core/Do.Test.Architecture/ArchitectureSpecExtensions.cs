@@ -1,4 +1,4 @@
-﻿using Do.Architecture;
+using Do.Architecture;
 using Do.Branding;
 
 namespace Do.Test;
@@ -113,7 +113,7 @@ public static class ArchitectureSpecExtensions
         {
             result
                 .Setup(l => l.GetContext(It.IsAny<IPhase>(), It.IsAny<ApplicationContext>()))
-                .Returns(new PhaseContext(ConfigurationTarget.Create(configurationTarget)));
+                .Returns(new PhaseContextBuilder().Add(configurationTarget).Build());
         }
 
         if (onApplyPhase != default)
@@ -178,12 +178,15 @@ public static class ArchitectureSpecExtensions
     public static void ShouldConfigureTarget<TTarget>(this PhaseContext source, TTarget expected)
     {
         var configured = false;
-        source.ConfigurationTarget.Configure((TTarget actual) =>
+        foreach (var configurator in source.Configurators)
         {
-            Assert.That(actual, Is.EqualTo(expected));
+            configurator.Configure((TTarget actual) =>
+            {
+                Assert.That(actual, Is.EqualTo(expected));
 
-            configured = true;
-        });
+                configured = true;
+            });
+        }
 
         Assert.That(configured, Is.True, "Phase context didn't get configured");
     }
@@ -191,13 +194,16 @@ public static class ArchitectureSpecExtensions
     public static void ShouldConfigureTwoTargets<TTarget1, TTarget2>(this PhaseContext source, TTarget1 expected1, TTarget2 expected2)
     {
         var configured = false;
-        source.ConfigurationTarget.Configure((TTarget1 actual1, TTarget2 actual2) =>
+        foreach (var configurator in source.Configurators)
         {
-            Assert.That(actual1, Is.EqualTo(expected1));
-            Assert.That(actual2, Is.EqualTo(expected2));
+            configurator.Configure((TTarget1 actual1, TTarget2 actual2) =>
+            {
+                Assert.That(actual1, Is.EqualTo(expected1));
+                Assert.That(actual2, Is.EqualTo(expected2));
 
-            configured = true;
-        });
+                configured = true;
+            });
+        }
 
         Assert.That(configured, Is.True, "Phase context didn't get configured");
     }
@@ -205,14 +211,17 @@ public static class ArchitectureSpecExtensions
     public static void ShouldConfigureThreeTargets<TTarget1, TTarget2, TTarget3>(this PhaseContext source, TTarget1 expected1, TTarget2 expected2, TTarget3 expected3)
     {
         var configured = false;
-        source.ConfigurationTarget.Configure((TTarget1 actual1, TTarget2 actual2, TTarget3 actual3) =>
+        foreach (var configurator in source.Configurators)
         {
-            Assert.That(actual1, Is.EqualTo(expected1));
-            Assert.That(actual2, Is.EqualTo(expected2));
-            Assert.That(actual3, Is.EqualTo(expected3));
+            configurator.Configure((TTarget1 actual1, TTarget2 actual2, TTarget3 actual3) =>
+            {
+                Assert.That(actual1, Is.EqualTo(expected1));
+                Assert.That(actual2, Is.EqualTo(expected2));
+                Assert.That(actual3, Is.EqualTo(expected3));
 
-            configured = true;
-        });
+                configured = true;
+            });
+        }
 
         Assert.That(configured, Is.True, "Phase context didn't get configured");
     }
