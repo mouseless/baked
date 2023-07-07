@@ -26,16 +26,20 @@ public class WebLayer : LayerBase<WebLayer.Build>
             var build = WebApplication.CreateBuilder();
 
             Context.Add(build);
-            Context.Add(build.Services);
         }
     }
 
-    public class Build : PhaseBase<WebApplicationBuilder>
+    public class Build : PhaseBase<WebApplicationBuilder, IServiceCollection>
     {
         public Build() : base(PhaseOrder.Latest) { }
 
-        protected override void Initialize(WebApplicationBuilder build)
+        protected override void Initialize(WebApplicationBuilder build, IServiceCollection services)
         {
+            foreach(var service in services)
+            {
+                build.Services.Add(service);
+            }
+
             var app = build.Build();
 
             Context.Add(app);

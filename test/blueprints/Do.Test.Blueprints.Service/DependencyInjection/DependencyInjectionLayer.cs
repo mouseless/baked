@@ -12,10 +12,15 @@ public class DependencyInjectionLayer : LayerBase<DependencyInjectionLayer.AddSe
     protected override PhaseContext GetContext(AddServices phase) =>
         phase.CreateContext(Context.Get<IServiceCollection>());
 
-    public class AddServices : PhaseBase<IServiceCollection>
+    public class AddServices : PhaseBase
     {
-        public AddServices() : base(PhaseOrder.Earliest) { }
+        public AddServices() : base(PhaseOrder.Early) { }
 
-        protected override void Initialize(IServiceCollection _) { }
+        protected override void Initialize()
+        {
+            IServiceCollection services = new ServiceCollection();
+
+            Context.Add(services);
+        }
     }
 }
