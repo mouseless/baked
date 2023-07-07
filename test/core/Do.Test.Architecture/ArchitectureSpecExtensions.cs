@@ -103,25 +103,20 @@ public static class ArchitectureSpecExtensions
         Action? onApplyPhase = default
     )
     {
+        target ??= new object();
         phases ??= new[] { phase ?? source.APhase() };
 
         var result = new Mock<ILayer>();
 
         result.Setup(l => l.GetPhases()).Returns(phases);
 
-        if (target != default)
-        {
-            result
-                .Setup(l => l.GetContext(It.IsAny<IPhase>(), It.IsAny<ApplicationContext>()))
-                .Returns(new PhaseContextBuilder().Add(target).Build());
-        }
+        var getContextSetup = result
+            .Setup(l => l.GetContext(It.IsAny<IPhase>(), It.IsAny<ApplicationContext>()))
+            .Returns(new PhaseContextBuilder().Add(target).Build());
 
         if (onApplyPhase != default)
         {
-            result
-                .Setup(l => l.GetContext(It.IsAny<IPhase>(), It.IsAny<ApplicationContext>()))
-                .Returns(PhaseContext.Empty)
-                .Callback((IPhase _, ApplicationContext _) => onApplyPhase());
+            getContextSetup.Callback((IPhase _, ApplicationContext _) => onApplyPhase());
         }
 
         return result.Object;
