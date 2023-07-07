@@ -68,6 +68,20 @@ public static class ArchitectureSpecExtensions
         return result;
     }
 
+    public static void ShouldHave<T>(this ApplicationContext context, T value)
+    {
+        Assert.That(context.Has<T>(), Is.True, $"Context should have an item with type {typeof(T)}");
+        Assert.That(context.Get<T>(), Is.EqualTo(value));
+    }
+
+    public static void ShouldNotHave<T>(this ApplicationContext context, T value)
+    {
+        if (context.Has<T>())
+        {
+            Assert.That(context.Get<T>(), Is.Not.EqualTo(value));
+        }
+    }
+
     #endregion
 
     #region Banner
@@ -156,6 +170,62 @@ public static class ArchitectureSpecExtensions
 
     public static void VerifyInitialized(this IPhase source, ApplicationContext context) =>
         Mock.Get(source).Verify(p => p.Initialize(context));
+
+    #endregion
+
+    #region PhaseContext
+
+    public static void ShouldConfigureTarget<TTarget>(this PhaseContext source, TTarget expected)
+    {
+        var configured = false;
+        source.ConfigurationTarget.Configure((TTarget actual) =>
+        {
+            Assert.That(actual, Is.EqualTo(expected));
+
+            configured = true;
+        });
+
+        Assert.That(configured, Is.True, "Phase context didn't get configured");
+    }
+
+    public static void ShouldConfigureTwoTargets<TTarget1, TTarget2>(this PhaseContext source, TTarget1 expected1, TTarget2 expected2)
+    {
+        var configured = false;
+        source.ConfigurationTarget.Configure((TTarget1 actual1, TTarget2 actual2) =>
+        {
+            Assert.That(actual1, Is.EqualTo(expected1));
+            Assert.That(actual2, Is.EqualTo(expected2));
+
+            configured = true;
+        });
+
+        Assert.That(configured, Is.True, "Phase context didn't get configured");
+    }
+
+    public static void ShouldConfigureThreeTargets<TTarget1, TTarget2, TTarget3>(this PhaseContext source, TTarget1 expected1, TTarget2 expected2, TTarget3 expected3)
+    {
+        var configured = false;
+        source.ConfigurationTarget.Configure((TTarget1 actual1, TTarget2 actual2, TTarget3 actual3) =>
+        {
+            Assert.That(actual1, Is.EqualTo(expected1));
+            Assert.That(actual2, Is.EqualTo(expected2));
+            Assert.That(actual3, Is.EqualTo(expected3));
+
+            configured = true;
+        });
+
+        Assert.That(configured, Is.True, "Phase context didn't get configured");
+    }
+
+    public static void ShouldAddValueToContextOnDispose<T>(this PhaseContext source, T value, ApplicationContext context)
+    {
+        using (source)
+        {
+            context.ShouldNotHave(value);
+        }
+
+        context.ShouldHave(value);
+    }
 
     #endregion
 

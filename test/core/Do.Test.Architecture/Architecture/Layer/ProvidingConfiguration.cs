@@ -1,5 +1,4 @@
 ﻿using Do.Architecture;
-
 using static Do.Test.Architecture.Layer.ProvidingConfiguration.LayerX;
 using static Do.Test.Architecture.Layer.ProvidingConfiguration.LayerY;
 using static Do.Test.Architecture.Layer.ProvidingConfiguration.LayerZ;
@@ -53,20 +52,18 @@ public class ProvidingConfiguration : Spec
         TestCase<LayerZ, DoB, LayerZConfigurationB>();
         TestCase<LayerZ, DoC, LayerZConfigurationC>();
 
-        void TestCase<TLayer, TPhase, TConfiguration>()
+        void TestCase<TLayer, TPhase, TTarget>()
             where TLayer : ILayer
             where TPhase : IPhase
         {
             var context = GiveMe.AnApplicationContext();
             var layer = GiveMe.A<TLayer>();
             var phase = GiveMe.A<TPhase>();
+            var target = GiveMe.A<TTarget>();
 
             var phaseContext = layer.GetContext(phase, context);
 
-            var configured = false;
-            phaseContext.ConfigurationTarget.Configure((TConfiguration configuration) => configured = true);
-
-            Assert.That(configured, Is.True, $"{typeof(TLayer).Name} didn't provide {typeof(TConfiguration).Name} for {typeof(TPhase).Name}");
+            phaseContext.ShouldConfigureTarget(target);
         }
     }
 
@@ -101,12 +98,10 @@ public class ProvidingConfiguration : Spec
         var layer = new BeforeAfterLayer() as ILayer;
         var phase = new DoA();
 
-        using (layer.GetContext(phase, context))
-        {
-            Assert.That(context.Get<string>(), Is.EqualTo("before"));
-        }
+        var phaseContext = layer.GetContext(phase, context);
 
-        Assert.That(context.Get<string>(), Is.EqualTo("after"));
+        context.ShouldHave("before");
+        phaseContext.ShouldAddValueToContextOnDispose("after", context);
     }
 
     public class TwoTargetLayer : LayerBase<DoA>
@@ -124,21 +119,10 @@ public class ProvidingConfiguration : Spec
         var phase = new DoA();
         var twoTarget = new TwoTargetLayer() as ILayer;
 
-        using (var phaseContext = twoTarget.GetContext(phase, context))
-        {
-            var configured = false;
-            phaseContext.ConfigurationTarget.Configure((string first, string second) =>
-            {
-                Assert.That(first, Is.EqualTo("first"));
-                Assert.That(second, Is.EqualTo("second"));
+        var phaseContext = twoTarget.GetContext(phase, context);
 
-                configured = true;
-            });
-
-            Assert.That(configured, Is.True, "Two target phase context didn't get configured");
-        }
-
-        Assert.That(context.Get<string>(), Is.EqualTo("after two target"));
+        phaseContext.ShouldConfigureTwoTargets("first", "second");
+        phaseContext.ShouldAddValueToContextOnDispose("after two target", context);
     }
 
     public class ThreeTargetLayer : LayerBase<DoA>
@@ -156,69 +140,35 @@ public class ProvidingConfiguration : Spec
         var phase = new DoA();
         var threeTarget = new ThreeTargetLayer() as ILayer;
 
-        using (var phaseContext = threeTarget.GetContext(phase, context))
-        {
-            var configured = false;
-            phaseContext.ConfigurationTarget.Configure((string first, string second, string third) =>
-            {
-                Assert.That(first, Is.EqualTo("first"));
-                Assert.That(second, Is.EqualTo("second"));
-                Assert.That(third, Is.EqualTo("third"));
+        var phaseContext = threeTarget.GetContext(phase, context);
 
-                configured = true;
-            });
+        phaseContext.ShouldConfigureThreeTargets("first", "second", "third");
+        phaseContext.ShouldAddValueToContextOnDispose("after three target", context);
+    }
 
-            Assert.That(configured, Is.True, "There target phase context didn't get configured");
-        }
-
-        Assert.That(context.Get<string>(), Is.EqualTo("after three target"));
+    public class MultiTargetLayer : LayerBase<DoA>
+    {
+        protected override PhaseContext GetContext(DoA phase) =>
+            phase.CreateContextBuilder()
+                .Add("first")
+                .Add("first", "second")
+                .Add("first", "second", "third")
+                .OnDispose(() => Context.Add("after multi target"))
+                .Build();
     }
 
     [Test]
-    [Ignore("not implemented")]
-    public void Phase_context_accepts_multiple_targets_to_be_applied_separately_in_the_given_order() => Assert.Fail();
+    public void Phase_context_accepts_multiple_targets_to_be_applied_separately_in_the_given_order()
+    {
+        var context = GiveMe.AnApplicationContext();
+        var phase = new DoA();
+        var multiTarget = new MultiTargetLayer() as ILayer;
+
+        var phaseContext = multiTarget.GetContext(phase, context);
+
+        phaseContext.ShouldConfigureTarget("first");
+        phaseContext.ShouldConfigureTwoTargets("first", "second");
+        phaseContext.ShouldConfigureThreeTargets("first", "second", "third");
+        phaseContext.ShouldAddValueToContextOnDispose("after multi target", context);
+    }
 }
-
-/*
-public class LayerA : LayerBase<PhaseX, PhaseY, PhaseZ>
-{
-    public LayerAConfigurationX ConfigX { get; } = new();
-    public LayerAConfigurationY1 ConfigY1 { get; } = new();
-    public LayerAConfigurationY2 ConfigY2 { get; } = new();
-    public LayerAConfigurationZA ConfigZA { get; } = new();
-    public LayerAConfigurationZB ConfigZB { get; } = new();
-    public LayerAConfigurationZC ConfigZC { get; } = new();
-
-    protected override PhaseContext GetContext(PhaseX phase)
-    {
-        var services = Context.Get<IServiceCollection>();
-
-        services.AddLayerAStuff();
-
-        return phase.CreateContext(ConfigX,
-            onDispose: () => services.ConfigureLayerA(ConfigX)
-        );
-    }
-
-    protected override PhaseContext GetContext(PhaseY phase)
-    {
-        var app = Context.Get<IApplicationBuilder>();
-
-        return phase.CreateContext(ConfigY1, ConfigY2,
-            onDispose: () => app.UseLayerA(ConfigY1, ConfigY2)
-        );
-    }
-
-    protected override PhaseContext GetContext(PhaseZ phase)
-    {
-        var app = Context.Get<IApplicationBuilder>();
-
-        app.UseLayerA(ConfigZA);
-
-        return phase.CreateMultipleContext(onDispose: () => app.UseLayerA(ConfigZB, ConfigZC))
-            .Add(ConfigZA)
-            .Add(ConfigZB, ConfigZC)
-        ;
-    }
- }
- */

@@ -82,16 +82,27 @@ public class RunningAnApplication : Spec
 
         context.Add(this);
 
-        Assert.That(context.Has<RunningAnApplication>(), Is.True);
+        context.ShouldHave(this);
     }
 
     [Test]
-    public void Application_context_can_check_or_get_objects_via_their_type()
+    public void Application_context_can_check_if_it_has_an_object_via_its_type()
     {
         var context = GiveMe.AnApplicationContext(content: this);
 
-        Assert.That(context.Has<RunningAnApplication>(), Is.True);
-        Assert.That(context.Get<RunningAnApplication>(), Is.EqualTo(this));
+        var hasContent = context.Has<RunningAnApplication>();
+
+        Assert.That(hasContent, Is.True);
+    }
+
+    [Test]
+    public void Application_context_can_get_an_object_via_its_type()
+    {
+        var context = GiveMe.AnApplicationContext(content: this);
+
+        var content = context.Get<RunningAnApplication>();
+
+        Assert.That(content, Is.EqualTo(this));
     }
 
     [Test]

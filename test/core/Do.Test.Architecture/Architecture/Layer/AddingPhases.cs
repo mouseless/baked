@@ -55,8 +55,7 @@ public class AddingPhases : Spec
 
         phase.Initialize(context);
 
-        Assert.That(context.Has<string>(), Is.True);
-        Assert.That(context.Get<string>(), Is.EqualTo("test"));
+        context.ShouldHave("test");
     }
 
     public class OneDependencyPhase : PhaseBase<string>
