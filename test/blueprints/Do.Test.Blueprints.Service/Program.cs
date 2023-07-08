@@ -1,5 +1,5 @@
-Build.Application
-    .AsService(
+Forge.New
+    .Service(
         configure: app =>
         {
             app.Layers.AddDependencyInjection();

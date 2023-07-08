@@ -74,10 +74,10 @@ public class CreateBuilder : PhaseBase
 
 You can define context dependencies via generic `PhaseBase<>` classes to make
 the phase wait until context is ready to provide that dependency. For example,
-`BuildApp` depends on the `WebApplicationBuilder` instance as shown below;
+`Build` depends on the `WebApplicationBuilder` instance as shown below;
 
 ```csharp
-public class BuildApp : PhaseBase<WebApplicationBuilder>
+public class Build : PhaseBase<WebApplicationBuilder>
 {
     protected override void Initialize(WebApplicationBuilder build)
     {
@@ -112,8 +112,8 @@ public class DoThisEarlyOn : PhaseBase
 
 Layers provide configuration objects phase by phase. This means a layer can
 provide two different configuration objects for two different phases. For this
-reason, a layer returns `PhaseContext` instance per phase it provides
-configuration to.
+reason, a layer returns `PhaseContext` instance per phase to which it provides
+configuration.
 
 ```csharp
 public class LayerX : LayerBase<AddServices>
@@ -269,7 +269,7 @@ public void Configure(LayerConfigurator configurator)
 > `phase.CreateContext()` is a helper method that utilizes
 > `phase.CreateContextBuilder()` behind the scenes.
 
-#### Using Two Ways In Combination
+#### Using in Combination
 
 You may combine these two ways to provide configuration;
 
@@ -297,4 +297,19 @@ This phase context will require two different actions;
 
 ## Conventions
 
-> TBD
+For a consistent developer experience, follow below conventions when
+implementing a new layer;
+
+1. Place all layer related classes under the same folder named after layer
+1. Use `Layer` suffix in layer class name
+1. Provide extension methods in `Do` namespace;
+   1. `Add` extension to `List<ILayer>`
+   1. `Configure` extensions to `LayerConfigurator` per configuration target(s)
+1. Place phase implementations as nested classes under the layer class
+1. Don't use any suffix for phases and use method-like names e.g., `Build` and
+   `Run`
+
+Please refer to existing layers in [github.com/mouseless/do][] for
+demonstration.
+
+[github.com/mouseless/do]:https://github.com/mouseless/do

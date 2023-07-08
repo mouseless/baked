@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 using Do.Architecture;
 using Do.Branding;
 
@@ -20,9 +20,9 @@ public static class ArchitectureSpecExtensions
 
     #endregion
 
-    #region Build
+    #region Forge
 
-    public static Build ABuild(this Spec.Stubber source,
+    public static Forge AForge(this Spec.Stubber source,
         IBanner? banner = default,
         ApplicationContext? context = default
     )
@@ -48,7 +48,7 @@ public static class ArchitectureSpecExtensions
         layers ??= new[] { layer ?? source.Spec.MockMe.ALayer() };
         features ??= new[] { feature ?? source.Spec.MockMe.AFeature() };
 
-        return source.ABuild(context: context).As(app =>
+        return source.AForge(context: context).Application(app =>
         {
             app.Layers.AddRange(layers);
             app.Features.AddRange(features);

@@ -5,18 +5,17 @@ position: 1
 # Application
 
 `Application` acts as a container object for all the domain objects, features
-and layers of the software you develop. This object can be built through
-provided builder classes and methods.
+and layers of the software you develop.
 
-## Building an Application
+## Forging an Application
 
-DO provides a fluent interface to build an application. You can access it
-through `Build.Application` under `Do` namespace. Below is a sample
-`Program.cs` that builds and runs a DO application;
+DO provides a fluent interface to create an application. You can access it
+through `Forge.New` under `Do` namespace. Below is a sample `Program.cs` that
+creates and runs a new application;
 
 ```csharp
-Build.Application
-    .As(app =>
+Forge.New
+    .Application(app =>
     {
         ...
     })
@@ -26,7 +25,7 @@ Build.Application
 > :information_source:
 >
 > `Do` is automatically added as a global using so that you can directly make a
-> call to `Build.Application`.
+> call to `Forge.New`.
 
 ## Adding Extensions
 
@@ -79,11 +78,11 @@ app.Features.AddOrm(c => c.EfCore(primaryKeyPrefix: "PK_"))
 
 ## Running an Application
 
-To run an application you need to call `Run()` method after building it.
+To run an application you need to call `Run()` method after forging it.
 
 ```csharp
-Build.Application
-    .As(app =>
+Forge.New
+    .Application(app =>
     {
         app.Layers.AddWeb();
     })

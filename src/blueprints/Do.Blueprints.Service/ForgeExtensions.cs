@@ -2,15 +2,15 @@
 
 namespace Do;
 
-public static class BuildExtensions
+public static class ForgeExtensions
 {
-    public static Application AsService(this Build source,
+    public static Application Service(this Forge source,
         Action<ApplicationDescriptor>? configure = default
     )
     {
         configure ??= _ => { };
 
-        return source.As(app =>
+        return source.Application(app =>
             {
                 configure(app);
             });

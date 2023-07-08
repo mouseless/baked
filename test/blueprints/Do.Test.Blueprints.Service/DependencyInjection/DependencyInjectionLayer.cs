@@ -1,16 +1,18 @@
 using Do.Architecture;
 
+using static Do.Test.Blueprints.Service.DependencyInjection.DependencyInjectionLayer;
+
 namespace Do.Test.Blueprints.Service.DependencyInjection;
 
-public class DependencyInjectionLayer : LayerBase<DependencyInjectionLayer.AddServices>
+public class DependencyInjectionLayer : LayerBase<AddServices>
 {
+    protected override PhaseContext GetContext(AddServices phase) =>
+        phase.CreateContext(Context.Get<IServiceCollection>());
+
     protected override IEnumerable<IPhase> GetPhases()
     {
         yield return new AddServices();
     }
-
-    protected override PhaseContext GetContext(AddServices phase) =>
-        phase.CreateContext(Context.Get<IServiceCollection>());
 
     public class AddServices : PhaseBase
     {
