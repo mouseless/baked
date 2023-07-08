@@ -48,7 +48,7 @@ public class WebLayer : LayerBase<Build>
         }
     }
 
-    public class Run : PhaseBase<WebApplication>
+    class Run : PhaseBase<WebApplication>
     {
         public Run() : base(PhaseOrder.Latest) { }
 

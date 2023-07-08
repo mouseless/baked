@@ -10,4 +10,8 @@
     <ProjectReference Include="..\..\..\..\src\blueprints\Do.Blueprints.Service\Do.Blueprints.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Using Include="Do" />
+  </ItemGroup>
+
 </Project>
