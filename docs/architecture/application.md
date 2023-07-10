@@ -57,7 +57,6 @@ app.Layers.AddDatabase();
 ```
 
 To configure a layer, you need to add a feature mentioned in the next section.
-More on layers can be found at [Layer](layer.md).
 
 ### Features
 

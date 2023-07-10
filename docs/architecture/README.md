@@ -132,17 +132,6 @@ design or technology, e.g. `Do.Api.Rest`, `Do.Auth.Auth0`, `Do.Fs.Aws`,
 > implementations that provides the same functionality through different system
 > components.
 
-A feature may depend on a layer, or another feature, strictly. In this case, an
-application will be required to include dependent features and layers for
-depending feature to be used. Most of the time this dependency is not strict,
-which means you can add that feature even if your application doesn't include
-its dependent features or layers.
-
-> :information_source:
->
-> Features depend on other features through their abstraction parts. Direct
-> dependency between feature implementations is forbidden.
-
 In conclusion, feature implementations serve as bridges, connecting the domain
 layer to other layers through their opinionated configurations. Below is a
 complete sample architecture, showcasing the integration of layers, features

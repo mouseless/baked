@@ -26,6 +26,26 @@ has the ability to use a middleware or add routes to the application.
 > we've created some base classes to make it easier for you to create layers
 > and phases. All examples below, demonstrate usage of these base classes.
 
+## Conventions
+
+For a consistent developer experience, follow below conventions when
+implementing a new layer;
+
+1. Place all layer related classes under the same folder named after layer,
+   e.g., `DependencyInjection/`
+1. Use `Layer` suffix in layer class name, e.g.,
+   `DependencyInjection/DependencyInjectionLayer.cs`
+1. Provide extension methods in `Do` namespace, e.g.,
+   `DependencyInjection/DependencyInjectionExtensions.cs`;
+   1. `Add` extension to `List<ILayer>`, e.g., `AddDependencyInjection()`
+   1. `Configure` extensions to `LayerConfigurator` per configuration
+      target(s), e.g., `ConfigureServiceCollection()`
+1. Place phase implementations as nested classes under the layer class
+1. Don't use any suffix for phases and use method-like names, e.g., `Build` and
+   `Run`
+
+Please refer to existing layers in [github.com/mouseless/do][] for examples.
+
 ## Adding Phases
 
 By default `LayerBase` returns no phases. To add one or more phases into the
@@ -294,22 +314,5 @@ This phase context will require two different actions;
 1. For the first two configuration objects: `(Configuration1 configuration1,
    Configuration2 configuration2)`
 1. For the last configuration object: `(Configuration3 configuration3)`.
-
-## Conventions
-
-For a consistent developer experience, follow below conventions when
-implementing a new layer;
-
-1. Place all layer related classes under the same folder named after layer
-1. Use `Layer` suffix in layer class name
-1. Provide extension methods in `Do` namespace;
-   1. `Add` extension to `List<ILayer>`
-   1. `Configure` extensions to `LayerConfigurator` per configuration target(s)
-1. Place phase implementations as nested classes under the layer class
-1. Don't use any suffix for phases and use method-like names e.g., `Build` and
-   `Run`
-
-Please refer to existing layers in [github.com/mouseless/do][] for
-demonstration.
 
 [github.com/mouseless/do]:https://github.com/mouseless/do
