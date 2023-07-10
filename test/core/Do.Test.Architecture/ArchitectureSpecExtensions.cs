@@ -137,6 +137,19 @@ public static class ArchitectureSpecExtensions
 
     #endregion
 
+    #region LayerConfigurator
+
+    public static LayerConfigurator ALayerConfigurator<TTarget>(this Spec.Stubber source,
+        TTarget? configuration = default
+    )
+    {
+        configuration ??= source.A<TTarget>();
+
+        return LayerConfigurator.Create<TTarget>(configuration);
+    }
+
+    #endregion
+
     #region Phase
 
     public static IPhase APhase(this Spec.Mocker source,
