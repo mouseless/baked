@@ -114,4 +114,17 @@ public static class WelcomePageGreetingExtensions
 }
 ```
 
+### Disabling a Feature
+
+To allow disabling a feature, provide a `Disabled()` method which returns an
+empty feature.
+
+`GreetingConfigurator.cs`
+```csharp
+public class GreetingConfigurator
+{
+    public IFeature Disabled() => Feature.Empty;
+}
+```
+
 [github.com/mouseless/do]:https://github.com/mouseless/do

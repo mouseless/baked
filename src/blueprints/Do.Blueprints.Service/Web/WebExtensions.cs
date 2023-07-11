@@ -1,5 +1,7 @@
 using Do.Architecture;
-using Do.Test.Blueprints.Service.Web;
+using Do.Blueprints.Service.Web;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Routing;
 
 namespace Do;
 

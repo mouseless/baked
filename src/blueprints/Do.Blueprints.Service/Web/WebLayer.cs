@@ -1,8 +1,11 @@
 using Do.Architecture;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.DependencyInjection;
 
-using static Do.Test.Blueprints.Service.Web.WebLayer;
+using static Do.Blueprints.Service.Web.WebLayer;
 
-namespace Do.Test.Blueprints.Service.Web;
+namespace Do.Blueprints.Service.Web;
 
 public class WebLayer : LayerBase<Build>
 {

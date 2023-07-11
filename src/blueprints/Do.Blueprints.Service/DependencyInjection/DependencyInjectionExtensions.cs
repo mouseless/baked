@@ -1,5 +1,6 @@
 using Do.Architecture;
-using Do.Test.Blueprints.Service.DependencyInjection;
+using Do.Blueprints.Service.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Do;
 

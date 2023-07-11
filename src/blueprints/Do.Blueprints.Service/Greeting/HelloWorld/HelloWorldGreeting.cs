@@ -1,6 +1,7 @@
 using Do.Architecture;
+using Microsoft.AspNetCore.Builder;
 
-namespace Do.Test.Blueprints.Service.Greeting.HelloWorld;
+namespace Do.Blueprints.Service.Greeting.HelloWorld;
 
 public class HelloWorldGreeting : IFeature
 {

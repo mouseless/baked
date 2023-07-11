@@ -1,5 +1,5 @@
-﻿using Do.Test.Blueprints.Service.Greeting;
-using Do.Test.Blueprints.Service.Greeting.HelloWorld;
+﻿using Do.Blueprints.Service.Greeting;
+using Do.Blueprints.Service.Greeting.HelloWorld;
 
 namespace Do;
 
