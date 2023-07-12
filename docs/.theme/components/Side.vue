@@ -82,9 +82,10 @@ nav {
     li {
       margin: 0;
       list-style: none;
+      line-height: 24px;
 
       a {
-        font-size: 90%;
+        font-size: 14.4px !important;
         display: block;
         text-decoration: none;
         color: $color-fg-passive;

@@ -25,6 +25,8 @@ tasks:
         theme: base
         deviceScaleFactor: 1.5
         themeVariables:
+          fontFamily: '"Roboto Mono", monospace'
+          fontSize: '12px'
           primaryColor: '#fa465b'
           primaryTextColor: '#fff'
           primaryBorderColor': '#7c0000'

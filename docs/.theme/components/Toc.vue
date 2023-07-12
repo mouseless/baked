@@ -118,14 +118,20 @@ onBeforeUnmount(() => {
 });
 </script>
 <style lang="scss" scoped>
+h4 {
+  margin-bottom: 0.5em;
+  padding-left: 1em;
+}
+
 nav {
   position: sticky;
   align-self: start;
   top: 1.5em;
   width: 250px;
-  margin: 0 1em;
   margin-top: 2.5em;
-  font-size: 80%;
+  font-size: 12.8px;
+  overflow: hidden;
+  text-wrap: nowrap;
 
   ul {
     margin: 0;
@@ -134,26 +140,25 @@ nav {
     li {
       margin: 0;
       list-style: none;
+      line-height: 24px;
 
       a {
         color: $color-fg-passive;
         text-decoration: none;
         cursor: pointer;
-        display: inline-block;
+        display: block;
         margin-top: 0.25em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding-left: 1em;
+        border-left: solid 3px #00000000;
 
         &:hover {
           color: $color-brand;
         }
 
-        &.active:before {
-          position: absolute;
-          left: -1em;
-          content: "."; /* . acts as a placeholder */
-          color: #00000000;
-          background-color: $color-brand;
-          @include radius();
-          width: 3px;
+        &.active {
+          border-left-color: $color-brand;
         }
 
         &.return-to-top {
@@ -163,9 +168,18 @@ nav {
 
       ul {
         margin-bottom: 0.25em;
-        padding-left: 1em;
+
+        a {
+          padding-left: 2em;
+        }
       }
     }
+  }
+}
+
+@media (max-width: $width-page) {
+  a {
+    font-size: 12.8px !important;
   }
 }
 
@@ -182,6 +196,7 @@ nav {
     h4 a {
       display: inline-block;
       padding-right: 0;
+      padding-left: 0;
     }
 
     & > ul {
@@ -189,6 +204,8 @@ nav {
       display: none;
       text-align: left;
       padding: 1em;
+      padding-left: 0em;
+      margin-bottom: 2.5em;
 
       &.active {
         display: block;

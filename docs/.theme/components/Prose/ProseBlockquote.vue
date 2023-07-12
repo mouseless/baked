@@ -50,7 +50,7 @@ blockquote {
   flex-direction: row;
   align-items: flex-start;
   justify-content: flex-start;
-  padding-left: 1em;
+  padding: 0 1em;
   border: solid 2px;
   border-radius: 10px;
   margin: 15px 0px;

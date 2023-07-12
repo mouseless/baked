@@ -26,134 +26,184 @@ img.do {
   }
 }
 
-h1, h2, h3, h4, h5, h6 {
- &, code {
-   color: $color-brand;
- }
-}
-
-h1 {
-  font-size: 40px;
-}
-
-h2 {
-  scroll-margin-top: 0.5em;
-}
-
-h3 {
-  scroll-margin-top: 1em;
-}
-
-nav {
-  h4 {
-    margin-top: 0;
-    margin-bottom: 0.5em;
-    text-transform: uppercase;
-
-    a {
-      color: $color-fg-passive;
-      text-decoration: none;
-      display: inline-block;
-
-      &:hover {
-        color: $color-fg-passive;
-      }
-    }
-  }
-}
-
-p {
-  line-height: 1.75em;
-
-  &:has(.diagram) {
-    @include box;
-
-    text-align: center;
-    padding: 30px 0px 18px 0px;
-  }
-}
-
-code {
-  background-color: $color-bg-code;
-  border-radius: 5px;
-  padding: 0.2em 0.4em;
-  color: $color-fg-code;
-}
-
-blockquote {
-  pre {
-    margin-right: 3em;
-  }
-}
-
-pre {
-  @include box;
-
-  padding: 1.2em;
-
-  code {
-    padding: 0;
-  }
-}
-
-ul, ol {
-  padding-inline-start: 1.2em;
-
-  li {
-    margin-bottom: 0.2em;
-    line-height: 1.75em;
-
-    ul, ol {
-      margin-top: 0.2em;
-    }
-  }
-}
-
-table {
-  border-spacing: 0;
-  width: 100%;
-
-  @include border();
-  @include radius();
-
-  tr {
-    td, th {
-      @include border(bottom);
-
-      padding: 1vh 1vw;
-    }
-
-    th {
-      color: $color-brand;
-    }
-
-    &:nth-child(2n-1) td {
-      background-color: darken($color-border, 5%);
-    }
-
-    &:last-child {
-      td {
-        border-bottom: 0;
-      }
-    }
+.content {
+  h1, h2, h3, h4, h5, h6 {
+   &, code {
+     color: $color-brand;
+   }
   }
 
-  * {
-    text-align: left;
+  h1 {
+    font-size: 40px;
   }
-}
-
-hr {
-  @include border();
-}
-
-@media (max-width: $width-page-l) {
   h2 {
-    scroll-margin-top: 2em;
+    scroll-margin-top: 0.5em;
+    margin-top: 1.5em;
   }
 
   h3 {
-    scroll-margin-top: 3em;
+    scroll-margin-top: 1em;
+    margin-top: 1.5em;
+  }
+
+  nav {
+    h4 {
+      margin-top: 0;
+      margin-bottom: 0.5em;
+      text-transform: uppercase;
+
+      a {
+        color: $color-fg-passive;
+        text-decoration: none;
+        display: inline-block;
+
+        &:hover {
+          color: $color-fg-passive;
+        }
+      }
+    }
+  }
+
+  p {
+    line-height: 1.5em;
+
+    &:has(.diagram) {
+      @include box;
+
+      text-align: center;
+      padding: 30px 0px 18px 0px;
+    }
+  }
+
+  code {
+    background-color: $color-bg-code;
+    border-radius: 5px;
+    padding: 0.2em 0.4em;
+    color: $color-fg-code;
+  }
+
+  blockquote {
+    pre {
+      margin-right: 3em;
+    }
+  }
+
+  pre {
+    @include box;
+
+    padding: 1.2em;
+    text-wrap: wrap;
+    overflow: auto;
+
+    code {
+      padding: 0;
+      background-color: transparent;
+      text-wrap: nowrap;
+      display: block;
+      max-width: 0px;
+    }
+  }
+
+  ul, ol {
+    padding-inline-start: 1.2em;
+
+    li {
+      margin-bottom: 0.2em;
+      line-height: 1.50em;
+
+      ul, ol {
+        margin-top: 0.2em;
+      }
+    }
+  }
+
+  table {
+    border-spacing: 0;
+    width: 100%;
+
+    @include border();
+    @include radius();
+
+    tr {
+      td, th {
+        @include border(bottom);
+
+        padding: 1vh 1vw;
+      }
+
+      th {
+        color: $color-brand;
+      }
+
+      &:nth-child(2n-1) td {
+        background-color: darken($color-border, 5%);
+      }
+
+      &:last-child {
+        td {
+          border-bottom: 0;
+        }
+      }
+    }
+
+    * {
+      text-align: left;
+    }
+  }
+
+  hr {
+    @include border();
+  }
+}
+
+@media (max-width: $width-page) {
+  .content {
+    h1 {
+      font-size: 35px;
+    }
+
+    h2 {
+      font-size: 22px;
+    }
+
+    h3 {
+      font-size: 20px;
+    }
+
+    h4 {
+      font-size: 18px;
+    }
+
+    p {
+      font-size: 14px;
+      line-height: 1.75em;
+
+      code {
+        font-size: 12px;
+      }
+    }
+
+    ul, ol {
+      li {
+        font-size: 14px;
+      }
+
+      code {
+        font-size: 12px;
+      }
+    }
+  }
+}
+
+@media (max-width: $width-page-l) {
+  .content {
+    h2 {
+      scroll-margin-top: 2em;
+    }
+
+    h3 {
+      scroll-margin-top: 3em;
+    }
   }
 
   nav {
