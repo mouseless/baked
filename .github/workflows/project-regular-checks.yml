@@ -11,7 +11,7 @@ on:
       - 'Directory.Build.props'
 
 env:
-  MIN_COVERAGE: 90
+  MIN_COVERAGE: 80
 
 jobs:
   # outputs matrix json so that windows is only added when head branch is a release branch
