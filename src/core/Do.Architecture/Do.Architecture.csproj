@@ -8,4 +8,8 @@
     <PackageTags>do;architecture</PackageTags>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Include="do-architecture.targets" Pack="true" PackagePath="build" />
+  </ItemGroup>
+
 </Project>
