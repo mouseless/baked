@@ -11,3 +11,6 @@
 # dotnet build files
 obj/
 bin/
+
+# coverage reports
+**/.coverage/*
