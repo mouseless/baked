@@ -1,4 +1,4 @@
-![](https://do.mouseless.codes/logo-readme.png)
+![](https://raw.githubusercontent.com/mouseless/do/main/docs/.theme/public/logo-readme.png)
 
 DO is an opinionated framework for .NET.
 
