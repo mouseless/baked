@@ -89,7 +89,7 @@ from the domain layer or from other feature implementations.
 > :information_source:
 >
 > Each feature has only one abstraction, named after the ability it provides,
-> e.g. `Do.Fs`, `Do.Orm`, `Do.Nosql`, `Do.Logging`, `Do.Auth` etc.
+> e.g. `Do.Fs`, `Do.Orm`, `Do.Logging`, `Do.Auth` etc.
 
 ```mermaid
 flowchart
