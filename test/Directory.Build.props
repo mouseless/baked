@@ -3,8 +3,8 @@
   <Import Project="..\Directory.Build.props" />
 
   <PropertyGroup>
-    <IsPackable>false</IsPackable>
     <RootNamespace>Do.Test</RootNamespace>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>

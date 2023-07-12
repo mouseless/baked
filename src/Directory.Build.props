@@ -4,6 +4,7 @@
 
   <PropertyGroup>
     <RootNamespace>Do</RootNamespace>
+    <IsPackable>true</IsPackable>
     <EnablePackageValidation>true</EnablePackageValidation>
   </PropertyGroup>
 

@@ -59,13 +59,6 @@ jobs:
     # should only run when this version does not exist in nuget
     # use contains to check for action value, == operator does not work probably because some space chars in the value
     if: contains(needs.check-version.outputs.action, 'pack')
-    strategy:
-      matrix:
-        project: [ 'Do.Blueprints.Service' ]
-        include:
-          - project: 'Do.Blueprints.Service'
-            folder: 'blueprints'
-            package: 'do-blueprints-service'
     runs-on: ubuntu-latest
     outputs:
       version: ${{ needs.check-version.outputs.version }}
@@ -78,29 +71,24 @@ jobs:
             6.0.x
       - name: Pack
         run: |
-          dotnet pack "src/${{ matrix.folder }}/${{ matrix.project }}/${{ matrix.project }}.csproj" \
-            -o "packages" \
-            -c Release
-      - name: Upload Package
+          dotnet pack -o "packages" -c Release
+      - name: Upload Packages
         uses: actions/upload-artifact@v3
         with:
-          name: package-${{ matrix.package }}
-          path: packages/${{ matrix.package }}.${{ needs.check-version.outputs.version }}.nupkg
+          name: packages
+          path: packages/
   push-packages:
     name: Push Packages
     needs: pack-projects
-    strategy:
-      matrix:
-        package: [ 'do-blueprints-service' ]
     runs-on: ubuntu-latest
     steps:
-      - name: Download Package
+      - name: Download Packages
         uses: actions/download-artifact@v3
         with:
-          name: package-${{ matrix.package }}
+          name: packages
       - name: Push
         run: |
-          dotnet nuget push "${{ matrix.package }}.${{ needs.pack-projects.outputs.version }}.nupkg" \
+          dotnet nuget push "*.nupkg" \
             -s https://api.nuget.org/v3/index.json \
             -k ${{ secrets.NUGET_API_KEY }} \
             --skip-duplicate \
