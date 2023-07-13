@@ -1,5 +1,4 @@
 # vscode files
-.editorconfig
 .vscode
 .vs
 
@@ -12,3 +11,6 @@
 # dotnet build files
 obj/
 bin/
+
+# coverage reports
+**/.coverage/*

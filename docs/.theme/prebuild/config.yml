@@ -25,6 +25,8 @@ tasks:
         theme: base
         deviceScaleFactor: 1.5
         themeVariables:
+          fontFamily: '"Roboto Mono", monospace'
+          fontSize: '12px'
           primaryColor: '#fa465b'
           primaryTextColor: '#fff'
           primaryBorderColor': '#7c0000'
@@ -32,6 +34,7 @@ tasks:
           secondaryColor: '#111111'
           secondaryTextColor: '#b3b3b3'
           tertiaryColor: '#222222'
+          activationBkgColor: '#fa465b'
   - rename:
       source: ./.theme/.temp
       find: README.md

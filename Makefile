@@ -10,7 +10,7 @@ run:
 	echo "Please select 1-2: " ; \
 	read app ; \
 	if test $$app -eq "1" ; then \
-		dotnet run --project test/blueprints/Do.Blueprints.Service.Test ; \
+		dotnet run --project test/blueprints/Do.Test.Blueprints.Service ; \
 	fi ; \
 	if test $$app -eq "2" ; then \
 		cd ./docs ; \

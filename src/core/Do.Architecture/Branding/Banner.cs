@@ -1,10 +1,10 @@
-﻿namespace Do;
+﻿namespace Do.Branding;
 
-sealed class Banner
+public sealed class DoBanner : IBanner
 {
-    public static void Print()
+    public void Print()
     {
-        var assembly = typeof(Banner).Assembly;
+        var assembly = GetType().Assembly;
         var version = assembly.GetName().Version!;
         var ver = $"{version.Major}.{version.Minor}.{version.Build}";
 

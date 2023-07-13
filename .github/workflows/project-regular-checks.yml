@@ -10,6 +10,9 @@ on:
       - 'Do.sln'
       - 'Directory.Build.props'
 
+env:
+  MIN_COVERAGE: 80
+
 jobs:
   # outputs matrix json so that windows is only added when head branch is a release branch
   prepare:
@@ -43,3 +46,73 @@ jobs:
             6.0.x
       - name: Build Solution
         run: dotnet build -c Release
+  test:
+    name: Test
+    needs: build
+    strategy:
+      max-parallel: 2
+      matrix: ${{ fromJson(needs.build.outputs.matrix) }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: |
+            6.0.x
+      - name: Test
+        if: ${{ matrix.os != 'ubuntu-latest' }}
+        run: dotnet test -c Release
+      - name: Test w/ Coverage
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        # If a project is not listed in coverage report,
+        # use '-verbosity:diagnostic --diag:log.log' options
+        # to log collector warnings.
+        run: |
+          dotnet test -c Release \
+            --collect:"XPlat Code Coverage" \
+            --logger trx \
+            --results-directory .coverage \
+            --settings test/runsettings.xml
+      - name: Merge Multiple Test Coverage Report
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        uses: danielpalme/ReportGenerator-GitHub-Action@5.1.12
+        with:
+          reports: '.coverage/*/coverage.cobertura.xml'
+          targetdir: 'coveragereport'
+          reporttypes: 'Cobertura'
+      - name: Code Coverage Summary Report
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        uses: irongut/CodeCoverageSummary@v1.3.0
+        with:
+          filename: coveragereport/Cobertura.xml
+          badge: true
+          format: 'markdown'
+          output: 'both'
+      - name: Upload Reports
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-reports
+          path: code-coverage-results.md
+  coverage:
+    name: Coverage
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Download Reports
+        uses: actions/download-artifact@v3
+        with:
+          name: coverage-reports
+      - name: Write to Job Summary
+        run: |
+          cat code-coverage-results.md >> $GITHUB_STEP_SUMMARY
+      - name: Checking Test Coverage Under Minimum Coverage
+        run: |
+          coverage=$(cat code-coverage-results.md | sed -n '/Code%20Coverage-/p' | sed '/[ a-zA-Z\/()=\.\?%\!]/ s///g' | sed 's/.\{3\}$//' | sed 's/^......//')
+          if test $(($coverage < ${{ env.MIN_COVERAGE }})) = 1
+            then
+              echo ! Coverage is below ${{ env.MIN_COVERAGE }}% ! >> $GITHUB_STEP_SUMMARY
+              exit 1
+          fi

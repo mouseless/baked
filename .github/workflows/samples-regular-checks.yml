@@ -1,0 +1,41 @@
+name: Samples - Regular Checks
+on:
+  pull_request:
+    branches:
+      - main
+      - 'epic/**'
+    paths:
+      - "samples/**"
+jobs:
+  prepare:
+    name: Prepare
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ env.MATRIX }}
+    env:
+      MATRIX: '{ "os": [ "ubuntu-latest" ] }'
+      COLON: ':'
+    steps:
+      - name: Windows
+        id: windows
+        if: startsWith(github.head_ref, 'release/') == true
+        run: echo "MATRIX={ \"os\"$COLON [ \"ubuntu-latest\", \"windows-latest\" ] }" >> $GITHUB_ENV
+  build-and-test:
+    name: Build & Test
+    needs: Prepare
+    strategy:
+      max-parallel: 2
+      matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: |
+            6.0.x
+      - name: samples/event-scheduler
+        working-directory: samples/event-scheduler
+        run: |
+          dotnet build -c Release
+          dotnet test -c Release

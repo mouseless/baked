@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyTitle>Do.Architecture</AssemblyTitle>
+    <Title>DO / Architecture</Title>
+    <Description>DO is an opinionated framework for .NET. This is DO's core package that provides a simple feature and layer system along with common features and layers.</Description>
+    <PackageId>do-architecture</PackageId>
+    <PackageTags>do;architecture</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="do-architecture.targets" Pack="true" PackagePath="build" />
+  </ItemGroup>
+
+</Project>

@@ -9,7 +9,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="do-blueprints-service.targets" Pack="true" PackagePath="build" />
+  </ItemGroup>
+
+  <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\core\Do.Architecture\Do.Architecture.csproj" />
   </ItemGroup>
 
 </Project>
