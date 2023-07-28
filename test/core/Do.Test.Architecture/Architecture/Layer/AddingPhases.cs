@@ -1,4 +1,5 @@
 using Do.Architecture;
+using Shouldly;
 
 namespace Do.Test.Architecture.Layer;
 
@@ -12,7 +13,7 @@ public class AddingPhases : Spec
         ILayer layer = new NoPhaseLayer();
         var phases = layer.GetPhases();
 
-        Assert.That(phases, Has.Exactly(0).Items);
+        phases.Count().ShouldBe(0);
     }
 
     public class TwoPhaseLayer : LayerBase
@@ -33,7 +34,8 @@ public class AddingPhases : Spec
         ILayer layer = new TwoPhaseLayer();
         var phases = layer.GetPhases();
 
-        Assert.That(phases, Has.Exactly(2).Items);
+        phases.Count().ShouldBe(2);
+
         Assert.That(phases, Has.One.TypeOf<TwoPhaseLayer.DoA>());
         Assert.That(phases, Has.One.TypeOf<TwoPhaseLayer.DoB>());
     }
@@ -86,22 +88,22 @@ public class AddingPhases : Spec
         IPhase twoDependency = new TwoDependencyPhase();
         IPhase threeDependency = new ThreeDependencyPhase();
 
-        Assert.That(initializing.IsReady(context), Is.True);
-        Assert.That(oneDependency.IsReady(context), Is.False);
+        initializing.IsReady(context).ShouldBeTrue();
+        oneDependency.IsReady(context).ShouldBeFalse();
 
         initializing.Initialize(context);
 
-        Assert.That(oneDependency.IsReady(context), Is.True);
-        Assert.That(twoDependency.IsReady(context), Is.False);
+        oneDependency.IsReady(context).ShouldBeTrue();
+        twoDependency.IsReady(context).ShouldBeFalse();
 
         oneDependency.Initialize(context);
 
-        Assert.That(twoDependency.IsReady(context), Is.True);
-        Assert.That(threeDependency.IsReady(context), Is.False);
+        twoDependency.IsReady(context).ShouldBeTrue();
+        threeDependency.IsReady(context).ShouldBeFalse();
 
         twoDependency.Initialize(context);
 
-        Assert.That(threeDependency.IsReady(context), Is.True);
+        threeDependency.IsReady(context).ShouldBeTrue();
 
         threeDependency.Initialize(context);
 
@@ -119,6 +121,6 @@ public class AddingPhases : Spec
     {
         IPhase phase = new OrderedPhase(order);
 
-        Assert.That(phase.Order, Is.EqualTo(order));
+        phase.Order.ShouldBe(order);
     }
 }

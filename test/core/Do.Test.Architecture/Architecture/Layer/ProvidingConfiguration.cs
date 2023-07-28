@@ -1,4 +1,5 @@
 ﻿using Do.Architecture;
+using Shouldly;
 using static Do.Test.Architecture.Layer.ProvidingConfiguration.LayerX;
 using static Do.Test.Architecture.Layer.ProvidingConfiguration.LayerY;
 using static Do.Test.Architecture.Layer.ProvidingConfiguration.LayerZ;
@@ -76,7 +77,7 @@ public class ProvidingConfiguration : Spec
 
         var phaseContext = layer.GetContext(phase, context);
 
-        Assert.That(phaseContext, Is.EqualTo(PhaseContext.Empty));
+        phaseContext.ShouldBe(PhaseContext.Empty);
     }
 
     public class BeforeAfterLayer : LayerBase<DoA>

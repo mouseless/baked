@@ -1,4 +1,5 @@
 using Do.Architecture;
+using Shouldly;
 
 namespace Do.Test.Architecture.Feature;
 
@@ -31,7 +32,7 @@ public class ConfiguringLayers : Spec
 
         featureA.Configure(configurator);
 
-        Assert.That(configuration.Value, Is.EqualTo("test"));
+        configuration.Value.ShouldBe("test");
     }
 
     [Test]
@@ -53,7 +54,7 @@ public class ConfiguringLayers : Spec
         configurator.Configure((object value) => configured = true);
         configurator.Configure((ConfigurationA value) => configured = false);
 
-        Assert.That(configured, Is.True, "should've configured only for the first call");
+        configured.ShouldBeTrue("should've configured only for the first call");
     }
 
     [Test]
@@ -65,7 +66,7 @@ public class ConfiguringLayers : Spec
         configurator.Configure((string str, int i) => configured = true);
         configurator.Configure((object str, object i) => configured = false);
 
-        Assert.That(configured, Is.True, "should've configured only for the first call");
+        configured.ShouldBeTrue("should've configured only for the first call");
     }
 
     [Test]
@@ -77,7 +78,7 @@ public class ConfiguringLayers : Spec
         configurator.Configure((string str, int i, bool b) => configured = true);
         configurator.Configure((object str, object i, object b) => configured = false);
 
-        Assert.That(configured, Is.True, "should've configured only for the first call");
+        configured.ShouldBeTrue("should've configured only for the first call");
     }
 
     public class FeatureAConfigurator
@@ -92,6 +93,6 @@ public class ConfiguringLayers : Spec
 
         var feature = configurator.Disabled();
 
-        Assert.That(feature, Is.EqualTo(Do.Architecture.Feature.Empty));
+        feature.ShouldBe(Do.Architecture.Feature.Empty);
     }
 }
