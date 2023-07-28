@@ -291,4 +291,18 @@ public static class ArchitectureSpecExtensions
         Mock.Get(source).Verify(f => f.Configure(It.IsAny<LayerConfigurator>()), Times.Never());
 
     #endregion
+
+    #region Assertion
+
+    public static void Fail(this Spec source, string message = "")
+    {
+        false.ShouldBeTrue(message);
+    }
+
+    public static void Pass(this Spec source, string message = "")
+    {
+        true.ShouldBeTrue(message);
+    }
+
+    #endregion
 }

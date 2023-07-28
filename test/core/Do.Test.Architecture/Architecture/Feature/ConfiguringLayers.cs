@@ -40,9 +40,9 @@ public class ConfiguringLayers : Spec
     {
         var configurator = LayerConfigurator.Create(new ConfigurationA());
 
-        configurator.Configure((object value) => Assert.Fail());
+        configurator.Configure((object value) => this.Fail());
 
-        Assert.Pass("didn't configure as expected");
+        this.Pass("didn't configure as expected");
     }
 
     [Test]

@@ -36,8 +36,8 @@ public class AddingPhases : Spec
 
         phases.Count().ShouldBe(2);
 
-        Assert.That(phases, Has.One.TypeOf<TwoPhaseLayer.DoA>());
-        Assert.That(phases, Has.One.TypeOf<TwoPhaseLayer.DoB>());
+        phases.ShouldContain(phase => phase is TwoPhaseLayer.DoA);
+        phases.ShouldContain(phase => phase is TwoPhaseLayer.DoB);
     }
 
     public class InitializedPhase : PhaseBase
