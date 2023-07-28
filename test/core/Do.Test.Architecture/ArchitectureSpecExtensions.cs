@@ -294,15 +294,12 @@ public static class ArchitectureSpecExtensions
 
     #region Assertion
 
-    public static void Fail(this Spec source, string message = "")
+    public static void ShouldFail(this Spec source, string message = "")
     {
-        false.ShouldBeTrue(message);
+        throw new ShouldAssertException(message);
     }
 
-    public static void Pass(this Spec source, string message = "")
-    {
-        true.ShouldBeTrue(message);
-    }
+    public static void ShouldPass(this Spec source, string message = "") { }
 
     #endregion
 }
