@@ -1,22 +1,25 @@
 <template>
-  <ContentDoc v-if="!trailingSlash">
-    <template #default="{ doc }">
-      <div class="container">
-        <ContentRenderer
-          :value="doc"
-          class="content toc-root"
-          :class="{ 'no-toc': doc.body.toc.links <= 0 }"
-        />
-        <Toc
-          v-if="doc.body.toc.links.length > 0"
-          :value="doc.body.toc"
-        />
-      </div>
-    </template>
-    <template #not-found>
-      <ContentDoc path="/not-found" :head="false" />
-    </template>
-  </ContentDoc>
+  <div>
+    <ContentDoc v-if="!trailingSlash">
+      <template #default="{ doc }">
+        <div class="container">
+          <ContentRenderer
+            :value="doc"
+            class="content toc-root"
+            :class="{ 'no-toc': doc.body.toc.links <= 0 }"
+          />
+          <Toc
+            v-if="doc.body.toc.links.length > 0"
+            :value="doc.body.toc"
+          />
+        </div>
+      </template>
+      <template #not-found>
+        <ContentDoc path="/not-found" :head="false" />
+      </template>
+    </ContentDoc>
+    <BottomNavigation />
+  </div>
 </template>
 <script setup>
 import { useRoute, navigateTo, onMounted } from "#imports";
