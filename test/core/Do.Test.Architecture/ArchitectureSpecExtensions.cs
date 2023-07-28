@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using Do.Architecture;
 using Do.Branding;
+using Shouldly;
 
 namespace Do.Test;
 
@@ -13,7 +14,7 @@ public static class ArchitectureSpecExtensions
     {
         var result = Activator.CreateInstance(typeof(T));
 
-        Assert.That(result, Is.Not.Null);
+        result.ShouldNotBeNull();
 
         return (T)result!;
     }
@@ -71,15 +72,15 @@ public static class ArchitectureSpecExtensions
 
     public static void ShouldHave<T>(this ApplicationContext context, T value)
     {
-        Assert.That(context.Has<T>(), Is.True, $"Context should have an item with type {typeof(T)}");
-        Assert.That(context.Get<T>(), Is.EqualTo(value));
+        context.Has<T>().ShouldBeTrue($"Context should have an item with type {typeof(T)}");
+        context.Get<T>().ShouldBe(value);
     }
 
     public static void ShouldNotHave<T>(this ApplicationContext context, T value)
     {
         if (context.Has<T>())
         {
-            Assert.That(context.Get<T>(), Is.Not.EqualTo(value));
+            context.Get<T>().ShouldNotBe(value);
         }
     }
 
@@ -201,10 +202,10 @@ public static class ArchitectureSpecExtensions
             var create = typeof(LayerConfigurator)
                 .GetMethods(BindingFlags.Static | BindingFlags.Public)
                 .FirstOrDefault(c => c.Name == nameof(LayerConfigurator.Create) && c.GetGenericArguments().Length == 1);
-            Assert.That(create, Is.Not.Null);
+            create.ShouldNotBeNull();
 
             var configurator = create!.MakeGenericMethod(t.GetType()).Invoke(null, new[] { t });
-            Assert.That(configurator, Is.Not.Null);
+            configurator.ShouldNotBeNull();
 
             configurators.Add((LayerConfigurator)configurator!);
         }
@@ -219,13 +220,13 @@ public static class ArchitectureSpecExtensions
         {
             configurator.Configure((TTarget actual) =>
             {
-                Assert.That(actual, Is.EqualTo(expected));
+                actual.ShouldBe(expected);
 
                 configured = true;
             });
         }
 
-        Assert.That(configured, Is.True, "Phase context didn't get configured");
+        configured.ShouldBeTrue("Phase context didn't get configured");
     }
 
     public static void ShouldConfigureTwoTargets<TTarget1, TTarget2>(this PhaseContext source, TTarget1 expected1, TTarget2 expected2)
@@ -235,14 +236,14 @@ public static class ArchitectureSpecExtensions
         {
             configurator.Configure((TTarget1 actual1, TTarget2 actual2) =>
             {
-                Assert.That(actual1, Is.EqualTo(expected1));
-                Assert.That(actual2, Is.EqualTo(expected2));
+                actual1.ShouldBe(expected1);
+                actual2.ShouldBe(expected2);
 
                 configured = true;
             });
         }
 
-        Assert.That(configured, Is.True, "Phase context didn't get configured");
+        configured.ShouldBeTrue("Phase context didn't get configured");
     }
 
     public static void ShouldConfigureThreeTargets<TTarget1, TTarget2, TTarget3>(this PhaseContext source, TTarget1 expected1, TTarget2 expected2, TTarget3 expected3)
@@ -252,15 +253,15 @@ public static class ArchitectureSpecExtensions
         {
             configurator.Configure((TTarget1 actual1, TTarget2 actual2, TTarget3 actual3) =>
             {
-                Assert.That(actual1, Is.EqualTo(expected1));
-                Assert.That(actual2, Is.EqualTo(expected2));
-                Assert.That(actual3, Is.EqualTo(expected3));
+                actual1.ShouldBe(expected1);
+                actual2.ShouldBe(expected2);
+                actual3.ShouldBe(expected3);
 
                 configured = true;
             });
         }
 
-        Assert.That(configured, Is.True, "Phase context didn't get configured");
+        configured.ShouldBeTrue("Phase context didn't get configured");
     }
 
     public static void ShouldAddValueToContextOnDispose<T>(this PhaseContext source, T value, ApplicationContext context)
