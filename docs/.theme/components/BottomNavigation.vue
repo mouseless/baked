@@ -1,19 +1,24 @@
 <template>
-  <div class="navigation-buttons">
+  <div v-if="prev != null || next != null" class="navigation-buttons-container">
+    <hr>
     <div v-if="prev != null" class="button left">
-      <NuxtLink :to="prev?._path">
-        <h4>
-          <i class="fa-solid fa-caret-left"></i>
-          {{ prev?.title }}
-        </h4>
+      <NuxtLink :to="prev._path">
+        <div class="link-text">
+          <i class="fa-solid fa-caret-left" /> Prev
+          <h4>
+            {{ prev?.title }}
+          </h4>
+        </div>
       </NuxtLink>
     </div>
     <div v-if="next != null" class="button right">
       <NuxtLink :to="next?._path">
-        <h4>
-          {{ next?.title }}
-          <i class="fa-solid fa-caret-right"></i>
-        </h4>
+        <div class="link-text">
+          Next <i class="fa-solid fa-caret-right" />
+          <h4>
+            {{ next?.title }}
+          </h4>
+        </div>
       </NuxtLink>
     </div>
   </div>
@@ -44,8 +49,8 @@ menus.forEach((menu, index) => {
   }
 });
 
-const prev = currentPageNumber > 0 ? menus[currentPageNumber - 1] : null;
-const next = currentPageNumber < menus.length + 1 ? menus[currentPageNumber + 1] : null;
+const prev: any = currentPageNumber > 0 ? menus[currentPageNumber - 1] : null;
+const next: any = currentPageNumber < menus.length + 1 ? menus[currentPageNumber + 1] : null;
 
 function sorter(
   { by = "position", order = "asc" } = { }
@@ -57,7 +62,7 @@ function sorter(
 }
 </script>
 <style lang="scss" scoped>
-.navigation-buttons
+.navigation-buttons-container
 {
   & .button {
     padding-right: 0.4rem;
@@ -67,11 +72,19 @@ function sorter(
     }
 
     &.left {
+      text-align: left;
       float: left;
     }
 
     &.right {
+      text-align: end;
       float: right;
+    }
+
+    & .link-text {
+      & h4 {
+        margin-top: 5px;
+      }
     }
   }
 }
