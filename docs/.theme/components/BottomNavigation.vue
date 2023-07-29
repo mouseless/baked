@@ -4,7 +4,7 @@
     <div v-if="prev != null" class="button left">
       <NuxtLink :to="prev._path">
         <div class="link-text">
-          <i class="fa-solid fa-caret-left" /> Prev
+          <i class="fa-solid fa-caret-left" /> Previous
           <h4>
             {{ prev?.title }}
           </h4>
@@ -67,6 +67,7 @@ function sorter(
   & .button {
     padding-right: 0.4rem;
     padding-left: 0.4rem;
+
     & a {
       text-decoration: none;
     }
@@ -82,8 +83,16 @@ function sorter(
     }
 
     & .link-text {
+      color: $color-fg-passive;
+      font-size: 13px;
+
       & h4 {
         margin-top: 5px;
+        font-size: 18px;
+      }
+
+      & i {
+        color: #444444;
       }
     }
   }
