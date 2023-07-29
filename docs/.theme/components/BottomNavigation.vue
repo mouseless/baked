@@ -1,6 +1,6 @@
 <template>
   <div class="navigation-buttons">
-    <div v-if="prev != null" class="button">
+    <div v-if="prev != null" class="button left">
       <NuxtLink :to="prev?._path">
         <h4>
           <i class="fa-solid fa-caret-left"></i>
@@ -8,7 +8,7 @@
         </h4>
       </NuxtLink>
     </div>
-    <div v-if="next != null" class="button">
+    <div v-if="next != null" class="button right">
       <NuxtLink :to="next?._path">
         <h4>
           {{ next?.title }}
@@ -59,15 +59,19 @@ function sorter(
 <style lang="scss" scoped>
 .navigation-buttons
 {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-
   & .button {
     padding-right: 0.4rem;
     padding-left: 0.4rem;
     & a {
       text-decoration: none;
+    }
+
+    &.left {
+      float: left;
+    }
+
+    &.right {
+      float: right;
     }
   }
 }
