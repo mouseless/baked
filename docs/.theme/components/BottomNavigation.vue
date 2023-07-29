@@ -18,6 +18,9 @@ import { useRoute } from "#imports";
 const route = useRoute();
 const root = `/${route.path.split("/")[1]}`;
 
+console.log(root);
+console.log(route);
+
 const index = await queryContent(root)
   .where({ _path: { $eq: root } })
   .only(["_path", "title", "position"])
@@ -29,7 +32,10 @@ const sections = await queryContent(root)
   .sort(sorter(index.sort))
   .find();
 
-const menus = [index, ...sections];
+const menus = root === "/" ? [index] : [index, ...sections];
+
+console.log(menus);
+
 let currentPageNumber = 0;
 menus.forEach((menu, index) => {
   if(menu._path === route.path) {
@@ -52,8 +58,8 @@ function sorter(
 <style lang="scss" scoped>
 .navigation-buttons
 {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 </style>
