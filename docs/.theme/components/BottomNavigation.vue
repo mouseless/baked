@@ -1,13 +1,19 @@
 <template>
   <div class="navigation-buttons">
-    <div class="prev-button">
-      <NuxtLink v-if="prev != null" :to="prev?._path">
-        {{ prev?.title }}
+    <div v-if="prev != null" class="button">
+      <NuxtLink :to="prev?._path">
+        <h4>
+          <i class="fa-solid fa-caret-left"></i>
+          {{ prev?.title }}
+        </h4>
       </NuxtLink>
     </div>
-    <div class="next-button">
-      <NuxtLink v-if="next != null" :to="next?._path">
-        {{ next?.title }}
+    <div v-if="next != null" class="button">
+      <NuxtLink :to="next?._path">
+        <h4>
+          {{ next?.title }}
+          <i class="fa-solid fa-caret-right"></i>
+        </h4>
       </NuxtLink>
     </div>
   </div>
@@ -17,9 +23,6 @@ import { useRoute } from "#imports";
 
 const route = useRoute();
 const root = `/${route.path.split("/")[1]}`;
-
-console.log(root);
-console.log(route);
 
 const index = await queryContent(root)
   .where({ _path: { $eq: root } })
@@ -33,8 +36,6 @@ const sections = await queryContent(root)
   .find();
 
 const menus = root === "/" ? [index] : [index, ...sections];
-
-console.log(menus);
 
 let currentPageNumber = 0;
 menus.forEach((menu, index) => {
@@ -61,5 +62,13 @@ function sorter(
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+
+  & .button {
+    padding-right: 0.4rem;
+    padding-left: 0.4rem;
+    & a {
+      text-decoration: none;
+    }
+  }
 }
 </style>

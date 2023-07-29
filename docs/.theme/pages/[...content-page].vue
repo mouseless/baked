@@ -3,11 +3,14 @@
     <ContentDoc v-if="!trailingSlash">
       <template #default="{ doc }">
         <div class="container">
-          <ContentRenderer
-            :value="doc"
-            class="content toc-root"
-            :class="{ 'no-toc': doc.body.toc.links <= 0 }"
-          />
+          <div class="content toc-root">
+            <ContentRenderer
+              :value="doc"
+              :class="{ 'no-toc': doc.body.toc.links <= 0 }"
+            />
+
+            <BottomNavigation />
+          </div>
           <Toc
             v-if="doc.body.toc.links.length > 0"
             :value="doc.body.toc"
@@ -18,7 +21,6 @@
         <ContentDoc path="/not-found" :head="false" />
       </template>
     </ContentDoc>
-    <BottomNavigation />
   </div>
 </template>
 <script setup>
