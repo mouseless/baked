@@ -29,7 +29,7 @@ const root = computed(() => `/${route.path.split("/")[1]}`);
 
 const index = await queryContent(root.value)
   .where({ _path: { $eq: root.value } })
-  .only(["_path", "title", "position"])
+  .only(["_path", "title", "position", "sort"])
   .findOne();
 
 const sections = await queryContent(root.value)
@@ -43,7 +43,7 @@ const menus = ref<Pick<ParsedContent, string>[]>([index, ...sections]);
 watch(root, async () => {
   const index = await queryContent(root.value)
     .where({ _path: { $eq: root.value } })
-    .only(["_path", "title", "position"])
+    .only(["_path", "title", "position", "sort"])
     .findOne();
 
   const sections = await queryContent(root.value)

@@ -31,7 +31,7 @@ const root = `/${route.path.split("/")[1]}`;
 
 const index = await queryContent(root)
   .where({ _path: { $eq: root } })
-  .only(["_path", "title", "position"])
+  .only(["_path", "title", "position", "sort"])
   .findOne();
 
 const sections = await queryContent(root)
