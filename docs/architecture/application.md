@@ -125,7 +125,7 @@ flowchart TB
     AR -.- AC
 ```
 
-As mentioned [earlier](./README.md), layers provide features with things to
+As mentioned [earlier](./README.md#layer), layers provide features with things to
 configure. For this to happen, application asks every layer what to configure
 at each phase. If a layer has something to get configured at a phase, such as
 the `IApplicationBuilder` at the _Build_ phase, it returns that object within a
