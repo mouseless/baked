@@ -3,7 +3,7 @@
     :href="href"
     :target="href.startsWith('http') ? '_blank' : target"
   >
-    <slot /> <i
+    <slot /><i
       v-if="href.startsWith('http')"
       class="fa-solid fa-arrow-up-right-from-square"
     />

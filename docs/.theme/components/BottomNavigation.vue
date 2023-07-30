@@ -1,6 +1,5 @@
 <template>
   <div v-if="prev != null || next != null" class="navigation-buttons-container">
-    <hr>
     <div v-if="prev != null" class="button left">
       <NuxtLink :to="prev._path">
         <div class="link-text">
@@ -64,9 +63,12 @@ function sorter(
 <style lang="scss" scoped>
 .navigation-buttons-container
 {
+  @include border(top);
+  margin-top: 30px;
   & .button {
     padding-right: 0.4rem;
     padding-left: 0.4rem;
+    margin-top: 15px;
 
     & a {
       text-decoration: none;
@@ -84,15 +86,15 @@ function sorter(
 
     & .link-text {
       color: $color-fg-passive;
-      font-size: 13px;
+      font-size: 12px;
 
       & h4 {
-        margin-top: 5px;
+        margin-top: 1px;
         font-size: 18px;
       }
 
       & i {
-        color: #444444;
+        color: $color-fg-passive;
       }
     }
   }
