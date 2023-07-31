@@ -170,8 +170,9 @@ public class RunningAnApplication : Spec
         var layer = MockMe.ALayer(phases: new[] { phaseA, phaseB });
 
         var app = GiveMe.AnApplication(layer: layer);
+        var action = () => app.Run();
 
-        Should.Throw< OverlappingPhaseException>(() => app.Run());
+        action.ShouldThrow<OverlappingPhaseException>();
     }
 
     [Test]
@@ -181,7 +182,8 @@ public class RunningAnApplication : Spec
         var layer = MockMe.ALayer(phase: phase);
 
         var app = GiveMe.AnApplication(layer: layer);
+        var action = () => app.Run();
 
-        Should.Throw<CannotProceedException>(() => app.Run());
+        action.ShouldThrow<CannotProceedException>();
     }
 }

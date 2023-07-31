@@ -294,7 +294,6 @@ public static class ArchitectureSpecExtensions
     #region Assertion
 
     public static void ShouldFail(this Spec source, string message = "") => Assert.Fail(message);
-
     public static void ShouldPass(this Spec source, string message = "") => Assert.Pass(message);
 
     #endregion

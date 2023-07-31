@@ -5,7 +5,7 @@ public class ForgingNewApplication : Spec
     [Test]
     public void It_is_accessible_via_a_fluent_api()
     {
-        Forge.New.ShouldBeAssignableTo(typeof(Forge));
+        Forge.New.ShouldBeAssignableTo<Forge>();
     }
 
     [Test]
@@ -15,6 +15,6 @@ public class ForgingNewApplication : Spec
 
         var actual = forge.Application(_ => { });
 
-        actual.ShouldBeAssignableTo(typeof(Do.Architecture.Application));
+        actual.ShouldBeAssignableTo<Do.Architecture.Application>();
     }
 }
