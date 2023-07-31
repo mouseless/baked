@@ -1,6 +1,4 @@
-﻿using Shouldly;
-
-namespace Do.Test.Architecture.Application;
+﻿namespace Do.Test.Architecture.Application;
 
 public class ForgingNewApplication : Spec
 {

@@ -1,5 +1,4 @@
 using Do.Architecture;
-using Shouldly;
 
 namespace Do.Test.Architecture.Feature;
 

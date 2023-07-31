@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using Do.Architecture;
 using Do.Branding;
-using Shouldly;
 
 namespace Do.Test;
 

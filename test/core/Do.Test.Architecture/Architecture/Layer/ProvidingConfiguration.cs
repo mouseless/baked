@@ -1,5 +1,5 @@
 ﻿using Do.Architecture;
-using Shouldly;
+
 using static Do.Test.Architecture.Layer.ProvidingConfiguration.LayerX;
 using static Do.Test.Architecture.Layer.ProvidingConfiguration.LayerY;
 using static Do.Test.Architecture.Layer.ProvidingConfiguration.LayerZ;
