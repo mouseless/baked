@@ -29,40 +29,33 @@ const root = computed(() => `/${route.path.split("/")[1]}`);
 
 const index = await queryContent(root.value)
   .where({ _path: { $eq: root.value } })
-  .only(["_path", "title", "position", "sort"])
+  .only(["_path", "title", "sections"])
   .findOne();
 
 const sections = await queryContent(root.value)
   .where({ _path: { $ne: root.value } })
-  .only(["_path", "title", "position"])
-  .sort(sorter(index.sort))
+  .only(["_path", "title"])
   .find();
+
+sections.sort((a, b) => sectionsSorter(a, b, index.sections));
 
 const menus = ref<Pick<ParsedContent, string>[]>([index, ...sections]);
 
 watch(root, async () => {
   const index = await queryContent(root.value)
     .where({ _path: { $eq: root.value } })
-    .only(["_path", "title", "position", "sort"])
+    .only(["_path", "title", "sections"])
     .findOne();
 
   const sections = await queryContent(root.value)
     .where({ _path: { $ne: root.value } })
-    .only(["_path", "title", "position"])
-    .sort(sorter(index.sort))
+    .only(["_path", "title"])
     .find();
+
+  sections.sort((a, b) => sectionsSorter(a, b, index.sections));
 
   menus.value = [index, ...sections];
 });
-
-function sorter(
-  { by = "position", order = "asc" } = { }
-) {
-  return {
-    [by]: order === "asc" ? 1 : -1,
-    $numeric: by === "position"
-  };
-}
 </script>
 <style lang="scss" scoped>
 nav {

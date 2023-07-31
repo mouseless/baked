@@ -1,5 +1,7 @@
 ---
-position: 99
+sections:
+  - v0-1-0
+  - v0-0-0
 sort:
   by: title
   order: desc

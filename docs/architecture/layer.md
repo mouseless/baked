@@ -1,7 +1,3 @@
----
-position: 2
----
-
 # Layer
 
 Each `ILayer` implementation represents an internal system component of the

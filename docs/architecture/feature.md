@@ -1,7 +1,3 @@
----
-position: 3
----
-
 # Feature
 
 Features consist of two parts; abstraction (port) and implementation (adapter).

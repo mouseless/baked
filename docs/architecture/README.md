@@ -1,5 +1,8 @@
 ---
-position: 4
+sections:
+  - application
+  - layer
+  - feature
 ---
 
 # Architecture

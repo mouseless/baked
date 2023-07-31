@@ -1,7 +1,3 @@
----
-position: 1
----
-
 # Application
 
 `Application` acts as a container object for all the domain objects, features

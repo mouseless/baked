@@ -42,11 +42,17 @@ const runtimeConfig = useRuntimeConfig();
 const route = useRoute();
 const root = computed(() => `/${route.path.split("/")[1]}`);
 
+const index = await queryContent()
+  .where({ _path: "/" })
+  .only(["sections"])
+  .findOne();
+
 const menus = await queryContent("/")
-  .only(["_path", "title", "position"])
-  .where({ _dir: { $eq: "" }, _path: { $ne: "/" }, position: { $exists: true } })
-  .sort({ position: 1, $numeric: true })
+  .only(["_path", "title"])
+  .where({ _dir: { $eq: "" }, _path: { $ne: "/" }, sections: { $exists: true } })
   .find();
+
+menus.sort((a, b) => sectionsSorter(a, b, index.sections));
 
 const menuShown = ref<boolean>(false);
 function toggle() { menuShown.value = !menuShown.value; }

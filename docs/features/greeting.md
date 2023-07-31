@@ -1,7 +1,3 @@
----
-position: 1
----
-
 # Greeting
 
 This feature provides a greeting message to show that application is up and

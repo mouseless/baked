@@ -1,7 +1,3 @@
----
-position: 1
----
-
 # Dependency Injection
 
 DO uses the default dependency injection library for now.

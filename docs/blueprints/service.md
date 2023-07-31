@@ -1,7 +1,3 @@
----
-position: 1
----
-
 # Service
 
 Service blueprint will be the default backend blueprint that DO provides. This

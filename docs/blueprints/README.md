@@ -1,5 +1,6 @@
 ---
-position: 1
+sections:
+    - service
 ---
 
 # Blueprints

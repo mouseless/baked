@@ -1,5 +1,7 @@
 ---
-position: 3
+sections:
+    - dependency-injection
+    - web
 ---
 
 # Layers

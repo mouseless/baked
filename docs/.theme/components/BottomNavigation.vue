@@ -30,14 +30,15 @@ const root = `/${route.path.split("/")[1]}`;
 
 const index = await queryContent(root)
   .where({ _path: { $eq: root } })
-  .only(["_path", "title", "position", "sort"])
+  .only(["_path", "title", "sections"])
   .findOne();
 
 const sections = await queryContent(root)
   .where({ _path: { $ne: root } })
-  .only(["_path", "title", "position"])
-  .sort(sorter(index.sort))
+  .only(["_path", "title"])
   .find();
+
+sections.sort((a, b) => sectionsSorter(a, b, index.sections));
 
 const menus = root === "/" ? [index] : [index, ...sections];
 
@@ -50,15 +51,6 @@ menus.forEach((menu, index) => {
 
 const prev: any = currentPageNumber > 0 ? menus[currentPageNumber - 1] : null;
 const next: any = currentPageNumber < menus.length + 1 ? menus[currentPageNumber + 1] : null;
-
-function sorter(
-  { by = "position", order = "asc" } = { }
-) {
-  return {
-    [by]: order === "asc" ? 1 : -1,
-    $numeric: by === "position"
-  };
-}
 </script>
 <style lang="scss" scoped>
 .navigation-buttons-container
