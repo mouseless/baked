@@ -53,10 +53,9 @@ const prev: any = currentPageNumber > 0 ? menus[currentPageNumber - 1] : null;
 const next: any = currentPageNumber < menus.length + 1 ? menus[currentPageNumber + 1] : null;
 </script>
 <style lang="scss" scoped>
-.navigation-buttons-container
-{
-  @include border(top);
-  margin-top: 30px;
+.navigation-buttons-container {
+  margin-top: 4em;
+
   & .button {
     padding-right: 0.4rem;
     padding-left: 0.4rem;
@@ -83,6 +82,7 @@ const next: any = currentPageNumber < menus.length + 1 ? menus[currentPageNumber
       & h4 {
         margin-top: 1px;
         font-size: 18px;
+        color: $color-brand;
       }
 
       & i {
