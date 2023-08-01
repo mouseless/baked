@@ -44,7 +44,7 @@ const menus = ref<Pick<ParsedContent, string>[]>([index, ...pages]);
 watch(root, async () => {
   const index = await queryContent(root.value)
     .where({ _path: { $eq: root.value } })
-    .only(["_path", "title", "pages"])
+    .only(["_path", "title", "pages", "sort"])
     .findOne();
 
   const pages = await queryContent(root.value)
