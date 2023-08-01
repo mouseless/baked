@@ -28,4 +28,7 @@ const manipulatedHref = props.href
 a {
   font-family: 'Open Sans';
 }
+i {
+  margin-left: 0.3em;
+}
 </style>
