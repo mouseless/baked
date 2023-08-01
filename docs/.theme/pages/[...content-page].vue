@@ -8,7 +8,6 @@
               :value="doc"
               :class="{ 'no-toc': doc.body.toc.links <= 0 }"
             />
-
             <BottomNavigation />
           </div>
           <Toc
