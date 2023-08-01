@@ -32,12 +32,12 @@ const index = await queryContent(root.value)
   .only(["_path", "title", "pages", "sort"])
   .findOne();
 
-const pages = await queryContent(root.value)
+let pages = await queryContent(root.value)
   .where({ _path: { $ne: root.value } })
   .only(["_path", "title"])
   .find();
 
-pages.sort((a, b) => pagesSorter(a, b, index));
+index.pages ? pages = pageSorter(index, pages) : index.sort ? pages.sort((a, b) => autoSorter(a, b, index)) : {} ;
 
 const menus = ref<Pick<ParsedContent, string>[]>([index, ...pages]);
 
@@ -47,12 +47,12 @@ watch(root, async () => {
     .only(["_path", "title", "pages", "sort"])
     .findOne();
 
-  const pages = await queryContent(root.value)
+  let pages = await queryContent(root.value)
     .where({ _path: { $ne: root.value } })
     .only(["_path", "title"])
     .find();
 
-  pages.sort((a, b) => pagesSorter(a, b, index));
+  index.pages ? pages = pageSorter(index, pages) : index.sort ? pages.sort((a, b) => autoSorter(a, b, index)) : {} ;
 
   menus.value = [index, ...pages];
 });

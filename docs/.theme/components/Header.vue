@@ -47,7 +47,7 @@ const index = await queryContent()
   .only(["sections"])
   .findOne();
 
-const menus = await queryContent("/")
+let menus = await queryContent("/")
   .only(["_path", "title", "_dir"])
   .where({
     _dir: { $eq: "" },
@@ -55,7 +55,7 @@ const menus = await queryContent("/")
   })
   .find();
 
-menus.sort((a, b) => sectionSorter(a, b, index.sections));
+menus = sectionSorter(index, menus);
 
 const menuShown = ref<boolean>(false);
 function toggle() { menuShown.value = !menuShown.value; }

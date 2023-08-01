@@ -33,12 +33,12 @@ const index = await queryContent(root)
   .only(["_path", "title", "pages", "sort"])
   .findOne();
 
-const pages = await queryContent(root)
+let pages = await queryContent(root)
   .where({ _path: { $ne: root } })
   .only(["_path", "title"])
   .find();
 
-pages.sort((a, b) => pagesSorter(a, b, index));
+index.pages ? pages = pageSorter(index, pages) : index.sort ? pages.sort((a, b) => autoSorter(a, b, index)) : {} ;
 
 const menus = root === "/" ? [index] : [index, ...pages];
 
