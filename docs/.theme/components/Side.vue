@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <h4><a @click="toggle">Sections</a></h4>
+    <h4><a @click="toggle">Pages</a></h4>
     <ul :class="{ active: shown }">
       <li>
         <NuxtLink

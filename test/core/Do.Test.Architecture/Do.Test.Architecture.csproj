@@ -20,6 +20,7 @@
   <ItemGroup>
     <Using Include="Moq" />
     <Using Include="NUnit.Framework" />
+    <Using Include="Shouldly" />
   </ItemGroup>
 
 </Project>
