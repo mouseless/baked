@@ -38,7 +38,7 @@ let pages = await queryContent(root)
   .only(["_path", "title"])
   .find();
 
-index.pages ? pages = pageSorter(index, pages) : index.sort ? pages.sort((a, b) => autoSorter(a, b, index)) : {} ;
+index.pages ? pages = pageSorter(index, pages) : index.sort ? pages.sort((a, b) => autoSorter(a, b, index)) : pages.sort();
 
 const menus = root === "/" ? [index] : [index, ...pages];
 

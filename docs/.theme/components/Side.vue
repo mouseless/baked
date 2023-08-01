@@ -37,7 +37,7 @@ let pages = await queryContent(root.value)
   .only(["_path", "title"])
   .find();
 
-index.pages ? pages = pageSorter(index, pages) : index.sort ? pages.sort((a, b) => autoSorter(a, b, index)) : {} ;
+index.pages ? pages = pageSorter(index, pages) : index.sort ? pages.sort((a, b) => autoSorter(a, b, index)) : pages.sort();
 
 const menus = ref<Pick<ParsedContent, string>[]>([index, ...pages]);
 
@@ -52,7 +52,7 @@ watch(root, async () => {
     .only(["_path", "title"])
     .find();
 
-  index.pages ? pages = pageSorter(index, pages) : index.sort ? pages.sort((a, b) => autoSorter(a, b, index)) : {} ;
+  index.pages ? pages = pageSorter(index, pages) : index.sort ? pages.sort((a, b) => autoSorter(a, b, index)) : pages.sort();
 
   menus.value = [index, ...pages];
 });
