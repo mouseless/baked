@@ -1,5 +1,5 @@
 ---
-sections:
+pages:
   - application
   - layer
   - feature

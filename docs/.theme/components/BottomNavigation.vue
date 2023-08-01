@@ -30,17 +30,17 @@ const root = `/${route.path.split("/")[1]}`;
 
 const index = await queryContent(root)
   .where({ _path: { $eq: root } })
-  .only(["_path", "title", "sections"])
+  .only(["_path", "title", "pages", "sort"])
   .findOne();
 
-const sections = await queryContent(root)
+const pages = await queryContent(root)
   .where({ _path: { $ne: root } })
   .only(["_path", "title"])
   .find();
 
-sections.sort((a, b) => sectionsSorter(a, b, index.sections));
+pages.sort((a, b) => pagesSorter(a, b, index));
 
-const menus = root === "/" ? [index] : [index, ...sections];
+const menus = root === "/" ? [index] : [index, ...pages];
 
 let currentPageNumber = 0;
 menus.forEach((menu, index) => {

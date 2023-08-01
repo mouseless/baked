@@ -48,11 +48,14 @@ const index = await queryContent()
   .findOne();
 
 const menus = await queryContent("/")
-  .only(["_path", "title"])
-  .where({ _dir: { $eq: "" }, _path: { $ne: "/" }, sections: { $exists: true } })
+  .only(["_path", "title", "_dir"])
+  .where({
+    _dir: { $eq: "" },
+    _path: { $in: index.sections.map((section :any) => `/${section}`) }
+  })
   .find();
 
-menus.sort((a, b) => sectionsSorter(a, b, index.sections));
+menus.sort((a, b) => sectionSorter(a, b, index.sections));
 
 const menuShown = ref<boolean>(false);
 function toggle() { menuShown.value = !menuShown.value; }

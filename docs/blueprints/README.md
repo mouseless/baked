@@ -1,5 +1,5 @@
 ---
-sections:
+pages:
     - service
 ---
 

@@ -29,32 +29,32 @@ const root = computed(() => `/${route.path.split("/")[1]}`);
 
 const index = await queryContent(root.value)
   .where({ _path: { $eq: root.value } })
-  .only(["_path", "title", "sections"])
+  .only(["_path", "title", "pages", "sort"])
   .findOne();
 
-const sections = await queryContent(root.value)
+const pages = await queryContent(root.value)
   .where({ _path: { $ne: root.value } })
   .only(["_path", "title"])
   .find();
 
-sections.sort((a, b) => sectionsSorter(a, b, index.sections));
+pages.sort((a, b) => pagesSorter(a, b, index));
 
-const menus = ref<Pick<ParsedContent, string>[]>([index, ...sections]);
+const menus = ref<Pick<ParsedContent, string>[]>([index, ...pages]);
 
 watch(root, async () => {
   const index = await queryContent(root.value)
     .where({ _path: { $eq: root.value } })
-    .only(["_path", "title", "sections"])
+    .only(["_path", "title", "pages"])
     .findOne();
 
-  const sections = await queryContent(root.value)
+  const pages = await queryContent(root.value)
     .where({ _path: { $ne: root.value } })
     .only(["_path", "title"])
     .find();
 
-  sections.sort((a, b) => sectionsSorter(a, b, index.sections));
+  pages.sort((a, b) => pagesSorter(a, b, index));
 
-  menus.value = [index, ...sections];
+  menus.value = [index, ...pages];
 });
 </script>
 <style lang="scss" scoped>
