@@ -27,18 +27,7 @@ import { usePageStore } from "~/store/pageStore";
 
 const route = useRoute();
 const root = `/${route.path.split("/")[1]}`;
-const trailingSlash = route.path !== "/" && route.path.endsWith("/");
 const store = usePageStore();
-
-onMounted(async () => {
-  if(trailingSlash) {
-    const { path, query, hash } = route;
-    const nextPath = path.replace(/\/+$/, "");
-    const nextRoute = { path: nextPath, query, hash };
-
-    await navigateTo(nextRoute, { replace: true });
-  }
-});
 
 const index = await queryContent(root)
   .where({ _path: { $eq: root } })
@@ -50,11 +39,26 @@ let pages = await queryContent(root)
   .only(["_path", "title"])
   .find();
 
-index.pages ? pages = pageSorter(index, pages) : index.sort ? pages.sort((a, b) => autoSorter(a, b, index)) : pages.sort();
+index.pages
+  ? pages = pageSorter(index, pages)
+  : index.sort
+    ? pages.sort((a, b) => autoSorter(a, b, index.sort.by, index.sort.order))
+    : pages.sort();
 
 const sortedPages = root === "/" ? [index] : [index, ...pages];
 
 store.setPages(sortedPages);
+
+const trailingSlash = route.path !== "/" && route.path.endsWith("/");
+onMounted(async () => {
+  if(trailingSlash) {
+    const { path, query, hash } = route;
+    const nextPath = path.replace(/\/+$/, "");
+    const nextRoute = { path: nextPath, query, hash };
+
+    await navigateTo(nextRoute, { replace: true });
+  }
+});
 </script>
 <style lang="scss" scoped>
 .container {

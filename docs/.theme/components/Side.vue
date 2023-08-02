@@ -20,13 +20,14 @@
 import { watch, ref } from "#imports";
 import { usePageStore } from "~/store/pageStore";
 
-const shown = ref<boolean>(false);
-function toggle() { shown.value = !shown.value; }
-function close() { shown.value = false; }
-
 const store = usePageStore();
 
+const shown = ref<boolean>(false);
+
 const menus:any = ref(store.pages);
+
+function close() { shown.value = false; }
+function toggle() { shown.value = !shown.value; }
 
 watch(usePageStore(), () => {
   menus.value = store.pages;

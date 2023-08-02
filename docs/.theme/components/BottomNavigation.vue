@@ -29,8 +29,7 @@ import { usePageStore } from "~/store/pageStore";
 const route = useRoute();
 const store = usePageStore();
 
-let menus:any = {};
-menus = store.pages;
+const menus:any = store.pages;
 
 let currentPageNumber = 0;
 menus.forEach((menu:any, index:any) => {

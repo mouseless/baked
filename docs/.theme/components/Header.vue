@@ -43,11 +43,11 @@ const runtimeConfig = useRuntimeConfig();
 const route = useRoute();
 const store = useSectionStore();
 
+const menuShown = ref<boolean>(false);
 const root = computed(() => `/${route.path.split("/")[1]}`);
 
 const menus:any = { ...store.sections };
 
-const menuShown = ref<boolean>(false);
 function toggle() { menuShown.value = !menuShown.value; }
 function close() { menuShown.value = false; }
 </script>
