@@ -36,7 +36,7 @@ const store = useSectionStore();
 
 const root = computed(() => `/${route.path.split("/")[1]}`);
 
-const menus:any = { ...store.sections };
+const menus: any = { ...store.sections };
 </script>
 <style lang="scss" scoped>
 div.bottom {

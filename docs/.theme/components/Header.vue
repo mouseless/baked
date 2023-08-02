@@ -46,7 +46,7 @@ const store = useSectionStore();
 const menuShown = ref<boolean>(false);
 const root = computed(() => `/${route.path.split("/")[1]}`);
 
-const menus:any = { ...store.sections };
+const menus: any = { ...store.sections };
 
 function toggle() { menuShown.value = !menuShown.value; }
 function close() { menuShown.value = false; }

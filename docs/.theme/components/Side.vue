@@ -24,7 +24,7 @@ const store = usePageStore();
 
 const shown = ref<boolean>(false);
 
-const menus:any = ref(store.pages);
+const menus: any = ref(store.pages);
 
 function close() { shown.value = false; }
 function toggle() { shown.value = !shown.value; }
