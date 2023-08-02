@@ -4,9 +4,9 @@
       <NuxtLink :to="prev._path">
         <div class="link-text">
           <i class="fa-solid fa-caret-left" /> Previous
-          <h4>
+          <h3>
             {{ prev?.title }}
-          </h4>
+          </h3>
         </div>
       </NuxtLink>
     </div>
@@ -14,9 +14,9 @@
       <NuxtLink :to="next?._path">
         <div class="link-text">
           Next <i class="fa-solid fa-caret-right" />
-          <h4>
+          <h3>
             {{ next?.title }}
-          </h4>
+          </h3>
         </div>
       </NuxtLink>
     </div>
@@ -57,9 +57,9 @@ const next: any = currentPageNumber < menus.length + 1 ? menus[currentPageNumber
   margin-top: 4em;
 
   & .button {
-    padding-right: 0.4rem;
-    padding-left: 0.4rem;
-    margin-top: 15px;
+    padding-right: 0.4em;
+    padding-left: 0.4em;
+    margin-top: 0.9em;
 
     & a {
       text-decoration: none;
@@ -77,11 +77,10 @@ const next: any = currentPageNumber < menus.length + 1 ? menus[currentPageNumber
 
     & .link-text {
       color: $color-fg-passive;
-      font-size: 12px;
+      font-size: 0.75em;
 
-      & h4 {
-        margin-top: 1px;
-        font-size: 18px;
+      & h3 {
+        margin-top: 0.1em;
         color: $color-brand;
       }
 
