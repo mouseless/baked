@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Do.Blueprints.Service.Core.Dotnet;
 
-public class DotnetCoreFeature : IFeature
+public class DotnetCore : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
