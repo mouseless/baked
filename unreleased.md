@@ -2,4 +2,4 @@
 
 ## Features
 
-- `Core` feature is added with `Dotnet` and `Mock` implementations.
+- `Core` feature is added with `Dotnet` implementation.
