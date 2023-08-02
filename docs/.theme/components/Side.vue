@@ -17,44 +17,19 @@
   </nav>
 </template>
 <script lang="ts" setup>
-import type { ParsedContent } from "@nuxt/content/dist/runtime/types";
-import { computed, useRoute, watch, queryContent, ref } from "#imports";
+import { watch, ref } from "#imports";
+import { usePageStore } from "~/store/pageStore";
 
 const shown = ref<boolean>(false);
 function toggle() { shown.value = !shown.value; }
 function close() { shown.value = false; }
 
-const route = useRoute();
-const root = computed(() => `/${route.path.split("/")[1]}`);
+const store = usePageStore();
 
-const index = await queryContent(root.value)
-  .where({ _path: { $eq: root.value } })
-  .only(["_path", "title", "pages", "sort"])
-  .findOne();
+const menus:any = ref(store.pages);
 
-let pages = await queryContent(root.value)
-  .where({ _path: { $ne: root.value } })
-  .only(["_path", "title"])
-  .find();
-
-index.pages ? pages = pageSorter(index, pages) : index.sort ? pages.sort((a, b) => autoSorter(a, b, index)) : pages.sort();
-
-const menus = ref<Pick<ParsedContent, string>[]>([index, ...pages]);
-
-watch(root, async () => {
-  const index = await queryContent(root.value)
-    .where({ _path: { $eq: root.value } })
-    .only(["_path", "title", "pages", "sort"])
-    .findOne();
-
-  let pages = await queryContent(root.value)
-    .where({ _path: { $ne: root.value } })
-    .only(["_path", "title"])
-    .find();
-
-  index.pages ? pages = pageSorter(index, pages) : index.sort ? pages.sort((a, b) => autoSorter(a, b, index)) : pages.sort();
-
-  menus.value = [index, ...pages];
+watch(usePageStore(), () => {
+  menus.value = store.pages;
 });
 </script>
 <style lang="scss" scoped>

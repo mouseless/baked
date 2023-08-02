@@ -90,7 +90,10 @@ export default defineNuxtConfig({
     }
   },
   css: ["~/assets/styles.scss"],
-  modules: ["@nuxt/content"],
+  modules: [
+    "@nuxt/content",
+    "@pinia/nuxt"
+  ],
   content: {
     markdown: {
       remarkPlugins: {

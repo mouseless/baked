@@ -37,25 +37,15 @@
 </template>
 <script lang="ts" setup>
 import { useRoute, useRuntimeConfig, ref } from "#imports";
+import { useSectionStore } from "~/store/sectionStore";
 
 const runtimeConfig = useRuntimeConfig();
 const route = useRoute();
+const store = useSectionStore();
+
 const root = computed(() => `/${route.path.split("/")[1]}`);
 
-const index = await queryContent()
-  .where({ _path: "/" })
-  .only(["sections"])
-  .findOne();
-
-let menus = await queryContent("/")
-  .only(["_path", "title", "_dir"])
-  .where({
-    _dir: { $eq: "" },
-    _path: { $in: index.sections.map((section :any) => `/${section}`) }
-  })
-  .find();
-
-menus = sectionSorter(index, menus);
+const menus:any = { ...store.sections };
 
 const menuShown = ref<boolean>(false);
 function toggle() { menuShown.value = !menuShown.value; }

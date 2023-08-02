@@ -24,26 +24,16 @@
 </template>
 <script lang="ts" setup>
 import { useRoute } from "#imports";
+import { usePageStore } from "~/store/pageStore";
 
 const route = useRoute();
-const root = `/${route.path.split("/")[1]}`;
+const store = usePageStore();
 
-const index = await queryContent(root)
-  .where({ _path: { $eq: root } })
-  .only(["_path", "title", "pages", "sort"])
-  .findOne();
-
-let pages = await queryContent(root)
-  .where({ _path: { $ne: root } })
-  .only(["_path", "title"])
-  .find();
-
-index.pages ? pages = pageSorter(index, pages) : index.sort ? pages.sort((a, b) => autoSorter(a, b, index)) : pages.sort();
-
-const menus = root === "/" ? [index] : [index, ...pages];
+let menus:any = {};
+menus = store.pages;
 
 let currentPageNumber = 0;
-menus.forEach((menu, index) => {
+menus.forEach((menu:any, index:any) => {
   if(menu._path === route.path) {
     currentPageNumber = index;
   }

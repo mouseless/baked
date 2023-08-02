@@ -23,9 +23,12 @@
 </template>
 <script setup>
 import { useRoute, navigateTo, onMounted } from "#imports";
+import { usePageStore } from "~/store/pageStore";
 
 const route = useRoute();
+const root = `/${route.path.split("/")[1]}`;
 const trailingSlash = route.path !== "/" && route.path.endsWith("/");
+const store = usePageStore();
 
 onMounted(async () => {
   if(trailingSlash) {
@@ -36,6 +39,22 @@ onMounted(async () => {
     await navigateTo(nextRoute, { replace: true });
   }
 });
+
+const index = await queryContent(root)
+  .where({ _path: { $eq: root } })
+  .only(["_path", "title", "pages", "sort"])
+  .findOne();
+
+let pages = await queryContent(root)
+  .where({ _path: { $ne: root } })
+  .only(["_path", "title"])
+  .find();
+
+index.pages ? pages = pageSorter(index, pages) : index.sort ? pages.sort((a, b) => autoSorter(a, b, index)) : pages.sort();
+
+const sortedPages = root === "/" ? [index] : [index, ...pages];
+
+store.setPages(sortedPages);
 </script>
 <style lang="scss" scoped>
 .container {
