@@ -27,16 +27,16 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { useRoute, useRuntimeConfig, queryContent } from "#imports";
+import { useRoute, useRuntimeConfig } from "#imports";
+import { useSectionStore } from "~/store/sectionStore";
 
 const runtimeConfig = useRuntimeConfig();
 const route = useRoute();
+const store = useSectionStore();
+
 const root = computed(() => `/${route.path.split("/")[1]}`);
-const menus = await queryContent("/")
-  .only(["_path", "title", "position"])
-  .where({ _dir: { $eq: "" }, _path: { $ne: "/" }, position: { $exists: true } })
-  .sort({ position: 1, $numeric: true })
-  .find();
+
+const menus: any = { ...store.sections };
 </script>
 <style lang="scss" scoped>
 div.bottom {

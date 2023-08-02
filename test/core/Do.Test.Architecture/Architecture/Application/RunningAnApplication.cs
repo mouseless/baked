@@ -32,8 +32,8 @@ public class RunningAnApplication : Spec
 
         app.Run();
 
-        Assert.That(values.First(), Is.EqualTo("phase"));
-        Assert.That(values.Last(), Is.EqualTo("layer"));
+        values.First().ShouldBe("phase");
+        values.Last().ShouldBe("layer");
     }
 
     [Test]
@@ -65,7 +65,7 @@ public class RunningAnApplication : Spec
 
         app.Run();
 
-        Assert.That(disposed, Is.True, "Phase context didn't get disposed");
+        disposed.ShouldBeTrue("Phase context didn't get disposed");
     }
 
     [Test]
@@ -102,7 +102,7 @@ public class RunningAnApplication : Spec
 
         var hasContent = context.Has<RunningAnApplication>();
 
-        Assert.That(hasContent, Is.True);
+        hasContent.ShouldBeTrue();
     }
 
     [Test]
@@ -112,7 +112,7 @@ public class RunningAnApplication : Spec
 
         var content = context.Get<RunningAnApplication>();
 
-        Assert.That(content, Is.EqualTo(this));
+        content.ShouldBe(this);
     }
 
     [Test]
@@ -129,9 +129,9 @@ public class RunningAnApplication : Spec
 
         app.Run();
 
-        Assert.That(phases[0], Is.EqualTo("phase c"));
-        Assert.That(phases[1], Is.EqualTo("phase b"));
-        Assert.That(phases[2], Is.EqualTo("phase a"));
+        phases[0].ShouldBe("phase c");
+        phases[1].ShouldBe("phase b");
+        phases[2].ShouldBe("phase a");
     }
 
     [Test]
@@ -147,18 +147,18 @@ public class RunningAnApplication : Spec
 
         app.Run();
 
-        Assert.That(phases[0], Is.EqualTo("phase b"));
-        Assert.That(phases[1], Is.EqualTo("phase a"));
+        phases[0].ShouldBe("phase b");
+        phases[1].ShouldBe("phase a");
     }
 
     [Test]
     public void There_are_five_phase_order_values()
     {
-        Assert.That((int)PhaseOrder.Earliest, Is.EqualTo(1));
-        Assert.That((int)PhaseOrder.Early, Is.EqualTo(2));
-        Assert.That((int)PhaseOrder.Normal, Is.EqualTo(3));
-        Assert.That((int)PhaseOrder.Late, Is.EqualTo(4));
-        Assert.That((int)PhaseOrder.Latest, Is.EqualTo(5));
+        ((int)PhaseOrder.Earliest).ShouldBe(1);
+        ((int)PhaseOrder.Early).ShouldBe(2);
+        ((int)PhaseOrder.Normal).ShouldBe(3);
+        ((int)PhaseOrder.Late).ShouldBe(4);
+        ((int)PhaseOrder.Latest).ShouldBe(5);
     }
 
     [TestCase(PhaseOrder.Earliest)]
@@ -170,8 +170,9 @@ public class RunningAnApplication : Spec
         var layer = MockMe.ALayer(phases: new[] { phaseA, phaseB });
 
         var app = GiveMe.AnApplication(layer: layer);
+        var action = () => app.Run();
 
-        Assert.That(() => app.Run(), Throws.TypeOf<OverlappingPhaseException>());
+        action.ShouldThrow<OverlappingPhaseException>();
     }
 
     [Test]
@@ -181,7 +182,8 @@ public class RunningAnApplication : Spec
         var layer = MockMe.ALayer(phase: phase);
 
         var app = GiveMe.AnApplication(layer: layer);
+        var action = () => app.Run();
 
-        Assert.That(() => app.Run(), Throws.TypeOf<CannotProceedException>());
+        action.ShouldThrow<CannotProceedException>();
     }
 }

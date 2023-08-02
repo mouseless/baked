@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <h4><a @click="toggle">Sections</a></h4>
+    <h4><a @click="toggle">Pages</a></h4>
     <ul :class="{ active: shown }">
       <li>
         <NuxtLink
@@ -17,52 +17,21 @@
   </nav>
 </template>
 <script lang="ts" setup>
-import type { ParsedContent } from "@nuxt/content/dist/runtime/types";
-import { computed, useRoute, watch, queryContent, ref } from "#imports";
+import { watch, ref } from "#imports";
+import { usePageStore } from "~/store/pageStore";
+
+const store = usePageStore();
 
 const shown = ref<boolean>(false);
-function toggle() { shown.value = !shown.value; }
+
+const menus: any = ref(store.pages);
+
 function close() { shown.value = false; }
+function toggle() { shown.value = !shown.value; }
 
-const route = useRoute();
-const root = computed(() => `/${route.path.split("/")[1]}`);
-
-const index = await queryContent(root.value)
-  .where({ _path: { $eq: root.value } })
-  .only(["_path", "title", "position"])
-  .findOne();
-
-const sections = await queryContent(root.value)
-  .where({ _path: { $ne: root.value } })
-  .only(["_path", "title", "position"])
-  .sort(sorter(index.sort))
-  .find();
-
-const menus = ref<Pick<ParsedContent, string>[]>([index, ...sections]);
-
-watch(root, async () => {
-  const index = await queryContent(root.value)
-    .where({ _path: { $eq: root.value } })
-    .only(["_path", "title", "position"])
-    .findOne();
-
-  const sections = await queryContent(root.value)
-    .where({ _path: { $ne: root.value } })
-    .only(["_path", "title", "position"])
-    .sort(sorter(index.sort))
-    .find();
-
-  menus.value = [index, ...sections];
+watch(usePageStore(), () => {
+  menus.value = store.pages;
 });
-
-function sorter(
-  { by = "position", order = "asc" } = { }
-) {
-  return {
-    [by]: order === "asc" ? 1 : -1,
-    $numeric: by === "position"
-  };
-}
 </script>
 <style lang="scss" scoped>
 nav {

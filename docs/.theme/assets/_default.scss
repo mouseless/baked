@@ -27,10 +27,16 @@ img.do {
 }
 
 .content {
-  h1, h2, h3, h4, h5, h6 {
+  h1 {
    &, code {
      color: $color-brand;
    }
+  }
+
+  h2, h3, h4, h5, h6 {
+    &, code {
+      color: $color-fg;
+    }
   }
 
   h1 {

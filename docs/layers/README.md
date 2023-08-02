@@ -1,5 +1,7 @@
 ---
-position: 3
+pages:
+    - dependency-injection
+    - web
 ---
 
 # Layers

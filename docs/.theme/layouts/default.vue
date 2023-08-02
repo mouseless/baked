@@ -18,6 +18,28 @@
     <Footer />
   </div>
 </template>
+<script setup lang="ts">
+import { useSectionStore } from "~/store/sectionStore";
+
+const store = useSectionStore();
+
+const index = await queryContent()
+  .where({ _path: "/" })
+  .only(["sections"])
+  .findOne();
+
+let sections = await queryContent("/")
+  .only(["_path", "title", "_dir"])
+  .where({
+    _dir: { $eq: "" },
+    _path: { $in: index.sections.map((section: any) => `/${section}`) }
+  })
+  .find();
+
+sections = sectionSorter(index, sections);
+
+store.setSections(sections);
+</script>
 <style lang="scss" scoped>
 .content, .full {
   @include width;

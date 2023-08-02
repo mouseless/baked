@@ -1,5 +1,8 @@
 ---
-position: 4
+pages:
+  - application
+  - layer
+  - feature
 ---
 
 # Architecture

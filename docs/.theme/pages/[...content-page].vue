@@ -2,11 +2,14 @@
   <ContentDoc v-if="!trailingSlash">
     <template #default="{ doc }">
       <div class="container">
-        <ContentRenderer
-          :value="doc"
-          class="content toc-root"
-          :class="{ 'no-toc': doc.body.toc.links <= 0 }"
-        />
+        <div class="content">
+          <ContentRenderer
+            :value="doc"
+            class="toc-root"
+            :class="{ 'no-toc': doc.body.toc.links <= 0 }"
+          />
+          <BottomNavigation />
+        </div>
         <Toc
           v-if="doc.body.toc.links.length > 0"
           :value="doc.body.toc"
@@ -20,10 +23,33 @@
 </template>
 <script setup>
 import { useRoute, navigateTo, onMounted } from "#imports";
+import { usePageStore } from "~/store/pageStore";
 
 const route = useRoute();
-const trailingSlash = route.path !== "/" && route.path.endsWith("/");
+const root = `/${route.path.split("/")[1]}`;
+const store = usePageStore();
 
+const index = await queryContent(root)
+  .where({ _path: { $eq: root } })
+  .only(["_path", "title", "pages", "sort"])
+  .findOne();
+
+let pages = await queryContent(root)
+  .where({ _path: { $ne: root } })
+  .only(["_path", "title"])
+  .find();
+
+index.pages
+  ? pages = pageSorter(index, pages)
+  : index.sort
+    ? pages.sort((a, b) => autoSorter(a, b, index.sort.by, index.sort.order))
+    : pages.sort();
+
+const sortedPages = root === "/" ? [index] : [index, ...pages];
+
+store.setPages(sortedPages);
+
+const trailingSlash = route.path !== "/" && route.path.endsWith("/");
 onMounted(async () => {
   if(trailingSlash) {
     const { path, query, hash } = route;

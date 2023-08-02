@@ -5,7 +5,7 @@ public class ForgingNewApplication : Spec
     [Test]
     public void It_is_accessible_via_a_fluent_api()
     {
-        Assert.That(Forge.New, Is.InstanceOf<Forge>());
+        Forge.New.ShouldBeAssignableTo<Forge>();
     }
 
     [Test]
@@ -15,6 +15,6 @@ public class ForgingNewApplication : Spec
 
         var actual = forge.Application(_ => { });
 
-        Assert.That(actual, Is.InstanceOf<Do.Architecture.Application>());
+        actual.ShouldBeAssignableTo<Do.Architecture.Application>();
     }
 }

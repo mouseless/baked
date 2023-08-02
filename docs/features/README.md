@@ -1,5 +1,6 @@
 ---
-position: 2
+pages:
+    - greeting
 ---
 
 # Features

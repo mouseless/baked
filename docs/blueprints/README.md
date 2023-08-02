@@ -1,5 +1,6 @@
 ---
-position: 1
+pages:
+    - service
 ---
 
 # Blueprints

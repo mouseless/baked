@@ -1,7 +1,3 @@
----
-position: 2
----
-
 # Web
 
 DO uses ASP.NET Core's `WebApplication` to build and host a web application.
