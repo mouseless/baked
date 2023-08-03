@@ -12,3 +12,6 @@
       removed from configuration
   - `Configuration` layer is added, you can now configure
     `IConfigurationBuilder`
+  - `RestApi` layer is added, you can now configure `SwaggerGenOptions`, 
+    `SwaggerOptions` and `SwaggerUIOptions` along with 
+    `IApplicationPartCollection`   

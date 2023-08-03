@@ -12,6 +12,7 @@ Layers in this blueprint are;
 | Dependency Injection |
 | Http Server          |
 | Monitoring           |
+| Rest Api             |
 
 Features with default options are;
 
