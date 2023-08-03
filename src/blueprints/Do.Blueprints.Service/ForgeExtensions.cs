@@ -20,6 +20,7 @@ public static class ForgeExtensions
             {
                 app.Layers.AddDependencyInjection();
                 app.Layers.AddWeb();
+                app.Layers.AddMonitoring();
 
                 app.Features.AddCore(core);
                 app.Features.AddGreeting(greeting);
