@@ -14,4 +14,5 @@ Features with default options are;
 
 | Features | Default     |
 | ---      | ---         |
+| Core     | Dotnet      |
 | Greeting | Hello World |

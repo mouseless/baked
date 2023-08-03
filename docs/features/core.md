@@ -1,6 +1,6 @@
 # Core
 
-This feature registers ISystem to ServiceCollection.
+This feature registers `ISystem` to services.
 
 Add this feature using `AddCore()` extension;
 
@@ -10,8 +10,8 @@ app.Features.AddCore(...);
 
 ## Dotnet
 
-Adds ISystem interface to ServiceCollection to be used throughout your
-application.
+Adds a local implementation of `ISystem` interface to services to be used
+throughout your application.
 
 ```csharp
 c => c.Dotnet()
