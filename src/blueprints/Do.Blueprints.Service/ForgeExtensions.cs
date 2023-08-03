@@ -18,6 +18,7 @@ public static class ForgeExtensions
 
         return source.Application(app =>
             {
+                app.Layers.AddConfiguration();
                 app.Layers.AddDataAccess();
                 app.Layers.AddDependencyInjection();
                 app.Layers.AddHttpServer();

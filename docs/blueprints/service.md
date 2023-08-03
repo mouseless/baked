@@ -7,6 +7,7 @@ Layers in this blueprint are;
 
 | Layers               |
 | ---                  |
+| Configuration        |
 | Data Access          |
 | Dependency Injection |
 | Http Server          |

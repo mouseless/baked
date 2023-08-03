@@ -1,5 +1,6 @@
 ---
 pages:
+    - configuration
     - data-access
     - dependency-injection
     - http-server

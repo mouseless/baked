@@ -40,7 +40,8 @@ configurator.ConfigureEndpointRouteBuilder(routes =>
 This layer introduces following phases to the application it is added;
 
 - `CreateBuilder`: This phase is the earliest phase in an application which
-  creates a `WebApplicationBuilder` instance to the application context.
+  creates and adds a `WebApplicationBuilder` instance to the application context
+  along with a `ConfigurationManager` instance.
 - `Build`: This phase adds all services from dependency injection layer to the
   services in `WebApplicationBuilder` instance. Then builds the app and adds
   `WebApplication` instance to the application context.
