@@ -17,6 +17,8 @@ public class RestApiLayer : LayerBase<AddServices, Build>
     readonly SwaggerOptions _swaggerOptions = new();
     readonly SwaggerUIOptions _swaggerUIOptions = new();
 
+    readonly IApplicationPartCollection _applicationParts = new ApplicationPartCollection();
+
     protected override PhaseContext GetContext(AddServices phase)
     {
         var services = Context.GetServiceCollection();
@@ -27,13 +29,20 @@ public class RestApiLayer : LayerBase<AddServices, Build>
             .AddApiExplorer();
         services.AddSwaggerGen();
         services.AddHttpContextAccessor();
-        services
-            .AddControllers()
-            .AddApplicationPart(Assembly.GetEntryAssembly()!)
-            .AddNewtonsoftJson();
 
-        return phase.CreateContext(_swaggerGenOptions,
-            onDispose: () =>
+        return phase.CreateContextBuilder()
+            .Add(_swaggerGenOptions)
+            .Add(_applicationParts)
+            .OnDispose(() =>
+            {
+                var mvcbuilder = services.AddControllers().AddNewtonsoftJson();
+
+                foreach (var item in _applicationParts)
+                {
+                    mvcbuilder.AddApplicationPart(item.Assembly);
+                }
+                mvcbuilder.AddApplicationPart(Assembly.GetEntryAssembly()!);
+
                 services.ConfigureSwaggerGen(config =>
                 {
                     config.SwaggerGeneratorOptions = _swaggerGenOptions.SwaggerGeneratorOptions;
@@ -43,8 +52,9 @@ public class RestApiLayer : LayerBase<AddServices, Build>
                     config.OperationFilterDescriptors = _swaggerGenOptions.OperationFilterDescriptors;
                     config.DocumentFilterDescriptors = _swaggerGenOptions.DocumentFilterDescriptors;
                     config.SchemaFilterDescriptors = _swaggerGenOptions.SchemaFilterDescriptors;
-                })
-        );
+                });
+            })
+            .Build();
     }
 
     protected override PhaseContext GetContext(Build phase)
