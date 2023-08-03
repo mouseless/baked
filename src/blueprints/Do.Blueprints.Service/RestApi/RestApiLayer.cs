@@ -1,6 +1,5 @@
 ﻿using Do.Architecture;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -20,8 +19,9 @@ public class RestApiLayer : LayerBase<AddServices, Build>
 
     protected override PhaseContext GetContext(AddServices phase)
     {
-        var services = Context.Get<IServiceCollection>();
+        var services = Context.GetServiceCollection();
 
+        services.AddHttpContextAccessor();
         services
             .AddMvcCore()
             .AddApiExplorer();

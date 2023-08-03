@@ -12,14 +12,7 @@ public class HttpServerLayer : LayerBase<AddServices, Build>
 {
     readonly IMiddlewareCollection _middlewares = new MiddlewareCollection();
 
-    protected override PhaseContext GetContext(AddServices phase)
-    {
-        var services = Context.GetServiceCollection();
-
-        services.AddHttpContextAccessor();
-
-        return PhaseContext.Empty;
-    }
+    protected override PhaseContext GetContext(AddServices phase) => PhaseContext.Empty;
 
     protected override PhaseContext GetContext(Build phase) =>
         phase.CreateContextBuilder()
