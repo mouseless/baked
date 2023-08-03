@@ -10,3 +10,5 @@
     `IMiddlewareCollection` along with `IEndpointRouteBuilder`
     - `Web` layer is merged into this new layer and `IApplicationBuilder` is
       removed from configuration
+  - `Configuration` layer is added, you can now configure
+    `IConfigurationBuilder`
