@@ -19,7 +19,7 @@ public static class ForgeExtensions
         return source.Application(app =>
             {
                 app.Layers.AddDependencyInjection();
-                app.Layers.AddWeb();
+                app.Layers.AddHttpServer();
 
                 app.Features.AddCore(core);
                 app.Features.AddGreeting(greeting);
