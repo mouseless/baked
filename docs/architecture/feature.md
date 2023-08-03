@@ -27,7 +27,7 @@ implementing a new feature;
       `Greeting/HelloWorldGreetingExtensions.cs`,
       `Greeting/WelcomePageGreetingExtensions.cs`
 1. Name feature class after implementation name with abstraction name as a
-   suffix, e.g., `HelloWorldGreeting`, `WelcomePageGreeting`.
+   suffix, e.g., `HelloWorldGreetingFeature`, `WelcomePageGreetingFeature`.
 1. Features depend on other features through their abstraction parts. Direct
    dependency between feature implementations is forbidden.
 
@@ -40,7 +40,7 @@ method of `IFeature` interface. Using extension methods on the given
 configurator, a feature accesses configuration targets of layers.
 
 ```csharp
-public class WelcomePageGreeting : IFeature
+public class WelcomePageGreetingFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
@@ -82,13 +82,13 @@ To include an option in a feature, take the option as a parameter in
 configurator extension and pass it to the feature implementation as shown
 below;
 
-`WelcomePageGreeting.cs`
+`WelcomePageGreetingFeature.cs`
 ```csharp
-public class WelcomePageGreeting : IFeature
+public class WelcomePageGreetingFeature : IFeature
 {
     string _path;
 
-    public WelcomePageGreeting(string path) => _path = path;
+    public WelcomePageGreetingFeature(string path) => _path = path;
 
     public void Configure(LayerConfigurator configurator)
     {
@@ -104,7 +104,8 @@ public class WelcomePageGreeting : IFeature
 ```csharp
 public static class WelcomePageGreetingExtensions
 {
-    public static WelcomePageGreeting WelcomePage(this GreetingConfigurator source,
+    public static WelcomePageGreetingFeature WelcomePage(
+        this GreetingConfigurator source,
         string? path = default
     ) => new(path ?? "/");
 }

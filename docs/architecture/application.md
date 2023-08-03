@@ -68,7 +68,7 @@ An implementation may ask for additional options within its configurator
 method;
 
 ```csharp
-app.Features.AddOrm(c => c.EfCore(primaryKeyPrefix: "PK_"))
+app.Features.AddOrm(c => c.EfCoreFeature(primaryKeyPrefix: "PK_"))
 ```
 
 ## Running an Application
