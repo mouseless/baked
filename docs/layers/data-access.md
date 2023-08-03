@@ -48,10 +48,3 @@ configurator.ConfigureNHibernateInterceptor(logging =>
     ...
 });
 ```
-
-## Phases
-
-This layer uses following phases;
-
-- AddServices: DataAccess Layer registers `NHConfiguration`, `ISession` 
-  `ISessionFactory` to `IServiceCollection` for setting up NHibernate

@@ -18,9 +18,3 @@ configurator.ConfigureLoggingBuilder(logging =>
     ...
 });
 ```
-
-## Phases
-
-This layer uses following phases;
-
-- `CreateBuilder`
