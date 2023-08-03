@@ -24,7 +24,6 @@ public class RestApiLayer : LayerBase<AddServices, Build>
         services.AddHttpContextAccessor();
         services.AddMvcCore().AddApiExplorer();
         services.AddSwaggerGen();
-        services.AddHttpContextAccessor();
 
         return phase.CreateContextBuilder()
             .Add(_applicationParts)
