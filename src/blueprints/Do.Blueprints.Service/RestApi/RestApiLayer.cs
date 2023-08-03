@@ -22,9 +22,7 @@ public class RestApiLayer : LayerBase<AddServices, Build>
         var services = Context.GetServiceCollection();
 
         services.AddHttpContextAccessor();
-        services
-            .AddMvcCore()
-            .AddApiExplorer();
+        services.AddMvcCore().AddApiExplorer();
         services.AddSwaggerGen();
         services.AddHttpContextAccessor();
 
@@ -33,13 +31,7 @@ public class RestApiLayer : LayerBase<AddServices, Build>
             .Add(_swaggerGenOptions)
             .OnDispose(() =>
             {
-                var mvcbuilder = services.AddControllers().AddNewtonsoftJson();
-
-                foreach (var item in _applicationParts)
-                {
-                    mvcbuilder.AddApplicationPart(item.Assembly);
-                }
-
+                services.AddControllers().AddNewtonsoftJson().AddApplicationParts(_applicationParts);
                 services.ConfigureSwaggerGen(config =>
                 {
                     config.SwaggerGeneratorOptions = _swaggerGenOptions.SwaggerGeneratorOptions;
