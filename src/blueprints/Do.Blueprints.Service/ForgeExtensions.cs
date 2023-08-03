@@ -18,7 +18,9 @@ public static class ForgeExtensions
 
         return source.Application(app =>
             {
+                app.Layers.AddDataAccess();
                 app.Layers.AddDependencyInjection();
+                app.Layers.AddMonitoring();
                 app.Layers.AddWeb();
 
                 app.Features.AddCore(core);

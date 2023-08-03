@@ -1,6 +1,8 @@
 ---
 pages:
+    - data-acess
     - dependency-injection
+    - monitoring
     - web
 ---
 
