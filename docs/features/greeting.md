@@ -14,22 +14,22 @@ app.Features.AddGreeting(...);
 Prints hello world at the root path `/`.
 
 ```csharp
-c => c.HelloWorld()
+c => c.HelloWorldFeature()
 ```
 
 ## Welcome Page
 
-Adds Microsoft's `WelcomePage` extension to the `WebApplication`.
+Adds Microsoft's `WelcomePageFeature` extension to the `WebApplication`.
 
 ```csharp
-c => c.WelcomePage()
+c => c.WelcomePageFeature()
 ```
 
 By default it adds the welcome page to root path `/`. You can provide another
 path to keep the welcome page in;
 
 ```csharp
-c => c.WelcomePage("/hi")
+c => c.WelcomePageFeature("/hi")
 ```
 
 ## Disabled
