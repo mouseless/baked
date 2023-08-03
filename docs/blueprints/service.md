@@ -8,6 +8,7 @@ Layers in this blueprint are;
 | Layers               |
 | ---                  |
 | Dependency Injection |
+| Rest Api             |
 | Web                  |
 
 Features with default options are;

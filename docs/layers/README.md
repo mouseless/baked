@@ -3,6 +3,7 @@ pages:
     - data-acess
     - dependency-injection
     - monitoring
+    - rest-api
     - web
 ---
 
