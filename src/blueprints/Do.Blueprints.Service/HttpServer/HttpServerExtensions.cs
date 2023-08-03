@@ -9,6 +9,9 @@ public static class HttpServerExtensions
 {
     public static void AddHttpServer(this List<ILayer> source) => source.Add(new HttpServerLayer());
 
+    public static WebApplicationBuilder GetWebApplicationBuilder(this ApplicationContext source) => source.Get<WebApplicationBuilder>();
+    public static WebApplication GetWebApplication(this ApplicationContext source) => source.Get<WebApplication>();
+
     public static void ConfigureMiddlewareCollection(this LayerConfigurator configurator, Action<IMiddlewareCollection> configuration) => configurator.Configure(configuration);
     public static void ConfigureEndpointRouteBuilder(this LayerConfigurator configurator, Action<IEndpointRouteBuilder> configuration) => configurator.Configure(configuration);
 

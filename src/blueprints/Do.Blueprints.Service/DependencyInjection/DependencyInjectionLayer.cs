@@ -8,7 +8,7 @@ namespace Do.DependencyInjection;
 public class DependencyInjectionLayer : LayerBase<AddServices>
 {
     protected override PhaseContext GetContext(AddServices phase) =>
-        phase.CreateContext(Context.Get<IServiceCollection>());
+        phase.CreateContext(Context.GetServiceCollection());
 
     protected override IEnumerable<IPhase> GetPhases()
     {

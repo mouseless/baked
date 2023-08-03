@@ -14,7 +14,7 @@ public class HttpServerLayer : LayerBase<AddServices, Build>
 
     protected override PhaseContext GetContext(AddServices phase)
     {
-        var services = Context.Get<IServiceCollection>();
+        var services = Context.GetServiceCollection();
 
         services.AddHttpContextAccessor();
 
@@ -24,7 +24,7 @@ public class HttpServerLayer : LayerBase<AddServices, Build>
     protected override PhaseContext GetContext(Build phase) =>
         phase.CreateContextBuilder()
             .Add<IMiddlewareCollection>(_middlewares)
-            .Add<IEndpointRouteBuilder>(Context.Get<WebApplication>())
+            .Add<IEndpointRouteBuilder>(Context.GetWebApplication())
             .Build();
 
     protected override IEnumerable<IPhase> GetPhases()
