@@ -1,6 +1,6 @@
 # Data Access
 
-DO uses NHibernate and FluentNHibernate library when providing data access
+DO uses _NHibernate_ and _FluentNHibernate_ library when providing data access
 layer.
 
 ```csharp

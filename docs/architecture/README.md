@@ -48,9 +48,9 @@ flowchart
   DB[(Database)]
 ```
 
-In this example, `Do.HttpServer` introduces the concept of web as a layer
-through the `ASP.NET Core` technology. Also, `Do.Database` introduces the
-concept of relational databases as a layer through the `EF Core` framework.
+In this example, `HttpServer` introduces the concept of web as a layer through
+the `ASP.NET Core` technology. Also, `Database` introduces the concept of
+relational databases as a layer through the `EF Core` framework.
 
 > :information_source:
 >

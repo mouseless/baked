@@ -8,7 +8,7 @@ app.AddMonitoring();
 
 ## Configuration Targets
 
-Monitoring Layer only exposes `ILoggingBuilder` for configuration target.
+`Monitoring` layer only exposes `ILoggingBuilder` for configuration target.
 
 ### `ILoggingBuilder`
 
