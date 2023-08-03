@@ -7,8 +7,10 @@ Layers in this blueprint are;
 
 | Layers               |
 | ---                  |
+| Data Access          |
 | Dependency Injection |
 | Http Server          |
+| Monitoring           |
 
 Features with default options are;
 
