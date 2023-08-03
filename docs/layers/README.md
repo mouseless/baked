@@ -1,10 +1,10 @@
 ---
 pages:
-    - data-acess
+    - data-access
     - dependency-injection
+    - http-server
     - monitoring
     - rest-api
-    - web
 ---
 
 # Layers

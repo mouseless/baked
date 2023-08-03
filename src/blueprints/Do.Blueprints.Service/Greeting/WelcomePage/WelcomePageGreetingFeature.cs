@@ -12,9 +12,9 @@ public class WelcomePageGreetingFeature : IFeature
 
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureApplicationBuilder(app =>
+        configurator.ConfigureMiddlewareCollection(middlewares =>
         {
-            app.UseWelcomePage(_path);
+            middlewares.Add(app => app.UseWelcomePage(_path));
         });
     }
 }

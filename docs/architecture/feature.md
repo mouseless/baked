@@ -44,9 +44,9 @@ public class WelcomePageGreetingFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureApplicationBuilder(app =>
+        configurator.ConfigureMiddlewareCollection(middlewares =>
         {
-            app.UseWelcomePage();
+            middlewares.Add(app => app.UseWelcomePage());
         });
     }
 }
@@ -59,11 +59,11 @@ public class WelcomePageGreetingFeature : IFeature
 `Configure` method will be called multiple times, each time to configure a
 different part of the application. `LayerConfigurator` ensures that given
 configuration action is only applied to the related target, e.g.,
-`IApplicationBuilder` in the above code.
+`IMiddlewareCollection` in the above code.
 
 A layer might provide the same object in different configurators. For example,
-`WebApplication` implements `IApplicationBuilder` and `IEndpointRouteBuilder`,
-but `WebLayer` provides them in two separate configuration targets.
+`WebApplication` implements `IEndpointRouteBuilder` but `HttpServerLayer`
+provides it with its interface not its concrete type.
 
 > :warning:
 >
