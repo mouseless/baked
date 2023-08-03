@@ -3,6 +3,7 @@ using Do.HttpServer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Do;
@@ -12,6 +13,7 @@ public static class HttpServerExtensions
     public static void AddHttpServer(this List<ILayer> source) => source.Add(new HttpServerLayer());
 
     public static WebApplicationBuilder GetWebApplicationBuilder(this ApplicationContext source) => source.Get<WebApplicationBuilder>();
+    public static ConfigurationManager GetConfigurationManager(this ApplicationContext source) => source.Get<ConfigurationManager>();
     public static WebApplication GetWebApplication(this ApplicationContext source) => source.Get<WebApplication>();
 
     public static void ConfigureMiddlewareCollection(this LayerConfigurator configurator, Action<IMiddlewareCollection> configuration) => configurator.Configure(configuration);
