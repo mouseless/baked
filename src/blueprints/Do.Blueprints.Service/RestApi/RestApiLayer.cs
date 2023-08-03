@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
-using System.Reflection;
 
 using static Do.DependencyInjection.DependencyInjectionLayer;
 using static Do.HttpServer.HttpServerLayer;
@@ -13,11 +12,10 @@ namespace Do.RestApi;
 
 public class RestApiLayer : LayerBase<AddServices, Build>
 {
+    readonly IApplicationPartCollection _applicationParts = new ApplicationPartCollection();
     readonly SwaggerGenOptions _swaggerGenOptions = new();
     readonly SwaggerOptions _swaggerOptions = new();
     readonly SwaggerUIOptions _swaggerUIOptions = new();
-
-    readonly IApplicationPartCollection _applicationParts = new ApplicationPartCollection();
 
     protected override PhaseContext GetContext(AddServices phase)
     {
@@ -31,8 +29,8 @@ public class RestApiLayer : LayerBase<AddServices, Build>
         services.AddHttpContextAccessor();
 
         return phase.CreateContextBuilder()
-            .Add(_swaggerGenOptions)
             .Add(_applicationParts)
+            .Add(_swaggerGenOptions)
             .OnDispose(() =>
             {
                 var mvcbuilder = services.AddControllers().AddNewtonsoftJson();
@@ -41,7 +39,6 @@ public class RestApiLayer : LayerBase<AddServices, Build>
                 {
                     mvcbuilder.AddApplicationPart(item.Assembly);
                 }
-                mvcbuilder.AddApplicationPart(Assembly.GetEntryAssembly()!);
 
                 services.ConfigureSwaggerGen(config =>
                 {
