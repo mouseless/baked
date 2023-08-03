@@ -1,9 +1,9 @@
 ---
 pages:
-    - dependency-injection
-    - web
     - data-acess
+    - dependency-injection
     - monitoring
+    - web
 ---
 
 # Layers
