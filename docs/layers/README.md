@@ -1,7 +1,9 @@
 ---
 pages:
+    - data-acess
     - dependency-injection
     - http-server
+    - monitoring
 ---
 
 # Layers

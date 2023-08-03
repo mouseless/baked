@@ -18,8 +18,10 @@ public static class ForgeExtensions
 
         return source.Application(app =>
             {
+                app.Layers.AddDataAccess();
                 app.Layers.AddDependencyInjection();
                 app.Layers.AddHttpServer();
+                app.Layers.AddMonitoring();
 
                 app.Features.AddCore(core);
                 app.Features.AddGreeting(greeting);
