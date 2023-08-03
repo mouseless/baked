@@ -15,3 +15,6 @@
   - `RestApi` layer is added, you can now configure `SwaggerGenOptions`, 
     `SwaggerOptions` and `SwaggerUIOptions` along with 
     `IApplicationPartCollection`   
+  - `Swagger` implementation is added for greeting feature
+  - `Logging` feature is added with `Request` implementation
+  - `MockOverrider`feature is added with `FirstInterface` implementation
