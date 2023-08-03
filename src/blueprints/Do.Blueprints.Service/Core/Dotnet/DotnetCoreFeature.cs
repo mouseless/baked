@@ -1,9 +1,7 @@
 using Do.Architecture;
-using Do.Core;
-using Do.Core.Dotnet;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Do.Blueprints.Service.Core.Dotnet;
+namespace Do.Core.Dotnet;
 
 public class DotnetCoreFeature : IFeature
 {

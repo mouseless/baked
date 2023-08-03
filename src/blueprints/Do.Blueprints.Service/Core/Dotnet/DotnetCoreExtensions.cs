@@ -1,5 +1,5 @@
 using Do.Blueprints.Service.Core;
-using Do.Blueprints.Service.Core.Dotnet;
+using Do.Core.Dotnet;
 
 namespace Do;
 
