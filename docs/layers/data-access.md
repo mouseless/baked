@@ -16,7 +16,7 @@ NHibernate behaviour.
 ### `PersistenceConfiguration`
 
 ```csharp
-configurator.ConfigurePersistence(logging =>
+configurator.ConfigurePersistence(persistence =>
 {
     ...
 });
@@ -25,7 +25,7 @@ configurator.ConfigurePersistence(logging =>
 ### `AutomappingConfiguration`
 
 ```csharp
-configurator.ConfigureAutomapping(logging =>
+configurator.ConfigureAutomapping(automapping =>
 {
     ...
 });
@@ -34,7 +34,7 @@ configurator.ConfigureAutomapping(logging =>
 ### `AutoPersistenceModel`
 
 ```csharp
-configurator.ConfigureAutoPersistenceModel(logging =>
+configurator.ConfigureAutoPersistenceModel(autoPersistenceModel =>
 {
     ...
 });
@@ -43,7 +43,7 @@ configurator.ConfigureAutoPersistenceModel(logging =>
 ### `InterceptorConfiguration`
 
 ```csharp
-configurator.ConfigureNHibernateInterceptor(logging =>
+configurator.ConfigureNHibernateInterceptor(interceptor =>
 {
     ...
 });
