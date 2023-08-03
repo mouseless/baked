@@ -48,7 +48,7 @@ Layers are added without any options to configure;
 
 ```csharp
 app.Layers.AddDomain();
-app.Layers.AddWeb();
+app.Layers.AddHttpServer();
 app.Layers.AddDatabase();
 ```
 
@@ -79,7 +79,7 @@ To run an application you need to call `Run()` method after forging it.
 Forge.New
     .Application(app =>
     {
-        app.Layers.AddWeb();
+        app.Layers.AddHttpServer();
     })
     .Run();
 ```
@@ -97,7 +97,7 @@ flowchart LR
 ```
 
 These phases come from layers using `GetPhases()` method of `ILayer`. In the
-above example, `WebLayer` (ASP.NET Core) introduced these three phases.
+above example, `HttpServerLayer` (ASP.NET Core) introduced these three phases.
 
 At the beginning of each phase, application initializes it by providing an
 `ApplicationContext` instance. This way each phase can add/get certain objects
@@ -176,10 +176,10 @@ sequenceDiagram
 > :information_source:
 >
 > A layer doesn't necessarily introduce new phases to an application, but all
-> phases are applied to all layers nevertheless. For example, `WebLayer`
-> introduces _Build_ phase which is applied to `Domain`, `Web` and `Database`
-> layers to allow them provide their configuration specific to the _Build_
-> phase.
+> phases are applied to all layers nevertheless. For example, `HttpServerLayer`
+> introduces _Build_ phase which is applied to `Domain`, `HttpServer` and
+> `Database` layers to allow them provide their configuration specific to the
+> _Build_ phase.
 
 ### Order of Phases
 
@@ -249,7 +249,7 @@ it means you need to reorder phases so that they don't overlap, or you might
 change their readiness so that they run in their own iteration.
 
 These special values ensures certain phases are initialized firstly or lastly.
-For example, the first phase of `WebLayer`, _Create Builder_, adds
+For example, the first phase of `HttpServerLayer`, _Create Builder_, adds
 `WebApplicationBuilder` to the application context, which should be the first
 thing to be done when running an application. To ensure this, _Create Builder_
 should be able to declare itself to be the only _earliest_ phase of its

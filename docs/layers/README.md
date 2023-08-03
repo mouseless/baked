@@ -1,7 +1,7 @@
 ---
 pages:
     - dependency-injection
-    - web
+    - http-server
 ---
 
 # Layers

@@ -63,7 +63,7 @@ configuration action is only applied to the related target, e.g.,
 
 A layer might provide the same object in different configurators. For example,
 `WebApplication` implements `IApplicationBuilder` and `IEndpointRouteBuilder`,
-but `WebLayer` provides them in two separate configuration targets.
+but `HttpServerLayer` provides them in two separate configuration targets.
 
 > :warning:
 >

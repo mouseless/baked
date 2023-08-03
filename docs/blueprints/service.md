@@ -8,7 +8,7 @@ Layers in this blueprint are;
 | Layers               |
 | ---                  |
 | Dependency Injection |
-| Web                  |
+| Http Server          |
 
 Features with default options are;
 

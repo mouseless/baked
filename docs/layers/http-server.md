@@ -1,15 +1,15 @@
-# Web
+# Http Server
 
 DO uses ASP.NET Core's `WebApplication` to build and host a web application.
 
 ```csharp
-app.AddWeb();
+app.AddHttpServer();
 ```
 
 ## Configuration Targets
 
-Web layer provides `IApplicationBuilder` and `IEndpointRouteBuilder` targets to
-configure a web application.
+`HttpServer` layer provides `IApplicationBuilder` and `IEndpointRouteBuilder`
+targets to configure a web application.
 
 ### `IApplicationBuilder`
 
