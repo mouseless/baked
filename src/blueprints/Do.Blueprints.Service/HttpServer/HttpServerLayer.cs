@@ -9,9 +9,11 @@ namespace Do.HttpServer;
 
 public class HttpServerLayer : LayerBase<Build>
 {
+    readonly IMiddlewareCollection _middlewares = new MiddlewareCollection();
+
     protected override PhaseContext GetContext(Build phase) =>
         phase.CreateContextBuilder()
-            .Add<IApplicationBuilder>(Context.Get<WebApplication>())
+            .Add<IMiddlewareCollection>(_middlewares)
             .Add<IEndpointRouteBuilder>(Context.Get<WebApplication>())
             .Build();
 
@@ -19,7 +21,7 @@ public class HttpServerLayer : LayerBase<Build>
     {
         yield return new CreateBuilder();
         yield return new Build();
-        yield return new Run();
+        yield return new Run(_middlewares);
     }
 
     public class CreateBuilder : PhaseBase
@@ -53,8 +55,19 @@ public class HttpServerLayer : LayerBase<Build>
 
     class Run : PhaseBase<WebApplication>
     {
-        public Run() : base(PhaseOrder.Latest) { }
+        readonly IMiddlewareCollection _middlewares;
 
-        protected override void Initialize(WebApplication app) => app.Run();
+        public Run(IMiddlewareCollection middlewares) : base(PhaseOrder.Latest) =>
+            _middlewares = middlewares;
+
+        protected override void Initialize(WebApplication app)
+        {
+            foreach (var middleware in _middlewares.OrderBy(m => m.Order))
+            {
+                middleware.Configure(app);
+            }
+
+            app.Run();
+        }
     }
 }

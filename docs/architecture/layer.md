@@ -12,7 +12,7 @@ entities to database tables.
 
 Another good example is the `HttpServerLayer`. This layer introduces the ASP.NET
 Core framework into your application. It provides three phases, as mentioned in
-[Application](./application.md), along with `IApplicationBuilder` and
+[Application](./application.md), along with `IMiddlewareCollection` and
 `IEndpointRouteBuilder` objects as its configuration API. This way, any feature
 has the ability to use a middleware or add routes to the application.
 

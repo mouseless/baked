@@ -8,15 +8,16 @@ app.AddHttpServer();
 
 ## Configuration Targets
 
-`HttpServer` layer provides `IApplicationBuilder` and `IEndpointRouteBuilder`
+`HttpServer` layer provides `IMiddlewareCollection` and `IEndpointRouteBuilder`
 targets to configure a web application.
 
-### `IApplicationBuilder`
+### `IMiddlewareCollection`
 
-This target is provided in `Build` phase. To configure it in a feature;
+This target is provided in `Build` phase as the first target. To configure it in
+a feature;
 
 ```csharp
-configurator.ConfigureApplicationBuilder(app =>
+configurator.ConfigureMiddlewareCollection(middlewares =>
 {
     ...
 });
@@ -24,7 +25,7 @@ configurator.ConfigureApplicationBuilder(app =>
 
 ### `IEndpointRouteBuilder`
 
-This target is provided in `Build` phase right after `IApplicationBuilder`. To
+This target is provided in `Build` phase right after `IMiddlewareCollection`. To
 configure it in a feature;
 
 ```csharp
@@ -45,4 +46,4 @@ This layer introduces following phases to the application it is added;
   `WebApplication` instance to the application context.
 - `Run`: This phase is added internally and is the latest phase in an
   application. It is not allowed to provide a configuration at this phase since
-  it only runs the `WebApplication` instance in the application context.
+  it runs the `WebApplication` instance during phase initialization.
