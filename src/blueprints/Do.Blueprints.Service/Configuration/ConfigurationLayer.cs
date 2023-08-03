@@ -21,7 +21,7 @@ public class ConfigurationLayer : LayerBase<BuildConfiguration>
 
         protected override void Initialize(ConfigurationManager configurationManager)
         {
-            Settings.SetConfiguration(configurationManager);
+            Settings.SetConfigurationRoot(configurationManager);
         }
     }
 }
