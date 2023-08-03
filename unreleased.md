@@ -2,4 +2,4 @@
 
 ## Features
 
-- `Core` feature is added with `Dotnet` implementation.
+- `Core` feature was added to `Service` blueprint as draft

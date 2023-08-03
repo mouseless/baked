@@ -1,7 +1,7 @@
 using Do.Architecture;
 using Microsoft.AspNetCore.Builder;
 
-namespace Do.Blueprints.Service.Greeting.HelloWorld;
+namespace Do.Greeting.HelloWorld;
 
 public class HelloWorldGreetingFeature : IFeature
 {

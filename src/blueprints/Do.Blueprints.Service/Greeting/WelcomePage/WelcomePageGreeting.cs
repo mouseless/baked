@@ -1,7 +1,7 @@
 using Do.Architecture;
 using Microsoft.AspNetCore.Builder;
 
-namespace Do.Blueprints.Service.Greeting.WelcomePage;
+namespace Do.Greeting.WelcomePage;
 
 public class WelcomePageGreetingFeature : IFeature
 {

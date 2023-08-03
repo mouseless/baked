@@ -36,7 +36,7 @@ overridden.
 ```csharp
 Forge.New
     .Service(
-        greeting: c => c.WelcomePageFeature("/hi")
+        greeting: c => c.WelcomePage("/hi")
     )
     .Run();
 ```

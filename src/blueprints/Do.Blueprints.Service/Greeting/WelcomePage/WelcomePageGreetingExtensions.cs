@@ -1,5 +1,5 @@
 ﻿using Do.Blueprints.Service.Greeting;
-using Do.Blueprints.Service.Greeting.WelcomePage;
+using Do.Greeting.WelcomePage;
 
 namespace Do;
 
