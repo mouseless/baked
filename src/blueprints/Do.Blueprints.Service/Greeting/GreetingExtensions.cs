@@ -1,5 +1,5 @@
 using Do.Architecture;
-using Do.Blueprints.Service.Greeting;
+using Do.Greeting;
 
 namespace Do;
 

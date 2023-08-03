@@ -1,11 +1,11 @@
-﻿using Do.Blueprints.Service.Greeting;
-using Do.Blueprints.Service.Greeting.WelcomePage;
+﻿using Do.Greeting;
+using Do.Greeting.WelcomePage;
 
 namespace Do;
 
 public static class WelcomePageGreetingExtensions
 {
-    public static WelcomePageGreeting WelcomePage(this GreetingConfigurator source,
+    public static WelcomePageGreetingFeature WelcomePage(this GreetingConfigurator source,
         string? path = default
     ) => new(path ?? "/");
 }

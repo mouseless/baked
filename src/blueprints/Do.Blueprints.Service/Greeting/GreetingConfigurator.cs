@@ -1,6 +1,6 @@
 using Do.Architecture;
 
-namespace Do.Blueprints.Service.Greeting;
+namespace Do.Greeting;
 
 public class GreetingConfigurator
 {

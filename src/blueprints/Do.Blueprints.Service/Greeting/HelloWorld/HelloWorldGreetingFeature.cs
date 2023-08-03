@@ -1,9 +1,9 @@
 using Do.Architecture;
 using Microsoft.AspNetCore.Builder;
 
-namespace Do.Blueprints.Service.Greeting.HelloWorld;
+namespace Do.Greeting.HelloWorld;
 
-public class HelloWorldGreeting : IFeature
+public class HelloWorldGreetingFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {

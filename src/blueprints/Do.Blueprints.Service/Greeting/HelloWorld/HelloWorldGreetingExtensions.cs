@@ -1,9 +1,9 @@
-﻿using Do.Blueprints.Service.Greeting;
-using Do.Blueprints.Service.Greeting.HelloWorld;
+﻿using Do.Greeting;
+using Do.Greeting.HelloWorld;
 
 namespace Do;
 
 public static class HelloWorldGreetingExtensions
 {
-    public static HelloWorldGreeting HelloWorld(this GreetingConfigurator source) => new();
+    public static HelloWorldGreetingFeature HelloWorld(this GreetingConfigurator source) => new();
 }
