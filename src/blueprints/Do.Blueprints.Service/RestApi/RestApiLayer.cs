@@ -49,11 +49,10 @@ public class RestApiLayer : LayerBase<AddServices, Build>
 
     protected override PhaseContext GetContext(Build phase)
     {
-        var app = Context.Get<WebApplication>();
-        var endpointBuilder = Context.Get<IEndpointRouteBuilder>();
+        var app = Context.GetWebApplication();
 
         app.UseRouting();
-        endpointBuilder.MapControllers();
+        app.MapControllers();
 
         return phase.CreateContextBuilder()
             .Add(_swaggerOptions)
