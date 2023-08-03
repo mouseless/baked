@@ -1,5 +1,4 @@
 ﻿using Do.Architecture;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Logging;
 
 using static Do.HttpServer.HttpServerLayer;
@@ -10,7 +9,7 @@ public class MonitoringLayer : LayerBase<CreateBuilder>
 {
     protected override PhaseContext GetContext(CreateBuilder phase)
     {
-        var builder = Context.Get<WebApplicationBuilder>();
+        var builder = Context.GetWebApplicationBuilder();
 
         builder.Logging.ClearProviders();
 

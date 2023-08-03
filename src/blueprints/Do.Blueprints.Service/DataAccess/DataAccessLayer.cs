@@ -27,7 +27,7 @@ public class DataAccessLayer : LayerBase<AddServices>
 
     protected override PhaseContext GetContext(AddServices phase)
     {
-        var services = Context.Get<IServiceCollection>();
+        var services = Context.GetServiceCollection();
 
         services.AddSingleton<NHConfiguration>(sp =>
         {
