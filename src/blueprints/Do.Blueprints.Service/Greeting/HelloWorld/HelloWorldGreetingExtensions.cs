@@ -1,4 +1,4 @@
-﻿using Do.Blueprints.Service.Greeting;
+﻿using Do.Greeting;
 using Do.Greeting.HelloWorld;
 
 namespace Do;

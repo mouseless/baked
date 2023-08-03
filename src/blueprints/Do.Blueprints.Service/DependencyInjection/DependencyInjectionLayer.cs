@@ -1,9 +1,9 @@
 using Do.Architecture;
 using Microsoft.Extensions.DependencyInjection;
 
-using static Do.Blueprints.Service.DependencyInjection.DependencyInjectionLayer;
+using static Do.DependencyInjection.DependencyInjectionLayer;
 
-namespace Do.Blueprints.Service.DependencyInjection;
+namespace Do.DependencyInjection;
 
 public class DependencyInjectionLayer : LayerBase<AddServices>
 {

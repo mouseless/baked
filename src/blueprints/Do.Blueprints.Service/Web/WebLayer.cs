@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 
-using static Do.Blueprints.Service.Web.WebLayer;
+using static Do.Web.WebLayer;
 
-namespace Do.Blueprints.Service.Web;
+namespace Do.Web;
 
 public class WebLayer : LayerBase<Build>
 {

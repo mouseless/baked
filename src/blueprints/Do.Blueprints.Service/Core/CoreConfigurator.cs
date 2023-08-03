@@ -1,3 +1,3 @@
-namespace Do.Blueprints.Service.Core;
+namespace Do.Core;
 
 public class CoreConfigurator { }

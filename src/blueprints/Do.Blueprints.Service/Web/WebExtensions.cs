@@ -1,5 +1,5 @@
 using Do.Architecture;
-using Do.Blueprints.Service.Web;
+using Do.Web;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 

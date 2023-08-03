@@ -1,15 +1,18 @@
 ﻿using Do.Architecture;
-using Do.Blueprints.Service.Greeting;
+using Do.Core;
+using Do.Greeting;
 
 namespace Do;
 
 public static class ForgeExtensions
 {
     public static Application Service(this Forge source,
+        Func<CoreConfigurator, IFeature>? core = default,
         Func<GreetingConfigurator, IFeature>? greeting = default,
         Action<ApplicationDescriptor>? configure = default
     )
     {
+        core ??= c => c.Dotnet();
         greeting ??= c => c.HelloWorld();
         configure ??= _ => { };
 
@@ -18,6 +21,7 @@ public static class ForgeExtensions
                 app.Layers.AddDependencyInjection();
                 app.Layers.AddWeb();
 
+                app.Features.AddCore(core);
                 app.Features.AddGreeting(greeting);
 
                 configure(app);

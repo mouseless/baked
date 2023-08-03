@@ -1,4 +1,4 @@
-using Do.Blueprints.Service.Core;
+using Do.Core;
 using Do.Core.Dotnet;
 
 namespace Do;
