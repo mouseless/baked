@@ -5,5 +5,5 @@ namespace Do;
 
 public static class HelloWorldGreetingExtensions
 {
-    public static HelloWorldGreeting HelloWorld(this GreetingConfigurator source) => new();
+    public static HelloWorldGreetingFeature HelloWorld(this GreetingConfigurator source) => new();
 }

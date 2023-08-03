@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Builder;
 
 namespace Do.Blueprints.Service.Greeting.WelcomePage;
 
-public class WelcomePageGreeting : IFeature
+public class WelcomePageGreetingFeature : IFeature
 {
     string _path;
 
-    public WelcomePageGreeting(string path) => _path = path;
+    public WelcomePageGreetingFeature(string path) => _path = path;
 
     public void Configure(LayerConfigurator configurator)
     {

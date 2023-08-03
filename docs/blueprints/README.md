@@ -30,13 +30,13 @@ Forge.New
 ## Configuration
 
 Blueprints come with as many defaults as they can. For every feature, they
-provide a parameter in the forge method so that the default behaviour can be
+provide a parameter in the forge method so that the default behavior can be
 overridden.
 
 ```csharp
 Forge.New
     .Service(
-        greeting: c => c.WelcomePage("/hi")
+        greeting: c => c.WelcomePageFeature("/hi")
     )
     .Run();
 ```

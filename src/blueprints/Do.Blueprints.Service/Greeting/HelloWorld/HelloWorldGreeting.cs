@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Builder;
 
 namespace Do.Blueprints.Service.Greeting.HelloWorld;
 
-public class HelloWorldGreeting : IFeature
+public class HelloWorldGreetingFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
