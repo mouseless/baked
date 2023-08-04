@@ -13,7 +13,9 @@ public abstract class ServiceSpec : Spec
 
     static IServiceProvider ServiceProvider => _serviceProvider;
 
-    static ApplicationContext Init()
+    protected new static ApplicationContext Init(
+        Action<ApplicationDescriptor>? describe = default
+    )
     {
         var context = Spec.Init(app =>
         {
@@ -26,12 +28,11 @@ public abstract class ServiceSpec : Spec
 
             app.Features.AddCore(c => c.Mock());
             app.Features.AddGreeting(c => c.Disabled());
+
+            describe?.Invoke(app);
         });
 
-        var services = context.Get<IServiceCollection>();
-
-        _serviceProvider = services.BuildServiceProvider();
-        _serviceProvider.CreateScope();
+        _serviceProvider = context.GetServiceProvider();
         _session = _serviceProvider.GetRequiredService<ISession>();
 
         return context;

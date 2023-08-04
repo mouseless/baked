@@ -35,6 +35,7 @@ public class TestingLayer : LayerBase<AddServices>
     protected override IEnumerable<IPhase> GetPhases()
     {
         yield return new CreateConfigurationManager();
+        yield return new Run();
     }
 
     public class CreateConfigurationManager : PhaseBase
@@ -44,6 +45,20 @@ public class TestingLayer : LayerBase<AddServices>
         protected override void Initialize()
         {
             Context.Add(new ConfigurationManager());
+        }
+    }
+
+    class Run : PhaseBase<IServiceCollection>
+    {
+        public Run() : base(PhaseOrder.Latest) { }
+
+        protected override void Initialize(IServiceCollection services)
+        {
+            var serviceProvider = services.BuildServiceProvider();
+
+            serviceProvider.CreateScope();
+
+            Context.Add<IServiceProvider>(serviceProvider);
         }
     }
 }
