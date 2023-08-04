@@ -4,8 +4,8 @@
        "adapter": "netcoredbg",
        "configuration": {
          "request": "launch",
-         "program": "${workspaceRoot}/test/blueprints/Do.Test.Blueprints.Service/bin/Debug/net6.0/Do.Test.Blueprints.Service.dll",
-         "cwd": "${workspaceRoot}/test/blueprints/Do.Test.Blueprints.Service/bin/Debug/net6.0",
+         "program": "${workspaceRoot}/test/blueprints/Do.Test.Blueprints.Service.Application/bin/Debug/net6.0/Do.Test.Blueprints.Service.Application.dll",
+         "cwd": "${workspaceRoot}/test/blueprints/Do.Test.Blueprints.Service.Application/bin/Debug/net6.0",
          "args": [],
          "stopAtEntry": false,
          "env": {

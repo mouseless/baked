@@ -2,6 +2,7 @@
 using Do.Business;
 using Do.Core;
 using Do.Database;
+using Do.ExceptionHandling;
 using Do.Greeting;
 using Do.Logging;
 using Do.Orm;
@@ -15,6 +16,7 @@ public static class ForgeExtensions
         Func<DatabaseConfigurator, IFeature> database,
         Func<CoreConfigurator, IFeature>? core = default,
         Func<DatabaseConfigurator, IFeature>? developmentDatabase = default,
+        Func<ExceptionHandlingConfigurator, IFeature>? exceptionHandling = default,
         Func<GreetingConfigurator, IFeature>? greeting = default,
         Func<LoggingConfigurator, IFeature>? logging = default,
         Func<OrmConfigurator, IFeature>? orm = default,
@@ -22,6 +24,7 @@ public static class ForgeExtensions
     )
     {
         core ??= c => c.Dotnet();
+        exceptionHandling ??= c => c.Default();
         greeting ??= c => c.Swagger();
         logging ??= c => c.RequestLogging();
         orm ??= c => c.Default();
@@ -39,6 +42,7 @@ public static class ForgeExtensions
                 app.Features.AddBusiness(business);
                 app.Features.AddCore(core);
                 app.Features.AddDatabase(database, developmentDatabase);
+                app.Features.AddExceptionHandling(exceptionHandling);
                 app.Features.AddGreeting(greeting);
                 app.Features.AddLogging(logging);
                 app.Features.AddOrm(orm);

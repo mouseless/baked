@@ -10,7 +10,7 @@ app.Features.AddLogging(...);
 
 ## Request Logging
 
-This implementation logs incoming request and related response information 
+This implementation logs incoming request and related response information
 along with exception logging.
 
 ```csharp

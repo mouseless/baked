@@ -2,6 +2,7 @@
 using Do.Business;
 using Do.Core;
 using Do.Database;
+using Do.ExceptionHandling;
 using Do.MockOverrider;
 using Do.Orm;
 using Do.Testing;
@@ -23,6 +24,7 @@ public abstract class ServiceSpec : Spec
         Func<BusinessConfigurator, IFeature> business,
         Func<CoreConfigurator, IFeature>? core = default,
         Func<DatabaseConfigurator, IFeature>? database = default,
+        Func<ExceptionHandlingConfigurator, IFeature>? exceptionHandling = default,
         Func<MockOverriderConfigurator, IFeature>? mockOverrider = default,
         Func<OrmConfigurator, IFeature>? orm = default,
         Action<ApplicationDescriptor>? configure = default
@@ -30,6 +32,7 @@ public abstract class ServiceSpec : Spec
     {
         core ??= c => c.Mock();
         database ??= c => c.InMemory();
+        exceptionHandling ??= c => c.Default();
         mockOverrider ??= c => c.FirstInterface();
         orm ??= c => c.Default();
 
@@ -45,6 +48,7 @@ public abstract class ServiceSpec : Spec
             app.Features.AddBusiness(business);
             app.Features.AddCore(core);
             app.Features.AddDatabase(database);
+            app.Features.AddExceptionHandling(exceptionHandling);
             app.Features.AddMockOverrider(mockOverrider);
             app.Features.AddOrm(orm);
 

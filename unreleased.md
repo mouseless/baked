@@ -28,6 +28,7 @@
   - `MockOverrider`feature is added with `FirstInterface` implementation
   - `Business` feature is added with no implementation
   - `HelloWorld` implementation of `Greeting` feature is now removed
+  - `Exception Handling` feature is now added with `Default` implementation
   - `Database` feature is added with `InMemory`,`Sqlite` and `MySql`
     implementations
   - `Orm` feature is added with `NHibernate` implementation   

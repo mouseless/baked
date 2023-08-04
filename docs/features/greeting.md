@@ -11,7 +11,7 @@ app.Features.AddGreeting(...);
 
 ## Swagger
 
-Redirects root path `/` to `SwaggerUI` for `RestApi` documentation. 
+Redirects root path `/` to `SwaggerUI` for `RestApi` documentation.
 
 ```csharp
 c => c.Swagger()

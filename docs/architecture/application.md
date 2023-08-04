@@ -29,7 +29,7 @@ To add a new extension to an application, you need to make use of the feature /
 layer system.
 
 DO does not allow you to use `build.Services.Add` or `app.Use` methods
-directly. This is a design decision to avoid any unexpected behaviour because
+directly. This is a design decision to avoid any unexpected behavior because
 the order of extensions may require a special attention as in [Enabling
 Cors][].
 

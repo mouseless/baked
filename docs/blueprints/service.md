@@ -22,6 +22,7 @@ Features with default options are;
 | Business          |             |                 | Yes      |
 | Core              | Dotnet      | Mock            |          |
 | Database          | Sqlite      | InMemory        | Yes      |
+| Excetion Handling | Default     |                 |          |
 | Greeting          | Hello World |                 |          |
 | Logging           | Request     |                 |          | 
 | Mocking Overrider |             | First Interface |          |
