@@ -2,7 +2,7 @@ using Do.Architecture;
 
 namespace Do.Test.Architecture.Layer;
 
-public class AddingPhases : Spec
+public class AddingPhases : ArchitectureSpec
 {
     public class NoPhaseLayer : LayerBase { }
 

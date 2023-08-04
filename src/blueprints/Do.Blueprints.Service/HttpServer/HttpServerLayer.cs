@@ -54,6 +54,7 @@ public class HttpServerLayer : LayerBase<AddServices, Build>
             var app = build.Build();
 
             Context.Add(app);
+            Context.Add(app.Services);
         }
     }
 
