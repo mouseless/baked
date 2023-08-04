@@ -14,6 +14,8 @@ for configuring `Swagger` behavior.
 
 ### `IApplicationPartCollection`
 
+This target is provided in `AddServices` phase. To configure it in a feature;
+
 ```csharp
 configurator.ConfigureApplicationParts(applicationParts =>
 {
@@ -22,6 +24,9 @@ configurator.ConfigureApplicationParts(applicationParts =>
 ```
 
 ### `SwaggerGenOptions`
+
+This target is provided in `AddServices` phase right after
+`IApplicationPartCollection`. To configure it in a feature;
 
 ```csharp
 configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
@@ -32,6 +37,9 @@ configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
 
 ### `SwaggerOptions`
 
+This target is provided in `AddServices` phase right after
+`SwaggerGenOptions`. To configure it in a feature;
+
 ```csharp
 configurator.ConfigureSwaggerOptions(swaggerOptions =>
 {
@@ -40,6 +48,9 @@ configurator.ConfigureSwaggerOptions(swaggerOptions =>
 ```
 
 ### `SwaggerUIOptions`
+
+This target is provided in `AddServices` phase right after
+`SwaggerOptions`. To configure it in a feature;
 
 ```csharp
 configurator.ConfigureSwaggerUIOptions(swaggerUIOptions =>

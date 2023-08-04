@@ -15,6 +15,9 @@ _NHibernate_ behavior.
 
 ### `PersistenceConfiguration`
 
+This target is provided in `AddServices` phase. To configure it in a
+feature;
+
 ```csharp
 configurator.ConfigurePersistence(persistence =>
 {
@@ -22,7 +25,22 @@ configurator.ConfigurePersistence(persistence =>
 });
 ```
 
+### `InterceptorConfiguration`
+
+This target is provided in `AddServices` phase right after
+`PersistenceConfiguration`. To configure it in a feature;
+
+```csharp
+configurator.ConfigureNHibernateInterceptor(interceptor =>
+{
+    ...
+});
+```
+
 ### `AutomappingConfiguration`
+
+This target is provided in `AddServices` phase right after
+`InterceptorConfiguration`. To configure it in a feature;
 
 ```csharp
 configurator.ConfigureAutomapping(automapping =>
@@ -33,17 +51,11 @@ configurator.ConfigureAutomapping(automapping =>
 
 ### `AutoPersistenceModel`
 
+This target is provided in `AddServices` phase right after
+`AutomappingConfiguration`. To configure it in a feature;
+
 ```csharp
 configurator.ConfigureAutoPersistenceModel(autoPersistenceModel =>
-{
-    ...
-});
-```
-
-### `InterceptorConfiguration`
-
-```csharp
-configurator.ConfigureNHibernateInterceptor(interceptor =>
 {
     ...
 });
