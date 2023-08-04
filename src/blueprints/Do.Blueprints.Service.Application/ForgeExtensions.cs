@@ -1,8 +1,10 @@
 ﻿using Do.Architecture;
 using Do.Business;
 using Do.Core;
+using Do.Database;
 using Do.Greeting;
 using Do.Logging;
+using Do.Orm;
 
 namespace Do;
 
@@ -11,14 +13,18 @@ public static class ForgeExtensions
     public static Application Service(this Forge source,
         Func<BusinessConfigurator, IFeature> business,
         Func<CoreConfigurator, IFeature>? core = default,
+        Func<DatabaseConfigurator, IFeature>? database = default,
         Func<GreetingConfigurator, IFeature>? greeting = default,
         Func<LoggingConfigurator, IFeature>? logging = default,
+        Func<OrmConfigurator, IFeature>? orm = default,
         Action<ApplicationDescriptor>? configure = default
     )
     {
         core ??= c => c.Dotnet();
+        database ??= c => c.Sqlite();
         greeting ??= c => c.Swagger();
         logging ??= c => c.RequestLogging();
+        orm ??= c => c.NHibernate();
         configure ??= _ => { };
 
         return source.Application(app =>
@@ -32,8 +38,10 @@ public static class ForgeExtensions
 
                 app.Features.AddBusiness(business);
                 app.Features.AddCore(core);
+                app.Features.AddDatabase(database);
                 app.Features.AddGreeting(greeting);
                 app.Features.AddLogging(logging);
+                app.Features.AddOrm(orm);
 
                 configure(app);
             });
