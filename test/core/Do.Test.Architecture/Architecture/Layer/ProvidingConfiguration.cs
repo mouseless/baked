@@ -6,7 +6,7 @@ using static Do.Test.Architecture.Layer.ProvidingConfiguration.LayerZ;
 
 namespace Do.Test.Architecture.Layer;
 
-public class ProvidingConfiguration : Spec
+public class ProvidingConfiguration : ArchitectureSpec
 {
     public record LayerXConfigurationA();
 

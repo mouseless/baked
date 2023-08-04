@@ -3,7 +3,7 @@
   <PropertyGroup>
     <AssemblyTitle>Do.Blueprints.Service</AssemblyTitle>
     <Title>DO / Blueprints / Service</Title>
-    <Description>DO is an opinionated framework for .NET. This is a blueprint package that brings together all the features one needs for a simple service application.</Description>
+    <Description>DO is an opinionated framework for .NET. This is a blueprint package that brings together all the feature abstractions one needs for a service domain.</Description>
     <PackageId>do-blueprints-service</PackageId>
     <PackageTags>do;blueprint;service</PackageTags>
   </PropertyGroup>
@@ -13,11 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\core\Do.Architecture\Do.Architecture.csproj" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1" />
   </ItemGroup>
 
 </Project>

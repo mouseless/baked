@@ -1,5 +1,12 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
   <ItemGroup>
     <Using Include="Do" />
+    <Using Include="System" />
+    <Using Include="System.Linq" />
+    <Using Include="System.Collections" />
+    <Using Include="System.Collections.Generic" />
+    <Using Include="System.Threading.Tasks" />
   </ItemGroup>
+
 </Project>

@@ -23,26 +23,9 @@ will be sufficient to forge a service application;
 
 ```csharp
 Forge.New
-    .Service()
-    .Run();
-```
-
-## Configuration
-
-Blueprints come with as many defaults as they can. For every feature, they
-provide a parameter in the forge method so that the default behaviour can be
-overridden.
-
-```csharp
-Forge.New
     .Service(
-        greeting: c => c.WelcomePage("/hi")
+        business: c => c.MyBusiness(),
+        database: c => c.Sqlite()
     )
     .Run();
 ```
-
-> :information_source:
->
-> If a feature cannot have a default configuration, such as a connection
-> string, than that parameter would not have a default value and needs to be
-> given.

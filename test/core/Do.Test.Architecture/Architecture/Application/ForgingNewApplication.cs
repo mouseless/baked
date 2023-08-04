@@ -1,6 +1,6 @@
 ﻿namespace Do.Test.Architecture.Application;
 
-public class ForgingNewApplication : Spec
+public class ForgingNewApplication : ArchitectureSpec
 {
     [Test]
     public void It_is_accessible_via_a_fluent_api()

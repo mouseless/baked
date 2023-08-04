@@ -1,6 +1,6 @@
 ﻿namespace Do.Test.Architecture.Branding;
 
-public class PrintingBanner : Spec
+public class PrintingBanner : ArchitectureSpec
 {
     [Test]
     public void It_prints_banner_prior_to_build()

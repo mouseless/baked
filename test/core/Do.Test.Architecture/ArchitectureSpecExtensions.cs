@@ -1,28 +1,15 @@
 ﻿using System.Reflection;
 using Do.Architecture;
 using Do.Branding;
+using Do.Testing;
 
 namespace Do.Test;
 
 public static class ArchitectureSpecExtensions
 {
-    #region Object
-
-    public static T An<T>(this Spec.Stubber source) => source.A<T>();
-    public static T A<T>(this Spec.Stubber source)
-    {
-        var result = Activator.CreateInstance(typeof(T));
-
-        result.ShouldNotBeNull();
-
-        return (T)result!;
-    }
-
-    #endregion
-
     #region Forge
 
-    public static Forge AForge(this Spec.Stubber source,
+    public static Forge AForge(this Stubber source,
         IBanner? banner = default,
         ApplicationContext? context = default
     )
@@ -37,7 +24,7 @@ public static class ArchitectureSpecExtensions
 
     #region Application
 
-    public static Application AnApplication(this Spec.Stubber source,
+    public static Application AnApplication(this Stubber source,
         ILayer? layer = default,
         ILayer[]? layers = default,
         IFeature? feature = default,
@@ -59,8 +46,8 @@ public static class ArchitectureSpecExtensions
 
     #region ApplicationContext
 
-    public static ApplicationContext AnApplicationContext(this Spec.Stubber source) => new();
-    public static ApplicationContext AnApplicationContext<T>(this Spec.Stubber source, T content) where T : notnull
+    public static ApplicationContext AnApplicationContext(this Stubber source) => new();
+    public static ApplicationContext AnApplicationContext<T>(this Stubber source, T content) where T : notnull
     {
         var result = source.AnApplicationContext();
 
@@ -87,7 +74,7 @@ public static class ArchitectureSpecExtensions
 
     #region Banner
 
-    public static IBanner ABanner(this Spec.Mocker source) =>
+    public static IBanner ABanner(this Mocker source) =>
         new Mock<IBanner>().Object;
 
     public static void VerifyPrinted(this IBanner source) =>
@@ -97,7 +84,7 @@ public static class ArchitectureSpecExtensions
 
     #region Layer
 
-    public static ILayer ALayer(this Spec.Mocker source,
+    public static ILayer ALayer(this Mocker source,
         object? target = default,
         object[]? targets = default,
         PhaseContext? phaseContext = default,
@@ -139,7 +126,7 @@ public static class ArchitectureSpecExtensions
 
     #region LayerConfigurator
 
-    public static LayerConfigurator ALayerConfigurator<TTarget>(this Spec.Stubber source,
+    public static LayerConfigurator ALayerConfigurator<TTarget>(this Stubber source,
         TTarget? configuration = default
     )
     {
@@ -152,7 +139,7 @@ public static class ArchitectureSpecExtensions
 
     #region Phase
 
-    public static IPhase APhase(this Spec.Mocker source,
+    public static IPhase APhase(this Mocker source,
         Func<bool>? isReady = default,
         Action? onInitialize = default,
         PhaseOrder order = PhaseOrder.Normal
@@ -186,7 +173,7 @@ public static class ArchitectureSpecExtensions
 
     #region PhaseContext
 
-    public static PhaseContext APhaseContext(this Spec.Stubber source,
+    public static PhaseContext APhaseContext(this Stubber source,
         object? target = default,
         object[]? targets = default,
         Action? onDispose = default
@@ -277,7 +264,7 @@ public static class ArchitectureSpecExtensions
 
     #region Feature
 
-    public static IFeature AFeature(this Spec.Mocker source) =>
+    public static IFeature AFeature(this Mocker source) =>
         new Mock<IFeature>().Object;
 
     public static void VerifyInitialized(this IFeature source) =>
@@ -288,13 +275,6 @@ public static class ArchitectureSpecExtensions
 
     public static void VerifyConfiguresNothing(this IFeature source) =>
         Mock.Get(source).Verify(f => f.Configure(It.IsAny<LayerConfigurator>()), Times.Never());
-
-    #endregion
-
-    #region Assertion
-
-    public static void ShouldFail(this Spec source, string message = "") => Assert.Fail(message);
-    public static void ShouldPass(this Spec source, string message = "") => Assert.Pass(message);
 
     #endregion
 }

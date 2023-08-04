@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyTitle>Do.Blueprints.Service.Application</AssemblyTitle>
+    <Title>DO / Blueprints / Service</Title>
+    <Description>DO is an opinionated framework for .NET. This is a blueprint package that brings together all the feature implementations one needs for a service application.</Description>
+    <PackageId>do-blueprints-service-application</PackageId>
+    <PackageTags>do;blueprint;service;application</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="do-blueprints-service-application.targets" Pack="true" PackagePath="build" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentNHibernate" Version="3.2.1" />
+    <PackageReference Include="MySql.Data" Version="8.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.20" />
+    <PackageReference Include="NHibernate" Version="5.4.4" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.118" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Do.Blueprints.Service\Do.Blueprints.Service.csproj" />
+    <ProjectReference Include="..\..\core\Do.Architecture\Do.Architecture.csproj" />
+  </ItemGroup>
+
+</Project>

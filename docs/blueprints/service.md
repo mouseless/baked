@@ -5,13 +5,25 @@ blueprint is under development and will be detailed as it becomes more mature.
 
 Layers in this blueprint are;
 
-| Layers               |
-| ---                  |
-| Dependency Injection |
-| Web                  |
+| Layers               | Run | Test |
+| ---                  | --- | ---  |
+| Configuration        | +   | +    |
+| Data Access          | +   | +    |
+| Dependency Injection | +   | +    |
+| Http Server          | +   |      |
+| Monitoring           | +   | +    |
+| Rest Api             | +   | +    |
+| Testing              |     | +    |
 
 Features with default options are;
 
-| Features | Default     |
-| ---      | ---         |
-| Greeting | Hello World |
+| Features          | Run         | Test            | Required |   
+| ---               | ---         | ---             | ---      |
+| Business          |             |                 | Yes      |
+| Core              | Dotnet      | Mock            |          |
+| Database          | Sqlite      | InMemory        | Yes      |
+| Excetion Handling | Default     |                 |          |
+| Greeting          | Hello World |                 |          |
+| Logging           | Request     |                 |          | 
+| Mocking Overrider |             | First Interface |          |
+| Orm               | Default     | Default         |          |

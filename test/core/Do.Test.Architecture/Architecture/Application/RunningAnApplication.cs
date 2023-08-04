@@ -2,7 +2,7 @@ using Do.Architecture;
 
 namespace Do.Test.Architecture.Application;
 
-public class RunningAnApplication : Spec
+public class RunningAnApplication : ArchitectureSpec
 {
     [Test]
     public void Application_collects_phases_from_all_layers()

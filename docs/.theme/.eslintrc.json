@@ -37,10 +37,6 @@
       "error",
       2
     ],
-    "linebreak-style": [
-      "error",
-      "unix"
-    ],
     "keyword-spacing": [
       "error",
       {

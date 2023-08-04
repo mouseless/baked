@@ -1,7 +1,12 @@
 ---
 pages:
+    - configuration
+    - data-access
     - dependency-injection
-    - web
+    - http-server
+    - monitoring
+    - rest-api
+    - testing
 ---
 
 # Layers

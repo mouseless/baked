@@ -43,21 +43,21 @@ layers are named after the domain of their technology.
 
 ```mermaid
 flowchart
-  W[[Web]]
+  HS[[Http Server]]
   D((Domain))
   DB[(Database)]
 ```
 
-In this example, `Do.Web` introduces the concept of web as a layer through the
-`ASP.NET Core` technology. Also, `Do.Database` introduces the concept of
+In this example, `HttpServer` introduces the concept of web as a layer through
+the `ASP.NET Core` technology. Also, `Database` introduces the concept of
 relational databases as a layer through the `EF Core` framework.
 
 > :information_source:
 >
-> `Domain` differs from other layers like `Web` and `Database`. It is a special
-> kind of layer that processes your domain assemblies to create an application
-> schema out of your domain objects so that they can be used in creating
-> configuration, conventions and/or generating source code.
+> `Domain` differs from other layers like `HttpServer` and `Database`. It is a
+> special kind of layer that processes your domain assemblies to create an
+> application schema out of your domain objects so that they can be used in
+> creating configuration, conventions and/or generating source code.
 
 But your domain objects would not just be exposed as API endpoints and mapped
 onto a relational database. For that, we need to be able to configure those
@@ -97,7 +97,7 @@ from the domain layer or from other feature implementations.
 ```mermaid
 flowchart
   subgraph Layers
-    W[[Web]]
+    HS[[Http Server]]
     D((Domain))
     DB[(Database)]
   end
@@ -125,8 +125,7 @@ layer.
 > A feature may configure multiple layers to achieve its functionality.
 
 Features may have multiple implementations, each named after its corresponding
-design or technology, e.g. `Do.Api.Rest`, `Do.Auth.Auth0`, `Do.Fs.Aws`,
-`Do.Orm.EfCore`.
+design or technology, e.g. `Do.Auth.Auth0`, `Do.Fs.Aws`, `Do.Database.MySql`.
 
 > :bulb:
 >
@@ -143,7 +142,7 @@ and the domain layer;
 ```mermaid
 flowchart TB
   subgraph Layers
-    W[[Web]]
+    HS[[Http Server]]
     D((Domain))
     DB[(Database)]
   end
@@ -156,16 +155,16 @@ flowchart TB
 
     subgraph Implementation
       AR(Api.Rest)
-      OE(Orm.EfCore)
+      OD(Orm.Default)
     end
   end
 
-  W -.configured by.-> AR
+  HS -.configured by.-> AR
   A --implemented by--> AR
   D -.uses.-> A
   D -.uses.-> O
-  O --implemented by--> OE
-  DB -.configured by.-> OE
+  O --implemented by--> OD
+  DB -.configured by.-> OD
 ```
 
 [Clean Architecture]:https://learn.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures#clean-architecture
