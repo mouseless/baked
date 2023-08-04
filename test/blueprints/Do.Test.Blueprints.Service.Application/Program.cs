@@ -1,3 +1,3 @@
 Forge.New
-    .Service()
+    .Service(business: c => c.Default())
     .Run();
