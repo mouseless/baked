@@ -14,6 +14,7 @@ public static class ForgeExtensions
         Func<BusinessConfigurator, IFeature> business,
         Func<DatabaseConfigurator, IFeature> database,
         Func<CoreConfigurator, IFeature>? core = default,
+        Func<DatabaseConfigurator, IFeature>? developmentDatabase = default,
         Func<GreetingConfigurator, IFeature>? greeting = default,
         Func<LoggingConfigurator, IFeature>? logging = default,
         Func<OrmConfigurator, IFeature>? orm = default,
@@ -37,7 +38,7 @@ public static class ForgeExtensions
 
                 app.Features.AddBusiness(business);
                 app.Features.AddCore(core);
-                app.Features.AddDatabase(database);
+                app.Features.AddDatabase(database, developmentDatabase);
                 app.Features.AddGreeting(greeting);
                 app.Features.AddLogging(logging);
                 app.Features.AddOrm(orm);
