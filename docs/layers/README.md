@@ -6,6 +6,7 @@ pages:
     - http-server
     - monitoring
     - rest-api
+    - testing
 ---
 
 # Layers

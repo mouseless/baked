@@ -1,6 +1,6 @@
 ﻿namespace Do.Test.Architecture.Application;
 
-public class AddingExtensions : Spec
+public class AddingExtensions : ArchitectureSpec
 {
     [Test]
     public void Layer_is_added_without_any_options()
