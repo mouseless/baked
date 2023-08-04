@@ -10,7 +10,7 @@ app.AddRestApi();
 
 This layer provides `IApplicationPartCollection` for registering necessary
 application parts, `SwaggerGenOptions`, `SwaggerOptions` and `SwaggerUIOptions`
-for configuring `Swagger` behaviour.
+for configuring `Swagger` behavior.
 
 ### `IApplicationPartCollection`
 

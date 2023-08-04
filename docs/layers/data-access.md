@@ -7,11 +7,11 @@ layer.
 app.AddDataAccess();
 ```
 
-## Configuration Target
+## Configuration Targets
 
 This layer provides `PersistenceConfiguration`, `AutomappingConfiguration`
 `AutoPersistenceModel`, `InterceptorConfiguration` for configuring
-_NHibernate_ behaviour.
+_NHibernate_ behavior.
 
 ### `PersistenceConfiguration`
 
