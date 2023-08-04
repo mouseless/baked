@@ -1,11 +1,15 @@
 ﻿using Do.Architecture;
 using Do.Business;
 using Do.Core;
+using Do.Database;
 using Do.ExceptionHandling;
 using Do.MockOverrider;
+using Do.Orm;
 using Do.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using NHibernate;
+
+using ITransaction = NHibernate.ITransaction;
 
 namespace Do;
 
@@ -19,14 +23,18 @@ public abstract class ServiceSpec : Spec
     protected static ApplicationContext Init(
         Func<BusinessConfigurator, IFeature> business,
         Func<CoreConfigurator, IFeature>? core = default,
+        Func<DatabaseConfigurator, IFeature>? database = default,
         Func<ExceptionHandlingConfigurator, IFeature>? exceptionHandling = default,
         Func<MockOverriderConfigurator, IFeature>? mockOverrider = default,
+        Func<OrmConfigurator, IFeature>? orm = default,
         Action<ApplicationDescriptor>? configure = default
     )
     {
         core ??= c => c.Mock();
+        database ??= c => c.InMemory();
         exceptionHandling ??= c => c.Default();
         mockOverrider ??= c => c.FirstInterface();
+        orm ??= c => c.Default();
 
         var context = Spec.Init(app =>
         {
@@ -39,8 +47,10 @@ public abstract class ServiceSpec : Spec
 
             app.Features.AddBusiness(business);
             app.Features.AddCore(core);
+            app.Features.AddDatabase(database);
             app.Features.AddExceptionHandling(exceptionHandling);
             app.Features.AddMockOverrider(mockOverrider);
+            app.Features.AddOrm(orm);
 
             configure?.Invoke(app);
         });

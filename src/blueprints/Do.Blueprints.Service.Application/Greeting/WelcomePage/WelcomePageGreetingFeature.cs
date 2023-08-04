@@ -5,7 +5,7 @@ namespace Do.Greeting.WelcomePage;
 
 public class WelcomePageGreetingFeature : IFeature
 {
-    string _path;
+    readonly string _path;
 
     public WelcomePageGreetingFeature(string path) =>
         _path = path;

@@ -26,6 +26,9 @@
   - `Swagger` implementation is added for greeting feature
   - `Logging` feature is added with `Request` implementation
   - `MockOverrider`feature is added with `FirstInterface` implementation
-  - `Business` features is added with no implementation
+  - `Business` feature is added with no implementation
   - `HelloWorld` implementation of `Greeting` feature is now removed
   - `Exception Handling` feature is now added with `Default` implementation
+  - `Database` feature is added with `InMemory`,`Sqlite` and `MySql`
+    implementations
+  - `Orm` feature is added with `NHibernate` implementation   
