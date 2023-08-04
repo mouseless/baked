@@ -1,6 +1,7 @@
 ﻿using Do.Architecture;
 using Do.Business;
 using Do.Core;
+using Do.ExceptionHandling;
 using Do.MockOverrider;
 using Do.Testing;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,11 +19,13 @@ public abstract class ServiceSpec : Spec
     protected static ApplicationContext Init(
         Func<BusinessConfigurator, IFeature> business,
         Func<CoreConfigurator, IFeature>? core = default,
+        Func<ExceptionHandlingConfigurator, IFeature>? exceptionHandling = default,
         Func<MockOverriderConfigurator, IFeature>? mockOverrider = default,
         Action<ApplicationDescriptor>? configure = default
     )
     {
         core ??= c => c.Mock();
+        exceptionHandling ??= c => c.Default();
         mockOverrider ??= c => c.FirstInterface();
 
         var context = Spec.Init(app =>
@@ -36,6 +39,7 @@ public abstract class ServiceSpec : Spec
 
             app.Features.AddBusiness(business);
             app.Features.AddCore(core);
+            app.Features.AddExceptionHandling(exceptionHandling);
             app.Features.AddMockOverrider(mockOverrider);
 
             configure?.Invoke(app);
