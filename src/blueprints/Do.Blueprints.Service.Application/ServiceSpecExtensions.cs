@@ -9,7 +9,7 @@ namespace Do;
 public static class ServiceSpecExtensions
 {
     #region MockOverrider
-    
+
     public static T Create<T>(this Stubber _, params object?[] mockOverrides) where T : notnull
     {
         var overrider = ServiceSpec.ServiceProvider.GetRequiredService<IMockOverrider>();
@@ -22,7 +22,7 @@ public static class ServiceSpecExtensions
         }
 
         return ServiceSpec.ServiceProvider.GetRequiredService<T>();
-    } 
+    }
 
     #endregion
 
