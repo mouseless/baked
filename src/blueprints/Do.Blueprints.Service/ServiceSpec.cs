@@ -26,7 +26,7 @@ public abstract class ServiceSpec : Spec
             app.Layers.AddTesting();
 
             app.Features.AddCore(c => c.Mock());
-            app.Features.AddGreeting(c => c.Disabled());
+            app.Features.AddMockOverrider(c => c.FirstInterface());
 
             describe?.Invoke(app);
         });
