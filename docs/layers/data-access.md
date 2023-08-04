@@ -11,7 +11,7 @@ app.AddDataAccess();
 
 This layer provides `PersistenceConfiguration`, `AutomappingConfiguration`
 `AutoPersistenceModel`, `InterceptorConfiguration` for configuring
-NHibernate behaviour.
+_NHibernate_ behaviour.
 
 ### `PersistenceConfiguration`
 
