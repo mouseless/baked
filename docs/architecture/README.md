@@ -125,8 +125,7 @@ layer.
 > A feature may configure multiple layers to achieve its functionality.
 
 Features may have multiple implementations, each named after its corresponding
-design or technology, e.g. `Do.Api.Rest`, `Do.Auth.Auth0`, `Do.Fs.Aws`,
-`Do.Orm.EfCore`.
+design or technology, e.g. `Do.Auth.Auth0`, `Do.Fs.Aws`, `Do.Database.MySql`.
 
 > :bulb:
 >
@@ -156,7 +155,7 @@ flowchart TB
 
     subgraph Implementation
       AR(Api.Rest)
-      OE(Orm.EfCore)
+      OD(Orm.Default)
     end
   end
 
@@ -164,8 +163,8 @@ flowchart TB
   A --implemented by--> AR
   D -.uses.-> A
   D -.uses.-> O
-  O --implemented by--> OE
-  DB -.configured by.-> OE
+  O --implemented by--> OD
+  DB -.configured by.-> OD
 ```
 
 [Clean Architecture]:https://learn.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures#clean-architecture

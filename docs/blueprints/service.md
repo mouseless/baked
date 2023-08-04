@@ -7,19 +7,22 @@ Layers in this blueprint are;
 
 | Layers               | Run | Test |
 | ---                  | --- | ---  |
-| Configuration        | ✅  | ✅   |
-| Data Access          | ✅  | ✅   |
-| Dependency Injection | ✅  | ✅   |
-| Http Server          | ✅  |      |
-| Monitoring           | ✅  | ✅   |
-| Rest Api             | ✅  | ✅   |
-| Testing              |     | ✅   |
+| Configuration        | +   | +    |
+| Data Access          | +   | +    |
+| Dependency Injection | +   | +    |
+| Http Server          | +   |      |
+| Monitoring           | +   | +    |
+| Rest Api             | +   | +    |
+| Testing              |     | +    |
 
 Features with default options are;
 
-| Features          | Run         | Test            |
-| ---               | ---         | ---             |
-| Core              | Dotnet      | Mock            |
-| Greeting          | Hello World |                 |
-| Logging           | Request     |                 | 
-| Mocking Overrider |             | First Interface |
+| Features          | Run         | Test            | Required |   
+| ---               | ---         | ---             | ---      |
+| Business          |             |                 | Yes      |
+| Core              | Dotnet      | Mock            |          |
+| Database          | Sqlite      | InMemory        | Yes      |
+| Greeting          | Hello World |                 |          |
+| Logging           | Request     |                 |          | 
+| Mocking Overrider |             | First Interface |          |
+| Orm               | Default     | Default         |          |
