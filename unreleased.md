@@ -28,3 +28,4 @@
   - `MockOverrider`feature is added with `FirstInterface` implementation
   - `Business` features is added with no implementation
   - `HelloWorld` implementation of `Greeting` feature is now removed
+  - `Exception Handling` feature is now added with `Default` implementation
