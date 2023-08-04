@@ -16,3 +16,8 @@
     `SwaggerOptions` and `SwaggerUIOptions` along with
     `IApplicationPartCollection`
   - `Testing` layer is added, you can now configure `TestConfiguration`
+  - `Swagger` implementation is added for greeting feature
+  - `Logging` feature is added with `Request` implementation
+  - `MockOverrider`feature is added with `FirstInterface` implementation
+  - `Business` features is added with no implementation.
+  - `HelloWorld` implementation of `Greeting` feature is now removed.

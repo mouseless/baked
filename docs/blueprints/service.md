@@ -17,7 +17,9 @@ Layers in this blueprint are;
 
 Features with default options are;
 
-| Features | Run         | Test     |
-| ---      | ---         | ---      |
-| Core     | Dotnet      | Mock     |
-| Greeting | Hello World | Disabled |
+| Features          | Run         | Test            |
+| ---               | ---         | ---             |
+| Core              | Dotnet      | Mock            |
+| Greeting          | Hello World |                 |
+| Logging           | Request     |                 | 
+| Mocking Overrider |             | First Interface |

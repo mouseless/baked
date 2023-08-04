@@ -9,12 +9,12 @@ Add this feature using `AddGreeting()` extension;
 app.Features.AddGreeting(...);
 ```
 
-## Hello World
+## Swagger
 
-Prints hello world at the root path `/`.
+Redirects root path `/` to `SwaggerUI` for `RestApi` documentation. 
 
 ```csharp
-c => c.HelloWorld()
+c => c.Swagger()
 ```
 
 ## Welcome Page
