@@ -16,3 +16,11 @@ throughout your application.
 ```csharp
 c => c.Dotnet()
 ```
+
+## Mock
+
+Adds a mock implementation to be used in testing.
+
+```csharp
+c => c.Mock()
+```
