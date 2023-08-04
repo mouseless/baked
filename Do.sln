@@ -7,13 +7,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2F297832-93E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "blueprints", "blueprints", "{CDC3A00A-52BD-4CDA-B7D7-1FCFC5DD1CEE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Do.Blueprints.Service", "src\blueprints\Do.Blueprints.Service\Do.Blueprints.Service.csproj", "{AAF123F9-BEAB-42D0-84AD-DFBD6CE7A9A9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Do.Blueprints.Service.Application", "src\blueprints\Do.Blueprints.Service.Application\Do.Blueprints.Service.Application.csproj", "{AAF123F9-BEAB-42D0-84AD-DFBD6CE7A9A9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{C407EF64-970A-498F-989D-17BBEF83B36F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "blueprints", "blueprints", "{F1F041D0-E073-455C-96F9-233FDF5CC2A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Do.Test.Blueprints.Service", "test\blueprints\Do.Test.Blueprints.Service\Do.Test.Blueprints.Service.csproj", "{F8B3EFE9-7BC4-48C3-98D8-97500A2486C6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Do.Test.Blueprints.Service.Application", "test\blueprints\Do.Test.Blueprints.Service.Application\Do.Test.Blueprints.Service.Application.csproj", "{F8B3EFE9-7BC4-48C3-98D8-97500A2486C6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{FC5EA7BE-2E36-4CC7-8CE0-DD8D69F8CF85}"
 EndProject

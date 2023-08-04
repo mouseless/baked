@@ -1,15 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <AssemblyTitle>Do.Blueprints.Service</AssemblyTitle>
+    <AssemblyTitle>Do.Blueprints.Service.Application</AssemblyTitle>
     <Title>DO / Blueprints / Service</Title>
     <Description>DO is an opinionated framework for .NET. This is a blueprint package that brings together all the features one needs for a simple service application.</Description>
-    <PackageId>do-blueprints-service</PackageId>
-    <PackageTags>do;blueprint;service</PackageTags>
+    <PackageId>do-blueprints-service-application</PackageId>
+    <PackageTags>do;blueprint;service;application</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="do-blueprints-service.targets" Pack="true" PackagePath="build" />
+    <None Include="do-blueprints-service-application.targets" Pack="true" PackagePath="build" />
   </ItemGroup>
 
   <ItemGroup>
