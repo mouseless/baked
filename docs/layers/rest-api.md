@@ -6,9 +6,9 @@ DO uses ASP.NET Core for configuring and building a REST API application.
 app.AddRestApi();
 ```
 
-## Configuration Target
+## Configuration Targets
 
-This layer provides `IApplicationPartCollection` for registering necessary  
+This layer provides `IApplicationPartCollection` for registering necessary
 application parts, `SwaggerGenOptions`, `SwaggerOptions` and `SwaggerUIOptions`
 for configuring `Swagger` behaviour.
 
