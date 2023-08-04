@@ -1,4 +1,7 @@
 ﻿using Do.Architecture;
+using Do.Business;
+using Do.Core;
+using Do.MockOverrider;
 using Do.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using NHibernate;
@@ -12,10 +15,16 @@ public abstract class ServiceSpec : Spec
 
     internal static IServiceProvider ServiceProvider => _serviceProvider;
 
-    protected new static ApplicationContext Init(
-        Action<ApplicationDescriptor>? describe = default
+    protected static ApplicationContext Init(
+        Func<BusinessConfigurator, IFeature> business,
+        Func<CoreConfigurator, IFeature>? core = default,
+        Func<MockOverriderConfigurator, IFeature>? mockOverrider = default,
+        Action<ApplicationDescriptor>? configure = default
     )
     {
+        core ??= c => c.Mock();
+        mockOverrider ??= c => c.FirstInterface();
+
         var context = Spec.Init(app =>
         {
             app.Layers.AddConfiguration();
@@ -25,10 +34,11 @@ public abstract class ServiceSpec : Spec
             app.Layers.AddRestApi();
             app.Layers.AddTesting();
 
-            app.Features.AddCore(c => c.Mock());
-            app.Features.AddMockOverrider(c => c.FirstInterface());
+            app.Features.AddBusiness(business);
+            app.Features.AddCore(core);
+            app.Features.AddMockOverrider(mockOverrider);
 
-            describe?.Invoke(app);
+            configure?.Invoke(app);
         });
 
         _serviceProvider = context.GetServiceProvider();

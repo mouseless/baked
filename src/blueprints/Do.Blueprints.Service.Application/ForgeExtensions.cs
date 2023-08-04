@@ -1,4 +1,5 @@
 ﻿using Do.Architecture;
+using Do.Business;
 using Do.Core;
 using Do.Greeting;
 using Do.Logging;
@@ -8,6 +9,7 @@ namespace Do;
 public static class ForgeExtensions
 {
     public static Application Service(this Forge source,
+        Func<BusinessConfigurator, IFeature> business,
         Func<CoreConfigurator, IFeature>? core = default,
         Func<GreetingConfigurator, IFeature>? greeting = default,
         Func<LoggingConfigurator, IFeature>? logging = default,
@@ -28,6 +30,7 @@ public static class ForgeExtensions
                 app.Layers.AddMonitoring();
                 app.Layers.AddRestApi();
 
+                app.Features.AddBusiness(business);
                 app.Features.AddCore(core);
                 app.Features.AddGreeting(greeting);
                 app.Features.AddLogging(logging);

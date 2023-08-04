@@ -7,20 +7,6 @@ namespace Do.Test;
 
 public static class ArchitectureSpecExtensions
 {
-    #region Object
-
-    public static T An<T>(this Stubber source) => source.A<T>();
-    public static T A<T>(this Stubber source)
-    {
-        var result = Activator.CreateInstance(typeof(T));
-
-        result.ShouldNotBeNull();
-
-        return (T)result!;
-    }
-
-    #endregion
-
     #region Forge
 
     public static Forge AForge(this Stubber source,
@@ -289,13 +275,6 @@ public static class ArchitectureSpecExtensions
 
     public static void VerifyConfiguresNothing(this IFeature source) =>
         Mock.Get(source).Verify(f => f.Configure(It.IsAny<LayerConfigurator>()), Times.Never());
-
-    #endregion
-
-    #region Assertion
-
-    public static void ShouldFail(this Spec source, string message = "") => Assert.Fail(message);
-    public static void ShouldPass(this Spec source, string message = "") => Assert.Pass(message);
 
     #endregion
 }

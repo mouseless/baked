@@ -9,9 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Using Include="System" />
     <Using Include="System.Linq" />
     <Using Include="System.Collections" />
     <Using Include="System.Collections.Generic" />
+    <Using Include="System.Threading.Tasks" />
   </ItemGroup>
 
 </Project>

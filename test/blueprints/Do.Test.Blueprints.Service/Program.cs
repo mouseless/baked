@@ -1,3 +1,0 @@
-Forge.New
-    .Service()
-    .Run();
