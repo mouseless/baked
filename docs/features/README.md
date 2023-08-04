@@ -2,6 +2,7 @@
 pages:
     - business
     - core
+    - exception-handling
     - greeting
     - logging
     - mock-overrider
