@@ -25,6 +25,7 @@ public abstract class ServiceSpec : Spec
             app.Layers.AddTesting();
 
             app.Features.AddCore(c => c.Mock());
+            app.Features.AddGreeting(c => c.Disabled());
         });
 
         var services = context.Get<IServiceCollection>();

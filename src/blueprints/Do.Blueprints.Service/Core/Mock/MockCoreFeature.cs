@@ -6,9 +6,9 @@ public class MockCoreFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureTesting(testing =>
+        configurator.ConfigureTestConfiguration(test =>
         {
-            testing.Mocks.Add<ISystem>(singleton: true);
+            test.Mocks.Add<ISystem>(singleton: true);
         });
     }
 }

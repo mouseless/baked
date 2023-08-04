@@ -5,18 +5,19 @@ blueprint is under development and will be detailed as it becomes more mature.
 
 Layers in this blueprint are;
 
-| Layers               |
-| ---                  |
-| Configuration        |
-| Data Access          |
-| Dependency Injection |
-| Http Server          |
-| Monitoring           |
-| Rest Api             |
+| Layers               | Run | Test |
+| ---                  | --- | ---  |
+| Configuration        | ✅  | ✅   |
+| Data Access          | ✅  | ✅   |
+| Dependency Injection | ✅  | ✅   |
+| Http Server          | ✅  |      |
+| Monitoring           | ✅  | ✅   |
+| Rest Api             | ✅  | ✅   |
+| Testing              |     | ✅   |
 
 Features with default options are;
 
-| Features | Default     |
-| ---      | ---         |
-| Core     | Dotnet      |
-| Greeting | Hello World |
+| Features | Run         | Test     |
+| ---      | ---         | ---      |
+| Core     | Dotnet      | Mock     |
+| Greeting | Hello World | Disabled |
