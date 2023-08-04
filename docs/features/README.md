@@ -3,8 +3,8 @@ pages:
     - business
     - core
     - greeting
-    - mock-overrider
     - logging
+    - mock-overrider
 ---
 
 # Features

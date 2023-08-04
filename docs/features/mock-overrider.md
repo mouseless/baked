@@ -12,7 +12,7 @@ app.Features.AddMockOverrider(...);
 ## First Interface
 
 This feature implementation provides a `IMockOverrider`implementation which
-overrides components with mocks added to ``MockDescriptor` collection 
+overrides components with mocks added to `MockDescriptor` collection 
 according to their type's first interface.
 
 ```csharp
@@ -27,7 +27,7 @@ public class MockOverrider{
 }
 ```
 
-Than all components are added to service collection durin `AddServices` phase of 
+Than all components are added to service collection during `AddServices` phase of 
 testing layer.
 
 ```csharp
