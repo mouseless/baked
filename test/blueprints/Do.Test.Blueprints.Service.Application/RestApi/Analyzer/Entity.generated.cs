@@ -3,7 +3,6 @@
 using Do.Orm;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace Do.Test.RestApi.Analyzer;
 
 [ApiController]
@@ -15,7 +14,6 @@ public class EntityController
 
     public EntityController(IQueryContext<Entity> query, Func<Entity> newTarget, Entities targets) =>
       (_query, _newTarget, _targets) = (query, newTarget, targets);
-
 
     [HttpGet]
     [Route("entities")]
