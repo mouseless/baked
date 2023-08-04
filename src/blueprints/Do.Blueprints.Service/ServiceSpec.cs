@@ -10,7 +10,7 @@ public abstract class ServiceSpec : Spec
     static IServiceProvider _serviceProvider = default!;
     static ISession _session = default!;
 
-    static IServiceProvider ServiceProvider => _serviceProvider;
+    internal static IServiceProvider ServiceProvider => _serviceProvider;
 
     protected new static ApplicationContext Init(
         Action<ApplicationDescriptor>? describe = default
