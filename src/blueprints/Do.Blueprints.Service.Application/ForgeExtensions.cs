@@ -12,8 +12,8 @@ public static class ForgeExtensions
 {
     public static Application Service(this Forge source,
         Func<BusinessConfigurator, IFeature> business,
+        Func<DatabaseConfigurator, IFeature> database,
         Func<CoreConfigurator, IFeature>? core = default,
-        Func<DatabaseConfigurator, IFeature>? database = default,
         Func<GreetingConfigurator, IFeature>? greeting = default,
         Func<LoggingConfigurator, IFeature>? logging = default,
         Func<OrmConfigurator, IFeature>? orm = default,
@@ -21,7 +21,6 @@ public static class ForgeExtensions
     )
     {
         core ??= c => c.Dotnet();
-        database ??= c => c.Sqlite();
         greeting ??= c => c.Swagger();
         logging ??= c => c.RequestLogging();
         orm ??= c => c.NHibernate();

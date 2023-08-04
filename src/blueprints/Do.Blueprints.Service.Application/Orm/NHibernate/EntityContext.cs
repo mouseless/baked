@@ -15,4 +15,9 @@ public class EntityContext<TEntity> : IEntityContext<TEntity>
 
         return entity;
     }
+
+    public void Delete(TEntity entity)
+    {
+        _session.Delete(entity);
+    }
 }
