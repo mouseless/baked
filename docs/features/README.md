@@ -1,5 +1,6 @@
 ---
 pages:
+    - business
     - core
     - greeting
     - mock-overrider
