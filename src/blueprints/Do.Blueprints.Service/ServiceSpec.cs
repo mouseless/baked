@@ -1,11 +1,10 @@
 ﻿using Do.Architecture;
+using Do.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using NHibernate;
 
-namespace Do.Testing;
+namespace Do;
 
-// WARNING: this belongs to Do.Blueprints.Service, do NOT move this into any
-// extension
 public abstract class ServiceSpec : Spec
 {
     static IServiceProvider _serviceProvider = default!;
