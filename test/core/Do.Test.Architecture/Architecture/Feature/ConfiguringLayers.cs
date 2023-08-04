@@ -2,7 +2,7 @@ using Do.Architecture;
 
 namespace Do.Test.Architecture.Feature;
 
-public class ConfiguringLayers : Spec
+public class ConfiguringLayers : ArchitectureSpec
 {
     public record ConfigurationA
     {
