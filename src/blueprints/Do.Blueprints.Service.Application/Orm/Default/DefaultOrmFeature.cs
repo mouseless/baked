@@ -5,9 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NHibernate;
 
-namespace Do.Orm.NHibernate;
+namespace Do.Orm.Default;
 
-public class NHibernateOrmFeature : IFeature
+public class DefaultOrmFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {

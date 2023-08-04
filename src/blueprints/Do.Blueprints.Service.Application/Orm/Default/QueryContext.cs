@@ -1,6 +1,6 @@
 ﻿using NHibernate;
 
-namespace Do.Orm.NHibernate;
+namespace Do.Orm.Default;
 
 public class QueryContext<TEntity> : IQueryContext<TEntity>
 {

@@ -24,7 +24,7 @@ public static class ForgeExtensions
         core ??= c => c.Dotnet();
         greeting ??= c => c.Swagger();
         logging ??= c => c.RequestLogging();
-        orm ??= c => c.NHibernate();
+        orm ??= c => c.Default();
         configure ??= _ => { };
 
         return source.Application(app =>

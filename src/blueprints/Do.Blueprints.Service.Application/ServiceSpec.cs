@@ -31,7 +31,7 @@ public abstract class ServiceSpec : Spec
         core ??= c => c.Mock();
         database ??= c => c.InMemory();
         mockOverrider ??= c => c.FirstInterface();
-        orm ??= c => c.NHibernate();
+        orm ??= c => c.Default();
 
         var context = Spec.Init(app =>
         {
