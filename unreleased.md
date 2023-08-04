@@ -1,5 +1,12 @@
 # Unreleased
 
+## Packages
+
+- `Do.Blueprints.Service.Application` package is introduced. This package
+  exposes was formerly named as `Do.Blueprints.Service`
+  - `Do.Blueprints.Service` package now only contains ports of service blueprint
+    and expected to be used from business domain projects
+
 ## Features
 
 - Beta features are available in `do-blueprints-service` package;
@@ -19,5 +26,5 @@
   - `Swagger` implementation is added for greeting feature
   - `Logging` feature is added with `Request` implementation
   - `MockOverrider`feature is added with `FirstInterface` implementation
-  - `Business` features is added with no implementation.
-  - `HelloWorld` implementation of `Greeting` feature is now removed.
+  - `Business` features is added with no implementation
+  - `HelloWorld` implementation of `Greeting` feature is now removed
