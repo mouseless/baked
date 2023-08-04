@@ -2,6 +2,8 @@
 pages:
     - core
     - greeting
+    - mock-overrider
+    - logging
 ---
 
 # Features

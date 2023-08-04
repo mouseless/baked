@@ -17,6 +17,14 @@ Prints hello world at the root path `/`.
 c => c.HelloWorld()
 ```
 
+## Swagger
+
+Redirects root path `/` to `SwaggerUI` for `RestApi` documentation. 
+
+```csharp
+c => c.Swagger()
+```
+
 ## Welcome Page
 
 Adds Microsoft's `WelcomePage` extension to the `WebApplication`.
