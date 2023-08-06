@@ -78,5 +78,10 @@ public class DefaultOrmFeature : IFeature
                 });
             });
         });
+
+        configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
+        {
+            swaggerGenOptions.OperationFilter<NullTypesAreObjectOperationFilter>();
+        });
     }
 }
