@@ -6,9 +6,9 @@ of this system component so that the features can bind domain objects and
 system components together.
 
 Let's take relational database as an example. A relational database is treated
-as an internal system component and is introduced by the `DatabaseLayer` along
-with a configuration API. This API enables a feature to map your domain
-entities to database tables.
+as an internal system component and is introduced by the `DataAccessLayer` along
+with a configuration API. This API enables a feature to map your domain entities
+to database tables.
 
 Another good example is the `HttpServerLayer`. This layer introduces the ASP.NET
 Core framework into your application. It provides three phases, as mentioned in
