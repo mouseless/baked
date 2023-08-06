@@ -17,9 +17,9 @@ public class EntityController
 
     [HttpGet]
     [Route("entities")]
-    public List<Entity> By([FromQuery] string text = default)
+    public List<Entity> By([FromQuery] string @string = default)
     {
-        return _targets.By(text);
+        return _targets.By(@string);
     }
 
     [HttpGet]
@@ -29,7 +29,7 @@ public class EntityController
         return _query.SingleById(id);
     }
 
-    public record NewRequest(string Text, int Numeric);
+    public record NewRequest(string String, int Int32, Uri Uri, Object Dynamic);
 
     [HttpPost]
     [Route("entities")]
@@ -38,7 +38,7 @@ public class EntityController
     {
         var target = _newTarget();
 
-        return target.With(request.Text, request.Numeric);
+        return target.With(request.String, request.Int32, request.Uri, request.Dynamic);
     }
 
     [HttpDelete]
@@ -50,7 +50,7 @@ public class EntityController
         target.Delete();
     }
 
-    public record UpdateRequest(string Text, int Numeric);
+    public record UpdateRequest(string String, int Int32, Uri Uri, Object Dynamic);
 
     [HttpPut]
     [Route("entities/{id}")]
@@ -58,6 +58,6 @@ public class EntityController
     {
         var target = _query.SingleById(id);
 
-        target.Update(request.Text, request.Numeric);
+        target.Update(request.String, request.Int32, request.Uri, request.Dynamic);
     }
 }
