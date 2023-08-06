@@ -58,9 +58,9 @@ public class ProvidingConfiguration : ArchitectureSpec
             where TPhase : IPhase
         {
             var context = GiveMe.AnApplicationContext();
-            var layer = GiveMe.A<TLayer>();
-            var phase = GiveMe.A<TPhase>();
-            var target = GiveMe.A<TTarget>();
+            var layer = GiveMe.AnInstanceOf<TLayer>();
+            var phase = GiveMe.AnInstanceOf<TPhase>();
+            var target = GiveMe.AnInstanceOf<TTarget>();
 
             var phaseContext = layer.GetContext(phase, context);
 

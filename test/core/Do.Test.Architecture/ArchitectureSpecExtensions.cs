@@ -130,7 +130,7 @@ public static class ArchitectureSpecExtensions
         TTarget? configuration = default
     )
     {
-        configuration ??= giveMe.A<TTarget>();
+        configuration ??= giveMe.AnInstanceOf<TTarget>();
 
         return LayerConfigurator.Create<TTarget>(configuration);
     }
