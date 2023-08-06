@@ -34,7 +34,7 @@ public class DefaultOrmFeature : IFeature
                 ))
                 .Conventions.Add(ConventionBuilder.Property.When(
                     x => x.Expect(p => p.Property.PropertyType == typeof(object)),
-                    x => x.CustomType(typeof(JsonObjectUserType))
+                    x => x.CustomType(typeof(ObjectUserType))
                 ))
             ;
         });

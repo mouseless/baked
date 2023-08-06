@@ -6,7 +6,7 @@ using System.Data.Common;
 
 namespace Do.Orm.Default.UserTypes;
 
-public class JsonObjectUserType : CompositeUserTypeBase
+public class ObjectUserType : CompositeUserTypeBase
 {
     public override string[] PropertyNames => new[] { "Value" };
     public override IType[] PropertyTypes => new[] { NHibernateUtil.StringClob };
