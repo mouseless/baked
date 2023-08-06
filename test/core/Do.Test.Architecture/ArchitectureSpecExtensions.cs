@@ -9,12 +9,12 @@ public static class ArchitectureSpecExtensions
 {
     #region Forge
 
-    public static Forge AForge(this Stubber source,
+    public static Forge AForge(this Stubber giveMe,
         IBanner? banner = default,
         ApplicationContext? context = default
     )
     {
-        banner ??= source.Spec.MockMe.ABanner();
+        banner ??= giveMe.Spec.MockMe.ABanner();
         context ??= new();
 
         return new(banner, () => new(context));
@@ -24,7 +24,7 @@ public static class ArchitectureSpecExtensions
 
     #region Application
 
-    public static Application AnApplication(this Stubber source,
+    public static Application AnApplication(this Stubber giveMe,
         ILayer? layer = default,
         ILayer[]? layers = default,
         IFeature? feature = default,
@@ -32,10 +32,10 @@ public static class ArchitectureSpecExtensions
         ApplicationContext? context = default
     )
     {
-        layers ??= new[] { layer ?? source.Spec.MockMe.ALayer() };
-        features ??= new[] { feature ?? source.Spec.MockMe.AFeature() };
+        layers ??= new[] { layer ?? giveMe.Spec.MockMe.ALayer() };
+        features ??= new[] { feature ?? giveMe.Spec.MockMe.AFeature() };
 
-        return source.AForge(context: context).Application(app =>
+        return giveMe.AForge(context: context).Application(app =>
         {
             app.Layers.AddRange(layers);
             app.Features.AddRange(features);
@@ -46,10 +46,10 @@ public static class ArchitectureSpecExtensions
 
     #region ApplicationContext
 
-    public static ApplicationContext AnApplicationContext(this Stubber source) => new();
-    public static ApplicationContext AnApplicationContext<T>(this Stubber source, T content) where T : notnull
+    public static ApplicationContext AnApplicationContext(this Stubber _) => new();
+    public static ApplicationContext AnApplicationContext<T>(this Stubber giveMe, T content) where T : notnull
     {
-        var result = source.AnApplicationContext();
+        var result = giveMe.AnApplicationContext();
 
         result.Add(content);
 
@@ -74,7 +74,7 @@ public static class ArchitectureSpecExtensions
 
     #region Banner
 
-    public static IBanner ABanner(this Mocker source) =>
+    public static IBanner ABanner(this Mocker _) =>
         new Mock<IBanner>().Object;
 
     public static void VerifyPrinted(this IBanner source) =>
@@ -84,7 +84,7 @@ public static class ArchitectureSpecExtensions
 
     #region Layer
 
-    public static ILayer ALayer(this Mocker source,
+    public static ILayer ALayer(this Mocker mockMe,
         object? target = default,
         object[]? targets = default,
         PhaseContext? phaseContext = default,
@@ -93,8 +93,8 @@ public static class ArchitectureSpecExtensions
         Action? onApplyPhase = default
     )
     {
-        phaseContext ??= source.Spec.GiveMe.APhaseContext(target: target, targets: targets);
-        phases ??= new[] { phase ?? source.APhase() };
+        phaseContext ??= mockMe.Spec.GiveMe.APhaseContext(target: target, targets: targets);
+        phases ??= new[] { phase ?? mockMe.APhase() };
 
         var result = new Mock<ILayer>();
 
@@ -126,11 +126,11 @@ public static class ArchitectureSpecExtensions
 
     #region LayerConfigurator
 
-    public static LayerConfigurator ALayerConfigurator<TTarget>(this Stubber source,
+    public static LayerConfigurator ALayerConfigurator<TTarget>(this Stubber giveMe,
         TTarget? configuration = default
     )
     {
-        configuration ??= source.A<TTarget>();
+        configuration ??= giveMe.AnInstanceOf<TTarget>();
 
         return LayerConfigurator.Create<TTarget>(configuration);
     }
@@ -139,7 +139,7 @@ public static class ArchitectureSpecExtensions
 
     #region Phase
 
-    public static IPhase APhase(this Mocker source,
+    public static IPhase APhase(this Mocker _,
         Func<bool>? isReady = default,
         Action? onInitialize = default,
         PhaseOrder order = PhaseOrder.Normal
@@ -173,7 +173,7 @@ public static class ArchitectureSpecExtensions
 
     #region PhaseContext
 
-    public static PhaseContext APhaseContext(this Stubber source,
+    public static PhaseContext APhaseContext(this Stubber giveMe,
         object? target = default,
         object[]? targets = default,
         Action? onDispose = default
@@ -264,7 +264,7 @@ public static class ArchitectureSpecExtensions
 
     #region Feature
 
-    public static IFeature AFeature(this Mocker source) =>
+    public static IFeature AFeature(this Mocker _) =>
         new Mock<IFeature>().Object;
 
     public static void VerifyInitialized(this IFeature source) =>
