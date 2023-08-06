@@ -7,4 +7,5 @@
 - `GiveMe.A()` and `GiveMe.An()` are renamed to `GiveMe.AnInstanceOf()`
 - Configurators now have ability to switch based on environments
   - `developmentDatabase` is removed, you can use environment switcher
-- Added `Uri` and `object` to `string` mapping support for `Orm` feature
+- Added `Uri` to `String` mapping support for `Orm` feature
+- Added `object` to `StringClob` mapping support for `Orm` feature
