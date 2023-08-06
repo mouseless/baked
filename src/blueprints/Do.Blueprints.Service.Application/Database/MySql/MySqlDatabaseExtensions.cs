@@ -11,7 +11,7 @@ public static class MySqlDatabaseExtensions
         Setting<bool>? autoUpdateSchema = default,
         Setting<bool>? showSql = default
     ) => new(
-        connectionString ?? Settings.Optional<string>("Database:MySql:ConnectionString", string.Empty),
+        connectionString ?? Settings.Required<string>("Database:MySql:ConnectionString"),
         autoUpdateSchema ?? Settings.Optional("Database:MySql:AutoUpdateSchema", false),
         showSql ?? Settings.Optional("Database:MySql:ShowSql", false)
     );

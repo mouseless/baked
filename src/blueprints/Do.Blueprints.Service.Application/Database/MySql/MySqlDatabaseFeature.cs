@@ -15,21 +15,15 @@ public class MySqlDatabaseFeature : IFeature
     public MySqlDatabaseFeature(Setting<string> connectionString, Setting<bool> autoUpdateSchema, Setting<bool> showSql) =>
         (_connectionString, _autoUpdateSchema, _showSql) = (connectionString, autoUpdateSchema, showSql);
 
-    bool Disabled => _connectionString == string.Empty;
-
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureServiceCollection(services =>
         {
-            if (Disabled) { return; }
-
             services.AddSingleton<ITransaction, FlatTransaction>();
         });
 
         configurator.ConfigurePersistence(persistence =>
         {
-            if (Disabled) { return; }
-
             var mysql = MySQLConfiguration.Standard
                 .ConnectionString(_connectionString)
                 .Dialect<MySQL57Dialect>();
@@ -46,8 +40,6 @@ public class MySqlDatabaseFeature : IFeature
 
         configurator.ConfigureMiddlewareCollection(middlewares =>
         {
-            if (Disabled) { return; }
-
             middlewares.Add<FlatTransactionMiddleware>();
         });
     }
