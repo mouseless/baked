@@ -46,7 +46,7 @@ public static class ArchitectureSpecExtensions
 
     #region ApplicationContext
 
-    public static ApplicationContext AnApplicationContext(this Stubber giveMe) => new();
+    public static ApplicationContext AnApplicationContext(this Stubber _) => new();
     public static ApplicationContext AnApplicationContext<T>(this Stubber giveMe, T content) where T : notnull
     {
         var result = giveMe.AnApplicationContext();
@@ -74,7 +74,7 @@ public static class ArchitectureSpecExtensions
 
     #region Banner
 
-    public static IBanner ABanner(this Mocker mockMe) =>
+    public static IBanner ABanner(this Mocker _) =>
         new Mock<IBanner>().Object;
 
     public static void VerifyPrinted(this IBanner source) =>
@@ -139,7 +139,7 @@ public static class ArchitectureSpecExtensions
 
     #region Phase
 
-    public static IPhase APhase(this Mocker mockMe,
+    public static IPhase APhase(this Mocker _,
         Func<bool>? isReady = default,
         Action? onInitialize = default,
         PhaseOrder order = PhaseOrder.Normal
@@ -264,7 +264,7 @@ public static class ArchitectureSpecExtensions
 
     #region Feature
 
-    public static IFeature AFeature(this Mocker mockMe) =>
+    public static IFeature AFeature(this Mocker _) =>
         new Mock<IFeature>().Object;
 
     public static void VerifyInitialized(this IFeature source) =>
