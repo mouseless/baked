@@ -15,8 +15,8 @@ public static class SpecExtensions
 
     #region Object
 
-    public static T An<T>(this Stubber source) => source.A<T>();
-    public static T A<T>(this Stubber source)
+    public static T An<T>(this Stubber giveMe) => giveMe.A<T>();
+    public static T A<T>(this Stubber giveMe)
     {
         var result = Activator.CreateInstance(typeof(T));
 
