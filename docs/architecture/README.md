@@ -45,16 +45,16 @@ layers are named after the domain of their technology.
 flowchart
   HS[[Http Server]]
   D((Domain))
-  DB[(Database)]
+  DA[(Data Access)]
 ```
 
 In this example, `HttpServer` introduces the concept of web as a layer through
-the `ASP.NET Core` technology. Also, `Database` introduces the concept of
+the `ASP.NET Core` technology. Also, `DataAccess` introduces the concept of
 relational databases as a layer through the `EF Core` framework.
 
 > :information_source:
 >
-> `Domain` differs from other layers like `HttpServer` and `Database`. It is a
+> `Domain` differs from other layers like `HttpServer` and `DataAccess`. It is a
 > special kind of layer that processes your domain assemblies to create an
 > application schema out of your domain objects so that they can be used in
 > creating configuration, conventions and/or generating source code.
@@ -92,25 +92,25 @@ from the domain layer or from other feature implementations.
 > :information_source:
 >
 > Each feature has only one abstraction, named after the ability it provides,
-> e.g. `Do.Fs`, `Do.Orm`, `Do.Logging`, `Do.Auth` etc.
+> e.g. `Fs`, `Orm`, `Logging`, `Auth` etc.
 
 ```mermaid
 flowchart
   subgraph Layers
     HS[[Http Server]]
     D((Domain))
-    DB[(Database)]
+    DA[(Data Access)]
   end
 
   subgraph Features
     subgraph Abstraction
       A(Api)
-      O(Orm)
+      Db(Database)
     end
   end
 
   D -.uses.-> A
-  D -.uses.-> O
+  D -.uses.-> Db
 ```
 
 ### Implementation
@@ -125,12 +125,12 @@ layer.
 > A feature may configure multiple layers to achieve its functionality.
 
 Features may have multiple implementations, each named after its corresponding
-design or technology, e.g. `Do.Auth.Auth0`, `Do.Fs.Aws`, `Do.Database.MySql`.
+design or technology, e.g. `Auth.Auth0`, `Fs.Aws`, `Database.MySql`.
 
 > :bulb:
 >
-> `Do.Fs` represents file system feature that provides an API to your domain
-> logic to read/write files. `Do.Fs.Local` and `Do.Fs.AwsS3` are two different
+> `Fs` represents file system feature that provides an API to your domain logic
+> to read/write files. `Fs.Local` and `Fs.AwsS3` are two different
 > implementations that provides the same functionality through different system
 > components.
 
@@ -144,27 +144,27 @@ flowchart TB
   subgraph Layers
     HS[[Http Server]]
     D((Domain))
-    DB[(Database)]
+    DA[(Data Access)]
   end
 
   subgraph Features
     subgraph Abstraction
       A(Api)
-      O(Orm)
+      Db(Database)
     end
 
     subgraph Implementation
       AR(Api.Rest)
-      OD(Orm.Default)
+      DbM(Database.MySql)
     end
   end
 
   HS -.configured by.-> AR
   A --implemented by--> AR
   D -.uses.-> A
-  D -.uses.-> O
-  O --implemented by--> OD
-  DB -.configured by.-> OD
+  D -.uses.-> Db
+  Db --implemented by--> DbM
+  DA -.configured by.-> DbM
 ```
 
 [Clean Architecture]:https://learn.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures#clean-architecture

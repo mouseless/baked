@@ -9,6 +9,6 @@ public static class SqliteDatabaseExtensions
     public static SqliteDatabaseFeature Sqlite(this DatabaseConfigurator source,
         Setting<string>? fileName = default
     ) => new(
-        fileName ?? Settings.Optional("Database:Sqlite:FileName", string.Empty)
+        fileName ?? Settings.Required<string>("Database:Sqlite:FileName")
     );
 }

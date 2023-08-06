@@ -49,7 +49,7 @@ Layers are added without any options to configure;
 ```csharp
 app.Layers.AddDomain();
 app.Layers.AddHttpServer();
-app.Layers.AddDatabase();
+app.Layers.AddDataAccess();
 ```
 
 To configure a layer, you need to add a feature mentioned in the next section.
@@ -60,15 +60,15 @@ Features are added using one of the implementations available in given
 configurator;
 
 ```csharp
-app.Features.AddApi(c => c.Rest());
-app.Features.AddOrm(c => c.Default());
+app.Features.AddGreeting(c => c.WelcomePage());
+app.Features.AddDatabase(c => c.MySql());
 ```
 
 An implementation may ask for additional options within its configurator
 method;
 
 ```csharp
-app.Features.AddOrm(c => c.Default(primaryKeyPrefix: "PK_"))
+app.Features.AddDatabase(c => c.MySql(autoUpdateSchema: true)
 ```
 
 ## Running an Application
@@ -178,7 +178,7 @@ sequenceDiagram
 > A layer doesn't necessarily introduce new phases to an application, but all
 > phases are applied to all layers nevertheless. For example, `HttpServerLayer`
 > introduces _Build_ phase which is applied to `Domain`, `HttpServer` and
-> `Database` layers to allow them provide their configuration specific to the
+> `DataAccess` layers to allow them provide their configuration specific to the
 > _Build_ phase.
 
 ### Order of Phases
