@@ -1,4 +1,5 @@
 ﻿using Do.Architecture;
+using Do.Orm.Default.UserTypes;
 using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Mapping;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,6 +31,10 @@ public class DefaultOrmFeature : IFeature
                 .Conventions.Add(ConventionBuilder.Property.When(
                     x => x.Expect(p => p.Property.PropertyType == typeof(string) && p.Property.Name.EndsWith("Data")),
                     x => x.CustomSqlType("TEXT")
+                ))
+                .Conventions.Add(ConventionBuilder.Property.When(
+                    x => x.Expect(p => p.Property.PropertyType == typeof(object)),
+                    x => x.CustomType(typeof(JsonObjectUserType))
                 ))
             ;
         });

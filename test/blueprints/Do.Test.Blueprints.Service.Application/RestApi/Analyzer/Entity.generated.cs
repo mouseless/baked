@@ -29,7 +29,7 @@ public class EntityController
         return _query.SingleById(id);
     }
 
-    public record NewRequest(string String, int Int32, Uri Uri, Object Dynamic);
+    public record NewRequest(string String, int Int32, Uri Uri, object Dynamic);
 
     [HttpPost]
     [Route("entities")]
@@ -50,7 +50,7 @@ public class EntityController
         target.Delete();
     }
 
-    public record UpdateRequest(string String, int Int32, Uri Uri, Object Dynamic);
+    public record UpdateRequest(string String, int Int32, Uri Uri, object Dynamic);
 
     [HttpPut]
     [Route("entities/{id}")]
