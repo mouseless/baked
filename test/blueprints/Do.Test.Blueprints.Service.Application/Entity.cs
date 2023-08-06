@@ -11,21 +11,27 @@ public class Entity
         _context = context;
 
     public virtual Guid Id { get; protected set; } = default!;
-    public virtual string Text { get; protected set; } = default!;
-    public virtual int Numeric { get; protected set; } = default!;
+    public virtual string String { get; protected set; } = default!;
+    public virtual int Int32 { get; protected set; } = default!;
+    public virtual Uri Uri { get; protected set; } = default!;
+    public virtual object Dynamic { get; protected set; } = default!;
 
-    public virtual Entity With(string text, int numeric)
+    public virtual Entity With(string @string, int int32, Uri uri, object @dynamic)
     {
-        Text = text;
-        Numeric = numeric;
+        String = @string;
+        Int32 = int32;
+        Uri = uri;
+        Dynamic = @dynamic;
 
         return _context.Insert(this);
     }
 
-    public virtual void Update(string text, int numeric)
+    public virtual void Update(string @string, int int32, Uri uri, object @dynamic)
     {
-        Text = text;
-        Numeric = numeric;
+        String = @string;
+        Int32 = int32;
+        Uri = uri;
+        Dynamic = @dynamic;
     }
 
     public virtual void Delete()
@@ -41,10 +47,10 @@ public class Entities
     public Entities(IQueryContext<Entity> context) =>
         _context = context;
 
-    public List<Entity> By(string? text = default)
+    public List<Entity> By(string? @string = default)
     {
-        if (text == default) { return _context.All(); }
+        if (@string == default) { return _context.All(); }
 
-        return _context.By(e => e.Text == text);
+        return _context.By(e => e.String == @string);
     }
 }
