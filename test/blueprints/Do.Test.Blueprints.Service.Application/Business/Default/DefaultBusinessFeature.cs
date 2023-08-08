@@ -13,6 +13,9 @@ public class DefaultBusinessFeature : IFeature
 
             services.AddTransientWithFactory<Entity>();
             services.AddSingleton<Entities>();
+
+            services.AddTransientWithFactory<EntityWithGuidProperty>();
+            services.AddSingleton<EntityWithGuidProperties>();
         });
 
         configurator.ConfigureAutoPersistenceModel(model =>
