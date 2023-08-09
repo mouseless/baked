@@ -7,18 +7,18 @@ namespace Do.Test.RestApi.Analyzer;
 [ApiController]
 public class SingletonController
 {
-    readonly Singleton _target;
+    private IServiceProvider _serviceProvider;
 
-    public SingletonController(Singleton target) =>
-      _target = target;
+    public SingletonController(IServiceProvider serviceProvider) =>
+        _serviceProvider = serviceProvider;
 
     [HttpGet]
     [Produces("application/json")]
     [Route("singleton/time")]
     public DateTime GetNow()
     {
-        var result = _target.GetNow();
+        var target = _serviceProvider.GetRequiredService<Singleton>();
 
-        return result;
+        return target.GetNow();
     }
 }
