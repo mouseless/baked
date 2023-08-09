@@ -33,6 +33,10 @@ public class DefaultOrmFeature : IFeature
                     x => x.CustomSqlType("TEXT")
                 ))
                 .Conventions.Add(ConventionBuilder.Property.When(
+                    x => x.Expect(p => p.Property.PropertyType == typeof(Uri)),
+                    x => x.CustomSqlType("TEXT")
+                ))
+                .Conventions.Add(ConventionBuilder.Property.When(
                     x => x.Expect(p => p.Property.PropertyType == typeof(object)),
                     x => x.CustomType(typeof(ObjectUserType))
                 ))
