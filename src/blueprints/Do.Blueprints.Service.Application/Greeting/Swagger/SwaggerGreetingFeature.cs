@@ -22,16 +22,16 @@ public class SwaggerGreetingFeature : IFeature
         {
             swaggerGenOptions.CustomSchemaIds(t =>
             {
-                if(!t.IsNested)
+                if(t.IsNested)
                 {
-                    return t.Name;
-                }
-
-                return t.FullName?
+                    return t.FullName?
                         .Replace($"{t.Namespace}.", "")
                         .Replace("Controller", "")
                         .Replace(".", "_")
                         .Replace("+", "_");
+                }
+
+                return t.Name;
             });
         });
     }
