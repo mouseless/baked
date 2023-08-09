@@ -12,13 +12,15 @@ public class Entity
 
     public virtual Guid Id { get; protected set; } = default!;
     public virtual string String { get; protected set; } = default!;
+    public virtual string StringData { get; protected set; } = default!;
     public virtual int Int32 { get; protected set; } = default!;
     public virtual Uri Uri { get; protected set; } = default!;
     public virtual object Dynamic { get; protected set; } = default!;
 
-    public virtual Entity With(string @string, int int32, Uri uri, object @dynamic)
+    public virtual Entity With(string @string, string stringData, int int32, Uri uri, object @dynamic)
     {
         String = @string;
+        StringData = stringData;
         Int32 = int32;
         Uri = uri;
         Dynamic = @dynamic;
@@ -26,9 +28,10 @@ public class Entity
         return _context.Insert(this);
     }
 
-    public virtual void Update(string @string, int int32, Uri uri, object @dynamic)
+    public virtual void Update(string @string, string stringData, int int32, Uri uri, object @dynamic)
     {
         String = @string;
+        StringData = stringData;
         Int32 = int32;
         Uri = uri;
         Dynamic = @dynamic;
