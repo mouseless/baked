@@ -18,9 +18,21 @@ public class SwaggerGreetingFeature : IFeature
             });
         });
 
-        configurator.ConfigureSwaggerGenOptions(swaggerGen =>
+        configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
-            swaggerGen.CustomSchemaIds(x => x.FullName);
+            swaggerGenOptions.CustomSchemaIds(t =>
+            {
+                if(!t.IsNested)
+                {
+                    return t.Name;
+                }
+
+                return t.FullName?
+                        .Replace($"{t.Namespace}.", "")
+                        .Replace("Controller", "")
+                        .Replace(".", "_")
+                        .Replace("+", "_");
+            });
         });
     }
 }
