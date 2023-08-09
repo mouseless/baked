@@ -3,6 +3,7 @@ using Do.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace Do;
 
@@ -73,6 +74,29 @@ public static class ServiceSpecExtensions
         source.GetParameters().Length.ShouldBe(1);
         source.GetParameters().First().ParameterType.ShouldBe<T>();
     }
+
+    #endregion
+    
+    #region Url Extensions
+
+    public static Uri AUrl(this Stubber giveMe,
+        string? url = default
+    )
+    {
+        url ??= $"https://www.{Regex.Replace(giveMe.AGuid().ToString(), "[0-9]", "x")}.com";
+
+        return new(url);
+    }
+
+    public static void ShouldBe(this Uri? uri, string urlString) => uri?.ToString().ShouldBe(urlString);
+
+    #endregion
+
+    #region Guid Extensions
+
+    public static Guid AGuid(this Stubber _,
+        string? guid = default
+    ) => guid is null ? Guid.NewGuid() : Guid.Parse(guid);
 
     #endregion
 }
