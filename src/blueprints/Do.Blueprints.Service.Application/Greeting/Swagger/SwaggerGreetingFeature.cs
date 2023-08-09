@@ -1,5 +1,6 @@
 using Do.Architecture;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Do.Greeting.Swagger;
 
@@ -15,6 +16,11 @@ public class SwaggerGreetingFeature : IFeature
 
                 return Task.CompletedTask;
             });
+        });
+
+        configurator.ConfigureSwaggerGenOptions(swaggerGen =>
+        {
+            swaggerGen.CustomSchemaIds(x => x.FullName);
         });
     }
 }
