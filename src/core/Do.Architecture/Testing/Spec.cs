@@ -22,12 +22,14 @@ public abstract class Spec
 
     public Stubber GiveMe { get; private set; } = default!;
     public Mocker MockMe { get; private set; } = default!;
+    public Searcher GetMe { get; private set; } = default!;
 
     [SetUp]
     public virtual void SetUp()
     {
         GiveMe = new(this);
         MockMe = new(this);
+        GetMe = new(this);
     }
 
     [TearDown]
