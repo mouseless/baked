@@ -8,7 +8,7 @@ namespace Do.Test.RestApi.Analyzer;
 [ApiController]
 public class EntityController
 {
-    private IServiceProvider _serviceProvider;
+    readonly IServiceProvider _serviceProvider;
 
     public EntityController(IServiceProvider serviceProvider) =>
         _serviceProvider = serviceProvider;

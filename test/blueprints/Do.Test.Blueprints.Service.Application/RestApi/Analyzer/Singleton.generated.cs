@@ -7,7 +7,7 @@ namespace Do.Test.RestApi.Analyzer;
 [ApiController]
 public class SingletonController
 {
-    private IServiceProvider _serviceProvider;
+    readonly IServiceProvider _serviceProvider;
 
     public SingletonController(IServiceProvider serviceProvider) =>
         _serviceProvider = serviceProvider;
