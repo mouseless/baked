@@ -15,9 +15,9 @@ public class ObjectUserType : CompositeUserTypeBase
 
     public override object? NullSafeGet(DbDataReader dr, string[] names, ISessionImplementor session, object owner)
     {
-        if (PropertyTypes[0].NullSafeGet(dr, names, session, owner) is string @string)
+        if (PropertyTypes[0].NullSafeGet(dr, names, session, owner) is string serializedObjectType)
         {
-            return JsonConvert.DeserializeObject(@string);
+            return JsonConvert.DeserializeObject(serializedObjectType);
         }
 
         return null;
