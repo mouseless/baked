@@ -2,7 +2,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 
-namespace Do.Test.RestApi.Analyzer;
+namespace Do.Test;
 
 [ApiController]
 public class SingletonController

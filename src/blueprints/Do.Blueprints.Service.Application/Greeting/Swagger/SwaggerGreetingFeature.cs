@@ -1,6 +1,7 @@
 using Do.Architecture;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using MySqlX.XDevAPI.Common;
 
 namespace Do.Greeting.Swagger;
 
@@ -22,15 +23,20 @@ public class SwaggerGreetingFeature : IFeature
         {
             swaggerGenOptions.CustomSchemaIds(t =>
             {
-                if(t.IsNested)
+                string[] splitedNamespace = t.Namespace!.Split(".");
+                string name = t.Name;
+
+                if (t.IsNested)
                 {
-                    return t.FullName?
+                    name = t.FullName?
                         .Replace($"{t.Namespace}.", "")
                         .Replace("Controller", "")
-                        .Replace("+", ".");
+                        .Replace("+", ".")!;
                 }
 
-                return t.Name;
+                return splitedNamespace.Length > 1 
+                    ? $"{string.Join('.', splitedNamespace.Skip(1))}.{name}"
+                    : name;
             });
         });
     }
