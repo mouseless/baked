@@ -12,6 +12,7 @@ public class EntityWithGuidProperty
 
     public virtual Guid Id { get; protected set; } = default!;
     public virtual Guid GuidProperty { get; protected set; } = default!;
+
     public virtual EntityWithGuidProperty With(Guid guid)
     {
         GuidProperty = guid;
@@ -36,6 +37,4 @@ public class EntityWithGuidProperties
 
     public EntityWithGuidProperties(IQueryContext<EntityWithGuidProperty> context) =>
         _context = context;
-
-    public EntityWithGuidProperty? ByGuidProperty(Guid guid) => _context.SingleBy(e => e.GuidProperty == guid);
 }
