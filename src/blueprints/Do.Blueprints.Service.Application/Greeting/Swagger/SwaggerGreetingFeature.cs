@@ -1,7 +1,6 @@
 using Do.Architecture;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using MySqlX.XDevAPI.Common;
 
 namespace Do.Greeting.Swagger;
 
@@ -34,7 +33,7 @@ public class SwaggerGreetingFeature : IFeature
                         .Replace("+", ".")!;
                 }
 
-                return splitedNamespace.Length > 1 
+                return splitedNamespace.Length > 1
                     ? $"{string.Join('.', splitedNamespace.Skip(1))}.{name}"
                     : name;
             });
