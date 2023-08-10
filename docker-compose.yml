@@ -31,7 +31,7 @@ services:
     build:
       dockerfile: test/blueprints/Do.Test.Blueprints.Service.Application/Dockerfile
       args: 
-        ENVIRONMENT: Development
+        ENVIRONMENT: Production
     ports:
       - 5007:80
     depends_on: 
