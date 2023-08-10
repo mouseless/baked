@@ -27,8 +27,7 @@ public class SwaggerGreetingFeature : IFeature
                     return t.FullName?
                         .Replace($"{t.Namespace}.", "")
                         .Replace("Controller", "")
-                        .Replace(".", "_")
-                        .Replace("+", "_");
+                        .Replace("+", ".");
                 }
 
                 return t.Name;
