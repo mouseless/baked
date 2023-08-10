@@ -47,9 +47,9 @@ public class EntityController
     [Route("entities/{id}")]
     public void Delete([FromRoute] Guid id)
     {
-        var target = _serviceProvider.GetRequiredService<IQueryContext<Entity>>();
+        var target = _serviceProvider.GetRequiredService<IQueryContext<Entity>>().SingleById(id);
 
-        target.SingleById(id).Delete();
+        target.Delete();
     }
 
     public record UpdateRequest(string String, int Int32, Uri Uri, object Dynamic);
@@ -58,8 +58,8 @@ public class EntityController
     [Route("entities/{id}")]
     public void Update([FromRoute] Guid id, [FromBody] UpdateRequest request)
     {
-        var target = _serviceProvider.GetRequiredService<IQueryContext<Entity>>();
+        var target = _serviceProvider.GetRequiredService<IQueryContext<Entity>>().SingleById(id);
 
-        target.SingleById(id).Update(request.String, request.Int32, request.Uri, request.Dynamic);
+        target.Update(request.String, request.Int32, request.Uri, request.Dynamic);
     }
 }
