@@ -11,8 +11,9 @@ public static class ServiceSpecExtensions
 {
     #region MockOverrider
 
-    public static T The<T>(this Searcher getMe, params object?[] mockOverrides) where T : notnull =>
-        getMe.Spec.GiveMe.The<T>(mockOverrides);
+    public static T The<T>(this Searcher _, params object?[] mockOverrides) where T : notnull =>
+        ServiceSpec.ServiceProvider.OverrideMocksAndGetRequiredService<T>(mockOverrides);
+
     public static T The<T>(this Stubber _, params object?[] mockOverrides) where T : notnull =>
         ServiceSpec.ServiceProvider.OverrideMocksAndGetRequiredService<T>(mockOverrides);
 
