@@ -28,7 +28,6 @@ public class EntityWithGuidProperty
     {
         _context.Delete(this);
     }
-
 }
 
 public class EntityWithGuidProperties
