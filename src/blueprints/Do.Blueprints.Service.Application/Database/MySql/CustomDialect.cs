@@ -7,6 +7,6 @@ public class CustomDialect : MySQL57Dialect
 {
     public CustomDialect()
     {
-        RegisterColumnType(DbType.Object, "TEXT");
+        RegisterColumnType(DbType.Object, "MEDIUMTEXT");
     }
 }
