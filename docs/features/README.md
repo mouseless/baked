@@ -3,6 +3,7 @@ pages:
     - business
     - core
     - database
+    - documentation
     - exception-handling
     - greeting
     - logging
