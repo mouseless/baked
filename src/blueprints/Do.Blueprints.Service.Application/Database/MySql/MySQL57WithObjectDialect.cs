@@ -3,9 +3,9 @@ using System.Data;
 
 namespace Do.Database.MySql;
 
-public class CustomDialect : MySQL57Dialect
+public class MySQL57WithObjectDialect : MySQL57Dialect
 {
-    public CustomDialect()
+    public MySQL57WithObjectDialect()
     {
         RegisterColumnType(DbType.Object, "MEDIUMTEXT");
     }

@@ -26,7 +26,7 @@ public class MySqlDatabaseFeature : IFeature
         {
             var mysql = MySQLConfiguration.Standard
                 .ConnectionString(_connectionString)
-                .Dialect<CustomDialect>();
+                .Dialect<MySQL57WithObjectDialect>();
 
             // this should be in logging
             if (_showSql) { mysql.ShowSql(); }
