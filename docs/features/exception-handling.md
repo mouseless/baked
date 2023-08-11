@@ -1,6 +1,6 @@
 # Exception Handling
 
-This feature allows adding custom _Exception Handlers_. 
+This feature allows adding custom _Exception Handlers_.
 
 ```csharp
 app.Features.AddExceptionHandling(...);

@@ -5,5 +5,5 @@ namespace Do;
 
 public static class DefaultOrmExtensions
 {
-    public static DefaultOrmFeature Default(this OrmConfigurator source) => new();
+    public static DefaultOrmFeature Default(this OrmConfigurator _) => new();
 }

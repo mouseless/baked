@@ -3,30 +3,32 @@
 using Do.Orm;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Do.Test.RestApi.Analyzer;
+namespace Do.Test;
 
 [ApiController]
 public class EntityController
 {
-    readonly IQueryContext<Entity> _query;
-    readonly Func<Entity> _newTarget;
-    readonly Entities _targets;
+    readonly IServiceProvider _serviceProvider;
 
-    public EntityController(IQueryContext<Entity> query, Func<Entity> newTarget, Entities targets) =>
-      (_query, _newTarget, _targets) = (query, newTarget, targets);
+    public EntityController(IServiceProvider serviceProvider) =>
+        _serviceProvider = serviceProvider;
 
     [HttpGet]
     [Route("entities")]
     public List<Entity> By([FromQuery] string @string = default)
     {
-        return _targets.By(@string);
+        var target = _serviceProvider.GetRequiredService<Entities>();
+
+        return target.By(@string);
     }
 
     [HttpGet]
     [Route("entities/{id}")]
     public Entity Get(Guid id)
     {
-        return _query.SingleById(id);
+        var target = _serviceProvider.GetRequiredService<IQueryContext<Entity>>();
+
+        return target.SingleById(id);
     }
 
     public record NewRequest(Guid Guid, string String, string StringData, int Int32, Uri Uri, object Dynamic);
@@ -36,7 +38,7 @@ public class EntityController
 
     public Entity New([FromBody] NewRequest request)
     {
-        var target = _newTarget();
+        var target = _serviceProvider.GetRequiredService<Entity>();
 
         return target.With(request.Guid, request.String, request.StringData, request.Int32, request.Uri, request.Dynamic);
     }
@@ -45,7 +47,7 @@ public class EntityController
     [Route("entities/{id}")]
     public void Delete([FromRoute] Guid id)
     {
-        var target = _query.SingleById(id);
+        var target = _serviceProvider.GetRequiredService<IQueryContext<Entity>>().SingleById(id);
 
         target.Delete();
     }
@@ -56,7 +58,7 @@ public class EntityController
     [Route("entities/{id}")]
     public void Update([FromRoute] Guid id, [FromBody] UpdateRequest request)
     {
-        var target = _query.SingleById(id);
+        var target = _serviceProvider.GetRequiredService<IQueryContext<Entity>>().SingleById(id);
 
         target.Update(request.Guid, request.String, request.StringData, request.Int32, request.Uri, request.Dynamic);
     }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Do.Orm.Default;
+namespace Do.Documentation.Default;
 
 public class NullTypesAreObjectOperationFilter : IOperationFilter
 {
