@@ -1,7 +1,7 @@
 ﻿using NHibernate.Dialect;
 using System.Data;
 
-namespace Do.Database.MySql;
+namespace Do.Database.Dialects;
 
 public class MySQL57WithObjectDialect : MySQL57Dialect
 {

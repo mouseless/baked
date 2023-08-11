@@ -1,5 +1,6 @@
 ﻿using Do.Architecture;
 using Do.Configuration;
+using Do.Database.Dialects;
 using FluentNHibernate.Cfg.Db;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -23,7 +24,7 @@ public class SqliteDatabaseFeature : IFeature
 
         configurator.ConfigurePersistence(persistence =>
         {
-            var sqlite = SQLiteConfiguration.Standard.UsingFile(FullFilePath);
+            var sqlite = SQLiteConfiguration.Standard.UsingFile(FullFilePath).Dialect<SQLliteWithObjectDialect>();
 
             sqlite.ShowSql();
             sqlite.MaxFetchDepth(1);

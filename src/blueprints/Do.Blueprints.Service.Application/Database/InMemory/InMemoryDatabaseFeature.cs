@@ -1,4 +1,5 @@
 ﻿using Do.Architecture;
+using Do.Database.Dialects;
 using FluentNHibernate.Cfg.Db;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,7 +16,7 @@ public class InMemoryDatabaseFeature : IFeature
 
         configurator.ConfigurePersistence(persistence =>
         {
-            var sqlite = SQLiteConfiguration.Standard.InMemory();
+            var sqlite = SQLiteConfiguration.Standard.InMemory().Dialect<SQLliteWithObjectDialect>();
 
             sqlite.MaxFetchDepth(1);
 

@@ -1,8 +1,8 @@
 ﻿using Do.Architecture;
 using Do.Configuration;
+using Do.Database.Dialects;
 using FluentNHibernate.Cfg.Db;
 using Microsoft.Extensions.DependencyInjection;
-using NHibernate.Dialect;
 
 namespace Do.Database.MySql;
 
