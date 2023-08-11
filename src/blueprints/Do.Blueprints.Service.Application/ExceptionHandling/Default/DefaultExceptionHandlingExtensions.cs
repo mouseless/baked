@@ -5,7 +5,7 @@ namespace Do;
 
 public static class DefaultExceptionHandlingExtensions
 {
-    public static DefaultExceptionHandlingFeature Default(this ExceptionHandlingConfigurator source,
+    public static DefaultExceptionHandlingFeature Default(this ExceptionHandlingConfigurator _,
         Action<Options>? optionsBuilder = default
     )
     {

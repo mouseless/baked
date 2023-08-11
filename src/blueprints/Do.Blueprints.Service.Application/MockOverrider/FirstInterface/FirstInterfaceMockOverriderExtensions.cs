@@ -5,5 +5,5 @@ namespace Do;
 
 public static class FirstInterfaceMockOverriderExtensions
 {
-    public static FirstInterfaceMockOverriderFeature FirstInterface(this MockOverriderConfigurator source) => new();
+    public static FirstInterfaceMockOverriderFeature FirstInterface(this MockOverriderConfigurator _) => new();
 }

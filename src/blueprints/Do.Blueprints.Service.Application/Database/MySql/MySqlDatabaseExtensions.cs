@@ -6,7 +6,7 @@ namespace Do;
 
 public static class MySqlDatabaseExtensions
 {
-    public static MySqlDatabaseFeature MySql(this DatabaseConfigurator source,
+    public static MySqlDatabaseFeature MySql(this DatabaseConfigurator _,
         Setting<string>? connectionString = default,
         Setting<bool>? autoUpdateSchema = default,
         Setting<bool>? showSql = default

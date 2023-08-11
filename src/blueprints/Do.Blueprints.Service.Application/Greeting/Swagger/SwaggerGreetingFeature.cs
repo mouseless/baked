@@ -17,26 +17,5 @@ public class SwaggerGreetingFeature : IFeature
                 return Task.CompletedTask;
             });
         });
-
-        configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
-        {
-            swaggerGenOptions.CustomSchemaIds(t =>
-            {
-                string[] splitedNamespace = t.Namespace!.Split(".");
-                string name = t.Name;
-
-                if (t.IsNested)
-                {
-                    name = t.FullName?
-                        .Replace($"{t.Namespace}.", "")
-                        .Replace("Controller", "")
-                        .Replace("+", ".")!;
-                }
-
-                return splitedNamespace.Length > 1
-                    ? $"{string.Join('.', splitedNamespace.Skip(1))}.{name}"
-                    : name;
-            });
-        });
     }
 }

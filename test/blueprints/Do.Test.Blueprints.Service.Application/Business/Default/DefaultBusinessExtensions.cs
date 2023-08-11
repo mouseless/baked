@@ -5,5 +5,5 @@ namespace Do;
 
 public static class DefaultBusinessExtensions
 {
-    public static DefaultBusinessFeature Default(this BusinessConfigurator source) => new();
+    public static DefaultBusinessFeature Default(this BusinessConfigurator _) => new();
 }

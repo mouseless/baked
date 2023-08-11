@@ -5,7 +5,7 @@ namespace Do;
 
 public static class WelcomePageGreetingExtensions
 {
-    public static WelcomePageGreetingFeature WelcomePage(this GreetingConfigurator source,
+    public static WelcomePageGreetingFeature WelcomePage(this GreetingConfigurator _,
         string? path = default
     ) => new(path ?? "/");
 }
