@@ -8,16 +8,16 @@ namespace Do.Orm.Default.UserTypes;
 public class ObjectUserType : CompositeUserTypeBase
 {
     public override string[] PropertyNames => new[] { "Value" };
-    public override IType[] PropertyTypes => new[] { new SerializedObjectType() };
+    public override IType[] PropertyTypes => new[] { new JsonObjectStringType() };
     public override Type ReturnedClass => typeof(object);
 
     public override object GetPropertyValue(object component, int property) => JsonConvert.SerializeObject(component);
 
     public override object? NullSafeGet(DbDataReader dr, string[] names, ISessionImplementor session, object owner)
     {
-        if (PropertyTypes[0].NullSafeGet(dr, names, session, owner) is string serializedObjectType)
+        if (PropertyTypes[0].NullSafeGet(dr, names, session, owner) is string jsonString)
         {
-            return JsonConvert.DeserializeObject(serializedObjectType);
+            return JsonConvert.DeserializeObject(jsonString);
         }
 
         return null;

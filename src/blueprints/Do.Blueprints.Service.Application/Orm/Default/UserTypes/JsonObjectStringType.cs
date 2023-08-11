@@ -3,10 +3,10 @@ using NHibernate.Type;
 
 namespace Do.Orm.Default.UserTypes;
 
-public class SerializedObjectType : AbstractStringType
+public class JsonObjectStringType : AbstractStringType
 {
-    public SerializedObjectType()
+    public JsonObjectStringType()
         : base(new SqlType(System.Data.DbType.Object)) { }
 
-    public override string Name => "SerializedObjectType";
+    public override string Name => nameof(JsonObjectStringType);
 }
