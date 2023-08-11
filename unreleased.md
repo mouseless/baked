@@ -2,7 +2,8 @@
 
 ## Features
 
-- `Documentation` feature is added with `Default` implementation.
+- Beta features are available in `do-blueprints-service` package;
+  - `Documentation` feature is added with `Default` implementation.
 
 ## Improvements
 
