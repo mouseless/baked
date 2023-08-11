@@ -33,7 +33,7 @@ services:
       args: 
         ENVIRONMENT: Production
     ports:
-      - 5007:80
+      - 5151:80
     depends_on: 
       db: 
         condition: service_healthy
