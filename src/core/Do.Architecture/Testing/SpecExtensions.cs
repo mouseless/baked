@@ -15,7 +15,6 @@ public static class SpecExtensions
 
     #region Object
 
-    public static T AnInstanceOf<T>(this Searcher getMe) => getMe.Spec.GiveMe.AnInstanceOf<T>();
     public static T AnInstanceOf<T>(this Stubber _)
     {
         var result = Activator.CreateInstance(typeof(T));
