@@ -17,13 +17,14 @@ Layers in this blueprint are;
 
 Features with default options are;
 
-| Features          | Run         | Test            | Required |   
+| Features          | Run         | Test            | Required |
 | ---               | ---         | ---             | ---      |
 | Business          |             |                 | Yes      |
 | Core              | Dotnet      | Mock            |          |
 | Database          | Sqlite      | InMemory        | Yes      |
+| Documentation     | Default     |                 |          |
 | Excetion Handling | Default     |                 |          |
 | Greeting          | Hello World |                 |          |
-| Logging           | Request     |                 |          | 
+| Logging           | Request     |                 |          |
 | Mocking Overrider |             | First Interface |          |
 | Orm               | Default     | Default         |          |

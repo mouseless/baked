@@ -1,7 +1,7 @@
 # Orm
 
-This feature setups _NHibernate_ which registers `IEntityContext` and 
-`IQueryContext` implementations and adds `AutoPersistenceModel` and 
+This feature setups _NHibernate_ which registers `IEntityContext` and
+`IQueryContext` implementations and adds `AutoPersistenceModel` and
 `AutoMapping` conventions along with an `Instantiator` interceptor
 for _NHibernate_.
 
