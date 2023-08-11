@@ -6,6 +6,10 @@
 
 ## Improvements
 
+- Changed Id automaping logic. Now `Guid` properties named as `Id` are being
+ mapped as Id.
+- Entity properties of type `object` were not being mapped as `MEDIUMTEXT`,
+ fixed.
 - Swagger schema ID conflict that occurred when two different controllers had a
   nested class with the same name, fixed.
 - `Searcher` `GetMe` is added to `Spec`, `Searcher` extensions have been added

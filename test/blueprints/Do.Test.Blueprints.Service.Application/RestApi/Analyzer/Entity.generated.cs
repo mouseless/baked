@@ -31,7 +31,7 @@ public class EntityController
         return target.SingleById(id);
     }
 
-    public record NewRequest(string String, int Int32, Uri Uri, object Dynamic);
+    public record NewRequest(Guid Guid, string String, string StringData, int Int32, Uri Uri, object Dynamic);
 
     [HttpPost]
     [Route("entities")]
@@ -40,7 +40,7 @@ public class EntityController
     {
         var target = _serviceProvider.GetRequiredService<Entity>();
 
-        return target.With(request.String, request.Int32, request.Uri, request.Dynamic);
+        return target.With(request.Guid, request.String, request.StringData, request.Int32, request.Uri, request.Dynamic);
     }
 
     [HttpDelete]
@@ -52,7 +52,7 @@ public class EntityController
         target.Delete();
     }
 
-    public record UpdateRequest(string String, int Int32, Uri Uri, object Dynamic);
+    public record UpdateRequest(Guid Guid, string String, string StringData, int Int32, Uri Uri, object Dynamic);
 
     [HttpPut]
     [Route("entities/{id}")]
@@ -60,6 +60,6 @@ public class EntityController
     {
         var target = _serviceProvider.GetRequiredService<IQueryContext<Entity>>().SingleById(id);
 
-        target.Update(request.String, request.Int32, request.Uri, request.Dynamic);
+        target.Update(request.Guid, request.String, request.StringData, request.Int32, request.Uri, request.Dynamic);
     }
 }

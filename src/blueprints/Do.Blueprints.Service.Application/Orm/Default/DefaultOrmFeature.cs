@@ -62,7 +62,7 @@ public class DefaultOrmFeature : IFeature
                 )
             );
 
-            automapping.MemberIsId.Add(m => m.PropertyType == typeof(Guid));
+            automapping.MemberIsId.Add(m => m.PropertyType == typeof(Guid) && m.Name == "Id");
             automapping.ShouldMapMember.Add(m => m.IsAutoProperty && !m.PropertyType.IsAssignableTo(typeof(ICollection)));
         });
 
