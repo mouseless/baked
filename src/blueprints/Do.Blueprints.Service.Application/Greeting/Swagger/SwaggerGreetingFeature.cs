@@ -1,6 +1,5 @@
 using Do.Architecture;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Do.Greeting.Swagger;
 
