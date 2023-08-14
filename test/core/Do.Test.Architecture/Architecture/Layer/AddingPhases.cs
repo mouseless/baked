@@ -59,6 +59,21 @@ public class AddingPhases : ArchitectureSpec
         context.ShouldHave("test");
     }
 
+    public class ContextTypeLookup : PhaseBase
+    {
+        protected override void Initialize() => throw new NotImplementedException();
+    }
+
+    [Ignore("Not implemented")]
+    [Test]
+    public void When_app_context_doesnt_have_the_given_type_Throws_an_exception_including_any_other_type_that_implements_or_extends_given_type() =>
+        this.ShouldFail();
+
+    [Ignore("Not implemented")]
+    [Test]
+    public void When_app_context_doesnt_have_the_given_type_and_no_types_implement_or_extends_given_type_Throws_an_exception_including_all_types_in_the_context() =>
+        this.ShouldFail();
+
     public class OneDependencyPhase : PhaseBase<string>
     {
         protected override void Initialize(string dependency) =>
