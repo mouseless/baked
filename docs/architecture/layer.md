@@ -86,6 +86,34 @@ public class CreateBuilder : PhaseBase
 }
 ```
 
+#### Application Context Type Lookup
+
+When `ApplicationContext` doesn't have the given type, looks for any other type that
+implements or extends given type. Throws a `NotFoundException` with message
+listing any found types. If no compatible type found, message is a list of all
+types in the context.
+
+```csharp
+public class CreateBuilder : PhaseBase
+{
+    protected override void Initialize()
+    {
+        var build = WebApplication.CreateBuilder();
+
+        Context.Add(build.Build());
+        /* Since WebApplication implements, IApplicationBuilder this Get<t>
+        operation throws an exception including WebApplication in message. */
+        var applicationBuilder = Context.Get<IApplicationBuilder>();
+    }
+}
+```
+
+> :warning:
+>
+>  Does not look for if the current type is implementing or extending another
+>  type.
+
+
 ### Readiness via Dependencies
 
 You can define context dependencies via generic `PhaseBase<>` classes to make

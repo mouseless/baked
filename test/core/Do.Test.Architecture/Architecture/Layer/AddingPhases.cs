@@ -59,20 +59,43 @@ public class AddingPhases : ArchitectureSpec
         context.ShouldHave("test");
     }
 
-    public class ContextTypeLookup : PhaseBase
+    [Ignore("Not implemented")]
+    [Test]
+    public void App_context_throws_a_not_found_exception_if_given_type_does_not_exist_in_context()
     {
-        protected override void Initialize() => throw new NotImplementedException();
+        var context = GiveMe.AnApplicationContext();
+
+        Should.Throw<NotFoundException>(() =>
+        {
+            context.Get<string>();
+        });
     }
 
     [Ignore("Not implemented")]
     [Test]
-    public void When_app_context_doesnt_have_the_given_type_Throws_an_exception_including_any_other_type_that_implements_or_extends_given_type() =>
-        this.ShouldFail();
+    public void App_context_not_found_exception_message_includes_any_type_implementing_or_extending_given_type()
+    {
+        var context = GiveMe.AnApplicationContext("Test");
+
+        Should.Throw<NotFoundException>(() =>
+        {
+            context.Get<object>();
+        }).Message.ShouldBeSameAs("Given type could not be found in ApplicationContext. Did you mean ? string");
+    }
 
     [Ignore("Not implemented")]
     [Test]
-    public void When_app_context_doesnt_have_the_given_type_and_no_types_implement_or_extends_given_type_Throws_an_exception_including_all_types_in_the_context() =>
-        this.ShouldFail();
+    public void App_context_not_found_exception_message_includes_all_types_if_no_related_type_is_found()
+    {
+        var context = GiveMe.AnApplicationContext();
+        context.Add("Test");
+        context.Add(5);
+
+        Should.Throw<NotFoundException>(() =>
+        {
+            context.Get<bool>();
+        }).Message.ShouldBeSameAs("Given type could not be found in ApplicationContext. Did you mean ? string, int");
+    }
 
     public class OneDependencyPhase : PhaseBase<string>
     {
