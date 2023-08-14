@@ -63,12 +63,24 @@ public class AddingPhases : ArchitectureSpec
     [Test]
     public void App_context_throws_a_not_found_exception_if_given_type_does_not_exist_in_context()
     {
+        var context = GiveMe.AnApplicationContext("Test");
+
+        Should.Throw<NotFoundException>(() =>
+        {
+            context.Get<bool>();
+        });
+    }
+
+    [Ignore("Not implemented")]
+    [Test]
+    public void App_context_not_found_exception_message_states_context_is_empty()
+    {
         var context = GiveMe.AnApplicationContext();
 
         Should.Throw<NotFoundException>(() =>
         {
             context.Get<string>();
-        });
+        }).Message.ShouldBeSameAs("Context is empty");
     }
 
     [Ignore("Not implemented")]
@@ -80,7 +92,7 @@ public class AddingPhases : ArchitectureSpec
         Should.Throw<NotFoundException>(() =>
         {
             context.Get<object>();
-        }).Message.ShouldBeSameAs("Given type could not be found in ApplicationContext. Did you mean ? string");
+        }).Message.ShouldBeSameAs("Given type could not be found in ApplicationContext. Did you mean ? String");
     }
 
     [Ignore("Not implemented")]
@@ -94,7 +106,7 @@ public class AddingPhases : ArchitectureSpec
         Should.Throw<NotFoundException>(() =>
         {
             context.Get<bool>();
-        }).Message.ShouldBeSameAs("Given type could not be found in ApplicationContext. Did you mean ? string, int");
+        }).Message.ShouldBeSameAs("Given type could not be found in ApplicationContext. Did you mean ? String, Int32");
     }
 
     public class OneDependencyPhase : PhaseBase<string>
