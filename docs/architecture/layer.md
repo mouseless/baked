@@ -111,8 +111,8 @@ public class Build : PhaseBase<WebApplicationBuilder>
 > You can provide more than one dependency for a phase. E.g., `Phase<X, Y>`
 > will require `Initialize(X x, Y y)` method to be implemented.
 
-[GetContext](../architecture/application.md#running-an-application) call
-will give an error if the given type is not the exact type of the dependency.
+`Initialize()` will give an error if the given type is not the exact type of
+the dependency.
 
 ```csharp
 public class Build : PhaseBase<WebApplication>

@@ -189,18 +189,14 @@ message listing any found types. If no compatible type found, message is a list
 of all types in the context.
 
 ```csharp
-public class CreateBuilder : PhaseBase
-{
-    protected override void Initialize()
-    {
-        var build = WebApplication.CreateBuilder();
-
-        Context.Add(build.Build());
-        /* Since WebApplication implements, IApplicationBuilder this Get<t>
-        operation throws an exception including WebApplication in message. */
-        var applicationBuilder = Context.Get<IApplicationBuilder>();
-    }
-}
+...
+    var build = WebApplication.CreateBuilder();
+    Context.Add(build.Build());
+    
+    /* Since WebApplication implements, IApplicationBuilder this Get<t>
+    operation throws an exception including WebApplication in message. */
+    var applicationBuilder = Context.Get<IApplicationBuilder>();
+...
 ```
 
 > :warning:
