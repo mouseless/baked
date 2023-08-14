@@ -162,7 +162,7 @@ configuration.
 ```csharp
 public class LayerX : LayerBase<AddServices>
 {
-    LayerXConfiguration _configuration = new();
+    readonly LayerXConfiguration _configuration = new();
 
     protected override PhaseContext GetContext(AddServices phase) =>
         phase.CreateContext(_configuration);
@@ -207,7 +207,7 @@ and `onDispose:` delegate to do stuff after.
 ```csharp
 public class LayerX : LayerBase<AddServices>
 {
-    LayerXConfiguration _configuration = new();
+    readonly LayerXConfiguration _configuration = new();
 
     protected override PhaseContext GetContext(AddServices phase)
     {
@@ -245,8 +245,8 @@ Below code demonstrates providing two configuration objects at once;
 ```csharp
 public class LayerX : LayerBase<AddServices>
 {
-    Configuration1 _configuration1 = new();
-    Configuration2 _configuration2 = new();
+    readonly Configuration1 _configuration1 = new();
+    readonly Configuration2 _configuration2 = new();
 
     protected override PhaseContext GetContext(AddServices phase) =>
         phase.CreateContext(_configuration1, _configuration2);
@@ -277,8 +277,8 @@ Below code demonstrates providing configuration objects one by one;
 ```csharp
 public class LayerX : LayerBase<AddServices>
 {
-    Configuration1 _configuration1 = new();
-    Configuration2 _configuration2 = new();
+    readonly Configuration1 _configuration1 = new();
+    readonly Configuration2 _configuration2 = new();
 
     protected override PhaseContext GetContext(AddServices phase) =>
         phase.CreateContextBuilder()
@@ -320,9 +320,9 @@ You may combine these two ways to provide configuration;
 ```csharp
 public class LayerX : LayerBase<AddServices>
 {
-    Configuration1 _configuration1 = new();
-    Configuration2 _configuration2 = new();
-    Configuration3 _configuration3 = new();
+    readonly Configuration1 _configuration1 = new();
+    readonly Configuration2 _configuration2 = new();
+    readonly Configuration3 _configuration3 = new();
 
     protected override PhaseContext GetContext(AddServices phase) =>
         phase.CreateContextBuilder()
