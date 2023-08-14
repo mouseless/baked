@@ -181,6 +181,33 @@ sequenceDiagram
 > `DataAccess` layers to allow them provide their configuration specific to the
 > _Build_ phase.
 
+### Application Context Type Lookup
+
+When `ApplicationContext` does not have the given type, looks for any other 
+type that implements or extends given type. Throws a `NotFoundException` with
+message listing any found types. If no compatible type found, message is a list
+of all types in the context.
+
+```csharp
+public class CreateBuilder : PhaseBase
+{
+    protected override void Initialize()
+    {
+        var build = WebApplication.CreateBuilder();
+
+        Context.Add(build.Build());
+        /* Since WebApplication implements, IApplicationBuilder this Get<t>
+        operation throws an exception including WebApplication in message. */
+        var applicationBuilder = Context.Get<IApplicationBuilder>();
+    }
+}
+```
+
+> :warning:
+>
+>  Does not look for if the current type is implementing or extending another
+>  type.
+
 ### Order of Phases
 
 Initialization order of phases are determined by;

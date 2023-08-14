@@ -86,34 +86,6 @@ public class CreateBuilder : PhaseBase
 }
 ```
 
-#### Application Context Type Lookup
-
-When `ApplicationContext` doesn't have the given type, looks for any other type that
-implements or extends given type. Throws a `NotFoundException` with message
-listing any found types. If no compatible type found, message is a list of all
-types in the context.
-
-```csharp
-public class CreateBuilder : PhaseBase
-{
-    protected override void Initialize()
-    {
-        var build = WebApplication.CreateBuilder();
-
-        Context.Add(build.Build());
-        /* Since WebApplication implements, IApplicationBuilder this Get<t>
-        operation throws an exception including WebApplication in message. */
-        var applicationBuilder = Context.Get<IApplicationBuilder>();
-    }
-}
-```
-
-> :warning:
->
->  Does not look for if the current type is implementing or extending another
->  type.
-
-
 ### Readiness via Dependencies
 
 You can define context dependencies via generic `PhaseBase<>` classes to make
@@ -138,6 +110,23 @@ public class Build : PhaseBase<WebApplicationBuilder>
 >
 > You can provide more than one dependency for a phase. E.g., `Phase<X, Y>`
 > will require `Initialize(X x, Y y)` method to be implemented.
+
+[GetContext](../architecture/application.md#running-an-application) call
+will give an error if the given type is not the exact type of the dependency.
+
+```csharp
+public class Build : PhaseBase<WebApplication>
+{
+    protected override void Initialize(IApplicationBuilder webApplication)
+    {
+        ...
+    }
+}
+```
+> :information_source:
+>
+> For more information,
+> [Application Context Type Lookup](../architecture/application.md#application-context-type-lookup).
 
 ### Order of a Phase
 

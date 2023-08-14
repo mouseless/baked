@@ -116,6 +116,39 @@ public class RunningAnApplication : ArchitectureSpec
     }
 
     [Test]
+    public void Application_context_throws_a_not_found_exception_if_given_type_does_not_exist_in_context()
+    {
+        var context = GiveMe.AnApplicationContext(5);
+        var action = () => context.Get<string>();
+
+        action.ShouldThrow<KeyNotFoundException>();
+    }
+
+    [Test]
+    public void Application_context_not_found_exception_message_includes_any_type_implementing_or_extending_given_type()
+    {
+        var context = GiveMe.AnApplicationContext("Test");
+        var action = () => context.Get<object>();
+
+        action.ShouldThrow<KeyNotFoundException>().Message.ShouldBe(
+            "Given type could not be found in ApplicationContext. Did you mean String ?"
+        );
+    }
+
+    [Test]
+    public void Application_context_not_found_exception_message_includes_all_types_if_no_related_type_is_found()
+    {
+        var context = GiveMe.AnApplicationContext();
+        context.Add('c');
+        context.Add(5);
+        var action = () => context.Get<string>();
+
+        action.ShouldThrow<KeyNotFoundException>().Message.ShouldBe(
+           "Given type could not be found in ApplicationContext. Did you mean Char, Int32 ?"
+       );
+    }
+
+    [Test]
     public void Application_resolves_which_phase_to_initialize_automatically_by_checking_if_they_are_ready()
     {
         var phases = new List<string>();

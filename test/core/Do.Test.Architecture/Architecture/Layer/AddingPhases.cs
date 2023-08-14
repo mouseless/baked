@@ -59,56 +59,6 @@ public class AddingPhases : ArchitectureSpec
         context.ShouldHave("test");
     }
 
-    //[Ignore("Not implemented")]
-    [Test]
-    public void App_context_throws_a_not_found_exception_if_given_type_does_not_exist_in_context()
-    {
-        var context = GiveMe.AnApplicationContext("Test");
-
-        Should.Throw<NotFoundException>(() =>
-        {
-            context.Get<bool>();
-        });
-    }
-
-    //[Ignore("Not implemented")]
-    [Test]
-    public void App_context_not_found_exception_message_states_context_is_empty()
-    {
-        var context = GiveMe.AnApplicationContext();
-
-        Should.Throw<NotFoundException>(() =>
-        {
-            context.Get<string>();
-        }).Message.ShouldBe("Context is empty");
-    }
-
-    //[Ignore("Not implemented")]
-    [Test]
-    public void App_context_not_found_exception_message_includes_any_type_implementing_or_extending_given_type()
-    {
-        var context = GiveMe.AnApplicationContext("Test");
-
-        Should.Throw<NotFoundException>(() =>
-        {
-            context.Get<object>();
-        }).Message.ShouldBe("Given type could not be found in ApplicationContext. Did you mean ? String");
-    }
-
-    //[Ignore("Not implemented")]
-    [Test]
-    public void App_context_not_found_exception_message_includes_all_types_if_no_related_type_is_found()
-    {
-        var context = GiveMe.AnApplicationContext();
-        context.Add("Test");
-        context.Add(5);
-
-        Should.Throw<NotFoundException>(() =>
-        {
-            context.Get<bool>();
-        }).Message.ShouldBe("Given type could not be found in ApplicationContext. Did you mean ? String, Int32");
-    }
-
     public class OneDependencyPhase : PhaseBase<string>
     {
         protected override void Initialize(string dependency) =>
@@ -125,6 +75,18 @@ public class AddingPhases : ArchitectureSpec
     {
         protected override void Initialize(string dependency1, int dependency2, bool dependency3) =>
             Context.Add('a');
+    }
+
+    [Test]
+    public void Gives_error_when_dependency_is_not_the_exact_type()
+    {
+        var context = GiveMe.AnApplicationContext(5);
+        IPhase oneDependency = new OneDependencyPhase();
+        var action = () => oneDependency.Initialize(context);
+
+        action.ShouldThrow<KeyNotFoundException>().Message.ShouldBe(
+            "Given type could not be found in ApplicationContext. Did you mean Int32 ?"
+        );
     }
 
     [Test]
