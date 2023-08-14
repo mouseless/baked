@@ -125,6 +125,15 @@ public class RunningAnApplication : ArchitectureSpec
     }
 
     [Test]
+    public void App_context_not_found_exception_message_states_context_is_empty()
+    {
+        var context = GiveMe.AnApplicationContext();
+        var action = () => context.Get<string>();
+
+        action.ShouldThrow<KeyNotFoundException>().Message.ShouldBe("Context is empty.");
+    }
+
+    [Test]
     public void Application_context_not_found_exception_message_includes_any_type_implementing_or_extending_given_type()
     {
         var context = GiveMe.AnApplicationContext("Test");

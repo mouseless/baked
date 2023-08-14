@@ -15,7 +15,7 @@ public class ApplicationContext
 
         if (_context.Count == 0)
         {
-            return (T)_context[typeof(T)];
+            throw new KeyNotFoundException("Context is empty.");
         }
 
         var types = _context.Keys.Select(k => k.Name).ToList();
