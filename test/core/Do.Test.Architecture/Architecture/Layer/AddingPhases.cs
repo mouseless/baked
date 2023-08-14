@@ -80,7 +80,7 @@ public class AddingPhases : ArchitectureSpec
         Should.Throw<NotFoundException>(() =>
         {
             context.Get<string>();
-        }).Message.ShouldBeSameAs("Context is empty");
+        }).Message.ShouldBe("Context is empty");
     }
 
     [Ignore("Not implemented")]
@@ -92,7 +92,7 @@ public class AddingPhases : ArchitectureSpec
         Should.Throw<NotFoundException>(() =>
         {
             context.Get<object>();
-        }).Message.ShouldBeSameAs("Given type could not be found in ApplicationContext. Did you mean ? String");
+        }).Message.ShouldBe("Given type could not be found in ApplicationContext. Did you mean ? String");
     }
 
     [Ignore("Not implemented")]
@@ -106,7 +106,7 @@ public class AddingPhases : ArchitectureSpec
         Should.Throw<NotFoundException>(() =>
         {
             context.Get<bool>();
-        }).Message.ShouldBeSameAs("Given type could not be found in ApplicationContext. Did you mean ? String, Int32");
+        }).Message.ShouldBe("Given type could not be found in ApplicationContext. Did you mean ? String, Int32");
     }
 
     public class OneDependencyPhase : PhaseBase<string>
