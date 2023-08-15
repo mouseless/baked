@@ -11,6 +11,13 @@ public class FlatTransaction : ITransaction
     public FlatTransaction(Func<ISession> getSession, ILogger<FlatTransaction> log) =>
         (_getSession, _logger) = (getSession, log);
 
+    public async Task CommitAsync(Action action)
+    {
+        action();
+
+        await CommitAndBeginNewTransaction();
+    }
+
     public async Task<T> CommitAsync<T>(Func<T> action)
     {
         var result = action();
@@ -18,6 +25,13 @@ public class FlatTransaction : ITransaction
         await CommitAndBeginNewTransaction();
 
         return result;
+    }
+
+    public async Task CommitAsync<TEntity>(TEntity entity, Action<TEntity> action)
+    {
+        action(entity);
+
+        await CommitAndBeginNewTransaction();
     }
 
     async Task CommitAndBeginNewTransaction()
