@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Do.Test.Architecture", "tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Do.Blueprints.Service", "src\blueprints\Do.Blueprints.Service\Do.Blueprints.Service.csproj", "{68CBB995-C501-41BB-93B4-01A0CC618A89}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Do.Test.Blueprints.Service", "test\blueprints\Do.Test.Blueprints.Service\Do.Test.Blueprints.Service.csproj", "{063A65CC-F465-4E53-816E-048E05BC3F75}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,6 +56,10 @@ Global
 		{68CBB995-C501-41BB-93B4-01A0CC618A89}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68CBB995-C501-41BB-93B4-01A0CC618A89}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68CBB995-C501-41BB-93B4-01A0CC618A89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{063A65CC-F465-4E53-816E-048E05BC3F75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{063A65CC-F465-4E53-816E-048E05BC3F75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{063A65CC-F465-4E53-816E-048E05BC3F75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{063A65CC-F465-4E53-816E-048E05BC3F75}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{CDC3A00A-52BD-4CDA-B7D7-1FCFC5DD1CEE} = {2F297832-93E6-4750-9141-818873A769F6}
@@ -65,5 +71,6 @@ Global
 		{BE392BCA-BDD7-43F6-BF11-9AC259F82CE6} = {C407EF64-970A-498F-989D-17BBEF83B36F}
 		{45D92BDD-5EA8-4B6C-A6F0-38C9DE139A32} = {BE392BCA-BDD7-43F6-BF11-9AC259F82CE6}
 		{68CBB995-C501-41BB-93B4-01A0CC618A89} = {CDC3A00A-52BD-4CDA-B7D7-1FCFC5DD1CEE}
+		{063A65CC-F465-4E53-816E-048E05BC3F75} = {F1F041D0-E073-455C-96F9-233FDF5CC2A8}
 	EndGlobalSection
 EndGlobal

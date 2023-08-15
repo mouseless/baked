@@ -56,7 +56,7 @@ public class Entity
 
 public class Entities
 {
-    readonly IQueryContext<Entity> _context = default!;
+    readonly IQueryContext<Entity> _context;
 
     public Entities(IQueryContext<Entity> context) =>
         _context = context;
