@@ -111,13 +111,24 @@ public class Build : PhaseBase<WebApplicationBuilder>
 > You can provide more than one dependency for a phase. E.g., `Phase<X, Y>`
 > will require `Initialize(X x, Y y)` method to be implemented.
 
-`Initialize()` will give an error if the given type is not the exact type of
-the dependency.
+`Build.Initialize()` will give an error if the given type is not the exact
+type of the dependency.
 
 ```csharp
-public class Build : PhaseBase<WebApplication>
+public class InitializedPhase : PhaseBase
 {
-    protected override void Initialize(IApplicationBuilder webApplication)
+    protected override void Initialize()
+    {
+        var build = WebApplication.CreateBuilder();
+        Context.Add(build.Build());
+    }
+}
+
+...
+
+public class Build : PhaseBase<IApplicationBuilder>
+{
+    protected override void Initialize(IApplicationBuilder applicationBuilder)
     {
         ...
     }
