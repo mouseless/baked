@@ -22,7 +22,10 @@ public class ApplicationContext
     {
         var message = $"'{typeof(T).Name}' does not exist in context.";
 
-        if (_context.Count == 0) return message.Replace('.', ' ') + "because it is empty.";
+        if (_context.Count == 0)
+        {
+            return message.Replace('.', ' ') + "because it is empty.";
+        }
 
         var foundTypes = _context.Keys.Where(k => typeof(T).IsAssignableFrom(k)).ToList();
         if (foundTypes.Any())
