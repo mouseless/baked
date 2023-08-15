@@ -34,6 +34,8 @@ implementing a new layer;
 1. Provide extension methods in `Do` namespace, e.g.,
    `DependencyInjection/DependencyInjectionExtensions.cs`;
    1. `Add` extension to `List<ILayer>`, e.g., `AddDependencyInjection()`
+   1. `Get` extention to `ApplicationContext`, e.g.,
+      `GetWebApplicationBuilder()`
    1. `Configure` extensions to `LayerConfigurator` per configuration
       target(s), e.g., `ConfigureServiceCollection()`
 1. Place phase implementations as nested classes under the layer class
@@ -111,33 +113,10 @@ public class Build : PhaseBase<WebApplicationBuilder>
 > You can provide more than one dependency for a phase. E.g., `Phase<X, Y>`
 > will require `Initialize(X x, Y y)` method to be implemented.
 
-`Build.Initialize()` will give an error if the given type is not the exact
-type of the dependency.
-
-```csharp
-public class InitializedPhase : PhaseBase
-{
-    protected override void Initialize()
-    {
-        var build = WebApplication.CreateBuilder();
-        Context.Add(build.Build());
-    }
-}
-
-...
-
-public class Build : PhaseBase<IApplicationBuilder>
-{
-    protected override void Initialize(IApplicationBuilder applicationBuilder)
-    {
-        ...
-    }
-}
-```
-> :information_source:
+> :warning:
 >
-> For more information,
-> [Application Context Type Lookup](../architecture/application.md#application-context-type-lookup).
+> Given type should be exact type of dependency. For more information
+> [Running an Application](../architecture/application.md#running-an-application)
 
 ### Order of a Phase
 

@@ -104,6 +104,12 @@ At the beginning of each phase, application initializes it by providing an
 to/from the context, such as `IServiceCollection`, `IMiddlewareCollection`,
 `IEndpointRouteBuilder` etc.
 
+> :information_source:
+>
+> When trying to get a certain object from `ApplicationContext`, exact type 
+> should be given. Using any other type that extends or implements the target
+> object will result in an unsuccessful `Get` operation.
+
 ```mermaid
 flowchart TB
     subgraph AR[ ]
@@ -180,29 +186,6 @@ sequenceDiagram
 > introduces _Build_ phase which is applied to `Domain`, `HttpServer` and
 > `DataAccess` layers to allow them provide their configuration specific to the
 > _Build_ phase.
-
-### Application Context Type Lookup
-
-When `ApplicationContext` does not have the given type, looks for any other 
-type that implements or extends given type. Throws a `NotFoundException` with
-message listing any found types. If no compatible type found, message is a list
-of all types in the context.
-
-```csharp
-...
-    var build = WebApplication.CreateBuilder();
-    Context.Add(build.Build());
-    
-    /* Since WebApplication implements, IApplicationBuilder this Get<t>
-    operation throws an exception including WebApplication in message. */
-    var applicationBuilder = Context.Get<IApplicationBuilder>();
-...
-```
-
-> :warning:
->
->  Does not look for if the current type is implementing or extending another
->  type.
 
 ### Order of Phases
 
