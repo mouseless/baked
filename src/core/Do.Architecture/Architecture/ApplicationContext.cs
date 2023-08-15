@@ -8,24 +8,27 @@ public class ApplicationContext
 
     public T Get<T>()
     {
-        if (Has<T>())
-        {
-            return (T)_context[typeof(T)];
-        }
+        if (!Has<T>()) throw new KeyNotFoundException(MessageBuilder<T>());
 
-        if (_context.Count == 0)
-        {
-            throw new KeyNotFoundException("Context is empty.");
-        }
-
-        var types = _context.Keys.Select(k => k.Name).ToList();
-
-        var foundTypes = _context.Keys.Where(k => typeof(T).IsAssignableFrom(k)).ToList();
-        var typeNames = foundTypes.Select(f => f.Name).ToList();
-
-        var message = typeNames.Count == 0 ? String.Join(", ", types) : String.Join(", ", typeNames);
-        throw new KeyNotFoundException($"Given type could not be found in ApplicationContext. Did you mean {message} ?");
+        return (T)_context[typeof(T)];
     }
 
     public bool Has<T>() => _context.ContainsKey(typeof(T));
+
+    private string MessageBuilder<T>()
+    {
+        var message = $"'{typeof(T).Name}' does not exist in context.";
+
+        if (_context.Count == 0) return message.Replace('.', ' ') + "because it is empty.";
+
+        var foundTypes = _context.Keys.Where(k => typeof(T).IsAssignableFrom(k)).ToList();
+        if (foundTypes.Any())
+        {
+            var typeNames = foundTypes.Select(f => $"'{f.Name}'").ToList();
+            return message += " Did you mean: " + string.Join(", ", typeNames) + "?";
+        }
+
+        var types = _context.Keys.Select(k => $"'{k.Name}'").ToList();
+        return message += " Available types are: " + string.Join(", ", types);
+    }
 }

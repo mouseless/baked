@@ -125,7 +125,6 @@ public class RunningAnApplication : ArchitectureSpec
         getAction.ShouldThrow<KeyNotFoundException>();
     }
 
-    [Ignore("Not implemented")]
     [Test]
     public void App_context_not_found_exception_message_states_context_is_empty()
     {
@@ -138,7 +137,6 @@ public class RunningAnApplication : ArchitectureSpec
         );
     }
 
-    [Ignore("Not implemented")]
     [Test]
     public void Application_context_not_found_exception_message_includes_any_type_implementing_or_extending_given_type()
     {
@@ -147,11 +145,10 @@ public class RunningAnApplication : ArchitectureSpec
         var getAction = () => context.Get<object>();
 
         getAction.ShouldThrow<KeyNotFoundException>().Message.ShouldBe(
-            "'Object' does not exist in context. Did you mean: 'String', Int32'?"
+            "'Object' does not exist in context. Did you mean: 'String', 'Int32'?"
         );
     }
 
-    [Ignore("Not implemented")]
     [Test]
     public void Application_context_not_found_exception_message_includes_all_types_if_no_related_type_is_found()
     {
