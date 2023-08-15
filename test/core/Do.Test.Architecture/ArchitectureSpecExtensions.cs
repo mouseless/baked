@@ -55,14 +55,14 @@ public static class ArchitectureSpecExtensions
 
         return result;
     }
-    public static ApplicationContext AnApplicationContext<T1, T2>(this Stubber giveMe, T1 firstContent, T2 secondContent)
+    public static ApplicationContext AnApplicationContext<T1, T2>(this Stubber giveMe, T1 content1, T2 content2)
         where T1 : notnull
         where T2 : notnull
     {
         var result = giveMe.AnApplicationContext();
 
-        result.Add(firstContent);
-        result.Add(secondContent);
+        result.Add(content1);
+        result.Add(content2);
 
         return result;
     }

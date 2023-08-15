@@ -82,6 +82,7 @@ public class AddingPhases : ArchitectureSpec
     {
         var context = GiveMe.AnApplicationContext(5);
         IPhase oneDependency = new OneDependencyPhase();
+
         var initializeAction = () => oneDependency.Initialize(context);
 
         initializeAction.ShouldThrow<KeyNotFoundException>();
