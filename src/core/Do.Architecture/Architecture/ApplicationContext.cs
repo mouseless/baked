@@ -8,7 +8,10 @@ public class ApplicationContext
 
     public T Get<T>()
     {
-        if (!Has<T>()) throw new KeyNotFoundException(MessageBuilder<T>());
+        if (!Has<T>())
+        {
+            throw new KeyNotFoundException(MessageBuilder<T>());
+        }
 
         return (T)_context[typeof(T)];
     }
@@ -25,10 +28,12 @@ public class ApplicationContext
         if (foundTypes.Any())
         {
             var typeNames = foundTypes.Select(f => $"'{f.Name}'").ToList();
+
             return message += " Did you mean: " + string.Join(", ", typeNames) + "?";
         }
 
         var types = _context.Keys.Select(k => $"'{k.Name}'").ToList();
+
         return message += " Available types are: " + string.Join(", ", types);
     }
 }
