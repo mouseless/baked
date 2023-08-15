@@ -27,15 +27,15 @@ services:
     restart: always
     ports:
       - 8080:80
-  do.test.blueprint.service.application:
+  blueprints.service:
     build:
       dockerfile: test/blueprints/Do.Test.Blueprints.Service.Application/Dockerfile
-      args: 
+      args:
         ENVIRONMENT: Production
     ports:
       - 5151:80
-    depends_on: 
-      db: 
+    depends_on:
+      db:
         condition: service_healthy
     links:
       - db:db
