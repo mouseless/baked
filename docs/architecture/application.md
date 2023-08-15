@@ -108,7 +108,7 @@ to/from the context, such as `IServiceCollection`, `IMiddlewareCollection`,
 >
 > When trying to get a certain object from `ApplicationContext`, exact type 
 > should be given. Using any other type that extends or implements the target
-> object will result in an unsuccessful `Get` operation. For example trying to
+> object will result in an unsuccessful `Get` operation. For example, trying to
 > `Get` a `WebApplication` using `IApplicationBuilder` type will be unsuccessful.
 
 ```mermaid

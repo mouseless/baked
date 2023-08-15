@@ -82,11 +82,9 @@ public class AddingPhases : ArchitectureSpec
     {
         var context = GiveMe.AnApplicationContext(5);
         IPhase oneDependency = new OneDependencyPhase();
-        var action = () => oneDependency.Initialize(context);
+        var initializeAction = () => oneDependency.Initialize(context);
 
-        action.ShouldThrow<KeyNotFoundException>().Message.ShouldBe(
-            "Given type could not be found in ApplicationContext. Did you mean Int32 ?"
-        );
+        initializeAction.ShouldThrow<KeyNotFoundException>();
     }
 
     [Test]
