@@ -21,7 +21,7 @@ public static class SpecExtensions
 
         result.ShouldNotBeNull();
 
-        return (T)result!;
+        return (T)result;
     }
 
     #endregion
