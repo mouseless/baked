@@ -34,8 +34,8 @@ implementing a new layer;
 1. Provide extension methods in `Do` namespace, e.g.,
    `DependencyInjection/DependencyInjectionExtensions.cs`;
    1. `Add` extension to `List<ILayer>`, e.g., `AddDependencyInjection()`
-   1. `Get` extention to `ApplicationContext`, e.g.,
-      `GetWebApplicationBuilder()`
+   1. `Get` extensions to `ApplicationContext`, e.g.,
+      `GetWebApplicationBuilder()`, `GetWebApplication()`
    1. `Configure` extensions to `LayerConfigurator` per configuration
       target(s), e.g., `ConfigureServiceCollection()`
 1. Place phase implementations as nested classes under the layer class
@@ -115,7 +115,8 @@ public class Build : PhaseBase<WebApplicationBuilder>
 
 > :warning:
 >
-> Given type should be exact type of dependency. For more information
+> Type of the dependency provided, must be exactly the same as the type of
+> dependency in `ApplicationContext`. For more information
 > [Running an Application](../architecture/application.md#running-an-application)
 
 ### Order of a Phase
