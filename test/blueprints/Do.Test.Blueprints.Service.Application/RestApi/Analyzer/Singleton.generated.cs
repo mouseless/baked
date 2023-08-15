@@ -21,4 +21,24 @@ public class SingletonController
 
         return target.GetNow();
     }
+
+    [HttpPost]
+    [Produces("application/json")]
+    [Route("singleton/test-transaction-action")]
+    public async Task TestTransactionAction()
+    {
+        var target = _serviceProvider.GetRequiredService<Singleton>();
+
+        await target.TestTransactionAction();
+    }
+
+    [HttpPost]
+    [Produces("application/json")]
+    [Route("singleton/test-transaction-func")]
+    public async Task TestTransactionFunc()
+    {
+        var target = _serviceProvider.GetRequiredService<Singleton>();
+
+        await target.TestTransactionFunc();
+    }
 }

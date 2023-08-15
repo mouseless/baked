@@ -52,14 +52,20 @@ public class EntityController
         target.Delete();
     }
 
-    public record UpdateRequest(Guid Guid, string String, string StringData, int Int32, Uri Uri, object Dynamic);
+    public record UpdateRequest(Guid Guid, string String, string StringData, int Int32, Uri Uri, object Dynamic,
+        bool useTransaction = false,
+        bool throwError = false
+    );
 
     [HttpPut]
     [Route("entities/{id}")]
-    public void Update([FromRoute] Guid id, [FromBody] UpdateRequest request)
+    public async Task Update([FromRoute] Guid id, [FromBody] UpdateRequest request)
     {
         var target = _serviceProvider.GetRequiredService<IQueryContext<Entity>>().SingleById(id);
 
-        target.Update(request.Guid, request.String, request.StringData, request.Int32, request.Uri, request.Dynamic);
+        await target.Update(request.Guid, request.String, request.StringData, request.Int32, request.Uri, request.Dynamic,
+            useTransaction: request.useTransaction,
+            throwError: request.throwError
+        );
     }
 }

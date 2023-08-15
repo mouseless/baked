@@ -11,16 +11,10 @@ public class DefaultDocumentationFeature : IFeature
         {
             swaggerGenOptions.CustomSchemaIds(t =>
             {
-                string[] splitedNamespace = t.Namespace!.Split(".");
-                string name = t.Name;
-
-                if (t.IsNested)
-                {
-                    name = t.FullName?
-                        .Replace($"{t.Namespace}.", "")
-                        .Replace("Controller", "")
-                        .Replace("+", ".")!;
-                }
+                string[] splitedNamespace = t.Namespace?.Split(".") ?? new string[0];
+                string name = t.IsNested && t.FullName is not null
+                    ? t.FullName.Replace($"{t.Namespace}.", "").Replace("Controller", "").Replace("+", ".")
+                    : t.Name;
 
                 return splitedNamespace.Length > 1
                     ? $"{string.Join('.', splitedNamespace.Skip(1))}.{name}"

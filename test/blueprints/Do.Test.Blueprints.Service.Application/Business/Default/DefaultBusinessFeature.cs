@@ -9,10 +9,9 @@ public class DefaultBusinessFeature : IFeature
     {
         configurator.ConfigureServiceCollection(services =>
         {
-            services.AddSingleton<Singleton>();
-
             services.AddTransientWithFactory<Entity>();
             services.AddSingleton<Entities>();
+            services.AddSingleton<Singleton>();
         });
 
         configurator.ConfigureAutoPersistenceModel(model =>
@@ -22,7 +21,7 @@ public class DefaultBusinessFeature : IFeature
 
         configurator.ConfigureApplicationParts(applicationParts =>
         {
-            applicationParts.Add(new(Assembly.GetEntryAssembly()!));
+            applicationParts.Add(new(Assembly.GetEntryAssembly() ?? throw new NotSupportedException("Entry assembly should not be null")));
         });
     }
 }

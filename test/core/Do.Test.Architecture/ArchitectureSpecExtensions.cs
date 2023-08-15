@@ -139,7 +139,7 @@ public static class ArchitectureSpecExtensions
 
     public static LayerConfigurator ALayerConfigurator<TTarget>(this Stubber giveMe,
         TTarget? configuration = default
-    )
+    ) where TTarget : notnull
     {
         configuration ??= giveMe.AnInstanceOf<TTarget>();
 
@@ -201,10 +201,10 @@ public static class ArchitectureSpecExtensions
                 .FirstOrDefault(c => c.Name == nameof(LayerConfigurator.Create) && c.GetGenericArguments().Length == 1);
             create.ShouldNotBeNull();
 
-            var configurator = create!.MakeGenericMethod(t.GetType()).Invoke(null, new[] { t });
+            var configurator = create.MakeGenericMethod(t.GetType()).Invoke(null, new[] { t });
             configurator.ShouldNotBeNull();
 
-            configurators.Add((LayerConfigurator)configurator!);
+            configurators.Add((LayerConfigurator)configurator);
         }
 
         return new(configurators) { OnDispose = onDispose };
@@ -281,7 +281,7 @@ public static class ArchitectureSpecExtensions
     public static void VerifyInitialized(this IFeature source) =>
         Mock.Get(source).Verify(f => f.Configure(It.IsAny<LayerConfigurator>()));
 
-    public static void VerifyConfigures<TTarget>(this IFeature source, TTarget target) =>
+    public static void VerifyConfigures<TTarget>(this IFeature source, TTarget target) where TTarget : notnull =>
         Mock.Get(source).Verify(f => f.Configure(LayerConfigurator.Create(target)));
 
     public static void VerifyConfiguresNothing(this IFeature source) =>

@@ -5,7 +5,7 @@ public sealed class DoBanner : IBanner
     public void Print()
     {
         var assembly = GetType().Assembly;
-        var version = assembly.GetName().Version!;
+        var version = assembly.GetName().Version ?? new(0, 0, 0);
         var ver = $"{version.Major}.{version.Minor}.{version.Build}";
 
         var brand = ConsoleColor.DarkRed;
