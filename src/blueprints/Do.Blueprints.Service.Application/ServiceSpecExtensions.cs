@@ -46,7 +46,7 @@ public static class ServiceSpecExtensions
 
     public static void ShouldBeAbstract(this PropertyInfo source)
     {
-        var getMethod = source.GetGetMethod(true); ;
+        var getMethod = source.GetGetMethod(true);
 
         getMethod.ShouldNotBeNull();
         getMethod.ShouldBeAbstract();
