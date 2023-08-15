@@ -32,10 +32,19 @@ public class Entity
         bool throwError = false
     )
     {
-        if (useTransaction) { await _transaction.CommitAsync(this, @this => @this.Set(guid, @string, stringData, int32, uri, @dynamic)); }
-        else { Set(guid, @string, stringData, int32, uri, @dynamic); }
+        if (useTransaction)
+        {
+            await _transaction.CommitAsync(this, @this => @this.Set(guid, @string, stringData, int32, uri, @dynamic));
+        }
+        else
+        {
+            Set(guid, @string, stringData, int32, uri, @dynamic);
+        }
 
-        if (throwError) { throw new Exception(); }
+        if (throwError)
+        {
+            throw new Exception();
+        }
     }
 
     protected virtual void Set(Guid guid, string @string, string stringData, int int32, Uri uri, object @dynamic)
