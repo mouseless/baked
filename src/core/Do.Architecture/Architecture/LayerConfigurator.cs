@@ -2,23 +2,35 @@
 
 public class LayerConfigurator
 {
-    public static LayerConfigurator Create<TTarget>(TTarget target) =>
-        new(new Target(typeof(TTarget), target));
+    public static LayerConfigurator Create<TTarget>(TTarget target)
+        where TTarget : notnull
+    {
+        return new(new Target(typeof(TTarget), target));
+    }
 
-    public static LayerConfigurator Create<TTarget1, TTarget2>(TTarget1 target1, TTarget2 target2) =>
-        new(
+    public static LayerConfigurator Create<TTarget1, TTarget2>(TTarget1 target1, TTarget2 target2)
+        where TTarget1 : notnull
+        where TTarget2 : notnull
+    {
+        return new(
             new Target(typeof(TTarget1), target1),
             new Target(typeof(TTarget2), target2)
         );
+    }
 
-    public static LayerConfigurator Create<TTarget1, TTarget2, TTarget3>(TTarget1 target1, TTarget2 target2, TTarget3 target3) =>
-        new(
+    public static LayerConfigurator Create<TTarget1, TTarget2, TTarget3>(TTarget1 target1, TTarget2 target2, TTarget3 target3)
+        where TTarget1 : notnull
+        where TTarget2 : notnull
+        where TTarget3 : notnull
+    {
+        return new(
             new Target(typeof(TTarget1), target1),
             new Target(typeof(TTarget2), target2),
             new Target(typeof(TTarget3), target3)
         );
+    }
 
-    record Target(Type Type, object? Value);
+    record Target(Type Type, object Value);
 
     readonly List<Target> _targets;
 
@@ -57,7 +69,7 @@ public class LayerConfigurator
         return true;
     }
 
-    TTarget ValueAs<TTarget>(int index) => (TTarget)_targets[index].Value!;
+    TTarget ValueAs<TTarget>(int index) => (TTarget)_targets[index].Value;
 
     public override bool Equals(object? obj)
     {

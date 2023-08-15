@@ -46,14 +46,18 @@ public static class ServiceSpecExtensions
 
     public static void ShouldBeAbstract(this PropertyInfo source)
     {
-        source.GetGetMethod(true).ShouldNotBeNull();
-        source.GetGetMethod(true)!.ShouldBeAbstract();
+        var getMethod = source.GetGetMethod(true); ;
+
+        getMethod.ShouldNotBeNull();
+        getMethod.ShouldBeAbstract();
     }
 
     public static void ShouldBeVirtual(this PropertyInfo source)
     {
-        source.GetGetMethod(true).ShouldNotBeNull();
-        source.GetGetMethod(true)!.ShouldBeVirtual();
+        var getMethod = source.GetGetMethod(true);
+
+        getMethod.ShouldNotBeNull();
+        getMethod.ShouldBeVirtual();
     }
 
     public static MethodInfo? MethodOf<T>(this Stubber _, string name) =>
@@ -76,7 +80,7 @@ public static class ServiceSpecExtensions
     }
 
     #endregion
-    
+
     #region Url Extensions
 
     public static Uri AUrl(this Stubber giveMe,
