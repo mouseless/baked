@@ -10,7 +10,7 @@ public class ApplicationContext
     {
         if (!Has<T>())
         {
-            throw new KeyNotFoundException(MessageBuilder<T>());
+            throw BuildKeyNotFound<T>();
         }
 
         return (T)_context[typeof(T)];
@@ -18,25 +18,29 @@ public class ApplicationContext
 
     public bool Has<T>() => _context.ContainsKey(typeof(T));
 
-    private string MessageBuilder<T>()
+    private KeyNotFoundException BuildKeyNotFound<T>()
     {
         var message = $"'{typeof(T).Name}' does not exist in context.";
 
         if (_context.Count == 0)
         {
-            return message.Replace('.', ' ') + "because it is empty.";
+            message = message.Replace('.', ' ') + "because it is empty.";
+
+            return new(message);
         }
 
         var foundTypes = _context.Keys.Where(k => typeof(T).IsAssignableFrom(k)).ToList();
         if (foundTypes.Any())
         {
             var typeNames = foundTypes.Select(f => $"'{f.Name}'").ToList();
+            message += " Did you mean: " + string.Join(", ", typeNames) + "?";
 
-            return message += " Did you mean: " + string.Join(", ", typeNames) + "?";
+            return new(message);
         }
 
         var types = _context.Keys.Select(k => $"'{k.Name}'").ToList();
+        message += " Available types are: " + string.Join(", ", types);
 
-        return message += " Available types are: " + string.Join(", ", types);
+        return new(message);
     }
 }
