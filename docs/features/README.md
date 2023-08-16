@@ -19,7 +19,7 @@ Here you can find every feature that has been implemented in DO.
 
 To override the configurations of base features, we suggest you to add a
 feature called `ConfigurationOverrider` and make overrides in the `IFeature`
-implementation. You can see how to add features from
+implementation. To learn more about features, you can refer to
 [Feature](../architecture/feature.md).
 
 > :warning:
