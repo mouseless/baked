@@ -34,6 +34,8 @@ implementing a new layer;
 1. Provide extension methods in `Do` namespace, e.g.,
    `DependencyInjection/DependencyInjectionExtensions.cs`;
    1. `Add` extension to `List<ILayer>`, e.g., `AddDependencyInjection()`
+   1. `Get` extensions to `ApplicationContext`, e.g.,
+      `GetWebApplicationBuilder()`, `GetWebApplication()`
    1. `Configure` extensions to `LayerConfigurator` per configuration
       target(s), e.g., `ConfigureServiceCollection()`
 1. Place phase implementations as nested classes under the layer class
@@ -111,6 +113,12 @@ public class Build : PhaseBase<WebApplicationBuilder>
 > You can provide more than one dependency for a phase. E.g., `Phase<X, Y>`
 > will require `Initialize(X x, Y y)` method to be implemented.
 
+> :warning:
+>
+> Type of the dependency provided, must be exactly the same as the type of
+> dependency in `ApplicationContext`. For more information
+> [Running an Application](../architecture/application.md#running-an-application)
+
 ### Order of a Phase
 
 `PhaseBase` classes has `order` parameter in their constructors. Default order
@@ -134,7 +142,7 @@ configuration.
 ```csharp
 public class LayerX : LayerBase<AddServices>
 {
-    LayerXConfiguration _configuration = new();
+    readonly LayerXConfiguration _configuration = new();
 
     protected override PhaseContext GetContext(AddServices phase) =>
         phase.CreateContext(_configuration);
@@ -179,7 +187,7 @@ and `onDispose:` delegate to do stuff after.
 ```csharp
 public class LayerX : LayerBase<AddServices>
 {
-    LayerXConfiguration _configuration = new();
+    readonly LayerXConfiguration _configuration = new();
 
     protected override PhaseContext GetContext(AddServices phase)
     {
@@ -217,8 +225,8 @@ Below code demonstrates providing two configuration objects at once;
 ```csharp
 public class LayerX : LayerBase<AddServices>
 {
-    Configuration1 _configuration1 = new();
-    Configuration2 _configuration2 = new();
+    readonly Configuration1 _configuration1 = new();
+    readonly Configuration2 _configuration2 = new();
 
     protected override PhaseContext GetContext(AddServices phase) =>
         phase.CreateContext(_configuration1, _configuration2);
@@ -249,8 +257,8 @@ Below code demonstrates providing configuration objects one by one;
 ```csharp
 public class LayerX : LayerBase<AddServices>
 {
-    Configuration1 _configuration1 = new();
-    Configuration2 _configuration2 = new();
+    readonly Configuration1 _configuration1 = new();
+    readonly Configuration2 _configuration2 = new();
 
     protected override PhaseContext GetContext(AddServices phase) =>
         phase.CreateContextBuilder()
@@ -292,9 +300,9 @@ You may combine these two ways to provide configuration;
 ```csharp
 public class LayerX : LayerBase<AddServices>
 {
-    Configuration1 _configuration1 = new();
-    Configuration2 _configuration2 = new();
-    Configuration3 _configuration3 = new();
+    readonly Configuration1 _configuration1 = new();
+    readonly Configuration2 _configuration2 = new();
+    readonly Configuration3 _configuration3 = new();
 
     protected override PhaseContext GetContext(AddServices phase) =>
         phase.CreateContextBuilder()

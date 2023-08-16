@@ -1,7 +1,7 @@
-﻿using System.Reflection;
-using Do.Architecture;
+﻿using Do.Architecture;
 using Do.Branding;
 using Do.Testing;
+using System.Reflection;
 
 namespace Do.Test;
 
@@ -52,6 +52,17 @@ public static class ArchitectureSpecExtensions
         var result = giveMe.AnApplicationContext();
 
         result.Add(content);
+
+        return result;
+    }
+    public static ApplicationContext AnApplicationContext<T1, T2>(this Stubber giveMe, T1 content1, T2 content2)
+        where T1 : notnull
+        where T2 : notnull
+    {
+        var result = giveMe.AnApplicationContext();
+
+        result.Add(content1);
+        result.Add(content2);
 
         return result;
     }

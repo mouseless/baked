@@ -78,6 +78,17 @@ public class AddingPhases : ArchitectureSpec
     }
 
     [Test]
+    public void Gives_error_when_dependency_is_not_the_exact_type()
+    {
+        var context = GiveMe.AnApplicationContext(5);
+        IPhase oneDependency = new OneDependencyPhase();
+
+        var initializeAction = () => oneDependency.Initialize(context);
+
+        initializeAction.ShouldThrow<KeyNotFoundException>();
+    }
+
+    [Test]
     public void Phases_may_depend_on_one_or_more_objects_to_appear_in_context()
     {
         var context = GiveMe.AnApplicationContext();

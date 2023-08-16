@@ -116,6 +116,52 @@ public class RunningAnApplication : ArchitectureSpec
     }
 
     [Test]
+    public void Application_context_throws_a_not_found_exception_if_given_type_does_not_exist_in_context()
+    {
+        var context = GiveMe.AnApplicationContext(content: 5);
+
+        var getAction = () => context.Get<string>();
+
+        getAction.ShouldThrow<KeyNotFoundException>();
+    }
+
+    [Test]
+    public void App_context_not_found_exception_message_states_context_is_empty()
+    {
+        var context = GiveMe.AnApplicationContext();
+
+        var getAction = () => context.Get<string>();
+
+        getAction.ShouldThrow<KeyNotFoundException>().Message.ShouldBe(
+            "'String' does not exist in context because it is empty."
+        );
+    }
+
+    [Test]
+    public void Application_context_not_found_exception_message_includes_any_type_implementing_or_extending_given_type()
+    {
+        var context = GiveMe.AnApplicationContext(content1: "Test", content2: 5);
+
+        var getAction = () => context.Get<object>();
+
+        getAction.ShouldThrow<KeyNotFoundException>().Message.ShouldBe(
+            "'Object' does not exist in context. Did you mean: 'String', 'Int32'?"
+        );
+    }
+
+    [Test]
+    public void Application_context_not_found_exception_message_includes_all_types_if_no_related_type_is_found()
+    {
+        var context = GiveMe.AnApplicationContext(content1: 'c', content2: 5 );
+
+        var getAction = () => context.Get<string>();
+
+        getAction.ShouldThrow<KeyNotFoundException>().Message.ShouldBe(
+           "'String' does not exist in context. Available types are: 'Char', 'Int32'"
+       );
+    }
+
+    [Test]
     public void Application_resolves_which_phase_to_initialize_automatically_by_checking_if_they_are_ready()
     {
         var phases = new List<string>();
