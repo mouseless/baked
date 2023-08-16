@@ -104,6 +104,13 @@ At the beginning of each phase, application initializes it by providing an
 to/from the context, such as `IServiceCollection`, `IMiddlewareCollection`,
 `IEndpointRouteBuilder` etc.
 
+> :warning:
+>
+> When trying to get a certain object from `ApplicationContext`, exact type 
+> should be given. Using any other type that extends or implements the target
+> object will result in an unsuccessful `Get` operation. For example, trying to
+> `Get` a `WebApplication` using `IApplicationBuilder` type will be unsuccessful.
+
 ```mermaid
 flowchart TB
     subgraph AR[ ]
