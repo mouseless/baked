@@ -25,5 +25,5 @@ implementation. You can see how to add features from
 > :warning:
 >
 > If the configurations in other features you add conflict with the
-> configurations in the base feature, the base feature configurations will be
-> overridden. In this case, the base features may not work as desired.
+> configurations in the base feature, the base features may not work as
+> expected.
