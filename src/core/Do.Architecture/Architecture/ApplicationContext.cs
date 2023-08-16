@@ -20,12 +20,12 @@ public class ApplicationContext
         return (T)_context[typeof(T)];
     }
 
-    private string BuildMessageDetails<T>() =>
+    string BuildMessageDetails<T>() =>
         !_context.Any()
             ? "because it is empty."
             : GetAssignableTypes<T>().Any()
                 ? $"did you mean: {string.Join(", ", GetAssignableTypes<T>().Select(t => $"'{t.Name}'"))}?"
                 : $"available types are: {string.Join(", ", _context.Keys.Select(t => $"'{t.Name}'"))}.";
 
-    private IEnumerable<Type> GetAssignableTypes<T>() => _context.Keys.Where(t => t.IsAssignableTo(typeof(T)));
+    IEnumerable<Type> GetAssignableTypes<T>() => _context.Keys.Where(t => t.IsAssignableTo(typeof(T)));
 }
