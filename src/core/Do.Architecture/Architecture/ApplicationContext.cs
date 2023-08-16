@@ -25,7 +25,8 @@ public class ApplicationContext
             ? "because it is empty."
             : GetAssignableTypes<T>().Any()
                 ? $"did you mean: {string.Join(", ", GetAssignableTypes<T>().Select(t => $"'{t.Name}'"))}?"
-                : $"available types are: {string.Join(", ", _context.Keys.Select(t => $"'{t.Name}'"))}.";
+                : $"available types are: {string.Join(", ", GetAvailableTypes().Select(t => $"'{t.Name}'"))}.";
 
-    IEnumerable<Type> GetAssignableTypes<T>() => _context.Keys.Where(t => t.IsAssignableTo(typeof(T)));
+    IEnumerable<Type> GetAssignableTypes<T>() => GetAvailableTypes().Where(t => t.IsAssignableTo(typeof(T)));
+    IEnumerable<Type> GetAvailableTypes() => _context.Keys;
 }
