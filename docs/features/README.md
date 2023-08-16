@@ -22,6 +22,8 @@ feature called `ConfigurationOverrider` and make overrides in the `IFeature`
 implementation. You can see how to add features from
 [Feature](../architecture/feature.md).
 
-If the configurations in other features you add conflict with the
-configurations in the base feature, the base feature configurations will be
-overridden. In this case, the base features may not work as desired.
+> :warning:
+>
+> If the configurations in other features you add conflict with the
+> configurations in the base feature, the base feature configurations will be
+> overridden. In this case, the base features may not work as desired.
