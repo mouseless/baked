@@ -14,3 +14,14 @@ pages:
 # Features
 
 Here you can find every feature that has been implemented in DO.
+
+## Override Feature Configuration
+
+To override the configurations of base features, we suggest you to add a
+feature called `ConfigurationOverrider` and make overrides in the `IFeature`
+implementation. You can see how to add features from
+[Feature](../architecture/feature.md).
+
+If the configurations in other features you add conflict with the
+configurations in the base feature, the base feature configurations will be
+overridden. In this case, the base features may not work as desired.
