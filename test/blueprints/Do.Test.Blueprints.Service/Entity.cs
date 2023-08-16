@@ -12,7 +12,7 @@ public class Entity
     public Entity(IEntityContext<Entity> context, ITransaction transaction) =>
         (_context, _transaction) = (context, transaction);
 
-    public virtual Guid Id { get; protected set; } = default!;
+    public virtual Guid EntityId { get; protected set; } = default!;
     public virtual Guid Guid { get; protected set; } = default!;
     public virtual string String { get; protected set; } = default!;
     public virtual string StringData { get; protected set; } = default!;
