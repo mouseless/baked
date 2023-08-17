@@ -30,8 +30,8 @@ implementing a new feature;
    suffix, e.g., `HelloWorldGreetingFeature`, `WelcomePageGreetingFeature`.
 1. Features depend on other features through their abstraction parts. Direct
    dependency between feature implementations is forbidden.
-1. To create configuration overrider add an extension and feature class under
-   its folder, e.g., `ConfigurationOverriderExtensions.cs` and
+1. To create a configuration overrider, add an extension and feature class
+   under its folder, e.g., `ConfigurationOverriderExtensions.cs` and
    `ConfigurationOverriderFeature.cs`.
     1. Unlike regular features, provide `AddConfigurationOverrider()` extension method
        directly to allow `app.Features.AddConfigurationOverrider()` usage.
