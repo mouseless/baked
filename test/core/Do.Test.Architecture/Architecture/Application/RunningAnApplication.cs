@@ -133,7 +133,7 @@ public class RunningAnApplication : ArchitectureSpec
         var getAction = () => context.Get<string>();
 
         getAction.ShouldThrow<KeyNotFoundException>().Message.ShouldBe(
-            "'String' does not exist in context because it is empty."
+            "'String' does not exist in context, because it is empty."
         );
     }
 
@@ -145,7 +145,7 @@ public class RunningAnApplication : ArchitectureSpec
         var getAction = () => context.Get<object>();
 
         getAction.ShouldThrow<KeyNotFoundException>().Message.ShouldBe(
-            "'Object' does not exist in context. Did you mean: 'String', 'Int32'?"
+            "'Object' does not exist in context, did you mean: 'String', 'Int32'?"
         );
     }
 
@@ -157,7 +157,7 @@ public class RunningAnApplication : ArchitectureSpec
         var getAction = () => context.Get<string>();
 
         getAction.ShouldThrow<KeyNotFoundException>().Message.ShouldBe(
-           "'String' does not exist in context. Available types are: 'Char', 'Int32'"
+           "'String' does not exist in context, available types are: 'Char', 'Int32'."
        );
     }
 

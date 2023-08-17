@@ -10,7 +10,7 @@ public class DelegatedInterceptor : EmptyInterceptor
     public DelegatedInterceptor(IServiceProvider serviceProvider, InterceptorConfiguration interceptorConfiguration) =>
         (_serviceProvider, _interceptorConfiguration) = (serviceProvider, interceptorConfiguration);
 
-    private ISessionFactory SessionFactory => _serviceProvider.GetRequiredServiceUsingRequestServices<ISessionFactory>();
+    ISessionFactory SessionFactory => _serviceProvider.GetRequiredServiceUsingRequestServices<ISessionFactory>();
 
     public override object Instantiate(string clazz, object id)
     {
