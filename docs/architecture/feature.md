@@ -6,28 +6,30 @@ Each adapter exposes a class that implements `IFeature` interface.
 ## Conventions
 
 For a consistent developer experience, follow below conventions when
-implementing a new feature;
+implementing a new or `ConfigurationOverrider` feature;
 
 ### Abstraction
 
 1. Place all abstraction classes under a folder named after feature, e.g.,
-   `Greeting/`
+   `Greeting/`, `ConfigurationOverrider/`.
 1. Provide a configurator and an extension class for abstraction part, e.g.
-   `Greeting/GreetingConfigurator.cs`, `Greeting/GreetingExtensions.cs`
+   `Greeting/GreetingConfigurator.cs`, `Greeting/GreetingExtensions.cs`, 
+   `ConfigurationOverrider/ConfigurationOverriderExtensions.cs`.
 1. Provide an `Add` method to add feature to an application, e.g.,
-   `AddGreeting()`
+   `AddGreeting()`, `AddConfigurationOverrider()`.
 
 ### Implementation
 
 1. Place all implementation classes under their own folder in the abstraction
-   folder, e.g., `Greeting/HelloWorld/`, `Greeting/WelcomePage/`
+   folder, e.g., `Greeting/HelloWorld/`, `Greeting/WelcomePage/`.
 1. Provide an extension method with the implementation name to allow adding
-   that implementation, e.g., `HelloWorld()`, `WelcomePage()`
+   that implementation, e.g., `HelloWorld()`, `WelcomePage()`.
    1. This method should be in an extension class under `Do` namespace, e.g.,
       `Greeting/HelloWorldGreetingExtensions.cs`,
-      `Greeting/WelcomePageGreetingExtensions.cs`
+      `Greeting/WelcomePageGreetingExtensions.cs`.
 1. Name feature class after implementation name with abstraction name as a
-   suffix, e.g., `HelloWorldGreetingFeature`, `WelcomePageGreetingFeature`.
+   suffix, e.g., `HelloWorldGreetingFeature`, `WelcomePageGreetingFeature`, 
+   `ConfigurationOverriderFeature`.
 1. Features depend on other features through their abstraction parts. Direct
    dependency between feature implementations is forbidden.
 

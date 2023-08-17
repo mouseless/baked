@@ -71,6 +71,18 @@ method;
 app.Features.AddDatabase(c => c.MySql(autoUpdateSchema: true)
 ```
 
+#### Overriding A Configuration
+
+To override the configurations of base features, follow 
+`ConfigurationOverrider` [conventions](../architecture/feature.md#conventions)
+and override configurations in `IFeature` implementation.
+
+> :warning:
+>
+> If the configurations in other features you add conflict with the
+> configurations in the base feature, the base features may not work as
+> expected.
+
 ## Running an Application
 
 To run an application you need to call `Run()` method after forging it.

@@ -11,6 +11,12 @@ application that fits your needs. However, there are also architectural
 blueprints that include a set of layers and features with a default
 configuration to allow you to reuse what is commonly needed for an application.
 
+> :information_source: 
+>
+> You can override feature configurations. For more information you can refer
+> to
+> [Overriding A Configuration](../architecture/application.md#overriding-a-configuration)
+
 Each blueprint comes with its own package that references to all the packages
 it uses. This way your application will only need to depend on one blueprint
 package.
