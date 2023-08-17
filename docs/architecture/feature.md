@@ -6,17 +6,16 @@ Each adapter exposes a class that implements `IFeature` interface.
 ## Conventions
 
 For a consistent developer experience, follow below conventions when
-implementing a new or `ConfigurationOverrider` feature;
+implementing a new feature;
 
 ### Abstraction
 
 1. Place all abstraction classes under a folder named after feature, e.g.,
-   `Greeting/`, `ConfigurationOverrider/`.
+   `Greeting/`.
 1. Provide a configurator and an extension class for abstraction part, e.g.
-   `Greeting/GreetingConfigurator.cs`, `Greeting/GreetingExtensions.cs`, 
-   `ConfigurationOverrider/ConfigurationOverriderExtensions.cs`.
+   `Greeting/GreetingConfigurator.cs`, `Greeting/GreetingExtensions.cs`.
 1. Provide an `Add` method to add feature to an application, e.g.,
-   `AddGreeting()`, `AddConfigurationOverrider()`.
+   `AddGreeting()`.
 
 ### Implementation
 
@@ -28,10 +27,13 @@ implementing a new or `ConfigurationOverrider` feature;
       `Greeting/HelloWorldGreetingExtensions.cs`,
       `Greeting/WelcomePageGreetingExtensions.cs`.
 1. Name feature class after implementation name with abstraction name as a
-   suffix, e.g., `HelloWorldGreetingFeature`, `WelcomePageGreetingFeature`, 
-   `ConfigurationOverriderFeature`.
+   suffix, e.g., `HelloWorldGreetingFeature`, `WelcomePageGreetingFeature`.
 1. Features depend on other features through their abstraction parts. Direct
    dependency between feature implementations is forbidden.
+1. To create `ConfigurationOverrider` add the extension and feature.
+   e.g., `ConfigurationOverrider/ConfigurationOverriderExtensions.cs`,
+   `ConfigurationOverrider/ConfigurationOverriderFeature.cs` and provide an
+   `Add` method, e.g., `AddConfigurationOverrider()`.
 
 Please refer to existing features in [github.com/mouseless/do][] for examples.
 

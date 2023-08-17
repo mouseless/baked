@@ -73,15 +73,17 @@ app.Features.AddDatabase(c => c.MySql(autoUpdateSchema: true)
 
 #### Overriding A Configuration
 
-To override the configurations of base features, follow 
-`ConfigurationOverrider` [conventions](../architecture/feature.md#conventions)
-and override configurations in `IFeature` implementation.
+To override configurations of added features, follow
+[feature conventions](feature.md#conventions), create a
+`ConfigurationOverrider` feature and add your overrider after all other
+features as shown below;
 
-> :warning:
->
-> If the configurations in other features you add conflict with the
-> configurations in the base feature, the base features may not work as
-> expected.
+```csharp
+app.Features.AddGreeting(c => c.WelcomePage());
+app.Features.AddDatabase(c => c.MySql());
+...
+app.Feature.AddConfigurationOverrider();
+```
 
 ## Running an Application
 
