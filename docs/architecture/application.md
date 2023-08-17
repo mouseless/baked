@@ -82,7 +82,7 @@ features as shown below;
 app.Features.AddGreeting(c => c.WelcomePage());
 app.Features.AddDatabase(c => c.MySql());
 ...
-app.Feature.AddConfigurationOverrider();
+app.Features.AddConfigurationOverrider();
 ```
 
 ## Running an Application

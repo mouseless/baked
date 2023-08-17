@@ -30,10 +30,13 @@ implementing a new feature;
    suffix, e.g., `HelloWorldGreetingFeature`, `WelcomePageGreetingFeature`.
 1. Features depend on other features through their abstraction parts. Direct
    dependency between feature implementations is forbidden.
-1. To create `ConfigurationOverrider` add the extension and feature.
-   e.g., `ConfigurationOverrider/ConfigurationOverriderExtensions.cs`,
-   `ConfigurationOverrider/ConfigurationOverriderFeature.cs` and provide an
-   `Add` method, e.g., `AddConfigurationOverrider()`.
+1. To create configuration overrider add an extension and feature class under
+   its folder, e.g., `ConfigurationOverriderExtensions.cs` and
+   `ConfigurationOverriderFeature.cs`.
+    1. Unlike regular features, provide `AddConfigurationOverrider()` extension method
+       directly to allow `app.Features.AddConfigurationOverrider()` usage.
+    1. Implement `IFeature` in `ConfigurationOverriderFeature` where you add all your
+       configuration overrides.
 
 Please refer to existing features in [github.com/mouseless/do][] for examples.
 
