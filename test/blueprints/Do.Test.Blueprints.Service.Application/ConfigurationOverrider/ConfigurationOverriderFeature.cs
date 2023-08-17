@@ -6,10 +6,9 @@ public class ConfigurationOverriderFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureAutomapping(mapping =>
+        configurator.ConfigureAutoPersistenceModel(model =>
         {
-            mapping.MemberIsId.Clear();
-            mapping.MemberIsId.Add(member => member.PropertyType == typeof(Guid) && member.Name == "EntityId");
+            model.Override<Entity>(x => x.Map(e => e.String).CustomSqlType("VARCHAR(500)"));
         });
     }
 }
