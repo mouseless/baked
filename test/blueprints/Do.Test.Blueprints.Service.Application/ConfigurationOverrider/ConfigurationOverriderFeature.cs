@@ -8,7 +8,7 @@ public class ConfigurationOverriderFeature : IFeature
     {
         configurator.ConfigureAutoPersistenceModel(model =>
         {
-            model.Override<Entity>(x => x.Map(e => e.String).Length(500));
+            model.Override<Entity>(x => x.Map(e => e.String).Length(200));
         });
     }
 }
