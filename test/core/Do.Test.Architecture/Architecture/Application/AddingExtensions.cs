@@ -100,4 +100,36 @@ public class AddingExtensions : ArchitectureSpec
 
         feature.VerifyConfiguresNothing();
     }
+
+    [Ignore("Not Implemented")]
+    [Test]
+    public void Adding_the_same_layer_more_than_once_gives_error()
+    {
+        var forge = GiveMe.AForge();
+        var layer = MockMe.ALayer();
+
+        var forgeAction = () => forge.Application(app =>
+        {
+            app.Layers.Add(layer);
+            app.Layers.Add(layer);
+        });
+
+        forgeAction.ShouldThrow<Exception>();
+    }
+
+    [Ignore("Not Implemented")]
+    [Test]
+    public void Adding_the_same_feature_more_than_once_gives_error()
+    {
+        var forge = GiveMe.AForge();
+        var feature = MockMe.AFeature();
+
+        var forgeAction = () => forge.Application(app =>
+        {
+            app.Features.Add(feature);
+            app.Features.Add(feature);
+        });
+
+        forgeAction.ShouldThrow<Exception>();
+    }
 }
