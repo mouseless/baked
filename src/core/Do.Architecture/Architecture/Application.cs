@@ -12,12 +12,26 @@ public class Application
 
     internal Application With(ApplicationDescriptor descriptor)
     {
+        CheckDuplicates(descriptor);
         _layers.AddRange(descriptor.Layers);
         _features.AddRange(descriptor.Features);
 
         FillPhases();
 
         return this;
+    }
+
+    void CheckDuplicates(ApplicationDescriptor descriptor)
+    {
+        try
+        {
+            descriptor.Layers.ToDictionary(l => l.GetType().FullName!, l => l);
+            descriptor.Features.ToDictionary(f => f.GetType().FullName!, f => f);
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
     }
 
     void FillPhases()

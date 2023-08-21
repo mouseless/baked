@@ -101,7 +101,6 @@ public class AddingExtensions : ArchitectureSpec
         feature.VerifyConfiguresNothing();
     }
 
-    [Ignore("Not Implemented")]
     [Test]
     public void Adding_the_same_layer_more_than_once_gives_error()
     {
@@ -117,7 +116,6 @@ public class AddingExtensions : ArchitectureSpec
         forgeAction.ShouldThrow<Exception>();
     }
 
-    [Ignore("Not Implemented")]
     [Test]
     public void Adding_the_same_feature_more_than_once_gives_error()
     {
