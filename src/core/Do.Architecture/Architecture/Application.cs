@@ -28,11 +28,11 @@ public class Application
         try
         {
             descriptor.Layers.ToDictionary(
-                keySelector: layer => layer.GetType().FullName ?? layer.GetType().Name,
+                keySelector: layer => layer.ToString() ?? layer.GetType().Name,
                 elementSelector: layer => layer
             );
             descriptor.Features.ToDictionary(
-                keySelector: feature => feature.GetType().FullName ?? feature.GetType().Name,
+                keySelector: feature => feature.ToString() ?? feature.GetType().Name,
                 elementSelector: feature => feature
             );
         }

@@ -95,8 +95,6 @@ public static class ArchitectureSpecExtensions
 
     #region Layer
 
-    static int _lockLayer = 0;
-
     public static ILayer ALayer(this Mocker mockMe,
         object? target = default,
         object[]? targets = default,
@@ -109,40 +107,19 @@ public static class ArchitectureSpecExtensions
         phaseContext ??= mockMe.Spec.GiveMe.APhaseContext(target: target, targets: targets);
         phases ??= new[] { phase ?? mockMe.APhase() };
 
-        if(_lockLayer > 0)
+        var result = new Mock<ILayer>();
+        result.Setup(l => l.GetPhases()).Returns(phases);
+
+        var setupGetContext = result
+            .Setup(l => l.GetContext(It.IsAny<IPhase>(), It.IsAny<ApplicationContext>()))
+            .Returns(phaseContext);
+
+        if (onApplyPhase != default)
         {
-            var result = new Mock<ILayerProxy>();
-            _lockLayer--;
-            result.Setup(l => l.GetPhases()).Returns(phases);
-
-            var setupGetContext = result
-                .Setup(l => l.GetContext(It.IsAny<IPhase>(), It.IsAny<ApplicationContext>()))
-                .Returns(phaseContext);
-
-            if(onApplyPhase != default)
-            {
-                setupGetContext.Callback((IPhase _, ApplicationContext _) => onApplyPhase());
-            }
-
-            return result.Object;
+            setupGetContext.Callback((IPhase _, ApplicationContext _) => onApplyPhase());
         }
-        else
-        {
-            var result = new Mock<ILayer>();
-            _lockLayer++;
-            result.Setup(l => l.GetPhases()).Returns(phases);
 
-            var setupGetContext = result
-                .Setup(l => l.GetContext(It.IsAny<IPhase>(), It.IsAny<ApplicationContext>()))
-                .Returns(phaseContext);
-
-            if(onApplyPhase != default)
-            {
-                setupGetContext.Callback((IPhase _, ApplicationContext _) => onApplyPhase());
-            }
-
-            return result.Object;
-        }
+        return result.Object;
     }
 
     public static void VerifyInitialized(this ILayer source) =>
@@ -297,20 +274,9 @@ public static class ArchitectureSpecExtensions
 
     #region Feature
 
-    static int _lockFeature = 0;
-
     public static IFeature AFeature(this Mocker _)
     {
-        if(_lockFeature > 0)
-        {
-            _lockFeature--;
-            return new Mock<IFeatureProxy>().Object;
-        }
-        else
-        {
-            _lockFeature++;
-            return new Mock<IFeature>().Object;
-        }
+        return new Mock<IFeature>().Object;
     }
 
     public static void VerifyInitialized(this IFeature source) =>
@@ -324,6 +290,3 @@ public static class ArchitectureSpecExtensions
 
     #endregion
 }
-
-internal interface ILayerProxy : ILayer { }
-internal interface IFeatureProxy : IFeature { }

@@ -113,7 +113,8 @@ public class AddingExtensions : ArchitectureSpec
             app.Layers.Add(layer);
         });
 
-        forgeAction.ShouldThrow<Exception>();
+        forgeAction.ShouldThrow<InvalidOperationException>().Message.ShouldBe(
+            $"Cannot add `{layer.ToString() ?? layer.GetType().Name}`, it was already added.");
     }
 
     [Test]
@@ -128,6 +129,7 @@ public class AddingExtensions : ArchitectureSpec
             app.Features.Add(feature);
         });
 
-        forgeAction.ShouldThrow<Exception>();
+        forgeAction.ShouldThrow<InvalidOperationException>().Message.ShouldBe(
+            $"Cannot add `{feature.ToString() ?? feature.GetType().Name}`, it was already added.");
     }
 }
