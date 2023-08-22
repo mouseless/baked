@@ -28,7 +28,7 @@ public class Application
         try
         {
             descriptor.Layers.ToDictionary(
-                keySelector: layer => layer.ToString() ?? layer.GetType().Name,
+                keySelector: layer => layer.Id,
                 elementSelector: layer => layer
             );
             descriptor.Features.ToDictionary(

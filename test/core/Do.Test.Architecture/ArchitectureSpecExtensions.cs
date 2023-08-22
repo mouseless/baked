@@ -96,6 +96,7 @@ public static class ArchitectureSpecExtensions
     #region Layer
 
     public static ILayer ALayer(this Mocker mockMe,
+        string? id = default,
         object? target = default,
         object[]? targets = default,
         PhaseContext? phaseContext = default,
@@ -109,6 +110,7 @@ public static class ArchitectureSpecExtensions
 
         var result = new Mock<ILayer>();
         result.Setup(l => l.GetPhases()).Returns(phases);
+        result.Setup(l => l.Id).Returns(id ?? string.Empty);
 
         var setupGetContext = result
             .Setup(l => l.GetContext(It.IsAny<IPhase>(), It.IsAny<ApplicationContext>()))

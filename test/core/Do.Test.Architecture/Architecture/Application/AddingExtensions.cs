@@ -1,13 +1,25 @@
-﻿namespace Do.Test.Architecture.Application;
+﻿using Do.Architecture;
+
+namespace Do.Test.Architecture.Application;
 
 public class AddingExtensions : ArchitectureSpec
 {
+    protected class LayerA : LayerBase { }
+
+    [Test]
+    public void Layer_id_is_its_fully_quelified_name()
+    {
+        var layer1 = new LayerA();
+
+        layer1.Id.ShouldBe("Do.Test.Architecture.Application.AddingExtensions+LayerA");
+    }
+
     [Test]
     public void Layer_is_added_without_any_options()
     {
         var forge = GiveMe.AForge();
-        var layer1 = MockMe.ALayer();
-        var layer2 = MockMe.ALayer();
+        var layer1 = MockMe.ALayer(id: "Do.Test.Architecture.Application.LayerA");
+        var layer2 = MockMe.ALayer(id: "Do.Test.Architecture.Application.LayerB");
 
         var app = forge.Application(app =>
         {
@@ -114,7 +126,7 @@ public class AddingExtensions : ArchitectureSpec
         });
 
         forgeAction.ShouldThrow<InvalidOperationException>().Message.ShouldBe(
-            $"Cannot add `{layer.ToString() ?? layer.GetType().Name}`, it was already added.");
+            $"Cannot add `{layer.Id}`, it was already added.");
     }
 
     [Test]

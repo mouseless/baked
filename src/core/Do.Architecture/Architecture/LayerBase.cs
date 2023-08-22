@@ -4,6 +4,8 @@ public abstract class LayerBase : ILayer
 {
     protected ApplicationContext Context { get; private set; } = default!;
 
+    public string Id => this.GetType().FullName ?? this.GetType().Name;
+
     protected virtual IEnumerable<IPhase> GetPhases() => Enumerable.Empty<IPhase>();
     protected virtual PhaseContext GetContext(IPhase phase) => PhaseContext.Empty;
 
