@@ -119,7 +119,7 @@ public static class ArchitectureSpecExtensions
                 .Setup(l => l.GetContext(It.IsAny<IPhase>(), It.IsAny<ApplicationContext>()))
                 .Returns(phaseContext);
 
-            if (onApplyPhase != default)
+            if(onApplyPhase != default)
             {
                 setupGetContext.Callback((IPhase _, ApplicationContext _) => onApplyPhase());
             }
@@ -136,7 +136,7 @@ public static class ArchitectureSpecExtensions
                 .Setup(l => l.GetContext(It.IsAny<IPhase>(), It.IsAny<ApplicationContext>()))
                 .Returns(phaseContext);
 
-            if (onApplyPhase != default)
+            if(onApplyPhase != default)
             {
                 setupGetContext.Callback((IPhase _, ApplicationContext _) => onApplyPhase());
             }
@@ -325,5 +325,5 @@ public static class ArchitectureSpecExtensions
     #endregion
 }
 
-public interface ILayerProxy : ILayer {}
-public interface IFeatureProxy : IFeature {}
+internal interface ILayerProxy : ILayer { }
+internal interface IFeatureProxy : IFeature { }

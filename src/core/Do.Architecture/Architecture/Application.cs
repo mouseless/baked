@@ -1,4 +1,6 @@
-﻿namespace Do.Architecture;
+﻿using System.Text.RegularExpressions;
+
+namespace Do.Architecture;
 
 public class Application
 {
@@ -25,12 +27,29 @@ public class Application
     {
         try
         {
-            descriptor.Layers.ToDictionary(l => l.GetType().FullName!, l => l);
-            descriptor.Features.ToDictionary(f => f.GetType().FullName!, f => f);
+            descriptor.Layers.ToDictionary(
+                keySelector: layer => layer.GetType().FullName ?? layer.GetType().Name,
+                elementSelector: layer => layer
+            );
+            descriptor.Features.ToDictionary(
+                keySelector: feature => feature.GetType().FullName ?? feature.GetType().Name,
+                elementSelector: feature => feature
+            );
         }
-        catch (Exception e)
+        catch (ArgumentException e)
         {
-            throw new Exception(e.Message);
+            // It takes the name value after "Key:" in the exeception message.
+            string pattern = @"Key:\s*(.*?)(?:\s|$)";
+
+            Match match = Regex.Match(e.Message, pattern);
+
+            string key = string.Empty;
+            if (match.Success)
+            {
+                key = match.Groups[1].Value;
+            }
+
+            throw new InvalidOperationException($"Cannot add `{key}`, it was already added.");
         }
     }
 
