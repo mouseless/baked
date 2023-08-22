@@ -21,7 +21,7 @@ public abstract class ServiceSpec : Spec
     internal static IServiceProvider ServiceProvider => _serviceProvider;
 
     protected static ApplicationContext Init(
-        Func<BusinessConfigurator, IFeature> business,
+        Func<BusinessConfigurator, IBusinessFeature> business,
         Func<CoreConfigurator, ICoreFeature>? core = default,
         Func<DatabaseConfigurator, IDatabaseFeature>? database = default,
         Func<ExceptionHandlingConfigurator, IExceptionHandlingFeature>? exceptionHandling = default,
