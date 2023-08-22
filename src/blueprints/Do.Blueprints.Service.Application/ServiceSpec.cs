@@ -22,11 +22,11 @@ public abstract class ServiceSpec : Spec
 
     protected static ApplicationContext Init(
         Func<BusinessConfigurator, IFeature> business,
-        Func<CoreConfigurator, IFeature>? core = default,
-        Func<DatabaseConfigurator, IFeature>? database = default,
-        Func<ExceptionHandlingConfigurator, IFeature>? exceptionHandling = default,
-        Func<MockOverriderConfigurator, IFeature>? mockOverrider = default,
-        Func<OrmConfigurator, IFeature>? orm = default,
+        Func<CoreConfigurator, ICoreFeature>? core = default,
+        Func<DatabaseConfigurator, IDatabaseFeature>? database = default,
+        Func<ExceptionHandlingConfigurator, IExceptionHandlingFeature>? exceptionHandling = default,
+        Func<MockOverriderConfigurator, IMockOverriderFeature>? mockOverrider = default,
+        Func<OrmConfigurator, IOrmFeature>? orm = default,
         Action<ApplicationDescriptor>? configure = default
     )
     {

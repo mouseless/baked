@@ -14,13 +14,13 @@ public static class ForgeExtensions
 {
     public static Application Service(this Forge source,
         Func<BusinessConfigurator, IFeature> business,
-        Func<CoreConfigurator, IFeature>? core = default,
-        Func<DatabaseConfigurator, IFeature>? database = default,
-        Func<DocumentationConfigurator, IFeature>? documentation = default,
-        Func<ExceptionHandlingConfigurator, IFeature>? exceptionHandling = default,
-        Func<GreetingConfigurator, IFeature>? greeting = default,
-        Func<LoggingConfigurator, IFeature>? logging = default,
-        Func<OrmConfigurator, IFeature>? orm = default,
+        Func<CoreConfigurator, ICoreFeature>? core = default,
+        Func<DatabaseConfigurator, IDatabaseFeature>? database = default,
+        Func<DocumentationConfigurator, IDocumentationFeature>? documentation = default,
+        Func<ExceptionHandlingConfigurator, IExceptionHandlingFeature>? exceptionHandling = default,
+        Func<GreetingConfigurator, IGreetingFeature>? greeting = default,
+        Func<LoggingConfigurator, ILoggingFeature>? logging = default,
+        Func<OrmConfigurator, IOrmFeature>? orm = default,
         Action<ApplicationDescriptor>? configure = default
     )
     {

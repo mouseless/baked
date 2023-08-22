@@ -8,7 +8,7 @@ using NHibernate;
 
 namespace Do.Orm.Default;
 
-public class DefaultOrmFeature : IFeature
+public class DefaultOrmFeature : IFeature, IOrmFeature
 {
     public void Configure(LayerConfigurator configurator)
     {

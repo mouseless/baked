@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Do.Database.Sqlite;
 
-public class SqliteDatabaseFeature : IFeature
+public class SqliteDatabaseFeature : IFeature, IDatabaseFeature
 {
     readonly Setting<string> _fileName;
 

@@ -5,5 +5,6 @@ namespace Do;
 
 public static class ExceptionHandlingExtensions
 {
-    public static void AddExceptionHandling(this IList<IFeature> source, Func<ExceptionHandlingConfigurator, IFeature> configure) => source.Add(configure(new()));
+    public static void AddExceptionHandling(this IList<IFeature> source, Func<ExceptionHandlingConfigurator, IExceptionHandlingFeature> configure) => 
+        source.Add((IFeature)configure(new()));
 }
