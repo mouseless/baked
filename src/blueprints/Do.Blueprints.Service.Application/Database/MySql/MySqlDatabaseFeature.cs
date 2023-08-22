@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Do.Database.MySql;
 
-public class MySqlDatabaseFeature : IFeature, IDatabaseFeature
+public class MySqlDatabaseFeature : IDatabaseFeature
 {
     readonly Setting<string> _connectionString;
     readonly Setting<bool> _autoUpdateSchema;

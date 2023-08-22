@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Do.MockOverrider.FirstInterface;
 
-public class FirstInterfaceMockOverriderFeature : IFeature, IMockOverriderFeature
+public class FirstInterfaceMockOverriderFeature : IMockOverriderFeature
 {
     public void Configure(LayerConfigurator configurator)
     {

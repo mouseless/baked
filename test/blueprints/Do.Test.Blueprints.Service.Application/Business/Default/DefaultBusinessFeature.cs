@@ -1,9 +1,10 @@
 ﻿using Do.Architecture;
+using Do.Business;
 using System.Reflection;
 
 namespace Do.Test.Business.Default;
 
-public class DefaultBusinessFeature : IFeature
+public class DefaultBusinessFeature : IBusinessFeature
 {
     public void Configure(LayerConfigurator configurator)
     {

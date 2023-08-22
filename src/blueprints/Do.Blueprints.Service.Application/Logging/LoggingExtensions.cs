@@ -5,5 +5,5 @@ namespace Do;
 
 public static class LoggingExtensions
 {
-    public static void AddLogging(this List<IFeature> source, Func<LoggingConfigurator, ILoggingFeature> configure) => source.Add((IFeature)configure(new()));
+    public static void AddLogging(this List<IFeature> source, Func<LoggingConfigurator, ILoggingFeature> configure) => source.Add(configure(new()));
 }

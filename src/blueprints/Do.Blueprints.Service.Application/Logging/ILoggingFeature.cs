@@ -1,3 +1,5 @@
-﻿namespace Do.Logging;
+﻿using Do.Architecture;
 
-public interface ILoggingFeature { }
+namespace Do.Logging;
+
+public interface ILoggingFeature : IFeature { }

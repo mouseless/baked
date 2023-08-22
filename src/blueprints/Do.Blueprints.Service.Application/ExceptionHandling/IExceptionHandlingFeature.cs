@@ -1,3 +1,5 @@
-﻿namespace Do.ExceptionHandling;
+﻿using Do.Architecture;
 
-public interface IExceptionHandlingFeature { }
+namespace Do.ExceptionHandling;
+
+public interface IExceptionHandlingFeature : IFeature { }

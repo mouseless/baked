@@ -1,3 +1,5 @@
-﻿namespace Do.Documentation;
+﻿using Do.Architecture;
 
-public interface IDocumentationFeature { }
+namespace Do.Documentation;
+
+public interface IDocumentationFeature : IFeature { }

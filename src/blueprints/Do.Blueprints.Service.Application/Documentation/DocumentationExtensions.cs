@@ -5,5 +5,5 @@ namespace Do;
 
 public static class DocumentationExtensions
 {
-    public static void AddDocumentation(this List<IFeature> source, Func<DocumentationConfigurator, IDocumentationFeature> configure) => source.Add((IFeature)configure(new()));
+    public static void AddDocumentation(this List<IFeature> source, Func<DocumentationConfigurator, IDocumentationFeature> configure) => source.Add(configure(new()));
 }

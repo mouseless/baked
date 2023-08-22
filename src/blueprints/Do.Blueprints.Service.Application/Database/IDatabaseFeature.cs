@@ -1,3 +1,5 @@
-﻿namespace Do.Database;
+﻿using Do.Architecture;
 
-public interface IDatabaseFeature { }
+namespace Do.Database;
+
+public interface IDatabaseFeature : IFeature { }

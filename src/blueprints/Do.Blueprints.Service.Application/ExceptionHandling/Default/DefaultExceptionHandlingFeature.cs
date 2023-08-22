@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Do.ExceptionHandling.Default;
 
-public class DefaultExceptionHandlingFeature : IFeature, IExceptionHandlingFeature
+public class DefaultExceptionHandlingFeature : IExceptionHandlingFeature
 {
     readonly List<Type> _handlers = new();
     readonly IExceptionHandler _defaultHandler = new DefaultExceptionHandler();

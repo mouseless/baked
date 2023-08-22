@@ -1,3 +1,5 @@
-﻿namespace Do.MockOverrider;
+﻿using Do.Architecture;
 
-public interface IMockOverriderFeature { }
+namespace Do.MockOverrider;
+
+public interface IMockOverriderFeature : IFeature { }

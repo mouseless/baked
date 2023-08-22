@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Builder;
 
 namespace Do.Greeting.WelcomePage;
 
-public class WelcomePageGreetingFeature : IFeature, IGreetingFeature
+public class WelcomePageGreetingFeature : IGreetingFeature
 {
     readonly string _path;
 

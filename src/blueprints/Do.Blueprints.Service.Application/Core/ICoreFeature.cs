@@ -1,3 +1,5 @@
-﻿namespace Do.Core;
+﻿using Do.Architecture;
 
-public interface ICoreFeature { }
+namespace Do.Core;
+
+public interface ICoreFeature : IFeature { }

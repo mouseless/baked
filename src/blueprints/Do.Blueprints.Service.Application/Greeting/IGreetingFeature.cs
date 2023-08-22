@@ -1,3 +1,5 @@
-﻿namespace Do.Greeting;
+﻿using Do.Architecture;
 
-public interface IGreetingFeature { }
+namespace Do.Greeting;
+
+public interface IGreetingFeature : IFeature { }

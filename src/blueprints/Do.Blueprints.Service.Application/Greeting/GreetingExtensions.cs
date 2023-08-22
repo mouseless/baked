@@ -5,5 +5,5 @@ namespace Do;
 
 public static class GreetingExtensions
 {
-    public static void AddGreeting(this List<IFeature> source, Func<GreetingConfigurator, IGreetingFeature> configure) => source.Add((IFeature)configure(new()));
+    public static void AddGreeting(this List<IFeature> source, Func<GreetingConfigurator, IGreetingFeature> configure) => source.Add(configure(new()));
 }
