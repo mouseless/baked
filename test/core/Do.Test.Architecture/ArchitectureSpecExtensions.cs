@@ -296,4 +296,10 @@ public static class ArchitectureSpecExtensions
         Mock.Get(source).Verify(f => f.Configure(It.IsAny<LayerConfigurator>()), Times.Never());
 
     #endregion
+
+    #region Helper
+
+    public static string AGuidAsString(this Stubber _) => Guid.NewGuid().ToString();
+
+    #endregion
 }

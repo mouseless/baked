@@ -10,8 +10,8 @@ public class RunningAnApplication : ArchitectureSpec
         var phase1 = MockMe.APhase();
         var phase2 = MockMe.APhase();
         var phase3 = MockMe.APhase();
-        var layer1 = MockMe.ALayer(id: "Do.Test.Architecture.Application.LayerA", phases: new[] { phase1, phase2 });
-        var layer2 = MockMe.ALayer(id: "Do.Test.Architecture.Application.LayerB", phase: phase3);
+        var layer1 = MockMe.ALayer(id: GiveMe.AGuidAsString(), phases: new[] { phase1, phase2 });
+        var layer2 = MockMe.ALayer(id: GiveMe.AGuidAsString(), phase: phase3);
         var app = GiveMe.AnApplication(layers: new[] { layer1, layer2 });
 
         app.Run();
@@ -41,8 +41,8 @@ public class RunningAnApplication : ArchitectureSpec
     {
         var phase1 = MockMe.APhase();
         var phase2 = MockMe.APhase();
-        var layer1 = MockMe.ALayer(id: "Do.Test.Architecture.Application.LayerA", phase: phase1);
-        var layer2 = MockMe.ALayer(id: "Do.Test.Architecture.Application.LayerB", phase: phase2);
+        var layer1 = MockMe.ALayer(id: GiveMe.AGuidAsString(), phase: phase1);
+        var layer2 = MockMe.ALayer(id: GiveMe.AGuidAsString(), phase: phase2);
 
         var app = GiveMe.AnApplication(layers: new[] { layer1, layer2 });
 

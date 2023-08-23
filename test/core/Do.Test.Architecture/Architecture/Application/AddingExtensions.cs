@@ -8,8 +8,8 @@ public class AddingExtensions : ArchitectureSpec
     public void Layer_is_added_without_any_options()
     {
         var forge = GiveMe.AForge();
-        var layer1 = MockMe.ALayer(id: "Do.Test.Architecture.Application.LayerA");
-        var layer2 = MockMe.ALayer(id: "Do.Test.Architecture.Application.LayerB");
+        var layer1 = MockMe.ALayer(id: GiveMe.AGuidAsString());
+        var layer2 = MockMe.ALayer(id: GiveMe.AGuidAsString());
 
         var app = forge.Application(app =>
         {
