@@ -1,6 +1,4 @@
-﻿using System.Text.RegularExpressions;
-
-namespace Do.Architecture;
+﻿namespace Do.Architecture;
 
 public class Application
 {
@@ -14,8 +12,10 @@ public class Application
 
     internal Application With(ApplicationDescriptor descriptor)
     {
-        CheckDuplicates(descriptor);
+        CheckDuplicates(descriptor.Layers.Select(layer => layer.Id).ToList());
         _layers.AddRange(descriptor.Layers);
+
+        CheckDuplicates(descriptor.Features.Select(feature => feature.Id).ToList());
         _features.AddRange(descriptor.Features);
 
         FillPhases();
@@ -23,33 +23,13 @@ public class Application
         return this;
     }
 
-    void CheckDuplicates(ApplicationDescriptor descriptor)
+    void CheckDuplicates(List<string> ids)
     {
-        try
+        var duplicates = ids.GroupBy(x => x).Where(g => g.Count() > 1).Select(l => l.Key).ToList();
+
+        if (duplicates.Any())
         {
-            descriptor.Layers.ToDictionary(
-                keySelector: layer => layer.Id,
-                elementSelector: layer => layer
-            );
-            descriptor.Features.ToDictionary(
-                keySelector: feature => feature.Id,
-                elementSelector: feature => feature
-            );
-        }
-        catch (ArgumentException e)
-        {
-            // It takes the name value after "Key:" in the exeception message.
-            string pattern = @"Key:\s*(.*?)(?:\s|$)";
-
-            Match match = Regex.Match(e.Message, pattern);
-
-            string key = string.Empty;
-            if (match.Success)
-            {
-                key = match.Groups[1].Value;
-            }
-
-            throw new InvalidOperationException($"Cannot add `{key}`, it was already added.");
+            throw new InvalidOperationException($"Cannot add `{string.Join(", ", duplicates)}`, it was already added.");
         }
     }
 
