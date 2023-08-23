@@ -4,16 +4,6 @@ namespace Do.Test.Architecture.Application;
 
 public class AddingExtensions : ArchitectureSpec
 {
-    protected class LayerA : LayerBase { }
-
-    [Test]
-    public void Layer_id_is_its_fully_quelified_name()
-    {
-        var layer1 = new LayerA();
-
-        layer1.Id.ShouldBe("Do.Test.Architecture.Application.AddingExtensions+LayerA");
-    }
-
     [Test]
     public void Layer_is_added_without_any_options()
     {
@@ -142,6 +132,6 @@ public class AddingExtensions : ArchitectureSpec
         });
 
         forgeAction.ShouldThrow<InvalidOperationException>().Message.ShouldBe(
-            $"Cannot add `{feature.ToString() ?? feature.GetType().Name}`, it was already added.");
+            $"Cannot add `{feature.Id}`, it was already added.");
     }
 }

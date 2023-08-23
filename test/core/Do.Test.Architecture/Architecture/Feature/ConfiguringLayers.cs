@@ -21,6 +21,21 @@ public class ConfiguringLayers : ArchitectureSpec
         }
     }
 
+    protected class Feature : IFeature
+    {
+        public void Configure(LayerConfigurator configurator) =>
+            configurator.Configure((ConfigurationA configuration) =>
+                configuration.Value = "Test");
+    }
+
+    [Test]
+    public void Feature_id_is_its_name()
+    {
+        IFeature feature = new Feature();
+
+        feature.Id.ShouldBe("Feature");
+    }
+
     [Test]
     public void Features_configure_layer_using_a_layer_configurator_that_can_apply_given_action_to_its_target_object()
     {

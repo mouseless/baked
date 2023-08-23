@@ -41,6 +41,16 @@ public class ProvidingConfiguration : ArchitectureSpec
         public class DoC : PhaseBase { }
     }
 
+    protected class Layer : LayerBase { }
+
+    [Test]
+    public void Layer_id_is_its_name()
+    {
+        var layer = new Layer();
+
+        layer.Id.ShouldBe("Layer");
+    }
+
     [Test]
     public void A_layer_provides_configuration_for_up_to_three_phases()
     {

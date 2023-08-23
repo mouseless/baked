@@ -110,7 +110,7 @@ public static class ArchitectureSpecExtensions
 
         var result = new Mock<ILayer>();
         result.Setup(l => l.GetPhases()).Returns(phases);
-        result.Setup(l => l.Id).Returns(id ?? string.Empty);
+        result.Setup(l => l.Id).Returns(id ?? $"{Guid.NewGuid()}");
 
         var setupGetContext = result
             .Setup(l => l.GetContext(It.IsAny<IPhase>(), It.IsAny<ApplicationContext>()))
@@ -276,9 +276,14 @@ public static class ArchitectureSpecExtensions
 
     #region Feature
 
-    public static IFeature AFeature(this Mocker _)
+    public static IFeature AFeature(this Mocker _,
+        string? id = default
+    )
     {
-        return new Mock<IFeature>().Object;
+        var result = new Mock<IFeature>();
+        result.Setup(l => l.Id).Returns(id ?? $"{Guid.NewGuid()}");
+
+        return result.Object;
     }
 
     public static void VerifyInitialized(this IFeature source) =>

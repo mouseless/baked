@@ -32,7 +32,7 @@ public class Application
                 elementSelector: layer => layer
             );
             descriptor.Features.ToDictionary(
-                keySelector: feature => feature.ToString() ?? feature.GetType().Name,
+                keySelector: feature => feature.Id,
                 elementSelector: feature => feature
             );
         }
