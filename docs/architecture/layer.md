@@ -22,6 +22,24 @@ has the ability to use a middleware or add routes to the application.
 > we've created some base classes to make it easier for you to create layers
 > and phases. All examples below, demonstrate usage of these base classes.
 
+`ILayer` has an `Id` property, which is the name of the implementing class by
+default. You can give your layer a custom `Id` by overriding `ILayer.Id`.
+
+```csharp
+public class CustomLayer : ILayer
+{
+...
+public string Id => "CustomId".   
+...
+}
+```
+
+`Id` determines uniqueness of layers, thus different layers should have unique
+ids. When adding layers to your application, if two layers have the same `Id`,
+you will get an error, since adding the same layer multiple times is not
+allowed. You can refer to conventions when giving custom `Id` to your layers.
+
+
 ## Conventions
 
 For a consistent developer experience, follow below conventions when
@@ -41,6 +59,7 @@ implementing a new layer;
 1. Place phase implementations as nested classes under the layer class
 1. Don't use any suffix for phases and use method-like names, e.g., `Build` and
    `Run`
+1. To give a custom `Id` to your layer, override `ILayer.Id` with a unique id.
 
 Please refer to existing layers in [github.com/mouseless/do][] for examples.
 

@@ -42,6 +42,10 @@ into your application.
 > Layers and features come with extension methods exposed directly in `Do`
 > namespace so that you can see options without adding an extra `using`.
 
+> :warning:
+>
+> Adding the same layer or feature multiple times will give an error.
+
 ### Layers
 
 Layers are added without any options to configure;
@@ -53,11 +57,6 @@ app.Layers.AddDataAccess();
 ```
 
 To configure a layer, you need to add a feature mentioned in the next section.
-
-> :warning:
->
-> Adding the same layer multiple times will give an error. Duplicates are
-> checked using `Layer.Id` which is fully qualified name of the layer.
 
 ### Features
 
@@ -75,10 +74,6 @@ method;
 ```csharp
 app.Features.AddDatabase(c => c.MySql(autoUpdateSchema: true)
 ```
-
-> :warning:
->
-> Adding the same feature multiple times will give an error.
 
 #### Overriding A Configuration
 

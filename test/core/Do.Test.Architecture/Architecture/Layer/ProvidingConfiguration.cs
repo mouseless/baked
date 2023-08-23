@@ -46,7 +46,7 @@ public class ProvidingConfiguration : ArchitectureSpec
     [Test]
     public void Layer_id_is_its_name()
     {
-        var layer = new Layer();
+        ILayer layer = new Layer();
 
         layer.Id.ShouldBe("Layer");
     }
