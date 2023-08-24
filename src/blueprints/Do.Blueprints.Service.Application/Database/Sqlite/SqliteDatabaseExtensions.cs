@@ -6,9 +6,9 @@ namespace Do;
 
 public static class SqliteDatabaseExtensions
 {
-    public static SqliteDatabaseFeature Sqlite(this DatabaseConfigurator _,
+    public static IDatabaseFeature Sqlite(this DatabaseConfigurator _,
         Setting<string>? fileName = default
-    ) => new(
+    ) => new SqliteDatabaseFeature(
         fileName ?? Settings.Required<string>("Database:Sqlite:FileName")
     );
 }

@@ -5,5 +5,5 @@ namespace Do;
 
 public static class MockCoreExtensions
 {
-    public static MockCoreFeature Mock(this CoreConfigurator _) => new();
+    public static ICoreFeature Mock(this CoreConfigurator _) => new MockCoreFeature();
 }

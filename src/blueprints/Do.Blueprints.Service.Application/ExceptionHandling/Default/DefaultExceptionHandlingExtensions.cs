@@ -5,7 +5,7 @@ namespace Do;
 
 public static class DefaultExceptionHandlingExtensions
 {
-    public static DefaultExceptionHandlingFeature Default(this ExceptionHandlingConfigurator _,
+    public static IExceptionHandlingFeature Default(this ExceptionHandlingConfigurator _,
         Action<Options>? optionsBuilder = default
     )
     {
@@ -14,7 +14,7 @@ public static class DefaultExceptionHandlingExtensions
         var options = new Options();
         optionsBuilder(options);
 
-        return new(options.Handlers);
+        return new DefaultExceptionHandlingFeature(options.Handlers);
     }
 
     public static void AddHandler<T>(this Options source) => source.Handlers.Add(typeof(T));

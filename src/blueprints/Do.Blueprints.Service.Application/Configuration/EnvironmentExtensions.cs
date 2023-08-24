@@ -5,16 +5,16 @@ namespace Do;
 
 public static class EnvironmentExtensions
 {
-    public static TFeature ForDevelopment<TFeature>(this IFeature @default, TFeature featureOnDevelopment) where TFeature : IFeature =>
-        (TFeature)@default.For(Environments.Development, featureOnDevelopment);
+    public static TFeature ForDevelopment<TFeature>(this TFeature @default, TFeature featureOnDevelopment) where TFeature : IFeature =>
+        @default.For(Environments.Development, featureOnDevelopment);
 
-    public static TFeature ForStaging<TFeature>(this IFeature @default, TFeature featureOnStaging) where TFeature : IFeature =>
-        (TFeature)@default.For(Environments.Staging, featureOnStaging);
+    public static TFeature ForStaging<TFeature>(this TFeature @default, TFeature featureOnStaging) where TFeature : IFeature =>
+        @default.For(Environments.Staging, featureOnStaging);
 
-    public static TFeature ForProduction<TFeature>(this IFeature @default, TFeature featureOnProduction) where TFeature : IFeature =>
-        (TFeature)@default.For(Environments.Production, featureOnProduction);
+    public static TFeature ForProduction<TFeature>(this TFeature @default, TFeature featureOnProduction) where TFeature : IFeature =>
+        @default.For(Environments.Production, featureOnProduction);
 
-    public static IFeature For(this IFeature @default, string environment, IFeature featureOnEnvironment)
+    public static TFeature For<TFeature>(this TFeature @default, string environment, TFeature featureOnEnvironment)
     {
         if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == environment)
         {

@@ -5,5 +5,5 @@ namespace Do;
 
 public static class SwaggerGreetingExtensions
 {
-    public static SwaggerGreetingFeature Swagger(this GreetingConfigurator _) => new();
+    public static IGreetingFeature Swagger(this GreetingConfigurator _) => new SwaggerGreetingFeature();
 }

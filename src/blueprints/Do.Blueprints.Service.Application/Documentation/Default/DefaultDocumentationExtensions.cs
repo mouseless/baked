@@ -5,5 +5,5 @@ namespace Do;
 
 public static class DefaultDocumentationExtensions
 {
-    public static DefaultDocumentationFeature Default(this DocumentationConfigurator _) => new();
+    public static IDocumentationFeature Default(this DocumentationConfigurator _) => new DefaultDocumentationFeature();
 }
