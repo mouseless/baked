@@ -148,14 +148,24 @@ public static class WelcomePageGreetingExtensions
 
 ### Disabling a Feature
 
-To allow disabling a feature, provide a `Disabled()` method which returns an
-empty feature.
+To allow disabling a feature, provide an `EmptyFeature` and a `Disabled()`
+method which returns an empty feature.
+
+`EmptyGreetingFeature.cs`
+```csharp
+public class EmptyGreetingFeature : IGreetingFeature
+{
+    public string Id => GetType().Name;
+
+    public void Configure(LayerConfigurator configurator) { }
+}
+```
 
 `GreetingConfigurator.cs`
 ```csharp
 public class GreetingConfigurator
 {
-    public IFeature Disabled() => Feature.Empty;
+    public IGreetingFeature Disabled() => new EmptyGreetingFeature();
 }
 ```
 
