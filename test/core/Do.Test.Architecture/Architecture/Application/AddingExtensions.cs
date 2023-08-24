@@ -1,6 +1,4 @@
-﻿using Do.Architecture;
-
-namespace Do.Test.Architecture.Application;
+﻿namespace Do.Test.Architecture.Application;
 
 public class AddingExtensions : ArchitectureSpec
 {
