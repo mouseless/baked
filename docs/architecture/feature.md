@@ -3,25 +3,6 @@
 Features consist of two parts; abstraction (port) and implementation (adapter).
 Each adapter exposes a class that implements `IFeature` interface.
 
-`IFeature` has an `Id` property, which is the name of the implementing class
-by default. You can give your feature a custom `Id` by overriding
-`IFeature.Id`.
-
-```csharp
-public class CustomFeature : IFeature
-{
-...
-public string Id => "CustomId".   
-...
-}
-```
-
-`Id` determines uniqueness of features, thus different features should have
-unique ids. When adding features to your application, if two features have the
-same `Id`, you will get an error, since adding the same feature multiple
-times is not allowed. You can refer to conventions when giving custom `Id` to
-your features.
-
 ## Conventions
 
 For a consistent developer experience, follow below conventions when
@@ -104,6 +85,23 @@ provides it with its interface not its concrete type.
 >
 > The order of the configuration calls does not have an effect in the outcome.
 > Feel free to organize these calls in the way you like.
+
+`IFeature` has an `Id` property, which is the name of the implementing class
+by default. You can give your feature a custom `Id` by overriding
+`IFeature.Id`.
+
+```csharp
+public class CustomFeature : IFeature
+{
+    ...
+    public string Id => "CustomId".
+    ...
+}
+```
+
+`Id` determines uniqueness of features. Adding the same feature multiple times is
+not allowed. You can refer to conventions when giving custom `Id` to your
+features.
 
 ### Including an Option
 

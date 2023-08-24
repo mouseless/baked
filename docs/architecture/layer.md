@@ -22,24 +22,6 @@ has the ability to use a middleware or add routes to the application.
 > we've created some base classes to make it easier for you to create layers
 > and phases. All examples below, demonstrate usage of these base classes.
 
-`ILayer` has an `Id` property, which is the name of the implementing class by
-default. You can give your layer a custom `Id` by overriding `ILayer.Id`.
-
-```csharp
-public class CustomLayer : ILayer
-{
-...
-public string Id => "CustomId".   
-...
-}
-```
-
-`Id` determines uniqueness of layers, thus different layers should have unique
-ids. When adding layers to your application, if two layers have the same `Id`,
-you will get an error, since adding the same layer multiple times is not
-allowed. You can refer to conventions when giving custom `Id` to your layers.
-
-
 ## Conventions
 
 For a consistent developer experience, follow below conventions when
@@ -176,6 +158,22 @@ In this example, you see a layer named `LayerX` providing a
 > By default, a layer returns `PhaseContext.Empty` instance for the phases it
 > does not provide a configuration. This means `Application` skips that layer
 > for the phases it doesn't have anything to configure.
+
+`ILayer` has an `Id` property, which is the name of the implementing class by
+default. You can give your layer a custom `Id` by overriding `ILayer.Id`.
+
+```csharp
+public class CustomLayer : LayerBase
+{
+    ...
+    protected override string Id => "CustomId"
+    ...
+}
+```
+
+`Id` determines uniqueness of layers. Adding the same layer multiple times is
+not allowed. You can refer to conventions when giving custom `Id` to your
+layers.
 
 ### Using non-generic `LayerBase`
 
