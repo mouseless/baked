@@ -101,7 +101,7 @@ provides it with its interface not its concrete type.
 ```csharp
 public class WelcomePageGreetingFeature : IGreetingFeature
 {
-    public string Id => "UniqueId";
+    public string Id => GetType().Name;
     ...
 }
 ```
@@ -123,7 +123,7 @@ public class WelcomePageGreetingFeature : IGreetingFeature
 
     public WelcomePageGreetingFeature(string path) => _path = path;
     
-    public string Id => "UniqueId";
+    public string Id => GetType().Name;
 
     public void Configure(LayerConfigurator configurator)
     {
