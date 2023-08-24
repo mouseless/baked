@@ -12,8 +12,9 @@ implementing a new feature;
 
 1. Place all abstraction classes under a folder named after feature, e.g.,
    `Greeting/`.
-1. Provide a configurator and an extension class for abstraction part, e.g.
+1. Provide a configurator and an extension class for abstraction part, e.g.,
    `Greeting/GreetingConfigurator.cs`, `Greeting/GreetingExtensions.cs`.
+1. Provide an interface, inheriting `IFeature` e.g., `IGreetingFeature.cs`.
 1. Provide an `Add` method to add feature to an application, e.g.,
    `AddGreeting()`.
 
@@ -44,13 +45,22 @@ Please refer to existing features in [github.com/mouseless/do][] for examples.
 
 ## Configuring Layers
 
-To configure layers, a `LayerCofigurator` instance is passed to `Configure()`
-method of `IFeature` interface. Using extension methods on the given
-configurator, a feature accesses configuration targets of layers.
+To configure layers, a `LayerCofigurator` instance is passed to the
+`Configure()` method of the `IFeature` interface. `IFeature` is inherited by
+`IGreetingFeature` in the following examples as specified by conventions. Using
+extension methods on the given configurator, a feature accesses configuration
+targets of layers.
 
+`IGreetingFeature.cs`
 ```csharp
-public class WelcomePageGreetingFeature : IFeature
+public interface IGreetingFeature : IFeature {}
+```
+
+`WelcomePageGreetingFeature.cs`
+```csharp
+public class WelcomePageGreetingFeature : IGreetingFeature
 {
+    ...
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureMiddlewareCollection(middlewares =>
@@ -89,10 +99,9 @@ provides it with its interface not its concrete type.
 `IFeature.Id`.
 
 ```csharp
-public class WelcomePageGreetingFeature : IFeature
+public class WelcomePageGreetingFeature : IGreetingFeature
 {
-    ...
-    public string Id => "UniqueId".
+    public string Id => "UniqueId";
     ...
 }
 ```
@@ -108,11 +117,13 @@ below;
 
 `WelcomePageGreetingFeature.cs`
 ```csharp
-public class WelcomePageGreetingFeature : IFeature
+public class WelcomePageGreetingFeature : IGreetingFeature
 {
     readonly string _path;
 
     public WelcomePageGreetingFeature(string path) => _path = path;
+    
+    public string Id => "UniqueId";
 
     public void Configure(LayerConfigurator configurator)
     {

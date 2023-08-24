@@ -72,7 +72,7 @@ An implementation may ask for additional options within its configurator
 method;
 
 ```csharp
-app.Features.AddDatabase(c => c.MySql(autoUpdateSchema: true)
+app.Features.AddDatabase(c => c.MySql(autoUpdateSchema: true))
 ```
 
 #### Overriding A Configuration
