@@ -4,6 +4,19 @@ namespace Do.Test.Architecture.Feature;
 
 public class ConfiguringLayers : ArchitectureSpec
 {
+    public class Feature : IFeature
+    {
+        public void Configure(LayerConfigurator configurator) { }
+    }
+
+    [Test]
+    public void Feature_id_is_its_name()
+    {
+        IFeature feature = new Feature();
+
+        feature.Id.ShouldBe("Feature");
+    }
+
     public record ConfigurationA
     {
         public string? Value { get; set; }
@@ -19,21 +32,6 @@ public class ConfiguringLayers : ArchitectureSpec
         {
             configurator.Configure((ConfigurationA configuration) => configuration.Value = _value);
         }
-    }
-
-    protected class Feature : IFeature
-    {
-        public void Configure(LayerConfigurator configurator) =>
-            configurator.Configure((ConfigurationA configuration) =>
-                configuration.Value = "Test");
-    }
-
-    [Test]
-    public void Feature_id_is_its_name()
-    {
-        IFeature feature = new Feature();
-
-        feature.Id.ShouldBe("Feature");
     }
 
     [Test]

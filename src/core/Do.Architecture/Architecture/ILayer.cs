@@ -2,7 +2,7 @@
 
 public interface ILayer
 {
-    string Id => GetType().Name;
+    string Id { get; }
     IEnumerable<IPhase> GetPhases();
     PhaseContext GetContext(IPhase phase, ApplicationContext context);
 }

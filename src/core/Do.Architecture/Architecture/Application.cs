@@ -12,10 +12,10 @@ public class Application
 
     internal Application With(ApplicationDescriptor descriptor)
     {
-        CheckDuplicates(descriptor.Layers.Select(layer => layer.Id).ToList());
+        CheckDuplicates(descriptor.Layers.Select(layer => layer.Id));
         _layers.AddRange(descriptor.Layers);
 
-        CheckDuplicates(descriptor.Features.Select(feature => feature.Id).ToList());
+        CheckDuplicates(descriptor.Features.Select(feature => feature.Id));
         _features.AddRange(descriptor.Features);
 
         FillPhases();
@@ -23,13 +23,13 @@ public class Application
         return this;
     }
 
-    void CheckDuplicates(List<string> ids)
+    void CheckDuplicates(IEnumerable<string> ids)
     {
-        var duplicates = ids.GroupBy(x => x).Where(g => g.Count() > 1).Select(l => l.Key).ToList();
+        var duplicate = ids.GroupBy(x => x).Where(g => g.Count() > 1).Select(l => l.Key).FirstOrDefault();
 
-        if (duplicates.Any())
+        if (duplicate is not null)
         {
-            throw new InvalidOperationException($"Cannot add `{string.Join(", ", duplicates)}`, it was already added.");
+            throw new InvalidOperationException($"Cannot add `{duplicate}`, it was already added.");
         }
     }
 

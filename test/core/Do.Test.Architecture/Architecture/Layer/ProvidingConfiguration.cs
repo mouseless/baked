@@ -8,6 +8,16 @@ namespace Do.Test.Architecture.Layer;
 
 public class ProvidingConfiguration : ArchitectureSpec
 {
+    public class Layer : LayerBase { }
+
+    [Test]
+    public void Layer_id_is_its_name()
+    {
+        ILayer layer = new Layer();
+
+        layer.Id.ShouldBe("Layer");
+    }
+
     public record LayerXConfigurationA();
 
     public class LayerX : LayerBase<DoA>
@@ -39,16 +49,6 @@ public class ProvidingConfiguration : ArchitectureSpec
         protected override PhaseContext GetContext(DoC phase) => phase.CreateContext(new LayerZConfigurationC());
 
         public class DoC : PhaseBase { }
-    }
-
-    protected class Layer : LayerBase { }
-
-    [Test]
-    public void Layer_id_is_its_name()
-    {
-        ILayer layer = new Layer();
-
-        layer.Id.ShouldBe("Layer");
     }
 
     [Test]

@@ -8,8 +8,8 @@ public class AddingExtensions : ArchitectureSpec
     public void Layer_is_added_without_any_options()
     {
         var forge = GiveMe.AForge();
-        var layer1 = MockMe.ALayer(id: GiveMe.AGuidAsString());
-        var layer2 = MockMe.ALayer(id: GiveMe.AGuidAsString());
+        var layer1 = MockMe.ALayer();
+        var layer2 = MockMe.ALayer();
 
         var app = forge.Application(app =>
         {
@@ -106,8 +106,9 @@ public class AddingExtensions : ArchitectureSpec
     [Test]
     public void Adding_the_same_layer_more_than_once_gives_error()
     {
+        var layerId = "Layer.Name";
         var forge = GiveMe.AForge();
-        var layer = MockMe.ALayer();
+        var layer = MockMe.ALayer(id: layerId);
 
         var forgeAction = () => forge.Application(app =>
         {
@@ -116,14 +117,15 @@ public class AddingExtensions : ArchitectureSpec
         });
 
         forgeAction.ShouldThrow<InvalidOperationException>().Message.ShouldBe(
-            $"Cannot add `{layer.Id}`, it was already added.");
+            $"Cannot add `{layerId}`, it was already added.");
     }
 
     [Test]
     public void Adding_the_same_feature_more_than_once_gives_error()
     {
+        var featureId = "Feature.Name";
         var forge = GiveMe.AForge();
-        var feature = MockMe.AFeature();
+        var feature = MockMe.AFeature(id: featureId);
 
         var forgeAction = () => forge.Application(app =>
         {
@@ -132,6 +134,6 @@ public class AddingExtensions : ArchitectureSpec
         });
 
         forgeAction.ShouldThrow<InvalidOperationException>().Message.ShouldBe(
-            $"Cannot add `{feature.Id}`, it was already added.");
+            $"Cannot add `{featureId}`, it was already added.");
     }
 }
