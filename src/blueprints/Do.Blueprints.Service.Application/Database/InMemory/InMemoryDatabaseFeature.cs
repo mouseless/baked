@@ -7,6 +7,8 @@ namespace Do.Database.InMemory;
 
 public class InMemoryDatabaseFeature : IDatabaseFeature
 {
+    public string Id => GetType().Name;
+
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureServiceCollection(services =>

@@ -5,6 +5,8 @@ namespace Do.Core.Dotnet;
 
 public class DotnetCoreFeature : ICoreFeature
 {
+    public string Id => GetType().Name;
+
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureServiceCollection(services =>

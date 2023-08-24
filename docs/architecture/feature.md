@@ -38,8 +38,7 @@ implementing a new feature;
        usage.
     1. Implement `IFeature` in `ConfigurationOverriderFeature` where you add
        all your configuration overrides.
-1. To give a custom `Id` to your feature, override `IFeature.Id` with a unique
-   id.
+1. To give an `Id` to your feature, implement `IFeature.Id` with a unique id.
 
 Please refer to existing features in [github.com/mouseless/do][] for examples.
 
@@ -86,22 +85,20 @@ provides it with its interface not its concrete type.
 > The order of the configuration calls does not have an effect in the outcome.
 > Feel free to organize these calls in the way you like.
 
-`IFeature` has an `Id` property, which is the name of the implementing class
-by default. You can give your feature a custom `Id` by overriding
+`IFeature` has an `Id` property. You can give your feature `Id` by implementing
 `IFeature.Id`.
 
 ```csharp
-public class CustomFeature : IFeature
+public class WelcomePageGreetingFeature : IFeature
 {
     ...
-    public string Id => "CustomId".
+    public string Id => "UniqueId".
     ...
 }
 ```
 
 `Id` determines uniqueness of features. Adding the same feature multiple times is
-not allowed. You can refer to conventions when giving custom `Id` to your
-features.
+not allowed. You can refer to conventions when giving `Id` to your features.
 
 ### Including an Option
 

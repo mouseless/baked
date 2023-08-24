@@ -15,6 +15,8 @@ public class MySqlDatabaseFeature : IDatabaseFeature
     public MySqlDatabaseFeature(Setting<string> connectionString, Setting<bool> autoUpdateSchema, Setting<bool> showSql) =>
         (_connectionString, _autoUpdateSchema, _showSql) = (connectionString, autoUpdateSchema, showSql);
 
+    public string Id => GetType().Name;
+
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureServiceCollection(services =>

@@ -10,6 +10,8 @@ public class WelcomePageGreetingFeature : IGreetingFeature
     public WelcomePageGreetingFeature(string path) =>
         _path = path;
 
+    public string Id => GetType().Name;
+
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureMiddlewareCollection(middlewares =>

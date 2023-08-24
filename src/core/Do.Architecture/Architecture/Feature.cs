@@ -6,6 +6,8 @@ public sealed class Feature
 
     class EmptyFeature : IFeature
     {
+        public string Id => GetType().Name;
+
         public void Configure(LayerConfigurator configurator) { }
     }
 }

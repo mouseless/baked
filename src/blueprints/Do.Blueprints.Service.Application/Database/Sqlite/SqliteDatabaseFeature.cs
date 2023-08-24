@@ -15,6 +15,8 @@ public class SqliteDatabaseFeature : IDatabaseFeature
 
     string FullFilePath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), _fileName);
 
+    public string Id => GetType().Name;
+
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureServiceCollection(services =>

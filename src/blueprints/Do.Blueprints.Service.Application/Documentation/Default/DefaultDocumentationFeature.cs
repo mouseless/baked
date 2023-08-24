@@ -5,6 +5,8 @@ namespace Do.Documentation.Default;
 
 public class DefaultDocumentationFeature : IDocumentationFeature
 {
+    public string Id => GetType().Name;
+
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>

@@ -6,6 +6,8 @@ public class ConfiguringLayers : ArchitectureSpec
 {
     public class Feature : IFeature
     {
+        public string Id => GetType().Name;
+
         public void Configure(LayerConfigurator configurator) { }
     }
 
@@ -27,6 +29,8 @@ public class ConfiguringLayers : ArchitectureSpec
         readonly string _value;
 
         public FeatureA(string value) => _value = value;
+
+        public string Id => GetType().Name;
 
         public void Configure(LayerConfigurator configurator)
         {

@@ -13,6 +13,8 @@ public class DefaultExceptionHandlingFeature : IExceptionHandlingFeature
         _handlers.AddRange(handlers);
     }
 
+    public string Id => GetType().Name;
+
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureServiceCollection(services =>

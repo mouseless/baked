@@ -5,6 +5,8 @@ namespace Do.Greeting.Swagger;
 
 public class SwaggerGreetingFeature : IGreetingFeature
 {
+    public string Id => GetType().Name;
+
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureEndpointRouteBuilder(endpoints =>

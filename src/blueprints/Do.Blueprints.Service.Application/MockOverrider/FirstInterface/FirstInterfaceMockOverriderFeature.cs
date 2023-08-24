@@ -5,6 +5,8 @@ namespace Do.MockOverrider.FirstInterface;
 
 public class FirstInterfaceMockOverriderFeature : IMockOverriderFeature
 {
+    public string Id => GetType().Name;
+
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureTestConfiguration(test =>

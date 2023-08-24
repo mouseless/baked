@@ -10,6 +10,8 @@ namespace Do.Orm.Default;
 
 public class DefaultOrmFeature : IOrmFeature
 {
+    public string Id => GetType().Name;
+
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureServiceCollection(services =>
