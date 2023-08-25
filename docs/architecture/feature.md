@@ -45,8 +45,12 @@ Please refer to existing features in [github.com/mouseless/do][] for examples.
 ## Creating A Feature
 
 When creating a feature, you should first pay attention to the conventions. If
-you have added a configurator, the feature should implement `IFeature<T>`
-instead of `IFeature`. The `T` here is your configurator.
+you have added a configurator, the feature should use `IFeature<T>` (which is
+derived from `IFeature`) instead of `IFeature`. Here `T` is your configurator.
+
+> :information_source:
+>
+> The following feature code examples will be explained through `IFeature<T>`.
 
 ### Override Feature Id
 
@@ -67,7 +71,7 @@ is not allowed. You can refer to conventions when giving `Id` to your features.
 ## Configuring Layers
 
 To configure layers, a `LayerCofigurator` instance is passed to the
-`Configure()` method of the `IFeature<T>` interface.  Using extension methods
+`Configure()` method of the `IFeature` interface.  Using extension methods
 on the given configurator, a feature accesses configuration targets of layers.
 
 `WelcomePageGreetingFeature.cs`
