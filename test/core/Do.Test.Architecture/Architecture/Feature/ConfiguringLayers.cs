@@ -15,8 +15,6 @@ public class ConfiguringLayers : ArchitectureSpec
 
         public FeatureA(string value) => _value = value;
 
-        public string Id => GetType().Name;
-
         public void Configure(LayerConfigurator configurator)
         {
             configurator.Configure((ConfigurationA configuration) => configuration.Value = _value);
