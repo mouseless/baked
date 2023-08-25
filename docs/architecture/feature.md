@@ -14,7 +14,6 @@ implementing a new feature;
    `Greeting/`.
 1. Provide a configurator and an extension class for abstraction part, e.g.,
    `Greeting/GreetingConfigurator.cs`, `Greeting/GreetingExtensions.cs`.
-1. Provide an interface, inheriting `IFeature` e.g., `IGreetingFeature.cs`.
 1. Provide an `Add` method to add feature to an application, e.g.,
    `AddGreeting()`.
 
@@ -25,8 +24,8 @@ implementing a new feature;
 1. Provide an extension method with the implementation name to allow adding
    that implementation, e.g., `HelloWorld()`, `WelcomePage()`.
    1. This method should be in an extension class under `Do` namespace, e.g.,
-      `Greeting/HelloWorldGreetingExtensions.cs`,
-      `Greeting/WelcomePageGreetingExtensions.cs`.
+      `Greeting/HelloWorld/HelloWorldGreetingExtensions.cs`,
+      `Greeting/WelcomePage/WelcomePageGreetingExtensions.cs`.
 1. Name feature class after implementation name with abstraction name as a
    suffix, e.g., `HelloWorldGreetingFeature`, `WelcomePageGreetingFeature`.
 1. Features depend on other features through their abstraction parts. Direct
@@ -55,32 +54,25 @@ instead of `IFeature`. The `T` here is your configurator.
 feature. You can give your feature `Id` by implementing `IFeature.Id`.
 
 ```csharp
-public class WelcomePageGreetingFeature : IGreetingFeature
+public class WelcomePageGreetingFeature : IFeature<GreetingConfigurator>
 {
     public string Id => GetType().Name;
     ...
 }
 ```
 
-`Id` determines uniqueness of features. Adding the same feature multiple times is
-not allowed. You can refer to conventions when giving `Id` to your features.
+`Id` determines uniqueness of features. Adding the same feature multiple times
+is not allowed. You can refer to conventions when giving `Id` to your features.
 
 ## Configuring Layers
 
 To configure layers, a `LayerCofigurator` instance is passed to the
-`Configure()` method of the `IFeature` interface. `IFeature` is inherited by
-`IGreetingFeature` in the following examples as specified by conventions. Using
-extension methods on the given configurator, a feature accesses configuration
-targets of layers.
-
-`IGreetingFeature.cs`
-```csharp
-public interface IGreetingFeature : IFeature {}
-```
+`Configure()` method of the `IFeature<T>` interface.  Using extension methods
+on the given configurator, a feature accesses configuration targets of layers.
 
 `WelcomePageGreetingFeature.cs`
 ```csharp
-public class WelcomePageGreetingFeature : IGreetingFeature
+public class WelcomePageGreetingFeature : IFeature<GreetingConfigurator>
 {
     ...
     public void Configure(LayerConfigurator configurator)
@@ -156,24 +148,16 @@ public static class WelcomePageGreetingExtensions
 
 ### Disabling a Feature
 
-To allow disabling a feature, provide an `EmptyFeature` and a `Disabled()`
-method which returns an empty feature.
-
-`EmptyGreetingFeature.cs`
-```csharp
-public class EmptyGreetingFeature : IGreetingFeature
-{
-    public string Id => GetType().Name;
-
-    public void Configure(LayerConfigurator configurator) { }
-}
-```
+To allow a feature to be disabled, you can return `Feature.Empty<T>()` by
+writing a `Disable` method in your configurator. Here `T` is your
+configurator class.
 
 `GreetingConfigurator.cs`
 ```csharp
 public class GreetingConfigurator
 {
-    public IGreetingFeature Disabled() => new EmptyGreetingFeature();
+    public IFeature<GreetingConfigurator> Disabled() =>
+        Feature.Empty<GreetingConfigurator>();
 }
 ```
 
