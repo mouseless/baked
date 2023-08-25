@@ -43,6 +43,28 @@ implementing a new feature;
 
 Please refer to existing features in [github.com/mouseless/do][] for examples.
 
+## Creating A Feature
+
+When creating a feature, you should first pay attention to the conventions. If
+you have added a configurator, the feature should implement `IFeature<T>`
+instead of `IFeature`. The `T` here is your configurator.
+
+### Override Feature Id
+
+`IFeature` has an `Id` property and default value is name of the implementing
+feature. You can give your feature `Id` by implementing `IFeature.Id`.
+
+```csharp
+public class WelcomePageGreetingFeature : IGreetingFeature
+{
+    public string Id => GetType().Name;
+    ...
+}
+```
+
+`Id` determines uniqueness of features. Adding the same feature multiple times is
+not allowed. You can refer to conventions when giving `Id` to your features.
+
 ## Configuring Layers
 
 To configure layers, a `LayerCofigurator` instance is passed to the
@@ -95,20 +117,6 @@ provides it with its interface not its concrete type.
 > The order of the configuration calls does not have an effect in the outcome.
 > Feel free to organize these calls in the way you like.
 
-`IFeature` has an `Id` property. You can give your feature `Id` by implementing
-`IFeature.Id`.
-
-```csharp
-public class WelcomePageGreetingFeature : IGreetingFeature
-{
-    public string Id => GetType().Name;
-    ...
-}
-```
-
-`Id` determines uniqueness of features. Adding the same feature multiple times is
-not allowed. You can refer to conventions when giving `Id` to your features.
-
 ### Including an Option
 
 To include an option in a feature, take the option as a parameter in
@@ -122,7 +130,7 @@ public class WelcomePageGreetingFeature : IGreetingFeature
     readonly string _path;
 
     public WelcomePageGreetingFeature(string path) => _path = path;
-    
+
     public string Id => GetType().Name;
 
     public void Configure(LayerConfigurator configurator)
