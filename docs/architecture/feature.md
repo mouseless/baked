@@ -121,7 +121,7 @@ below;
 
 `WelcomePageGreetingFeature.cs`
 ```csharp
-public class WelcomePageGreetingFeature : IGreetingFeature
+public class WelcomePageGreetingFeature : IFeature<GreetingConfigurator>
 {
     readonly string _path;
 
