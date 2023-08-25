@@ -4,21 +4,6 @@ namespace Do.Test.Architecture.Feature;
 
 public class ConfiguringLayers : ArchitectureSpec
 {
-    public class Feature : IFeature
-    {
-        public string Id => GetType().Name;
-
-        public void Configure(LayerConfigurator configurator) { }
-    }
-
-    [Test]
-    public void Feature_id_is_its_name()
-    {
-        IFeature feature = new Feature();
-
-        feature.Id.ShouldBe("Feature");
-    }
-
     public record ConfigurationA
     {
         public string? Value { get; set; }
