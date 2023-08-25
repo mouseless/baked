@@ -71,8 +71,8 @@ is not allowed. You can refer to conventions when giving `Id` to your features.
 ## Configuring Layers
 
 To configure layers, a `LayerCofigurator` instance is passed to the
-`Configure()` method of the `IFeature` interface.  Using extension methods
-on the given configurator, a feature accesses configuration targets of layers.
+`Configure()` method of the `IFeature` interface. Using extension methods on
+the given configurator, a feature accesses configuration targets of layers.
 
 `WelcomePageGreetingFeature.cs`
 ```csharp
