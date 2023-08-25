@@ -1,8 +1,8 @@
-using Do.Greeting.Empty;
+using Do.Architecture;
 
 namespace Do.Greeting;
 
 public class GreetingConfigurator
 {
-    public IGreetingFeature Disabled() => new EmptyGreetingFeature();
+    public IFeature<GreetingConfigurator> Disabled() => Feature.Empty<GreetingConfigurator>();
 }

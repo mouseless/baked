@@ -3,10 +3,8 @@ using Microsoft.AspNetCore.Builder;
 
 namespace Do.Greeting.Swagger;
 
-public class SwaggerGreetingFeature : IGreetingFeature
+public class SwaggerGreetingFeature : IFeature<GreetingConfigurator>
 {
-    public string Id => GetType().Name;
-
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureEndpointRouteBuilder(endpoints =>

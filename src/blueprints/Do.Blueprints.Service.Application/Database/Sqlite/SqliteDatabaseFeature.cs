@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Do.Database.Sqlite;
 
-public class SqliteDatabaseFeature : IDatabaseFeature
+public class SqliteDatabaseFeature : IFeature<DatabaseConfigurator>
 {
     readonly Setting<string> _fileName;
 
@@ -14,8 +14,6 @@ public class SqliteDatabaseFeature : IDatabaseFeature
         _fileName = fileName;
 
     string FullFilePath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), _fileName);
-
-    public string Id => GetType().Name;
 
     public void Configure(LayerConfigurator configurator)
     {

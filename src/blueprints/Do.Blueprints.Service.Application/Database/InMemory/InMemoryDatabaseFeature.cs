@@ -5,10 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Do.Database.InMemory;
 
-public class InMemoryDatabaseFeature : IDatabaseFeature
+public class InMemoryDatabaseFeature : IFeature<DatabaseConfigurator>
 {
-    public string Id => GetType().Name;
-
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureServiceCollection(services =>

@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Do.Database.MySql;
 
-public class MySqlDatabaseFeature : IDatabaseFeature
+public class MySqlDatabaseFeature : IFeature<DatabaseConfigurator>
 {
     readonly Setting<string> _connectionString;
     readonly Setting<bool> _autoUpdateSchema;
@@ -14,8 +14,6 @@ public class MySqlDatabaseFeature : IDatabaseFeature
 
     public MySqlDatabaseFeature(Setting<string> connectionString, Setting<bool> autoUpdateSchema, Setting<bool> showSql) =>
         (_connectionString, _autoUpdateSchema, _showSql) = (connectionString, autoUpdateSchema, showSql);
-
-    public string Id => GetType().Name;
 
     public void Configure(LayerConfigurator configurator)
     {

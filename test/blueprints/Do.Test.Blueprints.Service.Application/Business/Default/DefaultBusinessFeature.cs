@@ -4,10 +4,8 @@ using System.Reflection;
 
 namespace Do.Test.Business.Default;
 
-public class DefaultBusinessFeature : IBusinessFeature
+public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
 {
-    public string Id => GetType().Name;
-
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureServiceCollection(services =>

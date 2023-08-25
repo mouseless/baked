@@ -5,5 +5,5 @@ namespace Do;
 
 public static class RequestLoggingExtensions
 {
-    public static ILoggingFeature RequestLogging(this LoggingConfigurator _) => new RequestLoggingFeature();
+    public static RequestLoggingFeature RequestLogging(this LoggingConfigurator _) => new();
 }

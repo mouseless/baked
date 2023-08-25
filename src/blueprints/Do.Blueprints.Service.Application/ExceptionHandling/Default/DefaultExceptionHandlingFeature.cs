@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Do.ExceptionHandling.Default;
 
-public class DefaultExceptionHandlingFeature : IExceptionHandlingFeature
+public class DefaultExceptionHandlingFeature : IFeature<ExceptionHandlingConfigurator>
 {
     readonly List<Type> _handlers = new();
     readonly IExceptionHandler _defaultHandler = new DefaultExceptionHandler();
@@ -12,8 +12,6 @@ public class DefaultExceptionHandlingFeature : IExceptionHandlingFeature
     {
         _handlers.AddRange(handlers);
     }
-
-    public string Id => GetType().Name;
 
     public void Configure(LayerConfigurator configurator)
     {

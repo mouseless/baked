@@ -2,10 +2,8 @@ using Do.Architecture;
 
 namespace Do.Core.Mock;
 
-public class MockCoreFeature : ICoreFeature
+public class MockCoreFeature : IFeature<CoreConfigurator>
 {
-    public string Id => GetType().Name;
-
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureTestConfiguration(test =>

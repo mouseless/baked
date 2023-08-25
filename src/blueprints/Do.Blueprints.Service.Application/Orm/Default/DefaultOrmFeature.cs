@@ -8,10 +8,8 @@ using NHibernate;
 
 namespace Do.Orm.Default;
 
-public class DefaultOrmFeature : IOrmFeature
+public class DefaultOrmFeature : IFeature<OrmConfigurator>
 {
-    public string Id => GetType().Name;
-
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureServiceCollection(services =>

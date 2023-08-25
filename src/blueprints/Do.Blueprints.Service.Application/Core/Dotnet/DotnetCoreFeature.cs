@@ -3,10 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Do.Core.Dotnet;
 
-public class DotnetCoreFeature : ICoreFeature
+public class DotnetCoreFeature : IFeature<CoreConfigurator>
 {
-    public string Id => GetType().Name;
-
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureServiceCollection(services =>

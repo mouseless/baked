@@ -3,10 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Do.Documentation.Default;
 
-public class DefaultDocumentationFeature : IDocumentationFeature
+public class DefaultDocumentationFeature : IFeature<DocumentationConfigurator>
 {
-    public string Id => GetType().Name;
-
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>

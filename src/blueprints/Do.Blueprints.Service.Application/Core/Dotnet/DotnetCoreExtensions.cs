@@ -5,5 +5,5 @@ namespace Do;
 
 public static class DotnetCoreExtensions
 {
-    public static ICoreFeature Dotnet(this CoreConfigurator _) => new DotnetCoreFeature();
+    public static DotnetCoreFeature Dotnet(this CoreConfigurator _) => new();
 }

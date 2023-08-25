@@ -3,10 +3,8 @@ using Microsoft.Extensions.Logging;
 
 namespace Do.Logging.Request;
 
-public class RequestLoggingFeature : ILoggingFeature
+public class RequestLoggingFeature : IFeature<LoggingConfigurator>
 {
-    public string Id => GetType().Name;
-
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureLoggingBuilder(logging =>

@@ -99,7 +99,7 @@ public class ConfiguringLayers : ArchitectureSpec
 
     public class FeatureAConfigurator
     {
-        public IFeature Disabled() => Do.Architecture.Feature.Empty;
+        public IFeature<FeatureAConfigurator> Disabled() => Do.Architecture.Feature.Empty<FeatureAConfigurator>();
     }
 
     [Test]
@@ -109,6 +109,6 @@ public class ConfiguringLayers : ArchitectureSpec
 
         var feature = configurator.Disabled();
 
-        feature.ShouldBe(Do.Architecture.Feature.Empty);
+        feature.ShouldBeEquivalentTo(Do.Architecture.Feature.Empty<FeatureAConfigurator>());
     }
 }
