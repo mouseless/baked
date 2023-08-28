@@ -60,8 +60,9 @@ public class WelcomePageGreetingFeature : IFeature<GreetingConfigurator>
 
 ### `Id` of a Feature
 
-`IFeature` has an `Id` property which determines uniqueness of features.
-By default, value of this property is name of the implementing feature.
+`IFeature` has an `Id` property which should be unique per `Application`
+instance. By default, value of this property is name of the implementing
+feature.
 
 You can override its value by implementing `IFeature.Id` property in feature
 implementation class as shown below;
@@ -73,10 +74,6 @@ public class WelcomePageGreetingFeature : IFeature<GreetingConfigurator>
     ...
 }
 ```
-
-> :warning:
->
-> Adding multiple features with the same id gives an error.
 
 ### Disabling a Feature
 

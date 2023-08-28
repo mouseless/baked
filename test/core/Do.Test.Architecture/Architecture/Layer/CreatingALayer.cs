@@ -7,7 +7,7 @@ public class CreatingALayer : ArchitectureSpec
     public class LayerA : LayerBase { }
 
     [Test]
-    public void A_layer_is_created_by_implementing_layer_base()
+    public void A_layer_is_created_by_extending_LayerBase()
     {
         var layer = new LayerA();
 
@@ -15,7 +15,7 @@ public class CreatingALayer : ArchitectureSpec
     }
 
     [Test]
-    public void All_layer_implementations_implement_ILayer_behind_the_scenes()
+    public void All_layer_classes_implement_ILayer_behind_the_scenes()
     {
         var layer = new LayerA();
 
@@ -36,7 +36,7 @@ public class CreatingALayer : ArchitectureSpec
     }
 
     [Test]
-    public void Layer_id_can_be_overriden_by_implementing_an_Id_property_in_layer_class()
+    public void Layer_id_can_be_overriden_by_overriding_the_Id_property_in_layer_class()
     {
         var layer = new LayerB() as ILayer;
 

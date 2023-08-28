@@ -40,7 +40,7 @@ Please refer to existing layers in [github.com/mouseless/do][] for examples.
 
 ## Creating A Layer
 
-To create a layer, create a class using above conventions and implement
+To create a layer, create a class using above conventions and extend
 `LayerBase`.
 
 ```csharp
@@ -58,10 +58,9 @@ public class LayerX : LayerBase
 
 ### `Id` of a Layer
 
-`ILayer` has an `Id` property which determines its uniqueness. By default value
-of this property is name of the implementing layer when using `LayerBase` as
-base class. Direct implementations of `ILayer` should provide a value for `Id`
-property.
+`ILayer` has an `Id` property which should be a unique per `Application`
+instance. `LayerBase` sets the `Id` as name of the concrete class e.g.,
+`LayerX` at above example.
 
 You can override its value in layer implementation class as shown below;
 
@@ -72,10 +71,6 @@ public class LayerX : LayerBase
     ...
 }
 ```
-
-> :warning:
->
-> Adding multiple layers with same id gives an error.
 
 ## Adding Phases
 

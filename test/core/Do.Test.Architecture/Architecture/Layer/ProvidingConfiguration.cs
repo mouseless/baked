@@ -8,16 +8,6 @@ namespace Do.Test.Architecture.Layer;
 
 public class ProvidingConfiguration : ArchitectureSpec
 {
-    public class Layer : LayerBase { }
-
-    [Test]
-    public void Layer_id_is_its_name()
-    {
-        ILayer layer = new Layer();
-
-        layer.Id.ShouldBe("Layer");
-    }
-
     public record LayerXConfigurationA();
 
     public class LayerX : LayerBase<DoA>
