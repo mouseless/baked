@@ -6,8 +6,7 @@ public sealed class Feature
 
     class EmptyFeature<T> : IFeature<T>
     {
-        public string Id => GetType().Name;
-
+        public string Id => $"{nameof(EmptyFeature<T>)}<{typeof(T).Name}>";
         public void Configure(LayerConfigurator configurator) { }
     }
 }

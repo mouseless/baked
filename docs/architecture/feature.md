@@ -20,53 +20,77 @@ implementing a new feature;
 ### Implementation
 
 1. Place all implementation classes under their own folder in the abstraction
-   folder, e.g., `Greeting/HelloWorld/`, `Greeting/WelcomePage/`.
+   folder, e.g., `Greeting/WelcomePage/`.
 1. Provide an extension method with the implementation name to allow adding
-   that implementation, e.g., `HelloWorld()`, `WelcomePage()`.
+   that implementation, e.g., `WelcomePage()`.
    1. This method should be in an extension class under `Do` namespace, e.g.,
-      `Greeting/HelloWorld/HelloWorldGreetingExtensions.cs`,
       `Greeting/WelcomePage/WelcomePageGreetingExtensions.cs`.
 1. Name feature class after implementation name with abstraction name as a
-   suffix, e.g., `HelloWorldGreetingFeature`, `WelcomePageGreetingFeature`.
+   suffix, e.g., `WelcomePageGreetingFeature`.
 1. Features depend on other features through their abstraction parts. Direct
    dependency between feature implementations is forbidden.
 1. To create a configuration overrider, add an extension and feature class
-   under its folder, e.g., `ConfigurationOverriderExtensions.cs` and
-   `ConfigurationOverriderFeature.cs`.
+   directly under the feature folder, e.g.,
+   `ConfigurationOverrider/ConfigurationOverriderExtensions.cs` and
+   `ConfigurationOverrider/ConfigurationOverriderFeature.cs`.
     1. Unlike regular features, provide `AddConfigurationOverrider()` extension
        method directly to allow `app.Features.AddConfigurationOverrider()`
        usage.
     1. Implement `IFeature` in `ConfigurationOverriderFeature` where you add
        all your configuration overrides.
-1. To give an `Id` to your feature, implement `IFeature.Id` with a unique id.
 
 Please refer to existing features in [github.com/mouseless/do][] for examples.
 
 ## Creating A Feature
 
-When creating a feature, you should first pay attention to the conventions. If
-you have added a configurator, the feature should use `IFeature<T>` (which is
-derived from `IFeature`) instead of `IFeature`. Here `T` is your configurator.
+To create a feature implementation, create a class using above conventions and
+implement `IFeature<TConfigurator>` where `TConfigurator` is the configurator
+class of your feature abstraction.
 
-> :information_source:
->
-> The following feature code examples will be explained through `IFeature<T>`.
+`WelcomePageGreetingFeature.cs`
+```csharp
+public class WelcomePageGreetingFeature : IFeature<GreetingConfigurator>
+{
+    public void Configure(LayerConfigurator configurator)
+    {
+        ...
+    }
+}
+```
 
-### Override Feature Id
+### `Id` of a Feature
 
-`IFeature` has an `Id` property and default value is name of the implementing
-feature. You can give your feature `Id` by implementing `IFeature.Id`.
+`IFeature` has an `Id` property which determines uniqueness of features.
+By default, value of this property is name of the implementing feature.
+
+You can override its value by implementing `IFeature.Id` property in feature
+implementation class as shown below;
 
 ```csharp
 public class WelcomePageGreetingFeature : IFeature<GreetingConfigurator>
 {
-    public string Id => GetType().Name;
+    public string Id => "CustomFeatureId";
     ...
 }
 ```
 
-`Id` determines uniqueness of features. Adding the same feature multiple times
-is not allowed. You can refer to conventions when giving `Id` to your features.
+> :warning:
+>
+> Adding multiple features with the same id gives an error.
+
+### Disabling a Feature
+
+To allow a feature to be disabled, you can provide a `Disable` method in your
+configurator which returns `Feature.Empty<TConfigurator>()`.
+
+`GreetingConfigurator.cs`
+```csharp
+public class GreetingConfigurator
+{
+    public IFeature<GreetingConfigurator> Disabled() =>
+        Feature.Empty<GreetingConfigurator>();
+}
+```
 
 ## Configuring Layers
 
@@ -78,7 +102,6 @@ the given configurator, a feature accesses configuration targets of layers.
 ```csharp
 public class WelcomePageGreetingFeature : IFeature<GreetingConfigurator>
 {
-    ...
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureMiddlewareCollection(middlewares =>
@@ -127,8 +150,6 @@ public class WelcomePageGreetingFeature : IFeature<GreetingConfigurator>
 
     public WelcomePageGreetingFeature(string path) => _path = path;
 
-    public string Id => GetType().Name;
-
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureApplicationBuilder(app =>
@@ -147,21 +168,6 @@ public static class WelcomePageGreetingExtensions
         this GreetingConfigurator source,
         string? path = default
     ) => new(path ?? "/");
-}
-```
-
-### Disabling a Feature
-
-To allow a feature to be disabled, you can return `Feature.Empty<T>()` by
-writing a `Disable` method in your configurator. Here `T` is your
-configurator class.
-
-`GreetingConfigurator.cs`
-```csharp
-public class GreetingConfigurator
-{
-    public IFeature<GreetingConfigurator> Disabled() =>
-        Feature.Empty<GreetingConfigurator>();
 }
 ```
 

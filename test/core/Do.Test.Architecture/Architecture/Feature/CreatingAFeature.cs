@@ -4,33 +4,75 @@ namespace Do.Test.Architecture.Feature;
 
 public class CreatingAFeature : ArchitectureSpec
 {
-    public class FeatureConfigurator { }
+    public class FeatureAConfigurator { }
 
-    public class Feature : IFeature<FeatureConfigurator>
+    public class FeatureA : IFeature<FeatureAConfigurator>
     {
         public void Configure(LayerConfigurator configurator) { }
     }
-
-    public class FeatureOverriddenId : IFeature<FeatureConfigurator>
+    
+    [Test]
+    public void A_feature_implementation_is_created_by_implementing_generic_IFeature_interface_using_its_configurator()
     {
-        public string Id => "Test";
+        var feature = new FeatureA();
+        
+        feature.ShouldBeAssignableTo<IFeature<FeatureAConfigurator>>();
+    }
+
+    [Test]
+    public void All_feature_implementations_implements_IFeature_interface_behind_the_scenes()
+    {
+        var feature = new FeatureA();
+
+        feature.ShouldBeAssignableTo<IFeature>();
+    }
+
+    [Test]
+    public void By_default__id_of_a_feature_is_its_class_name()
+    {
+        var feature = new FeatureA() as IFeature<FeatureAConfigurator>;
+
+        feature.Id.ShouldBe(nameof(FeatureA));
+    }
+
+    public class FeatureBConfigurator { }
+
+    public class FeatureB : IFeature<FeatureBConfigurator>
+    {
+        public string Id => "B Feature";
 
         public void Configure(LayerConfigurator configurator) { }
     }
 
     [Test]
-    public void Feature_default_id_is_its_name()
+    public void Feature_id_can_be_overridden_by_implementing_an_Id_property_in_feature_class()
     {
-        IFeature feature = new Feature();
+        var feature = new FeatureB() as IFeature<FeatureBConfigurator>;
 
-        feature.Id.ShouldBe("Feature");
+        feature.Id.ShouldBe("B Feature");
+    }
+
+    public class FeatureCConfigurator
+    {
+        public IFeature<FeatureCConfigurator> Disabled() => Do.Architecture.Feature.Empty<FeatureCConfigurator>();
     }
 
     [Test]
-    public void Feature_id_can_be_overridden()
+    public void Feature_configurator_can_provide_an_empty_feature_to_allow_a_disabled_option()
     {
-        IFeature feature = new FeatureOverriddenId();
+        var configurator = new FeatureCConfigurator();
 
-        feature.Id.ShouldBe("Test");
+        var feature = configurator.Disabled();
+
+        feature.ShouldBeEquivalentTo(Do.Architecture.Feature.Empty<FeatureCConfigurator>());
+    }
+
+    [Test]
+    public void Empty_feature_ids_are_unique_by_their_configurator_names()
+    {
+        var featureC = Do.Architecture.Feature.Empty<FeatureCConfigurator>();
+        var featureB = Do.Architecture.Feature.Empty<FeatureBConfigurator>();
+
+        featureC.Id.ShouldNotBe(featureB.Id);
     }
 }

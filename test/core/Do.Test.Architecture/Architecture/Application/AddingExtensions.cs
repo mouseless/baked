@@ -105,7 +105,7 @@ public class AddingExtensions : ArchitectureSpec
     public void Adding_the_same_layer_more_than_once_gives_error()
     {
         var forge = GiveMe.AForge();
-        var layer = MockMe.ALayer(id: "Duplicate_Layer");
+        var layer = MockMe.ALayer(id: "DuplicateLayer");
 
         var forgeAction = () => forge.Application(app =>
         {
@@ -114,7 +114,7 @@ public class AddingExtensions : ArchitectureSpec
         });
 
         forgeAction.ShouldThrow<InvalidOperationException>().Message.ShouldBe(
-            $"Cannot add 'Duplicate_Layer', it was already added."
+            $"Cannot add 'DuplicateLayer', it was already added."
         );
     }
 
@@ -122,7 +122,7 @@ public class AddingExtensions : ArchitectureSpec
     public void Adding_the_same_feature_more_than_once_gives_error()
     {
         var forge = GiveMe.AForge();
-        var feature = MockMe.AFeature(id: "Duplicate_Features");
+        var feature = MockMe.AFeature(id: "DuplicateFeature");
 
         var forgeAction = () => forge.Application(app =>
         {
@@ -131,7 +131,7 @@ public class AddingExtensions : ArchitectureSpec
         });
 
         forgeAction.ShouldThrow<InvalidOperationException>().Message.ShouldBe(
-            $"Cannot add 'Duplicate_Features', it was already added."
+            $"Cannot add 'DuplicateFeature', it was already added."
         );
     }
 }

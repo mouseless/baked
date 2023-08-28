@@ -41,9 +41,23 @@ implementing a new layer;
 1. Place phase implementations as nested classes under the layer class
 1. Don't use any suffix for phases and use method-like names, e.g., `Build` and
    `Run`
-1. To give an `Id` to your layer, override `LayerBase.Id` with a unique id.
 
 Please refer to existing layers in [github.com/mouseless/do][] for examples.
+
+## Creating A Layer
+
+`ILayer` has an `Id` property which determines its uniqueness; adding two
+layers with same id gives an error. `LayerBase` sets as the name of the
+implementing class by default. You can override the default `Id`.
+
+```csharp
+public class LayerX : LayerBase
+{
+    ...
+    protected override string Id => "CustomUniqueId"
+    ...
+}
+```
 
 ## Adding Phases
 
@@ -159,22 +173,6 @@ In this example, you see a layer named `LayerX` providing a
 > does not provide a configuration. This means `Application` skips that layer
 > for the phases it doesn't have anything to configure.
 
-`ILayer` has an `Id` property which, `LayerBase` sets as the name of the
-implementing class by default. You can give your layer a custom `Id` by
-overriding `LayerBase.Id`.
-
-```csharp
-public class LayerX : LayerBase
-{
-    ...
-    protected override string Id => "CustomUniqueId"
-    ...
-}
-```
-
-`Id` determines uniqueness of layers. Adding the same layer multiple times is
-not allowed. You can refer to conventions when giving custom `Id` to your
-layers.
 
 ### Using non-generic `LayerBase`
 
