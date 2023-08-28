@@ -16,12 +16,6 @@ Core framework into your application. It provides three phases, as mentioned in
 `IEndpointRouteBuilder` objects as its configuration API. This way, any feature
 has the ability to use a middleware or add routes to the application.
 
-> :bulb:
->
-> You can directly implement provided interfaces `ILayer` and `IPhase`, however
-> we've created some base classes to make it easier for you to create layers
-> and phases. All examples below, demonstrate usage of these base classes.
-
 ## Conventions
 
 For a consistent developer experience, follow below conventions when
@@ -46,18 +40,42 @@ Please refer to existing layers in [github.com/mouseless/do][] for examples.
 
 ## Creating A Layer
 
-`ILayer` has an `Id` property which determines its uniqueness; adding two
-layers with same id gives an error. `LayerBase` sets as the name of the
-implementing class by default. You can override the default `Id`.
+To create a layer, create a class using above conventions and implement
+`LayerBase`.
 
 ```csharp
 public class LayerX : LayerBase
 {
     ...
+}
+```
+
+> :bulb:
+>
+> You can directly implement provided interface `ILayer`, however we've created
+> some base classes to make it easier for you to create layers. All examples
+> demonstrate usage of these base classes.
+
+### `Id` of a Layer
+
+`ILayer` has an `Id` property which determines its uniqueness. By default value
+of this property is name of the implementing layer when using `LayerBase` as
+base class. Direct implementations of `ILayer` should provide a value for `Id`
+property.
+
+You can override its value in layer implementation class as shown below;
+
+```csharp
+public class LayerX : LayerBase
+{
     protected override string Id => "CustomUniqueId"
     ...
 }
 ```
+
+> :warning:
+>
+> Adding multiple layers with same id gives an error.
 
 ## Adding Phases
 
@@ -102,6 +120,12 @@ public class CreateBuilder : PhaseBase
     }
 }
 ```
+
+> :bulb:
+>
+> You can directly implement provided interface `IPhase`, however we've created
+> some base classes to make it easier for you to create phases. All examples
+> demonstrate usage of these base classes.
 
 ### Readiness via Dependencies
 
