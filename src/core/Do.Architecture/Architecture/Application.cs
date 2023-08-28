@@ -29,7 +29,7 @@ public class Application
 
         if (duplicate is not null)
         {
-            throw new InvalidOperationException($"Cannot add `{duplicate}`, it was already added.");
+            throw new InvalidOperationException($"Cannot add '{duplicate}', it was already added.");
         }
     }
 
