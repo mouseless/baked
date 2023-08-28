@@ -192,7 +192,6 @@ In this example, you see a layer named `LayerX` providing a
 > does not provide a configuration. This means `Application` skips that layer
 > for the phases it doesn't have anything to configure.
 
-
 ### Using non-generic `LayerBase`
 
 `LayerBase<>` classes allow up to three generic arguments. If you need to
