@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Do.Documentation.Default;
 
-public class DefaultDocumentationFeature : IFeature
+public class DefaultDocumentationFeature : IFeature<DocumentationConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {

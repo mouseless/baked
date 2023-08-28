@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Builder;
 
 namespace Do.Greeting.Swagger;
 
-public class SwaggerGreetingFeature : IFeature
+public class SwaggerGreetingFeature : IFeature<GreetingConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {

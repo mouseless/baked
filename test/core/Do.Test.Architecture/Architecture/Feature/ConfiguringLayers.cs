@@ -79,19 +79,4 @@ public class ConfiguringLayers : ArchitectureSpec
 
         configured.ShouldBeTrue("should've configured only for the first call");
     }
-
-    public class FeatureAConfigurator
-    {
-        public IFeature Disabled() => Do.Architecture.Feature.Empty;
-    }
-
-    [Test]
-    public void Feature_configurator_can_provide_an_empty_feature_to_allow_a_disable_option()
-    {
-        var configurator = new FeatureAConfigurator();
-
-        var feature = configurator.Disabled();
-
-        feature.ShouldBe(Do.Architecture.Feature.Empty);
-    }
 }

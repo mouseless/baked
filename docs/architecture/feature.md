@@ -12,7 +12,7 @@ implementing a new feature;
 
 1. Place all abstraction classes under a folder named after feature, e.g.,
    `Greeting/`.
-1. Provide a configurator and an extension class for abstraction part, e.g.
+1. Provide a configurator and an extension class for abstraction part, e.g.,
    `Greeting/GreetingConfigurator.cs`, `Greeting/GreetingExtensions.cs`.
 1. Provide an `Add` method to add feature to an application, e.g.,
    `AddGreeting()`.
@@ -20,34 +20,84 @@ implementing a new feature;
 ### Implementation
 
 1. Place all implementation classes under their own folder in the abstraction
-   folder, e.g., `Greeting/HelloWorld/`, `Greeting/WelcomePage/`.
+   folder, e.g., `Greeting/WelcomePage/`.
 1. Provide an extension method with the implementation name to allow adding
-   that implementation, e.g., `HelloWorld()`, `WelcomePage()`.
+   that implementation, e.g., `WelcomePage()`.
    1. This method should be in an extension class under `Do` namespace, e.g.,
-      `Greeting/HelloWorldGreetingExtensions.cs`,
-      `Greeting/WelcomePageGreetingExtensions.cs`.
+      `Greeting/WelcomePage/WelcomePageGreetingExtensions.cs`.
 1. Name feature class after implementation name with abstraction name as a
-   suffix, e.g., `HelloWorldGreetingFeature`, `WelcomePageGreetingFeature`.
+   suffix, e.g., `WelcomePageGreetingFeature`.
 1. Features depend on other features through their abstraction parts. Direct
    dependency between feature implementations is forbidden.
 1. To create a configuration overrider, add an extension and feature class
-   under its folder, e.g., `ConfigurationOverriderExtensions.cs` and
-   `ConfigurationOverriderFeature.cs`.
-    1. Unlike regular features, provide `AddConfigurationOverrider()` extension method
-       directly to allow `app.Features.AddConfigurationOverrider()` usage.
-    1. Implement `IFeature` in `ConfigurationOverriderFeature` where you add all your
-       configuration overrides.
+   directly under the feature folder, e.g.,
+   `ConfigurationOverrider/ConfigurationOverriderExtensions.cs` and
+   `ConfigurationOverrider/ConfigurationOverriderFeature.cs`.
+    1. Unlike regular features, provide `AddConfigurationOverrider()` extension
+       method directly to allow `app.Features.AddConfigurationOverrider()`
+       usage.
+    1. Implement `IFeature` in `ConfigurationOverriderFeature` where you add
+       all your configuration overrides.
 
 Please refer to existing features in [github.com/mouseless/do][] for examples.
 
-## Configuring Layers
+## Creating A Feature
 
-To configure layers, a `LayerCofigurator` instance is passed to `Configure()`
-method of `IFeature` interface. Using extension methods on the given
-configurator, a feature accesses configuration targets of layers.
+To create a feature implementation, create a class using above conventions and
+implement `IFeature<TConfigurator>` where `TConfigurator` is the configurator
+class of your feature abstraction.
+
+`WelcomePageGreetingFeature.cs`
+```csharp
+public class WelcomePageGreetingFeature : IFeature<GreetingConfigurator>
+{
+    public void Configure(LayerConfigurator configurator)
+    {
+        ...
+    }
+}
+```
+
+### `Id` of a Feature
+
+`IFeature` has an `Id` property which should be unique per `Application`
+instance. By default, value of this property is name of the implementing
+feature.
+
+You can override its value by implementing `IFeature.Id` property in feature
+implementation class as shown below;
 
 ```csharp
-public class WelcomePageGreetingFeature : IFeature
+public class WelcomePageGreetingFeature : IFeature<GreetingConfigurator>
+{
+    public string Id => "CustomFeatureId";
+    ...
+}
+```
+
+### Disabling a Feature
+
+To allow a feature to be disabled, you can provide a `Disable` method in your
+configurator which returns `Feature.Empty<TConfigurator>()`.
+
+`GreetingConfigurator.cs`
+```csharp
+public class GreetingConfigurator
+{
+    public IFeature<GreetingConfigurator> Disabled() =>
+        Feature.Empty<GreetingConfigurator>();
+}
+```
+
+## Configuring Layers
+
+To configure layers, a `LayerCofigurator` instance is passed to the
+`Configure()` method of the `IFeature` interface. Using extension methods on
+the given configurator, a feature accesses configuration targets of layers.
+
+`WelcomePageGreetingFeature.cs`
+```csharp
+public class WelcomePageGreetingFeature : IFeature<GreetingConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
@@ -91,7 +141,7 @@ below;
 
 `WelcomePageGreetingFeature.cs`
 ```csharp
-public class WelcomePageGreetingFeature : IFeature
+public class WelcomePageGreetingFeature : IFeature<GreetingConfigurator>
 {
     readonly string _path;
 
@@ -115,19 +165,6 @@ public static class WelcomePageGreetingExtensions
         this GreetingConfigurator source,
         string? path = default
     ) => new(path ?? "/");
-}
-```
-
-### Disabling a Feature
-
-To allow disabling a feature, provide a `Disabled()` method which returns an
-empty feature.
-
-`GreetingConfigurator.cs`
-```csharp
-public class GreetingConfigurator
-{
-    public IFeature Disabled() => Feature.Empty;
 }
 ```
 

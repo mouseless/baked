@@ -5,16 +5,16 @@ namespace Do;
 
 public static class EnvironmentExtensions
 {
-    public static IFeature ForDevelopment(this IFeature @default, IFeature featureOnDevelopment) =>
+    public static IFeature<TConfigurator> ForDevelopment<TConfigurator>(this IFeature<TConfigurator> @default, IFeature<TConfigurator> featureOnDevelopment) =>
         @default.For(Environments.Development, featureOnDevelopment);
 
-    public static IFeature ForStaging(this IFeature @default, IFeature featureOnStaging) =>
+    public static IFeature<TConfigurator> ForStaging<TConfigurator>(this IFeature<TConfigurator> @default, IFeature<TConfigurator> featureOnStaging) =>
         @default.For(Environments.Staging, featureOnStaging);
 
-    public static IFeature ForProduction(this IFeature @default, IFeature featureOnProduction) =>
+    public static IFeature<TConfigurator> ForProduction<TConfigurator>(this IFeature<TConfigurator> @default, IFeature<TConfigurator> featureOnProduction) =>
         @default.For(Environments.Production, featureOnProduction);
 
-    public static IFeature For(this IFeature @default, string environment, IFeature featureOnEnvironment)
+    public static IFeature<TConfigurator> For<TConfigurator>(this IFeature<TConfigurator> @default, string environment, IFeature<TConfigurator> featureOnEnvironment)
     {
         if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == environment)
         {

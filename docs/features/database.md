@@ -1,6 +1,6 @@
 # Database
 
-This feature provides a database setup to be used both in development and 
+This feature provides a database setup to be used both in development and
 production setups.
 
 Add this feature using `AddDatabase()` extension;
@@ -19,7 +19,7 @@ c => c.InMemory()
 
 ## Sqlite
 
-Adds local Sqlite database setup which creates local sqlite database in 
+Adds local Sqlite database setup which creates local sqlite database in
 documents folder with given name.
 
 ```csharp

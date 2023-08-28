@@ -2,7 +2,7 @@ using Do.Architecture;
 
 namespace Do.Core.Mock;
 
-public class MockCoreFeature : IFeature
+public class MockCoreFeature : IFeature<CoreConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {

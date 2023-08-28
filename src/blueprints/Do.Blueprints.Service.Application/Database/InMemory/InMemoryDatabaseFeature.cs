@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Do.Database.InMemory;
 
-public class InMemoryDatabaseFeature : IFeature
+public class InMemoryDatabaseFeature : IFeature<DatabaseConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {

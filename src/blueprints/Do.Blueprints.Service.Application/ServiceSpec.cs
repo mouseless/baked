@@ -21,12 +21,12 @@ public abstract class ServiceSpec : Spec
     internal static IServiceProvider ServiceProvider => _serviceProvider;
 
     protected static ApplicationContext Init(
-        Func<BusinessConfigurator, IFeature> business,
-        Func<CoreConfigurator, IFeature>? core = default,
-        Func<DatabaseConfigurator, IFeature>? database = default,
-        Func<ExceptionHandlingConfigurator, IFeature>? exceptionHandling = default,
-        Func<MockOverriderConfigurator, IFeature>? mockOverrider = default,
-        Func<OrmConfigurator, IFeature>? orm = default,
+        Func<BusinessConfigurator, IFeature<BusinessConfigurator>> business,
+        Func<CoreConfigurator, IFeature<CoreConfigurator>>? core = default,
+        Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>>? database = default,
+        Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>>? exceptionHandling = default,
+        Func<MockOverriderConfigurator, IFeature<MockOverriderConfigurator>>? mockOverrider = default,
+        Func<OrmConfigurator, IFeature<OrmConfigurator>>? orm = default,
         Action<ApplicationDescriptor>? configure = default
     )
     {

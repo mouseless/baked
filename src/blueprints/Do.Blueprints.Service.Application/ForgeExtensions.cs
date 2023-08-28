@@ -13,14 +13,14 @@ namespace Do;
 public static class ForgeExtensions
 {
     public static Application Service(this Forge source,
-        Func<BusinessConfigurator, IFeature> business,
-        Func<CoreConfigurator, IFeature>? core = default,
-        Func<DatabaseConfigurator, IFeature>? database = default,
-        Func<DocumentationConfigurator, IFeature>? documentation = default,
-        Func<ExceptionHandlingConfigurator, IFeature>? exceptionHandling = default,
-        Func<GreetingConfigurator, IFeature>? greeting = default,
-        Func<LoggingConfigurator, IFeature>? logging = default,
-        Func<OrmConfigurator, IFeature>? orm = default,
+        Func<BusinessConfigurator, IFeature<BusinessConfigurator>> business,
+        Func<CoreConfigurator, IFeature<CoreConfigurator>>? core = default,
+        Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>>? database = default,
+        Func<DocumentationConfigurator, IFeature<DocumentationConfigurator>>? documentation = default,
+        Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>>? exceptionHandling = default,
+        Func<GreetingConfigurator, IFeature<GreetingConfigurator>>? greeting = default,
+        Func<LoggingConfigurator, IFeature<LoggingConfigurator>>? logging = default,
+        Func<OrmConfigurator, IFeature<OrmConfigurator>>? orm = default,
         Action<ApplicationDescriptor>? configure = default
     )
     {

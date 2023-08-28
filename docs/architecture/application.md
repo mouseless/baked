@@ -52,6 +52,10 @@ app.Layers.AddHttpServer();
 app.Layers.AddDataAccess();
 ```
 
+> :information_source:
+>
+> A layer can only be added once.
+
 To configure a layer, you need to add a feature mentioned in the next section.
 
 ### Features
@@ -64,11 +68,15 @@ app.Features.AddGreeting(c => c.WelcomePage());
 app.Features.AddDatabase(c => c.MySql());
 ```
 
+> :information_source:
+>
+> A feature can only be added once.
+
 An implementation may ask for additional options within its configurator
 method;
 
 ```csharp
-app.Features.AddDatabase(c => c.MySql(autoUpdateSchema: true)
+app.Features.AddDatabase(c => c.MySql(autoUpdateSchema: true));
 ```
 
 #### Overriding A Configuration
@@ -120,7 +128,7 @@ to/from the context, such as `IServiceCollection`, `IMiddlewareCollection`,
 
 > :warning:
 >
-> When trying to get a certain object from `ApplicationContext`, exact type 
+> When trying to get a certain object from `ApplicationContext`, exact type
 > should be given. Using any other type that extends or implements the target
 > object will result in an unsuccessful `Get` operation. For example, trying to
 > `Get` a `WebApplication` using `IApplicationBuilder` type will be unsuccessful.

@@ -2,10 +2,11 @@ namespace Do.Architecture;
 
 public sealed class Feature
 {
-    public static readonly IFeature Empty = new EmptyFeature();
+    public static IFeature<T> Empty<T>() => new EmptyFeature<T>();
 
-    class EmptyFeature : IFeature
+    class EmptyFeature<T> : IFeature<T>
     {
+        public string Id => $"{nameof(EmptyFeature<T>)}<{typeof(T).Name}>";
         public void Configure(LayerConfigurator configurator) { }
     }
 }

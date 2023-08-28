@@ -96,6 +96,7 @@ public static class ArchitectureSpecExtensions
     #region Layer
 
     public static ILayer ALayer(this Mocker mockMe,
+        string? id = default,
         object? target = default,
         object[]? targets = default,
         PhaseContext? phaseContext = default,
@@ -108,8 +109,8 @@ public static class ArchitectureSpecExtensions
         phases ??= new[] { phase ?? mockMe.APhase() };
 
         var result = new Mock<ILayer>();
-
         result.Setup(l => l.GetPhases()).Returns(phases);
+        result.Setup(l => l.Id).Returns(id ?? $"{Guid.NewGuid()}");
 
         var setupGetContext = result
             .Setup(l => l.GetContext(It.IsAny<IPhase>(), It.IsAny<ApplicationContext>()))
@@ -275,8 +276,15 @@ public static class ArchitectureSpecExtensions
 
     #region Feature
 
-    public static IFeature AFeature(this Mocker _) =>
-        new Mock<IFeature>().Object;
+    public static IFeature AFeature(this Mocker _,
+        string? id = default
+    )
+    {
+        var result = new Mock<IFeature>();
+        result.Setup(l => l.Id).Returns(id ?? $"{Guid.NewGuid()}");
+
+        return result.Object;
+    }
 
     public static void VerifyInitialized(this IFeature source) =>
         Mock.Get(source).Verify(f => f.Configure(It.IsAny<LayerConfigurator>()));

@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Do.Logging.Request;
 
-public class RequestLoggingFeature : IFeature
+public class RequestLoggingFeature : IFeature<LoggingConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
