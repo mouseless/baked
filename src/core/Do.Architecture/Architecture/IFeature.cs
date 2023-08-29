@@ -2,9 +2,9 @@ namespace Do.Architecture;
 
 public interface IFeature
 {
-    void Configure(LayerConfigurator configurator);
-
     public string Id => GetType().Name;
+
+    void Configure(LayerConfigurator configurator);
 }
 
 public interface IFeature<T> : IFeature { }

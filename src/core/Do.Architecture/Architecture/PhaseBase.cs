@@ -8,10 +8,10 @@ public abstract class PhaseBase : IPhase
 
     protected virtual ApplicationContext Context { get; private set; } = default!;
 
+    PhaseOrder IPhase.Order => _order;
+
     protected virtual bool IsReady() => true;
     protected virtual void Initialize() { }
-
-    PhaseOrder IPhase.Order => _order;
 
     bool IPhase.IsReady(ApplicationContext context)
     {
@@ -30,7 +30,8 @@ public abstract class PhaseBase : IPhase
 
 public abstract class PhaseBase<T> : PhaseBase
 {
-    protected PhaseBase(PhaseOrder order = PhaseOrder.Normal) : base(order: order) { }
+    protected PhaseBase(PhaseOrder order = PhaseOrder.Normal)
+        : base(order: order) { }
 
     protected override sealed bool IsReady() => Context.Has<T>();
     protected override sealed void Initialize() => Initialize(Context.Get<T>());
@@ -40,7 +41,8 @@ public abstract class PhaseBase<T> : PhaseBase
 
 public abstract class PhaseBase<T1, T2> : PhaseBase
 {
-    protected PhaseBase(PhaseOrder order = PhaseOrder.Normal) : base(order: order) { }
+    protected PhaseBase(PhaseOrder order = PhaseOrder.Normal)
+        : base(order: order) { }
 
     protected override sealed bool IsReady() => Context.Has<T1>() && Context.Has<T2>();
     protected override sealed void Initialize() => Initialize(Context.Get<T1>(), Context.Get<T2>());
@@ -50,7 +52,8 @@ public abstract class PhaseBase<T1, T2> : PhaseBase
 
 public abstract class PhaseBase<T1, T2, T3> : PhaseBase
 {
-    protected PhaseBase(PhaseOrder order = PhaseOrder.Normal) : base(order: order) { }
+    protected PhaseBase(PhaseOrder order = PhaseOrder.Normal)
+        : base(order: order) { }
 
     protected override sealed bool IsReady() => Context.Has<T1>() && Context.Has<T2>() && Context.Has<T3>();
     protected override sealed void Initialize() => Initialize(Context.Get<T1>(), Context.Get<T2>(), Context.Get<T3>());

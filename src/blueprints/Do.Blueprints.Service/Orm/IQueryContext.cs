@@ -13,39 +13,45 @@ public interface IQueryContext<TEntity>
     public TEntity? FirstBy(Expression<Func<TEntity, bool>> where) =>
         Query(where).FirstOrDefault();
 
-    public TEntity? FirstBy<TOrderBy>(Expression<Func<TEntity, bool>> where,
+    public TEntity? FirstBy<TOrderBy>(
+        Expression<Func<TEntity, bool>> where,
         Expression<Func<TEntity, TOrderBy>>? orderBy = default,
         Expression<Func<TEntity, TOrderBy>>? orderByDescending = default
-    ) => Query(where,
+    ) => Query(
+            where,
             orderBy: orderBy,
             orderByDescending: orderByDescending
-        ).FirstOrDefault();
+         ).FirstOrDefault();
 
     public List<TEntity> By(Expression<Func<TEntity, bool>> where) =>
         Query(where).ToList();
 
-    public List<TEntity> By<TOrderBy>(Expression<Func<TEntity, bool>> where,
+    public List<TEntity> By<TOrderBy>(
+        Expression<Func<TEntity, bool>> where,
         Expression<Func<TEntity, TOrderBy>>? orderBy = default,
         Expression<Func<TEntity, TOrderBy>>? orderByDescending = default
-    ) => Query(where,
+    ) => Query(
+            where,
             orderBy: orderBy,
             orderByDescending: orderByDescending
-        ).ToList();
+         ).ToList();
 
     public List<TEntity> All() => Query().ToList();
 
     public List<TEntity> All<TOrderBy>(
         Expression<Func<TEntity, TOrderBy>>? orderBy = default,
         Expression<Func<TEntity, TOrderBy>>? orderByDescending = default
-    ) => Query(t => true,
+    ) => Query(
+            t => true,
             orderBy: orderBy,
             orderByDescending: orderByDescending
-        ).ToList();
+         ).ToList();
 
     IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> where) =>
         Query().Where(where);
 
-    IQueryable<TEntity> Query<TOrderBy>(Expression<Func<TEntity, bool>> where,
+    IQueryable<TEntity> Query<TOrderBy>(
+        Expression<Func<TEntity, bool>> where,
         Expression<Func<TEntity, TOrderBy>>? orderBy = default,
         Expression<Func<TEntity, TOrderBy>>? orderByDescending = default
     )

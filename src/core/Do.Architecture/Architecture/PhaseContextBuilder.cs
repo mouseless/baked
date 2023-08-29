@@ -32,7 +32,12 @@ public class PhaseContextBuilder
         return this;
     }
 
-    public PhaseContextBuilder OnDispose(Action? onDispose) { _onDispose = onDispose; return this; }
+    public PhaseContextBuilder OnDispose(Action? onDispose)
+    {
+        _onDispose = onDispose;
+
+        return this;
+    }
 
     public PhaseContext Build() => new(_configurators) { OnDispose = _onDispose };
 }

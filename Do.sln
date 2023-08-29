@@ -7,33 +7,30 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2F297832-93E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "blueprints", "blueprints", "{CDC3A00A-52BD-4CDA-B7D7-1FCFC5DD1CEE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Do.Blueprints.Service.Application", "src\blueprints\Do.Blueprints.Service.Application\Do.Blueprints.Service.Application.csproj", "{AAF123F9-BEAB-42D0-84AD-DFBD6CE7A9A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Do.Blueprints.Service.Application", "src\blueprints\Do.Blueprints.Service.Application\Do.Blueprints.Service.Application.csproj", "{AAF123F9-BEAB-42D0-84AD-DFBD6CE7A9A9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{C407EF64-970A-498F-989D-17BBEF83B36F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "blueprints", "blueprints", "{F1F041D0-E073-455C-96F9-233FDF5CC2A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Do.Test.Blueprints.Service.Application", "test\blueprints\Do.Test.Blueprints.Service.Application\Do.Test.Blueprints.Service.Application.csproj", "{F8B3EFE9-7BC4-48C3-98D8-97500A2486C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Do.Test.Blueprints.Service.Application", "test\blueprints\Do.Test.Blueprints.Service.Application\Do.Test.Blueprints.Service.Application.csproj", "{F8B3EFE9-7BC4-48C3-98D8-97500A2486C6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{FC5EA7BE-2E36-4CC7-8CE0-DD8D69F8CF85}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Do.Architecture", "src\core\Do.Architecture\Do.Architecture.csproj", "{D24161F5-5B89-4EE5-94D3-660E9BC94CFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Do.Architecture", "src\core\Do.Architecture\Do.Architecture.csproj", "{D24161F5-5B89-4EE5-94D3-660E9BC94CFA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{BE392BCA-BDD7-43F6-BF11-9AC259F82CE6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Do.Test.Architecture", "test\core\Do.Test.Architecture\Do.Test.Architecture.csproj", "{45D92BDD-5EA8-4B6C-A6F0-38C9DE139A32}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Do.Test.Architecture", "test\core\Do.Test.Architecture\Do.Test.Architecture.csproj", "{45D92BDD-5EA8-4B6C-A6F0-38C9DE139A32}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Do.Blueprints.Service", "src\blueprints\Do.Blueprints.Service\Do.Blueprints.Service.csproj", "{68CBB995-C501-41BB-93B4-01A0CC618A89}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Do.Blueprints.Service", "src\blueprints\Do.Blueprints.Service\Do.Blueprints.Service.csproj", "{68CBB995-C501-41BB-93B4-01A0CC618A89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Do.Test.Blueprints.Service", "test\blueprints\Do.Test.Blueprints.Service\Do.Test.Blueprints.Service.csproj", "{063A65CC-F465-4E53-816E-048E05BC3F75}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Do.Test.Blueprints.Service", "test\blueprints\Do.Test.Blueprints.Service\Do.Test.Blueprints.Service.csproj", "{063A65CC-F465-4E53-816E-048E05BC3F75}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{AAF123F9-BEAB-42D0-84AD-DFBD6CE7A9A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -61,6 +58,9 @@ Global
 		{063A65CC-F465-4E53-816E-048E05BC3F75}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{063A65CC-F465-4E53-816E-048E05BC3F75}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{CDC3A00A-52BD-4CDA-B7D7-1FCFC5DD1CEE} = {2F297832-93E6-4750-9141-818873A769F6}
 		{AAF123F9-BEAB-42D0-84AD-DFBD6CE7A9A9} = {CDC3A00A-52BD-4CDA-B7D7-1FCFC5DD1CEE}
@@ -72,5 +72,8 @@ Global
 		{45D92BDD-5EA8-4B6C-A6F0-38C9DE139A32} = {BE392BCA-BDD7-43F6-BF11-9AC259F82CE6}
 		{68CBB995-C501-41BB-93B4-01A0CC618A89} = {CDC3A00A-52BD-4CDA-B7D7-1FCFC5DD1CEE}
 		{063A65CC-F465-4E53-816E-048E05BC3F75} = {F1F041D0-E073-455C-96F9-233FDF5CC2A8}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F41E6823-793F-4036-A795-DB6105039AEC}
 	EndGlobalSection
 EndGlobal
