@@ -16,10 +16,6 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
-  <PropertyGroup>
-    <CodeAnalysisRuleSet>../../../stylecop.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="FluentNHibernate" Version="3.2.1" />
     <PackageReference Include="MySql.Data" Version="8.1.0" />
@@ -27,10 +23,6 @@
     <PackageReference Include="NHibernate" Version="5.4.4" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.118" />
-    <PackageReference Include="StyleCop.Analyzers.Unstable" Version="1.2.0.507">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
