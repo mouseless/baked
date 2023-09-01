@@ -10,10 +10,11 @@ public static class TestingExtensions
     public static IServiceProvider GetServiceProvider(this ApplicationContext source) => source.Get<IServiceProvider>();
     public static void ConfigureTestConfiguration(this LayerConfigurator source, Action<TestConfiguration> configuration) => source.Configure(configuration);
 
-    public static void Add<T>(this IMockCollection source, bool singleton = false, Action<Mock<T>>? setup = default) where T : class =>
-        source.Add(new(
-            Type: typeof(T),
-            Singleton: singleton,
-            Setup: setup == default ? default : obj => setup((Mock<T>)obj)
-        ));
+    public static void Add<T>(this IMockCollection source, bool singleton = false, Action<Mock<T>>? setup = default)
+        where T : class =>
+            source.Add(new(
+                Type: typeof(T),
+                Singleton: singleton,
+                Setup: setup == default ? default : obj => setup((Mock<T>)obj)
+            ));
 }

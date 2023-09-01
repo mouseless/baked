@@ -1,5 +1,5 @@
-using Microsoft.Extensions.Configuration;
 using Do.Configuration;
+using Microsoft.Extensions.Configuration;
 
 namespace Do;
 
