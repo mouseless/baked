@@ -4,11 +4,11 @@ public class Application
 {
     readonly ApplicationContext _context;
 
+    public Application(ApplicationContext context) => _context = context;
+
     readonly List<ILayer> _layers = new();
     readonly List<IFeature> _features = new();
     readonly List<IPhase> _phases = new();
-
-    public Application(ApplicationContext context) => _context = context;
 
     internal Application With(ApplicationDescriptor descriptor)
     {
