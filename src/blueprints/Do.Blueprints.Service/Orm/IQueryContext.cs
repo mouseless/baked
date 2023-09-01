@@ -16,8 +16,7 @@ public interface IQueryContext<TEntity>
     public TEntity? FirstBy<TOrderBy>(Expression<Func<TEntity, bool>> where,
         Expression<Func<TEntity, TOrderBy>>? orderBy = default,
         Expression<Func<TEntity, TOrderBy>>? orderByDescending = default
-    ) => Query(
-            where,
+    ) => Query(where,
             orderBy: orderBy,
             orderByDescending: orderByDescending
          ).FirstOrDefault();
@@ -28,8 +27,7 @@ public interface IQueryContext<TEntity>
     public List<TEntity> By<TOrderBy>(Expression<Func<TEntity, bool>> where,
         Expression<Func<TEntity, TOrderBy>>? orderBy = default,
         Expression<Func<TEntity, TOrderBy>>? orderByDescending = default
-    ) => Query(
-            where,
+    ) => Query(where,
             orderBy: orderBy,
             orderByDescending: orderByDescending
          ).ToList();
@@ -39,8 +37,7 @@ public interface IQueryContext<TEntity>
     public List<TEntity> All<TOrderBy>(
         Expression<Func<TEntity, TOrderBy>>? orderBy = default,
         Expression<Func<TEntity, TOrderBy>>? orderByDescending = default
-    ) => Query(
-            t => true,
+    ) => Query(t => true,
             orderBy: orderBy,
             orderByDescending: orderByDescending
          ).ToList();
