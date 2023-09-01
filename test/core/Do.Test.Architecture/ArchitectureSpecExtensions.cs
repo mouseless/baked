@@ -47,8 +47,7 @@ public static class ArchitectureSpecExtensions
     #region ApplicationContext
 
     public static ApplicationContext AnApplicationContext(this Stubber _) => new();
-    public static ApplicationContext AnApplicationContext<T>(this Stubber giveMe, T content)
-        where T : notnull
+    public static ApplicationContext AnApplicationContext<T>(this Stubber giveMe, T content) where T : notnull
     {
         var result = giveMe.AnApplicationContext();
 
@@ -142,8 +141,7 @@ public static class ArchitectureSpecExtensions
 
     public static LayerConfigurator ALayerConfigurator<TTarget>(this Stubber giveMe,
         TTarget? configuration = default
-    )
-        where TTarget : notnull
+    ) where TTarget : notnull
     {
         configuration ??= giveMe.AnInstanceOf<TTarget>();
 
@@ -292,9 +290,8 @@ public static class ArchitectureSpecExtensions
     public static void VerifyInitialized(this IFeature source) =>
         Mock.Get(source).Verify(f => f.Configure(It.IsAny<LayerConfigurator>()));
 
-    public static void VerifyConfigures<TTarget>(this IFeature source, TTarget target)
-        where TTarget : notnull =>
-            Mock.Get(source).Verify(f => f.Configure(LayerConfigurator.Create(target)));
+    public static void VerifyConfigures<TTarget>(this IFeature source, TTarget target) where TTarget : notnull =>
+        Mock.Get(source).Verify(f => f.Configure(LayerConfigurator.Create(target)));
 
     public static void VerifyConfiguresNothing(this IFeature source) =>
         Mock.Get(source).Verify(f => f.Configure(It.IsAny<LayerConfigurator>()), Times.Never());

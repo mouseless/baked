@@ -11,20 +11,16 @@ public static class ServiceSpecExtensions
 {
     #region MockOverrider
 
-    public static T The<T>(this Stubber _, params object?[] mockOverrides)
-        where T : notnull =>
-            ServiceSpec.ServiceProvider.OverrideMocksAndGetRequiredService<T>(mockOverrides);
+    public static T The<T>(this Stubber _, params object?[] mockOverrides) where T : notnull =>
+        ServiceSpec.ServiceProvider.OverrideMocksAndGetRequiredService<T>(mockOverrides);
 
-    public static T An<T>(this Stubber _, params object?[] mockOverrides)
-        where T : notnull =>
-            ServiceSpec.ServiceProvider.OverrideMocksAndGetRequiredService<T>(mockOverrides);
+    public static T An<T>(this Stubber _, params object?[] mockOverrides) where T : notnull =>
+        ServiceSpec.ServiceProvider.OverrideMocksAndGetRequiredService<T>(mockOverrides);
 
-    public static T A<T>(this Stubber _, params object?[] mockOverrides)
-        where T : notnull =>
-            ServiceSpec.ServiceProvider.OverrideMocksAndGetRequiredService<T>(mockOverrides);
+    public static T A<T>(this Stubber _, params object?[] mockOverrides) where T : notnull =>
+        ServiceSpec.ServiceProvider.OverrideMocksAndGetRequiredService<T>(mockOverrides);
 
-    static T OverrideMocksAndGetRequiredService<T>(this IServiceProvider serviceProvider, params object?[] mockOverrides)
-        where T : notnull
+    static T OverrideMocksAndGetRequiredService<T>(this IServiceProvider serviceProvider, params object?[] mockOverrides) where T : notnull
     {
         var overrider = serviceProvider.GetRequiredService<IMockOverrider>();
 

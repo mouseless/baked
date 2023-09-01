@@ -8,8 +8,7 @@ public static class BusinessExtensions
 {
     public static void AddBusiness(this List<IFeature> source, Func<BusinessConfigurator, IFeature<BusinessConfigurator>> configure) => source.Add(configure(new()));
 
-    public static void AddTransientWithFactory<T>(this IServiceCollection source)
-        where T : class
+    public static void AddTransientWithFactory<T>(this IServiceCollection source) where T : class
     {
         source.AddSingleton<Func<T>>(sp => () => sp.GetRequiredServiceUsingRequestServices<T>());
         source.AddTransient<T>();
