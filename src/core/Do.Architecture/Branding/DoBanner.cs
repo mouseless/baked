@@ -1,6 +1,5 @@
 ﻿namespace Do.Branding;
 
-[System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1107:Code should not contain multiple statements on one line", Justification = "<Pending>")]
 public sealed class DoBanner : IBanner
 {
     public void Print()
@@ -16,11 +15,11 @@ public sealed class DoBanner : IBanner
 
         L("----------------------------------------------", border);
         L();
-        W("  "); W("██", brand); L("        ████████    ██████████", white);
-        W("    "); W("██", brand); L("      ██      ██  ██      ██", white);
-        W("      "); W("██", brand); L("    ██      ██  ██      ██", white);
-        W("    "); W("██", brand); L("      ██      ██  ██      ██", white);
-        W("  "); W("██", brand); W("        ████████    ██████████  ", white); L("██████████", brand);
+        W("  ").W("██", brand).L("        ████████    ██████████", white);
+        W("    ").W("██", brand).L("      ██      ██  ██      ██", white);
+        W("      ").W("██", brand).L("    ██      ██  ██      ██", white);
+        W("    ").W("██", brand).L("      ██      ██  ██      ██", white);
+        W("  ").W("██", brand).W("        ████████    ██████████  ", white).L("██████████", brand);
         L();
         L("------------------- v$VER$ -------------------".Replace("$VER$", ver), border);
         L();
@@ -30,8 +29,8 @@ public sealed class DoBanner : IBanner
         L("----------------------------------------------", border);
     }
 
-    static void L(string? message = default, ConsoleColor? color = default) => W($"{message ?? string.Empty}{Environment.NewLine}", color);
-    static void W(string message, ConsoleColor? color = default)
+    DoBanner L(string? message = default, ConsoleColor? color = default) => W($"{message ?? string.Empty}{Environment.NewLine}", color);
+    DoBanner W(string message, ConsoleColor? color = default)
     {
         color ??= Console.ForegroundColor;
 
@@ -41,5 +40,7 @@ public sealed class DoBanner : IBanner
         Console.Write(message);
 
         Console.ForegroundColor = old;
+
+        return this;
     }
 }
