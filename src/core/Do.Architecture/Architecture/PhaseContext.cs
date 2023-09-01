@@ -2,14 +2,12 @@ namespace Do.Architecture;
 
 public class PhaseContext : IDisposable
 {
-    static readonly PhaseContext _empty = new(Enumerable.Empty<LayerConfigurator>());
-
-    public PhaseContext(IEnumerable<LayerConfigurator> configurators) => Configurators = new List<LayerConfigurator>(configurators);
+    public static PhaseContext Empty => new(Enumerable.Empty<LayerConfigurator>());
 
     public IEnumerable<LayerConfigurator> Configurators { get; }
     public Action? OnDispose { get; init; }
 
-    public static PhaseContext Empty => _empty;
+    public PhaseContext(IEnumerable<LayerConfigurator> configurators) => Configurators = new List<LayerConfigurator>(configurators);
 
     void IDisposable.Dispose() => OnDispose?.Invoke();
 }

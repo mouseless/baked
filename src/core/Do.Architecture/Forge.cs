@@ -5,6 +5,8 @@ namespace Do;
 
 public class Forge
 {
+    public static Forge New => new(new DoBanner(), () => new(new()));
+
     readonly IBanner _banner;
     readonly Func<Application> _newApplication;
 
@@ -13,8 +15,6 @@ public class Forge
         _banner = banner;
         _newApplication = newApplication;
     }
-
-    public static Forge New => new(new DoBanner(), () => new(new()));
 
     public Application Application(Action<ApplicationDescriptor> describe)
     {

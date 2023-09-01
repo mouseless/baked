@@ -2,12 +2,6 @@
 
 public class LayerConfigurator
 {
-    record Target(Type Type, object Value);
-
-    readonly List<Target> _targets;
-
-    LayerConfigurator(params Target[] targets) => _targets = new(targets);
-
     public static LayerConfigurator Create<TTarget>(TTarget target)
         where TTarget : notnull
     {
@@ -35,6 +29,12 @@ public class LayerConfigurator
             new Target(typeof(TTarget3), target3)
         );
     }
+
+    record Target(Type Type, object Value);
+
+    readonly List<Target> _targets;
+
+    LayerConfigurator(params Target[] targets) => _targets = new(targets);
 
     public void Configure<TTarget>(Action<TTarget> configuration)
     {

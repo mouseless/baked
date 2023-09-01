@@ -8,10 +8,10 @@ public abstract class PhaseBase : IPhase
 
     protected virtual ApplicationContext Context { get; private set; } = default!;
 
-    PhaseOrder IPhase.Order => _order;
-
     protected virtual bool IsReady() => true;
     protected virtual void Initialize() { }
+
+    PhaseOrder IPhase.Order => _order;
 
     bool IPhase.IsReady(ApplicationContext context)
     {

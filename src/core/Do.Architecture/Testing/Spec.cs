@@ -7,10 +7,6 @@ namespace Do.Testing;
 
 public abstract class Spec
 {
-    public Stubber GiveMe { get; private set; } = default!;
-    public Mocker MockMe { get; private set; } = default!;
-    public Searcher GetMe { get; private set; } = default!;
-
     protected static ApplicationContext Init(
         Action<ApplicationDescriptor>? describe = default
     )
@@ -23,6 +19,10 @@ public abstract class Spec
 
         return result;
     }
+
+    public Stubber GiveMe { get; private set; } = default!;
+    public Mocker MockMe { get; private set; } = default!;
+    public Searcher GetMe { get; private set; } = default!;
 
     [SetUp]
     public virtual void SetUp()
