@@ -19,7 +19,7 @@ public interface IQueryContext<TEntity>
     ) => Query(where,
             orderBy: orderBy,
             orderByDescending: orderByDescending
-        ).FirstOrDefault();
+         ).FirstOrDefault();
 
     public List<TEntity> By(Expression<Func<TEntity, bool>> where) =>
         Query(where).ToList();
@@ -30,7 +30,7 @@ public interface IQueryContext<TEntity>
     ) => Query(where,
             orderBy: orderBy,
             orderByDescending: orderByDescending
-        ).ToList();
+         ).ToList();
 
     public List<TEntity> All() => Query().ToList();
 
@@ -40,7 +40,7 @@ public interface IQueryContext<TEntity>
     ) => Query(t => true,
             orderBy: orderBy,
             orderByDescending: orderByDescending
-        ).ToList();
+         ).ToList();
 
     IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> where) =>
         Query().Where(where);

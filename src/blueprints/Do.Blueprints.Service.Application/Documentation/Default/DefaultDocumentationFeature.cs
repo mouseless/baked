@@ -13,7 +13,7 @@ public class DefaultDocumentationFeature : IFeature<DocumentationConfigurator>
             {
                 string[] splitedNamespace = t.Namespace?.Split(".") ?? new string[0];
                 string name = t.IsNested && t.FullName is not null
-                    ? t.FullName.Replace($"{t.Namespace}.", "").Replace("Controller", "").Replace("+", ".")
+                    ? t.FullName.Replace($"{t.Namespace}.", string.Empty).Replace("Controller", string.Empty).Replace("+", ".")
                     : t.Name;
 
                 return splitedNamespace.Length > 1

@@ -16,6 +16,6 @@ public class NullTypesAreObjectOperationFilter : IOperationFilter
                     property.Type = "object";
                 }
             }
-        };
+        }
     }
 }

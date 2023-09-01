@@ -10,12 +10,12 @@ public class CreatingAFeature : ArchitectureSpec
     {
         public void Configure(LayerConfigurator configurator) { }
     }
-    
+
     [Test]
     public void A_feature_implementation_is_created_by_implementing_generic_IFeature_interface_using_its_configurator()
     {
         var feature = new FeatureA();
-        
+
         feature.ShouldBeAssignableTo<IFeature<FeatureAConfigurator>>();
     }
 
