@@ -6,7 +6,9 @@ using Do.ExceptionHandling;
 using Do.MockOverrider;
 using Do.Orm;
 using Do.Testing;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using NHibernate;
 
 using ITransaction = NHibernate.ITransaction;
@@ -62,12 +64,35 @@ public abstract class ServiceSpec : Spec
     }
 
     ITransaction _transaction = default!;
+    internal Dictionary<string, string> Settings { get; private set; } = default!;
+    internal DateTime SystemNow { get; private set; } = default!;
 
     public override void SetUp()
     {
         base.SetUp();
 
         _transaction = _session.BeginTransaction();
+
+        Mock.Get(GiveMe.The<IConfiguration>())
+           .Setup(c => c.GetSection(It.IsAny<string>())).Returns((string key) =>
+           {
+               var mockSection = new Mock<IConfigurationSection>();
+
+               mockSection.Setup(s => s.Value).Returns(() =>
+               {
+                   if (Settings.TryGetValue(key, out var result))
+                   {
+                       return result;
+                   }
+
+                   return key.EndsWith("Url") ? "https://test.com?value" : "test value";
+               });
+
+               return mockSection.Object;
+           });
+
+        Mock.Get(GiveMe.The<ISystem>())
+           .Setup(c => c.Now).Returns(SystemNow);
     }
 
     public override void TearDown()
@@ -77,5 +102,7 @@ public abstract class ServiceSpec : Spec
         _session.Flush();
         _transaction.Rollback();
         _session.Clear();
+
+        GiveMe.The<IMockOverrider>().Reset();
     }
 }

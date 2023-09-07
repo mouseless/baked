@@ -1,4 +1,5 @@
 using Do.Architecture;
+using Microsoft.Extensions.Configuration;
 
 namespace Do.Core.Mock;
 
@@ -9,6 +10,8 @@ public class MockCoreFeature : IFeature<CoreConfigurator>
         configurator.ConfigureTestConfiguration(test =>
         {
             test.Mocks.Add<ISystem>(singleton: true);
+
+            test.Mocks.Add<IConfiguration>(singleton: true);
         });
     }
 }

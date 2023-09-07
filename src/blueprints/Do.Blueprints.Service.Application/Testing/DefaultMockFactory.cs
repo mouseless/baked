@@ -1,10 +1,11 @@
+using Microsoft.Extensions.DependencyInjection;
 using Moq;
 
 namespace Do.Testing;
 
 public class DefaultMockFactory : IMockFactory
 {
-    public virtual object Create(IServiceProvider serviceProvider, MockDescriptor mockDescriptor)
+    public virtual object Create(IServiceProvider _, MockDescriptor mockDescriptor)
     {
         var mockType = typeof(Mock<>).MakeGenericType(mockDescriptor.Type);
         var mockInstance = (Mock?)Activator.CreateInstance(mockType)
