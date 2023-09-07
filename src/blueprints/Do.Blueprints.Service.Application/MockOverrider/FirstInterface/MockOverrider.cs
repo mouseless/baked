@@ -1,12 +1,13 @@
 ﻿using Moq;
 using System.Collections.Concurrent;
+using System.Reflection;
 
 namespace Do.MockOverrider.FirstInterface;
 
 public class MockOverrider : IMockOverrider
 {
     readonly ConcurrentDictionary<Type, object> _overrides = new();
-    readonly List<(Type, object)> _resetMocks = new();
+    readonly ConcurrentBag<(Type, object)> _resetMocks = new();
 
     public object? Get(Type type)
     {
@@ -24,9 +25,14 @@ public class MockOverrider : IMockOverrider
     {
         _overrides.Clear();
 
-        foreach (var (_, mock) in _resetMocks)
+        foreach (var (type, mockedObject) in _resetMocks)
         {
-            Mock.Get(mock).Reset();
+            var getMethod = typeof(Mock).GetMethod(nameof(Mock.Get), BindingFlags.Static | BindingFlags.Public) ?? throw new InvalidOperationException("method should not be null");
+            var genericGetMethod = getMethod.MakeGenericMethod(type);
+
+            Mock mock = (Mock)(genericGetMethod.Invoke(null, new[] { mockedObject }) ?? throw new Exception());
+
+            mock.Reset();
         }
     }
 

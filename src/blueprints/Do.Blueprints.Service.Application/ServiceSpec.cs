@@ -64,14 +64,16 @@ public abstract class ServiceSpec : Spec
     }
 
     ITransaction _transaction = default!;
-    internal Dictionary<string, string> Settings { get; private set; } = default!;
-    internal DateTime SystemNow { get; private set; } = default!;
+    public Dictionary<string, string> Settings { get; private set; } = default!;
+    public DateTime SystemNow { get; private set; } = default!;
 
     public override void SetUp()
     {
         base.SetUp();
 
         _transaction = _session.BeginTransaction();
+
+        Settings = new();
 
         Mock.Get(GiveMe.The<IConfiguration>())
            .Setup(c => c.GetSection(It.IsAny<string>())).Returns((string key) =>
