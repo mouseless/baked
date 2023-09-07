@@ -92,7 +92,6 @@ public abstract class ServiceSpec : Spec
                return mockSection.Object;
            });
 
-
         MockMe.TheSystem(new DateTime(2023, 09, 09, 10, 10, 00));
     }
 

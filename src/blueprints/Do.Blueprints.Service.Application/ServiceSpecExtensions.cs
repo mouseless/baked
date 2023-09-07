@@ -12,11 +12,11 @@ namespace Do;
 public static class ServiceSpecExtensions
 {
     #region Settings
-    
+
     public static void TheSetting(this Mocker mocker, string key, string value)
     {
         ((ServiceSpec)mocker.Spec).Settings[key] = value;
-    } 
+    }
 
     #endregion
 
@@ -26,7 +26,7 @@ public static class ServiceSpecExtensions
     {
         Mock.Get(mockMe.Spec.GiveMe.The<ISystem>())
            .Setup(c => c.Now).Returns(now);
-    } 
+    }
 
     #endregion
 
