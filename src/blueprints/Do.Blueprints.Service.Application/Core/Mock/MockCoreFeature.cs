@@ -9,9 +9,8 @@ public class MockCoreFeature : IFeature<CoreConfigurator>
     {
         configurator.ConfigureTestConfiguration(test =>
         {
-            test.Mocks.Add<ISystem>(singleton: true);
-
             test.Mocks.Add<IConfiguration>(singleton: true);
+            test.Mocks.Add<ISystem>(singleton: true);
         });
     }
 }

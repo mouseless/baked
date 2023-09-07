@@ -1,6 +1,8 @@
-﻿using Do.MockOverrider;
+﻿using Do.Core;
+using Do.MockOverrider;
 using Do.Testing;
 using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using Shouldly;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -9,6 +11,25 @@ namespace Do;
 
 public static class ServiceSpecExtensions
 {
+    #region Settings
+    
+    public static void TheSetting(this Mocker mocker, string key, string value)
+    {
+        ((ServiceSpec)mocker.Spec).Settings[key] = value;
+    } 
+
+    #endregion
+
+    #region System
+
+    public static void TheSystem(this Mocker mockMe, DateTime now)
+    {
+        Mock.Get(mockMe.Spec.GiveMe.The<ISystem>())
+           .Setup(c => c.Now).Returns(now);
+    } 
+
+    #endregion
+
     #region MockOverrider
 
     public static T The<T>(this Stubber _, params object?[] mockOverrides) where T : notnull =>
@@ -101,6 +122,12 @@ public static class ServiceSpecExtensions
     public static Guid AGuid(this Stubber _,
         string? guid = default
     ) => guid is null ? Guid.NewGuid() : Guid.Parse(guid);
+
+    #endregion
+
+    #region String Extensions
+
+    public static string AString(this Stubber _) => "string";
 
     #endregion
 }

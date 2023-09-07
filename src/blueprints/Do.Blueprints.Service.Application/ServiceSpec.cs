@@ -64,8 +64,7 @@ public abstract class ServiceSpec : Spec
     }
 
     ITransaction _transaction = default!;
-    public Dictionary<string, string> Settings { get; private set; } = default!;
-    public DateTime SystemNow { get; private set; } = default!;
+    internal Dictionary<string, string> Settings { get; private set; } = default!;
 
     public override void SetUp()
     {
@@ -93,8 +92,8 @@ public abstract class ServiceSpec : Spec
                return mockSection.Object;
            });
 
-        Mock.Get(GiveMe.The<ISystem>())
-           .Setup(c => c.Now).Returns(SystemNow);
+
+        MockMe.TheSystem(new DateTime(2023, 09, 09, 10, 10, 00));
     }
 
     public override void TearDown()
