@@ -13,19 +13,34 @@ public static class ServiceSpecExtensions
 {
     #region Settings
 
-    public static void TheSetting(this Mocker mocker, string key, string value)
+    public static void ASetting(this Mocker mockMe,
+        string? key = default,
+        string? value = default
+    )
     {
-        ((ServiceSpec)mocker.Spec).Settings[key] = value;
+        key ??= "Test:Configuration";
+        value ??= "value";
+
+        var spec = (ServiceSpec)mockMe.Spec;
+
+        spec.Settings[key] = value;
     }
 
     #endregion
 
     #region System
 
-    public static void TheSystem(this Mocker mockMe, DateTime now)
+    public static void TheSystem(this Mocker mockMe,
+        DateTime? now = default
+    )
     {
-        Mock.Get(mockMe.Spec.GiveMe.The<ISystem>())
-           .Setup(c => c.Now).Returns(now);
+        var system = mockMe.Spec.GiveMe.The<ISystem>();
+        var mock = Mock.Get(system);
+
+        if (now is not null)
+        {
+            mock.Setup(c => c.Now).Returns(now.Value);
+        }
     }
 
     #endregion
