@@ -1,6 +1,7 @@
 ﻿using Do.Core;
 using Do.MockOverrider;
 using Do.Testing;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Shouldly;
@@ -24,6 +25,33 @@ public static class ServiceSpecExtensions
         var spec = (ServiceSpec)mockMe.Spec;
 
         spec.Settings[key] = value;
+    }
+
+    public static void TheSettings(this Mocker mockMe,
+        Dictionary<string, string>? settings = default,
+        Func<string, string>? defaultValue = default
+    )
+    {
+        settings ??= new Dictionary<string, string>();
+        defaultValue ??= (key) => key.EndsWith("Url") ? "https://test.com?value" : "test value";
+
+        Mock.Get(mockMe.Spec.GiveMe.The<IConfiguration>())
+           .Setup(c => c.GetSection(It.IsAny<string>())).Returns((string key) =>
+           {
+               var mockSection = new Mock<IConfigurationSection>();
+
+               mockSection.Setup(s => s.Value).Returns(() =>
+               {
+                   if (settings.TryGetValue(key, out var result))
+                   {
+                       return result;
+                   }
+
+                   return defaultValue(key);
+               });
+
+               return mockSection.Object;
+           });
     }
 
     #endregion

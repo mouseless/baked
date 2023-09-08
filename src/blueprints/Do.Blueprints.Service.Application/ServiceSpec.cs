@@ -74,24 +74,7 @@ public abstract class ServiceSpec : Spec
 
         Settings = new();
 
-        Mock.Get(GiveMe.The<IConfiguration>())
-           .Setup(c => c.GetSection(It.IsAny<string>())).Returns((string key) =>
-           {
-               var mockSection = new Mock<IConfigurationSection>();
-
-               mockSection.Setup(s => s.Value).Returns(() =>
-               {
-                   if (Settings.TryGetValue(key, out var result))
-                   {
-                       return result;
-                   }
-
-                   return key.EndsWith("Url") ? "https://test.com?value" : "test value";
-               });
-
-               return mockSection.Object;
-           });
-
+        MockMe.TheSettings(Settings);
         MockMe.TheSystem(new DateTime(2023, 09, 09, 10, 10, 00));
     }
 
