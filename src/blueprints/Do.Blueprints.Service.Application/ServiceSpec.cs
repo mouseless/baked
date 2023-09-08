@@ -16,9 +16,9 @@ namespace Do;
 public abstract class ServiceSpec : Spec
 {
     static IServiceProvider _serviceProvider = default!;
-    static ISession _session = default!;
 
     internal static IServiceProvider ServiceProvider => _serviceProvider;
+    internal static ISession Session => _serviceProvider.GetRequiredService<ISession>();
 
     protected static ApplicationContext Init(
         Func<BusinessConfigurator, IFeature<BusinessConfigurator>> business,
@@ -56,7 +56,6 @@ public abstract class ServiceSpec : Spec
         });
 
         _serviceProvider = context.GetServiceProvider();
-        _session = _serviceProvider.GetRequiredService<ISession>();
 
         return context;
     }
@@ -68,7 +67,7 @@ public abstract class ServiceSpec : Spec
     {
         base.SetUp();
 
-        _transaction = _session.BeginTransaction();
+        _transaction = Session.BeginTransaction();
 
         Settings = new();
 
@@ -80,9 +79,9 @@ public abstract class ServiceSpec : Spec
     {
         base.TearDown();
 
-        _session.Flush();
+        Session.Flush();
         _transaction.Rollback();
-        _session.Clear();
+        Session.Clear();
 
         GiveMe.The<IMockOverrider>().Reset();
     }

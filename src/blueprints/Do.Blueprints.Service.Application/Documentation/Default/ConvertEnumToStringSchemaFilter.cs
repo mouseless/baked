@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 
 namespace Do.Documentation.Default;
 
-public class ConvertEnumToString : ISchemaFilter
+public class ConvertEnumToStringSchemaFilter : ISchemaFilter
 {
     public void Apply(OpenApiSchema model, SchemaFilterContext context)
     {

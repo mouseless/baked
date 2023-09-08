@@ -184,12 +184,9 @@ public static class ServiceSpecExtensions
     #region Entity
 
     public static void ShouldBeDeleted(this object @object) =>
-        GetSession().Contains(@object).ShouldBeFalse($"{@object} should've been deleted, but it's STILL in the session");
+        ServiceSpec.Session.Contains(@object).ShouldBeFalse($"{@object} should've been deleted, but it's STILL in the session");
     public static void ShouldBeInserted(this object @object) =>
-        GetSession().Contains(@object).ShouldBeTrue($"{@object} should've been inserted, but it's NOT in the session");
-
-    static ISession GetSession() =>
-        ServiceSpec.ServiceProvider.GetService<ISession>() ?? throw new InvalidOperationException("session should not be null");
+        ServiceSpec.Session.Contains(@object).ShouldBeTrue($"{@object} should've been inserted, but it's NOT in the session");
 
     #endregion
 }
