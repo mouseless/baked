@@ -62,12 +62,18 @@ public abstract class ServiceSpec : Spec
     }
 
     ITransaction _transaction = default!;
+    internal Dictionary<string, string> Settings { get; private set; } = default!;
 
     public override void SetUp()
     {
         base.SetUp();
 
         _transaction = _session.BeginTransaction();
+
+        Settings = new();
+
+        MockMe.TheConfiguration(settings: Settings);
+        MockMe.TheSystem(now: new DateTime(2023, 09, 09, 10, 10, 00));
     }
 
     public override void TearDown()
@@ -77,5 +83,7 @@ public abstract class ServiceSpec : Spec
         _session.Flush();
         _transaction.Rollback();
         _session.Clear();
+
+        GiveMe.The<IMockOverrider>().Reset();
     }
 }
