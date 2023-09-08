@@ -4,6 +4,7 @@ using Do.Testing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
+using NHibernate;
 using Shouldly;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -177,6 +178,18 @@ public static class ServiceSpecExtensions
     public static string AString(this Stubber _,
         string? value = default
     ) => value ?? "test string";
+
+    #endregion
+
+    #region Entity
+
+    public static void ShouldBeDeleted(this object @object) =>
+        GetSession().Contains(@object).ShouldBeFalse($"{@object} should've been deleted, but it's STILL in the session");
+    public static void ShouldBeInserted(this object @object) =>
+        GetSession().Contains(@object).ShouldBeTrue($"{@object} should've been inserted, but it's NOT in the session");
+
+    static ISession GetSession() =>
+        ServiceSpec.ServiceProvider.GetService<ISession>() ?? throw new InvalidOperationException("session should not be null");
 
     #endregion
 }
