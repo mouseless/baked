@@ -23,6 +23,7 @@ public class DefaultDocumentationFeature : IFeature<DocumentationConfigurator>
 
             configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
             {
+                swaggerGenOptions.SchemaFilter<ConvertEnumToStringSchemaFilter>();
                 swaggerGenOptions.OperationFilter<NullTypesAreObjectOperationFilter>();
             });
         });

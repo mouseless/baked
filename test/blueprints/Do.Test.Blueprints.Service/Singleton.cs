@@ -19,7 +19,7 @@ public class Singleton
         await _transaction.CommitAsync(() =>
         {
             // do not remove this variable, this is to ensure call is made to `Action` overload
-            var _ = _newEntity().With(Guid.NewGuid(), "test", "transaction action", 1, new("https://action.com"), new { transaction = "action" });
+            var _ = _newEntity().With(Guid.NewGuid(), "test", "transaction action", 1, new("https://action.com"), new { transaction = "action" }, Status.Enabled);
         });
 
         throw new Exception();
@@ -28,10 +28,10 @@ public class Singleton
     public async Task TestTransactionFunc()
     {
         var entity = await _transaction.CommitAsync(() =>
-            _newEntity().With(Guid.NewGuid(), "test", "transaction func", 1, new("https://func.com"), new { transaction = "func" })
+            _newEntity().With(Guid.NewGuid(), "test", "transaction func", 1, new("https://func.com"), new { transaction = "func" }, Status.Enabled)
         );
 
-        await entity.Update(Guid.NewGuid(), "rollback", "rollback", 2, new("https://rollback.com"), new { rollback = "rollback" });
+        await entity.Update(Guid.NewGuid(), "rollback", "rollback", 2, new("https://rollback.com"), new { rollback = "rollback" }, Status.Disabled);
 
         throw new Exception();
     }

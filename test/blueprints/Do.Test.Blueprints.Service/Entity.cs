@@ -19,26 +19,27 @@ public class Entity
     public virtual int Int32 { get; protected set; } = default!;
     public virtual Uri Uri { get; protected set; } = default!;
     public virtual object Dynamic { get; protected set; } = default!;
+    public virtual Status Status { get; protected set; } = default!;
 
-    public virtual Entity With(Guid guid, string @string, string stringData, int int32, Uri uri, object @dynamic)
+    public virtual Entity With(Guid guid, string @string, string stringData, int int32, Uri uri, object @dynamic, Status status)
     {
-        Set(guid, @string, stringData, int32, uri, @dynamic);
+        Set(guid, @string, stringData, int32, uri, @dynamic, status);
 
         return _context.Insert(this);
     }
 
-    public virtual async Task Update(Guid guid, string @string, string stringData, int int32, Uri uri, object @dynamic,
+    public virtual async Task Update(Guid guid, string @string, string stringData, int int32, Uri uri, object @dynamic, Status status,
         bool useTransaction = false,
         bool throwError = false
     )
     {
         if (useTransaction)
         {
-            await _transaction.CommitAsync(this, @this => @this.Set(guid, @string, stringData, int32, uri, @dynamic));
+            await _transaction.CommitAsync(this, @this => @this.Set(guid, @string, stringData, int32, uri, @dynamic, status));
         }
         else
         {
-            Set(guid, @string, stringData, int32, uri, @dynamic);
+            Set(guid, @string, stringData, int32, uri, @dynamic, status);
         }
 
         if (throwError)
@@ -47,7 +48,7 @@ public class Entity
         }
     }
 
-    protected virtual void Set(Guid guid, string @string, string stringData, int int32, Uri uri, object @dynamic)
+    protected virtual void Set(Guid guid, string @string, string stringData, int int32, Uri uri, object @dynamic, Status status)
     {
         Guid = guid;
         String = @string;
@@ -55,6 +56,7 @@ public class Entity
         Int32 = int32;
         Uri = uri;
         Dynamic = @dynamic;
+        Status = status;
     }
 
     public virtual void Delete()
