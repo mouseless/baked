@@ -13,4 +13,6 @@
 - `ShouldBeInserted` and `ShouldBeDeleted` extensions are now added for testing
   entites
 - _Swagger_ now renders `enum` as `string`
+- `SingleById()` query now throws a `RecordNotFoundException` if no matching 
+  record is found
 

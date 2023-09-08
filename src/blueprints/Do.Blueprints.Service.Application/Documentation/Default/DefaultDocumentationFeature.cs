@@ -1,5 +1,4 @@
 ﻿using Do.Architecture;
-using Google.Protobuf.WellKnownTypes;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Do.Documentation.Default;

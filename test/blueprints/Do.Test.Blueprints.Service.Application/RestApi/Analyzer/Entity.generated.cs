@@ -2,7 +2,6 @@
 
 using Do.Orm;
 using Microsoft.AspNetCore.Mvc;
-using NHibernate.Engine;
 
 namespace Do.Test;
 
