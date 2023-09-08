@@ -6,9 +6,7 @@ using Do.ExceptionHandling;
 using Do.MockOverrider;
 using Do.Orm;
 using Do.Testing;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Moq;
 using NHibernate;
 
 using ITransaction = NHibernate.ITransaction;
@@ -74,8 +72,8 @@ public abstract class ServiceSpec : Spec
 
         Settings = new();
 
-        MockMe.TheSettings(Settings);
-        MockMe.TheSystem(new DateTime(2023, 09, 09, 10, 10, 00));
+        MockMe.TheConfiguration(settings: Settings);
+        MockMe.TheSystem(now: new DateTime(2023, 09, 09, 10, 10, 00));
     }
 
     public override void TearDown()

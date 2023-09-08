@@ -27,15 +27,15 @@ public static class ServiceSpecExtensions
         spec.Settings[key] = value;
     }
 
-    public static void TheSettings(this Mocker mockMe,
-        Dictionary<string, string>? settings = default,
+    internal static IConfiguration TheConfiguration(this Mocker mockMe, Dictionary<string, string> settings,
         Func<string, string>? defaultValue = default
     )
     {
-        settings ??= new Dictionary<string, string>();
         defaultValue ??= (key) => key.EndsWith("Url") ? "https://test.com?value" : "test value";
 
-        Mock.Get(mockMe.Spec.GiveMe.The<IConfiguration>())
+        var configuration = mockMe.Spec.GiveMe.The<IConfiguration>();
+
+        Mock.Get(configuration)
            .Setup(c => c.GetSection(It.IsAny<string>())).Returns((string key) =>
            {
                var mockSection = new Mock<IConfigurationSection>();
@@ -52,13 +52,15 @@ public static class ServiceSpecExtensions
 
                return mockSection.Object;
            });
+
+        return configuration;
     }
 
     #endregion
 
     #region System
 
-    public static void TheSystem(this Mocker mockMe,
+    public static ISystem TheSystem(this Mocker mockMe,
         DateTime? now = default
     )
     {
@@ -69,6 +71,8 @@ public static class ServiceSpecExtensions
         {
             mock.Setup(c => c.Now).Returns(now.Value);
         }
+
+        return system;
     }
 
     #endregion
@@ -170,7 +174,8 @@ public static class ServiceSpecExtensions
 
     #region String Extensions
 
-    public static string AString(this Stubber _) => "string";
+    public static string AString(this Stubber _,
+        string? value = default) => value ?? "string";
 
     #endregion
 }
