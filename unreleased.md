@@ -10,5 +10,7 @@
 - `IConfiguration`mock is now added and can be configured with helpers
   provided from `ServiceSpec`
 - `ISystem`can now be configured with helpers provided from `ServiceSpec`
-
+- `ShouldBeInserted` and `ShouldBeDeleted` extensions are now added for testing
+  entites
+- _Swagger_ now renders `enum` as `string`
 
