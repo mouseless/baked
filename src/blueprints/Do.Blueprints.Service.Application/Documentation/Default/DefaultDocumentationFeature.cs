@@ -1,4 +1,5 @@
 ﻿using Do.Architecture;
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Do.Documentation.Default;
@@ -23,6 +24,7 @@ public class DefaultDocumentationFeature : IFeature<DocumentationConfigurator>
 
             configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
             {
+                swaggerGenOptions.SchemaFilter<ConvertEnumToString>();
                 swaggerGenOptions.OperationFilter<NullTypesAreObjectOperationFilter>();
             });
         });

@@ -2,6 +2,7 @@
 
 using Do.Orm;
 using Microsoft.AspNetCore.Mvc;
+using NHibernate.Engine;
 
 namespace Do.Test;
 
@@ -31,7 +32,7 @@ public class EntityController
         return target.SingleById(id);
     }
 
-    public record NewRequest(Guid Guid, string String, string StringData, int Int32, Uri Uri, object Dynamic);
+    public record NewRequest(Guid Guid, string String, string StringData, int Int32, Uri Uri, object Dynamic, Status Status);
 
     [HttpPost]
     [Route("entities")]
@@ -40,7 +41,7 @@ public class EntityController
     {
         var target = _serviceProvider.GetRequiredService<Entity>();
 
-        return target.With(request.Guid, request.String, request.StringData, request.Int32, request.Uri, request.Dynamic);
+        return target.With(request.Guid, request.String, request.StringData, request.Int32, request.Uri, request.Dynamic, request.Status);
     }
 
     [HttpDelete]
@@ -52,7 +53,7 @@ public class EntityController
         target.Delete();
     }
 
-    public record UpdateRequest(Guid Guid, string String, string StringData, int Int32, Uri Uri, object Dynamic,
+    public record UpdateRequest(Guid Guid, string String, string StringData, int Int32, Uri Uri, object Dynamic, Status Status,
         bool useTransaction = false,
         bool throwError = false
     );
@@ -63,7 +64,7 @@ public class EntityController
     {
         var target = _serviceProvider.GetRequiredService<IQueryContext<Entity>>().SingleById(id);
 
-        await target.Update(request.Guid, request.String, request.StringData, request.Int32, request.Uri, request.Dynamic,
+        await target.Update(request.Guid, request.String, request.StringData, request.Int32, request.Uri, request.Dynamic, request.Status,
             useTransaction: request.useTransaction,
             throwError: request.throwError
         );
