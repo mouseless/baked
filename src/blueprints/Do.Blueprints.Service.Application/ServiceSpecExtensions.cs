@@ -27,11 +27,11 @@ public static class ServiceSpecExtensions
         spec.Settings[key] = value;
     }
 
-    internal static IConfiguration TheConfiguration(this Mocker mockMe, Dictionary<string, string> settings,
-        Func<string, string>? defaultValue = default
+    internal static IConfiguration TheConfiguration(this Mocker mockMe,
+        Dictionary<string, string>? settings = default
     )
     {
-        defaultValue ??= (key) => key.EndsWith("Url") ? "https://test.com?value" : "test value";
+        settings ??= new Dictionary<string, string>();
 
         var configuration = mockMe.Spec.GiveMe.The<IConfiguration>();
 
@@ -47,7 +47,7 @@ public static class ServiceSpecExtensions
                        return result;
                    }
 
-                   return defaultValue(key);
+                   return key.EndsWith("Url") ? "https://test.com?value" : "test value";
                });
 
                return mockSection.Object;
@@ -175,7 +175,8 @@ public static class ServiceSpecExtensions
     #region String Extensions
 
     public static string AString(this Stubber _,
-        string? value = default) => value ?? "string";
+        string? value = default
+    ) => value ?? "test string";
 
     #endregion
 }
