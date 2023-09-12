@@ -9,6 +9,7 @@ public class RecordNotFoundException : HandledException
     public static RecordNotFoundException For<T>(string field, object value) => new(typeof(T), field, value);
 
     public override HttpStatusCode StatusCode => HttpStatusCode.NotFound;
+
     public RecordNotFoundException(Type entityType, Guid id)
         : this(entityType, "Id", $"{id}") { }
 
