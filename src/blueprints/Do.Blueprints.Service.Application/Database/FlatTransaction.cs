@@ -18,6 +18,13 @@ public class FlatTransaction : ITransaction
         await CommitAndBeginNewTransaction();
     }
 
+    public async Task CommitAsync(Func<Task> action)
+    {
+        await action();
+
+        await CommitAndBeginNewTransaction();
+    }
+
     public async Task<T> CommitAsync<T>(Func<T> action)
     {
         var result = action();
@@ -27,9 +34,25 @@ public class FlatTransaction : ITransaction
         return result;
     }
 
+    public async Task<TEntity> CommitAsync<TEntity>(Func<Task<TEntity>> action)
+    {
+        var result = await action();
+
+        await CommitAndBeginNewTransaction();
+
+        return result;
+    }
+
     public async Task CommitAsync<TEntity>(TEntity entity, Action<TEntity> action)
     {
         action(entity);
+
+        await CommitAndBeginNewTransaction();
+    }
+
+    public async Task CommitAsync<TEntity>(TEntity entity, Func<TEntity, Task> action)
+    {
+        await action(entity);
 
         await CommitAndBeginNewTransaction();
     }
