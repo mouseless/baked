@@ -6,7 +6,7 @@ public class ExceptionHandlingMiddleware
 {
     readonly RequestDelegate _next;
     readonly IEnumerable<IExceptionHandler> _handlers;
-    readonly DefaultExceptionHandler _defaultHandler = new();
+    readonly UnhandledExceptionHandler _unhandledExceptionHandler = new();
 
     public ExceptionHandlingMiddleware(IEnumerable<IExceptionHandler> handlers, RequestDelegate next) =>
         (_handlers, _next) = (handlers, next);
@@ -19,7 +19,7 @@ public class ExceptionHandlingMiddleware
         }
         catch (Exception ex)
         {
-            var handler = _handlers.FirstOrDefault(h => h.CanHandle(ex)) ?? _defaultHandler;
+            var handler = _handlers.FirstOrDefault(h => h.CanHandle(ex)) ?? _unhandledExceptionHandler;
             var exceptionInfo = handler.Handle(ex);
 
             context.Response.ContentType = "application/json";

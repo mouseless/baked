@@ -13,9 +13,3 @@ Adds default exception handler.
 ```csharp
 c => c.Default()
 ```
-
-You can add custom handlers via `handlers`.
-
-```csharp
-c => c.Default(handlers: ...)
-```

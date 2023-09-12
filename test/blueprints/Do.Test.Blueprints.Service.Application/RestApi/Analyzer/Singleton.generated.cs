@@ -41,4 +41,14 @@ public class SingletonController
 
         await target.TestTransactionFunc();
     }
+
+    [HttpPost]
+    [Produces("application/json")]
+    [Route("singleton/test-exception")]
+    public void TestException(bool handled)
+    {
+        var target = _serviceProvider.GetRequiredService<Singleton>();
+
+        target.TestException(handled);
+    }
 }

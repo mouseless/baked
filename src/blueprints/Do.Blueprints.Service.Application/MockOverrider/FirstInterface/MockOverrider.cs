@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using Do.Testing;
+using Moq;
 using System.Collections.Concurrent;
 using System.Reflection;
 
@@ -7,7 +8,7 @@ namespace Do.MockOverrider.FirstInterface;
 public class MockOverrider : IMockOverrider
 {
     readonly ConcurrentDictionary<Type, object> _overrides = new();
-    readonly ConcurrentBag<(Type, object)> _resetMocks = new();
+    readonly ConcurrentBag<(MockDescriptor, object)> _resetMocks = new();
 
     public object? Get(Type type)
     {
@@ -25,19 +26,20 @@ public class MockOverrider : IMockOverrider
     {
         _overrides.Clear();
 
-        foreach (var (type, mockedObject) in _resetMocks)
+        foreach (var (descriptor, mockedObject) in _resetMocks)
         {
             var getMethod = typeof(Mock).GetMethod(nameof(Mock.Get), BindingFlags.Static | BindingFlags.Public) ?? throw new InvalidOperationException("method should not be null");
-            var genericGetMethod = getMethod.MakeGenericMethod(type);
+            var genericGetMethod = getMethod.MakeGenericMethod(descriptor.Type);
 
             Mock mock = (Mock)(genericGetMethod.Invoke(null, new[] { mockedObject }) ?? throw new InvalidOperationException("invoke result should not be null"));
 
             mock.Reset();
+            descriptor.Setup?.Invoke(mock);
         }
     }
 
-    internal void ResetEventually(Type type, object mock)
+    internal void ResetEventually(MockDescriptor descriptor, object mock)
     {
-        _resetMocks.Add((type, mock));
+        _resetMocks.Add((descriptor, mock));
     }
 }

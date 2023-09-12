@@ -4,7 +4,6 @@ using Do.Testing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
-using NHibernate;
 using Shouldly;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -13,68 +12,21 @@ namespace Do;
 
 public static class ServiceSpecExtensions
 {
-    #region Settings
+    #region Entity
 
-    public static void ASetting(this Mocker mockMe,
-        string? key = default,
-        string? value = default
-    )
-    {
-        key ??= "Test:Configuration";
-        value ??= "value";
+    public static void ShouldBeDeleted(this object @object) =>
+        ServiceSpec.Session.Contains(@object).ShouldBeFalse($"{@object} should've been deleted, but it's STILL in the session");
 
-        var spec = (ServiceSpec)mockMe.Spec;
-
-        spec.Settings[key] = value;
-    }
-
-    internal static IConfiguration TheConfiguration(this Mocker mockMe,
-        Dictionary<string, string>? settings = default
-    )
-    {
-        settings ??= new Dictionary<string, string>();
-
-        var configuration = mockMe.Spec.GiveMe.The<IConfiguration>();
-
-        Mock.Get(configuration)
-           .Setup(c => c.GetSection(It.IsAny<string>())).Returns((string key) =>
-           {
-               var mockSection = new Mock<IConfigurationSection>();
-
-               mockSection.Setup(s => s.Value).Returns(() =>
-               {
-                   if (settings.TryGetValue(key, out var result))
-                   {
-                       return result;
-                   }
-
-                   return key.EndsWith("Url") ? "https://test.com?value" : "test value";
-               });
-
-               return mockSection.Object;
-           });
-
-        return configuration;
-    }
+    public static void ShouldBeInserted(this object @object) =>
+        ServiceSpec.Session.Contains(@object).ShouldBeTrue($"{@object} should've been inserted, but it's NOT in the session");
 
     #endregion
 
-    #region System
+    #region Guid Extensions
 
-    public static ISystem TheSystem(this Mocker mockMe,
-        DateTime? now = default
-    )
-    {
-        var system = mockMe.Spec.GiveMe.The<ISystem>();
-        var mock = Mock.Get(system);
-
-        if (now is not null)
-        {
-            mock.Setup(c => c.Now).Returns(now.Value);
-        }
-
-        return system;
-    }
+    public static Guid AGuid(this Stubber _,
+        string? guid = default
+    ) => guid is null ? Guid.NewGuid() : Guid.Parse(guid);
 
     #endregion
 
@@ -150,6 +102,79 @@ public static class ServiceSpecExtensions
 
     #endregion
 
+    #region Settings
+
+    public static void ASetting(this Mocker mockMe,
+        string? key = default,
+        string? value = default
+    )
+    {
+        key ??= "Test:Configuration";
+        value ??= "value";
+
+        var spec = (ServiceSpec)mockMe.Spec;
+
+        spec.Settings[key] = value;
+    }
+
+    internal static IConfiguration TheConfiguration(this Mocker mockMe,
+        Dictionary<string, string>? settings = default
+    )
+    {
+        settings ??= new Dictionary<string, string>();
+
+        var configuration = mockMe.Spec.GiveMe.The<IConfiguration>();
+
+        Mock.Get(configuration)
+           .Setup(c => c.GetSection(It.IsAny<string>())).Returns((string key) =>
+           {
+               var mockSection = new Mock<IConfigurationSection>();
+
+               mockSection.Setup(s => s.Value).Returns(() =>
+               {
+                   if (settings.TryGetValue(key, out var result))
+                   {
+                       return result;
+                   }
+
+                   return key.EndsWith("Url") ? "https://test.com?value" : "test value";
+               });
+
+               return mockSection.Object;
+           });
+
+        return configuration;
+    }
+
+    #endregion
+
+    #region String Extensions
+
+    public static string AString(this Stubber _,
+        string? value = default
+    ) => value ?? "test string";
+
+    #endregion
+
+    #region System
+
+    public static ISystem TheSystem(this Mocker mockMe,
+        DateTime? now = default
+    )
+    {
+        var system = mockMe.Spec.GiveMe.The<ISystem>();
+        var mock = Mock.Get(system);
+
+        if (now is not null)
+        {
+            mock.Setup(c => c.Now).Returns(now.Value);
+        }
+
+        return system;
+    }
+
+    #endregion
+
     #region Url Extensions
 
     public static Uri AUrl(this Stubber giveMe,
@@ -162,31 +187,6 @@ public static class ServiceSpecExtensions
     }
 
     public static void ShouldBe(this Uri? uri, string urlString) => uri?.ToString().ShouldBe(urlString);
-
-    #endregion
-
-    #region Guid Extensions
-
-    public static Guid AGuid(this Stubber _,
-        string? guid = default
-    ) => guid is null ? Guid.NewGuid() : Guid.Parse(guid);
-
-    #endregion
-
-    #region String Extensions
-
-    public static string AString(this Stubber _,
-        string? value = default
-    ) => value ?? "test string";
-
-    #endregion
-
-    #region Entity
-
-    public static void ShouldBeDeleted(this object @object) =>
-        ServiceSpec.Session.Contains(@object).ShouldBeFalse($"{@object} should've been deleted, but it's STILL in the session");
-    public static void ShouldBeInserted(this object @object) =>
-        ServiceSpec.Session.Contains(@object).ShouldBeTrue($"{@object} should've been inserted, but it's NOT in the session");
 
     #endregion
 }

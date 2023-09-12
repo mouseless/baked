@@ -1,4 +1,3 @@
-using Microsoft.Extensions.DependencyInjection;
 using Moq;
 
 namespace Do.Testing;
