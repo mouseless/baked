@@ -1,5 +1,6 @@
 ﻿using Do.Core;
 using Do.Database;
+using Do.ExceptionHandling;
 
 namespace Do.Test;
 
@@ -13,6 +14,16 @@ public class Singleton
         (_system, _newEntity, _transaction) = (system, newEntity, transaction);
 
     public DateTime GetNow() => _system.Now;
+
+    public void TestException(bool handled)
+    {
+        if (handled)
+        {
+            throw new HandledException("A handled exception was thrown");
+        }
+
+        throw new InvalidOperationException();
+    }
 
     public async Task TestTransactionAction()
     {
