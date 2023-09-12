@@ -14,7 +14,7 @@ public class DefaultExceptionHandlingFeature : IFeature<ExceptionHandlingConfigu
         configurator.ConfigureServiceCollection(services =>
         {
             services.AddSingleton<IExceptionHandler, HandledExceptionHandler>();
-            services.AddSingleton<IExceptionHandler, UnHandledExceptionHandler>();
+            services.AddSingleton<IExceptionHandler, UnhandledExceptionHandler>();
         });
 
         configurator.ConfigureMiddlewareCollection(middlewares =>
