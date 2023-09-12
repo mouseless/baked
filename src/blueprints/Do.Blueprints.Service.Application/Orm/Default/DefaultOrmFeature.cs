@@ -1,5 +1,4 @@
 ﻿using Do.Architecture;
-using Do.ExceptionHandling;
 using Do.Orm.Default.UserTypes;
 using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Mapping;
