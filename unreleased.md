@@ -7,9 +7,6 @@
   better distincition in results for managed and unmanaged exceptions
 - Added `RecordNotFoundExceptionHandler` for exceptions thrown when a record
   is not found
-
-## Breaking Changes
-
 - `AddHandler<T>()` extension for exception handling feature is now removed, 
-  all `IExceptionHandler` implementations should be registered as transient 
+  all `IExceptionHandler` implementations should be registered as singleton 
   services from features
