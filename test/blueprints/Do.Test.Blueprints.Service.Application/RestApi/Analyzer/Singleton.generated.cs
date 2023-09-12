@@ -45,7 +45,7 @@ public class SingletonController
     [HttpPost]
     [Produces("application/json")]
     [Route("singleton/test-exception")]
-    public void TestUnHandledException(bool handled)
+    public void TestException(bool handled)
     {
         var target = _serviceProvider.GetRequiredService<Singleton>();
 
