@@ -17,7 +17,6 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
         {
             services.AddScoped(typeof(IEntityContext<>), typeof(EntityContext<>));
             services.AddSingleton(typeof(IQueryContext<>), typeof(QueryContext<>));
-            services.AddTransient<IExceptionHandler, RecordNotFoundExceptionHandler>();
         });
 
         configurator.ConfigureAutoPersistenceModel(model =>

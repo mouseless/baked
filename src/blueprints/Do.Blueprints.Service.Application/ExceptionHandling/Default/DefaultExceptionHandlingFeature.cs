@@ -13,8 +13,8 @@ public class DefaultExceptionHandlingFeature : IFeature<ExceptionHandlingConfigu
     {
         configurator.ConfigureServiceCollection(services =>
         {
-            services.AddTransient<IExceptionHandler, HandledExceptionHandler>();
-            services.AddTransient<IExceptionHandler, DefaultExceptionHandler>();
+            services.AddSingleton<IExceptionHandler, HandledExceptionHandler>();
+            services.AddSingleton<IExceptionHandler, UnHandledExceptionHandler>();
         });
 
         configurator.ConfigureMiddlewareCollection(middlewares =>

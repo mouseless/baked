@@ -6,7 +6,7 @@ public class ExceptionHandlingMiddleware
 {
     readonly RequestDelegate _next;
     readonly IEnumerable<IExceptionHandler> _handlers;
-    readonly DefaultExceptionHandler _defaultHandler = new();
+    readonly UnHandledExceptionHandler _defaultHandler = new();
 
     public ExceptionHandlingMiddleware(IEnumerable<IExceptionHandler> handlers, RequestDelegate next) =>
         (_handlers, _next) = (handlers, next);

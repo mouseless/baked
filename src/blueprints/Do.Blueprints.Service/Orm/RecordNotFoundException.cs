@@ -1,9 +1,11 @@
 ﻿using Do.ExceptionHandling;
+using System.Net;
 
 namespace Do.Orm;
 
 public class RecordNotFoundException : HandledException
 {
+    public override HttpStatusCode StatusCode => HttpStatusCode.NotFound;
     public static RecordNotFoundException For<T>(Guid id) => new(typeof(T), id);
     public static RecordNotFoundException For<T>(string field, object value) => new(typeof(T), field, value);
 
