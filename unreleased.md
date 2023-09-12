@@ -11,3 +11,5 @@
   all `IExceptionHandler` implementations should be registered as singleton 
   services from features
 - `RecordNotFoundException` now returns 404 status code
+- Added an `ISetup.Returns()` extensions for ordered setup return values of 
+  a mock service
