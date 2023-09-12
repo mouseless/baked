@@ -9,6 +9,11 @@ public class SkippedTransaction : ITransaction
         return Task.CompletedTask;
     }
 
+    public async Task CommitAsync(Func<Task> action)
+    {
+        await action();
+    }
+
     public Task<T> CommitAsync<T>(Func<T> action)
     {
         var result = action();
@@ -16,10 +21,20 @@ public class SkippedTransaction : ITransaction
         return Task.FromResult(result);
     }
 
+    public async Task<TEntity> CommitAsync<TEntity>(Func<Task<TEntity>> action)
+    {
+        return await action();
+    }
+
     public Task CommitAsync<TEntity>(TEntity entity, Action<TEntity> action)
     {
         action(entity);
 
         return Task.CompletedTask;
+    }
+
+    public async Task CommitAsync<TEntity>(TEntity entity, Func<TEntity, Task> action)
+    {
+        await action(entity);
     }
 }
