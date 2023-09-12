@@ -13,7 +13,7 @@ public class MockOverriderMockFactory : DefaultMockFactory
 
         if (mockDescriptor.Singleton)
         {
-            overrider.ResetEventually(mockDescriptor.Type, result);
+            overrider.ResetEventually(mockDescriptor, result);
         }
 
         return result;
