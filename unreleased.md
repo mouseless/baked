@@ -2,6 +2,9 @@
 
 ## Improvements
 
+- Transaction function or action allows task return
+- Add logger services during unit testing
+
 - Reset mocked singleton services were not setup after reset, fixed
 - Added `HandledException` and `HandledExceptionHandler` for providing a 
   better distinction in results for managed and unmanaged exceptions
