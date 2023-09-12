@@ -6,11 +6,12 @@ namespace Do.ExceptionHandling.Default;
 public class DefaultExceptionHandlingFeature : IFeature<ExceptionHandlingConfigurator>
 {
     readonly List<Type> _handlers = new();
-    readonly IExceptionHandler _defaultHandler = new DefaultExceptionHandler();
 
     public DefaultExceptionHandlingFeature(List<Type> handlers)
     {
         _handlers.AddRange(handlers);
+        _handlers.Add(typeof(HandledExceptionHandler));
+        _handlers.Add(typeof(DefaultExceptionHandler));
     }
 
     public void Configure(LayerConfigurator configurator)

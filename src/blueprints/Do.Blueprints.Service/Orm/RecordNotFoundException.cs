@@ -1,6 +1,8 @@
-﻿namespace Do.Orm;
+﻿using Do.ExceptionHandling;
 
-public class RecordNotFoundException : Exception
+namespace Do.Orm;
+
+public class RecordNotFoundException : HandledException
 {
     public static RecordNotFoundException For<T>(Guid id) => new(typeof(T), id);
     public static RecordNotFoundException For<T>(string field, object value) => new(typeof(T), field, value);
