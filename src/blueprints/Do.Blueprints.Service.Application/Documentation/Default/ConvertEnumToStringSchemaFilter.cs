@@ -27,7 +27,7 @@ public class ConvertEnumToStringSchemaFilter : ISchemaFilter
                     ? enumName
                     : enumMemberAttribute.Value;
 
-                model.Enum.Add(new OpenApiString(label.ToLower()));
+                model.Enum.Add(new OpenApiString(label.ToLowerInvariant()));
             }
         }
     }
