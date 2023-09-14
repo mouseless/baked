@@ -35,7 +35,6 @@ public class EntityController
 
     [HttpPost]
     [Route("entities")]
-
     public Entity New([FromBody] NewRequest request)
     {
         var target = _serviceProvider.GetRequiredService<Entity>();
