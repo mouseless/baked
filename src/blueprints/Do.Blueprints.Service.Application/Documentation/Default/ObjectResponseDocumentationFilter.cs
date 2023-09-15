@@ -19,15 +19,14 @@ public class ObjectResponseDocumentationFilter : IDocumentFilter
 
     public void Apply(OpenApiDocument swaggerDoc, DocumentFilterContext context)
     {
-        var apiDescriptions = context.ApiDescriptions;
-        foreach (var apiDescription in apiDescriptions)
+        foreach (var apiDescription in context.ApiDescriptions)
         {
             var controllerActionDescriptor = apiDescription.ActionDescriptor as ControllerActionDescriptor;
             if (controllerActionDescriptor != null)
             {
-                if (controllerActionDescriptor.MethodInfo.ReturnType == typeof(object) || controllerActionDescriptor.MethodInfo.ReturnType == typeof(Task<object>))
+                if (IsTargetReturnType(controllerActionDescriptor.MethodInfo.ReturnType))
                 {
-                    var path = "/" + apiDescription!.RelativePath!.TrimEnd('/');
+                    var path = "/" + apiDescription.RelativePath!.TrimEnd('/');
                     var operation = swaggerDoc.Paths[path].Operations[_operationTypes[apiDescription.HttpMethod!]];
 
                     if (!operation.Responses.Any())
@@ -35,27 +34,25 @@ public class ObjectResponseDocumentationFilter : IDocumentFilter
                         operation.Responses.Add("200", new OpenApiResponse
                         {
                             Description = "Success",
-                            Content = new Dictionary<string, OpenApiMediaType>
-                            {
-                                ["application/json"] = new OpenApiMediaType
-                                {
-                                    Schema = context.SchemaGenerator.GenerateSchema(typeof(object), new())
-                                }
-                            }
                         });
                     }
-                    else
-                    {
-                        operation.Responses["200"].Content = new Dictionary<string, OpenApiMediaType>
-                        {
-                            ["application/json"] = new OpenApiMediaType
-                            {
-                                Schema = context.SchemaGenerator.GenerateSchema(typeof(object), new())
-                            }
-                        };
-                    }
+
+                    operation.Responses["200"].Content = GenerateContent(context);
                 }
             }
         }
     }
+
+    bool IsTargetReturnType(Type target) =>
+        target == typeof(object) ||
+        target == typeof(Task<object>) ||
+        target == typeof(Task);
+
+    Dictionary<string, OpenApiMediaType> GenerateContent(DocumentFilterContext context) => new()
+    {
+        ["application/json"] = new OpenApiMediaType
+        {
+            Schema = context.SchemaGenerator.GenerateSchema(typeof(object), new())
+        }
+    };
 }
