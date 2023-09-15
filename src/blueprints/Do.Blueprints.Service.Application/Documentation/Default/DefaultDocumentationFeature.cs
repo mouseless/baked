@@ -27,6 +27,7 @@ public class DefaultDocumentationFeature : IFeature<DocumentationConfigurator>
                 swaggerGenOptions.MapType<object>(() => new OpenApiSchema { Type = "object" });
                 swaggerGenOptions.SchemaFilter<ConvertEnumToStringSchemaFilter>();
                 swaggerGenOptions.OperationFilter<NullTypesAreObjectOperationFilter>();
+                swaggerGenOptions.DocumentFilter<ObjectResponseDocumentationFilter>();
             });
         });
     }
