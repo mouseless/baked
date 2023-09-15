@@ -3,7 +3,7 @@
 ## Improvements
 
 - Enums in responses are returned as string now.
-- Swagger now supports object type.
+- Swagger now supports object parameter and return type in endpoints.
 
 ## Library Upgrades
 
