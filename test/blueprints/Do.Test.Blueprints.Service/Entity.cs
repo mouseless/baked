@@ -72,6 +72,8 @@ public class Entities
     public Entities(IQueryContext<Entity> context) =>
         _context = context;
 
+    public List<Entity> All(int? take, int? skip) => _context.All(take, skip);
+
     public List<Entity> By(string? @string = default)
     {
         if (@string == default) { return _context.All(); }

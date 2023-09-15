@@ -23,6 +23,17 @@ public class EntityController
     }
 
     [HttpGet]
+    [Route("entities/all")]
+    public List<Entity> All([FromQuery] int? take = null, [FromQuery] int? skip = null)
+    {
+        var target = _serviceProvider.GetRequiredService<Entities>();
+
+        var result = target.All(take: take, skip: skip);
+
+        return result;
+    }
+
+    [HttpGet]
     [Route("entities/{id}")]
     public Entity Get(Guid id)
     {
