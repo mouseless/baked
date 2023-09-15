@@ -1,6 +1,8 @@
 ﻿using Do.Architecture;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
@@ -30,7 +32,11 @@ public class RestApiLayer : LayerBase<AddServices, Build>
             .Add(_swaggerGenOptions)
             .OnDispose(() =>
             {
-                services.AddControllers().AddNewtonsoftJson().AddApplicationParts(_applicationParts);
+                services.AddControllers()
+                    .AddNewtonsoftJson(opts =>
+                        opts.SerializerSettings.Converters.Add(new StringEnumConverter(new CamelCaseNamingStrategy()))
+                    )
+                    .AddApplicationParts(_applicationParts);
                 services.ConfigureSwaggerGen(config =>
                 {
                     config.SwaggerGeneratorOptions = _swaggerGenOptions.SwaggerGeneratorOptions;
