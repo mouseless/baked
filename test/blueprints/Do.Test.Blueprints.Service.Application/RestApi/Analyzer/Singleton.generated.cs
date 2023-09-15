@@ -19,7 +19,9 @@ public class SingletonController
     {
         var target = _serviceProvider.GetRequiredService<Singleton>();
 
-        return target.GetNow();
+        var result = target.GetNow();
+
+        return result;
     }
 
     [HttpPost]
@@ -71,6 +73,8 @@ public class SingletonController
     {
         var target = _serviceProvider.GetRequiredService<Singleton>();
 
-        return target.TestObject(request);
+        var result = target.TestObject(request);
+
+        return result;
     }
 }
