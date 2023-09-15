@@ -19,7 +19,9 @@ public class SingletonController
     {
         var target = _serviceProvider.GetRequiredService<Singleton>();
 
-        return target.GetNow();
+        var result = target.GetNow();
+
+        return result;
     }
 
     [HttpPost]
@@ -50,5 +52,29 @@ public class SingletonController
         var target = _serviceProvider.GetRequiredService<Singleton>();
 
         target.TestException(handled);
+    }
+
+    [HttpPut]
+    [Produces("application/json")]
+    [Route("singleton/test-async-object")]
+    public async Task<object> TestAsyncObject([FromBody] object request)
+    {
+        var target = _serviceProvider.GetRequiredService<Singleton>();
+
+        var result = await target.TestAsyncObject(request);
+
+        return result;
+    }
+
+    [HttpPut]
+    [Produces("application/json")]
+    [Route("singleton/test-object")]
+    public object TestObject([FromBody] object request)
+    {
+        var target = _serviceProvider.GetRequiredService<Singleton>();
+
+        var result = target.TestObject(request);
+
+        return result;
     }
 }
