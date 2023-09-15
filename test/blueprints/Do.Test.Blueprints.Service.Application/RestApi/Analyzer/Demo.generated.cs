@@ -21,4 +21,14 @@ public class DemoController
 
         return request;
     }
+
+    [HttpPut]
+    [Produces("application/json")]
+    [Route("object-types")]
+    public async Task<object> ObjectPut([FromBody] object request)
+    {
+        await Task.Delay(10);
+
+        return request;
+    }
 }
