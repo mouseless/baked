@@ -46,4 +46,13 @@ public class Singleton
 
         throw new Exception();
     }
+
+    public object TestObject(object request) => request;
+
+    public async Task<object> TestAsyncObject(object request)
+    {
+        await Task.Delay(100);
+
+        return request;
+    }
 }

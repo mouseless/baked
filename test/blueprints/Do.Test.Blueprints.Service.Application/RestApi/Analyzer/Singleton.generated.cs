@@ -51,4 +51,26 @@ public class SingletonController
 
         target.TestException(handled);
     }
+
+    [HttpPut]
+    [Produces("application/json")]
+    [Route("singleton/test-async-object")]
+    public async Task<object> TestObject([FromBody] object request)
+    {
+        var singleton = _serviceProvider.GetRequiredService<Singleton>();
+
+        var target = await singleton.TestAsyncObject(request);
+
+        return target;
+    }
+
+    [HttpPut]
+    [Produces("application/json")]
+    [Route("singleton/test-object")]
+    public object TestAsyncObject([FromBody] object request)
+    {
+        var target = _serviceProvider.GetRequiredService<Singleton>();
+
+        return target.TestObject(request);
+    }
 }
