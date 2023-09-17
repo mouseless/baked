@@ -15,11 +15,13 @@ public class EntityController
 
     [HttpGet]
     [Route("entities")]
-    public List<Entity> By([FromQuery] string @string = default)
+    public List<Entity> By([FromQuery] string @string = default, [FromQuery] int? take = null, [FromQuery] int? skip = null)
     {
         var target = _serviceProvider.GetRequiredService<Entities>();
 
-        return target.By(@string);
+        var result = target.By(@string: @string, take: take, skip: skip);
+
+        return result;
     }
 
     [HttpGet]

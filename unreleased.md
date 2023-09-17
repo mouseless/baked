@@ -4,6 +4,7 @@
 
 - Enums in responses are returned as string now.
 - Swagger now supports object parameter and return type in endpoints.
+- `By` and `All` methods now have `Take` and `Skip` options
 
 ## Library Upgrades
 

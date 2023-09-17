@@ -21,26 +21,67 @@ public interface IQueryContext<TEntity>
             orderByDescending: orderByDescending
          ).FirstOrDefault();
 
-    public List<TEntity> By(Expression<Func<TEntity, bool>> where) =>
-        Query(where).ToList();
+    public List<TEntity> By(Expression<Func<TEntity, bool>> where,
+        int? take = null,
+        int? skip = null
+    )
+    {
+        var result = Query(where);
+
+        if (take is not null) { result = result.Take(take.Value); }
+        if (skip is not null) { result = result.Skip(skip.Value); }
+
+        return result.ToList();
+    }
 
     public List<TEntity> By<TOrderBy>(Expression<Func<TEntity, bool>> where,
         Expression<Func<TEntity, TOrderBy>>? orderBy = default,
-        Expression<Func<TEntity, TOrderBy>>? orderByDescending = default
-    ) => Query(where,
+        Expression<Func<TEntity, TOrderBy>>? orderByDescending = default,
+        int? take = null,
+        int? skip = null
+    )
+    {
+        var result = Query(where,
             orderBy: orderBy,
             orderByDescending: orderByDescending
-         ).ToList();
+         );
 
-    public List<TEntity> All() => Query().ToList();
+        if (take is not null) { result = result.Take(take.Value); }
+        if (skip is not null) { result = result.Skip(skip.Value); }
+
+        return result.ToList();
+    }
+
+    public List<TEntity> All(
+        int? take = null,
+        int? skip = null
+    )
+    {
+        var result = Query();
+
+        if (take is not null) { result = result.Take(take.Value); }
+        if (skip is not null) { result = result.Skip(skip.Value); }
+
+        return result.ToList();
+    }
 
     public List<TEntity> All<TOrderBy>(
         Expression<Func<TEntity, TOrderBy>>? orderBy = default,
-        Expression<Func<TEntity, TOrderBy>>? orderByDescending = default
-    ) => Query(t => true,
+        Expression<Func<TEntity, TOrderBy>>? orderByDescending = default,
+        int? take = null,
+        int? skip = null
+    )
+    {
+        var result = Query(t => true,
             orderBy: orderBy,
             orderByDescending: orderByDescending
-         ).ToList();
+         );
+
+        if (take is not null) { result = result.Take(take.Value); }
+        if (skip is not null) { result = result.Skip(skip.Value); }
+
+        return result.ToList();
+    }
 
     IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> where) =>
         Query().Where(where);
