@@ -72,12 +72,14 @@ public class Entities
     public Entities(IQueryContext<Entity> context) =>
         _context = context;
 
-    public List<Entity> All(int? take, int? skip) => _context.All(take, skip);
-
-    public List<Entity> By(string? @string = default)
+    public List<Entity> By(
+        string? @string = default,
+        int? take = default,
+        int? skip = default
+    )
     {
-        if (@string == default) { return _context.All(); }
+        if (@string == default) { return _context.All(take: take, skip: skip); }
 
-        return _context.By(e => e.String == @string);
+        return _context.By(e => e.String == @string, take: take, skip: skip);
     }
 }
