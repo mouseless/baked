@@ -6,15 +6,27 @@ $width-page-s: 768px + $width-tolerance;
 $width-page-min: 270px;
 
 $color-brand: #fa465b;
-$color-border: #222222;
-$color-fg-passive: #9b9b9b;
-$color-fg: #cccccc;
-$color-fg-code: #cfcfcf;
+$color-border: #AAAAAA; // #222222 value is ok except table
+$color-fg-passive: #111111;
+$color-active-fg: #fa465b;
+$color-fg: #000000;
+$color-fg-code: #fa465b;
 $color-bg-body: #000000;
 $color-bg-code: #ffffff22;
 $color-bg-box: #111111;
-$color-bg-box-info: #001c78;
-$color-bg-box-tip: #003600;
+$color-bg-box-info: #1c2749;
+$color-bg-box-tip: #275527;
 $color-bg-box-warning: #312b00;
 $color-bg-box-danger: #4c0000;
 $color-bg-box-default: #232323;
+
+/* these are the settings for primary
+$color-fg: #cccccc;
+$color-fg-passive: #9b9b9b;
+$color-fg-code: #cfcfcf;
+$color-active-fg: #111111;
+$color-bg-box-info: #001c78;
+$color-bg-box-tip: #003600;
+$color-border: #222222;
+
+*/

@@ -105,5 +105,4 @@ onMounted(async () => {
     }
   }
 }
-
 </style>

@@ -68,6 +68,7 @@ nav {
 
         &.active {
           background-color: $color-border;
+          color: $color-active-fg;
         }
       }
     }

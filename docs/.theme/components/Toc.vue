@@ -159,6 +159,7 @@ nav {
 
         &.active {
           border-left-color: $color-brand;
+          color: $color-active-fg;
         }
 
         &.return-to-top {
