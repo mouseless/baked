@@ -4,7 +4,8 @@ html, body {
 }
 
 body {
- color: $color-fg;
+  @include theme("background-color", $theme-bg-color);
+  @include theme("color", $theme-color-fg);
 }
 
 img.do {
@@ -29,13 +30,13 @@ img.do {
 .content {
   h1 {
    &, code {
-     color: $color-brand;
+      @include theme("color", $theme-color-brand);
    }
   }
 
   h2, h3, h4, h5, h6 {
     &, code {
-      color: $color-fg;
+      @include theme("color", $theme-color-fg);
     }
   }
 
@@ -59,12 +60,12 @@ img.do {
       text-transform: uppercase;
 
       a {
-        color: $color-fg-passive;
+        @include theme("color", $theme-color-fg-passive);
         text-decoration: none;
         display: inline-block;
 
         &:hover {
-          color: $color-fg-passive;
+          @include theme("color", $theme-color-fg-passive);
         }
       }
     }
@@ -82,10 +83,11 @@ img.do {
   }
 
   code {
-    background-color: $color-bg-code;
+    @include theme("background-color", $theme-color-bg-code);
+    @include theme("color", $theme-color-fg-code);
+
     border-radius: 5px;
     padding: 0.2em 0.4em;
-    color: $color-fg-code;
     overflow-wrap: anywhere;
   }
 
@@ -139,11 +141,12 @@ img.do {
       }
 
       th {
-        color: $color-brand;
+        @include theme("color", $theme-color-brand);
       }
 
       &:nth-child(2n-1) td {
-        background-color: darken($color-border, 5%);
+        @include theme("color", $theme-color-fg-table);
+        @include theme("background-color", $theme-color-bg-table);
       }
 
       &:last-child {
@@ -220,7 +223,7 @@ img.do {
         padding: 1em;
 
         &:hover {
-          color: $color-brand;
+          @include theme("color", $theme-color-brand);
         }
       }
     }

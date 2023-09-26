@@ -65,16 +65,18 @@ const next: any = currentPageNumber < menus.length + 1 ? menus[currentPageNumber
     }
 
     & .link-text {
-      color: $color-fg-passive;
+      @include theme("color", $theme-color-fg-passive);
+
       font-size: 0.75em;
 
       & h3 {
+        @include theme("color", $theme-color-brand);
+
         margin-top: 0.1em;
-        color: $color-brand;
       }
 
       & i {
-        color: $color-fg-passive;
+        @include theme("color", $theme-color-fg-passive);
       }
     }
   }

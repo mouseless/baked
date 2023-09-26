@@ -87,11 +87,11 @@ div.logo {
 }
 
 a {
-  color: $color-fg-passive;
+  @include theme("color", $theme-color-fg-passive);
   cursor: pointer;
 
   &:hover {
-    color: $color-brand;
+    @include theme("color", $theme-color-brand);
   }
 }
 
@@ -105,7 +105,8 @@ nav a {
 
   &.active {
     @include border(bottom);
-    border-bottom-color: $color-brand;
+    @include theme("border-bottom-color", $theme-color-brand);
+
     padding-bottom: 22px;
   }
 }
@@ -147,7 +148,8 @@ nav a {
       &.active {
         border: 0;
         @include border(left);
-        border-left-color: $color-brand;
+        @include theme("border-left-color", $theme-color-brand);
+
         padding-bottom: 0;
         padding-left: 29px;
         margin-left: -22px;

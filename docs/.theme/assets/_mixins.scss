@@ -1,3 +1,12 @@
+@mixin theme($property, $variable) {
+  @each $theme in $themes {
+    @debug "#{$variable}";
+    @media (prefers-color-scheme: #{$theme}) {
+      #{$property}: var(--#{$theme}-#{$variable});
+    }
+  }
+}
+
 @mixin border($properties...) {
   @if length($properties) == 0 {
     $properties: top, left, bottom, right;
@@ -22,7 +31,7 @@
 }
 
 @mixin box {
-  background-color: $color-bg-box;
+  @include theme("background-color", $theme-color-bg-box);
   @include border();
   @include radius();
 }

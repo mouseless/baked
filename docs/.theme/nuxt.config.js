@@ -89,7 +89,7 @@ export default defineNuxtConfig({
       }
     }
   },
-  css: ["~/assets/styles.scss"],
+  css: ["~/assets/styles.scss", "~/assets/variables.css"],
   modules: [
     "@nuxt/content",
     "@pinia/nuxt"

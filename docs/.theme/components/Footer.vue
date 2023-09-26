@@ -57,7 +57,7 @@ footer {
   justify-content: space-between;
 
   &, & * {
-    color: $color-fg-passive;
+    @include theme("color", $theme-color-fg-passive);
   }
 }
 
@@ -93,7 +93,7 @@ nav {
 
     &:hover {
       &, & i {
-        color: $color-brand;
+        @include theme("color", $theme-color-brand);
       }
     }
   }

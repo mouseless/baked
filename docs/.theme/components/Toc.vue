@@ -143,7 +143,7 @@ nav {
       line-height: 24px;
 
       a {
-        color: $color-fg-passive;
+        @include theme('color', $theme-color-fg-passive);
         text-decoration: none;
         cursor: pointer;
         display: block;
@@ -154,12 +154,12 @@ nav {
         border-left: solid 3px #00000000;
 
         &:hover {
-          color: $color-brand;
+          @include theme('color', $theme-color-brand);
         }
 
         &.active {
-          border-left-color: $color-brand;
-          color: $color-active-fg;
+          @include theme('border-left-color', $theme-color-brand);
+          @include theme('color', $theme-color-fg-active);
         }
 
         &.return-to-top {
@@ -186,10 +186,11 @@ nav {
 
 @media (max-width: $width-page-l) {
   nav {
+    @include theme('background-color', $theme-color-bg-body);
+
     text-align: right;
     width: 100%;
     top: 0;
-    background-color: $color-bg-body;
     margin: 0;
     box-shadow: 0 5px 5px 0 $color-bg-body;
     margin-bottom: -2.5em;

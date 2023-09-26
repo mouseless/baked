@@ -1,3 +1,24 @@
+$themes: (dark, light);
+
+$theme-bg-color: "bg-color";
+$theme-color-brand: "color-brand";
+$theme-color-bg-body: "color-bg-body";
+$theme-color-bg-code: "color-bg-code";
+$theme-color-bg-box: "color-bg-box";
+$theme-color-fg-active: "color-fg-active";
+$theme-color-fg-passive: "color-fg-passive";
+$theme-color-fg: "color-fg";
+$theme-color-fg-code: "color-fg-code";
+$theme-color-border: "color-border";
+
+$theme-color-box-tip: "color-box";
+$theme-color-bg-box-tip: "color-bg-box";
+$theme-color-bd-box-tip: "color-bd-box";
+$theme-color-i-box-tip: "color-i-box";
+
+$theme-color-bg-table: "color-bg-table";
+$theme-color-fg-table: "color-fg-table";
+
 $width-tolerance: 50px;
 $width-page: 1768px + $width-tolerance;
 $width-page-l: 1280px + $width-tolerance;
@@ -5,28 +26,10 @@ $width-page-m: 1024px + $width-tolerance;
 $width-page-s: 768px + $width-tolerance;
 $width-page-min: 270px;
 
-$color-brand: #fa465b;
-$color-border: #AAAAAA; // #222222 value is ok except table
-$color-fg-passive: #111111;
-$color-active-fg: #fa465b;
-$color-fg: #000000;
-$color-fg-code: #fa465b;
+$color-border: #222222;
 $color-bg-body: #000000;
-$color-bg-code: #ffffff22;
-$color-bg-box: #111111;
-$color-bg-box-info: #1c2749;
-$color-bg-box-tip: #275527;
+$color-bg-box-info: #001c78;
 $color-bg-box-warning: #312b00;
+$color-bg-box-tip: #003600;
 $color-bg-box-danger: #4c0000;
 $color-bg-box-default: #232323;
-
-/* these are the settings for primary
-$color-fg: #cccccc;
-$color-fg-passive: #9b9b9b;
-$color-fg-code: #cfcfcf;
-$color-active-fg: #111111;
-$color-bg-box-info: #001c78;
-$color-bg-box-tip: #003600;
-$color-border: #222222;
-
-*/
