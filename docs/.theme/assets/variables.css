@@ -39,6 +39,9 @@
   --dark-color-fg-table: #cccccc;
   --dark-color-bg-table: #222222;
 
+  --dark-url-logo-full: url("/logo-full-primary.svg");
+  --dark-url-logo-mark: url("/logo-mark-primary.svg");
+
   /* light theme */
   --light-color-bg: #ebebeb;
   --light-color-fg: #000000;
@@ -78,4 +81,7 @@
 
   --light-color-fg-table: #ebebeb;
   --light-color-bg-table: #222222;
+
+  --light-url-logo-full: url("/logo-full-secondary.svg");
+  --light-url-logo-mark: url("/logo-mark-secondary.svg");
 }

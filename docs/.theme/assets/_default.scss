@@ -11,19 +11,11 @@ body {
 img.do {
   &:is(.logo),
   &:is(.logo:is(.full)) {
-    content: url(/logo-full-primary.svg);
-
-    &:is(.white) {
-      content: url(/logo-full-white.svg);
-    }
+    @include theme("content", $theme-url-logo-full);
   }
 
   &:is(.logo:is(.mark)) {
-    content: url(/logo-mark-primary.svg);
-
-    &:is(.white) {
-      content: url(/logo-mark-white.svg);
-    }
+    @include theme("content", $theme-url-logo-mark);
   }
 }
 

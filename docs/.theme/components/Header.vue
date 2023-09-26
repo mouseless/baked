@@ -117,15 +117,17 @@ nav a {
   }
 
   nav {
+    @include theme("background-color", $theme-color-bg);
+    @include theme("border-left-color", $theme-color-border);
+
     position: fixed;
     top: 0px;
     right: 0;
     z-index: 99;
-    background: black;
     height: 100%;
     width: 320px;
     padding: 20px;
-    border-left: solid 2px #222222;
+    border-left: solid 2px;
     display: none;
 
     &.active {
