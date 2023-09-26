@@ -1,6 +1,5 @@
 @mixin theme($property, $variable) {
   @each $theme in $themes {
-    @debug "#{$variable}";
     @media (prefers-color-scheme: #{$theme}) {
       #{$property}: var(--#{$theme}-#{$variable});
     }

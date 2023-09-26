@@ -65,29 +65,29 @@ blockquote {
   }
 
   @mixin box($color) {
-    border-color: lighten($color, 10%);
-    background-color: $color;
-    color: lighten($color, 75%);
+    @include theme("border-color", $theme-color-bd-box-tip + "-" + $color);
+    @include theme("background-color", $theme-color-bg-box-tip + "-" + $color);
+    @include theme("color", $theme-color-box-tip + "-" + $color);
 
     i {
-      color: lighten($color, 50%);
+      @include theme("color", $theme-color-i-box-tip + "-" + $color);
     }
   }
 
   &.info {
-    @include box($color-bg-box-info);
+    @include box("info");
   }
   &.warning {
-    @include box($color-bg-box-warning);
+    @include box("warning");
   }
   &.tip {
-    @include box($color-bg-box-tip);
+    @include box("tip");
   }
   &.danger {
-    @include box($color-bg-box-danger);
+    @include box("danger");
   }
   &.default {
-    @include box($color-bg-box-default);
+    @include box("default");
   }
 }
 </style>
