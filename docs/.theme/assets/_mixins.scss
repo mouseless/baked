@@ -12,7 +12,8 @@
   }
 
   @each $property in $properties {
-    border-#{$property}: solid 2px $color-border;
+    border-#{$property}: solid 2px;
+    @include theme("border-#{$property}-color", $theme-color-border);
   }
 }
 

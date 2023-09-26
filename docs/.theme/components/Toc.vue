@@ -187,12 +187,13 @@ nav {
 @media (max-width: $width-page-l) {
   nav {
     @include theme('background-color', $theme-color-bg-body);
+    @include theme('color', $theme-color-bg-body);
 
     text-align: right;
     width: 100%;
     top: 0;
     margin: 0;
-    box-shadow: 0 5px 5px 0 $color-bg-body;
+    box-shadow: 0 5px 5px 0;
     margin-bottom: -2.5em;
 
     h4 a {

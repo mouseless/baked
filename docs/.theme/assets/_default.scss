@@ -4,7 +4,7 @@ html, body {
 }
 
 body {
-  @include theme("background-color", $theme-bg-color);
+  @include theme("background-color", $theme-color-bg);
   @include theme("color", $theme-color-fg);
 }
 

@@ -1,7 +1,7 @@
 $themes: (dark, light);
 
-$theme-bg-color: "bg-color";
 $theme-color-brand: "color-brand";
+$theme-color-bg: "color-bg";
 $theme-color-bg-body: "color-bg-body";
 $theme-color-bg-code: "color-bg-code";
 $theme-color-bg-box: "color-bg-box";
@@ -25,6 +25,3 @@ $width-page-l: 1280px + $width-tolerance;
 $width-page-m: 1024px + $width-tolerance;
 $width-page-s: 768px + $width-tolerance;
 $width-page-min: 270px;
-
-$color-border: #222222;
-$color-bg-body: #000000;
