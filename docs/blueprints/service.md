@@ -6,7 +6,7 @@ blueprint is under development and will be detailed as it becomes more mature.
 Layers in this blueprint are;
 
 | Layers               | Run | Test |
-| ---                  | --- | ---  |
+| -------------------- | --- | ---- |
 | Configuration        | +   | +    |
 | Data Access          | +   | +    |
 | Dependency Injection | +   | +    |
@@ -17,14 +17,14 @@ Layers in this blueprint are;
 
 Features with default options are;
 
-| Features          | Run         | Test            | Required |
-| ---               | ---         | ---             | ---      |
-| Business          |             |                 | Yes      |
-| Core              | Dotnet      | Mock            |          |
-| Database          | Sqlite      | InMemory        | Yes      |
-| Documentation     | Default     |                 |          |
-| Excetion Handling | Default     |                 |          |
-| Greeting          | Hello World |                 |          |
-| Logging           | Request     |                 |          |
-| Mocking Overrider |             | First Interface |          |
-| Orm               | Default     | Default         |          |
+| Features           | Run         | Test            | Required |
+| ------------------ | ----------- | --------------- | -------- |
+| Business           |             |                 | Yes      |
+| Core               | Dotnet      | Mock            |          |
+| Database           | Sqlite      | InMemory        | Yes      |
+| Documentation      | Default     |                 |          |
+| Exception Handling | Default     |                 |          |
+| Greeting           | Hello World |                 |          |
+| Logging            | Request     |                 |          |
+| Mocking Overrider  |             | First Interface |          |
+| Orm                | Default     | Default         |          |
