@@ -3,7 +3,7 @@
 DO uses the default dependency injection library for now.
 
 ```csharp
-app.AddDependencyInjection();
+app.Layers.AddDependencyInjection();
 ```
 
 ## Configuration Targets

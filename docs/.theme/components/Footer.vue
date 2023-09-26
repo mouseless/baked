@@ -3,7 +3,7 @@
     <footer>
       <div class="logo">
         <NuxtLink to="/">
-          <img class="do logo white">
+          <img class="do logo">
         </NuxtLink>
         <span>Copyright (c) 2023 Mouseless - MIT License</span>
       </div>

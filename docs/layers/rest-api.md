@@ -3,7 +3,7 @@
 DO uses ASP.NET Core for configuring and building a REST API application.
 
 ```csharp
-app.AddRestApi();
+app.Layers.AddRestApi();
 ```
 
 ## Configuration Targets

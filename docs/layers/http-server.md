@@ -3,7 +3,7 @@
 DO uses ASP.NET Core's `WebApplication` to build and host a web application.
 
 ```csharp
-app.AddHttpServer();
+app.Layers.AddHttpServer();
 ```
 
 ## Configuration Targets
