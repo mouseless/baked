@@ -3,3 +3,9 @@
 ## Improvements
 
 - Added `ScopedWithFactory<T>()` helper for registering scoped services
+- Added new ServiceSpec extensions:
+  - `ADateTime` extension for `Stubber`
+  - `ADictionary` extensions for `Stubber`
+  - `AnEmail` extension for `Stubber`
+  - `ToGuid` extension for `string`
+- Added `passSomeTime` parameter for `Mocker.TheSystem` extension

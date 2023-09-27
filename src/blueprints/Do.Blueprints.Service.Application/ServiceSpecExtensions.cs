@@ -186,15 +186,21 @@ public static class ServiceSpecExtensions
 
     public static ISystem TheSystem(this Mocker mockMe,
         DateTime? now = default,
-        bool? passSomeTime = default
+        bool passSomeTime = false
     )
     {
         var system = mockMe.Spec.GiveMe.The<ISystem>();
         var mock = Mock.Get(system);
 
-        now ??= system.Now;
+        if (now is not null)
+        {
+            mock.Setup(c => c.Now).Returns(now.Value);
+        }
 
-        mock.Setup(c => c.Now).Returns(passSomeTime.GetValueOrDefault() ? now.Value : now.Value.AddSeconds(1));
+        if (passSomeTime)
+        {
+            mock.Setup(c => c.Now).Returns(system.Now.AddSeconds(1));
+        }
 
         return system;
     }
