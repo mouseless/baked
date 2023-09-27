@@ -12,6 +12,28 @@ namespace Do;
 
 public static class ServiceSpecExtensions
 {
+    #region DateTime
+
+    public static DateTime ADateTime(this Stubber _,
+        int year = 2023,
+        int month = 9,
+        int day = 17,
+        int hour = 13,
+        int minute = 29,
+        int second = 00
+    ) => new(year, month, day, hour, minute, second);
+
+    #endregion
+
+    #region Dictionary
+
+    public static Dictionary<string, string> ADictionary(this Stubber giveMe) => giveMe.ADictionary<string, string>();
+    public static Dictionary<TKey, TValue> ADictionary<TKey, TValue>(this Stubber _, params (TKey, TValue)[] pairs)
+        where TKey : notnull
+    => pairs.ToDictionary(pair => pair.Item1, pair => pair.Item2);
+
+    #endregion
+
     #region Entity
 
     public static void ShouldBeDeleted(this object @object) =>
@@ -148,11 +170,15 @@ public static class ServiceSpecExtensions
 
     #endregion
 
-    #region String Extensions
+    #region String
+
+    public static string AnEmail(this Stubber _) => "info@test.com";
 
     public static string AString(this Stubber _,
         string? value = default
     ) => value ?? "test string";
+
+    public static Guid ToGuid(this string source) => Guid.Parse(source);
 
     #endregion
 
