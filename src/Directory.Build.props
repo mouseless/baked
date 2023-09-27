@@ -10,7 +10,7 @@
 
   <PropertyGroup>
     <Product>DO</Product>
-    <Version>0.3.5</Version>
+    <Version>0.3.6</Version>
     <Authors>Mouseless</Authors>
     <Company>Mouseless</Company>
     <Copyright>Copyright (c) 2023 Mouseless</Copyright>

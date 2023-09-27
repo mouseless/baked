@@ -199,7 +199,8 @@ public static class ServiceSpecExtensions
 
         if (passSomeTime)
         {
-            mock.Setup(c => c.Now).Returns(system.Now.AddSeconds(1));
+            var localNow = system.Now;
+            mock.Setup(c => c.Now).Returns(localNow.AddSeconds(1));
         }
 
         return system;
