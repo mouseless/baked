@@ -13,4 +13,10 @@ public static class BusinessExtensions
         source.AddSingleton<Func<T>>(sp => () => sp.GetRequiredServiceUsingRequestServices<T>());
         source.AddTransient<T>();
     }
+
+    public static void AddScopedWithFactory<T>(this IServiceCollection source) where T : class
+    {
+        source.AddSingleton<Func<T>>(sp => () => sp.GetRequiredServiceUsingRequestServices<T>());
+        source.AddScoped<T>();
+    }
 }
