@@ -54,7 +54,7 @@ nav {
       line-height: 24px;
 
       a {
-        font-size: 14.4px !important;
+        font-size: 14.4px;
         display: block;
         text-decoration: none;
         @include theme('color', $theme-color-fg-passive);
@@ -111,7 +111,20 @@ nav {
       &.active {
         display: block;
       }
+      li a {
+        font-size: 13px;
+        padding: 8px;
+      }
     }
+  }
+}
+
+@media (max-width: $width-page-s) {
+  nav {
+    ul li a {
+        font-size: 12px;
+        padding: 7px;
+      }
   }
 }
 </style>

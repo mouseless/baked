@@ -111,6 +111,14 @@ nav a {
   }
 }
 
+@media (max-width: $width-page-l) {
+  nav {
+    a {
+      font-size: 0.85em;
+    }
+  }
+}
+
 @media (max-width: $width-page-m) {
   a.bars {
     display: block;
@@ -125,7 +133,7 @@ nav a {
     right: 0;
     z-index: 99;
     height: 100%;
-    width: 320px;
+    width: calc($width-page-min - 4em);
     padding: 20px;
     border-left: solid 2px;
     display: none;
@@ -162,7 +170,10 @@ nav a {
 
 @media (max-width: $width-page-s) {
   nav {
-    width: calc($width-page-min - 2em);
+    width: calc($width-page-min - 7em);
+    a {
+      font-size: 0.8em;
+    }
   }
 }
 </style>
