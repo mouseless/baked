@@ -122,7 +122,6 @@ img.do {
   table {
     border-spacing: 0;
     width: 100%;
-    table-layout: fixed;
 
     @include border();
     @include radius();
@@ -130,8 +129,7 @@ img.do {
     tr {
       td, th {
         @include border(bottom);
-        overflow: auto;
-        text-overflow: clip;
+
         padding: 1vh 1vw;
       }
 
