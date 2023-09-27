@@ -185,16 +185,16 @@ public static class ServiceSpecExtensions
     #region System
 
     public static ISystem TheSystem(this Mocker mockMe,
-        DateTime? now = default
+        DateTime? now = default,
+        bool? passSomeTime = default
     )
     {
         var system = mockMe.Spec.GiveMe.The<ISystem>();
         var mock = Mock.Get(system);
 
-        if (now is not null)
-        {
-            mock.Setup(c => c.Now).Returns(now.Value);
-        }
+        now ??= system.Now;
+
+        mock.Setup(c => c.Now).Returns(passSomeTime.GetValueOrDefault() ? now.Value : now.Value.AddSeconds(1));
 
         return system;
     }
