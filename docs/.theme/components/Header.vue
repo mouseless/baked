@@ -3,7 +3,7 @@
     <header>
       <div class="logo">
         <NuxtLink to="/">
-          <img class="do logo" />
+          <img class="do logo">
         </NuxtLink>
       </div>
       <a class="bars" @click="toggle"><i class="fa-solid fa-bars" /></a>

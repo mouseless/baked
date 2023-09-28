@@ -70,7 +70,7 @@ blockquote {
     color: color-mix(in srgb, $color, white 75%);
 
     i {
-      color: color-mix(in srgb, $color, white 50%)
+      color: color-mix(in srgb, $color, white 50%);
     }
   }
 

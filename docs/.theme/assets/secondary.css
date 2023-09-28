@@ -4,11 +4,12 @@
   --color-fg: #000000;
   --color-brand: #fa465b;
   --color-bg-body: #ebebeb;
-  --color-bg-code: #8c4e4e22;
+  --color-bg-code: #aaaaaa44;
   --color-bg-box: #111111;
+  --color-bg-toc: #cacaca;
   --color-fg-active: #111111;
   --color-fg-passive: #111111;
-  --color-fg-code: #fa465b;
+  --color-fg-code: #444444;
   --color-border: #cacaca;
 
   --color-bg-box-tip: #003600;
@@ -17,8 +18,8 @@
   --color-bg-box-warning: #312b00;
   --color-bg-box-default: #232323;
 
-  --color-fg-table: #ebebeb;
-  --color-bg-table: #222222;
+  --color-fg-table: #000000;
+  --color-bg-table: #cacaca;
 
   --url-logo-full: url("/logo-full-secondary.svg");
   --url-logo-full-mono: url("/logo-full-black.svg");
