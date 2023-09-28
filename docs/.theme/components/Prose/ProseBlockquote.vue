@@ -64,13 +64,13 @@ blockquote {
     width: 100%;
   }
 
-  @mixin box($color) {
-    @include theme("border-color", $theme-color-bd-box-tip + "-" + $color);
-    @include theme("background-color", $theme-color-bg-box-tip + "-" + $color);
-    @include theme("color", $theme-color-box-tip + "-" + $color);
+  @mixin box($type) {
+    @include theme("border-color", $theme-color-bd-box + "-" + $type);
+    @include theme("background-color", $theme-color-bg-box + "-" + $type);
+    @include theme("color", $theme-color-box + "-" + $type);
 
     i {
-      @include theme("color", $theme-color-i-box-tip + "-" + $color);
+      @include theme("color", $theme-color-i-box + "-" + $type);
     }
   }
 

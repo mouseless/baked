@@ -112,8 +112,8 @@ nav {
         display: block;
       }
       li a {
-        font-size: 13px;
-        padding: 8px;
+        font-size: 0.93em;
+        padding: 0.61em;
       }
     }
   }
@@ -122,8 +122,8 @@ nav {
 @media (max-width: $width-page-s) {
   nav {
     ul li a {
-        font-size: 12px;
-        padding: 7px;
+        font-size: 0.86em;
+        padding: 0.58em;
       }
   }
 }
