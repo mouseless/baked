@@ -17,6 +17,7 @@ onMounted(() => {
 </script>
 <style lang="scss" scoped>
 .table-container {
+  @include radius();
   overflow-x: auto;
   position: relative;
   width: 100%;
