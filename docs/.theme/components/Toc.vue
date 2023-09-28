@@ -204,7 +204,7 @@ nav {
 
     & > ul {
       @include box;
-      background-color: $color-bg-toc;
+      background-color: $color-bg-box-menu;
       display: none;
       text-align: left;
       padding: 1em;

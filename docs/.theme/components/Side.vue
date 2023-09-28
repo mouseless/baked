@@ -103,6 +103,7 @@ nav {
     ul {
       display: none;
       @include box;
+      background-color: $color-bg-box-menu;
       position: absolute;
       width: 200%;
       padding: 0.5em;
