@@ -1,19 +1,10 @@
-@mixin theme($property, $variable) {
-  @each $theme in $themes {
-    @media (prefers-color-scheme: #{$theme}) {
-      #{$property}: var(--#{$theme}-#{$variable});
-    }
-  }
-}
-
 @mixin border($properties...) {
   @if length($properties) == 0 {
     $properties: top, left, bottom, right;
   }
 
   @each $property in $properties {
-    border-#{$property}: solid 2px;
-    @include theme("border-#{$property}-color", $theme-color-border);
+    border-#{$property}: solid 2px $color-border;
   }
 }
 
@@ -31,7 +22,7 @@
 }
 
 @mixin box {
-  @include theme("background-color", $theme-color-bg-box);
+  background-color: $color-bg-box;
   @include border();
   @include radius();
 }

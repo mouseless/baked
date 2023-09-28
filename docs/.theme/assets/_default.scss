@@ -1,34 +1,48 @@
+@import url("https://mouseless.github.io/brand/assets/css/primary.css") (prefers-color-scheme: dark);
+@import url("./primary.css") (prefers-color-scheme: dark);
+
+@import url("https://mouseless.github.io/brand/assets/css/secondary.css") (prefers-color-scheme: light);
+@import url("./secondary.css") (prefers-color-scheme: light);
+
 html, body {
   margin: 0;
   padding: 0;
 }
 
 body {
-  @include theme("background-color", $theme-color-bg);
-  @include theme("color", $theme-color-fg);
+  background-color: $color-bg;
+  color: $color-fg;
 }
 
 img.do {
   &:is(.logo),
   &:is(.logo:is(.full)) {
-    @include theme("content", $theme-url-logo-full);
+    content: $url-logo-full;
+
+    &:is(.mono) {
+      content: $url-logo-full-mono;
+    }
   }
 
   &:is(.logo:is(.mark)) {
-    @include theme("content", $theme-url-logo-mark);
+    content: $url-logo-mark;
+
+    &:is(.mono) {
+      content: $url-logo-mark-mono;
+    }
   }
 }
 
 .content {
   h1 {
    &, code {
-      @include theme("color", $theme-color-brand);
+      color: $color-brand;
    }
   }
 
   h2, h3, h4, h5, h6 {
     &, code {
-      @include theme("color", $theme-color-fg);
+      color: $color-fg;
       overflow: auto;
     }
   }
@@ -53,12 +67,12 @@ img.do {
       text-transform: uppercase;
 
       a {
-        @include theme("color", $theme-color-fg-passive);
+        color: $color-fg-passive;
         text-decoration: none;
         display: inline-block;
 
         &:hover {
-          @include theme("color", $theme-color-fg-passive);
+          color: $color-fg-passive;
         }
       }
     }
@@ -76,9 +90,8 @@ img.do {
   }
 
   code {
-    @include theme("background-color", $theme-color-bg-code);
-    @include theme("color", $theme-color-fg-code);
-
+    background-color: $color-bg-code;
+    color: $color-fg-code;
     border-radius: 5px;
     padding: 0.2em 0.4em;
     overflow-wrap: anywhere;
@@ -134,12 +147,12 @@ img.do {
       }
 
       th {
-        @include theme("color", $theme-color-brand);
+        color: $color-brand;
       }
 
       &:nth-child(2n-1) td {
-        @include theme("color", $theme-color-fg-table);
-        @include theme("background-color", $theme-color-bg-table);
+        color: $color-fg-table;
+        background-color: $color-bg-table;
       }
 
       &:last-child {
@@ -216,7 +229,7 @@ img.do {
         padding: 1em;
 
         &:hover {
-          @include theme("color", $theme-color-brand);
+          color: $color-brand;
         }
       }
     }

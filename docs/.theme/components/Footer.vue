@@ -3,7 +3,7 @@
     <footer>
       <div class="logo">
         <NuxtLink to="/">
-          <img class="do logo">
+          <img class="do logo mono">
         </NuxtLink>
         <span>Copyright (c) 2023 Mouseless - MIT License</span>
       </div>
@@ -57,7 +57,7 @@ footer {
   justify-content: space-between;
 
   &, & * {
-    @include theme("color", $theme-color-fg-passive);
+    color: $color-fg-passive;
   }
 }
 
@@ -93,7 +93,7 @@ nav {
 
     &:hover {
       &, & i {
-        @include theme("color", $theme-color-brand);
+        color: $color-brand;
       }
     }
   }

@@ -1,26 +1,28 @@
-$themes: (dark, light);
+$color-brand: var(--color-brand);
+$color-bg: var(--color-bg);
+$color-bg-body: var(--color-bg-body);
+$color-bg-code: var(--color-bg-code);
+$color-bg-box: var(--color-bg-box);
+$color-fg-active: var(--color-fg-active);
+$color-fg-passive: var(--color-fg-passive);
+$color-fg: var(--color-fg);
+$color-fg-code: var(--color-fg-code);
+$color-border: var(--color-border);
+$color-box: var(--color-box);
 
-$theme-color-brand: "color-brand";
-$theme-color-bg: "color-bg";
-$theme-color-bg-body: "color-bg-body";
-$theme-color-bg-code: "color-bg-code";
-$theme-color-bg-box: "color-bg-box";
-$theme-color-fg-active: "color-fg-active";
-$theme-color-fg-passive: "color-fg-passive";
-$theme-color-fg: "color-fg";
-$theme-color-fg-code: "color-fg-code";
-$theme-color-border: "color-border";
+$color-bg-box-tip: var(--color-bg-box-tip);
+$color-bg-box-info: var(--color-bg-box-info);
+$color-bg-box-danger: var(--color-bg-box-danger);
+$color-bg-box-warning: var(--color-bg-box-warning);
+$color-bg-box-default: var(--color-bg-box-default);
 
-$theme-color-box: "color-box";
-$theme-color-bg-box: "color-bg-box";
-$theme-color-bd-box: "color-bd-box";
-$theme-color-i-box: "color-i-box";
+$color-bg-table: var(--color-bg-table);
+$color-fg-table: var(--color-fg-table);
 
-$theme-color-bg-table: "color-bg-table";
-$theme-color-fg-table: "color-fg-table";
-
-$theme-url-logo-full: "url-logo-full";
-$theme-url-logo-mark: "url-logo-mark";
+$url-logo-full: var(--url-logo-full);
+$url-logo-full-mono: var(--url-logo-full-mono);
+$url-logo-mark: var(--url-logo-mark);
+$url-logo-mark-mono: var(--url-logo-mark-mono);
 
 $width-tolerance: 50px;
 $width-page: 1768px + $width-tolerance;

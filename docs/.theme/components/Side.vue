@@ -57,18 +57,18 @@ nav {
         font-size: 14.4px;
         display: block;
         text-decoration: none;
-        @include theme('color', $theme-color-fg-passive);
+        color: $color-fg-passive;
 
         border-radius: 5px;
         padding: 10px;
 
         &:hover {
-          @include theme('color', $theme-color-brand);
+          color: $color-brand;
         }
 
         &.active {
-          @include theme('background-color', $theme-color-border);
-          @include theme('color', $theme-color-fg-active);
+          background-color: $color-border;
+          color: $color-fg-active;
         }
       }
     }
@@ -83,7 +83,7 @@ nav {
 
 @media (max-width: $width-page-m) {
   nav {
-    @include theme('background-color', $theme-color-bg-body);
+    background-color: $color-bg-body;
 
     margin-top: 0;
     width: 50%;

@@ -71,11 +71,6 @@ export default defineNuxtConfig({
           rel: "stylesheet",
           type: "text/css",
           href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
-        },
-        {
-          rel: "stylesheet",
-          type: "text/css",
-          href: "https://mouseless.github.io/brand/assets/css/secondary.css"
         }
       ]
     }
@@ -89,7 +84,7 @@ export default defineNuxtConfig({
       }
     }
   },
-  css: ["~/assets/styles.scss", "~/assets/variables.css"],
+  css: ["~/assets/styles.scss"],
   modules: [
     "@nuxt/content",
     "@pinia/nuxt"

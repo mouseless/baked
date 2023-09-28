@@ -64,30 +64,30 @@ blockquote {
     width: 100%;
   }
 
-  @mixin box($type) {
-    @include theme("border-color", $theme-color-bd-box + "-" + $type);
-    @include theme("background-color", $theme-color-bg-box + "-" + $type);
-    @include theme("color", $theme-color-box + "-" + $type);
+  @mixin box($color) {
+    border-color: color-mix(in srgb, $color, white 10%);
+    background-color: $color;
+    color: color-mix(in srgb, $color, white 75%);
 
     i {
-      @include theme("color", $theme-color-i-box + "-" + $type);
+      color: color-mix(in srgb, $color, white 50%)
     }
   }
 
   &.info {
-    @include box("info");
+    @include box($color-bg-box-info);
   }
   &.warning {
-    @include box("warning");
+    @include box($color-bg-box-warning);
   }
   &.tip {
-    @include box("tip");
+    @include box($color-bg-box-tip);
   }
   &.danger {
-    @include box("danger");
+    @include box($color-bg-box-danger);
   }
   &.default {
-    @include box("default");
+    @include box($color-bg-box-default);
   }
 }
 </style>

@@ -3,18 +3,12 @@
     <header>
       <div class="logo">
         <NuxtLink to="/">
-          <img class="do logo">
+          <img class="do logo" />
         </NuxtLink>
       </div>
-      <a
-        class="bars"
-        @click="toggle"
-      ><i class="fa-solid fa-bars" /></a>
+      <a class="bars" @click="toggle"><i class="fa-solid fa-bars" /></a>
       <nav :class="{ active: menuShown }">
-        <a
-          class="close"
-          @click="toggle"
-        ><i class="fa-solid fa-close" /></a>
+        <a class="close" @click="toggle"><i class="fa-solid fa-close" /></a>
         <NuxtLink
           v-for="menu in menus"
           :key="menu.title"
@@ -48,8 +42,12 @@ const root = computed(() => `/${route.path.split("/")[1]}`);
 
 const menus: any = { ...store.sections };
 
-function toggle() { menuShown.value = !menuShown.value; }
-function close() { menuShown.value = false; }
+function toggle() {
+  menuShown.value = !menuShown.value;
+}
+function close() {
+  menuShown.value = false;
+}
 </script>
 <style lang="scss" scoped>
 div.top {
@@ -87,11 +85,11 @@ div.logo {
 }
 
 a {
-  @include theme("color", $theme-color-fg-passive);
+  color: $color-fg-passive;
   cursor: pointer;
 
   &:hover {
-    @include theme("color", $theme-color-brand);
+    color: $color-brand;
   }
 }
 
@@ -105,7 +103,7 @@ nav a {
 
   &.active {
     @include border(bottom);
-    @include theme("border-bottom-color", $theme-color-brand);
+    border-bottom-color: $color-brand;
 
     padding-bottom: 22px;
   }
@@ -125,8 +123,8 @@ nav a {
   }
 
   nav {
-    @include theme("background-color", $theme-color-bg);
-    @include theme("border-left-color", $theme-color-border);
+    background-color: $color-bg;
+    border-left-color: $color-border;
 
     position: fixed;
     top: 0px;
@@ -158,7 +156,7 @@ nav a {
       &.active {
         border: 0;
         @include border(left);
-        @include theme("border-left-color", $theme-color-brand);
+        border-left-color: $color-brand;
 
         padding-bottom: 0;
         padding-left: 29px;

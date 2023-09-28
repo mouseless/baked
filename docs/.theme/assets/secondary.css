@@ -1,0 +1,27 @@
+:root {
+  /* light theme */
+  --color-bg: #ebebeb;
+  --color-fg: #000000;
+  --color-brand: #fa465b;
+  --color-bg-body: #ebebeb;
+  --color-bg-code: #8c4e4e22;
+  --color-bg-box: #111111;
+  --color-fg-active: #111111;
+  --color-fg-passive: #111111;
+  --color-fg-code: #fa465b;
+  --color-border: #cacaca;
+
+  --color-bg-box-tip: #003600;
+  --color-bg-box-info: #001c78;
+  --color-bg-box-danger: #4c0000;
+  --color-bg-box-warning: #312b00;
+  --color-bg-box-default: #232323;
+
+  --color-fg-table: #ebebeb;
+  --color-bg-table: #222222;
+
+  --url-logo-full: url("/logo-full-secondary.svg");
+  --url-logo-full-mono: url("/logo-full-black.svg");
+  --url-logo-mark: url("/logo-mark-secondary.svg");
+  --url-logo-mark-mono: url("/logo-mark-black.svg");
+}
