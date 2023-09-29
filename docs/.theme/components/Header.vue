@@ -106,7 +106,6 @@ nav a {
   &.active {
     @include border(bottom);
     border-bottom-color: $color-brand;
-
     padding-bottom: 22px;
   }
 }
