@@ -65,29 +65,29 @@ blockquote {
   }
 
   @mixin box($color) {
-    border-color: color-mix(in srgb, $color, $color-base-mix 10%);
-    background-color: $color;
-    color: color-mix(in srgb, $color, $color-base-mix 75%);
+    border-color: color-mix(in srgb, $color, $color-base-mix 65%);
+    background-color: color-mix(in srgb, $color, $color-base-mix 80%);
+    color: color-mix(in srgb, $color, $color-base-mix 0%);
 
     i {
-      color: color-mix(in srgb, $color, $color-base-mix 50%);
+      color: color-mix(in srgb, $color, $color-base-mix 0%);
     }
   }
 
   &.info {
-    @include box($color-bg-box-info);
+    @include box($color-box-info);
   }
   &.warning {
-    @include box($color-bg-box-warning);
+    @include box($color-box-warning);
   }
   &.tip {
-    @include box($color-bg-box-tip);
+    @include box($color-box-tip);
   }
   &.danger {
-    @include box($color-bg-box-danger);
+    @include box($color-box-danger);
   }
   &.default {
-    @include box($color-bg-box-default);
+    @include box($color-box-default);
   }
 }
 </style>

@@ -4,20 +4,21 @@
   --color-fg: #000000;
   --color-brand: #fa465b;
   --color-bg-body: #ebebeb;
-  --color-bg-code: #aaaaaa44;
+  --color-bg-code: #88888832;
   --color-bg-box: #111111;
   --color-bg-box-menu: #cacaca;
   --color-fg-active: #111111;
   --color-fg-passive: #111111;
   --color-fg-code: #444444;
   --color-border: #cacaca;
+  --color-border-code: #646464;
 
-  --color-base-mix: black;
-  --color-bg-box-tip: #75cd75;
-  --color-bg-box-info: #869eee;
-  --color-bg-box-danger: #e5a3a3;
-  --color-bg-box-warning: #e7dd93;
-  --color-bg-box-default: #a5a5a5;
+  --color-base-mix: var(--color-bg);
+  --color-box-tip: #1c8c12;
+  --color-box-info: #1a2da6;
+  --color-box-danger: #c41a1a;
+  --color-box-warning: #9f5f00;
+  --color-box-default: var(--color-fg);
 
   --color-fg-table: #000000;
   --color-bg-table: #cacaca;
