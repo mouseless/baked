@@ -69,9 +69,9 @@ const next: any = currentPageNumber < menus.length + 1 ? menus[currentPageNumber
       font-size: 0.75em;
 
       & h3 {
+        margin-top: 0.1em;
         color: $color-brand;
         font-size: 1.5em;
-        margin-top: 0.1em;
       }
 
       & i {

@@ -84,7 +84,6 @@ nav {
 @media (max-width: $width-page-m) {
   nav {
     background-color: $color-bg-body;
-
     margin-top: 0;
     width: 50%;
     top: 0;
@@ -112,6 +111,7 @@ nav {
       &.active {
         display: block;
       }
+
       li a {
         font-size: 0.93em;
         padding: 0.61em;

@@ -36,7 +36,7 @@ img.do {
 .content {
   h1 {
    &, code {
-      color: $color-brand;
+    color: $color-brand;
    }
   }
 
@@ -91,9 +91,9 @@ img.do {
 
   code {
     background-color: $color-bg-code;
-    color: $color-fg-code;
     border-radius: 5px;
     padding: 0.2em 0.4em;
+    color: $color-fg-code;
     overflow-wrap: anywhere;
   }
 
@@ -151,7 +151,6 @@ img.do {
       }
 
       &:nth-child(2n-1) td {
-        color: $color-fg-table;
         background-color: $color-bg-table;
       }
 

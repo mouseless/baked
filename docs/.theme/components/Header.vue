@@ -6,9 +6,15 @@
           <img class="do logo">
         </NuxtLink>
       </div>
-      <a class="bars" @click="toggle"><i class="fa-solid fa-bars" /></a>
+      <a
+        class="bars"
+        @click="toggle"
+      ><i class="fa-solid fa-bars" /></a>
       <nav :class="{ active: menuShown }">
-        <a class="close" @click="toggle"><i class="fa-solid fa-close" /></a>
+        <a
+          class="close"
+          @click="toggle"
+        ><i class="fa-solid fa-close" /></a>
         <NuxtLink
           v-for="menu in menus"
           :key="menu.title"
@@ -42,12 +48,8 @@ const root = computed(() => `/${route.path.split("/")[1]}`);
 
 const menus: any = { ...store.sections };
 
-function toggle() {
-  menuShown.value = !menuShown.value;
-}
-function close() {
-  menuShown.value = false;
-}
+function toggle() { menuShown.value = !menuShown.value; }
+function close() { menuShown.value = false; }
 </script>
 <style lang="scss" scoped>
 div.top {
@@ -123,17 +125,15 @@ nav a {
   }
 
   nav {
-    background-color: $color-bg;
-    border-left-color: $color-border;
-
     position: fixed;
     top: 0px;
     right: 0;
     z-index: 99;
+    background: $color-bg;
     height: 100%;
     width: calc($width-page-min - 4em);
     padding: 20px;
-    border-left: solid 2px;
+    border-left: solid 2px $color-border;
     display: none;
 
     &.active {

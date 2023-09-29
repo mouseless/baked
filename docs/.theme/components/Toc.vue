@@ -186,14 +186,12 @@ nav {
 
 @media (max-width: $width-page-l) {
   nav {
-    background-color: $color-bg-body;
-    color: $color-bg-body;
-
     text-align: right;
     width: 100%;
     top: 0;
+    background-color: $color-bg-body;
     margin: 0;
-    box-shadow: 0 5px 5px 0;
+    box-shadow: 0 5px 5px 0 $color-bg-body;
     margin-bottom: -2.5em;
 
     h4 a {
