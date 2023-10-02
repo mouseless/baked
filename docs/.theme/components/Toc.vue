@@ -143,7 +143,7 @@ nav {
       line-height: 24px;
 
       a {
-        color: $color-fg-passive;
+        color: $color-fg-second;
         text-decoration: none;
         cursor: pointer;
         display: block;
@@ -201,7 +201,7 @@ nav {
 
     & > ul {
       @include box;
-      background-color: $color-bg-box-menu;
+      background-color: $color-bg-nav;
       display: none;
       text-align: left;
       padding: 1em;

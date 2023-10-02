@@ -57,7 +57,7 @@ footer {
   justify-content: space-between;
 
   &, & * {
-    color: $color-fg-passive;
+    color: $color-fg-second;
   }
 }
 

@@ -57,8 +57,7 @@ nav {
         font-size: 14.4px;
         display: block;
         text-decoration: none;
-        color: $color-fg-passive;
-
+        color: $color-fg-second;
         border-radius: 5px;
         padding: 10px;
 
@@ -67,7 +66,7 @@ nav {
         }
 
         &.active {
-          background-color: $color-border;
+          background-color: $color-bg-second;
         }
       }
     }
@@ -101,7 +100,7 @@ nav {
     ul {
       display: none;
       @include box;
-      background-color: $color-bg-box-menu;
+      background-color: $color-bg-nav;
       position: absolute;
       width: 200%;
       padding: 0.5em;

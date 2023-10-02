@@ -62,12 +62,12 @@ img.do {
       text-transform: uppercase;
 
       a {
-        color: $color-fg-passive;
+        color: $color-fg-second;
         text-decoration: none;
         display: inline-block;
 
         &:hover {
-          color: $color-fg-passive;
+          color: $color-fg-second;
         }
       }
     }
@@ -78,7 +78,7 @@ img.do {
 
     &:has(.diagram) {
       @include box;
-      border-color: $color-border-code;
+      border-color: $color-bg-second;
       text-align: center;
       padding: 30px 0px 18px 0px;
     }
@@ -126,7 +126,7 @@ img.do {
 
   pre {
     @include box;
-    border-color: $color-border-code;
+    border-color: $color-bg-second;
     padding: 1.2em;
     text-wrap: wrap;
     overflow: auto;
@@ -172,7 +172,7 @@ img.do {
       }
 
       &:nth-child(2n-1) td {
-        background-color: $color-border;
+        background-color: $color-bg-second;
       }
 
       &:last-child {

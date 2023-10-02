@@ -65,7 +65,7 @@ const next: any = currentPageNumber < menus.length + 1 ? menus[currentPageNumber
     }
 
     & .link-text {
-      color: $color-fg-passive;
+      color: $color-fg-second;
       font-size: 0.75em;
 
       & h3 {
@@ -75,7 +75,7 @@ const next: any = currentPageNumber < menus.length + 1 ? menus[currentPageNumber
       }
 
       & i {
-        color: $color-fg-passive;
+        color: $color-fg-second;
       }
     }
   }

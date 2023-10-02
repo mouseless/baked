@@ -87,7 +87,7 @@ div.logo {
 }
 
 a {
-  color: $color-fg-passive;
+  color: $color-fg-second;
   cursor: pointer;
 
   &:hover {
@@ -132,7 +132,7 @@ nav a {
     height: 100%;
     width: calc($width-page-min - 4em);
     padding: 20px;
-    border-left: solid 2px $color-border;
+    border-left: solid 2px $color-bg-second;
     display: none;
 
     &.active {
