@@ -1,17 +1,11 @@
-@import url("https://mouseless.github.io/brand/assets/css/primary.css") (prefers-color-scheme: dark);
-@import url("./primary.css") (prefers-color-scheme: dark);
+@import url("https://mouseless.github.io/brand/assets/css/default.css");
 
-@import url("https://mouseless.github.io/brand/assets/css/secondary.css") (prefers-color-scheme: light);
+@import url("./primary.css") (prefers-color-scheme: dark);
 @import url("./secondary.css") (prefers-color-scheme: light);
 
 html, body {
   margin: 0;
   padding: 0;
-}
-
-body {
-  background-color: $color-bg;
-  color: $color-fg;
 }
 
 img.do {
@@ -83,7 +77,7 @@ img.do {
 
     &:has(.diagram) {
       @include box;
-
+      border-color: $color-border-code;
       text-align: center;
       padding: 30px 0px 18px 0px;
     }

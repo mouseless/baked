@@ -65,12 +65,12 @@ blockquote {
   }
 
   @mixin box($color) {
-    border-color: color-mix(in srgb, $color, $color-base-mix 65%);
-    background-color: color-mix(in srgb, $color, $color-base-mix 80%);
-    color: color-mix(in srgb, $color, $color-base-mix 0%);
+    border-color: color-mix(in srgb, $color, $color-bg 65%);
+    background-color: color-mix(in srgb, $color, $color-bg 80%);
+    color: color-mix(in srgb, $color, $color-bg 0%);
 
     i {
-      color: color-mix(in srgb, $color, $color-base-mix 0%);
+      color: color-mix(in srgb, $color, $color-bg 0%);
     }
   }
 

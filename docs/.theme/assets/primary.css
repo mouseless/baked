@@ -1,28 +1,5 @@
 :root {
-    /* dark theme */
-  --color-bg: #000000;
-  --color-fg: #cccccc;
-  --color-brand: #fa465b;
-  --color-bg-body: #000000;
-  --color-bg-code: #ffffff22;
-  --color-bg-box: #111111;
-  --color-bg-box-menu: #111111;
-  --color-fg-active: #9b9b9b;
-  --color-fg-passive: #9b9b9b;
-  --color-fg-code: #cfcfcf;
-  --color-border: #222222;
-  --color-border-code: var(--color-border);
-
-  --color-base-mix: var(--color-bg);
-  --color-box-tip: #37f426;
-  --color-box-info: #3893f4;
-  --color-box-danger: #e76565;
-  --color-box-warning: #bc930e;
-  --color-box-default: var(--color-fg);
-
-  --color-fg-table: #cccccc;
-  --color-bg-table: #222222;
-
+  /* dark theme */
   --url-logo-full: url("/logo-full-primary.svg");
   --url-logo-full-mono: url("/logo-full-white.svg");
   --url-logo-mark: url("/logo-mark-primary.svg");
