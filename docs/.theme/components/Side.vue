@@ -66,7 +66,7 @@ nav {
         }
 
         &.active {
-          background-color: $color-bg-second;
+          background-color: $color-bg-active;
         }
       }
     }
