@@ -159,7 +159,6 @@ nav {
 
         &.active {
           border-left-color: $color-brand;
-          color: $color-fg-active;
         }
 
         &.return-to-top {
@@ -189,9 +188,9 @@ nav {
     text-align: right;
     width: 100%;
     top: 0;
-    background-color: $color-bg-body;
+    background-color: $color-bg;
     margin: 0;
-    box-shadow: 0 5px 5px 0 $color-bg-body;
+    box-shadow: 0 5px 5px 0 $color-bg;
     margin-bottom: -2.5em;
 
     h4 a {

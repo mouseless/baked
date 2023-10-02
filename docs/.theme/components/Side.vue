@@ -68,7 +68,6 @@ nav {
 
         &.active {
           background-color: $color-border;
-          color: $color-fg-active;
         }
       }
     }
@@ -83,7 +82,7 @@ nav {
 
 @media (max-width: $width-page-m) {
   nav {
-    background-color: $color-bg-body;
+    background-color: $color-bg;
     margin-top: 0;
     width: 50%;
     top: 0;
