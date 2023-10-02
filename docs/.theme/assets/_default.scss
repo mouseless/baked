@@ -37,8 +37,6 @@ img.do {
   h2, h3, h4, h5, h6 {
     &, code {
       color: $color-fg;
-      overflow-x: auto;
-      overflow-y: hidden;
     }
   }
 
@@ -85,7 +83,7 @@ img.do {
   }
 
   code {
-    background-color: $color-bg-code;
+    background-color: color-mix(in srgb, $color-bg-code 14.4%, transparent);
     border-radius: 5px;
     padding: 0.2em 0.4em;
     color: $color-fg-code;

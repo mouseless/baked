@@ -1,22 +1,22 @@
 $color-brand: var(--color-brand);
 
 $color-bg: var(--color-bg);
-$color-bg-second: var(--color-border);
-$color-bg-nav: var(--color-bg-box-menu);
+$color-bg-second: var(--color-bg-2);
+$color-bg-nav: var(--color-bg-2);
 $color-bg-box: #111111;
-$color-bg-code: var(--color-bg-code);
+$color-bg-code: var(--color-bg-3);
 
-$color-bg-active: var(--color-border);
-$color-bg-table-nth-child: var(--color-border);
+$color-bg-active: var(--color-bg-2);
+$color-bg-table-nth-child: var(--color-bg-2);
 
-$color-box-danger: var(--color-box-danger);
-$color-box-default: var(--color-box-default);
-$color-box-info: var(--color-box-info);
-$color-box-tip: var(--color-box-tip);
-$color-box-warning: var(--color-box-warning);
+$color-box-danger: var(--color-danger);
+$color-box-default: var(--color-fg);
+$color-box-info: var(--color-info);
+$color-box-tip: var(--color-success);
+$color-box-warning: var(--color-warning);
 
 $color-fg: var(--color-fg);
-$color-fg-second: var(--color-fg-passive);
+$color-fg-second: var(--color-fg-2);
 $color-fg-code: var(--color-fg);
 
 $url-logo-full: var(--url-logo-full);
