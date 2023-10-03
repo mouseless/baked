@@ -91,3 +91,32 @@ blockquote {
   }
 }
 </style>
+<style lang="scss">
+blockquote {
+  &.info {
+    code {
+      color: $color-box-info;
+    }
+  }
+  &.warning {
+    code {
+      color: $color-box-warning;
+    }
+  }
+  &.tip {
+    code {
+      color: $color-box-tip;
+    }
+  }
+  &.danger {
+    code {
+      color: $color-box-danger;
+    }
+  }
+  &.default {
+    code {
+      color: $color-box-default;
+    }
+  }
+}
+</style>
