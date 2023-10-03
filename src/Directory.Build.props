@@ -27,10 +27,7 @@
     <None Include="..\..\..\icon.png" Pack="true" PackagePath="\" />
     <None Include="..\..\..\LICENSE" Pack="true" PackagePath="\" />
     <None Include="..\..\..\README.md" Pack="true" PackagePath="\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="..\..\..\stylecop.ruleset" />
+    <None Include="..\..\..\stylecop.ruleset" Pack="true" PackagePath="\" />
   </ItemGroup>
 
 </Project>
