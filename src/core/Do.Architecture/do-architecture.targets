@@ -1,5 +1,11 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
   <ItemGroup>
     <Using Include="Do" />
   </ItemGroup>
+
+  <PropertyGroup>
+    <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)../content/stylecop.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
 </Project>

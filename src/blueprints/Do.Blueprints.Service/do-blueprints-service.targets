@@ -9,4 +9,8 @@
     <Using Include="System.Threading.Tasks" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)../content/stylecop.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
 </Project>

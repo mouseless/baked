@@ -3,5 +3,9 @@
   <ItemGroup>
     <Using Include="Do" />
   </ItemGroup>
+  
+  <PropertyGroup>
+    <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)../content/stylecop.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
 
 </Project>
