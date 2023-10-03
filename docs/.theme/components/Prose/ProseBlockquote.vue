@@ -65,29 +65,58 @@ blockquote {
   }
 
   @mixin box($color) {
-    border-color: lighten($color, 10%);
-    background-color: $color;
-    color: lighten($color, 75%);
+    border-color: color-mix(in srgb, $color, $color-bg 65%);
+    background-color: color-mix(in srgb, $color, $color-bg 80%);
+    color: color-mix(in srgb, $color, $color-bg 0%);
 
     i {
-      color: lighten($color, 50%);
+      color: color-mix(in srgb, $color, $color-bg 0%);
     }
   }
 
   &.info {
-    @include box($color-bg-box-info);
+    @include box($color-box-info);
   }
   &.warning {
-    @include box($color-bg-box-warning);
+    @include box($color-box-warning);
   }
   &.tip {
-    @include box($color-bg-box-tip);
+    @include box($color-box-tip);
   }
   &.danger {
-    @include box($color-bg-box-danger);
+    @include box($color-box-danger);
   }
   &.default {
-    @include box($color-bg-box-default);
+    @include box($color-box-default);
+  }
+}
+</style>
+<style lang="scss">
+blockquote {
+  &.info {
+    code {
+      color: $color-box-info;
+    }
+  }
+  &.warning {
+    code {
+      color: $color-box-warning;
+    }
+  }
+  &.tip {
+    code {
+      color: $color-box-tip;
+    }
+  }
+  &.danger {
+    code {
+      color: $color-box-danger;
+    }
+  }
+  &.default {
+    code {
+      color: $color-box-default;
+    }
   }
 }
 </style>

@@ -87,7 +87,7 @@ div.logo {
 }
 
 a {
-  color: $color-fg-passive;
+  color: $color-fg-second;
   cursor: pointer;
 
   &:hover {
@@ -110,6 +110,14 @@ nav a {
   }
 }
 
+@media (max-width: $width-page-l) {
+  nav {
+    a {
+      font-size: 0.85em;
+    }
+  }
+}
+
 @media (max-width: $width-page-m) {
   a.bars {
     display: block;
@@ -120,11 +128,11 @@ nav a {
     top: 0px;
     right: 0;
     z-index: 99;
-    background: black;
+    background: $color-bg;
     height: 100%;
-    width: 320px;
+    width: calc($width-page-min - 4em);
     padding: 20px;
-    border-left: solid 2px #222222;
+    border-left: solid 2px $color-bg-second;
     display: none;
 
     &.active {
@@ -148,6 +156,7 @@ nav a {
         border: 0;
         @include border(left);
         border-left-color: $color-brand;
+
         padding-bottom: 0;
         padding-left: 29px;
         margin-left: -22px;
@@ -158,7 +167,10 @@ nav a {
 
 @media (max-width: $width-page-s) {
   nav {
-    width: calc($width-page-min - 2em);
+    width: calc($width-page-min - 7em);
+    a {
+      font-size: 0.8em;
+    }
   }
 }
 </style>

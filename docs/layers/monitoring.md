@@ -3,7 +3,7 @@
 DO uses the default logging library for now.
 
 ```csharp
-app.AddMonitoring();
+app.Layers.AddMonitoring();
 ```
 
 ## Configuration Targets

@@ -1,20 +1,32 @@
+$color-brand: var(--color-brand);
+
+$color-bg: var(--color-bg);
+$color-bg-second: var(--color-bg-2);
+$color-bg-nav: var(--color-bg-2);
+$color-bg-box: #111111;
+$color-bg-code: var(--color-bg-3);
+
+$color-bg-active: var(--color-bg-2);
+$color-bg-table-nth-child: var(--color-bg-2);
+
+$color-box-danger: var(--color-danger);
+$color-box-default: var(--color-fg);
+$color-box-info: var(--color-info);
+$color-box-tip: var(--color-success);
+$color-box-warning: var(--color-warning);
+
+$color-fg: var(--color-fg);
+$color-fg-second: var(--color-fg-2);
+$color-fg-code: var(--color-fg);
+
+$url-logo-full: var(--url-logo-full);
+$url-logo-full-mono: var(--url-logo-full-mono);
+$url-logo-mark: var(--url-logo-mark);
+$url-logo-mark-mono: var(--url-logo-mark-mono);
+
 $width-tolerance: 50px;
 $width-page: 1768px + $width-tolerance;
 $width-page-l: 1280px + $width-tolerance;
 $width-page-m: 1024px + $width-tolerance;
 $width-page-s: 768px + $width-tolerance;
 $width-page-min: 270px;
-
-$color-brand: #fa465b;
-$color-border: #222222;
-$color-fg-passive: #9b9b9b;
-$color-fg: #cccccc;
-$color-fg-code: #cfcfcf;
-$color-bg-body: #000000;
-$color-bg-code: #ffffff22;
-$color-bg-box: #111111;
-$color-bg-box-info: #001c78;
-$color-bg-box-tip: #003600;
-$color-bg-box-warning: #312b00;
-$color-bg-box-danger: #4c0000;
-$color-bg-box-default: #232323;

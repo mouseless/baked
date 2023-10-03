@@ -4,7 +4,7 @@ DO uses _NHibernate_ and _FluentNHibernate_ library when providing data access
 layer.
 
 ```csharp
-app.AddDataAccess();
+app.Layers.AddDataAccess();
 ```
 
 ## Configuration Targets

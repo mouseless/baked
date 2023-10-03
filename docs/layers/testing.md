@@ -4,7 +4,7 @@ DO uses _NUnit_ for unit testing, _Moq_ for mocking and _Shouldly_ for
 assertion.
 
 ```csharp
-app.AddTesting();
+app.Layers.AddTesting();
 ```
 
 ## Configuration Targets

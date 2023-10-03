@@ -76,7 +76,11 @@ onMounted(async () => {
     margin-left: 4em;
 
     .content {
-      margin: 0;
+      margin: 0.8em 0 0 0;
+
+      nav {
+        margin-top: -0.9em;
+      }
     }
 
     .no-toc {
@@ -105,5 +109,4 @@ onMounted(async () => {
     }
   }
 }
-
 </style>

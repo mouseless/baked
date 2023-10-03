@@ -54,11 +54,10 @@ nav {
       line-height: 24px;
 
       a {
-        font-size: 14.4px !important;
+        font-size: 14.4px;
         display: block;
         text-decoration: none;
-        color: $color-fg-passive;
-
+        color: $color-fg-second;
         border-radius: 5px;
         padding: 10px;
 
@@ -67,7 +66,7 @@ nav {
         }
 
         &.active {
-          background-color: $color-border;
+          background-color: $color-bg-active;
         }
       }
     }
@@ -82,7 +81,7 @@ nav {
 
 @media (max-width: $width-page-m) {
   nav {
-    background-color: $color-bg-body;
+    background-color: $color-bg;
     margin-top: 0;
     width: 50%;
     top: 0;
@@ -101,6 +100,7 @@ nav {
     ul {
       display: none;
       @include box;
+      background-color: $color-bg-nav;
       position: absolute;
       width: 200%;
       padding: 0.5em;
@@ -109,7 +109,21 @@ nav {
       &.active {
         display: block;
       }
+
+      li a {
+        font-size: 0.93em;
+        padding: 0.61em;
+      }
     }
+  }
+}
+
+@media (max-width: $width-page-s) {
+  nav {
+    ul li a {
+        font-size: 0.86em;
+        padding: 0.58em;
+      }
   }
 }
 </style>

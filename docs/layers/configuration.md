@@ -4,7 +4,7 @@ DO uses .NET's standard configuration system to provide a environment based
 configuration mechanism.
 
 ```csharp
-app.AddConfiguration();
+app.Layers.AddConfiguration();
 ```
 
 ## Configuration Targets

@@ -3,7 +3,7 @@
     <footer>
       <div class="logo">
         <NuxtLink to="/">
-          <img class="do logo white">
+          <img class="do logo mono">
         </NuxtLink>
         <span>Copyright (c) 2023 Mouseless - MIT License</span>
       </div>
@@ -57,7 +57,7 @@ footer {
   justify-content: space-between;
 
   &, & * {
-    color: $color-fg-passive;
+    color: $color-fg-second;
   }
 }
 

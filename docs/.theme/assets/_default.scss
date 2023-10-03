@@ -1,27 +1,28 @@
+@import url("https://mouseless.github.io/brand/assets/css/default.css");
+
+@import url("./primary.css") (prefers-color-scheme: dark);
+@import url("./secondary.css") (prefers-color-scheme: light);
+
 html, body {
   margin: 0;
   padding: 0;
 }
 
-body {
- color: $color-fg;
-}
-
 img.do {
   &:is(.logo),
   &:is(.logo:is(.full)) {
-    content: url(/logo-full-primary.svg);
+    content: $url-logo-full;
 
-    &:is(.white) {
-      content: url(/logo-full-white.svg);
+    &:is(.mono) {
+      content: $url-logo-full-mono;
     }
   }
 
   &:is(.logo:is(.mark)) {
-    content: url(/logo-mark-primary.svg);
+    content: $url-logo-mark;
 
-    &:is(.white) {
-      content: url(/logo-mark-white.svg);
+    &:is(.mono) {
+      content: $url-logo-mark-mono;
     }
   }
 }
@@ -29,7 +30,7 @@ img.do {
 .content {
   h1 {
    &, code {
-     color: $color-brand;
+    color: $color-brand;
    }
   }
 
@@ -59,12 +60,12 @@ img.do {
       text-transform: uppercase;
 
       a {
-        color: $color-fg-passive;
+        color: $color-fg-second;
         text-decoration: none;
         display: inline-block;
 
         &:hover {
-          color: $color-fg-passive;
+          color: $color-fg-second;
         }
       }
     }
@@ -75,14 +76,14 @@ img.do {
 
     &:has(.diagram) {
       @include box;
-
+      border-color: $color-bg-second;
       text-align: center;
       padding: 30px 0px 18px 0px;
     }
   }
 
   code {
-    background-color: $color-bg-code;
+    background-color: color-mix(in srgb, $color-bg-code 14.4%, transparent);
     border-radius: 5px;
     padding: 0.2em 0.4em;
     color: $color-fg-code;
@@ -97,7 +98,7 @@ img.do {
 
   pre {
     @include box;
-
+    border-color: $color-bg-second;
     padding: 1.2em;
     text-wrap: wrap;
     overflow: auto;
@@ -143,7 +144,7 @@ img.do {
       }
 
       &:nth-child(2n-1) td {
-        background-color: darken($color-border, 5%);
+        background-color: $color-bg-table-nth-child;
       }
 
       &:last-child {

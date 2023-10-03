@@ -1,0 +1,7 @@
+:root {
+  /* light theme */
+  --url-logo-full: url("/logo-full-secondary.svg");
+  --url-logo-full-mono: url("/logo-full-black.svg");
+  --url-logo-mark: url("/logo-mark-primary.svg");
+  --url-logo-mark-mono: url("/logo-mark-black.svg");
+}
