@@ -7,12 +7,15 @@
 </template>
 <style lang="scss" scoped>
 .table-container {
+  @include radius();
+
   overflow-x: auto;
   margin: 2em 0;
 
   table {
     @include radius();
     @include border();
+
     border-spacing: 0;
     width: 100%;
   }

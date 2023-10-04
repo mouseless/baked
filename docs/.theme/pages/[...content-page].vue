@@ -66,6 +66,7 @@ onMounted(async () => {
 
   .content {
     width: 100%;
+    max-width: $width-content;
     margin: 0 $width-content-margin;
   }
 }

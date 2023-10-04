@@ -81,4 +81,10 @@ article {
     grid-column-start: side;
   }
 }
+
+@media (max-width: $width-page-s) {
+  .content {
+    display: block;
+  }
+}
 </style>

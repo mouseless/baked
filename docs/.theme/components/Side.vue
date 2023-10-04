@@ -59,7 +59,7 @@ nav {
         text-decoration: none;
         color: $color-fg-second;
         border-radius: 10px;
-        padding: 0.75em;
+        padding: 0.75em 1em;
 
         &:hover {
           color: $color-brand;
@@ -127,6 +127,8 @@ nav {
 
 @media (max-width: $width-page-s) {
   nav {
+    margin-bottom: -3.7em;
+
     ul li a {
       padding: 0.58em;
     }
