@@ -71,6 +71,11 @@ export default defineNuxtConfig({
           rel: "stylesheet",
           type: "text/css",
           href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+        },
+        {
+          rel: "stylesheet",
+          type: "text/css",
+          href: "https://mouseless.github.io/brand/assets/css/default.css"
         }
       ]
     }
@@ -97,7 +102,7 @@ export default defineNuxtConfig({
     },
     highlight: {
       // Theme used in all color schemes.
-      theme: "dark-plus",
+      theme: "slack-dark",
       preload: [
         "diff",
         "ts",

@@ -87,16 +87,26 @@ public class DoDemo
 
 ```mermaid
 flowchart TB
-    A --> B --> C
-    B --> D
+    subgraph C
+      D
+      E
+    end
+
+    A --> B --> D
+    B --> E
 ```
 
 ### Horizontal
 
 ```mermaid
 flowchart LR
-    A --> B --> C
-    B --> D
+    subgraph C
+      D
+      E
+    end
+
+    A --> B --> D
+    B --> E
 ```
 
 ## Horizontal Ruler
@@ -121,7 +131,15 @@ This is an [internal Link](./README.md). This is an [external Link](https://gith
 
 ## Tables
 
-| Col 1  | Col 2  |
-| ---    | ---    |
-| Cell 1 | Cell 2 |
-| Cell 3 | Cell 4 |
+| Column 1 | Column 2 | Column 3 | Column 4 |
+| ---      | ---      | ---      | ---      |
+| Cell 1.1 | Cell 2.1 | Cell 3.1 | Cell 4.1 |
+| Cell 1.2 | Cell 2.2 | Cell 3.2 | Cell 4.2 |
+| Cell 1.3 | Cell 2.3 | Cell 3.3 | Cell 4.3 |
+| Cell 1.4 | Cell 2.4 | Cell 3.4 | Cell 4.4 |
+
+### with wide cells
+
+| Column 1                 | Column 2                 | Column 3                 |
+| ---                      | ---                      | ---                      |
+| Cell.That.Is.Really.Wide | Cell.That.Is.Really.Wide | Cell.That.Is.Really.Wide |

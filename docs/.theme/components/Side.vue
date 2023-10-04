@@ -54,19 +54,19 @@ nav {
       line-height: 24px;
 
       a {
-        font-size: 14.4px;
+        font-size: 1em;
         display: block;
         text-decoration: none;
         color: $color-fg-second;
-        border-radius: 5px;
-        padding: 10px;
+        border-radius: 10px;
+        padding: 0.75em 1em;
 
         &:hover {
           color: $color-brand;
         }
 
         &.active {
-          background-color: $color-bg-active;
+          background-color: $color-bg-nav-active;
         }
       }
     }
@@ -90,10 +90,14 @@ nav {
     h4 {
       display: block;
       text-transform: uppercase;
-      font-size: 80%;
+      font-size: 0.9em;
 
       a {
         padding-left: 0;
+
+        &:hover {
+          color: $color-brand;
+        }
       }
     }
 
@@ -111,8 +115,11 @@ nav {
       }
 
       li a {
-        font-size: 0.93em;
         padding: 0.61em;
+
+        &.active {
+          background-color: $color-bg-third;
+        }
       }
     }
   }
@@ -120,10 +127,11 @@ nav {
 
 @media (max-width: $width-page-s) {
   nav {
+    margin-bottom: -3.7em;
+
     ul li a {
-        font-size: 0.86em;
-        padding: 0.58em;
-      }
+      padding: 0.58em;
+    }
   }
 }
 </style>

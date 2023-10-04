@@ -66,17 +66,18 @@ onMounted(async () => {
 
   .content {
     width: 100%;
-    margin: 0 4em;
+    max-width: $width-content;
+    margin: 0 $width-content-margin;
   }
 }
 
 @media (max-width: $width-page-l) {
   .container {
     flex-direction: column-reverse;
-    margin-left: 4em;
+    margin-left: $width-content-margin;
 
     .content {
-      margin: 0.8em 0 0 0;
+      margin: 1.8em 0 0 0;
 
       nav {
         margin-top: -0.9em;

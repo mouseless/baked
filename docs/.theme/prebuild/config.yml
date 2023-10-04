@@ -21,19 +21,20 @@ tasks:
       source: ./
       target: ./.theme/.temp
       config:
-        backgroundColor: '#111111'
+        backgroundColor: '#092122'
         theme: base
-        deviceScaleFactor: 1.5
+        deviceScaleFactor: 1
         themeVariables:
           fontFamily: '"Roboto Mono", monospace'
-          fontSize: '12px'
+          fontSize: '16px'
           primaryColor: '#fa465b'
-          primaryTextColor: '#fff'
-          primaryBorderColor': '#7c0000'
-          lineColor: '#b3b3b3'
-          secondaryColor: '#111111'
-          secondaryTextColor: '#b3b3b3'
-          tertiaryColor: '#222222'
+          primaryTextColor: '#f6f6f6'
+          primaryBorderColor': '#fa465b'
+          lineColor: '#888888'
+          secondaryColor: '#061819'
+          secondaryTextColor: '#cacaca'
+          secondaryBorderColor: '#061819'
+          tertiaryColor: '#163738'
           activationBkgColor: '#fa465b'
   - rename:
       source: ./.theme/.temp

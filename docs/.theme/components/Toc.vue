@@ -121,15 +121,16 @@ onBeforeUnmount(() => {
 h4 {
   margin-bottom: 0.5em;
   padding-left: 1em;
+  font-size: 0.9em;
 }
 
 nav {
   position: sticky;
   align-self: start;
   top: 1.5em;
-  width: 250px;
+  width: $width-side;
   margin-top: 2.5em;
-  font-size: 12.8px;
+  font-size: 0.9em;
   overflow: hidden;
   text-wrap: nowrap;
 
@@ -143,6 +144,7 @@ nav {
       line-height: 24px;
 
       a {
+        font-size: 0.9em;
         color: $color-fg-second;
         text-decoration: none;
         cursor: pointer;
@@ -151,18 +153,18 @@ nav {
         overflow: hidden;
         text-overflow: ellipsis;
         padding-left: 1em;
-        border-left: solid 3px #00000000;
+        border-left: solid 2px transparent;
 
         &:hover {
           color: $color-brand;
         }
 
         &.active {
-          border-left-color: $color-brand;
+          border-left-color: $color-bg-third;
         }
 
         &.return-to-top {
-          margin-top: 0.50em;
+          margin-top: 0.75em;
         }
       }
 
@@ -177,12 +179,6 @@ nav {
   }
 }
 
-@media (max-width: $width-page) {
-  a {
-    font-size: 12.8px !important;
-  }
-}
-
 @media (max-width: $width-page-l) {
   nav {
     text-align: right;
@@ -191,12 +187,17 @@ nav {
     background-color: $color-bg;
     margin: 0;
     box-shadow: 0 5px 5px 0 $color-bg;
-    margin-bottom: -2.5em;
+    margin-bottom: -3.7em;
+    font-size: 1em;
 
     h4 a {
       display: inline-block;
       padding-right: 0;
       padding-left: 0;
+
+      &:hover {
+        color: $color-brand;
+      }
     }
 
     & > ul {
@@ -205,7 +206,7 @@ nav {
       display: none;
       text-align: left;
       padding: 1em;
-      padding-left: 0em;
+      padding-left: 0;
       margin-bottom: 2.5em;
 
       &.active {
@@ -214,7 +215,7 @@ nav {
     }
 
     ul li a.active:before {
-      left: 0em;
+      left: 0;
     }
   }
 }
