@@ -26,8 +26,9 @@ const manipulatedHref = props.href
 </script>
 <style lang="scss" scoped>
 a {
-  font-family: 'Open Sans';
+  font-family: $font-default;
 }
+
 i {
   margin-left: 0.3em;
 }

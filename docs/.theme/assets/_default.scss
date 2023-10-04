@@ -1,11 +1,13 @@
-@import url("https://mouseless.github.io/brand/assets/css/default.css");
-
 @import url("./primary.css") (prefers-color-scheme: dark);
 @import url("./secondary.css") (prefers-color-scheme: light);
 
 html, body {
   margin: 0;
   padding: 0;
+}
+
+body {
+  font-size: calc($font-size * 1.2);
 }
 
 img.do {
@@ -28,29 +30,10 @@ img.do {
 }
 
 .content {
-  h1 {
-   &, code {
-    color: $color-brand;
-   }
-  }
-
-  h2, h3, h4, h5, h6 {
+  h1, h2, h3, h4, h5, h6 {
     &, code {
       color: $color-fg;
     }
-  }
-
-  h1 {
-    font-size: 40px;
-  }
-  h2 {
-    scroll-margin-top: 0.5em;
-    margin-top: 1.5em;
-  }
-
-  h3 {
-    scroll-margin-top: 1em;
-    margin-top: 1.5em;
   }
 
   nav {
@@ -72,8 +55,6 @@ img.do {
   }
 
   p {
-    line-height: 1.5em;
-
     &:has(.diagram) {
       @include box;
       border-color: $color-bg-second;
@@ -165,51 +146,20 @@ img.do {
 }
 
 @media (max-width: $width-page) {
+  body {
+    font-size: $font-size;
+  }
+
   .content {
-    h1 {
-      font-size: 35px;
-    }
-
-    h2 {
-      font-size: 24px;
-    }
-
-    h3 {
-      font-size: 18px;
-    }
-
-    h4 {
-      font-size: 16px;
-    }
-
     p {
-      font-size: 14px;
       line-height: 1.75em;
-
-      code {
-        font-size: 12px;
-      }
-    }
-
-    ul, ol {
-      li {
-        font-size: 14px;
-      }
-
-      code {
-        font-size: 12px;
-      }
     }
   }
 }
 
 @media (max-width: $width-page-l) {
   .content {
-    h2 {
-      scroll-margin-top: 2em;
-    }
-
-    h3 {
+    h2, h3 {
       scroll-margin-top: 3em;
     }
   }

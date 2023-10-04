@@ -27,7 +27,7 @@ const types = {
   ":warning:": { class: "warning", icon: "fa-warning" },
   ":bulb:": { class: "tip", icon: "fa-lightbulb" },
   ":x:": { class: "danger", icon: "fa-circle-xmark" },
-  default: { class: "default" }
+  default: { class: "default", icon: "fa-angle-right" }
 };
 
 const type = computed(() => {
@@ -50,25 +50,21 @@ blockquote {
   flex-direction: row;
   align-items: flex-start;
   justify-content: flex-start;
-  padding: 0 1em;
-  border: solid 2px;
+  padding: 0;
   border-radius: 10px;
-  margin: 15px 0px;
+  margin: 1em 0;
 
   i {
-    padding-top: 1.2em;
-    padding-right: 1em;
+    position: absolute;
+    padding-top: 2ch;
   }
 
   div {
     width: 100%;
+    padding-left: 4ch;
   }
 
   @mixin box($color) {
-    border-color: color-mix(in srgb, $color, $color-bg 65%);
-    background-color: color-mix(in srgb, $color, $color-bg 80%);
-    color: color-mix(in srgb, $color, $color-bg 0%);
-
     i {
       color: color-mix(in srgb, $color, $color-bg 0%);
     }
