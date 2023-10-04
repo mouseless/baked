@@ -130,7 +130,7 @@ nav {
   top: 1.5em;
   width: $width-side;
   margin-top: 2.5em;
-
+  font-size: 0.9em;
   overflow: hidden;
   text-wrap: nowrap;
 
@@ -187,12 +187,17 @@ nav {
     background-color: $color-bg;
     margin: 0;
     box-shadow: 0 5px 5px 0 $color-bg;
-    margin-bottom: -2.5em;
+    margin-bottom: -3.7em;
+    font-size: 1em;
 
     h4 a {
       display: inline-block;
       padding-right: 0;
       padding-left: 0;
+
+      &:hover {
+        color: $color-brand;
+      }
     }
 
     & > ul {
@@ -201,7 +206,7 @@ nav {
       display: none;
       text-align: left;
       padding: 1em;
-      padding-left: 0em;
+      padding-left: 0;
       margin-bottom: 2.5em;
 
       &.active {
@@ -210,7 +215,7 @@ nav {
     }
 
     ul li a.active:before {
-      left: 0em;
+      left: 0;
     }
   }
 }

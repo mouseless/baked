@@ -28,15 +28,18 @@ $font-size: var(--font-size);
 
 $height-logo: var(--height-logo);
 
+$line-height: var(--line-height);
+
 $url-logo-full: var(--url-logo-full);
 $url-logo-full-mono: var(--url-logo-full-mono);
 $url-logo-mark: var(--url-logo-mark);
 $url-logo-mark-mono: var(--url-logo-mark-mono);
 
 $width-content: var(--width-content);
-$width-tolerance: 50px;
+$width-content-margin: 4em;
 $width-side: 250px;
-$width-page: calc($width-content + (2 * $width-side) + $width-tolerance);
+$width-tolerance: 50px;
+$width-page: calc($width-content + (2 * $width-side) + $width-content-margin + $width-tolerance);
 $width-page-xl: 1780px + $width-tolerance;
 $width-page-l: 1280px + $width-tolerance;
 $width-page-m: 1024px + $width-tolerance;

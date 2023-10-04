@@ -58,8 +58,8 @@ nav {
         display: block;
         text-decoration: none;
         color: $color-fg-second;
-        border-radius: 5px;
-        padding: 10px;
+        border-radius: 10px;
+        padding: 0.75em;
 
         &:hover {
           color: $color-brand;
@@ -94,6 +94,10 @@ nav {
 
       a {
         padding-left: 0;
+
+        &:hover {
+          color: $color-brand;
+        }
       }
     }
 

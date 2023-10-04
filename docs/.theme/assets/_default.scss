@@ -8,6 +8,7 @@ html, body {
 
 body {
   font-size: calc($font-size * 1.2);
+  line-height: calc($line-height * 1.2);
 }
 
 img.do {
@@ -81,7 +82,7 @@ img.do {
       display: block;
       max-width: 0;
       font-size: 0.9em;
-      line-height: 1.0em;
+      line-height: 1.5em;
     }
   }
 
@@ -104,11 +105,16 @@ img.do {
 @media (max-width: $width-page-xl) {
   body {
     font-size: $font-size;
+    line-height: $line-height;
   }
 
   .content {
     p {
       line-height: 1.75em;
+    }
+
+    pre code {
+      line-height: 1.0em;
     }
   }
 }

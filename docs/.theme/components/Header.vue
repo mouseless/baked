@@ -96,7 +96,7 @@ a {
 }
 
 nav a {
-  margin: 10px;
+  margin: 1em;
   text-decoration: none;
 
   &.close {
@@ -161,7 +161,7 @@ nav a {
         border-left-color: $color-bg-third;
 
         padding-bottom: 0;
-        padding-left: 29px;
+        padding-left: calc(20px + 1em);
         margin-left: -22px;
       }
     }

@@ -36,11 +36,11 @@
   }
 
   @media (max-width: $width-page-l) {
-    max-width: calc($width-page - 250px - $width-tolerance);
+    max-width: calc($width-page - $width-side - $width-tolerance);
   }
 
   @media (max-width: $width-page-m) {
-    max-width: calc($width-page - 500px - $width-tolerance);
+    max-width: calc($width-page - (2 * $width-side) - $width-content-margin - $width-tolerance);
   }
 
   @media (max-width: $width-page-s) {
