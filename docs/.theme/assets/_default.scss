@@ -30,12 +30,6 @@ img.do {
 }
 
 .content {
-  h1, h2, h3, h4, h5, h6 {
-    &, code {
-      color: $color-fg;
-    }
-  }
-
   nav {
     h4 {
       margin-top: 0;
@@ -64,38 +58,34 @@ img.do {
   }
 
   code {
-    background-color: color-mix(in srgb, $color-bg-code 14.4%, transparent);
+    background-color: $color-bg-code;
     border-radius: 5px;
     padding: 0.2em 0.4em;
     color: $color-fg-code;
     overflow-wrap: anywhere;
-  }
-
-  blockquote {
-    pre {
-      margin-right: 3em;
-    }
+    font-size: 0.9em;
   }
 
   pre {
     @include box;
-    border-color: $color-bg-second;
-    padding: 1.2em;
+    border-color: $color-bg-code;
+    padding: 3ch;
     text-wrap: wrap;
     overflow: auto;
+    max-width: calc($width-content - 6ch);
 
     code {
       padding: 0;
       background-color: transparent;
       text-wrap: nowrap;
       display: block;
-      max-width: 0px;
+      max-width: 0;
+      font-size: 0.9em;
+      line-height: 1.0em;
     }
   }
 
   ul, ol {
-    padding-inline-start: 1.2em;
-
     li {
       margin-bottom: 0.2em;
       line-height: 1.50em;
@@ -106,46 +96,12 @@ img.do {
     }
   }
 
-  table {
-    border-spacing: 0;
-    width: 100%;
-
-    @include border();
-    @include radius();
-
-    tr {
-      td, th {
-        @include border(bottom);
-
-        padding: 1vh 1vw;
-      }
-
-      th {
-        color: $color-brand;
-      }
-
-      &:nth-child(2n-1) td {
-        background-color: $color-bg-table-nth-child;
-      }
-
-      &:last-child {
-        td {
-          border-bottom: 0;
-        }
-      }
-    }
-
-    * {
-      text-align: left;
-    }
-  }
-
   hr {
     @include border();
   }
 }
 
-@media (max-width: $width-page) {
+@media (max-width: $width-page-xl) {
   body {
     font-size: $font-size;
   }

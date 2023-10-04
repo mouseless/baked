@@ -54,7 +54,7 @@ store.setSections(sections);
       "side content"
       "side content";
   grid-template-rows: 65px 1fr;
-  grid-template-columns: 250px;
+  grid-template-columns: $width-side;
 }
 
 .side {

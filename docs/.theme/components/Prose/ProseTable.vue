@@ -5,24 +5,33 @@
     </table>
   </div>
 </template>
-<script setup>
-import { onMounted } from "#imports";
-
-onMounted(() => {
-  const tableContainer = document.querySelector(".table-container");
-  const table = document.querySelector("table");
-
-  tableContainer.style.height = getComputedStyle(table).height;
-});
-</script>
 <style lang="scss" scoped>
 .table-container {
-  @include radius();
   overflow-x: auto;
-  position: relative;
-  width: 100%;
+  margin: 2em 0;
+
   table {
-    position: absolute;
+    @include radius();
+    @include border();
+    border-spacing: 0;
+    width: 100%;
+  }
+}
+</style>
+<style lang="scss">
+table {
+  tr {
+    td, th {
+      padding: 1em;
+    }
+
+    th, &:nth-child(even) td {
+      background-color: $color-bg-table-nth-child;
+    }
+  }
+
+  * {
+    text-align: left;
   }
 }
 </style>

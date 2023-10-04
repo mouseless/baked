@@ -43,15 +43,33 @@ const next: any = currentPageNumber < menus.length + 1 ? menus[currentPageNumber
 </script>
 <style lang="scss" scoped>
 .navigation-buttons-container {
+  max-width: $width-content;
   margin-top: 4em;
 
-  & .button {
+  .button {
     padding-right: 0.4em;
     padding-left: 0.4em;
     margin-top: 0.9em;
 
-    & a {
+    a {
       text-decoration: none;
+
+      .link-text {
+        color: $color-fg-third;
+        font-size: 0.75em;
+
+        h3 {
+          color: $color-fg-second;
+          margin-top: 0.1em;
+          font-size: 1.5em;
+        }
+      }
+
+      &:hover {
+        h3 {
+          color: $color-brand;
+        }
+      }
     }
 
     &.left {
@@ -62,21 +80,6 @@ const next: any = currentPageNumber < menus.length + 1 ? menus[currentPageNumber
     &.right {
       text-align: end;
       float: right;
-    }
-
-    & .link-text {
-      color: $color-fg-second;
-      font-size: 0.75em;
-
-      & h3 {
-        margin-top: 0.1em;
-        color: $color-brand;
-        font-size: 1.5em;
-      }
-
-      & i {
-        color: $color-fg-second;
-      }
     }
   }
 }

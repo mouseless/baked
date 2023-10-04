@@ -53,6 +53,7 @@ blockquote {
   padding: 0;
   border-radius: 10px;
   margin: 1em 0;
+  max-width: $width-content;
 
   i {
     position: absolute;
@@ -61,7 +62,7 @@ blockquote {
 
   div {
     width: 100%;
-    padding-left: 4ch;
+    padding-left: 3ch;
   }
 
   @mixin box($color) {
@@ -84,35 +85,6 @@ blockquote {
   }
   &.default {
     @include box($color-box-default);
-  }
-}
-</style>
-<style lang="scss">
-blockquote {
-  &.info {
-    code {
-      color: $color-box-info;
-    }
-  }
-  &.warning {
-    code {
-      color: $color-box-warning;
-    }
-  }
-  &.tip {
-    code {
-      color: $color-box-tip;
-    }
-  }
-  &.danger {
-    code {
-      color: $color-box-danger;
-    }
-  }
-  &.default {
-    code {
-      color: $color-box-default;
-    }
   }
 }
 </style>

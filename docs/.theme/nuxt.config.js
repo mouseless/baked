@@ -102,7 +102,7 @@ export default defineNuxtConfig({
     },
     highlight: {
       // Theme used in all color schemes.
-      theme: "dark-plus",
+      theme: "slack-dark",
       preload: [
         "diff",
         "ts",

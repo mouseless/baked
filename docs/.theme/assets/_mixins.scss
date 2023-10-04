@@ -15,15 +15,14 @@
 
   @each $property in $properties {
     border-#{$property}: {
-      left-radius: 10px;
-      right-radius: 10px;
+      left-radius: 20px;
+      right-radius: 20px;
     }
   }
 }
 
 @mixin box {
   background-color: $color-bg-box;
-  @include border();
   @include radius();
 }
 
@@ -32,19 +31,19 @@
   box-sizing: border-box;
   min-width: $width-page-min;
 
-  @media (max-width: $width-page) {
-    max-width: calc($width-page-l - $width-tolerance);
+  @media (max-width: $width-page-xl) {
+    max-width: calc($width-page - $width-tolerance);
   }
 
   @media (max-width: $width-page-l) {
-    max-width: calc($width-page-m - $width-tolerance);
+    max-width: calc($width-page - 250px - $width-tolerance);
   }
 
   @media (max-width: $width-page-m) {
-    max-width: calc($width-page-s - $width-tolerance);
+    max-width: calc($width-page - 500px - $width-tolerance);
   }
 
   @media (max-width: $width-page-s) {
-    max-width: 90%;
+    max-width: 82%;
   }
 }

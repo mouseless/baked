@@ -105,16 +105,19 @@ nav a {
 
   &.active {
     @include border(bottom);
-    border-bottom-color: $color-brand;
+
+    border-bottom-color: $color-bg-third;
     padding-bottom: 22px;
+  }
+
+  &:last-child {
+    margin-right: 0;
   }
 }
 
-@media (max-width: $width-page-l) {
-  nav {
-    a {
-      font-size: 0.85em;
-    }
+@media (max-width: $width-page-xl) {
+  nav a.active {
+    padding-bottom: 24px;
   }
 }
 
@@ -155,7 +158,7 @@ nav a {
       &.active {
         border: 0;
         @include border(left);
-        border-left-color: $color-brand;
+        border-left-color: $color-bg-third;
 
         padding-bottom: 0;
         padding-left: 29px;
@@ -168,9 +171,6 @@ nav a {
 @media (max-width: $width-page-s) {
   nav {
     width: calc($width-page-min - 7em);
-    a {
-      font-size: 0.8em;
-    }
   }
 }
 </style>
