@@ -67,7 +67,7 @@ blockquote {
 
   @mixin box($color) {
     i {
-      color: color-mix(in srgb, $color, $color-bg 0%);
+      color: $color;
     }
   }
 
