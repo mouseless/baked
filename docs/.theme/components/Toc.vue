@@ -186,7 +186,6 @@ nav {
     top: 0;
     background-color: $color-bg;
     margin: 0;
-    box-shadow: 0 5px 5px 0 $color-bg;
     margin-bottom: -3.7em;
     font-size: 1em;
 
@@ -227,6 +226,14 @@ nav {
         padding-left: calc($border-radius + 1em);
       }
     }
+  }
+}
+
+@media (max-width: $width-page-s) {
+  nav {
+    /* 2px padding occurs when content switches to display:block, this fixes it */
+    margin-top: -1px;
+    padding-bottom: 1px;
   }
 }
 </style>

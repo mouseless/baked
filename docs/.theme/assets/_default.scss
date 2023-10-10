@@ -71,6 +71,7 @@ img.do {
     text-wrap: wrap;
     overflow: auto;
     max-width: calc($width-content - 6ch);
+    background-color: $color-bg-box;
 
     code {
       padding: 0;
