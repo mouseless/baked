@@ -45,7 +45,6 @@ store.setSections(sections);
   @include width;
 
   margin: auto;
-  margin-top: 1em;
 }
 
 .content {

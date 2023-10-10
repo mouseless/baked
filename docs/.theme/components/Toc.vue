@@ -1,7 +1,13 @@
 <template>
   <nav>
-    <h4><a @click="toggle">On This Page</a></h4>
-    <ul :class="{ active: shown }">
+    <h4>
+      <a v-if="value.links.length > 0" @click="toggle">On This Page</a>
+      <a v-else>&nbsp;</a>
+    </h4>
+    <ul
+      v-if="value.links.length > 0"
+      :class="{ active: shown }"
+    >
       <li
         v-for="link in value.links"
         :key="link.id"
@@ -226,14 +232,6 @@ nav {
         padding-left: calc($border-radius + 1em);
       }
     }
-  }
-}
-
-@media (max-width: $width-page-s) {
-  nav {
-    /* 2px padding occurs when content switches to display:block, this fixes it */
-    margin-top: -1px;
-    padding-bottom: 1px;
   }
 }
 </style>

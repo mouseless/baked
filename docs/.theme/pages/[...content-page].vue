@@ -6,14 +6,10 @@
           <ContentRenderer
             :value="doc"
             class="toc-root"
-            :class="{ 'no-toc': doc.body.toc.links <= 0 }"
           />
           <BottomNavigation />
         </div>
-        <Toc
-          v-if="doc.body.toc.links.length > 0"
-          :value="doc.body.toc"
-        />
+        <Toc :value="doc.body.toc" />
       </div>
     </template>
     <template #not-found>
@@ -77,15 +73,7 @@ onMounted(async () => {
     margin-left: $width-content-margin;
 
     .content {
-      margin: 1.8em 0 0 0;
-
-      nav {
-        margin-top: -0.9em;
-      }
-    }
-
-    .no-toc {
-      margin-top: 1em;
+      margin: 1em 0 0 0;
     }
   }
 }
@@ -99,7 +87,8 @@ onMounted(async () => {
 <style lang="scss">
 .full {
   .content {
-    margin: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
   }
 }
 

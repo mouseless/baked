@@ -84,11 +84,9 @@ nav {
 
 @media (max-width: $width-page-m) {
   nav {
-    background-color: $color-bg;
     margin-top: 0;
     width: 50%;
     top: 0;
-    @include radius;
 
     h4 {
       display: block;
