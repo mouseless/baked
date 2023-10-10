@@ -39,7 +39,7 @@ $url-logo-mark-mono: var(--url-logo-mark-mono);
 
 $width-content: var(--width-content);
 $width-content-margin: 4em;
-$width-side: 250px;
+$width-side: 15em;
 $width-tolerance: 50px;
 $width-page: calc($width-content + (2 * $width-side) + $width-content-margin + $width-tolerance);
 $width-page-xl: 1780px + $width-tolerance;

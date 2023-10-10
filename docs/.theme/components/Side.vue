@@ -51,14 +51,13 @@ nav {
     li {
       margin: 0;
       list-style: none;
-      line-height: 24px;
 
       a {
         font-size: 1em;
         display: block;
         text-decoration: none;
         color: $color-fg-second;
-        border-radius: 10px;
+        border-radius: calc($border-radius / 3);
         padding: 0.75em 1em;
 
         &:hover {
@@ -107,7 +106,7 @@ nav {
       background-color: $color-bg-nav;
       position: absolute;
       width: 200%;
-      padding: 0.5em;
+      padding: calc($border-radius / 2);
       box-sizing: border-box;
 
       &.active {
@@ -115,8 +114,6 @@ nav {
       }
 
       li a {
-        padding: 0.61em;
-
         &.active {
           background-color: $color-bg-third;
         }
@@ -128,10 +125,6 @@ nav {
 @media (max-width: $width-page-s) {
   nav {
     margin-bottom: -3.7em;
-
-    ul li a {
-      padding: 0.58em;
-    }
   }
 }
 </style>

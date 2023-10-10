@@ -205,7 +205,7 @@ nav {
       background-color: $color-bg-nav;
       display: none;
       text-align: left;
-      padding: 1em;
+      padding: $border-radius;
       padding-left: 0;
       margin-bottom: 2.5em;
 
@@ -214,8 +214,18 @@ nav {
       }
     }
 
-    ul li a.active:before {
-      left: 0;
+    ul li {
+      a {
+        padding-left: $border-radius;
+
+        &.active:before {
+          left: 0;
+        }
+      }
+
+      ul li a {
+        padding-left: calc($border-radius + 1em);
+      }
     }
   }
 }
