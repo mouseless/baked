@@ -34,6 +34,10 @@ watch(usePageStore(), () => {
 });
 </script>
 <style lang="scss" scoped>
+
+$a-padding-lr: 1em;
+$a-padding-tb: 0.5em;
+
 nav {
   position: sticky;
   align-self: start;
@@ -58,7 +62,7 @@ nav {
         text-decoration: none;
         color: $color-fg-second;
         border-radius: calc($border-radius / 3);
-        padding: 0.75em 1em;
+        padding: $a-padding-tb $a-padding-lr;
 
         &:hover {
           color: $color-brand;
@@ -106,7 +110,7 @@ nav {
       background-color: $color-bg-nav;
       position: absolute;
       width: 200%;
-      padding: calc($border-radius / 2);
+      padding: calc($border-radius - $a-padding-tb) calc($border-radius - $a-padding-lr);
       box-sizing: border-box;
 
       &.active {
