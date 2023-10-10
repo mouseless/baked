@@ -91,7 +91,7 @@ blockquote {
 
 @media(min-width: $width-page-xl) {
   blockquote i {
-    line-height: calc($line-height * 1.1);
+    line-height: calc($line-height * $line-height-xl-coef);
   }
 }
 </style>
