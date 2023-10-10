@@ -8,7 +8,7 @@ html, body {
 
 body {
   font-size: calc($font-size * 1.2);
-  line-height: calc($line-height * 1.2);
+  line-height: calc($line-height * 1.1);
 }
 
 img.do {
@@ -68,9 +68,6 @@ img.do {
   }
 
   pre {
-    @include box;
-    border-color: $color-bg-code;
-    padding: 3ch;
     text-wrap: wrap;
     overflow: auto;
     max-width: calc($width-content - 6ch);
@@ -81,7 +78,6 @@ img.do {
       text-wrap: nowrap;
       display: block;
       max-width: 0;
-      font-size: 0.9em;
       line-height: 1.5em;
     }
   }
@@ -89,7 +85,6 @@ img.do {
   ul, ol {
     li {
       margin-bottom: 0.2em;
-      line-height: 1.50em;
 
       ul, ol {
         margin-top: 0.2em;
@@ -109,10 +104,6 @@ img.do {
   }
 
   .content {
-    p {
-      line-height: 1.75em;
-    }
-
     pre code {
       line-height: 1.0em;
     }

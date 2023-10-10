@@ -1,3 +1,5 @@
+$border-radius: var(--border-radius);
+
 $color-brand: var(--color-logo-mark);
 
 $color-bg: var(--color-bg);
@@ -14,7 +16,7 @@ $color-box-danger: var(--color-red);
 $color-box-default: var(--color-fg);
 $color-box-info: var(--color-blue);
 $color-box-tip: var(--color-green);
-$color-box-warning: var(--color-yellow);
+$color-box-warning: var(--color-orange);
 
 $color-fg: var(--color-fg);
 $color-fg-heading: var(--color-logo-text);

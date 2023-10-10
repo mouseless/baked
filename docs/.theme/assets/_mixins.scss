@@ -15,8 +15,8 @@
 
   @each $property in $properties {
     border-#{$property}: {
-      left-radius: 20px;
-      right-radius: 20px;
+      left-radius: $border-radius;
+      right-radius: $border-radius;
     }
   }
 }
