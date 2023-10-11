@@ -57,7 +57,8 @@ blockquote {
 
   i {
     position: absolute;
-    padding-top: 2ch;
+    margin-top: 1em;
+    line-height: $line-height;
   }
 
   div {
@@ -85,6 +86,12 @@ blockquote {
   }
   &.default {
     @include box($color-box-default);
+  }
+}
+
+@media(min-width: $width-page-xl) {
+  blockquote i {
+    line-height: calc($line-height * $line-height-xl-coef);
   }
 }
 </style>

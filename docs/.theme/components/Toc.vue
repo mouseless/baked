@@ -1,7 +1,13 @@
 <template>
   <nav>
-    <h4><a @click="toggle">On This Page</a></h4>
-    <ul :class="{ active: shown }">
+    <h4>
+      <a v-if="value.links.length > 0" @click="toggle">On This Page</a>
+      <a v-else>&nbsp;</a>
+    </h4>
+    <ul
+      v-if="value.links.length > 0"
+      :class="{ active: shown }"
+    >
       <li
         v-for="link in value.links"
         :key="link.id"
@@ -186,7 +192,6 @@ nav {
     top: 0;
     background-color: $color-bg;
     margin: 0;
-    box-shadow: 0 5px 5px 0 $color-bg;
     margin-bottom: -3.7em;
     font-size: 1em;
 
@@ -205,7 +210,7 @@ nav {
       background-color: $color-bg-nav;
       display: none;
       text-align: left;
-      padding: 1em;
+      padding: $border-radius;
       padding-left: 0;
       margin-bottom: 2.5em;
 
@@ -214,8 +219,18 @@ nav {
       }
     }
 
-    ul li a.active:before {
-      left: 0;
+    ul li {
+      a {
+        padding-left: $border-radius;
+
+        &.active:before {
+          left: 0;
+        }
+      }
+
+      ul li a {
+        padding-left: calc($border-radius + 1em);
+      }
     }
   }
 }

@@ -106,7 +106,7 @@ nav a {
   &.active {
     @include border(bottom);
 
-    border-bottom-color: $color-bg-third;
+    border-bottom-color: $color-brand;
     padding-bottom: 22px;
   }
 
@@ -158,7 +158,7 @@ nav a {
       &.active {
         border: 0;
         @include border(left);
-        border-left-color: $color-bg-third;
+        border-left-color: $color-brand;
 
         padding-bottom: 0;
         padding-left: calc(20px + 1em);
