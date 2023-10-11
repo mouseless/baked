@@ -40,13 +40,13 @@ jobs:
           # 2. first sed removes all lines except with Version info
           # 3. second sed removes <Version> and </Version> and spaces
           # 4. result is only version which is set to the $version variable
-          version=$(cat Directory.Build.props | sed -n '/<Version>/p' | sed '/[ <>a-zA-Z\/]/ s///g')
+          version=$(cat src/Directory.Build.props | sed -n '/<Version>/p' | sed '/[ <>a-zA-Z\/]/ s///g')
           # value of $version is set as a step output
           echo "version="$version >> $GITHUB_OUTPUT
       - name: Check Version in NuGet
         id: check
         run: |
-          if wget -q --method=HEAD https://api.nuget.org/v3-flatcontainer/Do.Blueprints.Service/${{ steps.parse.outputs.version }}/Do.Blueprints.Service.nuspec;
+          if wget -q --method=HEAD https://api.nuget.org/v3-flatcontainer/do-blueprints-service/${{ steps.parse.outputs.version }}/do-blueprints-service.nuspec;
            then
             echo "action=nothing" >> $GITHUB_OUTPUT
            else
