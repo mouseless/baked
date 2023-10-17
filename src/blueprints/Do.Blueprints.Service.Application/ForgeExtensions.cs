@@ -35,6 +35,7 @@ public static class ForgeExtensions
 
         return source.Application(app =>
             {
+                app.Layers.AddDomain();
                 app.Layers.AddConfiguration();
                 app.Layers.AddDataAccess();
                 app.Layers.AddDependencyInjection();

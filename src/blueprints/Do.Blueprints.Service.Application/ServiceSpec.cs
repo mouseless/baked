@@ -38,6 +38,7 @@ public abstract class ServiceSpec : Spec
 
         var context = Spec.Init(app =>
         {
+            app.Layers.AddDomain();
             app.Layers.AddConfiguration();
             app.Layers.AddDataAccess();
             app.Layers.AddDependencyInjection();
