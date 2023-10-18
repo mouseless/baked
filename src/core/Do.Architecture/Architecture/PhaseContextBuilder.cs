@@ -2,13 +2,16 @@ namespace Do.Architecture;
 
 public class PhaseContextBuilder
 {
+    readonly IPhase _phase = default!;
     readonly List<LayerConfigurator> _configurators = new();
     Action? _onDispose;
+
+    internal PhaseContextBuilder(IPhase phase) => _phase = phase;
 
     public PhaseContextBuilder Add<TTarget>(TTarget target)
         where TTarget : notnull
     {
-        _configurators.Add(LayerConfigurator.Create(target));
+        _configurators.Add(LayerConfigurator.Create(_phase.ApplicationContext, target));
 
         return this;
     }
@@ -17,7 +20,7 @@ public class PhaseContextBuilder
         where TTarget1 : notnull
         where TTarget2 : notnull
     {
-        _configurators.Add(LayerConfigurator.Create(target1, target2));
+        _configurators.Add(LayerConfigurator.Create(_phase.ApplicationContext, target1, target2));
 
         return this;
     }
@@ -27,7 +30,7 @@ public class PhaseContextBuilder
         where TTarget2 : notnull
         where TTarget3 : notnull
     {
-        _configurators.Add(LayerConfigurator.Create(target1, target2, target3));
+        _configurators.Add(LayerConfigurator.Create(_phase.ApplicationContext, target1, target2, target3));
 
         return this;
     }
@@ -44,7 +47,7 @@ public class PhaseContextBuilder
 
 public static class PhaseContextBuilderExtensions
 {
-    public static PhaseContextBuilder CreateContextBuilder(this IPhase source) => new();
+    public static PhaseContextBuilder CreateContextBuilder(this IPhase source) => new(source);
 
     public static PhaseContext CreateContext<TTarget>(this IPhase source, TTarget target,
         Action? onDispose = default

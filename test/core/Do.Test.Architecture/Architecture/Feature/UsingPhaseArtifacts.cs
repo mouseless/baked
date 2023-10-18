@@ -30,7 +30,6 @@ public class UsingPhaseArtifacts : ArchitectureSpec
     }
 
     [Test]
-    [Ignore("not implemented")]
     public void Feature_can_access_phase_artifacts_from_layer_configurator_and_can_use_them_when_configuring_a_layer()
     {
         var applicationContext = GiveMe.AnApplicationContext(new PhaseArtifact("Value from phase artifact"));
