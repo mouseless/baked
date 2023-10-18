@@ -36,11 +36,11 @@ public class LayerConfigurator
 
     readonly List<Target> _targets;
 
-    public ApplicationContext ApplicationContext { get; } = default!;
+    public ApplicationContext Context { get; } = default!;
 
     LayerConfigurator(ApplicationContext context, params Target[] targets)
     {
-        ApplicationContext = context;
+        Context = context;
         _targets = new(targets);
     }
 

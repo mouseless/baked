@@ -39,7 +39,7 @@ public class UsingPhaseArtifacts : ArchitectureSpec
 
         var feature = new FeatureUsingPhaseArtifact((configurator, configuration) =>
         {
-            PhaseArtifact artifact = configurator.ApplicationContext.Get<PhaseArtifact>();
+            var artifact = configurator.Context.Get<PhaseArtifact>();
 
             configuration.Value = artifact.Value;
         });
@@ -48,4 +48,8 @@ public class UsingPhaseArtifacts : ArchitectureSpec
 
         configuration.Value.ShouldBe("Value from phase artifact");
     }
+
+    [Test]
+    [Ignore("not-implemented")]
+    public void Only_a_phase_can_add_an_artifact_to_application_context() => this.ShouldFail();
 }
