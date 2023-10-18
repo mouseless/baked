@@ -34,6 +34,8 @@ public class LayerConfigurator
 
     readonly List<Target> _targets;
 
+    public ApplicationContext ApplicationContext { get; } = default!;
+
     LayerConfigurator(params Target[] targets) => _targets = new(targets);
 
     public void Configure<TTarget>(Action<TTarget> configuration)

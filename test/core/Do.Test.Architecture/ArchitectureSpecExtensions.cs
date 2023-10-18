@@ -148,16 +148,30 @@ public static class ArchitectureSpecExtensions
         return LayerConfigurator.Create<TTarget>(configuration);
     }
 
+    public static LayerConfigurator ALayerConfigurator<TTarget>(this Stubber giveMe, TTarget configuration, ApplicationContext applicationContext)
+        where TTarget : notnull
+    {
+        configuration ??= giveMe.AnInstanceOf<TTarget>();
+
+        var phase = giveMe.Spec.MockMe.APhase(context: applicationContext);
+
+        var phaseContext = phase.CreateContext(configuration);
+
+        return phaseContext.Configurators.First();
+    }
+
     #endregion
 
     #region Phase
 
-    public static IPhase APhase(this Mocker _,
+    public static IPhase APhase(this Mocker mockMe,
+        ApplicationContext? context = default,
         Func<bool>? isReady = default,
         Action? onInitialize = default,
         PhaseOrder order = PhaseOrder.Normal
     )
     {
+        context ??= mockMe.Spec.GiveMe.AnApplicationContext();
         isReady ??= () => true;
         onInitialize ??= () => { };
 
@@ -172,6 +186,10 @@ public static class ArchitectureSpecExtensions
         result
             .Setup(p => p.Initialize(It.IsAny<ApplicationContext>()))
             .Callback((ApplicationContext _) => onInitialize());
+
+        result
+            .Setup(p => p.ApplicationContext)
+            .Returns(context);
 
         return result.Object;
     }

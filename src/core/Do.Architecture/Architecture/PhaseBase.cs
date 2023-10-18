@@ -26,6 +26,8 @@ public abstract class PhaseBase : IPhase
 
         Initialize();
     }
+
+    ApplicationContext IPhase.ApplicationContext => Context;
 }
 
 public abstract class PhaseBase<T> : PhaseBase
