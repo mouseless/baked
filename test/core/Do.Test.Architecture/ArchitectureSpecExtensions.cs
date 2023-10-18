@@ -139,25 +139,76 @@ public static class ArchitectureSpecExtensions
 
     #region LayerConfigurator
 
-    public static LayerConfigurator ALayerConfigurator<TTarget>(this Stubber giveMe,
-        TTarget? configuration = default
-    ) where TTarget : notnull
+    public static LayerConfigurator ALayerConfigurator<TTarget1, TTarget2, TTarget3>(this Stubber giveMe,
+        ApplicationContext? context = default,
+        TTarget1? target1 = default,
+        TTarget2? target2 = default,
+        TTarget3? target3 = default
+    ) where TTarget1 : notnull
+      where TTarget2 : notnull
+      where TTarget3 : notnull
     {
-        configuration ??= giveMe.AnInstanceOf<TTarget>();
+        target1 ??= giveMe.AnInstanceOf<TTarget1>();
+        target2 ??= giveMe.AnInstanceOf<TTarget2>();
+        target3 ??= giveMe.AnInstanceOf<TTarget3>();
 
-        return LayerConfigurator.Create<TTarget>(configuration);
+        return giveMe.ALayerConfiguratorInner(
+            context: context,
+            targetTypes: new[] { typeof(TTarget1), typeof(TTarget2), typeof(TTarget3) },
+            values: new object[] { target1, target2, target3 }
+        );
     }
 
-    public static LayerConfigurator ALayerConfigurator<TTarget>(this Stubber giveMe, TTarget configuration, ApplicationContext applicationContext)
-        where TTarget : notnull
+    public static LayerConfigurator ALayerConfigurator<TTarget1, TTarget2>(this Stubber giveMe,
+        ApplicationContext? context = default,
+        TTarget1? target1 = default,
+        TTarget2? target2 = default
+    ) where TTarget1 : notnull
+      where TTarget2 : notnull
     {
-        configuration ??= giveMe.AnInstanceOf<TTarget>();
+        target1 ??= giveMe.AnInstanceOf<TTarget1>();
+        target2 ??= giveMe.AnInstanceOf<TTarget2>();
 
-        var phase = giveMe.Spec.MockMe.APhase(context: applicationContext);
+        return giveMe.ALayerConfiguratorInner(
+            context: context,
+            targetTypes: new[] { typeof(TTarget1), typeof(TTarget2) },
+            values: new object[] { target1, target2 }
+        );
+    }
 
-        var phaseContext = phase.CreateContext(configuration);
+    public static LayerConfigurator ALayerConfigurator<TTarget>(this Stubber giveMe,
+        ApplicationContext? context = default,
+        TTarget? target = default
+    ) where TTarget : notnull
+    {
+        target ??= giveMe.AnInstanceOf<TTarget>();
 
-        return phaseContext.Configurators.First();
+        return giveMe.ALayerConfiguratorInner(
+            context: context,
+            targetTypes: new[] { typeof(TTarget) },
+            values: new object[] { target }
+        );
+    }
+
+    static LayerConfigurator ALayerConfiguratorInner(this Stubber giveMe, Type[] targetTypes, object[] values,
+        ApplicationContext? context = default
+    )
+    {
+        context ??= giveMe.AnApplicationContext();
+
+        var phase = giveMe.Spec.MockMe.APhase(context: context);
+
+        var phaseContextBuilder = phase.CreateContextBuilder();
+
+        var add = typeof(PhaseContextBuilder)
+                .GetMethods()
+                .FirstOrDefault(c => c.Name == nameof(PhaseContextBuilder.Add) && c.GetGenericArguments().Length == targetTypes.Length);
+        add.ShouldNotBeNull("PhaseContextBuilder add should not be null");
+
+        phaseContextBuilder = (PhaseContextBuilder)(add.MakeGenericMethod(targetTypes).Invoke(phaseContextBuilder, values) ??
+            throw new Exception("PhaseContextBuilder should not be null"));
+
+        return phaseContextBuilder.Build().Configurators.First();
     }
 
     #endregion

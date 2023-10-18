@@ -36,7 +36,7 @@ public class UsingPhaseArtifacts : ArchitectureSpec
         var applicationContext = GiveMe.AnApplicationContext(new PhaseArtifact("Value from phase artifact"));
 
         var configuration = new LayerConfiguration();
-        var configuratior = GiveMe.ALayerConfigurator(configuration: configuration, applicationContext: applicationContext);
+        var configuratior = GiveMe.ALayerConfigurator(target: configuration, context: applicationContext);
 
         var feature = new FeatureUsingPhaseArtifact((configurator, configuration) =>
         {
