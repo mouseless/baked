@@ -29,24 +29,18 @@ Features with default options are;
 | Mocking Overrider  |             | First Interface |          |
 | Orm                | Default     | Default         |          |
 
-Phase execution order is;
+Phase execution order
 
 ```mermaid
-sequenceDiagram
-    box Earliest
-    participant CB as CreateBuilder
-    participant BC as BuildConfiguration
-    end
-    box Early
-    participant AS as AddServices
-    end
-    box Latest
-    participant B as Build
-    participant R as Run
-    end
-    CB->>BC: ConfigurationManager
-    CB->>AS: ConfigurationManager
-    CB->>B: WebApplicationBuilder
-    AS->>B: IServiceCollection
-    B->>R: WebApplication
-```
+flowchart TD
+    AS[AddServices]
+    BC[BuildConfiguration]
+    B[Build]
+    CB[CreateBuilder]
+    R[Run]
+    CB -->|ConfigurationManager| BC
+    CB --->|ConfigurationManager| AS
+    CB -->|WebApplicationBuilder| B
+    AS -->|IServiceCollection| B
+    B -->|WebApplication|R
+```    
