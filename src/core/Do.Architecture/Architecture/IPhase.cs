@@ -2,7 +2,7 @@ namespace Do.Architecture;
 
 public interface IPhase
 {
-    ApplicationContext ApplicationContext { get; }
+    ApplicationContext Context { get; }
     PhaseOrder Order { get; }
 
     bool IsReady(ApplicationContext context);

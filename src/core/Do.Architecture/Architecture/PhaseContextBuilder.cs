@@ -11,7 +11,7 @@ public class PhaseContextBuilder
     public PhaseContextBuilder Add<TTarget>(TTarget target)
         where TTarget : notnull
     {
-        _configurators.Add(LayerConfigurator.Create(_phase.ApplicationContext, target));
+        _configurators.Add(LayerConfigurator.Create(_phase.Context, target));
 
         return this;
     }
@@ -20,7 +20,7 @@ public class PhaseContextBuilder
         where TTarget1 : notnull
         where TTarget2 : notnull
     {
-        _configurators.Add(LayerConfigurator.Create(_phase.ApplicationContext, target1, target2));
+        _configurators.Add(LayerConfigurator.Create(_phase.Context, target1, target2));
 
         return this;
     }
@@ -30,7 +30,7 @@ public class PhaseContextBuilder
         where TTarget2 : notnull
         where TTarget3 : notnull
     {
-        _configurators.Add(LayerConfigurator.Create(_phase.ApplicationContext, target1, target2, target3));
+        _configurators.Add(LayerConfigurator.Create(_phase.Context, target1, target2, target3));
 
         return this;
     }

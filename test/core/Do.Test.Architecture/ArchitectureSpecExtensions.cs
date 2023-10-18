@@ -234,7 +234,7 @@ public static class ArchitectureSpecExtensions
             .Callback((ApplicationContext _) => onInitialize());
 
         result
-            .Setup(p => p.ApplicationContext)
+            .Setup(p => p.Context)
             .Returns(context);
 
         return result.Object;
