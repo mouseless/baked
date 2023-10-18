@@ -59,7 +59,7 @@ public class AddingExtensions : ArchitectureSpec
 
         app.Run();
 
-        feature.VerifyConfigures("text");
+        feature.VerifyConfigures(layerConfigurator: GiveMe.ALayerConfigurator(target: "text"));
     }
 
     [Test]
@@ -78,8 +78,8 @@ public class AddingExtensions : ArchitectureSpec
 
         app.Run();
 
-        feature.VerifyConfigures("text");
-        feature.VerifyConfigures(10);
+        feature.VerifyConfigures(layerConfigurator: GiveMe.ALayerConfigurator(target: "text"));
+        feature.VerifyConfigures(layerConfigurator: GiveMe.ALayerConfigurator(target: 10));
     }
 
     [Test]

@@ -359,8 +359,8 @@ public static class ArchitectureSpecExtensions
     public static void VerifyInitialized(this IFeature source) =>
         Mock.Get(source).Verify(f => f.Configure(It.IsAny<LayerConfigurator>()));
 
-    public static void VerifyConfigures<TTarget>(this IFeature source, TTarget target) where TTarget : notnull =>
-        Mock.Get(source).Verify(f => f.Configure(LayerConfigurator.Create(target)));
+    public static void VerifyConfigures(this IFeature source, LayerConfigurator layerConfigurator) =>
+        Mock.Get(source).Verify(f => f.Configure(layerConfigurator));
 
     public static void VerifyConfiguresNothing(this IFeature source) =>
         Mock.Get(source).Verify(f => f.Configure(It.IsAny<LayerConfigurator>()), Times.Never());
