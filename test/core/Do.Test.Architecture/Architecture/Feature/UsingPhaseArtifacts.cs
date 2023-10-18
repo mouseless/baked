@@ -13,18 +13,18 @@ public class UsingPhaseArtifacts : ArchitectureSpec
 
     public class FeatureUsingPhaseArtifact : IFeature
     {
-        Action<LayerConfigurator, LayerConfiguration> _configurationAction;
+        readonly Action<LayerConfigurator, LayerConfiguration> _configureAction;
 
-        public FeatureUsingPhaseArtifact(Action<LayerConfigurator, LayerConfiguration> configurationAction)
+        public FeatureUsingPhaseArtifact(Action<LayerConfigurator, LayerConfiguration> configureAction)
         {
-            _configurationAction = configurationAction;
+            _configureAction = configureAction;
         }
 
         public void Configure(LayerConfigurator configurator)
         {
             configurator.Configure((LayerConfiguration configuration) =>
             {
-                _configurationAction(configurator, configuration);
+                _configureAction(configurator, configuration);
             });
         }
     }
@@ -32,7 +32,7 @@ public class UsingPhaseArtifacts : ArchitectureSpec
     [Test]
     public void Feature_can_access_phase_artifacts_from_layer_configurator_and_can_use_them_when_configuring_a_layer()
     {
-        var applicationContext = GiveMe.AnApplicationContext(new PhaseArtifact("Value from phase artifact"));
+        var applicationContext = GiveMe.AnApplicationContext(content: new PhaseArtifact("Value from phase artifact"));
 
         var configuration = new LayerConfiguration();
         var configuratior = GiveMe.ALayerConfigurator(target: configuration, context: applicationContext);
