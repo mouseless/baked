@@ -54,7 +54,7 @@ public class AddingPhases : ArchitectureSpec
 
         IPhase phase = new InitializedPhase();
 
-        phase.Initialize(context);
+        phase.Initialize();
 
         context.ShouldHave("test");
     }
@@ -83,7 +83,7 @@ public class AddingPhases : ArchitectureSpec
         var context = GiveMe.AnApplicationContext(5);
         IPhase oneDependency = new OneDependencyPhase();
 
-        var initializeAction = () => oneDependency.Initialize(context);
+        var initializeAction = () => oneDependency.Initialize();
 
         initializeAction.ShouldThrow<KeyNotFoundException>();
     }
@@ -98,24 +98,24 @@ public class AddingPhases : ArchitectureSpec
         IPhase twoDependency = new TwoDependencyPhase();
         IPhase threeDependency = new ThreeDependencyPhase();
 
-        initializing.IsReady(context).ShouldBeTrue();
-        oneDependency.IsReady(context).ShouldBeFalse();
+        initializing.IsReady.ShouldBeTrue();
+        oneDependency.IsReady.ShouldBeFalse();
 
-        initializing.Initialize(context);
+        initializing.Initialize();
 
-        oneDependency.IsReady(context).ShouldBeTrue();
-        twoDependency.IsReady(context).ShouldBeFalse();
+        oneDependency.IsReady.ShouldBeTrue();
+        twoDependency.IsReady.ShouldBeFalse();
 
-        oneDependency.Initialize(context);
+        oneDependency.Initialize();
 
-        twoDependency.IsReady(context).ShouldBeTrue();
-        threeDependency.IsReady(context).ShouldBeFalse();
+        twoDependency.IsReady.ShouldBeTrue();
+        threeDependency.IsReady.ShouldBeFalse();
 
-        twoDependency.Initialize(context);
+        twoDependency.Initialize();
 
-        threeDependency.IsReady(context).ShouldBeTrue();
+        threeDependency.IsReady.ShouldBeTrue();
 
-        threeDependency.Initialize(context);
+        threeDependency.Initialize();
 
         context.ShouldHave('a');
     }

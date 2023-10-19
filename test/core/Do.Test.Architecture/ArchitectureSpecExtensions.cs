@@ -226,12 +226,12 @@ public static class ArchitectureSpecExtensions
         result.Setup(p => p.Order).Returns(order);
 
         result
-            .Setup(p => p.IsReady(It.IsAny<ApplicationContext>()))
-            .Returns((ApplicationContext _) => isReady());
+            .Setup(p => p.IsReady)
+            .Returns(() => isReady());
 
         result
-            .Setup(p => p.Initialize(It.IsAny<ApplicationContext>()))
-            .Callback((ApplicationContext _) => onInitialize());
+            .Setup(p => p.Initialize())
+            .Callback(() => onInitialize());
 
         result
             .Setup(p => p.Context)
@@ -240,11 +240,17 @@ public static class ArchitectureSpecExtensions
         return result.Object;
     }
 
-    public static void VerifyInitialized(this IPhase source) =>
-        Mock.Get(source).Verify(p => p.Initialize(It.IsAny<ApplicationContext>()));
+    public static void VerifyInitialized(this IPhase source,
+        ApplicationContext? context = default
+    )
+    {
+        Mock.Get(source).Verify(p => p.Initialize(), Times.Once);
 
-    public static void VerifyInitialized(this IPhase source, ApplicationContext context) =>
-        Mock.Get(source).Verify(p => p.Initialize(context));
+        if (context is not null)
+        {
+            Mock.Get(source).Verify(p => p.Context == context);
+        }
+    }
 
     #endregion
 
