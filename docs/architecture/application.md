@@ -121,10 +121,10 @@ flowchart LR
 These phases come from layers using `GetPhases()` method of `ILayer`. In the
 above example, `HttpServerLayer` (ASP.NET Core) introduced these three phases.
 
-At the beginning of each phase, application initializes it by providing an
-`ApplicationContext` instance. This way each phase can add/get certain objects
-to/from the context, such as `IServiceCollection`, `IMiddlewareCollection`,
-`IEndpointRouteBuilder` etc.
+When construction phase collection and sorting execution order, application 
+sets the `ApplicationContext` of each phase. This way each phase can add/get 
+certain objects to/from the context, such as `IServiceCollection`, 
+`IMiddlewareCollection`, `IEndpointRouteBuilder` etc.
 
 > :warning:
 >
@@ -214,7 +214,7 @@ sequenceDiagram
 
 Initialization order of phases are determined by;
 
-1. Readiness of a phase through `IPhase.IsReady()` method,
+1. Readiness of a phase through `IPhase.IsReady` property,
 1. Value of `IPhase.Order` property,
 1. And the order they are added to the application.
 
