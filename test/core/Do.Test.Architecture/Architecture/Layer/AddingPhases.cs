@@ -50,11 +50,12 @@ public class AddingPhases : ArchitectureSpec
     [Test]
     public void Phases_have_initialization_step_before_getting_applied_so_that_they_prepare_and_add_objects_to_application_context()
     {
-        var context = GiveMe.AnApplicationContext();
-
         IPhase phase = new InitializedPhase();
 
-        phase.Initialize();
+        var context = GiveMe.AnApplicationContext();
+        var application = GiveMe.AnApplicationWithPhase(context: context, phase: phase);
+
+        application.Run();
 
         context.ShouldHave("test");
     }
@@ -80,8 +81,9 @@ public class AddingPhases : ArchitectureSpec
     [Test]
     public void Gives_error_when_dependency_is_not_the_exact_type()
     {
-        var context = GiveMe.AnApplicationContext(5);
         IPhase oneDependency = new OneDependencyPhase();
+
+        GiveMe.AnApplicationWithPhase(context: GiveMe.AnApplicationContext(5), phase: oneDependency);
 
         var initializeAction = () => oneDependency.Initialize();
 
@@ -91,12 +93,14 @@ public class AddingPhases : ArchitectureSpec
     [Test]
     public void Phases_may_depend_on_one_or_more_objects_to_appear_in_context()
     {
-        var context = GiveMe.AnApplicationContext();
-
         IPhase initializing = new InitializedPhase();
         IPhase oneDependency = new OneDependencyPhase();
         IPhase twoDependency = new TwoDependencyPhase();
         IPhase threeDependency = new ThreeDependencyPhase();
+
+        var context = GiveMe.AnApplicationContext();
+
+        GiveMe.AnApplicationWithPhases(context: context, phases: new[] { initializing, oneDependency, twoDependency, threeDependency });
 
         initializing.IsReady.ShouldBeTrue();
         oneDependency.IsReady.ShouldBeFalse();

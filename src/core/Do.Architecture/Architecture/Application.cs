@@ -40,6 +40,7 @@ public class Application
             _phases.AddRange(layer.GetPhases());
         }
 
+        _phases.ForEach(p => p.Context = _context);
         _phases.Sort((l, r) => l.Order - r.Order);
     }
 

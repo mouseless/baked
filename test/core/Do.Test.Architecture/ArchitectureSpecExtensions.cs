@@ -23,6 +23,18 @@ public static class ArchitectureSpecExtensions
 
     #region Application
 
+    public static Application AnApplicationWithPhase(this Stubber giveMe, IPhase phase,
+        IFeature? feature = default,
+        IFeature[]? features = default,
+        ApplicationContext? context = default
+    ) => giveMe.AnApplicationWithPhases(context: context, phases: new[] { phase }, feature: feature, features: features);
+
+    public static Application AnApplicationWithPhases(this Stubber giveMe, IPhase[] phases,
+        IFeature? feature = default,
+        IFeature[]? features = default,
+        ApplicationContext? context = default
+    ) => giveMe.AnApplication(context: context, layer: giveMe.Spec.MockMe.ALayer(phases: phases), feature: feature, features: features);
+
     public static Application AnApplication(this Stubber giveMe,
         ILayer? layer = default,
         ILayer[]? layers = default,
@@ -248,7 +260,7 @@ public static class ArchitectureSpecExtensions
 
         if (context is not null)
         {
-            Mock.Get(source).Verify(p => p.Context == context);
+            source.Context.ShouldBeEquivalentTo(context);
         }
     }
 
