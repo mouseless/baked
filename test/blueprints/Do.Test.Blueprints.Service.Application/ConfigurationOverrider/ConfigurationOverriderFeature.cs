@@ -1,4 +1,5 @@
 ﻿using Do.Architecture;
+using System.Reflection;
 
 namespace Do.Test.ConfigurationOverrider;
 
@@ -8,7 +9,13 @@ public class ConfigurationOverriderFeature : IFeature
     {
         configurator.ConfigureAutoPersistenceModel(model =>
         {
+            model.AddEntityAssembly(typeof(Entity).Assembly);
             model.Override<Entity>(x => x.Map(e => e.String).Length(200));
+        });
+
+        configurator.ConfigureApplicationParts(applicationParts =>
+        {
+            applicationParts.Add(new(Assembly.GetEntryAssembly() ?? throw new NotSupportedException("Entry assembly should not be null")));
         });
     }
 }
