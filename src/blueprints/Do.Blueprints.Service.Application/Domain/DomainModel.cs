@@ -1,20 +1,22 @@
-﻿namespace Do.Domain;
+﻿using static Do.Domain.DomainModel;
 
-public class DomainModel : IDomainModel
+namespace Do.Domain;
+
+public record DomainModel(
+    Dictionary<Type, TypeModel> TypeModels
+)
 {
-    public static DomainModel From(params Type[] args) => new DomainModel().AddTypes(args);
-
-    private readonly HashSet<Type> _types = new();
-
-    public DomainModel AddTypes(Type[] types)
+    public static DomainModel From(params Type[] args)
     {
-        foreach (var type in types)
-        {
-            _types.Add(type);
-        }
+        var config = new DomainBuilderConfiguration();
+        var descriptor = new DomainDescriptor();
+        args.ToList().ForEach(t => descriptor.IncludeType(t));
 
-        return this;
+        return DomainModelBuilder.CreateBuilder(config, descriptor).Build();
     }
 
-    public List<Type> GetTypes() => _types.ToList();
+    public record TypeModel(Type Type, Type[]? Interfaces, bool IsSingleton, bool IsPersisted);
+    public record PropertyModel(TypeModel Owner, Type Type);
+    public record MethodModel(TypeModel Target, Type ReturnType, List<ParameterModel>? Parameters, List<Type> GenericArguements);
+    public record ParameterModel(MethodModel Owner, Type Type);
 }
