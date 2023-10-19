@@ -38,10 +38,10 @@ public abstract class ServiceSpec : Spec
 
         var context = Spec.Init(app =>
         {
-            app.Layers.AddDomain();
             app.Layers.AddConfiguration();
             app.Layers.AddDataAccess();
             app.Layers.AddDependencyInjection();
+            app.Layers.AddDomain();
             app.Layers.AddMonitoring();
             app.Layers.AddRestApi();
             app.Layers.AddTesting();

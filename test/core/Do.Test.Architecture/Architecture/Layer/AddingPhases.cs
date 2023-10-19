@@ -83,7 +83,7 @@ public class AddingPhases : ArchitectureSpec
     {
         IPhase oneDependency = new OneDependencyPhase();
 
-        GiveMe.AnApplicationWithPhase(context: GiveMe.AnApplicationContext(5), phase: oneDependency);
+        GiveMe.AnApplicationWithPhase(context: GiveMe.AnApplicationContext(content: 5), phase: oneDependency);
 
         var initializeAction = () => oneDependency.Initialize();
 
