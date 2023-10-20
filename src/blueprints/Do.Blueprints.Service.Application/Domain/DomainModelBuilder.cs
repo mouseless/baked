@@ -4,17 +4,15 @@ namespace Do.Domain;
 
 public class DomainModelBuilder
 {
-    public static DomainModelBuilder CreateBuilder(DomainBuilderConfiguration configuration, DomainDescriptor descriptor) =>
-        new(configuration, descriptor);
+    public static DomainModelBuilder CreateBuilder(DomainDescriptor descriptor) =>
+        new(descriptor);
 
-    readonly DomainBuilderConfiguration _configuration;
     readonly DomainDescriptor _descriptor;
 
     List<Type> _types = new();
 
-    DomainModelBuilder(DomainBuilderConfiguration configuration, DomainDescriptor descriptor)
+    DomainModelBuilder(DomainDescriptor descriptor)
     {
-        _configuration = configuration;
         _descriptor = descriptor;
     }
 
@@ -33,7 +31,7 @@ public class DomainModelBuilder
 
         foreach (var type in _types)
         {
-            result.Add(type, new(type, type.GetInterfaces(), _configuration.SingletonConvention(type), _configuration.PersistedTypeConvention(type)));
+            result.Add(type, new(type, type.GetInterfaces()));
         }
 
         return result;

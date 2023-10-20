@@ -4,13 +4,12 @@ namespace Do.Domain;
 
 public class DomainDescriptor
 {
-    internal List<Assembly> AssemblyList { get; } = new();
-    internal List<Type> IncludedTypes { get; } = new();
+    public List<Assembly> AssemblyList { get; } = new();
+    public List<Type> IncludedTypes { get; } = new();
 
-    public void IncludeType<T>() => IncludeType(typeof(T));
+    public void AddAssemblyOfType<T>() => AddAssemblyOfType(typeof(T));
+    public void AddAssemblyOfType(Type type) => AssemblyList.Add(type.Assembly);
 
-    public void IncludeType(Type type)
-    {
-        IncludedTypes.Add(type);
-    }
+    public void AddType<T>() => AddType(typeof(T));
+    public void AddType(Type type) => IncludedTypes.Add(type);
 }
