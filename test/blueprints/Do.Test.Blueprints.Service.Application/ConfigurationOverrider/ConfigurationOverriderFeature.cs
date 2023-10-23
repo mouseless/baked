@@ -8,6 +8,14 @@ public class ConfigurationOverriderFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
+        configurator.ConfigureDomainDescriptor(descriptor =>
+        {
+            descriptor.AddType<Entity>();
+            descriptor.AddType<Entities>();
+            descriptor.AddType<Singleton>();
+            descriptor.AddType<Status>();
+        });
+
         configurator.ConfigureAutoPersistenceModel(model =>
         {
             var domainDescriptor = configurator.Context.Get<DomainDescriptor>();
