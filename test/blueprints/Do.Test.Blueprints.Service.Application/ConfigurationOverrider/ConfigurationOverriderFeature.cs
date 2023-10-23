@@ -1,5 +1,4 @@
 ﻿using Do.Architecture;
-using Do.Domain;
 using System.Reflection;
 
 namespace Do.Test.ConfigurationOverrider;
@@ -18,11 +17,7 @@ public class ConfigurationOverriderFeature : IFeature
 
         configurator.ConfigureAutoPersistenceModel(model =>
         {
-            var domainDescriptor = configurator.Context.Get<DomainDescriptor>();
-            foreach (var item in domainDescriptor.AssemblyList)
-            {
-                model.AddEntityAssembly(item);
-            }
+            model.AddEntityAssembly(typeof(Entity).Assembly);
 
             model.Override<Entity>(x => x.Map(e => e.String).Length(200));
         });
