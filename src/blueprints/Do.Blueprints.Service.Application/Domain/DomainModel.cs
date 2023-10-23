@@ -14,14 +14,28 @@ public record DomainModel(
         return DomainModelBuilder.CreateBuilder(descriptor).Build();
     }
 
-    public record TypeModel(Type Type, string Name,
+    public record TypeModel(Type Type, string Name, bool IsValueType,
         Type[]? Interfaces = default
     )
     {
-        public List<MethodModel>? Constructors { get; internal set; }
-        public List<FieldModel>? Dependencies { get; internal set; }
-        public List<MethodModel>? Methods { get; internal set; }
-        public List<PropertyModel>? Properties { get; internal set; }
+        public List<MethodModel>? Constructors { get; init; }
+        public List<FieldModel>? Dependencies { get; init; }
+        public List<MethodModel>? Methods { get; init; }
+        public List<PropertyModel>? Properties { get; init; }
+
+        public TypeModel(Type Type, string Name, bool IsValueType,
+            Type[]? Interfaces = default,
+            Func<TypeModel, List<MethodModel>?>? Constructors = default,
+            Func<TypeModel, List<FieldModel>?>? Dependencies = default,
+            Func<TypeModel, List<MethodModel>?>? Methods = default,
+            Func<TypeModel, List<PropertyModel>?>? Properties = default
+        ) : this(Type, Name, IsValueType, Interfaces)
+        {
+            this.Constructors = Constructors?.Invoke(this);
+            this.Dependencies = Dependencies?.Invoke(this);
+            this.Methods = Methods?.Invoke(this);
+            this.Properties = Properties?.Invoke(this);
+        }
 
         public bool HasMethod(Func<MethodModel, bool> predicate) =>
             Methods is not null && Methods.Any(predicate);
@@ -36,7 +50,15 @@ public record DomainModel(
         Type[]? GenericArguements = default
     )
     {
-        public List<ParameterModel>? Parameters { get; internal set; }
+        public List<ParameterModel>? Parameters { get; init; } = default!;
+
+        public MethodModel(TypeModel Target, string Name, Type ReturnType, bool IsPublic, bool IsConstructor,
+            Type[]? GenericArguements = default,
+            Func<MethodModel, List<ParameterModel>?>? ParametersFactory = default
+        ) : this(Target, Name, ReturnType, IsPublic, IsConstructor, GenericArguements)
+        {
+            Parameters = ParametersFactory?.Invoke(this);
+        }
     }
 
     public record ParameterModel(MethodModel Owner, string Name, Type Type);
