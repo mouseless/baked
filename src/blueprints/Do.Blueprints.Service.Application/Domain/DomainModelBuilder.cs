@@ -1,7 +1,5 @@
-﻿using NHibernate.Util;
+﻿using Do.Domain.Model;
 using System.Reflection;
-
-using static Do.Domain.DomainModel;
 
 namespace Do.Domain;
 
@@ -40,18 +38,8 @@ public class DomainModelBuilder
                 new(
                     Type: type,
                     Name: type.Name,
-                    IsValueType: type.IsValueType,
-                    Interfaces: type.GetInterfaces(),
-                    Constructors: (model) => GenerateConstructorModels(model, type.GetConstructors()),
-                    Dependencies: (model) => GenerateFieldModels(
-                        model,
-                        type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.DeclaredOnly).Where(f => f.IsInitOnly && f.CustomAttributes.Count() == 0).ToArray()
-                    ),
-                    Methods: (model) => GenerateMethodModels(
-                        model,
-                        type.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly).Where(m => !m.IsSpecialName).ToArray()
-                    ),
-                    Properties: (model) => GeneratePropertyModels(model, type.GetProperties())
+                    Constructors: ExtractConstructorModels(type),
+                    Methods: ExtractMethodModels(type)
                 )
             );
         }
@@ -59,9 +47,10 @@ public class DomainModelBuilder
         return result;
     }
 
-    static List<MethodModel>? GenerateConstructorModels(TypeModel target, ConstructorInfo[] constructors)
+    static List<MethodModel>? ExtractConstructorModels(Type type)
     {
-        if (!constructors.Any()) return null;
+        var constructors = type.GetConstructors();
+        if (!constructors.Any()) { return null; }
 
         var result = new List<MethodModel>();
 
@@ -69,12 +58,11 @@ public class DomainModelBuilder
         {
             result.Add(
                 new(
-                    Target: target,
                     Name: constructor.Name,
-                    ReturnType: target.Type,
+                    ReturnType: type,
                     IsPublic: constructor.IsPublic,
                     IsConstructor: true,
-                    ParametersFactory: (model) => GenerateParameterModels(model, constructor.GetParameters())
+                    Parameters: ExtractParameterModels(constructor)
                 )
             );
         }
@@ -82,8 +70,9 @@ public class DomainModelBuilder
         return result;
     }
 
-    static List<MethodModel>? GenerateMethodModels(TypeModel target, MethodInfo[] methods)
+    static List<MethodModel>? ExtractMethodModels(Type type)
     {
+        var methods = type.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
         if (!methods.Any()) return null;
 
         var result = new List<MethodModel>();
@@ -91,13 +80,12 @@ public class DomainModelBuilder
         foreach (var method in methods)
         {
             var model = new MethodModel(
-                Target: target,
                 Name: method.Name,
                 ReturnType: method.ReturnType,
                 IsPublic: method.IsPublic,
                 IsConstructor: method.IsConstructor,
                 GenericArguements: method.GetGenericArguments(),
-                ParametersFactory: (model) => GenerateParameterModels(model, method.GetParameters())
+                Parameters: ExtractParameterModels(method)
             );
 
             result.Add(model);
@@ -106,9 +94,14 @@ public class DomainModelBuilder
         return result;
     }
 
-    static List<ParameterModel>? GenerateParameterModels(MethodModel owner, ParameterInfo[] parameters)
+    static List<ParameterModel>? ExtractParameterModels(ConstructorInfo constructor) => ExtractParameterModelsInner(constructor);
+
+    static List<ParameterModel>? ExtractParameterModels(MethodInfo method) => ExtractParameterModelsInner(method);
+
+    static List<ParameterModel>? ExtractParameterModelsInner(MethodBase method)
     {
-        if (!parameters.Any()) return null;
+        var parameters = method.GetParameters();
+        if (!parameters.Any()) { return null; }
 
         var result = new List<ParameterModel>();
 
@@ -116,49 +109,8 @@ public class DomainModelBuilder
         {
             result.Add(
                 new(
-                    Owner: owner,
-                    Name: parameter.Name ?? throw new ArgumentNullException("Parameter name should not be null. Method:" + owner.Name),
+                    Name: parameter.Name ?? throw new ArgumentNullException("Parameter name should not be null. Method:" + method.Name),
                     Type: parameter.ParameterType
-                )
-            );
-        }
-
-        return result;
-    }
-
-    static List<PropertyModel>? GeneratePropertyModels(TypeModel owner, PropertyInfo[] propertyInfos)
-    {
-        if (!propertyInfos.Any()) return null;
-
-        var result = new List<PropertyModel>();
-
-        foreach (var property in propertyInfos)
-        {
-            result.Add(
-                new(
-                    Owner: owner,
-                    Name: property.Name,
-                    Type: property.PropertyType
-                )
-            );
-        }
-
-        return result;
-    }
-
-    static List<FieldModel>? GenerateFieldModels(TypeModel owner, FieldInfo[] fields)
-    {
-        if (!fields.Any()) return null;
-
-        var result = new List<FieldModel>();
-
-        foreach (var field in fields)
-        {
-            result.Add(
-                new(
-                    Owner: owner,
-                    Name: field.Name,
-                    Type: field.FieldType
                 )
             );
         }

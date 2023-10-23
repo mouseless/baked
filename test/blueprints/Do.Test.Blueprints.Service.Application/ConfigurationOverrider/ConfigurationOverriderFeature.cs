@@ -12,7 +12,6 @@ public class ConfigurationOverriderFeature : IFeature
             descriptor.AddType<Entity>();
             descriptor.AddType<Entities>();
             descriptor.AddType<Singleton>();
-            descriptor.AddType<Status>();
         });
 
         configurator.ConfigureAutoPersistenceModel(model =>

@@ -1,9 +1,8 @@
 ﻿using Do.Architecture;
-using Do.Business;
-using Do.Domain;
+using Do.Domain.Model;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Do.Test.Business.Default;
+namespace Do.Business.Default;
 
 public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
 {
@@ -15,11 +14,11 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
 
             foreach (var (type, model) in domainModel.TypeModels)
             {
-                if (model.HasProperty(p => p.Name.Equals("Id")) && model.HasMethod(m => m.Name.Equals("With") && m.ReturnType.Equals(type)))
+                if (model.HasMethod(m => m.Name.Equals("With") && m.ReturnType.Equals(type)))
                 {
                     services.AddTransientWithFactoryFromType(type);
                 }
-                else if (!model.IsValueType && model.Dependencies?.Count > 0)
+                else
                 {
                     services.AddSingleton(type);
                 }
