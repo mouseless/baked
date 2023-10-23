@@ -1,6 +1,8 @@
-﻿namespace Do.Domain.Model;
+﻿using System.Reflection;
 
-public record DomainModel(Dictionary<Type, TypeModel> TypeModels)
+namespace Do.Domain.Model;
+
+public record DomainModel(List<AssemblyModel> AssemblyModels)
 {
     public static DomainModel From(params Type[] args)
     {

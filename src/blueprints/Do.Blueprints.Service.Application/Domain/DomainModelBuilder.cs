@@ -10,31 +10,52 @@ public class DomainModelBuilder
 
     readonly DomainDescriptor _descriptor;
 
-    List<Type> _types = new();
-
     DomainModelBuilder(DomainDescriptor descriptor)
     {
         _descriptor = descriptor;
     }
 
-    public DomainModel Build()
+    public DomainModel Build() => new(AssemblyModels: GenerateAssemblyModels(_descriptor.AssemblyList));
+
+    List<AssemblyModel> GenerateAssemblyModels(List<Assembly> assemblies)
     {
-        _descriptor.AssemblyList.ForEach(a => a.GetExportedTypes().ToList().ForEach(t => _types.Add(t)));
-        _descriptor.IncludedTypes.ForEach(t => _types.Add(t));
+        var result = new List<AssemblyModel>();
+        var types = new List<Type>();
+        types.AddRange(_descriptor.IncludedTypes);
 
-        return new(
-            TypeModels: GenerateTypeModelList()
-        );
-    }
+        foreach (var assembly in assemblies)
+        {
+            types.AddRange(assembly.GetExportedTypes());
+        }
 
-    Dictionary<Type, TypeModel> GenerateTypeModelList()
-    {
-        var result = new Dictionary<Type, TypeModel>();
+        types = types.Distinct().ToList();
 
-        foreach (var type in _types)
+        var groups = types.GroupBy(
+                keySelector: t => t.Assembly,
+                elementSelector: t => t,
+                resultSelector: (assembly, types) => new { Assembly = assembly, Types = types.ToList() }
+            ).ToList();
+
+        foreach (var group in groups)
         {
             result.Add(
-                type,
+                new(
+                    group.Assembly,
+                    GenerateTypeModelList(group.Types)
+                )
+            );
+        }
+
+        return result;
+    }
+
+    static List<TypeModel> GenerateTypeModelList(List<Type> types)
+    {
+        var result = new List<TypeModel>();
+
+        foreach (var type in types)
+        {
+            result.Add(
                 new(
                     Type: type,
                     Name: type.Name,
@@ -49,7 +70,7 @@ public class DomainModelBuilder
 
     static List<MethodModel>? ExtractConstructorModels(Type type)
     {
-        var constructors = type.GetConstructors();
+        var constructors = type.GetConstructors(BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic);
         if (!constructors.Any()) { return null; }
 
         var result = new List<MethodModel>();

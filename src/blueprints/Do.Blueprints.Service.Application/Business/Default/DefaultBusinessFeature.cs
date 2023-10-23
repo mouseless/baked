@@ -12,15 +12,18 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
         {
             var domainModel = configurator.Context.Get<DomainModel>();
 
-            foreach (var (type, model) in domainModel.TypeModels)
+            foreach (var assemblyModel in domainModel.AssemblyModels)
             {
-                if (model.HasMethod(m => m.Name.Equals("With") && m.ReturnType.Equals(type)))
+                foreach (var model in assemblyModel.TypeModels)
                 {
-                    services.AddTransientWithFactoryFromType(type);
-                }
-                else
-                {
-                    services.AddSingleton(type);
+                    if (model.HasConstructor(c => !c.IsPublic && c.Parameters is null) && model.HasMethod(m => m.Name.Equals("With") && m.ReturnType.Equals(model.Type)))
+                    {
+                        services.AddTransientWithFactoryForType(model.Type);
+                    }
+                    else
+                    {
+                        services.AddSingleton(model.Type);
+                    }
                 }
             }
         });
@@ -29,16 +32,16 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
 
 public static class BusinessFeatureExtensions
 {
-    public static void AddTransientWithFactoryFromType(this IServiceCollection services, Type type)
+    public static void AddTransientWithFactoryForType(this IServiceCollection services, Type type)
     {
-        var addsingletonMethod = typeof(BusinessExtensions)
+        var addTransientMethod = typeof(BusinessExtensions)
             .GetMethods()
             .FirstOrDefault(m =>
                 m.Name == nameof(BusinessExtensions.AddTransientWithFactory) &&
                 m.GetGenericArguments().Length == 1
             ) ?? throw new Exception("AddTransientWithFactory should not be null");
 
-        var generic = addsingletonMethod.MakeGenericMethod(type);
+        var generic = addTransientMethod.MakeGenericMethod(type);
 
         generic.Invoke(null, new object[] { services });
     }
