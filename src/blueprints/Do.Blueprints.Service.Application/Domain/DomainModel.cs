@@ -14,8 +14,32 @@ public record DomainModel(
         return DomainModelBuilder.CreateBuilder(descriptor).Build();
     }
 
-    public record TypeModel(Type Type, Type[]? Interfaces);
-    public record PropertyModel(TypeModel Owner, Type Type);
-    public record MethodModel(TypeModel Target, Type ReturnType, List<ParameterModel>? Parameters, List<Type>? GenericArguements);
-    public record ParameterModel(MethodModel Owner, Type Type);
+    public record TypeModel(Type Type, string Name,
+        Type[]? Interfaces = default
+    )
+    {
+        public List<MethodModel>? Constructors { get; internal set; }
+        public List<FieldModel>? Dependencies { get; internal set; }
+        public List<MethodModel>? Methods { get; internal set; }
+        public List<PropertyModel>? Properties { get; internal set; }
+
+        public bool HasMethod(Func<MethodModel, bool> predicate) =>
+            Methods is not null && Methods.Any(predicate);
+
+        public bool HasProperty(Func<PropertyModel, bool> predicate) =>
+            Properties is not null && Properties.Any(predicate);
+    }
+
+    public record PropertyModel(TypeModel Owner, string Name, Type Type);
+
+    public record MethodModel(TypeModel Target, string Name, Type ReturnType, bool IsPublic, bool IsConstructor,
+        Type[]? GenericArguements = default
+    )
+    {
+        public List<ParameterModel>? Parameters { get; internal set; }
+    }
+
+    public record ParameterModel(MethodModel Owner, string Name, Type Type);
+
+    public record FieldModel(TypeModel Owner, string Name, Type Type);
 }
