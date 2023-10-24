@@ -1,5 +1,5 @@
 <template>
-  <ContentDoc v-if="!trailingSlash">
+  <ContentDoc>
     <template #default="{ doc }">
       <div class="container">
         <div class="content">
