@@ -7,7 +7,7 @@
     "prepare": "npm run lint && npx cross-var node -r dotenv/config prebuild dotenv_config_path=.env.$npm_config_env",
     "predev": "npm run prepare --env=local",
     "dev": "npx nuxi dev --dotenv .env.local",
-    "pregenerate": "npx cross-var npm run build --env=$npm_config_env",
+    "pregenerate": "npx cross-var npm run prepare --env=$npm_config_env",
     "generate": "npx cross-var npx nuxi generate --dotenv .env.$npm_config_env",
     "generate:local": "npm run generate --env=local",
     "generate:production": "npm run generate --env=production",
