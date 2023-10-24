@@ -2,22 +2,26 @@ import { defineNuxtConfig } from "nuxt/config";
 import { joinURL } from "ufo";
 
 export default defineNuxtConfig({
-  typescript: {
-    typeCheck: true
-  },
   runtimeConfig: {
     public: {
-      content: {
-        anchorLinks: {
-          depth: 0
+      mdc: {
+        headings: {
+          anchorLinks: {
+            h1: false,
+            h2: false,
+            h3: false,
+            h4: false,
+            h5: false,
+            h6: false
+          }
         }
       },
-      baseURL: process.env.BASE_URL,
+      baseURL: "",
       githubURL: "/mouseless/do"
     }
   },
   app: {
-    baseURL: process.env.BASE_URL,
+    baseURL: process.env.NUXT_PUBLIC_BASE_URL,
     head: {
       meta: [
         { charset: "utf-8" },
@@ -65,7 +69,7 @@ export default defineNuxtConfig({
         {
           rel: "icon",
           type: "image/x-icon",
-          href: joinURL(process.env.BASE_URL ?? "/", "favicon.ico")
+          href: joinURL(process.env.NUXT_PUBLIC_BASE_URL ?? "/", "favicon.ico")
         },
         {
           rel: "stylesheet",
@@ -94,43 +98,21 @@ export default defineNuxtConfig({
     "@nuxt/content",
     "@pinia/nuxt"
   ],
-  content: {
-    markdown: {
-      remarkPlugins: {
-        "remark-emoji": false
-      }
-    },
-    highlight: {
-      // Theme used in all color schemes.
-      theme: "slack-dark",
-      preload: [
-        "diff",
-        "ts",
-        "js",
-        "css",
-        "java",
-        "markdown",
-        "sql",
-        "xml",
-        "json",
-        "csharp",
-        "md",
-        "bash"
-      ]
-    }
-  },
-  router: {
-    options: {
-      strict: true
-    }
-  },
   components: {
-    dirs: [{ global: true, path: "~/components/Prose" }, "~/components"]
+    global: true,
+    dirs: ["~/components/Prose", "~/components"]
   },
   dir: {
     public: ".public"
   },
   generate: {
     routes: ["/not-found"]
+  },
+  experimental: { payloadExtraction: false },
+  devtools: { enabled: false },
+  nitro: {
+    prerender: {
+      failOnError: false
+    }
   }
 });
