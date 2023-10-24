@@ -6,7 +6,7 @@ export default function (index, menus) {
 
   const sectionSorted = menus;
   for(let i = 0; i < index.sections.length; i++) {
-    sectionSorted[i] = sortedSectionsMap.get(`/${index.sections[i]}`);
+    sectionSorted[i] = sortedSectionsMap.get(`/${index.sections[i]}/`);
   }
 
   return sectionSorted;

@@ -18,6 +18,7 @@
   </ContentDoc>
 </template>
 <script setup>
+import { withTrailingSlash } from "ufo";
 import { useRoute } from "#imports";
 import { usePageStore } from "~/store/pageStore";
 
@@ -40,6 +41,8 @@ index.pages
   : index.sort
     ? pages.sort((a, b) => autoSorter(a, b, index.sort.by, index.sort.order))
     : pages.sort();
+
+index._path = withTrailingSlash(index._path);
 
 const sortedPages = root === "/" ? [index] : [index, ...pages];
 

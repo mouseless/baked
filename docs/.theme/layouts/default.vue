@@ -19,6 +19,7 @@
   </div>
 </template>
 <script setup lang="ts">
+import { withTrailingSlash } from "ufo";
 import { useSectionStore } from "~/store/sectionStore";
 
 const store = useSectionStore();
@@ -35,6 +36,11 @@ let sections = await queryContent("/")
     _path: { $in: index.sections.map((section: any) => `/${section}`) }
   })
   .find();
+
+sections.forEach(function(part, index) {
+  part._path = withTrailingSlash(part._path);
+  sections[index] = part;
+});
 
 sections = sectionSorter(index, sections);
 
