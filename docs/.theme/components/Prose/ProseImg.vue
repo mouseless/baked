@@ -8,9 +8,8 @@
   >
 </template>
 <script setup lang="ts">
-import { withTrailingSlash, withLeadingSlash, joinURL } from "ufo";
+import { joinURL, withBase } from "ufo";
 import { useRuntimeConfig, computed, useRoute } from "#imports";
-
 const props = withDefaults(defineProps<{
   src: string,
   alt: string,
@@ -26,21 +25,18 @@ const props = withDefaults(defineProps<{
 const route = useRoute();
 
 const refinedSrc = computed(() => {
-  if(props.src.startsWith("//")) {
-    return props.src;
+  let src = props.src;
+
+  if(src?.startsWith("./README")) {
+    src = joinURL(route.path, src);
   }
 
-  const base = withLeadingSlash(withTrailingSlash(useRuntimeConfig().app.baseURL));
-  const path = parsePath(route.path);
+  if(src?.startsWith("/") && !src.startsWith("//")) {
+    src = withBase(src, useRuntimeConfig().app.baseURL);
+  }
 
-  return joinURL(base, path, props.src);
+  return src;
 });
-
-function parsePath(path: string) {
-  return path.endsWith("/")
-    ? path
-    : path.replace(/\/[^/]*\/?$/, "");
-}
 </script>
 <style lang="scss" scoped>
 img {
