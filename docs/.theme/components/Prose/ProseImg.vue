@@ -10,6 +10,7 @@
 <script setup lang="ts">
 import { joinURL, withBase } from "ufo";
 import { useRuntimeConfig, computed, useRoute } from "#imports";
+
 const props = withDefaults(defineProps<{
   src: string,
   alt: string,
