@@ -134,10 +134,5 @@ export default defineNuxtConfig({
     routes: ["/not-found"]
   },
   experimental: { payloadExtraction: false },
-  devtools: { enabled: false },
-  nitro: {
-    prerender: {
-      failOnError: false
-    }
-  }
+  devtools: { enabled: false }
 });
