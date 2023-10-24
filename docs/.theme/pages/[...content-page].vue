@@ -18,7 +18,7 @@
   </ContentDoc>
 </template>
 <script setup>
-import { useRoute, navigateTo, onMounted } from "#imports";
+import { useRoute } from "#imports";
 import { usePageStore } from "~/store/pageStore";
 
 const route = useRoute();
@@ -44,17 +44,6 @@ index.pages
 const sortedPages = root === "/" ? [index] : [index, ...pages];
 
 store.setPages(sortedPages);
-
-const trailingSlash = route.path !== "/" && route.path.endsWith("/");
-onMounted(async () => {
-  if(trailingSlash) {
-    const { path, query, hash } = route;
-    const nextPath = path.replace(/\/+$/, "");
-    const nextRoute = { path: nextPath, query, hash };
-
-    await navigateTo(nextRoute, { replace: true });
-  }
-});
 </script>
 <style lang="scss" scoped>
 .container {
