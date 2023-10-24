@@ -98,6 +98,31 @@ export default defineNuxtConfig({
     "@nuxt/content",
     "@pinia/nuxt"
   ],
+  content: {
+    markdown: {
+      remarkPlugins: {
+        "remark-emoji": false
+      }
+    },
+    highlight: {
+      // Theme used in all color schemes.
+      theme: "slack-dark",
+      preload: [
+        "diff",
+        "ts",
+        "js",
+        "css",
+        "java",
+        "markdown",
+        "sql",
+        "xml",
+        "json",
+        "csharp",
+        "md",
+        "bash"
+      ]
+    }
+  },
   components: {
     global: true,
     dirs: ["~/components/Prose", "~/components"]
