@@ -37,16 +37,24 @@ let pages = await queryContent(root)
   .find();
 
 index.pages
-  ? pages = pageSorter(index, pages)
-  : index.sort
-    ? pages.sort((a, b) => autoSorter(a, b, index.sort.by, index.sort.order))
-    : pages.sort();
+  ? pages = sortWithReference(index.pages, i => `${index._path}/${index.pages[i]}`, pages, i => pages[i]._path)
+  : pages = pages.sort(index.sort ? (a, b) => pageComparer(a, b, index.sort.by, index.sort.order) : undefined);
 
 index._path = withTrailingSlash(index._path);
 
 const sortedPages = root === "/" ? [index] : [index, ...pages];
 
 store.setPages(sortedPages);
+
+function pageComparer(a, b, by = "title", order = "asc") {
+  return compare(a, b, by) * (order === "desc" ? -1 : 1);
+}
+
+function compare(a, b, by) {
+  if(a[by] < b[by]) { return -1; }
+  if(a[by] > b[by]) { return 1; }
+  return 0;
+}
 </script>
 <style lang="scss" scoped>
 .container {
