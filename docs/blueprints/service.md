@@ -34,12 +34,16 @@ Phase execution order
 ```mermaid
 flowchart TD
     AS[AddServices]
-    BC[BuildConfiguration]
     B[Build]
+    BC[BuildConfiguration]
+    BD[BuildDomain]
     CB[CreateBuilder]
+    CD[ConfigureDomain]
     R[Run]
     CB -->|ConfigurationManager| BC
-    CB --->|ConfigurationManager| AS
+    CB -->|ConfigurationManager| CD
+    CD -->|DomainDescriptor| BD
+    BD -->|DomainModel| AS
     CB -->|WebApplicationBuilder| B
     AS -->|IServiceCollection| B
     B -->|WebApplication|R
