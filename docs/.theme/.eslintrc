@@ -23,6 +23,10 @@
       "error",
       "as-needed"
     ],
+    "comma-dangle": [
+      "error",
+      "never"
+    ],
     "indent": [
       "error",
       2
@@ -63,7 +67,10 @@
       "error",
       "always"
     ],
-    "space-before-function-paren": "off",
+    "space-before-function-paren": [
+      "error",
+      "never"
+    ],
     "vue/multi-word-component-names": "off",
     "vue/html-quotes": [
       "error",

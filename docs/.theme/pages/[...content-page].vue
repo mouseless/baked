@@ -31,14 +31,16 @@ const index = await queryContent(root)
   .only(["_path", "title", "pages", "sort"])
   .findOne();
 
-let pages = await queryContent(root)
+const pages = await queryContent(root)
   .where({ _path: { $ne: root } })
   .only(["_path", "title"])
   .find();
 
-index.pages
-  ? pages = applyOrder(pages, i => `${index._path}/${index.pages[i]}`)
-  : pages = pages.sort((a, b) => compare(a, b, index.sort));
+if(index.pages) {
+  applyOrder(pages, i => `${index._path}/${index.pages[i]}`);
+} else {
+  pages.sort((a, b) => compare(a, b, index.sort));
+}
 
 index._path = withTrailingSlash(index._path);
 
