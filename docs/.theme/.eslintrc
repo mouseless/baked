@@ -5,15 +5,12 @@
     "node": true
   },
   "extends": [
-    "eslint:recommended",
-    "plugin:nuxt/recommended",
-    "plugin:vue/recommended",
     "@nuxtjs/eslint-config-typescript"
   ],
   "overrides": [
     {
       "files": [
-        "**/*.{ts,js,json,vue}"
+        "**/*.{ts,js,vue}"
       ]
     }
   ],
@@ -21,19 +18,16 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": [
-    "json-format"
-  ],
   "rules": {
     "arrow-parens": [
       "error",
       "as-needed"
     ],
-    "indent": [
+    "comma-dangle": [
       "error",
-      2
+      "never"
     ],
-    "@typescript-eslint/indent": [
+    "indent": [
       "error",
       2
     ],
@@ -73,7 +67,10 @@
       "error",
       "always"
     ],
-    "space-before-function-paren": "off",
+    "space-before-function-paren": [
+      "error",
+      "never"
+    ],
     "vue/multi-word-component-names": "off",
     "vue/html-quotes": [
       "error",
