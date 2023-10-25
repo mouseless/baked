@@ -33,7 +33,7 @@ let sections = await queryContent("/")
   .only(["_path", "title", "_dir"])
   .where({
     _dir: { $eq: "" },
-    _path: { $in: index.sections.map((section: any) => `${withLeadingSlash(section)}`) }
+    _path: { $in: index.sections.map((section: any) => withLeadingSlash(section)) }
   })
   .find();
 
@@ -42,7 +42,7 @@ sections.forEach(function(part, index) {
   sections[index] = part;
 });
 
-sections = sortWithReference(index.sections, (i:number) => `${withLeadingSlash(withTrailingSlash(index.sections[i]))}`, sections, (i:number) => sections[i]._path);
+sections = applyOrder(sections, (i:number) => withLeadingSlash(withTrailingSlash(index.sections[i])));
 
 store.setSections(sections);
 </script>

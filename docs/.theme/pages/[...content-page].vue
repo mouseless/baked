@@ -37,8 +37,8 @@ let pages = await queryContent(root)
   .find();
 
 index.pages
-  ? pages = sortWithReference(index.pages, i => `${index._path}/${index.pages[i]}`, pages, i => pages[i]._path)
-  : pages = pages.sort(index.sort ? (a, b) => pageComparer(a, b, index.sort.by, index.sort.order) : undefined);
+  ? pages = applyOrder(pages, i => `${index._path}/${index.pages[i]}`)
+  : pages = pages.sort((a, b) => compare(a, b, index.sort));
 
 index._path = withTrailingSlash(index._path);
 
@@ -46,13 +46,15 @@ const sortedPages = root === "/" ? [index] : [index, ...pages];
 
 store.setPages(sortedPages);
 
-function pageComparer(a, b, by = "title", order = "asc") {
-  return compare(a, b, by) * (order === "desc" ? -1 : 1);
-}
+function compare(a, b, { by, order } = { }) {
+  by ||= "title";
+  order ||= "asc";
 
-function compare(a, b, by) {
-  if(a[by] < b[by]) { return -1; }
-  if(a[by] > b[by]) { return 1; }
+  const direction = order === "asc" ? 1 : -1;
+
+  if(a[by] < b[by]) { return -1 * direction; }
+  if(a[by] > b[by]) { return 1 * direction; }
+
   return 0;
 }
 </script>
