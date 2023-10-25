@@ -66,6 +66,10 @@ export default defineNuxtConfig({
       ]
     }
   },
+  components: {
+    global: true,
+    dirs: ["~/components/Prose", "~/components"]
+  },
   content: {
     markdown: {
       remarkPlugins: {
@@ -90,10 +94,6 @@ export default defineNuxtConfig({
         "bash"
       ]
     }
-  },
-  components: {
-    global: true,
-    dirs: ["~/components/Prose", "~/components"]
   },
   css: ["~/assets/styles.scss"],
   devtools: { enabled: false },
