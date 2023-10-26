@@ -3,6 +3,7 @@ pages:
     - configuration
     - data-access
     - dependency-injection
+    - domain
     - http-server
     - monitoring
     - rest-api
