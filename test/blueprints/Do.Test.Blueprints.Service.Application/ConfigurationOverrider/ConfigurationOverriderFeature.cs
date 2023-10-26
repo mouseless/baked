@@ -16,8 +16,6 @@ public class ConfigurationOverriderFeature : IFeature
 
         configurator.ConfigureAutoPersistenceModel(model =>
         {
-            model.AddEntityAssembly(typeof(Entity).Assembly);
-
             model.Override<Entity>(x => x.Map(e => e.String).Length(200));
         });
 

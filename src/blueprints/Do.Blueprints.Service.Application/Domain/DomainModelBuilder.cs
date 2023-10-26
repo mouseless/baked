@@ -25,7 +25,7 @@ public class DomainModelBuilder
 
         foreach (var assembly in assemblies)
         {
-            types.AddRange(assembly.GetExportedTypes());
+            types.AddRange(assembly.GetTypes());
         }
 
         types = types.Distinct().ToList();
@@ -93,7 +93,7 @@ public class DomainModelBuilder
 
     static List<MethodModel>? ExtractMethodModels(Type type)
     {
-        var methods = type.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
+        var methods = type.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
         if (!methods.Any()) return null;
 
         var result = new List<MethodModel>();

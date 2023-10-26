@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace Do.Domain.Model;
+﻿namespace Do.Domain.Model;
 
 public record DomainModel(List<AssemblyModel> AssemblyModels)
 {
