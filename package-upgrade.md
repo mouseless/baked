@@ -5,6 +5,7 @@ Upgrades flowed in the following order.
 ```markdown
 - [ ] `c#` version upgrade
 - [ ] `.Net` version upgrade
+- [ ] Upgrade .Net version on workflows
 - [ ] Version upgrades in `Do.Blueprints.Service`
   - [ ] Microsoft.Extensions.Configuration.Abstractions
   - [ ] Microsoft.Extensions.Configuration.Binder
