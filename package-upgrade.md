@@ -15,6 +15,8 @@ Upgrades flowed in the following order.
 - [ ] Other version upgrades in `Do.Blueprints.Service.Application`
   - [ ] FluentNHibernate
   - [ ] MySql.Data
+- [ ] Docker .Net update
+  - [ ] Update version in Dockerfile
 ```
 
 ## C# version upgrade
@@ -37,10 +39,10 @@ following upgrade was done.
 
 ## Do.Blueprints.Service
 
-- `Microsoft.Extensions.Configuration.Abstractions` 7.0.0 ✅
+- `Microsoft.Extensions.Configuration.Abstractions` 7.0.0
   - Build ✅
   - Test ✅
-- `Microsoft.Extensions.Configuration.Binder` 7.0.4 ✅
+- `Microsoft.Extensions.Configuration.Binder` 7.0.4
   - Build ✅
   - Test ✅
 
@@ -61,3 +63,12 @@ following upgrade was done.
 - `MySql.Data` 8.2.0
   - Build ✅
   - Test ✅
+
+## Docker
+
+- Update `.Net` version in `Dockerfile`
+  - replace `.../dotnet/aspnet:6.0-focal` to `.../dotnet/aspnet:7.0-focal`
+  - docker compose up ❌ (`load metadata for mcr.microsoft.com/dotnet/aspnet:7.0-focal`)
+  - replace `.../dotnet/aspnet:7.0-focal` to `.../dotnet/aspnet:7.0`
+  - replace `.../dotnet/sdk:7.0-focal` to `.../dotnet/sdk:7.0`
+  - again docker compose up ✅
