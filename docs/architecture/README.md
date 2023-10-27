@@ -79,15 +79,18 @@ In other words;
 
 ## Feature
 
-A feature is an ability for a domain logic to use in order to access other
-software components. Every feature consists of two parts; abstraction (port)
-and implementation (adapter).
+Feature is a component which can configure individual layers, introduce new 
+behaviour using layers and other feature ports or register components 
+for providing APIs to domain layer to other software components. 
+
+Every feature consists of two parts; abstraction (port) and implementation 
+(adapter).
 
 ### Abstraction
 
 An abstraction is the library that contains all common classes, interfaces,
 attributes, if any, for a feature. It is the only accessible part of a feature
-from the domain layer or from other feature implementations.
+from the domain or from other feature implementations.
 
 > :information_source:
 >
@@ -135,7 +138,7 @@ design or technology, e.g. `Auth.Auth0`, `Fs.Aws`, `Database.MySql`.
 > components.
 
 In conclusion, feature implementations serve as bridges, connecting the domain
-layer to other layers through their opinionated configurations. Below is a
+or layers to other layers through their opinionated configurations. Below is a
 complete sample architecture, showcasing the integration of layers, features
 and the domain layer;
 
