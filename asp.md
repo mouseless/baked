@@ -97,11 +97,11 @@ public async Task GetTodoReturnsTodoFromDatabase()
 
 ## New HttpResult interfaces
 
-- IContentTypeHttpResult
-- IFileHttpResult
-- INestedHttpResult
-- IStatusCodeHttpResult
-- IValueHttpResult
+- `IContentTypeHttpResult`
+- `IFileHttpResult`
+- `INestedHttpResult`
+- `IStatusCodeHttpResult`
+- `IValueHttpResult`
 - `IValueHttpResult<TValue>`
 
 ## OpenAPI improvements for minimal APIs
