@@ -10,7 +10,7 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
     {
         configurator.ConfigureServiceCollection(services =>
         {
-            var domainModel = configurator.Context.Get<DomainModel>();
+            var domainModel = configurator.Context.GetDomainModel();
 
             foreach (var assemblyModel in domainModel.AssemblyModels)
             {

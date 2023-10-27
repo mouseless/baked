@@ -21,7 +21,7 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
 
         configurator.ConfigureAutoPersistenceModel(model =>
         {
-            var domainModel = configurator.Context.Get<DomainModel>();
+            var domainModel = configurator.Context.GetDomainModel();
 
             domainModel.AssemblyModels.ForEach(m => model.AddEntityAssembly(m.Assembly));
 
