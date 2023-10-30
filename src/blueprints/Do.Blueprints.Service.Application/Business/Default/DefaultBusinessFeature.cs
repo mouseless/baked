@@ -1,5 +1,4 @@
 ﻿using Do.Architecture;
-using Do.Domain.Model;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Do.Business.Default;
@@ -30,19 +29,3 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
     }
 }
 
-public static class BusinessFeatureExtensions
-{
-    public static void AddTransientWithFactoryForType(this IServiceCollection services, Type type)
-    {
-        var addTransientMethod = typeof(BusinessExtensions)
-            .GetMethods()
-            .FirstOrDefault(m =>
-                m.Name == nameof(BusinessExtensions.AddTransientWithFactory) &&
-                m.GetGenericArguments().Length == 1
-            ) ?? throw new Exception("AddTransientWithFactory should not be null");
-
-        var generic = addTransientMethod.MakeGenericMethod(type);
-
-        generic.Invoke(null, new object[] { services });
-    }
-}

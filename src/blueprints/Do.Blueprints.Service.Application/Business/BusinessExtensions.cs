@@ -1,12 +1,22 @@
 using Do.Architecture;
 using Do.Business;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace Do;
 
 public static class BusinessExtensions
 {
     public static void AddBusiness(this List<IFeature> source, Func<BusinessConfigurator, IFeature<BusinessConfigurator>> configure) => source.Add(configure(new()));
+
+    static readonly MethodInfo _addTransientWithFactory = typeof(BusinessExtensions).GetMethod(nameof(AddTransientWithFactory))
+        ?? throw new Exception("AddTransientWithFactory should have existed");
+    public static void AddTransientWithFactoryForType(this IServiceCollection services, Type type)
+    {
+        var generic = _addTransientWithFactory.MakeGenericMethod(type);
+
+        generic.Invoke(null, new object[] { services });
+    }
 
     public static void AddTransientWithFactory<T>(this IServiceCollection source) where T : class
     {
