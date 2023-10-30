@@ -2,7 +2,7 @@
 
 ## Features
 
-- Do now supports .NET 7! Look [here](./docs/net-7-migrations.md) to see migration.
+- Do now supports .NET 7! Look [here](./docs/net-7-migrations) to see migration.
 
 ## Library Upgrades
 
