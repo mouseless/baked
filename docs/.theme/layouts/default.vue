@@ -19,6 +19,7 @@
   </div>
 </template>
 <script setup lang="ts">
+import { withLeadingSlash, withTrailingSlash } from "ufo";
 import { useSectionStore } from "~/store/sectionStore";
 
 const store = useSectionStore();
@@ -28,15 +29,19 @@ const index = await queryContent()
   .only(["sections"])
   .findOne();
 
-let sections = await queryContent("/")
+const sections = await queryContent("/")
   .only(["_path", "title", "_dir"])
   .where({
     _dir: { $eq: "" },
-    _path: { $in: index.sections.map((section: any) => `/${section}`) }
+    _path: { $in: index.sections.map((path: any) => withLeadingSlash(path)) }
   })
   .find();
 
-sections = sectionSorter(index, sections);
+for(const section of sections) {
+  section._path = withTrailingSlash(section._path);
+}
+
+applyOrder(sections, (i:number) => withLeadingSlash(withTrailingSlash(index.sections[i])));
 
 store.setSections(sections);
 </script>
