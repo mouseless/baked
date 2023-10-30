@@ -70,10 +70,10 @@ the technology it uses. Configurations may contain a set of helper classes
 and/or facade methods that makes it easy to build a certain type of
 configuration, but they do __not__ have opinions upfront.
 
-## Feature
+## Features
 
-Finally, feature component connects layers in an opinionated way to introduce 
-new behaviours to the application. Features consist of two parts; an optional
+Finally, features connect layers in an opinionated way to introduce new 
+behaviours to the application. Features consist of two parts; an optional 
 abstraction (port) and a required implementation (adapter).
 
 ### Abstraction
