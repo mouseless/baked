@@ -15,9 +15,9 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
             {
                 foreach (var model in assemblyModel.TypeModels)
                 {
-                    if (model.HasConstructor(c => !c.IsPublic && c.Parameters is null) && model.HasMethod(m => m.Name.Equals("With") && m.ReturnType.Equals(model.Type)))
+                    if (model.HasMethod(m => m.Name.Equals("With") && m.ReturnType.Equals(model.Type)))
                     {
-                        services.AddTransientWithFactoryForType(model.Type);
+                        services.AddTransientWithFactory(model.Type);
                     }
                     else
                     {

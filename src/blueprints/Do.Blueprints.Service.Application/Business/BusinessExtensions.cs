@@ -1,7 +1,6 @@
 using Do.Architecture;
 using Do.Business;
 using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
 
 namespace Do;
 
@@ -9,24 +8,21 @@ public static class BusinessExtensions
 {
     public static void AddBusiness(this List<IFeature> source, Func<BusinessConfigurator, IFeature<BusinessConfigurator>> configure) => source.Add(configure(new()));
 
-    static readonly MethodInfo _addTransientWithFactory = typeof(BusinessExtensions).GetMethod(nameof(AddTransientWithFactory))
-        ?? throw new Exception("AddTransientWithFactory should have existed");
-    public static void AddTransientWithFactoryForType(this IServiceCollection services, Type type)
+    public static void AddTransientWithFactory<T>(this IServiceCollection source) where T : class => source.AddTransientWithFactory(typeof(T));
+    public static void AddTransientWithFactory(this IServiceCollection source, Type type)
     {
-        var generic = _addTransientWithFactory.MakeGenericMethod(type);
+        var funcType = typeof(Func<>).MakeGenericType(type);
 
-        generic.Invoke(null, new object[] { services });
+        source.AddSingleton(funcType, sp => () => sp.GetRequiredServiceUsingRequestServices(type));
+        source.AddTransient(type);
     }
 
-    public static void AddTransientWithFactory<T>(this IServiceCollection source) where T : class
+    public static void AddScopedWithFactory<T>(this IServiceCollection source) where T : class => source.AddScopedWithFactory(typeof(T));
+    public static void AddScopedWithFactory(this IServiceCollection source, Type type)
     {
-        source.AddSingleton<Func<T>>(sp => () => sp.GetRequiredServiceUsingRequestServices<T>());
-        source.AddTransient<T>();
-    }
+        var funcType = typeof(Func<>).MakeGenericType(type);
 
-    public static void AddScopedWithFactory<T>(this IServiceCollection source) where T : class
-    {
-        source.AddSingleton<Func<T>>(sp => () => sp.GetRequiredServiceUsingRequestServices<T>());
-        source.AddScoped<T>();
+        source.AddSingleton(funcType, sp => sp.GetRequiredServiceUsingRequestServices(type));
+        source.AddScoped(type);
     }
 }
