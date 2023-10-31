@@ -23,7 +23,7 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
         {
             var domainModel = configurator.Context.GetDomainModel();
 
-            domainModel.AssemblyModels.ForEach(m => model.AddEntityAssembly(m.Assembly));
+            domainModel.Assemblies.ForEach(m => model.AddEntityAssembly(m.Assembly));
 
             model
                 .Conventions.Add(Table.Is(x => x.EntityType.Name))

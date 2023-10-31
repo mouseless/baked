@@ -26,7 +26,7 @@ public class DomainLayer : LayerBase<BuildConfiguration>
 
         protected override void Initialize(ConfigurationManager _)
         {
-            Context.Add(DomainModelBuilder.CreateBuilder(_domainDescriptor).Build());
+            Context.Add(new DomainModelBuilder(_domainDescriptor).Build());
         }
     }
 }

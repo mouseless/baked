@@ -2,4 +2,4 @@
 
 namespace Do.Domain.Model;
 
-public record AssemblyModel(Assembly Assembly, List<TypeModel> TypeModels);
+public record AssemblyModel(Assembly Assembly);

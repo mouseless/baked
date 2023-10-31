@@ -11,18 +11,15 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
         {
             var domainModel = configurator.Context.GetDomainModel();
 
-            foreach (var assemblyModel in domainModel.AssemblyModels)
+            foreach (var model in domainModel.Types)
             {
-                foreach (var model in assemblyModel.TypeModels)
+                if (model.Methods.Any(m => m.Name.Equals("With") && m.ReturnType.Equals(model.Type)))
                 {
-                    if (model.HasMethod(m => m.Name.Equals("With") && m.ReturnType.Equals(model.Type)))
-                    {
-                        services.AddTransientWithFactory(model.Type);
-                    }
-                    else
-                    {
-                        services.AddSingleton(model.Type);
-                    }
+                    services.AddTransientWithFactory(model.Type);
+                }
+                else
+                {
+                    services.AddSingleton(model.Type);
                 }
             }
         });

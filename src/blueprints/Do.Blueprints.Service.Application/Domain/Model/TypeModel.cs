@@ -1,13 +1,21 @@
-﻿namespace Do.Domain.Model;
+﻿using System.Reflection;
 
-public record TypeModel(Type Type, string Name,
-        List<MethodModel>? Constructors = default,
-        List<MethodModel>? Methods = default
+namespace Do.Domain.Model;
+
+public record TypeModel(
+    Type Type,
+    string Name,
+    List<MethodModel> Methods
 )
 {
-    public bool HasConstructor(Func<MethodModel, bool> predicate) =>
-        Constructors is not null && Constructors.Any(predicate);
+    public TypeModel(Type type) : this(type, type.Name, new())
+    {
+        var methodInfos = type.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly) ??
+            Array.Empty<MethodInfo>();
 
-    public bool HasMethod(Func<MethodModel, bool> predicate) =>
-        Methods is not null && Methods.Any(predicate);
+        foreach (var method in methodInfos)
+        {
+            Methods.Add(new(method));
+        }
+    }
 }

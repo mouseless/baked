@@ -29,7 +29,7 @@ Features with default options are;
 | Mocking Overrider  |             | First Interface |          |
 | Orm                | Default     | Default         |          |
 
-Phase execution order
+Phase execution order;
 
 ```mermaid
 flowchart TD

@@ -9,6 +9,8 @@ public class ConfigurationOverriderFeature : IFeature
     {
         configurator.ConfigureDomainDescriptor(descriptor =>
         {
+            descriptor.AddAssembly<Entity>();
+
             descriptor.AddType<Entity>();
             descriptor.AddType<Entities>();
             descriptor.AddType<Singleton>();

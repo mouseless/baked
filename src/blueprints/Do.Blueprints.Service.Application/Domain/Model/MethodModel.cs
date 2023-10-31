@@ -1,7 +1,12 @@
-﻿namespace Do.Domain.Model;
+﻿using System.Reflection;
 
-public record MethodModel(string Name, Type ReturnType, bool IsPublic, bool IsConstructor,
-    Type[]? GenericArguements = default,
-    List<ParameterModel>? Parameters = default
-);
+namespace Do.Domain.Model;
+
+public record MethodModel(
+    string Name,
+    Type ReturnType
+)
+{
+    public MethodModel(MethodInfo methodInfo) : this(methodInfo.Name, methodInfo.ReturnType) { }
+}
 
