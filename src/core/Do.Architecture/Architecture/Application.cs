@@ -40,6 +40,7 @@ public class Application
             _phases.AddRange(layer.GetPhases());
         }
 
+        _phases.ForEach(p => p.Context = _context);
         _phases.Sort((l, r) => l.Order - r.Order);
     }
 
@@ -48,7 +49,7 @@ public class Application
         var phases = new List<IPhase>(_phases);
         while (phases.Count > 0)
         {
-            var phasesOfThisIteration = phases.Where(p => p.IsReady(_context)).ToList();
+            var phasesOfThisIteration = phases.Where(p => p.IsReady).ToList();
             if (!phasesOfThisIteration.Any()) { throw new CannotProceedException(phases); }
 
             VerifyOrderOccursAtMostOnce(PhaseOrder.Earliest, phasesOfThisIteration);
@@ -56,7 +57,7 @@ public class Application
 
             foreach (var phase in phasesOfThisIteration)
             {
-                phase.Initialize(_context);
+                phase.Initialize();
 
                 Apply(phase);
             }

@@ -3,16 +3,13 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 
-using static Do.DependencyInjection.DependencyInjectionLayer;
 using static Do.HttpServer.HttpServerLayer;
 
 namespace Do.HttpServer;
 
-public class HttpServerLayer : LayerBase<AddServices, Build>
+public class HttpServerLayer : LayerBase<Build>
 {
     readonly IMiddlewareCollection _middlewares = new MiddlewareCollection();
-
-    protected override PhaseContext GetContext(AddServices phase) => PhaseContext.Empty;
 
     protected override PhaseContext GetContext(Build phase) =>
         phase.CreateContextBuilder()

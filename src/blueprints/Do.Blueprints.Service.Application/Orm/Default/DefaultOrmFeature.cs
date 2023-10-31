@@ -1,4 +1,5 @@
 ﻿using Do.Architecture;
+using Do.Domain.Model;
 using Do.Orm.Default.UserTypes;
 using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Mapping;
@@ -20,6 +21,10 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
 
         configurator.ConfigureAutoPersistenceModel(model =>
         {
+            var domainModel = configurator.Context.GetDomainModel();
+
+            domainModel.Assemblies.ForEach(m => model.AddEntityAssembly(m.Assembly));
+
             model
                 .Conventions.Add(Table.Is(x => x.EntityType.Name))
                 .Conventions.Add(ConventionBuilder.Id.Always(x => x.GeneratedBy.Guid()))

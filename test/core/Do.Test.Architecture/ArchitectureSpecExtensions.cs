@@ -25,6 +25,8 @@ public static class ArchitectureSpecExtensions
     #region Application
 
     public static Application AnApplication(this Stubber giveMe,
+        IPhase? phase = default,
+        IPhase[]? phases = default,
         ILayer? layer = default,
         ILayer[]? layers = default,
         IFeature? feature = default,
@@ -32,7 +34,7 @@ public static class ArchitectureSpecExtensions
         ApplicationContext? context = default
     )
     {
-        layers ??= new[] { layer ?? giveMe.Spec.MockMe.ALayer() };
+        layers ??= new[] { layer ?? giveMe.Spec.MockMe.ALayer(phase: phase, phases: phases) };
         features ??= new[] { feature ?? giveMe.Spec.MockMe.AFeature() };
 
         return giveMe.AForge(context: context).Application(app =>
@@ -94,6 +96,35 @@ public static class ArchitectureSpecExtensions
 
     #endregion
 
+    #region Feature
+
+    public static IFeature AFeature(this Mocker _,
+        string? id = default
+    )
+    {
+        var result = new Mock<IFeature>();
+        result.Setup(l => l.Id).Returns(id ?? $"{Guid.NewGuid()}");
+
+        return result.Object;
+    }
+
+    public static void VerifyInitialized(this IFeature source) =>
+        Mock.Get(source).Verify(f => f.Configure(It.IsAny<LayerConfigurator>()));
+
+    public static void VerifyConfigures<TTarget>(this IFeature source, TTarget target) where TTarget : notnull =>
+        Mock.Get(source).Verify(f => f.Configure(LayerConfigurator.Create(new(), target)));
+
+    public static void VerifyConfiguresNothing(this IFeature source) =>
+        Mock.Get(source).Verify(f => f.Configure(It.IsAny<LayerConfigurator>()), Times.Never());
+
+    #endregion
+
+    #region Int
+
+    public static int AnInt(this Stubber _) => 42;
+
+    #endregion
+
     #region Layer
 
     public static ILayer ALayer(this Mocker mockMe,
@@ -140,24 +171,78 @@ public static class ArchitectureSpecExtensions
     #region LayerConfigurator
 
     public static LayerConfigurator ALayerConfigurator<TTarget>(this Stubber giveMe,
-        TTarget? configuration = default
+        ApplicationContext? context = default,
+        TTarget? target = default
     ) where TTarget : notnull
     {
-        configuration ??= giveMe.AnInstanceOf<TTarget>();
+        context ??= giveMe.AnApplicationContext();
+        target ??= giveMe.AnInstanceOf<TTarget>();
 
-        return LayerConfigurator.Create<TTarget>(configuration);
+        return LayerConfigurator.Create(context, target);
+    }
+
+    public static LayerConfigurator ALayerConfigurator<TTarget1, TTarget2>(this Stubber giveMe,
+        ApplicationContext? context = default,
+        TTarget1? target1 = default,
+        TTarget2? target2 = default
+    ) where TTarget1 : notnull
+      where TTarget2 : notnull
+    {
+        context ??= giveMe.AnApplicationContext();
+        target1 ??= giveMe.AnInstanceOf<TTarget1>();
+        target2 ??= giveMe.AnInstanceOf<TTarget2>();
+
+        return LayerConfigurator.Create(context, target1, target2);
+    }
+
+    public static LayerConfigurator ALayerConfigurator<TTarget1, TTarget2, TTarget3>(this Stubber giveMe,
+        ApplicationContext? context = default,
+        TTarget1? target1 = default,
+        TTarget2? target2 = default,
+        TTarget3? target3 = default
+    ) where TTarget1 : notnull
+      where TTarget2 : notnull
+      where TTarget3 : notnull
+    {
+        context ??= giveMe.AnApplicationContext();
+        target1 ??= giveMe.AnInstanceOf<TTarget1>();
+        target2 ??= giveMe.AnInstanceOf<TTarget2>();
+        target3 ??= giveMe.AnInstanceOf<TTarget3>();
+
+        return LayerConfigurator.Create(context, target1, target2, target3);
+    }
+
+    static LayerConfigurator ALayerConfigurator(this Stubber giveMe,
+        ApplicationContext? context = default,
+        object? target = default
+    )
+    {
+        context ??= giveMe.AnApplicationContext();
+        target ??= new();
+
+        var create = typeof(LayerConfigurator)
+                .GetMethods(BindingFlags.Static | BindingFlags.Public)
+                .FirstOrDefault(c => c.Name == nameof(LayerConfigurator.Create) && c.GetGenericArguments().Length == 1);
+        create.ShouldNotBeNull();
+
+        var configurator = create.MakeGenericMethod(target.GetType()).Invoke(null, new[] { context, target });
+        configurator.ShouldNotBeNull();
+
+        return (LayerConfigurator)configurator;
     }
 
     #endregion
 
     #region Phase
 
-    public static IPhase APhase(this Mocker _,
+    public static IPhase APhase(this Mocker mockMe,
+        ApplicationContext? context = default,
         Func<bool>? isReady = default,
         Action? onInitialize = default,
         PhaseOrder order = PhaseOrder.Normal
     )
     {
+        context ??= mockMe.Spec.GiveMe.AnApplicationContext();
         isReady ??= () => true;
         onInitialize ??= () => { };
 
@@ -166,27 +251,38 @@ public static class ArchitectureSpecExtensions
         result.Setup(p => p.Order).Returns(order);
 
         result
-            .Setup(p => p.IsReady(It.IsAny<ApplicationContext>()))
-            .Returns((ApplicationContext _) => isReady());
+            .Setup(p => p.IsReady)
+            .Returns(() => isReady());
 
         result
-            .Setup(p => p.Initialize(It.IsAny<ApplicationContext>()))
-            .Callback((ApplicationContext _) => onInitialize());
+            .Setup(p => p.Initialize())
+            .Callback(() => onInitialize());
+
+        result
+            .Setup(p => p.Context)
+            .Returns(context);
 
         return result.Object;
     }
 
-    public static void VerifyInitialized(this IPhase source) =>
-        Mock.Get(source).Verify(p => p.Initialize(It.IsAny<ApplicationContext>()));
+    public static void VerifyInitialized(this IPhase source,
+        ApplicationContext? context = default
+    )
+    {
+        Mock.Get(source).Verify(p => p.Initialize(), Times.Once);
 
-    public static void VerifyInitialized(this IPhase source, ApplicationContext context) =>
-        Mock.Get(source).Verify(p => p.Initialize(context));
+        if (context is not null)
+        {
+            source.Context.ShouldBeEquivalentTo(context);
+        }
+    }
 
     #endregion
 
     #region PhaseContext
 
     public static PhaseContext APhaseContext(this Stubber giveMe,
+        ApplicationContext? context = default,
         object? target = default,
         object[]? targets = default,
         Action? onDispose = default
@@ -195,21 +291,10 @@ public static class ArchitectureSpecExtensions
         targets ??= new[] { target ?? new() };
         onDispose ??= () => { };
 
-        var configurators = new List<LayerConfigurator>();
-        foreach (var t in targets)
+        return new(targets.Select(t => giveMe.ALayerConfigurator(context: context, target: t)).ToList())
         {
-            var create = typeof(LayerConfigurator)
-                .GetMethods(BindingFlags.Static | BindingFlags.Public)
-                .FirstOrDefault(c => c.Name == nameof(LayerConfigurator.Create) && c.GetGenericArguments().Length == 1);
-            create.ShouldNotBeNull();
-
-            var configurator = create.MakeGenericMethod(t.GetType()).Invoke(null, new[] { t });
-            configurator.ShouldNotBeNull();
-
-            configurators.Add((LayerConfigurator)configurator);
-        }
-
-        return new(configurators) { OnDispose = onDispose };
+            OnDispose = onDispose
+        };
     }
 
     public static void ShouldConfigureTarget<TTarget>(this PhaseContext source, TTarget expected)
@@ -275,26 +360,9 @@ public static class ArchitectureSpecExtensions
 
     #endregion
 
-    #region Feature
+    #region String
 
-    public static IFeature AFeature(this Mocker _,
-        string? id = default
-    )
-    {
-        var result = new Mock<IFeature>();
-        result.Setup(l => l.Id).Returns(id ?? $"{Guid.NewGuid()}");
-
-        return result.Object;
-    }
-
-    public static void VerifyInitialized(this IFeature source) =>
-        Mock.Get(source).Verify(f => f.Configure(It.IsAny<LayerConfigurator>()));
-
-    public static void VerifyConfigures<TTarget>(this IFeature source, TTarget target) where TTarget : notnull =>
-        Mock.Get(source).Verify(f => f.Configure(LayerConfigurator.Create(target)));
-
-    public static void VerifyConfiguresNothing(this IFeature source) =>
-        Mock.Get(source).Verify(f => f.Configure(It.IsAny<LayerConfigurator>()), Times.Never());
+    public static string AString(this Stubber _) => "test";
 
     #endregion
 }

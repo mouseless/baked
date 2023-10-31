@@ -38,6 +38,7 @@ public static class ForgeExtensions
                 app.Layers.AddConfiguration();
                 app.Layers.AddDataAccess();
                 app.Layers.AddDependencyInjection();
+                app.Layers.AddDomain();
                 app.Layers.AddHttpServer();
                 app.Layers.AddMonitoring();
                 app.Layers.AddRestApi();
