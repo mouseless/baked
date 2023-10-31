@@ -1,6 +1,7 @@
 ﻿using Do.Architecture;
 using Do.Branding;
 using Do.Testing;
+using System.Reflection;
 
 namespace Do.Test;
 
@@ -211,6 +212,25 @@ public static class ArchitectureSpecExtensions
         return LayerConfigurator.Create(context, target1, target2, target3);
     }
 
+    static LayerConfigurator ALayerConfigurator(this Stubber giveMe,
+        ApplicationContext? context = default,
+        object? target = default
+    )
+    {
+        context ??= giveMe.AnApplicationContext();
+        target ??= new();
+
+        var create = typeof(LayerConfigurator)
+                .GetMethods(BindingFlags.Static | BindingFlags.Public)
+                .FirstOrDefault(c => c.Name == nameof(LayerConfigurator.Create) && c.GetGenericArguments().Length == 1);
+        create.ShouldNotBeNull();
+
+        var configurator = create.MakeGenericMethod(target.GetType()).Invoke(null, new[] { context, target });
+        configurator.ShouldNotBeNull();
+
+        return (LayerConfigurator)configurator;
+    }
+
     #endregion
 
     #region Phase
@@ -261,41 +281,20 @@ public static class ArchitectureSpecExtensions
 
     #region PhaseContext
 
-    public static PhaseContextBuilder APhaseContextBuilder(this Stubber giveMe,
-        IPhase? phase = default,
-        ApplicationContext? context = default
-    )
-    {
-        context ??= giveMe.AnApplicationContext();
-        phase ??= giveMe.Spec.MockMe.APhase(context: context);
-
-        return phase.CreateContextBuilder();
-    }
-
     public static PhaseContext APhaseContext(this Stubber giveMe,
+        ApplicationContext? context = default,
         object? target = default,
         object[]? targets = default,
-        Action? onDispose = default,
-        ApplicationContext? context = default
+        Action? onDispose = default
     )
     {
         targets ??= new[] { target ?? new() };
         onDispose ??= () => { };
 
-        var phaseContextBuilder = giveMe.APhaseContextBuilder(context: context);
-
-        foreach (var t in targets)
-        {
-            var add = typeof(PhaseContextBuilder)
-                            .GetMethods()
-                            .FirstOrDefault(c => c.Name == nameof(PhaseContextBuilder.Add) && c.GetGenericArguments().Length == 1);
-            add.ShouldNotBeNull("PhaseContextBuilder add should not be null");
-
-            phaseContextBuilder = (PhaseContextBuilder)(add.MakeGenericMethod(t.GetType()).Invoke(phaseContextBuilder, new[] { t }) ??
-                throw new Exception("PhaseContextBuilder should not be null"));
-        }
-
-        return phaseContextBuilder.OnDispose(onDispose).Build();
+        return new(targets.Select(t => giveMe.ALayerConfigurator(context: context, target: t)).ToList())
+            {
+                OnDispose = onDispose
+            };
     }
 
     public static void ShouldConfigureTarget<TTarget>(this PhaseContext source, TTarget expected)

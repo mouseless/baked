@@ -135,13 +135,13 @@ public class AddingPhases : ArchitectureSpec
     [Test]
     public void Gives_error_when_dependency_is_not_the_exact_type()
     {
-        IPhase stringDependent = new StringDependentAddsInt(expectedString: GiveMe.AString(), artifact: GiveMe.AnInt());
+        IPhase phase = new StringDependentAddsInt(expectedString: GiveMe.AString(), artifact: GiveMe.AnInt());
         var app = GiveMe.AnApplication(
             context: GiveMe.AnApplicationContext(content: GiveMe.AnInt()),
-            phase: stringDependent
+            phase: phase
         );
 
-        var initializeAction = () => stringDependent.Initialize();
+        var initializeAction = () => phase.Initialize();
 
         initializeAction.ShouldThrow<KeyNotFoundException>();
     }
