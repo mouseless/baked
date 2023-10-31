@@ -22,7 +22,7 @@ public static class BusinessExtensions
     {
         var funcType = typeof(Func<>).MakeGenericType(type);
 
-        source.AddSingleton(funcType, sp => sp.GetRequiredServiceUsingRequestServices(type));
+        source.AddSingleton(funcType, sp => () => sp.GetRequiredServiceUsingRequestServices(type));
         source.AddScoped(type);
     }
 }
