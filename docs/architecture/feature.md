@@ -136,16 +136,15 @@ provides it with its interface not its concrete type.
 ### Using Phase Artifacts
 
 To access and use objects stored in application context in a feature, a 
-reference to the context is provided through `LayerConfigurator`'s
-`Context` property. 
+reference to the context is provided through `LayerConfigurator`'s `Context` 
+property. 
 
 > :warning:
 >
-> Unlike configuration targets, phase artifacts may or may not exists
-> in the application context or not configured properly at the moment 
-> `LayerConfigurator` applies configurations. Phase execution orders 
-> and configurations should be taken into consideration when using 
-> phase artifacts.
+> Unlike configuration targets, phase artifacts may or may not exists in the 
+> application context or not configured properly at the moment 
+> `LayerConfigurator` applies configurations. Phase execution orders and 
+> configurations should be taken into consideration when using phase artifacts.
 
 ### Including an Option
 
