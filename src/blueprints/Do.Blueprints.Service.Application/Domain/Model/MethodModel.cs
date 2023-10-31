@@ -7,6 +7,7 @@ public record MethodModel(
     Type ReturnType
 )
 {
-    public MethodModel(MethodInfo methodInfo) : this(methodInfo.Name, methodInfo.ReturnType) { }
+    public MethodModel(MethodInfo methodInfo)
+        : this(methodInfo.Name, methodInfo.ReturnType) { }
 }
 

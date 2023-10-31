@@ -8,7 +8,8 @@ public record TypeModel(
     List<MethodModel> Methods
 )
 {
-    public TypeModel(Type type) : this(type, type.Name, new())
+    public TypeModel(Type type)
+        : this(type, type.Name, new())
     {
         var methodInfos = type.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly) ??
             Array.Empty<MethodInfo>();
