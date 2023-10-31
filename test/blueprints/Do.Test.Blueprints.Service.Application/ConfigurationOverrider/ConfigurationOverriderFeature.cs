@@ -7,13 +7,16 @@ public class ConfigurationOverriderFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainDescriptor(descriptor =>
+        configurator.ConfigureAssemblyCollection(assemblies =>
         {
-            descriptor.AddAssembly<Entity>();
+            assemblies.Add(typeof(Entity).Assembly);
+        });
 
-            descriptor.AddType<Entity>();
-            descriptor.AddType<Entities>();
-            descriptor.AddType<Singleton>();
+        configurator.ConfigureTypeCollection(types =>
+        {
+            types.Add<Entity>();
+            types.Add<Entities>();
+            types.Add<Singleton>();
         });
 
         configurator.ConfigureAutoPersistenceModel(model =>

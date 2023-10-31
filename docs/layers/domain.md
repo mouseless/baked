@@ -10,15 +10,28 @@ app.Layers.AddDomain();
 
 ## Configuration Targets
 
-`Domain` layer only exposes `DomainDescriptor` for configuration target.
+This layer provides `IAssemblyCollection` and `ITypeCollection` as 
+configuration targets for building `DomainModel`.
 
-### `DomainDescriptor`
+### `IAssemblyCollection`
 
-This target serves as a configuration for when building the `DomainModel`. 
-To configure it in a feature;
+This target is provided in `BuildConfiguration` phase. To configure it in a 
+feature;
 
 ```csharp
-configurator.ConfigureDomainDescriptor(domainDescriptor =>
+configurator.ConfigureAssemblyCollection(assemblies =>
+{
+    ...
+});
+```
+
+### `ITypeCollection`
+
+This target is provided in `BuildConfiguration` phase. To configure it in a 
+feature;
+
+```csharp
+configurator.ConfigureTypeCollection(types =>
 {
     ...
 });
