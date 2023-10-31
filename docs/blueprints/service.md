@@ -38,11 +38,9 @@ flowchart TD
     BC[BuildConfiguration]
     BD[BuildDomain]
     CB[CreateBuilder]
-    CD[ConfigureDomain]
     R[Run]
     CB -->|ConfigurationManager| BC
-    CB -->|ConfigurationManager| CD
-    CD -->|DomainDescriptor| BD
+    CB -->|ConfigurationManager| BD
     BD -->|DomainModel| AS
     CB -->|WebApplicationBuilder| B
     AS -->|IServiceCollection| B

@@ -136,38 +136,8 @@ provides it with its interface not its concrete type.
 ### Using Phase Artifacts
 
 To access and use objects stored in application context in a feature, a 
-reference to the context is provided through `LayerConfigurator`. 
-
-`WelcomePageGreetingFeature.cs`
-```csharp
-public class WelcomePageGreetingFeature : IFeature<GreetingConfigurator>
-{
-    public void Configure(LayerConfigurator configurator)
-    {
-        configurator.ConfigureApplicationBuilder(app =>
-        {
-            var artifact = configurator.Context.Get<PhaseArtifact>();
-
-            app.UseWelcomePage(artifact.Value);
-        });
-    }
-}
-```
-
-`PhaseAddingAnArtifact.cs`
-```csharp
-public class PhaseAddingAnArtifact : PhaseBase
-{
-    ...
-
-    protected override void Initialize()
-    {
-        Context.Add(new PhaseArtifact("/"));
-    }
-}
-
-public record PhaseArtifact(string Value);
-```
+reference to the context is provided through `LayerConfigurator`'s
+`Context` property. 
 
 > :warning:
 >

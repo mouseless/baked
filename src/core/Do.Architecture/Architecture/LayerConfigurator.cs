@@ -34,15 +34,16 @@ public class LayerConfigurator
 
     record Target(Type Type, object Value);
 
+    readonly ApplicationContext _context;
     readonly List<Target> _targets;
-
-    public ApplicationContext Context { get; } = default!;
 
     LayerConfigurator(ApplicationContext context, params Target[] targets)
     {
-        Context = context;
+        _context = context;
         _targets = new(targets);
     }
+
+    public ApplicationContext Context => _context;
 
     public void Configure<TTarget>(Action<TTarget> configuration)
     {

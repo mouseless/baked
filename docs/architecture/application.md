@@ -110,7 +110,7 @@ Application runs in phases provided by its layers. For example an ASP.NET Core
 application typically runs in three phases;
 
 ```mermaid
-flowchart LR
+flowchart TB
     CB(Create Builder)
     B(Build)
     R(Run)
@@ -121,10 +121,10 @@ flowchart LR
 These phases come from layers using `GetPhases()` method of `ILayer`. In the
 above example, `HttpServerLayer` (ASP.NET Core) introduced these three phases.
 
-When construction phase collection and sorting execution order, application 
-sets the `ApplicationContext` of each phase. This way each phase can add/get 
-certain objects to/from the context, such as `IServiceCollection`, 
-`IMiddlewareCollection`, `IEndpointRouteBuilder` etc.
+At the beginning of each phase, application initializes it by providing an
+`ApplicationContext` instance. This way each phase can add/get certain objects
+to/from the context, such as `IServiceCollection`, `IMiddlewareCollection`,
+`IEndpointRouteBuilder` etc.
 
 > :warning:
 >
@@ -132,23 +132,6 @@ certain objects to/from the context, such as `IServiceCollection`,
 > should be given. Using any other type that extends or implements the target
 > object will result in an unsuccessful `Get` operation. For example, trying to
 > `Get` a `WebApplication` using `IApplicationBuilder` type will be unsuccessful.
-
-```mermaid
-flowchart TB
-    subgraph AR[ ]
-        direction LR
-
-        CB(Create Builder)
-        B(Build)
-        R(Run)
-
-        CB --> B --> R
-    end
-
-    AC[[Application Context]]
-
-    AR -.- AC
-```
 
 As mentioned [earlier](./README.md#layer), layers provide features with things
 to configure. For this to happen, application asks every layer what to configure
@@ -228,27 +211,13 @@ application knows that `Run` phase is not ready until some other phase, e.g.,
 `Build` phase, adds `WebApplication` to the context.
 
 ```mermaid
-flowchart LR
-    subgraph P[Phases]
-        direction LR
-        CB(Create Builder)
-        B(Build)
-        R(Run)
+flowchart TB
+  CB(Create Builder)
+  B(Build)
+  R(Run)
 
-        CB --> B --> R
-    end
-
-    subgraph AC[Application Context]
-        WAB[Web Application Builder]
-        WA[Web Application]
-
-        WAB ~~~ WA
-    end
-
-    CB -.-> WAB
-    WAB -.-> B
-    B -.-> WA
-    WA -.-> R
+  CB -->|WebApplicationBuilder| B
+  B --> |WebApplication| R
 ```
 
 > :information_source:
