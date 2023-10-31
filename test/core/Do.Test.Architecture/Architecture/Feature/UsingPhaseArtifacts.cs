@@ -4,48 +4,30 @@ namespace Do.Test.Architecture.Feature;
 
 public class UsingPhaseArtifacts : ArchitectureSpec
 {
-    public record LayerConfiguration
-    {
-        public string? Value { get; set; }
-    }
-
-    public record PhaseArtifact(string Value);
-
     public class FeatureUsingPhaseArtifact : IFeature
     {
-        readonly Action<LayerConfigurator, LayerConfiguration> _configureAction;
-
-        public FeatureUsingPhaseArtifact(Action<LayerConfigurator, LayerConfiguration> configureAction)
-        {
-            _configureAction = configureAction;
-        }
+        public int Artifact { get; private set; }
 
         public void Configure(LayerConfigurator configurator)
         {
-            configurator.Configure((LayerConfiguration configuration) =>
+            configurator.Configure((string target) =>
             {
-                _configureAction(configurator, configuration);
+                Artifact = configurator.Context.Get<int>();
             });
         }
     }
 
     [Test]
-    public void Feature_can_access_phase_artifacts_from_layer_configurator_and_can_use_them_when_configuring_a_layer()
+    public void Feature_accesses_phase_artifacts_from_layer_configurator()
     {
-        var applicationContext = GiveMe.AnApplicationContext(content: new PhaseArtifact("Value from phase artifact"));
+        var configurator = GiveMe.ALayerConfigurator(
+            target: GiveMe.AString(),
+            context: GiveMe.AnApplicationContext(content: 5)
+        );
+        var feature = new FeatureUsingPhaseArtifact();
 
-        var configuration = new LayerConfiguration();
-        var configuratior = GiveMe.ALayerConfigurator(target: configuration, context: applicationContext);
+        feature.Configure(configurator);
 
-        var feature = new FeatureUsingPhaseArtifact((configurator, configuration) =>
-        {
-            var artifact = configurator.Context.Get<PhaseArtifact>();
-
-            configuration.Value = artifact.Value;
-        });
-
-        feature.Configure(configuratior);
-
-        configuration.Value.ShouldBe("Value from phase artifact");
+        feature.Artifact.ShouldBe(5);
     }
 }

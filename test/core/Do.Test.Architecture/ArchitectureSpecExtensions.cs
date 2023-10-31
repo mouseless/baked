@@ -292,9 +292,9 @@ public static class ArchitectureSpecExtensions
         onDispose ??= () => { };
 
         return new(targets.Select(t => giveMe.ALayerConfigurator(context: context, target: t)).ToList())
-            {
-                OnDispose = onDispose
-            };
+        {
+            OnDispose = onDispose
+        };
     }
 
     public static void ShouldConfigureTarget<TTarget>(this PhaseContext source, TTarget expected)
