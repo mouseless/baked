@@ -150,24 +150,15 @@ public static class ArchitectureSpecExtensions
 
     #region LayerConfigurator
 
-    public static LayerConfigurator ALayerConfigurator<TTarget1, TTarget2, TTarget3>(this Stubber giveMe,
+    public static LayerConfigurator ALayerConfigurator<TTarget>(this Stubber giveMe,
         ApplicationContext? context = default,
-        TTarget1? target1 = default,
-        TTarget2? target2 = default,
-        TTarget3? target3 = default
-    ) where TTarget1 : notnull
-      where TTarget2 : notnull
-      where TTarget3 : notnull
+        TTarget? target = default
+    ) where TTarget : notnull
     {
-        target1 ??= giveMe.AnInstanceOf<TTarget1>();
-        target2 ??= giveMe.AnInstanceOf<TTarget2>();
-        target3 ??= giveMe.AnInstanceOf<TTarget3>();
+        context ??= giveMe.AnApplicationContext();
+        target ??= giveMe.AnInstanceOf<TTarget>();
 
-        return giveMe.ALayerConfiguratorInner(
-            context: context,
-            targetTypes: new[] { typeof(TTarget1), typeof(TTarget2), typeof(TTarget3) },
-            values: new object[] { target1, target2, target3 }
-        );
+        return LayerConfigurator.Create(context, target);
     }
 
     public static LayerConfigurator ALayerConfigurator<TTarget1, TTarget2>(this Stubber giveMe,
@@ -177,45 +168,28 @@ public static class ArchitectureSpecExtensions
     ) where TTarget1 : notnull
       where TTarget2 : notnull
     {
+        context ??= giveMe.AnApplicationContext();
         target1 ??= giveMe.AnInstanceOf<TTarget1>();
         target2 ??= giveMe.AnInstanceOf<TTarget2>();
 
-        return giveMe.ALayerConfiguratorInner(
-            context: context,
-            targetTypes: new[] { typeof(TTarget1), typeof(TTarget2) },
-            values: new object[] { target1, target2 }
-        );
+        return LayerConfigurator.Create(context, target1, target2);
     }
 
-    public static LayerConfigurator ALayerConfigurator<TTarget>(this Stubber giveMe,
+    public static LayerConfigurator ALayerConfigurator<TTarget1, TTarget2, TTarget3>(this Stubber giveMe,
         ApplicationContext? context = default,
-        TTarget? target = default
-    ) where TTarget : notnull
+        TTarget1? target1 = default,
+        TTarget2? target2 = default,
+        TTarget3? target3 = default
+    ) where TTarget1 : notnull
+      where TTarget2 : notnull
+      where TTarget3 : notnull
     {
-        target ??= giveMe.AnInstanceOf<TTarget>();
+        context ??= giveMe.AnApplicationContext();
+        target1 ??= giveMe.AnInstanceOf<TTarget1>();
+        target2 ??= giveMe.AnInstanceOf<TTarget2>();
+        target3 ??= giveMe.AnInstanceOf<TTarget3>();
 
-        return giveMe.ALayerConfiguratorInner(
-            context: context,
-            targetTypes: new[] { typeof(TTarget) },
-            values: new object[] { target }
-        );
-    }
-
-    static LayerConfigurator ALayerConfiguratorInner(this Stubber giveMe, Type[] targetTypes, object[] values,
-        ApplicationContext? context = default
-    )
-    {
-        var phaseContextBuilder = giveMe.APhaseContextBuilder(context: context);
-
-        var add = typeof(PhaseContextBuilder)
-                .GetMethods()
-                .FirstOrDefault(c => c.Name == nameof(PhaseContextBuilder.Add) && c.GetGenericArguments().Length == targetTypes.Length);
-        add.ShouldNotBeNull("PhaseContextBuilder add should not be null");
-
-        phaseContextBuilder = (PhaseContextBuilder)(add.MakeGenericMethod(targetTypes).Invoke(phaseContextBuilder, values) ??
-            throw new Exception("PhaseContextBuilder should not be null"));
-
-        return phaseContextBuilder.Build().Configurators.First();
+        return LayerConfigurator.Create(context, target1, target2, target3);
     }
 
     #endregion
@@ -383,8 +357,8 @@ public static class ArchitectureSpecExtensions
     public static void VerifyInitialized(this IFeature source) =>
         Mock.Get(source).Verify(f => f.Configure(It.IsAny<LayerConfigurator>()));
 
-    public static void VerifyConfigures(this IFeature source, LayerConfigurator layerConfigurator) =>
-        Mock.Get(source).Verify(f => f.Configure(layerConfigurator));
+    public static void VerifyConfigures<TTarget>(this IFeature source, TTarget target) where TTarget : notnull =>
+        Mock.Get(source).Verify(f => f.Configure(LayerConfigurator.Create(new(), target)));
 
     public static void VerifyConfiguresNothing(this IFeature source) =>
         Mock.Get(source).Verify(f => f.Configure(It.IsAny<LayerConfigurator>()), Times.Never());
