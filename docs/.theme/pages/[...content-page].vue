@@ -1,5 +1,5 @@
 <template>
-  <ContentDoc v-if="!trailingSlash">
+  <ContentDoc>
     <template #default="{ doc }">
       <div class="container">
         <div class="content">
@@ -18,7 +18,8 @@
   </ContentDoc>
 </template>
 <script setup>
-import { useRoute, navigateTo, onMounted } from "#imports";
+import { withTrailingSlash } from "ufo";
+import { useRoute } from "#imports";
 import { usePageStore } from "~/store/pageStore";
 
 const route = useRoute();
@@ -30,31 +31,34 @@ const index = await queryContent(root)
   .only(["_path", "title", "pages", "sort"])
   .findOne();
 
-let pages = await queryContent(root)
+const pages = await queryContent(root)
   .where({ _path: { $ne: root } })
   .only(["_path", "title"])
   .find();
 
-index.pages
-  ? pages = pageSorter(index, pages)
-  : index.sort
-    ? pages.sort((a, b) => autoSorter(a, b, index.sort.by, index.sort.order))
-    : pages.sort();
+if(index.pages) {
+  applyOrder(pages, i => `${index._path}/${index.pages[i]}`);
+} else {
+  pages.sort((a, b) => compare(a, b, index.sort));
+}
+
+index._path = withTrailingSlash(index._path);
 
 const sortedPages = root === "/" ? [index] : [index, ...pages];
 
 store.setPages(sortedPages);
 
-const trailingSlash = route.path !== "/" && route.path.endsWith("/");
-onMounted(async () => {
-  if(trailingSlash) {
-    const { path, query, hash } = route;
-    const nextPath = path.replace(/\/+$/, "");
-    const nextRoute = { path: nextPath, query, hash };
+function compare(a, b, { by, order } = { }) {
+  by ||= "title";
+  order ||= "asc";
 
-    await navigateTo(nextRoute, { replace: true });
-  }
-});
+  const direction = order === "asc" ? 1 : -1;
+
+  if(a[by] < b[by]) { return -1 * direction; }
+  if(a[by] > b[by]) { return 1 * direction; }
+
+  return 0;
+}
 </script>
 <style lang="scss" scoped>
 .container {

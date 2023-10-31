@@ -44,7 +44,7 @@ const route = useRoute();
 const store = useSectionStore();
 
 const menuShown = ref<boolean>(false);
-const root = computed(() => `/${route.path.split("/")[1]}`);
+const root = computed(() => `/${route.path.split("/")[1]}/`);
 
 const menus: any = { ...store.sections };
 
