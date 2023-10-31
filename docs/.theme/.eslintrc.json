@@ -13,7 +13,7 @@
   "overrides": [
     {
       "files": [
-        "**/*.{ts,js,vue}"
+        "**/*.{ts,js,json,vue}"
       ]
     }
   ],
