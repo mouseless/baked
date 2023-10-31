@@ -2,22 +2,8 @@ import { defineNuxtConfig } from "nuxt/config";
 import { joinURL } from "ufo";
 
 export default defineNuxtConfig({
-  typescript: {
-    typeCheck: true
-  },
-  runtimeConfig: {
-    public: {
-      content: {
-        anchorLinks: {
-          depth: 0
-        }
-      },
-      baseURL: process.env.BASE_URL,
-      githubURL: "/mouseless/do"
-    }
-  },
   app: {
-    baseURL: process.env.BASE_URL,
+    baseURL: process.env.NUXT_PUBLIC_BASE_URL,
     head: {
       meta: [
         { charset: "utf-8" },
@@ -65,7 +51,7 @@ export default defineNuxtConfig({
         {
           rel: "icon",
           type: "image/x-icon",
-          href: joinURL(process.env.BASE_URL ?? "/", "favicon.ico")
+          href: joinURL(process.env.NUXT_PUBLIC_BASE_URL ?? "/", "favicon.ico")
         },
         {
           rel: "stylesheet",
@@ -80,20 +66,10 @@ export default defineNuxtConfig({
       ]
     }
   },
-  vite: {
-    css: {
-      preprocessorOptions: {
-        scss: {
-          additionalData: "@import \"@/assets/variables.scss\"; @import \"@/assets/mixins.scss\";"
-        }
-      }
-    }
+  components: {
+    global: true,
+    dirs: ["~/components/Prose", "~/components"]
   },
-  css: ["~/assets/styles.scss"],
-  modules: [
-    "@nuxt/content",
-    "@pinia/nuxt"
-  ],
   content: {
     markdown: {
       remarkPlugins: {
@@ -119,18 +95,44 @@ export default defineNuxtConfig({
       ]
     }
   },
-  router: {
-    options: {
-      strict: true
-    }
-  },
-  components: {
-    dirs: [{ global: true, path: "~/components/Prose" }, "~/components"]
-  },
+  css: ["~/assets/styles.scss"],
+  devtools: { enabled: false },
   dir: {
     public: ".public"
   },
+  experimental: { payloadExtraction: false },
   generate: {
     routes: ["/not-found"]
+  },
+  modules: [
+    "@nuxt/content",
+    "@pinia/nuxt"
+  ],
+  runtimeConfig: {
+    public: {
+      mdc: {
+        headings: {
+          anchorLinks: {
+            h1: false,
+            h2: false,
+            h3: false,
+            h4: false,
+            h5: false,
+            h6: false
+          }
+        }
+      },
+      baseURL: "",
+      githubURL: "/mouseless/do"
+    }
+  },
+  vite: {
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: "@import \"@/assets/variables.scss\"; @import \"@/assets/mixins.scss\";"
+        }
+      }
+    }
   }
 });

@@ -1,8 +1,3 @@
----
-pages:
-    - service
----
-
 # Blueprints
 
 DO consists of many features and layers as separate packages. You are free to

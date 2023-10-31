@@ -23,6 +23,7 @@ tasks:
       config:
         backgroundColor: '#092122'
         theme: base
+        headless: new
         deviceScaleFactor: 1
         themeVariables:
           fontFamily: '"Roboto Mono", monospace'
