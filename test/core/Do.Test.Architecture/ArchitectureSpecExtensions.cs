@@ -23,19 +23,9 @@ public static class ArchitectureSpecExtensions
 
     #region Application
 
-    public static Application AnApplicationWithPhase(this Stubber giveMe, IPhase phase,
-        IFeature? feature = default,
-        IFeature[]? features = default,
-        ApplicationContext? context = default
-    ) => giveMe.AnApplicationWithPhases(context: context, phases: new[] { phase }, feature: feature, features: features);
-
-    public static Application AnApplicationWithPhases(this Stubber giveMe, IPhase[] phases,
-        IFeature? feature = default,
-        IFeature[]? features = default,
-        ApplicationContext? context = default
-    ) => giveMe.AnApplication(context: context, layer: giveMe.Spec.MockMe.ALayer(phases: phases), feature: feature, features: features);
-
     public static Application AnApplication(this Stubber giveMe,
+        IPhase? phase = default,
+        IPhase[]? phases = default,
         ILayer? layer = default,
         ILayer[]? layers = default,
         IFeature? feature = default,
@@ -43,7 +33,7 @@ public static class ArchitectureSpecExtensions
         ApplicationContext? context = default
     )
     {
-        layers ??= new[] { layer ?? giveMe.Spec.MockMe.ALayer() };
+        layers ??= new[] { layer ?? giveMe.Spec.MockMe.ALayer(phase: phase, phases: phases) };
         features ??= new[] { feature ?? giveMe.Spec.MockMe.AFeature() };
 
         return giveMe.AForge(context: context).Application(app =>
@@ -102,6 +92,35 @@ public static class ArchitectureSpecExtensions
 
     public static void VerifyPrinted(this IBanner source) =>
         Mock.Get(source).Verify(b => b.Print());
+
+    #endregion
+
+    #region Feature
+
+    public static IFeature AFeature(this Mocker _,
+        string? id = default
+    )
+    {
+        var result = new Mock<IFeature>();
+        result.Setup(l => l.Id).Returns(id ?? $"{Guid.NewGuid()}");
+
+        return result.Object;
+    }
+
+    public static void VerifyInitialized(this IFeature source) =>
+        Mock.Get(source).Verify(f => f.Configure(It.IsAny<LayerConfigurator>()));
+
+    public static void VerifyConfigures<TTarget>(this IFeature source, TTarget target) where TTarget : notnull =>
+        Mock.Get(source).Verify(f => f.Configure(LayerConfigurator.Create(new(), target)));
+
+    public static void VerifyConfiguresNothing(this IFeature source) =>
+        Mock.Get(source).Verify(f => f.Configure(It.IsAny<LayerConfigurator>()), Times.Never());
+
+    #endregion
+
+    #region Int
+
+    public static int AnInt(this Stubber _) => 42;
 
     #endregion
 
@@ -342,26 +361,9 @@ public static class ArchitectureSpecExtensions
 
     #endregion
 
-    #region Feature
+    #region String
 
-    public static IFeature AFeature(this Mocker _,
-        string? id = default
-    )
-    {
-        var result = new Mock<IFeature>();
-        result.Setup(l => l.Id).Returns(id ?? $"{Guid.NewGuid()}");
-
-        return result.Object;
-    }
-
-    public static void VerifyInitialized(this IFeature source) =>
-        Mock.Get(source).Verify(f => f.Configure(It.IsAny<LayerConfigurator>()));
-
-    public static void VerifyConfigures<TTarget>(this IFeature source, TTarget target) where TTarget : notnull =>
-        Mock.Get(source).Verify(f => f.Configure(LayerConfigurator.Create(new(), target)));
-
-    public static void VerifyConfiguresNothing(this IFeature source) =>
-        Mock.Get(source).Verify(f => f.Configure(It.IsAny<LayerConfigurator>()), Times.Never());
+    public static string AString(this Stubber _) => "test";
 
     #endregion
 }

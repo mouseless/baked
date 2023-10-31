@@ -48,8 +48,4 @@ public class UsingPhaseArtifacts : ArchitectureSpec
 
         configuration.Value.ShouldBe("Value from phase artifact");
     }
-
-    [Test]
-    [Ignore("not-implemented")]
-    public void Only_a_phase_can_add_an_artifact_to_application_context() => this.ShouldFail();
 }

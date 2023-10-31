@@ -4,7 +4,7 @@ namespace Do.Test.Architecture.Layer;
 
 public class AddingPhases : ArchitectureSpec
 {
-    public class NoPhaseLayer : LayerBase { }
+    class NoPhaseLayer : LayerBase { }
 
     [Test]
     public void Layer_returns_no_phases_by_default()
@@ -15,7 +15,7 @@ public class AddingPhases : ArchitectureSpec
         phases.Count().ShouldBe(0);
     }
 
-    public class TwoPhaseLayer : LayerBase
+    class TwoPhaseLayer : LayerBase
     {
         protected override IEnumerable<IPhase> GetPhases()
         {
@@ -39,53 +39,109 @@ public class AddingPhases : ArchitectureSpec
         phases.ShouldContain(phase => phase is TwoPhaseLayer.DoB);
     }
 
-    public class InitializedPhase : PhaseBase
+    class IndependentAddsString : PhaseBase
     {
+        readonly string _artifact;
+
+        public IndependentAddsString(string artifact)
+        {
+            _artifact = artifact;
+        }
+
         protected override void Initialize()
         {
-            Context.Add("test");
+            Context.Add(_artifact);
         }
     }
 
     [Test]
     public void Phases_have_initialization_step_before_getting_applied_so_that_they_prepare_and_add_objects_to_application_context()
     {
-        IPhase phase = new InitializedPhase();
-
         var context = GiveMe.AnApplicationContext();
-        var application = GiveMe.AnApplicationWithPhase(context: context, phase: phase);
+        IPhase phase = new IndependentAddsString(artifact: "test");
+        GiveMe.AnApplication(context: context, phase: phase);
 
-        application.Run();
+        phase.Initialize();
 
         context.ShouldHave("test");
     }
 
-    public class OneDependencyPhase : PhaseBase<string>
+    class StringDependentAddsInt : PhaseBase<string>
     {
-        protected override void Initialize(string dependency) =>
-            Context.Add(0);
+        readonly string _expectedString;
+        readonly int _artifact;
+
+        public StringDependentAddsInt(string expectedString, int artifact)
+        {
+            _expectedString = expectedString;
+            _artifact = artifact;
+        }
+
+        protected override void Initialize(string dependency)
+        {
+            dependency.ShouldBe(_expectedString);
+
+            Context.Add(_artifact);
+        }
     }
 
-    public class TwoDependencyPhase : PhaseBase<string, int>
+    class StringAndIntDependentAddsBool : PhaseBase<string, int>
     {
-        protected override void Initialize(string dependency1, int dependency2) =>
-            Context.Add(true);
+        readonly string _expectedString;
+        readonly int _expectedInt;
+        readonly bool _artifact;
+
+        public StringAndIntDependentAddsBool(string expectedString, int expectedInt, bool artifact)
+        {
+            _expectedString = expectedString;
+            _expectedInt = expectedInt;
+            _artifact = artifact;
+        }
+
+        protected override void Initialize(string dependency1, int dependency2)
+        {
+            dependency1.ShouldBe(_expectedString);
+            dependency2.ShouldBe(_expectedInt);
+
+            Context.Add(_artifact);
+        }
     }
 
-    public class ThreeDependencyPhase : PhaseBase<string, int, bool>
+    class StringIntAndBoolDependentAddsChar : PhaseBase<string, int, bool>
     {
-        protected override void Initialize(string dependency1, int dependency2, bool dependency3) =>
-            Context.Add('a');
+        readonly string _expectedString;
+        readonly int _expectedInt;
+        readonly bool _expectedBool;
+        readonly char _artifact;
+
+        public StringIntAndBoolDependentAddsChar(string expectedString, int expectedInt, bool expectedBool, char artifact)
+        {
+            _expectedString = expectedString;
+            _expectedInt = expectedInt;
+            _expectedBool = expectedBool;
+            _artifact = artifact;
+        }
+
+        protected override void Initialize(string dependency1, int dependency2, bool dependency3)
+        {
+            dependency1.ShouldBe(_expectedString);
+            dependency2.ShouldBe(_expectedInt);
+            dependency3.ShouldBe(_expectedBool);
+
+            Context.Add(_artifact);
+        }
     }
 
     [Test]
     public void Gives_error_when_dependency_is_not_the_exact_type()
     {
-        IPhase oneDependency = new OneDependencyPhase();
+        IPhase stringDependent = new StringDependentAddsInt(expectedString: GiveMe.AString(), artifact: GiveMe.AnInt());
+        var app = GiveMe.AnApplication(
+            context: GiveMe.AnApplicationContext(content: GiveMe.AnInt()),
+            phase: stringDependent
+        );
 
-        GiveMe.AnApplicationWithPhase(context: GiveMe.AnApplicationContext(content: 5), phase: oneDependency);
-
-        var initializeAction = () => oneDependency.Initialize();
+        var initializeAction = () => stringDependent.Initialize();
 
         initializeAction.ShouldThrow<KeyNotFoundException>();
     }
@@ -93,38 +149,36 @@ public class AddingPhases : ArchitectureSpec
     [Test]
     public void Phases_may_depend_on_one_or_more_objects_to_appear_in_context()
     {
-        IPhase initializing = new InitializedPhase();
-        IPhase oneDependency = new OneDependencyPhase();
-        IPhase twoDependency = new TwoDependencyPhase();
-        IPhase threeDependency = new ThreeDependencyPhase();
-
         var context = GiveMe.AnApplicationContext();
+        var app = GiveMe.AnApplication(
+            context: context,
+            phases: new IPhase[]
+            {
+                new StringIntAndBoolDependentAddsChar(
+                    expectedString: "test",
+                    expectedInt: 42,
+                    expectedBool: true,
+                    artifact: 'a'
+                ),
+                new StringAndIntDependentAddsBool(
+                    expectedString: "test",
+                    expectedInt: 42,
+                    artifact: true
+                ),
+                new StringDependentAddsInt(
+                    expectedString: "test",
+                    artifact: 42
+                ),
+                new IndependentAddsString(artifact: "test"),
+            }
+        );
 
-        GiveMe.AnApplicationWithPhases(context: context, phases: new[] { initializing, oneDependency, twoDependency, threeDependency });
-
-        initializing.IsReady.ShouldBeTrue();
-        oneDependency.IsReady.ShouldBeFalse();
-
-        initializing.Initialize();
-
-        oneDependency.IsReady.ShouldBeTrue();
-        twoDependency.IsReady.ShouldBeFalse();
-
-        oneDependency.Initialize();
-
-        twoDependency.IsReady.ShouldBeTrue();
-        threeDependency.IsReady.ShouldBeFalse();
-
-        twoDependency.Initialize();
-
-        threeDependency.IsReady.ShouldBeTrue();
-
-        threeDependency.Initialize();
+        app.Run();
 
         context.ShouldHave('a');
     }
 
-    public class OrderedPhase : PhaseBase
+    class OrderedPhase : PhaseBase
     {
         public OrderedPhase(PhaseOrder order) : base(order) { }
     }
