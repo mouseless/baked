@@ -172,4 +172,7 @@ public class ProvidingConfiguration : ArchitectureSpec
         phaseContext.ShouldConfigureThreeTargets("first", "second", "third");
         phaseContext.ShouldAddValueToContextOnDispose("after multi target", context);
     }
+
+    public record Point(int X, int Y);
+    public record Segment(Point Start, Point End);
 }
