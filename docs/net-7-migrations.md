@@ -6,6 +6,8 @@ Upgrades flowed in the following order.
 - [ ] `c#` version upgrade
 - [ ] `.Net` version upgrade
 - [ ] Upgrade .Net version on workflows
+- [ ] Add `Directory.Packages.props` to root
+- [ ] Collect all packages to `Directory.Packages.props`
 - [ ] Version upgrades in `Do.Blueprints.Service`
   - [ ] Microsoft.Extensions.Configuration.Abstractions
   - [ ] Microsoft.Extensions.Configuration.Binder
@@ -28,6 +30,13 @@ Change the `C#` version between `<LangVersion>` tags in `Directory.Build.props`.
 
 Change the `.Net` version between `<TargetFramework>` tags in
 `Directory.Build.props`.
+
+## `Directory.Packages.props`
+
+- Add `Directory.Packages.props` root
+- Set `true` to `<ManagePackageVersionsCentrally>`
+- Go through all `.csproj` and collect all packages into
+ `Directory.Packages.props` and remove versions from all `.csproj`.
 
 ## Do.Architecture
 
