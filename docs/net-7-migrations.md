@@ -18,6 +18,7 @@ Upgrades flowed in the following order.
 - [ ] Other version upgrades in `Do.Blueprints.Service.Application`
   - [ ] FluentNHibernate
   - [ ] MySql.Data
+- [ ] Check possible regex source generator use cases
 - [ ] Docker .Net update
   - [ ] Update version in Dockerfile
 ```
