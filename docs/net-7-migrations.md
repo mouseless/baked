@@ -19,8 +19,15 @@ Upgrades flowed in the following order.
   - [ ] FluentNHibernate
   - [ ] MySql.Data
 - [ ] Check possible regex source generator use cases
-- [ ] Docker .Net update
-  - [ ] Update version in Dockerfile
+- [ ] Docker
+  - [ ] Docker .Net update
+    - [ ] Update version in Dockerfile
+  - [ ] Or use publish over dockerfile
+    - [ ] Remove dockerfile
+    - [ ] Add nuget package `Microsoft.NET.Build.Containers`
+    - [ ] Use `PublishContainer` with dotnet publish
+    - [ ] Update `.csproj`
+    - [ ] Update `docker-compose.yml`
 ```
 
 ## C# version upgrade
@@ -77,9 +84,17 @@ following upgrade was done.
 
 ## Docker
 
+Two option for this
+
 - Update `.Net` version in `Dockerfile`
   - replace `.../dotnet/aspnet:6.0-focal` to `.../dotnet/aspnet:7.0-focal`
   - docker compose up ❌ (`load metadata for mcr.microsoft.com/dotnet/aspnet:7.0-focal`)
   - replace `.../dotnet/aspnet:7.0-focal` to `.../dotnet/aspnet:7.0`
   - replace `.../dotnet/sdk:7.0-focal` to `.../dotnet/sdk:7.0`
   - again docker compose up ✅
+- Create an container with dotnet publish
+  - Remove docker file
+  - Add nuget `Microsoft.NET.Build.Containers` package
+  - Use `PublishContainer` with dotnet publish
+  - Update `.csproj`
+  - Update `docker-compose.yml`
