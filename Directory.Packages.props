@@ -18,9 +18,9 @@
     <PackageVersion Include="NUnit" Version="3.13.3" />
     <PackageVersion Include="NUnit3TestAdapter" Version="4.5.0" />
     <PackageVersion Include="Shouldly" Version="4.2.1" />
+    <PackageVersion Include="StyleCop.Analyzers.Unstable"  Version="1.2.0.507" />
     <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageVersion Include="System.Data.SQLite" Version="1.0.118" />
-    <PackageVersion Include="StyleCop.Analyzers.Unstable"  Version="1.2.0.507" />
   </ItemGroup>
 
 </Project>
