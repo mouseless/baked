@@ -9,6 +9,7 @@ on:
       - 'test/**'
       - 'Do.sln'
       - 'Directory.Build.props'
+      - 'Directory.Packages.props'
 
 env:
   MIN_COVERAGE: 80
