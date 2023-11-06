@@ -32,8 +32,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: |
-            6.0.x
+          dotnet-version: 7
       - name: samples/event-scheduler
         working-directory: samples/event-scheduler
         run: |

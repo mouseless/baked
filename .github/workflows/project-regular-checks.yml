@@ -9,6 +9,7 @@ on:
       - 'test/**'
       - 'Do.sln'
       - 'Directory.Build.props'
+      - 'Directory.Packages.props'
 
 env:
   MIN_COVERAGE: 80
@@ -42,8 +43,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: |
-            6.0.x
+          dotnet-version: 7
       - name: Build Solution
         run: dotnet build -c Release
   test:
@@ -58,8 +58,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: |
-            6.0.x
+          dotnet-version: 7
       - name: Test
         if: ${{ matrix.os != 'ubuntu-latest' }}
         run: dotnet test -c Release
