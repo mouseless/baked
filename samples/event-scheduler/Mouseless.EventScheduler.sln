@@ -5,21 +5,21 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8352D37D-CE86-4DAA-B9FA-BDAFC688B88B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mouseless.EventScheduler.Service", "src\Mouseless.EventScheduler.Service\Mouseless.EventScheduler.Service.csproj", "{C520170D-1A4E-4F26-A86F-1AD51E4BBBEA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mouseless.EventScheduler.Service", "src\Mouseless.EventScheduler.Service\Mouseless.EventScheduler.Service.csproj", "{C520170D-1A4E-4F26-A86F-1AD51E4BBBEA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{C520170D-1A4E-4F26-A86F-1AD51E4BBBEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C520170D-1A4E-4F26-A86F-1AD51E4BBBEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C520170D-1A4E-4F26-A86F-1AD51E4BBBEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C520170D-1A4E-4F26-A86F-1AD51E4BBBEA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C520170D-1A4E-4F26-A86F-1AD51E4BBBEA} = {8352D37D-CE86-4DAA-B9FA-BDAFC688B88B}
