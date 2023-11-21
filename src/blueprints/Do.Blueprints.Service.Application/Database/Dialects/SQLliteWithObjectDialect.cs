@@ -7,6 +7,7 @@ public class SQLliteWithObjectDialect : SQLiteDialect
 {
     public SQLliteWithObjectDialect()
     {
-        RegisterColumnType(DbType.Object, "MEDIUMTEXT");
+        RegisterColumnType(DbType.String, 65535, "TEXT");
+        RegisterColumnType(DbType.String, 16777215, "MEDIUMTEXT");
     }
 }
