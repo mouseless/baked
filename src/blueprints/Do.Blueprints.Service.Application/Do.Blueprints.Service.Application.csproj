@@ -17,13 +17,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentNHibernate" Version="3.2.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.22" />
-    <PackageReference Include="Moq" Version="4.20.69" />
-    <PackageReference Include="MySql.Data" Version="8.1.0" />
-    <PackageReference Include="NHibernate" Version="5.4.6" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-    <PackageReference Include="System.Data.SQLite" Version="1.0.118" />
+    <PackageReference Include="FluentNHibernate" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" />
+    <PackageReference Include="Moq" />
+    <PackageReference Include="MySql.Data" />
+    <PackageReference Include="NHibernate" />
+    <PackageReference Include="Swashbuckle.AspNetCore" />
+    <PackageReference Include="System.Data.SQLite" />
   </ItemGroup>
 
   <ItemGroup>
