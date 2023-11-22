@@ -7,5 +7,4 @@
 
 ## Improvements
 
-- Now, `GenericADOExceptionHandler` has been added and server response has been
-  improved.
+- `GenericADOExceptionHandler` added and server response improved.
