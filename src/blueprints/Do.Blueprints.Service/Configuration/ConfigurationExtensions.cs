@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-
-namespace Do.Configuration;
+﻿namespace Microsoft.Extensions.Configuration;
 
 public static class ConfigurationExtensions
 {
