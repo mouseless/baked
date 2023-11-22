@@ -14,12 +14,12 @@ public class DefaultExceptionHandlingFeature : IFeature<ExceptionHandlingConfigu
         configurator.ConfigureServiceCollection(services =>
         {
             services.AddSingleton<IExceptionHandler, HandledExceptionHandler>();
+            services.AddSingleton<IExceptionHandler, GenericADOExceptionHandler>();
         });
 
         configurator.ConfigureMiddlewareCollection(middlewares =>
         {
-            middlewares.Add<ExceptionHandlingNHibernate>(order: -20);
-            middlewares.Add<ExceptionHandlingMiddleware>(order: -21);
+            middlewares.Add<ExceptionHandlingMiddleware>(order: -20);
         });
     }
 }
