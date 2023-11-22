@@ -62,6 +62,7 @@ public abstract class ServiceSpec : Spec
 
     ITransaction _transaction = default!;
     internal Dictionary<string, string> Settings { get; private set; } = default!;
+    protected internal virtual Func<string, string?> SettingsValueProvider { get; private set; } = default!;
 
     public override void SetUp()
     {
@@ -70,8 +71,9 @@ public abstract class ServiceSpec : Spec
         _transaction = Session.BeginTransaction();
 
         Settings = new();
+        SettingsValueProvider ??= _ => default;
 
-        MockMe.TheConfiguration(settings: Settings);
+        MockMe.TheConfiguration(settings: Settings, defaultValueProvider: SettingsValueProvider);
         MockMe.TheSystem(now: new DateTime(2023, 09, 09, 10, 10, 00));
     }
 

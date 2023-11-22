@@ -140,9 +140,11 @@ public static class ServiceSpecExtensions
     }
 
     internal static IConfiguration TheConfiguration(this Mocker mockMe,
+        Func<string, string?>? defaultValueProvider,
         Dictionary<string, string>? settings = default
     )
     {
+        defaultValueProvider ??= _ => default;
         settings ??= new Dictionary<string, string>();
 
         var configuration = mockMe.Spec.GiveMe.The<IConfiguration>();
@@ -159,7 +161,7 @@ public static class ServiceSpecExtensions
                        return result;
                    }
 
-                   return key.EndsWith("Url") ? "https://test.com?value" : "test value";
+                   return defaultValueProvider(key);
                });
 
                return mockSection.Object;

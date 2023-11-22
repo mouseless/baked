@@ -1,4 +1,4 @@
-namespace Do.Test.Blueprints.Service.Test;
+namespace Do.Test;
 
 public class BlueprintsServiceSpec : ServiceSpec
 {
