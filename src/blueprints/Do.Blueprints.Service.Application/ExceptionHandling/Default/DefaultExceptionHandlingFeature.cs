@@ -18,7 +18,8 @@ public class DefaultExceptionHandlingFeature : IFeature<ExceptionHandlingConfigu
 
         configurator.ConfigureMiddlewareCollection(middlewares =>
         {
-            middlewares.Add<ExceptionHandlingMiddleware>(order: -20);
+            middlewares.Add<ExceptionHandlingNHibernate>(order: -20);
+            middlewares.Add<ExceptionHandlingMiddleware>(order: -21);
         });
     }
 }
