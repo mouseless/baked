@@ -17,7 +17,14 @@ public class ObjectUserType : CompositeUserTypeBase
     {
         if (PropertyTypes[0].NullSafeGet(dr, names, session, owner) is string jsonString)
         {
-            return JsonConvert.DeserializeObject(jsonString);
+            try
+            {
+                return JsonConvert.DeserializeObject(jsonString);
+            }
+            catch (JsonReaderException e)
+            {
+                throw new InvalidDataException($"Data could not be deserialized to object. Data: {jsonString}", e);
+            }
         }
 
         return null;
