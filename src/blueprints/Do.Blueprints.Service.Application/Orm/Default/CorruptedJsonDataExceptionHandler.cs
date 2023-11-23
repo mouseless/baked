@@ -1,7 +1,8 @@
 using System.Net;
+using Do.ExceptionHandling;
 using NHibernate.Exceptions;
 
-namespace Do.ExceptionHandling.Default;
+namespace Do.Orm.Default;
 
 public class CorruptedJsonDataExceptionHandler : IExceptionHandler
 {

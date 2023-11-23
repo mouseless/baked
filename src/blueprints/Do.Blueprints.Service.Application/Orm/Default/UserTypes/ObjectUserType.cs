@@ -21,7 +21,7 @@ public class ObjectUserType : CompositeUserTypeBase
             {
                 return JsonConvert.DeserializeObject(jsonString);
             }
-            catch (JsonReaderException e)
+            catch (Exception e)
             {
                 throw new InvalidDataException($"Data could not be deserialized to object. Data: {jsonString}", e);
             }
