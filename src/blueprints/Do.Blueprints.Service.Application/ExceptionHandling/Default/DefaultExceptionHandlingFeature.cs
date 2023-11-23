@@ -5,10 +5,6 @@ namespace Do.ExceptionHandling.Default;
 
 public class DefaultExceptionHandlingFeature : IFeature<ExceptionHandlingConfigurator>
 {
-    public DefaultExceptionHandlingFeature()
-    {
-    }
-
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureServiceCollection(services =>
