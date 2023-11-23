@@ -10,8 +10,12 @@ public class Singleton
     readonly Func<Entity> _newEntity;
     readonly ITransaction _transaction;
 
-    public Singleton(ISystem system, Func<Entity> newEntity, ITransaction transaction) =>
-        (_system, _newEntity, _transaction) = (system, newEntity, transaction);
+    public Singleton(ISystem system, Func<Entity> newEntity, ITransaction transaction)
+    {
+        _system = system;
+        _newEntity = newEntity;
+        _transaction = transaction;
+    }
 
     public DateTime GetNow() => _system.Now;
 
@@ -33,7 +37,7 @@ public class Singleton
             var _ = _newEntity().With(Guid.NewGuid(), "test", "transaction action", 1, new("https://action.com"), new { transaction = "action" }, Status.Enabled);
         });
 
-        throw new Exception();
+        throw new();
     }
 
     public async Task TestTransactionFunc()
@@ -44,7 +48,7 @@ public class Singleton
 
         await entity.Update(Guid.NewGuid(), "rollback", "rollback", 2, new("https://rollback.com"), new { rollback = "rollback" }, Status.Disabled);
 
-        throw new Exception();
+        throw new();
     }
 
     public object TestObject(object request) => request;

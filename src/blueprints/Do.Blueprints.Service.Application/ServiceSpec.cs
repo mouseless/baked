@@ -71,7 +71,7 @@ public abstract class ServiceSpec : Spec
 
         Settings = new();
 
-        MockMe.TheConfiguration(settings: Settings);
+        MockMe.TheConfiguration(settings: Settings, defaultValueProvider: GetDefaultSettingsValue);
         MockMe.TheSystem(now: new DateTime(2023, 09, 09, 10, 10, 00));
     }
 
@@ -85,4 +85,7 @@ public abstract class ServiceSpec : Spec
 
         GiveMe.The<IMockOverrider>().Reset();
     }
+
+    protected virtual string? GetDefaultSettingsValue(string key) =>
+        "test value";
 }
