@@ -6,6 +6,7 @@
         <Configuration>
           <Format>cobertura</Format>
           <Exclude>[Do.Blueprints.*]*</Exclude>
+          <Exclude>[.*.Application]*</Exclude>
           <IncludeTestAssembly>false</IncludeTestAssembly>
           <SkipAutoProps>false</SkipAutoProps>
         </Configuration>

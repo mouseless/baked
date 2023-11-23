@@ -2,10 +2,10 @@
 
 ## Improvements
 
-- Added `GetRequiredValue<T>` extension to IConfiguration with default value 
-  option which returns given value when configuration value is null
+- Added `GetRequiredValue<T>` extension to `IConfiguration` with default value
+  option
 - Mock `IConfiguration` return values for not defined settings can now be 
-  configured by overriding `ServiceSpec.SettingsValueProvider`
+  configured by overriding `ServiceSpec.GetDefaultSettingsValue()`
 
 ## Bugfixes
 

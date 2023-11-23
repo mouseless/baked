@@ -140,7 +140,7 @@ public static class ServiceSpecExtensions
     }
 
     internal static IConfiguration TheConfiguration(this Mocker mockMe,
-        Func<string, string?>? defaultValueProvider,
+        Func<string, string?>? defaultValueProvider = default,
         Dictionary<string, string>? settings = default
     )
     {

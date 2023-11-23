@@ -4,10 +4,6 @@ namespace Do.Test.Configuration;
 
 public class MockingConfiguration : BlueprintsServiceSpec
 {
-    protected override Func<string, string?> SettingsValueProvider => GetSettingsValue;
-
-    string? GetSettingsValue(string key) => key.Equals("Int") ? "42" : "test value";
-
     [Test]
     public void Mock_configuration_returns_mocked_settings_value()
     {
@@ -19,11 +15,12 @@ public class MockingConfiguration : BlueprintsServiceSpec
         actual.ShouldBe(10);
     }
 
+    protected override string? GetDefaultSettingsValue(string key) => key.Equals("Int") ? "42" : "test value";
+
     [TestCase("Int", 42)]
     [TestCase("String", "test value")]
     public void Mock_configuration_uses_settings_value_provider_for_not_mocked_config_sections(string key, object value)
     {
-        MockMe.ASetting("Config", "10");
         var configuration = GiveMe.The<IConfiguration>();
 
         var actual = configuration.GetRequiredValue(value.GetType(), key);

@@ -1,19 +1,21 @@
 ﻿using Do.Core;
 using Do.Database;
 using Do.ExceptionHandling;
-using Microsoft.Extensions.Configuration;
 
 namespace Do.Test;
 
 public class Singleton
 {
-    readonly IConfiguration _configuration;
     readonly ISystem _system;
     readonly Func<Entity> _newEntity;
     readonly ITransaction _transaction;
 
-    public Singleton(ISystem system, Func<Entity> newEntity, ITransaction transaction, IConfiguration configuration) =>
-        (_system, _newEntity, _transaction, _configuration) = (system, newEntity, transaction, configuration);
+    public Singleton(ISystem system, Func<Entity> newEntity, ITransaction transaction)
+    {
+        _system = system;
+        _newEntity = newEntity;
+        _transaction = transaction;
+    }
 
     public DateTime GetNow() => _system.Now;
 
