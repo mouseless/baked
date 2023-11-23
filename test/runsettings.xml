@@ -5,7 +5,7 @@
       <DataCollector friendlyName="XPlat code coverage">
         <Configuration>
           <Format>cobertura</Format>
-          <Exclude>[Do.Blueprints.*]*</Exclude>
+          <Exclude>[Do.Blueprints.*]*,[Do.Test.Blueprints.*]*</Exclude>
           <IncludeTestAssembly>false</IncludeTestAssembly>
           <SkipAutoProps>false</SkipAutoProps>
         </Configuration>

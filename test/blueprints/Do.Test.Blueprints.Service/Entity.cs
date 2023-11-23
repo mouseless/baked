@@ -44,7 +44,7 @@ public class Entity
 
         if (throwError)
         {
-            throw new Exception();
+            throw new();
         }
     }
 
