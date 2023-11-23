@@ -86,5 +86,6 @@ public abstract class ServiceSpec : Spec
         GiveMe.The<IMockOverrider>().Reset();
     }
 
-    protected virtual string? GetDefaultSettingsValue(string key) => default;
+    protected virtual string? GetDefaultSettingsValue(string key) => 
+        "test value";
 }

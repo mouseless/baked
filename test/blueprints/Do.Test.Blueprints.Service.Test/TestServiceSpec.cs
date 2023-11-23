@@ -1,8 +1,8 @@
 namespace Do.Test;
 
-public class BlueprintsServiceSpec : ServiceSpec
+public abstract class TestServiceSpec : ServiceSpec
 {
-    static BlueprintsServiceSpec() =>
+    static TestServiceSpec() =>
         Init(
             business: c => c.Default(),
             configure: app =>
@@ -10,4 +10,7 @@ public class BlueprintsServiceSpec : ServiceSpec
                 app.Features.AddConfigurationOverrider();
             }
         );
+
+    protected override string? GetDefaultSettingsValue(string key) =>
+        key == "Int" ? "42" : "test value";
 }

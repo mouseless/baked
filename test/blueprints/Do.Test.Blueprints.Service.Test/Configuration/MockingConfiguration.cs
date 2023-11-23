@@ -2,7 +2,7 @@
 
 namespace Do.Test.Configuration;
 
-public class MockingConfiguration : BlueprintsServiceSpec
+public class MockingConfiguration : TestServiceSpec
 {
     [Test]
     public void Mock_configuration_returns_mocked_settings_value()
@@ -15,10 +15,8 @@ public class MockingConfiguration : BlueprintsServiceSpec
         actual.ShouldBe(10);
     }
 
-    protected override string? GetDefaultSettingsValue(string key) => key.Equals("Int") ? "42" : "test value";
-
-    [TestCase("Int", 42)]
-    [TestCase("String", "test value")]
+    [TestCase("Int", 42)] // defined in TestServiceSpec
+    [TestCase("String", "test value")] // defined in TestServiceSpec
     public void Mock_configuration_uses_settings_value_provider_for_not_mocked_config_sections(string key, object value)
     {
         var configuration = GiveMe.The<IConfiguration>();
