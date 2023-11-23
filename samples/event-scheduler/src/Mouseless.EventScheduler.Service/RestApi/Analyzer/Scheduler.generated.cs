@@ -14,7 +14,7 @@ public class SchedulerController
 
     [HttpGet]
     [Produces("application/json")]
-    [Route("schedular/now")]
+    [Route("scheduler/now")]
     public DateTime GetNow()
     {
         var target = _serviceProvider.GetRequiredService<SchedulerService>();

@@ -15,6 +15,8 @@ public class ConfigurationOverriderFeature : IFeature<BusinessConfigurator>
 
         configurator.ConfigureTypeCollection(types =>
         {
+            types.Add<Meeting>();
+            types.Add<Meetings>();
             types.Add<SchedulerService>();
         });
 
