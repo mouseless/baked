@@ -7,4 +7,4 @@
 
 ## Improvements
 
-- `GenericADOExceptionHandler` added and server response improved.
+- Improved exception message when there is no valid json in the database.
