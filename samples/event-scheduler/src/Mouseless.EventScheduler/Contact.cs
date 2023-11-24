@@ -7,7 +7,6 @@ public class Contact
     readonly IEntityContext<Contact> _context = default!;
 
     protected Contact() { }
-
     public Contact(IEntityContext<Contact> entityContext)
     {
         _context = entityContext;

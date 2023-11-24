@@ -7,7 +7,6 @@ public class MeetingContact
     readonly IEntityContext<MeetingContact> _context = default!;
 
     protected MeetingContact() { }
-
     public MeetingContact(IEntityContext<MeetingContact> entityContext)
     {
         _context = entityContext;
@@ -35,10 +34,8 @@ public class MeetingContacts
 {
     IQueryContext<MeetingContact> _context;
 
-    public MeetingContacts(IQueryContext<MeetingContact> context)
-    {
+    public MeetingContacts(IQueryContext<MeetingContact> context) =>
         _context = context;
-    }
 
     internal List<MeetingContact> ByMeeting(Meeting meeting) =>
         _context.By(mc => mc.Meeting == meeting);
