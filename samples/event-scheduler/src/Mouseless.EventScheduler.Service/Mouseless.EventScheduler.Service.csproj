@@ -4,6 +4,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -11,7 +12,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\src\blueprints\Do.Blueprints.Service\Do.Blueprints.Service.csproj" />
     <ProjectReference Include="..\..\..\..\src\blueprints\Do.Blueprints.Service.Application\Do.Blueprints.Service.Application.csproj" />
+    <ProjectReference Include="..\Mouseless.EventScheduler\Mouseless.EventScheduler.csproj" />
   </ItemGroup>
 
   <ItemGroup>

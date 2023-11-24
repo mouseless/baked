@@ -5,10 +5,16 @@ namespace EventScheduler;
 public class Meeting
 {
     readonly IEntityContext<Meeting> _context = default!;
+    readonly Func<MeetingContact> _newMeetingContact = default!;
+    readonly MeetingContacts _meetingContacts = default!;
 
     protected Meeting() { }
-    public Meeting(IEntityContext<Meeting> context) =>
+    public Meeting(IEntityContext<Meeting> context, Func<MeetingContact> newMeetingContact, MeetingContacts meetingContacts)
+    {
         _context = context;
+        _newMeetingContact = newMeetingContact;
+        _meetingContacts = meetingContacts;
+    }
 
     public virtual Guid Id { get; protected set; } = default!;
     public virtual string Name { get; protected set; } = default!;
@@ -22,8 +28,23 @@ public class Meeting
         return _context.Insert(this);
     }
 
+    public List<Contact> GetContacts() =>
+        _meetingContacts.ByMeeting(this).Select(mc => mc.Contact).ToList();
+
+    public virtual void AddContact(Contact contact)
+    {
+        _newMeetingContact().With(this, contact);
+    }
+
     public virtual void Delete()
     {
+        var meetingContacts = _meetingContacts.ByMeeting(this);
+
+        foreach (var item in meetingContacts)
+        {
+            item.Delete();
+        }
+
         _context.Delete(this);
     }
 }

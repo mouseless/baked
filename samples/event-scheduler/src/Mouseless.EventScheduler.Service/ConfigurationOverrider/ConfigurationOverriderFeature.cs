@@ -10,14 +10,17 @@ public class ConfigurationOverriderFeature : IFeature<BusinessConfigurator>
     {
         configurator.ConfigureAssemblyCollection(assemblies =>
         {
-            assemblies.Add(typeof(SchedulerService).Assembly);
+            assemblies.Add(typeof(Meeting).Assembly);
         });
 
         configurator.ConfigureTypeCollection(types =>
         {
+            types.Add<Contact>();
+            types.Add<Contacts>();
             types.Add<Meeting>();
             types.Add<Meetings>();
-            types.Add<SchedulerService>();
+            types.Add<MeetingContact>();
+            types.Add<MeetingContacts>();
         });
 
         configurator.ConfigureApplicationParts(applicationParts =>
