@@ -34,4 +34,17 @@ public class Transaction : TestServiceSpec
         result.ShouldNotBeNull();
         result.String.ShouldBe(entity.String);
     }
+
+    [Test]
+    public void Entity_does_not_persist_when_deleted()
+    {
+        var entity = GiveMe.AnEntity();
+        var entities = GiveMe.The<Entities>();
+
+        VerifyPersists(entity);
+
+        entity.Delete();
+
+        entities.By(@string: entity.String).FirstOrDefault(e => e.Guid == entity.Guid).ShouldBeNull();
+    }
 }
