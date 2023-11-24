@@ -23,7 +23,7 @@ public class Contact
         return _context.Insert(this);
     }
 
-    public void Edit(string name)
+    public virtual void Edit(string name)
     {
         Name = name;
     }

@@ -17,7 +17,7 @@ public class MeetingContact
     public virtual Meeting Meeting { get; protected set; } = default!;
     public virtual Contact Contact { get; protected set; } = default!;
 
-    public virtual MeetingContact With(Meeting meeting, Contact contact)
+    protected internal virtual MeetingContact With(Meeting meeting, Contact contact)
     {
         Meeting = meeting;
         Contact = contact;

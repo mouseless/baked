@@ -28,7 +28,7 @@ public class Meeting
         return _context.Insert(this);
     }
 
-    public List<Contact> GetContacts() =>
+    public virtual List<Contact> GetContacts() =>
         _meetingContacts.ByMeeting(this).Select(mc => mc.Contact).ToList();
 
     public virtual void AddContact(Contact contact)

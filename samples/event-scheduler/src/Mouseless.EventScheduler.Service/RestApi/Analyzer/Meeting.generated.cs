@@ -45,6 +45,16 @@ public class MeetingController
         return target().With(request.Name, request.Date);
     }
 
+    [HttpGet]
+    [Produces("application/json")]
+    [Route("meetings/{id}/contacts")]
+    public List<Contact> GetContacts([FromRoute] Guid id)
+    {
+        var target = _serviceProvider.GetRequiredService<IQueryContext<Meeting>>().SingleById(id);
+
+        return target.GetContacts();
+    }
+
     public record AddContactRequest(Guid ContactId);
 
     [HttpPost]
@@ -54,7 +64,7 @@ public class MeetingController
     {
         var target = _serviceProvider.GetRequiredService<IQueryContext<Meeting>>().SingleById(id);
 
-        target.AddContact(_serviceProvider.GetRequiredService<IQueryContext<Contact>>().SingleById(id));
+        target.AddContact(_serviceProvider.GetRequiredService<IQueryContext<Contact>>().SingleById(request.ContactId));
     }
 
     [HttpDelete]
