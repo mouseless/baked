@@ -1,3 +1,6 @@
 Forge.New
-    .Service()
+    .Service(
+        database: c => c.Sqlite("EventScheduler.db"),
+        configure: app => app.Features.AddConfigurationOverrider()
+    )
     .Run();

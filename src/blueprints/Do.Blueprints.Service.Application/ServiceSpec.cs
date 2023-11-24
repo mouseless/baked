@@ -21,7 +21,7 @@ public abstract class ServiceSpec : Spec
     internal static ISession Session => _serviceProvider.GetRequiredService<ISession>();
 
     protected static ApplicationContext Init(
-        Func<BusinessConfigurator, IFeature<BusinessConfigurator>> business,
+        Func<BusinessConfigurator, IFeature<BusinessConfigurator>>? business = default,
         Func<CoreConfigurator, IFeature<CoreConfigurator>>? core = default,
         Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>>? database = default,
         Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>>? exceptionHandling = default,
@@ -30,6 +30,7 @@ public abstract class ServiceSpec : Spec
         Action<ApplicationDescriptor>? configure = default
     )
     {
+        business ??= c => c.Default();
         core ??= c => c.Mock();
         database ??= c => c.InMemory();
         exceptionHandling ??= c => c.Default();
@@ -72,7 +73,7 @@ public abstract class ServiceSpec : Spec
 
         Settings = new();
 
-        MockMe.TheConfiguration(settings: Settings);
+        MockMe.TheConfiguration(settings: Settings, defaultValueProvider: GetDefaultSettingsValue);
         MockMe.TheSystem(now: new DateTime(2023, 09, 09, 10, 10, 00));
     }
 
@@ -86,4 +87,7 @@ public abstract class ServiceSpec : Spec
 
         GiveMe.The<IMockOverrider>().Reset();
     }
+
+    protected virtual string? GetDefaultSettingsValue(string key) =>
+        "test value";
 }

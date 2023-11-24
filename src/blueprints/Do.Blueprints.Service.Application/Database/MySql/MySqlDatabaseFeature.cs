@@ -1,8 +1,8 @@
 ﻿using Do.Architecture;
 using Do.Configuration;
-using Do.Database.Dialects;
 using FluentNHibernate.Cfg.Db;
 using Microsoft.Extensions.DependencyInjection;
+using NHibernate.Dialect;
 
 namespace Do.Database.MySql;
 
@@ -26,7 +26,7 @@ public class MySqlDatabaseFeature : IFeature<DatabaseConfigurator>
         {
             var mysql = MySQLConfiguration.Standard
                 .ConnectionString(_connectionString)
-                .Dialect<MySQL57WithObjectDialect>();
+                .Dialect<MySQL57Dialect>();
 
             // this should be in logging
             if (_showSql) { mysql.ShowSql(); }

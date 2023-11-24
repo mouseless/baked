@@ -1,0 +1,11 @@
+<Project>
+
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageVersion Include="StyleCop.Analyzers.Unstable" Version="1.2.0.507" />
+  </ItemGroup>
+
+</Project>

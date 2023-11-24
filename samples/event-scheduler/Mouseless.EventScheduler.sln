@@ -3,25 +3,32 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0CA66E05-2F65-4A0E-9C3A-FCBBD57BFBC3}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8352D37D-CE86-4DAA-B9FA-BDAFC688B88B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mouseless.EventScheduler.Service", "src\Mouseless.EventScheduler.Service\Mouseless.EventScheduler.Service.csproj", "{0A410C58-06DC-4EC0-864B-72C47C066F1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mouseless.EventScheduler.Service", "src\Mouseless.EventScheduler.Service\Mouseless.EventScheduler.Service.csproj", "{C520170D-1A4E-4F26-A86F-1AD51E4BBBEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mouseless.EventScheduler", "src\Mouseless.EventScheduler\Mouseless.EventScheduler.csproj", "{6779553C-D56D-401B-B76E-3D623D498CEC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C520170D-1A4E-4F26-A86F-1AD51E4BBBEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C520170D-1A4E-4F26-A86F-1AD51E4BBBEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C520170D-1A4E-4F26-A86F-1AD51E4BBBEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C520170D-1A4E-4F26-A86F-1AD51E4BBBEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6779553C-D56D-401B-B76E-3D623D498CEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6779553C-D56D-401B-B76E-3D623D498CEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6779553C-D56D-401B-B76E-3D623D498CEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6779553C-D56D-401B-B76E-3D623D498CEC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0A410C58-06DC-4EC0-864B-72C47C066F1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0A410C58-06DC-4EC0-864B-72C47C066F1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0A410C58-06DC-4EC0-864B-72C47C066F1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0A410C58-06DC-4EC0-864B-72C47C066F1D}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{0A410C58-06DC-4EC0-864B-72C47C066F1D} = {0CA66E05-2F65-4A0E-9C3A-FCBBD57BFBC3}
+		{C520170D-1A4E-4F26-A86F-1AD51E4BBBEA} = {8352D37D-CE86-4DAA-B9FA-BDAFC688B88B}
+		{6779553C-D56D-401B-B76E-3D623D498CEC} = {8352D37D-CE86-4DAA-B9FA-BDAFC688B88B}
 	EndGlobalSection
 EndGlobal

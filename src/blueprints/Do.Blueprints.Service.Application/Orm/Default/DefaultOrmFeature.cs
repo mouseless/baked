@@ -1,5 +1,6 @@
 ﻿using Do.Architecture;
 using Do.Domain.Model;
+using Do.ExceptionHandling;
 using Do.Orm.Default.UserTypes;
 using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Mapping;
@@ -17,6 +18,7 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
         {
             services.AddScoped(typeof(IEntityContext<>), typeof(EntityContext<>));
             services.AddSingleton(typeof(IQueryContext<>), typeof(QueryContext<>));
+            services.AddSingleton<IExceptionHandler, CorruptedJsonDataExceptionHandler>();
         });
 
         configurator.ConfigureAutoPersistenceModel(model =>
