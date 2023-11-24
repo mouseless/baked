@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\..\..\stylecop.ruleset" Pack="true" PackagePath="\" />
+    <None Include="..\..\..\..\stylecop.ruleset" Pack="true"/>
   </ItemGroup>
     
   <ItemGroup>
