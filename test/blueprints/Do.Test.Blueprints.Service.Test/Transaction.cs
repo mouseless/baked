@@ -1,4 +1,6 @@
-﻿namespace Do.Test;
+﻿using Do.ExceptionHandling;
+
+namespace Do.Test;
 
 public class Transaction : TestServiceSpec
 {
@@ -29,10 +31,10 @@ public class Transaction : TestServiceSpec
 
         await task.ShouldThrowAsync<Exception>();
 
-        var result = entities.By("updated").FirstOrDefault(e => e.Guid == entity.Guid);
+        var result = entities.By().FirstOrDefault(e => e.Guid == entity.Guid);
 
         result.ShouldNotBeNull();
-        result.String.ShouldBe(entity.String);
+        result.String.ShouldBe("updated");
     }
 
     [Test]
@@ -76,5 +78,53 @@ public class Transaction : TestServiceSpec
         Func<List<Entity>> task = () => entities.By(entity.String);
 
         task.ShouldNotThrow();
+    }
+
+    [Test]
+    public void TestException_throws_handled_exception_when_the_handled_bool_flag_is_provided()
+    {
+        var singleton = GiveMe.The<Singleton>();
+
+        Action task = () => singleton.TestException(handled: true);
+
+        task.ShouldThrow<HandledException>();
+    }
+
+    [Test]
+    public void TestException_throws_unhandled_exception_when_the_handled_bool_flag_is_provided()
+    {
+        var singleton = GiveMe.The<Singleton>();
+
+        Action task = () => singleton.TestException(handled: false);
+
+        task.ShouldThrow<InvalidOperationException>();
+    }
+
+    [Test]
+    public async Task Transaction_committed_asynchronously_does_not_rollback_when_error_occurs()
+    {
+        var singleton = GiveMe.The<Singleton>();
+        var entities = GiveMe.The<Entities>();
+
+        var task = singleton.TestTransactionAction();
+
+        await task.ShouldThrowAsync<Exception>();
+        entities.By().ShouldNotBeEmpty();
+    }
+
+    [Test]
+    public async Task Synchronous_update_is_not_committed_when_an_error_occurs_during_transaction()
+    {
+        var singleton = GiveMe.The<Singleton>();
+        var entities = GiveMe.The<Entities>();
+
+        var task = singleton.TestTransactionFunc();
+
+        await task.ShouldThrowAsync<Exception>();
+
+        var entity = entities.By().FirstOrDefault();
+
+        entity.ShouldNotBeNull();
+        entity.String.ShouldNotBeSameAs("rollback");
     }
 }
