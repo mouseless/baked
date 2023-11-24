@@ -13,13 +13,4 @@ public abstract class TestServiceSpec : ServiceSpec
 
     protected override string? GetDefaultSettingsValue(string key) =>
         key == "Int" ? "42" : "test value";
-
-    public void VerifyPersists(Entity entity)
-    {
-        var entities = GiveMe.The<Entities>();
-
-        var result = entities.By(entity.String).FirstOrDefault(e => e.Guid == entity.Guid);
-
-        result.ShouldNotBeNull();
-    }
 }

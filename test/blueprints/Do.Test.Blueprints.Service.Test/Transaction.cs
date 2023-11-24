@@ -7,7 +7,7 @@ public class Transaction : TestServiceSpec
     {
         var entity = GiveMe.AnEntity();
 
-        VerifyPersists(entity);
+        entity.ShouldBeInserted();
     }
 
     [Test]
@@ -39,12 +39,11 @@ public class Transaction : TestServiceSpec
     public void Entity_does_not_persist_when_deleted()
     {
         var entity = GiveMe.AnEntity();
-        var entities = GiveMe.The<Entities>();
 
-        VerifyPersists(entity);
+        entity.ShouldBeInserted();
 
         entity.Delete();
 
-        entities.By(@string: entity.String).FirstOrDefault(e => e.Guid == entity.Guid).ShouldBeNull();
+        entity.ShouldBeDeleted();
     }
 }
