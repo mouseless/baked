@@ -6,8 +6,4 @@
     <ProjectReference Include="..\Mouseless.EventScheduler\Mouseless.EventScheduler.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Using Include="Mouseless.EventScheduler" />
-  </ItemGroup>
-
 </Project>
