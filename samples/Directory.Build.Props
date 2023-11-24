@@ -20,6 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\..\..\..\stylecop.ruleset" Pack="true" PackagePath="\" />
+  </ItemGroup>
+    
+  <ItemGroup>
     <Using Include="Do" />
   </ItemGroup>
 
