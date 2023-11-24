@@ -7,21 +7,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
-  <PropertyGroup>
-    <CodeAnalysisRuleSet>../../../../stylecop.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="StyleCop.Analyzers.Unstable">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="..\..\..\..\stylecop.ruleset" Pack="true"/>
-  </ItemGroup>
     
   <ItemGroup>
     <Using Include="Do" />
