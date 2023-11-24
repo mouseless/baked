@@ -19,7 +19,7 @@
 
   <ItemGroup>
     <Using Include="Do" />
-    <Using Include="EventScheduler" />
+    <Using Include="Mouseless.EventScheduler" />
   </ItemGroup>
 
 </Project>

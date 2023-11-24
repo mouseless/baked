@@ -3,7 +3,7 @@
 using Do.Orm;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EventScheduler;
+namespace Mouseless.EventScheduler;
 
 [ApiController]
 public class MeetingController
@@ -33,12 +33,12 @@ public class MeetingController
         return  target.SingleById(id);
     }
 
-    public record NewMeetingRequest(string Name, DateTime Date);
+    public record NewRequest(string Name, DateTime Date);
 
     [HttpPost]
     [Produces("application/json")]
     [Route("meetings")]
-    public Meeting New([FromBody] NewMeetingRequest request)
+    public Meeting New([FromBody] NewRequest request)
     {
         var target = _serviceProvider.GetRequiredService<Func<Meeting>>();
 

@@ -2,7 +2,7 @@ using Do.Architecture;
 using Do.Business;
 using System.Reflection;
 
-namespace EventScheduler;
+namespace Mouseless.EventScheduler;
 
 public class ConfigurationOverriderFeature : IFeature<BusinessConfigurator>
 {

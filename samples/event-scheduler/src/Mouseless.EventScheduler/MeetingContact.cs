@@ -1,6 +1,6 @@
 ﻿using Do.Orm;
 
-namespace EventScheduler;
+namespace Mouseless.EventScheduler;
 
 public class MeetingContact
 {

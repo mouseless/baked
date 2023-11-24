@@ -3,7 +3,7 @@
 using Do.Orm;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EventScheduler;
+namespace Mouseless.EventScheduler;
 
 [ApiController]
 public class ContactController
@@ -23,24 +23,24 @@ public class ContactController
         return target.All();
     }
 
-    public record NewContactRequest(string Name);
+    public record NewRequest(string Name);
 
     [HttpPost]
     [Produces("application/json")]
     [Route("contacts")]
-    public Contact New([FromBody] NewContactRequest request)
+    public Contact New([FromBody] NewRequest request)
     {
         var target = _serviceProvider.GetRequiredService<Func<Contact>>();
 
         return target().With(request.Name);
     }
 
-    public record EditContactRequest(string Name);
+    public record EditRequest(string Name);
 
     [HttpPatch]
     [Produces("application/json")]
     [Route("contacts/{id}")]
-    public Contact Edit([FromRoute] Guid id, [FromBody] EditContactRequest request)
+    public Contact Edit([FromRoute] Guid id, [FromBody] EditRequest request)
     {
         var target = _serviceProvider.GetRequiredService<IQueryContext<Contact>>().SingleById(id);
 
