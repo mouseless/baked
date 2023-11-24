@@ -64,4 +64,17 @@ public class Transaction : TestServiceSpec
 
         entity1.ShouldNotBe(entity2);
     }
+
+    [Test]
+    public void Special_characters_do_not_cause_corrupted_data_for_object_properties()
+    {
+        var entity = GiveMe.AnEntity(dynamic: new { test = "ğ€@test" });
+        var entities = GiveMe.The<Entities>();
+
+        entity.ShouldBeInserted();
+
+        Func<List<Entity>> task = () => entities.By(entity.String);
+
+        task.ShouldNotThrow();
+    }
 }
