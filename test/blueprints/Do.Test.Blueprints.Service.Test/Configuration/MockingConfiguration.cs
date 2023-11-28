@@ -15,6 +15,20 @@ public class MockingConfiguration : TestServiceSpec
         actual.ShouldBe(10);
     }
 
+    [TestCase(42)]
+    [TestCase("value")]
+    [TestCase(false)]
+    [Test]
+    public void Mock_ASetting_value_parameter_is_generic<T>(T value)
+    {
+        MockMe.ASetting("Config", value);
+        var configuration = GiveMe.The<IConfiguration>();
+
+        var actual = configuration.GetRequiredValue<T>("Config");
+
+        actual.ShouldBeEquivalentTo(value);
+    }
+
     [TestCase("Int", 42)] // defined in TestServiceSpec
     [TestCase("String", "test value")] // defined in TestServiceSpec
     public void Mock_configuration_uses_settings_value_provider_for_not_mocked_config_sections(string key, object value)
