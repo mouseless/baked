@@ -43,15 +43,19 @@ public class FlatTransaction : ITransaction
         return result;
     }
 
-    public async Task CommitAsync<TEntity>(TEntity entity, Action<TEntity> action)
+    public async Task CommitAsync<TEntity>(TEntity? entity, Action<TEntity> action)
     {
+        if (entity is null) { return; }
+
         action(entity);
 
         await CommitAndBeginNewTransaction();
     }
 
-    public async Task CommitAsync<TEntity>(TEntity entity, Func<TEntity, Task> action)
+    public async Task CommitAsync<TEntity>(TEntity? entity, Func<TEntity, Task> action)
     {
+        if (entity is null) { return; }
+
         await action(entity);
 
         await CommitAndBeginNewTransaction();

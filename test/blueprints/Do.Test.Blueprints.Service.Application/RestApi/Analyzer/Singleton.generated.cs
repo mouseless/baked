@@ -54,6 +54,16 @@ public class SingletonController
         target.TestException(handled);
     }
 
+    [HttpPost]
+    [Produces("application/json")]
+    [Route("singleton/test-transaction-nullable")]
+    public async Task TestTransactionNullable()
+    {
+        var target = _serviceProvider.GetRequiredService<Singleton>();
+
+        await target.TestTransactionNullable(null);
+    }
+
     [HttpPut]
     [Produces("application/json")]
     [Route("singleton/test-async-object")]

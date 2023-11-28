@@ -59,4 +59,11 @@ public class Singleton
 
         return request;
     }
+
+    public async Task TestTransactionNullable(Entity? entity)
+    {
+        await _transaction.CommitAsync(entity, entity =>
+             entity.Update(Guid.NewGuid(), "test", "transaction func", 1, new("https://func.com"), new { transaction = "func" }, Status.Enabled)
+         );
+    }
 }
