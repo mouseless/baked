@@ -14,14 +14,13 @@ public class EntityController
         _serviceProvider = serviceProvider;
 
     public record ByRequest(
-        Guid Guid = default,
-        string String = default,
-        string StringData = default,
-        int Int32 = default,
-        Uri Uri = default,
-        object Dynamic = default,
-        Status Status = default,
-        DateTime DateTime = default
+        Guid guid = default,
+        string @string = default,
+        string stringData = default,
+        int int32 = default,
+        Uri uri = default,
+        Status status = default,
+        DateTime dateTime = default
     );
 
     [HttpGet]
@@ -31,13 +30,13 @@ public class EntityController
         var target = _serviceProvider.GetRequiredService<Entities>();
 
         var result = target.By(
-            guid: request.Guid,
-            @string: request.String,
-            stringData: request.StringData,
-            int32: request.Int32,
-            uri: request.Uri,
-            status: request.Status,
-            dateTime: request.DateTime,
+            guid: request.guid,
+            @string: request.@string,
+            stringData: request.stringData,
+            int32: request.int32,
+            uri: request.uri,
+            status: request.status,
+            dateTime: request.dateTime,
             take: take,
             skip: skip
         );

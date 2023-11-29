@@ -23,6 +23,6 @@ public static class TestServiceSpecExtensions
             uri ?? giveMe.AUrl(),
             dynamic ?? new { },
             @enum ?? Status.Disabled,
-            dateTime ?? DateTime.Now
+            dateTime ?? new DateTime(year: 2023, month: 11, day: 29, hour: 18, minute: 30, second: 5, kind: DateTimeKind.Utc)
         );
 }
