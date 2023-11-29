@@ -28,7 +28,7 @@ public class SkippedTransaction : ITransaction
 
     public Task CommitAsync<TEntity>(TEntity? entity, Action<TEntity> action)
     {
-        if (entity is null) { return new(() => { }); }
+        if (entity is null) { return Task.CompletedTask; }
 
         action(entity);
 
