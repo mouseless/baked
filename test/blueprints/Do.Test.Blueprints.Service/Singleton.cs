@@ -41,7 +41,8 @@ public class Singleton
                 int32: 1,
                 uri: new("https://action.com"),
                 @dynamic: new { transaction = "action" },
-                status: Status.Enabled
+                @enum: Status.Enabled,
+                dateTime: DateTime.Now
             );
         });
 
@@ -58,7 +59,8 @@ public class Singleton
                 int32: 1,
                 uri: new("https://func.com"),
                 @dynamic: new { transaction = "func" },
-                status: Status.Enabled
+                @enum: Status.Enabled,
+                dateTime: DateTime.Now
             )
         );
 
@@ -69,7 +71,8 @@ public class Singleton
             int32: 2,
             uri: new("https://rollback.com"),
             @dynamic: new { rollback = "rollback" },
-            status: Status.Disabled
+            @enum: Status.Disabled,
+            dateTime: DateTime.Now
         );
 
         throw new();
@@ -94,7 +97,8 @@ public class Singleton
                 int32: 1,
                 uri: new("https://func.com"),
                 @dynamic: new { transaction = "func" },
-                status: Status.Enabled
+                @enum: Status.Enabled,
+                dateTime: DateTime.Now
             )
         );
     }

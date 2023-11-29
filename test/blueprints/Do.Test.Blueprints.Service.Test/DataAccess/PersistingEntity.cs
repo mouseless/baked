@@ -14,7 +14,7 @@ public class PersistingEntity : TestServiceSpec
             int32: 0,
             uri: GiveMe.AUrl(),
             @dynamic: new { },
-            status: Status.Disabled
+            @enum: Status.Disabled
         );
 
         actual.ShouldBeInserted();
@@ -36,7 +36,7 @@ public class PersistingEntity : TestServiceSpec
         var entity = GiveMe.AnEntity(dynamic: new { test = "ğ€@test" });
         var entities = GiveMe.The<Entities>();
 
-        Func<List<Entity>> task = () => entities.By(entity.String);
+        Func<List<Entity>> task = () => entities.By(@string: entity.String);
 
         task.ShouldNotThrow();
     }

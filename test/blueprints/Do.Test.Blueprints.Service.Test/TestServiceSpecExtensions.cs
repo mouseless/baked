@@ -11,15 +11,18 @@ public static class TestServiceSpecExtensions
        int? int32 = default,
        Uri? uri = default,
        object? @dynamic = default,
-       Status? status = default
+       Status? @enum = default,
+       DateTime? dateTime = default
     ) => giveMe
         .A<Entity>()
         .With(
             guid ?? Guid.NewGuid(),
             @string ?? string.Empty,
             stringData ?? string.Empty,
-            int32 ?? 0, uri ?? giveMe.AUrl(),
+            int32 ?? 0,
+            uri ?? giveMe.AUrl(),
             dynamic ?? new { },
-            status ?? Status.Disabled
+            @enum ?? Status.Disabled,
+            dateTime ?? DateTime.Now
         );
 }
