@@ -126,6 +126,11 @@ public static class ServiceSpecExtensions
 
     #region Settings
 
+    public static void ASetting<T>(this Mocker mockMe,
+        string? key = default,
+        T? value = default
+    ) => mockMe.ASetting(key: key, value: $"{value}");
+
     public static void ASetting(this Mocker mockMe,
         string? key = default,
         string? value = default

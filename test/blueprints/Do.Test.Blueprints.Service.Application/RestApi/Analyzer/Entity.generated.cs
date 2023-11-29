@@ -13,13 +13,33 @@ public class EntityController
     public EntityController(IServiceProvider serviceProvider) =>
         _serviceProvider = serviceProvider;
 
+    public record ByRequest(
+        Guid guid = default,
+        string @string = default,
+        string stringData = default,
+        int int32 = default,
+        Uri uri = default,
+        Status status = default,
+        DateTime dateTime = default
+    );
+
     [HttpGet]
     [Route("entities")]
-    public List<Entity> By([FromQuery] string @string = default, [FromQuery] int? take = null, [FromQuery] int? skip = null)
+    public List<Entity> By([FromQuery] ByRequest request, [FromQuery] int? take = null, [FromQuery] int? skip = null)
     {
         var target = _serviceProvider.GetRequiredService<Entities>();
 
-        var result = target.By(@string: @string, take: take, skip: skip);
+        var result = target.By(
+            guid: request.guid,
+            @string: request.@string,
+            stringData: request.stringData,
+            int32: request.int32,
+            uri: request.uri,
+            status: request.status,
+            dateTime: request.dateTime,
+            take: take,
+            skip: skip
+        );
 
         return result;
     }
@@ -33,7 +53,16 @@ public class EntityController
         return target.SingleById(id);
     }
 
-    public record NewRequest(Guid Guid, string String, string StringData, int Int32, Uri Uri, object Dynamic, Status Status);
+    public record NewRequest(
+        Guid Guid = default,
+        string String = default,
+        string StringData = default,
+        int Int32 = default,
+        Uri Uri = default,
+        object Dynamic = default,
+        Status Status = default,
+        DateTime DateTime = default
+    );
 
     [HttpPost]
     [Route("entities")]
@@ -41,7 +70,7 @@ public class EntityController
     {
         var target = _serviceProvider.GetRequiredService<Entity>();
 
-        return target.With(request.Guid, request.String, request.StringData, request.Int32, request.Uri, request.Dynamic, request.Status);
+        return target.With(request.Guid, request.String, request.StringData, request.Int32, request.Uri, request.Dynamic, request.Status, request.DateTime);
     }
 
     [HttpDelete]
@@ -53,7 +82,15 @@ public class EntityController
         target.Delete();
     }
 
-    public record UpdateRequest(Guid Guid, string String, string StringData, int Int32, Uri Uri, object Dynamic, Status Status,
+    public record UpdateRequest(
+        Guid Guid = default,
+        string String = default,
+        string StringData = default,
+        int Int32 = default,
+        Uri Uri = default,
+        object Dynamic = default,
+        Status Status = default,
+        DateTime DateTime = default,
         bool useTransaction = false,
         bool throwError = false
     );
@@ -64,7 +101,7 @@ public class EntityController
     {
         var target = _serviceProvider.GetRequiredService<IQueryContext<Entity>>().SingleById(id);
 
-        await target.Update(request.Guid, request.String, request.StringData, request.Int32, request.Uri, request.Dynamic, request.Status,
+        await target.Update(request.Guid, request.String, request.StringData, request.Int32, request.Uri, request.Dynamic, request.Status, request.DateTime,
             useTransaction: request.useTransaction,
             throwError: request.throwError
         );

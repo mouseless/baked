@@ -19,27 +19,74 @@ public class Entity
     public virtual int Int32 { get; protected set; } = default!;
     public virtual Uri Uri { get; protected set; } = default!;
     public virtual object Dynamic { get; protected set; } = default!;
-    public virtual Status Status { get; protected set; } = default!;
+    public virtual Status Enum { get; protected set; } = default!;
+    public virtual DateTime DateTime { get; protected set; } = default!;
 
-    public virtual Entity With(Guid guid, string @string, string stringData, int int32, Uri uri, object @dynamic, Status status)
+    public virtual Entity With(
+        Guid? guid = default,
+        string? @string = default,
+        string? stringData = default,
+        int? int32 = default,
+        Uri? uri = default,
+        object? @dynamic = default,
+        Status? @enum = default,
+        DateTime? dateTime = default
+    )
     {
-        Set(guid, @string, stringData, int32, uri, @dynamic, status);
+        Set(
+            guid: guid,
+            @string: @string,
+            stringData: stringData,
+            int32: int32,
+            uri: uri,
+            @dynamic: @dynamic,
+            @enum: @enum,
+            dateTime: dateTime
+        );
 
         return _context.Insert(this);
     }
 
-    public virtual async Task Update(Guid guid, string @string, string stringData, int int32, Uri uri, object @dynamic, Status status,
+    public virtual async Task Update(
+        Guid? guid = default,
+        string? @string = default,
+        string? stringData = default,
+        int? int32 = default,
+        Uri? uri = default,
+        object? @dynamic = default,
+        Status? @enum = default,
+        DateTime? dateTime = default,
         bool useTransaction = false,
         bool throwError = false
     )
     {
         if (useTransaction)
         {
-            await _transaction.CommitAsync(this, @this => @this.Set(guid, @string, stringData, int32, uri, @dynamic, status));
+            await _transaction.CommitAsync(this, @this =>
+                @this.Set(
+                    guid: guid,
+                    @string: @string,
+                    stringData: stringData,
+                    int32: int32,
+                    uri: uri,
+                    @dynamic: @dynamic,
+                    @enum: @enum,
+                    dateTime: dateTime
+               )
+            );
         }
         else
         {
-            Set(guid, @string, stringData, int32, uri, @dynamic, status);
+            Set(
+                guid: guid,
+                @string: @string,
+                stringData: stringData,
+                int32: int32,
+                uri: uri,
+                @dynamic: @dynamic,
+                @enum: @enum,
+                dateTime: dateTime
+            );
         }
 
         if (throwError)
@@ -48,15 +95,25 @@ public class Entity
         }
     }
 
-    protected virtual void Set(Guid guid, string @string, string stringData, int int32, Uri uri, object @dynamic, Status status)
+    protected virtual void Set(
+        Guid? guid = default,
+        string? @string = default,
+        string? stringData = default,
+        int? int32 = default,
+        Uri? uri = default,
+        object? @dynamic = default,
+        Status? @enum = default,
+        DateTime? dateTime = default
+    )
     {
-        Guid = guid;
-        String = @string;
-        StringData = stringData;
-        Int32 = int32;
-        Uri = uri;
-        Dynamic = @dynamic;
-        Status = status;
+        Guid = guid ?? Guid;
+        String = @string ?? String;
+        StringData = stringData ?? StringData;
+        Int32 = int32 ?? Int32;
+        Uri = uri ?? Uri;
+        Dynamic = @dynamic ?? Dynamic;
+        Enum = @enum ?? Enum;
+        DateTime = dateTime ?? DateTime;
     }
 
     public virtual void Delete()
@@ -73,13 +130,28 @@ public class Entities
         _context = context;
 
     public List<Entity> By(
+        Guid? guid = default,
         string? @string = default,
+        string? stringData = default,
+        int? int32 = default,
+        Uri? uri = default,
+        Status? status = default,
+        DateTime? dateTime = default,
         int? take = default,
         int? skip = default
     )
     {
-        if (@string == default) { return _context.All(take: take, skip: skip); }
-
-        return _context.By(e => e.String == @string, take: take, skip: skip);
+        return _context.By(
+            where: e =>
+                (guid == default || e.Guid == guid) &&
+                (@string == default || e.String == @string) &&
+                (stringData == default || e.StringData == @stringData) &&
+                (int32 == default || e.Int32 == int32) &&
+                (uri == default || e.Uri == uri) &&
+                (status == default || e.Enum == status) &&
+                (dateTime == default || e.DateTime == dateTime),
+            take: take,
+            skip: skip
+        );
     }
 }

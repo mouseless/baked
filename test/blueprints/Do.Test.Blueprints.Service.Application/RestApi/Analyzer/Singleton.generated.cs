@@ -1,5 +1,6 @@
 // This file will be auto-generated
 
+using Do.Orm;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Do.Test;
@@ -52,6 +53,22 @@ public class SingletonController
         var target = _serviceProvider.GetRequiredService<Singleton>();
 
         target.TestException(handled);
+    }
+
+    public record TestTransactionNullableRequest(Guid? EntityId = default);
+
+    [HttpPost]
+    [Produces("application/json")]
+    [Route("singleton/test-transaction-nullable")]
+    public async Task TestTransactionNullable([FromBody] TestTransactionNullableRequest request)
+    {
+        var target = _serviceProvider.GetRequiredService<Singleton>();
+
+        await target.TestTransactionNullable(
+            entity: request.EntityId.HasValue
+                ? _serviceProvider.GetRequiredService<IQueryContext<Entity>>().SingleById(request.EntityId.Value)
+                : null
+        );
     }
 
     [HttpPut]
