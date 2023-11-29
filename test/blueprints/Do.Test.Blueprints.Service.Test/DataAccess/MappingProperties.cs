@@ -80,13 +80,13 @@ public class MappingProperties : TestServiceSpec
     [Test]
     public async Task DateTime()
     {
-        var entity = GiveMe.An<Entity>().With(dateTime: new DateTime(year: 2023, month: 11, day: 29));
-        entity.DateTime.ShouldBe(new DateTime(year: 2023, month: 11, day: 29));
+        var entity = GiveMe.An<Entity>().With(dateTime: GiveMe.ADateTime(year: 2023, month: 11, day: 29));
+        entity.DateTime.ShouldBe(GiveMe.ADateTime(year: 2023, month: 11, day: 29));
 
-        await entity.Update(dateTime: new DateTime(year: 2023, month: 11, day: 30));
-        entity.DateTime.ShouldBe(new DateTime(year: 2023, month: 11, day: 30));
+        await entity.Update(dateTime: GiveMe.ADateTime(year: 2023, month: 11, day: 30));
+        entity.DateTime.ShouldBe(GiveMe.ADateTime(year: 2023, month: 11, day: 30));
 
-        var actual = GiveMe.The<Entities>().By(dateTime: new DateTime(year: 2023, month: 11, day: 30)).FirstOrDefault();
+        var actual = GiveMe.The<Entities>().By(dateTime: GiveMe.ADateTime(year: 2023, month: 11, day: 30)).FirstOrDefault();
         actual.ShouldBe(entity);
     }
 }
