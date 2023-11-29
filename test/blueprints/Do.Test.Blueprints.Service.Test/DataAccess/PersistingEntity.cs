@@ -21,7 +21,7 @@ public class PersistingEntity : TestServiceSpec
     }
 
     [Test]
-    public async Task Entity_update_commits_when_done_asynchronously_if_an_error_occurs()
+    public void Entity_update_commits_when_done_asynchronously_if_an_error_occurs()
     {
         var entity = GiveMe.AnEntity(@string: "test");
         var entities = GiveMe.The<Entities>();
@@ -37,7 +37,7 @@ public class PersistingEntity : TestServiceSpec
             throwError: true
         );
 
-        await task.ShouldThrowAsync<Exception>();
+        task.ShouldThrow<Exception>();
 
         var result = entities.By().FirstOrDefault(e => e.Guid == entity.Guid);
 
@@ -46,14 +46,14 @@ public class PersistingEntity : TestServiceSpec
     }
 
     [Test]
-    public async Task Entity_created_by_a_transaction_committed_asynchronously_persists_when_an_error_occurs()
+    public void Entity_created_by_a_transaction_committed_asynchronously_persists_when_an_error_occurs()
     {
         var singleton = GiveMe.The<Singleton>();
         var entities = GiveMe.The<Entities>();
 
         var task = singleton.TestTransactionAction();
 
-        await task.ShouldThrowAsync<Exception>();
+        task.ShouldThrow<Exception>();
         entities.By().ShouldNotBeEmpty();
     }
 }

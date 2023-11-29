@@ -129,7 +129,7 @@ public static class ServiceSpecExtensions
     public static void ASetting(this Mocker mockMe,
         string? key = default,
         string? value = default
-    ) => mockMe.ASetting(key: key ?? "Test:Configuration", value: value ?? "value");
+    ) => mockMe.ASetting<string>(key: key ?? "Test:Configuration", value: value ?? "value");
 
     public static void ASetting<T>(this Mocker mockMe,
         string? key = default,
@@ -140,7 +140,7 @@ public static class ServiceSpecExtensions
 
         var spec = (ServiceSpec)mockMe.Spec;
 
-        spec.Settings[key] = value is null ? "value" : $"{value}";
+        spec.Settings[key] = $"{value}";
     }
 
     internal static IConfiguration TheConfiguration(this Mocker mockMe,

@@ -57,11 +57,11 @@ public class SingletonController
     [HttpPost]
     [Produces("application/json")]
     [Route("singleton/test-transaction-nullable")]
-    public async Task TestTransactionNullable()
+    public async Task TestTransactionNullable([FromBody] Entity entity = default)
     {
         var target = _serviceProvider.GetRequiredService<Singleton>();
 
-        await target.TestTransactionNullable(null);
+        await target.TestTransactionNullable(entity);
     }
 
     [HttpPut]

@@ -15,14 +15,14 @@ public static class TestServiceSpecExtensions
     )
     {
         return giveMe
-            .A<Entity>()
-            .With(
-                guid ?? Guid.NewGuid(),
-                @string ?? string.Empty,
-                stringData ?? string.Empty,
-                int32 ?? 0, uri ?? giveMe.AUrl(),
-                dynamic ?? new { },
-                status ?? Status.Disabled
-            );
+                   .A<Entity>()
+                   .With(
+                       guid ?? Guid.NewGuid(),
+                       @string ?? string.Empty,
+                       stringData ?? string.Empty,
+                       int32 ?? 0, uri ?? giveMe.AUrl(),
+                       dynamic ?? new { },
+                       status ?? Status.Disabled
+                   );
     }
 }
