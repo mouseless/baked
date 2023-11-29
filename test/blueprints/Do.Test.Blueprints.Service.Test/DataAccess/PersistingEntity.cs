@@ -5,9 +5,19 @@ public class PersistingEntity : TestServiceSpec
     [Test]
     public void Created_entity_persists()
     {
-        var entity = GiveMe.AnEntity();
+        var newEntity = GiveMe.A<Func<Entity>>();
 
-        entity.ShouldBeInserted();
+        var actual = newEntity().With(
+            guid: Guid.NewGuid(),
+            @string: string.Empty,
+            stringData: string.Empty,
+            int32: 0,
+            uri: GiveMe.AUrl(),
+            @dynamic: new { },
+            status: Status.Disabled
+        );
+
+        actual.ShouldBeInserted();
     }
 
     [Test]

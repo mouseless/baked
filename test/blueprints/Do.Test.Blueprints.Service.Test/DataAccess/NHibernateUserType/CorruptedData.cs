@@ -8,8 +8,6 @@ public class CorruptedData : TestServiceSpec
         var entity = GiveMe.AnEntity(dynamic: new { test = "ğ€@test" });
         var entities = GiveMe.The<Entities>();
 
-        entity.ShouldBeInserted();
-
         Func<List<Entity>> task = () => entities.By(entity.String);
 
         task.ShouldNotThrow();

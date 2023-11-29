@@ -18,7 +18,6 @@ public class MockingConfiguration : TestServiceSpec
     [TestCase(42)]
     [TestCase("value")]
     [TestCase(false)]
-    [Test]
     public void Mock_ASetting_value_parameter_is_generic<T>(T value)
     {
         MockMe.ASetting("Config", value);
