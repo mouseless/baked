@@ -12,17 +12,14 @@ public static class TestServiceSpecExtensions
        Uri? uri = default,
        object? @dynamic = default,
        Status? status = default
-    )
-    {
-        return giveMe
-                   .A<Entity>()
-                   .With(
-                       guid ?? Guid.NewGuid(),
-                       @string ?? string.Empty,
-                       stringData ?? string.Empty,
-                       int32 ?? 0, uri ?? giveMe.AUrl(),
-                       dynamic ?? new { },
-                       status ?? Status.Disabled
-                   );
-    }
+    ) => giveMe
+        .A<Entity>()
+        .With(
+            guid ?? Guid.NewGuid(),
+            @string ?? string.Empty,
+            stringData ?? string.Empty,
+            int32 ?? 0, uri ?? giveMe.AUrl(),
+            dynamic ?? new { },
+            status ?? Status.Disabled
+        );
 }

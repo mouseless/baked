@@ -15,6 +15,17 @@ public class MockingConfiguration : TestServiceSpec
         actual.ShouldBe(10);
     }
 
+    [Test]
+    public void Mock_configuration_returns_default_value_when_not_set()
+    {
+        MockMe.ASetting<int>("Config");
+        var configuration = GiveMe.The<IConfiguration>();
+
+        var actual = configuration.GetRequiredValue<int>("Config");
+
+        actual.ShouldBe(0);
+    }
+
     [TestCase(42)]
     [TestCase("value")]
     [TestCase(false)]
