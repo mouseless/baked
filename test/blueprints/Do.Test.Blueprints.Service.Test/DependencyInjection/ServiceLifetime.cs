@@ -8,7 +8,7 @@ public class ServiceLifetime : TestServiceSpec
         var singleton1 = GiveMe.The<Singleton>();
         var singleton2 = GiveMe.The<Singleton>();
 
-        singleton1.ShouldBe(singleton2);
+        singleton1.ShouldBeSameAs(singleton2);
     }
 
     [Test]
@@ -17,6 +17,6 @@ public class ServiceLifetime : TestServiceSpec
         var entity1 = GiveMe.An<Entity>();
         var entity2 = GiveMe.An<Entity>();
 
-        entity1.ShouldNotBe(entity2);
+        entity1.ShouldNotBeSameAs(entity2);
     }
 }

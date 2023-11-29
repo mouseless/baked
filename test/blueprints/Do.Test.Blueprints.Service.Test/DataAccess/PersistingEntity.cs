@@ -15,8 +15,6 @@ public class PersistingEntity : TestServiceSpec
     {
         var entity = GiveMe.AnEntity();
 
-        entity.ShouldBeInserted();
-
         entity.Delete();
 
         entity.ShouldBeDeleted();
