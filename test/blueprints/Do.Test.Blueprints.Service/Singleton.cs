@@ -34,7 +34,15 @@ public class Singleton
         await _transaction.CommitAsync(() =>
         {
             // do not remove this variable, this is to ensure call is made to `Action` overload
-            var _ = _newEntity().With(Guid.NewGuid(), "test", "transaction action", 1, new("https://action.com"), new { transaction = "action" }, Status.Enabled);
+            var _ = _newEntity().With(
+                guid: Guid.NewGuid(),
+                @string: "test",
+                stringData: "transaction action",
+                int32: 1,
+                uri: new("https://action.com"),
+                @dynamic: new { transaction = "action" },
+                status: Status.Enabled
+            );
         });
 
         throw new();
@@ -43,10 +51,26 @@ public class Singleton
     public async Task TestTransactionFunc()
     {
         var entity = await _transaction.CommitAsync(() =>
-            _newEntity().With(Guid.NewGuid(), "test", "transaction func", 1, new("https://func.com"), new { transaction = "func" }, Status.Enabled)
+            _newEntity().With(
+                guid: Guid.NewGuid(),
+                @string: "test",
+                stringData: "transaction func",
+                int32: 1,
+                uri: new("https://func.com"),
+                @dynamic: new { transaction = "func" },
+                status: Status.Enabled
+            )
         );
 
-        await entity.Update(Guid.NewGuid(), "rollback", "rollback", 2, new("https://rollback.com"), new { rollback = "rollback" }, Status.Disabled);
+        await entity.Update(
+            guid: Guid.NewGuid(),
+            @string: "rollback",
+            stringData: "rollback",
+            int32: 2,
+            uri: new("https://rollback.com"),
+            @dynamic: new { rollback = "rollback" },
+            status: Status.Disabled
+        );
 
         throw new();
     }
@@ -63,7 +87,15 @@ public class Singleton
     public async Task TestTransactionNullable(Entity? entity)
     {
         await _transaction.CommitAsync(entity, entity =>
-             entity.Update(Guid.NewGuid(), "test", "transaction func", 1, new("https://func.com"), new { transaction = "func" }, Status.Enabled)
-         );
+             entity.Update(
+                guid: Guid.NewGuid(),
+                @string: "test",
+                stringData: "transaction func",
+                int32: 1,
+                uri: new("https://func.com"),
+                @dynamic: new { transaction = "func" },
+                status: Status.Enabled
+            )
+        );
     }
 }

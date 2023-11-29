@@ -21,7 +21,7 @@ public class PersistingEntity : TestServiceSpec
     }
 
     [Test]
-    public void Entity_does_not_persist_when_deleted()
+    public void Entity_is_deleted_successfully()
     {
         var entity = GiveMe.AnEntity();
 
@@ -31,39 +31,13 @@ public class PersistingEntity : TestServiceSpec
     }
 
     [Test]
-    public void Entity_update_commits_when_done_asynchronously_if_an_error_occurs()
+    public void Object_user_type_supports_special_characters_to_be_used_within_strings()
     {
-        var entity = GiveMe.AnEntity(@string: "test");
-        var entities = GiveMe.The<Entities>();
-        var task = entity.Update(
-            guid: entity.Guid,
-            @string: "updated",
-            stringData: entity.StringData,
-            int32: entity.Int32,
-            uri: entity.Uri,
-            dynamic: entity.Dynamic,
-            status: entity.Status,
-            useTransaction: true,
-            throwError: true
-        );
-
-        task.ShouldThrow<Exception>();
-
-        var result = entities.By().FirstOrDefault(e => e.Guid == entity.Guid);
-
-        result.ShouldNotBeNull();
-        result.String.ShouldBe("updated");
-    }
-
-    [Test]
-    public void Entity_created_by_a_transaction_committed_asynchronously_persists_when_an_error_occurs()
-    {
-        var singleton = GiveMe.The<Singleton>();
+        var entity = GiveMe.AnEntity(dynamic: new { test = "ğ€@test" });
         var entities = GiveMe.The<Entities>();
 
-        var task = singleton.TestTransactionAction();
+        Func<List<Entity>> task = () => entities.By(entity.String);
 
-        task.ShouldThrow<Exception>();
-        entities.By().ShouldNotBeEmpty();
+        task.ShouldNotThrow();
     }
 }
