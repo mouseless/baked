@@ -126,21 +126,22 @@ public static class ServiceSpecExtensions
 
     #region Settings
 
-    public static void ASetting(this Mocker mockMe,
-        string? key = default,
-        string? value = default
-    ) => mockMe.ASetting<string>(key: key ?? "Test:Configuration", value: value ?? "value");
-
     public static void ASetting<T>(this Mocker mockMe,
         string? key = default,
         T? value = default
+    ) => mockMe.ASetting<string>(key: key, value: $"{value}");
+
+    public static void ASetting(this Mocker mockMe,
+        string? key = default,
+        string? value = default
     )
     {
         key ??= "Test:Configuration";
+        value ??= "value";
 
         var spec = (ServiceSpec)mockMe.Spec;
 
-        spec.Settings[key] = $"{value}";
+        spec.Settings[key] = value;
     }
 
     internal static IConfiguration TheConfiguration(this Mocker mockMe,
