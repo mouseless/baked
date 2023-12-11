@@ -1,1 +1,18 @@
 # Unreleased
+
+## Features
+
+- Beta features are available in do-blueprints-service package;
+  - `Caching` feature is now added with `ScopedMemory` implementation
+
+## Improvements
+
+- Added `CustomMySQL57Dialect` for enabling `varchar` column type with _1023_ 
+  max capacity
+- Added `TransientWithFactory<TService, TImplementation>` and 
+  `ScopedWithFactory<TService, TImplementation>` extensions for registering 
+  services with implementations
+- Added new ServiceSpec extensions:
+  - `AnInteger` extension for `Stubber`
+  - `AMemoryCache` extension for `Stubber`
+  - `ShouldHaveCount` extension for `IMemoryCache`

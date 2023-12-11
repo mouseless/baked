@@ -1,5 +1,6 @@
 ﻿using Do.Architecture;
 using Do.Business;
+using Do.Caching;
 using Do.Core;
 using Do.Database;
 using Do.Documentation;
@@ -14,6 +15,7 @@ public static class ForgeExtensions
 {
     public static Application Service(this Forge source,
         Func<BusinessConfigurator, IFeature<BusinessConfigurator>> business,
+        Func<CachingConfigurator, IFeature<CachingConfigurator>>? caching = default,
         Func<CoreConfigurator, IFeature<CoreConfigurator>>? core = default,
         Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>>? database = default,
         Func<DocumentationConfigurator, IFeature<DocumentationConfigurator>>? documentation = default,
@@ -24,6 +26,7 @@ public static class ForgeExtensions
         Action<ApplicationDescriptor>? configure = default
     )
     {
+        caching ??= c => c.ScopedMemory();
         core ??= c => c.Dotnet();
         database ??= c => c.Sqlite();
         documentation ??= c => c.Default();
@@ -43,6 +46,7 @@ public static class ForgeExtensions
                 app.Layers.AddRestApi();
 
                 app.Features.AddBusiness(business);
+                app.Features.AddCaching(caching);
                 app.Features.AddCore(core);
                 app.Features.AddDatabase(database);
                 app.Features.AddDocumentation(documentation);

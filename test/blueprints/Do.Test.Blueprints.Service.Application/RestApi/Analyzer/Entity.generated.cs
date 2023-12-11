@@ -14,13 +14,13 @@ public class EntityController
         _serviceProvider = serviceProvider;
 
     public record ByRequest(
-        Guid guid = default,
+        Guid? guid = default,
         string @string = default,
         string stringData = default,
-        int int32 = default,
+        int? int32 = default,
         Uri uri = default,
-        Status status = default,
-        DateTime dateTime = default
+        Status? status = default,
+        DateTime? dateTime = default
     );
 
     [HttpGet]
