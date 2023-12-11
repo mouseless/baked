@@ -3,9 +3,9 @@ using System.Data;
 
 namespace Do.Database.MySql;
 
-public class DoMySQLDialect : MySQL57Dialect
+public class DefaultMySQLDialect : MySQL57Dialect
 {
-    public DoMySQLDialect()
+    public DefaultMySQLDialect()
     {
         RegisterColumnType(DbType.String, 65535, "VARCHAR($l)");
     }
