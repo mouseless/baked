@@ -15,8 +15,8 @@ public static class BusinessExtensions
         where TService : class
         where TImplementation : class, TService
     {
-        source.AddSingleton<Func<TService>>(sp => () => sp.GetRequiredServiceUsingRequestServices<TImplementation>());
-        source.AddTransient<TImplementation>();
+        source.AddSingleton<Func<TService>>(sp => () => sp.GetRequiredServiceUsingRequestServices<TService>());
+        source.AddTransient<TService, TImplementation>();
     }
 
     public static void AddScopedWithFactory<TService>(this IServiceCollection source) where TService : class =>
@@ -26,7 +26,7 @@ public static class BusinessExtensions
         where TService : class
         where TImplementation : class, TService
     {
-        source.AddSingleton<Func<TService>>(sp => () => sp.GetRequiredServiceUsingRequestServices<TImplementation>());
-        source.AddScoped<TImplementation>();
+        source.AddSingleton<Func<TService>>(sp => () => sp.GetRequiredServiceUsingRequestServices<TService>());
+        source.AddScoped<TService, TImplementation>();
     }
 }

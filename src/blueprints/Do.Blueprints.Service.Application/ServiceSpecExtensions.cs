@@ -53,6 +53,12 @@ public static class ServiceSpecExtensions
 
     #endregion
 
+    #region Integer
+
+    public static int AnInteger(this Stubber _) => 42;
+
+    #endregion
+
     #region MemoryCache
 
     public static IMemoryCache AMemoryCache(this Stubber giveMe,
