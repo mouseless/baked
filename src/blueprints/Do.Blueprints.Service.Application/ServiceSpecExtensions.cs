@@ -76,8 +76,8 @@ public static class ServiceSpecExtensions
         return memoryCache;
     }
 
-    public static void VerifyCount(this IMemoryCache memoryCache, Func<int, bool> condition) =>
-        condition((memoryCache as MemoryCache)?.Count ?? throw new("`MemoryCache` should have existed")).ShouldBe(true);
+    public static void ShouldHaveCount(this IMemoryCache memoryCache, int count) =>
+        ((memoryCache as MemoryCache) ?? throw new("`MemoryCache` should have existed")).Count.ShouldBe(count);
 
     #endregion
 
