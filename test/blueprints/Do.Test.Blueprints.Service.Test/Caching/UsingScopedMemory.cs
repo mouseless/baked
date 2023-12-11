@@ -12,7 +12,7 @@ public class UsingScopedMemory : TestServiceSpec
     }
 
     [Test]
-    public void Objects_can_be_cached_in_memory()
+    public void Objects_can_be_cached_in__scoped_memory()
     {
         var cache = GiveMe.AMemoryCache();
         var expected = cache.GetOrCreate<object>("key", _ => new());
