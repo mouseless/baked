@@ -26,7 +26,7 @@ public class MySqlDatabaseFeature : IFeature<DatabaseConfigurator>
         {
             var mysql = MySQLConfiguration.Standard
                 .ConnectionString(_connectionString)
-                .Dialect<MySQL57Dialect>();
+                .Dialect<DoMySQLDialect>();
 
             // this should be in logging
             if (_showSql) { mysql.ShowSql(); }
