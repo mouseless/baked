@@ -3,7 +3,7 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace Do.Caching.ScopedMemory;
 
-public class ScopedMemoryFeature : IFeature<CachingConfigurator>
+public class ScopedMemoryCachingFeature : IFeature<CachingConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
