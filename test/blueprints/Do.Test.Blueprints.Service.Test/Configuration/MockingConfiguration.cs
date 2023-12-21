@@ -26,10 +26,8 @@ public class MockingConfiguration : TestServiceSpec
         actual.ShouldBe(0);
     }
 
-    [TestCase(42)]
-    [TestCase("value")]
-    [TestCase(false)]
-    public void Mock_ASetting_value_parameter_is_generic<T>(T value)
+    [Test]
+    public void Mock_ASetting_value_parameter_is_generic<T>([Values(42, "value", false)] T value)
     {
         MockMe.ASetting("Config", value);
         var configuration = GiveMe.The<IConfiguration>();

@@ -34,7 +34,7 @@ public class LayerConfigurator
 
     readonly List<Target> _targets;
 
-    LayerConfigurator(params Target[] targets) => _targets = new(targets);
+    LayerConfigurator(params Target[] targets) => _targets = [.. targets];
 
     public void Configure<TTarget>(Action<TTarget> configuration)
     {

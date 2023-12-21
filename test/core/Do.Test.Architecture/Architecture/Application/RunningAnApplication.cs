@@ -10,9 +10,9 @@ public class RunningAnApplication : ArchitectureSpec
         var phase1 = MockMe.APhase();
         var phase2 = MockMe.APhase();
         var phase3 = MockMe.APhase();
-        var layer1 = MockMe.ALayer(phases: new[] { phase1, phase2 });
+        var layer1 = MockMe.ALayer(phases: [phase1, phase2]);
         var layer2 = MockMe.ALayer(phase: phase3);
-        var app = GiveMe.AnApplication(layers: new[] { layer1, layer2 });
+        var app = GiveMe.AnApplication(layers: [layer1, layer2]);
 
         app.Run();
 
@@ -44,7 +44,7 @@ public class RunningAnApplication : ArchitectureSpec
         var layer1 = MockMe.ALayer(phase: phase1);
         var layer2 = MockMe.ALayer(phase: phase2);
 
-        var app = GiveMe.AnApplication(layers: new[] { layer1, layer2 });
+        var app = GiveMe.AnApplication(layers: [layer1, layer2]);
 
         app.Run();
 
@@ -152,7 +152,7 @@ public class RunningAnApplication : ArchitectureSpec
     [Test]
     public void Application_context_not_found_exception_message_includes_all_types_if_no_related_type_is_found()
     {
-        var context = GiveMe.AnApplicationContext(content1: 'c', content2: 5 );
+        var context = GiveMe.AnApplicationContext(content1: 'c', content2: 5);
 
         var getAction = () => context.Get<string>();
 
@@ -169,7 +169,7 @@ public class RunningAnApplication : ArchitectureSpec
         var phaseA = MockMe.APhase(onInitialize: () => phases.Add("phase a"), isReady: () => phases.Contains("phase b"));
         var phaseB = MockMe.APhase(onInitialize: () => phases.Add("phase b"), isReady: () => phases.Contains("phase c"));
         var phaseC = MockMe.APhase(onInitialize: () => phases.Add("phase c"));
-        var layer = MockMe.ALayer(phases: new[] { phaseA, phaseB, phaseC });
+        var layer = MockMe.ALayer(phases: [phaseA, phaseB, phaseC]);
 
         var app = GiveMe.AnApplication(layer: layer);
 
@@ -187,7 +187,7 @@ public class RunningAnApplication : ArchitectureSpec
 
         var phaseA = MockMe.APhase(onInitialize: () => phases.Add("phase a"), order: PhaseOrder.Late);
         var phaseB = MockMe.APhase(onInitialize: () => phases.Add("phase b"), order: PhaseOrder.Early);
-        var layer = MockMe.ALayer(phases: new[] { phaseA, phaseB });
+        var layer = MockMe.ALayer(phases: [phaseA, phaseB]);
 
         var app = GiveMe.AnApplication(layer: layer);
 
@@ -213,7 +213,7 @@ public class RunningAnApplication : ArchitectureSpec
     {
         var phaseA = MockMe.APhase(order: order);
         var phaseB = MockMe.APhase(order: order);
-        var layer = MockMe.ALayer(phases: new[] { phaseA, phaseB });
+        var layer = MockMe.ALayer(phases: [phaseA, phaseB]);
 
         var app = GiveMe.AnApplication(layer: layer);
         var action = () => app.Run();

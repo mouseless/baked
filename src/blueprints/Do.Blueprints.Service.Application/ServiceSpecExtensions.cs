@@ -150,7 +150,7 @@ public static class ServiceSpecExtensions
     )
     {
         defaultValueProvider ??= _ => default;
-        settings ??= new Dictionary<string, string>();
+        settings ??= [];
 
         var configuration = mockMe.Spec.GiveMe.The<IConfiguration>();
 

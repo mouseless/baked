@@ -2,9 +2,9 @@
 
 public class Application(ApplicationContext _context)
 {
-    readonly List<ILayer> _layers = new();
-    readonly List<IFeature> _features = new();
-    readonly List<IPhase> _phases = new();
+    readonly List<ILayer> _layers = [];
+    readonly List<IFeature> _features = [];
+    readonly List<IPhase> _phases = [];
 
     internal Application With(ApplicationDescriptor descriptor)
     {
