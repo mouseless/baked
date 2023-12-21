@@ -72,7 +72,7 @@ public abstract class ServiceSpec : Spec
         Settings = [];
 
         MockMe.TheConfiguration(settings: Settings, defaultValueProvider: GetDefaultSettingsValue);
-        MockMe.TheSystem(now: new DateTime(2023, 09, 09, 10, 10, 00));
+        MockMe.TheTime(now: new DateTime(2023, 09, 09, 10, 10, 00));
     }
 
     public override void TearDown()

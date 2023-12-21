@@ -1,12 +1,11 @@
-﻿using Do.Core;
-using Do.Database;
+﻿using Do.Database;
 using Do.ExceptionHandling;
 
 namespace Do.Test;
 
-public class Singleton(ISystem _system, Func<Entity> _newEntity, ITransaction _transaction)
+public class Singleton(TimeProvider _system, Func<Entity> _newEntity, ITransaction _transaction)
 {
-    public DateTime GetNow() => _system.Now;
+    public DateTime GetNow() => _system.GetUtcNow().DateTime;
 
     public void TestException(bool handled)
     {
@@ -31,7 +30,7 @@ public class Singleton(ISystem _system, Func<Entity> _newEntity, ITransaction _t
                 uri: new("https://action.com"),
                 @dynamic: new { transaction = "action" },
                 @enum: Status.Enabled,
-                dateTime: _system.Now
+                dateTime: _system.GetUtcNow().DateTime
             );
         });
 
@@ -49,7 +48,7 @@ public class Singleton(ISystem _system, Func<Entity> _newEntity, ITransaction _t
                 uri: new("https://func.com"),
                 @dynamic: new { transaction = "func" },
                 @enum: Status.Enabled,
-                dateTime: _system.Now
+                dateTime: _system.GetUtcNow().DateTime
             )
         );
 
@@ -61,7 +60,7 @@ public class Singleton(ISystem _system, Func<Entity> _newEntity, ITransaction _t
             uri: new("https://rollback.com"),
             @dynamic: new { rollback = "rollback" },
             @enum: Status.Disabled,
-            dateTime: _system.Now
+            dateTime: _system.GetUtcNow().DateTime
         );
 
         throw new();
@@ -87,7 +86,7 @@ public class Singleton(ISystem _system, Func<Entity> _newEntity, ITransaction _t
                 uri: new("https://func.com"),
                 @dynamic: new { transaction = "func" },
                 @enum: Status.Enabled,
-                dateTime: _system.Now
+                dateTime: _system.GetUtcNow().DateTime
             )
         );
     }

@@ -3,6 +3,7 @@ using Do.MockOverrider;
 using Do.Testing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Time.Testing;
 using Moq;
 using Shouldly;
 using System.Reflection;
@@ -189,28 +190,26 @@ public static class ServiceSpecExtensions
 
     #endregion
 
-    #region System
+    #region TimeProvider
 
-    public static ISystem TheSystem(this Mocker mockMe,
+    public static TimeProvider TheTime(this Mocker mockMe,
         DateTime? now = default,
         bool passSomeTime = false
     )
     {
-        var system = mockMe.Spec.GiveMe.The<ISystem>();
-        var mock = Mock.Get(system);
+        var timeProvider = (FakeTimeProvider)mockMe.Spec.GiveMe.The<TimeProvider>();
 
         if (now is not null)
         {
-            mock.Setup(c => c.Now).Returns(now.Value);
+            timeProvider.SetUtcNow(new DateTimeOffset(now.Value));
         }
 
         if (passSomeTime)
         {
-            var localNow = system.Now;
-            mock.Setup(c => c.Now).Returns(localNow.AddSeconds(1));
+            timeProvider.SetUtcNow(timeProvider.GetUtcNow().AddSeconds(1));
         }
 
-        return system;
+        return timeProvider;
     }
 
     #endregion
