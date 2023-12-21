@@ -120,7 +120,8 @@ public class AddingPhases : ArchitectureSpec
         context.ShouldHave('a');
     }
 
-    public class OrderedPhase(PhaseOrder _order) : PhaseBase(_order) { }
+    public class OrderedPhase(PhaseOrder _order)
+        : PhaseBase(_order) { }
 
     [TestCase(PhaseOrder.Early)]
     [TestCase(PhaseOrder.Late)]

@@ -6,7 +6,8 @@ using NHibernate.Dialect;
 
 namespace Do.Database.MySql;
 
-public class MySqlDatabaseFeature(Setting<string> _connectionString, Setting<bool> _autoUpdateSchema, Setting<bool> _showSql) : IFeature<DatabaseConfigurator>
+public class MySqlDatabaseFeature(Setting<string> _connectionString, Setting<bool> _autoUpdateSchema, Setting<bool> _showSql)
+    : IFeature<DatabaseConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {

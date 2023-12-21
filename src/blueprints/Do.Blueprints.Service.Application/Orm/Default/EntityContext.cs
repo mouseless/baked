@@ -2,7 +2,8 @@
 
 namespace Do.Orm.Default;
 
-public class EntityContext<TEntity>(ISession _session) : IEntityContext<TEntity>
+public class EntityContext<TEntity>(ISession _session)
+    : IEntityContext<TEntity>
 {
     public TEntity Insert(TEntity entity)
     {

@@ -160,10 +160,9 @@ is `PhaseOrder.Normal`. If you need to change the order, pass the desired order
 to this parameter as shown below;
 
 ```csharp
-public class DoThisEarlyOn : PhaseBase
-{
-    public DoThisEarlyOn() : base(PhaseOrder.Early) { }
-}
+public class DoThisEarlyOn()
+    : PhaseBase(PhaseOrder.Early)
+{ }
 ```
 
 ## Providing Configuration

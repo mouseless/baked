@@ -2,7 +2,8 @@
 
 namespace Do.DataAccess;
 
-public class DelegatedInterceptor(IServiceProvider _serviceProvider, InterceptorConfiguration _interceptorConfiguration) : EmptyInterceptor
+public class DelegatedInterceptor(IServiceProvider _serviceProvider, InterceptorConfiguration _interceptorConfiguration)
+    : EmptyInterceptor
 {
     ISessionFactory SessionFactory => _serviceProvider.GetRequiredServiceUsingRequestServices<ISessionFactory>();
 

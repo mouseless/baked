@@ -9,7 +9,8 @@ public class ConfiguringLayers : ArchitectureSpec
         public string? Value { get; set; }
     }
 
-    public class FeatureA(string _value) : IFeature
+    public class FeatureA(string _value)
+        : IFeature
     {
         public void Configure(LayerConfigurator configurator)
         {

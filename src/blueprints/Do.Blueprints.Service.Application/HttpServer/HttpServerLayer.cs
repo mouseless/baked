@@ -27,7 +27,8 @@ public class HttpServerLayer : LayerBase<AddServices, Build>
         yield return new Run(_middlewares);
     }
 
-    public class CreateBuilder() : PhaseBase(PhaseOrder.Earliest)
+    public class CreateBuilder()
+        : PhaseBase(PhaseOrder.Earliest)
     {
         protected override void Initialize()
         {
@@ -38,7 +39,8 @@ public class HttpServerLayer : LayerBase<AddServices, Build>
         }
     }
 
-    public class Build() : PhaseBase<WebApplicationBuilder, IServiceCollection>(PhaseOrder.Latest)
+    public class Build()
+        : PhaseBase<WebApplicationBuilder, IServiceCollection>(PhaseOrder.Latest)
     {
         protected override void Initialize(WebApplicationBuilder build, IServiceCollection services)
         {
@@ -54,7 +56,8 @@ public class HttpServerLayer : LayerBase<AddServices, Build>
         }
     }
 
-    class Run(IMiddlewareCollection _middlewares) : PhaseBase<WebApplication>(PhaseOrder.Latest)
+    class Run(IMiddlewareCollection _middlewares)
+        : PhaseBase<WebApplication>(PhaseOrder.Latest)
     {
         protected override void Initialize(WebApplication app)
         {

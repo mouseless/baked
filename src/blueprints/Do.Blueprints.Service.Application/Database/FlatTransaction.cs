@@ -3,7 +3,8 @@ using NHibernate;
 
 namespace Do.Database;
 
-public class FlatTransaction(Func<ISession> _getSession, ILogger<FlatTransaction> _logger) : ITransaction
+public class FlatTransaction(Func<ISession> _getSession, ILogger<FlatTransaction> _logger)
+    : ITransaction
 {
     public async Task CommitAsync(Action action)
     {

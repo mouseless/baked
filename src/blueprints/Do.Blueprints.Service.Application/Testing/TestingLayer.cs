@@ -38,7 +38,8 @@ public class TestingLayer : LayerBase<AddServices>
         yield return new Run();
     }
 
-    public class CreateConfigurationManager() : PhaseBase(PhaseOrder.Earliest)
+    public class CreateConfigurationManager()
+        : PhaseBase(PhaseOrder.Earliest)
     {
         protected override void Initialize()
         {
@@ -46,7 +47,8 @@ public class TestingLayer : LayerBase<AddServices>
         }
     }
 
-    class Run() : PhaseBase<IServiceCollection>(PhaseOrder.Latest)
+    class Run()
+        : PhaseBase<IServiceCollection>(PhaseOrder.Latest)
     {
         protected override void Initialize(IServiceCollection services)
         {
