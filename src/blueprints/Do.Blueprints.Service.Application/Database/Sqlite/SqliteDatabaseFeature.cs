@@ -6,13 +6,8 @@ using NHibernate.Dialect;
 
 namespace Do.Database.Sqlite;
 
-public class SqliteDatabaseFeature : IFeature<DatabaseConfigurator>
+public class SqliteDatabaseFeature(Setting<string> _fileName) : IFeature<DatabaseConfigurator>
 {
-    readonly Setting<string> _fileName;
-
-    public SqliteDatabaseFeature(Setting<string> fileName) =>
-        _fileName = fileName;
-
     string FullFilePath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), _fileName);
 
     public void Configure(LayerConfigurator configurator)

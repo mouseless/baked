@@ -2,13 +2,8 @@
 
 namespace Do.Orm.Default;
 
-public class EntityContext<TEntity> : IEntityContext<TEntity>
+public class EntityContext<TEntity>(ISession _session) : IEntityContext<TEntity>
 {
-    readonly ISession _session;
-
-    public EntityContext(ISession session) =>
-        _session = session;
-
     public TEntity Insert(TEntity entity)
     {
         _session.Save(entity);

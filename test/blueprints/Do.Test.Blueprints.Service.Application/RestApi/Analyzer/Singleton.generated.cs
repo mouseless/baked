@@ -6,13 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace Do.Test;
 
 [ApiController]
-public class SingletonController
+public class SingletonController(IServiceProvider _serviceProvider)
 {
-    readonly IServiceProvider _serviceProvider;
-
-    public SingletonController(IServiceProvider serviceProvider) =>
-        _serviceProvider = serviceProvider;
-
     [HttpGet]
     [Produces("application/json")]
     [Route("singleton/time")]

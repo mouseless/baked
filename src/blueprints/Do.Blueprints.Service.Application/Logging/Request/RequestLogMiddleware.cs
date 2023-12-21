@@ -3,17 +3,8 @@ using Microsoft.Extensions.Logging;
 
 namespace Do.Logging.Request;
 
-public class RequestLogMiddleware
+public class RequestLogMiddleware(ILogger<RequestLogMiddleware> _logger, RequestDelegate _next)
 {
-    readonly ILogger<RequestLogMiddleware> _logger;
-    readonly RequestDelegate _next;
-
-    public RequestLogMiddleware(ILogger<RequestLogMiddleware> logger, RequestDelegate next)
-    {
-        _logger = logger;
-        _next = next;
-    }
-
     public async Task Invoke(HttpContext context)
     {
         _logger.LogInformation(message: $"Begin: {context.Request.Path}");

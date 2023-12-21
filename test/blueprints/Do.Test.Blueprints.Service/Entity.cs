@@ -3,14 +3,9 @@ using Do.Orm;
 
 namespace Do.Test;
 
-public class Entity
+public class Entity(IEntityContext<Entity> _context, ITransaction _transaction)
 {
-    readonly IEntityContext<Entity> _context = default!;
-    readonly ITransaction _transaction = default!;
-
-    protected Entity() { }
-    public Entity(IEntityContext<Entity> context, ITransaction transaction) =>
-        (_context, _transaction) = (context, transaction);
+    protected Entity() : this(default!, default!) { }
 
     public virtual Guid Id { get; protected set; } = default!;
     public virtual Guid Guid { get; protected set; } = default!;
@@ -122,13 +117,8 @@ public class Entity
     }
 }
 
-public class Entities
+public class Entities(IQueryContext<Entity> _context)
 {
-    readonly IQueryContext<Entity> _context;
-
-    public Entities(IQueryContext<Entity> context) =>
-        _context = context;
-
     public List<Entity> By(
         Guid? guid = default,
         string? @string = default,

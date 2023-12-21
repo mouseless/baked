@@ -2,14 +2,8 @@
 
 namespace Do.DataAccess;
 
-public class DelegatedInterceptor : EmptyInterceptor
+public class DelegatedInterceptor(IServiceProvider _serviceProvider, InterceptorConfiguration _interceptorConfiguration) : EmptyInterceptor
 {
-    readonly IServiceProvider _serviceProvider;
-    readonly InterceptorConfiguration _interceptorConfiguration;
-
-    public DelegatedInterceptor(IServiceProvider serviceProvider, InterceptorConfiguration interceptorConfiguration) =>
-        (_serviceProvider, _interceptorConfiguration) = (serviceProvider, interceptorConfiguration);
-
     ISessionFactory SessionFactory => _serviceProvider.GetRequiredServiceUsingRequestServices<ISessionFactory>();
 
     public override object Instantiate(string clazz, object id)

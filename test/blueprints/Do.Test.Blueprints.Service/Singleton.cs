@@ -4,19 +4,8 @@ using Do.ExceptionHandling;
 
 namespace Do.Test;
 
-public class Singleton
+public class Singleton(ISystem _system, Func<Entity> _newEntity, ITransaction _transaction)
 {
-    readonly ISystem _system;
-    readonly Func<Entity> _newEntity;
-    readonly ITransaction _transaction;
-
-    public Singleton(ISystem system, Func<Entity> newEntity, ITransaction transaction)
-    {
-        _system = system;
-        _newEntity = newEntity;
-        _transaction = transaction;
-    }
-
     public DateTime GetNow() => _system.Now;
 
     public void TestException(bool handled)

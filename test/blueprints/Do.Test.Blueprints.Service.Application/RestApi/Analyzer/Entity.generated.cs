@@ -6,13 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace Do.Test;
 
 [ApiController]
-public class EntityController
+public class EntityController(IServiceProvider _serviceProvider)
 {
-    readonly IServiceProvider _serviceProvider;
-
-    public EntityController(IServiceProvider serviceProvider) =>
-        _serviceProvider = serviceProvider;
-
     public record ByRequest(
         Guid guid = default,
         string @string = default,

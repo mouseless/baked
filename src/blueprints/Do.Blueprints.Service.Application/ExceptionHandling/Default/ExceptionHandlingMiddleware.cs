@@ -2,14 +2,9 @@
 
 namespace Do.ExceptionHandling.Default;
 
-public class ExceptionHandlingMiddleware
+public class ExceptionHandlingMiddleware(IEnumerable<IExceptionHandler> _handlers, RequestDelegate _next)
 {
-    readonly RequestDelegate _next;
-    readonly IEnumerable<IExceptionHandler> _handlers;
     readonly UnhandledExceptionHandler _unhandledExceptionHandler = new();
-
-    public ExceptionHandlingMiddleware(IEnumerable<IExceptionHandler> handlers, RequestDelegate next) =>
-        (_handlers, _next) = (handlers, next);
 
     public async Task InvokeAsync(HttpContext context)
     {
