@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 
 ARG ENVIRONMENT=Production
 
@@ -6,7 +6,7 @@ EXPOSE 80
 ENV ASPNETCORE_ENVIRONMENT=$ENVIRONMENT
 ENV ASPNETCORE_URLS=http://+:80
 
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS publish
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS publish
 
 COPY . .
 RUN dotnet publish ./test/blueprints/Do.Test.Blueprints.Service.Application -c Release -o /app/publish
