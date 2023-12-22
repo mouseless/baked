@@ -194,22 +194,28 @@ public static class ServiceSpecExtensions
 
     public static TimeProvider TheTime(this Mocker mockMe,
         DateTime? now = default,
-        bool passSomeTime = false
+        bool passSomeTime = false,
+        bool reset = false
     )
     {
-        var timeProvider = (FakeTimeProvider)mockMe.Spec.GiveMe.The<TimeProvider>();
+        var fakeTimeProvider = (FakeFakeTimeProvider)mockMe.Spec.GiveMe.The<TimeProvider>();
+
+        if (reset)
+        {
+            fakeTimeProvider.Inner = new();
+        }
 
         if (now is not null)
         {
-            timeProvider.SetUtcNow(new DateTimeOffset(now.Value));
+            fakeTimeProvider.Inner.SetUtcNow(new DateTimeOffset(now.Value));
         }
 
         if (passSomeTime)
         {
-            timeProvider.SetUtcNow(timeProvider.GetUtcNow().AddSeconds(1));
+            fakeTimeProvider.Inner.SetUtcNow(fakeTimeProvider.GetUtcNow().AddSeconds(1));
         }
 
-        return timeProvider;
+        return fakeTimeProvider;
     }
 
     #endregion
