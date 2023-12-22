@@ -12,9 +12,21 @@ public class ApiModel
 
         foreach (var type in types)
         {
-            if (type.Namespace == "DomainModelOverReflection.Business" && type.GetConstructors().Any(c => c.IsPublic && c.GetParameters().Any()))
+            if (type.Namespace == "DomainModelOverReflection.Business")
             {
-                model.ControllerModels.Add(new(type));
+                if (type.GetConstructors().Any(c => c.IsPublic && c.GetParameters().Any()))
+                {
+                    model.ControllerModels.Add(new(type));
+                }
+                else
+                {
+                    var methods = type.GetMethods(BindingFlags.Public | BindingFlags.Instance);
+
+                    if (methods.Any(m => m.Name == "With") && methods.Any(m => m.Name == "Process"))
+                    {
+                        model.ControllerModels.Add(new(type));
+                    }
+                }
             }
         }
 

@@ -5,7 +5,7 @@ namespace DomainModelOverReflection.Models.Target;
 public record ActionModel(string Route, HttpMethod Method, Type ReturnType, List<ParameterModel> Parameters)
 {
     public ActionModel(MethodInfo methodInfo)
-        : this($"{methodInfo.Name}", HttpMethod.Get, methodInfo.ReturnType, new())
+        : this($"{methodInfo.DeclaringType?.Name}/{methodInfo.Name}", HttpMethod.Get, methodInfo.ReturnType, new())
     {
         var parameters = methodInfo.GetParameters() ?? Array.Empty<ParameterInfo>();
 

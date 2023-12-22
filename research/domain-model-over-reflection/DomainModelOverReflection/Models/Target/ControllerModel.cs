@@ -20,10 +20,6 @@ public record ControllerModel(string Name, List<ActionModel> Actions)
                 {
                     Actions.Add(new(method, HttpMethod.Get));
                 }
-                else
-                {
-                    Actions.Add(new(method));
-                }
             }
         }
     }

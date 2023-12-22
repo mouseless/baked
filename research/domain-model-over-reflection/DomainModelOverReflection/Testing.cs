@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace DomainModelOverReflection;
 
-[SimpleJob(launchCount: 1, warmupCount: 2, iterationCount: 10, invocationCount: 100)]
+[SimpleJob(launchCount: 1, warmupCount: 2, iterationCount: 20, invocationCount: 100)]
 public class Testing
 {
     [Benchmark(Baseline = true)]

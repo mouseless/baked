@@ -5,8 +5,8 @@
 <#@ output extension=".cs" #>
 #pragma warning disable SA1649 // File name should match first type name
 namespace DomainModelOverReflection.Business;
+<# for (int i = 0; i < 200; ++i) { #>
 
-<# for (int i = 0; i < 500; ++i) { #>
 public class <#= GetClassName(i) #>
 {
     readonly IEntityContext<<#= GetClassName(i) #>> _context = default!;
@@ -27,7 +27,12 @@ public class <#= GetClassName(i) #>
     }
 <# for (int j = 0; j < 5; j++) { #>
 
-    public void Method_<#= j #>(string name_<#= j #>)
+    public virtual void Method_<#= j #>(string name_<#= j #>)
+    {
+        Name = name_<#= j #>;
+    }
+
+    protected internal virtual void Internal_Method_<#= j #>(string name_<#= j #>)
     {
         Name = name_<#= j #>;
     }
@@ -40,11 +45,11 @@ public class <#= GetQueryName(i) #>
 
     public <#= GetQueryName(i) #>(IQueryContext<<#= GetClassName(i) #>> queryContext) => _queryContext = queryContext;
 
-<# for (int j = 0; j < 2; j++) { #>
+<# for (int j = 0; j < 5; j++) { #>
     public List<<#= GetClassName(i) #>> By<#= j #>(string name_<#= j #>) => _queryContext.All();
+    internal List<<#= GetClassName(i) #>> Internal_By<#= j #>(string name_<#= j #>) => _queryContext.All();
 <# } #>
 }
-
 <# } #>
 #pragma warning restore SA1649 // File name should match first type name
 <#+
