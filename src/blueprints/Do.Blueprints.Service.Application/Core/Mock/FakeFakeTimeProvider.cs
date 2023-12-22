@@ -1,5 +1,6 @@
-
 using Microsoft.Extensions.Time.Testing;
+
+namespace Do.Core.Mock;
 
 public class FakeFakeTimeProvider : TimeProvider
 {
