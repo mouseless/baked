@@ -10,7 +10,7 @@ public class MockCoreFeature : IFeature<CoreConfigurator>
     {
         configurator.ConfigureServiceCollection(services =>
         {
-            services.AddSingleton<TimeProvider, FakeFakeTimeProvider>();
+            services.AddSingleton<TimeProvider, ResettableFakeTimeProvider>();
         });
 
         configurator.ConfigureTestConfiguration(test =>

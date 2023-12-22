@@ -199,21 +199,21 @@ public static class ServiceSpecExtensions
         bool reset = false
     )
     {
-        var fakeTimeProvider = (FakeFakeTimeProvider)mockMe.Spec.GiveMe.The<TimeProvider>();
+        var fakeTimeProvider = (ResettableFakeTimeProvider)mockMe.Spec.GiveMe.The<TimeProvider>();
 
         if (reset)
         {
-            fakeTimeProvider.Inner = new();
+            fakeTimeProvider.Reset();
         }
 
         if (now is not null)
         {
-            fakeTimeProvider.Inner.SetUtcNow(new DateTimeOffset(now.Value));
+            fakeTimeProvider.SetUtcNow(new DateTimeOffset(now.Value));
         }
 
         if (passSomeTime)
         {
-            fakeTimeProvider.Inner.SetUtcNow(fakeTimeProvider.GetUtcNow().AddSeconds(1));
+            fakeTimeProvider.SetUtcNow(fakeTimeProvider.GetUtcNow().AddSeconds(1));
         }
 
         return fakeTimeProvider;
