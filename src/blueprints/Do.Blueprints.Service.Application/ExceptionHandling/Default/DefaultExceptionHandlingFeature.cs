@@ -1,4 +1,5 @@
 ﻿using Do.Architecture;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Do.ExceptionHandling.Default;
@@ -10,11 +11,14 @@ public class DefaultExceptionHandlingFeature : IFeature<ExceptionHandlingConfigu
         configurator.ConfigureServiceCollection(services =>
         {
             services.AddSingleton<IExceptionHandler, HandledExceptionHandler>();
+
+            services.AddExceptionHandler<ExceptionHandlingMiddleware>();
+            services.AddProblemDetails();
         });
 
-        configurator.ConfigureMiddlewareCollection(middlewares =>
+        configurator.ConfigureMiddlewareCollection(middleware =>
         {
-            middlewares.Add<ExceptionHandlingMiddleware>(order: -20);
+            middleware.Add(app => app.UseExceptionHandler());
         });
     }
 }

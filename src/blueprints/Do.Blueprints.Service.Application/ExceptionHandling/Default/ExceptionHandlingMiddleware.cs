@@ -1,33 +1,33 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Do.ExceptionHandling.Default;
 
-public class ExceptionHandlingMiddleware(IEnumerable<IExceptionHandler> _handlers, RequestDelegate _next)
+public class ExceptionHandlingMiddleware(IEnumerable<IExceptionHandler> _handlers)
+    : Microsoft.AspNetCore.Diagnostics.IExceptionHandler
 {
     readonly UnhandledExceptionHandler _unhandledExceptionHandler = new();
 
-    public async Task InvokeAsync(HttpContext context)
+    public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
-        try
+        var handler = _handlers.FirstOrDefault(h => h.CanHandle(exception)) ?? _unhandledExceptionHandler;
+        ExceptionInfo exceptionInfo = handler.Handle(exception);
+
+        var problemDetails = new ProblemDetails
         {
-            await _next(context);
-        }
-        catch (Exception ex)
-        {
-            var handler = _handlers.FirstOrDefault(h => h.CanHandle(ex)) ?? _unhandledExceptionHandler;
-            var exceptionInfo = handler.Handle(ex);
+            Type = $"this-url-should-be-read-from-config/exceptions/{exception.ExceptionId()}",
+            Title = exception.ExceptionName(),
+            Status = exceptionInfo.Code,
+            Detail = exceptionInfo.Body.ToString(), // TODO - body string olmalı
+            Extensions = new Dictionary<string, object?>()
+        };
 
-            context.Response.ContentType = "application/json";
-            context.Response.StatusCode = exceptionInfo.Code;
+        httpContext.Response.ContentType = "application/json";
+        httpContext.Response.StatusCode = exceptionInfo.Code;
 
-            object forwardedExceptionInfo =
-                new
-                {
-                    Request = context.Request.Path.Value,
-                    Message = exceptionInfo.Body
-                };
+        await httpContext.Response
+            .WriteAsJsonAsync(problemDetails, cancellationToken);
 
-            await context.Response.WriteAsJsonAsync(forwardedExceptionInfo);
-        }
+        return true;
     }
 }
