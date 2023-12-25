@@ -141,12 +141,8 @@ below;
 
 `WelcomePageGreetingFeature.cs`
 ```csharp
-public class WelcomePageGreetingFeature : IFeature<GreetingConfigurator>
+public class WelcomePageGreetingFeature(string _path) : IFeature<GreetingConfigurator>
 {
-    readonly string _path;
-
-    public WelcomePageGreetingFeature(string path) => _path = path;
-
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureApplicationBuilder(app =>
