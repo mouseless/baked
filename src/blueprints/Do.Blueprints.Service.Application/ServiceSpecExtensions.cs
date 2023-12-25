@@ -1,7 +1,6 @@
 ﻿using Do.Core.Mock;
 using Do.MockOverrider;
 using Do.Testing;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;

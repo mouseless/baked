@@ -9,14 +9,8 @@ public class ResettableFakeTimeProvider : TimeProvider
     public DateTimeOffset Start => _inner.Start;
     public TimeSpan AutoAdvanceAmount
     {
-        get
-        {
-            return _inner.AutoAdvanceAmount;
-        }
-        set
-        {
-            _inner.AutoAdvanceAmount = value;
-        }
+        get => _inner.AutoAdvanceAmount;
+        set => _inner.AutoAdvanceAmount = value;
     }
 
     public override TimeZoneInfo LocalTimeZone => _inner.LocalTimeZone;
