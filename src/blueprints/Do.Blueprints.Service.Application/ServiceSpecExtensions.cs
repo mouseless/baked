@@ -234,23 +234,4 @@ public static class ServiceSpecExtensions
     public static void ShouldBe(this Uri? uri, string urlString) => uri?.ToString().ShouldBe(urlString);
 
     #endregion
-
-    #region ProblemDetails
-
-    public static ProblemDetails AProblemDetail(this Stubber giveMe,
-        string? detail = default,
-        Dictionary<string, object?>? extensions = default,
-        int? status = default,
-        string? title = default,
-        string? type = default
-    ) => new()
-    {
-        Type = type ?? giveMe.AUrl().ToString(),
-        Status = status ?? 500,
-        Title = title ?? "Invalid Operation",
-        Detail = detail ?? "An invalid operation occurred",
-        Extensions = extensions ?? []
-    };
-
-    #endregion
 }
