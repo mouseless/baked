@@ -112,6 +112,6 @@ public Entity Get([FromServices] IQueryContext<Entity> service) { }
 | Microsoft.NET.Test.Sdk                          | 7.0.0       | 8.0.0       |
 | Microsoft.Extensions.TimeProvider.Testing       | -           | new*        |
 | Moq                                             | 4.20.69     | 4.20.70     |
-| NHibernate                                      | 5.4.6       | 5.4.7       |
+| NHibernate                                      | 5.4.6       | 5.5.0       |
 | NUnit                                           | 3.14.0      | 4.0.1       |
 | StyleCop.Analyzers.Unstable                     | 1.2.0.507   | 1.2.0.556   |
