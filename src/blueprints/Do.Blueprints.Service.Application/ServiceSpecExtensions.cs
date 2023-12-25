@@ -1,10 +1,9 @@
-﻿using Do.Core;
-using Do.Core.Mock;
+﻿using Do.Core.Mock;
 using Do.MockOverrider;
 using Do.Testing;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Time.Testing;
 using Moq;
 using Shouldly;
 using System.Reflection;
@@ -233,6 +232,25 @@ public static class ServiceSpecExtensions
     }
 
     public static void ShouldBe(this Uri? uri, string urlString) => uri?.ToString().ShouldBe(urlString);
+
+    #endregion
+
+    #region ProblemDetails
+
+    public static ProblemDetails AProblemDetail(this Stubber giveMe,
+        string? detail = default,
+        Dictionary<string, object?>? extensions = default,
+        int? status = default,
+        string? title = default,
+        string? type = default
+    ) => new()
+    {
+        Type = type ?? giveMe.AUrl().ToString(),
+        Status = status ?? 500,
+        Title = title ?? "Invalid Operation",
+        Detail = detail ?? "An invalid operation occurred",
+        Extensions = extensions ?? []
+    };
 
     #endregion
 }

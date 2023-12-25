@@ -13,10 +13,4 @@ public class HandlingExceptions : TestServiceSpec
 
         task.ShouldThrow<HandledException>();
     }
-
-    [Test]
-    public void Exception_message_format_is_ProblemDetail_type()
-    {
-        this.ShouldFail("not implemented");
-    }
 }

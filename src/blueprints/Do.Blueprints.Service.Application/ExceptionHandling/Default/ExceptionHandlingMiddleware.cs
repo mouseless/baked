@@ -1,12 +1,15 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace Do.ExceptionHandling.Default;
 
-public class ExceptionHandlingMiddleware(IEnumerable<IExceptionHandler> _handlers)
+public class ExceptionHandlingMiddleware(IEnumerable<IExceptionHandler> _handlers, IConfiguration _configuration)
     : Microsoft.AspNetCore.Diagnostics.IExceptionHandler
 {
     readonly UnhandledExceptionHandler _unhandledExceptionHandler = new();
+
+    string ExceptionTypeUrl => _configuration.GetValue<string>("Exception:TypeUrl") ?? string.Empty;
 
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
@@ -15,11 +18,11 @@ public class ExceptionHandlingMiddleware(IEnumerable<IExceptionHandler> _handler
 
         var problemDetails = new ProblemDetails
         {
-            Type = $"this-url-should-be-read-from-config/exceptions/{exception.ExceptionId()}",
+            Type = string.Format(ExceptionTypeUrl, exception.ExceptionId()),
             Title = exception.ExceptionName(),
             Status = exceptionInfo.Code,
-            Detail = exceptionInfo.Body.ToString(), // TODO - body string olmalı
-            Extensions = new Dictionary<string, object?>()
+            Detail = exceptionInfo.Body,
+            Extensions = exceptionInfo.ExtraData ?? []
         };
 
         httpContext.Response.ContentType = "application/json";
