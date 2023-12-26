@@ -13,6 +13,6 @@ public class CorruptedJsonDataExceptionHandler : IExceptionHandler
     public ExceptionInfo Handle(Exception ex) =>
         new(
             (int)HttpStatusCode.InternalServerError,
-            ex.InnerException?.Message ?? ex.Message
+            "An unexpected error occurred."
         );
 }
