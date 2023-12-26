@@ -59,6 +59,7 @@ public Entity Get([FromServices] IQueryContext<Entity> entityQuery) { }
 
 - `ExceptionHandling` now uses
   `Microsoft.AspNetCore.Diagnostics.IExceptionHandling`
+  - `ExceptionHandling` feature now adds `StatusCodePages` middleware.
 - Exceptions now return `ProblemDetails` as response
 - `ISystem` is replaced with `TimeProvider.System`
   - `Mocker`, `TheSystem` extension is renamed to `TheTime`
