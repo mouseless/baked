@@ -10,8 +10,8 @@ app.Features.AddCore(...);
 
 ## Dotnet
 
-Adds a local implementation of `TimeProvider.System` interface to services to be
-used throughout your application.
+Adds a local implementation of `TimeProvider` to services to be used throughout
+your application.
 
 ```csharp
 c => c.Dotnet()
