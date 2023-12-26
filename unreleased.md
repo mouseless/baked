@@ -65,6 +65,8 @@ public Entity Get([FromServices] IQueryContext<Entity> entityQuery) { }
 - `TheSystem` renamed to `TheTime`
 - Internal Server Error response included extra details in message, removed.
   - Extra details can be reached from the logs.
+- `HandledException` is now abstract.
+  - Added optional `ExtraDetails` collection property to `HandledException`
 
 ## Library Upgrades
 
