@@ -66,7 +66,6 @@ public Entity Get([FromServices] IQueryContext<Entity> service) { }
 - Internal Server Error response included extra details in message, removed.
   - Extra details can be reached from the logs.
 
-// TODO - Abstract class yapılacak. Extra datayı içerisinde bulunacak
 ## Library Upgrades
 
 | Package                                         | Old Version | New Version |
