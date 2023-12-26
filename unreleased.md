@@ -30,8 +30,8 @@ DO now supports .NET 8! Below you can find a task list to upgrade your projects.
 #### Primary constructors
 
 Use primary constructor, when there is a dependency that needs to be injected at
-the constructor without any logic or when the base class constructor needs to be
-called. Parameter names start with underscore.
+the constructor without any logic or when the base class constructor is called.
+Parameter names start with underscore.
 
 ```csharp
 public class Entity(IEntityContext<Entity> _context)
