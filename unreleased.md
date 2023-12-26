@@ -59,13 +59,13 @@ public Entity Get([FromServices] IQueryContext<Entity> entityQuery) { }
 
 - `ExceptionHandling` now uses
   `Microsoft.AspNetCore.Diagnostics.IExceptionHandling`
-- Exceptions now return `ProblemDetails` as response.
-- Now using `TimeProvider.System` instead of `ISystem`.
-  - Use `FakeTimeProvider` for tests instead of mocking `ISystem`.
-- `TheSystem` renamed to `TheTime`
-- Internal Server Error response included extra details in message, removed.
-  - Extra details can be reached from the logs.
-- `HandledException` is now abstract.
+- Exceptions now return `ProblemDetails` as response
+- `ISystem` is replaced with `TimeProvider.System`
+  - `Mocker`, `TheSystem` extension is renamed to `TheTime`
+  - Use `FakeTimeProvider` for tests by mocking `TheTime`
+- Internal Server Error response included extra details in message, removed
+  - Extra details can be reached from the logs
+- `HandledException` is now abstract
   - Added optional `ExtraDetails` collection property to `HandledException`
 
 ## Library Upgrades
