@@ -15,7 +15,7 @@ DO now supports .NET 8! Below you can find a task list to upgrade your projects.
     - Parameter name start with underscore
     - Use primary c. where dependency injection and record exist
   - [ ] Use collection expressions
-- [ ] `[FromKeyedServices]` and `[FromServices]` using in controller
+- [ ] Use `[FromKeyedServices]` and `[FromServices]` in controller
 ```
 
 ### Upgrade .NET and C# versions
@@ -27,11 +27,11 @@ DO now supports .NET 8! Below you can find a task list to upgrade your projects.
 
 ### Syntax improvement
 
-#### Use primary constructors
+#### Primary constructors
 
-In projects, use primary constructor when there is a dependency that needs to be
-injected at the constructor without any logic. Parameter names start with
-underscore.
+Use primary constructor when there is a dependency that needs to be injected at
+the constructor without any logic or when the base class constructor needs to be
+called. Parameter names start with underscore.
 
 ```csharp
 public class Entity(IEntityContext<Entity> _context)
@@ -46,7 +46,7 @@ Use new, simplified collection expressions where possible.
 
 Visit [Collection expression][] for more details.
 
-### `[FromServices]` using in controller
+### `[FromServices]` in controller
 
 Instead of getting dependency services from the constructor in controllers, get
 them using `[FromServices]` attributes.
