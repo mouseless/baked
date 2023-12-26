@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace Do.ExceptionHandling.Default;
 
-public class ExceptionHandlingMiddleware(IEnumerable<IExceptionHandler> _handlers, IConfiguration _configuration)
+public class ExceptionHandler(IEnumerable<IExceptionHandler> _handlers, IConfiguration _configuration)
     : Microsoft.AspNetCore.Diagnostics.IExceptionHandler
 {
     readonly UnhandledExceptionHandler _unhandledExceptionHandler = new();

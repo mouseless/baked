@@ -141,7 +141,8 @@ below;
 
 `WelcomePageGreetingFeature.cs`
 ```csharp
-public class WelcomePageGreetingFeature(string _path) : IFeature<GreetingConfigurator>
+public class WelcomePageGreetingFeature(string _path)
+    : IFeature<GreetingConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {

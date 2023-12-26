@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Do.Test;
 
 [ApiController]
-public class EntityController
+public class EntitiesController
 {
     public record ByRequest(
         Guid? Guid = default,
@@ -57,9 +57,11 @@ public class EntityController
 
     [HttpPost]
     [Route("entities")]
-    public Entity New([FromServices] Entity service, [FromBody] NewRequest request)
+    public Entity New([FromServices] Func<Entity> newTarget, [FromBody] NewRequest request)
     {
-        return service.With(request.Guid, request.String, request.StringData, request.Int32, request.Uri, request.Dynamic, request.Status, request.DateTime);
+        var target = newTarget();
+
+        return target.With(request.Guid, request.String, request.StringData, request.Int32, request.Uri, request.Dynamic, request.Status, request.DateTime);
     }
 
     [HttpDelete]

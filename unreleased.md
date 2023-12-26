@@ -57,21 +57,16 @@ public Entity Get([FromServices] IQueryContext<Entity> service) { }
 
 ## Improvements
 
-- `ExceptionHandlingMiddleware` now uses
+- `ExceptionHandling` now uses
   `Microsoft.AspNetCore.Diagnostics.IExceptionHandling`
-- Now using `ProblemDetails` format for exception message format.
+- Exceptions now return `ProblemDetails` as response.
 - Now using `TimeProvider.System` instead of `ISystem`.
   - Use `FakeTimeProvider` for tests instead of mocking `ISystem`.
 - `TheSystem` renamed to `TheTime`
+- Internal Server Error response included extra details in message, removed.
+  - Extra details can be reached from the logs.
 
-### New TimeProvider
-
-We switched to `TimeProvider` in time management. We use it by registering
-`TimeProvider.System` with dependency injection.
-
-We use `FakeTimeProvider` with wrapping in tests. Because it does not allow
-going back in time, we use it by resetting the time.
-
+// TODO - Abstract class yapılacak. Extra datayı içerisinde bulunacak
 ## Library Upgrades
 
 | Package                                         | Old Version | New Version |

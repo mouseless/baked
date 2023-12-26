@@ -193,7 +193,7 @@ public static class ServiceSpecExtensions
 
     public static TimeProvider TheTime(this Mocker mockMe,
         DateTime? now = default,
-        bool passSomeTime = false,
+        bool passSomeTime = false, // TODO - test edilecek
         bool reset = false
     )
     {
@@ -211,7 +211,7 @@ public static class ServiceSpecExtensions
 
         if (passSomeTime)
         {
-            fakeTimeProvider.SetUtcNow(fakeTimeProvider.GetUtcNow().AddSeconds(1));
+            fakeTimeProvider.Advance(TimeSpan.FromSeconds(1));
         }
 
         return fakeTimeProvider;

@@ -12,7 +12,7 @@ public class DefaultExceptionHandlingFeature : IFeature<ExceptionHandlingConfigu
         {
             services.AddSingleton<IExceptionHandler, HandledExceptionHandler>();
 
-            services.AddExceptionHandler<ExceptionHandlingMiddleware>();
+            services.AddExceptionHandler<ExceptionHandler>();
             services.AddProblemDetails();
         });
 
