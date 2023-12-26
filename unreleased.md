@@ -52,7 +52,7 @@ Instead of getting dependency services from the constructor in controllers, get
 them using `[FromServices]` attributes.
 
 ```csharp
-public Entity Get([FromServices] IQueryContext<Entity> service) { }
+public Entity Get([FromServices] IQueryContext<Entity> entityQuery) { }
 ```
 
 ## Improvements
