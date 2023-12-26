@@ -2,7 +2,6 @@
 
 namespace Do.Test;
 
-public class TestServiceHandledException : HandledException
-{
-    public TestServiceHandledException(string message) : base(message) { }
-}
+public class TestServiceHandledException(string _message)
+    : HandledException(_message)
+{ }
