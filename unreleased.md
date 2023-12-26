@@ -1,6 +1,6 @@
 # Unreleased
 
-## .NET 8 Update
+## .NET 8 Upgrade
 
 DO now supports .NET 8! Below you can find a task list to upgrade your projects.
 
@@ -9,80 +9,60 @@ DO now supports .NET 8! Below you can find a task list to upgrade your projects.
   - [ ] in projects
   - [ ] in docker files
   - [ ] in GitHub workflows
-- [ ] [Library upgrades](#library-upgrades)
+- [ ] Upgrade DO version
 - [ ] Syntax improvement
   - [ ] Use primary constructors
     - Parameter name start with underscore
     - Use primary c. where dependency injection and record exist
   - [ ] Use collection expressions
-  - [ ] Use default lambda parameters
-- [ ] Use/Test `DO` source link
-- [ ] Switch to `IExceptionHandling`.
-- [ ] `TimeProvider` to be injected.
 - [ ] `[FromKeyedServices]` and `[FromServices]` using in controller
-- [ ] Null, white space checks in the parameter are provided by
-  `ThrowIfNullOrWhiteSpace` etc. extensions of `ArgumentException`.
 ```
 
 ### Upgrade .NET and C# versions
 
-- Upgraded the project's `C#` language to `12`.
-- Framework version upgraded to `net8.0` in the projects.
-- Framework and sdk version upgraded to `8` in `Dockerfile`.
-- Upgraded dotnet version `8` in Github actions.
+- Upgrade the project's `C#` language to `12`.
+- Framework version upgrade to `net8.0` in the projects.
+- Framework and sdk version upgrade to `8` in `Dockerfile`.
+- Upgrade dotnet version `8` in Github actions.
 
 ### Syntax improvement
 
 #### Use primary constructors
 
-In projects, we use primary constructor when there is a dependency that we get
-from the constructor and when we get it without logic. We start parameter names
-with underscore.
-
-#### Use collection expressions
-
-Where we can use collection expressions in projects, we tried to use them for
-readability and more comfortable writing.
-
-### New Exception Handling
-
-In Exception handling, we switched to `IExceptionHandling` that `Dotnet`
-brought with `.NET 8`. We switched to `ProblemDetails` format in exception
-responses.
-
-`IExceptionHandling` usage
+In projects, use primary constructor when there is a dependency that needs to be
+injected at the constructor without any logic. Parameter names start with
+underscore.
 
 ```csharp
-services.AddExceptionHandler<ExceptionHandlingMiddleware>();
-
-...
-
-middleware.Add(app => app.UseExceptionHandler());
-```
-
-Using `ProblemDetails`
-
-```csharp
-services.AddProblemDetails();
-
-...
-
-public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
+public class Entity(IEntityContext<Entity> _context)
 {
   ...
-  var problemDetails = new ProblemDetails
-  {
-    ...
-  };
-
-  ...
-
-  await httpContext.Response
-    .WriteAsJsonAsync(problemDetails, cancellationToken);
-
-  return true;
 }
 ```
+
+#### Collection expressions
+
+Use new, simplified collection expressions where possible.
+
+Visit [Collection expression][] for more details.
+
+### `[FromServices]` using in controller
+
+Instead of getting dependency services from the constructor in controllers, get
+them using `[FromServices]` attributes.
+
+```csharp
+public Entity Get([FromServices] IQueryContext<Entity> service) { }
+```
+
+## Improvements
+
+- `ExceptionHandlingMiddleware` now uses
+  `Microsoft.AspNetCore.Diagnostics.IExceptionHandling`
+- Now using `ProblemDetails` format for exception message format.
+- Now using `TimeProvider.System` instead of `ISystem`.
+  - Use `FakeTimeProvider` for tests instead of mocking `ISystem`.
+- `TheSystem` renamed to `TheTime`
 
 ### New TimeProvider
 
@@ -91,15 +71,6 @@ We switched to `TimeProvider` in time management. We use it by registering
 
 We use `FakeTimeProvider` with wrapping in tests. Because it does not allow
 going back in time, we use it by resetting the time.
-
-### `[FromServices]` using in controller
-
-Instead of getting dependency services from the constructor in controllers, we
-switched to getting them with `[FromServices]` attributes.
-
-```csharp
-public Entity Get([FromServices] IQueryContext<Entity> service) { }
-```
 
 ## Library Upgrades
 
@@ -115,3 +86,5 @@ public Entity Get([FromServices] IQueryContext<Entity> service) { }
 | NHibernate                                      | 5.4.6       | 5.5.0       |
 | NUnit                                           | 3.14.0      | 4.0.1       |
 | StyleCop.Analyzers.Unstable                     | 1.2.0.507   | 1.2.0.556   |
+
+[Collection expression]: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/collection-expressions
