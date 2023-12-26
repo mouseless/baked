@@ -10,7 +10,7 @@ DO now supports .NET 8! Below you can find a task list to upgrade your projects.
   - [ ] in docker files
   - [ ] in GitHub workflows
 - [ ] Upgrade DO version
-- [ ] Syntax improvement
+- [ ] Syntax improvements
   - [ ] Use primary constructors
     - Parameter name start with underscore
     - Use primary c. where dependency injection and record exist
@@ -25,11 +25,11 @@ DO now supports .NET 8! Below you can find a task list to upgrade your projects.
 - Framework and sdk version upgrade to `8` in `Dockerfile`.
 - Upgrade dotnet version `8` in Github actions.
 
-### Syntax improvement
+### Syntax improvements
 
 #### Primary constructors
 
-Use primary constructor when there is a dependency that needs to be injected at
+Use primary constructor, when there is a dependency that needs to be injected at
 the constructor without any logic or when the base class constructor needs to be
 called. Parameter names start with underscore.
 
@@ -42,14 +42,14 @@ public class Entity(IEntityContext<Entity> _context)
 
 #### Collection expressions
 
-Use new, simplified collection expressions where possible.
+Use new and simplified collection expressions, where possible.
 
 Visit [Collection expression][] for more details.
 
 ### `[FromServices]` in controller
 
-Instead of getting dependency services from the constructor in controllers, get
-them using `[FromServices]` attributes.
+Instead of using constructor injection, use `[FromServices]` attribute to inject
+dependencies in controllers.
 
 ```csharp
 public Entity Get([FromServices] IQueryContext<Entity> entityQuery) { }
