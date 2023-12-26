@@ -1,6 +1,7 @@
 ﻿using Do.Core.Mock;
 using Do.MockOverrider;
 using Do.Testing;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
@@ -49,6 +50,34 @@ public static class ServiceSpecExtensions
     public static Guid AGuid(this Stubber _,
         string? guid = default
     ) => guid is null ? Guid.NewGuid() : Guid.Parse(guid);
+
+    #endregion
+
+    #region Integer
+
+    public static int AnInteger(this Stubber _) => 42;
+
+    #endregion
+
+    #region MemoryCache
+
+    public static IMemoryCache AMemoryCache(this Stubber giveMe,
+        bool clear = false
+    )
+    {
+        var getMemoryCache = giveMe.The<Func<IMemoryCache>>();
+        var memoryCache = getMemoryCache();
+
+        if (clear)
+        {
+            (memoryCache as MemoryCache)?.Clear();
+        }
+
+        return memoryCache;
+    }
+
+    public static void ShouldHaveCount(this IMemoryCache memoryCache, int count) =>
+        ((MemoryCache)memoryCache).Count.ShouldBe(count);
 
     #endregion
 

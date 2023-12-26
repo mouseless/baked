@@ -20,7 +20,7 @@ public class MySqlDatabaseFeature(Setting<string> _connectionString, Setting<boo
         {
             var mysql = MySQLConfiguration.Standard
                 .ConnectionString(_connectionString)
-                .Dialect<MySQL57Dialect>();
+                .Dialect<CustomMySQL57Dialect>();
 
             // this should be in logging
             if (_showSql) { mysql.ShowSql(); }

@@ -1,5 +1,6 @@
 ﻿using Do.Architecture;
 using Do.Business;
+using Do.Caching;
 using Do.Core;
 using Do.Database;
 using Do.ExceptionHandling;
@@ -22,6 +23,7 @@ public abstract class ServiceSpec : Spec
 
     protected static ApplicationContext Init(
         Func<BusinessConfigurator, IFeature<BusinessConfigurator>> business,
+        Func<CachingConfigurator, IFeature<CachingConfigurator>>? caching = default,
         Func<CoreConfigurator, IFeature<CoreConfigurator>>? core = default,
         Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>>? database = default,
         Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>>? exceptionHandling = default,
@@ -30,6 +32,7 @@ public abstract class ServiceSpec : Spec
         Action<ApplicationDescriptor>? configure = default
     )
     {
+        caching ??= c => c.ScopedMemory();
         core ??= c => c.Mock();
         database ??= c => c.InMemory();
         exceptionHandling ??= c => c.Default();
@@ -46,6 +49,7 @@ public abstract class ServiceSpec : Spec
             app.Layers.AddTesting();
 
             app.Features.AddBusiness(business);
+            app.Features.AddCaching(caching);
             app.Features.AddCore(core);
             app.Features.AddDatabase(database);
             app.Features.AddExceptionHandling(exceptionHandling);
@@ -84,6 +88,7 @@ public abstract class ServiceSpec : Spec
         Session.Clear();
 
         GiveMe.The<IMockOverrider>().Reset();
+        GiveMe.AMemoryCache(clear: true);
     }
 
     protected virtual string? GetDefaultSettingsValue(string key) =>
