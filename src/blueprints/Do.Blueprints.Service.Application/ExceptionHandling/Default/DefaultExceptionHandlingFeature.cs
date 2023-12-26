@@ -16,9 +16,9 @@ public class DefaultExceptionHandlingFeature : IFeature<ExceptionHandlingConfigu
             services.AddProblemDetails();
         });
 
-        configurator.ConfigureMiddlewareCollection(middleware =>
+        configurator.ConfigureMiddlewareCollection(middlewares =>
         {
-            middleware.Add(app => app.UseExceptionHandler());
+            middlewares.Add(app => app.UseExceptionHandler());
         });
     }
 }

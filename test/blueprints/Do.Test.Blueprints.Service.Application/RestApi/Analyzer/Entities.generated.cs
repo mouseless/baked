@@ -20,9 +20,9 @@ public class EntitiesController
 
     [HttpGet]
     [Route("entities")]
-    public List<Entity> By([FromServices] Entities service, [FromQuery] ByRequest request, [FromQuery] int? take = null, [FromQuery] int? skip = null)
+    public List<Entity> By([FromServices] Entities target, [FromQuery] ByRequest request, [FromQuery] int? take = null, [FromQuery] int? skip = null)
     {
-        var result = service.By(
+        var result = target.By(
             guid: request.Guid,
             @string: request.String,
             stringData: request.StringData,
@@ -39,9 +39,9 @@ public class EntitiesController
 
     [HttpGet]
     [Route("entities/{id}")]
-    public Entity Get([FromServices] IQueryContext<Entity> service, Guid id)
+    public Entity Get([FromServices] IQueryContext<Entity> entityQuery, Guid id)
     {
-        return service.SingleById(id);
+        return entityQuery.SingleById(id);
     }
 
     public record NewRequest(
@@ -66,9 +66,9 @@ public class EntitiesController
 
     [HttpDelete]
     [Route("entities/{id}")]
-    public void Delete([FromServices] IQueryContext<Entity> service, [FromRoute] Guid id)
+    public void Delete([FromServices] IQueryContext<Entity> entityQuery, [FromRoute] Guid id)
     {
-        var target = service.SingleById(id);
+        var target = entityQuery.SingleById(id);
 
         target.Delete();
     }
@@ -88,9 +88,9 @@ public class EntitiesController
 
     [HttpPut]
     [Route("entities/{id}")]
-    public async Task Update([FromServices] IQueryContext<Entity> service, [FromRoute] Guid id, [FromBody] UpdateRequest request)
+    public async Task Update([FromServices] IQueryContext<Entity> entityQuery, [FromRoute] Guid id, [FromBody] UpdateRequest request)
     {
-        var target = service.SingleById(id);
+        var target = entityQuery.SingleById(id);
 
         await target.Update(request.Guid, request.String, request.StringData, request.Int32, request.Uri, request.Dynamic, request.Status, request.DateTime,
             useTransaction: request.useTransaction,
