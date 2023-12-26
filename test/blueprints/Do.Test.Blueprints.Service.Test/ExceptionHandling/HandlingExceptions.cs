@@ -11,6 +11,6 @@ public class HandlingExceptions : TestServiceSpec
 
         var task = () => singleton.TestException(handled: true);
 
-        task.ShouldThrow<HandledException>();
+        task.ShouldThrow<TestServiceHandledException>();
     }
 }

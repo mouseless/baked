@@ -11,7 +11,7 @@ public class Singleton(TimeProvider _system, Func<Entity> _newEntity, ITransacti
     {
         if (handled)
         {
-            throw new HandledException("A handled exception was thrown");
+            throw new TestServiceHandledException("A handled exception was thrown");
         }
 
         throw new InvalidOperationException();
