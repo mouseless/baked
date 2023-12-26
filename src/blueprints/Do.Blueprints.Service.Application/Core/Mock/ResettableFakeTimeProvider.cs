@@ -22,8 +22,8 @@ public class ResettableFakeTimeProvider : TimeProvider
     public void SetUtcNow(DateTimeOffset time) =>
         _inner.SetUtcNow(time);
 
-    public void Advance(TimeSpan delta)
-        => _inner.Advance(delta);
+    public void Advance(TimeSpan delta) =>
+        _inner.Advance(delta);
 
     public void SetLocalTimeZone(TimeZoneInfo localTimeZone) =>
         _inner.SetLocalTimeZone(localTimeZone);

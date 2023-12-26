@@ -1,6 +1,6 @@
 # Core
 
-This feature registers `ISystem` to services.
+This feature registers `TimeProvider.System` to services.
 
 Add this feature using `AddCore()` extension;
 
@@ -10,8 +10,8 @@ app.Features.AddCore(...);
 
 ## Dotnet
 
-Adds a local implementation of `ISystem` interface to services to be used
-throughout your application.
+Adds a local implementation of `TimeProvider.System` interface to services to be
+used throughout your application.
 
 ```csharp
 c => c.Dotnet()
