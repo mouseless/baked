@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using Domain.Business;
+using DomainModelOverReflection.Models.Domain;
+using System.Reflection;
 
 namespace DomainModelOverReflection.Models.Target;
 
@@ -8,7 +10,7 @@ public record ControllerModel(string Name, List<ActionModel> Actions)
         : this(type.Name, new())
     {
         var fields = type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic);
-        bool isQuery = fields.Any(f => f.IsPrivate && f.FieldType.IsAssignableTo(typeof(IQueryContext<>)));
+        bool isQuery = fields.Any(f => f.IsPrivate && f.FieldType.Name == typeof(IQueryContext<>).Name);
 
         var methods = type.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly) ?? Array.Empty<MethodInfo>();
 
@@ -20,6 +22,28 @@ public record ControllerModel(string Name, List<ActionModel> Actions)
                 {
                     Actions.Add(new(method, HttpMethod.Get));
                 }
+                else
+                {
+                    Actions.Add(new(method));
+                }
+            }
+        }
+    }
+
+    public ControllerModel(TypeModel typeModel)
+        : this(typeModel.Name, new())
+    {
+        bool isQuery = typeModel.Fields.Any(f => f.IsPrivate && f.Type.Name == typeof(IQueryContext<>).Name);
+
+        foreach (var method in typeModel.Methods)
+        {
+            if (isQuery)
+            {
+                Actions.Add(new(method, HttpMethod.Get));
+            }
+            else
+            {
+                Actions.Add(new(method));
             }
         }
     }

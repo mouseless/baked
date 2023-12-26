@@ -1,4 +1,4 @@
-﻿namespace DomainModelOverReflection;
+﻿namespace Domain.Business;
 
 public interface IEntityContext<T> where T : class
 {

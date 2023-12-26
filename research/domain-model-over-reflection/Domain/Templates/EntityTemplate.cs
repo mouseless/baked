@@ -1,5 +1,5 @@
 ﻿#pragma warning disable SA1649 // File name should match first type name
-namespace DomainModelOverReflection.Business;
+namespace Domain.Business;
 
 public class Entity_0
 {

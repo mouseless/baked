@@ -8,43 +8,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="Templates\OperationObjectTemplate.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>OperationObjectTemplate.tt</DependentUpon>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Domain\Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Templates\EntityTemplate.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>EntityTemplate.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Templates\OperationObjectTemplate.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>OperationObjectTemplate.tt</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Templates\EntityTemplate.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>EntityTemplate.cs</LastGenOutput>
-    </None>
-    <None Update="Templates\OperationObjectTemplate.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>OperationObjectTemplate.cs</LastGenOutput>
-    </None>
   </ItemGroup>
 
 </Project>

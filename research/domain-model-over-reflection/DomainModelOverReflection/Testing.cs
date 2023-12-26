@@ -1,4 +1,5 @@
 ﻿using BenchmarkDotNet.Attributes;
+using Domain.Business;
 using DomainModelOverReflection.Models.Target;
 using System.Reflection;
 
@@ -9,5 +10,5 @@ public class Testing
 {
     [Benchmark(Baseline = true)]
     public ApiModel Controller_models_using_reflection() =>
-        ApiModel.Build(Assembly.GetAssembly(typeof(Testing)));
+        ApiModel.Build(Assembly.GetAssembly(typeof(IQueryContext<>)));
 }

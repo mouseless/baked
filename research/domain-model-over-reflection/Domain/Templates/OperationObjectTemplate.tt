@@ -4,7 +4,7 @@
 <#@ import namespace="System.IO" #>
 <#@ output extension=".cs" #>
 #pragma warning disable SA1649 // File name should match first type name
-namespace DomainModelOverReflection.Business;
+namespace Domain.Business;
 <# for (int i = 0; i < 1000; ++i) { #>
 
 public class OperationObject_<#= i #>
