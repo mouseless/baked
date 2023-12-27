@@ -1,8 +1,8 @@
 ﻿using Domain.Business;
-using DomainModelOverReflection.Models.Domain;
+using DomainModelOverReflection.Models;
 using System.Reflection;
 
-namespace DomainModelOverReflection.Models.Target;
+namespace DomainModelOverReflection.Api;
 
 public record ControllerModel(string Name, List<ActionModel> Actions)
 {

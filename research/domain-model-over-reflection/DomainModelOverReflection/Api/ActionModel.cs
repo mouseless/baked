@@ -1,7 +1,7 @@
-﻿using DomainModelOverReflection.Models.Domain;
+﻿using DomainModelOverReflection.Models;
 using System.Reflection;
 
-namespace DomainModelOverReflection.Models.Target;
+namespace DomainModelOverReflection.Api;
 
 public record ActionModel(string Route, HttpMethod Method, Type ReturnType, List<ParameterModel> Parameters)
 {
@@ -31,7 +31,7 @@ public record ActionModel(string Route, HttpMethod Method, Type ReturnType, List
     }
 
     public ActionModel(MethodModel methodModel)
-        : this($"{methodModel.Target.Name}/{methodModel.Name}", HttpMethod.Get, methodModel.ReturnType, new())
+        : this($"{methodModel.Target?.Name}/{methodModel.Name}", HttpMethod.Get, methodModel.ReturnType, new())
     {
         Method = methodModel.Name.StartsWith("Delete") ? HttpMethod.Delete :
             methodModel.Name.StartsWith("Edit") ? HttpMethod.Put : HttpMethod.Post;

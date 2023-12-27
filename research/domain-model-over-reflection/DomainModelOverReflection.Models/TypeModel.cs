@@ -1,4 +1,4 @@
-﻿namespace DomainModelOverReflection.Models.Domain;
+﻿namespace DomainModelOverReflection.Models;
 
 public record TypeModel(
     string Name,

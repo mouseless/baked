@@ -1,3 +1,3 @@
-﻿namespace DomainModelOverReflection.Models.Domain;
+﻿namespace DomainModelOverReflection.Models;
 
 public record ParameterModel(string Name, Type Type);

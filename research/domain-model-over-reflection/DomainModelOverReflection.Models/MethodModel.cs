@@ -1,8 +1,8 @@
-﻿namespace DomainModelOverReflection.Models.Domain;
+﻿namespace DomainModelOverReflection.Models;
 
 public record MethodModel(
     string Name,
-    TypeModel Target,
+    TypeModel? Target,
     Type ReturnType,
     List<ParameterModel> Parameters,
     bool IsPublic

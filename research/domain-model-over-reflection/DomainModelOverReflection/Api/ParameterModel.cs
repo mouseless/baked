@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace DomainModelOverReflection.Models.Target;
+namespace DomainModelOverReflection.Api;
 
 public record ParameterModel(string Name, Type Type)
 {
@@ -8,7 +8,7 @@ public record ParameterModel(string Name, Type Type)
         : this(parameterInfo.Name ?? throw new("Parameter should have name"), parameterInfo.ParameterType)
     { }
 
-    public ParameterModel(Domain.ParameterModel parameterModel)
+    public ParameterModel(Models.ParameterModel parameterModel)
         : this(parameterModel.Name, parameterModel.Type)
     { }
 }
