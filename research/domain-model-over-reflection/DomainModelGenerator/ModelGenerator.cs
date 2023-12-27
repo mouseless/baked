@@ -27,8 +27,11 @@ public class ModelGenerator : IIncrementalGenerator
         {
             var symbol = compilation.GetSemanticModel(syntax.SyntaxTree).GetDeclaredSymbol(syntax) as INamedTypeSymbol;
 
-            builder.Append(TypeString(symbol!));
-            builder.AppendLine(",");
+            if (symbol is not null)
+            {
+                builder.Append(TypeString(symbol));
+                builder.AppendLine(",");
+            }
         }
 
         builder.Length--;
@@ -70,21 +73,14 @@ new(
         return typeString;
     }
 
-    string Methods(List<IMethodSymbol> methods) => $$"""new() { {{string.Join(", ", methods.Select(Method))}} }""";
+    string Methods(List<IMethodSymbol> methods) =>
+        $$"""new() { {{string.Join(", ", methods.Select(Method))}} }""";
 
-    string Method(IMethodSymbol method)
-    {
-        var methodString = $$"""new("{{method.Name}}", null, typeof({{GetTypeString(method.ReturnType)}}), {{Parameters(method.Parameters)}}, true)""";
+    string Method(IMethodSymbol method) =>
+        $$"""new("{{method.Name}}", null, typeof({{GetTypeString(method.ReturnType)}}), {{Parameters(method.Parameters)}}, true)""";
 
-        return methodString;
-    }
-
-    string Parameters(ImmutableArray<IParameterSymbol> parameters)
-    {
-        if (!parameters.Any()) { return "new()"; }
-
-        return $$"""new() { {{string.Join(", ", parameters.Select(Parameter))}} }""";
-    }
+    string Parameters(ImmutableArray<IParameterSymbol> parameters) =>
+        !parameters.Any() ? "new()" : $$"""new() { {{string.Join(", ", parameters.Select(Parameter))}} }""";
 
     string Parameter(IParameterSymbol parameter) =>
         $$"""new("{{parameter.Name}}", typeof({{GetTypeString(parameter.Type)}}))""";
