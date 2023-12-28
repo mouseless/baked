@@ -13,18 +13,15 @@ public record ControllerModel(string Name, List<ActionModel> Actions)
 
         var methods = type.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly) ?? Array.Empty<MethodInfo>();
 
-        foreach (var method in methods)
+        foreach (var method in methods.Where(m => !m.IsConstructor && !m.IsSpecialName && m.Name != "With"))
         {
-            if (!method.IsConstructor && !method.IsSpecialName)
+            if (isQuery)
             {
-                if (isQuery)
-                {
-                    Actions.Add(new(method, HttpMethod.Get));
-                }
-                else
-                {
-                    Actions.Add(new(method));
-                }
+                Actions.Add(new(method, HttpMethod.Get));
+            }
+            else
+            {
+                Actions.Add(new(method));
             }
         }
     }
@@ -34,7 +31,7 @@ public record ControllerModel(string Name, List<ActionModel> Actions)
     {
         bool isQuery = typeModel.Fields.Any(f => f.IsPrivate && f.Type.Name.Contains("IQueryContext"));
 
-        foreach (var method in typeModel.Methods.Where(m => m.IsPublic))
+        foreach (var method in typeModel.Methods.Where(m => m.IsPublic && m.Name != "With"))
         {
             if (isQuery)
             {

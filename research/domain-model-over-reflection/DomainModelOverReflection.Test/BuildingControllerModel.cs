@@ -30,6 +30,17 @@ public class BuildingControllerModel
                         Parameters: new()
                     )
                 }
+            ),
+            new(
+                Name: "TestOperationObject",
+                Actions: new List<ActionModel> {
+                    new(
+                        Route: "TestOperationObject/Process",
+                        Method: HttpMethod.Post,
+                        ReturnType: typeof(void),
+                        Parameters: new()
+                    )
+                }
             )
         };
 
