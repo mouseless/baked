@@ -82,7 +82,7 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
                     {
                         if (e is GenericADOException genericADOException)
                         {
-                            var logger = context.RequestServices.GetService<ILogger>();
+                            var logger = context.RequestServices.GetService<ILogger<DefaultOrmFeature>>();
                             logger?.LogError(exception: e.InnerException, message: e.InnerException?.Message);
                         }
 
