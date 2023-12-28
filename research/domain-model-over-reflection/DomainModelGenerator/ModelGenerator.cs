@@ -22,6 +22,7 @@ public class ModelGenerator : IIncrementalGenerator
 
     private void Execute(SourceProductionContext spc, Compilation compilation, ImmutableArray<ClassDeclarationSyntax> types)
     {
+        int counter = 0;
         var builder = new StringBuilder();
         foreach (var syntax in types)
         {
@@ -31,6 +32,7 @@ public class ModelGenerator : IIncrementalGenerator
             {
                 builder.Append(TypeString(symbol));
                 builder.AppendLine(",");
+                counter++;
             }
         }
 
@@ -45,7 +47,7 @@ namespace {{compilation.AssemblyName}};
                 
 public class DomainModel : IDomainModel
 {
-    static TypeModel[] _typeModels = new TypeModel[] 
+    static TypeModel[] _typeModels = new TypeModel[{{counter}}] 
     {
 {{builder}}
     };
@@ -73,19 +75,19 @@ public class DomainModel : IDomainModel
     }
 
     string Fields(List<IFieldSymbol> fields) =>
-        !fields.Any() ? "Array.Empty<FieldModel>()" : $$"""new FieldModel[] { {{string.Join(", ", fields.Select(Field))}} }""";
+        !fields.Any() ? "Array.Empty<FieldModel>()" : $$"""new FieldModel[{{fields.Count}}] { {{string.Join(", ", fields.Select(Field))}} }""";
 
     string Field(IFieldSymbol field) =>
         $"""new("{field.Name}", "{GetTypeString(field.Type)}", {(field.DeclaredAccessibility == Accessibility.Private).ToString().ToLowerInvariant()})""";
 
     string Methods(INamedTypeSymbol target, List<IMethodSymbol> methods) =>
-        !methods.Any() ? "Array.Empty<MethodModel>()" : $$"""new MethodModel[] { {{string.Join(", ", methods.Select(m => Method(target, m)))}} }""";
+        !methods.Any() ? "Array.Empty<MethodModel>()" : $$"""new MethodModel[{{methods.Count}}] { {{string.Join(", ", methods.Select(m => Method(target, m)))}} }""";
 
     string Method(INamedTypeSymbol target, IMethodSymbol method) =>
         $"""new("{method.Name}", "{GetTypeString(target)}", "{GetTypeString(method.ReturnType)}", {Parameters(method.Parameters)}, {(method.DeclaredAccessibility == Accessibility.Public).ToString().ToLowerInvariant()})""";
 
     string Parameters(ImmutableArray<IParameterSymbol> parameters) =>
-        !parameters.Any() ? "Array.Empty<ParameterModel>()" : $$"""new ParameterModel[] { {{string.Join(", ", parameters.Select(Parameter))}} }""";
+        !parameters.Any() ? "Array.Empty<ParameterModel>()" : $$"""new ParameterModel[{{parameters.Length}}] { {{string.Join(", ", parameters.Select(Parameter))}} }""";
 
     string Parameter(IParameterSymbol parameter) =>
         $"""new("{parameter.Name}", "{GetTypeString(parameter.Type)}")""";

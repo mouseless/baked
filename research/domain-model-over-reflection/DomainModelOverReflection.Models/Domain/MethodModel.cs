@@ -1,7 +1,7 @@
 ﻿namespace DomainModelOverReflection.Models.Domain;
 
 #pragma warning disable IDE1006 // Naming Styles
-public class MethodModel
+public struct MethodModel
 {
     public readonly string Name;
     public readonly string Target;

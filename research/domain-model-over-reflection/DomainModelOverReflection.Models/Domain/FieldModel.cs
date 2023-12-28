@@ -1,7 +1,7 @@
 ﻿namespace DomainModelOverReflection.Models.Domain;
 
 #pragma warning disable IDE1006 // Naming Styles
-public class FieldModel
+public struct FieldModel
 {
     public readonly string Name;
     public readonly string Type;
