@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -13,12 +13,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Templates\EntityTemplate.tt">
-      <LastGenOutput>EntityTemplate.cs</LastGenOutput>
+    <None Update="Templates\EntityTemplate.g.tt">
+      <LastGenOutput>EntityTemplate.g.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
-    <None Update="Templates\OperationObjectTemplate.tt">
-      <LastGenOutput>OperationObjectTemplate.cs</LastGenOutput>
+    <None Update="Templates\OperationObjectTemplate.g.tt">
+      <LastGenOutput>OperationObjectTemplate.g.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
   </ItemGroup>
@@ -28,15 +28,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Templates\EntityTemplate.cs">
+    <Compile Update="Templates\EntityTemplate.g.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>EntityTemplate.tt</DependentUpon>
+      <DependentUpon>EntityTemplate.g.tt</DependentUpon>
     </Compile>
-    <Compile Update="Templates\OperationObjectTemplate.cs">
+    <Compile Update="Templates\OperationObjectTemplate.g.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>OperationObjectTemplate.tt</DependentUpon>
+      <DependentUpon>OperationObjectTemplate.g.tt</DependentUpon>
     </Compile>
   </ItemGroup>
 
