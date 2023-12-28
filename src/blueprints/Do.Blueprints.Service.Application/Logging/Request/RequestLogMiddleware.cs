@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using NHibernate.Exceptions;
 
 namespace Do.Logging.Request;
 
@@ -11,20 +10,21 @@ public class RequestLogMiddleware(ILogger<RequestLogMiddleware> _logger, Request
     {
         _logger.LogInformation(message: $"Begin: {context.Request.Path}");
 
-        await _next(context);
+        try
+        {
+            await _next(context);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(exception: e, message: e.Message);
+
+            throw;
+        }
 
         var exception = context.Features.Get<IExceptionHandlerFeature>();
-
-        if (exception is not null && exception.Error is not null)
+        if (exception?.Error is not null)
         {
-            if (exception.Error is GenericADOException genericADOException)
-            {
-                _logger.LogError(exception: genericADOException.InnerException, message: genericADOException.InnerException!.Message);
-            }
-            else
-            {
-                _logger.LogError(exception: exception.Error, message: exception.Error.Message);
-            }
+            _logger.LogError(exception: exception.Error, message: exception.Error.Message);
         }
         else
         {
