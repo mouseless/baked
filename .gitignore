@@ -16,5 +16,4 @@ bin/
 **/.coverage/*
 
 # generated file
-**/Generated/**/*.cs
 **/.benchmark/**
