@@ -9,12 +9,13 @@ public struct MethodModel
     public readonly ParameterModel[] Parameters;
     public readonly bool IsPublic;
 
-    public MethodModel(string name, string target, string returnType, ParameterModel[] parameters, bool ısPublic)
+    public MethodModel(string name, string target, string returnType, ParameterModel[] parameters, bool isPublic)
     {
         Name = name;
         Target = target;
         ReturnType = returnType;
         Parameters = parameters;
-        IsPublic = ısPublic;
+        IsPublic = isPublic;
     }
 }
+#pragma warning restore IDE1006 // Naming Styles

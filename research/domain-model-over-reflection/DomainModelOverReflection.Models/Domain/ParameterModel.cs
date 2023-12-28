@@ -11,3 +11,4 @@ public struct ParameterModel
         Type = type;
     }
 }
+#pragma warning restore IDE1006 // Naming Styles

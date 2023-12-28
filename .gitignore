@@ -14,3 +14,7 @@ bin/
 
 # coverage reports
 **/.coverage/*
+
+# generated file
+**/Generated/**/*.cs
+**/.benchmark/**

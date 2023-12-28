@@ -18,3 +18,4 @@ public struct TypeModel
         Methods = methods;
     }
 }
+#pragma warning restore IDE1006 // Naming Styles
