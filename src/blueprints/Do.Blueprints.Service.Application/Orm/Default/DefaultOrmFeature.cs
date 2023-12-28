@@ -5,7 +5,6 @@ using FluentNHibernate.Mapping;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using NHibernate;
 using NHibernate.Exceptions;
 
