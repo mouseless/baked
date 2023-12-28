@@ -8,7 +8,7 @@ public record ParameterModel(string Name, Type Type)
         : this(parameterInfo.Name ?? throw new("Parameter should have name"), parameterInfo.ParameterType)
     { }
 
-    public ParameterModel(Models.ParameterModel parameterModel)
+    public ParameterModel(Models.Domain.ParameterModel parameterModel)
         : this(parameterModel.Name, parameterModel.Type)
     { }
 }

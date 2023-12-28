@@ -27,7 +27,7 @@ public class ModelGenerator : IIncrementalGenerator
         {
             var symbol = compilation.GetSemanticModel(syntax.SyntaxTree).GetDeclaredSymbol(syntax) as INamedTypeSymbol;
 
-            if (symbol is not null)
+            if (symbol is not null && symbol.ContainingNamespace.Name.EndsWith("Business"))
             {
                 builder.Append(TypeString(symbol));
                 builder.AppendLine(",");
@@ -37,11 +37,11 @@ public class ModelGenerator : IIncrementalGenerator
         builder.Length--;
 
         var code = $$"""
-using DomainModelOverReflection.Models;
+using DomainModelOverReflection.Models.Domain;
 using System;
 using System.Collections.Generic;
 
-namespace Domain.Business;
+namespace {{compilation.AssemblyName}};
                 
 public class DomainModel : IDomainModel
 {
@@ -61,9 +61,9 @@ public class DomainModel : IDomainModel
             new(
                 "{symbol.Name}",
                 typeof({GetTypeString(symbol)}),
-                {Methods(symbol.GetMembers().OfType<IMethodSymbol>().Where(m => m.MethodKind == MethodKind.Constructor).ToList())},
+                {Methods(symbol, symbol.GetMembers().OfType<IMethodSymbol>().Where(m => m.MethodKind == MethodKind.Constructor).ToList())},
                 {Fields(symbol.GetMembers().OfType<IFieldSymbol>().ToList())},
-                {Methods(symbol.GetMembers().OfType<IMethodSymbol>().Where(m => m.MethodKind == MethodKind.Ordinary).ToList())}
+                {Methods(symbol, symbol.GetMembers().OfType<IMethodSymbol>().Where(m => m.MethodKind == MethodKind.Ordinary).ToList())}
             )
             """;
 
@@ -76,11 +76,11 @@ public class DomainModel : IDomainModel
     string Field(IFieldSymbol field) =>
         $"""new("{field.Name}", typeof({GetTypeString(field.Type)}), {(field.DeclaredAccessibility == Accessibility.Private).ToString().ToLowerInvariant()})""";
 
-    string Methods(List<IMethodSymbol> methods) =>
-        $$"""new() { {{string.Join(", ", methods.Select(Method))}} }""";
+    string Methods(INamedTypeSymbol target, List<IMethodSymbol> methods) =>
+        $$"""new() { {{string.Join(", ", methods.Select(m => Method(target, m)))}} }""";
 
-    string Method(IMethodSymbol method) =>
-        $"""new("{method.Name}", null, typeof({GetTypeString(method.ReturnType)}), {Parameters(method.Parameters)}, {(method.DeclaredAccessibility == Accessibility.Public).ToString().ToLowerInvariant()})""";
+    string Method(INamedTypeSymbol target, IMethodSymbol method) =>
+        $"""new("{method.Name}", typeof({GetTypeString(target)}), typeof({GetTypeString(method.ReturnType)}), {Parameters(method.Parameters)}, {(method.DeclaredAccessibility == Accessibility.Public).ToString().ToLowerInvariant()})""";
 
     string Parameters(ImmutableArray<IParameterSymbol> parameters) =>
         !parameters.Any() ? "new()" : $$"""new() { {{string.Join(", ", parameters.Select(Parameter))}} }""";
@@ -88,5 +88,5 @@ public class DomainModel : IDomainModel
     string Parameter(IParameterSymbol parameter) =>
         $"""new("{parameter.Name}", typeof({GetTypeString(parameter.Type)}))""";
 
-    string GetTypeString(ITypeSymbol symbol) => symbol.ToDisplayString();
+    string GetTypeString(ITypeSymbol? symbol) => symbol?.ToDisplayString() ?? string.Empty;
 }

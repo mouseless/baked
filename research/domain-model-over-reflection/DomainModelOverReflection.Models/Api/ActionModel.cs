@@ -1,4 +1,4 @@
-﻿using DomainModelOverReflection.Models;
+﻿using DomainModelOverReflection.Models.Domain;
 using System.Reflection;
 
 namespace DomainModelOverReflection.Api;
@@ -20,7 +20,7 @@ public record ActionModel(string Route, HttpMethod Method, Type ReturnType, List
     }
 
     public ActionModel(MethodInfo methodInfo, HttpMethod httpMethod)
-        : this($"{methodInfo.Name}", httpMethod, methodInfo.ReturnType, new())
+        : this($"{methodInfo.DeclaringType?.Name}/{methodInfo.Name}", httpMethod, methodInfo.ReturnType, new())
     {
         var parameters = methodInfo.GetParameters() ?? Array.Empty<ParameterInfo>();
 
@@ -43,7 +43,7 @@ public record ActionModel(string Route, HttpMethod Method, Type ReturnType, List
     }
 
     public ActionModel(MethodModel methodModel, HttpMethod httpMethod)
-        : this($"{methodModel.Name}", httpMethod, methodModel.ReturnType, new())
+        : this($"{methodModel.Target?.Name}/{methodModel.Name}", httpMethod, methodModel.ReturnType, new())
     {
         foreach (var parameter in methodModel.Parameters)
         {

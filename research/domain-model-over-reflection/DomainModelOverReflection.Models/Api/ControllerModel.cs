@@ -1,5 +1,4 @@
-﻿using Domain.Business;
-using DomainModelOverReflection.Models;
+﻿using DomainModelOverReflection.Models.Domain;
 using System.Reflection;
 
 namespace DomainModelOverReflection.Api;
@@ -10,13 +9,13 @@ public record ControllerModel(string Name, List<ActionModel> Actions)
         : this(type.Name, new())
     {
         var fields = type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic);
-        bool isQuery = fields.Any(f => f.IsPrivate && f.FieldType.Name == typeof(IQueryContext<>).Name);
+        bool isQuery = fields.Any(f => f.IsPrivate && f.FieldType.Name.Contains("IQueryContext"));
 
         var methods = type.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly) ?? Array.Empty<MethodInfo>();
 
         foreach (var method in methods)
         {
-            if (!method.IsConstructor && !method.IsSpecialName && !method.CustomAttributes.Any())
+            if (!method.IsConstructor && !method.IsSpecialName)
             {
                 if (isQuery)
                 {
@@ -33,9 +32,9 @@ public record ControllerModel(string Name, List<ActionModel> Actions)
     public ControllerModel(TypeModel typeModel)
         : this(typeModel.Name, new())
     {
-        bool isQuery = typeModel.Fields.Any(f => f.IsPrivate && f.Type.Name == typeof(IQueryContext<>).Name);
+        bool isQuery = typeModel.Fields.Any(f => f.IsPrivate && f.Type.Name.Contains("IQueryContext"));
 
-        foreach (var method in typeModel.Methods)
+        foreach (var method in typeModel.Methods.Where(m => m.IsPublic))
         {
             if (isQuery)
             {

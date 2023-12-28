@@ -1,4 +1,4 @@
-﻿using DomainModelOverReflection.Models;
+﻿using DomainModelOverReflection.Models.Domain;
 using System.Reflection;
 
 namespace DomainModelOverReflection.Api;
@@ -13,7 +13,7 @@ public class ApiModel
 
         foreach (var type in types)
         {
-            if (type.Namespace == "Domain.Business")
+            if (type.Namespace is not null && type.Namespace.EndsWith("Business"))
             {
                 if (type.GetConstructors().Any(c => c.IsPublic && c.GetParameters().Any()))
                 {
