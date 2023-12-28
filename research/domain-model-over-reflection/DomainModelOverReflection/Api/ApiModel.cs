@@ -34,7 +34,7 @@ public class ApiModel
         return model;
     }
 
-    public static ApiModel Build(DomainModel domainModel)
+    public static ApiModel Build(IDomainModel domainModel)
     {
         var model = new ApiModel();
 

@@ -9,10 +9,7 @@ namespace Domain.Business;
 
 public class OperationObject_<#= i #>
 {
-    public OperationObject_<#= i #> With()
-    {
-        return this;
-    }
+    public OperationObject_<#= i #> With() => this;
 
     public void Process() { }
 }

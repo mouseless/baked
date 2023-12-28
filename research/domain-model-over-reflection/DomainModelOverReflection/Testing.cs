@@ -14,5 +14,5 @@ public class Testing
 
     [Benchmark]
     public ApiModel Controller_models_using_domain_model() =>
-        ApiModel.Build(DomainModelBuilder.BuildDomainModel());
+        ApiModel.Build(new DomainModel());
 }
