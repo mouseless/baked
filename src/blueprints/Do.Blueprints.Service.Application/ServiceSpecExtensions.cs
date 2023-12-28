@@ -222,7 +222,7 @@ public static class ServiceSpecExtensions
 
     public static TimeProvider TheTime(this Mocker mockMe,
         DateTime? now = default,
-        bool passSomeTime = false, // TODO - test edilecek
+        bool passSomeTime = false,
         bool reset = false
     )
     {
