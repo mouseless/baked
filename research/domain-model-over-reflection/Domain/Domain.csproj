@@ -5,6 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    <TransformOnBuild>true</TransformOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,12 +14,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Templates\EntityTemplate.g.tt">
-      <LastGenOutput>EntityTemplate.g.cs</LastGenOutput>
+    <None Update="Templates\EntityTemplate.tt">
+      <LastGenOutput>EntityTemplate.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
-    <None Update="Templates\OperationObjectTemplate.g.tt">
-      <LastGenOutput>OperationObjectTemplate.g.cs</LastGenOutput>
+    <None Update="Templates\OperationObjectTemplate.tt">
+      <LastGenOutput>OperationObjectTemplate.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
   </ItemGroup>
@@ -28,15 +29,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Templates\EntityTemplate.g.cs">
+    <Compile Update="Templates\EntityTemplate.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>EntityTemplate.g.tt</DependentUpon>
+      <DependentUpon>EntityTemplate.tt</DependentUpon>
     </Compile>
-    <Compile Update="Templates\OperationObjectTemplate.g.cs">
+    <Compile Update="Templates\OperationObjectTemplate.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>OperationObjectTemplate.g.tt</DependentUpon>
+      <DependentUpon>OperationObjectTemplate.tt</DependentUpon>
     </Compile>
   </ItemGroup>
 
