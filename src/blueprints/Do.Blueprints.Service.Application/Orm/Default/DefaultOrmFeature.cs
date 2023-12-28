@@ -5,6 +5,7 @@ using FluentNHibernate.Mapping;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using NHibernate;
 using NHibernate.Exceptions;
 
@@ -81,7 +82,9 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
                     {
                         if (e is GenericADOException genericADOException)
                         {
-                            throw genericADOException.InnerException!;
+                            var logger = context.RequestServices.GetService<ILogger>();
+
+                            logger?.LogError(exception: e, message: e.Message);
                         }
 
                         throw;
