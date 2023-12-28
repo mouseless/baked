@@ -1,4 +1,5 @@
 ﻿using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Engines;
 using Domain;
 using Domain.Business;
 using DomainModelOverReflection.Api;
@@ -6,7 +7,7 @@ using System.Reflection;
 
 namespace DomainModelOverReflection;
 
-[SimpleJob(launchCount: 1, warmupCount: 1, iterationCount: 2, invocationCount: 1)]
+[SimpleJob(runStrategy: RunStrategy.ColdStart, launchCount: 1, iterationCount: 1, invocationCount: 1)]
 public class Testing
 {
     [Benchmark(Baseline = true)]

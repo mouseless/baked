@@ -8,15 +8,18 @@ namespace DomainModelOverReflection.Test;
 [TestFixture]
 public class BuildingControllerModel
 {
-    static List<ControllerModel> Expected => new() {
+    [Test]
+    public void Controller_model_is_built_using_reflection()
+    {
+        List<ControllerModel> Expected = new() {
             new(
                 Name: "TestEntity",
                 Actions: new List<ActionModel> {
                     new(
                         Route: "TestEntity/Method",
                         Method: HttpMethod.Post,
-                        ReturnType: typeof(void),
-                        Parameters: new() { new("text", typeof(string)) }
+                        ReturnType: typeof(void).FullName!,
+                        Parameters: new() { new("text", typeof(string).FullName!) }
                     )
                 }
             ),
@@ -26,7 +29,7 @@ public class BuildingControllerModel
                     new(
                         Route: "TestEntities/All",
                         Method: HttpMethod.Get,
-                        ReturnType: typeof(List<TestEntity>),
+                        ReturnType: typeof(List<TestEntity>).FullName!,
                         Parameters: new()
                     )
                 }
@@ -37,16 +40,13 @@ public class BuildingControllerModel
                     new(
                         Route: "TestOperationObject/Process",
                         Method: HttpMethod.Post,
-                        ReturnType: typeof(void),
+                        ReturnType: typeof(void).FullName!,
                         Parameters: new()
                     )
                 }
             )
         };
 
-    [Test]
-    public void Controller_model_is_built_using_reflection()
-    {
         var apiModel = ApiModel.Build(typeof(TestEntity).Assembly);
         var actual = apiModel.ControllerModels;
 
@@ -56,6 +56,42 @@ public class BuildingControllerModel
     [Test]
     public void Controller_model_is_built_using_domain_model()
     {
+        List<ControllerModel> Expected = new() {
+            new(
+                Name: "TestEntity",
+                Actions: new List<ActionModel> {
+                    new(
+                        Route: "TestEntity/Method",
+                        Method: HttpMethod.Post,
+                        ReturnType: "void",
+                        Parameters: new() { new("text", "string") }
+                    )
+                }
+            ),
+            new(
+                Name: "TestEntities",
+                Actions: new List<ActionModel> {
+                    new(
+                        Route: "TestEntities/All",
+                        Method: HttpMethod.Get,
+                        ReturnType: "System.Collections.Generic.List<DomainModelOverReflection.Test.Business.TestEntity>",
+                        Parameters: new()
+                    )
+                }
+            ),
+            new(
+                Name: "TestOperationObject",
+                Actions: new List<ActionModel> {
+                    new(
+                        Route: "TestOperationObject/Process",
+                        Method: HttpMethod.Post,
+                        ReturnType: "void",
+                        Parameters: new()
+                    )
+                }
+            )
+        };
+
         var apiModel = ApiModel.Build(new DomainModel());
         var actual = apiModel.ControllerModels;
 

@@ -29,7 +29,7 @@ public record ControllerModel(string Name, List<ActionModel> Actions)
     public ControllerModel(TypeModel typeModel)
         : this(typeModel.Name, new())
     {
-        bool isQuery = typeModel.Fields.Any(f => f.IsPrivate && f.Type.Name.Contains("IQueryContext"));
+        bool isQuery = typeModel.Fields.Any(f => f.IsPrivate && f.Type.Contains("IQueryContext"));
 
         foreach (var method in typeModel.Methods.Where(m => m.IsPublic && m.Name != "With"))
         {

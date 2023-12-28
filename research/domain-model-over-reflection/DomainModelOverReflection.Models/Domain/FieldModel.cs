@@ -1,7 +1,17 @@
 ﻿namespace DomainModelOverReflection.Models.Domain;
 
-public record FieldModel(
-    string Name,
-    Type Type,
-    bool IsPrivate
-);
+#pragma warning disable IDE1006 // Naming Styles
+public class FieldModel
+{
+    public readonly string Name;
+    public readonly string Type;
+    public readonly bool IsPrivate;
+
+    public FieldModel(string name, string type, bool ısPrivate)
+    {
+        Name = name;
+        Type = type;
+        IsPrivate = ısPrivate;
+    }
+}
+#pragma warning restore IDE1006 // Naming Styles

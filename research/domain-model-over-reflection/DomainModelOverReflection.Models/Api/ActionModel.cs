@@ -3,13 +3,14 @@ using System.Reflection;
 
 namespace DomainModelOverReflection.Api;
 
-public record ActionModel(string Route, HttpMethod Method, Type ReturnType, List<ParameterModel> Parameters)
+public record ActionModel(string Route, HttpMethod Method, string ReturnType, List<ParameterModel> Parameters)
 {
     public ActionModel(MethodInfo methodInfo)
-        : this($"{methodInfo.DeclaringType?.Name}/{methodInfo.Name}", HttpMethod.Get, methodInfo.ReturnType, new())
+        : this($"{methodInfo.DeclaringType?.Name}/{methodInfo.Name}", HttpMethod.Get, string.Empty, new())
     {
         var parameters = methodInfo.GetParameters() ?? Array.Empty<ParameterInfo>();
 
+        ReturnType = methodInfo.ReturnType.FullName ?? string.Empty;
         Method = methodInfo.Name.StartsWith("Delete") ? HttpMethod.Delete :
             methodInfo.Name.StartsWith("Edit") ? HttpMethod.Put : HttpMethod.Post;
 
@@ -20,8 +21,9 @@ public record ActionModel(string Route, HttpMethod Method, Type ReturnType, List
     }
 
     public ActionModel(MethodInfo methodInfo, HttpMethod httpMethod)
-        : this($"{methodInfo.DeclaringType?.Name}/{methodInfo.Name}", httpMethod, methodInfo.ReturnType, new())
+        : this($"{methodInfo.DeclaringType?.Name}/{methodInfo.Name}", httpMethod, string.Empty, new())
     {
+        ReturnType = methodInfo.ReturnType.FullName ?? string.Empty;
         var parameters = methodInfo.GetParameters() ?? Array.Empty<ParameterInfo>();
 
         foreach (var parameter in parameters)
@@ -31,10 +33,11 @@ public record ActionModel(string Route, HttpMethod Method, Type ReturnType, List
     }
 
     public ActionModel(MethodModel methodModel)
-        : this($"{methodModel.Target?.Name}/{methodModel.Name}", HttpMethod.Get, methodModel.ReturnType, new())
+        : this(string.Empty, HttpMethod.Get, methodModel.ReturnType, new())
     {
         Method = methodModel.Name.StartsWith("Delete") ? HttpMethod.Delete :
             methodModel.Name.StartsWith("Edit") ? HttpMethod.Put : HttpMethod.Post;
+        Route = $"{methodModel.Target[(methodModel.Target.LastIndexOf('.') + 1)..]}/{methodModel.Name}";
 
         foreach (var parameter in methodModel.Parameters)
         {
@@ -43,8 +46,9 @@ public record ActionModel(string Route, HttpMethod Method, Type ReturnType, List
     }
 
     public ActionModel(MethodModel methodModel, HttpMethod httpMethod)
-        : this($"{methodModel.Target?.Name}/{methodModel.Name}", httpMethod, methodModel.ReturnType, new())
+        : this(string.Empty, httpMethod, methodModel.ReturnType, new())
     {
+        Route = $"{methodModel.Target[(methodModel.Target.LastIndexOf('.') + 1)..]}/{methodModel.Name}";
         foreach (var parameter in methodModel.Parameters)
         {
             Parameters.Add(new(parameter));

@@ -45,10 +45,12 @@ namespace {{compilation.AssemblyName}};
                 
 public class DomainModel : IDomainModel
 {
-    public List<TypeModel> TypeModels => new() 
+    static TypeModel[] _typeModels = new TypeModel[] 
     {
 {{builder}}
     };
+
+    public TypeModel[] TypeModels => _typeModels;
 }
 """;
 
@@ -60,7 +62,7 @@ public class DomainModel : IDomainModel
         var typeString = $"""
             new(
                 "{symbol.Name}",
-                typeof({GetTypeString(symbol)}),
+                "{GetTypeString(symbol)}",
                 {Methods(symbol, symbol.GetMembers().OfType<IMethodSymbol>().Where(m => m.MethodKind == MethodKind.Constructor).ToList())},
                 {Fields(symbol.GetMembers().OfType<IFieldSymbol>().ToList())},
                 {Methods(symbol, symbol.GetMembers().OfType<IMethodSymbol>().Where(m => m.MethodKind == MethodKind.Ordinary).ToList())}
@@ -71,22 +73,22 @@ public class DomainModel : IDomainModel
     }
 
     string Fields(List<IFieldSymbol> fields) =>
-        !fields.Any() ? "new()" : $$"""new() { {{string.Join(", ", fields.Select(Field))}} }""";
+        !fields.Any() ? "Array.Empty<FieldModel>()" : $$"""new FieldModel[] { {{string.Join(", ", fields.Select(Field))}} }""";
 
     string Field(IFieldSymbol field) =>
-        $"""new("{field.Name}", typeof({GetTypeString(field.Type)}), {(field.DeclaredAccessibility == Accessibility.Private).ToString().ToLowerInvariant()})""";
+        $"""new("{field.Name}", "{GetTypeString(field.Type)}", {(field.DeclaredAccessibility == Accessibility.Private).ToString().ToLowerInvariant()})""";
 
     string Methods(INamedTypeSymbol target, List<IMethodSymbol> methods) =>
-        $$"""new() { {{string.Join(", ", methods.Select(m => Method(target, m)))}} }""";
+        !methods.Any() ? "Array.Empty<MethodModel>()" : $$"""new MethodModel[] { {{string.Join(", ", methods.Select(m => Method(target, m)))}} }""";
 
     string Method(INamedTypeSymbol target, IMethodSymbol method) =>
-        $"""new("{method.Name}", typeof({GetTypeString(target)}), typeof({GetTypeString(method.ReturnType)}), {Parameters(method.Parameters)}, {(method.DeclaredAccessibility == Accessibility.Public).ToString().ToLowerInvariant()})""";
+        $"""new("{method.Name}", "{GetTypeString(target)}", "{GetTypeString(method.ReturnType)}", {Parameters(method.Parameters)}, {(method.DeclaredAccessibility == Accessibility.Public).ToString().ToLowerInvariant()})""";
 
     string Parameters(ImmutableArray<IParameterSymbol> parameters) =>
-        !parameters.Any() ? "new()" : $$"""new() { {{string.Join(", ", parameters.Select(Parameter))}} }""";
+        !parameters.Any() ? "Array.Empty<ParameterModel>()" : $$"""new ParameterModel[] { {{string.Join(", ", parameters.Select(Parameter))}} }""";
 
     string Parameter(IParameterSymbol parameter) =>
-        $"""new("{parameter.Name}", typeof({GetTypeString(parameter.Type)}))""";
+        $"""new("{parameter.Name}", "{GetTypeString(parameter.Type)}")""";
 
     string GetTypeString(ITypeSymbol? symbol) => symbol?.ToDisplayString() ?? string.Empty;
 }
