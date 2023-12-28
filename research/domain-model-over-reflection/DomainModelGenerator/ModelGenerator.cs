@@ -71,7 +71,7 @@ public class DomainModel : IDomainModel
     }
 
     string Fields(List<IFieldSymbol> fields) =>
-        $$"""new() { {{string.Join(", ", fields.Select(Field))}} }""";
+        !fields.Any() ? "new()" : $$"""new() { {{string.Join(", ", fields.Select(Field))}} }""";
 
     string Field(IFieldSymbol field) =>
         $"""new("{field.Name}", typeof({GetTypeString(field.Type)}), {(field.DeclaredAccessibility == Accessibility.Private).ToString().ToLowerInvariant()})""";
