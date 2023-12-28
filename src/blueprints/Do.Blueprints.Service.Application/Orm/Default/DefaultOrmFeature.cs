@@ -1,11 +1,13 @@
 ﻿using Do.Architecture;
-using Do.ExceptionHandling;
 using Do.Orm.Default.UserTypes;
 using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Mapping;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using NHibernate;
+using NHibernate.Exceptions;
 
 namespace Do.Orm.Default;
 
@@ -69,6 +71,25 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
 
         configurator.ConfigureMiddlewareCollection(middlewares =>
         {
+            middlewares.Add(app =>
+                app.Use(async (context, next) =>
+                {
+                    try
+                    {
+                        await next(context);
+                    }
+                    catch (Exception e)
+                    {
+                        if (e is GenericADOException genericADOException)
+                        {
+                            throw genericADOException.InnerException!;
+                        }
+
+                        throw;
+                    }
+                })
+            );
+
             middlewares.Add(app =>
             {
                 var lifetime = app.ApplicationServices.GetRequiredService<IHostApplicationLifetime>();

@@ -12,8 +12,6 @@ DO now supports .NET 8! Below you can find a task list to upgrade your projects.
 - [ ] Upgrade DO version
 - [ ] Syntax improvements
   - [ ] Use primary constructors
-    - Parameter name start with underscore
-    - Use primary c. where dependency injection and record exist
   - [ ] Use collection expressions
 - [ ] Use `[FromKeyedServices]` and `[FromServices]` in controller
 ```
