@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Do.Blueprints.Service", "sr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Do.Test.Blueprints.Service", "test\blueprints\Do.Test.Blueprints.Service\Do.Test.Blueprints.Service.csproj", "{063A65CC-F465-4E53-816E-048E05BC3F75}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Do.Test.Blueprints.Service.Test", "test\blueprints\Do.Test.Blueprints.Service.Test\Do.Test.Blueprints.Service.Test.csproj", "{C56E61A8-3B89-4972-A261-DE8454B2BCFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Do.Test.Blueprints.Service.Test", "test\blueprints\Do.Test.Blueprints.Service.Test\Do.Test.Blueprints.Service.Test.csproj", "{C56E61A8-3B89-4972-A261-DE8454B2BCFC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
