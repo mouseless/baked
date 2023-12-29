@@ -13,7 +13,7 @@ public record ControllerModel(string Name, List<ActionModel> Actions)
 
         var methods = type.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly) ?? Array.Empty<MethodInfo>();
 
-        foreach (var method in methods.Where(m => !m.IsConstructor && !m.IsSpecialName && m.Name != "With"))
+        foreach (var method in methods.Where(m => !m.IsConstructor && m.IsPublic && !m.IsSpecialName && m.Name != "With"))
         {
             if (isQuery)
             {
