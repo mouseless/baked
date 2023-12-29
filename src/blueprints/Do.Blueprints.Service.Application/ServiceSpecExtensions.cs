@@ -235,7 +235,7 @@ public static class ServiceSpecExtensions
 
         if (now is not null)
         {
-            fakeTimeProvider.SetUtcNow(new DateTimeOffset(now.Value));
+            fakeTimeProvider.SetUtcNow(new DateTimeOffset(now.Value, fakeTimeProvider.LocalTimeZone.BaseUtcOffset));
         }
 
         if (passSomeTime)
