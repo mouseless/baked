@@ -9,11 +9,11 @@ public struct FieldModel
     public readonly string Type;
     public readonly bool IsPrivate;
 
-    public FieldModel(string name, string type, bool ısPrivate)
+    public FieldModel(string name, string type, bool isPrivate)
     {
         Name = name;
         Type = type;
-        IsPrivate = ısPrivate;
+        IsPrivate = isPrivate;
     }
 
     public FieldModel(FieldInfo fieldInfo)
