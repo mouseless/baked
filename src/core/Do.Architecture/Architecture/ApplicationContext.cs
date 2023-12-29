@@ -2,7 +2,7 @@ namespace Do.Architecture;
 
 public class ApplicationContext
 {
-    readonly Dictionary<Type, object> _context = new();
+    readonly Dictionary<Type, object> _context = [];
 
     public void Add<T>(T item) where T : notnull => _context[typeof(T)] = item;
 

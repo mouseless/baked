@@ -12,7 +12,8 @@ public static class TestServiceSpecExtensions
        Uri? uri = default,
        object? @dynamic = default,
        Status? @enum = default,
-       DateTime? dateTime = default
+       DateTime? dateTime = default,
+       bool? setNowForDateTime = false
     ) => giveMe
         .A<Entity>()
         .With(
@@ -23,6 +24,7 @@ public static class TestServiceSpecExtensions
             uri ?? giveMe.AUrl(),
             dynamic ?? new { },
             @enum ?? Status.Disabled,
-            dateTime ?? giveMe.ADateTime()
+            dateTime ?? giveMe.ADateTime(),
+            setNowForDateTime ?? false
         );
 }

@@ -12,7 +12,7 @@ public class DefaultDocumentationFeature : IFeature<DocumentationConfigurator>
         {
             swaggerGenOptions.CustomSchemaIds(t =>
             {
-                string[] splitedNamespace = t.Namespace?.Split(".") ?? new string[0];
+                string[] splitedNamespace = t.Namespace?.Split(".") ?? [];
                 string name = t.IsNested && t.FullName is not null
                     ? t.FullName.Replace($"{t.Namespace}.", string.Empty).Replace("Controller", string.Empty).Replace("+", ".")
                     : t.Name;

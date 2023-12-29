@@ -66,7 +66,7 @@ public class AddingExtensions : ArchitectureSpec
     public void Layers_can_provide_multiple_configuration_targets()
     {
         var forge = GiveMe.AForge();
-        var layer = MockMe.ALayer(targets: new object[] { "text", 10 });
+        var layer = MockMe.ALayer(targets: ["text", 10]);
         var feature = MockMe.AFeature();
 
         var app = forge.Application(app =>
@@ -86,7 +86,7 @@ public class AddingExtensions : ArchitectureSpec
     public void Layers_are_skipped_when_they_provide_no_configuration_target()
     {
         var forge = GiveMe.AForge();
-        var layer = MockMe.ALayer(targets: new object[0]);
+        var layer = MockMe.ALayer(targets: []);
         var feature = MockMe.AFeature();
 
         var app = forge.Application(app =>

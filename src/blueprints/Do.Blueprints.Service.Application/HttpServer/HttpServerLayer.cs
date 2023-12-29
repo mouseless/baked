@@ -27,10 +27,9 @@ public class HttpServerLayer : LayerBase<AddServices, Build>
         yield return new Run(_middlewares);
     }
 
-    public class CreateBuilder : PhaseBase
+    public class CreateBuilder()
+        : PhaseBase(PhaseOrder.Earliest)
     {
-        public CreateBuilder() : base(PhaseOrder.Earliest) { }
-
         protected override void Initialize()
         {
             var build = WebApplication.CreateBuilder();
@@ -40,10 +39,9 @@ public class HttpServerLayer : LayerBase<AddServices, Build>
         }
     }
 
-    public class Build : PhaseBase<WebApplicationBuilder, IServiceCollection>
+    public class Build()
+        : PhaseBase<WebApplicationBuilder, IServiceCollection>(PhaseOrder.Latest)
     {
-        public Build() : base(PhaseOrder.Latest) { }
-
         protected override void Initialize(WebApplicationBuilder build, IServiceCollection services)
         {
             foreach (var service in services)
@@ -58,13 +56,9 @@ public class HttpServerLayer : LayerBase<AddServices, Build>
         }
     }
 
-    class Run : PhaseBase<WebApplication>
+    class Run(IMiddlewareCollection _middlewares)
+        : PhaseBase<WebApplication>(PhaseOrder.Latest)
     {
-        readonly IMiddlewareCollection _middlewares;
-
-        public Run(IMiddlewareCollection middlewares) : base(PhaseOrder.Latest) =>
-            _middlewares = middlewares;
-
         protected override void Initialize(WebApplication app)
         {
             foreach (var middleware in _middlewares.OrderBy(m => m.Order))

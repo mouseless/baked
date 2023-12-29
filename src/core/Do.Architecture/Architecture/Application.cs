@@ -1,14 +1,10 @@
 ﻿namespace Do.Architecture;
 
-public class Application
+public class Application(ApplicationContext _context)
 {
-    readonly ApplicationContext _context;
-
-    public Application(ApplicationContext context) => _context = context;
-
-    readonly List<ILayer> _layers = new();
-    readonly List<IFeature> _features = new();
-    readonly List<IPhase> _phases = new();
+    readonly List<ILayer> _layers = [];
+    readonly List<IFeature> _features = [];
+    readonly List<IPhase> _phases = [];
 
     internal Application With(ApplicationDescriptor descriptor)
     {

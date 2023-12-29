@@ -1,4 +1,4 @@
-﻿using Do.Core;
+﻿using Do.Core.Mock;
 using Do.MockOverrider;
 using Do.Testing;
 using Microsoft.Extensions.Caching.Memory;
@@ -179,7 +179,7 @@ public static class ServiceSpecExtensions
     )
     {
         defaultValueProvider ??= _ => default;
-        settings ??= new Dictionary<string, string>();
+        settings ??= [];
 
         var configuration = mockMe.Spec.GiveMe.The<IConfiguration>();
 
@@ -218,28 +218,32 @@ public static class ServiceSpecExtensions
 
     #endregion
 
-    #region System
+    #region TimeProvider
 
-    public static ISystem TheSystem(this Mocker mockMe,
+    public static TimeProvider TheTime(this Mocker mockMe,
         DateTime? now = default,
-        bool passSomeTime = false
+        bool passSomeTime = false,
+        bool reset = false
     )
     {
-        var system = mockMe.Spec.GiveMe.The<ISystem>();
-        var mock = Mock.Get(system);
+        var fakeTimeProvider = (ResettableFakeTimeProvider)mockMe.Spec.GiveMe.The<TimeProvider>();
+
+        if (reset)
+        {
+            fakeTimeProvider.Reset();
+        }
 
         if (now is not null)
         {
-            mock.Setup(c => c.Now).Returns(now.Value);
+            fakeTimeProvider.SetUtcNow(new(now.Value, fakeTimeProvider.LocalTimeZone.BaseUtcOffset));
         }
 
         if (passSomeTime)
         {
-            var localNow = system.Now;
-            mock.Setup(c => c.Now).Returns(localNow.AddSeconds(1));
+            fakeTimeProvider.Advance(TimeSpan.FromSeconds(1));
         }
 
-        return system;
+        return fakeTimeProvider;
     }
 
     #endregion

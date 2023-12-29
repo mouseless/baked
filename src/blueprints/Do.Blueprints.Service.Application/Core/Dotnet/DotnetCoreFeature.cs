@@ -9,7 +9,7 @@ public class DotnetCoreFeature : IFeature<CoreConfigurator>
     {
         configurator.ConfigureServiceCollection(services =>
         {
-            services.AddSingleton<ISystem, System>();
+            services.AddSingleton(TimeProvider.System);
         });
     }
 }

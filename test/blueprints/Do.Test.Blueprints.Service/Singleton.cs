@@ -1,29 +1,16 @@
-﻿using Do.Core;
-using Do.Database;
-using Do.ExceptionHandling;
+﻿using Do.Database;
 
 namespace Do.Test;
 
-public class Singleton
+public class Singleton(TimeProvider _timeProvider, Func<Entity> _newEntity, ITransaction _transaction)
 {
-    readonly ISystem _system;
-    readonly Func<Entity> _newEntity;
-    readonly ITransaction _transaction;
-
-    public Singleton(ISystem system, Func<Entity> newEntity, ITransaction transaction)
-    {
-        _system = system;
-        _newEntity = newEntity;
-        _transaction = transaction;
-    }
-
-    public DateTime GetNow() => _system.Now;
+    public DateTime GetNow() => _timeProvider.GetNow();
 
     public void TestException(bool handled)
     {
         if (handled)
         {
-            throw new HandledException("A handled exception was thrown");
+            throw new TestServiceHandledException("A handled exception was thrown");
         }
 
         throw new InvalidOperationException();
@@ -42,7 +29,7 @@ public class Singleton
                 uri: new("https://action.com"),
                 @dynamic: new { transaction = "action" },
                 @enum: Status.Enabled,
-                dateTime: _system.Now
+                dateTime: _timeProvider.GetNow()
             );
         });
 
@@ -60,7 +47,7 @@ public class Singleton
                 uri: new("https://func.com"),
                 @dynamic: new { transaction = "func" },
                 @enum: Status.Enabled,
-                dateTime: _system.Now
+                dateTime: _timeProvider.GetNow()
             )
         );
 
@@ -72,7 +59,7 @@ public class Singleton
             uri: new("https://rollback.com"),
             @dynamic: new { rollback = "rollback" },
             @enum: Status.Disabled,
-            dateTime: _system.Now
+            dateTime: _timeProvider.GetNow()
         );
 
         throw new();
@@ -98,7 +85,7 @@ public class Singleton
                 uri: new("https://func.com"),
                 @dynamic: new { transaction = "func" },
                 @enum: Status.Enabled,
-                dateTime: _system.Now
+                dateTime: _timeProvider.GetNow()
             )
         );
     }

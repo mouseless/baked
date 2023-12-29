@@ -1,6 +1,4 @@
-﻿using Do.ExceptionHandling;
-
-namespace Do.Test.ExceptionHandling;
+﻿namespace Do.Test.ExceptionHandling;
 
 public class HandlingExceptions : TestServiceSpec
 {
@@ -11,6 +9,6 @@ public class HandlingExceptions : TestServiceSpec
 
         var task = () => singleton.TestException(handled: true);
 
-        task.ShouldThrow<HandledException>();
+        task.ShouldThrow<TestServiceHandledException>();
     }
 }

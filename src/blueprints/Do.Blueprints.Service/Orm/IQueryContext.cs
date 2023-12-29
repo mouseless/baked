@@ -31,7 +31,7 @@ public interface IQueryContext<TEntity>
         if (take is not null) { result = result.Take(take.Value); }
         if (skip is not null) { result = result.Skip(skip.Value); }
 
-        return result.ToList();
+        return [.. result];
     }
 
     public List<TEntity> By<TOrderBy>(Expression<Func<TEntity, bool>> where,
@@ -49,7 +49,7 @@ public interface IQueryContext<TEntity>
         if (take is not null) { result = result.Take(take.Value); }
         if (skip is not null) { result = result.Skip(skip.Value); }
 
-        return result.ToList();
+        return [.. result];
     }
 
     public List<TEntity> All(
@@ -62,7 +62,7 @@ public interface IQueryContext<TEntity>
         if (take is not null) { result = result.Take(take.Value); }
         if (skip is not null) { result = result.Skip(skip.Value); }
 
-        return result.ToList();
+        return [.. result];
     }
 
     public List<TEntity> All<TOrderBy>(
@@ -80,7 +80,7 @@ public interface IQueryContext<TEntity>
         if (take is not null) { result = result.Take(take.Value); }
         if (skip is not null) { result = result.Skip(skip.Value); }
 
-        return result.ToList();
+        return [.. result];
     }
 
     IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> where) =>

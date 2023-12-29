@@ -8,18 +8,11 @@ namespace Do.Test;
 [ApiController]
 public class SingletonController
 {
-    readonly IServiceProvider _serviceProvider;
-
-    public SingletonController(IServiceProvider serviceProvider) =>
-        _serviceProvider = serviceProvider;
-
     [HttpGet]
     [Produces("application/json")]
     [Route("singleton/time")]
-    public DateTime GetNow()
+    public DateTime GetNow([FromServices] Singleton target)
     {
-        var target = _serviceProvider.GetRequiredService<Singleton>();
-
         var result = target.GetNow();
 
         return result;
@@ -28,30 +21,24 @@ public class SingletonController
     [HttpPost]
     [Produces("application/json")]
     [Route("singleton/test-transaction-action")]
-    public async Task TestTransactionAction()
+    public async Task TestTransactionAction([FromServices] Singleton target)
     {
-        var target = _serviceProvider.GetRequiredService<Singleton>();
-
         await target.TestTransactionAction();
     }
 
     [HttpPost]
     [Produces("application/json")]
     [Route("singleton/test-transaction-func")]
-    public async Task TestTransactionFunc()
+    public async Task TestTransactionFunc([FromServices] Singleton target)
     {
-        var target = _serviceProvider.GetRequiredService<Singleton>();
-
         await target.TestTransactionFunc();
     }
 
     [HttpPost]
     [Produces("application/json")]
     [Route("singleton/test-exception")]
-    public void TestException(bool handled)
+    public void TestException([FromServices] Singleton target, bool handled)
     {
-        var target = _serviceProvider.GetRequiredService<Singleton>();
-
         target.TestException(handled);
     }
 
@@ -60,13 +47,11 @@ public class SingletonController
     [HttpPost]
     [Produces("application/json")]
     [Route("singleton/test-transaction-nullable")]
-    public async Task TestTransactionNullable([FromBody] TestTransactionNullableRequest request)
+    public async Task TestTransactionNullable([FromServices] Singleton target, [FromServices] IQueryContext<Entity> entityQuery, [FromBody] TestTransactionNullableRequest request)
     {
-        var target = _serviceProvider.GetRequiredService<Singleton>();
-
         await target.TestTransactionNullable(
             entity: request.EntityId.HasValue
-                ? _serviceProvider.GetRequiredService<IQueryContext<Entity>>().SingleById(request.EntityId.Value)
+                ? entityQuery.SingleById(request.EntityId.Value)
                 : null
         );
     }
@@ -74,10 +59,8 @@ public class SingletonController
     [HttpPut]
     [Produces("application/json")]
     [Route("singleton/test-async-object")]
-    public async Task<object> TestAsyncObject([FromBody] object request)
+    public async Task<object> TestAsyncObject([FromServices] Singleton target, [FromBody] object request)
     {
-        var target = _serviceProvider.GetRequiredService<Singleton>();
-
         var result = await target.TestAsyncObject(request);
 
         return result;
@@ -86,10 +69,8 @@ public class SingletonController
     [HttpPut]
     [Produces("application/json")]
     [Route("singleton/test-object")]
-    public object TestObject([FromBody] object request)
+    public object TestObject([FromServices] Singleton target, [FromBody] object request)
     {
-        var target = _serviceProvider.GetRequiredService<Singleton>();
-
         var result = target.TestObject(request);
 
         return result;
