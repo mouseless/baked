@@ -1,15 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 
 namespace Do.ExceptionHandling.Default;
 
-public class ExceptionHandler(IEnumerable<IExceptionHandler> _handlers, IConfiguration _configuration)
+public class ExceptionHandler(IEnumerable<IExceptionHandler> _handlers, Func<ExceptionConfig> _exceptionConfig)
     : Microsoft.AspNetCore.Diagnostics.IExceptionHandler
 {
     readonly UnhandledExceptionHandler _unhandledExceptionHandler = new();
-
-    string ExceptionTypeUrl => _configuration.GetValue<string>("Exception:TypeUrl") ?? string.Empty;
 
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
@@ -18,7 +15,7 @@ public class ExceptionHandler(IEnumerable<IExceptionHandler> _handlers, IConfigu
 
         var problemDetails = new ProblemDetails
         {
-            Type = string.Format(ExceptionTypeUrl, ExceptionId(exception)),
+            Type = string.Format(_exceptionConfig().TypeUrl, ExceptionId(exception)),
             Title = ExceptionName(exception),
             Status = exceptionInfo.Code,
             Detail = exceptionInfo.Body,

@@ -2,7 +2,6 @@
 using Do.Configuration;
 using FluentNHibernate.Cfg.Db;
 using Microsoft.Extensions.DependencyInjection;
-using NHibernate.Dialect;
 
 namespace Do.Database.MySql;
 
