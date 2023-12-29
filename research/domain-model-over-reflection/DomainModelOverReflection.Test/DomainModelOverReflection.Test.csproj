@@ -14,8 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DomainModelGenerator\DomainModelGenerator.csproj" OutputItemType="Analyzer" />
-    <ProjectReference Include="..\Domain\Domain.csproj" />
+    <ProjectReference Include="..\DomainModelOverReflection.Generator\DomainModelOverReflection.Generator.csproj" OutputItemType="Analyzer" />
+    <ProjectReference Include="..\DomainModelOverReflection.Domain\DomainModelOverReflection.Domain.csproj" />
   </ItemGroup>
 
 </Project>

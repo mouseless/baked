@@ -1,5 +1,5 @@
-using Domain;
 using DomainModelOverReflection.Api;
+using DomainModelOverReflection.Domain;
 using DomainModelOverReflection.Models;
 using DomainModelOverReflection.Test.Business;
 using NUnit.Framework;

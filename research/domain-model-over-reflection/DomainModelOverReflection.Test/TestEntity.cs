@@ -1,4 +1,4 @@
-﻿using Domain.Business;
+﻿using DomainModelOverReflection.Domain.Business;
 
 namespace DomainModelOverReflection.Test.Business;
 

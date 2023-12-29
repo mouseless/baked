@@ -1,5 +1,5 @@
 ﻿#pragma warning disable SA1649 // File name should match first type name
-namespace Domain.Business;
+namespace DomainModelOverReflection.Domain.Business;
 
 public class OperationObject_0
 {

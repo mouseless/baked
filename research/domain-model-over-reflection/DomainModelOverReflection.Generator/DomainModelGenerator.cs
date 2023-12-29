@@ -6,7 +6,7 @@ using System.Text;
 namespace DomainModelGenerator;
 
 [Generator]
-public class ModelGenerator : IIncrementalGenerator
+public class DomainModelGenerator : IIncrementalGenerator
 {
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {

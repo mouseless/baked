@@ -1,9 +1,9 @@
 ﻿using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Engines;
 using BenchmarkDotNet.Jobs;
-using Domain;
-using Domain.Business;
 using DomainModelOverReflection.Api;
+using DomainModelOverReflection.Domain;
+using DomainModelOverReflection.Domain.Business;
 using System.Reflection;
 
 namespace DomainModelOverReflection;

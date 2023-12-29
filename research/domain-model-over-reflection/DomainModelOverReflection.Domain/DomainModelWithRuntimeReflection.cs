@@ -1,7 +1,7 @@
 ﻿using DomainModelOverReflection.Models.Domain;
 using System.Reflection;
 
-namespace Domain;
+namespace DomainModelOverReflection.Domain;
 
 public class DomainModelWithRuntimeReflection : IDomainModel
 {
