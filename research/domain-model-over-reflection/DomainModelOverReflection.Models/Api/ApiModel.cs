@@ -8,9 +8,7 @@ public class ApiModel
     public static ApiModel Build(Assembly? assembly)
     {
         var model = new ApiModel();
-
         var types = assembly?.GetTypes() ?? Array.Empty<Type>();
-
         foreach (var type in types)
         {
             if (type.Namespace is not null && type.Namespace.EndsWith("Business"))
@@ -37,7 +35,6 @@ public class ApiModel
     public static ApiModel Build(IDomainModel domainModel)
     {
         var model = new ApiModel();
-
         foreach (var type in domainModel.TypeModels)
         {
             if (type.Constructors?.Any(c => c.IsPublic && c.Parameters?.Any() == true) == true)
