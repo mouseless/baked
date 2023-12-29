@@ -10,7 +10,7 @@ public class DomainModelWithRuntimeReflection : IDomainModel
 
     readonly TypeModel[] _typeModels;
 
-    public DomainModelWithRuntimeReflection(TypeModel[] typeModels)
+    DomainModelWithRuntimeReflection(TypeModel[] typeModels)
     {
         _typeModels = typeModels;
     }
