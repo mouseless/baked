@@ -1,6 +1,4 @@
-﻿using Do.ExceptionHandling;
-
-namespace Do.Test.ExceptionHandling;
+﻿namespace Do.Test.ExceptionHandling;
 
 public class HandlingExceptions : TestServiceSpec
 {

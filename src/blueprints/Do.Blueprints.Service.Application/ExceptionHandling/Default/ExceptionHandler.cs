@@ -1,5 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
@@ -37,17 +36,17 @@ public class ExceptionHandler(IEnumerable<IExceptionHandler> _handlers, IConfigu
 
     string ExceptionName(Exception exception)
     {
-        string formattedName = Regex.Replace(exception.GetType().Name, @"(\B[A-Z])", " $1");
-        formattedName = Regex.Replace(formattedName, @" Exception$", string.Empty);
+        var wordsSeparatedBySpace = string.Join(" ", exception.GetType().Name.SplitWordsFromCapitalLetters());
+        var result = wordsSeparatedBySpace.Replace(" Exception", string.Empty);
 
-        return formattedName;
+        return result;
     }
 
     string ExceptionId(Exception exception)
     {
-        string formattedName = ExceptionName(exception);
-        formattedName = Regex.Replace(formattedName, @"\s+", "-").ToLower();
+        var exceptionName = ExceptionName(exception);
+        var result = exceptionName.Replace(" ", "-").ToLower();
 
-        return formattedName;
+        return result;
     }
 }
