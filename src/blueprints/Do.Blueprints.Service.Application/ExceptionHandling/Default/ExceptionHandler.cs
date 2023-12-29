@@ -45,7 +45,7 @@ public class ExceptionHandler(IEnumerable<IExceptionHandler> _handlers, IConfigu
 
     string ExceptionId(Exception exception)
     {
-        string formattedName = exception.ExceptionName();
+        string formattedName = ExceptionName(exception);
         formattedName = Regex.Replace(formattedName, @"\s+", "-").ToLower();
 
         return formattedName;
