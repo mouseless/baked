@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
@@ -18,8 +19,8 @@ public class ExceptionHandler(IEnumerable<IExceptionHandler> _handlers, IConfigu
 
         var problemDetails = new ProblemDetails
         {
-            Type = string.Format(ExceptionTypeUrl, exception.ExceptionId()),
-            Title = exception.ExceptionName(),
+            Type = string.Format(ExceptionTypeUrl, ExceptionId(exception)),
+            Title = ExceptionName(exception),
             Status = exceptionInfo.Code,
             Detail = exceptionInfo.Body,
             Extensions = exceptionInfo.ExtraData ?? []
@@ -32,5 +33,21 @@ public class ExceptionHandler(IEnumerable<IExceptionHandler> _handlers, IConfigu
             .WriteAsJsonAsync(problemDetails, cancellationToken);
 
         return true;
+    }
+
+    string ExceptionName(Exception exception)
+    {
+        string formattedName = Regex.Replace(exception.GetType().Name, @"(\B[A-Z])", " $1");
+        formattedName = Regex.Replace(formattedName, @" Exception$", string.Empty);
+
+        return formattedName;
+    }
+
+    string ExceptionId(Exception exception)
+    {
+        string formattedName = exception.ExceptionName();
+        formattedName = Regex.Replace(formattedName, @"\s+", "-").ToLower();
+
+        return formattedName;
     }
 }
