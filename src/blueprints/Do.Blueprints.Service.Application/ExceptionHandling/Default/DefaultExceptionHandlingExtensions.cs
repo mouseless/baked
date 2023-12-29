@@ -6,6 +6,7 @@ namespace Do;
 
 public static class DefaultExceptionHandlingExtensions
 {
-    public static DefaultExceptionHandlingFeature Default(this ExceptionHandlingConfigurator _, Setting<string> exceptionTypeUrl) =>
-        new(exceptionTypeUrl);
+    public static DefaultExceptionHandlingFeature Default(this ExceptionHandlingConfigurator _,
+        Setting<string>? exceptionTypeUrl = default
+    ) => new(exceptionTypeUrl);
 }

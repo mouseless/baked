@@ -1,3 +1,3 @@
 namespace Do.ExceptionHandling.Default;
 
-public record ExceptionConfig(string TypeUrl);
+public record ExceptionConfig(string? TypeUrl);

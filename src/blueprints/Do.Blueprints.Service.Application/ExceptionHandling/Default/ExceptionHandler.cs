@@ -13,9 +13,10 @@ public class ExceptionHandler(IEnumerable<IExceptionHandler> _handlers, Func<Exc
         var handler = _handlers.FirstOrDefault(h => h.CanHandle(exception)) ?? _unhandledExceptionHandler;
         ExceptionInfo exceptionInfo = handler.Handle(exception);
 
+        var type = string.Format(_exceptionConfig().TypeUrl ?? string.Empty, ExceptionId(exception));
         var problemDetails = new ProblemDetails
         {
-            Type = string.Format(_exceptionConfig().TypeUrl, ExceptionId(exception)),
+            Type = type == string.Empty ? null : type,
             Title = ExceptionName(exception),
             Status = exceptionInfo.Code,
             Detail = exceptionInfo.Body,

@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Do.ExceptionHandling.Default;
 
-public class DefaultExceptionHandlingFeature(Setting<string> _exceptionTypeUrl)
+public class DefaultExceptionHandlingFeature(Setting<string>? _exceptionTypeUrl = default)
     : IFeature<ExceptionHandlingConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
@@ -13,7 +13,7 @@ public class DefaultExceptionHandlingFeature(Setting<string> _exceptionTypeUrl)
         configurator.ConfigureServiceCollection(services =>
         {
             services.AddSingleton<IExceptionHandler, HandledExceptionHandler>();
-            services.AddSingleton<Func<ExceptionConfig>>(sp => () => new(_exceptionTypeUrl));
+            services.AddSingleton<Func<ExceptionConfig>>(sp => () => new(_exceptionTypeUrl?.GetValue()));
 
             services.AddExceptionHandler<ExceptionHandler>();
             services.AddProblemDetails();
