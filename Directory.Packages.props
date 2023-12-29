@@ -1,7 +1,9 @@
 <Project>
+
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
+
   <ItemGroup>
     <PackageVersion Include="BenchmarkDotNet" Version="0.13.11" />
     <PackageVersion Include="coverlet.collector" Version="6.0.0" />
@@ -23,4 +25,5 @@
     <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageVersion Include="System.Data.SQLite" Version="1.0.118" />
   </ItemGroup>
+
 </Project>
