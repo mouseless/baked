@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Do.ExceptionHandling.Default;
 
-public class ExceptionHandler(IEnumerable<IExceptionHandler> _handlers, ExceptionSettings _exceptionSettings)
+public class ExceptionHandler(IEnumerable<IExceptionHandler> _handlers, ExceptionHandlerSettings _settings)
     : Microsoft.AspNetCore.Diagnostics.IExceptionHandler
 {
     readonly UnhandledExceptionHandler _unhandledExceptionHandler = new();
@@ -26,8 +26,8 @@ public class ExceptionHandler(IEnumerable<IExceptionHandler> _handlers, Exceptio
     ProblemDetails ToProblemDetails(ExceptionInfo exceptionInfo) =>
         new()
         {
-            Type = _exceptionSettings.TypeUrlFormat is not null
-                ? string.Format(_exceptionSettings.TypeUrlFormat.GetValue(), SnakeCase(NameOf(exceptionInfo.Exception)))
+            Type = _settings.TypeUrlFormat is not null
+                ? string.Format(_settings.TypeUrlFormat.GetValue(), SnakeCase(NameOf(exceptionInfo.Exception)))
                 : null,
             Title = TitleCase(NameOf(exceptionInfo.Exception)),
             Status = exceptionInfo.Code,
