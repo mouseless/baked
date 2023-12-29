@@ -20,4 +20,3 @@ public class TestEntity
     protected internal virtual void InternalMethod() { }
     protected virtual void ProtectedMethod() { }
 }
-

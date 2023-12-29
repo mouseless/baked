@@ -10,4 +10,3 @@ public class TestEntities
 
     public List<TestEntity> All() => _context.All();
 }
-
