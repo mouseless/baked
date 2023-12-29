@@ -2,14 +2,13 @@
 
 namespace DomainModelOverReflection.Models.Domain;
 
-#pragma warning disable IDE1006 // Naming Styles
 public struct TypeModel
 {
-    public readonly string Name;
-    public readonly string Type;
-    public readonly MethodModel[]? Constructors;
-    public readonly FieldModel[]? Fields;
-    public readonly MethodModel[]? Methods;
+    public string Name { get; set; }
+    public string Type { get; set; }
+    public MethodModel[]? Constructors { get; set; }
+    public FieldModel[]? Fields { get; set; }
+    public MethodModel[]? Methods { get; set; }
 
     public TypeModel(string name, string type, MethodModel[]? constructors, FieldModel[]? fields, MethodModel[]? methods)
     {
@@ -33,4 +32,3 @@ public struct TypeModel
         Methods = methods.Where(m => !m.IsSpecialName).Select(m => new MethodModel(m)).ToArray();
     }
 }
-#pragma warning restore IDE1006 // Naming Styles

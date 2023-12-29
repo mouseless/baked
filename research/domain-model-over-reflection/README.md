@@ -50,7 +50,7 @@ relative amount of query and operation objects classes.
 First benchmarks are run with `RunStrategy.ColdStart` and single invocation
 and iteration to simulate application startup process.
 
-![Bencmark-1](Benchmark-1.jpg)
+![Benchmark-1](Benchmark-1.jpg)
 ![Benchmark-2](Benchmark-2.PNG)
 
 Second benchmarks are run with `RunStrategy.ColdStart` and 10 invocations

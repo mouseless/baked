@@ -24,16 +24,18 @@ public class Testing
     public ApiModel Controller_models_using_generated_domain_model() =>
         ApiModel.Build(new DomainModelWithGeneration());
 
-    static DomainModelWithRuntimeReflection _testing = default!;
+    static DomainModelWithRuntimeReflection _runtimeReflectionCache = default!;
 
     [Benchmark]
     public ApiModel Controller_models_using_runtime_built_domain_model()
     {
-        if (_testing is null)
+        // we cache this built domain model to have healty comparison
+        // when we run multiple invocations
+        if (_runtimeReflectionCache is null)
         {
-            _testing = DomainModelWithRuntimeReflection.Build(Assembly.GetAssembly(typeof(IQueryContext<>)) ?? throw new());
+            _runtimeReflectionCache = DomainModelWithRuntimeReflection.Build(Assembly.GetAssembly(typeof(IQueryContext<>)) ?? throw new());
         }
 
-        return ApiModel.Build(_testing);
+        return ApiModel.Build(_runtimeReflectionCache);
     }
 }

@@ -2,14 +2,13 @@
 
 namespace DomainModelOverReflection.Models.Domain;
 
-#pragma warning disable IDE1006 // Naming Styles
 public struct MethodModel
 {
-    public readonly string Name;
-    public readonly string Target;
-    public readonly string ReturnType;
-    public readonly ParameterModel[]? Parameters;
-    public readonly bool IsPublic;
+    public string Name { get; set; }
+    public string Target { get; set; }
+    public string ReturnType { get; set; }
+    public ParameterModel[]? Parameters { get; set; }
+    public bool IsPublic { get; set; }
 
     public MethodModel(string name, string target, string returnType, ParameterModel[]? parameters, bool isPublic)
     {
@@ -38,4 +37,3 @@ public struct MethodModel
         Parameters = methodInfo.GetParameters().Select(p => new ParameterModel(p)).ToArray();
     }
 }
-#pragma warning restore IDE1006 // Naming Styles

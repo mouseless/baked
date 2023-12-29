@@ -2,11 +2,10 @@
 
 namespace DomainModelOverReflection.Models.Domain;
 
-#pragma warning disable IDE1006 // Naming Styles
 public struct ParameterModel
 {
-    public readonly string Name;
-    public readonly string Type;
+    public string Name { get; set; }
+    public string Type { get; set; }
 
     public ParameterModel(string name, string type)
     {
@@ -20,4 +19,3 @@ public struct ParameterModel
         Type = parameterInfo.ParameterType.FullName ?? string.Empty;
     }
 }
-#pragma warning restore IDE1006 // Naming Styles

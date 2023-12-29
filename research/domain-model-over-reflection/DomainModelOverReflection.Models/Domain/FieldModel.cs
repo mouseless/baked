@@ -2,12 +2,11 @@
 
 namespace DomainModelOverReflection.Models.Domain;
 
-#pragma warning disable IDE1006 // Naming Styles
 public struct FieldModel
 {
-    public readonly string Name;
-    public readonly string Type;
-    public readonly bool IsPrivate;
+    public string Name { get; set; }
+    public string Type { get; set; }
+    public bool IsPrivate { get; set; }
 
     public FieldModel(string name, string type, bool isPrivate)
     {
@@ -23,4 +22,4 @@ public struct FieldModel
         IsPrivate = fieldInfo.IsPrivate;
     }
 }
-#pragma warning restore IDE1006 // Naming Styles
+
