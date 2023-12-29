@@ -1,12 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <TransformOnBuild>true</TransformOnBuild>
-  </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\DomainModelGenerator\DomainModelGenerator.csproj" OutputItemType="Analyzer" />
     <ProjectReference Include="..\DomainModelOverReflection.Models\DomainModelOverReflection.Models.csproj" />

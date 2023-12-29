@@ -11,7 +11,7 @@ public record ControllerModel(string Name, List<ActionModel> Actions)
         var fields = type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic);
         bool isQuery = fields.Any(f => f.IsPrivate && f.FieldType.Name.Contains("IQueryContext"));
 
-        var methods = type.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly) ?? Array.Empty<MethodInfo>();
+        var methods = type.GetMethods(BindingFlags.Public | BindingFlags.DeclaredOnly) ?? Array.Empty<MethodInfo>();
 
         foreach (var method in methods.Where(m => !m.IsConstructor && !m.IsSpecialName && m.Name != "With"))
         {

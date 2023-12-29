@@ -54,7 +54,7 @@ public class DomainModelWithGeneration : IDomainModel
 }
 """;
 
-        spc.AddSource("DomainModel.g.cs", code);
+        spc.AddSource("DomainModelWithGeneration.g.cs", code);
     }
 
     private string TypeString(INamedTypeSymbol symbol)
