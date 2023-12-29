@@ -29,17 +29,20 @@ public record ControllerModel(string Name, List<ActionModel> Actions)
     public ControllerModel(TypeModel typeModel)
         : this(typeModel.Name, new())
     {
-        bool isQuery = typeModel.Fields.Any(f => f.IsPrivate && f.Type.Contains("IQueryContext"));
+        bool isQuery = typeModel.Fields?.Any(f => f.IsPrivate && f.Type.Contains("IQueryContext")) == true;
 
-        foreach (var method in typeModel.Methods.Where(m => m.IsPublic && m.Name != "With"))
+        if (typeModel.Methods is not null)
         {
-            if (isQuery)
+            foreach (var method in typeModel.Methods.Where(m => m.IsPublic && m.Name != "With"))
             {
-                Actions.Add(new(method, HttpMethod.Get));
-            }
-            else
-            {
-                Actions.Add(new(method));
+                if (isQuery)
+                {
+                    Actions.Add(new(method, HttpMethod.Get));
+                }
+                else
+                {
+                    Actions.Add(new(method));
+                }
             }
         }
     }

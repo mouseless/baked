@@ -1,4 +1,6 @@
-﻿namespace DomainModelOverReflection.Models.Domain;
+﻿using System.Reflection;
+
+namespace DomainModelOverReflection.Models.Domain;
 
 #pragma warning disable IDE1006 // Naming Styles
 public struct FieldModel
@@ -12,6 +14,13 @@ public struct FieldModel
         Name = name;
         Type = type;
         IsPrivate = ısPrivate;
+    }
+
+    public FieldModel(FieldInfo fieldInfo)
+    {
+        Name = fieldInfo.Name;
+        Type = fieldInfo.FieldType.Name;
+        IsPrivate = fieldInfo.IsPrivate;
     }
 }
 #pragma warning restore IDE1006 // Naming Styles

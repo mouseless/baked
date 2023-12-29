@@ -41,14 +41,14 @@ public class ApiModel
         foreach (var type in domainModel.TypeModels)
         {
             //entity or query
-            if (type.Constructors.Any(c => c.IsPublic && c.Parameters.Any()))
+            if (type.Constructors?.Any(c => c.IsPublic && c.Parameters?.Any() == true) == true)
             {
                 model.ControllerModels.Add(new(type));
             }
             else
             {
                 // operation object
-                if (type.Methods.Any(m => m.Name == "With") && type.Methods.Any(m => m.Name == "Process"))
+                if (type.Methods?.Any(m => m.Name == "With") == true && type.Methods.Any(m => m.Name == "Process"))
                 {
                     model.ControllerModels.Add(new(type));
                 }

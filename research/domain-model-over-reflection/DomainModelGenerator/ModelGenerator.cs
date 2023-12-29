@@ -40,12 +40,10 @@ public class ModelGenerator : IIncrementalGenerator
 
         var code = $$"""
 using DomainModelOverReflection.Models.Domain;
-using System;
-using System.Collections.Generic;
 
 namespace {{compilation.AssemblyName}};
                 
-public class DomainModel : IDomainModel
+public class DomainModelWithGeneration : IDomainModel
 {
     static TypeModel[] _typeModels = new TypeModel[{{counter}}] 
     {
@@ -65,9 +63,9 @@ public class DomainModel : IDomainModel
             new(
                 "{symbol.Name}",
                 "{GetTypeString(symbol)}",
-                {Methods(symbol, symbol.GetMembers().OfType<IMethodSymbol>().Where(m => m.MethodKind == MethodKind.Constructor).ToList())},
-                {Fields(symbol.GetMembers().OfType<IFieldSymbol>().ToList())},
-                {Methods(symbol, symbol.GetMembers().OfType<IMethodSymbol>().Where(m => m.MethodKind == MethodKind.Ordinary).ToList())}
+                {Methods(symbol, symbol.GetMembers().OfType<IMethodSymbol>().Where(m => m.MethodKind == MethodKind.Constructor && !m.IsImplicitlyDeclared).ToList())},
+                {Fields(symbol.GetMembers().OfType<IFieldSymbol>().Where(f => !f.IsImplicitlyDeclared).ToList())},
+                {Methods(symbol, symbol.GetMembers().OfType<IMethodSymbol>().Where(m => m.MethodKind == MethodKind.Ordinary && !m.IsImplicitlyDeclared).ToList())}
             )
             """;
 
@@ -75,19 +73,19 @@ public class DomainModel : IDomainModel
     }
 
     string Fields(List<IFieldSymbol> fields) =>
-        !fields.Any() ? "Array.Empty<FieldModel>()" : $$"""new FieldModel[{{fields.Count}}] { {{string.Join(", ", fields.Select(Field))}} }""";
+        !fields.Any() ? "null" : $$"""new FieldModel[{{fields.Count}}] { {{string.Join(", ", fields.Select(Field))}} }""";
 
     string Field(IFieldSymbol field) =>
         $"""new("{field.Name}", "{GetTypeString(field.Type)}", {(field.DeclaredAccessibility == Accessibility.Private).ToString().ToLowerInvariant()})""";
 
     string Methods(INamedTypeSymbol target, List<IMethodSymbol> methods) =>
-        !methods.Any() ? "Array.Empty<MethodModel>()" : $$"""new MethodModel[{{methods.Count}}] { {{string.Join(", ", methods.Select(m => Method(target, m)))}} }""";
+        !methods.Any() ? "null" : $$"""new MethodModel[{{methods.Count}}] { {{string.Join(", ", methods.Select(m => Method(target, m)))}} }""";
 
     string Method(INamedTypeSymbol target, IMethodSymbol method) =>
         $"""new("{method.Name}", "{GetTypeString(target)}", "{GetTypeString(method.ReturnType)}", {Parameters(method.Parameters)}, {(method.DeclaredAccessibility == Accessibility.Public).ToString().ToLowerInvariant()})""";
 
     string Parameters(ImmutableArray<IParameterSymbol> parameters) =>
-        !parameters.Any() ? "Array.Empty<ParameterModel>()" : $$"""new ParameterModel[{{parameters.Length}}] { {{string.Join(", ", parameters.Select(Parameter))}} }""";
+        !parameters.Any() ? "null" : $$"""new ParameterModel[{{parameters.Length}}] { {{string.Join(", ", parameters.Select(Parameter))}} }""";
 
     string Parameter(IParameterSymbol parameter) =>
         $"""new("{parameter.Name}", "{GetTypeString(parameter.Type)}")""";

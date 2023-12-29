@@ -39,9 +39,12 @@ public record ActionModel(string Route, HttpMethod Method, string ReturnType, Li
             methodModel.Name.StartsWith("Edit") ? HttpMethod.Put : HttpMethod.Post;
         Route = $"{methodModel.Target[(methodModel.Target.LastIndexOf('.') + 1)..]}/{methodModel.Name}";
 
-        foreach (var parameter in methodModel.Parameters)
+        if (methodModel.Parameters is not null)
         {
-            Parameters.Add(new(parameter));
+            foreach (var parameter in methodModel.Parameters)
+            {
+                Parameters.Add(new(parameter));
+            }
         }
     }
 
@@ -49,9 +52,12 @@ public record ActionModel(string Route, HttpMethod Method, string ReturnType, Li
         : this(string.Empty, httpMethod, methodModel.ReturnType, new())
     {
         Route = $"{methodModel.Target[(methodModel.Target.LastIndexOf('.') + 1)..]}/{methodModel.Name}";
-        foreach (var parameter in methodModel.Parameters)
+        if (methodModel.Parameters is not null)
         {
-            Parameters.Add(new(parameter));
+            foreach (var parameter in methodModel.Parameters)
+            {
+                Parameters.Add(new(parameter));
+            }
         }
     }
 }
