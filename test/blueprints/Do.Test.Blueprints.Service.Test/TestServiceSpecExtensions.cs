@@ -13,7 +13,8 @@ public static class TestServiceSpecExtensions
        object? @dynamic = default,
        Status? @enum = default,
        DateTime? dateTime = default,
-       bool? setNowForDateTime = false) => giveMe
+       bool? setNowForDateTime = false
+    ) => giveMe
         .A<Entity>()
         .With(
             guid ?? Guid.NewGuid(),
