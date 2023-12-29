@@ -25,3 +25,4 @@ test:
 
 # dotnet test -c Release --collect:"XPlat Code Coverage" --logger trx --results-directory .coverage --settings test/runsettings.xml
 # reportgenerator -reports:.coverage\0d84daea-0041-4f8d-a93c-51d3d348fa69\coverage.cobertura.xml;.coverage\d606db4f-8ea5-4e9f-a304-f37b22a1f34b\coverage.cobertura.xml -targetdir:.coverage/report
+# add blueprints.service to coverage
