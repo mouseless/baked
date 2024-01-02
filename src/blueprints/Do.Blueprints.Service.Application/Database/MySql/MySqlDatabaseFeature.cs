@@ -2,19 +2,12 @@
 using Do.Configuration;
 using FluentNHibernate.Cfg.Db;
 using Microsoft.Extensions.DependencyInjection;
-using NHibernate.Dialect;
 
 namespace Do.Database.MySql;
 
-public class MySqlDatabaseFeature : IFeature<DatabaseConfigurator>
+public class MySqlDatabaseFeature(Setting<string> _connectionString, Setting<bool> _autoUpdateSchema, Setting<bool> _showSql)
+    : IFeature<DatabaseConfigurator>
 {
-    readonly Setting<string> _connectionString;
-    readonly Setting<bool> _autoUpdateSchema;
-    readonly Setting<bool> _showSql;
-
-    public MySqlDatabaseFeature(Setting<string> connectionString, Setting<bool> autoUpdateSchema, Setting<bool> showSql) =>
-        (_connectionString, _autoUpdateSchema, _showSql) = (connectionString, autoUpdateSchema, showSql);
-
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureServiceCollection(services =>

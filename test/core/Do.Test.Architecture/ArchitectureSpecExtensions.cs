@@ -32,8 +32,8 @@ public static class ArchitectureSpecExtensions
         ApplicationContext? context = default
     )
     {
-        layers ??= new[] { layer ?? giveMe.Spec.MockMe.ALayer() };
-        features ??= new[] { feature ?? giveMe.Spec.MockMe.AFeature() };
+        layers ??= [layer ?? giveMe.Spec.MockMe.ALayer()];
+        features ??= [feature ?? giveMe.Spec.MockMe.AFeature()];
 
         return giveMe.AForge(context: context).Application(app =>
         {
@@ -107,7 +107,7 @@ public static class ArchitectureSpecExtensions
     )
     {
         phaseContext ??= mockMe.Spec.GiveMe.APhaseContext(target: target, targets: targets);
-        phases ??= new[] { phase ?? mockMe.APhase() };
+        phases ??= [phase ?? mockMe.APhase()];
 
         var result = new Mock<ILayer>();
         result.Setup(l => l.GetPhases()).Returns(phases);
@@ -192,7 +192,7 @@ public static class ArchitectureSpecExtensions
         Action? onDispose = default
     )
     {
-        targets ??= new[] { target ?? new() };
+        targets ??= [target ?? new()];
         onDispose ??= () => { };
 
         var configurators = new List<LayerConfigurator>();

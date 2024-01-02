@@ -1,11 +1,13 @@
 ﻿using Do.Architecture;
-using Do.ExceptionHandling;
 using Do.Orm.Default.UserTypes;
 using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Mapping;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using NHibernate;
+using NHibernate.Exceptions;
 
 namespace Do.Orm.Default;
 
@@ -17,7 +19,6 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
         {
             services.AddScoped(typeof(IEntityContext<>), typeof(EntityContext<>));
             services.AddSingleton(typeof(IQueryContext<>), typeof(QueryContext<>));
-            services.AddSingleton<IExceptionHandler, CorruptedJsonDataExceptionHandler>();
         });
 
         configurator.ConfigureAutoPersistenceModel(model =>
@@ -70,6 +71,24 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
 
         configurator.ConfigureMiddlewareCollection(middlewares =>
         {
+            middlewares.Add(app =>
+                app.Use(async (context, next) =>
+                {
+                    try
+                    {
+                        await next(context);
+                    }
+                    catch (GenericADOException e)
+                    {
+                        context.RequestServices
+                            .GetRequiredService<ILogger<DefaultOrmFeature>>()
+                            .LogError(e.InnerException, e.InnerException?.Message);
+
+                        throw;
+                    }
+                })
+            );
+
             middlewares.Add(app =>
             {
                 var lifetime = app.ApplicationServices.GetRequiredService<IHostApplicationLifetime>();

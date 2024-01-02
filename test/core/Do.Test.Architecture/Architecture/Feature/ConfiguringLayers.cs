@@ -9,12 +9,9 @@ public class ConfiguringLayers : ArchitectureSpec
         public string? Value { get; set; }
     }
 
-    public class FeatureA : IFeature
+    public class FeatureA(string _value)
+        : IFeature
     {
-        readonly string _value;
-
-        public FeatureA(string value) => _value = value;
-
         public void Configure(LayerConfigurator configurator)
         {
             configurator.Configure((ConfigurationA configuration) => configuration.Value = _value);

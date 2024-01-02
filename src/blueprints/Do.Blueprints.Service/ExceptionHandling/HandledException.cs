@@ -2,10 +2,19 @@
 
 namespace Do.ExceptionHandling;
 
-public class HandledException : Exception
+public abstract class HandledException : Exception
 {
+    public virtual Dictionary<string, object?> ExtraData { get; private set; }
     public virtual HttpStatusCode StatusCode => HttpStatusCode.BadRequest;
 
-    public HandledException(string message) : base(message) { }
-    public HandledException(string message, Exception innerException) : base(message, innerException) { }
+    protected HandledException(string message,
+        Dictionary<string, object?>? extraData = default
+    ) : this(message, null, extraData) { }
+
+    protected HandledException(string message, Exception? innerException,
+        Dictionary<string, object?>? extraData = default
+    ) : base(message, innerException)
+    {
+        ExtraData = extraData ?? [];
+    }
 }

@@ -7,8 +7,8 @@ namespace Do.Orm.Default.UserTypes;
 
 public class ObjectUserType : CompositeUserTypeBase
 {
-    public override string[] PropertyNames => new[] { "Value" };
-    public override IType[] PropertyTypes => new[] { new JsonObjectStringType() };
+    public override string[] PropertyNames => ["Value"];
+    public override IType[] PropertyTypes => [new JsonObjectStringType()];
     public override Type ReturnedClass => typeof(object);
 
     public override object GetPropertyValue(object component, int property) => JsonConvert.SerializeObject(component);

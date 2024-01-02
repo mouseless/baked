@@ -3,14 +3,9 @@ using Do.Orm;
 
 namespace Do.Test;
 
-public class Entity
+public class Entity(IEntityContext<Entity> _context, ITransaction _transaction, TimeProvider _timeProvider)
 {
-    readonly IEntityContext<Entity> _context = default!;
-    readonly ITransaction _transaction = default!;
-
-    protected Entity() { }
-    public Entity(IEntityContext<Entity> context, ITransaction transaction) =>
-        (_context, _transaction) = (context, transaction);
+    protected Entity() : this(default!, default!, default!) { }
 
     public virtual Guid Id { get; protected set; } = default!;
     public virtual Guid Guid { get; protected set; } = default!;
@@ -30,7 +25,8 @@ public class Entity
         Uri? uri = default,
         object? @dynamic = default,
         Status? @enum = default,
-        DateTime? dateTime = default
+        DateTime? dateTime = default,
+        bool? setNowForDateTime = default
     )
     {
         Set(
@@ -41,7 +37,7 @@ public class Entity
             uri: uri,
             @dynamic: @dynamic,
             @enum: @enum,
-            dateTime: dateTime
+            dateTime: setNowForDateTime == true ? _timeProvider.GetNow() : dateTime
         );
 
         return _context.Insert(this);
@@ -122,13 +118,8 @@ public class Entity
     }
 }
 
-public class Entities
+public class Entities(IQueryContext<Entity> _context)
 {
-    readonly IQueryContext<Entity> _context;
-
-    public Entities(IQueryContext<Entity> context) =>
-        _context = context;
-
     public List<Entity> By(
         Guid? guid = default,
         string? @string = default,

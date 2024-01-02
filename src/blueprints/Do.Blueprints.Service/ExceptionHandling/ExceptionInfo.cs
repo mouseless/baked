@@ -1,3 +1,8 @@
 ﻿namespace Do.ExceptionHandling;
 
-public record ExceptionInfo(int Code, object Body);
+public record ExceptionInfo(
+    Exception Exception,
+    int Code,
+    string Body,
+    Dictionary<string, object?>? ExtraData = default
+);

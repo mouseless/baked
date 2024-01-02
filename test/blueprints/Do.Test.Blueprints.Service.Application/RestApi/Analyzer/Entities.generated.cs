@@ -6,37 +6,30 @@ using Microsoft.AspNetCore.Mvc;
 namespace Do.Test;
 
 [ApiController]
-public class EntityController
+public class EntitiesController
 {
-    readonly IServiceProvider _serviceProvider;
-
-    public EntityController(IServiceProvider serviceProvider) =>
-        _serviceProvider = serviceProvider;
-
     public record ByRequest(
-        Guid? guid = default,
-        string @string = default,
-        string stringData = default,
-        int? int32 = default,
-        Uri uri = default,
-        Status? status = default,
-        DateTime? dateTime = default
+        Guid? Guid = default,
+        string String = default,
+        string StringData = default,
+        int? Int32 = default,
+        Uri Uri = default,
+        Status? Status = default,
+        DateTime? DateTime = default
     );
 
     [HttpGet]
     [Route("entities")]
-    public List<Entity> By([FromQuery] ByRequest request, [FromQuery] int? take = null, [FromQuery] int? skip = null)
+    public List<Entity> By([FromServices] Entities target, [FromQuery] ByRequest request, [FromQuery] int? take = null, [FromQuery] int? skip = null)
     {
-        var target = _serviceProvider.GetRequiredService<Entities>();
-
         var result = target.By(
-            guid: request.guid,
-            @string: request.@string,
-            stringData: request.stringData,
-            int32: request.int32,
-            uri: request.uri,
-            status: request.status,
-            dateTime: request.dateTime,
+            guid: request.Guid,
+            @string: request.String,
+            stringData: request.StringData,
+            int32: request.Int32,
+            uri: request.Uri,
+            status: request.Status,
+            dateTime: request.DateTime,
             take: take,
             skip: skip
         );
@@ -46,11 +39,9 @@ public class EntityController
 
     [HttpGet]
     [Route("entities/{id}")]
-    public Entity Get(Guid id)
+    public Entity Get([FromServices] IQueryContext<Entity> entityQuery, Guid id)
     {
-        var target = _serviceProvider.GetRequiredService<IQueryContext<Entity>>();
-
-        return target.SingleById(id);
+        return entityQuery.SingleById(id);
     }
 
     public record NewRequest(
@@ -66,18 +57,18 @@ public class EntityController
 
     [HttpPost]
     [Route("entities")]
-    public Entity New([FromBody] NewRequest request)
+    public Entity New([FromServices] Func<Entity> newTarget, [FromBody] NewRequest request)
     {
-        var target = _serviceProvider.GetRequiredService<Entity>();
+        var target = newTarget();
 
         return target.With(request.Guid, request.String, request.StringData, request.Int32, request.Uri, request.Dynamic, request.Status, request.DateTime);
     }
 
     [HttpDelete]
     [Route("entities/{id}")]
-    public void Delete([FromRoute] Guid id)
+    public void Delete([FromServices] IQueryContext<Entity> entityQuery, [FromRoute] Guid id)
     {
-        var target = _serviceProvider.GetRequiredService<IQueryContext<Entity>>().SingleById(id);
+        var target = entityQuery.SingleById(id);
 
         target.Delete();
     }
@@ -97,9 +88,9 @@ public class EntityController
 
     [HttpPut]
     [Route("entities/{id}")]
-    public async Task Update([FromRoute] Guid id, [FromBody] UpdateRequest request)
+    public async Task Update([FromServices] IQueryContext<Entity> entityQuery, [FromRoute] Guid id, [FromBody] UpdateRequest request)
     {
-        var target = _serviceProvider.GetRequiredService<IQueryContext<Entity>>().SingleById(id);
+        var target = entityQuery.SingleById(id);
 
         await target.Update(request.Guid, request.String, request.StringData, request.Int32, request.Uri, request.Dynamic, request.Status, request.DateTime,
             useTransaction: request.useTransaction,

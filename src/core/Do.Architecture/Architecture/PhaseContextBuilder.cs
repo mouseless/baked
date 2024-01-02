@@ -2,7 +2,7 @@ namespace Do.Architecture;
 
 public class PhaseContextBuilder
 {
-    readonly List<LayerConfigurator> _configurators = new();
+    readonly List<LayerConfigurator> _configurators = [];
     Action? _onDispose;
 
     public PhaseContextBuilder Add<TTarget>(TTarget target)
