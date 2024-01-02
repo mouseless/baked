@@ -76,7 +76,10 @@ public abstract class ServiceSpec : Spec
         Settings = [];
 
         MockMe.TheConfiguration(settings: Settings, defaultValueProvider: GetDefaultSettingsValue);
-        MockMe.TheTime(now: new DateTime(2023, 09, 09, 10, 10, 00), reset: true);
+
+        // This is the initial release date of DO. Do not change this the avoid
+        // potential "Cannot go back in time." errors.
+        MockMe.TheTime(now: new DateTime(2023, 06, 15, 16, 59, 00), reset: true);
     }
 
     public override void TearDown()
