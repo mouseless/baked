@@ -76,6 +76,7 @@ jobs:
         with:
           name: packages
           path: packages/
+
   push-packages:
     name: Push Packages
     needs: pack-projects
@@ -118,6 +119,7 @@ jobs:
           name: docs
           path: docs/.theme/.output/public
           if-no-files-found: error
+
   publish-docs:
     needs: generate-docs
     name: Publish Docs
