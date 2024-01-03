@@ -92,6 +92,9 @@ public static class ArchitectureSpecExtensions
     public static void VerifyPrinted(this IBanner source) =>
         Mock.Get(source).Verify(b => b.Print());
 
+    public static DoBanner ADoBanner(this Stubber _) =>
+        new();
+
     #endregion
 
     #region Layer
