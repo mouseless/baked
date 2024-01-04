@@ -31,6 +31,21 @@ public class ConfiguringLayers : ArchitectureSpec
         configuration.Value.ShouldBe("test");
     }
 
+    public class FeatureConfigurator { }
+
+    [Test]
+    public void EmptyFeature_does_not_configure_layers()
+    {
+        var configuration = new ConfigurationA();
+        var configurator = GiveMe.ALayerConfigurator(configuration);
+
+        var featureA = Do.Architecture.Feature.Empty<FeatureConfigurator>();
+
+        featureA.Configure(configurator);
+
+        configuration.Value.ShouldBeNull();
+    }
+
     [Test]
     public void Layer_configurator_does_not_apply_given_action_when_given_type_does_not_match_current_target_type()
     {
