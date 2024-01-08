@@ -18,13 +18,8 @@ public class DependencyInjectionLayer : LayerBase<AddServices>
         yield return new AddServices(_services);
     }
 
-    public class AddServices : PhaseBase<DomainModel>
+    public class AddServices(IServiceCollection _services) : PhaseBase<DomainModel>(PhaseOrder.Early)
     {
-        readonly IServiceCollection _services;
-
-        public AddServices(IServiceCollection services) : base(PhaseOrder.Early) =>
-            _services = services;
-
         protected override void Initialize(DomainModel _)
         {
             Context.Add(_services);
