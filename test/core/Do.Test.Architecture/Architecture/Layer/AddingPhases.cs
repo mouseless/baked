@@ -152,8 +152,8 @@ public class AddingPhases : ArchitectureSpec
         var context = GiveMe.AnApplicationContext();
         var app = GiveMe.AnApplication(
             context: context,
-            phases: new IPhase[]
-            {
+            phases:
+            [
                 new StringIntAndBoolDependentAddsChar(
                     expectedString: "test",
                     expectedInt: 42,
@@ -170,7 +170,7 @@ public class AddingPhases : ArchitectureSpec
                     artifact: 42
                 ),
                 new IndependentAddsString(artifact: "test"),
-            }
+            ]
         );
 
         app.Run();

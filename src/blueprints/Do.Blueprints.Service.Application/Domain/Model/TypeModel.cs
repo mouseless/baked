@@ -9,10 +9,10 @@ public record TypeModel(
 )
 {
     public TypeModel(Type type)
-        : this(type, type.Name, new())
+        : this(type, type.Name, [])
     {
         var methodInfos = type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) ??
-            Array.Empty<MethodInfo>();
+            [];
 
         foreach (var method in methodInfos)
         {

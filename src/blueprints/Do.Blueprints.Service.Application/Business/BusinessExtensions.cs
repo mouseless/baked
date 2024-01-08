@@ -26,7 +26,7 @@ public static class BusinessExtensions
         source.AddTransient<TService, TImplementation>();
     }
 
-    static readonly MethodInfo _addScopedWithFactory = typeof(BusinessExtensions).GetMethod(nameof(AddScopedWithFactory), 1, new Type[] { typeof(IServiceCollection) }) ??
+    static readonly MethodInfo _addScopedWithFactory = typeof(BusinessExtensions).GetMethod(nameof(AddScopedWithFactory), 1, [typeof(IServiceCollection)]) ??
             throw new Exception("AddScopedWithFactory<T> should have existed");
 
     public static void AddScopedWithFactory(this IServiceCollection source, Type type) =>
