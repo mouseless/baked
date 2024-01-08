@@ -9,11 +9,13 @@ public static class BusinessExtensions
 {
     public static void AddBusiness(this List<IFeature> source, Func<BusinessConfigurator, IFeature<BusinessConfigurator>> configure) => source.Add(configure(new()));
 
-    static readonly MethodInfo _addTransientWithFactory = typeof(BusinessExtensions).GetMethod(nameof(AddTransientWithFactory), 1, [typeof(IServiceCollection)]) ??
-            throw new Exception("AddTransientWithFactory<T> should have existed");
+    static readonly MethodInfo _addTransientWithFactory = typeof(BusinessExtensions).GetMethod(nameof(AddTransientWithFactory), 2, [typeof(IServiceCollection)]) ??
+            throw new Exception("AddTransientWithFactory<TService, TImplementation> should have existed");
 
-    public static void AddTransientWithFactory(this IServiceCollection source, Type type) =>
-        _addTransientWithFactory.MakeGenericMethod(type).Invoke(null, new object[] { source });
+    public static void AddTransientWithFactory(this IServiceCollection source, Type service) =>
+        _addTransientWithFactory.MakeGenericMethod(service, service).Invoke(null, new object[] { source });
+    public static void AddTransientWithFactory(this IServiceCollection source, Type service, Type implementation) =>
+        _addTransientWithFactory.MakeGenericMethod(service, implementation).Invoke(null, [source]);
 
     public static void AddTransientWithFactory<TService>(this IServiceCollection source) where TService : class =>
         source.AddTransientWithFactory<TService, TService>();
@@ -26,11 +28,13 @@ public static class BusinessExtensions
         source.AddTransient<TService, TImplementation>();
     }
 
-    static readonly MethodInfo _addScopedWithFactory = typeof(BusinessExtensions).GetMethod(nameof(AddScopedWithFactory), 1, [typeof(IServiceCollection)]) ??
-            throw new Exception("AddScopedWithFactory<T> should have existed");
+    static readonly MethodInfo _addScopedWithFactory = typeof(BusinessExtensions).GetMethod(nameof(AddScopedWithFactory), 2, [typeof(IServiceCollection)]) ??
+            throw new Exception("AddScopedWithFactory<TService, TImplementation> should have existed");
 
-    public static void AddScopedWithFactory(this IServiceCollection source, Type type) =>
-        _addScopedWithFactory.MakeGenericMethod(type).Invoke(null, new object[] { source });
+    public static void AddScopedWithFactory(this IServiceCollection source, Type service) =>
+        _addScopedWithFactory.MakeGenericMethod(service, service).Invoke(null, new object[] { source });
+    public static void AddScopedWithFactory(this IServiceCollection source, Type service, Type implementation) =>
+        _addScopedWithFactory.MakeGenericMethod(service, implementation).Invoke(null, [source]);
     public static void AddScopedWithFactory<TService>(this IServiceCollection source) where TService : class =>
         source.AddScopedWithFactory<TService, TService>();
 
