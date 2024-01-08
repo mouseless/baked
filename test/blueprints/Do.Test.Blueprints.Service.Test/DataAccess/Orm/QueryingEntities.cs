@@ -1,6 +1,6 @@
 ﻿using Do.Orm;
 
-namespace Do.Test.Orm;
+namespace Do.Test.DataAccess.Orm;
 
 public class QueryingEntities : TestServiceSpec
 {
@@ -9,9 +9,8 @@ public class QueryingEntities : TestServiceSpec
     {
         var guid = GiveMe.AGuid("b4b6bd2b-b8f3-414e-bd84-1e044cbe77dc");
         var entity = GiveMe.AnEntity(guid: guid);
-        var entitites = GiveMe.The<IQueryContext<Entity>>();
 
-        var actual = entitites.SingleBy(e => e.Guid == guid);
+        var actual = GiveMe.The<IQueryContext<Entity>>().SingleBy(e => e.Guid == guid);
 
         actual.ShouldBeEquivalentTo(entity);
     }
@@ -22,9 +21,8 @@ public class QueryingEntities : TestServiceSpec
         var guid = GiveMe.AGuid("b4b6bd2b-b8f3-414e-bd84-1e044cbe77dc");
         var entity = GiveMe.AnEntity(guid: guid);
         GiveMe.AnEntity();
-        var entitites = GiveMe.The<IQueryContext<Entity>>();
 
-        var actual = entitites.FirstBy(e => e.Guid == guid);
+        var actual = GiveMe.The<IQueryContext<Entity>>().FirstBy(e => e.Guid == guid);
 
         actual.ShouldBeEquivalentTo(entity);
     }
@@ -35,9 +33,8 @@ public class QueryingEntities : TestServiceSpec
         var guid = GiveMe.AGuid("b4b6bd2b-b8f3-414e-bd84-1e044cbe77dc");
         GiveMe.AnEntity(int32: 2);
         var entity = GiveMe.AnEntity(guid: guid, int32: 1);
-        var entitites = GiveMe.The<IQueryContext<Entity>>();
 
-        var actual = entitites.FirstBy(e => true, orderBy: e => e.Int32);
+        var actual = GiveMe.The<IQueryContext<Entity>>().FirstBy(e => true, orderBy: e => e.Int32);
 
         actual.ShouldBeEquivalentTo(entity);
     }
@@ -48,9 +45,8 @@ public class QueryingEntities : TestServiceSpec
         var guid = GiveMe.AGuid("b4b6bd2b-b8f3-414e-bd84-1e044cbe77dc");
         GiveMe.AnEntity(int32: 1);
         var entity = GiveMe.AnEntity(guid: guid, int32: 2);
-        var entitites = GiveMe.The<IQueryContext<Entity>>();
 
-        var actual = entitites.FirstBy(e => true, orderByDescending: e => e.Int32);
+        var actual = GiveMe.The<IQueryContext<Entity>>().FirstBy(e => true, orderByDescending: e => e.Int32);
 
         actual.ShouldBeEquivalentTo(entity);
     }
@@ -60,9 +56,8 @@ public class QueryingEntities : TestServiceSpec
     {
         var firstEntity = GiveMe.AnEntity(int32: 2);
         var secondEntity = GiveMe.AnEntity(int32: 1);
-        var entitites = GiveMe.The<IQueryContext<Entity>>();
 
-        var actual = entitites.By(e => e.Int32 > 0, orderBy: e => e.Int32);
+        var actual = GiveMe.The<IQueryContext<Entity>>().By(e => e.Int32 > 0, orderBy: e => e.Int32);
 
         actual.ShouldBe([secondEntity, firstEntity]);
     }
@@ -72,9 +67,8 @@ public class QueryingEntities : TestServiceSpec
     {
         var firstEntity = GiveMe.AnEntity(int32: 2);
         var secondEntity = GiveMe.AnEntity(int32: 1);
-        var entitites = GiveMe.The<IQueryContext<Entity>>();
 
-        var actual = entitites.By(e => true, orderByDescending: e => e.Int32);
+        var actual = GiveMe.The<IQueryContext<Entity>>().By(e => true, orderByDescending: e => e.Int32);
 
         actual.ShouldBe([firstEntity, secondEntity]);
     }
@@ -84,9 +78,8 @@ public class QueryingEntities : TestServiceSpec
     {
         var firstEntity = GiveMe.AnEntity(int32: 2);
         var secondEntity = GiveMe.AnEntity(int32: 1);
-        var entitites = GiveMe.The<IQueryContext<Entity>>();
 
-        var actual = entitites.By(e => true, orderBy: e => e.Int32, skip: 1);
+        var actual = GiveMe.The<IQueryContext<Entity>>().By(e => true, orderBy: e => e.Int32, skip: 1);
 
         actual.ShouldBe([firstEntity]);
     }
@@ -96,9 +89,8 @@ public class QueryingEntities : TestServiceSpec
     {
         var firstEntity = GiveMe.AnEntity(int32: 2);
         var secondEntity = GiveMe.AnEntity(int32: 1);
-        var entitites = GiveMe.The<IQueryContext<Entity>>();
 
-        var actual = entitites.By(e => true, orderBy: e => e.Int32, take: 1);
+        var actual = GiveMe.The<IQueryContext<Entity>>().By(e => true, orderBy: e => e.Int32, take: 1);
 
         actual.ShouldBe([secondEntity]);
     }
@@ -108,9 +100,8 @@ public class QueryingEntities : TestServiceSpec
     {
         var firstEntity = GiveMe.AnEntity(int32: 2);
         var secondEntity = GiveMe.AnEntity(int32: 1);
-        var entitites = GiveMe.The<IQueryContext<Entity>>();
 
-        var actual = entitites.All();
+        var actual = GiveMe.The<IQueryContext<Entity>>().All();
 
         actual.ShouldBe([firstEntity, secondEntity]);
     }
@@ -120,9 +111,8 @@ public class QueryingEntities : TestServiceSpec
     {
         var firstEntity = GiveMe.AnEntity(int32: 2);
         var secondEntity = GiveMe.AnEntity(int32: 1);
-        var entitites = GiveMe.The<IQueryContext<Entity>>();
 
-        var actual = entitites.All(orderBy: e => e.Int32);
+        var actual = GiveMe.The<IQueryContext<Entity>>().All(orderBy: e => e.Int32);
 
         actual.ShouldBe([secondEntity, firstEntity]);
     }
@@ -132,9 +122,8 @@ public class QueryingEntities : TestServiceSpec
     {
         var firstEntity = GiveMe.AnEntity(int32: 2);
         var secondEntity = GiveMe.AnEntity(int32: 1);
-        var entitites = GiveMe.The<IQueryContext<Entity>>();
 
-        var actual = entitites.All(orderByDescending: e => e.Int32);
+        var actual = GiveMe.The<IQueryContext<Entity>>().All(orderByDescending: e => e.Int32);
 
         actual.ShouldBe([firstEntity, secondEntity]);
     }
@@ -144,9 +133,8 @@ public class QueryingEntities : TestServiceSpec
     {
         var firstEntity = GiveMe.AnEntity(int32: 2);
         var secondEntity = GiveMe.AnEntity(int32: 1);
-        var entitites = GiveMe.The<IQueryContext<Entity>>();
 
-        var actual = entitites.All(orderBy: e => e.Int32, skip: 1);
+        var actual = GiveMe.The<IQueryContext<Entity>>().All(orderBy: e => e.Int32, skip: 1);
 
         actual.ShouldBe([firstEntity]);
     }
@@ -156,9 +144,8 @@ public class QueryingEntities : TestServiceSpec
     {
         var firstEntity = GiveMe.AnEntity(int32: 2);
         var secondEntity = GiveMe.AnEntity(int32: 1);
-        var entitites = GiveMe.The<IQueryContext<Entity>>();
 
-        var actual = entitites.All(orderBy: e => e.Int32, take: 1);
+        var actual = GiveMe.The<IQueryContext<Entity>>().All(orderBy: e => e.Int32, take: 1);
 
         actual.ShouldBe([secondEntity]);
     }
