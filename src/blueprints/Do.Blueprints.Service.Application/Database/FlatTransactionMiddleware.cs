@@ -6,13 +6,8 @@ using ISession = NHibernate.ISession;
 
 namespace Do.Database;
 
-public class FlatTransactionMiddleware
+public class FlatTransactionMiddleware(RequestDelegate _next)
 {
-    readonly RequestDelegate _next;
-
-    public FlatTransactionMiddleware(RequestDelegate next) =>
-        _next = next;
-
     public async Task InvokeAsync(HttpContext context)
     {
         using (var session = context.RequestServices.GetRequiredService<ISession>())

@@ -3,14 +3,9 @@ using NHibernate;
 
 namespace Do.Database;
 
-public class FlatTransaction : ITransaction
+public class FlatTransaction(Func<ISession> _getSession, ILogger<FlatTransaction> _logger)
+    : ITransaction
 {
-    readonly Func<ISession> _getSession;
-    readonly ILogger<FlatTransaction> _logger;
-
-    public FlatTransaction(Func<ISession> getSession, ILogger<FlatTransaction> log) =>
-        (_getSession, _logger) = (getSession, log);
-
     public async Task CommitAsync(Action action)
     {
         action();
@@ -43,15 +38,19 @@ public class FlatTransaction : ITransaction
         return result;
     }
 
-    public async Task CommitAsync<TEntity>(TEntity entity, Action<TEntity> action)
+    public async Task CommitAsync<TEntity>(TEntity? entity, Action<TEntity> action)
     {
+        if (entity is null) { return; }
+
         action(entity);
 
         await CommitAndBeginNewTransaction();
     }
 
-    public async Task CommitAsync<TEntity>(TEntity entity, Func<TEntity, Task> action)
+    public async Task CommitAsync<TEntity>(TEntity? entity, Func<TEntity, Task> action)
     {
+        if (entity is null) { return; }
+
         await action(entity);
 
         await CommitAndBeginNewTransaction();

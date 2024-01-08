@@ -3,7 +3,7 @@ namespace Do.Architecture;
 public class PhaseContextBuilder
 {
     readonly IPhase _phase = default!;
-    readonly List<LayerConfigurator> _configurators = new();
+    readonly List<LayerConfigurator> _configurators = [];
     Action? _onDispose;
 
     internal PhaseContextBuilder(IPhase phase) => _phase = phase;

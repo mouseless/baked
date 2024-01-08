@@ -38,20 +38,18 @@ public class TestingLayer : LayerBase<AddServices>
         yield return new Run();
     }
 
-    public class CreateConfigurationManager : PhaseBase
+    public class CreateConfigurationManager()
+        : PhaseBase(PhaseOrder.Earliest)
     {
-        public CreateConfigurationManager() : base(PhaseOrder.Earliest) { }
-
         protected override void Initialize()
         {
             Context.Add(new ConfigurationManager());
         }
     }
 
-    class Run : PhaseBase<IServiceCollection>
+    class Run()
+        : PhaseBase<IServiceCollection>(PhaseOrder.Latest)
     {
-        public Run() : base(PhaseOrder.Latest) { }
-
         protected override void Initialize(IServiceCollection services)
         {
             var serviceProvider = services.BuildServiceProvider();
