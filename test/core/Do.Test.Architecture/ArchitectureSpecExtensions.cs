@@ -1,4 +1,9 @@
-﻿namespace Do.Test;
+﻿using Do.Architecture;
+using Do.Branding;
+using Do.Testing;
+using System.Reflection;
+
+namespace Do.Test;
 
 public static class ArchitectureSpecExtensions
 {

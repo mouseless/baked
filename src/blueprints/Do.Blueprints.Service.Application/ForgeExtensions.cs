@@ -14,7 +14,7 @@ namespace Do;
 public static class ForgeExtensions
 {
     public static Application Service(this Forge source,
-        Func<BusinessConfigurator, IFeature<BusinessConfigurator>> business = default,
+        Func<BusinessConfigurator, IFeature<BusinessConfigurator>>? business = default,
         Func<CachingConfigurator, IFeature<CachingConfigurator>>? caching = default,
         Func<CoreConfigurator, IFeature<CoreConfigurator>>? core = default,
         Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>>? database = default,

@@ -9,13 +9,12 @@ public static class BusinessExtensions
 {
     public static void AddBusiness(this List<IFeature> source, Func<BusinessConfigurator, IFeature<BusinessConfigurator>> configure) => source.Add(configure(new()));
 
-    static readonly MethodInfo _addTransientWithFactory = typeof(BusinessExtensions).GetMethod(nameof(AddTransientWithFactory), 1, new Type[] { typeof(IServiceCollection) }) ??
+    static readonly MethodInfo _addTransientWithFactory = typeof(BusinessExtensions).GetMethod(nameof(AddTransientWithFactory), 1, [typeof(IServiceCollection)]) ??
             throw new Exception("AddTransientWithFactory<T> should have existed");
 
     public static void AddTransientWithFactory(this IServiceCollection source, Type type) =>
         _addTransientWithFactory.MakeGenericMethod(type).Invoke(null, new object[] { source });
 
-    public static void AddTransientWithFactory<T>(this IServiceCollection source) where T : class
     public static void AddTransientWithFactory<TService>(this IServiceCollection source) where TService : class =>
         source.AddTransientWithFactory<TService, TService>();
 
@@ -32,7 +31,6 @@ public static class BusinessExtensions
 
     public static void AddScopedWithFactory(this IServiceCollection source, Type type) =>
         _addScopedWithFactory.MakeGenericMethod(type).Invoke(null, new object[] { source });
-    public static void AddScopedWithFactory<T>(this IServiceCollection source) where T : class
     public static void AddScopedWithFactory<TService>(this IServiceCollection source) where TService : class =>
         source.AddScopedWithFactory<TService, TService>();
 
