@@ -48,3 +48,21 @@ Features with default options are;
 | Logging            | Request       |                 |          |
 | Mocking Overrider  |               | First Interface |          |
 | Orm                | Default       | Default         |          |
+
+Phase execution order;
+
+```mermaid
+flowchart TD
+    AS[AddServices]
+    B[Build]
+    BC[BuildConfiguration]
+    BD[BuildDomain]
+    CB[CreateBuilder]
+    R[Run]
+    CB -->|ConfigurationManager| BC
+    CB -->|ConfigurationManager| BD
+    BD -->|DomainModel| AS
+    CB -->|WebApplicationBuilder| B
+    AS -->|IServiceCollection| B
+    B -->|WebApplication|R
+```    
