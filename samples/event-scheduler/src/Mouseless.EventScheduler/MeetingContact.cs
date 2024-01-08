@@ -2,15 +2,9 @@
 
 namespace Mouseless.EventScheduler;
 
-public class MeetingContact
+public class MeetingContact(IEntityContext<MeetingContact> _context)
 {
-    readonly IEntityContext<MeetingContact> _context = default!;
-
-    protected MeetingContact() { }
-    public MeetingContact(IEntityContext<MeetingContact> entityContext)
-    {
-        _context = entityContext;
-    }
+    protected MeetingContact() : this(default!) { }
 
     public virtual Guid Id { get; protected set; } = default!;
     public virtual Meeting Meeting { get; protected set; } = default!;
@@ -30,13 +24,8 @@ public class MeetingContact
     }
 }
 
-public class MeetingContacts
+public class MeetingContacts(IQueryContext<MeetingContact> _context)
 {
-    IQueryContext<MeetingContact> _context;
-
-    public MeetingContacts(IQueryContext<MeetingContact> context) =>
-        _context = context;
-
     internal List<MeetingContact> ByMeeting(Meeting meeting) =>
         _context.By(mc => mc.Meeting == meeting);
 }
