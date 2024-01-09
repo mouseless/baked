@@ -16,4 +16,3 @@ This feature implementation registers `Func<IMemoryCache>` factory with scoped
 ```csharp
 c => c.ScopedMemory()
 ```
-
