@@ -7,7 +7,8 @@ public class PhaseContext : IDisposable
     public IEnumerable<LayerConfigurator> Configurators { get; }
     public Action? OnDispose { get; init; }
 
-    public PhaseContext(IEnumerable<LayerConfigurator> configurators) => Configurators = new List<LayerConfigurator>(configurators);
+    public PhaseContext(IEnumerable<LayerConfigurator> configurators) =>
+        Configurators = new List<LayerConfigurator>(configurators);
 
     void IDisposable.Dispose() => OnDispose?.Invoke();
 }

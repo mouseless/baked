@@ -31,7 +31,7 @@ public class MockOverrider : IMockOverrider
             var getMethod = typeof(Mock).GetMethod(nameof(Mock.Get), BindingFlags.Static | BindingFlags.Public) ?? throw new InvalidOperationException("method should not be null");
             var genericGetMethod = getMethod.MakeGenericMethod(descriptor.Type);
 
-            Mock mock = (Mock)(genericGetMethod.Invoke(null, new[] { mockedObject }) ?? throw new InvalidOperationException("invoke result should not be null"));
+            Mock mock = (Mock)(genericGetMethod.Invoke(null, [mockedObject]) ?? throw new InvalidOperationException("invoke result should not be null"));
 
             mock.Reset();
             descriptor.Setup?.Invoke(mock);
