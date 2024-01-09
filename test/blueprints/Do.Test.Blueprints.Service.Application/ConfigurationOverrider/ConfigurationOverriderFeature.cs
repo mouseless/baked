@@ -16,7 +16,11 @@ public class ConfigurationOverriderFeature : IFeature
         {
             types.Add<Entity>();
             types.Add<Entities>();
+            types.Add<OperationObject>();
+            types.Add<Record>();
             types.Add<Singleton>();
+            types.Add<Status>();
+            types.Add<Struct>();
         });
 
         configurator.ConfigureAutoPersistenceModel(model =>
