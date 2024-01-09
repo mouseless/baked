@@ -18,7 +18,6 @@ public abstract class PhaseBase(PhaseOrder order = PhaseOrder.Normal)
 public abstract class PhaseBase<T>(PhaseOrder order = PhaseOrder.Normal)
     : PhaseBase(order)
 {
-
     protected override sealed bool IsReady => Context.Has<T>();
     protected override sealed void Initialize() => Initialize(Context.Get<T>());
 
