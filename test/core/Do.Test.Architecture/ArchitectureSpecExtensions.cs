@@ -203,7 +203,7 @@ public static class ArchitectureSpecExtensions
                 .FirstOrDefault(c => c.Name == nameof(LayerConfigurator.Create) && c.GetGenericArguments().Length == 1);
             create.ShouldNotBeNull();
 
-            var configurator = create.MakeGenericMethod(t.GetType()).Invoke(null, new[] { t });
+            var configurator = create.MakeGenericMethod(t.GetType()).Invoke(null, [t]);
             configurator.ShouldNotBeNull();
 
             configurators.Add((LayerConfigurator)configurator);
