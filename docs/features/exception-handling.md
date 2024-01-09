@@ -11,5 +11,5 @@ app.Features.AddExceptionHandling(...);
 Adds default exception handler.
 
 ```csharp
-c => c.Default()
+c => c.Default(typeUrlFormat: "https://my-service.com/errors/{0}")
 ```

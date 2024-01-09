@@ -8,18 +8,11 @@ namespace Mouseless.EventScheduler;
 [ApiController]
 public class ContactController
 {
-    readonly IServiceProvider _serviceProvider;
-
-    public ContactController(IServiceProvider serviceProvider) =>
-        _serviceProvider = serviceProvider;
-
     [HttpGet]
     [Produces("application/json")]
     [Route("contacts")]
-    public List<Contact> All()
+    public List<Contact> All([FromServices] Contacts target)
     {
-        var target = _serviceProvider.GetRequiredService<Contacts>();
-
         return target.All();
     }
 
@@ -28,11 +21,11 @@ public class ContactController
     [HttpPost]
     [Produces("application/json")]
     [Route("contacts")]
-    public Contact New([FromBody] NewRequest request)
+    public Contact New([FromServices] Func<Contact> newTarget, [FromBody] NewRequest request)
     {
-        var target = _serviceProvider.GetRequiredService<Func<Contact>>();
+        var target = newTarget();
 
-        return target().With(request.Name);
+        return target.With(request.Name);
     }
 
     public record EditRequest(string Name);
@@ -40,9 +33,9 @@ public class ContactController
     [HttpPatch]
     [Produces("application/json")]
     [Route("contacts/{id}")]
-    public Contact Edit([FromRoute] Guid id, [FromBody] EditRequest request)
+    public Contact Edit([FromServices] IQueryContext<Contact> contactQuery, [FromRoute] Guid id, [FromBody] EditRequest request)
     {
-        var target = _serviceProvider.GetRequiredService<IQueryContext<Contact>>().SingleById(id);
+        var target = contactQuery.SingleById(id);
 
         target.Edit(request.Name);
 

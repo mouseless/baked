@@ -15,10 +15,9 @@ public class ConfigurationLayer : LayerBase<BuildConfiguration>
         yield return new BuildConfiguration();
     }
 
-    public class BuildConfiguration : PhaseBase<ConfigurationManager>
+    public class BuildConfiguration()
+        : PhaseBase<ConfigurationManager>(PhaseOrder.Earliest)
     {
-        public BuildConfiguration() : base(PhaseOrder.Earliest) { }
-
         protected override void Initialize(ConfigurationManager configurationManager)
         {
             Settings.SetConfigurationRoot(configurationManager);

@@ -67,7 +67,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 7
+          dotnet-version: 8
       - name: Pack
         run: |
           dotnet pack -o "packages" -c Release
@@ -76,6 +76,7 @@ jobs:
         with:
           name: packages
           path: packages/
+
   push-packages:
     name: Push Packages
     needs: pack-projects
@@ -118,6 +119,7 @@ jobs:
           name: docs
           path: docs/.theme/.output/public
           if-no-files-found: error
+
   publish-docs:
     needs: generate-docs
     name: Publish Docs

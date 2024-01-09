@@ -8,29 +8,20 @@ namespace Mouseless.EventScheduler;
 [ApiController]
 public class MeetingController
 {
-    readonly IServiceProvider _serviceProvider;
-
-    public MeetingController(IServiceProvider serviceProvider) =>
-        _serviceProvider = serviceProvider;
-
     [HttpGet]
     [Produces("application/json")]
     [Route("meetings")]
-    public List<Meeting> By([FromQuery] DateTime? before, [FromQuery] DateTime? after)
+    public List<Meeting> By([FromServices] Meetings target, [FromQuery] DateTime? before, [FromQuery] DateTime? after)
     {
-        var target = _serviceProvider.GetRequiredService<Meetings>();
-
         return target.By(before, after);
     }
 
     [HttpGet]
     [Produces("application/json")]
     [Route("meetings/{id}")]
-    public Meeting Get([FromRoute] Guid id)
+    public Meeting Get([FromServices] IQueryContext<Meeting> meetingQuery, [FromRoute] Guid id)
     {
-        var target = _serviceProvider.GetRequiredService<IQueryContext<Meeting>>();
-
-        return  target.SingleById(id);
+        return meetingQuery.SingleById(id);
     }
 
     public record NewRequest(string Name, DateTime Date);
@@ -38,19 +29,19 @@ public class MeetingController
     [HttpPost]
     [Produces("application/json")]
     [Route("meetings")]
-    public Meeting New([FromBody] NewRequest request)
+    public Meeting New([FromServices] Func<Meeting> newTarget, [FromBody] NewRequest request)
     {
-        var target = _serviceProvider.GetRequiredService<Func<Meeting>>();
+        var target = newTarget();
 
-        return target().With(request.Name, request.Date);
+        return target.With(request.Name, request.Date);
     }
 
     [HttpGet]
     [Produces("application/json")]
     [Route("meetings/{id}/contacts")]
-    public List<Contact> GetContacts([FromRoute] Guid id)
+    public List<Contact> GetContacts([FromServices] IQueryContext<Meeting> meetingQuery, [FromRoute] Guid id)
     {
-        var target = _serviceProvider.GetRequiredService<IQueryContext<Meeting>>().SingleById(id);
+        var target = meetingQuery.SingleById(id);
 
         return target.GetContacts();
     }
@@ -60,20 +51,20 @@ public class MeetingController
     [HttpPost]
     [Produces("application/json")]
     [Route("meetings/{id}/contacts")]
-    public void AddContact([FromRoute] Guid id, [FromBody] AddContactRequest request)
+    public void AddContact([FromServices] IQueryContext<Meeting> meetingQuery, [FromServices] IQueryContext<Contact> contactQuery, [FromRoute] Guid id, [FromBody] AddContactRequest request)
     {
-        var target = _serviceProvider.GetRequiredService<IQueryContext<Meeting>>().SingleById(id);
+        var target = meetingQuery.SingleById(id);
 
-        target.AddContact(_serviceProvider.GetRequiredService<IQueryContext<Contact>>().SingleById(request.ContactId));
+        target.AddContact(contactQuery.SingleById(request.ContactId));
     }
 
     [HttpDelete]
     [Produces("application/json")]
     [Route("meetings/{id}")]
-    public void Delete([FromRoute] Guid id)
+    public void Delete([FromServices] IQueryContext<Meeting> meetingQuery, [FromRoute] Guid id)
     {
-        var target = _serviceProvider.GetRequiredService<IQueryContext<Meeting>>();
+        var target = meetingQuery.SingleById(id);
 
-        target.SingleById(id).Delete();
+        target.Delete();
     }
 }

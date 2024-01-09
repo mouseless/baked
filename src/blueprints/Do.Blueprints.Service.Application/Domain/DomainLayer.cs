@@ -22,18 +22,8 @@ public class DomainLayer : LayerBase<BuildConfiguration>
         yield return new BuildDomain(_assemblyCollection, _typeCollection);
     }
 
-    public class BuildDomain : PhaseBase<ConfigurationManager>
+    public class BuildDomain(IAssemblyCollection _assemblyCollection, ITypeCollection _typeCollection) : PhaseBase<ConfigurationManager>(PhaseOrder.Early)
     {
-        readonly IAssemblyCollection _assemblyCollection;
-        readonly ITypeCollection _typeCollection;
-
-        public BuildDomain(IAssemblyCollection assemblyCollection, ITypeCollection typeCollection)
-            : base(PhaseOrder.Early)
-        {
-            _assemblyCollection = assemblyCollection;
-            _typeCollection = typeCollection;
-        }
-
         protected override void Initialize(ConfigurationManager _)
         {
             Context.Add<DomainModel>(new(_assemblyCollection, _typeCollection));

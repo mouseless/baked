@@ -39,15 +39,9 @@ public class AddingPhases : ArchitectureSpec
         phases.ShouldContain(phase => phase is TwoPhaseLayer.DoB);
     }
 
-    class IndependentAddsString : PhaseBase
+    class IndependentAddsString(string _artifact)
+        : PhaseBase
     {
-        readonly string _artifact;
-
-        public IndependentAddsString(string artifact)
-        {
-            _artifact = artifact;
-        }
-
         protected override void Initialize()
         {
             Context.Add(_artifact);
@@ -58,7 +52,7 @@ public class AddingPhases : ArchitectureSpec
     public void Phases_have_initialization_step_before_getting_applied_so_that_they_prepare_and_add_objects_to_application_context()
     {
         var context = GiveMe.AnApplicationContext();
-        IPhase phase = new IndependentAddsString(artifact: "test");
+        IPhase phase = new IndependentAddsString(_artifact: "test");
         GiveMe.AnApplication(context: context, phase: phase);
 
         phase.Initialize();
@@ -66,17 +60,9 @@ public class AddingPhases : ArchitectureSpec
         context.ShouldHave("test");
     }
 
-    class StringDependentAddsInt : PhaseBase<string>
+    class StringDependentAddsInt(string _expectedString, int _artifact)
+        : PhaseBase<string>
     {
-        readonly string _expectedString;
-        readonly int _artifact;
-
-        public StringDependentAddsInt(string expectedString, int artifact)
-        {
-            _expectedString = expectedString;
-            _artifact = artifact;
-        }
-
         protected override void Initialize(string dependency)
         {
             dependency.ShouldBe(_expectedString);
@@ -85,19 +71,9 @@ public class AddingPhases : ArchitectureSpec
         }
     }
 
-    class StringAndIntDependentAddsBool : PhaseBase<string, int>
+    class StringAndIntDependentAddsBool(string _expectedString, int _expectedInt, bool _artifact)
+        : PhaseBase<string, int>
     {
-        readonly string _expectedString;
-        readonly int _expectedInt;
-        readonly bool _artifact;
-
-        public StringAndIntDependentAddsBool(string expectedString, int expectedInt, bool artifact)
-        {
-            _expectedString = expectedString;
-            _expectedInt = expectedInt;
-            _artifact = artifact;
-        }
-
         protected override void Initialize(string dependency1, int dependency2)
         {
             dependency1.ShouldBe(_expectedString);
@@ -107,21 +83,9 @@ public class AddingPhases : ArchitectureSpec
         }
     }
 
-    class StringIntAndBoolDependentAddsChar : PhaseBase<string, int, bool>
+    class StringIntAndBoolDependentAddsChar(string _expectedString, int _expectedInt, bool _expectedBool, char _artifact)
+        : PhaseBase<string, int, bool>
     {
-        readonly string _expectedString;
-        readonly int _expectedInt;
-        readonly bool _expectedBool;
-        readonly char _artifact;
-
-        public StringIntAndBoolDependentAddsChar(string expectedString, int expectedInt, bool expectedBool, char artifact)
-        {
-            _expectedString = expectedString;
-            _expectedInt = expectedInt;
-            _expectedBool = expectedBool;
-            _artifact = artifact;
-        }
-
         protected override void Initialize(string dependency1, int dependency2, bool dependency3)
         {
             dependency1.ShouldBe(_expectedString);
@@ -135,7 +99,7 @@ public class AddingPhases : ArchitectureSpec
     [Test]
     public void Gives_error_when_dependency_is_not_the_exact_type()
     {
-        IPhase phase = new StringDependentAddsInt(expectedString: GiveMe.AString(), artifact: GiveMe.AnInt());
+        IPhase phase = new StringDependentAddsInt(_expectedString: GiveMe.AString(), _artifact: GiveMe.AnInt());
         var app = GiveMe.AnApplication(
             context: GiveMe.AnApplicationContext(content: GiveMe.AnInt()),
             phase: phase
@@ -152,25 +116,25 @@ public class AddingPhases : ArchitectureSpec
         var context = GiveMe.AnApplicationContext();
         var app = GiveMe.AnApplication(
             context: context,
-            phases: new IPhase[]
-            {
+            phases:
+            [
                 new StringIntAndBoolDependentAddsChar(
-                    expectedString: "test",
-                    expectedInt: 42,
-                    expectedBool: true,
-                    artifact: 'a'
+                    _expectedString: "test",
+                    _expectedInt: 42,
+                    _expectedBool: true,
+                    _artifact: 'a'
                 ),
                 new StringAndIntDependentAddsBool(
-                    expectedString: "test",
-                    expectedInt: 42,
-                    artifact: true
+                    _expectedString: "test",
+                    _expectedInt: 42,
+                    _artifact: true
                 ),
                 new StringDependentAddsInt(
-                    expectedString: "test",
-                    artifact: 42
+                    _expectedString: "test",
+                    _artifact: 42
                 ),
-                new IndependentAddsString(artifact: "test"),
-            }
+                new IndependentAddsString(_artifact: "test"),
+            ]
         );
 
         app.Run();
@@ -178,10 +142,9 @@ public class AddingPhases : ArchitectureSpec
         context.ShouldHave('a');
     }
 
-    class OrderedPhase : PhaseBase
-    {
-        public OrderedPhase(PhaseOrder order) : base(order) { }
-    }
+    public class OrderedPhase(PhaseOrder _order)
+        : PhaseBase(_order)
+    { }
 
     [TestCase(PhaseOrder.Early)]
     [TestCase(PhaseOrder.Late)]

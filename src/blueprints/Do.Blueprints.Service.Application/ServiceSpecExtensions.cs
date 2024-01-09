@@ -1,6 +1,7 @@
-﻿using Do.Core;
+﻿using Do.Core.Mock;
 using Do.MockOverrider;
 using Do.Testing;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
@@ -49,6 +50,34 @@ public static class ServiceSpecExtensions
     public static Guid AGuid(this Stubber _,
         string? guid = default
     ) => guid is null ? Guid.NewGuid() : Guid.Parse(guid);
+
+    #endregion
+
+    #region Integer
+
+    public static int AnInteger(this Stubber _) => 42;
+
+    #endregion
+
+    #region MemoryCache
+
+    public static IMemoryCache AMemoryCache(this Stubber giveMe,
+        bool clear = false
+    )
+    {
+        var getMemoryCache = giveMe.The<Func<IMemoryCache>>();
+        var memoryCache = getMemoryCache();
+
+        if (clear)
+        {
+            (memoryCache as MemoryCache)?.Clear();
+        }
+
+        return memoryCache;
+    }
+
+    public static void ShouldHaveCount(this IMemoryCache memoryCache, int count) =>
+        ((MemoryCache)memoryCache).Count.ShouldBe(count);
 
     #endregion
 
@@ -126,6 +155,11 @@ public static class ServiceSpecExtensions
 
     #region Settings
 
+    public static void ASetting<T>(this Mocker mockMe,
+        string? key = default,
+        T? value = default
+    ) => mockMe.ASetting(key: key, value: $"{value}");
+
     public static void ASetting(this Mocker mockMe,
         string? key = default,
         string? value = default
@@ -145,7 +179,7 @@ public static class ServiceSpecExtensions
     )
     {
         defaultValueProvider ??= _ => default;
-        settings ??= new Dictionary<string, string>();
+        settings ??= [];
 
         var configuration = mockMe.Spec.GiveMe.The<IConfiguration>();
 
@@ -184,28 +218,32 @@ public static class ServiceSpecExtensions
 
     #endregion
 
-    #region System
+    #region TimeProvider
 
-    public static ISystem TheSystem(this Mocker mockMe,
+    public static TimeProvider TheTime(this Mocker mockMe,
         DateTime? now = default,
-        bool passSomeTime = false
+        bool passSomeTime = false,
+        bool reset = false
     )
     {
-        var system = mockMe.Spec.GiveMe.The<ISystem>();
-        var mock = Mock.Get(system);
+        var fakeTimeProvider = (ResettableFakeTimeProvider)mockMe.Spec.GiveMe.The<TimeProvider>();
+
+        if (reset)
+        {
+            fakeTimeProvider.Reset();
+        }
 
         if (now is not null)
         {
-            mock.Setup(c => c.Now).Returns(now.Value);
+            fakeTimeProvider.SetUtcNow(new(now.Value, fakeTimeProvider.LocalTimeZone.BaseUtcOffset));
         }
 
         if (passSomeTime)
         {
-            var localNow = system.Now;
-            mock.Setup(c => c.Now).Returns(localNow.AddSeconds(1));
+            fakeTimeProvider.Advance(TimeSpan.FromSeconds(1));
         }
 
-        return system;
+        return fakeTimeProvider;
     }
 
     #endregion
