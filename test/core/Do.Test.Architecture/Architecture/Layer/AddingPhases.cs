@@ -39,7 +39,8 @@ public class AddingPhases : ArchitectureSpec
         phases.ShouldContain(phase => phase is TwoPhaseLayer.DoB);
     }
 
-    class IndependentAddsString(string _artifact) : PhaseBase
+    class IndependentAddsString(string _artifact)
+        : PhaseBase
     {
         protected override void Initialize()
         {
@@ -59,7 +60,8 @@ public class AddingPhases : ArchitectureSpec
         context.ShouldHave("test");
     }
 
-    class StringDependentAddsInt(string _expectedString, int _artifact) : PhaseBase<string>
+    class StringDependentAddsInt(string _expectedString, int _artifact)
+        : PhaseBase<string>
     {
         protected override void Initialize(string dependency)
         {
@@ -69,7 +71,8 @@ public class AddingPhases : ArchitectureSpec
         }
     }
 
-    class StringAndIntDependentAddsBool(string _expectedString, int _expectedInt, bool _artifact) : PhaseBase<string, int>
+    class StringAndIntDependentAddsBool(string _expectedString, int _expectedInt, bool _artifact)
+        : PhaseBase<string, int>
     {
         protected override void Initialize(string dependency1, int dependency2)
         {
@@ -80,7 +83,8 @@ public class AddingPhases : ArchitectureSpec
         }
     }
 
-    class StringIntAndBoolDependentAddsChar(string _expectedString, int _expectedInt, bool _expectedBool, char _artifact) : PhaseBase<string, int, bool>
+    class StringIntAndBoolDependentAddsChar(string _expectedString, int _expectedInt, bool _expectedBool, char _artifact)
+        : PhaseBase<string, int, bool>
     {
         protected override void Initialize(string dependency1, int dependency2, bool dependency3)
         {
