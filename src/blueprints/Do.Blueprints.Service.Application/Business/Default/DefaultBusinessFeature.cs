@@ -18,7 +18,7 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
                     {
                         services.AddTransientWithFactory(model.Type);
                     }
-                    else if (model.Properties.All(p => !p.IsPublic))
+                    else if (model.Constructors.Any(c => c.Parameters.Count > 0 && c.Parameters.All(p => p.Name.StartsWith('_'))))
                     {
                         services.AddSingleton(model.Type);
                     }
