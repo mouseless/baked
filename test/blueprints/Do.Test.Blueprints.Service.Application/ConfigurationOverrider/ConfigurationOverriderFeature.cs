@@ -18,6 +18,7 @@ public class ConfigurationOverriderFeature : IFeature
             types.Add<Entities>();
             types.Add<OperationObject>();
             types.Add<Record>();
+            types.Add<ServiceBase>();
             types.Add<Singleton>();
             types.Add<Status>();
             types.Add<Struct>();

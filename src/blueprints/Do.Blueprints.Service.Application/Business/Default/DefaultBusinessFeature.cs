@@ -12,13 +12,16 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
             var domainModel = configurator.Context.GetDomainModel();
             foreach (var model in domainModel.Types)
             {
-                if (model.Methods.Any(m => m.Name.Equals("With") && m.ReturnType.Equals(model.Type)))
+                if (!model.IsAbstract && !model.IsValueType)
                 {
-                    services.AddTransientWithFactory(model.Type);
-                }
-                else
-                {
-                    services.AddSingleton(model.Type);
+                    if (model.Methods.Any(m => m.Name.Equals("With") && m.ReturnType.Equals(model.Type)))
+                    {
+                        services.AddTransientWithFactory(model.Type);
+                    }
+                    else if (model.Properties.All(p => !p.IsPublic))
+                    {
+                        services.AddSingleton(model.Type);
+                    }
                 }
             }
         });
