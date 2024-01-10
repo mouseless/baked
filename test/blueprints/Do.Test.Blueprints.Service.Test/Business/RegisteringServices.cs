@@ -32,12 +32,20 @@ public class RegisteringServices : TestServiceSpec
     }
 
     [Test]
-    public void Types_with_no__virtual_methods__public_properties__are_registered_as_singleton()
+    public void Types_with_dependencies_and_no_with_methods_are_registered_as_singleton()
     {
         var actual = ApplicationContext.GetServiceDescriptor<Singleton>();
 
         actual.ShouldNotBeNull();
         actual.Lifetime.ShouldBe(ServiceLifetime.Singleton);
+    }
+
+    [Test]
+    public void Types_with_no_dependencies_are_not_registered()
+    {
+        var actual = ApplicationContext.GetServiceDescriptor<NoServiceClass>();
+
+        actual.ShouldBeNull();
     }
 
     [Test]
