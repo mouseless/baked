@@ -55,4 +55,12 @@ public class RegisteringServices : TestServiceSpec
 
         actual.ShouldBeNull();
     }
+
+    [Test]
+    public void Abstract_types_are_not_registered()
+    {
+        var actual = ApplicationContext.GetServiceDescriptor(typeof(ServiceBase));
+
+        actual.ShouldBeNull();
+    }
 }
