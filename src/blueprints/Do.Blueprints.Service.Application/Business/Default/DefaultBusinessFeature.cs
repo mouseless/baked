@@ -18,9 +18,16 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
                     {
                         services.AddTransientWithFactory(model.Type);
                     }
-                    else if (model.Constructors.Any(c => c.Parameters.Count > 0 && c.Parameters.All(p => p.Name.StartsWith('_'))))
+                    else if (model.Constructors.Count == 1)
                     {
-                        services.AddSingleton(model.Type);
+                        if (model.Constructors.All(c => c.Parameters.Count > 0 && c.Parameters.All(p => p.Type.Name.StartsWith("IQueryContext"))))
+                        {
+                            services.AddSingleton(model.Type);
+                        }
+                        else if (model.Constructors.All(c => c.Parameters.Count > 0 && c.Parameters.All(p => p.Name.StartsWith('_'))))
+                        {
+                            services.AddSingleton(model.Type);
+                        }
                     }
                 }
             }
