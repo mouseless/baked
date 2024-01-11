@@ -13,7 +13,7 @@ public class DefaultOrmConfiguration : TestServiceSpec
     }
 
     [Test]
-    public void Table_name_is_entity_name()
+    public void Table_name_is_entity_class_name()
     {
         var configuration = GiveMe.The<NHConfiguration>();
 
@@ -29,7 +29,7 @@ public class DefaultOrmConfiguration : TestServiceSpec
     }
 
     [Test]
-    public void Id_is_property_name_Id()
+    public void Id_is_property_named_Id()
     {
         var configuration = GiveMe.The<NHConfiguration>();
 

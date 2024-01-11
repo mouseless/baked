@@ -39,9 +39,9 @@ public class ConfiguringLayers : ArchitectureSpec
         var configuration = new ConfigurationA();
         var configurator = GiveMe.ALayerConfigurator(configuration);
 
-        var featureA = Do.Architecture.Feature.Empty<FeatureConfigurator>();
+        var emptyFeature = Do.Architecture.Feature.Empty<FeatureConfigurator>();
 
-        featureA.Configure(configurator);
+        emptyFeature.Configure(configurator);
 
         configuration.Value.ShouldBeNull();
     }
