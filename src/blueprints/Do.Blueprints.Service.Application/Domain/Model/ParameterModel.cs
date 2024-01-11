@@ -2,6 +2,6 @@
 
 public record ParameterModel(
     string Name,
-    TypeModel? ParameterType
+    TypeModel ParameterType
 );
 

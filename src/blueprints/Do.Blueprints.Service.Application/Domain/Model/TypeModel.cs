@@ -2,7 +2,7 @@
 
 public record TypeModel(
     string Name,
-    string NameSpace,
+    string Namespace,
     List<ConstructorModel> Constructors,
     List<MethodModel> Methods,
     List<PropertyModel> Properties,
@@ -18,5 +18,5 @@ public record TypeModel(
         _type = type;
     }
 
-    public void Apply(Action<Type> action) => action(_type);
+    internal void Apply(Action<Type> action) => action(_type);
 }

@@ -12,81 +12,94 @@ public class DomainModel
         {
             model.Assemblies.Add(new(descriptor.Assembly));
 
-            foreach (var type in descriptor.Assembly.GetTypes())
+            foreach (var type in descriptor.Assembly.GetExportedTypes())
             {
-                model._types[type] = new(type);
+                types.Add(type);
             }
         }
 
         foreach (var descriptor in types)
         {
-            model._types[descriptor.Type] = new(descriptor.Type);
-        }
+            if (model._types.ContainsKey(descriptor.Type)) { continue; }
 
-        BuildTypeModels(model);
+            model.CreateTypeModel(descriptor.Type);
+        }
 
         return model;
     }
 
-    Dictionary<Type, TypeModel> _types = new Dictionary<Type, TypeModel>();
+    readonly Dictionary<Type, TypeModel> _types = [];
 
-    public List<AssemblyModel> Assemblies { get; } = new();
+    public List<AssemblyModel> Assemblies { get; } = [];
     public List<TypeModel> Types => _types.Values.ToList();
 
-    static void BuildTypeModels(DomainModel model)
+    TypeModel GetOrCreateTypeModel(Type type)
     {
-        foreach (var typeModel in model.Types)
+        if (_types.TryGetValue(type, out var result))
         {
-            typeModel.Apply(type =>
-            {
-                var constructorInfos = type.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) ?? [];
-
-                foreach (var constructor in constructorInfos)
-                {
-                    typeModel.Constructors.Add(
-                        new(
-                            typeModel,
-                            constructor.GetParameters().Select(p => new ParameterModel(p.Name ?? string.Empty, model._types[p.ParameterType])).ToList()
-                        )
-                    );
-                }
-            });
-
-            typeModel.Apply(type =>
-            {
-                var propertyInfos = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) ?? [];
-
-                foreach (var property in propertyInfos)
-                {
-                    typeModel.Properties.Add(
-                        new(
-                            property.Name,
-                            model._types[property.PropertyType],
-                            property.CanRead
-                        )
-                    );
-                }
-            });
-
-            typeModel.Apply(type =>
-            {
-                var methodInfos = type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) ?? [];
-
-                foreach (var method in methodInfos)
-                {
-                    typeModel.Methods.Add(
-                        new(
-                            method.Name,
-                            method.ReturnType == typeof(void) || method.ReturnType.IsGenericParameter ? null : model._types[method.ReturnType],
-                            method.GetParameters().Select(p => new ParameterModel(
-                                        p.Name ?? string.Empty,
-                                        p.ParameterType == typeof(void) || p.ParameterType.IsGenericParameter ? null : model._types[p.ParameterType]
-                                    )).ToList(),
-                            method.IsPublic
-                        )
-                    );
-                }
-            });
+            return result;
         }
+
+        return CreateTypeModel(type);
+    }
+
+    TypeModel CreateTypeModel(Type type)
+    {
+        var typeModel = _types[type] = new(type);
+
+        if (typeModel.Namespace.Contains("System")) { return typeModel; }
+
+        typeModel.Apply(type =>
+        {
+            var constructorInfos = type.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) ?? [];
+
+            foreach (var constructor in constructorInfos)
+            {
+                typeModel.Constructors.Add(
+                    new(
+                        typeModel,
+                        constructor.GetParameters().Select(p => new ParameterModel(p.Name ?? string.Empty, GetOrCreateTypeModel(p.ParameterType))).ToList()
+                    )
+                );
+            }
+        });
+
+        typeModel.Apply(type =>
+        {
+            var propertyInfos = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) ?? [];
+
+            foreach (var property in propertyInfos)
+            {
+                typeModel.Properties.Add(
+                    new(
+                        property.Name,
+                        GetOrCreateTypeModel(property.PropertyType),
+                        property.CanRead
+                    )
+                );
+            }
+        });
+
+        typeModel.Apply(type =>
+        {
+            var methodInfos = type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) ?? [];
+
+            foreach (var method in methodInfos)
+            {
+                typeModel.Methods.Add(
+                    new(
+                        method.Name,
+                        GetOrCreateTypeModel(method.ReturnType),
+                        method.GetParameters().Select(p => new ParameterModel(
+                                    p.Name ?? string.Empty,
+                                    GetOrCreateTypeModel(p.ParameterType)
+                                )).ToList(),
+                        method.IsPublic
+                    )
+                );
+            }
+        });
+
+        return typeModel;
     }
 }

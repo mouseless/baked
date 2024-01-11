@@ -2,7 +2,7 @@
 
 public record MethodModel(
     string Name,
-    TypeModel? ReturnType,
+    TypeModel ReturnType,
     List<ParameterModel> Parameters,
     bool IsPublic
 );
