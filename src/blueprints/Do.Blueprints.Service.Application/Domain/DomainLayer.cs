@@ -22,11 +22,14 @@ public class DomainLayer : LayerBase<BuildConfiguration>
         yield return new BuildDomain(_assemblyCollection, _typeCollection);
     }
 
-    public class BuildDomain(IAssemblyCollection _assemblyCollection, ITypeCollection _typeCollection) : PhaseBase<ConfigurationManager>(PhaseOrder.Early)
+    public class BuildDomain(IAssemblyCollection _assemblyCollection, ITypeCollection _typeCollection)
+        : PhaseBase<ConfigurationManager>(PhaseOrder.Early)
     {
         protected override void Initialize(ConfigurationManager _)
         {
-            Context.Add<DomainModel>(new(_assemblyCollection, _typeCollection));
+            Context.Add<DomainModel>(DomainModel.Build(_assemblyCollection, _typeCollection));
         }
     }
 }
+
+// type collection kaldıralım

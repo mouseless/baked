@@ -1,13 +1,10 @@
-﻿using System.Reflection;
-
-namespace Do.Domain.Model;
+﻿namespace Do.Domain.Model;
 
 public record MethodModel(
     string Name,
-    Type ReturnType
-)
-{
-    public MethodModel(MethodInfo methodInfo)
-        : this(methodInfo.Name, methodInfo.ReturnType) { }
-}
+    TypeModel? ReturnType,
+    List<ParameterModel> Parameters,
+    bool IsPublic
+);
+
 

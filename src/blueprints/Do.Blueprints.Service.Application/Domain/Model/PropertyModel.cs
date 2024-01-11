@@ -1,10 +1,7 @@
-﻿using System.Reflection;
+﻿namespace Do.Domain.Model;
 
-namespace Do.Domain.Model;
-
-public record PropertyModel(string Name, bool IsPublic)
-{
-    public PropertyModel(PropertyInfo propertyInfo)
-        : this(propertyInfo.Name, propertyInfo.CanRead)
-    { }
-}
+public record PropertyModel(
+    string Name,
+    TypeModel Type,
+    bool IsPublic
+);

@@ -1,10 +1,8 @@
-﻿using System.Reflection;
-
-namespace Do.Domain.Model;
+﻿namespace Do.Domain.Model;
 
 public record TypeModel(
-    Type Type,
     string Name,
+    string NameSpace,
     List<ConstructorModel> Constructors,
     List<MethodModel> Methods,
     List<PropertyModel> Properties,
@@ -12,28 +10,13 @@ public record TypeModel(
     bool IsValueType
 )
 {
+    readonly Type _type = default!;
+
     public TypeModel(Type type)
-        : this(type, type.Name, [], [], [], type.IsAbstract, type.IsValueType)
+        : this(type.Name, type.Namespace ?? string.Empty, [], [], [], type.IsAbstract, type.IsValueType)
     {
-        var constructorInfos = type.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) ?? [];
-
-        foreach (var constructor in constructorInfos)
-        {
-            Constructors.Add(new(constructor));
-        }
-
-        var methodInfos = type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) ?? [];
-
-        foreach (var method in methodInfos)
-        {
-            Methods.Add(new(method));
-        }
-
-        var propertyInfos = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) ?? [];
-
-        foreach (var property in propertyInfos)
-        {
-            Properties.Add(new(property));
-        }
+        _type = type;
     }
+
+    public void Apply(Action<Type> action) => action(_type);
 }

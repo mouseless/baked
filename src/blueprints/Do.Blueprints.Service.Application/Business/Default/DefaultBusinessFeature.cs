@@ -1,4 +1,5 @@
 ﻿using Do.Architecture;
+using Do.Orm;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Do.Business.Default;
@@ -7,26 +8,31 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
+        configurator.ConfigureAssemblyCollection(assemblies =>
+        {
+            assemblies.Add(typeof(IQueryContext<>).Assembly);
+        });
+
         configurator.ConfigureServiceCollection(services =>
         {
             var domainModel = configurator.Context.GetDomainModel();
-            foreach (var model in domainModel.Types)
+            foreach (var type in domainModel.Types)
             {
-                if (!model.IsAbstract && !model.IsValueType)
+                if (!type.IsAbstract && !type.IsValueType)
                 {
-                    if (model.Methods.Any(m => m.Name.Equals("With") && m.ReturnType.Equals(model.Type)))
+                    if (type.Methods.Any(m => m.Name.Equals("With") && m.ReturnType?.Equals(type) == true))
                     {
-                        services.AddTransientWithFactory(model.Type);
+                        type.Apply(t => services.AddTransientWithFactory(t));
                     }
-                    else if (model.Constructors.Count == 1)
+                    else if (type.Constructors.Count == 1)
                     {
-                        if (model.Constructors.All(c => c.Parameters.Count > 0 && c.Parameters.All(p => p.Type.Name.StartsWith("IQueryContext"))))
+                        if (type.Constructors.All(c => c.Parameters.Count > 0 && c.Parameters.All(p => p.ParameterType?.Name.StartsWith("IQueryContext") == true)))
                         {
-                            services.AddSingleton(model.Type);
+                            type.Apply(t => services.AddSingleton(t));
                         }
-                        else if (model.Constructors.All(c => c.Parameters.Count > 0 && c.Parameters.All(p => p.Name.StartsWith('_'))))
+                        else if (type.Constructors.All(c => c.Parameters.Count > 0 && c.Parameters.All(p => p.Name.StartsWith('_'))))
                         {
-                            services.AddSingleton(model.Type);
+                            type.Apply(t => services.AddSingleton(t));
                         }
                     }
                 }
