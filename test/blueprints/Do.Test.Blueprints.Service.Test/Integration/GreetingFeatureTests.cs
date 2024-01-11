@@ -1,28 +1,26 @@
 ﻿namespace Do.Test.Integration;
 
-public class DocumentationFeatureTests : IntegrationSpec<DocumentationFeatureTests>
+public class GreetingFeatureTests : IntegrationSpec<GreetingFeatureTests>
 {
     public override void Run()
     {
         Forge.New
             .Service(
                 business: c => c.Default(),
-                database: c => c.MySql().ForDevelopment(c.Sqlite()),
                 exceptionHandling: ex => ex.Default(typeUrlFormat: "https://do.mouseless.codes/errors/{0}"),
+                greeting: c => c.WelcomePage("/WelcomePage"),
                 configure: app => app.Features.AddConfigurationOverrider()
             )
             .Run();
     }
 
     [Test]
-    public async Task Application_root_is_swagger_index_page()
+    public async Task Application_redirects_to_dotnet_welcome_page_on_given_url()
     {
         var client = Factory.CreateClient();
 
-        var response = await client.GetAsync("/");
+        var response = await client.GetAsync("/WelcomePage");
 
         response.EnsureSuccessStatusCode();
-        response.RequestMessage.ShouldNotBeNull();
-        response.RequestMessage.RequestUri.ShouldBe("http://localhost/swagger/index.html");
     }
 }

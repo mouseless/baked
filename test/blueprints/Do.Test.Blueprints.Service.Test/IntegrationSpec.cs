@@ -1,36 +1,23 @@
-﻿using Do.Architecture;
-using Microsoft.AspNetCore.Mvc.Testing;
+﻿using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace Do.Test;
 
-public abstract class IntegrationSpec
+public abstract class IntegrationSpec<T> where T : IntegrationSpec<T>
 {
-    static WebApplicationFactory<TestProgram> _factory = default!;
+    static WebApplicationFactory<IntegrationTestProgram> _factory = default!;
 
     static IntegrationSpec()
     {
         Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Development");
 
-        _factory = new WebApplicationFactory<TestProgram>();
+        _factory = new WebApplicationFactory<IntegrationTestProgram>().WithWebHostBuilder(a =>
+        {
+            a.UseSetting("type", $"{typeof(T).FullName}");
+            a.UseSetting("method", nameof(Run));
+        });
     }
 
-    public static void Run() =>
-        Forge.New
-            .Service(
-               business: c => c.Default(),
-               database: c => c.Sqlite(),
-               exceptionHandling: ex => ex.Default(typeUrlFormat: "https://do.mouseless.codes/errors/{0}"),
-               configure: app => app.Features.AddConfigurationOverrider()
-           )
-        .Run();
+    internal WebApplicationFactory<IntegrationTestProgram> Factory => _factory;
 
-    public WebApplicationFactory<TestProgram> Factory => _factory;
-}
-
-public class TestProgram
-{
-    public static void Main(string[] args)
-    {
-        IntegrationSpec.Run();
-    }
+    public abstract void Run();
 }
