@@ -101,8 +101,9 @@ Here `SampleLayer` adds two phases, `DoA` and `DoB`, to the application.
 ### Initializing a Phase
 
 `PhaseBase` class has `Initialize()` method to override so that it can add an
-object to the application context via `Context` property. Below, you can see
-how `CreateBuilder` phase adds `WebApplicationBuilder` to the context;
+object to the application context via `Context` property. Base `Initialize()`
+method does not add any objects to the application. Below, you can see how
+`CreateBuilder` phase adds `WebApplicationBuilder` to the context;
 
 ```csharp
 public class CreateBuilder : PhaseBase

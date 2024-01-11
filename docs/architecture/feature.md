@@ -78,7 +78,8 @@ public class WelcomePageGreetingFeature : IFeature<GreetingConfigurator>
 ### Disabling a Feature
 
 To allow a feature to be disabled, you can provide a `Disable` method in your
-configurator which returns `Feature.Empty<TConfigurator>()`.
+configurator which returns `Feature.Empty<TConfigurator>()`, this feautre does
+not configure any layers.
 
 `GreetingConfigurator.cs`
 ```csharp
