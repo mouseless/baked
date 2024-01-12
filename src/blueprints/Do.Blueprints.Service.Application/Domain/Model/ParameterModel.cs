@@ -2,6 +2,11 @@
 
 public record ParameterModel(
     string Name,
-    TypeModel ParameterType
-) : IModel;
+    TypeModel ParameterType,
+    bool IsOptional,
+    object? DefaultValue
+) : IModel
+{
+    public string Id => Name;
+}
 

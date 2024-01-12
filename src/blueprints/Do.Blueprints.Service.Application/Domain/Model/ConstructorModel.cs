@@ -4,4 +4,7 @@ public record ConstructorModel(
     string Name,
     TypeModel Type,
     ModelCollection<ParameterModel> Parameters
-) : IModel;
+) : IModel
+{
+    public string Id => $"{Name}[{string.Join(',', Parameters.Select(p => p.Id))}]";
+}

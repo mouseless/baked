@@ -4,4 +4,7 @@ public record PropertyModel(
     string Name,
     TypeModel Type,
     bool IsPublic
-) : IModel;
+) : IModel
+{
+    public string Id => Name;
+}

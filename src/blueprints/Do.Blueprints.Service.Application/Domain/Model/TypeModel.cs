@@ -6,18 +6,23 @@ public record TypeModel(
     ModelCollection<ConstructorModel> Constructors,
     ModelCollection<MethodModel> Methods,
     ModelCollection<PropertyModel> Properties,
-    ModelCollection<TypeModel> GenericArguements,
+    ModelCollection<TypeModel> GenericTypeArguments,
+    ModelCollection<TypeModel> CustomAttributes,
     bool IsAbstract,
     bool IsValueType
 ) : IModel
 {
     readonly Type _type = default!;
+    readonly string? _fullName;
 
     public TypeModel(Type type)
-        : this(type.Name, type.Namespace ?? string.Empty, [], [], [], [], type.IsAbstract, type.IsValueType)
+        : this(type.Name, type.Namespace ?? string.Empty, [], [], [], [], [], type.IsAbstract, type.IsValueType)
     {
         _type = type;
+        _fullName = type.FullName;
     }
+
+    public string Id => _fullName ?? $"{Name},{Namespace}";
 
     internal void Apply(Action<Type> action) => action(_type);
 }

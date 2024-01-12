@@ -10,16 +10,16 @@ public class ModelCollection<T>() : IEnumerable<T>
     readonly Dictionary<string, T> _models = [];
 
     public ModelCollection(List<T> data)
-        : this() => _models = data.ToDictionary(m => m.Name, m => m);
+        : this() => _models = data.ToDictionary(m => m.Id, m => m);
 
     List<T> List => _models.Values.ToList();
     public IEnumerator<T> GetEnumerator() => List.GetEnumerator();
 
-    public T Add(T model) => _models[model.Name] = model;
-    public T Get(string name) => _models[name];
+    public void Add(T model) => _models[model.Id] = model;
+    public T Get(string id) => _models[id];
 
-    public bool TryGetValue(string name, [NotNullWhen(true)] out T? model) =>
-        _models.TryGetValue(name, out model);
+    public bool TryGetValue(string id, [NotNullWhen(true)] out T? model) =>
+        _models.TryGetValue(id, out model);
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }

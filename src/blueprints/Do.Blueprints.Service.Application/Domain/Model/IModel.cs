@@ -2,5 +2,5 @@
 
 public interface IModel
 {
-    string Name { get; }
+    string Id { get; }
 }

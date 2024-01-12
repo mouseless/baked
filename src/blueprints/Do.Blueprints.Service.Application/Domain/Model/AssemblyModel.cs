@@ -14,5 +14,7 @@ public record AssemblyModel(
         _assembly = assembly;
     }
 
+    public string Id => Name;
+
     internal void Apply(Action<Assembly> action) => action(_assembly);
 }
