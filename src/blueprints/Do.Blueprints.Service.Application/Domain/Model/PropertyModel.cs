@@ -4,4 +4,4 @@ public record PropertyModel(
     string Name,
     TypeModel Type,
     bool IsPublic
-);
+) : IModel;

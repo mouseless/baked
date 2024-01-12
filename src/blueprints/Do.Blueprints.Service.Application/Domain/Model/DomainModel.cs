@@ -4,102 +4,67 @@ namespace Do.Domain.Model;
 
 public class DomainModel
 {
-    public static DomainModel Build(IAssemblyCollection assemblies, ITypeCollection types)
+    public ModelCollection<AssemblyModel> Assemblies { get; } = [];
+    public ModelCollection<TypeModel> Types { get; } = [];
+
+    internal TypeModel AddTypeModel(Type type)
     {
-        var model = new DomainModel();
-
-        foreach (var descriptor in assemblies)
-        {
-            model.Assemblies.Add(new(descriptor.Assembly));
-
-            foreach (var type in descriptor.Assembly.GetExportedTypes())
-            {
-                types.Add(type);
-            }
-        }
-
-        foreach (var descriptor in types)
-        {
-            if (model._types.ContainsKey(descriptor.Type)) { continue; }
-
-            model.CreateTypeModel(descriptor.Type);
-        }
-
-        return model;
-    }
-
-    readonly Dictionary<Type, TypeModel> _types = [];
-
-    public List<AssemblyModel> Assemblies { get; } = [];
-    public List<TypeModel> Types => _types.Values.ToList();
-
-    TypeModel GetOrCreateTypeModel(Type type)
-    {
-        if (_types.TryGetValue(type, out var result))
-        {
-            return result;
-        }
-
-        return CreateTypeModel(type);
-    }
-
-    TypeModel CreateTypeModel(Type type)
-    {
-        var typeModel = _types[type] = new(type);
+        var typeModel = Types.Add(new(type));
 
         if (typeModel.Namespace.Contains("System")) { return typeModel; }
 
         typeModel.Apply(type =>
         {
+            var genericArguements = type.GetGenericArguments();
+            foreach (var genericArgument in genericArguements)
+            {
+                typeModel.GenericArguements.Add(GetOrAddTypeModel(genericArgument));
+            }
+
             var constructorInfos = type.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) ?? [];
 
             foreach (var constructor in constructorInfos)
             {
-                typeModel.Constructors.Add(
-                    new(
-                        typeModel,
-                        constructor.GetParameters().Select(p => new ParameterModel(p.Name ?? string.Empty, GetOrCreateTypeModel(p.ParameterType))).ToList()
-                    )
-                );
-            }
-        });
+                var parameters = constructor.GetParameters().Select(p => new ParameterModel(
+                                    p.Name ?? string.Empty,
+                                    GetOrAddTypeModel(p.ParameterType)
+                                )).ToList();
 
-        typeModel.Apply(type =>
-        {
+                typeModel.Constructors.Add(new(constructor.Name, typeModel, parameters));
+            }
+
             var propertyInfos = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) ?? [];
 
             foreach (var property in propertyInfos)
             {
                 typeModel.Properties.Add(
-                    new(
-                        property.Name,
-                        GetOrCreateTypeModel(property.PropertyType),
-                        property.CanRead
-                    )
+                    new(property.Name, GetOrAddTypeModel(property.PropertyType), property.CanRead)
                 );
             }
-        });
 
-        typeModel.Apply(type =>
-        {
             var methodInfos = type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) ?? [];
 
             foreach (var method in methodInfos)
             {
-                typeModel.Methods.Add(
-                    new(
-                        method.Name,
-                        GetOrCreateTypeModel(method.ReturnType),
-                        method.GetParameters().Select(p => new ParameterModel(
+                var parameters = method.GetParameters().Select(p => new ParameterModel(
                                     p.Name ?? string.Empty,
-                                    GetOrCreateTypeModel(p.ParameterType)
-                                )).ToList(),
-                        method.IsPublic
-                    )
-                );
+                                    GetOrAddTypeModel(p.ParameterType)
+                                )).ToList();
+
+                typeModel.Methods.Add(new(method.Name, GetOrAddTypeModel(method.ReturnType), method.IsPublic, parameters));
             }
         });
 
         return typeModel;
+    }
+
+    TypeModel GetOrAddTypeModel(Type type)
+    {
+        if (Types.TryGetValue(type.Name, out var result))
+        {
+            return result;
+        }
+
+        return AddTypeModel(type);
     }
 }

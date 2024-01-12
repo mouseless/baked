@@ -3,8 +3,8 @@
 public record MethodModel(
     string Name,
     TypeModel ReturnType,
-    List<ParameterModel> Parameters,
-    bool IsPublic
-);
+    bool IsPublic,
+    ModelCollection<ParameterModel> Parameters
+) : IModel;
 
 

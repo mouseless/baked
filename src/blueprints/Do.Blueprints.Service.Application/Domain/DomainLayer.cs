@@ -27,9 +27,26 @@ public class DomainLayer : LayerBase<BuildConfiguration>
     {
         protected override void Initialize(ConfigurationManager _)
         {
-            Context.Add<DomainModel>(DomainModel.Build(_assemblyCollection, _typeCollection));
+            var model = new DomainModel();
+
+            foreach (var descriptor in _assemblyCollection)
+            {
+                model.Assemblies.Add(new(descriptor.Assembly));
+
+                foreach (var type in descriptor.Assembly.GetExportedTypes())
+                {
+                    _typeCollection.Add(type);
+                }
+            }
+
+            foreach (var descriptor in _typeCollection)
+            {
+                model.AddTypeModel(descriptor.Type);
+            }
+
+            Context.Add<DomainModel>(model);
         }
     }
 }
 
-// type collection kaldıralım
+

@@ -3,5 +3,5 @@
 public record ParameterModel(
     string Name,
     TypeModel ParameterType
-);
+) : IModel;
 

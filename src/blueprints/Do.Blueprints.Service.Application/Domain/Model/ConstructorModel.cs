@@ -1,6 +1,7 @@
 ﻿namespace Do.Domain.Model;
 
 public record ConstructorModel(
+    string Name,
     TypeModel Type,
-    List<ParameterModel> Parameters
-);
+    ModelCollection<ParameterModel> Parameters
+) : IModel;
