@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using Shouldly;
+using System.Reflection;
 
 namespace Do.Domain.Model;
 
@@ -7,23 +8,36 @@ public class DomainModel
     public ModelCollection<AssemblyModel> Assemblies { get; } = [];
     public ModelCollection<TypeModel> Types { get; } = [];
 
-    internal TypeModel AddTypeModel(Type type)
+    internal void Init()
     {
-        var typeModel = new TypeModel(type);
-        Types.Add(typeModel);
+        int counter = 0;
+        var enumerator = Types.GetEnumerator();
+        TypeModel? next;
 
-        if (typeModel.Namespace.Contains("System")) { return typeModel; }
+        while (enumerator.MoveNext())
+        {
+            next = enumerator.Current;
+            BuildTypeModel(next);
+            counter++;
+        }
+
+        counter.ShouldBe(Types.Count);
+    }
+
+    void BuildTypeModel(TypeModel typeModel)
+    {
+        if (typeModel.Namespace.Contains("System")) { return; }
 
         typeModel.Apply(type =>
         {
             foreach (var genericArgument in type.GenericTypeArguments)
             {
-                typeModel.GenericTypeArguments.Add(GetOrAddTypeModel(genericArgument));
+                typeModel.GenericTypeArguments.Add(GetOrCreateTypeModel(genericArgument));
             }
 
             foreach (var attributeData in type.GetCustomAttributesData())
             {
-                typeModel.CustomAttributes.Add(GetOrAddTypeModel(attributeData.AttributeType));
+                typeModel.CustomAttributes.Add(GetOrCreateTypeModel(attributeData.AttributeType));
             }
 
             var constructorInfos = type.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) ?? [];
@@ -35,31 +49,32 @@ public class DomainModel
             var propertyInfos = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) ?? [];
             foreach (var property in propertyInfos)
             {
-                typeModel.Properties.Add(new(property.Name, GetOrAddTypeModel(property.PropertyType), property.CanRead));
+                typeModel.Properties.Add(new(property.Name, GetOrCreateTypeModel(property.PropertyType), property.CanRead));
             }
 
             var methodInfos = type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) ?? [];
             foreach (var method in methodInfos)
             {
-                typeModel.Methods.Add(new(method.Name, GetOrAddTypeModel(method.ReturnType), method.IsPublic, ExtractParameters(method), ExtractCustomAttributes(method)));
+                typeModel.Methods.Add(new(method.Name, GetOrCreateTypeModel(method.ReturnType), method.IsPublic, ExtractParameters(method), ExtractCustomAttributes(method)));
             }
         });
-
-        return typeModel;
     }
 
-    TypeModel GetOrAddTypeModel(Type type)
+    TypeModel GetOrCreateTypeModel(Type type)
     {
-        if (Types.TryGetValue(type.FullName ?? string.Empty, out var result))
+        if (Types.TryGetValue(IModel.IdFromType(type), out var result))
         {
             return result;
         }
 
-        return AddTypeModel(type);
+        result = new TypeModel(type);
+        Types.Add(result);
+
+        return result;
     }
 
     List<ParameterModel> ExtractParameters(MethodBase method) =>
-        method.GetParameters().Select(p => new ParameterModel(p.Name ?? string.Empty, GetOrAddTypeModel(p.ParameterType), p.IsOptional, p.DefaultValue)).ToList();
+        method.GetParameters().Select(p => new ParameterModel(p.Name ?? string.Empty, GetOrCreateTypeModel(p.ParameterType), p.IsOptional, p.DefaultValue)).ToList();
     List<TypeModel> ExtractCustomAttributes(MemberInfo member) =>
-        member.GetCustomAttributesData().Select(a => GetOrAddTypeModel(a.AttributeType)).ToList();
+        member.GetCustomAttributesData().Select(a => GetOrCreateTypeModel(a.AttributeType)).ToList();
 }

@@ -13,16 +13,16 @@ public record TypeModel(
 ) : IModel
 {
     readonly Type _type = default!;
-    readonly string? _fullName;
+    readonly string _id = default!;
 
     public TypeModel(Type type)
         : this(type.Name, type.Namespace ?? string.Empty, [], [], [], [], [], type.IsAbstract, type.IsValueType)
     {
         _type = type;
-        _fullName = type.FullName;
+        _id = IModel.IdFromType(type);
     }
 
-    public string Id => _fullName ?? $"{Name},{Namespace}";
+    public string Id => _id;
 
     internal void Apply(Action<Type> action) => action(_type);
 }

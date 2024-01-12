@@ -39,10 +39,12 @@ public class DomainLayer : LayerBase<BuildConfiguration>
                 }
             }
 
-            foreach (var descriptor in _typeCollection)
+            foreach (var descriptor in _typeCollection.Distinct())
             {
-                model.AddTypeModel(descriptor.Type);
+                model.Types.Add(new(descriptor.Type));
             }
+
+            model.Init();
 
             Context.Add<DomainModel>(model);
         }
