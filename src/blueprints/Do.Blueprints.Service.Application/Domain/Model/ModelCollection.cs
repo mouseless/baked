@@ -21,6 +21,14 @@ public class ModelCollection<T>() : IEnumerable<T>
     public void Add(T model) =>
         _models.Add(model);
 
+    public void AddRange(IEnumerable<T> models)
+    {
+        foreach (var model in models)
+        {
+            _models.Add(model);
+        }
+    }
+
     internal bool TryGetValue(string id, [NotNullWhen(true)] out T? model) =>
         _models.TryGetValue(id, out model);
 

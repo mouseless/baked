@@ -71,4 +71,12 @@ public class RegisteringServices : TestServiceSpec
 
         actual.ShouldBeNull();
     }
+
+    [Test]
+    public void System_types_are_not_registered([Values(typeof(int), typeof(string), typeof(Guid), typeof(List<>), typeof(Task<>))] Type type)
+    {
+        var actual = ApplicationContext.GetServiceDescriptor(type);
+
+        actual.ShouldBeNull();
+    }
 }

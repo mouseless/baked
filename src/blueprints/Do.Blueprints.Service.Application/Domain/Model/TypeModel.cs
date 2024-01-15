@@ -2,7 +2,7 @@
 
 public record TypeModel(
     string Name,
-    string Namespace,
+    string? Namespace,
     ModelCollection<ConstructorModel> Constructors,
     ModelCollection<MethodModel> Methods,
     ModelCollection<PropertyModel> Properties,
@@ -16,7 +16,7 @@ public record TypeModel(
     readonly string _id = default!;
 
     public TypeModel(Type type)
-        : this(type.Name, type.Namespace ?? string.Empty, [], [], [], [], [], type.IsAbstract, type.IsValueType)
+        : this(type.Name, type.Namespace, [], [], [], [], [], type.IsAbstract, type.IsValueType)
     {
         _type = type;
         _id = IModel.IdFromType(type);

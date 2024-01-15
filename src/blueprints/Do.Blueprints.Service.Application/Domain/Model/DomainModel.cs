@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace Do.Domain.Model;
 
-public class DomainModel
+public class DomainModel(DomainOptions _domainOptions)
 {
     public ModelCollection<AssemblyModel> Assemblies { get; } = [];
     public ModelCollection<TypeModel> Types { get; } = [];
@@ -17,7 +17,10 @@ public class DomainModel
         while (enumerator.MoveNext())
         {
             next = enumerator.Current;
-            BuildTypeModel(next);
+            if (_domainOptions.TypeIsBuiltConventions.Any(f => f(next)))
+            {
+                BuildTypeModel(next);
+            }
 
             counter++;
         }
@@ -29,37 +32,32 @@ public class DomainModel
     {
         typeModel.Apply(type =>
         {
-            foreach (var genericArgument in type.GenericTypeArguments)
+            typeModel.Apply(type =>
             {
-                typeModel.GenericTypeArguments.Add(GetOrCreateTypeModel(genericArgument));
-            }
-        });
+                foreach (var genericArgument in type.GenericTypeArguments)
+                {
+                    typeModel.GenericTypeArguments.Add(GetOrCreateTypeModel(genericArgument));
+                }
+            });
 
-        if (typeModel.Namespace.Contains("System")) { return; }
+            typeModel.CustomAttributes.AddRange(ExtractCustomAttributes(type));
 
-        typeModel.Apply(type =>
-        {
-            foreach (var attributeData in type.GetCustomAttributesData())
-            {
-                typeModel.CustomAttributes.Add(GetOrCreateTypeModel(attributeData.AttributeType));
-            }
-
-            var constructorInfos = type.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) ?? [];
+            var constructorInfos = type.GetConstructors(_domainOptions.ConstuctorBindingFlags) ?? [];
             foreach (var constructor in constructorInfos)
             {
                 typeModel.Constructors.Add(new(constructor.Name, typeModel, ExtractParameters(constructor)));
             }
 
-            var propertyInfos = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) ?? [];
-            foreach (var property in propertyInfos)
-            {
-                typeModel.Properties.Add(new(property.Name, GetOrCreateTypeModel(property.PropertyType), property.CanRead));
-            }
-
-            var methodInfos = type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) ?? [];
+            var methodInfos = type.GetMethods(_domainOptions.MethodBindingFlags) ?? [];
             foreach (var method in methodInfos)
             {
                 typeModel.Methods.Add(new(method.Name, GetOrCreateTypeModel(method.ReturnType), method.IsPublic, ExtractParameters(method), ExtractCustomAttributes(method)));
+            }
+
+            var propertyInfos = type.GetProperties(_domainOptions.PropertyBindingFlags) ?? [];
+            foreach (var property in propertyInfos)
+            {
+                typeModel.Properties.Add(new(property.Name, GetOrCreateTypeModel(property.PropertyType), property.CanRead));
             }
         });
     }
@@ -79,6 +77,7 @@ public class DomainModel
 
     List<ParameterModel> ExtractParameters(MethodBase method) =>
         method.GetParameters().Select(p => new ParameterModel(p.Name ?? string.Empty, GetOrCreateTypeModel(p.ParameterType), p.IsOptional, p.DefaultValue)).ToList();
+
     List<TypeModel> ExtractCustomAttributes(MemberInfo member) =>
         member.GetCustomAttributesData().Select(a => GetOrCreateTypeModel(a.AttributeType)).ToList();
 }
