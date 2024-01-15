@@ -23,12 +23,7 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
 
         configurator.ConfigureAutoPersistenceModel(model =>
         {
-            var domainModel = configurator.Context.GetDomainModel();
-
-            foreach (var assembly in domainModel.Assemblies)
-            {
-                assembly.Apply(a => model.AddEntityAssembly(a));
-            }
+            model.AddTypeSource(configurator.Context.GetDomainModel());
 
             model
                 .Conventions.Add(Table.Is(x => x.EntityType.Name))
