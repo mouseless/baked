@@ -49,4 +49,35 @@ public class ServiceTests : IntegrationSpec<ServiceTests>
         result.ShouldNotBeNull();
         $"{result.Last().GetProperty("stringData")}".ShouldBe("transaction action");
     }
+
+    [Test]
+    public async Task Singleton_test_transaction_func()
+    {
+        var client = Factory.CreateClient();
+
+        var response = await client.PostAsync($"singleton/test-transaction-func", null);
+
+        response.ShouldNotBeNull();
+        response.Content.ReadFromJsonAsync<ProblemDetails>().Result.ShouldNotBeNull();
+
+        var entitiesResponse = await client.GetAsync("entities");
+        entitiesResponse.ShouldNotBeNull();
+
+        var result = await entitiesResponse.Content.ReadFromJsonAsync<List<JsonElement>>();
+
+        result.ShouldNotBeNull();
+        $"{result.Last().GetProperty("stringData")}".ShouldBe("rollback");
+    }
+
+    [Test]
+    [Ignore("not implemented")]
+    public void Singleton_test_transaction_nullable() => Assert.Fail();
+
+    [Test]
+    [Ignore("not implemented")]
+    public void Singleton_test_async_object() => Assert.Fail();
+
+    [Test]
+    [Ignore("not implemented")]
+    public void Singleton_test_object() => Assert.Fail();
 }
