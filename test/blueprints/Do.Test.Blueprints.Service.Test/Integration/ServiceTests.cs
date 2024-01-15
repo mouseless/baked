@@ -1,6 +1,7 @@
 ﻿using Do.Architecture;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http.Json;
+using System.Text.Json;
 
 namespace Do.Test.Integration;
 
@@ -28,5 +29,24 @@ public class ServiceTests : IntegrationSpec<ServiceTests>
 
         problemDetails.ShouldNotBeNull();
         problemDetails.Status.ShouldBe(successCase.code);
+    }
+
+    [Test]
+    public async Task Singleton_test_transaction_action()
+    {
+        var client = Factory.CreateClient();
+
+        var response = await client.PostAsync($"singleton/test-transaction-action", null);
+
+        response.ShouldNotBeNull();
+        response.Content.ReadFromJsonAsync<ProblemDetails>().Result.ShouldNotBeNull();
+
+        var entitiesResponse = await client.GetAsync("entities");
+        entitiesResponse.ShouldNotBeNull();
+
+        var result = await entitiesResponse.Content.ReadFromJsonAsync<List<JsonElement>>();
+
+        result.ShouldNotBeNull();
+        $"{result.Last().GetProperty("stringData")}".ShouldBe("transaction action");
     }
 }
