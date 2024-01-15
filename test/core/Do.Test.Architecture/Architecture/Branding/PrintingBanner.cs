@@ -24,14 +24,14 @@ public class PrintingBanner : ArchitectureSpec
 
         banner.Print();
 
-        var outputLines = writer.ToString().Split(Environment.NewLine);
+        var output = string.Join("\r\n", writer.ToString().Split(Environment.NewLine)[0..7]);
 
-        outputLines[0].ShouldBe("----------------------------------------------");
-        outputLines[1].ShouldBe(string.Empty);
-        outputLines[2].ShouldBe("  ██        ████████    ██████████");
-        outputLines[3].ShouldBe("    ██      ██      ██  ██      ██");
-        outputLines[4].ShouldBe("      ██    ██      ██  ██      ██");
-        outputLines[5].ShouldBe("    ██      ██      ██  ██      ██");
-        outputLines[6].ShouldBe("  ██        ████████    ██████████  ██████████");
+        output.ShouldBe(@"----------------------------------------------
+
+  ██        ████████    ██████████
+    ██      ██      ██  ██      ██
+      ██    ██      ██  ██      ██
+    ██      ██      ██  ██      ██
+  ██        ████████    ██████████  ██████████");
     }
 }
