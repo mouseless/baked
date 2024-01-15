@@ -1,5 +1,4 @@
-﻿using Shouldly;
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace Do.Domain.Model;
 
@@ -10,7 +9,6 @@ public class DomainModel(DomainOptions _domainOptions)
 
     internal void Init()
     {
-        int counter = 0;
         var enumerator = Types.GetEnumerator();
         TypeModel? next;
 
@@ -21,11 +19,7 @@ public class DomainModel(DomainOptions _domainOptions)
             {
                 BuildTypeModel(next);
             }
-
-            counter++;
         }
-
-        counter.ShouldBe(Types.Count);
     }
 
     void BuildTypeModel(TypeModel typeModel)
@@ -40,24 +34,26 @@ public class DomainModel(DomainOptions _domainOptions)
                 }
             });
 
-            typeModel.CustomAttributes.AddRange(ExtractCustomAttributes(type));
+            typeModel.CustomAttributes.AddRange(CustomAttributes(type));
 
             var constructorInfos = type.GetConstructors(_domainOptions.ConstuctorBindingFlags) ?? [];
             foreach (var constructor in constructorInfos)
             {
-                typeModel.Constructors.Add(new(constructor.Name, typeModel, ExtractParameters(constructor)));
+                typeModel.Constructors.Add(new(constructor.Name, typeModel, Parameters(constructor), constructor.IsPublic));
             }
 
             var methodInfos = type.GetMethods(_domainOptions.MethodBindingFlags) ?? [];
             foreach (var method in methodInfos)
             {
-                typeModel.Methods.Add(new(method.Name, GetOrCreateTypeModel(method.ReturnType), method.IsPublic, ExtractParameters(method), ExtractCustomAttributes(method)));
+                typeModel.Methods.Add(
+                    new(method.Name, GetOrCreateTypeModel(method.ReturnType), method.IsPublic, method.IsFamily, method.IsVirtual, Parameters(method), CustomAttributes(method))
+                );
             }
 
             var propertyInfos = type.GetProperties(_domainOptions.PropertyBindingFlags) ?? [];
             foreach (var property in propertyInfos)
             {
-                typeModel.Properties.Add(new(property.Name, GetOrCreateTypeModel(property.PropertyType), property.CanRead));
+                typeModel.Properties.Add(new(property.Name, GetOrCreateTypeModel(property.PropertyType), property.IsPublic(), property.IsVirtual()));
             }
         });
     }
@@ -75,9 +71,9 @@ public class DomainModel(DomainOptions _domainOptions)
         return result;
     }
 
-    List<ParameterModel> ExtractParameters(MethodBase method) =>
+    List<ParameterModel> Parameters(MethodBase method) =>
         method.GetParameters().Select(p => new ParameterModel(p.Name ?? string.Empty, GetOrCreateTypeModel(p.ParameterType), p.IsOptional, p.DefaultValue)).ToList();
 
-    List<TypeModel> ExtractCustomAttributes(MemberInfo member) =>
+    List<TypeModel> CustomAttributes(MemberInfo member) =>
         member.GetCustomAttributesData().Select(a => GetOrCreateTypeModel(a.AttributeType)).ToList();
 }

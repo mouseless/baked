@@ -4,6 +4,8 @@ public record MethodModel(
     string Name,
     TypeModel ReturnType,
     bool IsPublic,
+    bool IsProtected,
+    bool IsVirtual,
     ModelCollection<ParameterModel> Parameters,
     ModelCollection<TypeModel> CustomAttributes
 ) : IModel
