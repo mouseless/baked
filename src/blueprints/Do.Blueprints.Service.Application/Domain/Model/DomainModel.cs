@@ -18,6 +18,7 @@ public class DomainModel
         {
             next = enumerator.Current;
             BuildTypeModel(next);
+
             counter++;
         }
 
@@ -26,15 +27,18 @@ public class DomainModel
 
     void BuildTypeModel(TypeModel typeModel)
     {
-        if (typeModel.Namespace.Contains("System")) { return; }
-
         typeModel.Apply(type =>
         {
             foreach (var genericArgument in type.GenericTypeArguments)
             {
                 typeModel.GenericTypeArguments.Add(GetOrCreateTypeModel(genericArgument));
             }
+        });
 
+        if (typeModel.Namespace.Contains("System")) { return; }
+
+        typeModel.Apply(type =>
+        {
             foreach (var attributeData in type.GetCustomAttributesData())
             {
                 typeModel.CustomAttributes.Add(GetOrCreateTypeModel(attributeData.AttributeType));

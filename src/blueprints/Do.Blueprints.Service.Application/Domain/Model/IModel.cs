@@ -4,5 +4,6 @@ public interface IModel
 {
     string Id { get; }
 
-    static string IdFromType(Type type) => type.FullName ?? $"{type.Name},{type.Namespace}";
+    public static string IdFromType(Type type) =>
+        type.FullName ?? $"{type.Namespace}.{type.Name}[{string.Join(',', type.GenericTypeArguments.Select(IdFromType))}]";
 }

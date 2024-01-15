@@ -6,7 +6,7 @@ public record AssemblyModel(
     string Name
 ) : IModel
 {
-    Assembly _assembly = default!;
+    readonly Assembly _assembly = default!;
 
     public AssemblyModel(Assembly assembly)
         : this(assembly.FullName ?? string.Empty)

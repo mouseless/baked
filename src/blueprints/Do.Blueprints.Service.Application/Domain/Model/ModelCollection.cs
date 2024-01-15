@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Do.Domain.Model;
 
@@ -7,20 +8,18 @@ public class ModelCollection<T>() : IEnumerable<T>
 {
     public static implicit operator ModelCollection<T>(List<T> other) => new(other);
 
-    readonly Dictionary<string, T> _models = [];
+    readonly KeyedModelCollection<T> _models = [];
 
     public ModelCollection(List<T> data)
-        : this() => _models = data.ToDictionary(m => m.Id, m => m);
-
-    List<T> List => _models.Values.ToList();
+        : this() => _models = [.. data];
 
     public int Count => _models.Count;
 
-    public T this[int index] => List[index];
+    public T this[int index] =>
+        _models[index];
 
-    public void Add(T model) => _models[model.Id] = model;
-
-    public T? GetOrDefault(string id) => _models.ContainsKey(id) ? _models[id] : default;
+    public void Add(T model) =>
+        _models.Add(model);
 
     internal bool TryGetValue(string id, [NotNullWhen(true)] out T? model) =>
         _models.TryGetValue(id, out model);
@@ -29,17 +28,14 @@ public class ModelCollection<T>() : IEnumerable<T>
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-    public class ModelCollectionEnumerator(ModelCollection<T> collection) : IEnumerator<T>, IEnumerator
+    public struct ModelCollectionEnumerator(ModelCollection<T> collection) : IEnumerator<T>, IEnumerator
     {
         readonly ModelCollection<T> _collection = collection;
         int _index = 0;
         T _current = default!;
 
         public T Current => _current;
-
         object IEnumerator.Current => Current;
-
-        public void Dispose() { }
 
         public bool MoveNext()
         {
@@ -62,5 +58,13 @@ public class ModelCollection<T>() : IEnumerable<T>
             _index = 0;
             _current = default!;
         }
+
+        public void Dispose() { }
+    }
+
+    class KeyedModelCollection<TItem> : KeyedCollection<string, TItem>
+        where TItem : IModel
+    {
+        protected override string GetKeyForItem(TItem item) => item.Id;
     }
 }

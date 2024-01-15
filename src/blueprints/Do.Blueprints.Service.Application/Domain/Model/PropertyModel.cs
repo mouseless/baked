@@ -2,9 +2,9 @@
 
 public record PropertyModel(
     string Name,
-    TypeModel Type,
+    TypeModel PropertyType,
     bool IsPublic
 ) : IModel
 {
-    public string Id => Name;
+    public string Id => $"{PropertyType.Id}{Name}";
 }
