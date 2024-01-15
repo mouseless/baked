@@ -24,7 +24,7 @@ public class PrintingBanner : ArchitectureSpec
 
         banner.Print();
 
-        var output = string.Join("\r\n", writer.ToString().Split(Environment.NewLine)[0..7]);
+        var output = string.Join(Environment.NewLine, writer.ToString().Split(Environment.NewLine)[0..7]);
 
         output.ShouldBe(@"----------------------------------------------
 
