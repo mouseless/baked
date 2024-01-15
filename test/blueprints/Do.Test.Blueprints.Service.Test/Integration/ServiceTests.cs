@@ -1,21 +1,19 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Do.Architecture;
+using Microsoft.AspNetCore.Mvc;
 using System.Net.Http.Json;
 
 namespace Do.Test.Integration;
 
 public class ServiceTests : IntegrationSpec<ServiceTests>
 {
-    public override void Run()
-    {
+    protected override Application Application =>
         Forge.New
             .Service(
                 business: c => c.Default(),
                 database: c => c.MySql().ForDevelopment(c.Sqlite()),
                 exceptionHandling: ex => ex.Default(typeUrlFormat: "https://do.mouseless.codes/errors/{0}"),
                 configure: app => app.Features.AddConfigurationOverrider()
-            )
-            .Run();
-    }
+            );
 
     static (bool, int)[] _testExceptionSuccessCases = [(true, 400), (false, 500)];
 

@@ -1,18 +1,17 @@
-﻿namespace Do.Test.Integration;
+﻿using Do.Architecture;
+
+namespace Do.Test.Integration;
 
 public class DocumentationFeatureTests : IntegrationSpec<DocumentationFeatureTests>
 {
-    public override void Run()
-    {
+    protected override Application Application =>
         Forge.New
             .Service(
                 business: c => c.Default(),
                 database: c => c.MySql().ForDevelopment(c.Sqlite()),
                 exceptionHandling: ex => ex.Default(typeUrlFormat: "https://do.mouseless.codes/errors/{0}"),
                 configure: app => app.Features.AddConfigurationOverrider()
-            )
-            .Run();
-    }
+            );
 
     [Test]
     public async Task Application_root_is_swagger_index_page()

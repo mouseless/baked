@@ -5,9 +5,8 @@ public class IntegrationSpecRunner
     public static void Run(string[] args)
     {
         var type = Type.GetType(GetArgumentValue(args[0], '=')) ?? throw new("Type should have existed");
-        var method = typeof(IntegrationSpec<>).MakeGenericType(type).GetMethod(GetArgumentValue(args[1], '=')) ?? throw new("Method should have existed");
 
-        method.Invoke(Activator.CreateInstance(type), null);
+        ((IIntegrationSpec)(Activator.CreateInstance(type) ?? throw new("Should not be null"))).Run();
     }
 
     static string GetArgumentValue(string arg, char index) =>
