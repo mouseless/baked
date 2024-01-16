@@ -22,11 +22,6 @@ public class DomainModel(DomainOptions _domainOptions)
     {
         typeModel.Apply(type =>
         {
-            if (type.BaseType is not null)
-            {
-                typeModel.BaseType = GetOrCreateTypeModel(type.BaseType);
-            }
-
             foreach (var genericArgument in type.GenericTypeArguments)
             {
                 typeModel.GenericTypeArguments.Add(GetOrCreateTypeModel(genericArgument));

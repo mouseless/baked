@@ -19,20 +19,13 @@ public class TypeModel(Type type)
     public ModelCollection<PropertyModel> Properties { get; } = [];
     public ModelCollection<TypeModel> GenericTypeArguments { get; } = [];
     public ModelCollection<TypeModel> CustomAttributes { get; } = [];
-    public TypeModel? BaseType { get; internal set; }
 
     public bool IsSystemType => Namespace?.StartsWith("System") == true;
 
     public void Apply(Action<Type> action) => action(_type);
 
     public bool IsAssignableFrom<T>() => IsAssignableFrom(typeof(T));
-
-    public bool IsAssignableFrom(Type type)
-    {
-        if (_type == type) { return true; }
-
-        return BaseType?.IsAssignableFrom(type) == true;
-    }
+    public bool IsAssignableFrom(Type type) => type.IsAssignableFrom(_type);
 
     public static string IdFromType(Type type) =>
         type.FullName ?? $"{type.Namespace}.{type.Name}[{string.Join(',', type.GenericTypeArguments.Select(IdFromType))}]";
