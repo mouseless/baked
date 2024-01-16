@@ -5,11 +5,12 @@ namespace Do.Test.DataAccess.Orm;
 public class DefaultOrmConfiguration : TestServiceSpec
 {
     [Test]
-    public void Maps_entities()
+    public void Maps_only_entities()
     {
         var configuration = GiveMe.The<NHConfiguration>();
 
         configuration.GetClassMapping(typeof(Entity)).ShouldNotBeNull();
+        configuration.GetClassMapping(typeof(Singleton)).ShouldBeNull();
     }
 
     [Test]
@@ -29,7 +30,7 @@ public class DefaultOrmConfiguration : TestServiceSpec
     }
 
     [Test]
-    public void Id_is_property_named_Id()
+    public void Id_is__property_named_Id()
     {
         var configuration = GiveMe.The<NHConfiguration>();
 
