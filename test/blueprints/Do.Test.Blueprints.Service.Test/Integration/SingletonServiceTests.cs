@@ -5,19 +5,20 @@ using System.Text.Json;
 
 namespace Do.Test.Integration;
 
-public class SingletonServiceTests : IntegrationSpec<SingletonServiceTests>
+public class SingletonServiceTests : TestServiceNfr
 {
-    protected override Application Application =>
+    protected override Application ForgeApplication() =>
         Forge.New
             .Service(
                 business: c => c.Default(),
-                database: c => c.MySql().ForDevelopment(c.Sqlite()),
+                database: c => c.InMemory(),
                 exceptionHandling: ex => ex.Default(typeUrlFormat: "https://do.mouseless.codes/errors/{0}"),
                 configure: app => app.Features.AddConfigurationOverrider()
             );
 
     static (bool, int)[] _testExceptionSuccessCases = [(true, 400), (false, 500)];
 
+    // exception handing
     [Test]
     public async Task Singleton_test_exception([ValueSource(nameof(_testExceptionSuccessCases))] (bool handled, int code) successCase)
     {

@@ -24,6 +24,12 @@ public abstract class Spec
     public Mocker MockMe { get; private set; } = default!;
     public Searcher GetMe { get; private set; } = default!;
 
+    [OneTimeSetUp]
+    public virtual void OneTimeSetUp() { }
+
+    [OneTimeTearDown]
+    public virtual void OneTimeTearDown() { }
+
     [SetUp]
     public virtual void SetUp()
     {

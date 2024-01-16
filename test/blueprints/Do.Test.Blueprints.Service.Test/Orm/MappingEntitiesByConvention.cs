@@ -1,8 +1,8 @@
 ﻿using NHConfiguration = NHibernate.Cfg.Configuration;
 
-namespace Do.Test.DataAccess.Orm;
+namespace Do.Test.Orm;
 
-public class DefaultOrmConfiguration : TestServiceSpec
+public class MappingEntitiesByConvention : TestServiceSpec
 {
     [Test]
     public void Maps_only_entities()

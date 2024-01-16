@@ -3,7 +3,7 @@ using System.Text.Json;
 
 namespace Do.Test;
 
-public static class IntegrationSpecExtensions
+public static class TestServiceNfrExtensions
 {
     public static async Task<List<JsonElement>> GetEntities(this HttpClient client)
     {
