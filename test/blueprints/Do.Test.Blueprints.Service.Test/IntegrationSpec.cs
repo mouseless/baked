@@ -7,6 +7,7 @@ public abstract class IntegrationSpec<T> : IIntegrationSpec
     where T : IntegrationSpec<T>
 {
     static WebApplicationFactory<IntegrationTestProgram> _factory = default!;
+    internal static HttpClient Client => _factory.CreateClient();
 
     static IntegrationSpec()
     {
@@ -18,7 +19,6 @@ public abstract class IntegrationSpec<T> : IIntegrationSpec
         });
     }
 
-    internal WebApplicationFactory<IntegrationTestProgram> Factory => _factory;
     protected abstract Application Application { get; }
 
     void IIntegrationSpec.Run() => Application.Run();

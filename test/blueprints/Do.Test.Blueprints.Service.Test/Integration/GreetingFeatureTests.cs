@@ -16,9 +16,7 @@ public class GreetingFeatureTests : IntegrationSpec<GreetingFeatureTests>
     [Test]
     public async Task Application_redirects_to_dotnet_welcome_page_on_given_url()
     {
-        var client = Factory.CreateClient();
-
-        var response = await client.GetAsync("/WelcomePage");
+        var response = await Client.GetAsync("/WelcomePage");
 
         response.EnsureSuccessStatusCode();
     }

@@ -16,9 +16,7 @@ public class DocumentationFeatureTests : IntegrationSpec<DocumentationFeatureTes
     [Test]
     public async Task Application_root_is_swagger_index_page()
     {
-        var client = Factory.CreateClient();
-
-        var response = await client.GetAsync("/");
+        var response = await Client.GetAsync("/");
 
         response.EnsureSuccessStatusCode();
         response.RequestMessage.ShouldNotBeNull();

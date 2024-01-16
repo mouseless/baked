@@ -21,9 +21,7 @@ public class SingletonServiceTests : IntegrationSpec<SingletonServiceTests>
     [Test]
     public async Task Singleton_test_exception([ValueSource(nameof(_testExceptionSuccessCases))] (bool handled, int code) successCase)
     {
-        var client = Factory.CreateClient();
-
-        var response = await client.PostAsync($"singleton/test-exception?handled={successCase.handled}", null);
+        var response = await Client.PostAsync($"singleton/test-exception?handled={successCase.handled}", null);
 
         var problemDetails = response.Content.ReadFromJsonAsync<ProblemDetails>().Result;
 
@@ -34,17 +32,9 @@ public class SingletonServiceTests : IntegrationSpec<SingletonServiceTests>
     [Test]
     public async Task Singleton_test_transaction_action()
     {
-        var client = Factory.CreateClient();
+        await Client.PostAsync($"singleton/test-transaction-action", null);
 
-        var response = await client.PostAsync($"singleton/test-transaction-action", null);
-
-        response.ShouldNotBeNull();
-        response.Content.ReadFromJsonAsync<ProblemDetails>().Result.ShouldNotBeNull();
-
-        var entitiesResponse = await client.GetAsync("entities");
-        entitiesResponse.ShouldNotBeNull();
-
-        var result = await entitiesResponse.Content.ReadFromJsonAsync<List<JsonElement>>();
+        var result = await Client.GetEntities();
 
         result.ShouldNotBeNull();
         $"{result.Last().GetProperty("stringData")}".ShouldBe("transaction action");
@@ -53,17 +43,9 @@ public class SingletonServiceTests : IntegrationSpec<SingletonServiceTests>
     [Test]
     public async Task Singleton_test_transaction_func()
     {
-        var client = Factory.CreateClient();
+        await Client.PostAsync($"singleton/test-transaction-func", null);
 
-        var response = await client.PostAsync($"singleton/test-transaction-func", null);
-
-        response.ShouldNotBeNull();
-        response.Content.ReadFromJsonAsync<ProblemDetails>().Result.ShouldNotBeNull();
-
-        var entitiesResponse = await client.GetAsync("entities");
-        entitiesResponse.ShouldNotBeNull();
-
-        var result = await entitiesResponse.Content.ReadFromJsonAsync<List<JsonElement>>();
+        var result = await Client.GetEntities();
 
         result.ShouldNotBeNull();
         $"{result.Last().GetProperty("stringData")}".ShouldBe("rollback");
@@ -72,26 +54,18 @@ public class SingletonServiceTests : IntegrationSpec<SingletonServiceTests>
     [Test]
     public async Task Singleton_test_transaction_nullable()
     {
-        var client = Factory.CreateClient();
-
-        var entitiesResponse = await client.GetAsync("entities");
-        entitiesResponse.ShouldNotBeNull();
-        var result = await entitiesResponse.Content.ReadFromJsonAsync<List<JsonElement>>();
-        result.ShouldNotBeNull();
+        var result = await Client.GetEntities();
         var id = $"{result.Last().GetProperty("id")}";
 
-        var content = JsonContent.Create(new { entityId = id });
-
-        var response = await client.PostAsync($"singleton/test-transaction-nullable", content);
+        var response = await Client.PostAsync(
+            $"singleton/test-transaction-nullable",
+            JsonContent.Create(new { entityId = id })
+        );
 
         response.ShouldNotBeNull();
 
-        entitiesResponse = await client.GetAsync("entities");
-        entitiesResponse.ShouldNotBeNull();
+        result = await Client.GetEntities();
 
-        result = await entitiesResponse.Content.ReadFromJsonAsync<List<JsonElement>>();
-
-        result.ShouldNotBeNull();
         var entity = result.Where(e => $"{e.GetProperty("id")}" == id).FirstOrDefault();
         $"{entity.GetProperty("stringData")}".ShouldBe("transaction nullable");
     }
@@ -99,10 +73,10 @@ public class SingletonServiceTests : IntegrationSpec<SingletonServiceTests>
     [Test]
     public async Task Singleton_test_async_object()
     {
-        var client = Factory.CreateClient();
-
-        var content = JsonContent.Create(new { testValue = "Test value" });
-        var response = await client.PutAsync("singleton/test-async-object", content);
+        var response = await Client.PutAsync(
+            "singleton/test-async-object",
+            JsonContent.Create(new { testValue = "Test value" })
+        );
 
         var result = await response.Content.ReadFromJsonAsync<JsonElement>();
         $"{result.GetProperty("testValue")}".ShouldBe("Test value");
@@ -111,10 +85,10 @@ public class SingletonServiceTests : IntegrationSpec<SingletonServiceTests>
     [Test]
     public async Task Singleton_test_object()
     {
-        var client = Factory.CreateClient();
-
-        var content = JsonContent.Create(new { testValue = "Test value" });
-        var response = await client.PutAsync("singleton/test-object", content);
+        var response = await Client.PutAsync(
+            "singleton/test-object",
+            JsonContent.Create(new { testValue = "Test value" })
+        );
 
         var result = await response.Content.ReadFromJsonAsync<JsonElement>();
         $"{result.GetProperty("testValue")}".ShouldBe("Test value");
