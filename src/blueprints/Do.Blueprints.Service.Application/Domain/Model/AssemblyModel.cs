@@ -2,19 +2,11 @@
 
 namespace Do.Domain.Model;
 
-public record AssemblyModel(
-    string Name
-) : IModel
+public class AssemblyModel(Assembly _assembly)
+    : IModel
 {
-    readonly Assembly _assembly = default!;
-
-    public AssemblyModel(Assembly assembly)
-        : this(assembly.FullName ?? string.Empty)
-    {
-        _assembly = assembly;
-    }
-
+    public string Name { get; } = _assembly.FullName ?? string.Empty;
     public string Id => Name;
 
-    internal void Apply(Action<Assembly> action) => action(_assembly);
+    public void Apply(Action<Assembly> action) => action(_assembly);
 }

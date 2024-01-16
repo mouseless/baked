@@ -52,5 +52,3 @@ public class DomainLayer : LayerBase<BuildConfiguration>
         }
     }
 }
-
-
