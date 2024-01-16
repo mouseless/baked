@@ -10,6 +10,9 @@ public class TypeModel(Type type)
     public bool IsAbstract { get; } = type.IsAbstract;
     public bool IsValueType { get; } = type.IsValueType;
     public bool IsStatic { get; } = type.IsAbstract && type.IsSealed;
+    public bool IsInterface { get; } = type.IsInterface;
+    public bool IsGenericTypeParameter { get; } = type.IsGenericTypeParameter;
+    public bool IsGenericMethodParameter { get; } = type.IsGenericMethodParameter;
     public string Id { get; } = IdFromType(type);
     public ModelCollection<ConstructorModel> Constructors { get; } = [];
     public ModelCollection<MethodModel> Methods { get; } = [];

@@ -25,7 +25,14 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
 
             foreach (var type in domainModel.Types)
             {
-                if (type.IsSystemType || type.IsStatic || type.IsAbstract || type.IsValueType || type.IsAssignableFrom<Exception>()) { continue; }
+                if (
+                    type.IsSystemType ||
+                    type.IsStatic ||
+                    type.IsAbstract ||
+                    type.IsValueType ||
+                    type.IsGenericMethodParameter ||
+                    type.IsAssignableFrom<Exception>()
+                ) { continue; }
 
                 if (type.Methods.TryGetValue("With", out var method) && method.ReturnType == type)
                 {
@@ -33,7 +40,7 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
                 }
                 else
                 {
-                    if (type.Constructors.All(c => c.Parameters.All(p => p.Name.StartsWith('_'))))
+                    if (type.Constructors.All(c => c.Parameters.All(p => !p.ParameterType.IsValueType)))
                     {
                         type.Apply(t => services.AddSingleton(t));
                     }
