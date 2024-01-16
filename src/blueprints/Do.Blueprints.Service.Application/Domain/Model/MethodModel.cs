@@ -6,11 +6,8 @@ public record MethodModel(
     bool IsPublic,
     bool IsProtected,
     bool IsVirtual,
-    ModelCollection<ParameterModel> Parameters,
-    ModelCollection<TypeModel> CustomAttributes
+    ModelCollection<OverloadModel> Overloads
 ) : IModel
 {
-    public string Id { get; } = $"{Name}[{string.Join(',', Parameters.Select(p => p.Id))}]";
+    public string Id { get; } = $"{Name}";
 }
-
-

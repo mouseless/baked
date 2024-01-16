@@ -1,7 +1,7 @@
 ﻿namespace Do.Test;
 
-public class ClassDTO(int _number, string _text)
+public class ClassDTO(int number, string text)
 {
-    public int Number { get; } = _number;
-    public string Text { get; } = _text;
+    public int Number { get; } = number;
+    public string Text { get; } = text;
 }

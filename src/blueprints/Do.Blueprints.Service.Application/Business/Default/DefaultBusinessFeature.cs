@@ -27,7 +27,7 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
             {
                 if (type.IsSystemType || type.IsStatic || type.IsAbstract || type.IsValueType) { continue; }
 
-                if (type.Methods.Any(m => m.Name.Equals("With") && m.ReturnType == type))
+                if (type.Methods.TryGetValue("With", out var method) && method.ReturnType == type)
                 {
                     type.Apply(t => services.AddTransientWithFactory(t));
                 }

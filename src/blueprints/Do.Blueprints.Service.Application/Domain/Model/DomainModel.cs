@@ -42,15 +42,20 @@ public class DomainModel(DomainOptions _domainOptions)
             var methodInfos = type.GetMethods(_domainOptions.MethodBindingFlags) ?? [];
             foreach (var method in methodInfos)
             {
-                typeModel.Methods.Add(
-                    new(method.Name, GetOrCreateTypeModel(method.ReturnType), method.IsPublic, method.IsFamily, method.IsVirtual, Parameters(method), CustomAttributes(method))
-                );
+                if (typeModel.Methods.TryGetValue(method.Name, out var methodModel))
+                {
+                    methodModel.Overloads.Add(new(Parameters(method), CustomAttributes(method)));
+                }
+                else
+                {
+                    typeModel.Methods.Add(new(method.Name, GetOrCreateTypeModel(method.ReturnType), method.IsPublic, method.IsFamily, method.IsVirtual, [new(Parameters(method), CustomAttributes(method))]));
+                }
             }
 
             var propertyInfos = type.GetProperties(_domainOptions.PropertyBindingFlags) ?? [];
             foreach (var property in propertyInfos)
             {
-                typeModel.Properties.Add(new(property.Name, GetOrCreateTypeModel(property.PropertyType), property.IsPublic(), property.IsVirtual()));
+                typeModel.Properties.Add(new(property.Name, GetOrCreateTypeModel(property.PropertyType), IsPublic(property), IsVirtual(property)));
             }
         });
     }
@@ -73,4 +78,7 @@ public class DomainModel(DomainOptions _domainOptions)
 
     List<TypeModel> CustomAttributes(MemberInfo member) =>
         member.GetCustomAttributesData().Select(a => GetOrCreateTypeModel(a.AttributeType)).ToList();
+
+    static bool IsPublic(PropertyInfo source) => source.GetMethod?.IsPublic == true;
+    static bool IsVirtual(PropertyInfo source) => source.GetMethod?.IsVirtual == true;
 }
