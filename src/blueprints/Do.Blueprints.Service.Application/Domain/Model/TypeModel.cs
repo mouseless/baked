@@ -24,8 +24,8 @@ public class TypeModel(Type type)
 
     public void Apply(Action<Type> action) => action(_type);
 
-    public bool IsAssignableFrom<T>() => IsAssignableFrom(typeof(T));
-    public bool IsAssignableFrom(Type type) => type.IsAssignableFrom(_type);
+    public bool IsAssignableTo<T>() => IsAssignableTo(typeof(T));
+    public bool IsAssignableTo(Type type) => _type.IsAssignableTo(type);
 
     public static string IdFromType(Type type) =>
         type.FullName ?? $"{type.Namespace}.{type.Name}[{string.Join(',', type.GenericTypeArguments.Select(IdFromType))}]";

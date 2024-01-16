@@ -31,7 +31,7 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
                     type.IsAbstract ||
                     type.IsValueType ||
                     type.IsGenericMethodParameter ||
-                    type.IsAssignableFrom<Exception>()
+                    type.IsAssignableTo<Exception>()
                 ) { continue; }
 
                 if (type.Methods.TryGetValue("With", out var method) && method.ReturnType == type)
