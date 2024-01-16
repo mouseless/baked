@@ -24,5 +24,5 @@ public record TypeModel(
 
     public string Id => _id;
 
-    internal void Apply(Action<Type> action) => action(_type);
+    public void Apply(Action<Type> action) => action(_type);
 }
