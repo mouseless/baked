@@ -1,11 +1,8 @@
-﻿using FluentNHibernate;
-using FluentNHibernate.Diagnostics;
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace Do.Domain.Model;
 
 public class DomainModel(DomainOptions _domainOptions)
-    : ITypeSource
 {
     public ModelCollection<AssemblyModel> Assemblies { get; } = [];
     public ModelCollection<TypeModel> Types { get; } = [];
@@ -29,13 +26,10 @@ public class DomainModel(DomainOptions _domainOptions)
     {
         typeModel.Apply(type =>
         {
-            typeModel.Apply(type =>
+            foreach (var genericArgument in type.GenericTypeArguments)
             {
-                foreach (var genericArgument in type.GenericTypeArguments)
-                {
-                    typeModel.GenericTypeArguments.Add(GetOrCreateTypeModel(genericArgument));
-                }
-            });
+                typeModel.GenericTypeArguments.Add(GetOrCreateTypeModel(genericArgument));
+            }
 
             typeModel.CustomAttributes.AddRange(CustomAttributes(type));
 
@@ -79,19 +73,4 @@ public class DomainModel(DomainOptions _domainOptions)
 
     List<TypeModel> CustomAttributes(MemberInfo member) =>
         member.GetCustomAttributesData().Select(a => GetOrCreateTypeModel(a.AttributeType)).ToList();
-
-    IEnumerable<Type> ITypeSource.GetTypes()
-    {
-        var result = new List<Type>();
-        foreach (var typeModel in Types)
-        {
-            typeModel.Apply(result.Add);
-        }
-
-        return result;
-    }
-
-    void ITypeSource.LogSource(IDiagnosticLogger logger) { }
-
-    string ITypeSource.GetIdentifier() => nameof(DomainModel);
 }
