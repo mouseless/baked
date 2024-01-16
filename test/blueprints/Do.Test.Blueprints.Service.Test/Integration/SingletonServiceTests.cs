@@ -5,7 +5,7 @@ using System.Text.Json;
 
 namespace Do.Test.Integration;
 
-public class ServiceTests : IntegrationSpec<ServiceTests>
+public class SingletonServiceTests : IntegrationSpec<SingletonServiceTests>
 {
     protected override Application Application =>
         Forge.New
@@ -70,14 +70,53 @@ public class ServiceTests : IntegrationSpec<ServiceTests>
     }
 
     [Test]
-    [Ignore("not implemented")]
-    public void Singleton_test_transaction_nullable() => Assert.Fail();
+    public async Task Singleton_test_transaction_nullable()
+    {
+        var client = Factory.CreateClient();
+
+        var entitiesResponse = await client.GetAsync("entities");
+        entitiesResponse.ShouldNotBeNull();
+        var result = await entitiesResponse.Content.ReadFromJsonAsync<List<JsonElement>>();
+        result.ShouldNotBeNull();
+        var id = $"{result.Last().GetProperty("id")}";
+
+        var content = JsonContent.Create(new { entityId = id });
+
+        var response = await client.PostAsync($"singleton/test-transaction-nullable", content);
+
+        response.ShouldNotBeNull();
+
+        entitiesResponse = await client.GetAsync("entities");
+        entitiesResponse.ShouldNotBeNull();
+
+        result = await entitiesResponse.Content.ReadFromJsonAsync<List<JsonElement>>();
+
+        result.ShouldNotBeNull();
+        var entity = result.Where(e => $"{e.GetProperty("id")}" == id).FirstOrDefault();
+        $"{entity.GetProperty("stringData")}".ShouldBe("transaction nullable");
+    }
 
     [Test]
-    [Ignore("not implemented")]
-    public void Singleton_test_async_object() => Assert.Fail();
+    public async Task Singleton_test_async_object()
+    {
+        var client = Factory.CreateClient();
+
+        var content = JsonContent.Create(new { testValue = "Test value" });
+        var response = await client.PutAsync("singleton/test-async-object", content);
+
+        var result = await response.Content.ReadFromJsonAsync<JsonElement>();
+        $"{result.GetProperty("testValue")}".ShouldBe("Test value");
+    }
 
     [Test]
-    [Ignore("not implemented")]
-    public void Singleton_test_object() => Assert.Fail();
+    public async Task Singleton_test_object()
+    {
+        var client = Factory.CreateClient();
+
+        var content = JsonContent.Create(new { testValue = "Test value" });
+        var response = await client.PutAsync("singleton/test-object", content);
+
+        var result = await response.Content.ReadFromJsonAsync<JsonElement>();
+        $"{result.GetProperty("testValue")}".ShouldBe("Test value");
+    }
 }

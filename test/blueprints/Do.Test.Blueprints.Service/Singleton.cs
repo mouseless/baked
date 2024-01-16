@@ -80,7 +80,7 @@ public class Singleton(TimeProvider _timeProvider, Func<Entity> _newEntity, ITra
              entity.Update(
                 guid: Guid.NewGuid(),
                 @string: "test",
-                stringData: "transaction func",
+                stringData: "transaction nullable",
                 int32: 1,
                 uri: new("https://func.com"),
                 @dynamic: new { transaction = "func" },
