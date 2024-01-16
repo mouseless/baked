@@ -7,5 +7,5 @@ public record PropertyModel(
     bool IsVirtual
 ) : IModel
 {
-    public string Id => $"{PropertyType.Id}{Name}";
+    public string Id { get; } = $"{PropertyType.Id} {Name}";
 }

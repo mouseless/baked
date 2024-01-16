@@ -7,5 +7,5 @@ public record ConstructorModel(
     bool IsPublic
 ) : IModel
 {
-    public string Id => $"{Name}[{string.Join(',', Parameters.Select(p => p.Id))}]";
+    public string Id { get; } = $"{Name}[{string.Join(',', Parameters.Select(p => p.Id))}]";
 }

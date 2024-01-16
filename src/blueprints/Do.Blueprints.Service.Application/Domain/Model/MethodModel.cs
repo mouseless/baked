@@ -10,7 +10,7 @@ public record MethodModel(
     ModelCollection<TypeModel> CustomAttributes
 ) : IModel
 {
-    public string Id => $"{Name}[{string.Join(',', Parameters.Select(p => p.Id))}]";
+    public string Id { get; } = $"{Name}[{string.Join(',', Parameters.Select(p => p.Id))}]";
 }
 
 
