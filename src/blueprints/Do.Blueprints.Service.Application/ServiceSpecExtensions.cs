@@ -153,6 +153,13 @@ public static class ServiceSpecExtensions
 
     #endregion
 
+    #region ServiceProvider
+
+    public static object? TheService(this Stubber _, Type type) =>
+        ServiceSpec.ServiceProvider.GetService(type);
+
+    #endregion
+
     #region Settings
 
     public static void ASetting<T>(this Mocker mockMe,

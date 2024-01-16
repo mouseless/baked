@@ -57,7 +57,7 @@ public class DomainModel(DomainOptions _domainOptions)
 
     TypeModel GetOrCreateTypeModel(Type type)
     {
-        if (Types.TryGetValue(IModel.IdFromType(type), out var result))
+        if (Types.TryGetValue(TypeModel.IdFromType(type), out var result))
         {
             return result;
         }

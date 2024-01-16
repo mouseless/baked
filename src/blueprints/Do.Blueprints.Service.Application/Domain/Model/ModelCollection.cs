@@ -29,7 +29,7 @@ public class ModelCollection<T>() : IEnumerable<T>
         }
     }
 
-    internal bool TryGetValue(string id, [NotNullWhen(true)] out T? model) =>
+    public bool TryGetValue(string id, [NotNullWhen(true)] out T? model) =>
         _models.TryGetValue(id, out model);
 
     public IEnumerator<T> GetEnumerator() => new ModelCollectionEnumerator(this);
