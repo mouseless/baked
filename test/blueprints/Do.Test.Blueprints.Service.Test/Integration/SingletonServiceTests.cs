@@ -12,8 +12,7 @@ public class SingletonServiceTests : TestServiceNfr
             .Service(
                 business: c => c.Default(),
                 database: c => c.InMemory(),
-                exceptionHandling: ex => ex.Default(typeUrlFormat: "https://do.mouseless.codes/errors/{0}"),
-                configure: app => app.Features.AddConfigurationOverrider()
+                exceptionHandling: ex => ex.Default(typeUrlFormat: "https://do.mouseless.codes/errors/{0}")
             );
 
     static (bool, int)[] _testExceptionSuccessCases = [(true, 400), (false, 500)];

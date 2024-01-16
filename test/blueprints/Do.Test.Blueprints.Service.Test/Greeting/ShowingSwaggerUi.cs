@@ -9,8 +9,7 @@ public class ShowingSwaggerUi : TestServiceNfr
             .Service(
                 business: c => c.Default(),
                 database: c => c.InMemory(),
-                greeting: c => c.Swagger(),
-                configure: app => app.Features.AddConfigurationOverrider()
+                greeting: c => c.Swagger()
             );
 
     [Test]

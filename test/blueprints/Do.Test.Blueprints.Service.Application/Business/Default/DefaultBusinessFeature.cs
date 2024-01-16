@@ -22,7 +22,7 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
 
         configurator.ConfigureApplicationParts(applicationParts =>
         {
-            applicationParts.Add(new(Assembly.GetExecutingAssembly() ?? throw new NotSupportedException("Entry assembly should not be null")));
+            applicationParts.Add(new(Assembly.GetExecutingAssembly() ?? throw new NotSupportedException("Executing assembly should not be null")));
         });
     }
 }

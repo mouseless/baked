@@ -5,10 +5,16 @@ namespace Do.Testing;
 
 public abstract class Nfr
 {
-    protected static void Init(string[] args) =>
-        new Runner(args).Run();
+    protected static void Init(string[] args)
+    {
+        var typeName = args[0][(args[0].IndexOf('=') + 1)..];
+        var type = Type.GetType(typeName) ?? throw new($"Type with name '{typeName}' could not be found ");
+        var instance = (Nfr)(Activator.CreateInstance(type) ?? throw new($"Could not create instance of {type}"));
 
-    protected virtual string EnvironmentName => "Integration";
+        instance.ForgeApplication().Run();
+    }
+
+    protected virtual string EnvironmentName => "Nfr";
 
     protected abstract Application ForgeApplication();
 
@@ -23,13 +29,4 @@ public abstract class Nfr
 
     [TearDown]
     public virtual void TearDown() { }
-
-    protected class Runner(string[] _args)
-    {
-        Nfr Instance => (Nfr)(Activator.CreateInstance(Type) ?? throw new($"Could not create instance of {Type}"));
-        Type Type => Type.GetType(TypeName) ?? throw new($"Type with name '{TypeName}' could not be found ");
-        string TypeName => _args[0][(_args[0].IndexOf('=') + 1)..];
-
-        public void Run() => Instance.ForgeApplication().Run();
-    }
 }
