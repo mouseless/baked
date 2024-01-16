@@ -11,7 +11,7 @@ public class DomainModel(DomainOptions _domainOptions)
     {
         foreach (var type in Types)
         {
-            if (_domainOptions.TypeIsBuiltConventions.Any(f => f(type)))
+            if (_domainOptions.TypeIsBuiltConventions.All(f => f(type)))
             {
                 BuildTypeModel(type);
             }
