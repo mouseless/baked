@@ -33,7 +33,7 @@ public class DomainLayer : LayerBase<BuildConfiguration>
 
             foreach (var descriptor in _assemblyCollection)
             {
-                model.Assemblies.Add(new(descriptor.Assembly));
+                model.Assemblies.TryAdd(new(descriptor.Assembly));
 
                 foreach (var type in descriptor.Assembly.GetExportedTypes())
                 {
@@ -41,9 +41,9 @@ public class DomainLayer : LayerBase<BuildConfiguration>
                 }
             }
 
-            foreach (var descriptor in _typeCollection.Distinct())
+            foreach (var descriptor in _typeCollection)
             {
-                model.Types.Add(new(descriptor.Type));
+                model.Types.TryAdd(new TypeModel(descriptor.Type));
             }
 
             model.Init();

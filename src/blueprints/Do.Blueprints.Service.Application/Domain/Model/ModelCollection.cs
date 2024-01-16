@@ -11,7 +11,7 @@ public class ModelCollection<T>() : IEnumerable<T>
     readonly KeyedModelCollection<T> _models = [];
 
     public ModelCollection(List<T> data)
-        : this() => _models = [.. data];
+        : this() => _models = [..data];
 
     public int Count => _models.Count;
 
@@ -20,6 +20,15 @@ public class ModelCollection<T>() : IEnumerable<T>
 
     public void Add(T model) =>
         _models.Add(model);
+
+    public bool TryAdd(T model)
+    {
+        if (_models.Contains(model.Id)) { return false; }
+
+        _models.Add(model);
+
+        return true;
+    }
 
     public void AddRange(IEnumerable<T> models)
     {

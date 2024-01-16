@@ -25,7 +25,7 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
 
             foreach (var type in domainModel.Types)
             {
-                if (type.IsSystemType || type.IsStatic || type.IsAbstract || type.IsValueType) { continue; }
+                if (type.IsSystemType || type.IsStatic || type.IsAbstract || type.IsValueType || type.IsAssignableFrom<Exception>()) { continue; }
 
                 if (type.Methods.TryGetValue("With", out var method) && method.ReturnType == type)
                 {

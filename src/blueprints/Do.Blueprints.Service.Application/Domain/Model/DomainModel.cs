@@ -9,15 +9,11 @@ public class DomainModel(DomainOptions _domainOptions)
 
     internal void Init()
     {
-        var enumerator = Types.GetEnumerator();
-        TypeModel? next;
-
-        while (enumerator.MoveNext())
+        foreach (var type in Types)
         {
-            next = enumerator.Current;
-            if (_domainOptions.TypeIsBuiltConventions.Any(f => f(next)))
+            if (_domainOptions.TypeIsBuiltConventions.Any(f => f(type)))
             {
-                BuildTypeModel(next);
+                BuildTypeModel(type);
             }
         }
     }
@@ -26,6 +22,11 @@ public class DomainModel(DomainOptions _domainOptions)
     {
         typeModel.Apply(type =>
         {
+            if (type.BaseType is not null)
+            {
+                typeModel.BaseType = GetOrCreateTypeModel(type.BaseType);
+            }
+
             foreach (var genericArgument in type.GenericTypeArguments)
             {
                 typeModel.GenericTypeArguments.Add(GetOrCreateTypeModel(genericArgument));
@@ -79,6 +80,9 @@ public class DomainModel(DomainOptions _domainOptions)
     List<TypeModel> CustomAttributes(MemberInfo member) =>
         member.GetCustomAttributesData().Select(a => GetOrCreateTypeModel(a.AttributeType)).ToList();
 
-    static bool IsPublic(PropertyInfo source) => source.GetMethod?.IsPublic == true;
-    static bool IsVirtual(PropertyInfo source) => source.GetMethod?.IsVirtual == true;
+    static bool IsPublic(PropertyInfo source) =>
+        source.GetMethod?.IsPublic == true;
+
+    static bool IsVirtual(PropertyInfo source) =>
+        source.GetMethod?.IsVirtual == true;
 }
