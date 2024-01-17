@@ -18,7 +18,7 @@ public class TypeModel(Type type)
     public ModelCollection<MethodModel> Methods { get; } = [];
     public ModelCollection<PropertyModel> Properties { get; } = [];
     public ModelCollection<TypeModel> GenericTypeArguments { get; } = [];
-    public ModelCollection<TypeModel> CustomAttributes { get; } = [];
+    public ModelCollection<AttributeModel> CustomAttributes { get; } = [];
 
     public bool IsSystemType => Namespace?.StartsWith("System") == true;
 

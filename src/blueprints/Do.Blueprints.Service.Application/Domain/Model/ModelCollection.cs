@@ -11,7 +11,7 @@ public class ModelCollection<T>() : IEnumerable<T>
     readonly KeyedModelCollection<T> _models = [];
 
     public ModelCollection(List<T> data)
-        : this() => _models = [..data];
+        : this() => AddRange(data);
 
     public int Count => _models.Count;
 

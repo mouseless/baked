@@ -70,10 +70,19 @@ public class DomainModel(DomainOptions _domainOptions)
     }
 
     List<ParameterModel> Parameters(MethodBase method) =>
-        method.GetParameters().Select(p => new ParameterModel(p.Name ?? string.Empty, GetOrCreateTypeModel(p.ParameterType), p.IsOptional, p.DefaultValue)).ToList();
+        method.GetParameters()
+            .Select(p =>
+                new ParameterModel(p.Name ?? string.Empty, GetOrCreateTypeModel(p.ParameterType), p.IsOptional, p.DefaultValue)
+            ).ToList();
 
-    List<TypeModel> CustomAttributes(MemberInfo member) =>
-        member.GetCustomAttributesData().Select(a => GetOrCreateTypeModel(a.AttributeType)).ToList();
+    List<AttributeModel> CustomAttributes(MemberInfo member) =>
+        member.CustomAttributes
+            .Select(attr =>
+                new AttributeModel(
+                    GetOrCreateTypeModel(attr.AttributeType),
+                    attr.ConstructorArguments.Select(a => new ValueModel(GetOrCreateTypeModel(a.ArgumentType), a.Value)).ToList()
+                )
+            ).ToList();
 
     static bool IsPublic(PropertyInfo source) =>
         source.GetMethod?.IsPublic == true;
