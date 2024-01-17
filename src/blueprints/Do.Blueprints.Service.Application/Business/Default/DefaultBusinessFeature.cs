@@ -10,13 +10,14 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
 
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainOptions(options =>
+        configurator.ConfigureDomainBuilderOptions(options =>
         {
             options.ConstuctorBindingFlags = _defaultMemberBindingFlags;
             options.MethodBindingFlags = _defaultMemberBindingFlags;
             options.PropertyBindingFlags = _defaultMemberBindingFlags;
 
-            options.TypeIsBuiltConventions.Add(type => type.FullName?.StartsWith("System") == false && type.Namespace?.StartsWith("System") == false);
+            options.TypeIsBuiltConventions.Add(type => type.Namespace?.StartsWith("System") == false);
+            options.TypeIsBuiltConventions.Add(type => !type.IsAssignableTo(typeof(Attribute)));
         });
 
         configurator.ConfigureServiceCollection(services =>

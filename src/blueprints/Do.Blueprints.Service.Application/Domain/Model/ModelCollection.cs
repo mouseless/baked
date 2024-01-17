@@ -11,9 +11,6 @@ public class ModelCollection<T>() : IEnumerable<T>
     public ModelCollection(IEnumerable<T> data)
         : this() => AddRange(data);
 
-    public T this[int index] =>
-        _models[index];
-
     public T this[string key] =>
         _models[key];
 
