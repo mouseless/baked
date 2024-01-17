@@ -16,7 +16,7 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
             options.MethodBindingFlags = _defaultMemberBindingFlags;
             options.PropertyBindingFlags = _defaultMemberBindingFlags;
 
-            options.TypeIsBuiltConventions.Add(type => type.Namespace?.StartsWith("System") == false);
+            options.TypeIsBuiltConventions.Add(type => type.FullName?.StartsWith("System") == false && type.Namespace?.StartsWith("System") == false);
         });
 
         configurator.ConfigureServiceCollection(services =>
@@ -26,15 +26,15 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
             foreach (var type in domainModel.Types)
             {
                 if (
-                    type.IsSystemType ||
-                    type.IsStatic ||
+                    type.Namespace?.StartsWith("System") == true ||
+                    type.IsSealed && type.IsAbstract ||
                     type.IsAbstract ||
                     type.IsValueType ||
                     type.IsGenericMethodParameter ||
                     type.IsAssignableTo<Exception>()
                 ) { continue; }
 
-                if (type.Methods.TryGetValue("With", out var method) && method.Overloads.All(o => o.ReturnType == type))
+                if (type.Methods.TryGetValue("With", out var method) && method.Overloads.All(o => o.ReturnType?.Id == type.Id))
                 {
                     type.Apply(t => services.AddTransientWithFactory(t));
                 }

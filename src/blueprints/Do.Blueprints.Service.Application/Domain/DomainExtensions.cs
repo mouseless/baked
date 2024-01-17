@@ -13,7 +13,7 @@ public static class DomainExtensions
 
     public static void ConfigureAssemblyCollection(this LayerConfigurator configurator, Action<IAssemblyCollection> configuration) => configurator.Configure(configuration);
     public static void ConfigureTypeCollection(this LayerConfigurator configurator, Action<ITypeCollection> configuration) => configurator.Configure(configuration);
-    public static void ConfigureDomainOptions(this LayerConfigurator configurator, Action<DomainOptions> configuration) => configurator.Configure(configuration);
+    public static void ConfigureDomainOptions(this LayerConfigurator configurator, Action<DomainBuilderOptions> configuration) => configurator.Configure(configuration);
 
     public static void Add(this IAssemblyCollection source, Assembly assembly) => source.Add(new(assembly));
     public static void Add<T>(this ITypeCollection source) => source.Add(typeof(T));

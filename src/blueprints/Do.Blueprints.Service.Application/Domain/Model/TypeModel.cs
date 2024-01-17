@@ -1,32 +1,56 @@
 ﻿namespace Do.Domain.Model;
 
-public class TypeModel(Type type)
-    : IModel
+public class TypeModel(Type type) : IModel, IEquatable<TypeModel>
 {
     readonly Type _type = type;
 
+    public string Id { get; } = GetId(type);
     public string Name { get; } = type.Name;
     public string? Namespace { get; } = type.Namespace;
     public bool IsAbstract { get; } = type.IsAbstract;
     public bool IsValueType { get; } = type.IsValueType;
-    public bool IsStatic { get; } = type.IsAbstract && type.IsSealed;
+    public bool IsSealed { get; } = type.IsSealed;
     public bool IsInterface { get; } = type.IsInterface;
     public bool IsGenericTypeParameter { get; } = type.IsGenericTypeParameter;
     public bool IsGenericMethodParameter { get; } = type.IsGenericMethodParameter;
-    public string Id { get; } = IdFromType(type);
-    public ModelCollection<MethodModel> Methods { get; } = [];
-    public ModelCollection<PropertyModel> Properties { get; } = [];
-    public ModelCollection<TypeModel> GenericTypeArguments { get; } = [];
-    public ModelCollection<AttributeModel> CustomAttributes { get; } = [];
+    public ModelCollection<MethodModel> Methods { get; private set; } = default!;
+    public ModelCollection<PropertyModel> Properties { get; private set; } = default!;
+    public ModelCollection<TypeModel> GenericTypeArguments { get; private set; } = default!;
+    public ModelCollection<AttributeModel> CustomAttributes { get; private set; } = default!;
+
     public MethodModel Constructor => Methods[".ctor"];
 
-    public bool IsSystemType => Namespace?.StartsWith("System") == true;
+    internal void Init(
+        ModelCollection<MethodModel> methods,
+        ModelCollection<PropertyModel> properties,
+        ModelCollection<TypeModel> genericTypeArguments,
+        ModelCollection<AttributeModel> customAttributes
+    )
+    {
+        Methods = methods;
+        Properties = properties;
+        GenericTypeArguments = genericTypeArguments;
+        CustomAttributes = customAttributes;
+    }
 
-    public void Apply(Action<Type> action) => action(_type);
+    public void Apply(Action<Type> action) =>
+        action(_type);
 
-    public bool IsAssignableTo<T>() => IsAssignableTo(typeof(T));
-    public bool IsAssignableTo(Type type) => _type.IsAssignableTo(type);
+    public bool IsAssignableTo<T>() =>
+        IsAssignableTo(typeof(T));
 
-    public static string IdFromType(Type type) =>
-        type.FullName ?? $"{type.Namespace}.{type.Name}[{string.Join(',', type.GenericTypeArguments.Select(IdFromType))}]";
+    public bool IsAssignableTo(Type type) =>
+        _type.IsAssignableTo(type);
+
+    public static string GetId(Type type) =>
+        type.FullName ?? $"{type.Namespace}.{type.Name}[{string.Join(',', type.GenericTypeArguments.Select(GetId))}]";
+
+    public override bool Equals(object? obj) =>
+        ((IEquatable<TypeModel>)this).Equals(obj as TypeModel);
+
+    bool IEquatable<TypeModel>.Equals(TypeModel? other) =>
+        other is not null && other.Id == Id;
+
+    public override int GetHashCode() =>
+        Id.GetHashCode();
 }
