@@ -25,4 +25,16 @@ public class TransactionRollback : TestServiceNfr
         var stringData = $"{result.Last().GetProperty("stringData")}";
         stringData.ShouldBe("transaction action");
     }
+
+    [Test]
+    public async Task Only_the_updates_outside_of_transaction_are_rolled_back_when_an_error_occurs()
+    {
+        await Client.PostAsync($"singleton/test-transaction-func", null);
+
+        var entitiesContent = await Client.GetAsync("entities");
+        var result = await entitiesContent.Content.ReadFromJsonAsync<List<JsonElement>>() ?? throw new("No entities in database");
+
+        result.ShouldNotBeNull();
+        $"{result.Last().GetProperty("stringData")}".ShouldBe("transaction func");
+    }
 }

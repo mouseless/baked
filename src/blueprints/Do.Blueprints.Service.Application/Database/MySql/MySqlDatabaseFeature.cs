@@ -33,7 +33,7 @@ public class MySqlDatabaseFeature(Setting<string> _connectionString, Setting<boo
 
         configurator.ConfigureMiddlewareCollection(middlewares =>
         {
-            middlewares.Add<FlatTransactionMiddleware>();
+            middlewares.Add<FlatTransactionMiddleware>(order: -60);
         });
     }
 }
