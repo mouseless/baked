@@ -4,7 +4,7 @@ using System.Text.Json;
 
 namespace Do.Test.Database;
 
-public class FlatTransactionalWork : TestServiceNfr
+public class TransactionRollback : TestServiceNfr
 {
     protected override Application ForgeApplication() =>
         Forge.New
