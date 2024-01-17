@@ -14,11 +14,11 @@ public class TypeModel(Type type)
     public bool IsGenericTypeParameter { get; } = type.IsGenericTypeParameter;
     public bool IsGenericMethodParameter { get; } = type.IsGenericMethodParameter;
     public string Id { get; } = IdFromType(type);
-    public ModelCollection<ConstructorModel> Constructors { get; } = [];
     public ModelCollection<MethodModel> Methods { get; } = [];
     public ModelCollection<PropertyModel> Properties { get; } = [];
     public ModelCollection<TypeModel> GenericTypeArguments { get; } = [];
     public ModelCollection<AttributeModel> CustomAttributes { get; } = [];
+    public MethodModel Constructor => Methods[".ctor"];
 
     public bool IsSystemType => Namespace?.StartsWith("System") == true;
 

@@ -32,7 +32,14 @@ public class DomainModel(DomainOptions _domainOptions)
             var constructorInfos = type.GetConstructors(_domainOptions.ConstuctorBindingFlags) ?? [];
             foreach (var constructor in constructorInfos)
             {
-                typeModel.Constructors.Add(new(constructor.Name, typeModel, Parameters(constructor), constructor.IsPublic));
+                if (typeModel.Methods.TryGetValue(constructor.Name, out var methodModel))
+                {
+                    methodModel.Overloads.Add(Overload(constructor));
+                }
+                else
+                {
+                    typeModel.Methods.Add(new(constructor.Name, constructor.IsConstructor, [Overload(constructor)]));
+                }
             }
 
             var methodInfos = type.GetMethods(_domainOptions.MethodBindingFlags) ?? [];
@@ -40,18 +47,18 @@ public class DomainModel(DomainOptions _domainOptions)
             {
                 if (typeModel.Methods.TryGetValue(method.Name, out var methodModel))
                 {
-                    methodModel.Overloads.Add(new(Parameters(method), CustomAttributes(method)));
+                    methodModel.Overloads.Add(Overload(method));
                 }
                 else
                 {
-                    typeModel.Methods.Add(new(method.Name, GetOrCreateTypeModel(method.ReturnType), method.IsPublic, method.IsFamily, method.IsVirtual, [new(Parameters(method), CustomAttributes(method))]));
+                    typeModel.Methods.Add(new(method.Name, method.IsConstructor, [Overload(method)]));
                 }
             }
 
             var propertyInfos = type.GetProperties(_domainOptions.PropertyBindingFlags) ?? [];
             foreach (var property in propertyInfos)
             {
-                typeModel.Properties.Add(new(property.Name, GetOrCreateTypeModel(property.PropertyType), IsPublic(property), IsVirtual(property)));
+                typeModel.Properties.Add(Property(property));
             }
         });
     }
@@ -83,6 +90,14 @@ public class DomainModel(DomainOptions _domainOptions)
                     attr.ConstructorArguments.Select(a => new ValueModel(GetOrCreateTypeModel(a.ArgumentType), a.Value)).ToList()
                 )
             ).ToList();
+
+    OverloadModel Overload(ConstructorInfo method) =>
+        new(method.IsPublic, method.IsFamily, method.IsVirtual, Parameters(method), CustomAttributes(method));
+    OverloadModel Overload(MethodInfo method) =>
+        new(method.IsPublic, method.IsFamily, method.IsVirtual, Parameters(method), CustomAttributes(method), GetOrCreateTypeModel(method.ReturnType));
+
+    PropertyModel Property(PropertyInfo property) =>
+        new(property.Name, GetOrCreateTypeModel(property.PropertyType), IsPublic(property), IsVirtual(property));
 
     static bool IsPublic(PropertyInfo source) =>
         source.GetMethod?.IsPublic == true;

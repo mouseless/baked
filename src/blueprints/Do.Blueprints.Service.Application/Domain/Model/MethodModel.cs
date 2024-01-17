@@ -2,10 +2,7 @@
 
 public record MethodModel(
     string Name,
-    TypeModel ReturnType,
-    bool IsPublic,
-    bool IsProtected,
-    bool IsVirtual,
+    bool IsConstructor,
     ModelCollection<OverloadModel> Overloads
 ) : IModel
 {

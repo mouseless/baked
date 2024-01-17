@@ -18,6 +18,9 @@ public class ModelCollection<T>() : IEnumerable<T>
     public T this[int index] =>
         _models[index];
 
+    public T this[string key] =>
+        _models[key];
+
     public void Add(T model) =>
         _models.Add(model);
 

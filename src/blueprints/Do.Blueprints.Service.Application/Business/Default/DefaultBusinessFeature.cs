@@ -34,13 +34,13 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
                     type.IsAssignableTo<Exception>()
                 ) { continue; }
 
-                if (type.Methods.TryGetValue("With", out var method) && method.ReturnType == type)
+                if (type.Methods.TryGetValue("With", out var method) && method.Overloads.All(o => o.ReturnType == type))
                 {
                     type.Apply(t => services.AddTransientWithFactory(t));
                 }
                 else
                 {
-                    if (type.Constructors.All(c => c.Parameters.All(p => !p.ParameterType.IsValueType)))
+                    if (type.Constructor.Overloads.All(c => c.Parameters.All(p => !p.ParameterType.IsValueType)))
                     {
                         type.Apply(t => services.AddSingleton(t));
                     }

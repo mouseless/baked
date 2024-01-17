@@ -87,9 +87,9 @@ public class RegisteringServices : TestServiceSpec
     }
 
     [Test]
-    public void Exception_types_are_not_registered()
+    public void Exception_types_are_not_registered([Values(typeof(SampleException), typeof(Exception))] Type type)
     {
-        var actual = GiveMe.TheService(typeof(SampleException));
+        var actual = GiveMe.TheService(type);
 
         actual.ShouldBeNull();
     }
