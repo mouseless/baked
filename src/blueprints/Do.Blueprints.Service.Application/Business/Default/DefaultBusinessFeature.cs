@@ -33,7 +33,8 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
                     type.IsValueType ||
                     type.IsGenericMethodParameter ||
                     type.IsGenericTypeParameter ||
-                    type.Name.EndsWith("Exception")
+                    type.Name.EndsWith("Exception") ||
+                    type.Name.EndsWith("Attribute")
                 ) { continue; }
 
                 if (type.Methods.TryGetValue("With", out var method) && method.Overloads.All(o => o.ReturnType?.Id == type.Id))

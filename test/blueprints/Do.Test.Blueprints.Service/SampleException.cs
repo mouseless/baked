@@ -1,5 +1,3 @@
 ﻿namespace Do.Test;
 
-public class SampleException : Exception
-{
-}
+public class SampleException : Exception { }

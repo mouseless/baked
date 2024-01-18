@@ -2,5 +2,6 @@
 
 public class ClassService
 {
+    [AuthorizationRequired]
     public void VoidMethod() { }
 }

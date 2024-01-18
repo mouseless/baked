@@ -104,4 +104,12 @@ public class RegisteringServices : TestServiceSpec
 
         actual.ShouldBeNull();
     }
+
+    [Test]
+    public void Attributes_are_not_registered()
+    {
+        var actual = GiveMe.TheService<AuthorizationRequiredAttribute>();
+
+        actual.ShouldBeNull();
+    }
 }
