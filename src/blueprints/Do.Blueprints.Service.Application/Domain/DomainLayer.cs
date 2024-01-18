@@ -24,12 +24,12 @@ public class DomainLayer : LayerBase<BuildConfiguration>
         yield return new BuildDomain(_assemblyCollection, _typeCollection, _domainOptions);
     }
 
-    public class BuildDomain(IAssemblyCollection _assemblyCollection, ITypeCollection _typeCollection, DomainBuilderOptions _domainOptions)
+    public class BuildDomain(IAssemblyCollection _assemblyCollection, ITypeCollection _typeCollection, DomainBuilderOptions _domainBuilderOptions)
         : PhaseBase<ConfigurationManager>(PhaseOrder.Early)
     {
         protected override void Initialize(ConfigurationManager _)
         {
-            var builder = new DomainModelBuilder(_domainOptions);
+            var builder = new DomainModelBuilder(_domainBuilderOptions);
 
             foreach (var descriptor in _assemblyCollection)
             {
