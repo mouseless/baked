@@ -31,7 +31,7 @@ public class SqliteDatabaseFeature(Setting<string> _fileName)
 
         configurator.ConfigureMiddlewareCollection(middlewares =>
         {
-            middlewares.Add<FlatTransactionMiddleware>(order: -60);
+            middlewares.Add<FlatTransactionMiddleware>();
         });
     }
 }

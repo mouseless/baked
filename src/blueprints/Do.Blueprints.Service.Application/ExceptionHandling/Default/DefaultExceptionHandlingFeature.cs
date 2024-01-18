@@ -26,7 +26,7 @@ public class DefaultExceptionHandlingFeature(Setting<string>? _typeUrlFormat = d
                     app.UseExceptionHandler();
                     app.UseStatusCodePages();
                 },
-                order: -100
+                order: -10
             );
         });
     }

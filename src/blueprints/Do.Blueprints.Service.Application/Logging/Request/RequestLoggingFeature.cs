@@ -17,7 +17,7 @@ public class RequestLoggingFeature : IFeature<LoggingConfigurator>
 
         configurator.ConfigureMiddlewareCollection(middlewares =>
         {
-            middlewares.Add<RequestLogMiddleware>(order: -80);
+            middlewares.Add<RequestLogMiddleware>(order: -9);
         });
     }
 }

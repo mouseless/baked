@@ -35,6 +35,7 @@ public class TransactionRollback : TestServiceNfr
         var result = await entitiesContent.Content.ReadFromJsonAsync<List<JsonElement>>() ?? throw new("No entities in database");
 
         result.ShouldNotBeNull();
-        $"{result.Last().GetProperty("stringData")}".ShouldBe("transaction func");
+        var stringData = $"{result.Last().GetProperty("stringData")}";
+        stringData.ShouldBe("transaction func");
     }
 }
