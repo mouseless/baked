@@ -47,11 +47,14 @@ public class RegisteringServices : TestServiceSpec
     }
 
     [Test]
-    public void Types_with_no_dependencies_are_registered()
+    public void Types_with_no_dependencies_are_registered_as_singleton()
     {
-        var actual = GiveMe.TheService<ClassService>();
+        var actual1 = GiveMe.TheService<ClassService>();
+        var actual2 = GiveMe.TheService<ClassService>();
 
-        actual.ShouldNotBeNull();
+        actual1.ShouldNotBeNull();
+        actual2.ShouldNotBeNull();
+        actual1.ShouldBe(actual2);
     }
 
     [Test]
