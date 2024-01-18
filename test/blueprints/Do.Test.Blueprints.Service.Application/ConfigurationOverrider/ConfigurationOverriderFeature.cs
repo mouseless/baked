@@ -12,13 +12,6 @@ public class ConfigurationOverriderFeature : IFeature
             assemblies.Add(typeof(Entity).Assembly);
         });
 
-        configurator.ConfigureTypeCollection(types =>
-        {
-            types.Add<Entity>();
-            types.Add<Entities>();
-            types.Add<Singleton>();
-        });
-
         configurator.ConfigureAutoPersistenceModel(model =>
         {
             model.Override<Entity>(x => x.Map(e => e.String).Length(500));

@@ -1,9 +1,10 @@
 ﻿namespace Do.Domain.Model;
 
-public record MethodModel(
+public record PropertyModel(
     string Name,
-    OverloadModel[] Overloads,
-    bool IsConstructor = false
+    TypeModel PropertyType,
+    bool IsPublic,
+    bool IsVirtual
 ) : IModel
 {
     string IModel.Id { get; } = Name;

@@ -1,6 +1,4 @@
 ﻿using Do.Architecture;
-using Do.Domain.Model;
-using Do.ExceptionHandling;
 using Do.Orm.Default.UserTypes;
 using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Mapping;
@@ -27,7 +25,10 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
         {
             var domainModel = configurator.Context.GetDomainModel();
 
-            domainModel.Assemblies.ForEach(m => model.AddEntityAssembly(m.Assembly));
+            foreach (var assembly in domainModel.Assemblies)
+            {
+                assembly.Apply(a => model.AddEntityAssembly(a));
+            }
 
             model
                 .Conventions.Add(Table.Is(x => x.EntityType.Name))

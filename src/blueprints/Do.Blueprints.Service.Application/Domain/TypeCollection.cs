@@ -1,3 +1,3 @@
 ﻿namespace Do.Domain;
 
-public class TypeCollection : List<TypeDescriptor>, ITypeCollection { }
+public class TypeCollection : List<Type>, ITypeCollection { }

@@ -1,3 +1,5 @@
-﻿namespace Do.Domain;
+﻿using System.Reflection;
 
-public interface IAssemblyCollection : ICollection<AssemblyDescriptor>, IEnumerable<AssemblyDescriptor>, IEnumerable, IList<AssemblyDescriptor> { }
+namespace Do.Domain;
+
+public interface IAssemblyCollection : ICollection<Assembly>, IEnumerable<Assembly>, IEnumerable, IList<Assembly> { }

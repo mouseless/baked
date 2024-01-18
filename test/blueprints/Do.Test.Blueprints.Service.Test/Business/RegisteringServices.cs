@@ -1,0 +1,87 @@
+﻿namespace Do.Test.Business;
+
+public class RegisteringServices : TestServiceSpec
+{
+    [Test]
+    public void Types_containing_a_method_named_with_and_returns_self_are_registered_as_transient([Values(typeof(Entity), typeof(OperationObject))] Type type)
+    {
+        var actual1 = GiveMe.A(type);
+        var actual2 = GiveMe.A(type);
+
+        actual1.ShouldNotBe(actual2);
+    }
+
+    [Test]
+    public void Transient_services_have_singleton_factories([Values(typeof(Func<Entity>), typeof(Func<OperationObject>))] Type type)
+    {
+        var actual1 = GiveMe.The(type);
+        var actual2 = GiveMe.The(type);
+
+        actual1.ShouldBe(actual2);
+    }
+
+    [Test]
+    public void Types_without__with__methods_are_registered_as_singleton([Values(typeof(Singleton), typeof(Entities), typeof(ClassService))] Type type)
+    {
+        var actual1 = GiveMe.The(type);
+        var actual2 = GiveMe.The(type);
+
+        actual1.ShouldBe(actual2);
+    }
+
+    [Test]
+    public void Static_types_are_not_registered()
+    {
+        var action = () => GiveMe.The(typeof(Static));
+
+        action.ShouldThrow<InvalidOperationException>();
+    }
+
+    [Test]
+    public void Value_types_are_not_registered([Values(typeof(Struct), typeof(Status))] Type type)
+    {
+        var action = () => GiveMe.The(type);
+
+        action.ShouldThrow<InvalidOperationException>();
+    }
+
+    [Test]
+    public void Records_are_not_registered()
+    {
+        var action = () => GiveMe.The<Record>();
+
+        action.ShouldThrow<InvalidOperationException>();
+    }
+
+    [Test]
+    public void Abstract_types_are_not_registered()
+    {
+        var action = () => GiveMe.The<ServiceBase>();
+
+        action.ShouldThrow<InvalidOperationException>();
+    }
+
+    [Test]
+    public void Exception_types_are_not_registered([Values(typeof(SampleException), typeof(Exception))] Type type)
+    {
+        var action = () => GiveMe.The(type);
+
+        action.ShouldThrow<InvalidOperationException>();
+    }
+
+    [Test]
+    public void System_types_are_not_registered([Values(typeof(int), typeof(string), typeof(Guid), typeof(List<>), typeof(Task<>))] Type type)
+    {
+        var action = () => GiveMe.The(type);
+
+        action.ShouldThrow<InvalidOperationException>();
+    }
+
+    [Test]
+    public void Attributes_are_not_registered()
+    {
+        var action = () => GiveMe.The<AuthorizationRequiredAttribute>();
+
+        action.ShouldThrow<InvalidOperationException>();
+    }
+}

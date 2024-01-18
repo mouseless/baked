@@ -1,3 +1,5 @@
-﻿namespace Do.Domain;
+﻿using System.Reflection;
 
-public class AssemblyCollection : List<AssemblyDescriptor>, IAssemblyCollection { }
+namespace Do.Domain;
+
+public class AssemblyCollection : List<Assembly>, IAssemblyCollection { }

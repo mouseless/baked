@@ -10,8 +10,8 @@ app.Layers.AddDomain();
 
 ## Configuration Targets
 
-This layer provides `IAssemblyCollection` and `ITypeCollection` as 
-configuration targets for building `DomainModel`.
+This layer provides `IAssemblyCollection`, `ITypeCollection` and 
+`DomainBuilderOptions` as configuration targets for building `DomainModel`.
 
 ### `IAssemblyCollection`
 
@@ -32,6 +32,18 @@ feature;
 
 ```csharp
 configurator.ConfigureTypeCollection(types =>
+{
+    ...
+});
+```
+
+### `DomainOptions`
+
+This target is provided in `BuildConfiguration` phase. To configure it in a 
+feature;
+
+```csharp
+configurator.ConfigureDomainBuilderOptions(options =>
 {
     ...
 });
