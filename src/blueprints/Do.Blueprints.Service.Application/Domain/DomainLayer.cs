@@ -31,9 +31,9 @@ public class DomainLayer : LayerBase<BuildConfiguration>
         {
             var builder = new DomainModelBuilder(_domainBuilderOptions);
 
-            foreach (var descriptor in _assemblyCollection)
+            foreach (var assembly in _assemblyCollection)
             {
-                foreach (var type in descriptor.Assembly.GetExportedTypes())
+                foreach (var type in assembly.GetExportedTypes())
                 {
                     _typeCollection.Add(type);
                 }

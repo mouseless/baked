@@ -15,9 +15,6 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
             options.ConstuctorBindingFlags = _defaultMemberBindingFlags;
             options.MethodBindingFlags = _defaultMemberBindingFlags;
             options.PropertyBindingFlags = _defaultMemberBindingFlags;
-
-            options.TypeIsBuiltConventions.Add(type => type.Namespace?.StartsWith("System") == false);
-            options.TypeIsBuiltConventions.Add(type => !type.IsGenericTypeParameter && !type.IsGenericMethodParameter);
         });
 
         configurator.ConfigureServiceCollection(services =>

@@ -9,36 +9,29 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
 
     public DomainModel BuildFrom(IAssemblyCollection assemblyCollection, ITypeCollection typeCollection)
     {
-        foreach (var assemblyDescriptor in assemblyCollection)
+        foreach (var assembly in assemblyCollection)
         {
-            var model = new AssemblyModel(assemblyDescriptor.Assembly);
-            _assemblies.Add(model);
+            _assemblies.Add(new(assembly));
         }
 
-        foreach (var typeDescriptor in typeCollection)
+        foreach (var type in typeCollection)
         {
-            var id = IdFrom(typeDescriptor.Type);
-            if (_types.Contains(id)) { continue; }
+            _types.Add(new(type, IdFrom(type)));
+        }
 
-            var model = new TypeModel(typeDescriptor.Type, id);
-            _types.Add(model);
-
-            BuildTypeModel(model, typeDescriptor.Type);
+        foreach (var type in _types.ToList())
+        {
+            type.Apply(t =>
+                type.Init(
+                    genericTypeArguments: BuildGenericTypeArguments(t),
+                    customAttributes: BuildCustomAttributes(t),
+                    properties: BuildProperties(t),
+                    methods: BuildMethods(t)
+                )
+            );
         }
 
         return new(new(_assemblies), new(_types));
-    }
-
-    void BuildTypeModel(TypeModel typeModel, Type type)
-    {
-        if (_domainBuilderOptions.TypeIsBuiltConventions.Any(c => !c(typeModel))) { return; }
-
-        typeModel.Init(
-            genericTypeArguments: BuildGenericTypeArguments(type),
-            customAttributes: BuildCustomAttributes(type),
-            properties: BuildProperties(type),
-            methods: BuildMethods(type)
-        );
     }
 
     TypeModel GetOrCreateTypeModel(Type type)
@@ -49,26 +42,24 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
         var typeModel = new TypeModel(type, id);
         _types.Add(typeModel);
 
-        BuildTypeModel(typeModel, type);
-
         return typeModel;
     }
 
     ModelCollection<MethodModel> BuildMethods(Type type)
     {
-        var result = new Dictionary<string, MethodModel>();
+        var methods = new Dictionary<string, MethodModel>();
 
         var constructorInfos = type.GetConstructors(_domainBuilderOptions.ConstuctorBindingFlags) ?? [];
 
-        result[".ctor"] = new(".ctor", true, constructorInfos.Select(BuildConstructorOverload).ToArray());
+        methods[".ctor"] = new(".ctor", constructorInfos.Select(BuildConstructorOverload).ToArray(), IsConstructor: true);
 
         var methodInfos = type.GetMethods(_domainBuilderOptions.MethodBindingFlags) ?? [];
         foreach (var group in methodInfos.GroupBy(m => m.Name))
         {
-            result[group.Key] = new(group.Key, false, group.Select(BuildMethodOverload).ToArray());
+            methods[group.Key] = new(group.Key, group.Select(BuildMethodOverload).ToArray());
         }
 
-        return new(result.Values);
+        return new(methods.Values);
     }
 
     ModelCollection<TypeModel> BuildCustomAttributes(MemberInfo member) =>
@@ -101,5 +92,3 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
     static string IdFrom(Type type) =>
         type.FullName ?? $"{type.Namespace}.{type.Name}[{string.Join(',', type.GenericTypeArguments.Select(IdFrom))}]";
 }
-
-

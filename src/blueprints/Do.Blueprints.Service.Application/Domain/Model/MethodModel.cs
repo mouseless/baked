@@ -2,8 +2,8 @@
 
 public record MethodModel(
     string Name,
-    bool IsConstructor,
-    OverloadModel[] Overloads
+    OverloadModel[] Overloads,
+    bool IsConstructor = false
 ) : IModel
 {
     string IModel.Id { get; } = Name;
