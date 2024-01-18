@@ -7,7 +7,4 @@ public record OverloadModel(
     ModelCollection<ParameterModel> Parameters,
     ModelCollection<TypeModel> CustomAttributes,
     TypeModel? ReturnType = default
-) : IModel
-{
-    public string Id { get; } = $"{ReturnType?.Id}[{string.Join(',', Parameters.Select(p => p.Id))}]";
-}
+);

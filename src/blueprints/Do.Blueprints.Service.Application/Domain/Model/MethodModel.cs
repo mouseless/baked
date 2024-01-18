@@ -3,8 +3,8 @@
 public record MethodModel(
     string Name,
     bool IsConstructor,
-    ModelCollection<OverloadModel> Overloads
+    OverloadModel[] Overloads
 ) : IModel
 {
-    public string Id { get; } = Name;
+    string IModel.Id { get; } = Name;
 }

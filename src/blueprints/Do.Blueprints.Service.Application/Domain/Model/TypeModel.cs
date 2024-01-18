@@ -3,8 +3,8 @@
 public class TypeModel(Type type) : IModel, IEquatable<TypeModel>
 {
     readonly Type _type = type;
+    readonly string _id = GetId(type);
 
-    public string Id { get; } = GetId(type);
     public string Name { get; } = type.Name;
     public string? FullName { get; } = type.FullName;
     public string? Namespace { get; } = type.Namespace;
@@ -44,8 +44,10 @@ public class TypeModel(Type type) : IModel, IEquatable<TypeModel>
         ((IEquatable<TypeModel>)this).Equals(obj as TypeModel);
 
     bool IEquatable<TypeModel>.Equals(TypeModel? other) =>
-        other is not null && other.Id == Id;
+        other is not null && other._id == _id;
 
     public override int GetHashCode() =>
-        Id.GetHashCode();
+        _id.GetHashCode();
+
+    string IModel.Id => _id;
 }

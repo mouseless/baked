@@ -38,7 +38,7 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
                     type.Methods.TryGetValue("<Clone>$", out _) // if type is record
                 ) { continue; }
 
-                if (type.Methods.TryGetValue("With", out var method) && method.Overloads.All(o => o.ReturnType?.Id == type.Id))
+                if (type.Methods.TryGetValue("With", out var method) && method.Overloads.All(o => o.ReturnType == type))
                 {
                     type.Apply(t => services.AddTransientWithFactory(t));
                 }

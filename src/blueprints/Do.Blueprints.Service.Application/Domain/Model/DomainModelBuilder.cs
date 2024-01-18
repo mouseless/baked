@@ -4,28 +4,28 @@ namespace Do.Domain.Model;
 
 public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
 {
-    readonly Dictionary<string, AssemblyModel> _assemblies = [];
-    readonly Dictionary<string, TypeModel> _types = [];
+    readonly KeyedModelCollection<AssemblyModel> _assemblies = [];
+    readonly KeyedModelCollection<TypeModel> _types = [];
 
     public DomainModel BuildFrom(IAssemblyCollection assemblyCollection, ITypeCollection typeCollection)
     {
         foreach (var assemblyDescriptor in assemblyCollection)
         {
             var model = new AssemblyModel(assemblyDescriptor.Assembly);
-            _assemblies.Add(model.Id, model);
+            _assemblies.Add(model);
         }
 
         foreach (var typeDescriptor in typeCollection)
         {
-            if (_types.ContainsKey(TypeModel.GetId(typeDescriptor.Type))) { continue; }
+            if (_types.Contains(TypeModel.GetId(typeDescriptor.Type))) { continue; }
 
             var model = new TypeModel(typeDescriptor.Type);
-            _types.Add(model.Id, model);
+            _types.Add(model);
 
             BuildTypeModel(model, typeDescriptor.Type);
         }
 
-        return new(new(_assemblies.Values), new(_types.Values));
+        return new(new(_assemblies), new(_types));
     }
 
     void BuildTypeModel(TypeModel typeModel, Type type)
@@ -44,12 +44,12 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
     {
         if (_types.TryGetValue(TypeModel.GetId(type), out var result)) { return result; }
 
-        var newTypeModel = new TypeModel(type);
-        _types[newTypeModel.Id] = newTypeModel;
+        var typeModel = new TypeModel(type);
+        _types.Add(typeModel);
 
-        BuildTypeModel(newTypeModel, type);
+        BuildTypeModel(typeModel, type);
 
-        return newTypeModel;
+        return typeModel;
     }
 
     List<MethodModel> BuildMethods(Type type)
@@ -58,12 +58,12 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
 
         var constructorInfos = type.GetConstructors(_domainBuilderOptions.ConstuctorBindingFlags) ?? [];
 
-        result[".ctor"] = new(".ctor", true, new(constructorInfos.Select(BuildConstructorOverload).ToList()));
+        result[".ctor"] = new(".ctor", true, constructorInfos.Select(BuildConstructorOverload).ToArray());
 
         var methodInfos = type.GetMethods(_domainBuilderOptions.MethodBindingFlags) ?? [];
         foreach (var group in methodInfos.GroupBy(m => m.Name))
         {
-            result[group.Key] = new(group.Key, false, new(group.Select(BuildMethodOverload).ToList()));
+            result[group.Key] = new(group.Key, false, group.Select(BuildMethodOverload).ToArray());
         }
 
         return [.. result.Values];

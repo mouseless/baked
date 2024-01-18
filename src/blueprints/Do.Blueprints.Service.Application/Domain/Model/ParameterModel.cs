@@ -7,6 +7,6 @@ public record ParameterModel(
     object? DefaultValue
 ) : IModel
 {
-    public string Id { get; } = $"{ParameterType.Id} {Name}";
+    string IModel.Id { get; } = Name;
 }
 
