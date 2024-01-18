@@ -1,9 +1,9 @@
 ﻿namespace Do.Domain.Model;
 
-public class TypeModel(Type type) : IModel, IEquatable<TypeModel>
+public class TypeModel(Type type, string id) : IModel, IEquatable<TypeModel>
 {
     readonly Type _type = type;
-    readonly string _id = GetId(type);
+    readonly string _id = id;
 
     public string Name { get; } = type.Name;
     public string? FullName { get; } = type.FullName;
@@ -36,9 +36,6 @@ public class TypeModel(Type type) : IModel, IEquatable<TypeModel>
 
     public void Apply(Action<Type> action) =>
         action(_type);
-
-    public static string GetId(Type type) =>
-        type.FullName ?? $"{type.Namespace}.{type.Name}[{string.Join(',', type.GenericTypeArguments.Select(GetId))}]";
 
     public override bool Equals(object? obj) =>
         ((IEquatable<TypeModel>)this).Equals(obj as TypeModel);
