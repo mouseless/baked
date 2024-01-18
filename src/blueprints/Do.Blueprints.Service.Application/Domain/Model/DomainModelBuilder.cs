@@ -33,7 +33,7 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
         if (_domainBuilderOptions.TypeIsBuiltConventions.Any(c => !c(typeModel))) { return; }
 
         typeModel.Init(
-            genericTypeArguments: new(type.GenericTypeArguments.Select(GetOrCreateTypeModel)),
+            genericTypeArguments: new(BuildGenericTypeArguments(type)),
             customAttributes: new(BuildCustomAttributes(type)),
             properties: new(BuildProperties(type)),
             methods: new(BuildMethods(type))
@@ -55,15 +55,13 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
     List<MethodModel> BuildMethods(Type type)
     {
         var result = new Dictionary<string, MethodModel>();
-        var overloads = new Dictionary<string, List<OverloadModel>>();
 
         var constructorInfos = type.GetConstructors(_domainBuilderOptions.ConstuctorBindingFlags) ?? [];
 
         result[".ctor"] = new(".ctor", true, new(constructorInfos.Select(BuildConstructorOverload).ToList()));
 
         var methodInfos = type.GetMethods(_domainBuilderOptions.MethodBindingFlags) ?? [];
-        var groups = methodInfos.GroupBy(m => m.Name);
-        foreach (var group in groups)
+        foreach (var group in methodInfos.GroupBy(m => m.Name))
         {
             result[group.Key] = new(group.Key, false, new(group.Select(BuildMethodOverload).ToList()));
         }
@@ -72,13 +70,10 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
     }
 
     IEnumerable<AttributeModel> BuildCustomAttributes(MemberInfo member) =>
-        member.CustomAttributes
-            .Select(attr =>
-                new AttributeModel(
-                    GetOrCreateTypeModel(attr.AttributeType),
-                    new(attr.ConstructorArguments.Select(a => new ValueModel(GetOrCreateTypeModel(a.ArgumentType), a.Value)))
-                )
-            );
+        member.CustomAttributes.Select(attr => new AttributeModel(GetOrCreateTypeModel(attr.AttributeType)));
+
+    IEnumerable<TypeModel> BuildGenericTypeArguments(Type type) =>
+        type.GenericTypeArguments.Select(GetOrCreateTypeModel);
 
     OverloadModel BuildConstructorOverload(ConstructorInfo constructor) =>
         new(constructor.IsPublic, constructor.IsFamily, constructor.IsVirtual, new(BuildParameters(constructor)), new(BuildCustomAttributes(constructor)));
@@ -92,6 +87,7 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
 
     IEnumerable<PropertyModel> BuildProperties(Type type) =>
         type.GetProperties(_domainBuilderOptions.PropertyBindingFlags).Select(BuildProperty);
+
     PropertyModel BuildProperty(PropertyInfo property) =>
         new(property.Name, GetOrCreateTypeModel(property.PropertyType), IsPublic(property), IsVirtual(property));
 
