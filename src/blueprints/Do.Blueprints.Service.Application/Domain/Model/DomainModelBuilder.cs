@@ -4,7 +4,7 @@ namespace Do.Domain.Model;
 
 public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
 {
-    readonly Dictionary<string, AssemblyModel> _assemlies = [];
+    readonly Dictionary<string, AssemblyModel> _assemblies = [];
     readonly Dictionary<string, TypeModel> _types = [];
 
     public DomainModel BuildFrom(IAssemblyCollection assemblyCollection, ITypeCollection typeCollection)
@@ -12,44 +12,37 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
         foreach (var assemblyDescriptor in assemblyCollection)
         {
             var model = new AssemblyModel(assemblyDescriptor.Assembly);
-            _assemlies.Add(model.Id, model);
+            _assemblies.Add(model.Id, model);
         }
 
         foreach (var typeDescriptor in typeCollection)
         {
-            if (!_types.ContainsKey(TypeModel.GetId(typeDescriptor.Type)))
-            {
-                var model = new TypeModel(typeDescriptor.Type);
-                _types.Add(model.Id, model);
-                BuildTypeModel(model, typeDescriptor.Type);
-            }
+            if (_types.ContainsKey(TypeModel.GetId(typeDescriptor.Type))) { continue; }
+
+            var model = new TypeModel(typeDescriptor.Type);
+            _types.Add(model.Id, model);
+
+            BuildTypeModel(model, typeDescriptor.Type);
         }
 
-        return new(
-            Assemblies: new ModelCollection<AssemblyModel>([.. _assemlies.Values]),
-            Types: new ModelCollection<TypeModel>([.. _types.Values])
-        );
+        return new(new(_assemblies.Values), new(_types.Values));
     }
 
     void BuildTypeModel(TypeModel typeModel, Type type)
     {
-        if (_domainBuilderOptions.TypeIsBuiltConventions.All(f => f(type)))
-        {
-            typeModel.Init(
-                genericTypeArguments: new(type.GenericTypeArguments.Select(GetOrCreateTypeModel)),
-                customAttributes: new(BuildCustomAttributes(type)),
-                properties: new(BuildProperties(type)),
-                methods: new(BuildMethods(type))
-            );
-        }
+        if (_domainBuilderOptions.TypeIsBuiltConventions.Any(c => !c(typeModel))) { return; }
+
+        typeModel.Init(
+            genericTypeArguments: new(type.GenericTypeArguments.Select(GetOrCreateTypeModel)),
+            customAttributes: new(BuildCustomAttributes(type)),
+            properties: new(BuildProperties(type)),
+            methods: new(BuildMethods(type))
+        );
     }
 
     TypeModel GetOrCreateTypeModel(Type type)
     {
-        if (_types.TryGetValue(TypeModel.GetId(type), out var result))
-        {
-            return result;
-        }
+        if (_types.TryGetValue(TypeModel.GetId(type), out var result)) { return result; }
 
         var newTypeModel = new TypeModel(type);
         _types[newTypeModel.Id] = newTypeModel;
@@ -66,21 +59,17 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
 
         var constructorInfos = type.GetConstructors(_domainBuilderOptions.ConstuctorBindingFlags) ?? [];
 
-        result[".ctor"] = new MethodModel(".ctor", false, new(constructorInfos.Select(BuildConstructorOverload).ToList()));
+        result[".ctor"] = new(".ctor", true, new(constructorInfos.Select(BuildConstructorOverload).ToList()));
 
         var methodInfos = type.GetMethods(_domainBuilderOptions.MethodBindingFlags) ?? [];
         var groups = methodInfos.GroupBy(m => m.Name);
         foreach (var group in groups)
         {
-            result[group.Key] = new MethodModel(group.Key, false, new(group.Select(BuildOverload).ToList()));
+            result[group.Key] = new(group.Key, false, new(group.Select(BuildMethodOverload).ToList()));
         }
 
         return [.. result.Values];
     }
-
-    IEnumerable<ParameterModel> BuildParameters(MethodBase method) =>
-        method.GetParameters()
-            .Select(p => new ParameterModel(p.Name ?? string.Empty, GetOrCreateTypeModel(p.ParameterType), p.IsOptional, p.DefaultValue));
 
     IEnumerable<AttributeModel> BuildCustomAttributes(MemberInfo member) =>
         member.CustomAttributes
@@ -91,15 +80,18 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
                 )
             );
 
-    IEnumerable<PropertyModel> BuildProperties(Type type) =>
-        type.GetProperties(_domainBuilderOptions.PropertyBindingFlags).Select(BuildProperty);
+    OverloadModel BuildConstructorOverload(ConstructorInfo constructor) =>
+        new(constructor.IsPublic, constructor.IsFamily, constructor.IsVirtual, new(BuildParameters(constructor)), new(BuildCustomAttributes(constructor)));
 
-    OverloadModel BuildConstructorOverload(ConstructorInfo method) =>
-        new(method.IsPublic, method.IsFamily, method.IsVirtual, new(BuildParameters(method)), new(BuildCustomAttributes(method)));
-
-    OverloadModel BuildOverload(MethodInfo method) =>
+    OverloadModel BuildMethodOverload(MethodInfo method) =>
         new(method.IsPublic, method.IsFamily, method.IsVirtual, new(BuildParameters(method)), new(BuildCustomAttributes(method)), GetOrCreateTypeModel(method.ReturnType));
 
+    IEnumerable<ParameterModel> BuildParameters(MethodBase method) =>
+        method.GetParameters()
+            .Select(p => new ParameterModel(p.Name ?? string.Empty, GetOrCreateTypeModel(p.ParameterType), p.IsOptional, p.DefaultValue));
+
+    IEnumerable<PropertyModel> BuildProperties(Type type) =>
+        type.GetProperties(_domainBuilderOptions.PropertyBindingFlags).Select(BuildProperty);
     PropertyModel BuildProperty(PropertyInfo property) =>
         new(property.Name, GetOrCreateTypeModel(property.PropertyType), IsPublic(property), IsVirtual(property));
 

@@ -8,5 +8,5 @@ public class DomainBuilderOptions
     public BindingFlags MethodBindingFlags { get; set; } = BindingFlags.Default;
     public BindingFlags PropertyBindingFlags { get; set; } = BindingFlags.Default;
 
-    public List<Func<Type, bool>> TypeIsBuiltConventions { get; } = [];
+    public List<Func<TypeModel, bool>> TypeIsBuiltConventions { get; } = [];
 }

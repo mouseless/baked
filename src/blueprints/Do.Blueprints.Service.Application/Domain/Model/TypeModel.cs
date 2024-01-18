@@ -36,12 +36,6 @@ public class TypeModel(Type type) : IModel, IEquatable<TypeModel>
     public void Apply(Action<Type> action) =>
         action(_type);
 
-    public bool IsAssignableTo<T>() =>
-        IsAssignableTo(typeof(T));
-
-    public bool IsAssignableTo(Type type) =>
-        _type.IsAssignableTo(type);
-
     public static string GetId(Type type) =>
         type.FullName ?? $"{type.Namespace}.{type.Name}[{string.Join(',', type.GenericTypeArguments.Select(GetId))}]";
 

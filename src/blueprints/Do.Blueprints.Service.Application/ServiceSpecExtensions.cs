@@ -155,6 +155,9 @@ public static class ServiceSpecExtensions
 
     #region ServiceProvider
 
+    public static T? TheService<T>(this Stubber _) =>
+        (T?)ServiceSpec.ServiceProvider.GetService(typeof(T));
+
     public static object? TheService(this Stubber _, Type type) =>
         ServiceSpec.ServiceProvider.GetService(type);
 

@@ -17,7 +17,7 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
             options.PropertyBindingFlags = _defaultMemberBindingFlags;
 
             options.TypeIsBuiltConventions.Add(type => type.Namespace?.StartsWith("System") == false);
-            options.TypeIsBuiltConventions.Add(type => !type.IsAssignableTo(typeof(Attribute)));
+            options.TypeIsBuiltConventions.Add(type => !type.IsGenericTypeParameter && !type.IsGenericMethodParameter);
         });
 
         configurator.ConfigureServiceCollection(services =>
@@ -32,7 +32,8 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
                     type.IsAbstract ||
                     type.IsValueType ||
                     type.IsGenericMethodParameter ||
-                    type.IsAssignableTo<Exception>()
+                    type.IsGenericTypeParameter ||
+                    type.Name.EndsWith("Exception")
                 ) { continue; }
 
                 if (type.Methods.TryGetValue("With", out var method) && method.Overloads.All(o => o.ReturnType?.Id == type.Id))
@@ -41,10 +42,9 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
                 }
                 else
                 {
-                    if (type.Constructor.Overloads.All(c => c.Parameters.All(p => !p.ParameterType.IsValueType)))
-                    {
-                        type.Apply(t => services.AddSingleton(t));
-                    }
+                    if (type.Methods.TryGetValue("<Clone>$", out _)) { continue; }
+
+                    type.Apply(t => services.AddSingleton(t));
                 }
             }
         });

@@ -9,5 +9,5 @@ public record OverloadModel(
     TypeModel? ReturnType = default
 ) : IModel
 {
-    public string Id { get; } = $"[{string.Join(',', Parameters.Select(p => p.Id))}]";
+    public string Id { get; } = $"{ReturnType?.Id}[{string.Join(',', Parameters.Select(p => p.Id))}]";
 }

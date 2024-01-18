@@ -27,8 +27,8 @@ public class RegisteringServices : TestServiceSpec
     [Test]
     public void Types_with_IQueryContext_dependencies_are_registered_as_singleton()
     {
-        var actual1 = GiveMe.TheService(typeof(Entities));
-        var actual2 = GiveMe.TheService(typeof(Entities));
+        var actual1 = GiveMe.TheService<Entities>();
+        var actual2 = GiveMe.TheService<Entities>();
 
         actual1.ShouldNotBeNull();
         actual2.ShouldNotBeNull();
@@ -38,8 +38,8 @@ public class RegisteringServices : TestServiceSpec
     [Test]
     public void Types_with_dependencies_and_no_with_methods_are_registered_as_singleton()
     {
-        var actual1 = GiveMe.TheService(typeof(Singleton));
-        var actual2 = GiveMe.TheService(typeof(Singleton));
+        var actual1 = GiveMe.TheService<Singleton>();
+        var actual2 = GiveMe.TheService<Singleton>();
 
         actual1.ShouldNotBeNull();
         actual2.ShouldNotBeNull();
@@ -49,7 +49,7 @@ public class RegisteringServices : TestServiceSpec
     [Test]
     public void Types_with_no_dependencies_are_registered()
     {
-        var actual = GiveMe.TheService(typeof(ClassService));
+        var actual = GiveMe.TheService<ClassService>();
 
         actual.ShouldNotBeNull();
     }
@@ -71,9 +71,9 @@ public class RegisteringServices : TestServiceSpec
     }
 
     [Test]
-    public void DTOs_are_not_registered([Values(typeof(Record), typeof(ClassDTO))] Type type)
+    public void Records_are_not_registered()
     {
-        var actual = GiveMe.TheService(type);
+        var actual = GiveMe.TheService<Record>();
 
         actual.ShouldBeNull();
     }
@@ -81,7 +81,7 @@ public class RegisteringServices : TestServiceSpec
     [Test]
     public void Abstract_types_are_not_registered()
     {
-        var actual = GiveMe.TheService(typeof(ServiceBase));
+        var actual = GiveMe.TheService<ServiceBase>();
 
         actual.ShouldBeNull();
     }

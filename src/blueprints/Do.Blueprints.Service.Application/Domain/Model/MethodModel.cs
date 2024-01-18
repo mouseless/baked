@@ -6,5 +6,5 @@ public record MethodModel(
     ModelCollection<OverloadModel> Overloads
 ) : IModel
 {
-    public string Id { get; } = $"{Name}";
+    public string Id { get; } = Name;
 }
