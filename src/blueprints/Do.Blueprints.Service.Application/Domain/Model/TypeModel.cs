@@ -6,6 +6,7 @@ public class TypeModel(Type type) : IModel, IEquatable<TypeModel>
 
     public string Id { get; } = GetId(type);
     public string Name { get; } = type.Name;
+    public string? FullName { get; } = type.FullName;
     public string? Namespace { get; } = type.Namespace;
     public bool IsAbstract { get; } = type.IsAbstract;
     public bool IsValueType { get; } = type.IsValueType;
@@ -16,7 +17,7 @@ public class TypeModel(Type type) : IModel, IEquatable<TypeModel>
     public ModelCollection<MethodModel> Methods { get; private set; } = default!;
     public ModelCollection<PropertyModel> Properties { get; private set; } = default!;
     public ModelCollection<TypeModel> GenericTypeArguments { get; private set; } = default!;
-    public ModelCollection<AttributeModel> CustomAttributes { get; private set; } = default!;
+    public ModelCollection<TypeModel> CustomAttributes { get; private set; } = default!;
 
     public MethodModel Constructor => Methods[".ctor"];
 
@@ -24,7 +25,7 @@ public class TypeModel(Type type) : IModel, IEquatable<TypeModel>
         ModelCollection<MethodModel> methods,
         ModelCollection<PropertyModel> properties,
         ModelCollection<TypeModel> genericTypeArguments,
-        ModelCollection<AttributeModel> customAttributes
+        ModelCollection<TypeModel> customAttributes
     )
     {
         Methods = methods;

@@ -5,7 +5,7 @@ public record OverloadModel(
     bool IsProtected,
     bool IsVirtual,
     ModelCollection<ParameterModel> Parameters,
-    ModelCollection<AttributeModel> CustomAttributes,
+    ModelCollection<TypeModel> CustomAttributes,
     TypeModel? ReturnType = default
 ) : IModel
 {

@@ -69,8 +69,8 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
         return [.. result.Values];
     }
 
-    IEnumerable<AttributeModel> BuildCustomAttributes(MemberInfo member) =>
-        member.CustomAttributes.Select(attr => new AttributeModel(GetOrCreateTypeModel(attr.AttributeType)));
+    IEnumerable<TypeModel> BuildCustomAttributes(MemberInfo member) =>
+        member.CustomAttributes.Select(attr => GetOrCreateTypeModel(attr.AttributeType));
 
     IEnumerable<TypeModel> BuildGenericTypeArguments(Type type) =>
         type.GenericTypeArguments.Select(GetOrCreateTypeModel);

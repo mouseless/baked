@@ -28,13 +28,14 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
             {
                 if (
                     type.Namespace?.StartsWith("System") == true ||
-                    type.IsSealed && type.IsAbstract ||
+                    (type.IsSealed && type.IsAbstract) || // if type is static
                     type.IsAbstract ||
                     type.IsValueType ||
                     type.IsGenericMethodParameter ||
                     type.IsGenericTypeParameter ||
                     type.Name.EndsWith("Exception") ||
-                    type.Name.EndsWith("Attribute")
+                    type.Name.EndsWith("Attribute") ||
+                    type.Methods.TryGetValue("<Clone>$", out _) // if type is record
                 ) { continue; }
 
                 if (type.Methods.TryGetValue("With", out var method) && method.Overloads.All(o => o.ReturnType?.Id == type.Id))
@@ -43,8 +44,6 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
                 }
                 else
                 {
-                    if (type.Methods.TryGetValue("<Clone>$", out _)) { continue; }
-
                     type.Apply(t => services.AddSingleton(t));
                 }
             }

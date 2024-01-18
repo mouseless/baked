@@ -10,18 +10,18 @@ public class DomainLayer : LayerBase<BuildConfiguration>
 {
     readonly IAssemblyCollection _assemblyCollection = new AssemblyCollection();
     readonly ITypeCollection _typeCollection = new TypeCollection();
-    readonly DomainBuilderOptions _domainOptions = new();
+    readonly DomainBuilderOptions _domainBuilderOptions = new();
 
     protected override PhaseContext GetContext(BuildConfiguration phase) =>
         phase.CreateContextBuilder()
             .Add<IAssemblyCollection>(_assemblyCollection)
             .Add<ITypeCollection>(_typeCollection)
-            .Add<DomainBuilderOptions>(_domainOptions)
+            .Add<DomainBuilderOptions>(_domainBuilderOptions)
             .Build();
 
     protected override IEnumerable<IPhase> GetPhases()
     {
-        yield return new BuildDomain(_assemblyCollection, _typeCollection, _domainOptions);
+        yield return new BuildDomain(_assemblyCollection, _typeCollection, _domainBuilderOptions);
     }
 
     public class BuildDomain(IAssemblyCollection _assemblyCollection, ITypeCollection _typeCollection, DomainBuilderOptions _domainBuilderOptions)
