@@ -86,8 +86,7 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
 
                         throw;
                     }
-                }),
-                order: -70
+                })
             );
 
             middlewares.Add(app =>
@@ -98,8 +97,7 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
                         // to see mapping errors on start
                         var _ = app.ApplicationServices.GetRequiredService<ISessionFactory>();
                     });
-                },
-                order: -90
+                }
             );
         });
     }

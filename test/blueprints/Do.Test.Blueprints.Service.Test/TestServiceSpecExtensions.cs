@@ -27,4 +27,18 @@ public static class TestServiceSpecExtensions
             dateTime ?? giveMe.ADateTime(),
             setNowForDateTime ?? false
         );
+
+    public static IInterface AMockedObject(this Mocker mockMe, string[] results)
+    {
+        var mock = new Mock<IInterface>();
+
+        var setup = () => mock.Setup(c => c.DoSomething());
+        var taskSetup = () => mock.Setup(c => c.DoSomethingTask());
+
+        setup().Returns(results);
+
+        taskSetup().ReturnsAsync(results);
+
+        return mock.Object;
+    }
 }
