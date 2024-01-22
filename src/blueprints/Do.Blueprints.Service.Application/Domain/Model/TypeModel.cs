@@ -22,7 +22,8 @@ public class TypeModel(Type type, string id,
     public ModelCollection<PropertyModel> Properties { get; private set; } = default!;
     public ModelCollection<TypeModel> GenericTypeArguments { get; private set; } = default!;
     public ModelCollection<TypeModel> CustomAttributes { get; private set; } = default!;
-    public HashSet<TypeModel> Interfaces { get; private set; } = default!;
+    public ModelCollection<TypeModel> Interfaces { get; private set; } = default!;
+    HashSet<Type> InterfaceTypes { get; set; } = default!;
 
     public MethodModel Constructor => Methods[".ctor"];
 
@@ -31,7 +32,7 @@ public class TypeModel(Type type, string id,
         ModelCollection<PropertyModel> properties,
         ModelCollection<TypeModel> genericTypeArguments,
         ModelCollection<TypeModel> customAttributes,
-        HashSet<TypeModel> interfaces,
+        ModelCollection<TypeModel> interfaces,
         TypeModel? baseType = default
     )
     {
@@ -41,6 +42,12 @@ public class TypeModel(Type type, string id,
         CustomAttributes = customAttributes;
         Interfaces = interfaces;
         BaseType = baseType;
+
+        InterfaceTypes = [];
+        foreach (var type in interfaces)
+        {
+            type.Apply(t => InterfaceTypes.Add(t));
+        }
     }
 
     public void Apply(Action<Type> action) =>
@@ -53,7 +60,7 @@ public class TypeModel(Type type, string id,
     {
         if (type.IsInterface)
         {
-            return Interfaces.Any(i => i.Is(type));
+            return InterfaceTypes.Contains(type);
         }
 
         return _type == type || BaseType?.Is(type) == true;
