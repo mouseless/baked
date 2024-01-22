@@ -30,6 +30,24 @@ public class RegisteringServices : TestServiceSpec
     }
 
     [Test]
+    public void Singleton_types_with_interfaces_are_registered_as_implementations()
+    {
+        var actual1 = GiveMe.The<ISingletonService>();
+        var actual2 = GiveMe.The<ISingletonService>();
+
+        actual1.ShouldBe(actual2);
+    }
+
+    [Test]
+    public void Transient_types_with_interfaces_are_registered_as_implementations()
+    {
+        var actual1 = GiveMe.The<ITransientService>();
+        var actual2 = GiveMe.The<ITransientService>();
+
+        actual1.ShouldNotBe(actual2);
+    }
+
+    [Test]
     public void Static_types_are_not_registered()
     {
         var action = () => GiveMe.The(typeof(Static));
