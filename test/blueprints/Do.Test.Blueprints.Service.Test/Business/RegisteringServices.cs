@@ -53,7 +53,7 @@ public class RegisteringServices : TestServiceSpec
     {
         var action = () => GiveMe.The(typeof(Static));
 
-        action.ShouldThrowExceptionWithMessage(typeof(Static));
+        action.ShouldThrowExceptionWithServiceNotRegisteredMessage(typeof(Static));
     }
 
     [Test]
@@ -61,7 +61,7 @@ public class RegisteringServices : TestServiceSpec
     {
         var action = () => GiveMe.The(type);
 
-        action.ShouldThrowExceptionWithMessage(type);
+        action.ShouldThrowExceptionWithServiceNotRegisteredMessage(type);
     }
 
     [Test]
@@ -69,7 +69,7 @@ public class RegisteringServices : TestServiceSpec
     {
         var action = () => GiveMe.The<Record>();
 
-        action.ShouldThrowExceptionWithMessage(typeof(Record));
+        action.ShouldThrowExceptionWithServiceNotRegisteredMessage(typeof(Record));
     }
 
     [Test]
@@ -77,7 +77,7 @@ public class RegisteringServices : TestServiceSpec
     {
         var action = () => GiveMe.The<ServiceBase>();
 
-        action.ShouldThrowExceptionWithMessage(typeof(ServiceBase));
+        action.ShouldThrowExceptionWithServiceNotRegisteredMessage(typeof(ServiceBase));
     }
 
     [Test]
@@ -85,7 +85,7 @@ public class RegisteringServices : TestServiceSpec
     {
         var action = () => GiveMe.The(type);
 
-        action.ShouldThrowExceptionWithMessage(type);
+        action.ShouldThrowExceptionWithServiceNotRegisteredMessage(type);
     }
 
     [Test]
@@ -93,7 +93,7 @@ public class RegisteringServices : TestServiceSpec
     {
         var action = () => GiveMe.The(type);
 
-        action.ShouldThrowExceptionWithMessage(type);
+        action.ShouldThrowExceptionWithServiceNotRegisteredMessage(type);
     }
 
     [Test]
@@ -101,7 +101,7 @@ public class RegisteringServices : TestServiceSpec
     {
         var action = () => GiveMe.The<AuthorizationRequiredAttribute>();
 
-        action.ShouldThrowExceptionWithMessage(typeof(AuthorizationRequiredAttribute));
+        action.ShouldThrowExceptionWithServiceNotRegisteredMessage(typeof(AuthorizationRequiredAttribute));
     }
 
     [Test]
@@ -109,12 +109,12 @@ public class RegisteringServices : TestServiceSpec
     {
         var action = () => GiveMe.A(typeof(IEquatable<Entity>));
 
-        action.ShouldThrowExceptionWithMessage(typeof(IEquatable<Entity>));
+        action.ShouldThrowExceptionWithServiceNotRegisteredMessage(typeof(IEquatable<Entity>));
     }
 }
 
 public static class RegisteringServicesExtensions
 {
-    public static void ShouldThrowExceptionWithMessage(this Func<object> source, Type type) =>
-        source.ShouldThrow<Exception>().Message.ShouldBe($"No service for type '{type}' has been registered.");
+    public static void ShouldThrowExceptionWithServiceNotRegisteredMessage(this Func<object> source, Type serviceType) =>
+        source.ShouldThrow<Exception>().Message.ShouldBe($"No service for type '{serviceType}' has been registered.");
 }
