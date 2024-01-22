@@ -22,7 +22,7 @@ public class TypeModel(Type type, string id,
     public ModelCollection<PropertyModel> Properties { get; private set; } = default!;
     public ModelCollection<TypeModel> GenericTypeArguments { get; private set; } = default!;
     public ModelCollection<TypeModel> CustomAttributes { get; private set; } = default!;
-    public ModelCollection<TypeModel> Interfaces { get; private set; } = default!;
+    public HashSet<TypeModel> Interfaces { get; private set; } = default!;
 
     public MethodModel Constructor => Methods[".ctor"];
 
@@ -31,7 +31,7 @@ public class TypeModel(Type type, string id,
         ModelCollection<PropertyModel> properties,
         ModelCollection<TypeModel> genericTypeArguments,
         ModelCollection<TypeModel> customAttributes,
-        ModelCollection<TypeModel> interfaces,
+        HashSet<TypeModel> interfaces,
         TypeModel? baseType = default
     )
     {
@@ -51,10 +51,16 @@ public class TypeModel(Type type, string id,
 
     public bool IsAssignableTo(Type type)
     {
-        if (_type == type) return true;
+        if (type.IsInterface)
+        {
+            return Interfaces.Any(i => i.Is(type));
+        }
 
-        return BaseType?.IsAssignableTo(type) == true;
+        return _type == type || BaseType?.Is(type) == true;
     }
+
+    bool Is(Type type) =>
+        _type == type || BaseType?.Is(type) == true;
 
     public override bool Equals(object? obj) =>
         ((IEquatable<TypeModel>)this).Equals(obj as TypeModel);

@@ -70,7 +70,7 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
     ModelCollection<TypeModel> BuildGenericTypeArguments(Type type) =>
         new(type.GenericTypeArguments.Select(GetOrCreateTypeModel));
 
-    ModelCollection<TypeModel> BuildInterfaces(Type type) =>
+    HashSet<TypeModel> BuildInterfaces(Type type) =>
         new(type.GetInterfaces().Select(GetOrCreateTypeModel));
 
     OverloadModel BuildConstructorOverload(ConstructorInfo constructor) =>
