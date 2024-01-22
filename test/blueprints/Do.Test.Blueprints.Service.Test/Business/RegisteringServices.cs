@@ -1,5 +1,4 @@
 ﻿namespace Do.Test.Business;
-
 public class RegisteringServices : TestServiceSpec
 {
     [Test]
@@ -54,7 +53,7 @@ public class RegisteringServices : TestServiceSpec
     {
         var action = () => GiveMe.The(typeof(Static));
 
-        action.ShouldThrow<InvalidOperationException>();
+        action.ShouldThrowExceptionWithMessage(typeof(Static));
     }
 
     [Test]
@@ -62,7 +61,7 @@ public class RegisteringServices : TestServiceSpec
     {
         var action = () => GiveMe.The(type);
 
-        action.ShouldThrow<InvalidOperationException>();
+        action.ShouldThrowExceptionWithMessage(type);
     }
 
     [Test]
@@ -70,7 +69,7 @@ public class RegisteringServices : TestServiceSpec
     {
         var action = () => GiveMe.The<Record>();
 
-        action.ShouldThrow<InvalidOperationException>();
+        action.ShouldThrowExceptionWithMessage(typeof(Record));
     }
 
     [Test]
@@ -78,15 +77,15 @@ public class RegisteringServices : TestServiceSpec
     {
         var action = () => GiveMe.The<ServiceBase>();
 
-        action.ShouldThrow<InvalidOperationException>();
+        action.ShouldThrowExceptionWithMessage(typeof(ServiceBase));
     }
 
     [Test]
-    public void Exception_types_are_not_registered([Values(typeof(SampleException), typeof(Exception))] Type type)
+    public void Exception_types_are_not_registered([Values(typeof(SampleException), typeof(Exception), typeof(TestServiceHandledException))] Type type)
     {
         var action = () => GiveMe.The(type);
 
-        action.ShouldThrow<InvalidOperationException>();
+        action.ShouldThrowExceptionWithMessage(type);
     }
 
     [Test]
@@ -94,7 +93,7 @@ public class RegisteringServices : TestServiceSpec
     {
         var action = () => GiveMe.The(type);
 
-        action.ShouldThrow<InvalidOperationException>();
+        action.ShouldThrowExceptionWithMessage(type);
     }
 
     [Test]
@@ -102,7 +101,7 @@ public class RegisteringServices : TestServiceSpec
     {
         var action = () => GiveMe.The<AuthorizationRequiredAttribute>();
 
-        action.ShouldThrow<InvalidOperationException>();
+        action.ShouldThrowExceptionWithMessage(typeof(AuthorizationRequiredAttribute));
     }
 
     [Test]
@@ -110,6 +109,12 @@ public class RegisteringServices : TestServiceSpec
     {
         var action = () => GiveMe.A(typeof(IEquatable<Entity>));
 
-        action.ShouldThrow<InvalidOperationException>();
+        action.ShouldThrowExceptionWithMessage(typeof(IEquatable<Entity>));
     }
+}
+
+public static class RegisteringServicesExtensions
+{
+    public static void ShouldThrowExceptionWithMessage(this Func<object> source, Type type) =>
+        source.ShouldThrow<Exception>().Message.ShouldBe($"No service for type '{type}' has been registered.");
 }

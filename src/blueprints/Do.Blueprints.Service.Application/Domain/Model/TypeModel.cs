@@ -1,7 +1,8 @@
 ﻿namespace Do.Domain.Model;
 
-public class TypeModel(Type type, string id, AssemblyModel assembly = default!)
-    : IModel, IEquatable<TypeModel>
+public class TypeModel(Type type, string id,
+    AssemblyModel? assembly = default
+) : IModel, IEquatable<TypeModel>
 {
     readonly Type _type = type;
     readonly string _id = id;
