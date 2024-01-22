@@ -17,7 +17,7 @@ public class SwaggerSchemaGeneration : TestServiceNfr
     {
         var response = await Client.GetAsync("/swagger/v1/swagger.json");
 
-        dynamic? content = await response.Content.DeserializeContentToDynamic();
+        dynamic? content = await response.Content.Deserialize();
 
         ((string?)content?.paths["/singleton/time"].get.tags[0]).ShouldBe("Singleton");
     }

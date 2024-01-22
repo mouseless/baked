@@ -1,6 +1,4 @@
 ﻿using Do.Architecture;
-using System.Net.Http.Json;
-using System.Text.Json;
 
 namespace Do.Test.Database;
 
@@ -10,8 +8,10 @@ public class TransactionRollback : TestServiceNfr
         Forge.New
             .Service(
                 business: c => c.Default(),
-                database: c => c.Sqlite("Do.Test.Blueprits.Service.Test")
+                database: c => c.Sqlite()
             );
+
+    protected override string EnvironmentName => "Development";
 
     [Test]
     public async Task Entity_created_by_a_transaction_committed_asynchronously_persists_when_an_error_occurs()
@@ -19,11 +19,9 @@ public class TransactionRollback : TestServiceNfr
         await Client.PostAsync($"singleton/test-transaction-action", null);
 
         var entitiesContent = await Client.GetAsync("entities");
-        var result = await entitiesContent.Content.ReadFromJsonAsync<List<JsonElement>>() ?? throw new("No entities in database");
+        dynamic? result = await entitiesContent.Content.Deserialize();
 
-        result.ShouldNotBeNull();
-        var stringData = $"{result.Last().GetProperty("stringData")}";
-        stringData.ShouldBe("transaction action");
+        ((string?)result?.Last.String)?.ShouldBe("transaction action");
     }
 
     [Test]
@@ -32,10 +30,8 @@ public class TransactionRollback : TestServiceNfr
         await Client.PostAsync($"singleton/test-transaction-func", null);
 
         var entitiesContent = await Client.GetAsync("entities");
-        var result = await entitiesContent.Content.ReadFromJsonAsync<List<JsonElement>>() ?? throw new("No entities in database");
+        dynamic? result = await entitiesContent.Content.Deserialize();
 
-        result.ShouldNotBeNull();
-        var stringData = $"{result.Last().GetProperty("stringData")}";
-        stringData.ShouldBe("transaction func");
+        ((string?)result?.Last.String)?.ShouldBe("transaction func");
     }
 }
