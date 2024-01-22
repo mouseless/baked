@@ -47,6 +47,18 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
                         }
                     }
                 }
+                else if (type.IsAssignableTo<IScoped>())
+                {
+                    type.Apply(t => services.AddScopedWithFactory(t));
+
+                    foreach (var @interface in type.Interfaces)
+                    {
+                        if (domainModel.Assemblies.Contains(@interface.Assembly))
+                        {
+                            type.Apply(t => @interface.Apply(tservice => services.AddScopedWithFactory(tservice, t)));
+                        }
+                    }
+                }
                 else
                 {
                     type.Apply(t => services.AddSingleton(t));

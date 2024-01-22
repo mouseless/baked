@@ -1,4 +1,7 @@
-﻿namespace Do.Test.Business;
+﻿using Do.Business;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace Do.Test.Business;
 public class RegisteringServices : TestServiceSpec
 {
     [Test]
@@ -7,7 +10,7 @@ public class RegisteringServices : TestServiceSpec
         var actual1 = GiveMe.A(type);
         var actual2 = GiveMe.A(type);
 
-        actual1.ShouldNotBe(actual2);
+        actual1.ShouldNotBeSameAs(actual2);
     }
 
     [Test]
@@ -16,16 +19,16 @@ public class RegisteringServices : TestServiceSpec
         var actual1 = GiveMe.The(type);
         var actual2 = GiveMe.The(type);
 
-        actual1.ShouldBe(actual2);
+        actual1.ShouldBeSameAs(actual2);
     }
 
     [Test]
-    public void Types_without__with__methods_are_registered_as_singleton([Values(typeof(Singleton), typeof(Entities), typeof(ClassService))] Type type)
+    public void Types_without__with__methods_are_registered_as_singleton([Values(typeof(Singleton), typeof(Entities), typeof(Class))] Type type)
     {
         var actual1 = GiveMe.The(type);
         var actual2 = GiveMe.The(type);
 
-        actual1.ShouldBe(actual2);
+        actual1.ShouldBeSameAs(actual2);
     }
 
     [Test]
@@ -34,8 +37,8 @@ public class RegisteringServices : TestServiceSpec
         var actual1 = GiveMe.The(type);
         var actual2 = GiveMe.The(type);
 
-        actual1.ShouldBe(actual2);
-        (actual1 as Singleton).ShouldNotBeNull();
+        actual1.ShouldBeSameAs(actual2);
+        actual1.GetType().UnderlyingSystemType.ShouldBe(typeof(Singleton));
     }
 
     [Test]
@@ -44,8 +47,19 @@ public class RegisteringServices : TestServiceSpec
         var actual1 = GiveMe.The<ITransient>();
         var actual2 = GiveMe.The<ITransient>();
 
-        actual1.ShouldNotBe(actual2);
-        (actual1 as OperationObject).ShouldNotBeNull();
+        actual1.ShouldNotBeSameAs(actual2);
+        actual1.GetType().UnderlyingSystemType.ShouldBe(typeof(OperationObject));
+    }
+
+    [Test]
+    public void Types_having_properties_with_public_getter_and_setter_are_registered_as_scoped()
+    {
+        var actual1 = GiveMe.The<Scoped>();
+        var actual2 = GiveMe.The<Scoped>();
+        var actual3 = GiveMe.The<IServiceProvider>().CreateScope().ServiceProvider.GetRequiredService<Scoped>();
+
+        actual1.ShouldBeSameAs(actual2);
+        actual1.ShouldNotBeSameAs(actual3);
     }
 
     [Test]
@@ -105,10 +119,10 @@ public class RegisteringServices : TestServiceSpec
     }
 
     [Test]
-    public void Referenced_interfaces_are_not_registered()
+    public void Referenced_interfaces_are_not_registered([Values(typeof(IEquatable<Entity>), typeof(IScoped))] Type type )
     {
-        var action = () => GiveMe.A(typeof(IEquatable<Entity>));
+        var action = () => GiveMe.The(type);
 
-        action.ShouldThrowExceptionWithServiceNotRegisteredMessage(typeof(IEquatable<Entity>));
+        action.ShouldThrowExceptionWithServiceNotRegisteredMessage(type);
     }
 }

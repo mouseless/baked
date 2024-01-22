@@ -1,6 +1,6 @@
 ﻿namespace Do.Test;
 
-public class ClassService
+public class Class
 {
     [AuthorizationRequired]
     public void VoidMethod() { }
