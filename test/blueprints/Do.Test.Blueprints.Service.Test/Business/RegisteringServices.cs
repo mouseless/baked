@@ -29,7 +29,7 @@ public class RegisteringServices : TestServiceSpec
     }
 
     [Test]
-    public void Singleton_types_with_interfaces_are_registered_as_implementations([Values(typeof(ITestObjectService), typeof(IService))] Type type)
+    public void Singleton_types_with_interfaces_are_registered_as_implementations([Values(typeof(ITestObject), typeof(ISingleton))] Type type)
     {
         var actual1 = GiveMe.The(type);
         var actual2 = GiveMe.The(type);
@@ -41,8 +41,8 @@ public class RegisteringServices : TestServiceSpec
     [Test]
     public void Transient_types_with_interfaces_are_registered_as_implementations()
     {
-        var actual1 = GiveMe.The<ITransientService>();
-        var actual2 = GiveMe.The<ITransientService>();
+        var actual1 = GiveMe.The<ITransient>();
+        var actual2 = GiveMe.The<ITransient>();
 
         actual1.ShouldNotBe(actual2);
         (actual1 as OperationObject).ShouldNotBeNull();
@@ -75,9 +75,9 @@ public class RegisteringServices : TestServiceSpec
     [Test]
     public void Abstract_types_are_not_registered()
     {
-        var action = () => GiveMe.The<ServiceBase>();
+        var action = () => GiveMe.The<Base>();
 
-        action.ShouldThrowExceptionWithServiceNotRegisteredMessage(typeof(ServiceBase));
+        action.ShouldThrowExceptionWithServiceNotRegisteredMessage(typeof(Base));
     }
 
     [Test]
@@ -111,10 +111,4 @@ public class RegisteringServices : TestServiceSpec
 
         action.ShouldThrowExceptionWithServiceNotRegisteredMessage(typeof(IEquatable<Entity>));
     }
-}
-
-public static class RegisteringServicesExtensions
-{
-    public static void ShouldThrowExceptionWithServiceNotRegisteredMessage(this Func<object> source, Type serviceType) =>
-        source.ShouldThrow<Exception>().Message.ShouldBe($"No service for type '{serviceType}' has been registered.");
 }

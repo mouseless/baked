@@ -3,7 +3,7 @@
 namespace Do.Test;
 
 public class Singleton(TimeProvider _timeProvider, Func<Entity> _newEntity, ITransaction _transaction)
-    : ServiceBase(_timeProvider), ITestObjectService
+    : Base(_timeProvider), ITestObject
 {
     public void TestException(bool handled)
     {

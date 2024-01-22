@@ -1,6 +1,6 @@
 ﻿namespace Do.Test;
 
-public interface IService
+public interface ISingleton
 {
     DateTime GetNow();
 }

@@ -23,7 +23,7 @@ public class TypeModel(Type type, string id,
     public ModelCollection<TypeModel> GenericTypeArguments { get; private set; } = default!;
     public ModelCollection<TypeModel> CustomAttributes { get; private set; } = default!;
     public ModelCollection<TypeModel> Interfaces { get; private set; } = default!;
-    HashSet<Type> InterfaceTypes { get; set; } = default!;
+    HashSet<string> InterfaceTypeIds { get; set; } = default!;
 
     public MethodModel Constructor => Methods[".ctor"];
 
@@ -43,11 +43,7 @@ public class TypeModel(Type type, string id,
         Interfaces = interfaces;
         BaseType = baseType;
 
-        InterfaceTypes = [];
-        foreach (var type in interfaces)
-        {
-            type.Apply(t => InterfaceTypes.Add(t));
-        }
+        InterfaceTypeIds = [.. interfaces.Select(i => i._id)];
     }
 
     public void Apply(Action<Type> action) =>
@@ -57,7 +53,7 @@ public class TypeModel(Type type, string id,
         IsAssignableTo(typeof(T));
 
     public bool IsAssignableTo(Type type) =>
-        Is(type) || InterfaceTypes.Contains(type);
+        Is(type) || InterfaceTypeIds.Contains(DomainModelBuilder.IdFrom(type));
 
     bool Is(Type type) =>
         _type == type || BaseType?.Is(type) == true;

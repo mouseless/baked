@@ -94,6 +94,6 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
     static bool IsVirtual(PropertyInfo source) =>
         source.GetMethod?.IsVirtual == true;
 
-    static string IdFrom(Type type) =>
+    public static string IdFrom(Type type) =>
         type.FullName ?? $"{type.Namespace}.{type.Name}[{string.Join(',', type.GenericTypeArguments.Select(IdFrom))}]";
 }
