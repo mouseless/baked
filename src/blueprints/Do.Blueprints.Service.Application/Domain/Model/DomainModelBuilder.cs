@@ -34,7 +34,8 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
                     customAttributes: BuildCustomAttributes(t),
                     properties: BuildProperties(t),
                     methods: BuildMethods(t),
-                    interfaces: BuildInterfaces(t)
+                    interfaces: BuildInterfaces(t),
+                    baseType: t.BaseType is not null ? GetOrCreateTypeModel(t.BaseType) : default
                 )
             );
         }

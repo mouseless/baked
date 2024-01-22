@@ -30,8 +30,8 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
                     type.IsValueType ||
                     type.IsGenericMethodParameter ||
                     type.IsGenericTypeParameter ||
-                    type.Name.EndsWith("Exception") ||
-                    type.Name.EndsWith("Attribute") ||
+                    type.IsAssignableTo(typeof(Exception)) ||
+                    type.IsAssignableTo(typeof(Attribute)) ||
                     type.Methods.TryGetValue("<Clone>$", out _) // if type is record
                 ) { continue; }
 

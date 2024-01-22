@@ -16,6 +16,7 @@ public class TypeModel(Type type, string id, AssemblyModel assembly = default!)
     public bool IsGenericTypeParameter { get; } = type.IsGenericTypeParameter;
     public bool IsGenericMethodParameter { get; } = type.IsGenericMethodParameter;
     public AssemblyModel? Assembly { get; } = assembly;
+    public TypeModel? BaseType { get; private set; } = default!;
     public ModelCollection<MethodModel> Methods { get; private set; } = default!;
     public ModelCollection<PropertyModel> Properties { get; private set; } = default!;
     public ModelCollection<TypeModel> GenericTypeArguments { get; private set; } = default!;
@@ -29,7 +30,8 @@ public class TypeModel(Type type, string id, AssemblyModel assembly = default!)
         ModelCollection<PropertyModel> properties,
         ModelCollection<TypeModel> genericTypeArguments,
         ModelCollection<TypeModel> customAttributes,
-        ModelCollection<TypeModel> interfaces
+        ModelCollection<TypeModel> interfaces,
+        TypeModel? baseType = default
     )
     {
         Methods = methods;
@@ -37,10 +39,21 @@ public class TypeModel(Type type, string id, AssemblyModel assembly = default!)
         GenericTypeArguments = genericTypeArguments;
         CustomAttributes = customAttributes;
         Interfaces = interfaces;
+        BaseType = baseType;
     }
 
     public void Apply(Action<Type> action) =>
         action(_type);
+
+    public bool IsAssignableTo<T>() =>
+        IsAssignableTo(typeof(T));
+
+    public bool IsAssignableTo(Type type)
+    {
+        if (_type == type) return true;
+
+        return BaseType?.IsAssignableTo(type) == true;
+    }
 
     public override bool Equals(object? obj) =>
         ((IEquatable<TypeModel>)this).Equals(obj as TypeModel);
