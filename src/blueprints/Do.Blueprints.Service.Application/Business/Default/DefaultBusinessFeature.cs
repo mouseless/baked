@@ -41,7 +41,10 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
 
                     foreach (var @interface in type.Interfaces)
                     {
-                        type.Apply(t => @interface.Apply(tservice => services.AddTransientWithFactory(tservice, t)));
+                        if (domainModel.Assemblies.Contains(@interface.Assembly))
+                        {
+                            type.Apply(t => @interface.Apply(tservice => services.AddTransientWithFactory(tservice, t)));
+                        }
                     }
                 }
                 else
@@ -50,7 +53,10 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
 
                     foreach (var @interface in type.Interfaces)
                     {
-                        type.Apply(t => @interface.Apply(tservice => services.AddSingleton(tservice, sp => sp.GetRequiredServiceUsingRequestServices(t))));
+                        if (domainModel.Assemblies.Contains(@interface.Assembly))
+                        {
+                            type.Apply(t => @interface.Apply(tservice => services.AddSingleton(tservice, sp => sp.GetRequiredServiceUsingRequestServices(t))));
+                        }
                     }
                 }
             }

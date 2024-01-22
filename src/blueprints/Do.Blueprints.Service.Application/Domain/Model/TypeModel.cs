@@ -1,6 +1,7 @@
 ﻿namespace Do.Domain.Model;
 
-public class TypeModel(Type type, string id) : IModel, IEquatable<TypeModel>
+public class TypeModel(Type type, string id, AssemblyModel assembly = default!)
+    : IModel, IEquatable<TypeModel>
 {
     readonly Type _type = type;
     readonly string _id = id;
@@ -14,6 +15,7 @@ public class TypeModel(Type type, string id) : IModel, IEquatable<TypeModel>
     public bool IsInterface { get; } = type.IsInterface;
     public bool IsGenericTypeParameter { get; } = type.IsGenericTypeParameter;
     public bool IsGenericMethodParameter { get; } = type.IsGenericMethodParameter;
+    public AssemblyModel? Assembly { get; } = assembly;
     public ModelCollection<MethodModel> Methods { get; private set; } = default!;
     public ModelCollection<PropertyModel> Properties { get; private set; } = default!;
     public ModelCollection<TypeModel> GenericTypeArguments { get; private set; } = default!;

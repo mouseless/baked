@@ -16,7 +16,14 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
 
         foreach (var type in typeCollection)
         {
-            _types.Add(new(type, IdFrom(type)));
+            if (_assemblies.TryGetValue(type.Assembly.FullName ?? string.Empty, out var assembly))
+            {
+                _types.Add(new(type, IdFrom(type), assembly));
+            }
+            else
+            {
+                _types.Add(new(type, IdFrom(type)));
+            }
         }
 
         foreach (var type in _types.ToList())
