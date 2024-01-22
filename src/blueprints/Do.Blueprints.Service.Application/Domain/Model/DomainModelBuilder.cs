@@ -26,7 +26,8 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
                     genericTypeArguments: BuildGenericTypeArguments(t),
                     customAttributes: BuildCustomAttributes(t),
                     properties: BuildProperties(t),
-                    methods: BuildMethods(t)
+                    methods: BuildMethods(t),
+                    interfaces: BuildInterfaces(t)
                 )
             );
         }
@@ -67,6 +68,9 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
 
     ModelCollection<TypeModel> BuildGenericTypeArguments(Type type) =>
         new(type.GenericTypeArguments.Select(GetOrCreateTypeModel));
+
+    ModelCollection<TypeModel> BuildInterfaces(Type type) =>
+        new(type.GetInterfaces().Select(GetOrCreateTypeModel));
 
     OverloadModel BuildConstructorOverload(ConstructorInfo constructor) =>
         new(constructor.IsPublic, constructor.IsFamily, constructor.IsVirtual, new(BuildParameters(constructor)), new(BuildCustomAttributes(constructor)));

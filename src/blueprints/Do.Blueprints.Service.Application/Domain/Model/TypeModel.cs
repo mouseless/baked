@@ -18,6 +18,7 @@ public class TypeModel(Type type, string id) : IModel, IEquatable<TypeModel>
     public ModelCollection<PropertyModel> Properties { get; private set; } = default!;
     public ModelCollection<TypeModel> GenericTypeArguments { get; private set; } = default!;
     public ModelCollection<TypeModel> CustomAttributes { get; private set; } = default!;
+    public ModelCollection<TypeModel> Interfaces { get; private set; } = default!;
 
     public MethodModel Constructor => Methods[".ctor"];
 
@@ -25,13 +26,15 @@ public class TypeModel(Type type, string id) : IModel, IEquatable<TypeModel>
         ModelCollection<MethodModel> methods,
         ModelCollection<PropertyModel> properties,
         ModelCollection<TypeModel> genericTypeArguments,
-        ModelCollection<TypeModel> customAttributes
+        ModelCollection<TypeModel> customAttributes,
+        ModelCollection<TypeModel> interfaces
     )
     {
         Methods = methods;
         Properties = properties;
         GenericTypeArguments = genericTypeArguments;
         CustomAttributes = customAttributes;
+        Interfaces = interfaces;
     }
 
     public void Apply(Action<Type> action) =>

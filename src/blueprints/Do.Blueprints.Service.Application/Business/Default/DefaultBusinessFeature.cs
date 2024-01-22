@@ -38,10 +38,20 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
                 if (type.Methods.TryGetValue("With", out var method) && method.Overloads.All(o => o.ReturnType == type))
                 {
                     type.Apply(t => services.AddTransientWithFactory(t));
+
+                    foreach (var @interface in type.Interfaces)
+                    {
+                        type.Apply(t => @interface.Apply(tservice => services.AddTransientWithFactory(tservice, t)));
+                    }
                 }
                 else
                 {
                     type.Apply(t => services.AddSingleton(t));
+
+                    foreach (var @interface in type.Interfaces)
+                    {
+                        type.Apply(t => @interface.Apply(tservice => services.AddSingleton(tservice, sp => sp.GetRequiredServiceUsingRequestServices(t))));
+                    }
                 }
             }
         });

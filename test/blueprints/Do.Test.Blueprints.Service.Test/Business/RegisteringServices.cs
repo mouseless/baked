@@ -30,12 +30,13 @@ public class RegisteringServices : TestServiceSpec
     }
 
     [Test]
-    public void Singleton_types_with_interfaces_are_registered_as_implementations()
+    public void Singleton_types_with_interfaces_are_registered_as_implementations([Values(typeof(ITestObjectService), typeof(IService))] Type type)
     {
-        var actual1 = GiveMe.The<ISingletonService>();
-        var actual2 = GiveMe.The<ISingletonService>();
+        var actual1 = GiveMe.The(type);
+        var actual2 = GiveMe.The(type);
 
         actual1.ShouldBe(actual2);
+        (actual1 as Singleton).ShouldNotBeNull();
     }
 
     [Test]
@@ -45,6 +46,7 @@ public class RegisteringServices : TestServiceSpec
         var actual2 = GiveMe.The<ITransientService>();
 
         actual1.ShouldNotBe(actual2);
+        (actual1 as OperationObject).ShouldNotBeNull();
     }
 
     [Test]
@@ -99,6 +101,14 @@ public class RegisteringServices : TestServiceSpec
     public void Attributes_are_not_registered()
     {
         var action = () => GiveMe.The<AuthorizationRequiredAttribute>();
+
+        action.ShouldThrow<InvalidOperationException>();
+    }
+
+    [Test]
+    public void Referenced_interfaces_are_not_registered()
+    {
+        var action = () => GiveMe.A(typeof(IEquatable<Entity>));
 
         action.ShouldThrow<InvalidOperationException>();
     }
