@@ -56,15 +56,8 @@ public class TypeModel(Type type, string id,
     public bool IsAssignableTo<T>() =>
         IsAssignableTo(typeof(T));
 
-    public bool IsAssignableTo(Type type)
-    {
-        if (type.IsInterface)
-        {
-            return InterfaceTypes.Contains(type);
-        }
-
-        return _type == type || BaseType?.Is(type) == true;
-    }
+    public bool IsAssignableTo(Type type) =>
+        Is(type) || InterfaceTypes.Contains(type);
 
     bool Is(Type type) =>
         _type == type || BaseType?.Is(type) == true;

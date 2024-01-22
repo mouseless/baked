@@ -18,6 +18,9 @@ public class ModelCollection<T> : IEnumerable<T>
     public T this[string key] =>
         _models[key];
 
+    public bool Contains(T? item) =>
+        _models.Contains(item?.Id ?? string.Empty);
+
     public bool TryGetValue(string id, [NotNullWhen(true)] out T? model) =>
        _models.TryGetValue(id, out model);
 
