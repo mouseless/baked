@@ -1,6 +1,6 @@
 ﻿namespace Do.Test;
 
-public interface ITestObject
+public interface IInputOutputObjectTest
 {
     object TestObject(object request);
     Task<object> TestAsyncObject(object request);

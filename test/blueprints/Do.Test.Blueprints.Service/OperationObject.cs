@@ -1,6 +1,6 @@
 ﻿namespace Do.Test;
 
-public class OperationObject : ITransient
+public class OperationObject : IProcessor
 {
     public OperationObject With() => this;
 

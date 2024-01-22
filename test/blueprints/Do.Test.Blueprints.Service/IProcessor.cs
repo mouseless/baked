@@ -1,6 +1,6 @@
 ﻿namespace Do.Test;
 
-public interface ITransient
+public interface IProcessor
 {
     void Process();
 }

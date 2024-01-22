@@ -32,7 +32,7 @@ public class RegisteringServices : TestServiceSpec
     }
 
     [Test]
-    public void Singleton_types_with_interfaces_are_registered_as_implementations([Values(typeof(ITestObject), typeof(ISingleton))] Type type)
+    public void Singleton_types_with_interfaces_are_registered_as_implementations([Values(typeof(IInputOutputObjectTest), typeof(ISingleton))] Type type)
     {
         var actual1 = GiveMe.The(type);
         var actual2 = GiveMe.The(type);
@@ -44,8 +44,8 @@ public class RegisteringServices : TestServiceSpec
     [Test]
     public void Transient_types_with_interfaces_are_registered_as_implementations()
     {
-        var actual1 = GiveMe.The<ITransient>();
-        var actual2 = GiveMe.The<ITransient>();
+        var actual1 = GiveMe.The<IProcessor>();
+        var actual2 = GiveMe.The<IProcessor>();
 
         actual1.ShouldNotBeSameAs(actual2);
         actual1.GetType().UnderlyingSystemType.ShouldBe(typeof(OperationObject));
