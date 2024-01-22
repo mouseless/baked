@@ -63,6 +63,15 @@ public class RegisteringServices : TestServiceSpec
     }
 
     [Test]
+    public void Scoped_services_have_singleton_factories()
+    {
+        var actual1 = GiveMe.The<Func<Scoped>>();
+        var actual2 = GiveMe.The<Func<Scoped>>();
+
+        actual1.ShouldBeSameAs(actual2);
+    }
+
+    [Test]
     public void Static_types_are_not_registered()
     {
         var action = () => GiveMe.The(typeof(Static));
