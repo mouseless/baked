@@ -4,6 +4,9 @@ public class TypeModel(Type type, string id,
     AssemblyModel? assembly = default
 ) : IModel, IEquatable<TypeModel>
 {
+    internal static string IdFrom(Type type) =>
+        type.FullName ?? $"{type.Namespace}.{type.Name}[{string.Join(',', type.GenericTypeArguments.Select(IdFrom))}]";
+
     readonly Type _type = type;
     readonly string _id = id;
 
@@ -23,7 +26,6 @@ public class TypeModel(Type type, string id,
     public ModelCollection<TypeModel> GenericTypeArguments { get; private set; } = default!;
     public ModelCollection<TypeModel> CustomAttributes { get; private set; } = default!;
     public ModelCollection<TypeModel> Interfaces { get; private set; } = default!;
-    HashSet<string> InterfaceTypeIds { get; set; } = default!;
 
     public MethodModel Constructor => Methods[".ctor"];
 
@@ -42,8 +44,6 @@ public class TypeModel(Type type, string id,
         CustomAttributes = customAttributes;
         Interfaces = interfaces;
         BaseType = baseType;
-
-        InterfaceTypeIds = [.. interfaces.Select(i => i._id)];
     }
 
     public void Apply(Action<Type> action) =>
@@ -53,7 +53,7 @@ public class TypeModel(Type type, string id,
         IsAssignableTo(typeof(T));
 
     public bool IsAssignableTo(Type type) =>
-        Is(type) || InterfaceTypeIds.Contains(DomainModelBuilder.IdFrom(type));
+        Is(type) || Interfaces.Contains(IdFrom(type));
 
     bool Is(Type type) =>
         _type == type || BaseType?.Is(type) == true;

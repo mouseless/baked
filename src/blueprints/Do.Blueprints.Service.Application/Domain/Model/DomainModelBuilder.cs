@@ -16,7 +16,7 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
 
         foreach (var type in typeCollection)
         {
-            _types.Add(new(type, IdFrom(type), _assemblies.GetOrDefault(type.Assembly.FullName)));
+            _types.Add(new(type, TypeModel.IdFrom(type), _assemblies.GetOrDefault(type.Assembly.FullName)));
         }
 
         foreach (var type in _types.ToList())
@@ -38,7 +38,7 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
 
     TypeModel GetOrCreateTypeModel(Type type)
     {
-        var id = IdFrom(type);
+        var id = TypeModel.IdFrom(type);
         if (_types.TryGetValue(id, out var result)) { return result; }
 
         var typeModel = new TypeModel(type, id);
@@ -93,7 +93,4 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
 
     static bool IsVirtual(PropertyInfo source) =>
         source.GetMethod?.IsVirtual == true;
-
-    public static string IdFrom(Type type) =>
-        type.FullName ?? $"{type.Namespace}.{type.Name}[{string.Join(',', type.GenericTypeArguments.Select(IdFrom))}]";
 }

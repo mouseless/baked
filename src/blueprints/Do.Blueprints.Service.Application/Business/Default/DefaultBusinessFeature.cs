@@ -68,7 +68,7 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
                 }
             }
 
-            bool IsInDomain(TypeModel type) => domainModel.Assemblies.Contains(type.Assembly);
+            bool IsInDomain(TypeModel type) => domainModel.Assemblies.ContainsModel(type.Assembly);
         });
     }
 }

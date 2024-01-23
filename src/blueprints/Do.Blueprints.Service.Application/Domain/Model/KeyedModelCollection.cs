@@ -10,12 +10,8 @@ public class KeyedModelCollection<TItem> : KeyedCollection<string, TItem>
     public TItem? GetOrDefault(string? key)
     {
         if (string.IsNullOrEmpty(key)) { return default; }
+        if (!TryGetValue(key, out var result)) { return default; }
 
-        if (TryGetValue(key, out var item))
-        {
-            return item;
-        }
-
-        return default;
+        return result;
     }
 }
