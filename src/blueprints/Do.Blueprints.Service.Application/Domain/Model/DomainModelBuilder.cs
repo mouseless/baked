@@ -16,7 +16,7 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
 
         foreach (var type in typeCollection)
         {
-            _types.Add(new(type, IdFrom(type)));
+            _types.Add(new(type, TypeModel.IdFrom(type), _assemblies.GetOrDefault(type.Assembly.FullName)));
         }
 
         foreach (var type in _types.ToList())
@@ -26,7 +26,9 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
                     genericTypeArguments: BuildGenericTypeArguments(t),
                     customAttributes: BuildCustomAttributes(t),
                     properties: BuildProperties(t),
-                    methods: BuildMethods(t)
+                    methods: BuildMethods(t),
+                    interfaces: BuildInterfaces(t),
+                    baseType: t.BaseType is not null ? GetOrCreateTypeModel(t.BaseType) : default
                 )
             );
         }
@@ -36,7 +38,7 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
 
     TypeModel GetOrCreateTypeModel(Type type)
     {
-        var id = IdFrom(type);
+        var id = TypeModel.IdFrom(type);
         if (_types.TryGetValue(id, out var result)) { return result; }
 
         var typeModel = new TypeModel(type, id);
@@ -68,6 +70,9 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
     ModelCollection<TypeModel> BuildGenericTypeArguments(Type type) =>
         new(type.GenericTypeArguments.Select(GetOrCreateTypeModel));
 
+    ModelCollection<TypeModel> BuildInterfaces(Type type) =>
+        new(type.GetInterfaces().Select(GetOrCreateTypeModel));
+
     OverloadModel BuildConstructorOverload(ConstructorInfo constructor) =>
         new(constructor.IsPublic, constructor.IsFamily, constructor.IsVirtual, new(BuildParameters(constructor)), new(BuildCustomAttributes(constructor)));
 
@@ -83,12 +88,9 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
     PropertyModel BuildProperty(PropertyInfo property) =>
         new(property.Name, GetOrCreateTypeModel(property.PropertyType), IsPublic(property), IsVirtual(property));
 
-    static bool IsPublic(PropertyInfo source) =>
-        source.GetMethod?.IsPublic == true;
+    bool IsPublic(PropertyInfo property) =>
+        property.GetMethod?.IsPublic == true;
 
-    static bool IsVirtual(PropertyInfo source) =>
-        source.GetMethod?.IsVirtual == true;
-
-    static string IdFrom(Type type) =>
-        type.FullName ?? $"{type.Namespace}.{type.Name}[{string.Join(',', type.GenericTypeArguments.Select(IdFrom))}]";
+    bool IsVirtual(PropertyInfo property) =>
+        property.GetMethod?.IsVirtual == true;
 }

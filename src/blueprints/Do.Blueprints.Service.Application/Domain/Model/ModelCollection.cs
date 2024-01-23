@@ -7,9 +7,9 @@ public class ModelCollection<T> : IEnumerable<T>
 {
     readonly KeyedModelCollection<T> _models = [];
 
-    public ModelCollection(IEnumerable<T> data)
+    public ModelCollection(IEnumerable<T> models)
     {
-        foreach (var model in data)
+        foreach (var model in models)
         {
             _models.Add(model);
         }
@@ -17,6 +17,12 @@ public class ModelCollection<T> : IEnumerable<T>
 
     public T this[string key] =>
         _models[key];
+
+    public bool ContainsModel(T? model) =>
+        _models.Contains(model?.Id ?? string.Empty);
+
+    public bool Contains(string key) =>
+        _models.Contains(key);
 
     public bool TryGetValue(string id, [NotNullWhen(true)] out T? model) =>
        _models.TryGetValue(id, out model);

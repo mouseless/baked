@@ -1,7 +1,12 @@
 ﻿namespace Do.Domain.Model;
 
-public class TypeModel(Type type, string id) : IModel, IEquatable<TypeModel>
+public class TypeModel(Type type, string id,
+    AssemblyModel? assembly = default
+) : IModel, IEquatable<TypeModel>
 {
+    internal static string IdFrom(Type type) =>
+        type.FullName ?? $"{type.Namespace}.{type.Name}[{string.Join(',', type.GenericTypeArguments.Select(IdFrom))}]";
+
     readonly Type _type = type;
     readonly string _id = id;
 
@@ -14,10 +19,13 @@ public class TypeModel(Type type, string id) : IModel, IEquatable<TypeModel>
     public bool IsInterface { get; } = type.IsInterface;
     public bool IsGenericTypeParameter { get; } = type.IsGenericTypeParameter;
     public bool IsGenericMethodParameter { get; } = type.IsGenericMethodParameter;
+    public AssemblyModel? Assembly { get; } = assembly;
+    public TypeModel? BaseType { get; private set; } = default!;
     public ModelCollection<MethodModel> Methods { get; private set; } = default!;
     public ModelCollection<PropertyModel> Properties { get; private set; } = default!;
     public ModelCollection<TypeModel> GenericTypeArguments { get; private set; } = default!;
     public ModelCollection<TypeModel> CustomAttributes { get; private set; } = default!;
+    public ModelCollection<TypeModel> Interfaces { get; private set; } = default!;
 
     public MethodModel Constructor => Methods[".ctor"];
 
@@ -25,17 +33,30 @@ public class TypeModel(Type type, string id) : IModel, IEquatable<TypeModel>
         ModelCollection<MethodModel> methods,
         ModelCollection<PropertyModel> properties,
         ModelCollection<TypeModel> genericTypeArguments,
-        ModelCollection<TypeModel> customAttributes
+        ModelCollection<TypeModel> customAttributes,
+        ModelCollection<TypeModel> interfaces,
+        TypeModel? baseType = default
     )
     {
         Methods = methods;
         Properties = properties;
         GenericTypeArguments = genericTypeArguments;
         CustomAttributes = customAttributes;
+        Interfaces = interfaces;
+        BaseType = baseType;
     }
 
     public void Apply(Action<Type> action) =>
         action(_type);
+
+    public bool IsAssignableTo<T>() =>
+        IsAssignableTo(typeof(T));
+
+    public bool IsAssignableTo(Type type) =>
+        Is(type) || Interfaces.Contains(IdFrom(type));
+
+    bool Is(Type type) =>
+        _type == type || BaseType?.Is(type) == true;
 
     public override bool Equals(object? obj) =>
         ((IEquatable<TypeModel>)this).Equals(obj as TypeModel);
@@ -47,4 +68,15 @@ public class TypeModel(Type type, string id) : IModel, IEquatable<TypeModel>
         _id.GetHashCode();
 
     string IModel.Id => _id;
+}
+
+public static class TypeModelExtensions
+{
+    public static void Apply(this IEnumerable<TypeModel> types, Action<Type> action)
+    {
+        foreach (var type in types)
+        {
+            type.Apply(i => action(i));
+        }
+    }
 }

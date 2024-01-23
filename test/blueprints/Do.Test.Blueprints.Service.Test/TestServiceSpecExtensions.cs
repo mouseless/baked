@@ -27,4 +27,7 @@ public static class TestServiceSpecExtensions
             dateTime ?? giveMe.ADateTime(),
             setNowForDateTime ?? false
         );
+
+    public static void ShouldThrowExceptionWithServiceNotRegisteredMessage(this Func<object> source, Type serviceType) =>
+        source.ShouldThrow<Exception>().Message.ShouldBe($"No service for type '{serviceType}' has been registered.");
 }
