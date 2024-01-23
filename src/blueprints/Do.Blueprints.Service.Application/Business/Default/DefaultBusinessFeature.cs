@@ -20,7 +20,7 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
 
         configurator.ConfigureServiceCollection(services =>
         {
-            DomainModel domainModel = configurator.Context.GetDomainModel();
+            var domainModel = configurator.Context.GetDomainModel();
 
             foreach (var type in domainModel.Types)
             {

@@ -88,9 +88,9 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
     PropertyModel BuildProperty(PropertyInfo property) =>
         new(property.Name, GetOrCreateTypeModel(property.PropertyType), IsPublic(property), IsVirtual(property));
 
-    static bool IsPublic(PropertyInfo source) =>
-        source.GetMethod?.IsPublic == true;
+    bool IsPublic(PropertyInfo property) =>
+        property.GetMethod?.IsPublic == true;
 
-    static bool IsVirtual(PropertyInfo source) =>
-        source.GetMethod?.IsVirtual == true;
+    bool IsVirtual(PropertyInfo property) =>
+        property.GetMethod?.IsVirtual == true;
 }
