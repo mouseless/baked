@@ -9,9 +9,6 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
 {
     const BindingFlags _defaultMemberBindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
 
-    delegate void RegisterInterface(Type @interface, Type service);
-    delegate void RegisterService(Type service);
-
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureDomainBuilderOptions(options =>
@@ -23,7 +20,7 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
 
         configurator.ConfigureServiceCollection(services =>
         {
-            var domainModel = configurator.Context.GetDomainModel();
+            DomainModel domainModel = configurator.Context.GetDomainModel();
 
             foreach (var type in domainModel.Types)
             {
@@ -41,30 +38,37 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
 
                 if (type.Methods.TryGetValue("With", out var method) && method.Overloads.All(o => o.ReturnType == type))
                 {
-                    AddService(type, services.AddTransientWithFactory, services.AddTransientWithFactory);
+                    type.Apply(t =>
+                    {
+                        services.AddTransientWithFactory(t);
+                        type.Interfaces
+                            .Where(IsInDomain)
+                            .Apply(i => services.AddTransientWithFactory(i, t));
+                    });
                 }
                 else if (type.IsAssignableTo<IScoped>())
                 {
-                    AddService(type, services.AddScopedWithFactory, services.AddScopedWithFactory);
+                    type.Apply(t =>
+                    {
+                        services.AddScopedWithFactory(t);
+                        type.Interfaces
+                            .Where(IsInDomain)
+                            .Apply(i => services.AddScopedWithFactory(i, t));
+                    });
                 }
                 else
                 {
-                    AddService(type, type => services.AddSingleton(type), services.ForwardSingleton);
-                }
-            }
-
-            void AddService(TypeModel type, RegisterService registerService, RegisterInterface registerInterface)
-            {
-                type.Apply(t => registerService(t));
-
-                foreach (var @interface in type.Interfaces)
-                {
-                    if (domainModel.Assemblies.Contains(@interface.Assembly))
+                    type.Apply(t =>
                     {
-                        type.Apply(tservice => @interface.Apply(t => registerInterface(t, tservice)));
-                    }
+                        services.AddSingleton(t);
+                        type.Interfaces
+                            .Where(IsInDomain)
+                            .Apply(i => services.AddSingleton(i, t, forward: true));
+                    });
                 }
             }
+
+            bool IsInDomain(TypeModel type) => domainModel.Assemblies.Contains(type.Assembly);
         });
     }
 }
