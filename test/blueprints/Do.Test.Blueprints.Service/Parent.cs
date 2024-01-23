@@ -2,14 +2,14 @@
 
 namespace Do.Test;
 
-public class ParentEntity(IEntityContext<ParentEntity> _context, ChildEntities _childEntities, TimeProvider _timeProvider)
+public class Parent(IEntityContext<Parent> _context, Children _childEntities, TimeProvider _timeProvider)
 {
-    protected ParentEntity() : this(default!, default!, default!) { }
+    protected Parent() : this(default!, default!, default!) { }
 
     public virtual Guid Id { get; protected set; } = default!;
     public virtual DateTime DateTime { get; protected set; } = default!;
 
-    public virtual ParentEntity With(
+    public virtual Parent With(
         DateTime? dateTime = default
     )
     {
@@ -18,13 +18,13 @@ public class ParentEntity(IEntityContext<ParentEntity> _context, ChildEntities _
         return _context.Insert(this);
     }
 
-    public virtual List<ChildEntity> GetChildren(bool reverse = default, int? skip = default, int? take = default) =>
+    public virtual List<Child> GetChildren(bool reverse = default, int? skip = default, int? take = default) =>
         _childEntities.ByParent(Id, reverse, skip, take);
 }
 
-public class ParentEntities(IQueryContext<ParentEntity> _context)
+public class Parents(IQueryContext<Parent> _context)
 {
-    public List<ParentEntity> All(bool reverse = default, int? skip = default, int? take = default)
+    public List<Parent> All(bool reverse = default, int? skip = default, int? take = default)
     {
         return _context.All<DateTime>(
             orderBy: reverse is true ? null : e => e.DateTime,

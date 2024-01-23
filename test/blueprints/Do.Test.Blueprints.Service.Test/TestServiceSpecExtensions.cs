@@ -28,11 +28,11 @@ public static class TestServiceSpecExtensions
             setNowForDateTime ?? false
         );
 
-    public static ParentEntity AParentEntitiy(this Stubber giveMe, DateTime? dateTime = default) =>
-        giveMe.A<ParentEntity>().With(dateTime);
+    public static Parent AParentEntitiy(this Stubber giveMe, DateTime? dateTime = default) =>
+        giveMe.A<Parent>().With(dateTime);
 
-    public static ChildEntity AChildEntity(this Stubber giveMe, ParentEntity? parent = default, DateTime? dateTime = default) =>
-        giveMe.A<ChildEntity>().With(parent ?? giveMe.AParentEntitiy(), dateTime);
+    public static Child AChildEntity(this Stubber giveMe, Parent? parent = default, DateTime? dateTime = default) =>
+        giveMe.A<Child>().With(parent ?? giveMe.AParentEntitiy(), dateTime);
 
     public static IInterface AMockedObject(this Mocker mockMe, string[] results)
     {

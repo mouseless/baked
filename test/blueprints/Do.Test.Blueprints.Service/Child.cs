@@ -2,16 +2,16 @@
 
 namespace Do.Test;
 
-public class ChildEntity(IEntityContext<ChildEntity> _context, TimeProvider _timeProvider)
+public class Child(IEntityContext<Child> _context, TimeProvider _timeProvider)
 {
-    protected ChildEntity() : this(default!, default!) { }
+    protected Child() : this(default!, default!) { }
 
     public virtual Guid Id { get; protected set; } = default!;
-    public virtual ParentEntity Parent { get; protected set; } = default!;
+    public virtual Parent Parent { get; protected set; } = default!;
     public virtual DateTime DateTime { get; protected set; } = default!;
 
-    public virtual ChildEntity With(
-        ParentEntity parent,
+    public virtual Child With(
+        Parent parent,
         DateTime? dateTime = default
     )
     {
@@ -22,12 +22,12 @@ public class ChildEntity(IEntityContext<ChildEntity> _context, TimeProvider _tim
     }
 }
 
-public class ChildEntities(IQueryContext<ChildEntity> _context)
+public class Children(IQueryContext<Child> _context)
 {
-    public List<ChildEntity> All(int? skip = default, int? take = default) =>
+    public List<Child> All(int? skip = default, int? take = default) =>
         _context.All(skip, take);
 
-    public List<ChildEntity> ByParent(Guid parentId, bool reverse = default, int? skip = default, int? take = default)
+    public List<Child> ByParent(Guid parentId, bool reverse = default, int? skip = default, int? take = default)
     {
         return _context.By<DateTime>(
             where: e => e.Parent.Id == parentId,
@@ -38,7 +38,7 @@ public class ChildEntities(IQueryContext<ChildEntity> _context)
             );
     }
 
-    public ChildEntity? FirstByParent(Guid parentId, bool reverse = default)
+    public Child? FirstByParent(Guid parentId, bool reverse = default)
     {
         return _context.FirstBy<DateTime>(
             where: e => e.Parent.Id == parentId,

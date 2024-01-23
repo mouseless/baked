@@ -7,7 +7,7 @@ public class ParentEntitiesController
 {
     [HttpGet]
     [Route("parentEntities")]
-    public List<ParentEntity> All([FromServices] ParentEntities target, bool reverse = default, int? skip = default, int? take = default)
+    public List<Parent> All([FromServices] Parents target, bool reverse = default, int? skip = default, int? take = default)
     {
         return target.All(reverse, skip, take);
     }

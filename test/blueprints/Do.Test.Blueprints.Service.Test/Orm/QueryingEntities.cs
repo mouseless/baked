@@ -19,7 +19,7 @@ public class QueryingEntities : TestServiceSpec
         var parent = GiveMe.AParentEntitiy();
         var child1 = GiveMe.AChildEntity(parent, GiveMe.ADateTime(2024, 1, 23, 14, 21));
         var child2 = GiveMe.AChildEntity(parent, GiveMe.ADateTime(2024, 1, 23, 14, 22));
-        var childEntities = GiveMe.The<ChildEntities>();
+        var childEntities = GiveMe.The<Children>();
 
         childEntities.FirstByParent(parent.Id).ShouldBe(child1);
         childEntities.FirstByParent(parent.Id, reverse: true)?.ShouldBe(child2);
@@ -30,9 +30,9 @@ public class QueryingEntities : TestServiceSpec
     {
         var child1 = GiveMe.AChildEntity();
         var child2 = GiveMe.AChildEntity();
-        var childEntities = GiveMe.The<ChildEntities>();
+        var childEntities = GiveMe.The<Children>();
 
-        GiveMe.The<ChildEntities>().All().ShouldBe([child1, child2]);
+        GiveMe.The<Children>().All().ShouldBe([child1, child2]);
     }
 
     [Test]
@@ -40,7 +40,7 @@ public class QueryingEntities : TestServiceSpec
     {
         var parent1 = GiveMe.AParentEntitiy(GiveMe.ADateTime(2024, 1, 23, 14, 21));
         var parent2 = GiveMe.AParentEntitiy(GiveMe.ADateTime(2024, 1, 23, 14, 22));
-        var parentEntities = GiveMe.The<ParentEntities>();
+        var parentEntities = GiveMe.The<Parents>();
 
         parentEntities.All().ShouldBe([parent1, parent2]);
         parentEntities.All(reverse: true).ShouldBe([parent2, parent1]);
