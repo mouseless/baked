@@ -3,7 +3,7 @@
 namespace Do.Test;
 
 public class Singleton(TimeProvider _timeProvider, Func<Entity> _newEntity, ITransaction _transaction)
-    : Base(_timeProvider), IInputOutputObjectTest
+    : SingletonBase(_timeProvider), IInterface
 {
     public void TestException(bool handled)
     {

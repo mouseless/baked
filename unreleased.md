@@ -8,7 +8,7 @@
   - Added `IScoped` marker interface  
   - Added a default `BusinessFeature` which uses `DomainModel` to register
     services using following conventions:
-    - Types which have _With_ method with return type same as declaring type
+    - Types which have `With` method with return type same as declaring type
       are registered as `transient` services with `singleton` factories
     - Types which implements `IScoped` interface are registered as 
       `scoped` services with `singleton` factories

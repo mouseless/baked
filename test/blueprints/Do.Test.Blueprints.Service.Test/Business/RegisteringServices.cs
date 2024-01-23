@@ -5,7 +5,7 @@ namespace Do.Test.Business;
 public class RegisteringServices : TestServiceSpec
 {
     [Test]
-    public void Types_containing_a_method_named_with_and_returns_self_are_registered_as_transient([Values(typeof(Entity), typeof(OperationObject))] Type type)
+    public void Types_containing_a_method_named_with_and_returns_self_are_registered_as_transient([Values(typeof(Entity), typeof(Operation))] Type type)
     {
         var actual1 = GiveMe.A(type);
         var actual2 = GiveMe.A(type);
@@ -14,7 +14,7 @@ public class RegisteringServices : TestServiceSpec
     }
 
     [Test]
-    public void Transient_services_have_singleton_factories([Values(typeof(Func<Entity>), typeof(Func<OperationObject>))] Type type)
+    public void Transient_services_have_singleton_factories([Values(typeof(Func<Entity>), typeof(Func<Operation>))] Type type)
     {
         var actual1 = GiveMe.The(type);
         var actual2 = GiveMe.The(type);
@@ -32,27 +32,27 @@ public class RegisteringServices : TestServiceSpec
     }
 
     [Test]
-    public void Singleton_types_with_interfaces_are_registered_as_implementations([Values(typeof(IInputOutputObjectTest), typeof(ISingleton))] Type type)
+    public void Singleton_types_with_interfaces_are_registered_as_implementations([Values(typeof(IInterface), typeof(ISingleton))] Type type)
     {
         var actual1 = GiveMe.The(type);
         var actual2 = GiveMe.The(type);
 
         actual1.ShouldBeSameAs(actual2);
-        actual1.GetType().UnderlyingSystemType.ShouldBe(typeof(Singleton));
+        actual1.GetType().ShouldBe(typeof(Singleton));
     }
 
     [Test]
     public void Transient_types_with_interfaces_are_registered_as_implementations()
     {
-        var actual1 = GiveMe.The<IProcessor>();
-        var actual2 = GiveMe.The<IProcessor>();
+        var actual1 = GiveMe.The<IOperation>();
+        var actual2 = GiveMe.The<IOperation>();
 
         actual1.ShouldNotBeSameAs(actual2);
-        actual1.GetType().UnderlyingSystemType.ShouldBe(typeof(OperationObject));
+        actual1.GetType().ShouldBe(typeof(Operation));
     }
 
     [Test]
-    public void Types_having_properties_with_public_getter_and_setter_are_registered_as_scoped()
+    public void Types_that_implements_IScoped_are_registered_as_scoped()
     {
         var actual1 = GiveMe.The<Scoped>();
         var actual2 = GiveMe.The<Scoped>();
@@ -98,9 +98,9 @@ public class RegisteringServices : TestServiceSpec
     [Test]
     public void Abstract_types_are_not_registered()
     {
-        var action = () => GiveMe.The<Base>();
+        var action = () => GiveMe.The<SingletonBase>();
 
-        action.ShouldThrowExceptionWithServiceNotRegisteredMessage(typeof(Base));
+        action.ShouldThrowExceptionWithServiceNotRegisteredMessage(typeof(SingletonBase));
     }
 
     [Test]
