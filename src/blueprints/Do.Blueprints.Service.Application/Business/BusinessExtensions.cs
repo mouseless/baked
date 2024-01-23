@@ -46,10 +46,10 @@ public static class BusinessExtensions
         source.AddScoped<TService, TImplementation>();
     }
 
-    public static void ForwardService<TForward, TService>(this IServiceCollection source)
+    public static void ForwardSingleton<TForward, TService>(this IServiceCollection source)
         where TForward : class
         where TService : class, TForward
         => source.AddSingleton(typeof(TForward), typeof(TService));
-    public static void ForwardService(this IServiceCollection source, Type forward, Type service)
+    public static void ForwardSingleton(this IServiceCollection source, Type forward, Type service)
         => source.AddSingleton(forward, sp => sp.GetRequiredServiceUsingRequestServices(service));
 }

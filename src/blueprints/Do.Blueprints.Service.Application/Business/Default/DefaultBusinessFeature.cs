@@ -49,7 +49,7 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
                 }
                 else
                 {
-                    AddService(type, type => services.AddSingleton(type), services.ForwardService);
+                    AddService(type, type => services.AddSingleton(type), services.ForwardSingleton);
                 }
             }
 
