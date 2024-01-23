@@ -10,8 +10,12 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
     {
         configurator.ConfigureServiceCollection(services =>
         {
+            services.AddTransientWithFactory<ChildEntity>();
+            services.AddSingleton<ChildEntities>();
             services.AddTransientWithFactory<Entity>();
             services.AddSingleton<Entities>();
+            services.AddTransientWithFactory<ParentEntity>();
+            services.AddSingleton<ParentEntities>();
             services.AddSingleton<Singleton>();
         });
 
