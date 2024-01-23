@@ -4,7 +4,6 @@ public abstract class TestServiceSpec : ServiceSpec
 {
     static TestServiceSpec() =>
         Init(
-            business: c => c.Default(),
             configure: app =>
             {
                 app.Features.AddConfigurationOverrider();

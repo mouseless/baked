@@ -11,12 +11,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\src\blueprints\Do.Blueprints.Service\Do.Blueprints.Service.csproj" />
     <ProjectReference Include="..\..\..\..\src\blueprints\Do.Blueprints.Service.Application\Do.Blueprints.Service.Application.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Using Include="Do" />
-    <Using Include="EventScheduler" />
+    <ProjectReference Include="..\Mouseless.EventScheduler\Mouseless.EventScheduler.csproj" />
   </ItemGroup>
 
 </Project>

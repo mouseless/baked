@@ -14,18 +14,3 @@ configuration to allow you to reuse what is commonly needed for an application.
 Each blueprint comes with its own package that references to all the packages
 it uses. This way your application will only need to depend on one blueprint
 package.
-
-## Forge Using a Blueprint
-
-A blueprint comes with an extension to `Forge` class so that you can reuse it
-directly in `Program.cs`. For example, for `Service` blueprint following call
-will be sufficient to forge a service application;
-
-```csharp
-Forge.New
-    .Service(
-        business: c => c.MyBusiness(),
-        database: c => c.Sqlite()
-    )
-    .Run();
-```

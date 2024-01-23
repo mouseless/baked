@@ -3,9 +3,8 @@
 namespace Do.Test;
 
 public class Singleton(TimeProvider _timeProvider, Func<Entity> _newEntity, ITransaction _transaction)
+    : SingletonBase(_timeProvider), IInterface
 {
-    public DateTime GetNow() => _timeProvider.GetNow();
-
     public void TestException(bool handled)
     {
         if (handled)
@@ -29,7 +28,7 @@ public class Singleton(TimeProvider _timeProvider, Func<Entity> _newEntity, ITra
                 uri: new("https://action.com"),
                 @dynamic: new { transaction = "action" },
                 @enum: Status.Enabled,
-                dateTime: _timeProvider.GetNow()
+                dateTime: GetNow()
             );
         });
 
@@ -47,7 +46,7 @@ public class Singleton(TimeProvider _timeProvider, Func<Entity> _newEntity, ITra
                 uri: new("https://func.com"),
                 @dynamic: new { transaction = "func" },
                 @enum: Status.Enabled,
-                dateTime: _timeProvider.GetNow()
+                dateTime: GetNow()
             )
         );
 
@@ -59,7 +58,7 @@ public class Singleton(TimeProvider _timeProvider, Func<Entity> _newEntity, ITra
             uri: new("https://rollback.com"),
             @dynamic: new { rollback = "rollback" },
             @enum: Status.Disabled,
-            dateTime: _timeProvider.GetNow()
+            dateTime: GetNow()
         );
 
         throw new();
@@ -85,7 +84,7 @@ public class Singleton(TimeProvider _timeProvider, Func<Entity> _newEntity, ITra
                 uri: new("https://func.com"),
                 @dynamic: new { transaction = "func" },
                 @enum: Status.Enabled,
-                dateTime: _timeProvider.GetNow()
+                dateTime: GetNow()
             )
         );
     }

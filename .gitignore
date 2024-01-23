@@ -14,3 +14,6 @@ bin/
 
 # coverage reports
 **/.coverage/*
+
+# generated file
+**/.benchmark/**
