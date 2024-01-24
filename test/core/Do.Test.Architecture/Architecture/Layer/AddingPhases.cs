@@ -70,12 +70,11 @@ public class AddingPhases : ArchitectureSpec
 
         IPhase phase = new Phase();
 
-        phase.Initialize(applicationContext);
+        phase.Initialize();
 
         applicationContext.ShouldBeEquivalentTo(emptyContext);
     }
 
-    public class OneDependencyPhase : PhaseBase<string>
     class StringDependentAddsInt(string _expectedString, int _artifact)
         : PhaseBase<string>
     {

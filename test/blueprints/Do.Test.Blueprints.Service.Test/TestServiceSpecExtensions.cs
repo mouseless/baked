@@ -34,20 +34,6 @@ public static class TestServiceSpecExtensions
     public static Child AChildEntity(this Stubber giveMe, Parent? parent = default, DateTime? dateTime = default) =>
         giveMe.A<Child>().With(parent ?? giveMe.AParentEntitiy(), dateTime);
 
-    public static IInterface AMockedObject(this Mocker mockMe, string[] results)
-    {
-        var mock = new Mock<IInterface>();
-
-        var setup = () => mock.Setup(c => c.DoSomething());
-        var taskSetup = () => mock.Setup(c => c.DoSomethingTask());
-
-        setup().Returns(results);
-
-        taskSetup().ReturnsAsync(results);
-
-        return mock.Object;
-    }
-
     public static void ShouldThrowExceptionWithServiceNotRegisteredMessage(this Func<object> source, Type serviceType) =>
         source.ShouldThrow<Exception>().Message.ShouldBe($"No service for type '{serviceType}' has been registered.");
 }

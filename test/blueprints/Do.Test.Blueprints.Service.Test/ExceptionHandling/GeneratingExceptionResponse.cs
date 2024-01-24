@@ -12,7 +12,8 @@ public class GeneratingExceptionResponse : TestServiceNfr
              .Service(
                  business: c => c.Default(),
                  database: c => c.InMemory(),
-                 exceptionHandling: ex => ex.Default(typeUrlFormat: "https://do.mouseless.codes/errors/{0}")
+                 exceptionHandling: ex => ex.Default(typeUrlFormat: "https://do.mouseless.codes/errors/{0}"),
+                 configure: app => app.Features.AddConfigurationOverrider()
              );
 
     [Test]

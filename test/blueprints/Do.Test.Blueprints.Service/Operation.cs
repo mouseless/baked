@@ -1,4 +1,6 @@
-﻿namespace Do.Test;
+﻿
+
+namespace Do.Test;
 
 public class Operation : IOperation
 {

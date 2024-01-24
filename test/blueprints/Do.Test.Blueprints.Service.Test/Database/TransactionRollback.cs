@@ -8,7 +8,8 @@ public class TransactionRollback : TestServiceNfr
         Forge.New
             .Service(
                 business: c => c.Default(),
-                database: c => c.Sqlite()
+                database: c => c.Sqlite(),
+                configure: app => app.Features.AddConfigurationOverrider()
             );
 
     protected override string EnvironmentName => "Development";

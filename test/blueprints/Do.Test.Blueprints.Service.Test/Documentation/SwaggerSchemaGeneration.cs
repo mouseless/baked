@@ -9,7 +9,8 @@ public class SwaggerSchemaGeneration : TestServiceNfr
             .Service(
                 business: c => c.Default(),
                 database: c => c.InMemory(),
-                documentation: c => c.Default()
+                documentation: c => c.Default(),
+                configure: app => app.Features.AddConfigurationOverrider()
             );
 
     [Test]
