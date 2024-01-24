@@ -14,7 +14,7 @@ namespace Do;
 public static class ForgeExtensions
 {
     public static Application Service(this Forge source,
-        Func<BusinessConfigurator, IFeature<BusinessConfigurator>> business,
+        Func<BusinessConfigurator, IFeature<BusinessConfigurator>>? business = default,
         Func<CachingConfigurator, IFeature<CachingConfigurator>>? caching = default,
         Func<CoreConfigurator, IFeature<CoreConfigurator>>? core = default,
         Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>>? database = default,
@@ -26,6 +26,7 @@ public static class ForgeExtensions
         Action<ApplicationDescriptor>? configure = default
     )
     {
+        business ??= c => c.Default();
         caching ??= c => c.ScopedMemory();
         core ??= c => c.Dotnet();
         database ??= c => c.Sqlite();
@@ -41,6 +42,7 @@ public static class ForgeExtensions
                 app.Layers.AddConfiguration();
                 app.Layers.AddDataAccess();
                 app.Layers.AddDependencyInjection();
+                app.Layers.AddDomain();
                 app.Layers.AddHttpServer();
                 app.Layers.AddMonitoring();
                 app.Layers.AddRestApi();

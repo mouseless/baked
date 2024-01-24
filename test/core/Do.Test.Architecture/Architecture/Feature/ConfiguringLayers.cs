@@ -22,7 +22,7 @@ public class ConfiguringLayers : ArchitectureSpec
     public void Features_configure_layer_using_a_layer_configurator_that_can_apply_given_action_to_its_target_object()
     {
         var configuration = new ConfigurationA();
-        var configurator = GiveMe.ALayerConfigurator(configuration);
+        var configurator = GiveMe.ALayerConfigurator(target: configuration);
 
         var featureA = new FeatureA("test");
 
@@ -49,7 +49,7 @@ public class ConfiguringLayers : ArchitectureSpec
     [Test]
     public void Layer_configurator_does_not_apply_given_action_when_given_type_does_not_match_current_target_type()
     {
-        var configurator = LayerConfigurator.Create(new ConfigurationA());
+        var configurator = GiveMe.ALayerConfigurator(target: new ConfigurationA());
 
         configurator.Configure((object value) => this.ShouldFail());
 
@@ -59,7 +59,7 @@ public class ConfiguringLayers : ArchitectureSpec
     [Test]
     public void Layer_configurator_can_restrict_a_target_into_one_of_its_base_class_or_interfaces()
     {
-        var configurator = LayerConfigurator.Create<object>(new ConfigurationA());
+        var configurator = GiveMe.ALayerConfigurator<object>(target: new ConfigurationA());
 
         var configured = false;
         configurator.Configure((object value) => configured = true);
@@ -71,7 +71,7 @@ public class ConfiguringLayers : ArchitectureSpec
     [Test]
     public void Layer_configurator_accepts_two_parameters_in_a_given_action()
     {
-        var configurator = LayerConfigurator.Create<string, int>("test", 10);
+        var configurator = GiveMe.ALayerConfigurator<string, int>(target1: "test", target2: 10);
 
         var configured = false;
         configurator.Configure((string str, int i) => configured = true);
@@ -83,7 +83,7 @@ public class ConfiguringLayers : ArchitectureSpec
     [Test]
     public void Layer_configurator_accepts_three_parameters_in_a_given_action()
     {
-        var configurator = LayerConfigurator.Create<string, int, bool>("test", 10, false);
+        var configurator = GiveMe.ALayerConfigurator<string, int, bool>(target1: "test", target2: 10, target3: false);
 
         var configured = false;
         configurator.Configure((string str, int i, bool b) => configured = true);

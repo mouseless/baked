@@ -22,7 +22,7 @@ public abstract class ServiceSpec : Spec
     internal static ISession Session => _serviceProvider.GetRequiredService<ISession>();
 
     protected static ApplicationContext Init(
-        Func<BusinessConfigurator, IFeature<BusinessConfigurator>> business,
+        Func<BusinessConfigurator, IFeature<BusinessConfigurator>>? business = default,
         Func<CachingConfigurator, IFeature<CachingConfigurator>>? caching = default,
         Func<CoreConfigurator, IFeature<CoreConfigurator>>? core = default,
         Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>>? database = default,
@@ -32,6 +32,7 @@ public abstract class ServiceSpec : Spec
         Action<ApplicationDescriptor>? configure = default
     )
     {
+        business ??= c => c.Default();
         caching ??= c => c.ScopedMemory();
         core ??= c => c.Mock();
         database ??= c => c.InMemory();
@@ -44,6 +45,7 @@ public abstract class ServiceSpec : Spec
             app.Layers.AddConfiguration();
             app.Layers.AddDataAccess();
             app.Layers.AddDependencyInjection();
+            app.Layers.AddDomain();
             app.Layers.AddMonitoring();
             app.Layers.AddRestApi();
             app.Layers.AddTesting();

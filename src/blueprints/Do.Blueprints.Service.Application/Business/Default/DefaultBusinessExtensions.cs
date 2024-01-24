@@ -1,5 +1,5 @@
 using Do.Business;
-using Do.Test.Business.Default;
+using Do.Business.Default;
 
 namespace Do;
 

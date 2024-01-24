@@ -110,7 +110,7 @@ Application runs in phases provided by its layers. For example an ASP.NET Core
 application typically runs in three phases;
 
 ```mermaid
-flowchart LR
+flowchart TB
     CB(Create Builder)
     B(Build)
     R(Run)
@@ -132,23 +132,6 @@ to/from the context, such as `IServiceCollection`, `IMiddlewareCollection`,
 > should be given. Using any other type that extends or implements the target
 > object will result in an unsuccessful `Get` operation. For example, trying to
 > `Get` a `WebApplication` using `IApplicationBuilder` type will be unsuccessful.
-
-```mermaid
-flowchart TB
-    subgraph AR[ ]
-        direction LR
-
-        CB(Create Builder)
-        B(Build)
-        R(Run)
-
-        CB --> B --> R
-    end
-
-    AC[[Application Context]]
-
-    AR -.- AC
-```
 
 As mentioned [earlier](./README.md#layer), layers provide features with things
 to configure. For this to happen, application asks every layer what to configure
@@ -214,7 +197,7 @@ sequenceDiagram
 
 Initialization order of phases are determined by;
 
-1. Readiness of a phase through `IPhase.IsReady()` method,
+1. Readiness of a phase through `IPhase.IsReady` property,
 1. Value of `IPhase.Order` property,
 1. And the order they are added to the application.
 
@@ -228,27 +211,13 @@ application knows that `Run` phase is not ready until some other phase, e.g.,
 `Build` phase, adds `WebApplication` to the context.
 
 ```mermaid
-flowchart LR
-    subgraph P[Phases]
-        direction LR
-        CB(Create Builder)
-        B(Build)
-        R(Run)
+flowchart TB
+  CB(Create Builder)
+  B(Build)
+  R(Run)
 
-        CB --> B --> R
-    end
-
-    subgraph AC[Application Context]
-        WAB[Web Application Builder]
-        WA[Web Application]
-
-        WAB ~~~ WA
-    end
-
-    CB -.-> WAB
-    WAB -.-> B
-    B -.-> WA
-    WA -.-> R
+  CB -->|WebApplicationBuilder| B
+  B --> |WebApplication| R
 ```
 
 > :information_source:
