@@ -2,14 +2,6 @@
 
 public class QueryingEntities : TestServiceSpec
 {
-    // multiple entities are queried by all types of properties
-    // -> entities.by(string, bool, datetime...)
-
-    // when all entities are queried, result have take, skip, order by options
-    // -> parent.all(take skip)
-    // -> parent.all(asc desc)
-    // -> parent.all(asc take skip)
-
     // when a single entity is queried by a unique property, the only result is returned
     // single by
     // -> entities.single by
@@ -74,6 +66,12 @@ public class QueryingEntities : TestServiceSpec
         actual.Count.ShouldBe(1);
     }
 
+    // multiple entities are queried by all types of properties
+    // -> entities.by(string, bool, datetime...)
+    [Test]
+    [Ignore("not implemented")]
+    public void Multiple_entities_are_queried_by_all_types_of_properties() => this.ShouldFail();
+
     // when multiple entities are queried, result have take, skip, order by options
     // -> entities.by_string
     // -> entities.by_string(take skip)
@@ -82,17 +80,36 @@ public class QueryingEntities : TestServiceSpec
     [Test]
     public void When_multiple_entities_are_queried__result_have_take_skip_order_by_options()
     {
-        GiveMe.AnEntity(@string: "a", int32: 0);
-        GiveMe.AnEntity(@string: "a", int32: 1);
-        GiveMe.AnEntity(@string: "a", int32: 2);
-        var testing = GiveMe.The<Entities>();
+        GiveMe.AParent(name: "ab");
+        GiveMe.AParent(name: "aa");
+        GiveMe.AParent(name: "ad");
+        GiveMe.AParent(name: "ac");
 
-        var actual = testing.By(@string: "a");
+        var testing = GiveMe.The<Parents>();
+
+        var actual = testing.ByNameContains(name: "a");
         actual.ShouldNotBeNull();
-        actual.Count.ShouldBe(3);
+        actual.Count.ShouldBe(4);
 
-        actual = testing.By(@string: "a", skip: 2, take: 1);
-        actual[0].Int32.ShouldBe(2);
+        actual = testing.ByNameContains(name: "a", take: 2);
+        actual.Count.ShouldBe(2);
+        actual[1].Name.ShouldBe("aa");
+
+        actual = testing.ByNameContains(name: "a", skip: 2, take: 1);
+        actual.Count.ShouldBe(1);
+        actual[0].Name.ShouldBe("ad");
+
+        actual = testing.ByNameContains(name: "a", asc: true);
+        actual[0].Name.ShouldBe("aa");
+
+        actual = testing.ByNameContains(name: "a", asc: true, skip: 1);
+        actual[0].Name.ShouldBe("ab");
+
+        actual = testing.ByNameContains(name: "a", asc: true, take: 3);
+        actual[2].Name.ShouldBe("ac");
+
+        actual = testing.ByNameContains(name: "a", desc: true);
+        actual[0].Name.ShouldBe("ad");
     }
 
     // when all entities are queried, every record is returned
@@ -108,5 +125,31 @@ public class QueryingEntities : TestServiceSpec
         var actual = testing.All();
         actual.ShouldNotBeNull();
         actual.Count.ShouldBe(2);
+    }
+
+    // when all entities are queried, result have take, skip, order by options
+    // -> parent.all(take skip)
+    // -> parent.all(asc desc)
+    // -> parent.all(asc take skip)
+    [Test]
+    public void When_all_entities_are_queried__results_have_take_skip_orderby_options()
+    {
+        GiveMe.AParent(name: "b");
+        GiveMe.AParent(name: "d");
+        GiveMe.AParent(name: "a");
+        GiveMe.AParent(name: "c");
+
+        var testing = GiveMe.The<Parents>();
+
+        var actual = testing.All(skip: 2, take: 1);
+        actual.ShouldNotBeNull();
+        actual.Count.ShouldBe(1);
+        actual[0].Name.ShouldBe("a");
+
+        actual = testing.All(asc: true);
+        actual[0].Name.ShouldBe("a");
+
+        actual = testing.All(desc: true);
+        actual[0].Name.ShouldBe("d");
     }
 }
