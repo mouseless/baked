@@ -26,10 +26,10 @@ public interface IQueryContext<TEntity>
         int? skip = null
     )
     {
-        var result = Query(where);
-
-        if (take is not null) { result = result.Take(take.Value); }
-        if (skip is not null) { result = result.Skip(skip.Value); }
+        var result = Query(where,
+            take: take,
+            skip: skip
+        );
 
         return [.. result];
     }
@@ -43,11 +43,10 @@ public interface IQueryContext<TEntity>
     {
         var result = Query(where,
             orderBy: orderBy,
-            orderByDescending: orderByDescending
+            orderByDescending: orderByDescending,
+            take: take,
+            skip: skip
          );
-
-        if (take is not null) { result = result.Take(take.Value); }
-        if (skip is not null) { result = result.Skip(skip.Value); }
 
         return [.. result];
     }
@@ -57,10 +56,10 @@ public interface IQueryContext<TEntity>
         int? skip = null
     )
     {
-        var result = Query();
-
-        if (take is not null) { result = result.Take(take.Value); }
-        if (skip is not null) { result = result.Skip(skip.Value); }
+        var result = Query(t => true,
+            take: take,
+            skip: skip
+        );
 
         return [.. result];
     }
@@ -74,21 +73,39 @@ public interface IQueryContext<TEntity>
     {
         var result = Query(t => true,
             orderBy: orderBy,
-            orderByDescending: orderByDescending
+            orderByDescending: orderByDescending,
+            take: take,
+            skip: skip
          );
-
-        if (take is not null) { result = result.Take(take.Value); }
-        if (skip is not null) { result = result.Skip(skip.Value); }
 
         return [.. result];
     }
 
-    IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> where) =>
-        Query().Where(where);
+    IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> where,
+        int? take = null,
+        int? skip = null
+    )
+    {
+        var query = Query().Where(where);
+
+        if (take is not null)
+        {
+            query = query.Take(take.Value);
+        }
+
+        if (skip is not null)
+        {
+            query = query.Skip(skip.Value);
+        }
+
+        return query;
+    }
 
     IQueryable<TEntity> Query<TOrderBy>(Expression<Func<TEntity, bool>> where,
         Expression<Func<TEntity, TOrderBy>>? orderBy = default,
-        Expression<Func<TEntity, TOrderBy>>? orderByDescending = default
+        Expression<Func<TEntity, TOrderBy>>? orderByDescending = default,
+        int? take = null,
+        int? skip = null
     )
     {
         var query = Query().Where(where);
@@ -101,6 +118,16 @@ public interface IQueryContext<TEntity>
         if (orderByDescending is not null)
         {
             query = query.OrderByDescending(orderByDescending);
+        }
+
+        if (take is not null)
+        {
+            query = query.Take(take.Value);
+        }
+
+        if (skip is not null)
+        {
+            query = query.Skip(skip.Value);
         }
 
         return query;

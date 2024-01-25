@@ -28,12 +28,6 @@ public static class TestServiceSpecExtensions
             setNowForDateTime ?? false
         );
 
-    public static Parent AParentEntitiy(this Stubber giveMe, DateTime? dateTime = default) =>
-        giveMe.A<Parent>().With(dateTime);
-
-    public static Child AChildEntity(this Stubber giveMe, Parent? parent = default, DateTime? dateTime = default) =>
-        giveMe.A<Child>().With(parent ?? giveMe.AParentEntitiy(), dateTime);
-
     public static void ShouldThrowExceptionWithServiceNotRegisteredMessage(this Func<object> source, Type serviceType) =>
         source.ShouldThrow<Exception>().Message.ShouldBe($"No service for type '{serviceType}' has been registered.");
 }

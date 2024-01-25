@@ -2,47 +2,54 @@
 
 public class QueryingEntities : TestServiceSpec
 {
+    // when a single entity is queried by a unique property, the only result is returned
+    // single by
+    // -> entities.single by
+
+    // when a single entity is queried by a property, first result is returned
+    // first by
+    // ---
+    //  giveme ab
+    //  giveme aa
+    //  giveme ac
+    //  entities.FirstByString("a").ShouldBe(ab)
+    //  entities.FirstByString("a", asc: true).ShouldBe(aa)
+    //  entities.FirstByString("a", desc: true).ShouldBe(ac)
+    // ---
+
+    // multiple entities are queried by all types of properties
+    // -> entities.by(string, bool, datetime...)
+
+    // entities are queried by other entities
+    // -> parent.getchildren
+
+    // when multiple entities are queried, result have take, skip, order by options
+    // -> entities.by_string
+    // -> entities.by_string(take skip)
+    // -> entities.by_string(asc desc)
+    // -> entities.by_string(asc take skip)
+
+    // when all entities are queried, every record is returned
+    // -> parent.all
+
+    // when all entities are queried, result have take, skip, order by options
+    // -> parent.all(take skip)
+    // -> parent.all(asc desc)
+    // -> parent.all(asc take skip)
+
     [Test]
-    public void Returns_the_range_of_entities_by_the_given_condition()
-    {
-        var parent = GiveMe.AParentEntitiy();
-        var child1 = GiveMe.AChildEntity(parent, GiveMe.ADateTime(2024, 1, 23, 14, 21));
-        var child2 = GiveMe.AChildEntity(parent, GiveMe.ADateTime(2024, 1, 23, 14, 22));
-
-        parent.GetChildren().ShouldBe([child1, child2]);
-        parent.GetChildren(reverse: true).ShouldBe([child2, child1]);
-    }
+    [Ignore("not implemented")]
+    public void Returns_the_range_of_entities_by_the_given_condition() => this.ShouldFail();
 
     [Test]
-    public void Returns_a_single_entity_by_the_given_condition()
-    {
-        var parent = GiveMe.AParentEntitiy();
-        var child1 = GiveMe.AChildEntity(parent, GiveMe.ADateTime(2024, 1, 23, 14, 21));
-        var child2 = GiveMe.AChildEntity(parent, GiveMe.ADateTime(2024, 1, 23, 14, 22));
-        var childEntities = GiveMe.The<Children>();
-
-        childEntities.FirstByParent(parent.Id).ShouldBe(child1);
-        childEntities.FirstByParent(parent.Id, reverse: true)?.ShouldBe(child2);
-    }
+    [Ignore("not implemented")]
+    public void Returns_a_single_entity_by_the_given_condition() => this.ShouldFail();
 
     [Test]
-    public void Returns_all_entites()
-    {
-        var child1 = GiveMe.AChildEntity();
-        var child2 = GiveMe.AChildEntity();
-        var childEntities = GiveMe.The<Children>();
-
-        GiveMe.The<Children>().All().ShouldBe([child1, child2]);
-    }
+    [Ignore("not implemented")]
+    public void Returns_all_entites() => this.ShouldFail();
 
     [Test]
-    public void Returns_all_entites_with_given_order()
-    {
-        var parent1 = GiveMe.AParentEntitiy(GiveMe.ADateTime(2024, 1, 23, 14, 21));
-        var parent2 = GiveMe.AParentEntitiy(GiveMe.ADateTime(2024, 1, 23, 14, 22));
-        var parentEntities = GiveMe.The<Parents>();
-
-        parentEntities.All().ShouldBe([parent1, parent2]);
-        parentEntities.All(reverse: true).ShouldBe([parent2, parent1]);
-    }
+    [Ignore("not implemented")]
+    public void Returns_all_entities_with_given_order() => this.ShouldFail();
 }

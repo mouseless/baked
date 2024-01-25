@@ -4,7 +4,6 @@ using Do.Orm;
 namespace Do.Test;
 
 public class Entity(IEntityContext<Entity> _context, ITransaction _transaction, TimeProvider _timeProvider)
-    : IEquatable<Entity>
 {
     protected Entity() : this(default!, default!, default!) { }
 
@@ -117,9 +116,6 @@ public class Entity(IEntityContext<Entity> _context, ITransaction _transaction, 
     {
         _context.Delete(this);
     }
-
-    bool IEquatable<Entity>.Equals(Entity? other) =>
-        base.Equals(other);
 }
 
 public class Entities(IQueryContext<Entity> _context)
@@ -149,4 +145,14 @@ public class Entities(IQueryContext<Entity> _context)
             skip: skip
         );
     }
+
+    // SingleByString
+    //  return SingleBy()
+
+    // FirstByString(asc = false, desc = false)
+    //  if(asc) return FirstBy(orderBy:)
+    //  else if(desc) return FirstBy(orderByDesc:)
+    //  else return FirstBy()
+
+    // ByString
 }
