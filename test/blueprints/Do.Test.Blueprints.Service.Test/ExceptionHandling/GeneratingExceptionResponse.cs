@@ -11,7 +11,11 @@ public class GeneratingExceptionResponse : TestServiceNfr
     protected override Application ForgeApplication() =>
          Forge.New
              .Service(
-                 business: c => c.Default(businessAssemblies: [typeof(Entity).Assembly], applicationParts: [typeof(ParentsController).Assembly]),
+                 business: c => c.Default(options =>
+                 {
+                     options.AddBusinessAssembly<Entity>();
+                     options.AddApplicationPart<ParentsController>();
+                 }),
                  database: c => c.InMemory(),
                  exceptionHandling: ex => ex.Default(typeUrlFormat: "https://do.mouseless.codes/errors/{0}")
              );
