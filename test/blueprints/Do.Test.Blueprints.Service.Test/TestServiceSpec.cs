@@ -1,12 +1,10 @@
-using System.Reflection;
-
 namespace Do.Test;
 
 public abstract class TestServiceSpec : ServiceSpec
 {
     static TestServiceSpec() =>
         Init(
-            business: c => c.Default(businessAssemblies: [typeof(Entity).Assembly], applicationParts: [Assembly.GetExecutingAssembly()]),
+            business: c => c.Default(assemblies: [typeof(Entity).Assembly]),
             configure: app =>
             {
                 app.Features.AddConfigurationOverrider();

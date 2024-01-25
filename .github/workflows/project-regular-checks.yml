@@ -75,7 +75,7 @@ jobs:
             --settings test/runsettings.xml
       - name: Merge Multiple Test Coverage Report
         if: ${{ matrix.os == 'ubuntu-latest' }}
-        uses: danielpalme/ReportGenerator-GitHub-Action@5.1.12
+        uses: danielpalme/ReportGenerator-GitHub-Action@5.2.0
         with:
           reports: '.coverage/*/coverage.cobertura.xml'
           targetdir: 'coveragereport'
