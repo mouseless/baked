@@ -1,18 +1,13 @@
 ﻿using Do.Architecture;
-using Do.Test.RestApi.Analyzer;
+using Do.Database;
 
 namespace Do.Test.Database;
 
 public class TransactionRollback : TestServiceNfr
 {
-    protected override Application ForgeApplication() =>
-        Forge.New
-            .Service(
-                business: c => c.Default(assemblies: [typeof(Entity).Assembly], controllerAssembly: typeof(ParentsController).Assembly),
-                database: c => c.Sqlite()
-            );
-
     protected override string EnvironmentName => "Development";
+    protected override Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>>? Database =>
+        c => c.Sqlite();
 
     [Test]
     public async Task Entity_created_by_a_transaction_committed_asynchronously_persists_when_an_error_occurs()

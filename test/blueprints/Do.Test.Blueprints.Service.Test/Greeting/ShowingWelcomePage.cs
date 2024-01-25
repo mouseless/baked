@@ -1,17 +1,12 @@
 ﻿using Do.Architecture;
-using Do.Test.RestApi.Analyzer;
+using Do.Greeting;
 
 namespace Do.Test.Greeting;
 
 public class ShowingWelcomePage : TestServiceNfr
 {
-    protected override Application ForgeApplication() =>
-        Forge.New
-            .Service(
-                business: c => c.Default(assemblies: [typeof(Entity).Assembly], controllerAssembly: typeof(ParentsController).Assembly),
-                database: c => c.InMemory(),
-                greeting: c => c.WelcomePage()
-            );
+    protected override Func<GreetingConfigurator, IFeature<GreetingConfigurator>>? Greeting =>
+        c => c.WelcomePage();
 
     [Test]
     public async Task Application_redirects_to_dotnet_welcome_page()

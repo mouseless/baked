@@ -1,56 +1,28 @@
 ﻿using Do.Architecture;
-using Do.Test.RestApi.Analyzer;
+using Do.Greeting;
 using System.Net;
 
-namespace Do.Test.Configuration
+namespace Do.Test.Configuration;
+
+[TestFixture("Development", "/development")]
+[TestFixture("Staging", "/staging")]
+[TestFixture("Production", "/production")]
+public class EnvironmentSwitch(string _environment, string _path) : TestServiceNfr
 {
-    public class EnvironmentSwitch : TestServiceNfr
+    public EnvironmentSwitch() : this(default!, default!) { }
+
+    protected override string EnvironmentName => _environment;
+    protected override Func<GreetingConfigurator, IFeature<GreetingConfigurator>>? Greeting =>
+        c => c.WelcomePage()
+            .ForDevelopment(c.WelcomePage("/development"))
+            .ForStaging(c.WelcomePage("/staging"))
+            .ForProduction(c.WelcomePage("/production"))
+        ;
+
+    [Test]
+    public async Task Forge_selects_the_configuration_based_on_the_environment()
     {
-        protected override Application ForgeApplication() =>
-            Forge.New
-                .Service(
-                    business: c => c.Default(assemblies: [typeof(Entity).Assembly], controllerAssembly: typeof(ParentsController).Assembly),
-                    database: c => c.InMemory(),
-                    greeting: c => c.WelcomePage()
-                        .ForDevelopment(c.WelcomePage("/development"))
-                        .ForProduction(c.WelcomePage("/production"))
-                        .ForStaging(c.WelcomePage("/staging"))
-                );
-
-        public class Development : EnvironmentSwitch
-        {
-            protected override string EnvironmentName => "Development";
-
-            [Test]
-            public async Task Forge_selects_the_configuration_based_on_the_environment()
-            {
-                (await Client.GetAsync("/development")).StatusCode.ShouldBe(HttpStatusCode.OK);
-                (await Client.GetAsync("/")).StatusCode.ShouldBe(HttpStatusCode.NotFound);
-            }
-        }
-
-        public class Production : EnvironmentSwitch
-        {
-            protected override string EnvironmentName => "Production";
-
-            [Test]
-            public async Task Forge_selects_the_configuration_based_on_the_environment()
-            {
-                (await Client.GetAsync("/production")).StatusCode.ShouldBe(HttpStatusCode.OK);
-                (await Client.GetAsync("/")).StatusCode.ShouldBe(HttpStatusCode.NotFound);
-            }
-        }
-
-        public class Staging : EnvironmentSwitch
-        {
-            protected override string EnvironmentName => "Staging";
-
-            [Test]
-            public async Task Forge_selects_the_configuration_based_on_the_environment()
-            {
-                (await Client.GetAsync("/staging")).StatusCode.ShouldBe(HttpStatusCode.OK);
-                (await Client.GetAsync("/")).StatusCode.ShouldBe(HttpStatusCode.NotFound);
-            }
-        }
+        (await Client.GetAsync(_path)).StatusCode.ShouldBe(HttpStatusCode.OK);
+        (await Client.GetAsync("/")).StatusCode.ShouldBe(HttpStatusCode.NotFound);
     }
 }
