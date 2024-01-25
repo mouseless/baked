@@ -146,7 +146,30 @@ public class Entities(IQueryContext<Entity> _context)
         );
     }
 
-    // SingleByString
+    internal Entity? SingleByString(string @string)
+    {
+        return _context.SingleBy(e => e.String == @string);
+    }
+
+    internal Entity? FirstByStringStartsWith(string @string,
+        bool asc = false,
+        bool desc = false
+    )
+    {
+        if (asc)
+        {
+            return _context.FirstBy(e => e.String.StartsWith(@string), orderBy: e => e.String);
+        }
+        else if (desc)
+        {
+            return _context.FirstBy(e => e.String.StartsWith(@string), orderByDescending: e => e.String);
+        }
+        else
+        {
+            return _context.FirstBy(e => e.String.StartsWith(@string));
+        }
+    }
+
     //  return SingleBy()
 
     // FirstByString(asc = false, desc = false)
