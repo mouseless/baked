@@ -13,8 +13,9 @@ app.Features.AddBusiness(...);
 
 ## Default
 
-Adds default opinionated business feature
+Adds default opinionated business feature with given assemblies and controller 
+assembly.
 
 ```csharp
-c => c.Default()
+c => c.Default(assemblies: [typeof(MyEntity).Assembly])
 ```
