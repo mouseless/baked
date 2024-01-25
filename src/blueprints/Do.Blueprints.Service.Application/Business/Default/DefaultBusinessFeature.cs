@@ -5,7 +5,9 @@ using System.Reflection;
 
 namespace Do.Business.Default;
 
-public class DefaultBusinessFeature(BusinessFeatureOptions _options) : IFeature<BusinessConfigurator>
+public class DefaultBusinessFeature(List<Assembly> _businessAssemblies,
+    List<Assembly>? _applicationParts = default
+) : IFeature<BusinessConfigurator>
 {
     const BindingFlags _defaultMemberBindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
 
@@ -13,7 +15,7 @@ public class DefaultBusinessFeature(BusinessFeatureOptions _options) : IFeature<
     {
         configurator.ConfigureAssemblyCollection(assemblies =>
         {
-            foreach (var assembly in _options.BusinessAssemblies)
+            foreach (var assembly in _businessAssemblies)
             {
                 assemblies.Add(assembly);
             }
@@ -81,7 +83,7 @@ public class DefaultBusinessFeature(BusinessFeatureOptions _options) : IFeature<
 
         configurator.ConfigureApplicationParts(applicationParts =>
         {
-            foreach (var assembly in _options.ApplicationParts)
+            foreach (var assembly in _applicationParts ?? [])
             {
                 applicationParts.Add(new(assembly));
             }

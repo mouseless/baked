@@ -1,4 +1,3 @@
-using Do.Test.RestApi.Analyzer;
 using System.Reflection;
 
 namespace Do.Test;
@@ -7,11 +6,7 @@ public abstract class TestServiceSpec : ServiceSpec
 {
     static TestServiceSpec() =>
         Init(
-            business: c => c.Default(options =>
-            {
-                options.AddBusinessAssembly<Entity>();
-                options.AddApplicationPart<ParentsController>();
-            }),
+            business: c => c.Default(businessAssemblies: [typeof(Entity).Assembly], applicationParts: [Assembly.GetExecutingAssembly()]),
             configure: app =>
             {
                 app.Features.AddConfigurationOverrider();

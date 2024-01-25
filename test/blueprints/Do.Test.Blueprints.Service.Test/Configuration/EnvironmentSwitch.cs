@@ -1,5 +1,4 @@
 ﻿using Do.Architecture;
-using Do.Test.RestApi.Analyzer;
 using System.Net;
 
 namespace Do.Test.Configuration
@@ -9,11 +8,7 @@ namespace Do.Test.Configuration
         protected override Application ForgeApplication() =>
             Forge.New
                 .Service(
-                    business: c => c.Default(options =>
-                    {
-                        options.AddBusinessAssembly<Entity>();
-                        options.AddApplicationPart<ParentsController>();
-                    }),
+                    business: c => c.Default(businessAssemblies: [typeof(Entity).Assembly]),
                     database: c => c.InMemory(),
                     greeting: c => c.WelcomePage()
                         .ForDevelopment(c.WelcomePage("/development"))
