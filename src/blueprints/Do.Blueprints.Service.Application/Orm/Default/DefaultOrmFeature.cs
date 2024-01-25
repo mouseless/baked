@@ -97,14 +97,15 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
             );
 
             middlewares.Add(app =>
-            {
-                var lifetime = app.ApplicationServices.GetRequiredService<IHostApplicationLifetime>();
-                lifetime.ApplicationStarted.Register(() =>
                 {
-                    // to see mapping errors on start
-                    var _ = app.ApplicationServices.GetRequiredService<ISessionFactory>();
-                });
-            });
+                    var lifetime = app.ApplicationServices.GetRequiredService<IHostApplicationLifetime>();
+                    lifetime.ApplicationStarted.Register(() =>
+                    {
+                        // to see mapping errors on start
+                        var _ = app.ApplicationServices.GetRequiredService<ISessionFactory>();
+                    });
+                }
+            );
         });
     }
 }

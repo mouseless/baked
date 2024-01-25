@@ -28,6 +28,22 @@ public static class TestServiceSpecExtensions
             setNowForDateTime ?? false
         );
 
+    public static Parent AParent(this Stubber giveMe,
+        string? name = default,
+        bool withChild = false
+    )
+    {
+        name ??= giveMe.AString();
+
+        var result = giveMe.A<Parent>().With(name);
+        if (withChild)
+        {
+            result.AddChild();
+        }
+
+        return result;
+    }
+
     public static void ShouldThrowExceptionWithServiceNotRegisteredMessage(this Func<object> source, Type serviceType) =>
         source.ShouldThrow<Exception>().Message.ShouldBe($"No service for type '{serviceType}' has been registered.");
 }

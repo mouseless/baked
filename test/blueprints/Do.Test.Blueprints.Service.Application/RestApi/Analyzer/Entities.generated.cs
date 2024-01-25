@@ -15,14 +15,16 @@ public class EntitiesController
         int? Int32 = default,
         Uri Uri = default,
         Status? Status = default,
-        DateTime? DateTime = default
+        DateTime? DateTime = default,
+        int? Take = null, 
+        int? Skip = null
     );
 
     [HttpGet]
     [Route("entities")]
-    public List<Entity> By([FromServices] Entities target, [FromQuery] ByRequest request, [FromQuery] int? take = null, [FromQuery] int? skip = null)
+    public List<Entity> By([FromServices] Entities target, [FromQuery] ByRequest request)
     {
-        var result = target.By(
+        return target.By(
             guid: request.Guid,
             @string: request.String,
             stringData: request.StringData,
@@ -30,11 +32,33 @@ public class EntitiesController
             uri: request.Uri,
             status: request.Status,
             dateTime: request.DateTime,
-            take: take,
-            skip: skip
+            take: request.Take,
+            skip: request.Skip
         );
+    }
 
-        return result;
+    public record SingleByStringRequest(string String);
+
+    [HttpGet]
+    [Route("entities/single-by-string")]
+    public Entity SingleByString([FromServices] Entities target, [FromQuery] SingleByStringRequest request)
+    {
+        return target.SingleByString(request.String);
+    }
+
+    public record FirstByStringRequest(string StartsWith,
+        bool Asc = false,
+        bool Desc = false
+    );
+
+    [HttpGet]
+    [Route("entities/first-by-string")]
+    public Entity FirstByString([FromServices] Entities target, [FromQuery] FirstByStringRequest request)
+    {
+        return target.FirstByString(request.StartsWith,
+            asc: request.Asc,
+            desc: request.Desc
+        );
     }
 
     [HttpGet]

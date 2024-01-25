@@ -12,7 +12,7 @@ on:
       - 'Directory.Packages.props'
 
 env:
-  MIN_COVERAGE: 80
+  MIN_COVERAGE: 85
 
 jobs:
   # outputs matrix json so that windows is only added when head branch is a release branch
@@ -39,9 +39,9 @@ jobs:
       matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup .NET
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8
       - name: Build Solution
@@ -54,9 +54,9 @@ jobs:
       matrix: ${{ fromJson(needs.build.outputs.matrix) }}
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup .NET
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8
       - name: Test
@@ -75,7 +75,7 @@ jobs:
             --settings test/runsettings.xml
       - name: Merge Multiple Test Coverage Report
         if: ${{ matrix.os == 'ubuntu-latest' }}
-        uses: danielpalme/ReportGenerator-GitHub-Action@5.1.12
+        uses: danielpalme/ReportGenerator-GitHub-Action@5.2.0
         with:
           reports: '.coverage/*/coverage.cobertura.xml'
           targetdir: 'coveragereport'
@@ -90,7 +90,7 @@ jobs:
           output: 'both'
       - name: Upload Reports
         if: ${{ matrix.os == 'ubuntu-latest' }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: coverage-reports
           path: code-coverage-results.md
@@ -99,9 +99,9 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Download Reports
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: coverage-reports
       - name: Write to Job Summary

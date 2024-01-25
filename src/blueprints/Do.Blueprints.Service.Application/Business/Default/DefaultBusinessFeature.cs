@@ -5,12 +5,21 @@ using System.Reflection;
 
 namespace Do.Business.Default;
 
-public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
+public class DefaultBusinessFeature(List<Assembly> _assemblies, Assembly _controllerAssembly)
+    : IFeature<BusinessConfigurator>
 {
     const BindingFlags _defaultMemberBindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
 
     public void Configure(LayerConfigurator configurator)
     {
+        configurator.ConfigureAssemblyCollection(assemblies =>
+        {
+            foreach (var assembly in _assemblies)
+            {
+                assemblies.Add(assembly);
+            }
+        });
+
         configurator.ConfigureDomainBuilderOptions(options =>
         {
             options.ConstuctorBindingFlags = _defaultMemberBindingFlags;
@@ -69,6 +78,11 @@ public class DefaultBusinessFeature : IFeature<BusinessConfigurator>
             }
 
             bool IsInDomain(TypeModel type) => domainModel.Assemblies.ContainsModel(type.Assembly);
+        });
+
+        configurator.ConfigureApplicationParts(applicationParts =>
+        {
+            applicationParts.Add(new(_controllerAssembly));
         });
     }
 }

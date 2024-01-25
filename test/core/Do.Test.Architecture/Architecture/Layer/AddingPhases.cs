@@ -60,6 +60,21 @@ public class AddingPhases : ArchitectureSpec
         context.ShouldHave("test");
     }
 
+    public class Phase : PhaseBase { }
+
+    [Test]
+    public void Base_initialization_does_not_add_any_objects_to_application_context()
+    {
+        var applicationContext = GiveMe.AnApplicationContext();
+        var emptyContext = GiveMe.AnApplicationContext();
+
+        IPhase phase = new Phase();
+
+        phase.Initialize();
+
+        applicationContext.ShouldBeEquivalentTo(emptyContext);
+    }
+
     class StringDependentAddsInt(string _expectedString, int _artifact)
         : PhaseBase<string>
     {
