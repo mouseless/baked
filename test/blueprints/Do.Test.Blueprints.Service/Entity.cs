@@ -146,36 +146,18 @@ public class Entities(IQueryContext<Entity> _context)
         );
     }
 
-    internal Entity? SingleByString(string @string)
+    public Entity? SingleByString(string @string)
     {
         return _context.SingleBy(e => e.String == @string);
     }
 
-    internal Entity? FirstByStringStartsWith(string @string,
+    public Entity? FirstByString(string startsWith,
         bool asc = false,
         bool desc = false
     )
     {
-        if (asc)
-        {
-            return _context.FirstBy(e => e.String.StartsWith(@string), orderBy: e => e.String);
-        }
-        else if (desc)
-        {
-            return _context.FirstBy(e => e.String.StartsWith(@string), orderByDescending: e => e.String);
-        }
-        else
-        {
-            return _context.FirstBy(e => e.String.StartsWith(@string));
-        }
+        return asc ? _context.FirstBy(e => e.String.StartsWith(startsWith), orderBy: e => e.String) :
+               desc ? _context.FirstBy(e => e.String.StartsWith(startsWith), orderByDescending: e => e.String) :
+               _context.FirstBy(e => e.String.StartsWith(startsWith));
     }
-
-    //  return SingleBy()
-
-    // FirstByString(asc = false, desc = false)
-    //  if(asc) return FirstBy(orderBy:)
-    //  else if(desc) return FirstBy(orderByDesc:)
-    //  else return FirstBy()
-
-    // ByString
 }

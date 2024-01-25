@@ -37,6 +37,30 @@ public class EntitiesController
         );
     }
 
+    public record SingleByStringRequest(string String);
+
+    [HttpGet]
+    [Route("entities/single-by-string")]
+    public Entity SingleByString([FromServices] Entities target, [FromQuery] SingleByStringRequest request)
+    {
+        return target.SingleByString(request.String);
+    }
+
+    public record FirstByStringRequest(string StartsWith,
+        bool Asc = false,
+        bool Desc = false
+    );
+
+    [HttpGet]
+    [Route("entities/first-by-string")]
+    public Entity FirstByString([FromServices] Entities target, [FromQuery] FirstByStringRequest request)
+    {
+        return target.FirstByString(request.StartsWith,
+            asc: request.Asc,
+            desc: request.Desc
+        );
+    }
+
     [HttpGet]
     [Route("entities/{id}")]
     public Entity Get([FromServices] IQueryContext<Entity> entityQuery, Guid id)

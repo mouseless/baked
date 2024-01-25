@@ -1,9 +1,3 @@
-﻿
-namespace Do.Test;
+﻿namespace Do.Test;
 
-public interface IInterface
-{
-    object TestObject(object request);
-
-    Task<object> TestAsyncObject(object request);
-}
+public interface IInterface { }

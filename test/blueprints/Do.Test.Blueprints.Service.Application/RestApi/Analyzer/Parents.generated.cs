@@ -7,14 +7,41 @@ namespace Do.Test.RestApi.Analyzer;
 public class ParentsController
 {
     public record AllRequest(
-        bool Reverse = false
+        bool Asc = false,
+        bool Desc = false,
+        int? Take = default,
+        int? Skip = default
     );
 
     [HttpGet]
     [Route("parents")]
     public List<Parent> All([FromServices] Parents target, [FromQuery] AllRequest request)
     {
-        return target.All();
+        return target.All(
+            asc: request.Asc,
+            desc: request.Desc,
+            take: request.Take,
+            skip: request.Skip
+        );
+    }
+
+    public record ByNameRequest(string Contains,
+        bool Asc = false,
+        bool Desc = false,
+        int? Take = default,
+        int? Skip = default
+    );
+
+    [HttpGet]
+    [Route("parents/by-name")]
+    public List<Parent> ByName([FromServices] Parents target, [FromQuery] ByNameRequest request)
+    {
+        return target.ByName(request.Contains,
+            asc: request.Asc,
+            desc: request.Desc,
+            take: request.Take,
+            skip: request.Skip
+        );
     }
 
     [HttpGet]

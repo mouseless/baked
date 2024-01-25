@@ -3,11 +3,5 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\blueprints\Do.Blueprints.Service\Do.Blueprints.Service.csproj" />
   </ItemGroup>
-  
-    <ItemGroup>
-    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-      <_Parameter1>Do.Test.Blueprints.Service.Test</_Parameter1>
-    </AssemblyAttribute>
-  </ItemGroup>
 
 </Project>

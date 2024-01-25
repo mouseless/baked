@@ -42,7 +42,7 @@ public class Parents(IQueryContext<Parent> _context)
             _context.All(take: take, skip: skip);
     }
 
-    internal List<Parent> ByNameContains(string name,
+    public List<Parent> ByName(string contains,
         bool asc = false,
         bool desc = false,
         int? take = default,
@@ -50,8 +50,8 @@ public class Parents(IQueryContext<Parent> _context)
     )
     {
         return
-            asc ? _context.By(where: p => p.Name.Contains(name), orderBy: p => p.Name, take: take, skip: skip) :
-            desc ? _context.By(where: p => p.Name.Contains(name), orderByDescending: p => p.Name, take: take, skip: skip) :
-            _context.By(where: p => p.Name.Contains(name), take: take, skip: skip);
+            asc ? _context.By(where: p => p.Name.Contains(contains), orderBy: p => p.Name, take: take, skip: skip) :
+            desc ? _context.By(where: p => p.Name.Contains(contains), orderByDescending: p => p.Name, take: take, skip: skip) :
+            _context.By(where: p => p.Name.Contains(contains), take: take, skip: skip);
     }
 }

@@ -29,12 +29,19 @@ public static class TestServiceSpecExtensions
         );
 
     public static Parent AParent(this Stubber giveMe,
-        string? name = default
+        string? name = default,
+        bool withChild = false
     )
     {
         name ??= giveMe.AString();
 
-        return giveMe.A<Parent>().With(name);
+        var result = giveMe.A<Parent>().With(name);
+        if (withChild)
+        {
+            result.AddChild();
+        }
+
+        return result;
     }
 
     public static void ShouldThrowExceptionWithServiceNotRegisteredMessage(this Func<object> source, Type serviceType) =>
