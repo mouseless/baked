@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Do.Test.RestApi.Analyzer;
 
 [ApiController]
-public class ParentEntitiesController
+public class ParentsController
 {
     public record AllRequest(
         bool Reverse = false

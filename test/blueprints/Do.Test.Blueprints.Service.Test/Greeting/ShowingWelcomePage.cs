@@ -1,4 +1,5 @@
 ﻿using Do.Architecture;
+using Do.Test.RestApi.Analyzer;
 
 namespace Do.Test.Greeting;
 
@@ -7,7 +8,7 @@ public class ShowingWelcomePage : TestServiceNfr
     protected override Application ForgeApplication() =>
         Forge.New
             .Service(
-                business: c => c.Default(),
+                business: c => c.Default(businessAssemblies: [typeof(Entity).Assembly], applicationParts: [typeof(ParentsController).Assembly]),
                 database: c => c.InMemory(),
                 greeting: c => c.WelcomePage()
             );

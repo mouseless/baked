@@ -1,4 +1,5 @@
 ﻿using Do.Architecture;
+using Do.Test.RestApi.Analyzer;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Net.Http.Json;
@@ -10,10 +11,9 @@ public class GeneratingExceptionResponse : TestServiceNfr
     protected override Application ForgeApplication() =>
          Forge.New
              .Service(
-                 business: c => c.Default(),
+                 business: c => c.Default(businessAssemblies: [typeof(Entity).Assembly], applicationParts: [typeof(ParentsController).Assembly]),
                  database: c => c.InMemory(),
-                 exceptionHandling: ex => ex.Default(typeUrlFormat: "https://do.mouseless.codes/errors/{0}"),
-                 configure: app => app.Features.AddConfigurationOverrider()
+                 exceptionHandling: ex => ex.Default(typeUrlFormat: "https://do.mouseless.codes/errors/{0}")
              );
 
     [Test]

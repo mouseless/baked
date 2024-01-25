@@ -1,4 +1,5 @@
 ﻿using Do.Architecture;
+using Do.Test.RestApi.Analyzer;
 
 namespace Do.Test.Database;
 
@@ -7,9 +8,8 @@ public class TransactionRollback : TestServiceNfr
     protected override Application ForgeApplication() =>
         Forge.New
             .Service(
-                business: c => c.Default(),
-                database: c => c.Sqlite(),
-                configure: app => app.Features.AddConfigurationOverrider()
+                business: c => c.Default(businessAssemblies: [typeof(Entity).Assembly], applicationParts: [typeof(ParentsController).Assembly]),
+                database: c => c.Sqlite()
             );
 
     protected override string EnvironmentName => "Development";

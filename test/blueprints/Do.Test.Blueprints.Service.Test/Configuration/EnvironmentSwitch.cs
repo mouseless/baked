@@ -8,7 +8,7 @@ namespace Do.Test.Configuration
         protected override Application ForgeApplication() =>
             Forge.New
                 .Service(
-                    business: c => c.Default(),
+                    business: c => c.Default(businessAssemblies: [typeof(Entity).Assembly]),
                     database: c => c.InMemory(),
                     greeting: c => c.WelcomePage()
                         .ForDevelopment(c.WelcomePage("/development"))
