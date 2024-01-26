@@ -34,6 +34,7 @@ public class DefaultBusinessFeature(List<Assembly> _assemblies, Assembly _contro
             foreach (var type in domainModel.Types)
             {
                 if (
+                    !IsInDomain(type) ||
                     !type.IsPublic ||
                     type.Namespace?.StartsWith("System") == true ||
                     (type.IsSealed && type.IsAbstract) || // if type is static
@@ -70,13 +71,15 @@ public class DefaultBusinessFeature(List<Assembly> _assemblies, Assembly _contro
                 }
                 else
                 {
+                    if (type.Properties.Any(p => p.IsPublic)) { continue; }
+
                     type.Apply(t =>
-                    {
-                        services.AddSingleton(t);
-                        type.Interfaces
-                            .Where(IsInDomain)
-                            .Apply(i => services.AddSingleton(i, t, forward: true));
-                    });
+                        {
+                            services.AddSingleton(t);
+                            type.Interfaces
+                                .Where(IsInDomain)
+                                .Apply(i => services.AddSingleton(i, t, forward: true));
+                        });
                 }
             }
 
