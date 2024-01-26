@@ -20,3 +20,8 @@
 ## Improvements    
 
 - Features can now access `ApplicationContext` through `LayerConfigurator`
+
+## Bugfixes
+
+- Transaction was not rolling back changes properly when an exception occured,
+  fixed
