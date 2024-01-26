@@ -152,4 +152,12 @@ public class RegisteringServices : TestServiceSpec
 
         action.ShouldThrowExceptionWithServiceNotRegisteredMessage(nonPublicType);
     }
+
+    [Test]
+    public void Delegate_types_are_not_registered([Values(typeof(TaskDelegate))] Type type)
+    {
+        var action = () => GiveMe.The(type);
+
+        action.ShouldThrowExceptionWithServiceNotRegisteredMessage(type);
+    }
 }

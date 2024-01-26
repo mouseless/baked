@@ -41,6 +41,7 @@ public class DefaultBusinessFeature(List<Assembly> _assemblies, Assembly _contro
                     type.IsValueType ||
                     type.IsGenericMethodParameter ||
                     type.IsGenericTypeParameter ||
+                    type.IsAssignableTo<MulticastDelegate>() ||
                     type.IsAssignableTo<Exception>() ||
                     type.IsAssignableTo<Attribute>() ||
                     (type.ContainsGenericParameters && !type.GenericTypeArguments.Any()) ||
