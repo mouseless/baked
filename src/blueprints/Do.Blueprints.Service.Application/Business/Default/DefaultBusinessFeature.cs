@@ -47,7 +47,7 @@ public class DefaultBusinessFeature(List<Assembly> _assemblies, Assembly _contro
                     type.Methods.Contains("<Clone>$") // if type is record
                 ) { continue; }
 
-                if (type.Methods.TryGetValue("With", out var method) && method.Overloads.All(o => o.ReturnType == type))
+                if (type.Methods.Contains("With"))
                 {
                     type.Apply(t =>
                     {
