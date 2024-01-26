@@ -18,6 +18,16 @@ public class SingletonController
         return result;
     }
 
+    public record TestTransactionRollbackRequest(string String);
+
+    [HttpPost]
+    [Produces("application/json")]
+    [Route("singleton/test-transaction-rollback")]
+    public void TestTransactionRollback([FromServices] Singleton target, [FromBody] TestTransactionRollbackRequest request)
+    {
+        target.TestTransactionRollback(@string: request.String);
+    }
+
     [HttpPost]
     [Produces("application/json")]
     [Route("singleton/test-transaction-action")]

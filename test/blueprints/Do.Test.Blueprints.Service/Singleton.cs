@@ -35,6 +35,22 @@ public class Singleton(TimeProvider _timeProvider, Func<Entity> _newEntity, ITra
         throw new();
     }
 
+    public void TestTransactionRollback(string @string)
+    {
+        _newEntity().With(
+            guid: Guid.NewGuid(),
+            @string: @string,
+            stringData: "transaction func",
+            int32: 1,
+            uri: new("https://func.com"),
+            @dynamic: new { transaction = "func" },
+            @enum: Status.Enabled,
+            dateTime: GetNow()
+        );
+
+        throw new();
+    }
+
     public async Task TestTransactionFunc()
     {
         var entity = await _transaction.CommitAsync(() =>
