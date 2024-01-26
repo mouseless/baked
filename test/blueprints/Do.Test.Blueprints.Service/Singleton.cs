@@ -2,9 +2,18 @@
 
 namespace Do.Test;
 
-public class Singleton(TimeProvider _timeProvider, Func<Entity> _newEntity, ITransaction _transaction)
-    : SingletonBase(_timeProvider), IInterface
+public class Singleton(
+    TimeProvider _timeProvider,
+    Func<Entity> _newEntity,
+    ITransaction _transaction,
+    Func<OperationWithGenericParameter<Entity>> _newOperationWithGenericParameter
+) : SingletonBase(_timeProvider), IInterface
 {
+    internal void TestOperationWithGenericParameter()
+    {
+        _newOperationWithGenericParameter().With().Execute();
+    }
+
     public void TestException(bool handled)
     {
         if (handled)

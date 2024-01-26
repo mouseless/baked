@@ -42,6 +42,7 @@ public class DefaultBusinessFeature(List<Assembly> _assemblies, Assembly _contro
                     type.IsGenericTypeParameter ||
                     type.IsAssignableTo<Exception>() ||
                     type.IsAssignableTo<Attribute>() ||
+                    (type.ContainsGenericParameters && !type.GenericTypeArguments.Any()) ||
                     type.Methods.TryGetValue("<Clone>$", out _) // if type is record
                 ) { continue; }
 

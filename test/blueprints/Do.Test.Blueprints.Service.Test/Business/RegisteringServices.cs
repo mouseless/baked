@@ -128,7 +128,15 @@ public class RegisteringServices : TestServiceSpec
     }
 
     [Test]
-    public void Referenced_interfaces_are_not_registered([Values(typeof(IEquatable<Entity>), typeof(IScoped))] Type type )
+    public void Referenced_interfaces_are_not_registered([Values(typeof(IEquatable<Entity>), typeof(IScoped))] Type type)
+    {
+        var action = () => GiveMe.The(type);
+
+        action.ShouldThrowExceptionWithServiceNotRegisteredMessage(type);
+    }
+
+    [Test]
+    public void Types_with_generic_type_parameters_are_not_registered([Values(typeof(OperationWithGenericParameter<>))] Type type)
     {
         var action = () => GiveMe.The(type);
 

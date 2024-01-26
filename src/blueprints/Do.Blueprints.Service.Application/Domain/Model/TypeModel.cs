@@ -19,6 +19,7 @@ public class TypeModel(Type type, string id,
     public bool IsInterface { get; } = type.IsInterface;
     public bool IsGenericTypeParameter { get; } = type.IsGenericTypeParameter;
     public bool IsGenericMethodParameter { get; } = type.IsGenericMethodParameter;
+    public bool ContainsGenericParameters { get; } = type.ContainsGenericParameters;
     public AssemblyModel? Assembly { get; } = assembly;
     public TypeModel? BaseType { get; private set; } = default!;
     public ModelCollection<MethodModel> Methods { get; private set; } = default!;
