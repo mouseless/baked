@@ -83,7 +83,7 @@ public class DefaultBusinessFeature(List<Assembly> _assemblies, Assembly _contro
                 }
             }
 
-            bool IsInDomain(TypeModel type) => domainModel.Assemblies.ContainsModel(type.Assembly);
+            bool IsInDomain(IModel model) => domainModel.DomainTypeIds.Contains(model.Id);
         });
 
         configurator.ConfigureApplicationParts(applicationParts =>
