@@ -13,6 +13,8 @@ public class TypeModel(Type type, string id,
     public string Name { get; } = type.Name;
     public string? FullName { get; } = type.FullName;
     public string? Namespace { get; } = type.Namespace;
+    public bool ContainsGenericParameters { get; } = type.ContainsGenericParameters;
+    public bool IsPublic { get; } = type.IsPublic;
     public bool IsAbstract { get; } = type.IsAbstract;
     public bool IsValueType { get; } = type.IsValueType;
     public bool IsSealed { get; } = type.IsSealed;

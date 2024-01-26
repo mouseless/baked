@@ -34,6 +34,7 @@ public class DefaultBusinessFeature(List<Assembly> _assemblies, Assembly _contro
             foreach (var type in domainModel.Types)
             {
                 if (
+                    !type.IsPublic ||
                     type.Namespace?.StartsWith("System") == true ||
                     (type.IsSealed && type.IsAbstract) || // if type is static
                     type.IsAbstract ||
@@ -42,7 +43,8 @@ public class DefaultBusinessFeature(List<Assembly> _assemblies, Assembly _contro
                     type.IsGenericTypeParameter ||
                     type.IsAssignableTo<Exception>() ||
                     type.IsAssignableTo<Attribute>() ||
-                    type.Methods.TryGetValue("<Clone>$", out _) // if type is record
+                    (type.ContainsGenericParameters && !type.GenericTypeArguments.Any()) ||
+                    type.Methods.Contains("<Clone>$") // if type is record
                 ) { continue; }
 
                 if (type.Methods.TryGetValue("With", out var method) && method.Overloads.All(o => o.ReturnType == type))
