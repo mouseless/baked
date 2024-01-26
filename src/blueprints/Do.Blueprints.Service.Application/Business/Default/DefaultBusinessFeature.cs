@@ -74,12 +74,12 @@ public class DefaultBusinessFeature(List<Assembly> _assemblies, Assembly _contro
                     if (type.Properties.Any(p => p.IsPublic)) { continue; }
 
                     type.Apply(t =>
-                        {
-                            services.AddSingleton(t);
-                            type.Interfaces
-                                .Where(IsInDomain)
-                                .Apply(i => services.AddSingleton(i, t, forward: true));
-                        });
+                    {
+                        services.AddSingleton(t);
+                        type.Interfaces
+                            .Where(IsInDomain)
+                            .Apply(i => services.AddSingleton(i, t, forward: true));
+                    });
                 }
             }
 
