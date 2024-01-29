@@ -81,10 +81,4 @@ public static class TypeModelExtensions
             type.Apply(i => action(i));
         }
     }
-
-    public static bool IsStatic(this TypeModel type) =>
-        type.IsSealed && type.IsAbstract;
-
-    public static bool IsRecord(this TypeModel type) =>
-        type.Methods.Contains("<Clone>$");
 }

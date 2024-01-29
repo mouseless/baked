@@ -38,7 +38,7 @@ public class DefaultBusinessFeature(List<Assembly> _assemblies, Assembly _contro
                     !type.IsPublic ||
                     type.IsInterface ||
                     type.Namespace?.StartsWith("System") == true ||
-                    type.IsStatic() ||
+                    (type.IsSealed && type.IsAbstract) || // if type is static
                     type.IsAbstract ||
                     type.IsValueType ||
                     type.IsGenericMethodParameter ||
@@ -47,7 +47,7 @@ public class DefaultBusinessFeature(List<Assembly> _assemblies, Assembly _contro
                     type.IsAssignableTo<Exception>() ||
                     type.IsAssignableTo<Attribute>() ||
                     (type.ContainsGenericParameters && !type.GenericTypeArguments.Any()) ||
-                    type.IsRecord()
+                    type.Methods.Contains("<Clone>$") // if type is record
                 ) { continue; }
 
                 if (type.Methods.Contains("With"))
