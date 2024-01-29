@@ -45,9 +45,9 @@ public class RegisteringServices : TestServiceSpec
     public void Exception_handlers_are_registered_as_singleton_and_forwarded_to_IExceptionHandler_interface()
     {
         var exceptionHandlers = GiveMe.The<IEnumerable<Do.ExceptionHandling.IExceptionHandler>>();
-        var expected = GiveMe.The<TestExceptionHandler>();
+        var expected = GiveMe.The<SampleExceptionHandler>();
 
-        var actual = exceptionHandlers.FirstOrDefault(h => h is TestExceptionHandler);
+        var actual = exceptionHandlers.FirstOrDefault(h => h is SampleExceptionHandler);
 
         actual.ShouldBeSameAs(expected);
     }
