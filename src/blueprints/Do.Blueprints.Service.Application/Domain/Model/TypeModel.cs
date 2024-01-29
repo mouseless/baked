@@ -14,7 +14,6 @@ public class TypeModel(Type type, string id,
     public string Name { get; } = type.Name;
     public string? FullName { get; } = type.FullName;
     public string? Namespace { get; } = type.Namespace;
-    public bool ContainsGenericParameters { get; } = type.ContainsGenericParameters;
     public bool IsBusinessType { get; } = isBusinessType;
     public bool IsPublic { get; } = type.IsPublic;
     public bool IsAbstract { get; } = type.IsAbstract;
@@ -23,6 +22,7 @@ public class TypeModel(Type type, string id,
     public bool IsInterface { get; } = type.IsInterface;
     public bool IsGenericTypeParameter { get; } = type.IsGenericTypeParameter;
     public bool IsGenericMethodParameter { get; } = type.IsGenericMethodParameter;
+    public bool ContainsGenericParameters { get; } = type.ContainsGenericParameters;
     public AssemblyModel? Assembly { get; } = assembly;
     public TypeModel? BaseType { get; private set; } = default!;
     public ModelCollection<MethodModel> Methods { get; private set; } = default!;

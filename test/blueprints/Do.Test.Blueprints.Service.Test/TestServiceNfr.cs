@@ -14,4 +14,6 @@ public abstract class TestServiceNfr : ServiceNfr<TestServiceNfr>, IEntryPoint
         c => c.Default(assemblies: [typeof(Entity).Assembly], controllerAssembly: typeof(ParentsController).Assembly);
     protected override Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>>? Database =>
         c => c.InMemory();
+    protected override Action<ApplicationDescriptor>? Configure =>
+        app => app.Features.AddConfigurationOverrider();
 }
