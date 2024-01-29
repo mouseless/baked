@@ -34,25 +34,29 @@ public class DefaultBusinessFeature(List<Assembly> _assemblies, Assembly _contro
             foreach (var type in domainModel.Types)
             {
                 if (
+                    !type.IsBusinessType ||
+                    !type.IsPublic ||
+                    type.IsInterface ||
                     type.Namespace?.StartsWith("System") == true ||
                     (type.IsSealed && type.IsAbstract) || // if type is static
                     type.IsAbstract ||
                     type.IsValueType ||
                     type.IsGenericMethodParameter ||
                     type.IsGenericTypeParameter ||
+                    type.IsAssignableTo<MulticastDelegate>() ||
                     type.IsAssignableTo<Exception>() ||
                     type.IsAssignableTo<Attribute>() ||
                     (type.ContainsGenericParameters && !type.GenericTypeArguments.Any()) ||
-                    type.Methods.TryGetValue("<Clone>$", out _) // if type is record
+                    type.Methods.Contains("<Clone>$") // if type is record
                 ) { continue; }
 
-                if (type.Methods.TryGetValue("With", out var method) && method.Overloads.All(o => o.ReturnType == type))
+                if (type.Methods.Contains("With"))
                 {
                     type.Apply(t =>
                     {
                         services.AddTransientWithFactory(t);
                         type.Interfaces
-                            .Where(IsInDomain)
+                            .Where(i => i.IsBusinessType)
                             .Apply(i => services.AddTransientWithFactory(i, t));
                     });
                 }
@@ -62,23 +66,23 @@ public class DefaultBusinessFeature(List<Assembly> _assemblies, Assembly _contro
                     {
                         services.AddScopedWithFactory(t);
                         type.Interfaces
-                            .Where(IsInDomain)
+                            .Where(i => i.IsBusinessType)
                             .Apply(i => services.AddScopedWithFactory(i, t));
                     });
                 }
                 else
                 {
+                    if (type.Properties.Any(p => p.IsPublic)) { continue; }
+
                     type.Apply(t =>
                     {
                         services.AddSingleton(t);
                         type.Interfaces
-                            .Where(IsInDomain)
+                            .Where(i => i.IsBusinessType)
                             .Apply(i => services.AddSingleton(i, t, forward: true));
                     });
                 }
             }
-
-            bool IsInDomain(TypeModel type) => domainModel.Assemblies.ContainsModel(type.Assembly);
         });
 
         configurator.ConfigureApplicationParts(applicationParts =>
