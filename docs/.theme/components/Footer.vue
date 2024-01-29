@@ -5,7 +5,7 @@
         <NuxtLink to="/">
           <img class="do logo mono">
         </NuxtLink>
-        <span>Copyright (c) 2023 Mouseless - MIT License</span>
+        <span>Copyright (c) 2024 Mouseless - MIT License</span>
       </div>
       <nav>
         <NuxtLink
