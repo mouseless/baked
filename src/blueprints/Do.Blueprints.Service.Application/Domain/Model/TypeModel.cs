@@ -1,7 +1,8 @@
 ﻿namespace Do.Domain.Model;
 
 public class TypeModel(Type type, string id,
-    AssemblyModel? assembly = default
+    AssemblyModel? assembly = default,
+    bool isBusinessType = false
 ) : IModel, IEquatable<TypeModel>
 {
     internal static string IdFrom(Type type) =>
@@ -14,6 +15,7 @@ public class TypeModel(Type type, string id,
     public string? FullName { get; } = type.FullName;
     public string? Namespace { get; } = type.Namespace;
     public bool ContainsGenericParameters { get; } = type.ContainsGenericParameters;
+    public bool IsBusinessType { get; } = isBusinessType;
     public bool IsPublic { get; } = type.IsPublic;
     public bool IsAbstract { get; } = type.IsAbstract;
     public bool IsValueType { get; } = type.IsValueType;

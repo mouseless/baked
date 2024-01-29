@@ -2,6 +2,5 @@
 
 public record DomainModel(
     ModelCollection<AssemblyModel> Assemblies,
-    ModelCollection<TypeModel> Types,
-    HashSet<string> DomainTypeIds
+    ModelCollection<TypeModel> Types
 );

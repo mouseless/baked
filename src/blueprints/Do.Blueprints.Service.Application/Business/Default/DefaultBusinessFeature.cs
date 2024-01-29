@@ -34,7 +34,7 @@ public class DefaultBusinessFeature(List<Assembly> _assemblies, Assembly _contro
             foreach (var type in domainModel.Types)
             {
                 if (
-                    !IsInDomain(type) ||
+                    !type.IsBusinessType ||
                     !type.IsPublic ||
                     type.IsInterface ||
                     type.Namespace?.StartsWith("System") == true ||
@@ -56,7 +56,7 @@ public class DefaultBusinessFeature(List<Assembly> _assemblies, Assembly _contro
                     {
                         services.AddTransientWithFactory(t);
                         type.Interfaces
-                            .Where(IsInDomain)
+                            .Where(i => i.IsBusinessType)
                             .Apply(i => services.AddTransientWithFactory(i, t));
                     });
                 }
@@ -66,7 +66,7 @@ public class DefaultBusinessFeature(List<Assembly> _assemblies, Assembly _contro
                     {
                         services.AddScopedWithFactory(t);
                         type.Interfaces
-                            .Where(IsInDomain)
+                            .Where(i => i.IsBusinessType)
                             .Apply(i => services.AddScopedWithFactory(i, t));
                     });
                 }
@@ -78,13 +78,11 @@ public class DefaultBusinessFeature(List<Assembly> _assemblies, Assembly _contro
                     {
                         services.AddSingleton(t);
                         type.Interfaces
-                            .Where(IsInDomain)
+                            .Where(i => i.IsBusinessType)
                             .Apply(i => services.AddSingleton(i, t, forward: true));
                     });
                 }
             }
-
-            bool IsInDomain(IModel model) => domainModel.DomainTypeIds.Contains(model.Id);
         });
 
         configurator.ConfigureApplicationParts(applicationParts =>

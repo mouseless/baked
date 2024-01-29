@@ -6,7 +6,6 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
 {
     readonly KeyedModelCollection<AssemblyModel> _assemblies = [];
     readonly KeyedModelCollection<TypeModel> _types = [];
-    readonly HashSet<string> _domainTypeIds = [];
 
     public DomainModel BuildFrom(IAssemblyCollection assemblyCollection, ITypeCollection typeCollection)
     {
@@ -22,14 +21,11 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
 
         foreach (var type in typeCollection)
         {
-            var id = TypeModel.IdFrom(type);
-            _types.Add(new TypeModel(type, id, _assemblies.GetOrDefault(type.Assembly.FullName)));
-            _domainTypeIds.Add(id);
+            _types.Add(new(type, TypeModel.IdFrom(type), assembly: _assemblies.GetOrDefault(type.Assembly.FullName), isBusinessType: true));
         }
 
-        foreach (var id in _domainTypeIds)
+        foreach (var type in _types.ToList())
         {
-            var type = _types[id];
             type.Apply(t =>
                 type.Init(
                     genericTypeArguments: BuildGenericTypeArguments(t),
@@ -42,7 +38,7 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
             );
         }
 
-        return new(new(_assemblies), new(_types), _domainTypeIds);
+        return new(new(_assemblies), new(_types));
     }
 
     TypeModel GetOrCreateTypeModel(Type type)
