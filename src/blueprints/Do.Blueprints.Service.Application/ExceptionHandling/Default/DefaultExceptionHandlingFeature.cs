@@ -13,6 +13,7 @@ public class DefaultExceptionHandlingFeature(Setting<string>? _typeUrlFormat = d
         configurator.ConfigureTypeCollection(types =>
         {
             types.Add<HandledException>();
+            types.Add<IExceptionHandler>();
         });
 
         configurator.ConfigureServiceCollection(services =>
