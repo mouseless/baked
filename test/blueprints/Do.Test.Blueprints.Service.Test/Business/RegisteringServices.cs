@@ -128,7 +128,49 @@ public class RegisteringServices : TestServiceSpec
     }
 
     [Test]
-    public void Referenced_interfaces_are_not_registered([Values(typeof(IEquatable<Entity>), typeof(IScoped))] Type type )
+    public void Referenced_interfaces_are_not_registered([Values(typeof(IEquatable<Entity>), typeof(IScoped))] Type type)
+    {
+        var action = () => GiveMe.The(type);
+
+        action.ShouldThrowExceptionWithServiceNotRegisteredMessage(type);
+    }
+
+    [Test]
+    public void Types_with_generic_type_parameters_are_not_registered([Values(typeof(OperationWithGenericParameter<>))] Type type)
+    {
+        var action = () => GiveMe.The(type);
+
+        action.ShouldThrowExceptionWithServiceNotRegisteredMessage(type);
+    }
+
+    [Test]
+    public void Non_public_types_are_not_registered()
+    {
+        var nonPublicType = Activator.CreateInstance("Do.Test.Blueprints.Service", "Do.Test.Internal")?.GetType() ??
+            throw new("`Do.Test.Internal` should have existed");
+        var action = () => GiveMe.The(nonPublicType);
+
+        action.ShouldThrowExceptionWithServiceNotRegisteredMessage(nonPublicType);
+    }
+
+    [Test]
+    public void Delegate_types_are_not_registered([Values(typeof(TaskDelegate))] Type type)
+    {
+        var action = () => GiveMe.The(type);
+
+        action.ShouldThrowExceptionWithServiceNotRegisteredMessage(type);
+    }
+
+    [Test]
+    public void Types_having_no_with_method_but_public_properties_are_not_registered([Values(typeof(ClassDTO))] Type type)
+    {
+        var action = () => GiveMe.The(type);
+
+        action.ShouldThrowExceptionWithServiceNotRegisteredMessage(type);
+    }
+
+    [Test]
+    public void Interfaces_are_only_registered_through_their_implemented_classes([Values(typeof(IInterfaceWithNoImplementation))] Type type)
     {
         var action = () => GiveMe.The(type);
 

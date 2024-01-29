@@ -12,11 +12,16 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
         foreach (var assembly in assemblyCollection)
         {
             _assemblies.Add(new(assembly));
+
+            foreach (var type in assembly.GetExportedTypes())
+            {
+                typeCollection.Add(type);
+            }
         }
 
         foreach (var type in typeCollection)
         {
-            _types.Add(new(type, TypeModel.IdFrom(type), _assemblies.GetOrDefault(type.Assembly.FullName)));
+            _types.Add(new(type, TypeModel.IdFrom(type), assembly: _assemblies.GetOrDefault(type.Assembly.FullName), isBusinessType: true));
         }
 
         foreach (var type in _types.ToList())
