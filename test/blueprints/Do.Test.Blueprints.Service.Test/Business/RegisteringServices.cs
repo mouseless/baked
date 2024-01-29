@@ -168,4 +168,12 @@ public class RegisteringServices : TestServiceSpec
 
         action.ShouldThrowExceptionWithServiceNotRegisteredMessage(type);
     }
+
+    [Test]
+    public void Interfaces_are_only_registered_through_their_implemented_classes([Values(typeof(IInterfaceWithNoImplementation))] Type type)
+    {
+        var action = () => GiveMe.The(type);
+
+        action.ShouldThrowExceptionWithServiceNotRegisteredMessage(type);
+    }
 }

@@ -36,8 +36,9 @@ public class DefaultBusinessFeature(List<Assembly> _assemblies, Assembly _contro
                 if (
                     !IsInDomain(type) ||
                     !type.IsPublic ||
+                    type.IsInterface ||
                     type.Namespace?.StartsWith("System") == true ||
-                    (type.IsSealed && type.IsAbstract) || // if type is static
+                    type.IsStatic() ||
                     type.IsAbstract ||
                     type.IsValueType ||
                     type.IsGenericMethodParameter ||
@@ -46,7 +47,7 @@ public class DefaultBusinessFeature(List<Assembly> _assemblies, Assembly _contro
                     type.IsAssignableTo<Exception>() ||
                     type.IsAssignableTo<Attribute>() ||
                     (type.ContainsGenericParameters && !type.GenericTypeArguments.Any()) ||
-                    type.Methods.Contains("<Clone>$") // if type is record
+                    type.IsRecord()
                 ) { continue; }
 
                 if (type.Methods.Contains("With"))

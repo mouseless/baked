@@ -27,8 +27,9 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
             _domainTypeIds.Add(id);
         }
 
-        foreach (var type in _types.ToList())
+        foreach (var id in _domainTypeIds)
         {
+            var type = _types[id];
             type.Apply(t =>
                 type.Init(
                     genericTypeArguments: BuildGenericTypeArguments(t),
