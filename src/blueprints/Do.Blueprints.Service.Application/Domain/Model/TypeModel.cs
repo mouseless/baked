@@ -14,7 +14,6 @@ public class TypeModel(Type type, string id,
     public string Name { get; } = type.Name;
     public string? FullName { get; } = type.FullName;
     public string? Namespace { get; } = type.Namespace;
-    public bool ContainsGenericParameters { get; } = type.ContainsGenericParameters;
     public bool IsBusinessType { get; } = isBusinessType;
     public bool IsPublic { get; } = type.IsPublic;
     public bool IsAbstract { get; } = type.IsAbstract;
