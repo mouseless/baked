@@ -36,10 +36,10 @@ public class HandlingExceptions : TestServiceSpec
     public void RecordNotFoundException_for_calls_primary_constructor_with_correct_mapping()
     {
         var recordNotFoundException = RecordNotFoundException.For<Entity>(field: "Id",
-            value: GiveMe.AGuid("b4b6bd2b-b8f3-414e-bd84-1e044cbe77dc")
+            value: GiveMe.AGuid("fadf")
         );
 
-        recordNotFoundException.Message.ShouldBe($"Entity with Id: 'b4b6bd2b-b8f3-414e-bd84-1e044cbe77dc' does not exist");
+        recordNotFoundException.Message.ShouldBe($"Entity with Id: '{GiveMe.AGuid("fadf")}' does not exist");
     }
 
     [Test]
