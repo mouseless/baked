@@ -48,8 +48,15 @@ public static class ServiceSpecExtensions
     #region Guid Extensions
 
     public static Guid AGuid(this Stubber _,
-        string? guid = default
-    ) => guid is null ? Guid.NewGuid() : Guid.Parse(guid);
+        string? starts = default
+    )
+    {
+        starts = starts is null ? string.Empty : Regex.Replace(starts, @"[^\w]", string.Empty);
+
+        var template = "4d13bbe007a44b649d318fef958fbef1";
+
+        return new Guid($"{starts}{template[(starts?.Length ?? 0)..]}");
+    }
 
     #endregion
 
