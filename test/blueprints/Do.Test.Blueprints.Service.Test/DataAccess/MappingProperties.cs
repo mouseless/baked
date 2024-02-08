@@ -5,13 +5,13 @@ public class MappingProperties : TestServiceSpec
     [Test]
     public async Task Guid()
     {
-        var entity = GiveMe.An<Entity>().With(guid: GiveMe.AGuid("EB8DD0A1-07B7-42EC-AAD3-14B2A623C01E"));
-        entity.Guid.ShouldBe(GiveMe.AGuid("EB8DD0A1-07B7-42EC-AAD3-14B2A623C01E"));
+        var entity = GiveMe.An<Entity>().With(guid: GiveMe.AGuid("eb8dd0a1"));
+        entity.Guid.ShouldBe(GiveMe.AGuid("eb8dd0a1"));
 
-        await entity.Update(guid: GiveMe.AGuid("AB8DD0A1-07B7-42EC-AAD3-14B2A623C01E"));
-        entity.Guid.ShouldBe(GiveMe.AGuid("AB8DD0A1-07B7-42EC-AAD3-14B2A623C01E"));
+        await entity.Update(guid: GiveMe.AGuid("ab8dd0a1"));
+        entity.Guid.ShouldBe(GiveMe.AGuid("ab8dd0a1"));
 
-        var actual = GiveMe.The<Entities>().By(guid: GiveMe.AGuid("AB8DD0A1-07B7-42EC-AAD3-14B2A623C01E")).FirstOrDefault();
+        var actual = GiveMe.The<Entities>().By(guid: GiveMe.AGuid("ab8dd0a1")).FirstOrDefault();
         actual.ShouldBe(entity);
     }
 

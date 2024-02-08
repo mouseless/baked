@@ -51,11 +51,11 @@ public static class ServiceSpecExtensions
         string? starts = default
     )
     {
-        starts = starts is null ? string.Empty : Regex.Replace(starts, @"[^\w]", string.Empty);
+        starts ??= string.Empty;
 
-        var template = "4d13bbe007a44b649d318fef958fbef1";
+        const string template = "4d13bbe0-07a4-4b64-9d31-8fef958fbef1";
 
-        return new Guid($"{starts}{template[(starts?.Length ?? 0)..]}");
+        return Guid.Parse($"{starts}{template[starts.Length..]}");
     }
 
     #endregion
