@@ -1,4 +1,5 @@
-﻿using Do.Database;
+﻿using Do.Communication;
+using Do.Database;
 
 namespace Do.Test;
 
@@ -6,12 +7,20 @@ public class Singleton(
     TimeProvider _timeProvider,
     Func<Entity> _newEntity,
     ITransaction _transaction,
-    Func<OperationWithGenericParameter<Entity>> _newOperationWithGenericParameter
+    Func<OperationWithGenericParameter<Entity>> _newOperationWithGenericParameter,
+    IClient<Singleton> _client
 ) : SingletonBase(_timeProvider), IInterface
 {
     internal void TestOperationWithGenericParameter()
     {
         _newOperationWithGenericParameter().With().Execute();
+    }
+
+    public async Task<dynamic> TestClient()
+    {
+        var request = new Request("repos/mouseless/do/pulls", HttpMethod.Get);
+
+        return await _client.Send(request);
     }
 
     public void TestException(bool handled)
