@@ -1,16 +1,17 @@
 ﻿using Do.Architecture;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Do.Communication.Mock;
 
-public class MockCommunicationFeature : IFeature<CommunicationConfigurator>
+public class MockCommunicationFeature(MockClientConfiguration configuration) : IFeature<CommunicationConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureServiceCollection(serviceCollection =>
+        configurator.ConfigureTestConfiguration(tests =>
         {
-            serviceCollection.AddSingleton<ResponseGenerator>();
-            serviceCollection.AddSingleton(typeof(IClient<>), typeof(Client<>));
+            foreach (var mockClientDescriptor in configuration.MockClientDescriptors)
+            {
+                tests.Mocks.Add(mockClientDescriptor);
+            }
         });
     }
 }

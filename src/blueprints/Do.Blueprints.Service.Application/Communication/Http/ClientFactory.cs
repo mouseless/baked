@@ -1,5 +1,4 @@
-﻿using Do.HttpClient;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 
 namespace Do.Communication.Http;
 
@@ -10,16 +9,20 @@ public class ClientFactory<T>(IConfiguration _configuration, IHttpClientFactory 
         var name = typeof(T).Name;
         var client = _httpClientFactory.CreateClient(name);
 
-        HttpClientDescriptor? descriptor = _configuration.GetSection($"Communication:Http:{name}").Get<HttpClientDescriptor>();
+        client.BaseAddress ??= _configuration.GetValue<Uri>($"Communication:Http:{name}:BaseAddress") ??
+            _configuration.GetValue<Uri>($"Communication:Http:Default:BaseAddress");
 
-        if (descriptor is not null)
+        var defaultHeaders = _configuration.GetSection($"Communication:Http:Default:DefaultHeaders").Get<Dictionary<string, string>>() ?? [];
+        var typeHeaders = _configuration.GetSection($"Communication:Http:{name}:DefaultHeaders").Get<Dictionary<string, string>>() ?? [];
+
+        foreach (var header in defaultHeaders)
         {
-            client.BaseAddress = descriptor.BaseAddress;
+            client.DefaultRequestHeaders.Add(header.Key, header.Value);
+        }
 
-            foreach (var header in descriptor.DefaultHeaders ?? [])
-            {
-                client.DefaultRequestHeaders.Add(header.Key, header.Value);
-            }
+        foreach (var header in typeHeaders)
+        {
+            client.DefaultRequestHeaders.Add(header.Key, header.Value);
         }
 
         return client;

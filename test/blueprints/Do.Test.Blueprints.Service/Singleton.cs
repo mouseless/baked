@@ -20,7 +20,9 @@ public class Singleton(
     {
         var request = new Request("repos/mouseless/do/pulls", HttpMethod.Get);
 
-        return await _client.Send(request);
+        var response = await _client.Send(request);
+
+        return ((IEnumerable<dynamic>?)response.GetContentAsObject())?.Select(i => i.url) ?? [];
     }
 
     public void TestException(bool handled)

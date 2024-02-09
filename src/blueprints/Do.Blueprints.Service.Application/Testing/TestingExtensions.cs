@@ -18,6 +18,16 @@ public static class TestingExtensions
             Setup: setup == default ? default : obj => setup((Mock<T>)obj)
         ));
 
+    public static void Add(this IMockCollection source, Type type, bool singleton = false, Action<Mock<object>>? setup = default)
+    {
+        source.Add(
+        new(
+            Type: type,
+            Singleton: singleton,
+            Setup: setup == default ? default : obj => setup((Mock<object>)obj)
+        ));
+    }
+
     public static void Returns<TMock, TResult>(this ISetup<TMock, TResult> source, params TResult[] results) where TMock : class
     {
         int currentResultIndex = 0;
