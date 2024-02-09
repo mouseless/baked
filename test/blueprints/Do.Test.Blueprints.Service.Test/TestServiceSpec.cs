@@ -7,7 +7,12 @@ public abstract class TestServiceSpec : ServiceSpec
             business: c => c.Default(assemblies: [typeof(Entity).Assembly]),
             communication: c => c.Mock(options =>
             {
-                options.AddClient<Singleton>(new(r => true, "test result"));
+                options.DefaultResponse = new { value = "default response" };
+                options.AddClient<Singleton>([new(r => true, "test result")]);
+                options.AddClient<Operation>([
+                    new(r => r.UrlOrPath.Equals("path1"), "path1 response"),
+                    new(r => r.UrlOrPath.Equals("path2"), "path2 response")
+                ]);
             }),
             configure: app =>
             {

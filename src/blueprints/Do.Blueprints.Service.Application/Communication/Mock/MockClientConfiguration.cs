@@ -7,14 +7,21 @@ namespace Do.Communication.Mock;
 public class MockClientConfiguration
 {
     public IMockCollection MockClientDescriptors { get; } = new MockCollection();
+    public dynamic DefaultResponse { get; set; } = new { };
 
-    public void AddClient<T>(MockClientSetup setup)
+    public void AddClient<T>(List<MockClientSetup> setups) where T : class
     {
         MockClientDescriptors.Add<IClient<T>>(
             singleton: true,
-            setup: mock => mock
-                .Setup(c => c.Send(It.Is<Request>(r => setup.Match(r))))
-                .ReturnsAsync(new Response(JsonConvert.SerializeObject(setup.Response)))
+            setup: mock =>
+            {
+                foreach (var setup in setups)
+                {
+                    mock
+                    .Setup(c => c.Send(It.Is<Request>(r => setup.Match(r))))
+                    .ReturnsAsync(new Response(JsonConvert.SerializeObject(setup.Response)));
+                }
+            }
         );
     }
 }

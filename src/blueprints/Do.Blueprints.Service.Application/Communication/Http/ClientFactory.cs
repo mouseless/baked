@@ -15,14 +15,14 @@ public class ClientFactory<T>(IConfiguration _configuration, IHttpClientFactory 
         var defaultHeaders = _configuration.GetSection($"Communication:Http:Default:DefaultHeaders").Get<Dictionary<string, string>>() ?? [];
         var typeHeaders = _configuration.GetSection($"Communication:Http:{name}:DefaultHeaders").Get<Dictionary<string, string>>() ?? [];
 
-        foreach (var header in defaultHeaders)
+        foreach (var (key, value) in typeHeaders)
         {
-            client.DefaultRequestHeaders.Add(header.Key, header.Value);
+            defaultHeaders[key] = value;
         }
 
-        foreach (var header in typeHeaders)
+        foreach (var (key, value) in defaultHeaders)
         {
-            client.DefaultRequestHeaders.Add(header.Key, header.Value);
+            client.DefaultRequestHeaders.Add(key, value);
         }
 
         return client;
