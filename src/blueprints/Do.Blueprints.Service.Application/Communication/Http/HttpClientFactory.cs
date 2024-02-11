@@ -2,7 +2,7 @@
 
 namespace Do.Communication.Http;
 
-public class ClientFactory(IHttpClientFactory _httpClientFactory,
+public class HttpClientFactory(IHttpClientFactory _httpClientFactory,
     Dictionary<string, HttpClientDescriptor>? _descriptors = default
 )
 {

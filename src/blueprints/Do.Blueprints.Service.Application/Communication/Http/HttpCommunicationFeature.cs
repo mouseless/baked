@@ -34,8 +34,8 @@ public class HttpCommunicationFeature : IFeature<CommunicationConfigurator>
                     )
             );
 
-            configurator.Context.GetServiceCollection().AddSingleton(typeof(ClientFactory), sp =>
-                new ClientFactory(sp.GetRequiredService<IHttpClientFactory>(), descriptors)
+            configurator.Context.GetServiceCollection().AddSingleton(typeof(HttpClientFactory), sp =>
+                new HttpClientFactory(sp.GetRequiredService<IHttpClientFactory>(), descriptors)
             );
         });
 

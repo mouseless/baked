@@ -5,7 +5,7 @@ namespace Do.Communication.Http;
 
 public class Client<T>(
     ILogger<Client<T>> _logger,
-    ClientFactory _clientFactory
+    HttpClientFactory _clientFactory
 ) : IClient<T>
 {
     public async Task<Response> Send(Request request)
