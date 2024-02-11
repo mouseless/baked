@@ -6,7 +6,7 @@ namespace Do.HttpClient;
 
 public class HttpClientLayer : LayerBase<AddServices>
 {
-    readonly Dictionary<string, HttpClientDescriptor> _httpClients = [];
+    readonly List<HttpClientDescriptor> _httpClients = [];
 
     protected override PhaseContext GetContext(AddServices phase)
     {
@@ -17,17 +17,17 @@ public class HttpClientLayer : LayerBase<AddServices>
         return phase.CreateContext(_httpClients,
             onDispose: () =>
             {
-                foreach (var (key, descriptor) in _httpClients)
+                foreach (var client in _httpClients)
                 {
                     services
-                        .AddHttpClient(key)
+                        .AddHttpClient(client.Name)
                         .ConfigureHttpClient(hc =>
                         {
-                            hc.BaseAddress = descriptor.BaseAddress;
+                            hc.BaseAddress = client.BaseAddress;
 
-                            if (descriptor.DefaultHeaders is not null)
+                            if (client.DefaultHeaders is not null)
                             {
-                                foreach (var (key, value) in descriptor.DefaultHeaders)
+                                foreach (var (key, value) in client.DefaultHeaders)
                                 {
                                     hc.DefaultRequestHeaders.Add(key, value);
                                 }

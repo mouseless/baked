@@ -1,5 +1,4 @@
 ﻿using Do.Architecture;
-using Do.HttpClient;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Do.Communication.Http;
@@ -18,7 +17,6 @@ public class HttpCommunicationFeature : IFeature<CommunicationConfigurator>
             foreach (var (key, (baseAddress, defaultHeaders)) in configurations)
             {
                 descriptors.Add(
-                    key,
                     new(
                         Name: key,
                         BaseAddress: baseAddress ?? defaultSettings?.BaseAddress,
@@ -28,10 +26,11 @@ public class HttpCommunicationFeature : IFeature<CommunicationConfigurator>
             }
 
             descriptors.Add(
-                "Default",
                 new(
-                    "Deafult", defaultSettings?.BaseAddress, defaultSettings?.DefaultHeaders
-                    )
+                    "Deafult",
+                    defaultSettings?.BaseAddress,
+                    defaultSettings?.DefaultHeaders
+                )
             );
 
             configurator.Context.GetServiceCollection().AddSingleton(typeof(HttpClientFactory), sp =>
