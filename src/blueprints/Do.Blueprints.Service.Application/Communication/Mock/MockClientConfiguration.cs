@@ -7,9 +7,8 @@ namespace Do.Communication.Mock;
 public class MockClientConfiguration
 {
     public IMockCollection MockClientDescriptors { get; } = new MockCollection();
-    public dynamic DefaultResponse { get; set; } = new { };
 
-    public void AddClient<T>(List<MockClientSetup> setups) where T : class
+    public void AddClientSetup<T>(List<MockClientSetup> setups) where T : class
     {
         MockClientDescriptors.Add<IClient<T>>(
             singleton: true,

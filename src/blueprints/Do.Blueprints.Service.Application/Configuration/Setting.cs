@@ -18,4 +18,8 @@ public class Setting<T>
     public T GetValue() =>
         (_key is not null ? _getConfiguration().GetValue(_key, _defaultValue) : _defaultValue) ??
         throw new ConfigurationRequiredException($"Config required for {_key}");
+
+    public T? GetSection() =>
+        _key is not null ? _getConfiguration().GetSection(_key).Get<T>() ?? _defaultValue :
+        throw new ConfigurationRequiredException($"Config required for {_key}");
 }
