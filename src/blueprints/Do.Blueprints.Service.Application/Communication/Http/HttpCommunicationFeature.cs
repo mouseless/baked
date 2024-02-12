@@ -11,8 +11,8 @@ public class HttpCommunicationFeature : IFeature<CommunicationConfigurator>
 
         configurator.ConfigureHttpClients(descriptors =>
         {
-            var configurations = Settings.Required<Dictionary<string, ClientConfig>>($"Communication:Http").GetSection() ?? [];
-            configurations.Remove("Default", out var defaultSettings);
+            var configurations = Settings.Optional<Dictionary<string, ClientConfig>>($"Communication:Http", []).GetSection() ?? [];
+            configurations.TryGetValue("Default", out var defaultSettings);
 
             foreach (var (key, (baseAddress, defaultHeaders)) in configurations)
             {
@@ -25,16 +25,8 @@ public class HttpCommunicationFeature : IFeature<CommunicationConfigurator>
                 );
             }
 
-            descriptors.Add(
-                new(
-                    "Deafult",
-                    defaultSettings?.BaseAddress,
-                    defaultSettings?.DefaultHeaders
-                )
-            );
-
             configurator.Context.GetServiceCollection().AddSingleton(typeof(HttpClientFactory), sp =>
-                new HttpClientFactory(sp.GetRequiredService<IHttpClientFactory>(), descriptors)
+                new HttpClientFactory(sp.GetRequiredService<IHttpClientFactory>(), descriptors, defaultClientName: "Deafult")
             );
         });
 

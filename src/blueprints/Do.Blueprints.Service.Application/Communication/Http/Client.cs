@@ -33,19 +33,9 @@ public class Client<T>(
         }
         catch (HttpRequestException ex)
         {
-            if (ex.StatusCode.HasValue && (int)ex.StatusCode >= 500)
-            {
-                _logger.LogError(ex, ex.Message);
+            _logger.LogError(ex, ex.Message);
 
-                throw;
-            }
-
-            if (string.IsNullOrEmpty(content))
-            {
-                throw;
-            }
-
-            throw new HttpRequestException(content, ex, ex.StatusCode);
+            throw new HttpRequestException(ex.Message, new(content), ex.StatusCode);
         }
 
         return new(content);
