@@ -9,10 +9,22 @@ app.Features.AddCommunication(...);
 ## Http
 
 This feature provides an `IClient<>` implementation and adds descriptors for 
-configured named clients in _app.settings_
+configured named clients from _app.settings_
 
 ```csharp
 c => c.Http()
+```
+```json
+"Communication": {
+    "Http": {
+        "MyService": {
+            "BaseAddress": "http://api.backend.com",
+            "DefaultHeaders": {
+                "User-Agent": ".NET Http Client"
+            }
+        }
+    }
+}
 ```
 
 ## Mock

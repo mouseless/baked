@@ -20,7 +20,7 @@ public class HttpCommunicationFeature : IFeature<CommunicationConfigurator>
                     new(
                         Name: key,
                         BaseAddress: baseAddress ?? defaultSettings?.BaseAddress,
-                        DefaultHeaders: defaultHeaders.OverrideDictionary(defaultSettings?.DefaultHeaders)
+                        DefaultHeaders: defaultHeaders.Merge(defaultSettings?.DefaultHeaders)
                     )
                 );
             }
@@ -34,6 +34,22 @@ public class HttpCommunicationFeature : IFeature<CommunicationConfigurator>
         {
             serviceCollection.AddSingleton(typeof(IClient<>), typeof(Client<>));
         });
+    }
+}
+
+public static class DictionaryExtensions
+{
+    public static Dictionary<string, string> Merge(this Dictionary<string, string>? to, Dictionary<string, string>? source)
+    {
+        to ??= [];
+        source ??= [];
+
+        foreach (var (key, value) in to)
+        {
+            source[key] = value;
+        }
+
+        return source;
     }
 }
 
