@@ -1,6 +1,7 @@
 ﻿using Do.Architecture;
 using Do.Business;
 using Do.Caching;
+using Do.Communication;
 using Do.Core;
 using Do.Database;
 using Do.Documentation;
@@ -24,7 +25,10 @@ public abstract class ServiceNfr<TEntryPoint> : Nfr
         Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", EnvironmentName);
 
         Client = new WebApplicationFactory<TEntryPoint>()
-            .WithWebHostBuilder(config => config.UseSetting("typeName", $"{GetType().AssemblyQualifiedName}"))
+            .WithWebHostBuilder(config =>
+            {
+                config.UseSetting("typeName", $"{GetType().AssemblyQualifiedName}");
+            })
             .CreateClient();
     }
 
@@ -34,6 +38,7 @@ public abstract class ServiceNfr<TEntryPoint> : Nfr
                 business: Business,
                 caching: Caching,
                 core: Core,
+                communication: Communication,
                 database: Database,
                 documentation: Documentation,
                 exceptionHandling: ExceptionHandling,
@@ -45,6 +50,7 @@ public abstract class ServiceNfr<TEntryPoint> : Nfr
 
     protected abstract Func<BusinessConfigurator, IFeature<BusinessConfigurator>> Business { get; }
     protected virtual Func<CachingConfigurator, IFeature<CachingConfigurator>>? Caching => default;
+    protected virtual Func<CommunicationConfigurator, IFeature<CommunicationConfigurator>>? Communication => default;
     protected virtual Func<CoreConfigurator, IFeature<CoreConfigurator>>? Core => default;
     protected virtual Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>>? Database => c => c.InMemory();
     protected virtual Func<DocumentationConfigurator, IFeature<DocumentationConfigurator>>? Documentation => default;

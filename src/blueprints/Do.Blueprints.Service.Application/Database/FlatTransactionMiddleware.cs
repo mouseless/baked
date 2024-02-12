@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.DependencyInjection;
 using NHibernate;
 
@@ -10,24 +11,33 @@ public class FlatTransactionMiddleware(RequestDelegate _next)
 {
     public async Task InvokeAsync(HttpContext context)
     {
-        using (var session = context.RequestServices.GetRequiredService<ISession>())
+        var metadata = context.Features.Get<IEndpointFeature>()?.Endpoint?.Metadata;
+
+        if (metadata?.GetMetadata<NoTransactionAttribute>() is not null)
         {
-            session.BeginTransaction();
+            await _next(context);
+        }
+        else
+        {
+            using (var session = context.RequestServices.GetRequiredService<ISession>())
+            {
+                session.BeginTransaction();
 
-            try
-            {
-                await _next(context);
-                await session.GetCurrentTransaction().CommitAsync();
-            }
-            catch
-            {
-                await session.GetCurrentTransaction().RollbackAsync();
+                try
+                {
+                    await _next(context);
+                    await session.GetCurrentTransaction().CommitAsync();
+                }
+                catch
+                {
+                    await session.GetCurrentTransaction().RollbackAsync();
 
-                throw;
-            }
-            finally
-            {
-                session.GetCurrentTransaction()?.Dispose();
+                    throw;
+                }
+                finally
+                {
+                    session.GetCurrentTransaction()?.Dispose();
+                }
             }
         }
     }

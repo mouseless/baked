@@ -36,4 +36,24 @@ public class GeneratingExceptionResponse : TestServiceNfr
         problemDetails.Status.ShouldBe((int)HttpStatusCode.InternalServerError);
         problemDetails.Type.ShouldBe("https://do.mouseless.codes/errors/invalid-operation");
     }
+
+    [Test]
+    public async Task HttpRequest_exception_problem_details_are_set_by_unhandled_exception_handler()
+    {
+        var content = new
+        {
+            path = @"singleton/test-exception?handled=true",
+            method = "Post"
+        };
+
+        var response = await Client.PostAsync($"remote", JsonContent.Create(content));
+
+        var problemDetails = response.Content.ReadFromJsonAsync<ProblemDetails>().Result;
+
+        problemDetails.ShouldNotBeNull();
+        problemDetails.Title.ShouldBe("Http Request");
+        problemDetails.Detail.ShouldBe("A handled exception was thrown");
+        problemDetails.Status.ShouldBe((int)HttpStatusCode.BadRequest);
+        problemDetails.Type.ShouldBe("https://do.mouseless.codes/errors/http-request");
+    }
 }
