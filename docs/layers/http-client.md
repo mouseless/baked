@@ -10,7 +10,7 @@ app.Layers.AddHttpClient();
 ## Configuration Targets
 
 `HttpClient` layer provides `List<HttpClientDescriptor>` which is used to add
-named configuration delegates for `IHttpClientBuilder` 
+named configuration delegates for `IHttpClientBuilder`. 
 
 ### `List<HttpClientDescriptor>`
 
@@ -23,3 +23,8 @@ configurator.ConfigureHttpClient(clients =>
     ...
 });
 ```
+
+> :information_source:
+>
+> Descriptor with name "Default" is added as a default builder delegate for all
+> created http clients 

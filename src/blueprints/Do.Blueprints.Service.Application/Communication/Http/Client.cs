@@ -5,7 +5,7 @@ namespace Do.Communication.Http;
 
 public class Client<T>(
     ILogger<Client<T>> _logger,
-    HttpClientFactory _clientFactory
+    HttpClientFactory<T> _clientFactory
 ) : IClient<T>
 {
     public async Task<Response> Send(Request request)
@@ -24,7 +24,8 @@ public class Client<T>(
             req.Headers.Add(name, value);
         }
 
-        var res = await _clientFactory.Create<T>().SendAsync(req);
+        var client = _clientFactory.Create();
+        var res = await client.SendAsync(req);
         var content = await res.Content.ReadAsStringAsync();
 
         try

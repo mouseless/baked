@@ -24,14 +24,11 @@ public class HttpCommunicationFeature : IFeature<CommunicationConfigurator>
                     )
                 );
             }
-
-            configurator.Context.GetServiceCollection().AddSingleton(typeof(HttpClientFactory), sp =>
-                new HttpClientFactory(sp.GetRequiredService<IHttpClientFactory>(), descriptors, defaultClientName: "Deafult")
-            );
         });
 
         configurator.ConfigureServiceCollection(serviceCollection =>
         {
+            serviceCollection.AddSingleton(typeof(HttpClientFactory<>));
             serviceCollection.AddSingleton(typeof(IClient<>), typeof(Client<>));
         });
     }
@@ -44,12 +41,15 @@ public static class DictionaryExtensions
         to ??= [];
         source ??= [];
 
-        foreach (var (key, value) in to)
+        foreach (var (key, value) in source)
         {
-            source[key] = value;
+            if (!to.ContainsKey(key))
+            {
+                to[key] = value;
+            }
         }
 
-        return source;
+        return to;
     }
 }
 

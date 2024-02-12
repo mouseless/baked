@@ -6,6 +6,8 @@ namespace Do.HttpClient;
 
 public class HttpClientLayer : LayerBase<AddServices>
 {
+    public static string DefaultConfigKey = "Default";
+
     readonly List<HttpClientDescriptor> _httpClients = [];
 
     protected override PhaseContext GetContext(AddServices phase)
@@ -19,20 +21,42 @@ public class HttpClientLayer : LayerBase<AddServices>
             {
                 foreach (var client in _httpClients)
                 {
-                    services
-                        .AddHttpClient(client.Name)
-                        .ConfigureHttpClient(hc =>
-                        {
-                            hc.BaseAddress = client.BaseAddress;
-
-                            if (client.DefaultHeaders is not null)
+                    if (client.Name == DefaultConfigKey)
+                    {
+                        services
+                            .ConfigureHttpClientDefaults(builder =>
                             {
-                                foreach (var (key, value) in client.DefaultHeaders)
+                                builder.ConfigureHttpClient(hc =>
                                 {
-                                    hc.DefaultRequestHeaders.Add(key, value);
+                                    hc.BaseAddress = client.BaseAddress;
+
+                                    if (client.DefaultHeaders is not null)
+                                    {
+                                        foreach (var (key, value) in client.DefaultHeaders)
+                                        {
+                                            hc.DefaultRequestHeaders.Add(key, value);
+                                        }
+                                    }
+                                });
+                            });
+                    }
+                    else
+                    {
+                        services
+                            .AddHttpClient(client.Name)
+                            .ConfigureHttpClient(hc =>
+                            {
+                                hc.BaseAddress = client.BaseAddress;
+
+                                if (client.DefaultHeaders is not null)
+                                {
+                                    foreach (var (key, value) in client.DefaultHeaders)
+                                    {
+                                        hc.DefaultRequestHeaders.Add(key, value);
+                                    }
                                 }
-                            }
-                        });
+                            });
+                    }
                 }
             }
         );
