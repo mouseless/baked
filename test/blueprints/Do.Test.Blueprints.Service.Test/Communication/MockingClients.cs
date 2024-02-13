@@ -1,8 +1,6 @@
-﻿using Do.Communication;
+﻿namespace Do.Test.Communication;
 
-namespace Do.Test.Communication;
-
-public class MockCommunicationFeature : TestServiceSpec
+public class MockingClients : TestServiceSpec
 {
     [Test]
     public async Task Default_mock_behaviour_can_be_setup_for_given_client_type()
@@ -20,7 +18,7 @@ public class MockCommunicationFeature : TestServiceSpec
     {
         var client = MockMe.TheClient<Operation>();
 
-        var response1 = await client.Send(new Request(UrlOrPath: "path1", Method: HttpMethod.Post));
+        var response1 = await client.Send(new(UrlOrPath: "path1", Method: HttpMethod.Post));
         response1.ShouldNotBeNull();
         response1.Content.ShouldBe("\"path1 response\"");  // this reponse result is configured through Communication.Mock feature in TestServiceSpec
 

@@ -39,7 +39,7 @@ public class Client<T>(
                 _logger.LogError(ex, ex.Message);
             }
 
-            throw new HttpRequestException(ex.Message, new(content), ex.StatusCode);
+            throw new ClientException(content, ex);
         }
 
         return new(content);

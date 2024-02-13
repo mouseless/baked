@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\src\blueprints\Do.Blueprints.Service.Application\Do.Blueprints.Service.Application.csproj" />
     <ProjectReference Include="..\..\..\src\blueprints\Do.Blueprints.Service\Do.Blueprints.Service.csproj" />
   </ItemGroup>
 

@@ -1,5 +1,6 @@
 ﻿using Do.Architecture;
 using Microsoft.Extensions.DependencyInjection;
+
 using static Do.DependencyInjection.DependencyInjectionLayer;
 
 namespace Do.HttpClient;
@@ -16,50 +17,37 @@ public class HttpClientLayer : LayerBase<AddServices>
 
         services.AddHttpClient();
 
-        return phase.CreateContext(_httpClients,
-            onDispose: () =>
+        return phase.CreateContext(_httpClients, onDispose: () =>
+        {
+            foreach (var descriptor in _httpClients)
             {
-                foreach (var client in _httpClients)
+                if (descriptor.Name == DefaultConfigKey)
                 {
-                    if (client.Name == DefaultConfigKey)
-                    {
-                        services
-                            .ConfigureHttpClientDefaults(builder =>
-                            {
-                                builder.ConfigureHttpClient(hc =>
-                                {
-                                    hc.BaseAddress = client.BaseAddress;
+                    services
+                        .ConfigureHttpClientDefaults(builder =>
+                            builder.ConfigureHttpClient(client => Apply(descriptor, client))
+                        );
 
-                                    if (client.DefaultHeaders is not null)
-                                    {
-                                        foreach (var (key, value) in client.DefaultHeaders)
-                                        {
-                                            hc.DefaultRequestHeaders.Add(key, value);
-                                        }
-                                    }
-                                });
-                            });
-                    }
-                    else
-                    {
-                        services
-                            .AddHttpClient(client.Name)
-                            .ConfigureHttpClient(hc =>
-                            {
-                                hc.BaseAddress = client.BaseAddress;
-
-                                if (client.DefaultHeaders is not null)
-                                {
-                                    foreach (var (key, value) in client.DefaultHeaders)
-                                    {
-                                        hc.DefaultRequestHeaders.Add(key, value);
-                                    }
-                                }
-                            });
-                    }
+                    continue;
                 }
+
+                services
+                    .AddHttpClient(descriptor.Name)
+                    .ConfigureHttpClient(client => Apply(descriptor, client));
             }
-        );
+        });
+
+        void Apply(HttpClientDescriptor descriptor, System.Net.Http.HttpClient client)
+        {
+            client.BaseAddress = descriptor.BaseAddress;
+
+            if (descriptor.DefaultHeaders is null) { return; }
+
+            foreach (var (key, value) in descriptor.DefaultHeaders)
+            {
+                client.DefaultRequestHeaders.Add(key, value);
+            }
+        }
     }
 }
 
