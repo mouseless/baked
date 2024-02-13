@@ -16,28 +16,28 @@ public class FlatTransactionMiddleware(RequestDelegate _next)
         if (metadata?.GetMetadata<NoTransactionAttribute>() is not null)
         {
             await _next(context);
+
+            return;
         }
-        else
+
+        using (var session = context.RequestServices.GetRequiredService<ISession>())
         {
-            using (var session = context.RequestServices.GetRequiredService<ISession>())
+            session.BeginTransaction();
+
+            try
             {
-                session.BeginTransaction();
+                await _next(context);
+                await session.GetCurrentTransaction().CommitAsync();
+            }
+            catch
+            {
+                await session.GetCurrentTransaction().RollbackAsync();
 
-                try
-                {
-                    await _next(context);
-                    await session.GetCurrentTransaction().CommitAsync();
-                }
-                catch
-                {
-                    await session.GetCurrentTransaction().RollbackAsync();
-
-                    throw;
-                }
-                finally
-                {
-                    session.GetCurrentTransaction()?.Dispose();
-                }
+                throw;
+            }
+            finally
+            {
+                session.GetCurrentTransaction()?.Dispose();
             }
         }
     }

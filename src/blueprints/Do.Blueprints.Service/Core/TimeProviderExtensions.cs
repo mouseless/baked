@@ -1,4 +1,4 @@
-namespace Do.Core;
+namespace System;
 
 public static class TimeProviderExtensions
 {

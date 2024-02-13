@@ -1,4 +1,5 @@
 ﻿using Do.Communication;
+using Newtonsoft.Json;
 
 namespace Do.Test;
 
@@ -16,6 +17,6 @@ public class Remote(IClient<Remote> _client)
 
         var response = await _client.Send(request);
 
-        return response.GetContentAsObject() ?? new { };
+        return JsonConvert.DeserializeObject<dynamic>(response.Content) ?? new { };
     }
 }

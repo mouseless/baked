@@ -1,6 +1,4 @@
-﻿using Do.Core;
-
-namespace Do.Test;
+﻿namespace Do.Test;
 
 public abstract class SingletonBase(TimeProvider _timeProvider) : ISingleton
 {

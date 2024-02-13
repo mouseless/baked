@@ -12,7 +12,7 @@ public class HttpCommunicationFeature : IFeature<CommunicationConfigurator>
 
         configurator.ConfigureHttpClients(descriptors =>
         {
-            var configurations = Settings.Optional<Dictionary<string, ClientConfig>>($"Communication:Http", []).GetSection() ?? [];
+            var configurations = Settings.Optional<Dictionary<string, ClientConfig>>("Communication:Http", []).GetSection() ?? [];
             configurations.TryGetValue(HttpClientLayer.DefaultConfigKey, out var defaultSettings);
 
             foreach (var (key, (baseAddress, defaultHeaders)) in configurations)
@@ -34,23 +34,3 @@ public class HttpCommunicationFeature : IFeature<CommunicationConfigurator>
         });
     }
 }
-
-public static class DictionaryExtensions
-{
-    public static Dictionary<string, string> Merge(this Dictionary<string, string>? to, Dictionary<string, string>? source)
-    {
-        to ??= [];
-        source ??= [];
-
-        foreach (var (key, value) in source)
-        {
-            if (!to.ContainsKey(key))
-            {
-                to[key] = value;
-            }
-        }
-
-        return to;
-    }
-}
-

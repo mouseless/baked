@@ -1,5 +1,6 @@
 ﻿using Do.Communication;
 using Do.Database;
+using Newtonsoft.Json;
 
 namespace Do.Test;
 
@@ -16,13 +17,13 @@ public class Singleton(
         _newOperationWithGenericParameter().With().Execute();
     }
 
-    public async Task<dynamic> TestClient()
+    public async Task<List<PullRequest>> TestClient()
     {
         var request = new Request("repos/mouseless/do/pulls", HttpMethod.Get);
 
         var response = await _client.Send(request);
 
-        return ((IEnumerable<dynamic>?)response.GetContentAsObject())?.Select(i => i.url) ?? [];
+        return JsonConvert.DeserializeObject<List<PullRequest>>(response.Content) ?? [];
     }
 
     public void TestException(bool handled)

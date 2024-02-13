@@ -25,10 +25,7 @@ public abstract class ServiceNfr<TEntryPoint> : Nfr
         Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", EnvironmentName);
 
         Client = new WebApplicationFactory<TEntryPoint>()
-            .WithWebHostBuilder(config =>
-            {
-                config.UseSetting("typeName", $"{GetType().AssemblyQualifiedName}");
-            })
+            .WithWebHostBuilder(config => config.UseSetting("typeName", $"{GetType().AssemblyQualifiedName}"))
             .CreateClient();
     }
 

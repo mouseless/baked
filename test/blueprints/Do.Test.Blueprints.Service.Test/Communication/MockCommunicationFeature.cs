@@ -9,10 +9,10 @@ public class MockCommunicationFeature : TestServiceSpec
     {
         var client = MockMe.TheClient<Singleton>();
 
-        var response = await client.Send(new Request(UrlOrPath: string.Empty, Method: HttpMethod.Post));
+        var response = await client.Send(new(UrlOrPath: string.Empty, Method: HttpMethod.Post));
 
         response.ShouldNotBeNull();
-        ((string?)response.GetContentAsObject())?.ShouldBe("test result");
+        response.Content.ShouldBe("\"test result\"");  // this reponse result is configured through Communication.Mock feature in TestServiceSpec
     }
 
     [Test]
@@ -22,11 +22,11 @@ public class MockCommunicationFeature : TestServiceSpec
 
         var response1 = await client.Send(new Request(UrlOrPath: "path1", Method: HttpMethod.Post));
         response1.ShouldNotBeNull();
-        ((string?)response1.GetContentAsObject())?.ShouldBe("path1 response");
+        response1.Content.ShouldBe("\"path1 response\"");  // this reponse result is configured through Communication.Mock feature in TestServiceSpec
 
-        var response2 = await client.Send(new Request(UrlOrPath: "path2", Method: HttpMethod.Post));
+        var response2 = await client.Send(new(UrlOrPath: "path2", Method: HttpMethod.Post));
         response2.ShouldNotBeNull();
-        ((string?)response2.GetContentAsObject())?.ShouldBe("path2 response");
+        response2.Content.ShouldBe("\"path2 response\"");  // this reponse result is configured through Communication.Mock feature in TestServiceSpec
     }
 
     [Test]
@@ -34,9 +34,9 @@ public class MockCommunicationFeature : TestServiceSpec
     {
         var client = MockMe.TheClient<Singleton>(response: "overridden response");
 
-        var response = await client.Send(new Request(UrlOrPath: string.Empty, Method: HttpMethod.Post));
+        var response = await client.Send(new(UrlOrPath: string.Empty, Method: HttpMethod.Post));
 
         response.ShouldNotBeNull();
-        ((string?)response.GetContentAsObject())?.ShouldBe("overridden response");
+        response.Content.ShouldBe("\"overridden response\"");
     }
 }
