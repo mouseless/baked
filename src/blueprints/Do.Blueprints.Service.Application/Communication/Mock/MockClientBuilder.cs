@@ -7,11 +7,11 @@ namespace Do.Communication.Mock;
 
 public class MockClientBuilder
 {
-    static readonly MethodInfo _setupClient = typeof(MockClientBuilder).GetMethod("SetupClient", BindingFlags.Static | BindingFlags.NonPublic) ??
-        throw new("SetupClient<T, TClient> should have existed");
+    static readonly MethodInfo _setupClient = typeof(MockClientBuilder).GetMethod(nameof(SetupClient), BindingFlags.Static | BindingFlags.NonPublic) ??
+        throw new("SetupClient<T> should have existed");
 
-    static void SetupClient<T, TClient>(Mock<TClient> mock, List<(object? response, Func<Request, bool> when)> setups)
-        where TClient : class, IClient<T>
+    static void SetupClient<T>(Mock<IClient<T>> mock, List<(object? response, Func<Request, bool> when)> setups)
+        where T : class
     {
         foreach (var (response, when) in setups)
         {
@@ -40,12 +40,10 @@ public class MockClientBuilder
 
         foreach (var (type, setups) in _list)
         {
-            var clientType = typeof(IClient<>).MakeGenericType(type);
-
             result.Add(
-                service: clientType,
+                service: typeof(IClient<>).MakeGenericType(type),
                 singleton: true,
-                setup: mock => _setupClient.MakeGenericMethod(type, clientType).Invoke(null, [mock, setups])
+                setup: mock => _setupClient.MakeGenericMethod(type).Invoke(null, [mock, setups])
             );
         }
 
