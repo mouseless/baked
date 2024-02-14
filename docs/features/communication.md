@@ -34,7 +34,7 @@ Adds a mock implementation to be used in testing with `MockClientConfiguration`
 ```csharp
 communication: c => c.Mock(defaultResponses: responses =>
 {
-    responses.ForClient<MyService>(response: "test result");
-    responses.ForClient<MyOtherService>(response: "path1 response", when: r => r.UrlOrPath.Equals("path1"));
+    responses.ForClient<MyService>("""{ "value": "test result" }""");
+    responses.ForClient<MyOtherService>(new { value = "path1 response" }, when: r => r.UrlOrPath.Equals("path1"));
 })
 ```
