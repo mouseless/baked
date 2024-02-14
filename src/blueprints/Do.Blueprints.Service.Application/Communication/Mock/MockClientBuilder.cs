@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Do.Communication.Mock;
 
-public class MockClientBuilder
+internal class MockClientBuilder(MockClientSetups _setups)
 {
     static readonly MethodInfo _setupClient = typeof(MockClientBuilder).GetMethod(nameof(SetupClient), BindingFlags.Static | BindingFlags.NonPublic) ??
         throw new("SetupClient<T> should have existed");
@@ -19,26 +19,11 @@ public class MockClientBuilder
         }
     }
 
-    readonly Dictionary<Type, List<(object? response, Func<Request, bool> when)>> _list = [];
-
-    public void ForClient<T>(object response) where T : class => ForClient<T>(response, _ => true);
-    public void ForClient<T>(object response, Func<Request, bool> when) where T : class
-    {
-        if (_list.TryGetValue(typeof(T), out var setups))
-        {
-            setups.Add((response, when));
-
-            return;
-        }
-
-        _list[typeof(T)] = [(response, when)];
-    }
-
     internal IMockCollection Build()
     {
         IMockCollection result = new MockCollection();
 
-        foreach (var (type, setups) in _list)
+        foreach (var (type, setups) in _setups.Values)
         {
             result.Add(
                 service: typeof(IClient<>).MakeGenericType(type),

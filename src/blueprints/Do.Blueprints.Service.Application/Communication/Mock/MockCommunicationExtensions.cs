@@ -6,12 +6,12 @@ namespace Do;
 public static class MockCommunicationExtensions
 {
     public static MockCommunicationFeature Mock(this CommunicationConfigurator _,
-        Action<MockClientBuilder>? configurationBuilder = default
+        Action<MockClientSetups>? defaultResponses = default
     )
     {
-        var configuration = new MockClientBuilder();
-        configurationBuilder?.Invoke(configuration);
+        MockClientSetups setups = new();
+        defaultResponses?.Invoke(setups);
 
-        return new(configuration);
+        return new(setups);
     }
 }
