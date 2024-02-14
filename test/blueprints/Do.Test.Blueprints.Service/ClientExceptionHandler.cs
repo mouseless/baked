@@ -1,4 +1,4 @@
-﻿using Do.Communication.Http;
+﻿using Do.Communication;
 using Do.ExceptionHandling;
 using Newtonsoft.Json;
 using System.Net;
