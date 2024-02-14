@@ -32,11 +32,9 @@ c => c.Http()
 Adds a mock implementation to be used in testing with `MockClientConfiguration`
 
 ```csharp
-c => c.Mock(configuration =>
+communication: c => c.Mock(defaultResponses =>
 {
-    configuration.AddClientSetup<MyService>([
-        new(r => r.UrlOrPath.Equals("path1"), "path1 response"),
-        new(r => r.UrlOrPath.Equals("path2"), "path2 response")
-    ]);
-}),
+    defaultResponses.ForClient<MyService>("test result");
+    defaultResponses.ForClient<MyOtherService>("path1 response", when: r => r.UrlOrPath.Equals("path1"));
+})
 ```
