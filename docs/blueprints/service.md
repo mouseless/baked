@@ -29,6 +29,7 @@ Layers in this blueprint are;
 | Data Access          | +   | +    |
 | Dependency Injection | +   | +    |
 | Domain               | +   | +    |
+| Http Client          | +   |      |
 | Http Server          | +   |      |
 | Monitoring           | +   | +    |
 | Rest Api             | +   | +    |
@@ -40,6 +41,7 @@ Features with default options are;
 | ------------------ | ------------- | --------------- | -------- |
 | Business           | Default       | Default         | Yes      |
 | Caching            | Scoped Memory | Scoped Memory   |          |
+| Communication      | Http          | Mock            |          |
 | Core               | Dotnet        | Mock            |          |
 | Database           | Sqlite        | InMemory        | Yes      |
 | Documentation      | Default       |                 |          |

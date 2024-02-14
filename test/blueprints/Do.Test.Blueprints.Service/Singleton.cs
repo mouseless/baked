@@ -1,4 +1,6 @@
-﻿using Do.Database;
+﻿using Do.Communication;
+using Do.Database;
+using Newtonsoft.Json;
 
 namespace Do.Test;
 
@@ -6,12 +8,22 @@ public class Singleton(
     TimeProvider _timeProvider,
     Func<Entity> _newEntity,
     ITransaction _transaction,
-    Func<OperationWithGenericParameter<Entity>> _newOperationWithGenericParameter
+    Func<OperationWithGenericParameter<Entity>> _newOperationWithGenericParameter,
+    IClient<Singleton> _client
 ) : SingletonBase(_timeProvider), IInterface
 {
     internal void TestOperationWithGenericParameter()
     {
         _newOperationWithGenericParameter().With().Execute();
+    }
+
+    public async Task<List<PullRequest>> TestClient()
+    {
+        var request = new Request("repos/mouseless/do/pulls", HttpMethod.Get);
+
+        var response = await _client.Send(request);
+
+        return JsonConvert.DeserializeObject<List<PullRequest>>(response.Content) ?? [];
     }
 
     public void TestException(bool handled)

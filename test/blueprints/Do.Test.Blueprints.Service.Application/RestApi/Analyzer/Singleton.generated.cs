@@ -18,6 +18,14 @@ public class SingletonController
         return result;
     }
 
+    [HttpPost]
+    [Produces("application/json")]
+    [Route("singleton/test-client")]
+    public async Task<object> TestClient([FromServices] Singleton target)
+    {
+        return await target.TestClient();
+    }
+
     public record TestTransactionRollbackRequest(string String);
 
     [HttpPost]
