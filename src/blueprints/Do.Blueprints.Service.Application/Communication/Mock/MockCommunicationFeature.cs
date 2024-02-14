@@ -2,15 +2,17 @@
 
 namespace Do.Communication.Mock;
 
-public class MockCommunicationFeature(MockClientSetups _setups)
+public class MockCommunicationFeature(Action<DefaultResponseBuilder> _setupDefaultResponses)
     : IFeature<CommunicationConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureTestConfiguration(tests =>
         {
-            var descriptors = new MockClientBuilder(_setups).Build();
-            foreach (var descriptor in descriptors)
+            var builder = new DefaultResponseBuilder();
+            _setupDefaultResponses(builder);
+
+            foreach (var descriptor in builder.BuildMockClients())
             {
                 tests.Mocks.Add(descriptor);
             }

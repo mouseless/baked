@@ -3,7 +3,7 @@
 public class MockingClients : TestServiceSpec
 {
     [Test]
-    public async Task Default_mock_behaviour_can_be_setup_for_given_client_type()
+    public async Task Mock_communication_allows_default_response_for_a_client()
     {
         var client = MockMe.TheClient<Singleton>();
 
@@ -14,7 +14,7 @@ public class MockingClients : TestServiceSpec
     }
 
     [Test]
-    public async Task Default_mock_behaviour_can_have_multiple_setups()
+    public async Task Mock_communication_allows_conditioned_default_responses_for_a_client()
     {
         var client = MockMe.TheClient<Operation>();
 
@@ -28,7 +28,7 @@ public class MockingClients : TestServiceSpec
     }
 
     [Test]
-    public async Task Default_mock_behaviour_of_a_client_can_be_overriden_during_test_setup()
+    public async Task Response_of_a_client_can_be_set_through_mock_helper()
     {
         var client = MockMe.TheClient<Singleton>(response: "overridden response");
 

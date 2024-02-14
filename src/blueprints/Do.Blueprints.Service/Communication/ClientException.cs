@@ -1,4 +1,4 @@
-﻿namespace Do.Communication.Http;
+﻿namespace Do.Communication;
 
 public class ClientException(string content, HttpRequestException inner)
     : Exception(inner.Message, inner)
