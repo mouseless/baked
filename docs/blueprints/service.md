@@ -39,6 +39,7 @@ Features with default options are;
 
 | Features           | Run           | Test            | Required |
 | ------------------ | ------------- | --------------- | -------- |
+| Authentication     | FixedToken    | FixedToken      |          |
 | Business           | Default       | Default         | Yes      |
 | Caching            | Scoped Memory | Scoped Memory   |          |
 | Communication      | Http          | Mock            |          |
