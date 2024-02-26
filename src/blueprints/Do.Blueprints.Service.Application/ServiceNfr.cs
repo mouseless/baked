@@ -1,4 +1,5 @@
 ﻿using Do.Architecture;
+using Do.Authentication;
 using Do.Business;
 using Do.Caching;
 using Do.Communication;
@@ -32,6 +33,7 @@ public abstract class ServiceNfr<TEntryPoint> : Nfr
     protected override Application ForgeApplication() =>
         Forge.New
             .Service(
+                authentication: Authentication,
                 business: Business,
                 caching: Caching,
                 core: Core,
@@ -45,6 +47,7 @@ public abstract class ServiceNfr<TEntryPoint> : Nfr
                 configure: Configure
             );
 
+    protected virtual Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>? Authentication => default;
     protected abstract Func<BusinessConfigurator, IFeature<BusinessConfigurator>> Business { get; }
     protected virtual Func<CachingConfigurator, IFeature<CachingConfigurator>>? Caching => default;
     protected virtual Func<CommunicationConfigurator, IFeature<CommunicationConfigurator>>? Communication => default;

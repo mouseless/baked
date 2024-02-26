@@ -1,5 +1,6 @@
 // This file will be auto-generated
 
+using Do.Authentication;
 using Do.Orm;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,6 +12,7 @@ public class SingletonController
     [HttpGet]
     [Produces("application/json")]
     [Route("singleton/time")]
+    [Use<Authentication.FixedToken.Middleware>]
     public DateTime GetNow([FromServices] Singleton target)
     {
         var result = target.GetNow();
@@ -24,6 +26,18 @@ public class SingletonController
     public async Task<object> TestClient([FromServices] Singleton target)
     {
         return await target.TestClient();
+    }
+
+    [HttpPost]
+    [Produces("application/json")]
+    [Route("singleton/test-form-post-authentication")]
+    [Use<Authentication.FixedToken.Middleware>]
+    public object TestFormPostAuthentication([FromServices] Singleton target, 
+        [FromForm] string value,
+        [FromForm] string hash
+    )
+    {
+        return target.TestFormPostAuthentication(value);
     }
 
     public record TestTransactionRollbackRequest(string String);

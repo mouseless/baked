@@ -1,4 +1,5 @@
 ﻿using Do.Architecture;
+using Do.Authentication;
 using Do.Business;
 using Do.Caching;
 using Do.Communication;
@@ -24,6 +25,7 @@ public abstract class ServiceSpec : Spec
 
     protected static ApplicationContext Init(
         Func<BusinessConfigurator, IFeature<BusinessConfigurator>> business,
+        Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>? authentication = default,
         Func<CachingConfigurator, IFeature<CachingConfigurator>>? caching = default,
         Func<CommunicationConfigurator, IFeature<CommunicationConfigurator>>? communication = default,
         Func<CoreConfigurator, IFeature<CoreConfigurator>>? core = default,
@@ -34,6 +36,7 @@ public abstract class ServiceSpec : Spec
         Action<ApplicationDescriptor>? configure = default
     )
     {
+        authentication ??= c => c.Disabled();
         caching ??= c => c.ScopedMemory();
         communication ??= c => c.Mock();
         core ??= c => c.Mock();
@@ -52,6 +55,7 @@ public abstract class ServiceSpec : Spec
             app.Layers.AddRestApi();
             app.Layers.AddTesting();
 
+            app.Features.AddAuthentication(authentication);
             app.Features.AddBusiness(business);
             app.Features.AddCaching(caching);
             app.Features.AddCommunication(communication);
