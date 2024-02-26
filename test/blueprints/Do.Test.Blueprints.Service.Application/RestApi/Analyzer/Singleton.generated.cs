@@ -1,5 +1,6 @@
 // This file will be auto-generated
 
+using Do.Authentication;
 using Do.Orm;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,6 +12,7 @@ public class SingletonController
     [HttpGet]
     [Produces("application/json")]
     [Route("singleton/time")]
+    [Use<Authentication.FixedToken.Middleware>]
     public DateTime GetNow([FromServices] Singleton target)
     {
         var result = target.GetNow();
