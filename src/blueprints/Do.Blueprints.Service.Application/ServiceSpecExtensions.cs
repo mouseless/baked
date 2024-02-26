@@ -157,7 +157,7 @@ public static class ServiceSpecExtensions
 
     #endregion
 
-    #region MyRegion
+    #region HttpRequest
 
     public static HttpRequest AnHttpRequest(this Stubber giveMe,
     string? schema = default,
