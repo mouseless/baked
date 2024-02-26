@@ -216,7 +216,7 @@ public static class ServiceSpecExtensions
     )
     {
         var features = new FeatureCollection();
-        features.Set(giveMe.Spec.MockMe.AnEndpointFeature(metadata));
+        features.Set(giveMe.Spec.MockMe.AnEndpointFeature(metadata: metadata));
         features.Set<IHttpRequestFeature>(new HttpRequestFeature());
 
         return new DefaultHttpContext(features);
@@ -229,7 +229,7 @@ public static class ServiceSpecExtensions
         metadata ??= [];
 
         var mock = new Mock<IEndpointFeature>();
-        var endpoint = new Endpoint(_ => Task.CompletedTask, new(metadata), mockMe.Spec.GiveMe.AString());
+        var endpoint = new Endpoint(mockMe.Spec.GiveMe.ARequestDelegate(), new(metadata), mockMe.Spec.GiveMe.AString());
 
         mock.Setup(ef => ef.Endpoint).Returns(endpoint);
 
