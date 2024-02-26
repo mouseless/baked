@@ -5,5 +5,7 @@ namespace Do;
 
 public static class FixedTokenAuthenticationExtensions
 {
-    public static FixedTokenAuthenticationFeature FixedToken(this AuthenticationConfigurator _, List<string> tokenNames) => new(tokenNames);
+    public static FixedTokenAuthenticationFeature FixedToken(this AuthenticationConfigurator _,
+        string[]? tokenNames = default
+    ) => new([.. (tokenNames ?? ["Default"])]);
 }
