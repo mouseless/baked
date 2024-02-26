@@ -17,7 +17,7 @@ adding the feature and `Authentication:FixedToken:Default` value from settings
 will be used if no token key specified
 
 ```csharp
-c => c.FixedToken(["ServiceA", "ServiceB"])
+c => c.FixedToken(tokenNames: ["ServiceA", "ServiceB"])
 ```
 
 ```json
