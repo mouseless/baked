@@ -2,7 +2,7 @@
 
 namespace Do.Test.Authentication;
 
-public class AuthenticatingRequestsFromHeader : TestServiceSpec
+public class ValidatingAuthorizationHeader : TestServiceSpec
 {
     [TestCase("token_a")]
     [TestCase("token_b")]

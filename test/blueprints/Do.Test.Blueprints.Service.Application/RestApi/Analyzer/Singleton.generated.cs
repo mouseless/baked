@@ -28,6 +28,18 @@ public class SingletonController
         return await target.TestClient();
     }
 
+    [HttpPost]
+    [Produces("application/json")]
+    [Route("singleton/test-form-post-authentication")]
+    [Use<Authentication.FixedToken.Middleware>]
+    public object TestFormPostAuthentication([FromServices] Singleton target, 
+        [FromForm] object value,
+        [FromForm] string hash
+    )
+    {
+        return target.TestFormPostAuthentication(value);
+    }
+
     public record TestTransactionRollbackRequest(string String);
 
     [HttpPost]

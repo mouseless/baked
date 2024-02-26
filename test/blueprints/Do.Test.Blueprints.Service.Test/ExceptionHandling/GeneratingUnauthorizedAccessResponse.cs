@@ -10,7 +10,7 @@ namespace Do.Test.ExceptionHandling;
 public class GeneratingUnauthorizedAccessResponse : TestServiceNfr
 {
     protected override Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>? Authentication =>
-        c => c.FixedToken(["Backend"]);
+        c => c.FixedToken();
     protected override Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>>? ExceptionHandling =>
        c => c.Default(typeUrlFormat: "https://do.mouseless.codes/errors/{0}");
 

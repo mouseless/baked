@@ -125,4 +125,6 @@ public class Singleton(
             )
         );
     }
+
+    public object TestFormPostAuthentication(object value) => value;
 }

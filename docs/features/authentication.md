@@ -16,14 +16,14 @@ configured in settings. Multiple tokens can be used by providing key names
 when adding the feature
 
 ```csharp
-c => c.FixedToken(["Backend", "External"])
+c => c.FixedToken(["ServiceA", "ServiceB"])
 ```
 
 ```json
 "Authentication": {
   "FixedToken": {
-    "Backend": "BACKEND_TOKEN",
-    "External": "EXTERNAL_TOKEN"
+    "ServiceA": "SERVICE_A_TOKEN",
+    "ServiceB": "SERVICE_B_TOKEN"
   }
 }
 ```
