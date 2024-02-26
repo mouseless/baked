@@ -33,7 +33,7 @@ public class SingletonController
     [Route("singleton/test-form-post-authentication")]
     [Use<Authentication.FixedToken.Middleware>]
     public object TestFormPostAuthentication([FromServices] Singleton target, 
-        [FromForm] object value,
+        [FromForm] string value,
         [FromForm] string hash
     )
     {
