@@ -86,6 +86,11 @@ public class DoDemo
 ### Vertical
 
 ```mermaid
+---
+config:
+  flowchart:
+    useMaxWidth: false
+---
 flowchart TB
     subgraph C
       D
@@ -99,6 +104,11 @@ flowchart TB
 ### Horizontal
 
 ```mermaid
+---
+config:
+  flowchart:
+    useMaxWidth: false
+---
 flowchart LR
     subgraph C
       D

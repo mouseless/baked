@@ -7,8 +7,8 @@ pages:
 
 # Architecture
 
-DO's architectural core is designed to allow us to build software with any 
-architectural style. Core idea is to enable a good separation of concerns 
+DO's architectural core is designed to allow us to build software with any
+architectural style. Core idea is to enable a good separation of concerns
 without causing any repetitive work. To achieve this DO breaks down an
 application into following components: domain objects, layers and features.
 
@@ -27,21 +27,31 @@ very reason for an application to exist. Everything else exists only to expose
 this domain to outside world. So first component is domain objects;
 
 ```mermaid
+---
+config:
+  flowchart:
+    useMaxWidth: false
+---
 flowchart
   D((Domain\nObjects))
 ```
 
 ## Layers
 
-Second component is layers. Every layer introduces a new technology, such as a 
-database server, message queue server or a framework, into your application 
-architecture. 
+Second component is layers. Every layer introduces a new technology, such as a
+database server, message queue server or a framework, into your application
+architecture.
 
 > :bulb:
 >
 > Layers are named after the domain of their technology.
 
 ```mermaid
+---
+config:
+  flowchart:
+    useMaxWidth: false
+---
 flowchart LR
   HS[[Http Server\nLayer]]
   subgraph DL[Domain Layer]
@@ -62,7 +72,7 @@ relational databases as a layer through the `NHibernate` framework.
 > to create an application schema, so that it can be used in creating
 > configuration, conventions and/or generating source code.
 
-For domain objects to be exposed as API endpoints or mapped onto a relational 
+For domain objects to be exposed as API endpoints or mapped onto a relational
 database, layers require an insight about how to interpret domain objects.
 
 This is why every layer comes with its own configuration that is specific to
@@ -72,8 +82,8 @@ configuration, but they do __not__ have opinions upfront.
 
 ## Features
 
-Finally, features connect layers in an opinionated way to introduce new 
-behaviours to the application. Features consist of two parts; an optional 
+Finally, features connect layers in an opinionated way to introduce new
+behaviours to the application. Features consist of two parts; an optional
 abstraction (port) and a required implementation (adapter).
 
 ### Abstraction
@@ -125,8 +135,8 @@ design or technology, e.g. `Auth.Auth0`, `Fs.Aws`, `Database.MySql`.
 > implementations that provides the same functionality through different system
 > components.
 
-In conclusion, feature implementations serve as bridges, connecting layers to 
-each other through their opinionated configurations. Below is a complete sample 
+In conclusion, feature implementations serve as bridges, connecting layers to
+each other through their opinionated configurations. Below is a complete sample
 architecture, showcasing the integration of domain logic, layers and features;
 
 ```mermaid

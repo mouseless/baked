@@ -110,6 +110,11 @@ Application runs in phases provided by its layers. For example an ASP.NET Core
 application typically runs in three phases;
 
 ```mermaid
+---
+config:
+  flowchart:
+    useMaxWidth: false
+---
 flowchart TB
     CB(Create Builder)
     B(Build)
@@ -211,6 +216,11 @@ application knows that `Run` phase is not ready until some other phase, e.g.,
 `Build` phase, adds `WebApplication` to the context.
 
 ```mermaid
+---
+config:
+  flowchart:
+    useMaxWidth: false
+---
 flowchart TB
   CB(Create Builder)
   B(Build)
