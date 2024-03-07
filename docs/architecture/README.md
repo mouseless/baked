@@ -27,11 +27,6 @@ very reason for an application to exist. Everything else exists only to expose
 this domain to outside world. So first component is domain objects;
 
 ```mermaid
----
-config:
-  flowchart:
-    useMaxWidth: false
----
 flowchart
   D((Domain\nObjects))
 ```
@@ -47,11 +42,6 @@ architecture.
 > Layers are named after the domain of their technology.
 
 ```mermaid
----
-config:
-  flowchart:
-    useMaxWidth: false
----
 flowchart LR
   HS[[Http Server\nLayer]]
   subgraph DL[Domain Layer]
