@@ -19,19 +19,19 @@
     "@nuxtjs/fontawesome": "^1.1.2"
   },
   "devDependencies": {
-    "@mermaid-js/mermaid-cli": "^10.5.1",
-    "@nuxt/content": "^2.8.5",
+    "@mermaid-js/mermaid-cli": "^10.8.0",
+    "@nuxt/content": "^2.12.0",
     "@nuxt/devtools": "latest",
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
-    "@pinia/nuxt": "^0.4.11",
-    "eslint": "^8.51.0",
+    "@pinia/nuxt": "^0.5.1",
+    "eslint": "^8.57.0",
     "log-symbols": "^6.0.0",
-    "nuxt": "3.7.4",
-    "pinia": "^2.1.6",
-    "sass": "^1.69.4",
-    "vue": "^3.3.6",
-    "vue-router": "^4.2.5",
-    "webpack": "^5.79.0",
-    "yaml": "^2.2.1"
+    "nuxt": "3.10.3",
+    "pinia": "^2.1.7",
+    "sass": "^1.71.1",
+    "vue": "^3.4.21",
+    "vue-router": "^4.3.0",
+    "webpack": "^5.90.3",
+    "yaml": "^2.4.1"
   }
 }

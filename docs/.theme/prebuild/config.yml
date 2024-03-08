@@ -25,6 +25,9 @@ tasks:
         theme: base
         headless: new
         deviceScaleFactor: 1
+        outputFormat: 'svg'
+        flowchart:
+          useMaxWidth: false
         themeVariables:
           fontFamily: '"Roboto Mono", monospace'
           fontSize: '16px'
@@ -61,5 +64,9 @@ tasks:
       target: ./.theme/.public
   - move:
       extension: .png
+      source: ./.theme/.temp
+      target: ./.theme/.public
+  - move:
+      extension: .svg
       source: ./.theme/.temp
       target: ./.theme/.public
