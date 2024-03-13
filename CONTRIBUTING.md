@@ -24,6 +24,21 @@ Collective. It is, and will always be, free and open source.
 - Don't use access modifier when they are default
   - ⛔ Wrong => `private int _id;`
   - ✅ Correct => `int _id;`
+- Use named arguments when calling methods with optional parameters
+  ```csharp
+  public void Method(string required
+      string? optional = default
+  )
+  { 
+    ... 
+  }
+
+  // ⛔ Wrong
+  service.Method("Required", "Optional");
+  // ✅ Correct
+  service.Method("Required", optional: "Optional");
+  ``` 
+- Use file scoped namespaces
 - Don't use `[TestFixture]` attribute, nunit runs tests without it anyway
 - Refer to [PrimaryConstructos](https://github.com/mouseless/learn-dotnet/tree/main/primary-constructor/README.md)
   for coding standards we enforce using `PrimaryConstructors`.
