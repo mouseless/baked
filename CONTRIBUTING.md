@@ -25,6 +25,10 @@ Collective. It is, and will always be, free and open source.
   - ⛔ Wrong => `private int _id;`
   - ✅ Correct => `int _id;`
 - Don't use `[TestFixture]` attribute, nunit runs tests without it anyway
+- Refer to [PrimaryConstructos](https://github.com/mouseless/learn-dotnet/tree/main/primary-constructor/README.md)
+  for coding standards we enforce using `PrimaryConstructors`.
+- Refer to [NullableUsage](https://github.com/mouseless/learn-dotnet/tree/main/nullable-usage/README.md)
+  for coding standards we enforce using `nullable` value and reference types.
 - Refer to [Stylecop.Analyzers](https://github.com/mouseless/learn-dotnet/tree/main/analyzers/README.md)
   for coding standards we enforce using `Stylecop Analyzers`.
 
