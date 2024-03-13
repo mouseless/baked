@@ -16,49 +16,6 @@ Collective. It is, and will always be, free and open source.
   - `/blueprints`: e2e test projects per blueprint package
   - `/core`: unit test projects per package
 
-## Naming Conventions
-
-- Use [Layer.Conventions](https://github.com/mouseless/do/tree/main/docs/architecture/layer.md) 
-  when adding a new layer
-- Use [Feature.Conventions](https://github.com/mouseless/do/tree/main/docs/architecture/feature.md) 
-  when adding a new feature or feature implementation
-- Use documentation heading names for text fixtures
-  - ⛔ Wrong => `AddExtensionTest`
-  - ✅ Correct => `AddingExtensions`
-- Use `Extensions` suffix for static extension classes
-
-## Coding Standards
-
-- Use file scoped namespaces
-- Use `_` prefix for private fields
-  - ⛔ Wrong => `int id;`
-  - ✅ Correct => `int _id;`
-- Don't use access modifier when they are default
-  - ⛔ Wrong => `private int _id;`
-  - ✅ Correct => `int _id;`  
-- Refer to [PrimaryConstructos](https://github.com/mouseless/learn-dotnet/tree/main/primary-constructor/README.md)
-  for coding standards we follow when using `PrimaryConstructors`.
-- Refer to [NullableUsage](https://github.com/mouseless/learn-dotnet/tree/main/nullable-usage/README.md)
-  for coding standards we follow when using `nullable` value and reference 
-  types.
-- Refer to [Stylecop.Analyzers](https://github.com/mouseless/learn-dotnet/tree/main/analyzers/README.md)
-  for coding standards we enforce using `Stylecop Analyzers`.
-- Use named arguments when calling methods with optional parameters
-  ```csharp
-  public void Method(string required
-      string? optional = default
-  )
-  { 
-    ... 
-  }
-
-  // ⛔ Wrong
-  service.Method("Required", "Optional");
-  // ✅ Correct
-  service.Method("Required", optional: "Optional");
-  ``` 
-- Don't use `[TestFixture]` attribute, nunit runs tests without it anyway
-
 ## Feature project conventions;
 
 - When there is a single implementation, it becomes `Do.{Feature}` and
@@ -79,3 +36,44 @@ Collective. It is, and will always be, free and open source.
   itself.
   - However, a feature implementation must always be published with the package
     name matching its own port.
+
+## Naming Conventions
+
+- Use [Layer.Conventions](https://github.com/mouseless/do/tree/main/docs/architecture/layer.md) 
+  when adding a new layer
+- Use [Feature.Conventions](https://github.com/mouseless/do/tree/main/docs/architecture/feature.md) 
+  when adding a new feature or feature implementation
+- Use documentation heading names for text fixtures
+  - ⛔ Wrong => `AddExtensionTest`
+  - ✅ Correct => `AddingExtensions`
+- Use `Extensions` suffix for static extension classes
+
+## Coding Standards
+
+- Use file scoped namespaces
+- Use `_` prefix for private fields
+  - ⛔ Wrong => `int id;`
+  - ✅ Correct => `int _id;`
+- Don't use access modifier when they are default
+  - ⛔ Wrong => `private int _id;`
+  - ✅ Correct => `int _id;`  
+- Use named arguments when calling methods with optional parameters
+  ```csharp
+  public void Method(string required
+      string? optional = default
+  )
+  // ⛔ Wrong
+  service.Method("Required", "Optional");
+  // ✅ Correct
+  service.Method("Required", optional: "Optional");
+  ``` 
+- Don't use `[TestFixture]` attribute, nunit runs tests without it anyway
+- Place static factory or helper methods at the top of before any instance 
+  members
+- Refer to [PrimaryConstructos](https://github.com/mouseless/learn-dotnet/tree/main/primary-constructor/README.md)
+  for coding standards we follow when using `PrimaryConstructors`.
+- Refer to [NullableUsage](https://github.com/mouseless/learn-dotnet/tree/main/nullable-usage/README.md)
+  for coding standards we follow when using `nullable` value and reference 
+  types.
+- Refer to [Stylecop.Analyzers](https://github.com/mouseless/learn-dotnet/tree/main/analyzers/README.md)
+  for coding standards we enforce using `Stylecop Analyzers`.
