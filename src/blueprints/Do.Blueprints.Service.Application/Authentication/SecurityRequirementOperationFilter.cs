@@ -10,7 +10,7 @@ public class SecurityRequirementOperationFilter<T>(string _schemeId)
     {
         if (!context.MethodInfo.CustomAttributes.Any(a => a.AttributeType == typeof(T))) { return; }
 
-        operation.Security = [
+        operation.Security.Add(
             new()
             {
                 {
@@ -18,6 +18,6 @@ public class SecurityRequirementOperationFilter<T>(string _schemeId)
                     Array.Empty<string>()
                 }
             }
-        ];
+        );
     }
 }
