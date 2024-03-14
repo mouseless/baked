@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Configuration;
 
 namespace Do.Authentication.FixedToken;
@@ -15,8 +14,7 @@ public class Middleware(
 
     public async Task Invoke(HttpContext context)
     {
-        var metadata = context.Features.Get<IEndpointFeature>()?.Endpoint?.Metadata;
-        if (metadata?.GetMetadata<UseAttribute<Middleware>>() is null)
+        if (!context.HasMetadata<UseAttribute<Middleware>>())
         {
             await _next(context);
 
