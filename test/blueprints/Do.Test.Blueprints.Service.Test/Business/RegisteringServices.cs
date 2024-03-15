@@ -14,7 +14,16 @@ public class RegisteringServices : TestServiceSpec
     }
 
     [Test]
-    public void Transient_services_have_singleton_factories([Values(typeof(Func<Entity>), typeof(Func<Operation>))] Type type)
+    public void Transient_types_with_generic_type_arguments_are_registered([Values(typeof(OperationWithGenericParameter<Entity>))] Type type)
+    {
+        var actual1 = GiveMe.A(type);
+        var actual2 = GiveMe.A(type);
+
+        actual1.ShouldNotBeSameAs(actual2);
+    }
+
+    [Test]
+    public void Transient_services_have_singleton_factories([Values(typeof(Func<Entity>), typeof(Func<Operation>), typeof(Func<OperationWithGenericParameter<Entity>>))] Type type)
     {
         var actual1 = GiveMe.The(type);
         var actual2 = GiveMe.The(type);
