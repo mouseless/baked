@@ -42,6 +42,7 @@ public class Singleton(
         {
             // do not remove this variable, this is to ensure call is made to `Action` overload
             var _ = _newEntity().With(
+                uniq: Guid.NewGuid().ToString(),
                 guid: Guid.NewGuid(),
                 @string: "test",
                 stringData: "transaction action",
@@ -59,6 +60,7 @@ public class Singleton(
     public void TestTransactionRollback(string @string)
     {
         _newEntity().With(
+            uniq: Guid.NewGuid().ToString(),
             guid: Guid.NewGuid(),
             @string: @string,
             stringData: "transaction func",
@@ -76,6 +78,7 @@ public class Singleton(
     {
         var entity = await _transaction.CommitAsync(() =>
             _newEntity().With(
+                uniq: Guid.NewGuid().ToString(),
                 guid: Guid.NewGuid(),
                 @string: "test",
                 stringData: "transaction func",
@@ -88,6 +91,7 @@ public class Singleton(
         );
 
         await entity.Update(
+            uniq: Guid.NewGuid().ToString(),
             guid: Guid.NewGuid(),
             @string: "rollback",
             stringData: "rollback",
@@ -114,6 +118,7 @@ public class Singleton(
     {
         await _transaction.CommitAsync(entity, entity =>
              entity.Update(
+                uniq: Guid.NewGuid().ToString(),
                 guid: Guid.NewGuid(),
                 @string: "test",
                 stringData: "transaction nullable",

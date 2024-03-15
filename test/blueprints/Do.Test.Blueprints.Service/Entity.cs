@@ -3,21 +3,23 @@ using Do.Orm;
 
 namespace Do.Test;
 
-public class Entity(IEntityContext<Entity> _context, ITransaction _transaction, TimeProvider _timeProvider)
+public class Entity(IEntityContext<Entity> _context, IQueryContext<Entity> _queryContext, ITransaction _transaction, TimeProvider _timeProvider)
 {
-    protected Entity() : this(default!, default!, default!) { }
+    protected Entity() : this(default!, default!, default!, default!) { }
 
     public virtual Guid Id { get; protected set; } = default!;
     public virtual Guid Guid { get; protected set; } = default!;
     public virtual string String { get; protected set; } = default!;
     public virtual string StringData { get; protected set; } = default!;
     public virtual int Int32 { get; protected set; } = default!;
+    public virtual string Uniq { get; protected set; } = default!;
     public virtual Uri Uri { get; protected set; } = default!;
     public virtual object Dynamic { get; protected set; } = default!;
     public virtual Status Enum { get; protected set; } = default!;
     public virtual DateTime DateTime { get; protected set; } = default!;
 
     public virtual Entity With(
+        string uniq,
         Guid? guid = default,
         string? @string = default,
         string? stringData = default,
@@ -34,6 +36,7 @@ public class Entity(IEntityContext<Entity> _context, ITransaction _transaction, 
             @string: @string,
             stringData: stringData,
             int32: int32,
+            uniq: uniq,
             uri: uri,
             @dynamic: @dynamic,
             @enum: @enum,
@@ -44,6 +47,7 @@ public class Entity(IEntityContext<Entity> _context, ITransaction _transaction, 
     }
 
     public virtual async Task Update(
+        string uniq,
         Guid? guid = default,
         string? @string = default,
         string? stringData = default,
@@ -64,6 +68,7 @@ public class Entity(IEntityContext<Entity> _context, ITransaction _transaction, 
                     @string: @string,
                     stringData: stringData,
                     int32: int32,
+                    uniq: uniq,
                     uri: uri,
                     @dynamic: @dynamic,
                     @enum: @enum,
@@ -78,6 +83,7 @@ public class Entity(IEntityContext<Entity> _context, ITransaction _transaction, 
                 @string: @string,
                 stringData: stringData,
                 int32: int32,
+                uniq: uniq,
                 uri: uri,
                 @dynamic: @dynamic,
                 @enum: @enum,
@@ -92,6 +98,7 @@ public class Entity(IEntityContext<Entity> _context, ITransaction _transaction, 
     }
 
     protected virtual void Set(
+        string uniq,
         Guid? guid = default,
         string? @string = default,
         string? stringData = default,
@@ -102,10 +109,16 @@ public class Entity(IEntityContext<Entity> _context, ITransaction _transaction, 
         DateTime? dateTime = default
     )
     {
+        if (_queryContext.FirstBy(e => e.Uniq == uniq) != null)
+        {
+            throw new ShouldBeUniqException(nameof(Uniq));
+        }
+
         Guid = guid ?? Guid;
         String = @string ?? String;
         StringData = stringData ?? StringData;
         Int32 = int32 ?? Int32;
+        Uniq = uniq;
         Uri = uri ?? Uri;
         Dynamic = @dynamic ?? Dynamic;
         Enum = @enum ?? Enum;
@@ -125,6 +138,7 @@ public class Entities(IQueryContext<Entity> _context)
         string? @string = default,
         string? stringData = default,
         int? int32 = default,
+        string? uniq = default,
         Uri? uri = default,
         Status? status = default,
         DateTime? dateTime = default,
@@ -138,6 +152,7 @@ public class Entities(IQueryContext<Entity> _context)
                 (@string == default || e.String == @string) &&
                 (stringData == default || e.StringData == @stringData) &&
                 (int32 == default || e.Int32 == int32) &&
+                (uniq == default || e.Uniq == uniq) &&
                 (uri == default || e.Uri == uri) &&
                 (status == default || e.Enum == status) &&
                 (dateTime == default || e.DateTime == dateTime),
@@ -146,9 +161,9 @@ public class Entities(IQueryContext<Entity> _context)
         );
     }
 
-    public Entity? SingleByString(string @string)
+    public Entity? SingleByUniq(string uniq)
     {
-        return _context.SingleBy(e => e.String == @string);
+        return _context.SingleBy(e => e.Uniq == uniq);
     }
 
     public Entity? FirstByString(string startsWith,
