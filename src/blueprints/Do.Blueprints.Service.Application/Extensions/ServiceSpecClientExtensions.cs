@@ -1,0 +1,81 @@
+using Do.Communication;
+using Do.Testing;
+using Moq;
+
+namespace Do;
+
+public static class ServiceSpecClientExtensions
+{
+    public static IClient<T> TheClient<T>(this Mocker mockMe,
+        string? url = default,
+        string? path = default,
+        string? urlEndsWith = default,
+        object? response = default,
+        string? responseString = default,
+        Exception? throws = default,
+        List<object>? responses = default,
+        bool? noResponse = default
+    )
+    {
+        var mock = Mock.Get(mockMe.Spec.GiveMe.The<IClient<T>>());
+
+        var setup = () => mock.Setup(c => c.Send(It.Is<Request>(r =>
+            (url == default || r.UrlOrPath == url) &&
+            (path == default || r.UrlOrPath == path) &&
+            (urlEndsWith == default || r.UrlOrPath.EndsWith(urlEndsWith))
+        )));
+
+        if (throws is not null)
+        {
+            setup().ThrowsAsync(throws);
+        }
+        else if (response is not null)
+        {
+            setup().ReturnsAsync(new Response(response.ToJsonString()));
+        }
+        else if (responseString is not null)
+        {
+            setup().ReturnsAsync(new Response(responseString));
+        }
+        else if (responses is not null)
+        {
+            setup().ReturnsAsync(responses.Select(r => new Response(r.ToJsonString())).ToArray());
+        }
+        else if (noResponse == true)
+        {
+            setup().ReturnsAsync(new Response(string.Empty));
+        }
+
+        return mock.Object;
+    }
+
+    public static void VerifySent<T>(this IClient<T> source,
+        string? path = default,
+        string? url = default,
+        HttpMethod? method = default,
+        object? content = default,
+        string? contentContains = default,
+        Dictionary<string, string>? form = default,
+        (string key, string value)? header = default,
+        string? excludesHeader = default,
+        int? times = default
+    ) => Mock.Get(source).Verify(
+        c => c.Send(It.Is<Request>(r =>
+            (path == default || r.UrlOrPath == path) &&
+            (url == default || r.UrlOrPath == url) &&
+            (method == default || r.Method == method) &&
+            (content == default || new Content(content, null).Equals(r.Content)) &&
+            (contentContains == default || r.Content != null && r.Content.Body.Contains(contentContains)) &&
+            (form == default || new Content(form).Equals(r.Content)) &&
+            (!header.HasValue || r.Headers[header.GetValueOrDefault().key] == header.GetValueOrDefault().value) &&
+            (excludesHeader == default || !r.Headers.ContainsKey(excludesHeader))
+        )),
+        times is null ? Times.AtLeastOnce() : Times.Exactly(times.Value)
+    );
+
+    public static void VerifyNotSent<T>(this IClient<T> source) =>
+        Mock.Get(source).Verify(c => c.Send(It.IsAny<Request>()), Times.Never());
+
+    public static void VerifyNoContentIsSent<T>(this IClient<T> source) =>
+        Mock.Get(source).Verify(c => c.Send(It.Is<Request>(r => r.Content == null)));
+}
