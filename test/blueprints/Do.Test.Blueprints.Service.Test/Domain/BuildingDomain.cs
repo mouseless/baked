@@ -55,11 +55,12 @@ public class BuildingDomain : DomainTestSpec
     }
 
     [Test]
-    public void Base_type_is_added_for_task([Values(typeof(Task<TransientWithTask>))] Type type)
+    public void Base_type_is_added_for_task()
     {
         var model = DomainModel.Types[IdFrom<Task<TransientWithTask>>()];
 
         model.ShouldNotBeNull();
         model.BaseType.ShouldNotBeNull();
+        model.BaseType.IsAssignableTo<Task>();
     }
 }
