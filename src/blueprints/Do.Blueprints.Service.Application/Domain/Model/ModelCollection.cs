@@ -2,14 +2,13 @@
 
 namespace Do.Domain.Model;
 
-public class ModelCollection<T> : IEnumerable<T>
+public class ModelCollection<T>() : IEnumerable<T>
     where T : IModel
 {
     readonly KeyedModelCollection<T> _models = [];
 
-    internal ModelCollection() { }
-
     public ModelCollection(IEnumerable<T> models)
+        : this()
     {
         foreach (var model in models)
         {
