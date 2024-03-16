@@ -32,7 +32,7 @@ public class TypeModel(Type type, string id,
     public ModelCollection<TypeModel> CustomAttributes { get; private set; } = default!;
     public ModelCollection<TypeModel> Interfaces { get; private set; } = default!;
 
-    public MethodModel Constructor => Methods[".ctor"];
+    public MethodModel? Constructor => Methods.TryGetValue(".ctor", out var ctor) ? ctor : default;
 
     internal void Init(ModelCollection<TypeModel> genericTypeArguments,
         ModelCollection<MethodModel>? methods = default,

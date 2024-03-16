@@ -17,9 +17,9 @@ public class BuildingDomain : DomainTestSpec
     [Test]
     public void Non_business_types_are_added_to_type_collection([Values(typeof(string), typeof(int), typeof(Func<Entity>), typeof(IQueryContext<Entity>))] Type type)
     {
-        var action = () => DomainModel.Types[IdFrom(type)];
+        DomainModel.Types.TryGetValue(IdFrom(type), out var model);
 
-        action.ShouldNotThrow();
+        model.ShouldNotBeNull();
     }
 
     [Test]
@@ -41,6 +41,14 @@ public class BuildingDomain : DomainTestSpec
 
         model.CustomAttributes.ShouldNotBeNull();
         model.CustomAttributes.Count().ShouldBe(0);
+    }
+
+    [Test]
+    public void Constructor_is_optional_and_returns_null_for_non_business_types()
+    {
+        var model = DomainModel.Types[IdFrom<IQueryContext<Entity>>()];
+
+        model.Constructor.ShouldBeNull();
     }
 
     [Test]
