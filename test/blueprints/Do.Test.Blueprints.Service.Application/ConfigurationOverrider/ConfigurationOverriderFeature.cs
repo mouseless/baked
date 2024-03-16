@@ -33,15 +33,15 @@ public class ConfigurationOverriderFeature : IFeature
 
         configurator.ConfigureCodeCollection(codes =>
         {
-            codes.Add(Codes.Entities.Code);
-            codes.Add(Codes.Parents.Code);
-            codes.Add(Codes.Remote.Code);
-            codes.Add(Codes.Singleton.Code);
+            codes.AddCode(Codes.Entities.Code, assemblyName: "Controllers");
+            codes.AddCode(Codes.Parents.Code, assemblyName: "Controllers");
+            codes.AddCode(Codes.Remote.Code, assemblyName: "Controllers");
+            codes.AddCode(Codes.Singleton.Code, assemblyName: "Controllers");
         });
 
         configurator.ConfigureApplicationParts(applicationParts =>
         {
-            applicationParts.Add(new(configurator.Context.GetGeneratedAssembly().Assembly));
+            applicationParts.Add(new(configurator.Context.GetGeneratedAssembly("Controllers")));
         });
     }
 }

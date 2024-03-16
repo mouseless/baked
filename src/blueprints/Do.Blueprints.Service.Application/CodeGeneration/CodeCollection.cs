@@ -1,3 +1,3 @@
 namespace Do.CodeGeneration;
 
-public class CodeCollection : List<string>, ICodeCollection { }
+public class CodeCollection : List<CodeDescriptor>, ICodeCollection { }
