@@ -49,6 +49,13 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
         var typeModel = new TypeModel(type, id);
         _types.Add(typeModel);
 
+        typeModel.Apply(t =>
+            typeModel.Init(
+                genericTypeArguments: type.IsGenericType ? BuildGenericTypeArguments(t) : [],
+                baseType: t.BaseType is not null ? GetOrCreateTypeModel(t.BaseType) : default
+            )
+        );
+
         return typeModel;
     }
 

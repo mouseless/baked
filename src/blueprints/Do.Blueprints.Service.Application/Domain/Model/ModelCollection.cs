@@ -7,6 +7,8 @@ public class ModelCollection<T> : IEnumerable<T>
 {
     readonly KeyedModelCollection<T> _models = [];
 
+    internal ModelCollection() { }
+
     public ModelCollection(IEnumerable<T> models)
     {
         foreach (var model in models)

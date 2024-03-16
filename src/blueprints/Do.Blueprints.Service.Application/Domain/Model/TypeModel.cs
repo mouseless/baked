@@ -20,6 +20,7 @@ public class TypeModel(Type type, string id,
     public bool IsValueType { get; } = type.IsValueType;
     public bool IsSealed { get; } = type.IsSealed;
     public bool IsInterface { get; } = type.IsInterface;
+    public bool IsGenericType { get; } = type.IsGenericType;
     public bool IsGenericTypeParameter { get; } = type.IsGenericTypeParameter;
     public bool IsGenericMethodParameter { get; } = type.IsGenericMethodParameter;
     public bool ContainsGenericParameters { get; } = type.ContainsGenericParameters;
@@ -33,20 +34,19 @@ public class TypeModel(Type type, string id,
 
     public MethodModel Constructor => Methods[".ctor"];
 
-    internal void Init(
-        ModelCollection<MethodModel> methods,
-        ModelCollection<PropertyModel> properties,
-        ModelCollection<TypeModel> genericTypeArguments,
-        ModelCollection<TypeModel> customAttributes,
-        ModelCollection<TypeModel> interfaces,
+    internal void Init(ModelCollection<TypeModel> genericTypeArguments,
+        ModelCollection<MethodModel>? methods = default,
+        ModelCollection<PropertyModel>? properties = default,
+        ModelCollection<TypeModel>? customAttributes = default,
+        ModelCollection<TypeModel>? interfaces = default,
         TypeModel? baseType = default
     )
     {
-        Methods = methods;
-        Properties = properties;
         GenericTypeArguments = genericTypeArguments;
-        CustomAttributes = customAttributes;
-        Interfaces = interfaces;
+        Methods = methods ?? [];
+        Properties = properties ?? [];
+        CustomAttributes = customAttributes ?? [];
+        Interfaces = interfaces ?? [];
         BaseType = baseType;
     }
 

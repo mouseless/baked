@@ -8,3 +8,12 @@ public record MethodModel(
 {
     string IModel.Id { get; } = Name;
 }
+
+public static class MethodModelExtensions
+{
+    public static bool CanReturn(this MethodModel method, TypeModel type) =>
+        method.Overloads.Any(o =>
+            o.ReturnType == type ||
+            (o.ReturnType?.IsAssignableTo<Task>() == true && o.ReturnType?.GenericTypeArguments.Any(a => a == type) == true)
+        );
+}

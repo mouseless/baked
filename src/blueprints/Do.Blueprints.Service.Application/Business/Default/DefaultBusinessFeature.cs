@@ -50,7 +50,7 @@ public class DefaultBusinessFeature(List<Assembly> _assemblies, Assembly _contro
                     type.Methods.Contains("<Clone>$") // if type is record
                 ) { continue; }
 
-                if (type.Methods.Contains("With"))
+                if (type.Methods.TryGetValue("With", out var method) && method.CanReturn(type))
                 {
                     type.Apply(t =>
                     {
