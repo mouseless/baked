@@ -1,3 +1,8 @@
-﻿namespace Do.CodeGeneration;
+﻿using System.Reflection;
 
-public class CompilerOptions { }
+namespace Do.CodeGeneration;
+
+public record CompilerOptions()
+{
+    public List<Assembly> References { get; } = new();
+}

@@ -8,7 +8,10 @@ public class ConfigurationOverriderFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureTypeCollection(types => types.Add<OperationWithGenericParameter<Entity>>());
+        configurator.ConfigureTypeCollection(types =>
+        {
+            types.Add<OperationWithGenericParameter<Entity>>();
+        });
 
         configurator.ConfigureAutoPersistenceModel(model =>
         {
@@ -29,6 +32,11 @@ public class ConfigurationOverriderFeature : IFeature
 
             swaggerGenOptions.AddSecurityRequirementToOperationsThatUse<Middleware>("AdditionalSecurity");
             swaggerGenOptions.AddParameterToOperationsThatUse<Middleware>("X-Security", @in: ParameterLocation.Header, required: true);
+        });
+
+        configurator.ConfigureCompilerOptions(options =>
+        {
+            options.AddReferenceFrom<Program>();
         });
 
         configurator.ConfigureCodeCollection(codes =>

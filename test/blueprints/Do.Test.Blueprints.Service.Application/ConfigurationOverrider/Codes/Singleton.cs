@@ -6,6 +6,11 @@ public static class Singleton
         using Do.Authentication;
         using Do.Orm;
         using Microsoft.AspNetCore.Mvc;
+        using System;
+        using System.Linq;
+        using System.Collections;
+        using System.Collections.Generic;
+        using System.Threading.Tasks;
 
         namespace Do.Test;
 

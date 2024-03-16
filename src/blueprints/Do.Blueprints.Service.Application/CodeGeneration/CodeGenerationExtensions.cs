@@ -16,4 +16,8 @@ public static class CodeGenerationExtensions
     public static void ConfigureCompilerOptions(this LayerConfigurator configurator, Action<CompilerOptions> configuration) => configurator.Configure(configuration);
 
     public static void AddCode(this ICodeCollection codes, string code, string assemblyName = "Default") => codes.Add(new(code, assemblyName));
+
+    public static void AddReferenceFrom<T>(this CompilerOptions compilerOptions) => compilerOptions.AddReferenceFrom(typeof(T));
+    public static void AddReferenceFrom(this CompilerOptions compilerOptions, Type type) => compilerOptions.AddReference(type.Assembly);
+    public static void AddReference(this CompilerOptions compilerOptions, Assembly assembly) => compilerOptions.References.Add(assembly);
 }
