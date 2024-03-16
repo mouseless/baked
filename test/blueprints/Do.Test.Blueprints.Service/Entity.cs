@@ -12,7 +12,7 @@ public class Entity(IEntityContext<Entity> _context, IQueryContext<Entity> _quer
     public virtual string String { get; protected set; } = default!;
     public virtual string StringData { get; protected set; } = default!;
     public virtual int Int32 { get; protected set; } = default!;
-    public virtual string Uniq { get; protected set; } = default!;
+    public virtual string Unique { get; protected set; } = default!;
     public virtual Uri Uri { get; protected set; } = default!;
     public virtual object Dynamic { get; protected set; } = default!;
     public virtual Status Enum { get; protected set; } = default!;
@@ -23,7 +23,7 @@ public class Entity(IEntityContext<Entity> _context, IQueryContext<Entity> _quer
         string? @string = default,
         string? stringData = default,
         int? int32 = default,
-        string? uniq = default,
+        string? unique = default,
         Uri? uri = default,
         object? @dynamic = default,
         Status? @enum = default,
@@ -36,7 +36,7 @@ public class Entity(IEntityContext<Entity> _context, IQueryContext<Entity> _quer
             @string: @string,
             stringData: stringData,
             int32: int32,
-            uniq: uniq,
+            unique: unique,
             uri: uri,
             @dynamic: @dynamic,
             @enum: @enum,
@@ -51,7 +51,7 @@ public class Entity(IEntityContext<Entity> _context, IQueryContext<Entity> _quer
         string? @string = default,
         string? stringData = default,
         int? int32 = default,
-        string? uniq = default,
+        string? unique = default,
         Uri? uri = default,
         object? @dynamic = default,
         Status? @enum = default,
@@ -68,7 +68,7 @@ public class Entity(IEntityContext<Entity> _context, IQueryContext<Entity> _quer
                     @string: @string,
                     stringData: stringData,
                     int32: int32,
-                    uniq: uniq,
+                    unique: unique,
                     uri: uri,
                     @dynamic: @dynamic,
                     @enum: @enum,
@@ -83,7 +83,7 @@ public class Entity(IEntityContext<Entity> _context, IQueryContext<Entity> _quer
                 @string: @string,
                 stringData: stringData,
                 int32: int32,
-                uniq: uniq,
+                unique: unique,
                 uri: uri,
                 @dynamic: @dynamic,
                 @enum: @enum,
@@ -102,23 +102,23 @@ public class Entity(IEntityContext<Entity> _context, IQueryContext<Entity> _quer
         string? @string = default,
         string? stringData = default,
         int? int32 = default,
-        string? uniq = default,
+        string? unique = default,
         Uri? uri = default,
         object? @dynamic = default,
         Status? @enum = default,
         DateTime? dateTime = default
     )
     {
-        if (uniq != Uniq && _queryContext.FirstBy(e => e.Uniq == uniq) != null)
+        if (unique != Unique && _queryContext.FirstBy(e => e.Unique == unique) != null)
         {
-            throw new MustBeUniqException(nameof(Uniq));
+            throw new MustBeUniqueException(nameof(Unique));
         }
 
         Guid = guid ?? Guid;
         String = @string ?? String;
         StringData = stringData ?? StringData;
         Int32 = int32 ?? Int32;
-        Uniq = uniq ?? Uniq;
+        Unique = unique ?? Unique;
         Uri = uri ?? Uri;
         Dynamic = @dynamic ?? Dynamic;
         Enum = @enum ?? Enum;
@@ -138,7 +138,7 @@ public class Entities(IQueryContext<Entity> _context)
         string? @string = default,
         string? stringData = default,
         int? int32 = default,
-        string? uniq = default,
+        string? unique = default,
         Uri? uri = default,
         Status? status = default,
         DateTime? dateTime = default,
@@ -152,7 +152,7 @@ public class Entities(IQueryContext<Entity> _context)
                 (@string == default || e.String == @string) &&
                 (stringData == default || e.StringData == @stringData) &&
                 (int32 == default || e.Int32 == int32) &&
-                (uniq == default || e.Uniq == uniq) &&
+                (unique == default || e.Unique == unique) &&
                 (uri == default || e.Uri == uri) &&
                 (status == default || e.Enum == status) &&
                 (dateTime == default || e.DateTime == dateTime),
@@ -161,9 +161,9 @@ public class Entities(IQueryContext<Entity> _context)
         );
     }
 
-    public Entity? SingleByUniq(string uniq)
+    public Entity? SingleByUnique(string unique)
     {
-        return _context.SingleBy(e => e.Uniq == uniq);
+        return _context.SingleBy(e => e.Unique == unique);
     }
 
     public Entity? FirstByString(string startsWith,

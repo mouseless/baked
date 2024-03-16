@@ -13,7 +13,7 @@ public class EntitiesController
         string String = default,
         string StringData = default,
         int? Int32 = default,
-        string Uniq = default,
+        string Unique = default,
         Uri Uri = default,
         Status? Status = default,
         DateTime? DateTime = default,
@@ -30,7 +30,7 @@ public class EntitiesController
             @string: request.String,
             stringData: request.StringData,
             int32: request.Int32,
-            uniq: request.Uniq,
+            unique: request.Unique,
             uri: request.Uri,
             status: request.Status,
             dateTime: request.DateTime,
@@ -39,13 +39,13 @@ public class EntitiesController
         );
     }
 
-    public record SingleByStringRequest(string Uniq);
+    public record SingleByStringRequest(string Unique);
 
     [HttpGet]
-    [Route("entities/single-by-uniq")]
-    public Entity SingleByUniq([FromServices] Entities target, [FromQuery] SingleByStringRequest request)
+    [Route("entities/single-by-unique")]
+    public Entity SingleByUnique([FromServices] Entities target, [FromQuery] SingleByStringRequest request)
     {
-        return target.SingleByUniq(request.Uniq);
+        return target.SingleByUnique(request.Unique);
     }
 
     public record FirstByStringRequest(string StartsWith,
@@ -75,7 +75,7 @@ public class EntitiesController
         string String = default,
         string StringData = default,
         int Int32 = default,
-        string Uniq = default,
+        string Unique = default,
         Uri Uri = default,
         object Dynamic = default,
         Status Status = default,
@@ -88,7 +88,7 @@ public class EntitiesController
     {
         var target = newTarget();
 
-        return target.With(request.Guid, request.String, request.StringData, request.Int32, request.Uniq, request.Uri, request.Dynamic, request.Status, request.DateTime);
+        return target.With(request.Guid, request.String, request.StringData, request.Int32, request.Unique, request.Uri, request.Dynamic, request.Status, request.DateTime);
     }
 
     [HttpDelete]
@@ -105,7 +105,7 @@ public class EntitiesController
         string String = default,
         string StringData = default,
         int Int32 = default,
-        string Uniq = default,
+        string Unique = default,
         Uri Uri = default,
         object Dynamic = default,
         Status Status = default,
@@ -120,7 +120,7 @@ public class EntitiesController
     {
         var target = entityQuery.SingleById(id);
 
-        await target.Update(request.Guid, request.String, request.StringData, request.Int32, request.Uniq, request.Uri, request.Dynamic, request.Status, request.DateTime,
+        await target.Update(request.Guid, request.String, request.StringData, request.Int32, request.Unique, request.Uri, request.Dynamic, request.Status, request.DateTime,
             useTransaction: request.useTransaction,
             throwError: request.throwError
         );
