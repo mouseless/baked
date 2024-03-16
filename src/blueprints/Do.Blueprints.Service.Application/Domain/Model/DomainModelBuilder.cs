@@ -52,7 +52,7 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
         typeModel.Apply(t =>
             typeModel.Init(
                 genericTypeArguments: type.IsGenericType ? BuildGenericTypeArguments(t) : [],
-                baseType: t.BaseType is not null ? GetOrCreateTypeModel(t.BaseType) : default
+                baseType: t.IsAssignableTo(typeof(Task)) ? GetOrCreateTypeModel(typeof(Task)) : default
             )
         );
 
