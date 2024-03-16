@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace Do;
 
-public static class ServiceSpecReflectionExtensions
+public static class ReflectionServiceSpecExtensions
 {
     public static PropertyInfo? PropertyOf<T>(this Stubber _, string name) =>
         typeof(T).GetProperty(name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);

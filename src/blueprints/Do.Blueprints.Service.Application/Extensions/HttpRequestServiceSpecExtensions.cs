@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Do;
 
-public static class ServiceSpecHttpRequestExtensions
+public static class HttpRequestServiceSpecExtensions
 {
     public static HttpRequest AnHttpRequest(this Stubber giveMe,
     string? schema = default,

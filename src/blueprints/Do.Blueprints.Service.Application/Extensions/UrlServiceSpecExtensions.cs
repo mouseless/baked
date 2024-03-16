@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace Do;
 
-public static class ServiceSpecUrlExtensions
+public static class UrlServiceSpecExtensions
 {
     public static Uri AUrl(this Stubber giveMe,
         string? url = default

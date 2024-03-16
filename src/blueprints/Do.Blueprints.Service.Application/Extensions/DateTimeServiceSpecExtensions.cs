@@ -2,7 +2,7 @@ using Do.Testing;
 
 namespace Do;
 
-public static class ServiceSpecDateTimeExtensions
+public static class DateTimeServiceSpecExtensions
 {
     public static DateTime ADateTime(this Stubber _,
         int year = 2023,

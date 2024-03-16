@@ -4,7 +4,7 @@ using Moq;
 
 namespace Do;
 
-public static class ServiceSpecSettingsExtensions
+public static class SettingsServiceSpecExtensions
 {
     public static void ASetting<T>(this Mocker mockMe,
         string? key = default,

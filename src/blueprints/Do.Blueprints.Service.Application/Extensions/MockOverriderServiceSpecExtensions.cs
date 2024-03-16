@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Do;
 
-public static class ServiceSpecMockOverriderExtensions
+public static class MockOverriderServiceSpecExtensions
 {
     public static T The<T>(this Stubber _, params object?[] mockOverrides) where T : notnull =>
         ServiceSpec.ServiceProvider.OverrideMocksAndGetRequiredService<T>(mockOverrides);
