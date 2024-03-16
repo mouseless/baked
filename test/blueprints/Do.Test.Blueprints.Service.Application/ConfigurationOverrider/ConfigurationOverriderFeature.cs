@@ -30,5 +30,18 @@ public class ConfigurationOverriderFeature : IFeature
             swaggerGenOptions.AddSecurityRequirementToOperationsThatUse<Middleware>("AdditionalSecurity");
             swaggerGenOptions.AddParameterToOperationsThatUse<Middleware>("X-Security", @in: ParameterLocation.Header, required: true);
         });
+
+        configurator.ConfigureCodeCollection(codes =>
+        {
+            codes.Add(Entities.Code);
+            codes.Add(Parents.Code);
+            codes.Add(Remote.Code);
+            codes.Add(Singleton.Code);
+        });
+
+        configurator.ConfigureApplicationParts(applicationParts =>
+        {
+            applicationParts.Add(new(configurator.Context.GetGeneratedAssembly().Assembly));
+        });
     }
 }

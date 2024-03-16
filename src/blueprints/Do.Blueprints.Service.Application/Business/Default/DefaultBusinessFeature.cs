@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Do.Business.Default;
 
-public class DefaultBusinessFeature(List<Assembly> _assemblies, Assembly _controllerAssembly)
+public class DefaultBusinessFeature(List<Assembly> _assemblies)
     : IFeature<BusinessConfigurator>
 {
     const BindingFlags _defaultMemberBindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
@@ -83,11 +83,6 @@ public class DefaultBusinessFeature(List<Assembly> _assemblies, Assembly _contro
                     });
                 }
             }
-        });
-
-        configurator.ConfigureApplicationParts(applicationParts =>
-        {
-            applicationParts.Add(new(_controllerAssembly));
         });
     }
 }
