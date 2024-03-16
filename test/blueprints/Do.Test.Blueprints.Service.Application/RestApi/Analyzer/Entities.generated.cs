@@ -88,7 +88,7 @@ public class EntitiesController
     {
         var target = newTarget();
 
-        return target.With( request.Uniq, request.Guid, request.String, request.StringData, request.Int32, request.Uri, request.Dynamic, request.Status, request.DateTime);
+        return target.With(request.Guid, request.String, request.StringData, request.Int32, request.Uniq, request.Uri, request.Dynamic, request.Status, request.DateTime);
     }
 
     [HttpDelete]
@@ -120,7 +120,7 @@ public class EntitiesController
     {
         var target = entityQuery.SingleById(id);
 
-        await target.Update(request.Uniq, request.Guid, request.String, request.StringData, request.Int32, request.Uri, request.Dynamic, request.Status, request.DateTime,
+        await target.Update(request.Guid, request.String, request.StringData, request.Int32, request.Uniq, request.Uri, request.Dynamic, request.Status, request.DateTime,
             useTransaction: request.useTransaction,
             throwError: request.throwError
         );

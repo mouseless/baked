@@ -5,11 +5,11 @@ public class QueryingEntities : TestServiceSpec
     [Test]
     public void When_a_single_entity_is_queried_by_a_unique_property__the_only_result_is_returned()
     {
-        var expected = GiveMe.AnEntity(@string: "a");
-        GiveMe.AnEntity(@string: "b");
+        var expected = GiveMe.AnEntity(uniq: "a");
+        GiveMe.AnEntity(uniq: "b");
         var testing = GiveMe.The<Entities>();
 
-        testing.SingleByString("a").ShouldBe(expected);
+        testing.SingleByUniq("a").ShouldBe(expected);
     }
 
     [Test]

@@ -19,11 +19,11 @@ public class Entity(IEntityContext<Entity> _context, IQueryContext<Entity> _quer
     public virtual DateTime DateTime { get; protected set; } = default!;
 
     public virtual Entity With(
-        string uniq,
         Guid? guid = default,
         string? @string = default,
         string? stringData = default,
         int? int32 = default,
+        string? uniq = default,
         Uri? uri = default,
         object? @dynamic = default,
         Status? @enum = default,
@@ -47,11 +47,11 @@ public class Entity(IEntityContext<Entity> _context, IQueryContext<Entity> _quer
     }
 
     public virtual async Task Update(
-        string uniq,
         Guid? guid = default,
         string? @string = default,
         string? stringData = default,
         int? int32 = default,
+        string? uniq = default,
         Uri? uri = default,
         object? @dynamic = default,
         Status? @enum = default,
@@ -98,27 +98,27 @@ public class Entity(IEntityContext<Entity> _context, IQueryContext<Entity> _quer
     }
 
     protected virtual void Set(
-        string uniq,
         Guid? guid = default,
         string? @string = default,
         string? stringData = default,
         int? int32 = default,
+        string? uniq = default,
         Uri? uri = default,
         object? @dynamic = default,
         Status? @enum = default,
         DateTime? dateTime = default
     )
     {
-        if (_queryContext.FirstBy(e => e.Uniq == uniq) != null)
+        if (uniq != Uniq && _queryContext.FirstBy(e => e.Uniq == uniq) != null)
         {
-            throw new ShouldBeUniqException(nameof(Uniq));
+            throw new MustBeUniqException(nameof(Uniq));
         }
 
         Guid = guid ?? Guid;
         String = @string ?? String;
         StringData = stringData ?? StringData;
         Int32 = int32 ?? Int32;
-        Uniq = uniq;
+        Uniq = uniq ?? Uniq;
         Uri = uri ?? Uri;
         Dynamic = @dynamic ?? Dynamic;
         Enum = @enum ?? Enum;

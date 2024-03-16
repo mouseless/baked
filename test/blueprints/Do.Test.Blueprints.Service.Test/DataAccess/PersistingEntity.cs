@@ -12,6 +12,7 @@ public class PersistingEntity : TestServiceSpec
             @string: string.Empty,
             stringData: string.Empty,
             int32: 0,
+            uniq: Guid.NewGuid().ToString(),
             uri: GiveMe.AUrl(),
             @dynamic: new { },
             @enum: Status.Disabled
