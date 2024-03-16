@@ -3,7 +3,7 @@ using Do.Testing;
 
 namespace Do;
 
-public static class TimeProviderServiceSpecExtensions
+public static class TimeProviderExtensions
 {
     public static TimeProvider TheTime(this Mocker mockMe,
         DateTime? now = default,

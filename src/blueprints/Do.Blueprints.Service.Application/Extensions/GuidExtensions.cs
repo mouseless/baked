@@ -2,7 +2,7 @@ using Do.Testing;
 
 namespace Do;
 
-public static class GuidServiceSpecExtensions
+public static class GuidExtensions
 {
     public static Guid AGuid(this Stubber _,
         string? starts = default

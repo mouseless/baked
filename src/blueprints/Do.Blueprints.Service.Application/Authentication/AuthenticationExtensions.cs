@@ -5,7 +5,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Do;
 
-public static class AuthenticationExtensions
+public static partial class AuthenticationExtensions
 {
     public static void AddAuthentication(this IList<IFeature> source, Func<AuthenticationConfigurator, IFeature> configure) => source.Add(configure(new()));
 

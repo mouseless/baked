@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Do;
 
-public static class JsonServiceSpecExtensions
+public static class JsonExtensions
 {
     public static void ShouldDeeplyBe(this object? payload, object? json) => payload.ToJsonString().ShouldBe(json.ToJsonString());
 

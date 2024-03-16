@@ -2,7 +2,7 @@ using Shouldly;
 
 namespace Do;
 
-public static class EntityServiceSpecExtensions
+public static class EntityExtensions
 {
     public static void ShouldBeDeleted(this object @object) =>
         ServiceSpec.Session.Contains(@object).ShouldBeFalse($"{@object} should've been deleted, but it's STILL in the session");

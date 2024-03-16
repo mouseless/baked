@@ -4,7 +4,7 @@ using Shouldly;
 
 namespace Do;
 
-public static class MemoryCacheServiceSpecExtensions
+public static class MemoryCacheExtensions
 {
     public static IMemoryCache AMemoryCache(this Stubber giveMe,
         bool clear = false

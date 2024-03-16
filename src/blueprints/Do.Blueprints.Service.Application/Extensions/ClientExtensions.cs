@@ -4,7 +4,7 @@ using Moq;
 
 namespace Do;
 
-public static class ClientServiceSpecExtensions
+public static class ClientExtensions
 {
     public static IClient<T> TheClient<T>(this Mocker mockMe,
         string? url = default,

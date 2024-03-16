@@ -2,7 +2,7 @@ using Do.Testing;
 
 namespace Do;
 
-public static class StringServiceSpecExtensions
+public static class StringExtensions
 {
     public static string AnEmail(this Stubber _) => "info@test.com";
 

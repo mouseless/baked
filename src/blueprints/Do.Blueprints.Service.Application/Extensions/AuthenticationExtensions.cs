@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace Do;
 
-public static class AuthenticationServiceSpecExtensions
+public static partial class AuthenticationExtensions
 {
     public static Do.Authentication.FixedToken.Middleware AFixedTokenMiddleware(this Stubber giveMe,
        string[]? tokenNames = default
