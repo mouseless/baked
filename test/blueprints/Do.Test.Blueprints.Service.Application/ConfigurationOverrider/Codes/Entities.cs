@@ -126,5 +126,4 @@ public static class Entities
             }
         }
     """;
-
 }

@@ -7,12 +7,12 @@ namespace Do.CodeGeneration;
 
 public class CodeGenerationLayer : LayerBase<GenerateCode>
 {
-    readonly CompilerOptions _compiler = new();
+    readonly CompilerOptions _compilerOptions = new();
     readonly ICodeCollection _codeCollection = new CodeCollection();
 
     protected override PhaseContext GetContext(GenerateCode phase) =>
         phase.CreateContextBuilder()
-            .Add<CompilerOptions>(_compiler)
+            .Add<CompilerOptions>(_compilerOptions)
             .Add<ICodeCollection>(_codeCollection)
             .Build();
 

@@ -33,10 +33,10 @@ public class ConfigurationOverriderFeature : IFeature
 
         configurator.ConfigureCodeCollection(codes =>
         {
-            codes.Add(Entities.Code);
-            codes.Add(Parents.Code);
-            codes.Add(Remote.Code);
-            codes.Add(Singleton.Code);
+            codes.Add(Codes.Entities.Code);
+            codes.Add(Codes.Parents.Code);
+            codes.Add(Codes.Remote.Code);
+            codes.Add(Codes.Singleton.Code);
         });
 
         configurator.ConfigureApplicationParts(applicationParts =>
