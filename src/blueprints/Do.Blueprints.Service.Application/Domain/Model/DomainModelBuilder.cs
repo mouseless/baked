@@ -64,7 +64,6 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
     ModelCollection<MethodModel> BuildMethods(Type type)
     {
         var methods = new Dictionary<string, MethodModel>();
-
         var constructorInfos = type.GetConstructors(_domainBuilderOptions.ConstuctorBindingFlags) ?? [];
 
         methods[".ctor"] = new(".ctor", constructorInfos.Select(BuildConstructorOverload).ToArray(), IsConstructor: true);
