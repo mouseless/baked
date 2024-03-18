@@ -5,16 +5,16 @@ using System.Reflection;
 
 namespace Do.Business.Default;
 
-public class DefaultBusinessFeature(List<Assembly> _assemblies)
+public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
     : IFeature<BusinessConfigurator>
 {
     const BindingFlags _defaultMemberBindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
 
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureAssemblyCollection(assemblies =>
+        configurator.ConfigureDomainAssemblyCollection(assemblies =>
         {
-            foreach (var assembly in _assemblies)
+            foreach (var assembly in _domainAssemblies)
             {
                 assemblies.Add(assembly);
             }
@@ -50,7 +50,7 @@ public class DefaultBusinessFeature(List<Assembly> _assemblies)
                     type.Methods.Contains("<Clone>$") // if type is record
                 ) { continue; }
 
-                if (type.Methods.Contains("With"))
+                if (type.Methods.TryGetValue("With", out var method) && method.CanReturn(type))
                 {
                     type.Apply(t =>
                     {
