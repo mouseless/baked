@@ -7,19 +7,19 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
     readonly KeyedModelCollection<AssemblyModel> _assemblies = [];
     readonly KeyedModelCollection<TypeModel> _types = [];
 
-    public DomainModel BuildFrom(IDomainAssemblyCollection domainAssembyCollection, IDomainTypeCollection domainTypeCollection)
+    public DomainModel BuildFrom(IDomainAssemblyCollection domainAssemblies, IDomainTypeCollection domainTypes)
     {
-        foreach (var assembly in domainAssembyCollection)
+        foreach (var assembly in domainAssemblies)
         {
             _assemblies.Add(new(assembly));
 
             foreach (var type in assembly.GetExportedTypes())
             {
-                domainTypeCollection.Add(type);
+                domainTypes.Add(type);
             }
         }
 
-        foreach (var type in domainTypeCollection)
+        foreach (var type in domainTypes)
         {
             _types.Add(new(type, TypeModel.IdFrom(type), assembly: _assemblies.GetOrDefault(type.Assembly.FullName), isBusinessType: true));
         }

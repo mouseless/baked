@@ -7,17 +7,11 @@ namespace Do.Test;
 public class Singleton(
     TimeProvider _timeProvider,
     Func<Entity> _newEntity,
-    Func<TransientWithTask> _newTransientWithTask,
     ITransaction _transaction,
     Func<OperationWithGenericParameter<Entity>> _newOperationWithGenericParameter,
     IClient<Singleton> _client
 ) : SingletonBase(_timeProvider), IInterface
 {
-    internal async Task TestTransientWithTask()
-    {
-        (await _newTransientWithTask().With()).Execute();
-    }
-
     internal void TestOperationWithGenericParameter()
     {
         _newOperationWithGenericParameter().With().Execute();

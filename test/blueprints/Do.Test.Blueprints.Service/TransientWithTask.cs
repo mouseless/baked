@@ -2,7 +2,5 @@
 
 public class TransientWithTask
 {
-    public Task<TransientWithTask> With() => Task.FromResult(this);
-
-    public void Execute() { }
+    internal Task<TransientWithTask> With() => Task.FromResult(this);
 }
