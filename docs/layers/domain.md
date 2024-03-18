@@ -19,7 +19,7 @@ This target is provided in `BuildConfiguration` phase. To configure it in a
 feature;
 
 ```csharp
-configurator.ConfigureAssemblyCollection(assemblies =>
+configurator.ConfigureDomainAssemblyCollection(assemblies =>
 {
     ...
 });
@@ -31,7 +31,7 @@ This target is provided in `BuildConfiguration` phase. To configure it in a
 feature;
 
 ```csharp
-configurator.ConfigureTypeCollection(types =>
+configurator.ConfigureDomainTypeCollection(types =>
 {
     ...
 });
