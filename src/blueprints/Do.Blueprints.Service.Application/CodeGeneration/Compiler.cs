@@ -1,16 +1,13 @@
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using System.Reflection;
 using System.Text;
 
 namespace Do.CodeGeneration;
 
-public class Compiler(CompilerOptions _compilerOptions)
+public class Compiler(GeneratedAssemblyDescriptor _descriptor)
 {
-    readonly List<string> _codes = new();
     readonly Dictionary<string, MetadataReference> _references = new();
-
-    public void AddCode(string code) => _codes.Add(code);
 
     void AddReference(Assembly assembly)
     {
@@ -25,16 +22,21 @@ public class Compiler(CompilerOptions _compilerOptions)
 
     public Assembly Compile()
     {
-        foreach (var assembly in _compilerOptions.References)
+        foreach (var assembly in _descriptor.References)
         {
             AddReference(assembly);
         }
 
+        _descriptor.AddCode(string.Join(
+            Environment.NewLine,
+            _descriptor.CompilationOptions.Usings.Select(u => $"global using global::{u};")
+        ));
+
         var compilation = CSharpCompilation.Create(
             Path.GetRandomFileName(),
-            syntaxTrees: _codes.Select(c => CSharpSyntaxTree.ParseText(c)),
+            syntaxTrees: _descriptor.Codes.Select(c => CSharpSyntaxTree.ParseText(c)),
             references: _references.Values,
-            options: new(OutputKind.DynamicallyLinkedLibrary)
+            options: _descriptor.CompilationOptions
         );
 
         using var ms = new MemoryStream();
@@ -48,7 +50,7 @@ public class Compiler(CompilerOptions _compilerOptions)
             var errors = new StringBuilder();
             foreach (var diagnostic in failures)
             {
-                errors.AppendLine($"{diagnostic.Location.GetLineSpan()} - {diagnostic.Id}: {diagnostic.GetMessage()}");
+                errors.AppendLine(diagnostic.GetMessage());
                 errors.AppendLine();
             }
 

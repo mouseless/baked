@@ -5,11 +5,6 @@ public static class Parents
     public static readonly string Code = """
         using Do.Orm;
         using Microsoft.AspNetCore.Mvc;
-        using System;
-        using System.Linq;
-        using System.Collections;
-        using System.Collections.Generic;
-        using System.Threading.Tasks;
 
         namespace Do.Test.RestApi.Analyzer;
 

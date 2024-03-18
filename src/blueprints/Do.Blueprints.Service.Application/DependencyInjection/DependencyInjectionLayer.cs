@@ -1,4 +1,4 @@
-using Do.Architecture;
+﻿using Do.Architecture;
 using Do.CodeGeneration;
 using Do.Domain.Model;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,9 +20,9 @@ public class DependencyInjectionLayer : LayerBase<AddServices>
     }
 
     public class AddServices(IServiceCollection _services)
-        : PhaseBase<DomainModel, GeneratedAssemblies>(PhaseOrder.Early)
+        : PhaseBase<DomainModel, GeneratedAssemblyProvider>(PhaseOrder.Early)
     {
-        protected override void Initialize(DomainModel _, GeneratedAssemblies __)
+        protected override void Initialize(DomainModel _, GeneratedAssemblyProvider __)
         {
             Context.Add(_services);
         }

@@ -1,4 +1,4 @@
-using Do.Architecture;
+﻿using Do.Architecture;
 using Do.Domain.Model;
 
 using static Do.CodeGeneration.CodeGenerationLayer;
@@ -7,52 +7,40 @@ namespace Do.CodeGeneration;
 
 public class CodeGenerationLayer : LayerBase<GenerateCode>
 {
-    readonly ICodeCollection _codes = new CodeCollection();
-    readonly CompilerOptions _compilerOptions = new();
+    readonly IGeneratedAssemblyCollection _generatedAssemblies = new GeneratedAssemblyCollection();
 
     protected override PhaseContext GetContext(GenerateCode phase) =>
-        phase.CreateContextBuilder()
-            .Add(_codes)
-            .Add(_compilerOptions)
-            .Build();
+        phase.CreateContext(_generatedAssemblies);
 
     protected override IEnumerable<IPhase> GetPhases()
     {
-        yield return new GenerateCode(_codes);
-        yield return new Compile(_compilerOptions);
+        yield return new GenerateCode(_generatedAssemblies);
+        yield return new Compile();
     }
 
-    public class GenerateCode(ICodeCollection _codeCollection)
+    public class GenerateCode(IGeneratedAssemblyCollection _generatedAssemblies)
         : PhaseBase<DomainModel>(PhaseOrder.Earliest)
     {
         protected override void Initialize(DomainModel _)
         {
-            Context.Add(_codeCollection);
+            Context.Add(_generatedAssemblies);
         }
     }
 
-    public class Compile(CompilerOptions _compilerOptions)
-        : PhaseBase<ICodeCollection>(PhaseOrder.Latest)
+    public class Compile()
+        : PhaseBase<IGeneratedAssemblyCollection>(PhaseOrder.Latest)
     {
-        protected override void Initialize(ICodeCollection codes)
+        protected override void Initialize(IGeneratedAssemblyCollection generatedAssemblies)
         {
-            var generatedAssemblies = new GeneratedAssemblies();
-
-            var assemblyCodes = codes.GroupBy(cd => cd.AssemblyName, cd => cd.Code);
-            foreach (var assemblyCode in assemblyCodes)
+            var provider = new GeneratedAssemblyProvider();
+            foreach (var descriptor in generatedAssemblies)
             {
-                var compiler = new Compiler(_compilerOptions);
-                foreach (var code in assemblyCode)
-                {
-                    compiler.AddCode(code);
-                }
+                var assembly = new Compiler(descriptor).Compile();
 
-                var assembly = compiler.Compile();
-
-                generatedAssemblies.Add(assemblyCode.Key, assembly);
+                provider.Add(descriptor.Name, assembly);
             }
 
-            Context.Add(generatedAssemblies);
+            Context.Add(provider);
         }
     }
 }
