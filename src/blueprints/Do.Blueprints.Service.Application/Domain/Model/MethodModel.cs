@@ -9,8 +9,8 @@ public record MethodModel(
     string IModel.Id { get; } = Name;
 
     public bool CanReturn(TypeModel type) =>
-     Overloads.Any(o =>
-         o.ReturnType == type ||
-         (o.ReturnType?.IsAssignableTo<Task>() == true && o.ReturnType?.GenericTypeArguments.Any(a => a == type) == true)
-     );
+        Overloads.Any(o =>
+            o.ReturnType == type ||
+            (o.ReturnType?.IsAssignableTo<Task>() == true && o.ReturnType?.GenericTypeArguments.Any(a => a == type) == true)
+        );
 }
