@@ -7,7 +7,7 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
     readonly KeyedModelCollection<AssemblyModel> _assemblies = [];
     readonly KeyedModelCollection<TypeModel> _types = [];
 
-    public DomainModel BuildFrom(IAssemblyCollection assemblyCollection, ITypeCollection typeCollection)
+    public DomainModel BuildFrom(IDomainAssemblyCollection assemblyCollection, IDomainTypeCollection typeCollection)
     {
         foreach (var assembly in assemblyCollection)
         {

@@ -5,18 +5,18 @@ using System.Reflection;
 
 namespace Do.Business.Default;
 
-public class DefaultBusinessFeature(List<Assembly> _assemblies, Assembly _controllerAssembly)
+public class DefaultBusinessFeature(List<Assembly> _domainAssemblies, Assembly _controllerAssembly)
     : IFeature<BusinessConfigurator>
 {
     const BindingFlags _defaultMemberBindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
 
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureAssemblyCollection(assemblies =>
+        configurator.ConfigureDomainAssemblyCollection(domainAssemblyCollection =>
         {
-            foreach (var assembly in _assemblies)
+            foreach (var assembly in _domainAssemblies)
             {
-                assemblies.Add(assembly);
+                domainAssemblyCollection.Add(assembly);
             }
         });
 
