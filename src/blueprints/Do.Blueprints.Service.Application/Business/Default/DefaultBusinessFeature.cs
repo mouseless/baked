@@ -12,11 +12,11 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies, Assembly _
 
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainAssemblyCollection(domainAssemblyCollection =>
+        configurator.ConfigureDomainAssemblyCollection(assemblies =>
         {
             foreach (var assembly in _domainAssemblies)
             {
-                domainAssemblyCollection.Add(assembly);
+                assemblies.Add(assembly);
             }
         });
 
