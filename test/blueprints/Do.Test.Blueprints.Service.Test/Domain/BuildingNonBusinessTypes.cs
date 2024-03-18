@@ -1,61 +1,20 @@
-﻿using Do.Architecture;
-using Do.Branding;
-using Do.Domain.Model;
+﻿using Do.Domain.Model;
 using Do.Orm;
-using System.Reflection;
 
 namespace Do.Test.Domain;
 
-public class BuildingNonBusinessTypes
+public class BuildingNonBusinessTypes : TestServiceSpec
 {
-    /*
-     *  This is a temporary test fixture for testing domain model for
-     *  validating scenerios which cannot be tested with using outcomes
-     *  of current layers and features of the test project
-     */
-
-    #region Setup & Helpers
-
-    static readonly MethodInfo _idFrom = typeof(TypeModel).GetMethod(name: "IdFrom", bindingAttr: BindingFlags.Static | BindingFlags.NonPublic) ??
-        throw new("'IdFrom' hould have existed");
-
-    [OneTimeSetUp]
-    public void Setup()
-    {
-        var context = new ApplicationContext();
-        new Forge(new Mock<IBanner>().Object, () => new(context))
-            .Application(app =>
-            {
-                app.Layers.AddConfiguration();
-                app.Layers.AddDependencyInjection();
-                app.Layers.AddDomain();
-                app.Layers.AddTesting();
-
-                app.Features.AddBusiness(c => c.Default(assemblies: [typeof(Entity).Assembly]));
-            })
-            .Run();
-
-        DomainModel = context.GetDomainModel();
-    }
-
-    DomainModel DomainModel { get; set; } = default!;
-    string IdFrom<T>() => IdFrom(typeof(T));
-    string IdFrom(Type type) => $"{_idFrom.Invoke(null, [type])}";
-
-    #endregion
-
     [Test]
     public void Non_business_types_are_added_to_type_collection([Values(typeof(string), typeof(int), typeof(Task), typeof(Func<Entity>), typeof(IQueryContext<Entity>))] Type type)
     {
-        DomainModel.Types.TryGetValue(IdFrom(type), out var model);
-
-        model.ShouldNotBeNull();
+        DomainModel.Types.Contains(type).ShouldBeTrue();
     }
 
     [Test]
     public void Non_business_types_with_no_generic_parameters_are_initialized_with_empty_collections([Values(typeof(string), typeof(int), typeof(Task))] Type type)
     {
-        var model = DomainModel.Types[IdFrom(type)];
+        var model = DomainModel.Types[type];
 
         model.Properties.ShouldNotBeNull();
         model.Properties.Count().ShouldBe(0);
@@ -78,8 +37,8 @@ public class BuildingNonBusinessTypes
     [Test]
     public void Non_business_types_with_generic_parameters_are_initialized_with_generic_arguments([Values(typeof(List<Entity>), typeof(Func<Entity>), typeof(IQueryContext<Entity>))] Type type)
     {
-        var entityModel = DomainModel.Types[IdFrom<Entity>()];
-        var listEntity = DomainModel.Types[IdFrom(type)];
+        var entityModel = DomainModel.Types[typeof(Entity)];
+        var listEntity = DomainModel.Types[type];
 
         listEntity.ShouldNotBeNull();
         listEntity.GenericTypeArguments.Count().ShouldBe(1);
@@ -89,7 +48,7 @@ public class BuildingNonBusinessTypes
     [Test]
     public void Base_type_is_added_for_task()
     {
-        var model = DomainModel.Types[IdFrom<Task<TransientWithTask>>()];
+        var model = DomainModel.Types[typeof(Task<TransientWithTask>)];
 
         model.ShouldNotBeNull();
         model.BaseType.ShouldNotBeNull();

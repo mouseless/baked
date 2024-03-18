@@ -6,7 +6,7 @@ public class TypeModel(Type type, string id,
 ) : IModel, IEquatable<TypeModel>
 {
     internal static string IdFrom(Type type) =>
-        type.FullName ?? $"{type.Namespace}.{type.Name}[{string.Join(',', type.GenericTypeArguments.Select(IdFrom))}]";
+        type.FullName ?? $"{type.Namespace}.{type.Name}<{string.Join(',', type.GenericTypeArguments.Select(IdFrom))}>";
 
     readonly Type _type = type;
     readonly string _id = id;

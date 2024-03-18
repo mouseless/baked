@@ -16,14 +16,14 @@ public class ModelCollection<T>() : IEnumerable<T>
         }
     }
 
-    public T this[string key] =>
-        _models[key];
+    public T this[string id] =>
+        _models[id];
 
     public bool ContainsModel(T? model) =>
         _models.Contains(model?.Id ?? string.Empty);
 
-    public bool Contains(string key) =>
-        _models.Contains(key);
+    public bool Contains(string id) =>
+        _models.Contains(id);
 
     public bool TryGetValue(string id, [NotNullWhen(true)] out T? model) =>
        _models.TryGetValue(id, out model);
