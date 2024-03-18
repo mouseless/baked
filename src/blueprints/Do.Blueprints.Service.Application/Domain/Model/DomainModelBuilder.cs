@@ -26,16 +26,7 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
 
         foreach (var type in _types.ToList())
         {
-            type.Apply(t =>
-                type.Init(
-                    genericTypeArguments: BuildGenericTypeArguments(t),
-                    customAttributes: BuildCustomAttributes(t),
-                    properties: BuildProperties(t),
-                    methods: BuildMethods(t),
-                    interfaces: BuildInterfaces(t),
-                    baseType: t.BaseType is not null ? GetOrCreateTypeModel(t.BaseType) : default
-                )
-            );
+            InitTypeModel(type);
         }
 
         return new(new(_assemblies), new(_types));
@@ -46,17 +37,28 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
         var id = TypeModel.IdFrom(type);
         if (_types.TryGetValue(id, out var result)) { return result; }
 
-        var typeModel = new TypeModel(type, id);
+        var isGenericBusinessType = type.IsGenericType && !type.IsGenericTypeDefinition && _assemblies.Contains(type.Assembly?.FullName ?? string.Empty);
+        var typeModel = new TypeModel(type, id, isBusinessType: isGenericBusinessType);
+
         _types.Add(typeModel);
 
-        typeModel.Apply(t =>
-            typeModel.Init(
-                genericTypeArguments: type.IsGenericType ? BuildGenericTypeArguments(t) : [],
-                baseType: t.BaseType == typeof(Task) ? GetOrCreateTypeModel(typeof(Task)) : default
-            )
-        );
+        InitTypeModel(typeModel);
 
         return typeModel;
+    }
+
+    void InitTypeModel(TypeModel typeModel)
+    {
+        typeModel.Apply(t =>
+            typeModel.Init(
+                genericTypeArguments: typeModel.IsBusinessType || typeModel.IsGenericType ? BuildGenericTypeArguments(t) : [],
+                customAttributes: typeModel.IsBusinessType ? BuildCustomAttributes(t) : [],
+                properties: typeModel.IsBusinessType ? BuildProperties(t) : [],
+                methods: typeModel.IsBusinessType ? BuildMethods(t) : [],
+                interfaces: typeModel.IsBusinessType ? BuildInterfaces(t) : [],
+                baseType: (typeModel.IsBusinessType || t.BaseType == typeof(Task)) && t.BaseType is not null ? GetOrCreateTypeModel(t.BaseType) : default
+            )
+        );
     }
 
     ModelCollection<MethodModel> BuildMethods(Type type)
