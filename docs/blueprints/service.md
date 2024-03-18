@@ -1,15 +1,15 @@
 # Service
 
-Service blueprint is the default backend blueprint provided by DO which 
-includes necessary layers and feature implementations for any backend 
+Service blueprint is the default backend blueprint provided by DO which
+includes necessary layers and feature implementations for any backend
 application.
 
 > :bulb:
 >
-> This blueprint is under development and will be detailed as it becomes more 
+> This blueprint is under development and will be detailed as it becomes more
 > mature.
 
-To create an application from this blueprint, use `Service()` extension of 
+To create an application from this blueprint, use `Service()` extension of
 `Forge` class directly in `Program.cs`.
 
 ```csharp
@@ -25,6 +25,7 @@ Layers in this blueprint are;
 
 | Layers               | Run | Test |
 | -------------------- | --- | ---- |
+| Code Generation      | +   | +    |
 | Configuration        | +   | +    |
 | Data Access          | +   | +    |
 | Dependency Injection | +   | +    |
@@ -61,11 +62,21 @@ flowchart TD
     BC[BuildConfiguration]
     BD[BuildDomain]
     CB[CreateBuilder]
+    C[Compile]
+    GC[GenerateCode]
     R[Run]
-    CB -->|ConfigurationManager| BC
+
     CB -->|ConfigurationManager| BD
+    CB -->|ConfigurationManager| BC
+
+    BD -->|DomainModel| GC
+    GC -->|IGeneratedAssemblyCollection| C
+
     BD -->|DomainModel| AS
+    C -->|GeneratedAssemblyProvider| AS
+
     CB -->|WebApplicationBuilder| B
     AS -->|IServiceCollection| B
+
     B -->|WebApplication|R
-```    
+```

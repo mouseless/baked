@@ -30,7 +30,6 @@ public class DomainLayer : LayerBase<BuildConfiguration>
         protected override void Initialize(ConfigurationManager _)
         {
             var builder = new DomainModelBuilder(_domainBuilderOptions);
-
             var model = builder.BuildFrom(_domainAssemblies, _domainTypes);
 
             Context.Add<DomainModel>(model);
