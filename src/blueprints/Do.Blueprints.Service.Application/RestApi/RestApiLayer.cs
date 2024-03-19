@@ -33,9 +33,17 @@ public class RestApiLayer : LayerBase<GenerateCode, AddServices, Build>
                 generatedAssemblies.Add("RestApiLayer.Generated",
                     assembly => assembly
                         .AddReferenceFrom<ApiControllerAttribute>()
+                        .AddReferences(_apiModel.References)
                         .AddCodes(new ApiTemplate(_apiModel).Render()),
                     compilerOptions => compilerOptions
-                        .WithUsings("Microsoft.AspNetCore.Mvc")
+                        .WithUsings(
+                            "Microsoft.AspNetCore.Mvc",
+                            "System",
+                            "System.Linq",
+                            "System.Collections",
+                            "System.Collections.Generic",
+                            "System.Threading.Tasks"
+                        )
                 );
             }
         );

@@ -19,6 +19,8 @@ public class ModelCollection<T>() : IEnumerable<T>
     public T this[string id] =>
         _models[id];
 
+    public int Count => _models.Count;
+
     public bool ContainsModel(T? model) =>
         _models.Contains(model?.Id ?? string.Empty);
 

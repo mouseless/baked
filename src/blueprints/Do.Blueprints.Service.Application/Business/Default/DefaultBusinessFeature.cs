@@ -1,5 +1,6 @@
 ﻿using Do.Architecture;
 using Do.Domain.Model;
+using Do.RestApi.Model;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -30,7 +31,6 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
         configurator.ConfigureServiceCollection(services =>
         {
             var domainModel = configurator.Context.GetDomainModel();
-
             foreach (var type in domainModel.Types)
             {
                 if (
@@ -50,7 +50,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                     type.Methods.Contains("<Clone>$") // if type is record
                 ) { continue; }
 
-                if (type.Methods.TryGetValue("With", out var method) && method.CanReturn(type))
+                if (type.Methods.TryGetValue("With", out var with) && with.CanReturn(type))
                 {
                     type.Apply(t =>
                     {
@@ -81,6 +81,80 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                             .Where(i => i.IsBusinessType)
                             .Apply(i => services.AddSingleton(i, t, forward: true));
                     });
+                }
+            }
+        });
+
+        configurator.ConfigureApiModel(api =>
+        {
+            api.References.AddRange(_domainAssemblies);
+
+            var domainModel = configurator.Context.GetDomainModel();
+            foreach (var type in domainModel.Types)
+            {
+                if (
+                    !type.IsBusinessType ||
+                    !type.IsPublic ||
+                    type.IsInterface ||
+                    type.Namespace?.StartsWith("System") == true ||
+                    (type.IsSealed && type.IsAbstract) || // if type is static
+                    type.IsAbstract ||
+                    type.IsValueType ||
+                    type.IsGenericMethodParameter ||
+                    type.IsGenericTypeParameter ||
+                    type.IsAssignableTo<MulticastDelegate>() ||
+                    type.IsAssignableTo<Exception>() ||
+                    type.IsAssignableTo<Attribute>() ||
+                    (type.ContainsGenericParameters && !type.GenericTypeArguments.Any()) ||
+                    type.Methods.Contains("<Clone>$") // if type is record
+                ) { continue; }
+
+                if (type.Methods.TryGetValue("With", out var with) && with.CanReturn(type))
+                {
+                }
+                else if (type.IsAssignableTo<IScoped>())
+                {
+                }
+                else
+                {
+                    if (type.Properties.Any(p => p.IsPublic)) { continue; }
+                    if (type.FullName is null) { continue; }
+
+                    var singleton = new ControllerModel(type.Name);
+                    foreach (var method in type.Methods.Where(mm =>
+                                               !mm.IsConstructor &&
+                                               mm.Overloads.Length == 1 &&
+                                               mm.Overloads[0].IsPublic &&
+                                               mm.Overloads[0].Parameters.Count == 0 &&
+                                               mm.Overloads[0].ReturnType?.FullName == typeof(void).FullName
+                    ))
+                    {
+                        singleton.Actions.Add(
+                            new(
+                                Name: method.Name,
+                                Method: method.Name.StartsWith("Get") ? HttpMethod.Get : HttpMethod.Post,
+                                Route: $"{type.Name.ToLowerInvariant()}/{method.Name.ToLowerInvariant()}",
+                                Return: new(),
+                                Statements: new(
+                                    FindTarget: "target",
+                                    InvokeMethod: new(
+                                        Name: method.Name
+                                    )
+                                )
+                            )
+                            {
+                                Parameters = [
+                                    new(
+                                        From: ParameterModelFrom.Services,
+                                        Type: type.FullName,
+                                        Name: "target"
+                                    )
+                                ]
+                            }
+                        );
+                    }
+
+                    api.Controllers.Add(singleton);
                 }
             }
         });
