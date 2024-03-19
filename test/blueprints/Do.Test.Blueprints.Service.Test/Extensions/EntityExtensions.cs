@@ -1,8 +1,8 @@
-﻿using Do.Testing;
+using Do.Testing;
 
 namespace Do.Test;
 
-public static class TestServiceSpecExtensions
+public static class EntityExtensions
 {
     public static Entity AnEntity(this Stubber giveMe,
        Guid? guid = default,
@@ -29,23 +29,4 @@ public static class TestServiceSpecExtensions
             dateTime ?? giveMe.ADateTime(),
             setNowForDateTime ?? false
         );
-
-    public static Parent AParent(this Stubber giveMe,
-        string? name = default,
-        bool withChild = false
-    )
-    {
-        name ??= giveMe.AString();
-
-        var result = giveMe.A<Parent>().With(name);
-        if (withChild)
-        {
-            result.AddChild();
-        }
-
-        return result;
-    }
-
-    public static void ShouldThrowExceptionWithServiceNotRegisteredMessage(this Func<object> source, Type serviceType) =>
-        source.ShouldThrow<Exception>().Message.ShouldBe($"No service for type '{serviceType}' has been registered.");
 }
