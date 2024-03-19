@@ -101,13 +101,13 @@ To run an application you need to call `Run()` method after forging it.
 Forge.New
     .Application(app =>
     {
-        app.Layers.AddHttpServer();
+        ...
     })
     .Run();
 ```
 
-Application runs in phases provided by its layers. For example an ASP.NET Core
-application typically runs in three phases;
+Application runs in phases provided by its layers. For example an `HttpLayer` 
+uses ASP.NET Core application typically runs in three phases;
 
 ```mermaid
 flowchart TB
