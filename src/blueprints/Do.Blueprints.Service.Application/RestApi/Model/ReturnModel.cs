@@ -6,7 +6,7 @@ public record ReturnModel(string Type,
 )
 {
     public ReturnModel(bool async = false)
-        : this(typeof(void).Name, Async: async, Void: true) { }
+        : this(async ? typeof(Task).Name : "void", Async: async, Void: true) { }
 
     public string Type { get; set; } = Type;
     public bool Async { get; set; } = Async;

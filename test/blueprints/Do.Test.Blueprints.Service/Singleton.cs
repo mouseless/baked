@@ -24,6 +24,13 @@ public class Singleton(
         _logger.LogInformation($"{nameof(VoidParameterless)} was called");
     }
 
+    public async Task VoidParameterlessAsync()
+    {
+        await Task.Delay(10);
+
+        _logger.LogInformation($"{nameof(VoidParameterlessAsync)} was called");
+    }
+
     public async Task<List<PullRequest>> TestClient()
     {
         var request = new Request("repos/mouseless/do/pulls", HttpMethod.Get);
