@@ -124,7 +124,9 @@ above example, `HttpServerLayer` (ASP.NET Core) introduced these three phases.
 At the beginning of each phase, application initializes it by providing an
 `ApplicationContext` instance. This way each phase can add/get certain objects
 to/from the context, such as `IServiceCollection`, `IMiddlewareCollection`,
-`IEndpointRouteBuilder` etc.
+`IEndpointRouteBuilder` etc. 
+Refer to [Readiness via Dependencies](./layer.md#readiness-via-dependencies) 
+for more details.
 
 > :warning:
 >
