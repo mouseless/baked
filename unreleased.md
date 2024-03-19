@@ -5,6 +5,8 @@
 - Beta features are available in do-blueprints-service package;
   - `CodeGenerationLayer` is introduced, now it is possible to generate code
     during initialization of a service
+  - `RestApiLayer` now provides api model to generate controller code from
+    domain model
 
 ## Improvements
 

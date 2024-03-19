@@ -1,5 +1,6 @@
 ﻿using Do.Architecture;
 using Do.RestApi;
+using Do.RestApi.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -13,6 +14,7 @@ public static class RestApiExtensions
 {
     public static void AddRestApi(this IList<ILayer> source) => source.Add(new RestApiLayer());
 
+    public static void ConfigureApiModel(this LayerConfigurator source, Action<ApiModel> configuration) => source.Configure(configuration);
     public static void ConfigureApplicationParts(this LayerConfigurator source, Action<IApplicationPartCollection> configuration) => source.Configure(configuration);
     public static void ConfigureMvcNewtonsoftJsonOptions(this LayerConfigurator source, Action<MvcNewtonsoftJsonOptions> configuration) => source.Configure(configuration);
     public static void ConfigureSwaggerGenOptions(this LayerConfigurator source, Action<SwaggerGenOptions> configuration) => source.Configure(configuration);

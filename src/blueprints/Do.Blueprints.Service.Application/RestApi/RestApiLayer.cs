@@ -1,4 +1,5 @@
 ﻿using Do.Architecture;
+using Do.RestApi.Model;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -6,21 +7,50 @@ using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
+using static Do.CodeGeneration.CodeGenerationLayer;
 using static Do.DependencyInjection.DependencyInjectionLayer;
 using static Do.HttpServer.HttpServerLayer;
 
 namespace Do.RestApi;
 
-public class RestApiLayer : LayerBase<AddServices, Build>
+public class RestApiLayer : LayerBase<GenerateCode, AddServices, Build>
 {
+    readonly ApiModel _apiModel = new();
     readonly IApplicationPartCollection _applicationParts = new ApplicationPartCollection();
     readonly MvcNewtonsoftJsonOptions _mvcNewtonsoftJsonOptions = [];
     readonly SwaggerGenOptions _swaggerGenOptions = new();
     readonly SwaggerOptions _swaggerOptions = new();
     readonly SwaggerUIOptions _swaggerUIOptions = new();
 
+    protected override PhaseContext GetContext(GenerateCode phase)
+    {
+        var generatedAssemblies = Context.GetGeneratedAssemblyCollection();
+
+        return phase.CreateContext(_apiModel,
+            onDispose: () =>
+            {
+                generatedAssemblies.Add("RestApiLayer.Generated",
+                    assembly => assembly
+                        .AddReferenceFrom<ApiControllerAttribute>()
+                        .AddReferences(_apiModel.References)
+                        .AddCodes(new ApiCodeTemplate(_apiModel)),
+                    compilerOptions => compilerOptions
+                        .WithUsings(
+                            "Microsoft.AspNetCore.Mvc",
+                            "System",
+                            "System.Linq",
+                            "System.Collections",
+                            "System.Collections.Generic",
+                            "System.Threading.Tasks"
+                        )
+                );
+            }
+        );
+    }
+
     protected override PhaseContext GetContext(AddServices phase)
     {
+        var controllerAssembly = Context.GetGeneratedAssembly("RestApiLayer.Generated");
         var services = Context.GetServiceCollection();
 
         services.AddHttpContextAccessor();
@@ -35,6 +65,7 @@ public class RestApiLayer : LayerBase<AddServices, Build>
             {
                 services.AddControllers()
                     .AddNewtonsoftJson(_mvcNewtonsoftJsonOptions)
+                    .AddApplicationPart(controllerAssembly)
                     .AddApplicationParts(_applicationParts);
                 services.ConfigureSwaggerGen(config =>
                 {
