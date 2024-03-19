@@ -3,6 +3,30 @@
 public class MappingProperties : TestServiceSpec
 {
     [Test]
+    public async Task Unique()
+    {
+        var entity = GiveMe.An<Entity>().With(unique: GiveMe.AGuid("eb8dd0a1"));
+        entity.Unique.ShouldBe(GiveMe.AGuid("eb8dd0a1"));
+
+        await entity.Update(unique: GiveMe.AGuid("ab8dd0a1"));
+        entity.Unique.ShouldBe(GiveMe.AGuid("ab8dd0a1"));
+
+        var actual = GiveMe.The<Entities>().By(unique: GiveMe.AGuid("ab8dd0a1")).FirstOrDefault();
+        actual.ShouldBe(entity);
+    }
+
+    [Test]
+    public void Unique_must_be_unique()
+    {
+        var entity = GiveMe.An<Entity>().With(unique: GiveMe.AGuid("eb8dd0a1"));
+        entity.Unique.ShouldBe(GiveMe.AGuid("eb8dd0a1"));
+
+        Func<Entity> task = () => GiveMe.An<Entity>().With(unique: GiveMe.AGuid("eb8dd0a1"));
+
+        task.ShouldThrow<MustBeUniqueException>();
+    }
+
+    [Test]
     public async Task Guid()
     {
         var entity = GiveMe.An<Entity>().With(guid: GiveMe.AGuid("eb8dd0a1"));
