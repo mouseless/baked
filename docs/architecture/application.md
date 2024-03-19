@@ -106,8 +106,9 @@ Forge.New
     .Run();
 ```
 
-Application runs in phases provided by its layers. For example an `HttpLayer` 
-uses ASP.NET Core application typically runs in three phases;
+Application runs in phases provided by its layers. For example 
+`HttpServerLayer` uses ASP.NET Core to build a web application which typically
+runs in three phases;
 
 ```mermaid
 flowchart TB

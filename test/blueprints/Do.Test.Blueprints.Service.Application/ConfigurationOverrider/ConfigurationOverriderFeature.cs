@@ -1,8 +1,6 @@
 ﻿using Do.Architecture;
 using Do.Authentication.FixedToken;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Serialization;
 
 namespace Do.Test.ConfigurationOverrider;
 
@@ -55,11 +53,6 @@ public class ConfigurationOverriderFeature : IFeature
         configurator.ConfigureApplicationParts(applicationParts =>
         {
             applicationParts.Add(new(configurator.Context.GetGeneratedAssembly("Controllers")));
-        });
-
-        configurator.ConfigureMvcNewtonsoftJsonOptions(options =>
-        {
-            options.SerializerSettings.Converters.Add(new StringEnumConverter(new CamelCaseNamingStrategy()));
         });
     }
 }
