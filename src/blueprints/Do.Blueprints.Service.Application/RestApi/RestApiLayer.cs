@@ -1,7 +1,7 @@
 ﻿using Do.Architecture;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
@@ -14,7 +14,7 @@ namespace Do.RestApi;
 public class RestApiLayer : LayerBase<AddServices, Build>
 {
     readonly IApplicationPartCollection _applicationParts = new ApplicationPartCollection();
-    readonly MvcNewtonsoftJsonOptions _mvcNewtonsoftJsonOptions = new();
+    readonly List<JsonConverter> _jsonConverters = [];
     readonly SwaggerGenOptions _swaggerGenOptions = new();
     readonly SwaggerOptions _swaggerOptions = new();
     readonly SwaggerUIOptions _swaggerUIOptions = new();
@@ -29,12 +29,12 @@ public class RestApiLayer : LayerBase<AddServices, Build>
 
         return phase.CreateContextBuilder()
             .Add(_applicationParts)
-            .Add(_mvcNewtonsoftJsonOptions)
+            .Add(_jsonConverters)
             .Add(_swaggerGenOptions)
             .OnDispose(() =>
             {
                 services.AddControllers()
-                    .AddNewtonsoftJson(options => options = _mvcNewtonsoftJsonOptions)
+                    .AddNewtonsoftJson(options => options.SerializerSettings.Converters = _jsonConverters)
                     .AddApplicationParts(_applicationParts);
                 services.ConfigureSwaggerGen(config =>
                 {
