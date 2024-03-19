@@ -57,9 +57,9 @@ public class ConfigurationOverriderFeature : IFeature
             applicationParts.Add(new(configurator.Context.GetGeneratedAssembly("Controllers")));
         });
 
-        configurator.ConfigureJsonConverters(converters =>
+        configurator.ConfigureMvcNewtonsoftJsonOptions(options =>
         {
-            converters.Add(new StringEnumConverter(new CamelCaseNamingStrategy()));
+            options.SerializerSettings.Converters.Add(new StringEnumConverter(new CamelCaseNamingStrategy()));
         });
     }
 }
