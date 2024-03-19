@@ -13,7 +13,7 @@ public class EntitiesController
         string String = default,
         string StringData = default,
         int? Int32 = default,
-        string Unique = default,
+        Guid Unique = default,
         Uri Uri = default,
         Status? Status = default,
         DateTime? DateTime = default,
@@ -39,11 +39,11 @@ public class EntitiesController
         );
     }
 
-    public record SingleByStringRequest(string Unique);
+    public record SingleByUniqueRequest(Guid Unique);
 
     [HttpGet]
     [Route("entities/single-by-unique")]
-    public Entity SingleByUnique([FromServices] Entities target, [FromQuery] SingleByStringRequest request)
+    public Entity SingleByUnique([FromServices] Entities target, [FromQuery] SingleByUniqueRequest request)
     {
         return target.SingleByUnique(request.Unique);
     }
@@ -75,7 +75,7 @@ public class EntitiesController
         string String = default,
         string StringData = default,
         int Int32 = default,
-        string Unique = default,
+        Guid Unique = default,
         Uri Uri = default,
         object Dynamic = default,
         Status Status = default,
@@ -105,7 +105,7 @@ public class EntitiesController
         string String = default,
         string StringData = default,
         int Int32 = default,
-        string Unique = default,
+        Guid Unique = default,
         Uri Uri = default,
         object Dynamic = default,
         Status Status = default,

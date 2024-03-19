@@ -12,7 +12,7 @@ public class Entity(IEntityContext<Entity> _context, IQueryContext<Entity> _quer
     public virtual string String { get; protected set; } = default!;
     public virtual string StringData { get; protected set; } = default!;
     public virtual int Int32 { get; protected set; } = default!;
-    public virtual string Unique { get; protected set; } = default!;
+    public virtual Guid Unique { get; protected set; } = default!;
     public virtual Uri Uri { get; protected set; } = default!;
     public virtual object Dynamic { get; protected set; } = default!;
     public virtual Status Enum { get; protected set; } = default!;
@@ -23,7 +23,7 @@ public class Entity(IEntityContext<Entity> _context, IQueryContext<Entity> _quer
         string? @string = default,
         string? stringData = default,
         int? int32 = default,
-        string? unique = default,
+        Guid? unique = default,
         Uri? uri = default,
         object? @dynamic = default,
         Status? @enum = default,
@@ -51,7 +51,7 @@ public class Entity(IEntityContext<Entity> _context, IQueryContext<Entity> _quer
         string? @string = default,
         string? stringData = default,
         int? int32 = default,
-        string? unique = default,
+        Guid? unique = default,
         Uri? uri = default,
         object? @dynamic = default,
         Status? @enum = default,
@@ -102,7 +102,7 @@ public class Entity(IEntityContext<Entity> _context, IQueryContext<Entity> _quer
         string? @string = default,
         string? stringData = default,
         int? int32 = default,
-        string? unique = default,
+        Guid? unique = default,
         Uri? uri = default,
         object? @dynamic = default,
         Status? @enum = default,
@@ -138,7 +138,7 @@ public class Entities(IQueryContext<Entity> _context)
         string? @string = default,
         string? stringData = default,
         int? int32 = default,
-        string? unique = default,
+        Guid? unique = default,
         Uri? uri = default,
         Status? status = default,
         DateTime? dateTime = default,
@@ -161,7 +161,7 @@ public class Entities(IQueryContext<Entity> _context)
         );
     }
 
-    public Entity? SingleByUnique(string unique)
+    public Entity? SingleByUnique(Guid unique)
     {
         return _context.SingleBy(e => e.Unique == unique);
     }
