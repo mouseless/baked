@@ -1,6 +1,8 @@
 ﻿using Do.Architecture;
 using Do.Domain.Model;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 using System.Reflection;
 
 namespace Do.Business.Default;
@@ -83,6 +85,11 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                     });
                 }
             }
+        });
+
+        configurator.ConfigureMvcNewtonsoftJsonOptions(options =>
+        {
+            options.SerializerSettings.Converters.Add(new StringEnumConverter(new CamelCaseNamingStrategy()));
         });
     }
 }

@@ -15,7 +15,7 @@ To create an application from this blueprint, use `Service()` extension of
 ```csharp
 Forge.New
     .Service(
-        business: c => c.MyBusiness(),
+        business: c => c.Default(assemblies: [...]),
         database: c => c.Sqlite()
     )
     .Run();
@@ -48,7 +48,7 @@ Features with default options are;
 | Database           | Sqlite        | InMemory        | Yes      |
 | Documentation      | Default       |                 |          |
 | Exception Handling | Default       |                 |          |
-| Greeting           | Hello World   |                 |          |
+| Greeting           | Swagger       |                 |          |
 | Logging            | Request       |                 |          |
 | Mocking Overrider  |               | First Interface |          |
 | Orm                | Default       | Default         |          |
