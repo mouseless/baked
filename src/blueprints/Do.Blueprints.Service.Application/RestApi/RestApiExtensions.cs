@@ -1,5 +1,6 @@
 ﻿using Do.Architecture;
 using Do.RestApi;
+using Do.RestApi.Model;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -11,6 +12,7 @@ public static class RestApiExtensions
 {
     public static void AddRestApi(this IList<ILayer> source) => source.Add(new RestApiLayer());
 
+    public static void ConfigureApiModel(this LayerConfigurator source, Action<ApiModel> configuration) => source.Configure(configuration);
     public static void ConfigureApplicationParts(this LayerConfigurator source, Action<IApplicationPartCollection> configuration) => source.Configure(configuration);
     public static void ConfigureSwaggerGenOptions(this LayerConfigurator source, Action<SwaggerGenOptions> configuration) => source.Configure(configuration);
     public static void ConfigureSwaggerOptions(this LayerConfigurator source, Action<SwaggerOptions> configuration) => source.Configure(configuration);

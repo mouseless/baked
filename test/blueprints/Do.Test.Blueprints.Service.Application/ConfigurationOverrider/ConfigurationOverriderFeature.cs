@@ -29,16 +29,26 @@ public class ConfigurationOverriderFeature : IFeature
             swaggerGenOptions.AddParameterToOperationsThatUse<Middleware>("X-Security", @in: ParameterLocation.Header, required: true);
         });
 
+        configurator.ConfigureApiModel(api =>
+        {
+            api.Controllers.Add(new("TestController")
+            {
+                Actions = [new("TestAction")]
+            });
+        });
+
         configurator.ConfigureGeneratedAssemblyCollection(assemblies =>
         {
             assemblies.Add(
                 "Controllers",
                 assembly => assembly
                     .AddReferenceFrom<Program>()
-                    .AddCode(Codes.Entities.Code)
-                    .AddCode(Codes.Parents.Code)
-                    .AddCode(Codes.Remote.Code)
-                    .AddCode(Codes.Singleton.Code),
+                    .AddCodes(
+                        Codes.Entities.Code,
+                        Codes.Parents.Code,
+                        Codes.Remote.Code,
+                        Codes.Singleton.Code
+                    ),
                 compilationOptions => compilationOptions
                     .WithUsings(
                         "System",
