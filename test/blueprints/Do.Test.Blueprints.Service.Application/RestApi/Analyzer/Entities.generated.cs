@@ -13,7 +13,7 @@ public class EntitiesController
         string String = default,
         string StringData = default,
         int? Int32 = default,
-        Guid Unique = default,
+        Guid? Unique = default,
         Uri Uri = default,
         Status? Status = default,
         DateTime? DateTime = default,
