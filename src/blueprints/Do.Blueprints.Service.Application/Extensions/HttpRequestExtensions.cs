@@ -20,7 +20,7 @@ public static class HttpRequestExtensions
     Dictionary<string, string>? form = default,
     object? body = default,
     object[]? metadata = default
-)
+    )
     {
         schema ??= "http";
         host ??= "test.com";
