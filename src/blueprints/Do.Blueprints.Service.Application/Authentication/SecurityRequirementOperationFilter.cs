@@ -10,14 +10,12 @@ public class SecurityRequirementOperationFilter<T>(string _schemeId)
     {
         if (!context.MethodInfo.CustomAttributes.Any(a => a.AttributeType == typeof(T))) { return; }
 
-        operation.Security = [
-            new()
+        operation.Security.Add(new()
+        {
             {
-                {
-                    new() { Reference = new() { Type = ReferenceType.SecurityScheme, Id = _schemeId } },
-                    Array.Empty<string>()
-                }
+                new() { Reference = new() { Type = ReferenceType.SecurityScheme, Id = _schemeId } },
+                Array.Empty<string>()
             }
-        ];
+        });
     }
 }

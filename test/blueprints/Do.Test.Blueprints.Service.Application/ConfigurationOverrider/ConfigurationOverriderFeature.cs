@@ -1,4 +1,6 @@
 ﻿using Do.Architecture;
+using Do.Authentication.FixedToken;
+using Microsoft.OpenApi.Models;
 
 namespace Do.Test.ConfigurationOverrider;
 
@@ -12,6 +14,22 @@ public class ConfigurationOverriderFeature : IFeature
         {
             model.Override<Entity>(x => x.Map(e => e.String).Length(500));
             model.Override<Entity>(x => x.Map(e => e.Unique).Column("UniqueString").Unique());
+        });
+
+        configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
+        {
+            swaggerGenOptions.AddSecurityDefinition("AdditionalSecurity",
+                new()
+                {
+                    Type = SecuritySchemeType.ApiKey,
+                    In = ParameterLocation.Header,
+                    Name = "X-Secret",
+                    Description = "Enter secret information",
+                }
+            );
+
+            swaggerGenOptions.AddSecurityRequirementToOperationsThatUse<Middleware>("AdditionalSecurity");
+            swaggerGenOptions.AddParameterToOperationsThatUse<Middleware>("X-Security", @in: ParameterLocation.Header, required: true);
         });
     }
 }
