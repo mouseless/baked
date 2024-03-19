@@ -1,8 +1,8 @@
-using System.Reflection;
 using Do.Core;
 using Do.Core.Dotnet;
 using Do.Testing;
 using Shouldly;
+using System.Reflection;
 
 namespace Do;
 

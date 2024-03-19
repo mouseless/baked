@@ -1,11 +1,11 @@
-using System.Diagnostics.CodeAnalysis;
-using System.Text.RegularExpressions;
 using Do.Architecture;
 using Do.Core;
 using Do.Core.Mock;
 using Do.Testing;
 using Newtonsoft.Json;
 using Shouldly;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.RegularExpressions;
 
 namespace Do;
 
