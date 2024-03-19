@@ -17,6 +17,7 @@
 - `CanReturn()` helper is added for `MethodModel` which loops through all
   overloads and compares return types for given `TypeModel`
     - Generic `Task` return types are also supported
+- `MvcNewtonsoftJsonOptions` is added to `RestApiLayer` as configuration target 
 
 ## Bugfixes
 
