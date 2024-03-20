@@ -58,7 +58,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
 
             metadata.Method.Add(
                 add: new PublicServiceAttribute(),
-                when: method => method.Overloads.Any(o => o.IsPublic),
+                when: method => !method.IsConstructor && method.Overloads.Any(o => o.IsPublic),
                 order: int.MinValue
             );
         });
@@ -66,38 +66,37 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
         configurator.ConfigureServiceCollection(services =>
         {
             var domainModel = configurator.Context.GetDomainModel();
-            foreach (var type in domainModel.Types.Where(t => !t.IsIgnored()))
+            foreach (var type in domainModel.GetTypes<TransientAttribute>())
             {
-                if (type.Has<TransientAttribute>())
+                type.Apply(t =>
                 {
-                    type.Apply(t =>
-                    {
-                        services.AddTransientWithFactory(t);
-                        type.Interfaces
-                            .Where(i => i.IsBusinessType)
-                            .Apply(i => services.AddTransientWithFactory(i, t));
-                    });
-                }
-                else if (type.Has<ScopedAttribute>())
+                    services.AddTransientWithFactory(t);
+                    type.Interfaces
+                        .Where(i => i.IsBusinessType)
+                        .Apply(i => services.AddTransientWithFactory(i, t));
+                });
+            }
+
+            foreach (var type in domainModel.GetTypes<ScopedAttribute>())
+            {
+                type.Apply(t =>
                 {
-                    type.Apply(t =>
-                    {
-                        services.AddScopedWithFactory(t);
-                        type.Interfaces
-                            .Where(i => i.IsBusinessType)
-                            .Apply(i => services.AddScopedWithFactory(i, t));
-                    });
-                }
-                else if (type.Has<SingletonAttribute>())
+                    services.AddScopedWithFactory(t);
+                    type.Interfaces
+                        .Where(i => i.IsBusinessType)
+                        .Apply(i => services.AddScopedWithFactory(i, t));
+                });
+            }
+
+            foreach (var type in domainModel.GetTypes<SingletonAttribute>())
+            {
+                type.Apply(t =>
                 {
-                    type.Apply(t =>
-                    {
-                        services.AddSingleton(t);
-                        type.Interfaces
-                            .Where(i => i.IsBusinessType)
-                            .Apply(i => services.AddSingleton(i, t, forward: true));
-                    });
-                }
+                    services.AddSingleton(t);
+                    type.Interfaces
+                        .Where(i => i.IsBusinessType)
+                        .Apply(i => services.AddSingleton(i, t, forward: true));
+                });
             }
         });
 
@@ -112,21 +111,21 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                 if (!type.Has<SingletonAttribute>()) { continue; } // TODO for now only singleton
 
                 var controller = new ControllerModel(type.Name);
-                foreach (var method in type.Methods.Where(m => !m.IsConstructor && m.Has<PublicServiceAttribute>()))
+                foreach (var method in type.GetMethods<PublicServiceAttribute>())
                 {
                     var overload = method.Overloads.OrderByDescending(o => o.Parameters.Count).First();
                     if (overload.ReturnType is null) { continue; }
 
                     if (overload.Parameters.Count > 0) { continue; } // TODO for now only parameterless
-                    if (overload.ReturnType.FullName != typeof(void).FullName &&
-                        overload.ReturnType.FullName != typeof(Task).FullName) { continue; } // TODO for now only void
+                    if (!overload.ReturnType.IsAssignableTo(typeof(void)) &&
+                        !overload.ReturnType.IsAssignableTo(typeof(Task))) { continue; } // TODO for now only void
 
                     controller.Actions.Add(
                         new(
                             Name: method.Name,
                             Method: HttpMethod.Post,
                             Route: $"generated/{type.Name}/{method.Name}",
-                            Return: new(async: overload.ReturnType.FullName == typeof(Task).FullName),
+                            Return: new(async: overload.ReturnType.IsAssignableTo(typeof(Task))),
                             Statements: new(
                                 FindTarget: "target",
                                 InvokeMethod: new(method.Name)

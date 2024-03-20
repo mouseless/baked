@@ -29,9 +29,10 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions, Doma
             InitTypeModel(type);
         }
 
-        _processors.Execute(_types);
+        var model = new DomainModel(new(_assemblies), new(_types));
+        _processors.Execute(model);
 
-        return new DomainModel(new(_assemblies), new(_types));
+        return model;
     }
 
     TypeModel GetOrCreateTypeModel(Type type)

@@ -37,6 +37,8 @@ public class TypeModel(Type type, string id,
 
     public MethodModel? Constructor => Methods.TryGetValue(".ctor", out var ctor) ? ctor : default;
 
+    internal ModelCache<MethodModel> MethodCache { get; } = [];
+
     internal void Init(ModelCollection<TypeModel> genericTypeArguments,
         ModelCollection<MethodModel>? methods = default,
         ModelCollection<PropertyModel>? properties = default,
@@ -76,6 +78,9 @@ public class TypeModel(Type type, string id,
 
     public bool Has<T>() where T : Attribute =>
         CustomAttributes.Contains(IdFrom(typeof(T)));
+
+    public ModelCollection<MethodModel> GetMethods<T>() =>
+        MethodCache.GetOrEmpty(IdFrom(typeof(T)));
 
     string IModel.Id => _id;
 }
