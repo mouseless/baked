@@ -11,14 +11,14 @@ public class DomainLayer : LayerBase<BuildConfiguration>
     readonly IDomainAssemblyCollection _domainAssemblies = new DomainAssemblyCollection();
     readonly IDomainTypeCollection _domainTypes = new DomainTypeCollection();
     readonly DomainBuilderOptions _domainBuilderOptions = new();
-    readonly DomainMetadataProcessors _domainMetadataProcessors = new();
+    readonly DomainMetadataProcessor _domainMetadataProcessors = new();
 
     protected override PhaseContext GetContext(BuildConfiguration phase) =>
         phase.CreateContextBuilder()
             .Add<IDomainAssemblyCollection>(_domainAssemblies)
             .Add<IDomainTypeCollection>(_domainTypes)
             .Add<DomainBuilderOptions>(_domainBuilderOptions)
-            .Add<DomainMetadataProcessors>(_domainMetadataProcessors)
+            .Add<DomainMetadataProcessor>(_domainMetadataProcessors)
             .Build();
 
     protected override IEnumerable<IPhase> GetPhases()
@@ -30,7 +30,7 @@ public class DomainLayer : LayerBase<BuildConfiguration>
         IDomainAssemblyCollection _domainAssemblies,
         IDomainTypeCollection _domainTypes,
         DomainBuilderOptions _domainBuilderOptions,
-        DomainMetadataProcessors _domainMetadataProcessors
+        DomainMetadataProcessor _domainMetadataProcessors
     )
         : PhaseBase<ConfigurationManager>(PhaseOrder.Early)
     {

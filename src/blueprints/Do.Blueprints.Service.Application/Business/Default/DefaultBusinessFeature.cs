@@ -55,6 +55,12 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                 when: type => !type.IsIgnored() && !type.Has<TransientAttribute>() && !type.Has<ScopedAttribute>() && type.Properties.All(p => !p.IsPublic),
                 order: 30
             );
+
+            metadata.Method.Add(
+                add: new PublicServiceAttribute(),
+                when: method => method.Overloads.Any(o => o.IsPublic),
+                order: int.MinValue
+            );
         });
 
         configurator.ConfigureServiceCollection(services =>
@@ -106,7 +112,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                 if (!type.Has<SingletonAttribute>()) { continue; } // TODO for now only singleton
 
                 var controller = new ControllerModel(type.Name);
-                foreach (var method in type.Methods.Where(m => !m.IsConstructor && m.Overloads.Count(o => o.IsPublic) > 0))
+                foreach (var method in type.Methods.Where(m => !m.IsConstructor && m.Has<PublicServiceAttribute>()))
                 {
                     var overload = method.Overloads.OrderByDescending(o => o.Parameters.Count).First();
                     if (overload.ReturnType is null) { continue; }

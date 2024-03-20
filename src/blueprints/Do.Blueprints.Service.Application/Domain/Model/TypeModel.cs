@@ -3,7 +3,7 @@
 public class TypeModel(Type type, string id,
     AssemblyModel? assembly = default,
     bool isBusinessType = false
-) : IModel, IEquatable<TypeModel>
+) : IModelWithMetadata, IEquatable<TypeModel>
 {
     internal static string IdFrom(Type type) =>
         type.FullName ?? $"{type.Namespace}.{type.Name}<{string.Join(',', type.GenericTypeArguments.Select(IdFrom))}>";

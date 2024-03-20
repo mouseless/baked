@@ -2,7 +2,7 @@
 
 namespace Do.Domain.Model;
 
-public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions, DomainMetadataProcessors _processors)
+public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions, DomainMetadataProcessor _processors)
 {
     readonly KeyedModelCollection<AssemblyModel> _assemblies = [];
     readonly KeyedModelCollection<TypeModel> _types = [];
