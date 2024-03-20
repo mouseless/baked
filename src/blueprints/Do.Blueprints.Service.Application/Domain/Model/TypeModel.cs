@@ -74,7 +74,7 @@ public class TypeModel(Type type, string id,
     public override int GetHashCode() =>
         _id.GetHashCode();
 
-    public bool HasCustomAttribute<T>() =>
+    public bool Has<T>() where T : Attribute =>
         CustomAttributes.Contains(IdFrom(typeof(T)));
 
     string IModel.Id => _id;

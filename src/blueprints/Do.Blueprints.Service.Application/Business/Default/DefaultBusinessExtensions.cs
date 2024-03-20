@@ -24,15 +24,6 @@ public static class DefaultBusinessExtensions
         type.IsAssignableTo<Exception>() ||
         type.IsAssignableTo<Attribute>() ||
         (type.ContainsGenericParameters && !type.GenericTypeArguments.Any()) ||
-        type.HasCustomAttribute<DataClassAttribute>()
+        type.Has<DataClassAttribute>()
     ;
-
-    internal static bool IsTransient(this TypeModel type) =>
-        type.Methods.TryGetValue("With", out var with) && with.CanReturn(type);
-
-    internal static bool IsScoped(this TypeModel type) =>
-        type.IsAssignableTo<IScoped>();
-
-    internal static bool IsSingleton(this TypeModel type) =>
-        !type.IsTransient() && !type.IsScoped();
 }

@@ -37,6 +37,24 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                 when: type => type.Methods.Contains("<Clone>$"), // if type is record
                 order: int.MinValue
             );
+
+            metadata.Type.Add(
+                add: new TransientAttribute(),
+                when: type => !type.IsIgnored() && type.Methods.TryGetValue("With", out var with) && with.CanReturn(type),
+                order: 10
+            );
+
+            metadata.Type.Add(
+                add: new ScopedAttribute(),
+                when: type => !type.IsIgnored() && type.IsAssignableTo<IScoped>(),
+                order: 20
+            );
+
+            metadata.Type.Add(
+                add: new SingletonAttribute(),
+                when: type => !type.IsIgnored() && !type.Has<TransientAttribute>() && !type.Has<ScopedAttribute>() && type.Properties.All(p => !p.IsPublic),
+                order: 30
+            );
         });
 
         configurator.ConfigureServiceCollection(services =>
@@ -44,7 +62,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
             var domainModel = configurator.Context.GetDomainModel();
             foreach (var type in domainModel.Types.Where(t => !t.IsIgnored()))
             {
-                if (type.IsTransient())
+                if (type.Has<TransientAttribute>())
                 {
                     type.Apply(t =>
                     {
@@ -54,7 +72,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                             .Apply(i => services.AddTransientWithFactory(i, t));
                     });
                 }
-                else if (type.IsScoped())
+                else if (type.Has<ScopedAttribute>())
                 {
                     type.Apply(t =>
                     {
@@ -64,7 +82,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                             .Apply(i => services.AddScopedWithFactory(i, t));
                     });
                 }
-                else if (type.IsSingleton())
+                else if (type.Has<SingletonAttribute>())
                 {
                     type.Apply(t =>
                     {
@@ -85,7 +103,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
             foreach (var type in domainModel.Types.Where(t => !t.IsIgnored()))
             {
                 if (type.FullName is null) { continue; }
-                if (!type.IsSingleton()) { continue; } // TODO for now only singleton
+                if (!type.Has<SingletonAttribute>()) { continue; } // TODO for now only singleton
 
                 var controller = new ControllerModel(type.Name);
                 foreach (var method in type.Methods.Where(m => !m.IsConstructor && m.Overloads.Count(o => o.IsPublic) > 0))
