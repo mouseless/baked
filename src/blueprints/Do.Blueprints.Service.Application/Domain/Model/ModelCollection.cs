@@ -30,6 +30,18 @@ public class ModelCollection<T>() : IEnumerable<T>
     public bool TryGetValue(string id, [NotNullWhen(true)] out T? model) =>
        _models.TryGetValue(id, out model);
 
+    internal bool TryAdd(T typeModel)
+    {
+        if (!ContainsModel(typeModel))
+        {
+            _models.Add(typeModel);
+
+            return true;
+        }
+
+        return false;
+    }
+
     public IEnumerator<T> GetEnumerator() => _models.GetEnumerator();
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();

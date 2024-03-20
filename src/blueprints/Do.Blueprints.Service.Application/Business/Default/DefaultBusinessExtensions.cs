@@ -24,7 +24,7 @@ public static class DefaultBusinessExtensions
         type.IsAssignableTo<Exception>() ||
         type.IsAssignableTo<Attribute>() ||
         (type.ContainsGenericParameters && !type.GenericTypeArguments.Any()) ||
-        type.Methods.Contains("<Clone>$") // if type is record
+        type.HasCustomAttribute<DataClassAttribute>()
     ;
 
     internal static bool IsTransient(this TypeModel type) =>
@@ -34,5 +34,5 @@ public static class DefaultBusinessExtensions
         type.IsAssignableTo<IScoped>();
 
     internal static bool IsSingleton(this TypeModel type) =>
-        !type.IsTransient() && !type.IsScoped() && type.Properties.All(p => !p.IsPublic);
+        !type.IsTransient() && !type.IsScoped();
 }

@@ -11,6 +11,9 @@ public class TypeModel(Type type, string id,
     readonly Type _type = type;
     readonly string _id = id;
 
+    internal TypeModel(Type type)
+        : this(type, IdFrom(type), default, default) { }
+
     public string Name { get; } = type.Name;
     public string? FullName { get; } = type.FullName;
     public string? Namespace { get; } = type.Namespace;
@@ -70,6 +73,9 @@ public class TypeModel(Type type, string id,
 
     public override int GetHashCode() =>
         _id.GetHashCode();
+
+    public bool HasCustomAttribute<T>() =>
+        CustomAttributes.Contains(IdFrom(typeof(T)));
 
     string IModel.Id => _id;
 }

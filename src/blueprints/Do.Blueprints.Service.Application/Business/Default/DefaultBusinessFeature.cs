@@ -30,6 +30,15 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
             options.PropertyBindingFlags = _defaultMemberBindingFlags;
         });
 
+        configurator.ConfigureDomainMetaData(metadata =>
+        {
+            metadata.Type.Add(
+                add: new DataClassAttribute(),
+                when: type => type.Methods.Contains("<Clone>$"), // if type is record
+                order: int.MinValue
+            );
+        });
+
         configurator.ConfigureServiceCollection(services =>
         {
             var domainModel = configurator.Context.GetDomainModel();

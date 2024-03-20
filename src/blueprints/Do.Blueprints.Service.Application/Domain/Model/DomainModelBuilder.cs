@@ -2,7 +2,7 @@
 
 namespace Do.Domain.Model;
 
-public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
+public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions, DomainMetadataProcessors _processors)
 {
     readonly KeyedModelCollection<AssemblyModel> _assemblies = [];
     readonly KeyedModelCollection<TypeModel> _types = [];
@@ -29,7 +29,9 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
             InitTypeModel(type);
         }
 
-        return new(new(_assemblies), new(_types));
+        _processors.Execute(_types);
+
+        return new DomainModel(new(_assemblies), new(_types));
     }
 
     TypeModel GetOrCreateTypeModel(Type type)
