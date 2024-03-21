@@ -1,5 +1,4 @@
 ﻿using Do.Architecture;
-using Do.Domain.Model;
 using Do.RestApi.Model;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Converters;
@@ -81,10 +80,10 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                 var controller = new ControllerModel(type.Name);
                 foreach (var method in type.Methods.Where(m => !m.IsConstructor && m.Overloads.Count(o => o.IsPublic) > 0))
                 {
-                    var overload = method.Overloads.OrderByDescending(o => o.Parameters.Count).First();
+                    var overload = method.Overloads.OrderByDescending(o => o.Parameters.Count).First(); // overload with most parameters
                     if (overload.ReturnType is null) { continue; }
 
-                    if (overload.Parameters.Count > 0) { continue; } // TODO for now only parameterless
+                    if (overload.Parameters.Count(p => !p.ParameterType.IsPrimitive()) > 0) { continue; } // TODO for now only primitive parameters
                     if (overload.ReturnType.FullName != typeof(void).FullName &&
                         overload.ReturnType.FullName != typeof(Task).FullName) { continue; } // TODO for now only void
 
@@ -94,12 +93,15 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                             Method: HttpMethod.Post,
                             Route: $"generated/{type.Name}/{method.Name}",
                             Return: new(async: overload.ReturnType.FullName == typeof(Task).FullName),
-                            Statements: new(
-                                FindTarget: "target",
-                                InvokeMethod: new(method.Name)
-                            )
+                            FindTargetStatement: "target",
+                            InvokedMethodName: method.Name
                         )
-                        { Parameters = [new(ParameterModelFrom.Services, type.FullName, "target")] }
+                        {
+                            Parameters = [
+                                new(ParameterModelFrom.Services, type.FullName, "target"),
+                                ..overload.Parameters.Select(p => new ParameterModel(ParameterModelFrom.Body, p.ParameterType.FullName ?? p.ParameterType.Name, p.Name))
+                            ]
+                        }
                     );
                 }
 

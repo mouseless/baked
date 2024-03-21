@@ -73,14 +73,3 @@ public class TypeModel(Type type, string id,
 
     string IModel.Id => _id;
 }
-
-public static class TypeModelExtensions
-{
-    public static void Apply(this IEnumerable<TypeModel> types, Action<Type> action)
-    {
-        foreach (var type in types)
-        {
-            type.Apply(i => action(i));
-        }
-    }
-}

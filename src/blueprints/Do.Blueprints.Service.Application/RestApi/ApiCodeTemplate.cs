@@ -20,13 +20,26 @@ public class ApiCodeTemplate(ApiModel _apiModel)
     """;
 
     string Action(ActionModel action) => $$"""
+        {{If(action.HasRequestBody, () => $$"""
+        public record {{action.Name}}Request(
+            {{ForEach(action.BodyParameters, parameter => $"{parameter.Type} @{parameter.Name}", separator: ", ")}}
+        );
+        """)}}
+
         [Http{{Method(action.Method)}}]
         [Route("{{action.Route}}")]
-        public {{ReturnType(action.Return)}} {{action.Name}}({{ForEach(action.Parameters, Parameter, separator: ", ")}})
+        public {{ReturnType(action.Return)}} {{action.Name}}(
+            {{ForEach(action.NonBodyParameters, Parameter, separator: ", ")}}
+            {{If(action.HasRequestBody, () => $$"""
+            , [FromBody] {{action.Name}}Request request
+            """)}}
+        )
         {
-            var __target = {{action.Statements.FindTarget}};
+            var __target = {{action.FindTargetStatement}};
 
-            {{Return(action.Return)}} __target.{{action.Statements.InvokeMethod.Name}}();
+            {{Return(action.Return)}} __target.{{action.InvokedMethodName}}(
+                {{ForEach(action.MethodParameters, ParameterReference, separator: ", ")}}
+            );
         }
     """;
 
@@ -42,7 +55,10 @@ public class ApiCodeTemplate(ApiModel _apiModel)
     string Parameter(ParameterModel parameter) =>
         $"[From{parameter.From}] {parameter.Type} @{parameter.Name}";
 
-    string InvokeMethod(InvokeMethodModel invokeMethod) => $"__target.{invokeMethod.Name}();";
+    string ParameterReference(ParameterModel parameter) =>
+        parameter.FromBody
+            ? $"@{parameter.Name}: request.@{parameter.Name}"
+            : $"@{parameter.Name}: @{parameter.Name}";
 
     string Return(ReturnModel @return) =>
         @return.Async && @return.Void ? "await" :

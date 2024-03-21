@@ -35,4 +35,7 @@ public static class DefaultBusinessExtensions
 
     internal static bool IsSingleton(this TypeModel type) =>
         !type.IsTransient() && !type.IsScoped() && type.Properties.All(p => !p.IsPublic);
+
+    internal static bool IsPrimitive(this TypeModel type) =>
+        type.IsValueType || type.IsAssignableTo<string>();
 }
