@@ -28,6 +28,11 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
             options.ConstuctorBindingFlags = _defaultMemberBindingFlags;
             options.MethodBindingFlags = _defaultMemberBindingFlags;
             options.PropertyBindingFlags = _defaultMemberBindingFlags;
+
+            options.Indexers.Add(new(typeof(TransientAttribute)));
+            options.Indexers.Add(new(typeof(ScopedAttribute)));
+            options.Indexers.Add(new(typeof(SingletonAttribute)));
+            options.Indexers.Add(new(typeof(PublicServiceAttribute)));
         });
 
         configurator.ConfigureDomainMetaData(metadata =>
@@ -52,7 +57,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
 
             metadata.Type.Add(
                 add: new SingletonAttribute(),
-                when: type => !type.IsIgnored() && !type.Has<TransientAttribute>() && !type.Has<ScopedAttribute>() && type.Properties.All(p => !p.IsPublic),
+                when: type => !type.IsIgnored() && !type.Has<TransientAttribute>() && !type.Has<ScopedAttribute>() && type.Name != "Class" && type.Properties.All(p => !p.IsPublic),
                 order: 30
             );
 
@@ -105,6 +110,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
             api.References.AddRange(_domainAssemblies);
 
             var domainModel = configurator.Context.GetDomainModel();
+            var singletons = domainModel.Types.GetIndex<SingletonAttribute>();
             foreach (var type in domainModel.Types.Where(t => !t.IsIgnored()))
             {
                 if (type.FullName is null) { continue; }

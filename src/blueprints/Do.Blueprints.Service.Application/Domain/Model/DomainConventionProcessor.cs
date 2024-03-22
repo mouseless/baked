@@ -6,7 +6,7 @@ public class DomainConventionProcessor
     public ModelConventionCollection<PropertyModel> Property { get; } = [];
     public ModelConventionCollection<MethodModel> Method { get; } = [];
 
-    public void Execute(DomainModel domainModel)
+    public void Execute(DomainDescriptor domainModel)
     {
         Type.Apply(domainModel.Types);
 
