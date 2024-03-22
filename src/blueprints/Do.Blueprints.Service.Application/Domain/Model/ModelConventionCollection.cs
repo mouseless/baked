@@ -4,9 +4,11 @@ public class ModelConventionCollection<T> : IEnumerable<IModelConvention<T>> whe
 {
     readonly List<IModelConvention<T>> _conventions = [];
 
-    public void Add(Attribute add, Func<T, bool> when, int order)
+    public ModelConventionCollection<T> Add(Attribute add, Func<T, bool> when, int order)
     {
         _conventions.Add(new AddAttributeConvention<T>(add, when, order));
+
+        return this;
     }
 
     internal void Apply(ModelCollection<T> collection)

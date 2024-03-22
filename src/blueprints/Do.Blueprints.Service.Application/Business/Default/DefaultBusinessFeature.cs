@@ -37,35 +37,36 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
 
         configurator.ConfigureDomainMetaData(metadata =>
         {
-            metadata.Type.Add(
-                add: new DataClassAttribute(),
-                when: type => type.Methods.Contains("<Clone>$"), // if type is record
-                order: int.MinValue
-            );
+            metadata
+                .Type
+                    .Add(
+                        add: new DataClassAttribute(),
+                        when: type => type.Methods.Contains("<Clone>$"), // if type is record
+                        order: int.MinValue
+                    )
+                    .Add(
+                        add: new TransientAttribute(),
+                        when: type => !type.IsIgnored() && type.Methods.TryGetValue("With", out var with) && with.CanReturn(type),
+                        order: 10
+                    )
+                    .Add(
+                        add: new ScopedAttribute(),
+                        when: type => !type.IsIgnored() && type.IsAssignableTo<IScoped>(),
+                        order: 20
+                    )
+                    .Add(
+                        add: new SingletonAttribute(),
+                        when: type => !type.IsIgnored() && !type.Has<TransientAttribute>() && !type.Has<ScopedAttribute>() && type.Properties.All(p => !p.IsPublic),
+                        order: 30
+                    );
 
-            metadata.Type.Add(
-                add: new TransientAttribute(),
-                when: type => !type.IsIgnored() && type.Methods.TryGetValue("With", out var with) && with.CanReturn(type),
-                order: 10
-            );
-
-            metadata.Type.Add(
-                add: new ScopedAttribute(),
-                when: type => !type.IsIgnored() && type.IsAssignableTo<IScoped>(),
-                order: 20
-            );
-
-            metadata.Type.Add(
-                add: new SingletonAttribute(),
-                when: type => !type.IsIgnored() && !type.Has<TransientAttribute>() && !type.Has<ScopedAttribute>() && type.Properties.All(p => !p.IsPublic),
-                order: 30
-            );
-
-            metadata.Method.Add(
-                add: new PublicServiceAttribute(),
-                when: method => !method.IsConstructor && method.Overloads.Any(o => o.IsPublic),
-                order: int.MinValue
-            );
+            metadata
+                .Method
+                    .Add(
+                        add: new PublicServiceAttribute(),
+                        when: method => !method.IsConstructor && method.Overloads.Any(o => o.IsPublic),
+                        order: int.MinValue
+                    );
         });
 
         configurator.ConfigureServiceCollection(services =>
@@ -110,7 +111,6 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
             api.References.AddRange(_domainAssemblies);
 
             var domainModel = configurator.Context.GetDomainModel();
-            var singletons = domainModel.Types.GetIndex<SingletonAttribute>();
             foreach (var type in domainModel.Types.Where(t => !t.IsIgnored()))
             {
                 if (type.FullName is null) { continue; }
