@@ -56,7 +56,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                     )
                     .Add(
                         add: new SingletonAttribute(),
-                        when: type => !type.IsIgnored() && !type.Has<TransientAttribute>() && !type.Has<ScopedAttribute>() && type.Properties.All(p => !p.IsPublic),
+                        when: type => !type.IsIgnored() && !type.HasAttribute<TransientAttribute>() && !type.HasAttribute<ScopedAttribute>() && type.Properties.All(p => !p.IsPublic),
                         order: 30
                     );
 
@@ -114,7 +114,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
             foreach (var type in domainModel.Types.Where(t => !t.IsIgnored()))
             {
                 if (type.FullName is null) { continue; }
-                if (!type.Has<SingletonAttribute>()) { continue; } // TODO for now only singleton
+                if (!type.HasAttribute<SingletonAttribute>()) { continue; } // TODO for now only singleton
 
                 var controller = new ControllerModel(type.Name);
                 foreach (var method in type.Methods.WithAttribute<PublicServiceAttribute>())

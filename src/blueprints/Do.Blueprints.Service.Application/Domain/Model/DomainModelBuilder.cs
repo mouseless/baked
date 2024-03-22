@@ -2,10 +2,11 @@
 
 namespace Do.Domain.Model;
 
-internal class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions, DomainConventionProcessor _conventionProcessor)
+internal class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions, DomainConventions _domainConventions)
 {
     readonly KeyedModelCollection<AssemblyModel> _assemblies = [];
     readonly KeyedModelCollection<TypeModel> _types = [];
+    readonly DomainConventionProcessor _processor = new(_domainConventions);
     readonly DomainIndexer _indexer = new(_domainBuilderOptions.Indexers.Cast<IIndexer>().ToList());
 
     internal DomainModel BuildFrom(IDomainAssemblyCollection domainAssemblies, IDomainTypeCollection domainTypes)
@@ -30,7 +31,7 @@ internal class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions, Do
             InitTypeModel(type);
         }
 
-        _conventionProcessor.Execute(new(_types));
+        _processor.Execute(new(_types));
 
         var domainModel = new DomainModel(new(_assemblies), new(_types));
 
@@ -73,12 +74,12 @@ internal class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions, Do
         var methods = new Dictionary<string, MethodModel>();
         var constructorInfos = type.GetConstructors(_domainBuilderOptions.ConstuctorBindingFlags) ?? [];
 
-        methods[".ctor"] = new(".ctor", constructorInfos.Select(BuildConstructorOverload).ToArray(), IsConstructor: true);
+        methods[".ctor"] = new(".ctor", constructorInfos.Select(BuildConstructorOverload).ToArray(), [], IsConstructor: true);
 
         var methodInfos = type.GetMethods(_domainBuilderOptions.MethodBindingFlags) ?? [];
         foreach (var group in methodInfos.GroupBy(m => m.Name))
         {
-            methods[group.Key] = new(group.Key, group.Select(BuildMethodOverload).ToArray());
+            methods[group.Key] = new(group.Key, group.Select(BuildMethodOverload).ToArray(), []);
         }
 
         return new(methods.Values);
@@ -100,13 +101,13 @@ internal class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions, Do
         new(method.IsPublic, method.IsFamily, method.IsVirtual, new(BuildParameters(method)), new(BuildCustomAttributes(method)), GetOrCreateTypeModel(method.ReturnType));
 
     ModelCollection<ParameterModel> BuildParameters(MethodBase method) =>
-        new(method.GetParameters().Select(p => new ParameterModel(p.Name ?? string.Empty, GetOrCreateTypeModel(p.ParameterType), p.IsOptional, p.DefaultValue)));
+        new(method.GetParameters().Select(p => new ParameterModel(p.Name ?? string.Empty, GetOrCreateTypeModel(p.ParameterType), p.IsOptional, p.DefaultValue, BuildCustomAttributes(p.Member))));
 
     ModelCollection<PropertyModel> BuildProperties(Type type) =>
         new(type.GetProperties(_domainBuilderOptions.PropertyBindingFlags).Select(BuildProperty));
 
     PropertyModel BuildProperty(PropertyInfo property) =>
-        new(property.Name, GetOrCreateTypeModel(property.PropertyType), IsPublic(property), IsVirtual(property));
+        new(property.Name, GetOrCreateTypeModel(property.PropertyType), IsPublic(property), IsVirtual(property), BuildCustomAttributes(property));
 
     bool IsPublic(PropertyInfo property) =>
         property.GetMethod?.IsPublic == true;

@@ -65,7 +65,7 @@ public class TypeModel(Type type, string id,
     bool Is(Type type) =>
         _type == type || BaseType?.Is(type) == true;
 
-    public bool Has<T>() where T : Attribute =>
+    public bool HasAttribute<T>() where T : Attribute =>
         CustomAttributes.Contains(IdFrom(typeof(T)));
 
     public override bool Equals(object? obj) =>

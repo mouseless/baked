@@ -4,5 +4,5 @@ public interface IModelWithMetadata : IModel
 {
     ModelCollection<TypeModel> CustomAttributes { get; }
 
-    bool Has<T>() where T : Attribute;
+    bool HasAttribute<T>() where T : Attribute;
 }

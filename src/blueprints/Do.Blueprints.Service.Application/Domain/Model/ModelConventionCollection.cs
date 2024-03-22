@@ -1,6 +1,7 @@
 ﻿namespace Do.Domain.Model;
 
-public class ModelConventionCollection<T> : IEnumerable<IModelConvention<T>> where T : IModelWithMetadata
+public class ModelConventionCollection<T>() : IEnumerable<IModelConvention<T>>
+    where T : IModelWithMetadata
 {
     readonly List<IModelConvention<T>> _conventions = [];
 

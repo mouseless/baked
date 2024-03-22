@@ -24,6 +24,6 @@ public static class DefaultBusinessExtensions
         type.IsAssignableTo<Exception>() ||
         type.IsAssignableTo<Attribute>() ||
         (type.ContainsGenericParameters && !type.GenericTypeArguments.Any()) ||
-        type.Has<DataClassAttribute>()
+        type.HasAttribute<DataClassAttribute>()
     ;
 }

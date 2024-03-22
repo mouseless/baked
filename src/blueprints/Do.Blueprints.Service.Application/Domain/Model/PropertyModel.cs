@@ -4,12 +4,11 @@ public record PropertyModel(
     string Name,
     TypeModel PropertyType,
     bool IsPublic,
-    bool IsVirtual
+    bool IsVirtual,
+    ModelCollection<TypeModel> CustomAttributes
 ) : IModelWithMetadata
 {
-    public ModelCollection<TypeModel> CustomAttributes { get; private set; } = default!;
-
-    public bool Has<T>() where T : Attribute =>
+    public bool HasAttribute<T>() where T : Attribute =>
         CustomAttributes.Contains(TypeModel.IdFrom(typeof(T)));
 
     string IModel.Id { get; } = Name;

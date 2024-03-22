@@ -4,9 +4,13 @@ public record ParameterModel(
     string Name,
     TypeModel ParameterType,
     bool IsOptional,
-    object? DefaultValue
-) : IModel
+    object? DefaultValue,
+    ModelCollection<TypeModel> CustomAttributes
+) : IModelWithMetadata
 {
+    public bool HasAttribute<T>() where T : Attribute =>
+     CustomAttributes.Contains(TypeModel.IdFrom(typeof(T)));
+
     string IModel.Id { get; } = Name;
 }
 

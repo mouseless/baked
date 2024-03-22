@@ -4,12 +4,11 @@ namespace Do.Domain.Model;
 public record MethodModel(
     string Name,
     OverloadModel[] Overloads,
+    ModelCollection<TypeModel> CustomAttributes,
     bool IsConstructor = false
 ) : IModelWithMetadata
 {
-    public ModelCollection<TypeModel> CustomAttributes { get; } = [];
-
-    public bool Has<T>() where T : Attribute =>
+    public bool HasAttribute<T>() where T : Attribute =>
         CustomAttributes.Contains(TypeModel.IdFrom(typeof(T)));
 
     public bool CanReturn(TypeModel type) =>
