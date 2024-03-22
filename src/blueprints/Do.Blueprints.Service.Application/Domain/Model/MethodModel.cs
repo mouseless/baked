@@ -7,9 +7,10 @@ public record MethodModel(
     bool IsConstructor = false
 ) : IModelWithMetadata
 {
-    string IModel.Id { get; } = Name;
-
     public ModelCollection<TypeModel> CustomAttributes { get; } = [];
+
+    public bool Has<T>() where T : Attribute =>
+        CustomAttributes.Contains(TypeModel.IdFrom(typeof(T)));
 
     public bool CanReturn(TypeModel type) =>
         Overloads.Any(o =>
@@ -17,6 +18,5 @@ public record MethodModel(
             (o.ReturnType?.IsAssignableTo<Task>() == true && o.ReturnType?.GenericTypeArguments.Any(a => a == type) == true)
         );
 
-    public bool Has<T>() where T : Attribute =>
-        CustomAttributes.Contains(TypeModel.IdFrom(typeof(T)));
+    string IModel.Id { get; } = Name;
 }

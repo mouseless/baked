@@ -5,5 +5,5 @@ public interface IModelConvention<T>
 {
     int Order { get; }
     bool AppliesTo(T model);
-    void Apply(T model, ModelCache<T> cache);
+    void Apply(T model);
 }

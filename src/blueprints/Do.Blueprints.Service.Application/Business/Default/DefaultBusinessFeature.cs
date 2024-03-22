@@ -66,7 +66,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
         configurator.ConfigureServiceCollection(services =>
         {
             var domainModel = configurator.Context.GetDomainModel();
-            foreach (var type in domainModel.GetTypes<TransientAttribute>())
+            foreach (var type in domainModel.Types.GetIndex<TransientAttribute>())
             {
                 type.Apply(t =>
                 {
@@ -77,7 +77,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                 });
             }
 
-            foreach (var type in domainModel.GetTypes<ScopedAttribute>())
+            foreach (var type in domainModel.Types.GetIndex<ScopedAttribute>())
             {
                 type.Apply(t =>
                 {
@@ -88,7 +88,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                 });
             }
 
-            foreach (var type in domainModel.GetTypes<SingletonAttribute>())
+            foreach (var type in domainModel.Types.GetIndex<SingletonAttribute>())
             {
                 type.Apply(t =>
                 {
@@ -111,7 +111,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                 if (!type.Has<SingletonAttribute>()) { continue; } // TODO for now only singleton
 
                 var controller = new ControllerModel(type.Name);
-                foreach (var method in type.GetMethods<PublicServiceAttribute>())
+                foreach (var method in type.Methods.GetIndex<PublicServiceAttribute>())
                 {
                     var overload = method.Overloads.OrderByDescending(o => o.Parameters.Count).First();
                     if (overload.ReturnType is null) { continue; }

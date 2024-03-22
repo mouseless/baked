@@ -29,7 +29,7 @@ public class TypeModel(Type type, string id,
     public bool ContainsGenericParameters { get; } = type.ContainsGenericParameters;
     public AssemblyModel? Assembly { get; } = assembly;
     public TypeModel? BaseType { get; private set; } = default!;
-    public ModelCollection<MethodModel> Methods { get; private set; } = default!;
+    public MethodModelCollection Methods { get; private set; } = default!;
     public ModelCollection<PropertyModel> Properties { get; private set; } = default!;
     public ModelCollection<TypeModel> GenericTypeArguments { get; private set; } = default!;
     public ModelCollection<TypeModel> CustomAttributes { get; private set; } = default!;
@@ -37,10 +37,8 @@ public class TypeModel(Type type, string id,
 
     public MethodModel? Constructor => Methods.TryGetValue(".ctor", out var ctor) ? ctor : default;
 
-    internal ModelCache<MethodModel> MethodCache { get; } = [];
-
     internal void Init(ModelCollection<TypeModel> genericTypeArguments,
-        ModelCollection<MethodModel>? methods = default,
+        MethodModelCollection? methods = default,
         ModelCollection<PropertyModel>? properties = default,
         ModelCollection<TypeModel>? customAttributes = default,
         ModelCollection<TypeModel>? interfaces = default,
@@ -67,6 +65,9 @@ public class TypeModel(Type type, string id,
     bool Is(Type type) =>
         _type == type || BaseType?.Is(type) == true;
 
+    public bool Has<T>() where T : Attribute =>
+        CustomAttributes.Contains(IdFrom(typeof(T)));
+
     public override bool Equals(object? obj) =>
         ((IEquatable<TypeModel>)this).Equals(obj as TypeModel);
 
@@ -75,12 +76,6 @@ public class TypeModel(Type type, string id,
 
     public override int GetHashCode() =>
         _id.GetHashCode();
-
-    public bool Has<T>() where T : Attribute =>
-        CustomAttributes.Contains(IdFrom(typeof(T)));
-
-    public ModelCollection<MethodModel> GetMethods<T>() =>
-        MethodCache.GetOrEmpty(IdFrom(typeof(T)));
 
     string IModel.Id => _id;
 }

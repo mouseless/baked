@@ -2,10 +2,11 @@
 
 namespace Do.Domain.Model;
 
-public class ModelCollection<T>() : IEnumerable<T>
+public class ModelCollection<T>() : IEnumerable<T>, IModelCollectionWithIndex<T>
     where T : IModel
 {
     readonly KeyedModelCollection<T> _models = [];
+    readonly ModelIndex<T> _index = [];
 
     public ModelCollection(IEnumerable<T> models)
         : this()
@@ -41,6 +42,11 @@ public class ModelCollection<T>() : IEnumerable<T>
 
         return false;
     }
+
+    public ModelCollection<T> GetIndex(string id) =>
+        _index.GetOrEmpty(id);
+
+    ModelIndex<T> IModelCollectionWithIndex<T>.Index => _index;
 
     public IEnumerator<T> GetEnumerator() => _models.GetEnumerator();
 

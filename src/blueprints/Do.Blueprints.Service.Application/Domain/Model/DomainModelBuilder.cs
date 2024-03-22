@@ -2,7 +2,7 @@
 
 namespace Do.Domain.Model;
 
-public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions, DomainMetadataProcessor _processors)
+public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions, DomainConventionProcessor _processors)
 {
     readonly KeyedModelCollection<AssemblyModel> _assemblies = [];
     readonly KeyedModelCollection<TypeModel> _types = [];
@@ -64,7 +64,7 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions, Doma
         );
     }
 
-    ModelCollection<MethodModel> BuildMethods(Type type)
+    MethodModelCollection BuildMethods(Type type)
     {
         var methods = new Dictionary<string, MethodModel>();
         var constructorInfos = type.GetConstructors(_domainBuilderOptions.ConstuctorBindingFlags) ?? [];

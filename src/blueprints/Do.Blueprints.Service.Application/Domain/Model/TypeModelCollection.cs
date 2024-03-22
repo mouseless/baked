@@ -8,4 +8,7 @@ public class TypeModelCollection(IEnumerable<TypeModel> models)
 
     public bool Contains(Type type) =>
         Contains(TypeModel.IdFrom(type));
+
+    public ModelCollection<TypeModel> GetIndex<T>() where T : class
+        => GetIndex(TypeModel.IdFrom(typeof(T)));
 }

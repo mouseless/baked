@@ -3,22 +3,22 @@
 public class ModelConventionCollection<T> : IEnumerable<IModelConvention<T>> where T : IModelWithMetadata
 {
     readonly List<IModelConvention<T>> _conventions = [];
-    List<IModelConvention<T>>? _ordered = default!;
 
     public void Add(Attribute add, Func<T, bool> when, int order)
     {
         _conventions.Add(new AddAttributeConvention<T>(add, when, order));
     }
 
-    internal void Apply(T model, ModelCache<T> cache)
+    internal void Apply(ModelCollection<T> collection)
     {
-        _ordered ??= [.. _conventions.OrderBy(p => p.Order)];
-
-        foreach (var convention in _ordered)
+        foreach (var convention in _conventions.OrderBy(c => c.Order))
         {
-            if (convention.AppliesTo(model))
+            foreach (var model in collection)
             {
-                convention.Apply(model, cache);
+                if (convention.AppliesTo(model))
+                {
+                    convention.Apply(model);
+                }
             }
         }
     }
