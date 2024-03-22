@@ -1,19 +1,11 @@
 ﻿namespace Do.Domain.Model;
 
-public class AttributeIndexer(Type _attributeType)
+public class AttributeIndexer<T>() : IndexerBase
+    where T : Attribute
 {
-    string IndexId => TypeModel.IdFrom(_attributeType);
+    protected override string IndexId =>
+        TypeModel.IdFrom(typeof(T));
 
-    internal void Execute<T>(ModelIndex<T> index, T model) where T : IModelWithMetadata
-    {
-        if (model.CustomAttributes.Contains(IndexId))
-        {
-            if (!index.ContainsKey(IndexId))
-            {
-                index[IndexId] = [];
-            }
-
-            index[IndexId].TryAdd(model);
-        }
-    }
+    protected override bool CanIndex(IModel model) =>
+        model is IModelWithMetadata m && m.CustomAttributes.Contains(IndexId);
 }

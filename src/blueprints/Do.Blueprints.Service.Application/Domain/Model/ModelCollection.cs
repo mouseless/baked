@@ -6,6 +6,7 @@ public class ModelCollection<T> : IEnumerable<T>
     where T : IModel
 {
     readonly KeyedModelCollection<T> _models = [];
+    readonly ModelIndex<T> _index = [];
 
     public ModelCollection() { }
 
@@ -43,6 +44,17 @@ public class ModelCollection<T> : IEnumerable<T>
         }
 
         return false;
+    }
+
+    public ModelCollection<T> GetIndex(string id) =>
+        _index.GetOrEmpty(id);
+
+    internal void CreateIndex(IIndexer indexer)
+    {
+        foreach (var model in Models)
+        {
+            indexer.Execute(_index, model);
+        }
     }
 
     public IEnumerator<T> GetEnumerator() => _models.GetEnumerator();

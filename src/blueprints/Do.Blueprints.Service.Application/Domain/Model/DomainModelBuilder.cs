@@ -6,7 +6,7 @@ internal class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions, Do
 {
     readonly KeyedModelCollection<AssemblyModel> _assemblies = [];
     readonly KeyedModelCollection<TypeModel> _types = [];
-    readonly DomainIndexer _indexer = new(_domainBuilderOptions.Indexers);
+    readonly DomainIndexer _indexer = new(_domainBuilderOptions.Indexers.Cast<IIndexer>().ToList());
 
     internal DomainModel BuildFrom(IDomainAssemblyCollection domainAssemblies, IDomainTypeCollection domainTypes)
     {

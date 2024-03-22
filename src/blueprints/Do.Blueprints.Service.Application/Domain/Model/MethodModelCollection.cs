@@ -1,10 +1,10 @@
 ﻿namespace Do.Domain.Model;
 
 public class MethodModelCollection(IEnumerable<MethodModel> models)
-    : IndexedModelCollection<MethodModel>(models)
+    : ModelCollection<MethodModel>(models)
 {
     public MethodModelCollection() : this([]) { }
 
-    public ModelCollection<MethodModel> GetIndex<T>() where T : class
+    public ModelCollection<MethodModel> WithAttribute<T>() where T : Attribute
         => GetIndex(TypeModel.IdFrom(typeof(T)));
 }

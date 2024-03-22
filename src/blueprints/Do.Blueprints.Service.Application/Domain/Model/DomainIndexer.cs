@@ -1,7 +1,7 @@
 ﻿
 namespace Do.Domain.Model;
 
-public class DomainIndexer(List<AttributeIndexer> _indexers)
+public class DomainIndexer(List<IIndexer> _indexers)
 {
     IndexerCollection Indexers { get; } = new(_indexers);
 
