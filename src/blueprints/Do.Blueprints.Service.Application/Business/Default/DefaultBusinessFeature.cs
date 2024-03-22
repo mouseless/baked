@@ -1,4 +1,5 @@
 ﻿using Do.Architecture;
+using Do.Domain.Configuration;
 using Do.Domain.Model;
 using Do.RestApi.Model;
 using Microsoft.Extensions.DependencyInjection;
@@ -63,7 +64,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
             metadata
                 .Method
                     .Add(
-                        add: new PublicServiceAttribute(),
+                        add: (model, adder) => adder.Add(model, new PublicServiceAttribute()),
                         when: method => !method.IsConstructor && method.Overloads.Any(o => o.IsPublic),
                         order: int.MinValue
                     );

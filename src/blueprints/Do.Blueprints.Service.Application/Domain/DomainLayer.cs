@@ -1,4 +1,5 @@
 ﻿using Do.Architecture;
+using Do.Domain.Configuration;
 using Do.Domain.Model;
 using Microsoft.Extensions.Configuration;
 
@@ -37,6 +38,7 @@ public class DomainLayer : LayerBase<BuildConfiguration>
         protected override void Initialize(ConfigurationManager _)
         {
             var builder = new DomainModelBuilder(_domainBuilderOptions, _domainConventions);
+            builder.Initialize();
             var model = builder.BuildFrom(_domainAssemblies, _domainTypes);
 
             Context.Add<DomainModel>(model);

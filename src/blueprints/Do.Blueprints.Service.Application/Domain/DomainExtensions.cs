@@ -1,5 +1,6 @@
 ﻿using Do.Architecture;
 using Do.Domain;
+using Do.Domain.Configuration;
 using Do.Domain.Model;
 
 namespace Do;

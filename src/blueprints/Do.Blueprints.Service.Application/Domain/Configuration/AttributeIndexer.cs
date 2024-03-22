@@ -1,4 +1,6 @@
-﻿namespace Do.Domain.Model;
+﻿using Do.Domain.Model;
+
+namespace Do.Domain.Configuration;
 
 public class AttributeIndexer<T>() : IndexerBase
     where T : Attribute

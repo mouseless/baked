@@ -1,20 +1,30 @@
-﻿namespace Do.Domain.Model;
+﻿using Do.Domain.Configuration;
+using Do.Domain.Model;
+
+namespace Do.Domain.Convention;
 
 public class ModelConventionCollection<T>() : IEnumerable<IModelConvention<T>>
     where T : IModelWithMetadata
 {
-    readonly List<IModelConvention<T>> _conventions = [];
+    List<IModelConvention<T>> _conventions = [];
 
-    public ModelConventionCollection<T> Add(Attribute add, Func<T, bool> when, int order)
+    public void Add(IModelConvention<T> convention) => _conventions.Add(convention);
+
+    internal ModelConventionCollection<T> Initialize(ModelConfigurators configurators)
     {
-        _conventions.Add(new AddAttributeConvention<T>(add, when, order));
+        foreach (var item in _conventions)
+        {
+            item.Initialize(configurators);
+        }
+
+        _conventions = [.. _conventions.OrderBy(c => c.Order)];
 
         return this;
     }
 
     internal void Apply(ModelCollection<T> collection)
     {
-        foreach (var convention in _conventions.OrderBy(c => c.Order))
+        foreach (var convention in _conventions)
         {
             foreach (var model in collection)
             {

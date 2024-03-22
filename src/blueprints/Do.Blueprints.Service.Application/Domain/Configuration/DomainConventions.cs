@@ -1,4 +1,7 @@
-﻿namespace Do.Domain.Model;
+﻿using Do.Domain.Convention;
+using Do.Domain.Model;
+
+namespace Do.Domain.Configuration;
 
 public class DomainConventions
 {

@@ -1,13 +1,24 @@
-﻿using System.Reflection;
+﻿using Do.Domain.Configuration;
+using System.Reflection;
 
 namespace Do.Domain.Model;
 
-internal class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions, DomainConventions _domainConventions)
+internal class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions, DomainConventions _domainConventions) : ITypeModelFactory
 {
     readonly KeyedModelCollection<AssemblyModel> _assemblies = [];
     readonly KeyedModelCollection<TypeModel> _types = [];
-    readonly DomainConventionProcessor _processor = new(_domainConventions);
-    readonly DomainIndexer _indexer = new(_domainBuilderOptions.Indexers.Cast<IIndexer>().ToList());
+
+    DomainConventionProcessor _processor = default!;
+    DomainIndexer _indexer = default!;
+
+    internal void Initialize()
+    {
+        var configurators = new ModelConfigurators();
+        configurators.Add<AttributeAdder>(new(this));
+
+        _processor = new DomainConventionProcessor(configurators).With(_domainConventions);
+        _indexer = new(_domainBuilderOptions.Indexers.Cast<IIndexer>().ToList());
+    }
 
     internal DomainModel BuildFrom(IDomainAssemblyCollection domainAssemblies, IDomainTypeCollection domainTypes)
     {
@@ -114,4 +125,11 @@ internal class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions, Do
 
     bool IsVirtual(PropertyInfo property) =>
         property.GetMethod?.IsVirtual == true;
+
+    TypeModel ITypeModelFactory.Create(object @object) => GetOrCreateTypeModel(@object.GetType());
+}
+
+public interface ITypeModelFactory
+{
+    TypeModel Create(object @object);
 }

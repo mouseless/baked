@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Do.Domain.Configuration;
 
 namespace Do.Domain.Model;
 

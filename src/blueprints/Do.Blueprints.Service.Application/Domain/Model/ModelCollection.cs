@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Do.Domain.Configuration;
 
 namespace Do.Domain.Model;
 
