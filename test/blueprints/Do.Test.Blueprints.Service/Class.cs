@@ -5,6 +5,8 @@ namespace Do.Test;
 [Singleton]
 public class Class
 {
+    public int Id { get; set; }
+
     [AuthorizationRequired]
     public void VoidMethod() { }
 

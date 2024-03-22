@@ -2,14 +2,13 @@
 
 namespace Do.Domain.Model;
 
-public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions, DomainConventionProcessor _processor)
+internal class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions, DomainConventionProcessor _conventionProcessor)
 {
     readonly KeyedModelCollection<AssemblyModel> _assemblies = [];
     readonly KeyedModelCollection<TypeModel> _types = [];
-    readonly ModelCollectionFactory<TypeModel, TypeModelCollection> _typeCollectionFactory = new(_domainBuilderOptions.Indexers);
-    readonly ModelCollectionFactory<MethodModel, MethodModelCollection> _methodCollectionFactory = new(_domainBuilderOptions.Indexers);
+    readonly DomainIndexer _indexer = new(_domainBuilderOptions.Indexers);
 
-    public DomainModel BuildFrom(IDomainAssemblyCollection domainAssemblies, IDomainTypeCollection domainTypes)
+    internal DomainModel BuildFrom(IDomainAssemblyCollection domainAssemblies, IDomainTypeCollection domainTypes)
     {
         foreach (var assembly in domainAssemblies)
         {
@@ -31,9 +30,13 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions, Doma
             InitTypeModel(type);
         }
 
-        _processor.Execute(new(new(_assemblies), new(_types)));
+        _conventionProcessor.Execute(new(_types));
 
-        return new(new(_assemblies), _typeCollectionFactory.Create(_types));
+        var domainModel = new DomainModel(new(_assemblies), new(_types));
+
+        _indexer.Execute(domainModel);
+
+        return domainModel;
     }
 
     TypeModel GetOrCreateTypeModel(Type type)
@@ -58,14 +61,14 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions, Doma
                 genericTypeArguments: typeModel.IsBusinessType || typeModel.IsGenericType ? BuildGenericTypeArguments(t) : [],
                 customAttributes: typeModel.IsBusinessType ? BuildCustomAttributes(t) : [],
                 properties: typeModel.IsBusinessType ? BuildProperties(t) : [],
-                methods: _methodCollectionFactory.Create(typeModel.IsBusinessType ? BuildMethods(t) : []),
+                methods: typeModel.IsBusinessType ? BuildMethods(t) : [],
                 interfaces: typeModel.IsBusinessType ? BuildInterfaces(t) : [],
                 baseType: (typeModel.IsBusinessType || t.BaseType == typeof(Task)) && t.BaseType is not null ? GetOrCreateTypeModel(t.BaseType) : default
             )
         );
     }
 
-    KeyedModelCollection<MethodModel> BuildMethods(Type type)
+    MethodModelCollection BuildMethods(Type type)
     {
         var methods = new Dictionary<string, MethodModel>();
         var constructorInfos = type.GetConstructors(_domainBuilderOptions.ConstuctorBindingFlags) ?? [];
@@ -78,7 +81,7 @@ public class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions, Doma
             methods[group.Key] = new(group.Key, group.Select(BuildMethodOverload).ToArray());
         }
 
-        return [.. methods.Values];
+        return new(methods.Values);
     }
 
     ModelCollection<TypeModel> BuildCustomAttributes(MemberInfo member) =>

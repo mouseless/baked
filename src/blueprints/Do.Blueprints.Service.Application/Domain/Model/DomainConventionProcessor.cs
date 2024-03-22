@@ -1,23 +1,14 @@
 ﻿namespace Do.Domain.Model;
 
-public class DomainConventionProcessor
+internal class DomainConventionProcessor(DomainConventions _domainConventions)
 {
-    public ModelConventionCollection<TypeModel> Type { get; } = [];
-    public ModelConventionCollection<PropertyModel> Property { get; } = [];
-    public ModelConventionCollection<MethodModel> Method { get; } = [];
-
-    public void Execute(DomainDescriptor domainModel)
+    internal void Execute(ModelCollection<TypeModel> types)
     {
-        Type.Apply(domainModel.Types);
+        _domainConventions.Type.Apply(types);
 
-        foreach (var methods in domainModel.Types.Select(t => t.Methods))
+        foreach (var methods in types.Select(t => t.Methods))
         {
-            Method.Apply(methods);
-        }
-
-        foreach (var properties in domainModel.Types.Select(t => t.Properties))
-        {
-            Property.Apply(properties);
+            _domainConventions.Method.Apply(methods);
         }
     }
 }

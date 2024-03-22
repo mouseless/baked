@@ -57,7 +57,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
 
             metadata.Type.Add(
                 add: new SingletonAttribute(),
-                when: type => !type.IsIgnored() && !type.Has<TransientAttribute>() && !type.Has<ScopedAttribute>() && type.Name != "Class" && type.Properties.All(p => !p.IsPublic),
+                when: type => !type.IsIgnored() && !type.Has<TransientAttribute>() && !type.Has<ScopedAttribute>() && type.Properties.All(p => !p.IsPublic),
                 order: 30
             );
 
