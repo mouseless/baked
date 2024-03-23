@@ -23,9 +23,9 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
             services.AddSingleton(typeof(IQueryContext<>), typeof(QueryContext<>));
         });
 
-        configurator.ConfigureDomainBuilderOptions(options =>
+        configurator.ConfigureDomainIndexers(indexers =>
         {
-            options.Indexers.Add(new AttributeIndexer<MappedAttribute>());
+            indexers.Add(new AttributeIndexer<MappedAttribute>());
         });
 
         configurator.ConfigureDomainMetaData(metadata =>

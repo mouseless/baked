@@ -16,16 +16,16 @@ public class ModelConvention<T, TComponent>(int _order, Func<T, bool> _appliesTo
     where T : IModel
     where TComponent : class, IDomainComponent
 {
-    BuildDomainContext _domainBuilderContext = default!;
+    BuildDomainContext _buildDomainContext = default!;
 
-    void Initialize(BuildDomainContext domainBuilderContext)
+    void Initialize(BuildDomainContext buildDomainContext)
     {
-        _domainBuilderContext = domainBuilderContext;
+        _buildDomainContext = buildDomainContext;
     }
 
     int IModelConvention<T>.Order => _order;
     bool IModelConvention<T>.AppliesTo(T model) => _appliesTo(model);
-    void IModelConvention<T>.Apply(T model) => _apply(model, _domainBuilderContext.Get<TComponent>());
+    void IModelConvention<T>.Apply(T model) => _apply(model, _buildDomainContext.Get<TComponent>());
 
-    void IModelConvention<T>.Initialize(BuildDomainContext domainBuilderContext) => Initialize(domainBuilderContext);
+    void IModelConvention<T>.Initialize(BuildDomainContext buildDomainContext) => Initialize(buildDomainContext);
 }

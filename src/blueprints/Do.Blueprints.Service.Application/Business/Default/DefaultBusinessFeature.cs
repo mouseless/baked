@@ -29,12 +29,15 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
             options.ConstuctorBindingFlags = _defaultMemberBindingFlags;
             options.MethodBindingFlags = _defaultMemberBindingFlags;
             options.PropertyBindingFlags = _defaultMemberBindingFlags;
+        });
 
-            options.Indexers.Add(new AttributeIndexer<TransientAttribute>());
-            options.Indexers.Add(new AttributeIndexer<ScopedAttribute>());
-            options.Indexers.Add(new AttributeIndexer<SingletonAttribute>());
-            options.Indexers.Add(new AttributeIndexer<PublicServiceAttribute>());
-            options.Indexers.Add(new AttributeIndexer<DomainServiceAttribute>());
+        configurator.ConfigureDomainIndexers(indexers =>
+        {
+            indexers.Add(new AttributeIndexer<TransientAttribute>());
+            indexers.Add(new AttributeIndexer<ScopedAttribute>());
+            indexers.Add(new AttributeIndexer<SingletonAttribute>());
+            indexers.Add(new AttributeIndexer<PublicServiceAttribute>());
+            indexers.Add(new AttributeIndexer<DomainServiceAttribute>());
         });
 
         configurator.ConfigureDomainMetaData(metadata =>

@@ -2,10 +2,8 @@
 
 namespace Do.Domain.Configuration;
 
-internal class DomainIndexer(List<IIndexer> indexers)
+internal class DomainIndexer(DomainIndexerCollection _indexers)
 {
-    readonly IndexerCollection _indexers = new(indexers);
-
     internal void Execute(DomainModel model)
     {
         _indexers.Apply(model.Types);

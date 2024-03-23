@@ -2,8 +2,13 @@
 
 namespace Do.Domain.Configuration;
 
-internal class IndexerCollection(List<IIndexer> _indexers)
+public class DomainIndexerCollection()
 {
+    readonly List<IIndexer> _indexers = [];
+
+    public void Add(IIndexer indexer) =>
+        _indexers.Add(indexer);
+
     internal void Apply<T>(ModelCollection<T> collection) where T : IModelWithMetadata
     {
         foreach (var indexer in _indexers)
