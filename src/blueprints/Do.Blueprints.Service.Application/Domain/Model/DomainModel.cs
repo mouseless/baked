@@ -2,5 +2,5 @@
 
 public record DomainModel(
     ModelCollection<AssemblyModel> Assemblies,
-    TypeModelCollection Types
+    ModelCollection<TypeModel> Types
 );

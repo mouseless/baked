@@ -29,7 +29,7 @@ public class TypeModel(Type type, string id,
     public bool ContainsGenericParameters { get; } = type.ContainsGenericParameters;
     public AssemblyModel? Assembly { get; } = assembly;
     public TypeModel? BaseType { get; private set; } = default!;
-    public MethodModelCollection Methods { get; private set; } = default!;
+    public ModelCollection<MethodModel> Methods { get; private set; } = default!;
     public ModelCollection<PropertyModel> Properties { get; private set; } = default!;
     public ModelCollection<TypeModel> GenericTypeArguments { get; private set; } = default!;
     public ModelCollection<TypeModel> CustomAttributes { get; private set; } = default!;
@@ -38,7 +38,7 @@ public class TypeModel(Type type, string id,
     public MethodModel? Constructor => Methods.TryGetValue(".ctor", out var ctor) ? ctor : default;
 
     internal void Init(ModelCollection<TypeModel> genericTypeArguments,
-        MethodModelCollection? methods = default,
+        ModelCollection<MethodModel>? methods = default,
         ModelCollection<PropertyModel>? properties = default,
         ModelCollection<TypeModel>? customAttributes = default,
         ModelCollection<TypeModel>? interfaces = default,
@@ -95,4 +95,13 @@ public static class TypeModelExtensions
 
     public static Type MakeGenericType(this Type source, TypeModel model) =>
         model.MakeGenericType(source);
+
+    public static bool Contains(this ModelCollection<TypeModel> source, Type type) =>
+        source.Contains(TypeModel.IdFrom(type));
+
+    public static TypeModel Get<T>(this ModelCollection<TypeModel> source) =>
+        source.Get(typeof(T));
+
+    public static TypeModel Get(this ModelCollection<TypeModel> source, Type type) =>
+        source[TypeModel.IdFrom(type)];
 }

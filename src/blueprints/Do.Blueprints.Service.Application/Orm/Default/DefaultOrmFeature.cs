@@ -1,4 +1,7 @@
 ﻿using Do.Architecture;
+using Do.Business.Default;
+using Do.Domain.Configuration;
+using Do.Domain.Model;
 using Do.Orm.Default.UserTypes;
 using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Mapping;
@@ -21,14 +24,34 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
             services.AddSingleton(typeof(IQueryContext<>), typeof(QueryContext<>));
         });
 
+        configurator.ConfigureDomainBuilderOptions(options =>
+        {
+            options.Indexers.Add(new AttributeIndexer<MappedAttribute>());
+        });
+
+        configurator.ConfigureDomainMetaData(metadata =>
+        {
+            metadata
+                .Type
+                    .Add(
+                        add: typeof(MappedAttribute),
+                        when: type =>
+                            type.HasAttribute<TransientAttribute>() &&
+                            type.Constructor != null &&
+                            type.Constructor.HasParameter(p => p.ParameterType.IsAssignableTo(typeof(IEntityContext<>).MakeGenericType(type))),
+                        order: 100
+                );
+        });
+
         configurator.ConfigureAutoPersistenceModel(model =>
         {
             var domainModel = configurator.Context.GetDomainModel();
 
-            foreach (var assembly in domainModel.Assemblies)
-            {
-                assembly.Apply(a => model.AddEntityAssembly(a));
-            }
+            var typeSource = new TypeSource();
+            var mappedTypes = domainModel.Types.WithAttribute<MappedAttribute>();
+            mappedTypes.Apply(t => typeSource.Add(t));
+
+            model.AddTypeSource(typeSource);
 
             model
                 .Conventions.Add(Table.Is(x => x.EntityType.Name))
@@ -63,15 +86,10 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
 
         configurator.ConfigureAutomapping(automapping =>
         {
-            automapping.ShouldMapType.Add(t =>
-                t.IsClass && !t.IsAbstract &&
-                t.GetConstructors().Any(c => c
-                    .GetParameters().Any(p => p
-                        .ParameterType.IsAssignableTo(typeof(IEntityContext<>).MakeGenericType(t))
-                    )
-                )
-            );
+            var domainModel = configurator.Context.GetDomainModel();
+            var mappedTypes = domainModel.Types.WithAttribute<MappedAttribute>();
 
+            automapping.ShouldMapType.Add(t => mappedTypes.Contains(t));
             automapping.MemberIsId.Add(m => m.PropertyType == typeof(Guid) && m.Name == "Id");
             automapping.ShouldMapMember.Add(m => m.IsAutoProperty && !m.PropertyType.IsAssignableTo(typeof(ICollection)));
         });

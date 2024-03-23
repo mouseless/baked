@@ -1,5 +1,4 @@
-﻿using Do.Domain.Convention;
-using Do.Domain.Model;
+﻿using Do.Domain.Model;
 
 namespace Do.Domain.Configuration;
 

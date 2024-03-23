@@ -81,7 +81,7 @@ internal class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions, Do
         );
     }
 
-    MethodModelCollection BuildMethods(Type type)
+    ModelCollection<MethodModel> BuildMethods(Type type)
     {
         var methods = new Dictionary<string, MethodModel>();
         var constructorInfos = type.GetConstructors(_domainBuilderOptions.ConstuctorBindingFlags) ?? [];

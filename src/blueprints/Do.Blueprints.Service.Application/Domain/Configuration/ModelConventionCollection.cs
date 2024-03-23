@@ -1,7 +1,6 @@
-﻿using Do.Domain.Configuration;
-using Do.Domain.Model;
+﻿using Do.Domain.Model;
 
-namespace Do.Domain.Convention;
+namespace Do.Domain.Configuration;
 
 public class ModelConventionCollection<T>() : IEnumerable<IModelConvention<T>>
     where T : IModelWithMetadata

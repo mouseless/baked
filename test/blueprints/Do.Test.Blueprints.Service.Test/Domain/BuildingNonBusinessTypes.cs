@@ -14,7 +14,7 @@ public class BuildingNonBusinessTypes : TestServiceSpec
     [Test]
     public void Non_business_types_with_no_generic_parameters_are_initialized_with_empty_collections([Values(typeof(string), typeof(int), typeof(Task))] Type type)
     {
-        var model = DomainModel.Types[type];
+        var model = DomainModel.Types.Get(type);
 
         model.Properties.ShouldNotBeNull();
         model.Properties.Count().ShouldBe(0);
@@ -37,8 +37,8 @@ public class BuildingNonBusinessTypes : TestServiceSpec
     [Test]
     public void Non_business_types_with_generic_parameters_are_initialized_with_generic_arguments([Values(typeof(List<Entity>), typeof(Func<Entity>), typeof(IQueryContext<Entity>))] Type type)
     {
-        var entityModel = DomainModel.Types[typeof(Entity)];
-        var listEntity = DomainModel.Types[type];
+        var entityModel = DomainModel.Types.Get<Entity>();
+        var listEntity = DomainModel.Types.Get(type);
 
         listEntity.ShouldNotBeNull();
         listEntity.GenericTypeArguments.Count().ShouldBe(1);
@@ -48,7 +48,7 @@ public class BuildingNonBusinessTypes : TestServiceSpec
     [Test]
     public void Base_type_is_added_for_task()
     {
-        var model = DomainModel.Types[typeof(Task<TransientWithTask>)];
+        var model = DomainModel.Types.Get<Task<TransientWithTask>>();
 
         model.ShouldNotBeNull();
         model.BaseType.ShouldNotBeNull();

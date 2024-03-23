@@ -1,7 +1,6 @@
-﻿using Do.Domain.Configuration;
-using Do.Domain.Model;
+﻿using Do.Domain.Model;
 
-namespace Do.Domain.Convention;
+namespace Do.Domain.Configuration;
 
 public class ModelConvention<T>(int _order, Func<T, bool> _appliesTo, Action<T> _apply) : IModelConvention<T>
     where T : IModel

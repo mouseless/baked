@@ -50,6 +50,9 @@ public class ModelCollection<T> : IEnumerable<T>
     public ModelCollection<T> GetIndex(string id) =>
         _index.GetOrEmpty(id);
 
+    public ModelCollection<T> WithAttribute<TAttribute>() where TAttribute : Attribute =>
+        GetIndex(TypeModel.IdFrom(typeof(TAttribute)));
+
     internal void CreateIndex(IIndexer indexer)
     {
         foreach (var model in Models)
