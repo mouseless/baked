@@ -3,7 +3,7 @@ using Do.Domain.Model;
 
 namespace Do.Domain.Configuration;
 
-internal class DomainConventionProcessor(ModelConfigurators _configurators)
+internal class DomainConventionProcessor(DomainBuilderContext _domainBuilderContext)
 {
     ModelConventionCollection<TypeModel> _type = default!;
     ModelConventionCollection<MethodModel> _method = default!;
@@ -12,10 +12,10 @@ internal class DomainConventionProcessor(ModelConfigurators _configurators)
 
     internal DomainConventionProcessor With(DomainConventions conventions)
     {
-        _type = conventions.Type.Initialize(_configurators);
-        _method = conventions.Method.Initialize(_configurators);
-        _parameter = conventions.Parameter.Initialize(_configurators);
-        _property = conventions.Property.Initialize(_configurators);
+        _type = conventions.Type.Initialize(_domainBuilderContext);
+        _method = conventions.Method.Initialize(_domainBuilderContext);
+        _parameter = conventions.Parameter.Initialize(_domainBuilderContext);
+        _property = conventions.Property.Initialize(_domainBuilderContext);
 
         return this;
     }

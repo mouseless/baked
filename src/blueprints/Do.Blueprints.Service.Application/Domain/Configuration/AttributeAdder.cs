@@ -3,8 +3,18 @@ using Do.Domain.Model;
 
 namespace Do.Domain.Configuration;
 
-public class AttributeAdder(ITypeModelFactory _factory) : IModelConfigurer
+public class AttributeAdder : IDomainComponent
 {
+    static IDomainComponent IDomainComponent.New(DomainBuilderContext domainBuilderContext) =>
+        new AttributeAdder(domainBuilderContext.Get<ITypeModelFactory>());
+
+    readonly ITypeModelFactory _factory = default!;
+
+    AttributeAdder(ITypeModelFactory factory)
+    {
+        _factory = factory;
+    }
+
     public void Add<T>(IModelWithMetadata model) =>
         Add(model, typeof(T));
 

@@ -6,40 +6,30 @@ namespace Do.Domain.Convention;
 public class ModelConvention<T>(int _order, Func<T, bool> _appliesTo, Action<T> _apply) : IModelConvention<T>
     where T : IModel
 {
-    ModelConfigurators _configurators = default!;
+    void IModelConvention<T>.Initialize(DomainBuilderContext _) { }
 
-    internal ModelConvention<T> Initialize(ModelConfigurators configurators)
-    {
-        _configurators = configurators;
+    int IModelConvention<T>.Order => _order;
 
-        return this;
-    }
-
-    public int Order => _order;
-
-    public bool AppliesTo(T model) => _appliesTo(model);
-    public void Apply(T model) => _apply(model);
-
-    IModelConvention<T> IModelConvention<T>.Initialize(ModelConfigurators configurators) => Initialize(configurators);
+    bool IModelConvention<T>.AppliesTo(T model) =>
+        _appliesTo(model);
+    void IModelConvention<T>.Apply(T model) =>
+        _apply(model);
 }
 
-public class ModelConvention<T, TConfigurer>(int _order, Func<T, bool> _appliesTo, Action<T, TConfigurer> _apply) : IModelConvention<T>
+public class ModelConvention<T, TComponent>(int _order, Func<T, bool> _appliesTo, Action<T, TComponent> _apply) : IModelConvention<T>
     where T : IModel
-    where TConfigurer : IModelConfigurer
+    where TComponent : class, IDomainComponent
 {
-    ModelConfigurators _configurators = default!;
+    DomainBuilderContext _domainBuilderContext = default!;
 
-    internal ModelConvention<T, TConfigurer> Initialize(ModelConfigurators configurators)
+    void Initialize(DomainBuilderContext domainBuilderContext)
     {
-        _configurators = configurators;
-
-        return this;
+        _domainBuilderContext = domainBuilderContext;
     }
 
-    public int Order => _order;
+    int IModelConvention<T>.Order => _order;
+    bool IModelConvention<T>.AppliesTo(T model) => _appliesTo(model);
+    void IModelConvention<T>.Apply(T model) => _apply(model, _domainBuilderContext.Get<TComponent>());
 
-    public bool AppliesTo(T model) => _appliesTo(model);
-    public void Apply(T model) => _apply(model, _configurators.Get<TConfigurer>());
-
-    IModelConvention<T> IModelConvention<T>.Initialize(ModelConfigurators configurators) => Initialize(configurators);
+    void IModelConvention<T>.Initialize(DomainBuilderContext domainBuilderContext) => Initialize(domainBuilderContext);
 }

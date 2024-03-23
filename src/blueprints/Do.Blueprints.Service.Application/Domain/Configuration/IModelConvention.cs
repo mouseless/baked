@@ -9,6 +9,5 @@ public interface IModelConvention<T>
     int Order { get; }
     bool AppliesTo(T model);
     void Apply(T model);
-
-    IModelConvention<T> Initialize(ModelConfigurators configurators);
+    void Initialize(DomainBuilderContext domainBuilderContext);
 }

@@ -10,11 +10,11 @@ public class ModelConventionCollection<T>() : IEnumerable<IModelConvention<T>>
 
     public void Add(IModelConvention<T> convention) => _conventions.Add(convention);
 
-    internal ModelConventionCollection<T> Initialize(ModelConfigurators configurators)
+    internal ModelConventionCollection<T> Initialize(DomainBuilderContext domainBuilderContext)
     {
         foreach (var item in _conventions)
         {
-            item.Initialize(configurators);
+            item.Initialize(domainBuilderContext);
         }
 
         _conventions = [.. _conventions.OrderBy(c => c.Order)];

@@ -102,7 +102,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
             metadata
                 .Method
                     .Add(
-                        add: (model, adder) => adder.Add<PublicServiceAttribute>(model),
+                        add: (method, adder) => adder.Add<PublicServiceAttribute>(method),
                         when: method => !method.IsConstructor && method.Overloads.Any(o => o.IsPublic),
                         order: int.MinValue
                     );

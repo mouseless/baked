@@ -13,10 +13,11 @@ internal class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions, Do
 
     internal void Initialize()
     {
-        var configurators = new ModelConfigurators();
-        configurators.Add<AttributeAdder>(new(this));
+        var domainBuilderContext = new DomainBuilderContext();
+        domainBuilderContext.Add<ITypeModelFactory>(this);
+        domainBuilderContext.Add<AttributeAdder>();
 
-        _processor = new DomainConventionProcessor(configurators).With(_domainConventions);
+        _processor = new DomainConventionProcessor(domainBuilderContext).With(_domainConventions);
         _indexer = new(_domainBuilderOptions.Indexers.Cast<IIndexer>().ToList());
     }
 
@@ -127,9 +128,4 @@ internal class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions, Do
         property.GetMethod?.IsVirtual == true;
 
     TypeModel ITypeModelFactory.Create(Type type) => GetOrCreateTypeModel(type);
-}
-
-public interface ITypeModelFactory
-{
-    TypeModel Create(Type type);
 }
