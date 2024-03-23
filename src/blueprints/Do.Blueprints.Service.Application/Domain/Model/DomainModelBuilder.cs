@@ -126,10 +126,10 @@ internal class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions, Do
     bool IsVirtual(PropertyInfo property) =>
         property.GetMethod?.IsVirtual == true;
 
-    TypeModel ITypeModelFactory.Create(object @object) => GetOrCreateTypeModel(@object.GetType());
+    TypeModel ITypeModelFactory.Create(Type type) => GetOrCreateTypeModel(type);
 }
 
 public interface ITypeModelFactory
 {
-    TypeModel Create(object @object);
+    TypeModel Create(Type type);
 }

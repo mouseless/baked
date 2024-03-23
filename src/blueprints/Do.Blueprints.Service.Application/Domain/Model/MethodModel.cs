@@ -8,6 +8,9 @@ public record MethodModel(
     bool IsConstructor = false
 ) : IModelWithMetadata
 {
+    public List<ParameterModel> GetParameters() =>
+        Overloads.SelectMany(o => o.Parameters).ToList();
+
     public bool HasAttribute<T>() where T : Attribute =>
         CustomAttributes.Contains(TypeModel.IdFrom(typeof(T)));
 

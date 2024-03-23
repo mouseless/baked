@@ -68,6 +68,9 @@ public class TypeModel(Type type, string id,
     public bool HasAttribute<T>() where T : Attribute =>
         CustomAttributes.Contains(IdFrom(typeof(T)));
 
+    public Type MakeGenericType(Type type) =>
+        type.MakeGenericType(_type);
+
     public override bool Equals(object? obj) =>
         ((IEquatable<TypeModel>)this).Equals(obj as TypeModel);
 

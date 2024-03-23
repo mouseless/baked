@@ -5,19 +5,27 @@ namespace Do.Domain.Configuration;
 
 public class AttributeAdder(ITypeModelFactory _factory) : IModelConfigurer
 {
-    internal void Add(IModelWithMetadata model, Attribute attribute)
+    public void Add<T>(IModelWithMetadata model) =>
+        Add(model, typeof(T));
+
+    public void Add(IModelWithMetadata model, Type attributeType)
     {
-        model.CustomAttributes.TryAdd(_factory.Create(attribute));
+        if (!attributeType.IsAssignableTo(typeof(Attribute)))
+        {
+            throw new InvalidOperationException($"{attributeType.Name} is not assignable to 'Attribute'");
+        }
+
+        model.CustomAttributes.TryAdd(_factory.Create(attributeType));
     }
 }
 
-public static class AttributeAdderExtensions
+public static class ModelCollectionAttributeAdderExtensions
 {
-    public static ModelConventionCollection<T> Add<T>(this ModelConventionCollection<T> source, Attribute add, Func<T, bool> when, int order)
+    public static ModelConventionCollection<T> Add<T>(this ModelConventionCollection<T> source, Type add, Func<T, bool> when, int order)
         where T : IModelWithMetadata
     => source.Add((model, adder) => adder.Add(model, add), when, order);
 
-    public static ModelConventionCollection<T> Add<T>(this ModelConventionCollection<T> source, Attribute[] add, Func<T, bool> when, int order)
+    public static ModelConventionCollection<T> Add<T>(this ModelConventionCollection<T> source, Type[] add, Func<T, bool> when, int order)
         where T : IModelWithMetadata
     => source.Add((model, adder) => Array.ForEach(add, a => adder.Add(model, a)), when, order);
 
