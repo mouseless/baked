@@ -3,23 +3,10 @@ using System.Reflection;
 
 namespace Do.Domain.Model;
 
-internal class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions, DomainConventions _domainConventions) : ITypeModelFactory
+internal class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions) : ITypeModelFactory
 {
     readonly KeyedModelCollection<AssemblyModel> _assemblies = [];
     readonly KeyedModelCollection<TypeModel> _types = [];
-
-    DomainConventionProcessor _processor = default!;
-    DomainIndexer _indexer = default!;
-
-    internal void Initialize()
-    {
-        var domainBuilderContext = new DomainBuilderContext();
-        domainBuilderContext.Add<ITypeModelFactory>(this);
-        domainBuilderContext.Add<AttributeAdder>();
-
-        _processor = new DomainConventionProcessor(domainBuilderContext).With(_domainConventions);
-        _indexer = new(_domainBuilderOptions.Indexers.Cast<IIndexer>().ToList());
-    }
 
     internal DomainModel BuildFrom(IDomainAssemblyCollection domainAssemblies, IDomainTypeCollection domainTypes)
     {
@@ -43,13 +30,7 @@ internal class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions, Do
             InitTypeModel(type);
         }
 
-        _processor.Execute(new(_types));
-
-        var domainModel = new DomainModel(new(_assemblies), new(_types));
-
-        _indexer.Execute(domainModel);
-
-        return domainModel;
+        return new(new(_assemblies), new(_types));
     }
 
     TypeModel GetOrCreateTypeModel(Type type)

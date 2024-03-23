@@ -2,30 +2,30 @@
 
 namespace Do.Domain.Configuration;
 
-public class DomainIndexer(List<IIndexer> _indexers)
+internal class DomainIndexer(List<IIndexer> indexers)
 {
-    IndexerCollection Indexers { get; } = new(_indexers);
+    readonly IndexerCollection _indexers = new(indexers);
 
-    public void Execute(DomainModel model)
+    internal void Execute(DomainModel model)
     {
-        Indexers.Apply(model.Types);
+        _indexers.Apply(model.Types);
 
         foreach (var methods in model.Types.Select(t => t.Methods))
         {
-            Indexers.Apply(methods);
+            _indexers.Apply(methods);
 
             foreach (var overloads in methods.Select(m => m.Overloads))
             {
                 foreach (var overload in overloads)
                 {
-                    Indexers.Apply(overload.Parameters);
+                    _indexers.Apply(overload.Parameters);
                 }
             }
         }
 
         foreach (var properties in model.Types.Select(t => t.Properties))
         {
-            Indexers.Apply(properties);
+            _indexers.Apply(properties);
         }
     }
 }

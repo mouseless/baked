@@ -4,7 +4,7 @@ namespace Do.Domain.Configuration;
 
 public class AttributeAdder : IDomainComponent
 {
-    static IDomainComponent IDomainComponent.New(DomainBuilderContext domainBuilderContext) =>
+    static IDomainComponent IDomainComponent.New(BuildDomainContext domainBuilderContext) =>
         new AttributeAdder(domainBuilderContext.Get<ITypeModelFactory>());
 
     readonly ITypeModelFactory _factory = default!;

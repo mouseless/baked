@@ -55,8 +55,3 @@ public class ModelCollection<T> : IEnumerable<T>, IIndexedCollection<T>
     ModelIndex<T> IIndexedCollection<T>.Index => _index;
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }
-
-public interface IIndexedCollection<T> where T : IModel
-{
-    ModelIndex<T> Index { get; }
-}

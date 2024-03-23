@@ -9,7 +9,7 @@ public class ModelConventionCollection<T>() : IEnumerable<IModelConvention<T>>
 
     public void Add(IModelConvention<T> convention) => _conventions.Add(convention);
 
-    internal ModelConventionCollection<T> Initialize(DomainBuilderContext domainBuilderContext)
+    internal ModelConventionCollection<T> Initialize(BuildDomainContext domainBuilderContext)
     {
         foreach (var item in _conventions)
         {

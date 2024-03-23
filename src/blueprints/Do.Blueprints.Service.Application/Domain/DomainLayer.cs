@@ -37,9 +37,18 @@ public class DomainLayer : LayerBase<BuildConfiguration>
     {
         protected override void Initialize(ConfigurationManager _)
         {
-            var builder = new DomainModelBuilder(_domainBuilderOptions, _domainConventions);
-            builder.Initialize();
+            var builder = new DomainModelBuilder(_domainBuilderOptions);
+
+            var buildDomainContext = new BuildDomainContext();
+            buildDomainContext.Add<ITypeModelFactory>(builder);
+            buildDomainContext.Add<AttributeAdder>();
+
+            var configurer = new DomainConfigurer(buildDomainContext, _domainConventions);
+            var indexer = new DomainIndexer(_domainBuilderOptions.Indexers);
+
             var model = builder.BuildFrom(_domainAssemblies, _domainTypes);
+            configurer.Execute(model);
+            indexer.Execute(model);
 
             Context.Add<DomainModel>(model);
         }

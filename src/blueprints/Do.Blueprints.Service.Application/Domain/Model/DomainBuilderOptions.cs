@@ -9,5 +9,5 @@ public class DomainBuilderOptions
     public BindingFlags MethodBindingFlags { get; set; } = BindingFlags.Default;
     public BindingFlags PropertyBindingFlags { get; set; } = BindingFlags.Default;
 
-    public List<IndexerBase> Indexers { get; } = [];
+    public List<IIndexer> Indexers { get; } = [];
 }

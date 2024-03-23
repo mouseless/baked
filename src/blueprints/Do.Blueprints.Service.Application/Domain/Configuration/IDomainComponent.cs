@@ -2,5 +2,5 @@
 
 public interface IDomainComponent
 {
-    abstract static IDomainComponent New(DomainBuilderContext domainBuilderContext);
+    abstract static IDomainComponent New(BuildDomainContext domainBuilderContext);
 }

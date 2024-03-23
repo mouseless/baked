@@ -1,14 +1,14 @@
 ﻿namespace Do.Domain.Configuration;
 
-public class DomainBuilderContext
+public class BuildDomainContext
 {
-    readonly Dictionary<Type, Func<DomainBuilderContext, object>> _factories = [];
+    readonly Dictionary<Type, Func<BuildDomainContext, object>> _factories = [];
     readonly Dictionary<Type, object> _instances = [];
 
-    public void Add<T>(T item) where T : notnull => _factories[typeof(T)] = _ => item;
-    public void Add<T>() where T : IDomainComponent => _factories[typeof(T)] = T.New;
+    internal void Add<T>(T item) where T : notnull => _factories[typeof(T)] = _ => item;
+    internal void Add<T>() where T : IDomainComponent => _factories[typeof(T)] = T.New;
 
-    public T Get<T>() where T : class
+    internal T Get<T>() where T : class
     {
         var type = typeof(T);
 
