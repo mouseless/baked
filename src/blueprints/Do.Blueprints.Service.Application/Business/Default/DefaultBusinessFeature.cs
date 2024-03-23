@@ -70,12 +70,12 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                     .Add(
                         add: typeof(TransientAttribute),
                         when: type => type.HasAttribute<DomainServiceAttribute>() && type.Methods.TryGetValue("With", out var with) && with.CanReturn(type),
-                        order: 10
+                        order: 2
                     )
                     .Add(
                         add: typeof(ScopedAttribute),
                         when: type => type.HasAttribute<DomainServiceAttribute>() && type.IsAssignableTo<IScoped>(),
-                        order: 20
+                        order: 3
                     )
                     .Add(
                         add: typeof(SingletonAttribute),
@@ -84,27 +84,14 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                             !type.HasAttribute<TransientAttribute>() &&
                             !type.HasAttribute<ScopedAttribute>() &&
                             type.Properties.All(p => !p.IsPublic),
-                        order: 30
-                    )
-                    .Add(
-                        add: (query, adder) =>
-                        {
-                            var entity = query.Constructor?.GetParameters().First(p => p.ParameterType.Name.StartsWith("IQueryContext")).ParameterType ??
-                                throw new("Parameter model not found!");
-
-                            adder.Add(query, typeof(QueryAttribute<>).MakeGenericType(entity));
-                            adder.Add(entity, typeof(EntityAttribute<>).MakeGenericType(query));
-                        },
-                        when: type => type.HasAttribute<SingletonAttribute>() && type.Constructor?.HasParameter(p => p.ParameterType.Name.StartsWith("IQueryContext")) == true,
-                        order: 40
+                        order: 4
                     );
 
             metadata
                 .Method
                     .Add(
                         add: (method, adder) => adder.Add<PublicServiceAttribute>(method),
-                        when: method => !method.IsConstructor && method.Overloads.Any(o => o.IsPublic),
-                        order: int.MinValue
+                        when: method => !method.IsConstructor && method.Overloads.Any(o => o.IsPublic)
                     );
         });
 

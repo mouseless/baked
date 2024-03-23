@@ -1,5 +1,4 @@
 ﻿using Do.Architecture;
-using Do.Business.Default;
 using Do.Domain.Configuration;
 using Do.Domain.Model;
 using Do.Orm.Default.UserTypes;
@@ -34,13 +33,20 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
             metadata
                 .Type
                     .Add(
+                        add: (query, adder) =>
+                        {
+                            var entity = query.Constructor?.GetParameters().First(p => p.ParameterType.Name.StartsWith("IQueryContext")).ParameterType ??
+                                throw new("Parameter model not found!");
+
+                            adder.Add(query, typeof(QueryAttribute<>).MakeGenericType(entity));
+                            adder.Add(entity, typeof(EntityAttribute<>).MakeGenericType(query));
+                        },
+                        when: type => type.Constructor is not null && type.Constructor.HasParameter(p => p.ParameterType.Name.StartsWith("IQueryContext"))
+                    )
+                    .Add(
                         add: typeof(MappedAttribute),
-                        when: type =>
-                            type.HasAttribute<TransientAttribute>() &&
-                            type.Constructor != null &&
-                            type.Constructor.HasParameter(p => p.ParameterType.IsAssignableTo(typeof(IEntityContext<>).MakeGenericType(type))),
-                        order: 100
-                );
+                        when: type => type.Constructor != null && type.Constructor.HasParameter(p => p.ParameterType.IsAssignableTo(typeof(IEntityContext<>).MakeGenericType(type)))
+                    );
         });
 
         configurator.ConfigureAutoPersistenceModel(model =>
@@ -48,8 +54,7 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
             var domainModel = configurator.Context.GetDomainModel();
 
             var typeSource = new TypeSource();
-            var mappedTypes = domainModel.Types.WithAttribute<MappedAttribute>();
-            mappedTypes.Apply(t => typeSource.Add(t));
+            domainModel.Types.WithAttribute<MappedAttribute>().Apply(t => typeSource.Add(t));
 
             model.AddTypeSource(typeSource);
 
