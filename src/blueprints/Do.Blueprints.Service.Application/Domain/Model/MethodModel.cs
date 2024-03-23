@@ -11,6 +11,9 @@ public record MethodModel(
     public List<ParameterModel> GetParameters() =>
         Overloads.SelectMany(o => o.Parameters).ToList();
 
+    public bool HasParameter(Func<ParameterModel, bool> constraint) =>
+        GetParameters().All(p => constraint(p));
+
     public bool HasAttribute<T>() where T : Attribute =>
         CustomAttributes.Contains(TypeModel.IdFrom(typeof(T)));
 

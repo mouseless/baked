@@ -68,7 +68,7 @@ public class TypeModel(Type type, string id,
     public bool HasAttribute<T>() where T : Attribute =>
         CustomAttributes.Contains(IdFrom(typeof(T)));
 
-    public Type MakeGenericType(Type type) =>
+    internal Type MakeGenericType(Type type) =>
         type.MakeGenericType(_type);
 
     public override bool Equals(object? obj) =>
@@ -92,4 +92,7 @@ public static class TypeModelExtensions
             type.Apply(i => action(i));
         }
     }
+
+    public static Type MakeGenericType(this Type source, TypeModel model) =>
+        model.MakeGenericType(source);
 }

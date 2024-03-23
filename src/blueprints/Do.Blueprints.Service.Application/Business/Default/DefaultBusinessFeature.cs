@@ -92,10 +92,10 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                             var entity = query.Constructor?.GetParameters().First(p => p.ParameterType.Name.StartsWith("IQueryContext")).ParameterType ??
                                 throw new("Parameter model not found!");
 
-                            adder.Add(query, entity.MakeGenericType(typeof(QueryAttribute<>)));
-                            adder.Add(entity, query.MakeGenericType(typeof(EntityAttribute<>)));
+                            adder.Add(query, typeof(QueryAttribute<>).MakeGenericType(entity));
+                            adder.Add(entity, typeof(EntityAttribute<>).MakeGenericType(query));
                         },
-                        when: type => type.HasAttribute<SingletonAttribute>() && type.Constructor?.GetParameters().Any(p => p.ParameterType.Name.StartsWith("IQueryContext")) == true,
+                        when: type => type.HasAttribute<SingletonAttribute>() && type.Constructor?.HasParameter(p => p.ParameterType.Name.StartsWith("IQueryContext")) == true,
                         order: 40
                     );
 
