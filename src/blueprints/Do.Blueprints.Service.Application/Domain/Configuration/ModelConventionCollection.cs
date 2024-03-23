@@ -5,7 +5,7 @@ namespace Do.Domain.Configuration;
 public class ModelConventionCollection<T>() : IEnumerable<IModelConvention<T>>
     where T : IModelWithMetadata
 {
-    List<IModelConvention<T>> _conventions = [];
+    readonly List<IModelConvention<T>> _conventions = [];
 
     public void Add(IModelConvention<T> convention) => _conventions.Add(convention);
 
@@ -16,7 +16,7 @@ public class ModelConventionCollection<T>() : IEnumerable<IModelConvention<T>>
             item.Initialize(domainBuilderContext);
         }
 
-        _conventions = [.. _conventions.OrderBy(c => c.Order)];
+        _conventions.Sort((l, r) => l.Order - r.Order);
 
         return this;
     }

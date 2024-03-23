@@ -4,5 +4,6 @@ namespace Do.Domain.Configuration;
 
 public interface IIndexer
 {
-    void Execute<T>(ModelIndex<T> index, T model) where T : IModel;
+    bool AppliestTo(IModel model);
+    void Apply<T>(IIndexedCollection<T> index, T model) where T : IModel;
 }

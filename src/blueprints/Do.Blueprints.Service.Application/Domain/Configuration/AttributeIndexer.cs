@@ -8,6 +8,6 @@ public class AttributeIndexer<T>() : IndexerBase
     protected override string IndexId =>
         TypeModel.IdFrom(typeof(T));
 
-    protected override bool CanIndex(IModel model) =>
+    protected override bool AppliesTo(IModel model) =>
         model is IModelWithMetadata m && m.CustomAttributes.Contains(IndexId);
 }

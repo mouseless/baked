@@ -5,20 +5,18 @@ namespace Do.Domain.Configuration;
 public abstract class IndexerBase : IIndexer
 {
     protected abstract string IndexId { get; }
-    protected abstract bool CanIndex(IModel model);
+    protected abstract bool AppliesTo(IModel model);
 
-    internal void Execute<T>(ModelIndex<T> index, T model) where T : IModel
+    void Apply<T>(ModelIndex<T> index, T model) where T : IModel
     {
-        if (CanIndex(model))
+        if (!index.ContainsKey(IndexId))
         {
-            if (!index.ContainsKey(IndexId))
-            {
-                index[IndexId] = [];
-            }
-
-            index[IndexId].TryAdd(model);
+            index[IndexId] = [];
         }
+
+        index[IndexId].TryAdd(model);
     }
 
-    void IIndexer.Execute<T>(ModelIndex<T> index, T model) => Execute(index, model);
+    bool IIndexer.AppliestTo(IModel model) => AppliesTo(model);
+    void IIndexer.Apply<T>(IIndexedCollection<T> collection, T model) => Apply(collection.Index, model);
 }

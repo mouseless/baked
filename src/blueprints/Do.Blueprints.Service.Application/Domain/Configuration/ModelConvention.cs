@@ -5,14 +5,11 @@ namespace Do.Domain.Configuration;
 public class ModelConvention<T>(int _order, Func<T, bool> _appliesTo, Action<T> _apply) : IModelConvention<T>
     where T : IModel
 {
-    void IModelConvention<T>.Initialize(DomainBuilderContext _) { }
-
     int IModelConvention<T>.Order => _order;
+    bool IModelConvention<T>.AppliesTo(T model) => _appliesTo(model);
+    void IModelConvention<T>.Apply(T model) => _apply(model);
 
-    bool IModelConvention<T>.AppliesTo(T model) =>
-        _appliesTo(model);
-    void IModelConvention<T>.Apply(T model) =>
-        _apply(model);
+    void IModelConvention<T>.Initialize(DomainBuilderContext _) { }
 }
 
 public class ModelConvention<T, TComponent>(int _order, Func<T, bool> _appliesTo, Action<T, TComponent> _apply) : IModelConvention<T>

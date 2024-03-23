@@ -8,7 +8,13 @@ internal class IndexerCollection(List<IIndexer> _indexers)
     {
         foreach (var indexer in _indexers)
         {
-            collection.CreateIndex(indexer);
+            foreach (var model in collection)
+            {
+                if (indexer.AppliestTo(model))
+                {
+                    indexer.Apply(collection, model);
+                }
+            }
         }
     }
 }
