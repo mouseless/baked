@@ -33,11 +33,11 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
 
         configurator.ConfigureDomainIndexers(indexers =>
         {
-            indexers.Add(new AttributeIndexer<TransientAttribute>());
-            indexers.Add(new AttributeIndexer<ScopedAttribute>());
-            indexers.Add(new AttributeIndexer<SingletonAttribute>());
-            indexers.Add(new AttributeIndexer<PublicServiceAttribute>());
-            indexers.Add(new AttributeIndexer<DomainServiceAttribute>());
+            indexers.Add(AttributeIndexer.For<TransientAttribute>());
+            indexers.Add(AttributeIndexer.For<ScopedAttribute>());
+            indexers.Add(AttributeIndexer.For<SingletonAttribute>());
+            indexers.Add(AttributeIndexer.For<PublicServiceAttribute>());
+            indexers.Add(AttributeIndexer.For<DomainServiceAttribute>());
         });
 
         configurator.ConfigureDomainMetaData(metadata =>

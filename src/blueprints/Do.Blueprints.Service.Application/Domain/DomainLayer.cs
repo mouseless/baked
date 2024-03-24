@@ -45,7 +45,7 @@ public class DomainLayer : LayerBase<BuildConfiguration>
             buildDomainContext.Add<ITypeModelFactory>(builder);
             buildDomainContext.Add<AttributeAdder>();
 
-            var configurer = new DomainConfigurer(buildDomainContext, _domainConventions);
+            var configurer = new DomainConfigurer(_domainConventions.Initialize(buildDomainContext));
             var indexer = new DomainIndexer(_domainIndexers);
 
             var model = builder.BuildFrom(_domainAssemblies, _domainTypes);

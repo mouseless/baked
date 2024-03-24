@@ -25,7 +25,7 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
 
         configurator.ConfigureDomainIndexers(indexers =>
         {
-            indexers.Add(new AttributeIndexer<MappedAttribute>());
+            indexers.Add(AttributeIndexer.For<MappedAttribute>());
         });
 
         configurator.ConfigureDomainMetaData(metadata =>

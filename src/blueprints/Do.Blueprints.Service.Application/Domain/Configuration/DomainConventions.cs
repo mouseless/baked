@@ -8,4 +8,14 @@ public class DomainConventions
     public ModelConventionCollection<MethodModel> Method { get; } = [];
     public ModelConventionCollection<ParameterModel> Parameter { get; } = [];
     public ModelConventionCollection<PropertyModel> Property { get; } = [];
+
+    internal DomainConventions Initialize(BuildDomainContext buildDomainContext)
+    {
+        Type.Initialize(buildDomainContext);
+        Method.Initialize(buildDomainContext);
+        Parameter.Initialize(buildDomainContext);
+        Property.Initialize(buildDomainContext);
+
+        return this;
+    }
 }

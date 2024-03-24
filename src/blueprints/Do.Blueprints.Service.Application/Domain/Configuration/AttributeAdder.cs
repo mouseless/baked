@@ -43,11 +43,11 @@ public static class AttributeAdderExtensions
     => source.Add((model, adder) => Array.ForEach(add, a => adder.Add(model, a)), when, order);
 
     public static ModelConventionCollection<T> Add<T>(this ModelConventionCollection<T> source, Action<T, AttributeAdder> add, Func<T, bool> when,
-        int? order = 100
+        int? order = default
     )
         where T : IModelWithMetadata
     {
-        source.Add(new ModelConvention<T, AttributeAdder>(_apply: add, _appliesTo: when, _order: order.GetValueOrDefault()));
+        source.Add(new ModelConvention<T, AttributeAdder>(_apply: add, _appliesTo: when, _order: order ?? 100));
 
         return source;
     }
