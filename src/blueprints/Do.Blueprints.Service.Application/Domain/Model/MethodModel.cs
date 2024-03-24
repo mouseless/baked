@@ -2,6 +2,7 @@
 namespace Do.Domain.Model;
 
 public record MethodModel(
+    TypeModel Target,
     string Name,
     OverloadModel[] Overloads,
     ModelCollection<TypeModel> CustomAttributes,
