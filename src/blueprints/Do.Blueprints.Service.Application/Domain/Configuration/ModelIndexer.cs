@@ -2,28 +2,31 @@
 
 namespace Do.Domain.Configuration;
 
-internal class DomainConfigurer(DomainConventions _conventions)
+internal class ModelIndexer(ModelIndexerProcessor _indexers) : IDomainService
 {
+    static IDomainService IDomainService.New(DomainServiceProvider sp) =>
+        new ModelIndexer(sp.Get<ModelIndexerProcessor>());
+
     internal void Execute(DomainModel model)
     {
-        _conventions.Type.Apply(model.Types);
+        _indexers.Apply(model.Types);
 
         foreach (var methods in model.Types.Select(t => t.Methods))
         {
-            _conventions.Method.Apply(methods);
+            _indexers.Apply(methods);
 
             foreach (var overloads in methods.Select(m => m.Overloads))
             {
                 foreach (var overload in overloads)
                 {
-                    _conventions.Parameter.Apply(overload.Parameters);
+                    _indexers.Apply(overload.Parameters);
                 }
             }
         }
 
         foreach (var properties in model.Types.Select(t => t.Properties))
         {
-            _conventions.Property.Apply(properties);
+            _indexers.Apply(properties);
         }
     }
 }

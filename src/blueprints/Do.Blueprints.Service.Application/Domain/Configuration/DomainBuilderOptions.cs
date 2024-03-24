@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Do.Domain.Model;
+namespace Do.Domain.Configuration;
 
 public class DomainBuilderOptions
 {

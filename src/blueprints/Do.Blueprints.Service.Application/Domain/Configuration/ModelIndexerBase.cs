@@ -2,7 +2,7 @@
 
 namespace Do.Domain.Configuration;
 
-public abstract class IndexerBase : IIndexer
+public abstract class ModelIndexerBase : IModelIndexer
 {
     protected abstract string IndexId { get; }
     protected abstract bool AppliesTo(IModel model);
@@ -17,6 +17,6 @@ public abstract class IndexerBase : IIndexer
         index[IndexId].TryAdd(model);
     }
 
-    bool IIndexer.AppliestTo(IModel model) => AppliesTo(model);
-    void IIndexer.Apply<T>(IIndexedCollection<T> collection, T model) => Apply(collection.Index, model);
+    bool IModelIndexer.AppliestTo(IModel model) => AppliesTo(model);
+    void IModelIndexer.Apply<T>(IIndexedCollection<T> collection, T model) => Apply(collection.Index, model);
 }

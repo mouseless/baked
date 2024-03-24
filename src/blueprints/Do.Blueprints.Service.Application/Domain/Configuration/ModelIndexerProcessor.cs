@@ -2,12 +2,10 @@
 
 namespace Do.Domain.Configuration;
 
-public class DomainIndexerCollection()
+public class ModelIndexerProcessor(ModelIndexerCollection _indexers) : IDomainService
 {
-    readonly List<IIndexer> _indexers = [];
-
-    public void Add(IIndexer indexer) =>
-        _indexers.Add(indexer);
+    static IDomainService IDomainService.New(DomainServiceProvider sp) =>
+        new ModelIndexerProcessor(sp.Get<ModelIndexerCollection>());
 
     internal void Apply<T>(ModelCollection<T> collection) where T : IModelWithMetadata
     {
@@ -23,3 +21,4 @@ public class DomainIndexerCollection()
         }
     }
 }
+

@@ -2,11 +2,10 @@
 
 namespace Do.Domain.Configuration;
 
-public interface IModelConvention<T>
-    where T : IModel
+public interface IModelConvention
 {
     int Order { get; }
-    bool AppliesTo(T model);
-    void Apply(T model);
-    void Initialize(BuildDomainContext domainBuilderContext);
+    bool AppliesTo(IModel model);
+    void Apply(IModel model);
+    void Initialize(DomainServiceProvider sp);
 }

@@ -2,7 +2,7 @@
 
 namespace Do.Domain.Configuration;
 
-public interface IIndexer
+public interface IModelIndexer
 {
     bool AppliestTo(IModel model);
     void Apply<T>(IIndexedCollection<T> index, T model) where T : IModel;

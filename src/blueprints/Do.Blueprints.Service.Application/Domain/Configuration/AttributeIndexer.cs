@@ -2,7 +2,7 @@
 
 namespace Do.Domain.Configuration;
 
-public class AttributeIndexer : IndexerBase
+public class AttributeIndexer : ModelIndexerBase
 {
     public static AttributeIndexer For<T>() where T : Attribute
         => new(typeof(T));

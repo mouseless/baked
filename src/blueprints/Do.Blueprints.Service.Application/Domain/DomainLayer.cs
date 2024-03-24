@@ -2,7 +2,6 @@
 using Do.Domain.Configuration;
 using Do.Domain.Model;
 using Microsoft.Extensions.Configuration;
-
 using static Do.Configuration.ConfigurationLayer;
 
 namespace Do.Domain;
@@ -13,7 +12,7 @@ public class DomainLayer : LayerBase<BuildConfiguration>
     readonly IDomainTypeCollection _domainTypes = new DomainTypeCollection();
     readonly DomainBuilderOptions _domainBuilderOptions = new();
     readonly DomainConventions _domainConventions = new();
-    readonly DomainIndexerCollection _domainIndexers = new();
+    readonly ModelIndexerCollection _domainIndexers = [];
 
     protected override PhaseContext GetContext(BuildConfiguration phase) =>
         phase.CreateContextBuilder()
@@ -21,7 +20,7 @@ public class DomainLayer : LayerBase<BuildConfiguration>
             .Add<IDomainTypeCollection>(_domainTypes)
             .Add<DomainBuilderOptions>(_domainBuilderOptions)
             .Add<DomainConventions>(_domainConventions)
-            .Add<DomainIndexerCollection>(_domainIndexers)
+            .Add<ModelIndexerCollection>(_domainIndexers)
             .Build();
 
     protected override IEnumerable<IPhase> GetPhases()
@@ -34,23 +33,19 @@ public class DomainLayer : LayerBase<BuildConfiguration>
         IDomainTypeCollection _domainTypes,
         DomainBuilderOptions _domainBuilderOptions,
         DomainConventions _domainConventions,
-        DomainIndexerCollection _domainIndexers
+        ModelIndexerCollection _domainIndexers
     ) : PhaseBase<ConfigurationManager>(PhaseOrder.Early)
     {
         protected override void Initialize(ConfigurationManager _)
         {
-            var builder = new DomainModelBuilder(_domainBuilderOptions);
+            var configurer = new DomainServiceCollection()
+                .AddOptions(_domainBuilderOptions)
+                .AddConventions(_domainConventions)
+                .AddIndexers(_domainIndexers);
 
-            var buildDomainContext = new BuildDomainContext();
-            buildDomainContext.Add<ITypeModelFactory>(builder);
-            buildDomainContext.Add<AttributeAdder>();
-
-            var configurer = new DomainConfigurer(_domainConventions.Initialize(buildDomainContext));
-            var indexer = new DomainIndexer(_domainIndexers);
+            var builder = configurer.Build();
 
             var model = builder.BuildFrom(_domainAssemblies, _domainTypes);
-            configurer.Execute(model);
-            indexer.Execute(model);
 
             Context.Add<DomainModel>(model);
         }
