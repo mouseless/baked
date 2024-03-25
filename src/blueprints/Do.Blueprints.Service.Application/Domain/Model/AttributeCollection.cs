@@ -1,7 +1,10 @@
-﻿namespace Do.Domain.Model;
+﻿
+namespace Do.Domain.Model;
 
-public class AttributeCollection() : Dictionary<Type, List<Attribute>>
+public class AttributeCollection() : IEnumerable<KeyValuePair<Type, List<Attribute>>>
 {
+    readonly Dictionary<Type, List<Attribute>> _attributes = [];
+
     internal AttributeCollection(IEnumerable<Attribute> attributes)
         : this()
     {
@@ -14,12 +17,21 @@ public class AttributeCollection() : Dictionary<Type, List<Attribute>>
     internal void Add(Attribute attribute)
     {
         var type = attribute.GetType();
-        if (!ContainsKey(type))
+        if (!_attributes.ContainsKey(type))
         {
-            this[type] = [];
+            _attributes[type] = [];
         }
 
-        this[type].Add(attribute);
+        _attributes[type].Add(attribute);
     }
+
+    public bool ContainsKey(Type type) =>
+        _attributes.ContainsKey(type);
+
+    public IEnumerator<KeyValuePair<Type, List<Attribute>>> GetEnumerator() =>
+        ((IEnumerable<KeyValuePair<Type, List<Attribute>>>)_attributes).GetEnumerator();
+
+    IEnumerator IEnumerable.GetEnumerator() =>
+        ((IEnumerable)_attributes).GetEnumerator();
 }
 
