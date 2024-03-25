@@ -16,5 +16,5 @@ public class AttributeIndexer : ModelIndexerBase
         TypeModel.IdFrom(_type);
 
     protected override bool AppliesTo(IModel model) =>
-        model is IModelWithMetadata m && m.CustomAttributes.Contains(IndexId);
+        model.CustomAttributes.ContainsKey(_type);
 }

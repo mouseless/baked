@@ -45,12 +45,12 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
             metadata
                 .Type
                     .Add(
-                        add: typeof(DataClassAttribute),
+                        add: new DataClassAttribute(),
                         when: type => type.Methods.Contains("<Clone>$"), // if type is record
                         order: int.MinValue
                     )
                     .Add(
-                        add: typeof(DomainServiceAttribute),
+                        add: new DomainServiceAttribute(),
                         when: type =>
                             !(
                                 !type.IsBusinessType ||
@@ -71,17 +71,17 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                         order: 1
                     )
                     .Add(
-                        add: typeof(TransientAttribute),
+                        add: new TransientAttribute(),
                         when: type => type.HasAttribute<DomainServiceAttribute>() && type.Methods.TryGetValue("With", out var with) && with.CanReturn(type),
                         order: 2
                     )
                     .Add(
-                        add: typeof(ScopedAttribute),
+                        add: new ScopedAttribute(),
                         when: type => type.HasAttribute<DomainServiceAttribute>() && type.IsAssignableTo<IScoped>(),
                         order: 3
                     )
                     .Add(
-                        add: typeof(SingletonAttribute),
+                        add: new SingletonAttribute(),
                         when: type =>
                             type.HasAttribute<DomainServiceAttribute>() &&
                             !type.HasAttribute<TransientAttribute>() &&
@@ -93,7 +93,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
             metadata
                 .Method
                     .Add(
-                        add: (method, adder) => adder.Add<PublicServiceAttribute>(method),
+                        add: (method, adder) => adder.Add(method, new PublicServiceAttribute()),
                         when: method => method.Type.HasAttribute<SingletonAttribute>() && method.Overloads.Any(o => o.IsPublic)
                     );
         });

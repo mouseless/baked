@@ -5,25 +5,10 @@ namespace Do.Domain.Configuration;
 public class AttributeAdder : IDomainService
 {
     static IDomainService IDomainService.New(DomainServiceProvider sp) =>
-        new AttributeAdder(sp.Get<ITypeModelFactory>());
+        new AttributeAdder();
 
-    readonly ITypeModelFactory _factory = default!;
-
-    AttributeAdder(ITypeModelFactory factory)
+    public void Add(IModel model, Attribute attribute)
     {
-        _factory = factory;
-    }
-
-    public void Add<T>(IModelWithMetadata model) =>
-        Add(model, typeof(T));
-
-    public void Add(IModelWithMetadata model, Type attributeType)
-    {
-        if (!attributeType.IsAssignableTo(typeof(Attribute)))
-        {
-            throw new InvalidOperationException($"{attributeType.Name} is not assignable to 'Attribute'");
-        }
-
-        model.CustomAttributes.TryAdd(_factory.Create(attributeType));
+        model.CustomAttributes.Add(attribute);
     }
 }

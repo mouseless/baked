@@ -6,11 +6,11 @@ public record ParameterModel(
     TypeModel ParameterType,
     bool IsOptional,
     object? DefaultValue,
-    ModelCollection<TypeModel> CustomAttributes
-) : IModelWithMetadata
+    AttributeCollection CustomAttributes
+) : IModel
 {
     public bool HasAttribute<T>() where T : Attribute =>
-     CustomAttributes.Contains(TypeModel.IdFrom(typeof(T)));
+     CustomAttributes.ContainsKey(typeof(T));
 
     string IModel.Id { get; } = Name;
 }

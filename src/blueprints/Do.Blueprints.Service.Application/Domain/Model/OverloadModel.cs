@@ -9,9 +9,9 @@ public record OverloadModel(
 )
 {
     public ModelCollection<ParameterModel> Parameters { get; private set; } = default!;
-    public ModelCollection<TypeModel> CustomAttributes { get; private set; } = default!;
+    public AttributeCollection CustomAttributes { get; private set; } = default!;
 
-    internal void Init(ModelCollection<TypeModel> customAttributes, ModelCollection<ParameterModel> parameters)
+    internal void Init(AttributeCollection customAttributes, ModelCollection<ParameterModel> parameters)
     {
         CustomAttributes = customAttributes;
         Parameters = parameters;

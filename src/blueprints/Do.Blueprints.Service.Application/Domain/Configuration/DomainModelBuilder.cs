@@ -112,8 +112,8 @@ internal class DomainModelBuilder : IDomainService, ITypeModelFactory
         return new(methods.Values);
     }
 
-    ModelCollection<TypeModel> BuildCustomAttributes(MemberInfo member) =>
-        new(member.CustomAttributes.Select(attr => GetOrCreateTypeModel(attr.AttributeType)));
+    AttributeCollection BuildCustomAttributes(MemberInfo member) =>
+        new(member.GetCustomAttributes());
 
     ModelCollection<TypeModel> BuildGenericTypeArguments(Type type) =>
         new(type.GenericTypeArguments.Select(GetOrCreateTypeModel));

@@ -21,20 +21,20 @@ public static class DomainExtensions
 
     public static void AddAttributeIndexer<T>(this ModelIndexerCollection source) where T : Attribute => source.Add(AttributeIndexer.For<T>());
 
-    public static ModelConventionCollection<T> Add<T>(this ModelConventionCollection<T> source, Type add, Func<T, bool> when,
+    public static ModelConventionCollection<T> Add<T>(this ModelConventionCollection<T> source, Attribute add, Func<T, bool> when,
         int? order = default
     )
-        where T : IModelWithMetadata
+        where T : IModel
     => source.Add((model, adder) => adder.Add(model, add), when, order);
 
-    public static ModelConventionCollection<T> Add<T, TAttribute>(this ModelConventionCollection<T> source, Type[] add, Func<T, bool> when,
+    public static ModelConventionCollection<T> Add<T, TAttribute>(this ModelConventionCollection<T> source, Attribute[] add, Func<T, bool> when,
         int? order = default
-    ) where T : IModelWithMetadata
+    ) where T : IModel
     => source.Add((model, adder) => Array.ForEach(add, a => adder.Add(model, a)), when, order);
 
     public static ModelConventionCollection<T> Add<T>(this ModelConventionCollection<T> source, Action<T, AttributeAdder> add, Func<T, bool> when,
         int? order = default
-    ) where T : IModelWithMetadata
+    ) where T : IModel
     {
         source.Add(new ModelConvention<T, AttributeAdder>(_apply: add, _appliesTo: when, _order: order ?? 100));
 

@@ -7,7 +7,7 @@ public class ModelIndexerProcessor(ModelIndexerCollection _indexers) : IDomainSe
     static IDomainService IDomainService.New(DomainServiceProvider sp) =>
         new ModelIndexerProcessor(sp.Get<ModelIndexerCollection>());
 
-    internal void Apply<T>(ModelCollection<T> collection) where T : IModelWithMetadata
+    internal void Apply<T>(ModelCollection<T> collection) where T : IModel
     {
         foreach (var indexer in _indexers)
         {

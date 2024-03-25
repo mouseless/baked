@@ -5,12 +5,12 @@ public record MethodModel(
     TypeModel Type,
     string Name,
     bool IsConstructor = false
-) : IModelWithMetadata
+) : IModel
 {
     public OverloadModel[] Overloads { get; private set; } = default!;
-    public ModelCollection<TypeModel> CustomAttributes { get; private set; } = default!;
+    public AttributeCollection CustomAttributes { get; private set; } = default!;
 
-    internal void Init(OverloadModel[] overloads, ModelCollection<TypeModel> customAttributes)
+    internal void Init(OverloadModel[] overloads, AttributeCollection customAttributes)
     {
         Overloads = overloads;
         CustomAttributes = customAttributes;
@@ -23,7 +23,7 @@ public record MethodModel(
         GetParameters().Any(p => constraint(p));
 
     public bool HasAttribute<T>() where T : Attribute =>
-        CustomAttributes.Contains(TypeModel.IdFrom(typeof(T)));
+        CustomAttributes.ContainsKey(typeof(T));
 
     public bool CanReturn(TypeModel type) =>
         Overloads.Any(o =>

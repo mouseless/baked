@@ -3,7 +3,7 @@
 namespace Do.Domain.Configuration;
 
 internal class ModelConventionProcessor<T>(DomainServiceProvider _sp, ModelConventionCollection<T> _conventions) : IDomainService
-    where T : IModelWithMetadata
+    where T : IModel
 {
     static IDomainService IDomainService.New(DomainServiceProvider sp) =>
         new ModelConventionProcessor<T>(sp, sp.Get<ModelConventionCollection<T>>());

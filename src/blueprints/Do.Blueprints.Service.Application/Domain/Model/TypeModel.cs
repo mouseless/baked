@@ -1,11 +1,9 @@
-﻿using Newtonsoft.Json.Linq;
-
-namespace Do.Domain.Model;
+﻿namespace Do.Domain.Model;
 
 public class TypeModel(Type type, string id,
     AssemblyModel? assembly = default,
     bool isBusinessType = false
-) : IModelWithMetadata, IEquatable<TypeModel>
+) : IModel, IEquatable<TypeModel>
 {
     internal static string IdFrom(Type type) =>
         type.FullName ?? $"{type.Namespace}.{type.Name}<{string.Join(',', type.GenericTypeArguments.Select(IdFrom))}>";
@@ -34,7 +32,7 @@ public class TypeModel(Type type, string id,
     public ModelCollection<MethodModel> Methods { get; private set; } = default!;
     public ModelCollection<PropertyModel> Properties { get; private set; } = default!;
     public ModelCollection<TypeModel> GenericTypeArguments { get; private set; } = default!;
-    public ModelCollection<TypeModel> CustomAttributes { get; private set; } = default!;
+    public AttributeCollection CustomAttributes { get; private set; } = default!;
     public ModelCollection<TypeModel> Interfaces { get; private set; } = default!;
     public MethodModel? Constructor { get; private set; }
 
@@ -42,7 +40,7 @@ public class TypeModel(Type type, string id,
         MethodModel? constructor = default,
         ModelCollection<MethodModel>? methods = default,
         ModelCollection<PropertyModel>? properties = default,
-        ModelCollection<TypeModel>? customAttributes = default,
+        AttributeCollection? customAttributes = default,
         ModelCollection<TypeModel>? interfaces = default,
         TypeModel? baseType = default
     )
@@ -59,6 +57,9 @@ public class TypeModel(Type type, string id,
     public void Apply(Action<Type> action) =>
         action(_type);
 
+    public T Create<T>(Func<Type, T> create) =>
+        create(_type);
+
     public bool IsAssignableTo<T>() =>
         IsAssignableTo(typeof(T));
 
@@ -69,7 +70,7 @@ public class TypeModel(Type type, string id,
         _type == type || BaseType?.Is(type) == true;
 
     public bool HasAttribute<T>() where T : Attribute =>
-        CustomAttributes.Contains(IdFrom(typeof(T)));
+        CustomAttributes.ContainsKey(typeof(T));
 
     internal Type MakeGenericType(Type type) =>
         type.MakeGenericType(_type);
