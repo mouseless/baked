@@ -13,8 +13,6 @@ public class AssemblyModel(Assembly _assembly)
 
     public void Apply(Action<Assembly> action) => action(_assembly);
 
-    public bool HasAttribute<T>() where T : Attribute
-    {
-        throw new NotImplementedException();
-    }
+    public bool HasAttribute<T>() where T : Attribute =>
+        CustomAttributes.ContainsKey(typeof(T));
 }
