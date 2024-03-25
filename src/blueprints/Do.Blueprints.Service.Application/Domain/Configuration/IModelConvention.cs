@@ -7,5 +7,4 @@ public interface IModelConvention
     int Order { get; }
     bool AppliesTo(IModel model);
     void Apply(IModel model);
-    void Initialize(DomainServiceProvider sp);
 }

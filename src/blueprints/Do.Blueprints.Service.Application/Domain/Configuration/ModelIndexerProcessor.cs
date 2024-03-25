@@ -2,12 +2,10 @@
 
 namespace Do.Domain.Configuration;
 
-public class ModelIndexerProcessor(DomainIndexerCollection _indexers) : IDomainService
+public class ModelIndexerProcessor<T>(DomainIndexerCollection _indexers) : IModelCollectionConfigurer<T>
+     where T : IModel
 {
-    static IDomainService IDomainService.New(DomainServiceProvider sp) =>
-        new ModelIndexerProcessor(sp.Get<DomainIndexerCollection>());
-
-    internal void Apply<T>(ModelCollection<T> collection) where T : IModel
+    void Apply(ModelCollection<T> collection)
     {
         foreach (var indexer in _indexers)
         {
@@ -20,5 +18,7 @@ public class ModelIndexerProcessor(DomainIndexerCollection _indexers) : IDomainS
             }
         }
     }
+
+    void IModelCollectionConfigurer<T>.Apply(ModelCollection<T> collection) => Apply(collection);
 }
 

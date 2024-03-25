@@ -2,10 +2,10 @@
 
 namespace Do.Domain.Configuration;
 
-public class AttributeAdder : IDomainService
+public class AttributeAdder : IConventionComponent<AttributeAdder>
 {
-    static IDomainService IDomainService.New(DomainServiceProvider sp) =>
-        new AttributeAdder();
+    static AttributeAdder IConventionComponent<AttributeAdder>.New() =>
+        new();
 
     public void Add(IModel model, Attribute attribute)
     {

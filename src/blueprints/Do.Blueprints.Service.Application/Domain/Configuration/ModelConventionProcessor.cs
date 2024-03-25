@@ -2,25 +2,10 @@
 
 namespace Do.Domain.Configuration;
 
-internal class ModelConventionProcessor<T>(DomainServiceProvider _sp, ModelConventionCollection<T> _conventions) : IDomainService
+internal class ModelConventionProcessor<T>(ModelConventionCollection<T> _conventions) : IModelCollectionConfigurer<T>
     where T : IModel
 {
-    static IDomainService IDomainService.New(DomainServiceProvider sp) =>
-        new ModelConventionProcessor<T>(sp, sp.Get<ModelConventionCollection<T>>());
-
-    internal ModelConventionProcessor<T> Initialize()
-    {
-        foreach (var item in _conventions)
-        {
-            item.Initialize(_sp);
-        }
-
-        _conventions.Sort((l, r) => l.Order - r.Order);
-
-        return this;
-    }
-
-    internal void Apply(ModelCollection<T> collection)
+    void Apply(ModelCollection<T> collection)
     {
         foreach (var convention in _conventions)
         {
@@ -33,4 +18,6 @@ internal class ModelConventionProcessor<T>(DomainServiceProvider _sp, ModelConve
             }
         }
     }
+
+    void IModelCollectionConfigurer<T>.Apply(ModelCollection<T> collection) => Apply(collection);
 }

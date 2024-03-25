@@ -2,7 +2,7 @@
 
 namespace Do.Domain.Configuration;
 
-public class DomainConventions
+public class DomainConventionCollection
 {
     public ModelConventionCollection<TypeModel> Type { get; } = [];
     public ModelConventionCollection<MethodModel> Method { get; } = [];

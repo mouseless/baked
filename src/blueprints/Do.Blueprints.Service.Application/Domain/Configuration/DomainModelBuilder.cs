@@ -3,23 +3,10 @@ using System.Reflection;
 
 namespace Do.Domain.Configuration;
 
-internal class DomainModelBuilder : IDomainService, ITypeModelFactory
+internal class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
 {
-    static IDomainService IDomainService.New(DomainServiceProvider sp) =>
-        new DomainModelBuilder(sp.Get<DomainBuilderOptions>(), sp.Get<ModelConfigurer>(), sp.Get<ModelIndexer>());
-
-    readonly DomainBuilderOptions _domainBuilderOptions;
-    readonly ModelConfigurer _configurer;
-    readonly ModelIndexer _indexer;
     readonly KeyedModelCollection<AssemblyModel> _assemblies = [];
     readonly KeyedModelCollection<TypeModel> _types = [];
-
-    DomainModelBuilder(DomainBuilderOptions domainBuilderOptions, ModelConfigurer configurer, ModelIndexer indexer)
-    {
-        _domainBuilderOptions = domainBuilderOptions;
-        _configurer = configurer;
-        _indexer = indexer;
-    }
 
     internal DomainModel BuildFrom(IDomainAssemblyCollection domainAssemblies, IDomainTypeCollection domainTypes)
     {
@@ -43,12 +30,7 @@ internal class DomainModelBuilder : IDomainService, ITypeModelFactory
             InitTypeModel(type);
         }
 
-        var model = new DomainModel(new(_assemblies), new(_types));
-
-        _configurer.Execute(model);
-        _indexer.Execute(model);
-
-        return model;
+        return new(new(_assemblies), new(_types));
     }
 
     TypeModel GetOrCreateTypeModel(Type type)
@@ -160,6 +142,4 @@ internal class DomainModelBuilder : IDomainService, ITypeModelFactory
 
     bool IsVirtual(PropertyInfo property) =>
         property.GetMethod?.IsVirtual == true;
-
-    TypeModel ITypeModelFactory.Create(Type type) => GetOrCreateTypeModel(type);
 }
