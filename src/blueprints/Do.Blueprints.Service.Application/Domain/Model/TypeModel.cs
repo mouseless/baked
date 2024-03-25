@@ -25,29 +25,40 @@ public class TypeModel(Type type, string id,
     public bool IsGenericMethodParameter { get; } = type.IsGenericMethodParameter;
     public bool ContainsGenericParameters { get; } = type.ContainsGenericParameters;
     public AssemblyModel? Assembly { get; } = assembly;
-    public TypeModel? BaseType { get; private set; } = default!;
+
     public ModelCollection<MethodModel> Methods { get; private set; } = default!;
     public ModelCollection<PropertyModel> Properties { get; private set; } = default!;
-    public ModelCollection<TypeModel> GenericTypeArguments { get; private set; } = default!;
     public ModelCollection<TypeModel> CustomAttributes { get; private set; } = default!;
     public ModelCollection<TypeModel> Interfaces { get; private set; } = default!;
+    public TypeModel? BaseType { get; private set; } = default!;
+    public TypeModel? GenericTypeDefinition { get; private set; } = default!;
+    public ModelCollection<TypeModel> GenericTypeArguments { get; private set; } = default!;
+
+    public string CSharpFriendlyFullName { get; private set; } = default!;
 
     public MethodModel? Constructor => Methods.TryGetValue(".ctor", out var ctor) ? ctor : default;
 
-    internal void Init(ModelCollection<TypeModel> genericTypeArguments,
+    internal void Init(
         ModelCollection<MethodModel>? methods = default,
         ModelCollection<PropertyModel>? properties = default,
         ModelCollection<TypeModel>? customAttributes = default,
         ModelCollection<TypeModel>? interfaces = default,
-        TypeModel? baseType = default
+        TypeModel? baseType = default,
+        TypeModel? genericTypeDefinition = default,
+        ModelCollection<TypeModel>? genericTypeArguments = default
     )
     {
-        GenericTypeArguments = genericTypeArguments;
         Methods = methods ?? [];
         Properties = properties ?? [];
         CustomAttributes = customAttributes ?? [];
         Interfaces = interfaces ?? [];
         BaseType = baseType;
+        GenericTypeDefinition = genericTypeDefinition;
+        GenericTypeArguments = genericTypeArguments ?? [];
+
+        CSharpFriendlyFullName = IsGenericType
+            ? $"{Namespace}.{Name[..Name.IndexOf("`")]}<{string.Join(", ", GenericTypeArguments.Select(t => t.CSharpFriendlyFullName))}>"
+            : FullName ?? Name;
     }
 
     public void Apply(Action<Type> action) =>
@@ -60,7 +71,7 @@ public class TypeModel(Type type, string id,
         Is(type) || Interfaces.Contains(IdFrom(type));
 
     bool Is(Type type) =>
-        _type == type || BaseType?.Is(type) == true;
+        _type == type || BaseType?.IsAssignableTo(type) == true;
 
     public override bool Equals(object? obj) =>
         ((IEquatable<TypeModel>)this).Equals(obj as TypeModel);

@@ -35,4 +35,17 @@ public class ExposingPublicMethods : TestServiceNfr
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }
+
+    [Test]
+    public async Task ListParameters()
+    {
+        var response = await Client.PostAsync("/generated/Methods/ListParameters", JsonContent.Create(
+            new
+            {
+                @stringList = new[] { "a", "b" }
+            }
+        ));
+
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+    }
 }

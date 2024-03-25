@@ -38,4 +38,9 @@ public static class DefaultBusinessExtensions
 
     internal static bool IsPrimitive(this TypeModel type) =>
         type.IsValueType || type.IsAssignableTo<string>();
+
+    internal static bool IsPrimitiveList(this TypeModel type) =>
+        type.IsGenericType &&
+        type.GenericTypeDefinition?.IsAssignableTo(typeof(List<>)) == true &&
+        type.GenericTypeArguments.First().IsPrimitive();
 }

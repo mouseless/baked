@@ -26,6 +26,9 @@ public class Methods(
     public void PrimitiveParameters(string @string, int @int, DateTime dateTime) =>
         _logger.LogInformation($"{nameof(PrimitiveParameters)} was called with {@string}, {@int} and ${dateTime}");
 
+    public void ListParameters(List<string> stringList) =>
+        _logger.LogInformation($"{nameof(ListParameters)} was called with [{string.Join(", ", stringList)}]");
+
     public object Object(object @object) =>
         @object;
 
