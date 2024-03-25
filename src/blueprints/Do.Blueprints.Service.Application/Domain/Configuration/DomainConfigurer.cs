@@ -27,16 +27,3 @@ internal class DomainConfigurer(IDomainConfiguration _configuration)
         }
     }
 }
-
-public interface IDomainConfiguration
-{
-    IModelCollectionConfigurer<TypeModel> Type { get; }
-    IModelCollectionConfigurer<MethodModel> Method { get; }
-    IModelCollectionConfigurer<ParameterModel> Parameter { get; }
-    IModelCollectionConfigurer<PropertyModel> Property { get; }
-}
-
-public interface IModelCollectionConfigurer<T> where T : IModel
-{
-    void Apply(ModelCollection<T> collection);
-}
