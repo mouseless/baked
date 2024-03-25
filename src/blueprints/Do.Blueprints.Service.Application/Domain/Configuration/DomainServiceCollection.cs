@@ -18,9 +18,9 @@ internal class DomainServiceCollection
         return this;
     }
 
-    internal DomainServiceCollection AddIndexers(ModelIndexerCollection domainIndexers)
+    internal DomainServiceCollection AddIndexers(DomainIndexerCollection domainIndexers)
     {
-        _descriptors.Add(new(typeof(ModelIndexerCollection), _ => domainIndexers));
+        _descriptors.Add(new(typeof(DomainIndexerCollection), _ => domainIndexers));
 
         return this;
     }

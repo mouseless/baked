@@ -12,7 +12,7 @@ public class DomainLayer : LayerBase<BuildConfiguration>
     readonly IDomainTypeCollection _domainTypes = new DomainTypeCollection();
     readonly DomainBuilderOptions _domainBuilderOptions = new();
     readonly DomainConventions _domainConventions = new();
-    readonly ModelIndexerCollection _domainIndexers = [];
+    readonly DomainIndexerCollection _domainIndexers = [];
 
     protected override PhaseContext GetContext(BuildConfiguration phase) =>
         phase.CreateContextBuilder()
@@ -20,7 +20,7 @@ public class DomainLayer : LayerBase<BuildConfiguration>
             .Add<IDomainTypeCollection>(_domainTypes)
             .Add<DomainBuilderOptions>(_domainBuilderOptions)
             .Add<DomainConventions>(_domainConventions)
-            .Add<ModelIndexerCollection>(_domainIndexers)
+            .Add<DomainIndexerCollection>(_domainIndexers)
             .Build();
 
     protected override IEnumerable<IPhase> GetPhases()
@@ -33,7 +33,7 @@ public class DomainLayer : LayerBase<BuildConfiguration>
         IDomainTypeCollection _domainTypes,
         DomainBuilderOptions _domainBuilderOptions,
         DomainConventions _domainConventions,
-        ModelIndexerCollection _domainIndexers
+        DomainIndexerCollection _domainIndexers
     ) : PhaseBase<ConfigurationManager>(PhaseOrder.Early)
     {
         protected override void Initialize(ConfigurationManager _)

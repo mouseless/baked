@@ -2,10 +2,10 @@
 
 namespace Do.Domain.Configuration;
 
-public class ModelIndexerProcessor(ModelIndexerCollection _indexers) : IDomainService
+public class ModelIndexerProcessor(DomainIndexerCollection _indexers) : IDomainService
 {
     static IDomainService IDomainService.New(DomainServiceProvider sp) =>
-        new ModelIndexerProcessor(sp.Get<ModelIndexerCollection>());
+        new ModelIndexerProcessor(sp.Get<DomainIndexerCollection>());
 
     internal void Apply<T>(ModelCollection<T> collection) where T : IModel
     {

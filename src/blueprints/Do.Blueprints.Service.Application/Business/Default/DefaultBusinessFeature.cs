@@ -1,5 +1,4 @@
 ﻿using Do.Architecture;
-using Do.Domain.Configuration;
 using Do.Domain.Model;
 using Do.RestApi.Model;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,11 +32,11 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
 
         configurator.ConfigureDomainIndexers(indexers =>
         {
-            indexers.Add(AttributeIndexer.For<TransientAttribute>());
-            indexers.Add(AttributeIndexer.For<ScopedAttribute>());
-            indexers.Add(AttributeIndexer.For<SingletonAttribute>());
-            indexers.Add(AttributeIndexer.For<PublicServiceAttribute>());
-            indexers.Add(AttributeIndexer.For<DomainServiceAttribute>());
+            indexers.AddAttributeIndexer<TransientAttribute>();
+            indexers.AddAttributeIndexer<ScopedAttribute>();
+            indexers.AddAttributeIndexer<SingletonAttribute>();
+            indexers.AddAttributeIndexer<PublicServiceAttribute>();
+            indexers.AddAttributeIndexer<DomainServiceAttribute>();
         });
 
         configurator.ConfigureDomainMetaData(metadata =>
