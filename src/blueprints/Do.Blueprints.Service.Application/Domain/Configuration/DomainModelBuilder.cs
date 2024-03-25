@@ -85,12 +85,20 @@ internal class DomainModelBuilder : IDomainService, ITypeModelFactory
         var methods = new Dictionary<string, MethodModel>();
         var constructorInfos = type.GetConstructors(_domainBuilderOptions.ConstuctorBindingFlags) ?? [];
 
-        methods[".ctor"] = new(target, ".ctor", constructorInfos.Select(BuildConstructorOverload).ToArray(), [], IsConstructor: true);
+        var ctor = methods[".ctor"] = new(target, ".ctor", IsConstructor: true);
+        ctor.Init(
+            overloads: constructorInfos.Select(c => BuildConstructorOverload(c, ctor)).ToArray(),
+            customAttributes: []
+        );
 
         var methodInfos = type.GetMethods(_domainBuilderOptions.MethodBindingFlags) ?? [];
         foreach (var group in methodInfos.GroupBy(m => m.Name))
         {
-            methods[group.Key] = new(target, group.Key, group.Select(BuildMethodOverload).ToArray(), []);
+            var method = methods[group.Key] = new(target, group.Key);
+            method.Init(
+                overloads: group.Select(m => BuildMethodOverload(m, method)).ToArray(),
+                customAttributes: []
+            );
         }
 
         return new(methods.Values);
@@ -105,14 +113,33 @@ internal class DomainModelBuilder : IDomainService, ITypeModelFactory
     ModelCollection<TypeModel> BuildInterfaces(Type type) =>
         new(type.GetInterfaces().Select(GetOrCreateTypeModel));
 
-    OverloadModel BuildConstructorOverload(ConstructorInfo constructor) =>
-        new(constructor.IsPublic, constructor.IsFamily, constructor.IsVirtual, new(BuildParameters(constructor)), new(BuildCustomAttributes(constructor)));
+    OverloadModel BuildConstructorOverload(ConstructorInfo constructor, MethodModel parent)
+    {
+        var overload = new OverloadModel(parent, constructor.IsPublic, constructor.IsFamily, constructor.IsVirtual);
+        overload.Init(
+            parameters: BuildParameters(constructor, overload),
+            customAttributes: []
+        );
 
-    OverloadModel BuildMethodOverload(MethodInfo method) =>
-        new(method.IsPublic, method.IsFamily, method.IsVirtual, new(BuildParameters(method)), new(BuildCustomAttributes(method)), GetOrCreateTypeModel(method.ReturnType));
+        return overload;
+    }
 
-    ModelCollection<ParameterModel> BuildParameters(MethodBase method) =>
-        new(method.GetParameters().Select(p => new ParameterModel(p.Name ?? string.Empty, GetOrCreateTypeModel(p.ParameterType), p.IsOptional, p.DefaultValue, BuildCustomAttributes(p.Member))));
+    OverloadModel BuildMethodOverload(MethodInfo method, MethodModel parent)
+    {
+        var overload = new OverloadModel(parent, method.IsPublic, method.IsFamily, method.IsVirtual, GetOrCreateTypeModel(method.ReturnType));
+        overload.Init(
+            parameters: BuildParameters(method, overload),
+            customAttributes: []
+        );
+
+        return overload;
+    }
+
+    ModelCollection<ParameterModel> BuildParameters(MethodBase method, OverloadModel overload) =>
+        new(method.GetParameters().Select(p => BuildParameter(p, overload)));
+
+    ParameterModel BuildParameter(ParameterInfo parameter, OverloadModel overload) =>
+        new(overload, parameter.Name ?? string.Empty, GetOrCreateTypeModel(parameter.ParameterType), parameter.IsOptional, parameter.DefaultValue, BuildCustomAttributes(parameter.Member));
 
     ModelCollection<PropertyModel> BuildProperties(Type type, TypeModel owner) =>
         new(type.GetProperties(_domainBuilderOptions.PropertyBindingFlags).Select(p => BuildProperty(p, owner)));

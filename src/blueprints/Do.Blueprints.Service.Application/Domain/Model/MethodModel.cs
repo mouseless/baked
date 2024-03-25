@@ -2,13 +2,20 @@
 namespace Do.Domain.Model;
 
 public record MethodModel(
-    TypeModel Target,
+    TypeModel Type,
     string Name,
-    OverloadModel[] Overloads,
-    ModelCollection<TypeModel> CustomAttributes,
     bool IsConstructor = false
 ) : IModelWithMetadata
 {
+    public OverloadModel[] Overloads { get; private set; } = default!;
+    public ModelCollection<TypeModel> CustomAttributes { get; private set; } = default!;
+
+    internal void Init(OverloadModel[] overloads, ModelCollection<TypeModel> customAttributes)
+    {
+        Overloads = overloads;
+        CustomAttributes = customAttributes;
+    }
+
     public List<ParameterModel> GetParameters() =>
         Overloads.SelectMany(o => o.Parameters).ToList();
 

@@ -1,6 +1,7 @@
 ﻿namespace Do.Domain.Model;
 
 public record ParameterModel(
+    OverloadModel Overload,
     string Name,
     TypeModel ParameterType,
     bool IsOptional,

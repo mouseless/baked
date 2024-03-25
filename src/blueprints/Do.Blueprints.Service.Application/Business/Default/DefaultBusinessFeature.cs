@@ -94,7 +94,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                 .Method
                     .Add(
                         add: (method, adder) => adder.Add<PublicServiceAttribute>(method),
-                        when: method => method.Target.HasAttribute<SingletonAttribute>() && !method.IsConstructor && method.Overloads.Any(o => o.IsPublic)
+                        when: method => method.Type.HasAttribute<SingletonAttribute>() && !method.IsConstructor && method.Overloads.Any(o => o.IsPublic)
                     );
         });
 
