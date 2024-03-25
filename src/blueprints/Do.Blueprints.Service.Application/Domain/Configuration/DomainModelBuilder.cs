@@ -71,6 +71,7 @@ internal class DomainModelBuilder : IDomainService, ITypeModelFactory
         typeModel.Apply(t =>
             typeModel.Init(
                 genericTypeArguments: typeModel.IsBusinessType || typeModel.IsGenericType ? BuildGenericTypeArguments(t) : [],
+                constructor: typeModel.IsBusinessType ? BuildConstructor(t, typeModel) : default,
                 customAttributes: typeModel.IsBusinessType ? BuildCustomAttributes(t) : [],
                 properties: typeModel.IsBusinessType ? BuildProperties(t, typeModel) : [],
                 methods: typeModel.IsBusinessType ? BuildMethods(t, typeModel) : [],
@@ -80,17 +81,24 @@ internal class DomainModelBuilder : IDomainService, ITypeModelFactory
         );
     }
 
-    ModelCollection<MethodModel> BuildMethods(Type type, TypeModel target)
+    MethodModel? BuildConstructor(Type type, TypeModel target)
     {
-        var methods = new Dictionary<string, MethodModel>();
         var constructorInfos = type.GetConstructors(_domainBuilderOptions.ConstuctorBindingFlags) ?? [];
 
-        var ctor = methods[".ctor"] = new(target, ".ctor", IsConstructor: true);
+        if (!constructorInfos.Any()) { return null; }
+
+        var ctor = new MethodModel(target, ".ctor", IsConstructor: true);
         ctor.Init(
             overloads: constructorInfos.Select(c => BuildConstructorOverload(c, ctor)).ToArray(),
             customAttributes: []
         );
 
+        return ctor;
+    }
+
+    ModelCollection<MethodModel> BuildMethods(Type type, TypeModel target)
+    {
+        var methods = new Dictionary<string, MethodModel>();
         var methodInfos = type.GetMethods(_domainBuilderOptions.MethodBindingFlags) ?? [];
         foreach (var group in methodInfos.GroupBy(m => m.Name))
         {
