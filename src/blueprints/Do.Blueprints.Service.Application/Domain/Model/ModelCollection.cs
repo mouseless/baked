@@ -21,6 +21,9 @@ public class ModelCollection<T> : IEnumerable<T>, IIndexedCollection<T>
     public T this[string id] =>
         _models[id];
 
+    public T this[Type type] =>
+        _models[TypeModel.IdFrom(type)];
+
     public int Count => _models.Count;
 
     public bool ContainsModel(T? model) =>

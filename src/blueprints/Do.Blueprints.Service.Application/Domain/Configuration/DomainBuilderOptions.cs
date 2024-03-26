@@ -4,14 +4,19 @@ namespace Do.Domain.Configuration;
 
 public class DomainBuilderOptions
 {
-    public BindingFlags ConstuctorBindingFlags { get; set; } = BindingFlags.Default;
-    public BindingFlags MethodBindingFlags { get; set; } = BindingFlags.Default;
-    public BindingFlags PropertyBindingFlags { get; set; } = BindingFlags.Default;
+    public ReferencedTypeOptions ReferencedType { get; } = new();
+    public ReflectedTypeOptions ReflectedType { get; } = new();
 
-    public List<Func<ITypeDescriptor, bool>> AddProperties { get; } = [];
-    public List<Func<ITypeDescriptor, bool>> AddMethods { get; } = [];
-    public List<Func<ITypeDescriptor, bool>> AddInterfaces { get; } = [];
-    public List<Func<ITypeDescriptor, bool>> AddBaseType { get; } = [];
-    public List<Func<ITypeDescriptor, bool>> AddConstructor { get; } = [];
+    public class ReferencedTypeOptions
+    {
+        public List<Func<Type, bool>> ShouldSkipSetGenerics { get; set; } = [];
+        public List<Func<Type, bool>> ShouldSkipSetInheritance { get; set; } = [];
+    }
+
+    public class ReflectedTypeOptions
+    {
+        public BindingFlags ConstructorBindingFlags { get; set; } = BindingFlags.Default;
+        public BindingFlags MethodBindingFlags { get; set; } = BindingFlags.Default;
+        public BindingFlags PropertyBindingFlags { get; set; } = BindingFlags.Default;
+    }
 }
-

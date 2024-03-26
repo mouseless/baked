@@ -1,5 +1,4 @@
 ﻿using Do.Architecture;
-using Do.Domain.Configuration;
 using Do.Domain.Model;
 using Do.Orm.Default.UserTypes;
 using FluentNHibernate.Conventions.Helpers;
@@ -36,15 +35,15 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
                     .Add(
                         add: (query, adder) =>
                         {
-                            var queryContext = query.Constructor?.GetParameters().First(p => p.ParameterType.Name.StartsWith("IQueryContext")).ParameterType ??
+                            var parameter = query.Constructor?.Overloads.SelectMany(o => o.Parameters).First(p => p.ParameterType.IsAssignableTo(typeof(IQueryContext<>))) ??
                                 throw new("Parameter model not found!");
 
-                            var entity = queryContext.GenericTypeArguments.First();
+                            var entity = parameter.ParameterType.GenericTypeArguments.First();
 
-                            adder.Add(query, entity.Create(t => new QueryAttribute(t)));
-                            adder.Add(entity, query.Create(t => new EntityAttribute(t)));
+                            entity.Apply(t => adder.Add(query, new QueryAttribute(t)));
+                            query.Apply(t => adder.Add(entity, new EntityAttribute(t)));
                         },
-                        when: type => type.Constructor is not null && type.Constructor.HasParameter(p => p.ParameterType.Name.StartsWith("IQueryContext"))
+                        when: type => type.Constructor is not null && type.Constructor.Overloads.Any(o => o.Parameters.Any(p => p.ParameterType.IsAssignableTo(typeof(IQueryContext<>))))
                     );
         });
 
@@ -53,7 +52,7 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
             var domainModel = configurator.Context.GetDomainModel();
 
             var typeSource = new TypeSource();
-            domainModel.Types.Having<EntityAttribute>().Apply(t => typeSource.Add(t));
+            domainModel.ReflectedTypes.Having<EntityAttribute>().Apply(t => typeSource.Add(t));
 
             model.AddTypeSource(typeSource);
 
@@ -91,7 +90,7 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
         configurator.ConfigureAutomapping(automapping =>
         {
             var domainModel = configurator.Context.GetDomainModel();
-            var mappedTypes = domainModel.Types.Having<EntityAttribute>();
+            var mappedTypes = domainModel.ReflectedTypes.Having<EntityAttribute>();
 
             automapping.ShouldMapType.Add(t => mappedTypes.Contains(t));
             automapping.MemberIsId.Add(m => m.PropertyType == typeof(Guid) && m.Name == "Id");

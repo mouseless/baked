@@ -15,26 +15,26 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
 
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureDomainAssemblyCollection(assemblies =>
+        configurator.ConfigureDomainTypeCollection(types =>
         {
             foreach (var assembly in _domainAssemblies)
             {
-                assemblies.Add(assembly);
+                types.AddFromAssembly(assembly, except: type =>
+                    (type.IsSealed && type.IsAbstract) || // if type is static
+                    type.IsAssignableTo(typeof(Exception)) ||
+                    type.IsAssignableTo(typeof(Attribute)) ||
+                    type.IsAssignableTo(typeof(Delegate))
+                );
             }
         });
 
         configurator.ConfigureDomainBuilderOptions(options =>
         {
-            options.ConstuctorBindingFlags = _defaultMemberBindingFlags;
-            options.MethodBindingFlags = _defaultMemberBindingFlags;
-            options.PropertyBindingFlags = _defaultMemberBindingFlags;
+            options.ReflectedType.ConstructorBindingFlags = _defaultMemberBindingFlags;
+            options.ReflectedType.MethodBindingFlags = _defaultMemberBindingFlags;
+            options.ReflectedType.PropertyBindingFlags = _defaultMemberBindingFlags;
 
-            options.AddBaseType.Add(t => t.IsDomainType);
-            options.AddBaseType.Add(t => t.ReflectedType.BaseType == typeof(Task));
-            options.AddProperties.Add(t => t.IsDomainType);
-            options.AddMethods.Add(t => t.IsDomainType);
-            options.AddInterfaces.Add(t => t.IsDomainType);
-            options.AddConstructor.Add(t => t.IsDomainType);
+            options.ReferencedType.ShouldSkipSetInheritance.When(t => t.IsValueType);
         });
 
         configurator.ConfigureDomainIndexers(indexers =>
@@ -59,32 +59,23 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                         add: new DomainServiceAttribute(),
                         when: type =>
                             !(
-                                !type.IsDomainType ||
                                 !type.IsPublic ||
                                 type.IsInterface ||
-                                type.Namespace?.StartsWith("System") == true ||
-                                (type.IsSealed && type.IsAbstract) || // if type is static
                                 type.IsAbstract ||
                                 type.IsValueType ||
                                 type.IsGenericMethodParameter ||
                                 type.IsGenericTypeParameter ||
-                                type.IsAssignableTo<MulticastDelegate>() ||
-                                type.IsAssignableTo<Exception>() ||
-                                type.IsAssignableTo<Attribute>() ||
                                 (type.ContainsGenericParameters && !type.GenericTypeArguments.Any()) ||
                                 type.Has<DataClassAttribute>()
-                            ),
-                        order: 1
+                            )
                     )
                     .Add(
                         add: new TransientAttribute(),
-                        when: type => type.Has<DomainServiceAttribute>() && type.Methods.TryGetValue("With", out var with) && with.CanReturn(type),
-                        order: 2
+                        when: type => type.Has<DomainServiceAttribute>() && type.Methods.TryGetValue("With", out var with) && with.CanReturn(type)
                     )
                     .Add(
                         add: new ScopedAttribute(),
-                        when: type => type.Has<DomainServiceAttribute>() && type.IsAssignableTo<IScoped>(),
-                        order: 3
+                        when: type => type.Has<DomainServiceAttribute>() && type.IsAssignableTo<IScoped>()
                     )
                     .Add(
                         add: new SingletonAttribute(),
@@ -92,8 +83,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                             type.Has<DomainServiceAttribute>() &&
                             !type.Has<TransientAttribute>() &&
                             !type.Has<ScopedAttribute>() &&
-                            type.Properties.All(p => !p.IsPublic),
-                        order: 4
+                            type.Properties.All(p => !p.IsPublic)
                     );
 
             metadata
@@ -107,35 +97,35 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
         configurator.ConfigureServiceCollection(services =>
         {
             var domainModel = configurator.Context.GetDomainModel();
-            foreach (var type in domainModel.Types.Having<TransientAttribute>())
+            foreach (var type in domainModel.ReferencedTypes.Having<TransientAttribute>())
             {
                 type.Apply(t =>
                 {
                     services.AddTransientWithFactory(t);
                     type.Interfaces
-                        .Where(i => i.IsDomainType)
+                        //.Where(i => i.IsDomainType) // will be filtered with new design
                         .Apply(i => services.AddTransientWithFactory(i, t));
                 });
             }
 
-            foreach (var type in domainModel.Types.Having<ScopedAttribute>())
+            foreach (var type in domainModel.ReferencedTypes.Having<ScopedAttribute>())
             {
                 type.Apply(t =>
                 {
                     services.AddScopedWithFactory(t);
                     type.Interfaces
-                        .Where(i => i.IsDomainType)
+                        //.Where(i => i.IsDomainType) // will be filtered with new design
                         .Apply(i => services.AddScopedWithFactory(i, t));
                 });
             }
 
-            foreach (var type in domainModel.Types.Having<SingletonAttribute>())
+            foreach (var type in domainModel.ReferencedTypes.Having<SingletonAttribute>())
             {
                 type.Apply(t =>
                 {
                     services.AddSingleton(t);
                     type.Interfaces
-                        .Where(i => i.IsDomainType)
+                        //.Where(i => i.IsDomainType) // will be filtered with new design
                         .Apply(i => services.AddSingleton(i, t, forward: true));
                 });
             }
@@ -147,7 +137,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
 
             var domainModel = configurator.Context.GetDomainModel();
 
-            foreach (var type in domainModel.Types.Having<DomainServiceAttribute>())
+            foreach (var type in domainModel.ReflectedTypes.Having<DomainServiceAttribute>())
             {
                 if (type.FullName is null) { continue; }
                 if (!type.Has<SingletonAttribute>()) { continue; } // TODO for now only singleton

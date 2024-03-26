@@ -5,68 +5,76 @@ namespace Do.Domain.Configuration;
 
 internal class DomainModelBuilder(DomainBuilderOptions _options)
 {
-    readonly KeyedModelCollection<AssemblyModel> _assemblies = [];
-    readonly KeyedModelCollection<TypeModel> _types = [];
+    readonly KeyedModelCollection<TypeModel> _reflectedTypes = [];
+    readonly KeyedModelCollection<TypeModel> _referencedTypes = [];
 
-    internal DomainModel BuildFrom(IDomainAssemblyCollection domainAssemblies, IDomainTypeCollection domainTypes)
+    internal DomainModel BuildFrom(IDomainTypeCollection reflectedTypes)
     {
-        foreach (var assembly in domainAssemblies)
+        foreach (var type in reflectedTypes)
         {
-            _assemblies.Add(new(assembly));
+            _reflectedTypes.Add(new(type, TypeModel.IdFrom(type)));
+        }
 
-            foreach (var type in assembly.GetExportedTypes())
+        foreach (var typeModel in _reflectedTypes)
+        {
+            typeModel.Apply(t =>
             {
-                domainTypes.Add(type);
-            }
+                typeModel.SetGenerics(
+                    genericTypeArguments: typeModel.IsGenericType ? BuildGenericTypeArguments(t) : []
+                );
+                typeModel.SetInheritance(
+                    baseType: t.BaseType is not null ? GetOrCreateTypeModel(t.BaseType) : default,
+                    interfaces: BuildInterfaces(t)
+                );
+                typeModel.SetMetadata(
+                    customAttributes: BuildCustomAttributes(t)
+                );
+                typeModel.SetMembers(
+                    constructor: BuildConstructor(t, typeModel),
+                    properties: BuildProperties(t, typeModel),
+                    methods: BuildMethods(t, typeModel)
+                );
+            });
         }
 
-        foreach (var type in domainTypes)
-        {
-            _types.Add(new(type, TypeModel.IdFrom(type), assembly: _assemblies.GetOrDefault(type.Assembly.FullName), isDomainType: true));
-        }
-
-        foreach (var type in _types.ToList())
-        {
-            InitTypeModel(type);
-        }
-
-        return new(new(_assemblies), new(_types));
+        return new(new(_reflectedTypes), new(_referencedTypes));
     }
 
     TypeModel GetOrCreateTypeModel(Type type)
     {
         var id = TypeModel.IdFrom(type);
-        if (_types.TryGetValue(id, out var result)) { return result; }
+        if (_reflectedTypes.TryGetValue(id, out var result)) { return result; }
+        if (_referencedTypes.TryGetValue(id, out result)) { return result; }
 
-        var isDomainType = type.IsGenericType && !type.IsGenericTypeDefinition && _assemblies.Contains(type.Assembly?.FullName ?? string.Empty);
-        var typeModel = new TypeModel(type, id, isDomainType: isDomainType);
+        var typeModel = new TypeModel(type, id);
 
-        _types.Add(typeModel);
+        _referencedTypes.Add(typeModel);
 
-        InitTypeModel(typeModel);
+        typeModel.Apply(t =>
+        {
+            if (_options.ReferencedType.ShouldSkipSetGenerics.Any(f => f(t))) { return; }
+
+            typeModel.SetGenerics(
+                genericTypeArguments: typeModel.IsGenericType ? BuildGenericTypeArguments(t) : []
+            );
+        });
+
+        typeModel.Apply(t =>
+        {
+            if (_options.ReferencedType.ShouldSkipSetInheritance.Any(f => f(t))) { return; }
+
+            typeModel.SetInheritance(
+                baseType: t.BaseType is not null ? GetOrCreateTypeModel(t.BaseType) : default,
+                interfaces: BuildInterfaces(t)
+            );
+        });
 
         return typeModel;
     }
 
-    void InitTypeModel(TypeModel typeModel)
-    {
-        typeModel.Apply(t =>
-            typeModel.Init(
-                genericTypeArguments: typeModel.IsGenericType ? BuildGenericTypeArguments(t) : [],
-                constructor: _options.AddConstructor.Any(f => f(typeModel)) ? BuildConstructor(t, typeModel) : default,
-                customAttributes: typeModel.IsDomainType ? BuildCustomAttributes(t) : default,
-                properties: _options.AddProperties.Any(f => f(typeModel)) ? BuildProperties(t, typeModel) : default,
-                methods: _options.AddMethods.Any(f => f(typeModel)) ? BuildMethods(t, typeModel) : default,
-                interfaces: _options.AddInterfaces.Any(f => f(typeModel)) ? BuildInterfaces(t) : default,
-                baseType: _options.AddBaseType.Any(f => f(typeModel)) && t.BaseType is not null ? GetOrCreateTypeModel(t.BaseType) : default
-            )
-        );
-    }
-
     MethodModel? BuildConstructor(Type type, TypeModel target)
     {
-        var constructorInfos = type.GetConstructors(_options.ConstuctorBindingFlags) ?? [];
-
+        var constructorInfos = type.GetConstructors(_options.ReflectedType.ConstructorBindingFlags) ?? [];
         if (!constructorInfos.Any()) { return null; }
 
         var ctor = new MethodModel(target, ".ctor", IsConstructor: true);
@@ -81,10 +89,11 @@ internal class DomainModelBuilder(DomainBuilderOptions _options)
     ModelCollection<MethodModel> BuildMethods(Type type, TypeModel target)
     {
         var methods = new Dictionary<string, MethodModel>();
-        var methodInfos = type.GetMethods(_options.MethodBindingFlags) ?? [];
+        var methodInfos = type.GetMethods(_options.ReflectedType.MethodBindingFlags) ?? [];
         foreach (var group in methodInfos.GroupBy(m => m.Name))
         {
             var method = methods[group.Key] = new(target, group.Key);
+            // reflected type parent
             method.Init(
                 overloads: group.Select(m => BuildMethodOverload(m, method)).ToArray(),
                 customAttributes: []
@@ -132,7 +141,7 @@ internal class DomainModelBuilder(DomainBuilderOptions _options)
         new(overload, parameter.Name ?? string.Empty, GetOrCreateTypeModel(parameter.ParameterType), parameter.IsOptional, parameter.DefaultValue, BuildCustomAttributes(parameter.Member));
 
     ModelCollection<PropertyModel> BuildProperties(Type type, TypeModel owner) =>
-        new(type.GetProperties(_options.PropertyBindingFlags).Select(p => BuildProperty(p, owner)));
+        new(type.GetProperties(_options.ReflectedType.PropertyBindingFlags).Select(p => BuildProperty(p, owner)));
 
     PropertyModel BuildProperty(PropertyInfo property, TypeModel owner) =>
         new(owner, property.Name, GetOrCreateTypeModel(property.PropertyType), IsPublic(property), IsVirtual(property), BuildCustomAttributes(property));

@@ -6,9 +6,9 @@ internal class DomainConfigurer(IDomainConfiguration _configuration)
 {
     internal void Execute(DomainModel model)
     {
-        _configuration.Type.Apply(model.Types);
+        _configuration.Type.Apply(model.ReflectedTypes);
 
-        foreach (var methods in model.Types.Select(t => t.Methods))
+        foreach (var methods in model.ReflectedTypes.Select(t => t.Methods))
         {
             _configuration.Method.Apply(methods);
 
@@ -21,7 +21,7 @@ internal class DomainConfigurer(IDomainConfiguration _configuration)
             }
         }
 
-        foreach (var properties in model.Types.Select(t => t.Properties))
+        foreach (var properties in model.ReflectedTypes.Select(t => t.Properties))
         {
             _configuration.Property.Apply(properties);
         }
