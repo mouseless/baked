@@ -1,9 +1,11 @@
-﻿namespace Do.Domain.Model;
+﻿using Do.Domain.Configuration;
+
+namespace Do.Domain.Model;
 
 public class TypeModel(Type type, string id,
     AssemblyModel? assembly = default,
-    bool isBusinessType = false
-) : IModel, IEquatable<TypeModel>
+    bool isDomainType = false
+) : IModel, ITypeDescriptor, IEquatable<TypeModel>
 {
     internal static string IdFrom(Type type) =>
         type.FullName ?? $"{type.Namespace}.{type.Name}<{string.Join(',', type.GenericTypeArguments.Select(IdFrom))}>";
@@ -17,7 +19,7 @@ public class TypeModel(Type type, string id,
     public string Name { get; } = type.Name;
     public string? FullName { get; } = type.FullName;
     public string? Namespace { get; } = type.Namespace;
-    public bool IsBusinessType { get; } = isBusinessType;
+    public bool IsDomainType { get; } = isDomainType;
     public bool IsPublic { get; } = type.IsPublic;
     public bool IsAbstract { get; } = type.IsAbstract;
     public bool IsValueType { get; } = type.IsValueType;
@@ -85,6 +87,10 @@ public class TypeModel(Type type, string id,
         _id.GetHashCode();
 
     string IModel.Id => _id;
+
+    bool ITypeDescriptor.IsDomainType => IsDomainType;
+
+    Type ITypeDescriptor.ReflectedType => _type;
 }
 
 public static class TypeModelExtensions

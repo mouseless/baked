@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace Do.Domain.Configuration;
 
-internal class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
+internal class DomainModelBuilder(DomainBuilderOptions _options)
 {
     readonly KeyedModelCollection<AssemblyModel> _assemblies = [];
     readonly KeyedModelCollection<TypeModel> _types = [];
@@ -22,7 +22,7 @@ internal class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
 
         foreach (var type in domainTypes)
         {
-            _types.Add(new(type, TypeModel.IdFrom(type), assembly: _assemblies.GetOrDefault(type.Assembly.FullName), isBusinessType: true));
+            _types.Add(new(type, TypeModel.IdFrom(type), assembly: _assemblies.GetOrDefault(type.Assembly.FullName), isDomainType: true));
         }
 
         foreach (var type in _types.ToList())
@@ -38,8 +38,8 @@ internal class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
         var id = TypeModel.IdFrom(type);
         if (_types.TryGetValue(id, out var result)) { return result; }
 
-        var isGenericBusinessType = type.IsGenericType && !type.IsGenericTypeDefinition && _assemblies.Contains(type.Assembly?.FullName ?? string.Empty);
-        var typeModel = new TypeModel(type, id, isBusinessType: isGenericBusinessType);
+        var isDomainType = type.IsGenericType && !type.IsGenericTypeDefinition && _assemblies.Contains(type.Assembly?.FullName ?? string.Empty);
+        var typeModel = new TypeModel(type, id, isDomainType: isDomainType);
 
         _types.Add(typeModel);
 
@@ -52,20 +52,20 @@ internal class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
     {
         typeModel.Apply(t =>
             typeModel.Init(
-                genericTypeArguments: typeModel.IsBusinessType || typeModel.IsGenericType ? BuildGenericTypeArguments(t) : [],
-                constructor: typeModel.IsBusinessType ? BuildConstructor(t, typeModel) : default,
-                customAttributes: typeModel.IsBusinessType ? BuildCustomAttributes(t) : [],
-                properties: typeModel.IsBusinessType ? BuildProperties(t, typeModel) : [],
-                methods: typeModel.IsBusinessType ? BuildMethods(t, typeModel) : [],
-                interfaces: typeModel.IsBusinessType ? BuildInterfaces(t) : [],
-                baseType: (typeModel.IsBusinessType || t.BaseType == typeof(Task)) && t.BaseType is not null ? GetOrCreateTypeModel(t.BaseType) : default
+                genericTypeArguments: typeModel.IsGenericType ? BuildGenericTypeArguments(t) : [],
+                constructor: _options.AddConstructor.Any(f => f(typeModel)) ? BuildConstructor(t, typeModel) : default,
+                customAttributes: typeModel.IsDomainType ? BuildCustomAttributes(t) : default,
+                properties: _options.AddProperties.Any(f => f(typeModel)) ? BuildProperties(t, typeModel) : default,
+                methods: _options.AddMethods.Any(f => f(typeModel)) ? BuildMethods(t, typeModel) : default,
+                interfaces: _options.AddInterfaces.Any(f => f(typeModel)) ? BuildInterfaces(t) : default,
+                baseType: _options.AddBaseType.Any(f => f(typeModel)) && t.BaseType is not null ? GetOrCreateTypeModel(t.BaseType) : default
             )
         );
     }
 
     MethodModel? BuildConstructor(Type type, TypeModel target)
     {
-        var constructorInfos = type.GetConstructors(_domainBuilderOptions.ConstuctorBindingFlags) ?? [];
+        var constructorInfos = type.GetConstructors(_options.ConstuctorBindingFlags) ?? [];
 
         if (!constructorInfos.Any()) { return null; }
 
@@ -81,7 +81,7 @@ internal class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
     ModelCollection<MethodModel> BuildMethods(Type type, TypeModel target)
     {
         var methods = new Dictionary<string, MethodModel>();
-        var methodInfos = type.GetMethods(_domainBuilderOptions.MethodBindingFlags) ?? [];
+        var methodInfos = type.GetMethods(_options.MethodBindingFlags) ?? [];
         foreach (var group in methodInfos.GroupBy(m => m.Name))
         {
             var method = methods[group.Key] = new(target, group.Key);
@@ -132,7 +132,7 @@ internal class DomainModelBuilder(DomainBuilderOptions _domainBuilderOptions)
         new(overload, parameter.Name ?? string.Empty, GetOrCreateTypeModel(parameter.ParameterType), parameter.IsOptional, parameter.DefaultValue, BuildCustomAttributes(parameter.Member));
 
     ModelCollection<PropertyModel> BuildProperties(Type type, TypeModel owner) =>
-        new(type.GetProperties(_domainBuilderOptions.PropertyBindingFlags).Select(p => BuildProperty(p, owner)));
+        new(type.GetProperties(_options.PropertyBindingFlags).Select(p => BuildProperty(p, owner)));
 
     PropertyModel BuildProperty(PropertyInfo property, TypeModel owner) =>
         new(owner, property.Name, GetOrCreateTypeModel(property.PropertyType), IsPublic(property), IsVirtual(property), BuildCustomAttributes(property));

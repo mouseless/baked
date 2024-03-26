@@ -28,6 +28,13 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
             options.ConstuctorBindingFlags = _defaultMemberBindingFlags;
             options.MethodBindingFlags = _defaultMemberBindingFlags;
             options.PropertyBindingFlags = _defaultMemberBindingFlags;
+
+            options.AddBaseType.Add(t => t.IsDomainType);
+            options.AddBaseType.Add(t => t.ReflectedType.BaseType == typeof(Task));
+            options.AddProperties.Add(t => t.IsDomainType);
+            options.AddMethods.Add(t => t.IsDomainType);
+            options.AddInterfaces.Add(t => t.IsDomainType);
+            options.AddConstructor.Add(t => t.IsDomainType);
         });
 
         configurator.ConfigureDomainIndexers(indexers =>
@@ -52,7 +59,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                         add: new DomainServiceAttribute(),
                         when: type =>
                             !(
-                                !type.IsBusinessType ||
+                                !type.IsDomainType ||
                                 !type.IsPublic ||
                                 type.IsInterface ||
                                 type.Namespace?.StartsWith("System") == true ||
@@ -106,7 +113,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                 {
                     services.AddTransientWithFactory(t);
                     type.Interfaces
-                        .Where(i => i.IsBusinessType)
+                        .Where(i => i.IsDomainType)
                         .Apply(i => services.AddTransientWithFactory(i, t));
                 });
             }
@@ -117,7 +124,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                 {
                     services.AddScopedWithFactory(t);
                     type.Interfaces
-                        .Where(i => i.IsBusinessType)
+                        .Where(i => i.IsDomainType)
                         .Apply(i => services.AddScopedWithFactory(i, t));
                 });
             }
@@ -128,7 +135,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                 {
                     services.AddSingleton(t);
                     type.Interfaces
-                        .Where(i => i.IsBusinessType)
+                        .Where(i => i.IsDomainType)
                         .Apply(i => services.AddSingleton(i, t, forward: true));
                 });
             }
