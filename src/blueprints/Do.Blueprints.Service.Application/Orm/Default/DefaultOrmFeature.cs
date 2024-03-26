@@ -53,7 +53,7 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
             var domainModel = configurator.Context.GetDomainModel();
 
             var typeSource = new TypeSource();
-            domainModel.Types.WithAttribute<EntityAttribute>().Apply(t => typeSource.Add(t));
+            domainModel.Types.Having<EntityAttribute>().Apply(t => typeSource.Add(t));
 
             model.AddTypeSource(typeSource);
 
@@ -91,7 +91,7 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
         configurator.ConfigureAutomapping(automapping =>
         {
             var domainModel = configurator.Context.GetDomainModel();
-            var mappedTypes = domainModel.Types.WithAttribute<EntityAttribute>();
+            var mappedTypes = domainModel.Types.Having<EntityAttribute>();
 
             automapping.ShouldMapType.Add(t => mappedTypes.Contains(t));
             automapping.MemberIsId.Add(m => m.PropertyType == typeof(Guid) && m.Name == "Id");

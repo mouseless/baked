@@ -13,6 +13,6 @@ public class AssemblyModel(Assembly _assembly)
 
     public void Apply(Action<Assembly> action) => action(_assembly);
 
-    public bool HasAttribute<T>() where T : Attribute =>
+    public bool Has<T>() where T : Attribute =>
         CustomAttributes.ContainsKey(typeof(T));
 }

@@ -35,7 +35,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
             indexers.AddAttributeIndexer<TransientAttribute>();
             indexers.AddAttributeIndexer<ScopedAttribute>();
             indexers.AddAttributeIndexer<SingletonAttribute>();
-            indexers.AddAttributeIndexer<PublicServiceAttribute>();
+            indexers.AddAttributeIndexer<ApiMethodAttribute>();
             indexers.AddAttributeIndexer<DomainServiceAttribute>();
         });
 
@@ -65,26 +65,26 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                                 type.IsAssignableTo<Exception>() ||
                                 type.IsAssignableTo<Attribute>() ||
                                 (type.ContainsGenericParameters && !type.GenericTypeArguments.Any()) ||
-                                type.HasAttribute<DataClassAttribute>()
+                                type.Has<DataClassAttribute>()
                             ),
                         order: 1
                     )
                     .Add(
                         add: new TransientAttribute(),
-                        when: type => type.HasAttribute<DomainServiceAttribute>() && type.Methods.TryGetValue("With", out var with) && with.CanReturn(type),
+                        when: type => type.Has<DomainServiceAttribute>() && type.Methods.TryGetValue("With", out var with) && with.CanReturn(type),
                         order: 2
                     )
                     .Add(
                         add: new ScopedAttribute(),
-                        when: type => type.HasAttribute<DomainServiceAttribute>() && type.IsAssignableTo<IScoped>(),
+                        when: type => type.Has<DomainServiceAttribute>() && type.IsAssignableTo<IScoped>(),
                         order: 3
                     )
                     .Add(
                         add: new SingletonAttribute(),
                         when: type =>
-                            type.HasAttribute<DomainServiceAttribute>() &&
-                            !type.HasAttribute<TransientAttribute>() &&
-                            !type.HasAttribute<ScopedAttribute>() &&
+                            type.Has<DomainServiceAttribute>() &&
+                            !type.Has<TransientAttribute>() &&
+                            !type.Has<ScopedAttribute>() &&
                             type.Properties.All(p => !p.IsPublic),
                         order: 4
                     );
@@ -92,15 +92,15 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
             metadata
                 .Method
                     .Add(
-                        add: (method, adder) => adder.Add(method, new PublicServiceAttribute()),
-                        when: method => method.Type.HasAttribute<SingletonAttribute>() && method.Overloads.Any(o => o.IsPublic)
+                        add: (method, adder) => adder.Add(method, new ApiMethodAttribute()),
+                        when: method => method.Type.Has<SingletonAttribute>() && method.Overloads.Any(o => o.IsPublic)
                     );
         });
 
         configurator.ConfigureServiceCollection(services =>
         {
             var domainModel = configurator.Context.GetDomainModel();
-            foreach (var type in domainModel.Types.WithAttribute<TransientAttribute>())
+            foreach (var type in domainModel.Types.Having<TransientAttribute>())
             {
                 type.Apply(t =>
                 {
@@ -111,7 +111,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                 });
             }
 
-            foreach (var type in domainModel.Types.WithAttribute<ScopedAttribute>())
+            foreach (var type in domainModel.Types.Having<ScopedAttribute>())
             {
                 type.Apply(t =>
                 {
@@ -122,7 +122,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                 });
             }
 
-            foreach (var type in domainModel.Types.WithAttribute<SingletonAttribute>())
+            foreach (var type in domainModel.Types.Having<SingletonAttribute>())
             {
                 type.Apply(t =>
                 {
@@ -140,13 +140,13 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
 
             var domainModel = configurator.Context.GetDomainModel();
 
-            foreach (var type in domainModel.Types.WithAttribute<DomainServiceAttribute>())
+            foreach (var type in domainModel.Types.Having<DomainServiceAttribute>())
             {
                 if (type.FullName is null) { continue; }
-                if (!type.HasAttribute<SingletonAttribute>()) { continue; } // TODO for now only singleton
+                if (!type.Has<SingletonAttribute>()) { continue; } // TODO for now only singleton
 
                 var controller = new ControllerModel(type.Name);
-                foreach (var method in type.Methods.WithAttribute<PublicServiceAttribute>())
+                foreach (var method in type.Methods.Having<ApiMethodAttribute>())
                 {
                     var overload = method.Overloads.OrderByDescending(o => o.Parameters.Count).First();
                     if (overload.ReturnType is null) { continue; }

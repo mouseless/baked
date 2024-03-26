@@ -22,7 +22,7 @@ public record MethodModel(
     public bool HasParameter(Func<ParameterModel, bool> constraint) =>
         GetParameters().Any(p => constraint(p));
 
-    public bool HasAttribute<T>() where T : Attribute =>
+    public bool Has<T>() where T : Attribute =>
         CustomAttributes.ContainsKey(typeof(T));
 
     public bool CanReturn(TypeModel type) =>

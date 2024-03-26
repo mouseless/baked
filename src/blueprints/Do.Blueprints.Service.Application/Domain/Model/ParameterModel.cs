@@ -9,7 +9,7 @@ public record ParameterModel(
     AttributeCollection CustomAttributes
 ) : IModel
 {
-    public bool HasAttribute<T>() where T : Attribute =>
+    public bool Has<T>() where T : Attribute =>
      CustomAttributes.ContainsKey(typeof(T));
 
     string IModel.Id { get; } = Name;

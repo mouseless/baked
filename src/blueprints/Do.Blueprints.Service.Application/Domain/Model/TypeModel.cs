@@ -69,7 +69,7 @@ public class TypeModel(Type type, string id,
     bool Is(Type type) =>
         _type == type || BaseType?.Is(type) == true;
 
-    public bool HasAttribute<T>() where T : Attribute =>
+    public bool Has<T>() where T : Attribute =>
         CustomAttributes.ContainsKey(typeof(T));
 
     internal Type MakeGenericType(Type type) =>

@@ -5,5 +5,5 @@ public interface IModel
     string Id { get; }
     AttributeCollection CustomAttributes { get; }
 
-    bool HasAttribute<T>() where T : Attribute;
+    bool Has<T>() where T : Attribute;
 }
