@@ -9,10 +9,6 @@
     <Using Include="System.Threading.Tasks" />
   </ItemGroup>
 
-  <PropertyGroup>
-    <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)../stylecop.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="StyleCop.Analyzers.Unstable" VersionOverride="1.2.0.556" Condition="'$(ManagePackageVersionsCentrally)' == 'true'">
       <PrivateAssets>all</PrivateAssets>
