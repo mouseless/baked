@@ -3,7 +3,7 @@ using Do.RestApi.Model;
 
 namespace Do.RestApi;
 
-public interface IApiModelConventionCollection : IList<ApiModelConventionCollection>
+public interface IApiModelConventionCollection : IList<IApiModelConvention>
 {
     public void Apply(ApiModel apiModel)
     {
@@ -13,7 +13,7 @@ public interface IApiModelConventionCollection : IList<ApiModelConventionCollect
             apiModelConvention.Apply(apiModelContext);
         }
 
-        foreach (ControllerModel controller in apiModel.Controllers)
+        foreach (ControllerModel controller in apiModel.Controllers.ToList())
         {
             var controllerModelContext = new ControllerModelContext { Api = apiModel, Controller = controller };
             foreach (var controllerConvention in this.OfType<IApiModelConvention<ControllerModelContext>>())
@@ -22,9 +22,9 @@ public interface IApiModelConventionCollection : IList<ApiModelConventionCollect
             }
         }
 
-        foreach (ControllerModel controller in apiModel.Controllers)
+        foreach (ControllerModel controller in apiModel.Controllers.ToList())
         {
-            foreach (ActionModel action in controller.Actions)
+            foreach (ActionModel action in controller.Actions.ToList())
             {
                 var actionModelContext = new ActionModelContext { Api = apiModel, Controller = controller, Action = action };
                 foreach (var actionConvention in this.OfType<IApiModelConvention<ActionModelContext>>())
@@ -34,11 +34,11 @@ public interface IApiModelConventionCollection : IList<ApiModelConventionCollect
             }
         }
 
-        foreach (ControllerModel controller in apiModel.Controllers)
+        foreach (ControllerModel controller in apiModel.Controllers.ToList())
         {
-            foreach (ActionModel action in controller.Actions)
+            foreach (ActionModel action in controller.Actions.ToList())
             {
-                foreach (ParameterModel parameter in action.Parameters)
+                foreach (ParameterModel parameter in action.Parameters.ToList())
                 {
                     var parameterModelContext = new ParameterModelContext { Api = apiModel, Controller = controller, Action = action, Parameter = parameter };
                     foreach (var parameterConvention in this.OfType<IApiModelConvention<ParameterModelContext>>())

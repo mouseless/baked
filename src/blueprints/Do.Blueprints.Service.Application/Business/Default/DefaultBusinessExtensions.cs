@@ -43,4 +43,12 @@ public static class DefaultBusinessExtensions
         type.IsGenericType &&
         type.GenericTypeDefinition?.IsAssignableTo(typeof(List<>)) == true &&
         type.GenericTypeArguments.First().IsPrimitive();
+
+    internal static bool IsEntity(this TypeModel type) =>
+        type.IsClass && !type.IsAbstract &&
+        type.Constructor?.Overloads.Any(c => c
+            .Parameters.Any(p => p
+                .ParameterType.Name.StartsWith("IEntityContext")
+            )
+        ) == true;
 }

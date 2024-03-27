@@ -37,15 +37,28 @@ public class ExposingPublicMethods : TestServiceNfr
     }
 
     [Test]
-    public async Task ListParameters()
+    public async Task PrimitiveListParameters()
     {
-        var response = await Client.PostAsync("/generated/Methods/ListParameters", JsonContent.Create(
+        var response = await Client.PostAsync("/generated/Methods/PrimitiveListParameters", JsonContent.Create(
             new
             {
-                @stringList = new[] { "a", "b" }
+                stringList = new[] { "a", "b" }
             }
         ));
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
+    }
+
+    [Test]
+    public async Task EntityParameters()
+    {
+        var response = await Client.PostAsync("/generated/Methods/EntityParameters", JsonContent.Create(
+            new
+            {
+                entityId = $"{Guid.NewGuid()}"
+            }
+        ));
+
+        response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
     }
 }

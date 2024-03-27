@@ -16,6 +16,7 @@ public class TypeModel(Type type, string id,
     public string? Namespace { get; } = type.Namespace;
     public bool IsBusinessType { get; } = isBusinessType;
     public bool IsPublic { get; } = type.IsPublic;
+    public bool IsClass { get; } = type.IsClass;
     public bool IsAbstract { get; } = type.IsAbstract;
     public bool IsValueType { get; } = type.IsValueType;
     public bool IsSealed { get; } = type.IsSealed;
@@ -36,7 +37,6 @@ public class TypeModel(Type type, string id,
 
     public string CSharpFriendlyFullName { get; private set; } = default!;
 
-    public string RequiredFullName => throw new($"FullName was required for {Name}");
     public MethodModel? Constructor => Methods.TryGetValue(".ctor", out var ctor) ? ctor : default;
 
     internal void Init(

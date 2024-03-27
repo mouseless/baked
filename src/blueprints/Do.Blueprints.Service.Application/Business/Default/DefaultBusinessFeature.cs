@@ -84,7 +84,8 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                     var overload = method.Overloads.OrderByDescending(o => o.Parameters.Count).First(); // overload with most parameters
                     if (overload.ReturnType is null) { continue; }
 
-                    if (overload.Parameters.Count(p => !p.ParameterType.IsPrimitive() && !p.ParameterType.IsPrimitiveList()) > 0) { continue; } // TODO for now only primitive and list of primitive parameters
+                    // TODO for now only primitive, list of primitive and entity parameters
+                    if (overload.Parameters.Count(p => !p.ParameterType.IsPrimitive() && !p.ParameterType.IsPrimitiveList() && !p.ParameterType.IsEntity()) > 0) { continue; }
                     if (overload.ReturnType.FullName != typeof(void).FullName &&
                         overload.ReturnType.FullName != typeof(Task).FullName) { continue; } // TODO for now only void
 

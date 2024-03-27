@@ -24,10 +24,13 @@ public class Methods(
     }
 
     public void PrimitiveParameters(string @string, int @int, DateTime dateTime) =>
-        _logger.LogInformation($"{nameof(PrimitiveParameters)} was called with {@string}, {@int} and ${dateTime}");
+        _logger.LogInformation($"{nameof(PrimitiveParameters)} was called with {@string}, {@int} and {dateTime}");
 
-    public void ListParameters(List<string> stringList) =>
-        _logger.LogInformation($"{nameof(ListParameters)} was called with [{string.Join(", ", stringList)}]");
+    public void PrimitiveListParameters(List<string> stringList) =>
+        _logger.LogInformation($"{nameof(PrimitiveListParameters)} was called with [{string.Join(", ", stringList)}]");
+
+    public void EntityParameters(Entity entity) =>
+        _logger.LogInformation($"{nameof(EntityParameters)} was called with {entity.Id}");
 
     public object Object(object @object) =>
         @object;
