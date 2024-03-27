@@ -21,39 +21,27 @@ public class TypeModel(Type type, string id)
     public bool IsSealed { get; } = type.IsSealed;
     public bool IsInterface { get; } = type.IsInterface;
     public bool IsGenericType { get; } = type.IsGenericType;
+    public bool IsGenericTypeDefinition { get; } = type.IsGenericTypeDefinition;
     public bool IsGenericTypeParameter { get; } = type.IsGenericTypeParameter;
     public bool IsGenericMethodParameter { get; } = type.IsGenericMethodParameter;
     public bool ContainsGenericParameters { get; } = type.ContainsGenericParameters;
-    public TypeModel? BaseType { get; private set; } = default!;
+
+    public MethodModel? Constructor { get; private set; }
     public ModelCollection<MethodModel> Methods { get; private set; } = default!;
     public ModelCollection<PropertyModel> Properties { get; private set; } = default!;
-    public ModelCollection<TypeModel> GenericTypeArguments { get; private set; } = default!;
+
     public AttributeCollection CustomAttributes { get; private set; } = default!;
     public ModelCollection<TypeModel> Interfaces { get; private set; } = default!;
-    public MethodModel? Constructor { get; private set; }
+    public TypeModel? BaseType { get; private set; }
+    public TypeModel? GenericTypeDefinition { get; private set; }
+    public ModelCollection<TypeModel> GenericTypeArguments { get; private set; } = default!;
 
-    void Init(
-        ModelCollection<TypeModel>? genericTypeArguments = default,
-        MethodModel? constructor = default,
-        ModelCollection<MethodModel>? methods = default,
-        ModelCollection<PropertyModel>? properties = default,
-        AttributeCollection? customAttributes = default,
-        ModelCollection<TypeModel>? interfaces = default,
-        TypeModel? baseType = default
+    internal void SetGenerics(ModelCollection<TypeModel> genericTypeArguments,
+        TypeModel? genericTypeDefinition = default
     )
     {
-        GenericTypeArguments ??= genericTypeArguments ?? [];
-        Constructor ??= constructor;
-        Methods ??= methods ?? [];
-        Properties = properties ?? [];
-        CustomAttributes = customAttributes ?? [];
-        Interfaces = interfaces ?? [];
-        BaseType = baseType;
-    }
-
-    internal void SetGenerics(ModelCollection<TypeModel> genericTypeArguments)
-    {
         GenericTypeArguments = genericTypeArguments;
+        GenericTypeDefinition = genericTypeDefinition;
     }
 
     internal void SetInheritance(ModelCollection<TypeModel> interfaces,
@@ -89,10 +77,10 @@ public class TypeModel(Type type, string id)
         IsAssignableTo(typeof(T));
 
     public bool IsAssignableTo(Type type) =>
-        Is(type) || Interfaces.Contains(IdFrom(type));
+        Is(type) || Interfaces?.Contains(IdFrom(type)) == true;
 
     bool Is(Type type) =>
-        _type == type || BaseType?.Is(type) == true;
+        _type == type || BaseType?.Is(type) == true || (type.IsGenericType && _type.IsGenericType && GenericTypeDefinition?.Is(type) == true);
 
     public bool Has<T>() where T : Attribute =>
         CustomAttributes.ContainsKey(typeof(T));

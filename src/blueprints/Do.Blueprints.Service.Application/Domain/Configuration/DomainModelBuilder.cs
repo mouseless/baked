@@ -20,10 +20,11 @@ internal class DomainModelBuilder(DomainBuilderOptions _options)
             typeModel.Apply(t =>
             {
                 typeModel.SetGenerics(
-                    genericTypeArguments: typeModel.IsGenericType ? BuildGenericTypeArguments(t) : []
+                    genericTypeArguments: typeModel.IsGenericType ? BuildGenericTypeArguments(t) : [],
+                    genericTypeDefinition: typeModel.IsGenericType ? BuildGenericTypeDefinition(t) : default
                 );
                 typeModel.SetInheritance(
-                    baseType: t.BaseType is not null ? GetOrCreateTypeModel(t.BaseType) : default,
+                    baseType: BuildBaseType(t),
                     interfaces: BuildInterfaces(t)
                 );
                 typeModel.SetMetadata(
@@ -55,7 +56,8 @@ internal class DomainModelBuilder(DomainBuilderOptions _options)
             if (_options.ReferencedType.ShouldSkipSetGenerics.Any(f => f(t))) { return; }
 
             typeModel.SetGenerics(
-                genericTypeArguments: typeModel.IsGenericType ? BuildGenericTypeArguments(t) : []
+                genericTypeArguments: typeModel.IsGenericType ? BuildGenericTypeArguments(t) : [],
+                genericTypeDefinition: typeModel.IsGenericType ? BuildGenericTypeDefinition(t) : default
             );
         });
 
@@ -64,7 +66,7 @@ internal class DomainModelBuilder(DomainBuilderOptions _options)
             if (_options.ReferencedType.ShouldSkipSetInheritance.Any(f => f(t))) { return; }
 
             typeModel.SetInheritance(
-                baseType: t.BaseType is not null ? GetOrCreateTypeModel(t.BaseType) : default,
+                baseType: BuildBaseType(t),
                 interfaces: BuildInterfaces(t)
             );
         });
@@ -103,11 +105,17 @@ internal class DomainModelBuilder(DomainBuilderOptions _options)
         return new(methods.Values);
     }
 
+    TypeModel? BuildBaseType(Type type) =>
+        type.BaseType is null ? default : GetOrCreateTypeModel(type.BaseType);
+
     AttributeCollection BuildCustomAttributes(MemberInfo member) =>
         new(member.GetCustomAttributes());
 
     ModelCollection<TypeModel> BuildGenericTypeArguments(Type type) =>
         new(type.GenericTypeArguments.Select(GetOrCreateTypeModel));
+
+    TypeModel? BuildGenericTypeDefinition(Type type) =>
+         type.IsGenericTypeDefinition ? default : GetOrCreateTypeModel(type.GetGenericTypeDefinition());
 
     ModelCollection<TypeModel> BuildInterfaces(Type type) =>
         new(type.GetInterfaces().Select(GetOrCreateTypeModel));

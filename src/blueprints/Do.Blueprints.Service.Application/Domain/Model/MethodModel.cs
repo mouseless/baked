@@ -17,20 +17,8 @@ public record MethodModel(
         CustomAttributes = customAttributes;
     }
 
-    public List<ParameterModel> GetParameters() =>
-        Overloads.SelectMany(o => o.Parameters).ToList();
-
-    public bool HasParameter(Func<ParameterModel, bool> constraint) =>
-        GetParameters().Any(p => constraint(p));
-
     public bool Has<T>() where T : Attribute =>
         CustomAttributes.ContainsKey(typeof(T));
-
-    public bool CanReturn(TypeModel type) =>
-        Overloads.Any(o =>
-            o.ReturnType == type ||
-            (o.ReturnType?.IsAssignableTo<Task>() == true && o.ReturnType?.GenericTypeArguments.Any(a => a == type) == true)
-        );
 
     string IModel.Id { get; } = Name;
 }

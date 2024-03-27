@@ -54,7 +54,9 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                         add: new DataClassAttribute(),
                         when: type => type.Methods.Contains("<Clone>$"), // if type is record
                         order: int.MinValue
-                    )
+                    );
+            metadata
+                .Type
                     .Add(
                         add: new DomainServiceAttribute(),
                         when: type =>
@@ -68,15 +70,27 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                                 (type.ContainsGenericParameters && !type.GenericTypeArguments.Any()) ||
                                 type.Has<DataClassAttribute>()
                             )
-                    )
+                    );
+            metadata
+                .Type
                     .Add(
                         add: new TransientAttribute(),
-                        when: type => type.Has<DomainServiceAttribute>() && type.Methods.TryGetValue("With", out var with) && with.CanReturn(type)
-                    )
+                        when: type =>
+                            type.Has<DomainServiceAttribute>() &&
+                            type.Methods.TryGetValue("With", out var with) &&
+                            with.Overloads.Any(o =>
+                                o.ReturnType == type ||
+                                (o.ReturnType?.IsAssignableTo<Task>() == true && o.ReturnType?.GenericTypeArguments.Any(a => a == type) == true)
+                            )
+                    );
+            metadata
+                .Type
                     .Add(
                         add: new ScopedAttribute(),
                         when: type => type.Has<DomainServiceAttribute>() && type.IsAssignableTo<IScoped>()
-                    )
+                    );
+            metadata
+                .Type
                     .Add(
                         add: new SingletonAttribute(),
                         when: type =>
@@ -97,7 +111,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
         configurator.ConfigureServiceCollection(services =>
         {
             var domainModel = configurator.Context.GetDomainModel();
-            foreach (var type in domainModel.ReferencedTypes.Having<TransientAttribute>())
+            foreach (var type in domainModel.ReflectedTypes.Having<TransientAttribute>())
             {
                 type.Apply(t =>
                 {
@@ -108,7 +122,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                 });
             }
 
-            foreach (var type in domainModel.ReferencedTypes.Having<ScopedAttribute>())
+            foreach (var type in domainModel.ReflectedTypes.Having<ScopedAttribute>())
             {
                 type.Apply(t =>
                 {
@@ -119,7 +133,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                 });
             }
 
-            foreach (var type in domainModel.ReferencedTypes.Having<SingletonAttribute>())
+            foreach (var type in domainModel.ReflectedTypes.Having<SingletonAttribute>())
             {
                 type.Apply(t =>
                 {
