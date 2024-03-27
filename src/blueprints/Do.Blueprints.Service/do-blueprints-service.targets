@@ -9,15 +9,23 @@
     <Using Include="System.Threading.Tasks" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <AnalysisModeStyle>All</AnalysisModeStyle>
+  </PropertyGroup>
+
   <ItemGroup>
-    <PackageReference Include="StyleCop.Analyzers.Unstable" VersionOverride="1.2.0.556" Condition="'$(ManagePackageVersionsCentrally)' == 'true'">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="StyleCop.Analyzers.Unstable" Version="1.2.0.556" Condition="'$(ManagePackageVersionsCentrally)' != 'true'">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    <EditorConfigFilesToCopy Include="$(MSBuildThisFileDirectory)../.editorconfig" />
   </ItemGroup>
+
+  <Target Name="CopyEditorConfig" BeforeTargets="BeforeBuild">
+    <Copy
+      SourceFiles="@(EditorConfigFilesToCopy)"
+      DestinationFolder="$(SolutionDir)"
+      SkipUnchangedFiles="true"
+      UseHardlinksIfPossible="false"
+      OverwriteReadOnlyFiles="false"
+      Condition="$(DOCodingStyle) == true"/>
+  </Target>
 
 </Project>
