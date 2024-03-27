@@ -1,4 +1,4 @@
-﻿namespace Do.Domain.Model;
+namespace Do.Domain.Model;
 
 public class TypeModel(Type type, string id,
     AssemblyModel? assembly = default,
@@ -36,6 +36,7 @@ public class TypeModel(Type type, string id,
 
     public string CSharpFriendlyFullName { get; private set; } = default!;
 
+    public string RequiredFullName => throw new($"FullName was required for {Name}");
     public MethodModel? Constructor => Methods.TryGetValue(".ctor", out var ctor) ? ctor : default;
 
     internal void Init(

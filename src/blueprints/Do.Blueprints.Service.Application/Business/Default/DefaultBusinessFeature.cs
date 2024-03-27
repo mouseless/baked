@@ -1,4 +1,5 @@
 using Do.Architecture;
+using Do.Business.Default.RestApiConventions;
 using Do.RestApi.Model;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Converters;
@@ -69,7 +70,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
 
         configurator.ConfigureApiModel(api =>
         {
-            api.References.AddRange(_domainAssemblies);
+            _domainAssemblies.ForEach(a => api.Reference.Add(a.GetName().FullName, a));
 
             var domainModel = configurator.Context.GetDomainModel();
             foreach (var type in domainModel.Types.Where(t => !t.IsIgnored()))
@@ -87,7 +88,8 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                     if (overload.ReturnType.FullName != typeof(void).FullName &&
                         overload.ReturnType.FullName != typeof(Task).FullName) { continue; } // TODO for now only void
 
-                    controller.Actions.Add(
+                    controller.Action.Add(
+                        method.Name,
                         new(
                             Name: method.Name,
                             Method: HttpMethod.Post,
@@ -99,14 +101,19 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                         {
                             Parameters = [
                                 new(ParameterModelFrom.Services, type.FullName, "target"),
-                                ..overload.Parameters.Select(p => new ParameterModel(ParameterModelFrom.Body, p.ParameterType.CSharpFriendlyFullName, p.Name))
+                                .. overload.Parameters.Select(p => new ParameterModel(ParameterModelFrom.Body, p.ParameterType.CSharpFriendlyFullName, p.Name))
                             ]
                         }
                     );
                 }
 
-                api.Controllers.Add(controller);
+                api.Controller.Add(controller.Name, controller);
             }
+        });
+
+        configurator.ConfigureApiModelConventions(conventions =>
+        {
+            conventions.Add(new LookupEntityByIdConvention(configurator.Context.GetDomainModel()));
         });
 
         configurator.ConfigureMvcNewtonsoftJsonOptions(options =>
