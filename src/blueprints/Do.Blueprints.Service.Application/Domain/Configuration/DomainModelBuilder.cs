@@ -74,28 +74,26 @@ internal class DomainModelBuilder(DomainBuilderOptions _options)
         return typeModel;
     }
 
-    ConstructorGroupModel? BuildConstructorGroup(Type type, TypeModel target)
+    ConstructorGroupModel? BuildConstructorGroup(Type type, TypeModel typeModel)
     {
         var constructorInfos = type.GetConstructors(_options.ReflectedType.ConstructorBindingFlags) ?? [];
         if (!constructorInfos.Any()) { return null; }
 
-        var ctor = new ConstructorGroupModel(target);
-        ctor.Init([.. constructorInfos.Select(c => BuildConstructor(c, ctor))]);
+        var ctorGroup = new ConstructorGroupModel(typeModel);
+        ctorGroup.Init([.. constructorInfos.Select(c => BuildConstructor(c, ctorGroup))]);
 
-        return ctor;
+        return ctorGroup;
     }
 
-    ModelCollection<MethodGroupModel> BuildMethodGroups(Type type, TypeModel target)
+    ModelCollection<MethodGroupModel> BuildMethodGroups(Type type, TypeModel typeModel)
     {
         var methods = new Dictionary<string, MethodGroupModel>();
         var methodInfos = type.GetMethods(_options.ReflectedType.MethodBindingFlags) ?? [];
         foreach (var group in methodInfos.GroupBy(m => m.Name))
         {
-            var method = methods[group.Key] = new(target, group.Key);
+            var method = methods[group.Key] = new(typeModel, group.Key);
             // reflected type parent
-            method.Init(
-                methods: [.. group.Select(m => BuildMethod(m, method))]
-            );
+            method.Init(methods: [.. group.Select(m => BuildMethod(m, method))]);
         }
 
         return new(methods.Values);
@@ -116,26 +114,26 @@ internal class DomainModelBuilder(DomainBuilderOptions _options)
     ModelCollection<TypeModel> BuildInterfaces(Type type) =>
         new(type.GetInterfaces().Select(GetOrCreateTypeModel));
 
-    ConstructorModel BuildConstructor(ConstructorInfo constructor, ConstructorGroupModel parent)
+    ConstructorModel BuildConstructor(ConstructorInfo constructorInfo, ConstructorGroupModel ctorGroup)
     {
-        var overload = new ConstructorModel(parent, constructor.IsPublic, constructor.IsFamily);
-        overload.Init(
-            parameters: BuildParameters(constructor, overload),
-            customAttributes: []
+        var ctor = new ConstructorModel(ctorGroup, constructorInfo.IsPublic, constructorInfo.IsFamily);
+        ctor.Init(
+            parameters: BuildParameters(constructorInfo, ctor),
+            customAttributes: BuildCustomAttributes(constructorInfo)
         );
 
-        return overload;
+        return ctor;
     }
 
-    MethodModel BuildMethod(MethodInfo method, MethodGroupModel group)
+    MethodModel BuildMethod(MethodInfo methodInfo, MethodGroupModel group)
     {
-        var overload = new MethodModel(group, method.IsPublic, method.IsFamily, method.IsVirtual, GetOrCreateTypeModel(method.ReturnType));
-        overload.Init(
-            parameters: BuildParameters(method, overload),
-            customAttributes: []
+        var method = new MethodModel(group, methodInfo.IsPublic, methodInfo.IsFamily, methodInfo.IsVirtual, GetOrCreateTypeModel(methodInfo.ReturnType));
+        method.Init(
+            parameters: BuildParameters(methodInfo, method),
+            customAttributes: BuildCustomAttributes(methodInfo)
         );
 
-        return overload;
+        return method;
     }
 
     ModelCollection<ParameterModel> BuildParameters(MethodBase method, MethodBaseModel methodbase) =>
