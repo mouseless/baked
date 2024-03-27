@@ -22,5 +22,5 @@ public record ActionModel(
     public IEnumerable<ParameterModel> Parameters { get => Parameter.Values; init => Parameter = value.ToDictionary(p => p.Name); }
     public IEnumerable<ParameterModel> BodyParameters => Parameters.Where(p => p.From == ParameterModelFrom.Body);
     public IEnumerable<ParameterModel> NonBodyParameters => Parameters.Where(p => p.From != ParameterModelFrom.Body);
-    public IEnumerable<ParameterModel> MethodParameters => Parameters.Where(p => p.From != ParameterModelFrom.Services);
+    public IEnumerable<ParameterModel> InvokedMethodParameters => Parameters.Where(p => p.From != ParameterModelFrom.Services);
 }

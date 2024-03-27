@@ -3,7 +3,7 @@ using Do.RestApi.Model;
 
 namespace Do.RestApi;
 
-public interface IApiModelConventionCollection : IList<IApiModelConvention>
+public interface IApiModelConventionCollection : IList<ApiModelConventionCollection>
 {
     public void Apply(ApiModel apiModel)
     {

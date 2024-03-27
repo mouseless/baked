@@ -38,7 +38,7 @@ public class ApiCodeTemplate(ApiModel _apiModel)
             var __target = {{action.FindTargetStatement}};
 
             {{Return(action.Return)}} __target.{{action.InvokedMethodName}}(
-                {{ForEach(action.MethodParameters, p => $"@{p.Name}: {ParameterReference(p)}", separator: ", ")}}
+                {{ForEach(action.InvokedMethodParameters, p => $"@{p.Name}: {ParameterLookup(p)}", separator: ", ")}}
             );
         }
     """;
@@ -55,7 +55,7 @@ public class ApiCodeTemplate(ApiModel _apiModel)
     string Parameter(ParameterModel parameter) =>
         $"[From{parameter.From}(Name = \"{parameter.ApiName}\")] {parameter.Type} @{parameter.Name}";
 
-    string ParameterReference(ParameterModel parameter) =>
+    string ParameterLookup(ParameterModel parameter) =>
         $"({parameter.RenderLookup(parameter.FromBody ? $"request.@{parameter.Name}" : $"@{parameter.Name}")})";
 
     string Return(ReturnModel @return) =>
