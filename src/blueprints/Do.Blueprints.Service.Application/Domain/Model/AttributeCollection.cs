@@ -31,6 +31,9 @@ public class AttributeCollection() : IEnumerable<KeyValuePair<Type, List<Attribu
     public bool ContainsKey(Type type) =>
         _attributes.ContainsKey(type);
 
+    public bool Contains(Attribute attribute) =>
+        _attributes.TryGetValue(attribute.GetType(), out var list) ? list.Contains(attribute) : false;
+
     public IEnumerator<KeyValuePair<Type, List<Attribute>>> GetEnumerator() =>
         ((IEnumerable<KeyValuePair<Type, List<Attribute>>>)_attributes).GetEnumerator();
 

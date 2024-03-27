@@ -4,17 +4,17 @@ namespace Do.Domain.Configuration;
 
 public abstract class ModelIndexerBase : IModelIndexer
 {
-    protected abstract string IndexId { get; }
+    protected abstract ModelIndexKey IndexKey { get; }
     protected abstract bool AppliesTo(IModel model);
 
     void Apply<T>(ModelIndex<T> index, T model) where T : IModel
     {
-        if (!index.ContainsKey(IndexId))
+        if (!index.ContainsKey(IndexKey))
         {
-            index[IndexId] = [];
+            index[IndexKey] = [];
         }
 
-        index[IndexId].TryAdd(model);
+        index[IndexKey].TryAdd(model);
     }
 
     bool IModelIndexer.AppliestTo(IModel model) => AppliesTo(model);

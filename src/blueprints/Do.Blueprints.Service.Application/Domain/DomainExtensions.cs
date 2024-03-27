@@ -19,6 +19,7 @@ public static class DomainExtensions
     public static void Add<T>(this IDomainTypeCollection source) => source.Add(typeof(T));
 
     public static void AddAttributeIndexer<T>(this DomainIndexerCollection source) where T : Attribute => source.Add(AttributeIndexer.For<T>());
+    public static void AddAttributeIndexer<T>(this DomainIndexerCollection source, T attribute) where T : Attribute => source.Add(AttributeIndexer.For<T>(attribute));
 
     public static ModelConventionCollection<T> Add<T>(this ModelConventionCollection<T> source, Attribute add, Func<T, bool> when,
         int? order = default

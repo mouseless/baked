@@ -47,11 +47,11 @@ public class ModelCollection<T> : IEnumerable<T>, IIndexedCollection<T>
         return false;
     }
 
-    public ModelCollection<T> GetIndex(string id) =>
-        _index.GetOrEmpty(id);
+    public ModelCollection<T> GetIndex(object key) =>
+        _index.TryGetValue(new(key), out var result) ? result : new([]);
 
     public ModelCollection<T> Having<TAttribute>() where TAttribute : Attribute =>
-        GetIndex(TypeModel.IdFrom(typeof(TAttribute)));
+        GetIndex(typeof(TAttribute));
 
     public IEnumerator<T> GetEnumerator() => _models.GetEnumerator();
 
