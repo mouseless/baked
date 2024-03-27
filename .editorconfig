@@ -100,6 +100,10 @@ dotnet_style_qualification_for_event = false:silent
 dotnet_style_qualification_for_method = false:silent
 dotnet_code_quality_unused_parameters = all:suggestion
 
+# Code Analyzer
+
+dotnet_diagnostic.CA1860.severity = none
+
 # Coding Styles
 
 dotnet_diagnostic.IDE0001.severity = error # System.IO.FileInfo file;
