@@ -7,7 +7,7 @@ public class AttributeAdder : IConventionComponent<AttributeAdder>
     static AttributeAdder IConventionComponent<AttributeAdder>.New() =>
         new();
 
-    public void Add(IModel model, Attribute attribute)
+    public void Add(IMemberModel model, Attribute attribute)
     {
         model.CustomAttributes.Add(attribute);
     }

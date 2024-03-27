@@ -23,12 +23,12 @@ public static class DomainExtensions
     public static ModelConventionCollection<T> Add<T>(this ModelConventionCollection<T> source, Attribute add, Func<T, bool> when,
         int? order = default
     )
-        where T : IModel
+        where T : IMemberModel
     => source.Add((model, adder) => adder.Add(model, add), when, order);
 
     public static ModelConventionCollection<T> Add<T, TAttribute>(this ModelConventionCollection<T> source, Attribute[] add, Func<T, bool> when,
         int? order = default
-    ) where T : IModel
+    ) where T : IMemberModel
     => source.Add((model, adder) => Array.ForEach(add, a => adder.Add(model, a)), when, order);
 
     public static ModelConventionCollection<T> Add<T>(this ModelConventionCollection<T> source, Action<T, AttributeAdder> add, Func<T, bool> when,

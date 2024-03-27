@@ -1,16 +1,16 @@
 ﻿namespace Do.Domain.Model;
 
 public record ParameterModel(
-    MethodModel Overload,
+    MethodBaseModel Method,
     string Name,
     TypeModel ParameterType,
     bool IsOptional,
     object? DefaultValue,
     AttributeCollection CustomAttributes
-) : IModel
+) : IMemberModel
 {
     public bool Has<T>() where T : Attribute =>
-     CustomAttributes.ContainsKey(typeof(T));
+        CustomAttributes.ContainsKey<T>();
 
     string IModel.Id { get; } = Name;
 }

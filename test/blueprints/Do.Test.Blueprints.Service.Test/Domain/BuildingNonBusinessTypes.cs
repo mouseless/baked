@@ -22,8 +22,8 @@ public class BuildingNonBusinessTypes : TestServiceSpec
         model.GenericTypeArguments.ShouldNotBeNull();
         model.GenericTypeArguments.Count().ShouldBe(0);
 
-        model.MethodGroups.ShouldNotBeNull();
-        model.MethodGroups.Count().ShouldBe(0);
+        model.Methods.ShouldNotBeNull();
+        model.Methods.Length.ShouldBe(0);
 
         model.Interfaces.ShouldNotBeNull();
         model.Interfaces.Count().ShouldBe(0);
@@ -31,7 +31,8 @@ public class BuildingNonBusinessTypes : TestServiceSpec
         model.CustomAttributes.ShouldNotBeNull();
         model.CustomAttributes.Count().ShouldBe(0);
 
-        model.Constructor.ShouldBeNull();
+        model.Constructors.ShouldBeNull();
+        model.Constructors.Length.ShouldBe(0);
     }
 
     [Test]

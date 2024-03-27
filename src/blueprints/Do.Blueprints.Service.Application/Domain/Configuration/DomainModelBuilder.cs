@@ -31,7 +31,7 @@ internal class DomainModelBuilder(DomainBuilderOptions _options)
                     customAttributes: BuildCustomAttributes(t)
                 );
                 typeModel.SetMembers(
-                    constructor: BuildConstructor(t, typeModel),
+                    constructor: BuildConstructorGroup(t, typeModel),
                     properties: BuildProperties(t, typeModel),
                     methodGroups: BuildMethodGroups(t, typeModel)
                 );
@@ -74,16 +74,13 @@ internal class DomainModelBuilder(DomainBuilderOptions _options)
         return typeModel;
     }
 
-    MethodGroupModel? BuildConstructor(Type type, TypeModel target)
+    ConstructorGroupModel? BuildConstructorGroup(Type type, TypeModel target)
     {
         var constructorInfos = type.GetConstructors(_options.ReflectedType.ConstructorBindingFlags) ?? [];
         if (!constructorInfos.Any()) { return null; }
 
-        var ctor = new MethodGroupModel(target, ".ctor");
-        ctor.Init(
-            methods: [.. constructorInfos.Select(c => BuildConstructorOverload(c, ctor))],
-            customAttributes: []
-        );
+        var ctor = new ConstructorGroupModel(target);
+        ctor.Init([.. constructorInfos.Select(c => BuildConstructor(c, ctor))]);
 
         return ctor;
     }
@@ -97,8 +94,7 @@ internal class DomainModelBuilder(DomainBuilderOptions _options)
             var method = methods[group.Key] = new(target, group.Key);
             // reflected type parent
             method.Init(
-                methods: [.. group.Select(m => BuildMethodOverload(m, method))],
-                customAttributes: []
+                methods: [.. group.Select(m => BuildMethod(m, method))]
             );
         }
 
@@ -120,9 +116,9 @@ internal class DomainModelBuilder(DomainBuilderOptions _options)
     ModelCollection<TypeModel> BuildInterfaces(Type type) =>
         new(type.GetInterfaces().Select(GetOrCreateTypeModel));
 
-    MethodModel BuildConstructorOverload(ConstructorInfo constructor, MethodGroupModel parent)
+    ConstructorModel BuildConstructor(ConstructorInfo constructor, ConstructorGroupModel parent)
     {
-        var overload = new MethodModel(parent, constructor.IsPublic, constructor.IsFamily, constructor.IsVirtual);
+        var overload = new ConstructorModel(parent, constructor.IsPublic, constructor.IsFamily);
         overload.Init(
             parameters: BuildParameters(constructor, overload),
             customAttributes: []
@@ -131,7 +127,7 @@ internal class DomainModelBuilder(DomainBuilderOptions _options)
         return overload;
     }
 
-    MethodModel BuildMethodOverload(MethodInfo method, MethodGroupModel group)
+    MethodModel BuildMethod(MethodInfo method, MethodGroupModel group)
     {
         var overload = new MethodModel(group, method.IsPublic, method.IsFamily, method.IsVirtual, GetOrCreateTypeModel(method.ReturnType));
         overload.Init(
@@ -142,10 +138,10 @@ internal class DomainModelBuilder(DomainBuilderOptions _options)
         return overload;
     }
 
-    ModelCollection<ParameterModel> BuildParameters(MethodBase method, MethodModel overload) =>
-        new(method.GetParameters().Select(p => BuildParameter(p, overload)));
+    ModelCollection<ParameterModel> BuildParameters(MethodBase method, MethodBaseModel methodbase) =>
+        new(method.GetParameters().Select(p => BuildParameter(p, methodbase)));
 
-    ParameterModel BuildParameter(ParameterInfo parameter, MethodModel overload) =>
+    ParameterModel BuildParameter(ParameterInfo parameter, MethodBaseModel overload) =>
         new(overload, parameter.Name ?? string.Empty, GetOrCreateTypeModel(parameter.ParameterType), parameter.IsOptional, parameter.DefaultValue, BuildCustomAttributes(parameter.Member));
 
     ModelCollection<PropertyModel> BuildProperties(Type type, TypeModel owner) =>

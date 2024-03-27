@@ -25,6 +25,9 @@ public class AttributeCollection() : IEnumerable<KeyValuePair<Type, List<Attribu
         _attributes[type].Add(attribute);
     }
 
+    public bool ContainsKey<T>() =>
+        _attributes.ContainsKey(typeof(T));
+
     public bool ContainsKey(Type type) =>
         _attributes.ContainsKey(type);
 

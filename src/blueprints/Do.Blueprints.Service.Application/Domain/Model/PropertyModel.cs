@@ -10,7 +10,7 @@ public record PropertyModel(
 ) : IModel
 {
     public bool Has<T>() where T : Attribute =>
-        CustomAttributes.ContainsKey(typeof(T));
+        CustomAttributes.ContainsKey<T>();
 
     string IModel.Id { get; } = Name;
 }

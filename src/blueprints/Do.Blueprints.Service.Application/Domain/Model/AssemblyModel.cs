@@ -14,5 +14,5 @@ public class AssemblyModel(Assembly _assembly)
     public void Apply(Action<Assembly> action) => action(_assembly);
 
     public bool Has<T>() where T : Attribute =>
-        CustomAttributes.ContainsKey(typeof(T));
+        CustomAttributes.ContainsKey<T>();
 }

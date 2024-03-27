@@ -103,8 +103,14 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
             metadata
                 .MethodGroup
                     .Add(
-                        add: (method, adder) => adder.Add(method, new ApiMethodAttribute()),
-                        when: group => group.ReflectedType.Has<SingletonAttribute>() && group.Methods.Any(o => o.IsPublic)
+                        add: (group, adder) =>
+                        {
+                            foreach (var method in group.Methods.Where(m => m.IsPublic))
+                            {
+                                adder.Add(method, new ApiMethodAttribute());
+                            }
+                        },
+                        when: group => group.ReflectedType.Has<SingletonAttribute>() && group.Methods.Any(m => m.IsPublic)
                     );
         });
 

@@ -1,7 +1,7 @@
 ﻿namespace Do.Domain.Model;
 
 public class TypeModel(Type type, string id)
-    : IModel, IEquatable<TypeModel>
+    : IMemberModel, IModel, IEquatable<TypeModel>
 {
     internal static string IdFrom(Type type) =>
         type.FullName ?? $"{type.Namespace}.{type.Name}<{string.Join(',', type.GenericTypeArguments.Select(IdFrom))}>";
@@ -26,9 +26,8 @@ public class TypeModel(Type type, string id)
     public bool IsGenericMethodParameter { get; } = type.IsGenericMethodParameter;
     public bool ContainsGenericParameters { get; } = type.ContainsGenericParameters;
 
-    public MethodGroupModel? Constructor { get; private set; }
-    public ModelCollection<MethodGroupModel> MethodGroups { get; private set; } = default!;
-    MethodModel[] Methods { get; set; } = default!;
+    internal ModelCollection<MethodGroupModel> MethodGroups { get; private set; } = default!;
+    public MethodModel[] Methods { get; private set; } = default!;
     public ModelCollection<PropertyModel> Properties { get; private set; } = default!;
 
     public AttributeCollection CustomAttributes { get; private set; } = default!;
@@ -37,12 +36,22 @@ public class TypeModel(Type type, string id)
     public TypeModel? GenericTypeDefinition { get; private set; }
     public ModelCollection<TypeModel> GenericTypeArguments { get; private set; } = default!;
 
+    public string CSharpFriendlyFullName { get; private set; } = default!;
+
+    public string RequiredFullName => throw new($"FullName was required for {Name}");
+    internal ConstructorGroupModel? ConstructorGroup { get; private set; }
+    public ConstructorModel[] Constructors { get; private set; } = default!;
+
     internal void SetGenerics(ModelCollection<TypeModel> genericTypeArguments,
         TypeModel? genericTypeDefinition = default
     )
     {
         GenericTypeArguments = genericTypeArguments;
         GenericTypeDefinition = genericTypeDefinition;
+
+        CSharpFriendlyFullName = IsGenericType
+            ? $"{Namespace}.{Name[..Name.IndexOf("`")]}<{string.Join(", ", GenericTypeArguments.Select(t => t.CSharpFriendlyFullName))}>"
+            : FullName ?? Name;
     }
 
     internal void SetInheritance(ModelCollection<TypeModel> interfaces,
@@ -59,18 +68,20 @@ public class TypeModel(Type type, string id)
     }
 
     internal void SetMembers(ModelCollection<MethodGroupModel> methodGroups, ModelCollection<PropertyModel> properties,
-        MethodGroupModel? constructor = default
+        ConstructorGroupModel? constructor = default
     )
     {
         MethodGroups = methodGroups;
         Methods = MethodGroups.SelectMany(m => m.Methods).ToArray();
         Properties = properties;
-        Constructor = constructor;
+        ConstructorGroup = constructor;
+        Constructors = constructor?.Constructors.ToArray() ?? [];
     }
 
+    public ConstructorModel? GetConstructor() => ConstructorGroup?.Constructors.Single();
+
     public MethodModel GetMethod(string name) => MethodGroups[name].Methods.Single();
-    public MethodModel[] GetMethods(string name) => [..MethodGroups[name].Methods];
-    public MethodModel[] GetMethods() => Methods;
+    public MethodModel[] GetMethods(string name) => [.. MethodGroups[name].Methods];
 
     public void Apply(Action<Type> action) =>
         action(_type);
@@ -85,7 +96,7 @@ public class TypeModel(Type type, string id)
         _type == type || BaseType?.Is(type) == true || (type.IsGenericType && _type.IsGenericType && GenericTypeDefinition?.Is(type) == true);
 
     public bool Has<T>() where T : Attribute =>
-        CustomAttributes.ContainsKey(typeof(T));
+        CustomAttributes.ContainsKey<T>();
 
     public override bool Equals(object? obj) =>
         ((IEquatable<TypeModel>)this).Equals(obj as TypeModel);
