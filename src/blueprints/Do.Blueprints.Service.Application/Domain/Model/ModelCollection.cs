@@ -5,7 +5,7 @@ namespace Do.Domain.Model;
 public class ModelCollection<T> : IEnumerable<T>, IIndexedCollection<T>
     where T : IModel
 {
-    readonly KeyedModelCollection<T> _models = [];
+    readonly ModelKeyedCollection<T> _models = [];
     readonly ModelIndex<T> _index = [];
 
     public ModelCollection() { }

@@ -5,8 +5,8 @@ namespace Do.Domain.Configuration;
 
 internal class DomainModelBuilder(DomainBuilderOptions _options)
 {
-    readonly KeyedModelCollection<TypeModel> _reflectedTypes = [];
-    readonly KeyedModelCollection<TypeModel> _referencedTypes = [];
+    readonly ModelKeyedCollection<TypeModel> _reflectedTypes = [];
+    readonly ModelKeyedCollection<TypeModel> _referencedTypes = [];
 
     internal DomainModel BuildFrom(IDomainTypeCollection reflectedTypes)
     {

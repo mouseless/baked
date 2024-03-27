@@ -5,6 +5,17 @@ public record DomainModel(
     ModelCollection<TypeModel> ReferencedTypes
 )
 {
-    public TypeModel this[Type type] => ReflectedTypes[type]; // TODO fix and add referenced type lookup
-    public TypeModel this[string typeId] => ReflectedTypes[typeId]; // TODO fix and add referenced type lookup
+    public TypeModel this[Type type] => 
+        this[TypeModel.IdFrom(type)];
+
+    public TypeModel this[string typeId]
+    {
+        get
+        {
+            if (ReflectedTypes.TryGetValue(typeId, out var model)) { return model; }
+            if (ReflectedTypes.TryGetValue(typeId, out model)) { return model; }
+
+            throw new KeyNotFoundException(typeId);
+        }
+    }
 }
