@@ -3,7 +3,7 @@ namespace Do.Domain.Model;
 
 public class AttributeCollection() : IEnumerable<KeyValuePair<Type, List<Attribute>>>
 {
-    readonly Dictionary<Type, List<Attribute>> _attributes = [];
+    readonly Dictionary<Type, HashSet<Attribute>> _attributes = [];
 
     internal AttributeCollection(IEnumerable<Attribute> attributes)
         : this()

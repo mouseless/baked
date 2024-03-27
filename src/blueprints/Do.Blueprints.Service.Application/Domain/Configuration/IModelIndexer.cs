@@ -5,5 +5,5 @@ namespace Do.Domain.Configuration;
 public interface IModelIndexer
 {
     bool AppliestTo(IModel model);
-    void Apply<T>(IIndexedCollection<T> index, T model) where T : IModel;
+    void Apply<T>(IIndexedCollection<T> index, IEnumerable<T> models) where T : IModel;
 }

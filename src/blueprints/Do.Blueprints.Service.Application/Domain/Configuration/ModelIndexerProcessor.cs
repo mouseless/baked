@@ -7,15 +7,20 @@ public class ModelIndexerProcessor<T>(DomainIndexerCollection _indexers) : IMode
 {
     void Apply(ModelCollection<T> collection)
     {
+        var models = new List<T>();
+
         foreach (var indexer in _indexers)
         {
             foreach (var model in collection)
             {
                 if (indexer.AppliestTo(model))
                 {
-                    indexer.Apply(collection, model);
+                    models.Add(model);
                 }
             }
+
+            indexer.Apply(collection, models);
+            models.Clear();
         }
     }
 

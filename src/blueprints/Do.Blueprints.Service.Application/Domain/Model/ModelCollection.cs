@@ -35,18 +35,6 @@ public class ModelCollection<T> : IEnumerable<T>, IIndexedCollection<T>
     public bool TryGetValue(string id, [NotNullWhen(true)] out T? model) =>
        _models.TryGetValue(id, out model);
 
-    internal bool TryAdd(T typeModel)
-    {
-        if (!ContainsModel(typeModel))
-        {
-            _models.Add(typeModel);
-
-            return true;
-        }
-
-        return false;
-    }
-
     public ModelCollection<T> GetIndex(object key) =>
         _index.TryGetValue(new(key), out var result) ? result : new([]);
 
