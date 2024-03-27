@@ -5,7 +5,7 @@ public record DomainModel(
     ModelCollection<TypeModel> ReferencedTypes
 )
 {
-    public TypeModel this[Type type] => 
+    public TypeModel this[Type type] =>
         this[TypeModel.IdFrom(type)];
 
     public TypeModel this[string typeId]

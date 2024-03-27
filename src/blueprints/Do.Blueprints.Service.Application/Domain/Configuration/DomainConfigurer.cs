@@ -8,11 +8,11 @@ internal class DomainConfigurer(IDomainConfiguration _configuration)
     {
         _configuration.Type.Apply(model.ReflectedTypes);
 
-        foreach (var methods in model.ReflectedTypes.Select(t => t.Methods))
+        foreach (var methods in model.ReflectedTypes.Select(t => t.MethodGroups))
         {
-            _configuration.Method.Apply(methods);
+            _configuration.MethodGroup.Apply(methods);
 
-            foreach (var overloads in methods.Select(m => m.Overloads))
+            foreach (var overloads in methods.Select(m => m.Methods))
             {
                 foreach (var overload in overloads)
                 {

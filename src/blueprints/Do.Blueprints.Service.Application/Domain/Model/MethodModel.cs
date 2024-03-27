@@ -1,24 +1,19 @@
-﻿
-namespace Do.Domain.Model;
+﻿namespace Do.Domain.Model;
 
-// method group model
 public record MethodModel(
-    TypeModel Type,
-    string Name,
-    bool IsConstructor = false // constructor model olsun, method model'de is constructor olmayacak
-) : IModel
+    MethodGroupModel Group,
+    bool IsPublic,
+    bool IsProtected,
+    bool IsVirtual,
+    TypeModel? ReturnType = default
+)
 {
-    public OverloadModel[] Overloads { get; private set; } = default!; // methodmodel[], list olsun
-    public AttributeCollection CustomAttributes { get; private set; } = default!; // kalkacak
+    public ModelCollection<ParameterModel> Parameters { get; private set; } = default!;
+    public AttributeCollection CustomAttributes { get; private set; } = default!;
 
-    internal void Init(OverloadModel[] overloads, AttributeCollection customAttributes)
+    internal void Init(AttributeCollection customAttributes, ModelCollection<ParameterModel> parameters)
     {
-        Overloads = overloads;
         CustomAttributes = customAttributes;
+        Parameters = parameters;
     }
-
-    public bool Has<T>() where T : Attribute =>
-        CustomAttributes.ContainsKey(typeof(T));
-
-    string IModel.Id { get; } = Name;
 }

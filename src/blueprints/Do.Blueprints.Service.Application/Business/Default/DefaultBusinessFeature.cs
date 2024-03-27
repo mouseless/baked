@@ -52,7 +52,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                 .Type
                     .Add(
                         add: new DataClassAttribute(),
-                        when: type => type.Methods.Contains("<Clone>$"), // if type is record
+                        when: type => type.MethodGroups.Contains("<Clone>$"), // if type is record
                         order: int.MinValue
                     );
             metadata
@@ -77,8 +77,8 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                         add: new TransientAttribute(),
                         when: type =>
                             type.Has<DomainServiceAttribute>() &&
-                            type.Methods.TryGetValue("With", out var with) &&
-                            with.Overloads.Any(o =>
+                            type.MethodGroups.TryGetValue("With", out var group) &&
+                            group.Methods.Any(o =>
                                 o.ReturnType == type ||
                                 (o.ReturnType?.IsAssignableTo<Task>() == true && o.ReturnType?.GenericTypeArguments.Any(a => a == type) == true)
                             )
@@ -101,10 +101,10 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                     );
 
             metadata
-                .Method
+                .MethodGroup
                     .Add(
                         add: (method, adder) => adder.Add(method, new ApiMethodAttribute()),
-                        when: method => method.Type.Has<SingletonAttribute>() && method.Overloads.Any(o => o.IsPublic)
+                        when: group => group.ReflectedType.Has<SingletonAttribute>() && group.Methods.Any(o => o.IsPublic)
                     );
         });
 
@@ -157,9 +157,9 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                 if (!type.Has<SingletonAttribute>()) { continue; } // TODO for now only singleton
 
                 var controller = new ControllerModel(type.Name);
-                foreach (var method in type.Methods.Having<ApiMethodAttribute>())
+                foreach (var group in type.MethodGroups.Having<ApiMethodAttribute>())
                 {
-                    var overload = method.Overloads.OrderByDescending(o => o.Parameters.Count).First();
+                    var overload = group.Methods.OrderByDescending(o => o.Parameters.Count).First();
                     if (overload.ReturnType is null) { continue; }
 
                     if (overload.Parameters.Count > 0) { continue; } // TODO for now only parameterless
@@ -168,13 +168,13 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
 
                     controller.Actions.Add(
                         new(
-                            Name: method.Name,
+                            Name: group.Name,
                             Method: HttpMethod.Post,
-                            Route: $"generated/{type.Name}/{method.Name}",
+                            Route: $"generated/{type.Name}/{group.Name}",
                             Return: new(async: overload.ReturnType.IsAssignableTo(typeof(Task))),
                             Statements: new(
                                 FindTarget: "target",
-                                InvokeMethod: new(method.Name)
+                                InvokeMethod: new(group.Name)
                             )
                         )
                         { Parameters = [new(ParameterModelFrom.Services, type.FullName, "target")] }

@@ -26,8 +26,9 @@ public class TypeModel(Type type, string id)
     public bool IsGenericMethodParameter { get; } = type.IsGenericMethodParameter;
     public bool ContainsGenericParameters { get; } = type.ContainsGenericParameters;
 
-    public MethodModel? Constructor { get; private set; }
-    public ModelCollection<MethodModel> Methods { get; private set; } = default!;
+    public MethodGroupModel? Constructor { get; private set; }
+    public ModelCollection<MethodGroupModel> MethodGroups { get; private set; } = default!;
+    MethodModel[] Methods { get; set; } = default!;
     public ModelCollection<PropertyModel> Properties { get; private set; } = default!;
 
     public AttributeCollection CustomAttributes { get; private set; } = default!;
@@ -57,18 +58,19 @@ public class TypeModel(Type type, string id)
         CustomAttributes = customAttributes;
     }
 
-    internal void SetMembers(ModelCollection<MethodModel> methods, ModelCollection<PropertyModel> properties,
-        MethodModel? constructor = default
+    internal void SetMembers(ModelCollection<MethodGroupModel> methodGroups, ModelCollection<PropertyModel> properties,
+        MethodGroupModel? constructor = default
     )
     {
-        Methods = methods;
+        MethodGroups = methodGroups;
+        Methods = MethodGroups.SelectMany(m => m.Methods).ToArray();
         Properties = properties;
         Constructor = constructor;
     }
 
-    public OverloadModel GetMethod(string name) => Methods[name].Overloads.Single();
-    public OverloadModel[] GetMethods(string name) => Methods[name].Overloads;
-    public OverloadModel[] GetMethods() => Methods.SelectMany(m => m.Overloads).ToArray(); // tabi bu array on demand olmasin, prebuilt olsun
+    public MethodModel GetMethod(string name) => MethodGroups[name].Methods.Single();
+    public MethodModel[] GetMethods(string name) => [..MethodGroups[name].Methods];
+    public MethodModel[] GetMethods() => Methods;
 
     public void Apply(Action<Type> action) =>
         action(_type);

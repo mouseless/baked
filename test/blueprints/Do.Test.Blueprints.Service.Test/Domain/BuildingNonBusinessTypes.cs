@@ -22,8 +22,8 @@ public class BuildingNonBusinessTypes : TestServiceSpec
         model.GenericTypeArguments.ShouldNotBeNull();
         model.GenericTypeArguments.Count().ShouldBe(0);
 
-        model.Methods.ShouldNotBeNull();
-        model.Methods.Count().ShouldBe(0);
+        model.MethodGroups.ShouldNotBeNull();
+        model.MethodGroups.Count().ShouldBe(0);
 
         model.Interfaces.ShouldNotBeNull();
         model.Interfaces.Count().ShouldBe(0);
