@@ -18,27 +18,22 @@ public class MembersBuildLevel : BuildLevel
             var constructorInfos = type.GetConstructors(builder.Options.BindingFlags.Constructor) ?? [];
             if (!constructorInfos.Any()) { return null; }
 
-            var ctorGroup = new ConstructorGroupModel(typeModel);
-            ctorGroup.Init([.. constructorInfos.Select(c => BuildConstructor(c, ctorGroup))]);
-
-            return ctorGroup;
+            return new([.. constructorInfos.Select(BuildConstructor)]);
         }
 
-        ConstructorModel BuildConstructor(ConstructorInfo constructorInfo, ConstructorGroupModel ctorGroup)
+        ConstructorModel BuildConstructor(ConstructorInfo constructorInfo)
         {
-            var result = new ConstructorModel(ctorGroup, constructorInfo.IsPublic, constructorInfo.IsFamily);
-
-            result.Init(
-                parameters: BuildParameters(constructorInfo, result),
-                customAttributes: new(constructorInfo.GetCustomAttributes())
+            return new(
+                "ctor",
+                constructorInfo.IsPublic,
+                constructorInfo.IsFamily,
+                new(constructorInfo.GetCustomAttributes()),
+                BuildParameters(constructorInfo)
             );
-
-            return result;
         }
 
         PropertyModel BuildProperty(PropertyInfo property) =>
             new(
-                typeModel,
                 property.Name,
                 builder.Get(property.PropertyType),
                 property.GetMethod?.IsPublic == true,
@@ -52,32 +47,30 @@ public class MembersBuildLevel : BuildLevel
             var methodInfos = type.GetMethods(builder.Options.BindingFlags.Method) ?? [];
             foreach (var group in methodInfos.GroupBy(m => m.Name))
             {
-                var method = methods[group.Key] = new(typeModel, group.Key);
-
-                method.Init(methods: [.. group.Select(m => BuildMethod(m, method))]);
+                methods[group.Key] = new(group.Key, [.. group.Select(BuildMethod)]);
             }
 
             return new(methods.Values);
         }
 
-        MethodModel BuildMethod(MethodInfo methodInfo, MethodGroupModel group)
+        MethodModel BuildMethod(MethodInfo methodInfo)
         {
-            var result = new MethodModel(group, methodInfo.IsPublic, methodInfo.IsFamily, methodInfo.IsVirtual, builder.Get(methodInfo.ReturnType));
-
-            result.Init(
-                parameters: BuildParameters(methodInfo, result),
-                customAttributes: new(methodInfo.GetCustomAttributes())
+            return new(
+                methodInfo.Name,
+                methodInfo.IsPublic,
+                methodInfo.IsFamily,
+                methodInfo.IsVirtual,
+                builder.Get(methodInfo.ReturnType),
+                new(methodInfo.GetCustomAttributes()),
+                BuildParameters(methodInfo)
             );
-
-            return result;
         }
 
-        ModelCollection<ParameterModel> BuildParameters(MethodBase method, MethodBaseModel methodBase) =>
-            method.GetParameters().Select(p => BuildParameter(p, methodBase)).ToModelCollection();
+        ModelCollection<ParameterModel> BuildParameters(MethodBase method) =>
+            method.GetParameters().Select(BuildParameter).ToModelCollection();
 
-        ParameterModel BuildParameter(ParameterInfo parameter, MethodBaseModel overload) =>
+        ParameterModel BuildParameter(ParameterInfo parameter) =>
             new(
-                overload,
                 parameter.Name ?? string.Empty,
                 builder.Get(parameter.ParameterType),
                 parameter.IsOptional,

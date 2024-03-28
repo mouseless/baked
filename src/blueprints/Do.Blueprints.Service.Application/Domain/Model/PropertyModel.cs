@@ -1,7 +1,6 @@
 ﻿namespace Do.Domain.Model;
 
 public record PropertyModel(
-    TypeModel Owner,
     string Name,
     TypeModel PropertyType,
     bool IsPublic,

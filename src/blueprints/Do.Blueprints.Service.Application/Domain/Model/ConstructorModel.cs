@@ -1,14 +1,18 @@
 ﻿namespace Do.Domain.Model;
 
 public record ConstructorModel(
-    ConstructorGroupModel Group,
+    string Name,
     bool IsPublic,
     bool IsProtected,
-    TypeModel? ReturnType = default
+    AttributeCollection CustomAttributes,
+    ModelCollection<ParameterModel> Parameters
 ) : MethodBaseModel(
+    Name,
     IsPublic,
     IsProtected,
     false,
     true,
-    ReturnType
+    default,
+    CustomAttributes,
+    Parameters
 );

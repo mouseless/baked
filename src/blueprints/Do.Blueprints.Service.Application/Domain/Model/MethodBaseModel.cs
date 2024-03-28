@@ -1,21 +1,15 @@
 ﻿namespace Do.Domain.Model;
 
 public abstract record MethodBaseModel(
+    string Name,
     bool IsPublic,
     bool IsProtected,
     bool IsVirtual,
     bool IsConstructor,
-    TypeModel? ReturnType
+    TypeModel? ReturnType,
+    AttributeCollection CustomAttributes,
+    ModelCollection<ParameterModel> Parameters
 ) : IMemberModel
 {
-    public AttributeCollection CustomAttributes { get; private set; } = default!;
-    public ModelCollection<ParameterModel> Parameters { get; private set; } = default!;
-
-    internal void Init(AttributeCollection customAttributes, ModelCollection<ParameterModel> parameters)
-    {
-        CustomAttributes = customAttributes;
-        Parameters = parameters;
-    }
-
-    public string Id => $"{ReturnType?.Name}[{string.Join(", ", Parameters.Select(p => p.Name))}]";
+    string IModel.Id { get; } = $"{ReturnType?.Name}{Name}({string.Join(", ", Parameters.Select(p => p.Name))})";
 }

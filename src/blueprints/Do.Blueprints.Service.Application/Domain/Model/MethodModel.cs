@@ -1,15 +1,20 @@
 ﻿namespace Do.Domain.Model;
 
 public record MethodModel(
-    MethodGroupModel Group,
+    string Name,
     bool IsPublic,
     bool IsProtected,
     bool IsVirtual,
-    TypeModel? ReturnType
+    TypeModel? ReturnType,
+    AttributeCollection CustomAttributes,
+    ModelCollection<ParameterModel> Parameters
 ) : MethodBaseModel(
+    Name,
     IsPublic,
     IsProtected,
     IsVirtual,
     false,
-    ReturnType
+    ReturnType,
+    CustomAttributes,
+    Parameters
 );
