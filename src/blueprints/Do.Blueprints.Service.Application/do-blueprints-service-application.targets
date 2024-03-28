@@ -4,23 +4,4 @@
     <Using Include="Do" />
   </ItemGroup>
 
-  <PropertyGroup>
-    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-    <AnalysisModeStyle>All</AnalysisModeStyle>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <EditorConfigFilesToCopy Include="$(MSBuildThisFileDirectory)../.editorconfig" />
-  </ItemGroup>
-
-  <Target Name="CopyEditorConfig" BeforeTargets="BeforeBuild">
-    <Copy
-      SourceFiles="@(EditorConfigFilesToCopy)"
-      DestinationFolder="$(SolutionDir)"
-      SkipUnchangedFiles="true"
-      UseHardlinksIfPossible="false"
-      OverwriteReadOnlyFiles="false"
-      Condition="$(DOCodingStyle) == true"/>
-  </Target>
-
 </Project>
