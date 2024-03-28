@@ -1,5 +1,5 @@
 ﻿using Do.Architecture;
-using Do.Domain.Model;
+using Do.Domain.Configuration;
 using Do.RestApi.Model;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Converters;
@@ -11,7 +11,7 @@ namespace Do.Business.Default;
 public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
     : IFeature<BusinessConfigurator>
 {
-    const BindingFlags _defaultMemberBindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
+    const BindingFlags _bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
 
     public void Configure(LayerConfigurator configurator)
     {
@@ -30,11 +30,14 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
 
         configurator.ConfigureDomainBuilderOptions(options =>
         {
-            options.ReflectedType.ConstructorBindingFlags = _defaultMemberBindingFlags;
-            options.ReflectedType.MethodBindingFlags = _defaultMemberBindingFlags;
-            options.ReflectedType.PropertyBindingFlags = _defaultMemberBindingFlags;
+            options.BindingFlags.Constructor = _bindingFlags;
+            options.BindingFlags.Method = _bindingFlags;
+            options.BindingFlags.Property = _bindingFlags;
 
-            options.ReferencedType.ShouldSkipSetInheritance.When(t => t.IsValueType);
+            options.BuildLevels.Add(context => context.IsDomainType(context.Type), BuildLevel.Members);
+            options.BuildLevels.Add(context => context.Type.IsGenericType && context.IsDomainType(context.Type.GetGenericTypeDefinition()), BuildLevel.Members);
+            options.BuildLevels.Add(type => !type.IsValueType, BuildLevel.Inheritance);
+            options.BuildLevels.Add(type => type.IsGenericType, BuildLevel.Generics);
         });
 
         configurator.ConfigureDomainIndexers(indexers =>
@@ -117,7 +120,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
         configurator.ConfigureServiceCollection(services =>
         {
             var domainModel = configurator.Context.GetDomainModel();
-            foreach (var type in domainModel.ReflectedTypes.Having<TransientAttribute>())
+            foreach (var type in domainModel.Types.Having<TransientAttribute>())
             {
                 type.Apply(t =>
                 {
@@ -128,7 +131,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                 });
             }
 
-            foreach (var type in domainModel.ReflectedTypes.Having<ScopedAttribute>())
+            foreach (var type in domainModel.Types.Having<ScopedAttribute>())
             {
                 type.Apply(t =>
                 {
@@ -139,7 +142,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                 });
             }
 
-            foreach (var type in domainModel.ReflectedTypes.Having<SingletonAttribute>())
+            foreach (var type in domainModel.Types.Having<SingletonAttribute>())
             {
                 type.Apply(t =>
                 {
@@ -157,7 +160,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
 
             var domainModel = configurator.Context.GetDomainModel();
 
-            foreach (var type in domainModel.ReflectedTypes.Having<DomainServiceAttribute>())
+            foreach (var type in domainModel.Types.Having<DomainServiceAttribute>())
             {
                 if (type.FullName is null) { continue; }
                 if (!type.Has<SingletonAttribute>()) { continue; } // TODO for now only singleton

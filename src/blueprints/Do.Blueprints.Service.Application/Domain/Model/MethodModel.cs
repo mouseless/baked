@@ -5,7 +5,7 @@ public record MethodModel(
     bool IsPublic,
     bool IsProtected,
     bool IsVirtual,
-    TypeModel? ReturnType = default
+    TypeModel? ReturnType
 ) : MethodBaseModel(
     IsPublic,
     IsProtected,

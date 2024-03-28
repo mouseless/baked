@@ -5,7 +5,7 @@ public abstract record MethodBaseModel(
     bool IsProtected,
     bool IsVirtual,
     bool IsConstructor,
-    TypeModel? ReturnType = default
+    TypeModel? ReturnType
 ) : IMemberModel
 {
     public AttributeCollection CustomAttributes { get; private set; } = default!;

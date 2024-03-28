@@ -1,5 +1,4 @@
 ﻿using Do.Architecture;
-using Do.Domain.Model;
 using Do.Orm.Default.UserTypes;
 using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Mapping;
@@ -52,7 +51,7 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
             var domainModel = configurator.Context.GetDomainModel();
 
             var typeSource = new TypeSource();
-            domainModel.ReflectedTypes.Having<EntityAttribute>().Apply(t => typeSource.Add(t));
+            domainModel.Types.Having<EntityAttribute>().Apply(t => typeSource.Add(t));
 
             model.AddTypeSource(typeSource);
 
@@ -90,7 +89,7 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
         configurator.ConfigureAutomapping(automapping =>
         {
             var domainModel = configurator.Context.GetDomainModel();
-            var mappedTypes = domainModel.ReflectedTypes.Having<EntityAttribute>();
+            var mappedTypes = domainModel.Types.Having<EntityAttribute>();
 
             automapping.ShouldMapType.Add(t => mappedTypes.Contains(t));
             automapping.MemberIsId.Add(m => m.PropertyType == typeof(Guid) && m.Name == "Id");

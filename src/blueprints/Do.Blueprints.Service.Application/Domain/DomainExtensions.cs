@@ -12,7 +12,7 @@ public static class DomainExtensions
     public static DomainModel GetDomainModel(this ApplicationContext source) => source.Get<DomainModel>();
 
     public static void ConfigureDomainTypeCollection(this LayerConfigurator configurator, Action<IDomainTypeCollection> configuration) => configurator.Configure(configuration);
-    public static void ConfigureDomainBuilderOptions(this LayerConfigurator configurator, Action<DomainBuilderOptions> configuration) => configurator.Configure(configuration);
+    public static void ConfigureDomainBuilderOptions(this LayerConfigurator configurator, Action<DomainModelBuilderOptions> configuration) => configurator.Configure(configuration);
     public static void ConfigureDomainMetaData(this LayerConfigurator configurator, Action<DomainConventionCollection> configuration) => configurator.Configure(configuration);
     public static void ConfigureDomainIndexers(this LayerConfigurator configurator, Action<DomainIndexerCollection> configuration) => configurator.Configure(configuration);
 
@@ -41,6 +41,23 @@ public static class DomainExtensions
         return source;
     }
 
-    public static void When<T>(this List<Func<T, bool>> filters, Func<T, bool> filter) =>
-        filters.Add(filter);
+    public static void Add(this List<TypeBuildLevelFilter> filters, Func<Type, bool> filter, BuildLevel buildLevel) =>
+        filters.Add(context => filter(context.Type), buildLevel);
+
+    public static void Add(this List<TypeBuildLevelFilter> filters, Func<TypeBuildContext, bool> filter, BuildLevel buildLevel) =>
+        filters.Add(new(filter, buildLevel));
+
+    public static ModelCollection<TModel> ToModelCollection<TModel>(this IEnumerable<TModel> models) where TModel : IModel =>
+        new(models);
+
+    public static void Apply(this IEnumerable<TypeModel> types, Action<Type> action)
+    {
+        foreach (var type in types)
+        {
+            type.Apply(action);
+        }
+    }
+
+    public static bool Contains(this ModelCollection<TypeModel> source, Type type) =>
+        source.Contains(TypeModel.IdFrom(type));
 }

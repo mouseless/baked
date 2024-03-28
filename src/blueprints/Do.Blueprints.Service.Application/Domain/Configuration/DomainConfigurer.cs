@@ -6,12 +6,22 @@ internal class DomainConfigurer(IDomainConfiguration _configuration)
 {
     internal void Execute(DomainModel model)
     {
-        _configuration.Type.Apply(model.ReflectedTypes);
+        var types = model.Types.Where(t => t.IsBuilt(BuildLevel.Members)).ToModelCollection();
 
-        foreach (var methods in model.ReflectedTypes.Select(t => t.MethodGroups))
+        _configuration.Type.Apply(types);
+
+        foreach (var properties in types.Select(t => t.Properties))
+        {
+            _configuration.Property.Apply(properties);
+        }
+
+        foreach (var methods in types.Select(t => t.MethodGroups))
         {
             _configuration.MethodGroup.Apply(methods);
+        }
 
+        foreach (var methods in types.Select(t => t.MethodGroups))
+        {
             foreach (var overloads in methods.Select(m => m.Methods))
             {
                 foreach (var overload in overloads)
@@ -19,11 +29,6 @@ internal class DomainConfigurer(IDomainConfiguration _configuration)
                     _configuration.Parameter.Apply(overload.Parameters);
                 }
             }
-        }
-
-        foreach (var properties in model.ReflectedTypes.Select(t => t.Properties))
-        {
-            _configuration.Property.Apply(properties);
         }
     }
 }
