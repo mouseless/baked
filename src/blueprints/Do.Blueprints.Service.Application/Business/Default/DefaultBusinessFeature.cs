@@ -113,7 +113,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                                 adder.Add(method, new ApiMethodAttribute());
                             }
                         },
-                        when: group => group.ReflectedType.Has<SingletonAttribute>() && group.Methods.Any(m => m.IsPublic)
+                        when: group => group.Methods.Any(m => m.IsPublic)
                     );
         });
 
