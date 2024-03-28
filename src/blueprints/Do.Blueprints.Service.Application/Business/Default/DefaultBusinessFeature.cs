@@ -42,11 +42,11 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
 
         configurator.ConfigureDomainIndexers(indexers =>
         {
+            indexers.AddAttributeIndexer<ServiceAttribute>();
             indexers.AddAttributeIndexer<TransientAttribute>();
             indexers.AddAttributeIndexer<ScopedAttribute>();
             indexers.AddAttributeIndexer<SingletonAttribute>();
             indexers.AddAttributeIndexer<ApiMethodAttribute>();
-            indexers.AddAttributeIndexer<DomainServiceAttribute>();
         });
 
         configurator.ConfigureDomainMetaData(metadata =>
@@ -61,7 +61,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
             metadata
                 .Type
                     .Add(
-                        add: new DomainServiceAttribute(),
+                        add: new ServiceAttribute(),
                         when: type =>
                             !(
                                 !type.IsPublic ||
@@ -79,7 +79,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                     .Add(
                         add: new TransientAttribute(),
                         when: type =>
-                            type.Has<DomainServiceAttribute>() &&
+                            type.Has<ServiceAttribute>() &&
                             type.MethodGroups.TryGetValue("With", out var group) &&
                             group.Methods.Any(o =>
                                 o.ReturnType == type ||
@@ -90,14 +90,14 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                 .Type
                     .Add(
                         add: new ScopedAttribute(),
-                        when: type => type.Has<DomainServiceAttribute>() && type.IsAssignableTo<IScoped>()
+                        when: type => type.Has<ServiceAttribute>() && type.IsAssignableTo<IScoped>()
                     );
             metadata
                 .Type
                     .Add(
                         add: new SingletonAttribute(),
                         when: type =>
-                            type.Has<DomainServiceAttribute>() &&
+                            type.Has<ServiceAttribute>() &&
                             !type.Has<TransientAttribute>() &&
                             !type.Has<ScopedAttribute>() &&
                             type.Properties.All(p => !p.IsPublic)
@@ -126,7 +126,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                 {
                     services.AddTransientWithFactory(t);
                     type.Interfaces
-                        //.Where(i => i.IsDomainType) // will be filtered with new design
+                        .Where(i => i.IsBuilt(BuildLevel.Members))
                         .Apply(i => services.AddTransientWithFactory(i, t));
                 });
             }
@@ -137,7 +137,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                 {
                     services.AddScopedWithFactory(t);
                     type.Interfaces
-                        //.Where(i => i.IsDomainType) // will be filtered with new design
+                        .Where(i => i.IsBuilt(BuildLevel.Members))
                         .Apply(i => services.AddScopedWithFactory(i, t));
                 });
             }
@@ -148,7 +148,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                 {
                     services.AddSingleton(t);
                     type.Interfaces
-                        //.Where(i => i.IsDomainType) // will be filtered with new design
+                        .Where(i => i.IsBuilt(BuildLevel.Members))
                         .Apply(i => services.AddSingleton(i, t, forward: true));
                 });
             }
@@ -160,7 +160,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
 
             var domainModel = configurator.Context.GetDomainModel();
 
-            foreach (var type in domainModel.Types.Having<DomainServiceAttribute>())
+            foreach (var type in domainModel.Types.Having<ServiceAttribute>())
             {
                 if (type.FullName is null) { continue; }
                 if (!type.Has<SingletonAttribute>()) { continue; } // TODO for now only singleton

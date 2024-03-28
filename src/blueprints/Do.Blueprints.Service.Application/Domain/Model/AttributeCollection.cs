@@ -1,7 +1,7 @@
 ﻿
 namespace Do.Domain.Model;
 
-public class AttributeCollection() : IEnumerable<KeyValuePair<Type, List<Attribute>>>
+public class AttributeCollection() : IEnumerable<KeyValuePair<Type, HashSet<Attribute>>>
 {
     readonly Dictionary<Type, HashSet<Attribute>> _attributes = [];
 
@@ -34,8 +34,8 @@ public class AttributeCollection() : IEnumerable<KeyValuePair<Type, List<Attribu
     public bool Contains(Attribute attribute) =>
         _attributes.TryGetValue(attribute.GetType(), out var list) ? list.Contains(attribute) : false;
 
-    public IEnumerator<KeyValuePair<Type, List<Attribute>>> GetEnumerator() =>
-        ((IEnumerable<KeyValuePair<Type, List<Attribute>>>)_attributes).GetEnumerator();
+    public IEnumerator<KeyValuePair<Type, HashSet<Attribute>>> GetEnumerator() =>
+        ((IEnumerable<KeyValuePair<Type, HashSet<Attribute>>>)_attributes).GetEnumerator();
 
     IEnumerator IEnumerable.GetEnumerator() =>
         ((IEnumerable)_attributes).GetEnumerator();

@@ -43,8 +43,7 @@ public class DomainLayer : LayerBase<BuildConfiguration>
             configurer.Execute(model);
             indexer.Execute(model);
 
-            Context.Add<DomainModel>(model); // can be domain model
-            //Context.Add<ModelCollection<AssemblyModel>>(assemblies);
+            Context.Add<DomainModel>(model);
         }
     }
 }

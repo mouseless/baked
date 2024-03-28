@@ -104,6 +104,9 @@ public class TypeModel
     public bool IsAssignableTo(Type type) =>
         _type == type ||
         (
+            IsBuilt(BuildLevel.Generics) && GenericTypeDefinition?.IsAssignableTo(type) == true
+        ) ||
+        (
             IsBuilt(BuildLevel.Inheritance) &&
             (
                 BaseType?.IsAssignableTo(type) == true ||

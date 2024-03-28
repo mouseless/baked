@@ -18,6 +18,16 @@ public class ModelCollection<T> : IEnumerable<T>, IIndexedCollection<T>
         }
     }
 
+    ModelCollection(IEnumerable<T> models, ModelIndex<T> index)
+    {
+        foreach (var model in models)
+        {
+            _models.Add(model);
+        }
+
+        _index = index;
+    }
+
     public T this[string id] =>
         _models[id];
 
@@ -40,6 +50,9 @@ public class ModelCollection<T> : IEnumerable<T>, IIndexedCollection<T>
 
     public ModelCollection<T> Having<TAttribute>() where TAttribute : Attribute =>
         GetIndex(typeof(TAttribute));
+
+    public ModelCollection<T> CreateReferenceModelCollection(Func<T, bool> selector) =>
+       new(_models.Where(selector), _index);
 
     public IEnumerator<T> GetEnumerator() => _models.GetEnumerator();
 

@@ -17,5 +17,5 @@ public abstract record MethodBaseModel(
         Parameters = parameters;
     }
 
-    public string Id => throw new NotSupportedException();
+    public string Id => $"{ReturnType?.Name}[{string.Join(", ", Parameters.Select(p => p.Name))}]";
 }

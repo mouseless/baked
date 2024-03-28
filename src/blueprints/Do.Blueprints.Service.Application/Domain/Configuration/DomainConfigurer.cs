@@ -6,7 +6,9 @@ internal class DomainConfigurer(IDomainConfiguration _configuration)
 {
     internal void Execute(DomainModel model)
     {
-        var types = model.Types.Where(t => t.IsBuilt(BuildLevel.Members)).ToModelCollection();
+        // temporary fix for losing modelindex refernce when
+        // using ToModelCollection() extensions
+        var types = model.Types.CreateReferenceModelCollection(t => t.IsBuilt(BuildLevel.Members));
 
         _configuration.Type.Apply(types);
 
