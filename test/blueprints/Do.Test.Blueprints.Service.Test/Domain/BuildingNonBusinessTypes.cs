@@ -1,5 +1,4 @@
-﻿using Do.Domain.Configuration;
-using Do.Domain.Model;
+﻿using Do.Domain.Model;
 using Do.Orm;
 
 namespace Do.Test.Domain;
@@ -13,12 +12,12 @@ public class BuildingNonBusinessTypes : TestServiceSpec
     }
 
     [Test]
-    public void Non_business_types_value_types_with_no_generic_parameters_have_basic_build_level([Values(typeof(int), typeof(char))] Type type)
+    public void Non_business_types_value_types_with_no_generic_parameters_have_no_build_level([Values(typeof(int), typeof(char))] Type type)
     {
         var model = DomainModel.Types[type];
 
-        model.IsBuilt(BuildLevel.Basics).ShouldBeTrue();
-        model.IsBuilt(BuildLevel.Generics).ShouldBeFalse();
+        model.ShouldBeOfType<TypeModel>();
+        model.ShouldNotBeOfType<TypeModelGenerics>();
     }
 
     [Test]
@@ -26,7 +25,7 @@ public class BuildingNonBusinessTypes : TestServiceSpec
     {
         var model = DomainModel.Types[type];
 
-        model.IsBuilt(BuildLevel.Inheritance).ShouldBeTrue();
+        model.ShouldBeOfType<TypeModelInheritance>();
     }
 
     [Test]
@@ -35,9 +34,9 @@ public class BuildingNonBusinessTypes : TestServiceSpec
         var entityModel = DomainModel.Types[typeof(Entity)];
         var model = DomainModel.Types[type];
 
-        model.IsBuilt(BuildLevel.Generics).ShouldBeTrue();
-        model.GenericTypeArguments.Count.ShouldBe(1);
-        model.GenericTypeArguments.First().ShouldBe(entityModel);
+        model.ShouldBeAssignableTo<TypeModelGenerics>();
+        model.GetGenerics().GenericTypeArguments.Count.ShouldBe(1);
+        model.GetGenerics().GenericTypeArguments.First().Model.ShouldBe(entityModel);
     }
 
     [Test]
@@ -46,7 +45,7 @@ public class BuildingNonBusinessTypes : TestServiceSpec
         var model = DomainModel.Types[typeof(Task<TransientWithTask>)];
 
         model.ShouldNotBeNull();
-        model.BaseType.ShouldNotBeNull();
-        model.BaseType.IsAssignableTo<Task>();
+        model.ShouldBeOfType<TypeModelInheritance>();
+        model.GetInheritance().BaseType?.IsAssignableTo<Task>().ShouldBeTrue();
     }
 }

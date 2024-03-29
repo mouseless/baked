@@ -2,6 +2,11 @@
 
 namespace Do.Domain.Configuration;
 
-public class ModelConventionCollection<T>() : List<IModelConvention>
-    where T : IModel
-{ }
+public class ModelConventionCollection<TModel>() : List<IModelConvention<TModel>>
+    where TModel : IModel
+{
+    public void Add(ModelConvention<TModel, AttributeAdder> convention)
+    {
+        Add((IModelConvention<TModel>)convention);
+    }
+}

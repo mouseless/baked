@@ -1,11 +1,11 @@
 ﻿namespace Do.Domain.Configuration;
 
-public class TypeBuildContext
+public class TypeModelBuildContext
 {
     readonly Type _type;
     readonly DomainModelBuilder _builder;
 
-    internal TypeBuildContext(Type type, DomainModelBuilder builder)
+    internal TypeModelBuildContext(Type type, DomainModelBuilder builder)
     {
         _type = type;
         _builder = builder;
@@ -13,6 +13,6 @@ public class TypeBuildContext
 
     public Type Type => _type;
 
-    public bool IsDomainType(Type type) =>
-        _builder.IsDomainType(type);
+    public bool DomainTypesContain(Type type) =>
+        _builder.DomainTypesContain(type);
 }

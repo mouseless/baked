@@ -6,10 +6,12 @@ public abstract record MethodBaseModel(
     bool IsProtected,
     bool IsVirtual,
     bool IsConstructor,
-    TypeModel? ReturnType,
+    TypeModelReference? ReturnTypeReference,
     AttributeCollection CustomAttributes,
     ModelCollection<ParameterModel> Parameters
 ) : IMemberModel
 {
-    string IModel.Id { get; } = $"{ReturnType?.Name}{Name}({string.Join(", ", Parameters.Select(p => p.Name))})";
+    public TypeModel? ReturnType => ReturnTypeReference?.Model;
+
+    string IModel.Id { get; } = $"{ReturnTypeReference} {Name}({string.Join(", ", Parameters.Select(p => p.Name))})";
 }

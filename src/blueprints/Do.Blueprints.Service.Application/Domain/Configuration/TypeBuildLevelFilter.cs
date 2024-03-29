@@ -1,3 +1,8 @@
-﻿namespace Do.Domain.Configuration;
+﻿using Do.Domain.Model;
 
-public record TypeBuildLevelFilter(Func<TypeBuildContext, bool> Filter, BuildLevel BuildLevel);
+namespace Do.Domain.Configuration;
+
+public record TypeBuildLevelFilter(
+    Func<TypeModelBuildContext, bool> Filter,
+    TypeModel.Factory BuildLevel
+);

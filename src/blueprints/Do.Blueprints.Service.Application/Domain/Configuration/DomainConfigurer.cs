@@ -6,23 +6,19 @@ internal class DomainConfigurer(IDomainConfiguration _configuration)
 {
     internal void Execute(DomainModel model)
     {
-        // temporary fix for losing modelindex refernce when
-        // using ToModelCollection() extensions
-        var types = model.Types.CreateReferenceModelCollection(t => t.IsBuilt(BuildLevel.Members));
+        _configuration.Type.Apply(model.Types);
 
-        _configuration.Type.Apply(types);
-
-        foreach (var properties in types.Select(t => t.Properties))
+        foreach (var properties in model.Types.Where(t => t.HasMembers()).Select(t => t.GetMembers().Properties))
         {
             _configuration.Property.Apply(properties);
         }
 
-        foreach (var methods in types.Select(t => t.MethodGroups))
+        foreach (var methods in model.Types.Where(t => t.HasMembers()).Select(t => t.GetMembers().MethodGroups))
         {
             _configuration.MethodGroup.Apply(methods);
         }
 
-        foreach (var methods in types.Select(t => t.MethodGroups))
+        foreach (var methods in model.Types.Where(t => t.HasMembers()).Select(t => t.GetMembers().MethodGroups))
         {
             foreach (var overloads in methods.Select(m => m.Methods))
             {

@@ -4,7 +4,7 @@ namespace Do.Domain.Configuration;
 
 public class TypeModelBuildQueue
 {
-    readonly ModelKeyedCollection<TypeModel> _data = [];
+    readonly ModelKeyedCollection<TypeModelReference> _data = [];
 
     public bool IsEmpty => _data.Count == 0;
 
@@ -16,18 +16,18 @@ public class TypeModelBuildQueue
         }
     }
 
-    public TypeModel Enqueue(Type type)
+    public TypeModelReference Enqueue(Type type)
     {
-        if (_data.TryGetValue(TypeModel.IdFrom(type), out var result)) { return result; }
+        if (_data.TryGetValue(TypeModelReference.IdFrom(type), out var result)) { return result; }
 
         _data.Add(result = new(type));
 
         return result;
     }
 
-    public List<TypeModel> DequeueAll()
+    public List<TypeModelReference> DequeueAll()
     {
-        var result = new List<TypeModel>(_data);
+        var result = new List<TypeModelReference>(_data);
 
         _data.Clear();
 

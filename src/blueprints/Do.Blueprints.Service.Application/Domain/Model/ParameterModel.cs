@@ -2,12 +2,14 @@
 
 public record ParameterModel(
     string Name,
-    TypeModel ParameterType,
+    TypeModelReference ParameterTypeReference,
     bool IsOptional,
     object? DefaultValue,
     AttributeCollection CustomAttributes
 ) : IMemberModel
 {
+    public TypeModel ParameterType => ParameterTypeReference.Model;
+
     public bool Has<T>() where T : Attribute =>
         CustomAttributes.ContainsKey<T>();
 

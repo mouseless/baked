@@ -5,7 +5,7 @@ public record MethodModel(
     bool IsPublic,
     bool IsProtected,
     bool IsVirtual,
-    TypeModel? ReturnType,
+    TypeModelReference? ReturnTypeReference,
     AttributeCollection CustomAttributes,
     ModelCollection<ParameterModel> Parameters
 ) : MethodBaseModel(
@@ -14,7 +14,7 @@ public record MethodModel(
     IsProtected,
     IsVirtual,
     false,
-    ReturnType,
+    ReturnTypeReference,
     CustomAttributes,
     Parameters
 );

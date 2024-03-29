@@ -2,9 +2,8 @@
 
 namespace Do.Domain.Configuration;
 
-public interface IModelConvention
+public interface IModelConvention<TModel> where TModel : IModel
 {
     int Order { get; }
-    bool AppliesTo(IModel model);
-    void Apply(IModel model);
+    void Apply(TModel model);
 }

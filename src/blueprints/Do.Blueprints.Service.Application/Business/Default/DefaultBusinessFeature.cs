@@ -34,10 +34,10 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
             options.BindingFlags.Method = _bindingFlags;
             options.BindingFlags.Property = _bindingFlags;
 
-            options.BuildLevels.Add(context => context.IsDomainType(context.Type), BuildLevel.Members);
-            options.BuildLevels.Add(context => context.Type.IsGenericType && context.IsDomainType(context.Type.GetGenericTypeDefinition()), BuildLevel.Members);
-            options.BuildLevels.Add(type => !type.IsValueType, BuildLevel.Inheritance);
-            options.BuildLevels.Add(type => type.IsGenericType, BuildLevel.Generics);
+            options.BuildLevels.Add(context => context.DomainTypesContain(context.Type), BuildLevels.Members);
+            options.BuildLevels.Add(context => context.Type.IsGenericType && context.DomainTypesContain(context.Type.GetGenericTypeDefinition()), BuildLevels.Members);
+            options.BuildLevels.Add(type => !type.IsValueType, BuildLevels.Inheritance);
+            options.BuildLevels.Add(type => type.IsGenericType, BuildLevels.Generics);
         });
 
         configurator.ConfigureDomainIndexers(indexers =>
@@ -51,70 +51,63 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
 
         configurator.ConfigureDomainMetaData(metadata =>
         {
-            metadata
-                .Type
-                    .Add(
-                        add: new DataClassAttribute(),
-                        when: type => type.MethodGroups.Contains("<Clone>$"), // if type is record
-                        order: int.MinValue
-                    );
-            metadata
-                .Type
-                    .Add(
-                        add: new ServiceAttribute(),
-                        when: type =>
-                            !(
-                                !type.IsPublic ||
-                                type.IsInterface ||
-                                type.IsAbstract ||
-                                type.IsValueType ||
-                                type.IsGenericMethodParameter ||
-                                type.IsGenericTypeParameter ||
-                                (type.ContainsGenericParameters && !type.GenericTypeArguments.Any()) ||
-                                type.Has<DataClassAttribute>()
-                            )
-                    );
-            metadata
-                .Type
-                    .Add(
-                        add: new TransientAttribute(),
-                        when: type =>
-                            type.Has<ServiceAttribute>() &&
-                            type.MethodGroups.TryGetValue("With", out var group) &&
-                            group.Methods.Any(o =>
-                                o.ReturnType == type ||
-                                (o.ReturnType?.IsAssignableTo<Task>() == true && o.ReturnType?.GenericTypeArguments.Any(a => a == type) == true)
-                            )
-                    );
-            metadata
-                .Type
-                    .Add(
-                        add: new ScopedAttribute(),
-                        when: type => type.Has<ServiceAttribute>() && type.IsAssignableTo<IScoped>()
-                    );
-            metadata
-                .Type
-                    .Add(
-                        add: new SingletonAttribute(),
-                        when: type =>
-                            type.Has<ServiceAttribute>() &&
-                            !type.Has<TransientAttribute>() &&
-                            !type.Has<ScopedAttribute>() &&
-                            type.Properties.All(p => !p.IsPublic)
-                    );
+            metadata.Type.Add(
+                add: new DataClassAttribute(),
+                when: type => type.TryGetMembers(out var members) && members.MethodGroups.Contains("<Clone>$"), // if type is record
+                order: int.MinValue
+            );
+            metadata.Type.Add(new ServiceAttribute(),
+                when: type =>
+                    !(
+                        !type.IsPublic ||
+                        type.IsValueType ||
+                        type.IsGenericMethodParameter ||
+                        type.IsGenericTypeParameter ||
+                        type.IsGenericTypeDefinition ||
+                        type.TryGetMetadata(out var metadata) && metadata.Has<DataClassAttribute>()
+                    )
+            );
+            metadata.Type.Add(new TransientAttribute(),
+                when: type =>
+                    type.IsClass && !type.IsAbstract &&
+                    type.TryGetMembers(out var members) &&
+                    members.Has<ServiceAttribute>() &&
+                    members.MethodGroups.TryGetValue("With", out var group) &&
+                    group.Methods.Any(o =>
+                        o.ReturnType is not null &&
+                        (
+                            o.ReturnType == type ||
+                            (o.ReturnType.IsAssignableTo<Task>() && o.ReturnType.TryGetGenerics(out var returnTypeGenerics) && returnTypeGenerics.GenericTypeArguments.Contains(type))
+                        )
+                    )
+            );
+            metadata.Type.Add(new ScopedAttribute(),
+                when: type =>
+                    type.IsClass && !type.IsAbstract &&
+                    type.TryGetMetadata(out var metadata) &&
+                    metadata.Has<ServiceAttribute>() &&
+                    type.IsAssignableTo<IScoped>()
+            );
+            metadata.Type.Add(new SingletonAttribute(),
+                when: type =>
+                    type.IsClass && !type.IsAbstract &&
+                    type.TryGetMembers(out var members) &&
+                    members.Has<ServiceAttribute>() &&
+                    !members.Has<TransientAttribute>() &&
+                    !members.Has<ScopedAttribute>() &&
+                    members.Properties.All(p => !p.IsPublic)
+            );
 
-            metadata
-                .MethodGroup
-                    .Add(
-                        add: (group, adder) =>
-                        {
-                            foreach (var method in group.Methods.Where(m => m.IsPublic))
-                            {
-                                adder.Add(method, new ApiMethodAttribute());
-                            }
-                        },
-                        when: group => group.Methods.Any(m => m.IsPublic)
-                    );
+            metadata.MethodGroup.Add(
+                apply: (group, adder) =>
+                {
+                    foreach (var method in group.Methods.Where(m => m.IsPublic))
+                    {
+                        adder.Add(method, new ApiMethodAttribute());
+                    }
+                },
+                when: group => group.Methods.Any(m => m.IsPublic)
+            );
         });
 
         configurator.ConfigureServiceCollection(services =>
@@ -125,8 +118,8 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                 type.Apply(t =>
                 {
                     services.AddTransientWithFactory(t);
-                    type.Interfaces
-                        .Where(i => i.IsBuilt(BuildLevel.Members))
+                    type.GetInheritance().Interfaces
+                        .Where(i => i.Model.TryGetMetadata(out var metadata) && metadata.Has<ServiceAttribute>())
                         .Apply(i => services.AddTransientWithFactory(i, t));
                 });
             }
@@ -136,8 +129,8 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                 type.Apply(t =>
                 {
                     services.AddScopedWithFactory(t);
-                    type.Interfaces
-                        .Where(i => i.IsBuilt(BuildLevel.Members))
+                    type.GetInheritance().Interfaces
+                        .Where(i => i.Model.TryGetMetadata(out var metadata) && metadata.Has<ServiceAttribute>())
                         .Apply(i => services.AddScopedWithFactory(i, t));
                 });
             }
@@ -147,8 +140,8 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                 type.Apply(t =>
                 {
                     services.AddSingleton(t);
-                    type.Interfaces
-                        .Where(i => i.IsBuilt(BuildLevel.Members))
+                    type.GetInheritance().Interfaces
+                        .Where(i => i.Model.TryGetMetadata(out var metadata) && metadata.Has<ServiceAttribute>())
                         .Apply(i => services.AddSingleton(i, t, forward: true));
                 });
             }
@@ -163,10 +156,10 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
             foreach (var type in domainModel.Types.Having<ServiceAttribute>())
             {
                 if (type.FullName is null) { continue; }
-                if (!type.Has<SingletonAttribute>()) { continue; } // TODO for now only singleton
+                if (!type.GetMetadata().Has<SingletonAttribute>()) { continue; } // TODO for now only singleton
 
                 var controller = new ControllerModel(type.Name);
-                foreach (var group in type.MethodGroups.Having<ApiMethodAttribute>())
+                foreach (var group in type.GetMembers().MethodGroups.Having<ApiMethodAttribute>())
                 {
                     var overload = group.Methods.OrderByDescending(o => o.Parameters.Count).First();
                     if (overload.ReturnType is null) { continue; }

@@ -2,11 +2,11 @@
 
 namespace Do.Domain.Configuration;
 
-internal class DomainModelBuilder(DomainModelBuilderOptions _options)
+public class DomainModelBuilder(DomainModelBuilderOptions _options)
 {
     readonly TypeModelBuildQueue _buildQueue = new();
     readonly HashSet<Type> _domainTypes = [];
-    readonly ModelKeyedCollection<TypeModel> _types = [];
+    readonly ModelKeyedCollection<TypeModelReference> _references = [];
 
     public DomainModelBuilderOptions Options => _options;
 
@@ -21,42 +21,35 @@ internal class DomainModelBuilder(DomainModelBuilderOptions _options)
 
         do
         {
-            var currentTypes = _buildQueue.DequeueAll();
-            foreach (var type in currentTypes)
+            var currentReferences = _buildQueue.DequeueAll();
+            foreach (var reference in currentReferences)
             {
-                _types.Add(type);
+                _references.Add(reference);
             }
 
-            foreach (var typeModel in currentTypes)
+            foreach (var reference in currentReferences)
             {
-                typeModel.Apply(t =>
-                {
-                    var buildLevel = GetBuildLevel(t);
-                    foreach (var level in BuildLevel.All.Where(bl => buildLevel.Covers(bl)))
-                    {
-                        level.Set(typeModel, t, this);
-                    }
-                });
+                reference.Apply(t => reference.Init(GetFactory(t).Create(t, this)));
             }
         }
         while (!_buildQueue.IsEmpty);
 
-        return new(new(_types));
+        return new(new(_references.Select(t => t.Model)));
     }
 
-    BuildLevel GetBuildLevel(Type t)
+    TypeModel.Factory GetFactory(Type t)
     {
-        var context = new TypeBuildContext(t, this);
+        var context = new TypeModelBuildContext(t, this);
 
-        return _options.BuildLevels.FirstOrDefault(blf => blf.Filter(context))?.BuildLevel ?? BuildLevel.Basics;
+        return _options.BuildLevels.FirstOrDefault(blf => blf.Filter(context))?.BuildLevel ?? BuildLevels.Basics;
     }
 
-    internal bool IsDomainType(Type t) =>
+    internal bool DomainTypesContain(Type t) =>
         _domainTypes.Contains(t);
 
-    public TypeModel Get(Type type)
+    public TypeModelReference Get(Type type)
     {
-        if (_types.TryGetValue(TypeModel.IdFrom(type), out var result))
+        if (_references.TryGetValue(TypeModelReference.IdFrom(type), out var result))
         {
             return result;
         }

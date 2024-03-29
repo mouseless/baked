@@ -2,13 +2,21 @@
 
 namespace Do.Domain.Configuration;
 
-public class ModelConvention<T, TComponent>(int _order, Func<T, bool> _appliesTo, Action<T, TComponent> _apply) : IModelConvention
-    where T : IModel
+public class ModelConvention<TModel, TComponent>(Func<TModel, bool> _when, Action<TModel, TComponent> _apply,
+    int? _order = default
+) : IModelConvention<TModel>
+    where TModel : IModel
     where TComponent : IConventionComponent<TComponent>
 {
     readonly TComponent _component = TComponent.New();
 
-    int IModelConvention.Order => _order;
-    bool IModelConvention.AppliesTo(IModel model) => _appliesTo((T)model);
-    void IModelConvention.Apply(IModel model) => _apply((T)model, _component);
+    int IModelConvention<TModel>.Order => _order ?? 0;
+
+    void IModelConvention<TModel>.Apply(TModel model)
+    {
+        if (_when(model))
+        {
+            _apply(model, _component);
+        }
+    }
 }

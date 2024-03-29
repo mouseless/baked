@@ -32,7 +32,7 @@ public class AttributeCollection() : IEnumerable<KeyValuePair<Type, HashSet<Attr
         _attributes.ContainsKey(type);
 
     public bool Contains(Attribute attribute) =>
-        _attributes.TryGetValue(attribute.GetType(), out var list) ? list.Contains(attribute) : false;
+        _attributes.TryGetValue(attribute.GetType(), out var list) && list.Contains(attribute);
 
     public IEnumerator<KeyValuePair<Type, HashSet<Attribute>>> GetEnumerator() =>
         ((IEnumerable<KeyValuePair<Type, HashSet<Attribute>>>)_attributes).GetEnumerator();

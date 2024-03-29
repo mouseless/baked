@@ -1,7 +1,6 @@
 ﻿namespace Do.Domain.Model;
 
-public class ModelIndex<T> : Dictionary<ModelIndexKey, ModelCollection<T>> where T : IModel
-{ }
+public class ModelIndex<T> : Dictionary<ModelIndexKey, ModelCollection<T>> where T : IModel { }
 
 public class ModelIndexKey(object key) : IEquatable<ModelIndexKey>
 {

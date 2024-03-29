@@ -32,17 +32,20 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
             metadata
                 .Type
                     .Add(
-                        add: (query, adder) =>
+                        apply: (query, adder) =>
                         {
-                            var parameter = query.Constructors.SelectMany(o => o.Parameters).First(p => p.ParameterType.IsAssignableTo(typeof(IQueryContext<>))) ??
-                                throw new("Parameter model not found!");
+                            var parameter =
+                                query.GetMembers()
+                                    .Constructors
+                                    .SelectMany(o => o.Parameters)
+                                    .First(p => p.ParameterType.IsAssignableTo(typeof(IQueryContext<>)));
 
-                            var entity = parameter.ParameterType.GenericTypeArguments.First();
+                            var entity = parameter.ParameterType.GetGenerics().GenericTypeArguments.First().Model;
 
-                            entity.Apply(t => adder.Add(query, new QueryAttribute(t)));
-                            query.Apply(t => adder.Add(entity, new EntityAttribute(t)));
+                            entity.Apply(t => adder.Add(query.GetMembers(), new QueryAttribute(t)));
+                            query.Apply(t => adder.Add(entity.GetMembers(), new EntityAttribute(t)));
                         },
-                        when: type => type.Constructors.Any() && type.Constructors.Any(o => o.Parameters.Any(p => p.ParameterType.IsAssignableTo(typeof(IQueryContext<>))))
+                        when: type => type.TryGetMembers(out var members) && members.Constructors.Any(o => o.Parameters.Any(p => p.ParameterType.IsAssignableTo(typeof(IQueryContext<>))))
                     );
         });
 
