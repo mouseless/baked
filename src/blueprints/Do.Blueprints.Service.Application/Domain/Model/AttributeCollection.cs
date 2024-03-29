@@ -1,11 +1,10 @@
 ﻿namespace Do.Domain.Model;
 
-public class AttributeCollection() : IEnumerable<(Type Type, HashSet<Attribute> Attributes)>
+public class AttributeCollection : IEnumerable<(Type Type, HashSet<Attribute> Attributes)>
 {
     readonly Dictionary<Type, HashSet<Attribute>> _attributes = [];
 
     internal AttributeCollection(IEnumerable<Attribute> attributes)
-        : this()
     {
         foreach (var attribute in attributes)
         {
