@@ -21,13 +21,13 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
 
         do
         {
-            var currentReferences = _buildQueue.DequeueAll();
-            foreach (var reference in currentReferences)
+            var references = _buildQueue.DequeueAll();
+            foreach (var reference in references)
             {
                 _references.Add(reference);
             }
 
-            foreach (var reference in currentReferences)
+            foreach (var reference in references)
             {
                 reference.Apply(t => reference.Init(GetFactory(t).Create(t, this)));
             }
