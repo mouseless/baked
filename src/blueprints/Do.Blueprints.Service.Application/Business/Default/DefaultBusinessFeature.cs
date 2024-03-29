@@ -53,19 +53,20 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
         {
             metadata.Type.Add(
                 add: new DataClassAttribute(),
-                when: type => type.TryGetMembers(out var members) && members.MethodGroups.Contains("<Clone>$"), // if type is record
+                when: type =>
+                    type.TryGetMembers(out var members) &&
+                    members.MethodGroups.Contains("<Clone>$"), // if type is record
                 order: int.MinValue
             );
             metadata.Type.Add(new ServiceAttribute(),
                 when: type =>
-                    !(
-                        !type.IsPublic ||
-                        type.IsValueType ||
-                        type.IsGenericMethodParameter ||
-                        type.IsGenericTypeParameter ||
-                        type.IsGenericTypeDefinition ||
-                        type.TryGetMetadata(out var metadata) && metadata.Has<DataClassAttribute>()
-                    )
+                    type.IsPublic &&
+                    !type.IsValueType &&
+                    !type.IsGenericMethodParameter &&
+                    !type.IsGenericTypeParameter &&
+                    !type.IsGenericTypeDefinition &&
+                    type.TryGetMembers(out var members) &&
+                    !members.Has<DataClassAttribute>()
             );
             metadata.Type.Add(new TransientAttribute(),
                 when: type =>
@@ -98,14 +99,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                     members.Properties.All(p => !p.IsPublic)
             );
 
-            metadata.MethodGroup.Add(
-                apply: (group, adder) =>
-                {
-                    foreach (var method in group.Methods.Where(m => m.IsPublic))
-                    {
-                        adder.Add(method, new ApiMethodAttribute());
-                    }
-                },
+            metadata.MethodGroup.Add(new ApiMethodAttribute(),
                 when: group => group.Methods.Any(m => m.IsPublic)
             );
         });

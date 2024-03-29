@@ -63,14 +63,19 @@ public class TypeModelMembers : TypeModelMetadata
 
             ModelCollection<MethodGroupModel> BuildMethodGroups()
             {
-                var methods = new Dictionary<string, MethodGroupModel>();
+                var methodGroups = new Dictionary<string, MethodGroupModel>();
                 var methodInfos = type.GetMethods(builder.Options.BindingFlags.Method) ?? [];
                 foreach (var group in methodInfos.GroupBy(m => m.Name))
                 {
-                    methods[group.Key] = new(group.Key, [.. group.Select(BuildMethod)]);
+                    var methods = group.Select(BuildMethod).ToList();
+                    methodGroups[group.Key] = new(
+                        group.Key,
+                        methods,
+                        new(methods.SelectMany(m => m.CustomAttributes.SelectMany(a => a.Attributes)))
+                    );
                 }
 
-                return new(methods.Values);
+                return new(methodGroups.Values);
             }
 
             MethodModel BuildMethod(MethodInfo methodInfo)

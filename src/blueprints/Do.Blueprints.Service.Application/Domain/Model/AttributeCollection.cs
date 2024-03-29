@@ -1,7 +1,6 @@
-﻿
-namespace Do.Domain.Model;
+﻿namespace Do.Domain.Model;
 
-public class AttributeCollection() : IEnumerable<KeyValuePair<Type, HashSet<Attribute>>>
+public class AttributeCollection() : IEnumerable<(Type Type, HashSet<Attribute> Attributes)>
 {
     readonly Dictionary<Type, HashSet<Attribute>> _attributes = [];
 
@@ -34,10 +33,25 @@ public class AttributeCollection() : IEnumerable<KeyValuePair<Type, HashSet<Attr
     public bool Contains(Attribute attribute) =>
         _attributes.TryGetValue(attribute.GetType(), out var list) && list.Contains(attribute);
 
-    public IEnumerator<KeyValuePair<Type, HashSet<Attribute>>> GetEnumerator() =>
-        ((IEnumerable<KeyValuePair<Type, HashSet<Attribute>>>)_attributes).GetEnumerator();
+    public IEnumerator<(Type Type, HashSet<Attribute> Attributes)> GetEnumerator() =>
+        new Enumerator(_attributes.GetEnumerator());
 
-    IEnumerator IEnumerable.GetEnumerator() =>
-        ((IEnumerable)_attributes).GetEnumerator();
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+    class Enumerator : IEnumerator<(Type Type, HashSet<Attribute> Attributes)>
+    {
+        readonly IEnumerator<KeyValuePair<Type, HashSet<Attribute>>> _real;
+
+        public Enumerator(IEnumerator<KeyValuePair<Type, HashSet<Attribute>>> real) =>
+            _real = real;
+
+        public (Type Type, HashSet<Attribute> Attributes) Current => (_real.Current.Key, _real.Current.Value);
+
+        object IEnumerator.Current => Current;
+
+        public void Dispose() => _real.Dispose();
+        public bool MoveNext() => _real.MoveNext();
+        public void Reset() => _real.Reset();
+    }
 }
 
