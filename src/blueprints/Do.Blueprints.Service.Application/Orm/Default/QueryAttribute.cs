@@ -1,7 +1,8 @@
 ﻿namespace Do.Orm;
 
 [AttributeUsage(AttributeTargets.Class)]
-public class QueryAttribute(Type type) : Attribute
+public class QueryAttribute(Type entityType)
+    : Attribute
 {
-    public Type Type { get; } = type;
+    public Type EntityType { get; } = entityType;
 }

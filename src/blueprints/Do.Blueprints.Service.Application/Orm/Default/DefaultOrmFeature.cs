@@ -29,24 +29,22 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
 
         configurator.ConfigureDomainMetaData(metadata =>
         {
-            metadata
-                .Type
-                    .Add(
-                        apply: (query, adder) =>
-                        {
-                            var parameter =
-                                query.GetMembers()
-                                    .Constructors
-                                    .SelectMany(o => o.Parameters)
-                                    .First(p => p.ParameterType.IsAssignableTo(typeof(IQueryContext<>)));
+            metadata.Type.Add(
+                apply: (query, adder) =>
+                {
+                    var parameter =
+                        query.GetMembers()
+                            .Constructors
+                            .SelectMany(o => o.Parameters)
+                            .First(p => p.ParameterType.IsAssignableTo(typeof(IQueryContext<>)));
 
-                            var entity = parameter.ParameterType.GetGenerics().GenericTypeArguments.First().Model;
+                    var entity = parameter.ParameterType.GetGenerics().GenericTypeArguments.First().Model;
 
-                            entity.Apply(t => adder.Add(query.GetMembers(), new QueryAttribute(t)));
-                            query.Apply(t => adder.Add(entity.GetMembers(), new EntityAttribute(t)));
-                        },
-                        when: type => type.TryGetMembers(out var members) && members.Constructors.Any(o => o.Parameters.Any(p => p.ParameterType.IsAssignableTo(typeof(IQueryContext<>))))
-                    );
+                    entity.Apply(t => adder.Add(query.GetMembers(), new QueryAttribute(t)));
+                    query.Apply(t => adder.Add(entity.GetMembers(), new EntityAttribute(t)));
+                },
+                when: type => type.TryGetMembers(out var members) && members.Constructors.Any(o => o.Parameters.Any(p => p.ParameterType.IsAssignableTo(typeof(IQueryContext<>))))
+            );
         });
 
         configurator.ConfigureAutoPersistenceModel(model =>
