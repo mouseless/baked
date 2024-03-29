@@ -89,10 +89,7 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
 
         configurator.ConfigureAutomapping(automapping =>
         {
-            var domainModel = configurator.Context.GetDomainModel();
-            var mappedTypes = domainModel.Types.Having<EntityAttribute>();
-
-            automapping.ShouldMapType.Add(t => mappedTypes.Contains(t));
+            automapping.ShouldMapType.Add(t => true);
             automapping.MemberIsId.Add(m => m.PropertyType == typeof(Guid) && m.Name == "Id");
             automapping.ShouldMapMember.Add(m => m.IsAutoProperty && !m.PropertyType.IsAssignableTo(typeof(ICollection)));
         });
