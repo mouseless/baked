@@ -15,12 +15,9 @@ public static class DomainExtensions
     public static void ConfigureDomainTypeCollection(this LayerConfigurator configurator, Action<IDomainTypeCollection> configuration) => configurator.Configure(configuration);
     public static void ConfigureDomainBuilderOptions(this LayerConfigurator configurator, Action<DomainModelBuilderOptions> configuration) => configurator.Configure(configuration);
     public static void ConfigureDomainMetaData(this LayerConfigurator configurator, Action<DomainConventionCollection> configuration) => configurator.Configure(configuration);
-    public static void ConfigureDomainIndexers(this LayerConfigurator configurator, Action<DomainIndexerCollection> configuration) => configurator.Configure(configuration);
+    public static void ConfigureDomainIndexOptions(this LayerConfigurator configurator, Action<DomainIndexOptions> configuration) => configurator.Configure(configuration);
 
     public static void Add<T>(this IDomainTypeCollection source) => source.Add(typeof(T));
-
-    public static void AddAttributeIndexer<T>(this DomainIndexerCollection source) where T : Attribute => source.Add(AttributeIndexer.For<T>());
-    public static void AddAttributeIndexer<T>(this DomainIndexerCollection source, T attribute) where T : Attribute => source.Add(AttributeIndexer.For<T>(attribute));
 
     public static ModelConventionCollection<TypeModel> Add(this ModelConventionCollection<TypeModel> source, Attribute add, Func<TypeModelMetadata, bool> when,
         int? order = default

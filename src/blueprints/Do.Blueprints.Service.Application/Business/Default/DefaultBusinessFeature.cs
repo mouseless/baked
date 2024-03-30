@@ -40,13 +40,13 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
             options.BuildLevels.Add(type => type.IsGenericType, BuildLevels.Generics);
         });
 
-        configurator.ConfigureDomainIndexers(indexers =>
+        configurator.ConfigureDomainIndexOptions(options =>
         {
-            indexers.AddAttributeIndexer<ServiceAttribute>();
-            indexers.AddAttributeIndexer<TransientAttribute>();
-            indexers.AddAttributeIndexer<ScopedAttribute>();
-            indexers.AddAttributeIndexer<SingletonAttribute>();
-            indexers.AddAttributeIndexer<ApiMethodAttribute>();
+            options.Type.Add(AttributeIndex.New<ServiceAttribute>());
+            options.Type.Add(AttributeIndex.New<TransientAttribute>());
+            options.Type.Add(AttributeIndex.New<ScopedAttribute>());
+            options.Type.Add(AttributeIndex.New(new SingletonAttribute()));
+            options.MethodGroup.Add(AttributeIndex.New<ApiMethodAttribute>());
         });
 
         configurator.ConfigureDomainMetaData(metadata =>
@@ -129,7 +129,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                 });
             }
 
-            foreach (var type in domainModel.Types.Having<SingletonAttribute>())
+            foreach (var type in domainModel.Types.Having(new SingletonAttribute()))
             {
                 type.Apply(t =>
                 {

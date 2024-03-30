@@ -2,11 +2,11 @@
 
 namespace Do.Domain.Model;
 
-public class ModelCollection<T> : IEnumerable<T>, IIndexedCollection<T>
+public class ModelCollection<T> : IEnumerable<T>, IModelCollectionWithIndex<T>
     where T : IModel
 {
     readonly ModelKeyedCollection<T> _models = [];
-    readonly ModelIndex<T> _index = [];
+    readonly Dictionary<ModelIndexKey, ModelCollection<T>> _index = [];
 
     public ModelCollection() { }
 
@@ -40,9 +40,11 @@ public class ModelCollection<T> : IEnumerable<T>, IIndexedCollection<T>
 
     public ModelCollection<T> Having<TAttribute>() where TAttribute : Attribute =>
         GetIndex(typeof(TAttribute));
+    public ModelCollection<T> Having<TAttribute>(TAttribute attribute) where TAttribute : Attribute =>
+        GetIndex(attribute);
 
     public IEnumerator<T> GetEnumerator() => _models.GetEnumerator();
 
-    ModelIndex<T> IIndexedCollection<T>.Index => _index;
+    Dictionary<ModelIndexKey, ModelCollection<T>> IModelCollectionWithIndex<T>.Index => _index;
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }

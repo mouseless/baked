@@ -2,10 +2,10 @@
 
 namespace Do.Domain.Configuration;
 
-internal class IndexerConfiguration(DomainIndexerCollection _collection) : IDomainConfiguration
+internal class IndexerConfiguration(DomainIndexOptions _options) : IDomainConfiguration
 {
-    IModelCollectionConfigurer<TypeModel> IDomainConfiguration.Type { get; } = new ModelIndexerProcessor<TypeModel>(_collection);
-    IModelCollectionConfigurer<MethodGroupModel> IDomainConfiguration.MethodGroup { get; } = new ModelIndexerProcessor<MethodGroupModel>(_collection);
-    IModelCollectionConfigurer<ParameterModel> IDomainConfiguration.Parameter { get; } = new ModelIndexerProcessor<ParameterModel>(_collection);
-    IModelCollectionConfigurer<PropertyModel> IDomainConfiguration.Property { get; } = new ModelIndexerProcessor<PropertyModel>(_collection);
+    IModelCollectionConfigurer<TypeModel> IDomainConfiguration.Type { get; } = new ModelCollectionIndexer<TypeModel>(_options.Type);
+    IModelCollectionConfigurer<MethodGroupModel> IDomainConfiguration.MethodGroup { get; } = new ModelCollectionIndexer<MethodGroupModel>(_options.MethodGroup);
+    IModelCollectionConfigurer<ParameterModel> IDomainConfiguration.Parameter { get; } = new ModelCollectionIndexer<ParameterModel>(_options.Parameters);
+    IModelCollectionConfigurer<PropertyModel> IDomainConfiguration.Property { get; } = new ModelCollectionIndexer<PropertyModel>(_options.Property);
 }

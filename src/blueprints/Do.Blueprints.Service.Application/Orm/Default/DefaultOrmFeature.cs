@@ -1,4 +1,5 @@
 ﻿using Do.Architecture;
+using Do.Domain.Configuration;
 using Do.Orm.Default.UserTypes;
 using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Mapping;
@@ -21,10 +22,10 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
             services.AddSingleton(typeof(IQueryContext<>), typeof(QueryContext<>));
         });
 
-        configurator.ConfigureDomainIndexers(indexers =>
+        configurator.ConfigureDomainIndexOptions(options =>
         {
-            indexers.AddAttributeIndexer<QueryAttribute>();
-            indexers.AddAttributeIndexer<EntityAttribute>();
+            options.Type.Add(AttributeIndex.New<QueryAttribute>());
+            options.Type.Add(AttributeIndex.New<EntityAttribute>());
         });
 
         configurator.ConfigureDomainMetaData(metadata =>
