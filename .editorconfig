@@ -123,7 +123,7 @@ dotnet_diagnostic.IDE0017.severity = error # c.Age = 21; -> var c = new Customer
 dotnet_diagnostic.IDE0018.severity = error # int i; -> if (int.TryParse(value, out int i)) {...}
 dotnet_diagnostic.IDE0019.severity = error # Use pattern matching to avoid as followed by a null check
 dotnet_diagnostic.IDE0020.severity = error # Use pattern matching to avoid is check followed by a cast (with variable)
-dotnet_diagnostic.IDE0021.severity = error # Use expression body for constructors
+dotnet_diagnostic.IDE0021.severity = none # Use expression body for constructors
 dotnet_diagnostic.IDE0022.severity = none # expression_bodied_methods
 dotnet_diagnostic.IDE0023.severity = none # expression_bodied_operators
 dotnet_diagnostic.IDE0024.severity = error # expression_bodied_operators

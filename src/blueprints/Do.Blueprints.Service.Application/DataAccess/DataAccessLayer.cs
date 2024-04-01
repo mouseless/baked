@@ -20,8 +20,10 @@ public class DataAccessLayer : LayerBase<AddServices>
     volatile bool _exported = false;
     readonly object _exportedLock = new();
 
-    public DataAccessLayer() =>
+    public DataAccessLayer()
+    {
         _autoPersistenceModel = new(new DelegatedAutomappingConfiguration(_automappingConfiguration));
+    }
 
     protected override PhaseContext GetContext(AddServices phase)
     {
