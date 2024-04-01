@@ -12,37 +12,31 @@ public class BuildingNonBusinessTypes : TestServiceSpec
     }
 
     [Test]
-    public void Non_business_types_with_no_generic_parameters_are_initialized_with_empty_collections([Values(typeof(string), typeof(int), typeof(Task))] Type type)
+    public void Non_business_types_value_types_with_no_generic_parameters_have_no_build_level([Values(typeof(int), typeof(char))] Type type)
     {
         var model = DomainModel.Types[type];
 
-        model.Properties.ShouldNotBeNull();
-        model.Properties.Count().ShouldBe(0);
+        model.ShouldBeOfType<TypeModel>();
+        model.ShouldNotBeOfType<TypeModelGenerics>();
+    }
 
-        model.GenericTypeArguments.ShouldNotBeNull();
-        model.GenericTypeArguments.Count().ShouldBe(0);
+    [Test]
+    public void Non_business_types_have_inheritance_build_level([Values(typeof(string))] Type type)
+    {
+        var model = DomainModel.Types[type];
 
-        model.Methods.ShouldNotBeNull();
-        model.Methods.Count().ShouldBe(0);
-
-        model.Interfaces.ShouldNotBeNull();
-        model.Interfaces.Count().ShouldBe(0);
-
-        model.CustomAttributes.ShouldNotBeNull();
-        model.CustomAttributes.Count().ShouldBe(0);
-
-        model.Constructor.ShouldBeNull();
+        model.ShouldBeOfType<TypeModelInheritance>();
     }
 
     [Test]
     public void Non_business_types_with_generic_parameters_are_initialized_with_generic_arguments([Values(typeof(List<Entity>), typeof(Func<Entity>), typeof(IQueryContext<Entity>))] Type type)
     {
         var entityModel = DomainModel.Types[typeof(Entity)];
-        var listEntity = DomainModel.Types[type];
+        var model = DomainModel.Types[type];
 
-        listEntity.ShouldNotBeNull();
-        listEntity.GenericTypeArguments.Count().ShouldBe(1);
-        listEntity.GenericTypeArguments.First().ShouldBe(entityModel);
+        model.ShouldBeAssignableTo<TypeModelGenerics>();
+        model.GetGenerics().GenericTypeArguments.Count.ShouldBe(1);
+        model.GetGenerics().GenericTypeArguments.First().Model.ShouldBe(entityModel);
     }
 
     [Test]
@@ -51,7 +45,7 @@ public class BuildingNonBusinessTypes : TestServiceSpec
         var model = DomainModel.Types[typeof(Task<TransientWithTask>)];
 
         model.ShouldNotBeNull();
-        model.BaseType.ShouldNotBeNull();
-        model.BaseType.IsAssignableTo<Task>();
+        model.ShouldBeOfType<TypeModelInheritance>();
+        model.GetInheritance().BaseType?.IsAssignableTo<Task>().ShouldBeTrue();
     }
 }

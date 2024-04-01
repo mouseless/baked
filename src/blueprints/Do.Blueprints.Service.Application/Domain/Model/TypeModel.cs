@@ -1,86 +1,103 @@
-﻿namespace Do.Domain.Model;
+﻿using Do.Domain.Configuration;
 
-public class TypeModel(Type type, string id,
-    AssemblyModel? assembly = default,
-    bool isBusinessType = false
-) : IModel, IEquatable<TypeModel>
+namespace Do.Domain.Model;
+
+public class TypeModel : IModel, IEquatable<TypeModel>
 {
-    internal static string IdFrom(Type type) =>
-        type.FullName ?? $"{type.Namespace}.{type.Name}<{string.Join(',', type.GenericTypeArguments.Select(IdFrom))}>";
+    readonly Lazy<string> _cSharpFriendlyFullName;
 
-    readonly Type _type = type;
-    readonly string _id = id;
-
-    public string Name { get; } = type.Name;
-    public string? FullName { get; } = type.FullName;
-    public string? Namespace { get; } = type.Namespace;
-    public bool IsBusinessType { get; } = isBusinessType;
-    public bool IsPublic { get; } = type.IsPublic;
-    public bool IsAbstract { get; } = type.IsAbstract;
-    public bool IsValueType { get; } = type.IsValueType;
-    public bool IsSealed { get; } = type.IsSealed;
-    public bool IsInterface { get; } = type.IsInterface;
-    public bool IsGenericType { get; } = type.IsGenericType;
-    public bool IsGenericTypeParameter { get; } = type.IsGenericTypeParameter;
-    public bool IsGenericMethodParameter { get; } = type.IsGenericMethodParameter;
-    public bool ContainsGenericParameters { get; } = type.ContainsGenericParameters;
-    public AssemblyModel? Assembly { get; } = assembly;
-    public TypeModel? BaseType { get; private set; } = default!;
-    public ModelCollection<MethodModel> Methods { get; private set; } = default!;
-    public ModelCollection<PropertyModel> Properties { get; private set; } = default!;
-    public ModelCollection<TypeModel> GenericTypeArguments { get; private set; } = default!;
-    public ModelCollection<TypeModel> CustomAttributes { get; private set; } = default!;
-    public ModelCollection<TypeModel> Interfaces { get; private set; } = default!;
-
-    public MethodModel? Constructor => Methods.TryGetValue(".ctor", out var ctor) ? ctor : default;
-
-    internal void Init(ModelCollection<TypeModel> genericTypeArguments,
-        ModelCollection<MethodModel>? methods = default,
-        ModelCollection<PropertyModel>? properties = default,
-        ModelCollection<TypeModel>? customAttributes = default,
-        ModelCollection<TypeModel>? interfaces = default,
-        TypeModel? baseType = default
-    )
+    protected TypeModel()
     {
-        GenericTypeArguments = genericTypeArguments;
-        Methods = methods ?? [];
-        Properties = properties ?? [];
-        CustomAttributes = customAttributes ?? [];
-        Interfaces = interfaces ?? [];
-        BaseType = baseType;
+        _cSharpFriendlyFullName = new(BuildCSharpFriendlyFullName);
     }
 
+    Type Type { get; set; } = default!;
+    string Id { get; set; } = default!;
+    public string Name { get; private set; } = default!;
+    public string? FullName { get; private set; } = default!;
+    public string? Namespace { get; private set; } = default!;
+    public bool IsPublic { get; private set; } = default!;
+    public bool IsAbstract { get; private set; } = default!;
+    public bool IsValueType { get; private set; } = default!;
+    public bool IsSealed { get; private set; } = default!;
+    public bool IsClass { get; private set; } = default!;
+    public bool IsInterface { get; private set; } = default!;
+    public bool IsGenericType { get; private set; } = default!;
+    public bool IsGenericTypeDefinition { get; private set; } = default!;
+    public bool IsGenericTypeParameter { get; private set; } = default!;
+    public bool IsGenericMethodParameter { get; private set; } = default!;
+    public bool ContainsGenericParameters { get; private set; } = default!;
+
+    public string CSharpFriendlyFullName => _cSharpFriendlyFullName.Value;
+
+    string BuildCSharpFriendlyFullName()
+    {
+        if (!IsGenericType) { return FullName ?? Name; }
+
+        if (this is TypeModelGenerics generics)
+        {
+            return $"{Namespace}.{Name[..Name.IndexOf("`")]}<{string.Join(", ", generics.GenericTypeArguments.Select(t => t.Model.CSharpFriendlyFullName))}>";
+        }
+
+        return BuildCSharpFriendlyFullName(Type);
+    }
+
+    static string BuildCSharpFriendlyFullName(Type type) =>
+        $"{type.Namespace}.{type.Name[..type.Name.IndexOf("`")]}<{string.Join(", ", type.GenericTypeArguments.Select(BuildCSharpFriendlyFullName))}>";
+
     public void Apply(Action<Type> action) =>
-        action(_type);
+        action(Type);
 
     public bool IsAssignableTo<T>() =>
         IsAssignableTo(typeof(T));
 
     public bool IsAssignableTo(Type type) =>
-        Is(type) || Interfaces.Contains(IdFrom(type));
-
-    bool Is(Type type) =>
-        _type == type || BaseType?.Is(type) == true;
+        Type == type ||
+        this.TryGetGenerics(out var generics) && generics.GenericTypeDefinition?.IsAssignableTo(type) == true ||
+        this.TryGetInheritance(out var inheritance) && (inheritance.BaseType?.IsAssignableTo(type) == true || inheritance.Interfaces.Contains(type))
+    ;
 
     public override bool Equals(object? obj) =>
         ((IEquatable<TypeModel>)this).Equals(obj as TypeModel);
 
     bool IEquatable<TypeModel>.Equals(TypeModel? other) =>
-        other is not null && other._id == _id;
+        other is not null && other.Id == Id;
 
     public override int GetHashCode() =>
-        _id.GetHashCode();
+        Id.GetHashCode();
 
-    string IModel.Id => _id;
-}
+    string IModel.Id => Id;
 
-public static class TypeModelExtensions
-{
-    public static void Apply(this IEnumerable<TypeModel> types, Action<Type> action)
+    public class Factory
     {
-        foreach (var type in types)
+        protected virtual TypeModel Create() => new();
+        protected virtual void Fill(TypeModel result, Type type, DomainModelBuilder builder)
         {
-            type.Apply(i => action(i));
+            result.Type = type;
+            result.Id = TypeModelReference.IdFrom(type);
+            result.Name = type.Name;
+            result.FullName = type.FullName;
+            result.Namespace = type.Namespace;
+            result.IsPublic = type.IsPublic;
+            result.IsAbstract = type.IsAbstract;
+            result.IsValueType = type.IsValueType;
+            result.IsSealed = type.IsSealed;
+            result.IsClass = type.IsClass;
+            result.IsInterface = type.IsInterface;
+            result.IsGenericType = type.IsGenericType;
+            result.IsGenericTypeDefinition = type.IsGenericTypeDefinition;
+            result.IsGenericTypeParameter = type.IsGenericTypeParameter;
+            result.IsGenericMethodParameter = type.IsGenericMethodParameter;
+            result.ContainsGenericParameters = type.ContainsGenericParameters;
+        }
+
+        public TypeModel Create(Type type, DomainModelBuilder builder)
+        {
+            var result = Create();
+
+            Fill(result, type, builder);
+
+            return result;
         }
     }
 }

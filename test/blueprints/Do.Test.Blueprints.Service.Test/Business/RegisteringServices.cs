@@ -196,4 +196,12 @@ public class RegisteringServices : TestServiceSpec
 
         action.ShouldThrowExceptionWithServiceNotRegisteredMessage(type);
     }
+
+    [Test]
+    public void User_defined_enumerable_types_are_not_registered([Values(typeof(CustomList), typeof(CustomDictionary))] Type type)
+    {
+        var action = () => GiveMe.The(type);
+
+        action.ShouldThrowExceptionWithServiceNotRegisteredMessage(type);
+    }
 }

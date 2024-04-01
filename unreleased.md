@@ -7,18 +7,21 @@
     during initialization of a service
   - `RestApiLayer` now provides api model to generate controller code from
     domain model
+  - `DomainLayer` now provides a inherited factory mechanism to individually
+    configure level of reflected details for registered types. Models for types
+    are now built as following inherited levels:
+    - `TypeModel`
+    - `TypeModelGenerics`
+    - `TypeModelInheritance`
+    - `TypeModelMetadata`
+    - `TypeModelMembers`
+  - `DomainLayer` now provides a metadata mechanism that allows you to add
+    custom attributes to domain model
+  - `DomainLayer` now provides a indexer mechanism that allows you to index
+    models based on their attributes
 
 ## Improvements
 
-- `DomainModel` generation is improved for generic type support
-  - `TypeModel`'s for generic types with arguments are now marked as business
-    type and initialized with all collection properties
-  - `TypeModel`'s for non business generic types are now initialized with
-    generic type arguments
-  - `TypeModel`'s for generic `Task<T>` now have `Task` as base class
-- `CanReturn()` helper is added for `MethodModel` which loops through all
-  overloads and compares return types for given `TypeModel`
-    - Generic `Task` return types are also supported
 - `MvcNewtonsoftJsonOptions` is added to `RestApiLayer` as configuration target 
 
 ## Bugfixes
