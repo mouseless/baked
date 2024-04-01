@@ -48,7 +48,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
             builder.Metadata.Type.Add(new DataClassAttribute(),
                 when: type =>
                     type.TryGetMembers(out var members) &&
-                    members.Methods.ContainsGroup("<Clone>$"), // if type is record
+                    members.Methods.Contains("<Clone>$"), // if type is record
                 order: int.MinValue
             );
             builder.Metadata.Type.Add(new ServiceAttribute(),

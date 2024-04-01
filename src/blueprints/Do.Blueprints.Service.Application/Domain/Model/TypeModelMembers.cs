@@ -7,7 +7,7 @@ public class TypeModelMembers : TypeModelMetadata
 {
     public List<ConstructorModel> Constructors { get; private set; } = default!;
     public ModelCollection<PropertyModel> Properties { get; private set; } = default!;
-    public GroupedModelCollection<MethodModel> Methods { get; private set; } = default!;
+    public MethodModelCollection Methods { get; private set; } = default!;
 
     public ConstructorModel GetConstructor() =>
         Constructors.Single();
@@ -59,7 +59,7 @@ public class TypeModelMembers : TypeModelMetadata
                     new(property.GetCustomAttributes())
                 );
 
-            GroupedModelCollection<MethodModel> BuildMethods()
+            MethodModelCollection BuildMethods()
             {
                 var methodGroups = new Dictionary<string, IEnumerable<MethodModel>>();
                 var methodInfos = type.GetMethods(builder.Options.BindingFlags.Method) ?? [];
