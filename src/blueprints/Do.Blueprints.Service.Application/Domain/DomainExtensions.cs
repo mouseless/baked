@@ -13,44 +13,42 @@ public static class DomainExtensions
     public static DomainModel GetDomainModel(this ApplicationContext source) => source.Get<DomainModel>();
 
     public static void ConfigureDomainTypeCollection(this LayerConfigurator configurator, Action<IDomainTypeCollection> configuration) => configurator.Configure(configuration);
-    public static void ConfigureDomainBuilderOptions(this LayerConfigurator configurator, Action<DomainModelBuilderOptions> configuration) => configurator.Configure(configuration);
-    public static void ConfigureDomainMetaData(this LayerConfigurator configurator, Action<DomainConventionCollection> configuration) => configurator.Configure(configuration);
-    public static void ConfigureDomainIndexOptions(this LayerConfigurator configurator, Action<DomainIndexOptions> configuration) => configurator.Configure(configuration);
+    public static void ConfigureDomainModelBuilder(this LayerConfigurator configurator, Action<DomainModelBuilderOptions> configuration) => configurator.Configure(configuration);
 
     public static void Add<T>(this IDomainTypeCollection source) => source.Add(typeof(T));
 
-    public static ModelConventionCollection<TypeModel> Add(this ModelConventionCollection<TypeModel> source, Attribute add, Func<TypeModelMetadata, bool> when,
+    public static ICollection<MetadataConvention<TypeModel>> Add(this ICollection<MetadataConvention<TypeModel>> source, Attribute attribute, Func<TypeModelMetadata, bool> when,
         int? order = default
-    ) => source.Add((model, adder) => adder.Add(model, add), when, order);
+    ) => source.Add((model, add) => add(model, attribute), when, order);
 
-    public static ModelConventionCollection<TypeModel> Add<TAttribute>(this ModelConventionCollection<TypeModel> source, Attribute[] add, Func<TypeModelMetadata, bool> when,
+    public static ICollection<MetadataConvention<TypeModel>> Add<TAttribute>(this ICollection<MetadataConvention<TypeModel>> source, Attribute[] attributes, Func<TypeModelMetadata, bool> when,
         int? order = default
-    ) => source.Add((model, adder) => Array.ForEach(add, a => adder.Add(model, a)), when, order);
+    ) => source.Add((model, add) => Array.ForEach(attributes, a => add(model, a)), when, order);
 
-    public static ModelConventionCollection<TypeModel> Add(this ModelConventionCollection<TypeModel> source, Action<TypeModelMetadata, AttributeAdder> add, Func<TypeModelMetadata, bool> when,
+    public static ICollection<MetadataConvention<TypeModel>> Add(this ICollection<MetadataConvention<TypeModel>> source, Action<TypeModelMetadata, Action<IMemberModel, Attribute>> apply, Func<TypeModelMetadata, bool> when,
         int? order = default
     )
     {
-        source.Add(new(
+        source.Add(new MetadataConvention<TypeModel>(
             t => t.TryGetMetadata(out var metadata) && when(metadata),
-            (t, adder) => add(t.GetMetadata(), adder),
+            (t, add) => apply(t.GetMetadata(), add),
             _order: order
         ));
 
         return source;
     }
 
-    public static ModelConventionCollection<T> Add<T>(this ModelConventionCollection<T> source, Attribute add, Func<T, bool> when,
+    public static ICollection<MetadataConvention<T>> Add<T>(this ICollection<MetadataConvention<T>> source, Attribute attribute, Func<T, bool> when,
         int? order = default
     ) where T : IMemberModel =>
-        source.Add((model, adder) => adder.Add(model, add), when, order);
+        source.Add((model, add) => add(model, attribute), when, order);
 
-    public static ModelConventionCollection<T> Add<T, TAttribute>(this ModelConventionCollection<T> source, Attribute[] add, Func<T, bool> when,
+    public static ICollection<MetadataConvention<T>> Add<T, TAttribute>(this ICollection<MetadataConvention<T>> source, Attribute[] attributes, Func<T, bool> when,
         int? order = default
     ) where T : IMemberModel =>
-        source.Add((model, adder) => Array.ForEach(add, a => adder.Add(model, a)), when, order);
+        source.Add((model, add) => Array.ForEach(attributes, a => add(model, a)), when, order);
 
-    public static ModelConventionCollection<T> Add<T>(this ModelConventionCollection<T> source, Action<T, AttributeAdder> apply, Func<T, bool> when,
+    public static ICollection<MetadataConvention<T>> Add<T>(this ICollection<MetadataConvention<T>> source, Action<T, Action<IMemberModel, Attribute>> apply, Func<T, bool> when,
         int? order = default
     ) where T : IModel
     {
@@ -58,6 +56,9 @@ public static class DomainExtensions
 
         return source;
     }
+
+    public static void Add<T>(this ICollection<Type> types) =>
+        types.Add(typeof(T));
 
     public static void Add(this List<TypeBuildLevelFilter> filters, Func<Type, bool> filter, TypeModel.Factory buildLevel) =>
         filters.Add(context => filter(context.Type), buildLevel);

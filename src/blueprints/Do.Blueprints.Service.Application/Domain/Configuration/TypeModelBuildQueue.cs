@@ -4,7 +4,7 @@ namespace Do.Domain.Configuration;
 
 public class TypeModelBuildQueue
 {
-    readonly ModelKeyedCollection<TypeModelReference> _data = [];
+    readonly ModelCollection<TypeModelReference>.KeyedCollection _data = [];
 
     public bool IsEmpty => _data.Count == 0;
 

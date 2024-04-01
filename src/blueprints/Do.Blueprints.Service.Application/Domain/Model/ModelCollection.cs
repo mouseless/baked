@@ -1,12 +1,13 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Do.Domain.Model;
 
-public class ModelCollection<T> : IEnumerable<T>, IModelCollectionWithIndex<T>
+public class ModelCollection<T> : IEnumerable<T>
     where T : IModel
 {
-    readonly ModelKeyedCollection<T> _models = [];
-    readonly Dictionary<ModelIndexKey, ModelCollection<T>> _index = [];
+    readonly KeyedCollection _models = [];
+    readonly Dictionary<Type, IEnumerable<T>> _index = [];
 
     public ModelCollection() { }
 
@@ -26,6 +27,9 @@ public class ModelCollection<T> : IEnumerable<T>, IModelCollectionWithIndex<T>
 
     public int Count => _models.Count;
 
+    internal void AddIndex(Type index) =>
+        _index[index] = this.Where(m => m is IMemberModel member && member.CustomAttributes.ContainsKey(index));
+
     public bool ContainsModel(T? model) =>
         _models.Contains(model?.Id ?? string.Empty);
 
@@ -35,16 +39,18 @@ public class ModelCollection<T> : IEnumerable<T>, IModelCollectionWithIndex<T>
     public bool TryGetValue(string id, [NotNullWhen(true)] out T? model) =>
        _models.TryGetValue(id, out model);
 
-    public ModelCollection<T> GetIndex(object key) =>
-        _index.TryGetValue(new(key), out var result) ? result : new([]);
+    public IEnumerable<T> Having<TAttribute>() where TAttribute : Attribute =>
+        Having(typeof(TAttribute));
 
-    public ModelCollection<T> Having<TAttribute>() where TAttribute : Attribute =>
-        GetIndex(typeof(TAttribute));
-    public ModelCollection<T> Having<TAttribute>(TAttribute attribute) where TAttribute : Attribute =>
-        GetIndex(attribute);
+    public IEnumerable<T> Having(Type attributeType) =>
+        _index.TryGetValue(attributeType, out var result) ? result : [];
 
     public IEnumerator<T> GetEnumerator() => _models.GetEnumerator();
 
-    Dictionary<ModelIndexKey, ModelCollection<T>> IModelCollectionWithIndex<T>.Index => _index;
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+    public class KeyedCollection : KeyedCollection<string, T>
+    {
+        protected override string GetKeyForItem(T item) => item.Id;
+    }
 }

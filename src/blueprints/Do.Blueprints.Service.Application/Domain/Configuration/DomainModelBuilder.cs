@@ -6,11 +6,11 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
 {
     readonly TypeModelBuildQueue _buildQueue = new();
     readonly HashSet<Type> _domainTypes = [];
-    readonly ModelKeyedCollection<TypeModelReference> _references = [];
+    readonly ModelCollection<TypeModelReference>.KeyedCollection _references = [];
 
     public DomainModelBuilderOptions Options => _options;
 
-    public DomainModel BuildFrom(IDomainTypeCollection types)
+    public DomainModel Build(IDomainTypeCollection types)
     {
         foreach (var type in types)
         {
@@ -34,7 +34,12 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
         }
         while (!_buildQueue.IsEmpty);
 
-        return new(new(_references.Select(t => t.Model)));
+        var result = new DomainModel(new(_references.Select(t => t.Model)));
+
+        BuildMetadata(result);
+        BuildIndices(result);
+
+        return result;
     }
 
     TypeModel.Factory GetFactory(Type t)
@@ -55,5 +60,93 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
         }
 
         return _buildQueue.Enqueue(type);
+    }
+
+    void BuildMetadata(DomainModel model)
+    {
+        foreach (var convention in _options.Metadata.Type)
+        {
+            foreach (var type in model.Types)
+            {
+                convention.Apply(type);
+            }
+        }
+
+        foreach (var convention in _options.Metadata.Property)
+        {
+            foreach (var properties in model.Types.Where(t => t.HasMembers()).Select(t => t.GetMembers().Properties))
+            {
+                foreach (var property in properties)
+                {
+                    convention.Apply(property);
+                }
+            }
+        }
+
+        foreach (var convention in _options.Metadata.MethodGroup)
+        {
+            foreach (var methodGroups in model.Types.Where(t => t.HasMembers()).Select(t => t.GetMembers().MethodGroups))
+            {
+                foreach (var methodGroup in methodGroups)
+                {
+                    convention.Apply(methodGroup);
+                }
+            }
+        }
+
+        foreach (var convention in _options.Metadata.Parameter)
+        {
+            foreach (var methodGroups in model.Types.Where(t => t.HasMembers()).Select(t => t.GetMembers().MethodGroups))
+            {
+                foreach (var methodGroup in methodGroups)
+                {
+                    foreach (var method in methodGroup.Methods)
+                    {
+                        foreach (var parameter in method.Parameters)
+                        {
+                            convention.Apply(parameter);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    void BuildIndices(DomainModel model)
+    {
+        foreach (var index in _options.Index.Type)
+        {
+            model.Types.AddIndex(index);
+        }
+
+        foreach (var index in _options.Index.Property)
+        {
+            foreach (var properties in model.Types.Where(m => m.HasMembers()).Select(m => m.GetMembers().Properties))
+            {
+                properties.AddIndex(index);
+            }
+        }
+
+        foreach (var index in _options.Index.MethodGroup)
+        {
+            foreach (var methodGroups in model.Types.Where(m => m.HasMembers()).Select(m => m.GetMembers().MethodGroups))
+            {
+                methodGroups.AddIndex(index);
+            }
+        }
+
+        foreach (var index in _options.Index.Parameters)
+        {
+            foreach (var methodGroups in model.Types.Where(m => m.HasMembers()).Select(m => m.GetMembers().MethodGroups))
+            {
+                foreach (var methodGroup in methodGroups)
+                {
+                    foreach (var method in methodGroup.Methods)
+                    {
+                        method.Parameters.AddIndex(index);
+                    }
+                }
+            }
+        }
     }
 }

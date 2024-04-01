@@ -28,37 +28,30 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
             }
         });
 
-        configurator.ConfigureDomainBuilderOptions(options =>
+        configurator.ConfigureDomainModelBuilder(builder =>
         {
-            options.BindingFlags.Constructor = _bindingFlags;
-            options.BindingFlags.Method = _bindingFlags;
-            options.BindingFlags.Property = _bindingFlags;
+            builder.BindingFlags.Constructor = _bindingFlags;
+            builder.BindingFlags.Method = _bindingFlags;
+            builder.BindingFlags.Property = _bindingFlags;
 
-            options.BuildLevels.Add(context => context.DomainTypesContain(context.Type), BuildLevels.Members);
-            options.BuildLevels.Add(context => context.Type.IsGenericType && context.DomainTypesContain(context.Type.GetGenericTypeDefinition()), BuildLevels.Members);
-            options.BuildLevels.Add(type => !type.IsValueType, BuildLevels.Inheritance);
-            options.BuildLevels.Add(type => type.IsGenericType, BuildLevels.Generics);
-        });
+            builder.BuildLevels.Add(context => context.DomainTypesContain(context.Type), BuildLevels.Members);
+            builder.BuildLevels.Add(context => context.Type.IsGenericType && context.DomainTypesContain(context.Type.GetGenericTypeDefinition()), BuildLevels.Members);
+            builder.BuildLevels.Add(type => !type.IsValueType, BuildLevels.Inheritance);
+            builder.BuildLevels.Add(type => type.IsGenericType, BuildLevels.Generics);
 
-        configurator.ConfigureDomainIndexOptions(options =>
-        {
-            options.Type.Add(AttributeIndex.New<ServiceAttribute>());
-            options.Type.Add(AttributeIndex.New<TransientAttribute>());
-            options.Type.Add(AttributeIndex.New<ScopedAttribute>());
-            options.Type.Add(AttributeIndex.New(new SingletonAttribute()));
-            options.MethodGroup.Add(AttributeIndex.New<ApiMethodAttribute>());
-        });
+            builder.Index.Type.Add<ServiceAttribute>();
+            builder.Index.Type.Add<TransientAttribute>();
+            builder.Index.Type.Add<ScopedAttribute>();
+            builder.Index.Type.Add<SingletonAttribute>();
+            builder.Index.MethodGroup.Add<ApiMethodAttribute>();
 
-        configurator.ConfigureDomainMetaData(metadata =>
-        {
-            metadata.Type.Add(
-                add: new DataClassAttribute(),
+            builder.Metadata.Type.Add(new DataClassAttribute(),
                 when: type =>
                     type.TryGetMembers(out var members) &&
                     members.MethodGroups.Contains("<Clone>$"), // if type is record
                 order: int.MinValue
             );
-            metadata.Type.Add(new ServiceAttribute(),
+            builder.Metadata.Type.Add(new ServiceAttribute(),
                 when: type =>
                     type.IsPublic &&
                     !type.IsValueType &&
@@ -68,7 +61,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                     type.TryGetMembers(out var members) &&
                     !members.Has<DataClassAttribute>()
             );
-            metadata.Type.Add(new TransientAttribute(),
+            builder.Metadata.Type.Add(new TransientAttribute(),
                 when: type =>
                     type.IsClass && !type.IsAbstract &&
                     type.TryGetMembers(out var members) &&
@@ -82,14 +75,14 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                         )
                     )
             );
-            metadata.Type.Add(new ScopedAttribute(),
+            builder.Metadata.Type.Add(new ScopedAttribute(),
                 when: type =>
                     type.IsClass && !type.IsAbstract &&
                     type.TryGetMetadata(out var metadata) &&
                     metadata.Has<ServiceAttribute>() &&
                     type.IsAssignableTo<IScoped>()
             );
-            metadata.Type.Add(new SingletonAttribute(),
+            builder.Metadata.Type.Add(new SingletonAttribute(),
                 when: type =>
                     type.IsClass && !type.IsAbstract &&
                     type.TryGetMembers(out var members) &&
@@ -99,7 +92,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                     members.Properties.All(p => !p.IsPublic)
             );
 
-            metadata.MethodGroup.Add(new ApiMethodAttribute(),
+            builder.Metadata.MethodGroup.Add(new ApiMethodAttribute(),
                 when: group => group.Methods.Any(m => m.IsPublic)
             );
         });
@@ -129,7 +122,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                 });
             }
 
-            foreach (var type in domainModel.Types.Having(new SingletonAttribute()))
+            foreach (var type in domainModel.Types.Having<SingletonAttribute>())
             {
                 type.Apply(t =>
                 {

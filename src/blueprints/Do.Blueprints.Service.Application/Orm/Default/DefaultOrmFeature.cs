@@ -1,5 +1,4 @@
 ﻿using Do.Architecture;
-using Do.Domain.Configuration;
 using Do.Orm.Default.UserTypes;
 using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Mapping;
@@ -22,16 +21,13 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
             services.AddSingleton(typeof(IQueryContext<>), typeof(QueryContext<>));
         });
 
-        configurator.ConfigureDomainIndexOptions(options =>
+        configurator.ConfigureDomainModelBuilder(builder =>
         {
-            options.Type.Add(AttributeIndex.New<QueryAttribute>());
-            options.Type.Add(AttributeIndex.New<EntityAttribute>());
-        });
+            builder.Index.Type.Add(typeof(QueryAttribute));
+            builder.Index.Type.Add(typeof(EntityAttribute));
 
-        configurator.ConfigureDomainMetaData(metadata =>
-        {
-            metadata.Type.Add(
-                apply: (query, adder) =>
+            builder.Metadata.Type.Add(
+                apply: (query, add) =>
                 {
                     var parameter =
                         query.GetMembers()
@@ -41,8 +37,8 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
 
                     var entity = parameter.ParameterType.GetGenerics().GenericTypeArguments.First().Model;
 
-                    entity.Apply(t => adder.Add(query.GetMembers(), new QueryAttribute(t)));
-                    query.Apply(t => adder.Add(entity.GetMembers(), new EntityAttribute(t)));
+                    entity.Apply(t => add(query.GetMembers(), new QueryAttribute(t)));
+                    query.Apply(t => add(entity.GetMembers(), new EntityAttribute(t)));
                 },
                 when: type => type.TryGetMembers(out var members) && members.Constructors.Any(o => o.Parameters.Any(p => p.ParameterType.IsAssignableTo(typeof(IQueryContext<>))))
             );

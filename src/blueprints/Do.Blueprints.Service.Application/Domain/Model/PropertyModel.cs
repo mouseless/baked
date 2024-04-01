@@ -6,7 +6,7 @@ public record PropertyModel(
     bool IsPublic,
     bool IsVirtual,
     AttributeCollection CustomAttributes
-) : IModel
+) : IMemberModel
 {
     public TypeModel PropertyType => PropertyTypeReference.Model;
 

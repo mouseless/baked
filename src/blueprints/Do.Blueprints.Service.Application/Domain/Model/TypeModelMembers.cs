@@ -7,8 +7,7 @@ public class TypeModelMembers : TypeModelMetadata
 {
     public List<ConstructorModel> Constructors { get; private set; } = default!;
     public ModelCollection<PropertyModel> Properties { get; private set; } = default!;
-    internal ModelCollection<MethodGroupModel> MethodGroups { get; private set; } = default!;
-    public List<MethodModel> Methods { get; private set; } = default!;
+    public ModelCollection<MethodGroupModel> MethodGroups { get; private set; } = default!;
 
     public ConstructorModel GetConstructor() =>
         Constructors.Single();
