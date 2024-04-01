@@ -3,21 +3,20 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Do.Domain.Model;
 
-public class ModelCollection<T> : IEnumerable<T>
+public class ModelCollection<T>() : IEnumerable<T>
     where T : IModel
 {
     readonly KeyedCollection _models = [];
     readonly Dictionary<Type, IEnumerable<T>> _index = [];
 
-    public ModelCollection(IEnumerable<T> models) : this()
+    public ModelCollection(IEnumerable<T> models)
+        : this()
     {
         foreach (var model in models)
         {
             _models.Add(model);
         }
     }
-
-    public ModelCollection() { }
 
     public T this[string id] =>
         _models[id];

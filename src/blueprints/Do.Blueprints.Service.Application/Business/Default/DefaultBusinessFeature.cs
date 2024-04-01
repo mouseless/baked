@@ -62,6 +62,16 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                     type.TryGetMembers(out var members) &&
                     !members.Has<DataClassAttribute>()
             );
+            builder.Metadata.Type.Add(new SingletonAttribute(),
+               when: type =>
+                   type.IsClass && !type.IsAbstract &&
+                   type.TryGetMembers(out var members) &&
+                   members.Has<ServiceAttribute>() &&
+                   !members.Has<TransientAttribute>() &&
+                   !members.Has<ScopedAttribute>() &&
+                   members.Properties.All(p => !p.IsPublic),
+               order: int.MaxValue
+            );
             builder.Metadata.Type.Add(new TransientAttribute(),
                 when: type =>
                     type.IsClass && !type.IsAbstract &&
@@ -82,15 +92,6 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                     type.TryGetMetadata(out var metadata) &&
                     metadata.Has<ServiceAttribute>() &&
                     type.IsAssignableTo<IScoped>()
-            );
-            builder.Metadata.Type.Add(new SingletonAttribute(),
-                when: type =>
-                    type.IsClass && !type.IsAbstract &&
-                    type.TryGetMembers(out var members) &&
-                    members.Has<ServiceAttribute>() &&
-                    !members.Has<TransientAttribute>() &&
-                    !members.Has<ScopedAttribute>() &&
-                    members.Properties.All(p => !p.IsPublic)
             );
 
             builder.Metadata.Method.Add(new ApiMethodAttribute(),

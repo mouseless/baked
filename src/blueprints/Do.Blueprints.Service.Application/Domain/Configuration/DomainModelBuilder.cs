@@ -64,7 +64,7 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
 
     void BuildMetadata(DomainModel model)
     {
-        foreach (var convention in _options.Metadata.Type)
+        foreach (var convention in _options.Metadata.Type.OrderBy(c => c.Order))
         {
             foreach (var type in model.Types)
             {
@@ -72,7 +72,7 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
             }
         }
 
-        foreach (var convention in _options.Metadata.Property)
+        foreach (var convention in _options.Metadata.Property.OrderBy(c => c.Order))
         {
             foreach (var property in model.Types.Where(t => t.HasMembers())
                                                 .SelectMany(t => t.GetMembers().Properties)
@@ -82,7 +82,7 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
             }
         }
 
-        foreach (var convention in _options.Metadata.Method)
+        foreach (var convention in _options.Metadata.Method.OrderBy(c => c.Order))
         {
             foreach (var method in model.Types.Where(t => t.HasMembers())
                                               .SelectMany(t => t.GetMembers().Methods)
@@ -92,7 +92,7 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
             }
         }
 
-        foreach (var convention in _options.Metadata.Parameter)
+        foreach (var convention in _options.Metadata.Parameter.OrderBy(c => c.Order))
         {
             foreach (var parameter in model.Types.Where(t => t.HasMembers())
                                                  .SelectMany(t => t.GetMembers().Methods)
