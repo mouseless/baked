@@ -13,7 +13,7 @@ public class LookupEntityByIdConvention(DomainModel _domain)
     public void Apply(ParameterModelContext context)
     {
         if (!_domain.Types.TryGetValue(context.Parameter.Type, out var entityType)) { return; }
-        if (!entityType.IsEntity()) { return; }
+        if (!entityType.TryGetMetadata(out var metadata) || !metadata.Has<EntityAttribute>()) { return; }
 
         var queryContextType = FindQueryContextType(entityType);
 

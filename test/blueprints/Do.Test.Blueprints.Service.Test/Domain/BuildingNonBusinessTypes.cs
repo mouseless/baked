@@ -12,26 +12,20 @@ public class BuildingNonBusinessTypes : TestServiceSpec
     }
 
     [Test]
-    public void Non_business_types_with_no_generic_parameters_are_initialized_with_empty_collections([Values(typeof(string), typeof(int), typeof(Task))] Type type)
+    public void Non_business_types_value_types_with_no_generic_parameters_have_no_build_level([Values(typeof(int), typeof(char))] Type type)
     {
         var model = DomainModel.Types[type];
 
-        model.Properties.ShouldNotBeNull();
-        model.Properties.Count().ShouldBe(0);
+        model.ShouldBeOfType<TypeModel>();
+        model.ShouldNotBeOfType<TypeModelGenerics>();
+    }
 
-        model.GenericTypeArguments.ShouldNotBeNull();
-        model.GenericTypeArguments.Count().ShouldBe(0);
+    [Test]
+    public void Non_business_types_have_inheritance_build_level([Values(typeof(string))] Type type)
+    {
+        var model = DomainModel.Types[type];
 
-        model.Methods.ShouldNotBeNull();
-        model.Methods.Count().ShouldBe(0);
-
-        model.Interfaces.ShouldNotBeNull();
-        model.Interfaces.Count().ShouldBe(0);
-
-        model.CustomAttributes.ShouldNotBeNull();
-        model.CustomAttributes.Count().ShouldBe(0);
-
-        model.Constructor.ShouldBeNull();
+        model.ShouldBeOfType<TypeModelInheritance>();
     }
 
     [Test]
@@ -40,9 +34,9 @@ public class BuildingNonBusinessTypes : TestServiceSpec
         var entityType = DomainModel.Types[typeof(Entity)];
         var genericType = DomainModel.Types[typeof(List<Entity>)];
 
-        genericType.ShouldNotBeNull();
-        genericType.GenericTypeDefinition.ShouldNotBeNull();
-        genericType.GenericTypeDefinition.IsAssignableTo(typeof(List<>)).ShouldBeTrue();
+        genericType.ShouldBeAssignableTo<TypeModelGenerics>();
+        genericType.GetGenerics().GenericTypeDefinition.ShouldNotBeNull();
+        genericType.GetGenerics().GenericTypeDefinition?.IsAssignableTo(typeof(List<>)).ShouldBeTrue();
     }
 
     [Test]
@@ -51,10 +45,10 @@ public class BuildingNonBusinessTypes : TestServiceSpec
         var stringType = DomainModel.Types[typeof(string)];
         var genericType = DomainModel.Types[typeof(List<string>)];
 
-        genericType.ShouldNotBeNull();
-        genericType.GenericTypeDefinition.ShouldNotBeNull();
-        genericType.GenericTypeDefinition.IsAssignableTo(typeof(List<>)).ShouldBeTrue();
-        genericType.GenericTypeArguments.First().IsAssignableTo<string>().ShouldBeTrue();
+        genericType.ShouldBeAssignableTo<TypeModelGenerics>();
+        genericType.GetGenerics().GenericTypeDefinition.ShouldNotBeNull();
+        genericType.GetGenerics().GenericTypeDefinition?.IsAssignableTo(typeof(List<>)).ShouldBeTrue();
+        genericType.GetGenerics().GenericTypeArguments.First().Model.IsAssignableTo<string>().ShouldBeTrue();
     }
 
     [Test]
@@ -63,9 +57,9 @@ public class BuildingNonBusinessTypes : TestServiceSpec
         var entityType = DomainModel.Types[typeof(Entity)];
         var genericType = DomainModel.Types[type];
 
-        genericType.ShouldNotBeNull();
-        genericType.GenericTypeArguments.Count().ShouldBe(1);
-        genericType.GenericTypeArguments.First().ShouldBe(entityType);
+        genericType.ShouldBeAssignableTo<TypeModelGenerics>();
+        genericType.GetGenerics().GenericTypeArguments.Count.ShouldBe(1);
+        genericType.GetGenerics().GenericTypeArguments.First().Model.ShouldBe(entityType);
     }
 
     [Test]
@@ -74,7 +68,7 @@ public class BuildingNonBusinessTypes : TestServiceSpec
         var model = DomainModel.Types[typeof(Task<TransientWithTask>)];
 
         model.ShouldNotBeNull();
-        model.BaseType.ShouldNotBeNull();
-        model.BaseType.IsAssignableTo<Task>();
+        model.ShouldBeOfType<TypeModelInheritance>();
+        model.GetInheritance().BaseType?.IsAssignableTo<Task>().ShouldBeTrue();
     }
 }

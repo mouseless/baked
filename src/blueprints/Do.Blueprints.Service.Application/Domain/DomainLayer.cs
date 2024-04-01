@@ -1,4 +1,5 @@
 ﻿using Do.Architecture;
+using Do.Domain.Configuration;
 using Do.Domain.Model;
 using Microsoft.Extensions.Configuration;
 
@@ -8,29 +9,27 @@ namespace Do.Domain;
 
 public class DomainLayer : LayerBase<BuildConfiguration>
 {
-    readonly IDomainAssemblyCollection _domainAssemblies = new DomainAssemblyCollection();
     readonly IDomainTypeCollection _domainTypes = new DomainTypeCollection();
-    readonly DomainBuilderOptions _domainBuilderOptions = new();
+    readonly DomainModelBuilderOptions _builderOptions = new();
 
     protected override PhaseContext GetContext(BuildConfiguration phase) =>
         phase.CreateContextBuilder()
-            .Add<IDomainAssemblyCollection>(_domainAssemblies)
             .Add<IDomainTypeCollection>(_domainTypes)
-            .Add<DomainBuilderOptions>(_domainBuilderOptions)
+            .Add<DomainModelBuilderOptions>(_builderOptions)
             .Build();
 
     protected override IEnumerable<IPhase> GetPhases()
     {
-        yield return new BuildDomain(_domainAssemblies, _domainTypes, _domainBuilderOptions);
+        yield return new BuildDomain(_domainTypes, _builderOptions);
     }
 
-    public class BuildDomain(IDomainAssemblyCollection _domainAssemblies, IDomainTypeCollection _domainTypes, DomainBuilderOptions _domainBuilderOptions)
+    public class BuildDomain(IDomainTypeCollection _domainTypes, DomainModelBuilderOptions _builderOptions)
         : PhaseBase<ConfigurationManager>(PhaseOrder.Early)
     {
         protected override void Initialize(ConfigurationManager _)
         {
-            var builder = new DomainModelBuilder(_domainBuilderOptions);
-            var model = builder.BuildFrom(_domainAssemblies, _domainTypes);
+            var builder = new DomainModelBuilder(_builderOptions);
+            var model = builder.Build(_domainTypes);
 
             Context.Add<DomainModel>(model);
         }
