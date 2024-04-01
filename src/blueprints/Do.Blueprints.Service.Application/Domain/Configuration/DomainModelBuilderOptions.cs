@@ -20,7 +20,7 @@ public class DomainModelBuilderOptions
     public class DomainMetadataOptions
     {
         public ICollection<MetadataConvention<TypeModel>> Type { get; } = [];
-        public ICollection<MetadataConvention<MethodGroupModel>> MethodGroup { get; } = [];
+        public ICollection<MetadataConvention<MethodModel>> Method { get; } = [];
         public ICollection<MetadataConvention<ParameterModel>> Parameter { get; } = [];
         public ICollection<MetadataConvention<PropertyModel>> Property { get; } = [];
     }
@@ -28,8 +28,8 @@ public class DomainModelBuilderOptions
     public class DomainIndexOptions
     {
         public ICollection<Type> Type { get; } = [];
-        public ICollection<Type> MethodGroup { get; } = [];
-        public ICollection<Type> Parameters { get; } = [];
+        public ICollection<Type> Method { get; } = [];
+        public ICollection<Type> Parameter { get; } = [];
         public ICollection<Type> Property { get; } = [];
     }
 }

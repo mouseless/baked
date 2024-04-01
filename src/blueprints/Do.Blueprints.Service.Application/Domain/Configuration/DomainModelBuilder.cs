@@ -83,9 +83,9 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
             }
         }
 
-        foreach (var convention in _options.Metadata.MethodGroup)
+        foreach (var convention in _options.Metadata.Method)
         {
-            foreach (var methodGroups in model.Types.Where(t => t.HasMembers()).Select(t => t.GetMembers().MethodGroups))
+            foreach (var methodGroups in model.Types.Where(t => t.HasMembers()).Select(t => t.GetMembers().Methods))
             {
                 foreach (var methodGroup in methodGroups)
                 {
@@ -96,16 +96,13 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
 
         foreach (var convention in _options.Metadata.Parameter)
         {
-            foreach (var methodGroups in model.Types.Where(t => t.HasMembers()).Select(t => t.GetMembers().MethodGroups))
+            foreach (var methods in model.Types.Where(t => t.HasMembers()).Select(t => t.GetMembers().Methods))
             {
-                foreach (var methodGroup in methodGroups)
+                foreach (var method in methods)
                 {
-                    foreach (var method in methodGroup.Methods)
+                    foreach (var parameter in method.Parameters)
                     {
-                        foreach (var parameter in method.Parameters)
-                        {
-                            convention.Apply(parameter);
-                        }
+                        convention.Apply(parameter);
                     }
                 }
             }
@@ -127,24 +124,21 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
             }
         }
 
-        foreach (var index in _options.Index.MethodGroup)
+        foreach (var index in _options.Index.Method)
         {
-            foreach (var methodGroups in model.Types.Where(m => m.HasMembers()).Select(m => m.GetMembers().MethodGroups))
+            foreach (var methods in model.Types.Where(m => m.HasMembers()).Select(m => m.GetMembers().Methods))
             {
-                methodGroups.AddIndex(index);
+                methods.AddIndex(index);
             }
         }
 
-        foreach (var index in _options.Index.Parameters)
+        foreach (var index in _options.Index.Parameter)
         {
-            foreach (var methodGroups in model.Types.Where(m => m.HasMembers()).Select(m => m.GetMembers().MethodGroups))
+            foreach (var methods in model.Types.Where(m => m.HasMembers()).Select(m => m.GetMembers().Methods))
             {
-                foreach (var methodGroup in methodGroups)
+                foreach (var method in methods)
                 {
-                    foreach (var method in methodGroup.Methods)
-                    {
-                        method.Parameters.AddIndex(index);
-                    }
+                    method.Parameters.AddIndex(index);
                 }
             }
         }

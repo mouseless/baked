@@ -43,12 +43,12 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
             builder.Index.Type.Add<TransientAttribute>();
             builder.Index.Type.Add<ScopedAttribute>();
             builder.Index.Type.Add<SingletonAttribute>();
-            builder.Index.MethodGroup.Add<ApiMethodAttribute>();
+            builder.Index.Method.Add<ApiMethodAttribute>();
 
             builder.Metadata.Type.Add(new DataClassAttribute(),
                 when: type =>
                     type.TryGetMembers(out var members) &&
-                    members.MethodGroups.Contains("<Clone>$"), // if type is record
+                    members.Methods.ContainsGroup("<Clone>$"), // if type is record
                 order: int.MinValue
             );
             builder.Metadata.Type.Add(new ServiceAttribute(),
@@ -67,8 +67,8 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                     type.IsClass && !type.IsAbstract &&
                     type.TryGetMembers(out var members) &&
                     members.Has<ServiceAttribute>() &&
-                    members.MethodGroups.TryGetValue("With", out var group) &&
-                    group.Methods.Any(o =>
+                    members.Methods.TryGetGroup("With", out var methods) &&
+                    methods.Any(o =>
                         o.ReturnType is not null &&
                         (
                             o.ReturnType == type ||
@@ -93,8 +93,8 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                     members.Properties.All(p => !p.IsPublic)
             );
 
-            builder.Metadata.MethodGroup.Add(new ApiMethodAttribute(),
-                when: group => group.Methods.Any(m => m.IsPublic)
+            builder.Metadata.Method.Add(new ApiMethodAttribute(),
+                when: method => method.IsPublic
             );
         });
 
@@ -147,24 +147,23 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                 if (!type.GetMetadata().Has<SingletonAttribute>()) { continue; } // TODO for now only singleton
 
                 var controller = new ControllerModel(type.Name);
-                foreach (var group in type.GetMembers().MethodGroups.Having<ApiMethodAttribute>())
+                foreach (var method in type.GetMembers().Methods.Having<ApiMethodAttribute>())
                 {
-                    var overload = group.Methods.OrderByDescending(o => o.Parameters.Count).First();
-                    if (overload.ReturnType is null) { continue; }
+                    if (method.ReturnType is null) { continue; }
 
-                    if (overload.Parameters.Count > 0) { continue; } // TODO for now only parameterless
-                    if (!overload.ReturnType.IsAssignableTo(typeof(void)) &&
-                        !overload.ReturnType.IsAssignableTo(typeof(Task))) { continue; } // TODO for now only void
+                    if (method.Parameters.Count > 0) { continue; } // TODO for now only parameterless
+                    if (!method.ReturnType.IsAssignableTo(typeof(void)) &&
+                        !method.ReturnType.IsAssignableTo(typeof(Task))) { continue; } // TODO for now only void
 
                     controller.Actions.Add(
                         new(
-                            Name: group.Name,
+                            Name: method.Name,
                             Method: HttpMethod.Post,
-                            Route: $"generated/{type.Name}/{group.Name}",
-                            Return: new(async: overload.ReturnType.IsAssignableTo(typeof(Task))),
+                            Route: $"generated/{type.Name}/{method.Name}",
+                            Return: new(async: method.ReturnType.IsAssignableTo(typeof(Task))),
                             Statements: new(
                                 FindTarget: "target",
-                                InvokeMethod: new(group.Name)
+                                InvokeMethod: new(method.Name)
                             )
                         )
                         { Parameters = [new(ParameterModelFrom.Services, type.FullName, "target")] }

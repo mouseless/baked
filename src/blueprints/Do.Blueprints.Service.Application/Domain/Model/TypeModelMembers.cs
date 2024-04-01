@@ -7,16 +7,16 @@ public class TypeModelMembers : TypeModelMetadata
 {
     public List<ConstructorModel> Constructors { get; private set; } = default!;
     public ModelCollection<PropertyModel> Properties { get; private set; } = default!;
-    public ModelCollection<MethodGroupModel> MethodGroups { get; private set; } = default!;
+    public GroupedModelCollection<MethodModel> Methods { get; private set; } = default!;
 
     public ConstructorModel GetConstructor() =>
         Constructors.Single();
 
     public MethodModel GetMethod(string name) =>
-        MethodGroups[name].Methods.Single();
+       GetMethods(name).Single();
 
     public IEnumerable<MethodModel> GetMethods(string name) =>
-        MethodGroups[name].Methods;
+        Methods.TryGetGroup(name, out var result) ? result : [];
 
     public new class Factory : TypeModelMetadata.Factory
     {
@@ -30,7 +30,7 @@ public class TypeModelMembers : TypeModelMetadata
 
             members.Constructors = BuildConstructorGroup();
             members.Properties = new(type.GetProperties(builder.Options.BindingFlags.Property).Select(BuildProperty));
-            members.MethodGroups = BuildMethodGroups();
+            members.Methods = BuildMethods();
 
             List<ConstructorModel> BuildConstructorGroup()
             {
@@ -43,7 +43,6 @@ public class TypeModelMembers : TypeModelMetadata
             ConstructorModel BuildConstructor(ConstructorInfo constructorInfo)
             {
                 return new(
-                    "ctor",
                     constructorInfo.IsPublic,
                     constructorInfo.IsFamily,
                     new(constructorInfo.GetCustomAttributes()),
@@ -60,21 +59,17 @@ public class TypeModelMembers : TypeModelMetadata
                     new(property.GetCustomAttributes())
                 );
 
-            ModelCollection<MethodGroupModel> BuildMethodGroups()
+            GroupedModelCollection<MethodModel> BuildMethods()
             {
-                var methodGroups = new Dictionary<string, MethodGroupModel>();
+                var methodGroups = new Dictionary<string, IEnumerable<MethodModel>>();
                 var methodInfos = type.GetMethods(builder.Options.BindingFlags.Method) ?? [];
                 foreach (var group in methodInfos.GroupBy(m => m.Name))
                 {
-                    var methods = group.Select(BuildMethod).ToList();
-                    methodGroups[group.Key] = new(
-                        group.Key,
-                        methods,
-                        new(methods.SelectMany(m => m.CustomAttributes.SelectMany(a => a.Attributes)))
-                    );
+                    var methods = group.Select(BuildMethod);
+                    methodGroups[group.Key] = methods;
                 }
 
-                return new(methodGroups.Values);
+                return new(methodGroups);
             }
 
             MethodModel BuildMethod(MethodInfo methodInfo)
