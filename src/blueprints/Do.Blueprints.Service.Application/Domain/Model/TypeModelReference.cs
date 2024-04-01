@@ -1,6 +1,6 @@
 ﻿namespace Do.Domain.Model;
 
-public class TypeModelReference : IKeyedModel
+public class TypeModelReference : IModel
 {
     internal static string IdFrom(Type type) =>
         type.FullName ?? $"{type.Namespace}.{type.Name}<{string.Join(',', type.GenericTypeArguments.Select(IdFrom))}>";
@@ -28,5 +28,5 @@ public class TypeModelReference : IKeyedModel
     public override string ToString() =>
         _id;
 
-    string IKeyedModel.Id => _id;
+    string IModel.Id => _id;
 }

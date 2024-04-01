@@ -2,16 +2,12 @@
 
 public record ConstructorModel(
     bool IsPublic,
-    bool IsProtected,
-    AttributeCollection CustomAttributes,
+    bool IsFamily,
     ModelCollection<ParameterModel> Parameters
 ) : MethodBaseModel(
-    "ctor",
     IsPublic,
-    IsProtected,
+    IsFamily,
     false,
     true,
-    default,
-    CustomAttributes,
     Parameters
 );

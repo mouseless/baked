@@ -1,20 +1,12 @@
-﻿namespace Do.Domain.Model;
+﻿using System.Collections.ObjectModel;
+
+namespace Do.Domain.Model;
 
 public record MethodModel(
     string Name,
-    bool IsPublic,
-    bool IsProtected,
-    bool IsVirtual,
-    TypeModelReference? ReturnTypeReference,
-    AttributeCollection CustomAttributes,
-    ModelCollection<ParameterModel> Parameters
-) : MethodBaseModel(
-    Name,
-    IsPublic,
-    IsProtected,
-    IsVirtual,
-    false,
-    ReturnTypeReference,
-    CustomAttributes,
-    Parameters
-);
+    ReadOnlyCollection<MethodOverloadModel> Overloads,
+    AttributeCollection CustomAttributes
+) : IModel, ICustomAttributesModel
+{
+    string IModel.Id => Name;
+}

@@ -28,8 +28,8 @@ public class TypeModelGenerics : TypeModel
                 return;
             }
 
-            generics.GenericTypeDefinitionReference = !type.IsGenericTypeDefinition ? builder.Get(type.GetGenericTypeDefinition()) : default;
-            generics.GenericTypeArguments = new(type.GenericTypeArguments.Select(builder.Get));
+            generics.GenericTypeDefinitionReference = !type.IsGenericTypeDefinition ? builder.GetReference(type.GetGenericTypeDefinition()) : default;
+            generics.GenericTypeArguments = new(type.GenericTypeArguments.Select(builder.GetReference));
         }
     }
 }

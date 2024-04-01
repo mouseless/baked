@@ -2,7 +2,7 @@
 
 namespace Do.Domain.Model;
 
-public class TypeModel : IKeyedModel, IEquatable<TypeModel>
+public class TypeModel : IModel, IEquatable<TypeModel>
 {
     readonly Lazy<string> _cSharpFriendlyFullName;
 
@@ -66,7 +66,7 @@ public class TypeModel : IKeyedModel, IEquatable<TypeModel>
     public override int GetHashCode() =>
         Id.GetHashCode();
 
-    string IKeyedModel.Id => Id;
+    string IModel.Id => Id;
 
     public class Factory
     {

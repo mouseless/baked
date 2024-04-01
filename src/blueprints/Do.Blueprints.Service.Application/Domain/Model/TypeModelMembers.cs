@@ -1,22 +1,52 @@
 ﻿using Do.Domain.Configuration;
+using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 namespace Do.Domain.Model;
 
 public class TypeModelMembers : TypeModelMetadata
 {
-    public List<ConstructorModel> Constructors { get; private set; } = default!;
+    public ReadOnlyCollection<ConstructorModel> Constructors { get; private set; } = default!;
     public ModelCollection<PropertyModel> Properties { get; private set; } = default!;
-    public MethodModelCollection Methods { get; private set; } = default!;
+    public ModelCollection<MethodModel> Methods { get; set; } = default!;
 
     public ConstructorModel GetConstructor() =>
         Constructors.Single();
 
-    public MethodModel GetMethod(string name) =>
+    public bool TryGetMethod(string name, [NotNullWhen(true)] out MethodOverloadModel? result)
+    {
+        if (!TryGetMethods(name, out var methods))
+        {
+            result = null;
+
+            return false;
+        }
+
+        result = methods.SingleOrDefault();
+
+        return result is not null;
+    }
+
+    public MethodOverloadModel GetMethod(string name) =>
        GetMethods(name).Single();
 
-    public IEnumerable<MethodModel> GetMethods(string name) =>
-        Methods.TryGetGroup(name, out var result) ? result : [];
+    public bool TryGetMethods(string name, [NotNullWhen(true)] out IEnumerable<MethodOverloadModel>? result)
+    {
+        if (!Methods.TryGetValue(name, out var method))
+        {
+            result = null;
+
+            return false;
+        }
+
+        result = method.Overloads;
+
+        return true;
+    }
+
+    public IEnumerable<MethodOverloadModel> GetMethods(string name) =>
+        Methods[name].Overloads;
 
     public new class Factory : TypeModelMetadata.Factory
     {
@@ -28,16 +58,16 @@ public class TypeModelMembers : TypeModelMetadata
 
             if (result is not TypeModelMembers members) { return; }
 
-            members.Constructors = BuildConstructorGroup();
+            members.Constructors = BuildConstructors();
             members.Properties = new(type.GetProperties(builder.Options.BindingFlags.Property).Select(BuildProperty));
             members.Methods = BuildMethods();
 
-            List<ConstructorModel> BuildConstructorGroup()
+            ReadOnlyCollection<ConstructorModel> BuildConstructors()
             {
                 var constructorInfos = type.GetConstructors(builder.Options.BindingFlags.Constructor) ?? [];
-                if (!constructorInfos.Any()) { return []; }
+                if (!constructorInfos.Any()) { return ReadOnlyCollection<ConstructorModel>.Empty; }
 
-                return [.. constructorInfos.Select(BuildConstructor)];
+                return constructorInfos.Select(BuildConstructor).ToList().AsReadOnly();
             }
 
             ConstructorModel BuildConstructor(ConstructorInfo constructorInfo)
@@ -45,7 +75,6 @@ public class TypeModelMembers : TypeModelMetadata
                 return new(
                     constructorInfo.IsPublic,
                     constructorInfo.IsFamily,
-                    new(constructorInfo.GetCustomAttributes()),
                     BuildParameters(constructorInfo)
                 );
             }
@@ -53,35 +82,36 @@ public class TypeModelMembers : TypeModelMetadata
             PropertyModel BuildProperty(PropertyInfo property) =>
                 new(
                     property.Name,
-                    builder.Get(property.PropertyType),
+                    builder.GetReference(property.PropertyType),
                     property.GetMethod?.IsPublic == true,
                     property.GetMethod?.IsVirtual == true,
                     new(property.GetCustomAttributes())
                 );
 
-            MethodModelCollection BuildMethods()
+            ModelCollection<MethodModel> BuildMethods()
             {
-                var methodGroups = new Dictionary<string, IEnumerable<MethodModel>>();
+                var result = new ModelCollection<MethodModel>.KeyedCollection();
                 var methodInfos = type.GetMethods(builder.Options.BindingFlags.Method) ?? [];
-                foreach (var group in methodInfos.GroupBy(m => m.Name))
+                foreach (var methodsByName in methodInfos.GroupBy(m => m.Name))
                 {
-                    var methods = group.Select(BuildMethod);
-                    methodGroups[group.Key] = methods;
+                    result.Add(new(
+                        methodsByName.Key,
+                        methodsByName.Select(BuildMethod).ToList().AsReadOnly(),
+                        new(methodsByName.SelectMany(m => m.GetCustomAttributes()))
+                    ));
                 }
 
-                return new(methodGroups);
+                return new(result);
             }
 
-            MethodModel BuildMethod(MethodInfo methodInfo)
+            MethodOverloadModel BuildMethod(MethodInfo methodInfo)
             {
                 return new(
-                    methodInfo.Name,
                     methodInfo.IsPublic,
                     methodInfo.IsFamily,
                     methodInfo.IsVirtual,
-                    builder.Get(methodInfo.ReturnType),
-                    new(methodInfo.GetCustomAttributes()),
-                    BuildParameters(methodInfo)
+                    BuildParameters(methodInfo),
+                    builder.GetReference(methodInfo.ReturnType)
                 );
             }
 
@@ -91,7 +121,7 @@ public class TypeModelMembers : TypeModelMetadata
             ParameterModel BuildParameter(ParameterInfo parameter) =>
                 new(
                     parameter.Name ?? string.Empty,
-                    builder.Get(parameter.ParameterType),
+                    builder.GetReference(parameter.ParameterType),
                     parameter.IsOptional,
                     parameter.DefaultValue,
                     new(parameter.Member.GetCustomAttributes())

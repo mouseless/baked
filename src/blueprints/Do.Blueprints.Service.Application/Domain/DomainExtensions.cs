@@ -38,17 +38,17 @@ public static class DomainExtensions
 
     public static ICollection<MetadataConvention<T>> Add<T>(this ICollection<MetadataConvention<T>> source, Attribute attribute, Func<T, bool> when,
         int? order = default
-    ) where T : ICustomAttributesModel =>
+    ) where T : IModel, ICustomAttributesModel =>
         source.Add((model, add) => add(model, attribute), when, order);
 
     public static ICollection<MetadataConvention<T>> Add<T, TAttribute>(this ICollection<MetadataConvention<T>> source, Attribute[] attributes, Func<T, bool> when,
         int? order = default
-    ) where T : ICustomAttributesModel =>
+    ) where T : IModel, ICustomAttributesModel =>
         source.Add((model, add) => Array.ForEach(attributes, a => add(model, a)), when, order);
 
     public static ICollection<MetadataConvention<T>> Add<T>(this ICollection<MetadataConvention<T>> source, Action<T, Action<ICustomAttributesModel, Attribute>> apply, Func<T, bool> when,
         int? order = default
-    ) where T : ICustomAttributesModel
+    ) where T : IModel, ICustomAttributesModel
     {
         source.Add(new(when, apply, _order: order));
 
@@ -84,10 +84,12 @@ public static class DomainExtensions
         source.Contains(TypeModelReference.IdFrom(type));
 
     public static bool Contains(this ModelCollection<TypeModelReference> source, TypeModel type) =>
-        source.Contains(((IKeyedModel)type).Id);
+        source.Contains(((IModel)type).Id);
 
     public static bool Contains(this ModelCollection<TypeModel> source, Type type) =>
         source.Contains(TypeModelReference.IdFrom(type));
+
+    #region TypeModel
 
     public static bool HasGenerics(this TypeModel type) =>
         type.HasInfo<TypeModelGenerics>();
@@ -138,4 +140,6 @@ public static class DomainExtensions
 
         return result is not null;
     }
+
+    #endregion
 }

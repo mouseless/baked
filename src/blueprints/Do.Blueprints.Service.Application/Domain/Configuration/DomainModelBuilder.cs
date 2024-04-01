@@ -52,7 +52,7 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
     internal bool DomainTypesContain(Type t) =>
         _domainTypes.Contains(t);
 
-    public TypeModelReference Get(Type type)
+    internal TypeModelReference GetReference(Type type)
     {
         if (_references.TryGetValue(TypeModelReference.IdFrom(type), out var result))
         {
@@ -74,37 +74,33 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
 
         foreach (var convention in _options.Metadata.Property)
         {
-            foreach (var properties in model.Types.Where(t => t.HasMembers()).Select(t => t.GetMembers().Properties))
+            foreach (var property in model.Types.Where(t => t.HasMembers())
+                                                .SelectMany(t => t.GetMembers().Properties)
+            )
             {
-                foreach (var property in properties)
-                {
-                    convention.Apply(property);
-                }
+                convention.Apply(property);
             }
         }
 
         foreach (var convention in _options.Metadata.Method)
         {
-            foreach (var methodGroups in model.Types.Where(t => t.HasMembers()).Select(t => t.GetMembers().Methods))
+            foreach (var method in model.Types.Where(t => t.HasMembers())
+                                              .SelectMany(t => t.GetMembers().Methods)
+            )
             {
-                foreach (var methodGroup in methodGroups)
-                {
-                    convention.Apply(methodGroup);
-                }
+                convention.Apply(method);
             }
         }
 
         foreach (var convention in _options.Metadata.Parameter)
         {
-            foreach (var methods in model.Types.Where(t => t.HasMembers()).Select(t => t.GetMembers().Methods))
+            foreach (var parameter in model.Types.Where(t => t.HasMembers())
+                                                 .SelectMany(t => t.GetMembers().Methods)
+                                                 .SelectMany(m => m.Overloads)
+                                                 .SelectMany(o => o.Parameters)
+            )
             {
-                foreach (var method in methods)
-                {
-                    foreach (var parameter in method.Parameters)
-                    {
-                        convention.Apply(parameter);
-                    }
-                }
+                convention.Apply(parameter);
             }
         }
     }
@@ -118,7 +114,9 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
 
         foreach (var index in _options.Index.Property)
         {
-            foreach (var properties in model.Types.Where(m => m.HasMembers()).Select(m => m.GetMembers().Properties))
+            foreach (var properties in model.Types.Where(t => t.HasMembers())
+                                                  .Select(m => m.GetMembers().Properties)
+            )
             {
                 properties.AddIndex(index);
             }
@@ -126,7 +124,9 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
 
         foreach (var index in _options.Index.Method)
         {
-            foreach (var methods in model.Types.Where(m => m.HasMembers()).Select(m => m.GetMembers().Methods))
+            foreach (var methods in model.Types.Where(t => t.HasMembers())
+                                               .Select(m => m.GetMembers().Methods)
+            )
             {
                 methods.AddIndex(index);
             }
@@ -134,12 +134,12 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
 
         foreach (var index in _options.Index.Parameter)
         {
-            foreach (var methods in model.Types.Where(m => m.HasMembers()).Select(m => m.GetMembers().Methods))
+            foreach (var overload in model.Types.Where(t => t.HasMembers())
+                                                .SelectMany(t => t.GetMembers().Methods)
+                                                .SelectMany(m => m.Overloads)
+            )
             {
-                foreach (var method in methods)
-                {
-                    method.Parameters.AddIndex(index);
-                }
+                overload.Parameters.AddIndex(index);
             }
         }
     }

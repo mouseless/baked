@@ -67,8 +67,8 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                     type.IsClass && !type.IsAbstract &&
                     type.TryGetMembers(out var members) &&
                     members.Has<ServiceAttribute>() &&
-                    members.Methods.TryGetGroup("With", out var methods) &&
-                    methods.Any(o =>
+                    members.TryGetMethods("With", out var method) &&
+                    method.Any(o =>
                         o.ReturnType is not null &&
                         (
                             o.ReturnType == type ||
@@ -94,7 +94,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
             );
 
             builder.Metadata.Method.Add(new ApiMethodAttribute(),
-                when: method => method.IsPublic
+                when: method => method.Overloads.Any(m => m.IsPublic)
             );
         });
 
@@ -140,7 +140,6 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
             api.References.AddRange(_domainAssemblies);
 
             var domainModel = configurator.Context.GetDomainModel();
-
             foreach (var type in domainModel.Types.Having<ServiceAttribute>())
             {
                 if (type.FullName is null) { continue; }
@@ -149,18 +148,19 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                 var controller = new ControllerModel(type.Name);
                 foreach (var method in type.GetMembers().Methods.Having<ApiMethodAttribute>())
                 {
-                    if (method.ReturnType is null) { continue; }
+                    var overload = method.Overloads.OrderByDescending(o => o.Parameters.Count).First();
+                    if (overload.ReturnType is null) { continue; }
 
-                    if (method.Parameters.Count > 0) { continue; } // TODO for now only parameterless
-                    if (!method.ReturnType.IsAssignableTo(typeof(void)) &&
-                        !method.ReturnType.IsAssignableTo(typeof(Task))) { continue; } // TODO for now only void
+                    if (overload.Parameters.Count > 0) { continue; } // TODO for now only parameterless
+                    if (!overload.ReturnType.IsAssignableTo(typeof(void)) &&
+                        !overload.ReturnType.IsAssignableTo(typeof(Task))) { continue; } // TODO for now only void
 
                     controller.Actions.Add(
                         new(
                             Name: method.Name,
                             Method: HttpMethod.Post,
                             Route: $"generated/{type.Name}/{method.Name}",
-                            Return: new(async: method.ReturnType.IsAssignableTo(typeof(Task))),
+                            Return: new(async: overload.ReturnType.IsAssignableTo(typeof(Task))),
                             Statements: new(
                                 FindTarget: "target",
                                 InvokeMethod: new(method.Name)
