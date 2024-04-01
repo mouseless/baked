@@ -6,7 +6,6 @@
     <RootNamespace>Do</RootNamespace>
     <IsPackable>true</IsPackable>
     <EnablePackageValidation>true</EnablePackageValidation>
-    <NoDefaultExcludes>true</NoDefaultExcludes>
   </PropertyGroup>
 
   <PropertyGroup>
