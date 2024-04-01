@@ -6,13 +6,13 @@ public record ParameterModel(
     bool IsOptional,
     object? DefaultValue,
     AttributeCollection CustomAttributes
-) : IMemberModel
+) : ICustomAttributesModel, IKeyedModel
 {
     public TypeModel ParameterType => ParameterTypeReference.Model;
 
     public bool Has<T>() where T : Attribute =>
         CustomAttributes.ContainsKey<T>();
 
-    string IModel.Id => Name;
+    string IKeyedModel.Id => Name;
 }
 

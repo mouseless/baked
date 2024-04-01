@@ -2,7 +2,7 @@
 
 namespace Do.Domain.Configuration;
 
-public class MetadataConvention<TModel>(Func<TModel, bool> _when, Action<TModel, Action<IMemberModel, Attribute>> _apply,
+public class MetadataConvention<TModel>(Func<TModel, bool> _when, Action<TModel, Action<ICustomAttributesModel, Attribute>> _apply,
     int? _order = default
 ) where TModel : IModel
 {
@@ -16,7 +16,7 @@ public class MetadataConvention<TModel>(Func<TModel, bool> _when, Action<TModel,
         }
     }
 
-    void Add(IMemberModel model, Attribute attribute)
+    void Add(ICustomAttributesModel model, Attribute attribute)
     {
         model.CustomAttributes.Add(attribute);
     }

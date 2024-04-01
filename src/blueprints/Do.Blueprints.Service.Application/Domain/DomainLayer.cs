@@ -10,25 +10,25 @@ namespace Do.Domain;
 public class DomainLayer : LayerBase<BuildConfiguration>
 {
     readonly IDomainTypeCollection _domainTypes = new DomainTypeCollection();
-    readonly DomainModelBuilderOptions _domainBuilderOptions = new();
+    readonly DomainModelBuilderOptions _builderOptions = new();
 
     protected override PhaseContext GetContext(BuildConfiguration phase) =>
         phase.CreateContextBuilder()
             .Add<IDomainTypeCollection>(_domainTypes)
-            .Add<DomainModelBuilderOptions>(_domainBuilderOptions)
+            .Add<DomainModelBuilderOptions>(_builderOptions)
             .Build();
 
     protected override IEnumerable<IPhase> GetPhases()
     {
-        yield return new BuildDomain(_domainTypes, _domainBuilderOptions);
+        yield return new BuildDomain(_domainTypes, _builderOptions);
     }
 
-    public class BuildDomain(IDomainTypeCollection _domainTypes, DomainModelBuilderOptions _domainBuilderOptions)
+    public class BuildDomain(IDomainTypeCollection _domainTypes, DomainModelBuilderOptions _builderOptions)
         : PhaseBase<ConfigurationManager>(PhaseOrder.Early)
     {
         protected override void Initialize(ConfigurationManager _)
         {
-            var builder = new DomainModelBuilder(_domainBuilderOptions);
+            var builder = new DomainModelBuilder(_builderOptions);
             var model = builder.Build(_domainTypes);
 
             Context.Add<DomainModel>(model);

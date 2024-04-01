@@ -4,7 +4,7 @@ public record MethodGroupModel(
     string Name,
     List<MethodModel> Methods,
     AttributeCollection CustomAttributes
-) : IMemberModel
+) : ICustomAttributesModel, IKeyedModel
 {
-    string IModel.Id => Name;
+    string IKeyedModel.Id => Name;
 }

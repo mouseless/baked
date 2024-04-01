@@ -1,10 +1,8 @@
 ﻿using Do.Domain.Configuration;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Do.Domain.Model;
 
-public class TypeModel :
-    IModel, IEquatable<TypeModel>
+public class TypeModel : IKeyedModel, IEquatable<TypeModel>
 {
     readonly Lazy<string> _cSharpFriendlyFullName;
 
@@ -55,8 +53,8 @@ public class TypeModel :
 
     public bool IsAssignableTo(Type type) =>
         Type == type ||
-        TryGetGenerics(out var generics) && generics.GenericTypeDefinition?.IsAssignableTo(type) == true ||
-        TryGetInheritance(out var inheritance) && (inheritance.BaseType?.IsAssignableTo(type) == true || inheritance.Interfaces.Contains(type))
+        this.TryGetGenerics(out var generics) && generics.GenericTypeDefinition?.IsAssignableTo(type) == true ||
+        this.TryGetInheritance(out var inheritance) && (inheritance.BaseType?.IsAssignableTo(type) == true || inheritance.Interfaces.Contains(type))
     ;
 
     public override bool Equals(object? obj) =>
@@ -68,7 +66,7 @@ public class TypeModel :
     public override int GetHashCode() =>
         Id.GetHashCode();
 
-    string IModel.Id => Id;
+    string IKeyedModel.Id => Id;
 
     public class Factory
     {
@@ -101,55 +99,5 @@ public class TypeModel :
 
             return result;
         }
-    }
-
-    public bool HasGenerics() =>
-        HasInfo<TypeModelGenerics>();
-
-    public TypeModelGenerics GetGenerics() =>
-        GetInfo<TypeModelGenerics>();
-
-    public bool TryGetGenerics([NotNullWhen(true)] out TypeModelMetadata? result) =>
-        TryGetInfo(out result);
-
-    public bool HasInheritance() =>
-        HasInfo<TypeModelInheritance>();
-
-    public TypeModelInheritance GetInheritance() =>
-        GetInfo<TypeModelInheritance>();
-
-    public bool TryGetInheritance([NotNullWhen(true)] out TypeModelMetadata? result) =>
-        TryGetInfo(out result);
-
-    public bool HasMetadata() =>
-        HasInfo<TypeModelMetadata>();
-
-    public TypeModelMetadata GetMetadata() =>
-        GetInfo<TypeModelMetadata>();
-
-    public bool TryGetMetadata([NotNullWhen(true)] out TypeModelMetadata? result) =>
-        TryGetInfo(out result);
-
-    public bool HasMembers() =>
-        HasInfo<TypeModelMembers>();
-
-    public TypeModelMembers GetMembers() =>
-        GetInfo<TypeModelMembers>();
-
-    public bool TryGetMembers([NotNullWhen(true)] out TypeModelMembers? result) =>
-        TryGetInfo(out result);
-
-    bool HasInfo<TInfo>() where TInfo : TypeModel =>
-        this is TInfo;
-
-    TInfo GetInfo<TInfo>() where TInfo : TypeModel =>
-        (TInfo)this;
-
-    bool TryGetInfo<TInfo>([NotNullWhen(true)] out TInfo? result)
-        where TInfo : TypeModel
-    {
-        result = this as TInfo;
-
-        return result is not null;
     }
 }

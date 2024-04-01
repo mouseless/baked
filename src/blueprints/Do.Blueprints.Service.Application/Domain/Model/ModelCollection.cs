@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace Do.Domain.Model;
 
 public class ModelCollection<T> : IEnumerable<T>
-    where T : IModel
+    where T : IKeyedModel
 {
     readonly KeyedCollection _models = [];
     readonly Dictionary<Type, IEnumerable<T>> _index = [];
@@ -28,7 +28,7 @@ public class ModelCollection<T> : IEnumerable<T>
     public int Count => _models.Count;
 
     internal void AddIndex(Type index) =>
-        _index[index] = this.Where(m => m is IMemberModel member && member.CustomAttributes.ContainsKey(index));
+        _index[index] = this.Where(m => m is ICustomAttributesModel member && member.CustomAttributes.ContainsKey(index));
 
     public bool ContainsModel(T? model) =>
         _models.Contains(model?.Id ?? string.Empty);

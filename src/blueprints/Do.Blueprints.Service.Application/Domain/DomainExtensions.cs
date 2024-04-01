@@ -2,6 +2,7 @@
 using Do.Domain;
 using Do.Domain.Configuration;
 using Do.Domain.Model;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Do;
 
@@ -22,7 +23,7 @@ public static class DomainExtensions
         int? order = default
     ) => source.Add((model, add) => Array.ForEach(attributes, a => add(model, a)), when, order);
 
-    public static ICollection<MetadataConvention<TypeModel>> Add(this ICollection<MetadataConvention<TypeModel>> source, Action<TypeModelMetadata, Action<IMemberModel, Attribute>> apply, Func<TypeModelMetadata, bool> when,
+    public static ICollection<MetadataConvention<TypeModel>> Add(this ICollection<MetadataConvention<TypeModel>> source, Action<TypeModelMetadata, Action<ICustomAttributesModel, Attribute>> apply, Func<TypeModelMetadata, bool> when,
         int? order = default
     )
     {
@@ -37,17 +38,17 @@ public static class DomainExtensions
 
     public static ICollection<MetadataConvention<T>> Add<T>(this ICollection<MetadataConvention<T>> source, Attribute attribute, Func<T, bool> when,
         int? order = default
-    ) where T : IMemberModel =>
+    ) where T : ICustomAttributesModel =>
         source.Add((model, add) => add(model, attribute), when, order);
 
     public static ICollection<MetadataConvention<T>> Add<T, TAttribute>(this ICollection<MetadataConvention<T>> source, Attribute[] attributes, Func<T, bool> when,
         int? order = default
-    ) where T : IMemberModel =>
+    ) where T : ICustomAttributesModel =>
         source.Add((model, add) => Array.ForEach(attributes, a => add(model, a)), when, order);
 
-    public static ICollection<MetadataConvention<T>> Add<T>(this ICollection<MetadataConvention<T>> source, Action<T, Action<IMemberModel, Attribute>> apply, Func<T, bool> when,
+    public static ICollection<MetadataConvention<T>> Add<T>(this ICollection<MetadataConvention<T>> source, Action<T, Action<ICustomAttributesModel, Attribute>> apply, Func<T, bool> when,
         int? order = default
-    ) where T : IModel
+    ) where T : ICustomAttributesModel
     {
         source.Add(new(when, apply, _order: order));
 
@@ -79,12 +80,62 @@ public static class DomainExtensions
         }
     }
 
-    public static bool Contains(this ModelCollection<TypeModelReference> models, Type type) =>
-        models.Contains(TypeModelReference.IdFrom(type));
+    public static bool Contains(this ModelCollection<TypeModelReference> source, Type type) =>
+        source.Contains(TypeModelReference.IdFrom(type));
 
-    public static bool Contains(this ModelCollection<TypeModelReference> models, TypeModel type) =>
-        models.Contains(((IModel)type).Id);
+    public static bool Contains(this ModelCollection<TypeModelReference> source, TypeModel type) =>
+        source.Contains(((IKeyedModel)type).Id);
 
-    public static bool Contains(this ModelCollection<TypeModel> models, Type type) =>
-        models.Contains(TypeModelReference.IdFrom(type));
+    public static bool Contains(this ModelCollection<TypeModel> source, Type type) =>
+        source.Contains(TypeModelReference.IdFrom(type));
+
+    public static bool HasGenerics(this TypeModel type) =>
+        type.HasInfo<TypeModelGenerics>();
+
+    public static TypeModelGenerics GetGenerics(this TypeModel type) =>
+        type.GetInfo<TypeModelGenerics>();
+
+    public static bool TryGetGenerics(this TypeModel type, [NotNullWhen(true)] out TypeModelGenerics? result) =>
+        type.TryGetInfo(out result);
+
+    public static bool HasInheritance(this TypeModel type) =>
+        type.HasInfo<TypeModelInheritance>();
+
+    public static TypeModelInheritance GetInheritance(this TypeModel type) =>
+        type.GetInfo<TypeModelInheritance>();
+
+    public static bool TryGetInheritance(this TypeModel type, [NotNullWhen(true)] out TypeModelInheritance? result) =>
+        type.TryGetInfo(out result);
+
+    public static bool HasMetadata(this TypeModel type) =>
+        type.HasInfo<TypeModelMetadata>();
+
+    public static TypeModelMetadata GetMetadata(this TypeModel type) =>
+        type.GetInfo<TypeModelMetadata>();
+
+    public static bool TryGetMetadata(this TypeModel type, [NotNullWhen(true)] out TypeModelMetadata? result) =>
+        type.TryGetInfo(out result);
+
+    public static bool HasMembers(this TypeModel type) =>
+        type.HasInfo<TypeModelMembers>();
+
+    public static TypeModelMembers GetMembers(this TypeModel type) =>
+        type.GetInfo<TypeModelMembers>();
+
+    public static bool TryGetMembers(this TypeModel type, [NotNullWhen(true)] out TypeModelMembers? result) =>
+        type.TryGetInfo(out result);
+
+    static bool HasInfo<TInfo>(this TypeModel type) where TInfo : TypeModel =>
+        type is TInfo;
+
+    static TInfo GetInfo<TInfo>(this TypeModel type) where TInfo : TypeModel =>
+        (TInfo)type;
+
+    static bool TryGetInfo<TInfo>(this TypeModel type, [NotNullWhen(true)] out TInfo? result)
+        where TInfo : TypeModel
+    {
+        result = type as TInfo;
+
+        return result is not null;
+    }
 }

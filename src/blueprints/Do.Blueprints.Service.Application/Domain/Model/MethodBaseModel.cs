@@ -9,9 +9,7 @@ public abstract record MethodBaseModel(
     TypeModelReference? ReturnTypeReference,
     AttributeCollection CustomAttributes,
     ModelCollection<ParameterModel> Parameters
-) : IMemberModel
+) : ICustomAttributesModel
 {
     public TypeModel? ReturnType => ReturnTypeReference?.Model;
-
-    string IModel.Id { get; } = $"{ReturnTypeReference} {Name}({string.Join(", ", Parameters.Select(p => p.Name))})";
 }

@@ -6,12 +6,12 @@ public record PropertyModel(
     bool IsPublic,
     bool IsVirtual,
     AttributeCollection CustomAttributes
-) : IMemberModel
+) : ICustomAttributesModel, IKeyedModel
 {
     public TypeModel PropertyType => PropertyTypeReference.Model;
 
     public bool Has<T>() where T : Attribute =>
         CustomAttributes.ContainsKey<T>();
 
-    string IModel.Id { get; } = Name;
+    string IKeyedModel.Id { get; } = Name;
 }
