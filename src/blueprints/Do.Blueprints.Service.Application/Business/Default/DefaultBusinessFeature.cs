@@ -54,6 +54,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
             builder.Metadata.Type.Add(new ServiceAttribute(),
                 when: type =>
                     type.IsPublic &&
+                    !type.IsAssignableTo<IEnumerable>() &&
                     !type.IsValueType &&
                     !type.IsGenericMethodParameter &&
                     !type.IsGenericTypeParameter &&
