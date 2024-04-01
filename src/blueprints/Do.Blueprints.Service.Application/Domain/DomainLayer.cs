@@ -2,6 +2,7 @@
 using Do.Domain.Configuration;
 using Do.Domain.Model;
 using Microsoft.Extensions.Configuration;
+
 using static Do.Configuration.ConfigurationLayer;
 
 namespace Do.Domain;
@@ -22,10 +23,8 @@ public class DomainLayer : LayerBase<BuildConfiguration>
         yield return new BuildDomain(_domainTypes, _domainBuilderOptions);
     }
 
-    public class BuildDomain(
-        IDomainTypeCollection _domainTypes,
-        DomainModelBuilderOptions _domainBuilderOptions
-    ) : PhaseBase<ConfigurationManager>(PhaseOrder.Early)
+    public class BuildDomain(IDomainTypeCollection _domainTypes, DomainModelBuilderOptions _domainBuilderOptions)
+        : PhaseBase<ConfigurationManager>(PhaseOrder.Early)
     {
         protected override void Initialize(ConfigurationManager _)
         {
