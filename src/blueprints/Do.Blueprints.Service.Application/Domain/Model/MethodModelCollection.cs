@@ -18,6 +18,8 @@ public class MethodModelCollection : IEnumerable<MethodModel>
         }
     }
 
+    public int Count => _models.Count;
+
     public bool Contains(string name) =>
         _groups.ContainsKey(name);
 
