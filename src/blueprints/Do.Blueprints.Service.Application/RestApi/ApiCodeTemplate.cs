@@ -42,6 +42,7 @@ public class ApiCodeTemplate(ApiModel _apiModel)
     string Parameter(ParameterModel parameter) =>
         $"[From{parameter.From}] {parameter.Type} @{parameter.Name}";
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
     string InvokeMethod(InvokeMethodModel invokeMethod) => $"__target.{invokeMethod.Name}();";
 
     string Return(ReturnModel @return) =>

@@ -21,14 +21,10 @@ public class DefaultDocumentationFeature : IFeature<DocumentationConfigurator>
                     ? $"{string.Join('.', splitedNamespace.Skip(1))}.{name}"
                     : name;
             });
-
-            configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
-            {
-                swaggerGenOptions.MapType<object>(() => new OpenApiSchema { Type = "object" }); // Makes endpoint content template an object.
-                swaggerGenOptions.SchemaFilter<ConvertEnumToStringSchemaFilter>();
-                swaggerGenOptions.OperationFilter<NullTypesAreObjectOperationFilter>();
-                swaggerGenOptions.DocumentFilter<ObjectResponseDocumentationFilter>();
-            });
+            swaggerGenOptions.MapType<object>(() => new OpenApiSchema { Type = "object" }); // Makes endpoint content template an object.
+            swaggerGenOptions.SchemaFilter<ConvertEnumToStringSchemaFilter>();
+            swaggerGenOptions.OperationFilter<NullTypesAreObjectOperationFilter>();
+            swaggerGenOptions.DocumentFilter<ObjectResponseDocumentationFilter>();
         });
     }
 }
