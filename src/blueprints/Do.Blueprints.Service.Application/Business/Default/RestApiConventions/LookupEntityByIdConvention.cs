@@ -21,12 +21,17 @@ public class LookupEntityByIdConvention(DomainModel _domain)
 
         context.Parameter.Type = nameof(Guid);
         context.Parameter.Name += "Id";
-        context.Parameter.RenderLookup = parameterExpression => $"{queryContextParameter.Name}.SingleById({parameterExpression})";
 
         if (!context.Parameter.IsInvokeMethodParameter)
         {
             context.Parameter.From = ParameterModelFrom.Route;
             context.Action.Route = $"generated/{entityType.Name}/{{{context.Parameter.Name}}}/{context.Action.Name}";
+        }
+
+        context.Parameter.RenderLookup = parameterExpression => $"{queryContextParameter.Name}.SingleById({parameterExpression}, throwNotFound: {context.Parameter.FromRoute.ToString().ToLowerInvariant()})";
+
+        if (!context.Parameter.IsInvokeMethodParameter)
+        {
             context.Action.FindTargetStatement = context.Parameter.RenderLookup(context.Parameter.Name);
         }
     }

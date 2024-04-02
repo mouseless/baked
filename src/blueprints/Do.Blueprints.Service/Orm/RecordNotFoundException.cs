@@ -3,14 +3,19 @@ using System.Net;
 
 namespace Do.Orm;
 
-public class RecordNotFoundException(Type entityType, string field, object value)
+public class RecordNotFoundException(Type entityType, string field, object value, bool notFound)
     : HandledException($"{entityType.Name} with {field}: '{value}' does not exist")
 {
-    public static RecordNotFoundException For<T>(Guid id) => new(typeof(T), id);
-    public static RecordNotFoundException For<T>(string field, object value) => new(typeof(T), field, value);
+    public static RecordNotFoundException For<T>(Guid id,
+        bool notFound = false
+    ) => new(typeof(T), id, notFound);
 
-    public override HttpStatusCode StatusCode => HttpStatusCode.NotFound;
+    public static RecordNotFoundException For<T>(string field, object value,
+        bool notFound = false
+    ) => new(typeof(T), field, value, notFound);
 
-    public RecordNotFoundException(Type entityType, Guid id)
-        : this(entityType, "Id", $"{id}") { }
+    public override HttpStatusCode StatusCode => notFound ? HttpStatusCode.NotFound : base.StatusCode;
+
+    public RecordNotFoundException(Type entityType, Guid id, bool notFound)
+        : this(entityType, "Id", $"{id}", notFound) { }
 }

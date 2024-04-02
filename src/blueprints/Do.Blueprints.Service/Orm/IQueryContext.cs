@@ -4,7 +4,7 @@ namespace Do.Orm;
 
 public interface IQueryContext<TEntity>
 {
-    TEntity SingleById(Guid id);
+    TEntity SingleById(Guid id, bool throwNotFound = false);
     IQueryable<TEntity> Query();
 
     public TEntity? SingleBy(Expression<Func<TEntity, bool>> where) =>

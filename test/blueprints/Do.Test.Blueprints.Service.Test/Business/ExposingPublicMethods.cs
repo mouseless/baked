@@ -61,7 +61,7 @@ public class ExposingPublicMethods : TestServiceNfr
             }
         ));
 
-        response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
     }
 
     [Test]

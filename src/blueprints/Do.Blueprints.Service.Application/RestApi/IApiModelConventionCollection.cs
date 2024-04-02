@@ -7,10 +7,9 @@ public interface IApiModelConventionCollection : IList<IApiModelConvention>
 {
     public void Apply(ApiModel apiModel)
     {
-        var apiModelContext = new ApiModelContext { Api = apiModel };
         foreach (var apiModelConvention in this.OfType<IApiModelConvention<ApiModelContext>>())
         {
-            apiModelConvention.Apply(apiModelContext);
+            apiModelConvention.Apply(new() { Api = apiModel });
         }
 
         foreach (var controllerConvention in this.OfType<IApiModelConvention<ControllerModelContext>>())
@@ -35,9 +34,9 @@ public interface IApiModelConventionCollection : IList<IApiModelConvention>
         foreach (var parameterConvention in this.OfType<IApiModelConvention<ParameterModelContext>>())
         {
             foreach (var (controller, action, parameter) in apiModel.Controllers
-                                                         .SelectMany(c => c.Actions.Select(a => (c, a)))
-                                                         .SelectMany(x => x.a.Parameters.Select(p => (x.c, x.a, p)))
-                                                         .ToList()
+                                                                    .SelectMany(c => c.Actions.Select(a => (c, a)))
+                                                                    .SelectMany(x => x.a.Parameters.Select(p => (x.c, x.a, p)))
+                                                                    .ToList()
             )
             {
                 parameterConvention.Apply(new() { Api = apiModel, Controller = controller, Action = action, Parameter = parameter });
