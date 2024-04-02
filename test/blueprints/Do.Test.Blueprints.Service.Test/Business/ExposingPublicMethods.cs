@@ -42,7 +42,9 @@ public class ExposingPublicMethods : TestServiceNfr
         var response = await Client.PostAsync("/generated/Methods/PrimitiveListParameters", JsonContent.Create(
             new
             {
-                stringList = new[] { "a", "b" }
+                strings = new[] { "a", "b" },
+                ints = new[] { 1, 2 },
+                dateTimes = new[] { DateTime.Now, DateTime.Today }
             }
         ));
 
