@@ -11,8 +11,6 @@ namespace Do.Business.Default;
 public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
     : IFeature<BusinessConfigurator>
 {
-    const BindingFlags DefaultBindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
-
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureDomainTypeCollection(types =>
@@ -30,9 +28,9 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
 
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.BindingFlags.Constructor = DefaultBindingFlags;
-            builder.BindingFlags.Method = DefaultBindingFlags;
-            builder.BindingFlags.Property = DefaultBindingFlags;
+            builder.BindingFlags.Constructor = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
+            builder.BindingFlags.Method = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
+            builder.BindingFlags.Property = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
 
             builder.BuildLevels.Add(context => context.DomainTypesContain(context.Type), BuildLevels.Members);
             builder.BuildLevels.Add(context => context.Type.IsGenericType && context.DomainTypesContain(context.Type.GetGenericTypeDefinition()), BuildLevels.Members);

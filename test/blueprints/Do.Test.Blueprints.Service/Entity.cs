@@ -3,7 +3,7 @@ using Do.Orm;
 
 namespace Do.Test;
 
-public class Entity(IEntityContext<Entity> _context, IQueryContext<Entity> _queryContext, ITransaction _transaction, TimeProvider _timeProvider)
+public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransaction _transaction, TimeProvider _timeProvider)
 {
     protected Entity() : this(default!, default!, default!, default!) { }
 
@@ -109,7 +109,7 @@ public class Entity(IEntityContext<Entity> _context, IQueryContext<Entity> _quer
         DateTime? dateTime = default
     )
     {
-        if (unique != Unique && _queryContext.FirstBy(e => e.Unique == unique) != null)
+        if (unique.GetValueOrDefault() != Unique && _entities.SingleByUnique(unique.GetValueOrDefault()) is not null)
         {
             throw new MustBeUniqueException(nameof(Unique));
         }
