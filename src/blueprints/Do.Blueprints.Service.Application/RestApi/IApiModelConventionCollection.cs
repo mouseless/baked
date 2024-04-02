@@ -13,39 +13,34 @@ public interface IApiModelConventionCollection : IList<IApiModelConvention>
             apiModelConvention.Apply(apiModelContext);
         }
 
-        foreach (ControllerModel controller in apiModel.Controllers.ToList())
+        foreach (var controllerConvention in this.OfType<IApiModelConvention<ControllerModelContext>>())
         {
-            var controllerModelContext = new ControllerModelContext { Api = apiModel, Controller = controller };
-            foreach (var controllerConvention in this.OfType<IApiModelConvention<ControllerModelContext>>())
+            foreach (ControllerModel controller in apiModel.Controllers.ToList())
             {
-                controllerConvention.Apply(controllerModelContext);
+                controllerConvention.Apply(new() { Api = apiModel, Controller = controller });
             }
         }
 
-        foreach (ControllerModel controller in apiModel.Controllers.ToList())
+        foreach (var actionConvention in this.OfType<IApiModelConvention<ActionModelContext>>())
         {
-            foreach (ActionModel action in controller.Actions.ToList())
+            foreach (var (controller, action) in apiModel.Controllers
+                                                         .SelectMany(c => c.Actions.Select(a => (c, a)))
+                                                         .ToList()
+            )
             {
-                var actionModelContext = new ActionModelContext { Api = apiModel, Controller = controller, Action = action };
-                foreach (var actionConvention in this.OfType<IApiModelConvention<ActionModelContext>>())
-                {
-                    actionConvention.Apply(actionModelContext);
-                }
+                actionConvention.Apply(new() { Api = apiModel, Controller = controller, Action = action });
             }
         }
 
-        foreach (ControllerModel controller in apiModel.Controllers.ToList())
+        foreach (var parameterConvention in this.OfType<IApiModelConvention<ParameterModelContext>>())
         {
-            foreach (ActionModel action in controller.Actions.ToList())
+            foreach (var (controller, action, parameter) in apiModel.Controllers
+                                                         .SelectMany(c => c.Actions.Select(a => (c, a)))
+                                                         .SelectMany(x => x.a.Parameters.Select(p => (x.c, x.a, p)))
+                                                         .ToList()
+            )
             {
-                foreach (ParameterModel parameter in action.Parameters.ToList())
-                {
-                    var parameterModelContext = new ParameterModelContext { Api = apiModel, Controller = controller, Action = action, Parameter = parameter };
-                    foreach (var parameterConvention in this.OfType<IApiModelConvention<ParameterModelContext>>())
-                    {
-                        parameterConvention.Apply(parameterModelContext);
-                    }
-                }
+                parameterConvention.Apply(new() { Api = apiModel, Controller = controller, Action = action, Parameter = parameter });
             }
         }
     }
