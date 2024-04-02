@@ -7,7 +7,7 @@
     during initialization of a service
   - `RestApiLayer` now provides api model to generate controller code from
     domain model
-  - `DomainLayer` now provides a inherited factory mechanism to individually
+  - `DomainLayer` now provides an inherited factory mechanism to individually
     configure level of reflected details for registered types. Models for types
     are now built as following inherited levels:
     - `TypeModel`
