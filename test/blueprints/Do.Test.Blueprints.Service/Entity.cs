@@ -109,7 +109,7 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
         DateTime? dateTime = default
     )
     {
-        if (unique.GetValueOrDefault() != Unique && _entities.SingleByUnique(unique.GetValueOrDefault()) is not null)
+        if (unique.HasValue && unique != Unique && _entities.SingleByUnique(unique.Value) is not null)
         {
             throw new MustBeUniqueException(nameof(Unique));
         }
