@@ -6,9 +6,12 @@ public class TypeModelGenerics : TypeModel
 {
     protected TypeModelGenerics() { }
 
+    public TypeModelReference? ElementTypeReference { get; private set; } = default!;
     public TypeModelReference? GenericTypeDefinitionReference { get; private set; } = default!;
+    public List<TypeModelReference> GenericTypeArguments { get; private set; } = default!;
+
+    public TypeModel? ElementType => ElementTypeReference?.Model;
     public TypeModel? GenericTypeDefinition => GenericTypeDefinitionReference?.Model;
-    public ModelCollection<TypeModelReference> GenericTypeArguments { get; private set; } = default!;
 
     public new class Factory : TypeModel.Factory
     {
@@ -20,16 +23,21 @@ public class TypeModelGenerics : TypeModel
 
             if (result is not TypeModelGenerics generics) { return; }
 
-            if (!type.IsGenericType)
+            if (type.IsGenericType)
             {
-                generics.GenericTypeDefinitionReference = default;
+                generics.GenericTypeArguments = new(type.GenericTypeArguments.Select(builder.GetReference));
+                generics.GenericTypeDefinitionReference = !type.IsGenericTypeDefinition ? builder.GetReference(type.GetGenericTypeDefinition()) : default;
+            }
+            else
+            {
                 generics.GenericTypeArguments = [];
-
-                return;
             }
 
-            generics.GenericTypeDefinitionReference = !type.IsGenericTypeDefinition ? builder.GetReference(type.GetGenericTypeDefinition()) : default;
-            generics.GenericTypeArguments = new(type.GenericTypeArguments.Select(builder.GetReference));
+            var elementType = type.GetElementType();
+            if (elementType is not null)
+            {
+                generics.ElementTypeReference = builder.GetReference(elementType);
+            }
         }
     }
 }
