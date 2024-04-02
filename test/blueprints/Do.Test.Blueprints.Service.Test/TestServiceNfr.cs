@@ -12,7 +12,7 @@ public abstract class TestServiceNfr : ServiceNfr<TestServiceNfr>, IEntryPoint
     protected override Func<BusinessConfigurator, IFeature<BusinessConfigurator>> Business =>
         c => c.Default(assemblies: [typeof(Entity).Assembly]);
     protected override Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>>? Database =>
-        c => c.InMemory();
+        c => c.Sqlite(fileName: $"{nameof(TestServiceNfr)}.db");
     protected override Action<ApplicationDescriptor>? Configure =>
         app => app.Features.AddConfigurationOverrider();
 }

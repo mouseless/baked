@@ -175,7 +175,10 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
             foreach (var type in domainModel.Types.Having<ServiceAttribute>())
             {
                 if (type.FullName is null) { continue; }
-                if (!type.GetMetadata().Has<SingletonAttribute>()) { continue; } // TODO for now only singleton
+                if (!(
+                    type.GetMetadata().Has<SingletonAttribute>() || // for now only singleton
+                    type.GetMetadata().Has<EntityAttribute>() // and entities
+                )) { continue; }
 
                 var controller = new ControllerModel(type.Name);
                 foreach (var method in type.GetMembers().Methods.Having<ApiMethodAttribute>())
@@ -200,7 +203,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                         )
                         {
                             Parameters = [
-                                new(ParameterModelFrom.Services, type.FullName, "target"),
+                                new(ParameterModelFrom.Services, type.FullName, "target") { IsInvokeMethodParameter = false },
                                 .. overload.Parameters.Select(p => new RestApi.Model.ParameterModel(ParameterModelFrom.Body, p.ParameterType.CSharpFriendlyFullName, p.Name))
                             ]
                         }
@@ -214,6 +217,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
         configurator.ConfigureApiModelConventions(conventions =>
         {
             conventions.Add(new LookupEntityByIdConvention(configurator.Context.GetDomainModel()));
+            conventions.Add(new AutoHttpMethodConvention());
         });
 
         configurator.ConfigureMvcNewtonsoftJsonOptions(options =>

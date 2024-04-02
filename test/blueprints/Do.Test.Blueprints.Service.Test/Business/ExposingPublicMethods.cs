@@ -63,4 +63,12 @@ public class ExposingPublicMethods : TestServiceNfr
 
         response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
     }
+
+    [Test]
+    public async Task EntityMethods()
+    {
+        var response = await Client.DeleteAsync($"/generated/Entity/{Guid.NewGuid()}/Delete");
+
+        response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
+    }
 }

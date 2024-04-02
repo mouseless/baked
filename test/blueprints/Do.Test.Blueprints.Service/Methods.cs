@@ -29,8 +29,8 @@ public class Methods(
     public void PrimitiveListParameters(List<string> strings, int[] ints, IEnumerable<DateTime> dateTimes) =>
         _logger.LogInformation($"{nameof(PrimitiveListParameters)} was called with [{string.Join(", ", strings)}], [{string.Join(", ", ints)}] and [{string.Join(", ", dateTimes)}]");
 
-    public void EntityParameters(Entity entity, Child child, Parent parent) =>
-        _logger.LogInformation($"{nameof(EntityParameters)} was called with {entity.Id}, {child.Id} and {parent.Id}");
+    public void EntityParameters(Entity entity) =>
+        _logger.LogInformation($"{nameof(EntityParameters)} was called with {entity.Id}");
 
     public object Object(object @object) =>
         @object;

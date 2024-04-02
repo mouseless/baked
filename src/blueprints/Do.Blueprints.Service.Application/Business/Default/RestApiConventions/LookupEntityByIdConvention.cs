@@ -16,13 +16,19 @@ public class LookupEntityByIdConvention(DomainModel _domain)
         if (!entityType.TryGetMetadata(out var metadata) || !metadata.Has<EntityAttribute>()) { return; }
 
         var queryContextType = FindQueryContextType(entityType);
-
-        var queryContextParameter = new ParameterModel(ParameterModelFrom.Services, queryContextType.CSharpFriendlyFullName, $"{entityType.Name}Query");
+        var queryContextParameter = new ParameterModel(ParameterModelFrom.Services, queryContextType.CSharpFriendlyFullName, $"{entityType.Name}Query") { IsInvokeMethodParameter = false };
         context.Action.Parameter[queryContextParameter.Name] = queryContextParameter;
 
         context.Parameter.Type = nameof(Guid);
         context.Parameter.Name += "Id";
         context.Parameter.RenderLookup = parameterExpression => $"{queryContextParameter.Name}.SingleById({parameterExpression})";
+
+        if (!context.Parameter.IsInvokeMethodParameter)
+        {
+            context.Parameter.From = ParameterModelFrom.Route;
+            context.Action.Route = $"generated/{entityType.Name}/{{{context.Parameter.Name}}}/{context.Action.Name}";
+            context.Action.FindTargetStatement = context.Parameter.RenderLookup(context.Parameter.Name);
+        }
     }
 
     TypeModel FindQueryContextType(TypeModel entityType)
