@@ -42,24 +42,24 @@ public class BuildingNonBusinessTypes : TestServiceSpec
     [Test]
     public void Non_business_types_with_non_business_generic_parameters_are_initialized_with_generic_type_definition()
     {
-        var stringType = DomainModel.Types[typeof(string)];
-        var genericType = DomainModel.Types[typeof(List<string>)];
+        var stringModel = DomainModel.Types[typeof(string)];
+        var genericModel = DomainModel.Types[typeof(List<string>)];
 
-        genericType.ShouldBeAssignableTo<TypeModelGenerics>();
-        genericType.GetGenerics().GenericTypeDefinition.ShouldNotBeNull();
-        genericType.GetGenerics().GenericTypeDefinition?.IsAssignableTo(typeof(List<>)).ShouldBeTrue();
-        genericType.GetGenerics().GenericTypeArguments.First().Model.IsAssignableTo<string>().ShouldBeTrue();
+        genericModel.ShouldBeAssignableTo<TypeModelGenerics>();
+        genericModel.GetGenerics().GenericTypeDefinition.ShouldNotBeNull();
+        genericModel.GetGenerics().GenericTypeDefinition?.IsAssignableTo(typeof(List<>)).ShouldBeTrue();
+        genericModel.GetGenerics().GenericTypeArguments.First().Model.IsAssignableTo<string>().ShouldBeTrue();
     }
 
     [Test]
     public void Non_business_types_with_generic_parameters_are_initialized_with_generic_arguments([Values(typeof(List<Entity>), typeof(Func<Entity>), typeof(IQueryContext<Entity>))] Type type)
     {
-        var entityType = DomainModel.Types[typeof(Entity)];
-        var genericType = DomainModel.Types[type];
+        var entityModel = DomainModel.Types[typeof(Entity)];
+        var genericModel = DomainModel.Types[type];
 
-        genericType.ShouldBeAssignableTo<TypeModelGenerics>();
-        genericType.GetGenerics().GenericTypeArguments.Count.ShouldBe(1);
-        genericType.GetGenerics().GenericTypeArguments.First().Model.ShouldBe(entityType);
+        genericModel.ShouldBeAssignableTo<TypeModelGenerics>();
+        genericModel.GetGenerics().GenericTypeArguments.Count.ShouldBe(1);
+        genericModel.GetGenerics().GenericTypeArguments.First().Model.ShouldBe(entityModel);
     }
 
     [Test]
@@ -70,5 +70,13 @@ public class BuildingNonBusinessTypes : TestServiceSpec
         model.ShouldNotBeNull();
         model.ShouldBeOfType<TypeModelInheritance>();
         model.GetInheritance().BaseType?.IsAssignableTo<Task>().ShouldBeTrue();
+    }
+
+    [Test]
+    public void IsAssignableTo_checks_generic_type_definition_of_interfaces_as_well([Values(typeof(List<string>), typeof(int[]), typeof(IEnumerable<DateTime>))] Type type)
+    {
+        var model = DomainModel.Types[type];
+
+        model.IsAssignableTo(typeof(IEnumerable<>)).ShouldBeTrue();
     }
 }
