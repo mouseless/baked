@@ -36,9 +36,12 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
                             .First(p => p.ParameterType.IsAssignableTo(typeof(IQueryContext<>)));
 
                     var entity = parameter.ParameterType.GetGenerics().GenericTypeArguments.First().Model;
+                    Type? queryContext = null;
+                    entity.Apply(t => queryContext = typeof(IQueryContext<>).MakeGenericType(t));
+                    if (queryContext is null) { return; }
 
                     entity.Apply(t => add(query.GetMembers(), new QueryAttribute(t)));
-                    query.Apply(t => add(entity.GetMembers(), new EntityAttribute(t)));
+                    query.Apply(t => add(entity.GetMembers(), new EntityAttribute(t, queryContext)));
                 },
                 when: type => type.TryGetMembers(out var members) && members.Constructors.Any(o => o.Parameters.Any(p => p.ParameterType.IsAssignableTo(typeof(IQueryContext<>))))
             );

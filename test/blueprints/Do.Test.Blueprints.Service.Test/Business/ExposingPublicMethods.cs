@@ -65,6 +65,20 @@ public class ExposingPublicMethods : TestServiceNfr
     }
 
     [Test]
+    public async Task EntityListParameters()
+    {
+        var response = await Client.PostAsync("/generated/Methods/EntityListParameters", JsonContent.Create(
+            new
+            {
+                entityIds = new[] { $"{Guid.NewGuid()}", $"{Guid.NewGuid()}" },
+                otherEntityIds = new[] { $"{Guid.NewGuid()}", $"{Guid.NewGuid()}" },
+            }
+        ));
+
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+    }
+
+    [Test]
     public async Task EntityMethods()
     {
         var response = await Client.DeleteAsync($"/generated/Entity/{Guid.NewGuid()}/Delete");

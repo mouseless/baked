@@ -143,20 +143,22 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                 when: type => type.IsAssignableTo(typeof(string))
             );
             builder.Metadata.Type.Add(new ApiInputAttribute(),
+                when: type => type.Has<EntityAttribute>(),
+                order: int.MaxValue
+            );
+            builder.Metadata.Type.Add(new ApiInputAttribute(),
                 when: type =>
                     type.IsAssignableTo(typeof(IEnumerable<>)) &&
                     type.IsGenericType && type.TryGetGenerics(out var generics) &&
                     generics.GenericTypeArguments.FirstOrDefault()?.Model.TryGetMetadata(out var genericArgMetadata) == true &&
-                    genericArgMetadata.Has<ApiInputAttribute>()
+                    genericArgMetadata.Has<ApiInputAttribute>(),
+                order: int.MaxValue
             );
             builder.Metadata.Type.Add(new ApiInputAttribute(),
                 when: type =>
                     type.IsArray && type.TryGetGenerics(out var generics) &&
                     generics.ElementType?.TryGetMetadata(out var elementMetadata) == true &&
-                    elementMetadata.Has<ApiInputAttribute>()
-            );
-            builder.Metadata.Type.Add(new ApiInputAttribute(),
-                when: type => type.Has<EntityAttribute>(),
+                    elementMetadata.Has<ApiInputAttribute>(),
                 order: int.MaxValue
             );
 
@@ -201,8 +203,8 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                         )
                         {
                             Parameters = [
-                                new(ParameterModelFrom.Services, type.FullName, "target") { IsInvokeMethodParameter = false },
-                                .. overload.Parameters.Select(p => new RestApi.Model.ParameterModel(ParameterModelFrom.Body, p.ParameterType.CSharpFriendlyFullName, p.Name))
+                                new(type, ParameterModelFrom.Services, "target") { IsInvokeMethodParameter = false },
+                                .. overload.Parameters.Select(p => new RestApi.Model.ParameterModel(p.ParameterType, ParameterModelFrom.Body, p.Name))
                             ]
                         }
                     );
@@ -215,6 +217,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
         configurator.ConfigureApiModelConventions(conventions =>
         {
             conventions.Add(new LookupEntityByIdConvention(configurator.Context.GetDomainModel()));
+            conventions.Add(new LookupEntitiesByIdsConvention(configurator.Context.GetDomainModel()));
             conventions.Add(new AutoHttpMethodConvention());
         });
 

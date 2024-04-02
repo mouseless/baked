@@ -7,6 +7,9 @@ public interface IQueryContext<TEntity>
     TEntity SingleById(Guid id, bool throwNotFound = false);
     IQueryable<TEntity> Query();
 
+    public List<TEntity> ByIds(IEnumerable<Guid> ids) =>
+        ids.Select(id => SingleById(id)).ToList();
+
     public TEntity? SingleBy(Expression<Func<TEntity, bool>> where) =>
         Query(where).SingleOrDefault();
 

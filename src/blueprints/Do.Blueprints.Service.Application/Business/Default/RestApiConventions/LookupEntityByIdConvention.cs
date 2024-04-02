@@ -12,11 +12,11 @@ public class LookupEntityByIdConvention(DomainModel _domain)
 {
     public void Apply(ParameterModelContext context)
     {
-        if (!_domain.Types.TryGetValue(context.Parameter.Type, out var entityType)) { return; }
+        var entityType = context.Parameter.TypeModel;
         if (!entityType.TryGetMetadata(out var metadata) || !metadata.Has<EntityAttribute>()) { return; }
 
-        var queryContextType = FindQueryContextType(entityType);
-        var queryContextParameter = new ParameterModel(ParameterModelFrom.Services, queryContextType.CSharpFriendlyFullName, $"{entityType.Name}Query") { IsInvokeMethodParameter = false };
+        var queryContextType = _domain.Types[metadata.GetSingle<EntityAttribute>().QueryContextType];
+        var queryContextParameter = new ParameterModel(queryContextType, ParameterModelFrom.Services, $"{entityType.Name}Query") { IsInvokeMethodParameter = false };
         context.Action.Parameter[queryContextParameter.Name] = queryContextParameter;
 
         context.Parameter.Type = nameof(Guid);
@@ -34,14 +34,5 @@ public class LookupEntityByIdConvention(DomainModel _domain)
         {
             context.Action.FindTargetStatement = context.Parameter.RenderLookup(context.Parameter.Name);
         }
-    }
-
-    TypeModel FindQueryContextType(TypeModel entityType)
-    {
-        TypeModel? queryContextType = default;
-
-        entityType.Apply(t => queryContextType = _domain.Types[typeof(IQueryContext<>).MakeGenericType(t)]);
-
-        return queryContextType ?? throw new("Query type should've existed");
     }
 }

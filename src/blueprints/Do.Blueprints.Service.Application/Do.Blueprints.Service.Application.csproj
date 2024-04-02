@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <PackageReference Include="FluentNHibernate" />
+    <PackageReference Include="Humanizer.Core" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />

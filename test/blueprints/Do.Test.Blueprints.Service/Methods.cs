@@ -32,6 +32,9 @@ public class Methods(
     public void EntityParameters(Entity entity) =>
         _logger.LogInformation($"{nameof(EntityParameters)} was called with {entity.Id}");
 
+    public void EntityListParameters(IEnumerable<Entity> entities, Entity[] otherEntities) =>
+        _logger.LogInformation($"{nameof(EntityListParameters)} was called with [{string.Join(", ", entities.Select(e => e.Id))}] and [{string.Join(", ", otherEntities.Select(e => e.Id))}]");
+
     public object Object(object @object) =>
         @object;
 
