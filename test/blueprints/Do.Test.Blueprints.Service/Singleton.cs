@@ -26,15 +26,5 @@ public class Singleton(
         return JsonConvert.DeserializeObject<List<PullRequest>>(response.Content) ?? [];
     }
 
-    public void TestException(bool handled)
-    {
-        if (handled)
-        {
-            throw new TestServiceHandledException("A handled exception was thrown");
-        }
-
-        throw new InvalidOperationException();
-    }
-
     public object TestFormPostAuthentication(object value) => value;
 }

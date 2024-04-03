@@ -42,14 +42,6 @@ public static class Singleton
             {
                 return target.TestFormPostAuthentication(value);
             }
-
-            [HttpPost]
-            [Produces("application/json")]
-            [Route("singleton/test-exception")]
-            public void TestException([FromServices] Singleton target, bool handled)
-            {
-                target.TestException(handled);
-            }
         }
     """;
 }

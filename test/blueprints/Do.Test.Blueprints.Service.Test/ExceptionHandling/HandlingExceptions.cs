@@ -10,9 +10,9 @@ public class HandlingExceptions : TestServiceSpec
     [Test(Description = "Actual behaviour is not testable, this test is included only for documentation and to improve coverage")]
     public void HandledException_is_handled_by_default()
     {
-        var singleton = GiveMe.The<Singleton>();
+        var testing = GiveMe.The<ExceptionResult>();
 
-        var task = () => singleton.TestException(handled: true);
+        var task = () => testing.Throw(handled: true);
 
         task.ShouldThrow<TestServiceHandledException>();
     }
