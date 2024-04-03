@@ -23,7 +23,6 @@ public class BuildingNonDomainTypes : TestServiceSpec
     [Test]
     public void Non_domain_types_with_generic_parameters_are_initialized_with_generic_type_definition()
     {
-        var entityType = DomainModel.Types[typeof(Entity)];
         var genericType = DomainModel.Types[typeof(List<Entity>)];
 
         genericType.ShouldBeAssignableTo<TypeModelGenerics>();
