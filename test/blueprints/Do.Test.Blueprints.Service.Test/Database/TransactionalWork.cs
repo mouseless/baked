@@ -5,9 +5,9 @@ public class TransactionalWork : TestServiceSpec
     [Test]
     public void Commit_async_takes_nullable_parameters()
     {
-        var singleton = GiveMe.The<Singleton>();
+        var testing = GiveMe.The<TestingTransaction>();
 
-        var task = singleton.TestTransactionNullable(null);
+        var task = testing.CommitNullable(null);
 
         task.ShouldNotThrow();
     }
@@ -16,9 +16,9 @@ public class TransactionalWork : TestServiceSpec
     public void Commit_async_update_occurs_when_entity_is_not_null()
     {
         var entity = GiveMe.AnEntity(@string: "string");
-        var singleton = GiveMe.The<Singleton>();
+        var testing = GiveMe.The<TestingTransaction>();
 
-        var task = singleton.TestTransactionNullable(entity);
+        var task = testing.CommitNullable(entity);
 
         task.ShouldNotThrow();
         entity.String.ShouldNotBe("string");
@@ -40,10 +40,10 @@ public class TransactionalWork : TestServiceSpec
     [Test(Description = "Actual behaviour is not testable, this test is included only for documentation and to improve coverage")]
     public void Entity_created_by_a_transaction_committed_asynchronously_persists_when_an_error_occurs()
     {
-        var singleton = GiveMe.The<Singleton>();
+        var testing = GiveMe.The<TestingTransaction>();
         var entities = GiveMe.The<Entities>();
 
-        var task = singleton.TestTransactionAction();
+        var task = testing.CommitAction();
 
         task.ShouldThrow<Exception>();
         entities.By().ShouldNotBeEmpty();
@@ -52,10 +52,10 @@ public class TransactionalWork : TestServiceSpec
     [Test(Description = "Actual behaviour is not testable, this test is included only for documentation and to improve coverage")]
     public void Only_the_updates_outside_of_transaction_are_rolled_back_when_an_error_occurs()
     {
-        var singleton = GiveMe.The<Singleton>();
+        var testing = GiveMe.The<TestingTransaction>();
         var entities = GiveMe.The<Entities>();
 
-        var task = singleton.TestTransactionFunc();
+        var task = testing.CommitFunc();
 
         task.ShouldThrow<Exception>();
         entities.By().ShouldNotBeEmpty();
