@@ -13,7 +13,7 @@ public class ApiCodeTemplate(ApiModel _apiModel)
         namespace RestApi.Generated.Controllers;
 
         [ApiController]
-        public class {{controller.Name}}
+        public class {{controller.ClassName}}
         {
             {{ForEach(controller.Actions, Action)}}
         }
@@ -27,7 +27,7 @@ public class ApiCodeTemplate(ApiModel _apiModel)
         """)}}
 
         [Http{{Method(action.Method)}}]
-        [Route("{{action.Route}}")]
+        [Route("{{action.RouteStylized}}")]
         public {{ReturnType(action.Return)}} {{action.Name}}(
             {{ForEach(action.NonBodyParameters, Parameter, separator: ", ")}}
             {{If(action.HasRequestBody, () => $$"""
@@ -47,8 +47,7 @@ public class ApiCodeTemplate(ApiModel _apiModel)
         $"{method.Method[0]}{method.Method[1..].ToLowerInvariant()}";
 
     string ReturnType(ReturnModel @return) =>
-        @return.Async ? $"async {@return.Type}" :
-        @return.Void ? "void" :
+        @return.IsAsync ? $"async {@return.Type}" :
         @return.Type
     ;
 
@@ -59,8 +58,8 @@ public class ApiCodeTemplate(ApiModel _apiModel)
         $"({parameter.RenderLookup(parameter.FromBody ? $"request.@{parameter.Name}" : $"@{parameter.Name}")})";
 
     string Return(ReturnModel @return) =>
-        @return.Async && @return.Void ? "await" :
-        @return.Async && !@return.Void ? "return await" :
-        @return.Void ? string.Empty :
+        @return.IsAsync && @return.IsVoid ? "await" :
+        @return.IsAsync && !@return.IsVoid ? "return await" :
+        @return.IsVoid ? string.Empty :
         "return";
 }

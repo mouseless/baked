@@ -1,9 +1,12 @@
-﻿namespace Do.RestApi.Model;
+﻿using Do.Domain.Model;
 
-public record ControllerModel(string Name)
+namespace Do.RestApi.Model;
+
+public record ControllerModel(TypeModel TypeModel)
 {
-    public string Name { get; set; } = Name;
+    public string Id { get; } = TypeModel.Name;
+    public string ClassName { get; } = TypeModel.Name;
     public Dictionary<string, ActionModel> Action { get; init; } = [];
 
-    public IEnumerable<ActionModel> Actions { get => Action.Values; init => Action = value.ToDictionary(a => a.Name); }
+    public IEnumerable<ActionModel> Actions { get => Action.Values; init => Action = value.ToDictionary(a => a.Id); }
 }

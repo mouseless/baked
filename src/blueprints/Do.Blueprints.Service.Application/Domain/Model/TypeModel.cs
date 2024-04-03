@@ -33,6 +33,7 @@ public class TypeModel : IModel, IEquatable<TypeModel>
 
     string BuildCSharpFriendlyFullName()
     {
+        if (Type == typeof(void)) { return "void"; }
         if (!IsGenericType) { return FullName ?? Name; }
 
         if (this is TypeModelGenerics generics)
@@ -49,11 +50,17 @@ public class TypeModel : IModel, IEquatable<TypeModel>
     public void Apply(Action<Type> action) =>
         action(Type);
 
+    public bool Is<T>() =>
+        Is(typeof(T));
+
+    public bool Is(Type type) =>
+        Type == type;
+
     public bool IsAssignableTo<T>() =>
         IsAssignableTo(typeof(T));
 
     public bool IsAssignableTo(Type type) =>
-        Type == type ||
+        Is(type) ||
         this.TryGetGenerics(out var generics) && generics.GenericTypeDefinition?.IsAssignableTo(type) == true ||
         this.TryGetInheritance(out var inheritance) && (inheritance.BaseType?.IsAssignableTo(type) == true || inheritance.Interfaces.Contains(type))
     ;

@@ -2,12 +2,12 @@
 
 namespace Do.RestApi.Model;
 
-public record ParameterModel(TypeModel TypeModel, ParameterModelFrom From, string Name)
+public record ParameterModel(TypeModel TypeModel, ParameterModelFrom From, string Id)
 {
     public ParameterModelFrom From { get; set; } = From;
     public string Type { get; set; } = TypeModel.CSharpFriendlyFullName;
-    public string Name { get; set; } = Name;
-    public string InternalName { get; set; } = Name;
+    public string Name { get; set; } = Id;
+    public string InternalName { get; set; } = Id;
     public bool IsInvokeMethodParameter { get; set; } = true;
     public Func<string, string> RenderLookup { get; set; } = parameterExpression => parameterExpression;
 

@@ -180,7 +180,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                     type.GetMetadata().Has<EntityAttribute>() // and entities
                 )) { continue; }
 
-                var controller = new ControllerModel(type.Name);
+                var controller = new ControllerModel(type);
                 foreach (var method in type.GetMembers().Methods.Having<ApiMethodAttribute>())
                 {
                     var overload = method.Overloads
@@ -188,16 +188,13 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                         .First(o => o.Parameters.All(p => p.ParameterType.TryGetMetadata(out var metadata) && metadata.Has<ApiInputAttribute>())); // with only api parameters
                     if (overload.ReturnType is null) { continue; }
 
-                    if (!overload.ReturnType.IsAssignableTo(typeof(void)) &&
-                        !overload.ReturnType.IsAssignableTo(typeof(Task))) { continue; } // TODO for now only void
-
                     controller.Action.Add(
                         method.Name,
                         new(
-                            Name: method.Name,
+                            Id: method.Name,
                             Method: HttpMethod.Post,
                             Route: $"generated/{type.Name}/{method.Name}",
-                            Return: new(async: overload.ReturnType.IsAssignableTo(typeof(Task))),
+                            Return: new(overload.ReturnType),
                             FindTargetStatement: "target",
                             InvokedMethodName: method.Name
                         )
@@ -210,7 +207,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                     );
                 }
 
-                api.Controller.Add(controller.Name, controller);
+                api.Controller.Add(controller.Id, controller);
             }
         });
 
