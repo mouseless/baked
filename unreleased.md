@@ -25,6 +25,7 @@
   - `DefaultBusinessFeature` now generates;
     - api controllers and actions from domain model
     - entity lookup calls for entity parameters
+    - all types of return types
 
 ## Improvements
 
