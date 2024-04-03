@@ -6,7 +6,7 @@ namespace Do.CodeGeneration;
 
 public record GeneratedAssemblyDescriptor(string Name)
 {
-    public List<string> Codes { get; } = new();
+    public List<string> Codes { get; } = [];
     public CSharpCompilationOptions CompilationOptions { get; set; } = new(OutputKind.DynamicallyLinkedLibrary);
-    public List<Assembly> References { get; } = new();
+    public List<Assembly> References { get; } = [];
 }

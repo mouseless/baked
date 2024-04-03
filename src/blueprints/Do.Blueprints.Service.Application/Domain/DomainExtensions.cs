@@ -58,10 +58,13 @@ public static class DomainExtensions
     public static void Add<T>(this ICollection<Type> types) =>
         types.Add(typeof(T));
 
-    public static void Add(this List<TypeBuildLevelFilter> filters, Func<Type, bool> filter, TypeModel.Factory buildLevel) =>
+    public static void Add(this ICollection<TypeBuildLevelFilter> filters, TypeModel.Factory buildLevel) =>
+        filters.Add((Type _) => true, buildLevel);
+
+    public static void Add(this ICollection<TypeBuildLevelFilter> filters, Func<Type, bool> filter, TypeModel.Factory buildLevel) =>
         filters.Add(context => filter(context.Type), buildLevel);
 
-    public static void Add(this List<TypeBuildLevelFilter> filters, Func<TypeModelBuildContext, bool> filter, TypeModel.Factory buildLevel) =>
+    public static void Add(this ICollection<TypeBuildLevelFilter> filters, Func<TypeModelBuildContext, bool> filter, TypeModel.Factory buildLevel) =>
         filters.Add(new(filter, buildLevel));
 
     public static void Apply(this IEnumerable<TypeModelReference> references, Action<Type> action)

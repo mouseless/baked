@@ -5,7 +5,7 @@ namespace Do.Domain.Configuration;
 
 public class DomainModelBuilderOptions
 {
-    public List<TypeBuildLevelFilter> BuildLevels { get; set; } = [];
+    public ICollection<TypeBuildLevelFilter> BuildLevels { get; set; } = [];
     public BindingFlagOptions BindingFlags { get; } = new();
     public DomainMetadataOptions Metadata { get; set; } = new();
     public DomainIndexOptions Index { get; set; } = new();

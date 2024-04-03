@@ -91,7 +91,7 @@ public class TypeModelMembers : TypeModelMetadata
             ModelCollection<MethodModel> BuildMethods()
             {
                 var result = new ModelCollection<MethodModel>.KeyedCollection();
-                var methodInfos = type.GetMethods(builder.Options.BindingFlags.Method) ?? [];
+                var methodInfos = type.GetMethods(builder.Options.BindingFlags.Method).Where(m => !m.IsSpecialName) ?? [];
                 foreach (var methodsByName in methodInfos.GroupBy(m => m.Name))
                 {
                     result.Add(new(

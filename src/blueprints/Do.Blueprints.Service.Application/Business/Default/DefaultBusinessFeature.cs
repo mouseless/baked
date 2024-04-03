@@ -1,5 +1,8 @@
 ﻿using Do.Architecture;
+using Do.Business.Attributes;
+using Do.Business.Default.RestApiConventions;
 using Do.Domain.Configuration;
+using Do.Orm;
 using Do.RestApi.Model;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Converters;
@@ -34,14 +37,12 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
 
             builder.BuildLevels.Add(context => context.DomainTypesContain(context.Type), BuildLevels.Members);
             builder.BuildLevels.Add(context => context.Type.IsGenericType && context.DomainTypesContain(context.Type.GetGenericTypeDefinition()), BuildLevels.Members);
-            builder.BuildLevels.Add(type => !type.IsValueType, BuildLevels.Inheritance);
-            builder.BuildLevels.Add(type => type.IsGenericType, BuildLevels.Generics);
+            builder.BuildLevels.Add(BuildLevels.Metadata);
 
             builder.Index.Type.Add<ServiceAttribute>();
             builder.Index.Type.Add<TransientAttribute>();
             builder.Index.Type.Add<ScopedAttribute>();
             builder.Index.Type.Add<SingletonAttribute>();
-            builder.Index.Method.Add<ApiMethodAttribute>();
 
             builder.Metadata.Type.Add(new DataClassAttribute(),
                 when: type =>
@@ -80,7 +81,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                         o.ReturnType is not null &&
                         (
                             o.ReturnType == type ||
-                            (o.ReturnType.IsAssignableTo<Task>() && o.ReturnType.TryGetGenerics(out var returnTypeGenerics) && returnTypeGenerics.GenericTypeArguments.Contains(type))
+                            (o.ReturnType.IsAssignableTo(typeof(Task<>)) && o.ReturnType.GetGenerics().GenericTypeArguments.First().Model == type)
                         )
                     )
             );
@@ -90,10 +91,6 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                     type.TryGetMetadata(out var metadata) &&
                     metadata.Has<ServiceAttribute>() &&
                     type.IsAssignableTo<IScoped>()
-            );
-
-            builder.Metadata.Method.Add(new ApiMethodAttribute(),
-                when: method => method.Overloads.Any(m => m.IsPublic)
             );
         });
 
@@ -134,43 +131,94 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
             }
         });
 
+        configurator.ConfigureDomainModelBuilder(builder =>
+        {
+            builder.Index.Type.Add<ApiInputAttribute>();
+            builder.Index.Method.Add<ApiMethodAttribute>();
+
+            builder.Metadata.Type.Add(new ApiInputAttribute(),
+                when: type => type.IsAssignableTo(typeof(IParsable<>))
+            );
+            builder.Metadata.Type.Add(new ApiInputAttribute(),
+                when: type => type.IsAssignableTo(typeof(string))
+            );
+            builder.Metadata.Type.Add(new ApiInputAttribute(),
+                when: type => type.Has<EntityAttribute>(),
+                order: int.MaxValue
+            );
+            builder.Metadata.Type.Add(new ApiInputAttribute(),
+                when: type =>
+                    type.IsAssignableTo(typeof(IEnumerable<>)) &&
+                    type.IsGenericType && type.TryGetGenerics(out var generics) &&
+                    generics.GenericTypeArguments.FirstOrDefault()?.Model.TryGetMetadata(out var genericArgMetadata) == true &&
+                    genericArgMetadata.Has<ApiInputAttribute>(),
+                order: int.MaxValue
+            );
+            builder.Metadata.Type.Add(new ApiInputAttribute(),
+                when: type =>
+                    type.IsArray && type.TryGetGenerics(out var generics) &&
+                    generics.ElementType?.TryGetMetadata(out var elementMetadata) == true &&
+                    elementMetadata.Has<ApiInputAttribute>(),
+                order: int.MaxValue
+            );
+
+            builder.Metadata.Method.Add(new ApiMethodAttribute(),
+                when: method => method.Overloads.Any(o => o.IsPublic && o.Parameters.All(p => p.ParameterType.TryGetMetadata(out var metadata) && metadata.Has<ApiInputAttribute>()))
+            );
+        });
+
         configurator.ConfigureApiModel(api =>
         {
-            api.References.AddRange(_domainAssemblies);
+            _domainAssemblies.ForEach(a => api.Reference.Add(a.GetName().FullName, a));
 
             var domainModel = configurator.Context.GetDomainModel();
             foreach (var type in domainModel.Types.Having<ServiceAttribute>())
             {
                 if (type.FullName is null) { continue; }
-                if (!type.GetMetadata().Has<SingletonAttribute>()) { continue; } // TODO for now only singleton
+                if (!(
+                    type.GetMetadata().Has<SingletonAttribute>() || // for now only singleton
+                    type.GetMetadata().Has<EntityAttribute>() // and entities
+                )) { continue; }
 
                 var controller = new ControllerModel(type.Name);
                 foreach (var method in type.GetMembers().Methods.Having<ApiMethodAttribute>())
                 {
-                    var overload = method.Overloads.OrderByDescending(o => o.Parameters.Count).First();
+                    var overload = method.Overloads
+                        .OrderByDescending(o => o.Parameters.Count) // overload with most parameters
+                        .First(o => o.Parameters.All(p => p.ParameterType.TryGetMetadata(out var metadata) && metadata.Has<ApiInputAttribute>())); // with only api parameters
                     if (overload.ReturnType is null) { continue; }
 
-                    if (overload.Parameters.Count > 0) { continue; } // TODO for now only parameterless
                     if (!overload.ReturnType.IsAssignableTo(typeof(void)) &&
                         !overload.ReturnType.IsAssignableTo(typeof(Task))) { continue; } // TODO for now only void
 
-                    controller.Actions.Add(
+                    controller.Action.Add(
+                        method.Name,
                         new(
                             Name: method.Name,
                             Method: HttpMethod.Post,
                             Route: $"generated/{type.Name}/{method.Name}",
                             Return: new(async: overload.ReturnType.IsAssignableTo(typeof(Task))),
-                            Statements: new(
-                                FindTarget: "target",
-                                InvokeMethod: new(method.Name)
-                            )
+                            FindTargetStatement: "target",
+                            InvokedMethodName: method.Name
                         )
-                        { Parameters = [new(ParameterModelFrom.Services, type.FullName, "target")] }
+                        {
+                            Parameters = [
+                                new(type, ParameterModelFrom.Services, "target") { IsInvokeMethodParameter = false },
+                                .. overload.Parameters.Select(p => new RestApi.Model.ParameterModel(p.ParameterType, ParameterModelFrom.Body, p.Name))
+                            ]
+                        }
                     );
                 }
 
-                api.Controllers.Add(controller);
+                api.Controller.Add(controller.Name, controller);
             }
+        });
+
+        configurator.ConfigureApiModelConventions(conventions =>
+        {
+            conventions.Add(new LookupEntityByIdConvention(configurator.Context.GetDomainModel()));
+            conventions.Add(new LookupEntitiesByIdsConvention(configurator.Context.GetDomainModel()));
+            conventions.Add(new AutoHttpMethodConvention());
         });
 
         configurator.ConfigureMvcNewtonsoftJsonOptions(options =>

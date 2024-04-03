@@ -22,7 +22,17 @@ public class TypeModelInheritance : TypeModelGenerics
             if (result is not TypeModelInheritance inheritance) { return; }
 
             inheritance.BaseTypeReference = type.BaseType is null ? default : builder.GetReference(type.BaseType);
-            inheritance.Interfaces = new(type.GetInterfaces().Select(builder.GetReference));
+            inheritance.Interfaces = new(type.GetInterfaces().SelectMany(BuildInterfaces));
+
+            IEnumerable<TypeModelReference> BuildInterfaces(Type @interface)
+            {
+                yield return builder.GetReference(@interface);
+
+                if (@interface.IsGenericType)
+                {
+                    yield return builder.GetReference(@interface.GetGenericTypeDefinition());
+                }
+            }
         }
     }
 }
