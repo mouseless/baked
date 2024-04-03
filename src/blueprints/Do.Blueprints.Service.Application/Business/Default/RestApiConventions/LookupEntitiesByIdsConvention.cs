@@ -21,9 +21,9 @@ public class LookupEntitiesByIdsConvention(DomainModel _domain)
 
         var entityType = enumerableType.IsArray ? enumerableGenerics.ElementType : enumerableGenerics.GenericTypeArguments.FirstOrDefault()?.Model;
         if (entityType is null) { return; }
-        if (!entityType.TryGetMetadata(out var metadata) || !metadata.Has<EntityAttribute>()) { return; }
+        if (!entityType.TryGetMetadata(out var metadata) || !metadata.TryGetSingle<EntityAttribute>(out var entityAttribute)) { return; }
 
-        var queryContextType = _domain.Types[metadata.GetSingle<EntityAttribute>().QueryContextType];
+        var queryContextType = _domain.Types[entityAttribute.QueryContextType];
         var queryContextParameter = new ParameterModel(queryContextType, ParameterModelFrom.Services, $"{entityType.Name}Query") { IsInvokeMethodParameter = false };
         context.Action.Parameter[queryContextParameter.Name] = queryContextParameter;
 

@@ -13,9 +13,9 @@ public class LookupEntityByIdConvention(DomainModel _domain)
     public void Apply(ParameterModelContext context)
     {
         var entityType = context.Parameter.TypeModel;
-        if (!entityType.TryGetMetadata(out var metadata) || !metadata.Has<EntityAttribute>()) { return; }
+        if (!entityType.TryGetMetadata(out var metadata) || !metadata.TryGetSingle<EntityAttribute>(out var entityAttribute)) { return; }
 
-        var queryContextType = _domain.Types[metadata.GetSingle<EntityAttribute>().QueryContextType];
+        var queryContextType = _domain.Types[entityAttribute.QueryContextType];
         var queryContextParameter = new ParameterModel(queryContextType, ParameterModelFrom.Services, $"{entityType.Name}Query") { IsInvokeMethodParameter = false };
         context.Action.Parameter[queryContextParameter.Name] = queryContextParameter;
 

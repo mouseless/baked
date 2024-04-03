@@ -27,7 +27,7 @@ public class ModelCollection<T>() : IEnumerable<T>
     public int Count => _models.Count;
 
     internal void AddIndex(Type index) =>
-        _index[index] = this.Where(m => m is ICustomAttributesModel member && member.CustomAttributes.ContainsKey(index));
+        _index[index] = this.Where(m => m is ICustomAttributesModel member && member.CustomAttributes.Contains(index));
 
     public bool ContainsModel(T? model) =>
         _models.Contains(model?.Id ?? string.Empty);

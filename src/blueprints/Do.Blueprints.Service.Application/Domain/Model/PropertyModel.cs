@@ -11,7 +11,7 @@ public record PropertyModel(
     public TypeModel PropertyType => PropertyTypeReference.Model;
 
     public bool Has<T>() where T : Attribute =>
-        CustomAttributes.ContainsKey<T>();
+        CustomAttributes.Contains<T>();
 
     string IModel.Id { get; } = Name;
 }

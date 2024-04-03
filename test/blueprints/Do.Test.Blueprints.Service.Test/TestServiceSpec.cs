@@ -26,5 +26,5 @@ public abstract class TestServiceSpec : ServiceSpec
     }
 
     protected override string? GetDefaultSettingsValue(string key) =>
-        key == "Int" ? "42" : "test value";
+        key == "Int" ? $"{GiveMe.AnInteger()}" : GiveMe.AString();
 }

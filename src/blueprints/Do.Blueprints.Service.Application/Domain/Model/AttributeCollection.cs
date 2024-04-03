@@ -2,7 +2,7 @@
 
 namespace Do.Domain.Model;
 
-public class AttributeCollection : IEnumerable<(Type Type, HashSet<Attribute> Attributes)>
+public class AttributeCollection
 {
     readonly Dictionary<Type, HashSet<Attribute>> _attributes = [];
 
@@ -25,19 +25,17 @@ public class AttributeCollection : IEnumerable<(Type Type, HashSet<Attribute> At
         _attributes[type].Add(attribute);
     }
 
-    public bool ContainsKey<T>() =>
-        _attributes.ContainsKey(typeof(T));
+    public bool Contains<T>() where T : Attribute =>
+        Contains(typeof(T));
 
-    public bool ContainsKey(Type type) =>
+    public bool Contains(Type type) =>
         _attributes.ContainsKey(type);
 
-    public bool Contains(Attribute attribute) =>
-        _attributes.TryGetValue(attribute.GetType(), out var list) && list.Contains(attribute);
-
-    public HashSet<Attribute> this[Type type] => _attributes[type];
-
     public IEnumerable<T> Get<T>() where T : Attribute =>
-        this[typeof(T)].Cast<T>();
+        Get(typeof(T)).Cast<T>();
+
+    public IEnumerable<Attribute> Get(Type type) =>
+        _attributes[type];
 
     public bool TryGet<T>([NotNullWhen(true)] out IEnumerable<T>? result) where T : Attribute
     {
@@ -50,26 +48,5 @@ public class AttributeCollection : IEnumerable<(Type Type, HashSet<Attribute> At
         result = set.Cast<T>();
 
         return true;
-    }
-
-    public IEnumerator<(Type Type, HashSet<Attribute> Attributes)> GetEnumerator() =>
-        new Enumerator(_attributes.GetEnumerator());
-
-    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-    class Enumerator : IEnumerator<(Type Type, HashSet<Attribute> Attributes)>
-    {
-        readonly IEnumerator<KeyValuePair<Type, HashSet<Attribute>>> _real;
-
-        public Enumerator(IEnumerator<KeyValuePair<Type, HashSet<Attribute>>> real) =>
-            _real = real;
-
-        public (Type Type, HashSet<Attribute> Attributes) Current => (_real.Current.Key, _real.Current.Value);
-
-        object IEnumerator.Current => Current;
-
-        public void Dispose() => _real.Dispose();
-        public bool MoveNext() => _real.MoveNext();
-        public void Reset() => _real.Reset();
     }
 }
