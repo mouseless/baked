@@ -38,6 +38,7 @@ public class ConfigurationOverriderFeature : IFeature
                     .AddReferenceFrom<Program>()
                     .AddCode(Codes.AuthenticationTests.Code)
                     .AddCode(Codes.ExceptionResult.Code)
+                    .AddCode(Codes.External.Code)
                     .AddCode(Codes.Entities.Code)
                     .AddCode(Codes.Parents.Code)
                     .AddCode(Codes.Remote.Code)

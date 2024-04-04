@@ -21,14 +21,6 @@ public static class Singleton
 
                 return result;
             }
-
-            [HttpPost]
-            [Produces("application/json")]
-            [Route("singleton/test-client")]
-            public async Task<object> TestClient([FromServices] Singleton target)
-            {
-                return await target.TestClient();
-            }
         }
     """;
 }
