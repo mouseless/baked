@@ -33,7 +33,6 @@ public class BuildingNonDomainTypes : TestServiceSpec
     [Test]
     public void Non_domain_types_with_non_business_generic_parameters_are_initialized_with_generic_type_definition()
     {
-        var stringModel = DomainModel.Types[typeof(string)];
         var genericModel = DomainModel.Types[typeof(List<string>)];
 
         genericModel.ShouldBeAssignableTo<TypeModelGenerics>();

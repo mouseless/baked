@@ -15,7 +15,6 @@ public static class Singleton
             [HttpGet]
             [Produces("application/json")]
             [Route("singleton/time")]
-            [Use<Authentication.FixedToken.Middleware>]
             public DateTime GetNow([FromServices] Singleton target)
             {
                 var result = target.GetNow();
@@ -29,18 +28,6 @@ public static class Singleton
             public async Task<object> TestClient([FromServices] Singleton target)
             {
                 return await target.TestClient();
-            }
-
-            [HttpPost]
-            [Produces("application/json")]
-            [Route("singleton/test-form-post-authentication")]
-            [Use<Authentication.FixedToken.Middleware>]
-            public object TestFormPostAuthentication([FromServices] Singleton target,
-                [FromForm] string value,
-                [FromForm] string hash
-            )
-            {
-                return target.TestFormPostAuthentication(value);
             }
         }
     """;

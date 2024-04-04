@@ -1,19 +1,11 @@
 ﻿namespace Do.Domain.Model;
 
-public class TypeModelReference : IModel
+public class TypeModelReference(Type type, string id) : IModel
 {
     internal static string IdFrom(Type type) =>
         type.FullName ?? $"{type.Namespace}.{type.Name}<{string.Join(',', type.GenericTypeArguments.Select(IdFrom))}>";
 
-    readonly Type _type;
-    readonly string _id;
-
     internal TypeModelReference(Type type) : this(type, IdFrom(type)) { }
-    public TypeModelReference(Type type, string id)
-    {
-        _type = type;
-        _id = id;
-    }
 
     public TypeModel Model { get; private set; } = default!;
 
@@ -23,10 +15,10 @@ public class TypeModelReference : IModel
     }
 
     public void Apply(Action<Type> action) =>
-        action(_type);
+        action(type);
 
     public override string ToString() =>
-        _id;
+        id;
 
-    string IModel.Id => _id;
+    string IModel.Id => id;
 }

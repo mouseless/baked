@@ -1,4 +1,4 @@
-﻿namespace Do.Test.ExceptionHandling;
+﻿namespace Do.Test;
 
 public class ExceptionResult
 {

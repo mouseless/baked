@@ -25,6 +25,4 @@ public class Singleton(
 
         return JsonConvert.DeserializeObject<List<PullRequest>>(response.Content) ?? [];
     }
-
-    public object TestFormPostAuthentication(object value) => value;
 }
