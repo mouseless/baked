@@ -4,7 +4,7 @@ using Humanizer;
 
 namespace Do.Business.Default.RestApiConventions;
 
-public class EntityGroupsArePluralConvention : IApiModelConvention<ControllerModelContext>
+public class EntityUnderEntitiesConvention : IApiModelConvention<ControllerModelContext>
 {
     public void Apply(ControllerModelContext context)
     {

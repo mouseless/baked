@@ -223,17 +223,17 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
         {
             var domainModel = configurator.Context.GetDomainModel();
 
-            conventions.Add(new EntityGroupsArePluralConvention());
+            conventions.Add(new EntityUnderEntitiesConvention());
             conventions.Add(new LookupEntityByIdConvention(domainModel, action => action.Id != "With"));
             conventions.Add(new LookupEntitiesByIdsConvention(domainModel));
             conventions.Add(new SingleByUniqueConvention(domainModel));
 
             conventions.Add(new AutoHttpMethodConvention());
-            conventions.Add(new WithMethodConvention());
-            conventions.Add(new AddChildConvention());
-            conventions.Add(new GetConvention());
-            conventions.Add(new GetAndDeleteAcceptsQueryConvention());
-            conventions.Add(new DefaultActionConvention("With", "Delete", "Update", "By"));
+            conventions.Add(new PublicWithIsPostResourceConvention());
+            conventions.Add(new AddChildToChildrenConvention());
+            conventions.Add(new GetChildrenToChildrenConvention());
+            conventions.Add(new GetAndDeleteAcceptsOnlyQueryConvention());
+            conventions.Add(new RemoveActionNameFromRouteConvention("With", "Delete", "Update", "By"));
         });
 
         configurator.ConfigureMvcNewtonsoftJsonOptions(options =>
