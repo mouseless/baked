@@ -62,6 +62,9 @@ public class RestApiLayer : LayerBase<GenerateCode, AddServices, Build>
         services.AddMvcCore().AddApiExplorer();
         services.AddSwaggerGen();
 
+        _swaggerGenOptions.DocInclusionPredicate((name, api) => true);
+        _swaggerGenOptions.TagActionsBy(api => [api.GroupName]);
+
         return phase.CreateContextBuilder()
             .Add(_applicationParts)
             .Add(_mvcNewtonsoftJsonOptions)

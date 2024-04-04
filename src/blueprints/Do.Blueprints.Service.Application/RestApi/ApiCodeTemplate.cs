@@ -13,6 +13,7 @@ public class ApiCodeTemplate(ApiModel _apiModel)
         namespace RestApiLayer;
 
         [ApiController]
+        [ApiExplorerSettings(GroupName = "{{controller.GroupName}}")]
         public class {{controller.ClassName}}
         {
             {{ForEach(controller.Actions, Action)}}
