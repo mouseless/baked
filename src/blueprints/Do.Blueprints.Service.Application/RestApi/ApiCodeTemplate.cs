@@ -10,7 +10,7 @@ public class ApiCodeTemplate(ApiModel _apiModel)
         _apiModel.Controllers.Select(Controller);
 
     string Controller(ControllerModel controller) => $$"""
-        namespace RestApi.Generated.Controllers;
+        namespace RestApiLayer;
 
         [ApiController]
         public class {{controller.ClassName}}

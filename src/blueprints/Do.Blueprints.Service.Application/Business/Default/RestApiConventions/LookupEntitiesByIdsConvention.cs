@@ -13,9 +13,10 @@ public class LookupEntitiesByIdsConvention(DomainModel _domain)
 {
     public void Apply(ParameterModelContext context)
     {
-        if (!context.Parameter.IsInvokeMethodParameter) { return; }
+        var enumerableParameter = context.Parameter;
+        if (!enumerableParameter.IsInvokeMethodParameter) { return; }
 
-        var enumerableType = context.Parameter.TypeModel;
+        var enumerableType = enumerableParameter.TypeModel;
         if (!enumerableType.IsAssignableTo(typeof(IEnumerable<>))) { return; }
         if (!enumerableType.TryGetGenerics(out var enumerableGenerics)) { return; }
 
@@ -27,8 +28,8 @@ public class LookupEntitiesByIdsConvention(DomainModel _domain)
         var queryContextParameter = new ParameterModel(queryContextType, ParameterModelFrom.Services, $"{entityType.Name}Query") { IsInvokeMethodParameter = false };
         context.Action.Parameter[queryContextParameter.Name] = queryContextParameter;
 
-        context.Parameter.Type = "IEnumerable<Guid>";
-        context.Parameter.Name = $"{context.Parameter.Name.Singularize()}Ids";
-        context.Parameter.RenderLookup = parameterExpression => $"{queryContextParameter.Name}.ByIds({parameterExpression}){(enumerableType.IsArray ? ".ToArray()" : string.Empty)}";
+        enumerableParameter.Type = "IEnumerable<Guid>";
+        enumerableParameter.Name = $"{enumerableParameter.Name.Singularize()}Ids";
+        enumerableParameter.RenderLookup = parameterExpression => $"{queryContextParameter.Name}.ByIds({parameterExpression}){(enumerableType.IsArray ? ".ToArray()" : string.Empty)}";
     }
 }

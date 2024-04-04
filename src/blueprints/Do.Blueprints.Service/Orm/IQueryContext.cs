@@ -54,36 +54,6 @@ public interface IQueryContext<TEntity>
         return [.. result];
     }
 
-    public List<TEntity> All(
-        int? take = null,
-        int? skip = null
-    )
-    {
-        var result = Query(t => true,
-            take: take,
-            skip: skip
-        );
-
-        return [.. result];
-    }
-
-    public List<TEntity> All<TOrderBy>(
-        Expression<Func<TEntity, TOrderBy>>? orderBy = default,
-        Expression<Func<TEntity, TOrderBy>>? orderByDescending = default,
-        int? take = null,
-        int? skip = null
-    )
-    {
-        var result = Query(t => true,
-            orderBy: orderBy,
-            orderByDescending: orderByDescending,
-            take: take,
-            skip: skip
-         );
-
-        return [.. result];
-    }
-
     IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> where,
         int? take = null,
         int? skip = null

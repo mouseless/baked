@@ -58,7 +58,7 @@ public class QueryingEntities : TestServiceSpec
         GiveMe.AParent();
         var testing = GiveMe.The<Parents>();
 
-        testing.All().Count.ShouldBe(2);
+        testing.By().Count.ShouldBe(2);
     }
 
     [Test]
@@ -70,10 +70,10 @@ public class QueryingEntities : TestServiceSpec
 
         var testing = GiveMe.The<Parents>();
 
-        testing.All(skip: 1, take: 1).Count.ShouldBe(1);
-        testing.All(skip: 1, take: 1).First().Name.ShouldBe("a");
+        testing.By(skip: 1, take: 1).Count.ShouldBe(1);
+        testing.By(skip: 1, take: 1).First().Name.ShouldBe("a");
 
-        testing.All(asc: true).First().Name.ShouldBe("a");
-        testing.All(desc: true).First().Name.ShouldBe("c");
+        testing.By(asc: true).First().Name.ShouldBe("a");
+        testing.By(desc: true).First().Name.ShouldBe("c");
     }
 }

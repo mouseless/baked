@@ -4,7 +4,7 @@ namespace Do.Business.Default;
 
 internal static partial class Regexes
 {
-    [GeneratedRegex(@"^(Get|List).*$", RegexOptions.None, "en-US")]
+    [GeneratedRegex(@"^(Get|List|By).*$", RegexOptions.None, "en-US")]
     public static partial Regex GetMethod();
 
     [GeneratedRegex(@"^(Delete|Remove).*$", RegexOptions.None, "en-US")]

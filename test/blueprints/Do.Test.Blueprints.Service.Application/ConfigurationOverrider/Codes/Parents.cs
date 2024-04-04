@@ -11,7 +11,8 @@ public static class Parents
         [ApiController]
         public class ParentsController
         {
-            public record AllRequest(
+            public record ByRequest(
+                string Name = default,
                 bool Asc = false,
                 bool Desc = false,
                 int? Take = default,
@@ -20,9 +21,10 @@ public static class Parents
 
             [HttpGet]
             [Route("parents")]
-            public List<Parent> All([FromServices] Parents target, [FromQuery] AllRequest request)
+            public List<Parent> By([FromServices] Parents target, [FromQuery] ByRequest request)
             {
-                return target.All(
+                return target.By(
+                    name: request.Name,
                     asc: request.Asc,
                     desc: request.Desc,
                     take: request.Take,
@@ -47,13 +49,6 @@ public static class Parents
                     take: request.Take,
                     skip: request.Skip
                 );
-            }
-
-            [HttpGet]
-            [Route("parents/{id}")]
-            public Parent Get([FromServices] IQueryContext<Parent> parentQuery, Guid id)
-            {
-                return parentQuery.SingleById(id);
             }
 
             [HttpGet]

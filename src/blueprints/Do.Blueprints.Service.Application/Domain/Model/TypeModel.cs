@@ -23,6 +23,7 @@ public class TypeModel : IModel, IEquatable<TypeModel>
     public bool IsClass { get; private set; } = default!;
     public bool IsInterface { get; private set; } = default!;
     public bool IsArray { get; private set; } = default!;
+    public bool IsEnum { get; private set; } = default!;
     public bool IsGenericType { get; private set; } = default!;
     public bool IsGenericTypeDefinition { get; private set; } = default!;
     public bool IsGenericTypeParameter { get; private set; } = default!;
@@ -93,6 +94,7 @@ public class TypeModel : IModel, IEquatable<TypeModel>
             result.IsClass = type.IsClass;
             result.IsInterface = type.IsInterface;
             result.IsArray = type.IsArray;
+            result.IsEnum = type.IsEnum;
             result.IsGenericType = type.IsGenericType;
             result.IsGenericTypeDefinition = type.IsGenericTypeDefinition;
             result.IsGenericTypeParameter = type.IsGenericTypeParameter;

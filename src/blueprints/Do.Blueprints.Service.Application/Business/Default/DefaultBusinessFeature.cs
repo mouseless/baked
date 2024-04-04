@@ -137,10 +137,18 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
             builder.Index.Method.Add<ApiMethodAttribute>();
 
             builder.Metadata.Type.Add(new ApiInputAttribute(),
-                when: type => type.IsAssignableTo(typeof(IParsable<>))
+                when: type =>
+                  type.IsEnum ||
+                  type.Is<Uri>() ||
+                  type.Is<object>() ||
+                  type.IsAssignableTo(typeof(IParsable<>)) ||
+                  type.IsAssignableTo(typeof(string))
             );
             builder.Metadata.Type.Add(new ApiInputAttribute(),
-                when: type => type.IsAssignableTo(typeof(string))
+                when: type =>
+                    type.IsAssignableTo(typeof(Nullable<>)) &&
+                    type.GenericTypeArguments.FirstOrDefault()?.Model.TryGetMetadata(out var genericArgumentMetadata) == true &&
+                    genericArgumentMetadata.Has<ApiInputAttribute>()
             );
             builder.Metadata.Type.Add(new ApiInputAttribute(),
                 when: type => type.Has<EntityAttribute>(),
@@ -216,6 +224,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
             conventions.Add(new LookupEntityByIdConvention(configurator.Context.GetDomainModel()));
             conventions.Add(new LookupEntitiesByIdsConvention(configurator.Context.GetDomainModel()));
             conventions.Add(new AutoHttpMethodConvention());
+            conventions.Add(new GetAndDeleteAcceptsQueryConvention());
         });
 
         configurator.ConfigureMvcNewtonsoftJsonOptions(options =>
