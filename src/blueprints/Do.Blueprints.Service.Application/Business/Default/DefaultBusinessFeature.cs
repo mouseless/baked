@@ -221,14 +221,17 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
 
         configurator.ConfigureApiModelConventions(conventions =>
         {
+            var domainModel = configurator.Context.GetDomainModel();
+
             conventions.Add(new WithMethodConvention());
-            conventions.Add(new LookupEntityByIdConvention(configurator.Context.GetDomainModel(), a => a.Id != "With"));
-            conventions.Add(new LookupEntitiesByIdsConvention(configurator.Context.GetDomainModel()));
+            conventions.Add(new LookupEntityByIdConvention(domainModel, a => a.Id != "With"));
+            conventions.Add(new LookupEntitiesByIdsConvention(domainModel));
             conventions.Add(new AutoHttpMethodConvention());
             conventions.Add(new GetAndDeleteAcceptsQueryConvention());
             conventions.Add(new DefaultActionConvention("With", "Delete", "Update", "By"));
             conventions.Add(new AddChildConvention());
             conventions.Add(new GetConvention());
+            conventions.Add(new SingleByUniqueConvention(domainModel));
         });
 
         configurator.ConfigureMvcNewtonsoftJsonOptions(options =>
