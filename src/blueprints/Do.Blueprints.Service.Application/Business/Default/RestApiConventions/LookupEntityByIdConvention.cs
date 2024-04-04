@@ -8,11 +8,13 @@ using ParameterModel = Do.RestApi.Model.ParameterModel;
 
 namespace Do.Business.Default.RestApiConventions;
 
-public class LookupEntityByIdConvention(DomainModel _domain)
+public class LookupEntityByIdConvention(DomainModel _domain, Func<ActionModel, bool> _actionFilter)
     : IApiModelConvention<ParameterModelContext>
 {
     public void Apply(ParameterModelContext context)
     {
+        if (!_actionFilter(context.Action)) { return; }
+
         var entityParameter = context.Parameter;
         var entityType = entityParameter.TypeModel;
         if (!entityType.TryGetMetadata(out var metadata) || !metadata.TryGetSingle<EntityAttribute>(out var entityAttribute)) { return; }
@@ -28,7 +30,7 @@ public class LookupEntityByIdConvention(DomainModel _domain)
         {
             entityParameter.Name = $"{entityParameter.TypeModel.Name.Camelize()}Id";
             entityParameter.From = ParameterModelFrom.Route;
-            context.Action.Route = $"generated/{entityType.Name.Pluralize()}/{{{entityParameter.Name}:guid}}/{context.Action.Name}";
+            context.Action.Route = $"{entityType.Name.Pluralize()}/{{{entityParameter.Name}:guid}}/{context.Action.Name}";
         }
 
         entityParameter.RenderLookup = parameterExpression => $"{queryContextParameter.Name}.SingleById({parameterExpression}, throwNotFound: {entityParameter.FromRoute.ToString().ToLowerInvariant()})";
