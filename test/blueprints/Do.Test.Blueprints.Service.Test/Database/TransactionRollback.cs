@@ -15,7 +15,7 @@ public class TransactionRollback : TestServiceNfr
     {
         var @string = $"{Guid.NewGuid()}";
         var content = JsonContent.Create(new { @string });
-        await Client.PostAsync($"generated/TestingTransaction/Rollback", content);
+        await Client.PostAsync($"transaction/rollback", content);
 
         var entitiesContent = await Client.GetAsync("entities");
         dynamic? result = await entitiesContent.Content.Deserialize();
@@ -26,7 +26,7 @@ public class TransactionRollback : TestServiceNfr
     [Test]
     public async Task Entity_created_by_a_transaction_committed_asynchronously_persists_when_an_error_occurs()
     {
-        await Client.PostAsync($"generated/TestingTransaction/CommitAction", null);
+        await Client.PostAsync($"transaction/commit-action", null);
 
         var entitiesContent = await Client.GetAsync("entities");
         dynamic? result = await entitiesContent.Content.Deserialize();
@@ -37,7 +37,7 @@ public class TransactionRollback : TestServiceNfr
     [Test]
     public async Task Only_the_updates_outside_of_transaction_are_rolled_back_when_an_error_occurs()
     {
-        await Client.PostAsync($"generated/TestingTransaction/CommitFunc", null);
+        await Client.PostAsync($"transaction/commit-func", null);
 
         var entitiesContent = await Client.GetAsync("entities");
         dynamic? result = await entitiesContent.Content.Deserialize();

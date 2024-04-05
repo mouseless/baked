@@ -1,4 +1,4 @@
-﻿namespace Do.Test.DependencyInjection;
+﻿namespace Do.Test.Core;
 
 public class Time : TestServiceSpec
 {
