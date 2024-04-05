@@ -3,7 +3,7 @@ using Do.ExceptionHandling;
 using Newtonsoft.Json;
 using System.Net;
 
-namespace Do.Test;
+namespace Do.Test.Communication;
 
 public class ClientExceptionHandler : IExceptionHandler
 {

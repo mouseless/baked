@@ -1,6 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Do.Test.DataAccess;
+using Microsoft.Extensions.Logging;
 
-namespace Do.Test;
+namespace Do.Test.Business;
 
 public class Methods(
     ILogger<Singleton> _logger

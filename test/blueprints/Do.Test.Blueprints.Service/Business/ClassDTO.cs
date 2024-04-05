@@ -1,4 +1,4 @@
-﻿namespace Do.Test;
+﻿namespace Do.Test.Business;
 
 public class ClassDTO(string text, int numeric)
 {

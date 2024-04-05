@@ -1,8 +1,6 @@
-﻿using Do.Communication;
-using Do.Database;
-using Newtonsoft.Json;
+﻿using Do.Test.DataAccess;
 
-namespace Do.Test;
+namespace Do.Test.Business;
 
 public class Singleton(
     TimeProvider _timeProvider,
@@ -12,7 +10,7 @@ public class Singleton(
     public override DateTime GetTime() =>
         _timeProvider.GetNow();
 
-    public string TestOperationWithGenericParameter(string parameter)
+    public string OperationWithGenericParameter(string parameter)
     {
         return _newOperationWithGenericParameter()
             .With(parameter)

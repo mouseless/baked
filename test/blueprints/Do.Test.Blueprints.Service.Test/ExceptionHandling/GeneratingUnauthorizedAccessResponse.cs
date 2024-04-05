@@ -17,7 +17,7 @@ public class GeneratingUnauthorizedAccessResponse : TestServiceNfr
     [Test]
     public async Task Unauthorized_access_exceptions_are_handled_with_its_own_handler()
     {
-        var response = await Client.GetAsync("authentication/time");
+        var response = await Client.PostAsync("authentication-samples/token-authentication", null);
 
         var problemDetails = response.Content.ReadFromJsonAsync<ProblemDetails>().Result;
 

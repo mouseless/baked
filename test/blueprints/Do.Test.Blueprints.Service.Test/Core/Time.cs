@@ -1,4 +1,6 @@
-﻿namespace Do.Test.Core;
+﻿using Do.Test.Business;
+
+namespace Do.Test.Core;
 
 public class Time : TestServiceSpec
 {

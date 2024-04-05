@@ -1,6 +1,7 @@
 ﻿namespace Do.Domain.Model;
 
-public class TypeModelReference(Type _type, string _id) : IModel
+public class TypeModelReference(Type _type, string _id)
+    : IModel
 {
     internal static string IdFrom(Type type) =>
         type.FullName ?? $"{type.Namespace}.{type.Name}<{string.Join(',', type.GenericTypeArguments.Select(IdFrom))}>";

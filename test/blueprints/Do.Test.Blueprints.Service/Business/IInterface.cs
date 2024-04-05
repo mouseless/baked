@@ -1,3 +1,3 @@
-﻿namespace Do.Test;
+﻿namespace Do.Test.Business;
 
 public interface IInterface { }

@@ -1,4 +1,6 @@
 ﻿using Do.Business;
+using Do.Test.DataAccess;
+using Do.Test.ExceptionHandling;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Do.Test.Business;
@@ -156,8 +158,8 @@ public class RegisteringServices : TestServiceSpec
     [Test]
     public void Non_public_types_are_not_registered()
     {
-        var nonPublicType = Activator.CreateInstance("Do.Test.Blueprints.Service", "Do.Test.Internal")?.GetType() ??
-            throw new("`Do.Test.Internal` should have existed");
+        var nonPublicType = Activator.CreateInstance("Do.Test.Blueprints.Service", "Do.Test.Business.Internal")?.GetType() ??
+            throw new("`Do.Test.Business.Internal` should have existed");
         var action = () => GiveMe.The(nonPublicType);
 
         action.ShouldThrowExceptionWithServiceNotRegisteredMessage(nonPublicType);

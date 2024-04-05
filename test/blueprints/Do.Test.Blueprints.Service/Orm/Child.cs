@@ -1,6 +1,6 @@
 ﻿using Do.Orm;
 
-namespace Do.Test;
+namespace Do.Test.Orm;
 
 public class Child(IEntityContext<Child> _context)
 {

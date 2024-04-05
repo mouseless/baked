@@ -1,7 +1,7 @@
 ﻿using Do.Communication;
 using Newtonsoft.Json;
 
-namespace Do.Test;
+namespace Do.Test.Communication;
 
 public class Remote(IClient<Remote> _client)
 {

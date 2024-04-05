@@ -1,8 +1,9 @@
 ﻿using Do.Database;
+using Do.Test.DataAccess;
 
-namespace Do.Test;
+namespace Do.Test.Database;
 
-public class Transaction(
+public class TransactionSamples(
     Func<Entity> _newEntity,
     ITransaction _transaction,
     TimeProvider _timeProvider

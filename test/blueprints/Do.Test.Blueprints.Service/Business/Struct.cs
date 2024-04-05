@@ -1,4 +1,4 @@
-﻿namespace Do.Test;
+﻿namespace Do.Test.Business;
 
 public struct Struct(string text, int numeric)
 {

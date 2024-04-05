@@ -1,11 +1,11 @@
 ﻿using Do.Communication;
 using Newtonsoft.Json;
 
-namespace Do.Test;
+namespace Do.Test.Communication;
 
 public class External(IClient<External> _client)
 {
-    public async Task<List<PullRequest>> TestClient()
+    public async Task<List<PullRequest>> Process()
     {
         var request = new Request("repos/mouseless/do/pulls", HttpMethod.Get);
 

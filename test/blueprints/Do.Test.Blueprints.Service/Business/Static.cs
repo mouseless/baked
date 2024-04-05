@@ -1,4 +1,4 @@
-﻿namespace Do.Test;
+﻿namespace Do.Test.Business;
 
 public static class Static
 {

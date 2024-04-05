@@ -1,11 +1,13 @@
-﻿namespace Do.Test.Database;
+﻿using Do.Test.DataAccess;
+
+namespace Do.Test.Database;
 
 public class TransactionalWork : TestServiceSpec
 {
     [Test]
     public void Commit_async_takes_nullable_parameters()
     {
-        var transaction = GiveMe.The<Transaction>();
+        var transaction = GiveMe.The<TransactionSamples>();
 
         var task = transaction.CommitNullable(null);
 
@@ -16,7 +18,7 @@ public class TransactionalWork : TestServiceSpec
     public void Commit_async_update_occurs_when_entity_is_not_null()
     {
         var entity = GiveMe.AnEntity(@string: "string");
-        var transaction = GiveMe.The<Transaction>();
+        var transaction = GiveMe.The<TransactionSamples>();
 
         var task = transaction.CommitNullable(entity);
 
@@ -40,7 +42,7 @@ public class TransactionalWork : TestServiceSpec
     [Test(Description = "Actual behaviour is not testable, this test is included only for documentation and to improve coverage")]
     public void Entity_created_by_a_transaction_committed_asynchronously_persists_when_an_error_occurs()
     {
-        var transaction = GiveMe.The<Transaction>();
+        var transaction = GiveMe.The<TransactionSamples>();
         var entities = GiveMe.The<Entities>();
 
         var task = transaction.CommitAction();
@@ -52,7 +54,7 @@ public class TransactionalWork : TestServiceSpec
     [Test(Description = "Actual behaviour is not testable, this test is included only for documentation and to improve coverage")]
     public void Only_the_updates_outside_of_transaction_are_rolled_back_when_an_error_occurs()
     {
-        var transaction = GiveMe.The<Transaction>();
+        var transaction = GiveMe.The<TransactionSamples>();
         var entities = GiveMe.The<Entities>();
 
         var task = transaction.CommitFunc();

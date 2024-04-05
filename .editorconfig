@@ -112,7 +112,7 @@ dotnet_diagnostic.IDE0001.severity = error # System.IO.FileInfo file;
 dotnet_diagnostic.IDE0002.severity = error # class C { C.M1(); }
 dotnet_diagnostic.IDE0003.severity = error # Remove this or Me qualification
 dotnet_diagnostic.IDE0004.severity = error # int v = (int)0;
-dotnet_diagnostic.IDE0005.severity = none # remove Using directive is unnecessary
+dotnet_diagnostic.IDE0005.severity = error # remove Using directive is unnecessary
 dotnet_diagnostic.IDE0007.severity = error # Use var instead of explicit type
 dotnet_diagnostic.IDE0008.severity = none # Use explicit type instead of 'var'
 dotnet_diagnostic.IDE0009.severity = error # Add this or Me qualification
@@ -213,6 +213,7 @@ dotnet_diagnostic.IDE0304.severity = error # Use collection expression for build
 dotnet_diagnostic.IDE0305.severity = error # Use collection expression for fluent
 dotnet_diagnostic.IDE1005.severity = error # Use conditional delegate call
 dotnet_diagnostic.IDE1006.severity = error # Naming rule violation: Missing prefix: '_'
+dotnet_diagnostic.CS1591.severity = none # Missing XML comment
 
 # Stylecop
 

@@ -1,7 +1,7 @@
 ﻿using Do.ExceptionHandling;
 using System.Net;
 
-namespace Do.Test;
+namespace Do.Test.ExceptionHandling;
 
 public class SampleExceptionHandler : IExceptionHandler
 {

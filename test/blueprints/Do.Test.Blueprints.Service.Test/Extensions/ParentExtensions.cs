@@ -1,3 +1,4 @@
+using Do.Test.Orm;
 using Do.Testing;
 
 namespace Do.Test;

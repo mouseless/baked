@@ -1,6 +1,7 @@
 ﻿using Do.ExceptionHandling;
 using Do.ExceptionHandling.Default;
 using Do.Orm;
+using Do.Test.DataAccess;
 using System.Net;
 
 namespace Do.Test.ExceptionHandling;
@@ -10,7 +11,7 @@ public class HandlingExceptions : TestServiceSpec
     [Test(Description = "Actual behaviour is not testable, this test is included only for documentation and to improve coverage")]
     public void HandledException_is_handled_by_default()
     {
-        var exceptionResult = GiveMe.The<ExceptionResult>();
+        var exceptionResult = GiveMe.The<ExceptionSamples>();
 
         var task = () => exceptionResult.Throw(handled: true);
 

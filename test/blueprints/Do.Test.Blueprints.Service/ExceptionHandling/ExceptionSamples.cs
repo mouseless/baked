@@ -1,6 +1,6 @@
-﻿namespace Do.Test;
+﻿namespace Do.Test.ExceptionHandling;
 
-public class ExceptionResult
+public class ExceptionSamples
 {
     public void Throw(bool handled)
     {

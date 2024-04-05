@@ -1,6 +1,6 @@
 ﻿using Do.Orm;
 
-namespace Do.Test;
+namespace Do.Test.Orm;
 
 public class Parent(IEntityContext<Parent> _context, Func<Child> _newChild, Children _childEntities)
 {
@@ -38,9 +38,9 @@ public class Parents(IQueryContext<Parent> _context)
     )
     {
         return
-            asc ? _context.By(p => (name == default || p.Name == name), orderBy: p => p.Name, take: take, skip: skip) :
-            desc ? _context.By(p => (name == default || p.Name == name), orderByDescending: p => p.Name, take: take, skip: skip) :
-            _context.By(p => (name == default || p.Name == name), take: take, skip: skip);
+            asc ? _context.By(p => name == default || p.Name == name, orderBy: p => p.Name, take: take, skip: skip) :
+            desc ? _context.By(p => name == default || p.Name == name, orderByDescending: p => p.Name, take: take, skip: skip) :
+            _context.By(p => name == default || p.Name == name, take: take, skip: skip);
     }
 
     public List<Parent> ByName(string contains,

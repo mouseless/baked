@@ -1,4 +1,6 @@
 using Do.Domain.Model;
+using Do.Test.Communication;
+using Do.Test.DataAccess;
 
 namespace Do.Test;
 
