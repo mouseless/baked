@@ -1,5 +1,4 @@
-﻿using Do.Test.Database;
-using Do.Test.Orm;
+﻿using Do.Test.Orm;
 
 namespace Do.Test.DataAccess;
 
