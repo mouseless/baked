@@ -50,7 +50,7 @@ public class LayerX : LayerBase
 }
 ```
 
-> :bulb:
+> [!TIP]
 >
 > You can directly implement provided interface `ILayer`, however we've created
 > some base classes to make it easier for you to create layers. All examples
@@ -93,7 +93,7 @@ public class SampleLayer : LayerBase
 
 Here `SampleLayer` adds two phases, `DoA` and `DoB`, to the application.
 
-> :bulb:
+> [!TIP]
 >
 > By convention place the phase implementations as a nested class in the layer
 > it is added.
@@ -117,7 +117,7 @@ public class CreateBuilder : PhaseBase
 }
 ```
 
-> :bulb:
+> [!TIP]
 >
 > You can directly implement provided interface `IPhase`, however we've created
 > some base classes to make it easier for you to create phases. All examples
@@ -143,12 +143,12 @@ public class Build : PhaseBase<WebApplicationBuilder>
 
 `PhaseBase<T>` class requires `Initialize(T t)` method to be implemented.
 
-> :information_source:
+> [!NOTE]
 >
 > You can provide more than one dependency for a phase. E.g., `Phase<X, Y>`
 > will require `Initialize(X x, Y y)` method to be implemented.
 
-> :warning:
+> [!WARNING]
 >
 > Type of the dependency provided, must be exactly the same as the type of
 > dependency in `ApplicationContext`. For more information
@@ -186,7 +186,7 @@ public class LayerX : LayerBase<AddServices>
 In this example, you see a layer named `LayerX` providing a
 `LayerXConfiguration` instance during `AddServices` phase.
 
-> :information_source:
+> [!NOTE]
 >
 > By default, a layer returns `PhaseContext.Empty` instance for the phases it
 > does not provide a configuration. This means `Application` skips that layer
@@ -236,12 +236,12 @@ public class LayerX : LayerBase<AddServices>
 }
 ```
 
-> :information_source:
+> [!NOTE]
 >
 > Notice that a layer has access to the `ApplicationContext` instance through
 > `Context` property provided in `LayerBase` base class.
 
-> :warning:
+> [!WARNING]
 >
 > `GetContext()` method is called for every layer before applying any of them
 > to features. And `onDispose:` actions are called after applying these
@@ -322,7 +322,7 @@ public void Configure(LayerConfigurator configurator)
 ...
 ```
 
-> :bulb:
+> [!TIP]
 >
 > `phase.CreateContext()` is a helper method that utilizes
 > `phase.CreateContextBuilder()` behind the scenes.

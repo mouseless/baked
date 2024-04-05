@@ -1,6 +1,6 @@
 # Http Client
 
-DO uses ASP.NET Core's `IHttpClientFactory` and related services for providing 
+DO uses ASP.NET Core's `IHttpClientFactory` and related services for providing
 clients for http requests and responses.
 
 ```csharp
@@ -10,11 +10,11 @@ app.Layers.AddHttpClient();
 ## Configuration Targets
 
 `HttpClient` layer provides `List<HttpClientDescriptor>` which is used to add
-named configuration delegates for `IHttpClientBuilder`. 
+named configuration delegates for `IHttpClientBuilder`.
 
 ### `List<HttpClientDescriptor>`
 
-This target is provided in `AddServices` phase as the target. To configure it 
+This target is provided in `AddServices` phase as the target. To configure it
 in a feature;
 
 ```csharp
@@ -24,7 +24,7 @@ configurator.ConfigureHttpClient(clients =>
 });
 ```
 
-> :information_source:
+> [!NOTE]
 >
 > Descriptor with name "Default" is added as a default builder delegate for all
-> created http clients 
+> created http clients

@@ -37,7 +37,7 @@ Second component is layers. Every layer introduces a new technology, such as a
 database server, message queue server or a framework, into your application
 architecture.
 
-> :bulb:
+> [!TIP]
 >
 > Layers are named after the domain of their technology.
 
@@ -55,7 +55,7 @@ In this example, `HttpServer` introduces the concept of web as a layer through
 the `ASP.NET Core` technology. Also, `DataAccess` introduces the concept of
 relational databases as a layer through the `NHibernate` framework.
 
-> :information_source:
+> [!NOTE]
 >
 > `Domain` is a unique layer that introduces the business logic of an
 > application by encapsulating its domain objects. It processes the assemblies
@@ -82,7 +82,7 @@ An abstraction is the library that contains all common classes, interfaces,
 attributes, if any, for a feature. It is the only accessible part of a feature
 from domain objects or from other feature implementations.
 
-> :information_source:
+> [!NOTE]
 >
 > Each feature has only one abstraction, named after the ability it provides,
 > e.g. `Fs`, `Orm`, `Logging`, `Auth` etc.
@@ -118,7 +118,7 @@ layer(s).
 Features may have multiple implementations, each named after its corresponding
 design or technology, e.g. `Auth.Auth0`, `Fs.Aws`, `Database.MySql`.
 
-> :bulb:
+> [!TIP]
 >
 > `Fs` represents file system feature that provides an API to your domain logic
 > to read/write files. `Fs.Local` and `Fs.AwsS3` are two different
