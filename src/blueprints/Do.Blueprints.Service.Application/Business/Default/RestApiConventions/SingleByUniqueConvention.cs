@@ -23,9 +23,11 @@ public class SingleByUniqueConvention(DomainModel _domainModel)
         if (!context.Action.Parameter.TryGetValue(uniqueParameterName.Camelize(), out var uniqueParameter)) { return; }
 
         var newParameterName = $"{entityType.Name.Camelize()}{uniqueParameterName}";
-        context.Action.Route = context.Action.Route.Replace(context.Action.Id, $"{{{newParameterName}}}");
         uniqueParameter.From = ParameterModelFrom.Route;
         uniqueParameter.Name = newParameterName;
+
+        var newParameterRoute = $"{{{newParameterName}{(uniqueParameter.TypeModel.Is<Guid>() ? ":guid" : string.Empty)}}}";
+        context.Action.Route = context.Action.Route.Replace(context.Action.Id, newParameterRoute);
 
         if (context.Action.Parameter.TryGetValue("throwNotFound", out var throwNotFoundParameter))
         {

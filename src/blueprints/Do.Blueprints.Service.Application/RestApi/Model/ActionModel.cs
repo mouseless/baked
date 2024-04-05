@@ -7,8 +7,7 @@ public record ActionModel(
     HttpMethod Method,
     string Route,
     ReturnModel Return,
-    string FindTargetStatement,
-    string InvokedMethodName
+    string FindTargetStatement
 )
 {
     public string Name { get; set; } = Id;
@@ -17,7 +16,7 @@ public record ActionModel(
     public Func<string, string> RoutePartStylizer { get; set; } = s => s.Kebaberize();
     public ReturnModel Return { get; set; } = Return;
     public string FindTargetStatement { get; set; } = FindTargetStatement;
-    public string InvokedMethodName { get; set; } = InvokedMethodName;
+    public string InvokedMethodName { get; set; } = Id;
     public bool UseForm { get; set; } = false;
 
     public List<string> AdditionalAttributes { get; init; } = [];

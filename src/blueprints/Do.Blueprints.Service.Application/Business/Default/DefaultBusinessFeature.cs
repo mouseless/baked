@@ -191,39 +191,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                 var controller = new ControllerModel(type);
                 foreach (var method in type.GetMembers().Methods.Having<ApiMethodAttribute>())
                 {
-                    var overload = method.Overloads
-                        .OrderByDescending(o => o.Parameters.Count) // overload with most parameters
-                        .First(o => o.Parameters.All(p => p.ParameterType.TryGetMetadata(out var metadata) && metadata.Has<ApiInputAttribute>())); // with only api parameters
-                    if (overload.ReturnType is null) { continue; }
-
-                    controller.Action.Add(
-                        method.Name,
-                        new(
-                            Id: method.Name,
-                            Method: HttpMethod.Post,
-                            Route: $"{type.Name}/{method.Name}",
-                            Return: new(overload.ReturnType),
-                            FindTargetStatement: "target",
-                            InvokedMethodName: method.Name
-                        )
-                        {
-                            Parameters = [
-                                new(type, ParameterModelFrom.Services, "target") { IsInvokeMethodParameter = false },
-                                .. overload.Parameters.Select(p =>
-                                        new RestApi.Model.ParameterModel(p.ParameterType, ParameterModelFrom.BodyOrForm, p.Name)
-                                        {
-                                            IsOptional = p.IsOptional,
-                                            DefaultValue = p.DefaultValue,
-                                            DefaultValueRenderer = defaultValue =>
-                                                p.ParameterType.Is<bool>() ? $"{defaultValue}".ToLowerInvariant() :
-                                                p.ParameterType.Is<bool?>() ? $"{defaultValue}".ToLowerInvariant() :
-                                                p.ParameterType.Is<string>() ? $"\"{defaultValue}\"" :
-                                                $"{defaultValue}"
-                                        }
-                                    )
-                            ]
-                        }
-                    );
+                    controller.AddAction(type, method);
                 }
 
                 api.Controller.Add(controller.Id, controller);

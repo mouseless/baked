@@ -18,11 +18,16 @@ public class ConfigurationOverriderFeature : IFeature
 
         configurator.ConfigureApiModel(apiModel =>
         {
+            var domainModel = configurator.Context.GetDomainModel();
+
             apiModel.References.Add<Middleware>();
+
             apiModel.Controller[nameof(Singleton)].Action[nameof(Singleton.GetTime)].AdditionalAttributes.Add(typeof(UseAttribute<Middleware>).GetCSharpFriendlyFullName());
             apiModel.Controller[nameof(Singleton)].Action[nameof(Singleton.TestFormPostAuthentication)].AdditionalAttributes.Add(typeof(UseAttribute<Middleware>).GetCSharpFriendlyFullName());
             apiModel.Controller[nameof(Singleton)].Action[nameof(Singleton.TestException)].Parameter["handled"].From = ParameterModelFrom.Query;
             apiModel.Controller[nameof(Singleton)].Action[nameof(Singleton.TestFormPostAuthentication)].UseForm = true;
+
+            apiModel.Controller[nameof(Entities)].AddSingleById<Entity>(domainModel);
         });
 
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
