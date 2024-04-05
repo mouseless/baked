@@ -4,5 +4,5 @@ namespace Do.Test;
 
 public abstract class ArchitectureSpec : Spec
 {
-    static ArchitectureSpec() => Spec.Init();
+    static ArchitectureSpec() => Init();
 }

@@ -45,7 +45,7 @@ public abstract class ServiceSpec : Spec
         mockOverrider ??= c => c.FirstInterface();
         orm ??= c => c.Default();
 
-        var context = Spec.Init(app =>
+        var context = Init(app =>
         {
             app.Layers.AddCodeGeneration();
             app.Layers.AddConfiguration();

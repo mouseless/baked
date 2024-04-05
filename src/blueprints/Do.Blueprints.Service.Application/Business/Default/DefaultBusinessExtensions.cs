@@ -38,17 +38,17 @@ public static class DefaultBusinessExtensions
             {
                 Parameters = [
                     new(type, ParameterModelFrom.Services, "target"),
-                        .. overload.Parameters.Select(p =>
-                                new RestApi.Model.ParameterModel(p.ParameterType, ParameterModelFrom.BodyOrForm, p.Name)
-                                {
-                                    IsOptional = p.IsOptional,
-                                    DefaultValue = p.DefaultValue,
-                                    DefaultValueRenderer = defaultValue =>
-                                        p.ParameterType.Is<bool>() ? $"{defaultValue}".ToLowerInvariant() :
-                                        p.ParameterType.Is<bool?>() ? $"{defaultValue}".ToLowerInvariant() :
-                                        p.ParameterType.Is<string>() ? $"\"{defaultValue}\"" :
-                                        $"{defaultValue}"
-                                }
+                    .. overload.Parameters.Select(p =>
+                            new RestApi.Model.ParameterModel(p.ParameterType, ParameterModelFrom.BodyOrForm, p.Name)
+                            {
+                                IsOptional = p.IsOptional,
+                                DefaultValue = p.DefaultValue,
+                                DefaultValueRenderer = defaultValue =>
+                                    p.ParameterType.Is<bool>() ? $"{defaultValue}".ToLowerInvariant() :
+                                    p.ParameterType.Is<bool?>() ? $"{defaultValue}".ToLowerInvariant() :
+                                    p.ParameterType.Is<string>() ? $"\"{defaultValue}\"" :
+                                    $"{defaultValue}"
+                            }
                             )
                 ]
             }

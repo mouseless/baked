@@ -14,8 +14,8 @@ public class DomainLayer : LayerBase<BuildConfiguration>
 
     protected override PhaseContext GetContext(BuildConfiguration phase) =>
         phase.CreateContextBuilder()
-            .Add<IDomainTypeCollection>(_domainTypes)
-            .Add<DomainModelBuilderOptions>(_builderOptions)
+            .Add(_domainTypes)
+            .Add(_builderOptions)
             .Build();
 
     protected override IEnumerable<IPhase> GetPhases()
@@ -31,7 +31,7 @@ public class DomainLayer : LayerBase<BuildConfiguration>
             var builder = new DomainModelBuilder(_builderOptions);
             var model = builder.Build(_domainTypes);
 
-            Context.Add<DomainModel>(model);
+            Context.Add(model);
         }
     }
 }
