@@ -213,6 +213,9 @@ dotnet_diagnostic.IDE0304.severity = error # Use collection expression for build
 dotnet_diagnostic.IDE0305.severity = error # Use collection expression for fluent
 dotnet_diagnostic.IDE1005.severity = error # Use conditional delegate call
 dotnet_diagnostic.IDE1006.severity = error # Naming rule violation: Missing prefix: '_'
+
+# CS
+
 dotnet_diagnostic.CS1591.severity = none # Missing XML comment
 
 # Stylecop

@@ -27,8 +27,8 @@ public class ConfigurationOverriderFeature : IFeature
 
             apiModel.Controller[nameof(AuthenticationSamples)].Action[nameof(AuthenticationSamples.TokenAuthentication)].AdditionalAttributes.Add(typeof(UseAttribute<Middleware>).GetCSharpFriendlyFullName());
             apiModel.Controller[nameof(AuthenticationSamples)].Action[nameof(AuthenticationSamples.FormPostAuthentication)].AdditionalAttributes.Add(typeof(UseAttribute<Middleware>).GetCSharpFriendlyFullName());
-            apiModel.Controller[nameof(ExceptionSamples)].Action[nameof(ExceptionSamples.Throw)].Parameter["handled"].From = ParameterModelFrom.Query;
             apiModel.Controller[nameof(AuthenticationSamples)].Action[nameof(AuthenticationSamples.FormPostAuthentication)].UseForm = true;
+            apiModel.Controller[nameof(ExceptionSamples)].Action[nameof(ExceptionSamples.Throw)].Parameter["handled"].From = ParameterModelFrom.Query;
 
             apiModel.Controller[nameof(Entities)].AddSingleById<Entity>(domainModel);
         });
