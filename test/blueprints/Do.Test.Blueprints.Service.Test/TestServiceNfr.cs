@@ -1,7 +1,7 @@
 ﻿using Do.Architecture;
 using Do.Business;
 using Do.Database;
-using Do.Test.DataAccess;
+using Do.Test.Orm;
 using Do.Testing;
 
 namespace Do.Test;

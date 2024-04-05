@@ -1,5 +1,4 @@
 ﻿using Do.Test.Business;
-using Do.Test.DataAccess;
 using NHConfiguration = NHibernate.Cfg.Configuration;
 
 namespace Do.Test.Orm;

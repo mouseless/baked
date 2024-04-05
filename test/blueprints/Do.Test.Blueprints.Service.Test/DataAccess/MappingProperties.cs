@@ -1,4 +1,7 @@
-﻿namespace Do.Test.DataAccess;
+﻿using Do.Test.Database;
+using Do.Test.Orm;
+
+namespace Do.Test.DataAccess;
 
 public class MappingProperties : TestServiceSpec
 {

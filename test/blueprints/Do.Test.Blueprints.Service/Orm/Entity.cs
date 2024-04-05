@@ -1,7 +1,7 @@
 ﻿using Do.Database;
 using Do.Orm;
 
-namespace Do.Test.DataAccess;
+namespace Do.Test.Orm;
 
 public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransaction _transaction, TimeProvider _timeProvider)
 {

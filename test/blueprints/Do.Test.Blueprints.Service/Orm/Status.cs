@@ -1,4 +1,4 @@
-﻿namespace Do.Test.DataAccess;
+﻿namespace Do.Test.Orm;
 
 public enum Status
 {

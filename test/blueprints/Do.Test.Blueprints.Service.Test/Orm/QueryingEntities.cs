@@ -1,6 +1,4 @@
-﻿using Do.Test.DataAccess;
-
-namespace Do.Test.Orm;
+﻿namespace Do.Test.Orm;
 
 public class QueryingEntities : TestServiceSpec
 {

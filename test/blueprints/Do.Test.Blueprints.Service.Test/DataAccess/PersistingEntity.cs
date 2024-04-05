@@ -1,4 +1,6 @@
-﻿namespace Do.Test.DataAccess;
+﻿using Do.Test.Orm;
+
+namespace Do.Test.DataAccess;
 
 public class PersistingEntity : TestServiceSpec
 {
