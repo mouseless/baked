@@ -1,6 +1,5 @@
 ﻿using Do.Architecture;
 using Do.Domain.Configuration;
-using Do.Domain.Model;
 using Microsoft.Extensions.Configuration;
 
 using static Do.Configuration.ConfigurationLayer;
