@@ -14,8 +14,8 @@ import { useRuntimeConfig, computed, useRoute } from "#imports";
 const props = withDefaults(defineProps<{
   src: string,
   alt: string,
-  width: string | number,
-  height: string | number
+  width?: string | number,
+  height?: string | number
 }>(), {
   src: "",
   alt: "",
