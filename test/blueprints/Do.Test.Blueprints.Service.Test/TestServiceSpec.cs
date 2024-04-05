@@ -1,5 +1,4 @@
 using Do.Domain.Model;
-using Do.Test.Communication;
 
 namespace Do.Test;
 
