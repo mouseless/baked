@@ -71,11 +71,6 @@ export default defineNuxtConfig({
     dirs: ["~/components/Prose", "~/components"]
   },
   content: {
-    markdown: {
-      remarkPlugins: {
-        "remark-emoji": false
-      }
-    },
     highlight: {
       // Theme used in all color schemes.
       theme: "slack-dark",

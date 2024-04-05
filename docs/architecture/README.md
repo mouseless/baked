@@ -12,7 +12,7 @@ architectural style. Core idea is to enable a good separation of concerns
 without causing any repetitive work. To achieve this DO breaks down an
 application into following components: domain objects, layers and features.
 
-> :information_source:
+> [!NOTE]
 >
 > DO is inspired by [Clean Architecture][], but it has its own approach to the
 > concept.
