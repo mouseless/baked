@@ -5,7 +5,7 @@ namespace Do.Test;
 
 public static class CompilerExtensions
 {
-    public static Compiler ACompiler(this Stubber giveMe,
+    public static Compiler ACompiler(this Stubber _,
         string? code = default
     )
     {

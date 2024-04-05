@@ -1,4 +1,5 @@
-﻿using NHConfiguration = NHibernate.Cfg.Configuration;
+﻿using Do.Test.Business;
+using NHConfiguration = NHibernate.Cfg.Configuration;
 
 namespace Do.Test.Orm;
 

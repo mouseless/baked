@@ -14,7 +14,7 @@ public class GeneratingExceptionResponse : TestServiceNfr
     [Test]
     public async Task Handled_exception_problem_details_are_set_by_its_handler()
     {
-        var response = await Client.PostAsync($"singleton/test-exception?handled=true", null);
+        var response = await Client.PostAsync($"exception-samples/throw?handled=true", null);
 
         var problemDetails = response.Content.ReadFromJsonAsync<ProblemDetails>().Result;
 
@@ -27,7 +27,7 @@ public class GeneratingExceptionResponse : TestServiceNfr
     [Test]
     public async Task Unhandled_exception_problem_details_are_set_by_unhandled_exception_handler()
     {
-        var response = await Client.PostAsync($"singleton/test-exception?handled=false", null);
+        var response = await Client.PostAsync($"exception-samples/throw?handled=false", null);
 
         var problemDetails = response.Content.ReadFromJsonAsync<ProblemDetails>().Result;
 

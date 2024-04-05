@@ -15,7 +15,7 @@ public static class DefaultOrmExtensions
             Parameters = [
                 new(domainModel.Types[typeof(IQueryContext<T>)], ParameterModelFrom.Services, "target"),
                 new(domainModel.Types[typeof(Guid)], ParameterModelFrom.BodyOrForm, "id"),
-                new(domainModel.Types[typeof(bool?)], ParameterModelFrom.BodyOrForm, "throwNotFound")
+                new(domainModel.Types[typeof(bool)], ParameterModelFrom.BodyOrForm, "throwNotFound")
             ]
         };
 }

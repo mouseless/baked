@@ -70,14 +70,12 @@ public class TypeModelMembers : TypeModelMetadata
                 return constructorInfos.Select(BuildConstructor).ToList().AsReadOnly();
             }
 
-            ConstructorModel BuildConstructor(ConstructorInfo constructorInfo)
-            {
-                return new(
+            ConstructorModel BuildConstructor(ConstructorInfo constructorInfo) =>
+                new(
                     constructorInfo.IsPublic,
                     constructorInfo.IsFamily,
                     BuildParameters(constructorInfo)
                 );
-            }
 
             PropertyModel BuildProperty(PropertyInfo property) =>
                 new(
@@ -104,16 +102,14 @@ public class TypeModelMembers : TypeModelMetadata
                 return new(result);
             }
 
-            MethodOverloadModel BuildMethod(MethodInfo methodInfo)
-            {
-                return new(
+            MethodOverloadModel BuildMethod(MethodInfo methodInfo) =>
+                new(
                     methodInfo.IsPublic,
                     methodInfo.IsFamily,
                     methodInfo.IsVirtual,
                     BuildParameters(methodInfo),
                     builder.GetReference(methodInfo.ReturnType)
                 );
-            }
 
             ModelCollection<ParameterModel> BuildParameters(MethodBase method) =>
                 new(method.GetParameters().Select(BuildParameter));

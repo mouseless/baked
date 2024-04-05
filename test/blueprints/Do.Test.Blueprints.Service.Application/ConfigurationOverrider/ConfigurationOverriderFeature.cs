@@ -2,6 +2,9 @@
 using Do.Authentication;
 using Do.Authentication.FixedToken;
 using Do.RestApi.Model;
+using Do.Test.Authentication;
+using Do.Test.ExceptionHandling;
+using Do.Test.Orm;
 using Microsoft.OpenApi.Models;
 
 namespace Do.Test.ConfigurationOverrider;
@@ -22,10 +25,10 @@ public class ConfigurationOverriderFeature : IFeature
 
             apiModel.References.Add<Middleware>();
 
-            apiModel.Controller[nameof(Singleton)].Action[nameof(Singleton.GetTime)].AdditionalAttributes.Add(typeof(UseAttribute<Middleware>).GetCSharpFriendlyFullName());
-            apiModel.Controller[nameof(Singleton)].Action[nameof(Singleton.TestFormPostAuthentication)].AdditionalAttributes.Add(typeof(UseAttribute<Middleware>).GetCSharpFriendlyFullName());
-            apiModel.Controller[nameof(Singleton)].Action[nameof(Singleton.TestException)].Parameter["handled"].From = ParameterModelFrom.Query;
-            apiModel.Controller[nameof(Singleton)].Action[nameof(Singleton.TestFormPostAuthentication)].UseForm = true;
+            apiModel.Controller[nameof(AuthenticationSamples)].Action[nameof(AuthenticationSamples.TokenAuthentication)].AdditionalAttributes.Add(typeof(UseAttribute<Middleware>).GetCSharpFriendlyFullName());
+            apiModel.Controller[nameof(AuthenticationSamples)].Action[nameof(AuthenticationSamples.FormPostAuthentication)].AdditionalAttributes.Add(typeof(UseAttribute<Middleware>).GetCSharpFriendlyFullName());
+            apiModel.Controller[nameof(AuthenticationSamples)].Action[nameof(AuthenticationSamples.FormPostAuthentication)].UseForm = true;
+            apiModel.Controller[nameof(ExceptionSamples)].Action[nameof(ExceptionSamples.Throw)].Parameter["handled"].From = ParameterModelFrom.Query;
 
             apiModel.Controller[nameof(Entities)].AddSingleById<Entity>(domainModel);
         });

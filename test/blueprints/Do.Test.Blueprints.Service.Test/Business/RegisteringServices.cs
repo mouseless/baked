@@ -1,4 +1,6 @@
 ﻿using Do.Business;
+using Do.Test.ExceptionHandling;
+using Do.Test.Orm;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Do.Test.Business;
@@ -6,7 +8,7 @@ namespace Do.Test.Business;
 public class RegisteringServices : TestServiceSpec
 {
     [Test]
-    public void Types_containing_a_method_named_with_and_returns_self_are_registered_as_transient([Values(typeof(Entity), typeof(Operation), typeof(TransientWithTask))] Type type)
+    public void Types_containing_a_method_named_with_and_returns_self_are_registered_as_transient([Values(typeof(Entity), typeof(Operation), typeof(TransientAsync))] Type type)
     {
         var actual1 = GiveMe.A(type);
         var actual2 = GiveMe.A(type);
@@ -15,7 +17,7 @@ public class RegisteringServices : TestServiceSpec
     }
 
     [Test]
-    public void Transient_types_with_generic_type_arguments_are_registered([Values(typeof(OperationWithGenericParameter<Entity>))] Type type)
+    public void Transient_types_with_generic_type_arguments_are_registered([Values(typeof(TransientGeneric<Entity>))] Type type)
     {
         var actual1 = GiveMe.A(type);
         var actual2 = GiveMe.A(type);
@@ -24,7 +26,7 @@ public class RegisteringServices : TestServiceSpec
     }
 
     [Test]
-    public void Transient_services_have_singleton_factories([Values(typeof(Func<Entity>), typeof(Func<Operation>), typeof(Func<OperationWithGenericParameter<Entity>>))] Type type)
+    public void Transient_services_have_singleton_factories([Values(typeof(Func<Entity>), typeof(Func<Operation>), typeof(Func<TransientGeneric<Entity>>))] Type type)
     {
         var actual1 = GiveMe.The(type);
         var actual2 = GiveMe.The(type);
@@ -146,7 +148,7 @@ public class RegisteringServices : TestServiceSpec
     }
 
     [Test]
-    public void Types_with_generic_type_parameters_are_not_registered([Values(typeof(OperationWithGenericParameter<>))] Type type)
+    public void Types_with_generic_type_parameters_are_not_registered([Values(typeof(TransientGeneric<>))] Type type)
     {
         var action = () => GiveMe.The(type);
 
@@ -156,8 +158,8 @@ public class RegisteringServices : TestServiceSpec
     [Test]
     public void Non_public_types_are_not_registered()
     {
-        var nonPublicType = Activator.CreateInstance("Do.Test.Blueprints.Service", "Do.Test.Internal")?.GetType() ??
-            throw new("`Do.Test.Internal` should have existed");
+        var nonPublicType = Activator.CreateInstance("Do.Test.Blueprints.Service", "Do.Test.Business.Internal")?.GetType() ??
+            throw new("`Do.Test.Business.Internal` should have existed");
         var action = () => GiveMe.The(nonPublicType);
 
         action.ShouldThrowExceptionWithServiceNotRegisteredMessage(nonPublicType);
