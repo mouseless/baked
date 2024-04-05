@@ -9,7 +9,7 @@ public class TransactionalWork : TestServiceSpec
     {
         var transactionSamples = GiveMe.The<TransactionSamples>();
 
-        var task = transactionSamples.CommitNullable(null);
+        var task = transactionSamples.CommitNullable(null, GiveMe.AString());
 
         task.ShouldNotThrow();
     }
@@ -17,13 +17,13 @@ public class TransactionalWork : TestServiceSpec
     [Test]
     public void Commit_async_update_occurs_when_entity_is_not_null()
     {
-        var entity = GiveMe.AnEntity(@string: "string");
+        var entity = GiveMe.AnEntity(@string: "before");
         var transactionSamples = GiveMe.The<TransactionSamples>();
 
-        var task = transactionSamples.CommitNullable(entity);
+        var task = transactionSamples.CommitNullable(entity, GiveMe.AString());
 
         task.ShouldNotThrow();
-        entity.String.ShouldNotBe("string");
+        entity.String.ShouldNotBe("before");
     }
 
     [Test]

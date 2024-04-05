@@ -1,5 +1,6 @@
 using Do.Architecture;
 using Microsoft.Extensions.Configuration;
+using System.Globalization;
 
 using static Do.Configuration.ConfigurationLayer;
 
@@ -20,6 +21,7 @@ public class ConfigurationLayer : LayerBase<BuildConfiguration>
     {
         protected override void Initialize(ConfigurationManager configurationManager)
         {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             Settings.SetConfigurationRoot(configurationManager);
         }
     }
