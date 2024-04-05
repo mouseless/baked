@@ -7,9 +7,9 @@ public class TransactionalWork : TestServiceSpec
     [Test]
     public void Commit_async_takes_nullable_parameters()
     {
-        var transaction = GiveMe.The<TransactionSamples>();
+        var transactionSamples = GiveMe.The<TransactionSamples>();
 
-        var task = transaction.CommitNullable(null);
+        var task = transactionSamples.CommitNullable(null);
 
         task.ShouldNotThrow();
     }
@@ -18,9 +18,9 @@ public class TransactionalWork : TestServiceSpec
     public void Commit_async_update_occurs_when_entity_is_not_null()
     {
         var entity = GiveMe.AnEntity(@string: "string");
-        var transaction = GiveMe.The<TransactionSamples>();
+        var transactionSamples = GiveMe.The<TransactionSamples>();
 
-        var task = transaction.CommitNullable(entity);
+        var task = transactionSamples.CommitNullable(entity);
 
         task.ShouldNotThrow();
         entity.String.ShouldNotBe("string");
@@ -42,10 +42,10 @@ public class TransactionalWork : TestServiceSpec
     [Test(Description = "Actual behaviour is not testable, this test is included only for documentation and to improve coverage")]
     public void Entity_created_by_a_transaction_committed_asynchronously_persists_when_an_error_occurs()
     {
-        var transaction = GiveMe.The<TransactionSamples>();
+        var transactionSamples = GiveMe.The<TransactionSamples>();
         var entities = GiveMe.The<Entities>();
 
-        var task = transaction.CommitAction();
+        var task = transactionSamples.CommitAction();
 
         task.ShouldThrow<Exception>();
         entities.By().ShouldNotBeEmpty();
@@ -54,10 +54,10 @@ public class TransactionalWork : TestServiceSpec
     [Test(Description = "Actual behaviour is not testable, this test is included only for documentation and to improve coverage")]
     public void Only_the_updates_outside_of_transaction_are_rolled_back_when_an_error_occurs()
     {
-        var transaction = GiveMe.The<TransactionSamples>();
+        var transactionSamples = GiveMe.The<TransactionSamples>();
         var entities = GiveMe.The<Entities>();
 
-        var task = transaction.CommitFunc();
+        var task = transactionSamples.CommitFunc();
 
         task.ShouldThrow<Exception>();
         entities.By().ShouldNotBeEmpty();
