@@ -22,10 +22,10 @@ public class ConfigurationOverriderFeature : IFeature
 
             apiModel.References.Add<Middleware>();
 
-            apiModel.Controller[nameof(Singleton)].Action[nameof(Singleton.GetTime)].AdditionalAttributes.Add(typeof(UseAttribute<Middleware>).GetCSharpFriendlyFullName());
-            apiModel.Controller[nameof(AuthenticationTests)].Action[nameof(AuthenticationTests.TestFormPostAuthentication)].AdditionalAttributes.Add(typeof(UseAttribute<Middleware>).GetCSharpFriendlyFullName());
+            apiModel.Controller[nameof(Authentication)].Action[nameof(Authentication.GetTime)].AdditionalAttributes.Add(typeof(UseAttribute<Middleware>).GetCSharpFriendlyFullName());
+            apiModel.Controller[nameof(Authentication)].Action[nameof(Authentication.TestFormPostAuthentication)].AdditionalAttributes.Add(typeof(UseAttribute<Middleware>).GetCSharpFriendlyFullName());
             apiModel.Controller[nameof(ExceptionResult)].Action[nameof(ExceptionResult.Throw)].Parameter["handled"].From = ParameterModelFrom.Query;
-            apiModel.Controller[nameof(AuthenticationTests)].Action[nameof(AuthenticationTests.TestFormPostAuthentication)].UseForm = true;
+            apiModel.Controller[nameof(Authentication)].Action[nameof(Authentication.TestFormPostAuthentication)].UseForm = true;
 
             apiModel.Controller[nameof(Entities)].AddSingleById<Entity>(domainModel);
         });

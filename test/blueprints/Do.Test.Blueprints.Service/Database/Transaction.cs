@@ -2,7 +2,7 @@
 
 namespace Do.Test;
 
-public class TestingTransaction(
+public class Transaction(
     Func<Entity> _newEntity,
     ITransaction _transaction,
     TimeProvider _timeProvider
