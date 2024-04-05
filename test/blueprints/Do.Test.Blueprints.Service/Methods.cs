@@ -27,13 +27,13 @@ public class Methods(
         _logger.LogInformation($"{nameof(PrimitiveParameters)} was called with {@string}, {@int} and {dateTime}");
 
     public void PrimitiveListParameters(List<string> strings, int[] ints, IEnumerable<DateTime> dateTimes) =>
-        _logger.LogInformation($"{nameof(PrimitiveListParameters)} was called with [{string.Join(", ", strings)}], [{string.Join(", ", ints)}] and [{string.Join(", ", dateTimes)}]");
+        _logger.LogInformation($"{nameof(PrimitiveListParameters)} was called with [{strings.Join(", ")}], [{ints.Join(", ")}] and [{dateTimes.Join(", ")}]");
 
     public void EntityParameters(Entity entity) =>
         _logger.LogInformation($"{nameof(EntityParameters)} was called with {entity.Id}");
 
     public void EntityListParameters(IEnumerable<Entity> entities, Entity[] otherEntities) =>
-        _logger.LogInformation($"{nameof(EntityListParameters)} was called with [{string.Join(", ", entities.Select(e => e.Id))}] and [{string.Join(", ", otherEntities.Select(e => e.Id))}]");
+        _logger.LogInformation($"{nameof(EntityListParameters)} was called with [{entities.Select(e => e.Id).Join(", ")}] and [{otherEntities.Select(e => e.Id).Join(", ")}]");
 
     public object Object(object @object) =>
         @object;

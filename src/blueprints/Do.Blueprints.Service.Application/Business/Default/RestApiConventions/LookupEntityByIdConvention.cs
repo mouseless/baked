@@ -2,37 +2,42 @@
 using Do.Orm;
 using Do.RestApi.Configuration;
 using Do.RestApi.Model;
+using Humanizer;
 
 using ParameterModel = Do.RestApi.Model.ParameterModel;
 
 namespace Do.Business.Default.RestApiConventions;
 
-public class LookupEntityByIdConvention(DomainModel _domain)
+public class LookupEntityByIdConvention(DomainModel _domain, Func<ActionModel, bool> _actionFilter)
     : IApiModelConvention<ParameterModelContext>
 {
     public void Apply(ParameterModelContext context)
     {
-        var entityType = context.Parameter.TypeModel;
+        if (!_actionFilter(context.Action)) { return; }
+
+        var entityParameter = context.Parameter;
+        var entityType = entityParameter.TypeModel;
         if (!entityType.TryGetMetadata(out var metadata) || !metadata.TryGetSingle<EntityAttribute>(out var entityAttribute)) { return; }
 
         var queryContextType = _domain.Types[entityAttribute.QueryContextType];
-        var queryContextParameter = new ParameterModel(queryContextType, ParameterModelFrom.Services, $"{entityType.Name}Query") { IsInvokeMethodParameter = false };
+        var queryContextParameter = new ParameterModel(queryContextType, ParameterModelFrom.Services, $"{entityType.Name.Camelize()}Query") { IsInvokeMethodParameter = false };
         context.Action.Parameter[queryContextParameter.Name] = queryContextParameter;
 
-        context.Parameter.Type = nameof(Guid);
-        context.Parameter.Name += "Id";
+        entityParameter.Type = nameof(Guid);
+        entityParameter.Name += "Id";
 
-        if (!context.Parameter.IsInvokeMethodParameter)
+        if (!entityParameter.IsInvokeMethodParameter)
         {
-            context.Parameter.From = ParameterModelFrom.Route;
-            context.Action.Route = $"generated/{entityType.Name}/{{{context.Parameter.Name}}}/{context.Action.Name}";
+            entityParameter.Name = $"{entityParameter.TypeModel.Name.Camelize()}Id";
+            entityParameter.From = ParameterModelFrom.Route;
+            context.Action.Route = $"{entityType.Name.Pluralize()}/{{{entityParameter.Name}:guid}}/{context.Action.Name}";
         }
 
-        context.Parameter.RenderLookup = parameterExpression => $"{queryContextParameter.Name}.SingleById({parameterExpression}, throwNotFound: {context.Parameter.FromRoute.ToString().ToLowerInvariant()})";
+        entityParameter.LookupRenderer = parameterExpression => $"{queryContextParameter.Name}.SingleById({parameterExpression}, throwNotFound: {entityParameter.FromRoute.ToString().ToLowerInvariant()})";
 
-        if (!context.Parameter.IsInvokeMethodParameter)
+        if (!entityParameter.IsInvokeMethodParameter)
         {
-            context.Action.FindTargetStatement = context.Parameter.RenderLookup(context.Parameter.Name);
+            context.Action.FindTargetStatement = entityParameter.LookupRenderer(entityParameter.Name);
         }
     }
 }

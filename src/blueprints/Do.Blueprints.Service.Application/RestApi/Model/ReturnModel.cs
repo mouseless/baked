@@ -1,14 +1,10 @@
-﻿namespace Do.RestApi.Model;
+﻿using Do.Domain.Model;
 
-public record ReturnModel(string Type,
-    bool Async = false,
-    bool Void = false
-)
+namespace Do.RestApi.Model;
+
+public record ReturnModel(TypeModel TypeModel)
 {
-    public ReturnModel(bool async = false)
-        : this(async ? typeof(Task).Name : "void", Async: async, Void: true) { }
-
-    public string Type { get; set; } = Type;
-    public bool Async { get; set; } = Async;
-    public bool Void { get; set; } = Void;
+    public string Type { get; set; } = TypeModel.CSharpFriendlyFullName;
+    public bool IsAsync { get; set; } = TypeModel.IsAssignableTo<Task>();
+    public bool IsVoid { get; set; } = TypeModel.Is(typeof(void)) || TypeModel.Is<Task>();
 }

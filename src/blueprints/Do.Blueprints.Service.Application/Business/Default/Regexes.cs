@@ -4,7 +4,7 @@ namespace Do.Business.Default;
 
 internal static partial class Regexes
 {
-    [GeneratedRegex(@"^(Get|List).*$", RegexOptions.None, "en-US")]
+    [GeneratedRegex(@"^(Get|By|SingleBy|FirstBy).*$", RegexOptions.None, "en-US")]
     public static partial Regex GetMethod();
 
     [GeneratedRegex(@"^(Delete|Remove).*$", RegexOptions.None, "en-US")]
@@ -15,4 +15,7 @@ internal static partial class Regexes
 
     [GeneratedRegex(@"^(Update|Change|Set).*$", RegexOptions.None, "en-US")]
     public static partial Regex PatchMethod();
+
+    [GeneratedRegex(@"^SingleBy(?<Unique>.+)$", RegexOptions.None, "en-US")]
+    public static partial Regex SingleByUniqueMethod();
 }

@@ -34,7 +34,7 @@ public class RestApiLayer : LayerBase<GenerateCode, AddServices, Build>
             {
                 _apiModelConventions.Apply(_apiModel);
 
-                generatedAssemblies.Add("RestApiLayer.Generated",
+                generatedAssemblies.Add(nameof(RestApiLayer),
                     assembly => assembly
                         .AddReferenceFrom<ApiControllerAttribute>()
                         .AddReferences(_apiModel.References)
@@ -55,12 +55,15 @@ public class RestApiLayer : LayerBase<GenerateCode, AddServices, Build>
 
     protected override PhaseContext GetContext(AddServices phase)
     {
-        var controllerAssembly = Context.GetGeneratedAssembly("RestApiLayer.Generated");
+        var controllerAssembly = Context.GetGeneratedAssembly(nameof(RestApiLayer));
         var services = Context.GetServiceCollection();
 
         services.AddHttpContextAccessor();
         services.AddMvcCore().AddApiExplorer();
         services.AddSwaggerGen();
+
+        _swaggerGenOptions.DocInclusionPredicate((name, api) => true);
+        _swaggerGenOptions.TagActionsBy(api => [api.GroupName]);
 
         return phase.CreateContextBuilder()
             .Add(_applicationParts)
