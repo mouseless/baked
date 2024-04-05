@@ -10,6 +10,9 @@ public interface IQueryContext<TEntity>
     public List<TEntity> ByIds(IEnumerable<Guid> ids) =>
         ids.Select(id => SingleById(id)).ToList();
 
+    public bool AnyBy(Expression<Func<TEntity, bool>> where) =>
+        Query(where).Any();
+
     public TEntity? SingleBy(Expression<Func<TEntity, bool>> where) =>
         Query(where).SingleOrDefault();
 
@@ -45,36 +48,6 @@ public interface IQueryContext<TEntity>
     )
     {
         var result = Query(where,
-            orderBy: orderBy,
-            orderByDescending: orderByDescending,
-            take: take,
-            skip: skip
-         );
-
-        return [.. result];
-    }
-
-    public List<TEntity> All(
-        int? take = null,
-        int? skip = null
-    )
-    {
-        var result = Query(t => true,
-            take: take,
-            skip: skip
-        );
-
-        return [.. result];
-    }
-
-    public List<TEntity> All<TOrderBy>(
-        Expression<Func<TEntity, TOrderBy>>? orderBy = default,
-        Expression<Func<TEntity, TOrderBy>>? orderByDescending = default,
-        int? take = null,
-        int? skip = null
-    )
-    {
-        var result = Query(t => true,
             orderBy: orderBy,
             orderByDescending: orderByDescending,
             take: take,

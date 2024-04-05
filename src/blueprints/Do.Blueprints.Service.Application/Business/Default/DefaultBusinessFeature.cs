@@ -137,10 +137,18 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
             builder.Index.Method.Add<ApiMethodAttribute>();
 
             builder.Metadata.Type.Add(new ApiInputAttribute(),
-                when: type => type.IsAssignableTo(typeof(IParsable<>))
+                when: type =>
+                  type.IsEnum ||
+                  type.Is<Uri>() ||
+                  type.Is<object>() ||
+                  type.IsAssignableTo(typeof(IParsable<>)) ||
+                  type.IsAssignableTo(typeof(string))
             );
             builder.Metadata.Type.Add(new ApiInputAttribute(),
-                when: type => type.IsAssignableTo(typeof(string))
+                when: type =>
+                    type.IsAssignableTo(typeof(Nullable<>)) &&
+                    type.GenericTypeArguments.FirstOrDefault()?.Model.TryGetMetadata(out var genericArgumentMetadata) == true &&
+                    genericArgumentMetadata.Has<ApiInputAttribute>()
             );
             builder.Metadata.Type.Add(new ApiInputAttribute(),
                 when: type => type.Has<EntityAttribute>(),
@@ -169,7 +177,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
 
         configurator.ConfigureApiModel(api =>
         {
-            _domainAssemblies.ForEach(a => api.Reference.Add(a.GetName().FullName, a));
+            api.References.AddRange(_domainAssemblies);
 
             var domainModel = configurator.Context.GetDomainModel();
             foreach (var type in domainModel.Types.Having<ServiceAttribute>())
@@ -180,45 +188,32 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                     type.GetMetadata().Has<EntityAttribute>() // and entities
                 )) { continue; }
 
-                var controller = new ControllerModel(type.Name);
+                var controller = new ControllerModel(type);
                 foreach (var method in type.GetMembers().Methods.Having<ApiMethodAttribute>())
                 {
-                    var overload = method.Overloads
-                        .OrderByDescending(o => o.Parameters.Count) // overload with most parameters
-                        .First(o => o.Parameters.All(p => p.ParameterType.TryGetMetadata(out var metadata) && metadata.Has<ApiInputAttribute>())); // with only api parameters
-                    if (overload.ReturnType is null) { continue; }
-
-                    if (!overload.ReturnType.IsAssignableTo(typeof(void)) &&
-                        !overload.ReturnType.IsAssignableTo(typeof(Task))) { continue; } // TODO for now only void
-
-                    controller.Action.Add(
-                        method.Name,
-                        new(
-                            Name: method.Name,
-                            Method: HttpMethod.Post,
-                            Route: $"generated/{type.Name}/{method.Name}",
-                            Return: new(async: overload.ReturnType.IsAssignableTo(typeof(Task))),
-                            FindTargetStatement: "target",
-                            InvokedMethodName: method.Name
-                        )
-                        {
-                            Parameters = [
-                                new(type, ParameterModelFrom.Services, "target") { IsInvokeMethodParameter = false },
-                                .. overload.Parameters.Select(p => new RestApi.Model.ParameterModel(p.ParameterType, ParameterModelFrom.Body, p.Name))
-                            ]
-                        }
-                    );
+                    controller.AddAction(type, method);
                 }
 
-                api.Controller.Add(controller.Name, controller);
+                api.Controller.Add(controller.Id, controller);
             }
         });
 
         configurator.ConfigureApiModelConventions(conventions =>
         {
-            conventions.Add(new LookupEntityByIdConvention(configurator.Context.GetDomainModel()));
-            conventions.Add(new LookupEntitiesByIdsConvention(configurator.Context.GetDomainModel()));
+            var domainModel = configurator.Context.GetDomainModel();
+
+            conventions.Add(new EntityUnderEntitiesConvention());
+            conventions.Add(new LookupEntityByIdConvention(domainModel, action => action.Id != "With"));
+            conventions.Add(new LookupEntitiesByIdsConvention(domainModel));
+            conventions.Add(new SingleByUniqueConvention(domainModel));
+
             conventions.Add(new AutoHttpMethodConvention());
+            conventions.Add(new PublicWithIsPostResourceConvention());
+            conventions.Add(new AddChildToChildrenConvention());
+            conventions.Add(new GetChildrenToChildrenConvention());
+            conventions.Add(new GetAndDeleteAcceptsOnlyQueryConvention());
+            conventions.Add(new RemoveActionNameFromRouteConvention("With", "Delete", "Update", "By"));
+            conventions.Add(new EnumDefaultValueConvention());
         });
 
         configurator.ConfigureMvcNewtonsoftJsonOptions(options =>

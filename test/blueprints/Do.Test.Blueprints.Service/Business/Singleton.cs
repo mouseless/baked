@@ -7,8 +7,11 @@ namespace Do.Test;
 public class Singleton(
     TimeProvider _timeProvider,
     Func<OperationWithGenericParameter<Entity>> _newOperationWithGenericParameter
-) : SingletonBase(_timeProvider), IInterface
+) : SingletonBase, IInterface
 {
+    public override DateTime GetTime() =>
+        _timeProvider.GetNow();
+
     public string TestOperationWithGenericParameter(string parameter)
     {
         return _newOperationWithGenericParameter()

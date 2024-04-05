@@ -1,5 +1,7 @@
 ﻿using Do.Architecture;
+using Do.Authentication;
 using Do.Authentication.FixedToken;
+using Do.RestApi.Model;
 using Microsoft.OpenApi.Models;
 
 namespace Do.Test.ConfigurationOverrider;
@@ -12,6 +14,20 @@ public class ConfigurationOverriderFeature : IFeature
         {
             model.Override<Entity>(x => x.Map(e => e.String).Length(500));
             model.Override<Entity>(x => x.Map(e => e.Unique).Column("UniqueString").Unique());
+        });
+
+        configurator.ConfigureApiModel(apiModel =>
+        {
+            var domainModel = configurator.Context.GetDomainModel();
+
+            apiModel.References.Add<Middleware>();
+
+            apiModel.Controller[nameof(Singleton)].Action[nameof(Singleton.GetTime)].AdditionalAttributes.Add(typeof(UseAttribute<Middleware>).GetCSharpFriendlyFullName());
+            apiModel.Controller[nameof(AuthenticationTests)].Action[nameof(AuthenticationTests.TestFormPostAuthentication)].AdditionalAttributes.Add(typeof(UseAttribute<Middleware>).GetCSharpFriendlyFullName());
+            apiModel.Controller[nameof(ExceptionResult)].Action[nameof(ExceptionResult.Throw)].Parameter["handled"].From = ParameterModelFrom.Query;
+            apiModel.Controller[nameof(AuthenticationTests)].Action[nameof(AuthenticationTests.TestFormPostAuthentication)].UseForm = true;
+
+            apiModel.Controller[nameof(Entities)].AddSingleById<Entity>(domainModel);
         });
 
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
@@ -30,33 +46,5 @@ public class ConfigurationOverriderFeature : IFeature
             swaggerGenOptions.AddParameterToOperationsThatUse<Middleware>("X-Security", @in: ParameterLocation.Header, required: true);
         });
 
-        configurator.ConfigureGeneratedAssemblyCollection(assemblies =>
-        {
-            assemblies.Add(
-                "Controllers",
-                assembly => assembly
-                    .AddReferenceFrom<Program>()
-                    .AddCode(Codes.AuthenticationTests.Code)
-                    .AddCode(Codes.ExceptionResult.Code)
-                    .AddCode(Codes.External.Code)
-                    .AddCode(Codes.Entities.Code)
-                    .AddCode(Codes.Parents.Code)
-                    .AddCode(Codes.Remote.Code)
-                    .AddCode(Codes.Singleton.Code),
-                compilationOptions => compilationOptions
-                    .WithUsings(
-                        "System",
-                        "System.Linq",
-                        "System.Collections",
-                        "System.Collections.Generic",
-                        "System.Threading.Tasks"
-                    )
-            );
-        });
-
-        configurator.ConfigureApplicationParts(applicationParts =>
-        {
-            applicationParts.Add(new(configurator.Context.GetGeneratedAssembly("Controllers")));
-        });
     }
 }

@@ -23,6 +23,7 @@ public class TypeModel : IModel, IEquatable<TypeModel>
     public bool IsClass { get; private set; } = default!;
     public bool IsInterface { get; private set; } = default!;
     public bool IsArray { get; private set; } = default!;
+    public bool IsEnum { get; private set; } = default!;
     public bool IsGenericType { get; private set; } = default!;
     public bool IsGenericTypeDefinition { get; private set; } = default!;
     public bool IsGenericTypeParameter { get; private set; } = default!;
@@ -33,27 +34,50 @@ public class TypeModel : IModel, IEquatable<TypeModel>
 
     string BuildCSharpFriendlyFullName()
     {
+        if (Type == typeof(void)) { return "void"; }
+        if (Type == typeof(bool)) { return "bool"; }
+        if (Type == typeof(byte)) { return "byte"; }
+        if (Type == typeof(char)) { return "char"; }
+        if (Type == typeof(decimal)) { return "decimal"; }
+        if (Type == typeof(double)) { return "double"; }
+        if (Type == typeof(float)) { return "float"; }
+        if (Type == typeof(int)) { return "int"; }
+        if (Type == typeof(long)) { return "long"; }
+        if (Type == typeof(object)) { return "object"; }
+        if (Type == typeof(short)) { return "short"; }
+        if (Type == typeof(string)) { return "string"; }
+        if (Type == typeof(uint)) { return "uint"; }
+        if (Type == typeof(ulong)) { return "ulong"; }
+        if (Type == typeof(ushort)) { return "ushort"; }
         if (!IsGenericType) { return FullName ?? Name; }
 
         if (this is TypeModelGenerics generics)
         {
+            if (generics.IsAssignableTo(typeof(Nullable<>)))
+            {
+                return $"{generics.GenericTypeArguments.First().Model.CSharpFriendlyFullName}?";
+            }
+
             return $"{Namespace}.{Name[..Name.IndexOf("`")]}<{string.Join(", ", generics.GenericTypeArguments.Select(t => t.Model.CSharpFriendlyFullName))}>";
         }
 
-        return BuildCSharpFriendlyFullName(Type);
+        return Type.GetCSharpFriendlyFullName();
     }
-
-    static string BuildCSharpFriendlyFullName(Type type) =>
-        $"{type.Namespace}.{type.Name[..type.Name.IndexOf("`")]}<{string.Join(", ", type.GenericTypeArguments.Select(BuildCSharpFriendlyFullName))}>";
 
     public void Apply(Action<Type> action) =>
         action(Type);
+
+    public bool Is<T>() =>
+        Is(typeof(T));
+
+    public bool Is(Type type) =>
+        Type == type;
 
     public bool IsAssignableTo<T>() =>
         IsAssignableTo(typeof(T));
 
     public bool IsAssignableTo(Type type) =>
-        Type == type ||
+        Is(type) ||
         this.TryGetGenerics(out var generics) && generics.GenericTypeDefinition?.IsAssignableTo(type) == true ||
         this.TryGetInheritance(out var inheritance) && (inheritance.BaseType?.IsAssignableTo(type) == true || inheritance.Interfaces.Contains(type))
     ;
@@ -86,6 +110,7 @@ public class TypeModel : IModel, IEquatable<TypeModel>
             result.IsClass = type.IsClass;
             result.IsInterface = type.IsInterface;
             result.IsArray = type.IsArray;
+            result.IsEnum = type.IsEnum;
             result.IsGenericType = type.IsGenericType;
             result.IsGenericTypeDefinition = type.IsGenericTypeDefinition;
             result.IsGenericTypeParameter = type.IsGenericTypeParameter;

@@ -29,7 +29,8 @@ public class Parent(IEntityContext<Parent> _context, Func<Child> _newChild, Chil
 
 public class Parents(IQueryContext<Parent> _context)
 {
-    public List<Parent> All(
+    public List<Parent> By(
+        string? name = default,
         bool asc = false,
         bool desc = false,
         int? take = default,
@@ -37,9 +38,9 @@ public class Parents(IQueryContext<Parent> _context)
     )
     {
         return
-            asc ? _context.All(orderBy: p => p.Name, take: take, skip: skip) :
-            desc ? _context.All(orderByDescending: p => p.Name, take: take, skip: skip) :
-            _context.All(take: take, skip: skip);
+            asc ? _context.By(p => (name == default || p.Name == name), orderBy: p => p.Name, take: take, skip: skip) :
+            desc ? _context.By(p => (name == default || p.Name == name), orderByDescending: p => p.Name, take: take, skip: skip) :
+            _context.By(p => (name == default || p.Name == name), take: take, skip: skip);
     }
 
     public List<Parent> ByName(string contains,

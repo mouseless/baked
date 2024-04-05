@@ -53,7 +53,6 @@ public abstract class ServiceSpec : Spec
             app.Layers.AddDependencyInjection();
             app.Layers.AddDomain();
             app.Layers.AddMonitoring();
-            app.Layers.AddRestApi();
             app.Layers.AddTesting();
 
             app.Features.AddAuthentication(authentication);
