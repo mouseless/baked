@@ -1,5 +1,6 @@
 ﻿using Do.Architecture;
 using Do.Database;
+using System.Net;
 using System.Net.Http.Json;
 
 namespace Do.Test.Database;
@@ -20,7 +21,7 @@ public class TransactionRollback : TestServiceNfr
         var entitiesContent = await Client.GetAsync("entities");
         dynamic? result = await entitiesContent.Content.Deserialize();
 
-        response.StatusCode.ShouldNotBe(System.Net.HttpStatusCode.NotFound);
+        response.StatusCode.ShouldNotBe(HttpStatusCode.NotFound);
         ((string?)result?.Last.String)?.ShouldNotBe($"{@string}");
     }
 
@@ -32,7 +33,7 @@ public class TransactionRollback : TestServiceNfr
         var entitiesContent = await Client.GetAsync("entities");
         dynamic? result = await entitiesContent.Content.Deserialize();
 
-        response.StatusCode.ShouldNotBe(System.Net.HttpStatusCode.NotFound);
+        response.StatusCode.ShouldNotBe(HttpStatusCode.NotFound);
         ((string?)result?.Last.String)?.ShouldBe("transaction action");
     }
 
@@ -44,7 +45,7 @@ public class TransactionRollback : TestServiceNfr
         var entitiesContent = await Client.GetAsync("entities");
         dynamic? result = await entitiesContent.Content.Deserialize();
 
-        response.StatusCode.ShouldNotBe(System.Net.HttpStatusCode.NotFound);
+        response.StatusCode.ShouldNotBe(HttpStatusCode.NotFound);
         ((string?)result?.Last.String)?.ShouldBe("transaction func");
     }
 }
