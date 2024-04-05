@@ -20,7 +20,7 @@ public class LookupEntityByIdConvention(DomainModel _domain, Func<ActionModel, b
         if (!entityType.TryGetMetadata(out var metadata) || !metadata.TryGetSingle<EntityAttribute>(out var entityAttribute)) { return; }
 
         var queryContextType = _domain.Types[entityAttribute.QueryContextType];
-        var queryContextParameter = new ParameterModel(queryContextType, ParameterModelFrom.Services, $"{entityType.Name}Query") { IsInvokeMethodParameter = false };
+        var queryContextParameter = new ParameterModel(queryContextType, ParameterModelFrom.Services, $"{entityType.Name.Camelize()}Query") { IsInvokeMethodParameter = false };
         context.Action.Parameter[queryContextParameter.Name] = queryContextParameter;
 
         entityParameter.Type = nameof(Guid);
@@ -33,11 +33,11 @@ public class LookupEntityByIdConvention(DomainModel _domain, Func<ActionModel, b
             context.Action.Route = $"{entityType.Name.Pluralize()}/{{{entityParameter.Name}:guid}}/{context.Action.Name}";
         }
 
-        entityParameter.RenderLookup = parameterExpression => $"{queryContextParameter.Name}.SingleById({parameterExpression}, throwNotFound: {entityParameter.FromRoute.ToString().ToLowerInvariant()})";
+        entityParameter.LookupRenderer = parameterExpression => $"{queryContextParameter.Name}.SingleById({parameterExpression}, throwNotFound: {entityParameter.FromRoute.ToString().ToLowerInvariant()})";
 
         if (!entityParameter.IsInvokeMethodParameter)
         {
-            context.Action.FindTargetStatement = entityParameter.RenderLookup(entityParameter.Name);
+            context.Action.FindTargetStatement = entityParameter.LookupRenderer(entityParameter.Name);
         }
     }
 }

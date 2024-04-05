@@ -35,10 +35,29 @@ public class TypeModel : IModel, IEquatable<TypeModel>
     string BuildCSharpFriendlyFullName()
     {
         if (Type == typeof(void)) { return "void"; }
+        if (Type == typeof(bool)) { return "bool"; }
+        if (Type == typeof(byte)) { return "byte"; }
+        if (Type == typeof(char)) { return "char"; }
+        if (Type == typeof(decimal)) { return "decimal"; }
+        if (Type == typeof(double)) { return "double"; }
+        if (Type == typeof(float)) { return "float"; }
+        if (Type == typeof(int)) { return "int"; }
+        if (Type == typeof(long)) { return "long"; }
+        if (Type == typeof(object)) { return "object"; }
+        if (Type == typeof(short)) { return "short"; }
+        if (Type == typeof(string)) { return "string"; }
+        if (Type == typeof(uint)) { return "uint"; }
+        if (Type == typeof(ulong)) { return "ulong"; }
+        if (Type == typeof(ushort)) { return "ushort"; }
         if (!IsGenericType) { return FullName ?? Name; }
 
         if (this is TypeModelGenerics generics)
         {
+            if (generics.IsAssignableTo(typeof(Nullable<>)))
+            {
+                return $"{generics.GenericTypeArguments.First().Model.CSharpFriendlyFullName}?";
+            }
+
             return $"{Namespace}.{Name[..Name.IndexOf("`")]}<{string.Join(", ", generics.GenericTypeArguments.Select(t => t.Model.CSharpFriendlyFullName))}>";
         }
 
@@ -46,6 +65,8 @@ public class TypeModel : IModel, IEquatable<TypeModel>
     }
 
     static string BuildCSharpFriendlyFullName(Type type) =>
+        !type.IsGenericType ? type.FullName ?? type.Name :
+        type.GetGenericTypeDefinition() == typeof(Nullable<>) ? $"{BuildCSharpFriendlyFullName(type.GenericTypeArguments.First())}?" :
         $"{type.Namespace}.{type.Name[..type.Name.IndexOf("`")]}<{string.Join(", ", type.GenericTypeArguments.Select(BuildCSharpFriendlyFullName))}>";
 
     public void Apply(Action<Type> action) =>

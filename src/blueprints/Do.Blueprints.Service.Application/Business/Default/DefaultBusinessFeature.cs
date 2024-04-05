@@ -209,7 +209,18 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                         {
                             Parameters = [
                                 new(type, ParameterModelFrom.Services, "target") { IsInvokeMethodParameter = false },
-                                .. overload.Parameters.Select(p => new RestApi.Model.ParameterModel(p.ParameterType, ParameterModelFrom.Body, p.Name))
+                                .. overload.Parameters.Select(p =>
+                                        new RestApi.Model.ParameterModel(p.ParameterType, ParameterModelFrom.Body, p.Name)
+                                        {
+                                            IsOptional = p.IsOptional,
+                                            DefaultValue = p.DefaultValue,
+                                            DefaultValueRenderer = defaultValue =>
+                                                p.ParameterType.Is<bool>() ? $"{defaultValue}".ToLowerInvariant() :
+                                                p.ParameterType.Is<bool?>() ? $"{defaultValue}".ToLowerInvariant() :
+                                                p.ParameterType.Is<string>() ? $"\"{defaultValue}\"" :
+                                                $"{defaultValue}"
+                                        }
+                                    )
                             ]
                         }
                     );
@@ -234,6 +245,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
             conventions.Add(new GetChildrenToChildrenConvention());
             conventions.Add(new GetAndDeleteAcceptsOnlyQueryConvention());
             conventions.Add(new RemoveActionNameFromRouteConvention("With", "Delete", "Update", "By"));
+            conventions.Add(new EnumDefaultValueConvention());
         });
 
         configurator.ConfigureMvcNewtonsoftJsonOptions(options =>

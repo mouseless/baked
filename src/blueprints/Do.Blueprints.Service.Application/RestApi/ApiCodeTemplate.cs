@@ -23,7 +23,7 @@ public class ApiCodeTemplate(ApiModel _apiModel)
     string Action(ActionModel action) => $$"""
         {{If(action.HasRequestBody, () => $$"""
         public record {{action.Name}}Request(
-            {{ForEach(action.BodyParameters, parameter => $"{parameter.Type} @{parameter.Name}", separator: ", ")}}
+            {{ForEach(action.BodyParameters, Parameter, separator: ", ")}}
         );
         """)}}
 
@@ -53,10 +53,16 @@ public class ApiCodeTemplate(ApiModel _apiModel)
     ;
 
     string Parameter(ParameterModel parameter) =>
-        $"[From{parameter.From}] {parameter.Type} @{parameter.Name}";
+        $"{If(!parameter.FromBody, () => $"[From{parameter.From}] ")}{parameter.Type} @{parameter.Name}{If(parameter.IsOptional, () => $" = {parameter.RenderDefaultValue()}")}";
 
     string ParameterLookup(ParameterModel parameter) =>
-        $"({parameter.RenderLookup(parameter.FromBody ? $"request.@{parameter.Name}" : $"@{parameter.Name}")})";
+        $"({parameter.RenderLookup(
+            If(parameter.FromBody,
+                () => $"request.@{parameter.Name}",
+            @else:
+                () => $"@{parameter.Name}"
+            )
+        )})";
 
     string Return(ReturnModel @return) =>
         @return.IsAsync && @return.IsVoid ? "await" :

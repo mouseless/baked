@@ -30,6 +30,6 @@ public class LookupEntitiesByIdsConvention(DomainModel _domain)
 
         enumerableParameter.Type = "IEnumerable<Guid>";
         enumerableParameter.Name = $"{enumerableParameter.Name.Singularize()}Ids";
-        enumerableParameter.RenderLookup = parameterExpression => $"{queryContextParameter.Name}.ByIds({parameterExpression}){(enumerableType.IsArray ? ".ToArray()" : string.Empty)}";
+        enumerableParameter.LookupRenderer = parameterExpression => $"{queryContextParameter.Name}.ByIds({parameterExpression}){(enumerableType.IsArray ? ".ToArray()" : string.Empty)}";
     }
 }
