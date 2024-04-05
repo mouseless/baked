@@ -177,7 +177,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
 
         configurator.ConfigureApiModel(api =>
         {
-            _domainAssemblies.ForEach(a => api.Reference.Add(a.GetName().FullName, a));
+            api.References.AddRange(_domainAssemblies);
 
             var domainModel = configurator.Context.GetDomainModel();
             foreach (var type in domainModel.Types.Having<ServiceAttribute>())
@@ -210,7 +210,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                             Parameters = [
                                 new(type, ParameterModelFrom.Services, "target") { IsInvokeMethodParameter = false },
                                 .. overload.Parameters.Select(p =>
-                                        new RestApi.Model.ParameterModel(p.ParameterType, ParameterModelFrom.Body, p.Name)
+                                        new RestApi.Model.ParameterModel(p.ParameterType, ParameterModelFrom.BodyOrForm, p.Name)
                                         {
                                             IsOptional = p.IsOptional,
                                             DefaultValue = p.DefaultValue,

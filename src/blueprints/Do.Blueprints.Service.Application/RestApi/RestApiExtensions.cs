@@ -1,4 +1,5 @@
-﻿using Do.Architecture;
+﻿using System.Reflection;
+using Do.Architecture;
 using Do.RestApi;
 using Do.RestApi.Model;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +32,9 @@ public static class RestApiExtensions
 
         return source;
     }
+
+    public static void Add<T>(this ICollection<Assembly> assemblies) =>
+        assemblies.Add(typeof(T).Assembly);
 
     internal static IMvcBuilder AddNewtonsoftJson(this IMvcBuilder source, MvcNewtonsoftJsonOptions options)
     {

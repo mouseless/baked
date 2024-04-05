@@ -58,6 +58,11 @@ public static class DomainExtensions
     public static void Add<T>(this ICollection<Type> types) =>
         types.Add(typeof(T));
 
+    public static string GetCSharpFriendlyFullName(this Type type) =>
+        !type.IsGenericType ? type.FullName ?? type.Name :
+        type.GetGenericTypeDefinition() == typeof(Nullable<>) ? $"{type.GenericTypeArguments.First().GetCSharpFriendlyFullName()}?" :
+        $"{type.Namespace}.{type.Name[..type.Name.IndexOf("`")]}<{string.Join(", ", type.GenericTypeArguments.Select(GetCSharpFriendlyFullName))}>";
+
     public static void Add(this ICollection<TypeBuildLevelFilter> filters, TypeModel.Factory buildLevel) =>
         filters.Add((Type _) => true, buildLevel);
 

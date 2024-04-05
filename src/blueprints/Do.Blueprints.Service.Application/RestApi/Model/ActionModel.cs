@@ -18,13 +18,15 @@ public record ActionModel(
     public ReturnModel Return { get; set; } = Return;
     public string FindTargetStatement { get; set; } = FindTargetStatement;
     public string InvokedMethodName { get; set; } = InvokedMethodName;
+    public bool UseForm { get; set; } = false;
 
+    public List<string> AdditionalAttributes { get; init; } = [];
     public Dictionary<string, ParameterModel> Parameter { get; init; } = [];
 
-    public bool HasRequestBody => BodyParameters.Any();
+    public bool HasBodyOrForm => BodyOrFormParameters.Any();
     public IEnumerable<ParameterModel> Parameters { get => Parameter.Values; init => Parameter = value.ToDictionary(p => p.Id); }
-    public IEnumerable<ParameterModel> BodyParameters => Parameters.Where(p => p.From == ParameterModelFrom.Body);
-    public IEnumerable<ParameterModel> NonBodyParameters => Parameters.Where(p => p.From != ParameterModelFrom.Body);
+    public IEnumerable<ParameterModel> BodyOrFormParameters => Parameters.Where(p => p.From == ParameterModelFrom.BodyOrForm);
+    public IEnumerable<ParameterModel> NonBodyOrFormParameters => Parameters.Where(p => p.From != ParameterModelFrom.BodyOrForm);
     public IEnumerable<ParameterModel> InvokedMethodParameters => Parameters.Where(p => p.IsInvokeMethodParameter);
     public string RouteStylized => Route.Split('/').Select(part => part.StartsWith("{") ? part : RoutePartStylizer(part)).Join('/');
 }

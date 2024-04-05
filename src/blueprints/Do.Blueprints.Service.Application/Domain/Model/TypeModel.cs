@@ -61,13 +61,8 @@ public class TypeModel : IModel, IEquatable<TypeModel>
             return $"{Namespace}.{Name[..Name.IndexOf("`")]}<{string.Join(", ", generics.GenericTypeArguments.Select(t => t.Model.CSharpFriendlyFullName))}>";
         }
 
-        return BuildCSharpFriendlyFullName(Type);
+        return Type.GetCSharpFriendlyFullName();
     }
-
-    static string BuildCSharpFriendlyFullName(Type type) =>
-        !type.IsGenericType ? type.FullName ?? type.Name :
-        type.GetGenericTypeDefinition() == typeof(Nullable<>) ? $"{BuildCSharpFriendlyFullName(type.GenericTypeArguments.First())}?" :
-        $"{type.Namespace}.{type.Name[..type.Name.IndexOf("`")]}<{string.Join(", ", type.GenericTypeArguments.Select(BuildCSharpFriendlyFullName))}>";
 
     public void Apply(Action<Type> action) =>
         action(Type);

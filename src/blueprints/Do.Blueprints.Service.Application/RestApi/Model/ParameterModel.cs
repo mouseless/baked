@@ -17,8 +17,7 @@ public record ParameterModel(TypeModel TypeModel, ParameterModelFrom From, strin
     public bool FromServices => From == ParameterModelFrom.Services;
     public bool FromRoute => From == ParameterModelFrom.Route;
     public bool FromQuery => From == ParameterModelFrom.Query;
-    public bool FromForm => From == ParameterModelFrom.Form;
-    public bool FromBody => From == ParameterModelFrom.Body;
+    public bool FromBodyOrForm => From == ParameterModelFrom.BodyOrForm;
 
     public string RenderLookup(string parameterExpression) =>
         LookupRenderer(parameterExpression);

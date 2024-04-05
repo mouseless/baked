@@ -8,7 +8,7 @@ public class Time : TestServiceSpec
         MockMe.TheTime(now: GiveMe.ADateTime(year: 2023, month: 11, day: 29));
         var singleton = GiveMe.The<Singleton>();
 
-        var actual = singleton.GetNow();
+        var actual = singleton.GetTime();
 
         actual.ShouldBe(GiveMe.ADateTime(year: 2023, month: 11, day: 29));
     }

@@ -10,8 +10,11 @@ public class Singleton(
     ITransaction _transaction,
     Func<OperationWithGenericParameter<Entity>> _newOperationWithGenericParameter,
     IClient<Singleton> _client
-) : SingletonBase(_timeProvider), IInterface
+) : SingletonBase, IInterface
 {
+    public override DateTime GetTime() =>
+        _timeProvider.GetNow();
+
     public string TestOperationWithGenericParameter(string parameter)
     {
         return _newOperationWithGenericParameter()
@@ -52,7 +55,7 @@ public class Singleton(
                 uri: new("https://action.com"),
                 @dynamic: new { transaction = "action" },
                 @enum: Status.Enabled,
-                dateTime: GetNow()
+                dateTime: GetTime()
             );
         });
 
@@ -70,7 +73,7 @@ public class Singleton(
             uri: new("https://func.com"),
             @dynamic: new { transaction = "func" },
             @enum: Status.Enabled,
-            dateTime: GetNow()
+            dateTime: GetTime()
         );
 
         throw new();
@@ -88,7 +91,7 @@ public class Singleton(
                 uri: new("https://func.com"),
                 @dynamic: new { transaction = "func" },
                 @enum: Status.Enabled,
-                dateTime: GetNow()
+                dateTime: GetTime()
             )
         );
 
@@ -101,7 +104,7 @@ public class Singleton(
             uri: new("https://rollback.com"),
             @dynamic: new { rollback = "rollback" },
             @enum: Status.Disabled,
-            dateTime: GetNow()
+            dateTime: GetTime()
         );
 
         throw new();
@@ -119,7 +122,7 @@ public class Singleton(
                 uri: new("https://func.com"),
                 @dynamic: new { transaction = "func" },
                 @enum: Status.Enabled,
-                dateTime: GetNow()
+                dateTime: GetTime()
             )
         );
     }
