@@ -5,7 +5,7 @@ public class MockingClients : TestServiceSpec
     [Test]
     public async Task Mock_communication_allows_default_response_for_a_client()
     {
-        var client = MockMe.TheClient<External>();
+        var client = MockMe.TheClient<ExternalSamples>();
 
         var response = await client.Send(new(UrlOrPath: string.Empty, Method: HttpMethod.Post));
 
@@ -16,7 +16,7 @@ public class MockingClients : TestServiceSpec
     [Test]
     public async Task Mock_communication_allows_conditioned_default_responses_for_a_client()
     {
-        var client = MockMe.TheClient<Remote>();
+        var client = MockMe.TheClient<InternalSamples>();
 
         var response1 = await client.Send(new(UrlOrPath: "path1", Method: HttpMethod.Post));
         response1.ShouldNotBeNull();
@@ -30,7 +30,7 @@ public class MockingClients : TestServiceSpec
     [Test]
     public async Task Response_of_a_client_can_be_set_through_mock_helper()
     {
-        var client = MockMe.TheClient<External>(response: "overridden response");
+        var client = MockMe.TheClient<ExternalSamples>(response: "overridden response");
 
         var response = await client.Send(new(UrlOrPath: string.Empty, Method: HttpMethod.Post));
 

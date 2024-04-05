@@ -3,9 +3,9 @@ using Newtonsoft.Json;
 
 namespace Do.Test.Communication;
 
-public class External(IClient<External> _client)
+public class ExternalSamples(IClient<ExternalSamples> _client)
 {
-    public async Task<List<PullRequest>> Process()
+    public async Task<List<PullRequest>> GithubPulls()
     {
         var request = new Request("repos/mouseless/do/pulls", HttpMethod.Get);
 

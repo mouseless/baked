@@ -57,7 +57,7 @@ public class BuildingNonDomainTypes : TestServiceSpec
     [Test]
     public void Base_type_is_added_for_task()
     {
-        var model = DomainModel.Types[typeof(Task<TransientWithTask>)];
+        var model = DomainModel.Types[typeof(Task<TransientAsync>)];
 
         model.ShouldNotBeNull();
         model.ShouldBeAssignableTo<TypeModelInheritance>();

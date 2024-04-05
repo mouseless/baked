@@ -3,9 +3,9 @@ using Newtonsoft.Json;
 
 namespace Do.Test.Communication;
 
-public class Remote(IClient<Remote> _client)
+public class InternalSamples(IClient<InternalSamples> _client)
 {
-    public async Task<dynamic> Process(string path, string method, object? content = default)
+    public async Task<dynamic> InternalRequest(string path, string method, object? content = default)
     {
         var httpMethod =
             method.Equals(nameof(HttpMethod.Post), StringComparison.CurrentCultureIgnoreCase) ? HttpMethod.Post :

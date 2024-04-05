@@ -15,6 +15,6 @@ public class SwaggerSchemaGeneration : TestServiceNfr
 
         dynamic? content = await response.Content.Deserialize();
 
-        ((string?)content?.paths["/singleton/time"].get.tags[0]).ShouldBe("Singleton");
+        ((string?)content?.paths["/time-provider-samples/now"].get.tags[0]).ShouldBe("TimeProviderSamples");
     }
 }
