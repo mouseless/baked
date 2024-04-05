@@ -25,8 +25,9 @@ public record ActionModel(
 
     public bool HasBodyOrForm => BodyOrFormParameters.Any();
     public IEnumerable<ParameterModel> Parameters { get => Parameter.Values; init => Parameter = value.ToDictionary(p => p.Id); }
-    public IEnumerable<ParameterModel> BodyOrFormParameters => Parameters.Where(p => p.From == ParameterModelFrom.BodyOrForm);
-    public IEnumerable<ParameterModel> NonBodyOrFormParameters => Parameters.Where(p => p.From != ParameterModelFrom.BodyOrForm);
+    public IEnumerable<ParameterModel> ActionParameters => Parameters.Where(p => !p.IsHardCoded);
+    public IEnumerable<ParameterModel> BodyOrFormParameters => ActionParameters.Where(p => p.From == ParameterModelFrom.BodyOrForm);
+    public IEnumerable<ParameterModel> NonBodyOrFormParameters => ActionParameters.Where(p => p.From != ParameterModelFrom.BodyOrForm);
     public IEnumerable<ParameterModel> InvokedMethodParameters => Parameters.Where(p => p.IsInvokeMethodParameter);
     public string RouteStylized => Route.Split('/').Select(part => part.StartsWith("{") ? part : RoutePartStylizer(part)).Join('/');
 }

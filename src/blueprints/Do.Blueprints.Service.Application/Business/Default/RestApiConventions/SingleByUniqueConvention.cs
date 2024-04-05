@@ -26,5 +26,11 @@ public class SingleByUniqueConvention(DomainModel _domainModel)
         context.Action.Route = context.Action.Route.Replace(context.Action.Id, $"{{{newParameterName}}}");
         uniqueParameter.From = ParameterModelFrom.Route;
         uniqueParameter.Name = newParameterName;
+
+        if (context.Action.Parameter.TryGetValue("throwNotFound", out var throwNotFoundParameter))
+        {
+            throwNotFoundParameter.IsHardCoded = true;
+            throwNotFoundParameter.LookupRenderer = _ => "true";
+        }
     }
 }

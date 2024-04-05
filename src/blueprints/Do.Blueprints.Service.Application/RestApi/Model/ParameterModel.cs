@@ -11,6 +11,7 @@ public record ParameterModel(TypeModel TypeModel, ParameterModelFrom From, strin
     public bool IsOptional { get; set; } = false;
     public object? DefaultValue { get; set; }
     public bool IsInvokeMethodParameter { get; set; } = true;
+    public bool IsHardCoded { get; set; } = false;
     public Func<string, string> LookupRenderer { get; set; } = parameterExpression => parameterExpression;
     public Func<object, string> DefaultValueRenderer { get; set; } = defaultValue => $"{defaultValue}";
 

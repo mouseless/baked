@@ -109,7 +109,7 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
         DateTime? dateTime = default
     )
     {
-        if (unique.HasValue && unique != Unique && _entities.SingleByUnique(unique.Value) is not null)
+        if (unique.HasValue && unique != Unique && _entities.AnyByUnique(unique.Value))
         {
             throw new MustBeUniqueException(nameof(Unique));
         }
@@ -144,9 +144,7 @@ public class Entities(IQueryContext<Entity> _context)
         DateTime? dateTime = default,
         int? take = default,
         int? skip = default
-    )
-    {
-        return _context.By(
+    ) => _context.By(
             where: e =>
                 (guid == default || e.Guid == guid) &&
                 (@string == default || e.String == @string) &&
@@ -159,20 +157,18 @@ public class Entities(IQueryContext<Entity> _context)
             take: take,
             skip: skip
         );
-    }
 
-    public Entity? SingleByUnique(Guid unique)
-    {
-        return _context.SingleBy(e => e.Unique == unique);
-    }
+    public bool AnyByUnique(Guid unique) =>
+        _context.AnyBy(e => e.Unique == unique);
+
+    public Entity SingleByUnique(Guid unique,
+        bool throwNotFound = false
+    ) => _context.SingleBy(e => e.Unique == unique) ?? throw RecordNotFoundException.For<Entity>(nameof(unique), unique, notFound: throwNotFound);
 
     public Entity? FirstByString(string startsWith,
         bool asc = false,
         bool desc = false
-    )
-    {
-        return asc ? _context.FirstBy(e => e.String.StartsWith(startsWith), orderBy: e => e.String) :
-               desc ? _context.FirstBy(e => e.String.StartsWith(startsWith), orderByDescending: e => e.String) :
-               _context.FirstBy(e => e.String.StartsWith(startsWith));
-    }
+    ) => asc ? _context.FirstBy(e => e.String.StartsWith(startsWith), orderBy: e => e.String) :
+         desc ? _context.FirstBy(e => e.String.StartsWith(startsWith), orderByDescending: e => e.String) :
+         _context.FirstBy(e => e.String.StartsWith(startsWith));
 }

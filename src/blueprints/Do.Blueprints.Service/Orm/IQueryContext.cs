@@ -10,6 +10,9 @@ public interface IQueryContext<TEntity>
     public List<TEntity> ByIds(IEnumerable<Guid> ids) =>
         ids.Select(id => SingleById(id)).ToList();
 
+    public bool AnyBy(Expression<Func<TEntity, bool>> where) =>
+        Query(where).Any();
+
     public TEntity? SingleBy(Expression<Func<TEntity, bool>> where) =>
         Query(where).SingleOrDefault();
 
