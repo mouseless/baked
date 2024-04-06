@@ -29,7 +29,7 @@ public class DataAccessLayer : LayerBase<AddServices>
     {
         var services = Context.GetServiceCollection();
 
-        services.AddSingleton<NHConfiguration>(sp =>
+        services.AddSingleton(sp =>
         {
             var builder = Fluently.Configure()
                 .Database(_persistenceConfiguration.Configurer)
@@ -44,10 +44,10 @@ public class DataAccessLayer : LayerBase<AddServices>
             return builder.BuildConfiguration();
         });
 
-        services.AddSingleton<ISessionFactory>(sp => sp.GetRequiredService<NHConfiguration>().BuildSessionFactory());
+        services.AddSingleton(sp => sp.GetRequiredService<NHConfiguration>().BuildSessionFactory());
         services.AddSingleton<Func<ISession>>(sp => () => sp.GetRequiredServiceUsingRequestServices<ISession>());
 
-        services.AddScoped<ISession>(sp =>
+        services.AddScoped(sp =>
         {
             var result = sp.GetRequiredService<ISessionFactory>().OpenSession();
 

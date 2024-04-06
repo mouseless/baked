@@ -70,21 +70,25 @@ public class TypeModelMembers : TypeModelMetadata
                 return constructorInfos.Select(BuildConstructor).ToList().AsReadOnly();
             }
 
-            ConstructorModel BuildConstructor(ConstructorInfo constructorInfo) =>
-                new(
+            ConstructorModel BuildConstructor(ConstructorInfo constructorInfo)
+            {
+                return new(
                     constructorInfo.IsPublic,
                     constructorInfo.IsFamily,
                     BuildParameters(constructorInfo)
                 );
+            }
 
-            PropertyModel BuildProperty(PropertyInfo property) =>
-                new(
+            PropertyModel BuildProperty(PropertyInfo property)
+            {
+                return new(
                     property.Name,
                     builder.GetReference(property.PropertyType),
                     property.GetMethod?.IsPublic == true,
                     property.GetMethod?.IsVirtual == true,
                     new(property.GetCustomAttributes())
                 );
+            }
 
             ModelCollection<MethodModel> BuildMethods()
             {
@@ -102,26 +106,32 @@ public class TypeModelMembers : TypeModelMetadata
                 return new(result);
             }
 
-            MethodOverloadModel BuildMethod(MethodInfo methodInfo) =>
-                new(
+            MethodOverloadModel BuildMethod(MethodInfo methodInfo)
+            {
+                return new(
                     methodInfo.IsPublic,
                     methodInfo.IsFamily,
                     methodInfo.IsVirtual,
                     BuildParameters(methodInfo),
                     builder.GetReference(methodInfo.ReturnType)
                 );
+            }
 
-            ModelCollection<ParameterModel> BuildParameters(MethodBase method) =>
-                new(method.GetParameters().Select(BuildParameter));
+            ModelCollection<ParameterModel> BuildParameters(MethodBase method)
+            {
+                return new(method.GetParameters().Select(BuildParameter));
+            }
 
-            ParameterModel BuildParameter(ParameterInfo parameter) =>
-                new(
+            ParameterModel BuildParameter(ParameterInfo parameter)
+            {
+                return new(
                     parameter.Name ?? string.Empty,
                     builder.GetReference(parameter.ParameterType),
                     parameter.IsOptional,
                     parameter.DefaultValue,
                     new(parameter.Member.GetCustomAttributes())
                 );
+            }
         }
     }
 }

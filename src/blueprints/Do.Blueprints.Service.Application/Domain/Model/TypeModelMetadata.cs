@@ -32,7 +32,7 @@ public class TypeModelMetadata : TypeModelInheritance, ICustomAttributesModel
     }
 
     public bool TryGet<T>([NotNullWhen(true)] out IEnumerable<T>? result) where T : Attribute =>
-        CustomAttributes.TryGet<T>(out result);
+        CustomAttributes.TryGet(out result);
 
     AttributeCollection ICustomAttributesModel.CustomAttributes => CustomAttributes;
 

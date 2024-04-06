@@ -1,7 +1,10 @@
 .PHONY: build run test
 
 build:
-	dotnet build
+	@ \
+	dotnet restore ; \
+	dotnet format --no-restore --verbosity normal; \
+	dotnet build --no-restore
 run:
 	@ \
 	echo "(1) Blueprints.Service (Development)" ; \
