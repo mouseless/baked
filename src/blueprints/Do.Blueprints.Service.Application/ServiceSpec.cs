@@ -62,6 +62,7 @@ public abstract class ServiceSpec : Spec
             app.Features.AddCore(core);
             app.Features.AddDatabase(database);
             app.Features.AddExceptionHandling(exceptionHandling);
+            app.Features.AddLifetimes([c => c.Singleton()]);
             app.Features.AddMockOverrider(mockOverrider);
             app.Features.AddOrm(orm);
 

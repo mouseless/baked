@@ -48,6 +48,5 @@ public class ConfigurationOverriderFeature : IFeature
             swaggerGenOptions.AddSecurityRequirementToOperationsThatUse<Middleware>("AdditionalSecurity");
             swaggerGenOptions.AddParameterToOperationsThatUse<Middleware>("X-Security", @in: ParameterLocation.Header, required: true);
         });
-
     }
 }

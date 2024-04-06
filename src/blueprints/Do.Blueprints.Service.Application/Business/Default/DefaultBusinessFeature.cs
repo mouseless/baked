@@ -2,9 +2,9 @@
 using Do.Business.Attributes;
 using Do.Business.Default.RestApiConventions;
 using Do.Domain.Configuration;
+using Do.Lifetime;
 using Do.Orm;
 using Do.RestApi.Model;
-using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using System.Reflection;
@@ -42,7 +42,6 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
             builder.Index.Type.Add<ServiceAttribute>();
             builder.Index.Type.Add<TransientAttribute>();
             builder.Index.Type.Add<ScopedAttribute>();
-            builder.Index.Type.Add<SingletonAttribute>();
 
             builder.Metadata.Type.Add(new DataClassAttribute(),
                 when: type =>
@@ -116,17 +115,6 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                     type.GetInheritance().Interfaces
                         .Where(i => i.Model.TryGetMetadata(out var metadata) && metadata.Has<ServiceAttribute>())
                         .Apply(i => services.AddScopedWithFactory(i, t));
-                });
-            }
-
-            foreach (var type in domainModel.Types.Having<SingletonAttribute>())
-            {
-                type.Apply(t =>
-                {
-                    services.AddSingleton(t);
-                    type.GetInheritance().Interfaces
-                        .Where(i => i.Model.TryGetMetadata(out var metadata) && metadata.Has<ServiceAttribute>())
-                        .Apply(i => services.AddSingleton(i, t, forward: true));
                 });
             }
         });

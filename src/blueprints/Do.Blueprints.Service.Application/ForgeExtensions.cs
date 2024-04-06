@@ -63,6 +63,7 @@ public static class ForgeExtensions
             app.Features.AddDocumentation(documentation);
             app.Features.AddExceptionHandling(exceptionHandling);
             app.Features.AddGreeting(greeting);
+            app.Features.AddLifetimes([c => c.Singleton()]);
             app.Features.AddLogging(logging);
             app.Features.AddOrm(orm);
 

@@ -52,7 +52,7 @@ public abstract class ServiceNfr<TEntryPoint> : Nfr
     protected virtual Func<CachingConfigurator, IFeature<CachingConfigurator>>? Caching => default;
     protected virtual Func<CommunicationConfigurator, IFeature<CommunicationConfigurator>>? Communication => default;
     protected virtual Func<CoreConfigurator, IFeature<CoreConfigurator>>? Core => default;
-    protected virtual Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>>? Database => c => c.InMemory();
+    protected virtual Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>>? Database => default;
     protected virtual Func<DocumentationConfigurator, IFeature<DocumentationConfigurator>>? Documentation => default;
     protected virtual Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>>? ExceptionHandling => default;
     protected virtual Func<GreetingConfigurator, IFeature<GreetingConfigurator>>? Greeting => default;
