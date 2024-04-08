@@ -1,4 +1,4 @@
-﻿using Do.Business.Attributes;
+﻿using Do.Lifetime;
 using Do.RestApi.Configuration;
 using Humanizer;
 

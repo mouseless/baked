@@ -40,8 +40,6 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
             builder.BuildLevels.Add(BuildLevels.Metadata);
 
             builder.Index.Type.Add<ServiceAttribute>();
-            builder.Index.Type.Add<TransientAttribute>();
-            builder.Index.Type.Add<ScopedAttribute>();
 
             builder.Metadata.Type.Add(new DataClassAttribute(),
                 when: type =>
@@ -91,32 +89,6 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                     metadata.Has<ServiceAttribute>() &&
                     type.IsAssignableTo<IScoped>()
             );
-        });
-
-        configurator.ConfigureServiceCollection(services =>
-        {
-            var domainModel = configurator.Context.GetDomainModel();
-            foreach (var type in domainModel.Types.Having<TransientAttribute>())
-            {
-                type.Apply(t =>
-                {
-                    services.AddTransientWithFactory(t);
-                    type.GetInheritance().Interfaces
-                        .Where(i => i.Model.TryGetMetadata(out var metadata) && metadata.Has<ServiceAttribute>())
-                        .Apply(i => services.AddTransientWithFactory(i, t));
-                });
-            }
-
-            foreach (var type in domainModel.Types.Having<ScopedAttribute>())
-            {
-                type.Apply(t =>
-                {
-                    services.AddScopedWithFactory(t);
-                    type.GetInheritance().Interfaces
-                        .Where(i => i.Model.TryGetMetadata(out var metadata) && metadata.Has<ServiceAttribute>())
-                        .Apply(i => services.AddScopedWithFactory(i, t));
-                });
-            }
         });
 
         configurator.ConfigureDomainModelBuilder(builder =>
