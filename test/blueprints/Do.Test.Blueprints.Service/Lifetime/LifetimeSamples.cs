@@ -1,14 +1,12 @@
-﻿using Do.Test.Orm;
+﻿namespace Do.Test.Lifetime;
 
-namespace Do.Test.Business;
-
-public class DependencyInjectionSamples(
+public class LifetimeSamples(
     Singleton _singleton,
     Func<Scoped> _getScoped,
     Func<Transient> _newTransient,
     Func<TransientAsync> _newTransientAsync,
-    Func<TransientGeneric<Entity>> _newTransientGeneric
-) : SingletonBase, IInterface
+    Func<TransientGeneric<Singleton>> _newTransientGeneric
+)
 {
     public Singleton Singleton() =>
         _singleton;
@@ -22,6 +20,6 @@ public class DependencyInjectionSamples(
     public async Task<TransientAsync> TransientAsync() =>
         await _newTransientAsync().With();
 
-    public TransientGeneric<Entity> TransientGeneric() =>
+    public TransientGeneric<Singleton> TransientGeneric() =>
         _newTransientGeneric().With();
 }

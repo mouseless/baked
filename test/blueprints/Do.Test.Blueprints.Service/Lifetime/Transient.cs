@@ -1,4 +1,4 @@
-﻿namespace Do.Test.Business;
+﻿namespace Do.Test.Lifetime;
 
 public class Transient
 {

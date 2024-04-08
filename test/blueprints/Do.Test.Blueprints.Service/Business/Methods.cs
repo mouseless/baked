@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 namespace Do.Test.Business;
 
 public class Methods(
-    ILogger<Singleton> _logger
+    ILogger<Methods> _logger
 )
 {
     [AuthorizationRequired]

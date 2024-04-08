@@ -1,3 +1,3 @@
-﻿namespace Do.Business;
+﻿namespace Do.Lifetime;
 
 public interface IScoped { }
