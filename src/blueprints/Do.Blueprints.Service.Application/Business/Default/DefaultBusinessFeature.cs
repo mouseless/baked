@@ -87,15 +87,22 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                     type.IsClass && !type.IsAbstract &&
                     type.TryGetMetadata(out var metadata) &&
                     metadata.Has<ServiceAttribute>() &&
-                    type.IsAssignableTo<IScoped>()
+                    type.Name.EndsWith("Context")
             );
         });
 
         configurator.ConfigureDomainModelBuilder(builder =>
         {
+            builder.Index.Type.Add<ApiServiceAttribute>();
             builder.Index.Type.Add<ApiInputAttribute>();
             builder.Index.Method.Add<ApiMethodAttribute>();
 
+            builder.Metadata.Type.Add(new ApiServiceAttribute(),
+                when: type =>
+                  type.Has<ServiceAttribute>() &&
+                  !type.IsGenericType &&
+                  type.IsClass && !type.IsAbstract
+            );
             builder.Metadata.Type.Add(new ApiInputAttribute(),
                 when: type =>
                   type.IsEnum ||
@@ -140,13 +147,9 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
             api.References.AddRange(_domainAssemblies);
 
             var domainModel = configurator.Context.GetDomainModel();
-            foreach (var type in domainModel.Types.Having<ServiceAttribute>())
+            foreach (var type in domainModel.Types.Having<ApiServiceAttribute>())
             {
                 if (type.FullName is null) { continue; }
-                if (!(
-                    type.GetMetadata().Has<SingletonAttribute>() || // for now only singleton
-                    type.GetMetadata().Has<EntityAttribute>() // and entities
-                )) { continue; }
 
                 var controller = new ControllerModel(type);
                 foreach (var method in type.GetMembers().Methods.Having<ApiMethodAttribute>())
@@ -154,7 +157,14 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                     controller.AddAction(type, method);
                 }
 
-                api.Controller.Add(controller.Id, controller);
+                try
+                {
+                    api.Controller.Add(controller.Id, controller);
+                }
+                catch
+                {
+                    throw new Exception($"{controller.Id} could not be added");
+                }
             }
         });
 

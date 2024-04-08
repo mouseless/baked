@@ -1,5 +1,4 @@
-﻿using Do.Lifetime;
-using Do.Test.ExceptionHandling;
+﻿using Do.Test.ExceptionHandling;
 using Do.Test.Lifetime;
 using Do.Test.Orm;
 using Microsoft.Extensions.DependencyInjection;
@@ -65,11 +64,11 @@ public class RegisteringServices : TestServiceSpec
     }
 
     [Test]
-    public void Types_that_implements_IScoped_are_registered_as_scoped()
+    public void Types_that_has_Context_suffix_are_registered_as_scoped()
     {
-        var actual1 = GiveMe.The<Scoped>();
-        var actual2 = GiveMe.The<Scoped>();
-        var actual3 = GiveMe.The<IServiceProvider>().CreateScope().ServiceProvider.GetRequiredService<Scoped>();
+        var actual1 = GiveMe.The<ScopedContext>();
+        var actual2 = GiveMe.The<ScopedContext>();
+        var actual3 = GiveMe.The<IServiceProvider>().CreateScope().ServiceProvider.GetRequiredService<ScopedContext>();
 
         actual1.ShouldBeSameAs(actual2);
         actual1.ShouldNotBeSameAs(actual3);
@@ -78,8 +77,8 @@ public class RegisteringServices : TestServiceSpec
     [Test]
     public void Scoped_services_have_singleton_factories()
     {
-        var actual1 = GiveMe.The<Func<Scoped>>();
-        var actual2 = GiveMe.The<Func<Scoped>>();
+        var actual1 = GiveMe.The<Func<ScopedContext>>();
+        var actual2 = GiveMe.The<Func<ScopedContext>>();
 
         actual1.ShouldBeSameAs(actual2);
     }
@@ -141,7 +140,7 @@ public class RegisteringServices : TestServiceSpec
     }
 
     [Test]
-    public void Referenced_interfaces_are_not_registered([Values(typeof(IEquatable<Entity>), typeof(IScoped))] Type type)
+    public void Referenced_interfaces_are_not_registered([Values(typeof(IEquatable<Entity>))] Type type)
     {
         var action = () => GiveMe.The(type);
 

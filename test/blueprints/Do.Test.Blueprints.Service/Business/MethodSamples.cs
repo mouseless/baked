@@ -3,9 +3,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Do.Test.Business;
 
-public class Methods(
-    ILogger<Methods> _logger
-)
+public class MethodSamples(ILogger<MethodSamples> _logger)
 {
     [AuthorizationRequired]
     public void RequiresAuthorization() =>

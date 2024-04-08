@@ -1,3 +1,3 @@
 ﻿namespace Do.Test.Lifetime;
 
-public class Singleton { }
+public class ScopedContext { }

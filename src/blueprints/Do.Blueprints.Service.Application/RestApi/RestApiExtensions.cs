@@ -36,6 +36,15 @@ public static class RestApiExtensions
     public static void Add<T>(this ICollection<Assembly> assemblies) =>
         assemblies.Add(typeof(T).Assembly);
 
+    public static string GetControllerId(this Type type) =>
+        type.GetCSharpFriendlyFullName();
+
+    public static ControllerModel GetController<T>(this ApiModel api) =>
+        api.Controller[typeof(T).GetControllerId()];
+
+    public static void AddAttribute<T>(this ActionModel action) where T : Attribute =>
+        action.AdditionalAttributes.Add(typeof(T).GetCSharpFriendlyFullName());
+
     internal static IMvcBuilder AddNewtonsoftJson(this IMvcBuilder source, MvcNewtonsoftJsonOptions options)
     {
         source.AddNewtonsoftJson();

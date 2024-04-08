@@ -2,7 +2,7 @@
 
 public class LifetimeSamples(
     Singleton _singleton,
-    Func<Scoped> _getScoped,
+    Func<ScopedContext> _getScoped,
     Func<Transient> _newTransient,
     Func<TransientAsync> _newTransientAsync,
     Func<TransientGeneric<Singleton>> _newTransientGeneric
@@ -11,7 +11,7 @@ public class LifetimeSamples(
     public Singleton Singleton() =>
         _singleton;
 
-    public Scoped Scoped() =>
+    public ScopedContext Scoped() =>
         _getScoped();
 
     public Transient Transient() =>

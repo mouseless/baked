@@ -37,6 +37,8 @@
 ## Improvements
 
 - `MvcNewtonsoftJsonOptions` is added to `RestApiLayer` as configuration target
+- `IScoped` marker interface is removed, `[Name]Context` convention is
+  introduced to configure scoped lifetime by convention
 
 ## Bugfixes
 

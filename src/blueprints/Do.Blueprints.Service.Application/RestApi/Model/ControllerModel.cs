@@ -4,7 +4,7 @@ namespace Do.RestApi.Model;
 
 public record ControllerModel(TypeModel TypeModel)
 {
-    public string Id { get; } = TypeModel.Name;
+    public string Id { get; } = TypeModel.CSharpFriendlyFullName;
     public string ClassName { get; } = TypeModel.Name;
     public string GroupName { get; set; } = TypeModel.Name;
     public Dictionary<string, ActionModel> Action { get; init; } = [];

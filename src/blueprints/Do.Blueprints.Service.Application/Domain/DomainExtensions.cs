@@ -80,14 +80,6 @@ public static class DomainExtensions
         }
     }
 
-    public static void Apply(this IEnumerable<TypeModel> types, Action<Type> action)
-    {
-        foreach (var type in types)
-        {
-            type.Apply(action);
-        }
-    }
-
     public static bool Contains(this ModelCollection<TypeModelReference> source, Type type) =>
         source.Contains(TypeModelReference.IdFrom(type));
 

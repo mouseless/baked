@@ -5,7 +5,7 @@ public record MethodOverloadModel(
     bool IsFamily,
     bool IsVirtual,
     ModelCollection<ParameterModel> Parameters,
-    TypeModelReference? ReturnTypeReference
+    TypeModelReference ReturnTypeReference
 ) : MethodBaseModel(
     IsPublic,
     IsFamily,
@@ -14,5 +14,5 @@ public record MethodOverloadModel(
     Parameters
 )
 {
-    public TypeModel? ReturnType => ReturnTypeReference?.Model;
+    public TypeModel ReturnType => ReturnTypeReference.Model;
 }

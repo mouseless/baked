@@ -51,10 +51,7 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
         {
             var domainModel = configurator.Context.GetDomainModel();
 
-            var typeSource = new TypeSource();
-            domainModel.Types.Having<EntityAttribute>().Apply(t => typeSource.Add(t));
-
-            model.AddTypeSource(typeSource);
+            model.AddTypeSource(new TypeModelTypeSource(domainModel.Types.Having<EntityAttribute>()));
 
             model
                 .Conventions.Add(Table.Is(x => x.EntityType.Name))
@@ -115,15 +112,14 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
             );
 
             middlewares.Add(app =>
+            {
+                var lifetime = app.ApplicationServices.GetRequiredService<IHostApplicationLifetime>();
+                lifetime.ApplicationStarted.Register(() =>
                 {
-                    var lifetime = app.ApplicationServices.GetRequiredService<IHostApplicationLifetime>();
-                    lifetime.ApplicationStarted.Register(() =>
-                    {
-                        // to see mapping errors on start
-                        var _ = app.ApplicationServices.GetRequiredService<ISessionFactory>();
-                    });
-                }
-            );
+                    // to see mapping errors on start
+                    var _ = app.ApplicationServices.GetRequiredService<ISessionFactory>();
+                });
+            });
         });
     }
 }
