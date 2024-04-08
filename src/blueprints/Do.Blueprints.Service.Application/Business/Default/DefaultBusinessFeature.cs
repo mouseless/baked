@@ -157,14 +157,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                     controller.AddAction(type, method);
                 }
 
-                try
-                {
-                    api.Controller.Add(controller.Id, controller);
-                }
-                catch
-                {
-                    throw new Exception($"{controller.Id} could not be added");
-                }
+                api.Controller.Add(controller.Id, controller);
             }
         });
 
