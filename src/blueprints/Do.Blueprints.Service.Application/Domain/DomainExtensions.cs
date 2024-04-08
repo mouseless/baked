@@ -62,8 +62,8 @@ public static class DomainExtensions
     public static void AddType(this ICollection<IDomainModelConvention> source, Action<TypeModelMetadata, Action<ICustomAttributesModel, Attribute>> apply, Func<TypeModelMetadata, bool> when,
         int? order = default
     ) => source.Add(new MetadataConvention<TypeModel>(
-            t => t.TryGetMetadata(out var metadata) && when(metadata),
             (t, add) => apply(t.GetMetadata(), add),
+            t => t.TryGetMetadata(out var metadata) && when(metadata),
             _order: order
         ));
 
@@ -77,7 +77,7 @@ public static class DomainExtensions
 
     public static void AddProperty(this ICollection<IDomainModelConvention> source, Action<PropertyModel, Action<ICustomAttributesModel, Attribute>> apply, Func<PropertyModel, bool> when,
         int? order = default
-    ) => source.Add(apply, when, order);
+    ) => source.Add(new MetadataConvention<PropertyModel>(apply, when, order));
 
     public static void AddMethod(this ICollection<IDomainModelConvention> source, Attribute attribute, Func<MethodModel, bool> when,
         int? order = default
@@ -89,7 +89,7 @@ public static class DomainExtensions
 
     public static void AddMethod(this ICollection<IDomainModelConvention> source, Action<MethodModel, Action<ICustomAttributesModel, Attribute>> apply, Func<MethodModel, bool> when,
         int? order = default
-    ) => source.Add(apply, when, order);
+    ) => source.Add(new MetadataConvention<MethodModel>(apply, when, order));
 
     public static void AddParameter(this ICollection<IDomainModelConvention> source, Attribute attribute, Func<ParameterModel, bool> when,
         int? order = default
@@ -101,12 +101,7 @@ public static class DomainExtensions
 
     public static void AddParameter(this ICollection<IDomainModelConvention> source, Action<ParameterModel, Action<ICustomAttributesModel, Attribute>> apply, Func<ParameterModel, bool> when,
         int? order = default
-    ) => source.Add(apply, when, order);
-
-    static void Add<T>(this ICollection<IDomainModelConvention> source, Action<T, Action<ICustomAttributesModel, Attribute>> apply, Func<T, bool> when,
-        int? order = default
-    ) where T : IModel, ICustomAttributesModel =>
-        source.Add(new MetadataConvention<T>(when, apply, _order: order));
+    ) => source.Add(new MetadataConvention<ParameterModel>(apply, when, order));
 
     #endregion
 

@@ -3,8 +3,8 @@
 namespace Do.Domain.Configuration;
 
 public class MetadataConvention<TModel>(
-    Func<TModel, bool> _when,
     Action<TModel, Action<ICustomAttributesModel, Attribute>> _apply,
+    Func<TModel, bool> _when,
     int? _order = default
 ) : IDomainModelConvention<TModel> where TModel : IModel
 {
