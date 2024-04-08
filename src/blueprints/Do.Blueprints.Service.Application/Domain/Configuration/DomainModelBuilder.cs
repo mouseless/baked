@@ -36,7 +36,7 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
 
         var result = new DomainModel(new(_references.Select(t => t.Model)));
 
-        BuildMetadata(result);
+        ApplyConventions(result);
         BuildIndices(result);
 
         return result;
@@ -62,45 +62,49 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
         return _buildQueue.Enqueue(type);
     }
 
-    void BuildMetadata(DomainModel model)
+    void ApplyConventions(DomainModel model)
     {
-        foreach (var convention in _options.Metadata.Type.OrderBy(c => c.Order))
+        foreach (var convention in _options.Conventions.OrderBy(c => c.Order))
         {
-            foreach (var type in model.Types)
+            if (convention is IDomainModelConvention<TypeModel> typeConvention)
             {
-                convention.Apply(type);
+                foreach (var type in model.Types)
+                {
+                    typeConvention.Apply(type);
+                }
             }
-        }
 
-        foreach (var convention in _options.Metadata.Property.OrderBy(c => c.Order))
-        {
-            foreach (var property in model.Types.Where(t => t.HasMembers())
-                                                .SelectMany(t => t.GetMembers().Properties)
-            )
+            if (convention is IDomainModelConvention<PropertyModel> propertyConvention)
             {
-                convention.Apply(property);
+                foreach (var property in model.Types.Where(t => t.HasMembers())
+                                                    .SelectMany(t => t.GetMembers().Properties)
+                )
+                {
+                    propertyConvention.Apply(property);
+                }
+
             }
-        }
 
-        foreach (var convention in _options.Metadata.Method.OrderBy(c => c.Order))
-        {
-            foreach (var method in model.Types.Where(t => t.HasMembers())
-                                              .SelectMany(t => t.GetMembers().Methods)
-            )
+            if (convention is IDomainModelConvention<MethodModel> methodConvention)
             {
-                convention.Apply(method);
+                foreach (var method in model.Types.Where(t => t.HasMembers())
+                                                  .SelectMany(t => t.GetMembers().Methods)
+                )
+                {
+                    methodConvention.Apply(method);
+                }
             }
-        }
 
-        foreach (var convention in _options.Metadata.Parameter.OrderBy(c => c.Order))
-        {
-            foreach (var parameter in model.Types.Where(t => t.HasMembers())
-                                                 .SelectMany(t => t.GetMembers().Methods)
-                                                 .SelectMany(m => m.Overloads)
-                                                 .SelectMany(o => o.Parameters)
-            )
+            if (convention is IDomainModelConvention<ParameterModel> parameterConvention)
             {
-                convention.Apply(parameter);
+                foreach (var parameter in model.Types.Where(t => t.HasMembers())
+                                                     .SelectMany(t => t.GetMembers().Methods)
+                                                     .SelectMany(m => m.Overloads)
+                                                     .SelectMany(o => o.Parameters)
+                )
+                {
+                    parameterConvention.Apply(parameter);
+                }
             }
         }
     }

@@ -2,9 +2,11 @@
 
 namespace Do.Domain.Configuration;
 
-public class MetadataConvention<TModel>(Func<TModel, bool> _when, Action<TModel, Action<ICustomAttributesModel, Attribute>> _apply,
+public class MetadataConvention<TModel>(
+    Func<TModel, bool> _when,
+    Action<TModel, Action<ICustomAttributesModel, Attribute>> _apply,
     int? _order = default
-) where TModel : IModel
+) : IDomainModelConvention<TModel> where TModel : IModel
 {
     public int Order => _order ?? 0;
 

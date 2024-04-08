@@ -1,4 +1,6 @@
 ﻿using Do.Architecture;
+using Do.Business.Attributes;
+using Do.Business.Default.RestApiConventions;
 using Do.Orm.Default.UserTypes;
 using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Mapping;
@@ -26,7 +28,7 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
             builder.Index.Type.Add(typeof(QueryAttribute));
             builder.Index.Type.Add(typeof(EntityAttribute));
 
-            builder.Metadata.Type.Add(
+            builder.Conventions.AddType(
                 apply: (query, add) =>
                 {
                     var parameter =
@@ -40,10 +42,17 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
                     entity.Apply(t => queryContext = typeof(IQueryContext<>).MakeGenericType(t));
                     if (queryContext is null) { return; }
 
-                    entity.Apply(t => add(query.GetMembers(), new QueryAttribute(t)));
-                    query.Apply(t => add(entity.GetMembers(), new EntityAttribute(t, queryContext)));
+                    entity.Apply(t =>
+                        add(query, new QueryAttribute(t))
+                    );
+                    query.Apply(t =>
+                        add(entity.GetMetadata(), new EntityAttribute(t, queryContext))
+                    );
+                    add(entity.GetMetadata(), new ApiInputAttribute());
                 },
-                when: type => type.TryGetMembers(out var members) && members.Constructors.Any(o => o.Parameters.Any(p => p.ParameterType.IsAssignableTo(typeof(IQueryContext<>))))
+                when: type =>
+                    type.TryGetMembers(out var members) &&
+                    members.Constructors.Any(o => o.Parameters.Any(p => p.ParameterType.IsAssignableTo(typeof(IQueryContext<>))))
             );
         });
 
@@ -120,6 +129,19 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
                     var _ = app.ApplicationServices.GetRequiredService<ISessionFactory>();
                 });
             });
+        });
+
+        configurator.ConfigureApiModelConventions(conventions =>
+        {
+            var domainModel = configurator.Context.GetDomainModel();
+
+            conventions.Add(new EntityUnderEntitiesConvention());
+            conventions.Add(new LookupEntityByIdConvention(domainModel, action => action.Id != "With"));
+            conventions.Add(new LookupEntitiesByIdsConvention(domainModel));
+            conventions.Add(new SingleByUniqueConvention(domainModel));
+            conventions.Add(new RemoveActionNameFromRouteConvention("Delete", "Update", "By"));
+            conventions.Add(new AddChildToChildrenConvention());
+            conventions.Add(new GetChildrenToChildrenConvention());
         });
     }
 }

@@ -5,5 +5,6 @@ namespace Do;
 
 public static class ScopedLifetimeExtensions
 {
-    public static ScopedLifetimeFeature Scoped(this LifetimeConfigurator _) => new();
+    public static ScopedLifetimeFeature Scoped(this LifetimeConfigurator _) =>
+        new();
 }

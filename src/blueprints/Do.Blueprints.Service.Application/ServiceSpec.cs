@@ -58,6 +58,7 @@ public abstract class ServiceSpec : Spec
             app.Features.AddAuthentication(authentication);
             app.Features.AddBusiness(business);
             app.Features.AddCaching(caching);
+            app.Features.AddCodingStyles([c => c.WithMethod()]);
             app.Features.AddCommunication(communication);
             app.Features.AddCore(core);
             app.Features.AddDatabase(database);

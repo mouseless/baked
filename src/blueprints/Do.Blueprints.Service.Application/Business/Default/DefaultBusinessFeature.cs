@@ -3,7 +3,6 @@ using Do.Business.Attributes;
 using Do.Business.Default.RestApiConventions;
 using Do.Domain.Configuration;
 using Do.Lifetime;
-using Do.Orm;
 using Do.RestApi.Model;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
@@ -41,13 +40,13 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
 
             builder.Index.Type.Add<ServiceAttribute>();
 
-            builder.Metadata.Type.Add(new DataClassAttribute(),
+            builder.Conventions.AddType(new DataClassAttribute(),
                 when: type =>
                     type.TryGetMembers(out var members) &&
                     members.Methods.Contains("<Clone>$"), // if type is record
                 order: int.MinValue
             );
-            builder.Metadata.Type.Add(new ServiceAttribute(),
+            builder.Conventions.AddType(new ServiceAttribute(),
                 when: type =>
                     type.IsPublic &&
                     !type.IsAssignableTo<IEnumerable>() &&
@@ -58,7 +57,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                     type.TryGetMembers(out var members) &&
                     !members.Has<DataClassAttribute>()
             );
-            builder.Metadata.Type.Add(new SingletonAttribute(),
+            builder.Conventions.AddType(new SingletonAttribute(),
                when: type =>
                    type.IsClass && !type.IsAbstract &&
                    type.TryGetMembers(out var members) &&
@@ -68,21 +67,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                    members.Properties.All(p => !p.IsPublic),
                order: int.MaxValue
             );
-            builder.Metadata.Type.Add(new TransientAttribute(),
-                when: type =>
-                    type.IsClass && !type.IsAbstract &&
-                    type.TryGetMembers(out var members) &&
-                    members.Has<ServiceAttribute>() &&
-                    members.TryGetMethods("With", out var method) &&
-                    method.Any(o =>
-                        o.ReturnType is not null &&
-                        (
-                            o.ReturnType == type ||
-                            (o.ReturnType.IsAssignableTo(typeof(Task<>)) && o.ReturnType.GetGenerics().GenericTypeArguments.First().Model == type)
-                        )
-                    )
-            );
-            builder.Metadata.Type.Add(new ScopedAttribute(),
+            builder.Conventions.AddType(new ScopedAttribute(),
                 when: type =>
                     type.IsClass && !type.IsAbstract &&
                     type.TryGetMetadata(out var metadata) &&
@@ -97,13 +82,13 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
             builder.Index.Type.Add<ApiInputAttribute>();
             builder.Index.Method.Add<ApiMethodAttribute>();
 
-            builder.Metadata.Type.Add(new ApiServiceAttribute(),
+            builder.Conventions.AddType(new ApiServiceAttribute(),
                 when: type =>
                   type.Has<ServiceAttribute>() &&
                   !type.IsGenericType &&
                   type.IsClass && !type.IsAbstract
             );
-            builder.Metadata.Type.Add(new ApiInputAttribute(),
+            builder.Conventions.AddType(new ApiInputAttribute(),
                 when: type =>
                   type.IsEnum ||
                   type.Is<Uri>() ||
@@ -111,34 +96,30 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                   type.IsAssignableTo(typeof(IParsable<>)) ||
                   type.IsAssignableTo(typeof(string))
             );
-            builder.Metadata.Type.Add(new ApiInputAttribute(),
+            builder.Conventions.AddType(new ApiInputAttribute(),
                 when: type =>
                     type.IsAssignableTo(typeof(Nullable<>)) &&
                     type.GenericTypeArguments.FirstOrDefault()?.Model.TryGetMetadata(out var genericArgumentMetadata) == true &&
                     genericArgumentMetadata.Has<ApiInputAttribute>()
             );
-            builder.Metadata.Type.Add(new ApiInputAttribute(),
-                when: type => type.Has<EntityAttribute>(),
-                order: int.MaxValue
-            );
-            builder.Metadata.Type.Add(new ApiInputAttribute(),
+            builder.Conventions.AddType(new ApiInputAttribute(),
                 when: type =>
                     type.IsAssignableTo(typeof(IEnumerable<>)) &&
                     type.IsGenericType && type.TryGetGenerics(out var generics) &&
                     generics.GenericTypeArguments.FirstOrDefault()?.Model.TryGetMetadata(out var genericArgMetadata) == true &&
                     genericArgMetadata.Has<ApiInputAttribute>(),
-                order: int.MaxValue
+                order: 20
             );
-            builder.Metadata.Type.Add(new ApiInputAttribute(),
+            builder.Conventions.AddType(new ApiInputAttribute(),
                 when: type =>
                     type.IsArray && type.TryGetGenerics(out var generics) &&
                     generics.ElementType?.TryGetMetadata(out var elementMetadata) == true &&
                     elementMetadata.Has<ApiInputAttribute>(),
-                order: int.MaxValue
+                order: 20
             );
-
-            builder.Metadata.Method.Add(new ApiMethodAttribute(),
-                when: method => method.Overloads.Any(o => o.IsPublic && o.Parameters.All(p => p.ParameterType.TryGetMetadata(out var metadata) && metadata.Has<ApiInputAttribute>()))
+            builder.Conventions.AddMethod(new ApiMethodAttribute(),
+                when: method => method.Overloads.Any(o => o.IsPublic && o.Parameters.All(p => p.ParameterType.TryGetMetadata(out var metadata) && metadata.Has<ApiInputAttribute>())),
+                order: 30
             );
         });
 
@@ -163,19 +144,8 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
 
         configurator.ConfigureApiModelConventions(conventions =>
         {
-            var domainModel = configurator.Context.GetDomainModel();
-
-            conventions.Add(new EntityUnderEntitiesConvention());
-            conventions.Add(new LookupEntityByIdConvention(domainModel, action => action.Id != "With"));
-            conventions.Add(new LookupEntitiesByIdsConvention(domainModel));
-            conventions.Add(new SingleByUniqueConvention(domainModel));
-
             conventions.Add(new AutoHttpMethodConvention());
-            conventions.Add(new PublicWithIsPostResourceConvention());
-            conventions.Add(new AddChildToChildrenConvention());
-            conventions.Add(new GetChildrenToChildrenConvention());
             conventions.Add(new GetAndDeleteAcceptsOnlyQueryConvention());
-            conventions.Add(new RemoveActionNameFromRouteConvention("With", "Delete", "Update", "By"));
             conventions.Add(new EnumDefaultValueConvention());
         });
 

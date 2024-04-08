@@ -17,19 +17,19 @@ public class AutoHttpMethodConvention(
 
     public void Apply(ActionModelContext context)
     {
-        if (_get.IsMatch(context.Action.Name))
+        if (_get.IsMatch(context.Action.Id))
         {
             context.Action.Method = HttpMethod.Get;
         }
-        else if (_delete.IsMatch(context.Action.Name))
+        else if (_delete.IsMatch(context.Action.Id))
         {
             context.Action.Method = HttpMethod.Delete;
         }
-        else if (_put.IsMatch(context.Action.Name))
+        else if (_put.IsMatch(context.Action.Id))
         {
             context.Action.Method = HttpMethod.Put;
         }
-        else if (_patch.IsMatch(context.Action.Name))
+        else if (_patch.IsMatch(context.Action.Id))
         {
             context.Action.Method = HttpMethod.Patch;
         }
