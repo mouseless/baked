@@ -31,7 +31,8 @@
   - `Business` and `Orm` is split into several features
   - `LifetimeFeature` is introduced with three implementations `Singleton`,
     `Scoped` and `Transient`
-  - `CodingStyleFeature` is introduced with many built-in coding styles
+  - `CodingStyleFeature` is introduced with existing coding styles to separate
+    them from business feature
 
 ## Improvements
 

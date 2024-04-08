@@ -1,4 +1,3 @@
 ﻿namespace Do.Test.Business;
 
-public class Class : Abstract, IInterface
-{ }
+public class Class : Abstract, IInterface { }
