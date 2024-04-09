@@ -1,13 +1,7 @@
-﻿using Do.Architecture;
-using Do.Documentation;
-
-namespace Do.Test.Documentation;
+﻿namespace Do.Test.Business;
 
 public class SwaggerSchemaGeneration : TestServiceNfr
 {
-    protected override Func<DocumentationConfigurator, IFeature<DocumentationConfigurator>>? Documentation =>
-        c => c.Default();
-
     [Test]
     public async Task Generates_swagger_json_automatically()
     {

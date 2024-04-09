@@ -5,7 +5,6 @@ using Do.Caching;
 using Do.Communication;
 using Do.Core;
 using Do.Database;
-using Do.Documentation;
 using Do.ExceptionHandling;
 using Do.Greeting;
 using Do.Logging;
@@ -22,7 +21,6 @@ public static class ForgeExtensions
         Func<CommunicationConfigurator, IFeature<CommunicationConfigurator>>? communication = default,
         Func<CoreConfigurator, IFeature<CoreConfigurator>>? core = default,
         Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>>? database = default,
-        Func<DocumentationConfigurator, IFeature<DocumentationConfigurator>>? documentation = default,
         Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>>? exceptionHandling = default,
         Func<GreetingConfigurator, IFeature<GreetingConfigurator>>? greeting = default,
         Func<LoggingConfigurator, IFeature<LoggingConfigurator>>? logging = default,
@@ -35,7 +33,6 @@ public static class ForgeExtensions
         communication ??= c => c.Http();
         core ??= c => c.Dotnet();
         database ??= c => c.Sqlite();
-        documentation ??= c => c.Default();
         exceptionHandling ??= c => c.Default();
         greeting ??= c => c.Swagger();
         logging ??= c => c.RequestLogging();
@@ -67,7 +64,6 @@ public static class ForgeExtensions
             app.Features.AddCommunication(communication);
             app.Features.AddCore(core);
             app.Features.AddDatabase(database);
-            app.Features.AddDocumentation(documentation);
             app.Features.AddExceptionHandling(exceptionHandling);
             app.Features.AddGreeting(greeting);
             app.Features.AddLifetimes([

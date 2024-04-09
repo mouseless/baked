@@ -3,6 +3,7 @@ using Do.Business.Attributes;
 using Do.Business.Default.RestApiConventions;
 using Do.Domain.Configuration;
 using Do.RestApi.Model;
+using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
 namespace Do.Business.Default;
@@ -100,6 +101,21 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
         {
             conventions.Add(new AutoHttpMethodConvention());
             conventions.Add(new GetAndDeleteAcceptsOnlyQueryConvention());
+        });
+
+        configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
+        {
+            swaggerGenOptions.CustomSchemaIds(t =>
+            {
+                string[] splitedNamespace = t.Namespace?.Split(".") ?? [];
+                string name = t.IsNested && t.FullName is not null
+                    ? t.FullName.Replace($"{t.Namespace}.", string.Empty).Replace("Controller", string.Empty).Replace("+", ".")
+                    : t.Name;
+
+                return splitedNamespace.Length > 1
+                    ? $"{string.Join('.', splitedNamespace.Skip(1))}.{name}"
+                    : name;
+            });
         });
     }
 }

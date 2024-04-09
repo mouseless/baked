@@ -5,7 +5,6 @@ using Do.Caching;
 using Do.Communication;
 using Do.Core;
 using Do.Database;
-using Do.Documentation;
 using Do.ExceptionHandling;
 using Do.Greeting;
 using Do.Logging;
@@ -39,7 +38,6 @@ public abstract class ServiceNfr<TEntryPoint> : Nfr
                 core: Core,
                 communication: Communication,
                 database: Database,
-                documentation: Documentation,
                 exceptionHandling: ExceptionHandling,
                 greeting: Greeting,
                 logging: Logging,
@@ -53,7 +51,6 @@ public abstract class ServiceNfr<TEntryPoint> : Nfr
     protected virtual Func<CommunicationConfigurator, IFeature<CommunicationConfigurator>>? Communication => default;
     protected virtual Func<CoreConfigurator, IFeature<CoreConfigurator>>? Core => default;
     protected virtual Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>>? Database => default;
-    protected virtual Func<DocumentationConfigurator, IFeature<DocumentationConfigurator>>? Documentation => default;
     protected virtual Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>>? ExceptionHandling => default;
     protected virtual Func<GreetingConfigurator, IFeature<GreetingConfigurator>>? Greeting => default;
     protected virtual Func<LoggingConfigurator, IFeature<LoggingConfigurator>>? Logging => default;
