@@ -57,7 +57,7 @@ public static class ForgeExtensions
             app.Features.AddAuthentication(authentication);
             app.Features.AddBusiness(business);
             app.Features.AddCaching(caching);
-            app.Features.AddCodingStyles([c => c.WithMethod(), c => c.ScopedBySuffix()]);
+            app.Features.AddCodingStyles([c => c.WithMethod(), c => c.ScopedBySuffix(), c => c.RemainingServicesAreSingleton()]);
             app.Features.AddCommunication(communication);
             app.Features.AddCore(core);
             app.Features.AddDatabase(database);

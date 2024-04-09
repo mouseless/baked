@@ -1,4 +1,4 @@
 ﻿namespace Do.Business.Attributes;
 
-[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+[AttributeUsage(AttributeTargets.Class)]
 public class ServiceAttribute : Attribute { }

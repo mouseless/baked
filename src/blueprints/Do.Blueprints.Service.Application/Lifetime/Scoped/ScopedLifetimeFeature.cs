@@ -1,4 +1,4 @@
-using Do.Architecture;
+﻿using Do.Architecture;
 using Do.Business.Attributes;
 
 namespace Do.Lifetime.Scoped;

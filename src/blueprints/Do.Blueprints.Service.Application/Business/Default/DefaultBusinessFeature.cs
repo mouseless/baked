@@ -2,7 +2,6 @@
 using Do.Business.Attributes;
 using Do.Business.Default.RestApiConventions;
 using Do.Domain.Configuration;
-using Do.Lifetime;
 using Do.RestApi.Model;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
@@ -40,7 +39,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
 
             builder.Index.Type.Add<ServiceAttribute>();
 
-            builder.Conventions.AddType(new DataClassAttribute(),
+            builder.Conventions.AddType(new DataAttribute(),
                 when: type =>
                     type.TryGetMembers(out var members) &&
                     members.Methods.Contains("<Clone>$"), // if type is record
@@ -55,17 +54,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                     !type.IsGenericTypeParameter &&
                     !type.IsGenericTypeDefinition &&
                     type.TryGetMembers(out var members) &&
-                    !members.Has<DataClassAttribute>()
-            );
-            builder.Conventions.AddType(new SingletonAttribute(),
-               when: type =>
-                   type.IsClass && !type.IsAbstract &&
-                   type.TryGetMembers(out var members) &&
-                   members.Has<ServiceAttribute>() &&
-                   !members.Has<TransientAttribute>() &&
-                   !members.Has<ScopedAttribute>() &&
-                   members.Properties.All(p => !p.IsPublic),
-               order: int.MaxValue
+                    !members.Has<DataAttribute>()
             );
         });
 

@@ -174,7 +174,7 @@ public class RegisteringServices : TestServiceSpec
     }
 
     [Test]
-    public void Types_having_no_with_method_but_public_properties_are_not_registered([Values(typeof(ClassDTO))] Type type)
+    public void Types_having_no_with_method_but_public_properties_are_not_registered([Values(typeof(Data))] Type type)
     {
         var action = () => GiveMe.The(type);
 
