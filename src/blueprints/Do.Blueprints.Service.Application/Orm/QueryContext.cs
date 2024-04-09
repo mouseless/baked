@@ -1,6 +1,6 @@
 ﻿using NHibernate;
 
-namespace Do.Orm.Default;
+namespace Do.Orm;
 
 public class QueryContext<TEntity>(Func<ISession> _getSession)
     : IQueryContext<TEntity>

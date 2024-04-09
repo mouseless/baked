@@ -3,7 +3,7 @@ using Do.RestApi.Configuration;
 using Do.RestApi.Model;
 using Humanizer;
 
-namespace Do.Orm.Default;
+namespace Do.Orm.AutoMap;
 
 public class SingleByUniqueConvention(DomainModel _domainModel)
     : IApiModelConvention<ActionModelContext>

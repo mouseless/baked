@@ -5,16 +5,16 @@ using Do.RestApi.Model;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
-namespace Do.Business.Default;
+namespace Do.Business.DomainAssemblies;
 
-public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
+public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies)
     : IFeature<BusinessConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureDomainTypeCollection(types =>
         {
-            foreach (var assembly in _domainAssemblies)
+            foreach (var assembly in _assemblies)
             {
                 types.AddFromAssembly(assembly,
                     except: type =>
@@ -74,7 +74,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
 
         configurator.ConfigureApiModel(api =>
         {
-            api.References.AddRange(_domainAssemblies);
+            api.References.AddRange(_assemblies);
 
             var domainModel = configurator.Context.GetDomainModel();
             foreach (var type in domainModel.Types.Having<ApiServiceAttribute>())

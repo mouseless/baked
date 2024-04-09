@@ -1,14 +1,14 @@
-using Do.Business;
-using Do.Business.Default;
+﻿using Do.Business;
+using Do.Business.DomainAssemblies;
 using Do.Domain.Model;
 using Do.RestApi.Model;
 using System.Reflection;
 
 namespace Do;
 
-public static class DefaultBusinessExtensions
+public static class DomainAssembliesBusinessExtensions
 {
-    public static DefaultBusinessFeature Default(this BusinessConfigurator _, List<Assembly> assemblies) =>
+    public static DomainAssembliesBusinessFeature DomainAssemblies(this BusinessConfigurator _, List<Assembly> assemblies) =>
         new(assemblies);
 
     public static void AddAction(this ControllerModel controller, TypeModel type, string methodName)

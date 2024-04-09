@@ -1,13 +1,14 @@
 ﻿using Do.Domain.Model;
 using Do.Orm;
-using Do.Orm.Default;
+using Do.Orm.AutoMap;
 using Do.RestApi.Model;
 
 namespace Do;
 
-public static class DefaultOrmExtensions
+public static class AutoMapOrmExtensions
 {
-    public static DefaultOrmFeature Default(this OrmConfigurator _) => new();
+    public static AutoMapOrmFeature AutoMap(this OrmConfigurator _) =>
+        new();
 
     public static void AddSingleById<T>(this ControllerModel controller, DomainModel domainModel) =>
         controller.Action["SingleById"] = new("SingleById", HttpMethod.Get, $"{controller.TypeModel.Name}/SingleById", new(domainModel.Types[typeof(T)]), "target")

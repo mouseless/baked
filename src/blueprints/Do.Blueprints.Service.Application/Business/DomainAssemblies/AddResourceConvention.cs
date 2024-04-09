@@ -1,7 +1,7 @@
 ﻿using Do.RestApi.Configuration;
 using Humanizer;
 
-namespace Do.Business.Default;
+namespace Do.Business.DomainAssemblies;
 
 public class AddResourceConvention : IApiModelConvention<ActionModelContext>
 {

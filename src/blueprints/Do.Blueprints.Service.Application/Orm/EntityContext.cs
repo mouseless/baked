@@ -1,6 +1,6 @@
 ﻿using ISession = NHibernate.ISession;
 
-namespace Do.Orm.Default;
+namespace Do.Orm;
 
 public class EntityContext<TEntity>(ISession _session)
     : IEntityContext<TEntity>

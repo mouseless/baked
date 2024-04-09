@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace Do.Orm.Default;
+namespace Do.Orm.AutoMap;
 
 internal static partial class Regexes
 {

@@ -5,7 +5,7 @@ using Humanizer;
 
 using ParameterModel = Do.RestApi.Model.ParameterModel;
 
-namespace Do.Orm.Default;
+namespace Do.Orm.AutoMap;
 
 public class LookupEntityByIdConvention(DomainModel _domain, Func<ActionModel, bool> _actionFilter)
     : IApiModelConvention<ParameterModelContext>

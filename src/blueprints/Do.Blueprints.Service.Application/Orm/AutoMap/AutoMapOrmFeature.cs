@@ -9,9 +9,9 @@ using Microsoft.Extensions.Logging;
 using NHibernate;
 using NHibernate.Exceptions;
 
-namespace Do.Orm.Default;
+namespace Do.Orm.AutoMap;
 
-public class DefaultOrmFeature : IFeature<OrmConfigurator>
+public class AutoMapOrmFeature : IFeature<OrmConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
@@ -60,7 +60,7 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
                     catch (GenericADOException e)
                     {
                         context.RequestServices
-                            .GetRequiredService<ILogger<DefaultOrmFeature>>()
+                            .GetRequiredService<ILogger<AutoMapOrmFeature>>()
                             .LogError(e.InnerException, e.InnerException?.Message);
 
                         throw;

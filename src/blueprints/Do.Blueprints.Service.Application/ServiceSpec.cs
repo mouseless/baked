@@ -43,7 +43,7 @@ public abstract class ServiceSpec : Spec
         database ??= c => c.InMemory();
         exceptionHandling ??= c => c.Default();
         mockOverrider ??= c => c.FirstInterface();
-        orm ??= c => c.Default();
+        orm ??= c => c.AutoMap();
 
         var context = Init(app =>
         {

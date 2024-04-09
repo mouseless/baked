@@ -2,7 +2,7 @@
 using FluentNHibernate;
 using FluentNHibernate.Diagnostics;
 
-namespace Do.Orm.Default;
+namespace Do.Orm;
 
 public class TypeModelTypeSource(IEnumerable<TypeModel> _types)
     : ITypeSource

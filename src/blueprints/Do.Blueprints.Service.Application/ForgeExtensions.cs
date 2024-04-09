@@ -28,7 +28,7 @@ public static class ForgeExtensions
         Action<ApplicationDescriptor>? configure = default
     )
     {
-        authentication ??= c => c.Disabled();
+        authentication ??= c => c.FixedToken();
         caching ??= c => c.ScopedMemory();
         communication ??= c => c.Http();
         core ??= c => c.Dotnet();
@@ -36,7 +36,7 @@ public static class ForgeExtensions
         exceptionHandling ??= c => c.Default();
         greeting ??= c => c.Swagger();
         logging ??= c => c.RequestLogging();
-        orm ??= c => c.Default();
+        orm ??= c => c.AutoMap();
         configure ??= _ => { };
 
         return source.Application(app =>
