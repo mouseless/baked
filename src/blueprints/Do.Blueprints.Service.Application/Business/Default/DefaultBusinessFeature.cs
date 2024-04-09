@@ -1,7 +1,6 @@
 ﻿using Do.Architecture;
-using Do.Business.Attributes;
-using Do.Business.Default.RestApiConventions;
 using Do.Domain.Configuration;
+using Do.RestApi.Conventions;
 using Do.RestApi.Model;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
@@ -17,11 +16,12 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
         {
             foreach (var assembly in _domainAssemblies)
             {
-                types.AddFromAssembly(assembly, except: type =>
-                    (type.IsSealed && type.IsAbstract) || // if type is static
-                    type.IsAssignableTo(typeof(Exception)) ||
-                    type.IsAssignableTo(typeof(Attribute)) ||
-                    type.IsAssignableTo(typeof(Delegate))
+                types.AddFromAssembly(assembly,
+                    except: type =>
+                        (type.IsSealed && type.IsAbstract) || // if type is static
+                        type.IsAssignableTo(typeof(Exception)) ||
+                        type.IsAssignableTo(typeof(Attribute)) ||
+                        type.IsAssignableTo(typeof(Delegate))
                 );
             }
         });
@@ -38,22 +38,16 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
 
             builder.Index.Type.Add<ServiceAttribute>();
 
-            builder.Conventions.AddType(new DataAttribute(),
-                when: type =>
-                    type.TryGetMembers(out var members) &&
-                    members.Methods.Contains("<Clone>$"), // if type is record
-                order: int.MinValue
-            );
-            builder.Conventions.AddType(new ServiceAttribute(),
+            builder.Conventions.AddTypeMetadata(new ServiceAttribute(),
                 when: type =>
                     type.IsPublic &&
-                    !type.IsAssignableTo<IEnumerable>() &&
                     !type.IsValueType &&
                     !type.IsGenericMethodParameter &&
                     !type.IsGenericTypeParameter &&
                     !type.IsGenericTypeDefinition &&
+                    !type.IsAssignableTo<IEnumerable>() &&
                     type.TryGetMembers(out var members) &&
-                    !members.Has<DataAttribute>()
+                    !members.Methods.Contains("<Clone>$") // if type is record
             );
         });
 
@@ -63,7 +57,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
             builder.Index.Type.Add<ApiInputAttribute>();
             builder.Index.Method.Add<ApiMethodAttribute>();
 
-            builder.Conventions.AddType(new ApiServiceAttribute(),
+            builder.Conventions.AddTypeMetadata(new ApiServiceAttribute(),
                 when: type =>
                   type.Has<ServiceAttribute>() &&
                   type.IsClass &&
@@ -72,7 +66,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                   type.TryGetMembers(out var members) &&
                   members.Methods.Any()
             );
-            builder.Conventions.AddMethod(new ApiMethodAttribute(),
+            builder.Conventions.AddMethodMetadata(new ApiMethodAttribute(),
                 when: method => method.Overloads.Any(o => o.IsPublic && o.Parameters.All(p => p.ParameterType.TryGetMetadata(out var metadata) && metadata.Has<ApiInputAttribute>())),
                 order: int.MaxValue
             );
@@ -101,6 +95,9 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
         {
             conventions.Add(new AutoHttpMethodConvention());
             conventions.Add(new GetAndDeleteAcceptsOnlyQueryConvention());
+            conventions.Add(new RemoveActionNameFromRouteConvention(["Delete", "Update"]));
+            conventions.Add(new RemovePrefixFromRouteConvention(["Get"]));
+            conventions.Add(new AddResourceConvention());
         });
 
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
@@ -109,7 +106,7 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
             {
                 string[] splitedNamespace = t.Namespace?.Split(".") ?? [];
                 string name = t.IsNested && t.FullName is not null
-                    ? t.FullName.Replace($"{t.Namespace}.", string.Empty).Replace("Controller", string.Empty).Replace("+", ".")
+                    ? t.FullName.Replace($"{t.Namespace}.", string.Empty).Replace("+", ".")
                     : t.Name;
 
                 return splitedNamespace.Length > 1

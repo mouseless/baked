@@ -18,6 +18,7 @@ public record ActionModel(
     public string FindTargetStatement { get; set; } = FindTargetStatement;
     public string InvokedMethodName { get; set; } = Id;
     public bool UseForm { get; set; } = false;
+    public int Order { get; set; } = 0;
 
     public List<string> AdditionalAttributes { get; init; } = [];
     public Dictionary<string, ParameterModel> Parameter { get; init; } = [];
@@ -27,6 +28,6 @@ public record ActionModel(
     public IEnumerable<ParameterModel> ActionParameters => Parameters.Where(p => !p.IsHardCoded);
     public IEnumerable<ParameterModel> BodyOrFormParameters => ActionParameters.Where(p => p.From == ParameterModelFrom.BodyOrForm);
     public IEnumerable<ParameterModel> NonBodyOrFormParameters => ActionParameters.Where(p => p.From != ParameterModelFrom.BodyOrForm);
-    public IEnumerable<ParameterModel> InvokedMethodParameters => Parameters.Where(p => p.IsInvokeMethodParameter);
+    public IEnumerable<ParameterModel> InvokedMethodParameters => Parameters.Where(p => p.IsInvokeMethodParameter).OrderBy(p => p.Order);
     public string RouteStylized => Route.Split('/').Select(part => part.StartsWith("{") ? part : RoutePartStylizer(part)).Join('/');
 }

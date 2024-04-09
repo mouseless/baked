@@ -1,7 +1,7 @@
 ﻿using Do.RestApi.Configuration;
 using Do.RestApi.Model;
 
-namespace Do.Business.Default.RestApiConventions;
+namespace Do.RestApi.Conventions;
 
 public class GetAndDeleteAcceptsOnlyQueryConvention : IApiModelConvention<ParameterModelContext>
 {

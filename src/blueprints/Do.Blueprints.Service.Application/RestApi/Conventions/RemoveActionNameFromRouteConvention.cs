@@ -1,8 +1,8 @@
 ﻿using Do.RestApi.Configuration;
 
-namespace Do.Business.Default.RestApiConventions;
+namespace Do.RestApi.Conventions;
 
-public class RemoveActionNameFromRouteConvention(params string[] actionIds)
+public class RemoveActionNameFromRouteConvention(IEnumerable<string> actionIds)
     : IApiModelConvention<ActionModelContext>
 {
     readonly HashSet<string> _actionIds = new(actionIds);

@@ -2,7 +2,7 @@
 using Do.RestApi.Configuration;
 using Humanizer;
 
-namespace Do.Business.Default.RestApiConventions;
+namespace Do.CodingStyle.RichEntity;
 
 public class EntityUnderEntitiesConvention : IApiModelConvention<ControllerModelContext>
 {

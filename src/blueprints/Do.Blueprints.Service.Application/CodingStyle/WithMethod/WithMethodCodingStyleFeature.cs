@@ -1,5 +1,5 @@
 ﻿using Do.Architecture;
-using Do.Business.Attributes;
+using Do.Business;
 using Do.Lifetime;
 
 namespace Do.CodingStyle.WithMethod;
@@ -10,7 +10,7 @@ public class WithMethodCodingStyleFeature : IFeature<CodingStyleConfigurator>
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Conventions.AddType(new TransientAttribute(),
+            builder.Conventions.AddTypeMetadata(new TransientAttribute(),
                 when: type =>
                     type.IsClass && !type.IsAbstract &&
                     type.TryGetMembers(out var members) &&

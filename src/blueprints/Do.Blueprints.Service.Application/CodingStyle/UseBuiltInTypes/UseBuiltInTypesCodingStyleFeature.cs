@@ -1,5 +1,5 @@
 ﻿using Do.Architecture;
-using Do.Business.Attributes;
+using Do.Business;
 using FluentNHibernate.Conventions.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Converters;
@@ -14,20 +14,20 @@ public class UseBuiltInTypesCodingStyleFeature(IEnumerable<string> _textProperty
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Conventions.AddType(new ApiInputAttribute(),
+            builder.Conventions.AddTypeMetadata(new ApiInputAttribute(),
                 when: type =>
                   type.IsEnum ||
                   type.Is<Uri>() ||
                   type.IsAssignableTo(typeof(IParsable<>)) ||
                   type.IsAssignableTo(typeof(string))
             );
-            builder.Conventions.AddType(new ApiInputAttribute(),
+            builder.Conventions.AddTypeMetadata(new ApiInputAttribute(),
                 when: type =>
                     type.IsAssignableTo(typeof(Nullable<>)) &&
                     type.GenericTypeArguments.FirstOrDefault()?.Model.TryGetMetadata(out var genericArgumentMetadata) == true &&
                     genericArgumentMetadata.Has<ApiInputAttribute>()
             );
-            builder.Conventions.AddType(new ApiInputAttribute(),
+            builder.Conventions.AddTypeMetadata(new ApiInputAttribute(),
                 when: type =>
                     type.IsAssignableTo(typeof(IEnumerable<>)) &&
                     type.IsGenericType && type.TryGetGenerics(out var generics) &&
@@ -35,7 +35,7 @@ public class UseBuiltInTypesCodingStyleFeature(IEnumerable<string> _textProperty
                     genericArgMetadata.Has<ApiInputAttribute>(),
                 order: 20
             );
-            builder.Conventions.AddType(new ApiInputAttribute(),
+            builder.Conventions.AddTypeMetadata(new ApiInputAttribute(),
                 when: type =>
                     type.IsArray && type.TryGetGenerics(out var generics) &&
                     generics.ElementType?.TryGetMetadata(out var elementMetadata) == true &&

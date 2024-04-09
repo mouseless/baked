@@ -1,5 +1,5 @@
 ﻿using Do.Architecture;
-using Do.Business.Attributes;
+using Do.Business;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Do.Lifetime.Singleton;

@@ -1,7 +1,7 @@
-﻿using System.Text.RegularExpressions;
-using Do.RestApi.Configuration;
+﻿using Do.RestApi.Configuration;
+using System.Text.RegularExpressions;
 
-namespace Do.Business.Default.RestApiConventions;
+namespace Do.RestApi.Conventions;
 
 public class AutoHttpMethodConvention(
     Regex? get = default,

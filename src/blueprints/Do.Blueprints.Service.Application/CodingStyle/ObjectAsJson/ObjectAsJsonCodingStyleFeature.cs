@@ -1,5 +1,5 @@
-using Do.Architecture;
-using Do.Business.Attributes;
+﻿using Do.Architecture;
+using Do.Business;
 using FluentNHibernate.Conventions.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
@@ -12,7 +12,7 @@ public class ObjectAsJsonCodingStyleFeature : IFeature<CodingStyleConfigurator>
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Conventions.AddType(new ApiInputAttribute(),
+            builder.Conventions.AddTypeMetadata(new ApiInputAttribute(),
                 when: type => type.Is<object>()
             );
         });

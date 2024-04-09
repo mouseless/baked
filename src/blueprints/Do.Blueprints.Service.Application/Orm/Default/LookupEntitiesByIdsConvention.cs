@@ -1,12 +1,11 @@
 ﻿using Do.Domain.Model;
-using Do.Orm;
 using Do.RestApi.Configuration;
 using Do.RestApi.Model;
 using Humanizer;
 
 using ParameterModel = Do.RestApi.Model.ParameterModel;
 
-namespace Do.Business.Default.RestApiConventions;
+namespace Do.Orm.Default;
 
 public class LookupEntitiesByIdsConvention(DomainModel _domain)
     : IApiModelConvention<ParameterModelContext>

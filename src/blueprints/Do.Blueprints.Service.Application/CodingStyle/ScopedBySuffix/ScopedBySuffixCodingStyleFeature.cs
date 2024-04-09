@@ -1,22 +1,22 @@
 ﻿using Do.Architecture;
-using Do.Business.Attributes;
+using Do.Business;
 using Do.Lifetime;
 
 namespace Do.CodingStyle.ScopedBySuffix;
 
-public class ScopedBySuffixCodingStyleFeature(IEnumerable<string> _suffices)
+public class ScopedBySuffixCodingStyleFeature(IEnumerable<string> _suffixes)
     : IFeature<CodingStyleConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Conventions.AddType(new ScopedAttribute(),
+            builder.Conventions.AddTypeMetadata(new ScopedAttribute(),
                 when: type =>
                     type.IsClass && !type.IsAbstract &&
                     type.TryGetMetadata(out var metadata) &&
                     metadata.Has<ServiceAttribute>() &&
-                    _suffices.Any(suffix => type.Name.EndsWith(suffix))
+                    _suffixes.Any(suffix => type.Name.EndsWith(suffix))
             );
         });
     }

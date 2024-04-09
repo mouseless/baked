@@ -1,10 +1,9 @@
 ﻿using Do.Domain.Model;
-using Do.Orm;
 using Do.RestApi.Configuration;
 using Do.RestApi.Model;
 using Humanizer;
 
-namespace Do.Business.Default.RestApiConventions;
+namespace Do.Orm.Default;
 
 public class SingleByUniqueConvention(DomainModel _domainModel)
     : IApiModelConvention<ActionModelContext>

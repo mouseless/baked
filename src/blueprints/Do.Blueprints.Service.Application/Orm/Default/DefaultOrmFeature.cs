@@ -1,6 +1,5 @@
 ﻿using Do.Architecture;
-using Do.Business.Attributes;
-using Do.Business.Default.RestApiConventions;
+using Do.RestApi.Conventions;
 using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Mapping;
 using Microsoft.AspNetCore.Builder;
@@ -26,33 +25,6 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
         {
             builder.Index.Type.Add(typeof(QueryAttribute));
             builder.Index.Type.Add(typeof(EntityAttribute));
-
-            builder.Conventions.AddType(
-                apply: (query, add) =>
-                {
-                    var parameter =
-                        query.GetMembers()
-                            .Constructors
-                            .SelectMany(o => o.Parameters)
-                            .First(p => p.ParameterType.IsAssignableTo(typeof(IQueryContext<>)));
-
-                    var entity = parameter.ParameterType.GetGenerics().GenericTypeArguments.First().Model;
-                    Type? queryContext = null;
-                    entity.Apply(t => queryContext = typeof(IQueryContext<>).MakeGenericType(t));
-                    if (queryContext is null) { return; }
-
-                    entity.Apply(t =>
-                        add(query, new QueryAttribute(t))
-                    );
-                    query.Apply(t =>
-                        add(entity.GetMetadata(), new EntityAttribute(t, queryContext))
-                    );
-                    add(entity.GetMetadata(), new ApiInputAttribute());
-                },
-                when: type =>
-                    type.TryGetMembers(out var members) &&
-                    members.Constructors.Any(o => o.Parameters.Any(p => p.ParameterType.IsAssignableTo(typeof(IQueryContext<>))))
-            );
         });
 
         configurator.ConfigureAutoPersistenceModel(model =>
@@ -69,23 +41,11 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
             model.Conventions.Add(ConventionBuilder.Reference.Always(x => x.Index(x.EntityType, x.Name)));
         });
 
-        configurator.ConfigureNHibernateInterceptor(interceptor =>
-        {
-            interceptor.Instantiator = (ctx, id) =>
-            {
-                var result = ctx.ApplicationServices.GetRequiredServiceUsingRequestServices(ctx.MetaData.MappedClass);
-
-                ctx.MetaData.SetIdentifier(result, id);
-
-                return result;
-            };
-        });
-
         configurator.ConfigureAutomapping(automapping =>
         {
-            automapping.ShouldMapType.Add(t => true);
+            automapping.ShouldMapType.Add(_ => true);
+            automapping.ShouldMapMember.Add(m => m.IsAutoProperty);
             automapping.MemberIsId.Add(m => m.PropertyType == typeof(Guid) && m.Name == "Id");
-            automapping.ShouldMapMember.Add(m => m.IsAutoProperty && !m.PropertyType.IsAssignableTo(typeof(ICollection)));
         });
 
         configurator.ConfigureMiddlewareCollection(middlewares =>
@@ -123,13 +83,10 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
         {
             var domainModel = configurator.Context.GetDomainModel();
 
-            conventions.Add(new EntityUnderEntitiesConvention());
             conventions.Add(new LookupEntityByIdConvention(domainModel, action => action.Id != "With"));
             conventions.Add(new LookupEntitiesByIdsConvention(domainModel));
             conventions.Add(new SingleByUniqueConvention(domainModel));
-            conventions.Add(new RemoveActionNameFromRouteConvention("Delete", "Update", "By"));
-            conventions.Add(new AddChildToChildrenConvention());
-            conventions.Add(new GetChildrenToChildrenConvention());
+            conventions.Add(new RemoveActionNameFromRouteConvention(["By"]));
         });
     }
 }

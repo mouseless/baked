@@ -6,6 +6,6 @@ namespace Do;
 public static class ScopedBySuffixCodingStyleExtensions
 {
     public static ScopedBySuffixCodingStyleFeature ScopedBySuffix(this CodingStyleConfigurator _,
-        IEnumerable<string>? suffices = default
-    ) => new(suffices ?? ["Context"]);
+        IEnumerable<string>? suffixes = default
+    ) => new(suffixes ?? ["Context"]);
 }

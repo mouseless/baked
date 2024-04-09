@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace Do.Business.Default;
+namespace Do.RestApi;
 
 internal static partial class Regexes
 {
@@ -15,7 +15,4 @@ internal static partial class Regexes
 
     [GeneratedRegex(@"^(Update|Change|Set).*$", RegexOptions.None, "en-US")]
     public static partial Regex PatchMethod();
-
-    [GeneratedRegex(@"^SingleBy(?<Unique>.+)$", RegexOptions.None, "en-US")]
-    public static partial Regex SingleByUniqueMethod();
 }

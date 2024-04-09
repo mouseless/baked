@@ -1,5 +1,5 @@
-using Do.Architecture;
-using Do.Business.Attributes;
+﻿using Do.Architecture;
+using Do.Business;
 using Do.Lifetime;
 
 namespace Do.CodingStyle.RemainingServicesAreSingleton;
@@ -11,7 +11,7 @@ public class RemainingServicesAreSingletonCodingStyleFeature()
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Conventions.AddType(new SingletonAttribute(),
+            builder.Conventions.AddTypeMetadata(new SingletonAttribute(),
                when: type =>
                    type.IsClass && !type.IsAbstract &&
                    type.TryGetMembers(out var members) &&

@@ -1,4 +1,4 @@
-﻿namespace Do.Business.Attributes;
+﻿namespace Do.Business;
 
 [AttributeUsage(AttributeTargets.Method)]
 public class ApiMethodAttribute : Attribute { }

@@ -1,12 +1,11 @@
 ﻿using Do.Domain.Model;
-using Do.Orm;
 using Do.RestApi.Configuration;
 using Do.RestApi.Model;
 using Humanizer;
 
 using ParameterModel = Do.RestApi.Model.ParameterModel;
 
-namespace Do.Business.Default.RestApiConventions;
+namespace Do.Orm.Default;
 
 public class LookupEntityByIdConvention(DomainModel _domain, Func<ActionModel, bool> _actionFilter)
     : IApiModelConvention<ParameterModelContext>
@@ -16,6 +15,8 @@ public class LookupEntityByIdConvention(DomainModel _domain, Func<ActionModel, b
         if (!_actionFilter(context.Action)) { return; }
 
         var entityParameter = context.Parameter;
+        if (!entityParameter.IsInvokeMethodParameter) { return; }
+
         var entityType = entityParameter.TypeModel;
         if (!entityType.TryGetMetadata(out var metadata) || !metadata.TryGetSingle<EntityAttribute>(out var entityAttribute)) { return; }
 
@@ -25,19 +26,6 @@ public class LookupEntityByIdConvention(DomainModel _domain, Func<ActionModel, b
 
         entityParameter.Type = nameof(Guid);
         entityParameter.Name += "Id";
-
-        if (!entityParameter.IsInvokeMethodParameter)
-        {
-            entityParameter.Name = $"{entityParameter.TypeModel.Name.Camelize()}Id";
-            entityParameter.From = ParameterModelFrom.Route;
-            context.Action.Route = $"{entityType.Name.Pluralize()}/{{{entityParameter.Name}:guid}}/{context.Action.Name}";
-        }
-
-        entityParameter.LookupRenderer = parameterExpression => $"{queryContextParameter.Name}.SingleById({parameterExpression}, throwNotFound: {entityParameter.FromRoute.ToString().ToLowerInvariant()})";
-
-        if (!entityParameter.IsInvokeMethodParameter)
-        {
-            context.Action.FindTargetStatement = entityParameter.LookupRenderer(entityParameter.Name);
-        }
+        entityParameter.LookupRenderer = parameterExpression => $"{queryContextParameter.Name}.SingleById({parameterExpression})";
     }
 }

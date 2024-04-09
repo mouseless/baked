@@ -1,9 +1,9 @@
 ﻿using Do.RestApi.Configuration;
 using Humanizer;
 
-namespace Do.Business.Default.RestApiConventions;
+namespace Do.Business.Default;
 
-public class AddChildToChildrenConvention : IApiModelConvention<ActionModelContext>
+public class AddResourceConvention : IApiModelConvention<ActionModelContext>
 {
     public void Apply(ActionModelContext context)
     {
