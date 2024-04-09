@@ -1,6 +1,5 @@
 ﻿using Do.Architecture;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
 
 namespace Do.Documentation.Default;
 
@@ -21,9 +20,6 @@ public class DefaultDocumentationFeature : IFeature<DocumentationConfigurator>
                     ? $"{string.Join('.', splitedNamespace.Skip(1))}.{name}"
                     : name;
             });
-            swaggerGenOptions.MapType<object>(() => new OpenApiSchema { Type = "object" }); // Makes endpoint content template an object.
-            swaggerGenOptions.OperationFilter<NullTypesAreObjectOperationFilter>();
-            swaggerGenOptions.DocumentFilter<ObjectResponseDocumentationFilter>();
         });
     }
 }

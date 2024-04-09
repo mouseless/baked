@@ -1,7 +1,6 @@
 ﻿using Do.Architecture;
 using Do.Business.Attributes;
 using Do.Business.Default.RestApiConventions;
-using Do.Orm.Default.UserTypes;
 using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Mapping;
 using Microsoft.AspNetCore.Builder;
@@ -68,10 +67,6 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
             model.Conventions.Add(ConventionBuilder.Reference.Always(x => x.ForeignKey("none")));
             model.Conventions.Add(ConventionBuilder.Reference.Always(x => x.LazyLoad(Laziness.Proxy)));
             model.Conventions.Add(ConventionBuilder.Reference.Always(x => x.Index(x.EntityType, x.Name)));
-            model.Conventions.Add(ConventionBuilder.Property.When(
-                x => x.Expect(p => p.Property.PropertyType == typeof(object)),
-                x => x.CustomType(typeof(ObjectUserType))
-            ));
         });
 
         configurator.ConfigureNHibernateInterceptor(interceptor =>

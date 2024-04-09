@@ -1,8 +1,8 @@
 root = true
 
 [*.cs]
-# Naming rules
 
+# Naming rules
 dotnet_naming_rule.interface_should_be_begins_with_i.severity = suggestion
 dotnet_naming_rule.interface_should_be_begins_with_i.symbols = interface
 dotnet_naming_rule.interface_should_be_begins_with_i.style = begins_with_i
@@ -24,7 +24,6 @@ dotnet_naming_rule.const_fields_should_use_pascal_case.symbols  = const_fields
 dotnet_naming_rule.const_fields_should_use_pascal_case.style = pascal_case
 
 # Symbol specifications
-
 dotnet_naming_symbols.interface.applicable_kinds = interface
 dotnet_naming_symbols.interface.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
 dotnet_naming_symbols.interface.required_modifiers =
@@ -47,7 +46,6 @@ dotnet_naming_symbols.const_fields.applicable_accessibilities = public,private,p
 dotnet_naming_symbols.const_fields.required_modifiers = const
 
 # Naming styles
-
 dotnet_naming_style.begins_with_i.required_prefix = I
 dotnet_naming_style.begins_with_i.required_suffix =
 dotnet_naming_style.begins_with_i.word_separator =
@@ -103,11 +101,9 @@ dotnet_style_qualification_for_method = false:silent
 dotnet_code_quality_unused_parameters = all:suggestion
 
 # Code Analyzer
-
 dotnet_diagnostic.CA1860.severity = none
 
 # Coding Styles
-
 dotnet_diagnostic.IDE0001.severity = error # System.IO.FileInfo file;
 dotnet_diagnostic.IDE0002.severity = error # class C { C.M1(); }
 dotnet_diagnostic.IDE0003.severity = error # Remove this or Me qualification
@@ -215,11 +211,9 @@ dotnet_diagnostic.IDE1005.severity = error # Use conditional delegate call
 dotnet_diagnostic.IDE1006.severity = error # Naming rule violation: Missing prefix: '_'
 
 # CS
-
 dotnet_diagnostic.CS1591.severity = none # Missing XML comment
 
 # Stylecop
-
 dotnet_analyzer_diagnostic.category-StyleCop.CSharp.AlternativeRules.severity = none
 dotnet_analyzer_diagnostic.category-StyleCop.CSharp.DocumentationRules.severity = none
 dotnet_analyzer_diagnostic.category-StyleCop.CSharp.LayoutRules.severity = none
@@ -252,7 +246,6 @@ dotnet_diagnostic.SA1649.severity = error # File Name Must Match Type Name
 dotnet_diagnostic.SX1309.severity = error # Field 'field' should begin with an underscore
 
 # csharp
-
 csharp_indent_labels = one_less_than_current
 csharp_using_directive_placement = outside_namespace:silent
 csharp_space_around_binary_operators = before_and_after
@@ -308,7 +301,6 @@ csharp_style_var_when_type_is_apparent = false:silent
 csharp_style_var_elsewhere = false:silent
 
 # Other
-
 tab_width = 4
 indent_size = 4
 end_of_line = lf

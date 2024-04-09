@@ -1,9 +1,10 @@
-﻿using Newtonsoft.Json;
+using Do.DataAccess;
+using Newtonsoft.Json;
 using NHibernate.Engine;
 using NHibernate.Type;
 using System.Data.Common;
 
-namespace Do.Orm.Default.UserTypes;
+namespace Do.CodingStyle.ObjectAsJson;
 
 public class ObjectUserType : CompositeUserTypeBase
 {
@@ -15,19 +16,16 @@ public class ObjectUserType : CompositeUserTypeBase
 
     public override object? NullSafeGet(DbDataReader dr, string[] names, ISessionImplementor session, object owner)
     {
-        if (PropertyTypes[0].NullSafeGet(dr, names, session, owner) is string jsonString)
-        {
-            try
-            {
-                return JsonConvert.DeserializeObject(jsonString);
-            }
-            catch (Exception e)
-            {
-                throw new InvalidDataException($"Data could not be deserialized to object. Data: {jsonString}", e);
-            }
-        }
+        if (PropertyTypes[0].NullSafeGet(dr, names, session, owner) is not string jsonString) { return null; }
 
-        return null;
+        try
+        {
+            return JsonConvert.DeserializeObject(jsonString);
+        }
+        catch (Exception e)
+        {
+            throw new InvalidDataException($"Data could not be deserialized to object. Data: {jsonString}", e);
+        }
     }
 
     public override void NullSafeSet(DbCommand cmd, object value, int index, bool[] settable, ISessionImplementor session)

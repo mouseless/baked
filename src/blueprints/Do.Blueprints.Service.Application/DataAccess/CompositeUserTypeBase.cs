@@ -3,7 +3,7 @@ using NHibernate.Type;
 using NHibernate.UserTypes;
 using System.Data.Common;
 
-namespace Do.Orm.Default.UserTypes;
+namespace Do.DataAccess;
 
 public abstract class CompositeUserTypeBase : ICompositeUserType
 {

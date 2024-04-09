@@ -62,7 +62,8 @@ public abstract class ServiceSpec : Spec
                 c => c.WithMethod(),
                 c => c.ScopedBySuffix(),
                 c => c.RemainingServicesAreSingleton(),
-                c => c.UseBuiltInTypes()
+                c => c.UseBuiltInTypes(),
+                c => c.ObjectAsJson()
             ]);
             app.Features.AddCommunication(communication);
             app.Features.AddCore(core);

@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc.Controllers;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Do.Documentation.Default;
+namespace Do.CodingStyle.ObjectAsJson;
 
-public class ObjectResponseDocumentationFilter : IDocumentFilter
+public class ObjectResponseDocumentFilter : IDocumentFilter
 {
     Dictionary<string, OperationType> _operationTypes = new()
     {
@@ -22,13 +22,11 @@ public class ObjectResponseDocumentationFilter : IDocumentFilter
         foreach (var apiDescription in context.ApiDescriptions)
         {
             if (apiDescription.ActionDescriptor is not ControllerActionDescriptor controllerActionDescriptor) { continue; }
-            if (!IsTargetReturnType(controllerActionDescriptor.MethodInfo.ReturnType)) { continue; }
-            if (apiDescription.HttpMethod is null) { continue; }
+            if (!IsObject(controllerActionDescriptor.MethodInfo.ReturnType)) { continue; }
             if (apiDescription.HttpMethod is null) { continue; }
 
             var path = $"/{apiDescription.RelativePath?.TrimEnd('/')}";
             var operation = swaggerDoc.Paths[path].Operations[_operationTypes[apiDescription.HttpMethod]];
-
             if (!operation.Responses.Any())
             {
                 operation.Responses.Add("200", new() { Description = "Success" });
@@ -41,7 +39,7 @@ public class ObjectResponseDocumentationFilter : IDocumentFilter
         }
     }
 
-    bool IsTargetReturnType(Type target) =>
+    bool IsObject(Type target) =>
         target == typeof(object) ||
         target == typeof(Task<object>);
 }

@@ -1,0 +1,35 @@
+using Do.Architecture;
+using Do.Business.Attributes;
+using FluentNHibernate.Conventions.Helpers;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
+
+namespace Do.CodingStyle.ObjectAsJson;
+
+public class ObjectAsJsonCodingStyleFeature : IFeature<CodingStyleConfigurator>
+{
+    public void Configure(LayerConfigurator configurator)
+    {
+        configurator.ConfigureDomainModelBuilder(builder =>
+        {
+            builder.Conventions.AddType(new ApiInputAttribute(),
+                when: type => type.Is<object>()
+            );
+        });
+
+        configurator.ConfigureAutoPersistenceModel(model =>
+        {
+            model.Conventions.Add(ConventionBuilder.Property.When(
+                x => x.Expect(p => p.Property.PropertyType == typeof(object)),
+                x => x.CustomType(typeof(ObjectUserType))
+            ));
+        });
+
+        configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
+        {
+            swaggerGenOptions.MapType<object>(() => new OpenApiSchema { Type = "object" }); // Makes endpoint content template an object.
+            swaggerGenOptions.SchemaFilter<NullTypesAreObjectSchemaFilter>();
+            swaggerGenOptions.DocumentFilter<ObjectResponseDocumentFilter>();
+        });
+    }
+}
