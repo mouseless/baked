@@ -67,13 +67,6 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
                    members.Properties.All(p => !p.IsPublic),
                order: int.MaxValue
             );
-            builder.Conventions.AddType(new ScopedAttribute(),
-                when: type =>
-                    type.IsClass && !type.IsAbstract &&
-                    type.TryGetMetadata(out var metadata) &&
-                    metadata.Has<ServiceAttribute>() &&
-                    type.Name.EndsWith("Context")
-            );
         });
 
         configurator.ConfigureDomainModelBuilder(builder =>
