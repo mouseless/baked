@@ -58,12 +58,21 @@ public abstract class ServiceSpec : Spec
             app.Features.AddAuthentication(authentication);
             app.Features.AddBusiness(business);
             app.Features.AddCaching(caching);
-            app.Features.AddCodingStyles([c => c.WithMethod(), c => c.ScopedBySuffix(), c => c.RemainingServicesAreSingleton()]);
+            app.Features.AddCodingStyles([
+                c => c.WithMethod(),
+                c => c.ScopedBySuffix(),
+                c => c.RemainingServicesAreSingleton(),
+                c => c.UseBuiltInTypes()
+            ]);
             app.Features.AddCommunication(communication);
             app.Features.AddCore(core);
             app.Features.AddDatabase(database);
             app.Features.AddExceptionHandling(exceptionHandling);
-            app.Features.AddLifetimes([c => c.Singleton(), c => c.Scoped(), c => c.Transient()]);
+            app.Features.AddLifetimes([
+                c => c.Singleton(),
+                c => c.Scoped(),
+                c => c.Transient()
+            ]);
             app.Features.AddMockOverrider(mockOverrider);
             app.Features.AddOrm(orm);
 
@@ -88,7 +97,7 @@ public abstract class ServiceSpec : Spec
 
         MockMe.TheConfiguration(settings: Settings, defaultValueProvider: GetDefaultSettingsValue);
 
-        // This is the initial release date of DO. Do not change this the avoid
+        // This is the initial release date. Do not change this to avoid
         // potential "Cannot go back in time." errors.
         MockMe.TheTime(now: new DateTime(2023, 06, 15, 16, 59, 00), reset: true);
     }

@@ -3,8 +3,6 @@ using Do.Business.Attributes;
 using Do.Business.Default.RestApiConventions;
 using Do.Domain.Configuration;
 using Do.RestApi.Model;
-using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Serialization;
 using System.Reflection;
 
 namespace Do.Business.Default;
@@ -67,41 +65,15 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
             builder.Conventions.AddType(new ApiServiceAttribute(),
                 when: type =>
                   type.Has<ServiceAttribute>() &&
+                  type.IsClass &&
+                  !type.IsAbstract &&
                   !type.IsGenericType &&
-                  type.IsClass && !type.IsAbstract
-            );
-            builder.Conventions.AddType(new ApiInputAttribute(),
-                when: type =>
-                  type.IsEnum ||
-                  type.Is<Uri>() ||
-                  type.Is<object>() ||
-                  type.IsAssignableTo(typeof(IParsable<>)) ||
-                  type.IsAssignableTo(typeof(string))
-            );
-            builder.Conventions.AddType(new ApiInputAttribute(),
-                when: type =>
-                    type.IsAssignableTo(typeof(Nullable<>)) &&
-                    type.GenericTypeArguments.FirstOrDefault()?.Model.TryGetMetadata(out var genericArgumentMetadata) == true &&
-                    genericArgumentMetadata.Has<ApiInputAttribute>()
-            );
-            builder.Conventions.AddType(new ApiInputAttribute(),
-                when: type =>
-                    type.IsAssignableTo(typeof(IEnumerable<>)) &&
-                    type.IsGenericType && type.TryGetGenerics(out var generics) &&
-                    generics.GenericTypeArguments.FirstOrDefault()?.Model.TryGetMetadata(out var genericArgMetadata) == true &&
-                    genericArgMetadata.Has<ApiInputAttribute>(),
-                order: 20
-            );
-            builder.Conventions.AddType(new ApiInputAttribute(),
-                when: type =>
-                    type.IsArray && type.TryGetGenerics(out var generics) &&
-                    generics.ElementType?.TryGetMetadata(out var elementMetadata) == true &&
-                    elementMetadata.Has<ApiInputAttribute>(),
-                order: 20
+                  type.TryGetMembers(out var members) &&
+                  members.Methods.Any()
             );
             builder.Conventions.AddMethod(new ApiMethodAttribute(),
                 when: method => method.Overloads.Any(o => o.IsPublic && o.Parameters.All(p => p.ParameterType.TryGetMetadata(out var metadata) && metadata.Has<ApiInputAttribute>())),
-                order: 30
+                order: int.MaxValue
             );
         });
 
@@ -128,12 +100,6 @@ public class DefaultBusinessFeature(List<Assembly> _domainAssemblies)
         {
             conventions.Add(new AutoHttpMethodConvention());
             conventions.Add(new GetAndDeleteAcceptsOnlyQueryConvention());
-            conventions.Add(new EnumDefaultValueConvention());
-        });
-
-        configurator.ConfigureMvcNewtonsoftJsonOptions(options =>
-        {
-            options.SerializerSettings.Converters.Add(new StringEnumConverter(new CamelCaseNamingStrategy()));
         });
     }
 }

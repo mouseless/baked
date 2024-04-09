@@ -59,26 +59,19 @@ public class DefaultOrmFeature : IFeature<OrmConfigurator>
         configurator.ConfigureAutoPersistenceModel(model =>
         {
             var domainModel = configurator.Context.GetDomainModel();
-
             model.AddTypeSource(new TypeModelTypeSource(domainModel.Types.Having<EntityAttribute>()));
 
-            model
-                .Conventions.Add(Table.Is(x => x.EntityType.Name))
-                .Conventions.Add(ConventionBuilder.Id.Always(x => x.GeneratedBy.Guid()))
-                .Conventions.Add(ConventionBuilder.Id.Always(x => x.Unique()))
-                .Conventions.Add(ForeignKey.EndsWith("Id"))
-                .Conventions.Add(ConventionBuilder.Reference.Always(x => x.ForeignKey("none")))
-                .Conventions.Add(ConventionBuilder.Reference.Always(x => x.LazyLoad(Laziness.Proxy)))
-                .Conventions.Add(ConventionBuilder.Reference.Always(x => x.Index(x.EntityType, x.Name)))
-                .Conventions.Add(ConventionBuilder.Property.When(
-                    x => x.Expect(p => p.Property.PropertyType == typeof(string) && p.Property.Name.EndsWith("Data")),
-                    x => x.CustomSqlType("TEXT")
-                ))
-                .Conventions.Add(ConventionBuilder.Property.When(
-                    x => x.Expect(p => p.Property.PropertyType == typeof(object)),
-                    x => x.CustomType(typeof(ObjectUserType))
-                ))
-            ;
+            model.Conventions.Add(Table.Is(x => x.EntityType.Name));
+            model.Conventions.Add(ConventionBuilder.Id.Always(x => x.GeneratedBy.Guid()));
+            model.Conventions.Add(ConventionBuilder.Id.Always(x => x.Unique()));
+            model.Conventions.Add(ForeignKey.EndsWith("Id"));
+            model.Conventions.Add(ConventionBuilder.Reference.Always(x => x.ForeignKey("none")));
+            model.Conventions.Add(ConventionBuilder.Reference.Always(x => x.LazyLoad(Laziness.Proxy)));
+            model.Conventions.Add(ConventionBuilder.Reference.Always(x => x.Index(x.EntityType, x.Name)));
+            model.Conventions.Add(ConventionBuilder.Property.When(
+                x => x.Expect(p => p.Property.PropertyType == typeof(object)),
+                x => x.CustomType(typeof(ObjectUserType))
+            ));
         });
 
         configurator.ConfigureNHibernateInterceptor(interceptor =>
