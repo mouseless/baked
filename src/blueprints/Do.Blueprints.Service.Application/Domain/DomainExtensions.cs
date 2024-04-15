@@ -8,12 +8,17 @@ namespace Do;
 
 public static class DomainExtensions
 {
-    public static void AddDomain(this ICollection<ILayer> layers) => layers.Add(new DomainLayer());
+    public static void AddDomain(this ICollection<ILayer> layers) =>
+        layers.Add(new DomainLayer());
 
-    public static DomainModel GetDomainModel(this ApplicationContext source) => source.Get<DomainModel>();
+    public static DomainModel GetDomainModel(this ApplicationContext source) =>
+        source.Get<DomainModel>();
 
-    public static void ConfigureDomainTypeCollection(this LayerConfigurator configurator, Action<IDomainTypeCollection> configuration) => configurator.Configure(configuration);
-    public static void ConfigureDomainModelBuilder(this LayerConfigurator configurator, Action<DomainModelBuilderOptions> configuration) => configurator.Configure(configuration);
+    public static void ConfigureDomainTypeCollection(this LayerConfigurator configurator, Action<IDomainTypeCollection> configuration) =>
+        configurator.Configure(configuration);
+
+    public static void ConfigureDomainModelBuilder(this LayerConfigurator configurator, Action<DomainModelBuilderOptions> configuration) =>
+        configurator.Configure(configuration);
 
     public static void Add<T>(this ICollection<Type> types) =>
         types.Add(typeof(T));

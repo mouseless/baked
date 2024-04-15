@@ -5,5 +5,6 @@ namespace Do;
 
 public static class TransientLifetimeExtensions
 {
-    public static TransientLifetimeFeature Transient(this LifetimeConfigurator _) => new();
+    public static TransientLifetimeFeature Transient(this LifetimeConfigurator _) =>
+        new();
 }

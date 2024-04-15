@@ -7,7 +7,8 @@ namespace Do;
 
 public static class MockCommunicationExtensions
 {
-    public static MockCommunicationFeature Mock(this CommunicationConfigurator _, Action<DefaultResponseBuilder>? defaultResponses = default) => new(defaultResponses ?? (_ => { }));
+    public static MockCommunicationFeature Mock(this CommunicationConfigurator _, Action<DefaultResponseBuilder>? defaultResponses = default) =>
+        new(defaultResponses ?? (_ => { }));
 
     public static IClient<T> TheClient<T>(this Mocker mockMe,
         string? url = default,

@@ -12,17 +12,21 @@ namespace Do;
 
 public static class CoreExtensions
 {
-    public static void AddCore(this List<IFeature> source, Func<CoreConfigurator, IFeature<CoreConfigurator>> configure) => source.Add(configure(new()));
+    public static void AddCore(this List<IFeature> source, Func<CoreConfigurator, IFeature<CoreConfigurator>> configure) =>
+        source.Add(configure(new()));
 
-    public static int AnInteger(this Stubber _) => 42;
+    public static int AnInteger(this Stubber _) =>
+        42;
 
-    public static string AnEmail(this Stubber _) => "info@test.com";
+    public static string AnEmail(this Stubber _) =>
+        "info@test.com";
 
     public static string AString(this Stubber _,
         string? value = default
     ) => value ?? "test string";
 
-    public static Guid ToGuid(this string source) => Guid.Parse(source);
+    public static Guid ToGuid(this string source) =>
+        Guid.Parse(source);
 
     public static DateTime ADateTime(this Stubber _,
         int year = 2023,
@@ -84,19 +88,25 @@ public static class CoreExtensions
         return new(url);
     }
 
-    public static void ShouldBe(this Uri? uri, string urlString) => uri?.ToString().ShouldBe(urlString);
+    public static void ShouldBe(this Uri? uri, string urlString) =>
+        uri?.ToString().ShouldBe(urlString);
 
-    public static void ShouldDeeplyBe(this object? payload, object? json) => payload.ToJsonString().ShouldBe(json.ToJsonString());
+    public static void ShouldDeeplyBe(this object? payload, object? json) =>
+        payload.ToJsonString().ShouldBe(json.ToJsonString());
 
     [return: NotNullIfNotNull("payload")]
-    public static string? ToJsonString(this object? payload) => payload is null ? null : JsonConvert.SerializeObject(payload);
+    public static string? ToJsonString(this object? payload) =>
+        payload is null ? null : JsonConvert.SerializeObject(payload);
+
     [return: NotNullIfNotNull("payload")]
-    public static object? ToJsonObject(this object? payload) => JsonConvert.DeserializeObject(payload.ToJsonString() ?? string.Empty);
+    public static object? ToJsonObject(this object? payload) =>
+        JsonConvert.DeserializeObject(payload.ToJsonString() ?? string.Empty);
 
     public static PropertyInfo? PropertyOf<T>(this Stubber _, string name) =>
         typeof(T).GetProperty(name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
 
-    public static void ShouldBe<T>(this Type source) => source.ShouldBe(typeof(T));
+    public static void ShouldBe<T>(this Type source) =>
+        source.ShouldBe(typeof(T));
 
     public static void ShouldBeAbstract(this PropertyInfo source)
     {

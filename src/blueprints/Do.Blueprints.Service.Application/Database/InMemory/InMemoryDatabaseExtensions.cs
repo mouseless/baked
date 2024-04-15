@@ -5,5 +5,6 @@ namespace Do;
 
 public static class InMemoryDatabaseExtensions
 {
-    public static InMemoryDatabaseFeature InMemory(this DatabaseConfigurator _) => new();
+    public static InMemoryDatabaseFeature InMemory(this DatabaseConfigurator _) =>
+        new();
 }

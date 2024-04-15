@@ -5,5 +5,6 @@ namespace Do;
 
 public static class SingletonLifetimeExtensions
 {
-    public static SingletonLifetimeFeature Singleton(this LifetimeConfigurator _) => new();
+    public static SingletonLifetimeFeature Singleton(this LifetimeConfigurator _) =>
+        new();
 }
