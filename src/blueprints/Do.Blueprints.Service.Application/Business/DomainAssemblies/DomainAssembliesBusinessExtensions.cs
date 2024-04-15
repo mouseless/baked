@@ -8,29 +8,20 @@ namespace Do;
 
 public static class DomainAssembliesBusinessExtensions
 {
-    public static DomainAssembliesBusinessFeature DomainAssemblies(this BusinessConfigurator _, List<Assembly> assemblies) =>
-        new(assemblies);
+    public static DomainAssembliesBusinessFeature DomainAssemblies(this BusinessConfigurator _, List<Assembly> assemblies,
+        Func<IEnumerable<MethodOverloadModel>, MethodOverloadModel>? overloadSelector = default
+    ) => new(
+        assemblies,
+        overloadSelector ?? (overloads => overloads.OrderByDescending(o => o.Parameters.Count).First()) // overload with most parameters
+    );
 
-    public static void AddAction(this ControllerModel controller, TypeModel type, string methodName)
-    {
-        if (!type.TryGetMembers(out var members) || !members.Methods.TryGetValue(methodName, out var method)) { return; }
-
-        controller.AddAction(type, method);
-    }
-
-    public static void AddAction(this ControllerModel controller, TypeModel type, MethodModel method)
-    {
-        var overload = method.Overloads
-            .Where(o => o.Parameters.All(p => p.ParameterType.TryGetMetadata(out var metadata) && metadata.Has<ApiInputAttribute>()))
-            .OrderByDescending(o => o.Parameters.Count) // overload with most parameters
-            .First();
-
+    public static void AddAction(this ControllerModel controller, TypeModel type, string name, MethodOverloadModel overload) =>
         controller.Action.Add(
-            method.Name,
+            name,
             new(
-                Id: method.Name,
+                Id: name,
                 Method: HttpMethod.Post,
-                Route: $"{type.Name}/{method.Name}",
+                Route: $"{type.Name}/{name}",
                 Return: new(overload.ReturnType),
                 FindTargetStatement: "target"
             )
@@ -52,5 +43,7 @@ public static class DomainAssembliesBusinessExtensions
                 ]
             }
         );
-    }
+
+    public static bool AllParametersAreApiInput(this MethodOverloadModel overload) =>
+        overload.Parameters.All(p => p.ParameterType.TryGetMetadata(out var metadata) && metadata.Has<ApiInputAttribute>());
 }

@@ -1,5 +1,6 @@
 ﻿using Do.Architecture;
 using Do.Domain.Configuration;
+using Do.Domain.Model;
 using Do.RestApi.Conventions;
 using Do.RestApi.Model;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,7 +8,7 @@ using System.Reflection;
 
 namespace Do.Business.DomainAssemblies;
 
-public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies)
+public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IEnumerable<MethodOverloadModel>, MethodOverloadModel> _overloadSelector)
     : IFeature<BusinessConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
@@ -67,7 +68,8 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies)
                   members.Methods.Any()
             );
             builder.Conventions.AddMethodMetadata(new ApiMethodAttribute(),
-                when: method => method.Overloads.Any(o => o.IsPublic && o.Parameters.All(p => p.ParameterType.TryGetMetadata(out var metadata) && metadata.Has<ApiInputAttribute>())),
+                when: method =>
+                    method.Overloads.Any(o => o.IsPublic && o.AllParametersAreApiInput()),
                 order: int.MaxValue
             );
         });
@@ -84,7 +86,9 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies)
                 var controller = new ControllerModel(type);
                 foreach (var method in type.GetMembers().Methods.Having<ApiMethodAttribute>())
                 {
-                    controller.AddAction(type, method);
+                    var overload = _overloadSelector(method.Overloads.Where(o => o.IsPublic && o.AllParametersAreApiInput()));
+
+                    controller.AddAction(type, method.Name, overload);
                 }
 
                 api.Controller.Add(controller.Id, controller);
