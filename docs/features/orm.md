@@ -1,9 +1,7 @@
 # Orm
 
-This feature setups _NHibernate_ which registers `IEntityContext` and
-`IQueryContext` implementations, configures and uses the generated 
-`DomainModel`to add `AutoPersistenceModel` and `AutoMapping` conventions along
-with an `Instantiator` interceptor for _NHibernate_.
+This features basically configures `DataAccessLayer` so that it interprets
+certain domain types as entities and queries.
 
 Add this feature using `AddOrm()` extension;
 
@@ -11,10 +9,12 @@ Add this feature using `AddOrm()` extension;
 app.Features.AddOrm(...);
 ```
 
-## Default
+## Auto Map
 
-Adds default opinionated orm feature
+Auto maps domain types with `Entity` attribute using default opinions of
+`FluentNHibernate` along with `Guid Id` properties as primary key and configure
+foreign key references between entities.
 
 ```csharp
-c => c.Default()
+c => c.AutoMap()
 ```

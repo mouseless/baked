@@ -15,8 +15,7 @@ To create an application from this blueprint, use `Service()` extension of
 ```csharp
 Forge.New
     .Service(
-        business: c => c.Default(assemblies: [...]),
-        database: c => c.Sqlite()
+        business: c => c.DomainAssemblies([...])
     )
     .Run();
 ```
@@ -33,25 +32,24 @@ Layers in this blueprint are;
 | Http Client          | +   |      |
 | Http Server          | +   |      |
 | Monitoring           | +   | +    |
-| Rest Api             | +   | +    |
+| Rest Api             | +   |      |
 | Testing              |     | +    |
 
 Features with default options are;
 
 | Features           | Run           | Test            | Required |
 | ------------------ | ------------- | --------------- | -------- |
-| Authentication     | FixedToken    | FixedToken      |          |
-| Business           | Default       | Default         | Yes      |
+| Authentication     | Fixed Token   | Fixed Token     |          |
+| Business           |               |                 | Yes      |
 | Caching            | Scoped Memory | Scoped Memory   |          |
 | Communication      | Http          | Mock            |          |
 | Core               | Dotnet        | Mock            |          |
-| Database           | Sqlite        | InMemory        | Yes      |
-| Documentation      | Default       |                 |          |
-| Exception Handling | Default       |                 |          |
+| Database           | Sqlite        | In Memory       |          |
+| Exception Handling | Default       | Default         |          |
 | Greeting           | Swagger       |                 |          |
 | Logging            | Request       |                 |          |
 | Mocking Overrider  |               | First Interface |          |
-| Orm                | Default       | Default         |          |
+| Orm                | Auto Map      | Auto Map        |          |
 
 Phase execution order;
 

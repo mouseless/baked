@@ -9,7 +9,7 @@ Add this feature using `AddDatabase()` extension;
 app.Features.AddDatabase(...);
 ```
 
-## InMemory
+## In Memory
 
 Adds in-memory database setup.
 

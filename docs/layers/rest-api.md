@@ -8,10 +8,10 @@ app.Layers.AddRestApi();
 
 ## Configuration Targets
 
-This layer provides `ApiModel` for generating controllers from domain objects,
-`IApplicationPartCollection` for registering necessary application parts,
-`MvcNewtonsoftJsonOptions` `SwaggerGenOptions`, `SwaggerOptions` and
-`SwaggerUIOptions` for configuring `Swagger` behavior.
+This layer provides `ApiModel` and `IApiModelConventionCollection` to generate
+controllers from domain objects, `IApplicationPartCollection` for registering
+necessary application parts, `MvcNewtonsoftJsonOptions` `SwaggerGenOptions`,
+`SwaggerOptions` and `SwaggerUIOptions` for configuring `Swagger` behavior.
 
 ### `ApiModel`
 
@@ -19,6 +19,17 @@ This target is provided in `GenerateCode` phase. To configure it in a feature;
 
 ```csharp
 configurator.ConfigureApiModel(api =>
+{
+    ...
+});
+```
+
+### `IApiModelConventionCollection`
+
+This target is provided in `GenerateCode` phase. To configure it in a feature;
+
+```csharp
+configurator.ConfigureApiModelConventions(conventions =>
 {
     ...
 });

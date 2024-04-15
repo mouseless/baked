@@ -35,7 +35,7 @@ public static class ForgeExtensions
         database ??= c => c.Sqlite();
         exceptionHandling ??= c => c.Default();
         greeting ??= c => c.Swagger();
-        logging ??= c => c.RequestLogging();
+        logging ??= c => c.Request();
         orm ??= c => c.AutoMap();
         configure ??= _ => { };
 
