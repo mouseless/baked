@@ -16,7 +16,7 @@ public static class ForgeExtensions
 {
     public static Application Service(this Forge source,
         Func<BusinessConfigurator, IFeature<BusinessConfigurator>> business,
-        Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>? authentication = default,
+        IEnumerable<Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>>? authentications = default,
         Func<CachingConfigurator, IFeature<CachingConfigurator>>? caching = default,
         Func<CommunicationConfigurator, IFeature<CommunicationConfigurator>>? communication = default,
         Func<CoreConfigurator, IFeature<CoreConfigurator>>? core = default,
@@ -28,7 +28,7 @@ public static class ForgeExtensions
         Action<ApplicationDescriptor>? configure = default
     )
     {
-        authentication ??= c => c.FixedToken();
+        authentications ??= [c => c.FixedToken()];
         caching ??= c => c.ScopedMemory();
         communication ??= c => c.Http();
         core ??= c => c.Dotnet();
@@ -51,7 +51,7 @@ public static class ForgeExtensions
             app.Layers.AddMonitoring();
             app.Layers.AddRestApi();
 
-            app.Features.AddAuthentication(authentication);
+            app.Features.AddAuthentications(authentications);
             app.Features.AddBusiness(business);
             app.Features.AddCaching(caching);
             app.Features.AddCodingStyles([

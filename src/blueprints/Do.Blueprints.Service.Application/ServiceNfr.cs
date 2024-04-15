@@ -32,7 +32,7 @@ public abstract class ServiceNfr<TEntryPoint> : Nfr
     protected override Application ForgeApplication() =>
         Forge.New
             .Service(
-                authentication: Authentication,
+                authentications: Authentications,
                 business: Business,
                 caching: Caching,
                 core: Core,
@@ -45,7 +45,7 @@ public abstract class ServiceNfr<TEntryPoint> : Nfr
                 configure: Configure
             );
 
-    protected virtual Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>? Authentication => default;
+    protected virtual IEnumerable<Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>>? Authentications => default;
     protected abstract Func<BusinessConfigurator, IFeature<BusinessConfigurator>> Business { get; }
     protected virtual Func<CachingConfigurator, IFeature<CachingConfigurator>>? Caching => default;
     protected virtual Func<CommunicationConfigurator, IFeature<CommunicationConfigurator>>? Communication => default;

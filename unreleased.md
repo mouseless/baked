@@ -44,6 +44,7 @@
 - `Default` orm feature is renamed as `AutoMap`
 - `Documentation` feature is refactored into coding styles and removed
   completely
+- `Authentication` feature is now a multi-feature
 
 ## Bugfixes
 
