@@ -12,18 +12,19 @@ public static class DomainAssembliesBusinessExtensions
         Func<IEnumerable<MethodOverloadModel>, MethodOverloadModel>? overloadSelector = default
     ) => new(
         assemblies,
-        overloadSelector ?? (overloads => overloads.OrderByDescending(o => o.Parameters.Count).First()) // overload with most parameters
+        overloadSelector ?? (overloads => overloads.OrderByDescending(o => o.Parameters.Count).First())
     );
 
-    public static void AddAction(this ControllerModel controller, TypeModel type, string name, MethodOverloadModel overload) =>
+    public static void AddAction(this ControllerModel controller, TypeModel type, MethodModel method, MethodOverloadModel overload) =>
         controller.Action.Add(
-            name,
+            method.Name,
             new(
-                Id: name,
+                Id: method.Name,
                 Method: HttpMethod.Post,
-                Route: $"{type.Name}/{name}",
+                Route: $"{type.Name}/{method.Name}",
                 Return: new(overload.ReturnType),
-                FindTargetStatement: "target"
+                FindTargetStatement: "target",
+                MethodModel: method
             )
             {
                 Parameters = [

@@ -83,7 +83,7 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
         {
             var domainModel = configurator.Context.GetDomainModel();
 
-            conventions.Add(new LookupEntityByIdConvention(domainModel, action => action.Id != "With"));
+            conventions.Add(new LookupEntityByIdConvention(domainModel));
             conventions.Add(new LookupEntitiesByIdsConvention(domainModel));
             conventions.Add(new SingleByUniqueConvention(domainModel));
             conventions.Add(new RemoveActionNameFromRouteConvention(["By"]));

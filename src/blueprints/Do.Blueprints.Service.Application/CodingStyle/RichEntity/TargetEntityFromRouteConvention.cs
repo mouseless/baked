@@ -1,4 +1,5 @@
-﻿using Do.Domain.Model;
+﻿using Do.Business;
+using Do.Domain.Model;
 using Do.Orm;
 using Do.RestApi.Configuration;
 using Do.RestApi.Model;
@@ -8,12 +9,12 @@ using ParameterModel = Do.RestApi.Model.ParameterModel;
 
 namespace Do.CodingStyle.RichEntity;
 
-public class TargetEntityFromRouteConvention(DomainModel _domain, Func<ActionModel, bool> _actionFilter)
+public class TargetEntityFromRouteConvention(DomainModel _domain)
     : IApiModelConvention<ParameterModelContext>
 {
     public void Apply(ParameterModelContext context)
     {
-        if (!_actionFilter(context.Action)) { return; }
+        if (context.Action.MethodModel?.CustomAttributes.Contains<InitializerAttribute>() == true) { return; }
 
         var entityParameter = context.Parameter;
         if (entityParameter.IsInvokeMethodParameter) { return; }

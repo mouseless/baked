@@ -1,4 +1,5 @@
-﻿using Do.Domain.Model;
+﻿using Do.Business;
+using Do.Domain.Model;
 using Do.RestApi.Configuration;
 using Do.RestApi.Model;
 using Humanizer;
@@ -7,12 +8,12 @@ using ParameterModel = Do.RestApi.Model.ParameterModel;
 
 namespace Do.Orm.AutoMap;
 
-public class LookupEntityByIdConvention(DomainModel _domain, Func<ActionModel, bool> _actionFilter)
+public class LookupEntityByIdConvention(DomainModel _domain)
     : IApiModelConvention<ParameterModelContext>
 {
     public void Apply(ParameterModelContext context)
     {
-        if (!_actionFilter(context.Action)) { return; }
+        if (context.Action.MethodModel?.CustomAttributes.Contains<InitializerAttribute>() == true) { return; }
 
         var entityParameter = context.Parameter;
         if (!entityParameter.IsInvokeMethodParameter) { return; }

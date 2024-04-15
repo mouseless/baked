@@ -17,6 +17,9 @@ public class WithMethodCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     members.Has<ServiceAttribute>() &&
                     members.Methods.Contains("With")
             );
+            builder.Conventions.AddMethodMetadata(new InitializerAttribute(),
+                when: method => method.Name == "With"
+            );
         });
 
         configurator.ConfigureApiModelConventions(conventions =>

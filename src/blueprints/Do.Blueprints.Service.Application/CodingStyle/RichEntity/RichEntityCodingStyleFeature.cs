@@ -55,7 +55,7 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
             var domainModel = configurator.Context.GetDomainModel();
 
             conventions.Add(new EntityUnderEntitiesConvention());
-            conventions.Add(new TargetEntityFromRouteConvention(domainModel, action => action.Id != "With"));
+            conventions.Add(new TargetEntityFromRouteConvention(domainModel));
         });
     }
 }

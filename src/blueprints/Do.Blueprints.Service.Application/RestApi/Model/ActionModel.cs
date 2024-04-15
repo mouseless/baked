@@ -1,4 +1,5 @@
-﻿using Humanizer;
+﻿using Do.Domain.Model;
+using Humanizer;
 
 namespace Do.RestApi.Model;
 
@@ -7,7 +8,8 @@ public record ActionModel(
     HttpMethod Method,
     string Route,
     ReturnModel Return,
-    string FindTargetStatement
+    string FindTargetStatement,
+    MethodModel? MethodModel = default
 )
 {
     public string Name { get; set; } = Id;

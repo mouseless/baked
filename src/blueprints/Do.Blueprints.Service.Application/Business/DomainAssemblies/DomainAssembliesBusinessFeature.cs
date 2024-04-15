@@ -88,7 +88,7 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
                 {
                     var overload = _overloadSelector(method.Overloads.Where(o => o.IsPublic && o.AllParametersAreApiInput()));
 
-                    controller.AddAction(type, method.Name, overload);
+                    controller.AddAction(type, method, overload);
                 }
 
                 api.Controller.Add(controller.Id, controller);
