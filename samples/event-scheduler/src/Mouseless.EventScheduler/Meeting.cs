@@ -29,7 +29,6 @@ public class Meeting(IEntityContext<Meeting> _context, Func<MeetingContact> _new
     public virtual void Delete()
     {
         var meetingContacts = _meetingContacts.ByMeeting(this);
-
         foreach (var item in meetingContacts)
         {
             item.Delete();

@@ -12,5 +12,6 @@ public class RemoveActionNameFromRouteConvention(IEnumerable<string> actionNames
         if (!_actionNames.Contains(context.Action.Name)) { return; }
 
         context.Action.Route = context.Action.Route.Replace($"/{context.Action.Name}", string.Empty);
+        context.Action.Name = string.Empty;
     }
 }
