@@ -16,7 +16,6 @@ public record ActionModel(
     public Func<string, string> RoutePartStylizer { get; set; } = s => s.Kebaberize();
     public ReturnModel Return { get; set; } = Return;
     public string FindTargetStatement { get; set; } = FindTargetStatement;
-    public string InvokedMethodName { get; set; } = Id;
     public bool UseForm { get; set; } = false;
     public int Order { get; set; } = 0;
 

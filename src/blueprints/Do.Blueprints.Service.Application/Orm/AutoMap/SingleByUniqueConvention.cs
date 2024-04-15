@@ -26,7 +26,7 @@ public class SingleByUniqueConvention(DomainModel _domainModel)
         uniqueParameter.Name = newParameterName;
 
         var newParameterRoute = $"{{{newParameterName}{(uniqueParameter.TypeModel.Is<Guid>() ? ":guid" : string.Empty)}}}";
-        context.Action.Route = context.Action.Route.Replace(context.Action.Id, newParameterRoute);
+        context.Action.Route = context.Action.Route.Replace(context.Action.Name, newParameterRoute);
 
         if (context.Action.Parameter.TryGetValue("throwNotFound", out var throwNotFoundParameter))
         {

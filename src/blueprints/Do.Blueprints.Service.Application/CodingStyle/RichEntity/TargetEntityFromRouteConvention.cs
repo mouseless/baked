@@ -29,7 +29,7 @@ public class TargetEntityFromRouteConvention(DomainModel _domain, Func<ActionMod
         entityParameter.Name = $"{entityParameter.TypeModel.Name.Camelize()}Id";
         entityParameter.From = ParameterModelFrom.Route;
 
-        context.Action.Route = $"{entityType.Name.Pluralize()}/{{{entityParameter.Name}:guid}}/{context.Action.Id}";
+        context.Action.Route = $"{entityType.Name.Pluralize()}/{{{entityParameter.Name}:guid}}/{context.Action.Name}";
         context.Action.FindTargetStatement = $"{queryContextParameter.Name}.SingleById({entityParameter.Name}, throwNotFound: true)";
     }
 }

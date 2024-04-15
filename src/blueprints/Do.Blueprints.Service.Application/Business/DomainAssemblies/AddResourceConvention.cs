@@ -7,8 +7,10 @@ public class AddResourceConvention : IApiModelConvention<ActionModelContext>
 {
     public void Apply(ActionModelContext context)
     {
-        if (!context.Action.Id.StartsWith("Add")) { return; }
+        if (!context.Action.Name.StartsWith("Add")) { return; }
 
-        context.Action.Route = context.Action.Route.Replace(context.Action.Id, context.Action.Id[3..].Pluralize());
+        var newName = context.Action.Name[3..].Pluralize();
+        context.Action.Route = context.Action.Route.Replace(context.Action.Name, newName);
+        context.Action.Name = newName;
     }
 }

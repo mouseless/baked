@@ -7,8 +7,11 @@ public class RemovePrefixFromRouteConvention(IEnumerable<string> _prefixes)
 {
     public void Apply(ActionModelContext context)
     {
-        if (!_prefixes.Any(prefix => context.Action.Id.StartsWith(prefix))) { return; }
+        var prefix = _prefixes.FirstOrDefault(prefix => context.Action.Name.StartsWith(prefix));
+        if (prefix is null) { return; }
 
-        context.Action.Route = context.Action.Route.Replace(context.Action.Id, context.Action.Id[3..]);
+        var newName = context.Action.Name[prefix.Length..];
+        context.Action.Route = context.Action.Route.Replace(context.Action.Name, newName);
+        context.Action.Name = newName;
     }
 }
