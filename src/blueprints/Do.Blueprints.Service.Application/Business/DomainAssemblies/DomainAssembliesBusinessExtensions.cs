@@ -33,11 +33,7 @@ public static class DomainAssembliesBusinessExtensions
                         {
                             IsOptional = p.IsOptional,
                             DefaultValue = p.DefaultValue,
-                            DefaultValueRenderer = defaultValue =>
-                                p.ParameterType.Is<bool>() ? $"{defaultValue}".ToLowerInvariant() :
-                                p.ParameterType.Is<bool?>() ? $"{defaultValue}".ToLowerInvariant() :
-                                p.ParameterType.Is<string>() ? $"\"{defaultValue}\"" :
-                                $"{defaultValue}"
+                            DefaultValueRenderer = defaultValue => $"{defaultValue}"
                         }
                     )
                 ]

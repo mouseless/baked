@@ -8,7 +8,11 @@ public class EnumDefaultValueConvention : IApiModelConvention<ParameterModelCont
     public void Apply(ParameterModelContext context)
     {
         TypeModel? enumType = null;
-        if (context.Parameter.TypeModel.IsEnum) { enumType = context.Parameter.TypeModel; }
+        if (context.Parameter.TypeModel.IsEnum)
+        {
+            enumType = context.Parameter.TypeModel;
+        }
+
         if (context.Parameter.TypeModel.IsAssignableTo(typeof(Nullable<>)) &&
             context.Parameter.TypeModel.TryGetGenerics(out var generics))
         {
