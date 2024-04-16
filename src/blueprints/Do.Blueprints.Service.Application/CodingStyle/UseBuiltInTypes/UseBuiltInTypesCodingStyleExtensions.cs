@@ -6,6 +6,6 @@ namespace Do;
 public static class UseBuiltInTypesCodingStyleExtensions
 {
     public static UseBuiltInTypesCodingStyleFeature UseBuiltInTypes(this CodingStyleConfigurator _,
-        IEnumerable<string>? textPropertySuffices = default
-    ) => new(textPropertySuffices ?? ["Data"]);
+        IEnumerable<string>? textPropertySuffixes = default
+    ) => new(textPropertySuffixes ?? ["Data"]);
 }

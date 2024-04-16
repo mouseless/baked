@@ -7,7 +7,7 @@ using Newtonsoft.Json.Serialization;
 
 namespace Do.CodingStyle.UseBuiltInTypes;
 
-public class UseBuiltInTypesCodingStyleFeature(IEnumerable<string> _textPropertySuffices)
+public class UseBuiltInTypesCodingStyleFeature(IEnumerable<string> _textPropertySuffixes)
     : IFeature<CodingStyleConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
@@ -49,7 +49,7 @@ public class UseBuiltInTypesCodingStyleFeature(IEnumerable<string> _textProperty
             model.Conventions.Add(ConventionBuilder.Property.When(
                 x => x.Expect(p =>
                     p.Property.PropertyType == typeof(string) &&
-                    _textPropertySuffices.Any(suffix => p.Property.Name.EndsWith(suffix))
+                    _textPropertySuffixes.Any(suffix => p.Property.Name.EndsWith(suffix))
                 ),
                 x => x.CustomSqlType("TEXT")
             ));
