@@ -1,11 +1,9 @@
 # Authentication
 
-This feature provides a mechanism which authenticates incoming http requests.
-
-Add this feature using `AddAuthentication()` extension;
+Add this feature using `AddAuthentications()` extension;
 
 ```csharp
-app.Features.AddAuthentication(...);
+app.Features.AddAuthentications([...]);
 ```
 
 ## Fixed Token

@@ -17,8 +17,8 @@ c => c.ObjectAsJson()
 
 ## Remaining Services are Singleton
 
-Configures all remaining (non-transient and non-scoped) services to use
-singleton lifetime.
+Adds `SingletonAttribute` to the services that has no `TransientAttribute` or
+`ScopedAttribute`.
 
 ```csharp
 c => c.RemainingServicesAreSingleton()
@@ -41,7 +41,8 @@ c => c.RichEntity()
 
 ## Scoped by Suffix
 
-Configures services with given suffixes to use scoped lifetime.
+Adds `ScopedAttribute` to the services that has name with any of the given
+suffixes.
 
 ```csharp
 c => c.ScopedBySuffix(suffixes: ["Context", "Scope"])
@@ -70,8 +71,8 @@ c => c.UseBuiltInTypes(textPropertySuffixes: ["Data", "Description"])
 
 ## With Method
 
-Configures services that has a `With` method to use transient lifetime. This
-coding style makes usages like `newEntity().With(name)` possible.
+Adds `TransientAttribute` to the services that has a `With` method. This coding
+style makes usages like `newEntity().With(name)` possible.
 
 ```csharp
 c => c.WithMethod()
