@@ -18,7 +18,7 @@ Forge.New
     .Run();
 ```
 
-> :information_source:
+> [!NOTE]
 >
 > `Do` is automatically added as a global using so that you can directly make a
 > call to `Forge.New`.
@@ -42,7 +42,7 @@ Cors][].
 `Features` properties. Using these properties, you can add desired extensions
 into your application.
 
-> :information_source:
+> [!NOTE]
 >
 > Layers and features come with extension methods exposed directly in `Do`
 > namespace so that you can see options without adding an extra `using`.
@@ -57,7 +57,7 @@ app.Layers.AddHttpServer();
 app.Layers.AddDataAccess();
 ```
 
-> :information_source:
+> [!NOTE]
 >
 > A layer can only be added once.
 
@@ -73,7 +73,7 @@ app.Features.AddGreeting(c => c.WelcomePage());
 app.Features.AddDatabase(c => c.MySql());
 ```
 
-> :information_source:
+> [!NOTE]
 >
 > A feature can only be added once.
 
@@ -134,7 +134,7 @@ to/from the context, such as `IServiceCollection`, `IMiddlewareCollection`,
 Refer to [Readiness via Dependencies](./layer.md#readiness-via-dependencies)
 for more details.
 
-> :warning:
+> [!WARNING]
 >
 > When trying to get a certain object from `ApplicationContext`, exact type
 > should be given. Using any other type that extends or implements the target
@@ -193,7 +193,7 @@ sequenceDiagram
     PB -->>-APP: End of Phase B
 ```
 
-> :information_source:
+> [!NOTE]
 >
 > A layer doesn't necessarily introduce new phases to an application, but all
 > phases are applied to all layers nevertheless. For example, `HttpServerLayer`
@@ -228,7 +228,7 @@ flowchart TB
   B --> |WebApplication| R
 ```
 
-> :information_source:
+> [!NOTE]
 >
 > All phases need to initialize. Application will cause a
 > `CannotProceedException` if any of the phases never gets initialized.
