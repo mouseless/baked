@@ -10,10 +10,9 @@ public class DefaultExceptionHandlingFeature(Setting<string>? _typeUrlFormat = d
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureTypeCollection(types =>
+        configurator.ConfigureDomainTypeCollection(types =>
         {
             types.Add<HandledException>();
-            types.Add<IExceptionHandler>();
         });
 
         configurator.ConfigureServiceCollection(services =>
@@ -21,6 +20,15 @@ public class DefaultExceptionHandlingFeature(Setting<string>? _typeUrlFormat = d
             services.AddSingleton<IExceptionHandler, UnauthorizedAccessExceptionHandler>();
             services.AddSingleton<IExceptionHandler, HandledExceptionHandler>();
             services.AddSingleton(new ExceptionHandlerSettings(_typeUrlFormat));
+
+            var domainModel = configurator.Context.GetDomainModel();
+            foreach (var exceptionHandlerType in domainModel.Types.Where(t => t.IsClass && !t.IsAbstract && t.IsAssignableTo<IExceptionHandler>()))
+            {
+                exceptionHandlerType.Apply(t =>
+                {
+                    services.AddSingleton(typeof(IExceptionHandler), t, forward: true);
+                });
+            }
 
             services.AddExceptionHandler<ExceptionHandler>();
             services.AddProblemDetails();

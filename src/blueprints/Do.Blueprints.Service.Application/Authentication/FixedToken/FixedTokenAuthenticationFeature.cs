@@ -4,7 +4,8 @@ using Microsoft.OpenApi.Models;
 
 namespace Do.Authentication.FixedToken;
 
-public class FixedTokenAuthenticationFeature(List<string> _tokenNames) : IFeature<AuthenticationConfigurator>
+public class FixedTokenAuthenticationFeature(List<string> _tokenNames)
+    : IFeature<AuthenticationConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {

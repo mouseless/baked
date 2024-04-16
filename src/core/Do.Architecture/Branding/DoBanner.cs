@@ -6,27 +6,21 @@ public sealed class DoBanner : IBanner
     {
         var assembly = GetType().Assembly;
         var version = assembly.GetName().Version ?? new(0, 0, 0);
-        var ver = $"{version.Major}.{version.Minor}.{version.Build}";
+        var versionString = $"{version.Major}.{version.Minor}.{version.Build}";
 
         var brand = ConsoleColor.DarkRed;
         var white = ConsoleColor.White;
-        var foreground = ConsoleColor.Gray;
-        var border = ConsoleColor.DarkGray;
+        var foreground = ConsoleColor.DarkGray;
 
-        L("----------------------------------------------", border);
         L();
-        W("  ").W("██", brand).L("        ████████    ██████████", white);
-        W("    ").W("██", brand).L("      ██      ██  ██      ██", white);
-        W("      ").W("██", brand).L("    ██      ██  ██      ██", white);
-        W("    ").W("██", brand).L("      ██      ██  ██      ██", white);
-        W("  ").W("██", brand).W("        ████████    ██████████  ", white).L("██████████", brand);
+        W(" ").W("▀▄  ", brand).L(" █▀▀▀▄ █▀▀▀█", white);
+        W("  ").W("▄▀ ", brand).L(" █   █ █   █", white);
+        W(" ").W("▀   ", brand).W(" ▀▀▀▀  ▀▀▀▀▀", white).L(" ▀▀▀▀▀", brand);
         L();
-        L("------------------- v$VER$ -------------------".Replace("$VER$", ver), border);
-        L();
+        L($"Version: v{versionString}", foreground);
         L("Docs: https://do.mouseless.codes", foreground);
         L("Source: https://github.com/mouseless/do", foreground);
         L();
-        L("----------------------------------------------", border);
     }
 
     DoBanner L(string? message = default, ConsoleColor? color = default) => W($"{message ?? string.Empty}{Environment.NewLine}", color);

@@ -1,21 +1,16 @@
-﻿using Do.Architecture;
-using Do.Authentication;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http.Headers;
 
 namespace Do.Test.Authentication;
 
 public class InterceptingUnauthorizedRequests : TestServiceNfr
 {
-    protected override Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>? Authentication =>
-       c => c.FixedToken();
-
     [Test]
     public async Task Returns_unauthorized_access_response_for_invalid_authorization_header()
     {
         Client.DefaultRequestHeaders.Authorization = AuthenticationHeaderValue.Parse("Wrong_token");
 
-        var response = await Client.GetAsync("singleton/time");
+        var response = await Client.PostAsync("authentication-samples/token-authentication", null);
 
         response.IsSuccessStatusCode.ShouldBeFalse();
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
@@ -31,7 +26,7 @@ public class InterceptingUnauthorizedRequests : TestServiceNfr
             new("value", "1")
         ]);
 
-        var response = await Client.PostAsync("singleton/test-form-post-authentication", content);
+        var response = await Client.PostAsync("authentication-samples/form-post-authentication", content);
 
         response.IsSuccessStatusCode.ShouldBeFalse();
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);

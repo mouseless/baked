@@ -1,39 +1,46 @@
 ﻿using Do.Architecture;
-using Do.Domain.Model;
+using Do.Domain.Configuration;
 using Microsoft.Extensions.Configuration;
 
-using static Do.Configuration.ConfigurationLayer;
+using static Do.Domain.DomainLayer;
 
 namespace Do.Domain;
 
-public class DomainLayer : LayerBase<BuildConfiguration>
+public class DomainLayer : LayerBase<AddDomainTypes>
 {
-    readonly IAssemblyCollection _assemblyCollection = new AssemblyCollection();
-    readonly ITypeCollection _typeCollection = new TypeCollection();
-    readonly DomainBuilderOptions _domainBuilderOptions = new();
+    readonly IDomainTypeCollection _domainTypes = new DomainTypeCollection();
+    readonly DomainModelBuilderOptions _builderOptions = new();
 
-    protected override PhaseContext GetContext(BuildConfiguration phase) =>
+    protected override PhaseContext GetContext(AddDomainTypes phase) =>
         phase.CreateContextBuilder()
-            .Add<IAssemblyCollection>(_assemblyCollection)
-            .Add<ITypeCollection>(_typeCollection)
-            .Add<DomainBuilderOptions>(_domainBuilderOptions)
+            .Add(_domainTypes)
+            .Add(_builderOptions)
             .Build();
 
     protected override IEnumerable<IPhase> GetPhases()
     {
-        yield return new BuildDomain(_assemblyCollection, _typeCollection, _domainBuilderOptions);
+        yield return new AddDomainTypes(_domainTypes);
+        yield return new BuildDomainModel(_builderOptions);
     }
 
-    public class BuildDomain(IAssemblyCollection _assemblyCollection, ITypeCollection _typeCollection, DomainBuilderOptions _domainBuilderOptions)
+    public class AddDomainTypes(IDomainTypeCollection _domainTypes)
         : PhaseBase<ConfigurationManager>(PhaseOrder.Early)
     {
         protected override void Initialize(ConfigurationManager _)
         {
-            var builder = new DomainModelBuilder(_domainBuilderOptions);
+            Context.Add(_domainTypes);
+        }
+    }
 
-            var model = builder.BuildFrom(_assemblyCollection, _typeCollection);
+    public class BuildDomainModel(DomainModelBuilderOptions _builderOptions)
+        : PhaseBase<IDomainTypeCollection>(PhaseOrder.Latest)
+    {
+        protected override void Initialize(IDomainTypeCollection domainTypes)
+        {
+            var builder = new DomainModelBuilder(_builderOptions);
+            var model = builder.Build(domainTypes);
 
-            Context.Add<DomainModel>(model);
+            Context.Add(model);
         }
     }
 }

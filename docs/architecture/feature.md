@@ -16,6 +16,9 @@ implementing a new feature;
    `Greeting/GreetingConfigurator.cs`, `Greeting/GreetingExtensions.cs`.
 1. Provide an `Add` method to add feature to an application, e.g.,
    `AddGreeting()`.
+   1. If feature allows multiple implementations, indicate this with a plural
+      add method, e.g., `AddCodingStyles()`. Also accept a list of features
+      instead of a single feature.
 
 ### Implementation
 

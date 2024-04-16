@@ -1,5 +1,6 @@
 ﻿using Do.Architecture;
 using Do.Branding;
+using System.Globalization;
 
 namespace Do;
 
@@ -9,6 +10,7 @@ public class Forge(IBanner _banner, Func<Application> _newApplication)
 
     public Application Application(Action<ApplicationDescriptor> describe)
     {
+        Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
         _banner.Print();
 
         var descriptor = new ApplicationDescriptor();

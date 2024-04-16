@@ -25,7 +25,7 @@ public abstract class ServiceSpec : Spec
 
     protected static ApplicationContext Init(
         Func<BusinessConfigurator, IFeature<BusinessConfigurator>> business,
-        Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>? authentication = default,
+        IEnumerable<Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>>? authentications = default,
         Func<CachingConfigurator, IFeature<CachingConfigurator>>? caching = default,
         Func<CommunicationConfigurator, IFeature<CommunicationConfigurator>>? communication = default,
         Func<CoreConfigurator, IFeature<CoreConfigurator>>? core = default,
@@ -36,32 +36,45 @@ public abstract class ServiceSpec : Spec
         Action<ApplicationDescriptor>? configure = default
     )
     {
-        authentication ??= c => c.Disabled();
+        authentications ??= [c => c.FixedToken()];
         caching ??= c => c.ScopedMemory();
         communication ??= c => c.Mock();
         core ??= c => c.Mock();
         database ??= c => c.InMemory();
         exceptionHandling ??= c => c.Default();
         mockOverrider ??= c => c.FirstInterface();
-        orm ??= c => c.Default();
+        orm ??= c => c.AutoMap();
 
-        var context = Spec.Init(app =>
+        var context = Init(app =>
         {
+            app.Layers.AddCodeGeneration();
             app.Layers.AddConfiguration();
             app.Layers.AddDataAccess();
             app.Layers.AddDependencyInjection();
             app.Layers.AddDomain();
             app.Layers.AddMonitoring();
-            app.Layers.AddRestApi();
             app.Layers.AddTesting();
 
-            app.Features.AddAuthentication(authentication);
+            app.Features.AddAuthentications(authentications);
             app.Features.AddBusiness(business);
             app.Features.AddCaching(caching);
+            app.Features.AddCodingStyles([
+                c => c.WithMethod(),
+                c => c.ScopedBySuffix(),
+                c => c.RemainingServicesAreSingleton(),
+                c => c.UseBuiltInTypes(),
+                c => c.ObjectAsJson(),
+                c => c.RichEntity()
+            ]);
             app.Features.AddCommunication(communication);
             app.Features.AddCore(core);
             app.Features.AddDatabase(database);
             app.Features.AddExceptionHandling(exceptionHandling);
+            app.Features.AddLifetimes([
+                c => c.Singleton(),
+                c => c.Scoped(),
+                c => c.Transient()
+            ]);
             app.Features.AddMockOverrider(mockOverrider);
             app.Features.AddOrm(orm);
 
@@ -86,7 +99,7 @@ public abstract class ServiceSpec : Spec
 
         MockMe.TheConfiguration(settings: Settings, defaultValueProvider: GetDefaultSettingsValue);
 
-        // This is the initial release date of DO. Do not change this the avoid
+        // This is the initial release date. Do not change this to avoid
         // potential "Cannot go back in time." errors.
         MockMe.TheTime(now: new DateTime(2023, 06, 15, 16, 59, 00), reset: true);
     }

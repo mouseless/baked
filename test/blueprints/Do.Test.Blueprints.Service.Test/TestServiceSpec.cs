@@ -1,15 +1,22 @@
+using Do.Domain.Model;
+using Do.Test.Communication;
+using Do.Test.Orm;
+
 namespace Do.Test;
 
 public abstract class TestServiceSpec : ServiceSpec
 {
-    static TestServiceSpec() =>
-        Init(
-            business: c => c.Default(assemblies: [typeof(Entity).Assembly]),
+    protected static DomainModel DomainModel { get; private set; } = default!;
+
+    static TestServiceSpec()
+    {
+        var context = Init(
+            business: c => c.DomainAssemblies([typeof(Entity).Assembly]),
             communication: c => c.Mock(defaultResponses: response =>
             {
-                response.ForClient<Singleton>(response: "test result");
-                response.ForClient<Operation>(response: "path1 response", when: r => r.UrlOrPath.Equals("path1"));
-                response.ForClient<Operation>(response: "path2 response", when: r => r.UrlOrPath.Equals("path2"));
+                response.ForClient<ExternalSamples>(response: "test result");
+                response.ForClient<InternalSamples>(response: "path1 response", when: r => r.UrlOrPath.Equals("path1"));
+                response.ForClient<InternalSamples>(response: "path2 response", when: r => r.UrlOrPath.Equals("path2"));
             }),
             configure: app =>
             {
@@ -17,6 +24,9 @@ public abstract class TestServiceSpec : ServiceSpec
             }
         );
 
+        DomainModel = context.GetDomainModel();
+    }
+
     protected override string? GetDefaultSettingsValue(string key) =>
-        key == "Int" ? "42" : "test value";
+        key == "Int" ? $"{GiveMe.AnInteger()}" : GiveMe.AString();
 }

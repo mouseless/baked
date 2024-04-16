@@ -5,7 +5,6 @@ using Do.Caching;
 using Do.Communication;
 using Do.Core;
 using Do.Database;
-using Do.Documentation;
 using Do.ExceptionHandling;
 using Do.Greeting;
 using Do.Logging;
@@ -33,13 +32,12 @@ public abstract class ServiceNfr<TEntryPoint> : Nfr
     protected override Application ForgeApplication() =>
         Forge.New
             .Service(
-                authentication: Authentication,
+                authentications: Authentications,
                 business: Business,
                 caching: Caching,
                 core: Core,
                 communication: Communication,
                 database: Database,
-                documentation: Documentation,
                 exceptionHandling: ExceptionHandling,
                 greeting: Greeting,
                 logging: Logging,
@@ -47,13 +45,12 @@ public abstract class ServiceNfr<TEntryPoint> : Nfr
                 configure: Configure
             );
 
-    protected virtual Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>? Authentication => default;
+    protected virtual IEnumerable<Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>>? Authentications => default;
     protected abstract Func<BusinessConfigurator, IFeature<BusinessConfigurator>> Business { get; }
     protected virtual Func<CachingConfigurator, IFeature<CachingConfigurator>>? Caching => default;
     protected virtual Func<CommunicationConfigurator, IFeature<CommunicationConfigurator>>? Communication => default;
     protected virtual Func<CoreConfigurator, IFeature<CoreConfigurator>>? Core => default;
-    protected virtual Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>>? Database => c => c.InMemory();
-    protected virtual Func<DocumentationConfigurator, IFeature<DocumentationConfigurator>>? Documentation => default;
+    protected virtual Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>>? Database => default;
     protected virtual Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>>? ExceptionHandling => default;
     protected virtual Func<GreetingConfigurator, IFeature<GreetingConfigurator>>? Greeting => default;
     protected virtual Func<LoggingConfigurator, IFeature<LoggingConfigurator>>? Logging => default;

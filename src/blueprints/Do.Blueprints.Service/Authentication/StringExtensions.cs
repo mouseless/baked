@@ -3,7 +3,7 @@ using System.Text;
 
 namespace System;
 
-public static class StringExtensions
+public static partial class StringExtensions
 {
     public static byte[] ToSHA256(this string source)
     {

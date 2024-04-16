@@ -8,7 +8,8 @@ namespace Do;
 
 public static class ScopedMemoryCachingExtensions
 {
-    public static ScopedMemoryCachingFeature ScopedMemory(this CachingConfigurator _) => new();
+    public static ScopedMemoryCachingFeature ScopedMemory(this CachingConfigurator _) =>
+        new();
 
     public static IMemoryCache AMemoryCache(this Stubber giveMe,
         bool clear = false

@@ -1,27 +1,29 @@
-﻿namespace Do.Test.DataAccess;
+﻿using Do.Test.Orm;
+
+namespace Do.Test.DataAccess;
 
 public class MappingProperties : TestServiceSpec
 {
     [Test]
     public async Task Unique()
     {
-        var entity = GiveMe.An<Entity>().With(unique: GiveMe.AGuid("eb8dd0a1"));
-        entity.Unique.ShouldBe(GiveMe.AGuid("eb8dd0a1"));
+        var entity = GiveMe.An<Entity>().With(unique: "eb8dd0a1");
+        entity.Unique.ShouldBe("eb8dd0a1");
 
-        await entity.Update(unique: GiveMe.AGuid("ab8dd0a1"));
-        entity.Unique.ShouldBe(GiveMe.AGuid("ab8dd0a1"));
+        await entity.Update(unique: "ab8dd0a1");
+        entity.Unique.ShouldBe("ab8dd0a1");
 
-        var actual = GiveMe.The<Entities>().By(unique: GiveMe.AGuid("ab8dd0a1")).FirstOrDefault();
+        var actual = GiveMe.The<Entities>().By(unique: "ab8dd0a1").FirstOrDefault();
         actual.ShouldBe(entity);
     }
 
     [Test]
     public void Unique_must_be_unique()
     {
-        var entity = GiveMe.An<Entity>().With(unique: GiveMe.AGuid("eb8dd0a1"));
-        entity.Unique.ShouldBe(GiveMe.AGuid("eb8dd0a1"));
+        var entity = GiveMe.An<Entity>().With(unique: "eb8dd0a1");
+        entity.Unique.ShouldBe("eb8dd0a1");
 
-        Func<Entity> task = () => GiveMe.An<Entity>().With(unique: GiveMe.AGuid("eb8dd0a1"));
+        Func<Entity> task = () => GiveMe.An<Entity>().With(unique: "eb8dd0a1");
 
         task.ShouldThrow<MustBeUniqueException>();
     }

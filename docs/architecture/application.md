@@ -23,6 +23,11 @@ Forge.New
 > `Do` is automatically added as a global using so that you can directly make a
 > call to `Forge.New`.
 
+> [!NOTE]
+>
+> `Forge` always sets current culture to `CultureInfo.InvariantCulture` to avoid
+> case conversion errors.
+
 ## Adding Extensions
 
 To add a new extension to an application, you need to make use of the feature /
@@ -101,13 +106,14 @@ To run an application you need to call `Run()` method after forging it.
 Forge.New
     .Application(app =>
     {
-        app.Layers.AddHttpServer();
+        ...
     })
     .Run();
 ```
 
-Application runs in phases provided by its layers. For example an ASP.NET Core
-application typically runs in three phases;
+Application runs in phases provided by its layers. For example
+`HttpServerLayer` uses ASP.NET Core to build a web application which typically
+runs in three phases;
 
 ```mermaid
 flowchart TB
@@ -125,6 +131,8 @@ At the beginning of each phase, application initializes it by providing an
 `ApplicationContext` instance. This way each phase can add/get certain objects
 to/from the context, such as `IServiceCollection`, `IMiddlewareCollection`,
 `IEndpointRouteBuilder` etc.
+Refer to [Readiness via Dependencies](./layer.md#readiness-via-dependencies)
+for more details.
 
 > [!WARNING]
 >

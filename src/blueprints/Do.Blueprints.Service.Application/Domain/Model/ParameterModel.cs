@@ -2,11 +2,16 @@
 
 public record ParameterModel(
     string Name,
-    TypeModel ParameterType,
+    TypeModelReference ParameterTypeReference,
     bool IsOptional,
-    object? DefaultValue
-) : IModel
+    object? DefaultValue,
+    AttributeCollection CustomAttributes
+) : IModel, ICustomAttributesModel
 {
-    string IModel.Id { get; } = Name;
-}
+    public TypeModel ParameterType => ParameterTypeReference.Model;
 
+    public bool Has<T>() where T : Attribute =>
+        CustomAttributes.Contains<T>();
+
+    string IModel.Id => Name;
+}

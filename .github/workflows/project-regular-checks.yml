@@ -7,9 +7,10 @@ on:
     paths:
       - 'src/**'
       - 'test/**'
-      - 'Do.sln'
+      - '.editorconfig'
       - 'Directory.Build.props'
       - 'Directory.Packages.props'
+      - 'Do.sln'
 
 env:
   MIN_COVERAGE: 85
@@ -44,8 +45,12 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8
+      - name: Restore Dependencies
+        run: dotnet restore
+      - name: Format Solution
+        run: dotnet format --no-restore --verify-no-changes --verbosity diagnostic
       - name: Build Solution
-        run: dotnet build -c Release
+        run: dotnet build --no-restore -c Release
   test:
     name: Test
     needs: build

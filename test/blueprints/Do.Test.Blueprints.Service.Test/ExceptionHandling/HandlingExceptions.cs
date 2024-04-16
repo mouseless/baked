@@ -1,6 +1,7 @@
 ﻿using Do.ExceptionHandling;
 using Do.ExceptionHandling.Default;
 using Do.Orm;
+using Do.Test.Orm;
 using System.Net;
 
 namespace Do.Test.ExceptionHandling;
@@ -10,9 +11,9 @@ public class HandlingExceptions : TestServiceSpec
     [Test(Description = "Actual behaviour is not testable, this test is included only for documentation and to improve coverage")]
     public void HandledException_is_handled_by_default()
     {
-        var singleton = GiveMe.The<Singleton>();
+        var exceptionsSamples = GiveMe.The<ExceptionSamples>();
 
-        var task = () => singleton.TestException(handled: true);
+        var task = () => exceptionsSamples.Throw(handled: true);
 
         task.ShouldThrow<TestServiceHandledException>();
     }
@@ -52,10 +53,21 @@ public class HandlingExceptions : TestServiceSpec
     }
 
     [Test]
-    public void RecordNotFoundException_status_code_is_not_found()
+    public void RecordNotFoundException_status_code_is_bad_request()
     {
         var entityQueryContext = GiveMe.The<IQueryContext<Entity>>();
         var task = () => entityQueryContext.SingleById(GiveMe.AGuid());
+
+        var actual = task.ShouldThrow<RecordNotFoundException>();
+
+        actual.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+    }
+
+    [Test]
+    public void RecordNotFoundException_status_code_can_be_overridden()
+    {
+        var entityQueryContext = GiveMe.The<IQueryContext<Entity>>();
+        var task = () => entityQueryContext.SingleById(GiveMe.AGuid(), throwNotFound: true);
 
         var actual = task.ShouldThrow<RecordNotFoundException>();
 

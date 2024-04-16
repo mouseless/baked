@@ -1,4 +1,6 @@
-﻿namespace Do.Test.DataAccess;
+﻿using Do.Test.Orm;
+
+namespace Do.Test.DataAccess;
 
 public class PersistingEntity : TestServiceSpec
 {
@@ -12,7 +14,7 @@ public class PersistingEntity : TestServiceSpec
             @string: string.Empty,
             stringData: string.Empty,
             int32: 0,
-            unique: Guid.NewGuid(),
+            unique: $"{Guid.NewGuid()}",
             uri: GiveMe.AUrl(),
             @dynamic: new { },
             @enum: Status.Disabled

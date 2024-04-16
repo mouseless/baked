@@ -7,7 +7,8 @@ namespace Do;
 
 public static class BusinessExtensions
 {
-    public static void AddBusiness(this List<IFeature> source, Func<BusinessConfigurator, IFeature<BusinessConfigurator>> configure) => source.Add(configure(new()));
+    public static void AddBusiness(this List<IFeature> source, Func<BusinessConfigurator, IFeature<BusinessConfigurator>> configure) =>
+        source.Add(configure(new()));
 
     static readonly MethodInfo _addTransientWithFactory = typeof(BusinessExtensions).GetMethod(nameof(AddTransientWithFactory), 2, [typeof(IServiceCollection)]) ??
         throw new("AddTransientWithFactory<TService, TImplementation> should have existed");

@@ -26,7 +26,7 @@ public class PrintingBanner : ArchitectureSpec
     string ConsoleOutput => _fakeOut?.ToString() ?? string.Empty;
 
     // Version is shortened to Ver to keep banner width fixed
-    string Ver => FileVersionInfo.GetVersionInfo(typeof(IBanner).Assembly.Location).FileVersion?[..^2] ?? throw new("Version not found");
+    string VersionString => FileVersionInfo.GetVersionInfo(typeof(IBanner).Assembly.Location).FileVersion?[..^2] ?? throw new("Version not found");
 
     [Test]
     public void It_prints_banner_prior_to_build()
@@ -46,21 +46,16 @@ public class PrintingBanner : ArchitectureSpec
 
         banner.Print();
 
-        ConsoleOutput.ShouldMatch($@"
-----------------------------------------------
+        ConsoleOutput.ShouldMatch($$"""
 
-  ██        ████████    ██████████
-    ██      ██      ██  ██      ██
-      ██    ██      ██  ██      ██
-    ██      ██      ██  ██      ██
-  ██        ████████    ██████████  ██████████
+         ▀▄   █▀▀▀▄ █▀▀▀█
+          ▄▀  █   █ █   █
+         ▀    ▀▀▀▀  ▀▀▀▀▀ ▀▀▀▀▀
 
-------------------- v{Ver} -------------------
+        Version: v{{VersionString}}
+        Docs: https://do.mouseless.codes
+        Source: https://github.com/mouseless/do
 
-Docs: https://do.mouseless.codes
-Source: https://github.com/mouseless/do
-
-----------------------------------------------
-".Trim());
+        """);
     }
 }

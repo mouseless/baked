@@ -1,3 +1,4 @@
+using Do.Test.Orm;
 using Do.Testing;
 
 namespace Do.Test;
@@ -9,7 +10,7 @@ public static class EntityExtensions
        string? @string = default,
        string? stringData = default,
        int? int32 = default,
-       Guid? unique = default,
+       string? unique = default,
        Uri? uri = default,
        object? @dynamic = default,
        Status? @enum = default,
@@ -18,11 +19,11 @@ public static class EntityExtensions
     ) => giveMe
         .A<Entity>()
         .With(
-            guid ?? Guid.NewGuid(),
+            guid ?? giveMe.AGuid(),
             @string ?? string.Empty,
             stringData ?? string.Empty,
             int32 ?? 0,
-            unique ?? Guid.NewGuid(),
+            unique ?? $"giveMe.AGuid()",
             uri ?? giveMe.AUrl(),
             dynamic ?? new { },
             @enum ?? Status.Disabled,

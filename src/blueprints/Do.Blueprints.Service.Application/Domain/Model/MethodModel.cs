@@ -1,10 +1,12 @@
-﻿namespace Do.Domain.Model;
+﻿using System.Collections.ObjectModel;
+
+namespace Do.Domain.Model;
 
 public record MethodModel(
     string Name,
-    OverloadModel[] Overloads,
-    bool IsConstructor = false
-) : IModel
+    ReadOnlyCollection<MethodOverloadModel> Overloads,
+    AttributeCollection CustomAttributes
+) : IModel, ICustomAttributesModel
 {
-    string IModel.Id { get; } = Name;
+    string IModel.Id => Name;
 }

@@ -37,8 +37,8 @@ public class MockingConfiguration : TestServiceSpec
         actual.ShouldBeEquivalentTo(value);
     }
 
-    [TestCase("Int", 42)] // defined in TestServiceSpec
-    [TestCase("String", "test value")] // defined in TestServiceSpec
+    [TestCase("Int", 42)] // defined in TestServiceSpec which uses GiveMe.AnInteger()
+    [TestCase("String", "test string")] // defined in TestServiceSpec which uses GiveMe.AString()
     public void Mock_configuration_uses_settings_value_provider_for_not_mocked_config_sections(string key, object value)
     {
         var configuration = GiveMe.The<IConfiguration>();

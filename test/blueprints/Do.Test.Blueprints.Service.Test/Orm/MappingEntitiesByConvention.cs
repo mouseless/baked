@@ -1,4 +1,6 @@
-﻿using NHConfiguration = NHibernate.Cfg.Configuration;
+﻿using Do.Test.Lifetime;
+
+using NHConfiguration = NHibernate.Cfg.Configuration;
 
 namespace Do.Test.Orm;
 

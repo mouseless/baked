@@ -6,9 +6,9 @@ Add this feature using `AddCommunication()` extension;
 app.Features.AddCommunication(...);
 ```
 
-## Http
+## HTTP
 
-This feature provides an `IClient<>` implementation and adds descriptors for 
+This feature provides an `IClient<>` implementation and adds descriptors for
 configured named clients from _app.settings_
 
 ```csharp
@@ -20,7 +20,7 @@ c => c.Http()
         "MyService": {
             "BaseAddress": "http://api.backend.com",
             "DefaultHeaders": {
-                "User-Agent": ".NET Http Client"
+                "User-Agent": ".NET HTTP Client"
             }
         }
     }

@@ -71,7 +71,7 @@ public class ConfiguringLayers : ArchitectureSpec
     [Test]
     public void Layer_configurator_accepts_two_parameters_in_a_given_action()
     {
-        var configurator = GiveMe.ALayerConfigurator<string, int>(target1: "test", target2: 10);
+        var configurator = GiveMe.ALayerConfigurator(target1: "test", target2: 10);
 
         var configured = false;
         configurator.Configure((string str, int i) => configured = true);
@@ -83,7 +83,7 @@ public class ConfiguringLayers : ArchitectureSpec
     [Test]
     public void Layer_configurator_accepts_three_parameters_in_a_given_action()
     {
-        var configurator = GiveMe.ALayerConfigurator<string, int, bool>(target1: "test", target2: 10, target3: false);
+        var configurator = GiveMe.ALayerConfigurator(target1: "test", target2: 10, target3: false);
 
         var configured = false;
         configurator.Configure((string str, int i, bool b) => configured = true);

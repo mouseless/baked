@@ -13,7 +13,7 @@ public class HttpServerLayer : LayerBase<Build>
 
     protected override PhaseContext GetContext(Build phase) =>
         phase.CreateContextBuilder()
-            .Add<IMiddlewareCollection>(_middlewares)
+            .Add(_middlewares)
             .Add<IEndpointRouteBuilder>(Context.GetWebApplication())
             .Build();
 
@@ -49,7 +49,6 @@ public class HttpServerLayer : LayerBase<Build>
             var app = build.Build();
 
             Context.Add(app);
-            Context.Add(app.Services);
         }
     }
 

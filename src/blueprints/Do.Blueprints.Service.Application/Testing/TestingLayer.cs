@@ -14,6 +14,8 @@ public class TestingLayer : LayerBase<AddServices>
     {
         var services = Context.Get<IServiceCollection>();
 
+        services.AddHttpContextAccessor();
+
         return phase.CreateContext(_configuration,
             onDispose: () =>
             {

@@ -1,5 +1,4 @@
 ﻿using Do.Architecture;
-using Do.Authentication;
 using Do.ExceptionHandling;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -9,15 +8,13 @@ namespace Do.Test.ExceptionHandling;
 
 public class GeneratingUnauthorizedAccessResponse : TestServiceNfr
 {
-    protected override Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>? Authentication =>
-        c => c.FixedToken();
     protected override Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>>? ExceptionHandling =>
        c => c.Default(typeUrlFormat: "https://do.mouseless.codes/errors/{0}");
 
     [Test]
     public async Task Unauthorized_access_exceptions_are_handled_with_its_own_handler()
     {
-        var response = await Client.GetAsync("singleton/time");
+        var response = await Client.PostAsync("authentication-samples/token-authentication", null);
 
         var problemDetails = response.Content.ReadFromJsonAsync<ProblemDetails>().Result;
 

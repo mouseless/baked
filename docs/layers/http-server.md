@@ -1,4 +1,4 @@
-# Http Server
+# HTTP Server
 
 DO uses ASP.NET Core's `WebApplication` to build and host a web application.
 
@@ -41,11 +41,9 @@ This layer introduces following phases to the application it is added;
 
 - `CreateBuilder`: This phase is the earliest phase in an application which
   creates and adds a `WebApplicationBuilder` instance to the application context
-  along with a `ConfigurationManager` instance.
+  along with a `ConfigurationManager` instance
 - `Build`: This phase adds all services from dependency injection layer to the
   services in `WebApplicationBuilder` instance. Then builds the app and adds
-  the `WebApplication` instance to the application context along with the
-  `IServiceProvider`.
-- `Run`: This phase is added internally and is the latest phase in an
-  application. It is not allowed to provide a configuration at this phase since
-  it runs the `WebApplication` instance during phase initialization.
+  the `WebApplication` instance to the application context
+- `Run`: This phase is added to the application internally as the latest phase
+  to run the `WebApplication`

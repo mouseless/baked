@@ -5,19 +5,19 @@ public class QueryingEntities : TestServiceSpec
     [Test]
     public void When_a_single_entity_is_queried_by_a_unique_property__the_only_result_is_returned()
     {
-        var expected = GiveMe.AnEntity(unique: GiveMe.AGuid("eb8dd0a1"));
-        GiveMe.AnEntity(unique: GiveMe.AGuid("ac9dd0a2"));
+        var expected = GiveMe.AnEntity(unique: "eb8dd0a1");
+        GiveMe.AnEntity(unique: "ac9dd0a2");
         var testing = GiveMe.The<Entities>();
 
-        testing.SingleByUnique(GiveMe.AGuid("eb8dd0a1")).ShouldBe(expected);
+        testing.SingleByUnique("eb8dd0a1").ShouldBe(expected);
     }
 
     [Test]
     public void When_a_single_entity_is_queried_by_a_property__first_result_is_returned()
     {
-        var expected = GiveMe.AnEntity(@string: "ab");
-        var expected2 = GiveMe.AnEntity(@string: "aa");
-        var expected3 = GiveMe.AnEntity(@string: "ac");
+        var expected = GiveMe.AnEntity(@string: "ab", unique: "1");
+        var expected2 = GiveMe.AnEntity(@string: "aa", unique: "2");
+        var expected3 = GiveMe.AnEntity(@string: "ac", unique: "3");
         var testing = GiveMe.The<Entities>();
 
         testing.FirstByString(startsWith: "a").ShouldBe(expected);
@@ -58,7 +58,7 @@ public class QueryingEntities : TestServiceSpec
         GiveMe.AParent();
         var testing = GiveMe.The<Parents>();
 
-        testing.All().Count.ShouldBe(2);
+        testing.By().Count.ShouldBe(2);
     }
 
     [Test]
@@ -70,10 +70,10 @@ public class QueryingEntities : TestServiceSpec
 
         var testing = GiveMe.The<Parents>();
 
-        testing.All(skip: 1, take: 1).Count.ShouldBe(1);
-        testing.All(skip: 1, take: 1).First().Name.ShouldBe("a");
+        testing.By(skip: 1, take: 1).Count.ShouldBe(1);
+        testing.By(skip: 1, take: 1).First().Name.ShouldBe("a");
 
-        testing.All(asc: true).First().Name.ShouldBe("a");
-        testing.All(desc: true).First().Name.ShouldBe("c");
+        testing.By(asc: true).First().Name.ShouldBe("a");
+        testing.By(desc: true).First().Name.ShouldBe("c");
     }
 }

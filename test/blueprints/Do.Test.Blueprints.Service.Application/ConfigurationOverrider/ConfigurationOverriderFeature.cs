@@ -1,5 +1,10 @@
 ﻿using Do.Architecture;
+using Do.Authentication;
 using Do.Authentication.FixedToken;
+using Do.RestApi.Model;
+using Do.Test.Authentication;
+using Do.Test.ExceptionHandling;
+using Do.Test.Orm;
 using Microsoft.OpenApi.Models;
 
 namespace Do.Test.ConfigurationOverrider;
@@ -8,12 +13,25 @@ public class ConfigurationOverriderFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureTypeCollection(types => types.Add<OperationWithGenericParameter<Entity>>());
-
         configurator.ConfigureAutoPersistenceModel(model =>
         {
             model.Override<Entity>(x => x.Map(e => e.String).Length(500));
             model.Override<Entity>(x => x.Map(e => e.Unique).Column("UniqueString").Unique());
+        });
+
+        configurator.ConfigureApiModel(apiModel =>
+        {
+            var domainModel = configurator.Context.GetDomainModel();
+
+            apiModel.References.Add<Middleware>();
+
+            apiModel.GetController<AuthenticationSamples>().Action[nameof(AuthenticationSamples.TokenAuthentication)].AddAttribute<UseAttribute<Middleware>>();
+            apiModel.GetController<AuthenticationSamples>().Action[nameof(AuthenticationSamples.FormPostAuthentication)].AddAttribute<UseAttribute<Middleware>>();
+            apiModel.GetController<AuthenticationSamples>().Action[nameof(AuthenticationSamples.FormPostAuthentication)].UseForm = true;
+
+            apiModel.GetController<ExceptionSamples>().Action[nameof(ExceptionSamples.Throw)].Parameter["handled"].From = ParameterModelFrom.Query;
+
+            apiModel.GetController<Entities>().AddSingleById<Entity>(domainModel);
         });
 
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
