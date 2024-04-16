@@ -23,10 +23,10 @@ Forge.New
 > `Do` is automatically added as a global using so that you can directly make a
 > call to `Forge.New`.
 
-> :information_source:
+> [!NOTE]
 >
 > `Forge` always sets current culture to `CultureInfo.InvariantCulture` to avoid
-> case conversion errors
+> case conversion errors.
 
 ## Adding Extensions
 
