@@ -25,12 +25,13 @@ public class ConfigurationOverriderFeature : IFeature
 
             apiModel.References.Add<Middleware>();
 
-            apiModel.Controller[nameof(AuthenticationSamples)].Action[nameof(AuthenticationSamples.TokenAuthentication)].AdditionalAttributes.Add(typeof(UseAttribute<Middleware>).GetCSharpFriendlyFullName());
-            apiModel.Controller[nameof(AuthenticationSamples)].Action[nameof(AuthenticationSamples.FormPostAuthentication)].AdditionalAttributes.Add(typeof(UseAttribute<Middleware>).GetCSharpFriendlyFullName());
-            apiModel.Controller[nameof(AuthenticationSamples)].Action[nameof(AuthenticationSamples.FormPostAuthentication)].UseForm = true;
-            apiModel.Controller[nameof(ExceptionSamples)].Action[nameof(ExceptionSamples.Throw)].Parameter["handled"].From = ParameterModelFrom.Query;
+            apiModel.GetController<AuthenticationSamples>().Action[nameof(AuthenticationSamples.TokenAuthentication)].AddAttribute<UseAttribute<Middleware>>();
+            apiModel.GetController<AuthenticationSamples>().Action[nameof(AuthenticationSamples.FormPostAuthentication)].AddAttribute<UseAttribute<Middleware>>();
+            apiModel.GetController<AuthenticationSamples>().Action[nameof(AuthenticationSamples.FormPostAuthentication)].UseForm = true;
 
-            apiModel.Controller[nameof(Entities)].AddSingleById<Entity>(domainModel);
+            apiModel.GetController<ExceptionSamples>().Action[nameof(ExceptionSamples.Throw)].Parameter["handled"].From = ParameterModelFrom.Query;
+
+            apiModel.GetController<Entities>().AddSingleById<Entity>(domainModel);
         });
 
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
@@ -48,6 +49,5 @@ public class ConfigurationOverriderFeature : IFeature
             swaggerGenOptions.AddSecurityRequirementToOperationsThatUse<Middleware>("AdditionalSecurity");
             swaggerGenOptions.AddParameterToOperationsThatUse<Middleware>("X-Security", @in: ParameterLocation.Header, required: true);
         });
-
     }
 }

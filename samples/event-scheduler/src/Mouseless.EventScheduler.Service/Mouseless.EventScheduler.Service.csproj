@@ -6,10 +6,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <CodeAnalysisRuleSet>..\..\..\..\stylecop.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\src\blueprints\Do.Blueprints.Service\Do.Blueprints.Service.csproj" />
     <ProjectReference Include="..\..\..\..\src\blueprints\Do.Blueprints.Service.Application\Do.Blueprints.Service.Application.csproj" />

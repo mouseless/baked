@@ -1,4 +1,5 @@
-﻿using Humanizer;
+﻿using Do.Domain.Model;
+using Humanizer;
 
 namespace Do.RestApi.Model;
 
@@ -7,7 +8,8 @@ public record ActionModel(
     HttpMethod Method,
     string Route,
     ReturnModel Return,
-    string FindTargetStatement
+    string FindTargetStatement,
+    MethodModel? MethodModel = default
 )
 {
     public string Name { get; set; } = Id;
@@ -16,8 +18,8 @@ public record ActionModel(
     public Func<string, string> RoutePartStylizer { get; set; } = s => s.Kebaberize();
     public ReturnModel Return { get; set; } = Return;
     public string FindTargetStatement { get; set; } = FindTargetStatement;
-    public string InvokedMethodName { get; set; } = Id;
     public bool UseForm { get; set; } = false;
+    public int Order { get; set; } = 0;
 
     public List<string> AdditionalAttributes { get; init; } = [];
     public Dictionary<string, ParameterModel> Parameter { get; init; } = [];
@@ -27,6 +29,6 @@ public record ActionModel(
     public IEnumerable<ParameterModel> ActionParameters => Parameters.Where(p => !p.IsHardCoded);
     public IEnumerable<ParameterModel> BodyOrFormParameters => ActionParameters.Where(p => p.From == ParameterModelFrom.BodyOrForm);
     public IEnumerable<ParameterModel> NonBodyOrFormParameters => ActionParameters.Where(p => p.From != ParameterModelFrom.BodyOrForm);
-    public IEnumerable<ParameterModel> InvokedMethodParameters => Parameters.Where(p => p.IsInvokeMethodParameter);
+    public IEnumerable<ParameterModel> InvokedMethodParameters => Parameters.Where(p => p.IsInvokeMethodParameter).OrderBy(p => p.Order);
     public string RouteStylized => Route.Split('/').Select(part => part.StartsWith("{") ? part : RoutePartStylizer(part)).Join('/');
 }

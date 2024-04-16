@@ -1,5 +1,5 @@
-﻿using Do.Business;
-using Do.Test.ExceptionHandling;
+﻿using Do.Test.ExceptionHandling;
+using Do.Test.Lifetime;
 using Do.Test.Orm;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -17,7 +17,7 @@ public class RegisteringServices : TestServiceSpec
     }
 
     [Test]
-    public void Transient_types_with_generic_type_arguments_are_registered([Values(typeof(TransientGeneric<Entity>))] Type type)
+    public void Transient_types_with_generic_type_arguments_are_registered([Values(typeof(TransientGeneric<Singleton>))] Type type)
     {
         var actual1 = GiveMe.A(type);
         var actual2 = GiveMe.A(type);
@@ -26,7 +26,7 @@ public class RegisteringServices : TestServiceSpec
     }
 
     [Test]
-    public void Transient_services_have_singleton_factories([Values(typeof(Func<Entity>), typeof(Func<Operation>), typeof(Func<TransientGeneric<Entity>>))] Type type)
+    public void Transient_services_have_singleton_factories([Values(typeof(Func<Transient>), typeof(Func<Operation>), typeof(Func<TransientGeneric<Singleton>>))] Type type)
     {
         var actual1 = GiveMe.The(type);
         var actual2 = GiveMe.The(type);
@@ -35,7 +35,7 @@ public class RegisteringServices : TestServiceSpec
     }
 
     [Test]
-    public void Types_without__with__methods_are_registered_as_singleton([Values(typeof(Singleton), typeof(Entities), typeof(Class))] Type type)
+    public void Types_without__with__methods_are_registered_as_singleton([Values(typeof(Singleton), typeof(Class))] Type type)
     {
         var actual1 = GiveMe.The(type);
         var actual2 = GiveMe.The(type);
@@ -44,13 +44,13 @@ public class RegisteringServices : TestServiceSpec
     }
 
     [Test]
-    public void Singleton_types_with_interfaces_are_registered_as_implementations([Values(typeof(IInterface), typeof(ISingleton))] Type type)
+    public void Singleton_types_with_interfaces_are_registered_as_implementations([Values(typeof(IInterface))] Type type)
     {
         var actual1 = GiveMe.The(type);
         var actual2 = GiveMe.The(type);
 
         actual1.ShouldBeSameAs(actual2);
-        actual1.GetType().ShouldBe(typeof(Singleton));
+        actual1.GetType().ShouldBe(typeof(Class));
     }
 
     [Test]
@@ -64,11 +64,11 @@ public class RegisteringServices : TestServiceSpec
     }
 
     [Test]
-    public void Types_that_implements_IScoped_are_registered_as_scoped()
+    public void Types_that_has_Context_suffix_are_registered_as_scoped()
     {
-        var actual1 = GiveMe.The<Scoped>();
-        var actual2 = GiveMe.The<Scoped>();
-        var actual3 = GiveMe.The<IServiceProvider>().CreateScope().ServiceProvider.GetRequiredService<Scoped>();
+        var actual1 = GiveMe.The<ScopedContext>();
+        var actual2 = GiveMe.The<ScopedContext>();
+        var actual3 = GiveMe.The<IServiceProvider>().CreateScope().ServiceProvider.GetRequiredService<ScopedContext>();
 
         actual1.ShouldBeSameAs(actual2);
         actual1.ShouldNotBeSameAs(actual3);
@@ -77,8 +77,8 @@ public class RegisteringServices : TestServiceSpec
     [Test]
     public void Scoped_services_have_singleton_factories()
     {
-        var actual1 = GiveMe.The<Func<Scoped>>();
-        var actual2 = GiveMe.The<Func<Scoped>>();
+        var actual1 = GiveMe.The<Func<ScopedContext>>();
+        var actual2 = GiveMe.The<Func<ScopedContext>>();
 
         actual1.ShouldBeSameAs(actual2);
     }
@@ -110,9 +110,9 @@ public class RegisteringServices : TestServiceSpec
     [Test]
     public void Abstract_types_are_not_registered()
     {
-        var action = () => GiveMe.The<SingletonBase>();
+        var action = () => GiveMe.The<Abstract>();
 
-        action.ShouldThrowExceptionWithServiceNotRegisteredMessage(typeof(SingletonBase));
+        action.ShouldThrowExceptionWithServiceNotRegisteredMessage(typeof(Abstract));
     }
 
     [Test]
@@ -140,7 +140,7 @@ public class RegisteringServices : TestServiceSpec
     }
 
     [Test]
-    public void Referenced_interfaces_are_not_registered([Values(typeof(IEquatable<Entity>), typeof(IScoped))] Type type)
+    public void Referenced_interfaces_are_not_registered([Values(typeof(IEquatable<Entity>))] Type type)
     {
         var action = () => GiveMe.The(type);
 
@@ -174,7 +174,7 @@ public class RegisteringServices : TestServiceSpec
     }
 
     [Test]
-    public void Types_having_no_with_method_but_public_properties_are_not_registered([Values(typeof(ClassDTO))] Type type)
+    public void Types_having_no_with_method_but_public_properties_are_not_registered([Values(typeof(Data))] Type type)
     {
         var action = () => GiveMe.The(type);
 

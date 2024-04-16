@@ -1,0 +1,30 @@
+﻿using Do.Architecture;
+using Do.Business;
+using Do.Lifetime;
+
+namespace Do.CodingStyle.WithMethod;
+
+public class WithMethodCodingStyleFeature : IFeature<CodingStyleConfigurator>
+{
+    public void Configure(LayerConfigurator configurator)
+    {
+        configurator.ConfigureDomainModelBuilder(builder =>
+        {
+            builder.Conventions.AddTypeMetadata(new TransientAttribute(),
+                when: type =>
+                    type.IsClass && !type.IsAbstract &&
+                    type.TryGetMembers(out var members) &&
+                    members.Has<ServiceAttribute>() &&
+                    members.Methods.Contains("With")
+            );
+            builder.Conventions.AddMethodMetadata(new InitializerAttribute(),
+                when: method => method.Name == "With"
+            );
+        });
+
+        configurator.ConfigureApiModelConventions(conventions =>
+        {
+            conventions.Add(new EntityPublicWithIsPostResourceConvention());
+        });
+    }
+}

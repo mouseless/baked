@@ -16,7 +16,7 @@ public class Contact(IEntityContext<Contact> _context)
         return _context.Insert(this);
     }
 
-    public virtual void Edit(string name)
+    public virtual void Update(string name)
     {
         Name = name;
     }
@@ -24,6 +24,7 @@ public class Contact(IEntityContext<Contact> _context)
 
 public class Contacts(IQueryContext<Contact> _context)
 {
-    public List<Contact> All() =>
-        _context.All();
+    public List<Contact> By(
+        string? name = default
+    ) => _context.By(c => name == default || c.Name == name);
 }

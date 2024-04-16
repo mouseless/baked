@@ -22,16 +22,29 @@
     - api model to generate controller code from domain model
     - model binder configuration to allow custom parameter types from action
       parameters
-  - `DefaultBusinessFeature` now generates;
+  - `Forge.New.Service` now automatically generates;
     - api controllers and actions from domain model
     - entity lookup calls for entity parameters
     - all types of parameters and return types
     - stylized routes with default conventions
     - additional attributes for controller actions
+  - `Business` and `Orm` is split into two features
+    - `LifetimeFeature` is introduced with three implementations `Singleton`,
+      `Scoped` and `Transient`
+    - `CodingStyleFeature` is introduced with existing coding styles to separate
+      them from business feature
 
 ## Improvements
 
 - `MvcNewtonsoftJsonOptions` is added to `RestApiLayer` as configuration target
+- `IScoped` marker interface is removed, `[Name]Context` convention is
+  introduced to configure scoped lifetime by convention
+- `FixedToken` authentication is now the default in `Service` blueprint
+- `Default` business feature is renamed as `DomainAssemblies`
+- `Default` orm feature is renamed as `AutoMap`
+- `Documentation` feature is refactored into coding styles and removed
+  completely
+- `Authentication` feature is now a multi-feature
 
 ## Bugfixes
 

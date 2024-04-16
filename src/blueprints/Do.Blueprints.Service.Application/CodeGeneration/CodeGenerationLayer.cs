@@ -19,7 +19,7 @@ public class CodeGenerationLayer : LayerBase<GenerateCode>
     }
 
     public class GenerateCode(IGeneratedAssemblyCollection _generatedAssemblies)
-        : PhaseBase<DomainModel>(PhaseOrder.Earliest)
+        : PhaseBase<DomainModel>(PhaseOrder.Early)
     {
         protected override void Initialize(DomainModel _)
         {

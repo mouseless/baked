@@ -7,13 +7,20 @@ namespace Do;
 
 public static class CodeGenerationExtensions
 {
-    public static void AddCodeGeneration(this ICollection<ILayer> layers) => layers.Add(new CodeGenerationLayer());
+    public static void AddCodeGeneration(this ICollection<ILayer> layers) =>
+        layers.Add(new CodeGenerationLayer());
 
-    public static IGeneratedAssemblyCollection GetGeneratedAssemblyCollection(this ApplicationContext source) => source.Get<IGeneratedAssemblyCollection>();
-    public static GeneratedAssemblyProvider GetGeneratedAssemblyProvider(this ApplicationContext source) => source.Get<GeneratedAssemblyProvider>();
-    public static Assembly GetGeneratedAssembly(this ApplicationContext source, string name) => source.GetGeneratedAssemblyProvider()[name];
+    public static IGeneratedAssemblyCollection GetGeneratedAssemblyCollection(this ApplicationContext source) =>
+        source.Get<IGeneratedAssemblyCollection>();
 
-    public static void ConfigureGeneratedAssemblyCollection(this LayerConfigurator configurator, Action<IGeneratedAssemblyCollection> configuration) => configurator.Configure(configuration);
+    public static GeneratedAssemblyProvider GetGeneratedAssemblyProvider(this ApplicationContext source) =>
+        source.Get<GeneratedAssemblyProvider>();
+
+    public static Assembly GetGeneratedAssembly(this ApplicationContext source, string name) =>
+        source.GetGeneratedAssemblyProvider()[name];
+
+    public static void ConfigureGeneratedAssemblyCollection(this LayerConfigurator configurator, Action<IGeneratedAssemblyCollection> configuration) =>
+        configurator.Configure(configuration);
 
     public static void Add(this IGeneratedAssemblyCollection generatedAssemblies, string name, Action<GeneratedAssemblyDescriptor> descriptorBuilder,
         Func<CSharpCompilationOptions, CSharpCompilationOptions>? compilationOptionsBuilder = default

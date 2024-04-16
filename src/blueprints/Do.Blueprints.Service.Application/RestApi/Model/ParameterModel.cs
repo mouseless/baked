@@ -14,6 +14,7 @@ public record ParameterModel(TypeModel TypeModel, ParameterModelFrom From, strin
     public bool IsHardCoded { get; set; } = false;
     public Func<string, string> LookupRenderer { get; set; } = parameterExpression => parameterExpression;
     public Func<object, string> DefaultValueRenderer { get; set; } = defaultValue => $"{defaultValue}";
+    public int Order { get; set; } = 0;
 
     public bool FromServices => From == ParameterModelFrom.Services;
     public bool FromRoute => From == ParameterModelFrom.Route;

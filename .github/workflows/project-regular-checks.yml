@@ -7,9 +7,10 @@ on:
     paths:
       - 'src/**'
       - 'test/**'
-      - 'Do.sln'
+      - '.editorconfig'
       - 'Directory.Build.props'
       - 'Directory.Packages.props'
+      - 'Do.sln'
 
 env:
   MIN_COVERAGE: 85

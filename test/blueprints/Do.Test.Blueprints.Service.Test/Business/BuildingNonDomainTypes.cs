@@ -1,6 +1,6 @@
 ﻿using Do.Domain.Model;
 using Do.Orm;
-using Do.Test.Business;
+using Do.Test.Lifetime;
 using Do.Test.Orm;
 
 namespace Do.Test.Domain;

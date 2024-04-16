@@ -16,6 +16,9 @@ implementing a new feature;
    `Greeting/GreetingConfigurator.cs`, `Greeting/GreetingExtensions.cs`.
 1. Provide an `Add` method to add feature to an application, e.g.,
    `AddGreeting()`.
+   1. If feature allows multiple implementations, indicate this with a plural
+      add method, e.g., `AddCodingStyles()`. Also accept a list of features
+      instead of a single feature.
 
 ### Implementation
 
@@ -110,7 +113,7 @@ public class WelcomePageGreetingFeature : IFeature<GreetingConfigurator>
 }
 ```
 
-> :information_source:
+> [!NOTE]
 >
 > Layers allow up to three configuration targets per configuration action.
 
@@ -123,28 +126,28 @@ A layer might provide the same object in different configurators. For example,
 `WebApplication` implements `IEndpointRouteBuilder` but `HttpServerLayer`
 provides it with its interface not its concrete type.
 
-> :warning:
+> [!WARNING]
 >
 > Do __NOT__ cast given configuration objects to their other interfaces. A
 > layer provides a separate extension method, e.g.,
 > `ConfigureEndpointRouteBuilder()`.
 
-> :bulb:
+> [!TIP]
 >
 > The order of the configuration calls does not have an effect in the outcome.
 > Feel free to organize these calls in the way you like.
 
 ### Using Phase Artifacts
 
-To access and use objects stored in application context in a feature, a 
-reference to the context is provided through `LayerConfigurator`'s `Context` 
-property. 
+To access and use objects stored in application context in a feature, a
+reference to the context is provided through `LayerConfigurator`'s `Context`
+property.
 
-> :warning:
+> [!WARNING]
 >
-> Unlike configuration targets, phase artifacts may or may not exists in the 
-> application context or not configured properly at the moment 
-> `LayerConfigurator` applies configurations. Phase execution orders and 
+> Unlike configuration targets, phase artifacts may or may not exists in the
+> application context or not configured properly at the moment
+> `LayerConfigurator` applies configurations. Phase execution orders and
 > configurations should be taken into consideration when using phase artifacts.
 
 ### Including an Option

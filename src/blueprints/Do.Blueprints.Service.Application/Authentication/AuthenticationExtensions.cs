@@ -10,9 +10,12 @@ namespace Do;
 
 public static class AuthenticationExtensions
 {
-    public static void AddAuthentication(this IList<IFeature> source, Func<AuthenticationConfigurator, IFeature> configure) => source.Add(configure(new()));
+    public static void AddAuthentications(this List<IFeature> source, IEnumerable<Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>> configures) =>
+        source.AddRange(configures.Select(configure => configure(new())));
 
-    public static void AddSecurityRequirementToOperationsThatUse<TMiddleware>(this SwaggerGenOptions source, string schemeId) => source.OperationFilter<SecurityRequirementOperationFilter<UseAttribute<TMiddleware>>>([schemeId]);
+    public static void AddSecurityRequirementToOperationsThatUse<TMiddleware>(this SwaggerGenOptions source, string schemeId) =>
+        source.OperationFilter<SecurityRequirementOperationFilter<UseAttribute<TMiddleware>>>([schemeId]);
+
     public static void AddParameterToOperationsThatUse<TMiddleware>(this SwaggerGenOptions source, string name,
         ParameterLocation @in = ParameterLocation.Header,
         bool required = false

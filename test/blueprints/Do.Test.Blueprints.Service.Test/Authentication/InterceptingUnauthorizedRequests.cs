@@ -1,15 +1,10 @@
-﻿using Do.Architecture;
-using Do.Authentication;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http.Headers;
 
 namespace Do.Test.Authentication;
 
 public class InterceptingUnauthorizedRequests : TestServiceNfr
 {
-    protected override Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>? Authentication =>
-       c => c.FixedToken();
-
     [Test]
     public async Task Returns_unauthorized_access_response_for_invalid_authorization_header()
     {

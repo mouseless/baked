@@ -1,4 +1,5 @@
-﻿using Do.Test.Business;
+﻿using Do.Test.Lifetime;
+
 using NHConfiguration = NHibernate.Cfg.Configuration;
 
 namespace Do.Test.Orm;

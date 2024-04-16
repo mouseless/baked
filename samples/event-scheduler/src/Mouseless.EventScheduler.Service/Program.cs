@@ -1,6 +1,6 @@
 Forge.New
     .Service(
-        business: c => c.Default(assemblies: [typeof(Contact).Assembly]),
+        business: c => c.DomainAssemblies([typeof(Contact).Assembly]),
         database: c => c.Sqlite("EventScheduler.db")
     )
     .Run();

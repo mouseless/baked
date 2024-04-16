@@ -28,5 +28,5 @@ configurator.ConfigureConfigurationBuilder(configurationBuilder =>
 
 This layer introduces following phases to the application it is added;
 
-- `BuildConfiguration`: This phase runs before `AddServices` to allow the usage
-  of `Settings` API.
+- `BuildConfiguration`: This phase runs in the earliest stage to allow the usage
+  of `Settings` API from features

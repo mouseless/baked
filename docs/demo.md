@@ -5,19 +5,19 @@ components.
 
 ## Alert Boxes
 
-> :bulb:
+> [!TIP]
 >
 > this is tip
 
-> :information_source:
+> [!NOTE]
 >
 > this is info
 
-> :warning:
+> [!WARNING]
 >
 > this is warning
 
-> :x:
+> [!CAUTION]
 >
 > this is error
 
@@ -25,7 +25,7 @@ components.
 
 ### Long Text
 
-> :warning:
+> [!WARNING]
 >
 > Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
 > tempor incididunt ut labore et dolore magna aliqua. Sit amet venenatis urna
@@ -67,7 +67,7 @@ public class DoDemo
 
 ### `code` in Header
 
-> :information_source:
+> [!NOTE]
 >
 > Code in alert box;
 >

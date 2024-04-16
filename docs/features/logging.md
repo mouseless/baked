@@ -8,13 +8,13 @@ Add this feature implementations using `AddLogging()` extension;
 app.Features.AddLogging(...);
 ```
 
-## Request Logging
+## Request
 
 This implementation logs incoming request and related response information
 along with exception logging.
 
 ```csharp
-c => c.RequestLogging()
+c => c.Request()
 ```
 
 By default it adds a logging middeware for printing log messages to console.

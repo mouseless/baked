@@ -5,5 +5,6 @@ namespace Do;
 
 public static class HttpCommunicationExtensions
 {
-    public static HttpCommunicationFeature Http(this CommunicationConfigurator _) => new();
+    public static HttpCommunicationFeature Http(this CommunicationConfigurator _) =>
+        new();
 }

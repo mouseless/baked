@@ -22,7 +22,7 @@ public class ApiCodeTemplate(ApiModel _apiModel)
 
     string Action(ActionModel action) => $$"""
         {{If(!action.UseForm && action.HasBodyOrForm, () => $$"""
-        public record {{action.Name}}Request(
+        public record {{action.Id}}Request(
             {{ForEach(action.BodyOrFormParameters, p => Parameter(p, action.UseForm), separator: ", ")}}
         );
         """)}}
@@ -30,20 +30,20 @@ public class ApiCodeTemplate(ApiModel _apiModel)
         [Http{{Method(action.Method)}}]
         [Route("{{action.RouteStylized}}")]
         {{ForEach(action.AdditionalAttributes, Attribute)}}
-        public {{ReturnType(action.Return)}} {{action.Name}}(
+        public {{ReturnType(action.Return)}} {{action.Id}}(
             {{ForEach(action.NonBodyOrFormParameters, p => Parameter(p, action.UseForm), separator: ", ")}}
             {{If(action.HasBodyOrForm, () =>
                 If(action.UseForm, () => $$"""
                 , {{ForEach(action.BodyOrFormParameters, p => Parameter(p, action.UseForm), separator: ", ")}}
                 """, @else: () => $$"""
-                , [FromBody] {{action.Name}}Request request
+                , [FromBody] {{action.Id}}Request request
                 """)
             )}}
         )
         {
             var __target = {{action.FindTargetStatement}};
 
-            {{Return(action.Return)}} __target.{{action.InvokedMethodName}}(
+            {{Return(action.Return)}} __target.{{action.Id}}(
                 {{ForEach(action.InvokedMethodParameters, p => $"@{p.InternalName}: {ParameterLookup(p, action.UseForm)}", separator: ", ")}}
             );
         }

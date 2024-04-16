@@ -4,5 +4,6 @@ namespace Do.Authentication;
 
 public class AuthenticationConfigurator
 {
-    public IFeature<AuthenticationConfigurator> Disabled() => Feature.Empty<AuthenticationConfigurator>();
+    public IFeature<AuthenticationConfigurator> Disabled() =>
+        Feature.Empty<AuthenticationConfigurator>();
 }

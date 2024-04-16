@@ -11,7 +11,7 @@ public abstract class TestServiceSpec : ServiceSpec
     static TestServiceSpec()
     {
         var context = Init(
-            business: c => c.Default(assemblies: [typeof(Entity).Assembly]),
+            business: c => c.DomainAssemblies([typeof(Entity).Assembly]),
             communication: c => c.Mock(defaultResponses: response =>
             {
                 response.ForClient<ExternalSamples>(response: "test result");

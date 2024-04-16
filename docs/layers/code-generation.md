@@ -32,7 +32,7 @@ This layer introduces following phases to the application it is added;
   all generated assemblies into `GeneratedAssemblyProvider`, which is added to
   the application context
 
-> :bulb:
+> [!TIP]
 >
 > To access to a generated assembly from a feature use
 > `configurator.Context.GetGeneratedAssembly("MyAssembly")` extension method.

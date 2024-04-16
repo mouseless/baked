@@ -19,14 +19,14 @@ const slot = computed(() => {
 });
 
 const firstLine = computed(() => {
-  return slot.value[0].children.default()[0].children;
+  return slot.value[0].children.default()[0].children[0].children;
 });
 
 const types = {
-  ":information_source:": { class: "info", icon: "fa-circle-info" },
-  ":warning:": { class: "warning", icon: "fa-warning" },
-  ":bulb:": { class: "tip", icon: "fa-lightbulb" },
-  ":x:": { class: "danger", icon: "fa-circle-xmark" },
+  "!NOTE": { class: "info", icon: "fa-circle-info" },
+  "!WARNING": { class: "warning", icon: "fa-warning" },
+  "!TIP": { class: "tip", icon: "fa-lightbulb" },
+  "!CAUTION": { class: "danger", icon: "fa-circle-xmark" },
   default: { class: "default", icon: "fa-angle-right" }
 };
 
