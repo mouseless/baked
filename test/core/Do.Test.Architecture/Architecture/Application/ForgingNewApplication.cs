@@ -1,4 +1,6 @@
-﻿namespace Do.Test.Architecture.Application;
+﻿using System.Globalization;
+
+namespace Do.Test.Architecture.Application;
 
 public class ForgingNewApplication : ArchitectureSpec
 {
@@ -16,5 +18,15 @@ public class ForgingNewApplication : ArchitectureSpec
         var actual = forge.Application(_ => { });
 
         actual.ShouldBeAssignableTo<Do.Architecture.Application>();
+    }
+
+    [Test]
+    public void Forging_is_done_using_the_invariant_culture()
+    {
+        var forge = GiveMe.AForge();
+
+        forge.Application(_ => { });
+
+        Thread.CurrentThread.CurrentCulture.ShouldBe(CultureInfo.InvariantCulture);
     }
 }
