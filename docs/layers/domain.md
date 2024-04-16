@@ -41,6 +41,6 @@ configurator.ConfigureDomainBuilderOptions(options =>
 This layer introduces following phases to the application it is added;
 
 - `AddDomainTypes`: This phase adds an `IDomainTypeCollection` instance to the
-  application context.
+  application context
 - `BuildDomainModel`: This phase uses domain types to build and add a
-  `DomainModel` instance to the application context.
+  `DomainModel` instance to the application context

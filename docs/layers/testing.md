@@ -27,8 +27,6 @@ configurator.ConfigureTestConfiguration(test =>
 This layer introduces following phases to the application it is added;
 
 - `CreateConfigurationManager`: This phase runs as the earliest stage of a test
-  run to add an empty `ConfigurationManager` to the application context.
-- `Run`: This phase is added internally and is the latest phase in a test run.
-  It is not allowed to provide a configuration at this phase, it only builds
-  given service collection and adds `IServiceProvider` to the application
-  context to be used by specs.
+  run to add an empty `ConfigurationManager` to the application context
+- `Run`: This phase is added to the application internally as the latest phase
+  to provide `IServiceProvider` to be used during the test run

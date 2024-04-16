@@ -1,4 +1,4 @@
-# Orm
+# ORM
 
 This features basically configures `DataAccessLayer` so that it interprets
 certain domain types as entities and queries.
