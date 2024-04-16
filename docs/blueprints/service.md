@@ -29,10 +29,10 @@ Layers in this blueprint are;
 | Data Access          | +   | +    |
 | Dependency Injection | +   | +    |
 | Domain               | +   | +    |
-| Http Client          | +   |      |
-| Http Server          | +   |      |
+| HTTP Client          | +   |      |
+| HTTP Server          | +   |      |
 | Monitoring           | +   | +    |
-| Rest Api             | +   |      |
+| Rest API             | +   |      |
 | Testing              |     | +    |
 
 Features with default options are;
@@ -49,7 +49,7 @@ Features with default options are;
 | Greeting           | Swagger       |                 |          |
 | Logging            | Request       |                 |          |
 | Mocking Overrider  |               | First Interface |          |
-| Orm                | Auto Map      | Auto Map        |          |
+| ORM                | Auto Map      | Auto Map        |          |
 
 Phase execution order;
 
