@@ -11,6 +11,9 @@ public static class DomainExtensions
     public static void AddDomain(this ICollection<ILayer> layers) =>
         layers.Add(new DomainLayer());
 
+    public static IDomainTypeCollection GetDomainTypes(this ApplicationContext source) =>
+        source.Get<IDomainTypeCollection>();
+
     public static DomainModel GetDomainModel(this ApplicationContext source) =>
         source.Get<DomainModel>();
 

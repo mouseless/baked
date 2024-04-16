@@ -58,23 +58,19 @@ flowchart TD
     AS[AddServices]
     B[Build]
     BC[BuildConfiguration]
-    BD[BuildDomain]
+    AD[AddDomainTypes]
+    BD[BuildDomainModel]
     CB[CreateBuilder]
     C[Compile]
     GC[GenerateCode]
     R[Run]
 
-    CB -->|ConfigurationManager| BD
-    CB -->|ConfigurationManager| BC
-
+    CB -->|ConfigurationManager\nWebApplicationBuilder| BC
+    BC --> AD
+    AD -->|IDomainTypeCollection| BD
     BD -->|DomainModel| GC
     GC -->|IGeneratedAssemblyCollection| C
-
-    BD -->|DomainModel| AS
     C -->|GeneratedAssemblyProvider| AS
-
-    CB -->|WebApplicationBuilder| B
     AS -->|IServiceCollection| B
-
     B -->|WebApplication|R
 ```
