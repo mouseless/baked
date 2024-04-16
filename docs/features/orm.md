@@ -15,6 +15,14 @@ Auto maps domain types with `Entity` attribute using default opinions of
 `FluentNHibernate` along with `Guid Id` properties as primary key and configure
 foreign key references between entities.
 
+Also adds api model conventions that enables;
+
+- Getting entity types directly from api inputs
+- Exposing `SingleBy[Property]` query methods under `GET
+  /entities/{entityProperty}` route
+- Hiding method name from route for `By` methods, exposing them under `GET
+  /entities` route
+
 ```csharp
 c => c.AutoMap()
 ```
