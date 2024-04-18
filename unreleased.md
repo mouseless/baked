@@ -28,6 +28,9 @@
     - all types of parameters and return types
     - stylized routes with default conventions
     - additional attributes for controller actions
+    - methods of transient services are rendered as actions
+    - entity composition are rendered under entity services
+    - single by unique generates duplicate actions for entities
   - `Business` and `Orm` is split into two features
     - `LifetimeFeature` is introduced with three implementations `Singleton`,
       `Scoped` and `Transient`
@@ -45,6 +48,7 @@
 - `Documentation` feature is refactored into coding styles and removed
   completely
 - `Authentication` feature is now a multi-feature
+- Not null parameters throw bad request when null value is received
 
 ## Bugfixes
 
