@@ -26,14 +26,12 @@ public class FixedBearerTokenAuthenticationHandler(
             {
                 var claims = new[] { new Claim("AdminToken", "Test") };
                 var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, "AdminOnly"));
-                var ticket = new AuthenticationTicket(principal, this.Scheme.Name);
+                var ticket = new AuthenticationTicket(principal, Scheme.Name);
 
                 return Task.FromResult(AuthenticateResult.Success(ticket));
             }
-            else
-            {
-                return Task.FromResult(AuthenticateResult.Fail("401"));
-            }
+
+            throw new UnauthorizedAccessException("Attempted to perform an unauthorized operation.");
         }
 
         if (Context.Request.HasFormContentType && Context.Request.Form.ContainsKey("hash"))
@@ -58,14 +56,12 @@ public class FixedBearerTokenAuthenticationHandler(
             {
                 var claims = new[] { new Claim("AdminToken", "Test") };
                 var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, "AdminOnly"));
-                var ticket = new AuthenticationTicket(principal, this.Scheme.Name);
+                var ticket = new AuthenticationTicket(principal, Scheme.Name);
 
                 return Task.FromResult(AuthenticateResult.Success(ticket));
             }
-            else
-            {
-                return Task.FromResult(AuthenticateResult.Fail("401"));
-            }
+
+            throw new UnauthorizedAccessException("Attempted to perform an unauthorized operation.");
         }
 
         return Task.FromResult(AuthenticateResult.NoResult());

@@ -23,7 +23,9 @@ public class FixedTokenAuthenticationFeature(List<string> _tokenNames)
 
         configurator.ConfigureMiddlewareCollection(middlewares =>
         {
-            middlewares.Add(app => app.UseAuthentication());
+            middlewares.Add(app => app.UseAuthentication(),
+                order: 100
+            );
         });
     }
 }

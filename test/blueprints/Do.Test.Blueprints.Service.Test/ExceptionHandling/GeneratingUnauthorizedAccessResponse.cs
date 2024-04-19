@@ -2,6 +2,7 @@
 using Do.ExceptionHandling;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
 namespace Do.Test.ExceptionHandling;
@@ -14,6 +15,8 @@ public class GeneratingUnauthorizedAccessResponse : TestServiceNfr
     [Test]
     public async Task Unauthorized_access_exceptions_are_handled_with_its_own_handler()
     {
+        Client.DefaultRequestHeaders.Authorization = AuthenticationHeaderValue.Parse("Wrong_token");
+
         var response = await Client.PostAsync("authentication-samples/token-authentication", null);
 
         var problemDetails = response.Content.ReadFromJsonAsync<ProblemDetails>().Result;
