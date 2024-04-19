@@ -1,7 +1,9 @@
 ﻿using Do.Architecture;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 
 namespace Do.Authentication.FixedToken;
 
@@ -26,6 +28,20 @@ public class FixedTokenAuthenticationFeature(List<string> _tokenNames)
             middlewares.Add(app => app.UseAuthentication(),
                 order: 100
             );
+        });
+
+        configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
+        {
+            swaggerGenOptions.AddSecurityDefinition("FixedToken",
+                new()
+                {
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "Bearer",
+                    Description = $"Enter the {string.Join(" or ", _tokenNames).ToLowerInvariant()} token",
+                }
+            );
+
+            swaggerGenOptions.AddSecurityRequirementToOperationsThatUse<AuthorizeAttribute>("FixedToken");
         });
     }
 }

@@ -18,7 +18,7 @@ public class ClaimBasedAuthorizationFeature : IFeature<AuthorizationConfigurator
 
         configurator.ConfigureMiddlewareCollection(middlewares =>
         {
-            middlewares.Add(app => app.UseAuthorization());
+            middlewares.Add(app => app.UseAuthorization(), order: 101);
         });
 
         configurator.ConfigureApiModelConventions(conventions =>

@@ -14,7 +14,14 @@ public class AddAuthorizeAttributeToActionConvention : IApiModelConvention<Actio
         foreach (var attribute in context.Action.MethodModel.CustomAttributes.Get<AuthorizeAttribute>())
         {
             // Get CSharpFriendlyName from TypeModel
-            context.Action.AdditionalAttributes.Add($"""Microsoft.AspNetCore.Authorization.Authorize(Policy = "{attribute.Policy}")""");
+            if (string.IsNullOrEmpty(attribute.Policy))
+            {
+                context.Action.AdditionalAttributes.Add($"""Microsoft.AspNetCore.Authorization.Authorize""");
+            }
+            else
+            {
+                context.Action.AdditionalAttributes.Add($"""Microsoft.AspNetCore.Authorization.Authorize(Policy = "{attribute.Policy}")""");
+            }
         }
     }
 
