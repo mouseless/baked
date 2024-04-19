@@ -1,4 +1,5 @@
 ﻿using Do.Architecture;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,13 +13,12 @@ public class FixedTokenAuthenticationFeature(List<string> _tokenNames)
         configurator.ConfigureServiceCollection(services =>
         {
             services.AddAuthentication()
-                .AddScheme<FixedBearerTokenOptions, FixedBearerTokenAuthenticationHandler>(
+                .AddScheme<AuthenticationSchemeOptions, FixedBearerTokenAuthenticationHandler>(
                     "FixedBearerToken",
-                    opts =>
-                    {
-                        opts.TokenNames.AddRange(_tokenNames);
-                    }
+                    opts => { }
                 );
+            services.AddSingleton(new FixedBearerTokenOptions { TokenNames = _tokenNames });
+
         });
 
         configurator.ConfigureMiddlewareCollection(middlewares =>

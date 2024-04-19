@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿namespace Do.Authentication.FixedToken;
 
-namespace Do.Authentication.FixedToken;
-
-public class FixedBearerTokenOptions : AuthenticationSchemeOptions
+public class FixedBearerTokenOptions
 {
-    public List<string> TokenNames { get; } = [];
+    public List<string> TokenNames { get; init; } = [];
 }

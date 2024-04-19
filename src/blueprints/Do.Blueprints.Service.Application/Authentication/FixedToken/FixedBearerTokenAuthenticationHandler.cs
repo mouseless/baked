@@ -8,11 +8,12 @@ using System.Text.Encodings.Web;
 namespace Do.Authentication.FixedToken;
 
 public class FixedBearerTokenAuthenticationHandler(
+    FixedBearerTokenOptions _options,
     IConfiguration _configuration,
-    IOptionsMonitor<FixedBearerTokenOptions> options,
+    IOptionsMonitor<AuthenticationSchemeOptions> options,
     ILoggerFactory logger,
     UrlEncoder encoder
-) : AuthenticationHandler<FixedBearerTokenOptions>(options, logger, encoder)
+) : AuthenticationHandler<AuthenticationSchemeOptions>(options, logger, encoder)
 {
     string? GetToken(string tokenName) =>
         _configuration.GetValue<string>($"Authentication:FixedToken:{tokenName}");
@@ -69,7 +70,7 @@ public class FixedBearerTokenAuthenticationHandler(
 
     bool AnyTokenValidates(Func<string, bool> test)
     {
-        foreach (var tokenName in Options.TokenNames)
+        foreach (var tokenName in _options.TokenNames)
         {
             var token = GetToken(tokenName);
             if (token is null) { continue; }

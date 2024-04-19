@@ -1,7 +1,8 @@
 ﻿using Do.Authentication;
 using Do.Authentication.FixedToken;
 using Do.Testing;
-using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 
 namespace Do;
 
@@ -11,12 +12,19 @@ public static class FixedTokenAuthenticationExtensions
         string[]? tokenNames = default
     ) => new([.. (tokenNames ?? ["Default"])]);
 
-    public static Middleware AFixedTokenMiddleware(this Stubber giveMe,
+    public static IAuthenticationHandler AFixedBearerTokenAuthenticationHandler(this Stubber giveMe, HttpRequest request,
        string[]? tokenNames = default
     )
     {
         tokenNames ??= [];
 
-        return new(_ => Task.CompletedTask, giveMe.The<IConfiguration>(), new(TokenNames: [.. tokenNames]));
+        var options = giveMe.The<FixedBearerTokenOptions>();
+        options.TokenNames.AddRange(tokenNames);
+
+        var handler = giveMe.A<FixedBearerTokenAuthenticationHandler>();
+
+        handler.InitializeAsync(new AuthenticationScheme("FixedBearerToken", "FixedBearerToken", handler.GetType())!, request.HttpContext).GetAwaiter().GetResult();
+
+        return handler;
     }
 }
