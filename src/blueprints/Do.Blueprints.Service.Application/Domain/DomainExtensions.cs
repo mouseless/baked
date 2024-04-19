@@ -57,13 +57,39 @@ public static class DomainExtensions
     public static bool Contains(this ModelCollection<TypeModel> source, Type type) =>
         source.Contains(TypeModelReference.IdFrom(type));
 
+    public static bool Has<T>(this ICustomAttributesModel model) where T : Attribute =>
+        model.CustomAttributes.Contains<T>();
+
+    public static T GetSingle<T>(this ICustomAttributesModel model) where T : Attribute =>
+        model.Get<T>().Single();
+
+    public static IEnumerable<T> Get<T>(this ICustomAttributesModel model) where T : Attribute =>
+        model.CustomAttributes.Get<T>();
+
+    public static bool TryGetSingle<T>(this ICustomAttributesModel model, [NotNullWhen(true)] out T? result) where T : Attribute
+    {
+        if (!model.TryGet<T>(out var attributes))
+        {
+            result = null;
+
+            return false;
+        }
+
+        result = attributes.SingleOrDefault();
+
+        return result is not null;
+    }
+
+    public static bool TryGet<T>(this ICustomAttributesModel model, [NotNullWhen(true)] out IEnumerable<T>? result) where T : Attribute =>
+        model.CustomAttributes.TryGet(out result);
+
     #region IDomainModelConvention
 
     public static void AddTypeMetadata(this ICollection<IDomainModelConvention> source, Attribute attribute, Func<TypeModelMetadata, bool> when,
         int? order = default
     ) => source.AddTypeMetadata((model, add) => add(model, attribute), when, order);
 
-    public static void AddTypeMetadata<TAttribute>(this ICollection<IDomainModelConvention> source, Attribute[] attributes, Func<TypeModelMetadata, bool> when,
+    public static void AddTypeMetadata(this ICollection<IDomainModelConvention> source, Attribute[] attributes, Func<TypeModelMetadata, bool> when,
         int? order = default
     ) => source.AddTypeMetadata((model, add) => Array.ForEach(attributes, a => add(model, a)), when, order);
 
@@ -79,7 +105,7 @@ public static class DomainExtensions
         int? order = default
     ) => source.AddPropertyMetadata((model, add) => add(model, attribute), when, order);
 
-    public static void AddPropertyMetadata<TAttribute>(this ICollection<IDomainModelConvention> source, Attribute[] attributes, Func<PropertyModel, bool> when,
+    public static void AddPropertyMetadata(this ICollection<IDomainModelConvention> source, Attribute[] attributes, Func<PropertyModel, bool> when,
         int? order = default
     ) => source.AddPropertyMetadata((model, add) => Array.ForEach(attributes, a => add(model, a)), when, order);
 
@@ -91,7 +117,7 @@ public static class DomainExtensions
         int? order = default
     ) => source.AddMethodMetadata((model, add) => add(model, attribute), when, order);
 
-    public static void AddMethodMetadata<TAttribute>(this ICollection<IDomainModelConvention> source, Attribute[] attributes, Func<MethodModel, bool> when,
+    public static void AddMethodMetadata(this ICollection<IDomainModelConvention> source, Attribute[] attributes, Func<MethodModel, bool> when,
         int? order = default
     ) => source.AddMethodMetadata((model, add) => Array.ForEach(attributes, a => add(model, a)), when, order);
 
@@ -103,7 +129,7 @@ public static class DomainExtensions
         int? order = default
     ) => source.AddParameterMetadata((model, add) => add(model, attribute), when, order);
 
-    public static void AddParameterMetadata<TAttribute>(this ICollection<IDomainModelConvention> source, Attribute[] attributes, Func<ParameterModel, bool> when,
+    public static void AddParameterMetadata(this ICollection<IDomainModelConvention> source, Attribute[] attributes, Func<ParameterModel, bool> when,
         int? order = default
     ) => source.AddParameterMetadata((model, add) => Array.ForEach(attributes, a => add(model, a)), when, order);
 

@@ -13,7 +13,7 @@ public class LookupEntityByIdConvention(DomainModel _domain)
 {
     public void Apply(ParameterModelContext context)
     {
-        if (context.Action.MethodModel?.CustomAttributes.Contains<InitializerAttribute>() == true) { return; }
+        if (context.Action.MethodModel?.Has<InitializerAttribute>() == true) { return; }
 
         var entityParameter = context.Parameter;
         if (!entityParameter.IsInvokeMethodParameter) { return; }

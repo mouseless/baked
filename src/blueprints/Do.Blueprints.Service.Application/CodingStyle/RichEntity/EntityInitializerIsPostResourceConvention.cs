@@ -1,16 +1,17 @@
-﻿using Do.Orm;
+﻿using Do.Business;
+using Do.Orm;
 using Do.RestApi.Configuration;
 using Humanizer;
 
-namespace Do.CodingStyle.WithMethod;
+namespace Do.CodingStyle.RichEntity;
 
-public class EntityPublicWithIsPostResourceConvention : IApiModelConvention<ParameterModelContext>
+public class EntityInitializerIsPostResourceConvention : IApiModelConvention<ParameterModelContext>
 {
     public void Apply(ParameterModelContext context)
     {
         if (context.Parameter.IsInvokeMethodParameter) { return; }
         if (!context.Parameter.TypeModel.TryGetMetadata(out var metadata) || !metadata.Has<EntityAttribute>()) { return; }
-        if (context.Action.Id != "With") { return; }
+        if (context.Action.MethodModel?.Has<InitializerAttribute>() != true) { return; }
 
         context.Parameter.Name = "newTarget";
         context.Parameter.Type = $"Func<{context.Parameter.Type}>";

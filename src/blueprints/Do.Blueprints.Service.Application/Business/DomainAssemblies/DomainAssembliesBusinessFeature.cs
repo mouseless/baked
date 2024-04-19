@@ -56,6 +56,8 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
         {
             builder.Index.Type.Add<ApiServiceAttribute>();
             builder.Index.Type.Add<ApiInputAttribute>();
+
+            builder.Index.Method.Add<InitializerAttribute>();
             builder.Index.Method.Add<ApiMethodAttribute>();
 
             builder.Conventions.AddTypeMetadata(new ApiServiceAttribute(),
@@ -69,6 +71,7 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
             );
             builder.Conventions.AddMethodMetadata(new ApiMethodAttribute(),
                 when: method =>
+                    !method.Has<InitializerAttribute>() &&
                     method.Overloads.Any(o => o.IsPublic && o.AllParametersAreApiInput()),
                 order: int.MaxValue
             );

@@ -42,6 +42,7 @@ public class AttributeCollection
         if (!_attributes.TryGetValue(typeof(T), out var set))
         {
             result = null;
+
             return false;
         }
 

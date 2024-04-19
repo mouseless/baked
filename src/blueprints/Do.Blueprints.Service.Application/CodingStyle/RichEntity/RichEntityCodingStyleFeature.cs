@@ -36,6 +36,9 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     type.TryGetMembers(out var members) &&
                     members.Constructors.Any(o => o.Parameters.Any(p => p.ParameterType.IsAssignableTo(typeof(IQueryContext<>))))
             );
+            builder.Conventions.AddMethodMetadata(new ApiMethodAttribute(),
+                when: _ => false // context.Type.Has<EntityAttribute>() && context.Method.Has<InitializerAttribute>()
+            );
         });
 
         configurator.ConfigureNHibernateInterceptor(interceptor =>
@@ -55,6 +58,7 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
             var domainModel = configurator.Context.GetDomainModel();
 
             conventions.Add(new EntityUnderEntitiesConvention());
+            conventions.Add(new EntityInitializerIsPostResourceConvention());
             conventions.Add(new TargetEntityFromRouteConvention(domainModel));
         });
     }

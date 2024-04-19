@@ -21,10 +21,5 @@ public class WithMethodCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 when: method => method.Name == "With"
             );
         });
-
-        configurator.ConfigureApiModelConventions(conventions =>
-        {
-            conventions.Add(new EntityPublicWithIsPostResourceConvention());
-        });
     }
 }

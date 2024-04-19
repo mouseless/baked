@@ -10,8 +10,5 @@ public record ParameterModel(
 {
     public TypeModel ParameterType => ParameterTypeReference.Model;
 
-    public bool Has<T>() where T : Attribute =>
-        CustomAttributes.Contains<T>();
-
     string IModel.Id => Name;
 }
