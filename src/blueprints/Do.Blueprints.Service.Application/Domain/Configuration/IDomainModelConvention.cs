@@ -1,6 +1,4 @@
-﻿using Do.Domain.Model;
-
-namespace Do.Domain.Configuration;
+﻿namespace Do.Domain.Configuration;
 
 public interface IDomainModelConvention
 {
@@ -8,7 +6,6 @@ public interface IDomainModelConvention
 }
 
 public interface IDomainModelConvention<TModel> : IDomainModelConvention
-    where TModel : IModel
 {
     void Apply(TModel model);
 }

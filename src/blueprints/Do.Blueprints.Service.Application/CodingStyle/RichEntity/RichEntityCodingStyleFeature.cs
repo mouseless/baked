@@ -11,8 +11,9 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
         configurator.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.AddTypeMetadata(
-                apply: (query, add) =>
+                apply: (context, add) =>
                 {
+                    var query = context.Type;
                     var parameter =
                         query.GetMembers()
                             .Constructors
@@ -32,8 +33,8 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     );
                     add(entity.GetMetadata(), new ApiInputAttribute());
                 },
-                when: type =>
-                    type.TryGetMembers(out var members) &&
+                when: c =>
+                    c.Type.TryGetMembers(out var members) &&
                     members.Constructors.Any(o => o.Parameters.Any(p => p.ParameterType.IsAssignableTo(typeof(IQueryContext<>))))
             );
             builder.Conventions.AddMethodMetadata(new ApiMethodAttribute(),

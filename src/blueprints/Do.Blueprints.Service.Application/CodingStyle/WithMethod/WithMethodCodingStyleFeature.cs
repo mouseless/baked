@@ -11,14 +11,14 @@ public class WithMethodCodingStyleFeature : IFeature<CodingStyleConfigurator>
         configurator.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.AddTypeMetadata(new TransientAttribute(),
-                when: type =>
-                    type.IsClass && !type.IsAbstract &&
-                    type.TryGetMembers(out var members) &&
+                when: c =>
+                    c.Type.IsClass && !c.Type.IsAbstract &&
+                    c.Type.TryGetMembers(out var members) &&
                     members.Has<ServiceAttribute>() &&
                     members.Methods.Contains("With")
             );
             builder.Conventions.AddMethodMetadata(new InitializerAttribute(),
-                when: method => method.Name == "With"
+                when: c => c.Method.Name == "With"
             );
         });
     }

@@ -40,14 +40,14 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
             builder.Index.Type.Add<ServiceAttribute>();
 
             builder.Conventions.AddTypeMetadata(new ServiceAttribute(),
-                when: type =>
-                    type.IsPublic &&
-                    !type.IsValueType &&
-                    !type.IsGenericMethodParameter &&
-                    !type.IsGenericTypeParameter &&
-                    !type.IsGenericTypeDefinition &&
-                    !type.IsAssignableTo<IEnumerable>() &&
-                    type.TryGetMembers(out var members) &&
+                when: c =>
+                    c.Type.IsPublic &&
+                    !c.Type.IsValueType &&
+                    !c.Type.IsGenericMethodParameter &&
+                    !c.Type.IsGenericTypeParameter &&
+                    !c.Type.IsGenericTypeDefinition &&
+                    !c.Type.IsAssignableTo<IEnumerable>() &&
+                    c.Type.TryGetMembers(out var members) &&
                     !members.Methods.Contains("<Clone>$") // if type is record
             );
         });
@@ -61,18 +61,18 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
             builder.Index.Method.Add<ApiMethodAttribute>();
 
             builder.Conventions.AddTypeMetadata(new ApiServiceAttribute(),
-                when: type =>
-                  type.Has<ServiceAttribute>() &&
-                  type.IsClass &&
-                  !type.IsAbstract &&
-                  !type.IsGenericType &&
-                  type.TryGetMembers(out var members) &&
+                when: c =>
+                  c.Type.Has<ServiceAttribute>() &&
+                  c.Type.IsClass &&
+                  !c.Type.IsAbstract &&
+                  !c.Type.IsGenericType &&
+                  c.Type.TryGetMembers(out var members) &&
                   members.Methods.Any()
             );
             builder.Conventions.AddMethodMetadata(new ApiMethodAttribute(),
-                when: method =>
-                    !method.Has<InitializerAttribute>() &&
-                    method.Overloads.Any(o => o.IsPublic && o.AllParametersAreApiInput()),
+                when: c =>
+                    !c.Method.Has<InitializerAttribute>() &&
+                    c.Method.Overloads.Any(o => o.IsPublic && o.AllParametersAreApiInput()),
                 order: int.MaxValue
             );
         });
