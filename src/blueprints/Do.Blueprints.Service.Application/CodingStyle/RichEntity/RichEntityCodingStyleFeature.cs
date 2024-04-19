@@ -38,7 +38,9 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     members.Constructors.Any(o => o.Parameters.Any(p => p.ParameterType.IsAssignableTo(typeof(IQueryContext<>))))
             );
             builder.Conventions.AddMethodMetadata(new ApiMethodAttribute(),
-                when: _ => false // context.Type.Has<EntityAttribute>() && context.Method.Has<InitializerAttribute>()
+                when: c =>
+                    c.Type.Has<EntityAttribute>() && c.Method.Has<InitializerAttribute>() &&
+                    c.Method.Overloads.Any(o => o.IsPublic && o.AllParametersAreApiInput())
             );
         });
 
