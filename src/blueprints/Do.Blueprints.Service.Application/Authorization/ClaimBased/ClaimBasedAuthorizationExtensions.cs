@@ -5,6 +5,6 @@ namespace Do;
 
 public static class ClaimBasedAuthorizationExtensions
 {
-    public static ClaimBasedAuthorizationFeature FixedToken(this AuthorizationConfigurator _) =>
+    public static ClaimBasedAuthorizationFeature ClaimBased(this AuthorizationConfigurator _) =>
         new();
 }

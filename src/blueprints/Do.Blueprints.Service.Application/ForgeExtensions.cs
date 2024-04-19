@@ -1,5 +1,6 @@
 ﻿using Do.Architecture;
 using Do.Authentication;
+using Do.Authorization;
 using Do.Business;
 using Do.Caching;
 using Do.Communication;
@@ -17,6 +18,7 @@ public static class ForgeExtensions
     public static Application Service(this Forge source,
         Func<BusinessConfigurator, IFeature<BusinessConfigurator>> business,
         IEnumerable<Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>>? authentications = default,
+        Func<AuthorizationConfigurator, IFeature<AuthorizationConfigurator>>? authorization = default,
         Func<CachingConfigurator, IFeature<CachingConfigurator>>? caching = default,
         Func<CommunicationConfigurator, IFeature<CommunicationConfigurator>>? communication = default,
         Func<CoreConfigurator, IFeature<CoreConfigurator>>? core = default,
@@ -29,6 +31,7 @@ public static class ForgeExtensions
     )
     {
         authentications ??= [c => c.FixedToken()];
+        authorization ??= c => c.ClaimBased();
         caching ??= c => c.ScopedMemory();
         communication ??= c => c.Http();
         core ??= c => c.Dotnet();
@@ -52,6 +55,7 @@ public static class ForgeExtensions
             app.Layers.AddRestApi();
 
             app.Features.AddAuthentications(authentications);
+            app.Features.AddAuthorization(authorization);
             app.Features.AddBusiness(business);
             app.Features.AddCaching(caching);
             app.Features.AddCodingStyles([
