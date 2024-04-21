@@ -83,6 +83,7 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
         {
             var domainModel = configurator.Context.GetDomainModel();
 
+            conventions.Insert(0, new AutoHttpMethodConvention([(Regexes.StartsWithByFirstByOrSingleBy(), HttpMethod.Get)]));
             conventions.Add(new LookupEntityByIdConvention(domainModel));
             conventions.Add(new LookupEntitiesByIdsConvention(domainModel));
             conventions.Add(new SingleByUniqueConvention(domainModel));

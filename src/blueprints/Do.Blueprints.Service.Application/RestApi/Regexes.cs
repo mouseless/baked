@@ -4,15 +4,15 @@ namespace Do.RestApi;
 
 internal static partial class Regexes
 {
-    [GeneratedRegex(@"^(Get|By|SingleBy|FirstBy).*$", RegexOptions.None, "en-US")]
-    public static partial Regex GetMethod();
+    [GeneratedRegex(@"^Get.*$", RegexOptions.None, "en-US")]
+    public static partial Regex StartsWithGet();
 
     [GeneratedRegex(@"^(Delete|Remove).*$", RegexOptions.None, "en-US")]
-    public static partial Regex DeleteMethod();
+    public static partial Regex StartsWithDeleteOrRemove();
 
     [GeneratedRegex(@"^(Update|Change|Set)$", RegexOptions.None, "en-US")]
-    public static partial Regex PutMethod();
+    public static partial Regex IsUpdateChangeOrSet();
 
     [GeneratedRegex(@"^(Update|Change|Set).*$", RegexOptions.None, "en-US")]
-    public static partial Regex PatchMethod();
+    public static partial Regex StartsWithUpdateChangeOrSet();
 }

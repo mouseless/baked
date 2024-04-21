@@ -1,6 +1,7 @@
 ﻿using Do.Architecture;
 using Do.Domain.Configuration;
 using Do.Domain.Model;
+using Do.RestApi;
 using Do.RestApi.Conventions;
 using Do.RestApi.Model;
 using Microsoft.Extensions.DependencyInjection;
@@ -100,11 +101,17 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
 
         configurator.ConfigureApiModelConventions(conventions =>
         {
-            conventions.Add(new AutoHttpMethodConvention());
+            conventions.Add(new AutoHttpMethodConvention([
+                (Regexes.StartsWithGet(), HttpMethod.Get),
+                (Regexes.IsUpdateChangeOrSet(), HttpMethod.Put),
+                (Regexes.StartsWithUpdateChangeOrSet(), HttpMethod.Patch),
+                (Regexes.StartsWithDeleteOrRemove(), HttpMethod.Delete)
+            ]));
             conventions.Add(new GetAndDeleteAcceptsOnlyQueryConvention());
-            conventions.Add(new RemoveActionNameFromRouteConvention(["Delete", "Update"]));
             conventions.Add(new RemovePrefixFromRouteConvention(["Get"]));
-            conventions.Add(new AddResourceConvention());
+            conventions.Add(new RemoveActionNameFromRouteConvention(["Update", "Change", "Set"]));
+            conventions.Add(new RemoveActionNameFromRouteConvention(["Delete", "Remove"]));
+            conventions.Add(new RemovePrefixFromRouteConvention(["Add"], _pluralize: true));
         });
 
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>

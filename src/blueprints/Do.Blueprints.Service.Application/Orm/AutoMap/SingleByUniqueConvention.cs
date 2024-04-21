@@ -1,4 +1,4 @@
-﻿using Do.Domain.Model;
+using Do.Domain.Model;
 using Do.RestApi.Configuration;
 using Do.RestApi.Model;
 using Humanizer;
@@ -15,10 +15,10 @@ public class SingleByUniqueConvention(DomainModel _domainModel)
 
         var entityType = _domainModel.Types[queryAttribute.EntityType];
 
-        var match = Regexes.SingleByUniqueMethod().Match(context.Action.Id);
+        var match = Regexes.StartsWithSingleBy().Match(context.Action.Id);
         if (!match.Success) { return; }
 
-        var uniqueParameterName = match.Groups["Unique"].Value;
+        var uniqueParameterName = match.Groups["Name"].Value;
         if (!context.Action.Parameter.TryGetValue(uniqueParameterName.Camelize(), out var uniqueParameter)) { return; }
 
         var newParameterName = $"{entityType.Name.Camelize()}{uniqueParameterName}";
