@@ -22,9 +22,9 @@ public class GeneratingUnauthorizedAccessResponse : TestServiceNfr
         var problemDetails = response.Content.ReadFromJsonAsync<ProblemDetails>().Result;
 
         problemDetails.ShouldNotBeNull();
-        problemDetails.Detail.ShouldBe("Attempted to perform an unauthorized operation.");
         problemDetails.Status.ShouldBe((int)HttpStatusCode.Unauthorized);
-        problemDetails.Title.ShouldBe("Unauthorized Access");
-        problemDetails.Type.ShouldBe("https://do.mouseless.codes/errors/unauthorized-access");
+        problemDetails.Detail.ShouldBe("Attempted to perform an unauthorized operation.");
+        problemDetails.Title.ShouldBe("Authentication Failure");
+        problemDetails.Type.ShouldBe("https://do.mouseless.codes/errors/authentication-failure");
     }
 }

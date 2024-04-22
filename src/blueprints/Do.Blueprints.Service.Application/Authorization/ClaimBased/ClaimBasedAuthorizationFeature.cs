@@ -1,10 +1,11 @@
 ﻿using Do.Architecture;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Do.Authorization.ClaimBased;
 
-public class ClaimBasedAuthorizationFeature : IFeature<AuthorizationConfigurator>
+public class ClaimBasedAuthorizationFeature(Dictionary<string, Action<AuthorizationPolicyBuilder>> _policies) : IFeature<AuthorizationConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
@@ -12,13 +13,22 @@ public class ClaimBasedAuthorizationFeature : IFeature<AuthorizationConfigurator
         {
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("AdminOnly", policy => policy.RequireClaim("AdminToken"));
+                options.DefaultPolicy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build();
+
+                foreach (var item in _policies)
+                {
+                    options.AddPolicy(item.Key, item.Value);
+                }
             });
+
+            services.AddSingleton<IAuthorizationMiddlewareResultHandler, AuthorizationResultHandler>();
         });
 
         configurator.ConfigureMiddlewareCollection(middlewares =>
         {
-            middlewares.Add(app => app.UseAuthorization(), order: 101);
+            middlewares.Add(app => app.UseAuthorization(), order: 1);
         });
 
         configurator.ConfigureApiModelConventions(conventions =>

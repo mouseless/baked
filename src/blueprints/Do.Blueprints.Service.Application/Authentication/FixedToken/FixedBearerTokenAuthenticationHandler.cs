@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System.Security.Claims;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Encodings.Web;
 
 namespace Do.Authentication.FixedToken;
@@ -23,13 +23,14 @@ public class FixedBearerTokenAuthenticationHandler(
         if (Context.Request.Headers.Authorization.Any())
         {
             var givenToken = $"{Context.Request.Headers.Authorization}".Replace("Bearer", string.Empty).Trim();
-            if (AnyTokenValidates(token => givenToken == token))
+            if (AnyTokenValidates(token => givenToken == token, out var token))
             {
-                var claims = new[] { new Claim("AdminToken", "Test") };
-                var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, "AdminOnly"));
-                var ticket = new AuthenticationTicket(principal, Scheme.Name);
+                var principle = _options.ClaimsPrincipleProvider.Create(Context.Request);
 
-                return Task.FromResult(AuthenticateResult.Success(ticket));
+                if (principle != null)
+                {
+                    return Task.FromResult(AuthenticateResult.Success(new(principle, Scheme.Name)));
+                }
             }
 
             return Task.FromResult(AuthenticateResult.Fail("Attempted to perform an unauthorized operation."));
@@ -53,13 +54,17 @@ public class FixedBearerTokenAuthenticationHandler(
                 parameters += $"{value}";
             }
 
-            if (AnyTokenValidates(token => hash == (parameters + token).ToSHA256().ToBase64()))
+            if (AnyTokenValidates(token => hash == (parameters + token).ToSHA256().ToBase64(), out var token))
             {
-                var claims = new[] { new Claim("AdminToken", "Test") };
-                var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, "AdminOnly"));
-                var ticket = new AuthenticationTicket(principal, Scheme.Name);
+                var properties = new AuthenticationProperties();
+                properties.Items.Add("Token", token);
 
-                return Task.FromResult(AuthenticateResult.Success(ticket));
+                var principle = _options.ClaimsPrincipleProvider.Create(Context.Request, properties);
+
+                if (principle != null)
+                {
+                    return Task.FromResult(AuthenticateResult.Success(new(principle, properties, Scheme.Name)));
+                }
             }
 
             return Task.FromResult(AuthenticateResult.Fail("Attempted to perform an unauthorized operation."));
@@ -68,14 +73,21 @@ public class FixedBearerTokenAuthenticationHandler(
         return Task.FromResult(AuthenticateResult.NoResult());
     }
 
-    bool AnyTokenValidates(Func<string, bool> test)
+    bool AnyTokenValidates(Func<string, bool> test, [NotNullWhen(true)] out string? validToken)
     {
+        validToken = default;
+
         foreach (var tokenName in _options.TokenNames)
         {
             var token = GetToken(tokenName);
             if (token is null) { continue; }
 
-            if (test(token)) { return true; }
+            if (test(token))
+            {
+                validToken = token;
+
+                return true;
+            }
         }
 
         return false;

@@ -19,15 +19,17 @@ public class FixedTokenAuthenticationFeature(List<string> _tokenNames)
                     "FixedBearerToken",
                     opts => { }
                 );
-            services.AddSingleton(new FixedBearerTokenOptions { TokenNames = _tokenNames });
+            services.AddSingleton(new FixedBearerTokenOptions
+            {
+                TokenNames = _tokenNames,
+                ClaimsPrincipleProvider = new TokenClaimProvider()
+            });
 
         });
 
         configurator.ConfigureMiddlewareCollection(middlewares =>
         {
-            middlewares.Add(app => app.UseAuthentication(),
-                order: 100
-            );
+            middlewares.Add(app => app.UseAuthentication());
         });
 
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>

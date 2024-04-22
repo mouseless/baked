@@ -31,4 +31,15 @@ public class InterceptingUnauthorizedRequests : TestServiceNfr
         response.IsSuccessStatusCode.ShouldBeFalse();
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }
+
+    [Test]
+    public async Task Returns_forbidden_response_for_invalid_policy()
+    {
+        Client.DefaultRequestHeaders.Authorization = AuthenticationHeaderValue.Parse("11111111111111111111111111111111");
+
+        var response = await Client.PostAsync("authorization-samples/claim-based-authorization", null);
+
+        response.IsSuccessStatusCode.ShouldBeFalse();
+        response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
+    }
 }

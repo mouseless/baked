@@ -17,6 +17,7 @@ public class DefaultExceptionHandlingFeature(Setting<string>? _typeUrlFormat = d
 
         configurator.ConfigureServiceCollection(services =>
         {
+            services.AddSingleton<IExceptionHandler, AuthenticationFailureExceptionHandler>();
             services.AddSingleton<IExceptionHandler, UnauthorizedAccessExceptionHandler>();
             services.AddSingleton<IExceptionHandler, HandledExceptionHandler>();
             services.AddSingleton(new ExceptionHandlerSettings(_typeUrlFormat));
