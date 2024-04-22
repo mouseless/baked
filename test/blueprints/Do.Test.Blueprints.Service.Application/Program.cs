@@ -1,8 +1,16 @@
+using Do.Authentication.FixedToken;
 using Do.Test.Orm;
 
 Forge.New
     .Service(
         business: c => c.DomainAssemblies([typeof(Entity).Assembly]),
+        authentications:
+        [
+            c => c.FixedToken(_optionsBuilder: options =>
+            {
+                options.IdentityOptions.Add("Admin", [new TokenClaimProvider()]);
+            })
+        ],
         authorization: c => c.ClaimBased(policies:
             new()
             {

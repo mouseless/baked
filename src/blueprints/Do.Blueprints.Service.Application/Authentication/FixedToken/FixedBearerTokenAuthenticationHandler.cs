@@ -8,6 +8,7 @@ using System.Text.Encodings.Web;
 namespace Do.Authentication.FixedToken;
 
 public class FixedBearerTokenAuthenticationHandler(
+    ClaimsPrincipleProvider<FixedBearerTokenAuthenticationHandler> _claimsPrincipleProvider,
     FixedBearerTokenOptions _options,
     IConfiguration _configuration,
     IOptionsMonitor<AuthenticationSchemeOptions> options,
@@ -20,20 +21,14 @@ public class FixedBearerTokenAuthenticationHandler(
 
     protected override Task<AuthenticateResult> HandleAuthenticateAsync()
     {
+        string? token = default;
         if (Context.Request.Headers.Authorization.Any())
         {
             var givenToken = $"{Context.Request.Headers.Authorization}".Replace("Bearer", string.Empty).Trim();
-            if (AnyTokenValidates(token => givenToken == token, out var token))
+            if (!AnyTokenValidates(token => givenToken == token, out token))
             {
-                var principle = _options.ClaimsPrincipleProvider.Create(Context.Request);
-
-                if (principle != null)
-                {
-                    return Task.FromResult(AuthenticateResult.Success(new(principle, Scheme.Name)));
-                }
+                return Task.FromResult(AuthenticateResult.Fail("Attempted to perform an unauthorized operation."));
             }
-
-            return Task.FromResult(AuthenticateResult.Fail("Attempted to perform an unauthorized operation."));
         }
 
         if (Context.Request.HasFormContentType && Context.Request.Form.ContainsKey("hash"))
@@ -54,20 +49,20 @@ public class FixedBearerTokenAuthenticationHandler(
                 parameters += $"{value}";
             }
 
-            if (AnyTokenValidates(token => hash == (parameters + token).ToSHA256().ToBase64(), out var token))
+            if (!AnyTokenValidates(token => hash == (parameters + token).ToSHA256().ToBase64(), out token))
             {
-                var properties = new AuthenticationProperties();
-                properties.Items.Add("Token", token);
-
-                var principle = _options.ClaimsPrincipleProvider.Create(Context.Request, properties);
-
-                if (principle != null)
-                {
-                    return Task.FromResult(AuthenticateResult.Success(new(principle, properties, Scheme.Name)));
-                }
+                return Task.FromResult(AuthenticateResult.Fail("Attempted to perform an unauthorized operation."));
             }
+        }
 
-            return Task.FromResult(AuthenticateResult.Fail("Attempted to perform an unauthorized operation."));
+        if (token != null)
+        {
+            var properties = new AuthenticationProperties();
+            properties.Items.Add(TokenClaimProvider.TOKEN_KEY, token);
+
+            var principle = _claimsPrincipleProvider.Create(Context.Request, properties);
+
+            return Task.FromResult(AuthenticateResult.Success(new(principle, properties, Scheme.Name)));
         }
 
         return Task.FromResult(AuthenticateResult.NoResult());

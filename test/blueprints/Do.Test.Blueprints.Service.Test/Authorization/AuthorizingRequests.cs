@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Headers;
 
 namespace Do.Test.Authorization;
+
 public class AuthorizingRequests : TestServiceNfr
 {
     [Test]

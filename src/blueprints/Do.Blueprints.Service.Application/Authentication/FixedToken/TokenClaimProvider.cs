@@ -4,19 +4,23 @@ using System.Security.Claims;
 
 namespace Do.Authentication.FixedToken;
 
-public class TokenClaimProvider : IClaimsPrincipleProvider
+public class TokenClaimProvider : IClaimProvider
 {
-    public ClaimsPrincipal? Create(HttpRequest request, AuthenticationProperties? properties)
+    public const string TOKEN_KEY = "Token";
+
+    public Claim? Create(HttpRequest request,
+        AuthenticationProperties? properties = null
+    )
     {
-        if (properties?.Items.TryGetValue("Token", out string? propertyToken) == true)
+        if (properties is not null && properties.Items.TryGetValue(TOKEN_KEY, out string? propertyToken))
         {
-            return new(new ClaimsIdentity([new("Token", $"{propertyToken}")], "Admin"));
+            return new(TOKEN_KEY, $"{propertyToken}");
         }
 
         var headerToken = $"{request.Headers.Authorization}".Replace("Bearer", string.Empty).Trim();
         if (!string.IsNullOrEmpty(headerToken))
         {
-            return new(new ClaimsIdentity([new("Token", $"{headerToken}")], "Admin"));
+            return new(TOKEN_KEY, $"{headerToken}");
         }
 
         return default;

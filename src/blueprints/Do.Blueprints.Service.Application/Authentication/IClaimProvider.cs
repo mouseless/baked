@@ -4,9 +4,9 @@ using System.Security.Claims;
 
 namespace Do.Authentication;
 
-public interface IClaimsPrincipleProvider
+public interface IClaimProvider
 {
-    ClaimsPrincipal? Create(HttpRequest request,
+    Claim? Create(HttpRequest request,
         AuthenticationProperties? properties = default
     );
 }

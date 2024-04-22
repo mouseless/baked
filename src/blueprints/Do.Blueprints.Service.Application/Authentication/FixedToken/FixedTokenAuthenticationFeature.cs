@@ -7,7 +7,7 @@ using Microsoft.OpenApi.Models;
 
 namespace Do.Authentication.FixedToken;
 
-public class FixedTokenAuthenticationFeature(List<string> _tokenNames)
+public class FixedTokenAuthenticationFeature(List<string> _tokenNames, Action<ClaimsPrincipleProviderOptions> _optionsBuilder)
     : IFeature<AuthenticationConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
@@ -19,10 +19,14 @@ public class FixedTokenAuthenticationFeature(List<string> _tokenNames)
                     "FixedBearerToken",
                     opts => { }
                 );
+
+            var options = new ClaimsPrincipleProviderOptions();
+            _optionsBuilder(options);
+            services.AddSingleton(new ClaimsPrincipleProvider<FixedBearerTokenAuthenticationHandler>(options));
+
             services.AddSingleton(new FixedBearerTokenOptions
             {
                 TokenNames = _tokenNames,
-                ClaimsPrincipleProvider = new TokenClaimProvider()
             });
 
         });
