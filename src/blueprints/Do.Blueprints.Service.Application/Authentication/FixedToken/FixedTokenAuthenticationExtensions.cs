@@ -10,8 +10,16 @@ public static class FixedTokenAuthenticationExtensions
 {
     public static FixedTokenAuthenticationFeature FixedToken(this AuthenticationConfigurator _,
         string[]? tokenNames = default,
-        Action<ClaimsPrincipalProviderOptions>? _optionsBuilder = default
-    ) => new([.. (tokenNames ?? ["Default"])], _optionsBuilder ?? (_ => { }));
+        Action<ClaimsPrincipalFactoryOptions>? configure = default
+    )
+    {
+        configure ??= _ => { };
+
+        var options = new ClaimsPrincipalFactoryOptions();
+        configure(options);
+
+        return new([.. tokenNames ?? ["Default"]], options);
+    }
 
     public static IAuthenticationHandler AFixedBearerTokenAuthenticationHandler(this Stubber giveMe, HttpRequest request,
        string[]? tokenNames = default

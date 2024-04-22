@@ -2,5 +2,6 @@
 
 public class FixedBearerTokenOptions
 {
-    public List<string> TokenNames { get; init; } = ["Default"];
+    public List<string> TokenNames { get; init; } = [];
+    public ClaimsPrincipalFactoryOptions ClaimsPrincipalFactoryOptions { get; init; } = [];
 }

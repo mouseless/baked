@@ -4,13 +4,12 @@ using System.Security.Claims;
 
 namespace Do.Authentication;
 
-public class ClaimsPrincipalProvider<THandler>(ClaimsPrincipalProviderOptions _options)
-    where THandler : IAuthenticationHandler
+public class ClaimsPrincipalFactory(ClaimsPrincipalFactoryOptions _options)
 {
     internal ClaimsPrincipal Create(HttpRequest request, AuthenticationProperties? properties)
     {
         var identites = new List<ClaimsIdentity>();
-        foreach (var item in _options.IdentityOptions)
+        foreach (var item in _options)
         {
             var claims = new List<Claim>();
             foreach (var claimProvider in item.Value)
@@ -25,6 +24,6 @@ public class ClaimsPrincipalProvider<THandler>(ClaimsPrincipalProviderOptions _o
             identites.Add(new ClaimsIdentity(claims, item.Key));
         }
 
-        return new ClaimsPrincipal(identites);
+        return new(identites);
     }
 }

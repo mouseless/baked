@@ -8,7 +8,6 @@ using System.Text.Encodings.Web;
 namespace Do.Authentication.FixedToken;
 
 public class FixedBearerTokenAuthenticationHandler(
-    ClaimsPrincipalProvider<FixedBearerTokenAuthenticationHandler> _claimsPrincipleProvider,
     FixedBearerTokenOptions _options,
     IConfiguration _configuration,
     IOptionsMonitor<AuthenticationSchemeOptions> options,
@@ -22,6 +21,7 @@ public class FixedBearerTokenAuthenticationHandler(
     protected override Task<AuthenticateResult> HandleAuthenticateAsync()
     {
         string? token = default;
+
         if (Context.Request.Headers.Authorization.Any())
         {
             var givenToken = $"{Context.Request.Headers.Authorization}".Replace("Bearer", string.Empty).Trim();
@@ -60,7 +60,7 @@ public class FixedBearerTokenAuthenticationHandler(
             var properties = new AuthenticationProperties();
             properties.Items.Add(TokenClaimProvider.TOKEN_KEY, token);
 
-            var principle = _claimsPrincipleProvider.Create(Context.Request, properties);
+            var principle = new ClaimsPrincipalFactory(_options.ClaimsPrincipalFactoryOptions).Create(Context.Request, properties);
 
             return Task.FromResult(AuthenticateResult.Success(new(principle, properties, Scheme.Name)));
         }
