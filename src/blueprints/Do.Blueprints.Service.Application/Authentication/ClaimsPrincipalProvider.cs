@@ -4,7 +4,7 @@ using System.Security.Claims;
 
 namespace Do.Authentication;
 
-public class ClaimsPrincipleProvider<THandler>(ClaimsPrincipleProviderOptions _options)
+public class ClaimsPrincipalProvider<THandler>(ClaimsPrincipalProviderOptions _options)
     where THandler : IAuthenticationHandler
 {
     internal ClaimsPrincipal Create(HttpRequest request, AuthenticationProperties? properties)

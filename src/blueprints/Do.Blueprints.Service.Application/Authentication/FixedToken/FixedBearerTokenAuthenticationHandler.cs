@@ -8,7 +8,7 @@ using System.Text.Encodings.Web;
 namespace Do.Authentication.FixedToken;
 
 public class FixedBearerTokenAuthenticationHandler(
-    ClaimsPrincipleProvider<FixedBearerTokenAuthenticationHandler> _claimsPrincipleProvider,
+    ClaimsPrincipalProvider<FixedBearerTokenAuthenticationHandler> _claimsPrincipleProvider,
     FixedBearerTokenOptions _options,
     IConfiguration _configuration,
     IOptionsMonitor<AuthenticationSchemeOptions> options,

@@ -1,6 +1,6 @@
 ﻿namespace Do.Authentication;
 
-public class ClaimsPrincipleProviderOptions
+public class ClaimsPrincipalProviderOptions
 {
     public Dictionary<string, List<IClaimProvider>> IdentityOptions { get; } = [];
 }
