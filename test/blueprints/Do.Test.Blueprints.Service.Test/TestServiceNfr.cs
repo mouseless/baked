@@ -10,6 +10,9 @@ public abstract class TestServiceNfr : ServiceNfr<TestServiceNfr>, IEntryPoint
 {
     public static void Main(string[] args) => Init(args);
 
+    protected override IEnumerable<string> EntityNamesToClearOnTearDown =>
+        [nameof(Entity), nameof(Parent)];
+
     protected override Func<BusinessConfigurator, IFeature<BusinessConfigurator>> Business =>
         c => c.DomainAssemblies([typeof(Entity).Assembly]);
     protected override Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>>? Database =>

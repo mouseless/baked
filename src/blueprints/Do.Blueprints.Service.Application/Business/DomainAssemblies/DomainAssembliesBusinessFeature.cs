@@ -108,10 +108,11 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
                 (Regexes.StartsWithDeleteOrRemove(), HttpMethod.Delete)
             ]));
             conventions.Add(new GetAndDeleteAcceptsOnlyQueryConvention());
-            conventions.Add(new RemovePrefixFromRouteConvention(["Get"]));
+            conventions.Add(new RemoveActionPrefixFromRouteConvention(["Get"]));
             conventions.Add(new RemoveActionNameFromRouteConvention(["Update", "Change", "Set"]));
+            conventions.Add(new RemoveActionPrefixFromRouteConvention(["Update", "Change", "Set"]));
             conventions.Add(new RemoveActionNameFromRouteConvention(["Delete", "Remove"]));
-            conventions.Add(new RemovePrefixFromRouteConvention(["Add"], _pluralize: true));
+            conventions.Add(new RemoveActionPrefixFromRouteConvention(["Add"], _pluralize: true));
         });
 
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>

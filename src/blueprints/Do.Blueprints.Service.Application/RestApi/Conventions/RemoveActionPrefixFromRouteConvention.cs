@@ -3,7 +3,7 @@ using Humanizer;
 
 namespace Do.RestApi.Conventions;
 
-public class RemovePrefixFromRouteConvention(IEnumerable<string> _prefixes,
+public class RemoveActionPrefixFromRouteConvention(IEnumerable<string> _prefixes,
     bool _pluralize = false
 ) : IApiModelConvention<ActionModelContext>
 {

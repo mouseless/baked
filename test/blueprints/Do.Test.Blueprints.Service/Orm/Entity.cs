@@ -97,6 +97,10 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
         }
     }
 
+    public virtual void UpdateString(
+        string? @string = default
+    ) => Set(@string: @string);
+
     protected virtual void Set(
         Guid? guid = default,
         string? @string = default,

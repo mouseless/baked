@@ -4,7 +4,8 @@ namespace Do.Test.Orm;
 
 public class Parent(IEntityContext<Parent> _context, Func<Child> _newChild, Children _childEntities)
 {
-    protected Parent() : this(default!, default!, default!) { }
+    protected Parent()
+        : this(default!, default!, default!) { }
 
     public virtual Guid Id { get; protected set; } = default!;
     public virtual string Name { get; protected set; } = default!;
@@ -24,6 +25,14 @@ public class Parent(IEntityContext<Parent> _context, Func<Child> _newChild, Chil
     public virtual void AddChild()
     {
         _newChild().With(this);
+    }
+
+    public virtual void Delete()
+    {
+        foreach (var child in GetChildren())
+        {
+            child.Delete();
+        }
     }
 }
 

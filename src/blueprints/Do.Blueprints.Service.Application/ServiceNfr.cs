@@ -9,7 +9,9 @@ using Do.ExceptionHandling;
 using Do.Greeting;
 using Do.Logging;
 using Do.Orm;
+using Humanizer;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Newtonsoft.Json;
 
 namespace Do.Testing;
 
@@ -18,15 +20,31 @@ public abstract class ServiceNfr<TEntryPoint> : Nfr
 {
     protected System.Net.Http.HttpClient Client { get; private set; } = default!;
 
-    public override void OneTimeSetUp()
+    public override async Task OneTimeSetUp()
     {
-        base.OneTimeSetUp();
+        await base.OneTimeSetUp();
 
         Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", EnvironmentName);
 
         Client = new WebApplicationFactory<TEntryPoint>()
             .WithWebHostBuilder(config => config.UseSetting("typeName", $"{GetType().AssemblyQualifiedName}"))
             .CreateClient();
+    }
+
+    public override async Task OneTimeTearDown()
+    {
+        await base.OneTimeTearDown();
+
+        foreach (var entityName in EntityNamesToClearOnTearDown)
+        {
+            var entitiesRoute = entityName.ToLowerInvariant().Pluralize();
+            var entitiesResponse = await Client.GetAsync($"/{entitiesRoute}");
+            var entities = (IEnumerable?)JsonConvert.DeserializeObject(await entitiesResponse.Content.ReadAsStringAsync()) ?? Array.Empty<object>();
+            foreach (dynamic entity in entities)
+            {
+                await Client.DeleteAsync($"/{entitiesRoute}/{entity?.id}");
+            }
+        }
     }
 
     protected override Application ForgeApplication() =>
@@ -44,6 +62,8 @@ public abstract class ServiceNfr<TEntryPoint> : Nfr
                 orm: Orm,
                 configure: Configure
             );
+
+    protected virtual IEnumerable<string> EntityNamesToClearOnTearDown => [];
 
     protected virtual IEnumerable<Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>>? Authentications => default;
     protected abstract Func<BusinessConfigurator, IFeature<BusinessConfigurator>> Business { get; }
