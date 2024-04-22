@@ -5,9 +5,13 @@ namespace Do.Test.Business;
 
 public class MethodSamples(ILogger<MethodSamples> _logger)
 {
-    [AuthorizationRequired]
-    public void RequiresAuthorization() =>
-        _logger.LogInformation($"{nameof(RequiresAuthorization)} was called");
+    readonly List<string> _strings = [];
+
+    public List<string> GetStrings() =>
+        _strings;
+
+    public void AddString(string @string) =>
+        _strings.Add(@string);
 
     internal Internal Internal() =>
         new();
@@ -22,18 +26,6 @@ public class MethodSamples(ILogger<MethodSamples> _logger)
         _logger.LogInformation($"{nameof(VoidAsync)} was called");
     }
 
-    public void PrimitiveParameters(string @string, int @int, DateTime dateTime) =>
-        _logger.LogInformation($"{nameof(PrimitiveParameters)} was called with {@string}, {@int} and {dateTime}");
-
-    public void PrimitiveListParameters(List<string> strings, int[] ints, IEnumerable<DateTime> dateTimes) =>
-        _logger.LogInformation($"{nameof(PrimitiveListParameters)} was called with [{strings.Join(", ")}], [{ints.Join(", ")}] and [{dateTimes.Join(", ")}]");
-
-    public void EntityParameters(Entity entity) =>
-        _logger.LogInformation($"{nameof(EntityParameters)} was called with {entity.Id}");
-
-    public void EntityListParameters(IEnumerable<Entity> entities, Entity[] otherEntities) =>
-        _logger.LogInformation($"{nameof(EntityListParameters)} was called with [{entities.Select(e => e.Id).Join(", ")}] and [{otherEntities.Select(e => e.Id).Join(", ")}]");
-
     public object Object(object @object) =>
         @object;
 
@@ -43,4 +35,16 @@ public class MethodSamples(ILogger<MethodSamples> _logger)
 
         return @object;
     }
+
+    public void PrimitiveParameters(string @string, int @int, DateTime dateTime) =>
+        _logger.LogInformation($"{nameof(PrimitiveParameters)} was called with {@string}, {@int} and {dateTime}");
+
+    public void PrimitiveListParameters(List<string> strings, int[] ints, IEnumerable<DateTime> dateTimes) =>
+        _logger.LogInformation($"{nameof(PrimitiveListParameters)} was called with [{strings.Join(", ")}], [{ints.Join(", ")}] and [{dateTimes.Join(", ")}]");
+
+    public Entity EntityParameters(Entity entity) =>
+        entity;
+
+    public IEnumerable<Entity> EntityListParameters(IEnumerable<Entity> entities, Entity[] otherEntities) =>
+        [.. entities, .. otherEntities];
 }
