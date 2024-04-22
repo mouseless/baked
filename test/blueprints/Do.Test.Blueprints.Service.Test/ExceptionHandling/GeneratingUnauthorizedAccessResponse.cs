@@ -13,7 +13,7 @@ public class GeneratingUnauthorizedAccessResponse : TestServiceNfr
        c => c.Default(typeUrlFormat: "https://do.mouseless.codes/errors/{0}");
 
     [Test]
-    public async Task Unauthorized_access_exceptions_are_handled_with_its_own_handler()
+    public async Task Authentication_exceptions_are_handled_with_its_own_handler()
     {
         Client.DefaultRequestHeaders.Authorization = AuthenticationHeaderValue.Parse("Wrong_token");
 
@@ -24,7 +24,7 @@ public class GeneratingUnauthorizedAccessResponse : TestServiceNfr
         problemDetails.ShouldNotBeNull();
         problemDetails.Status.ShouldBe((int)HttpStatusCode.Unauthorized);
         problemDetails.Detail.ShouldBe("Attempted to perform an unauthorized operation.");
-        problemDetails.Title.ShouldBe("Authentication Failure");
-        problemDetails.Type.ShouldBe("https://do.mouseless.codes/errors/authentication-failure");
+        problemDetails.Title.ShouldBe("Authentication");
+        problemDetails.Type.ShouldBe("https://do.mouseless.codes/errors/authentication");
     }
 }

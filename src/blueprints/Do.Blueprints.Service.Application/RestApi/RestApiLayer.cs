@@ -33,21 +33,23 @@ public class RestApiLayer : LayerBase<GenerateCode, AddServices, Build>
             .OnDispose(() =>
             {
                 _apiModelConventions.Apply(_apiModel);
+                IEnumerable<string> usings =
+                [
+                    .. _apiModel.Usings,
+                    "Microsoft.AspNetCore.Mvc",
+                    "System",
+                    "System.Linq",
+                    "System.Collections",
+                    "System.Collections.Generic",
+                    "System.Threading.Tasks"
+                ];
 
                 generatedAssemblies.Add(nameof(RestApiLayer),
                     assembly => assembly
                         .AddReferenceFrom<ApiControllerAttribute>()
                         .AddReferences(_apiModel.References)
                         .AddCodes(new ApiCodeTemplate(_apiModel)),
-                    compilerOptions => compilerOptions
-                        .WithUsings(
-                            "Microsoft.AspNetCore.Mvc",
-                            "System",
-                            "System.Linq",
-                            "System.Collections",
-                            "System.Collections.Generic",
-                            "System.Threading.Tasks"
-                        )
+                    compilerOptions => compilerOptions.WithUsings(usings)
                 );
             })
             .Build();

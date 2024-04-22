@@ -1,5 +1,6 @@
 ﻿using Do.RestApi.Configuration;
 using Microsoft.AspNetCore.Authorization;
+using System.Text;
 
 namespace Do.Authorization.ClaimBased;
 
@@ -13,20 +14,36 @@ public class AddAuthorizeAttributeToActionConvention : IApiModelConvention<Actio
 
         foreach (var attribute in context.Action.MethodModel.CustomAttributes.Get<AuthorizeAttribute>())
         {
-            // Get CSharpFriendlyName from TypeModel
-            if (string.IsNullOrEmpty(attribute.Policy))
+            var attributeSyntaxBuilder = new StringBuilder();
+            attributeSyntaxBuilder.Append("Authorize");
+
+            var args = new List<string>();
+            if (!string.IsNullOrEmpty(attribute.AuthenticationSchemes))
             {
-                context.Action.AdditionalAttributes.Add($"""Microsoft.AspNetCore.Authorization.Authorize""");
+                args.Add($"AuthenticationSchemes = \"{attribute.AuthenticationSchemes}\"");
             }
-            else
+
+            if (!string.IsNullOrEmpty(attribute.Policy))
             {
-                context.Action.AdditionalAttributes.Add($"""Microsoft.AspNetCore.Authorization.Authorize(Policy = "{attribute.Policy}")""");
+                args.Add($"Policy = \"{attribute.Policy}\"");
             }
+
+            if (!string.IsNullOrEmpty(attribute.Roles))
+            {
+                args.Add($"Roles = \"{attribute.Roles}\"");
+            }
+
+            if (args.Any())
+            {
+                attributeSyntaxBuilder.Append($"({string.Join(',', args)})");
+            }
+
+            context.Action.AdditionalAttributes.Add(attributeSyntaxBuilder.ToString());
         }
     }
 
     public void Apply(ApiModelContext context)
     {
-        //context.Api.usi
+        context.Api.Usings.Add("Microsoft.AspNetCore.Authorization");
     }
 }

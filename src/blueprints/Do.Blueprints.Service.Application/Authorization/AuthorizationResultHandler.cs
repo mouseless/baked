@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Policy;
 using Microsoft.AspNetCore.Http;
+using System.Security.Authentication;
 
 namespace Do.Authorization;
 
@@ -15,7 +15,7 @@ public class AuthorizationResultHandler : IAuthorizationMiddlewareResultHandler
         {
             if (authorizeResult.Challenged)
             {
-                throw new AuthenticationFailureException(@"Attempted to perform an unauthorized operation.");
+                throw new AuthenticationException(@"Attempted to perform an unauthorized operation.");
             }
 
             if (authorizeResult.Forbidden)
