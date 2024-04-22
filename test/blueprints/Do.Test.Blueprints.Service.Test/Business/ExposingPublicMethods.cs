@@ -1,4 +1,5 @@
 using System.Net;
+using System.Net.Http.Json;
 
 namespace Do.Test.Business;
 
@@ -13,32 +14,50 @@ public class ExposingPublicMethods : TestServiceNfr
     }
 
     [Test]
-    [Ignore("not tested")]
-    public void Post() =>
-        throw new("fail");
+    public async Task Post()
+    {
+        var response = await Client.PostAsync($"/method-samples/execute", new StringContent(string.Empty));
+
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+    }
 
     [Test]
-    [Ignore("not tested")]
-    public void Get() =>
-        throw new("fail");
+    public async Task Put()
+    {
+        var response = await Client.PutAsync($"/method-samples", new StringContent(string.Empty));
+
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+    }
 
     [Test]
-    [Ignore("not tested")]
-    public void Put() =>
-        throw new("fail");
+    public async Task Patch()
+    {
+        var response = await Client.PatchAsync($"/method-samples/string", new StringContent(string.Empty));
+
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+    }
 
     [Test]
-    [Ignore("not tested")]
-    public void Patch() =>
-        throw new("fail");
+    public async Task Delete()
+    {
+        var response = await Client.DeleteAsync($"/method-samples");
+
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+    }
 
     [Test]
-    [Ignore("not tested")]
-    public void Delete() =>
-        throw new("fail");
+    public async Task Get()
+    {
+        var response = await Client.GetAsync($"/method-samples/strings");
+
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+    }
 
     [Test]
-    [Ignore("not tested")]
-    public void AddStrings() =>
-        throw new("fail");
+    public async Task AddChildConvention()
+    {
+        var response = await Client.PostAsync($"/method-samples/strings", JsonContent.Create(new { @string = "test" }));
+
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+    }
 }

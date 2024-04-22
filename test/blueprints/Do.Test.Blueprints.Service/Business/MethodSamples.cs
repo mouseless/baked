@@ -7,17 +7,26 @@ public class MethodSamples(ILogger<MethodSamples> _logger)
 {
     readonly List<string> _strings = [];
 
+    public void Execute() =>
+        _logger.LogInformation($"{nameof(Execute)} was called");
+
+    public void Update() =>
+        _logger.LogInformation($"{nameof(Update)} was called");
+
+    public void UpdateString() =>
+        _logger.LogInformation($"{nameof(UpdateString)} was called");
+
+    public void Delete() =>
+        _logger.LogInformation($"{nameof(Delete)} was called");
+
+    public void Void() =>
+        _logger.LogInformation($"{nameof(Void)} was called");
+
     public List<string> GetStrings() =>
         _strings;
 
     public void AddString(string @string) =>
         _strings.Add(@string);
-
-    internal Internal Internal() =>
-        new();
-
-    public void Void() =>
-        _logger.LogInformation($"{nameof(Void)} was called");
 
     public async Task VoidAsync()
     {
@@ -47,4 +56,7 @@ public class MethodSamples(ILogger<MethodSamples> _logger)
 
     public IEnumerable<Entity> EntityListParameters(IEnumerable<Entity> entities, Entity[] otherEntities) =>
         [.. entities, .. otherEntities];
+
+    internal Internal Internal() =>
+        new();
 }
