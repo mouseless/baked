@@ -32,7 +32,7 @@ public class FixedBearerTokenAuthenticationHandler(
                 return Task.FromResult(AuthenticateResult.Success(ticket));
             }
 
-            throw new UnauthorizedAccessException("Attempted to perform an unauthorized operation.");
+            return Task.FromResult(AuthenticateResult.Fail("Attempted to perform an unauthorized operation."));
         }
 
         if (Context.Request.HasFormContentType && Context.Request.Form.ContainsKey("hash"))
@@ -62,7 +62,7 @@ public class FixedBearerTokenAuthenticationHandler(
                 return Task.FromResult(AuthenticateResult.Success(ticket));
             }
 
-            throw new UnauthorizedAccessException("Attempted to perform an unauthorized operation.");
+            return Task.FromResult(AuthenticateResult.Fail("Attempted to perform an unauthorized operation."));
         }
 
         return Task.FromResult(AuthenticateResult.NoResult());

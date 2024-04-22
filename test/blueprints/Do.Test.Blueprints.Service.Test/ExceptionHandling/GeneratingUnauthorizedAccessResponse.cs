@@ -17,7 +17,7 @@ public class GeneratingUnauthorizedAccessResponse : TestServiceNfr
     {
         Client.DefaultRequestHeaders.Authorization = AuthenticationHeaderValue.Parse("Wrong_token");
 
-        var response = await Client.PostAsync("authentication-samples/token-authentication", null);
+        var response = await Client.PostAsync("authorization-samples/require-authorization", null);
 
         var problemDetails = response.Content.ReadFromJsonAsync<ProblemDetails>().Result;
 
