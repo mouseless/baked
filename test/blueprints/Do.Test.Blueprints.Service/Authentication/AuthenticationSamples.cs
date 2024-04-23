@@ -1,8 +1,23 @@
-﻿namespace Do.Test.Authentication;
+﻿using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using System.Security.Claims;
 
-public class AuthenticationSamples
+namespace Do.Test.Authentication;
+
+public class AuthenticationSamples(
+    ILogger<AuthenticationSamples> _logger,
+    Func<ClaimsPrincipal> _getClaims
+)
 {
-    public void TokenAuthentication() { }
+    public void TokenAuthentication()
+    {
+        _logger.LogInformation($"User:{JsonConvert.SerializeObject(_getClaims())}");
+    }
 
-    public object FormPostAuthentication(object value) => value;
+    public object FormPostAuthentication(object value)
+    {
+        _logger.LogInformation($"User:{JsonConvert.SerializeObject(_getClaims())}");
+
+        return value;
+    }
 }

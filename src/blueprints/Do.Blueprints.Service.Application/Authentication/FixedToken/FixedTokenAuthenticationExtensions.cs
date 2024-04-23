@@ -9,16 +9,15 @@ namespace Do;
 public static class FixedTokenAuthenticationExtensions
 {
     public static FixedTokenAuthenticationFeature FixedToken(this AuthenticationConfigurator _,
-        string[]? tokenNames = default,
-        Action<ClaimsPrincipalFactoryOptions>? configure = default
+        Action<FixedBearerTokenOptionsBuilder>? configure = default
     )
     {
         configure ??= _ => { };
 
-        var options = new ClaimsPrincipalFactoryOptions();
-        configure(options);
+        var builder = new FixedBearerTokenOptionsBuilder();
+        configure(builder);
 
-        return new([.. tokenNames ?? ["Default"]], options);
+        return new(builder.Build());
     }
 
     public static IAuthenticationHandler AFixedBearerTokenAuthenticationHandler(this Stubber giveMe, HttpRequest request,

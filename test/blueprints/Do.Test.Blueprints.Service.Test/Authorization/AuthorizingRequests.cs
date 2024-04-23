@@ -1,6 +1,4 @@
 ﻿using Do.Architecture;
-using Do.Authentication;
-using Do.Authentication.FixedToken;
 using Do.Authorization;
 using System.Net.Http.Headers;
 
@@ -10,8 +8,6 @@ public class AuthorizingRequests : TestServiceNfr
 {
     const string ApiKey = "11111111111111111111111111111111";
 
-    protected override IEnumerable<Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>>? Authentications =>
-        [c => c.FixedToken(configure: options => options.AddIdentity("Admin", [new TokenClaimProvider()]))];
     protected override Func<AuthorizationConfigurator, IFeature<AuthorizationConfigurator>>? Authorization =>
         c => c.ClaimBased(policies: [new("AdminOnly", policy => policy.RequireClaim("Token"))]);
 

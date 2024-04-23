@@ -6,7 +6,7 @@ namespace Do.Authentication;
 
 public interface IClaimProvider
 {
-    Claim? Create(HttpRequest request,
+    Claim? Create(HttpContext context,
         AuthenticationProperties? properties = default
     );
 }

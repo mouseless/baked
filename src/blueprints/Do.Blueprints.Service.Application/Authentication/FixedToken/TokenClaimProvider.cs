@@ -8,7 +8,7 @@ public class TokenClaimProvider : IClaimProvider
 {
     public const string TOKEN_KEY = "Token";
 
-    public Claim? Create(HttpRequest request,
+    public Claim? Create(HttpContext context,
         AuthenticationProperties? properties = null
     )
     {
@@ -17,7 +17,7 @@ public class TokenClaimProvider : IClaimProvider
             return new(TOKEN_KEY, $"{propertyToken}");
         }
 
-        var headerToken = $"{request.Headers.Authorization}".Replace("Bearer", string.Empty).Trim();
+        var headerToken = $"{context.Request.Headers.Authorization}".Replace("Bearer", string.Empty).Trim();
         if (!string.IsNullOrEmpty(headerToken))
         {
             return new(TOKEN_KEY, $"{headerToken}");

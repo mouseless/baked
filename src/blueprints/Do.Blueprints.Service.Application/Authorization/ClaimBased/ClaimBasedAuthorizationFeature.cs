@@ -1,7 +1,9 @@
 ﻿using Do.Architecture;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using System.Security.Claims;
 
 namespace Do.Authorization.ClaimBased;
 
@@ -21,6 +23,7 @@ public class ClaimBasedAuthorizationFeature(KeyValuePair<string, Action<Authoriz
             });
 
             services.AddSingleton<IAuthorizationMiddlewareResultHandler, AuthorizationResultHandler>();
+            services.AddSingleton<Func<ClaimsPrincipal>>(sp => () => sp.GetRequiredService<IHttpContextAccessor>().HttpContext?.User ?? throw new("HttpContext.User is required"));
         });
 
         configurator.ConfigureMiddlewareCollection(middlewares =>

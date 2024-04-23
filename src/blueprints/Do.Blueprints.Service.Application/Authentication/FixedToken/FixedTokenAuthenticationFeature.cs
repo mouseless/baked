@@ -7,7 +7,7 @@ using Microsoft.OpenApi.Models;
 
 namespace Do.Authentication.FixedToken;
 
-public class FixedTokenAuthenticationFeature(List<string> _tokenNames, ClaimsPrincipalFactoryOptions _claimsPrincipalFactoryOptions)
+public class FixedTokenAuthenticationFeature(FixedBearerTokenOptions _options)
     : IFeature<AuthenticationConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
@@ -20,11 +20,7 @@ public class FixedTokenAuthenticationFeature(List<string> _tokenNames, ClaimsPri
                     opts => { }
                 );
 
-            services.AddSingleton(new FixedBearerTokenOptions
-            {
-                TokenNames = _tokenNames,
-                ClaimsPrincipalFactoryOptions = _claimsPrincipalFactoryOptions
-            });
+            services.AddSingleton(_options);
 
         });
 
@@ -40,7 +36,7 @@ public class FixedTokenAuthenticationFeature(List<string> _tokenNames, ClaimsPri
                 {
                     Type = SecuritySchemeType.Http,
                     Scheme = "Bearer",
-                    Description = $"Enter the {string.Join(" or ", _tokenNames).ToLowerInvariant()} token",
+                    Description = $"Enter the {string.Join(" or ", _options.TokenNames).ToLowerInvariant()} token",
                 }
             );
 

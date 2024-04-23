@@ -60,7 +60,7 @@ public class FixedBearerTokenAuthenticationHandler(
             var properties = new AuthenticationProperties();
             properties.Items.Add(TokenClaimProvider.TOKEN_KEY, token);
 
-            var principle = new ClaimsPrincipalFactory(_options.ClaimsPrincipalFactoryOptions).Create(Context.Request, properties);
+            var principle = new ClaimsPrincipalFactory(_options.ClaimsPrincipalFactoryOptions).Create(Context, properties);
 
             return Task.FromResult(AuthenticateResult.Success(new(principle, properties, Scheme.Name)));
         }

@@ -6,7 +6,7 @@ namespace Do.Authentication;
 
 public class ClaimsPrincipalFactory(ClaimsPrincipalFactoryOptions _options)
 {
-    internal ClaimsPrincipal Create(HttpRequest request, AuthenticationProperties? properties)
+    internal ClaimsPrincipal Create(HttpContext context, AuthenticationProperties? properties)
     {
         var identites = new List<ClaimsIdentity>();
         foreach (var item in _options)
@@ -14,14 +14,17 @@ public class ClaimsPrincipalFactory(ClaimsPrincipalFactoryOptions _options)
             var claims = new List<Claim>();
             foreach (var claimProvider in item.Value)
             {
-                var claim = claimProvider.Create(request, properties);
+                var claim = claimProvider.Create(context, properties);
                 if (claim is not null)
                 {
                     claims.Add(claim);
                 }
             }
 
-            identites.Add(new ClaimsIdentity(claims, item.Key));
+            if (claims.Any())
+            {
+                identites.Add(new ClaimsIdentity(claims, item.Key));
+            }
         }
 
         return new(identites);

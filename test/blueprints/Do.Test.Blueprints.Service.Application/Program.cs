@@ -6,9 +6,9 @@ Forge.New
         business: c => c.DomainAssemblies([typeof(Entity).Assembly]),
         authentications:
         [
-            c => c.FixedToken(configure: options =>
+            c => c.FixedToken(builder =>
             {
-                options.AddIdentity("Admin", [new TokenClaimProvider()]);
+                builder.AddIdentity("Admin", [new TokenClaimProvider()]);
             })
         ],
         authorization: c => c.ClaimBased(policies:

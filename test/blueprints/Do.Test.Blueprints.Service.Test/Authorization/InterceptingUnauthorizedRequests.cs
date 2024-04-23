@@ -1,6 +1,4 @@
 ﻿using Do.Architecture;
-using Do.Authentication;
-using Do.Authentication.FixedToken;
 using Do.Authorization;
 using System.Net;
 using System.Net.Http.Headers;
@@ -9,8 +7,6 @@ namespace Do.Test.Authorization;
 
 public class InterceptingUnauthorizedRequests : TestServiceNfr
 {
-    protected override IEnumerable<Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>>? Authentications =>
-        [c => c.FixedToken(configure: options => options.AddIdentity("Admin", [new TokenClaimProvider()]))];
     protected override Func<AuthorizationConfigurator, IFeature<AuthorizationConfigurator>>? Authorization =>
         c => c.ClaimBased(policies:
         [
