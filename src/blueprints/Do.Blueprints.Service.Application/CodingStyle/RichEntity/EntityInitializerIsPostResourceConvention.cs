@@ -10,8 +10,10 @@ public class EntityInitializerIsPostResourceConvention : IApiModelConvention<Par
     public void Apply(ParameterModelContext context)
     {
         if (context.Parameter.IsInvokeMethodParameter) { return; }
-        if (!context.Parameter.TypeModel.TryGetMetadata(out var metadata) || !metadata.Has<EntityAttribute>()) { return; }
-        if (context.Action.MethodModel?.Has<InitializerAttribute>() != true) { return; }
+        if (!context.Parameter.TypeModel.TryGetMetadata(out var metadata)) { return; }
+        if (!metadata.Has<EntityAttribute>()) { return; }
+        if (context.Action.MethodModel is null) { return; }
+        if (!context.Action.MethodModel.Has<InitializerAttribute>()) { return; }
 
         context.Parameter.Name = "newTarget";
         context.Parameter.Type = $"Func<{context.Parameter.Type}>";

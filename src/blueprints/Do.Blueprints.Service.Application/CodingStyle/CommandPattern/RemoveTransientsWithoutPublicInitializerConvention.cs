@@ -1,10 +1,10 @@
-using Do.Business;
+﻿using Do.Business;
 using Do.Lifetime;
 using Do.RestApi.Configuration;
 
 namespace Do.CodingStyle.CommandPattern;
 
-public class RemoveTransientServicesWithNonPublicInitializerConvention : IApiModelConvention<ControllerModelContext>
+public class RemoveTransientsWithoutPublicInitializerConvention : IApiModelConvention<ControllerModelContext>
 {
     public void Apply(ControllerModelContext context)
     {

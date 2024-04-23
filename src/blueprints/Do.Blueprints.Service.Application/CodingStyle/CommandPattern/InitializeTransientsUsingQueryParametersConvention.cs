@@ -1,15 +1,14 @@
-using Do.Business;
+﻿using Do.Business;
 using Do.Lifetime;
 using Do.RestApi.Configuration;
 using Do.RestApi.Model;
 
 namespace Do.CodingStyle.CommandPattern;
 
-public class InitializeUsingQueryParametersConvention : IApiModelConvention<ActionModelContext>
+public class InitializeTransientsUsingQueryParametersConvention : IApiModelConvention<ActionModelContext>
 {
     public void Apply(ActionModelContext context)
     {
-        if (context.Action.MethodModel is null) { return; }
         if (!context.Controller.TypeModel.TryGetMembers(out var members)) { return; }
         if (!members.Has<TransientAttribute>()) { return; }
         if (members.Has<LocatableAttribute>()) { return; }
