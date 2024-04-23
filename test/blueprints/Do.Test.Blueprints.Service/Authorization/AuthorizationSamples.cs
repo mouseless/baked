@@ -11,5 +11,5 @@ public class AuthorizationSamples
     public void RequireAdminPolicy() { }
 
     [Authorize(Policy = "ManagerOnly")]
-    public void ClaimBasedAuthorization() { }
+    public void RequireManagerPolicy() { }
 }

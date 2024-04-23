@@ -12,11 +12,10 @@ Forge.New
             })
         ],
         authorization: c => c.ClaimBased(policies:
-            new()
-            {
-                 { "AdminOnly", policy => policy.RequireClaim("Token") },
-                 { "ManagerOnly", policy => policy.RequireClaim("Manager") }
-            }
+            [
+                new("AdminOnly", policy => policy.RequireClaim("Token")),
+                new("ManagerOnly", policy => policy.RequireClaim("Manager"))
+            ]
         ),
         database: c => c.MySql().ForDevelopment(c.Sqlite()),
         exceptionHandling: ex => ex.Default(typeUrlFormat: "https://do.mouseless.codes/errors/{0}"),

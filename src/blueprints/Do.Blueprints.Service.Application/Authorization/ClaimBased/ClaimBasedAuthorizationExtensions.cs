@@ -7,6 +7,6 @@ namespace Do;
 public static class ClaimBasedAuthorizationExtensions
 {
     public static ClaimBasedAuthorizationFeature ClaimBased(this AuthorizationConfigurator _,
-        Dictionary<string, Action<AuthorizationPolicyBuilder>>? policies = default
+        KeyValuePair<string, Action<AuthorizationPolicyBuilder>>[]? policies = default
     ) => new(policies ?? []);
 }

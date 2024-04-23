@@ -1,12 +1,34 @@
-﻿using System.Net;
+﻿using Do.Architecture;
+using Do.Authentication;
+using Do.Authentication.FixedToken;
+using Do.Authorization;
+using System.Net;
 using System.Net.Http.Headers;
 
 namespace Do.Test.Authorization;
 
 public class InterceptingUnauthorizedRequests : TestServiceNfr
 {
+    protected override IEnumerable<Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>>? Authentications =>
+        [c => c.FixedToken(configure: options => options.AddIdentity("Admin", [new TokenClaimProvider()]))];
+    protected override Func<AuthorizationConfigurator, IFeature<AuthorizationConfigurator>>? Authorization =>
+        c => c.ClaimBased(policies:
+        [
+            new("AdminOnly", policy => policy.RequireClaim("Token")),
+            new("ManagerOnly", policy => policy.RequireClaim("Token", "788db39fd347455daf438c96d14c3ea2"))
+        ]);
+
     [Test]
-    public async Task Returns_unauthorized_access_response_for_invalid_authorization_header()
+    public async Task Returns_unauthorized_access_response_for_not_authenticated_user()
+    {
+        var response = await Client.PostAsync("authorization-samples/require-authorization", null);
+
+        response.IsSuccessStatusCode.ShouldBeFalse();
+        response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
+    }
+
+    [Test]
+    public async Task Returns_unauthorized_access_response_for_failed_authenticatation()
     {
         Client.DefaultRequestHeaders.Authorization = AuthenticationHeaderValue.Parse("Wrong_token");
 
@@ -17,27 +39,11 @@ public class InterceptingUnauthorizedRequests : TestServiceNfr
     }
 
     [Test]
-    public async Task Returns_unauthorized_access_response_for_invalid_hash_with_form_parameters_and_token()
-    {
-        var content = new FormUrlEncodedContent([
-            // Default: 11111111111111111111111111111111
-            // InvalidHash: 12token -sha256-> 169E215B21C17B9D1991A7243597433083BB332EF49DA4EC414643A12D2FF5AC
-            new("hash", "Fp4hWyHBe50ZkackNZdDMIO7My70naTsQUZDoS0v9aw="),
-            new("value", "1")
-        ]);
-
-        var response = await Client.PostAsync("authorization-samples/require-authorization", content);
-
-        response.IsSuccessStatusCode.ShouldBeFalse();
-        response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
-    }
-
-    [Test]
-    public async Task Returns_forbidden_response_for_invalid_policy()
+    public async Task Returns_forbidden_response_when_policy_requirements__are_not_met()
     {
         Client.DefaultRequestHeaders.Authorization = AuthenticationHeaderValue.Parse("11111111111111111111111111111111");
 
-        var response = await Client.PostAsync("authorization-samples/claim-based-authorization", null);
+        var response = await Client.PostAsync("authorization-samples/require-manager-policy", null);
 
         response.IsSuccessStatusCode.ShouldBeFalse();
         response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
