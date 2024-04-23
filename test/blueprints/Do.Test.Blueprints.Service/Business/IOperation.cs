@@ -2,5 +2,5 @@
 
 public interface IOperation
 {
-    void Execute();
+    string Execute(string body);
 }

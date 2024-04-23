@@ -40,7 +40,8 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
             builder.Conventions.AddMethodMetadata(new ApiMethodAttribute(),
                 when: c =>
                     c.Type.Has<EntityAttribute>() && c.Method.Has<InitializerAttribute>() &&
-                    c.Method.Overloads.Any(o => o.IsPublic && o.AllParametersAreApiInput())
+                    c.Method.Overloads.Any(o => o.IsPublic && o.AllParametersAreApiInput()),
+                order: 100
             );
         });
 

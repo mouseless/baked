@@ -19,13 +19,15 @@ public class UseBuiltInTypesCodingStyleFeature(IEnumerable<string> _textProperty
                   c.Type.IsEnum ||
                   c.Type.Is<Uri>() ||
                   c.Type.IsAssignableTo(typeof(IParsable<>)) ||
-                  c.Type.IsAssignableTo(typeof(string))
+                  c.Type.IsAssignableTo(typeof(string)),
+              order: int.MinValue
             );
             builder.Conventions.AddTypeMetadata(new ApiInputAttribute(),
                 when: c =>
                     c.Type.IsAssignableTo(typeof(Nullable<>)) &&
                     c.Type.GenericTypeArguments.FirstOrDefault()?.Model.TryGetMetadata(out var genericArgumentMetadata) == true &&
-                    genericArgumentMetadata.Has<ApiInputAttribute>()
+                    genericArgumentMetadata.Has<ApiInputAttribute>(),
+                  order: int.MinValue
             );
             builder.Conventions.AddTypeMetadata(new ApiInputAttribute(),
                 when: c =>

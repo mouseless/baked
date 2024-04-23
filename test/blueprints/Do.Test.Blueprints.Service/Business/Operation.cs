@@ -4,7 +4,15 @@ namespace Do.Test;
 
 public class Operation : IOperation
 {
-    public Operation With() => this;
+    string _query = default!;
 
-    public void Execute() { }
+    public Operation With(string query)
+    {
+        _query = query;
+
+        return this;
+    }
+
+    public string Execute(string body) =>
+        $"{_query}:{body}";
 }
