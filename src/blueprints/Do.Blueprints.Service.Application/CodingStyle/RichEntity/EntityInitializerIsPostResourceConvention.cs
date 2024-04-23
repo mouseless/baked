@@ -15,6 +15,7 @@ public class EntityInitializerIsPostResourceConvention : IApiModelConvention<Par
 
         context.Parameter.Name = "newTarget";
         context.Parameter.Type = $"Func<{context.Parameter.Type}>";
+
         context.Action.FindTargetStatement = "newTarget()";
         context.Action.Route = $"{context.Parameter.TypeModel.Name.Pluralize()}";
     }

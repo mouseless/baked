@@ -5,10 +5,9 @@ namespace Do.Test.CodingStyle;
 public class RoutingCommands : TestServiceNfr
 {
     [Test]
-    [Ignore("not implemented")]
-    public async Task Initialization_parameters_come_from_query()
+    public async Task Initialization_parameters_come_from_query([Values("execute", "execute-alternative")] string action)
     {
-        var response = await Client.PostAsync("/operation?query=q", JsonContent.Create(
+        var response = await Client.PostAsync($"/command/{action}?query=q", JsonContent.Create(
             new { body = "b" }
         ));
 

@@ -1,6 +1,6 @@
 ﻿namespace Do.Test.Business;
 
-public interface IOperation
+public interface IExecuteCommand
 {
     string Execute(string body);
 }

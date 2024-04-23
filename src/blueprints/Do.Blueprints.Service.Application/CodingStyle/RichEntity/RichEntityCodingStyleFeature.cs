@@ -37,6 +37,9 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     c.Type.TryGetMembers(out var members) &&
                     members.Constructors.Any(o => o.Parameters.Any(p => p.ParameterType.IsAssignableTo(typeof(IQueryContext<>))))
             );
+            builder.Conventions.AddTypeMetadata(new LocatableAttribute(),
+                when: c => c.Type.Has<EntityAttribute>()
+            );
             builder.Conventions.AddMethodMetadata(new ApiMethodAttribute(),
                 when: c =>
                     c.Type.Has<EntityAttribute>() && c.Method.Has<InitializerAttribute>() &&

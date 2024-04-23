@@ -1,4 +1,4 @@
-using Do.Test.Business;
+﻿using Do.Test.Business;
 using Do.Test.Lifetime;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -36,11 +36,11 @@ public class RegisteringServicesByConvention : TestServiceSpec
     [Test]
     public void Transient_types_with_interfaces_are_registered_as_implementations()
     {
-        var actual1 = GiveMe.The<IOperation>();
-        var actual2 = GiveMe.The<IOperation>();
+        var actual1 = GiveMe.The<IExecuteCommand>();
+        var actual2 = GiveMe.The<IExecuteCommand>();
 
         actual1.ShouldNotBeSameAs(actual2);
-        actual1.GetType().ShouldBe(typeof(Operation));
+        actual1.GetType().ShouldBe(typeof(ExecuteCommand));
     }
 
     [Test]

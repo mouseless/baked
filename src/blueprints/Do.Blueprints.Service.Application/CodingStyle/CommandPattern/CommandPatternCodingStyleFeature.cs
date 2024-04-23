@@ -9,7 +9,7 @@ public class CommandPatternCodingStyleFeature : IFeature<CodingStyleConfigurator
         configurator.ConfigureApiModelConventions(conventions =>
         {
             conventions.Insert(0, new RemoveTransientServicesWithNonPublicInitializerConvention());
-            conventions.Insert(0, new InitializeUsingQueryParametersConvention());
+            conventions.Insert(1, new InitializeUsingQueryParametersConvention());
         });
     }
 }

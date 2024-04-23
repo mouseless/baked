@@ -1,6 +1,5 @@
 using Do.Business;
 using Do.Lifetime;
-using Do.Orm;
 using Do.RestApi.Configuration;
 using Do.RestApi.Model;
 
@@ -13,11 +12,10 @@ public class InitializeUsingQueryParametersConvention : IApiModelConvention<Acti
         if (context.Action.MethodModel is null) { return; }
         if (!context.Controller.TypeModel.TryGetMembers(out var members)) { return; }
         if (!members.Has<TransientAttribute>()) { return; }
-        if (members.Has<EntityAttribute>()) { return; } // get this from another way
+        if (members.Has<LocatableAttribute>()) { return; }
 
-        var initializer = members.Methods.Having<InitializerAttribute>().First(i => i.Overloads.Any(o => o.IsPublic && o.AllParametersAreApiInput()));
-        var overload = initializer.Overloads.First(o => o.IsPublic && o.AllParametersAreApiInput()); // fix this public & all parameters duplication and reuse configured overload selector
-
+        var initializer = members.Methods.Having<InitializerAttribute>().Single();
+        var overload = initializer.Overloads.First(o => o.IsPublic && o.AllParametersAreApiInput()); // TODO get overload number from api method metadata
         foreach (var parameter in overload.Parameters)
         {
             context.Action.Parameter[parameter.Name] =
@@ -30,7 +28,9 @@ public class InitializeUsingQueryParametersConvention : IApiModelConvention<Acti
         }
 
         var targetParameter = context.Action.Parameter["target"];
+        targetParameter.Name = "newTarget";
+        targetParameter.Type = $"Func<{targetParameter.Type}>";
 
-        context.Action.FindTargetStatement = $"target.{initializer.Name}({overload.Parameters.Select(p => $"@{p.Name}").Join(", ")})";
+        context.Action.FindTargetStatement = $"newTarget().{initializer.Name}({overload.Parameters.Select(p => $"@{p.Name}").Join(", ")})";
     }
 }

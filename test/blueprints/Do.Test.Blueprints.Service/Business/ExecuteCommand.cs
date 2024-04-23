@@ -1,12 +1,10 @@
-﻿using Do.Test.Business;
+﻿namespace Do.Test.Business;
 
-namespace Do.Test;
-
-public class Operation : IOperation
+public class ExecuteCommand : IExecuteCommand
 {
     string _query = default!;
 
-    public Operation With(string query)
+    public ExecuteCommand With(string query)
     {
         _query = query;
 
