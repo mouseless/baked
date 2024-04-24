@@ -25,6 +25,16 @@ public class AttributeCollection
         _attributes[type].Add(attribute);
     }
 
+    internal void Remove<T>() where T : Attribute =>
+        Remove(typeof(T));
+
+    internal void Remove(Type type)
+    {
+        if (!_attributes.ContainsKey(type)) { return; }
+
+        _attributes.Remove(type);
+    }
+
     public bool Contains<T>() where T : Attribute =>
         Contains(typeof(T));
 

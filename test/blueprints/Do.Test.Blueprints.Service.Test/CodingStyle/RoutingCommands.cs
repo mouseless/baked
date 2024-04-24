@@ -15,4 +15,16 @@ public class RoutingCommands : TestServiceNfr
 
         actual.ShouldBe("q:b");
     }
+
+    [Test]
+    public async Task Action_name_is_hidden_when_command_has_only_one_method()
+    {
+        var response = await Client.PostAsync($"/execute-command?query=q", JsonContent.Create(
+            new { body = "b" }
+        ));
+
+        var actual = await response.Content.ReadAsStringAsync();
+
+        actual.ShouldBe("q:b");
+    }
 }

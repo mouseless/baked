@@ -86,53 +86,42 @@ public static class DomainExtensions
 
     #region IDomainModelConvention
 
-    public static void AddTypeMetadata(this ICollection<IDomainModelConvention> source, Attribute attribute, Func<TypeModelMetadataContext, bool> when,
-        int? order = default
-    ) => source.AddTypeMetadata((context, add) => add(context.Type, attribute), when, order);
+    public static void AddTypeMetadata(this ICollection<IDomainModelConvention> conventions, Attribute attribute, Func<TypeModelMetadataContext, bool> when,
+        int order = default
+    ) => conventions.AddTypeMetadata((context, add) => add(context.Type, attribute), when, order);
 
-    public static void AddTypeMetadata(this ICollection<IDomainModelConvention> source, Attribute[] attributes, Func<TypeModelMetadataContext, bool> when,
-        int? order = default
-    ) => source.AddTypeMetadata((context, add) => Array.ForEach(attributes, a => add(context.Type, a)), when, order);
+    public static void AddTypeMetadata(this ICollection<IDomainModelConvention> conventions, Action<TypeModelMetadataContext, Action<ICustomAttributesModel, Attribute>> apply, Func<TypeModelMetadataContext, bool> when,
+        int order = default
+    ) => conventions.Add(new MetadataConvention<TypeModelMetadataContext>(apply, when, order));
 
-    public static void AddTypeMetadata(this ICollection<IDomainModelConvention> source, Action<TypeModelMetadataContext, Action<ICustomAttributesModel, Attribute>> apply, Func<TypeModelMetadataContext, bool> when,
-        int? order = default
-    ) => source.Add(new MetadataConvention<TypeModelMetadataContext>(apply, when, order));
+    public static void RemoveTypeMetadata<TAttribute>(this ICollection<IDomainModelConvention> conventions, Func<TypeModelMetadataContext, bool> when,
+        int order = default
+    ) where TAttribute : Attribute =>
+        conventions.Add(new RemoveMetadataFromTypeConvention<TAttribute>(when, order));
 
-    public static void AddPropertyMetadata(this ICollection<IDomainModelConvention> source, Attribute attribute, Func<PropertyModelContext, bool> when,
-        int? order = default
-    ) => source.AddPropertyMetadata((context, add) => add(context.Property, attribute), when, order);
+    public static void AddPropertyMetadata(this ICollection<IDomainModelConvention> conventions, Attribute attribute, Func<PropertyModelContext, bool> when,
+        int order = default
+    ) => conventions.AddPropertyMetadata((context, add) => add(context.Property, attribute), when, order);
 
-    public static void AddPropertyMetadata(this ICollection<IDomainModelConvention> source, Attribute[] attributes, Func<PropertyModelContext, bool> when,
-        int? order = default
-    ) => source.AddPropertyMetadata((context, add) => Array.ForEach(attributes, a => add(context.Property, a)), when, order);
+    public static void AddPropertyMetadata(this ICollection<IDomainModelConvention> conventions, Action<PropertyModelContext, Action<ICustomAttributesModel, Attribute>> apply, Func<PropertyModelContext, bool> when,
+        int order = default
+    ) => conventions.Add(new MetadataConvention<PropertyModelContext>(apply, when, order));
 
-    public static void AddPropertyMetadata(this ICollection<IDomainModelConvention> source, Action<PropertyModelContext, Action<ICustomAttributesModel, Attribute>> apply, Func<PropertyModelContext, bool> when,
-        int? order = default
-    ) => source.Add(new MetadataConvention<PropertyModelContext>(apply, when, order));
+    public static void AddMethodMetadata(this ICollection<IDomainModelConvention> conventions, Attribute attribute, Func<MethodModelContext, bool> when,
+        int order = default
+    ) => conventions.AddMethodMetadata((context, add) => add(context.Method, attribute), when, order);
 
-    public static void AddMethodMetadata(this ICollection<IDomainModelConvention> source, Attribute attribute, Func<MethodModelContext, bool> when,
-        int? order = default
-    ) => source.AddMethodMetadata((context, add) => add(context.Method, attribute), when, order);
+    public static void AddMethodMetadata(this ICollection<IDomainModelConvention> conventions, Action<MethodModelContext, Action<ICustomAttributesModel, Attribute>> apply, Func<MethodModelContext, bool> when,
+        int order = default
+    ) => conventions.Add(new MetadataConvention<MethodModelContext>(apply, when, order));
 
-    public static void AddMethodMetadata(this ICollection<IDomainModelConvention> source, Attribute[] attributes, Func<MethodModelContext, bool> when,
-        int? order = default
-    ) => source.AddMethodMetadata((context, add) => Array.ForEach(attributes, a => add(context.Method, a)), when, order);
+    public static void AddParameterMetadata(this ICollection<IDomainModelConvention> conventions, Attribute attribute, Func<ParameterModelContext, bool> when,
+        int order = default
+    ) => conventions.AddParameterMetadata((context, add) => add(context.Parameter, attribute), when, order);
 
-    public static void AddMethodMetadata(this ICollection<IDomainModelConvention> source, Action<MethodModelContext, Action<ICustomAttributesModel, Attribute>> apply, Func<MethodModelContext, bool> when,
-        int? order = default
-    ) => source.Add(new MetadataConvention<MethodModelContext>(apply, when, order));
-
-    public static void AddParameterMetadata(this ICollection<IDomainModelConvention> source, Attribute attribute, Func<ParameterModelContext, bool> when,
-        int? order = default
-    ) => source.AddParameterMetadata((context, add) => add(context.Parameter, attribute), when, order);
-
-    public static void AddParameterMetadata(this ICollection<IDomainModelConvention> source, Attribute[] attributes, Func<ParameterModelContext, bool> when,
-        int? order = default
-    ) => source.AddParameterMetadata((context, add) => Array.ForEach(attributes, a => add(context.Parameter, a)), when, order);
-
-    public static void AddParameterMetadata(this ICollection<IDomainModelConvention> source, Action<ParameterModelContext, Action<ICustomAttributesModel, Attribute>> apply, Func<ParameterModelContext, bool> when,
-        int? order = default
-    ) => source.Add(new MetadataConvention<ParameterModelContext>(apply, when, order));
+    public static void AddParameterMetadata(this ICollection<IDomainModelConvention> conventions, Action<ParameterModelContext, Action<ICustomAttributesModel, Attribute>> apply, Func<ParameterModelContext, bool> when,
+        int order = default
+    ) => conventions.Add(new MetadataConvention<ParameterModelContext>(apply, when, order));
 
     #endregion
 

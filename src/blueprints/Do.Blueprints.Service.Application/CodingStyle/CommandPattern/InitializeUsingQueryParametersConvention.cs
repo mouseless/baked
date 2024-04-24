@@ -1,17 +1,15 @@
 ﻿using Do.Business;
-using Do.Lifetime;
 using Do.RestApi.Configuration;
 using Do.RestApi.Model;
 
 namespace Do.CodingStyle.CommandPattern;
 
-public class InitializeTransientsUsingQueryParametersConvention : IApiModelConvention<ActionModelContext>
+public class InitializeUsingQueryParametersConvention : IApiModelConvention<ActionModelContext>
 {
     public void Apply(ActionModelContext context)
     {
         if (!context.Controller.TypeModel.TryGetMembers(out var members)) { return; }
-        if (!members.Has<TransientAttribute>()) { return; }
-        if (members.Has<LocatableAttribute>()) { return; }
+        if (!members.Has<PubliclyInitializableAttribute>()) { return; }
 
         var initializer = members.Methods.Having<InitializerAttribute>().Single();
         var overload = initializer.Overloads.First(o => o.IsPublic && o.AllParametersAreApiInput()); // TODO get overload number from api method metadata

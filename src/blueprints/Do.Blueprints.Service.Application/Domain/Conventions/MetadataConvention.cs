@@ -6,10 +6,10 @@ namespace Do.Domain.Conventions;
 public class MetadataConvention<TModelContext>(
     Action<TModelContext, Action<ICustomAttributesModel, Attribute>> _apply,
     Func<TModelContext, bool> _when,
-    int? _order = default
+    int _order = default
 ) : IDomainModelConvention<TModelContext>
 {
-    public int Order => _order ?? 0;
+    public int Order => _order;
 
     public void Apply(TModelContext model)
     {

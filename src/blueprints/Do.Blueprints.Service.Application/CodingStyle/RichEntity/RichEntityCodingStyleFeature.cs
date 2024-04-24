@@ -44,7 +44,7 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 when: c =>
                     c.Type.Has<EntityAttribute>() && c.Method.Has<InitializerAttribute>() &&
                     c.Method.Overloads.Any(o => o.IsPublic && o.AllParametersAreApiInput()),
-                order: 100
+                order: 30
             );
         });
 
