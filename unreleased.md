@@ -46,6 +46,8 @@
 - `Documentation` feature is refactored into coding styles and removed
   completely
 - `Authentication` feature is now a multi-feature
+- `Authentication` now supports multi scheme authentication for a given
+  controler or endpoint
 
 ## Bugfixes
 
