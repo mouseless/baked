@@ -10,7 +10,7 @@ public class AutoHttpMethodConvention(IEnumerable<(Regex Regex, HttpMethod Metho
     {
         foreach (var mapping in _mappings)
         {
-            if (!mapping.Regex.IsMatch(context.Action.Id)) { continue; }
+            if (!mapping.Regex.IsMatch(context.Action.Name)) { continue; }
 
             context.Action.Method = mapping.Method;
 

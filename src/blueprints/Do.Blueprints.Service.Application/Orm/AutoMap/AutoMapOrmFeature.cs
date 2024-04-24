@@ -1,4 +1,4 @@
-﻿using Do.Architecture;
+using Do.Architecture;
 using Do.RestApi.Conventions;
 using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Mapping;
@@ -83,11 +83,11 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
         {
             var domainModel = configurator.Context.GetDomainModel();
 
-            conventions.Insert(0, new AutoHttpMethodConvention([(Regexes.StartsWithByFirstByOrSingleBy(), HttpMethod.Get)]));
+            conventions.Insert(0, new AutoHttpMethodConvention([(Regexes.StartsWithFirstBySingleByOrBy(), HttpMethod.Get)]));
             conventions.Add(new LookupEntityByIdConvention(domainModel));
             conventions.Add(new LookupEntitiesByIdsConvention(domainModel));
             conventions.Add(new SingleByUniqueConvention(domainModel));
-            conventions.Add(new RemoveActionNameFromRouteConvention(["By"]));
+            conventions.Add(new RemoveFromRouteConvention(["FirstBy", "SingleBy", "By"]));
         });
     }
 }

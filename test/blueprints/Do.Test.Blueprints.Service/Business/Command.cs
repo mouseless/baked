@@ -11,9 +11,6 @@ public class Command
         return this;
     }
 
-    public string Execute(string body) =>
-        $"{_query}:{body}";
-
-    public string ExecuteAlternative(string body) =>
+    public string Transient(string body) =>
         $"{_query}:{body}";
 }

@@ -36,11 +36,11 @@ public class RegisteringServicesByConvention : TestServiceSpec
     [Test]
     public void Transient_types_with_interfaces_are_registered_as_implementations()
     {
-        var actual1 = GiveMe.The<IExecuteCommand>();
-        var actual2 = GiveMe.The<IExecuteCommand>();
+        var actual1 = GiveMe.The<ITransientInterface>();
+        var actual2 = GiveMe.The<ITransientInterface>();
 
         actual1.ShouldNotBeSameAs(actual2);
-        actual1.GetType().ShouldBe(typeof(ExecuteCommand));
+        actual1.ShouldBeOfType<Transient>();
     }
 
     [Test]
@@ -64,37 +64,37 @@ public class RegisteringServicesByConvention : TestServiceSpec
     }
 
     [Test]
-    public void Types_without_a_with_method_are_registered_as_singleton([Values(typeof(Singleton), typeof(Class))] Type type)
+    public void Types_without_a_with_method_are_registered_as_singleton()
     {
-        var actual1 = GiveMe.The(type);
-        var actual2 = GiveMe.The(type);
+        var actual1 = GiveMe.The<Singleton>();
+        var actual2 = GiveMe.The<Singleton>();
 
         actual1.ShouldBeSameAs(actual2);
     }
 
     [Test]
-    public void Types_are_not_registered_as_singleton_when_they_have_public_properties([Values(typeof(Data))] Type type)
+    public void Types_are_not_registered_as_singleton_when_they_have_public_properties()
     {
-        var action = () => GiveMe.The(type);
+        var action = () => GiveMe.The<Data>();
 
-        action.ShouldThrowExceptionWithServiceNotRegisteredMessage(type);
+        action.ShouldThrowExceptionWithServiceNotRegisteredMessage<Data>();
     }
 
     [Test]
-    public void Singleton_types_with_interfaces_are_registered_as_implementations([Values(typeof(IInterface))] Type type)
+    public void Singleton_types_with_interfaces_are_registered_as_implementations()
     {
-        var actual1 = GiveMe.The(type);
-        var actual2 = GiveMe.The(type);
+        var actual1 = GiveMe.The<ISingletonInterface>();
+        var actual2 = GiveMe.The<ISingletonInterface>();
 
         actual1.ShouldBeSameAs(actual2);
-        actual1.GetType().ShouldBe(typeof(Class));
+        actual1.ShouldBeOfType<Singleton>();
     }
 
     [Test]
-    public void Interfaces_are_only_registered_through_their_implemented_classes([Values(typeof(IInterfaceWithNoImplementation))] Type type)
+    public void Interfaces_are_only_registered_through_their_implemented_classes()
     {
-        var action = () => GiveMe.The(type);
+        var action = () => GiveMe.The<IInterfaceWithNoImplementation>();
 
-        action.ShouldThrowExceptionWithServiceNotRegisteredMessage(type);
+        action.ShouldThrowExceptionWithServiceNotRegisteredMessage<IInterfaceWithNoImplementation>();
     }
 }

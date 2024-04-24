@@ -105,14 +105,14 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
                 (Regexes.StartsWithGet(), HttpMethod.Get),
                 (Regexes.IsUpdateChangeOrSet(), HttpMethod.Put),
                 (Regexes.StartsWithUpdateChangeOrSet(), HttpMethod.Patch),
-                (Regexes.StartsWithDeleteOrRemove(), HttpMethod.Delete)
+                (Regexes.StartsWithDeleteRemoveOrClear(), HttpMethod.Delete)
             ]));
             conventions.Add(new GetAndDeleteAcceptsOnlyQueryConvention());
-            conventions.Add(new RemoveActionPrefixFromRouteConvention(["Get"]));
-            conventions.Add(new RemoveActionNameFromRouteConvention(["Update", "Change", "Set"]));
-            conventions.Add(new RemoveActionPrefixFromRouteConvention(["Update", "Change", "Set"]));
-            conventions.Add(new RemoveActionNameFromRouteConvention(["Delete", "Remove"]));
-            conventions.Add(new RemoveActionPrefixFromRouteConvention(["Add"], _pluralize: true));
+            conventions.Add(new RemoveFromRouteConvention(["Get"]));
+            conventions.Add(new RemoveFromRouteConvention(["Update", "Change", "Set"]));
+            conventions.Add(new RemoveFromRouteConvention(["Update", "Change", "Set"]));
+            conventions.Add(new RemoveFromRouteConvention(["Delete", "Remove", "Clear"]));
+            conventions.Add(new RemoveFromRouteConvention(["Add"], _pluralize: true));
         });
 
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>

@@ -1,6 +1,6 @@
 ﻿namespace Do.Test.Business;
 
-public class ExecuteCommand
+public class UpdateCommand
 {
     public void Execute() { }
 }

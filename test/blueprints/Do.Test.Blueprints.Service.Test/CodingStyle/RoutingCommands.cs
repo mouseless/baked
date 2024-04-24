@@ -1,25 +1,25 @@
+using System.Net;
 using System.Net.Http.Json;
 
 namespace Do.Test.CodingStyle;
 
 public class RoutingCommands : TestServiceNfr
 {
-    [Test]
-    public async Task Initialization_parameters_come_from_query([Values("execute", "execute-alternative")] string action)
+    [TestCase("Post", "command")]
+    [TestCase("Get", "command")]
+    [TestCase("Patch", "command")]
+    [TestCase("Delete", "command")]
+    public async Task Class_name_is_used_to_decide_http_methods_for_single_action_commands(string method, string action)
     {
-        var response = await Client.PostAsync($"/command/{action}?query=q", JsonContent.Create(
-            new { body = "b" }
-        ));
+        var response = await Client.SendAsync(new(HttpMethod.Parse(method), $"/{action}"));
 
-        var actual = await response.Content.ReadAsStringAsync();
-
-        actual.ShouldBe("q:b");
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }
 
     [Test]
-    public async Task Action_name_is_hidden_when_command_has_only_one_method()
+    public async Task Initialization_parameters_come_from_query()
     {
-        var response = await Client.PostAsync($"/execute-command?query=q", JsonContent.Create(
+        var response = await Client.PostAsync($"/command/transient?query=q", JsonContent.Create(
             new { body = "b" }
         ));
 

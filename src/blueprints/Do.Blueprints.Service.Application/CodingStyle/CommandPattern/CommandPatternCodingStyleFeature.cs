@@ -1,6 +1,7 @@
 ﻿using Do.Architecture;
 using Do.Business;
 using Do.Lifetime;
+using Do.RestApi.Conventions;
 
 namespace Do.CodingStyle.CommandPattern;
 
@@ -32,7 +33,9 @@ public class CommandPatternCodingStyleFeature : IFeature<CodingStyleConfigurator
         configurator.ConfigureApiModelConventions(conventions =>
         {
             conventions.Insert(0, new InitializeUsingQueryParametersConvention());
-            conventions.Add(new RemoveTheOnlyActionNameFromRouteForSingleMethodInitializables());
+            conventions.Insert(1, new UseClassNameAsActionNameForSingleMethodNonLocatables());
+            conventions.Add(new RemoveFromRouteConvention(["Do", "Execute", "Process"]));
+            conventions.Add(new UseActionNameAsGroupNameForSingleMethodNonLocatables());
         });
     }
 }
