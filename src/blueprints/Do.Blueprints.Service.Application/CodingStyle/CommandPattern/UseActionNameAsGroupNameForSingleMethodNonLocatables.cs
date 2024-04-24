@@ -12,7 +12,6 @@ public class UseActionNameAsGroupNameForSingleMethodNonLocatables : IApiModelCon
         if (context.Controller.Action.Count != 1) { return; }
 
         var theOnlyAction = context.Controller.Actions.Single();
-
         context.Controller.GroupName = theOnlyAction.Name;
     }
 }
