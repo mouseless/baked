@@ -20,6 +20,8 @@ public class ValidatingFormPost : TestServiceSpec
         var authenticateResult = await handler.AuthenticateAsync();
 
         authenticateResult.Succeeded.ShouldBeTrue();
+        authenticateResult.Principal.ShouldNotBeNull();
+        authenticateResult.Principal.Claims.First(c => c.Type == "Token").Value.ShouldBe("token");
     }
 
     [Test]
@@ -55,5 +57,6 @@ public class ValidatingFormPost : TestServiceSpec
 
         authenticateResult.Succeeded.ShouldBeFalse();
         authenticateResult.Failure.ShouldBeNull();
+        authenticateResult.Principal.ShouldBeNull();
     }
 }

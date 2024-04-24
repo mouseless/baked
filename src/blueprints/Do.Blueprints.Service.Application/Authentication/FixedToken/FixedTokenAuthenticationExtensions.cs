@@ -30,7 +30,6 @@ public static class FixedTokenAuthenticationExtensions
         options.TokenNames.AddRange(tokenNames);
 
         var handler = giveMe.A<FixedBearerTokenAuthenticationHandler>();
-
         handler.InitializeAsync(new AuthenticationScheme("FixedBearerToken", "FixedBearerToken", handler.GetType())!, request.HttpContext).GetAwaiter().GetResult();
 
         return handler;

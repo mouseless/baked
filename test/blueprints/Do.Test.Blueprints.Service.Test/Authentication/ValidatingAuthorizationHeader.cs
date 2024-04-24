@@ -18,6 +18,8 @@ public class ValidatingAuthorizationHeader : TestServiceSpec
         var authenticateResult = await handler.AuthenticateAsync();
 
         authenticateResult.Succeeded.ShouldBeTrue();
+        authenticateResult.Principal.ShouldNotBeNull();
+        authenticateResult.Principal.Claims.First(c => c.Type == "Token").Value.ShouldBe(token);
     }
 
     [Test]
@@ -48,5 +50,7 @@ public class ValidatingAuthorizationHeader : TestServiceSpec
         var authenticateResult = await handler.AuthenticateAsync();
 
         authenticateResult.Succeeded.ShouldBeTrue();
+        authenticateResult.Principal.ShouldNotBeNull();
+        authenticateResult.Principal.Claims.First(c => c.Type == "Token").Value.ShouldBe("test_token");
     }
 }
