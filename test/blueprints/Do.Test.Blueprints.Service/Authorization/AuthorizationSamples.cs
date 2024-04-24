@@ -7,9 +7,9 @@ public class AuthorizationSamples
     [Authorize]
     public void RequireAuthorization() { }
 
+    [Authorize(Policy = "Default")]
+    public void RequireDefaultPolicy() { }
+
     [Authorize(Policy = "AdminOnly")]
     public void RequireAdminPolicy() { }
-
-    [Authorize(Policy = "ManagerOnly")]
-    public void RequireManagerPolicy() { }
 }

@@ -9,7 +9,7 @@ public class AuthorizingRequests : TestServiceNfr
     const string ApiKey = "11111111111111111111111111111111";
 
     protected override Func<AuthorizationConfigurator, IFeature<AuthorizationConfigurator>>? Authorization =>
-        c => c.ClaimBased(policies: [new("AdminOnly", policy => policy.RequireClaim("Token"))]);
+        c => c.ClaimBased(policies: [new("Default", policy => policy.RequireClaim("Token"))]);
 
     [Test]
     public async Task Authorizes_succesfully_authenticated_user()
@@ -26,7 +26,7 @@ public class AuthorizingRequests : TestServiceNfr
     {
         Client.DefaultRequestHeaders.Authorization = AuthenticationHeaderValue.Parse(ApiKey);
 
-        var response = await Client.PostAsync("authorization-samples/require-admin-policy", null);
+        var response = await Client.PostAsync("authorization-samples/require-default-policy", null);
 
         response.IsSuccessStatusCode.ShouldBeTrue();
     }

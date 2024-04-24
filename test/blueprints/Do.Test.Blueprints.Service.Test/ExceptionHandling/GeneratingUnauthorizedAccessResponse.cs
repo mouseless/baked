@@ -2,7 +2,6 @@
 using Do.ExceptionHandling;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
 namespace Do.Test.ExceptionHandling;
@@ -15,16 +14,14 @@ public class GeneratingUnauthorizedAccessResponse : TestServiceNfr
     [Test]
     public async Task Authentication_exceptions_are_handled_with_its_own_handler()
     {
-        Client.DefaultRequestHeaders.Authorization = AuthenticationHeaderValue.Parse("Wrong_token");
-
         var response = await Client.PostAsync("authorization-samples/require-authorization", null);
 
         var problemDetails = response.Content.ReadFromJsonAsync<ProblemDetails>().Result;
 
         problemDetails.ShouldNotBeNull();
-        problemDetails.Status.ShouldBe((int)HttpStatusCode.Unauthorized);
         problemDetails.Detail.ShouldBe("Attempted to perform an unauthorized operation.");
-        problemDetails.Title.ShouldBe("Authentication");
-        problemDetails.Type.ShouldBe("https://do.mouseless.codes/errors/authentication");
+        problemDetails.Status.ShouldBe((int)HttpStatusCode.Unauthorized);
+        problemDetails.Title.ShouldBe("Unauthorized Access");
+        problemDetails.Type.ShouldBe("https://do.mouseless.codes/errors/unauthorized-access");
     }
 }

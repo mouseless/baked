@@ -1,20 +1,12 @@
-using Do.Authentication.FixedToken;
 using Do.Test.Orm;
 
 Forge.New
     .Service(
         business: c => c.DomainAssemblies([typeof(Entity).Assembly]),
-        authentications:
-        [
-            c => c.FixedToken(builder =>
-            {
-                builder.AddIdentity("Admin", [new TokenClaimProvider()]);
-            })
-        ],
         authorization: c => c.ClaimBased(policies:
             [
-                new("AdminOnly", policy => policy.RequireClaim("Token")),
-                new("ManagerOnly", policy => policy.RequireClaim("Manager"))
+                new("Default", policy => policy.RequireClaim("Token")),
+                new("AdminOnly", policy => policy.RequireClaim("Token", "788db39fd347455daf438c96d14c3ea2"))
             ]
         ),
         database: c => c.MySql().ForDevelopment(c.Sqlite()),

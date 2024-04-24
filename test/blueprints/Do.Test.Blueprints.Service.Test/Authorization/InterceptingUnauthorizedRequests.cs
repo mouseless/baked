@@ -10,8 +10,8 @@ public class InterceptingUnauthorizedRequests : TestServiceNfr
     protected override Func<AuthorizationConfigurator, IFeature<AuthorizationConfigurator>>? Authorization =>
         c => c.ClaimBased(policies:
         [
-            new("AdminOnly", policy => policy.RequireClaim("Token")),
-            new("ManagerOnly", policy => policy.RequireClaim("Token", "788db39fd347455daf438c96d14c3ea2"))
+            new("Default", policy => policy.RequireClaim("Token")),
+            new("AdminOnly", policy => policy.RequireClaim("Token", "Admin_Token"))
         ]);
 
     [Test]
@@ -39,7 +39,7 @@ public class InterceptingUnauthorizedRequests : TestServiceNfr
     {
         Client.DefaultRequestHeaders.Authorization = AuthenticationHeaderValue.Parse("11111111111111111111111111111111");
 
-        var response = await Client.PostAsync("authorization-samples/require-manager-policy", null);
+        var response = await Client.PostAsync("authorization-samples/require-admin-policy", null);
 
         response.IsSuccessStatusCode.ShouldBeFalse();
         response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
