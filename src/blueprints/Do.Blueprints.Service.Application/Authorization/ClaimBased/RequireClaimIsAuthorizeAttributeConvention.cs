@@ -7,7 +7,6 @@ public class RequireClaimIsAuthorizeAttributeConvention : IApiModelConvention<Ac
     public void Apply(ActionModelContext context)
     {
         if (context.Action.MethodModel is null) { return; }
-        // TODO CustomAttribute access is changed, use helpers Has
         if (!context.Action.MethodModel.CustomAttributes.Contains<RequireClaimAttribute>()) { return; }
 
         foreach (var require in context.Action.MethodModel.CustomAttributes.Get<RequireClaimAttribute>())
