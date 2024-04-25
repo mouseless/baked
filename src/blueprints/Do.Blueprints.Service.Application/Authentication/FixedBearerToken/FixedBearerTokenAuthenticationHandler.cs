@@ -3,9 +3,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Diagnostics.CodeAnalysis;
+using System.Security.Claims;
 using System.Text.Encodings.Web;
 
-namespace Do.Authentication.FixedToken;
+namespace Do.Authentication.FixedBearerToken;
 
 public class FixedBearerTokenAuthenticationHandler(
     FixedBearerTokenOptions _options,
@@ -15,19 +16,19 @@ public class FixedBearerTokenAuthenticationHandler(
     UrlEncoder encoder
 ) : AuthenticationHandler<AuthenticationSchemeOptions>(options, logger, encoder)
 {
-    string? GetToken(string tokenName) =>
-        _configuration.GetValue<string>($"Authentication:FixedToken:{tokenName}");
+    string? GetTokenValue(string tokenName) =>
+        _configuration.GetValue<string>($"Authentication:FixedBearerToken:{tokenName}");
 
     protected override Task<AuthenticateResult> HandleAuthenticateAsync()
     {
-        string? token = default;
+        Token? token = default;
 
         if (Context.Request.Headers.Authorization.Any())
         {
             var givenToken = $"{Context.Request.Headers.Authorization}".Replace("Bearer", string.Empty).Trim();
             if (!AnyTokenValidates(token => givenToken == token, out token))
             {
-                return Task.FromResult(AuthenticateResult.Fail("Attempted to perform an unauthorized operation."));
+                return Task.FromResult(AuthenticateResult.Fail("Invalid credentials"));
             }
         }
 
@@ -51,33 +52,31 @@ public class FixedBearerTokenAuthenticationHandler(
 
             if (!AnyTokenValidates(token => hash == (parameters + token).ToSHA256().ToBase64(), out token))
             {
-                return Task.FromResult(AuthenticateResult.Fail("Attempted to perform an unauthorized operation."));
+                return Task.FromResult(AuthenticateResult.Fail("Invalid credentials"));
             }
         }
 
         if (token != null)
         {
-            var properties = new AuthenticationProperties();
-            properties.Items.Add(TokenClaimProvider.TOKEN_KEY, token);
+            var identity = new ClaimsIdentity(token.Claims.Select(c => new Claim(c, c)), token.Name);
+            var principal = new ClaimsPrincipal(identity);
 
-            var principle = new ClaimsPrincipalFactory(_options.ClaimsPrincipalFactoryOptions).Create(Context, properties);
-
-            return Task.FromResult(AuthenticateResult.Success(new(principle, properties, Scheme.Name)));
+            return Task.FromResult(AuthenticateResult.Success(new(principal, Scheme.Name)));
         }
 
         return Task.FromResult(AuthenticateResult.NoResult());
     }
 
-    bool AnyTokenValidates(Func<string, bool> test, [NotNullWhen(true)] out string? validToken)
+    bool AnyTokenValidates(Func<string, bool> test, [NotNullWhen(true)] out Token? validToken)
     {
         validToken = default;
 
-        foreach (var tokenName in _options.TokenNames)
+        foreach (var token in _options.Tokens)
         {
-            var token = GetToken(tokenName);
-            if (token is null) { continue; }
+            var requiredValue = GetTokenValue(token.Name);
+            if (requiredValue is null) { continue; }
 
-            if (test(token))
+            if (test(requiredValue))
             {
                 validToken = token;
 

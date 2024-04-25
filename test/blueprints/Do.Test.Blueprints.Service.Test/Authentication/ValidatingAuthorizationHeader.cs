@@ -4,22 +4,27 @@ namespace Do.Test.Authentication;
 
 public class ValidatingAuthorizationHeader : TestServiceSpec
 {
-    [TestCase("token_a")]
-    [TestCase("token_b")]
-    public async Task Validates_given_bearer_token_in_configured_tokens(string token)
+    [TestCase("token_a", "ClaimA")]
+    [TestCase("token_b", "ClaimB")]
+    public async Task Validates_given_bearer_token_in_configured_tokens(string token, string claim)
     {
         var request = GiveMe.AnHttpRequest(
             header: GiveMe.ADictionary(("Authorization", token))
         );
-        var handler = GiveMe.AFixedBearerTokenAuthenticationHandler(request, tokenNames: ["A", "B"]);
-        MockMe.ASetting("Authentication:FixedToken:A", "token_a");
-        MockMe.ASetting("Authentication:FixedToken:B", "token_b");
+        var handler = GiveMe.AFixedBearerTokenAuthenticationHandler(request,
+             tokens =>
+             {
+                 tokens.Add("A", ["ClaimA"]);
+                 tokens.Add("B", ["ClaimB"]);
+             });
+        MockMe.ASetting("Authentication:FixedBearerToken:A", "token_a");
+        MockMe.ASetting("Authentication:FixedBearerToken:B", "token_b");
 
         var authenticateResult = await handler.AuthenticateAsync();
 
         authenticateResult.Succeeded.ShouldBeTrue();
         authenticateResult.Principal.ShouldNotBeNull();
-        authenticateResult.Principal.Claims.First(c => c.Type == "Token").Value.ShouldBe(token);
+        authenticateResult.Principal.Claims.FirstOrDefault(c => c.Type == claim).ShouldNotBeNull();
     }
 
     [Test]
@@ -28,8 +33,10 @@ public class ValidatingAuthorizationHeader : TestServiceSpec
         var request = GiveMe.AnHttpRequest(
             header: GiveMe.ADictionary(("Authorization", "Bearer wrong_token"))
         );
-        var handler = GiveMe.AFixedBearerTokenAuthenticationHandler(request, tokenNames: ["Test"]);
-        MockMe.ASetting("Authentication:FixedToken:Test", "test_token");
+        var handler = GiveMe.AFixedBearerTokenAuthenticationHandler(request,
+             tokens => tokens.Add("Test", ["User"])
+        );
+        MockMe.ASetting("Authentication:FixedBearerToken:Test", "test_token");
 
         var authenticateResult = await handler.AuthenticateAsync();
 
@@ -44,13 +51,15 @@ public class ValidatingAuthorizationHeader : TestServiceSpec
         var request = GiveMe.AnHttpRequest(
             header: GiveMe.ADictionary(("Authorization", "Bearer test_token "))
         );
-        var handler = GiveMe.AFixedBearerTokenAuthenticationHandler(request, tokenNames: ["Test"]);
-        MockMe.ASetting("Authentication:FixedToken:Test", "test_token");
+        var handler = GiveMe.AFixedBearerTokenAuthenticationHandler(request,
+            tokens => tokens.Add("Test", ["User"])
+        );
+        MockMe.ASetting("Authentication:FixedBearerToken:Test", "test_token");
 
         var authenticateResult = await handler.AuthenticateAsync();
 
         authenticateResult.Succeeded.ShouldBeTrue();
         authenticateResult.Principal.ShouldNotBeNull();
-        authenticateResult.Principal.Claims.First(c => c.Type == "Token").Value.ShouldBe("test_token");
+        authenticateResult.Principal.Claims.FirstOrDefault(c => c.Type == "User").ShouldNotBeNull();
     }
 }

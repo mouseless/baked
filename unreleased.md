@@ -33,7 +33,7 @@
       `Scoped` and `Transient`
     - `CodingStyleFeature` is introduced with existing coding styles to separate
       them from business feature
-  - `Authorization` feature is now added with `ClaimAuthorization` implementation
+  - `Authorization` feature is now added with `ClaimBasedAuthorization` implementation
 
 ## Improvements
 
@@ -46,6 +46,8 @@
 - `Documentation` feature is refactored into coding styles and removed
   completely
 - `Authentication` feature is now a multi-feature
+- `Authentication` now supports multi scheme authentication for a given
+  controler or endpoint
 
 ## Bugfixes
 

@@ -15,7 +15,17 @@ namespace Do.RestApi;
 
 public class RestApiLayer : LayerBase<GenerateCode, AddServices, Build>
 {
-    readonly ApiModel _apiModel = new();
+    readonly ApiModel _apiModel = new()
+    {
+        Usings = [
+                    "Microsoft.AspNetCore.Mvc",
+            "System",
+            "System.Linq",
+            "System.Collections",
+            "System.Collections.Generic",
+            "System.Threading.Tasks"
+                ]
+    };
     readonly IApiModelConventionCollection _apiModelConventions = new ApiModelConventionCollection();
     readonly IApplicationPartCollection _applicationParts = new ApplicationPartCollection();
     readonly MvcNewtonsoftJsonOptions _mvcNewtonsoftJsonOptions = [];
@@ -33,23 +43,13 @@ public class RestApiLayer : LayerBase<GenerateCode, AddServices, Build>
             .OnDispose(() =>
             {
                 _apiModelConventions.Apply(_apiModel);
-                IEnumerable<string> usings =
-                [
-                    .. _apiModel.Usings,
-                    "Microsoft.AspNetCore.Mvc",
-                    "System",
-                    "System.Linq",
-                    "System.Collections",
-                    "System.Collections.Generic",
-                    "System.Threading.Tasks"
-                ];
 
                 generatedAssemblies.Add(nameof(RestApiLayer),
                     assembly => assembly
                         .AddReferenceFrom<ApiControllerAttribute>()
                         .AddReferences(_apiModel.References)
                         .AddCodes(new ApiCodeTemplate(_apiModel)),
-                    compilerOptions => compilerOptions.WithUsings(usings)
+                    compilerOptions => compilerOptions.WithUsings(_apiModel.Usings)
                 );
             })
             .Build();

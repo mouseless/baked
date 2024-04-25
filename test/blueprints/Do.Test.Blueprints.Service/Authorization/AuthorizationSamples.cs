@@ -1,15 +1,17 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Do.Authorization;
 
 namespace Do.Test.Authorization;
 
 public class AuthorizationSamples
 {
-    [Authorize]
     public void RequireAuthorization() { }
 
-    [Authorize(Policy = "Default")]
-    public void RequireDefaultPolicy() { }
+    [RequireClaim("System")]
+    public void RequireSystemClaim() { }
 
-    [Authorize(Policy = "AdminOnly")]
-    public void RequireAdminPolicy() { }
+    [RequireClaim("Admin")]
+    public void RequireAdminClaim() { }
+
+    [RequireNoClaim]
+    public void RequireNoClaim() { }
 }

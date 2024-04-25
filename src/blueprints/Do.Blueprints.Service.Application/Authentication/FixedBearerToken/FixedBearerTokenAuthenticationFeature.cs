@@ -1,13 +1,14 @@
-﻿using Do.Architecture;
+﻿using Do;
+using Do.Architecture;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
-namespace Do.Authentication.FixedToken;
+namespace Do.Authentication.FixedBearerToken;
 
-public class FixedTokenAuthenticationFeature(FixedBearerTokenOptions _options)
+public class FixedBearerTokenAuthenticationFeature(FixedBearerTokenOptions _options)
     : IFeature<AuthenticationConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
@@ -31,16 +32,16 @@ public class FixedTokenAuthenticationFeature(FixedBearerTokenOptions _options)
 
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
-            swaggerGenOptions.AddSecurityDefinition("FixedToken",
+            swaggerGenOptions.AddSecurityDefinition("FixedBearerToken",
                 new()
                 {
                     Type = SecuritySchemeType.Http,
                     Scheme = "Bearer",
-                    Description = $"Enter the {string.Join(" or ", _options.TokenNames).ToLowerInvariant()} token",
+                    Description = $"Enter the {string.Join(" or ", _options.Tokens.Select(t => t.Name)).ToLowerInvariant()} token",
                 }
             );
 
-            swaggerGenOptions.AddSecurityRequirementToOperationsThatUse<AuthorizeAttribute>("FixedToken");
+            swaggerGenOptions.AddSecurityRequirementToOperationsThatUse<AuthorizeAttribute>("FixedBearerToken");
         });
     }
 }

@@ -30,7 +30,7 @@ public static class ForgeExtensions
         Action<ApplicationDescriptor>? configure = default
     )
     {
-        authentications ??= [c => c.FixedToken()];
+        authentications ??= [c => c.FixedBearerToken()];
         authorization ??= c => c.ClaimBased();
         caching ??= c => c.ScopedMemory();
         communication ??= c => c.Http();

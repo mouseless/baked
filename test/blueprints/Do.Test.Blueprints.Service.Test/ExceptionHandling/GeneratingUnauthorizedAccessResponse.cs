@@ -1,4 +1,6 @@
 ﻿using Do.Architecture;
+using Do.Authentication;
+using Do.Authorization;
 using Do.ExceptionHandling;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -8,6 +10,11 @@ namespace Do.Test.ExceptionHandling;
 
 public class GeneratingUnauthorizedAccessResponse : TestServiceNfr
 {
+    protected override IEnumerable<Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>>? Authentications =>
+        [c => c.FixedBearerToken(tokens => tokens.Add("Default", claims: ["User"]))];
+    protected override Func<AuthorizationConfigurator, IFeature<AuthorizationConfigurator>>? Authorization =>
+        c => c.ClaimBased(baseClaim: "User");
+
     protected override Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>>? ExceptionHandling =>
        c => c.Default(typeUrlFormat: "https://do.mouseless.codes/errors/{0}");
 
@@ -19,9 +26,9 @@ public class GeneratingUnauthorizedAccessResponse : TestServiceNfr
         var problemDetails = response.Content.ReadFromJsonAsync<ProblemDetails>().Result;
 
         problemDetails.ShouldNotBeNull();
-        problemDetails.Detail.ShouldBe("Attempted to perform an unauthorized operation.");
+        problemDetails.Detail.ShouldBe("Failed to authenticate with given credentials");
         problemDetails.Status.ShouldBe((int)HttpStatusCode.Unauthorized);
-        problemDetails.Title.ShouldBe("Unauthorized Access");
-        problemDetails.Type.ShouldBe("https://do.mouseless.codes/errors/unauthorized-access");
+        problemDetails.Title.ShouldBe("Authentication");
+        problemDetails.Type.ShouldBe("https://do.mouseless.codes/errors/authentication");
     }
 }
