@@ -15,9 +15,9 @@ public class ValidatingFormPost : TestServiceSpec
             )
         );
         var handler = GiveMe.AFixedBearerTokenAuthenticationHandler(request,
-            tokenNames => tokenNames.Add("Test", ["User"])
+            tokens => tokens.Add("Default", ["User"])
         );
-        MockMe.ASetting(key: "Authentication:FixedBearerToken:Test", value: "token");
+        MockMe.ASetting(key: "Authentication:FixedBearerToken:Default", value: "token");
 
         var authenticateResult = await handler.AuthenticateAsync();
 
@@ -37,9 +37,9 @@ public class ValidatingFormPost : TestServiceSpec
            )
        );
         var handler = GiveMe.AFixedBearerTokenAuthenticationHandler(request,
-             tokenNames => tokenNames.Add("Test", ["User"])
+             tokens => tokens.Add("Default", ["User"])
          );
-        MockMe.ASetting(key: "Authentication:FixedBearerToken:Test", value: "other-token");
+        MockMe.ASetting(key: "Authentication:FixedBearerToken:Default", value: "other-token");
 
         var authenticateResult = await handler.AuthenticateAsync();
 
@@ -55,9 +55,9 @@ public class ValidatingFormPost : TestServiceSpec
             form: GiveMe.ADictionary()
         );
         var handler = GiveMe.AFixedBearerTokenAuthenticationHandler(request,
-            tokenNames => tokenNames.Add("Test", ["User"])
+            tokens => tokens.Add("Default", ["User"])
         );
-        MockMe.ASetting(key: "Authentication:FixedBearerToken:Test", value: GiveMe.AString());
+        MockMe.ASetting(key: "Authentication:FixedBearerToken:Default", value: GiveMe.AString());
 
         var authenticateResult = await handler.AuthenticateAsync();
 

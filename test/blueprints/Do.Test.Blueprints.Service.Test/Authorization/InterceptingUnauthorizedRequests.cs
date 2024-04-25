@@ -16,7 +16,7 @@ public class InterceptingUnauthorizedRequests : TestServiceNfr
     [Test]
     public async Task Returns_unauthorized_access_response_for_not_authenticated_user()
     {
-        var response = await Client.PostAsync("authorization-samples/require-authorization", null);
+        var response = await Client.PostAsync("authorization-samples/require-base-claim", null);
 
         response.IsSuccessStatusCode.ShouldBeFalse();
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
@@ -27,7 +27,7 @@ public class InterceptingUnauthorizedRequests : TestServiceNfr
     {
         Client.DefaultRequestHeaders.Authorization = AuthenticationHeaderValue.Parse("Wrong_token");
 
-        var response = await Client.PostAsync("authorization-samples/require-authorization", null);
+        var response = await Client.PostAsync("authorization-samples/require-base-claim", null);
 
         response.IsSuccessStatusCode.ShouldBeFalse();
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);

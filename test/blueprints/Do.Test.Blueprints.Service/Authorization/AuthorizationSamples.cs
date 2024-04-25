@@ -4,7 +4,7 @@ namespace Do.Test.Authorization;
 
 public class AuthorizationSamples
 {
-    public void RequireAuthorization() { }
+    public void RequireBaseClaim() { }
 
     [RequireClaim("System")]
     public void RequireSystemClaim() { }
