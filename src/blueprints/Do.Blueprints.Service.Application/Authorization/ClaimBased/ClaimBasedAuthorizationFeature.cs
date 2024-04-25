@@ -37,11 +37,11 @@ public class ClaimBasedAuthorizationFeature(string? _baseClaim, List<string> _cl
         {
             if (_baseClaim is not null)
             {
-                conventions.Add(new AllRequestsShouldRequireBaseClaimConvention(_baseClaim));
-                conventions.Add(new RequireNoClaimIsAllowAnonymousAttributeConvention());
+                conventions.Add(new AllActionsRequireBaseClaimConvention(_baseClaim));
+                conventions.Add(new RequireNoClaimIsAllowAnonymousConvention());
             }
 
-            conventions.Add(new RequireClaimIsAuthorizeAttributeConvention());
+            conventions.Add(new RequireClaimIsAuthorizeWithClaimConvention());
         });
     }
 }

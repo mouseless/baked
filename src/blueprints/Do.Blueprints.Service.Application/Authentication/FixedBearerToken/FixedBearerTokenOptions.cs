@@ -2,12 +2,10 @@
 
 public class FixedBearerTokenOptions
 {
-    readonly List<Token> _tokens = [];
-
-    public List<Token> Tokens => _tokens;
+    public List<Token> Tokens { get; } = [];
 
     public void Add(string tokenName, List<string> claims)
     {
-        _tokens.Add(new(tokenName, claims));
+        Tokens.Add(new(tokenName, claims));
     }
 }

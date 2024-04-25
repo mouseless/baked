@@ -22,7 +22,6 @@ public class FixedBearerTokenAuthenticationFeature(FixedBearerTokenOptions _opti
                 );
 
             services.AddSingleton(_options);
-
         });
 
         configurator.ConfigureMiddlewareCollection(middlewares =>

@@ -2,7 +2,7 @@
 
 namespace Do.Authorization.ClaimBased;
 
-public class AllRequestsShouldRequireBaseClaimConvention(string _baseClaim) : IApiModelConvention<ActionModelContext>
+public class AllActionsRequireBaseClaimConvention(string _baseClaim) : IApiModelConvention<ActionModelContext>
 {
     public void Apply(ActionModelContext context)
     {
