@@ -14,3 +14,4 @@ public class AllRequestsShouldRequireBaseClaimConvention(string _baseClaim) : IA
 
         context.Action.AdditionalAttributes.Add(attributeSyntax);
     }
+}
