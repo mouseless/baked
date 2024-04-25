@@ -6,7 +6,7 @@ Forge.New
         authentications: [
             c => c.FixedBearerToken(tokens =>
             {
-                tokens.Add("Dinc", claims: ["User"]);
+                tokens.Add("User", claims: ["User"]);
                 tokens.Add("Admin", claims: ["Admin"]);
                 tokens.Add("System", claims: ["System", "Admin"]);
             })
