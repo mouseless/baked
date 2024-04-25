@@ -16,7 +16,7 @@ public class AuthorizingRequests : TestServiceNfr
             })
         ];
     protected override Func<AuthorizationConfigurator, IFeature<AuthorizationConfigurator>>? Authorization =>
-        c => c.ClaimBased(baseClaim: "User", claims: ["System", "Admin"]);
+        c => c.ClaimBased(claims: ["User", "System", "Admin"], baseClaim: "User");
 
     [Test]
     public async Task Authorizes_succesfully_authenticated_user()

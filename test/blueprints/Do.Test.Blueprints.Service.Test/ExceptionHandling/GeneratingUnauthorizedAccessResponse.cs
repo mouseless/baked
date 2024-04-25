@@ -14,7 +14,7 @@ public class GeneratingUnauthorizedAccessResponse : TestServiceNfr
     protected override IEnumerable<Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>>? Authentications =>
         [c => c.FixedBearerToken(tokens => tokens.Add("Default", claims: ["User"]))];
     protected override Func<AuthorizationConfigurator, IFeature<AuthorizationConfigurator>>? Authorization =>
-        c => c.ClaimBased(baseClaim: "User", claims: ["Admin"]);
+        c => c.ClaimBased(claims: ["User", "Admin"], baseClaim: "User");
 
     protected override Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>>? ExceptionHandling =>
        c => c.Default(typeUrlFormat: "https://do.mouseless.codes/errors/{0}");

@@ -11,7 +11,7 @@ public class InterceptingUnauthorizedRequests : TestServiceNfr
     protected override IEnumerable<Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>>? Authentications =>
         [c => c.FixedBearerToken(tokens => tokens.Add("Default", claims: ["User"]))];
     protected override Func<AuthorizationConfigurator, IFeature<AuthorizationConfigurator>>? Authorization =>
-        c => c.ClaimBased(baseClaim: "User", claims: ["Admin"]);
+        c => c.ClaimBased(claims: ["User", "Admin"], baseClaim: "User");
 
     [Test]
     public async Task Returns_unauthorized_access_response_for_not_authenticated_user()

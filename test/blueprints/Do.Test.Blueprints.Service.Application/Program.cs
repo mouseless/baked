@@ -11,7 +11,7 @@ Forge.New
                 tokens.Add("System", claims: ["System", "Admin"]);
             })
         ],
-        authorization: c => c.ClaimBased(baseClaim: "User", claims: ["System", "Admin"]),
+        authorization: c => c.ClaimBased(claims: ["User", "System", "Admin"], baseClaim: "User"),
         database: c => c.MySql().ForDevelopment(c.Sqlite()),
         exceptionHandling: ex => ex.Default(typeUrlFormat: "https://do.mouseless.codes/errors/{0}"),
         configure: app => app.Features.AddConfigurationOverrider()
