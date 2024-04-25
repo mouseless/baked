@@ -12,7 +12,7 @@ public class AuthorizingRequests : TestServiceNfr
             {
                 tokens.Add("Default", claims: ["User"]);
                 tokens.Add("System", claims: ["System"]);
-                tokens.Add("Admin", claims: ["User","System","Admin"]);
+                tokens.Add("Admin", claims: ["User", "System", "Admin"]);
             })
         ];
     protected override Func<AuthorizationConfigurator, IFeature<AuthorizationConfigurator>>? Authorization =>
