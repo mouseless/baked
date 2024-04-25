@@ -19,8 +19,8 @@ public static class AuthenticationExtensions
     public static void AddParameterToOperationsThatUse<TAttribute>(this SwaggerGenOptions source, string name,
         ParameterLocation @in = ParameterLocation.Header,
         bool required = false
-    ) where TAttribute : Attribute
-        => source.OperationFilter<AddParameterOperationFilter<TAttribute>>(name, @in, required);
+    ) where TAttribute : Attribute =>
+        source.OperationFilter<AddParameterOperationFilter<TAttribute>>(name, @in, required);
 
     public static bool HasMetadata<T>(this HttpContext source) where T : Attribute
     {

@@ -1,13 +1,11 @@
 ﻿using Do.Architecture;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using System.Security.Claims;
 
 namespace Do.Authorization.ClaimBased;
 
-public class ClaimBasedAuthorizationFeature(KeyValuePair<string, Action<AuthorizationPolicyBuilder>>[] _policies)
+public class ClaimBasedAuthorizationFeature(List<string> _claims)
     : IFeature<AuthorizationConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
@@ -16,14 +14,13 @@ public class ClaimBasedAuthorizationFeature(KeyValuePair<string, Action<Authoriz
         {
             services.AddAuthorization(options =>
             {
-                foreach (var item in _policies)
+                foreach (var claim in _claims)
                 {
-                    options.AddPolicy(item.Key, item.Value);
+                    options.AddPolicy(claim, policy => policy.RequireClaim(claim));
                 }
             });
 
             services.AddSingleton<IAuthorizationMiddlewareResultHandler, AuthorizationResultHandler>();
-            services.AddSingleton<Func<ClaimsPrincipal>>(sp => () => sp.GetRequiredService<IHttpContextAccessor>().HttpContext?.User ?? throw new("HttpContext.User is required"));
         });
 
         configurator.ConfigureMiddlewareCollection(middlewares =>
@@ -33,7 +30,7 @@ public class ClaimBasedAuthorizationFeature(KeyValuePair<string, Action<Authoriz
 
         configurator.ConfigureApiModelConventions(conventions =>
         {
-            conventions.Add(new AddAuthorizeAttributeToActionConvention());
+            conventions.Add(new RequireClaimIsAuthorizeAttributeConvention());
         });
     }
 }

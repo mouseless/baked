@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Policy;
 using Microsoft.AspNetCore.Http;
+using System.Security.Authentication;
 
 namespace Do.Authorization;
 
@@ -12,12 +13,12 @@ public class AuthorizationResultHandler : IAuthorizationMiddlewareResultHandler
         {
             if (authorizeResult.Challenged)
             {
-                throw new UnauthorizedAccessException(@"Attempted to perform an unauthorized operation.");
+                throw new AuthenticationException(@"Failed to authenticate with given credentials");
             }
 
             if (authorizeResult.Forbidden)
             {
-                throw new ForbiddenAccessException(@"Attempted to perform a forbidden operation.");
+                throw new UnauthorizedAccessException(@"Attempted to perform a forbidden operation.");
             }
         }
 

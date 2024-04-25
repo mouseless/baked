@@ -33,7 +33,7 @@
       `Scoped` and `Transient`
     - `CodingStyleFeature` is introduced with existing coding styles to separate
       them from business feature
-  - `Authorization` feature is now added with `ClaimAuthorization` implementation
+  - `Authorization` feature is now added with `ClaimBasedAuthorization` implementation
 
 ## Improvements
 

@@ -22,12 +22,8 @@ public class ConfigurationOverriderFeature : IFeature
         {
             var domainModel = configurator.Context.GetDomainModel();
 
-            apiModel.GetController<AuthenticationSamples>().Action[nameof(AuthenticationSamples.TokenAuthentication)].AddAttribute<AuthorizeAttribute>();
-            apiModel.GetController<AuthenticationSamples>().Action[nameof(AuthenticationSamples.FormPostAuthentication)].AddAttribute<AuthorizeAttribute>();
             apiModel.GetController<AuthenticationSamples>().Action[nameof(AuthenticationSamples.FormPostAuthentication)].UseForm = true;
-
             apiModel.GetController<ExceptionSamples>().Action[nameof(ExceptionSamples.Throw)].Parameter["handled"].From = ParameterModelFrom.Query;
-
             apiModel.GetController<Entities>().AddSingleById<Entity>(domainModel);
         });
 

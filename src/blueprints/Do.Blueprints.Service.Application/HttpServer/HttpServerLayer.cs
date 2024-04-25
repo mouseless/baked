@@ -1,8 +1,9 @@
 ﻿using Do.Architecture;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
-
+using System.Security.Claims;
 using static Do.HttpServer.HttpServerLayer;
 
 namespace Do.HttpServer;
@@ -41,6 +42,8 @@ public class HttpServerLayer : LayerBase<Build>
     {
         protected override void Initialize(WebApplicationBuilder build, IServiceCollection services)
         {
+            services.AddSingleton<Func<ClaimsPrincipal>>(sp => () => sp.GetRequiredService<IHttpContextAccessor>().HttpContext?.User ?? throw new("HttpContext.User is required"));
+
             foreach (var service in services)
             {
                 build.Services.Add(service);
