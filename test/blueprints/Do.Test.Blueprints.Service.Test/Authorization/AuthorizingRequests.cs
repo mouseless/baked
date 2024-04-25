@@ -10,12 +10,9 @@ public class AuthorizingRequests : TestServiceNfr
     const string ApiKey = "11111111111111111111111111111111";
 
     protected override IEnumerable<Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>>? Authentications =>
-    [
-        c => c.FixedBearerToken(tokens => tokens.Add("Default", claims: ["User", "Admin"]))
-    ];
-
+        [c => c.FixedBearerToken(tokens => tokens.Add("Default", claims: ["User", "Admin"]))];
     protected override Func<AuthorizationConfigurator, IFeature<AuthorizationConfigurator>>? Authorization =>
-        c => c.ClaimBased(["User", "Admin"]);
+        c => c.ClaimBased(baseClaim: "User", claims: ["Admin"]);
 
     [Test]
     public async Task Authorizes_succesfully_authenticated_user()
@@ -28,11 +25,19 @@ public class AuthorizingRequests : TestServiceNfr
     }
 
     [Test]
-    public async Task Authorizes_succesfully_authenticated_use_with_valid_policy()
+    public async Task Authorizes_succesfully_authenticated_use_with_valid_claim()
     {
         Client.DefaultRequestHeaders.Authorization = AuthenticationHeaderValue.Parse(ApiKey);
 
-        var response = await Client.PostAsync("authorization-samples/require-admin-policy", null);
+        var response = await Client.PostAsync("authorization-samples/require-admin-claim", null);
+
+        response.IsSuccessStatusCode.ShouldBeTrue();
+    }
+
+    [Test]
+    public async Task Require_no_claim_authorizes_all_requests()
+    {
+        var response = await Client.PostAsync("authorization-samples/require-no-claim", null);
 
         response.IsSuccessStatusCode.ShouldBeTrue();
     }

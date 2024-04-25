@@ -37,7 +37,7 @@ public class FixedBearerTokenAuthenticationFeature(FixedBearerTokenOptions _opti
                 {
                     Type = SecuritySchemeType.Http,
                     Scheme = "Bearer",
-                    Description = $"Enter the {string.Join(" or ", _options.TokenNames).ToLowerInvariant()} token",
+                    Description = $"Enter the {string.Join(" or ", _options.Tokens.Select(t => t.Name)).ToLowerInvariant()} token",
                 }
             );
 

@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Do.Authorization.ClaimBased;
 
-public class ClaimBasedAuthorizationFeature(List<string> _claims)
+public class ClaimBasedAuthorizationFeature(string? _baseClaim, List<string> _claims)
     : IFeature<AuthorizationConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
@@ -14,6 +14,11 @@ public class ClaimBasedAuthorizationFeature(List<string> _claims)
         {
             services.AddAuthorization(options =>
             {
+                if (_baseClaim is not null)
+                {
+                    _claims.Add(_baseClaim);
+                }
+
                 foreach (var claim in _claims)
                 {
                     options.AddPolicy(claim, policy => policy.RequireClaim(claim));
@@ -30,6 +35,12 @@ public class ClaimBasedAuthorizationFeature(List<string> _claims)
 
         configurator.ConfigureApiModelConventions(conventions =>
         {
+            if (_baseClaim is not null)
+            {
+                conventions.Add(new AllRequestsShouldRequireBaseClaimConvention(_baseClaim));
+                conventions.Add(new RequireNoClaimIsAllowAnonymousAttributeConvention());
+            }
+
             conventions.Add(new RequireClaimIsAuthorizeAttributeConvention());
         });
     }

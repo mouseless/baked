@@ -7,8 +7,11 @@ public class AuthorizationSamples
     public void RequireAuthorization() { }
 
     [RequireClaim("System")]
-    public void RequireDefaultPolicy() { }
+    public void RequireSystemClaim() { }
 
     [RequireClaim("Admin")]
-    public void RequireAdminPolicy() { }
+    public void RequireAdminClaim() { }
+
+    [RequireNoClaim]
+    public void RequireNoClaim() { }
 }

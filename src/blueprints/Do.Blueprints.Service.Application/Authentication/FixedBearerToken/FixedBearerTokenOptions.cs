@@ -2,15 +2,12 @@
 
 public class FixedBearerTokenOptions
 {
-    readonly Dictionary<string, List<string>> _tokenClaims = [];
+    readonly List<Token> _tokens = [];
 
-    public List<string> TokenNames => [.. _tokenClaims.Keys];
+    public List<Token> Tokens => _tokens;
 
     public void Add(string tokenName, List<string> claims)
     {
-        _tokenClaims.Add(tokenName, claims);
+        _tokens.Add(new(tokenName, claims));
     }
-
-    public List<string> GetClaims(string tokenName) =>
-        _tokenClaims.TryGetValue(tokenName, out var claims) ? claims : [];
 }
