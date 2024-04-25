@@ -3,9 +3,9 @@ using Do.Orm;
 
 namespace Do.Test.Orm;
 
-public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransaction _transaction, TimeProvider _timeProvider)
+public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransaction _transaction)
 {
-    protected Entity() : this(default!, default!, default!, default!) { }
+    protected Entity() : this(default!, default!, default!) { }
 
     public virtual Guid Id { get; protected set; } = default!;
     public virtual Guid Guid { get; protected set; } = default!;
@@ -27,8 +27,7 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
         Uri? uri = default,
         object? @dynamic = default,
         Status? @enum = default,
-        DateTime? dateTime = default,
-        bool? setNowForDateTime = default
+        DateTime? dateTime = default
     )
     {
         Set(
@@ -40,7 +39,7 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
             uri: uri,
             @dynamic: @dynamic,
             @enum: @enum,
-            dateTime: setNowForDateTime == true ? _timeProvider.GetNow() : dateTime
+            dateTime: dateTime
         );
 
         return _context.Insert(this);

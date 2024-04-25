@@ -1,4 +1,4 @@
-﻿namespace Do.Test.Business;
+﻿namespace Do.Test.CodingStyle.CommandPattern;
 
 public class UpdateCommand
 {
