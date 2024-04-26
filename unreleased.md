@@ -28,17 +28,16 @@
     - all types of parameters and return types
     - stylized routes with default conventions
     - additional attributes for controller actions
-    - commands are rendered as actions
-    - entity extensions are rendered under entity services
-    - entity compositions are rendered under entity services
+    - commands as actions
+    - entity extension services under entity route
+    - entity composition services are rendered under entity route
     - single by unique generates duplicate actions for entities
   - `Business` and `Orm` is split into two features
     - `LifetimeFeature` is introduced with three implementations `Singleton`,
       `Scoped` and `Transient`
     - `CodingStyleFeature` is introduced with existing coding styles to separate
       them from business feature
-  - `Business` now allows services casting via
-    `service.Cast().To<AnotherService>()`
+  - `Business` now allows service casting, `service.Cast().To<AnotherService>()`
 
 ## Improvements
 
