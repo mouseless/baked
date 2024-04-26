@@ -1,3 +1,3 @@
 ﻿namespace Do.Authentication.FixedBearerToken;
 
-public record Token(string Name, List<string> Claims);
+public record Token(string Name, IEnumerable<string> Claims);

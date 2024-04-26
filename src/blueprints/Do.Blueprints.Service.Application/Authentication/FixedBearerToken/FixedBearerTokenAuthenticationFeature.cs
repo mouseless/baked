@@ -8,7 +8,7 @@ using Microsoft.OpenApi.Models;
 
 namespace Do.Authentication.FixedBearerToken;
 
-public class FixedBearerTokenAuthenticationFeature(FixedBearerTokenOptions _options)
+public class FixedBearerTokenAuthenticationFeature(List<Token> _tokens)
     : IFeature<AuthenticationConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
@@ -16,12 +16,12 @@ public class FixedBearerTokenAuthenticationFeature(FixedBearerTokenOptions _opti
         configurator.ConfigureServiceCollection(services =>
         {
             services.AddAuthentication()
-                .AddScheme<AuthenticationSchemeOptions, FixedBearerTokenAuthenticationHandler>(
+                .AddScheme<AuthenticationSchemeOptions, AuthenticationHandler>(
                     "FixedBearerToken",
                     opts => { }
                 );
 
-            services.AddSingleton(_options);
+            services.AddSingleton(new TokenOptions(_tokens));
         });
 
         configurator.ConfigureMiddlewareCollection(middlewares =>
@@ -36,7 +36,7 @@ public class FixedBearerTokenAuthenticationFeature(FixedBearerTokenOptions _opti
                 {
                     Type = SecuritySchemeType.Http,
                     Scheme = "Bearer",
-                    Description = $"Enter the {string.Join(" or ", _options.Tokens.Select(t => t.Name)).ToLowerInvariant()} token",
+                    Description = $"Enter the {string.Join(" or ", _tokens.Select(t => t.Name)).ToLowerInvariant()} token",
                 }
             );
 

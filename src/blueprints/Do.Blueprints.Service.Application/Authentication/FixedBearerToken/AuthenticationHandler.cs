@@ -8,8 +8,8 @@ using System.Text.Encodings.Web;
 
 namespace Do.Authentication.FixedBearerToken;
 
-public class FixedBearerTokenAuthenticationHandler(
-    FixedBearerTokenOptions _options,
+public class AuthenticationHandler(
+    TokenOptions _options,
     IConfiguration _configuration,
     IOptionsMonitor<AuthenticationSchemeOptions> options,
     ILoggerFactory logger,

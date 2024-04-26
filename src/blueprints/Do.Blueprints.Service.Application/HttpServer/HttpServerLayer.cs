@@ -16,6 +16,7 @@ public class HttpServerLayer : LayerBase<AddServices, Build>
     protected override PhaseContext GetContext(AddServices phase)
     {
         var services = Context.GetServiceCollection();
+        services.AddHttpContextAccessor();
         services.AddSingleton<Func<ClaimsPrincipal>>(sp => () => sp.GetRequiredService<IHttpContextAccessor>().HttpContext?.User ?? throw new("HttpContext.User is required"));
 
         return PhaseContext.Empty;

@@ -9,7 +9,7 @@ public class BuildingClaimsPrincipal : TestServiceSpec
             header: GiveMe.ADictionary(("Authorization", "test_token "))
         );
         var handler = GiveMe.AFixedBearerTokenAuthenticationHandler(request,
-            tokens => tokens.Add("Default", ["User"])
+            tokens => tokens.Add("Default", claims: ["User"])
         );
         MockMe.ASetting("Authentication:FixedBearerToken:Default", "test_token");
 
@@ -29,7 +29,7 @@ public class BuildingClaimsPrincipal : TestServiceSpec
             header: GiveMe.ADictionary(("Authorization", "test_token"))
         );
         var handler = GiveMe.AFixedBearerTokenAuthenticationHandler(request,
-            tokens => tokens.Add("Default", ["User", "Admin"])
+            tokens => tokens.Add("Default", claims: ["User", "Admin"])
         );
         MockMe.ASetting("Authentication:FixedBearerToken:Default", "test_token");
 
@@ -47,7 +47,7 @@ public class BuildingClaimsPrincipal : TestServiceSpec
             header: GiveMe.ADictionary(("Authorization", "wrong_token"))
         );
         var handler = GiveMe.AFixedBearerTokenAuthenticationHandler(request,
-            tokens => tokens.Add("Default", ["User"])
+            tokens => tokens.Add("Default", claims: ["User"])
         );
         MockMe.ASetting("Authentication:FixedBearerToken:Default", "test_token");
 

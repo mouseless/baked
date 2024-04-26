@@ -1,5 +1,4 @@
 ﻿using Do.Architecture;
-using Do.Authentication;
 using Do.Authorization;
 using Do.ExceptionHandling;
 using Microsoft.AspNetCore.Mvc;
@@ -11,13 +10,11 @@ namespace Do.Test.ExceptionHandling;
 
 public class GeneratingUnauthorizedAccessResponse : TestServiceNfr
 {
-    protected override IEnumerable<Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>>? Authentications =>
-        [c => c.FixedBearerToken(tokens => tokens.Add("Default", claims: ["User"]))];
     protected override Func<AuthorizationConfigurator, IFeature<AuthorizationConfigurator>>? Authorization =>
         c => c.ClaimBased(claims: ["User", "Admin"], baseClaim: "User");
 
     protected override Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>>? ExceptionHandling =>
-       c => c.Default(typeUrlFormat: "https://do.mouseless.codes/errors/{0}");
+        c => c.Default(typeUrlFormat: "https://do.mouseless.codes/errors/{0}");
 
     [Test]
     public async Task Authentication_exceptions_are_handled_with_its_own_handler()

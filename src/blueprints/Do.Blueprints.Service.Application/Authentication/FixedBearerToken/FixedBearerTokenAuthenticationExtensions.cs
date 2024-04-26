@@ -13,24 +13,33 @@ namespace Do;
 public static class FixedBearerTokenAuthenticationExtensions
 {
     public static FixedBearerTokenAuthenticationFeature FixedBearerToken(this AuthenticationConfigurator _,
-        Action<FixedBearerTokenOptions>? configure = default
+        Action<List<Token>>? configure = default
     )
     {
-        configure ??= _ => { };
+        configure ??= tokens => tokens.Add("Default", claims: ["User"]);
 
-        var options = new FixedBearerTokenOptions();
-        configure(options);
+        var tokens = new List<Token>();
+        configure(tokens);
 
-        return new(options);
+        return new(tokens);
     }
 
-    public static IAuthenticationHandler AFixedBearerTokenAuthenticationHandler(this Stubber giveMe, HttpRequest request, Action<FixedBearerTokenOptions> tokens)
+    public static void Add(this List<Token> tokens, string name,
+        IEnumerable<string>? claims = default
+    )
     {
-        var options = new FixedBearerTokenOptions();
-        tokens(options);
+        claims ??= ["User"];
 
-        var handler = new FixedBearerTokenAuthenticationHandler(
-            options,
+        tokens.Add(new(name, claims));
+    }
+
+    public static IAuthenticationHandler AFixedBearerTokenAuthenticationHandler(this Stubber giveMe, HttpRequest request, Action<List<Token>> configure)
+    {
+        var tokens = new List<Token>();
+        configure(tokens);
+
+        var handler = new AuthenticationHandler(
+            new(tokens),
             giveMe.The<IConfiguration>(),
             giveMe.The<IOptionsMonitor<AuthenticationSchemeOptions>>(),
             giveMe.The<ILoggerFactory>(),

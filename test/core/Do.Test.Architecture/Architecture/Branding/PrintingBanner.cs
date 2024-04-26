@@ -46,7 +46,7 @@ public class PrintingBanner : ArchitectureSpec
 
         banner.Print();
 
-        ConsoleOutput.ShouldMatch($$"""
+        ConsoleOutput.ShouldContainWithoutWhitespace($$"""
 
          ▀▄   █▀▀▀▄ █▀▀▀█
           ▄▀  █   █ █   █

@@ -31,7 +31,7 @@ public static class ForgeExtensions
     )
     {
         authentications ??= [c => c.FixedBearerToken()];
-        authorization ??= c => c.ClaimBased(claims: ["User"]);
+        authorization ??= c => c.ClaimBased();
         caching ??= c => c.ScopedMemory();
         communication ??= c => c.Http();
         core ??= c => c.Dotnet();

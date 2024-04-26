@@ -60,7 +60,6 @@ public class RestApiLayer : LayerBase<GenerateCode, AddServices, Build>
         var controllerAssembly = Context.GetGeneratedAssembly(nameof(RestApiLayer));
         var services = Context.GetServiceCollection();
 
-        services.AddHttpContextAccessor();
         services.AddMvcCore().AddApiExplorer();
         services.AddSwaggerGen();
 
