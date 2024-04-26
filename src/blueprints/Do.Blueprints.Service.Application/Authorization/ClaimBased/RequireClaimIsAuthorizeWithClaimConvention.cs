@@ -2,7 +2,7 @@
 
 namespace Do.Authorization.ClaimBased;
 
-public class RequireClaimIsAuthorizeWithClaimConvention : IApiModelConvention<ActionModelContext>, IApiModelConvention<ApiModelContext>
+public class RequireClaimIsAuthorizeWithClaimConvention : IApiModelConvention<ActionModelContext>
 {
     public void Apply(ActionModelContext context)
     {
@@ -15,10 +15,5 @@ public class RequireClaimIsAuthorizeWithClaimConvention : IApiModelConvention<Ac
 
             context.Action.AdditionalAttributes.Add(attributeSyntax);
         }
-    }
-
-    public void Apply(ApiModelContext context)
-    {
-        context.Api.Usings.Add("Microsoft.AspNetCore.Authorization");
     }
 }

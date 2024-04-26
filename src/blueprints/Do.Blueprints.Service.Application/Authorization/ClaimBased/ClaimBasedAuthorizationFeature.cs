@@ -28,6 +28,11 @@ public class ClaimBasedAuthorizationFeature(IEnumerable<string> _claims, string?
             middlewares.Add(app => app.UseAuthorization(), order: 1);
         });
 
+        configurator.ConfigureApiModel(api =>
+        {
+            api.Usings.Add("Microsoft.AspNetCore.Authorization");
+        });
+
         configurator.ConfigureApiModelConventions(conventions =>
         {
             if (_baseClaim is not null)

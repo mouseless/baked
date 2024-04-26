@@ -9,8 +9,6 @@ public class RequireNoClaimIsAllowAnonymousConvention : IApiModelConvention<Acti
         if (context.Action.MethodModel is null) { return; }
         if (!context.Action.MethodModel.CustomAttributes.Contains<RequireNoClaim>()) { return; }
 
-        var attributeSyntax = "AllowAnonymous";
-
-        context.Action.AdditionalAttributes.Add(attributeSyntax);
+        context.Action.AdditionalAttributes.Add("AllowAnonymous");
     }
 }

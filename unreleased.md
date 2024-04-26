@@ -46,6 +46,7 @@
 - `Documentation` feature is refactored into coding styles and removed
   completely
 - `Authentication` feature is now a multi-feature
+- `FixedToken` authentication feature is now renamed to `FixedBearerToken`
 
 ## Bugfixes
 
