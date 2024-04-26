@@ -2,7 +2,7 @@
 
 namespace Do.Authorization.ClaimBased;
 
-public class RequireNoClaimIsAllowAnonymousAttributeConvention : IApiModelConvention<ActionModelContext>
+public class RequireNoClaimIsAllowAnonymousConvention : IApiModelConvention<ActionModelContext>
 {
     public void Apply(ActionModelContext context)
     {

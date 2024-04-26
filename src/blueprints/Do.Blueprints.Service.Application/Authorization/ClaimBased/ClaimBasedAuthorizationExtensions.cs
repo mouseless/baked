@@ -6,7 +6,12 @@ namespace Do;
 public static class ClaimBasedAuthorizationExtensions
 {
     public static ClaimBasedAuthorizationFeature ClaimBased(this AuthorizationConfigurator _,
-        string? baseClaim = default,
-        List<string>? claims = default
-    ) => new(baseClaim, claims ?? []);
+        IEnumerable<string>? claims = default,
+        string? baseClaim = default
+    )
+    {
+        claims ??= ["User"];
+
+        return new(claims, baseClaim);
+    }
 }

@@ -6,12 +6,11 @@ Forge.New
         authentications: [
             c => c.FixedBearerToken(tokens =>
             {
-                tokens.Add("Dinc", claims: ["User"]);
-                tokens.Add("Admin", claims: ["Admin"]);
-                tokens.Add("System", claims: ["System", "Admin"]);
+                tokens.Add("Jane", claims: ["User"]);
+                tokens.Add("John", claims: ["User", "Admin"]);
             })
         ],
-        authorization: c => c.ClaimBased(baseClaim: "User", claims: ["System", "Admin"]),
+        authorization: c => c.ClaimBased(claims: ["User", "Admin"], baseClaim: "User"),
         database: c => c.MySql().ForDevelopment(c.Sqlite()),
         exceptionHandling: ex => ex.Default(typeUrlFormat: "https://do.mouseless.codes/errors/{0}"),
         configure: app => app.Features.AddConfigurationOverrider()

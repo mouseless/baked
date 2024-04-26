@@ -1,5 +1,4 @@
 ﻿using Do.Architecture;
-using Do.Authentication;
 using Do.Authorization;
 using System.Net.Http.Headers;
 
@@ -7,27 +6,23 @@ namespace Do.Test.Authorization;
 
 public class AuthorizingRequests : TestServiceNfr
 {
-    const string ApiKey = "11111111111111111111111111111111";
-
-    protected override IEnumerable<Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>>? Authentications =>
-        [c => c.FixedBearerToken(tokens => tokens.Add("Default", claims: ["User", "Admin"]))];
     protected override Func<AuthorizationConfigurator, IFeature<AuthorizationConfigurator>>? Authorization =>
-        c => c.ClaimBased(baseClaim: "User", claims: ["Admin"]);
+        c => c.ClaimBased(claims: ["User", "Admin"], baseClaim: "User");
 
     [Test]
     public async Task Authorizes_succesfully_authenticated_user()
     {
-        Client.DefaultRequestHeaders.Authorization = AuthenticationHeaderValue.Parse(ApiKey);
+        Client.DefaultRequestHeaders.Authorization = AuthenticationHeaderValue.Parse("11111111111111111111111111111111");
 
-        var response = await Client.PostAsync("authorization-samples/require-authorization", null);
+        var response = await Client.PostAsync("authorization-samples/require-base-claim", null);
 
         response.IsSuccessStatusCode.ShouldBeTrue();
     }
 
     [Test]
-    public async Task Authorizes_succesfully_authenticated_use_with_valid_claim()
+    public async Task Authorizes_succesfully_authenticated_user_with_valid_claim()
     {
-        Client.DefaultRequestHeaders.Authorization = AuthenticationHeaderValue.Parse(ApiKey);
+        Client.DefaultRequestHeaders.Authorization = AuthenticationHeaderValue.Parse("22222222222222222222222222222222");
 
         var response = await Client.PostAsync("authorization-samples/require-admin-claim", null);
 

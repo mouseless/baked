@@ -8,17 +8,14 @@ using System.Text.Encodings.Web;
 
 namespace Do.Authentication.FixedBearerToken;
 
-public class FixedBearerTokenAuthenticationHandler(
-    FixedBearerTokenOptions _options,
+public class AuthenticationHandler(
+    TokenOptions _options,
     IConfiguration _configuration,
     IOptionsMonitor<AuthenticationSchemeOptions> options,
     ILoggerFactory logger,
     UrlEncoder encoder
 ) : AuthenticationHandler<AuthenticationSchemeOptions>(options, logger, encoder)
 {
-    string? GetTokenValue(string tokenName) =>
-        _configuration.GetValue<string>($"Authentication:FixedBearerToken:{tokenName}");
-
     protected override Task<AuthenticateResult> HandleAuthenticateAsync()
     {
         Token? token = default;
@@ -69,20 +66,20 @@ public class FixedBearerTokenAuthenticationHandler(
 
     bool AnyTokenValidates(Func<string, bool> test, [NotNullWhen(true)] out Token? validToken)
     {
-        validToken = default;
-
         foreach (var token in _options.Tokens)
         {
-            var requiredValue = GetTokenValue(token.Name);
-            if (requiredValue is null) { continue; }
+            var value = _configuration.GetValue<string>($"Authentication:FixedBearerToken:{token.Name}");
+            if (value is null) { continue; }
 
-            if (test(requiredValue))
+            if (test(value))
             {
                 validToken = token;
 
                 return true;
             }
         }
+
+        validToken = default;
 
         return false;
     }

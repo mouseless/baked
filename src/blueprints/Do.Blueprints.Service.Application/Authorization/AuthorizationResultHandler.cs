@@ -13,12 +13,12 @@ public class AuthorizationResultHandler : IAuthorizationMiddlewareResultHandler
         {
             if (authorizeResult.Challenged)
             {
-                throw new AuthenticationException(@"Failed to authenticate with given credentials");
+                throw new AuthenticationException("Failed to authenticate with given credentials.");
             }
 
             if (authorizeResult.Forbidden)
             {
-                throw new UnauthorizedAccessException(@"Attempted to perform a forbidden operation.");
+                throw new UnauthorizedAccessException();
             }
         }
 

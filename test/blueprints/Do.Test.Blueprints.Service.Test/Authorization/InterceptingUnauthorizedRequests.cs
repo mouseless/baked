@@ -1,5 +1,4 @@
 ﻿using Do.Architecture;
-using Do.Authentication;
 using Do.Authorization;
 using System.Net;
 using System.Net.Http.Headers;
@@ -8,15 +7,13 @@ namespace Do.Test.Authorization;
 
 public class InterceptingUnauthorizedRequests : TestServiceNfr
 {
-    protected override IEnumerable<Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>>? Authentications =>
-        [c => c.FixedBearerToken(tokens => tokens.Add("Default", claims: ["User"]))];
     protected override Func<AuthorizationConfigurator, IFeature<AuthorizationConfigurator>>? Authorization =>
-        c => c.ClaimBased(baseClaim: "User", claims: ["Admin"]);
+        c => c.ClaimBased(claims: ["User", "Admin"], baseClaim: "User");
 
     [Test]
     public async Task Returns_unauthorized_access_response_for_not_authenticated_user()
     {
-        var response = await Client.PostAsync("authorization-samples/require-authorization", null);
+        var response = await Client.PostAsync("authorization-samples/require-base-claim", null);
 
         response.IsSuccessStatusCode.ShouldBeFalse();
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
@@ -27,7 +24,7 @@ public class InterceptingUnauthorizedRequests : TestServiceNfr
     {
         Client.DefaultRequestHeaders.Authorization = AuthenticationHeaderValue.Parse("Wrong_token");
 
-        var response = await Client.PostAsync("authorization-samples/require-authorization", null);
+        var response = await Client.PostAsync("authorization-samples/require-base-claim", null);
 
         response.IsSuccessStatusCode.ShouldBeFalse();
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);

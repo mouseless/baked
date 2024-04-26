@@ -15,17 +15,7 @@ namespace Do.RestApi;
 
 public class RestApiLayer : LayerBase<GenerateCode, AddServices, Build>
 {
-    readonly ApiModel _apiModel = new()
-    {
-        Usings = [
-                    "Microsoft.AspNetCore.Mvc",
-            "System",
-            "System.Linq",
-            "System.Collections",
-            "System.Collections.Generic",
-            "System.Threading.Tasks"
-                ]
-    };
+    readonly ApiModel _apiModel = new();
     readonly IApiModelConventionCollection _apiModelConventions = new ApiModelConventionCollection();
     readonly IApplicationPartCollection _applicationParts = new ApplicationPartCollection();
     readonly MvcNewtonsoftJsonOptions _mvcNewtonsoftJsonOptions = [];
@@ -36,6 +26,16 @@ public class RestApiLayer : LayerBase<GenerateCode, AddServices, Build>
     protected override PhaseContext GetContext(GenerateCode phase)
     {
         var generatedAssemblies = Context.GetGeneratedAssemblyCollection();
+
+        _apiModel.Usings.AddRange(
+        [
+            "Microsoft.AspNetCore.Mvc",
+            "System",
+            "System.Linq",
+            "System.Collections",
+            "System.Collections.Generic",
+            "System.Threading.Tasks"
+        ]);
 
         return phase.CreateContextBuilder()
             .Add(_apiModel)
@@ -60,7 +60,6 @@ public class RestApiLayer : LayerBase<GenerateCode, AddServices, Build>
         var controllerAssembly = Context.GetGeneratedAssembly(nameof(RestApiLayer));
         var services = Context.GetServiceCollection();
 
-        services.AddHttpContextAccessor();
         services.AddMvcCore().AddApiExplorer();
         services.AddSwaggerGen();
 

@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Do.Authorization.ClaimBased;
 
-public class ClaimBasedAuthorizationFeature(string? _baseClaim, List<string> _claims)
+public class ClaimBasedAuthorizationFeature(IEnumerable<string> _claims, string? _baseClaim)
     : IFeature<AuthorizationConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
@@ -14,11 +14,6 @@ public class ClaimBasedAuthorizationFeature(string? _baseClaim, List<string> _cl
         {
             services.AddAuthorization(options =>
             {
-                if (_baseClaim is not null)
-                {
-                    _claims.Add(_baseClaim);
-                }
-
                 foreach (var claim in _claims)
                 {
                     options.AddPolicy(claim, policy => policy.RequireClaim(claim));
@@ -33,15 +28,20 @@ public class ClaimBasedAuthorizationFeature(string? _baseClaim, List<string> _cl
             middlewares.Add(app => app.UseAuthorization(), order: 1);
         });
 
+        configurator.ConfigureApiModel(api =>
+        {
+            api.Usings.Add("Microsoft.AspNetCore.Authorization");
+        });
+
         configurator.ConfigureApiModelConventions(conventions =>
         {
             if (_baseClaim is not null)
             {
-                conventions.Add(new AllRequestsShouldRequireBaseClaimConvention(_baseClaim));
-                conventions.Add(new RequireNoClaimIsAllowAnonymousAttributeConvention());
+                conventions.Add(new AllActionsRequireBaseClaimConvention(_baseClaim));
+                conventions.Add(new RequireNoClaimIsAllowAnonymousConvention());
             }
 
-            conventions.Add(new RequireClaimIsAuthorizeAttributeConvention());
+            conventions.Add(new RequireClaimIsAuthorizeWithClaimConvention());
         });
     }
 }

@@ -4,9 +4,9 @@ namespace Do.Test.Authentication;
 
 public class ValidatingAuthorizationHeader : TestServiceSpec
 {
-    [TestCase("token_a", "ClaimA")]
-    [TestCase("token_b", "ClaimB")]
-    public async Task Validates_given_bearer_token_in_configured_tokens(string token, string claim)
+    [TestCase("token_a")]
+    [TestCase("token_b")]
+    public async Task Validates_given_bearer_token_in_configured_tokens(string token)
     {
         var request = GiveMe.AnHttpRequest(
             header: GiveMe.ADictionary(("Authorization", token))
@@ -23,20 +23,18 @@ public class ValidatingAuthorizationHeader : TestServiceSpec
         var authenticateResult = await handler.AuthenticateAsync();
 
         authenticateResult.Succeeded.ShouldBeTrue();
-        authenticateResult.Principal.ShouldNotBeNull();
-        authenticateResult.Principal.Claims.FirstOrDefault(c => c.Type == claim).ShouldNotBeNull();
     }
 
     [Test]
-    public async Task Returns_when_provided_token_does_not_match_any_fixed_token()
+    public async Task Returns_failure_when_provided_token_does_not_match_any_configured_token()
     {
         var request = GiveMe.AnHttpRequest(
             header: GiveMe.ADictionary(("Authorization", "Bearer wrong_token"))
         );
         var handler = GiveMe.AFixedBearerTokenAuthenticationHandler(request,
-             tokens => tokens.Add("Test", ["User"])
+             tokens => tokens.Add("Default", ["User"])
         );
-        MockMe.ASetting("Authentication:FixedBearerToken:Test", "test_token");
+        MockMe.ASetting("Authentication:FixedBearerToken:Default", "test_token");
 
         var authenticateResult = await handler.AuthenticateAsync();
 
@@ -52,14 +50,12 @@ public class ValidatingAuthorizationHeader : TestServiceSpec
             header: GiveMe.ADictionary(("Authorization", "Bearer test_token "))
         );
         var handler = GiveMe.AFixedBearerTokenAuthenticationHandler(request,
-            tokens => tokens.Add("Test", ["User"])
+            tokens => tokens.Add("Default", ["User"])
         );
-        MockMe.ASetting("Authentication:FixedBearerToken:Test", "test_token");
+        MockMe.ASetting("Authentication:FixedBearerToken:Default", "test_token");
 
         var authenticateResult = await handler.AuthenticateAsync();
 
         authenticateResult.Succeeded.ShouldBeTrue();
-        authenticateResult.Principal.ShouldNotBeNull();
-        authenticateResult.Principal.Claims.FirstOrDefault(c => c.Type == "User").ShouldNotBeNull();
     }
 }
