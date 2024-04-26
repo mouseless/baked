@@ -1,4 +1,3 @@
 ﻿namespace Do.Authorization;
 
-public class RequireNoClaim : Attribute
-{ }
+public class RequireNoClaim : Attribute { }

@@ -5,14 +5,13 @@ namespace Do.Test.Authorization;
 
 public class AuthorizationSamples(Func<ClaimsPrincipal> _getClaims)
 {
-    public Dictionary<string, string> RequireBaseClaim() =>
-        _getClaims().Claims.ToDictionary(c => c.Type, c => c.Value);
+    public string RequireBaseClaim() =>
+        _getClaims().FindFirst("User")?.Value ?? throw new("Admin claim should have existed");
 
     [RequireClaim("Admin")]
-    public Dictionary<string, string> RequireAdminClaim() =>
-        _getClaims().Claims.ToDictionary(c => c.Type, c => c.Value);
+    public string RequireAdminClaim() =>
+        _getClaims().FindFirst("Admin")?.Value ?? throw new("Admin claim should have existed");
 
     [RequireNoClaim]
-    public Dictionary<string, string> RequireNoClaim() =>
-        _getClaims().Claims.ToDictionary(c => c.Type, c => c.Value);
+    public void RequireNoClaim() { }
 }
