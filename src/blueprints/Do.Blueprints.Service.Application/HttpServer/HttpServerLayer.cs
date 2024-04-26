@@ -4,13 +4,22 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using System.Security.Claims;
+using static Do.DependencyInjection.DependencyInjectionLayer;
 using static Do.HttpServer.HttpServerLayer;
 
 namespace Do.HttpServer;
 
-public class HttpServerLayer : LayerBase<Build>
+public class HttpServerLayer : LayerBase<AddServices, Build>
 {
     readonly IMiddlewareCollection _middlewares = new MiddlewareCollection();
+
+    protected override PhaseContext GetContext(AddServices phase)
+    {
+        var services = Context.GetServiceCollection();
+        services.AddSingleton<Func<ClaimsPrincipal>>(sp => () => sp.GetRequiredService<IHttpContextAccessor>().HttpContext?.User ?? throw new("HttpContext.User is required"));
+
+        return PhaseContext.Empty;
+    }
 
     protected override PhaseContext GetContext(Build phase) =>
         phase.CreateContextBuilder()
@@ -42,8 +51,6 @@ public class HttpServerLayer : LayerBase<Build>
     {
         protected override void Initialize(WebApplicationBuilder build, IServiceCollection services)
         {
-            services.AddSingleton<Func<ClaimsPrincipal>>(sp => () => sp.GetRequiredService<IHttpContextAccessor>().HttpContext?.User ?? throw new("HttpContext.User is required"));
-
             foreach (var service in services)
             {
                 build.Services.Add(service);
