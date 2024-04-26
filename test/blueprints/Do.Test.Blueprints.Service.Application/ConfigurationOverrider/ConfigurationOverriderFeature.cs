@@ -1,10 +1,9 @@
 ﻿using Do.Architecture;
-using Do.Authentication;
-using Do.Authentication.FixedToken;
 using Do.RestApi.Model;
 using Do.Test.Authentication;
 using Do.Test.ExceptionHandling;
 using Do.Test.Orm;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
 
 namespace Do.Test.ConfigurationOverrider;
@@ -23,14 +22,8 @@ public class ConfigurationOverriderFeature : IFeature
         {
             var domainModel = configurator.Context.GetDomainModel();
 
-            apiModel.References.Add<Middleware>();
-
-            apiModel.GetController<AuthenticationSamples>().Action[nameof(AuthenticationSamples.TokenAuthentication)].AddAttribute<UseAttribute<Middleware>>();
-            apiModel.GetController<AuthenticationSamples>().Action[nameof(AuthenticationSamples.FormPostAuthentication)].AddAttribute<UseAttribute<Middleware>>();
             apiModel.GetController<AuthenticationSamples>().Action[nameof(AuthenticationSamples.FormPostAuthentication)].UseForm = true;
-
             apiModel.GetController<ExceptionSamples>().Action[nameof(ExceptionSamples.Throw)].Parameter["handled"].From = ParameterModelFrom.Query;
-
             apiModel.GetController<Entities>().AddSingleById<Entity>(domainModel);
         });
 
@@ -46,8 +39,8 @@ public class ConfigurationOverriderFeature : IFeature
                 }
             );
 
-            swaggerGenOptions.AddSecurityRequirementToOperationsThatUse<Middleware>("AdditionalSecurity");
-            swaggerGenOptions.AddParameterToOperationsThatUse<Middleware>("X-Security", @in: ParameterLocation.Header, required: true);
+            swaggerGenOptions.AddSecurityRequirementToOperationsThatUse<AuthorizeAttribute>("AdditionalSecurity");
+            swaggerGenOptions.AddParameterToOperationsThatUse<AuthorizeAttribute>("X-Security", @in: ParameterLocation.Header, required: true);
         });
     }
 }

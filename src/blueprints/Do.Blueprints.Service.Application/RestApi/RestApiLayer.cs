@@ -27,6 +27,16 @@ public class RestApiLayer : LayerBase<GenerateCode, AddServices, Build>
     {
         var generatedAssemblies = Context.GetGeneratedAssemblyCollection();
 
+        _apiModel.Usings.AddRange(
+        [
+            "Microsoft.AspNetCore.Mvc",
+            "System",
+            "System.Linq",
+            "System.Collections",
+            "System.Collections.Generic",
+            "System.Threading.Tasks"
+        ]);
+
         return phase.CreateContextBuilder()
             .Add(_apiModel)
             .Add(_apiModelConventions)
@@ -39,15 +49,7 @@ public class RestApiLayer : LayerBase<GenerateCode, AddServices, Build>
                         .AddReferenceFrom<ApiControllerAttribute>()
                         .AddReferences(_apiModel.References)
                         .AddCodes(new ApiCodeTemplate(_apiModel)),
-                    compilerOptions => compilerOptions
-                        .WithUsings(
-                            "Microsoft.AspNetCore.Mvc",
-                            "System",
-                            "System.Linq",
-                            "System.Collections",
-                            "System.Collections.Generic",
-                            "System.Threading.Tasks"
-                        )
+                    compilerOptions => compilerOptions.WithUsings(_apiModel.Usings)
                 );
             })
             .Build();
@@ -58,7 +60,6 @@ public class RestApiLayer : LayerBase<GenerateCode, AddServices, Build>
         var controllerAssembly = Context.GetGeneratedAssembly(nameof(RestApiLayer));
         var services = Context.GetServiceCollection();
 
-        services.AddHttpContextAccessor();
         services.AddMvcCore().AddApiExplorer();
         services.AddSwaggerGen();
 

@@ -13,13 +13,14 @@ public static class AuthenticationExtensions
     public static void AddAuthentications(this List<IFeature> source, IEnumerable<Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>> configures) =>
         source.AddRange(configures.Select(configure => configure(new())));
 
-    public static void AddSecurityRequirementToOperationsThatUse<TMiddleware>(this SwaggerGenOptions source, string schemeId) =>
-        source.OperationFilter<SecurityRequirementOperationFilter<UseAttribute<TMiddleware>>>([schemeId]);
+    public static void AddSecurityRequirementToOperationsThatUse<TAttribute>(this SwaggerGenOptions source, string schemeId) where TAttribute : Attribute =>
+        source.OperationFilter<SecurityRequirementOperationFilter<TAttribute>>([schemeId]);
 
-    public static void AddParameterToOperationsThatUse<TMiddleware>(this SwaggerGenOptions source, string name,
+    public static void AddParameterToOperationsThatUse<TAttribute>(this SwaggerGenOptions source, string name,
         ParameterLocation @in = ParameterLocation.Header,
         bool required = false
-    ) => source.OperationFilter<AddParameterOperationFilter<UseAttribute<TMiddleware>>>(name, @in, required);
+    ) where TAttribute : Attribute =>
+        source.OperationFilter<AddParameterOperationFilter<TAttribute>>(name, @in, required);
 
     public static bool HasMetadata<T>(this HttpContext source) where T : Attribute
     {

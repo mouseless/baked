@@ -33,6 +33,7 @@
       `Scoped` and `Transient`
     - `CodingStyleFeature` is introduced with existing coding styles to separate
       them from business feature
+  - `Authorization` feature is now added with `ClaimBasedAuthorization` implementation
 
 ## Improvements
 
@@ -45,6 +46,7 @@
 - `Documentation` feature is refactored into coding styles and removed
   completely
 - `Authentication` feature is now a multi-feature
+- `FixedToken` authentication feature is now renamed to `FixedBearerToken`
 
 ## Bugfixes
 

@@ -36,7 +36,7 @@ public abstract class ServiceSpec : Spec
         Action<ApplicationDescriptor>? configure = default
     )
     {
-        authentications ??= [c => c.FixedToken()];
+        authentications ??= [c => c.FixedBearerToken()];
         caching ??= c => c.ScopedMemory();
         communication ??= c => c.Mock();
         core ??= c => c.Mock();
