@@ -5,6 +5,7 @@ using Do.RestApi;
 using Do.RestApi.Conventions;
 using Do.RestApi.Model;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using System.Reflection;
 
 namespace Do.Business.DomainAssemblies;
@@ -39,6 +40,7 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
             builder.BuildLevels.Add(BuildLevels.Metadata);
 
             builder.Index.Type.Add<ServiceAttribute>();
+            builder.Index.Type.Add<CasterAttribute>();
 
             builder.Conventions.AddTypeMetadata(new ServiceAttribute(),
                 when: c =>
@@ -50,6 +52,9 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
                     !c.Type.IsAssignableTo<IEnumerable>() &&
                     c.Type.TryGetMembers(out var members) &&
                     !members.Methods.Contains("<Clone>$") // if type is record
+            );
+            builder.Conventions.AddTypeMetadata(new CasterAttribute(),
+                when: c => c.Type.IsClass && !c.Type.IsAbstract && c.Type.IsAssignableTo(typeof(ICasts<,>))
             );
         });
 
@@ -97,6 +102,28 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
 
                 api.Controller.Add(controller.Id, controller);
             }
+        });
+
+        configurator.ConfigureMiddlewareCollection(middlewares =>
+        {
+            var domainModel = configurator.Context.GetDomainModel();
+            middlewares.Add(app =>
+            {
+                var lifetime = app.ApplicationServices.GetRequiredService<IHostApplicationLifetime>();
+                lifetime.ApplicationStarted.Register(() =>
+                {
+                    foreach (var type in domainModel.Types.Having<CasterAttribute>())
+                    {
+                        foreach (var @interface in type.GetInheritance().Interfaces.Where(i => i.Model.IsGenericType && !i.Model.IsGenericTypeDefinition && i.Model.IsAssignableTo(typeof(ICasts<,>))))
+                        {
+                            type.Apply(t => @interface.Apply(i =>
+                            {
+                                Caster.Add(i.GenericTypeArguments[0], i.GenericTypeArguments[1], app.ApplicationServices.GetRequiredService(t));
+                            }));
+                        }
+                    }
+                });
+            });
         });
 
         configurator.ConfigureApiModelConventions(conventions =>
