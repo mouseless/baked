@@ -12,7 +12,7 @@ public class InitializeUsingQueryParametersConvention : IApiModelConvention<Acti
         if (!members.Has<PubliclyInitializableAttribute>()) { return; }
 
         var initializer = members.Methods.Having<InitializerAttribute>().Single();
-        var overload = initializer.Overloads.First(o => o.IsPublic && o.AllParametersAreApiInput()); // TODO get overload number from api method metadata
+        var overload = initializer.Overloads.First(o => o.IsPublic && !o.IsStatic && !o.IsSpecialName && o.AllParametersAreApiInput()); // TODO get overload number from api method metadata
         foreach (var parameter in overload.Parameters)
         {
             context.Action.Parameter[parameter.Name] =

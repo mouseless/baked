@@ -93,7 +93,7 @@ public class TypeModelMembers : TypeModelMetadata
             ModelCollection<MethodModel> BuildMethods()
             {
                 var result = new ModelCollection<MethodModel>.KeyedCollection();
-                var methodInfos = type.GetMethods(builder.Options.BindingFlags.Method).Where(m => !m.IsSpecialName) ?? [];
+                var methodInfos = type.GetMethods(builder.Options.BindingFlags.Method) ?? [];
                 foreach (var methodsByName in methodInfos.GroupBy(m => m.Name))
                 {
                     result.Add(new(
@@ -112,6 +112,8 @@ public class TypeModelMembers : TypeModelMetadata
                     methodInfo.IsPublic,
                     methodInfo.IsFamily,
                     methodInfo.IsVirtual,
+                    methodInfo.IsStatic,
+                    methodInfo.IsSpecialName,
                     BuildParameters(methodInfo),
                     builder.GetReference(methodInfo.ReturnType)
                 );

@@ -60,6 +60,7 @@ public abstract class ServiceSpec : Spec
             app.Features.AddCaching(caching);
             app.Features.AddCodingStyles([
                 c => c.CommandPattern(),
+                c => c.EntityExtensionViaComposition(),
                 c => c.ObjectAsJson(),
                 c => c.RemainingServicesAreSingleton(),
                 c => c.RichEntity(),

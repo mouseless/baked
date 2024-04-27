@@ -31,7 +31,7 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
         configurator.ConfigureDomainModelBuilder(builder =>
         {
             builder.BindingFlags.Constructor = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
-            builder.BindingFlags.Method = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
+            builder.BindingFlags.Method = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
             builder.BindingFlags.Property = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
 
             builder.BuildLevels.Add(context => context.DomainTypesContain(context.Type), BuildLevels.Members);
@@ -72,12 +72,12 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
                   !c.Type.IsAbstract &&
                   !c.Type.IsGenericType &&
                   c.Type.TryGetMembers(out var members) &&
-                  members.Methods.Any()
+                  members.Methods.Any(m => m.Overloads.Any(o => !o.IsStatic && !o.IsSpecialName))
             );
             builder.Conventions.AddMethodMetadata(new ApiMethodAttribute(),
                 when: c =>
                     !c.Method.Has<InitializerAttribute>() &&
-                    c.Method.Overloads.Any(o => o.IsPublic && o.AllParametersAreApiInput()),
+                    c.Method.Overloads.Any(o => o.IsPublic && !o.IsStatic && !o.IsSpecialName && o.AllParametersAreApiInput()),
                 order: int.MaxValue
             );
         });
@@ -94,7 +94,7 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
                 var controller = new ControllerModel(type);
                 foreach (var method in type.GetMembers().Methods.Having<ApiMethodAttribute>())
                 {
-                    var overload = _overloadSelector(method.Overloads.Where(o => o.IsPublic && o.AllParametersAreApiInput()));
+                    var overload = _overloadSelector(method.Overloads.Where(o => o.IsPublic && !o.IsStatic && !o.IsSpecialName && o.AllParametersAreApiInput()));
 
                     controller.AddAction(type, method, overload);
                 }
