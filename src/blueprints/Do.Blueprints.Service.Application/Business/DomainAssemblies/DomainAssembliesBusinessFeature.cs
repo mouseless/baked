@@ -5,7 +5,6 @@ using Do.RestApi;
 using Do.RestApi.Conventions;
 using Do.RestApi.Model;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using System.Reflection;
 
 namespace Do.Business.DomainAssemblies;
@@ -104,26 +103,19 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
             }
         });
 
-        configurator.ConfigureMiddlewareCollection(middlewares =>
+        configurator.ConfigureServiceProvider(serviceProvider =>
         {
             var domainModel = configurator.Context.GetDomainModel();
-            middlewares.Add(app =>
+            foreach (var type in domainModel.Types.Having<CasterAttribute>())
             {
-                var lifetime = app.ApplicationServices.GetRequiredService<IHostApplicationLifetime>();
-                lifetime.ApplicationStarted.Register(() =>
+                foreach (var @interface in type.GetInheritance().Interfaces.Where(i => i.Model.IsGenericType && !i.Model.IsGenericTypeDefinition && i.Model.IsAssignableTo(typeof(ICasts<,>))))
                 {
-                    foreach (var type in domainModel.Types.Having<CasterAttribute>())
+                    type.Apply(t => @interface.Apply(i =>
                     {
-                        foreach (var @interface in type.GetInheritance().Interfaces.Where(i => i.Model.IsGenericType && !i.Model.IsGenericTypeDefinition && i.Model.IsAssignableTo(typeof(ICasts<,>))))
-                        {
-                            type.Apply(t => @interface.Apply(i =>
-                            {
-                                Caster.Add(i.GenericTypeArguments[0], i.GenericTypeArguments[1], app.ApplicationServices.GetRequiredService(t));
-                            }));
-                        }
-                    }
-                });
-            });
+                        Caster.Add(i.GenericTypeArguments[0], i.GenericTypeArguments[1], serviceProvider.GetRequiredService(t));
+                    }));
+                }
+            }
         });
 
         configurator.ConfigureApiModelConventions(conventions =>

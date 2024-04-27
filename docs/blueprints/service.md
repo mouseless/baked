@@ -67,14 +67,15 @@ Forge.New
 
 ```mermaid
 flowchart TD
-    AS[AddServices]
-    B[Build]
+    CB[CreateBuilder]
     BC[BuildConfiguration]
     AD[AddDomainTypes]
     BD[BuildDomainModel]
-    CB[CreateBuilder]
-    C[Compile]
     GC[GenerateCode]
+    C[Compile]
+    AS[AddServices]
+    B[Build]
+    PB[PostBuild]
     R[Run]
 
     CB -->|ConfigurationManager\nWebApplicationBuilder| BC
@@ -84,5 +85,6 @@ flowchart TD
     GC -->|IGeneratedAssemblyCollection| C
     C -->|GeneratedAssemblyProvider| AS
     AS -->|IServiceCollection| B
-    B -->|WebApplication|R
+    B -->|IServiceProvider\nWebApplication|PB
+    PB --> R
 ```
