@@ -4,11 +4,14 @@ using Humanizer;
 namespace Do.RestApi.Conventions;
 
 public class RemoveFromRouteConvention(IEnumerable<string> _parts,
+    Func<ActionModelContext, bool>? _when = default,
     bool _pluralize = false
 ) : IApiModelConvention<ActionModelContext>
 {
     public void Apply(ActionModelContext context)
     {
+        if (_when is not null && !_when(context)) { return; }
+
         var changed = false;
         foreach (var part in _parts.Where(p => context.Action.Route.Contains(p)))
         {

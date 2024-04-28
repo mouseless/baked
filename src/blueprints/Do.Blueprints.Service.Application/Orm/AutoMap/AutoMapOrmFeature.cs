@@ -87,7 +87,9 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             conventions.Add(new LookupEntityByIdConvention(domainModel));
             conventions.Add(new LookupEntitiesByIdsConvention(domainModel));
             conventions.Add(new SingleByUniqueConvention(domainModel));
-            conventions.Add(new RemoveFromRouteConvention(["FirstBy", "SingleBy", "By"]));
+            conventions.Add(new RemoveFromRouteConvention(["FirstBy", "SingleBy", "By"],
+                _when: c => c.Controller.TypeModel.TryGetMetadata(out var metadata) && metadata.Has<QueryAttribute>()
+            ));
         });
     }
 }

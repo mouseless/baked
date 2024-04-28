@@ -1,10 +1,10 @@
-using Do.Architecture;
+﻿using Do.Architecture;
 using Do.Business;
 using Do.Orm;
 
 namespace Do.CodingStyle.EntityExtensionViaComposition;
 
-public class EntityExtensionViaCompositionFeature : IFeature<CodingStyleConfigurator>
+public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingStyleConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
@@ -26,11 +26,16 @@ public class EntityExtensionViaCompositionFeature : IFeature<CodingStyleConfigur
                     implicits.Count() == 1 &&
                     implicits.Single().Parameters.SingleOrDefault()?.ParameterType.TryGetMetadata(out var parameterTypeMetadata) == true &&
                     parameterTypeMetadata.Has<EntityAttribute>(),
-                order: 35
+                order: 10
             );
-            builder.Conventions.AddTypeMetadata(new LocatableAttribute(),
+            builder.Conventions.AddTypeMetadata(
+                apply: (c, add) =>
+                {
+                    add(c.Type, new ApiInputAttribute());
+                    add(c.Type, new LocatableAttribute());
+                },
                 when: c => c.Type.Has<EntityExtensionAttribute>(),
-                order: 35
+                order: 10
             );
         });
 
@@ -40,6 +45,8 @@ public class EntityExtensionViaCompositionFeature : IFeature<CodingStyleConfigur
 
             conventions.Add(new TargetEntityExtensionFromRouteConvention(domain));
             conventions.Add(new EntityExtensionsUnderEntitiesConvention(domain));
+            conventions.Add(new LookupEntityExtensionByIdConvention(domain));
+            conventions.Add(new LookupEntityExtensionsByIdsConvention(domain));
         });
     }
 }

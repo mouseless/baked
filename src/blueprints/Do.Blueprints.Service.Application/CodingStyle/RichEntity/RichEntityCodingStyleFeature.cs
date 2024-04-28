@@ -31,13 +31,17 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     query.Apply(t =>
                         add(entity.GetMetadata(), new EntityAttribute(t, queryContext))
                     );
-                    add(entity.GetMetadata(), new ApiInputAttribute());
                 },
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
                     members.Constructors.Any(o => o.Parameters.Any(p => p.ParameterType.IsAssignableTo(typeof(IQueryContext<>))))
             );
-            builder.Conventions.AddTypeMetadata(new LocatableAttribute(),
+            builder.Conventions.AddTypeMetadata(
+                apply: (c, add) =>
+                {
+                    add(c.Type, new ApiInputAttribute());
+                    add(c.Type, new LocatableAttribute());
+                },
                 when: c => c.Type.Has<EntityAttribute>()
             );
             builder.Conventions.AddMethodMetadata(new ApiMethodAttribute(),

@@ -1,13 +1,14 @@
-﻿using Do.Domain.Model;
+using Do.Domain.Model;
+using Do.Orm;
 using Do.RestApi.Configuration;
 using Do.RestApi.Model;
 using Humanizer;
 
 using ParameterModel = Do.RestApi.Model.ParameterModel;
 
-namespace Do.Orm.AutoMap;
+namespace Do.CodingStyle.EntityExtensionViaComposition;
 
-public class LookupEntitiesByIdsConvention(DomainModel _domain)
+public class LookupEntityExtensionsByIdsConvention(DomainModel _domain)
     : IApiModelConvention<ParameterModelContext>
 {
     public void Apply(ParameterModelContext context)
@@ -19,8 +20,12 @@ public class LookupEntitiesByIdsConvention(DomainModel _domain)
         if (!enumerableType.IsAssignableTo(typeof(IEnumerable<>))) { return; }
         if (!enumerableType.TryGetGenerics(out var enumerableGenerics)) { return; }
 
-        var entityType = enumerableType.IsArray ? enumerableGenerics.ElementType : enumerableGenerics.GenericTypeArguments.FirstOrDefault()?.Model;
-        if (entityType is null) { return; }
+        var entityExtensionType = enumerableType.IsArray ? enumerableGenerics.ElementType : enumerableGenerics.GenericTypeArguments.FirstOrDefault()?.Model;
+        if (entityExtensionType is null) { return; }
+        if (!entityExtensionType.TryGetMetadata(out var entityExtensionMetadata)) { return; }
+        if (!entityExtensionMetadata.TryGetSingle<EntityExtensionAttribute>(out var entityExtensionAttribute)) { return; }
+
+        var entityType = _domain.Types[entityExtensionAttribute.EntityType];
         if (!entityType.TryGetMetadata(out var metadata)) { return; }
         if (!metadata.TryGetSingle<EntityAttribute>(out var entityAttribute)) { return; }
 
@@ -30,6 +35,6 @@ public class LookupEntitiesByIdsConvention(DomainModel _domain)
 
         enumerableParameter.Type = "IEnumerable<Guid>";
         enumerableParameter.Name = $"{enumerableParameter.Name.Singularize()}Ids";
-        enumerableParameter.LookupRenderer = parameterExpression => $"{queryContextParameter.Name}.ByIds({parameterExpression}){(enumerableType.IsArray ? ".ToArray()" : string.Empty)}";
+        enumerableParameter.LookupRenderer = parameterExpression => $"{queryContextParameter.Name}.ByIds({parameterExpression}).Select(i => ({entityExtensionType.CSharpFriendlyFullName})i){(enumerableType.IsArray ? ".ToArray()" : ".ToList()")}";
     }
 }

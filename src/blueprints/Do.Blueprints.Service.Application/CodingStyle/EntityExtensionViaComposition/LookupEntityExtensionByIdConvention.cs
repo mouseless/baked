@@ -1,14 +1,15 @@
-﻿using Do.Business;
+using Do.Business;
 using Do.Domain.Model;
+using Do.Orm;
 using Do.RestApi.Configuration;
 using Do.RestApi.Model;
 using Humanizer;
 
 using ParameterModel = Do.RestApi.Model.ParameterModel;
 
-namespace Do.Orm.AutoMap;
+namespace Do.CodingStyle.EntityExtensionViaComposition;
 
-public class LookupEntityByIdConvention(DomainModel _domain)
+public class LookupEntityExtensionByIdConvention(DomainModel _domain)
     : IApiModelConvention<ParameterModelContext>
 {
     public void Apply(ParameterModelContext context)
@@ -18,9 +19,13 @@ public class LookupEntityByIdConvention(DomainModel _domain)
         var entityParameter = context.Parameter;
         if (!entityParameter.IsInvokeMethodParameter) { return; }
 
-        var entityType = entityParameter.TypeModel;
-        if (!entityType.TryGetMetadata(out var metadata)) { return; }
-        if (!metadata.TryGetSingle<EntityAttribute>(out var entityAttribute)) { return; }
+        var entityExtensionType = entityParameter.TypeModel;
+        if (!entityExtensionType.TryGetMetadata(out var entityExtensionMetadata)) { return; }
+        if (!entityExtensionMetadata.TryGetSingle<EntityExtensionAttribute>(out var entityExtensionAttribute)) { return; }
+
+        var entityType = _domain.Types[entityExtensionAttribute.EntityType];
+        if (!entityType.TryGetMetadata(out var entityMetadata)) { return; }
+        if (!entityMetadata.TryGetSingle<EntityAttribute>(out var entityAttribute)) { return; }
 
         var queryContextType = _domain.Types[entityAttribute.QueryContextType];
         var queryContextParameter = new ParameterModel(queryContextType, ParameterModelFrom.Services, $"{entityType.Name.Camelize()}Query") { IsInvokeMethodParameter = false };
@@ -28,6 +33,6 @@ public class LookupEntityByIdConvention(DomainModel _domain)
 
         entityParameter.Type = nameof(Guid);
         entityParameter.Name += "Id";
-        entityParameter.LookupRenderer = parameterExpression => $"{queryContextParameter.Name}.SingleById({parameterExpression})";
+        entityParameter.LookupRenderer = parameterExpression => $"({entityExtensionType.CSharpFriendlyFullName}){queryContextParameter.Name}.SingleById({parameterExpression})";
     }
 }
