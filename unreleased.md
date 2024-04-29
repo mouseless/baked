@@ -33,7 +33,12 @@
       `Scoped` and `Transient`
     - `CodingStyleFeature` is introduced with existing coding styles to separate
       them from business feature
-  - `Authorization` feature is now added with `ClaimBasedAuthorization` implementation
+  - `Authorization` feature is now added with `ClaimBasedAuthorization` 
+    implementation
+  - `HttpServerLayer` now registers authentication services and adds 
+    authentication middleware
+    - provides `SchemeConfigurationCollection` configuration target which
+      supports forwarding request to appropriate handlers
 
 ## Improvements
 
@@ -47,6 +52,8 @@
   completely
 - `Authentication` feature is now a multi-feature
 - `FixedToken` authentication feature is now renamed to `FixedBearerToken`
+  - Feature now have `TokenOptions` parameter to configure token names and
+    associated claims with given tokens
 
 ## Bugfixes
 

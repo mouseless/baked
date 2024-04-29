@@ -1,11 +1,12 @@
 ﻿using Do.Architecture;
 using Do.Authentication;
 using Do.Authorization;
+using Do.Test.Authentication;
 using Newtonsoft.Json;
 
-namespace Do.Test.Authentication;
+namespace Do.Test.HttpServer;
 
-public class AuthenticatingWithMultipleHandlers : TestServiceNfr
+public class ConfiguringMultipleAuthenticationHandlers : TestServiceNfr
 {
     protected override IEnumerable<Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>>? Authentications =>
         [
@@ -21,7 +22,7 @@ public class AuthenticatingWithMultipleHandlers : TestServiceNfr
 
     [TestCase("Authorization", "11111111111111111111111111111111", "User")]
     [TestCase("X-Api-Key", "Api_Key", "System")]
-    public async Task Request_can_be_authenticated_with_available_handler(string header, string value, string claim)
+    public async Task Request_can_be_forwarded_to_available_handlers(string header, string value, string claim)
     {
         Client.DefaultRequestHeaders.Add(header, value);
 
@@ -36,7 +37,7 @@ public class AuthenticatingWithMultipleHandlers : TestServiceNfr
     }
 
     [Test]
-    public async Task Request_is_only_handed_by_first_available_handler()
+    public async Task Request_is_only_forwarded_to_first_available_handler_with_given_order()
     {
         Client.DefaultRequestHeaders.Add("Authorization", "11111111111111111111111111111111");
         Client.DefaultRequestHeaders.Add("X-Api-Key", "Api_Key");
@@ -52,8 +53,11 @@ public class AuthenticatingWithMultipleHandlers : TestServiceNfr
     }
 
     [Test]
-    public async Task User_is_not_authenticated_and_have_no_claims_when_no_handler_can_authenticate()
+    public async Task Request_is_not_forwarded_to_other_handlers_when_authentication_fails()
     {
+        Client.DefaultRequestHeaders.Add("Authorization", "Wrong_token");
+        Client.DefaultRequestHeaders.Add("X-Api-Key", "Api_Key");
+
         var response = await Client.GetAsync("authentication-samples/claims");
 
         response.IsSuccessStatusCode.ShouldBeTrue();
@@ -64,12 +68,9 @@ public class AuthenticatingWithMultipleHandlers : TestServiceNfr
         identites.ShouldNotContain(i => i.Claims.Any());
     }
 
-    [TestCase("Authorization", "Wrong_Token")]
-    [TestCase("X-Api-Key", "Wrong_Key")]
-    public async Task User_is_not_authenticated_and_have_no_claims_when_authentication_fails(string header, string value)
+    [Test]
+    public async Task Context_user_is_not_authenticated_and_have_no_claims_when_no_handler_can_authenticate()
     {
-        Client.DefaultRequestHeaders.Add(header, value);
-
         var response = await Client.GetAsync("authentication-samples/claims");
 
         response.IsSuccessStatusCode.ShouldBeTrue();
