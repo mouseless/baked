@@ -12,7 +12,7 @@ public class JwtAuthenticationFeature : IFeature<AuthenticationConfigurator>
     {
         configurator.ConfigureAuthentication(configuration =>
         {
-            configuration.Add(
+            configuration.AddScheme(
                     JwtBearerDefaults.AuthenticationScheme,
                     context =>
                     {
@@ -28,7 +28,7 @@ public class JwtAuthenticationFeature : IFeature<AuthenticationConfigurator>
 
                         return false;
                     },
-                    useBuilder: builder => builder.AddJwtBearer(options =>
+                    use: builder => builder.AddJwtBearer(options =>
                     {
                         options.TokenValidationParameters = new TokenValidationParameters
                         {

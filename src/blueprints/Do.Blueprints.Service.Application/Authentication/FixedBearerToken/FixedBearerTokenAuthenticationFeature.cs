@@ -11,12 +11,12 @@ public class FixedBearerTokenAuthenticationFeature(List<Token> _tokens)
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureAuthentication(configurations =>
+        configurator.ConfigureAuthentication(configuration =>
         {
-            configurations.Add(
+            configuration.AddScheme(
                 "FixedBearerToken",
                 context => context.Request.Headers.Authorization.Any() || (context.Request.HasFormContentType && context.Request.Form.ContainsKey("hash")),
-                configureAuthentication: options =>
+                configure: options =>
                 {
                     options.DefaultScheme = "FixedBearerToken";
                     options.DefaultAuthenticateScheme = "FixedBearerToken";

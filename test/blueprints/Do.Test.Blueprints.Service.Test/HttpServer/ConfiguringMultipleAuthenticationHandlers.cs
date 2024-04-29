@@ -15,7 +15,7 @@ public class ConfiguringMultipleAuthenticationHandlers : TestServiceNfr
                 tokens.Add("Jane", claims: ["User"]);
                 tokens.Add("John", claims: ["User", "Admin"]);
             }),
-            c => c.ApiKey("Default", claims: ["System"])
+            c => c.ApiKey()
         ];
     protected override Func<AuthorizationConfigurator, IFeature<AuthorizationConfigurator>>? Authorization =>
         c => c.Disabled();

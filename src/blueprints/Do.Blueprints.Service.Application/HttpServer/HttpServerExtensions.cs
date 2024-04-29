@@ -17,19 +17,19 @@ namespace Do;
 
 public static class HttpServerExtensions
 {
-    public static void AddHttpServer(this List<ILayer> source) =>
-        source.Add(new HttpServerLayer());
+    public static void AddHttpServer(this List<ILayer> list) =>
+        list.Add(new HttpServerLayer());
 
-    public static WebApplicationBuilder GetWebApplicationBuilder(this ApplicationContext source) =>
-        source.Get<WebApplicationBuilder>();
+    public static WebApplicationBuilder GetWebApplicationBuilder(this ApplicationContext context) =>
+        context.Get<WebApplicationBuilder>();
 
-    public static ConfigurationManager GetConfigurationManager(this ApplicationContext source) =>
-        source.Get<ConfigurationManager>();
+    public static ConfigurationManager GetConfigurationManager(this ApplicationContext context) =>
+        context.Get<ConfigurationManager>();
 
-    public static WebApplication GetWebApplication(this ApplicationContext source) =>
-        source.Get<WebApplication>();
+    public static WebApplication GetWebApplication(this ApplicationContext context) =>
+        context.Get<WebApplication>();
 
-    public static void ConfigureAuthentication(this LayerConfigurator configurator, Action<SchemeConfigurationCollection> configuration) =>
+    public static void ConfigureAuthentication(this LayerConfigurator configurator, Action<AuthenticationConfiguration> configuration) =>
         configurator.Configure(configuration);
 
     public static void ConfigureMiddlewareCollection(this LayerConfigurator configurator, Action<IMiddlewareCollection> configuration) =>
@@ -38,26 +38,28 @@ public static class HttpServerExtensions
     public static void ConfigureEndpointRouteBuilder(this LayerConfigurator configurator, Action<IEndpointRouteBuilder> configuration) =>
         configurator.Configure(configuration);
 
-    public static void Add(
-       this SchemeConfigurationCollection source,
+    public static void AddScheme(
+       this AuthenticationConfiguration configuration,
        string name,
        Func<HttpContext, bool> shouldHandle,
-       Action<AuthenticationOptions>? configureAuthentication = default,
-       Action<AuthenticationBuilder>? useBuilder = default
-   ) => source.Add(new(name, shouldHandle, ConfigureAuthentication: configureAuthentication, UseBuilder: useBuilder));
+       Action<AuthenticationOptions>? configure = default,
+       Action<AuthenticationBuilder>? use = default
+   ) => configuration.SchemeConfigurations.Add(new(name, shouldHandle, Configure: configure, Use: use));
 
-    public static void Add<T>(this IMiddlewareCollection source, int order = default) =>
-        source.Add(new(app => app.UseMiddleware<T>(), order));
+    public static void Add<T>(this IMiddlewareCollection collection, int order = default) =>
+        collection.Add(new(app => app.UseMiddleware<T>(), order));
 
-    public static void Add(this IMiddlewareCollection source, Action<IApplicationBuilder> configure, int order = default) =>
-        source.Add(new(configure, order));
+    public static void Add(this IMiddlewareCollection collection, Action<IApplicationBuilder> configure, int order = default) =>
+        collection.Add(new(configure, order));
 
-    public static T GetRequiredServiceUsingRequestServices<T>(this IServiceProvider source) where T : notnull => (T)source.GetRequiredServiceUsingRequestServices(typeof(T));
-    public static object GetRequiredServiceUsingRequestServices(this IServiceProvider source, Type serviceType)
+    public static T GetRequiredServiceUsingRequestServices<T>(this IServiceProvider sp) where T : notnull =>
+        (T)sp.GetRequiredServiceUsingRequestServices(typeof(T));
+
+    public static object GetRequiredServiceUsingRequestServices(this IServiceProvider sp, Type serviceType)
     {
-        var http = source.GetRequiredService<IHttpContextAccessor>();
+        var http = sp.GetRequiredService<IHttpContextAccessor>();
 
-        if (http.HttpContext is null) { return source.GetRequiredService(serviceType); }
+        if (http.HttpContext is null) { return sp.GetRequiredService(serviceType); }
 
         return http.HttpContext.RequestServices.GetRequiredService(serviceType);
     }
