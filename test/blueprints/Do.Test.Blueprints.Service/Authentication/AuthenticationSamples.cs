@@ -7,7 +7,8 @@ public class AuthenticationSamples(Func<ClaimsPrincipal> _getClaims)
     public object? GetClaims() =>
         ToIdentityList(_getClaims());
 
-    public object FormPostAuthentication(object value) => value;
+    public object FormPostAuthentication(object value) =>
+        value;
 
     IEnumerable<IdentityData> ToIdentityList(ClaimsPrincipal source)
     {

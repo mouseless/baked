@@ -16,7 +16,7 @@ public static class FixedBearerTokenAuthenticationExtensions
         Action<List<Token>>? configure = default
     )
     {
-        configure ??= tokens => tokens.Add("Default", claims: ["User"]);
+        configure ??= tokens => tokens.Add("Default");
 
         var tokens = new List<Token>();
         configure(tokens);
@@ -26,12 +26,7 @@ public static class FixedBearerTokenAuthenticationExtensions
 
     public static void Add(this List<Token> tokens, string name,
         IEnumerable<string>? claims = default
-    )
-    {
-        claims ??= ["User"];
-
-        tokens.Add(new(name, claims));
-    }
+    ) => tokens.Add(new(name, claims ?? ["User"]));
 
     public static IAuthenticationHandler AFixedBearerTokenAuthenticationHandler(this Stubber giveMe, HttpRequest request, Action<List<Token>> configure)
     {

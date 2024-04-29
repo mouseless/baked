@@ -9,7 +9,7 @@ Forge.New
                 tokens.Add("Jane", claims: ["User"]);
                 tokens.Add("John", claims: ["User", "Admin"]);
             }),
-            c => c.ApiKey("Default", ["User"])
+            c => c.ApiKey("Default", claims: ["User"])
         ],
         authorization: c => c.ClaimBased(claims: ["User", "Admin"], baseClaim: "User"),
         database: c => c.MySql().ForDevelopment(c.Sqlite()),

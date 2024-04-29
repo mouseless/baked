@@ -11,9 +11,9 @@ public class FixedBearerTokenAuthenticationFeature(List<Token> _tokens)
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureAuthentication(configuration =>
+        configurator.ConfigureAuthentication(configurations =>
         {
-            configuration.Add(
+            configurations.Add(
                 "FixedBearerToken",
                 options =>
                 {

@@ -10,9 +10,9 @@ public class ApiKeyAuthenticationFeature(ApiKeyOptions _options) : IFeature<Auth
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureAuthentication(configuration =>
+        configurator.ConfigureAuthentication(configurations =>
         {
-            configuration.Add(
+            configurations.Add(
                 "ApiKey",
                 options => options.AddScheme<AuthenticationHandler>("ApiKey", "ApiKey"),
                 context => context.Request.Headers.ContainsKey("X-Api-Key".ToLowerInvariant()));
