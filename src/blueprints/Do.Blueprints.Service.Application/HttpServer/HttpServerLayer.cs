@@ -30,9 +30,14 @@ public class HttpServerLayer : LayerBase<AddServices, Build>
                 {
                     foreach (var configuration in _authenticationConfigurations)
                     {
-                        configuration.ConfigureAuthentication(options);
+                        configuration.ConfigureAuthentication?.Invoke(options);
                     }
                 });
+
+                foreach (var configuration in _authenticationConfigurations)
+                {
+                    configuration.UseBuilder?.Invoke(new(services));
+                }
 
                 services.Configure<AuthenticationSchemeOptions>(
                     default,

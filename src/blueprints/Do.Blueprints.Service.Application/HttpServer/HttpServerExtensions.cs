@@ -39,11 +39,12 @@ public static class HttpServerExtensions
         configurator.Configure(configuration);
 
     public static void Add(
-        this List<AuthenticationConfiguration> source,
-        string scheme,
-        Action<AuthenticationOptions> configureAuthentication,
-        Func<HttpContext, bool> shouldHandle
-    ) => source.Add(new(scheme, configureAuthentication, shouldHandle));
+       this List<AuthenticationConfiguration> source,
+       string scheme,
+       Func<HttpContext, bool> shouldHandle,
+       Action<AuthenticationOptions>? configureAuthentication = default,
+       Action<AuthenticationBuilder>? useBuilder = default
+   ) => source.Add(new(scheme, shouldHandle, ConfigureAuthentication: configureAuthentication, UseBuilder: useBuilder));
 
     public static void Add<T>(this IMiddlewareCollection source, int order = default) =>
         source.Add(new(app => app.UseMiddleware<T>(), order));

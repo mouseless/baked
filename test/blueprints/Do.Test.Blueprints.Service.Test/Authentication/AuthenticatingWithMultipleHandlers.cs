@@ -8,13 +8,13 @@ namespace Do.Test.Authentication;
 public class AuthenticatingWithMultipleHandlers : TestServiceNfr
 {
     protected override IEnumerable<Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>>? Authentications =>
-       [
+        [
             c => c.FixedBearerToken(tokens =>
             {
                 tokens.Add("Jane", claims: ["User"]);
                 tokens.Add("John", claims: ["User", "Admin"]);
             }),
-           c => c.ApiKey("Default", claims: ["System"])
+            c => c.ApiKey("Default", claims: ["System"])
         ];
     protected override Func<AuthorizationConfigurator, IFeature<AuthorizationConfigurator>>? Authorization =>
         c => c.Disabled();

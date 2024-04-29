@@ -1,4 +1,6 @@
-﻿using System.Security.Claims;
+﻿using Do.Authorization;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace Do.Test.Authentication;
 
@@ -9,6 +11,12 @@ public class AuthenticationSamples(Func<ClaimsPrincipal> _getClaims)
 
     public object FormPostAuthentication(object value) =>
         value;
+
+    [RequireNoClaim]
+    public string CreateJwtToken()
+    {
+        return new JwtSecurityTokenHandler().WriteToken(new JwtSecurityToken(claims: [new("User", "User")], expires: DateTime.Now.AddMinutes(120)));
+    }
 
     IEnumerable<IdentityData> ToIdentityList(ClaimsPrincipal source)
     {

@@ -4,6 +4,7 @@ Forge.New
     .Service(
         business: c => c.DomainAssemblies([typeof(Entity).Assembly]),
         authentications: [
+            c => c.Jwt(),
             c => c.FixedBearerToken(tokens =>
             {
                 tokens.Add("Jane", claims: ["User"]);

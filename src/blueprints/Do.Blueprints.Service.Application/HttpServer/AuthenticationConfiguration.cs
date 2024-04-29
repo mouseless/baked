@@ -6,6 +6,7 @@ namespace Do.HttpServer;
 public record AuthenticationConfiguration
 (
     string Scheme,
-    Action<AuthenticationOptions> ConfigureAuthentication,
-    Func<HttpContext, bool> ShouldHandle
+    Func<HttpContext, bool> ShouldHandle,
+    Action<AuthenticationOptions>? ConfigureAuthentication = default,
+    Action<AuthenticationBuilder>? UseBuilder = default
 );

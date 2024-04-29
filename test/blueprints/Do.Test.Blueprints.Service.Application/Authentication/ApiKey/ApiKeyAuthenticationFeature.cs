@@ -14,8 +14,9 @@ public class ApiKeyAuthenticationFeature(ApiKeyOptions _options) : IFeature<Auth
         {
             configurations.Add(
                 "ApiKey",
-                options => options.AddScheme<AuthenticationHandler>("ApiKey", "ApiKey"),
-                context => context.Request.Headers.ContainsKey("X-Api-Key".ToLowerInvariant()));
+                context => context.Request.Headers.ContainsKey("X-Api-Key".ToLowerInvariant()),
+                configureAuthentication: options => options.AddScheme<AuthenticationHandler>("ApiKey", "ApiKey")
+            );
         });
 
         configurator.ConfigureServiceCollection(services =>

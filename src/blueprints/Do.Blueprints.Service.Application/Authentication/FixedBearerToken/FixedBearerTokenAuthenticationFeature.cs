@@ -15,13 +15,13 @@ public class FixedBearerTokenAuthenticationFeature(List<Token> _tokens)
         {
             configurations.Add(
                 "FixedBearerToken",
-                options =>
+                context => context.Request.Headers.Authorization.Any() || (context.Request.HasFormContentType && context.Request.Form.ContainsKey("hash")),
+                configureAuthentication: options =>
                 {
                     options.DefaultScheme = "FixedBearerToken";
                     options.DefaultAuthenticateScheme = "FixedBearerToken";
                     options.AddScheme<AuthenticationHandler>("FixedBearerToken", "FixedBearerToken");
-                },
-                context => context.Request.Headers.Authorization.Any() || (context.Request.HasFormContentType && context.Request.Form.ContainsKey("hash")));
+                });
         });
 
         configurator.ConfigureServiceCollection(services =>
