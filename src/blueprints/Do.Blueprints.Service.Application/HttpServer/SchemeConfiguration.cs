@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Http;
 
 namespace Do.HttpServer;
 
-public record AuthenticationConfiguration
+public record SchemeConfiguration
 (
-    string Scheme,
+    string Name,
     Func<HttpContext, bool> ShouldHandle,
     Action<AuthenticationOptions>? ConfigureAuthentication = default,
     Action<AuthenticationBuilder>? UseBuilder = default

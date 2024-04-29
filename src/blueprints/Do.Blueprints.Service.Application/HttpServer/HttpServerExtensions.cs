@@ -29,7 +29,7 @@ public static class HttpServerExtensions
     public static WebApplication GetWebApplication(this ApplicationContext source) =>
         source.Get<WebApplication>();
 
-    public static void ConfigureAuthentication(this LayerConfigurator configurator, Action<List<AuthenticationConfiguration>> configuration) =>
+    public static void ConfigureAuthentication(this LayerConfigurator configurator, Action<SchemeConfigurationCollection> configuration) =>
         configurator.Configure(configuration);
 
     public static void ConfigureMiddlewareCollection(this LayerConfigurator configurator, Action<IMiddlewareCollection> configuration) =>
@@ -39,12 +39,12 @@ public static class HttpServerExtensions
         configurator.Configure(configuration);
 
     public static void Add(
-       this List<AuthenticationConfiguration> source,
-       string scheme,
+       this SchemeConfigurationCollection source,
+       string name,
        Func<HttpContext, bool> shouldHandle,
        Action<AuthenticationOptions>? configureAuthentication = default,
        Action<AuthenticationBuilder>? useBuilder = default
-   ) => source.Add(new(scheme, shouldHandle, ConfigureAuthentication: configureAuthentication, UseBuilder: useBuilder));
+   ) => source.Add(new(name, shouldHandle, ConfigureAuthentication: configureAuthentication, UseBuilder: useBuilder));
 
     public static void Add<T>(this IMiddlewareCollection source, int order = default) =>
         source.Add(new(app => app.UseMiddleware<T>(), order));

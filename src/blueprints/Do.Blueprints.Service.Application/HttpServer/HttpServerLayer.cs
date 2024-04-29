@@ -13,7 +13,7 @@ namespace Do.HttpServer;
 
 public class HttpServerLayer : LayerBase<AddServices, Build>
 {
-    readonly List<AuthenticationConfiguration> _authenticationConfigurations = [];
+    readonly SchemeConfigurationCollection _schemeConfigurations = [];
     readonly IMiddlewareCollection _middlewares = new MiddlewareCollection();
 
     protected override PhaseContext GetContext(AddServices phase)
@@ -23,26 +23,21 @@ public class HttpServerLayer : LayerBase<AddServices, Build>
         services.AddSingleton<Func<ClaimsPrincipal>>(sp => () => sp.GetRequiredService<IHttpContextAccessor>().HttpContext?.User ?? throw new("HttpContext.User is required"));
 
         return phase.CreateContextBuilder()
-            .Add(_authenticationConfigurations)
+            .Add(_schemeConfigurations)
             .OnDispose(() =>
             {
-                services.AddAuthentication(options =>
-                {
-                    foreach (var configuration in _authenticationConfigurations)
-                    {
-                        configuration.ConfigureAuthentication?.Invoke(options);
-                    }
-                });
+                services.AddAuthentication();
 
-                foreach (var configuration in _authenticationConfigurations)
+                foreach (var configuration in _schemeConfigurations)
                 {
+                    services.Configure(configuration.ConfigureAuthentication ?? (_ => { }));
                     configuration.UseBuilder?.Invoke(new(services));
                 }
 
                 services.Configure<AuthenticationSchemeOptions>(
                     default,
                     options => options.ForwardDefaultSelector = context =>
-                        _authenticationConfigurations.FirstOrDefault(d => d.ShouldHandle(context))?.Scheme
+                        _schemeConfigurations.FirstOrDefault(d => d.ShouldHandle(context))?.Name
                 );
 
                 services.AddOptions<AuthenticationSchemeOptions>();
@@ -60,7 +55,7 @@ public class HttpServerLayer : LayerBase<AddServices, Build>
     {
         yield return new CreateBuilder();
         yield return new Build();
-        yield return new Run(_middlewares);
+        yield return new Run(_schemeConfigurations, _middlewares);
     }
 
     public class CreateBuilder()
@@ -91,12 +86,15 @@ public class HttpServerLayer : LayerBase<AddServices, Build>
         }
     }
 
-    class Run(IMiddlewareCollection _middlewares)
+    class Run(SchemeConfigurationCollection _authenticationConfiguration, IMiddlewareCollection _middlewares)
         : PhaseBase<WebApplication>(PhaseOrder.Latest)
     {
         protected override void Initialize(WebApplication app)
         {
-            app.UseAuthentication();
+            if (_authenticationConfiguration.Any())
+            {
+                app.UseAuthentication();
+            }
 
             foreach (var middleware in _middlewares.OrderBy(m => m.Order))
             {
