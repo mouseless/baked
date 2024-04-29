@@ -21,7 +21,7 @@ public class SingleByUniqueConvention(DomainModel _domainModel)
         var uniqueParameterName = match.Groups["Name"].Value;
         if (!context.Action.Parameter.TryGetValue(uniqueParameterName.Camelize(), out var uniqueParameter)) { return; }
 
-        var newParameterName = $"{entityType.Name.Camelize()}{uniqueParameterName}";
+        var newParameterName = $"{uniqueParameterName.Camelize()}";
         uniqueParameter.From = ParameterModelFrom.Route;
         uniqueParameter.Name = newParameterName;
 

@@ -1,11 +1,7 @@
-using Do.Business;
+﻿using Do.Business;
 using Do.Domain.Model;
-using Do.Orm;
 using Do.RestApi.Configuration;
-using Do.RestApi.Model;
 using Humanizer;
-
-using ParameterModel = Do.RestApi.Model.ParameterModel;
 
 namespace Do.CodingStyle.EntityExtensionViaComposition;
 
@@ -15,27 +11,16 @@ public class TargetEntityExtensionFromRouteConvention(DomainModel _domain)
     public void Apply(ParameterModelContext context)
     {
         if (context.Action.MethodModel?.Has<InitializerAttribute>() == true) { return; }
+        if (context.Parameter.IsInvokeMethodParameter) { return; }
 
-        var target = context.Parameter;
-        if (target.IsInvokeMethodParameter) { return; }
+        var entityExtensionType = context.Parameter.TypeModel;
+        if (!entityExtensionType.TryGetEntityTypeFromExtension(_domain, out var entityType)) { return; }
+        if (!entityType.TryGetQueryContextType(_domain, out var queryContextType)) { return; }
 
-        var entityExtensionType = target.TypeModel;
-        if (!entityExtensionType.TryGetMetadata(out var entityExtensionMetadata)) { return; }
-        if (!entityExtensionMetadata.TryGetSingle<EntityExtensionAttribute>(out var entityExtensionAttribute)) { return; }
+        var queryContextParameter = context.Action.AddQueryContextAsService(queryContextType);
 
-        var entityType = _domain.Types[entityExtensionAttribute.EntityType];
-        if (!entityType.TryGetMetadata(out var entityMetadata)) { return; }
-        if (!entityMetadata.TryGetSingle<EntityAttribute>(out var entityAttribute)) { return; }
-
-        var queryContextType = _domain.Types[entityAttribute.QueryContextType];
-        var queryContextParameter = new ParameterModel(queryContextType, ParameterModelFrom.Services, $"{entityType.Name.Camelize()}Query") { IsInvokeMethodParameter = false };
-        context.Action.Parameter[queryContextParameter.Name] = queryContextParameter;
-
-        target.Type = nameof(Guid);
-        target.Name = $"{entityType.Name.Camelize()}Id";
-        target.From = ParameterModelFrom.Route;
-
-        context.Action.Route = $"{entityType.Name.Pluralize()}/{{{target.Name}:guid}}/{context.Action.Name}";
-        context.Action.FindTargetStatement = $"({entityExtensionType.CSharpFriendlyFullName}){queryContextParameter.Name}.SingleById({target.Name}, throwNotFound: true)";
+        context.Parameter.ConvertToId(name: "id");
+        context.MoveParameterToRoute(entityType.Name.Pluralize(), constraint: "guid");
+        context.Action.FindTargetStatement = queryContextParameter.BuildSingleBy(context.Parameter.Name, fromRoute: true, castTo: entityExtensionType);
     }
 }

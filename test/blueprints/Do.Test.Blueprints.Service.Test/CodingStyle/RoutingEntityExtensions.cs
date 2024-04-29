@@ -46,6 +46,5 @@ public class RoutingEntityExtensions : TestServiceNfr
         ));
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
-
     }
 }
