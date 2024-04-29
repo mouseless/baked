@@ -28,4 +28,10 @@ public abstract class TestServiceNfr : ServiceNfr<TestServiceNfr>, IEntryPoint
         c => c.Sqlite(fileName: $"{nameof(TestServiceNfr)}.db");
     protected override Action<ApplicationDescriptor>? Configure =>
         app => app.Features.AddConfigurationOverrider();
+
+    [TearDown]
+    public override void TearDown()
+    {
+        Client.DefaultRequestHeaders.Clear();
+    }
 }
