@@ -1,7 +1,6 @@
 ﻿using Do.Architecture;
 using Do.Authentication;
 using Do.Authorization;
-using Do.Test.Authentication;
 using Newtonsoft.Json;
 
 namespace Do.Test.HttpServer;
@@ -31,9 +30,8 @@ public class ConfiguringMultipleAuthenticationHandlers : TestServiceNfr
         response.IsSuccessStatusCode.ShouldBeTrue();
 
         var content = await response.Content.ReadAsStringAsync();
-        var identites = JsonConvert.DeserializeObject<List<IdentityData>>(content);
-        identites.ShouldNotBeNull();
-        identites.ShouldContain(i => i.Claims.Any(c => c.Type == claim));
+        var claims = JsonConvert.DeserializeObject<List<dynamic>>(content)?.SelectMany(i => (IEnumerable<dynamic>)i.claims) ?? [];
+        claims.Any(c => c.type == claim).ShouldBeTrue();
     }
 
     [Test]
@@ -47,9 +45,8 @@ public class ConfiguringMultipleAuthenticationHandlers : TestServiceNfr
         response.IsSuccessStatusCode.ShouldBeTrue();
 
         var content = await response.Content.ReadAsStringAsync();
-        var identites = JsonConvert.DeserializeObject<List<IdentityData>>(content);
-        identites.ShouldNotBeNull();
-        identites.ShouldNotContain(i => i.Claims.Any(c => c.Type == "System"));
+        var claims = JsonConvert.DeserializeObject<List<dynamic>>(content)?.SelectMany(i => (IEnumerable<dynamic>)i.claims) ?? [];
+        claims.Any(c => c.type == "System").ShouldBeFalse();
     }
 
     [Test]
@@ -63,9 +60,8 @@ public class ConfiguringMultipleAuthenticationHandlers : TestServiceNfr
         response.IsSuccessStatusCode.ShouldBeTrue();
 
         var content = await response.Content.ReadAsStringAsync();
-        var identites = JsonConvert.DeserializeObject<List<IdentityData>>(content);
-        identites.ShouldNotBeNull();
-        identites.ShouldNotContain(i => i.Claims.Any());
+        var claims = JsonConvert.DeserializeObject<List<dynamic>>(content)?.SelectMany(i => (IEnumerable<dynamic>)i.claims) ?? [];
+        claims.Any().ShouldBeFalse();
     }
 
     [Test]
@@ -76,8 +72,7 @@ public class ConfiguringMultipleAuthenticationHandlers : TestServiceNfr
         response.IsSuccessStatusCode.ShouldBeTrue();
 
         var content = await response.Content.ReadAsStringAsync();
-        var identites = JsonConvert.DeserializeObject<List<IdentityData>>(content);
-        identites.ShouldNotBeNull();
-        identites.ShouldNotContain(i => i.Claims.Any());
+        var claims = JsonConvert.DeserializeObject<List<dynamic>>(content)?.SelectMany(i => (IEnumerable<dynamic>)i.claims) ?? [];
+        claims.Any().ShouldBeFalse();
     }
 }

@@ -18,11 +18,15 @@ public class AuthenticationSamples(Func<ClaimsPrincipal> _getClaims)
         return new JwtSecurityTokenHandler().WriteToken(new JwtSecurityToken(claims: [new("User", "User")], expires: DateTime.Now.AddMinutes(120)));
     }
 
-    IEnumerable<IdentityData> ToIdentityList(ClaimsPrincipal source)
+    IEnumerable<dynamic> ToIdentityList(ClaimsPrincipal source)
     {
         foreach (var identity in source.Identities)
         {
-            yield return new(identity.AuthenticationType ?? "Anonymous", identity.Claims.Select(c => new ClaimData(c.Type, c.Value)));
+            yield return new
+            {
+                Name = identity.AuthenticationType ?? "Anonymous",
+                Claims = identity.Claims.Select(c => new { c.Type, c.Value })
+            };
         }
     }
 }
