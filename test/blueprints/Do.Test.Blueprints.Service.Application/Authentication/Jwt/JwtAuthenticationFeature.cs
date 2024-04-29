@@ -28,7 +28,7 @@ public class JwtAuthenticationFeature : IFeature<AuthenticationConfigurator>
 
                         return false;
                     },
-                    use: builder => builder.AddJwtBearer(options =>
+                    builder: builder => builder.AddJwtBearer(options =>
                     {
                         options.TokenValidationParameters = new TokenValidationParameters
                         {

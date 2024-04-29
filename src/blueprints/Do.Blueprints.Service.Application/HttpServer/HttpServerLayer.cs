@@ -31,7 +31,7 @@ public class HttpServerLayer : LayerBase<AddServices, Build>
                 foreach (var configuration in _authenticationConfiguration.SchemeConfigurations)
                 {
                     services.Configure(configuration.Configure ?? (_ => { }));
-                    configuration.Use?.Invoke(new(services));
+                    configuration.Builder?.Invoke(new(services));
                 }
 
                 services.Configure<AuthenticationSchemeOptions>(

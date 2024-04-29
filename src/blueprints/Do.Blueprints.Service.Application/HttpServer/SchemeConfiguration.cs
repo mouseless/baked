@@ -8,5 +8,5 @@ public record SchemeConfiguration
     string Name,
     Func<HttpContext, bool> ShouldHandle,
     Action<AuthenticationOptions>? Configure = default,
-    Action<AuthenticationBuilder>? Use = default
+    Action<AuthenticationBuilder>? Builder = default
 );

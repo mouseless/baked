@@ -43,8 +43,8 @@ public static class HttpServerExtensions
        string name,
        Func<HttpContext, bool> shouldHandle,
        Action<AuthenticationOptions>? configure = default,
-       Action<AuthenticationBuilder>? use = default
-   ) => configuration.SchemeConfigurations.Add(new(name, shouldHandle, Configure: configure, Use: use));
+       Action<AuthenticationBuilder>? builder = default
+   ) => configuration.SchemeConfigurations.Add(new(name, shouldHandle, Configure: configure, Builder: builder));
 
     public static void Add<T>(this IMiddlewareCollection collection, int order = default) =>
         collection.Add(new(app => app.UseMiddleware<T>(), order));
