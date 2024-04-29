@@ -2,6 +2,7 @@
 using Do.Communication;
 using Do.HttpServer;
 using Do.Testing;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
@@ -28,11 +29,21 @@ public static class HttpServerExtensions
     public static WebApplication GetWebApplication(this ApplicationContext source) =>
         source.Get<WebApplication>();
 
+    public static void ConfigureAuthentication(this LayerConfigurator configurator, Action<List<AuthenticationConfiguration>> configuration) =>
+        configurator.Configure(configuration);
+
     public static void ConfigureMiddlewareCollection(this LayerConfigurator configurator, Action<IMiddlewareCollection> configuration) =>
         configurator.Configure(configuration);
 
     public static void ConfigureEndpointRouteBuilder(this LayerConfigurator configurator, Action<IEndpointRouteBuilder> configuration) =>
         configurator.Configure(configuration);
+
+    public static void Add(
+        this List<AuthenticationConfiguration> source,
+        string scheme,
+        Action<AuthenticationOptions> configureAuthentication,
+        Func<HttpContext, bool> shouldHandle
+    ) => source.Add(new(scheme, configureAuthentication, shouldHandle));
 
     public static void Add<T>(this IMiddlewareCollection source, int order = default) =>
         source.Add(new(app => app.UseMiddleware<T>(), order));

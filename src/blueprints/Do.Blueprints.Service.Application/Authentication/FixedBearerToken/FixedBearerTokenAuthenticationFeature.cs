@@ -1,8 +1,6 @@
 ﻿using Do;
 using Do.Architecture;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
@@ -13,20 +11,22 @@ public class FixedBearerTokenAuthenticationFeature(List<Token> _tokens)
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureServiceCollection(services =>
+        configurator.ConfigureAuthentication(configuration =>
         {
-            services.AddAuthentication()
-                .AddScheme<AuthenticationSchemeOptions, AuthenticationHandler>(
-                    "FixedBearerToken",
-                    opts => { }
-                );
-
-            services.AddSingleton(new TokenOptions(_tokens));
+            configuration.Add(
+                "FixedBearerToken",
+                options =>
+                {
+                    options.DefaultScheme = "FixedBearerToken";
+                    options.DefaultAuthenticateScheme = "FixedBearerToken";
+                    options.AddScheme<AuthenticationHandler>("FixedBearerToken", "FixedBearerToken");
+                },
+                context => context.Request.Headers.Authorization.Any() || (context.Request.HasFormContentType && context.Request.Form.ContainsKey("hash")));
         });
 
-        configurator.ConfigureMiddlewareCollection(middlewares =>
+        configurator.ConfigureServiceCollection(services =>
         {
-            middlewares.Add(app => app.UseAuthentication());
+            services.AddSingleton(new TokenOptions(_tokens));
         });
 
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>

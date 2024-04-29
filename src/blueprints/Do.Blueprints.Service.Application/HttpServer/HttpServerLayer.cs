@@ -1,4 +1,5 @@
 ﻿using Do.Architecture;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -12,6 +13,7 @@ namespace Do.HttpServer;
 
 public class HttpServerLayer : LayerBase<AddServices, Build>
 {
+    readonly List<AuthenticationConfiguration> _authenticationConfigurations = [];
     readonly IMiddlewareCollection _middlewares = new MiddlewareCollection();
 
     protected override PhaseContext GetContext(AddServices phase)
@@ -20,7 +22,27 @@ public class HttpServerLayer : LayerBase<AddServices, Build>
         services.AddHttpContextAccessor();
         services.AddSingleton<Func<ClaimsPrincipal>>(sp => () => sp.GetRequiredService<IHttpContextAccessor>().HttpContext?.User ?? throw new("HttpContext.User is required"));
 
-        return PhaseContext.Empty;
+        return phase.CreateContextBuilder()
+            .Add(_authenticationConfigurations)
+            .OnDispose(() =>
+            {
+                services.AddAuthentication(options =>
+                {
+                    foreach (var configuration in _authenticationConfigurations)
+                    {
+                        configuration.ConfigureAuthentication(options);
+                    }
+                });
+
+                services.Configure<AuthenticationSchemeOptions>(
+                    default,
+                    options => options.ForwardDefaultSelector = context =>
+                        _authenticationConfigurations.FirstOrDefault(d => d.ShouldHandle(context))?.Scheme
+                );
+
+                services.AddOptions<AuthenticationSchemeOptions>();
+            })
+            .Build();
     }
 
     protected override PhaseContext GetContext(Build phase) =>
@@ -69,6 +91,8 @@ public class HttpServerLayer : LayerBase<AddServices, Build>
     {
         protected override void Initialize(WebApplication app)
         {
+            app.UseAuthentication();
+
             foreach (var middleware in _middlewares.OrderBy(m => m.Order))
             {
                 middleware.Configure(app);
