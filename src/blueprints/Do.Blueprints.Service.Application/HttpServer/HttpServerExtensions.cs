@@ -38,19 +38,17 @@ public static class HttpServerExtensions
     public static void ConfigureEndpointRouteBuilder(this LayerConfigurator configurator, Action<IEndpointRouteBuilder> configuration) =>
         configurator.Configure(configuration);
 
-    public static void Add(
-       this IAuthenticationSchemeCollection authenticationSchemes,
-       string name,
-       Func<HttpContext, bool> handles,
-       Action<AuthenticationOptions>? configureOptions = default,
-       Action<AuthenticationBuilder>? useBuilder = default
-   ) => authenticationSchemes.Add(new(name, handles, configureOptions, useBuilder));
+    public static void Add(this IAuthenticationSchemeCollection authenticationSchemes, string name, Action<AuthenticationBuilder> useBuilder,
+       Func<HttpContext, bool>? handles = default
+    ) => authenticationSchemes.Add(new(name, useBuilder, handles ?? (_ => true)));
 
-    public static void Add<T>(this IMiddlewareCollection middlewares, int order = default) =>
-        middlewares.Add(new(app => app.UseMiddleware<T>(), order));
+    public static void Add<T>(this IMiddlewareCollection middlewares,
+        int order = default
+    ) => middlewares.Add(new(app => app.UseMiddleware<T>(), order));
 
-    public static void Add(this IMiddlewareCollection middlewares, Action<IApplicationBuilder> configure, int order = default) =>
-        middlewares.Add(new(configure, order));
+    public static void Add(this IMiddlewareCollection middlewares, Action<IApplicationBuilder> configure,
+        int order = default
+    ) => middlewares.Add(new(configure, order));
 
     public static T GetRequiredServiceUsingRequestServices<T>(this IServiceProvider sp) where T : notnull =>
         (T)sp.GetRequiredServiceUsingRequestServices(typeof(T));

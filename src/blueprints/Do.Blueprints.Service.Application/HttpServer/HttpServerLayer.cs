@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using System.Security.Claims;
+
 using static Do.DependencyInjection.DependencyInjectionLayer;
 using static Do.HttpServer.HttpServerLayer;
 
@@ -31,16 +32,11 @@ public class HttpServerLayer : LayerBase<AddServices, Build>
                     {
                         o.DefaultScheme = "Default";
                         o.AddScheme<DefaultAuthenticationHandler>("Default", "Default");
-
-                        foreach (var scheme in _authenticationSchemes)
-                        {
-                            scheme.ConfigureOptions?.Invoke(o);
-                        }
                     });
 
                     foreach (var scheme in _authenticationSchemes)
                     {
-                        scheme.UseBuilder?.Invoke(builder);
+                        scheme.UseBuilder.Invoke(builder);
                     }
 
                     services.Configure<AuthenticationSchemeOptions>(

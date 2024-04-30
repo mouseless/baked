@@ -4,9 +4,9 @@ namespace Do.Test.Authentication;
 
 public class AuthenticationSamples(Func<ClaimsPrincipal> _getClaims)
 {
-    public string? GetAuthenticationType() =>
+    public string? Authenticate() =>
         _getClaims().Identity?.AuthenticationType;
 
-    public object FormPostAuthentication(object value) =>
+    public object FormPostAuthenticate(object value) =>
         value;
 }

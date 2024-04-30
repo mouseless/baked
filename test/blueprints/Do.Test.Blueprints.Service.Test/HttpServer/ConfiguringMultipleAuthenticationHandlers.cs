@@ -9,8 +9,7 @@ public class ConfiguringMultipleAuthenticationHandlers : TestServiceNfr
         [
             c => c.FixedBearerToken(tokens =>
             {
-                tokens.Add("Jane", claims: ["User"]);
-                tokens.Add("John", claims: ["User", "Admin"]);
+                tokens.Add("Jane");
             }),
             c => c.ApiKey()
         ];
@@ -21,7 +20,7 @@ public class ConfiguringMultipleAuthenticationHandlers : TestServiceNfr
     {
         Client.DefaultRequestHeaders.Add(header, value);
 
-        var response = await Client.GetAsync("authentication-samples/authentication-type");
+        var response = await Client.PostAsync("authentication-samples/authenticate", null);
         var result = await response.Content.ReadAsStringAsync();
 
         result.ShouldBe(authenticationType);
@@ -33,7 +32,7 @@ public class ConfiguringMultipleAuthenticationHandlers : TestServiceNfr
         Client.DefaultRequestHeaders.Add("Authorization", "11111111111111111111111111111111");
         Client.DefaultRequestHeaders.Add("X-Api-Key", "apikey");
 
-        var response = await Client.GetAsync("authentication-samples/authentication-type");
+        var response = await Client.PostAsync("authentication-samples/authenticate", null);
         var result = await response.Content.ReadAsStringAsync();
 
         result.ShouldBe("FixedBearerToken");
@@ -45,7 +44,7 @@ public class ConfiguringMultipleAuthenticationHandlers : TestServiceNfr
         Client.DefaultRequestHeaders.Add("Authorization", "Wrong_token");
         Client.DefaultRequestHeaders.Add("X-Api-Key", "apikey");
 
-        var response = await Client.GetAsync("authentication-samples/authentication-type");
+        var response = await Client.PostAsync("authentication-samples/authenticate", null);
         var result = await response.Content.ReadAsStringAsync();
 
         result.ShouldBeNullOrEmpty();
@@ -54,7 +53,7 @@ public class ConfiguringMultipleAuthenticationHandlers : TestServiceNfr
     [Test]
     public async Task Context_user_is_not_authenticated_and_when_no_handler_can_authenticate()
     {
-        var response = await Client.GetAsync("authentication-samples/authentication-type");
+        var response = await Client.PostAsync("authentication-samples/authenticate", null);
         var result = await response.Content.ReadAsStringAsync();
 
         result.ShouldBeNullOrEmpty();

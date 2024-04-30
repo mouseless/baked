@@ -1,5 +1,6 @@
 ﻿using Do;
 using Do.Architecture;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
@@ -15,8 +16,15 @@ public class FixedBearerTokenAuthenticationFeature(List<Token> _tokens)
         {
             configuration.Add(
                 name: "FixedBearerToken",
-                handles: context => context.Request.Headers.Authorization.Any() || (context.Request.HasFormContentType && context.Request.Form.ContainsKey("hash")),
-                configureOptions: options => options.AddScheme<AuthenticationHandler>("FixedBearerToken", "FixedBearerToken"));
+                useBuilder: builder => builder
+                    .AddScheme<AuthenticationSchemeOptions, AuthenticationHandler>(
+                        "FixedBearerToken",
+                        opts => { }
+                    ),
+                handles: context =>
+                    context.Request.Headers.Authorization.Any() ||
+                    (context.Request.HasFormContentType && context.Request.Form.ContainsKey("hash"))
+            );
         });
 
         configurator.ConfigureServiceCollection(services =>

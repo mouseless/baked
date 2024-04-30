@@ -1,5 +1,6 @@
 ﻿using Do.Architecture;
 using Do.Authentication;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Do.Test.Authentication.ApiKey;
 
@@ -12,8 +13,11 @@ public class ApiKeyAuthenticationFeature()
         {
             configuration.Add(
                 name: "ApiKey",
-                handles: context => context.Request.Headers.ContainsKey("X-Api-Key"),
-                configureOptions: options => options.AddScheme<AuthenticationHandler>("ApiKey", "ApiKey")
+                useBuilder: builder => builder.AddScheme<AuthenticationSchemeOptions, AuthenticationHandler>(
+                    "ApiKey",
+                    opt => { }
+                ),
+                handles: context => context.Request.Headers.ContainsKey("X-Api-Key")
             );
         });
     }
