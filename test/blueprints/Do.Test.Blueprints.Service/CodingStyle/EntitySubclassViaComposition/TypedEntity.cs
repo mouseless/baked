@@ -9,7 +9,7 @@ public class TypedEntity(IEntityContext<TypedEntity> _context)
     public virtual Guid Id { get; protected set; } = default!;
     public virtual TypedEntityType Type { get; protected set; } = default!;
 
-    public virtual TypedEntity With(TypedEntityType type)
+    protected internal virtual TypedEntity With(TypedEntityType type)
     {
         Type = type;
 

@@ -36,6 +36,12 @@ public class EntitySubclassViaCompositionCodingStyleFeature : IFeature<CodingSty
                 when: c => c.Type.Has<EntitySubclassAttribute>(),
                 order: 10
             );
+            builder.Conventions.AddMethodMetadata(new ApiMethodAttribute(),
+                when: c =>
+                    c.Type.Has<EntitySubclassAttribute>() && c.Method.Has<InitializerAttribute>() &&
+                    c.Method.Overloads.Any(o => o.IsPublic && !o.IsStatic && !o.IsSpecialName && o.AllParametersAreApiInput()),
+                order: 30
+            );
         });
 
         configurator.ConfigureApiModelConventions(conventions =>
@@ -44,6 +50,7 @@ public class EntitySubclassViaCompositionCodingStyleFeature : IFeature<CodingSty
 
             conventions.Add(new TargetEntitySubclassFromRouteConvention(domain));
             conventions.Add(new EntitySubclassUnderEntitiesConvention(domain));
+            conventions.Add(new EntitySubclassInitializerIsPostResourceConvention(domain));
         });
     }
 }

@@ -3,9 +3,14 @@ using Microsoft.Extensions.Logging;
 
 namespace Do.Test.CodingStyle.EntitySubclassViaComposition;
 
-public class ATypedEntity(ILogger<ATypedEntity> _logger)
+public class ATypedEntity(ILogger<ATypedEntity> _logger, Func<TypedEntity> _newTypedEntity)
 {
     TypedEntity _entity = default!;
+
+    public Guid Id => _entity.Id;
+
+    public ATypedEntity With() =>
+        With(_newTypedEntity().With(TypedEntityType.A));
 
     internal ATypedEntity With(TypedEntity entity)
     {

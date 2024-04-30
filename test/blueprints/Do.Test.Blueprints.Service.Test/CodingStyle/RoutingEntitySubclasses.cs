@@ -19,6 +19,10 @@ public class RoutingEntitySubclasses : TestServiceNfr
     }
 
     [Test]
-    [Ignore("not implemented")]
-    public void Subclasses_accept_post_resource_under_entity_slash_type_route() => throw new();
+    public async Task Subclasses_accept_post_resource_under_entity_slash_type_route([Values(["a", "b"])] string route)
+    {
+        var response = await Client.PostAsync($"/typed-entities/{route}", null);
+
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+    }
 }
