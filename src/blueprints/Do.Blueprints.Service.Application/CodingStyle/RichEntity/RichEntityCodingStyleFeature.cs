@@ -21,15 +21,11 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
                             .First(p => p.ParameterType.IsAssignableTo(typeof(IQueryContext<>)));
 
                     var entity = parameter.ParameterType.GetGenerics().GenericTypeArguments.First().Model;
-                    Type? queryContext = null;
-                    entity.Apply(t => queryContext = typeof(IQueryContext<>).MakeGenericType(t));
-                    if (queryContext is null) { return; }
-
                     entity.Apply(t =>
                         add(query, new QueryAttribute(t))
                     );
                     query.Apply(t =>
-                        add(entity.GetMetadata(), new EntityAttribute(t, queryContext))
+                        add(entity.GetMetadata(), new EntityAttribute(t))
                     );
                 },
                 when: c =>

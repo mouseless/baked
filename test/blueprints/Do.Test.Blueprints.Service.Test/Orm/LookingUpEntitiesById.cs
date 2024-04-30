@@ -1,10 +1,22 @@
-using System.Net.Http.Json;
 using Newtonsoft.Json;
+using System.Net;
+using System.Net.Http.Json;
 
 namespace Do.Test.Orm;
 
 public class LookingUpEntitiesById : TestServiceNfr
 {
+    [Test]
+    public async Task ExposedSingleById()
+    {
+        var entityResponse = await Client.PostAsync("/entities", JsonContent.Create(new { }));
+        dynamic? entity = JsonConvert.DeserializeObject(await entityResponse.Content.ReadAsStringAsync());
+
+        var response = await Client.GetAsync($"/entities/{entity?.id}");
+
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+    }
+
     [Test]
     public async Task EntityParameters()
     {

@@ -1,10 +1,10 @@
-﻿using Do.Architecture;
+using Do.Architecture;
 using Do.Business;
 using Do.Orm;
 
-namespace Do.CodingStyle.EntityExtensionViaComposition;
+namespace Do.CodingStyle.EntitySubclassViaComposition;
 
-public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingStyleConfigurator>
+public class EntitySubclassViaCompositionCodingStyleFeature : IFeature<CodingStyleConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
@@ -13,15 +13,15 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
             builder.Conventions.AddTypeMetadata(
                 apply: (c, add) =>
                 {
-                    var entityType = c.Type.GetMembers().GetMethod("op_Implicit").Parameters.Single().ParameterType;
+                    var entityType = c.Type.GetMembers().GetMethod("op_Explicit").Parameters.Single().ParameterType;
                     entityType.Apply(t =>
                     {
-                        add(c.Type, new EntityExtensionAttribute(t));
+                        add(c.Type, new EntitySubclassAttribute(t, c.Type.Name.Replace(t.Name, string.Empty)));
                     });
                 },
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
-                    members.TryGetMethods("op_Implicit", out var implicits) &&
+                    members.TryGetMethods("op_Explicit", out var implicits) &&
                     implicits.Count() == 1 &&
                     implicits.Single().Parameters.SingleOrDefault()?.ParameterType.TryGetMetadata(out var parameterTypeMetadata) == true &&
                     parameterTypeMetadata.Has<EntityAttribute>(),
@@ -33,7 +33,7 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
                     add(c.Type, new ApiInputAttribute());
                     add(c.Type, new LocatableAttribute());
                 },
-                when: c => c.Type.Has<EntityExtensionAttribute>(),
+                when: c => c.Type.Has<EntitySubclassAttribute>(),
                 order: 10
             );
         });
@@ -42,10 +42,8 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
         {
             var domain = configurator.Context.GetDomainModel();
 
-            conventions.Add(new TargetEntityExtensionFromRouteConvention(domain));
-            conventions.Add(new EntityExtensionsUnderEntitiesConvention(domain));
-            conventions.Add(new LookupEntityExtensionByIdConvention(domain));
-            conventions.Add(new LookupEntityExtensionsByIdsConvention(domain));
+            conventions.Add(new TargetEntitySubclassFromRouteConvention(domain));
+            conventions.Add(new EntitySubclassUnderEntitiesConvention(domain));
         });
     }
 }

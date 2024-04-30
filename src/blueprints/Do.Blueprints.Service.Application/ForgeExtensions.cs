@@ -57,10 +57,12 @@ public static class ForgeExtensions
             app.Features.AddCodingStyles([
                 c => c.CommandPattern(),
                 c => c.EntityExtensionViaComposition(),
+                c => c.EntitySubclassViaComposition(),
                 c => c.ObjectAsJson(),
                 c => c.RemainingServicesAreSingleton(),
                 c => c.RichEntity(),
                 c => c.ScopedBySuffix(),
+                c => c.SingleByUnique(),
                 c => c.UseBuiltInTypes(),
                 c => c.WithMethod()
             ]);

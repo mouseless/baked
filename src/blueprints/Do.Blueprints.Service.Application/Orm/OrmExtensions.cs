@@ -16,18 +16,28 @@ public static class OrmExtensions
     public static void AddOrm(this List<IFeature> source, Func<OrmConfigurator, IFeature<OrmConfigurator>> configure) =>
         source.Add(configure(new()));
 
-    public static ParameterModel AddQueryContextAsService(this ActionModel action, TypeModel queryContextType)
+    public static ParameterModel AddAsService(this ActionModel action, TypeModel type,
+        string? name = default
+    )
     {
-        var entityType = queryContextType.GetGenerics().GenericTypeArguments[0].Model;
-        var queryContextParameter =
-            new ParameterModel(queryContextType, ParameterModelFrom.Services, $"{entityType.Name.Camelize()}Query")
+        name ??= type.Name.Camelize();
+
+        var parameter =
+            new ParameterModel(type, ParameterModelFrom.Services, name)
             {
                 IsInvokeMethodParameter = false
             };
 
-        action.Parameter[queryContextParameter.Name] = queryContextParameter;
+        action.Parameter[parameter.Name] = parameter;
 
-        return queryContextParameter;
+        return parameter;
+    }
+
+    public static ParameterModel AddQueryContextAsService(this ActionModel action, TypeModel queryContextType)
+    {
+        var entityType = queryContextType.GetGenerics().GenericTypeArguments[0].Model;
+
+        return action.AddAsService(queryContextType, name: $"{entityType.Name.Camelize()}Query");
     }
 
     public static void MoveParameterToRoute(this ParameterModelContext context, string resourceName,
@@ -67,8 +77,8 @@ public static class OrmExtensions
         }
 
         return isArray
-            ? $"{byIds}.ToArray()" :
-            $"{byIds}.ToList()";
+            ? $"{byIds}.ToArray()"
+            : $"{byIds}.ToList()";
     }
 
     public static void ConvertToId(this ParameterModel parameter,
@@ -87,16 +97,30 @@ public static class OrmExtensions
         parameter.Name = $"{parameter.Name.Singularize()}Ids";
     }
 
-    public static bool TryGetQueryContextType(this TypeModel type, DomainModel domain, [NotNullWhen(true)] out TypeModel? queryContextType)
+    public static bool TryGetQueryType(this TypeModel type, DomainModel domain, [NotNullWhen(true)] out TypeModel? queryType)
     {
         if (!type.TryGetEntityAttribute(out var entityAttribute))
+        {
+            queryType = default;
+
+            return false;
+        }
+
+        queryType = domain.Types[entityAttribute.QueryType];
+
+        return true;
+    }
+
+    public static bool TryGetQueryContextType(this TypeModel type, DomainModel domain, [NotNullWhen(true)] out TypeModel? queryContextType)
+    {
+        if (!type.TryGetEntityAttribute(out _))
         {
             queryContextType = default;
 
             return false;
         }
 
-        queryContextType = domain.Types[entityAttribute.QueryContextType];
+        queryContextType = domain.Types[domain.Types[typeof(IQueryContext<>)].MakeGenericTypeId(type)];
 
         return true;
     }
@@ -106,8 +130,8 @@ public static class OrmExtensions
         entityAttribute = default;
 
         return
-            type.TryGetMetadata(out var entityMetadata) &&
-            entityMetadata.TryGetSingle(out entityAttribute);
+            type.TryGetMetadata(out var metadata) &&
+            metadata.TryGetSingle(out entityAttribute);
     }
 
     public static void ShouldBeDeleted(this object @object) =>
