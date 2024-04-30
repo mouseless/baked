@@ -44,8 +44,8 @@ public abstract class ServiceNfr<TEntryPoint> : Nfr
             var entities = (IEnumerable?)JsonConvert.DeserializeObject(await entitiesResponse.Content.ReadAsStringAsync()) ?? Array.Empty<object>();
             foreach (dynamic entity in entities)
             {
-                _ = await Client.DeleteAsync($"/{entitiesRoute}/{entity?.id}");
-                await CheckResponse($"DELETE /{entitiesRoute}/{entity?.id}", entitiesResponse);
+                var deleteResponse = await Client.DeleteAsync($"/{entitiesRoute}/{entity?.id}");
+                await CheckResponse($"DELETE /{entitiesRoute}/{entity?.id}", deleteResponse);
             }
         }
     }
