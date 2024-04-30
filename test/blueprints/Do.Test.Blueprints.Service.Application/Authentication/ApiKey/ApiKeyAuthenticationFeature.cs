@@ -1,19 +1,19 @@
 ﻿using Do.Architecture;
 using Do.Authentication;
-using Do.Test.Authentication.ApiKey;
 
-namespace Do;
+namespace Do.Test.Authentication.ApiKey;
 
-public class ApiKeyAuthenticationFeature : IFeature<AuthenticationConfigurator>
+public class ApiKeyAuthenticationFeature()
+    : IFeature<AuthenticationConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureAuthentication(configuration =>
+        configurator.ConfigureAuthenticationSchemeCollection(configuration =>
         {
-            configuration.AddScheme(
-                "ApiKey",
-                context => context.Request.Headers.ContainsKey("X-Api-Key".ToLowerInvariant()),
-                configure: options => options.AddScheme<AuthenticationHandler>("ApiKey", "ApiKey")
+            configuration.Add(
+                name: "ApiKey",
+                handles: context => context.Request.Headers.ContainsKey("X-Api-Key"),
+                configureOptions: options => options.AddScheme<AuthenticationHandler>("ApiKey", "ApiKey")
             );
         });
     }

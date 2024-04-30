@@ -11,17 +11,12 @@ public class FixedBearerTokenAuthenticationFeature(List<Token> _tokens)
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureAuthentication(configuration =>
+        configurator.ConfigureAuthenticationSchemeCollection(configuration =>
         {
-            configuration.AddScheme(
-                "FixedBearerToken",
-                context => context.Request.Headers.Authorization.Any() || (context.Request.HasFormContentType && context.Request.Form.ContainsKey("hash")),
-                configure: options =>
-                {
-                    options.DefaultScheme = "FixedBearerToken";
-                    options.DefaultAuthenticateScheme = "FixedBearerToken";
-                    options.AddScheme<AuthenticationHandler>("FixedBearerToken", "FixedBearerToken");
-                });
+            configuration.Add(
+                name: "FixedBearerToken",
+                handles: context => context.Request.Headers.Authorization.Any() || (context.Request.HasFormContentType && context.Request.Form.ContainsKey("hash")),
+                configureOptions: options => options.AddScheme<AuthenticationHandler>("FixedBearerToken", "FixedBearerToken"));
         });
 
         configurator.ConfigureServiceCollection(services =>

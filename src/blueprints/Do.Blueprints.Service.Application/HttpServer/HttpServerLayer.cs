@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using System.Security.Claims;
-
 using static Do.DependencyInjection.DependencyInjectionLayer;
 using static Do.HttpServer.HttpServerLayer;
 
@@ -13,7 +12,7 @@ namespace Do.HttpServer;
 
 public class HttpServerLayer : LayerBase<AddServices, Build>
 {
-    readonly AuthenticationConfiguration _authenticationConfiguration = new();
+    readonly IAuthenticationSchemeCollection _authenticationSchemes = new AuthenticationSchemeCollection();
     readonly IMiddlewareCollection _middlewares = new MiddlewareCollection();
 
     protected override PhaseContext GetContext(AddServices phase)
@@ -23,39 +22,68 @@ public class HttpServerLayer : LayerBase<AddServices, Build>
         services.AddSingleton<Func<ClaimsPrincipal>>(sp => () => sp.GetRequiredService<IHttpContextAccessor>().HttpContext?.User ?? throw new("HttpContext.User is required"));
 
         return phase.CreateContextBuilder()
-            .Add(_authenticationConfiguration)
+            .Add(_authenticationSchemes)
             .OnDispose(() =>
             {
-                services.AddAuthentication();
-
-                foreach (var configuration in _authenticationConfiguration.SchemeConfigurations)
+                if (_authenticationSchemes.Any())
                 {
-                    services.Configure(configuration.Configure ?? (_ => { }));
-                    configuration.Builder?.Invoke(new(services));
+                    var builder = services.AddAuthentication(o =>
+                    {
+                        o.DefaultScheme = "Default";
+                        o.AddScheme<DefaultAuthenticationHandler>("Default", "Default");
+
+                        foreach (var scheme in _authenticationSchemes)
+                        {
+                            scheme.ConfigureOptions?.Invoke(o);
+                        }
+                    });
+
+                    foreach (var scheme in _authenticationSchemes)
+                    {
+                        scheme.UseBuilder?.Invoke(builder);
+                    }
+
+                    services.Configure<AuthenticationSchemeOptions>(
+                        default,
+                        options => options.ForwardDefaultSelector = FirstSchemeThatHandles
+                    );
+
+                    services.AddOptions<AuthenticationSchemeOptions>();
                 }
-
-                services.Configure<AuthenticationSchemeOptions>(
-                    default,
-                    options => options.ForwardDefaultSelector = context =>
-                        _authenticationConfiguration.SchemeConfigurations.FirstOrDefault(d => d.ShouldHandle(context))?.Name
-                );
-
-                services.AddOptions<AuthenticationSchemeOptions>();
             })
             .Build();
     }
 
-    protected override PhaseContext GetContext(Build phase) =>
-        phase.CreateContextBuilder()
+    string? FirstSchemeThatHandles(HttpContext context) =>
+        _authenticationSchemes.FirstOrDefault(scheme => scheme.Handles(context))?.Name;
+
+    protected override PhaseContext GetContext(Build phase)
+    {
+        var app = Context.GetWebApplication();
+
+        return phase.CreateContextBuilder()
             .Add(_middlewares)
-            .Add<IEndpointRouteBuilder>(Context.GetWebApplication())
+            .Add<IEndpointRouteBuilder>(app)
+            .OnDispose(() =>
+            {
+                if (_authenticationSchemes.Any())
+                {
+                    app.UseAuthentication();
+                }
+
+                foreach (var middleware in _middlewares.OrderBy(m => m.Order))
+                {
+                    middleware.Configure(app);
+                }
+            })
             .Build();
+    }
 
     protected override IEnumerable<IPhase> GetPhases()
     {
         yield return new CreateBuilder();
         yield return new Build();
-        yield return new Run(_authenticationConfiguration, _middlewares);
+        yield return new Run();
     }
 
     public class CreateBuilder()
@@ -86,21 +114,11 @@ public class HttpServerLayer : LayerBase<AddServices, Build>
         }
     }
 
-    class Run(AuthenticationConfiguration _authenticationConfiguration, IMiddlewareCollection _middlewares)
+    class Run()
         : PhaseBase<WebApplication>(PhaseOrder.Latest)
     {
         protected override void Initialize(WebApplication app)
         {
-            if (_authenticationConfiguration.SchemeConfigurations.Any())
-            {
-                app.UseAuthentication();
-            }
-
-            foreach (var middleware in _middlewares.OrderBy(m => m.Order))
-            {
-                middleware.Configure(app);
-            }
-
             app.Run();
         }
     }

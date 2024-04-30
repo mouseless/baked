@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 
-namespace Do.Test.Authentication.ApiKey;
+namespace Do.HttpServer;
 
-public class AuthenticationHandler(
+public class DefaultAuthenticationHandler(
     IOptionsMonitor<AuthenticationSchemeOptions> options,
     ILoggerFactory logger,
     UrlEncoder encoder

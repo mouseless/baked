@@ -17,8 +17,8 @@ namespace Do;
 
 public static class HttpServerExtensions
 {
-    public static void AddHttpServer(this List<ILayer> list) =>
-        list.Add(new HttpServerLayer());
+    public static void AddHttpServer(this List<ILayer> layers) =>
+        layers.Add(new HttpServerLayer());
 
     public static WebApplicationBuilder GetWebApplicationBuilder(this ApplicationContext context) =>
         context.Get<WebApplicationBuilder>();
@@ -29,8 +29,8 @@ public static class HttpServerExtensions
     public static WebApplication GetWebApplication(this ApplicationContext context) =>
         context.Get<WebApplication>();
 
-    public static void ConfigureAuthentication(this LayerConfigurator configurator, Action<AuthenticationConfiguration> configuration) =>
-        configurator.Configure(configuration);
+    public static void ConfigureAuthenticationSchemeCollection(this LayerConfigurator configurator, Action<IAuthenticationSchemeCollection> authenticationSchemes) =>
+        configurator.Configure(authenticationSchemes);
 
     public static void ConfigureMiddlewareCollection(this LayerConfigurator configurator, Action<IMiddlewareCollection> configuration) =>
         configurator.Configure(configuration);
@@ -38,19 +38,19 @@ public static class HttpServerExtensions
     public static void ConfigureEndpointRouteBuilder(this LayerConfigurator configurator, Action<IEndpointRouteBuilder> configuration) =>
         configurator.Configure(configuration);
 
-    public static void AddScheme(
-       this AuthenticationConfiguration configuration,
+    public static void Add(
+       this IAuthenticationSchemeCollection authenticationSchemes,
        string name,
-       Func<HttpContext, bool> shouldHandle,
-       Action<AuthenticationOptions>? configure = default,
-       Action<AuthenticationBuilder>? builder = default
-   ) => configuration.SchemeConfigurations.Add(new(name, shouldHandle, Configure: configure, Builder: builder));
+       Func<HttpContext, bool> handles,
+       Action<AuthenticationOptions>? configureOptions = default,
+       Action<AuthenticationBuilder>? useBuilder = default
+   ) => authenticationSchemes.Add(new(name, handles, configureOptions, useBuilder));
 
-    public static void Add<T>(this IMiddlewareCollection collection, int order = default) =>
-        collection.Add(new(app => app.UseMiddleware<T>(), order));
+    public static void Add<T>(this IMiddlewareCollection middlewares, int order = default) =>
+        middlewares.Add(new(app => app.UseMiddleware<T>(), order));
 
-    public static void Add(this IMiddlewareCollection collection, Action<IApplicationBuilder> configure, int order = default) =>
-        collection.Add(new(configure, order));
+    public static void Add(this IMiddlewareCollection middlewares, Action<IApplicationBuilder> configure, int order = default) =>
+        middlewares.Add(new(configure, order));
 
     public static T GetRequiredServiceUsingRequestServices<T>(this IServiceProvider sp) where T : notnull =>
         (T)sp.GetRequiredServiceUsingRequestServices(typeof(T));

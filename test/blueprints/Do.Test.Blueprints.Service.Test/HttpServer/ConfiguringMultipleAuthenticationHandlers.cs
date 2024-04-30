@@ -1,7 +1,5 @@
 ﻿using Do.Architecture;
 using Do.Authentication;
-using Do.Authorization;
-using Newtonsoft.Json;
 
 namespace Do.Test.HttpServer;
 
@@ -16,63 +14,49 @@ public class ConfiguringMultipleAuthenticationHandlers : TestServiceNfr
             }),
             c => c.ApiKey()
         ];
-    protected override Func<AuthorizationConfigurator, IFeature<AuthorizationConfigurator>>? Authorization =>
-        c => c.Disabled();
 
-    [TestCase("Authorization", "11111111111111111111111111111111", "User")]
-    [TestCase("X-Api-Key", "Api_Key", "System")]
-    public async Task Request_can_be_forwarded_to_available_handlers(string header, string value, string claim)
+    [TestCase("Authorization", "11111111111111111111111111111111", "FixedBearerToken")]
+    [TestCase("X-Api-Key", "apikey", "ApiKey")]
+    public async Task Request_can_be_forwarded_to_available_handlers(string header, string value, string authenticationType)
     {
         Client.DefaultRequestHeaders.Add(header, value);
 
-        var response = await Client.GetAsync("authentication-samples/claims");
+        var response = await Client.GetAsync("authentication-samples/authentication-type");
+        var result = await response.Content.ReadAsStringAsync();
 
-        response.IsSuccessStatusCode.ShouldBeTrue();
-
-        var content = await response.Content.ReadAsStringAsync();
-        var claims = JsonConvert.DeserializeObject<List<dynamic>>(content)?.SelectMany(i => (IEnumerable<dynamic>)i.claims) ?? [];
-        claims.Any(c => c.type == claim).ShouldBeTrue();
+        result.ShouldBe(authenticationType);
     }
 
     [Test]
     public async Task Request_is_only_forwarded_to_first_available_handler_with_given_order()
     {
         Client.DefaultRequestHeaders.Add("Authorization", "11111111111111111111111111111111");
-        Client.DefaultRequestHeaders.Add("X-Api-Key", "Api_Key");
+        Client.DefaultRequestHeaders.Add("X-Api-Key", "apikey");
 
-        var response = await Client.GetAsync("authentication-samples/claims");
+        var response = await Client.GetAsync("authentication-samples/authentication-type");
+        var result = await response.Content.ReadAsStringAsync();
 
-        response.IsSuccessStatusCode.ShouldBeTrue();
-
-        var content = await response.Content.ReadAsStringAsync();
-        var claims = JsonConvert.DeserializeObject<List<dynamic>>(content)?.SelectMany(i => (IEnumerable<dynamic>)i.claims) ?? [];
-        claims.Any(c => c.type == "System").ShouldBeFalse();
+        result.ShouldBe("FixedBearerToken");
     }
 
     [Test]
     public async Task Request_is_not_forwarded_to_other_handlers_when_authentication_fails()
     {
         Client.DefaultRequestHeaders.Add("Authorization", "Wrong_token");
-        Client.DefaultRequestHeaders.Add("X-Api-Key", "Api_Key");
+        Client.DefaultRequestHeaders.Add("X-Api-Key", "apikey");
 
-        var response = await Client.GetAsync("authentication-samples/claims");
+        var response = await Client.GetAsync("authentication-samples/authentication-type");
+        var result = await response.Content.ReadAsStringAsync();
 
-        response.IsSuccessStatusCode.ShouldBeTrue();
-
-        var content = await response.Content.ReadAsStringAsync();
-        var claims = JsonConvert.DeserializeObject<List<dynamic>>(content)?.SelectMany(i => (IEnumerable<dynamic>)i.claims) ?? [];
-        claims.Any().ShouldBeFalse();
+        result.ShouldBeNullOrEmpty();
     }
 
     [Test]
-    public async Task Context_user_is_not_authenticated_and_have_no_claims_when_no_handler_can_authenticate()
+    public async Task Context_user_is_not_authenticated_and_when_no_handler_can_authenticate()
     {
-        var response = await Client.GetAsync("authentication-samples/claims");
+        var response = await Client.GetAsync("authentication-samples/authentication-type");
+        var result = await response.Content.ReadAsStringAsync();
 
-        response.IsSuccessStatusCode.ShouldBeTrue();
-
-        var content = await response.Content.ReadAsStringAsync();
-        var claims = JsonConvert.DeserializeObject<List<dynamic>>(content)?.SelectMany(i => (IEnumerable<dynamic>)i.claims) ?? [];
-        claims.Any().ShouldBeFalse();
+        result.ShouldBeNullOrEmpty();
     }
 }
