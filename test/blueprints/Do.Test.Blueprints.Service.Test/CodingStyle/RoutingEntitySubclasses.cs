@@ -5,16 +5,15 @@ namespace Do.Test.CodingStyle;
 
 public class RoutingEntitySubclasses : TestServiceNfr
 {
-    [TestCase("type-a", "TypeA")]
-    [TestCase("type-b", "TypeB")]
-    [Ignore("failing")]
-    public async Task Subclasses_are_served_under_entity_routes(string route, string unique)
+    [TestCase("a", "A")]
+    [TestCase("b", "B")]
+    public async Task Subclasses_are_served_under_entity_routes(string route, string type)
     {
-        await Client.PostAsync("/entities", JsonContent.Create(
-            new { unique }
+        await Client.PostAsync("/typed-entities", JsonContent.Create(
+            new { type }
         ));
 
-        var response = await Client.PostAsync($"/entities/{route}/operate-on-{route}", null);
+        var response = await Client.PostAsync($"/typed-entities/{route}/operate-on-{route}", null);
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }

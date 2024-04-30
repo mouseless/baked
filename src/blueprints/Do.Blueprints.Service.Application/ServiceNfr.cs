@@ -37,14 +37,24 @@ public abstract class ServiceNfr<TEntryPoint> : Nfr
 
         foreach (var entityName in EntityNamesToClearOnTearDown)
         {
-            var entitiesRoute = entityName.ToLowerInvariant().Pluralize();
+            var entitiesRoute = entityName.Kebaberize().Pluralize();
             var entitiesResponse = await Client.GetAsync($"/{entitiesRoute}");
+            await CheckResponse($"GET /{entitiesRoute}", entitiesResponse);
+
             var entities = (IEnumerable?)JsonConvert.DeserializeObject(await entitiesResponse.Content.ReadAsStringAsync()) ?? Array.Empty<object>();
             foreach (dynamic entity in entities)
             {
-                await Client.DeleteAsync($"/{entitiesRoute}/{entity?.id}");
+                _ = await Client.DeleteAsync($"/{entitiesRoute}/{entity?.id}");
+                await CheckResponse($"DELETE /{entitiesRoute}/{entity?.id}", entitiesResponse);
             }
         }
+    }
+
+    async Task CheckResponse(string route, HttpResponseMessage response)
+    {
+        if (response.IsSuccessStatusCode) { return; }
+
+        throw new($"'{route}' didn't work as expected: {response.StatusCode}\n{await response.Content.ReadAsStringAsync()}");
     }
 
     protected override Application ForgeApplication() =>
