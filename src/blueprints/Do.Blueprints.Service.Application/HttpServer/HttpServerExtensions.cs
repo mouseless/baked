@@ -29,8 +29,8 @@ public static class HttpServerExtensions
     public static WebApplication GetWebApplication(this ApplicationContext context) =>
         context.Get<WebApplication>();
 
-    public static void ConfigureAuthenticationSchemeCollection(this LayerConfigurator configurator, Action<IAuthenticationSchemeCollection> authenticationSchemes) =>
-        configurator.Configure(authenticationSchemes);
+    public static void ConfigureAuthenticationCollection(this LayerConfigurator configurator, Action<IAuthenticationCollection> configuration) =>
+        configurator.Configure(configuration);
 
     public static void ConfigureMiddlewareCollection(this LayerConfigurator configurator, Action<IMiddlewareCollection> configuration) =>
         configurator.Configure(configuration);
@@ -38,9 +38,9 @@ public static class HttpServerExtensions
     public static void ConfigureEndpointRouteBuilder(this LayerConfigurator configurator, Action<IEndpointRouteBuilder> configuration) =>
         configurator.Configure(configuration);
 
-    public static void Add(this IAuthenticationSchemeCollection authenticationSchemes, string name, Action<AuthenticationBuilder> useBuilder,
+    public static void Add(this IAuthenticationCollection authentications, string scheme, Action<AuthenticationBuilder> useBuilder,
        Func<HttpContext, bool>? handles = default
-    ) => authenticationSchemes.Add(new(name, useBuilder, handles ?? (_ => true)));
+    ) => authentications.Add(new(scheme, useBuilder, handles ?? (_ => true)));
 
     public static void Add<T>(this IMiddlewareCollection middlewares,
         int order = default

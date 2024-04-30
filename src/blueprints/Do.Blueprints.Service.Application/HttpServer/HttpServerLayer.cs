@@ -13,7 +13,7 @@ namespace Do.HttpServer;
 
 public class HttpServerLayer : LayerBase<AddServices, Build>
 {
-    readonly IAuthenticationSchemeCollection _authenticationSchemes = new AuthenticationSchemeCollection();
+    readonly IAuthenticationCollection _authentications = new AuthenticationCollection();
     readonly IMiddlewareCollection _middlewares = new MiddlewareCollection();
 
     protected override PhaseContext GetContext(AddServices phase)
@@ -23,25 +23,25 @@ public class HttpServerLayer : LayerBase<AddServices, Build>
         services.AddSingleton<Func<ClaimsPrincipal>>(sp => () => sp.GetRequiredService<IHttpContextAccessor>().HttpContext?.User ?? throw new("HttpContext.User is required"));
 
         return phase.CreateContextBuilder()
-            .Add(_authenticationSchemes)
+            .Add(_authentications)
             .OnDispose(() =>
             {
-                if (_authenticationSchemes.Any())
+                if (_authentications.Any())
                 {
-                    var builder = services.AddAuthentication(o =>
+                    var builder = services.AddAuthentication(options =>
                     {
-                        o.DefaultScheme = "Default";
-                        o.AddScheme<DefaultAuthenticationHandler>("Default", "Default");
+                        options.DefaultScheme = "Default";
+                        options.AddScheme<DefaultAuthenticationHandler>("Default", "Default");
                     });
 
-                    foreach (var scheme in _authenticationSchemes)
+                    foreach (var scheme in _authentications)
                     {
                         scheme.UseBuilder.Invoke(builder);
                     }
 
                     services.Configure<AuthenticationSchemeOptions>(
                         default,
-                        options => options.ForwardDefaultSelector = FirstSchemeThatHandles
+                        options => options.ForwardDefaultSelector = FirstAuthenticationThatHandles
                     );
 
                     services.AddOptions<AuthenticationSchemeOptions>();
@@ -50,8 +50,8 @@ public class HttpServerLayer : LayerBase<AddServices, Build>
             .Build();
     }
 
-    string? FirstSchemeThatHandles(HttpContext context) =>
-        _authenticationSchemes.FirstOrDefault(scheme => scheme.Handles(context))?.Name;
+    string? FirstAuthenticationThatHandles(HttpContext context) =>
+        _authentications.FirstOrDefault(a => a.Handles(context))?.Scheme;
 
     protected override PhaseContext GetContext(Build phase)
     {
@@ -62,7 +62,7 @@ public class HttpServerLayer : LayerBase<AddServices, Build>
             .Add<IEndpointRouteBuilder>(app)
             .OnDispose(() =>
             {
-                if (_authenticationSchemes.Any())
+                if (_authentications.Any())
                 {
                     app.UseAuthentication();
                 }

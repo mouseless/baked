@@ -9,10 +9,10 @@ public class ApiKeyAuthenticationFeature()
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureAuthenticationSchemeCollection(configuration =>
+        configurator.ConfigureAuthenticationCollection(authentications =>
         {
-            configuration.Add(
-                name: "ApiKey",
+            authentications.Add(
+                scheme: "ApiKey",
                 useBuilder: builder => builder.AddScheme<AuthenticationSchemeOptions, AuthenticationHandler>(
                     "ApiKey",
                     opt => { }

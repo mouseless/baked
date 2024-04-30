@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Http;
 
 namespace Do.HttpServer;
 
-public record AuthenticationSchemeDescriptor
+public record AuthenticationDescriptor
 (
-    string Name,
+    string Scheme,
     Action<AuthenticationBuilder> UseBuilder,
     Func<HttpContext, bool> Handles
 );

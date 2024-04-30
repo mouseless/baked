@@ -12,10 +12,10 @@ public class FixedBearerTokenAuthenticationFeature(List<Token> _tokens)
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureAuthenticationSchemeCollection(configuration =>
+        configurator.ConfigureAuthenticationCollection(authentications =>
         {
-            configuration.Add(
-                name: "FixedBearerToken",
+            authentications.Add(
+                scheme: "FixedBearerToken",
                 useBuilder: builder => builder
                     .AddScheme<AuthenticationSchemeOptions, AuthenticationHandler>(
                         "FixedBearerToken",
