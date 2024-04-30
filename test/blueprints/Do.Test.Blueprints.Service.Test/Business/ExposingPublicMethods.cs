@@ -8,7 +8,7 @@ public class ExposingPublicMethods : TestServiceNfr
     [Test]
     public async Task Void([Values("void", "void-async")] string route)
     {
-        var response = await Client.PostAsync($"/method-samples/{route}", new StringContent(string.Empty));
+        var response = await Client.PostAsync($"/method-samples/{route}", null);
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }
@@ -16,7 +16,7 @@ public class ExposingPublicMethods : TestServiceNfr
     [Test]
     public async Task Post()
     {
-        var response = await Client.PostAsync($"/method-samples", new StringContent(string.Empty));
+        var response = await Client.PostAsync($"/method-samples", null);
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }
@@ -24,7 +24,7 @@ public class ExposingPublicMethods : TestServiceNfr
     [Test]
     public async Task Put()
     {
-        var response = await Client.PutAsync($"/method-samples", new StringContent(string.Empty));
+        var response = await Client.PutAsync($"/method-samples", null);
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }
@@ -32,7 +32,7 @@ public class ExposingPublicMethods : TestServiceNfr
     [Test]
     public async Task Patch()
     {
-        var response = await Client.PatchAsync($"/method-samples/string", new StringContent(string.Empty));
+        var response = await Client.PatchAsync($"/method-samples/string", null);
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }

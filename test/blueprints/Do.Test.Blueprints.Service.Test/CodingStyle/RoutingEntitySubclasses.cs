@@ -14,7 +14,7 @@ public class RoutingEntitySubclasses : TestServiceNfr
             new { unique }
         ));
 
-        var response = await Client.PostAsync($"/entities/{route}/operate-on-{route}", new StringContent(string.Empty));
+        var response = await Client.PostAsync($"/entities/{route}/operate-on-{route}", null);
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }
