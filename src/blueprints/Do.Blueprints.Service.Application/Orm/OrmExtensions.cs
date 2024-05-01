@@ -1,7 +1,6 @@
 using Do.Architecture;
 using Do.Domain.Model;
 using Do.Orm;
-using Do.RestApi.Configuration;
 using Do.RestApi.Model;
 using Humanizer;
 using Shouldly;
@@ -40,25 +39,27 @@ public static class OrmExtensions
         return action.AddAsService(queryContextType, name: $"{entityType.Name.Camelize()}Query");
     }
 
-    public static void MoveParameterToRoute(this ParameterModelContext context, string resourceName,
-        string? constraint = default
-    )
+    public static string GetRouteString(this ParameterModel parameter)
     {
-        constraint = constraint is null ? string.Empty : $":{constraint}";
+        var constraint = parameter switch
+        {
+            { Type: nameof(Guid) } => ":guid",
+            _ when parameter.TypeModel.Is<Guid>() => ":guid",
+            _ => string.Empty
+        };
 
-        context.Parameter.From = ParameterModelFrom.Route;
-        context.Action.Route = $"{resourceName}/{{{context.Parameter.Name}{constraint}}}/{context.Action.Name}";
+        return $"{{{parameter.Name}{constraint}}}";
     }
 
-    public static string BuildSingleBy(this ParameterModel queryContextParameter, string valueExpression,
+    public static string BuildSingleBy(this ParameterModel queryParameter, string valueExpression,
         string property = "Id",
         bool fromRoute = false,
         TypeModel? castTo = default
     )
     {
         var singleBy = fromRoute
-            ? $"{queryContextParameter.Name}.SingleBy{property}({valueExpression}, throwNotFound: true)"
-            : $"{queryContextParameter.Name}.SingleBy{property}({valueExpression})";
+            ? $"{queryParameter.Name}.SingleBy{property}({valueExpression}, throwNotFound: true)"
+            : $"{queryParameter.Name}.SingleBy{property}({valueExpression})";
 
         return castTo is null
             ? singleBy

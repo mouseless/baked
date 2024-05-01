@@ -1,10 +1,10 @@
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http.Json;
 
 namespace Do.Test.CodingStyle;
 
-public class RoutingRichEntities : TestServiceNfr
+public class RoutingEntities : TestServiceNfr
 {
     [Test]
     public async Task Post()

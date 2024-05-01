@@ -41,6 +41,9 @@ public class ApiCodeTemplate(ApiModel _apiModel)
             )}}
         )
         {
+            {{ForEach(action.PreparationStatements, statement => $$"""
+                {{statement}}
+            """)}}
             var __target = {{action.FindTargetStatement}};
 
             {{Return(action.Return)}} __target.{{action.Id}}(

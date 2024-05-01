@@ -28,7 +28,10 @@ public class SingleByUniqueCodingStyleFeature : IFeature<CodingStyleConfigurator
 
         configurator.ConfigureApiModelConventions(conventions =>
         {
-            conventions.Add(new UseRouteForUniquePropertyConvention());
+            var domain = configurator.Context.GetDomainModel();
+
+            conventions.Add(new UseRouteInSingleByUniqueConvention());
+            conventions.Add(new AddUniqueSupportToIdInRouteConvention(domain));
         });
     }
 }

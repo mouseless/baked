@@ -23,6 +23,7 @@ public record ActionModel(
 
     public List<string> AdditionalAttributes { get; init; } = [];
     public Dictionary<string, ParameterModel> Parameter { get; init; } = [];
+    public List<string> PreparationStatements { get; init; } = [];
 
     public bool HasBodyOrForm => BodyOrFormParameters.Any();
     public IEnumerable<ParameterModel> Parameters { get => Parameter.Values; init => Parameter = value.ToDictionary(p => p.Id); }

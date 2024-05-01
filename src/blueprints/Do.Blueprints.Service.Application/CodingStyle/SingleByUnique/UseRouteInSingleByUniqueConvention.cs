@@ -4,7 +4,7 @@ using Humanizer;
 
 namespace Do.CodingStyle.SingleByUnique;
 
-public class UseRouteForUniquePropertyConvention : IApiModelConvention<ActionModelContext>
+public class UseRouteInSingleByUniqueConvention : IApiModelConvention<ActionModelContext>
 {
     public void Apply(ActionModelContext context)
     {
@@ -13,11 +13,7 @@ public class UseRouteForUniquePropertyConvention : IApiModelConvention<ActionMod
         if (!context.Action.Parameter.TryGetValue(unique.PropertyName.Camelize(), out var uniqueParameter)) { return; }
 
         uniqueParameter.From = ParameterModelFrom.Route;
-        context.Action.Route = context.Action.Route.Replace($"/{context.Action.Name}",
-            uniqueParameter.TypeModel.Is<Guid>()
-                ? $"/{{{uniqueParameter.Name:guid}}}"
-                : $"/{{{uniqueParameter.Name}}}"
-        );
+        context.Action.Route = context.Action.Route.Replace($"/{context.Action.Name}", $"/{uniqueParameter.GetRouteString()}");
 
         if (context.Action.Parameter.TryGetValue("throwNotFound", out var throwNotFoundParameter))
         {
