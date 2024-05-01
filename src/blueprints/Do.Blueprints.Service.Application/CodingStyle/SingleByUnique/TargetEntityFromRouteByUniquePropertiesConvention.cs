@@ -1,21 +1,32 @@
-﻿using System.Text;
-using Do.Business;
+﻿using Do.Business;
 using Do.Domain.Model;
 using Do.RestApi.Configuration;
 using Humanizer;
+using System.Diagnostics.CodeAnalysis;
+using System.Text;
 
 namespace Do.CodingStyle.SingleByUnique;
 
-public class AddUniqueSupportToIdInRouteConvention(DomainModel _domain)
+public class TargetEntityFromRouteByUniquePropertiesConvention(DomainModel _domain)
     : IApiModelConvention<ParameterModelContext>
 {
+    protected DomainModel Domain => _domain;
+
+    protected virtual bool TryGetEntityType(ParameterModelContext context, [NotNullWhen(true)] out TypeModel? entityType, out TypeModel? castTo)
+    {
+        entityType = context.Parameter.TypeModel;
+        castTo = null;
+
+        return true;
+    }
+
     public void Apply(ParameterModelContext context)
     {
         if (context.Parameter.IsInvokeMethodParameter) { return; }
         if (context.Action.MethodModel is null) { return; }
         if (context.Action.MethodModel.Has<InitializerAttribute>()) { return; }
 
-        var entityType = context.Parameter.TypeModel;
+        if (!TryGetEntityType(context, out var entityType, out var castTo)) { return; }
         if (!entityType.TryGetQueryType(_domain, out var queryType)) { return; }
         if (!queryType.TryGetMembers(out var queryMembers)) { return; }
 
@@ -48,7 +59,7 @@ public class AddUniqueSupportToIdInRouteConvention(DomainModel _domain)
                 findTargetStatements.Append($$"""
                     else if(Enum.TryParse<{{uniqueParameter.ParameterType.CSharpFriendlyFullName}}>({{context.Parameter.Name}}, true, out var @{{uniqueParameter.Name}}))
                     {
-                        __foundTarget = {{queryParameter.BuildSingleBy($"@{uniqueParameter.Name}", property: unique.PropertyName, fromRoute: true)}};
+                        __foundTarget = {{queryParameter.BuildSingleBy($"@{uniqueParameter.Name}", property: unique.PropertyName, fromRoute: true, castTo: castTo)}};
                     }
                 """);
             }
@@ -57,7 +68,7 @@ public class AddUniqueSupportToIdInRouteConvention(DomainModel _domain)
                 findTargetStatements.Append($$"""
                     else if({{uniqueParameter.ParameterType.CSharpFriendlyFullName}}.TryParse((IFormatProvider)null, out var @{{uniqueParameter.Name}}))
                     {
-                        __foundTarget = {{queryParameter.BuildSingleBy($"@{uniqueParameter.Name}", property: unique.PropertyName, fromRoute: true)}};
+                        __foundTarget = {{queryParameter.BuildSingleBy($"@{uniqueParameter.Name}", property: unique.PropertyName, fromRoute: true, castTo: castTo)}};
                     }
                 """);
             }
@@ -65,7 +76,6 @@ public class AddUniqueSupportToIdInRouteConvention(DomainModel _domain)
             {
                 uniqueString = unique;
             }
-
         }
 
         if (uniqueString is not null)
@@ -73,7 +83,7 @@ public class AddUniqueSupportToIdInRouteConvention(DomainModel _domain)
             findTargetStatements.Append($$"""
                 else
                 {
-                    __foundTarget = {{queryParameter.BuildSingleBy(context.Parameter.Name, property: uniqueString.PropertyName, fromRoute: true)}};
+                    __foundTarget = {{queryParameter.BuildSingleBy(context.Parameter.Name, property: uniqueString.PropertyName, fromRoute: true, castTo: castTo)}};
                 }
             """);
         }

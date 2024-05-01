@@ -169,7 +169,7 @@ public class Entities(IQueryContext<Entity> _context)
     ) => _context.SingleBy(e => e.Unique == unique) ?? throw RecordNotFoundException.For<Entity>(nameof(unique), unique, notFound: throwNotFound);
 
     public Entity SingleByEnum(Status @enum,
-            bool throwNotFound = false
+        bool throwNotFound = false
     ) => _context.SingleBy(e => e.Enum == @enum) ?? throw RecordNotFoundException.For<Entity>(nameof(@enum), @enum, notFound: throwNotFound);
 
     public Entity? FirstByString(string startsWith,

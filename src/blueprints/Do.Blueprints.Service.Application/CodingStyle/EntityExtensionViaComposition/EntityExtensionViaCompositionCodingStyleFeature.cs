@@ -43,6 +43,7 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
             var domain = configurator.Context.GetDomainModel();
 
             conventions.Add(new TargetEntityExtensionFromRouteConvention(domain));
+            conventions.Add(new TargetEntityExtensionFromRouteByUniquePropertiesConvention(domain));
             conventions.Add(new EntityExtensionsUnderEntitiesConvention(domain));
             conventions.Add(new LookupEntityExtensionByIdConvention(domain));
             conventions.Add(new LookupEntityExtensionsByIdsConvention(domain));
