@@ -21,10 +21,10 @@ public class RoutingEntityByUniqueProperties : TestServiceNfr
     public async Task GetByUniqueEnum()
     {
         await Client.PostAsync("/entities", JsonContent.Create(
-            new { @enum = "enabled" }
+            new { @enum = "member1" }
         ));
 
-        var response = await Client.GetAsync("/entities/enabled");
+        var response = await Client.GetAsync("/entities/member1");
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }

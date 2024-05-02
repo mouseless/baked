@@ -20,9 +20,9 @@ public class RoutingEntityExtensions : TestServiceNfr
     [Test]
     public async Task Extensions_are_compatible_with_single_by_unique_coding_style()
     {
-        await Client.PostAsync("/entities", JsonContent.Create(new { @enum = "enabled" }));
+        await Client.PostAsync("/entities", JsonContent.Create(new { @enum = "member1" }));
 
-        var response = await Client.PostAsync($"/entities/enabled/increment-int32", new StringContent(string.Empty));
+        var response = await Client.PostAsync($"/entities/member1/increment-int32", new StringContent(string.Empty));
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }

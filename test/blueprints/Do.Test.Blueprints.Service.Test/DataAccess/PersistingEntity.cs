@@ -17,7 +17,7 @@ public class PersistingEntity : TestServiceSpec
             unique: $"{Guid.NewGuid()}",
             uri: GiveMe.AUrl(),
             @dynamic: new { },
-            @enum: Status.Disabled
+            @enum: Enumeration.Member1
         );
 
         actual.ShouldBeInserted();

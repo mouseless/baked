@@ -48,5 +48,10 @@ public class SingleByUniqueCodingStyleFeature : IFeature<CodingStyleConfigurator
         {
             services.AddSingleton<MatcherPolicy, UniquePropertyMatcherPolicy>();
         });
+
+        configurator.ConfigureSwaggerGenOptions(swaggerGen =>
+        {
+            swaggerGen.DocumentFilter<UnifyUniquePropertiesInRouteDocumentFilter>();
+        });
     }
 }

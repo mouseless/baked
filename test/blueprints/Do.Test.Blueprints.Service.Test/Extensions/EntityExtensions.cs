@@ -13,7 +13,7 @@ public static class EntityExtensions
        string? unique = default,
        Uri? uri = default,
        object? @dynamic = default,
-       Status? @enum = default,
+       Enumeration? @enum = default,
        DateTime? dateTime = default,
        bool setNowForDateTime = false
     )
@@ -25,7 +25,7 @@ public static class EntityExtensions
         unique ??= $"giveMe.AGuid()";
         uri ??= giveMe.AUrl();
         dynamic ??= new { };
-        @enum ??= Status.Disabled;
+        @enum ??= Enumeration.Member1;
         dateTime ??= setNowForDateTime ? giveMe.The<TimeProvider>().GetNow() : giveMe.ADateTime();
 
         return giveMe.An<Entity>().With(

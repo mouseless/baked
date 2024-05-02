@@ -15,7 +15,7 @@ public class RegisteringServices : TestServiceSpec
     }
 
     [Test]
-    public void Value_types_are_not_registered([Values(typeof(Struct), typeof(Status))] Type type)
+    public void Value_types_are_not_registered([Values(typeof(Struct), typeof(Enumeration))] Type type)
     {
         var action = () => GiveMe.The(type);
 
