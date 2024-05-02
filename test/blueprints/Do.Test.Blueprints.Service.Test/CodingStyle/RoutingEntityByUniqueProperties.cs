@@ -6,7 +6,6 @@ namespace Do.Test.CodingStyle;
 public class RoutingEntityByUniqueProperties : TestServiceNfr
 {
     [Test]
-    [Ignore("not implemented")]
     public async Task GetByUniqueString()
     {
         await Client.PostAsync("/entities", JsonContent.Create(
@@ -19,8 +18,7 @@ public class RoutingEntityByUniqueProperties : TestServiceNfr
     }
 
     [Test]
-    [Ignore("not implemented")]
-    public async Task GetByByUniqueEnum()
+    public async Task GetByUniqueEnum()
     {
         await Client.PostAsync("/entities", JsonContent.Create(
             new { @enum = "enabled" }
@@ -67,16 +65,5 @@ public class RoutingEntityByUniqueProperties : TestServiceNfr
         var response = await Client.DeleteAsync($"/entities/non-existing");
 
         response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
-    }
-
-    [Test]
-    [Ignore("not implemented")]
-    public async Task Ignores_case_for_enum_values()
-    {
-        await Client.PostAsync("/entities", JsonContent.Create(new { @enum = "enabled" }));
-
-        var response = await Client.DeleteAsync($"/entities/enabled");
-
-        response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }
 }

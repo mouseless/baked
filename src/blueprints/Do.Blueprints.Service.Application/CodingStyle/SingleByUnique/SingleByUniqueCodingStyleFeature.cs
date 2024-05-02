@@ -1,6 +1,9 @@
 ﻿using Do.Architecture;
 using Do.Orm;
 using Do.Orm.AutoMap;
+using Humanizer;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Do.CodingStyle.SingleByUnique;
 
@@ -17,8 +20,14 @@ public class SingleByUniqueCodingStyleFeature : IFeature<CodingStyleConfigurator
                 {
                     var match = Regexes.StartsWithSingleBy().Match(c.Method.Name);
                     var propertyName = match.Groups["Name"].Value;
-
-                    add(c.Method, new SingleByUniqueAttribute(propertyName));
+                    var propertyType = c.Method.Overloads[0].Parameters[propertyName.Camelize()].ParameterType; // TODO use default overload
+                    if (propertyType.Is<string>() || propertyType.IsEnum)
+                    {
+                        propertyType.Apply(t =>
+                        {
+                            add(c.Method, new SingleByUniqueAttribute(propertyName, t));
+                        });
+                    }
                 },
                 when: c =>
                     c.Type.Has<QueryAttribute>() &&
@@ -32,6 +41,12 @@ public class SingleByUniqueCodingStyleFeature : IFeature<CodingStyleConfigurator
 
             conventions.Add(new TargetEntityFromRouteByUniquePropertiesConvention(domain));
             conventions.Add(new UseRouteInSingleByUniqueConvention());
+            conventions.Add(new MarkActionAsSingleByUniqueConvention());
+        });
+
+        configurator.ConfigureServiceCollection(services =>
+        {
+            services.AddSingleton<MatcherPolicy, UniquePropertyMatcherPolicy>();
         });
     }
 }

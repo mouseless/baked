@@ -48,7 +48,7 @@ public class TargetEntityFromRouteByUniquePropertiesConvention(DomainModel _doma
         """);
 
         var queryParameter = context.Action.AddAsService(queryType);
-        SingleByUniqueAttribute? uniqueString = null;
+        SingleByUniqueAttribute? fallback = null;
         foreach (var singleByUnique in singleByUniques)
         {
             var overload = singleByUnique.Overloads.Single(); // TODO use default overload
@@ -63,27 +63,18 @@ public class TargetEntityFromRouteByUniquePropertiesConvention(DomainModel _doma
                     }
                 """);
             }
-            else if (!uniqueParameter.ParameterType.Is<string>() && uniqueParameter.ParameterType.IsAssignableTo(typeof(IParsable<>)))
-            {
-                findTargetStatements.Append($$"""
-                    else if({{uniqueParameter.ParameterType.CSharpFriendlyFullName}}.TryParse((IFormatProvider)null, out var @{{uniqueParameter.Name}}))
-                    {
-                        __foundTarget = {{queryParameter.BuildSingleBy($"@{uniqueParameter.Name}", property: unique.PropertyName, fromRoute: true, castTo: castTo)}};
-                    }
-                """);
-            }
             else if (uniqueParameter.ParameterType.Is<string>())
             {
-                uniqueString = unique;
+                fallback = unique;
             }
         }
 
-        if (uniqueString is not null)
+        if (fallback is not null)
         {
             findTargetStatements.Append($$"""
                 else
                 {
-                    __foundTarget = {{queryParameter.BuildSingleBy(context.Parameter.Name, property: uniqueString.PropertyName, fromRoute: true, castTo: castTo)}};
+                    __foundTarget = {{queryParameter.BuildSingleBy(context.Parameter.Name, property: fallback.PropertyName, fromRoute: true, castTo: castTo)}};
                 }
             """);
         }
