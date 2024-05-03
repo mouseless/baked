@@ -30,6 +30,21 @@ public record ActionModel(
     public IEnumerable<ParameterModel> ActionParameters => Parameters.Where(p => !p.IsHardCoded);
     public IEnumerable<ParameterModel> BodyOrFormParameters => ActionParameters.Where(p => p.From == ParameterModelFrom.BodyOrForm);
     public IEnumerable<ParameterModel> NonBodyOrFormParameters => ActionParameters.Where(p => p.From != ParameterModelFrom.BodyOrForm);
+    public IEnumerable<ParameterModel> RouteParameters => Parameters.Where(p => p.From == ParameterModelFrom.Route).OrderBy(p => p.RoutePosition);
     public IEnumerable<ParameterModel> InvokedMethodParameters => Parameters.Where(p => p.IsInvokeMethodParameter).OrderBy(p => p.Order);
-    public string RouteStylized => Route.Split('/').Select(part => part.StartsWith("{") ? part : RoutePartStylizer(part)).Join('/');
+
+    public string RouteStylized
+    {
+        get
+        {
+            var routeParts = Route.Split('/').Select(part => RoutePartStylizer(part)).ToList();
+            foreach (var routeParameter in RouteParameters)
+            {
+                var index = routeParameter.RoutePosition > routeParts.Count ? routeParts.Count : routeParameter.RoutePosition;
+                routeParts.Insert(index, routeParameter.GetRouteString());
+            }
+
+            return routeParts.Join('/');
+        }
+    }
 }

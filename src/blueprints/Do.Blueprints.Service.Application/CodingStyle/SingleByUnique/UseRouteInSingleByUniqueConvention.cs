@@ -13,7 +13,8 @@ public class UseRouteInSingleByUniqueConvention : IApiModelConvention<ActionMode
         if (!context.Action.Parameter.TryGetValue(unique.PropertyName.Camelize(), out var uniqueParameter)) { return; }
 
         uniqueParameter.From = ParameterModelFrom.Route;
-        context.Action.Route = context.Action.Route.Replace($"/{context.Action.Name}", $"/{uniqueParameter.GetRouteString()}");
+        uniqueParameter.RoutePosition = 1;
+        context.Action.Route = context.Action.Route.Replace($"/{context.Action.Name}", string.Empty);
 
         if (context.Action.Parameter.TryGetValue("throwNotFound", out var throwNotFoundParameter))
         {

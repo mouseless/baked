@@ -132,7 +132,6 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
             conventions.Add(new RemoveFromRouteConvention(["Update", "Change", "Set"]));
             conventions.Add(new RemoveFromRouteConvention(["Update", "Change", "Set"]));
             conventions.Add(new RemoveFromRouteConvention(["Delete", "Remove", "Clear"]));
-            conventions.Add(new RemoveFromRouteConvention(["Add"], _pluralize: true));
         });
 
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>

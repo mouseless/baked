@@ -55,6 +55,7 @@ public static class ForgeExtensions
             app.Features.AddBusiness(business);
             app.Features.AddCaching(caching);
             app.Features.AddCodingStyles([
+                c => c.AddRemoveChild(),
                 c => c.CommandPattern(),
                 c => c.EntityExtensionViaComposition(),
                 c => c.EntitySubclassViaComposition(),

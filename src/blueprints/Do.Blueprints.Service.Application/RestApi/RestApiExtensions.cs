@@ -59,6 +59,18 @@ public static class RestApiExtensions
     public static void AddAttribute<T>(this ActionModel action) where T : Attribute =>
         action.AdditionalAttributes.Add(typeof(T).GetCSharpFriendlyFullName());
 
+    public static string GetRouteString(this ParameterModel parameter)
+    {
+        var constraint = parameter switch
+        {
+            { Type: nameof(Guid) } => ":guid",
+            _ when parameter.TypeModel.Is<Guid>() => ":guid",
+            _ => string.Empty
+        };
+
+        return $"{{{parameter.Name}{constraint}}}";
+    }
+
     internal static IMvcBuilder AddNewtonsoftJson(this IMvcBuilder source, MvcNewtonsoftJsonOptions options)
     {
         source.AddNewtonsoftJson();

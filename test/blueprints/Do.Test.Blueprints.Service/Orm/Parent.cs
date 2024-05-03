@@ -27,6 +27,13 @@ public class Parent(IEntityContext<Parent> _context, Func<Child> _newChild, Chil
         _newChild().With(this);
     }
 
+    public virtual void RemoveChild(Child child)
+    {
+        if (child.Parent != this) { throw new NotMyChildException(child); }
+
+        child.Delete();
+    }
+
     public virtual void Delete()
     {
         foreach (var child in GetChildren())

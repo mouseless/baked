@@ -22,7 +22,8 @@ public class TargetEntityExtensionFromRouteConvention(DomainModel _domain)
 
         context.Parameter.ConvertToId(name: "id");
         context.Parameter.From = ParameterModelFrom.Route;
-        context.Action.Route = $"{entityType.Name.Pluralize()}/{context.Parameter.GetRouteString()}/{context.Action.Name}";
+        context.Parameter.RoutePosition = 1;
+        context.Action.Route = $"{entityType.Name.Pluralize()}/{context.Action.Name}";
         context.Action.FindTargetStatement = queryContextParameter.BuildSingleBy(context.Parameter.Name, fromRoute: true, castTo: entityExtensionType);
     }
 }
