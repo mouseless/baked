@@ -67,6 +67,7 @@ public abstract class ServiceSpec : Spec
                 c => c.RichEntity(),
                 c => c.ScopedBySuffix(),
                 c => c.SingleByUnique(),
+                c => c.UriReturnIsRedirect(),
                 c => c.UseBuiltInTypes(),
                 c => c.WithMethod()
             ]);

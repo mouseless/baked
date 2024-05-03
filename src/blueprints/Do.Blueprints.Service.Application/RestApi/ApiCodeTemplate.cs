@@ -46,9 +46,13 @@ public class ApiCodeTemplate(ApiModel _apiModel)
             """)}}
             var __target = {{action.FindTargetStatement}};
 
-            {{Return(action.Return)}} __target.{{action.Id}}(
-                {{ForEach(action.InvokedMethodParameters, p => $"@{p.InternalName}: {ParameterLookup(p, action.UseForm)}", separator: ", ")}}
-            );
+            {{If(action.Return.IsVoid, () => $$"""
+                {{Invoke("__target", action)}};
+            """, @else: () => $$"""
+                var __result = {{Invoke("__target", action)}};
+
+                return {{action.Return.RenderResult("__result")}};
+            """)}}
         }
     """;
 
@@ -71,6 +75,12 @@ public class ApiCodeTemplate(ApiModel _apiModel)
             ? useForm ? $"FromForm" : "FromBody"
             : $"From{parameterFrom}";
 
+    string Invoke(string target, ActionModel action) => $$"""
+        {{(action.Return.IsAsync ? "await " : string.Empty)}}{{target}}.{{action.Id}}(
+            {{ForEach(action.InvokedMethodParameters, p => $"@{p.InternalName}: {ParameterLookup(p, action.UseForm)}", separator: ", ")}}
+        )
+    """;
+
     string ParameterLookup(ParameterModel parameter, bool useForm) =>
         $"({parameter.RenderLookup(
             If(useForm || !parameter.FromBodyOrForm,
@@ -79,10 +89,4 @@ public class ApiCodeTemplate(ApiModel _apiModel)
                 () => $"request.@{parameter.Name}"
             )
         )})";
-
-    string Return(ReturnModel @return) =>
-        @return.IsAsync && @return.IsVoid ? "await" :
-        @return.IsAsync && !@return.IsVoid ? "return await" :
-        @return.IsVoid ? string.Empty :
-        "return";
 }

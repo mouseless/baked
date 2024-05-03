@@ -20,6 +20,8 @@ public abstract class ServiceNfr<TEntryPoint> : Nfr
 {
     protected System.Net.Http.HttpClient Client { get; private set; } = default!;
 
+    protected virtual bool AllowAutoRedirect => false;
+
     public override async Task OneTimeSetUp()
     {
         await base.OneTimeSetUp();
@@ -28,7 +30,7 @@ public abstract class ServiceNfr<TEntryPoint> : Nfr
 
         Client = new WebApplicationFactory<TEntryPoint>()
             .WithWebHostBuilder(config => config.UseSetting("typeName", $"{GetType().AssemblyQualifiedName}"))
-            .CreateClient();
+            .CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = AllowAutoRedirect });
     }
 
     public override async Task OneTimeTearDown()
