@@ -20,7 +20,7 @@ public class SingleByUniqueCodingStyleFeature : IFeature<CodingStyleConfigurator
                 {
                     var match = Regexes.StartsWithSingleBy().Match(c.Method.Name);
                     var propertyName = match.Groups["Name"].Value;
-                    var propertyType = c.Method.Overloads[0].Parameters[propertyName.Camelize()].ParameterType; // TODO use default overload
+                    var propertyType = c.Method.DefaultOverload.Parameters[propertyName.Camelize()].ParameterType;
                     if (propertyType.Is<string>() || propertyType.IsEnum)
                     {
                         propertyType.Apply(t =>

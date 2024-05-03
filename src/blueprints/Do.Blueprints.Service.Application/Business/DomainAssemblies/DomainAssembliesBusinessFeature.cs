@@ -9,7 +9,7 @@ using System.Reflection;
 
 namespace Do.Business.DomainAssemblies;
 
-public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IEnumerable<MethodOverloadModel>, MethodOverloadModel> _overloadSelector)
+public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IEnumerable<MethodOverloadModel>, MethodOverloadModel> _defaultOverloadSelector)
     : IFeature<BusinessConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
@@ -33,6 +33,8 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
             builder.BindingFlags.Constructor = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
             builder.BindingFlags.Method = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
             builder.BindingFlags.Property = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
+
+            builder.DefaultOverloadSelector = _defaultOverloadSelector;
 
             builder.BuildLevels.Add(context => context.DomainTypesContain(context.Type), BuildLevels.Members);
             builder.BuildLevels.Add(context => context.Type.IsGenericType && context.DomainTypesContain(context.Type.GetGenericTypeDefinition()), BuildLevels.Members);
@@ -72,12 +74,13 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
                   !c.Type.IsAbstract &&
                   !c.Type.IsGenericType &&
                   c.Type.TryGetMembers(out var members) &&
-                  members.Methods.Any(m => m.Overloads.Any(o => !o.IsStatic && !o.IsSpecialName))
+                  members.Methods.Any(m => m.DefaultOverload.IsPublicInstanceWithNoSpecialName())
             );
             builder.Conventions.AddMethodMetadata(new ApiMethodAttribute(),
                 when: c =>
                     !c.Method.Has<InitializerAttribute>() &&
-                    c.Method.Overloads.Any(o => o.IsPublic && !o.IsStatic && !o.IsSpecialName && o.AllParametersAreApiInput()),
+                    c.Method.DefaultOverload.IsPublicInstanceWithNoSpecialName() &&
+                    c.Method.DefaultOverload.AllParametersAreApiInput(),
                 order: int.MaxValue
             );
         });
@@ -94,9 +97,7 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
                 var controller = new ControllerModel(type);
                 foreach (var method in type.GetMembers().Methods.Having<ApiMethodAttribute>())
                 {
-                    var overload = _overloadSelector(method.Overloads.Where(o => o.IsPublic && !o.IsStatic && !o.IsSpecialName && o.AllParametersAreApiInput()));
-
-                    controller.AddAction(type, method, overload);
+                    controller.AddAction(type, method);
                 }
 
                 api.Controller.Add(controller.Id, controller);

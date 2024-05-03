@@ -23,9 +23,8 @@ public class TargetEntitySubclassFromRouteConvention(DomainModel _domain)
         var singleByUniqueMethod = queryMembers.Methods.Having<SingleByUniqueAttribute>().FirstOrDefault();
         if (singleByUniqueMethod is null) { return; }
         if (!singleByUniqueMethod.TryGetSingle<SingleByUniqueAttribute>(out var unique)) { return; }
-        if (singleByUniqueMethod.Overloads.Count != 1) { return; } // TODO will use default overload
 
-        var uniqueParameter = singleByUniqueMethod.Overloads[0].Parameters[unique.PropertyName.Camelize()];
+        var uniqueParameter = singleByUniqueMethod.DefaultOverload.Parameters[unique.PropertyName.Camelize()];
         if (!uniqueParameter.ParameterType.IsEnum && !uniqueParameter.ParameterType.Is<string>()) { return; }
 
         var valueExpression = uniqueParameter.ParameterType.IsEnum

@@ -17,8 +17,8 @@ public class CommandPatternCodingStyleFeature : IFeature<CodingStyleConfigurator
                     members.Has<TransientAttribute>() &&
                     !members.Has<LocatableAttribute>() &&
                     members
-                        .Methods.SingleOrDefault(m => m.Has<InitializerAttribute>()) // TODO performance :thinking:
-                        ?.Overloads.Any(o => o.IsPublic && !o.IsStatic && !o.IsSpecialName) == true, // TODO migrate to metadata check
+                        .Methods.SingleOrDefault(m => m.Has<InitializerAttribute>())
+                        ?.DefaultOverload.IsPublicInstanceWithNoSpecialName() == true,
                 order: 40
             );
             builder.Conventions.RemoveTypeMetadata<ApiServiceAttribute>(
@@ -35,7 +35,7 @@ public class CommandPatternCodingStyleFeature : IFeature<CodingStyleConfigurator
             conventions.Insert(0, new InitializeUsingQueryParametersConvention());
             conventions.Insert(1, new UseClassNameInsteadOfActionNames(["Execute", "Process"]));
             conventions.Add(new RemoveFromRouteConvention(["Execute", "Process"]));
-            conventions.Add(new UseActionNameAsGroupNameForSingleMethodNonLocatables());
+            conventions.Add(new UseRootPathAsGroupNameForSingleMethodNonLocatables());
         });
     }
 }

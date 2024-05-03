@@ -51,9 +51,8 @@ public class TargetEntityFromRouteByUniquePropertiesConvention(DomainModel _doma
         SingleByUniqueAttribute? fallback = null;
         foreach (var singleByUnique in singleByUniques)
         {
-            var overload = singleByUnique.Overloads.Single(); // TODO use default overload
             var unique = singleByUnique.GetSingle<SingleByUniqueAttribute>();
-            var uniqueParameter = overload.Parameters[unique.PropertyName.Camelize()];
+            var uniqueParameter = singleByUnique.DefaultOverload.Parameters[unique.PropertyName.Camelize()];
             if (uniqueParameter.ParameterType.IsEnum)
             {
                 findTargetStatements.Append($$"""

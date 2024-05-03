@@ -12,8 +12,7 @@ public class InitializeUsingQueryParametersConvention : IApiModelConvention<Acti
         if (!members.Has<PubliclyInitializableAttribute>()) { return; }
 
         var initializer = members.Methods.Having<InitializerAttribute>().Single();
-        var overload = initializer.Overloads.First(o => o.IsPublic && !o.IsStatic && !o.IsSpecialName && o.AllParametersAreApiInput()); // TODO get overload number from api method metadata
-        foreach (var parameter in overload.Parameters)
+        foreach (var parameter in initializer.DefaultOverload.Parameters)
         {
             context.Action.Parameter[parameter.Name] =
                 new(parameter.ParameterType, ParameterModelFrom.Query, parameter.Name)
@@ -28,6 +27,6 @@ public class InitializeUsingQueryParametersConvention : IApiModelConvention<Acti
         targetParameter.Name = "newTarget";
         targetParameter.Type = $"Func<{targetParameter.Type}>";
 
-        context.Action.FindTargetStatement = $"newTarget().{initializer.Name}({overload.Parameters.Select(p => $"@{p.Name}").Join(", ")})";
+        context.Action.FindTargetStatement = $"newTarget().{initializer.Name}({initializer.DefaultOverload.Parameters.Select(p => $"@{p.Name}").Join(", ")})";
     }
 }

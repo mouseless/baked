@@ -96,9 +96,11 @@ public class TypeModelMembers : TypeModelMetadata
                 var methodInfos = type.GetMethods(builder.Options.BindingFlags.Method) ?? [];
                 foreach (var methodsByName in methodInfos.GroupBy(m => m.Name))
                 {
+                    var overloads = methodsByName.Select(BuildMethod).ToList().AsReadOnly();
                     result.Add(new(
                         methodsByName.Key,
-                        methodsByName.Select(BuildMethod).ToList().AsReadOnly(),
+                        builder.Options.DefaultOverloadSelector(overloads),
+                        overloads,
                         new(methodsByName.SelectMany(m => m.GetCustomAttributes()))
                     ));
                 }
