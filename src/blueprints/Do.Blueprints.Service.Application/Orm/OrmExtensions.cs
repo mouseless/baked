@@ -51,13 +51,22 @@ public static class OrmExtensions
 
     public static string BuildSingleBy(this ParameterModel queryParameter, string valueExpression,
         string property = "Id",
+        string? notNullValueExpression = default,
         bool fromRoute = false,
-        TypeModel? castTo = default
+        TypeModel? castTo = default,
+        bool nullable = false
     )
     {
+        notNullValueExpression ??= valueExpression;
+
         var singleBy = fromRoute
-            ? $"{queryParameter.Name}.SingleBy{property}({valueExpression}, throwNotFound: true)"
-            : $"{queryParameter.Name}.SingleBy{property}({valueExpression})";
+            ? $"{queryParameter.Name}.SingleBy{property}({notNullValueExpression}, throwNotFound: true)"
+            : $"{queryParameter.Name}.SingleBy{property}({notNullValueExpression})";
+
+        if (nullable)
+        {
+            singleBy = $"({valueExpression} != null ? {singleBy} : null)";
+        }
 
         return castTo is null
             ? singleBy
@@ -81,12 +90,19 @@ public static class OrmExtensions
     }
 
     public static void ConvertToId(this ParameterModel parameter,
-        string? name = default
+        string? name = default,
+        bool nullable = false,
+        bool dontAddRequired = false
     )
     {
         name ??= $"{parameter.Name}Id";
 
-        parameter.Type = nameof(Guid);
+        if (!nullable && dontAddRequired)
+        {
+            parameter.AddRequiredAttributes(isValueType: true);
+        }
+
+        parameter.Type = nullable ? "Guid?" : "Guid";
         parameter.Name = name;
     }
 

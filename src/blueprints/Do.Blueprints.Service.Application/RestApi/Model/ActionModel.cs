@@ -28,10 +28,10 @@ public record ActionModel(
     public bool HasBodyOrForm => BodyOrFormParameters.Any();
     public IEnumerable<ParameterModel> Parameters { get => Parameter.Values; init => Parameter = value.ToDictionary(p => p.Id); }
     public IEnumerable<ParameterModel> ActionParameters => Parameters.Where(p => !p.IsHardCoded);
-    public IEnumerable<ParameterModel> BodyOrFormParameters => ActionParameters.Where(p => p.From == ParameterModelFrom.BodyOrForm);
-    public IEnumerable<ParameterModel> NonBodyOrFormParameters => ActionParameters.Where(p => p.From != ParameterModelFrom.BodyOrForm);
+    public IEnumerable<ParameterModel> BodyOrFormParameters => ActionParameters.Where(p => p.From == ParameterModelFrom.BodyOrForm).OrderBy(p => p.Order).OrderBy(p => p.IsOptional ? 1 : -1);
+    public IEnumerable<ParameterModel> NonBodyOrFormParameters => ActionParameters.Where(p => p.From != ParameterModelFrom.BodyOrForm).OrderBy(p => p.Order).OrderBy(p => p.IsOptional ? 1 : -1);
     public IEnumerable<ParameterModel> RouteParameters => Parameters.Where(p => p.From == ParameterModelFrom.Route).OrderBy(p => p.RoutePosition);
-    public IEnumerable<ParameterModel> InvokedMethodParameters => Parameters.Where(p => p.IsInvokeMethodParameter).OrderBy(p => p.Order);
+    public IEnumerable<ParameterModel> InvokedMethodParameters => Parameters.Where(p => p.IsInvokeMethodParameter);
 
     public string RouteStylized
     {

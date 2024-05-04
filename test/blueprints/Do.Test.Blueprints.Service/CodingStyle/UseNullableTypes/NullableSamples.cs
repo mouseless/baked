@@ -1,53 +1,56 @@
+using Do.Test.CodingStyle.EntityExtensionViaComposition;
 using Do.Test.Orm;
+using Microsoft.Extensions.Logging;
 
 namespace Do.Test.CodingStyle.UseNullableTypes;
 
-public class NullableSamples
+public class NullableSamples(ILogger<NullableSamples> _logger)
 {
-    public int NotNullValueType(int notNull) =>
-        notNull;
+    public void GetValueType(int notNull, int? nullable,
+        int optional = 42,
+        int? optionalNullable = 42
+    ) => _logger.LogInformation($"{notNull} - {nullable} - {optional} - {optionalNullable}");
 
-    public int OptionalValueType(int optional = 42) =>
-        optional;
-
-    public int? NullableValueType(int? nullable) =>
-        nullable;
-
-    public int? OptionalNullableValueType(int? optionalNullable = 42) =>
-        optionalNullable;
+    public void ValueType(int notNull, int? nullable,
+        int optional = 42,
+        int? optionalNullable = 42
+    ) => _logger.LogInformation($"{notNull} - {nullable} - {optional} - {optionalNullable}");
 
     /*
-    public Enumeration NotNullEnum(Enumeration notNull) =>
-        notNull;
+    public void GetEnum(Enumeration notNull, Enumeration? nullable,
+        Enumeration optional = Enumeration.Member1,
+        Enumeration? optionalNullable = Enumeration.Member1
+    ) => _logger.LogInformation($"{notNull} - {nullable} - {optional} - {optionalNullable}");
 
-    public Enumeration OptionalEnum(Enumeration optional = Enumeration.Member1) =>
-        optional;
-
-    public Enumeration? NullableEnum(Enumeration? nullable) =>
-        nullable;
-
-    public Enumeration? OptionalNullableEnum(Enumeration? optionalNullable = Enumeration.Member1) =>
-        optionalNullable;
+    public void Enum(Enumeration notNull, Enumeration? nullable,
+        Enumeration optional = Enumeration.Member1,
+        Enumeration? optionalNullable = Enumeration.Member1
+    ) => _logger.LogInformation($"{notNull} - {nullable} - {optional} - {optionalNullable}");
     */
 
-    public string NotNullReferenceType(string notNull) =>
-        notNull;
+    public void GetReferenceType(string notNull, string? nullable,
+        string optional = "default",
+        string? optionalNullable = "default"
+    ) => _logger.LogInformation($"{notNull} - {nullable} - {optional} - {optionalNullable}");
 
-    public string OptionalReferenceType(string optional = "default") =>
-        optional;
+    public void ReferenceType(string notNull, string? nullable,
+        string optional = "default",
+        string? optionalNullable = "default"
+    ) => _logger.LogInformation($"{notNull} - {nullable} - {optional} - {optionalNullable}");
 
-    public string? NullableReferenceType(string? nullable) =>
-        nullable;
+    public void GetEntity(Entity notNull, Entity? nullable,
+        Entity? optionalNullable = default
+    ) => _logger.LogInformation($"{notNull} - {nullable} - {optionalNullable}");
 
-    public string? OptionalNullableReferenceType(string? optionalNullable = "default") =>
-        optionalNullable;
+    public void Entity(Entity notNull, Entity? nullable,
+        Entity? optionalNullable = default
+    ) => _logger.LogInformation($"{notNull} - {nullable} - {optionalNullable}");
 
-    public Entity NotNullEntity(Entity notNull) =>
-        notNull;
+    public void GetEntityExtension(EntityExtension notNull, EntityExtension? nullable,
+        EntityExtension? optionalNullable = default
+    ) => _logger.LogInformation($"{notNull} - {nullable} - {optionalNullable}");
 
-    public Entity? NullableEntity(Entity? nullable) =>
-        nullable;
-
-    public Entity? OptionalNullableEntity(Entity? optionalNullable = default) =>
-        optionalNullable;
+    public void EntityExtension(EntityExtension notNull, EntityExtension? nullable,
+        EntityExtension? optionalNullable = default
+    ) => _logger.LogInformation($"{notNull} - {nullable} - {optionalNullable}");
 }

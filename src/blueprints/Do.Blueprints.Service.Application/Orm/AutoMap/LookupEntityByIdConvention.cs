@@ -1,6 +1,7 @@
 ﻿using Do.Business;
 using Do.Domain.Model;
 using Do.RestApi.Configuration;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Do.Orm.AutoMap;
 
@@ -14,9 +15,14 @@ public class LookupEntityByIdConvention(DomainModel _domain)
         if (!context.Parameter.IsInvokeMethodParameter) { return; }
         if (!context.Parameter.TypeModel.TryGetQueryContextType(_domain, out var queryContextType)) { return; }
 
+        var notNull = context.Parameter.MappedParameter?.Has<NotNullAttribute>() == true;
         var queryContextParameter = context.Action.AddQueryContextAsService(queryContextType);
 
-        context.Parameter.ConvertToId();
-        context.Parameter.LookupRenderer = p => queryContextParameter.BuildSingleBy(p);
+        context.Parameter.ConvertToId(nullable: !notNull);
+        context.Parameter.LookupRenderer =
+            p => queryContextParameter.BuildSingleBy(p,
+                notNullValueExpression: $"(Guid){p}",
+                nullable: !notNull
+            );
     }
 }

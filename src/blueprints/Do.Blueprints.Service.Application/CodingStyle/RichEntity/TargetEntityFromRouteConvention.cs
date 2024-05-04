@@ -20,7 +20,7 @@ public class TargetEntityFromRouteConvention(DomainModel _domain)
 
         var queryContextParameter = context.Action.AddQueryContextAsService(queryContextType);
 
-        context.Parameter.ConvertToId(name: "id");
+        context.Parameter.ConvertToId(name: "id", dontAddRequired: true);
         context.Parameter.From = ParameterModelFrom.Route;
         context.Parameter.RoutePosition = 1;
         context.Action.Route = $"{entityType.Name.Pluralize()}/{context.Action.Name}";
