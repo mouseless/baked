@@ -9,7 +9,7 @@ public record ActionModel(
     string Route,
     ReturnModel Return,
     string FindTargetStatement,
-    MethodModel? MethodModel = default
+    MethodModel? MappedMethod = default
 )
 {
     public string Name { get; set; } = Id;

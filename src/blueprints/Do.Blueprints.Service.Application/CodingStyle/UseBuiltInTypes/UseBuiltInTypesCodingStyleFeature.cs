@@ -24,13 +24,6 @@ public class UseBuiltInTypesCodingStyleFeature(IEnumerable<string> _textProperty
             );
             builder.Conventions.AddTypeMetadata(new ApiInputAttribute(),
                 when: c =>
-                    c.Type.IsAssignableTo(typeof(Nullable<>)) &&
-                    c.Type.GenericTypeArguments.FirstOrDefault()?.Model.TryGetMetadata(out var genericArgumentMetadata) == true &&
-                    genericArgumentMetadata.Has<ApiInputAttribute>(),
-                  order: int.MinValue
-            );
-            builder.Conventions.AddTypeMetadata(new ApiInputAttribute(),
-                when: c =>
                     c.Type.IsAssignableTo(typeof(IEnumerable<>)) &&
                     c.Type.IsGenericType && c.Type.TryGetGenerics(out var generics) &&
                     generics.GenericTypeArguments.FirstOrDefault()?.Model.TryGetMetadata(out var genericArgMetadata) == true &&

@@ -31,13 +31,13 @@ public static class DomainAssembliesBusinessExtensions
                 Route: $"{type.Name}/{method.Name}",
                 Return: new(method.DefaultOverload.ReturnType),
                 FindTargetStatement: "target",
-                MethodModel: method
+                MappedMethod: method
             )
             {
                 Parameters = [
                     new(type, ParameterModelFrom.Services, "target"),
                     .. method.DefaultOverload.Parameters.Select(p =>
-                        new RestApi.Model.ParameterModel(p.ParameterType, ParameterModelFrom.BodyOrForm, p.Name)
+                        new RestApi.Model.ParameterModel(p.ParameterType, ParameterModelFrom.BodyOrForm, p.Name, MappedParameter: p)
                         {
                             IsOptional = p.IsOptional,
                             DefaultValue = p.DefaultValue,

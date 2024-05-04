@@ -70,6 +70,7 @@ public abstract class ServiceSpec : Spec
                 c => c.SingleByUnique(),
                 c => c.UriReturnIsRedirect(),
                 c => c.UseBuiltInTypes(),
+                c => c.UseNullableTypes(),
                 c => c.WithMethod()
             ]);
             app.Features.AddCommunication(communication);

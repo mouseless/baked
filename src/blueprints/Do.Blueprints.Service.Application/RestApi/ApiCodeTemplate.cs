@@ -23,7 +23,7 @@ public class ApiCodeTemplate(ApiModel _apiModel)
     string Action(ActionModel action) => $$"""
         {{If(!action.UseForm && action.HasBodyOrForm, () => $$"""
         public record {{action.Id}}Request(
-            {{ForEach(action.BodyOrFormParameters, p => Parameter(p, action.UseForm), separator: ", ")}}
+            {{ForEach(action.BodyOrFormParameters, p => Parameter(p, fromForm: false), separator: ", ")}}
         );
         """)}}
 
@@ -31,10 +31,10 @@ public class ApiCodeTemplate(ApiModel _apiModel)
         [Route("{{action.RouteStylized}}")]
         {{ForEach(action.AdditionalAttributes, Attribute)}}
         public {{ReturnType(action.Return)}} {{action.Id}}(
-            {{ForEach(action.NonBodyOrFormParameters, p => Parameter(p, action.UseForm), separator: ", ")}}
+            {{ForEach(action.NonBodyOrFormParameters, p => Parameter(p), separator: ", ")}}
             {{If(action.HasBodyOrForm, () =>
                 If(action.UseForm, () => $$"""
-                , {{ForEach(action.BodyOrFormParameters, p => Parameter(p, action.UseForm), separator: ", ")}}
+                , {{ForEach(action.BodyOrFormParameters, p => Parameter(p, fromForm: true), separator: ", ")}}
                 """, @else: () => $$"""
                 , [FromBody] {{action.Id}}Request request
                 """)
@@ -67,13 +67,16 @@ public class ApiCodeTemplate(ApiModel _apiModel)
         @return.Type
     ;
 
-    string Parameter(ParameterModel parameter, bool useForm) =>
-        $"{If(useForm || !parameter.FromBodyOrForm, () => $"[{ParameterFrom(parameter.From, useForm)}] ")}{parameter.Type} @{parameter.Name}{If(parameter.IsOptional, () => $" = {parameter.RenderDefaultValue()}")}";
+    string Parameter(ParameterModel parameter, bool? fromForm = default) =>
+        $"{Attributes(parameter, fromForm: fromForm)}{parameter.Type} @{parameter.Name}{If(parameter.IsOptional, () => $" = {parameter.RenderDefaultValue()}")}";
 
-    string ParameterFrom(ParameterModelFrom parameterFrom, bool useForm) =>
-        parameterFrom == ParameterModelFrom.BodyOrForm
-            ? useForm ? $"FromForm" : "FromBody"
-            : $"From{parameterFrom}";
+    string Attributes(ParameterModel parameter, bool? fromForm = default) =>
+        $"{ParameterFrom(parameter.From, fromForm)}{ForEach(parameter.AdditionalAttributes, Attribute)} ";
+
+    string ParameterFrom(ParameterModelFrom parameterFrom, bool? useForm = default) =>
+        parameterFrom != ParameterModelFrom.BodyOrForm ? $"[From{parameterFrom}]" :
+        useForm == true ? $"[FromForm]" :
+        string.Empty;
 
     string Invoke(string target, ActionModel action) => $$"""
         {{(action.Return.IsAsync ? "await " : string.Empty)}}{{target}}.{{action.Id}}(

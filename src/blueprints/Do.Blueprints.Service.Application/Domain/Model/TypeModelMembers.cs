@@ -86,7 +86,8 @@ public class TypeModelMembers : TypeModelMetadata
                     builder.GetReference(property.PropertyType),
                     property.GetMethod?.IsPublic == true,
                     property.GetMethod?.IsVirtual == true,
-                    new(property.GetCustomAttributes())
+                    new(property.GetCustomAttributes()),
+                    apply => apply(property)
                 );
             }
 
@@ -117,7 +118,8 @@ public class TypeModelMembers : TypeModelMetadata
                     methodInfo.IsStatic,
                     methodInfo.IsSpecialName,
                     BuildParameters(methodInfo),
-                    builder.GetReference(methodInfo.ReturnType)
+                    builder.GetReference(methodInfo.ReturnType),
+                    apply => apply(methodInfo)
                 );
             }
 
@@ -133,7 +135,8 @@ public class TypeModelMembers : TypeModelMetadata
                     builder.GetReference(parameter.ParameterType),
                     parameter.IsOptional,
                     parameter.DefaultValue,
-                    new(parameter.Member.GetCustomAttributes())
+                    new(parameter.Member.GetCustomAttributes()),
+                    apply => apply(parameter)
                 );
             }
         }

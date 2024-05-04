@@ -15,7 +15,7 @@ public class InitializeUsingQueryParametersConvention : IApiModelConvention<Acti
         foreach (var parameter in initializer.DefaultOverload.Parameters)
         {
             context.Action.Parameter[parameter.Name] =
-                new(parameter.ParameterType, ParameterModelFrom.Query, parameter.Name)
+                new(parameter.ParameterType, ParameterModelFrom.Query, parameter.Name, MappedParameter: parameter)
                 {
                     IsOptional = parameter.IsOptional,
                     DefaultValue = parameter.DefaultValue,

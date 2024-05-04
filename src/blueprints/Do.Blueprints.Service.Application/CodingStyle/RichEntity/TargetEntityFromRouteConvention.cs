@@ -11,8 +11,8 @@ public class TargetEntityFromRouteConvention(DomainModel _domain)
 {
     public void Apply(ParameterModelContext context)
     {
-        if (context.Action.MethodModel is null) { return; }
-        if (context.Action.MethodModel.Has<InitializerAttribute>()) { return; }
+        if (context.Action.MappedMethod is null) { return; }
+        if (context.Action.MappedMethod.Has<InitializerAttribute>()) { return; }
         if (context.Parameter.IsInvokeMethodParameter) { return; }
 
         var entityType = context.Parameter.TypeModel;

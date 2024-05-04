@@ -1,5 +1,4 @@
-﻿using Do.Domain.Model;
-using Do.RestApi.Configuration;
+﻿using Do.RestApi.Configuration;
 
 namespace Do.CodingStyle.UseBuiltInTypes;
 
@@ -7,20 +6,9 @@ public class EnumDefaultValueConvention : IApiModelConvention<ParameterModelCont
 {
     public void Apply(ParameterModelContext context)
     {
-        TypeModel? enumType = null;
-        if (context.Parameter.TypeModel.IsEnum)
-        {
-            enumType = context.Parameter.TypeModel;
-        }
+        if (!context.Parameter.TypeModel.IsEnum) { return; }
 
-        if (context.Parameter.TypeModel.IsAssignableTo(typeof(Nullable<>)) &&
-            context.Parameter.TypeModel.TryGetGenerics(out var generics))
-        {
-            enumType = generics.GenericTypeArguments.FirstOrDefault()?.Model;
-        }
-
-        if (enumType is null) { return; }
-
+        var enumType = context.Parameter.TypeModel;
         context.Parameter.DefaultValueRenderer = defaultValue =>
         {
             var enumName = string.Empty;

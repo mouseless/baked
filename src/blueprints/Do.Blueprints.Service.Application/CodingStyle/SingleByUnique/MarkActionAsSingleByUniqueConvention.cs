@@ -9,10 +9,12 @@ public class MarkActionAsSingleByUniqueConvention : IApiModelConvention<ActionMo
         if (context.Action.Id == "SingleById")
         {
             context.Action.AdditionalAttributes.Add($"{typeof(SingleByUniqueAttribute).FullName}(\"Id\", typeof(Guid))");
+
+            return;
         }
 
-        if (context.Action.MethodModel is null) { return; }
-        if (context.Action.MethodModel.TryGetSingle<SingleByUniqueAttribute>(out var unique))
+        if (context.Action.MappedMethod is null) { return; }
+        if (context.Action.MappedMethod.TryGetSingle<SingleByUniqueAttribute>(out var unique))
         {
             context.Action.AdditionalAttributes
                 .Add($"{typeof(SingleByUniqueAttribute).FullName}(\"{unique.PropertyName}\", typeof({unique.PropertyType.FullName}))");

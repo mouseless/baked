@@ -7,8 +7,8 @@ public class UriReturnIsRedirectConvention : IApiModelConvention<ActionModelCont
 {
     public void Apply(ActionModelContext context)
     {
-        if (context.Action.MethodModel is null) { return; }
-        if (!context.Action.MethodModel.DefaultOverload.ReturnType.Is<Uri>()) { return; }
+        if (context.Action.MappedMethod is null) { return; }
+        if (!context.Action.MappedMethod.DefaultOverload.ReturnType.Is<Uri>()) { return; }
 
         context.Action.AdditionalAttributes.Add($"ProducesResponseType((int){typeof(HttpStatusCode).FullName}.Redirect)");
         context.Action.Return.Type = "RedirectResult";

@@ -8,8 +8,8 @@ public class UseRouteInSingleByUniqueConvention : IApiModelConvention<ActionMode
 {
     public void Apply(ActionModelContext context)
     {
-        if (context.Action.MethodModel is null) { return; }
-        if (!context.Action.MethodModel.TryGetSingle<SingleByUniqueAttribute>(out var unique)) { return; }
+        if (context.Action.MappedMethod is null) { return; }
+        if (!context.Action.MappedMethod.TryGetSingle<SingleByUniqueAttribute>(out var unique)) { return; }
         if (!context.Action.Parameter.TryGetValue(unique.PropertyName.Camelize(), out var uniqueParameter)) { return; }
 
         uniqueParameter.From = ParameterModelFrom.Route;
