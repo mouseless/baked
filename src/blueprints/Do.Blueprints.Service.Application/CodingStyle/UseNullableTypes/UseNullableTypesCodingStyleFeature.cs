@@ -37,6 +37,7 @@ public class UseNullableTypesCodingStyleFeature : IFeature<CodingStyleConfigurat
         configurator.ConfigureApiModelConventions(conventions =>
         {
             conventions.Add(new NonOptionalNotNullParametersAreRequiredConvention());
+            conventions.Add(new SetDefaultValueForNullableEnumConvention());
         });
     }
 }

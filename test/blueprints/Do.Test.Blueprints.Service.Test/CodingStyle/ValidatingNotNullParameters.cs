@@ -8,7 +8,7 @@ public class ValidatingNotNullParameters : TestServiceNfr
 {
     [TestCase("value-type", "notNull")]
     [TestCase("reference-type", "notNull")]
-    // [TestCase("enum", "notNull")]
+    [TestCase("enum", "notNull")]
     [TestCase("entity", "notNullId")]
     [TestCase("entity-extension", "notNullId")]
     public async Task Not_null_in_query_throws_bad_request_when_not_given(string route, string propertyName)
@@ -23,7 +23,7 @@ public class ValidatingNotNullParameters : TestServiceNfr
 
     [TestCase("value-type", "notNull")]
     [TestCase("reference-type", "notNull")]
-    // [TestCase("enum", "notNull")]
+    [TestCase("enum", "notNull")]
     [TestCase("entity", "notNullId")]
     [TestCase("entity-extension", "notNullId")]
     public async Task Not_null_in_body_throws_bad_request_when_not_given(string route, string propertyName)
@@ -40,7 +40,7 @@ public class ValidatingNotNullParameters : TestServiceNfr
 
     [TestCase("value-type", "notNull")]
     [TestCase("reference-type", "notNull")]
-    // [TestCase("enum", "notNull")]
+    [TestCase("enum", "notNull")]
     [TestCase("entity", "notNullId")]
     [TestCase("entity-extension", "notNullId")]
     public async Task Not_null_in_body_throws_bad_request_when_null_is_given(string route, string propertyName)

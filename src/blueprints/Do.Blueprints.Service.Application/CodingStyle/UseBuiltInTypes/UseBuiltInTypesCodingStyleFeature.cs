@@ -53,7 +53,7 @@ public class UseBuiltInTypesCodingStyleFeature(IEnumerable<string> _textProperty
         configurator.ConfigureApiModelConventions(conventions =>
         {
             conventions.Add(new BoolDefaultValueConvention());
-            conventions.Add(new EnumDefaultValueConvention());
+            conventions.Add(new SetDefaultValueForEnumConvention());
             conventions.Add(new StringDefaultValueConvention());
         });
 

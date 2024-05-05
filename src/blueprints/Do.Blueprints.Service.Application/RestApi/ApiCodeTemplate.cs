@@ -33,10 +33,10 @@ public class ApiCodeTemplate(ApiModel _apiModel)
         [Route("{{action.RouteStylized}}")]
         {{ForEach(action.AdditionalAttributes, Attribute)}}
         public {{ReturnType(action.Return)}} {{action.Id}}(
-            {{ForEach(action.NonBodyOrFormParameters, p => Parameter(p), separator: ", ")}}
+            {{ForEach(action.NonBodyOrFormParameters, Parameter, separator: ", ")}}
             {{If(action.HasBodyOrForm, () =>
                 If(action.UseForm, () => $$"""
-                , {{ForEach(action.BodyOrFormParameters, p => Parameter(p, fromForm: true), separator: ", ")}}
+                , {{ForEach(action.BodyOrFormParameters, Parameter, separator: ", ")}}
                 """, @else: () => $$"""
                 , [FromBody] {{action.Id}}Request request = default
                 """)
@@ -74,7 +74,7 @@ public class ApiCodeTemplate(ApiModel _apiModel)
         @return.Type
     ;
 
-    string Parameter(ParameterModel parameter, bool? fromForm = default) =>
+    string Parameter(ParameterModel parameter) =>
         $"{Attributes(parameter)}{parameter.Type} @{parameter.Name}{If(parameter.IsOptional, () => $" = {parameter.RenderDefaultValue()}")}";
 
     string Attributes(ParameterModel parameter) =>

@@ -16,7 +16,6 @@ public class NullableSamples(ILogger<NullableSamples> _logger)
         int? optionalNullable = 42
     ) => _logger.LogInformation($"{notNull} - {nullable} - {optional} - {optionalNullable}");
 
-    /*
     public void GetEnum(Enumeration notNull, Enumeration? nullable,
         Enumeration optional = Enumeration.Member1,
         Enumeration? optionalNullable = Enumeration.Member1
@@ -26,7 +25,6 @@ public class NullableSamples(ILogger<NullableSamples> _logger)
         Enumeration optional = Enumeration.Member1,
         Enumeration? optionalNullable = Enumeration.Member1
     ) => _logger.LogInformation($"{notNull} - {nullable} - {optional} - {optionalNullable}");
-    */
 
     public void GetReferenceType(string notNull, string? nullable,
         string optional = "default",

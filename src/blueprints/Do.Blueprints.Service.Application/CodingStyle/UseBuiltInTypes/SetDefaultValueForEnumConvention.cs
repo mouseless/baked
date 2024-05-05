@@ -2,7 +2,7 @@
 
 namespace Do.CodingStyle.UseBuiltInTypes;
 
-public class EnumDefaultValueConvention : IApiModelConvention<ParameterModelContext>
+public class SetDefaultValueForEnumConvention : IApiModelConvention<ParameterModelContext>
 {
     public void Apply(ParameterModelContext context)
     {
