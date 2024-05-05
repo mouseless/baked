@@ -24,14 +24,18 @@
       parameters
   - `Forge.New.Service` now automatically generates;
     - api controllers and actions from domain model
-    - entity lookup calls for entity parameters
+    - entity lookup calls for entity and entity extension parameters
     - all types of parameters and return types
     - stylized routes with default conventions
     - additional attributes for controller actions
+    - multi unique property instead of just id route
     - commands as actions
     - entity extension services under entity route
-    - entity composition services are rendered under entity route
-    - single by unique generates duplicate actions for entities
+    - entity subclass services under entity route via a discriminator unique
+      property
+    - add/remove child routes
+    - null check for not-null parameters
+    - redirect result for uri returning methods
   - `Business` and `Orm` is split into two features
     - `LifetimeFeature` is introduced with three implementations `Singleton`,
       `Scoped` and `Transient`

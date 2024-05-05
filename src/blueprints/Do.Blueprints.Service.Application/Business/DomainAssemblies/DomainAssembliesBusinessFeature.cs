@@ -118,7 +118,7 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
             }
         });
 
-        configurator.ConfigureServiceProvider(serviceProvider =>
+        configurator.ConfigureServiceProvider(sp =>
         {
             var domainModel = configurator.Context.GetDomainModel();
             foreach (var type in domainModel.Types.Having<CasterAttribute>())
@@ -127,7 +127,7 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
                 {
                     type.Apply(t => @interface.Apply(i =>
                     {
-                        Caster.Add(i.GenericTypeArguments[0], i.GenericTypeArguments[1], serviceProvider.GetRequiredService(t));
+                        Caster.Add(i.GenericTypeArguments[0], i.GenericTypeArguments[1], sp.GetRequiredService(t));
                     }));
                 }
             }
