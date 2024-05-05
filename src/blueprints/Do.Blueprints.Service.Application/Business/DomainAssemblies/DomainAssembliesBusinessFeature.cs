@@ -31,7 +31,7 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
         configurator.ConfigureDomainModelBuilder(builder =>
         {
             builder.BindingFlags.Constructor = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
-            builder.BindingFlags.Method = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
+            builder.BindingFlags.Method = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
             builder.BindingFlags.Property = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
 
             builder.DefaultOverloadSelector = _defaultOverloadSelector;
@@ -53,6 +53,19 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
                     !c.Type.IsAssignableTo<IEnumerable>() &&
                     c.Type.TryGetMembers(out var members) &&
                     !members.Methods.Contains("<Clone>$") // if type is record
+            );
+            builder.Conventions.AddMethodMetadata(new ExternalAttribute(),
+                when: c =>
+                    c.Method.DefaultOverload.DeclaringType is not null &&
+                    c.Method.DefaultOverload.DeclaringType.TryGetMetadata(out var metadata) &&
+                    !metadata.Has<ServiceAttribute>()
+            );
+            builder.Conventions.AddMethodMetadata(new ExternalAttribute(),
+                when: c =>
+                    c.Method.DefaultOverload.BaseDefinition is not null &&
+                    c.Method.DefaultOverload.BaseDefinition.DeclaringType is not null &&
+                    c.Method.DefaultOverload.BaseDefinition.DeclaringType.TryGetMetadata(out var metadata) &&
+                    !metadata.Has<ServiceAttribute>()
             );
             builder.Conventions.AddTypeMetadata(new CasterAttribute(),
                 when: c => c.Type.IsClass && !c.Type.IsAbstract && c.Type.IsAssignableTo(typeof(ICasts<,>))
@@ -78,6 +91,7 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
             );
             builder.Conventions.AddMethodMetadata(new ApiMethodAttribute(),
                 when: c =>
+                    !c.Method.Has<ExternalAttribute>() &&
                     !c.Method.Has<InitializerAttribute>() &&
                     c.Method.DefaultOverload.IsPublicInstanceWithNoSpecialName() &&
                     c.Method.DefaultOverload.AllParametersAreApiInput(),

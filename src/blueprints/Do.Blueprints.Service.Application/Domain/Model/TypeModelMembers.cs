@@ -111,6 +111,12 @@ public class TypeModelMembers : TypeModelMetadata
 
             MethodOverloadModel BuildMethod(MethodInfo methodInfo)
             {
+                var baseDefinition = methodInfo.GetBaseDefinition();
+                if (baseDefinition == methodInfo)
+                {
+                    baseDefinition = null;
+                }
+
                 return new(
                     methodInfo.IsPublic,
                     methodInfo.IsFamily,
@@ -119,6 +125,8 @@ public class TypeModelMembers : TypeModelMetadata
                     methodInfo.IsSpecialName,
                     BuildParameters(methodInfo),
                     builder.GetReference(methodInfo.ReturnType),
+                    methodInfo.DeclaringType is not null ? builder.GetReference(methodInfo.DeclaringType) : null,
+                    baseDefinition is not null ? BuildMethod(baseDefinition) : null,
                     apply => apply(methodInfo)
                 );
             }

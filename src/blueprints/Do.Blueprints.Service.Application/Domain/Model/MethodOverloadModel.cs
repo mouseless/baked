@@ -10,6 +10,8 @@ public record MethodOverloadModel(
     bool IsSpecialName,
     ModelCollection<ParameterModel> Parameters,
     TypeModelReference ReturnTypeReference,
+    TypeModelReference? DeclaringTypeReference,
+    MethodOverloadModel? BaseDefinition,
     Action<Action<MethodInfo>> Apply
 ) : MethodBaseModel(
     IsPublic,
@@ -20,4 +22,5 @@ public record MethodOverloadModel(
 )
 {
     public TypeModel ReturnType => ReturnTypeReference.Model;
+    public TypeModel? DeclaringType => DeclaringTypeReference?.Model;
 }
