@@ -21,10 +21,10 @@ public class ApiCodeTemplate(ApiModel _apiModel)
     """;
 
     string Action(ActionModel action) => $$"""
-        {{If(!action.UseForm && action.HasBodyOrForm, () => $$"""
+        {{If(action.HasBody, () => $$"""
         public class {{action.Id}}Request
         {
-            {{ForEach(action.BodyOrFormParameters, Property)}}
+            {{ForEach(action.BodyParameters, Property)}}
         }
 
         """)}}
@@ -32,16 +32,11 @@ public class ApiCodeTemplate(ApiModel _apiModel)
         [Http{{Method(action.Method)}}]
         [Route("{{action.RouteStylized}}")]
         {{ForEach(action.AdditionalAttributes, Attribute)}}
-        public {{ReturnType(action.Return)}} {{action.Id}}(
-            {{ForEach(action.NonBodyOrFormParameters, Parameter, separator: ", ")}}
-            {{If(action.HasBodyOrForm, () =>
-                If(action.UseForm, () => $$"""
-                , {{ForEach(action.BodyOrFormParameters, Parameter, separator: ", ")}}
-                """, @else: () => $$"""
-                , [FromBody] {{action.Id}}Request request = default
-                """)
-            )}}
-        )
+        public {{ReturnType(action.Return)}} {{action.Id}}({{Join(", ",
+            ForEach(action.ServiceParameters, Parameter, separator: ", "),
+            If(action.HasBody, () => $$"""[FromBody] {{action.Id}}Request request"""),
+            ForEach(action.NonBodyParameters, Parameter, separator: ", ")
+        )}})
         {
             {{ForEach(action.PreparationStatements, statement => $$"""
                 {{statement}}
