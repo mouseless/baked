@@ -35,9 +35,9 @@ public class EntityExtension
         entity.Cast().To<EntityExtension>();
 }
 
-public class EntityExtensions(Func<EntityExtension> _newComposite)
+public class EntityExtensions(Func<EntityExtension> _newEntityExtension)
     : ICasts<Entity, EntityExtension>
 {
     EntityExtension ICasts<Entity, EntityExtension>.To(Entity from) =>
-        _newComposite().With(from);
+        _newEntityExtension().With(from);
 }

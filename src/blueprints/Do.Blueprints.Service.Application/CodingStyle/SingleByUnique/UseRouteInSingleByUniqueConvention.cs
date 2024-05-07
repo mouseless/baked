@@ -15,6 +15,7 @@ public class UseRouteInSingleByUniqueConvention : IApiModelConvention<ActionMode
         uniqueParameter.From = ParameterModelFrom.Route;
         uniqueParameter.RoutePosition = 1;
         context.Action.RouteParts = context.Action.RouteParts.RemoveAll(context.Action.Name);
+        context.Action.Name = string.Empty;
 
         if (context.Action.Parameter.TryGetValue("throwNotFound", out var throwNotFoundParameter))
         {
