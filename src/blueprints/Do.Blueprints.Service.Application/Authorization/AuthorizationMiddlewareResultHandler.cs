@@ -5,7 +5,7 @@ using System.Security.Authentication;
 
 namespace Do.Authorization;
 
-public class AuthorizationResultHandler : IAuthorizationMiddlewareResultHandler
+public class AuthorizationMiddlewareResultHandler : IAuthorizationMiddlewareResultHandler
 {
     public async Task HandleAsync(RequestDelegate next, HttpContext context, AuthorizationPolicy policy, PolicyAuthorizationResult authorizeResult)
     {

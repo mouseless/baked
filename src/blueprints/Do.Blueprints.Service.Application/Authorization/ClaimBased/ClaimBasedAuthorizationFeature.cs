@@ -20,7 +20,7 @@ public class ClaimBasedAuthorizationFeature(IEnumerable<string> _claims, string?
                 }
             });
 
-            services.AddSingleton<IAuthorizationMiddlewareResultHandler, AuthorizationResultHandler>();
+            services.AddSingleton<IAuthorizationMiddlewareResultHandler, AuthorizationMiddlewareResultHandler>();
         });
 
         configurator.ConfigureMiddlewareCollection(middlewares =>

@@ -14,7 +14,7 @@ app.Features.AddAuthentications([...]);
 
 ## Fixed Bearer Token
 
-This feature  using the token provided in `Authorization` header. Handler 
+This feature uses the token provided in `Authorization` header. Handler 
 tests the token against the value configured in settings and setups `Claims` 
 for current `HttpContext.User`. Multiple tokens can be used by providing key 
 names when adding the feature and `Authentication:FixedBearerToken:Default` 
