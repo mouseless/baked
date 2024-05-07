@@ -43,7 +43,7 @@ This layer introduces following phases to the application it is added;
   creates and adds a `WebApplicationBuilder` instance to the application context
   along with a `ConfigurationManager` instance
 - `Build`: This phase adds all services from dependency injection layer to the
-  services in `WebApplicationBuilder` instance. Then builds the app and adds
-  the `WebApplication` instance to the application context
+  services in `WebApplicationBuilder` instance, then builds the app and adds
+  `WebApplication` and `IServiceProvider` instances to the application context
 - `Run`: This phase is added to the application internally as the latest phase
   to run the `WebApplication`

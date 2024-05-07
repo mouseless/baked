@@ -19,10 +19,10 @@ public abstract class Nfr
     protected abstract Application ForgeApplication();
 
     [OneTimeSetUp]
-    public virtual void OneTimeSetUp() { }
+    public virtual Task OneTimeSetUp() => Task.CompletedTask;
 
     [OneTimeTearDown]
-    public virtual void OneTimeTearDown() { }
+    public virtual Task OneTimeTearDown() => Task.CompletedTask;
 
     [SetUp]
     public virtual void SetUp() { }

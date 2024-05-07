@@ -26,7 +26,7 @@ public class RestApiLayer : LayerBase<GenerateCode, AddServices, Build>
     protected override PhaseContext GetContext(GenerateCode phase)
     {
         var generatedAssemblies = Context.GetGeneratedAssemblyCollection();
-
+        _apiModel.References.Add<RestApiLayer>();
         _apiModel.Usings.AddRange(
         [
             "Microsoft.AspNetCore.Mvc",

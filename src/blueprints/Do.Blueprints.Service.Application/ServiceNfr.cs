@@ -10,7 +10,9 @@ using Do.ExceptionHandling;
 using Do.Greeting;
 using Do.Logging;
 using Do.Orm;
+using Humanizer;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Newtonsoft.Json;
 
 namespace Do.Testing;
 
@@ -19,15 +21,50 @@ public abstract class ServiceNfr<TEntryPoint> : Nfr
 {
     protected System.Net.Http.HttpClient Client { get; private set; } = default!;
 
-    public override void OneTimeSetUp()
+    protected virtual bool AllowAutoRedirect => false;
+
+    public override async Task OneTimeSetUp()
     {
-        base.OneTimeSetUp();
+        await base.OneTimeSetUp();
 
         Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", EnvironmentName);
 
         Client = new WebApplicationFactory<TEntryPoint>()
             .WithWebHostBuilder(config => config.UseSetting("typeName", $"{GetType().AssemblyQualifiedName}"))
-            .CreateClient();
+            .CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = AllowAutoRedirect });
+    }
+
+    public override async Task OneTimeTearDown()
+    {
+        await base.OneTimeTearDown();
+
+        foreach (var entityName in EntityNamesToClearOnTearDown)
+        {
+            var entitiesRoute = entityName.Kebaberize().Pluralize();
+            var entitiesResponse = await Client.GetAsync($"/{entitiesRoute}");
+            await CheckResponse($"GET /{entitiesRoute}", entitiesResponse);
+
+            var entities = (IEnumerable?)JsonConvert.DeserializeObject(await entitiesResponse.Content.ReadAsStringAsync()) ?? Array.Empty<object>();
+            foreach (dynamic entity in entities)
+            {
+                var deleteResponse = await Client.DeleteAsync($"/{entitiesRoute}/{entity?.id}");
+                await CheckResponse($"DELETE /{entitiesRoute}/{entity?.id}", deleteResponse);
+            }
+        }
+    }
+
+    async Task CheckResponse(string route, HttpResponseMessage response)
+    {
+        if (response.IsSuccessStatusCode) { return; }
+
+        throw new($"'{route}' didn't work as expected: {response.StatusCode}\n{await response.Content.ReadAsStringAsync()}");
+    }
+
+    public override void SetUp()
+    {
+        base.SetUp();
+
+        Client.DefaultRequestHeaders.Authorization = null;
     }
 
     protected override Application ForgeApplication() =>
@@ -46,6 +83,8 @@ public abstract class ServiceNfr<TEntryPoint> : Nfr
                 orm: Orm,
                 configure: Configure
             );
+
+    protected virtual IEnumerable<string> EntityNamesToClearOnTearDown => [];
 
     protected virtual IEnumerable<Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>>? Authentications => default;
     protected virtual Func<AuthorizationConfigurator, IFeature<AuthorizationConfigurator>>? Authorization => default;

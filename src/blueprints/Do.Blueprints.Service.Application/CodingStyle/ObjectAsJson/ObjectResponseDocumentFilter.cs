@@ -1,3 +1,4 @@
+using Humanizer;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -6,17 +7,6 @@ namespace Do.CodingStyle.ObjectAsJson;
 
 public class ObjectResponseDocumentFilter : IDocumentFilter
 {
-    Dictionary<string, OperationType> _operationTypes = new()
-    {
-        { "POST", OperationType.Post },
-        { "GET", OperationType.Get },
-        { "PATCH", OperationType.Patch },
-        { "PUT", OperationType.Put },
-        { "HEAD", OperationType.Head },
-        { "TRACE", OperationType.Trace },
-        { "OPTIONS", OperationType.Options },
-    };
-
     public void Apply(OpenApiDocument swaggerDoc, DocumentFilterContext context)
     {
         foreach (var apiDescription in context.ApiDescriptions)
@@ -26,7 +16,7 @@ public class ObjectResponseDocumentFilter : IDocumentFilter
             if (apiDescription.HttpMethod is null) { continue; }
 
             var path = $"/{apiDescription.RelativePath?.TrimEnd('/')}";
-            var operation = swaggerDoc.Paths[path].Operations[_operationTypes[apiDescription.HttpMethod]];
+            var operation = swaggerDoc.Paths[path].Operations[Enum.Parse<OperationType>(apiDescription.HttpMethod.ToLowerInvariant().Pascalize())];
             if (!operation.Responses.Any())
             {
                 operation.Responses.Add("200", new() { Description = "Success" });

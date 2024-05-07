@@ -59,20 +59,27 @@ public abstract class ServiceSpec : Spec
             app.Features.AddBusiness(business);
             app.Features.AddCaching(caching);
             app.Features.AddCodingStyles([
-                c => c.WithMethod(),
-                c => c.ScopedBySuffix(),
-                c => c.RemainingServicesAreSingleton(),
-                c => c.UseBuiltInTypes(),
+                c => c.AddRemoveChild(),
+                c => c.CommandPattern(),
+                c => c.EntityExtensionViaComposition(),
+                c => c.EntitySubclassViaComposition(),
                 c => c.ObjectAsJson(),
-                c => c.RichEntity()
+                c => c.RemainingServicesAreSingleton(),
+                c => c.RichEntity(),
+                c => c.ScopedBySuffix(),
+                c => c.SingleByUnique(),
+                c => c.UriReturnIsRedirect(),
+                c => c.UseBuiltInTypes(),
+                c => c.UseNullableTypes(),
+                c => c.WithMethod()
             ]);
             app.Features.AddCommunication(communication);
             app.Features.AddCore(core);
             app.Features.AddDatabase(database);
             app.Features.AddExceptionHandling(exceptionHandling);
             app.Features.AddLifetimes([
-                c => c.Singleton(),
                 c => c.Scoped(),
+                c => c.Singleton(),
                 c => c.Transient()
             ]);
             app.Features.AddMockOverrider(mockOverrider);

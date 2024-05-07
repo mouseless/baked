@@ -16,6 +16,13 @@ public class GeneratingUnauthorizedAccessResponse : TestServiceNfr
     protected override Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>>? ExceptionHandling =>
         c => c.Default(typeUrlFormat: "https://do.mouseless.codes/errors/{0}");
 
+    public override async Task OneTimeTearDown()
+    {
+        Client.DefaultRequestHeaders.Authorization = AuthenticationHeaderValue.Parse("11111111111111111111111111111111");
+
+        await base.OneTimeTearDown();
+    }
+
     [Test]
     public async Task Authentication_exceptions_are_handled_with_its_own_handler()
     {

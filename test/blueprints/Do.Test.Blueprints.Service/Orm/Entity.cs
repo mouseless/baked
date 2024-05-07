@@ -3,20 +3,20 @@ using Do.Orm;
 
 namespace Do.Test.Orm;
 
-public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransaction _transaction, TimeProvider _timeProvider)
+public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransaction _transaction)
 {
-    protected Entity() : this(default!, default!, default!, default!) { }
+    protected Entity() : this(default!, default!, default!) { }
 
     public virtual Guid Id { get; protected set; } = default!;
-    public virtual Guid Guid { get; protected set; } = default!;
-    public virtual string String { get; protected set; } = default!;
-    public virtual string StringData { get; protected set; } = default!;
-    public virtual int Int32 { get; protected set; } = default!;
-    public virtual string Unique { get; protected set; } = default!;
-    public virtual Uri Uri { get; protected set; } = default!;
-    public virtual object Dynamic { get; protected set; } = default!;
-    public virtual Status Enum { get; protected set; } = default!;
-    public virtual DateTime DateTime { get; protected set; } = default!;
+    public virtual Guid? Guid { get; protected set; } = default!;
+    public virtual string? String { get; protected set; } = default!;
+    public virtual string? StringData { get; protected set; } = default!;
+    public virtual int? Int32 { get; protected set; } = default!;
+    public virtual string? Unique { get; protected set; } = default!;
+    public virtual Uri? Uri { get; protected set; } = default!;
+    public virtual object? Dynamic { get; protected set; } = default!;
+    public virtual Enumeration? Enum { get; protected set; } = default!;
+    public virtual DateTime? DateTime { get; protected set; } = default!;
 
     public virtual Entity With(
         Guid? guid = default,
@@ -26,9 +26,8 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
         string? unique = default,
         Uri? uri = default,
         object? @dynamic = default,
-        Status? @enum = default,
-        DateTime? dateTime = default,
-        bool? setNowForDateTime = default
+        Enumeration? @enum = default,
+        DateTime? dateTime = default
     )
     {
         Set(
@@ -40,7 +39,7 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
             uri: uri,
             @dynamic: @dynamic,
             @enum: @enum,
-            dateTime: setNowForDateTime == true ? _timeProvider.GetNow() : dateTime
+            dateTime: dateTime
         );
 
         return _context.Insert(this);
@@ -54,7 +53,7 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
         string? unique = default,
         Uri? uri = default,
         object? @dynamic = default,
-        Status? @enum = default,
+        Enumeration? @enum = default,
         DateTime? dateTime = default,
         bool useTransaction = false,
         bool throwError = false
@@ -97,6 +96,10 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
         }
     }
 
+    public virtual void UpdateString(
+        string? @string = default
+    ) => Set(@string: @string);
+
     protected virtual void Set(
         Guid? guid = default,
         string? @string = default,
@@ -105,13 +108,18 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
         string? unique = default,
         Uri? uri = default,
         object? @dynamic = default,
-        Status? @enum = default,
+        Enumeration? @enum = default,
         DateTime? dateTime = default
     )
     {
         if (unique is not null && unique != Unique && _entities.AnyByUnique(unique))
         {
             throw new MustBeUniqueException(nameof(Unique));
+        }
+
+        if (@enum is not null && @enum != Enum && _entities.AnyByEnum(@enum.Value))
+        {
+            throw new MustBeUniqueException(nameof(Enum));
         }
 
         Guid = guid ?? Guid;
@@ -140,7 +148,7 @@ public class Entities(IQueryContext<Entity> _context)
         int? int32 = default,
         string? unique = default,
         Uri? uri = default,
-        Status? status = default,
+        Enumeration? status = default,
         DateTime? dateTime = default,
         int? take = default,
         int? skip = default
@@ -161,14 +169,21 @@ public class Entities(IQueryContext<Entity> _context)
     internal bool AnyByUnique(string unique) =>
         _context.AnyBy(e => e.Unique == unique);
 
+    internal bool AnyByEnum(Enumeration @enum) =>
+        _context.AnyBy(e => e.Enum == @enum);
+
     public Entity SingleByUnique(string unique,
         bool throwNotFound = false
     ) => _context.SingleBy(e => e.Unique == unique) ?? throw RecordNotFoundException.For<Entity>(nameof(unique), unique, notFound: throwNotFound);
 
+    public Entity SingleByEnum(Enumeration @enum,
+        bool throwNotFound = false
+    ) => _context.SingleBy(e => e.Enum == @enum) ?? throw RecordNotFoundException.For<Entity>(nameof(@enum), @enum, notFound: throwNotFound);
+
     public Entity? FirstByString(string startsWith,
         bool asc = false,
         bool desc = false
-    ) => asc ? _context.FirstBy(e => e.String.StartsWith(startsWith), orderBy: e => e.String) :
-         desc ? _context.FirstBy(e => e.String.StartsWith(startsWith), orderByDescending: e => e.String) :
-         _context.FirstBy(e => e.String.StartsWith(startsWith));
+    ) => asc ? _context.FirstBy(e => e.String != null && e.String.StartsWith(startsWith), orderBy: e => e.String) :
+         desc ? _context.FirstBy(e => e.String != null && e.String.StartsWith(startsWith), orderByDescending: e => e.String) :
+         _context.FirstBy(e => e.String != null && e.String.StartsWith(startsWith));
 }

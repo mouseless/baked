@@ -85,7 +85,7 @@ from domain objects or from other feature implementations.
 > [!NOTE]
 >
 > Each feature has only one abstraction, named after the ability it provides,
-> e.g. `Fs`, `Orm`, `Logging`, `Auth` etc.
+> e.g. `Authentication`, `Lifetime`, `Logging`, `Orm` etc.
 
 ```mermaid
 flowchart
@@ -99,7 +99,7 @@ flowchart
 
   subgraph Features
     subgraph Abstraction
-      A(Api)
+      A(Authentication)
       Db(Database)
     end
   end
@@ -116,14 +116,14 @@ opinionated configurations using the configuration API of the corresponding
 layer(s).
 
 Features may have multiple implementations, each named after its corresponding
-design or technology, e.g. `Auth.Auth0`, `Fs.Aws`, `Database.MySql`.
+design or technology, e.g. `Authentication.FixedToken` and `Database.MySql`.
 
 > [!TIP]
 >
-> `Fs` represents file system feature that provides an API to your domain logic
-> to read/write files. `Fs.Local` and `Fs.AwsS3` are two different
-> implementations that provides the same functionality through different system
-> components.
+> `Lifetime` represents lifetime feature that provides an API to your domain to
+> register services in different lifetimes. `Lifetime.Singleton` and
+> `Lifetime.Transient` are two different implementations of how you register and
+> retrieve your domain objects from dependency injection.
 
 In conclusion, feature implementations serve as bridges, connecting layers to
 each other through their opinionated configurations. Below is a complete sample

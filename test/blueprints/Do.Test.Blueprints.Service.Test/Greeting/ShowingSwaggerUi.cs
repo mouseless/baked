@@ -5,6 +5,7 @@ namespace Do.Test.Documentation;
 
 public class ShowingSwaggerUi : TestServiceNfr
 {
+    protected override bool AllowAutoRedirect => true;
     protected override Func<GreetingConfigurator, IFeature<GreetingConfigurator>>? Greeting =>
         c => c.Swagger();
 
