@@ -1,11 +1,8 @@
 ﻿using Do.Business;
 using Do.Domain.Model;
-using Do.Orm;
 using Do.RestApi.Configuration;
 using Do.RestApi.Model;
 using Humanizer;
-
-using ParameterModel = Do.RestApi.Model.ParameterModel;
 
 namespace Do.CodingStyle.RichEntity;
 
@@ -14,23 +11,19 @@ public class TargetEntityFromRouteConvention(DomainModel _domain)
 {
     public void Apply(ParameterModelContext context)
     {
-        if (context.Action.MethodModel?.CustomAttributes.Contains<InitializerAttribute>() == true) { return; }
+        if (context.Action.MappedMethod is null) { return; }
+        if (context.Action.MappedMethod.Has<InitializerAttribute>()) { return; }
+        if (context.Parameter.IsInvokeMethodParameter) { return; }
 
-        var entityParameter = context.Parameter;
-        if (entityParameter.IsInvokeMethodParameter) { return; }
+        var entityType = context.Parameter.TypeModel;
+        if (!entityType.TryGetQueryContextType(_domain, out var queryContextType)) { return; }
 
-        var entityType = entityParameter.TypeModel;
-        if (!entityType.TryGetMetadata(out var entityMetadata) || !entityMetadata.TryGetSingle<EntityAttribute>(out var entityAttribute)) { return; }
+        var queryContextParameter = context.Action.AddQueryContextAsService(queryContextType);
 
-        var queryContextType = _domain.Types[entityAttribute.QueryContextType];
-        var queryContextParameter = new ParameterModel(queryContextType, ParameterModelFrom.Services, $"{entityType.Name.Camelize()}Query") { IsInvokeMethodParameter = false };
-        context.Action.Parameter[queryContextParameter.Name] = queryContextParameter;
-
-        entityParameter.Type = nameof(Guid);
-        entityParameter.Name = $"{entityParameter.TypeModel.Name.Camelize()}Id";
-        entityParameter.From = ParameterModelFrom.Route;
-
-        context.Action.Route = $"{entityType.Name.Pluralize()}/{{{entityParameter.Name}:guid}}/{context.Action.Name}";
-        context.Action.FindTargetStatement = $"{queryContextParameter.Name}.SingleById({entityParameter.Name}, throwNotFound: true)";
+        context.Parameter.ConvertToId(name: "id", dontAddRequired: true);
+        context.Parameter.From = ParameterModelFrom.Route;
+        context.Parameter.RoutePosition = 1;
+        context.Action.RouteParts = [entityType.Name.Pluralize(), context.Action.Name];
+        context.Action.FindTargetStatement = queryContextParameter.BuildSingleBy(context.Parameter.Name, fromRoute: true);
     }
 }

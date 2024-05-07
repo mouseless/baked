@@ -6,83 +6,58 @@ namespace Do.Test.Business;
 public class ExposingPublicMethods : TestServiceNfr
 {
     [Test]
-    public async Task Void()
+    public async Task Void([Values("void", "void-async")] string route)
     {
-        var response = await Client.PostAsync("/method-samples/void", new StringContent(string.Empty));
+        var response = await Client.PostAsync($"/method-samples/{route}", null);
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }
 
     [Test]
-    public async Task VoidAsync()
+    public async Task Post()
     {
-        var response = await Client.PostAsync("/method-samples/void-async", new StringContent(string.Empty));
+        var response = await Client.PostAsync($"/method-samples", null);
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }
 
     [Test]
-    public async Task PrimitiveParameters()
+    public async Task Put()
     {
-        var response = await Client.PostAsync("/method-samples/primitive-parameters", JsonContent.Create(
-            new
-            {
-                @string = "string",
-                @int = 42,
-                dateTime = DateTime.Now
-            }
-        ));
+        var response = await Client.PutAsync($"/method-samples", null);
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }
 
     [Test]
-    public async Task PrimitiveListParameters()
+    public async Task Patch()
     {
-        var response = await Client.PostAsync("/method-samples/primitive-list-parameters", JsonContent.Create(
-            new
-            {
-                strings = new[] { "a", "b" },
-                ints = new[] { 1, 2 },
-                dateTimes = new[] { DateTime.Now, DateTime.Today }
-            }
-        ));
+        var response = await Client.PatchAsync($"/method-samples/string", null);
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }
 
     [Test]
-    public async Task EntityParameters()
+    public async Task Delete()
     {
-        var response = await Client.PostAsync("/method-samples/entity-parameters", JsonContent.Create(
-            new
-            {
-                entityId = $"{Guid.NewGuid()}"
-            }
-        ));
+        var response = await Client.DeleteAsync($"/method-samples");
 
-        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }
 
     [Test]
-    public async Task EntityListParameters()
+    public async Task Get()
     {
-        var response = await Client.PostAsync("/method-samples/entity-list-parameters", JsonContent.Create(
-            new
-            {
-                entityIds = new[] { $"{Guid.NewGuid()}", $"{Guid.NewGuid()}" },
-                otherEntityIds = new[] { $"{Guid.NewGuid()}", $"{Guid.NewGuid()}" },
-            }
-        ));
+        var response = await Client.GetAsync($"/method-samples/strings");
 
-        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }
 
     [Test]
-    public async Task EntityMethods()
+    public async Task AddChildConvention()
     {
-        var response = await Client.DeleteAsync($"/entity/{Guid.NewGuid()}/delete");
+        var response = await Client.PostAsync($"/method-samples/strings", JsonContent.Create(new { @string = "test" }));
 
-        response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }
 }

@@ -4,6 +4,7 @@ namespace Do.Domain.Model;
 
 public record MethodModel(
     string Name,
+    MethodOverloadModel DefaultOverload,
     ReadOnlyCollection<MethodOverloadModel> Overloads,
     AttributeCollection CustomAttributes
 ) : IModel, ICustomAttributesModel

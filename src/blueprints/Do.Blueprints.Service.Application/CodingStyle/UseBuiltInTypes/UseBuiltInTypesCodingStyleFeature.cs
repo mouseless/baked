@@ -15,29 +15,24 @@ public class UseBuiltInTypesCodingStyleFeature(IEnumerable<string> _textProperty
         configurator.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.AddTypeMetadata(new ApiInputAttribute(),
-                when: type =>
-                  type.IsEnum ||
-                  type.Is<Uri>() ||
-                  type.IsAssignableTo(typeof(IParsable<>)) ||
-                  type.IsAssignableTo(typeof(string))
+                when: c =>
+                  c.Type.IsEnum ||
+                  c.Type.Is<Uri>() ||
+                  c.Type.IsAssignableTo(typeof(IParsable<>)) ||
+                  c.Type.IsAssignableTo(typeof(string)),
+              order: int.MinValue
             );
             builder.Conventions.AddTypeMetadata(new ApiInputAttribute(),
-                when: type =>
-                    type.IsAssignableTo(typeof(Nullable<>)) &&
-                    type.GenericTypeArguments.FirstOrDefault()?.Model.TryGetMetadata(out var genericArgumentMetadata) == true &&
-                    genericArgumentMetadata.Has<ApiInputAttribute>()
-            );
-            builder.Conventions.AddTypeMetadata(new ApiInputAttribute(),
-                when: type =>
-                    type.IsAssignableTo(typeof(IEnumerable<>)) &&
-                    type.IsGenericType && type.TryGetGenerics(out var generics) &&
+                when: c =>
+                    c.Type.IsAssignableTo(typeof(IEnumerable<>)) &&
+                    c.Type.IsGenericType && c.Type.TryGetGenerics(out var generics) &&
                     generics.GenericTypeArguments.FirstOrDefault()?.Model.TryGetMetadata(out var genericArgMetadata) == true &&
                     genericArgMetadata.Has<ApiInputAttribute>(),
                 order: 20
             );
             builder.Conventions.AddTypeMetadata(new ApiInputAttribute(),
-                when: type =>
-                    type.IsArray && type.TryGetGenerics(out var generics) &&
+                when: c =>
+                    c.Type.IsArray && c.Type.TryGetGenerics(out var generics) &&
                     generics.ElementType?.TryGetMetadata(out var elementMetadata) == true &&
                     elementMetadata.Has<ApiInputAttribute>(),
                 order: 20
@@ -58,7 +53,7 @@ public class UseBuiltInTypesCodingStyleFeature(IEnumerable<string> _textProperty
         configurator.ConfigureApiModelConventions(conventions =>
         {
             conventions.Add(new BoolDefaultValueConvention());
-            conventions.Add(new EnumDefaultValueConvention());
+            conventions.Add(new SetDefaultValueForEnumConvention());
             conventions.Add(new StringDefaultValueConvention());
         });
 

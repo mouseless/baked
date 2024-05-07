@@ -24,18 +24,27 @@
       parameters
   - `Forge.New.Service` now automatically generates;
     - api controllers and actions from domain model
-    - entity lookup calls for entity parameters
+    - entity lookup calls for entity and entity extension parameters
     - all types of parameters and return types
     - stylized routes with default conventions
     - additional attributes for controller actions
+    - multi unique property instead of just id route
+    - commands as actions
+    - entity extension services under entity route
+    - entity subclass services under entity route via a discriminator unique
+      property
+    - add/remove child routes
+    - null check for not-null parameters
+    - redirect result for uri returning methods
   - `Business` and `Orm` is split into two features
     - `LifetimeFeature` is introduced with three implementations `Singleton`,
       `Scoped` and `Transient`
     - `CodingStyleFeature` is introduced with existing coding styles to separate
       them from business feature
-  - `Authorization` feature is now added with `ClaimBasedAuthorization` 
+  - `Business` now allows service casting, `service.Cast().To<AnotherService>()`
+  - `Authorization` feature is now added with `ClaimBasedAuthorization`
     implementation
-  - `HttpServerLayer` now registers authentication services and adds 
+  - `HttpServerLayer` now registers authentication services and adds
     authentication middleware
     - provides `SchemeConfigurationCollection` configuration target which
       supports forwarding request to appropriate handlers
@@ -51,6 +60,7 @@
 - `Documentation` feature is refactored into coding styles and removed
   completely
 - `Authentication` feature is now a multi-feature
+- Not null parameters throw bad request when null value is received
 - `FixedToken` authentication feature is now renamed to `FixedBearerToken`
   - Feature now have `TokenOptions` parameter to configure token names and
     associated claims with given tokens

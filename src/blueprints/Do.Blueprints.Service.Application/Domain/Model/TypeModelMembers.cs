@@ -93,12 +93,14 @@ public class TypeModelMembers : TypeModelMetadata
             ModelCollection<MethodModel> BuildMethods()
             {
                 var result = new ModelCollection<MethodModel>.KeyedCollection();
-                var methodInfos = type.GetMethods(builder.Options.BindingFlags.Method).Where(m => !m.IsSpecialName) ?? [];
+                var methodInfos = type.GetMethods(builder.Options.BindingFlags.Method) ?? [];
                 foreach (var methodsByName in methodInfos.GroupBy(m => m.Name))
                 {
+                    var overloads = methodsByName.Select(BuildMethod).ToList().AsReadOnly();
                     result.Add(new(
                         methodsByName.Key,
-                        methodsByName.Select(BuildMethod).ToList().AsReadOnly(),
+                        builder.Options.DefaultOverloadSelector(overloads),
+                        overloads,
                         new(methodsByName.SelectMany(m => m.GetCustomAttributes()))
                     ));
                 }
@@ -108,12 +110,22 @@ public class TypeModelMembers : TypeModelMetadata
 
             MethodOverloadModel BuildMethod(MethodInfo methodInfo)
             {
+                var baseDefinition = methodInfo.GetBaseDefinition();
+                if (baseDefinition == methodInfo)
+                {
+                    baseDefinition = null;
+                }
+
                 return new(
                     methodInfo.IsPublic,
                     methodInfo.IsFamily,
                     methodInfo.IsVirtual,
+                    methodInfo.IsStatic,
+                    methodInfo.IsSpecialName,
                     BuildParameters(methodInfo),
-                    builder.GetReference(methodInfo.ReturnType)
+                    builder.GetReference(methodInfo.ReturnType),
+                    methodInfo.DeclaringType is not null ? builder.GetReference(methodInfo.DeclaringType) : null,
+                    baseDefinition is not null ? BuildMethod(baseDefinition) : null
                 );
             }
 
@@ -129,7 +141,8 @@ public class TypeModelMembers : TypeModelMetadata
                     builder.GetReference(parameter.ParameterType),
                     parameter.IsOptional,
                     parameter.DefaultValue,
-                    new(parameter.Member.GetCustomAttributes())
+                    new(parameter.Member.GetCustomAttributes()),
+                    apply => apply(parameter)
                 );
             }
         }

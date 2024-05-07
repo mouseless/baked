@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Humanizer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Do.ExceptionHandling.Default;
@@ -27,9 +28,9 @@ public class ExceptionHandler(IEnumerable<IExceptionHandler> _handlers, Exceptio
         new()
         {
             Type = _settings.TypeUrlFormat is not null
-                ? string.Format(_settings.TypeUrlFormat.GetValue(), SnakeCase(NameOf(exceptionInfo.Exception)))
+                ? string.Format(_settings.TypeUrlFormat.GetValue(), NameOf(exceptionInfo.Exception).Kebaberize())
                 : null,
-            Title = TitleCase(NameOf(exceptionInfo.Exception)),
+            Title = NameOf(exceptionInfo.Exception).Titleize(),
             Status = exceptionInfo.Code,
             Detail = exceptionInfo.Body,
             Extensions = exceptionInfo.ExtraData ?? []
@@ -37,13 +38,4 @@ public class ExceptionHandler(IEnumerable<IExceptionHandler> _handlers, Exceptio
 
     string NameOf(Exception exception) =>
         exception.GetType().Name.Replace(nameof(Exception), string.Empty);
-
-    string TitleCase(string pascalCaseString) =>
-        SplitPascalCase(pascalCaseString, joinBy: " ");
-
-    string SnakeCase(string pascalCaseString) =>
-        SplitPascalCase(pascalCaseString, joinBy: "-").ToLowerInvariant();
-
-    string SplitPascalCase(string @string, string joinBy) =>
-        Regexes.PascalCaseSplitter().Replace(@string, joinBy);
 }

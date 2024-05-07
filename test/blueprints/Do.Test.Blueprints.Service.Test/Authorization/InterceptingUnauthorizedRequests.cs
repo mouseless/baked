@@ -10,6 +10,13 @@ public class InterceptingUnauthorizedRequests : TestServiceNfr
     protected override Func<AuthorizationConfigurator, IFeature<AuthorizationConfigurator>>? Authorization =>
         c => c.ClaimBased(claims: ["User", "Admin"], baseClaim: "User");
 
+    public override async Task OneTimeTearDown()
+    {
+        Client.DefaultRequestHeaders.Authorization = AuthenticationHeaderValue.Parse("11111111111111111111111111111111");
+
+        await base.OneTimeTearDown();
+    }
+
     [Test]
     public async Task Returns_unauthorized_access_response_for_not_authenticated_user()
     {

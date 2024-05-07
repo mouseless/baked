@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using Do.Domain.Model;
+using System.Reflection;
 
 namespace Do.Domain.Configuration;
 
@@ -8,6 +9,7 @@ public class DomainModelBuilderOptions
     public BindingFlagOptions BindingFlags { get; } = new();
     public ICollection<IDomainModelConvention> Conventions { get; set; } = [];
     public DomainIndexOptions Index { get; set; } = new();
+    public Func<IEnumerable<MethodOverloadModel>, MethodOverloadModel> DefaultOverloadSelector { get; set; } = overloads => overloads.First();
 
     public class BindingFlagOptions
     {

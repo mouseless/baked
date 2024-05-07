@@ -21,32 +21,40 @@ public class ApiCodeTemplate(ApiModel _apiModel)
     """;
 
     string Action(ActionModel action) => $$"""
-        {{If(!action.UseForm && action.HasBodyOrForm, () => $$"""
-        public record {{action.Id}}Request(
-            {{ForEach(action.BodyOrFormParameters, p => Parameter(p, action.UseForm), separator: ", ")}}
-        );
+        {{If(action.HasBody, () => $$"""
+        public class {{action.Id}}Request
+        {
+            {{ForEach(action.BodyParameters, Property)}}
+        }
         """)}}
 
         [Http{{Method(action.Method)}}]
-        [Route("{{action.RouteStylized}}")]
+        [Route("{{action.GetRoute()}}")]
         {{ForEach(action.AdditionalAttributes, Attribute)}}
-        public {{ReturnType(action.Return)}} {{action.Id}}(
-            {{ForEach(action.NonBodyOrFormParameters, p => Parameter(p, action.UseForm), separator: ", ")}}
-            {{If(action.HasBodyOrForm, () =>
-                If(action.UseForm, () => $$"""
-                , {{ForEach(action.BodyOrFormParameters, p => Parameter(p, action.UseForm), separator: ", ")}}
-                """, @else: () => $$"""
-                , [FromBody] {{action.Id}}Request request
-                """)
-            )}}
-        )
+        public {{ReturnType(action.Return)}} {{action.Id}}({{Join(", ",
+            ForEach(action.ServiceParameters, Parameter, separator: ", "),
+            If(action.HasBody, () => $$"""[FromBody] {{action.Id}}Request request"""),
+            ForEach(action.NonBodyParameters, Parameter, separator: ", ")
+        )}})
         {
+            {{ForEach(action.PreparationStatements, statement => $$"""
+                {{statement}}
+            """)}}
             var __target = {{action.FindTargetStatement}};
 
-            {{Return(action.Return)}} __target.{{action.Id}}(
-                {{ForEach(action.InvokedMethodParameters, p => $"@{p.InternalName}: {ParameterLookup(p, action.UseForm)}", separator: ", ")}}
-            );
+            {{If(action.Return.IsVoid, () => $$"""
+                {{Invoke("__target", action)}};
+            """, @else: () => $$"""
+                var __result = {{Invoke("__target", action)}};
+
+                return {{action.Return.RenderResult("__result")}};
+            """)}}
         }
+    """;
+
+    string Property(ParameterModel parameter) => $$"""
+        {{Attributes(parameter)}}
+        public {{parameter.Type}} @{{parameter.Name}} { get; set; }{{If(parameter.IsOptional, () => $" = {parameter.RenderDefaultValue()};")}}
     """;
 
     string Method(HttpMethod method) =>
@@ -60,13 +68,22 @@ public class ApiCodeTemplate(ApiModel _apiModel)
         @return.Type
     ;
 
-    string Parameter(ParameterModel parameter, bool useForm) =>
-        $"{If(useForm || !parameter.FromBodyOrForm, () => $"[{ParameterFrom(parameter.From, useForm)}] ")}{parameter.Type} @{parameter.Name}{If(parameter.IsOptional, () => $" = {parameter.RenderDefaultValue()}")}";
+    string Parameter(ParameterModel parameter) =>
+        $"{Attributes(parameter)}{parameter.Type} @{parameter.Name}{If(parameter.IsOptional, () => $" = {parameter.RenderDefaultValue()}")}";
 
-    string ParameterFrom(ParameterModelFrom parameterFrom, bool useForm) =>
-        parameterFrom == ParameterModelFrom.BodyOrForm
-            ? useForm ? $"FromForm" : "FromBody"
-            : $"From{parameterFrom}";
+    string Attributes(ParameterModel parameter) =>
+        $"{ParameterFrom(parameter.From)}{ForEach(parameter.AdditionalAttributes, Attribute)}";
+
+    string ParameterFrom(ParameterModelFrom parameterFrom) =>
+        parameterFrom != ParameterModelFrom.BodyOrForm
+            ? $"[From{parameterFrom}]"
+            : "[FromForm]";
+
+    string Invoke(string target, ActionModel action) => $$"""
+        {{(action.Return.IsAsync ? "await " : string.Empty)}}{{target}}.{{action.Id}}(
+            {{ForEach(action.InvokedMethodParameters, p => $"@{p.InternalName}: {ParameterLookup(p, action.UseForm)}", separator: ", ")}}
+        )
+    """;
 
     string ParameterLookup(ParameterModel parameter, bool useForm) =>
         $"({parameter.RenderLookup(
@@ -76,10 +93,4 @@ public class ApiCodeTemplate(ApiModel _apiModel)
                 () => $"request.@{parameter.Name}"
             )
         )})";
-
-    string Return(ReturnModel @return) =>
-        @return.IsAsync && @return.IsVoid ? "await" :
-        @return.IsAsync && !@return.IsVoid ? "return await" :
-        @return.IsVoid ? string.Empty :
-        "return";
 }
