@@ -4,6 +4,9 @@ namespace Do.Orm.AutoMap;
 
 internal static partial class Regexes
 {
-    [GeneratedRegex(@"^SingleBy(?<Unique>.+)$", RegexOptions.None, "en-US")]
-    public static partial Regex SingleByUniqueMethod();
+    [GeneratedRegex(@"^(FirstBy|SingleBy|By).*$", RegexOptions.None, "en-US")]
+    public static partial Regex StartsWithFirstBySingleByOrBy();
+
+    [GeneratedRegex(@"^SingleBy(?<Name>.+)$", RegexOptions.None, "en-US")]
+    public static partial Regex StartsWithSingleBy();
 }

@@ -44,7 +44,6 @@ public interface IApiModelConventionCollection : IList<IApiModelConvention>
                     parameterConvention.Apply(new() { Api = apiModel, Controller = controller, Action = action, Parameter = parameter });
                 }
             }
-
         }
     }
 }

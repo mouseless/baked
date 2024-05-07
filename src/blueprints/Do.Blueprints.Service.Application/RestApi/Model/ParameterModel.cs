@@ -2,7 +2,12 @@
 
 namespace Do.RestApi.Model;
 
-public record ParameterModel(TypeModel TypeModel, ParameterModelFrom From, string Id)
+public record ParameterModel(
+    TypeModel TypeModel,
+    ParameterModelFrom From,
+    string Id,
+    Domain.Model.ParameterModel? MappedParameter = default
+)
 {
     public ParameterModelFrom From { get; set; } = From;
     public string Type { get; set; } = TypeModel.CSharpFriendlyFullName;
@@ -15,6 +20,9 @@ public record ParameterModel(TypeModel TypeModel, ParameterModelFrom From, strin
     public Func<string, string> LookupRenderer { get; set; } = parameterExpression => parameterExpression;
     public Func<object, string> DefaultValueRenderer { get; set; } = defaultValue => $"{defaultValue}";
     public int Order { get; set; } = 0;
+    public int RoutePosition { get; set; } = 0;
+
+    public List<string> AdditionalAttributes { get; init; } = [];
 
     public bool FromServices => From == ParameterModelFrom.Services;
     public bool FromRoute => From == ParameterModelFrom.Route;

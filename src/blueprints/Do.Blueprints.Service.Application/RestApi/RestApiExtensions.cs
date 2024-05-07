@@ -59,6 +59,45 @@ public static class RestApiExtensions
     public static void AddAttribute<T>(this ActionModel action) where T : Attribute =>
         action.AdditionalAttributes.Add(typeof(T).GetCSharpFriendlyFullName());
 
+    public static string GetRouteString(this ParameterModel parameter)
+    {
+        var constraint = parameter switch
+        {
+            { Type: nameof(Guid) } => ":guid",
+            _ when parameter.TypeModel.Is<Guid>() => ":guid",
+            _ => string.Empty
+        };
+
+        return $"{{{parameter.Name}{constraint}}}";
+    }
+
+    public static List<string> RemoveAll(this List<string> parts, string partToRemove)
+    {
+        for (var i = 0; i < parts.Count; i++)
+        {
+            if (parts[i] == partToRemove)
+            {
+                parts.RemoveAt(i);
+                i--;
+            }
+        }
+
+        return parts;
+    }
+
+    public static List<string> Replace(this List<string> parts, string oldPart, string newPart)
+    {
+        for (var i = 0; i < parts.Count; i++)
+        {
+            if (parts[i] == oldPart)
+            {
+                parts[i] = newPart;
+            }
+        }
+
+        return parts;
+    }
+
     internal static IMvcBuilder AddNewtonsoftJson(this IMvcBuilder source, MvcNewtonsoftJsonOptions options)
     {
         source.AddNewtonsoftJson();

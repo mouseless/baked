@@ -10,8 +10,5 @@ public record PropertyModel(
 {
     public TypeModel PropertyType => PropertyTypeReference.Model;
 
-    public bool Has<T>() where T : Attribute =>
-        CustomAttributes.Contains<T>();
-
     string IModel.Id { get; } = Name;
 }

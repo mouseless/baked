@@ -1,6 +1,7 @@
 ﻿using Do.Architecture;
 using Do.Business;
 using Do.Database;
+using Do.Test.CodingStyle.EntitySubclassViaComposition;
 using Do.Test.Orm;
 using Do.Testing;
 
@@ -9,6 +10,9 @@ namespace Do.Test;
 public abstract class TestServiceNfr : ServiceNfr<TestServiceNfr>, IEntryPoint
 {
     public static void Main(string[] args) => Init(args);
+
+    protected override IEnumerable<string> EntityNamesToClearOnTearDown =>
+        [nameof(Entity), nameof(Parent), nameof(TypedEntity)];
 
     protected override Func<BusinessConfigurator, IFeature<BusinessConfigurator>> Business =>
         c => c.DomainAssemblies([typeof(Entity).Assembly]);

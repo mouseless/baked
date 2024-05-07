@@ -1,17 +1,17 @@
-﻿namespace Do.Domain.Model;
+﻿using System.Reflection;
+
+namespace Do.Domain.Model;
 
 public record ParameterModel(
     string Name,
     TypeModelReference ParameterTypeReference,
     bool IsOptional,
     object? DefaultValue,
-    AttributeCollection CustomAttributes
+    AttributeCollection CustomAttributes,
+    Action<Action<ParameterInfo>> Apply
 ) : IModel, ICustomAttributesModel
 {
     public TypeModel ParameterType => ParameterTypeReference.Model;
-
-    public bool Has<T>() where T : Attribute =>
-        CustomAttributes.Contains<T>();
 
     string IModel.Id => Name;
 }

@@ -11,9 +11,6 @@ public static class TestingExtensions
     public static void AddTesting(this List<ILayer> source) =>
         source.Add(new TestingLayer());
 
-    public static IServiceProvider GetServiceProvider(this ApplicationContext source) =>
-        source.Get<IServiceProvider>();
-
     public static void ConfigureTestConfiguration(this LayerConfigurator source, Action<TestConfiguration> configuration) =>
         source.Configure(configuration);
 

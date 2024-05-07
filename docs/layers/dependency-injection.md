@@ -8,8 +8,8 @@ app.Layers.AddDependencyInjection();
 
 ## Configuration Targets
 
-Dependency injection layer provides `IServiceCollection` as the only
-configuration target.
+Dependency injection layer provides `IServiceCollection` and `IServiceProvider`
+as configuration targets.
 
 ### `IServiceCollection`
 
@@ -22,9 +22,22 @@ configurator.ConfigureServiceCollection(services =>
 });
 ```
 
+### `IServiceProvider`
+
+This target is provided in `PostBuild` phase. To configure it in a feature;
+
+```csharp
+configurator.ConfigureServiceProvider(sp =>
+{
+    ...
+});
+```
+
 ## Phases
 
 This layer introduces following phases to the application it is added;
 
 - `AddServices`: This phase creates a `IServiceCollection` instance and places
   it in the application context
+- `PostBuild`: This phase depends on a `IServiceProvider` instance to be added
+  to application context so that it can be provided from this layer
