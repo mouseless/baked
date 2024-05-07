@@ -35,7 +35,7 @@ public class TargetEntitySubclassFromRouteConvention(DomainModel _domain)
         var queryParameter = context.Action.AddAsService(queryType);
 
         context.Parameter.IsHardCoded = true;
-        context.Action.Route = $"{entityType.Name.Pluralize()}/{subclassName}/{context.Action.Name}";
+        context.Action.RouteParts = [entityType.Name.Pluralize(), subclassName, context.Action.Name];
         context.Action.FindTargetStatement = queryParameter.BuildSingleBy(valueExpression, property: unique.PropertyName, fromRoute: true, castTo: entitySubclassType);
     }
 }

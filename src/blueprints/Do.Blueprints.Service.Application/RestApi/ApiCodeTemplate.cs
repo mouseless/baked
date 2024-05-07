@@ -30,7 +30,7 @@ public class ApiCodeTemplate(ApiModel _apiModel)
         """)}}
 
         [Http{{Method(action.Method)}}]
-        [Route("{{action.RouteStylized}}")]
+        [Route("{{action.GetRoute()}}")]
         {{ForEach(action.AdditionalAttributes, Attribute)}}
         public {{ReturnType(action.Return)}} {{action.Id}}({{Join(", ",
             ForEach(action.ServiceParameters, Parameter, separator: ", "),

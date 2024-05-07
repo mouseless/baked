@@ -71,6 +71,33 @@ public static class RestApiExtensions
         return $"{{{parameter.Name}{constraint}}}";
     }
 
+    public static List<string> RemoveAll(this List<string> parts, string partToRemove)
+    {
+        for (var i = 0; i < parts.Count; i++)
+        {
+            if (parts[i] == partToRemove)
+            {
+                parts.RemoveAt(i);
+                i--;
+            }
+        }
+
+        return parts;
+    }
+
+    public static List<string> Replace(this List<string> parts, string oldPart, string newPart)
+    {
+        for (var i = 0; i < parts.Count; i++)
+        {
+            if (parts[i] == oldPart)
+            {
+                parts[i] = newPart;
+            }
+        }
+
+        return parts;
+    }
+
     internal static IMvcBuilder AddNewtonsoftJson(this IMvcBuilder source, MvcNewtonsoftJsonOptions options)
     {
         source.AddNewtonsoftJson();

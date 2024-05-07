@@ -28,7 +28,7 @@ public static class DomainAssembliesBusinessExtensions
             new(
                 Id: method.Name,
                 Method: HttpMethod.Post,
-                Route: $"{type.Name}/{method.Name}",
+                RouteParts: [type.Name, method.Name],
                 Return: new(method.DefaultOverload.ReturnType),
                 FindTargetStatement: "target",
                 MappedMethod: method

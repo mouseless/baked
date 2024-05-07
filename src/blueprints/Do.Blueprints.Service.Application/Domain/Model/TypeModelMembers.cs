@@ -86,8 +86,7 @@ public class TypeModelMembers : TypeModelMetadata
                     builder.GetReference(property.PropertyType),
                     property.GetMethod?.IsPublic == true,
                     property.GetMethod?.IsVirtual == true,
-                    new(property.GetCustomAttributes()),
-                    apply => apply(property)
+                    new(property.GetCustomAttributes())
                 );
             }
 
@@ -126,8 +125,7 @@ public class TypeModelMembers : TypeModelMetadata
                     BuildParameters(methodInfo),
                     builder.GetReference(methodInfo.ReturnType),
                     methodInfo.DeclaringType is not null ? builder.GetReference(methodInfo.DeclaringType) : null,
-                    baseDefinition is not null ? BuildMethod(baseDefinition) : null,
-                    apply => apply(methodInfo)
+                    baseDefinition is not null ? BuildMethod(baseDefinition) : null
                 );
             }
 

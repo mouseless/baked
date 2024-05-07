@@ -20,6 +20,6 @@ public class EntitySubclassInitializerIsPostResourceConvention(DomainModel _doma
         context.Parameter.Type = $"Func<{context.Parameter.Type}>";
 
         context.Action.FindTargetStatement = "newTarget()";
-        context.Action.Route = $"{entityType.Name.Pluralize()}/{subclassName}";
+        context.Action.RouteParts = [entityType.Name.Pluralize(), subclassName];
     }
 }

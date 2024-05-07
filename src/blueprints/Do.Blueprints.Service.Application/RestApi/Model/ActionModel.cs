@@ -6,7 +6,7 @@ namespace Do.RestApi.Model;
 public record ActionModel(
     string Id,
     HttpMethod Method,
-    string Route,
+    List<string> RouteParts,
     ReturnModel Return,
     string FindTargetStatement,
     MethodModel? MappedMethod = default
@@ -14,7 +14,7 @@ public record ActionModel(
 {
     public string Name { get; set; } = Id;
     public HttpMethod Method { get; set; } = Method;
-    public string Route { get; set; } = Route;
+    public List<string> RouteParts { get; set; } = RouteParts;
     public Func<string, string> RoutePartStylizer { get; set; } = s => s.Kebaberize();
     public ReturnModel Return { get; set; } = Return;
     public string FindTargetStatement { get; set; } = FindTargetStatement;
@@ -38,18 +38,15 @@ public record ActionModel(
     public IEnumerable<ParameterModel> NonBodyParameters => UseForm ? NonServiceParameters : NonServiceParameters.Where(p => p.From != ParameterModelFrom.BodyOrForm);
     public IEnumerable<ParameterModel> InvokedMethodParameters => Parameters.Where(p => p.IsInvokeMethodParameter);
 
-    public string RouteStylized
+    public string GetRoute()
     {
-        get
+        var routeParts = RouteParts.Select(part => RoutePartStylizer(part)).ToList();
+        foreach (var routeParameter in RouteParameters)
         {
-            var routeParts = Route.Split('/').Select(part => RoutePartStylizer(part)).ToList();
-            foreach (var routeParameter in RouteParameters)
-            {
-                var index = routeParameter.RoutePosition > routeParts.Count ? routeParts.Count : routeParameter.RoutePosition;
-                routeParts.Insert(index, routeParameter.GetRouteString());
-            }
-
-            return routeParts.Join('/');
+            var index = routeParameter.RoutePosition > routeParts.Count ? routeParts.Count : routeParameter.RoutePosition;
+            routeParts.Insert(index, routeParameter.GetRouteString());
         }
+
+        return routeParts.Join('/');
     }
 }

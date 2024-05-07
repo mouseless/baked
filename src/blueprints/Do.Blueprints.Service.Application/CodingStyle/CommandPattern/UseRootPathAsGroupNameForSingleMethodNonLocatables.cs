@@ -13,7 +13,7 @@ public class UseRootPathAsGroupNameForSingleMethodNonLocatables : IApiModelConve
         if (context.Controller.Action.Count != 1) { return; }
 
         var theOnlyAction = context.Controller.Actions.Single();
-        var rootPath = theOnlyAction.Route.Split('/').First();
+        var rootPath = theOnlyAction.RouteParts.First();
         context.Controller.GroupName = rootPath.Pascalize();
     }
 }

@@ -144,7 +144,6 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
             conventions.Add(new GetAndDeleteAcceptsOnlyQueryConvention());
             conventions.Add(new RemoveFromRouteConvention(["Get"]));
             conventions.Add(new RemoveFromRouteConvention(["Update", "Change", "Set"]));
-            conventions.Add(new RemoveFromRouteConvention(["Update", "Change", "Set"]));
             conventions.Add(new RemoveFromRouteConvention(["Delete", "Remove", "Clear"]));
         });
 

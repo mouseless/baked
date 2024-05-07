@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace Do.Domain.Model;
+﻿namespace Do.Domain.Model;
 
 public record MethodOverloadModel(
     bool IsPublic,
@@ -11,8 +9,7 @@ public record MethodOverloadModel(
     ModelCollection<ParameterModel> Parameters,
     TypeModelReference ReturnTypeReference,
     TypeModelReference? DeclaringTypeReference,
-    MethodOverloadModel? BaseDefinition,
-    Action<Action<MethodInfo>> Apply
+    MethodOverloadModel? BaseDefinition
 ) : MethodBaseModel(
     IsPublic,
     IsFamily,

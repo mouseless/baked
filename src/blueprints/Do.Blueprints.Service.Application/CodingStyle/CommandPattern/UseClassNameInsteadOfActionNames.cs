@@ -11,6 +11,7 @@ public class UseClassNameInsteadOfActionNames(IEnumerable<string> actionNames)
     {
         if (!_actionNames.Contains(context.Action.Name)) { return; }
 
+        context.Action.RouteParts.RemoveAll(context.Action.Name);
         context.Action.Name = context.Controller.ClassName;
     }
 }

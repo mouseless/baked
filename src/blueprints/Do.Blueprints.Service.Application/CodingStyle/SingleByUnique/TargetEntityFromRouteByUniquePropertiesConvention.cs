@@ -36,7 +36,7 @@ public class TargetEntityFromRouteByUniquePropertiesConvention(DomainModel _doma
         var uniques = singleByUniques.Select(sbu => sbu.GetSingle<SingleByUniqueAttribute>());
         context.Parameter.Type = "string";
         context.Parameter.Name = $"idOr{uniques.Select(u => u.PropertyName).Join("Or")}";
-        context.Action.Route = context.Action.Route.Replace("{id:guid}", $"{{{context.Parameter.Name}}}");
+        context.Action.RouteParts = context.Action.RouteParts.Replace("{id:guid}", $"{{{context.Parameter.Name}}}");
 
         var findTargetStatements = new StringBuilder();
         findTargetStatements.Append($$"""

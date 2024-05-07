@@ -1,30 +1,34 @@
 ﻿using Do.RestApi.Configuration;
-using Humanizer;
 
 namespace Do.RestApi.Conventions;
 
 public class RemoveFromRouteConvention(IEnumerable<string> _parts,
-    Func<ActionModelContext, bool>? _when = default,
-    bool _pluralize = false
+    Func<ActionModelContext, bool>? _when = default
 ) : IApiModelConvention<ActionModelContext>
 {
     public void Apply(ActionModelContext context)
     {
         if (_when is not null && !_when(context)) { return; }
 
-        var changed = false;
-        foreach (var part in _parts.Where(p => context.Action.Route.Contains(p)))
+        for (var i = 0; i < context.Action.RouteParts.Count; i++)
         {
-            context.Action.Route = context.Action.Route.Replace(part, string.Empty);
-            context.Action.Name = context.Action.Name.Replace(part, string.Empty);
-            changed = true;
+            var routePart = context.Action.RouteParts[i];
+            foreach (var part in _parts.Where(p => routePart.Contains(p)))
+            {
+                routePart = routePart.Replace(part, string.Empty);
+            }
+
+            context.Action.RouteParts[i] = routePart;
+            if (string.IsNullOrWhiteSpace(routePart))
+            {
+                context.Action.RouteParts.RemoveAt(i);
+                i--;
+            }
         }
 
-        if (_pluralize && changed && !string.IsNullOrEmpty(context.Action.Name))
+        foreach (var part in _parts)
         {
-            var plural = context.Action.Name.Pluralize();
-            context.Action.Route = context.Action.Route.Replace(context.Action.Name, plural);
-            context.Action.Name = plural;
+            context.Action.Name = context.Action.Name.Replace(part, string.Empty);
         }
     }
 }
