@@ -21,13 +21,13 @@ public static class UseNullableTypesCodingStyleExtensions
 
         if (isValueType.Value)
         {
-            parameter.AdditionalAttributes.Add($"{typeof(BindRequiredAttribute).FullName}");
+            parameter.AdditionalAttributes.Add($"{typeof(BindRequiredAttribute).Name}");
         }
         else
         {
-            parameter.AdditionalAttributes.Add($"{typeof(RequiredAttribute).FullName}");
+            parameter.AdditionalAttributes.Add($"{typeof(RequiredAttribute).Name}");
         }
 
-        parameter.AdditionalAttributes.Add($"{typeof(JsonPropertyAttribute).FullName}(Required = {typeof(Required).FullName}.{Required.Always})");
+        parameter.AdditionalAttributes.Add($"{typeof(JsonPropertyAttribute).Name}(Required = {typeof(Required).Name}.{Required.Always})");
     }
 }

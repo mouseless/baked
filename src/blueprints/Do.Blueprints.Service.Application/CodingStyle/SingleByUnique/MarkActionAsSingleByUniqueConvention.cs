@@ -2,13 +2,13 @@
 
 namespace Do.CodingStyle.SingleByUnique;
 
-public class MarkActionAsSingleByUniqueConvention : IApiModelConvention<ActionModelContext>
+public class MarkActionAsSingleByUniqueConvention : IApiModelConvention<ActionModelContext>, IApiModelConvention<ApiModelContext>
 {
     public void Apply(ActionModelContext context)
     {
         if (context.Action.Id == "SingleById")
         {
-            context.Action.AdditionalAttributes.Add($"{typeof(SingleByUniqueAttribute).FullName}(\"Id\", typeof(Guid))");
+            context.Action.AdditionalAttributes.Add($"{typeof(SingleByUniqueAttribute).Name}(\"Id\", typeof(Guid))");
 
             return;
         }
@@ -17,7 +17,12 @@ public class MarkActionAsSingleByUniqueConvention : IApiModelConvention<ActionMo
         if (context.Action.MappedMethod.TryGetSingle<SingleByUniqueAttribute>(out var unique))
         {
             context.Action.AdditionalAttributes
-                .Add($"{typeof(SingleByUniqueAttribute).FullName}(\"{unique.PropertyName}\", typeof({unique.PropertyType.FullName}))");
+                .Add($"{typeof(SingleByUniqueAttribute).Name}(\"{unique.PropertyName}\", typeof({unique.PropertyType.FullName}))");
         }
+    }
+
+    public void Apply(ApiModelContext context)
+    {
+        context.Api.Usings.Add("Do.CodingStyle.SingleByUnique");
     }
 }

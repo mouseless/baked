@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Do.CodingStyle.UseNullableTypes;
 
-public class NonOptionalNotNullParametersAreRequiredConvention : IApiModelConvention<ParameterModelContext>
+public class NonOptionalNotNullParametersAreRequiredConvention : IApiModelConvention<ParameterModelContext>, IApiModelConvention<ApiModelContext>
 {
     public void Apply(ParameterModelContext context)
     {
@@ -14,5 +14,14 @@ public class NonOptionalNotNullParametersAreRequiredConvention : IApiModelConven
         if (context.Parameter.FromServices) { return; }
 
         context.Parameter.AddRequiredAttributes();
+    }
+
+    public void Apply(ApiModelContext context)
+    {
+        context.Api.Usings.AddRange([
+            "Microsoft.AspNetCore.Mvc.ModelBinding",
+            "Newtonsoft.Json",
+            "System.ComponentModel.DataAnnotations"
+        ]);
     }
 }
