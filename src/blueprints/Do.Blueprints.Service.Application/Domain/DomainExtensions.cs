@@ -127,6 +127,9 @@ public static class DomainExtensions
 
     #region TypeModel
 
+    public static bool Is<T>(this TypeModel type, bool allowAsync) =>
+        type.Is<T>() || (allowAsync && type.Is<Task<T>>());
+
     public static bool HasGenerics(this TypeModel type) =>
         type.HasInfo<TypeModelGenerics>();
 

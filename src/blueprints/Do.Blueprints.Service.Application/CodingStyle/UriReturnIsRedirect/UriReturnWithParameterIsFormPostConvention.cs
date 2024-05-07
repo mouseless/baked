@@ -7,8 +7,8 @@ public class UriReturnWithParameterIsFormPostConvention : IApiModelConvention<Ac
     public void Apply(ActionModelContext context)
     {
         if (context.Action.MappedMethod is null) { return; }
-        if (!context.Action.MappedMethod.DefaultOverload.ReturnType.Is<Uri>()) { return; }
-        if (!context.Action.MappedMethod.DefaultOverload.Parameters.Any()) { return; }
+        if (!context.Action.Return.TypeModel.Is<Uri>(allowAsync: true)) { return; }
+        if (!context.Action.InvokedMethodParameters.Any()) { return; }
 
         context.Action.Method = HttpMethod.Post;
         context.Action.UseForm = true;
