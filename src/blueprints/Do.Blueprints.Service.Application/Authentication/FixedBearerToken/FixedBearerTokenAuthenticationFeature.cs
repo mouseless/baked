@@ -45,5 +45,13 @@ public class FixedBearerTokenAuthenticationFeature(List<Token> _tokens)
 
             swaggerGenOptions.AddSecurityRequirementToOperationsThatUse<AuthorizeAttribute>("FixedBearerToken");
         });
+
+        configurator.ConfigureApiModelConventions(conventions =>
+        {
+            var domainModel = configurator.Context.GetDomainModel();
+
+            conventions.Add(new AddHashParameterToFormPostConvention(domainModel));
+            conventions.Add(new AddRequestIdParameterToFormPostConvention(domainModel));
+        });
     }
 }
