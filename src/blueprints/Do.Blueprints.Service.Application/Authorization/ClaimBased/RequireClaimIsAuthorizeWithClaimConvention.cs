@@ -7,9 +7,9 @@ public class RequireClaimIsAuthorizeWithClaimConvention : IApiModelConvention<Ac
     public void Apply(ActionModelContext context)
     {
         if (context.Action.MappedMethod is null) { return; }
-        if (!context.Action.MappedMethod.CustomAttributes.Contains<RequireClaimAttribute>()) { return; }
+        if (!context.Action.MappedMethod.Has<RequireClaimAttribute>()) { return; }
 
-        foreach (var attribute in context.Action.MappedMethod.CustomAttributes.Get<RequireClaimAttribute>())
+        foreach (var attribute in context.Action.MappedMethod.Get<RequireClaimAttribute>())
         {
             var attributeSyntax = $"Authorize(Policy = \"{attribute.Claim}\")";
 
