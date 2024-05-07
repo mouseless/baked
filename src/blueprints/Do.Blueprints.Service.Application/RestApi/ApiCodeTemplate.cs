@@ -26,7 +26,6 @@ public class ApiCodeTemplate(ApiModel _apiModel)
         {
             {{ForEach(action.BodyParameters, Property)}}
         }
-
         """)}}
 
         [Http{{Method(action.Method)}}]
