@@ -60,13 +60,6 @@ public abstract class ServiceNfr<TEntryPoint> : Nfr
         throw new($"'{route}' didn't work as expected: {response.StatusCode}\n{await response.Content.ReadAsStringAsync()}");
     }
 
-    public override void SetUp()
-    {
-        base.SetUp();
-
-        Client.DefaultRequestHeaders.Authorization = null;
-    }
-
     protected override Application ForgeApplication() =>
         Forge.New
             .Service(

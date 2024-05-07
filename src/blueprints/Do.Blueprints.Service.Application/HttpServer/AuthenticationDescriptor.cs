@@ -3,8 +3,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace Do.HttpServer;
 
-public record AuthenticationDescriptor
-(
+public record AuthenticationDescriptor(
     string Scheme,
     Action<AuthenticationBuilder> UseBuilder,
     Func<HttpContext, bool> Handles
