@@ -1,13 +1,7 @@
-﻿using Do.Architecture;
-using Do.Authorization;
-
-namespace Do.Test.Authentication;
+﻿namespace Do.Test.Authentication;
 
 public class AddingHashAndRequestIdParametersToFormPost : TestServiceNfr
 {
-    protected override Func<AuthorizationConfigurator, IFeature<AuthorizationConfigurator>>? Authorization =>
-        c => c.Disabled();
-
     [Test]
     public async Task RequestId_and_hash_parameters_are_added_to_form_post_authenticate_requests()
     {
