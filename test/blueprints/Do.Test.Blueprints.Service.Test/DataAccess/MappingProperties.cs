@@ -93,13 +93,13 @@ public class MappingProperties : TestServiceSpec
     [Test]
     public async Task Enum()
     {
-        var entity = GiveMe.An<Entity>().With(@enum: Status.Enabled);
-        entity.Enum.ShouldBe(Status.Enabled);
+        var entity = GiveMe.An<Entity>().With(@enum: Enumeration.Member1);
+        entity.Enum.ShouldBe(Enumeration.Member1);
 
-        await entity.Update(@enum: Status.Disabled);
-        entity.Enum.ShouldBe(Status.Disabled);
+        await entity.Update(@enum: Enumeration.Member2);
+        entity.Enum.ShouldBe(Enumeration.Member2);
 
-        var actual = GiveMe.The<Entities>().By(status: Status.Disabled).FirstOrDefault();
+        var actual = GiveMe.The<Entities>().By(status: Enumeration.Member2).FirstOrDefault();
         actual.ShouldBe(entity);
     }
 

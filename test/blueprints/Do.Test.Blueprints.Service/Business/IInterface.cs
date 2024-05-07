@@ -1,3 +1,6 @@
 ﻿namespace Do.Test.Business;
 
-public interface IInterface { }
+public interface IInterface
+{
+    void InterfaceMethod();
+}
