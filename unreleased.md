@@ -37,7 +37,7 @@
     implementation
   - `HttpServerLayer` now registers authentication services and adds 
     authentication middleware
-    - provides `SchemeConfigurationCollection` configuration target which
+    - provides `AuthenticationCollection` configuration target which
       supports forwarding request to appropriate handlers
 
 ## Improvements
