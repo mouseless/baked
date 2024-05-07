@@ -8,7 +8,7 @@ public class MarkActionAsSingleByUniqueConvention : IApiModelConvention<ActionMo
     {
         if (context.Action.Id == "SingleById")
         {
-            context.Action.AdditionalAttributes.Add($"{typeof(SingleByUniqueAttribute).Name}(\"Id\", typeof(Guid))");
+            context.Action.AdditionalAttributes.Add($"{nameof(SingleByUniqueAttribute)}(\"Id\", typeof(Guid))");
 
             return;
         }
@@ -17,7 +17,7 @@ public class MarkActionAsSingleByUniqueConvention : IApiModelConvention<ActionMo
         if (context.Action.MappedMethod.TryGetSingle<SingleByUniqueAttribute>(out var unique))
         {
             context.Action.AdditionalAttributes
-                .Add($"{typeof(SingleByUniqueAttribute).Name}(\"{unique.PropertyName}\", typeof({unique.PropertyType.FullName}))");
+                .Add($"{nameof(SingleByUniqueAttribute)}(\"{unique.PropertyName}\", typeof({unique.PropertyType.FullName}))");
         }
     }
 

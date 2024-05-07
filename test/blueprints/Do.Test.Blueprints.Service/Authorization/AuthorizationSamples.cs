@@ -12,6 +12,6 @@ public class AuthorizationSamples(Func<ClaimsPrincipal> _getClaims)
     public string RequireAdminClaim() =>
         _getClaims().FindFirst("Admin")?.Value ?? throw new("Admin claim should have existed");
 
-    [RequireNoClaim]
+    [RequireNoClaimAttribute]
     public void RequireNoClaim() { }
 }

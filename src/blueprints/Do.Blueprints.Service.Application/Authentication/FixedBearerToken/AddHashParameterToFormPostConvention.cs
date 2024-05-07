@@ -20,7 +20,7 @@ public class AddHashParameterToFormPostConvention(DomainModel _domainModel) : IA
             )
             {
                 IsInvokeMethodParameter = false,
-                AdditionalAttributes = [$"{typeof(RequiredAttribute).Name}", $"{typeof(JsonPropertyAttribute).Name}(Required = {typeof(Required).Name}.{Required.Always})"]
+                AdditionalAttributes = [$"{nameof(RequiredAttribute)}", $"{nameof(JsonPropertyAttribute)}(Required = {nameof(Required)}.{Required.Always})"]
             }
         );
     }

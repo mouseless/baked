@@ -7,7 +7,7 @@ public class RequireNoClaimIsAllowAnonymousConvention : IApiModelConvention<Acti
     public void Apply(ActionModelContext context)
     {
         if (context.Action.MappedMethod is null) { return; }
-        if (!context.Action.MappedMethod.Has<RequireNoClaim>()) { return; }
+        if (!context.Action.MappedMethod.Has<RequireNoClaimAttribute>()) { return; }
 
         context.Action.AdditionalAttributes.Add("AllowAnonymous");
     }
