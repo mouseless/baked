@@ -9,9 +9,9 @@ public class AddingHashAndRequestIdParametersToFormPost : TestServiceNfr
     {
         var form = new Dictionary<string, string>
         {
-            ["requestId"] = "requestId",
             ["value"] = "value",
-            ["hash"] = "KtvYUkJPIhwki0EsfAqAI+i4FQyEtwPbK+EifUcocos=" // requestIdvalue111111111111111111111111 -sha256-> 2adbd852424f221c248b412c7c0a8023e8b8150c84b703db2be1227d4728728b
+            ["requestId"] = "requestId",
+            ["hash"] = "VGQCN7lFnTCAf6YvvZjwUNG/w8J2LGnpELlBFP8a8Yw=" // valuerequestId111111111111111111111111 -sha256-> 54640237b9459d30807fa62fbd98f050d1bfc3c2762c69e910b94114ff1af18c
         };
 
         var response = await Client.PostAsync("authentication-samples/form-post-authenticate", new FormUrlEncodedContent(form));
@@ -19,23 +19,21 @@ public class AddingHashAndRequestIdParametersToFormPost : TestServiceNfr
     }
 
     [Test]
-    public async Task RequestId_parameter_is_required()
+    public async Task RequestId_parameter_is_optional()
     {
         var form = new Dictionary<string, string>
         {
             ["value"] = "value",
-            ["hash"] = "KtvYUkJPIhwki0EsfAqAI+i4FQyEtwPbK+EifUcocos=" // requestIdvalue111111111111111111111111 -sha256-> 2adbd852424f221c248b412c7c0a8023e8b8150c84b703db2be1227d4728728b
+            ["hash"] = "VGQCN7lFnTCAf6YvvZjwUNG/w8J2LGnpELlBFP8a8Yw=" // requestIdvalue111111111111111111111111 -sha256-> 54640237b9459d30807fa62fbd98f050d1bfc3c2762c69e910b94114ff1af18c
         };
 
         var response = await Client.PostAsync("authentication-samples/form-post-authenticate", new FormUrlEncodedContent(form));
-        var content = await response.Content.ReadAsStringAsync();
 
-        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
-        content.ShouldContain("The requestId field is required.");
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }
 
     [Test]
-    public async Task Hash_parameter_is_required()
+    public async Task Hash_parameter_is_optional()
     {
         var form = new Dictionary<string, string>
         {
@@ -44,9 +42,7 @@ public class AddingHashAndRequestIdParametersToFormPost : TestServiceNfr
         };
 
         var response = await Client.PostAsync("authentication-samples/form-post-authenticate", new FormUrlEncodedContent(form));
-        var content = await response.Content.ReadAsStringAsync();
 
-        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
-        content.ShouldContain("The hash field is required.");
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }
 }

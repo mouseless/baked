@@ -2,7 +2,7 @@
 
 namespace Do.CodingStyle.SingleByUnique;
 
-public class MarkActionAsSingleByUniqueConvention : IApiModelConvention<ActionModelContext>, IApiModelConvention<ApiModelContext>
+public class MarkActionAsSingleByUniqueConvention : IApiModelConvention<ActionModelContext>
 {
     public void Apply(ActionModelContext context)
     {
@@ -19,10 +19,5 @@ public class MarkActionAsSingleByUniqueConvention : IApiModelConvention<ActionMo
             context.Action.AdditionalAttributes
                 .Add($"{nameof(SingleByUniqueAttribute)}(\"{unique.PropertyName}\", typeof({unique.PropertyType.FullName}))");
         }
-    }
-
-    public void Apply(ApiModelContext context)
-    {
-        context.Api.Usings.Add("Do.CodingStyle.SingleByUnique");
     }
 }

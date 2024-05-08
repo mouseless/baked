@@ -34,6 +34,15 @@ public class UseNullableTypesCodingStyleFeature : IFeature<CodingStyleConfigurat
             );
         });
 
+        configurator.ConfigureApiModel(api =>
+        {
+            api.Usings.AddRange([
+                "Microsoft.AspNetCore.Mvc.ModelBinding",
+                "Newtonsoft.Json",
+                "System.ComponentModel.DataAnnotations"
+            ]);
+        });
+
         configurator.ConfigureApiModelConventions(conventions =>
         {
             conventions.Add(new NonOptionalNotNullParametersAreRequiredConvention());

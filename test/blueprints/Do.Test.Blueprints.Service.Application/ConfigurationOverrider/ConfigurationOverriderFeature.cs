@@ -18,13 +18,13 @@ public class ConfigurationOverriderFeature : IFeature
             model.Override<Entity>(x => x.Map(e => e.Unique).Column("UniqueString").Unique());
         });
 
-        configurator.ConfigureApiModel(apiModel =>
+        configurator.ConfigureApiModel(api =>
         {
             var domainModel = configurator.Context.GetDomainModel();
 
-            apiModel.GetController<AuthenticationSamples>().Action[nameof(AuthenticationSamples.FormPostAuthenticate)].UseForm = true;
-            apiModel.GetController<ExceptionSamples>().Action[nameof(ExceptionSamples.Throw)].Parameter["handled"].From = ParameterModelFrom.Query;
-            apiModel.GetController<Entities>().AddSingleById<Entity>(domainModel);
+            api.GetController<AuthenticationSamples>().Action[nameof(AuthenticationSamples.FormPostAuthenticate)].UseForm = true;
+            api.GetController<ExceptionSamples>().Action[nameof(ExceptionSamples.Throw)].Parameter["handled"].From = ParameterModelFrom.Query;
+            api.GetController<Entities>().AddSingleById<Entity>(domainModel);
         });
 
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
