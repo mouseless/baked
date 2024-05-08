@@ -17,7 +17,7 @@ application.
 This target is provided in `AddServices` phase. To configure it in a feature;
 
 ```csharp
-configurator.ConfigureAuthenticationCollection(authentcation =>
+configurator.ConfigureAuthenticationCollection(authentications =>
 {
     ...
 });

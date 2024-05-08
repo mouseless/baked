@@ -23,8 +23,8 @@ value from settings will be used if no token key specified
 ```csharp
 c => c.FixedBearerToken(tokens =>
 {
-    tokens.Add("ServiceA", claims: ["ClaimA"]);
-    tokens.Add("ServiceB", claims: ["ClaimB", "Admin"]);
+    tokens.Add("ServiceA", claims: ["ClaimX"]);
+    tokens.Add("ServiceB", claims: ["ClaimX", "ClaimY"]);
 })
 ```
 
