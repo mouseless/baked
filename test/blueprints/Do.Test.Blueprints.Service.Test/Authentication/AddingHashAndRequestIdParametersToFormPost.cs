@@ -1,4 +1,6 @@
-﻿namespace Do.Test.Authentication;
+﻿using System.Net;
+
+namespace Do.Test.Authentication;
 
 public class AddingHashAndRequestIdParametersToFormPost : TestServiceNfr
 {
@@ -13,10 +15,7 @@ public class AddingHashAndRequestIdParametersToFormPost : TestServiceNfr
         };
 
         var response = await Client.PostAsync("authentication-samples/form-post-authenticate", new FormUrlEncodedContent(form));
-        response.EnsureSuccessStatusCode();
-
-        var responseContent = await response.Content.ReadAsStringAsync();
-        responseContent.ShouldNotBeNull();
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }
 
     [Test]
@@ -31,7 +30,7 @@ public class AddingHashAndRequestIdParametersToFormPost : TestServiceNfr
         var response = await Client.PostAsync("authentication-samples/form-post-authenticate", new FormUrlEncodedContent(form));
         var content = await response.Content.ReadAsStringAsync();
 
-        response.StatusCode.ShouldBe(System.Net.HttpStatusCode.BadRequest);
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
         content.ShouldContain("The requestId field is required.");
     }
 
@@ -47,7 +46,7 @@ public class AddingHashAndRequestIdParametersToFormPost : TestServiceNfr
         var response = await Client.PostAsync("authentication-samples/form-post-authenticate", new FormUrlEncodedContent(form));
         var content = await response.Content.ReadAsStringAsync();
 
-        response.StatusCode.ShouldBe(System.Net.HttpStatusCode.BadRequest);
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
         content.ShouldContain("The hash field is required.");
     }
 }
