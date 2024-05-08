@@ -36,6 +36,8 @@ Forge.New
 | ------------------ | -------------------------------- | ---------------------------------- |
 | Authentication(s)  | :white_check_mark:               | :no_entry:                         |
 |                    | Fixed Token                      |                                    |
+| Authorization      | :white_check_mark:               | :no_entry:                         |
+|                    | Claim Based                      |                                    |
 | Business           | :white_check_mark: (No Default)  | :white_check_mark:                 |
 | Caching            | :white_check_mark: Scoped Memory | :white_check_mark:                 |
 | Coding Style(s)    | :white_check_mark:               | :white_check_mark:                 |

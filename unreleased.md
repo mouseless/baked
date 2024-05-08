@@ -43,7 +43,10 @@
       them from business feature
   - `Business` now allows service casting, `service.Cast().To<AnotherService>()`
   - `Authorization` feature is now added with `ClaimBasedAuthorization`
-    implementation
+    implementation which supports;
+    - Individual claim requirements for actions
+    - Default claim requirement for all actions
+    - Anonymous access to specific actions
   - `HttpServerLayer` now registers authentication services and adds
     authentication middleware
     - provides `AuthenticationCollection` configuration target which
@@ -64,6 +67,8 @@
 - `FixedToken` authentication feature is now renamed to `FixedBearerToken`
   - Feature now have `TokenOptions` parameter to configure token names and
     associated claims with given tokens
+  - Feature now automatically adds `hash` and `requestId` parameters to actions 
+    when form post authentication is required  
 
 ## Bugfixes
 
