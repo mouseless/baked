@@ -17,13 +17,13 @@ public abstract class TestServiceNfr : ServiceNfr<TestServiceNfr>, IEntryPoint
         [nameof(Entity), nameof(Parent), nameof(TypedEntity)];
 
     protected override IEnumerable<Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>>? Authentications =>
-       [
-           c => c.FixedBearerToken(tokens =>
+        [
+            c => c.FixedBearerToken(tokens =>
             {
                 tokens.Add("Jane", claims: ["User"]);
                 tokens.Add("John", claims: ["User", "Admin"]);
             })
-       ];
+        ];
     protected override Func<AuthorizationConfigurator, IFeature<AuthorizationConfigurator>>? Authorization =>
         c => c.ClaimBased(claims: ["User", "Admin"]);
     protected override Func<BusinessConfigurator, IFeature<BusinessConfigurator>> Business =>

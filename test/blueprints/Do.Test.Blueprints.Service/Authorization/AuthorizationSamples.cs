@@ -6,7 +6,7 @@ namespace Do.Test.Authorization;
 public class AuthorizationSamples(Func<ClaimsPrincipal> _getClaims)
 {
     public string RequireBaseClaim() =>
-        _getClaims().FindFirst("User")?.Value ?? throw new("Admin claim should have existed");
+        _getClaims().FindFirst("User")?.Value ?? throw new("User claim should have existed");
 
     [RequireClaim("Admin")]
     public string RequireAdminClaim() =>

@@ -82,7 +82,7 @@ public class TargetEntityFromRouteByUniquePropertiesConvention(DomainModel _doma
             findTargetStatements.Append($$"""
                 else
                 {
-                    throw new {{typeof(RouteParameterIsNotValidException).FullName}}("{{context.Parameter.Name}}", {{context.Parameter.Name}});
+                    throw new {{nameof(RouteParameterIsNotValidException)}}("{{context.Parameter.Name}}", {{context.Parameter.Name}});
                 }
             """);
         }

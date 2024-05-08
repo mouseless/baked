@@ -7,7 +7,7 @@ using Microsoft.OpenApi.Models;
 
 namespace Do.Authentication.FixedBearerToken;
 
-public class FixedBearerTokenAuthenticationFeature(List<Token> _tokens)
+public class FixedBearerTokenAuthenticationFeature(List<Token> _tokens, List<string> formPostParameters)
     : IFeature<AuthenticationConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
@@ -44,6 +44,17 @@ public class FixedBearerTokenAuthenticationFeature(List<Token> _tokens)
             );
 
             swaggerGenOptions.AddSecurityRequirementToOperationsThatUse<AuthorizeAttribute>("FixedBearerToken");
+        });
+
+        configurator.ConfigureApiModelConventions(conventions =>
+        {
+            var domainModel = configurator.Context.GetDomainModel();
+            foreach (var name in formPostParameters)
+            {
+                conventions.Add(new AddParameterToFormPostConvention(domainModel, name));
+            }
+
+            conventions.Add(new AddParameterToFormPostConvention(domainModel, "hash"));
         });
     }
 }

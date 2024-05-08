@@ -6,6 +6,11 @@ public class UriReturnIsRedirectCodingStyleFeature : IFeature<CodingStyleConfigu
 {
     public void Configure(LayerConfigurator configurator)
     {
+        configurator.ConfigureApiModel(api =>
+        {
+            api.Usings.Add("System.Net");
+        });
+
         configurator.ConfigureApiModelConventions(conventions =>
         {
             conventions.Add(new UriReturnIsRedirectConvention());

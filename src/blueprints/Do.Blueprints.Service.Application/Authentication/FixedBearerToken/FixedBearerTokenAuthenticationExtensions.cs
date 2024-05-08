@@ -13,15 +13,17 @@ namespace Do;
 public static class FixedBearerTokenAuthenticationExtensions
 {
     public static FixedBearerTokenAuthenticationFeature FixedBearerToken(this AuthenticationConfigurator _,
-        Action<List<Token>>? configure = default
+        Action<List<Token>>? configure = default,
+        List<string>? formPostParameters = default
     )
     {
         configure ??= tokens => tokens.Add("Default");
+        formPostParameters ??= [];
 
         var tokens = new List<Token>();
         configure(tokens);
 
-        return new(tokens);
+        return new(tokens, formPostParameters);
     }
 
     public static void Add(this List<Token> tokens, string name,
