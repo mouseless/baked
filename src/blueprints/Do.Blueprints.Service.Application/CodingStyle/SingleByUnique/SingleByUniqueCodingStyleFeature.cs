@@ -35,6 +35,11 @@ public class SingleByUniqueCodingStyleFeature : IFeature<CodingStyleConfigurator
             );
         });
 
+        configurator.ConfigureApiModel(api =>
+        {
+            api.Usings.Add("Do.CodingStyle.SingleByUnique");
+        });
+
         configurator.ConfigureApiModelConventions(conventions =>
         {
             var domain = configurator.Context.GetDomainModel();

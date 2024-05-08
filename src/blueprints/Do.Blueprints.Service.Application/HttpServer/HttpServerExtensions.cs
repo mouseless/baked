@@ -2,6 +2,7 @@
 using Do.Communication;
 using Do.HttpServer;
 using Do.Testing;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
@@ -16,17 +17,20 @@ namespace Do;
 
 public static class HttpServerExtensions
 {
-    public static void AddHttpServer(this List<ILayer> source) =>
-        source.Add(new HttpServerLayer());
+    public static void AddHttpServer(this List<ILayer> layers) =>
+        layers.Add(new HttpServerLayer());
 
-    public static WebApplicationBuilder GetWebApplicationBuilder(this ApplicationContext source) =>
-        source.Get<WebApplicationBuilder>();
+    public static WebApplicationBuilder GetWebApplicationBuilder(this ApplicationContext context) =>
+        context.Get<WebApplicationBuilder>();
 
-    public static ConfigurationManager GetConfigurationManager(this ApplicationContext source) =>
-        source.Get<ConfigurationManager>();
+    public static ConfigurationManager GetConfigurationManager(this ApplicationContext context) =>
+        context.Get<ConfigurationManager>();
 
-    public static WebApplication GetWebApplication(this ApplicationContext source) =>
-        source.Get<WebApplication>();
+    public static WebApplication GetWebApplication(this ApplicationContext context) =>
+        context.Get<WebApplication>();
+
+    public static void ConfigureAuthenticationCollection(this LayerConfigurator configurator, Action<IAuthenticationCollection> configuration) =>
+        configurator.Configure(configuration);
 
     public static void ConfigureMiddlewareCollection(this LayerConfigurator configurator, Action<IMiddlewareCollection> configuration) =>
         configurator.Configure(configuration);
@@ -34,18 +38,26 @@ public static class HttpServerExtensions
     public static void ConfigureEndpointRouteBuilder(this LayerConfigurator configurator, Action<IEndpointRouteBuilder> configuration) =>
         configurator.Configure(configuration);
 
-    public static void Add<T>(this IMiddlewareCollection source, int order = default) =>
-        source.Add(new(app => app.UseMiddleware<T>(), order));
+    public static void Add(this IAuthenticationCollection authentications, string scheme, Action<AuthenticationBuilder> useBuilder,
+       Func<HttpContext, bool>? handles = default
+    ) => authentications.Add(new(scheme, useBuilder, handles ?? (_ => true)));
 
-    public static void Add(this IMiddlewareCollection source, Action<IApplicationBuilder> configure, int order = default) =>
-        source.Add(new(configure, order));
+    public static void Add<T>(this IMiddlewareCollection middlewares,
+        int order = default
+    ) => middlewares.Add(new(app => app.UseMiddleware<T>(), order));
 
-    public static T GetRequiredServiceUsingRequestServices<T>(this IServiceProvider source) where T : notnull => (T)source.GetRequiredServiceUsingRequestServices(typeof(T));
-    public static object GetRequiredServiceUsingRequestServices(this IServiceProvider source, Type serviceType)
+    public static void Add(this IMiddlewareCollection middlewares, Action<IApplicationBuilder> configure,
+        int order = default
+    ) => middlewares.Add(new(configure, order));
+
+    public static T GetRequiredServiceUsingRequestServices<T>(this IServiceProvider sp) where T : notnull =>
+        (T)sp.GetRequiredServiceUsingRequestServices(typeof(T));
+
+    public static object GetRequiredServiceUsingRequestServices(this IServiceProvider sp, Type serviceType)
     {
-        var http = source.GetRequiredService<IHttpContextAccessor>();
+        var http = sp.GetRequiredService<IHttpContextAccessor>();
 
-        if (http.HttpContext is null) { return source.GetRequiredService(serviceType); }
+        if (http.HttpContext is null) { return sp.GetRequiredService(serviceType); }
 
         return http.HttpContext.RequestServices.GetRequiredService(serviceType);
     }

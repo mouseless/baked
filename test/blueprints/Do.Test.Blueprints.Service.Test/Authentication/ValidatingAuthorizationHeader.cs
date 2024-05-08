@@ -1,4 +1,4 @@
-﻿using Do.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 
 namespace Do.Test.Authentication;
 
@@ -6,48 +6,56 @@ public class ValidatingAuthorizationHeader : TestServiceSpec
 {
     [TestCase("token_a")]
     [TestCase("token_b")]
-    public void Validates_given_bearer_token_in_configured_tokens(string token)
+    public async Task Validates_given_bearer_token_in_configured_tokens(string token)
     {
-        var middleware = GiveMe.AFixedTokenMiddleware(tokenNames: ["A", "B"]);
-        MockMe.ASetting("Authentication:FixedToken:A", "token_a");
-        MockMe.ASetting("Authentication:FixedToken:B", "token_b");
         var request = GiveMe.AnHttpRequest(
-            metadata: [new UseAttribute<Do.Authentication.FixedToken.Middleware>()],
             header: GiveMe.ADictionary(("Authorization", token))
         );
+        var handler = GiveMe.AFixedBearerTokenAuthenticationHandler(request,
+             tokens =>
+             {
+                 tokens.Add("A", ["ClaimA"]);
+                 tokens.Add("B", ["ClaimB"]);
+             });
+        MockMe.ASetting("Authentication:FixedBearerToken:A", "token_a");
+        MockMe.ASetting("Authentication:FixedBearerToken:B", "token_b");
 
-        var action = () => middleware.Invoke(request.HttpContext);
+        var authenticateResult = await handler.AuthenticateAsync();
 
-        action.ShouldNotThrow();
+        authenticateResult.Succeeded.ShouldBeTrue();
     }
 
     [Test]
-    public void Throws_unauthorized_access_when_provided_token_does_not_match_any_fixed_token()
+    public async Task Returns_failure_when_provided_token_does_not_match_any_configured_token()
     {
-        var middleware = GiveMe.AFixedTokenMiddleware(tokenNames: ["Test"]);
-        MockMe.ASetting("Authentication:FixedToken:Test", "test_token");
         var request = GiveMe.AnHttpRequest(
-            metadata: [new UseAttribute<Do.Authentication.FixedToken.Middleware>()],
             header: GiveMe.ADictionary(("Authorization", "Bearer wrong_token"))
         );
+        var handler = GiveMe.AFixedBearerTokenAuthenticationHandler(request,
+             tokens => tokens.Add("Default", ["User"])
+        );
+        MockMe.ASetting("Authentication:FixedBearerToken:Default", "test_token");
 
-        var action = () => middleware.Invoke(request.HttpContext);
+        var authenticateResult = await handler.AuthenticateAsync();
 
-        action.ShouldThrow<UnauthorizedAccessException>();
+        authenticateResult.Succeeded.ShouldBeFalse();
+        authenticateResult.Failure.ShouldNotBeNull();
+        authenticateResult.Failure.ShouldBeAssignableTo<AuthenticationFailureException>();
     }
 
     [Test]
-    public void Trims_bearer_scheme_and_whitespace()
+    public async Task Trims_bearer_scheme_and_whitespace()
     {
-        var middleware = GiveMe.AFixedTokenMiddleware(tokenNames: ["Test"]);
-        MockMe.ASetting("Authentication:FixedToken:Test", "test_token");
         var request = GiveMe.AnHttpRequest(
-            metadata: [new UseAttribute<Do.Authentication.FixedToken.Middleware>()],
             header: GiveMe.ADictionary(("Authorization", "Bearer test_token "))
         );
+        var handler = GiveMe.AFixedBearerTokenAuthenticationHandler(request,
+            tokens => tokens.Add("Default", ["User"])
+        );
+        MockMe.ASetting("Authentication:FixedBearerToken:Default", "test_token");
 
-        var action = () => middleware.Invoke(request.HttpContext);
+        var authenticateResult = await handler.AuthenticateAsync();
 
-        action.ShouldNotThrow();
+        authenticateResult.Succeeded.ShouldBeTrue();
     }
 }

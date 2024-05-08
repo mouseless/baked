@@ -1,5 +1,6 @@
 ﻿using Do.Architecture;
 using Do.Authentication;
+using Do.Authorization;
 using Do.Business;
 using Do.Caching;
 using Do.Communication;
@@ -63,6 +64,7 @@ public abstract class ServiceNfr<TEntryPoint> : Nfr
         Forge.New
             .Service(
                 authentications: Authentications,
+                authorization: Authorization,
                 business: Business,
                 caching: Caching,
                 core: Core,
@@ -78,6 +80,7 @@ public abstract class ServiceNfr<TEntryPoint> : Nfr
     protected virtual IEnumerable<string> EntityNamesToClearOnTearDown => [];
 
     protected virtual IEnumerable<Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>>? Authentications => default;
+    protected virtual Func<AuthorizationConfigurator, IFeature<AuthorizationConfigurator>>? Authorization => default;
     protected abstract Func<BusinessConfigurator, IFeature<BusinessConfigurator>> Business { get; }
     protected virtual Func<CachingConfigurator, IFeature<CachingConfigurator>>? Caching => default;
     protected virtual Func<CommunicationConfigurator, IFeature<CommunicationConfigurator>>? Communication => default;

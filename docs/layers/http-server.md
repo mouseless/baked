@@ -8,8 +8,20 @@ app.Layers.AddHttpServer();
 
 ## Configuration Targets
 
-`HttpServer` layer provides `IMiddlewareCollection` and `IEndpointRouteBuilder`
-targets to configure a web application.
+`HttpServer` layer provides `IAuthenticationCollection`, 
+`IMiddlewareCollection` and `IEndpointRouteBuilder` targets to configure a web 
+application.
+
+### `IAuthenticationCollection`
+
+This target is provided in `AddServices` phase. To configure it in a feature;
+
+```csharp
+configurator.ConfigureAuthenticationCollection(authentications =>
+{
+    ...
+});
+```
 
 ### `IMiddlewareCollection`
 

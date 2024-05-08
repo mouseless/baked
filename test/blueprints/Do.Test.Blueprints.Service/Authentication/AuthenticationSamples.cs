@@ -1,8 +1,12 @@
-﻿namespace Do.Test.Authentication;
+﻿using System.Security.Claims;
 
-public class AuthenticationSamples
+namespace Do.Test.Authentication;
+
+public class AuthenticationSamples(Func<ClaimsPrincipal> _getClaims)
 {
-    public void TokenAuthentication() { }
+    public string? Authenticate() =>
+        _getClaims().Identity?.AuthenticationType;
 
-    public object FormPostAuthentication(object value) => value;
+    public object FormPostAuthenticate(object value) =>
+        value;
 }

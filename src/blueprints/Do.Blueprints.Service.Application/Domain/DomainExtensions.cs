@@ -61,6 +61,9 @@ public static class DomainExtensions
     public static bool Has<T>(this ICustomAttributesModel model) where T : Attribute =>
         model.CustomAttributes.Contains<T>();
 
+    public static bool Has(this ICustomAttributesModel model, Type type) =>
+        model.CustomAttributes.Contains(type);
+
     public static T GetSingle<T>(this ICustomAttributesModel model) where T : Attribute =>
         model.Get<T>().Single();
 
