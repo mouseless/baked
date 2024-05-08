@@ -34,7 +34,7 @@ Forge.New
 
 | Name               | Run                              | Test                               |
 | ------------------ | -------------------------------- | ---------------------------------- |
-| Authentication(s)  | :white_check_mark:               | :white_check_mark:                 |
+| Authentication(s)  | :white_check_mark:               | :no_entry:                         |
 |                    | Fixed Token                      |                                    |
 | Authorization      | :white_check_mark:               | :no_entry:                         |
 |                    | Claim Based                      |                                    |
