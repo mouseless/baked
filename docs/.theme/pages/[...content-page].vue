@@ -48,16 +48,41 @@ const sortedPages = root === "/" ? [index] : [index, ...pages];
 
 store.setPages(sortedPages);
 
-function compare(a, b, { by, order } = { }) {
+function compare(a, b, { by, order, numeric } = { }) {
   by ||= "title";
   order ||= "asc";
+  numeric ||= false;
 
   const direction = order === "asc" ? 1 : -1;
 
-  if(a[by] < b[by]) { return -1 * direction; }
-  if(a[by] > b[by]) { return 1 * direction; }
+  let valA;
+  let valB;
+
+  if(numeric) {
+    for(const part of a[by].replace("v", "").split(".")) {
+      valA += leftPad(part, 2);
+    }
+
+    for(const part of b[by].replace("v", "").split(".")) {
+      valB += leftPad(part, 2);
+    }
+  } else {
+    valA = a[by];
+    valB = b[by];
+  }
+
+  if(valA < valB) { return -1 * direction; }
+  if(valA > valB) { return 1 * direction; }
 
   return 0;
+}
+
+function leftPad(number, targetLength) {
+  let output = number + "";
+  while(output.length < targetLength) {
+    output = "0" + output;
+  }
+  return output;
 }
 </script>
 <style lang="scss" scoped>

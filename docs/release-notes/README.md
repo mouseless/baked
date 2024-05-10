@@ -2,6 +2,7 @@
 sort:
   by: title
   order: desc
+  numeric: true
 ---
 
 # Release Notes
