@@ -10,4 +10,5 @@ public record ControllerModel(TypeModel TypeModel)
     public Dictionary<string, ActionModel> Action { get; init; } = [];
 
     public IEnumerable<ActionModel> Actions { get => Action.Values.OrderBy(a => a.Order); init => Action = value.ToDictionary(a => a.Id); }
+    public string TemplateName => Id.Replace(".", "_");
 }
