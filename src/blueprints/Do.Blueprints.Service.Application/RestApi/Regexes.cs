@@ -15,4 +15,7 @@ internal static partial class Regexes
 
     [GeneratedRegex(@"^(Update|Change|Set).*$", RegexOptions.None, "en-US")]
     public static partial Regex StartsWithUpdateChangeOrSet();
+
+    [GeneratedRegex("(?<=[a-z])(?=[A-Z])")]
+    public static partial Regex MatchUpperInitial();
 }

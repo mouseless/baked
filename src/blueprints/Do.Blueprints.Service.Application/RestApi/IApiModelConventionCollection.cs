@@ -5,6 +5,12 @@ namespace Do.RestApi;
 
 public interface IApiModelConventionCollection : IList<IApiModelConvention>
 {
+    public new void Add(IApiModelConvention convention)
+    {
+        int index = ((Count % 2) == 0) ? (Count / 2) : (Count + 1) / 2;
+        Insert(index, convention);
+    }
+
     public void Apply(ApiModel apiModel)
     {
         foreach (var convention in this)

@@ -1,6 +1,6 @@
-﻿using System.Reflection;
-using Do.Architecture;
+﻿using Do.Architecture;
 using Do.RestApi;
+using Do.RestApi.Configuration;
 using Do.RestApi.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
+using System.Reflection;
 
 namespace Do;
 
@@ -46,6 +47,12 @@ public static class RestApiExtensions
 
         return source;
     }
+
+    public static void AddEarliest(this IApiModelConventionCollection collection, IApiModelConvention convention) =>
+       collection.Insert(0, convention);
+
+    public static void AddLatest(this IApiModelConventionCollection collection, IApiModelConvention convention) =>
+        collection.Add(convention);
 
     public static void Add<T>(this ICollection<Assembly> assemblies) =>
         assemblies.Add(typeof(T).Assembly);
