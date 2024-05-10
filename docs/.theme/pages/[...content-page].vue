@@ -48,24 +48,19 @@ const sortedPages = root === "/" ? [index] : [index, ...pages];
 
 store.setPages(sortedPages);
 
-function compare(a, b, { by, order, numeric } = { }) {
+function compare(a, b, { by, order, version } = { }) {
   by ||= "title";
   order ||= "asc";
-  numeric ||= false;
+  version ||= false;
 
   const direction = order === "asc" ? 1 : -1;
 
   let valA;
   let valB;
 
-  if(numeric) {
-    for(const part of a[by].replace("v", "").split(".")) {
-      valA += leftPad(part, 2);
-    }
-
-    for(const part of b[by].replace("v", "").split(".")) {
-      valB += leftPad(part, 2);
-    }
+  if(version) {
+    valA = normalizedVersionTitle(a[by]);
+    valB = normalizedVersionTitle(b[by]);
   } else {
     valA = a[by];
     valB = b[by];
@@ -77,12 +72,24 @@ function compare(a, b, { by, order, numeric } = { }) {
   return 0;
 }
 
-function leftPad(number, targetLength) {
-  let output = number + "";
-  while(output.length < targetLength) {
-    output = "0" + output;
+function normalizedVersionTitle(title) {
+  let normalized = "";
+  for(const part of title.replace("v", "").split(".")) {
+    normalized += pad(part, 2);
   }
-  return output;
+
+  pad(normalized, 6, true);
+  return normalized;
+}
+
+function pad(text, targetLength, right) {
+  right ||= false;
+
+  let result = text + "";
+  while(result.length < targetLength) {
+    result = right ? result + "0" : "0" + result;
+  }
+  return result;
 }
 </script>
 <style lang="scss" scoped>

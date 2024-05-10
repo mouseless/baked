@@ -2,7 +2,7 @@
 sort:
   by: title
   order: desc
-  numeric: true
+  version: true
 ---
 
 # Release Notes
