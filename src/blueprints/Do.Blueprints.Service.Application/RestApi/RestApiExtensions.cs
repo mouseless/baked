@@ -52,7 +52,7 @@ public static class RestApiExtensions
        collection.Insert(0, convention);
 
     public static void AddLatest(this IApiModelConventionCollection collection, IApiModelConvention convention) =>
-        collection.Add(convention);
+        collection.Insert(collection.Count, convention);
 
     public static void Add<T>(this ICollection<Assembly> assemblies) =>
         assemblies.Add(typeof(T).Assembly);
