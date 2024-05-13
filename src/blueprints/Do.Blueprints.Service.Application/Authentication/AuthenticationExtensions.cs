@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
-using Shouldly;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Security.Claims;
 
@@ -32,37 +31,34 @@ public static class AuthenticationExtensions
         return metadata?.GetMetadata<T>() is not null;
     }
 
-    public static void ShouldBeSuccededResult(this AuthenticateResult result, IEnumerable<string> claims) =>
-        ShouldBeSuccededResult(result, claims.Select(c => new Claim(c, c)), true);
-
-    public static void ShouldBeSuccededResult(this AuthenticateResult result,
+    public static bool ShouldBeAuthenticatedResult(this AuthenticateResult result,
         IEnumerable<Claim>? claims = default,
         bool ensureClaimValue = false
     )
     {
-        result.Failure.ShouldBeNull();
-        result.Succeeded.ShouldBeTrue();
-        result.Principal.ShouldNotBeNull();
-        result.Principal.Identity.ShouldNotBeNull();
-        result.Principal.Identity.IsAuthenticated.ShouldBeTrue();
+        if (result.Failure is not null) { return false; }
+        if (result.Principal is null) { return false; }
+        if (!result.Succeeded) { return false; }
 
         if (claims is not null)
         {
-            result.Principal.Claims.ShouldContain(c => claims.Any(e => e.Type == c.Type && (!ensureClaimValue || e.Value == c.Value)));
+            foreach (var claim in claims)
+            {
+                if (
+                    result.Principal.Claims.FirstOrDefault(c =>
+                        c.Type == claim.Type &&
+                        (!ensureClaimValue || c.Value == claim.Value)
+                    ) is null
+                )
+                {
+                    return false;
+                }
+            }
         }
+
+        return true;
     }
 
-    public static void ShouldBeNoResult(this AuthenticateResult result)
-    {
-        result.Failure.ShouldBeNull();
-        result.Succeeded.ShouldBeFalse();
-        result.Principal?.Claims.Any().ShouldBeFalse();
-    }
-
-    public static void ShouldBeFailedResult(this AuthenticateResult result)
-    {
-        result.Failure.ShouldNotBeNull();
-        result.Failure.ShouldBeAssignableTo<AuthenticationFailureException>();
-        result.Succeeded.ShouldBeFalse();
-    }
+    public static bool ShouldBeFailedResult(this AuthenticateResult result) =>
+        result.Failure is not null && !result.Succeeded;
 }

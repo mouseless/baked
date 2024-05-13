@@ -146,18 +146,4 @@ public static class HttpServerExtensions
 
     public static RequestDelegate ARequestDelegate(this Stubber _) =>
         _ => Task.CompletedTask;
-
-    public static ClaimsPrincipal AClaimsPrincipal(this Stubber _,
-        IEnumerable<Claim>? claims = default,
-        string? authenticationType = default
-    )
-    {
-        claims ??= [new("User", "User")];
-        authenticationType ??= "Test";
-
-        var identity = new ClaimsIdentity(authenticationType);
-        identity.AddClaims(claims);
-
-        return new(identity);
-    }
 }
