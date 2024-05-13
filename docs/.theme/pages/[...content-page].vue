@@ -57,7 +57,7 @@ function comparePages(a, b, { by, order, version } = { }) {
   const direction = order === "asc" ? 1 : -1;
 
   if(version) {
-    return compare(clean(a[by]+".0"), clean(b[by]+".0")) * direction;
+    return compare(clean(a[by] + ".0"), clean(b[by] + ".0")) * direction;
   } else {
     if(a[by] < b[by]) { return -1 * direction; }
     if(a[by] > b[by]) { return 1 * direction; }
