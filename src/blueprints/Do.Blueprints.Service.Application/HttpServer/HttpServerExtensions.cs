@@ -83,7 +83,7 @@ public static class HttpServerExtensions
         method ??= form is null && body is null ? "GET" : "POST";
 
         var result = giveMe.AnHttpContext(metadata: metadata, user: user).Request;
-        
+
         result.Scheme = schema;
         result.Host = new(host);
         result.Path = path;
