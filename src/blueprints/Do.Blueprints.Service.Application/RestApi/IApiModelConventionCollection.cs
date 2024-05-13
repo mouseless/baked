@@ -9,8 +9,6 @@ public interface IApiModelConventionCollection : IList<(IApiModelConvention Conv
     {
         foreach (var (Convention, _) in this.OrderBy(i => i.Order))
         {
-            Console.WriteLine(Convention.GetType().Name);
-
             if (Convention is IApiModelConvention<ApiModelContext> apiModelConvention)
             {
                 apiModelConvention.Apply(new() { Api = apiModel });
