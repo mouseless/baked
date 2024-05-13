@@ -2,7 +2,7 @@
 
 namespace Do.CodingStyle.CommandPattern;
 
-public class UseClassNameInsteadOfActionNames(IEnumerable<string> actionNames)
+public class UseClassNameInsteadOfActionNamesConvention(IEnumerable<string> actionNames)
     : IApiModelConvention<ActionModelContext>
 {
     readonly HashSet<string> _actionNames = actionNames.ToHashSet();

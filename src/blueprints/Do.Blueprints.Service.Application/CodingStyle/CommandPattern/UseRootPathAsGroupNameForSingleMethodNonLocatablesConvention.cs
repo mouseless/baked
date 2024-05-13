@@ -4,7 +4,7 @@ using Humanizer;
 
 namespace Do.CodingStyle.CommandPattern;
 
-public class UseRootPathAsGroupNameForSingleMethodNonLocatables : IApiModelConvention<ControllerModelContext>
+public class UseRootPathAsGroupNameForSingleMethodNonLocatablesConvention : IApiModelConvention<ControllerModelContext>
 {
     public void Apply(ControllerModelContext context)
     {

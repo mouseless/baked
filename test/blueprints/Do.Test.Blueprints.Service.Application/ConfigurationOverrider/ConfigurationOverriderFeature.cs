@@ -1,5 +1,4 @@
 ﻿using Do.Architecture;
-using Do.RestApi.Conventions;
 using Do.RestApi.Model;
 using Do.Test.Authentication;
 using Do.Test.ExceptionHandling;
@@ -42,11 +41,6 @@ public class ConfigurationOverriderFeature : IFeature
 
             swaggerGenOptions.AddSecurityRequirementToOperationsThatUse<AuthorizeAttribute>("AdditionalSecurity");
             swaggerGenOptions.AddParameterToOperationsThatUse<AuthorizeAttribute>("X-Security", @in: ParameterLocation.Header, required: true);
-        });
-
-        configurator.ConfigureApiModelConventions(conventions =>
-        {
-            conventions.Add(new RemoveFromRouteConvention(["Cla", "ss", "Comm", "mand"]));
         });
     }
 }

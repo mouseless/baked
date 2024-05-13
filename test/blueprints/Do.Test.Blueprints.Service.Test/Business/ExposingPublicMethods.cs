@@ -60,4 +60,12 @@ public class ExposingPublicMethods : TestServiceNfr
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }
+
+    [Test]
+    public async Task GetSetting()
+    {
+        var response = await Client.PostAsync("/method-samples/settings", JsonContent.Create(new { value = "test" }));
+
+        response.StatusCode.ShouldNotBe(HttpStatusCode.OK);
+    }
 }
