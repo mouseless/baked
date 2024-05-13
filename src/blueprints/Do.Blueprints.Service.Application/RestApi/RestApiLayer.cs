@@ -27,6 +27,7 @@ public class RestApiLayer : LayerBase<GenerateCode, AddServices, Build>
     {
         var generatedAssemblies = Context.GetGeneratedAssemblyCollection();
         _apiModel.References.Add<RestApiLayer>();
+        _apiModel.References.Add<ApiControllerAttribute>();
         _apiModel.Usings.AddRange(
         [
             "Microsoft.AspNetCore.Mvc",
@@ -46,7 +47,6 @@ public class RestApiLayer : LayerBase<GenerateCode, AddServices, Build>
 
                 generatedAssemblies.Add(nameof(RestApiLayer),
                     assembly => assembly
-                        .AddReferenceFrom<ApiControllerAttribute>()
                         .AddReferences(_apiModel.References)
                         .AddCodes(new ApiCodeTemplate(_apiModel)),
                     compilerOptions => compilerOptions.WithUsings(_apiModel.Usings)

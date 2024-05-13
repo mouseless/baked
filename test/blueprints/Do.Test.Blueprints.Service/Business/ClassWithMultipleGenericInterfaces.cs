@@ -4,9 +4,9 @@ public class ClassWithMultipleGenericInterfaces : IEquatable<int>, IEquatable<st
 {
     public int Numeric { get; set; } = default!;
 
-    public bool Equals(int other) =>
+    bool IEquatable<int>.Equals(int other) =>
         Numeric.Equals(other);
 
-    public bool Equals(string? other) =>
+    bool IEquatable<string>.Equals(string? other) =>
         $"{Numeric}".Equals(other);
 }
