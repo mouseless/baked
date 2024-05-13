@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication;
-
-namespace Do.Test.Authentication;
+﻿namespace Do.Test.Authentication;
 
 public class ValidatingFormPost : TestServiceSpec
 {
@@ -21,9 +19,7 @@ public class ValidatingFormPost : TestServiceSpec
 
         var authenticateResult = await handler.AuthenticateAsync();
 
-        authenticateResult.Succeeded.ShouldBeTrue();
-        authenticateResult.Principal.ShouldNotBeNull();
-        authenticateResult.Principal.Claims.FirstOrDefault(c => c.Type == "User").ShouldNotBeNull();
+        authenticateResult.ShouldBeSuccededResult(["User"]);
     }
 
     [Test]
@@ -43,9 +39,7 @@ public class ValidatingFormPost : TestServiceSpec
 
         var authenticateResult = await handler.AuthenticateAsync();
 
-        authenticateResult.Succeeded.ShouldBeFalse();
-        authenticateResult.Failure.ShouldNotBeNull();
-        authenticateResult.Failure.ShouldBeAssignableTo<AuthenticationFailureException>();
+        authenticateResult.ShouldBeFailedResult();
     }
 
     [Test]
@@ -61,8 +55,6 @@ public class ValidatingFormPost : TestServiceSpec
 
         var authenticateResult = await handler.AuthenticateAsync();
 
-        authenticateResult.Succeeded.ShouldBeFalse();
-        authenticateResult.Failure.ShouldBeNull();
-        authenticateResult.Principal.ShouldBeNull();
+        authenticateResult.ShouldBeNoResult();
     }
 }

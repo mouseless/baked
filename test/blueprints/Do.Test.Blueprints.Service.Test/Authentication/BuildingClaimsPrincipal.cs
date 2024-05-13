@@ -15,11 +15,7 @@ public class BuildingClaimsPrincipal : TestServiceSpec
 
         var authenticateResult = await handler.AuthenticateAsync();
 
-        authenticateResult.Succeeded.ShouldBeTrue();
-        authenticateResult.Principal.ShouldNotBeNull();
-        authenticateResult.Principal.Identity.ShouldNotBeNull();
-        authenticateResult.Principal.Identity.IsAuthenticated.ShouldBeTrue();
-        authenticateResult.Principal.Claims.Any(c => c.Type == "User").ShouldBeTrue();
+        authenticateResult.ShouldBeSuccededResult(claims: ["User"]);
     }
 
     [Test]
@@ -35,9 +31,7 @@ public class BuildingClaimsPrincipal : TestServiceSpec
 
         var authenticateResult = await handler.AuthenticateAsync();
 
-        authenticateResult.Principal.ShouldNotBeNull();
-        authenticateResult.Principal.Claims.Any(c => c.Type == "User").ShouldBeTrue();
-        authenticateResult.Principal.Claims.Any(c => c.Type == "Admin").ShouldBeTrue();
+        authenticateResult.ShouldBeSuccededResult(claims: ["User", "Admin"]);
     }
 
     [Test]
@@ -53,6 +47,6 @@ public class BuildingClaimsPrincipal : TestServiceSpec
 
         var authenticateResult = await handler.AuthenticateAsync();
 
-        authenticateResult.Principal.ShouldBeNull();
+        authenticateResult.ShouldBeFailedResult();
     }
 }

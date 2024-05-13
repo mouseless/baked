@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication;
-
-namespace Do.Test.Authentication;
+﻿namespace Do.Test.Authentication;
 
 public class ValidatingAuthorizationHeader : TestServiceSpec
 {
@@ -22,7 +20,7 @@ public class ValidatingAuthorizationHeader : TestServiceSpec
 
         var authenticateResult = await handler.AuthenticateAsync();
 
-        authenticateResult.Succeeded.ShouldBeTrue();
+        authenticateResult.ShouldBeSuccededResult();
     }
 
     [Test]
@@ -38,9 +36,7 @@ public class ValidatingAuthorizationHeader : TestServiceSpec
 
         var authenticateResult = await handler.AuthenticateAsync();
 
-        authenticateResult.Succeeded.ShouldBeFalse();
-        authenticateResult.Failure.ShouldNotBeNull();
-        authenticateResult.Failure.ShouldBeAssignableTo<AuthenticationFailureException>();
+        authenticateResult.ShouldBeFailedResult();
     }
 
     [Test]
@@ -56,6 +52,6 @@ public class ValidatingAuthorizationHeader : TestServiceSpec
 
         var authenticateResult = await handler.AuthenticateAsync();
 
-        authenticateResult.Succeeded.ShouldBeTrue();
+        authenticateResult.ShouldBeSuccededResult();
     }
 }
