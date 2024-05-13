@@ -8,7 +8,7 @@ public record ControllerModel(TypeModel TypeModel)
     public string ClassName { get; } = TypeModel.Name;
     public string GroupName { get; set; } = TypeModel.Name;
     public Dictionary<string, ActionModel> Action { get; init; } = [];
+    public string TemplateName { get; set; } = TypeModel.CSharpFriendlyFullName.Replace(".", "_");
 
     public IEnumerable<ActionModel> Actions { get => Action.Values.OrderBy(a => a.Order); init => Action = value.ToDictionary(a => a.Id); }
-    public string TemplateName => Id.Replace(".", "_");
 }
