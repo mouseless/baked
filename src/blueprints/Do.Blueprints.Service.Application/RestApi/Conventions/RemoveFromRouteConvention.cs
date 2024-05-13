@@ -1,4 +1,5 @@
 ﻿using Do.RestApi.Configuration;
+using Humanizer;
 
 namespace Do.RestApi.Conventions;
 
@@ -24,11 +25,6 @@ public class RemoveFromRouteConvention(IEnumerable<string> _parts,
         context.Action.Name = RemoveParts(context.Action.Name, _parts);
     }
 
-    string RemoveParts(string from, IEnumerable<string> parts)
-    {
-        var words = Regexes.StartsWithUpperCaseEndsWithLowerCase().Split(from);
-        if (words is null) { return from; }
-
-        return string.Join(string.Empty, words.Except(parts));
-    }
+    string RemoveParts(string from, IEnumerable<string> parts) =>
+        string.Join(string.Empty, from.Humanize().Split(" ").Select(w => w.Transform(To.TitleCase)).Except(parts));
 }
