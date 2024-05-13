@@ -62,9 +62,9 @@ public class ExposingPublicMethods : TestServiceNfr
     }
 
     [Test]
-    public async Task GetSetting()
+    public async Task SetSetting()
     {
-        var response = await Client.PostAsync("/method-samples/settings", JsonContent.Create(new { value = "test" }));
+        var response = await Client.PatchAsync("/method-samples/setting", JsonContent.Create(new { value = "test" }));
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }
