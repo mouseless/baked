@@ -66,6 +66,6 @@ public class ExposingPublicMethods : TestServiceNfr
     {
         var response = await Client.PostAsync("/method-samples/settings", JsonContent.Create(new { value = "test" }));
 
-        response.StatusCode.ShouldNotBe(HttpStatusCode.OK);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }
 }
