@@ -51,7 +51,7 @@ public class FixedBearerTokenAuthenticationFeature(List<Token> _tokens, List<str
             var domainModel = configurator.Context.GetDomainModel();
             foreach (var name in formPostParameters)
             {
-                conventions.Add(new AddParameterToFormPostConvention(domainModel, name));
+                conventions.Add(new AddParameterToFormPostConvention(domainModel, name), order: int.MaxValue);
             }
 
             conventions.Add(new AddParameterToFormPostConvention(domainModel, "hash"), order: int.MaxValue);

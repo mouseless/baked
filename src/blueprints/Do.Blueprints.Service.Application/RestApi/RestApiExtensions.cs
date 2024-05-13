@@ -49,8 +49,8 @@ public static class RestApiExtensions
     }
 
     public static void Add(this IApiModelConventionCollection collection, IApiModelConvention convention,
-        int? order = default
-    ) => collection.Add((convention, order is null ? collection.Count : order.GetValueOrDefault()));
+        int order = 0
+    ) => collection.Add((convention, order));
 
     public static void Add<T>(this ICollection<Assembly> assemblies) =>
         assemblies.Add(typeof(T).Assembly);

@@ -18,6 +18,7 @@
   </ContentDoc>
 </template>
 <script setup>
+import { clean, compare } from "semver";
 import { withTrailingSlash } from "ufo";
 import { useRoute } from "#imports";
 import { usePageStore } from "~/store/pageStore";
@@ -39,7 +40,7 @@ const pages = await queryContent(root)
 if(index.pages) {
   applyOrder(pages, i => `${index._path}/${index.pages[i]}`);
 } else {
-  pages.sort((a, b) => compare(a, b, index.sort));
+  pages.sort((a, b) => comparePages(a, b, index.sort));
 }
 
 index._path = withTrailingSlash(index._path);
@@ -48,48 +49,21 @@ const sortedPages = root === "/" ? [index] : [index, ...pages];
 
 store.setPages(sortedPages);
 
-function compare(a, b, { by, order, version } = { }) {
+function comparePages(a, b, { by, order, version } = { }) {
   by ||= "title";
   order ||= "asc";
   version ||= false;
 
   const direction = order === "asc" ? 1 : -1;
 
-  let valA;
-  let valB;
-
   if(version) {
-    valA = normalizedVersionTitle(a[by]);
-    valB = normalizedVersionTitle(b[by]);
+    return compare(clean(a[by]+".0"), clean(b[by]+".0")) * direction;
   } else {
-    valA = a[by];
-    valB = b[by];
+    if(a[by] < b[by]) { return -1 * direction; }
+    if(a[by] > b[by]) { return 1 * direction; }
   }
-
-  if(valA < valB) { return -1 * direction; }
-  if(valA > valB) { return 1 * direction; }
 
   return 0;
-}
-
-function normalizedVersionTitle(title) {
-  let normalized = "";
-  for(const part of title.replace("v", "").split(".")) {
-    normalized += pad(part, 2);
-  }
-
-  pad(normalized, 6, true);
-  return normalized;
-}
-
-function pad(text, targetLength, right) {
-  right ||= false;
-
-  let result = text + "";
-  while(result.length < targetLength) {
-    result = right ? result + "0" : "0" + result;
-  }
-  return result;
 }
 </script>
 <style lang="scss" scoped>

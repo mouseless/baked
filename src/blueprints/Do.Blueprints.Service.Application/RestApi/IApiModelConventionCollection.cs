@@ -7,14 +7,14 @@ public interface IApiModelConventionCollection : IList<(IApiModelConvention Conv
 {
     public void Apply(ApiModel apiModel)
     {
-        foreach (var (Convention, _) in this.OrderBy(i => i.Order))
+        foreach (var (convention, _) in this.OrderBy(i => i.Order))
         {
-            if (Convention is IApiModelConvention<ApiModelContext> apiModelConvention)
+            if (convention is IApiModelConvention<ApiModelContext> apiModelConvention)
             {
                 apiModelConvention.Apply(new() { Api = apiModel });
             }
 
-            if (Convention is IApiModelConvention<ControllerModelContext> controllerConvention)
+            if (convention is IApiModelConvention<ControllerModelContext> controllerConvention)
             {
                 foreach (ControllerModel controller in apiModel.Controllers.ToList())
                 {
@@ -22,7 +22,7 @@ public interface IApiModelConventionCollection : IList<(IApiModelConvention Conv
                 }
             }
 
-            if (Convention is IApiModelConvention<ActionModelContext> actionConvention)
+            if (convention is IApiModelConvention<ActionModelContext> actionConvention)
             {
                 foreach (var (controller, action) in apiModel.Controllers
                                                              .SelectMany(c => c.Actions.Select(a => (c, a)))
@@ -33,7 +33,7 @@ public interface IApiModelConventionCollection : IList<(IApiModelConvention Conv
                 }
             }
 
-            if (Convention is IApiModelConvention<ParameterModelContext> parameterConvention)
+            if (convention is IApiModelConvention<ParameterModelContext> parameterConvention)
             {
                 foreach (var (controller, action, parameter) in apiModel.Controllers
                                                                         .SelectMany(c => c.Actions.Select(a => (c, a)))
