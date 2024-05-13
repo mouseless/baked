@@ -1,5 +1,6 @@
 ﻿using Do.Architecture;
 using Do.RestApi;
+using Do.RestApi.Configuration;
 using Do.RestApi.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -46,6 +47,10 @@ public static class RestApiExtensions
 
         return source;
     }
+
+    public static void Add(this IApiModelConventionCollection collection, IApiModelConvention convention,
+        int? order = default
+    ) => collection.Add((convention, order is null ? collection.Count : order.GetValueOrDefault()));
 
     public static void Add<T>(this ICollection<Assembly> assemblies) =>
         assemblies.Add(typeof(T).Assembly);

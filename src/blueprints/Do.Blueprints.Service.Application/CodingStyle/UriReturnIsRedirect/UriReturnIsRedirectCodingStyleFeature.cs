@@ -15,7 +15,7 @@ public class UriReturnIsRedirectCodingStyleFeature : IFeature<CodingStyleConfigu
         {
             conventions.Add(new UriReturnIsRedirectConvention());
             conventions.Add(new UriReturnWithoutParameterIsGetConvention());
-            conventions.Insert(0, new UriReturnWithParameterIsFormPostConvention());
+            conventions.Add(new UriReturnWithParameterIsFormPostConvention(), order: int.MinValue);
         });
     }
 }

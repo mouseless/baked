@@ -32,8 +32,8 @@ public class CommandPatternCodingStyleFeature : IFeature<CodingStyleConfigurator
 
         configurator.ConfigureApiModelConventions(conventions =>
         {
-            conventions.Insert(0, new InitializeUsingQueryParametersConvention());
-            conventions.Insert(1, new UseClassNameInsteadOfActionNames(["Execute", "Process"]));
+            conventions.Add(new InitializeUsingQueryParametersConvention(), order: int.MinValue);
+            conventions.Add(new UseClassNameInsteadOfActionNames(["Execute", "Process"]), order: int.MinValue + 1);
             conventions.Add(new RemoveFromRouteConvention(["Execute", "Process"]));
             conventions.Add(new UseRootPathAsGroupNameForSingleMethodNonLocatables());
         });

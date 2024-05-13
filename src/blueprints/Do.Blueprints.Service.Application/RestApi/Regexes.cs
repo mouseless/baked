@@ -17,5 +17,5 @@ internal static partial class Regexes
     public static partial Regex StartsWithUpdateChangeOrSet();
 
     [GeneratedRegex("(?<=[a-z])(?=[A-Z])")]
-    public static partial Regex MatchUpperInitial();
+    public static partial Regex StartsWithUpperCaseEndsWithLowerCase();
 }

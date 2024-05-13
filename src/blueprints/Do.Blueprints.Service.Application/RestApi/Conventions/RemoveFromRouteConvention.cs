@@ -26,7 +26,7 @@ public class RemoveFromRouteConvention(IEnumerable<string> _parts,
 
     string RemoveParts(string original, IEnumerable<string> parts)
     {
-        var words = Regexes.MatchUpperInitial().Split(original);
+        var words = Regexes.StartsWithUpperCaseEndsWithLowerCase().Split(original);
         if (words is null) { return original; }
 
         return string.Join(string.Empty, words.Except(parts));
