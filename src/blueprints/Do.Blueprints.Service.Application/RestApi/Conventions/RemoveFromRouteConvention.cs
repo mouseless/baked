@@ -24,10 +24,10 @@ public class RemoveFromRouteConvention(IEnumerable<string> _parts,
         context.Action.Name = RemoveParts(context.Action.Name, _parts);
     }
 
-    string RemoveParts(string original, IEnumerable<string> parts)
+    string RemoveParts(string from, IEnumerable<string> parts)
     {
-        var words = Regexes.StartsWithUpperCaseEndsWithLowerCase().Split(original);
-        if (words is null) { return original; }
+        var words = Regexes.StartsWithUpperCaseEndsWithLowerCase().Split(from);
+        if (words is null) { return from; }
 
         return string.Join(string.Empty, words.Except(parts));
     }
