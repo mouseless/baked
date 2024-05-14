@@ -8,7 +8,7 @@ public class EntityUnderEntitiesConvention : IApiModelConvention<ControllerModel
 {
     public void Apply(ControllerModelContext context)
     {
-        if (!context.Controller.TypeModel.TryGetMetadata(out var metadata)) { return; }
+        if (!context.Controller.MappedType.TryGetMetadata(out var metadata)) { return; }
         if (!metadata.Has<EntityAttribute>()) { return; }
 
         context.Controller.GroupName = context.Controller.GroupName.Pluralize(inputIsKnownToBeSingular: true);

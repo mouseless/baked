@@ -1,4 +1,5 @@
 ﻿using Do.RestApi.Configuration;
+using Humanizer;
 
 namespace Do.RestApi.Conventions;
 
@@ -12,12 +13,7 @@ public class RemoveFromRouteConvention(IEnumerable<string> _parts,
 
         for (var i = 0; i < context.Action.RouteParts.Count; i++)
         {
-            var routePart = context.Action.RouteParts[i];
-            foreach (var part in _parts.Where(p => routePart.Contains(p)))
-            {
-                routePart = routePart.Replace(part, string.Empty);
-            }
-
+            var routePart = RemoveParts(context.Action.RouteParts[i], _parts);
             context.Action.RouteParts[i] = routePart;
             if (string.IsNullOrWhiteSpace(routePart))
             {
@@ -26,9 +22,9 @@ public class RemoveFromRouteConvention(IEnumerable<string> _parts,
             }
         }
 
-        foreach (var part in _parts)
-        {
-            context.Action.Name = context.Action.Name.Replace(part, string.Empty);
-        }
+        context.Action.Name = RemoveParts(context.Action.Name, _parts);
     }
+
+    string RemoveParts(string from, IEnumerable<string> parts) =>
+        from.Humanize().Split(" ").Select(w => w.Pascalize()).Except(parts).Join();
 }

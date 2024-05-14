@@ -4,6 +4,7 @@ using Do.Domain.Model;
 using Do.RestApi;
 using Do.RestApi.Conventions;
 using Do.RestApi.Model;
+using Humanizer;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -108,7 +109,7 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
             {
                 if (type.FullName is null) { continue; }
 
-                var controller = new ControllerModel(type);
+                var controller = new ControllerModel(type) { ClassName = type.CSharpFriendlyFullName.Split('.').Skip(1).Join('_') };
                 foreach (var method in type.GetMembers().Methods.Having<ApiMethodAttribute>())
                 {
                     controller.AddAction(type, method);
@@ -153,12 +154,14 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
             {
                 string[] splitedNamespace = t.Namespace?.Split(".") ?? [];
                 string name = t.IsNested && t.FullName is not null
-                    ? t.FullName.Replace($"{t.Namespace}.", string.Empty).Replace("+", ".")
+                    ? t.FullName.Replace($"{t.Namespace}.", string.Empty).Replace("+", "_")
                     : t.Name;
 
-                return splitedNamespace.Length > 1
-                    ? $"{string.Join('.', splitedNamespace.Skip(1))}.{name}"
+                var result = splitedNamespace.Length > 1
+                    ? $"{splitedNamespace.Skip(1).Join('_')}_{name}"
                     : name;
+
+                return result.Replace("_", "--").Kebaberize();
             });
         });
     }

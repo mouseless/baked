@@ -3,11 +3,11 @@ using Do.RestApi.Model;
 
 namespace Do.RestApi;
 
-public interface IApiModelConventionCollection : IList<IApiModelConvention>
+public interface IApiModelConventionCollection : IList<(IApiModelConvention Convention, int Order)>
 {
     public void Apply(ApiModel apiModel)
     {
-        foreach (var convention in this)
+        foreach (var (convention, _) in this.OrderBy(i => i.Order))
         {
             if (convention is IApiModelConvention<ApiModelContext> apiModelConvention)
             {

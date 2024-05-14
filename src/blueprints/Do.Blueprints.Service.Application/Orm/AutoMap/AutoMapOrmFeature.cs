@@ -83,11 +83,11 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
         {
             var domainModel = configurator.Context.GetDomainModel();
 
-            conventions.Insert(0, new AutoHttpMethodConvention([(Regexes.StartsWithFirstBySingleByOrBy(), HttpMethod.Get)]));
+            conventions.Add(new AutoHttpMethodConvention([(Regexes.StartsWithFirstBySingleByOrBy(), HttpMethod.Get)]), order: -10);
             conventions.Add(new LookupEntityByIdConvention(domainModel));
             conventions.Add(new LookupEntitiesByIdsConvention(domainModel));
             conventions.Add(new RemoveFromRouteConvention(["FirstBy", "SingleBy", "By"],
-                _when: c => c.Controller.TypeModel.TryGetMetadata(out var metadata) && metadata.Has<QueryAttribute>()
+                _when: c => c.Controller.MappedType.TryGetMetadata(out var metadata) && metadata.Has<QueryAttribute>()
             ));
         });
     }

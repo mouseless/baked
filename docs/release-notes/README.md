@@ -2,6 +2,7 @@
 sort:
   by: title
   order: desc
+  version: true
 ---
 
 # Release Notes

@@ -10,7 +10,7 @@
 
   <PropertyGroup>
     <Product>DO</Product>
-    <Version>0.9.1</Version>
+    <Version>0.10.0</Version>
     <Authors>Mouseless</Authors>
     <Company>Mouseless</Company>
     <Copyright>Copyright (c) 2024 Mouseless</Copyright>
@@ -27,7 +27,6 @@
     <None Include="..\..\..\icon.png" Pack="true" PackagePath="\" />
     <None Include="..\..\..\LICENSE" Pack="true" PackagePath="\" />
     <None Include="..\..\..\README.md" Pack="true" PackagePath="\" />
-    <None Include="..\..\..\.editorconfig" Pack="true" PackagePath="\" />
   </ItemGroup>
 
 </Project>

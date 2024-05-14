@@ -8,7 +8,7 @@ public class InitializeUsingQueryParametersConvention : IApiModelConvention<Acti
 {
     public void Apply(ActionModelContext context)
     {
-        if (!context.Controller.TypeModel.TryGetMembers(out var members)) { return; }
+        if (!context.Controller.MappedType.TryGetMembers(out var members)) { return; }
         if (!members.Has<PubliclyInitializableAttribute>()) { return; }
 
         var initializer = members.Methods.Having<InitializerAttribute>().Single();

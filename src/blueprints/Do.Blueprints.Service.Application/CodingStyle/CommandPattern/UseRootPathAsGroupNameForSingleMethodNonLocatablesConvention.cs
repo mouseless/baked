@@ -4,11 +4,11 @@ using Humanizer;
 
 namespace Do.CodingStyle.CommandPattern;
 
-public class UseRootPathAsGroupNameForSingleMethodNonLocatables : IApiModelConvention<ControllerModelContext>
+public class UseRootPathAsGroupNameForSingleMethodNonLocatablesConvention : IApiModelConvention<ControllerModelContext>
 {
     public void Apply(ControllerModelContext context)
     {
-        if (!context.Controller.TypeModel.TryGetMetadata(out var metadata)) { return; }
+        if (!context.Controller.MappedType.TryGetMetadata(out var metadata)) { return; }
         if (metadata.Has<LocatableAttribute>()) { return; }
         if (context.Controller.Action.Count != 1) { return; }
 

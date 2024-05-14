@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Http.Features.Authentication;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
 using Moq;
+using System.Security.Claims;
 using System.Text;
 
 namespace Do;
@@ -71,7 +73,8 @@ public static class HttpServerExtensions
         Dictionary<string, string>? header = default,
         Dictionary<string, string>? form = default,
         object? body = default,
-        object[]? metadata = default
+        object[]? metadata = default,
+        ClaimsPrincipal? user = default
     )
     {
         schema ??= "http";
@@ -79,7 +82,7 @@ public static class HttpServerExtensions
         path ??= string.Empty;
         method ??= form is null && body is null ? "GET" : "POST";
 
-        var result = giveMe.AnHttpContext(metadata: metadata).Request;
+        var result = giveMe.AnHttpContext(metadata: metadata, user: user).Request;
 
         result.Scheme = schema;
         result.Host = new(host);
@@ -115,12 +118,14 @@ public static class HttpServerExtensions
     }
 
     public static HttpContext AnHttpContext(this Stubber giveMe,
-        object[]? metadata = default
+        object[]? metadata = default,
+        ClaimsPrincipal? user = default
     )
     {
         var features = new FeatureCollection();
         features.Set(giveMe.Spec.MockMe.AnEndpointFeature(metadata: metadata));
         features.Set<IHttpRequestFeature>(new HttpRequestFeature());
+        features.Set<IHttpAuthenticationFeature>(new HttpAuthenticationFeature { User = user });
 
         return new DefaultHttpContext(features);
     }
