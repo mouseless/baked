@@ -16,7 +16,7 @@ public static class OrmExtensions
         source.Add(configure(new()));
 
     public static void AddSingleById<T>(this ControllerModel controller, DomainModel domainModel) =>
-        controller.Action["SingleById"] = new("SingleById", HttpMethod.Get, [controller.TypeModel.Name], new(domainModel.Types[typeof(T)]), "target")
+        controller.Action["SingleById"] = new("SingleById", HttpMethod.Get, [controller.MappedType.Name], new(domainModel.Types[typeof(T)]), "target")
         {
             Parameters = [
                 new(domainModel.Types[typeof(IQueryContext<T>)], ParameterModelFrom.Services, "target"),

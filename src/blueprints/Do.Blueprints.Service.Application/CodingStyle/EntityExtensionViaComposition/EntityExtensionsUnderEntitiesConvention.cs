@@ -9,7 +9,7 @@ public class EntityExtensionsUnderEntitiesConvention(DomainModel _domain)
 {
     public void Apply(ControllerModelContext context)
     {
-        if (!context.Controller.TypeModel.TryGetEntityTypeFromExtension(_domain, out var entityType)) { return; }
+        if (!context.Controller.MappedType.TryGetEntityTypeFromExtension(_domain, out var entityType)) { return; }
 
         context.Controller.GroupName = entityType.Name.Pluralize();
     }

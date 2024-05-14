@@ -14,7 +14,7 @@ public class ApiCodeTemplate(ApiModel _apiModel)
 
         [ApiController]
         [ApiExplorerSettings(GroupName = "{{controller.GroupName}}")]
-        public class {{controller.Id.Replace(".", "_")}}
+        public class {{controller.ClassName}}
         {
             {{ForEach(controller.Actions, Action)}}
         }

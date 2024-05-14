@@ -26,5 +26,5 @@ public class RemoveFromRouteConvention(IEnumerable<string> _parts,
     }
 
     string RemoveParts(string from, IEnumerable<string> parts) =>
-        string.Join(string.Empty, from.Humanize().Split(" ").Select(w => w.Transform(To.TitleCase)).Except(parts));
+        from.Humanize().Split(" ").Select(w => w.Pascalize()).Except(parts).Join();
 }

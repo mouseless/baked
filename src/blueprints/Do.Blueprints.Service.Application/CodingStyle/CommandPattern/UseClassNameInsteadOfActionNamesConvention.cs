@@ -12,6 +12,6 @@ public class UseClassNameInsteadOfActionNamesConvention(IEnumerable<string> acti
         if (!_actionNames.Contains(context.Action.Name)) { return; }
 
         context.Action.RouteParts.RemoveAll(context.Action.Name);
-        context.Action.Name = context.Controller.ClassName;
+        context.Action.Name = context.Controller.MappedType.Name;
     }
 }
