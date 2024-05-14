@@ -1,1 +1,0 @@
-import{_ as a,o as t,c as s,a as o,r as c}from"./entry.B_MSAwpk.js";const r={},n={class:"table-container"};function d(e,l){return t(),s("div",n,[o("table",null,[c(e.$slots,"default",{},void 0,!0)])])}const f=a(r,[["render",d],["__scopeId","data-v-de530c61"]]);export{f as default};
