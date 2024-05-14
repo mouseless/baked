@@ -7,6 +7,6 @@ public class AuthenticationSamples(Func<ClaimsPrincipal> _getClaims)
     public string? Authenticate() =>
         _getClaims().Identity?.AuthenticationType;
 
-    public object FormPostAuthenticate(object value) =>
-        value;
+    public string? FormPostAuthenticate(object value) =>
+        _getClaims().Identity?.AuthenticationType;
 }
