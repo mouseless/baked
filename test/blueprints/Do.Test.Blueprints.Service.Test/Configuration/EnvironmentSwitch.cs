@@ -7,7 +7,8 @@ namespace Do.Test.Configuration;
 [TestFixture("Development", "/development")]
 [TestFixture("Staging", "/staging")]
 [TestFixture("Production", "/production")]
-public class EnvironmentSwitch(string _environment, string _path) : TestServiceNfr
+public class EnvironmentSwitch(string _environment, string _path)
+    : TestServiceNfr
 {
     public EnvironmentSwitch() : this(default!, default!) { }
 

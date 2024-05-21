@@ -29,9 +29,10 @@ public abstract class ServiceNfr<TEntryPoint> : Nfr
 
         Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", EnvironmentName);
 
-        Client = new WebApplicationFactory<TEntryPoint>()
-            .WithWebHostBuilder(config => config.UseSetting("typeName", $"{GetType().AssemblyQualifiedName}"))
-            .CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = AllowAutoRedirect });
+        var webApplicationFactory = new WebApplicationFactory<TEntryPoint>()
+            .WithWebHostBuilder(config => config.UseSetting("typeName", $"{GetType().AssemblyQualifiedName}"));
+        Caster.SetServiceProvider(webApplicationFactory.Services);
+        Client = webApplicationFactory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = AllowAutoRedirect });
     }
 
     public override async Task OneTimeTearDown()
