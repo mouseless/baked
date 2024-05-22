@@ -44,13 +44,9 @@ const next: any = currentPageNumber < menus.length + 1 ? menus[currentPageNumber
 <style lang="scss" scoped>
 .navigation-buttons-container {
   max-width: $width-content;
-  margin-top: 4em;
+  margin-top: $space-md;
 
   .button {
-    padding-right: 0.4em;
-    padding-left: 0.4em;
-    margin-top: 0.9em;
-
     a {
       text-decoration: none;
 
@@ -60,7 +56,7 @@ const next: any = currentPageNumber < menus.length + 1 ? menus[currentPageNumber
 
         h3 {
           color: $color-fg-second;
-          margin-top: 0.1em;
+          margin-top: 0;
           font-size: 1.5em;
         }
       }

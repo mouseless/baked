@@ -83,7 +83,7 @@ function comparePages(a, b, { by, order, version } = { }) {
     margin-left: $width-content-margin;
 
     .content {
-      margin: 1em 0 0 0;
+      margin: $space-sm 0 0 0;
     }
   }
 }

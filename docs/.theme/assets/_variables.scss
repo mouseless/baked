@@ -24,6 +24,12 @@ $color-fg-second: var(--color-fg-soft);
 $color-fg-third: var(--color-fg-mute);
 $color-fg-code: var(--color-soft);
 
+$space-xs: var(--space-xs);
+$space-sm: var(--space-sm);
+$space-md: var(--space-md);
+$space-lg: var(--space-lg);
+$space-xl: var(--space-xl);
+
 $font-default: var(--font-default);
 $font-heading: var(--font-heading);
 $font-size: var(--font-size);
@@ -39,7 +45,7 @@ $url-logo-mark: var(--url-logo-mark);
 $url-logo-mark-mono: var(--url-logo-mark-mono);
 
 $width-content: var(--width-content);
-$width-content-margin: 4em;
+$width-content-margin: $space-md;
 $width-side: 15em;
 $width-tolerance: 50px;
 $width-page: calc($width-content + (2 * $width-side) + $width-content-margin + $width-tolerance);

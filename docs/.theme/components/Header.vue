@@ -71,7 +71,7 @@ header {
 }
 
 div.logo {
-  margin: 20px 0px;
+  margin: $space-sm 0;
 
   a:has(img.logo) {
     display: block;
@@ -96,7 +96,7 @@ a {
 }
 
 nav a {
-  margin: 1em;
+  margin: $space-sm;
   text-decoration: none;
 
   &.close {
@@ -107,7 +107,7 @@ nav a {
     @include border(bottom);
 
     border-bottom-color: $color-brand;
-    padding-bottom: 22px;
+    padding-bottom: calc($space-sm + 2px);
   }
 
   &:last-child {
@@ -117,7 +117,7 @@ nav a {
 
 @media (max-width: $width-page-xl) {
   nav a.active {
-    padding-bottom: 24px;
+    padding-bottom: calc($space-sm + 4px);
   }
 }
 
@@ -128,12 +128,12 @@ nav a {
 
   nav {
     position: fixed;
-    top: 0px;
+    top: 0;
     right: 0;
     z-index: 99;
     background: $color-bg;
     height: 100%;
-    width: calc($width-page-min - 4em);
+    width: calc($width-page-min - $space-md);
     padding: 20px;
     border-left: solid 2px $color-bg-second;
     display: none;
@@ -148,7 +148,7 @@ nav a {
 
       &.close {
         display: block;
-        margin-bottom: 1em;
+        margin-bottom: $space-sm;
 
         i {
           font-size: larger;
@@ -161,16 +161,10 @@ nav a {
         border-left-color: $color-brand;
 
         padding-bottom: 0;
-        padding-left: calc(20px + 1em);
+        padding-left: calc(20px + $space-sm);
         margin-left: -22px;
       }
     }
-  }
-}
-
-@media (max-width: $width-page-s) {
-  nav {
-    width: calc($width-page-min - 7em);
   }
 }
 </style>

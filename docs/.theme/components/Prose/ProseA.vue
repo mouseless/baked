@@ -30,6 +30,6 @@ a {
 }
 
 i {
-  margin-left: 0.3em;
+  margin-left: $space-xs;
 }
 </style>

@@ -34,15 +34,11 @@ watch(usePageStore(), () => {
 });
 </script>
 <style lang="scss" scoped>
-
-$a-padding-lr: 1em;
-$a-padding-tb: 0.5em;
-
 nav {
   position: sticky;
   align-self: start;
-  top: 1.5em;
-  margin-top: 2.5em;
+  top: $space-sm;
+  margin-top: $space-md;
 
   h4 {
     display: none;
@@ -61,8 +57,8 @@ nav {
         display: block;
         text-decoration: none;
         color: $color-fg-second;
-        border-radius: calc($border-radius / 3);
-        padding: $a-padding-tb $a-padding-lr;
+        border-radius: $space-xs;
+        padding: $space-xs $space-sm;
 
         &:hover {
           color: $color-brand;
@@ -73,12 +69,6 @@ nav {
         }
       }
     }
-  }
-}
-
-@media (max-width: $width-page-l) {
-  nav {
-    margin-top: 3.5em;
   }
 }
 
@@ -104,11 +94,11 @@ nav {
 
     ul {
       display: none;
-      @include box;
-      background-color: $color-bg-nav;
       position: absolute;
       width: 200%;
-      padding: calc($border-radius - $a-padding-tb) calc($border-radius - $a-padding-lr);
+      background-color: $color-bg-nav;
+      border-radius: $space-sm;
+      padding: $space-sm;
       box-sizing: border-box;
 
       &.active {
@@ -126,7 +116,7 @@ nav {
 
 @media (max-width: $width-page-s) {
   nav {
-    margin-bottom: -3.7em;
+    margin-bottom: -54px;
   }
 }
 </style>

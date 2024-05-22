@@ -51,19 +51,17 @@ blockquote {
   align-items: flex-start;
   justify-content: flex-start;
   padding: 0;
-  border-radius: 10px;
-  margin: 1em 0;
+  margin: $space-sm 0;
   max-width: $width-content;
 
   i {
-    position: absolute;
-    margin-top: 1em;
+    margin-top: $space-sm;
     line-height: $line-height;
   }
 
   div {
     width: 100%;
-    padding-left: 3ch;
+    padding-left: $space-sm;
   }
 
   @mixin box($color) {
