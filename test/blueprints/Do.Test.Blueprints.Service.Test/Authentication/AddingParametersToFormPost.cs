@@ -1,22 +1,14 @@
-﻿using Do.Architecture;
-using Do.Authentication;
+﻿using System.Net;
 
 namespace Do.Test.Authentication;
 
 public class AddingParametersToFormPost : TestServiceNfr
 {
-    protected override IEnumerable<Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>>? Authentications =>
-        [
-            c => c.FixedBearerToken(tokens =>
-            {
-                tokens.Add("Jane", claims: ["User"]);
-            },
-            formPostParameters: ["additional"])
-        ];
-
     [Test]
     public async Task Hash_and_configured_additional_parameters_are_added_to_form_post_authenticate_requests()
     {
+        Client.DefaultRequestHeaders.Clear();
+
         var form = new Dictionary<string, string>
         {
             ["value"] = "value",
@@ -33,6 +25,8 @@ public class AddingParametersToFormPost : TestServiceNfr
     [Test]
     public async Task Hash_parameter_is_required()
     {
+        Client.DefaultRequestHeaders.Clear();
+
         var form = new Dictionary<string, string>
         {
             ["value"] = "value",
@@ -41,7 +35,6 @@ public class AddingParametersToFormPost : TestServiceNfr
 
         var response = await Client.PostAsync("authentication-samples/form-post-authenticate", new FormUrlEncodedContent(form));
 
-        var content = await response.Content.ReadAsStringAsync();
-        content.ShouldBeNullOrEmpty();
+        response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }
 }

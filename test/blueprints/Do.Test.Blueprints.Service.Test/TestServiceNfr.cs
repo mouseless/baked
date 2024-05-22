@@ -1,41 +1,64 @@
-﻿using Do.Architecture;
-using Do.Authentication;
-using Do.Authorization;
-using Do.Business;
-using Do.Database;
-using Do.Test.CodingStyle.EntitySubclassViaComposition;
+﻿using Do.Test.CodingStyle.EntitySubclassViaComposition;
 using Do.Test.Orm;
 using Do.Testing;
+using Humanizer;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
+using System.Net.Http.Headers;
 
 namespace Do.Test;
 
-public abstract class TestServiceNfr : ServiceNfr<TestServiceNfr>, IEntryPoint
+public abstract class TestServiceNfr : ServiceNfr
 {
-    public static void Main(string[] args) => Init(args);
+    static TestServiceNfr() =>
+        Init<Program>();
 
-    protected override IEnumerable<string> EntityNamesToClearOnTearDown =>
-        [nameof(Entity), nameof(Parent), nameof(TypedEntity)];
+    readonly IEnumerable<string> _entityNamesToClear = [nameof(Entity), nameof(Parent), nameof(TypedEntity)];
 
-    protected override IEnumerable<Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>>? Authentications =>
-        [
-            c => c.FixedBearerToken(tokens =>
+    public override async Task OneTimeTearDown()
+    {
+        await base.OneTimeTearDown();
+
+        Client.DefaultRequestHeaders.Authorization = UserFixedBearerToken;
+        foreach (var entityName in _entityNamesToClear)
+        {
+            var entitiesRoute = entityName.Kebaberize().Pluralize();
+            var entitiesResponse = await Client.GetAsync($"/{entitiesRoute}");
+            await CheckResponse($"GET /{entitiesRoute}", entitiesResponse);
+
+            var entities = (IEnumerable?)JsonConvert.DeserializeObject(await entitiesResponse.Content.ReadAsStringAsync()) ?? Array.Empty<object>();
+            foreach (dynamic entity in entities)
             {
-                tokens.Add("Jane", claims: ["User"]);
-                tokens.Add("John", claims: ["User", "Admin"]);
-            })
-        ];
-    protected override Func<AuthorizationConfigurator, IFeature<AuthorizationConfigurator>>? Authorization =>
-        c => c.ClaimBased(claims: ["User", "Admin"]);
-    protected override Func<BusinessConfigurator, IFeature<BusinessConfigurator>> Business =>
-        c => c.DomainAssemblies([typeof(Entity).Assembly]);
-    protected override Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>>? Database =>
-        c => c.Sqlite(fileName: $"{nameof(TestServiceNfr)}.db");
-    protected override Action<ApplicationDescriptor>? Configure =>
-        app => app.Features.AddConfigurationOverrider();
+                var deleteResponse = await Client.DeleteAsync($"/{entitiesRoute}/{entity?.id}");
+                await CheckResponse($"DELETE /{entitiesRoute}/{entity?.id}", deleteResponse);
+            }
+        }
+    }
 
-    [TearDown]
+    async Task CheckResponse(string route, HttpResponseMessage response)
+    {
+        if (response.IsSuccessStatusCode) { return; }
+
+        throw new($"'{route}' didn't work as expected: {response.StatusCode}\n{await response.Content.ReadAsStringAsync()}");
+    }
+
+    public override void SetUp()
+    {
+        base.SetUp();
+
+        Client.DefaultRequestHeaders.Authorization = UserFixedBearerToken;
+    }
+
     public override void TearDown()
     {
+        base.TearDown();
+
         Client.DefaultRequestHeaders.Clear();
     }
+
+    protected AuthenticationHeaderValue UserFixedBearerToken => GetFixedBearerToken("Jane");
+    protected AuthenticationHeaderValue AdminFixedBearerToken => GetFixedBearerToken("John");
+
+    protected AuthenticationHeaderValue GetFixedBearerToken(string name) =>
+        AuthenticationHeaderValue.Parse(Configuration.GetRequiredValue<string>($"Authentication:FixedBearerToken:{name}"));
 }

@@ -4,15 +4,18 @@ Forge.New
     .Service(
         business: c => c.DomainAssemblies([typeof(Entity).Assembly]),
         authentications: [
-            c => c.FixedBearerToken(tokens =>
-            {
-                tokens.Add("Jane", claims: ["User"]);
-                tokens.Add("John", claims: ["User", "Admin"]);
-            }),
+            c => c.FixedBearerToken(
+                tokens =>
+                {
+                    tokens.Add("Jane", claims: ["User"]);
+                    tokens.Add("John", claims: ["User", "Admin"]);
+                },
+                formPostParameters: ["additional"]
+            ),
             c => c.ApiKey()
         ],
         authorization: c => c.ClaimBased(claims: ["User", "Admin"], baseClaim: "User"),
-        database: c => c.MySql().ForDevelopment(c.Sqlite()),
+        database: c => c.MySql().ForDevelopment(c.Sqlite()).ForNfr(c.Sqlite(fileName: $"Do.Test.Blueprints.Service.Nfr.db")),
         exceptionHandling: ex => ex.Default(typeUrlFormat: "https://do.mouseless.codes/errors/{0}"),
         configure: app => app.Features.AddConfigurationOverrider()
     )

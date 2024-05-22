@@ -96,10 +96,9 @@ public abstract class ServiceSpec : Spec
     {
         base.SetUp();
 
+        Caster.SetServiceProvider(_serviceProvider);
         _transaction = Session.BeginTransaction();
-
         Settings = [];
-
         MockMe.TheConfiguration(settings: Settings, defaultValueProvider: GetDefaultSettingsValue);
 
         // This is the initial release date. Do not change this to avoid

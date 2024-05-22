@@ -4,16 +4,22 @@ namespace Do.Business;
 
 public static class Caster
 {
-    static readonly ConcurrentDictionary<Type, ConcurrentDictionary<Type, object>> _all = [];
+    static readonly ConcurrentDictionary<Type, ConcurrentDictionary<Type, Func<IServiceProvider, object>>> _from = [];
+    static IServiceProvider? _serviceProvider;
 
-    public static void Add(Type from, Type to, object caster)
+    public static void SetServiceProvider(IServiceProvider serviceProvider) =>
+        _serviceProvider = serviceProvider;
+
+    static IServiceProvider ServiceProvider => _serviceProvider ?? throw new InvalidOperationException("Cannot use Caster before setting IServiceProvider");
+
+    public static void Add(Type fromType, Type toType, Func<IServiceProvider, object> getCaster)
     {
-        if (!_all.TryGetValue(from, out var fromCasters))
+        if (!_from.TryGetValue(fromType, out var to))
         {
-            _all[from] = fromCasters = [];
+            _from[fromType] = to = [];
         }
 
-        fromCasters.TryAdd(to, caster);
+        to[toType] = getCaster;
     }
 
     public static Casting<TFrom> Cast<TFrom>(this TFrom from) =>
@@ -23,10 +29,10 @@ public static class Caster
     {
         public TTo To<TTo>()
         {
-            if (!_all.TryGetValue(typeof(TFrom), out var to)) { throw new InvalidCastException($"Cannot cast {typeof(TFrom)} to {typeof(TTo)}"); }
-            if (!to.TryGetValue(typeof(TTo), out var caster)) { throw new InvalidCastException($"Cannot cast {typeof(TFrom)} to {typeof(TTo)}"); }
+            if (!Caster._from.TryGetValue(typeof(TFrom), out var to)) { throw new InvalidCastException($"Cannot cast {typeof(TFrom)} to {typeof(TTo)}"); }
+            if (!to.TryGetValue(typeof(TTo), out var getCaster)) { throw new InvalidCastException($"Cannot cast {typeof(TFrom)} to {typeof(TTo)}"); }
 
-            return ((ICasts<TFrom, TTo>)caster).To(_from);
+            return ((ICasts<TFrom, TTo>)getCaster(ServiceProvider)).To(_from);
         }
     }
 }
