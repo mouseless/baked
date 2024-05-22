@@ -6,6 +6,11 @@
           <img class="do logo">
         </NuxtLink>
       </div>
+      <div
+        v-if="menuShown"
+        class="overlay"
+        @click="close"
+      />
       <a
         class="bars"
         @click="toggle"
@@ -68,6 +73,19 @@ header {
   .bars {
     display: none;
   }
+}
+
+.overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-darkgreen-900);
+  opacity: 0.5;
+  padding: 0;
+  margin: 0;
+  top: 0;
+  left: 0;
+  display: none;
 }
 
 div.logo {
@@ -134,6 +152,10 @@ nav a {
 
 @media (max-width: $width-page-m) {
   a.bars {
+    display: block;
+  }
+
+  .overlay {
     display: block;
   }
 
