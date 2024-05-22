@@ -80,6 +80,9 @@ img.do {
   }
 
   ul, ol {
+    padding-inline-start: $space-sm;
+    list-style-position: inside;
+
     li {
       margin-bottom: $space-xs;
 
