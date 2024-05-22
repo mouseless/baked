@@ -86,6 +86,7 @@ header {
   top: 0;
   left: 0;
   display: none;
+  z-index: 98;
 }
 
 div.logo {
