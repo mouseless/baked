@@ -42,15 +42,15 @@ const menus: any = { ...store.sections };
 div.bottom {
   @include border(top);
 
-  margin-top: 4em;
+  margin-top: $space-md;
 }
 
 footer {
   @include width;
 
   margin: auto;
-  margin-top: 1em;
-  margin-bottom: 1em;
+  margin-top: $space-sm;
+  margin-bottom: $space-sm;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -67,7 +67,7 @@ footer {
 }
 
 div.logo {
-  margin: 20px 0px;
+  margin: $space-sm 0;
 
   a:has(img.logo) {
     display: block;
@@ -84,7 +84,7 @@ div.logo {
 
   span {
     display: inline-block;
-    margin-top: 1em;
+    margin-top: $space-sm;
   }
 }
 
@@ -92,7 +92,7 @@ nav {
   text-align: right;
 
   a {
-    margin: 5px;
+    margin: $space-xs;
     text-decoration: none;
     display: block;
 

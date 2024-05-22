@@ -6,6 +6,11 @@
           <img class="do logo">
         </NuxtLink>
       </div>
+      <div
+        v-if="menuShown"
+        class="overlay"
+        @click="close"
+      />
       <a
         class="bars"
         @click="toggle"
@@ -70,8 +75,22 @@ header {
   }
 }
 
+.overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-darkgreen-900);
+  opacity: 0.5;
+  padding: 0;
+  margin: 0;
+  top: 0;
+  left: 0;
+  display: none;
+  z-index: 98;
+}
+
 div.logo {
-  margin: 20px 0px;
+  margin: $space-sm 0;
 
   a:has(img.logo) {
     display: block;
@@ -96,7 +115,7 @@ a {
 }
 
 nav a {
-  margin: 1em;
+  margin: $space-sm;
   text-decoration: none;
 
   &.close {
@@ -107,7 +126,7 @@ nav a {
     @include border(bottom);
 
     border-bottom-color: $color-brand;
-    padding-bottom: 22px;
+    padding-bottom: calc($space-sm + 3px);
   }
 
   &:last-child {
@@ -116,8 +135,19 @@ nav a {
 }
 
 @media (max-width: $width-page-xl) {
+  div.logo {
+    a:has(img.logo) {
+      height: 20px;
+
+      img.do {
+        &:is(.logo) {
+          height: 20px;
+        }
+      }
+    }
+  }
   nav a.active {
-    padding-bottom: 24px;
+    padding-bottom: calc($space-sm + 1px);
   }
 }
 
@@ -126,14 +156,18 @@ nav a {
     display: block;
   }
 
+  .overlay {
+    display: block;
+  }
+
   nav {
     position: fixed;
-    top: 0px;
+    top: 0;
     right: 0;
     z-index: 99;
     background: $color-bg;
     height: 100%;
-    width: calc($width-page-min - 4em);
+    width: calc($width-page-min - $space-md);
     padding: 20px;
     border-left: solid 2px $color-bg-second;
     display: none;
@@ -148,7 +182,7 @@ nav a {
 
       &.close {
         display: block;
-        margin-bottom: 1em;
+        margin-bottom: $space-sm;
 
         i {
           font-size: larger;
@@ -161,16 +195,10 @@ nav a {
         border-left-color: $color-brand;
 
         padding-bottom: 0;
-        padding-left: calc(20px + 1em);
+        padding-left: calc(20px + $space-sm);
         margin-left: -22px;
       }
     }
-  }
-}
-
-@media (max-width: $width-page-s) {
-  nav {
-    width: calc($width-page-min - 7em);
   }
 }
 </style>

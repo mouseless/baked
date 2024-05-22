@@ -125,20 +125,20 @@ onBeforeUnmount(() => {
 </script>
 <style lang="scss" scoped>
 h4 {
-  margin-bottom: 0.5em;
-  padding-left: 1em;
-  font-size: 0.9em;
+  margin-bottom: $space-xs;
+  padding-left: $space-sm;
+  font-size: 1em;
 }
 
 nav {
   position: sticky;
   align-self: start;
-  top: 1.5em;
+  top: $space-sm;
   width: $width-side;
-  margin-top: 2.5em;
+  margin-top: $space-md;
   font-size: 0.9em;
   overflow: hidden;
-  text-wrap: nowrap;
+  white-space: nowrap;
 
   ul {
     margin: 0;
@@ -150,15 +150,14 @@ nav {
       line-height: 24px;
 
       a {
-        font-size: 0.9em;
         color: $color-fg-second;
         text-decoration: none;
         cursor: pointer;
         display: block;
-        margin-top: 0.25em;
+        margin-top: $space-xs;
         overflow: hidden;
         text-overflow: ellipsis;
-        padding-left: 1em;
+        padding-left: $space-sm;
         border-left: solid 2px transparent;
 
         &:hover {
@@ -170,15 +169,15 @@ nav {
         }
 
         &.return-to-top {
-          margin-top: 0.75em;
+          margin-top: $space-sm;
         }
       }
 
       ul {
-        margin-bottom: 0.25em;
+        margin-bottom: $space-xs;
 
         a {
-          padding-left: 2em;
+          padding-left: calc($space-sm + 1em);
         }
       }
     }
@@ -192,8 +191,8 @@ nav {
     top: 0;
     background-color: $color-bg;
     margin: 0;
-    margin-bottom: -3.7em;
-    font-size: 1em;
+    margin-bottom: -52px;
+    font-size: 0.9em;
 
     h4 a {
       display: inline-block;
@@ -206,13 +205,13 @@ nav {
     }
 
     & > ul {
-      @include box;
+      border-radius: $space-sm;
       background-color: $color-bg-nav;
       display: none;
       text-align: left;
-      padding: $border-radius;
+      padding: $space-sm;
       padding-left: 0;
-      margin-bottom: 2.5em;
+      margin-bottom: $space-md;
 
       &.active {
         display: block;
@@ -221,7 +220,7 @@ nav {
 
     ul li {
       a {
-        padding-left: $border-radius;
+        padding-left: $space-sm;
 
         &.active:before {
           left: 0;
@@ -229,7 +228,7 @@ nav {
       }
 
       ul li a {
-        padding-left: calc($border-radius + 1em);
+        padding-left: calc($space-sm + 1em);
       }
     }
   }

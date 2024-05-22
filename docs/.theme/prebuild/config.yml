@@ -21,7 +21,7 @@ tasks:
       source: ./
       target: ./.theme/.temp
       config:
-        backgroundColor: '#092122'
+        backgroundColor: '#092C2E'
         theme: base
         headless: new
         deviceScaleFactor: 1
@@ -29,17 +29,16 @@ tasks:
         flowchart:
           useMaxWidth: false
         themeVariables:
-          fontFamily: '"Roboto Mono", monospace'
           fontSize: '16px'
-          primaryColor: '#fa465b'
-          primaryTextColor: '#f6f6f6'
-          primaryBorderColor': '#fa465b'
-          lineColor: '#888888'
-          secondaryColor: '#061819'
-          secondaryTextColor: '#cacaca'
-          secondaryBorderColor: '#061819'
-          tertiaryColor: '#163738'
-          activationBkgColor: '#fa465b'
+          primaryColor: '#FA465B'
+          primaryTextColor: '#F7F7F7'
+          primaryBorderColor': '#FA465B'
+          lineColor: '#D5DBDB'
+          secondaryColor: '#031819'
+          secondaryTextColor: '#E9EBEB'
+          secondaryBorderColor: '#031819'
+          tertiaryColor: '#154245'
+          activationBkgColor: '#FA465B'
   - rename:
       source: ./.theme/.temp
       find: README.md

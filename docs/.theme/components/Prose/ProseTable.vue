@@ -7,15 +7,12 @@
 </template>
 <style lang="scss" scoped>
 .table-container {
-  @include radius();
-
+  border-radius: $space-xs;
   overflow-x: auto;
-  margin: 2em 0;
+  margin-top: $space-sm;
+  margin-bottom: $space-md;
 
   table {
-    @include radius();
-    @include border();
-
     border-spacing: 0;
     width: 100%;
   }
@@ -25,7 +22,7 @@
 table {
   tr {
     td, th {
-      padding: 1em;
+      padding: $space-sm;
     }
 
     th, &:nth-child(even) td {

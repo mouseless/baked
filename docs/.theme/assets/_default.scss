@@ -8,7 +8,7 @@ html, body {
 
 body {
   font-size: calc($font-size * 1.2);
-  line-height: calc($line-height * $line-height-xl-coef);
+  min-width: calc($width-page-min + $space-md);
 }
 
 img.do {
@@ -34,7 +34,7 @@ img.do {
   nav {
     h4 {
       margin-top: 0;
-      margin-bottom: 0.5em;
+      margin-bottom: $space-xs;
       text-transform: uppercase;
 
       a {
@@ -54,27 +54,25 @@ img.do {
       @include box;
       border-color: $color-bg-second;
       text-align: center;
-      padding: 30px 0px 18px 0px;
+      padding: 30px $space-sm 18px $space-sm;
     }
   }
 
   code {
     background-color: $color-bg-code;
-    border-radius: 5px;
-    padding: 0.2em 0.4em;
+    border-radius: $space-xs;
+    padding: $space-xs $space-xs;
     color: $color-fg-code;
     overflow-wrap: anywhere;
-    font-size: 0.9em;
   }
 
   pre {
-    text-wrap: wrap;
     overflow: auto;
+    padding: $space-md;
 
     code {
       padding: 0;
       background-color: transparent;
-      text-wrap: nowrap;
       display: block;
       max-width: 0;
       line-height: 1.5em;
@@ -82,11 +80,14 @@ img.do {
   }
 
   ul, ol {
+    padding-inline-start: $space-sm;
+    list-style-position: inside;
+
     li {
-      margin-bottom: 0.2em;
+      margin-bottom: $space-xs;
 
       ul, ol {
-        margin-top: 0.2em;
+        margin-top: $space-xs;
       }
     }
   }
@@ -104,7 +105,7 @@ img.do {
 
   .content {
     pre code {
-      line-height: 1.0em;
+      line-height: 1em;
     }
   }
 }
@@ -112,7 +113,7 @@ img.do {
 @media (max-width: $width-page-l) {
   .content {
     h2, h3 {
-      scroll-margin-top: 3em;
+      scroll-margin-top: $space-md;
     }
   }
 
@@ -120,7 +121,7 @@ img.do {
     h4 {
       a {
         cursor: pointer;
-        padding: 1em;
+        padding: $space-sm;
 
         &:hover {
           color: $color-brand;
