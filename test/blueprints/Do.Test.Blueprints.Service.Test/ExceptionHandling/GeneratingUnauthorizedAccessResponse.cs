@@ -1,31 +1,16 @@
-﻿using Do.Architecture;
-using Do.Authorization;
-using Do.ExceptionHandling;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
 namespace Do.Test.ExceptionHandling;
 
 public class GeneratingUnauthorizedAccessResponse : TestServiceNfr
 {
-    protected override Func<AuthorizationConfigurator, IFeature<AuthorizationConfigurator>>? Authorization =>
-        c => c.ClaimBased(claims: ["User", "Admin"], baseClaim: "User");
-
-    protected override Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>>? ExceptionHandling =>
-        c => c.Default(typeUrlFormat: "https://do.mouseless.codes/errors/{0}");
-
-    public override async Task OneTimeTearDown()
-    {
-        Client.DefaultRequestHeaders.Authorization = AuthenticationHeaderValue.Parse("11111111111111111111111111111111");
-
-        await base.OneTimeTearDown();
-    }
-
     [Test]
     public async Task Authentication_exceptions_are_handled_with_its_own_handler()
     {
+        Client.DefaultRequestHeaders.Clear();
+
         var response = await Client.PostAsync("authorization-samples/require-base-claim", null);
 
         var problemDetails = response.Content.ReadFromJsonAsync<ProblemDetails>().Result;
@@ -40,7 +25,7 @@ public class GeneratingUnauthorizedAccessResponse : TestServiceNfr
     [Test]
     public async Task Unauthorized_exceptions_are_handled_with_its_own_handler()
     {
-        Client.DefaultRequestHeaders.Authorization = AuthenticationHeaderValue.Parse("11111111111111111111111111111111");
+        Client.DefaultRequestHeaders.Authorization = UserFixedBearerToken;
 
         var response = await Client.PostAsync("authorization-samples/require-admin-claim", null);
 

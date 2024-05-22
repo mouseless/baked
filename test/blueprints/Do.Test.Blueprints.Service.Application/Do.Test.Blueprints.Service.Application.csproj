@@ -5,4 +5,8 @@
     <ProjectReference Include="..\Do.Test.Blueprints.Service\Do.Test.Blueprints.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="Do.Test.Blueprints.Service.Test" />
+  </ItemGroup>
+
 </Project>

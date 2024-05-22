@@ -1,10 +1,14 @@
 using Do.Architecture;
+using Do.Testing;
 using Microsoft.Extensions.Hosting;
 
 namespace Do;
 
 public static class EnvironmentExtensions
 {
+    public static IFeature<TConfigurator> ForNfr<TConfigurator>(this IFeature<TConfigurator> @default, IFeature<TConfigurator> featureOnNfr) =>
+        @default.For(nameof(Nfr), featureOnNfr);
+
     public static IFeature<TConfigurator> ForDevelopment<TConfigurator>(this IFeature<TConfigurator> @default, IFeature<TConfigurator> featureOnDevelopment) =>
         @default.For(Environments.Development, featureOnDevelopment);
 

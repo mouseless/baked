@@ -18,7 +18,7 @@ public class AuthenticationHandler(
             return Task.FromResult(AuthenticateResult.Fail("X-Api-Key expects \"apikey\""));
         }
 
-        var identity = new ClaimsIdentity("ApiKey");
+        var identity = new ClaimsIdentity([new("User", "User")], "ApiKey");
         var principal = new ClaimsPrincipal(identity);
 
         return Task.FromResult(AuthenticateResult.Success(new(principal, Scheme.Name)));
