@@ -20,7 +20,6 @@
 </style>
 <style lang="scss">
 table {
-
   tr {
     td, th {
       padding: $space-sm;

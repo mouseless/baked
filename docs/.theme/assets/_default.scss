@@ -8,7 +8,6 @@ html, body {
 
 body {
   font-size: calc($font-size * 1.2);
-  line-height: calc($line-height * $line-height-xl-coef);
   min-width: calc($width-page-min + $space-md);
 }
 

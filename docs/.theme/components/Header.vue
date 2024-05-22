@@ -107,7 +107,7 @@ nav a {
     @include border(bottom);
 
     border-bottom-color: $color-brand;
-    padding-bottom: calc($space-sm + 2px);
+    padding-bottom: calc($space-sm + 3px);
   }
 
   &:last-child {
@@ -116,8 +116,19 @@ nav a {
 }
 
 @media (max-width: $width-page-xl) {
+  div.logo {
+    a:has(img.logo) {
+      height: 20px;
+
+      img.do {
+        &:is(.logo) {
+          height: 20px;
+        }
+      }
+    }
+  }
   nav a.active {
-    padding-bottom: calc($space-sm + 4px);
+    padding-bottom: calc($space-sm + 1px);
   }
 }
 
