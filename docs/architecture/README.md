@@ -43,7 +43,7 @@ architecture.
 
 ```mermaid
 flowchart LR
-  HS[[Http Server\nLayer]]
+  HS[[HTTP\nServer\nLayer]]
   subgraph DL[Domain Layer]
     D((Domain\nObjects))
   end
@@ -90,7 +90,7 @@ from domain objects or from other feature implementations.
 ```mermaid
 flowchart
   subgraph Layers
-    HS[[Http Server\nLayer]]
+    HS[[HTTP\nServer\nLayer]]
     subgraph DL[Domain Layer]
       D((Domain\nObjects))
     end
@@ -116,7 +116,8 @@ opinionated configurations using the configuration API of the corresponding
 layer(s).
 
 Features may have multiple implementations, each named after its corresponding
-design or technology, e.g. `Authentication.FixedToken` and `Database.MySql`.
+design or technology, e.g. `Authentication.FixedBearerToken` and
+`Database.MySql`.
 
 > [!TIP]
 >
@@ -132,7 +133,7 @@ architecture, showcasing the integration of domain logic, layers and features;
 ```mermaid
 flowchart TB
   subgraph Layers
-    HS[[Http Server\nLayer]]
+    HS[[HTTP\nServer\nLayer]]
     subgraph DL[Domain Layer]
       D((Domain\nObjects))
     end
@@ -146,7 +147,7 @@ flowchart TB
     end
 
     subgraph Implementation
-      AF(Authentication.FixedToken)
+      AF(Authentication.FixedBearerToken)
       DbM(Database.MySql)
     end
   end

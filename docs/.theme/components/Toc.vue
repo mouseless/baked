@@ -138,7 +138,7 @@ nav {
   margin-top: 2.5em;
   font-size: 0.9em;
   overflow: hidden;
-  text-wrap: nowrap;
+  white-space: nowrap;
 
   ul {
     margin: 0;
