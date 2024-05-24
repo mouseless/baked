@@ -27,4 +27,14 @@ public class RoutingCommands : TestServiceNfr
 
         actual.ShouldBe("q:b");
     }
+
+    [Test]
+    public async Task Classes_must_have_an_initializer_overload_with_all_parameters_are_api_input()
+    {
+        var response = await Client.PostAsync($"/not-rendered-command/transient?query=q", JsonContent.Create(
+            new { body = "b" }
+        ));
+
+        response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
+    }
 }

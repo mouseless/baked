@@ -16,9 +16,11 @@ public class CommandPatternCodingStyleFeature : IFeature<CodingStyleConfigurator
                     c.Type.TryGetMembers(out var members) &&
                     members.Has<TransientAttribute>() &&
                     !members.Has<LocatableAttribute>() &&
-                    members
-                        .Methods.SingleOrDefault(m => m.Has<InitializerAttribute>())
-                        ?.DefaultOverload.IsPublicInstanceWithNoSpecialName() == true,
+                    members.Methods.Any(m =>
+                        m.Has<InitializerAttribute>() &&
+                        m.DefaultOverload.AllParametersAreApiInput() &&
+                        m.DefaultOverload.IsPublicInstanceWithNoSpecialName()
+                    ),
                 order: 40
             );
             builder.Conventions.RemoveTypeMetadata<ApiServiceAttribute>(

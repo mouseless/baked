@@ -115,6 +115,8 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
                     controller.AddAction(type, method);
                 }
 
+                if (!controller.Action.Any()) { continue; }
+
                 api.Controller.Add(controller.Id, controller);
             }
         });
@@ -163,6 +165,18 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
                     : name;
 
                 return result.Replace("_", "--").Kebaberize();
+            });
+
+            swaggerGenOptions.OrderActionsBy(apiDescription =>
+            {
+                var methodOrder =
+                    apiDescription.HttpMethod == "POST" ? 0 :
+                    apiDescription.HttpMethod == "GET" ? 1 :
+                    apiDescription.HttpMethod == "PUT" ? 2 :
+                    apiDescription.HttpMethod == "PATCH" ? 3 :
+                    4;
+
+                return $"{apiDescription.ActionDescriptor.AttributeRouteInfo?.Template}_{methodOrder}";
             });
         });
     }
