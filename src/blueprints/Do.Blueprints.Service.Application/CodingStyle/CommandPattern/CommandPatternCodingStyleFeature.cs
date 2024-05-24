@@ -17,7 +17,7 @@ public class CommandPatternCodingStyleFeature : IFeature<CodingStyleConfigurator
                     members.Has<TransientAttribute>() &&
                     !members.Has<LocatableAttribute>() &&
                     members
-                        .Methods.SingleOrDefault(m => m.Has<InitializerAttribute>())
+                        .Methods.SingleOrDefault(m => m.Has<InitializerAttribute>() && m.Overloads.Any(o => o.AllParametersAreApiInput()))
                         ?.DefaultOverload.IsPublicInstanceWithNoSpecialName() == true,
                 order: 40
             );

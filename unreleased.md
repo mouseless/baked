@@ -6,4 +6,5 @@
   as `FromBody` without generating a request class
 - Only concrete classes are now included in `EntityExtensionViaComposition` and
  `EntitySubclassViaComposition` coding style features
-- Transients with non api input parameters are now not rendered as api service
+- Transients having only one initializer with not api input paramteres are now 
+  not marked as api service
