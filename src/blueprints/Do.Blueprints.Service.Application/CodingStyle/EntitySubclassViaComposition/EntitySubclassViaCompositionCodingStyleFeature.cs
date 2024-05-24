@@ -20,6 +20,8 @@ public class EntitySubclassViaCompositionCodingStyleFeature : IFeature<CodingSty
                     });
                 },
                 when: c =>
+                    !c.Type.IsAbstract &&
+                    !c.Type.IsInterface &&
                     c.Type.TryGetMembers(out var members) &&
                     members.TryGetMethods("op_Explicit", out var explicits) &&
                     explicits.Count() == 1 &&
