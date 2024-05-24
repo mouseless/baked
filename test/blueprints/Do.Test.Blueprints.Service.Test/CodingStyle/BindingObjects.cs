@@ -29,7 +29,7 @@ public class BindingObjects : TestServiceNfr
     [Test]
     public async Task Builds_request_class_when_action_has_multiple_parameters()
     {
-        var response = await Client.PostAsync($"/method-samples/multiple-object", JsonContent.Create(
+        var response = await Client.PostAsync($"/method-samples/multiple-objects", JsonContent.Create(
             new
             {
                 @object1 = new { param1 = "param1" },
