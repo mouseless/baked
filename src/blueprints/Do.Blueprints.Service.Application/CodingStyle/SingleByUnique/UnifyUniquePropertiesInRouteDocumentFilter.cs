@@ -51,7 +51,7 @@ public class UnifyUniquePropertiesInRouteDocumentFilter : IDocumentFilter
                 : new() { Tags = [new() { Name = groupName }] };
 
             operation.Parameters.Add(new() { In = ParameterLocation.Path, Name = unifiedAction.PathParameter, Required = true });
-            unifiedPath.AddOperation(OperationType.Get, operationTemplate);
+            unifiedPath.AddOperation(OperationType.Get, operation);
         }
     }
 
