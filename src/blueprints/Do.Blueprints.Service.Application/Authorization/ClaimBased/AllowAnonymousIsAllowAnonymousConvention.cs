@@ -2,12 +2,12 @@
 
 namespace Do.Authorization.ClaimBased;
 
-public class RequireNoClaimIsAllowAnonymousConvention : IApiModelConvention<ActionModelContext>
+public class AllowAnonymousIsAllowAnonymousConvention : IApiModelConvention<ActionModelContext>
 {
     public void Apply(ActionModelContext context)
     {
         if (context.Action.MappedMethod is null) { return; }
-        if (!context.Action.MappedMethod.Has<RequireNoClaimAttribute>()) { return; }
+        if (!context.Action.MappedMethod.Has<AllowAnonymousAttribute>()) { return; }
 
         context.Action.AdditionalAttributes.Add("AllowAnonymous");
     }

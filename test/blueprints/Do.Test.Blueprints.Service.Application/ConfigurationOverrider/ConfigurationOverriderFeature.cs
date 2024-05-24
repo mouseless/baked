@@ -40,7 +40,7 @@ public class ConfigurationOverriderFeature : IFeature
             );
 
             swaggerGenOptions.AddSecurityRequirementToOperationsThatUse<AuthorizeAttribute>("AdditionalSecurity");
-            swaggerGenOptions.AddParameterToOperationsThatUse<AuthorizeAttribute>("X-Security", @in: ParameterLocation.Header, required: true);
+            swaggerGenOptions.AddParameterToOperationsThatUse<AuthorizeAttribute>("X-Security", @in: ParameterLocation.Header);
         });
     }
 }

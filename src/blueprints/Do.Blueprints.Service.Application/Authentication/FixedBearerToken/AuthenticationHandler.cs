@@ -55,7 +55,9 @@ public class AuthenticationHandler(
 
         if (token != null)
         {
-            var identity = new ClaimsIdentity(token.Claims.Select(c => new Claim(c, c)), "FixedBearerToken");
+            var identity = new ClaimsIdentity("FixedBearerToken");
+            identity.AddClaim(new(ClaimTypes.Name, token.Name));
+            identity.AddClaims(token.Claims.Select(c => new Claim(c, c)));
             var principal = new ClaimsPrincipal(identity);
 
             return Task.FromResult(AuthenticateResult.Success(new(principal, Scheme.Name)));
