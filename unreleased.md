@@ -2,6 +2,10 @@
 
 ## Improvements
 
+- `ObjectAsJson` coding style feature now supports rendering `object` parameter
+  as `FromBody` without generating a request class
+- Only concrete classes are now included in `EntityExtensionViaComposition` and
+ `EntitySubclassViaComposition` coding style features
 - `RequireClaim` and `RequireNoClaim` renamed to .NET standards `RequireUser`
   and `AllowAnonymous` respectively
 - `RequireUser` now accepts list of claims and can keep the base claim
