@@ -1,7 +1,8 @@
 ﻿using Do.RestApi.Configuration;
 
 namespace Do.CodingStyle.ObjectAsJson;
-public class ObjectParameterFromBodyConvention : IApiModelConvention<ActionModelContext>
+
+public class SingleObjectParametersDontUseRequestClassConvention : IApiModelConvention<ActionModelContext>
 {
     public void Apply(ActionModelContext context)
     {
@@ -11,6 +12,6 @@ public class ObjectParameterFromBodyConvention : IApiModelConvention<ActionModel
         if (bodyParameter.MappedParameter is null) { return; }
         if (!bodyParameter.MappedParameter.ParameterType.Is<object>()) { return; }
 
-        context.Action.UseRequestClass = false;
+        context.Action.UseRequestClassForBody = false;
     }
 }

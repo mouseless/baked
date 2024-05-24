@@ -19,7 +19,7 @@ public record ActionModel(
     public ReturnModel Return { get; set; } = Return;
     public string FindTargetStatement { get; set; } = FindTargetStatement;
     public bool UseForm { get; set; } = false;
-    public bool UseRequestClass { get; set; } = true;
+    public bool UseRequestClassForBody { get; set; } = true;
     public int Order { get; set; } = 0;
 
     public List<string> AdditionalAttributes { get; init; } = [];

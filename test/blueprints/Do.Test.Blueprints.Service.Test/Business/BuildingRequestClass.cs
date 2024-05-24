@@ -11,13 +11,8 @@ public class BuildingRequestClass : TestServiceNfr
         var response = await Client.PostAsync($"/method-samples/request-class", JsonContent.Create(
             new
             {
-                @string = "string",
-                @int = 1,
-                @object = new
-                {
-                    text = "text",
-                    numeric = 2
-                }
+                text = "text",
+                numeric = 1
             }
         ));
         var actual = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
@@ -25,13 +20,8 @@ public class BuildingRequestClass : TestServiceNfr
         actual.ShouldDeeplyBe(
            new
            {
-               @string = "string",
-               @int = 1,
-               @object = new
-               {
-                   text = "text",
-                   numeric = 2
-               }
+               text = "text",
+               numeric = 1
            }
         );
     }
