@@ -109,8 +109,11 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
             {
                 if (type.FullName is null) { continue; }
 
+                var apiMethods = type.GetMembers().Methods.Having<ApiMethodAttribute>();
+                if (!apiMethods.Any()) { continue; }
+
                 var controller = new ControllerModel(type) { ClassName = type.CSharpFriendlyFullName.Split('.').Skip(1).Join('_') };
-                foreach (var method in type.GetMembers().Methods.Having<ApiMethodAttribute>())
+                foreach (var method in apiMethods)
                 {
                     controller.AddAction(type, method);
                 }
