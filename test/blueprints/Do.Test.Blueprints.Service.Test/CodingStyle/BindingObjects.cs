@@ -11,11 +11,8 @@ public class BindingObjects : TestServiceNfr
         var response = await Client.PostAsync($"/method-samples/{route}", JsonContent.Create(
             new
             {
-                @object = new
-                {
-                    any = "object",
-                    canBe = "sent"
-                }
+                any = "object",
+                canBe = "sent"
             }
         ));
         var actual = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());

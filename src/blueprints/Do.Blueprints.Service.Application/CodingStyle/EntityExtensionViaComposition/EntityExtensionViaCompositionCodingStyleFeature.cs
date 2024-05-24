@@ -20,6 +20,7 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
                     });
                 },
                 when: c =>
+                    c.Type.IsClass &&
                     !c.Type.IsAbstract &&
                     !c.Type.IsInterface &&
                     c.Type.TryGetMembers(out var members) &&

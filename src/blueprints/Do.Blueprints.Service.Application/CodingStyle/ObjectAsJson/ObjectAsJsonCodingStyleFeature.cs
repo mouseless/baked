@@ -17,6 +17,11 @@ public class ObjectAsJsonCodingStyleFeature : IFeature<CodingStyleConfigurator>
             );
         });
 
+        configurator.ConfigureApiModelConventions(conventions =>
+        {
+            conventions.Add(new ObjectParameterFromBodyConvention());
+        });
+
         configurator.ConfigureAutoPersistenceModel(model =>
         {
             model.Conventions.Add(ConventionBuilder.Property.When(

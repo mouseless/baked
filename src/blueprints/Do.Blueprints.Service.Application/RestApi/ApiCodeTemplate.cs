@@ -21,7 +21,7 @@ public class ApiCodeTemplate(ApiModel _apiModel)
     """;
 
     string Action(ActionModel action) => $$"""
-        {{If(action.HasBody, () => $$"""
+        {{If(action.HasBody && action.UseRequestDto, () => $$"""
         public class {{action.Id}}Request
         {
             {{ForEach(action.BodyParameters, Property)}}
@@ -33,7 +33,12 @@ public class ApiCodeTemplate(ApiModel _apiModel)
         {{ForEach(action.AdditionalAttributes, Attribute)}}
         public {{ReturnType(action.Return)}} {{action.Id}}({{Join(", ",
             ForEach(action.ServiceParameters, Parameter, separator: ", "),
-            If(action.HasBody, () => $$"""[FromBody] {{action.Id}}Request request"""),
+            If(action.HasBody, () =>
+                 If(action.UseRequestDto,
+                    () => $$"""[FromBody] {{action.Id}}Request request""",
+                    () => $$"""[FromBody] {{Parameter(action.BodyParameters.First())}}"""
+                )
+            ),
             ForEach(action.NonBodyParameters, Parameter, separator: ", ")
         )}})
         {
@@ -52,7 +57,8 @@ public class ApiCodeTemplate(ApiModel _apiModel)
         }
     """;
 
-    string Property(ParameterModel parameter) => $$"""
+    string Property(ParameterModel parameter) =>
+    $$"""
         {{Attributes(parameter)}}
         public {{parameter.Type}} @{{parameter.Name}} { get; set; }{{If(parameter.IsOptional, () => $" = {parameter.RenderDefaultValue()};")}}
     """;
@@ -75,19 +81,17 @@ public class ApiCodeTemplate(ApiModel _apiModel)
         $"{ParameterFrom(parameter.From)}{ForEach(parameter.AdditionalAttributes, Attribute)}";
 
     string ParameterFrom(ParameterModelFrom parameterFrom) =>
-        parameterFrom != ParameterModelFrom.BodyOrForm
-            ? $"[From{parameterFrom}]"
-            : "[FromForm]";
+        parameterFrom != ParameterModelFrom.BodyOrForm ? $"[From{parameterFrom}]" : "[FromForm]";
 
     string Invoke(string target, ActionModel action) => $$"""
         {{(action.Return.IsAsync ? "await " : string.Empty)}}{{target}}.{{action.Id}}(
-            {{ForEach(action.InvokedMethodParameters, p => $"@{p.InternalName}: {ParameterLookup(p, action.UseForm)}", separator: ", ")}}
+            {{ForEach(action.InvokedMethodParameters, p => $"@{p.InternalName}: {ParameterLookup(p, action.UseForm, action.UseRequestDto)}", separator: ", ")}}
         )
     """;
 
-    string ParameterLookup(ParameterModel parameter, bool useForm) =>
+    string ParameterLookup(ParameterModel parameter, bool useForm, bool useRequestDto) =>
         $"({parameter.RenderLookup(
-            If(useForm || !parameter.FromBodyOrForm,
+            If(useForm || !useRequestDto || !parameter.FromBodyOrForm,
                 () => $"@{parameter.Name}",
             @else:
                 () => $"request.@{parameter.Name}"
