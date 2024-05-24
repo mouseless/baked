@@ -38,6 +38,9 @@ public class MethodSamples(ILogger<MethodSamples> _logger)
         _logger.LogInformation($"{nameof(VoidAsync)} was called");
     }
 
+    public object RequestClass(string @string, int @int) =>
+        new { @string, @int };
+
     public object Object(object @object) =>
         @object;
 

@@ -34,8 +34,9 @@ public class ApiCodeTemplate(ApiModel _apiModel)
         public {{ReturnType(action.Return)}} {{action.Id}}({{Join(", ",
             ForEach(action.ServiceParameters, Parameter, separator: ", "),
             If(action.HasBody, () =>
-                 If(action.UseRequestDto,
+                If(action.UseRequestDto,
                     () => $$"""[FromBody] {{action.Id}}Request request""",
+                @else:
                     () => $$"""[FromBody] {{Parameter(action.BodyParameters.First())}}"""
                 )
             ),
@@ -75,10 +76,10 @@ public class ApiCodeTemplate(ApiModel _apiModel)
     ;
 
     string Parameter(ParameterModel parameter) =>
-        $"{Attributes(parameter)}{parameter.Type} @{parameter.Name}{If(parameter.IsOptional, () => $" = {parameter.RenderDefaultValue()}")}";
+        $"{ParameterFrom(parameter.From)}{Attributes(parameter)}{parameter.Type} @{parameter.Name}{If(parameter.IsOptional, () => $" = {parameter.RenderDefaultValue()}")}";
 
     string Attributes(ParameterModel parameter) =>
-        $"{ParameterFrom(parameter.From)}{ForEach(parameter.AdditionalAttributes, Attribute)}";
+        $"{ForEach(parameter.AdditionalAttributes, Attribute)}";
 
     string ParameterFrom(ParameterModelFrom parameterFrom) =>
         parameterFrom != ParameterModelFrom.BodyOrForm ? $"[From{parameterFrom}]" : "[FromForm]";
