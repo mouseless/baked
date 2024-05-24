@@ -21,7 +21,7 @@ public class ApiCodeTemplate(ApiModel _apiModel)
     """;
 
     string Action(ActionModel action) => $$"""
-        {{If(action.HasBody && action.UseRequestDto, () => $$"""
+        {{If(action.HasBody && action.UseRequestClass, () => $$"""
         public class {{action.Id}}Request
         {
             {{ForEach(action.BodyParameters, Property)}}
@@ -34,10 +34,10 @@ public class ApiCodeTemplate(ApiModel _apiModel)
         public {{ReturnType(action.Return)}} {{action.Id}}({{Join(", ",
             ForEach(action.ServiceParameters, p => Parameter(p, action), separator: ", "),
             If(action.HasBody, () =>
-                If(action.UseRequestDto,
+                If(action.UseRequestClass,
                     () => $$"""[FromBody] {{action.Id}}Request request""",
                 @else:
-                    () => $$"""{{Parameter(action.BodyParameters.First(), action)}}"""
+                    () => $$"""{{Parameter(action.BodyParameters.Single(), action)}}"""
                 )
             ),
             ForEach(action.NonBodyParameters, p => Parameter(p, action), separator: ", ")
@@ -87,7 +87,7 @@ public class ApiCodeTemplate(ApiModel _apiModel)
 
     string Invoke(string target, ActionModel action) => $$"""
         {{(action.Return.IsAsync ? "await " : string.Empty)}}{{target}}.{{action.Id}}(
-            {{ForEach(action.InvokedMethodParameters, p => $"@{p.InternalName}: {ParameterLookup(p, action.UseForm, action.UseRequestDto)}", separator: ", ")}}
+            {{ForEach(action.InvokedMethodParameters, p => $"@{p.InternalName}: {ParameterLookup(p, action.UseForm, action.UseRequestClass)}", separator: ", ")}}
         )
     """;
 
