@@ -4,14 +4,31 @@ using System.Security.Claims;
 namespace Do.Test.Authorization;
 
 public class AuthorizationSamples(Func<ClaimsPrincipal> _getClaims)
+    : AuthorizationSamplesBase(_getClaims)
 {
-    public string RequireBaseClaim() =>
-        _getClaims().FindFirst("User")?.Value ?? throw new("User claim should have existed");
+    [AllowAnonymous]
+    public void Anonymous() { }
 
-    [RequireClaim("Admin")]
-    public string RequireAdminClaim() =>
-        _getClaims().FindFirst("Admin")?.Value ?? throw new("Admin claim should have existed");
+    [RequireUser(["Admin"])]
+    public string Admin() =>
+        Validate(["Admin"]);
 
-    [RequireNoClaim]
-    public void RequireNoClaim() { }
+    [RequireUser(["User"])]
+    public string User() =>
+        Validate(["User"]);
+
+    [RequireUser(Override = true)]
+    public string Authenticated() =>
+        Validate([]);
+
+    public string BaseClaims() =>
+        Validate(["BaseA", "BaseB"]);
+
+    [RequireUser(["GivenA", "GivenB"], Override = true)]
+    public string GivenClaims() =>
+        Validate(["GivenA", "GivenB"]);
+
+    [RequireUser(["GivenA", "GivenB"])]
+    public string GivenAndBaseClaims() =>
+        Validate(["GivenA", "GivenB", "BaseA", "BaseB"]);
 }

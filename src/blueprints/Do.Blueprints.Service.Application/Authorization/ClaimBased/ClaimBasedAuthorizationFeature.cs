@@ -5,11 +5,23 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Do.Authorization.ClaimBased;
 
-public class ClaimBasedAuthorizationFeature(IEnumerable<string> _claims, string? _baseClaim)
+public class ClaimBasedAuthorizationFeature(IEnumerable<string> _claims, IEnumerable<string> _baseClaims)
     : IFeature<AuthorizationConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
+        configurator.ConfigureDomainModelBuilder(builder =>
+        {
+            builder.Conventions.AddMethodMetadata(
+                apply: (c, add) => add(c.Method, c.Type.GetSingle<AllowAnonymousAttribute>()),
+                when: c => !c.Method.Has<RequireUserAttribute>() && c.Type.Has<AllowAnonymousAttribute>()
+            );
+            builder.Conventions.AddMethodMetadata(
+                apply: (c, add) => add(c.Method, c.Type.GetSingle<RequireUserAttribute>()),
+                when: c => !c.Method.Has<RequireUserAttribute>() && c.Type.Has<RequireUserAttribute>()
+            );
+        });
+
         configurator.ConfigureServiceCollection(services =>
         {
             services.AddAuthorization(options =>
@@ -35,13 +47,10 @@ public class ClaimBasedAuthorizationFeature(IEnumerable<string> _claims, string?
 
         configurator.ConfigureApiModelConventions(conventions =>
         {
-            if (_baseClaim is not null)
-            {
-                conventions.Add(new AllActionsRequireBaseClaimConvention(_baseClaim));
-                conventions.Add(new RequireNoClaimIsAllowAnonymousConvention());
-            }
-
-            conventions.Add(new RequireClaimIsAuthorizeWithClaimConvention());
+            conventions.Add(new AllowAnonymousIsAllowAnonymousConvention());
+            conventions.Add(new RequireUserIsAuthorizeConvention());
+            conventions.Add(new AddBaseClaimsAsAuthorizePolicyConvention(_baseClaims));
+            conventions.Add(new AddRequireUserClaimsAsAuthorizePolicyConvention());
         });
     }
 }

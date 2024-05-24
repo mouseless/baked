@@ -1,8 +1,8 @@
 # Authentication
 
-Implementations of this feature adds an `AuthenticationScheme` with an 
-`IAuthenticationHandler` implementation. Features can also configure 
-`AuthenticationSchemeOptions.ForwardDefaultSelector` which enables multiple 
+Implementations of this feature adds an `AuthenticationScheme` with an
+`IAuthenticationHandler` implementation. Features can also configure
+`AuthenticationSchemeOptions.ForwardDefaultSelector` which enables multiple
 authentication handlers for a single endpoint by selecting first matching
 handler available.
 
@@ -14,11 +14,11 @@ app.Features.AddAuthentications([...]);
 
 ## Fixed Bearer Token
 
-This feature uses the token provided in `Authorization` header. Handler 
-tests the token against the value configured in settings and setups `Claims` 
-for current `HttpContext.User`. Multiple tokens can be used by providing key 
-names when adding the feature and `Authentication:FixedBearerToken:Default` 
-value from settings will be used if no token key specified
+This feature uses the token provided in `Authorization` header. Handler tests
+the token against the value configured in settings and setups `Claims` for
+current `HttpContext.User`. Multiple tokens can be used by providing key names
+when adding the feature and `Authentication:FixedBearerToken:Default` value from
+settings will be used if no token key specified
 
 ```csharp
 c => c.FixedBearerToken(tokens =>

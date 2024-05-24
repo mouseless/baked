@@ -1,5 +1,6 @@
 ﻿using Do;
 using Do.Architecture;
+using Humanizer;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,7 +40,7 @@ public class FixedBearerTokenAuthenticationFeature(List<Token> _tokens, List<str
                 {
                     Type = SecuritySchemeType.Http,
                     Scheme = "Bearer",
-                    Description = $"Enter the {string.Join(" or ", _tokens.Select(t => t.Name)).ToLowerInvariant()} token",
+                    Description = $"Enter token for {_tokens.Select(t => t.Name).Humanize("or")}",
                 }
             );
 

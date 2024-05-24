@@ -10,7 +10,7 @@ public class InterceptingUnauthorizedRequests : TestServiceNfr
     {
         Client.DefaultRequestHeaders.Clear();
 
-        var response = await Client.PostAsync("authorization-samples/require-base-claim", null);
+        var response = await Client.PostAsync("authorization-samples/authenticated", null);
 
         response.IsSuccessStatusCode.ShouldBeFalse();
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
@@ -21,7 +21,7 @@ public class InterceptingUnauthorizedRequests : TestServiceNfr
     {
         Client.DefaultRequestHeaders.Authorization = AuthenticationHeaderValue.Parse("Wrong_token");
 
-        var response = await Client.PostAsync("authorization-samples/require-base-claim", null);
+        var response = await Client.PostAsync("authorization-samples/user", null);
 
         response.IsSuccessStatusCode.ShouldBeFalse();
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
@@ -32,7 +32,7 @@ public class InterceptingUnauthorizedRequests : TestServiceNfr
     {
         Client.DefaultRequestHeaders.Authorization = UserFixedBearerToken;
 
-        var response = await Client.PostAsync("authorization-samples/require-admin-claim", null);
+        var response = await Client.PostAsync("authorization-samples/admin", null);
 
         response.IsSuccessStatusCode.ShouldBeFalse();
         response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);

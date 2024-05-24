@@ -11,7 +11,7 @@ public class GeneratingUnauthorizedAccessResponse : TestServiceNfr
     {
         Client.DefaultRequestHeaders.Clear();
 
-        var response = await Client.PostAsync("authorization-samples/require-base-claim", null);
+        var response = await Client.PostAsync("authorization-samples/base-claims", null);
 
         var problemDetails = response.Content.ReadFromJsonAsync<ProblemDetails>().Result;
 
@@ -27,7 +27,7 @@ public class GeneratingUnauthorizedAccessResponse : TestServiceNfr
     {
         Client.DefaultRequestHeaders.Authorization = UserFixedBearerToken;
 
-        var response = await Client.PostAsync("authorization-samples/require-admin-claim", null);
+        var response = await Client.PostAsync("authorization-samples/admin", null);
 
         var problemDetails = response.Content.ReadFromJsonAsync<ProblemDetails>().Result;
 
