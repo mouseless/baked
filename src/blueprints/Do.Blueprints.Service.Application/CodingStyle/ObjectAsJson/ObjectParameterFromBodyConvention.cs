@@ -6,7 +6,10 @@ public class ObjectParameterFromBodyConvention : IApiModelConvention<ActionModel
     public void Apply(ActionModelContext context)
     {
         if (context.Action.BodyParameters.Count() != 1) { return; }
-        if (!context.Action.BodyParameters.First().MappedParameter?.ParameterType.Is<object>() == true) { return; }
+
+        var bodyParameter = context.Action.BodyParameters.First();
+        if (bodyParameter.MappedParameter is null) { return; }
+        if (!bodyParameter.MappedParameter.ParameterType.Is<object>()) { return; }
 
         context.Action.UseRequestDto = false;
     }
