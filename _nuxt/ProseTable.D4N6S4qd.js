@@ -1,1 +1,0 @@
-import{_ as a,o as t,c as s,a as o,r}from"./entry.Bdjvfxg_.js";const c={},n={class:"table-container"};function l(e,d){return t(),s("div",n,[o("table",null,[r(e.$slots,"default",{},void 0,!0)])])}const f=a(c,[["render",l],["__scopeId","data-v-24fe1f69"]]);export{f as default};
