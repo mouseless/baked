@@ -7,11 +7,12 @@ public static class ClaimBasedAuthorizationExtensions
 {
     public static ClaimBasedAuthorizationFeature ClaimBased(this AuthorizationConfigurator _,
         IEnumerable<string>? claims = default,
-        string? baseClaim = default
+        IEnumerable<string>? baseClaims = default
     )
     {
-        claims ??= ["User"];
+        claims ??= [];
+        baseClaims ??= [];
 
-        return new(claims, baseClaim);
+        return new(claims, baseClaims);
     }
 }
