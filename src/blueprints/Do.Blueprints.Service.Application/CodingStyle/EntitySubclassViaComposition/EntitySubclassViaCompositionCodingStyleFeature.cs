@@ -20,10 +20,12 @@ public class EntitySubclassViaCompositionCodingStyleFeature : IFeature<CodingSty
                     });
                 },
                 when: c =>
+                    c.Type.IsClass &&
+                    !c.Type.IsAbstract &&
                     c.Type.TryGetMembers(out var members) &&
-                    members.TryGetMethods("op_Explicit", out var implicits) &&
-                    implicits.Count() == 1 &&
-                    implicits.Single().Parameters.SingleOrDefault()?.ParameterType.TryGetMetadata(out var parameterTypeMetadata) == true &&
+                    members.TryGetMethods("op_Explicit", out var explicits) &&
+                    explicits.Count() == 1 &&
+                    explicits.Single().Parameters.SingleOrDefault()?.ParameterType.TryGetMetadata(out var parameterTypeMetadata) == true &&
                     parameterTypeMetadata.Has<EntityAttribute>(),
                 order: 10
             );

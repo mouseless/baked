@@ -38,6 +38,9 @@ public class MethodSamples(ILogger<MethodSamples> _logger)
         _logger.LogInformation($"{nameof(VoidAsync)} was called");
     }
 
+    public Record RequestClass(string text, int numeric) =>
+         new(text, numeric);
+
     public object Object(object @object) =>
         @object;
 
@@ -47,6 +50,9 @@ public class MethodSamples(ILogger<MethodSamples> _logger)
 
         return @object;
     }
+
+    public object MultipleObjects(object object1, object object2) =>
+        new { object1, object2 };
 
     public void PrimitiveParameters(string @string, int @int, DateTime dateTime) =>
         _logger.LogInformation($"{nameof(PrimitiveParameters)} was called with {@string}, {@int} and {dateTime}");
