@@ -166,6 +166,18 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
 
                 return result.Replace("_", "--").Kebaberize();
             });
+
+            swaggerGenOptions.OrderActionsBy(apiDescription =>
+            {
+                var methodOrder =
+                    apiDescription.HttpMethod == "POST" ? 0 :
+                    apiDescription.HttpMethod == "GET" ? 1 :
+                    apiDescription.HttpMethod == "PUT" ? 2 :
+                    apiDescription.HttpMethod == "PATCH" ? 3 :
+                    4;
+
+                return $"{apiDescription.ActionDescriptor.AttributeRouteInfo?.Template}_{methodOrder}";
+            });
         });
     }
 }
