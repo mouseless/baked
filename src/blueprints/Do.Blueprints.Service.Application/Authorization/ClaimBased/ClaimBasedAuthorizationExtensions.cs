@@ -10,7 +10,7 @@ public static class ClaimBasedAuthorizationExtensions
         IEnumerable<string>? baseClaims = default
     )
     {
-        claims ??= ["User"];
+        claims ??= [];
         baseClaims ??= [];
 
         return new(claims, baseClaims);
