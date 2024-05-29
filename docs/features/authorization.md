@@ -20,7 +20,7 @@ metadata and adds appropriate `AuthorizeAttribute` to the specified controller
 actions by with `ApiModel` conventions.
 
 ```csharp
-[RequireUser("Admin")]
+[RequireUser(["Admin"])]
 public string AdminMethod()
 {
     ...
