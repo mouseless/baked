@@ -107,6 +107,8 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
     {
         await Task.Delay(TimeSpan.FromSeconds(delayInSeconds));
 
+        _context.Lock(this);
+
         Set(int32: Int32 + offset);
 
         return Int32 ?? 0;
