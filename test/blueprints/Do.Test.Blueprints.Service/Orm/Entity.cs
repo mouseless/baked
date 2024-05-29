@@ -100,6 +100,20 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
         string? @string = default
     ) => Set(@string: @string);
 
+    public virtual async Task<int> LockAndIncrementInt32(
+        int offset = 1,
+        int delayInSeconds = 5
+    )
+    {
+        await Task.Delay(TimeSpan.FromSeconds(delayInSeconds));
+
+        _context.Lock(this);
+
+        Set(int32: Int32 + offset);
+
+        return Int32 ?? 0;
+    }
+
     protected virtual void Set(
         Guid? guid = default,
         string? @string = default,

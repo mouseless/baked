@@ -5,7 +5,7 @@ namespace Do.Test.HttpServer;
 
 public class ConfiguringMultipleAuthenticationHandlers : TestServiceNfr
 {
-    [TestCase("Authorization", "11111111111111111111111111111111", "FixedBearerToken")]
+    [TestCase("Authorization", "token-jane", "FixedBearerToken")]
     [TestCase("X-Api-Key", "apikey", "ApiKey")]
     public async Task Request_can_be_forwarded_to_available_handlers(string header, string value, string authenticationType)
     {

@@ -1,4 +1,4 @@
-﻿using ISession = NHibernate.ISession;
+﻿using NHibernate;
 
 namespace Do.Orm;
 
@@ -15,5 +15,10 @@ public class EntityContext<TEntity>(ISession _session)
     public void Delete(TEntity entity)
     {
         _session.Delete(entity);
+    }
+
+    public void Lock(TEntity entity)
+    {
+        _session.Refresh(entity, LockMode.Upgrade);
     }
 }
