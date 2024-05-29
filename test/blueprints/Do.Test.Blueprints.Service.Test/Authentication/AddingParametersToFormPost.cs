@@ -13,7 +13,7 @@ public class AddingParametersToFormPost : TestServiceNfr
         {
             ["value"] = "value",
             ["additional"] = "additional",
-            ["hash"] = "ph0dPl9pFZdlrAq92u8NmuOHyMVus/pJQ0zNMEuej5A=" // valueadditional11111111111111111111111111111111 -sha256-> a61d1d3e5f69159765ac0abddaef0d9ae387c8c56eb3fa49434ccd304b9e8f90
+            ["hash"] = "LqGNbYhL3cCp5vNClVJ3I7D6kCe7rSnb/Tzhp/tV2As=" // valueadditionaltoken-jane -sha256-> 2ea18d6d884bddc0a9e6f34295527723b0fa9027bbad29dbfd3ce1a7fb55d80b
         };
 
         var response = await Client.PostAsync("authentication-samples/form-post-authenticate", new FormUrlEncodedContent(form));
