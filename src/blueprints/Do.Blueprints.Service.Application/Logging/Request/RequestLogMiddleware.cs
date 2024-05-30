@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
 namespace Do.Logging.Request;
@@ -10,25 +9,8 @@ public class RequestLogMiddleware(ILogger<RequestLogMiddleware> _logger, Request
     {
         _logger.LogInformation(message: $"Begin: {context.Request.Path}");
 
-        try
-        {
-            await _next(context);
+        await _next(context);
 
-            var exception = context.Features.Get<IExceptionHandlerFeature>();
-            if (exception?.Error is not null)
-            {
-                _logger.LogError(exception: exception.Error, message: exception.Error.Message);
-            }
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(exception: e, message: e.Message);
-
-            throw;
-        }
-        finally
-        {
-            _logger.LogInformation(message: $"End: {context.Request.Path} StatusCode: {context.Response.StatusCode}");
-        }
+        _logger.LogInformation(message: $"End: {context.Request.Path} StatusCode: {context.Response.StatusCode}");
     }
 }

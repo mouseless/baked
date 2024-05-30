@@ -1,7 +1,9 @@
 ﻿using Do.Architecture;
 using Do.Configuration;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Text;
 
 namespace Do.ExceptionHandling.Default;
 
@@ -10,6 +12,19 @@ public class DefaultExceptionHandlingFeature(Setting<string>? _typeUrlFormat = d
 {
     public void Configure(LayerConfigurator configurator)
     {
+        configurator.ConfigureConfigurationBuilder(configuration =>
+        {
+            configuration.AddJsonStream(new MemoryStream(Encoding.UTF8.GetBytes("""
+            {
+              "Logging": {
+                "LogLevel": {
+                  "Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddleware": "None"
+                }
+              }
+            }
+            """)));
+        });
+
         configurator.ConfigureDomainTypeCollection(types =>
         {
             types.Add<HandledException>();
@@ -39,6 +54,7 @@ public class DefaultExceptionHandlingFeature(Setting<string>? _typeUrlFormat = d
         {
             middlewares.Add(app =>
                 {
+                    app.UseMiddleware<ExceptionLoggerMiddleware>();
                     app.UseExceptionHandler();
                     app.UseStatusCodePages();
                 },
