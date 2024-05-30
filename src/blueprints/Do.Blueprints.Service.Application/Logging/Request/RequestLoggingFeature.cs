@@ -3,7 +3,8 @@ using Microsoft.Extensions.Logging;
 
 namespace Do.Logging.Request;
 
-public class RequestLoggingFeature : IFeature<LoggingConfigurator>
+public class RequestLoggingFeature(bool singleLine)
+    : IFeature<LoggingConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
@@ -11,8 +12,16 @@ public class RequestLoggingFeature : IFeature<LoggingConfigurator>
         {
             logging.AddSimpleConsole(options =>
             {
-                options.SingleLine = true;
+                options.IncludeScopes = true;
+                options.SingleLine = singleLine;
+                options.TimestampFormat = "yyyy.MM.dd HH:mm:ss.fff ";
+                options.UseUtcTimestamp = true;
             });
+        });
+
+        configurator.ConfigureApiModelConventions(conventions =>
+        {
+            conventions.Add(new AddMappedMethodAttributeConvention());
         });
 
         configurator.ConfigureMiddlewareCollection(middlewares =>

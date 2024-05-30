@@ -5,6 +5,7 @@ namespace Do;
 
 public static class RequestLoggingExtensions
 {
-    public static RequestLoggingFeature Request(this LoggingConfigurator _) =>
-        new();
+    public static RequestLoggingFeature Request(this LoggingConfigurator _,
+        bool singleLine = false
+    ) => new(singleLine: singleLine);
 }
