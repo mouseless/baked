@@ -10,18 +10,9 @@ app.Features.AddLogging(...);
 
 ## Request
 
-This implementation logs incoming request and related response information
-along with exception logging.
+This implementation creates a log scope for business method endpoints and logs
+begin and end with response status.
 
 ```csharp
-c => c.Request()
-```
-
-By default it adds a logging middeware for printing log messages to console.
-
-```csharp
-configurator.ConfigureMiddlewareCollection(middlewares =>
-{
-    middlewares.Add<RequestLogMiddleware>(order: ...);
-});
+c => c.Request(singleLine: false)
 ```
