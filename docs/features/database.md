@@ -23,7 +23,7 @@ Adds local Sqlite database setup which creates local sqlite database in
 documents folder with given name.
 
 ```csharp
-c => c.AddSqlite(fileName: "test.db")
+c => c.Sqlite(fileName: "test.db")
 ```
 
 ## MySql
