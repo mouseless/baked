@@ -13,13 +13,12 @@ public sealed class BakedBanner : IBanner
         var foreground = ConsoleColor.DarkGray;
 
         L();
-        W(" ▀▄  ", brand).L(" █▀▀▀▄ █▀▀▀█ █  ▄▀ █▀▀▀▀ █▀▀▀▄", white);
-        W("  ▄▀ ", brand).L(" █▀▀▀▄ █▀▀▀█ █▀▀▀█ █▀▀▀▀ █   █", white);
-        W(" ▀   ", brand).W(" ▀▀▀▀  ▀   ▀ ▀   ▀ ▀▀▀▀▀ ▀▀▀▀ ", white).L(" ▀▀▀▀▀", brand);
+        W("▄  ", brand).L("█▄▄ ▄▄▄ █ ▄ ▄▄▄ ▄▄█", white);
+        W("▄▀ ", brand).W("█▄█ █▀█ █▀▄ ██▄ █▄█", white).L(" ▄▄", brand);
         L();
-        L($"Version: v{versionString}", foreground);
-        L("Docs: https://baked.mouseless.codes", foreground);
-        L("Source: https://github.com/mouseless/baked", foreground);
+        L($"version: v{versionString}", foreground);
+        L("docs: https://baked.mouseless.codes", foreground);
+        L("source: https://github.com/mouseless/baked", foreground);
         L();
     }
 

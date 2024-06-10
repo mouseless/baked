@@ -48,13 +48,12 @@ public class PrintingBanner : ArchitectureSpec
 
         ConsoleOutput.ShouldContainWithoutWhitespace($$"""
 
-         ▀▄   █▀▀▀▄ █▀▀▀█ █  ▄▀ █▀▀▀▀ █▀▀▀▄
-          ▄▀  █▀▀▀▄ █▀▀▀█ █▀▀▀█ █▀▀▀▀ █   █
-         ▀    ▀▀▀▀  ▀   ▀ ▀   ▀ ▀▀▀▀▀ ▀▀▀▀  ▀▀▀▀▀
+        ▄  █▄▄ ▄▄▄ █ ▄ ▄▄▄ ▄▄█
+        ▄▀ █▄█ █▀█ █▀▄ ██▄ █▄█ ▄▄
 
-        Version: v{{VersionString}}
-        Docs: https://baked.mouseless.codes
-        Source: https://github.com/mouseless/baked
+        version: v{{VersionString}}
+        docs: https://baked.mouseless.codes
+        source: https://github.com/mouseless/baked
 
         """);
     }
