@@ -49,6 +49,12 @@ img.baked {
     }
   }
 
+  h1, h2, h3, h4, h5, h6 {
+    & > code {
+      font-size: smaller;
+    }
+  }
+
   p {
     &:has(.diagram) {
       @include box;
@@ -94,6 +100,8 @@ img.baked {
 
   hr {
     @include border();
+
+    margin: 2em 0;
   }
 }
 

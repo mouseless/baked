@@ -9,7 +9,7 @@
           />
           <BottomNavigation />
         </div>
-        <Toc :value="doc.body.toc" />
+        <Toc v-if="$route.path !== '/'" :value="doc.body.toc" />
       </div>
     </template>
     <template #not-found>
@@ -24,8 +24,9 @@ import { useRoute } from "#imports";
 import { usePageStore } from "~/store/pageStore";
 
 const route = useRoute();
-const root = `/${route.path.split("/")[1]}`;
 const store = usePageStore();
+
+const root = `/${route.path.split("/")[1]}`;
 
 const index = await queryContent(root)
   .where({ _path: { $eq: root } })
@@ -96,15 +97,44 @@ function comparePages(a, b, { by, order, version } = { }) {
 </style>
 <style lang="scss">
 .full {
-  .content {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
+  .container {
+    justify-content: center;
+
+    .content {
+      max-width: $width-page;
+      margin-left: 0;
+      margin-right: 0;
+
+      h1+h2 {
+        margin-top: -0.5em;
+      }
+
+      h1, h2 { line-height: 1.2em; }
+
+      h1 { color: var(--color-red-0); }
+      h2 { color: var(--color-red-n3); }
+      h3 { color: var(--color-red-n1); }
+
+      a:not(.external) {
+        display: inline-block;
+        padding: var(--space-xs) var(--space-sm);
+        background-color: var(--color-darkgreen-700);
+        color: var(--color-gray-200);
+        border-radius: var(--space-xs);
+        text-decoration: none;
+
+        &:hover {
+          color: var(--color-green-0);
+        }
+      }
+    }
   }
 }
 
 @media (max-width: $width-page-l) {
   .full {
     .container {
+      flex-direction: row;
       margin-left: 0;
     }
   }
