@@ -2,7 +2,7 @@
 
 ## Improvements
 
-- __DO__ is renamed as __Baked Objects__
+- __DO__ is renamed as __Baked (Objects)__
   - Root namespace is `Baked`
   - `Forge` is now `Bake`
   - `Bluprints` are now `Recipes`

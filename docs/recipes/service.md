@@ -1,11 +1,10 @@
 # Service
 
-Service blueprint is the default backend blueprint provided by DO which
-includes necessary layers and feature implementations for any backend
-application.
+Service recipe is the default backend recipe provided by Baked which includes
+necessary layers and feature implementations for any backend application.
 
-To create an application from this blueprint, use `Service()` extension of
-`Bake` class directly in `Program.cs`.
+To create an application from this recipe, use `Service()` extension of `Bake`
+class directly in `Program.cs`.
 
 ```csharp
 Bake.New

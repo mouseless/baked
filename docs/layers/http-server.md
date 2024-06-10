@@ -1,6 +1,6 @@
 # HTTP Server
 
-DO uses ASP.NET Core's `WebApplication` to build and host a web application.
+Baked uses ASP.NET Core's `WebApplication` to build and host a web application.
 
 ```csharp
 app.Layers.AddHttpServer();
@@ -8,8 +8,8 @@ app.Layers.AddHttpServer();
 
 ## Configuration Targets
 
-`HttpServer` layer provides `IAuthenticationCollection`, 
-`IMiddlewareCollection` and `IEndpointRouteBuilder` targets to configure a web 
+`HttpServer` layer provides `IAuthenticationCollection`,
+`IMiddlewareCollection` and `IEndpointRouteBuilder` targets to configure a web
 application.
 
 ### `IAuthenticationCollection`

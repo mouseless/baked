@@ -7,18 +7,13 @@ pages:
 
 # Architecture
 
-DO's architectural core is designed to allow us to build software with any
-architectural style. Core idea is to enable a good separation of concerns
-without causing any repetitive work. To achieve this DO breaks down an
-application into following components: domain objects, layers and features.
-
-> [!NOTE]
->
-> DO is inspired by [Clean Architecture][], but it has its own approach to the
-> concept.
+Baked has an architectural core that is designed to allow us to build software
+with any architectural style. Core idea is to enable a good separation of
+concerns without causing any repetitive work. To achieve this Baked breaks down
+an application into following components: domain objects, layers and features.
 
 Let's dive into each type of software component to have a better understanding
-of how DO is structured.
+of how Baked is structured.
 
 ## Domain Objects
 

@@ -1,6 +1,6 @@
 ---
 sections:
-    - blueprints
+    - recipes
     - features
     - layers
     - architecture

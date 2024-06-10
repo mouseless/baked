@@ -1,7 +1,7 @@
 # Data Access
 
-DO uses _NHibernate_ and _FluentNHibernate_ library when providing data access
-layer.
+Baked uses _NHibernate_ and _FluentNHibernate_ library when providing data
+access layer.
 
 ```csharp
 app.Layers.AddDataAccess();

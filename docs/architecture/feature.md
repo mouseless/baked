@@ -26,7 +26,7 @@ implementing a new feature;
    folder, e.g., `Greeting/WelcomePage/`.
 1. Provide an extension method with the implementation name to allow adding
    that implementation, e.g., `WelcomePage()`.
-   1. This method should be in an extension class under `Do` namespace, e.g.,
+   1. This method should be in an extension class under `Baked` namespace, e.g.,
       `Greeting/WelcomePage/WelcomePageGreetingExtensions.cs`.
 1. Name feature class after implementation name with abstraction name as a
    suffix, e.g., `WelcomePageGreetingFeature`.

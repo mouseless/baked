@@ -5,8 +5,8 @@ and layers of the software you develop.
 
 ## Baking an Application
 
-DO provides a fluent interface to create an application. You can access it
-through `Bake.New` under `Do` namespace. Below is a sample `Program.cs` that
+Baked provides a fluent interface to create an application. You can access it
+through `Bake.New` under `Baked` namespace. Below is a sample `Program.cs` that
 creates and runs a new application;
 
 ```csharp
@@ -20,8 +20,8 @@ Bake.New
 
 > [!NOTE]
 >
-> `Do` is automatically added as a global using so that you can directly make a
-> call to `Bake.New`.
+> `Baked` is automatically added as a global using so that you can directly make
+> a call to `Bake.New`.
 
 > [!NOTE]
 >
@@ -33,10 +33,9 @@ Bake.New
 To add a new extension to an application, you need to make use of the feature /
 layer system.
 
-DO does not allow you to use `build.Services.Add` or `app.Use` methods
-directly. This is a design decision to avoid any unexpected behavior because
-the order of extensions may require a special attention as in [Enabling
-Cors][].
+Baked does not allow you to use `build.Services.Add` or `app.Use` methods
+directly. This is a design decision to avoid any unexpected behavior because the
+order of extensions may require a special attention as in [Enabling Cors][].
 
 `As` method provides an `ApplicationDescriptor` instance that has `Layers` and
 `Features` properties. Using these properties, you can add desired extensions
@@ -44,7 +43,7 @@ into your application.
 
 > [!NOTE]
 >
-> Layers and features come with extension methods exposed directly in `Do`
+> Layers and features come with extension methods exposed directly in `Baked`
 > namespace so that you can see options without adding an extra `using`.
 
 ### Layers

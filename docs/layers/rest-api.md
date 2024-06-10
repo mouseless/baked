@@ -1,6 +1,6 @@
 # Rest API
 
-DO uses ASP.NET Core for configuring and building a REST API application.
+Baked uses ASP.NET Core for configuring and building a REST API application.
 
 ```csharp
 app.Layers.AddRestApi();
