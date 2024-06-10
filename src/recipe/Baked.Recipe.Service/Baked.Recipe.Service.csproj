@@ -1,15 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <AssemblyTitle>Do.Blueprints.Service</AssemblyTitle>
-    <Title>DO / Blueprints / Service</Title>
-    <Description>DO is an opinionated framework for .NET. This is a blueprint package that brings together all the feature abstractions one needs for a service domain.</Description>
-    <PackageId>do-blueprints-service</PackageId>
-    <PackageTags>do;blueprint;service</PackageTags>
+    <AssemblyTitle>Baked.Recipe.Service</AssemblyTitle>
+    <Title>Baked (Objcts) / Recipe / Service</Title>
+    <Description>Baked (Objects) is an opinionated framework for .NET. This is a recipe package that brings together all the feature abstractions one needs for a service domain.</Description>
+    <PackageId>Baked.Recipe.Service</PackageId>
+    <PackageTags>baked;objects;recipe;service</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="do-blueprints-service.targets" Pack="true" PackagePath="build" />
+    <None Include="Baked.Recipe.Service.targets" Pack="true" PackagePath="build" />
   </ItemGroup>
 
   <ItemGroup>

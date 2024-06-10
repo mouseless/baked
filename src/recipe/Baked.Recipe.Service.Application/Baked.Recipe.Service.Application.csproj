@@ -1,15 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <AssemblyTitle>Do.Blueprints.Service.Application</AssemblyTitle>
-    <Title>DO / Blueprints / Service</Title>
-    <Description>DO is an opinionated framework for .NET. This is a blueprint package that brings together all the feature implementations one needs for a service application.</Description>
-    <PackageId>do-blueprints-service-application</PackageId>
-    <PackageTags>do;blueprint;service;application</PackageTags>
+    <AssemblyTitle>Baked.Recipe.Service.Application</AssemblyTitle>
+    <Title>Baked (Objects) / Recipe / Service</Title>
+    <Description>Baked (Objects) is an opinionated framework for .NET. This is a recipe package that brings together all the feature implementations one needs for a service application.</Description>
+    <PackageId>Baked.Recipe.Service.Application</PackageId>
+    <PackageTags>baked;objects;recipe;service;application</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="do-blueprints-service-application.targets" Pack="true" PackagePath="build" />
+    <None Include="Baked.Recipe.Service.Application.targets" Pack="true" PackagePath="build" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,8 +31,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Do.Blueprints.Service\Do.Blueprints.Service.csproj" />
-    <ProjectReference Include="..\..\core\Do.Architecture\Do.Architecture.csproj" />
+    <ProjectReference Include="..\Baked.Recipe.Service\Baked.Recipe.Service.csproj" />
+    <ProjectReference Include="..\..\core\Baked.Architecture\Baked.Architecture.csproj" />
   </ItemGroup>
 
 </Project>

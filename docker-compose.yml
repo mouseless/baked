@@ -6,7 +6,7 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: Do.Test.Blueprints.Service.Application
+      MYSQL_DATABASE: Baked.Test.Recipe.Service.Application
       MYSQL_TCP_PORT: 3366
     ports:
       - 3366:3366
@@ -29,7 +29,7 @@ services:
       - 8080:80
   blueprints.service:
     build:
-      dockerfile: test/blueprints/Do.Test.Blueprints.Service.Application/Dockerfile
+      dockerfile: test/recipe/Baked.Test.Recipe.Service.Application/Dockerfile
       args:
         ENVIRONMENT: Production
     ports:

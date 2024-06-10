@@ -8,14 +8,14 @@ test:
 	@ dotnet test
 run:
 	@ \
-	echo "(1) Blueprints.Service (Development)" ; \
-	echo "(2) Blueprints.Service (Production)" ; \
-	echo "(3) Do.Docs" ; \
+	echo "(1) Recipe.Service (Development)" ; \
+	echo "(2) Recipe.Service (Production)" ; \
+	echo "(3) Docs" ; \
 	echo "" ; \
 	echo "Please select 1-2: " ; \
 	read app ; \
 	if test $$app -eq "1" ; then \
-		dotnet run --project test/blueprints/Do.Test.Blueprints.Service.Application ; \
+		dotnet run --project test/recipe/Baked.Test.Recipe.Service.Application ; \
 	fi ; \
 	if test $$app -eq "2" ; then \
 		docker compose up --build ; \

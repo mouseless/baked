@@ -15,7 +15,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Do.Test.Blueprints.Service.Application\Do.Test.Blueprints.Service.Application.csproj" />
+      <ProjectReference Include="..\Baked.Test.Recipe.Service.Application\Baked.Test.Recipe.Service.Application.csproj" />
     </ItemGroup>
 
     <ItemGroup>
