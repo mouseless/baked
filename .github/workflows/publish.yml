@@ -46,7 +46,7 @@ jobs:
       - name: Check Version in NuGet
         id: check
         run: |
-          if wget -q --method=HEAD https://api.nuget.org/v3-flatcontainer/do-blueprints-service/${{ steps.parse.outputs.version }}/do-blueprints-service.nuspec;
+          if wget -q --method=HEAD https://api.nuget.org/v3-flatcontainer/Baked.Recipe.Service/${{ steps.parse.outputs.version }}/Baked.Recipe.Service.nuspec;
            then
             echo "action=nothing" >> $GITHUB_OUTPUT
            else
@@ -128,7 +128,7 @@ jobs:
       - name: Checkout docs branch
         uses: actions/checkout@v4
         with:
-          ref: do.mouseless.codes
+          ref: baked.mouseless.codes
       - name: Remove Old Files
         run: |
           git rm -rf .
