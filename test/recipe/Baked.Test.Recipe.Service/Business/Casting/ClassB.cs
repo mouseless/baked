@@ -1,3 +1,3 @@
-namespace Do.Test.Business.Casting;
+namespace Baked.Test.Business.Casting;
 
 public class ClassB { }

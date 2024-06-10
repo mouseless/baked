@@ -1,6 +1,6 @@
-﻿using Do.Business;
+﻿using Baked.Business;
 
-namespace Do.Test.Business.Casting;
+namespace Baked.Test.Business.Casting;
 
 public class ClassAToClassB(ClassB _to)
     : ICasts<ClassA, ClassB>

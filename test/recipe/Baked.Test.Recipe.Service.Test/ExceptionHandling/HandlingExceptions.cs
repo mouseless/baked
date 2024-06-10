@@ -1,10 +1,10 @@
-﻿using Do.ExceptionHandling;
-using Do.ExceptionHandling.Default;
-using Do.Orm;
-using Do.Test.Orm;
+﻿using Baked.ExceptionHandling;
+using Baked.ExceptionHandling.Default;
+using Baked.Orm;
+using Baked.Test.Orm;
 using System.Net;
 
-namespace Do.Test.ExceptionHandling;
+namespace Baked.Test.ExceptionHandling;
 
 public class HandlingExceptions : TestServiceSpec
 {

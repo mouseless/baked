@@ -1,4 +1,4 @@
-﻿namespace Do.Test.CodingStyle.CommandPattern;
+﻿namespace Baked.Test.CodingStyle.CommandPattern;
 
 public class GetCommand
 {

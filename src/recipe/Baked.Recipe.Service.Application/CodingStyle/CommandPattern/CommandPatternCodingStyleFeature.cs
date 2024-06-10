@@ -1,9 +1,9 @@
-﻿using Do.Architecture;
-using Do.Business;
-using Do.Lifetime;
-using Do.RestApi.Conventions;
+﻿using Baked.Architecture;
+using Baked.Business;
+using Baked.Lifetime;
+using Baked.RestApi.Conventions;
 
-namespace Do.CodingStyle.CommandPattern;
+namespace Baked.CodingStyle.CommandPattern;
 
 public class CommandPatternCodingStyleFeature : IFeature<CodingStyleConfigurator>
 {

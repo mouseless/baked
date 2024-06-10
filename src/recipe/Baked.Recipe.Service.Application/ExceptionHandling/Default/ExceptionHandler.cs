@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Do.ExceptionHandling.Default;
+namespace Baked.ExceptionHandling.Default;
 
 public class ExceptionHandler(IEnumerable<IExceptionHandler> _handlers, ExceptionHandlerSettings _settings)
     : Microsoft.AspNetCore.Diagnostics.IExceptionHandler

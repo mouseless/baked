@@ -1,7 +1,7 @@
-using Do.Domain.Model;
-using Do.RestApi.Configuration;
+﻿using Baked.Domain.Model;
+using Baked.RestApi.Configuration;
 
-namespace Do.CodingStyle.EntityExtensionViaComposition;
+namespace Baked.CodingStyle.EntityExtensionViaComposition;
 
 public class LookupEntityExtensionsByIdsConvention(DomainModel _domain)
     : IApiModelConvention<ParameterModelContext>

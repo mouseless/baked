@@ -1,6 +1,6 @@
-using Do.Test.Business.Casting;
+using Baked.Test.Business.Casting;
 
-namespace Do.Test.Business;
+namespace Baked.Test.Business;
 
 public class CastingServices : TestServiceSpec
 {

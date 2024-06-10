@@ -1,7 +1,7 @@
-﻿using Do.Architecture;
-using Do.RestApi;
-using Do.RestApi.Configuration;
-using Do.RestApi.Model;
+﻿using Baked.Architecture;
+using Baked.RestApi;
+using Baked.RestApi.Configuration;
+using Baked.RestApi.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -10,7 +10,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System.Reflection;
 
-namespace Do;
+namespace Baked;
 
 public static class RestApiExtensions
 {

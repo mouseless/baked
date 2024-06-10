@@ -1,7 +1,7 @@
-﻿using Do.Architecture;
-using Do.HttpClient;
+﻿using Baked.Architecture;
+using Baked.HttpClient;
 
-namespace Do;
+namespace Baked;
 
 public static class HttpClientExtensions
 {

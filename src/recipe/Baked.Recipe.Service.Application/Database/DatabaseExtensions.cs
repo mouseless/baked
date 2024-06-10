@@ -1,9 +1,9 @@
-﻿using Do.Architecture;
-using Do.Database;
+﻿using Baked.Architecture;
+using Baked.Database;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
 
-namespace Do;
+namespace Baked;
 
 public static class DatabaseExtensions
 {

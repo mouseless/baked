@@ -1,7 +1,7 @@
-﻿using Do.RestApi.Configuration;
+﻿using Baked.RestApi.Configuration;
 using Humanizer;
 
-namespace Do.RestApi.Conventions;
+namespace Baked.RestApi.Conventions;
 
 public class RemoveFromRouteConvention(IEnumerable<string> _parts,
     Func<ActionModelContext, bool>? _when = default

@@ -1,6 +1,6 @@
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 
-namespace Do.Configuration;
+namespace Baked.Configuration;
 
 public class Setting<T>
 {

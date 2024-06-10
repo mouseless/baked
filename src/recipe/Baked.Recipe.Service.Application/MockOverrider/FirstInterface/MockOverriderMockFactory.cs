@@ -1,7 +1,7 @@
-﻿using Do.Testing;
+﻿using Baked.Testing;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Do.MockOverrider.FirstInterface;
+namespace Baked.MockOverrider.FirstInterface;
 
 public class MockOverriderMockFactory : DefaultMockFactory
 {

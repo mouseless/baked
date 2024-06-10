@@ -1,10 +1,10 @@
-﻿using Do.Architecture;
-using Do.Domain.Configuration;
+﻿using Baked.Architecture;
+using Baked.Domain.Configuration;
 using Microsoft.Extensions.Configuration;
 
-using static Do.Domain.DomainLayer;
+using static Baked.Domain.DomainLayer;
 
-namespace Do.Domain;
+namespace Baked.Domain;
 
 public class DomainLayer : LayerBase<AddDomainTypes>
 {

@@ -1,6 +1,6 @@
-using ParameterModel = Do.RestApi.Model.ParameterModel;
+﻿using ParameterModel = Baked.RestApi.Model.ParameterModel;
 
-namespace Do.RestApi.Configuration;
+namespace Baked.RestApi.Configuration;
 
 public record ParameterModelContext : ActionModelContext
 {

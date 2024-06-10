@@ -1,4 +1,4 @@
-﻿namespace Do.RestApi.Model;
+﻿namespace Baked.RestApi.Model;
 
 public enum ParameterModelFrom
 {

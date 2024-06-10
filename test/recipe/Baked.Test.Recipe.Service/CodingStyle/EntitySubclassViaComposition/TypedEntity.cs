@@ -1,6 +1,6 @@
-using Do.Orm;
+using Baked.Orm;
 
-namespace Do.Test.CodingStyle.EntitySubclassViaComposition;
+namespace Baked.Test.CodingStyle.EntitySubclassViaComposition;
 
 public class TypedEntity(IEntityContext<TypedEntity> _context)
 {

@@ -1,8 +1,8 @@
-﻿using Do.Domain.Model;
+﻿using Baked.Domain.Model;
 using FluentNHibernate;
 using FluentNHibernate.Diagnostics;
 
-namespace Do.Orm;
+namespace Baked.Orm;
 
 public class TypeModelTypeSource(IEnumerable<TypeModel> _types)
     : ITypeSource

@@ -1,7 +1,7 @@
-﻿using Do.Business;
-using Do.Test.Orm;
+﻿using Baked.Business;
+using Baked.Test.Orm;
 
-namespace Do.Test.CodingStyle.EntityExtensionViaComposition;
+namespace Baked.Test.CodingStyle.EntityExtensionViaComposition;
 
 public class EntityExtension
 {

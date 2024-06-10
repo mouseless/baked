@@ -1,7 +1,7 @@
-﻿using Do.Configuration;
+﻿using Baked.Configuration;
 using FluentNHibernate.Cfg.Db;
 
-namespace Do.DataAccess;
+namespace Baked.DataAccess;
 
 public class PersistenceConfiguration
 {

@@ -1,12 +1,12 @@
-﻿using Do.Architecture;
-using Do.Authentication;
+﻿using Baked.Architecture;
+using Baked.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Do;
+namespace Baked;
 
 public static class AuthenticationExtensions
 {

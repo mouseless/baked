@@ -1,11 +1,11 @@
-﻿using Do.Architecture;
-using Do.Orm;
-using Do.Orm.AutoMap;
+﻿using Baked.Architecture;
+using Baked.Orm;
+using Baked.Orm.AutoMap;
 using Humanizer;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Do.CodingStyle.SingleByUnique;
+namespace Baked.CodingStyle.SingleByUnique;
 
 public class SingleByUniqueCodingStyleFeature : IFeature<CodingStyleConfigurator>
 {
@@ -37,7 +37,7 @@ public class SingleByUniqueCodingStyleFeature : IFeature<CodingStyleConfigurator
 
         configurator.ConfigureApiModel(api =>
         {
-            api.Usings.Add("Do.CodingStyle.SingleByUnique");
+            api.Usings.Add("Baked.CodingStyle.SingleByUnique");
         });
 
         configurator.ConfigureApiModelConventions(conventions =>

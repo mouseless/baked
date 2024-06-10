@@ -1,9 +1,9 @@
-﻿using Do.Business;
+﻿using Baked.Business;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Do.Testing;
+namespace Baked.Testing;
 
 public abstract class ServiceNfr : Nfr
 {

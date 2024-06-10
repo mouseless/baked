@@ -1,10 +1,10 @@
-﻿using Do.Architecture;
-using Do.Business;
+﻿using Baked.Architecture;
+using Baked.Business;
 using FluentNHibernate.Conventions.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
-namespace Do.CodingStyle.ObjectAsJson;
+namespace Baked.CodingStyle.ObjectAsJson;
 
 public class ObjectAsJsonCodingStyleFeature : IFeature<CodingStyleConfigurator>
 {

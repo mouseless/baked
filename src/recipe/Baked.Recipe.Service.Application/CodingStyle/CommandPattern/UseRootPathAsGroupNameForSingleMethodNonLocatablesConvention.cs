@@ -1,8 +1,8 @@
-﻿using Do.Business;
-using Do.RestApi.Configuration;
+﻿using Baked.Business;
+using Baked.RestApi.Configuration;
 using Humanizer;
 
-namespace Do.CodingStyle.CommandPattern;
+namespace Baked.CodingStyle.CommandPattern;
 
 public class UseRootPathAsGroupNameForSingleMethodNonLocatablesConvention : IApiModelConvention<ControllerModelContext>
 {

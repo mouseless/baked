@@ -1,3 +1,3 @@
-namespace Do.CodingStyle;
+﻿namespace Baked.CodingStyle;
 
 public class CodingStyleConfigurator { }

@@ -1,8 +1,8 @@
-﻿using Do.Business;
-using Do.RestApi.Configuration;
-using Do.RestApi.Model;
+﻿using Baked.Business;
+using Baked.RestApi.Configuration;
+using Baked.RestApi.Model;
 
-namespace Do.CodingStyle.CommandPattern;
+namespace Baked.CodingStyle.CommandPattern;
 
 public class InitializeUsingQueryParametersConvention : IApiModelConvention<ActionModelContext>
 {

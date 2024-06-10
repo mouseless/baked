@@ -1,8 +1,8 @@
-﻿using Do.Configuration;
-using Do.Database;
-using Do.Database.MySql;
+﻿using Baked.Configuration;
+using Baked.Database;
+using Baked.Database.MySql;
 
-namespace Do;
+namespace Baked;
 
 public static class MySqlDatabaseExtensions
 {

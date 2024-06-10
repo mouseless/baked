@@ -1,7 +1,7 @@
-using Do.Testing;
+﻿using Baked.Testing;
 using Shouldly;
 
-namespace Do;
+namespace Baked;
 
 public static class ObjectExtensions
 {

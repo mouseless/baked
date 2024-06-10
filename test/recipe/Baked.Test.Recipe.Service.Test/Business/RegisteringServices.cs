@@ -1,8 +1,8 @@
-﻿using Do.Test.ExceptionHandling;
-using Do.Test.Lifetime;
-using Do.Test.Orm;
+﻿using Baked.Test.ExceptionHandling;
+using Baked.Test.Lifetime;
+using Baked.Test.Orm;
 
-namespace Do.Test.Business;
+namespace Baked.Test.Business;
 
 public class RegisteringServices : TestServiceSpec
 {
@@ -81,8 +81,8 @@ public class RegisteringServices : TestServiceSpec
     [Test]
     public void Non_public_types_are_not_registered()
     {
-        var nonPublicType = Activator.CreateInstance("Do.Test.Blueprints.Service", "Do.Test.Business.Internal")?.GetType() ??
-            throw new("`Do.Test.Business.Internal` should have existed");
+        var nonPublicType = Activator.CreateInstance("Baked.Test.Recipe.Service", "Baked.Test.Business.Internal")?.GetType() ??
+            throw new("`Baked.Test.Business.Internal` should have existed");
         var action = () => GiveMe.The(nonPublicType);
 
         action.ShouldThrowExceptionWithServiceNotRegisteredMessage(nonPublicType);

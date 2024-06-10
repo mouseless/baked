@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
 
-namespace Do.RestApi;
+namespace Baked.RestApi;
 
 public record ApplicationPartDescriptor(Assembly Assembly);

@@ -1,8 +1,8 @@
-﻿using Do.Test.Lifetime;
+﻿using Baked.Test.Lifetime;
 
 using NHConfiguration = NHibernate.Cfg.Configuration;
 
-namespace Do.Test.Orm;
+namespace Baked.Test.Orm;
 
 public class MappingEntitiesByConvention : TestServiceSpec
 {

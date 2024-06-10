@@ -1,7 +1,7 @@
-﻿using Do.Domain.Model;
+﻿using Baked.Domain.Model;
 using Humanizer;
 
-namespace Do.RestApi.Model;
+namespace Baked.RestApi.Model;
 
 public record ActionModel(
     string Id,

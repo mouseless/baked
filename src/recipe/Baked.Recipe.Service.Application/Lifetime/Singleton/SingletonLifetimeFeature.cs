@@ -1,8 +1,8 @@
-﻿using Do.Architecture;
-using Do.Business;
+﻿using Baked.Architecture;
+using Baked.Business;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Do.Lifetime.Singleton;
+namespace Baked.Lifetime.Singleton;
 
 public class SingletonLifetimeFeature : IFeature<LifetimeConfigurator>
 {

@@ -1,7 +1,7 @@
-using Do.Architecture;
-using Do.Lifetime;
+﻿using Baked.Architecture;
+using Baked.Lifetime;
 
-namespace Do;
+namespace Baked;
 
 public static class LifetimeExtensions
 {

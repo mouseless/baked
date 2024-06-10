@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
 
-namespace Do.HttpServer;
+namespace Baked.HttpServer;
 
 public record MiddlewareDescriptor(Action<IApplicationBuilder> Configure, int Order);

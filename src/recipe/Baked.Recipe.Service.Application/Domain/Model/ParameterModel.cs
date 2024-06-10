@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Do.Domain.Model;
+namespace Baked.Domain.Model;
 
 public record ParameterModel(
     string Name,

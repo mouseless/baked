@@ -1,5 +1,5 @@
-using Do.Configuration;
+﻿using Baked.Configuration;
 
-namespace Do.ExceptionHandling.Default;
+namespace Baked.ExceptionHandling.Default;
 
 public record ExceptionHandlerSettings(Setting<string>? TypeUrlFormat);

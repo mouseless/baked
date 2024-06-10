@@ -1,7 +1,7 @@
-using Do.CodeGeneration;
-using Do.Testing;
+using Baked.CodeGeneration;
+using Baked.Testing;
 
-namespace Do.Test;
+namespace Baked.Test;
 
 public static class CompilerExtensions
 {

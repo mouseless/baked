@@ -1,3 +1,3 @@
-namespace Do.Core;
+﻿namespace Baked.Core;
 
 public class CoreConfigurator { }

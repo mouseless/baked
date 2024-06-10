@@ -1,11 +1,11 @@
-﻿using Do.Architecture;
-using Do.Configuration;
+﻿using Baked.Architecture;
+using Baked.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text;
 
-namespace Do.ExceptionHandling.Default;
+namespace Baked.ExceptionHandling.Default;
 
 public class DefaultExceptionHandlingFeature(Setting<string>? _typeUrlFormat = default)
     : IFeature<ExceptionHandlingConfigurator>

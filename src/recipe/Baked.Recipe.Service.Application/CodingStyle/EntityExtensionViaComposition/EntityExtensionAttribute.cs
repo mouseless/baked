@@ -1,5 +1,4 @@
-
-namespace Do.CodingStyle.EntityExtensionViaComposition;
+﻿namespace Baked.CodingStyle.EntityExtensionViaComposition;
 
 [AttributeUsage(AttributeTargets.Class)]
 public class EntityExtensionAttribute(Type entityType)

@@ -3,7 +3,7 @@
   <Import Project="..\Directory.Build.props" />
 
   <PropertyGroup>
-    <RootNamespace>Do</RootNamespace>
+    <RootNamespace>Baked</RootNamespace>
     <IsPackable>true</IsPackable>
     <EnablePackageValidation>true</EnablePackageValidation>
   </PropertyGroup>

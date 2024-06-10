@@ -1,6 +1,6 @@
-using Do.ExceptionHandling;
+using Baked.ExceptionHandling;
 
-namespace Do.Test.Orm;
+namespace Baked.Test.Orm;
 
 public class MustBeUniqueException(string propertyName)
     : HandledException($"{propertyName} should be unique")

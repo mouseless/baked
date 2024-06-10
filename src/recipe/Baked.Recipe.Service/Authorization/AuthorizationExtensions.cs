@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace Do;
+namespace Baked;
 
 public static class AuthorizationExtensions
 {

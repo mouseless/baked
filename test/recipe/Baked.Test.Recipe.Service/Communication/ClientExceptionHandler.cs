@@ -1,9 +1,9 @@
-﻿using Do.Communication;
-using Do.ExceptionHandling;
+﻿using Baked.Communication;
+using Baked.ExceptionHandling;
 using Newtonsoft.Json;
 using System.Net;
 
-namespace Do.Test.Communication;
+namespace Baked.Test.Communication;
 
 public class ClientExceptionHandler : IExceptionHandler
 {

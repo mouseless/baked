@@ -1,7 +1,7 @@
-﻿using Do.Architecture;
-using Do.ExceptionHandling;
+﻿using Baked.Architecture;
+using Baked.ExceptionHandling;
 
-namespace Do;
+namespace Baked;
 
 public static class ExceptionHandlingExtensions
 {

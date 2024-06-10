@@ -1,4 +1,4 @@
-﻿namespace Do.Architecture;
+﻿namespace Baked.Architecture;
 
 public interface ILayer
 {

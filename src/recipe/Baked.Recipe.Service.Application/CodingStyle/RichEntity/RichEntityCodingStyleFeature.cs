@@ -1,8 +1,8 @@
-using Do.Architecture;
-using Do.Business;
-using Do.Orm;
+﻿using Baked.Architecture;
+using Baked.Business;
+using Baked.Orm;
 
-namespace Do.CodingStyle.RichEntity;
+namespace Baked.CodingStyle.RichEntity;
 
 public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
 {

@@ -1,9 +1,9 @@
-using Humanizer;
+﻿using Humanizer;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Do.CodingStyle.ObjectAsJson;
+namespace Baked.CodingStyle.ObjectAsJson;
 
 public class ObjectResponseDocumentFilter : IDocumentFilter
 {

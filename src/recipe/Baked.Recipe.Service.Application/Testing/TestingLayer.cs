@@ -1,10 +1,10 @@
-using Do.Architecture;
+﻿using Baked.Architecture;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using static Do.DependencyInjection.DependencyInjectionLayer;
+using static Baked.DependencyInjection.DependencyInjectionLayer;
 
-namespace Do.Testing;
+namespace Baked.Testing;
 
 public class TestingLayer : LayerBase<AddServices>
 {

@@ -1,8 +1,8 @@
-using Do.Architecture;
-using Do.Testing;
+﻿using Baked.Architecture;
+using Baked.Testing;
 using Microsoft.Extensions.Hosting;
 
-namespace Do;
+namespace Baked;
 
 public static class EnvironmentExtensions
 {

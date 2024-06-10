@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 
-namespace Do.Authentication.FixedBearerToken;
+namespace Baked.Authentication.FixedBearerToken;
 
 public class AuthenticationHandler(
     TokenOptions _options,

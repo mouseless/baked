@@ -1,11 +1,11 @@
-﻿using Do.Architecture;
-using Do.Business;
+﻿using Baked.Architecture;
+using Baked.Business;
 using FluentNHibernate.Conventions.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
-namespace Do.CodingStyle.UseBuiltInTypes;
+namespace Baked.CodingStyle.UseBuiltInTypes;
 
 public class UseBuiltInTypesCodingStyleFeature(IEnumerable<string> _textPropertySuffixes)
     : IFeature<CodingStyleConfigurator>

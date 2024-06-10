@@ -1,4 +1,4 @@
-namespace Do.Testing;
+﻿namespace Baked.Testing;
 
 public record TestConfiguration()
 {

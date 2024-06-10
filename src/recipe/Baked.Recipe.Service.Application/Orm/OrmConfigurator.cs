@@ -1,3 +1,3 @@
-﻿namespace Do.Orm;
+﻿namespace Baked.Orm;
 
 public class OrmConfigurator { }

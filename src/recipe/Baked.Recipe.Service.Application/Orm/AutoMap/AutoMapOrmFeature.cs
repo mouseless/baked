@@ -1,5 +1,5 @@
-using Do.Architecture;
-using Do.RestApi.Conventions;
+﻿using Baked.Architecture;
+using Baked.RestApi.Conventions;
 using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Mapping;
 using Microsoft.AspNetCore.Builder;
@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 using NHibernate;
 using NHibernate.Exceptions;
 
-namespace Do.Orm.AutoMap;
+namespace Baked.Orm.AutoMap;
 
 public class AutoMapOrmFeature : IFeature<OrmConfigurator>
 {

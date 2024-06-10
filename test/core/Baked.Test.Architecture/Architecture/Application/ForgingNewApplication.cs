@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace Do.Test.Architecture.Application;
+namespace Baked.Test.Architecture.Application;
 
 public class ForgingNewApplication : ArchitectureSpec
 {
@@ -17,7 +17,7 @@ public class ForgingNewApplication : ArchitectureSpec
 
         var actual = forge.Application(_ => { });
 
-        actual.ShouldBeAssignableTo<Do.Architecture.Application>();
+        actual.ShouldBeAssignableTo<Baked.Architecture.Application>();
     }
 
     [Test]

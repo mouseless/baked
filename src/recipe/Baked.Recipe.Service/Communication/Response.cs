@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace Do.Communication;
+namespace Baked.Communication;
 
 public record Response(
     string Content

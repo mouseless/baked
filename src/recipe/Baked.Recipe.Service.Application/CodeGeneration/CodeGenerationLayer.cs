@@ -1,9 +1,9 @@
-﻿using Do.Architecture;
-using Do.Domain.Model;
+﻿using Baked.Architecture;
+using Baked.Domain.Model;
 
-using static Do.CodeGeneration.CodeGenerationLayer;
+using static Baked.CodeGeneration.CodeGenerationLayer;
 
-namespace Do.CodeGeneration;
+namespace Baked.CodeGeneration;
 
 public class CodeGenerationLayer : LayerBase<GenerateCode>
 {

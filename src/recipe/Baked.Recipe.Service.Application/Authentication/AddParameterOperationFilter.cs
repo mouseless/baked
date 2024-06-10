@@ -1,7 +1,7 @@
 ﻿using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Do.Authentication;
+namespace Baked.Authentication;
 
 public class AddParameterOperationFilter<T>(string _name, ParameterLocation _in, bool _required)
     : IOperationFilter where T : Attribute

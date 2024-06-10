@@ -1,7 +1,7 @@
-using Do.Architecture;
+﻿using Baked.Architecture;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Do.Core.Dotnet;
+namespace Baked.Core.Dotnet;
 
 public class DotnetCoreFeature : IFeature<CoreConfigurator>
 {

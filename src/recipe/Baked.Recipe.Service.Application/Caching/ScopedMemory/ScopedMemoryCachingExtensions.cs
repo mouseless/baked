@@ -1,10 +1,10 @@
-﻿using Do.Caching;
-using Do.Caching.ScopedMemory;
-using Do.Testing;
+﻿using Baked.Caching;
+using Baked.Caching.ScopedMemory;
+using Baked.Testing;
 using Microsoft.Extensions.Caching.Memory;
 using Shouldly;
 
-namespace Do;
+namespace Baked;
 
 public static class ScopedMemoryCachingExtensions
 {

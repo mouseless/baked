@@ -1,10 +1,10 @@
-﻿using Do.Architecture;
+﻿using Baked.Architecture;
 
-using static Do.Test.Architecture.Layer.ProvidingConfiguration.LayerX;
-using static Do.Test.Architecture.Layer.ProvidingConfiguration.LayerY;
-using static Do.Test.Architecture.Layer.ProvidingConfiguration.LayerZ;
+using static Baked.Test.Architecture.Layer.ProvidingConfiguration.LayerX;
+using static Baked.Test.Architecture.Layer.ProvidingConfiguration.LayerY;
+using static Baked.Test.Architecture.Layer.ProvidingConfiguration.LayerZ;
 
-namespace Do.Test.Architecture.Layer;
+namespace Baked.Test.Architecture.Layer;
 
 public class ProvidingConfiguration : ArchitectureSpec
 {

@@ -1,7 +1,7 @@
-using Do.Architecture;
+﻿using Baked.Architecture;
 using Microsoft.AspNetCore.Builder;
 
-namespace Do.Greeting.Swagger;
+namespace Baked.Greeting.Swagger;
 
 public class SwaggerGreetingFeature : IFeature<GreetingConfigurator>
 {

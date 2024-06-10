@@ -1,14 +1,14 @@
-﻿using Do.Architecture;
-using Do.Domain.Configuration;
-using Do.Domain.Model;
-using Do.RestApi;
-using Do.RestApi.Conventions;
-using Do.RestApi.Model;
+﻿using Baked.Architecture;
+using Baked.Domain.Configuration;
+using Baked.Domain.Model;
+using Baked.RestApi;
+using Baked.RestApi.Conventions;
+using Baked.RestApi.Model;
 using Humanizer;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
-namespace Do.Business.DomainAssemblies;
+namespace Baked.Business.DomainAssemblies;
 
 public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IEnumerable<MethodOverloadModel>, MethodOverloadModel> _defaultOverloadSelector)
     : IFeature<BusinessConfigurator>

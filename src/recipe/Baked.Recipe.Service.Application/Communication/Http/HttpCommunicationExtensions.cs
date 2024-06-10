@@ -1,7 +1,7 @@
-﻿using Do.Communication;
-using Do.Communication.Http;
+﻿using Baked.Communication;
+using Baked.Communication.Http;
 
-namespace Do;
+namespace Baked;
 
 public static class HttpCommunicationExtensions
 {

@@ -1,11 +1,11 @@
-﻿using Do.Business;
-using Do.Domain.Model;
-using Do.RestApi.Configuration;
+﻿using Baked.Business;
+using Baked.Domain.Model;
+using Baked.RestApi.Configuration;
 using Humanizer;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
-namespace Do.CodingStyle.SingleByUnique;
+namespace Baked.CodingStyle.SingleByUnique;
 
 public class TargetEntityFromRouteByUniquePropertiesConvention(DomainModel _domain)
     : IApiModelConvention<ParameterModelContext>

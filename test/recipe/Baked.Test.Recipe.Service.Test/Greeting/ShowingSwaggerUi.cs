@@ -1,4 +1,4 @@
-﻿namespace Do.Test.Documentation;
+﻿namespace Baked.Test.Documentation;
 
 public class ShowingSwaggerUi : TestServiceNfr
 {

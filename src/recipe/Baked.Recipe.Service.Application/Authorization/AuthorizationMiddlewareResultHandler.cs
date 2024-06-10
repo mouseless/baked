@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization.Policy;
 using Microsoft.AspNetCore.Http;
 using System.Security.Authentication;
 
-namespace Do.Authorization;
+namespace Baked.Authorization;
 
 public class AuthorizationMiddlewareResultHandler : IAuthorizationMiddlewareResultHandler
 {

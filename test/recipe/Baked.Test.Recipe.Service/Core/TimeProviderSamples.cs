@@ -1,4 +1,4 @@
-﻿namespace Do.Test.Core;
+﻿namespace Baked.Test.Core;
 
 public class TimeProviderSamples(TimeProvider _timeProvider)
 {

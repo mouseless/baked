@@ -1,7 +1,7 @@
-using Do.Test.Orm;
-using Do.Testing;
+using Baked.Test.Orm;
+using Baked.Testing;
 
-namespace Do.Test;
+namespace Baked.Test;
 
 public static class ParentExtensions
 {

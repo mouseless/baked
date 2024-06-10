@@ -1,6 +1,6 @@
-﻿using Do.Architecture;
+﻿using Baked.Architecture;
 
-namespace Do.Test.Architecture.Layer;
+namespace Baked.Test.Architecture.Layer;
 
 public class CreatingALayer : ArchitectureSpec
 {

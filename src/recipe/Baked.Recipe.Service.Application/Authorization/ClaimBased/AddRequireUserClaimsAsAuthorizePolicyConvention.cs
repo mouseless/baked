@@ -1,6 +1,6 @@
-﻿using Do.RestApi.Configuration;
+﻿using Baked.RestApi.Configuration;
 
-namespace Do.Authorization.ClaimBased;
+namespace Baked.Authorization.ClaimBased;
 
 public class AddRequireUserClaimsAsAuthorizePolicyConvention : IApiModelConvention<ActionModelContext>
 {

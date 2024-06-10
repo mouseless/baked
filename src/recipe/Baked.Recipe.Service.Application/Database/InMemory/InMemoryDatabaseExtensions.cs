@@ -1,7 +1,7 @@
-﻿using Do.Database;
-using Do.Database.InMemory;
+﻿using Baked.Database;
+using Baked.Database.InMemory;
 
-namespace Do;
+namespace Baked;
 
 public static class InMemoryDatabaseExtensions
 {

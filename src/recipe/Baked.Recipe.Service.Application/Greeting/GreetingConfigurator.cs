@@ -1,6 +1,6 @@
-using Do.Architecture;
+﻿using Baked.Architecture;
 
-namespace Do.Greeting;
+namespace Baked.Greeting;
 
 public class GreetingConfigurator
 {

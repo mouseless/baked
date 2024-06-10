@@ -1,7 +1,7 @@
-﻿using Do.Architecture;
-using Do.Business;
+﻿using Baked.Architecture;
+using Baked.Business;
 
-namespace Do.Lifetime.Transient;
+namespace Baked.Lifetime.Transient;
 
 public class TransientLifetimeFeature : IFeature<LifetimeConfigurator>
 {

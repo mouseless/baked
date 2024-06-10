@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Do.Domain.Model;
+namespace Baked.Domain.Model;
 
 public class ModelCollection<T>() : IEnumerable<T>
     where T : IModel

@@ -1,4 +1,4 @@
-namespace Do.Communication;
+namespace Baked.Communication;
 
 public interface IClient<T>
 {

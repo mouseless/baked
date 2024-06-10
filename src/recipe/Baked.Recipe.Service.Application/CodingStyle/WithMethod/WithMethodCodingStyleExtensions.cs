@@ -1,7 +1,7 @@
-﻿using Do.CodingStyle;
-using Do.CodingStyle.WithMethod;
+﻿using Baked.CodingStyle;
+using Baked.CodingStyle.WithMethod;
 
-namespace Do;
+namespace Baked;
 
 public static class WithMethodCodingStyleExtensions
 {

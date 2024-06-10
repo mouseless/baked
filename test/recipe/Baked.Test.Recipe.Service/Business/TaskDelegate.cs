@@ -1,4 +1,3 @@
-﻿namespace Do.Test.Business
-{
-    public delegate Task TaskDelegate();
-}
+﻿namespace Baked.Test.Business;
+
+public delegate Task TaskDelegate();

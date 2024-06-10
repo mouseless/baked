@@ -1,8 +1,8 @@
-﻿using Do.Architecture;
-using Do.Business;
-using Do.Lifetime;
+﻿using Baked.Architecture;
+using Baked.Business;
+using Baked.Lifetime;
 
-namespace Do.CodingStyle.ScopedBySuffix;
+namespace Baked.CodingStyle.ScopedBySuffix;
 
 public class ScopedBySuffixCodingStyleFeature(IEnumerable<string> _suffixes)
     : IFeature<CodingStyleConfigurator>

@@ -1,10 +1,10 @@
-﻿using Do.Business;
-using Do.Domain.Model;
-using Do.RestApi.Configuration;
-using Do.RestApi.Model;
+﻿using Baked.Business;
+using Baked.Domain.Model;
+using Baked.RestApi.Configuration;
+using Baked.RestApi.Model;
 using Humanizer;
 
-namespace Do.CodingStyle.EntityExtensionViaComposition;
+namespace Baked.CodingStyle.EntityExtensionViaComposition;
 
 public class TargetEntityExtensionFromRouteConvention(DomainModel _domain)
     : IApiModelConvention<ParameterModelContext>

@@ -1,9 +1,9 @@
-﻿using Do.Communication;
-using Do.Communication.Mock;
-using Do.Testing;
+﻿using Baked.Communication;
+using Baked.Communication.Mock;
+using Baked.Testing;
 using Moq;
 
-namespace Do;
+namespace Baked;
 
 public static class MockCommunicationExtensions
 {

@@ -1,4 +1,4 @@
-﻿namespace Do.Domain.Model;
+﻿namespace Baked.Domain.Model;
 
 public class TypeModelReference(Type _type, string _id)
     : IModel

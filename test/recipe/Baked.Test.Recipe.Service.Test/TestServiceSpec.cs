@@ -1,8 +1,8 @@
-using Do.Domain.Model;
-using Do.Test.Communication;
-using Do.Test.Orm;
+using Baked.Domain.Model;
+using Baked.Test.Communication;
+using Baked.Test.Orm;
 
-namespace Do.Test;
+namespace Baked.Test;
 
 public abstract class TestServiceSpec : ServiceSpec
 {

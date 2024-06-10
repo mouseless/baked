@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 
-namespace Do.Test.Caching;
+namespace Baked.Test.Caching;
 
 public class UsingScopedMemory : TestServiceSpec
 {

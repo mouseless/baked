@@ -1,7 +1,7 @@
-using Do.Architecture;
-using Do.Greeting;
+﻿using Baked.Architecture;
+using Baked.Greeting;
 
-namespace Do;
+namespace Baked;
 
 public static class GreetingExtensions
 {

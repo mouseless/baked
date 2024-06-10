@@ -1,6 +1,6 @@
-using Moq;
+﻿using Moq;
 
-namespace Do.Testing;
+namespace Baked.Testing;
 
 public class DefaultMockFactory : IMockFactory
 {

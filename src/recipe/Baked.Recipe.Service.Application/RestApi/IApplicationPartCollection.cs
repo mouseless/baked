@@ -1,3 +1,3 @@
-﻿namespace Do.RestApi;
+﻿namespace Baked.RestApi;
 
 public interface IApplicationPartCollection : IList<ApplicationPartDescriptor> { }

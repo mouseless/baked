@@ -1,6 +1,6 @@
-﻿using Do.Domain.Model;
+﻿using Baked.Domain.Model;
 
-namespace Do.Domain.Configuration;
+namespace Baked.Domain.Configuration;
 
 public class TypeModelMembersContext
 {

@@ -1,7 +1,7 @@
-﻿using Do.Authorization;
+﻿using Baked.Authorization;
 using System.Security.Claims;
 
-namespace Do.Test.Authorization;
+namespace Baked.Test.Authorization;
 
 [RequireUser(["GivenA", "GivenB"])]
 public class AuthorizationClassSamples(Func<ClaimsPrincipal> _getClaims)

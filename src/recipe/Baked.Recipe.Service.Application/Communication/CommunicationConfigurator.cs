@@ -1,3 +1,3 @@
-﻿namespace Do.Communication;
+﻿namespace Baked.Communication;
 
 public class CommunicationConfigurator { }

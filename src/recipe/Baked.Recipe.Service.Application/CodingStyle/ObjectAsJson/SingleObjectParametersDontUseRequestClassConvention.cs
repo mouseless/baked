@@ -1,6 +1,6 @@
-﻿using Do.RestApi.Configuration;
+﻿using Baked.RestApi.Configuration;
 
-namespace Do.CodingStyle.ObjectAsJson;
+namespace Baked.CodingStyle.ObjectAsJson;
 
 public class SingleObjectParametersDontUseRequestClassConvention : IApiModelConvention<ActionModelContext>
 {

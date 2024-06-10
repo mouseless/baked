@@ -1,7 +1,7 @@
-using Do.Test;
+using Baked.Test;
 using System.Net;
 
-namespace Do.Business;
+namespace Baked.Business;
 
 public class MethodsOfAClass : TestServiceNfr
 {

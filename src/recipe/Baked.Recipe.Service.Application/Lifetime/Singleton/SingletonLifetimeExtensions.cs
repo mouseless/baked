@@ -1,7 +1,7 @@
-using Do.Lifetime;
-using Do.Lifetime.Singleton;
+﻿using Baked.Lifetime;
+using Baked.Lifetime.Singleton;
 
-namespace Do;
+namespace Baked;
 
 public static class SingletonLifetimeExtensions
 {

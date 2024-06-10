@@ -1,9 +1,9 @@
-﻿using Do.Domain.Configuration;
+﻿using Baked.Domain.Configuration;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
-namespace Do.Domain.Model;
+namespace Baked.Domain.Model;
 
 public class TypeModelMembers : TypeModelMetadata
 {

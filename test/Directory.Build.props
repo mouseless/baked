@@ -3,12 +3,12 @@
   <Import Project="..\Directory.Build.props" />
 
   <PropertyGroup>
-    <RootNamespace>Do.Test</RootNamespace>
+    <RootNamespace>Baked.Test</RootNamespace>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
-    <Using Include="Do" />
+    <Using Include="Baked" />
   </ItemGroup>
 
 </Project>

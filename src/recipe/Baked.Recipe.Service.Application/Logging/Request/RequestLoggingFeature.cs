@@ -1,7 +1,7 @@
-﻿using Do.Architecture;
+﻿using Baked.Architecture;
 using Microsoft.Extensions.Logging;
 
-namespace Do.Logging.Request;
+namespace Baked.Logging.Request;
 
 public class RequestLoggingFeature(bool singleLine)
     : IFeature<LoggingConfigurator>

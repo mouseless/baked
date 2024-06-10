@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace Do.ExceptionHandling.Default;
+namespace Baked.ExceptionHandling.Default;
 
 public class ExceptionLoggerMiddleware(ILogger<ExceptionLoggerMiddleware> _logger, RequestDelegate _next)
 {

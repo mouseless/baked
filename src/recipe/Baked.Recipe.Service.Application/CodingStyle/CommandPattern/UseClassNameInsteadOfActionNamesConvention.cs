@@ -1,6 +1,6 @@
-﻿using Do.RestApi.Configuration;
+﻿using Baked.RestApi.Configuration;
 
-namespace Do.CodingStyle.CommandPattern;
+namespace Baked.CodingStyle.CommandPattern;
 
 public class UseClassNameInsteadOfActionNamesConvention(IEnumerable<string> actionNames)
     : IApiModelConvention<ActionModelContext>

@@ -1,19 +1,19 @@
-﻿using Do.Architecture;
-using Do.Business;
-using Do.Caching;
-using Do.Communication;
-using Do.Core;
-using Do.Database;
-using Do.ExceptionHandling;
-using Do.MockOverrider;
-using Do.Orm;
-using Do.Testing;
+﻿using Baked.Architecture;
+using Baked.Business;
+using Baked.Caching;
+using Baked.Communication;
+using Baked.Core;
+using Baked.Database;
+using Baked.ExceptionHandling;
+using Baked.MockOverrider;
+using Baked.Orm;
+using Baked.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using NHibernate;
 
 using ITransaction = NHibernate.ITransaction;
 
-namespace Do;
+namespace Baked;
 
 public abstract class ServiceSpec : Spec
 {

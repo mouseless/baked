@@ -1,8 +1,8 @@
-using Do.Architecture;
-using Do.RestApi;
-using Do.RestApi.Conventions;
+﻿using Baked.Architecture;
+using Baked.RestApi;
+using Baked.RestApi.Conventions;
 
-namespace Do.CodingStyle.AddRemoveChild;
+namespace Baked.CodingStyle.AddRemoveChild;
 
 public class AddRemoveChildCodingStyleFeature : IFeature<CodingStyleConfigurator>
 {

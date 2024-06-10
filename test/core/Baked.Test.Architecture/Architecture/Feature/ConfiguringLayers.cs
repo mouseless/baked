@@ -1,6 +1,6 @@
-using Do.Architecture;
+﻿using Baked.Architecture;
 
-namespace Do.Test.Architecture.Feature;
+namespace Baked.Test.Architecture.Feature;
 
 public class ConfiguringLayers : ArchitectureSpec
 {
@@ -39,7 +39,7 @@ public class ConfiguringLayers : ArchitectureSpec
         var configuration = new ConfigurationA();
         var configurator = GiveMe.ALayerConfigurator(target: configuration);
 
-        var emptyFeature = Do.Architecture.Feature.Empty<FeatureConfigurator>();
+        var emptyFeature = Baked.Architecture.Feature.Empty<FeatureConfigurator>();
 
         emptyFeature.Configure(configurator);
 

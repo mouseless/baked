@@ -1,9 +1,9 @@
-using Do.Architecture;
-using Do.Business;
+﻿using Baked.Architecture;
+using Baked.Business;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
-namespace Do;
+namespace Baked;
 
 public static class BusinessExtensions
 {

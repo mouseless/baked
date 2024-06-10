@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Do.Domain;
+namespace Baked.Domain;
 
 public interface IDomainTypeCollection : IList<Type>
 {

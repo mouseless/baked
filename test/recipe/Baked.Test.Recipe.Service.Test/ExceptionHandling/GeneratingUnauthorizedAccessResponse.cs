@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.Http.Json;
 
-namespace Do.Test.ExceptionHandling;
+namespace Baked.Test.ExceptionHandling;
 
 public class GeneratingUnauthorizedAccessResponse : TestServiceNfr
 {

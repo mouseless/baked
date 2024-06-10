@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Do.CodingStyle.SingleByUnique;
+namespace Baked.CodingStyle.SingleByUnique;
 
 public class UnifyUniquePropertiesInRouteDocumentFilter : IDocumentFilter
 {

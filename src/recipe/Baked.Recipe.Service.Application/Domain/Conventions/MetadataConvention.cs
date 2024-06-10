@@ -1,7 +1,7 @@
-﻿using Do.Domain.Configuration;
-using Do.Domain.Model;
+﻿using Baked.Domain.Configuration;
+using Baked.Domain.Model;
 
-namespace Do.Domain.Conventions;
+namespace Baked.Domain.Conventions;
 
 public class MetadataConvention<TModelContext>(
     Action<TModelContext, Action<ICustomAttributesModel, Attribute>> _apply,

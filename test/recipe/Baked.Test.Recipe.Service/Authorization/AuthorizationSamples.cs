@@ -1,7 +1,7 @@
-﻿using Do.Authorization;
+﻿using Baked.Authorization;
 using System.Security.Claims;
 
-namespace Do.Test.Authorization;
+namespace Baked.Test.Authorization;
 
 public class AuthorizationSamples(Func<ClaimsPrincipal> _getClaims)
     : AuthorizationSamplesBase(_getClaims)

@@ -1,7 +1,7 @@
-﻿using Do.Architecture;
-using Do.Authorization;
+﻿using Baked.Architecture;
+using Baked.Authorization;
 
-namespace Do;
+namespace Baked;
 
 public static class AuthorizationExtensions
 {

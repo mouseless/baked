@@ -1,6 +1,6 @@
-﻿using Do.Architecture;
+﻿using Baked.Architecture;
 
-namespace Do.Authorization;
+namespace Baked.Authorization;
 
 public class AuthorizationConfigurator
 {

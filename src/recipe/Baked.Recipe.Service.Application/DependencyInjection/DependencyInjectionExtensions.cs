@@ -1,8 +1,8 @@
-using Do.Architecture;
-using Do.DependencyInjection;
+﻿using Baked.Architecture;
+using Baked.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Do;
+namespace Baked;
 
 public static class DependencyInjectionExtensions
 {

@@ -3,7 +3,7 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Runtime.Serialization;
 
-namespace Do.CodingStyle.UseBuiltInTypes;
+namespace Baked.CodingStyle.UseBuiltInTypes;
 
 public class ConvertEnumToStringSchemaFilter : ISchemaFilter
 {

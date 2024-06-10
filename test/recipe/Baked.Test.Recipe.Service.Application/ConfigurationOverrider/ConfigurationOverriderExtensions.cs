@@ -1,7 +1,7 @@
-﻿using Do.Architecture;
-using Do.Test.ConfigurationOverrider;
+﻿using Baked.Architecture;
+using Baked.Test.ConfigurationOverrider;
 
-namespace Do;
+namespace Baked;
 
 public static class ConfigurationOverriderExtensions
 {

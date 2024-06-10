@@ -1,8 +1,8 @@
-using Do.Architecture;
-using Do.Configuration;
+﻿using Baked.Architecture;
+using Baked.Configuration;
 using Microsoft.Extensions.Configuration;
 
-namespace Do;
+namespace Baked;
 
 public static class ConfigurationExtensions
 {

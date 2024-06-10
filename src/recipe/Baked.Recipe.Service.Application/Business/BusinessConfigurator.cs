@@ -1,3 +1,3 @@
-namespace Do.Business;
+﻿namespace Baked.Business;
 
 public class BusinessConfigurator { }

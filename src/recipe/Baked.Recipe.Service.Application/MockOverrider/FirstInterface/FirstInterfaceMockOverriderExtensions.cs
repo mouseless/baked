@@ -1,7 +1,7 @@
-using Do.MockOverrider;
-using Do.MockOverrider.FirstInterface;
+﻿using Baked.MockOverrider;
+using Baked.MockOverrider.FirstInterface;
 
-namespace Do;
+namespace Baked;
 
 public static class FirstInterfaceMockOverriderExtensions
 {

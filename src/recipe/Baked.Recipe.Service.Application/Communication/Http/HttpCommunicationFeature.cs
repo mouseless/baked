@@ -1,8 +1,8 @@
-﻿using Do.Architecture;
-using Do.HttpClient;
+﻿using Baked.Architecture;
+using Baked.HttpClient;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Do.Communication.Http;
+namespace Baked.Communication.Http;
 
 public class HttpCommunicationFeature : IFeature<CommunicationConfigurator>
 {

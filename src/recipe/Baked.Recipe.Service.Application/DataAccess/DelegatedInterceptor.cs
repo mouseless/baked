@@ -1,6 +1,6 @@
 ﻿using NHibernate;
 
-namespace Do.DataAccess;
+namespace Baked.DataAccess;
 
 public class DelegatedInterceptor(IServiceProvider _serviceProvider, InterceptorConfiguration _interceptorConfiguration)
     : EmptyInterceptor

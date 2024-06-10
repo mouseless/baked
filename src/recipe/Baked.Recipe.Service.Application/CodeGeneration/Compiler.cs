@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using System.Reflection;
 using System.Text;
 
-namespace Do.CodeGeneration;
+namespace Baked.CodeGeneration;
 
 public class Compiler(GeneratedAssemblyDescriptor _descriptor)
 {

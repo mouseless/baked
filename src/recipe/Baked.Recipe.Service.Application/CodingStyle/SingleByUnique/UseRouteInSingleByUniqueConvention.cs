@@ -1,8 +1,8 @@
-﻿using Do.RestApi.Configuration;
-using Do.RestApi.Model;
+﻿using Baked.RestApi.Configuration;
+using Baked.RestApi.Model;
 using Humanizer;
 
-namespace Do.CodingStyle.SingleByUnique;
+namespace Baked.CodingStyle.SingleByUnique;
 
 public class UseRouteInSingleByUniqueConvention : IApiModelConvention<ActionModelContext>
 {

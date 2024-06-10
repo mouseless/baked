@@ -1,7 +1,7 @@
-﻿using Do.Architecture;
-using Do.Caching;
+﻿using Baked.Architecture;
+using Baked.Caching;
 
-namespace Do;
+namespace Baked;
 
 public static class CachingExtensions
 {

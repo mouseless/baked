@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 
-namespace Do.Test.Authentication.ApiKey;
+namespace Baked.Test.Authentication.ApiKey;
 
 public class AuthenticationHandler(
     IOptionsMonitor<AuthenticationSchemeOptions> options,

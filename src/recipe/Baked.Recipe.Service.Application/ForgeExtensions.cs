@@ -1,17 +1,17 @@
-﻿using Do.Architecture;
-using Do.Authentication;
-using Do.Authorization;
-using Do.Business;
-using Do.Caching;
-using Do.Communication;
-using Do.Core;
-using Do.Database;
-using Do.ExceptionHandling;
-using Do.Greeting;
-using Do.Logging;
-using Do.Orm;
+﻿using Baked.Architecture;
+using Baked.Authentication;
+using Baked.Authorization;
+using Baked.Business;
+using Baked.Caching;
+using Baked.Communication;
+using Baked.Core;
+using Baked.Database;
+using Baked.ExceptionHandling;
+using Baked.Greeting;
+using Baked.Logging;
+using Baked.Orm;
 
-namespace Do;
+namespace Baked;
 
 public static class ForgeExtensions
 {

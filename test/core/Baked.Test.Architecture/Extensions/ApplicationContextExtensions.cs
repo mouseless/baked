@@ -1,7 +1,7 @@
-using Do.Architecture;
-using Do.Testing;
+﻿using Baked.Architecture;
+using Baked.Testing;
 
-namespace Do.Test;
+namespace Baked.Test;
 
 public static class ApplicationContextExtensions
 {

@@ -1,7 +1,7 @@
-﻿using Do.Architecture;
-using Do.Communication;
-using Do.HttpServer;
-using Do.Testing;
+﻿using Baked.Architecture;
+using Baked.Communication;
+using Baked.HttpServer;
+using Baked.Testing;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -15,7 +15,7 @@ using Moq;
 using System.Security.Claims;
 using System.Text;
 
-namespace Do;
+namespace Baked;
 
 public static class HttpServerExtensions
 {

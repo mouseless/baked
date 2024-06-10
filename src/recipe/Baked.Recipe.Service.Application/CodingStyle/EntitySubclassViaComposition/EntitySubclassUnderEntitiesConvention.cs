@@ -1,8 +1,8 @@
-using Do.Domain.Model;
-using Do.RestApi.Configuration;
+﻿using Baked.Domain.Model;
+using Baked.RestApi.Configuration;
 using Humanizer;
 
-namespace Do.CodingStyle.EntitySubclassViaComposition;
+namespace Baked.CodingStyle.EntitySubclassViaComposition;
 
 public class EntitySubclassUnderEntitiesConvention(DomainModel _domain)
     : IApiModelConvention<ControllerModelContext>

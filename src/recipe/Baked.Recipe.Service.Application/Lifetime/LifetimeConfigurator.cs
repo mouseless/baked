@@ -1,3 +1,3 @@
-namespace Do.Lifetime;
+﻿namespace Baked.Lifetime;
 
 public class LifetimeConfigurator { }

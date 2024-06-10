@@ -1,10 +1,10 @@
-using Do.DataAccess;
+﻿using Baked.DataAccess;
 using Newtonsoft.Json;
 using NHibernate.Engine;
 using NHibernate.Type;
 using System.Data.Common;
 
-namespace Do.CodingStyle.ObjectAsJson;
+namespace Baked.CodingStyle.ObjectAsJson;
 
 public class ObjectUserType : CompositeUserTypeBase
 {

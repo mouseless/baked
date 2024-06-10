@@ -1,4 +1,4 @@
-﻿namespace Do.Domain.Configuration;
+﻿namespace Baked.Domain.Configuration;
 
 public interface IDomainModelConvention
 {

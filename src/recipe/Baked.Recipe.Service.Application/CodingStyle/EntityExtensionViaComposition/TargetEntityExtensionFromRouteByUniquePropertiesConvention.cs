@@ -1,9 +1,9 @@
-﻿using Do.CodingStyle.SingleByUnique;
-using Do.Domain.Model;
-using Do.RestApi.Configuration;
+﻿using Baked.CodingStyle.SingleByUnique;
+using Baked.Domain.Model;
+using Baked.RestApi.Configuration;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Do.CodingStyle.EntityExtensionViaComposition;
+namespace Baked.CodingStyle.EntityExtensionViaComposition;
 
 public class TargetEntityExtensionFromRouteByUniquePropertiesConvention(DomainModel _domain)
     : TargetEntityFromRouteByUniquePropertiesConvention(_domain)

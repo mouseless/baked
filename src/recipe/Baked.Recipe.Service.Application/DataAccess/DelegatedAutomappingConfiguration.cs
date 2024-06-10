@@ -1,7 +1,7 @@
 ﻿using FluentNHibernate;
 using FluentNHibernate.Automapping;
 
-namespace Do.DataAccess;
+namespace Baked.DataAccess;
 
 public class DelegatedAutomappingConfiguration(AutomappingConfiguration _configuration)
     : DefaultAutomappingConfiguration

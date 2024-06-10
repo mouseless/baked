@@ -1,6 +1,6 @@
-using Do.Architecture;
+﻿using Baked.Architecture;
 
-namespace Do.CodingStyle.UriReturnIsRedirect;
+namespace Baked.CodingStyle.UriReturnIsRedirect;
 
 public class UriReturnIsRedirectCodingStyleFeature : IFeature<CodingStyleConfigurator>
 {

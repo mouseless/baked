@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Text.Encodings.Web;
 
-namespace Do.HttpServer;
+namespace Baked.HttpServer;
 
 public class DefaultAuthenticationHandler(
     IOptionsMonitor<AuthenticationSchemeOptions> options,

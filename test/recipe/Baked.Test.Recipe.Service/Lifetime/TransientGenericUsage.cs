@@ -1,4 +1,4 @@
-﻿namespace Do.Test.Lifetime;
+﻿namespace Baked.Test.Lifetime;
 
 public class TransientGenericUsage(
     Func<TransientGeneric<Singleton>> _newTransientGeneric

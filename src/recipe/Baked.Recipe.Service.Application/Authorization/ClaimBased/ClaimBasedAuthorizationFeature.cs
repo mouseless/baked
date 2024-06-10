@@ -1,9 +1,9 @@
-﻿using Do.Architecture;
+﻿using Baked.Architecture;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Do.Authorization.ClaimBased;
+namespace Baked.Authorization.ClaimBased;
 
 public class ClaimBasedAuthorizationFeature(IEnumerable<string> _claims, IEnumerable<string> _baseClaims)
     : IFeature<AuthorizationConfigurator>

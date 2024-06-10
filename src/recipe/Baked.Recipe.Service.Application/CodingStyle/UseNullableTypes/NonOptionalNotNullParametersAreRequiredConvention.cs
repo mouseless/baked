@@ -1,7 +1,7 @@
-﻿using Do.RestApi.Configuration;
+﻿using Baked.RestApi.Configuration;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Do.CodingStyle.UseNullableTypes;
+namespace Baked.CodingStyle.UseNullableTypes;
 
 public class NonOptionalNotNullParametersAreRequiredConvention : IApiModelConvention<ParameterModelContext>
 {

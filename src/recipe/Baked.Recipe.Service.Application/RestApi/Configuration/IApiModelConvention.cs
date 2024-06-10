@@ -1,4 +1,4 @@
-namespace Do.RestApi.Configuration;
+﻿namespace Baked.RestApi.Configuration;
 
 public interface IApiModelConvention { }
 

@@ -1,4 +1,4 @@
-﻿namespace Do.Test.Business;
+﻿namespace Baked.Test.Business;
 
 public class Class : Abstract, IInterface
 {

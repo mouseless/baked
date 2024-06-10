@@ -1,6 +1,6 @@
-﻿using Do.Architecture;
+﻿using Baked.Architecture;
 
-namespace Do.Test.Architecture.Feature;
+namespace Baked.Test.Architecture.Feature;
 
 public class UsingPhaseArtifacts : ArchitectureSpec
 {

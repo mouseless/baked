@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 
-namespace Do.Test.Authentication;
+namespace Baked.Test.Authentication;
 
 public class ValidatingFormPost : TestServiceSpec
 {

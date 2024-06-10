@@ -1,7 +1,7 @@
-using Do.Branding;
-using Do.Testing;
+﻿using Baked.Branding;
+using Baked.Testing;
 
-namespace Do.Test;
+namespace Baked.Test;
 
 public static class BannerExtensions
 {

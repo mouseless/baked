@@ -1,4 +1,4 @@
-﻿namespace Do.Test.ExceptionHandling;
+﻿namespace Baked.Test.ExceptionHandling;
 
 public class ExceptionSamples
 {

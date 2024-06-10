@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Security.Claims;
 
-namespace Do.Test.Authentication;
+namespace Baked.Test.Authentication;
 
 public class AuthenticationSamples(
     Func<ClaimsPrincipal> _getClaims,

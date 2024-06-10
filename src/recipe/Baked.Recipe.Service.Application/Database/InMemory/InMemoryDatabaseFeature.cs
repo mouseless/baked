@@ -1,9 +1,9 @@
-﻿using Do.Architecture;
+﻿using Baked.Architecture;
 using FluentNHibernate.Cfg.Db;
 using Microsoft.Extensions.DependencyInjection;
 using NHibernate.Dialect;
 
-namespace Do.Database.InMemory;
+namespace Baked.Database.InMemory;
 
 public class InMemoryDatabaseFeature : IFeature<DatabaseConfigurator>
 {

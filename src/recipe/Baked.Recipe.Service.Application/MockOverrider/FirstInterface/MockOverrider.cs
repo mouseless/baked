@@ -1,9 +1,9 @@
-﻿using Do.Testing;
+﻿using Baked.Testing;
 using Moq;
 using System.Collections.Concurrent;
 using System.Reflection;
 
-namespace Do.MockOverrider.FirstInterface;
+namespace Baked.MockOverrider.FirstInterface;
 
 public class MockOverrider : IMockOverrider
 {

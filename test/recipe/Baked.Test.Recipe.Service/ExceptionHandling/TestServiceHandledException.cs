@@ -1,6 +1,6 @@
-﻿using Do.ExceptionHandling;
+﻿using Baked.ExceptionHandling;
 
-namespace Do.Test.ExceptionHandling;
+namespace Baked.Test.ExceptionHandling;
 
 public class TestServiceHandledException(string message)
     : HandledException(message)

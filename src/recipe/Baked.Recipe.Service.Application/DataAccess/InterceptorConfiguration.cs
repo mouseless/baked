@@ -1,4 +1,4 @@
-﻿namespace Do.DataAccess;
+﻿namespace Baked.DataAccess;
 
 public class InterceptorConfiguration
 {

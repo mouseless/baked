@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace Do.Domain.Model;
+namespace Baked.Domain.Model;
 
 public record MethodModel(
     string Name,

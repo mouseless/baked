@@ -1,4 +1,4 @@
-﻿namespace Do.Test.Authentication;
+﻿namespace Baked.Test.Authentication;
 
 public class BuildingClaimsPrincipal : TestServiceSpec
 {

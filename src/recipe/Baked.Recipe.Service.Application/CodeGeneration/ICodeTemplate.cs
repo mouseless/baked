@@ -1,4 +1,4 @@
-namespace Do.CodeGeneration;
+﻿namespace Baked.CodeGeneration;
 
 public interface ICodeTemplate
 {

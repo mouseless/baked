@@ -1,9 +1,9 @@
-﻿using Do.Business;
-using Do.Domain.Model;
-using Do.RestApi.Configuration;
+﻿using Baked.Business;
+using Baked.Domain.Model;
+using Baked.RestApi.Configuration;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Do.Orm.AutoMap;
+namespace Baked.Orm.AutoMap;
 
 public class LookupEntityByIdConvention(DomainModel _domain)
     : IApiModelConvention<ParameterModelContext>

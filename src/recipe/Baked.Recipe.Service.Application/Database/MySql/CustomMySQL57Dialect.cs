@@ -1,7 +1,7 @@
 ﻿using NHibernate.Dialect;
 using System.Data;
 
-namespace Do.Database.MySql;
+namespace Baked.Database.MySql;
 
 public class CustomMySQL57Dialect : MySQL57Dialect
 {

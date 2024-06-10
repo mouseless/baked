@@ -1,3 +1,3 @@
-﻿namespace Do.Logging;
+﻿namespace Baked.Logging;
 
 public class LoggingConfigurator { }

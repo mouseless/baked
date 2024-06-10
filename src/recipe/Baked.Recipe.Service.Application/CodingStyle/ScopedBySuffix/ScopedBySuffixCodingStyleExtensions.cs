@@ -1,7 +1,7 @@
-using Do.CodingStyle;
-using Do.CodingStyle.ScopedBySuffix;
+﻿using Baked.CodingStyle;
+using Baked.CodingStyle.ScopedBySuffix;
 
-namespace Do;
+namespace Baked;
 
 public static class ScopedBySuffixCodingStyleExtensions
 {

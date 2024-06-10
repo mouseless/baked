@@ -1,8 +1,8 @@
-using Do.Test.CodingStyle.EntityExtensionViaComposition;
-using Do.Test.Orm;
+using Baked.Test.CodingStyle.EntityExtensionViaComposition;
+using Baked.Test.Orm;
 using Microsoft.Extensions.Logging;
 
-namespace Do.Test.CodingStyle.UseNullableTypes;
+namespace Baked.Test.CodingStyle.UseNullableTypes;
 
 public class NullableSamples(ILogger<NullableSamples> _logger)
 {

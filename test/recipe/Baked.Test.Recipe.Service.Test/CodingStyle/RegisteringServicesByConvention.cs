@@ -1,8 +1,8 @@
-﻿using Do.Test.Business;
-using Do.Test.Lifetime;
+﻿using Baked.Test.Business;
+using Baked.Test.Lifetime;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Do.Test.CodingStyle;
+namespace Baked.Test.CodingStyle;
 
 public class RegisteringServicesByConvention : TestServiceSpec
 {

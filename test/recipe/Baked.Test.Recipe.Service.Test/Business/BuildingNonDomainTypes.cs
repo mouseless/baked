@@ -1,9 +1,9 @@
-﻿using Do.Domain.Model;
-using Do.Orm;
-using Do.Test.Lifetime;
-using Do.Test.Orm;
+﻿using Baked.Domain.Model;
+using Baked.Orm;
+using Baked.Test.Lifetime;
+using Baked.Test.Orm;
 
-namespace Do.Test.Domain;
+namespace Baked.Test.Domain;
 
 public class BuildingNonDomainTypes : TestServiceSpec
 {

@@ -1,14 +1,14 @@
-﻿using Do.Architecture;
-using Do.Domain.Model;
-using Do.Orm;
-using Do.RestApi.Model;
+﻿using Baked.Architecture;
+using Baked.Domain.Model;
+using Baked.Orm;
+using Baked.RestApi.Model;
 using Humanizer;
 using Shouldly;
 using System.Diagnostics.CodeAnalysis;
 
-using ParameterModel = Do.RestApi.Model.ParameterModel;
+using ParameterModel = Baked.RestApi.Model.ParameterModel;
 
-namespace Do;
+namespace Baked;
 
 public static class OrmExtensions
 {

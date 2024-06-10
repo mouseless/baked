@@ -1,7 +1,7 @@
-﻿using Do.Domain.Configuration;
+﻿using Baked.Domain.Configuration;
 using System.Reflection;
 
-namespace Do.Domain.Model;
+namespace Baked.Domain.Model;
 
 public class TypeModelMetadata : TypeModelInheritance, ICustomAttributesModel
 {

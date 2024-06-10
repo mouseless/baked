@@ -1,7 +1,7 @@
-﻿using Do.Database;
-using Do.Test.Orm;
+﻿using Baked.Database;
+using Baked.Test.Orm;
 
-namespace Do.Test.Database;
+namespace Baked.Test.Database;
 
 public class TransactionSamples(
     Func<Entity> _newEntity,

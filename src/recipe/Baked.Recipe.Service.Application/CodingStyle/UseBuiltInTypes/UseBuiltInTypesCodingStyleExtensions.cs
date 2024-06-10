@@ -1,9 +1,9 @@
-﻿using Do.CodingStyle;
-using Do.CodingStyle.UseBuiltInTypes;
-using Do.Domain.Model;
+﻿using Baked.CodingStyle;
+using Baked.CodingStyle.UseBuiltInTypes;
+using Baked.Domain.Model;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Do;
+namespace Baked;
 
 public static class UseBuiltInTypesCodingStyleExtensions
 {

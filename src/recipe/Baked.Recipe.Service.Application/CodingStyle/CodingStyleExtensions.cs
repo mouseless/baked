@@ -1,7 +1,7 @@
-using Do.Architecture;
-using Do.CodingStyle;
+﻿using Baked.Architecture;
+using Baked.CodingStyle;
 
-namespace Do;
+namespace Baked;
 
 public static class CodingStyleExtensions
 {

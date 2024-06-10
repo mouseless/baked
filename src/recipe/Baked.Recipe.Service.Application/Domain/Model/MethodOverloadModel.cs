@@ -1,4 +1,4 @@
-﻿namespace Do.Domain.Model;
+﻿namespace Baked.Domain.Model;
 
 public record MethodOverloadModel(
     bool IsPublic,

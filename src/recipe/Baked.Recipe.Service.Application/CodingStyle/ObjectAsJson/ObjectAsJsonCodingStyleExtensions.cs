@@ -1,7 +1,7 @@
-using Do.CodingStyle;
-using Do.CodingStyle.ObjectAsJson;
+﻿using Baked.CodingStyle;
+using Baked.CodingStyle.ObjectAsJson;
 
-namespace Do;
+namespace Baked;
 
 public static class ObjectAsJsonCodingStyleExtensions
 {

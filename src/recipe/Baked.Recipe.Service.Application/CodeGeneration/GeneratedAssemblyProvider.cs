@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
 
-namespace Do.CodeGeneration;
+namespace Baked.CodeGeneration;
 
 public class GeneratedAssemblyProvider : Dictionary<string, Assembly> { }

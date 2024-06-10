@@ -1,6 +1,6 @@
 ﻿using FluentNHibernate;
 
-namespace Do.DataAccess;
+namespace Baked.DataAccess;
 
 public class AutomappingConfiguration
 {

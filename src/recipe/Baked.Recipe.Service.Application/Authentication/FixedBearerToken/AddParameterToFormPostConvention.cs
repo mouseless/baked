@@ -1,8 +1,8 @@
-﻿using Do.Domain.Model;
-using Do.RestApi.Configuration;
-using Do.RestApi.Model;
+﻿using Baked.Domain.Model;
+using Baked.RestApi.Configuration;
+using Baked.RestApi.Model;
 
-namespace Do.Authentication.FixedBearerToken;
+namespace Baked.Authentication.FixedBearerToken;
 
 public class AddParameterToFormPostConvention(DomainModel _domain, string _name)
     : IApiModelConvention<ActionModelContext>

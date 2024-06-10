@@ -1,11 +1,11 @@
-﻿using Do.Architecture;
-using Do.Domain;
-using Do.Domain.Configuration;
-using Do.Domain.Conventions;
-using Do.Domain.Model;
+﻿using Baked.Architecture;
+using Baked.Domain;
+using Baked.Domain.Configuration;
+using Baked.Domain.Conventions;
+using Baked.Domain.Model;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Do;
+namespace Baked;
 
 public static class DomainExtensions
 {

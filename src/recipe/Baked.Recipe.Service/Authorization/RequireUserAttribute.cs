@@ -1,4 +1,4 @@
-﻿namespace Do.Authorization;
+﻿namespace Baked.Authorization;
 
 public class RequireUserAttribute(
   string[]? claims = default

@@ -1,4 +1,4 @@
-﻿namespace Do.Test.Communication;
+﻿namespace Baked.Test.Communication;
 
 public class MockingClients : TestServiceSpec
 {

@@ -1,7 +1,7 @@
-using Do.Lifetime;
-using Do.Lifetime.Scoped;
+﻿using Baked.Lifetime;
+using Baked.Lifetime.Scoped;
 
-namespace Do;
+namespace Baked;
 
 public static class ScopedLifetimeExtensions
 {

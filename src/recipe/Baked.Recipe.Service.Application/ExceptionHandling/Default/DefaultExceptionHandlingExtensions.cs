@@ -1,8 +1,8 @@
-﻿using Do.Configuration;
-using Do.ExceptionHandling;
-using Do.ExceptionHandling.Default;
+﻿using Baked.Configuration;
+using Baked.ExceptionHandling;
+using Baked.ExceptionHandling.Default;
 
-namespace Do;
+namespace Baked;
 
 public static class DefaultExceptionHandlingExtensions
 {

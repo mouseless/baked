@@ -1,7 +1,7 @@
 ﻿using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Do.Authentication;
+namespace Baked.Authentication;
 
 public class SecurityRequirementOperationFilter<T>(string _schemeId)
     : IOperationFilter where T : Attribute

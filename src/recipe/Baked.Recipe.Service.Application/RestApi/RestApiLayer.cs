@@ -1,5 +1,5 @@
-﻿using Do.Architecture;
-using Do.RestApi.Model;
+﻿using Baked.Architecture;
+using Baked.RestApi.Model;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,11 +7,11 @@ using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
-using static Do.CodeGeneration.CodeGenerationLayer;
-using static Do.DependencyInjection.DependencyInjectionLayer;
-using static Do.HttpServer.HttpServerLayer;
+using static Baked.CodeGeneration.CodeGenerationLayer;
+using static Baked.DependencyInjection.DependencyInjectionLayer;
+using static Baked.HttpServer.HttpServerLayer;
 
-namespace Do.RestApi;
+namespace Baked.RestApi;
 
 public class RestApiLayer : LayerBase<GenerateCode, AddServices, Build>
 {

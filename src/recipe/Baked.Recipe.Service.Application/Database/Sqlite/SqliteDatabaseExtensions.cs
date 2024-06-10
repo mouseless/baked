@@ -1,8 +1,8 @@
-﻿using Do.Configuration;
-using Do.Database;
-using Do.Database.Sqlite;
+﻿using Baked.Configuration;
+using Baked.Database;
+using Baked.Database.Sqlite;
 
-namespace Do;
+namespace Baked;
 
 public static class SqliteDatabaseExtensions
 {

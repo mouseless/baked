@@ -1,4 +1,4 @@
-namespace Do.MockOverrider;
+﻿namespace Baked.MockOverrider;
 
 public interface IMockOverrider
 {

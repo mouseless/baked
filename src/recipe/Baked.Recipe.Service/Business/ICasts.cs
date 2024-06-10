@@ -1,4 +1,4 @@
-namespace Do.Business;
+namespace Baked.Business;
 
 public interface ICasts<TFrom, TTo>
 {

@@ -1,9 +1,9 @@
-﻿using Do.Testing;
+﻿using Baked.Testing;
 using Moq;
 using Newtonsoft.Json;
 using System.Reflection;
 
-namespace Do.Communication.Mock;
+namespace Baked.Communication.Mock;
 
 public class DefaultResponseBuilder
 {

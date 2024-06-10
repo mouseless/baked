@@ -1,4 +1,4 @@
-﻿namespace Do.ExceptionHandling.Default;
+﻿namespace Baked.ExceptionHandling.Default;
 
 public class HandledExceptionHandler : IExceptionHandler
 {

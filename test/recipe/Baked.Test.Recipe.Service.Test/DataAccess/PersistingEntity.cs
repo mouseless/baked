@@ -1,6 +1,6 @@
-﻿using Do.Test.Orm;
+﻿using Baked.Test.Orm;
 
-namespace Do.Test.DataAccess;
+namespace Baked.Test.DataAccess;
 
 public class PersistingEntity : TestServiceSpec
 {

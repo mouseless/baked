@@ -1,5 +1,5 @@
 ﻿using NHibernate.Metadata;
 
-namespace Do.DataAccess;
+namespace Baked.DataAccess;
 
 public record InstantiationContext(IClassMetadata MetaData, IServiceProvider ApplicationServices);

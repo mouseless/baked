@@ -1,8 +1,8 @@
-﻿using Do.Orm;
-using Do.RestApi.Configuration;
+﻿using Baked.Orm;
+using Baked.RestApi.Configuration;
 using Humanizer;
 
-namespace Do.CodingStyle.RichEntity;
+namespace Baked.CodingStyle.RichEntity;
 
 public class EntityUnderEntitiesConvention : IApiModelConvention<ControllerModelContext>
 {

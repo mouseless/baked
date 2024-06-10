@@ -1,7 +1,7 @@
-using Microsoft.OpenApi.Models;
+﻿using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Do.CodingStyle.ObjectAsJson;
+namespace Baked.CodingStyle.ObjectAsJson;
 
 public class NullTypesAreObjectSchemaFilter : ISchemaFilter
 {

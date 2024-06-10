@@ -1,7 +1,7 @@
-﻿using Do.Communication;
+﻿using Baked.Communication;
 using Newtonsoft.Json;
 
-namespace Do.Test.Communication;
+namespace Baked.Test.Communication;
 
 public class ExternalSamples(IClient<ExternalSamples> _client)
 {

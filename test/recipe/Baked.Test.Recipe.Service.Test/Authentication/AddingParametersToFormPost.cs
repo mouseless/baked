@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Do.Test.Authentication;
+namespace Baked.Test.Authentication;
 
 public class AddingParametersToFormPost : TestServiceNfr
 {

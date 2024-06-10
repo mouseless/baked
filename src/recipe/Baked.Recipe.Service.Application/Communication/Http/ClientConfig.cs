@@ -1,4 +1,4 @@
-﻿namespace Do.Communication.Http;
+﻿namespace Baked.Communication.Http;
 
 public record ClientConfig(
     Uri? BaseAddress = default,

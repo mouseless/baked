@@ -1,12 +1,12 @@
-﻿using Do.Test.CodingStyle.EntitySubclassViaComposition;
-using Do.Test.Orm;
-using Do.Testing;
+﻿using Baked.Test.CodingStyle.EntitySubclassViaComposition;
+using Baked.Test.Orm;
+using Baked.Testing;
 using Humanizer;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 
-namespace Do.Test;
+namespace Baked.Test;
 
 public abstract class TestServiceNfr : ServiceNfr
 {

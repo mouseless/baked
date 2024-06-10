@@ -1,8 +1,8 @@
-﻿using Do.Architecture;
-using Do.Business;
-using Do.Orm;
+﻿using Baked.Architecture;
+using Baked.Business;
+using Baked.Orm;
 
-namespace Do.CodingStyle.EntityExtensionViaComposition;
+namespace Baked.CodingStyle.EntityExtensionViaComposition;
 
 public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingStyleConfigurator>
 {

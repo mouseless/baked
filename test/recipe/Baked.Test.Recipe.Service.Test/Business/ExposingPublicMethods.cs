@@ -1,7 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 
-namespace Do.Test.Business;
+namespace Baked.Test.Business;
 
 public class ExposingPublicMethods : TestServiceNfr
 {

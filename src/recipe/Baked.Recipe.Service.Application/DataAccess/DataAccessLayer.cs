@@ -1,14 +1,14 @@
-﻿using Do.Architecture;
+﻿using Baked.Architecture;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Cfg;
 using Microsoft.Extensions.DependencyInjection;
 using NHibernate;
 using NHibernate.Tool.hbm2ddl;
 
-using static Do.DependencyInjection.DependencyInjectionLayer;
+using static Baked.DependencyInjection.DependencyInjectionLayer;
 using NHConfiguration = NHibernate.Cfg.Configuration;
 
-namespace Do.DataAccess;
+namespace Baked.DataAccess;
 
 public class DataAccessLayer : LayerBase<AddServices>
 {

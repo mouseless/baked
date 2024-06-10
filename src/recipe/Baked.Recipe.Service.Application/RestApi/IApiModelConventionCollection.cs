@@ -1,7 +1,7 @@
-using Do.RestApi.Configuration;
-using Do.RestApi.Model;
+﻿using Baked.RestApi.Configuration;
+using Baked.RestApi.Model;
 
-namespace Do.RestApi;
+namespace Baked.RestApi;
 
 public interface IApiModelConventionCollection : IList<(IApiModelConvention Convention, int Order)>
 {

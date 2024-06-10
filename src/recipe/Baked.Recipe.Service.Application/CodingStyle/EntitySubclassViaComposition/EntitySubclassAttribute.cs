@@ -1,4 +1,4 @@
-namespace Do.CodingStyle.EntitySubclassViaComposition;
+﻿namespace Baked.CodingStyle.EntitySubclassViaComposition;
 
 [AttributeUsage(AttributeTargets.Class)]
 public class EntitySubclassAttribute(Type entityType, string name)

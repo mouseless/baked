@@ -1,7 +1,7 @@
-using Do.CodingStyle;
-using Do.CodingStyle.RemainingServicesAreSingleton;
+﻿using Baked.CodingStyle;
+using Baked.CodingStyle.RemainingServicesAreSingleton;
 
-namespace Do;
+namespace Baked;
 
 public static class RemainingServicesAreSingletonCodingStyleExtensions
 {

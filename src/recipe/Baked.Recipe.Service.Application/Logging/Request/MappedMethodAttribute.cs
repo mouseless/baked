@@ -1,4 +1,4 @@
-﻿namespace Do.Logging.Request;
+﻿namespace Baked.Logging.Request;
 
 [AttributeUsage(AttributeTargets.Method)]
 public class MappedMethodAttribute(string typeFullName, string methodName)

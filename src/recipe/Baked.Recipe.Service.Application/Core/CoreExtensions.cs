@@ -1,14 +1,14 @@
-using Do.Architecture;
-using Do.Core;
-using Do.Core.Mock;
-using Do.Testing;
+﻿using Baked.Architecture;
+using Baked.Core;
+using Baked.Core.Mock;
+using Baked.Testing;
 using Newtonsoft.Json;
 using Shouldly;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
-namespace Do;
+namespace Baked;
 
 public static class CoreExtensions
 {

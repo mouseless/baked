@@ -1,7 +1,7 @@
-﻿using Do.RestApi.Configuration;
+﻿using Baked.RestApi.Configuration;
 using Humanizer;
 
-namespace Do.RestApi.Conventions;
+namespace Baked.RestApi.Conventions;
 
 public class PluralizeActionConvention(
     Func<ActionModelContext, bool>? _when = default

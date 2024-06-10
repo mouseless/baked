@@ -1,9 +1,9 @@
-﻿using Do.Architecture;
-using Do.CodeGeneration;
+﻿using Baked.Architecture;
+using Baked.CodeGeneration;
 using Microsoft.CodeAnalysis.CSharp;
 using System.Reflection;
 
-namespace Do;
+namespace Baked;
 
 public static class CodeGenerationExtensions
 {

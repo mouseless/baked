@@ -1,6 +1,6 @@
-﻿using Do.Domain.Model;
+﻿using Baked.Domain.Model;
 
-namespace Do.RestApi.Model;
+namespace Baked.RestApi.Model;
 
 public record ParameterModel(
     TypeModel TypeModel,

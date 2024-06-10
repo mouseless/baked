@@ -1,11 +1,11 @@
-﻿using Do.Architecture;
-using Do.CodeGeneration;
-using Do.Domain.Model;
+﻿using Baked.Architecture;
+using Baked.CodeGeneration;
+using Baked.Domain.Model;
 using Microsoft.Extensions.DependencyInjection;
 
-using static Do.DependencyInjection.DependencyInjectionLayer;
+using static Baked.DependencyInjection.DependencyInjectionLayer;
 
-namespace Do.DependencyInjection;
+namespace Baked.DependencyInjection;
 
 public class DependencyInjectionLayer : LayerBase<AddServices, PostBuild>
 {

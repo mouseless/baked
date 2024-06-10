@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Text;
 
-namespace Do.Communication.Http;
+namespace Baked.Communication.Http;
 
 public class Client<T>(
     ILogger<Client<T>> _logger,

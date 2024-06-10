@@ -1,7 +1,7 @@
-using Do.Core;
-using Do.Core.Dotnet;
+﻿using Baked.Core;
+using Baked.Core.Dotnet;
 
-namespace Do;
+namespace Baked;
 
 public static class DotnetCoreExtensions
 {

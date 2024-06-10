@@ -1,7 +1,7 @@
-﻿using Do.Test.Orm;
+﻿using Baked.Test.Orm;
 using Microsoft.Extensions.Logging;
 
-namespace Do.Test.Business;
+namespace Baked.Test.Business;
 
 public class MethodSamples(ILogger<MethodSamples> _logger)
 {

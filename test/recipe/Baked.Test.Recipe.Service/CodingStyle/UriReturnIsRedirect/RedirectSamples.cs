@@ -1,4 +1,4 @@
-﻿namespace Do.Test.CodingStyle.UriReturnIsRedirect;
+﻿namespace Baked.Test.CodingStyle.UriReturnIsRedirect;
 
 public class RedirectSamples
 {

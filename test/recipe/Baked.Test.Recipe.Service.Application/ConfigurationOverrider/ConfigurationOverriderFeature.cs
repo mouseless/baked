@@ -1,12 +1,12 @@
-﻿using Do.Architecture;
-using Do.RestApi.Model;
-using Do.Test.Authentication;
-using Do.Test.ExceptionHandling;
-using Do.Test.Orm;
+﻿using Baked.Architecture;
+using Baked.RestApi.Model;
+using Baked.Test.Authentication;
+using Baked.Test.ExceptionHandling;
+using Baked.Test.Orm;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
 
-namespace Do.Test.ConfigurationOverrider;
+namespace Baked.Test.ConfigurationOverrider;
 
 public class ConfigurationOverriderFeature : IFeature
 {

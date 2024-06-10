@@ -1,4 +1,4 @@
-namespace Do.Database;
+namespace Baked.Database;
 
 public interface ITransaction
 {

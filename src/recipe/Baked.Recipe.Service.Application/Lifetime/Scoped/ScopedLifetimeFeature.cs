@@ -1,7 +1,7 @@
-﻿using Do.Architecture;
-using Do.Business;
+﻿using Baked.Architecture;
+using Baked.Business;
 
-namespace Do.Lifetime.Scoped;
+namespace Baked.Lifetime.Scoped;
 
 public class ScopedLifetimeFeature : IFeature<LifetimeConfigurator>
 {

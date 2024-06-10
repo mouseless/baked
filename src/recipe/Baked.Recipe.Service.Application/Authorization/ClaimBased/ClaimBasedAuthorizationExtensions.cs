@@ -1,7 +1,7 @@
-﻿using Do.Authorization;
-using Do.Authorization.ClaimBased;
+﻿using Baked.Authorization;
+using Baked.Authorization.ClaimBased;
 
-namespace Do;
+namespace Baked;
 
 public static class ClaimBasedAuthorizationExtensions
 {

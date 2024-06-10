@@ -1,8 +1,8 @@
-﻿using Do.Architecture;
-using Do.Business;
-using Do.Lifetime;
+﻿using Baked.Architecture;
+using Baked.Business;
+using Baked.Lifetime;
 
-namespace Do.CodingStyle.RemainingServicesAreSingleton;
+namespace Baked.CodingStyle.RemainingServicesAreSingleton;
 
 public class RemainingServicesAreSingletonCodingStyleFeature()
     : IFeature<CodingStyleConfigurator>

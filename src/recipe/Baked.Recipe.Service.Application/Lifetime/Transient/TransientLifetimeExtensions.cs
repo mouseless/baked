@@ -1,7 +1,7 @@
-using Do.Lifetime;
-using Do.Lifetime.Transient;
+﻿using Baked.Lifetime;
+using Baked.Lifetime.Transient;
 
-namespace Do;
+namespace Baked;
 
 public static class TransientLifetimeExtensions
 {

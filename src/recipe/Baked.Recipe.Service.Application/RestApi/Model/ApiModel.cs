@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Do.RestApi.Model;
+namespace Baked.RestApi.Model;
 
 public record ApiModel
 {

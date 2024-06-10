@@ -1,7 +1,7 @@
-﻿using Do.ExceptionHandling;
+﻿using Baked.ExceptionHandling;
 using System.Net;
 
-namespace Do.Test.ExceptionHandling;
+namespace Baked.Test.ExceptionHandling;
 
 public class SampleExceptionHandler : IExceptionHandler
 {

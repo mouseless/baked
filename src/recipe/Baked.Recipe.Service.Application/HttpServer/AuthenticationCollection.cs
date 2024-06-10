@@ -1,3 +1,3 @@
-﻿namespace Do.HttpServer;
+﻿namespace Baked.HttpServer;
 
 public class AuthenticationCollection : List<AuthenticationDescriptor>, IAuthenticationCollection { }

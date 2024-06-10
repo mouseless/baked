@@ -1,11 +1,11 @@
-using Do.CodingStyle;
-using Do.CodingStyle.UseNullableTypes;
-using Do.RestApi.Model;
+﻿using Baked.CodingStyle;
+using Baked.CodingStyle.UseNullableTypes;
+using Baked.RestApi.Model;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 
-namespace Do;
+namespace Baked;
 
 public static class UseNullableTypesCodingStyleExtensions
 {

@@ -1,6 +1,6 @@
-using Do.RestApi.Configuration;
+﻿using Baked.RestApi.Configuration;
 
-namespace Do.CodingStyle.UriReturnIsRedirect;
+namespace Baked.CodingStyle.UriReturnIsRedirect;
 
 public class UriReturnWithParameterIsFormPostConvention : IApiModelConvention<ActionModelContext>
 {

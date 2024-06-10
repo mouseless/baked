@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 
-namespace Do.Orm;
+namespace Baked.Orm;
 
 public interface IQueryContext<TEntity>
 {

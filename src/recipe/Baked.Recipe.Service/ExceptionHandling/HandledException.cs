@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Do.ExceptionHandling;
+namespace Baked.ExceptionHandling;
 
 public abstract class HandledException(string message, Exception? innerException,
     Dictionary<string, object?>? extraData = default

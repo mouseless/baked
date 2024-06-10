@@ -1,10 +1,10 @@
-﻿using Do.Architecture;
-using Do.Configuration;
+﻿using Baked.Architecture;
+using Baked.Configuration;
 using FluentNHibernate.Cfg.Db;
 using Microsoft.Extensions.DependencyInjection;
 using NHibernate.Dialect;
 
-namespace Do.Database.Sqlite;
+namespace Baked.Database.Sqlite;
 
 public class SqliteDatabaseFeature(Setting<string> _fileName)
     : IFeature<DatabaseConfigurator>

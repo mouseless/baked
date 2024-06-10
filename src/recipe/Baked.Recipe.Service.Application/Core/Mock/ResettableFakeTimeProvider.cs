@@ -1,6 +1,6 @@
-using Microsoft.Extensions.Time.Testing;
+﻿using Microsoft.Extensions.Time.Testing;
 
-namespace Do.Core.Mock;
+namespace Baked.Core.Mock;
 
 public class ResettableFakeTimeProvider : TimeProvider
 {

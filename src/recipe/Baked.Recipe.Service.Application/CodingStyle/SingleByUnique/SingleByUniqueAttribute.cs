@@ -1,4 +1,4 @@
-﻿namespace Do.CodingStyle.SingleByUnique;
+﻿namespace Baked.CodingStyle.SingleByUnique;
 
 [AttributeUsage(AttributeTargets.Method)]
 public class SingleByUniqueAttribute(string propertyName, Type propertyType)

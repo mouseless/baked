@@ -1,6 +1,6 @@
-using Do.Domain.Configuration;
+﻿using Baked.Domain.Configuration;
 
-namespace Do.Domain.Model;
+namespace Baked.Domain.Model;
 
 public class TypeModel : IModel, IEquatable<TypeModel>
 {

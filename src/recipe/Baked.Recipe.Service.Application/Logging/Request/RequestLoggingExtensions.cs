@@ -1,7 +1,7 @@
-﻿using Do.Logging;
-using Do.Logging.Request;
+﻿using Baked.Logging;
+using Baked.Logging.Request;
 
-namespace Do;
+namespace Baked;
 
 public static class RequestLoggingExtensions
 {

@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace Do.Testing;
+namespace Baked.Testing;
 
 public abstract class Nfr
 {

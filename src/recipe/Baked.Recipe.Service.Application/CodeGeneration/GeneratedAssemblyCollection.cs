@@ -1,3 +1,3 @@
-﻿namespace Do.CodeGeneration;
+﻿namespace Baked.CodeGeneration;
 
 public class GeneratedAssemblyCollection : List<GeneratedAssemblyDescriptor>, IGeneratedAssemblyCollection { }

@@ -1,6 +1,6 @@
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
-namespace Do.Orm.AutoMap;
+namespace Baked.Orm.AutoMap;
 
 internal static partial class Regexes
 {

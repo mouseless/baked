@@ -1,4 +1,4 @@
-﻿namespace Do.HttpClient;
+﻿namespace Baked.HttpClient;
 
 public record HttpClientDescriptor(
     string Name,

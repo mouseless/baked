@@ -1,6 +1,6 @@
 ﻿using NHibernate;
 
-namespace Do.Orm;
+namespace Baked.Orm;
 
 public class EntityContext<TEntity>(ISession _session)
     : IEntityContext<TEntity>

@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Security.Authentication;
 
-namespace Do.ExceptionHandling.Default;
+namespace Baked.ExceptionHandling.Default;
 
 public class AuthenticationExceptionHandler : IExceptionHandler
 {

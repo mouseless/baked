@@ -1,8 +1,8 @@
-using Do.Testing;
+﻿using Baked.Testing;
 using NUnit.Framework;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Do;
+namespace Baked;
 
 public static class AssertionExtensions
 {

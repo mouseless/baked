@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Do.Communication;
+namespace Baked.Communication;
 
 public static class CommunicationExtensions
 {

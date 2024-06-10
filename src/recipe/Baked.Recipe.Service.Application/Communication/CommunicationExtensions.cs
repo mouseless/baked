@@ -1,7 +1,7 @@
-﻿using Do.Architecture;
-using Do.Communication;
+﻿using Baked.Architecture;
+using Baked.Communication;
 
-namespace Do;
+namespace Baked;
 
 public static class CommunicationExtensions
 {

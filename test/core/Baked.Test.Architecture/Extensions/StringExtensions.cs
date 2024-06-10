@@ -1,6 +1,6 @@
-using Do.Testing;
+﻿using Baked.Testing;
 
-namespace Do.Test;
+namespace Baked.Test;
 
 public static class StringExtensions
 {

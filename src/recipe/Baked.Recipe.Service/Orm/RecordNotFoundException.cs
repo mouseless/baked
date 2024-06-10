@@ -1,7 +1,7 @@
-﻿using Do.ExceptionHandling;
+﻿using Baked.ExceptionHandling;
 using System.Net;
 
-namespace Do.Orm;
+namespace Baked.Orm;
 
 public class RecordNotFoundException(Type entityType, string field, object value, bool notFound)
     : HandledException($"{entityType.Name} with {field}: '{value}' does not exist")

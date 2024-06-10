@@ -1,6 +1,6 @@
-using Do.RestApi.Model;
+﻿using Baked.RestApi.Model;
 
-namespace Do.RestApi.Configuration;
+namespace Baked.RestApi.Configuration;
 
 public record ControllerModelContext : ApiModelContext
 {

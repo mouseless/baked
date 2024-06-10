@@ -1,7 +1,7 @@
-﻿using Do.Domain.Model;
+﻿using Baked.Domain.Model;
 using System.Reflection;
 
-namespace Do.Domain.Configuration;
+namespace Baked.Domain.Configuration;
 
 public class DomainModelBuilderOptions
 {

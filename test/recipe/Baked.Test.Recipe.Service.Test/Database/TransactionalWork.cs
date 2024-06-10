@@ -1,6 +1,6 @@
-﻿using Do.Test.Orm;
+﻿using Baked.Test.Orm;
 
-namespace Do.Test.Database;
+namespace Baked.Test.Database;
 
 public class TransactionalWork : TestServiceSpec
 {

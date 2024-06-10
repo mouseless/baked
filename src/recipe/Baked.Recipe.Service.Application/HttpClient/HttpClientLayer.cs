@@ -1,9 +1,9 @@
-﻿using Do.Architecture;
+﻿using Baked.Architecture;
 using Microsoft.Extensions.DependencyInjection;
 
-using static Do.DependencyInjection.DependencyInjectionLayer;
+using static Baked.DependencyInjection.DependencyInjectionLayer;
 
-namespace Do.HttpClient;
+namespace Baked.HttpClient;
 
 public class HttpClientLayer : LayerBase<AddServices>
 {

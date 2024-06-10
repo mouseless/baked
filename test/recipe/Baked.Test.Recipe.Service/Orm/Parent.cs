@@ -1,6 +1,6 @@
-﻿using Do.Orm;
+﻿using Baked.Orm;
 
-namespace Do.Test.Orm;
+namespace Baked.Test.Orm;
 
 public class Parent(IEntityContext<Parent> _context, Func<Child> _newChild, Children _childEntities)
 {

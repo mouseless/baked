@@ -1,3 +1,3 @@
-﻿namespace Do.ExceptionHandling;
+﻿namespace Baked.ExceptionHandling;
 
 public class ExceptionHandlingConfigurator { }

@@ -1,9 +1,9 @@
-using Do.Architecture;
-using Do.MockOverrider;
-using Do.Testing;
+﻿using Baked.Architecture;
+using Baked.MockOverrider;
+using Baked.Testing;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Do;
+namespace Baked;
 
 public static class MockOverriderExtensions
 {

@@ -1,12 +1,12 @@
-﻿using Do;
-using Do.Architecture;
+﻿using Baked;
+using Baked.Architecture;
 using Humanizer;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
-namespace Do.Authentication.FixedBearerToken;
+namespace Baked.Authentication.FixedBearerToken;
 
 public class FixedBearerTokenAuthenticationFeature(List<Token> _tokens, List<string> formPostParameters)
     : IFeature<AuthenticationConfigurator>

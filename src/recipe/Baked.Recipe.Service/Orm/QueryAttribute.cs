@@ -1,4 +1,4 @@
-﻿namespace Do.Orm;
+﻿namespace Baked.Orm;
 
 [AttributeUsage(AttributeTargets.Class)]
 public class QueryAttribute(Type entityType)

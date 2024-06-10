@@ -1,7 +1,7 @@
-﻿using Do.Business;
+﻿using Baked.Business;
 using Microsoft.Extensions.Logging;
 
-namespace Do.Test.CodingStyle.EntitySubclassViaComposition;
+namespace Baked.Test.CodingStyle.EntitySubclassViaComposition;
 
 public class BTypedEntity(ILogger<BTypedEntity> _logger, Func<TypedEntity> _newTypedEntity)
 {

@@ -1,7 +1,7 @@
-﻿using Do.Orm;
-using Do.Orm.AutoMap;
+﻿using Baked.Orm;
+using Baked.Orm.AutoMap;
 
-namespace Do;
+namespace Baked;
 
 public static class AutoMapOrmExtensions
 {

@@ -1,6 +1,6 @@
-﻿using Do.Testing;
+﻿using Baked.Testing;
 
-namespace Do.Test;
+namespace Baked.Test;
 
 public abstract class ArchitectureSpec : Spec
 {

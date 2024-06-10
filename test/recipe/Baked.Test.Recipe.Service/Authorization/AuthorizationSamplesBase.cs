@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace Do.Test.Authorization;
+namespace Baked.Test.Authorization;
 
 public abstract class AuthorizationSamplesBase(Func<ClaimsPrincipal> _getClaims)
 {

@@ -1,6 +1,6 @@
-﻿using Do.Architecture;
+﻿using Baked.Architecture;
 
-namespace Do.Authentication;
+namespace Baked.Authentication;
 
 public class AuthenticationConfigurator
 {

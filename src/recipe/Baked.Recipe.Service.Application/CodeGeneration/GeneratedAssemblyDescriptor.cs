@@ -1,8 +1,8 @@
-﻿using System.Reflection;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using System.Reflection;
 
-namespace Do.CodeGeneration;
+namespace Baked.CodeGeneration;
 
 public record GeneratedAssemblyDescriptor(string Name)
 {

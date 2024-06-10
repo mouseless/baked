@@ -1,10 +1,10 @@
-﻿using Do.Business;
-using Do.Business.DomainAssemblies;
-using Do.Domain.Model;
-using Do.RestApi.Model;
+﻿using Baked.Business;
+using Baked.Business.DomainAssemblies;
+using Baked.Domain.Model;
+using Baked.RestApi.Model;
 using System.Reflection;
 
-namespace Do;
+namespace Baked;
 
 public static class DomainAssembliesBusinessExtensions
 {

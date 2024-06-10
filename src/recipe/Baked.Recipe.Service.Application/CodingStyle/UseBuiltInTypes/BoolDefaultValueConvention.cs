@@ -1,6 +1,6 @@
-﻿using Do.RestApi.Configuration;
+﻿using Baked.RestApi.Configuration;
 
-namespace Do.CodingStyle.UseBuiltInTypes;
+namespace Baked.CodingStyle.UseBuiltInTypes;
 
 public class BoolDefaultValueConvention : IApiModelConvention<ParameterModelContext>
 {

@@ -1,6 +1,6 @@
-﻿using Do.Domain.Configuration;
+﻿using Baked.Domain.Configuration;
 
-namespace Do.Domain.Conventions;
+namespace Baked.Domain.Conventions;
 
 public class RemoveMetadataFromTypeConvention<TAttribute>(Func<TypeModelMetadataContext, bool> _when,
     int _order = default

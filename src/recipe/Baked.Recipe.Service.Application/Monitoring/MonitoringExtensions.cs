@@ -1,8 +1,8 @@
-using Do.Architecture;
-using Do.Logging;
+﻿using Baked.Architecture;
+using Baked.Logging;
 using Microsoft.Extensions.Logging;
 
-namespace Do;
+namespace Baked;
 
 public static class MonitoringExtensions
 {

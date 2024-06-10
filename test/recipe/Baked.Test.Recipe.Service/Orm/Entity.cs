@@ -1,7 +1,7 @@
-﻿using Do.Database;
-using Do.Orm;
+﻿using Baked.Database;
+using Baked.Orm;
 
-namespace Do.Test.Orm;
+namespace Baked.Test.Orm;
 
 public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransaction _transaction)
 {

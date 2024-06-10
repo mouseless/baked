@@ -1,7 +1,7 @@
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using NHibernate;
 
-namespace Do.Database;
+namespace Baked.Database;
 
 public class FlatTransaction(Func<ISession> _getSession, ILogger<FlatTransaction> _logger)
     : ITransaction

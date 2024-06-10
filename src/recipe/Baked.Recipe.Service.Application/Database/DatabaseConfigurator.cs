@@ -1,3 +1,3 @@
-﻿namespace Do.Database;
+﻿namespace Baked.Database;
 
 public class DatabaseConfigurator { }

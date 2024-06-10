@@ -1,7 +1,7 @@
-using Do.CodingStyle;
-using Do.CodingStyle.CommandPattern;
+﻿using Baked.CodingStyle;
+using Baked.CodingStyle.CommandPattern;
 
-namespace Do;
+namespace Baked;
 
 public static class CommandPatternCodingStyleExtensions
 {

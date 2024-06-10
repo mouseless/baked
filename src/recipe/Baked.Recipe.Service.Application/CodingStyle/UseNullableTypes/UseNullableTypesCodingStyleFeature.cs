@@ -1,9 +1,9 @@
-using Do.Architecture;
-using Do.Business;
+﻿using Baked.Architecture;
+using Baked.Business;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
-namespace Do.CodingStyle.UseNullableTypes;
+namespace Baked.CodingStyle.UseNullableTypes;
 
 public class UseNullableTypesCodingStyleFeature : IFeature<CodingStyleConfigurator>
 {

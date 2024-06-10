@@ -1,9 +1,9 @@
-using Do.Architecture;
-using Do.Branding;
+﻿using Baked.Architecture;
+using Baked.Branding;
 using Moq;
 using NUnit.Framework;
 
-namespace Do.Testing;
+namespace Baked.Testing;
 
 public abstract class Spec
 {

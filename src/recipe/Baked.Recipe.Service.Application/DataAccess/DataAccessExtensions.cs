@@ -1,8 +1,8 @@
-﻿using Do.Architecture;
-using Do.DataAccess;
+﻿using Baked.Architecture;
+using Baked.DataAccess;
 using FluentNHibernate.Automapping;
 
-namespace Do;
+namespace Baked;
 
 public static class DataAccessExtensions
 {

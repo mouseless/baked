@@ -1,7 +1,7 @@
-using Do.Greeting;
-using Do.Greeting.Swagger;
+﻿using Baked.Greeting;
+using Baked.Greeting.Swagger;
 
-namespace Do;
+namespace Baked;
 
 public static class SwaggerGreetingExtensions
 {

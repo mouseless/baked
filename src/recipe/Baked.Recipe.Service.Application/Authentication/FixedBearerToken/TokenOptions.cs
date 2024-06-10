@@ -1,4 +1,4 @@
-﻿namespace Do.Authentication.FixedBearerToken;
+﻿namespace Baked.Authentication.FixedBearerToken;
 
 public class TokenOptions(IEnumerable<Token> _tokens)
 {

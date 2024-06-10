@@ -1,9 +1,9 @@
-using Do.Architecture;
+﻿using Baked.Architecture;
 using Microsoft.Extensions.Configuration;
 
-using static Do.Configuration.ConfigurationLayer;
+using static Baked.Configuration.ConfigurationLayer;
 
-namespace Do.Configuration;
+namespace Baked.Configuration;
 
 public class ConfigurationLayer : LayerBase<BuildConfiguration>
 {

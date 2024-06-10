@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http.Json;
 
-namespace Do.Test.Orm;
+namespace Baked.Test.Orm;
 
 public class LookingUpEntitiesById : TestServiceNfr
 {

@@ -1,7 +1,7 @@
-using Do.Configuration;
+﻿using Baked.Configuration;
 using Microsoft.Extensions.Configuration;
 
-namespace Do;
+namespace Baked;
 
 public class Settings
 {

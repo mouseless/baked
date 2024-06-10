@@ -1,7 +1,7 @@
-using Do.CodingStyle;
-using Do.CodingStyle.SingleByUnique;
+﻿using Baked.CodingStyle;
+using Baked.CodingStyle.SingleByUnique;
 
-namespace Do;
+namespace Baked;
 
 public static class SingleByUniqueCodingStyleExtensions
 {

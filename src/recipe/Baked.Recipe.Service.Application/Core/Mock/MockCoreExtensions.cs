@@ -1,7 +1,7 @@
-using Do.Core;
-using Do.Core.Mock;
+﻿using Baked.Core;
+using Baked.Core.Mock;
 
-namespace Do;
+namespace Baked;
 
 public static class MockCoreExtensions
 {

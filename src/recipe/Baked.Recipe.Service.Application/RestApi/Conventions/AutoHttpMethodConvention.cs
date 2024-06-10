@@ -1,7 +1,7 @@
-using Do.RestApi.Configuration;
+﻿using Baked.RestApi.Configuration;
 using System.Text.RegularExpressions;
 
-namespace Do.RestApi.Conventions;
+namespace Baked.RestApi.Conventions;
 
 public class AutoHttpMethodConvention(IEnumerable<(Regex Regex, HttpMethod Method)> _mappings)
     : IApiModelConvention<ActionModelContext>

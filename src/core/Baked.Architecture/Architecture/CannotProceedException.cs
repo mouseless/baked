@@ -1,4 +1,4 @@
-﻿namespace Do.Architecture;
+﻿namespace Baked.Architecture;
 
 public class CannotProceedException(IEnumerable<IPhase> _phases)
     : Exception(

@@ -1,4 +1,4 @@
-namespace Do.Test;
+namespace Baked.Test;
 
 public static class ExceptionExtensions
 {

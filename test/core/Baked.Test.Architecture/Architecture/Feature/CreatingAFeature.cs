@@ -1,6 +1,6 @@
-﻿using Do.Architecture;
+﻿using Baked.Architecture;
 
-namespace Do.Test.Architecture.Feature;
+namespace Baked.Test.Architecture.Feature;
 
 public class CreatingAFeature : ArchitectureSpec
 {
@@ -54,7 +54,7 @@ public class CreatingAFeature : ArchitectureSpec
 
     public class FeatureCConfigurator
     {
-        public IFeature<FeatureCConfigurator> Disabled() => Do.Architecture.Feature.Empty<FeatureCConfigurator>();
+        public IFeature<FeatureCConfigurator> Disabled() => Baked.Architecture.Feature.Empty<FeatureCConfigurator>();
     }
 
     [Test]
@@ -64,14 +64,14 @@ public class CreatingAFeature : ArchitectureSpec
 
         var feature = configurator.Disabled();
 
-        feature.ShouldBeEquivalentTo(Do.Architecture.Feature.Empty<FeatureCConfigurator>());
+        feature.ShouldBeEquivalentTo(Baked.Architecture.Feature.Empty<FeatureCConfigurator>());
     }
 
     [Test]
     public void Empty_feature_ids_are_unique_by_their_configurator_names()
     {
-        var featureC = Do.Architecture.Feature.Empty<FeatureCConfigurator>();
-        var featureB = Do.Architecture.Feature.Empty<FeatureBConfigurator>();
+        var featureC = Baked.Architecture.Feature.Empty<FeatureCConfigurator>();
+        var featureB = Baked.Architecture.Feature.Empty<FeatureBConfigurator>();
 
         featureC.Id.ShouldNotBe(featureB.Id);
     }

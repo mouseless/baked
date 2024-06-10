@@ -1,7 +1,7 @@
-using Do.Architecture;
+﻿using Baked.Architecture;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Do.MockOverrider.FirstInterface;
+namespace Baked.MockOverrider.FirstInterface;
 
 public class FirstInterfaceMockOverriderFeature : IFeature<MockOverriderConfigurator>
 {

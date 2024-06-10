@@ -1,7 +1,7 @@
-using Do.RestApi.Configuration;
-using Do.RestApi.Model;
+﻿using Baked.RestApi.Configuration;
+using Baked.RestApi.Model;
 
-namespace Do.CodingStyle.AddRemoveChild;
+namespace Baked.CodingStyle.AddRemoveChild;
 
 public class FirstParameterIsInRouteForDeleteChildConvention : IApiModelConvention<ActionModelContext>
 {

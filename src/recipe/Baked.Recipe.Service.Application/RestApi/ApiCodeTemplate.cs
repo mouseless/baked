@@ -1,7 +1,7 @@
-﻿using Do.CodeGeneration;
-using Do.RestApi.Model;
+﻿using Baked.CodeGeneration;
+using Baked.RestApi.Model;
 
-namespace Do.RestApi;
+namespace Baked.RestApi;
 
 public class ApiCodeTemplate(ApiModel _apiModel)
     : CodeTemplateBase

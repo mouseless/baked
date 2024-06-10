@@ -1,4 +1,4 @@
-﻿namespace Do.Architecture;
+﻿namespace Baked.Architecture;
 
 public class OverlappingPhaseException(PhaseOrder _order, IEnumerable<IPhase> _phases)
     : Exception(

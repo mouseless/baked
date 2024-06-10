@@ -1,4 +1,4 @@
-﻿namespace Do.Test.Authorization;
+﻿namespace Baked.Test.Authorization;
 
 public class AuthorizingRequests : TestServiceNfr
 {

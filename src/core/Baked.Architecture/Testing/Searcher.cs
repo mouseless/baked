@@ -1,3 +1,3 @@
-﻿namespace Do.Testing;
+﻿namespace Baked.Testing;
 
 public record Searcher(Spec Spec);

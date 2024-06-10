@@ -1,4 +1,4 @@
-﻿using Do.Architecture;
+﻿using Baked.Architecture;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using System.Security.Claims;
 
-using static Do.DependencyInjection.DependencyInjectionLayer;
-using static Do.HttpServer.HttpServerLayer;
+using static Baked.DependencyInjection.DependencyInjectionLayer;
+using static Baked.HttpServer.HttpServerLayer;
 
-namespace Do.HttpServer;
+namespace Baked.HttpServer;
 
 public class HttpServerLayer : LayerBase<AddServices, Build>
 {

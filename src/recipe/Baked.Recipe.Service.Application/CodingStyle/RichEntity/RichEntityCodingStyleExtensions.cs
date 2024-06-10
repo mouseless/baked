@@ -1,7 +1,7 @@
-using Do.CodingStyle;
-using Do.CodingStyle.RichEntity;
+﻿using Baked.CodingStyle;
+using Baked.CodingStyle.RichEntity;
 
-namespace Do;
+namespace Baked;
 
 public static class RichEntityCodingStyleExtensions
 {

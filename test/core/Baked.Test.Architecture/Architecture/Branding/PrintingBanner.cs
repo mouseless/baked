@@ -1,7 +1,7 @@
-﻿using Do.Branding;
+﻿using Baked.Branding;
 using System.Diagnostics;
 
-namespace Do.Test.Architecture.Branding;
+namespace Baked.Test.Architecture.Branding;
 
 public class PrintingBanner : ArchitectureSpec
 {

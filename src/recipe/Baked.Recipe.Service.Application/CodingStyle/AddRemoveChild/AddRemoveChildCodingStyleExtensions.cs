@@ -1,7 +1,7 @@
-using Do.CodingStyle;
-using Do.CodingStyle.AddRemoveChild;
+﻿using Baked.CodingStyle;
+using Baked.CodingStyle.AddRemoveChild;
 
-namespace Do;
+namespace Baked;
 
 public static class AddRemoveChildCodingStyleExtensions
 {

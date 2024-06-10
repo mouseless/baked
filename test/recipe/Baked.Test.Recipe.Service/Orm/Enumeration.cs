@@ -1,4 +1,4 @@
-﻿namespace Do.Test.Orm;
+﻿namespace Baked.Test.Orm;
 
 public enum Enumeration
 {

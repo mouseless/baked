@@ -1,7 +1,7 @@
-using NHibernate.SqlTypes;
+﻿using NHibernate.SqlTypes;
 using NHibernate.Type;
 
-namespace Do.CodingStyle.ObjectAsJson;
+namespace Baked.CodingStyle.ObjectAsJson;
 
 public class JsonObjectStringType()
     : AbstractStringType(new SqlType(System.Data.DbType.String, ColumnLength))

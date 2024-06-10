@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 
-namespace Do.Business;
+namespace Baked.Business;
 
 public static class Caster
 {

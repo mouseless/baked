@@ -1,4 +1,4 @@
-namespace Do.Test.CodeGeneration;
+namespace Baked.Test.CodeGeneration;
 
 public class CompilerErrors : TestServiceSpec
 {

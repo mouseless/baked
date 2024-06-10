@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Routing.Matching;
 
-namespace Do.CodingStyle.SingleByUnique;
+namespace Baked.CodingStyle.SingleByUnique;
 
 public class UniquePropertyMatcherPolicy : MatcherPolicy, IEndpointSelectorPolicy
 {

@@ -1,9 +1,9 @@
-﻿using Do.Architecture;
-using Do.Configuration;
+﻿using Baked.Architecture;
+using Baked.Configuration;
 using FluentNHibernate.Cfg.Db;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Do.Database.MySql;
+namespace Baked.Database.MySql;
 
 public class MySqlDatabaseFeature(Setting<string> _connectionString, Setting<bool> _autoUpdateSchema, Setting<bool> _showSql)
     : IFeature<DatabaseConfigurator>

@@ -1,7 +1,7 @@
-using Do.Test.Orm;
+using Baked.Test.Orm;
 using Newtonsoft.Json.Linq;
 
-namespace Do.Test.Testing;
+namespace Baked.Test.Testing;
 
 public class ProvidingStubs : TestServiceSpec
 {

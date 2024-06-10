@@ -1,11 +1,11 @@
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.DependencyInjection;
 using NHibernate;
 
 using ISession = NHibernate.ISession;
 
-namespace Do.Database;
+namespace Baked.Database;
 
 public class FlatTransactionMiddleware(RequestDelegate _next)
 {

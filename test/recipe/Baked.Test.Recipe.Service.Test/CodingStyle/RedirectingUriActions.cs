@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace Do.Test.CodingStyle;
+namespace Baked.Test.CodingStyle;
 
 public class RedirectingUriActions : TestServiceNfr
 {

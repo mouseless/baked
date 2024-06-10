@@ -1,6 +1,6 @@
-﻿using Do.Authentication;
-using Do.Authentication.FixedBearerToken;
-using Do.Testing;
+﻿using Baked.Authentication;
+using Baked.Authentication.FixedBearerToken;
+using Baked.Testing;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Text.Encodings.Web;
 
-namespace Do;
+namespace Baked;
 
 public static class FixedBearerTokenAuthenticationExtensions
 {

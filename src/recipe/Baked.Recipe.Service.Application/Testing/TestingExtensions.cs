@@ -1,10 +1,10 @@
-using Do.Architecture;
-using Do.Testing;
+﻿using Baked.Architecture;
+using Baked.Testing;
 using Microsoft.Extensions.Configuration;
 using Moq;
 using Moq.Language.Flow;
 
-namespace Do;
+namespace Baked;
 
 public static class TestingExtensions
 {

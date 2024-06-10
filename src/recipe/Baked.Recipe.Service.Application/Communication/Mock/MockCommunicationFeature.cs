@@ -1,6 +1,6 @@
-﻿using Do.Architecture;
+﻿using Baked.Architecture;
 
-namespace Do.Communication.Mock;
+namespace Baked.Communication.Mock;
 
 public class MockCommunicationFeature(Action<DefaultResponseBuilder> _setupDefaultResponses)
     : IFeature<CommunicationConfigurator>

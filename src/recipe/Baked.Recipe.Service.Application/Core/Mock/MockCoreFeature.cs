@@ -1,8 +1,8 @@
-using Do.Architecture;
+﻿using Baked.Architecture;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Do.Core.Mock;
+namespace Baked.Core.Mock;
 
 public class MockCoreFeature : IFeature<CoreConfigurator>
 {

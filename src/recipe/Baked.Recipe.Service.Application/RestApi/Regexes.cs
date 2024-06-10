@@ -1,6 +1,6 @@
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
-namespace Do.RestApi;
+namespace Baked.RestApi;
 
 internal static partial class Regexes
 {

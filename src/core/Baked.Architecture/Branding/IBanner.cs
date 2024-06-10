@@ -1,4 +1,4 @@
-﻿namespace Do.Branding;
+﻿namespace Baked.Branding;
 
 public interface IBanner
 {

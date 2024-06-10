@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Do.Test;
+namespace Baked.Test;
 
 public static class TestServiceNfrExtensions
 {

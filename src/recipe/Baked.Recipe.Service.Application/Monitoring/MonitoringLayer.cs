@@ -1,11 +1,11 @@
-﻿using Do.Architecture;
+﻿using Baked.Architecture;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-using static Do.DependencyInjection.DependencyInjectionLayer;
-using static Do.HttpServer.HttpServerLayer;
+using static Baked.DependencyInjection.DependencyInjectionLayer;
+using static Baked.HttpServer.HttpServerLayer;
 
-namespace Do.Logging;
+namespace Baked.Logging;
 
 public class MonitoringLayer : LayerBase<CreateBuilder, AddServices>
 {

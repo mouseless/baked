@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Logging;
 
-namespace Do.Logging.Request;
+namespace Baked.Logging.Request;
 
 public class RequestLogMiddleware(ILogger<RequestLogMiddleware> _logger, RequestDelegate _next)
 {

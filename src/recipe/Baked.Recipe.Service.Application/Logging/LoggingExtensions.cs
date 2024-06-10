@@ -1,7 +1,7 @@
-﻿using Do.Architecture;
-using Do.Logging;
+﻿using Baked.Architecture;
+using Baked.Logging;
 
-namespace Do;
+namespace Baked;
 
 public static class LoggingExtensions
 {

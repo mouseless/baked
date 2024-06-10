@@ -1,7 +1,7 @@
-using Do.CodingStyle;
-using Do.CodingStyle.UriReturnIsRedirect;
+﻿using Baked.CodingStyle;
+using Baked.CodingStyle.UriReturnIsRedirect;
 
-namespace Do;
+namespace Baked;
 
 public static class UriReturnIsRedirectCodingStyleExtensions
 {

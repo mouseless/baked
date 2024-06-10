@@ -1,6 +1,6 @@
-using Do.Architecture;
+﻿using Baked.Architecture;
 
-namespace Do.Test.Architecture.Application;
+namespace Baked.Test.Architecture.Application;
 
 public class RunningAnApplication : ArchitectureSpec
 {

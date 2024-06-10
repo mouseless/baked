@@ -1,7 +1,7 @@
-﻿using Do.Authentication;
-using Do.Test.Authentication.ApiKey;
+﻿using Baked.Authentication;
+using Baked.Test.Authentication.ApiKey;
 
-namespace Do;
+namespace Baked;
 
 public static class ApiKeyAuthenticationExtensions
 {

@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Net.Http.Headers;
 
-namespace Do.Test.HttpServer;
+namespace Baked.Test.HttpServer;
 
 public class ConfiguringMultipleAuthenticationHandlers : TestServiceNfr
 {

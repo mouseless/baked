@@ -1,6 +1,6 @@
-using Do.RestApi.Configuration;
+﻿using Baked.RestApi.Configuration;
 
-namespace Do.CodingStyle.UseNullableTypes;
+namespace Baked.CodingStyle.UseNullableTypes;
 
 public class SetDefaultValueForNullableEnumConvention : IApiModelConvention<ParameterModelContext>
 {

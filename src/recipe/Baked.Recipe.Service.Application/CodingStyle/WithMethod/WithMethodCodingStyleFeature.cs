@@ -1,8 +1,8 @@
-﻿using Do.Architecture;
-using Do.Business;
-using Do.Lifetime;
+﻿using Baked.Architecture;
+using Baked.Business;
+using Baked.Lifetime;
 
-namespace Do.CodingStyle.WithMethod;
+namespace Baked.CodingStyle.WithMethod;
 
 public class WithMethodCodingStyleFeature : IFeature<CodingStyleConfigurator>
 {

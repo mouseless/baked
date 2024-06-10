@@ -1,7 +1,7 @@
-using System.Net.Http.Json;
 using Newtonsoft.Json;
+using System.Net.Http.Json;
 
-namespace Do.Test.CodingStyle;
+namespace Baked.Test.CodingStyle;
 
 public class BindingObjects : TestServiceNfr
 {

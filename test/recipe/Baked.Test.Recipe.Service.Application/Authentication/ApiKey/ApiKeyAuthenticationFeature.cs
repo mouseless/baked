@@ -1,8 +1,8 @@
-﻿using Do.Architecture;
-using Do.Authentication;
+﻿using Baked.Architecture;
+using Baked.Authentication;
 using Microsoft.AspNetCore.Authentication;
 
-namespace Do.Test.Authentication.ApiKey;
+namespace Baked.Test.Authentication.ApiKey;
 
 public class ApiKeyAuthenticationFeature()
     : IFeature<AuthenticationConfigurator>

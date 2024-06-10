@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Net.Http.Headers;
 
-namespace Do.Test.Authorization;
+namespace Baked.Test.Authorization;
 
 public class InterceptingUnauthorizedRequests : TestServiceNfr
 {

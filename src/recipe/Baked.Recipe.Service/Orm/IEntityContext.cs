@@ -1,4 +1,4 @@
-﻿namespace Do.Orm;
+﻿namespace Baked.Orm;
 
 public interface IEntityContext<TEntity>
 {

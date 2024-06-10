@@ -1,8 +1,8 @@
-using Do.Architecture;
-using Do.Branding;
-using Do.Testing;
+﻿using Baked.Architecture;
+using Baked.Branding;
+using Baked.Testing;
 
-namespace Do.Test;
+namespace Baked.Test;
 
 public static class ForgeExtensions
 {

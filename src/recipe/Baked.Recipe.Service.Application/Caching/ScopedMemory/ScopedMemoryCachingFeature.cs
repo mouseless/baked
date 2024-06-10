@@ -1,7 +1,7 @@
-﻿using Do.Architecture;
+﻿using Baked.Architecture;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace Do.Caching.ScopedMemory;
+namespace Baked.Caching.ScopedMemory;
 
 public class ScopedMemoryCachingFeature : IFeature<CachingConfigurator>
 {

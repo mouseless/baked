@@ -1,4 +1,4 @@
-﻿namespace Do.Communication.Http;
+﻿namespace Baked.Communication.Http;
 
 public class HttpClientFactory<T>(IHttpClientFactory _httpClientFactory)
 {

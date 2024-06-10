@@ -1,6 +1,6 @@
-using Do.RestApi.Configuration;
+﻿using Baked.RestApi.Configuration;
 
-namespace Do.RestApi;
+namespace Baked.RestApi;
 
 public class ApiModelConventionCollection : List<(IApiModelConvention Convention, int Order)>, IApiModelConventionCollection
 { }
