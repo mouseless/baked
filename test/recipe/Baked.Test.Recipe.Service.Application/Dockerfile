@@ -9,7 +9,7 @@ ENV ASPNETCORE_URLS=http://+:80
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS publish
 
 COPY . .
-RUN dotnet publish ./test/blueprints/Baked.Test.Recipe.Service.Application -c Release -o /app/publish
+RUN dotnet publish ./test/recipe/Baked.Test.Recipe.Service.Application -c Release -o /app/publish
 
 FROM base AS final
 

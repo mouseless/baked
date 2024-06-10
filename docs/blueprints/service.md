@@ -5,10 +5,10 @@ includes necessary layers and feature implementations for any backend
 application.
 
 To create an application from this blueprint, use `Service()` extension of
-`Forge` class directly in `Program.cs`.
+`Bake` class directly in `Program.cs`.
 
 ```csharp
-Forge.New
+Bake.New
     .Service(
         business: c => c.DomainAssemblies([...])
     )

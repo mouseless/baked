@@ -1,6 +1,6 @@
 ﻿using Baked.Test.Orm;
 
-Forge.New
+Bake.New
     .Service(
         business: c => c.DomainAssemblies([typeof(Entity).Assembly]),
         authentications: [

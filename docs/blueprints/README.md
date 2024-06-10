@@ -1,10 +1,10 @@
 # Blueprints
 
 DO consists of many features and layers as separate packages. You are free to
-add necessary feature and layer packages to your project and forge an
-application that fits your needs. However, there are also architectural
-blueprints that include a set of layers and features with a default
-configuration to allow you to reuse what is commonly needed for an application.
+add necessary feature and layer packages to your project and bake an application
+that fits your needs. However, there are also architectural blueprints that
+include a set of layers and features with a default configuration to allow you
+to reuse what is commonly needed for an application.
 
 > [!TIP]
 >

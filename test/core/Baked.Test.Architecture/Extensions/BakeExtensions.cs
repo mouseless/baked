@@ -4,9 +4,9 @@ using Baked.Testing;
 
 namespace Baked.Test;
 
-public static class ForgeExtensions
+public static class BakeExtensions
 {
-    public static Forge AForge(this Stubber giveMe,
+    public static Bake ABake(this Stubber giveMe,
         IBanner? banner = default,
         ApplicationContext? context = default
     )

@@ -5,11 +5,11 @@ public class AddingExtensions : ArchitectureSpec
     [Test]
     public void Layer_is_added_without_any_options()
     {
-        var forge = GiveMe.AForge();
+        var bake = GiveMe.ABake();
         var layer1 = MockMe.ALayer();
         var layer2 = MockMe.ALayer();
 
-        var app = forge.Application(app =>
+        var app = bake.Application(app =>
         {
             app.Layers.Add(layer1);
             app.Layers.Add(layer2);
@@ -24,12 +24,12 @@ public class AddingExtensions : ArchitectureSpec
     [Test]
     public void Feature_is_added_to_configure_layers()
     {
-        var forge = GiveMe.AForge();
+        var bake = GiveMe.ABake();
         var layer = MockMe.ALayer();
         var feature1 = MockMe.AFeature();
         var feature2 = MockMe.AFeature();
 
-        var app = forge.Application(app =>
+        var app = bake.Application(app =>
         {
             app.Layers.Add(layer);
 
@@ -46,11 +46,11 @@ public class AddingExtensions : ArchitectureSpec
     [Test]
     public void Feature_configures_target_configurations_of_the_layers()
     {
-        var forge = GiveMe.AForge();
+        var bake = GiveMe.ABake();
         var layer = MockMe.ALayer(target: "text");
         var feature = MockMe.AFeature();
 
-        var app = forge.Application(app =>
+        var app = bake.Application(app =>
         {
             app.Layers.Add(layer);
 
@@ -65,11 +65,11 @@ public class AddingExtensions : ArchitectureSpec
     [Test]
     public void Layers_can_provide_multiple_configuration_targets()
     {
-        var forge = GiveMe.AForge();
+        var bake = GiveMe.ABake();
         var layer = MockMe.ALayer(targets: ["text", 10]);
         var feature = MockMe.AFeature();
 
-        var app = forge.Application(app =>
+        var app = bake.Application(app =>
         {
             app.Layers.Add(layer);
 
@@ -85,11 +85,11 @@ public class AddingExtensions : ArchitectureSpec
     [Test]
     public void Layers_are_skipped_when_they_provide_no_configuration_target()
     {
-        var forge = GiveMe.AForge();
+        var bake = GiveMe.ABake();
         var layer = MockMe.ALayer(targets: []);
         var feature = MockMe.AFeature();
 
-        var app = forge.Application(app =>
+        var app = bake.Application(app =>
         {
             app.Layers.Add(layer);
 
@@ -104,16 +104,16 @@ public class AddingExtensions : ArchitectureSpec
     [Test]
     public void Adding_the_same_layer_more_than_once_gives_error()
     {
-        var forge = GiveMe.AForge();
+        var bake = GiveMe.ABake();
         var layer = MockMe.ALayer(id: "DuplicateLayer");
 
-        var forgeAction = () => forge.Application(app =>
+        var bakeAction = () => bake.Application(app =>
         {
             app.Layers.Add(layer);
             app.Layers.Add(layer);
         });
 
-        forgeAction.ShouldThrow<InvalidOperationException>().Message.ShouldBe(
+        bakeAction.ShouldThrow<InvalidOperationException>().Message.ShouldBe(
             $"Cannot add 'DuplicateLayer', it was already added."
         );
     }
@@ -121,16 +121,16 @@ public class AddingExtensions : ArchitectureSpec
     [Test]
     public void Adding_the_same_feature_more_than_once_gives_error()
     {
-        var forge = GiveMe.AForge();
+        var bake = GiveMe.ABake();
         var feature = MockMe.AFeature(id: "DuplicateFeature");
 
-        var forgeAction = () => forge.Application(app =>
+        var bakeAction = () => bake.Application(app =>
         {
             app.Features.Add(feature);
             app.Features.Add(feature);
         });
 
-        forgeAction.ShouldThrow<InvalidOperationException>().Message.ShouldBe(
+        bakeAction.ShouldThrow<InvalidOperationException>().Message.ShouldBe(
             $"Cannot add 'DuplicateFeature', it was already added."
         );
     }

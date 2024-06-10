@@ -32,29 +32,29 @@ public class PrintingBanner : ArchitectureSpec
     public void It_prints_banner_prior_to_build()
     {
         var banner = MockMe.ABanner();
-        var forge = GiveMe.AForge(banner: banner);
+        var bake = GiveMe.ABake(banner: banner);
 
-        forge.Application(_ => { });
+        bake.Application(_ => { });
 
         banner.VerifyPrinted();
     }
 
     [Test]
-    public void Do_banner_prints_do_logo__version_and_project_links_to_console()
+    public void Baked_banner_prints_baked_logo__version_and_project_links_to_console()
     {
-        var banner = GiveMe.ADoBanner();
+        var banner = GiveMe.ABakedBanner();
 
         banner.Print();
 
         ConsoleOutput.ShouldContainWithoutWhitespace($$"""
 
-         ▀▄   █▀▀▀▄ █▀▀▀█
-          ▄▀  █   █ █   █
-         ▀    ▀▀▀▀  ▀▀▀▀▀ ▀▀▀▀▀
+         ▀▄   █▀▀▀▄ █▀▀▀█ █  ▄▀ █▀▀▀▀ █▀▀▀▄
+          ▄▀  █▀▀▀▄ █▀▀▀█ █▀▀▀█ █▀▀▀▀ █   █
+         ▀    ▀▀▀▀  ▀   ▀ ▀   ▀ ▀▀▀▀▀ ▀▀▀▀  ▀▀▀▀▀
 
         Version: v{{VersionString}}
-        Docs: https://do.mouseless.codes
-        Source: https://github.com/mouseless/do
+        Docs: https://baked.mouseless.codes
+        Source: https://github.com/mouseless/baked
 
         """);
     }

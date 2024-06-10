@@ -13,7 +13,7 @@ public abstract class Spec
     {
         var result = new ApplicationContext();
 
-        new Forge(new Mock<IBanner>().Object, () => new(result))
+        new Bake(new Mock<IBanner>().Object, () => new(result))
             .Application(describe ?? (_ => { }))
             .Run();
 

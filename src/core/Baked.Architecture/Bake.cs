@@ -4,9 +4,9 @@ using System.Globalization;
 
 namespace Baked;
 
-public class Forge(IBanner _banner, Func<Application> _newApplication)
+public class Bake(IBanner _banner, Func<Application> _newApplication)
 {
-    public static Forge New => new(new DoBanner(), () => new(new()));
+    public static Bake New => new(new BakedBanner(), () => new(new()));
 
     public Application Application(Action<ApplicationDescriptor> describe)
     {

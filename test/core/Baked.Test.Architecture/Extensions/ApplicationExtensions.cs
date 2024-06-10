@@ -18,7 +18,7 @@ public static class ApplicationExtensions
         layers ??= [layer ?? giveMe.Spec.MockMe.ALayer(phase: phase, phases: phases)];
         features ??= [feature ?? giveMe.Spec.MockMe.AFeature()];
 
-        return giveMe.AForge(context: context).Application(app =>
+        return giveMe.ABake(context: context).Application(app =>
         {
             app.Layers.AddRange(layers);
             app.Features.AddRange(features);

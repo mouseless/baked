@@ -13,9 +13,9 @@ using Baked.Orm;
 
 namespace Baked;
 
-public static class ForgeExtensions
+public static class BakeExtensions
 {
-    public static Application Service(this Forge source,
+    public static Application Service(this Bake source,
         Func<BusinessConfigurator, IFeature<BusinessConfigurator>> business,
         IEnumerable<Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>>? authentications = default,
         Func<AuthorizationConfigurator, IFeature<AuthorizationConfigurator>>? authorization = default,

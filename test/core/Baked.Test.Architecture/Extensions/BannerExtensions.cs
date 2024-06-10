@@ -11,6 +11,6 @@ public static class BannerExtensions
     public static void VerifyPrinted(this IBanner source) =>
         Mock.Get(source).Verify(b => b.Print());
 
-    public static DoBanner ADoBanner(this Stubber _) =>
+    public static BakedBanner ABakedBanner(this Stubber _) =>
         new();
 }

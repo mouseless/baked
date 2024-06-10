@@ -27,7 +27,7 @@ services:
     restart: always
     ports:
       - 8080:80
-  blueprints.service:
+  recipe.service:
     build:
       dockerfile: test/recipe/Baked.Test.Recipe.Service.Application/Dockerfile
       args:
