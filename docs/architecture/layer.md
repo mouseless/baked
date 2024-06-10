@@ -36,7 +36,7 @@ implementing a new layer;
 1. Don't use any suffix for phases and use method-like names, e.g., `Build` and
    `Run`
 
-Please refer to existing layers in [github.com/mouseless/do][] for examples.
+Please refer to existing layers in [github.com/mouseless/baked][] for examples.
 
 ## Creating A Layer
 
@@ -385,4 +385,4 @@ This phase context will require two different actions;
    Configuration2 configuration2)`
 1. For the last configuration object: `(Configuration3 configuration3)`.
 
-[github.com/mouseless/do]:https://github.com/mouseless/do
+[github.com/mouseless/baked]:https://github.com/mouseless/baked

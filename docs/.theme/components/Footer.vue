@@ -3,7 +3,7 @@
     <footer>
       <div class="logo">
         <NuxtLink to="/">
-          <img class="do logo mono">
+          <img class="baked logo mono">
         </NuxtLink>
         <span>Copyright (c) 2024 Mouseless - MIT License</span>
       </div>
@@ -73,7 +73,7 @@ div.logo {
     display: block;
     height: 15px;
 
-    img.do {
+    img.baked {
       &:is(.logo) {
         height: 15px;
         display: inline-block;

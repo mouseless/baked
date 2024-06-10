@@ -42,7 +42,8 @@ implementing a new feature;
     1. Implement `IFeature` in `ConfigurationOverriderFeature` where you add
        all your configuration overrides.
 
-Please refer to existing features in [github.com/mouseless/do][] for examples.
+Please refer to existing features in [github.com/mouseless/baked][] for
+examples.
 
 ## Creating A Feature
 
@@ -182,4 +183,4 @@ public static class WelcomePageGreetingExtensions
 }
 ```
 
-[github.com/mouseless/do]:https://github.com/mouseless/do
+[github.com/mouseless/baked]:https://github.com/mouseless/baked

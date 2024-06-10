@@ -27,7 +27,7 @@ Bake.New
             baseClaims: ["BaseA", "BaseB"]
         ),
         database: c => c.MySql().ForDevelopment(c.Sqlite()).ForNfr(c.Sqlite(fileName: $"Baked.Test.Recipe.Service.Nfr.db")),
-        exceptionHandling: ex => ex.Default(typeUrlFormat: "https://do.mouseless.codes/errors/{0}"),
+        exceptionHandling: ex => ex.Default(typeUrlFormat: "https://baked.mouseless.codes/errors/{0}"),
         configure: app => app.Features.AddConfigurationOverrider()
     )
     .Run();

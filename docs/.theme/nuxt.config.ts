@@ -24,7 +24,7 @@ export default defineNuxtConfig({
         {
           hid: "og:site_name",
           property: "og:site_name",
-          content: "Do"
+          content: "Baked (Objects)"
         },
         {
           hid: "og:description",
@@ -34,7 +34,7 @@ export default defineNuxtConfig({
         {
           hid: "og:image",
           property: "og:image",
-          content: "https://do.mouseless.codes/favicon.ico"
+          content: "https://baked.mouseless.codes/favicon.ico"
         },
         {
           hid: "og:image:width",
@@ -118,7 +118,7 @@ export default defineNuxtConfig({
         }
       },
       baseURL: "",
-      githubURL: "/mouseless/do"
+      githubURL: "/mouseless/baked"
     }
   },
   vite: {

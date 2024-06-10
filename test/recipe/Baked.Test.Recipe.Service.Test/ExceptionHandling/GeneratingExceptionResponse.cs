@@ -16,7 +16,7 @@ public class GeneratingExceptionResponse : TestServiceNfr
         problemDetails.ShouldNotBeNull();
         problemDetails.Detail.ShouldBe("A handled exception was thrown");
         problemDetails.Status.ShouldBe((int)HttpStatusCode.BadRequest);
-        problemDetails.Type.ShouldBe("https://do.mouseless.codes/errors/test-service-handled");
+        problemDetails.Type.ShouldBe("https://baked.mouseless.codes/errors/test-service-handled");
     }
 
     [Test]
@@ -29,6 +29,6 @@ public class GeneratingExceptionResponse : TestServiceNfr
         problemDetails.ShouldNotBeNull();
         problemDetails.Detail.ShouldBe("An unexpected error has occured. Please contact the administrator.");
         problemDetails.Status.ShouldBe((int)HttpStatusCode.InternalServerError);
-        problemDetails.Type.ShouldBe("https://do.mouseless.codes/errors/invalid-operation");
+        problemDetails.Type.ShouldBe("https://baked.mouseless.codes/errors/invalid-operation");
     }
 }

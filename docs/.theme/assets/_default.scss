@@ -11,7 +11,7 @@ body {
   min-width: calc($width-page-min + $space-md);
 }
 
-img.do {
+img.baked {
   &:is(.logo),
   &:is(.logo:is(.full)) {
     content: $url-logo-full;

@@ -19,7 +19,7 @@ public class GeneratingUnauthorizedAccessResponse : TestServiceNfr
         problemDetails.Detail.ShouldBe("Failed to authenticate with given credentials.");
         problemDetails.Status.ShouldBe((int)HttpStatusCode.Unauthorized);
         problemDetails.Title.ShouldBe("Authentication");
-        problemDetails.Type.ShouldBe("https://do.mouseless.codes/errors/authentication");
+        problemDetails.Type.ShouldBe("https://baked.mouseless.codes/errors/authentication");
     }
 
     [Test]
@@ -35,6 +35,6 @@ public class GeneratingUnauthorizedAccessResponse : TestServiceNfr
         problemDetails.Detail.ShouldBe("Attempted to perform an unauthorized operation.");
         problemDetails.Status.ShouldBe((int)HttpStatusCode.Forbidden);
         problemDetails.Title.ShouldBe("Unauthorized Access");
-        problemDetails.Type.ShouldBe("https://do.mouseless.codes/errors/unauthorized-access");
+        problemDetails.Type.ShouldBe("https://baked.mouseless.codes/errors/unauthorized-access");
     }
 }
