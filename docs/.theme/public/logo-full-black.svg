@@ -1,16 +1,11 @@
-<svg width="230" height="50" viewBox="0 0 230 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect x="180" y="40" width="50" height="10" fill="black"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M170 0H120V50H170V0ZM130 10H160V40H130V10Z" fill="black"/>
-<path d="M60 50V0H100V10H70V40H100V50H60Z" fill="black"/>
-<path d="M110 10H100V40H110V10Z" fill="black"/>
-<mask id="mask0_407_1184" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="50" height="50">
-<path d="M10 0H20V10H10V0Z" fill="white"/>
-<path d="M20 10H30V20H20V10Z" fill="white"/>
-<path d="M30 20H40V30H30V20Z" fill="white"/>
-<path d="M20 30H30V40H20V30Z" fill="white"/>
-<path d="M10 40H20V50H10V40Z" fill="white"/>
-</mask>
-<g mask="url(#mask0_407_1184)">
-<rect width="50" height="50" fill="black"/>
-</g>
+<svg width="250" height="40" viewBox="0 0 250 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="230" y="30" width="20" height="10" fill="black"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M220 40.0001V0H210V10H190V40.0001H220ZM210 20V30H200V20H210Z" fill="black"/>
+<path d="M150 40L180 40L180 30L170 30L170 20L180 20L180 10L150 10L150 40Z" fill="black"/>
+<path d="M110 40V0H120V20H130V10H140V20H130V30H140V40H130V30H120V40H110Z" fill="black"/>
+<path d="M70 10V40H80V30H90V40H100V10H70Z" fill="black"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M30 40.0001V0H40V10H60V40.0001H30ZM40 20V30H50V20H40Z" fill="black"/>
+<path d="M0 20V10H10V20H0Z" fill="black"/>
+<path d="M10 30V20H20V30H10Z" fill="black"/>
+<path d="M0 40V30H10V40H0Z" fill="black"/>
 </svg>
