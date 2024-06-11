@@ -1,9 +1,7 @@
 ﻿using Baked.Architecture;
 using Baked.Configuration;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Text;
 
 namespace Baked.ExceptionHandling.Default;
 
@@ -14,7 +12,7 @@ public class DefaultExceptionHandlingFeature(Setting<string>? _typeUrlFormat = d
     {
         configurator.ConfigureConfigurationBuilder(configuration =>
         {
-            configuration.AddJsonStream(new MemoryStream(Encoding.UTF8.GetBytes("""
+            configuration.AddJson("""
             {
               "Logging": {
                 "LogLevel": {
@@ -22,7 +20,7 @@ public class DefaultExceptionHandlingFeature(Setting<string>? _typeUrlFormat = d
                 }
               }
             }
-            """)));
+            """);
         });
 
         configurator.ConfigureDomainTypeCollection(types =>

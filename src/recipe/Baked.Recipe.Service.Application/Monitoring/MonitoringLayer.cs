@@ -24,6 +24,6 @@ public class MonitoringLayer : LayerBase<CreateBuilder, AddServices>
 
         services.AddLogging();
 
-        return PhaseContext.Empty;
+        return phase.CreateEmptyContext();
     }
 }

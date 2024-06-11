@@ -8,11 +8,9 @@ public static class MySqlDatabaseExtensions
 {
     public static MySqlDatabaseFeature MySql(this DatabaseConfigurator _,
         Setting<string>? connectionString = default,
-        Setting<bool>? autoUpdateSchema = default,
-        Setting<bool>? showSql = default
+        Setting<bool>? autoUpdateSchema = default
     ) => new(
         connectionString ?? Settings.Required<string>("Database:MySql:ConnectionString"),
-        autoUpdateSchema ?? Settings.Optional("Database:MySql:AutoUpdateSchema", false),
-        showSql ?? Settings.Optional("Database:MySql:ShowSql", false)
+        autoUpdateSchema ?? Settings.Optional("Database:MySql:AutoUpdateSchema", false)
     );
 }

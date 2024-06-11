@@ -8,6 +8,19 @@ public class RequestLoggingFeature(bool singleLine)
 {
     public void Configure(LayerConfigurator configurator)
     {
+        configurator.ConfigureConfigurationBuilder(configuration =>
+        {
+            configuration.AddJson($$"""
+            {
+              "Logging": {
+                "LogLevel": {
+                  "Microsoft.AspNetCore.Hosting.Diagnostics": "{{(configurator.IsProduction() ? "Error" : "Information")}}"
+                }
+              }
+            }
+            """);
+        });
+
         configurator.ConfigureLoggingBuilder(logging =>
         {
             logging.AddSimpleConsole(options =>
@@ -26,7 +39,7 @@ public class RequestLoggingFeature(bool singleLine)
 
         configurator.ConfigureMiddlewareCollection(middlewares =>
         {
-            middlewares.Add<RequestLogMiddleware>(order: -20);
+            middlewares.Add<MappedMethodLogScopeMiddleware>(order: -20);
         });
     }
 }
