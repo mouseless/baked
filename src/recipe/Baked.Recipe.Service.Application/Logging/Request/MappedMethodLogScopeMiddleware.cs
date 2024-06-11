@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Baked.Logging.Request;
 
-public class RequestLogMiddleware(ILogger<RequestLogMiddleware> _logger, RequestDelegate _next)
+public class MappedMethodLogScopeMiddleware(ILogger<MappedMethodLogScopeMiddleware> _logger, RequestDelegate _next)
 {
     public async Task Invoke(HttpContext context)
     {
@@ -18,12 +18,7 @@ public class RequestLogMiddleware(ILogger<RequestLogMiddleware> _logger, Request
 
         using (_logger.BeginScope("Type:{0}, Method:{1}", mappedMethod.TypeFullName, mappedMethod.MethodName))
         {
-            _logger.LogInformation(message: $"begin");
-
             await _next(context);
-
-            _logger.LogInformation(message: $"end - {context.Response.StatusCode}");
-
         }
     }
 }

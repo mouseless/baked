@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Baked.Database.MySql;
 
-public class MySqlDatabaseFeature(Setting<string> _connectionString, Setting<bool> _autoUpdateSchema, Setting<bool> _showSql)
+public class MySqlDatabaseFeature(Setting<string> _connectionString, Setting<bool> _autoUpdateSchema)
     : IFeature<DatabaseConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
@@ -20,9 +20,6 @@ public class MySqlDatabaseFeature(Setting<string> _connectionString, Setting<boo
             var mysql = MySQLConfiguration.Standard
                 .ConnectionString(_connectionString)
                 .Dialect<CustomMySQL57Dialect>();
-
-            // this should be in logging
-            if (_showSql) { mysql.ShowSql(); }
 
             // this should be in orm
             mysql.MaxFetchDepth(1);

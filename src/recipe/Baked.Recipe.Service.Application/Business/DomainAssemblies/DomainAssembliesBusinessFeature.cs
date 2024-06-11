@@ -29,6 +29,21 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
             }
         });
 
+        configurator.ConfigureConfigurationBuilder(configuration =>
+        {
+            configuration.AddJson($$"""
+            {
+              "Logging": {
+                "LogLevel": {
+                  "Default": "{{(configurator.IsProduction() ? "Error" : "Information")}}",
+                  "Microsoft.AspNetCore": "Error",
+                  "Microsoft.Hosting.Lifetime": "Information"
+                }
+              }
+            }
+            """);
+        });
+
         configurator.ConfigureDomainModelBuilder(builder =>
         {
             builder.BindingFlags.Constructor = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;

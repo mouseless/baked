@@ -22,7 +22,6 @@ public class SqliteDatabaseFeature(Setting<string> _fileName)
         {
             var sqlite = SQLiteConfiguration.Standard.UsingFile(FullFilePath).Dialect<SQLiteDialect>();
 
-            sqlite.ShowSql();
             sqlite.MaxFetchDepth(1);
 
             persistence.Configurer = sqlite;

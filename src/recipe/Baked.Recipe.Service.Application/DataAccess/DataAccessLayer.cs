@@ -10,7 +10,7 @@ using NHConfiguration = NHibernate.Cfg.Configuration;
 
 namespace Baked.DataAccess;
 
-public class DataAccessLayer : LayerBase<AddServices>
+public class DataAccessLayer : LayerBase<AddServices, PostBuild>
 {
     readonly PersistenceConfiguration _persistenceConfiguration = new();
     readonly InterceptorConfiguration _interceptorConfiguration = new();
@@ -29,6 +29,7 @@ public class DataAccessLayer : LayerBase<AddServices>
     {
         var services = Context.GetServiceCollection();
 
+        services.AddSingleton<INHibernateLoggerFactory, StandardNHibernateLoggerFactory>();
         services.AddSingleton(sp =>
         {
             var builder = Fluently.Configure()
@@ -77,5 +78,13 @@ public class DataAccessLayer : LayerBase<AddServices>
             .Add(_automappingConfiguration)
             .Add(_autoPersistenceModel)
             .Build();
+    }
+
+    protected override PhaseContext GetContext(PostBuild phase)
+    {
+        var sp = Context.GetServiceProvider();
+        NHibernateLogger.SetLoggersFactory(sp.GetRequiredService<INHibernateLoggerFactory>());
+
+        return phase.CreateEmptyContext();
     }
 }

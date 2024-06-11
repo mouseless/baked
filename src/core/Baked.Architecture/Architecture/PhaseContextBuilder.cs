@@ -47,6 +47,9 @@ public class PhaseContextBuilder
 
 public static class PhaseContextBuilderExtensions
 {
+    public static PhaseContext CreateEmptyContext(this IPhase _) =>
+        PhaseContext.Empty;
+
     public static PhaseContextBuilder CreateContextBuilder(this IPhase source) => new(source);
 
     public static PhaseContext CreateContext<TTarget>(this IPhase source, TTarget target,

@@ -23,6 +23,20 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             services.AddSingleton(typeof(IQueryContext<>), typeof(QueryContext<>));
         });
 
+        configurator.ConfigureConfigurationBuilder(configuration =>
+        {
+            configuration.AddJson($$"""
+            {
+              "Logging": {
+                "LogLevel": {
+                  "NHibernate": "None",
+                  "NHibernate.Sql": "{{(configurator.IsDevelopment() ? "Debug" : "None")}}"
+                }
+              }
+            }
+            """);
+        });
+
         configurator.ConfigureDomainModelBuilder(builder =>
         {
             builder.Index.Type.Add(typeof(QueryAttribute));

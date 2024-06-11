@@ -27,4 +27,19 @@ public static class EnvironmentExtensions
 
         return @default;
     }
+
+    public static bool IsNfr(this LayerConfigurator configurator) =>
+        configurator.IsEnvironment(nameof(Nfr));
+
+    public static bool IsDevelopment(this LayerConfigurator configurator) =>
+        configurator.IsEnvironment(Environments.Development);
+
+    public static bool IsStaging(this LayerConfigurator configurator) =>
+        configurator.IsEnvironment(Environments.Staging);
+
+    public static bool IsProduction(this LayerConfigurator configurator) =>
+        configurator.IsEnvironment(Environments.Production);
+
+    public static bool IsEnvironment(this LayerConfigurator _, string environment) =>
+        Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == environment;
 }
