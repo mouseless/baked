@@ -7,6 +7,7 @@
   - `Forge` is now `Bake`
   - `Bluprints` are now `Recipes`
 - `Authentication.Disabled` was removed
+- NHibernate logs are now redirected to logger instead of direct console logging
 
 ## Bugfixes
 
