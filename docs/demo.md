@@ -56,11 +56,11 @@ components.
 This is a `code` within a paragraph.
 
 ```csharp
-public class DoDemo
+public class Demo
 {
     public void SayHello()
     {
-        Console.WriteLine("Hello Do");
+        Console.WriteLine("Hello Code Block");
     }
 }
 ```
@@ -72,11 +72,11 @@ public class DoDemo
 > Code in alert box;
 >
 > ```csharp
-> public class DoDemo
+> public class Demo
 > {
 >     public void SayHello()
 >     {
->         Console.WriteLine("Hello Info Box");
+>         Console.WriteLine("Hello Info");
 >     }
 > }
 > ```
