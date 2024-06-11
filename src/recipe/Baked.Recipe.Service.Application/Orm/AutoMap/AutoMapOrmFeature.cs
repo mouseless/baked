@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.RestApi;
 using Baked.RestApi.Conventions;
 using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Mapping;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NHibernate;
 using NHibernate.Exceptions;
+using NHibernate.Proxy;
 
 namespace Baked.Orm.AutoMap;
 
@@ -77,6 +79,13 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
                     var _ = app.ApplicationServices.GetRequiredService<ISessionFactory>();
                 });
             });
+        });
+
+        configurator.ConfigureMvcNewtonsoftJsonOptions(options =>
+        {
+            if (options.SerializerSettings.ContractResolver is null) { return; }
+
+            options.SerializerSettings.ContractResolver = new ProxyAwareContractResolver<INHibernateProxy>(options.SerializerSettings.ContractResolver);
         });
 
         configurator.ConfigureApiModelConventions(conventions =>
