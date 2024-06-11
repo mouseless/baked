@@ -1,0 +1,1 @@
+.columns{align-items:flex-start;display:flex;gap:var(--space-md)}.columns__item{max-width:100%}@media (max-width:1074px){.columns{flex-direction:column;gap:var(--space-sm)}.columns__item{width:100%!important}.columns__item:has(img.prose:only-child){display:none}}
