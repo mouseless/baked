@@ -24,4 +24,7 @@ public class Children(IQueryContext<Child> _context)
 {
     internal List<Child> ByParent(Parent parent) =>
         _context.By(e => e.Parent == parent);
+
+    public List<Child> By() =>
+        _context.By(c => true);
 }

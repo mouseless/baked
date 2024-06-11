@@ -1,9 +1,3 @@
-﻿using Baked.Architecture;
+﻿namespace Baked.Authentication;
 
-namespace Baked.Authentication;
-
-public class AuthenticationConfigurator
-{
-    public IFeature<AuthenticationConfigurator> Disabled() =>
-        Feature.Empty<AuthenticationConfigurator>();
-}
+public class AuthenticationConfigurator { }
