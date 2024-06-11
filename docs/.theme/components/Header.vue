@@ -94,11 +94,11 @@ div.logo {
 
   a:has(img.logo) {
     display: block;
-    height: 25px;
+    height: 24px;
 
     img.baked {
       &:is(.logo) {
-        height: 25px;
+        height: 24px;
         display: inline-block;
       }
     }
@@ -126,7 +126,7 @@ nav a {
     @include border(bottom);
 
     border-bottom-color: $color-brand;
-    padding-bottom: calc($space-sm + 3px);
+    padding-bottom: calc($space-sm + 2px);
   }
 
   &:last-child {
