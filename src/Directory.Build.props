@@ -3,13 +3,13 @@
   <Import Project="..\Directory.Build.props" />
 
   <PropertyGroup>
-    <RootNamespace>Do</RootNamespace>
+    <RootNamespace>Baked</RootNamespace>
     <IsPackable>true</IsPackable>
     <EnablePackageValidation>true</EnablePackageValidation>
   </PropertyGroup>
 
   <PropertyGroup>
-    <Product>DO</Product>
+    <Product>Baked (Objects)</Product>
     <Version>0.10.4</Version>
     <Authors>Mouseless</Authors>
     <Company>Mouseless</Company>
@@ -17,9 +17,9 @@
     <PackageIcon>icon.png</PackageIcon>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageProjectUrl>https://do.mouseless.codes</PackageProjectUrl>
-    <PackageReleaseNotes>https://do.mouseless.codes/release-notes</PackageReleaseNotes>
-    <RepositoryUrl>https://github.com/mouseless/do.git</RepositoryUrl>
+    <PackageProjectUrl>https://baked.mouseless.codes</PackageProjectUrl>
+    <PackageReleaseNotes>https://baked.mouseless.codes/release-notes</PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/mouseless/baked.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 

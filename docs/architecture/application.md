@@ -3,14 +3,14 @@
 `Application` acts as a container object for all the domain objects, features
 and layers of the software you develop.
 
-## Forging an Application
+## Baking an Application
 
-DO provides a fluent interface to create an application. You can access it
-through `Forge.New` under `Do` namespace. Below is a sample `Program.cs` that
+Baked provides a fluent interface to create an application. You can access it
+through `Bake.New` under `Baked` namespace. Below is a sample `Program.cs` that
 creates and runs a new application;
 
 ```csharp
-Forge.New
+Bake.New
     .Application(app =>
     {
         ...
@@ -20,12 +20,12 @@ Forge.New
 
 > [!NOTE]
 >
-> `Do` is automatically added as a global using so that you can directly make a
-> call to `Forge.New`.
+> `Baked` is automatically added as a global using so that you can directly make
+> a call to `Bake.New`.
 
 > [!NOTE]
 >
-> `Forge` always sets current culture to `CultureInfo.InvariantCulture` to avoid
+> `Bake` always sets current culture to `CultureInfo.InvariantCulture` to avoid
 > case conversion errors.
 
 ## Adding Extensions
@@ -33,10 +33,9 @@ Forge.New
 To add a new extension to an application, you need to make use of the feature /
 layer system.
 
-DO does not allow you to use `build.Services.Add` or `app.Use` methods
-directly. This is a design decision to avoid any unexpected behavior because
-the order of extensions may require a special attention as in [Enabling
-Cors][].
+Baked does not allow you to use `build.Services.Add` or `app.Use` methods
+directly. This is a design decision to avoid any unexpected behavior because the
+order of extensions may require a special attention as in [Enabling Cors][].
 
 `As` method provides an `ApplicationDescriptor` instance that has `Layers` and
 `Features` properties. Using these properties, you can add desired extensions
@@ -44,7 +43,7 @@ into your application.
 
 > [!NOTE]
 >
-> Layers and features come with extension methods exposed directly in `Do`
+> Layers and features come with extension methods exposed directly in `Baked`
 > namespace so that you can see options without adding an extra `using`.
 
 ### Layers
@@ -100,10 +99,10 @@ app.Features.AddConfigurationOverrider();
 
 ## Running an Application
 
-To run an application you need to call `Run()` method after forging it.
+To run an application you need to call `Run()` method after baking it.
 
 ```csharp
-Forge.New
+Bake.New
     .Application(app =>
     {
         ...

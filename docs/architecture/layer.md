@@ -25,7 +25,7 @@ implementing a new layer;
    e.g., `DependencyInjection/`
 1. Use `Layer` suffix in layer class name, e.g.,
    `DependencyInjection/DependencyInjectionLayer.cs`
-1. Provide extension methods in `Do` namespace, e.g.,
+1. Provide extension methods in `Baked` namespace, e.g.,
    `DependencyInjection/DependencyInjectionExtensions.cs`;
    1. `Add` extension to `List<ILayer>`, e.g., `AddDependencyInjection()`
    1. `Get` extensions to `ApplicationContext`, e.g.,
@@ -36,7 +36,7 @@ implementing a new layer;
 1. Don't use any suffix for phases and use method-like names, e.g., `Build` and
    `Run`
 
-Please refer to existing layers in [github.com/mouseless/do][] for examples.
+Please refer to existing layers in [github.com/mouseless/baked][] for examples.
 
 ## Creating A Layer
 
@@ -154,9 +154,9 @@ public class Build : PhaseBase<WebApplicationBuilder>
 > dependency in `ApplicationContext`. For more information
 > [Running an Application](../architecture/application.md#running-an-application)
 
-Phases can also define context dependencies from other phase artifacts. For 
-example `HttpServerLayer.Build` phase can require `IServiceCollection` which 
-will be provided during `DependencyInjectionLayer.AddServices` phase. 
+Phases can also define context dependencies from other phase artifacts. For
+example `HttpServerLayer.Build` phase can require `IServiceCollection` which
+will be provided during `DependencyInjectionLayer.AddServices` phase.
 
 ```csharp
 // DependencyInjectionLayer
@@ -182,7 +182,7 @@ public class Build()
 
 > :warning:
 >
-> This type of artifact requirement will create a dependency between phases 
+> This type of artifact requirement will create a dependency between phases
 > which results to a layer to layer dependency. In the above example `Build`
 > phase will never execute unless `DependencyLayer` is added to the application
 
@@ -385,4 +385,4 @@ This phase context will require two different actions;
    Configuration2 configuration2)`
 1. For the last configuration object: `(Configuration3 configuration3)`.
 
-[github.com/mouseless/do]:https://github.com/mouseless/do
+[github.com/mouseless/baked]:https://github.com/mouseless/baked

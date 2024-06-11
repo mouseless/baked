@@ -26,7 +26,7 @@ implementing a new feature;
    folder, e.g., `Greeting/WelcomePage/`.
 1. Provide an extension method with the implementation name to allow adding
    that implementation, e.g., `WelcomePage()`.
-   1. This method should be in an extension class under `Do` namespace, e.g.,
+   1. This method should be in an extension class under `Baked` namespace, e.g.,
       `Greeting/WelcomePage/WelcomePageGreetingExtensions.cs`.
 1. Name feature class after implementation name with abstraction name as a
    suffix, e.g., `WelcomePageGreetingFeature`.
@@ -42,7 +42,8 @@ implementing a new feature;
     1. Implement `IFeature` in `ConfigurationOverriderFeature` where you add
        all your configuration overrides.
 
-Please refer to existing features in [github.com/mouseless/do][] for examples.
+Please refer to existing features in [github.com/mouseless/baked][] for
+examples.
 
 ## Creating A Feature
 
@@ -182,4 +183,4 @@ public static class WelcomePageGreetingExtensions
 }
 ```
 
-[github.com/mouseless/do]:https://github.com/mouseless/do
+[github.com/mouseless/baked]:https://github.com/mouseless/baked

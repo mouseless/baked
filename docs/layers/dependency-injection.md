@@ -1,6 +1,6 @@
 # Dependency Injection
 
-DO uses the default dependency injection library for now.
+Baked uses the default dependency injection library for now.
 
 ```csharp
 app.Layers.AddDependencyInjection();

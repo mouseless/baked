@@ -10,7 +10,7 @@ on:
       - '.editorconfig'
       - 'Directory.Build.props'
       - 'Directory.Packages.props'
-      - 'Do.sln'
+      - 'Baked.sln'
 
 env:
   MIN_COVERAGE: 85

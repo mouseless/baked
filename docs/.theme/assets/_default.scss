@@ -11,7 +11,7 @@ body {
   min-width: calc($width-page-min + $space-md);
 }
 
-img.do {
+img.baked {
   &:is(.logo),
   &:is(.logo:is(.full)) {
     content: $url-logo-full;
@@ -46,6 +46,12 @@ img.do {
           color: $color-fg-second;
         }
       }
+    }
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    & > code {
+      font-size: smaller;
     }
   }
 
@@ -94,6 +100,8 @@ img.do {
 
   hr {
     @include border();
+
+    margin: 2em 0;
   }
 }
 

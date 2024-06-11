@@ -1,6 +1,6 @@
 # Configuration
 
-DO uses .NET's standard configuration system to provide a environment based
+Baked uses .NET's standard configuration system to provide a environment based
 configuration mechanism.
 
 ```csharp

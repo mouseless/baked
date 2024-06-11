@@ -3,7 +3,7 @@
     <header>
       <div class="logo">
         <NuxtLink to="/">
-          <img class="do logo">
+          <img class="baked logo">
         </NuxtLink>
       </div>
       <div
@@ -96,7 +96,7 @@ div.logo {
     display: block;
     height: 25px;
 
-    img.do {
+    img.baked {
       &:is(.logo) {
         height: 25px;
         display: inline-block;
@@ -139,7 +139,7 @@ nav a {
     a:has(img.logo) {
       height: 20px;
 
-      img.do {
+      img.baked {
         &:is(.logo) {
           height: 20px;
         }

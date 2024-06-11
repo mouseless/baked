@@ -1,7 +1,7 @@
 # HTTP Client
 
-DO uses ASP.NET Core's `IHttpClientFactory` and related services for providing
-clients for http requests and responses.
+Baked uses ASP.NET Core's `IHttpClientFactory` and related services for
+providing clients for http requests and responses.
 
 ```csharp
 app.Layers.AddHttpClient();

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\..\src\blueprints\Do.Blueprints.Service\Do.Blueprints.Service.csproj" />
+        <ProjectReference Include="..\..\..\..\src\recipe\Baked.Recipe.Service\Baked.Recipe.Service.csproj" />
     </ItemGroup>
 
 </Project>

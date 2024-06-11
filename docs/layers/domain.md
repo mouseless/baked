@@ -1,8 +1,8 @@
 # Domain
 
-DO introduces a model generation mechanism to reflect the business domain of
-a project. The generated model instance can be used in directly in layers or
-in features while configuring configuration targets.
+Baked introduces a model generation mechanism to reflect the business domain of
+a project. The generated model instance can be used in directly in layers or in
+features while configuring configuration targets.
 
 ```csharp
 app.Layers.AddDomain();

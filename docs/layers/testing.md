@@ -1,6 +1,6 @@
 # Testing
 
-DO uses _NUnit_ for unit testing, _Moq_ for mocking and _Shouldly_ for
+Baked uses _NUnit_ for unit testing, _Moq_ for mocking and _Shouldly_ for
 assertion.
 
 ```csharp

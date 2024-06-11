@@ -1,6 +1,6 @@
 # Monitoring
 
-DO uses the default logging library for now.
+Baked uses the default logging library for now.
 
 ```csharp
 app.Layers.AddMonitoring();
