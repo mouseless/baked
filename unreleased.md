@@ -8,6 +8,8 @@
   - `Bluprints` are now `Recipes`
 - `Authentication.Disabled` was removed
 - NHibernate logs are now redirected to logger instead of direct console logging
+- Default levels are added to enable request/response and sql logging for
+  development, only error for production
 
 ## Bugfixes
 
