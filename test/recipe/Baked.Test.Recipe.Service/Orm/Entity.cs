@@ -162,7 +162,7 @@ public class Entities(IQueryContext<Entity> _context)
         int? int32 = default,
         string? unique = default,
         Uri? uri = default,
-        Enumeration? status = default,
+        Enumeration? @enum = default,
         DateTime? dateTime = default,
         int? take = default,
         int? skip = default
@@ -174,7 +174,7 @@ public class Entities(IQueryContext<Entity> _context)
                 (int32 == default || e.Int32 == int32) &&
                 (unique == default || e.Unique == unique) &&
                 (uri == default || e.Uri == uri) &&
-                (status == default || e.Enum == status) &&
+                (@enum == default || e.Enum == @enum) &&
                 (dateTime == default || e.DateTime == dateTime),
             take: take,
             skip: skip

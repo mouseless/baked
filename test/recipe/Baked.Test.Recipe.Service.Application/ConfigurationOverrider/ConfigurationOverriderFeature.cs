@@ -29,18 +29,33 @@ public class ConfigurationOverriderFeature : IFeature
 
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
-            swaggerGenOptions.AddSecurityDefinition("AdditionalSecurity",
+            swaggerGenOptions.SwaggerDoc("samples", new() { Title = "Samples", Version = "v1" });
+            swaggerGenOptions.SwaggerDoc("external", new() { Title = "External", Version = "v1" });
+
+            swaggerGenOptions.AddSecurityDefinition("Custom",
                 new()
                 {
                     Type = SecuritySchemeType.ApiKey,
                     In = ParameterLocation.Header,
-                    Name = "X-Secret",
-                    Description = "Enter secret information",
-                }
+                    Name = "X-Custom-API-Key",
+                    Description = "Demonstration of additional security definitions",
+                },
+                documentName: "external"
             );
 
-            swaggerGenOptions.AddSecurityRequirementToOperationsThatUse<AuthorizeAttribute>("AdditionalSecurity");
-            swaggerGenOptions.AddParameterToOperationsThatUse<AuthorizeAttribute>("X-Security", @in: ParameterLocation.Header);
+            swaggerGenOptions.DocInclusionPredicate((documentName, api) =>
+                documentName == "samples" ||
+                documentName == "external" && api.GroupName == "ExternalSamples"
+            );
+
+            swaggerGenOptions.AddSecurityRequirementToOperationsThatUse<AuthorizeAttribute>("Custom", documentName: "external");
+            swaggerGenOptions.AddParameterToOperationsThatUse<AuthorizeAttribute>("X-Security", @in: ParameterLocation.Header, documentName: "external");
+        });
+
+        configurator.ConfigureSwaggerUIOptions(swaggerUIOptions =>
+        {
+            swaggerUIOptions.SwaggerEndpoint($"samples/swagger.json", "Samples");
+            swaggerUIOptions.SwaggerEndpoint($"external/swagger.json", "External");
         });
     }
 }

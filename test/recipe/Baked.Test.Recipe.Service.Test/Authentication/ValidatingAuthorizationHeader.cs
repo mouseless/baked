@@ -14,8 +14,8 @@ public class ValidatingAuthorizationHeader : TestServiceSpec
         var handler = GiveMe.AFixedBearerTokenAuthenticationHandler(request,
              tokens =>
              {
-                 tokens.Add("A", ["ClaimA"]);
-                 tokens.Add("B", ["ClaimB"]);
+                 tokens.Add("A", claims: ["ClaimA"]);
+                 tokens.Add("B", claims: ["ClaimB"]);
              });
         MockMe.ASetting("Authentication:FixedBearerToken:A", "token_a");
         MockMe.ASetting("Authentication:FixedBearerToken:B", "token_b");
@@ -32,7 +32,7 @@ public class ValidatingAuthorizationHeader : TestServiceSpec
             header: GiveMe.ADictionary(("Authorization", "Bearer wrong_token"))
         );
         var handler = GiveMe.AFixedBearerTokenAuthenticationHandler(request,
-             tokens => tokens.Add("Default", ["User"])
+             tokens => tokens.Add("Default", claims: ["User"])
         );
         MockMe.ASetting("Authentication:FixedBearerToken:Default", "test_token");
 
@@ -50,7 +50,7 @@ public class ValidatingAuthorizationHeader : TestServiceSpec
             header: GiveMe.ADictionary(("Authorization", "Bearer test_token "))
         );
         var handler = GiveMe.AFixedBearerTokenAuthenticationHandler(request,
-            tokens => tokens.Add("Default", ["User"])
+            tokens => tokens.Add("Default", claims: ["User"])
         );
         MockMe.ASetting("Authentication:FixedBearerToken:Default", "test_token");
 

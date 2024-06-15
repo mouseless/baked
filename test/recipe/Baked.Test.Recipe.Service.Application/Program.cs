@@ -18,7 +18,8 @@ Bake.New
                     tokens.Add("ClassClaims", claims: ["GivenA", "GivenB", "BaseA", "BaseB"]);
                     tokens.Add("MethodOverClassClaims", claims: ["GivenC"]);
                 },
-                formPostParameters: ["additional"]
+                formPostParameters: ["additional"],
+                documentNames: ["samples"]
             ),
             c => c.ApiKey()
         ],

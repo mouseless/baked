@@ -13,14 +13,20 @@ public static class AuthenticationExtensions
     public static void AddAuthentications(this List<IFeature> source, IEnumerable<Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>> configures) =>
         source.AddRange(configures.Select(configure => configure(new())));
 
-    public static void AddSecurityRequirementToOperationsThatUse<TAttribute>(this SwaggerGenOptions source, string schemeId) where TAttribute : Attribute =>
-        source.OperationFilter<SecurityRequirementOperationFilter<TAttribute>>([schemeId]);
+    public static void AddSecurityDefinition(this SwaggerGenOptions source, string schemeId, OpenApiSecurityScheme scheme, string? documentName) =>
+        source.DocumentFilter<SecurityDefinitionDocumentFilter>(schemeId, scheme, documentName ?? string.Empty);
+
+    public static void AddSecurityRequirementToOperationsThatUse<TAttribute>(this SwaggerGenOptions source, string schemeId,
+        string? documentName = default
+    ) where TAttribute : Attribute =>
+        source.OperationFilter<SecurityRequirementOperationFilter<TAttribute>>(schemeId, documentName ?? string.Empty);
 
     public static void AddParameterToOperationsThatUse<TAttribute>(this SwaggerGenOptions source, string name,
         ParameterLocation @in = ParameterLocation.Header,
-        bool required = false
+        bool required = false,
+        string? documentName = default
     ) where TAttribute : Attribute =>
-        source.OperationFilter<AddParameterOperationFilter<TAttribute>>(name, @in, required);
+        source.OperationFilter<AddParameterOperationFilter<TAttribute>>(name, @in, required, documentName ?? string.Empty);
 
     public static bool HasMetadata<T>(this HttpContext source) where T : Attribute
     {

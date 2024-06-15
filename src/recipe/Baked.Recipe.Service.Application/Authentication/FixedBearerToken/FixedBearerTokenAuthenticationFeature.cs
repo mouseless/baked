@@ -1,6 +1,5 @@
 ﻿using Baked;
 using Baked.Architecture;
-using Humanizer;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,7 +7,7 @@ using Microsoft.OpenApi.Models;
 
 namespace Baked.Authentication.FixedBearerToken;
 
-public class FixedBearerTokenAuthenticationFeature(List<Token> _tokens, List<string> formPostParameters)
+public class FixedBearerTokenAuthenticationFeature(IEnumerable<Token> _tokens, IEnumerable<string> _formPostParameters, IEnumerable<string> _documentNames, string description)
     : IFeature<AuthenticationConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
@@ -35,22 +34,28 @@ public class FixedBearerTokenAuthenticationFeature(List<Token> _tokens, List<str
 
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
-            swaggerGenOptions.AddSecurityDefinition("FixedBearerToken",
-                new()
-                {
-                    Type = SecuritySchemeType.Http,
-                    Scheme = "Bearer",
-                    Description = $"Enter token for {_tokens.Select(t => t.Name).Humanize("or")}",
-                }
-            );
+            foreach (var documentName in _documentNames)
+            {
+                swaggerGenOptions.AddSecurityDefinition("FixedBearerToken",
+                    new()
+                    {
+                        Type = SecuritySchemeType.Http,
+                        Scheme = "Bearer",
+                        Description = description,
+                    },
+                    documentName: documentName
+                );
 
-            swaggerGenOptions.AddSecurityRequirementToOperationsThatUse<AuthorizeAttribute>("FixedBearerToken");
+                swaggerGenOptions.AddSecurityRequirementToOperationsThatUse<AuthorizeAttribute>("FixedBearerToken",
+                    documentName: documentName
+                );
+            }
         });
 
         configurator.ConfigureApiModelConventions(conventions =>
         {
             var domainModel = configurator.Context.GetDomainModel();
-            foreach (var name in formPostParameters)
+            foreach (var name in _formPostParameters)
             {
                 conventions.Add(new AddParameterToFormPostConvention(domainModel, name), order: int.MaxValue);
             }
