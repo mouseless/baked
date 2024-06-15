@@ -25,7 +25,7 @@ public class RoutingCommands : TestServiceNfr
 
         var actual = await response.Content.ReadAsStringAsync();
 
-        actual.ShouldBe("q:b");
+        actual.ShouldBe("\"q:b\"");
     }
 
     [Test]

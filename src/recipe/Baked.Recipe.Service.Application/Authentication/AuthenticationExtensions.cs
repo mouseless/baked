@@ -10,27 +10,27 @@ namespace Baked;
 
 public static class AuthenticationExtensions
 {
-    public static void AddAuthentications(this List<IFeature> source, IEnumerable<Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>> configures) =>
-        source.AddRange(configures.Select(configure => configure(new())));
+    public static void AddAuthentications(this List<IFeature> features, IEnumerable<Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>> configures) =>
+        features.AddRange(configures.Select(configure => configure(new())));
 
-    public static void AddSecurityDefinition(this SwaggerGenOptions source, string schemeId, OpenApiSecurityScheme scheme, string? documentName) =>
-        source.DocumentFilter<SecurityDefinitionDocumentFilter>(schemeId, scheme, documentName ?? string.Empty);
+    public static void AddSecurityDefinition(this SwaggerGenOptions swaggerGenOptions, string schemeId, OpenApiSecurityScheme scheme, string? documentName) =>
+        swaggerGenOptions.DocumentFilter<SecurityDefinitionDocumentFilter>(schemeId, scheme, documentName ?? string.Empty);
 
-    public static void AddSecurityRequirementToOperationsThatUse<TAttribute>(this SwaggerGenOptions source, string schemeId,
+    public static void AddSecurityRequirementToOperationsThatUse<TAttribute>(this SwaggerGenOptions swaggerGenOptions, string schemeId,
         string? documentName = default
     ) where TAttribute : Attribute =>
-        source.OperationFilter<SecurityRequirementOperationFilter<TAttribute>>(schemeId, documentName ?? string.Empty);
+        swaggerGenOptions.OperationFilter<SecurityRequirementOperationFilter<TAttribute>>(schemeId, documentName ?? string.Empty);
 
-    public static void AddParameterToOperationsThatUse<TAttribute>(this SwaggerGenOptions source, string name,
+    public static void AddParameterToOperationsThatUse<TAttribute>(this SwaggerGenOptions swaggerGenOptions, string name,
         ParameterLocation @in = ParameterLocation.Header,
         bool required = false,
         string? documentName = default
     ) where TAttribute : Attribute =>
-        source.OperationFilter<AddParameterOperationFilter<TAttribute>>(name, @in, required, documentName ?? string.Empty);
+        swaggerGenOptions.OperationFilter<AddParameterOperationFilter<TAttribute>>(name, @in, required, documentName ?? string.Empty);
 
-    public static bool HasMetadata<T>(this HttpContext source) where T : Attribute
+    public static bool HasMetadata<T>(this HttpContext httpContext) where T : Attribute
     {
-        var metadata = source.Features.Get<IEndpointFeature>()?.Endpoint?.Metadata;
+        var metadata = httpContext.Features.Get<IEndpointFeature>()?.Endpoint?.Metadata;
 
         return metadata?.GetMetadata<T>() is not null;
     }

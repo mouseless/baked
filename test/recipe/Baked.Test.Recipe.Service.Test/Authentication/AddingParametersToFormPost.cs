@@ -19,7 +19,7 @@ public class AddingParametersToFormPost : TestServiceNfr
         var response = await Client.PostAsync("authentication-samples/form-post-authenticate", new FormUrlEncodedContent(form));
 
         var content = await response.Content.ReadAsStringAsync();
-        content.ShouldBe("FixedBearerToken");
+        content.ShouldBe("\"FixedBearerToken\"");
     }
 
     [Test]
