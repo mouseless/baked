@@ -164,6 +164,8 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
             conventions.Add(new RemoveFromRouteConvention(["Get"]));
             conventions.Add(new RemoveFromRouteConvention(["Update", "Change", "Set"]));
             conventions.Add(new RemoveFromRouteConvention(["Delete", "Remove", "Clear"]));
+            conventions.Add(new ConsumesJsonConvention(_when: c => c.Action.HasBody), order: 10);
+            conventions.Add(new ProducesJsonConvention(_when: c => !c.Action.Return.IsVoid), order: 10);
         });
 
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>

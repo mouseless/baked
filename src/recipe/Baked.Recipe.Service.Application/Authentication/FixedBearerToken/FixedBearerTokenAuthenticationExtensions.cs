@@ -14,21 +14,24 @@ public static class FixedBearerTokenAuthenticationExtensions
 {
     public static FixedBearerTokenAuthenticationFeature FixedBearerToken(this AuthenticationConfigurator _,
         Action<List<Token>>? configure = default,
-        List<string>? formPostParameters = default
+        IEnumerable<string>? formPostParameters = default,
+        IEnumerable<string>? documentNames = default,
+        string description = "Enter your token provided by the development team"
     )
     {
         configure ??= tokens => tokens.Add("Default");
         formPostParameters ??= [];
+        documentNames ??= [string.Empty];
 
         var tokens = new List<Token>();
         configure(tokens);
 
-        return new(tokens, formPostParameters);
+        return new(tokens, formPostParameters, documentNames, description);
     }
 
     public static void Add(this List<Token> tokens, string name,
         IEnumerable<string>? claims = default
-    ) => tokens.Add(new(name, claims ?? ["User"]));
+    ) => tokens.Add(new(name, claims ?? []));
 
     public static IAuthenticationHandler AFixedBearerTokenAuthenticationHandler(this Stubber giveMe, HttpRequest request, Action<List<Token>> configure)
     {
@@ -42,7 +45,7 @@ public static class FixedBearerTokenAuthenticationExtensions
             giveMe.The<ILoggerFactory>(),
             UrlEncoder.Default
         );
-        handler.InitializeAsync(new AuthenticationScheme("FixedBearerToken", "FixedBearerToken", handler.GetType()), request.HttpContext).GetAwaiter().GetResult();
+        handler.InitializeAsync(new AuthenticationScheme(nameof(FixedBearerToken), nameof(FixedBearerToken), handler.GetType()), request.HttpContext).GetAwaiter().GetResult();
 
         return handler;
     }

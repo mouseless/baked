@@ -5,8 +5,8 @@ namespace Baked.Test.HttpServer;
 
 public class ConfiguringMultipleAuthenticationHandlers : TestServiceNfr
 {
-    [TestCase("Authorization", "token-jane", "FixedBearerToken")]
-    [TestCase("X-Api-Key", "apikey", "ApiKey")]
+    [TestCase("Authorization", "token-jane", "\"FixedBearerToken\"")]
+    [TestCase("X-Api-Key", "apikey", "\"ApiKey\"")]
     public async Task Request_can_be_forwarded_to_available_handlers(string header, string value, string authenticationType)
     {
         Client.DefaultRequestHeaders.Clear();
@@ -27,7 +27,7 @@ public class ConfiguringMultipleAuthenticationHandlers : TestServiceNfr
         var response = await Client.PostAsync("authentication-samples/authenticate", null);
         var result = await response.Content.ReadAsStringAsync();
 
-        result.ShouldBe("FixedBearerToken");
+        result.ShouldBe("\"FixedBearerToken\"");
     }
 
     [Test]

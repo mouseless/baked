@@ -5,7 +5,7 @@ public class SwaggerSchemaGeneration : TestServiceNfr
     [Test]
     public async Task Generates_swagger_json_automatically()
     {
-        var response = await Client.GetAsync("/swagger/v1/swagger.json");
+        var response = await Client.GetAsync("/swagger/samples/swagger.json");
 
         dynamic? content = await response.Content.Deserialize();
 

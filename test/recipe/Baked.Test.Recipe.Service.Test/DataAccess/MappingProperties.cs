@@ -99,7 +99,7 @@ public class MappingProperties : TestServiceSpec
         await entity.Update(@enum: Enumeration.Member2);
         entity.Enum.ShouldBe(Enumeration.Member2);
 
-        var actual = GiveMe.The<Entities>().By(status: Enumeration.Member2).FirstOrDefault();
+        var actual = GiveMe.The<Entities>().By(@enum: Enumeration.Member2).FirstOrDefault();
         actual.ShouldBe(entity);
     }
 
