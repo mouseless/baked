@@ -2,14 +2,16 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using System.Xml;
 
 namespace Baked.Domain.Model;
 
-public class TypeModelMembers : TypeModelMetadata
+public class TypeModelMembers : TypeModelMetadata, IDocumentedModel
 {
     public ReadOnlyCollection<ConstructorModel> Constructors { get; private set; } = default!;
     public ModelCollection<PropertyModel> Properties { get; private set; } = default!;
-    public ModelCollection<MethodModel> Methods { get; set; } = default!;
+    public ModelCollection<MethodModel> Methods { get; private set; } = default!;
+    public XmlNode? Documentation { get; private set; } = default!;
 
     public ConstructorModel GetConstructor() =>
         Constructors.Single();
@@ -61,6 +63,7 @@ public class TypeModelMembers : TypeModelMetadata
             members.Constructors = BuildConstructors();
             members.Properties = new(type.GetProperties(builder.Options.BindingFlags.Property).Select(BuildProperty));
             members.Methods = BuildMethods();
+            members.Documentation = XmlComments.Get(type);
 
             ReadOnlyCollection<ConstructorModel> BuildConstructors()
             {
@@ -75,7 +78,7 @@ public class TypeModelMembers : TypeModelMetadata
                 return new(
                     constructorInfo.IsPublic,
                     constructorInfo.IsFamily,
-                    BuildParameters(constructorInfo)
+                    BuildParameters(constructorInfo, null)
                 );
             }
 
@@ -87,7 +90,10 @@ public class TypeModelMembers : TypeModelMetadata
                     property.GetMethod?.IsPublic == true,
                     property.GetMethod?.IsVirtual == true,
                     new(property.GetCustomAttributes())
-                );
+                )
+                {
+                    Documentation = XmlComments.Get(property)
+                };
             }
 
             ModelCollection<MethodModel> BuildMethods()
@@ -116,25 +122,30 @@ public class TypeModelMembers : TypeModelMetadata
                     baseDefinition = null;
                 }
 
+                var documentation = XmlComments.Get(methodInfo);
+
                 return new(
                     methodInfo.IsPublic,
                     methodInfo.IsFamily,
                     methodInfo.IsVirtual,
                     methodInfo.IsStatic,
                     methodInfo.IsSpecialName,
-                    BuildParameters(methodInfo),
+                    BuildParameters(methodInfo, documentation),
                     builder.GetReference(methodInfo.ReturnType),
                     methodInfo.DeclaringType is not null ? builder.GetReference(methodInfo.DeclaringType) : null,
                     baseDefinition is not null ? BuildMethod(baseDefinition) : null
-                );
+                )
+                {
+                    Documentation = documentation
+                };
             }
 
-            ModelCollection<ParameterModel> BuildParameters(MethodBase method)
+            ModelCollection<ParameterModel> BuildParameters(MethodBase method, XmlNode? methodDocumentation)
             {
-                return new(method.GetParameters().Select(BuildParameter));
+                return new(method.GetParameters().Select(p => BuildParameter(p, methodDocumentation)));
             }
 
-            ParameterModel BuildParameter(ParameterInfo parameter)
+            ParameterModel BuildParameter(ParameterInfo parameter, XmlNode? methodDocumentation)
             {
                 return new(
                     parameter.Name ?? string.Empty,
@@ -143,7 +154,10 @@ public class TypeModelMembers : TypeModelMetadata
                     parameter.DefaultValue,
                     new(parameter.Member.GetCustomAttributes()),
                     apply => apply(parameter)
-                );
+                )
+                {
+                    Documentation = XmlComments.Get(parameter, methodDocumentation)
+                };
             }
         }
     }
