@@ -27,6 +27,7 @@
     <PackageReference Include="MySql.Data" />
     <PackageReference Include="NHibernate" />
     <PackageReference Include="Swashbuckle.AspNetCore" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" />
     <PackageReference Include="System.Data.SQLite" />
   </ItemGroup>
 

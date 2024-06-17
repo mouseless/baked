@@ -118,6 +118,7 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
         configurator.ConfigureApiModel(api =>
         {
             api.References.AddRange(_assemblies);
+            api.Usings.Add("Swashbuckle.AspNetCore.Annotations");
 
             var domainModel = configurator.Context.GetDomainModel();
             foreach (var type in domainModel.Types.Having<ApiServiceAttribute>())
@@ -154,6 +155,10 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
 
         configurator.ConfigureApiModelConventions(conventions =>
         {
+            // TODO couldn't find a better way to create a shared variable
+            // between layer configurators within a feature
+            configurator.Context.Add(new TagDescriptions());
+
             conventions.Add(new AutoHttpMethodConvention([
                 (Regexes.StartsWithGet(), HttpMethod.Get),
                 (Regexes.IsUpdateChangeOrSet(), HttpMethod.Put),
@@ -166,10 +171,12 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
             conventions.Add(new RemoveFromRouteConvention(["Delete", "Remove", "Clear"]));
             conventions.Add(new ConsumesJsonConvention(_when: c => c.Action.HasBody), order: 10);
             conventions.Add(new ProducesJsonConvention(_when: c => !c.Action.Return.IsVoid), order: 10);
+            conventions.Add(new UseDocumentationAsDescriptionConvention(configurator.Context.Get<TagDescriptions>()), order: 10);
         });
 
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
+            swaggerGenOptions.EnableAnnotations();
             swaggerGenOptions.CustomSchemaIds(t =>
             {
                 string[] splitedNamespace = t.Namespace?.Split(".") ?? [];
@@ -195,6 +202,8 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
 
                 return $"{apiDescription.ActionDescriptor.AttributeRouteInfo?.Template}_{methodOrder}";
             });
+
+            swaggerGenOptions.DocumentFilter<ApplyTagDescriptionsDocumentFilter>(configurator.Context.Get<TagDescriptions>());
         });
     }
 }

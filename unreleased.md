@@ -9,5 +9,5 @@
   - Document based securtiy definition extension is added
 - `json` request and response types were documented as more than one type,
   restricted to `application/json`
-- Domain model now comes with extensions to read xml documentation
+- Domain model now contains xml comments as `XmlNode` instances
 - Swagger now includes xml documentation coming from doman model
