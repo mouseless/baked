@@ -2,19 +2,19 @@
 
 internal static class DictionaryExtensions
 {
-    internal static Dictionary<string, string> Merge(this Dictionary<string, string>? source, Dictionary<string, string>? input)
+    internal static Dictionary<string, string> Merge(this Dictionary<string, string>? dictionary, Dictionary<string, string>? input)
     {
-        source ??= [];
+        dictionary ??= [];
         input ??= [];
 
         foreach (var (key, value) in input)
         {
-            if (!source.ContainsKey(key))
+            if (!dictionary.ContainsKey(key))
             {
-                source[key] = value;
+                dictionary[key] = value;
             }
         }
 
-        return source;
+        return dictionary;
     }
 }

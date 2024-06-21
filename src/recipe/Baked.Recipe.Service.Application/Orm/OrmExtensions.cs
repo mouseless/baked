@@ -12,8 +12,8 @@ namespace Baked;
 
 public static class OrmExtensions
 {
-    public static void AddOrm(this List<IFeature> source, Func<OrmConfigurator, IFeature<OrmConfigurator>> configure) =>
-        source.Add(configure(new()));
+    public static void AddOrm(this List<IFeature> features, Func<OrmConfigurator, IFeature<OrmConfigurator>> configure) =>
+        features.Add(configure(new()));
 
     public static void AddSingleById<T>(this ControllerModel controller, DomainModel domainModel) =>
         controller.Action["SingleById"] = new("SingleById", HttpMethod.Get, [controller.MappedType.Name], new(domainModel.Types[typeof(T)]), "target")

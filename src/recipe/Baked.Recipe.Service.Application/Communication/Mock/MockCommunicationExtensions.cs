@@ -53,7 +53,7 @@ public static class MockCommunicationExtensions
         return mock.Object;
     }
 
-    public static void VerifySent<T>(this IClient<T> source,
+    public static void VerifySent<T>(this IClient<T> client,
         string? path = default,
         string? url = default,
         HttpMethod? method = default,
@@ -63,7 +63,7 @@ public static class MockCommunicationExtensions
         (string key, string value)? header = default,
         string? excludesHeader = default,
         int? times = default
-    ) => Moq.Mock.Get(source).Verify(
+    ) => Moq.Mock.Get(client).Verify(
         c => c.Send(It.Is<Request>(r =>
             (path == default || r.UrlOrPath == path) &&
             (url == default || r.UrlOrPath == url) &&
@@ -77,9 +77,9 @@ public static class MockCommunicationExtensions
         times is null ? Times.AtLeastOnce() : Times.Exactly(times.Value)
     );
 
-    public static void VerifyNotSent<T>(this IClient<T> source) =>
-        Moq.Mock.Get(source).Verify(c => c.Send(It.IsAny<Request>()), Times.Never());
+    public static void VerifyNotSent<T>(this IClient<T> client) =>
+        Moq.Mock.Get(client).Verify(c => c.Send(It.IsAny<Request>()), Times.Never());
 
-    public static void VerifyNoContentIsSent<T>(this IClient<T> source) =>
-        Moq.Mock.Get(source).Verify(c => c.Send(It.Is<Request>(r => r.Content == null)));
+    public static void VerifyNoContentIsSent<T>(this IClient<T> client) =>
+        Moq.Mock.Get(client).Verify(c => c.Send(It.Is<Request>(r => r.Content == null)));
 }

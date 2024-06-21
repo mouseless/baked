@@ -7,12 +7,12 @@ namespace Baked;
 
 public static class DatabaseExtensions
 {
-    public static void AddDatabase(this List<IFeature> source, Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>> configure) =>
-        source.Add(configure(new()));
+    public static void AddDatabase(this List<IFeature> features, Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>> configure) =>
+        features.Add(configure(new()));
 
-    public static PropertyPart Index<TEntity>(this PropertyPart source, string name) =>
-        source.Index($"IX_{typeof(TEntity).Name}_{name}");
+    public static PropertyPart Index<TEntity>(this PropertyPart propertyPart, string name) =>
+        propertyPart.Index($"IX_{typeof(TEntity).Name}_{name}");
 
-    public static void Index(this IManyToOneInstance source, Type entity, string name) =>
-        source.Index($"IX_{entity.Name}_{name}");
+    public static void Index(this IManyToOneInstance manyToOne, Type entity, string name) =>
+        manyToOne.Index($"IX_{entity.Name}_{name}");
 }

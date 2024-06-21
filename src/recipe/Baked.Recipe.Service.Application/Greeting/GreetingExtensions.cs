@@ -5,6 +5,6 @@ namespace Baked;
 
 public static class GreetingExtensions
 {
-    public static void AddGreeting(this List<IFeature> source, Func<GreetingConfigurator, IFeature<GreetingConfigurator>> configure) =>
-        source.Add(configure(new()));
+    public static void AddGreeting(this List<IFeature> features, Func<GreetingConfigurator, IFeature<GreetingConfigurator>> configure) =>
+        features.Add(configure(new()));
 }

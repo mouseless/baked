@@ -21,10 +21,10 @@ public static class PhaseContextExtensions
         };
     }
 
-    public static void ShouldConfigureTarget<TTarget>(this PhaseContext source, TTarget expected)
+    public static void ShouldConfigureTarget<TTarget>(this PhaseContext phaseContext, TTarget expected)
     {
         var configured = false;
-        foreach (var configurator in source.Configurators)
+        foreach (var configurator in phaseContext.Configurators)
         {
             configurator.Configure((TTarget actual) =>
             {
@@ -37,10 +37,10 @@ public static class PhaseContextExtensions
         configured.ShouldBeTrue("Phase context didn't get configured");
     }
 
-    public static void ShouldConfigureTwoTargets<TTarget1, TTarget2>(this PhaseContext source, TTarget1 expected1, TTarget2 expected2)
+    public static void ShouldConfigureTwoTargets<TTarget1, TTarget2>(this PhaseContext phaseContext, TTarget1 expected1, TTarget2 expected2)
     {
         var configured = false;
-        foreach (var configurator in source.Configurators)
+        foreach (var configurator in phaseContext.Configurators)
         {
             configurator.Configure((TTarget1 actual1, TTarget2 actual2) =>
             {
@@ -54,10 +54,10 @@ public static class PhaseContextExtensions
         configured.ShouldBeTrue("Phase context didn't get configured");
     }
 
-    public static void ShouldConfigureThreeTargets<TTarget1, TTarget2, TTarget3>(this PhaseContext source, TTarget1 expected1, TTarget2 expected2, TTarget3 expected3)
+    public static void ShouldConfigureThreeTargets<TTarget1, TTarget2, TTarget3>(this PhaseContext phaseContext, TTarget1 expected1, TTarget2 expected2, TTarget3 expected3)
     {
         var configured = false;
-        foreach (var configurator in source.Configurators)
+        foreach (var configurator in phaseContext.Configurators)
         {
             configurator.Configure((TTarget1 actual1, TTarget2 actual2, TTarget3 actual3) =>
             {
@@ -72,9 +72,9 @@ public static class PhaseContextExtensions
         configured.ShouldBeTrue("Phase context didn't get configured");
     }
 
-    public static void ShouldAddValueToContextOnDispose<T>(this PhaseContext source, T value, ApplicationContext context)
+    public static void ShouldAddValueToContextOnDispose<T>(this PhaseContext phaseContext, T value, ApplicationContext context)
     {
-        using (source)
+        using (phaseContext)
         {
             context.ShouldNotHave(value);
         }

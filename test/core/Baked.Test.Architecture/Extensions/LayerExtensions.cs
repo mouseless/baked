@@ -34,11 +34,11 @@ public static class LayerExtensions
         return result.Object;
     }
 
-    public static void VerifyInitialized(this ILayer source) =>
-        Mock.Get(source).Verify(l => l.GetPhases());
+    public static void VerifyInitialized(this ILayer layer) =>
+        Mock.Get(layer).Verify(l => l.GetPhases());
 
-    public static void VerifyApplied(this ILayer source, IPhase phase) =>
-        Mock.Get(source)
+    public static void VerifyApplied(this ILayer layer, IPhase phase) =>
+        Mock.Get(layer)
             .Verify(l => l.GetContext(
                 phase,
                 It.IsAny<ApplicationContext>()
