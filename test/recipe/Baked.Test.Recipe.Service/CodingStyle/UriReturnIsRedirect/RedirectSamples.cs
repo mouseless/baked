@@ -4,6 +4,9 @@ public class RedirectSamples
 {
     Uri _uri = default!;
 
+    /// <param name="uri">
+    /// uri description
+    /// </param>
     public RedirectSamples With(Uri uri)
     {
         _uri = uri;
@@ -11,6 +14,15 @@ public class RedirectSamples
         return this;
     }
 
+    /// <summary>
+    /// Form post summary
+    /// </summary>
+    /// <remarks>
+    /// Form post description
+    /// </remarks>
+    /// <param name="key">
+    /// key description
+    /// </param>
     public Uri FormPost(string key) =>
         new($"{_uri}?key={key}");
 

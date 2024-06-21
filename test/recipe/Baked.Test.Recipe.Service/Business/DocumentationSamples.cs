@@ -22,4 +22,10 @@ public class DocumentationSamples
     /// </param>
     public DocumentedData Method(string parameter1, string parameter2) =>
         new() { Property = $"{parameter1} - {parameter2}" };
+
+    /// <param name="route">
+    /// route description
+    /// </param>
+    public string Route(string route) =>
+        route;
 }
