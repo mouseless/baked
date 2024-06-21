@@ -8,31 +8,31 @@ namespace Baked;
 
 public static class TestingExtensions
 {
-    public static void AddTesting(this List<ILayer> source) =>
-        source.Add(new TestingLayer());
+    public static void AddTesting(this List<ILayer> layers) =>
+        layers.Add(new TestingLayer());
 
-    public static void ConfigureTestConfiguration(this LayerConfigurator source, Action<TestConfiguration> configuration) =>
-        source.Configure(configuration);
+    public static void ConfigureTestConfiguration(this LayerConfigurator configurator, Action<TestConfiguration> configuration) =>
+        configurator.Configure(configuration);
 
-    public static void Add<T>(this IMockCollection source, bool singleton = false, Action<Mock<T>>? setup = default) where T : class =>
-        source.Add(new(
+    public static void Add<T>(this IMockCollection mocks, bool singleton = false, Action<Mock<T>>? setup = default) where T : class =>
+        mocks.Add(new(
             Type: typeof(T),
             Singleton: singleton,
             Setup: setup == default ? default : obj => setup((Mock<T>)obj)
         ));
 
-    public static void Add(this IMockCollection source, Type service, bool singleton = false, Action<Mock>? setup = default) =>
-        source.Add(new(
+    public static void Add(this IMockCollection mocks, Type service, bool singleton = false, Action<Mock>? setup = default) =>
+        mocks.Add(new(
             Type: service,
             Singleton: singleton,
             Setup: setup == default ? default : obj => setup(obj)
         ));
 
-    public static void Returns<TMock, TResult>(this ISetup<TMock, TResult> source, params TResult[] results) where TMock : class
+    public static void Returns<TMock, TResult>(this ISetup<TMock, TResult> setup, params TResult[] results) where TMock : class
     {
         int currentResultIndex = 0;
 
-        source.Returns(() =>
+        setup.Returns(() =>
         {
             if (currentResultIndex >= results.Length)
             {
@@ -43,11 +43,11 @@ public static class TestingExtensions
         });
     }
 
-    public static void ReturnsAsync<TMock, TResult>(this ISetup<TMock, Task<TResult>> source, params TResult[] results) where TMock : class
+    public static void ReturnsAsync<TMock, TResult>(this ISetup<TMock, Task<TResult>> setup, params TResult[] results) where TMock : class
     {
         int currentResultIndex = 0;
 
-        source.ReturnsAsync(() =>
+        setup.ReturnsAsync(() =>
         {
             if (currentResultIndex >= results.Length)
             {

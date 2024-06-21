@@ -1,4 +1,6 @@
-﻿namespace Baked.Domain.Model;
+﻿using System.Xml;
+
+namespace Baked.Domain.Model;
 
 public record MethodOverloadModel(
     bool IsPublic,
@@ -16,8 +18,10 @@ public record MethodOverloadModel(
     IsVirtual,
     false,
     Parameters
-)
+), IDocumentedModel
 {
     public TypeModel ReturnType => ReturnTypeReference.Model;
     public TypeModel? DeclaringType => DeclaringTypeReference?.Model;
+
+    public XmlNode? Documentation { get; init; }
 }

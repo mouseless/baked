@@ -15,7 +15,7 @@ namespace Baked;
 
 public static class BakeExtensions
 {
-    public static Application Service(this Bake source,
+    public static Application Service(this Bake bake,
         Func<BusinessConfigurator, IFeature<BusinessConfigurator>> business,
         IEnumerable<Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>>? authentications = default,
         Func<AuthorizationConfigurator, IFeature<AuthorizationConfigurator>>? authorization = default,
@@ -42,7 +42,7 @@ public static class BakeExtensions
         orm ??= c => c.AutoMap();
         configure ??= _ => { };
 
-        return source.Application(app =>
+        return bake.Application(app =>
         {
             app.Layers.AddCodeGeneration();
             app.Layers.AddConfiguration();

@@ -12,11 +12,11 @@ public static class DomainExtensions
     public static void AddDomain(this ICollection<ILayer> layers) =>
         layers.Add(new DomainLayer());
 
-    public static IDomainTypeCollection GetDomainTypes(this ApplicationContext source) =>
-        source.Get<IDomainTypeCollection>();
+    public static IDomainTypeCollection GetDomainTypes(this ApplicationContext application) =>
+        application.Get<IDomainTypeCollection>();
 
-    public static DomainModel GetDomainModel(this ApplicationContext source) =>
-        source.Get<DomainModel>();
+    public static DomainModel GetDomainModel(this ApplicationContext context) =>
+        context.Get<DomainModel>();
 
     public static void ConfigureDomainTypeCollection(this LayerConfigurator configurator, Action<IDomainTypeCollection> configuration) =>
         configurator.Configure(configuration);
@@ -49,14 +49,14 @@ public static class DomainExtensions
         }
     }
 
-    public static bool Contains(this ModelCollection<TypeModelReference> source, Type type) =>
-        source.Contains(TypeModelReference.IdFrom(type));
+    public static bool Contains(this ModelCollection<TypeModelReference> typeReferences, Type type) =>
+        typeReferences.Contains(TypeModelReference.IdFrom(type));
 
-    public static bool Contains(this ModelCollection<TypeModelReference> source, TypeModel type) =>
-        source.Contains(((IModel)type).Id);
+    public static bool Contains(this ModelCollection<TypeModelReference> typeReferences, TypeModel type) =>
+        typeReferences.Contains(((IModel)type).Id);
 
-    public static bool Contains(this ModelCollection<TypeModel> source, Type type) =>
-        source.Contains(TypeModelReference.IdFrom(type));
+    public static bool Contains(this ModelCollection<TypeModel> types, Type type) =>
+        types.Contains(TypeModelReference.IdFrom(type));
 
     public static bool Has<T>(this ICustomAttributesModel model) where T : Attribute =>
         model.CustomAttributes.Contains<T>();

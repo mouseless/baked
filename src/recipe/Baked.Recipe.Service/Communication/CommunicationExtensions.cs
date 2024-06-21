@@ -4,9 +4,9 @@ namespace Baked.Communication;
 
 public static class CommunicationExtensions
 {
-    public static Uri WithQuery(this Uri source, Dictionary<string, string> parameters)
+    public static Uri WithQuery(this Uri uri, Dictionary<string, string> parameters)
     {
-        var builder = new UriBuilder(source);
+        var builder = new UriBuilder(uri);
 
         if (!string.IsNullOrEmpty(builder.Query))
         {

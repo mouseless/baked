@@ -4,7 +4,7 @@ using Baked.RestApi.Model;
 
 namespace Baked.Authentication.FixedBearerToken;
 
-public class AddParameterToFormPostConvention(DomainModel _domain, string _name)
+public class AddParameterToFormPostConvention(DomainModel _domain, string _name, string _description)
     : IApiModelConvention<ActionModelContext>
 {
     public void Apply(ActionModelContext context)
@@ -16,7 +16,8 @@ public class AddParameterToFormPostConvention(DomainModel _domain, string _name)
             _name,
             new(_domain.Types[typeof(string)], ParameterModelFrom.BodyOrForm, _name)
             {
-                IsInvokeMethodParameter = false
+                IsInvokeMethodParameter = false,
+                AdditionalAttributes = [$"SwaggerSchema(\"{_description}\")"]
             }
         );
     }

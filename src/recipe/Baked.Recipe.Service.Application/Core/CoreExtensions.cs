@@ -12,8 +12,8 @@ namespace Baked;
 
 public static class CoreExtensions
 {
-    public static void AddCore(this List<IFeature> source, Func<CoreConfigurator, IFeature<CoreConfigurator>> configure) =>
-        source.Add(configure(new()));
+    public static void AddCore(this List<IFeature> features, Func<CoreConfigurator, IFeature<CoreConfigurator>> configure) =>
+        features.Add(configure(new()));
 
     public static int AnInteger(this Stubber _) =>
         42;
@@ -25,8 +25,8 @@ public static class CoreExtensions
         string? value = default
     ) => value ?? "test string";
 
-    public static Guid ToGuid(this string source) =>
-        Guid.Parse(source);
+    public static Guid ToGuid(this string guidStr) =>
+        Guid.Parse(guidStr);
 
     public static DateTime ADateTime(this Stubber _,
         int year = 2023,
@@ -105,20 +105,20 @@ public static class CoreExtensions
     public static PropertyInfo? PropertyOf<T>(this Stubber _, string name) =>
         typeof(T).GetProperty(name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
 
-    public static void ShouldBe<T>(this Type source) =>
-        source.ShouldBe(typeof(T));
+    public static void ShouldBe<T>(this Type type) =>
+        type.ShouldBe(typeof(T));
 
-    public static void ShouldBeAbstract(this PropertyInfo source)
+    public static void ShouldBeAbstract(this PropertyInfo property)
     {
-        var getMethod = source.GetGetMethod(true);
+        var getMethod = property.GetGetMethod(true);
 
         getMethod.ShouldNotBeNull();
         getMethod.ShouldBeAbstract();
     }
 
-    public static void ShouldBeVirtual(this PropertyInfo source)
+    public static void ShouldBeVirtual(this PropertyInfo property)
     {
-        var getMethod = source.GetGetMethod(true);
+        var getMethod = property.GetGetMethod(true);
 
         getMethod.ShouldNotBeNull();
         getMethod.ShouldBeVirtual();
@@ -127,19 +127,19 @@ public static class CoreExtensions
     public static MethodInfo? MethodOf<T>(this Stubber _, string name) =>
         typeof(T).GetMethod(name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
 
-    public static void ShouldBeAbstract(this MethodInfo source)
+    public static void ShouldBeAbstract(this MethodInfo method)
     {
-        source.IsAbstract.ShouldBeTrue();
+        method.IsAbstract.ShouldBeTrue();
     }
 
-    public static void ShouldBeVirtual(this MethodInfo source)
+    public static void ShouldBeVirtual(this MethodInfo method)
     {
-        source.IsVirtual.ShouldBeTrue();
+        method.IsVirtual.ShouldBeTrue();
     }
 
-    public static void ShouldHaveOneParameter<T>(this MethodInfo source)
+    public static void ShouldHaveOneParameter<T>(this MethodInfo method)
     {
-        source.GetParameters().Length.ShouldBe(1);
-        source.GetParameters().First().ParameterType.ShouldBe<T>();
+        method.GetParameters().Length.ShouldBe(1);
+        method.GetParameters().First().ParameterType.ShouldBe<T>();
     }
 }

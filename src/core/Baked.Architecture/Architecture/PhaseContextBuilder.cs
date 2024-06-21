@@ -50,32 +50,32 @@ public static class PhaseContextBuilderExtensions
     public static PhaseContext CreateEmptyContext(this IPhase _) =>
         PhaseContext.Empty;
 
-    public static PhaseContextBuilder CreateContextBuilder(this IPhase source) => new(source);
+    public static PhaseContextBuilder CreateContextBuilder(this IPhase phase) => new(phase);
 
-    public static PhaseContext CreateContext<TTarget>(this IPhase source, TTarget target,
+    public static PhaseContext CreateContext<TTarget>(this IPhase phase, TTarget target,
         Action? onDispose = default
     )
         where TTarget : notnull
     {
-        return source.CreateContextBuilder().Add(target).OnDispose(onDispose).Build();
+        return phase.CreateContextBuilder().Add(target).OnDispose(onDispose).Build();
     }
 
-    public static PhaseContext CreateContext<TTarget1, TTarget2>(this IPhase source, TTarget1 target1, TTarget2 target2,
+    public static PhaseContext CreateContext<TTarget1, TTarget2>(this IPhase phase, TTarget1 target1, TTarget2 target2,
         Action? onDispose = default
     )
         where TTarget1 : notnull
         where TTarget2 : notnull
     {
-        return source.CreateContextBuilder().Add(target1, target2).OnDispose(onDispose).Build();
+        return phase.CreateContextBuilder().Add(target1, target2).OnDispose(onDispose).Build();
     }
 
-    public static PhaseContext CreateContext<TTarget1, TTarget2, TTarget3>(this IPhase source, TTarget1 target1, TTarget2 target2, TTarget3 target3,
+    public static PhaseContext CreateContext<TTarget1, TTarget2, TTarget3>(this IPhase phase, TTarget1 target1, TTarget2 target2, TTarget3 target3,
         Action? onDispose = default
     )
         where TTarget1 : notnull
         where TTarget2 : notnull
         where TTarget3 : notnull
     {
-        return source.CreateContextBuilder().Add(target1, target2, target3).OnDispose(onDispose).Build();
+        return phase.CreateContextBuilder().Add(target1, target2, target3).OnDispose(onDispose).Build();
     }
 }

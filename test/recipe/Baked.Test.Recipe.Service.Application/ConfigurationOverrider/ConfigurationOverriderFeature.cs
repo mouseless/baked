@@ -1,6 +1,7 @@
 ﻿using Baked.Architecture;
 using Baked.RestApi.Model;
 using Baked.Test.Authentication;
+using Baked.Test.Business;
 using Baked.Test.ExceptionHandling;
 using Baked.Test.Orm;
 using Microsoft.AspNetCore.Authorization;
@@ -23,6 +24,8 @@ public class ConfigurationOverriderFeature : IFeature
             var domainModel = configurator.Context.GetDomainModel();
 
             api.GetController<AuthenticationSamples>().Action[nameof(AuthenticationSamples.FormPostAuthenticate)].UseForm = true;
+            api.GetController<DocumentationSamples>().Action[nameof(DocumentationSamples.Route)].Parameter["route"].From = ParameterModelFrom.Route;
+            api.GetController<DocumentationSamples>().Action[nameof(DocumentationSamples.Route)].Parameter["route"].RoutePosition = 2;
             api.GetController<ExceptionSamples>().Action[nameof(ExceptionSamples.Throw)].Parameter["handled"].From = ParameterModelFrom.Query;
             api.GetController<Entities>().AddSingleById<Entity>(domainModel);
         });

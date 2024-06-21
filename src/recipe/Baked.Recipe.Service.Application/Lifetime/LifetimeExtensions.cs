@@ -5,6 +5,6 @@ namespace Baked;
 
 public static class LifetimeExtensions
 {
-    public static void AddLifetimes(this List<IFeature> source, IEnumerable<Func<LifetimeConfigurator, IFeature<LifetimeConfigurator>>> configures) =>
-        source.AddRange(configures.Select(configure => configure(new())));
+    public static void AddLifetimes(this List<IFeature> features, IEnumerable<Func<LifetimeConfigurator, IFeature<LifetimeConfigurator>>> configures) =>
+        features.AddRange(configures.Select(configure => configure(new())));
 }

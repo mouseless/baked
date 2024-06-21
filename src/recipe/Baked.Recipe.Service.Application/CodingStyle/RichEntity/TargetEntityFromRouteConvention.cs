@@ -23,6 +23,7 @@ public class TargetEntityFromRouteConvention(DomainModel _domain)
         context.Parameter.ConvertToId(name: "id", dontAddRequired: true);
         context.Parameter.From = ParameterModelFrom.Route;
         context.Parameter.RoutePosition = 1;
+        context.Parameter.AdditionalAttributes.Add($"SwaggerSchema(\"Unique value to find {entityType.Name.Humanize().ToLowerInvariant()} resource\")");
         context.Action.RouteParts = [entityType.Name.Pluralize(), context.Action.Name];
         context.Action.FindTargetStatement = queryContextParameter.BuildSingleBy(context.Parameter.Name, fromRoute: true);
     }

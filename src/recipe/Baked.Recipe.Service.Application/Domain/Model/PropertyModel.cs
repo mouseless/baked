@@ -1,4 +1,6 @@
-﻿namespace Baked.Domain.Model;
+﻿using System.Xml;
+
+namespace Baked.Domain.Model;
 
 public record PropertyModel(
     string Name,
@@ -6,9 +8,11 @@ public record PropertyModel(
     bool IsPublic,
     bool IsVirtual,
     AttributeCollection CustomAttributes
-) : IModel, ICustomAttributesModel
+) : IModel, ICustomAttributesModel, IDocumentedModel
 {
     public TypeModel PropertyType => PropertyTypeReference.Model;
 
     string IModel.Id { get; } = Name;
+
+    public XmlNode? Documentation { get; set; }
 }

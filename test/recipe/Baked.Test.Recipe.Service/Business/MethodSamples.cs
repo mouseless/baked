@@ -60,9 +60,18 @@ public class MethodSamples(ILogger<MethodSamples> _logger)
     public void PrimitiveListParameters(List<string> strings, int[] ints, IEnumerable<DateTime> dateTimes) =>
         _logger.LogInformation($"{nameof(PrimitiveListParameters)} was called with [{strings.Join(", ")}], [{ints.Join(", ")}] and [{dateTimes.Join(", ")}]");
 
+    /// <param name="entity">
+    /// Entity description
+    /// </param>
     public Entity EntityParameters(Entity entity) =>
         entity;
 
+    /// <param name="entities">
+    /// Entities description
+    /// </param>
+    /// <param name="otherEntities">
+    /// Other entities description
+    /// </param>
     public IEnumerable<Entity> EntityListParameters(IEnumerable<Entity> entities, Entity[] otherEntities) =>
         [.. entities, .. otherEntities];
 

@@ -35,15 +35,15 @@ public static class PhaseExtensions
         return result.Object;
     }
 
-    public static void VerifyInitialized(this IPhase source,
+    public static void VerifyInitialized(this IPhase phaseContext,
         ApplicationContext? context = default
     )
     {
-        Mock.Get(source).Verify(p => p.Initialize(), Times.Once);
+        Mock.Get(phaseContext).Verify(p => p.Initialize(), Times.Once);
 
         if (context is not null)
         {
-            source.Context.ShouldBeEquivalentTo(context);
+            phaseContext.Context.ShouldBeEquivalentTo(context);
         }
     }
 }

@@ -15,12 +15,12 @@ public static class FeatureExtensions
         return result.Object;
     }
 
-    public static void VerifyInitialized(this IFeature source) =>
-        Mock.Get(source).Verify(f => f.Configure(It.IsAny<LayerConfigurator>()));
+    public static void VerifyInitialized(this IFeature feature) =>
+        Mock.Get(feature).Verify(f => f.Configure(It.IsAny<LayerConfigurator>()));
 
-    public static void VerifyConfigures<TTarget>(this IFeature source, TTarget target) where TTarget : notnull =>
-        Mock.Get(source).Verify(f => f.Configure(LayerConfigurator.Create(new(), target)));
+    public static void VerifyConfigures<TTarget>(this IFeature feature, TTarget target) where TTarget : notnull =>
+        Mock.Get(feature).Verify(f => f.Configure(LayerConfigurator.Create(new(), target)));
 
-    public static void VerifyConfiguresNothing(this IFeature source) =>
-        Mock.Get(source).Verify(f => f.Configure(It.IsAny<LayerConfigurator>()), Times.Never());
+    public static void VerifyConfiguresNothing(this IFeature feature) =>
+        Mock.Get(feature).Verify(f => f.Configure(It.IsAny<LayerConfigurator>()), Times.Never());
 }
