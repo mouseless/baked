@@ -7,7 +7,7 @@ using Microsoft.OpenApi.Models;
 
 namespace Baked.Authentication.FixedBearerToken;
 
-public class FixedBearerTokenAuthenticationFeature(IEnumerable<Token> _tokens, IEnumerable<string> _formPostParameters, IEnumerable<string> _documentNames, string description)
+public class FixedBearerTokenAuthenticationFeature(IEnumerable<Token> _tokens, IEnumerable<string> _formPostParameters, IEnumerable<string> _documentNames, string _description)
     : IFeature<AuthenticationConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
@@ -41,7 +41,7 @@ public class FixedBearerTokenAuthenticationFeature(IEnumerable<Token> _tokens, I
                     {
                         Type = SecuritySchemeType.Http,
                         Scheme = "Bearer",
-                        Description = description,
+                        Description = _description,
                     },
                     documentName: documentName
                 );
@@ -57,10 +57,29 @@ public class FixedBearerTokenAuthenticationFeature(IEnumerable<Token> _tokens, I
             var domainModel = configurator.Context.GetDomainModel();
             foreach (var name in _formPostParameters)
             {
-                conventions.Add(new AddParameterToFormPostConvention(domainModel, name), order: int.MaxValue);
+                conventions.Add(
+                    new AddParameterToFormPostConvention(
+                        domainModel,
+                        name,
+                        Settings.Optional($"Authentication:FixedBearerToken:Description:{name}", name)
+                    ),
+                    order: int.MaxValue
+                );
             }
 
-            conventions.Add(new AddParameterToFormPostConvention(domainModel, "hash"), order: int.MaxValue);
+            conventions.Add(
+                new AddParameterToFormPostConvention(
+                    domainModel,
+                    "hash",
+                    Settings.Optional(
+                        "Authentication:FixedBearerToken:Description:hash",
+                        "Concatenate all form post parameters with secret " +
+                        "token at the end, then hash it using `sha256` and " +
+                        "convert it to `base64`."
+                    )
+                ),
+                order: int.MaxValue
+            );
         });
     }
 }
