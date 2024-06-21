@@ -1,4 +1,4 @@
-namespace Baked.Test.Business;
+﻿namespace Baked.Test.Business;
 
 public class IncludingXmlComments : TestServiceSpec
 {
@@ -60,6 +60,23 @@ public class IncludingXmlComments : TestServiceSpec
                 .Types[typeof(DocumentationSamples)]
                 .GetMembers()
                 .GetMethod(nameof(DocumentationSamples.Method))
+                .Parameters[name];
+
+        var documentation = parameter.Documentation?.InnerText;
+        documentation.ShouldNotBeNull();
+        documentation.Trim().ShouldBe(expectedDocumentation);
+    }
+
+    [TestCase("enumerable", "Enumerable description")]
+    [TestCase("array", "Array description")]
+    [TestCase("dictionary", "Dictionary description")]
+    public void Accessing_array_and_generic_parameter_documentation(string name, string expectedDocumentation)
+    {
+        var parameter =
+            DomainModel
+                .Types[typeof(DocumentationSamples)]
+                .GetMembers()
+                .GetMethod(nameof(DocumentationSamples.ArrayAndGenericParameters))
                 .Parameters[name];
 
         var documentation = parameter.Documentation?.InnerText;

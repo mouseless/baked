@@ -34,6 +34,18 @@ public class DocumentationSamples
     /// </returns>
     public void ParameterlessMethod() { }
 
+    /// <param name="enumerable">
+    /// Enumerable description
+    /// </param>
+    /// <param name="array">
+    /// Array description
+    /// </param>
+    /// <param name="dictionary">
+    /// Dictionary description
+    /// </param>
+    public string ArrayAndGenericParameters(IEnumerable<string> enumerable, string[] array, Dictionary<string, string> dictionary) =>
+        $"{enumerable.Join(", ")} - {array.Join(", ")} - {dictionary.Join(", ")}";
+
     /// <param name="route">
     /// route description
     /// </param>

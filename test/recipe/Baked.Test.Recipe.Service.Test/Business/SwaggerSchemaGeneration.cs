@@ -59,6 +59,19 @@ public class SwaggerSchemaGeneration : TestServiceNfr
         ((string?)schema?.properties["parameter2"].description).ShouldBe("Parameter 2 documentation");
     }
 
+    [TestCase("entity-parameters", "entityId", "Entity description")]
+    [TestCase("entity-list-parameters", "entityIds", "Entities description")]
+    [TestCase("entity-list-parameters", "otherEntityIds", "Other entities description")]
+    public async Task Entity_parameter_comments_are_kept_even_if_their_name_change(string method, string parameter, string expected)
+    {
+        var response = await Client.GetAsync("/swagger/samples/swagger.json");
+
+        dynamic? content = await response.Content.Deserialize();
+        var schema = content?.components.schemas[$"test--business--method-samples--{method}-request"];
+
+        ((string?)schema?.properties[parameter].description).ShouldBe(expected);
+    }
+
     [Test]
     public async Task Route_parameters_are_placed_in_schema_description_under_parameters()
     {

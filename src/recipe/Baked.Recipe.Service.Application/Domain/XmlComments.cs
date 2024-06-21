@@ -77,7 +77,26 @@ public class XmlComments
             return $"M:{methodInfo.ReflectedType?.FullName}.{methodInfo.Name}";
         }
 
-        return $"M:{methodInfo.ReflectedType?.FullName}.{methodInfo.Name}({parameters.Select(p => p.ParameterType.FullName).Join(",")})";
+        return $"M:{methodInfo.ReflectedType?.FullName}.{methodInfo.Name}({parameters.Select(p => XmlTypeName(p.ParameterType)).Join(",")})";
+    }
+
+    static string XmlTypeName(Type? type)
+    {
+        if (type is null) { return string.Empty; }
+
+        if (type.IsArray)
+        {
+            return $"{XmlTypeName(type.GetElementType())}[]";
+        }
+
+        var fullName = type.FullName ?? type.Name;
+
+        if (type.IsGenericType)
+        {
+            return $"{fullName[..fullName.IndexOf('`')]}{{{type.GenericTypeArguments.Select(XmlTypeName).Join(",")}}}";
+        }
+
+        return fullName;
     }
 
     static string XmlName(PropertyInfo propertyInfo) =>
