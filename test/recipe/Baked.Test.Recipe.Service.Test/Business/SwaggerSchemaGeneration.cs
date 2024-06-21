@@ -37,6 +37,17 @@ public class SwaggerSchemaGeneration : TestServiceNfr
     }
 
     [Test]
+    public async Task Class_summary_and_remarks_are_used_for_non_documented_methods_in_command_classes()
+    {
+        var response = await Client.GetAsync("/swagger/samples/swagger.json");
+        dynamic? content = await response.Content.Deserialize();
+        var endpoint = content?.paths["/command"].post;
+
+        ((string?)endpoint?.summary).ShouldBe("Command summary from class");
+        ((string?)endpoint?.description).ShouldBe("Command remarks from class");
+    }
+
+    [Test]
     public async Task Method_parameter_comments_are_placed_in_schema_property_descriptions()
     {
         var response = await Client.GetAsync("/swagger/samples/swagger.json");

@@ -33,6 +33,24 @@ public class IncludingXmlComments : TestServiceSpec
         returns.InnerText.Trim().ShouldBe("Return documentation");
     }
 
+    [Test]
+    public void Accessing_method_documentation_of_a_parameterless_method()
+    {
+        var method =
+            DomainModel
+                .Types[typeof(DocumentationSamples)]
+                .GetMembers()
+                .GetMethod(nameof(DocumentationSamples.ParameterlessMethod));
+
+        var summary = method.Documentation?["summary"];
+        summary.ShouldNotBeNull();
+        summary.InnerText.Trim().ShouldBe("Method summary");
+
+        var returns = method.Documentation?["returns"];
+        returns.ShouldNotBeNull();
+        returns.InnerText.Trim().ShouldBe("Return documentation");
+    }
+
     [TestCase("parameter1", "Parameter 1 documentation")]
     [TestCase("parameter2", "Parameter 2 documentation")]
     public void Accessing_parameter_documentation(string name, string expectedDocumentation)

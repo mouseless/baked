@@ -23,6 +23,17 @@ public class DocumentationSamples
     public DocumentedData Method(string parameter1, string parameter2) =>
         new() { Property = $"{parameter1} - {parameter2}" };
 
+    /// <summary>
+    /// Method summary
+    /// </summary>
+    /// <remarks>
+    /// Method description
+    /// </remarks>
+    /// <returns>
+    /// Return documentation
+    /// </returns>
+    public void ParameterlessMethod() { }
+
     /// <param name="route">
     /// route description
     /// </param>

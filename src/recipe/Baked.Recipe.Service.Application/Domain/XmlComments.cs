@@ -69,8 +69,16 @@ public class XmlComments
     static string XmlName(Type type) =>
         $"T:{type.FullName}";
 
-    static string XmlName(MethodInfo methodInfo) =>
-        $"M:{methodInfo.ReflectedType?.FullName}.{methodInfo.Name}({methodInfo.GetParameters().Select(p => p.ParameterType.FullName).Join(",")})";
+    static string XmlName(MethodInfo methodInfo)
+    {
+        var parameters = methodInfo.GetParameters();
+        if (!parameters.Any())
+        {
+            return $"M:{methodInfo.ReflectedType?.FullName}.{methodInfo.Name}";
+        }
+
+        return $"M:{methodInfo.ReflectedType?.FullName}.{methodInfo.Name}({parameters.Select(p => p.ParameterType.FullName).Join(",")})";
+    }
 
     static string XmlName(PropertyInfo propertyInfo) =>
         $"P:{propertyInfo.ReflectedType?.FullName}.{propertyInfo.Name}";
