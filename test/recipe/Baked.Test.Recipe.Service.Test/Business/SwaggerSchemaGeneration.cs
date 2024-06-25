@@ -64,7 +64,7 @@ public class SwaggerSchemaGeneration : TestServiceNfr
     {
         var response = await Client.GetAsync("/swagger/samples/swagger.json");
         dynamic? content = await response.Content.Deserialize();
-        var endpoint = content?.paths["/command"].post;
+        var endpoint = content?.paths["/documentation-samples"].post;
 
         ((string?)endpoint?.summary).ShouldBe("Command summary from class");
         ((string?)endpoint?.description).ShouldBe("Command remarks from class");
@@ -168,5 +168,30 @@ public class SwaggerSchemaGeneration : TestServiceNfr
             {
                 property = "value 1 - value 2"
             });
+    }
+
+    [Test]
+    public async Task Request_examples_are_included_from_class_for_commands()
+    {
+        var response = await Client.GetAsync("/swagger/samples/swagger.json");
+        dynamic? content = await response.Content.Deserialize();
+        var endpoint = content?.paths["/documentation-samples"].post;
+
+        ((object?)endpoint?.requestBody.content["application/json"].example)
+            .ShouldDeeplyBe(new
+            {
+                parameter = "sample"
+            });
+    }
+
+    [Test]
+    public async Task Response_examples_are_included_from_class_for_commands()
+    {
+        var response = await Client.GetAsync("/swagger/samples/swagger.json");
+        dynamic? content = await response.Content.Deserialize();
+        var endpoint = content?.paths["/documentation-samples"].post;
+
+        ((object?)endpoint?.responses["200"].content["application/json"].example)
+            .ShouldDeeplyBe("sample");
     }
 }
