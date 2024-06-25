@@ -4,6 +4,7 @@ using Baked.Domain.Configuration;
 using Baked.Domain.Conventions;
 using Baked.Domain.Model;
 using System.Diagnostics.CodeAnalysis;
+using System.Xml;
 
 namespace Baked;
 
@@ -182,6 +183,30 @@ public static class DomainExtensions
 
         return result is not null;
     }
+
+    #endregion
+
+    #region Documentation
+
+    public static string? GetSummary(this XmlNode? xmlNode) =>
+        xmlNode.GetChildTagInnerText("summary");
+
+    public static string? GetRemarks(this XmlNode? xmlNode) =>
+        xmlNode.GetChildTagInnerText("remarks");
+
+    public static string? GetReturns(this XmlNode? xmlNode) =>
+        xmlNode.GetChildTagInnerText("returns");
+
+    public static string? GetChildTagInnerText(this XmlNode? xmlNode, string tagName) =>
+        xmlNode?[tagName]?.InnerText.Trim();
+
+    public static string? EscapeNewLines(this string? str) =>
+        str?
+          .Replace("  ", string.Empty)
+          .Replace("\n ", "\\n")
+          .Replace("\n", "\\n")
+          .Replace("\r", "\\r")
+        ;
 
     #endregion
 }

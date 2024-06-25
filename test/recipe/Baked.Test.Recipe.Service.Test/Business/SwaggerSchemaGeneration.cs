@@ -37,6 +37,29 @@ public class SwaggerSchemaGeneration : TestServiceNfr
     }
 
     [Test]
+    public async Task Escapes_newlines_when_xml_comment_is_multiline()
+    {
+        var response = await Client.GetAsync("/swagger/samples/swagger.json");
+        dynamic? content = await response.Content.Deserialize();
+        var endpoint = content?.paths["/documentation-samples/multiline"].post;
+
+        ((string?)endpoint?.summary)?.Trim().ShouldBe("""
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras porta,
+        augue ut egestas finibus, purus sem scelerisque nunc, ac hendrerit
+        sapien ligula eget tellus.
+        """);
+        ((string?)endpoint?.description)?.Trim().ShouldBe("""
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras porta,
+        augue ut egestas finibus, purus sem scelerisque nunc, ac hendrerit
+        sapien ligula eget tellus.
+
+        Aenean sollicitudin elementum neque, at vehicula lacus pretium ac.
+        Vivamus ac augue eget leo vehicula mollis. Sed vulputate molestie
+        commodo.
+        """);
+    }
+
+    [Test]
     public async Task Class_summary_and_remarks_are_used_for_non_documented_methods_in_command_classes()
     {
         var response = await Client.GetAsync("/swagger/samples/swagger.json");
