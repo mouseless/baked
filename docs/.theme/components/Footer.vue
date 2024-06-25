@@ -71,11 +71,11 @@ div.logo {
 
   a:has(img.logo) {
     display: block;
-    height: 15px;
+    height: 12px;
 
     img.baked {
       &:is(.logo) {
-        height: 15px;
+        height: 12px;
         display: inline-block;
         opacity: 0.5;
       }
