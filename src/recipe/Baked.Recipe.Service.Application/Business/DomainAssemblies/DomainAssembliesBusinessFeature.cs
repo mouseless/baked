@@ -173,6 +173,7 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
             conventions.Add(new ConsumesJsonConvention(_when: c => c.Action.HasBody), order: 10);
             conventions.Add(new ProducesJsonConvention(_when: c => !c.Action.Return.IsVoid), order: 10);
             conventions.Add(new UseDocumentationAsDescriptionConvention(configurator.Context.Get<TagDescriptions>()), order: 10);
+            conventions.Add(new AddMappedMethodAttributeConvention());
         });
 
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
@@ -213,6 +214,7 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
             });
 
             swaggerGenOptions.DocumentFilter<ApplyTagDescriptionsDocumentFilter>(configurator.Context.Get<TagDescriptions>());
+            swaggerGenOptions.OperationFilter<XmlExamplesOperationFilter>(configurator.Context.GetDomainModel());
         });
     }
 }

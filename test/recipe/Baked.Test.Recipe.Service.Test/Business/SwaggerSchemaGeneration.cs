@@ -140,4 +140,33 @@ public class SwaggerSchemaGeneration : TestServiceNfr
         ((string?)schema?.description).ShouldBe("Data summary");
         ((string?)schema?.properties["property"].description).ShouldBe("Property summary");
     }
+
+    [Test]
+    public async Task Request_examples_are_included()
+    {
+        var response = await Client.GetAsync("/swagger/samples/swagger.json");
+        dynamic? content = await response.Content.Deserialize();
+        var endpoint = content?.paths["/documentation-samples/method"].post;
+
+        ((object?)endpoint?.requestBody.content["application/json"].example)
+            .ShouldDeeplyBe(new
+            {
+                parameter1 = "value 1",
+                parameter2 = "value 2"
+            });
+    }
+
+    [Test]
+    public async Task Response_examples_are_included()
+    {
+        var response = await Client.GetAsync("/swagger/samples/swagger.json");
+        dynamic? content = await response.Content.Deserialize();
+        var endpoint = content?.paths["/documentation-samples/method"].post;
+
+        ((object?)endpoint?.responses["200"].content["application/json"].example)
+            .ShouldDeeplyBe(new
+            {
+                property = "value 1 - value 2"
+            });
+    }
 }

@@ -32,11 +32,6 @@ public class RequestLoggingFeature(bool singleLine)
             });
         });
 
-        configurator.ConfigureApiModelConventions(conventions =>
-        {
-            conventions.Add(new AddMappedMethodAttributeConvention());
-        });
-
         configurator.ConfigureMiddlewareCollection(middlewares =>
         {
             middlewares.Add<MappedMethodLogScopeMiddleware>(order: -20);

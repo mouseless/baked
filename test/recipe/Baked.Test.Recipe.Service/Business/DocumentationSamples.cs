@@ -20,6 +20,19 @@ public class DocumentationSamples
     /// <param name="parameter2">
     /// Parameter 2 documentation
     /// </param>
+    /// <example for="rest-api">
+    /// <code for="request">
+    /// {
+    ///   "parameter1": "value 1",
+    ///   "parameter2": "value 2"
+    /// }
+    /// </code>
+    /// <code for="response">
+    /// {
+    ///   "property": "value 1 - value 2"
+    /// }
+    /// </code>
+    /// </example>
     public DocumentedData Method(string parameter1, string parameter2) =>
         new() { Property = $"{parameter1} - {parameter2}" };
 
