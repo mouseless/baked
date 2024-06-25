@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.Domain;
 using Baked.Domain.Configuration;
 using Baked.Domain.Model;
 using Baked.RestApi;
@@ -176,6 +177,14 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
 
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
+            foreach (var assembly in _assemblies)
+            {
+                var xmlPath = XmlComments.GetPath(assembly);
+                if (xmlPath is null) { continue; }
+
+                swaggerGenOptions.IncludeXmlComments(xmlPath);
+            }
+
             swaggerGenOptions.EnableAnnotations();
             swaggerGenOptions.CustomSchemaIds(t =>
             {

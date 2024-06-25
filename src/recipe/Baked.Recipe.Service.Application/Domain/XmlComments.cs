@@ -8,16 +8,27 @@ public class XmlComments
 {
     static ConcurrentDictionary<Assembly, XmlNode> _comments = new();
 
+    public static string? GetPath(Assembly? assembly)
+    {
+        if (assembly is null) { return null; }
+
+        string result = assembly.Location.Replace(".dll", ".xml");
+        if (!File.Exists(result)) { return null; }
+
+        return result;
+    }
+
     public static XmlNode? Get(Assembly? assembly)
     {
         if (assembly is null) { return null; }
         if (_comments.TryGetValue(assembly, out var result)) { return result; }
 
-        var document = new XmlDocument();
-        string filename = assembly.Location.Replace(".dll", ".xml");
-        if (!File.Exists(filename)) { return null; }
+        var path = GetPath(assembly);
+        if (path is null) { return null; }
 
-        document.Load(filename);
+        var document = new XmlDocument();
+        document.Load(path);
+
         if (document.DocumentElement is null) { return null; }
 
         _comments.TryAdd(assembly, document.DocumentElement);

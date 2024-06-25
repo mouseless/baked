@@ -3,6 +3,13 @@ using Baked.Orm;
 
 namespace Baked.Test.Orm;
 
+/// <summary>
+/// Sample entity
+/// </summary>
+/// <remarks>
+/// It is a test entity to check all supported property types both in data
+/// access layer and in rest api layer.
+/// </remarks>
 public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransaction _transaction)
 {
     protected Entity() : this(default!, default!, default!) { }
@@ -10,10 +17,18 @@ public class Entity(IEntityContext<Entity> _context, Entities _entities, ITransa
     public virtual Guid Id { get; protected set; } = default!;
     public virtual Guid? Guid { get; protected set; } = default!;
     public virtual string? String { get; protected set; } = default!;
+    /// <summary>
+    /// Data suffix should cause this property to map to a TEXT column in MySql
+    /// etc.
+    /// </summary>
     public virtual string? StringData { get; protected set; } = default!;
     public virtual int? Int32 { get; protected set; } = default!;
     public virtual string? Unique { get; protected set; } = default!;
     public virtual Uri? Uri { get; protected set; } = default!;
+    /// <summary>
+    /// Object type properties are converted to json strings in db, dynamic
+    /// json objects in rest api layer.
+    /// </summary>
     public virtual object? Dynamic { get; protected set; } = default!;
     public virtual Enumeration? Enum { get; protected set; } = default!;
     public virtual DateTime? DateTime { get; protected set; } = default!;

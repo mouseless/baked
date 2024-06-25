@@ -128,4 +128,16 @@ public class SwaggerSchemaGeneration : TestServiceNfr
 
         ((string?)schema?.properties["key"].description).ShouldBe("key description");
     }
+
+    [Test]
+    public async Task Documented_properties_are_included_in_schema_property_descriptions()
+    {
+        var response = await Client.GetAsync("/swagger/samples/swagger.json");
+
+        dynamic? content = await response.Content.Deserialize();
+        var schema = content?.components.schemas["test--business--documented-data"];
+
+        ((string?)schema?.description).ShouldBe("Data summary");
+        ((string?)schema?.properties["property"].description).ShouldBe("Property summary");
+    }
 }
