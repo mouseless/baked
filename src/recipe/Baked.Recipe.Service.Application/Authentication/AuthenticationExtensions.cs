@@ -16,17 +16,22 @@ public static class AuthenticationExtensions
     public static void AddSecurityDefinition(this SwaggerGenOptions swaggerGenOptions, string schemeId, OpenApiSecurityScheme scheme, string? documentName) =>
         swaggerGenOptions.DocumentFilter<SecurityDefinitionDocumentFilter>(schemeId, scheme, documentName ?? string.Empty);
 
-    public static void AddSecurityRequirementToOperationsThatUse<TAttribute>(this SwaggerGenOptions swaggerGenOptions, string schemeId,
+    public static void AddSecurityRequirementToOperationsThatUse<TAttribute>(this SwaggerGenOptions swaggerGenOptions, IEnumerable<string> schemeIds,
+        bool includeRedirects = false,
         string? documentName = default
     ) where TAttribute : Attribute =>
-        swaggerGenOptions.OperationFilter<SecurityRequirementOperationFilter<TAttribute>>(schemeId, documentName ?? string.Empty);
+        swaggerGenOptions.OperationFilter<SecurityRequirementOperationFilter<TAttribute>>(schemeIds, includeRedirects, documentName ?? string.Empty);
 
-    public static void AddParameterToOperationsThatUse<TAttribute>(this SwaggerGenOptions swaggerGenOptions, string name,
-        ParameterLocation @in = ParameterLocation.Header,
-        bool required = false,
+    public static void AddParameterToOperationsThatUse<TAttribute>(this SwaggerGenOptions swaggerGenOptions, OpenApiParameter parameter,
+        int position = -1,
         string? documentName = default
     ) where TAttribute : Attribute =>
-        swaggerGenOptions.OperationFilter<AddParameterOperationFilter<TAttribute>>(name, @in, required, documentName ?? string.Empty);
+        swaggerGenOptions.OperationFilter<AddParameterOperationFilter<TAttribute>>(parameter, position, documentName ?? string.Empty);
+
+    public static void AddFormParameterToRedirectOperationsThatUse<TAttribute>(this SwaggerGenOptions swaggerGenOptions, string name, OpenApiSchema property,
+        string? documentName = default
+    ) where TAttribute : Attribute =>
+        swaggerGenOptions.OperationFilter<AddFormParameterToRedirectOperationFilter<TAttribute>>(name, property, documentName ?? string.Empty);
 
     public static bool HasMetadata<T>(this HttpContext httpContext) where T : Attribute
     {

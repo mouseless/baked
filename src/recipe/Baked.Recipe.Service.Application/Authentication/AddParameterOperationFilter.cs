@@ -3,7 +3,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Baked.Authentication;
 
-public class AddParameterOperationFilter<T>(string _name, ParameterLocation _in, bool _required, string _documentName)
+public class AddParameterOperationFilter<T>(OpenApiParameter _parameter, int _position, string _documentName)
     : IOperationFilter where T : Attribute
 {
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
@@ -11,11 +11,13 @@ public class AddParameterOperationFilter<T>(string _name, ParameterLocation _in,
         if (!string.IsNullOrWhiteSpace(_documentName) && context.DocumentName != _documentName) { return; }
         if (!context.MethodInfo.CustomAttributes.Any(a => a.AttributeType == typeof(T))) { return; }
 
-        operation.Parameters.Add(new()
+        if (_position >= 0 && _position < operation.Parameters.Count)
         {
-            Required = _required,
-            In = _in,
-            Name = _name
-        });
+            operation.Parameters.Insert(_position, _parameter);
+        }
+        else
+        {
+            operation.Parameters.Add(_parameter);
+        }
     }
 }

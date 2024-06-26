@@ -96,9 +96,5 @@ public class IncludingXmlComments : TestServiceSpec
         var summary = property.Documentation?["summary"];
         summary.ShouldNotBeNull();
         summary.InnerText.Trim().ShouldBe("Property summary");
-
-        var value = property.Documentation?["value"];
-        value.ShouldNotBeNull();
-        value.InnerText.Trim().ShouldBe("Value explanation");
     }
 }

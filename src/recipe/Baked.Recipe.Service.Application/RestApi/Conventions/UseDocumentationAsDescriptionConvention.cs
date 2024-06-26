@@ -11,7 +11,7 @@ public class UseDocumentationAsDescriptionConvention(TagDescriptions _descriptio
         if (context.Controller.MappedType is null) { return; }
         if (!context.Controller.MappedType.TryGetMembers(out var controllerMembers)) { return; }
 
-        var summary = controllerMembers.Documentation?["summary"]?.InnerText.Trim();
+        var summary = controllerMembers.Documentation.GetSummary();
 
         _descriptions[context.Controller.GroupName] = summary ?? string.Empty;
     }
@@ -21,11 +21,11 @@ public class UseDocumentationAsDescriptionConvention(TagDescriptions _descriptio
         if (context.Action.MappedMethod is null) { return; }
         if (context.Action.MappedMethod.Documentation is null) { return; }
 
-        var summary = context.Action.MappedMethod.Documentation["summary"]?.InnerText.Trim();
-        var remarks = context.Action.MappedMethod.Documentation["remarks"]?.InnerText.Trim();
+        var summary = context.Action.MappedMethod.Documentation.GetSummary();
+        var remarks = context.Action.MappedMethod.Documentation.GetRemarks();
         if (summary is null && remarks is null) { return; }
 
-        context.Action.AdditionalAttributes.Add($"SwaggerOperation(Summary = \"{summary}\", Description = \"{remarks}\")");
+        context.Action.AdditionalAttributes.Add($"SwaggerOperation(Summary = \"{summary.EscapeNewLines()}\", Description = \"{remarks.EscapeNewLines()}\")");
     }
 
     public void Apply(ParameterModelContext context)
@@ -36,6 +36,6 @@ public class UseDocumentationAsDescriptionConvention(TagDescriptions _descriptio
         var description = context.Parameter.MappedParameter.Documentation.InnerText.Trim();
         if (description is null) { return; }
 
-        context.Parameter.AdditionalAttributes.Add($"SwaggerSchema(\"{description}\")");
+        context.Parameter.AdditionalAttributes.Add($"SwaggerSchema(\"{description.EscapeNewLines()}\")");
     }
 }

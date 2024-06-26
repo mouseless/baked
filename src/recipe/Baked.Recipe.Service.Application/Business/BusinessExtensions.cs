@@ -1,7 +1,12 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using System.Xml;
 
 namespace Baked;
 
@@ -59,5 +64,25 @@ public static class BusinessExtensions
         if (!forward) { return services.AddSingleton(service, implementation); }
 
         return services.AddSingleton(service, sp => sp.GetRequiredServiceUsingRequestServices(implementation));
+    }
+
+    public static bool TryGetMappedMethod(this ApiDescription apiDescription, [NotNullWhen(true)] out MappedMethodAttribute? result)
+    {
+        result = apiDescription.CustomAttributes().OfType<MappedMethodAttribute>().SingleOrDefault();
+
+        return result is not null;
+    }
+
+    public static void SetJsonExample(this IDictionary<string, OpenApiMediaType> mediaTypes, XmlNode? documentation, string @for)
+    {
+        var example = documentation.GetExampleCode(@for);
+        if (example is null) { return; }
+
+        if (!mediaTypes.TryGetValue("application/json", out var mediaType))
+        {
+            mediaTypes["application/json"] = mediaType = new() { };
+        }
+
+        mediaType.Example = OpenApiAnyFactory.CreateFromJson(example);
     }
 }

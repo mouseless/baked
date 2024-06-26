@@ -13,10 +13,10 @@ public class IncludeClassDocsForActionNamesConvention(IEnumerable<string> action
         if (!context.Controller.MappedType.TryGetMembers(out var controllerMembers)) { return; }
         if (controllerMembers.Documentation is null) { return; }
 
-        var summary = controllerMembers.Documentation["summary"]?.InnerText.Trim();
-        var remarks = controllerMembers.Documentation["remarks"]?.InnerText.Trim();
+        var summary = controllerMembers.Documentation.GetSummary();
+        var remarks = controllerMembers.Documentation.GetRemarks();
         if (summary is null && remarks is null) { return; }
 
-        context.Action.AdditionalAttributes.Add($"SwaggerOperation(Summary = \"{summary}\", Description = \"{remarks}\")");
+        context.Action.AdditionalAttributes.Add($"SwaggerOperation(Summary = \"{summary.EscapeNewLines()}\", Description = \"{remarks.EscapeNewLines()}\")");
     }
 }

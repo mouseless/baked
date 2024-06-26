@@ -2,10 +2,12 @@
 using Baked.Business;
 using Baked.Lifetime;
 using Baked.RestApi.Conventions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Baked.CodingStyle.CommandPattern;
 
-public class CommandPatternCodingStyleFeature : IFeature<CodingStyleConfigurator>
+public class CommandPatternCodingStyleFeature(IEnumerable<string> _methodNames)
+    : IFeature<CodingStyleConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
@@ -35,10 +37,15 @@ public class CommandPatternCodingStyleFeature : IFeature<CodingStyleConfigurator
         configurator.ConfigureApiModelConventions(conventions =>
         {
             conventions.Add(new InitializeUsingQueryParametersConvention(), order: -10);
-            conventions.Add(new IncludeClassDocsForActionNamesConvention(["Execute", "Process"]), order: -10);
-            conventions.Add(new UseClassNameInsteadOfActionNamesConvention(["Execute", "Process"]), order: -10);
-            conventions.Add(new RemoveFromRouteConvention(["Execute", "Process"]));
+            conventions.Add(new IncludeClassDocsForActionNamesConvention(_methodNames), order: -10);
+            conventions.Add(new UseClassNameInsteadOfActionNamesConvention(_methodNames), order: -10);
+            conventions.Add(new RemoveFromRouteConvention(_methodNames));
             conventions.Add(new UseRootPathAsGroupNameForSingleMethodNonLocatablesConvention());
+        });
+
+        configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
+        {
+            swaggerGenOptions.OperationFilter<XmlExamplesFromClassOperationFilter>(_methodNames, configurator.Context.GetDomainModel());
         });
     }
 }

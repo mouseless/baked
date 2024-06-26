@@ -35,6 +35,11 @@ public class ConfigurationOverriderFeature : IFeature
             swaggerGenOptions.SwaggerDoc("samples", new() { Title = "Samples", Version = "v1" });
             swaggerGenOptions.SwaggerDoc("external", new() { Title = "External", Version = "v1" });
 
+            swaggerGenOptions.DocInclusionPredicate((documentName, api) =>
+                documentName == "samples" ||
+                documentName == "external" && api.GroupName == "ExternalSamples"
+            );
+
             swaggerGenOptions.AddSecurityDefinition("Custom",
                 new()
                 {
@@ -45,14 +50,20 @@ public class ConfigurationOverriderFeature : IFeature
                 },
                 documentName: "external"
             );
-
-            swaggerGenOptions.DocInclusionPredicate((documentName, api) =>
-                documentName == "samples" ||
-                documentName == "external" && api.GroupName == "ExternalSamples"
+            swaggerGenOptions.AddSecurityDefinition("Custom.Secret",
+                new()
+                {
+                    Type = SecuritySchemeType.ApiKey,
+                    In = ParameterLocation.Header,
+                    Name = "X-Custom-API-Secret",
+                    Description = "Demonstration of adding two requirements",
+                },
+                documentName: "external"
             );
 
-            swaggerGenOptions.AddSecurityRequirementToOperationsThatUse<AuthorizeAttribute>("Custom", documentName: "external");
-            swaggerGenOptions.AddParameterToOperationsThatUse<AuthorizeAttribute>("X-Security", @in: ParameterLocation.Header, documentName: "external");
+            swaggerGenOptions.AddSecurityRequirementToOperationsThatUse<AuthorizeAttribute>(["Custom", "Custom.Secret"], documentName: "external");
+            swaggerGenOptions.AddParameterToOperationsThatUse<AuthorizeAttribute>(new() { Name = "X-Security-2", In = ParameterLocation.Header }, documentName: "external");
+            swaggerGenOptions.AddParameterToOperationsThatUse<AuthorizeAttribute>(new() { Name = "X-Security-1", In = ParameterLocation.Header }, position: 0, documentName: "external");
         });
 
         configurator.ConfigureSwaggerUIOptions(swaggerUIOptions =>

@@ -1,6 +1,6 @@
 ﻿using Baked.RestApi.Configuration;
 
-namespace Baked.Logging.Request;
+namespace Baked.Business.DomainAssemblies;
 
 public class AddMappedMethodAttributeConvention : IApiModelConvention<ActionModelContext>
 {

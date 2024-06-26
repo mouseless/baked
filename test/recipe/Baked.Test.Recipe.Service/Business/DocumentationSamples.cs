@@ -20,6 +20,19 @@ public class DocumentationSamples
     /// <param name="parameter2">
     /// Parameter 2 documentation
     /// </param>
+    /// <example for="rest-api">
+    /// <code for="request">
+    /// {
+    ///   "parameter1": "value 1",
+    ///   "parameter2": "value 2"
+    /// }
+    /// </code>
+    /// <code for="response">
+    /// {
+    ///   "property": "value 1 - value 2"
+    /// }
+    /// </code>
+    /// </example>
     public DocumentedData Method(string parameter1, string parameter2) =>
         new() { Property = $"{parameter1} - {parameter2}" };
 
@@ -51,4 +64,20 @@ public class DocumentationSamples
     /// </param>
     public string Route(string route) =>
         route;
+
+    /// <summary>
+    /// Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras porta,
+    /// augue ut egestas finibus, purus sem scelerisque nunc, ac hendrerit
+    /// sapien ligula eget tellus.
+    /// </summary>
+    /// <remarks>
+    /// Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras porta,
+    /// augue ut egestas finibus, purus sem scelerisque nunc, ac hendrerit
+    /// sapien ligula eget tellus.
+    ///
+    /// Aenean sollicitudin elementum neque, at vehicula lacus pretium ac.
+    /// Vivamus ac augue eget leo vehicula mollis. Sed vulputate molestie
+    /// commodo.
+    /// </remarks>
+    public void Multiline() { }
 }

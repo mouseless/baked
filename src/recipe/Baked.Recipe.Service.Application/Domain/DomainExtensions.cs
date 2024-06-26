@@ -3,7 +3,9 @@ using Baked.Domain;
 using Baked.Domain.Configuration;
 using Baked.Domain.Conventions;
 using Baked.Domain.Model;
+using Baked.Testing;
 using System.Diagnostics.CodeAnalysis;
+using System.Xml;
 
 namespace Baked;
 
@@ -183,5 +185,61 @@ public static class DomainExtensions
         return result is not null;
     }
 
+    #endregion
+
+    #region Documentation
+
+    static readonly string _xmlLeftIndent = new string(' ', 3 * 4);
+
+    public static string? GetSummary(this XmlNode? xmlNode) =>
+        xmlNode.GetChildTagInnerText("summary");
+
+    public static string? GetRemarks(this XmlNode? xmlNode) =>
+        xmlNode.GetChildTagInnerText("remarks");
+
+    public static string? GetReturns(this XmlNode? xmlNode) =>
+        xmlNode.GetChildTagInnerText("returns");
+
+    public static string? GetExampleCode(this XmlNode? xmlNode, string @for,
+        string exampleFor = "rest-api"
+    ) => xmlNode?.SelectSingleNode($"example[@for='{exampleFor}']/code[@for='{@for}']")?.InnerText.Trim().Replace(_xmlLeftIndent, string.Empty);
+
+    public static string? GetChildTagInnerText(this XmlNode? xmlNode, string tagName) =>
+        xmlNode?[tagName]?.InnerText.Trim();
+
+    public static string? EscapeNewLines(this string? str) =>
+        str?
+          .Replace(_xmlLeftIndent, string.Empty)
+          .Replace("\n ", "\\n")
+          .Replace("\n", "\\n")
+          .Replace("\r", "\\r")
+        ;
+
+    public static XmlNode? TheDocumentation<T>(this Stubber _,
+        string? property = default,
+        string? method = default,
+        string? parameter = default
+    )
+    {
+        var type = ServiceSpec.DomainModel.Types[typeof(T)];
+        if (!type.TryGetMembers(out var members)) { return null; }
+
+        if (property is not null)
+        {
+            return members.Properties[property].Documentation;
+        }
+
+        if (method is not null)
+        {
+            if (parameter is not null)
+            {
+                return members.Methods[method].DefaultOverload.Parameters[parameter].Documentation;
+            }
+
+            return members.Methods[method].Documentation;
+        }
+
+        return members.Documentation;
+    }
     #endregion
 }
