@@ -4,6 +4,7 @@ using Baked.Caching;
 using Baked.Communication;
 using Baked.Core;
 using Baked.Database;
+using Baked.Domain.Model;
 using Baked.ExceptionHandling;
 using Baked.MockOverrider;
 using Baked.Orm;
@@ -17,8 +18,10 @@ namespace Baked;
 
 public abstract class ServiceSpec : Spec
 {
+    static DomainModel _domainModel = default!;
     static IServiceProvider _serviceProvider = default!;
 
+    internal static DomainModel DomainModel => _domainModel;
     internal static IServiceProvider ServiceProvider => _serviceProvider;
     internal static ISession Session => _serviceProvider.GetRequiredService<ISession>();
 
@@ -84,6 +87,7 @@ public abstract class ServiceSpec : Spec
             configure?.Invoke(app);
         });
 
+        _domainModel = context.GetDomainModel();
         _serviceProvider = context.GetServiceProvider();
 
         return context;
