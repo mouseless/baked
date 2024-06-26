@@ -21,12 +21,11 @@ public static class AuthenticationExtensions
     ) where TAttribute : Attribute =>
         swaggerGenOptions.OperationFilter<SecurityRequirementOperationFilter<TAttribute>>(schemeIds, documentName ?? string.Empty);
 
-    public static void AddParameterToOperationsThatUse<TAttribute>(this SwaggerGenOptions swaggerGenOptions, string name,
-        ParameterLocation @in = ParameterLocation.Header,
-        bool required = false,
+    public static void AddParameterToOperationsThatUse<TAttribute>(this SwaggerGenOptions swaggerGenOptions, OpenApiParameter parameter,
+        int position = -1,
         string? documentName = default
     ) where TAttribute : Attribute =>
-        swaggerGenOptions.OperationFilter<AddParameterOperationFilter<TAttribute>>(name, @in, required, documentName ?? string.Empty);
+        swaggerGenOptions.OperationFilter<AddParameterOperationFilter<TAttribute>>(parameter, position, documentName ?? string.Empty);
 
     public static bool HasMetadata<T>(this HttpContext httpContext) where T : Attribute
     {

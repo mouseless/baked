@@ -62,7 +62,8 @@ public class ConfigurationOverriderFeature : IFeature
             );
 
             swaggerGenOptions.AddSecurityRequirementToOperationsThatUse<AuthorizeAttribute>(["Custom", "Custom.Secret"], documentName: "external");
-            swaggerGenOptions.AddParameterToOperationsThatUse<AuthorizeAttribute>("X-Security", @in: ParameterLocation.Header, documentName: "external");
+            swaggerGenOptions.AddParameterToOperationsThatUse<AuthorizeAttribute>(new() { Name = "X-Security-2", In = ParameterLocation.Header }, documentName: "external");
+            swaggerGenOptions.AddParameterToOperationsThatUse<AuthorizeAttribute>(new() { Name = "X-Security-1", In = ParameterLocation.Header }, position: 0, documentName: "external");
         });
 
         configurator.ConfigureSwaggerUIOptions(swaggerUIOptions =>
