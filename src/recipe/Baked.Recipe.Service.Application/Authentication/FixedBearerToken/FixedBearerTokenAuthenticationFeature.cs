@@ -36,7 +36,7 @@ public class FixedBearerTokenAuthenticationFeature(IEnumerable<Token> _tokens, I
         {
             foreach (var documentName in _documentNames)
             {
-                swaggerGenOptions.AddSecurityDefinition("FixedBearerToken",
+                swaggerGenOptions.AddSecurityDefinition(nameof(FixedBearerToken),
                     new()
                     {
                         Type = SecuritySchemeType.Http,
@@ -46,7 +46,7 @@ public class FixedBearerTokenAuthenticationFeature(IEnumerable<Token> _tokens, I
                     documentName: documentName
                 );
 
-                swaggerGenOptions.AddSecurityRequirementToOperationsThatUse<AuthorizeAttribute>("FixedBearerToken",
+                swaggerGenOptions.AddSecurityRequirementToOperationsThatUse<AuthorizeAttribute>([nameof(FixedBearerToken)],
                     documentName: documentName
                 );
             }

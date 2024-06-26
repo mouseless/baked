@@ -16,10 +16,10 @@ public static class AuthenticationExtensions
     public static void AddSecurityDefinition(this SwaggerGenOptions swaggerGenOptions, string schemeId, OpenApiSecurityScheme scheme, string? documentName) =>
         swaggerGenOptions.DocumentFilter<SecurityDefinitionDocumentFilter>(schemeId, scheme, documentName ?? string.Empty);
 
-    public static void AddSecurityRequirementToOperationsThatUse<TAttribute>(this SwaggerGenOptions swaggerGenOptions, string schemeId,
+    public static void AddSecurityRequirementToOperationsThatUse<TAttribute>(this SwaggerGenOptions swaggerGenOptions, IEnumerable<string> schemeIds,
         string? documentName = default
     ) where TAttribute : Attribute =>
-        swaggerGenOptions.OperationFilter<SecurityRequirementOperationFilter<TAttribute>>(schemeId, documentName ?? string.Empty);
+        swaggerGenOptions.OperationFilter<SecurityRequirementOperationFilter<TAttribute>>(schemeIds, documentName ?? string.Empty);
 
     public static void AddParameterToOperationsThatUse<TAttribute>(this SwaggerGenOptions swaggerGenOptions, string name,
         ParameterLocation @in = ParameterLocation.Header,

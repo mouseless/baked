@@ -3,7 +3,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Baked.Authentication;
 
-public class SecurityRequirementOperationFilter<T>(string _schemeId, string _documentName)
+public class SecurityRequirementOperationFilter<T>(IEnumerable<string> _schemeIds, string _documentName)
     : IOperationFilter where T : Attribute
 {
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
@@ -11,12 +11,12 @@ public class SecurityRequirementOperationFilter<T>(string _schemeId, string _doc
         if (!string.IsNullOrWhiteSpace(_documentName) && context.DocumentName != _documentName) { return; }
         if (!context.MethodInfo.CustomAttributes.Any(a => a.AttributeType == typeof(T))) { return; }
 
-        operation.Security.Add(new()
+        var requirement = new OpenApiSecurityRequirement();
+        foreach (var schemeId in _schemeIds)
         {
-            {
-                new() { Reference = new() { Type = ReferenceType.SecurityScheme, Id = _schemeId } },
-                Array.Empty<string>()
-            }
-        });
+            requirement.Add(new() { Reference = new() { Type = ReferenceType.SecurityScheme, Id = schemeId } }, Array.Empty<string>());
+        }
+
+        operation.Security.Add(requirement);
     }
 }
