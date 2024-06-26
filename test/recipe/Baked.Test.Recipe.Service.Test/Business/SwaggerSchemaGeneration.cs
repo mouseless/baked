@@ -26,6 +26,18 @@ public class SwaggerSchemaGeneration : TestServiceNfr
     }
 
     [Test]
+    public async Task Empty_tags_are_not_shown_for_a_document()
+    {
+        var response = await Client.GetAsync("/swagger/external/swagger.json");
+        dynamic? content = await response.Content.Deserialize();
+        JArray? tags = content?.tags;
+        var tagExists = tags?.Any(tag => tag["name"]?.Value<string>() == "DocumentationSamples");
+
+        tagExists.ShouldNotBeNull();
+        tagExists.ShouldBe(false);
+    }
+
+    [Test]
     public async Task Method_summary_and_remarks_are_placed_in_endpoint_summary_and_description()
     {
         var response = await Client.GetAsync("/swagger/samples/swagger.json");
