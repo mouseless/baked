@@ -75,10 +75,13 @@ public static class BusinessExtensions
 
     public static void SetJsonExample(this IDictionary<string, OpenApiMediaType> mediaTypes, XmlNode? documentation, string @for)
     {
-        if (!mediaTypes.TryGetValue("application/json", out var mediaType)) { return; }
-
         var example = documentation.GetExampleCode(@for);
         if (example is null) { return; }
+
+        if (!mediaTypes.TryGetValue("application/json", out var mediaType))
+        {
+            mediaTypes["application/json"] = mediaType = new() { };
+        }
 
         mediaType.Example = OpenApiAnyFactory.CreateFromJson(example);
     }

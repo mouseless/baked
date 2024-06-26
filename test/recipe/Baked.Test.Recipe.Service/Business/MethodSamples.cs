@@ -41,6 +41,18 @@ public class MethodSamples(ILogger<MethodSamples> _logger)
     public Record RequestClass(string text, int numeric) =>
          new(text, numeric);
 
+    /// <example for="rest-api">
+    /// <code for="request">
+    /// {
+    ///   "any": "object"
+    /// }
+    /// </code>
+    /// <code for="response">
+    /// {
+    ///   "will": "do"
+    /// }
+    /// </code>
+    /// </example>
     public object Object(object @object) =>
         @object;
 

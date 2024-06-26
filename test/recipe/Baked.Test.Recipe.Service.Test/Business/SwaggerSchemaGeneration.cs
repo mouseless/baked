@@ -206,4 +206,32 @@ public class SwaggerSchemaGeneration : TestServiceNfr
         ((object?)endpoint?.responses["200"].content["application/json"].example)
             .ShouldDeeplyBe("sample");
     }
+
+    [Test]
+    public async Task Request_examples_are_included_for_object_type()
+    {
+        var response = await Client.GetAsync("/swagger/samples/swagger.json");
+        dynamic? content = await response.Content.Deserialize();
+        var endpoint = content?.paths["/method-samples/object"].post;
+
+        ((object?)endpoint?.requestBody.content["application/json"].example)
+            .ShouldDeeplyBe(new
+            {
+                any = "object"
+            });
+    }
+
+    [Test]
+    public async Task Response_examples_are_included_for_object_type()
+    {
+        var response = await Client.GetAsync("/swagger/samples/swagger.json");
+        dynamic? content = await response.Content.Deserialize();
+        var endpoint = content?.paths["/method-samples/object"].post;
+
+        ((object?)endpoint?.responses["200"].content["application/json"].example)
+            .ShouldDeeplyBe(new
+            {
+                will = "do"
+            });
+    }
 }
