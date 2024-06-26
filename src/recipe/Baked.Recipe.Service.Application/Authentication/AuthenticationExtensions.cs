@@ -17,15 +17,21 @@ public static class AuthenticationExtensions
         swaggerGenOptions.DocumentFilter<SecurityDefinitionDocumentFilter>(schemeId, scheme, documentName ?? string.Empty);
 
     public static void AddSecurityRequirementToOperationsThatUse<TAttribute>(this SwaggerGenOptions swaggerGenOptions, IEnumerable<string> schemeIds,
+        bool includeRedirects = false,
         string? documentName = default
     ) where TAttribute : Attribute =>
-        swaggerGenOptions.OperationFilter<SecurityRequirementOperationFilter<TAttribute>>(schemeIds, documentName ?? string.Empty);
+        swaggerGenOptions.OperationFilter<SecurityRequirementOperationFilter<TAttribute>>(schemeIds, includeRedirects, documentName ?? string.Empty);
 
     public static void AddParameterToOperationsThatUse<TAttribute>(this SwaggerGenOptions swaggerGenOptions, OpenApiParameter parameter,
         int position = -1,
         string? documentName = default
     ) where TAttribute : Attribute =>
         swaggerGenOptions.OperationFilter<AddParameterOperationFilter<TAttribute>>(parameter, position, documentName ?? string.Empty);
+
+    public static void AddFormParameterToRedirectOperationsThatUse<TAttribute>(this SwaggerGenOptions swaggerGenOptions, string name, OpenApiSchema property,
+        string? documentName = default
+    ) where TAttribute : Attribute =>
+        swaggerGenOptions.OperationFilter<AddFormParameterToRedirectOperationFilter<TAttribute>>(name, property, documentName ?? string.Empty);
 
     public static bool HasMetadata<T>(this HttpContext httpContext) where T : Attribute
     {

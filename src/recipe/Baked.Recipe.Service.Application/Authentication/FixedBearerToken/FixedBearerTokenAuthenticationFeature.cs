@@ -49,37 +49,35 @@ public class FixedBearerTokenAuthenticationFeature(IEnumerable<Token> _tokens, I
                 swaggerGenOptions.AddSecurityRequirementToOperationsThatUse<AuthorizeAttribute>([nameof(FixedBearerToken)],
                     documentName: documentName
                 );
-            }
-        });
 
-        configurator.ConfigureApiModelConventions(conventions =>
-        {
-            var domainModel = configurator.Context.GetDomainModel();
-            foreach (var name in _formPostParameters)
-            {
-                conventions.Add(
-                    new AddParameterToFormPostConvention(
-                        domainModel,
+                foreach (var name in _formPostParameters)
+                {
+                    swaggerGenOptions.AddFormParameterToRedirectOperationsThatUse<AuthorizeAttribute>(
                         name,
-                        Settings.Optional($"Authentication:FixedBearerToken:Description:{name}", name)
-                    ),
-                    order: int.MaxValue
+                        new()
+                        {
+                            Type = "string",
+                            Description = Settings.Optional($"Authentication:FixedBearerToken:Description:{name}", name)
+                        },
+                        documentName: documentName
+                    );
+                }
+
+                swaggerGenOptions.AddFormParameterToRedirectOperationsThatUse<AuthorizeAttribute>(
+                    "hash",
+                    new()
+                    {
+                        Type = "string",
+                        Description = Settings.Optional(
+                            "Authentication:FixedBearerToken:Description:hash",
+                            "Concatenate all form post parameters with secret " +
+                            "token at the end, then hash it using `sha256` and " +
+                            "convert it to `base64`"
+                        )
+                    },
+                    documentName: documentName
                 );
             }
-
-            conventions.Add(
-                new AddParameterToFormPostConvention(
-                    domainModel,
-                    "hash",
-                    Settings.Optional(
-                        "Authentication:FixedBearerToken:Description:hash",
-                        "Concatenate all form post parameters with secret " +
-                        "token at the end, then hash it using `sha256` and " +
-                        "convert it to `base64`."
-                    )
-                ),
-                order: int.MaxValue
-            );
         });
     }
 }
