@@ -4,7 +4,7 @@
 
 | Package                                   | Old Version | New Version |
 | ----------------------------------------- | ----------- | ----------- |
-| FluentNHibernate                          | 5.5.2       | 3.4.0       |
+| FluentNHibernate                          | 3.3.0       | 3.4.0       |
 | Microsoft.AspNetCore.Authorization        | 8.0.6       | 8.0.7       |
 | Microsoft.AspNetCore.Mvc.NewtonsoftJson   | 8.0.6       | 8.0.7       |
 | Microsoft.Extensions.Configuration.Binder | 8.0.1       | 8.0.2       |
