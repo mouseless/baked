@@ -23,7 +23,7 @@
     <PackageVersion Include="Moq" Version="4.20.70" />
     <PackageVersion Include="MySql.Data" Version="8.4.0" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageVersion Include="NHibernate" Version="5.5.1" />
+    <PackageVersion Include="NHibernate" Version="5.5.2" />
     <PackageVersion Include="NUnit" Version="4.1.0" />
     <PackageVersion Include="NUnit3TestAdapter" Version="4.5.0" />
     <PackageVersion Include="Shouldly" Version="4.2.1" />
