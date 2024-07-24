@@ -1,7 +1,6 @@
-version: '3.9'
 services:
   db:
-    image: mysql
+    image: mariadb
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
@@ -11,22 +10,11 @@ services:
     ports:
       - 3366:3366
     healthcheck:
-      test: ["CMD", 'mysqladmin', 'ping', '-h', 'localhost','-P','3366', '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD' ]
-      start_period: 2s
-      interval: 5s
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      start_period: 10s
+      interval: 10s
       timeout: 5s
-      retries: 5
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    depends_on:
-      db:
-        condition: service_healthy
-    environment:
-      PMA_HOST: db
-      PMA_PORT: 3366
-    restart: always
-    ports:
-      - 8080:80
+      retries: 3
   recipe.service:
     build:
       dockerfile: test/recipe/Baked.Test.Recipe.Service.Application/Dockerfile
