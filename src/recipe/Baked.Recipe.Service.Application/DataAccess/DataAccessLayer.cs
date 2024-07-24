@@ -39,7 +39,7 @@ public class DataAccessLayer : LayerBase<AddServices, PostBuild>
 
             if (_persistenceConfiguration.AutoUpdateSchema)
             {
-                builder.ExposeConfiguration(c => new SchemaUpdate(c).Execute(true, true));
+                builder.ExposeConfiguration(c => new SchemaUpdate(c).Execute(false, true));
             }
 
             return builder.BuildConfiguration();

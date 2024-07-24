@@ -1,12 +1,11 @@
 ﻿using Baked.Architecture;
 using Baked.Configuration;
-using FluentNHibernate.Cfg.Db;
+using Baked.DataAccess.Sqlite;
 using Microsoft.Extensions.DependencyInjection;
-using NHibernate.Dialect;
 
 namespace Baked.Database.Sqlite;
 
-public class SqliteDatabaseFeature(Setting<string> _fileName)
+public class SqliteDatabaseFeature(Setting<string> _fileName, Setting<bool> _autoExportSchema)
     : IFeature<DatabaseConfigurator>
 {
     string FullFilePath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), _fileName);
@@ -20,12 +19,11 @@ public class SqliteDatabaseFeature(Setting<string> _fileName)
 
         configurator.ConfigurePersistence(persistence =>
         {
-            var sqlite = SQLiteConfiguration.Standard.UsingFile(FullFilePath).Dialect<SQLiteDialect>();
-
-            sqlite.MaxFetchDepth(1);
-
-            persistence.Configurer = sqlite;
-            persistence.AutoUpdateSchema = true;
+            persistence.AutoExportSchema = _autoExportSchema;
+            persistence.Configurer =
+                SQLiteConfiguration.Microsoft
+                    .UsingFile(FullFilePath)
+                    .MaxFetchDepth(1);
         });
 
         configurator.ConfigureMiddlewareCollection(middlewares =>
