@@ -96,6 +96,9 @@ export default defineNuxtConfig({
     public: ".public"
   },
   experimental: { payloadExtraction: false },
+  features: {
+    inlineStyles: false
+  },
   generate: {
     routes: ["/not-found"]
   },
@@ -129,5 +132,6 @@ export default defineNuxtConfig({
         }
       }
     }
-  }
+  },
+  compatibilityDate: "2024-08-15"
 });
