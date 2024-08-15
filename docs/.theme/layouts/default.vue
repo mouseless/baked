@@ -1,22 +1,20 @@
 <template>
-  <div>
-    <Header />
-    <div v-if="$route.path === '/'">
-      <article class="full">
-        <slot />
-      </article>
-    </div>
-    <div
-      v-else
-      class="content"
-    >
-      <Side class="side" />
-      <article>
-        <slot />
-      </article>
-    </div>
-    <Footer />
+  <Header />
+  <div v-if="$route.path === '/'">
+    <article class="full">
+      <slot />
+    </article>
   </div>
+  <div
+    v-else
+    class="content"
+  >
+    <Side class="side" />
+    <article>
+      <slot />
+    </article>
+  </div>
+  <Footer />
 </template>
 <script setup lang="ts">
 import { withLeadingSlash, withTrailingSlash } from "ufo";
@@ -49,7 +47,9 @@ store.setSections(sections);
 .content, .full {
   @include width;
 
-  margin: auto;
+  & {
+    margin: auto;
+  }
 }
 
 .content {

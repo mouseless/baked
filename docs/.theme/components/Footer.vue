@@ -42,19 +42,23 @@ const menus: any = { ...store.sections };
 div.bottom {
   @include border(top);
 
-  margin-top: $space-md;
+  & {
+    margin-top: $space-md;
+  }
 }
 
 footer {
   @include width;
 
-  margin: auto;
-  margin-top: $space-sm;
-  margin-bottom: $space-sm;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: space-between;
+  & {
+    margin: auto;
+    margin-top: $space-sm;
+    margin-bottom: $space-sm;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
 
   &, & * {
     color: $color-fg-third;
