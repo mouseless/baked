@@ -10,6 +10,8 @@
   value `true` to use automatic schema for development databases which clears
   data each time your application runs. You may set it to false if you want your
   data to retain.
+- `Client.Send` now has option to disable ensure success status code check to
+  return error response data
 
 ## Library Upgrades
 
