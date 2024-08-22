@@ -8,7 +8,9 @@ public class Client<T>(
     HttpClientFactory<T> _clientFactory
 ) : IClient<T>
 {
-    public async Task<Response> Send(Request request)
+    public async Task<Response> Send(Request request,
+        bool ensureSuccessStatusCode = true
+    )
     {
         var req = new HttpRequestMessage(request.Method, request.UrlOrPath);
 
@@ -28,18 +30,22 @@ public class Client<T>(
         var res = await client.SendAsync(req);
         var content = await res.Content.ReadAsStringAsync();
 
-        try
+        if (ensureSuccessStatusCode)
         {
-            res.EnsureSuccessStatusCode();
-        }
-        catch (HttpRequestException ex)
-        {
-            if (ex.StatusCode is not null && (int)ex.StatusCode >= 500)
+            try
             {
-                _logger.LogError(ex, ex.Message);
+                res.EnsureSuccessStatusCode();
+                return new(content);
             }
+            catch (HttpRequestException ex)
+            {
+                if (ex.StatusCode is not null && (int)ex.StatusCode >= 500)
+                {
+                    _logger.LogError(ex, ex.Message);
+                }
 
-            throw new ClientException(content, ex);
+                throw new ClientException(content, ex);
+            }
         }
 
         return new(content);
