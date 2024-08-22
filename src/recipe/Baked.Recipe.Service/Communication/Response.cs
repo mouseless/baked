@@ -1,18 +1,18 @@
 using Newtonsoft.Json;
-using System.Net;
 
 namespace Baked.Communication;
 
 public record Response(
-    HttpStatusCode StatusCode,
+    StatusCode StatusCode,
     string Content
 )
 {
-    public static Response SuccessResponse(string Content) =>
-        new(HttpStatusCode.OK, Content);
+    public static Response Success(string content) =>
+        new(StatusCode.Success, content);
 
     public bool HasContent => !string.IsNullOrWhiteSpace(Content);
-    public bool IsSuccessStatusCode => StatusCode == HttpStatusCode.OK;
+    public bool IsSuccess => StatusCode == StatusCode.Success;
+    public bool IsError => StatusCode is StatusCode.Handled or StatusCode.UnHandled;
 
     public dynamic? GetContentAsObject(
         JsonSerializerSettings? settings = default

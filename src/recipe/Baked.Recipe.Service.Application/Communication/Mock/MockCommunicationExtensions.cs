@@ -2,6 +2,7 @@
 using Baked.Communication.Mock;
 using Baked.Testing;
 using Moq;
+using System.Net;
 
 namespace Baked;
 
@@ -9,6 +10,15 @@ public static class MockCommunicationExtensions
 {
     public static MockCommunicationFeature Mock(this CommunicationConfigurator _, Action<DefaultResponseBuilder>? defaultResponses = default) =>
         new(defaultResponses ?? (_ => { }));
+
+    public static StatusCode ToStatusCode(this HttpStatusCode httStatusCode) =>
+        (int)httStatusCode switch
+        {
+            var c when c < 300 => StatusCode.Success,
+            var c when c < 400 => StatusCode.Redirection,
+            var c when c < 500 => StatusCode.Handled,
+            _ => StatusCode.UnHandled
+        };
 
     public static IClient<T> TheClient<T>(this Mocker mockMe,
         string? url = default,
@@ -38,19 +48,19 @@ public static class MockCommunicationExtensions
         }
         else if (response is not null)
         {
-            setup().ReturnsAsync(Response.SuccessResponse(response.ToJsonString()));
+            setup().ReturnsAsync(Response.Success(response.ToJsonString()));
         }
         else if (responseString is not null)
         {
-            setup().ReturnsAsync(Response.SuccessResponse(responseString));
+            setup().ReturnsAsync(Response.Success(responseString));
         }
         else if (responses is not null)
         {
-            setup().ReturnsAsync(responses.Select(r => Response.SuccessResponse(r.ToJsonString())).ToArray());
+            setup().ReturnsAsync(responses.Select(r => Response.Success(r.ToJsonString())).ToArray());
         }
         else if (noResponse == true)
         {
-            setup().ReturnsAsync(Response.SuccessResponse(string.Empty));
+            setup().ReturnsAsync(Response.Success(string.Empty));
         }
 
         return mock.Object;
@@ -83,8 +93,8 @@ public static class MockCommunicationExtensions
     );
 
     public static void VerifyNotSent<T>(this IClient<T> client) =>
-        Moq.Mock.Get(client).Verify(c => c.Send(It.IsAny<Request>(), false), Times.Never());
+        Moq.Mock.Get(client).Verify(c => c.Send(It.IsAny<Request>(), It.IsAny<bool>()), Times.Never());
 
     public static void VerifyNoContentIsSent<T>(this IClient<T> client) =>
-        Moq.Mock.Get(client).Verify(c => c.Send(It.Is<Request>(r => r.Content == null), false));
+        Moq.Mock.Get(client).Verify(c => c.Send(It.Is<Request>(r => r.Content == null), It.IsAny<bool>()));
 }
