@@ -1,8 +1,8 @@
 ﻿using Baked.Communication;
 using Baked.Communication.Mock;
+using Baked.ExceptionHandling;
 using Baked.Testing;
 using Moq;
-using System.Net;
 
 namespace Baked;
 
@@ -11,15 +11,6 @@ public static class MockCommunicationExtensions
     public static MockCommunicationFeature Mock(this CommunicationConfigurator _, Action<DefaultResponseBuilder>? defaultResponses = default) =>
         new(defaultResponses ?? (_ => { }));
 
-    public static StatusCode ToStatusCode(this HttpStatusCode httStatusCode) =>
-        (int)httStatusCode switch
-        {
-            var c when c < 300 => StatusCode.Success,
-            var c when c < 400 => StatusCode.Redirection,
-            var c when c < 500 => StatusCode.Handled,
-            _ => StatusCode.UnHandled
-        };
-
     public static IClient<T> TheClient<T>(this Mocker mockMe,
         string? url = default,
         string? path = default,
@@ -27,6 +18,7 @@ public static class MockCommunicationExtensions
         object? response = default,
         string? responseString = default,
         Exception? throws = default,
+        bool returnErrorResponse = false,
         List<object>? responses = default,
         bool? noResponse = default
     )
@@ -44,7 +36,14 @@ public static class MockCommunicationExtensions
 
         if (throws is not null)
         {
-            setup().ThrowsAsync(throws);
+            if (returnErrorResponse)
+            {
+                setup().ReturnsAsync(new Response(throws is HandledException ? StatusCode.Handled : StatusCode.UnHandled, throws.Message ?? string.Empty));
+            }
+            else
+            {
+                setup().ThrowsAsync(throws);
+            }
         }
         else if (response is not null)
         {
