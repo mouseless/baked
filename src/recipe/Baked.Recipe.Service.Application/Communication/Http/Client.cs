@@ -35,7 +35,6 @@ public class Client<T>(
             try
             {
                 res.EnsureSuccessStatusCode();
-                return new(content);
             }
             catch (HttpRequestException ex)
             {
@@ -48,6 +47,6 @@ public class Client<T>(
             }
         }
 
-        return new(content);
+        return new(res.StatusCode, content);
     }
 }

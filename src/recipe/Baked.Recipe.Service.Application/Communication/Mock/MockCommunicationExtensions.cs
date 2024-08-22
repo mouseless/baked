@@ -38,19 +38,19 @@ public static class MockCommunicationExtensions
         }
         else if (response is not null)
         {
-            setup().ReturnsAsync(new Response(response.ToJsonString()));
+            setup().ReturnsAsync(Response.SuccessResponse(response.ToJsonString()));
         }
         else if (responseString is not null)
         {
-            setup().ReturnsAsync(new Response(responseString));
+            setup().ReturnsAsync(Response.SuccessResponse(responseString));
         }
         else if (responses is not null)
         {
-            setup().ReturnsAsync(responses.Select(r => new Response(r.ToJsonString())).ToArray());
+            setup().ReturnsAsync(responses.Select(r => Response.SuccessResponse(r.ToJsonString())).ToArray());
         }
         else if (noResponse == true)
         {
-            setup().ReturnsAsync(new Response(string.Empty));
+            setup().ReturnsAsync(Response.SuccessResponse(string.Empty));
         }
 
         return mock.Object;
