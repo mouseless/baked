@@ -74,7 +74,8 @@ public static class MockCommunicationExtensions
         Dictionary<string, string>? form = default,
         (string key, string value)? header = default,
         string? excludesHeader = default,
-        int? times = default
+        int? times = default,
+        bool? allowErrorResponse = default
     ) => Moq.Mock.Get(client).Verify(
         c => c.Send(It.Is<Request>(r =>
                 (path == default || r.UrlOrPath == path) &&
@@ -86,7 +87,7 @@ public static class MockCommunicationExtensions
                 (!header.HasValue || r.Headers[header.GetValueOrDefault().key] == header.GetValueOrDefault().value) &&
                 (excludesHeader == default || !r.Headers.ContainsKey(excludesHeader))
             ),
-            It.IsAny<bool>()
+            allowErrorResponse.GetValueOrDefault()
         ),
         times is null ? Times.AtLeastOnce() : Times.Exactly(times.Value)
     );
