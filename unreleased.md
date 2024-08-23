@@ -3,5 +3,5 @@
 ## Improvements
 
 - Change `Response.StatusCode` property type to `HttpStatusCode`
-- Mock `Client` now returns empty `200` response when no response parameter is
-  set
+- `VerifySent` now have `allowErrorResponse` parameter as optional
+- Change `MockMe.TheClient` parameter `noResponse` name to `emptyResponse`
