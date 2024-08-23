@@ -1,6 +1,5 @@
 ﻿using Baked.Communication;
 using Baked.Communication.Mock;
-using Baked.ExceptionHandling;
 using Baked.Testing;
 using Moq;
 
@@ -17,12 +16,14 @@ public static class MockCommunicationExtensions
         string? urlEndsWith = default,
         object? response = default,
         string? responseString = default,
+        StatusCode? statusCode = default,
         Exception? throws = default,
-        bool returnErrorResponse = false,
         List<object>? responses = default,
         bool? noResponse = default
     )
     {
+        statusCode ??= StatusCode.Success;
+
         var mock = Moq.Mock.Get(mockMe.Spec.GiveMe.The<IClient<T>>());
 
         var setup = () => mock.Setup(c =>
@@ -36,30 +37,23 @@ public static class MockCommunicationExtensions
 
         if (throws is not null)
         {
-            if (returnErrorResponse)
-            {
-                setup().ReturnsAsync(new Response(throws is HandledException ? StatusCode.Handled : StatusCode.UnHandled, throws.Message ?? string.Empty));
-            }
-            else
-            {
-                setup().ThrowsAsync(throws);
-            }
+            setup().ThrowsAsync(throws);
         }
         else if (response is not null)
         {
-            setup().ReturnsAsync(Response.Success(response.ToJsonString()));
+            setup().ReturnsAsync(new Response(statusCode.GetValueOrDefault(), response.ToJsonString()));
         }
         else if (responseString is not null)
         {
-            setup().ReturnsAsync(Response.Success(responseString));
+            setup().ReturnsAsync(new Response(statusCode.GetValueOrDefault(), responseString));
         }
         else if (responses is not null)
         {
-            setup().ReturnsAsync(responses.Select(r => Response.Success(r.ToJsonString())).ToArray());
+            setup().ReturnsAsync(responses.Select(r => new Response(statusCode.GetValueOrDefault(), r.ToJsonString())).ToArray());
         }
         else if (noResponse == true)
         {
-            setup().ReturnsAsync(Response.Success(string.Empty));
+            setup().ReturnsAsync(new Response(statusCode.GetValueOrDefault(), string.Empty));
         }
 
         return mock.Object;

@@ -28,8 +28,7 @@ public static class CommunicationExtensions
         (int)httStatusCode switch
         {
             var c when c < 300 => StatusCode.Success,
-            var c when c < 400 => StatusCode.Redirection,
             var c when c < 500 => StatusCode.Handled,
-            _ => StatusCode.UnHandled
+            _ => StatusCode.Unhandled
         };
 }

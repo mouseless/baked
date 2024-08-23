@@ -3,7 +3,6 @@
 public enum StatusCode
 {
     Success,
-    Redirection,
     Handled,
-    UnHandled
+    Unhandled
 }

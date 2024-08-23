@@ -7,12 +7,9 @@ public record Response(
     string Content
 )
 {
-    public static Response Success(string content) =>
-        new(StatusCode.Success, content);
-
     public bool HasContent => !string.IsNullOrWhiteSpace(Content);
     public bool IsSuccess => StatusCode == StatusCode.Success;
-    public bool IsError => StatusCode is StatusCode.Handled or StatusCode.UnHandled;
+    public bool IsError => StatusCode is StatusCode.Handled or StatusCode.Unhandled;
 
     public dynamic? GetContentAsObject(
         JsonSerializerSettings? settings = default
