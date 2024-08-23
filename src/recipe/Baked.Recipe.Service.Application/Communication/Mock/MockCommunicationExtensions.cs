@@ -2,6 +2,7 @@
 using Baked.Communication.Mock;
 using Baked.Testing;
 using Moq;
+using System.Net;
 
 namespace Baked;
 
@@ -16,14 +17,12 @@ public static class MockCommunicationExtensions
         string? urlEndsWith = default,
         object? response = default,
         string? responseString = default,
-        StatusCode? statusCode = default,
+        HttpStatusCode? statusCode = default,
         Exception? throws = default,
         List<object>? responses = default,
         bool? noResponse = default
     )
     {
-        statusCode ??= StatusCode.Success;
-
         var mock = Moq.Mock.Get(mockMe.Spec.GiveMe.The<IClient<T>>());
 
         var setup = () => mock.Setup(c =>
@@ -41,19 +40,23 @@ public static class MockCommunicationExtensions
         }
         else if (response is not null)
         {
-            setup().ReturnsAsync(new Response(statusCode.GetValueOrDefault(), response.ToJsonString()));
+            setup().ReturnsAsync(new Response(statusCode ?? HttpStatusCode.OK, response.ToJsonString()));
         }
         else if (responseString is not null)
         {
-            setup().ReturnsAsync(new Response(statusCode.GetValueOrDefault(), responseString));
+            setup().ReturnsAsync(new Response(statusCode ?? HttpStatusCode.OK, responseString));
         }
         else if (responses is not null)
         {
-            setup().ReturnsAsync(responses.Select(r => new Response(statusCode.GetValueOrDefault(), r.ToJsonString())).ToArray());
+            setup().ReturnsAsync(responses.Select(r => new Response(statusCode ?? HttpStatusCode.OK, r.ToJsonString())).ToArray());
         }
         else if (noResponse == true)
         {
-            setup().ReturnsAsync(new Response(statusCode.GetValueOrDefault(), string.Empty));
+            setup().ReturnsAsync(new Response(statusCode ?? HttpStatusCode.OK, string.Empty));
+        }
+        else if (statusCode is not null)
+        {
+            setup().ReturnsAsync(new Response(statusCode.Value, "{}"));
         }
 
         return mock.Object;
@@ -78,10 +81,10 @@ public static class MockCommunicationExtensions
                 (content == default || new Content(content, null).Equals(r.Content)) &&
                 (contentContains == default || r.Content != null && r.Content.Body.Contains(contentContains)) &&
                 (form == default || new Content(form).Equals(r.Content)) &&
-                (!header.HasValue || r.Headers[header.GetValueOrDefault().key] == header.GetValueOrDefault().value) &&
+                (!header.HasValue || (r.Headers.ContainsKey(header.GetValueOrDefault().key) && r.Headers[header.GetValueOrDefault().key] == header.GetValueOrDefault().value)) &&
                 (excludesHeader == default || !r.Headers.ContainsKey(excludesHeader))
             ),
-            allowErrorResponse.GetValueOrDefault()
+            It.Is<bool>(aer => allowErrorResponse == default || aer == allowErrorResponse.GetValueOrDefault())
         ),
         times is null ? Times.AtLeastOnce() : Times.Exactly(times.Value)
     );
