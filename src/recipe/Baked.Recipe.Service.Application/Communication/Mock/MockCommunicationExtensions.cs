@@ -79,7 +79,7 @@ public static class MockCommunicationExtensions
                 (content == default || new Content(content, null).Equals(r.Content)) &&
                 (contentContains == default || r.Content != null && r.Content.Body.Contains(contentContains)) &&
                 (form == default || new Content(form).Equals(r.Content)) &&
-                (!header.HasValue || r.Headers[header.GetValueOrDefault().key] == header.GetValueOrDefault().value) &&
+                (!header.HasValue || (r.Headers.ContainsKey(header.GetValueOrDefault().key) && r.Headers[header.GetValueOrDefault().key] == header.GetValueOrDefault().value)) &&
                 (excludesHeader == default || !r.Headers.ContainsKey(excludesHeader))
             ),
             It.Is<bool>(aer => allowErrorResponse == default || aer == allowErrorResponse.GetValueOrDefault())
