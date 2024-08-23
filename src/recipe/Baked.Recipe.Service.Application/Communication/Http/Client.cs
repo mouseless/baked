@@ -8,7 +8,9 @@ public class Client<T>(
     HttpClientFactory<T> _clientFactory
 ) : IClient<T>
 {
-    public async Task<Response> Send(Request request)
+    public async Task<Response> Send(Request request,
+        bool allowErrorResponse = false
+    )
     {
         var req = new HttpRequestMessage(request.Method, request.UrlOrPath);
 
@@ -28,6 +30,11 @@ public class Client<T>(
         var res = await client.SendAsync(req);
         var content = await res.Content.ReadAsStringAsync();
 
+        if (allowErrorResponse)
+        {
+            return new(res.StatusCode.ToStatusCode(), content);
+        }
+
         try
         {
             res.EnsureSuccessStatusCode();
@@ -42,6 +49,6 @@ public class Client<T>(
             throw new ClientException(content, ex);
         }
 
-        return new(content);
+        return new(res.StatusCode.ToStatusCode(), content);
     }
 }

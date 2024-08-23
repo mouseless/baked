@@ -10,27 +10,30 @@ public class DefaultResponseBuilder
     static readonly MethodInfo _setupClient = typeof(DefaultResponseBuilder).GetMethod(nameof(SetupClient), BindingFlags.Static | BindingFlags.NonPublic)
         ?? throw new("SetupClient<T> should have existed");
 
-    static void SetupClient<T>(Mock<IClient<T>> mock, List<(string response, Func<Request, bool> when)> setups)
+    static void SetupClient<T>(Mock<IClient<T>> mock, List<(string response, StatusCode statusCode, Func<Request, bool> when)> setups)
         where T : class
     {
-        foreach (var (response, when) in setups)
+        foreach (var (response, statusCode, when) in setups)
         {
-            mock.Setup(c => c.Send(It.Is<Request>(r => when(r))))
-                .ReturnsAsync(new Response(response));
+            mock.Setup(c => c.Send(It.Is<Request>(r => when(r)), It.IsAny<bool>()))
+                .ReturnsAsync(new Response(statusCode, response));
         }
     }
 
-    readonly Dictionary<Type, List<(string? response, Func<Request, bool> when)>> _setups = [];
+    readonly Dictionary<Type, List<(string? response, StatusCode statusCode, Func<Request, bool> when)>> _setups = [];
 
     public void ForClient<T>(object response,
+        StatusCode? statusCode = default,
         Func<Request, bool>? when = default
     ) where T : class =>
-        ForClient<T>(JsonConvert.SerializeObject(response), when);
+        ForClient<T>(JsonConvert.SerializeObject(response), statusCode, when);
 
     public void ForClient<T>(string responseString,
+        StatusCode? statusCode = default,
         Func<Request, bool>? when = default
     ) where T : class
     {
+        statusCode ??= StatusCode.Success;
         when ??= _ => true;
 
         if (!_setups.TryGetValue(typeof(T), out var setups))
@@ -38,7 +41,7 @@ public class DefaultResponseBuilder
             setups = _setups[typeof(T)] = [];
         }
 
-        setups.Add((responseString, when));
+        setups.Add((responseString, statusCode.GetValueOrDefault(), when));
     }
 
     internal IMockCollection BuildMockClients()
