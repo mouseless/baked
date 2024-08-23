@@ -11,7 +11,7 @@ public class VerifyingClients : TestServiceSpec
 
         await client.Send(new("path", HttpMethod.Get));
         await client.Send(new("path", HttpMethod.Get), allowErrorResponse: true);
-        await client.Send(new Request(UrlOrPath: "path", Method: HttpMethod.Get).AddAuthorization("token"));
+        await client.Send(new Request("path", HttpMethod.Get).AddAuthorization("token"));
         await client.Send(new("path2", HttpMethod.Get));
         await client.Send(new($"{GiveMe.AUrl()}", HttpMethod.Post, Content: new(new { content = "content" })));
         await client.Send(new($"{GiveMe.AUrl()}", HttpMethod.Post, Content: new(new { content = "another content" })));

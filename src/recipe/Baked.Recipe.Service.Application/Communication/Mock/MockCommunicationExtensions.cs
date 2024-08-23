@@ -23,8 +23,6 @@ public static class MockCommunicationExtensions
         bool? noResponse = default
     )
     {
-        statusCode ??= HttpStatusCode.OK;
-
         var mock = Moq.Mock.Get(mockMe.Spec.GiveMe.The<IClient<T>>());
 
         var setup = () => mock.Setup(c =>
@@ -42,19 +40,23 @@ public static class MockCommunicationExtensions
         }
         else if (response is not null)
         {
-            setup().ReturnsAsync(new Response(statusCode.GetValueOrDefault(), response.ToJsonString()));
+            setup().ReturnsAsync(new Response(statusCode ?? HttpStatusCode.OK, response.ToJsonString()));
         }
         else if (responseString is not null)
         {
-            setup().ReturnsAsync(new Response(statusCode.GetValueOrDefault(), responseString));
+            setup().ReturnsAsync(new Response(statusCode ?? HttpStatusCode.OK, responseString));
         }
         else if (responses is not null)
         {
-            setup().ReturnsAsync(responses.Select(r => new Response(statusCode.GetValueOrDefault(), r.ToJsonString())).ToArray());
+            setup().ReturnsAsync(responses.Select(r => new Response(statusCode ?? HttpStatusCode.OK, r.ToJsonString())).ToArray());
         }
         else if (noResponse == true)
         {
-            setup().ReturnsAsync(new Response(statusCode.GetValueOrDefault(), string.Empty));
+            setup().ReturnsAsync(new Response(statusCode ?? HttpStatusCode.OK, string.Empty));
+        }
+        else if (statusCode is not null)
+        {
+            setup().ReturnsAsync(new Response(statusCode.Value, "{}"));
         }
 
         return mock.Object;

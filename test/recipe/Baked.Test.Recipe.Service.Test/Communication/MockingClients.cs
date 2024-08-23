@@ -86,7 +86,7 @@ public class MockingClients : TestServiceSpec
     [Test]
     public async Task Mock_helper_can_configure_response_status_code_as_non_success()
     {
-        var client = MockMe.TheClient<ExternalSamples>(statusCode: HttpStatusCode.NotFound, noResponse: true);
+        var client = MockMe.TheClient<ExternalSamples>(statusCode: HttpStatusCode.NotFound);
 
         var response = await client.Send(new(string.Empty, HttpMethod.Post));
 
