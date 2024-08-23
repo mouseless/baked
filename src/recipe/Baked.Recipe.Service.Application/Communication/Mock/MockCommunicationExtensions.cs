@@ -52,7 +52,7 @@ public static class MockCommunicationExtensions
         {
             setup().ReturnsAsync(responses.Select(r => new Response(statusCode.GetValueOrDefault(), r.ToJsonString())).ToArray());
         }
-        else if (emptyResponse.GetValueOrDefault())
+        else if (emptyResponse == true)
         {
             setup().ReturnsAsync(new Response(statusCode.GetValueOrDefault(), "{}"));
         }
