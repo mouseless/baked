@@ -27,7 +27,7 @@ public static class CommunicationExtensions
     public static StatusCode ToStatusCode(this HttpStatusCode httStatusCode) =>
         (int)httStatusCode switch
         {
-            var c when c < 300 => StatusCode.Success,
+            var c when c < 400 => StatusCode.Success,
             var c when c < 500 => StatusCode.Handled,
             _ => StatusCode.Unhandled
         };
