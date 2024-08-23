@@ -4,9 +4,9 @@
 
 - Change `Response.StatusCode` property type to `HttpStatusCode`
 - `VerifySent` now have `allowErrorResponse` parameter as optional
-- Change `MockMe.TheClient` parameter `noResponse` name to `emptyResponse`
+- `MockMe.ThClient<T>` can now set response with only `statusCode` parameter
 
-## Bug Fixes
+## Bugfixes
 
 - `VerifySent` was throwing key not found exception when header key was not
   present, fixed
