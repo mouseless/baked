@@ -20,7 +20,7 @@ public static class MockCommunicationExtensions
         HttpStatusCode? statusCode = default,
         Exception? throws = default,
         List<object>? responses = default,
-        bool? emptyResponse = default
+        bool? noResponse = default
     )
     {
         statusCode ??= HttpStatusCode.OK;
@@ -52,9 +52,9 @@ public static class MockCommunicationExtensions
         {
             setup().ReturnsAsync(responses.Select(r => new Response(statusCode.GetValueOrDefault(), r.ToJsonString())).ToArray());
         }
-        else if (emptyResponse == true)
+        else if (noResponse == true)
         {
-            setup().ReturnsAsync(new Response(statusCode.GetValueOrDefault(), "{}"));
+            setup().ReturnsAsync(new Response(statusCode.GetValueOrDefault(), string.Empty));
         }
 
         return mock.Object;
