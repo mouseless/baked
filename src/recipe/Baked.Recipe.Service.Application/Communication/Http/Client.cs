@@ -32,7 +32,7 @@ public class Client<T>(
 
         if (allowErrorResponse)
         {
-            return new(res.StatusCode.ToStatusCode(), content);
+            return new(res.StatusCode, content);
         }
 
         try
@@ -49,6 +49,6 @@ public class Client<T>(
             throw new ClientException(content, ex);
         }
 
-        return new(res.StatusCode.ToStatusCode(), content);
+        return new(res.StatusCode, content);
     }
 }

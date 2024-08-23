@@ -1,4 +1,6 @@
-﻿namespace Baked.Test.Communication;
+﻿using System.Net;
+
+namespace Baked.Test.Communication;
 
 public class MockingClients : TestServiceSpec
 {
@@ -36,5 +38,80 @@ public class MockingClients : TestServiceSpec
 
         response.ShouldNotBeNull();
         response.Content.ShouldBe("\"overridden response\"");
+    }
+
+    [Test]
+    public async Task Mock_helper_can_configure_individual_response_per_path()
+    {
+        MockMe.TheClient<ExternalSamples>(path: "path1", response: new { content = "Response 1" });
+        var client = MockMe.TheClient<ExternalSamples>(path: "path2", response: new { content = "Response 2" });
+
+        var response = await client.Send(new(UrlOrPath: "path2", Method: HttpMethod.Post));
+
+        response.Content.ShouldBe(new { content = "Response 2" }.ToJsonString());
+    }
+
+    [Test]
+    public async Task Mock_helper_can_configure_sequence_of_responses()
+    {
+        var client = MockMe.TheClient<ExternalSamples>(responses: [new { content = "Response 1" }, new { content = "Response 2" }]);
+
+        var responseOne = await client.Send(new(UrlOrPath: string.Empty, Method: HttpMethod.Post));
+        var responseTwo = await client.Send(new(UrlOrPath: string.Empty, Method: HttpMethod.Post));
+
+        responseOne.Content.ShouldBe(new { content = "Response 1" }.ToJsonString());
+        responseTwo.Content.ShouldBe(new { content = "Response 2" }.ToJsonString());
+    }
+
+    [Test]
+    public async Task Mock_helper_can_configure_client_to_throw_exception()
+    {
+        var client = MockMe.TheClient<ExternalSamples>(throws: new Exception());
+
+        var task = client.Send(new(UrlOrPath: string.Empty, Method: HttpMethod.Post));
+
+        await task.ShouldThrowAsync<Exception>();
+    }
+
+    [Test]
+    public async Task Mock_helper_can_configures_OK_as_default_response_code()
+    {
+        var client = MockMe.TheClient<ExternalSamples>(emptyResponse: true);
+
+        var response = await client.Send(new(UrlOrPath: "path", Method: HttpMethod.Post));
+
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+    }
+
+    [Test]
+    public async Task Mock_helper_can_configure_response_status_code_as_non_success()
+    {
+        var client = MockMe.TheClient<ExternalSamples>(statusCode: HttpStatusCode.NotFound, emptyResponse: true);
+
+        var response = await client.Send(new(UrlOrPath: "path", Method: HttpMethod.Post));
+
+        response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
+    }
+
+    [Test]
+    public async Task Mock_helper_can_configure_non_success_response_with_error_content()
+    {
+        var client = MockMe.TheClient<ExternalSamples>(statusCode: HttpStatusCode.BadRequest, responseString: "Invalid Request");
+
+        var response = await client.Send(new(UrlOrPath: "path", Method: HttpMethod.Post));
+
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+        response.Content.ShouldBe("Invalid Request");
+    }
+
+    [Test]
+    public async Task Mock_helper_does_not_configure_mock_when_no_response_parameters_are_set()
+    {
+        MockMe.TheClient<ExternalSamples>(responseString: "response");
+        var client = MockMe.TheClient<ExternalSamples>();
+
+        var response = await client.Send(new(UrlOrPath: "path", Method: HttpMethod.Post));
+
+        response.Content.ShouldBe("response");
     }
 }

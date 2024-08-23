@@ -2,6 +2,7 @@
 using Baked.Communication.Mock;
 using Baked.Testing;
 using Moq;
+using System.Net;
 
 namespace Baked;
 
@@ -16,13 +17,13 @@ public static class MockCommunicationExtensions
         string? urlEndsWith = default,
         object? response = default,
         string? responseString = default,
-        StatusCode? statusCode = default,
+        HttpStatusCode? statusCode = default,
         Exception? throws = default,
         List<object>? responses = default,
-        bool? noResponse = default
+        bool? emptyResponse = default
     )
     {
-        statusCode ??= StatusCode.Success;
+        statusCode ??= HttpStatusCode.OK;
 
         var mock = Moq.Mock.Get(mockMe.Spec.GiveMe.The<IClient<T>>());
 
@@ -51,9 +52,9 @@ public static class MockCommunicationExtensions
         {
             setup().ReturnsAsync(responses.Select(r => new Response(statusCode.GetValueOrDefault(), r.ToJsonString())).ToArray());
         }
-        else if (noResponse == true)
+        else if (emptyResponse.GetValueOrDefault())
         {
-            setup().ReturnsAsync(new Response(statusCode.GetValueOrDefault(), string.Empty));
+            setup().ReturnsAsync(new Response(statusCode.GetValueOrDefault(), "{}"));
         }
 
         return mock.Object;
@@ -81,7 +82,7 @@ public static class MockCommunicationExtensions
                 (!header.HasValue || r.Headers[header.GetValueOrDefault().key] == header.GetValueOrDefault().value) &&
                 (excludesHeader == default || !r.Headers.ContainsKey(excludesHeader))
             ),
-            allowErrorResponse.GetValueOrDefault()
+            It.Is<bool>(aer => allowErrorResponse == default || aer == allowErrorResponse.GetValueOrDefault())
         ),
         times is null ? Times.AtLeastOnce() : Times.Exactly(times.Value)
     );
