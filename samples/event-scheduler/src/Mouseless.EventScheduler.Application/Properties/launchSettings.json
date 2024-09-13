@@ -8,7 +8,7 @@
     }
   },
   "profiles": {
-    "Mouseless.EventScheduler.Service": {
+    "Mouseless.EventScheduler.Application": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
