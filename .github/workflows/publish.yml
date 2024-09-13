@@ -119,6 +119,7 @@ jobs:
           name: docs
           path: docs/.theme/.output/public
           if-no-files-found: error
+          include-hidden-files: true
 
   publish-docs:
     needs: generate-docs
