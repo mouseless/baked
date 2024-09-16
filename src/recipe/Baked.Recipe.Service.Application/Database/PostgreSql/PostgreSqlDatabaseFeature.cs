@@ -17,15 +17,11 @@ public class PostgreSqlDatabaseFeature(Setting<string> _connectionString, Settin
 
         configurator.ConfigurePersistence(persistence =>
         {
-            var postgresql = PostgreSQLConfiguration.PostgreSQL83
-                .ConnectionString(_connectionString)
-              ;
-
-            // this should be in orm
-            postgresql.MaxFetchDepth(1);
-
-            persistence.Configurer = postgresql;
             persistence.AutoUpdateSchema = _autoUpdateSchema;
+            persistence.Configurer =
+                PostgreSQLConfiguration.PostgreSQL83
+                    .ConnectionString(_connectionString)
+                    .MaxFetchDepth(1);
         });
 
         configurator.ConfigureMiddlewareCollection(middlewares =>

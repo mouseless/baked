@@ -17,15 +17,12 @@ public class MySqlDatabaseFeature(Setting<string> _connectionString, Setting<boo
 
         configurator.ConfigurePersistence(persistence =>
         {
-            var mysql = MySQLConfiguration.Standard
-                .ConnectionString(_connectionString)
-                .Dialect<CustomMySQL57Dialect>();
-
-            // this should be in orm
-            mysql.MaxFetchDepth(1);
-
-            persistence.Configurer = mysql;
             persistence.AutoUpdateSchema = _autoUpdateSchema;
+            persistence.Configurer =
+                MySQLConfiguration.Standard
+                    .ConnectionString(_connectionString)
+                    .Dialect<CustomMySQL57Dialect>()
+                    .MaxFetchDepth(1);
         });
 
         configurator.ConfigureMiddlewareCollection(middlewares =>
