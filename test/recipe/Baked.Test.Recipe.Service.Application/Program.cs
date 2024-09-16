@@ -27,7 +27,11 @@ Bake.New
             claims: ["User", "Admin", "BaseA", "BaseB", "GivenA", "GivenB", "GivenC"],
             baseClaims: ["BaseA", "BaseB"]
         ),
-        database: c => c.MySql().ForDevelopment(c.Sqlite()).ForNfr(c.Sqlite(fileName: $"Baked.Test.Recipe.Service.Nfr.db")),
+        database: c => c
+          //.MySql()
+          .PostgreSql()
+          .ForDevelopment(c.Sqlite())
+          .ForNfr(c.Sqlite(fileName: $"Baked.Test.Recipe.Service.Nfr.db")),
         exceptionHandling: ex => ex.Default(typeUrlFormat: "https://baked.mouseless.codes/errors/{0}"),
         configure: app => app.Features.AddConfigurationOverrider()
     )

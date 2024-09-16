@@ -10,7 +10,7 @@ ENV ASPNETCORE_URLS=http://+:80
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS publish
 
-COPY --exclude=**/*.cs --exclude=**/*.json . .
+COPY --exclude=**/*.cs --exclude=**/*.json --exclude=**/*.md --exclude=**/*.yml --exclude=Makefile . .
 RUN dotnet restore
 
 COPY . .

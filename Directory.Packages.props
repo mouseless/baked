@@ -28,6 +28,7 @@
     <PackageVersion Include="NHibernate.Extensions.Sqlite" Version="8.0.8" />
     <PackageVersion Include="NUnit" Version="4.2.1" />
     <PackageVersion Include="NUnit3TestAdapter" Version="4.6.0" />
+    <PackageVersion Include="Npgsql" Version="8.0.4" />
     <PackageVersion Include="Shouldly" Version="4.2.1" />
     <PackageVersion Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.9" />
     <PackageVersion Include="StyleCop.Analyzers.Unstable" Version="1.2.0.556" />

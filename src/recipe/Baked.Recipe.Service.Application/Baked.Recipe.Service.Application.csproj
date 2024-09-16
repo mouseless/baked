@@ -28,6 +28,7 @@
     <PackageReference Include="MySql.Data" />
     <PackageReference Include="NHibernate" />
     <PackageReference Include="NHibernate.Extensions.Sqlite" />
+    <PackageReference Include="Npgsql" />
     <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" />
     <PackageReference Include="Swashbuckle.AspNetCore" />
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" />
