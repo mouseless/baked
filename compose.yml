@@ -1,11 +1,11 @@
 services:
-  db:
+  db.mysql:
     image: mariadb
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: Baked.Test.Recipe.Service.Application
+      MYSQL_DATABASE: Recipe.Service
       MYSQL_TCP_PORT: 3366
     ports:
       - 3366:3366
@@ -15,6 +15,22 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+
+  db.postgresql:
+    image: postgres
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: Recipe.Service
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U root -d Recipe.Service'"]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
   recipe.service:
     build:
       dockerfile: test/recipe/Baked.Test.Recipe.Service.Application/Dockerfile
@@ -23,7 +39,10 @@ services:
     ports:
       - 5151:80
     depends_on:
-      db:
+      db.mysql:
+        condition: service_healthy
+      db.postgresql:
         condition: service_healthy
     links:
-      - db:db
+      - db.mysql
+      - db.postgresql

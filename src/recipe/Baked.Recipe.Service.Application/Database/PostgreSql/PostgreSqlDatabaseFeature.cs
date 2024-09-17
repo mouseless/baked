@@ -1,11 +1,11 @@
-﻿using Baked.Architecture;
+using Baked.Architecture;
 using Baked.Configuration;
 using FluentNHibernate.Cfg.Db;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Baked.Database.MySql;
+namespace Baked.Database.PostgreSql;
 
-public class MySqlDatabaseFeature(Setting<string> _connectionString, Setting<bool> _autoUpdateSchema)
+public class PostgreSqlDatabaseFeature(Setting<string> _connectionString, Setting<bool> _autoUpdateSchema)
     : IFeature<DatabaseConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
@@ -19,9 +19,8 @@ public class MySqlDatabaseFeature(Setting<string> _connectionString, Setting<boo
         {
             persistence.AutoUpdateSchema = _autoUpdateSchema;
             persistence.Configurer =
-                MySQLConfiguration.Standard
+                PostgreSQLConfiguration.PostgreSQL83
                     .ConnectionString(_connectionString)
-                    .Dialect<CustomMySQL57Dialect>()
                     .MaxFetchDepth(1);
         });
 

@@ -12,7 +12,7 @@ public class DefaultExceptionHandlingFeature(Setting<string>? _typeUrlFormat = d
     {
         configurator.ConfigureConfigurationBuilder(configuration =>
         {
-            configuration.AddJson("""
+            configuration.AddJsonAsDefault("""
             {
               "Logging": {
                 "LogLevel": {

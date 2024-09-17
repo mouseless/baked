@@ -17,19 +17,28 @@ Adds in-memory database setup.
 c => c.InMemory()
 ```
 
-## Sqlite
+## MySQL
 
-Adds local Sqlite database setup which creates local sqlite database in
+Adds MySQL database setup which gets connection parameters from `app.settings`.
+
+```csharp
+c => c.MySql()
+```
+
+## PostgreSQL
+
+Adds PostgreSQL database setup which gets connection parameters from
+`app.settings`.
+
+```csharp
+c => c.PostgreSql()
+```
+
+## SQLite
+
+Adds local SQLite database setup which creates local sqlite database in
 documents folder with given name.
 
 ```csharp
 c => c.Sqlite(fileName: "test.db", autoExportSchema: false)
-```
-
-## MySql
-
-Adds MySql database setup which gets connection parameters from `app.settings`.
-
-```csharp
-c => c.MySql()
 ```

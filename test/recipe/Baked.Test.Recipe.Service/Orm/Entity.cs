@@ -182,15 +182,16 @@ public class Entities(IQueryContext<Entity> _context)
         int? take = default,
         int? skip = default
     ) => _context.By(
-            where: e =>
-                (guid == default || e.Guid == guid) &&
-                (@string == default || e.String == @string) &&
-                (stringData == default || e.StringData == @stringData) &&
-                (int32 == default || e.Int32 == int32) &&
-                (unique == default || e.Unique == unique) &&
-                (uri == default || e.Uri == uri) &&
-                (@enum == default || e.Enum == @enum) &&
-                (dateTime == default || e.DateTime == dateTime),
+            whereIf: [
+                (guid is not null, e => e.Guid == guid),
+                (@string is not null, e => e.String == @string),
+                (stringData is not null, e => e.StringData == @stringData),
+                (int32 is not null, e => e.Int32 == int32),
+                (unique is not null, e => e.Unique == unique),
+                (uri is not null, e => e.Uri == uri),
+                (@enum is not null, e => e.Enum == @enum),
+                (dateTime is not null, e => e.DateTime == dateTime),
+            ],
             take: take,
             skip: skip
         );

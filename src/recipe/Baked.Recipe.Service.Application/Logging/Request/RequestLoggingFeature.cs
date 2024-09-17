@@ -10,7 +10,7 @@ public class RequestLoggingFeature(bool singleLine)
     {
         configurator.ConfigureConfigurationBuilder(configuration =>
         {
-            configuration.AddJson($$"""
+            configuration.AddJsonAsDefault($$"""
             {
               "Logging": {
                 "LogLevel": {
