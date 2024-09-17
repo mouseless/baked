@@ -7,5 +7,6 @@
 
 ## Improvements
 
-- Fixes an issue where built-in configs couldn't be overridden in
-  `appsettings.json` and `appsettings.[Environment].json` files
+- Built-in configs couldn't be overridden in `appsettings.json` and
+  `appsettings.[Environment].json` files, fixed
+- `IQueryContext` now provides `whereIf:` to allow dynamic where clause building
