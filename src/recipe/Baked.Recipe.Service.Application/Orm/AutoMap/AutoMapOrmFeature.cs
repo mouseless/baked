@@ -25,7 +25,7 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
 
         configurator.ConfigureConfigurationBuilder(configuration =>
         {
-            configuration.AddJson($$"""
+            configuration.AddJsonAsDefault($$"""
             {
               "Logging": {
                 "LogLevel": {

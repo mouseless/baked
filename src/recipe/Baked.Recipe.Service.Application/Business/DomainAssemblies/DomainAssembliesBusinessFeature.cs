@@ -32,7 +32,7 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
 
         configurator.ConfigureConfigurationBuilder(configuration =>
         {
-            configuration.AddJson($$"""
+            configuration.AddJsonAsDefault($$"""
             {
               "Logging": {
                 "LogLevel": {
