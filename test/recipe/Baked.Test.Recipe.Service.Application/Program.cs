@@ -28,7 +28,6 @@ Bake.New
             baseClaims: ["BaseA", "BaseB"]
         ),
         database: c => c
-          //.MySql()
           .PostgreSql()
           .ForDevelopment(c.Sqlite())
           .ForNfr(c.Sqlite(fileName: $"Baked.Test.Recipe.Service.Nfr.db")),
