@@ -10,3 +10,9 @@
 - Built-in configs couldn't be overridden in `appsettings.json` and
   `appsettings.[Environment].json` files, fixed
 - `IQueryContext` now provides `whereIf:` to allow dynamic where clause building
+
+## Library Upgrades
+
+| Package  | Old Version | New Version |
+| -------- | ----------- | ----------- |
+| Npgsql   | new         | 8.0.4       |
