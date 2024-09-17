@@ -10,6 +10,7 @@
 - Built-in configs couldn't be overridden in `appsettings.json` and
   `appsettings.[Environment].json` files, fixed
 - `IQueryContext` now provides `whereIf:` to allow dynamic where clause building
+- `*By` methods were causing parents to be fetched lazily, fixed
 
 ## Library Upgrades
 
