@@ -1,4 +1,6 @@
-﻿namespace Baked.Test.Orm;
+﻿using NHibernate.Proxy;
+
+namespace Baked.Test.Orm;
 
 public class QueryingEntities : TestServiceSpec
 {
@@ -76,5 +78,18 @@ public class QueryingEntities : TestServiceSpec
 
         testing.By(asc: true).First().Name.ShouldBe("a");
         testing.By(desc: true).First().Name.ShouldBe("c");
+    }
+
+    [Test]
+    public void Parents_are_fetched_eagerly()
+    {
+        GiveMe.AParent(withChild: true);
+        GiveMe.AClearSession();
+
+        var children = GiveMe.The<Children>();
+
+        var child = children.By().First();
+
+        child.Parent.ShouldNotBeAssignableTo<INHibernateProxy>();
     }
 }

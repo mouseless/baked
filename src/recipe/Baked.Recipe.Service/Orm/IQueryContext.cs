@@ -5,7 +5,7 @@ namespace Baked.Orm;
 public interface IQueryContext<TEntity>
 {
     TEntity SingleById(Guid id, bool throwNotFound = false);
-    IQueryable<TEntity> Query();
+    IQueryable<TEntity> Query(bool fetchParents = true);
 
     public List<TEntity> ByIds(IEnumerable<Guid> ids) =>
         ids.Select(id => SingleById(id)).ToList();
@@ -13,7 +13,7 @@ public interface IQueryContext<TEntity>
     public bool AnyBy(
         Expression<Func<TEntity, bool>>? where = null,
         List<(bool, Expression<Func<TEntity, bool>>)>? whereIf = null
-    ) => Query(where, whereIf: whereIf).Any();
+    ) => Query(where, whereIf: whereIf, fetchParents: false).Any();
 
     public TEntity? SingleBy(
         Expression<Func<TEntity, bool>>? where = null,
@@ -75,10 +75,11 @@ public interface IQueryContext<TEntity>
     IQueryable<TEntity> Query(Expression<Func<TEntity, bool>>? where,
         List<(bool, Expression<Func<TEntity, bool>>)>? whereIf = null,
         int? take = null,
-        int? skip = null
+        int? skip = null,
+        bool fetchParents = true
     )
     {
-        var query = Query();
+        var query = Query(fetchParents: fetchParents);
 
         if (where is not null)
         {
@@ -113,11 +114,13 @@ public interface IQueryContext<TEntity>
         Expression<Func<TEntity, TOrderBy>>? orderBy = default,
         Expression<Func<TEntity, TOrderBy>>? orderByDescending = default,
         int? take = null,
-        int? skip = null
+        int? skip = null,
+        bool fetchParents = true
     )
     {
         var query = Query(where,
-            whereIf: whereIf
+            whereIf: whereIf,
+            fetchParents: fetchParents
         );
 
         if (orderBy is not null)
