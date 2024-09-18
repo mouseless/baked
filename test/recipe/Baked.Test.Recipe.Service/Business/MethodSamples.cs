@@ -72,6 +72,12 @@ public class MethodSamples(ILogger<MethodSamples> _logger)
     public void PrimitiveListParameters(List<string> strings, int[] ints, IEnumerable<DateTime> dateTimes) =>
         _logger.LogInformation($"{nameof(PrimitiveListParameters)} was called with [{strings.Join(", ")}], [{ints.Join(", ")}] and [{dateTimes.Join(", ")}]");
 
+    public void RecordParameters(Record record) =>
+        _logger.LogInformation($"{nameof(RecordParameters)} was called with {record}");
+
+    public void RecordListParameters(List<Record> records) =>
+        _logger.LogInformation($"{nameof(RecordParameters)} was called with {records.Join(", ")}");
+
     /// <param name="entity">
     /// Entity description
     /// </param>

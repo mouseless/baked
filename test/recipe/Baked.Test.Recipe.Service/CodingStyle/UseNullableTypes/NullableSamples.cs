@@ -1,3 +1,4 @@
+using Baked.Test.Business;
 using Baked.Test.CodingStyle.EntityExtensionViaComposition;
 using Baked.Test.Orm;
 using Microsoft.Extensions.Logging;
@@ -35,6 +36,10 @@ public class NullableSamples(ILogger<NullableSamples> _logger)
         string optional = "default",
         string? optionalNullable = "default"
     ) => _logger.LogInformation($"{notNull} - {nullable} - {optional} - {optionalNullable}");
+
+    public void Record(Record notNull, Record? nullable,
+        Record? optionalNullable
+    ) => _logger.LogInformation($"{notNull} - {nullable} - {optionalNullable}");
 
     public void GetEntity(Entity notNull, Entity? nullable,
         Entity? optionalNullable = default
