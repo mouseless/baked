@@ -1,5 +1,4 @@
 ﻿using Baked.Architecture;
-using Baked.DependencyInjection;
 using Baked.RestApi;
 using Baked.RestApi.Conventions;
 using FluentNHibernate.Conventions.Helpers;
@@ -70,12 +69,7 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
 
         configurator.ConfigureServiceCollection(services =>
         {
-            var assembly = configurator.Context.GetGeneratedAssembly(nameof(AutoMapOrmFeature));
-            var serviceAdderType = assembly.GetExportedTypes().SingleOrDefault(t => t.IsAssignableTo(typeof(IServiceAdder))) ?? throw new("ServiceAdder implementation not found");
-            var serviceAdder = (IServiceAdder?)Activator.CreateInstance(serviceAdderType) ?? throw new($"Cannot create instance of {serviceAdderType}");
-
-            serviceAdder.AddServices(services);
-
+            services.AddFromAssembly(configurator.Context.GetGeneratedAssembly(nameof(AutoMapOrmFeature)));
             services.AddScoped(typeof(IEntityContext<>), typeof(EntityContext<>));
             services.AddSingleton(typeof(IQueryContext<>), typeof(QueryContext<>));
         });
