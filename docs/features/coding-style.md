@@ -62,6 +62,15 @@ Configures all `object` parameters, return types and properties to be treated as
 c => c.ObjectAsJson()
 ```
 
+## Records are DTOs
+
+Configures domain type records as valid input paramters. Methods containing
+record parameters render as api endpoints.
+
+```csharp
+c => c.RecordsAreDtos()
+```
+
 ## Remaining Services are Singleton
 
 Adds `SingletonAttribute` to the services that has no `TransientAttribute` or

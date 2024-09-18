@@ -4,6 +4,8 @@
 
 - Beta features are available in Baked.Recipe.Service package;
   - `PostgreSql` implementation is added to `Database` feature
+  - `RecordsAreDtos` coding style was added to support domain type records as
+    api inputs
 
 ## Improvements
 
@@ -11,7 +13,6 @@
   `appsettings.[Environment].json` files, fixed
 - `IQueryContext` now provides `whereIf:` to allow dynamic where clause building
 - `*By` methods were causing parents to be fetched lazily, fixed
-- Records were not rendered in api endpoints, fixed
 
 ## Library Upgrades
 

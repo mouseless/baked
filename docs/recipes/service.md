@@ -44,6 +44,7 @@ Bake.New
 |                    | Entity Extension via Composition |                                    |
 |                    | Entity Subclass via Composition  |                                    |
 |                    | Object as JSON                   |                                    |
+|                    | Records are DTOs                 |                                    |
 |                    | Remaining Services are Singleton |                                    |
 |                    | Rich Entity                      |                                    |
 |                    | Scoped by Suffix                 |                                    |
