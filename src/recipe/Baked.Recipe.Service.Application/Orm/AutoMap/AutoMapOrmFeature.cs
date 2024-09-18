@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.DependencyInjection;
 using Baked.RestApi;
 using Baked.RestApi.Conventions;
 using FluentNHibernate.Conventions.Helpers;
@@ -17,12 +18,6 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureServiceCollection(services =>
-        {
-            services.AddScoped(typeof(IEntityContext<>), typeof(EntityContext<>));
-            services.AddSingleton(typeof(IQueryContext<>), typeof(QueryContext<>));
-        });
-
         configurator.ConfigureConfigurationBuilder(configuration =>
         {
             configuration.AddJsonAsDefault($$"""
@@ -41,6 +36,48 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
         {
             builder.Index.Type.Add(typeof(QueryAttribute));
             builder.Index.Type.Add(typeof(EntityAttribute));
+        });
+
+        configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
+        {
+            var domain = configurator.Context.GetDomainModel();
+
+            generatedAssemblies.Add(nameof(AutoMapOrmFeature),
+                assembly =>
+                {
+                    assembly
+                        .AddReferenceFrom<AutoMapOrmFeature>()
+                        .AddCodes(new ManyToOneFetcherTemplate(domain));
+
+                    foreach (var entity in domain.Types.Having<EntityAttribute>())
+                    {
+                        entity.Apply(t => assembly.AddReferenceFrom(t));
+                    }
+                },
+                compilationOptions => compilationOptions.WithUsings(
+                    "Baked.DependencyInjection",
+                    "Baked.Orm",
+                    "Microsoft.Extensions.DependencyInjection",
+                    "NHibernate.Linq",
+                    "System",
+                    "System.Linq",
+                    "System.Collections",
+                    "System.Collections.Generic",
+                    "System.Threading.Tasks"
+                )
+            );
+        });
+
+        configurator.ConfigureServiceCollection(services =>
+        {
+            var assembly = configurator.Context.GetGeneratedAssembly(nameof(AutoMapOrmFeature));
+            var serviceAdderType = assembly.GetExportedTypes().SingleOrDefault(t => t.IsAssignableTo(typeof(IServiceAdder))) ?? throw new("ServiceAdder implementation not found");
+            var serviceAdder = (IServiceAdder?)Activator.CreateInstance(serviceAdderType) ?? throw new($"Cannot create instance of {serviceAdderType}");
+
+            serviceAdder.AddServices(services);
+
+            services.AddScoped(typeof(IEntityContext<>), typeof(EntityContext<>));
+            services.AddSingleton(typeof(IQueryContext<>), typeof(QueryContext<>));
         });
 
         configurator.ConfigureAutoPersistenceModel(model =>
