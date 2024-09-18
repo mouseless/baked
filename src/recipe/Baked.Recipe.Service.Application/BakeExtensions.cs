@@ -64,6 +64,7 @@ public static class BakeExtensions
                 c => c.EntityExtensionViaComposition(),
                 c => c.EntitySubclassViaComposition(),
                 c => c.ObjectAsJson(),
+                c => c.RecordsAreDtos(),
                 c => c.RemainingServicesAreSingleton(),
                 c => c.RichEntity(),
                 c => c.ScopedBySuffix(),
