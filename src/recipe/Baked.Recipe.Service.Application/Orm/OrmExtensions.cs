@@ -2,6 +2,7 @@
 using Baked.Domain.Model;
 using Baked.Orm;
 using Baked.RestApi.Model;
+using Baked.Testing;
 using Humanizer;
 using Shouldly;
 using System.Diagnostics.CodeAnalysis;
@@ -147,6 +148,12 @@ public static class OrmExtensions
         return
             type.TryGetMetadata(out var metadata) &&
             metadata.TryGetSingle(out entityAttribute);
+    }
+
+    public static void AClearSession(this Stubber _)
+    {
+        ServiceSpec.Session.Flush();
+        ServiceSpec.Session.Clear();
     }
 
     public static void ShouldBeDeleted(this object @object) =>

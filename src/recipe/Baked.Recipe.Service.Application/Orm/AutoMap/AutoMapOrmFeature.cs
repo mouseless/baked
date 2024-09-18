@@ -17,12 +17,6 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureServiceCollection(services =>
-        {
-            services.AddScoped(typeof(IEntityContext<>), typeof(EntityContext<>));
-            services.AddSingleton(typeof(IQueryContext<>), typeof(QueryContext<>));
-        });
-
         configurator.ConfigureConfigurationBuilder(configuration =>
         {
             configuration.AddJsonAsDefault($$"""
@@ -41,6 +35,43 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
         {
             builder.Index.Type.Add(typeof(QueryAttribute));
             builder.Index.Type.Add(typeof(EntityAttribute));
+        });
+
+        configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
+        {
+            var domain = configurator.Context.GetDomainModel();
+
+            generatedAssemblies.Add(nameof(AutoMapOrmFeature),
+                assembly =>
+                {
+                    assembly
+                        .AddReferenceFrom<AutoMapOrmFeature>()
+                        .AddCodes(new ManyToOneFetcherTemplate(domain));
+
+                    foreach (var entity in domain.Types.Having<EntityAttribute>())
+                    {
+                        entity.Apply(t => assembly.AddReferenceFrom(t));
+                    }
+                },
+                compilationOptions => compilationOptions.WithUsings(
+                    "Baked.DependencyInjection",
+                    "Baked.Orm",
+                    "Microsoft.Extensions.DependencyInjection",
+                    "NHibernate.Linq",
+                    "System",
+                    "System.Linq",
+                    "System.Collections",
+                    "System.Collections.Generic",
+                    "System.Threading.Tasks"
+                )
+            );
+        });
+
+        configurator.ConfigureServiceCollection(services =>
+        {
+            services.AddFromAssembly(configurator.Context.GetGeneratedAssembly(nameof(AutoMapOrmFeature)));
+            services.AddScoped(typeof(IEntityContext<>), typeof(EntityContext<>));
+            services.AddSingleton(typeof(IQueryContext<>), typeof(QueryContext<>));
         });
 
         configurator.ConfigureAutoPersistenceModel(model =>

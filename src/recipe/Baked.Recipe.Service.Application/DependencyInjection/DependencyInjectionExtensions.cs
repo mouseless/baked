@@ -1,6 +1,7 @@
 ﻿using Baked.Architecture;
 using Baked.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace Baked;
 
@@ -20,4 +21,12 @@ public static class DependencyInjectionExtensions
 
     public static void ConfigureServiceProvider(this LayerConfigurator configurator, Action<IServiceProvider> configuration) =>
         configurator.Configure(configuration);
+
+    public static void AddFromAssembly(this IServiceCollection services, Assembly assembly)
+    {
+        var serviceAdderType = assembly.GetExportedTypes().SingleOrDefault(t => t.IsAssignableTo(typeof(IServiceAdder))) ?? throw new("`IServiceAdder` implementation not found");
+        var serviceAdder = (IServiceAdder?)Activator.CreateInstance(serviceAdderType) ?? throw new($"Cannot create instance of {serviceAdderType}");
+
+        serviceAdder.AddServices(services);
+    }
 }
