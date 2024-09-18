@@ -33,7 +33,7 @@ public class QueryContext<TEntity>(Func<ISession> _getSession, NHibernate.Cfg.Co
                     ?.MakeGenericMethod(typeof(TEntity), parent.Type.ReturnedClass)
                 ?? throw new("Fetch extension should've existed");
 
-            result = (IQueryable<TEntity>?)fetch.Invoke(null, new object[] { result, fetchExp })
+            result = (IQueryable<TEntity>?)fetch.Invoke(null, [result, fetchExp])
                 ?? throw new("Fetch extension should've returned not null");
         }
 
