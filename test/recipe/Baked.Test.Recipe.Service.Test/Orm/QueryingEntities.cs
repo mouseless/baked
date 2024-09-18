@@ -85,7 +85,6 @@ public class QueryingEntities : TestServiceSpec
     {
         GiveMe.AParent(withChild: true);
         GiveMe.AClearSession();
-
         var children = GiveMe.The<Children>();
 
         var child = children.By().First();
