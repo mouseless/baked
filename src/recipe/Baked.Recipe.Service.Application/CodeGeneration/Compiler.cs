@@ -33,7 +33,7 @@ public class Compiler(GeneratedAssemblyDescriptor _descriptor)
         ));
 
         var compilation = CSharpCompilation.Create(
-            Path.GetRandomFileName(),
+            $"Baked.g.{_descriptor.Name}",
             syntaxTrees: _descriptor.Codes.Select(c => CSharpSyntaxTree.ParseText(c)),
             references: _references.Values,
             options: _descriptor.CompilationOptions

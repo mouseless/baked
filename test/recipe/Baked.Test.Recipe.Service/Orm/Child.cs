@@ -8,6 +8,7 @@ public class Child(IEntityContext<Child> _context)
 
     public virtual Guid Id { get; protected set; } = default!;
     public virtual Parent Parent { get; protected set; } = default!;
+    protected internal virtual Parent? InternalParent { get; protected set; } = default!;
 
     protected internal virtual Child With(Parent parent)
     {
