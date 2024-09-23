@@ -9,4 +9,9 @@
     <Using Include="System.Threading.Tasks" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="Baked.g.AutoMapOrmFeature"/>
+    <InternalsVisibleTo Include="Baked.g.RestApiLayer"/>
+  </ItemGroup>  
+
 </Project>

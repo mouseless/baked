@@ -8,4 +8,9 @@
     <ProjectReference Include="..\..\..\src\recipe\Baked.Recipe.Service\Baked.Recipe.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="Baked.g.AutoMapOrmFeature"/>
+    <InternalsVisibleTo Include="Baked.g.RestApiLayer"/>
+  </ItemGroup>  
+
 </Project>
