@@ -7,4 +7,5 @@
 
 ## Improvements
 
-- Generated assembly names can now be set
+- Generated assembly names are now set from `Name` property of
+  `GeneratedAssemblyDescriptor` with `Baked.g.` prefix
