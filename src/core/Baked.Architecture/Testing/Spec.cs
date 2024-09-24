@@ -7,17 +7,20 @@ namespace Baked.Testing;
 
 public abstract class Spec
 {
+    private static ApplicationContext _context = new();
+
+    public static ApplicationContext StaticContext => _context;
+    public ApplicationContext Context => _context;
+
     protected static ApplicationContext Init(
         Action<ApplicationDescriptor>? describe = default
     )
     {
-        var result = new ApplicationContext();
-
-        new Bake(new Mock<IBanner>().Object, () => new(result))
+        new Bake(new Mock<IBanner>().Object, () => new(_context))
             .Application(describe ?? (_ => { }))
             .Run();
 
-        return result;
+        return _context;
     }
 
     public Stubber GiveMe { get; private set; } = default!;

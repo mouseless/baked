@@ -76,7 +76,7 @@ public static class TestingExtensions
         spec.Settings[key] = value;
     }
 
-    internal static IConfiguration TheConfiguration(this Mocker mockMe,
+    public static IConfiguration TheConfiguration(this Mocker mockMe,
         Func<string, string?>? defaultValueProvider = default,
         Dictionary<string, string>? settings = default
     )

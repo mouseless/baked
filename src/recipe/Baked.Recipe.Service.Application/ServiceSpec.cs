@@ -4,12 +4,10 @@ using Baked.Caching;
 using Baked.Communication;
 using Baked.Core;
 using Baked.Database;
-using Baked.Domain.Model;
 using Baked.ExceptionHandling;
 using Baked.MockOverrider;
 using Baked.Orm;
 using Baked.Testing;
-using Microsoft.Extensions.DependencyInjection;
 using NHibernate;
 
 using ITransaction = NHibernate.ITransaction;
@@ -18,13 +16,6 @@ namespace Baked;
 
 public abstract class ServiceSpec : Spec
 {
-    static DomainModel _domainModel = default!;
-    static IServiceProvider _serviceProvider = default!;
-
-    internal static DomainModel DomainModel => _domainModel;
-    internal static IServiceProvider ServiceProvider => _serviceProvider;
-    internal static ISession Session => _serviceProvider.GetRequiredService<ISession>();
-
     protected static ApplicationContext Init(
         Func<BusinessConfigurator, IFeature<BusinessConfigurator>> business,
         Func<CachingConfigurator, IFeature<CachingConfigurator>>? caching = default,
@@ -45,7 +36,7 @@ public abstract class ServiceSpec : Spec
         mockOverrider ??= c => c.FirstInterface();
         orm ??= c => c.AutoMap();
 
-        var context = Init(app =>
+        return Init(app =>
         {
             app.Layers.AddCodeGeneration();
             app.Layers.AddConfiguration();
@@ -87,11 +78,6 @@ public abstract class ServiceSpec : Spec
 
             configure?.Invoke(app);
         });
-
-        _domainModel = context.GetDomainModel();
-        _serviceProvider = context.GetServiceProvider();
-
-        return context;
     }
 
     ITransaction _transaction = default!;
@@ -101,8 +87,8 @@ public abstract class ServiceSpec : Spec
     {
         base.SetUp();
 
-        Caster.SetServiceProvider(_serviceProvider);
-        _transaction = Session.BeginTransaction();
+        Caster.SetServiceProvider(GiveMe.TheServiceProvider());
+        _transaction = GiveMe.The<ISession>().BeginTransaction();
         Settings = [];
         MockMe.TheConfiguration(settings: Settings, defaultValueProvider: GetDefaultSettingsValue);
 
@@ -115,9 +101,9 @@ public abstract class ServiceSpec : Spec
     {
         base.TearDown();
 
-        Session.Flush();
+        GiveMe.The<ISession>().Flush();
         _transaction.Rollback();
-        Session.Clear();
+        GiveMe.The<ISession>().Clear();
 
         GiveMe.The<IMockOverrider>().Reset();
         GiveMe.AMemoryCache(clear: true);
