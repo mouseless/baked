@@ -11,5 +11,13 @@ public class ScopedMemoryCachingFeature : IFeature<CachingConfigurator>
         {
             services.AddScopedWithFactory<IMemoryCache, MemoryCache>();
         });
+
+        configurator.ConfigureTestConfiguration(test =>
+        {
+            test.TearDowns.Add(spec =>
+            {
+                spec.GiveMe.AMemoryCache(clear: true);
+            });
+        });
     }
 }

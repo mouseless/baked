@@ -8,7 +8,6 @@ using Baked.ExceptionHandling;
 using Baked.MockOverrider;
 using Baked.Orm;
 using Baked.Testing;
-using NHibernate;
 
 namespace Baked;
 
@@ -33,6 +32,7 @@ public abstract class ServiceSpec : Spec
         exceptionHandling ??= c => c.Default();
         mockOverrider ??= c => c.FirstInterface();
         orm ??= c => c.AutoMap();
+        configure ??= _ => { };
 
         Init(app =>
         {
@@ -74,7 +74,7 @@ public abstract class ServiceSpec : Spec
             app.Features.AddMockOverrider(mockOverrider);
             app.Features.AddOrm(orm);
 
-            configure?.Invoke(app);
+            configure(app);
         });
     }
 
@@ -82,25 +82,8 @@ public abstract class ServiceSpec : Spec
     {
         base.SetUp();
 
-        Caster.SetServiceProvider(GiveMe.TheServiceProvider());
-        GiveMe.The<ISession>().BeginTransaction();
+        // overrides configuration mock in `MockCoreFeature` with below default value provider
         MockMe.TheConfiguration(defaultValueProvider: GetDefaultSettingsValue);
-
-        // This is the initial release date. Do not change this to avoid
-        // potential "Cannot go back in time." errors.
-        MockMe.TheTime(now: new DateTime(2023, 06, 15, 16, 59, 00), reset: true);
-    }
-
-    public override void TearDown()
-    {
-        base.TearDown();
-
-        GiveMe.The<ISession>().Flush();
-        GiveMe.The<ISession>().GetCurrentTransaction().Rollback();
-        GiveMe.The<ISession>().Clear();
-
-        GiveMe.The<IMockOverrider>().Reset();
-        GiveMe.AMemoryCache(clear: true);
     }
 
     protected virtual string? GetDefaultSettingsValue(string key) =>

@@ -154,7 +154,7 @@ public static class OrmExtensions
 
     public static void ShouldBeDeleted(this object @object) =>
         Spec
-          .StaticContext
+          .ContextStatic
           .GetServiceProvider()
           .GetRequiredService<ISession>()
           .Contains(@object)
@@ -162,7 +162,7 @@ public static class OrmExtensions
 
     public static void ShouldBeInserted(this object @object) =>
         Spec
-          .StaticContext
+          .ContextStatic
           .GetServiceProvider()
           .GetRequiredService<ISession>()
           .Contains(@object)
