@@ -19,10 +19,11 @@ public class MockCoreFeature : IFeature<CoreConfigurator>
             test.Mocks.Add<IConfiguration>(singleton: true);
             test.SetUps.Add(spec =>
             {
+                spec.MockMe.TheConfiguration();
+
                 // This is the initial release date. Do not change this to avoid
                 // potential "Cannot go back in time." errors.
                 spec.MockMe.TheTime(now: new DateTime(2023, 06, 15, 16, 59, 00), reset: true);
-                spec.MockMe.TheConfiguration();
             });
         });
     }
