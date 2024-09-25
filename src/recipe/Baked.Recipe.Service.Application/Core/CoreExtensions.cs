@@ -1,6 +1,5 @@
 ﻿using Baked.Architecture;
 using Baked.Core;
-using Baked.Core.Mock;
 using Baked.Testing;
 using Newtonsoft.Json;
 using Shouldly;
@@ -51,32 +50,6 @@ public static class CoreExtensions
         const string template = "4d13bbe0-07a4-4b64-9d31-8fef958fbef1";
 
         return Guid.Parse($"{starts}{template[starts.Length..]}");
-    }
-
-    public static TimeProvider TheTime(this Mocker mockMe,
-        DateTime? now = default,
-        bool passSomeTime = false,
-        bool reset = false
-    )
-    {
-        var fakeTimeProvider = (ResettableFakeTimeProvider)mockMe.Spec.GiveMe.The<TimeProvider>();
-
-        if (reset)
-        {
-            fakeTimeProvider.Reset();
-        }
-
-        if (now is not null)
-        {
-            fakeTimeProvider.SetUtcNow(new(now.Value, fakeTimeProvider.LocalTimeZone.BaseUtcOffset));
-        }
-
-        if (passSomeTime)
-        {
-            fakeTimeProvider.Advance(TimeSpan.FromSeconds(1));
-        }
-
-        return fakeTimeProvider;
     }
 
     public static Uri AUrl(this Stubber giveMe,

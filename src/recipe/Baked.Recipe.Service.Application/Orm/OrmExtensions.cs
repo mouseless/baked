@@ -152,12 +152,6 @@ public static class OrmExtensions
             metadata.TryGetSingle(out entityAttribute);
     }
 
-    public static void AClearSession(this Stubber giveMe)
-    {
-        giveMe.The<ISession>().Flush();
-        giveMe.The<ISession>().Clear();
-    }
-
     public static void ShouldBeDeleted(this object @object) =>
         Spec
           .StaticContext

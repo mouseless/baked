@@ -10,8 +10,6 @@ using Baked.Orm;
 using Baked.Testing;
 using NHibernate;
 
-using ITransaction = NHibernate.ITransaction;
-
 namespace Baked;
 
 public abstract class ServiceSpec : Spec
@@ -80,17 +78,13 @@ public abstract class ServiceSpec : Spec
         });
     }
 
-    ITransaction _transaction = default!;
-    internal Dictionary<string, string> Settings { get; private set; } = default!;
-
     public override void SetUp()
     {
         base.SetUp();
 
         Caster.SetServiceProvider(GiveMe.TheServiceProvider());
-        _transaction = GiveMe.The<ISession>().BeginTransaction();
-        Settings = [];
-        MockMe.TheConfiguration(settings: Settings, defaultValueProvider: GetDefaultSettingsValue);
+        GiveMe.The<ISession>().BeginTransaction();
+        MockMe.TheConfiguration(defaultValueProvider: GetDefaultSettingsValue);
 
         // This is the initial release date. Do not change this to avoid
         // potential "Cannot go back in time." errors.
@@ -102,7 +96,7 @@ public abstract class ServiceSpec : Spec
         base.TearDown();
 
         GiveMe.The<ISession>().Flush();
-        _transaction.Rollback();
+        GiveMe.The<ISession>().GetCurrentTransaction().Rollback();
         GiveMe.The<ISession>().Clear();
 
         GiveMe.The<IMockOverrider>().Reset();

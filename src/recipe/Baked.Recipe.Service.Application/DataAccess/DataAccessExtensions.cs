@@ -1,6 +1,8 @@
 ﻿using Baked.Architecture;
 using Baked.DataAccess;
+using Baked.Testing;
 using FluentNHibernate.Automapping;
+using NHibernate;
 
 namespace Baked;
 
@@ -20,4 +22,10 @@ public static class DataAccessExtensions
 
     public static void ConfigureNHibernateInterceptor(this LayerConfigurator configurator, Action<InterceptorConfiguration> configuration) =>
         configurator.Configure(configuration);
+
+    public static void AClearSession(this Stubber giveMe)
+    {
+        giveMe.The<ISession>().Flush();
+        giveMe.The<ISession>().Clear();
+    }
 }
