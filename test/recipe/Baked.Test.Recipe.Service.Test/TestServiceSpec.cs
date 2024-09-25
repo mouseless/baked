@@ -1,4 +1,3 @@
-using Baked.Domain.Model;
 using Baked.Test.Communication;
 using Baked.Test.Orm;
 
@@ -6,11 +5,8 @@ namespace Baked.Test;
 
 public abstract class TestServiceSpec : ServiceSpec
 {
-    protected static DomainModel DomainModel { get; private set; } = default!;
-
-    static TestServiceSpec()
-    {
-        var context = Init(
+    static TestServiceSpec() =>
+        Init(
             business: c => c.DomainAssemblies([typeof(Entity).Assembly]),
             communication: c => c.Mock(defaultResponses: response =>
             {
@@ -23,9 +19,6 @@ public abstract class TestServiceSpec : ServiceSpec
                 app.Features.AddConfigurationOverrider();
             }
         );
-
-        DomainModel = context.GetDomainModel();
-    }
 
     protected override string? GetDefaultSettingsValue(string key) =>
         key == "Int" ? $"{GiveMe.AnInteger()}" : GiveMe.AString();

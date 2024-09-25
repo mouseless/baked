@@ -14,7 +14,7 @@ namespace Baked;
 
 public abstract class ServiceSpec : Spec
 {
-    protected static ApplicationContext Init(
+    protected static void Init(
         Func<BusinessConfigurator, IFeature<BusinessConfigurator>> business,
         Func<CachingConfigurator, IFeature<CachingConfigurator>>? caching = default,
         Func<CommunicationConfigurator, IFeature<CommunicationConfigurator>>? communication = default,
@@ -34,7 +34,7 @@ public abstract class ServiceSpec : Spec
         mockOverrider ??= c => c.FirstInterface();
         orm ??= c => c.AutoMap();
 
-        return Init(app =>
+        Init(app =>
         {
             app.Layers.AddCodeGeneration();
             app.Layers.AddConfiguration();

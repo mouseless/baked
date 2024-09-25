@@ -12,16 +12,11 @@ public abstract class Spec
     public static ApplicationContext StaticContext => _context;
     public ApplicationContext Context => _context;
 
-    protected static ApplicationContext Init(
+    protected static void Init(
         Action<ApplicationDescriptor>? describe = default
-    )
-    {
-        new Bake(new Mock<IBanner>().Object, () => new(_context))
+    ) => new Bake(new Mock<IBanner>().Object, () => new(_context))
             .Application(describe ?? (_ => { }))
             .Run();
-
-        return _context;
-    }
 
     public Stubber GiveMe { get; private set; } = default!;
     public Mocker MockMe { get; private set; } = default!;
