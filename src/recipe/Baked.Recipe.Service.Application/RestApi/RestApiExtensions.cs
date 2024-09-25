@@ -48,6 +48,15 @@ public static class RestApiExtensions
         return mvcBuilder;
     }
 
+    public static IMvcBuilder AddNewtonsoftJson(this IMvcBuilder mvcBuilder, MvcNewtonsoftJsonOptions options)
+    {
+        mvcBuilder.AddNewtonsoftJson();
+        mvcBuilder.Services.AddOptions();
+        mvcBuilder.Services.AddSingleton<IOptions<MvcNewtonsoftJsonOptions>>(sp => new OptionsWrapper<MvcNewtonsoftJsonOptions>(options));
+
+        return mvcBuilder;
+    }
+
     public static void Add(this IApiModelConventionCollection collection, IApiModelConvention convention,
         int order = 0
     ) => collection.Add((convention, order));
@@ -101,14 +110,5 @@ public static class RestApiExtensions
         }
 
         return parts;
-    }
-
-    internal static IMvcBuilder AddNewtonsoftJson(this IMvcBuilder mvcBuilder, MvcNewtonsoftJsonOptions options)
-    {
-        mvcBuilder.AddNewtonsoftJson();
-        mvcBuilder.Services.AddOptions();
-        mvcBuilder.Services.AddSingleton<IOptions<MvcNewtonsoftJsonOptions>>(sp => new OptionsWrapper<MvcNewtonsoftJsonOptions>(options));
-
-        return mvcBuilder;
     }
 }

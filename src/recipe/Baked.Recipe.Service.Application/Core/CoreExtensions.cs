@@ -14,6 +14,22 @@ public static class CoreExtensions
     public static void AddCore(this List<IFeature> features, Func<CoreConfigurator, IFeature<CoreConfigurator>> configure) =>
         features.Add(configure(new()));
 
+    public static Dictionary<string, string> Merge(this Dictionary<string, string>? dictionary, Dictionary<string, string>? input)
+    {
+        dictionary ??= [];
+        input ??= [];
+
+        foreach (var (key, value) in input)
+        {
+            if (!dictionary.ContainsKey(key))
+            {
+                dictionary[key] = value;
+            }
+        }
+
+        return dictionary;
+    }
+
     public static int AnInteger(this Stubber _) =>
         42;
 
