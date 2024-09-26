@@ -21,7 +21,7 @@ public class ApiCodeTemplate(ApiModel _apiModel)
     """;
 
     string Action(ActionModel action) => $$"""
-        {{If(action.HasBody && action.UseRequestClassForBody, () => $$"""
+        {{If(action.UseForm || action.HasBody && action.UseRequestClassForBody, () => $$"""
         public class {{action.Id}}Request
         {
             {{ForEach(action.BodyParameters, Property)}}
@@ -33,11 +33,15 @@ public class ApiCodeTemplate(ApiModel _apiModel)
         {{ForEach(action.AdditionalAttributes, Attribute)}}
         public {{ReturnType(action.Return)}} {{action.Id}}({{Join(", ",
             ForEach(action.ServiceParameters, Parameter, separator: ", "),
-            If(action.HasBody, () =>
-                If(action.UseRequestClassForBody,
-                    () => $$"""[FromBody] {{action.Id}}Request request""",
-                @else:
-                    () => $$"""[FromBody] {{ParameterWithoutFrom(action.BodyParameters.Single())}}"""
+            If(action.UseForm || action.HasBody, () =>
+                If(action.UseForm,
+                    () => $$"""[FromForm] {{action.Id}}Request request""",
+                @else: () =>
+                    If(action.UseRequestClassForBody,
+                        () => $$"""[FromBody] {{action.Id}}Request request""",
+                    @else:
+                        () => $$"""[FromBody] {{ParameterWithoutFrom(action.BodyParameters.Single())}}"""
+                    )
                 )
             ),
             ForEach(action.NonBodyParameters, Parameter, separator: ", ")
@@ -96,10 +100,10 @@ public class ApiCodeTemplate(ApiModel _apiModel)
 
     string ParameterLookup(ParameterModel parameter, bool useForm, bool useRequestClassForBody) =>
         $"({parameter.RenderLookup(
-            If(useForm || !useRequestClassForBody || !parameter.FromBodyOrForm,
-                () => $"@{parameter.Name}",
+            If(useForm || useRequestClassForBody && parameter.FromBodyOrForm,
+                () => $"request.@{parameter.Name}",
             @else:
-                () => $"request.@{parameter.Name}"
+                () => $"@{parameter.Name}"
             )
         )})";
 }

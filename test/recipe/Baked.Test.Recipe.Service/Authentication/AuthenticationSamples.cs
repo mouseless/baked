@@ -11,7 +11,7 @@ public class AuthenticationSamples(
     public string? Authenticate() =>
         _getClaims().Identity?.AuthenticationType;
 
-    public string? FormPostAuthenticate(object value)
+    public string? FormPostAuthenticate(string value)
     {
         _logger.LogInformation($"Form post authenticate is called with value:'{value}'");
 

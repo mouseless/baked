@@ -34,9 +34,9 @@ public record ActionModel(
     IEnumerable<ParameterModel> RouteParameters => Parameters.Where(p => p.From == ParameterModelFrom.Route).OrderBy(p => p.RoutePosition);
     IEnumerable<ParameterModel> NonServiceParameters => ActionParameters.Where(p => p.From != ParameterModelFrom.Services);
 
-    public IEnumerable<ParameterModel> BodyParameters => !UseForm ? ActionParameters.Where(p => p.From == ParameterModelFrom.BodyOrForm) : [];
+    public IEnumerable<ParameterModel> BodyParameters => ActionParameters.Where(p => p.From == ParameterModelFrom.BodyOrForm);
     public IEnumerable<ParameterModel> ServiceParameters => ActionParameters.Where(p => p.From == ParameterModelFrom.Services);
-    public IEnumerable<ParameterModel> NonBodyParameters => UseForm ? NonServiceParameters : NonServiceParameters.Where(p => p.From != ParameterModelFrom.BodyOrForm);
+    public IEnumerable<ParameterModel> NonBodyParameters => NonServiceParameters.Where(p => p.From != ParameterModelFrom.BodyOrForm);
     public IEnumerable<ParameterModel> InvokedMethodParameters => Parameters.Where(p => p.IsInvokeMethodParameter);
 
     public string GetRoute()
