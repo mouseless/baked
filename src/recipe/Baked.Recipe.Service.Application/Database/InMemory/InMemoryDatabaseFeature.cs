@@ -27,13 +27,13 @@ public class InMemoryDatabaseFeature : IFeature<DatabaseConfigurator>
         {
             test.SetUps.Add(spec =>
             {
-                spec.GiveMe.The<ISession>().BeginTransaction();
+                spec.GiveMe.TheSession().BeginTransaction();
             });
             test.TearDowns.Add(spec =>
             {
-                spec.GiveMe.The<ISession>().Flush();
-                spec.GiveMe.The<ISession>().GetCurrentTransaction().Rollback();
-                spec.GiveMe.The<ISession>().Clear();
+                spec.GiveMe.TheSession().Flush();
+                spec.GiveMe.TheSession().GetCurrentTransaction().Rollback();
+                spec.GiveMe.TheSession().Clear();
             });
         });
 

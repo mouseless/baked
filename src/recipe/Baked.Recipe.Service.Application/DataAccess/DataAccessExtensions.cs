@@ -23,9 +23,17 @@ public static class DataAccessExtensions
     public static void ConfigureNHibernateInterceptor(this LayerConfigurator configurator, Action<InterceptorConfiguration> configuration) =>
         configurator.Configure(configuration);
 
-    public static void AClearSession(this Stubber giveMe)
+    public static ISession TheSession(this Stubber giveMe,
+        bool clear = false
+    )
     {
-        giveMe.The<ISession>().Flush();
-        giveMe.The<ISession>().Clear();
+        var result = giveMe.The<ISession>();
+        if (clear)
+        {
+            result.Flush();
+            result.Clear();
+        }
+
+        return result;
     }
 }
