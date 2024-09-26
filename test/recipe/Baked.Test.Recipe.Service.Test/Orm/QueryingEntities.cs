@@ -84,7 +84,7 @@ public class QueryingEntities : TestServiceSpec
     public void Parents_are_fetched_eagerly()
     {
         GiveMe.AParent(withChild: true);
-        GiveMe.AClearSession();
+        GiveMe.TheSession(clear: true);
         var children = GiveMe.The<Children>();
 
         var child = children.By().First();

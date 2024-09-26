@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.DependencyInjection;
+using Baked.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -29,4 +30,25 @@ public static class DependencyInjectionExtensions
 
         serviceAdder.AddServices(services);
     }
+
+    public static IServiceProvider TheServiceProvider(this Stubber giveMe) =>
+        giveMe.Spec.Context.GetServiceProvider();
+
+    public static T The<T>(this Stubber giveMe) where T : notnull =>
+        giveMe.TheServiceProvider().GetRequiredService<T>();
+
+    public static object The(this Stubber giveMe, Type type) =>
+        giveMe.TheServiceProvider().GetRequiredService(type);
+
+    public static T An<T>(this Stubber giveMe) where T : notnull =>
+        giveMe.TheServiceProvider().GetRequiredService<T>();
+
+    public static object An(this Stubber giveMe, Type type) =>
+        giveMe.TheServiceProvider().GetRequiredService(type);
+
+    public static T A<T>(this Stubber giveMe) where T : notnull =>
+        giveMe.TheServiceProvider().GetRequiredService<T>();
+
+    public static object A(this Stubber giveMe, Type type) =>
+        giveMe.TheServiceProvider().GetRequiredService(type);
 }

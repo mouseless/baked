@@ -154,6 +154,14 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
             }
         });
 
+        configurator.ConfigureTestConfiguration(test =>
+        {
+            test.SetUps.Add(spec =>
+            {
+                Caster.SetServiceProvider(spec.GiveMe.TheServiceProvider());
+            });
+        });
+
         configurator.ConfigureApiModelConventions(conventions =>
         {
             // TODO couldn't find a better way to create a shared variable

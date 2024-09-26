@@ -5,8 +5,9 @@ public class IncludingXmlComments : TestServiceSpec
     [Test]
     public void Accessing_class_documentation()
     {
+        var domainModel = GiveMe.TheDomainModel();
         var members =
-            DomainModel
+            domainModel
                 .Types[typeof(DocumentationSamples)]
                 .GetMembers();
 
@@ -18,8 +19,9 @@ public class IncludingXmlComments : TestServiceSpec
     [Test]
     public void Accessing_method_documentation()
     {
+        var domainModel = GiveMe.TheDomainModel();
         var method =
-            DomainModel
+            domainModel
                 .Types[typeof(DocumentationSamples)]
                 .GetMembers()
                 .GetMethod(nameof(DocumentationSamples.Method));
@@ -36,8 +38,9 @@ public class IncludingXmlComments : TestServiceSpec
     [Test]
     public void Accessing_method_documentation_of_a_parameterless_method()
     {
+        var domainModel = GiveMe.TheDomainModel();
         var method =
-            DomainModel
+            domainModel
                 .Types[typeof(DocumentationSamples)]
                 .GetMembers()
                 .GetMethod(nameof(DocumentationSamples.ParameterlessMethod));
@@ -55,8 +58,9 @@ public class IncludingXmlComments : TestServiceSpec
     [TestCase("parameter2", "Parameter 2 documentation")]
     public void Accessing_parameter_documentation(string name, string expectedDocumentation)
     {
+        var domainModel = GiveMe.TheDomainModel();
         var parameter =
-            DomainModel
+            domainModel
                 .Types[typeof(DocumentationSamples)]
                 .GetMembers()
                 .GetMethod(nameof(DocumentationSamples.Method))
@@ -72,8 +76,9 @@ public class IncludingXmlComments : TestServiceSpec
     [TestCase("dictionary", "Dictionary description")]
     public void Accessing_array_and_generic_parameter_documentation(string name, string expectedDocumentation)
     {
+        var domainModel = GiveMe.TheDomainModel();
         var parameter =
-            DomainModel
+            domainModel
                 .Types[typeof(DocumentationSamples)]
                 .GetMembers()
                 .GetMethod(nameof(DocumentationSamples.ArrayAndGenericParameters))
@@ -87,8 +92,9 @@ public class IncludingXmlComments : TestServiceSpec
     [Test]
     public void Accessing_property_documentation()
     {
+        var domainModel = GiveMe.TheDomainModel();
         var property =
-            DomainModel
+            domainModel
                 .Types[typeof(DocumentedData)]
                 .GetMembers()
                 .Properties[nameof(DocumentedData.Property)];

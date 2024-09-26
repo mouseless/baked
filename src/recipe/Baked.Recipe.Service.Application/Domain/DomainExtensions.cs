@@ -215,13 +215,14 @@ public static class DomainExtensions
           .Replace("\r", "\\r")
         ;
 
-    public static XmlNode? TheDocumentation<T>(this Stubber _,
+    public static XmlNode? TheDocumentation<T>(this Stubber giveMe,
         string? property = default,
         string? method = default,
         string? parameter = default
     )
     {
-        var type = ServiceSpec.DomainModel.Types[typeof(T)];
+        var domainModel = giveMe.Spec.Context.GetDomainModel();
+        var type = domainModel.Types[typeof(T)];
         if (!type.TryGetMembers(out var members)) { return null; }
 
         if (property is not null)
