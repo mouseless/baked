@@ -40,7 +40,18 @@ public class CommandPatternCodingStyleFeature(IEnumerable<string> _methodNames)
             conventions.Add(new IncludeClassDocsForActionNamesConvention(_methodNames), order: -10);
             conventions.Add(new UseClassNameInsteadOfActionNamesConvention(_methodNames), order: -10);
             conventions.Add(new RemoveFromRouteConvention(_methodNames));
+            conventions.Add(new RemoveFromRouteConvention(["Sync", "Create"]));
             conventions.Add(new UseRootPathAsGroupNameForSingleMethodNonLocatablesConvention());
+
+            conventions.Add(new NoRequestBodyForSingleEnumerableParametersConvention(
+                _when: c => c.Action.Name.StartsWith("Sync"),
+                _method: HttpMethod.Put
+            ), order: -10);
+
+            conventions.Add(new NoRequestBodyForSingleEnumerableParametersConvention(
+                _when: c => c.Action.Name.StartsWith("Create"),
+                _method: HttpMethod.Patch
+            ), order: -10);
         });
 
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
