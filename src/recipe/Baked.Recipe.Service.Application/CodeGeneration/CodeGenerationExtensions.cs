@@ -24,9 +24,9 @@ public static class CodeGenerationExtensions
 
     /// <summary>
     /// Adds a descriptor for a generated assembly with given parameters
-    /// 
+    ///
     /// ℹ️  Any layer or feature generates code which accesses non-public members should
-    /// be explicitly added tobe added to abstraction project `.targets` file  
+    /// be explicitly added tobe added to abstraction project `.targets` file
     /// </summary>
     public static void Add(this IGeneratedAssemblyCollection generatedAssemblies, string name, Action<GeneratedAssemblyDescriptor> descriptorBuilder,
         Func<CSharpCompilationOptions, CSharpCompilationOptions>? compilationOptionsBuilder = default

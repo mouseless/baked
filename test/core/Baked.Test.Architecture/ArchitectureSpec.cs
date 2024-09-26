@@ -4,5 +4,6 @@ namespace Baked.Test;
 
 public abstract class ArchitectureSpec : Spec
 {
-    static ArchitectureSpec() => Init();
+    static ArchitectureSpec() =>
+        Init(_ => { });
 }

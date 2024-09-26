@@ -10,6 +10,10 @@ public class FirstInterfaceMockOverriderFeature : IFeature<MockOverriderConfigur
         configurator.ConfigureTestConfiguration(test =>
         {
             test.MockFactory = new MockOverriderMockFactory();
+            test.TearDowns.Add(spec =>
+            {
+                spec.GiveMe.The<IMockOverrider>().Reset();
+            });
         });
 
         configurator.ConfigureServiceCollection(services =>

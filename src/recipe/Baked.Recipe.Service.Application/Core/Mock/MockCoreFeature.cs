@@ -11,11 +11,20 @@ public class MockCoreFeature : IFeature<CoreConfigurator>
         configurator.ConfigureServiceCollection(services =>
         {
             services.AddSingleton<TimeProvider, ResettableFakeTimeProvider>();
+            services.AddSingleton<FakeSettings>();
         });
 
         configurator.ConfigureTestConfiguration(test =>
         {
             test.Mocks.Add<IConfiguration>(singleton: true);
+            test.SetUps.Add(spec =>
+            {
+                spec.MockMe.TheConfiguration();
+
+                // This is the initial release date. Do not change this to avoid
+                // potential "Cannot go back in time." errors.
+                spec.MockMe.TheTime(now: new DateTime(2023, 06, 15, 16, 59, 00), reset: true);
+            });
         });
     }
 }

@@ -7,18 +7,15 @@ namespace Baked.Testing;
 
 public abstract class Spec
 {
-    protected static ApplicationContext Init(
-        Action<ApplicationDescriptor>? describe = default
-    )
-    {
-        var result = new ApplicationContext();
+    private static ApplicationContext _context = new();
 
-        new Bake(new Mock<IBanner>().Object, () => new(result))
-            .Application(describe ?? (_ => { }))
+    public static ApplicationContext ContextStatic => _context;
+    public ApplicationContext Context => _context;
+
+    protected static void Init(Action<ApplicationDescriptor> describe) =>
+        new Bake(new Mock<IBanner>().Object, () => new(_context))
+            .Application(describe)
             .Run();
-
-        return result;
-    }
 
     public Stubber GiveMe { get; private set; } = default!;
     public Mocker MockMe { get; private set; } = default!;
@@ -36,8 +33,19 @@ public abstract class Spec
         GiveMe = new(this);
         MockMe = new(this);
         GetMe = new(this);
+
+        if (_context.Has<ITestRun>())
+        {
+            _context.Get<ITestRun>().SetUp(this);
+        }
     }
 
     [TearDown]
-    public virtual void TearDown() { }
+    public virtual void TearDown()
+    {
+        if (_context.Has<ITestRun>())
+        {
+            _context.Get<ITestRun>().TearDown(this);
+        }
+    }
 }
