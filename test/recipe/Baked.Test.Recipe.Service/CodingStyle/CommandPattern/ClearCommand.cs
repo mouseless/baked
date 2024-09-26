@@ -1,6 +1,22 @@
-﻿namespace Baked.Test.CodingStyle.CommandPattern;
+﻿using Microsoft.Extensions.Logging;
 
-public class ClearCommand
+namespace Baked.Test.CodingStyle.CommandPattern;
+
+public class ClearCommand(ILogger<ClearCommand> _logger)
 {
-    public void Execute() { }
+    string? _initParam = default!;
+
+    public ClearCommand With(string? initParam)
+    {
+        _initParam = initParam;
+
+        return this;
+    }
+
+    public string Execute(string? executeParam)
+    {
+        _logger.LogInformation($"Deleting using params '{_initParam}' and '{executeParam}'");
+
+        return $"{_initParam}:{executeParam}";
+    }
 }

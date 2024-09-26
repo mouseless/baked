@@ -14,7 +14,7 @@ public class AddRemoveChildCodingStyleFeature : IFeature<CodingStyleConfigurator
                 (c.Action.Method == HttpMethod.Delete && c.Action.RouteParts.Count >= 2) ||
                 (c.Action.Method == HttpMethod.Post && Regexes.StartsWithAddOrCreate().IsMatch(c.Action.Name) && c.Action.RouteParts.Count >= 2)
             ));
-            conventions.Add(new FirstParameterIsInRouteForDeleteChildConvention());
+            conventions.Add(new OnlyEntityParameterIsInRouteForDeleteChildConvention());
             conventions.Add(new RemoveFromRouteConvention(["Add", "Create"]));
         });
     }

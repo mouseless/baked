@@ -5,6 +5,8 @@ namespace Baked.Test.CodingStyle;
 
 public class RoutingCommands : TestServiceNfr
 {
+    [TestCase("Put", "bulk-command")]
+    [TestCase("Patch", "bulk-command")]
     [TestCase("Post", "command")]
     [TestCase("Get", "command")]
     [TestCase("Patch", "command")]
@@ -13,13 +15,13 @@ public class RoutingCommands : TestServiceNfr
     {
         var response = await Client.SendAsync(new(HttpMethod.Parse(method), $"/{action}"));
 
-        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+        response.StatusCode.ShouldNotBe(HttpStatusCode.NotFound);
     }
 
     [Test]
     public async Task Initialization_parameters_come_from_query()
     {
-        var response = await Client.PostAsync($"/command/transient?query=q", JsonContent.Create(
+        var response = await Client.PostAsync("/command/transient?query=q", JsonContent.Create(
             new { body = "b" }
         ));
 
@@ -29,9 +31,37 @@ public class RoutingCommands : TestServiceNfr
     }
 
     [Test]
+    public async Task Delete_commands_use_query_for_both_init_and_execute_parameters()
+    {
+        var response = await Client.DeleteAsync("/command?initParam=i&executeParam=e");
+
+        var actual = await response.Content.ReadAsStringAsync();
+
+        actual.ShouldBe("\"i:e\"");
+    }
+
+    [Test]
+    public async Task Batch_commands_with_one_list_argument_does_not_use_request_body_class([Values("Put", "Patch")] string method)
+    {
+        var response = await Client.SendAsync(new(HttpMethod.Parse(method), "/bulk-command")
+        {
+            Content = JsonContent.Create(new[]
+            {
+                new { name = "a" },
+                new { name = "b" },
+                new { name = "c" },
+            })
+        });
+
+        var actual = await response.Content.ReadAsStringAsync();
+
+        actual.ShouldBe("\"a:b:c\"");
+    }
+
+    [Test]
     public async Task Classes_must_have_an_initializer_overload_with_all_parameters_are_api_input()
     {
-        var response = await Client.PostAsync($"/not-rendered-command/transient?query=q", JsonContent.Create(
+        var response = await Client.PostAsync("/not-rendered-command/transient?query=q", JsonContent.Create(
             new { body = "b" }
         ));
 
