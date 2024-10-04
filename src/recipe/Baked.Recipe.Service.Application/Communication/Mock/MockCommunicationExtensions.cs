@@ -94,4 +94,8 @@ public static class MockCommunicationExtensions
 
     public static void VerifyNoContentIsSent<T>(this IClient<T> client) =>
         Moq.Mock.Get(client).Verify(c => c.Send(It.Is<Request>(r => r.Content == null), It.IsAny<bool>()));
+
+    public static ClientException AClientException(this Stubber _, HttpStatusCode statusCode, string content,
+        Exception? httpRequestExceptionInner = default
+    ) => new(content: content, inner: new(message: content, statusCode: statusCode, inner: httpRequestExceptionInner));
 }
