@@ -1,6 +1,7 @@
 ﻿using Baked.Architecture;
 using Baked.RestApi;
 using Baked.RestApi.Configuration;
+using Baked.RestApi.Conventions;
 using Baked.RestApi.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -110,5 +111,47 @@ public static class RestApiExtensions
         }
 
         return parts;
+    }
+
+    public static void ConfigureAction<T>(this ApiModel api, string name,
+        HttpMethod? method = default,
+        List<string>? routeParts = default,
+        bool? useForm = default,
+        bool? useRequestClassForBody = default,
+        Action<Dictionary<string, ParameterModel>>? parameter = default
+    )
+    {
+        var controller = api.GetController<T>();
+        var action = controller.Action[name];
+
+        if (method is not null) { action.Method = method; }
+        if (routeParts is not null) { action.RouteParts = routeParts; }
+        if (useForm is not null) { action.UseForm = useForm.Value; }
+        if (useRequestClassForBody is not null) { action.UseRequestClassForBody = useRequestClassForBody.Value; }
+        if (parameter is not null) { parameter(action.Parameter); }
+    }
+
+    public static void OverrideAction<T>(this IApiModelConventionCollection conventions,
+         HttpMethod? method = default,
+         List<string>? routeParts = default,
+         bool? useForm = default,
+         bool? useRequestClassForBody = default,
+         Action<Dictionary<string, ParameterModel>>? parameter = default
+    )
+    {
+        conventions.Add(
+            new OverrideActionConvention(
+                _when: c => c.Controller.MappedType.Is<T>(),
+                _configuration: action =>
+                {
+                    if (method is not null) { action.Method = method; }
+                    if (routeParts is not null) { action.RouteParts = routeParts; }
+                    if (useForm is not null) { action.UseForm = useForm.Value; }
+                    if (useRequestClassForBody is not null) { action.UseRequestClassForBody = useRequestClassForBody.Value; }
+                    if (parameter is not null) { parameter(action.Parameter); }
+                }
+            ),
+            order: int.MaxValue
+        );
     }
 }
