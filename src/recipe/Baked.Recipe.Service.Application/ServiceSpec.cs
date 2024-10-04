@@ -13,6 +13,11 @@ namespace Baked;
 
 public abstract class ServiceSpec : Spec
 {
+    public class Enum<T> where T : notnull
+    {
+        public static IEnumerable<T> Values() => Enum.GetValues(typeof(T)).Cast<int>().Where(it => it > 0).Cast<T>();
+    }
+
     protected static void Init(
         Func<BusinessConfigurator, IFeature<BusinessConfigurator>> business,
         Func<CachingConfigurator, IFeature<CachingConfigurator>>? caching = default,
