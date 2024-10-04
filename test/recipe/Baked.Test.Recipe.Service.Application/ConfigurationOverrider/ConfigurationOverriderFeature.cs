@@ -71,5 +71,28 @@ public class ConfigurationOverriderFeature : IFeature
             swaggerUIOptions.SwaggerEndpoint($"samples/swagger.json", "Samples");
             swaggerUIOptions.SwaggerEndpoint($"external/swagger.json", "External");
         });
+
+        configurator.ConfigureApiModelConventions(conventions =>
+        {
+            conventions.OverrideAction<OverrideSamples>(
+                mappedMethodName: nameof(OverrideSamples.UpdateRoute),
+                routeParts: ["override-samples", "override", "update-route"]
+            );
+
+            conventions.OverrideAction<OverrideSamples>(
+                mappedMethodName: nameof(OverrideSamples.Parameter),
+                parameter: parameter =>
+                {
+                    parameter["parameter"].Name = "id";
+                    parameter["parameter"].From = ParameterModelFrom.Route;
+                    parameter["parameter"].RoutePosition = 2;
+                }
+            );
+
+            conventions.OverrideAction<OverrideSamples>(
+                mappedMethodName: nameof(OverrideSamples.RequestClass),
+                useRequestClassForBody: false
+            );
+        });
     }
 }

@@ -132,6 +132,7 @@ public static class RestApiExtensions
     }
 
     public static void OverrideAction<T>(this IApiModelConventionCollection conventions,
+         string? mappedMethodName = default,
          HttpMethod? method = default,
          List<string>? routeParts = default,
          bool? useForm = default,
@@ -141,7 +142,7 @@ public static class RestApiExtensions
     {
         conventions.Add(
             new OverrideActionConvention(
-                _when: c => c.Controller.MappedType.Is<T>(),
+                _when: c => c.Controller.MappedType.Is<T>() && (mappedMethodName == null || c.Action.MappedMethod?.Name == mappedMethodName),
                 _configuration: action =>
                 {
                     if (method is not null) { action.Method = method; }
