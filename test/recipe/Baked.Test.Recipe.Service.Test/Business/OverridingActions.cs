@@ -12,6 +12,9 @@ public class OverridingActions : TestServiceNfr
         response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
 
         response = await Client.PatchAsync("override-samples/override/update-route", default);
+        response.StatusCode.ShouldBe(HttpStatusCode.MethodNotAllowed);
+
+        response = await Client.PostAsync("override-samples/override/update-route", default);
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }
 

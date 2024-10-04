@@ -76,7 +76,8 @@ public class ConfigurationOverriderFeature : IFeature
         {
             conventions.OverrideAction<OverrideSamples>(
                 mappedMethodName: nameof(OverrideSamples.UpdateRoute),
-                routeParts: ["override-samples", "override", "update-route"]
+                routeParts: ["override-samples", "override", "update-route"],
+                method: HttpMethod.Post
             );
 
             conventions.OverrideAction<OverrideSamples>(

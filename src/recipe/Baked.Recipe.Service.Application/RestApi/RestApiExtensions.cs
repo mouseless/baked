@@ -135,7 +135,6 @@ public static class RestApiExtensions
          string? mappedMethodName = default,
          HttpMethod? method = default,
          List<string>? routeParts = default,
-         bool? useForm = default,
          bool? useRequestClassForBody = default,
          Action<Dictionary<string, ParameterModel>>? parameter = default
     )
@@ -147,7 +146,6 @@ public static class RestApiExtensions
                 {
                     if (method is not null) { action.Method = method; }
                     if (routeParts is not null) { action.RouteParts = routeParts; }
-                    if (useForm is not null) { action.UseForm = useForm.Value; }
                     if (useRequestClassForBody is not null) { action.UseRequestClassForBody = useRequestClassForBody.Value; }
                     if (parameter is not null) { parameter(action.Parameter); }
                 }
