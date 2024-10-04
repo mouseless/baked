@@ -20,7 +20,8 @@ public static class MockCommunicationExtensions
         HttpStatusCode? statusCode = default,
         Exception? throws = default,
         List<object>? responses = default,
-        bool? noResponse = default
+        bool? noResponse = default,
+        bool clearInvocations = false
     )
     {
         var mock = Moq.Mock.Get(mockMe.Spec.GiveMe.The<IClient<T>>());
@@ -57,6 +58,11 @@ public static class MockCommunicationExtensions
         else if (statusCode is not null)
         {
             setup().ReturnsAsync(new Response(statusCode.Value, "{}"));
+        }
+
+        if (clearInvocations)
+        {
+            mock.Invocations.Clear();
         }
 
         return mock.Object;
