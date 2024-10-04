@@ -25,6 +25,7 @@ public class MockCoreFeature : IFeature<CoreConfigurator>
                 // potential "Cannot go back in time." errors.
                 spec.MockMe.TheTime(now: new DateTime(2023, 06, 15, 16, 59, 00), reset: true);
             });
+            test.TearDowns.Add(spec => spec.GiveMe.The<FakeSettings>().Clear());
         });
     }
 }
