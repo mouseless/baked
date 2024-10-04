@@ -71,6 +71,8 @@ public static class MockCommunicationExtensions
     public static void VerifySent<T>(this IClient<T> client,
         string? path = default,
         string? url = default,
+        string? urlContains = default,
+        Func<string, bool>? urlMatches = default,
         HttpMethod? method = default,
         object? content = default,
         string? contentContains = default,
@@ -83,6 +85,8 @@ public static class MockCommunicationExtensions
         c => c.Send(It.Is<Request>(r =>
                 (path == default || r.UrlOrPath == path) &&
                 (url == default || r.UrlOrPath == url) &&
+                (urlContains == default || r.UrlOrPath.Contains(urlContains)) &&
+                (urlMatches == default || urlMatches(r.UrlOrPath)) &&
                 (method == default || r.Method == method) &&
                 (content == default || new Content(content, null).Equals(r.Content)) &&
                 (contentContains == default || r.Content != null && r.Content.Body.Contains(contentContains)) &&
