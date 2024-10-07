@@ -1,14 +1,14 @@
-# Dependency Injection
+# Runtime
 
 Baked uses the default dependency injection library for now.
 
 ```csharp
-app.Layers.AddDependencyInjection();
+app.Layers.AddRuntime();
 ```
 
 ## Configuration Targets
 
-Dependency injection layer provides `IServiceCollection` and `IServiceProvider`
+Runtime layer provides `IServiceCollection` and `IServiceProvider`
 as configuration targets.
 
 ### `IServiceCollection`
