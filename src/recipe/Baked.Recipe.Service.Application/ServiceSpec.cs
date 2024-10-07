@@ -42,7 +42,6 @@ public abstract class ServiceSpec : Spec
         Init(app =>
         {
             app.Layers.AddCodeGeneration();
-            app.Layers.AddConfiguration();
             app.Layers.AddDataAccess();
             app.Layers.AddDomain();
             app.Layers.AddRuntime();

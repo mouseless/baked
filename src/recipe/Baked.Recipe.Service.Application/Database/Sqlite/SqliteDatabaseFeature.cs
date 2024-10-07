@@ -1,6 +1,6 @@
 ﻿using Baked.Architecture;
-using Baked.Configuration;
 using Baked.DataAccess.Sqlite;
+using Baked.Runtime.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Baked.Database.Sqlite;

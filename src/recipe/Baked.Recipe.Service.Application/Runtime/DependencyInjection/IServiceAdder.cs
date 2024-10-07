@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Baked.Runtime;
+namespace Baked.Runtime.DependencyInjection;
 
 public interface IServiceAdder
 {

@@ -1,5 +1,5 @@
 ﻿using Baked.Architecture;
-using Baked.Configuration;
+using Baked.Runtime.Configuration;
 using FluentNHibernate.Cfg.Db;
 using Microsoft.Extensions.DependencyInjection;
 

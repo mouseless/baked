@@ -1,4 +1,4 @@
-﻿using Baked.Configuration;
+﻿using Baked.Runtime.Configuration;
 using FluentNHibernate.Cfg.Db;
 
 namespace Baked.DataAccess;

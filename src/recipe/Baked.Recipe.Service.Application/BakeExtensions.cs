@@ -45,7 +45,6 @@ public static class BakeExtensions
         return bake.Application(app =>
         {
             app.Layers.AddCodeGeneration();
-            app.Layers.AddConfiguration();
             app.Layers.AddDataAccess();
             app.Layers.AddDomain();
             app.Layers.AddHttpClient();

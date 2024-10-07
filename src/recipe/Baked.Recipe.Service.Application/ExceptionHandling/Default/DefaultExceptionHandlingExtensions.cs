@@ -1,6 +1,6 @@
-﻿using Baked.Configuration;
-using Baked.ExceptionHandling;
+﻿using Baked.ExceptionHandling;
 using Baked.ExceptionHandling.Default;
+using Baked.Runtime.Configuration;
 
 namespace Baked;
 

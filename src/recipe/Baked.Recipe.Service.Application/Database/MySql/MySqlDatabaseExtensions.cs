@@ -1,6 +1,6 @@
-﻿using Baked.Configuration;
-using Baked.Database;
+﻿using Baked.Database;
 using Baked.Database.MySql;
+using Baked.Runtime.Configuration;
 
 namespace Baked;
 

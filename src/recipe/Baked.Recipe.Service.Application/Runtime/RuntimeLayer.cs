@@ -1,6 +1,8 @@
 ﻿using Baked.Architecture;
 using Baked.CodeGeneration;
 using Baked.Domain.Model;
+using Baked.Runtime.Configuration;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -9,7 +11,7 @@ using static Baked.Runtime.RuntimeLayer;
 
 namespace Baked.Runtime;
 
-public class RuntimeLayer : LayerBase<CreateBuilder, AddServices, PostBuild>
+public class RuntimeLayer : LayerBase<CreateBuilder, BuildConfiguration, AddServices, PostBuild>
 {
     readonly IServiceCollection _services = new ServiceCollection();
 
@@ -21,6 +23,9 @@ public class RuntimeLayer : LayerBase<CreateBuilder, AddServices, PostBuild>
 
         return phase.CreateContext(builder.Logging);
     }
+
+    protected override PhaseContext GetContext(BuildConfiguration phase) =>
+        phase.CreateContext<IConfigurationBuilder>(Context.GetConfigurationManager());
 
     protected override PhaseContext GetContext(AddServices phase)
     {
@@ -36,8 +41,18 @@ public class RuntimeLayer : LayerBase<CreateBuilder, AddServices, PostBuild>
 
     protected override IEnumerable<IPhase> GetPhases()
     {
+        yield return new BuildConfiguration();
         yield return new AddServices(_services);
         yield return new PostBuild();
+    }
+
+    public class BuildConfiguration()
+        : PhaseBase<ConfigurationManager>(PhaseOrder.Earliest)
+    {
+        protected override void Initialize(ConfigurationManager configurationManager)
+        {
+            Settings.SetConfigurationRoot(configurationManager);
+        }
     }
 
     public class AddServices(IServiceCollection _services)

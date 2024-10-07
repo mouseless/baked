@@ -19,7 +19,6 @@ Bake.New
 | Name                 | Run                | Test               |
 | -------------------- | ------------------ | ------------------ |
 | Code Generation      | :white_check_mark: | :white_check_mark: |
-| Configuration        | :white_check_mark: | :white_check_mark: |
 | Data Access          | :white_check_mark: | :white_check_mark: |
 | Domain               | :white_check_mark: | :white_check_mark: |
 | HTTP Client          | :white_check_mark: | :no_entry:         |

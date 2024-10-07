@@ -1,6 +1,6 @@
-using Baked.Configuration;
 using Baked.Database;
 using Baked.Database.PostgreSql;
+using Baked.Runtime.Configuration;
 
 namespace Baked;
 
