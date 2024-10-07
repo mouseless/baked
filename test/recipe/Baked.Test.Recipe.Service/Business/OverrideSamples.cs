@@ -1,4 +1,5 @@
 ﻿namespace Baked.Test.Business;
+
 public class OverrideSamples
 {
     public void UpdateRoute() { }

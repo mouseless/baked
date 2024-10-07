@@ -24,9 +24,12 @@ public class ConfigurationOverriderFeature : IFeature
             var domainModel = configurator.Context.GetDomainModel();
 
             api.ConfigureAction<AuthenticationSamples>(nameof(AuthenticationSamples.FormPostAuthenticate), useForm: true);
-            api.ConfigureAction<DocumentationSamples>(nameof(DocumentationSamples.Route), parameter: parameter => parameter["route"].From = ParameterModelFrom.Route);
-            api.ConfigureAction<DocumentationSamples>(nameof(DocumentationSamples.Route), parameter: parameter => parameter["route"].RoutePosition = 2);
-            api.ConfigureAction<ExceptionSamples>(nameof(ExceptionSamples.Throw), parameter: parameter => parameter["handled"].From = ParameterModelFrom.Query);
+            api.ConfigureAction<DocumentationSamples>(nameof(DocumentationSamples.Route), parameter: p =>
+            {
+                p["route"].From = ParameterModelFrom.Route;
+                p["route"].RoutePosition = 2;
+            });
+            api.ConfigureAction<ExceptionSamples>(nameof(ExceptionSamples.Throw), parameter: p => p["handled"].From = ParameterModelFrom.Query);
             api.GetController<Entities>().AddSingleById<Entity>(domainModel);
         });
 
