@@ -2,6 +2,7 @@
 using Baked.Runtime;
 using Baked.Testing;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System.Reflection;
 
 namespace Baked;
@@ -16,6 +17,9 @@ public static class RuntimeExtensions
 
     public static IServiceProvider GetServiceProvider(this ApplicationContext context) =>
         context.Get<IServiceProvider>();
+
+    public static void ConfigureLoggingBuilder(this LayerConfigurator configurator, Action<ILoggingBuilder> configuration) =>
+       configurator.Configure(configuration);
 
     public static void ConfigureServiceCollection(this LayerConfigurator configurator, Action<IServiceCollection> configuration) =>
         configurator.Configure(configuration);

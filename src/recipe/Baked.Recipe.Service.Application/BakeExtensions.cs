@@ -50,7 +50,6 @@ public static class BakeExtensions
             app.Layers.AddDomain();
             app.Layers.AddHttpClient();
             app.Layers.AddHttpServer();
-            app.Layers.AddMonitoring();
             app.Layers.AddRestApi();
             app.Layers.AddRuntime();
 

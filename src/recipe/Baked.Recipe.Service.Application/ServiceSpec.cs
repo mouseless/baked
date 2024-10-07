@@ -45,7 +45,6 @@ public abstract class ServiceSpec : Spec
             app.Layers.AddConfiguration();
             app.Layers.AddDataAccess();
             app.Layers.AddDomain();
-            app.Layers.AddMonitoring();
             app.Layers.AddRuntime();
             app.Layers.AddTesting();
 

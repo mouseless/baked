@@ -1,6 +1,9 @@
 # Runtime
 
-Baked uses the default dependency injection library for now.
+This layer provides configuration, dependency injection, monitoring components 
+which provide a foundation to an application. Baked uses default 
+dependency injection and logging libraries
+ 
 
 ```csharp
 app.Layers.AddRuntime();
@@ -8,8 +11,19 @@ app.Layers.AddRuntime();
 
 ## Configuration Targets
 
-Runtime layer provides `IServiceCollection` and `IServiceProvider`
+Runtime layer provides `ILoggingBuilder`, `IServiceCollection` and `IServiceProvider`
 as configuration targets.
+
+### `ILoggingBuilder`
+
+This target is provided in `CreateBuilder` phase. To configure it in a feature;
+
+```csharp
+configurator.ConfigureLoggingBuilder(logging =>
+{
+    ...
+});
+```
 
 ### `IServiceCollection`
 

@@ -24,7 +24,6 @@ Bake.New
 | Domain               | :white_check_mark: | :white_check_mark: |
 | HTTP Client          | :white_check_mark: | :no_entry:         |
 | HTTP Server          | :white_check_mark: | :no_entry:         |
-| Monitoring           | :white_check_mark: | :white_check_mark: |
 | Rest API             | :white_check_mark: | :no_entry:         |
 | Runtime              | :white_check_mark: | :white_check_mark: |
 | Testing              | :no_entry:         | :white_check_mark: |
