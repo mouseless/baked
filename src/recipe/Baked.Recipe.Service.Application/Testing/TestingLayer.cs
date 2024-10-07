@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using static Baked.DependencyInjection.DependencyInjectionLayer;
+using static Baked.Runtime.RuntimeLayer;
 
 namespace Baked.Testing;
 

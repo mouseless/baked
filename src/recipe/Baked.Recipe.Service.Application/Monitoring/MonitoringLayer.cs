@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-using static Baked.DependencyInjection.DependencyInjectionLayer;
+using static Baked.Runtime.RuntimeLayer;
 using static Baked.HttpServer.HttpServerLayer;
 
 namespace Baked.Logging;

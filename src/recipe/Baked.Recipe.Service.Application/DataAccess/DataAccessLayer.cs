@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NHibernate;
 using NHibernate.Tool.hbm2ddl;
 
-using static Baked.DependencyInjection.DependencyInjectionLayer;
+using static Baked.Runtime.RuntimeLayer;
 using NHConfiguration = NHibernate.Cfg.Configuration;
 
 namespace Baked.DataAccess;

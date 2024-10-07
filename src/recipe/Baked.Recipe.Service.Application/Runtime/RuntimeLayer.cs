@@ -3,11 +3,11 @@ using Baked.CodeGeneration;
 using Baked.Domain.Model;
 using Microsoft.Extensions.DependencyInjection;
 
-using static Baked.DependencyInjection.DependencyInjectionLayer;
+using static Baked.Runtime.RuntimeLayer;
 
-namespace Baked.DependencyInjection;
+namespace Baked.Runtime;
 
-public class DependencyInjectionLayer : LayerBase<AddServices, PostBuild>
+public class RuntimeLayer : LayerBase<AddServices, PostBuild>
 {
     readonly IServiceCollection _services = new ServiceCollection();
 

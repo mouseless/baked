@@ -44,9 +44,9 @@ public abstract class ServiceSpec : Spec
             app.Layers.AddCodeGeneration();
             app.Layers.AddConfiguration();
             app.Layers.AddDataAccess();
-            app.Layers.AddDependencyInjection();
             app.Layers.AddDomain();
             app.Layers.AddMonitoring();
+            app.Layers.AddRuntime();
             app.Layers.AddTesting();
 
             app.Features.AddBusiness(business);

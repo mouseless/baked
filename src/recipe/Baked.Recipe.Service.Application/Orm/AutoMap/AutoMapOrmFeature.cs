@@ -54,8 +54,8 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
                     }
                 },
                 compilationOptions => compilationOptions.WithUsings(
-                    "Baked.DependencyInjection",
                     "Baked.Orm",
+                    "Baked.Runtime",
                     "Microsoft.Extensions.DependencyInjection",
                     "NHibernate.Linq",
                     "System",

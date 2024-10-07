@@ -1,15 +1,15 @@
 ﻿using Baked.Architecture;
-using Baked.DependencyInjection;
+using Baked.Runtime;
 using Baked.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
 namespace Baked;
 
-public static class DependencyInjectionExtensions
+public static class RuntimeExtensions
 {
-    public static void AddDependencyInjection(this List<ILayer> layers) =>
-        layers.Add(new DependencyInjectionLayer());
+    public static void AddRuntime(this List<ILayer> layers) =>
+        layers.Add(new RuntimeLayer());
 
     public static IServiceCollection GetServiceCollection(this ApplicationContext context) =>
         context.Get<IServiceCollection>();
