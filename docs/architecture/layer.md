@@ -180,7 +180,7 @@ public class Build()
 }
 ```
 
-> :warning:
+> [!WARNING]
 >
 > This type of artifact requirement will create a dependency between phases
 > which results to a layer to layer dependency. In the above example `Build`

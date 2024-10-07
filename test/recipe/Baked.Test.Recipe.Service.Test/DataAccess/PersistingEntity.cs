@@ -5,7 +5,7 @@ namespace Baked.Test.DataAccess;
 public class PersistingEntity : TestServiceSpec
 {
     [Test]
-    public void Created_entity_persists()
+    public void Created_entity_persists([ValueSource(typeof(Enum<Enumeration>), "Values")] Enumeration @enum)
     {
         var newEntity = GiveMe.A<Func<Entity>>();
 
@@ -17,7 +17,7 @@ public class PersistingEntity : TestServiceSpec
             unique: $"{Guid.NewGuid()}",
             uri: GiveMe.AUrl(),
             @dynamic: new { },
-            @enum: Enumeration.Member1
+            @enum: @enum
         );
 
         actual.ShouldBeInserted();
