@@ -9,3 +9,7 @@
   `RestApi.ActionModel` before and after conventions
 - `Enum<T>` helper class is added to use enum values within `ValueSource`
   attribute
+- The following layers are merged into one single layer;
+  - Configuration
+  - DependencyInjection
+  - Monitoring
