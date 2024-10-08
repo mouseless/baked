@@ -10,12 +10,13 @@ using NHConfiguration = NHibernate.Cfg.Configuration;
 
 namespace Baked.DataAccess;
 
-public class DataAccessLayer : LayerBase<AddServices, PostBuild>
+public class DataAccessLayer : LayerBase<BuildConfiguration, AddServices, PostBuild>
 {
     readonly PersistenceConfiguration _persistenceConfiguration = new();
     readonly InterceptorConfiguration _interceptorConfiguration = new();
     readonly AutomappingConfiguration _automappingConfiguration = new();
     readonly AutoPersistenceModel _autoPersistenceModel;
+    readonly FluentConfiguration _fluentConfiguration;
 
     volatile bool _exported = false;
     readonly object _exportedLock = new();
@@ -23,7 +24,11 @@ public class DataAccessLayer : LayerBase<AddServices, PostBuild>
     public DataAccessLayer()
     {
         _autoPersistenceModel = new(new DelegatedAutomappingConfiguration(_automappingConfiguration));
+        _fluentConfiguration = Fluently.Configure();
     }
+
+    protected override PhaseContext GetContext(BuildConfiguration phase) =>
+        phase.CreateContext(_fluentConfiguration);
 
     protected override PhaseContext GetContext(AddServices phase)
     {
@@ -32,17 +37,11 @@ public class DataAccessLayer : LayerBase<AddServices, PostBuild>
         services.AddSingleton<INHibernateLoggerFactory, StandardNHibernateLoggerFactory>();
         services.AddSingleton(sp =>
         {
-            var builder = Fluently.Configure()
-                .Database(_persistenceConfiguration.Configurer)
+            _fluentConfiguration
                 .ExposeConfiguration(c => c.SetInterceptor(new DelegatedInterceptor(sp, _interceptorConfiguration)))
                 .Mappings(m => m.AutoMappings.Add(_autoPersistenceModel));
 
-            if (_persistenceConfiguration.AutoUpdateSchema)
-            {
-                builder.ExposeConfiguration(c => new SchemaUpdate(c).Execute(false, true));
-            }
-
-            return builder.BuildConfiguration();
+            return _fluentConfiguration.BuildConfiguration();
         });
 
         services.AddSingleton(sp => sp.GetRequiredService<NHConfiguration>().BuildSessionFactory());

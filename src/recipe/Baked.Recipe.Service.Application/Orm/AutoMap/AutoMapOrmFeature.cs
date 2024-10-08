@@ -74,6 +74,11 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             services.AddSingleton(typeof(IQueryContext<>), typeof(QueryContext<>));
         });
 
+        configurator.ConfigureFluentBuilder(builder =>
+        {
+            builder.MaxFetchDepth(1);
+        });
+
         configurator.ConfigureAutoPersistenceModel(model =>
         {
             var domainModel = configurator.Context.GetDomainModel();

@@ -2,6 +2,7 @@
 using Baked.Runtime.Configuration;
 using FluentNHibernate.Cfg.Db;
 using Microsoft.Extensions.DependencyInjection;
+using NHibernate.Tool.hbm2ddl;
 
 namespace Baked.Database.MySql;
 
@@ -15,14 +16,14 @@ public class MySqlDatabaseFeature(Setting<string> _connectionString, Setting<boo
             services.AddSingleton<ITransaction, FlatTransaction>();
         });
 
-        configurator.ConfigurePersistence(persistence =>
+        configurator.ConfigureFluentBuilder(builder =>
         {
-            persistence.AutoUpdateSchema = _autoUpdateSchema;
-            persistence.Configurer =
-                MySQLConfiguration.Standard
-                    .ConnectionString(_connectionString)
-                    .Dialect<CustomMySQL57Dialect>()
-                    .MaxFetchDepth(1);
+            builder.Database(MySQLConfiguration.Standard.ConnectionString(_connectionString).Dialect<CustomMySQL57Dialect>());
+
+            if (_autoUpdateSchema)
+            {
+                builder.ExposeConfiguration(c => new SchemaUpdate(c).Execute(false, true));
+            }
         });
 
         configurator.ConfigureMiddlewareCollection(middlewares =>
