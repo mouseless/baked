@@ -74,7 +74,7 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             services.AddSingleton(typeof(IQueryContext<>), typeof(QueryContext<>));
         });
 
-        configurator.ConfigureFluentBuilder(builder =>
+        configurator.ConfigureFluentConfiguration(builder =>
         {
             builder.MaxFetchDepth(1);
         });

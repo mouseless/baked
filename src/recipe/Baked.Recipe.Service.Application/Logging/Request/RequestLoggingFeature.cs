@@ -21,7 +21,7 @@ public class RequestLoggingFeature(bool singleLine)
             """);
         });
 
-        configurator.ConfigureFluentBuilder(builder =>
+        configurator.ConfigureFluentConfiguration(builder =>
         {
             builder.ShowSql(true);
         });

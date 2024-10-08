@@ -17,14 +17,10 @@ public class SqliteDatabaseFeature(Setting<string> _fileName, Setting<bool> _aut
             services.AddSingleton<ITransaction, FlatTransaction>();
         });
 
-        configurator.ConfigureFluentBuilder(builder =>
-        {
-            builder.Database(SQLiteConfiguration.Microsoft.UsingFile(FullFilePath));
-        });
-
         configurator.ConfigurePersistence(persistence =>
         {
             persistence.AutoExportSchema = _autoExportSchema;
+            persistence.Configurer = SQLiteConfiguration.Microsoft.UsingFile(FullFilePath);
         });
 
         configurator.ConfigureMiddlewareCollection(middlewares =>

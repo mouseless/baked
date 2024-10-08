@@ -14,14 +14,10 @@ public class InMemoryDatabaseFeature : IFeature<DatabaseConfigurator>
             services.AddSingleton<ITransaction, SkippedTransaction>();
         });
 
-        configurator.ConfigureFluentBuilder(builder =>
-        {
-            builder.Database(SQLiteConfiguration.Microsoft.InMemory());
-        });
-
         configurator.ConfigurePersistence(persistence =>
         {
             persistence.AutoExportSchema = true;
+            persistence.Configurer = SQLiteConfiguration.Microsoft.InMemory();
         });
 
         configurator.ConfigureTestConfiguration(test =>

@@ -16,14 +16,17 @@ public class PostgreSqlDatabaseFeature(Setting<string> _connectionString, Settin
             services.AddSingleton<ITransaction, FlatTransaction>();
         });
 
-        configurator.ConfigureFluentBuilder(builder =>
+        configurator.ConfigureFluentConfiguration(fluent =>
         {
-            builder.Database(PostgreSQLConfiguration.PostgreSQL83.ConnectionString(_connectionString));
-
             if (_autoUpdateSchema)
             {
-                builder.ExposeConfiguration(c => new SchemaUpdate(c).Execute(false, true));
+                fluent.ExposeConfiguration(c => new SchemaUpdate(c).Execute(false, true));
             }
+        });
+
+        configurator.ConfigurePersistence(persistence =>
+        {
+            persistence.Configurer = PostgreSQLConfiguration.PostgreSQL83.ConnectionString(_connectionString);
         });
 
         configurator.ConfigureMiddlewareCollection(middlewares =>

@@ -16,14 +16,17 @@ public class MySqlDatabaseFeature(Setting<string> _connectionString, Setting<boo
             services.AddSingleton<ITransaction, FlatTransaction>();
         });
 
-        configurator.ConfigureFluentBuilder(builder =>
+        configurator.ConfigureFluentConfiguration(fluent =>
         {
-            builder.Database(MySQLConfiguration.Standard.ConnectionString(_connectionString).Dialect<CustomMySQL57Dialect>());
-
             if (_autoUpdateSchema)
             {
-                builder.ExposeConfiguration(c => new SchemaUpdate(c).Execute(false, true));
+                fluent.ExposeConfiguration(c => new SchemaUpdate(c).Execute(false, true));
             }
+        });
+
+        configurator.ConfigurePersistence(persistence =>
+        {
+            persistence.Configurer = MySQLConfiguration.Standard.ConnectionString(_connectionString).Dialect<CustomMySQL57Dialect>();
         });
 
         configurator.ConfigureMiddlewareCollection(middlewares =>
