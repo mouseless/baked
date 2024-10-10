@@ -72,3 +72,25 @@ public abstract class LayerBase<TPhase1, TPhase2, TPhase3> : LayerBase
     protected abstract PhaseContext GetContext(TPhase2 phase);
     protected abstract PhaseContext GetContext(TPhase3 phase);
 }
+
+public abstract class LayerBase<TPhase1, TPhase2, TPhase3, TPhase4> : LayerBase
+    where TPhase1 : IPhase
+    where TPhase2 : IPhase
+    where TPhase3 : IPhase
+    where TPhase4 : IPhase
+{
+    protected override sealed PhaseContext GetContext(IPhase phase) =>
+        phase switch
+        {
+            TPhase1 tPhase1 => GetContext(tPhase1),
+            TPhase2 tPhase2 => GetContext(tPhase2),
+            TPhase3 tPhase3 => GetContext(tPhase3),
+            TPhase4 tPhase4 => GetContext(tPhase4),
+            _ => base.GetContext(phase)
+        };
+
+    protected abstract PhaseContext GetContext(TPhase1 phase);
+    protected abstract PhaseContext GetContext(TPhase2 phase);
+    protected abstract PhaseContext GetContext(TPhase3 phase);
+    protected abstract PhaseContext GetContext(TPhase4 phase);
+}

@@ -45,14 +45,12 @@ public static class BakeExtensions
         return bake.Application(app =>
         {
             app.Layers.AddCodeGeneration();
-            app.Layers.AddConfiguration();
             app.Layers.AddDataAccess();
-            app.Layers.AddDependencyInjection();
             app.Layers.AddDomain();
             app.Layers.AddHttpClient();
             app.Layers.AddHttpServer();
-            app.Layers.AddMonitoring();
             app.Layers.AddRestApi();
+            app.Layers.AddRuntime();
 
             app.Features.AddAuthentications(authentications);
             app.Features.AddAuthorization(authorization);

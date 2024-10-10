@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration.Json;
 using System.Text;
 
-namespace Baked.Configuration;
+namespace Baked.Runtime;
 
 public class JsonConfigurationSource(string _json)
     : StreamConfigurationSource

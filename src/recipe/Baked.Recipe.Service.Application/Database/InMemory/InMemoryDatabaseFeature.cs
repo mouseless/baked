@@ -17,10 +17,7 @@ public class InMemoryDatabaseFeature : IFeature<DatabaseConfigurator>
         configurator.ConfigurePersistence(persistence =>
         {
             persistence.AutoExportSchema = true;
-            persistence.Configurer =
-                SQLiteConfiguration.Microsoft
-                    .InMemory()
-                    .MaxFetchDepth(1);
+            persistence.Configurer = SQLiteConfiguration.Microsoft.InMemory();
         });
 
         configurator.ConfigureTestConfiguration(test =>

@@ -1,7 +1,7 @@
 ﻿using Baked.Architecture;
 using Microsoft.Extensions.DependencyInjection;
 
-using static Baked.DependencyInjection.DependencyInjectionLayer;
+using static Baked.Runtime.RuntimeLayer;
 
 namespace Baked.HttpClient;
 

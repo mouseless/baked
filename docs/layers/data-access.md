@@ -10,8 +10,8 @@ app.Layers.AddDataAccess();
 ## Configuration Targets
 
 This layer provides `PersistenceConfiguration`, `AutomappingConfiguration`
-`AutoPersistenceModel`, `InterceptorConfiguration` for configuring
-_NHibernate_ behavior.
+`AutoPersistenceModel`, `InterceptorConfiguration` and `FluentConfiguration` 
+for configuring _NHibernate_ behavior.
 
 ### `PersistenceConfiguration`
 
@@ -56,6 +56,18 @@ This target is provided in `AddServices` phase right after
 
 ```csharp
 configurator.ConfigureAutoPersistenceModel(autoPersistenceModel =>
+{
+    ...
+});
+```
+
+### `FluentConfiguration`
+
+This target is provided in `AddServices` phase. To configure it in a
+feature;
+
+```csharp
+configurator.ConfigureFluentConfiguration(fluentConfiguration =>
 {
     ...
 });
