@@ -1,6 +1,6 @@
 ﻿using Baked.Database;
 using Baked.Database.Sqlite;
-using Baked.Runtime.Configuration;
+using Baked.Runtime;
 
 namespace Baked;
 

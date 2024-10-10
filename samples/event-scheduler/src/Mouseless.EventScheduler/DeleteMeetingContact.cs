@@ -24,9 +24,9 @@ public class DeleteMeetingContact(MeetingContacts _meetingContacts)
             meeting.Cast().To<DeleteMeetingContact>();
 }
 
-public class DeleteMeetingContacts(Func<DeleteMeetingContact> _newEntityExtension)
+public class DeleteMeetingContacts(Func<DeleteMeetingContact> _newDeleteMeetingContact)
     : ICasts<Meeting, DeleteMeetingContact>
 {
     DeleteMeetingContact ICasts<Meeting, DeleteMeetingContact>.To(Meeting from) =>
-        _newEntityExtension().With(from);
+        _newDeleteMeetingContact().With(from);
 }

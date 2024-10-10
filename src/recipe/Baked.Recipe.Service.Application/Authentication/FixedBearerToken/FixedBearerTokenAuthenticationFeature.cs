@@ -1,6 +1,5 @@
 ﻿using Baked;
 using Baked.Architecture;
-using Baked.Runtime.Configuration;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;

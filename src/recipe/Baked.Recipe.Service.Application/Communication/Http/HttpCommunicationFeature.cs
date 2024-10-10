@@ -1,6 +1,5 @@
 ﻿using Baked.Architecture;
 using Baked.HttpClient;
-using Baked.Runtime.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Baked.Communication.Http;

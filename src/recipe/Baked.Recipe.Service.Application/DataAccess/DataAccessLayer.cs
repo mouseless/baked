@@ -64,8 +64,10 @@ public class DataAccessLayer : LayerBase<AddServices, PostBuild>
             }
             else
             {
-                using var scope = sp.CreateScope();
-                ExportSchema(scope.ServiceProvider);
+                using (var scope = sp.CreateScope())
+                {
+                    ExportSchema(scope.ServiceProvider);
+                }
             }
         }
 

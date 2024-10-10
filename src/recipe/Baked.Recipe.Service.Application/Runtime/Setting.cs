@@ -1,7 +1,7 @@
 ﻿using Baked;
 using Microsoft.Extensions.Configuration;
 
-namespace Baked.Runtime.Configuration;
+namespace Baked.Runtime;
 
 public class Setting<T>
 {

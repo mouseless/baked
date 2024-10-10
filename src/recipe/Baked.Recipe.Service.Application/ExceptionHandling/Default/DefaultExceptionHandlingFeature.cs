@@ -1,5 +1,5 @@
 ﻿using Baked.Architecture;
-using Baked.Runtime.Configuration;
+using Baked.Runtime;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 

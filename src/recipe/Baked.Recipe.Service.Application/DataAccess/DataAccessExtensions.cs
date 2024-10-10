@@ -5,7 +5,7 @@ using FluentNHibernate.Automapping;
 using FluentNHibernate.Cfg;
 using NHibernate;
 
-using NHibEnvironment = NHibernate.Cfg.Environment;
+using NHEnvironment = NHibernate.Cfg.Environment;
 
 namespace Baked;
 
@@ -30,10 +30,10 @@ public static class DataAccessExtensions
        configurator.Configure(configuration);
 
     public static void MaxFetchDepth(this FluentConfiguration configuration, int maxFetchDepth) =>
-      configuration.ExposeConfiguration(c => c.SetProperty(NHibEnvironment.MaxFetchDepth, $"{maxFetchDepth}"));
+      configuration.ExposeConfiguration(c => c.SetProperty(NHEnvironment.MaxFetchDepth, $"{maxFetchDepth}"));
 
     public static void ShowSql(this FluentConfiguration configuration, bool showSql) =>
-      configuration.ExposeConfiguration(c => c.SetProperty(NHibEnvironment.ShowSql, $"{showSql.ToString().ToLowerInvariant()}"));
+      configuration.ExposeConfiguration(c => c.SetProperty(NHEnvironment.ShowSql, $"{showSql.ToString().ToLowerInvariant()}"));
 
     public static ISession TheSession(this Stubber giveMe,
         bool clear = false

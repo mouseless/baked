@@ -1,4 +1,4 @@
-﻿using Baked.Runtime.Configuration;
+﻿using Baked.Runtime;
 
 namespace Baked.ExceptionHandling.Default;
 

@@ -1,6 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Baked.Runtime;
+using Microsoft.Extensions.Configuration;
 
-namespace Baked.Runtime.Configuration;
+namespace Baked;
 
 public class Settings
 {

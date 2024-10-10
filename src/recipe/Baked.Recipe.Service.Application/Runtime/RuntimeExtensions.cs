@@ -1,7 +1,5 @@
 ﻿using Baked.Architecture;
 using Baked.Runtime;
-using Baked.Runtime.Configuration;
-using Baked.Runtime.DependencyInjection;
 using Baked.Testing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
