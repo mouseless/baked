@@ -60,14 +60,12 @@ public class DataAccessLayer : LayerBase<AddServices, PostBuild>
         {
             if (Context.Has<IServiceScope>())
             {
-                ExportSchema(sp);
+                ExportSchema(Context.GetServiceScope().ServiceProvider);
             }
             else
             {
-                using (var scope = sp.CreateScope())
-                {
-                    ExportSchema(scope.ServiceProvider);
-                }
+                using var scope = sp.CreateScope();
+                ExportSchema(scope.ServiceProvider);
             }
         }
 

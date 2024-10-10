@@ -22,6 +22,9 @@ public static class RuntimeExtensions
     public static IServiceProvider GetServiceProvider(this ApplicationContext context) =>
         context.Get<IServiceProvider>();
 
+    public static IServiceScope GetServiceScope(this ApplicationContext context) =>
+        context.Get<IServiceScope>();
+
     public static void ConfigureLoggingBuilder(this LayerConfigurator configurator, Action<ILoggingBuilder> configuration) =>
        configurator.Configure(configuration);
 
