@@ -1,5 +1,13 @@
 # Unreleased
 
+## Features
+
+- Beta features are available in do-blueprints-service package;
+  - `RuntimeLayer`is added which merges the following layers:
+      - `Configuration`
+      - `DependencyInjection`
+      - `Monitoring`
+
 ## Improvements
 
 - `MockConfiguration` feature now clears `FakeSettings` list on teardown
@@ -9,7 +17,4 @@
   `RestApi.ActionModel` before and after conventions
 - `Enum<T>` helper class is added to use enum values within `ValueSource`
   attribute
-- The following layers are merged into one single layer;
-  - Configuration
-  - DependencyInjection
-  - Monitoring
+- `DataAccess` layer now exposes `FluentConfiguration` as configuration target
