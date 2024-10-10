@@ -28,4 +28,7 @@ public class MeetingContacts(IQueryContext<MeetingContact> _context)
 {
     internal List<MeetingContact> ByMeeting(Meeting meeting) =>
         _context.By(mc => mc.Meeting == meeting);
+
+    internal MeetingContact? SingleBy(Meeting meeting, Contact contact) =>
+        _context.SingleBy(mc => mc.Meeting == meeting && mc.Contact == contact);
 }
