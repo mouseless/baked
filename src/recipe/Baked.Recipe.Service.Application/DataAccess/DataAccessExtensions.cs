@@ -14,8 +14,8 @@ public static class DataAccessExtensions
     public static void AddDataAccess(this ICollection<ILayer> layers) =>
         layers.Add(new DataAccessLayer());
 
-    public static void ConfigureFluentConfiguration(this LayerConfigurator configurator, Action<FluentConfiguration> builder) =>
-        configurator.Configure(builder);
+    public static void ConfigureFluentConfiguration(this LayerConfigurator configurator, Action<FluentConfiguration> configuration) =>
+        configurator.Configure(configuration);
 
     public static void ConfigurePersistence(this LayerConfigurator configurator, Action<PersistenceConfiguration> configuration) =>
         configurator.Configure(configuration);

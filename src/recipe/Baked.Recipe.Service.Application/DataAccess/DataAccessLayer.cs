@@ -18,9 +18,6 @@ public class DataAccessLayer : LayerBase<AddServices, PostBuild>
     readonly AutoPersistenceModel _autoPersistenceModel;
     readonly FluentConfiguration _fluentConfiguration;
 
-    volatile bool _exported = false;
-    readonly object _exportedLock = new();
-
     public DataAccessLayer()
     {
         _autoPersistenceModel = new(new DelegatedAutomappingConfiguration(_automappingConfiguration));
@@ -59,24 +56,29 @@ public class DataAccessLayer : LayerBase<AddServices, PostBuild>
         NHibernateLogger.SetLoggersFactory(sp.GetRequiredService<INHibernateLoggerFactory>());
         sp.GetRequiredService<NHConfiguration>().SetInterceptor(new DelegatedInterceptor(sp, _interceptorConfiguration));
 
-        var session = sp.GetRequiredService<ISession>();
         if (_persistenceConfiguration.AutoExportSchema)
         {
-            if (!_exported)
+            if (Context.Has<IServiceScope>())
             {
-                lock (_exportedLock)
+                ExportSchema(sp);
+            }
+            else
+            {
+                using (var scope = sp.CreateScope())
                 {
-                    if (!_exported)
-                    {
-                        var export = new SchemaExport(sp.GetRequiredService<NHConfiguration>());
-
-                        export.Execute(false, true, false, session.Connection, null);
-                        _exported = true;
-                    }
+                    ExportSchema(scope.ServiceProvider);
                 }
             }
         }
 
         return phase.CreateEmptyContext();
+    }
+
+    void ExportSchema(IServiceProvider sp)
+    {
+        var session = sp.GetRequiredService<ISession>();
+
+        var export = new SchemaExport(sp.GetRequiredService<NHConfiguration>());
+        export.Execute(false, true, false, session.Connection, null);
     }
 }

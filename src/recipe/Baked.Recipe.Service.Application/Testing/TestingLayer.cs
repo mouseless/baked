@@ -56,8 +56,9 @@ public class TestingLayer : LayerBase<AddServices>
         {
             var serviceProvider = services.BuildServiceProvider();
 
-            serviceProvider.CreateScope();
+            var scope = serviceProvider.CreateScope();
 
+            Context.Add(scope);
             Context.Add<IServiceProvider>(serviceProvider);
             Context.Add<ITestRun>(new TestRun(_configuration));
         }
