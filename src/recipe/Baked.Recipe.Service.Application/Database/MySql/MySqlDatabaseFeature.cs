@@ -2,7 +2,6 @@
 using Baked.Runtime;
 using FluentNHibernate.Cfg.Db;
 using Microsoft.Extensions.DependencyInjection;
-using NHibernate.Tool.hbm2ddl;
 
 namespace Baked.Database.MySql;
 
@@ -20,7 +19,7 @@ public class MySqlDatabaseFeature(Setting<string> _connectionString, Setting<boo
         {
             if (_autoUpdateSchema)
             {
-                fluent.ExposeConfiguration(c => new SchemaUpdate(c).Execute(false, true));
+                fluent.UpdateSchema();
             }
         });
 

@@ -21,9 +21,9 @@ public class RequestLoggingFeature(bool singleLine)
             """);
         });
 
-        configurator.ConfigureFluentConfiguration(builder =>
+        configurator.ConfigureFluentConfiguration(fluent =>
         {
-            builder.ShowSql(true);
+            fluent.ShowSql(true);
         });
 
         configurator.ConfigureLoggingBuilder(logging =>
