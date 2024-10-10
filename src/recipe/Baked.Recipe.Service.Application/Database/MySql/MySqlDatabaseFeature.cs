@@ -25,7 +25,8 @@ public class MySqlDatabaseFeature(Setting<string> _connectionString, Setting<boo
 
         configurator.ConfigurePersistence(persistence =>
         {
-            persistence.Configurer = MySQLConfiguration.Standard.ConnectionString(_connectionString).Dialect<CustomMySQL57Dialect>();
+            persistence.Configurer = MySQLConfiguration.Standard.ConnectionString(_connectionString)
+                    .Dialect<CustomMySQL57Dialect>();
         });
 
         configurator.ConfigureMiddlewareCollection(middlewares =>
