@@ -3,7 +3,6 @@
 using static Baked.Test.Architecture.Layer.ProvidingConfiguration.LayerX;
 using static Baked.Test.Architecture.Layer.ProvidingConfiguration.LayerY;
 using static Baked.Test.Architecture.Layer.ProvidingConfiguration.LayerZ;
-using static Baked.Test.Architecture.Layer.ProvidingConfiguration.LayerAA;
 
 namespace Baked.Test.Architecture.Layer;
 
@@ -42,21 +41,6 @@ public class ProvidingConfiguration : ArchitectureSpec
         public class DoC : PhaseBase { }
     }
 
-    public record LayerAAConfigurationA();
-    public record LayerAAConfigurationB();
-    public record LayerAAConfigurationC();
-    public record LayerAAConfigurationD();
-
-    public class LayerAA : LayerBase<DoA, DoB, DoC, DoD>
-    {
-        protected override PhaseContext GetContext(DoA phase) => phase.CreateContext(new LayerAAConfigurationA());
-        protected override PhaseContext GetContext(DoB phase) => phase.CreateContext(new LayerAAConfigurationB());
-        protected override PhaseContext GetContext(DoC phase) => phase.CreateContext(new LayerAAConfigurationC());
-        protected override PhaseContext GetContext(DoD phase) => phase.CreateContext(new LayerAAConfigurationD());
-
-        public class DoD : PhaseBase { }
-    }
-
     [Test]
     public void A_layer_provides_configuration_for_up_to_four_phases()
     {
@@ -68,11 +52,6 @@ public class ProvidingConfiguration : ArchitectureSpec
         TestCase<LayerZ, DoA, LayerZConfigurationA>();
         TestCase<LayerZ, DoB, LayerZConfigurationB>();
         TestCase<LayerZ, DoC, LayerZConfigurationC>();
-
-        TestCase<LayerAA, DoA, LayerAAConfigurationA>();
-        TestCase<LayerAA, DoB, LayerAAConfigurationB>();
-        TestCase<LayerAA, DoC, LayerAAConfigurationC>();
-        TestCase<LayerAA, DoD, LayerAAConfigurationD>();
 
         void TestCase<TLayer, TPhase, TTarget>()
             where TLayer : ILayer

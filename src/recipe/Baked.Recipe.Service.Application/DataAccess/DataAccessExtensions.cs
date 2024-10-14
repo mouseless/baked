@@ -36,10 +36,8 @@ public static class DataAccessExtensions
     public static void ShowSql(this FluentConfiguration configuration, bool showSql) =>
       configuration.ExposeConfiguration(c => c.SetProperty(NHEnvironment.ShowSql, $"{showSql.ToString().ToLowerInvariant()}"));
 
-    public static void UpdateSchema(this FluentConfiguration configuration,
-        bool useStdOut = false,
-        bool doUpdate = true
-    ) => configuration.ExposeConfiguration(c => new SchemaUpdate(c).Execute(useStdOut, doUpdate));
+    public static void UpdateSchema(this FluentConfiguration configuration, bool useStdOut, bool doUpdate) =>
+        configuration.ExposeConfiguration(c => new SchemaUpdate(c).Execute(useStdOut, doUpdate));
 
     public static ISession TheSession(this Stubber giveMe,
         bool clear = false

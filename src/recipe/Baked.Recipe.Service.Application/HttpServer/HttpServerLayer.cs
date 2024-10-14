@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using System.Security.Claims;
 
-using static Baked.Runtime.RuntimeLayer;
 using static Baked.HttpServer.HttpServerLayer;
+using static Baked.Runtime.RuntimeLayer;
 
 namespace Baked.HttpServer;
 

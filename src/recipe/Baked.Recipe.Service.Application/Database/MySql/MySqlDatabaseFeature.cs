@@ -19,7 +19,7 @@ public class MySqlDatabaseFeature(Setting<string> _connectionString, Setting<boo
         {
             if (_autoUpdateSchema)
             {
-                fluent.UpdateSchema();
+                fluent.UpdateSchema(false, true);
             }
         });
 

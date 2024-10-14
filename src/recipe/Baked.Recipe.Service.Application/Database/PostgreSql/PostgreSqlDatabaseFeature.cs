@@ -19,7 +19,7 @@ public class PostgreSqlDatabaseFeature(Setting<string> _connectionString, Settin
         {
             if (_autoUpdateSchema)
             {
-                fluent.UpdateSchema();
+                fluent.UpdateSchema(false, true);
             }
         });
 
