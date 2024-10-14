@@ -19,7 +19,7 @@ public class SQLiteConfiguration : PersistenceConfiguration<SQLiteConfiguration>
     {
         Raw("connection.release_mode", "on_close");
 
-        return ConnectionString(c => c.Is(new SqliteConnectionStringBuilder { DataSource = ":memory:" }.ToString()));
+        return ConnectionString(c => c.Is(new SqliteConnectionStringBuilder { DataSource = ":memory:", Mode = SqliteOpenMode.Memory, Cache = SqliteCacheMode.Shared }.ToString()));
     }
 
     public SQLiteConfiguration UsingFile(string fileName) =>

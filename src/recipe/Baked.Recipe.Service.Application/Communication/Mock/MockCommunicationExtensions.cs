@@ -20,7 +20,8 @@ public static class MockCommunicationExtensions
         HttpStatusCode? statusCode = default,
         Exception? throws = default,
         List<object>? responses = default,
-        bool? noResponse = default
+        bool? noResponse = default,
+        bool clearInvocations = false
     )
     {
         var mock = Moq.Mock.Get(mockMe.Spec.GiveMe.The<IClient<T>>());
@@ -59,12 +60,19 @@ public static class MockCommunicationExtensions
             setup().ReturnsAsync(new Response(statusCode.Value, "{}"));
         }
 
+        if (clearInvocations)
+        {
+            mock.Invocations.Clear();
+        }
+
         return mock.Object;
     }
 
     public static void VerifySent<T>(this IClient<T> client,
         string? path = default,
         string? url = default,
+        string? urlContains = default,
+        Func<string, bool>? urlMatches = default,
         HttpMethod? method = default,
         object? content = default,
         string? contentContains = default,
@@ -77,6 +85,8 @@ public static class MockCommunicationExtensions
         c => c.Send(It.Is<Request>(r =>
                 (path == default || r.UrlOrPath == path) &&
                 (url == default || r.UrlOrPath == url) &&
+                (urlContains == default || r.UrlOrPath.Contains(urlContains)) &&
+                (urlMatches == default || urlMatches(r.UrlOrPath)) &&
                 (method == default || r.Method == method) &&
                 (content == default || new Content(content, null).Equals(r.Content)) &&
                 (contentContains == default || r.Content != null && r.Content.Body.Contains(contentContains)) &&
@@ -94,4 +104,16 @@ public static class MockCommunicationExtensions
 
     public static void VerifyNoContentIsSent<T>(this IClient<T> client) =>
         Moq.Mock.Get(client).Verify(c => c.Send(It.Is<Request>(r => r.Content == null), It.IsAny<bool>()));
+
+    public static ClientException AClientException(this Stubber _,
+        HttpStatusCode? statusCode = default,
+        string? content = default,
+        Exception? httpRequestExceptionInner = default
+    )
+    {
+        content ??= "An exception has occured";
+        statusCode ??= HttpStatusCode.BadRequest;
+
+        return new(content, new(content, httpRequestExceptionInner, statusCode));
+    }
 }

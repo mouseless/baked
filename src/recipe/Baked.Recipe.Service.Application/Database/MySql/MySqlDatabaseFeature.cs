@@ -1,5 +1,5 @@
 ﻿using Baked.Architecture;
-using Baked.Configuration;
+using Baked.Runtime;
 using FluentNHibernate.Cfg.Db;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,14 +15,18 @@ public class MySqlDatabaseFeature(Setting<string> _connectionString, Setting<boo
             services.AddSingleton<ITransaction, FlatTransaction>();
         });
 
+        configurator.ConfigureFluentConfiguration(fluent =>
+        {
+            if (_autoUpdateSchema)
+            {
+                fluent.UpdateSchema();
+            }
+        });
+
         configurator.ConfigurePersistence(persistence =>
         {
-            persistence.AutoUpdateSchema = _autoUpdateSchema;
-            persistence.Configurer =
-                MySQLConfiguration.Standard
-                    .ConnectionString(_connectionString)
-                    .Dialect<CustomMySQL57Dialect>()
-                    .MaxFetchDepth(1);
+            persistence.Configurer = MySQLConfiguration.Standard.ConnectionString(_connectionString)
+                    .Dialect<CustomMySQL57Dialect>();
         });
 
         configurator.ConfigureMiddlewareCollection(middlewares =>

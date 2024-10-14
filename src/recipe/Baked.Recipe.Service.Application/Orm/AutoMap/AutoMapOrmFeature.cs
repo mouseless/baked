@@ -54,8 +54,8 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
                     }
                 },
                 compilationOptions => compilationOptions.WithUsings(
-                    "Baked.DependencyInjection",
                     "Baked.Orm",
+                    "Baked.Runtime",
                     "Microsoft.Extensions.DependencyInjection",
                     "NHibernate.Linq",
                     "System",
@@ -72,6 +72,11 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             services.AddFromAssembly(configurator.Context.GetGeneratedAssembly(nameof(AutoMapOrmFeature)));
             services.AddScoped(typeof(IEntityContext<>), typeof(EntityContext<>));
             services.AddSingleton(typeof(IQueryContext<>), typeof(QueryContext<>));
+        });
+
+        configurator.ConfigureFluentConfiguration(builder =>
+        {
+            builder.MaxFetchDepth(1);
         });
 
         configurator.ConfigureAutoPersistenceModel(model =>

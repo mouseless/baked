@@ -1,5 +1,5 @@
 using Baked.Architecture;
-using Baked.Configuration;
+using Baked.Runtime;
 using FluentNHibernate.Cfg.Db;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,13 +15,17 @@ public class PostgreSqlDatabaseFeature(Setting<string> _connectionString, Settin
             services.AddSingleton<ITransaction, FlatTransaction>();
         });
 
+        configurator.ConfigureFluentConfiguration(fluent =>
+        {
+            if (_autoUpdateSchema)
+            {
+                fluent.UpdateSchema();
+            }
+        });
+
         configurator.ConfigurePersistence(persistence =>
         {
-            persistence.AutoUpdateSchema = _autoUpdateSchema;
-            persistence.Configurer =
-                PostgreSQLConfiguration.PostgreSQL83
-                    .ConnectionString(_connectionString)
-                    .MaxFetchDepth(1);
+            persistence.Configurer = PostgreSQLConfiguration.PostgreSQL83.ConnectionString(_connectionString);
         });
 
         configurator.ConfigureMiddlewareCollection(middlewares =>

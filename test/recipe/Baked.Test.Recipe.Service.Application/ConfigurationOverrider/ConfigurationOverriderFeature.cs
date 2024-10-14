@@ -23,10 +23,13 @@ public class ConfigurationOverriderFeature : IFeature
         {
             var domainModel = configurator.Context.GetDomainModel();
 
-            api.GetController<AuthenticationSamples>().Action[nameof(AuthenticationSamples.FormPostAuthenticate)].UseForm = true;
-            api.GetController<DocumentationSamples>().Action[nameof(DocumentationSamples.Route)].Parameter["route"].From = ParameterModelFrom.Route;
-            api.GetController<DocumentationSamples>().Action[nameof(DocumentationSamples.Route)].Parameter["route"].RoutePosition = 2;
-            api.GetController<ExceptionSamples>().Action[nameof(ExceptionSamples.Throw)].Parameter["handled"].From = ParameterModelFrom.Query;
+            api.ConfigureAction<AuthenticationSamples>(nameof(AuthenticationSamples.FormPostAuthenticate), useForm: true);
+            api.ConfigureAction<DocumentationSamples>(nameof(DocumentationSamples.Route), parameter: p =>
+            {
+                p["route"].From = ParameterModelFrom.Route;
+                p["route"].RoutePosition = 2;
+            });
+            api.ConfigureAction<ExceptionSamples>(nameof(ExceptionSamples.Throw), parameter: p => p["handled"].From = ParameterModelFrom.Query);
             api.GetController<Entities>().AddSingleById<Entity>(domainModel);
         });
 
@@ -70,6 +73,30 @@ public class ConfigurationOverriderFeature : IFeature
         {
             swaggerUIOptions.SwaggerEndpoint($"samples/swagger.json", "Samples");
             swaggerUIOptions.SwaggerEndpoint($"external/swagger.json", "External");
+        });
+
+        configurator.ConfigureApiModelConventions(conventions =>
+        {
+            conventions.OverrideAction<OverrideSamples>(
+                mappedMethodName: nameof(OverrideSamples.UpdateRoute),
+                routeParts: ["override-samples", "override", "update-route"],
+                method: HttpMethod.Post
+            );
+
+            conventions.OverrideAction<OverrideSamples>(
+                mappedMethodName: nameof(OverrideSamples.Parameter),
+                parameter: parameter =>
+                {
+                    parameter["parameter"].Name = "id";
+                    parameter["parameter"].From = ParameterModelFrom.Route;
+                    parameter["parameter"].RoutePosition = 2;
+                }
+            );
+
+            conventions.OverrideAction<OverrideSamples>(
+                mappedMethodName: nameof(OverrideSamples.RequestClass),
+                useRequestClassForBody: false
+            );
         });
     }
 }

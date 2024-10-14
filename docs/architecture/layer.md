@@ -22,12 +22,12 @@ For a consistent developer experience, follow below conventions when
 implementing a new layer;
 
 1. Place all layer related classes under the same folder named after layer,
-   e.g., `DependencyInjection/`
+   e.g., `Runtime/`
 1. Use `Layer` suffix in layer class name, e.g.,
-   `DependencyInjection/DependencyInjectionLayer.cs`
+   `Runtime/RuntimeLayer.cs`
 1. Provide extension methods in `Baked` namespace, e.g.,
-   `DependencyInjection/DependencyInjectionExtensions.cs`;
-   1. `Add` extension to `List<ILayer>`, e.g., `AddDependencyInjection()`
+   `Runtime/RuntimeExtensions.cs`;
+   1. `Add` extension to `List<ILayer>`, e.g., `AddRuntime()`
    1. `Get` extensions to `ApplicationContext`, e.g.,
       `GetWebApplicationBuilder()`, `GetWebApplication()`
    1. `Configure` extensions to `LayerConfigurator` per configuration
@@ -180,7 +180,7 @@ public class Build()
 }
 ```
 
-> :warning:
+> [!WARNING]
 >
 > This type of artifact requirement will create a dependency between phases
 > which results to a layer to layer dependency. In the above example `Build`
@@ -226,8 +226,8 @@ In this example, you see a layer named `LayerX` providing a
 
 ### Using non-generic `LayerBase`
 
-`LayerBase<>` classes allow up to three generic arguments. If you need to
-implement a layer that has things to configure during more than three phases,
+`LayerBase<>` classes allow up to four generic arguments. If you need to
+implement a layer that has things to configure during more than four phases,
 use non-generic `LayerBase` class, override `GetContext(IPhase phase)` method
 and switch given phase according to its type;
 

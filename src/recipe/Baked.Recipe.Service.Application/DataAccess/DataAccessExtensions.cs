@@ -2,7 +2,11 @@
 using Baked.DataAccess;
 using Baked.Testing;
 using FluentNHibernate.Automapping;
+using FluentNHibernate.Cfg;
 using NHibernate;
+using NHibernate.Tool.hbm2ddl;
+
+using NHEnvironment = NHibernate.Cfg.Environment;
 
 namespace Baked;
 
@@ -10,6 +14,9 @@ public static class DataAccessExtensions
 {
     public static void AddDataAccess(this ICollection<ILayer> layers) =>
         layers.Add(new DataAccessLayer());
+
+    public static void ConfigureFluentConfiguration(this LayerConfigurator configurator, Action<FluentConfiguration> configuration) =>
+        configurator.Configure(configuration);
 
     public static void ConfigurePersistence(this LayerConfigurator configurator, Action<PersistenceConfiguration> configuration) =>
         configurator.Configure(configuration);
@@ -21,7 +28,18 @@ public static class DataAccessExtensions
         configurator.Configure(configuration);
 
     public static void ConfigureNHibernateInterceptor(this LayerConfigurator configurator, Action<InterceptorConfiguration> configuration) =>
-        configurator.Configure(configuration);
+       configurator.Configure(configuration);
+
+    public static void MaxFetchDepth(this FluentConfiguration configuration, int maxFetchDepth) =>
+      configuration.ExposeConfiguration(c => c.SetProperty(NHEnvironment.MaxFetchDepth, $"{maxFetchDepth}"));
+
+    public static void ShowSql(this FluentConfiguration configuration, bool showSql) =>
+      configuration.ExposeConfiguration(c => c.SetProperty(NHEnvironment.ShowSql, $"{showSql.ToString().ToLowerInvariant()}"));
+
+    public static void UpdateSchema(this FluentConfiguration configuration,
+        bool useStdOut = false,
+        bool doUpdate = true
+    ) => configuration.ExposeConfiguration(c => new SchemaUpdate(c).Execute(useStdOut, doUpdate));
 
     public static ISession TheSession(this Stubber giveMe,
         bool clear = false

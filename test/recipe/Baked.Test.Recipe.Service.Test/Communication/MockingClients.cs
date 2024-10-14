@@ -114,4 +114,16 @@ public class MockingClients : TestServiceSpec
 
         response.Content.ShouldBe("response");
     }
+
+    [Test]
+    public async Task Mock_helper_can_clear_previous_invocations()
+    {
+        var client = MockMe.TheClient<ExternalSamples>();
+        await client.Send(new("path", HttpMethod.Post));
+        MockMe.TheClient<ExternalSamples>(clearInvocations: true);
+
+        await client.Send(new("path", HttpMethod.Post));
+
+        client.VerifySent(urlContains: "path", times: 1);
+    }
 }
