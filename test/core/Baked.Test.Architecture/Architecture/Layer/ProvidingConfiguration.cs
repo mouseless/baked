@@ -42,7 +42,7 @@ public class ProvidingConfiguration : ArchitectureSpec
     }
 
     [Test]
-    public void A_layer_provides_configuration_for_up_to_four_phases()
+    public void A_layer_provides_configuration_for_up_to_three_phases()
     {
         TestCase<LayerX, DoA, LayerXConfigurationA>();
 
