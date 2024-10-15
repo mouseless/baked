@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System.Security.Claims;
 
 using static Baked.HttpServer.HttpServerLayer;
@@ -90,6 +91,7 @@ public class HttpServerLayer : LayerBase<AddServices, Build>
         protected override void Initialize()
         {
             var build = WebApplication.CreateBuilder();
+            build.Logging.ClearProviders();
 
             Context.Add(build);
             Context.Add(build.Configuration);
@@ -97,13 +99,18 @@ public class HttpServerLayer : LayerBase<AddServices, Build>
     }
 
     public class Build()
-        : PhaseBase<WebApplicationBuilder, IServiceCollection>(PhaseOrder.Latest)
+        : PhaseBase<WebApplicationBuilder, IServiceCollection, ILoggingBuilderCollection>(PhaseOrder.Latest)
     {
-        protected override void Initialize(WebApplicationBuilder build, IServiceCollection services)
+        protected override void Initialize(WebApplicationBuilder build, IServiceCollection services, ILoggingBuilderCollection loggingBuilders)
         {
             foreach (var service in services)
             {
                 build.Services.Add(service);
+            }
+
+            foreach (var loggingBuilder in loggingBuilders)
+            {
+                loggingBuilder.Configure(build.Logging);
             }
 
             var app = build.Build();

@@ -12,7 +12,7 @@ app.Layers.AddRuntime();
 
 ## Configuration Targets
 
-`Runtime` layer provides `IConfigurationBuilder`, `ILoggingBuilder`, 
+`Runtime` layer provides `IConfigurationBuilder`, `ILoggingBuilderCollection`, 
 `IServiceCollection` and `IServiceProvider` as configuration targets.
 
 ### `IConfigurationBuilder`
@@ -27,12 +27,12 @@ configurator.ConfigureConfigurationBuilder(configurationBuilder =>
 });
 ```
 
-### `ILoggingBuilder`
+### `ILoggingBuilderCollection`
 
-This target is provided in `CreateBuilder` phase. To configure it in a feature;
+This target is provided in `AddServices` phase. To configure it in a feature;
 
 ```csharp
-configurator.ConfigureLoggingBuilder(logging =>
+configurator.ConfigureLoggingBuilderCollection(loggingBuilders =>
 {
     ...
 });

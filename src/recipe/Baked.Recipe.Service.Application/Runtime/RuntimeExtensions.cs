@@ -20,7 +20,7 @@ public static class RuntimeExtensions
     public static IServiceProvider GetServiceProvider(this ApplicationContext context) =>
         context.Get<IServiceProvider>();
 
-    public static void ConfigureLoggingBuilder(this LayerConfigurator configurator, Action<ILoggingBuilder> configuration) =>
+    public static void ConfigureLoggingBuilderCollection(this LayerConfigurator configurator, Action<ILoggingBuilderCollection> configuration) =>
        configurator.Configure(configuration);
 
     public static void ConfigureServiceCollection(this LayerConfigurator configurator, Action<IServiceCollection> configuration) =>
@@ -39,6 +39,9 @@ public static class RuntimeExtensions
 
         serviceAdder.AddServices(services);
     }
+
+    public static void AddLoggingBuilder(this ILoggingBuilderCollection loggingBuilders, Action<ILoggingBuilder> configuration) =>
+       loggingBuilders.Add(new(configuration));
 
     public static void AddJson(this IConfigurationBuilder builder, string json) =>
         builder.Add(new JsonConfigurationSource(json));
