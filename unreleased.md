@@ -18,3 +18,8 @@
 - `Enum<T>` helper class is added to use enum values within `ValueSource`
   attribute
 - `DataAccess` layer now exposes `FluentConfiguration` as configuration target
+- `DataAccess` layer now introduces `IDatabaseInitializerCollection` 
+  configuration target for registering database initialization actions
+- `IServiceProvider` now has `UseCurrentScope` extensions to resolve services 
+  using the scope provided by `IServiceProviderAccessor` implementations      
+- `TestRun` now creates and disposes a scope for each test run to  

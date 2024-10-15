@@ -2,9 +2,8 @@
 using Baked.DataAccess.Sqlite;
 using Baked.Runtime;
 using Microsoft.Extensions.DependencyInjection;
-using NHibernate.Cfg;
 
-using Environment = System.Environment;
+using NHConfiguration = NHibernate.Cfg.Configuration;
 
 namespace Baked.Database.Sqlite;
 
@@ -33,7 +32,7 @@ public class SqliteDatabaseFeature(Setting<string> _fileName, Setting<bool> _aut
                 {
                     using (var session = sf.OpenSession())
                     {
-                        sp.GetRequiredService<Configuration>().ExportSchema(false, true, false, session.Connection);
+                        sp.GetRequiredService<NHConfiguration>().ExportSchema(false, true, false, session.Connection);
                     }
                 }
             });
