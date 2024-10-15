@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace Baked.HttpServer;
 
-public class RequestServicesAccessor(IHttpContextAccessor contextAccessor)
+public class RequestServicesServiceProviderAccessor(IHttpContextAccessor contextAccessor)
     : IServiceProviderAccessor
 {
     public IServiceProvider? GetServiceProvider() =>
