@@ -32,6 +32,9 @@ public static class RuntimeExtensions
     public static void ConfigureServiceProvider(this LayerConfigurator configurator, Action<IServiceProvider> configuration) =>
         configurator.Configure(configuration);
 
+    public static void ConfigureConfigurationBuilder(this LayerConfigurator configurator, Action<IConfigurationBuilder> configuration) =>
+        configurator.Configure(configuration);
+
     public static void AddFromAssembly(this IServiceCollection services, Assembly assembly)
     {
         var serviceAdderType = assembly.GetExportedTypes().SingleOrDefault(t => t.IsAssignableTo(typeof(IServiceAdder))) ?? throw new("`IServiceAdder` implementation not found");
@@ -39,9 +42,6 @@ public static class RuntimeExtensions
 
         serviceAdder.AddServices(services);
     }
-
-    public static void ConfigureConfigurationBuilder(this LayerConfigurator configurator, Action<IConfigurationBuilder> configuration) =>
-     configurator.Configure(configuration);
 
     public static void AddJson(this IConfigurationBuilder builder, string json) =>
         builder.Add(new JsonConfigurationSource(json));
