@@ -1,3 +1,3 @@
 ﻿namespace Baked.HttpServer;
 
-public interface IAuthenticationCollection : IList<AuthenticationDescriptor> { }
+public interface IAuthenticationCollection : IList<AuthenticationDescriptor>;

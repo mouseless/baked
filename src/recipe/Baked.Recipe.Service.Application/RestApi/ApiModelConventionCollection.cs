@@ -2,5 +2,4 @@
 
 namespace Baked.RestApi;
 
-public class ApiModelConventionCollection : List<(IApiModelConvention Convention, int Order)>, IApiModelConventionCollection
-{ }
+public class ApiModelConventionCollection : List<(IApiModelConvention Convention, int Order)>, IApiModelConventionCollection;

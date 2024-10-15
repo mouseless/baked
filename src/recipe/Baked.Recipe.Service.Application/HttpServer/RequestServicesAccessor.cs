@@ -6,8 +6,6 @@ namespace Baked.HttpServer;
 public class RequestServicesAccessor(IHttpContextAccessor contextAccessor)
     : IServiceProviderAccessor
 {
-    public IServiceProvider? GetServiceProvider()
-    {
-        return contextAccessor.HttpContext?.RequestServices;
-    }
+    public IServiceProvider? GetServiceProvider() =>
+        contextAccessor.HttpContext?.RequestServices;
 }
