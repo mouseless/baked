@@ -48,7 +48,7 @@ public static class DataAccessExtensions
         configuration.ExposeConfiguration(c => new SchemaUpdate(c).Execute(useStdOut, doUpdate));
 
     public static void ExportSchema(this Configuration configuration, bool useStdOut, bool doUpdate, bool justDrop, DbConnection connection) =>
-        new SchemaExport(configuration).Execute(false, true, false, connection, null);
+        new SchemaExport(configuration).Execute(useStdOut, doUpdate, justDrop, connection, null);
 
     public static ISession TheSession(this Stubber giveMe,
         bool clear = false
