@@ -6,9 +6,11 @@ public class UsingScopedMemory : TestServiceSpec
 {
     public override void TearDown()
     {
+        var cache = GiveMe.AMemoryCache();
+
         base.TearDown();
 
-        GiveMe.AMemoryCache().ShouldHaveCount(0);
+        cache.ShouldHaveCount(0);
     }
 
     [Test]

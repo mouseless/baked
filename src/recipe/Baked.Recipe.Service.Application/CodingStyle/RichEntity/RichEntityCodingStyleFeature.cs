@@ -1,6 +1,7 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
 using Baked.Orm;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Baked.CodingStyle.RichEntity;
 
@@ -52,7 +53,7 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
         {
             interceptor.Instantiator = (ctx, id) =>
             {
-                var result = ctx.ApplicationServices.GetRequiredServiceUsingRequestServices(ctx.MetaData.MappedClass);
+                var result = ctx.ApplicationServices.UsingCurrentScope().GetRequiredService(ctx.MetaData.MappedClass);
 
                 ctx.MetaData.SetIdentifier(result, id);
 

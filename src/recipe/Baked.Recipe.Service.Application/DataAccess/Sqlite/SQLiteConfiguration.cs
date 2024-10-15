@@ -15,11 +15,13 @@ public class SQLiteConfiguration : PersistenceConfiguration<SQLiteConfiguration>
         Raw("query.substitutions", "true=1;false=0");
     }
 
-    public SQLiteConfiguration InMemory()
+    public SQLiteConfiguration InMemory(
+        SqliteCacheMode cache = SqliteCacheMode.Default
+    )
     {
         Raw("connection.release_mode", "on_close");
 
-        return ConnectionString(c => c.Is(new SqliteConnectionStringBuilder { DataSource = ":memory:", Mode = SqliteOpenMode.Memory, Cache = SqliteCacheMode.Shared }.ToString()));
+        return ConnectionString(c => c.Is(new SqliteConnectionStringBuilder { DataSource = ":memory:", Mode = SqliteOpenMode.Memory, Cache = cache }.ToString()));
     }
 
     public SQLiteConfiguration UsingFile(string fileName) =>

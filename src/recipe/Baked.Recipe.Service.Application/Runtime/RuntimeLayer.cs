@@ -20,6 +20,7 @@ public class RuntimeLayer : LayerBase<BuildConfiguration, AddServices, PostBuild
     {
         var services = Context.GetServiceCollection();
         services.AddLogging();
+        services.AddSingleton<ServiceProviderAccessor>();
 
         var loggingBuilder = new LoggingBuilder(services);
         loggingBuilder.ClearProviders();

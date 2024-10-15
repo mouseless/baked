@@ -1,3 +1,3 @@
 ﻿namespace Baked.HttpServer;
 
-public interface IMiddlewareCollection : IList<MiddlewareDescriptor> { }
+public interface IMiddlewareCollection : IList<MiddlewareDescriptor>;

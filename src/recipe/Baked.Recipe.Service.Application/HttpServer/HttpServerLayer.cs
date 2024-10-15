@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.Runtime;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -21,6 +22,7 @@ public class HttpServerLayer : LayerBase<AddServices, Build>
         var services = Context.GetServiceCollection();
         services.AddHttpContextAccessor();
         services.AddSingleton<Func<ClaimsPrincipal>>(sp => () => sp.GetRequiredService<IHttpContextAccessor>().HttpContext?.User ?? throw new("HttpContext.User is required"));
+        services.AddSingleton<IServiceProviderAccessor, RequestServicesAccessor>();
 
         return phase.CreateContextBuilder()
             .Add(_authentications)

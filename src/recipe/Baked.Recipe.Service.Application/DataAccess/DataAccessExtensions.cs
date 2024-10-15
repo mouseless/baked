@@ -4,7 +4,9 @@ using Baked.Testing;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Cfg;
 using NHibernate;
+using NHibernate.Cfg;
 using NHibernate.Tool.hbm2ddl;
+using System.Data.Common;
 
 using NHEnvironment = NHibernate.Cfg.Environment;
 
@@ -28,13 +30,25 @@ public static class DataAccessExtensions
         configurator.Configure(configuration);
 
     public static void ConfigureNHibernateInterceptor(this LayerConfigurator configurator, Action<InterceptorConfiguration> configuration) =>
-       configurator.Configure(configuration);
+        configurator.Configure(configuration);
+
+    public static void ConfigureDatabaseInitializationCollection(this LayerConfigurator configurator, Action<IDatabaseInitializationCollection> configuration) =>
+        configurator.Configure((IDatabaseInitializationCollection initializations, IServiceProvider sp) => configuration(initializations));
+
+    public static void ConfigureDatabaseInitializationCollection(this LayerConfigurator configurator, Action<IDatabaseInitializationCollection, IServiceProvider> configuration) =>
+        configurator.Configure(configuration);
+
+    public static void AddInitializer(this IDatabaseInitializationCollection initializations, Action<ISessionFactory> initializer) =>
+        initializations.Add(new(initializer));
 
     public static void MaxFetchDepth(this FluentConfiguration configuration, int maxFetchDepth) =>
       configuration.ExposeConfiguration(c => c.SetProperty(NHEnvironment.MaxFetchDepth, $"{maxFetchDepth}"));
 
     public static void UpdateSchema(this FluentConfiguration configuration, bool useStdOut, bool doUpdate) =>
         configuration.ExposeConfiguration(c => new SchemaUpdate(c).Execute(useStdOut, doUpdate));
+
+    public static void ExportSchema(this Configuration configuration, bool useStdOut, bool doUpdate, bool justDrop, DbConnection connection) =>
+        new SchemaExport(configuration).Execute(false, true, false, connection, null);
 
     public static ISession TheSession(this Stubber giveMe,
         bool clear = false
