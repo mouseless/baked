@@ -5,15 +5,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <None Remove="Resource\EmbeddedResource.txt" />
-      <None Remove="Resource\PhysicalResource.txt" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <EmbeddedResource Include="Resource\EmbeddedResource.txt" />
-    </ItemGroup>
-
-    <ItemGroup>
         <PackageReference Include="coverlet.collector" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" />
@@ -25,12 +16,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Baked.Test.Recipe.Service.Application\Baked.Test.Recipe.Service.Application.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Content Include="Resource\PhysicalResource.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
     </ItemGroup>
 
     <ItemGroup>

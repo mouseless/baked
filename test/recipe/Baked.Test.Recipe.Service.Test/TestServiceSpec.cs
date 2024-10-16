@@ -1,6 +1,5 @@
 using Baked.Test.Communication;
 using Baked.Test.Orm;
-using Baked.Test.Resource;
 
 namespace Baked.Test;
 
@@ -19,10 +18,10 @@ public abstract class TestServiceSpec : ServiceSpec
             {
                 app.Features.AddResource([
                     c => c.EmbeddedResource([
-                        (typeof(ReadingFromEmbeddedResource).Assembly, string.Empty)
+                        (typeof(Entity).Assembly, string.Empty)
                     ]),
                     c => c.Physical([
-                        Path.GetDirectoryName(typeof(ReadingFromEmbeddedResource).Assembly.Location)
+                        Path.GetDirectoryName(typeof(Entity).Assembly.Location)
                     ])
                 ]);
                 app.Features.AddConfigurationOverrider();
