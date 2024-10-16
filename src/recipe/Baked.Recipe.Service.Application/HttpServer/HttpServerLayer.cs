@@ -99,18 +99,13 @@ public class HttpServerLayer : LayerBase<AddServices, Build>
     }
 
     public class Build()
-        : PhaseBase<WebApplicationBuilder, IServiceCollection, ILoggingBuilderCollection>(PhaseOrder.Latest)
+        : PhaseBase<WebApplicationBuilder, IServiceCollection>(PhaseOrder.Latest)
     {
-        protected override void Initialize(WebApplicationBuilder build, IServiceCollection services, ILoggingBuilderCollection loggingBuilders)
+        protected override void Initialize(WebApplicationBuilder build, IServiceCollection services)
         {
             foreach (var service in services)
             {
                 build.Services.Add(service);
-            }
-
-            foreach (var loggingBuilder in loggingBuilders)
-            {
-                loggingBuilder.Configure(build.Logging);
             }
 
             var app = build.Build();

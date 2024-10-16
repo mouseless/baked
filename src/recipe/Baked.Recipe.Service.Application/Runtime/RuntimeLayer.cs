@@ -12,7 +12,12 @@ namespace Baked.Runtime;
 public class RuntimeLayer : LayerBase<BuildConfiguration, AddServices, PostBuild>
 {
     readonly IServiceCollection _services = new ServiceCollection();
-    readonly ILoggingBuilderCollection _loggingBuilders = new LoggingBuilderCollection();
+    readonly ILoggingBuilder _loggingBuilder;
+
+    public RuntimeLayer()
+    {
+        _loggingBuilder = new LoggingBuilder(_services);
+    }
 
     protected override PhaseContext GetContext(BuildConfiguration phase) =>
         phase.CreateContext<IConfigurationBuilder>(Context.GetConfigurationManager());
@@ -23,11 +28,9 @@ public class RuntimeLayer : LayerBase<BuildConfiguration, AddServices, PostBuild
         services.AddLogging();
         services.AddSingleton<ServiceProviderAccessor>();
 
-        _loggingBuilders.AddLoggingBuilder(builder => builder.ClearProviders());
-
         return phase.CreateContextBuilder()
             .Add(_services)
-            .Add(_loggingBuilders)
+            .Add(_loggingBuilder)
             .Build()
         ;
     }
@@ -38,7 +41,7 @@ public class RuntimeLayer : LayerBase<BuildConfiguration, AddServices, PostBuild
     protected override IEnumerable<IPhase> GetPhases()
     {
         yield return new BuildConfiguration();
-        yield return new AddServices(_services, _loggingBuilders);
+        yield return new AddServices(_services);
         yield return new PostBuild();
     }
 
@@ -51,13 +54,12 @@ public class RuntimeLayer : LayerBase<BuildConfiguration, AddServices, PostBuild
         }
     }
 
-    public class AddServices(IServiceCollection _services, ILoggingBuilderCollection _loggingBuilders)
+    public class AddServices(IServiceCollection _services)
         : PhaseBase<DomainModel, GeneratedAssemblyProvider>(PhaseOrder.Early)
     {
         protected override void Initialize(DomainModel _, GeneratedAssemblyProvider __)
         {
             Context.Add(_services);
-            Context.Add(_loggingBuilders);
         }
     }
 

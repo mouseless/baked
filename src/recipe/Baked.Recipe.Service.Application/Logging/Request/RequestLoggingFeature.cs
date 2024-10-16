@@ -21,17 +21,15 @@ public class RequestLoggingFeature(bool singleLine)
             """);
         });
 
-        configurator.ConfigureLoggingBuilderCollection(loggingBuilders =>
+        configurator.ConfigureLoggingBuilder(builder =>
         {
-            loggingBuilders.AddLoggingBuilder(builder =>
-                builder.AddSimpleConsole(options =>
-                {
-                    options.IncludeScopes = true;
-                    options.SingleLine = singleLine;
-                    options.TimestampFormat = "yyyy.MM.dd HH:mm:ss.fff ";
-                    options.UseUtcTimestamp = true;
-                })
-            );
+            builder.AddSimpleConsole(options =>
+            {
+                options.IncludeScopes = true;
+                options.SingleLine = singleLine;
+                options.TimestampFormat = "yyyy.MM.dd HH:mm:ss.fff ";
+                options.UseUtcTimestamp = true;
+            });
         });
 
         configurator.ConfigureMiddlewareCollection(middlewares =>
