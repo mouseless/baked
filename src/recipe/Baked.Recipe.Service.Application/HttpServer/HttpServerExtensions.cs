@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Http.Features.Authentication;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
 using Moq;
 using System.Security.Claims;
@@ -51,18 +50,6 @@ public static class HttpServerExtensions
     public static void Add(this IMiddlewareCollection middlewares, Action<IApplicationBuilder> configure,
         int order = default
     ) => middlewares.Add(new(configure, order));
-
-    public static T GetRequiredServiceUsingRequestServices<T>(this IServiceProvider sp) where T : notnull =>
-        (T)sp.GetRequiredServiceUsingRequestServices(typeof(T));
-
-    public static object GetRequiredServiceUsingRequestServices(this IServiceProvider sp, Type serviceType)
-    {
-        var http = sp.GetRequiredService<IHttpContextAccessor>();
-
-        if (http.HttpContext is null) { return sp.GetRequiredService(serviceType); }
-
-        return http.HttpContext.RequestServices.GetRequiredService(serviceType);
-    }
 
     public static HttpRequest AnHttpRequest(this Stubber giveMe,
         string? schema = default,

@@ -20,9 +20,6 @@ public static class RuntimeExtensions
     public static IServiceProvider GetServiceProvider(this ApplicationContext context) =>
         context.Get<IServiceProvider>();
 
-    public static IServiceScope GetServiceScope(this ApplicationContext context) =>
-        context.Get<IServiceScope>();
-
     public static void ConfigureLoggingBuilder(this LayerConfigurator configurator, Action<ILoggingBuilder> configuration) =>
        configurator.Configure(configuration);
 
@@ -32,6 +29,9 @@ public static class RuntimeExtensions
     public static void ConfigureServiceProvider(this LayerConfigurator configurator, Action<IServiceProvider> configuration) =>
         configurator.Configure(configuration);
 
+    public static void ConfigureConfigurationBuilder(this LayerConfigurator configurator, Action<IConfigurationBuilder> configuration) =>
+        configurator.Configure(configuration);
+
     public static void AddFromAssembly(this IServiceCollection services, Assembly assembly)
     {
         var serviceAdderType = assembly.GetExportedTypes().SingleOrDefault(t => t.IsAssignableTo(typeof(IServiceAdder))) ?? throw new("`IServiceAdder` implementation not found");
@@ -39,9 +39,6 @@ public static class RuntimeExtensions
 
         serviceAdder.AddServices(services);
     }
-
-    public static void ConfigureConfigurationBuilder(this LayerConfigurator configurator, Action<IConfigurationBuilder> configuration) =>
-     configurator.Configure(configuration);
 
     public static void AddJson(this IConfigurationBuilder builder, string json) =>
         builder.Add(new JsonConfigurationSource(json));
@@ -89,8 +86,11 @@ public static class RuntimeExtensions
     public static bool IsEnvironment(this LayerConfigurator _, string environment) =>
         Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == environment;
 
+    public static IServiceProvider UsingCurrentScope(this IServiceProvider sp) =>
+        sp.GetRequiredService<ServiceProviderAccessor>().GetServiceProvider() ?? sp;
+
     public static IServiceProvider TheServiceProvider(this Stubber giveMe) =>
-        giveMe.Spec.Context.GetServiceProvider();
+        giveMe.Spec.Context.GetServiceProvider().UsingCurrentScope();
 
     public static T The<T>(this Stubber giveMe) where T : notnull =>
         giveMe.TheServiceProvider().GetRequiredService<T>();

@@ -10,8 +10,9 @@ app.Layers.AddDataAccess();
 ## Configuration Targets
 
 This layer provides `PersistenceConfiguration`, `AutomappingConfiguration`
-`AutoPersistenceModel`, `InterceptorConfiguration` and `FluentConfiguration` 
-for configuring _NHibernate_ behavior.
+`AutoPersistenceModel`, `InterceptorConfiguration`, `FluentConfiguration` 
+for configuring _NHibernate_ behavior and `IDatabaseInitializationCollection`
+for configuring database initialization actions.
 
 ### `PersistenceConfiguration`
 
@@ -68,6 +69,18 @@ feature;
 
 ```csharp
 configurator.ConfigureFluentConfiguration(fluentConfiguration =>
+{
+    ...
+});
+```
+
+### `IDatabaseInitializationCollection`
+
+This target is provided in `PostBuild` phase. To configure it in a
+feature;
+
+```csharp
+configurator.ConfigureDatabaseInitializationCollection(initializations =>
 {
     ...
 });

@@ -5,22 +5,18 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-using static Baked.HttpServer.HttpServerLayer;
 using static Baked.Runtime.RuntimeLayer;
 
 namespace Baked.Runtime;
 
-public class RuntimeLayer : LayerBase<CreateBuilder, BuildConfiguration, AddServices, PostBuild>
+public class RuntimeLayer : LayerBase<BuildConfiguration, AddServices, PostBuild>
 {
     readonly IServiceCollection _services = new ServiceCollection();
+    readonly ILoggingBuilder _loggingBuilder;
 
-    protected override PhaseContext GetContext(CreateBuilder phase)
+    public RuntimeLayer()
     {
-        var builder = Context.GetWebApplicationBuilder();
-
-        builder.Logging.ClearProviders();
-
-        return phase.CreateContext(builder.Logging);
+        _loggingBuilder = new LoggingBuilder(_services);
     }
 
     protected override PhaseContext GetContext(BuildConfiguration phase) =>
@@ -29,10 +25,14 @@ public class RuntimeLayer : LayerBase<CreateBuilder, BuildConfiguration, AddServ
     protected override PhaseContext GetContext(AddServices phase)
     {
         var services = Context.GetServiceCollection();
-
         services.AddLogging();
+        services.AddSingleton<ServiceProviderAccessor>();
 
-        return phase.CreateContext(_services);
+        return phase.CreateContextBuilder()
+            .Add(_services)
+            .Add(_loggingBuilder)
+            .Build()
+        ;
     }
 
     protected override PhaseContext GetContext(PostBuild phase) =>

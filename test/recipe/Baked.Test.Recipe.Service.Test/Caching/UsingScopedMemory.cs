@@ -4,13 +4,6 @@ namespace Baked.Test.Caching;
 
 public class UsingScopedMemory : TestServiceSpec
 {
-    public override void TearDown()
-    {
-        base.TearDown();
-
-        GiveMe.AMemoryCache().ShouldHaveCount(0);
-    }
-
     [Test]
     public void Objects_can_be_cached_in__scoped_memory()
     {

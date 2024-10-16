@@ -1,3 +1,3 @@
 ﻿namespace Baked.Testing;
 
-public interface IMockCollection : IList<MockDescriptor> { }
+public interface IMockCollection : IList<MockDescriptor>;

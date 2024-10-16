@@ -1,3 +1,3 @@
 ﻿namespace Baked.RestApi;
 
-public class ApplicationPartCollection : List<ApplicationPartDescriptor>, IApplicationPartCollection { }
+public class ApplicationPartCollection : List<ApplicationPartDescriptor>, IApplicationPartCollection;

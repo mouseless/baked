@@ -148,7 +148,7 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
                 {
                     type.Apply(t => @interface.Apply(i =>
                     {
-                        Caster.Add(i.GenericTypeArguments[0], i.GenericTypeArguments[1], sp => sp.GetRequiredServiceUsingRequestServices(t));
+                        Caster.Add(i.GenericTypeArguments[0], i.GenericTypeArguments[1], sp => sp.UsingCurrentScope().GetRequiredService(t));
                     }));
                 }
             }

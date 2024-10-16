@@ -3,7 +3,6 @@ using FluentNHibernate.Automapping;
 using FluentNHibernate.Cfg;
 using Microsoft.Extensions.DependencyInjection;
 using NHibernate;
-using NHibernate.Tool.hbm2ddl;
 
 using static Baked.Runtime.RuntimeLayer;
 using NHConfiguration = NHibernate.Cfg.Configuration;
@@ -17,6 +16,7 @@ public class DataAccessLayer : LayerBase<AddServices, PostBuild>
     readonly AutomappingConfiguration _automappingConfiguration = new();
     readonly AutoPersistenceModel _autoPersistenceModel;
     readonly FluentConfiguration _fluentConfiguration;
+    readonly IDatabaseInitializationCollection _databaseInitializationCollection = new DatabaseInitializationCollection();
 
     public DataAccessLayer()
     {
@@ -44,7 +44,7 @@ public class DataAccessLayer : LayerBase<AddServices, PostBuild>
                 services.AddSingleton(sp => _fluentConfiguration.BuildConfiguration());
                 services.AddSingleton(sp => sp.GetRequiredService<NHConfiguration>().BuildSessionFactory());
                 services.AddScoped(sp => sp.GetRequiredService<ISessionFactory>().OpenSession());
-                services.AddSingleton<Func<ISession>>(sp => () => sp.GetRequiredServiceUsingRequestServices<ISession>());
+                services.AddSingleton<Func<ISession>>(sp => () => sp.UsingCurrentScope().GetRequiredService<ISession>());
             })
             .Build();
     }
@@ -56,29 +56,13 @@ public class DataAccessLayer : LayerBase<AddServices, PostBuild>
         NHibernateLogger.SetLoggersFactory(sp.GetRequiredService<INHibernateLoggerFactory>());
         sp.GetRequiredService<NHConfiguration>().SetInterceptor(new DelegatedInterceptor(sp, _interceptorConfiguration));
 
-        if (_persistenceConfiguration.AutoExportSchema)
+        return phase.CreateContext(_databaseInitializationCollection, sp, onDispose: () =>
         {
-            if (Context.Has<IServiceScope>())
+            var sessionFactory = sp.GetRequiredService<ISessionFactory>();
+            foreach (var descriptor in _databaseInitializationCollection)
             {
-                ExportSchema(Context.GetServiceScope().ServiceProvider);
+                descriptor.Initializer(sessionFactory);
             }
-            else
-            {
-                using (var scope = sp.CreateScope())
-                {
-                    ExportSchema(scope.ServiceProvider);
-                }
-            }
-        }
-
-        return phase.CreateEmptyContext();
-    }
-
-    void ExportSchema(IServiceProvider sp)
-    {
-        var session = sp.GetRequiredService<ISession>();
-
-        var export = new SchemaExport(sp.GetRequiredService<NHConfiguration>());
-        export.Execute(false, true, false, session.Connection, null);
+        });
     }
 }

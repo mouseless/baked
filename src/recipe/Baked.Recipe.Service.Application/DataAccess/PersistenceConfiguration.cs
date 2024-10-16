@@ -1,10 +1,8 @@
-﻿using Baked.Runtime;
-using FluentNHibernate.Cfg.Db;
+﻿using FluentNHibernate.Cfg.Db;
 
 namespace Baked.DataAccess;
 
 public class PersistenceConfiguration
 {
     public IPersistenceConfigurer Configurer { get; set; } = SQLiteConfiguration.Standard.InMemory();
-    public Setting<bool> AutoExportSchema { get; set; } = false;
 }

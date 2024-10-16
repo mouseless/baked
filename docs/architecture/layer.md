@@ -226,8 +226,8 @@ In this example, you see a layer named `LayerX` providing a
 
 ### Using non-generic `LayerBase`
 
-`LayerBase<>` classes allow up to four generic arguments. If you need to
-implement a layer that has things to configure during more than four phases,
+`LayerBase<>` classes allow up to three generic arguments. If you need to
+implement a layer that has things to configure during more than three phases,
 use non-generic `LayerBase` class, override `GetContext(IPhase phase)` method
 and switch given phase according to its type;
 
