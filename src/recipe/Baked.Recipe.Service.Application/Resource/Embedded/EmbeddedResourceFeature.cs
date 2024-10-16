@@ -14,12 +14,13 @@ public class EmbeddedResourceFeature(List<(Assembly assembly, string? baseNameSp
         {
             foreach (var (assembly, baseNameSpace) in _assemblies)
             {
-                var reader = new EmbeddedFileProvider(assembly, baseNameSpace);
-                services.AddSingleton(reader);
-                services.AddSingleton<IFileProvider>(reader);
+                var provider = new EmbeddedFileProvider(assembly, baseNameSpace);
+                services.AddSingleton(provider);
+                services.AddSingleton<IFileProvider>(provider);
             }
 
-            services.AddSingleton<IEmbeddedResourceReader, EmbeddedResourceReader>();
+            services.AddSingleton<EmbeddedResourceReader>();
+            services.AddSingleton<IEmbeddedResourceReader, EmbeddedResourceReader>(forward: true);
         });
     }
 }

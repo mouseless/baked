@@ -18,7 +18,12 @@ public abstract class TestServiceSpec : ServiceSpec
             configure: app =>
             {
                 app.Features.AddResource([
-                    c => c.EmbeddedResource([(typeof(ReadingFromEmbeddedResource).Assembly, string.Empty)])
+                    c => c.EmbeddedResource([
+                        (typeof(ReadingFromEmbeddedResource).Assembly, string.Empty)
+                    ]),
+                    c => c.Physical([
+                        Path.GetDirectoryName(typeof(ReadingFromEmbeddedResource).Assembly.Location)
+                    ])
                 ]);
                 app.Features.AddConfigurationOverrider();
             }
