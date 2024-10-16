@@ -156,6 +156,7 @@ public static class OrmExtensions
         Spec
           .ContextStatic
           .GetServiceProvider()
+          .UsingCurrentScope()
           .GetRequiredService<ISession>()
           .Contains(@object)
           .ShouldBeFalse($"{@object} should've been deleted, but it's STILL in the session");
@@ -164,6 +165,7 @@ public static class OrmExtensions
         Spec
           .ContextStatic
           .GetServiceProvider()
+          .UsingCurrentScope()
           .GetRequiredService<ISession>()
           .Contains(@object)
           .ShouldBeTrue($"{@object} should've been inserted, but it's NOT in the session");

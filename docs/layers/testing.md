@@ -28,6 +28,6 @@ This layer introduces following phases to the application it is added;
 
 - `CreateConfigurationManager`: This phase runs as the earliest stage of a test
   run to add an empty `ConfigurationManager` to the application context
-- `Run`: This phase is added to the application internally as the latest phase
-  to add `IServiceProvider` to application context so that it can be used during
-  the test run
+- `Build`: This phase is added to the application internally to build an
+  `IServiceProvider`from registered services and add to the application context 
+  so that it can be used during the test run and trigger later phases

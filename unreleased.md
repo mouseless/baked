@@ -1,5 +1,13 @@
 # Unreleased
 
+## Features
+
+- Beta features are available in do-blueprints-service package;
+  - `RuntimeLayer`is added which merges the following layers:
+      - `Configuration`
+      - `DependencyInjection`
+      - `Monitoring`
+
 ## Improvements
 
 - `MockConfiguration` feature now clears `FakeSettings` list on teardown
@@ -9,3 +17,9 @@
   `RestApi.ActionModel` before and after conventions
 - `Enum<T>` helper class is added to use enum values within `ValueSource`
   attribute
+- `DataAccess` layer now exposes `FluentConfiguration` as configuration target
+- `DataAccess` layer now introduces `IDatabaseInitializerCollection` 
+  configuration target for registering database initialization actions
+- `IServiceProvider` now has `UseCurrentScope` extensions to resolve services 
+  using the scope provided by `IServiceProviderAccessor` implementations      
+- `TestRun` now creates and disposes a scope for each test run to  

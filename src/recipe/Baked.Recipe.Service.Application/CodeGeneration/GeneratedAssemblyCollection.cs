@@ -1,3 +1,3 @@
 ﻿namespace Baked.CodeGeneration;
 
-public class GeneratedAssemblyCollection : List<GeneratedAssemblyDescriptor>, IGeneratedAssemblyCollection { }
+public class GeneratedAssemblyCollection : List<GeneratedAssemblyDescriptor>, IGeneratedAssemblyCollection;

@@ -35,7 +35,7 @@ public static class BusinessExtensions
         where TService : class
         where TImplementation : class, TService
     => services
-        .AddSingleton<Func<TService>>(sp => () => sp.GetRequiredServiceUsingRequestServices<TService>())
+        .AddSingleton<Func<TService>>(sp => () => sp.UsingCurrentScope().GetRequiredService<TService>())
         .AddTransient<TService, TImplementation>();
 
     public static IServiceCollection AddScopedWithFactory(this IServiceCollection services, Type service) =>
@@ -51,7 +51,7 @@ public static class BusinessExtensions
         where TService : class
         where TImplementation : class, TService
     => services
-        .AddSingleton<Func<TService>>(sp => () => sp.GetRequiredServiceUsingRequestServices<TService>())
+        .AddSingleton<Func<TService>>(sp => () => sp.UsingCurrentScope().GetRequiredService<TService>())
         .AddScoped<TService, TImplementation>();
 
     public static IServiceCollection AddSingleton<TService, TImplementation>(this IServiceCollection services, bool forward)
@@ -63,7 +63,7 @@ public static class BusinessExtensions
     {
         if (!forward) { return services.AddSingleton(service, implementation); }
 
-        return services.AddSingleton(service, sp => sp.GetRequiredServiceUsingRequestServices(implementation));
+        return services.AddSingleton(service, sp => sp.UsingCurrentScope().GetRequiredService(implementation));
     }
 
     public static bool TryGetMappedMethod(this ApiDescription apiDescription, [NotNullWhen(true)] out MappedMethodAttribute? result)

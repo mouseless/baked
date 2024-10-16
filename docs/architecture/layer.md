@@ -22,12 +22,12 @@ For a consistent developer experience, follow below conventions when
 implementing a new layer;
 
 1. Place all layer related classes under the same folder named after layer,
-   e.g., `DependencyInjection/`
+   e.g., `Runtime/`
 1. Use `Layer` suffix in layer class name, e.g.,
-   `DependencyInjection/DependencyInjectionLayer.cs`
+   `Runtime/RuntimeLayer.cs`
 1. Provide extension methods in `Baked` namespace, e.g.,
-   `DependencyInjection/DependencyInjectionExtensions.cs`;
-   1. `Add` extension to `List<ILayer>`, e.g., `AddDependencyInjection()`
+   `Runtime/RuntimeExtensions.cs`;
+   1. `Add` extension to `List<ILayer>`, e.g., `AddRuntime()`
    1. `Get` extensions to `ApplicationContext`, e.g.,
       `GetWebApplicationBuilder()`, `GetWebApplication()`
    1. `Configure` extensions to `LayerConfigurator` per configuration

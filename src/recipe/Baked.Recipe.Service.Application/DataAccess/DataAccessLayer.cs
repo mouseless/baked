@@ -3,9 +3,8 @@ using FluentNHibernate.Automapping;
 using FluentNHibernate.Cfg;
 using Microsoft.Extensions.DependencyInjection;
 using NHibernate;
-using NHibernate.Tool.hbm2ddl;
 
-using static Baked.DependencyInjection.DependencyInjectionLayer;
+using static Baked.Runtime.RuntimeLayer;
 using NHConfiguration = NHibernate.Cfg.Configuration;
 
 namespace Baked.DataAccess;
@@ -16,13 +15,13 @@ public class DataAccessLayer : LayerBase<AddServices, PostBuild>
     readonly InterceptorConfiguration _interceptorConfiguration = new();
     readonly AutomappingConfiguration _automappingConfiguration = new();
     readonly AutoPersistenceModel _autoPersistenceModel;
-
-    volatile bool _exported = false;
-    readonly object _exportedLock = new();
+    readonly FluentConfiguration _fluentConfiguration;
+    readonly IDatabaseInitializationCollection _databaseInitializationCollection = new DatabaseInitializationCollection();
 
     public DataAccessLayer()
     {
         _autoPersistenceModel = new(new DelegatedAutomappingConfiguration(_automappingConfiguration));
+        _fluentConfiguration = Fluently.Configure();
     }
 
     protected override PhaseContext GetContext(AddServices phase)
@@ -30,61 +29,40 @@ public class DataAccessLayer : LayerBase<AddServices, PostBuild>
         var services = Context.GetServiceCollection();
 
         services.AddSingleton<INHibernateLoggerFactory, StandardNHibernateLoggerFactory>();
-        services.AddSingleton(sp =>
-        {
-            var builder = Fluently.Configure()
-                .Database(_persistenceConfiguration.Configurer)
-                .ExposeConfiguration(c => c.SetInterceptor(new DelegatedInterceptor(sp, _interceptorConfiguration)))
-                .Mappings(m => m.AutoMappings.Add(_autoPersistenceModel));
-
-            if (_persistenceConfiguration.AutoUpdateSchema)
-            {
-                builder.ExposeConfiguration(c => new SchemaUpdate(c).Execute(false, true));
-            }
-
-            return builder.BuildConfiguration();
-        });
-
-        services.AddSingleton(sp => sp.GetRequiredService<NHConfiguration>().BuildSessionFactory());
-        services.AddSingleton<Func<ISession>>(sp => () => sp.GetRequiredServiceUsingRequestServices<ISession>());
-
-        services.AddScoped(sp =>
-        {
-            var result = sp.GetRequiredService<ISessionFactory>().OpenSession();
-
-            if (_persistenceConfiguration.AutoExportSchema)
-            {
-                if (!_exported)
-                {
-                    lock (_exportedLock)
-                    {
-                        if (!_exported)
-                        {
-                            var export = new SchemaExport(sp.GetRequiredService<NHConfiguration>());
-
-                            export.Execute(false, true, false, result.Connection, null);
-                            _exported = true;
-                        }
-                    }
-                }
-            }
-
-            return result;
-        });
 
         return phase.CreateContextBuilder()
+            .Add(_fluentConfiguration)
             .Add(_persistenceConfiguration)
             .Add(_interceptorConfiguration)
             .Add(_automappingConfiguration)
             .Add(_autoPersistenceModel)
+            .OnDispose(() =>
+            {
+                _fluentConfiguration.Database(_persistenceConfiguration.Configurer);
+                _fluentConfiguration.Mappings(m => m.AutoMappings.Add(_autoPersistenceModel));
+
+                services.AddSingleton(sp => _fluentConfiguration.BuildConfiguration());
+                services.AddSingleton(sp => sp.GetRequiredService<NHConfiguration>().BuildSessionFactory());
+                services.AddScoped(sp => sp.GetRequiredService<ISessionFactory>().OpenSession());
+                services.AddSingleton<Func<ISession>>(sp => () => sp.UsingCurrentScope().GetRequiredService<ISession>());
+            })
             .Build();
     }
 
     protected override PhaseContext GetContext(PostBuild phase)
     {
         var sp = Context.GetServiceProvider();
-        NHibernateLogger.SetLoggersFactory(sp.GetRequiredService<INHibernateLoggerFactory>());
 
-        return phase.CreateEmptyContext();
+        NHibernateLogger.SetLoggersFactory(sp.GetRequiredService<INHibernateLoggerFactory>());
+        sp.GetRequiredService<NHConfiguration>().SetInterceptor(new DelegatedInterceptor(sp, _interceptorConfiguration));
+
+        return phase.CreateContext(_databaseInitializationCollection, sp, onDispose: () =>
+        {
+            var sessionFactory = sp.GetRequiredService<ISessionFactory>();
+            foreach (var descriptor in _databaseInitializationCollection)
+            {
+                descriptor.Initializer(sessionFactory);
+            }
+        });
     }
 }

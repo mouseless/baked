@@ -1,18 +1,44 @@
 ﻿using Baked.Architecture;
-using Baked.Configuration;
+using Baked.Runtime;
 using Baked.Testing;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using System.Reflection;
 
 namespace Baked;
 
-public static class ConfigurationExtensions
+public static class RuntimeExtensions
 {
-    public static void AddConfiguration(this List<ILayer> layers) =>
-        layers.Add(new ConfigurationLayer());
+    public static void AddRuntime(this List<ILayer> layers) =>
+        layers.Add(new RuntimeLayer());
+
+    public static IServiceCollection GetServiceCollection(this ApplicationContext context) =>
+        context.Get<IServiceCollection>();
+
+    public static IServiceProvider GetServiceProvider(this ApplicationContext context) =>
+        context.Get<IServiceProvider>();
+
+    public static void ConfigureLoggingBuilder(this LayerConfigurator configurator, Action<ILoggingBuilder> configuration) =>
+       configurator.Configure(configuration);
+
+    public static void ConfigureServiceCollection(this LayerConfigurator configurator, Action<IServiceCollection> configuration) =>
+        configurator.Configure(configuration);
+
+    public static void ConfigureServiceProvider(this LayerConfigurator configurator, Action<IServiceProvider> configuration) =>
+        configurator.Configure(configuration);
 
     public static void ConfigureConfigurationBuilder(this LayerConfigurator configurator, Action<IConfigurationBuilder> configuration) =>
         configurator.Configure(configuration);
+
+    public static void AddFromAssembly(this IServiceCollection services, Assembly assembly)
+    {
+        var serviceAdderType = assembly.GetExportedTypes().SingleOrDefault(t => t.IsAssignableTo(typeof(IServiceAdder))) ?? throw new("`IServiceAdder` implementation not found");
+        var serviceAdder = (IServiceAdder?)Activator.CreateInstance(serviceAdderType) ?? throw new($"Cannot create instance of {serviceAdderType}");
+
+        serviceAdder.AddServices(services);
+    }
 
     public static void AddJson(this IConfigurationBuilder builder, string json) =>
         builder.Add(new JsonConfigurationSource(json));
@@ -59,4 +85,28 @@ public static class ConfigurationExtensions
 
     public static bool IsEnvironment(this LayerConfigurator _, string environment) =>
         Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == environment;
+
+    public static IServiceProvider UsingCurrentScope(this IServiceProvider sp) =>
+        sp.GetRequiredService<ServiceProviderAccessor>().GetServiceProvider() ?? sp;
+
+    public static IServiceProvider TheServiceProvider(this Stubber giveMe) =>
+        giveMe.Spec.Context.GetServiceProvider().UsingCurrentScope();
+
+    public static T The<T>(this Stubber giveMe) where T : notnull =>
+        giveMe.TheServiceProvider().GetRequiredService<T>();
+
+    public static object The(this Stubber giveMe, Type type) =>
+        giveMe.TheServiceProvider().GetRequiredService(type);
+
+    public static T An<T>(this Stubber giveMe) where T : notnull =>
+        giveMe.TheServiceProvider().GetRequiredService<T>();
+
+    public static object An(this Stubber giveMe, Type type) =>
+        giveMe.TheServiceProvider().GetRequiredService(type);
+
+    public static T A<T>(this Stubber giveMe) where T : notnull =>
+        giveMe.TheServiceProvider().GetRequiredService<T>();
+
+    public static object A(this Stubber giveMe, Type type) =>
+        giveMe.TheServiceProvider().GetRequiredService(type);
 }

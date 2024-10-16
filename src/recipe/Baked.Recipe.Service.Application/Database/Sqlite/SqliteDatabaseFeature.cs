@@ -1,7 +1,9 @@
 ﻿using Baked.Architecture;
-using Baked.Configuration;
 using Baked.DataAccess.Sqlite;
+using Baked.Runtime;
 using Microsoft.Extensions.DependencyInjection;
+
+using NHConfiguration = NHibernate.Cfg.Configuration;
 
 namespace Baked.Database.Sqlite;
 
@@ -19,11 +21,21 @@ public class SqliteDatabaseFeature(Setting<string> _fileName, Setting<bool> _aut
 
         configurator.ConfigurePersistence(persistence =>
         {
-            persistence.AutoExportSchema = _autoExportSchema;
-            persistence.Configurer =
-                SQLiteConfiguration.Microsoft
-                    .UsingFile(FullFilePath)
-                    .MaxFetchDepth(1);
+            persistence.Configurer = SQLiteConfiguration.Microsoft.UsingFile(FullFilePath);
+        });
+
+        configurator.ConfigureDatabaseInitializationCollection((initializations, sp) =>
+        {
+            initializations.AddInitializer(sf =>
+            {
+                if (_autoExportSchema)
+                {
+                    using (var session = sf.OpenSession())
+                    {
+                        sp.GetRequiredService<NHConfiguration>().ExportSchema(false, true, false, session.Connection);
+                    }
+                }
+            });
         });
 
         configurator.ConfigureMiddlewareCollection(middlewares =>
