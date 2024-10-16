@@ -4,7 +4,6 @@ This layer serves as foundation and provides common libraries for an
 application. Baked uses .NET's standard libraries for providing an environment 
 based configuration mechanism, dependency injection container for inversion of 
 control and logging mechanism for monitoring and diagnostic purposes.
- 
 
 ```csharp
 app.Layers.AddRuntime();
@@ -21,7 +20,7 @@ This target is provided in `BuildConfiguration` phase. To configure it in a
 feature;
 
 ```csharp
-configurator.ConfigureConfigurationBuilder(builder =>
+configurator.ConfigureConfigurationBuilder(configuration =>
 {
     ...
 });
@@ -32,7 +31,7 @@ configurator.ConfigureConfigurationBuilder(builder =>
 This target is provided in `AddServices` phase. To configure it in a feature;
 
 ```csharp
-configurator.ConfigureLoggingBuilder(builder =>
+configurator.ConfigureLoggingBuilder(logging =>
 {
     ...
 });

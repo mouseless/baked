@@ -21,9 +21,9 @@ public class RequestLoggingFeature(bool singleLine)
             """);
         });
 
-        configurator.ConfigureLoggingBuilder(builder =>
+        configurator.ConfigureLoggingBuilder(logging =>
         {
-            builder.AddSimpleConsole(options =>
+            logging.AddSimpleConsole(options =>
             {
                 options.IncludeScopes = true;
                 options.SingleLine = singleLine;
