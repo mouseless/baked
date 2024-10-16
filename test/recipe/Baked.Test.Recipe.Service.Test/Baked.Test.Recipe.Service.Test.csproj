@@ -5,6 +5,14 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <None Remove="Resource\EmbeddedResource.txt" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="Resource\EmbeddedResource.txt" />
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="coverlet.collector" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" />

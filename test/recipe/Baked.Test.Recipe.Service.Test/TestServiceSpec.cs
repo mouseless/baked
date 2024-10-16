@@ -1,5 +1,6 @@
 using Baked.Test.Communication;
 using Baked.Test.Orm;
+using Baked.Test.Resource;
 
 namespace Baked.Test;
 
@@ -16,6 +17,9 @@ public abstract class TestServiceSpec : ServiceSpec
             }),
             configure: app =>
             {
+                app.Features.AddResource([
+                    c => c.EmbeddedResource([(typeof(ReadingFromEmbeddedResource).Assembly, string.Empty)])
+                ]);
                 app.Features.AddConfigurationOverrider();
             }
         );
