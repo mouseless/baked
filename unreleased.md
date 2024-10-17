@@ -25,5 +25,7 @@
 - `TestRun` now creates and disposes a scope for each test run to  
 - `Runtime` layer now provides `IFileProvider`component with 
   `CompositeFileProvider` implementation
+- `ReadAsString` and `ReadAsStringAsync` helper extensions are now added for
+  `IFileProvider`  
 - `DomainAssemblies` feature now have options to auto add embedded and physical
   file providers for give assemblies  
