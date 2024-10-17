@@ -41,29 +41,8 @@ public static class RuntimeExtensions
         serviceAdder.AddServices(services);
     }
 
-    public static void AddEmbeddedFileProvider<T>(this IServiceCollection services, Assembly assembly, string? baseNamespace) =>
-        services.AddEmbeddedFileProvider(typeof(T).Name, assembly, baseNamespace);
-
-    public static void AddEmbeddedFileProvider(this IServiceCollection services, object key, Assembly assembly, string? baseNamespace) =>
-        services.AddFileProvider(key, new EmbeddedFileProvider(assembly, baseNamespace));
-
-    public static void AddManifestEmbeddedFileProvider<T>(this IServiceCollection services, Assembly assembly, string root) =>
-        services.AddManifestEmbeddedFileProvider(typeof(T).Name, assembly, root);
-
-    public static void AddManifestEmbeddedFileProvider(this IServiceCollection services, object key, Assembly assembly, string root) =>
-        services.AddFileProvider(key, new ManifestEmbeddedFileProvider(assembly, root));
-
-    public static void AddPhysicalFileProvider(this IServiceCollection services, string? root,
-        object? key = default
-    ) => services.AddFileProvider(key, new PhysicalFileProvider(root ?? throw new("Physical file provider requires a valid root path")));
-
-    static void AddFileProvider(this IServiceCollection services, object? key, IFileProvider implementation)
+    public static void AddFileProvider(this IServiceCollection services, IFileProvider implementation)
     {
-        if (key is null)
-        {
-            services.AddKeyedSingleton(key, implementation);
-        }
-
         services.AddKeyedSingleton(RuntimeLayer.FILE_PROVIDERS_KEY, implementation);
         services.AddSingleton(implementation);
     }

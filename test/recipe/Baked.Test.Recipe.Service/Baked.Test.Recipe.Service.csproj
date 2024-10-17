@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,7 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\recipe\Baked.Recipe.Service\Baked.Recipe.Service.csproj" />
-  </ItemGroup>
+  </ItemGroup>  
 
   <ItemGroup>
     <InternalsVisibleTo Include="Baked.g.AutoMapOrmFeature" />

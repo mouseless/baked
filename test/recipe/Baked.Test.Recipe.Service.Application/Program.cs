@@ -2,7 +2,7 @@
 
 Bake.New
     .Service(
-        business: c => c.DomainAssemblies([typeof(Entity).Assembly]),
+        business: c => c.DomainAssemblies([typeof(Entity).Assembly], addEmbeddedFileProviders: true, addPhysicalFileProviders: true),
         authentications: [
             c => c.FixedBearerToken(
                 tokens =>

@@ -98,11 +98,5 @@ public class ConfigurationOverriderFeature : IFeature
                 useRequestClassForBody: false
             );
         });
-
-        configurator.ConfigureServiceCollection(services =>
-        {
-            services.AddEmbeddedFileProvider<Entity>(typeof(Entity).Assembly, string.Empty);
-            services.AddPhysicalFileProvider(Path.GetDirectoryName(typeof(Entity).Assembly.Location));
-        });
     }
 }

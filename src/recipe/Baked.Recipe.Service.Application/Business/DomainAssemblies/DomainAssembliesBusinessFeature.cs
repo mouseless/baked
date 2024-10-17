@@ -7,12 +7,17 @@ using Baked.RestApi.Conventions;
 using Baked.RestApi.Model;
 using Humanizer;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using System.Reflection;
 
 namespace Baked.Business.DomainAssemblies;
 
-public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IEnumerable<MethodOverloadModel>, MethodOverloadModel> _defaultOverloadSelector)
-    : IFeature<BusinessConfigurator>
+public class DomainAssembliesBusinessFeature(
+    List<Assembly> _assemblies,
+    Func<IEnumerable<MethodOverloadModel>, MethodOverloadModel> _defaultOverloadSelector,
+    bool _addEmbeddedFileProviders,
+    bool _addPhysicalFileProviders
+) : IFeature<BusinessConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
@@ -114,6 +119,22 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
                     c.Method.DefaultOverload.AllParametersAreApiInput(),
                 order: int.MaxValue
             );
+        });
+
+        configurator.ConfigureServiceCollection(services =>
+        {
+            foreach (var assembly in _assemblies)
+            {
+                if (_addEmbeddedFileProviders)
+                {
+                    services.AddFileProvider(new ManifestEmbeddedFileProvider(assembly));
+                }
+
+                if (_addPhysicalFileProviders)
+                {
+                    services.AddFileProvider(new PhysicalFileProvider(Path.GetDirectoryName(assembly.Location) ?? throw new("'Assembly.Location' should not be null")));
+                }
+            }
         });
 
         configurator.ConfigureApiModel(api =>

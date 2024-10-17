@@ -9,7 +9,9 @@ namespace Baked;
 public static class DomainAssembliesBusinessExtensions
 {
     public static DomainAssembliesBusinessFeature DomainAssemblies(this BusinessConfigurator _, List<Assembly> assemblies,
-        Func<IEnumerable<MethodOverloadModel>, MethodOverloadModel>? defaultOverloadSelector = default
+        Func<IEnumerable<MethodOverloadModel>, MethodOverloadModel>? defaultOverloadSelector = default,
+        bool addEmbeddedFileProviders = false,
+        bool addPhysicalFileProviders = false
     ) => new(
         assemblies,
         defaultOverloadSelector ?? (overloads =>
@@ -19,7 +21,9 @@ public static class DomainAssembliesBusinessExtensions
             overloads.FirstNonPublicStaticWithMostParametersOrDefault() ??
             overloads.FirstWithMostParametersOrDefault() ??
             throw new($"Method without an overload should not exist")
-        )
+        ),
+        addEmbeddedFileProviders,
+        addPhysicalFileProviders
     );
 
     public static void AddAction(this ControllerModel controller, TypeModel type, MethodModel method) =>
