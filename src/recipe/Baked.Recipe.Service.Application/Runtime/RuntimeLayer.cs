@@ -36,7 +36,12 @@ public class RuntimeLayer : LayerBase<BuildConfiguration, AddServices, PostBuild
             .Add(_fileProviders)
             .OnDispose(() =>
             {
-                services.AddSingleton<IFileProvider>(new CompositeFileProvider(_fileProviders));
+                foreach (var provider in _fileProviders)
+                {
+                    services.AddSingleton(provider);
+                }
+
+                services.AddSingleton<IFileProvider>(sp => new CompositeFileProvider(_fileProviders));
             })
             .Build()
         ;

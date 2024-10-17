@@ -32,6 +32,17 @@ Bake.New
           .ForDevelopment(c.Sqlite())
           .ForNfr(c.Sqlite(fileName: $"Baked.Test.Recipe.Service.Nfr.db")),
         exceptionHandling: ex => ex.Default(typeUrlFormat: "https://baked.mouseless.codes/errors/{0}"),
-        configure: app => app.Features.AddConfigurationOverrider()
+        configure: app =>
+        {
+            app.Features.AddResource([
+                    c => c.EmbeddedResource([
+                        new(typeof(Entity).Assembly, string.Empty)
+                    ]),
+                    c => c.Physical([
+                        Path.GetDirectoryName(typeof(Entity).Assembly.Location)
+                    ])
+                ]);
+            app.Features.AddConfigurationOverrider();
+        }
     )
     .Run();
