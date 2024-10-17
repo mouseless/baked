@@ -23,5 +23,7 @@
 - `IServiceProvider` now has `UseCurrentScope` extensions to resolve services 
   using the scope provided by `IServiceProviderAccessor` implementations      
 - `TestRun` now creates and disposes a scope for each test run to  
-- An embedded resource reader component, `IEmbeddedResourceReader`, is now provided 
-  through `DotnetCore` and `MockCore` features
+- `Runtime` layer now provides `IFileProvider`component with 
+  `CompositeFileProvider` implementation
+- `DomainAssemblies` feature now have options to auto add embedded and physical
+  file providers for give assemblies  
