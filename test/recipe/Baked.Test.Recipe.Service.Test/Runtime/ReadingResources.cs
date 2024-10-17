@@ -9,10 +9,10 @@ public class ReadingResources : TestServiceSpec
     {
         var reader = GiveMe.The<IFileProvider>();
 
-        var result = reader.ReadAsString("\\Core\\PhysicalResource.txt");
+        var result = reader.ReadAsString("/Core/PhysicalResource.txt");
         result.ShouldBe("physical resource content");
 
-        result = await reader.ReadAsStringAsync("\\Core\\PhysicalResource.txt");
+        result = await reader.ReadAsStringAsync("/Core/PhysicalResource.txt");
         result.ShouldBe("physical resource content");
     }
 
@@ -21,10 +21,10 @@ public class ReadingResources : TestServiceSpec
     {
         var reader = GiveMe.The<IFileProvider>();
 
-        var result = reader.ReadAsString("\\Core\\EmbeddedResource.txt");
+        var result = reader.ReadAsString("/Core/EmbeddedResource.txt");
         result.ShouldBe("embedded resource content");
 
-        result = await reader.ReadAsStringAsync("\\Core\\EmbeddedResource.txt");
+        result = await reader.ReadAsStringAsync("/Core/EmbeddedResource.txt");
         result.ShouldBe("embedded resource content");
     }
 
