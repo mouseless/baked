@@ -1,7 +1,3 @@
-﻿using Microsoft.Extensions.FileProviders;
+﻿namespace Baked.Runtime;
 
-namespace Baked.Runtime;
-
-public class FileProviderCollection : List<IFileProvider>, IFileProviderCollection;
-
-public interface IFileProviderCollection : IList<IFileProvider>;
+public class FileProviderCollection : List<FileProviderDescriptor>, IFileProviderCollection;

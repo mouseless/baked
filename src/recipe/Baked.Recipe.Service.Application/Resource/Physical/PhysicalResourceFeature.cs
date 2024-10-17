@@ -2,15 +2,15 @@
 
 namespace Baked.Resource.Physical;
 
-public class PhysicalResourceFeature(List<string> _roots) : IFeature<ResourceConfigurator>
+public class PhysicalResourceFeature(List<PhysicalFileProviderDescriptor> _descriptors) : IFeature<ResourceConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureFileProviders(providers =>
         {
-            foreach (string root in _roots)
+            foreach (var descriptor in _descriptors)
             {
-                providers.AddPhysical(root);
+                providers.Add(descriptor);
             }
         });
     }

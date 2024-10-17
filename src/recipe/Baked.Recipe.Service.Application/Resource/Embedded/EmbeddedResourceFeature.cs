@@ -9,9 +9,9 @@ public class EmbeddedResourceFeature(List<EmbeddedFileProviderDescriptor> _descr
     {
         configurator.ConfigureFileProviders(providers =>
         {
-            foreach (var (assembly, baseNamespace) in _descriptors)
+            foreach (var descriptor in _descriptors)
             {
-                providers.AddEmbedded(assembly, baseNamespace);
+                providers.Add(descriptor);
             }
         });
     }

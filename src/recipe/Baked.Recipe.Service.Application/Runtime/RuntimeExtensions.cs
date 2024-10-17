@@ -44,11 +44,11 @@ public static class RuntimeExtensions
         serviceAdder.AddServices(services);
     }
 
-    public static void AddEmbedded(this IFileProviderCollection providers, Assembly assembly, string? baseNamespace) =>
-        providers.Add(new EmbeddedFileProvider(assembly, baseNamespace));
+    public static void AddEmbedded(this IFileProviderCollection providers, string key, Assembly assembly, string? baseNamespace) =>
+        providers.Add(new(key, new EmbeddedFileProvider(assembly, baseNamespace)));
 
-    public static void AddPhysical(this IFileProviderCollection providers, string root) =>
-        providers.Add(new PhysicalFileProvider(root));
+    public static void AddPhysical(this IFileProviderCollection providers, string key, string root) =>
+        providers.Add(new(key, new PhysicalFileProvider(root)));
 
     public static void AddJson(this IConfigurationBuilder builder, string json) =>
         builder.Add(new JsonConfigurationSource(json));

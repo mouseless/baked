@@ -36,11 +36,11 @@ Bake.New
         {
             app.Features.AddResource([
                     c => c.EmbeddedResource([
-                        new(typeof(Entity).Assembly, string.Empty)
+                        new(typeof(Entity), typeof(Entity).Assembly, string.Empty)
                     ]),
-                    c => c.Physical([
-                        Path.GetDirectoryName(typeof(Entity).Assembly.Location)
-                    ])
+                c => c.Physical([
+                    new(typeof(Entity), Path.GetDirectoryName(typeof(Entity).Assembly.Location))
+                ])
                 ]);
             app.Features.AddConfigurationOverrider();
         }

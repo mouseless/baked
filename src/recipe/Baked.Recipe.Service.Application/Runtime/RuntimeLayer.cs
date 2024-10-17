@@ -36,12 +36,16 @@ public class RuntimeLayer : LayerBase<BuildConfiguration, AddServices, PostBuild
             .Add(_fileProviders)
             .OnDispose(() =>
             {
-                foreach (var provider in _fileProviders)
+                foreach (var (key, provider) in _fileProviders)
                 {
+                    services.AddKeyedSingleton(key, provider);
+                    services.AddKeyedSingleton(FromFileProviderCollectionAttribute.FILE_PROVIDERS_KEY, provider);
                     services.AddSingleton(provider);
                 }
 
-                services.AddSingleton<IFileProvider>(sp => new CompositeFileProvider(_fileProviders));
+                services.AddSingleton<IFileProvider>(sp =>
+                    new CompositeFileProvider(sp.UsingCurrentScope().GetKeyedServices<IFileProvider>(FromFileProviderCollectionAttribute.FILE_PROVIDERS_KEY))
+                );
             })
             .Build()
         ;
