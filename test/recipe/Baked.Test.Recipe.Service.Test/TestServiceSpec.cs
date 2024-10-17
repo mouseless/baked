@@ -14,18 +14,7 @@ public abstract class TestServiceSpec : ServiceSpec
                 response.ForClient<InternalSamples>(response: "path1 response", when: r => r.UrlOrPath.Equals("path1"));
                 response.ForClient<InternalSamples>(response: "path2 response", when: r => r.UrlOrPath.Equals("path2"));
             }),
-            configure: app =>
-            {
-                app.Features.AddResource([
-                    c => c.EmbeddedResource([
-                        new(typeof(Entity), typeof(Entity).Assembly, string.Empty)
-                    ]),
-                    c => c.Physical([
-                        new(typeof(Entity), Path.GetDirectoryName(typeof(Entity).Assembly.Location))
-                    ])
-                ]);
-                app.Features.AddConfigurationOverrider();
-            }
+            configure: app => app.Features.AddConfigurationOverrider()
         );
 
     protected override string? GetDefaultSettingsValue(string key) =>

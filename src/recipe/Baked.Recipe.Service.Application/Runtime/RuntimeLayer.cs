@@ -12,9 +12,10 @@ namespace Baked.Runtime;
 
 public class RuntimeLayer : LayerBase<BuildConfiguration, AddServices, PostBuild>
 {
+    public const string FILE_PROVIDERS_KEY = "FILE_PROVIDERS_KEY";
+
     readonly IServiceCollection _services = new ServiceCollection();
     readonly ILoggingBuilder _loggingBuilder;
-    readonly IFileProviderCollection _fileProviders = new FileProviderCollection();
 
     public RuntimeLayer()
     {
@@ -33,18 +34,10 @@ public class RuntimeLayer : LayerBase<BuildConfiguration, AddServices, PostBuild
         return phase.CreateContextBuilder()
             .Add(_services)
             .Add(_loggingBuilder)
-            .Add(_fileProviders)
             .OnDispose(() =>
             {
-                foreach (var (key, provider) in _fileProviders)
-                {
-                    services.AddKeyedSingleton(key, provider);
-                    services.AddKeyedSingleton(FromFileProviderCollectionAttribute.FILE_PROVIDERS_KEY, provider);
-                    services.AddSingleton(provider);
-                }
-
                 services.AddSingleton<IFileProvider>(sp =>
-                    new CompositeFileProvider(sp.UsingCurrentScope().GetKeyedServices<IFileProvider>(FromFileProviderCollectionAttribute.FILE_PROVIDERS_KEY))
+                    new CompositeFileProvider(sp.UsingCurrentScope().GetKeyedServices<IFileProvider>(FILE_PROVIDERS_KEY))
                 );
             })
             .Build()

@@ -9,10 +9,10 @@ public class ReadingFromEmbeddedResource : TestServiceSpec
     {
         var reader = GiveMe.The<IFileProvider>();
 
-        var result = reader.ReadAsString("Baked.Test.Resource.EmbeddedResource.txt");
+        var result = reader.ReadAsString("Baked.Test.Core.EmbeddedResource.txt");
         result.ShouldBe("embedded resource content");
 
-        result = await reader.ReadAsStringAsync("Baked.Test.Resource.EmbeddedResource.txt");
+        result = await reader.ReadAsStringAsync("Baked.Test.Core.EmbeddedResource.txt");
         result.ShouldBe("embedded resource content");
     }
 

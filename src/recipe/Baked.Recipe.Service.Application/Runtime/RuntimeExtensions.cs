@@ -21,9 +21,6 @@ public static class RuntimeExtensions
     public static IServiceProvider GetServiceProvider(this ApplicationContext context) =>
         context.Get<IServiceProvider>();
 
-    public static void ConfigureFileProviders(this LayerConfigurator configurator, Action<IFileProviderCollection> configuration) =>
-       configurator.Configure(configuration);
-
     public static void ConfigureLoggingBuilder(this LayerConfigurator configurator, Action<ILoggingBuilder> configuration) =>
        configurator.Configure(configuration);
 
@@ -44,11 +41,32 @@ public static class RuntimeExtensions
         serviceAdder.AddServices(services);
     }
 
-    public static void AddEmbedded(this IFileProviderCollection providers, string key, Assembly assembly, string? baseNamespace) =>
-        providers.Add(new(key, new EmbeddedFileProvider(assembly, baseNamespace)));
+    public static void AddEmbeddedFileProvider<T>(this IServiceCollection services, Assembly assembly, string? baseNamespace) =>
+        services.AddEmbeddedFileProvider(typeof(T).Name, assembly, baseNamespace);
 
-    public static void AddPhysical(this IFileProviderCollection providers, string key, string root) =>
-        providers.Add(new(key, new PhysicalFileProvider(root)));
+    public static void AddEmbeddedFileProvider(this IServiceCollection services, object key, Assembly assembly, string? baseNamespace) =>
+        services.AddFileProvider(key, new EmbeddedFileProvider(assembly, baseNamespace));
+
+    public static void AddManifestEmbeddedFileProvider<T>(this IServiceCollection services, Assembly assembly, string root) =>
+        services.AddManifestEmbeddedFileProvider(typeof(T).Name, assembly, root);
+
+    public static void AddManifestEmbeddedFileProvider(this IServiceCollection services, object key, Assembly assembly, string root) =>
+        services.AddFileProvider(key, new ManifestEmbeddedFileProvider(assembly, root));
+
+    public static void AddPhysicalFileProvider(this IServiceCollection services, string? root,
+        object? key = default
+    ) => services.AddFileProvider(key, new PhysicalFileProvider(root ?? throw new("Physical file provider requires a valid root path")));
+
+    static void AddFileProvider(this IServiceCollection services, object? key, IFileProvider implementation)
+    {
+        if (key is null)
+        {
+            services.AddKeyedSingleton(key, implementation);
+        }
+
+        services.AddKeyedSingleton(RuntimeLayer.FILE_PROVIDERS_KEY, implementation);
+        services.AddSingleton(implementation);
+    }
 
     public static void AddJson(this IConfigurationBuilder builder, string json) =>
         builder.Add(new JsonConfigurationSource(json));

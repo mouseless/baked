@@ -9,10 +9,10 @@ public class ReadingFromPhysicalResource : TestServiceSpec
     {
         var reader = GiveMe.The<IFileProvider>();
 
-        var result = reader.ReadAsString("\\Resource\\PhysicalResource.txt");
+        var result = reader.ReadAsString("\\Core\\PhysicalResource.txt");
         result.ShouldBe("physical resource content");
 
-        result = await reader.ReadAsStringAsync("\\Resource\\PhysicalResource.txt");
+        result = await reader.ReadAsStringAsync("\\Core\\PhysicalResource.txt");
         result.ShouldBe("physical resource content");
     }
 
