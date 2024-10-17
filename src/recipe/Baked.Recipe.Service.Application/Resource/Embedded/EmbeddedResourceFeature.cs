@@ -1,26 +1,18 @@
 ﻿using Baked.Architecture;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
-using System.Reflection;
 
 namespace Baked.Resource.Embedded;
 
-public class EmbeddedResourceFeature(List<(Assembly assembly, string? baseNameSpace)> _assemblies)
+public class EmbeddedResourceFeature(List<EmbeddedFileProviderDescriptor> _descriptors)
     : IFeature<ResourceConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureServiceCollection(services =>
+        configurator.ConfigureFileProviders(providers =>
         {
-            foreach (var (assembly, baseNameSpace) in _assemblies)
+            foreach (var (assembly, baseNamespace) in _descriptors)
             {
-                var provider = new EmbeddedFileProvider(assembly, baseNameSpace);
-                services.AddSingleton(provider);
-                services.AddSingleton<IFileProvider>(provider);
+                providers.AddEmbedded(assembly, baseNamespace);
             }
-
-            services.AddSingleton<EmbeddedResourceReader>();
-            services.AddSingleton<IEmbeddedResourceReader, EmbeddedResourceReader>(forward: true);
         });
     }
 }

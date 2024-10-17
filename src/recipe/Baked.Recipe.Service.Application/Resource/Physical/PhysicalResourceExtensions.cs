@@ -5,6 +5,6 @@ namespace Baked;
 
 public static class PhysicalResourceExtensions
 {
-    public static PhysicalResourceReaderFeature Physical(this ResourceConfigurator _, List<string> roots) =>
+    public static PhysicalResourceFeature Physical(this ResourceConfigurator _, List<string> roots) =>
         new(roots);
 }

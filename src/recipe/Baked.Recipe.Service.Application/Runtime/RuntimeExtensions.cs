@@ -3,9 +3,11 @@ using Baked.Runtime;
 using Baked.Testing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Reflection;
+using System.Text;
 
 namespace Baked;
 
@@ -19,6 +21,9 @@ public static class RuntimeExtensions
 
     public static IServiceProvider GetServiceProvider(this ApplicationContext context) =>
         context.Get<IServiceProvider>();
+
+    public static void ConfigureFileProviders(this LayerConfigurator configurator, Action<IFileProviderCollection> configuration) =>
+       configurator.Configure(configuration);
 
     public static void ConfigureLoggingBuilder(this LayerConfigurator configurator, Action<ILoggingBuilder> configuration) =>
        configurator.Configure(configuration);
@@ -39,6 +44,12 @@ public static class RuntimeExtensions
 
         serviceAdder.AddServices(services);
     }
+
+    public static void AddEmbedded(this IFileProviderCollection providers, Assembly assembly, string? baseNamespace) =>
+        providers.Add(new EmbeddedFileProvider(assembly, baseNamespace));
+
+    public static void AddPhysical(this IFileProviderCollection providers, string root) =>
+        providers.Add(new PhysicalFileProvider(root));
 
     public static void AddJson(this IConfigurationBuilder builder, string json) =>
         builder.Add(new JsonConfigurationSource(json));
@@ -69,6 +80,28 @@ public static class RuntimeExtensions
         }
 
         return @default;
+    }
+
+    public static string? ReadAsString(this IFileProvider provider, string subPath)
+    {
+        var fileInfo = provider.GetFileInfo(subPath);
+        if (!fileInfo.Exists) { return null; }
+
+        using var stream = fileInfo.CreateReadStream();
+        using var streamReader = new StreamReader(stream, Encoding.UTF8);
+
+        return streamReader.ReadToEnd();
+    }
+
+    public static async Task<string?> ReadAsStringAsync(this IFileProvider provider, string subPath)
+    {
+        var fileInfo = provider.GetFileInfo(subPath);
+        if (!fileInfo.Exists) { return null; }
+
+        using var stream = fileInfo.CreateReadStream();
+        using var streamReader = new StreamReader(stream, Encoding.UTF8);
+
+        return await streamReader.ReadToEndAsync();
     }
 
     public static bool IsNfr(this LayerConfigurator configurator) =>

@@ -18,7 +18,7 @@ public abstract class TestServiceSpec : ServiceSpec
             {
                 app.Features.AddResource([
                     c => c.EmbeddedResource([
-                        (typeof(Entity).Assembly, string.Empty)
+                        new(typeof(Entity).Assembly, string.Empty)
                     ]),
                     c => c.Physical([
                         Path.GetDirectoryName(typeof(Entity).Assembly.Location)

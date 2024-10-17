@@ -3,6 +3,7 @@ using Baked.CodeGeneration;
 using Baked.Domain.Model;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 
 using static Baked.Runtime.RuntimeLayer;
@@ -13,6 +14,7 @@ public class RuntimeLayer : LayerBase<BuildConfiguration, AddServices, PostBuild
 {
     readonly IServiceCollection _services = new ServiceCollection();
     readonly ILoggingBuilder _loggingBuilder;
+    readonly IFileProviderCollection _fileProviders = new FileProviderCollection();
 
     public RuntimeLayer()
     {
@@ -31,6 +33,11 @@ public class RuntimeLayer : LayerBase<BuildConfiguration, AddServices, PostBuild
         return phase.CreateContextBuilder()
             .Add(_services)
             .Add(_loggingBuilder)
+            .Add(_fileProviders)
+            .OnDispose(() =>
+            {
+                services.AddSingleton<IFileProvider>(new CompositeFileProvider(_fileProviders));
+            })
             .Build()
         ;
     }
