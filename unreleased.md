@@ -27,5 +27,7 @@
   `CompositeFileProvider` implementation
 - `ReadAsString` and `ReadAsStringAsync` helper extensions are now added for
   `IFileProvider`  
-- `DomainAssemblies` feature now have options to auto add embedded and physical
-  file providers for give assemblies  
+- `DomainAssemblies` feature now have options to auto add embedded file 
+  providers for give assemblies  
+- `Dotnet` feature now adds embedded and physical file providers for given
+  entry assembly 

@@ -1,6 +1,7 @@
 # Core
 
-This feature registers `TimeProvider.System` to services.
+This feature registers `TimeProvider.System` to services and adds file 
+providers for given entry assembly.
 
 Add this feature using `AddCore()` extension;
 
