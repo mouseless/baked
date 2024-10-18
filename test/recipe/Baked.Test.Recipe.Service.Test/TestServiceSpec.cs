@@ -7,7 +7,7 @@ public abstract class TestServiceSpec : ServiceSpec
 {
     static TestServiceSpec() =>
         Init(
-            business: c => c.DomainAssemblies([typeof(Entity).Assembly], addEmbeddedFileProviders: true, addPhysicalFileProviders: true),
+            business: c => c.DomainAssemblies([typeof(Entity).Assembly]),
             communication: c => c.Mock(defaultResponses: response =>
             {
                 response.ForClient<ExternalSamples>(response: "test result");

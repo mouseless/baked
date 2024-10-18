@@ -13,17 +13,16 @@ using System.Reflection;
 namespace Baked.Business.DomainAssemblies;
 
 public class DomainAssembliesBusinessFeature(
-    List<Assembly> _assemblies,
+    IEnumerable<(Assembly assembly, string? baseNamespace)> _assemblyDescriptors,
     Func<IEnumerable<MethodOverloadModel>, MethodOverloadModel> _defaultOverloadSelector,
-    bool _addEmbeddedFileProviders,
-    bool _addPhysicalFileProviders
+    bool _addEmbeddedFileProviders
 ) : IFeature<BusinessConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureDomainTypeCollection(types =>
         {
-            foreach (var assembly in _assemblies)
+            foreach (var (assembly, _) in _assemblyDescriptors)
             {
                 types.AddFromAssembly(assembly,
                     except: type =>
@@ -123,23 +122,18 @@ public class DomainAssembliesBusinessFeature(
 
         configurator.ConfigureServiceCollection(services =>
         {
-            foreach (var assembly in _assemblies)
+            foreach (var (assembly, baseNamespace) in _assemblyDescriptors)
             {
                 if (_addEmbeddedFileProviders)
                 {
-                    services.AddFileProvider(new ManifestEmbeddedFileProvider(assembly));
-                }
-
-                if (_addPhysicalFileProviders)
-                {
-                    services.AddFileProvider(new PhysicalFileProvider(Path.GetDirectoryName(assembly.Location) ?? throw new("'Assembly.Location' should not be null")));
+                    services.AddFileProvider(new EmbeddedFileProvider(assembly, baseNamespace));
                 }
             }
         });
 
         configurator.ConfigureApiModel(api =>
         {
-            api.References.AddRange(_assemblies);
+            api.References.AddRange(_assemblyDescriptors.Select(a => a.assembly));
             api.Usings.Add("Swashbuckle.AspNetCore.Annotations");
 
             var domainModel = configurator.Context.GetDomainModel();
@@ -207,7 +201,7 @@ public class DomainAssembliesBusinessFeature(
 
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
-            foreach (var assembly in _assemblies)
+            foreach (var (assembly, _) in _assemblyDescriptors)
             {
                 var xmlPath = XmlComments.GetPath(assembly);
                 if (xmlPath is null) { continue; }

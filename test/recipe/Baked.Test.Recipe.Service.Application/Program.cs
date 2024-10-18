@@ -2,7 +2,7 @@
 
 Bake.New
     .Service(
-        business: c => c.DomainAssemblies([typeof(Entity).Assembly], addEmbeddedFileProviders: true, addPhysicalFileProviders: true),
+        business: c => c.DomainAssemblies([typeof(Entity).Assembly], baseNamespace: "Baked.Test"),
         authentications: [
             c => c.FixedBearerToken(
                 tokens =>
@@ -27,6 +27,7 @@ Bake.New
             claims: ["User", "Admin", "BaseA", "BaseB", "GivenA", "GivenB", "GivenC"],
             baseClaims: ["BaseA", "BaseB"]
         ),
+        core: c => c.Dotnet(baseNamespace: () => "Baked.Test"),
         database: c => c
           .PostgreSql()
           .ForDevelopment(c.Sqlite())

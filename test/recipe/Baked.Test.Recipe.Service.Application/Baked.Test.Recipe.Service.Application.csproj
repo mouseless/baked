@@ -1,5 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
-
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+    
+  <ItemGroup>
+    <EmbeddedResource Include="Core\ApplicationEmbedded.txt" />
+  </ItemGroup>
+    
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\recipe\Baked.Recipe.Service.Application\Baked.Recipe.Service.Application.csproj" />
     <ProjectReference Include="..\Baked.Test.Recipe.Service\Baked.Test.Recipe.Service.csproj" />

@@ -1,10 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
-  </PropertyGroup>
-
   <ItemGroup>
     <Content Include="Core\PhysicalResource.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

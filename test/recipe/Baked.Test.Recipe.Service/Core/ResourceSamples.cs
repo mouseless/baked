@@ -4,6 +4,9 @@ namespace Baked.Test.Core;
 
 public class ResourceSamples(IFileProvider _provider)
 {
-    public string? ReadFromCompositeProvider(string subpath) =>
-        _provider.ReadAsString(subpath);
+    public string? Read(string subPath) =>
+        _provider.ReadAsString(subPath);
+
+    public async Task<string?> ReadAsync(string subPath) =>
+        await _provider.ReadAsStringAsync(subPath);
 }

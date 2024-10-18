@@ -1,48 +1,39 @@
-﻿using Microsoft.Extensions.FileProviders;
+﻿using System.Net.Http.Json;
 
 namespace Baked.Test.Runtime;
 
-public class ReadingResources : TestServiceSpec
+public class ReadingResources : TestServiceNfr
 {
-    [Test]
-    public async Task Contents_of_a_physical_resource_can_be_read()
+    [TestCase("/Core/PhysicalResource.txt", "\"physical resource content\"")]
+    [TestCase("/Core/EmbeddedResource.txt", "\"embedded resource content\"")]
+    [TestCase("/Core/ApplicationEmbedded.txt", "\"application embedded\"")]
+    public async Task Contents_of_a_resource_can_be_read(string subPath, string expected)
     {
-        var subPath = "/Core/PhysicalResource.txt";
-        var expectedContent = "physical resource content";
-        var reader = GiveMe.The<IFileProvider>();
+        Client.DefaultRequestHeaders.Authorization = GetFixedBearerToken("BaseClaims");
 
-        var result = reader.ReadAsString(subPath);
-        result.ShouldBe(expectedContent);
+        var response = await Client.PostAsync("resource-samples/read", JsonContent.Create(new { subPath }));
+        var content = await response.Content.ReadAsStringAsync();
 
-        result = await reader.ReadAsStringAsync(subPath);
-        result.ShouldBe(expectedContent);
+        content.ShouldBe(expected);
+
+        response = await Client.PostAsync("resource-samples/read-async", JsonContent.Create(new { subPath }));
+        content = await response.Content.ReadAsStringAsync();
+
+        content.ShouldBe(expected);
     }
 
-    [Test]
-    public async Task Contents_of_an_embedded_resource_can_be_read()
+    public async Task Returns_null_when_embedded_resource_does_not_exits()
     {
-        var subPath = "/Core/EmbeddedResource.txt";
-        var expectedContent = "embedded resource content";
-        var reader = GiveMe.The<IFileProvider>();
+        Client.DefaultRequestHeaders.Authorization = GetFixedBearerToken("BaseClaims");
 
-        var result = reader.ReadAsString(subPath);
-        result.ShouldBe(expectedContent);
+        var response = await Client.PostAsync("resource-samples/read", JsonContent.Create(new { subPath = "NotExistingResource.txt" }));
+        var content = await response.Content.ReadAsStringAsync();
 
-        result = await reader.ReadAsStringAsync(subPath);
-        result.ShouldBe(expectedContent);
-    }
+        content.ShouldBeNull();
 
-    [TestCase(null)]
-    [TestCase("")]
-    [TestCase("NotExistingResource.txt")]
-    public async Task Returns_null_when_embedded_resource_does_not_exits(string subpath)
-    {
-        var reader = GiveMe.The<IFileProvider>();
+        response = await Client.PostAsync("resource-samples/read-async", JsonContent.Create(new { subPath = "NotExistingResource.txt" }));
+        content = await response.Content.ReadAsStringAsync();
 
-        var result = reader.ReadAsString(subpath);
-        result.ShouldBeNull();
-
-        result = await reader.ReadAsStringAsync(subpath);
-        result.ShouldBeNull();
+        content.ShouldBeNull();
     }
 }
