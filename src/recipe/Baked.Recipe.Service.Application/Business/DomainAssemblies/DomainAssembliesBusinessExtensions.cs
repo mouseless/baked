@@ -17,11 +17,11 @@ public static class DomainAssembliesBusinessExtensions
         addEmbeddedFileProviders: addEmbeddedFileProviders
     );
 
-    public static DomainAssembliesBusinessFeature DomainAssemblies(this BusinessConfigurator _, IEnumerable<(Assembly, string?)> assemblies,
+    public static DomainAssembliesBusinessFeature DomainAssemblies(this BusinessConfigurator _, IEnumerable<(Assembly, string?)> assemblyDescriptors,
         Func<IEnumerable<MethodOverloadModel>, MethodOverloadModel>? defaultOverloadSelector = default,
         bool addEmbeddedFileProviders = true
     ) => new(
-        assemblies,
+        assemblyDescriptors,
         defaultOverloadSelector ?? (overloads =>
             overloads.FirstPublicInstanceWithMostParametersOrDefault() ??
             overloads.FirstNonPublicInstanceWithMostParametersOrDefault() ??
