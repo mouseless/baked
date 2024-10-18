@@ -1,4 +1,5 @@
 ﻿using Baked.Test.Orm;
+using System.Reflection;
 
 Bake.New
     .Service(
@@ -27,7 +28,8 @@ Bake.New
             claims: ["User", "Admin", "BaseA", "BaseB", "GivenA", "GivenB", "GivenC"],
             baseClaims: ["BaseA", "BaseB"]
         ),
-        core: c => c.Dotnet(baseNamespace: () => "Baked.Test"),
+        core: c => c.Dotnet(baseNamespace: "Baked.Test")
+            .ForNfr(c.Dotnet(entryAssembly: Assembly.GetExecutingAssembly(), baseNamespace: "Baked.Test.Application")),
         database: c => c
           .PostgreSql()
           .ForDevelopment(c.Sqlite())

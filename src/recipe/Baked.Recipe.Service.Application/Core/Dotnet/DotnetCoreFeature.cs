@@ -2,11 +2,13 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace Baked.Core.Dotnet;
 
 public class DotnetCoreFeature(
-    Func<string?>? _baseNamespace = default
+    Assembly? entryAssembly = default,
+    string? _baseNamespace = default
 ) : IFeature<CoreConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
@@ -15,11 +17,13 @@ public class DotnetCoreFeature(
         {
             services.AddSingleton(TimeProvider.System);
 
-            _baseNamespace ??= () => Assembly.GetExecutingAssembly().FullName;
+            entryAssembly ??= Assembly.GetEntryAssembly() ?? throw new("'EntryAssembly' should not be null");
+            _baseNamespace ??= entryAssembly.FullName ?? string.Empty;
+            _baseNamespace = Regex.Match(_baseNamespace, @"[\s\S]*?(?=.Application|$)").Value;
 
-            services.AddFileProvider(new EmbeddedFileProvider(Assembly.GetExecutingAssembly(), _baseNamespace()));
-            services.AddFileProvider(new PhysicalFileProvider(Path.GetDirectoryName(Assembly.GetExecutingAssembly()?.Location) ??
-                throw new("'Assembly.GetEntryAssembly()' should not be null"))
+            services.AddFileProvider(new EmbeddedFileProvider(entryAssembly, _baseNamespace));
+            services.AddFileProvider(new PhysicalFileProvider(Path.GetDirectoryName(entryAssembly.Location) ??
+                throw new("'EntryAssembly' should have a not null location"))
             );
         });
     }
