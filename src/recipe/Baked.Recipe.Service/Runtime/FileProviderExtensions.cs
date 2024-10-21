@@ -6,25 +6,23 @@ public static class FileProviderExtensions
 {
     public static string? ReadAsString(this IFileProvider provider, string subPath)
     {
-        using var stream = provider.CreateReadStream(subPath);
-        using var streamReader = new StreamReader(stream, Encoding.UTF8);
+        using var streamReader = provider.CreateReadStream(subPath);
 
         return streamReader.ReadToEnd();
     }
 
     public static async Task<string?> ReadAsStringAsync(this IFileProvider provider, string subPath)
     {
-        using var stream = provider.CreateReadStream(subPath);
-        using var streamReader = new StreamReader(stream, Encoding.UTF8);
+        using var streamReader = provider.CreateReadStream(subPath);
 
         return await streamReader.ReadToEndAsync();
     }
 
-    static Stream CreateReadStream(this IFileProvider provider, string subPath)
+    static StreamReader CreateReadStream(this IFileProvider provider, string subPath)
     {
         var fileInfo = provider.GetFileInfo(subPath);
-        if (!fileInfo.Exists) { return new MemoryStream(); }
+        if (!fileInfo.Exists) { return StreamReader.Null; }
 
-        return fileInfo.CreateReadStream();
+        return new StreamReader(fileInfo.CreateReadStream(), Encoding.UTF8);
     }
 }

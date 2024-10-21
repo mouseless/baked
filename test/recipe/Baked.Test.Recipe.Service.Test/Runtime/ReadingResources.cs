@@ -5,8 +5,8 @@ namespace Baked.Test.Runtime;
 public class ReadingResources : TestServiceNfr
 {
     [TestCase("/Core/ApplicationPhysical.txt", "\"application physical\"")]
-    [TestCase("/Core/DomainEmbedded.txt", "\"domain embedded\"")]
     [TestCase("/Core/ApplicationEmbedded.txt", "\"application embedded\"")]
+    [TestCase("/Core/DomainEmbedded.txt", "\"domain embedded\"")]
     public async Task Contents_of_a_resource_can_be_read(string subPath, string expected)
     {
         Client.DefaultRequestHeaders.Authorization = GetFixedBearerToken("BaseClaims");
