@@ -7,6 +7,7 @@
       - `Configuration`
       - `DependencyInjection`
       - `Monitoring`
+  - `Oracle` implementation of `Database` feature is now added  
 
 ## Improvements
 
