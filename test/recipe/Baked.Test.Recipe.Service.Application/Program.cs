@@ -28,8 +28,8 @@ Bake.New
             claims: ["User", "Admin", "BaseA", "BaseB", "GivenA", "GivenB", "GivenC"],
             baseClaims: ["BaseA", "BaseB"]
         ),
-        core: c => c.Dotnet(baseNamespace: "Baked.Test")
-            .ForNfr(c.Dotnet(entryAssembly: Assembly.GetExecutingAssembly(), baseNamespace: "Baked.Test.Application")),
+        core: c => c.Dotnet(baseNamespace: _ => "Baked.Test")
+            .ForNfr(c.Dotnet(entryAssembly: Assembly.GetExecutingAssembly(), baseNamespace: _ => "Baked.Test")),
         database: c => c
           .PostgreSql()
           .ForDevelopment(c.Sqlite())
