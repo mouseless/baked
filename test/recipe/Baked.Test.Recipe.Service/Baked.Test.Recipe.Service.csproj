@@ -5,13 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Core\PhysicalResource.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Core\EmbeddedResource.txt" />
+    <EmbeddedResource Include="Core\DomainEmbedded.txt" />
   </ItemGroup>
 
   <ItemGroup>

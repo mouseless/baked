@@ -5,7 +5,10 @@ using System.Reflection;
 
 namespace Baked.Core.Dotnet;
 
-public class DotnetCoreFeature(Assembly _entryAssembly, Func<Assembly, string?> _baseNamespace) : IFeature<CoreConfigurator>
+public class DotnetCoreFeature(
+    Assembly _entryAssembly,
+    Func<Assembly, string?> _baseNamespace
+) : IFeature<CoreConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {

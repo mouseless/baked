@@ -12,7 +12,7 @@ namespace Baked.Runtime;
 
 public class RuntimeLayer : LayerBase<BuildConfiguration, AddServices, PostBuild>
 {
-    public const string FILE_PROVIDERS_KEY = "FILE_PROVIDERS_KEY";
+    public const string FILE_PROVIDERS_KEY = "CompositeFileProvider";
 
     readonly IServiceCollection _services = new ServiceCollection();
     readonly ILoggingBuilder _loggingBuilder;

@@ -1,6 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
     
   <ItemGroup>
+    <Content Include="Core\ApplicationPhysical.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+    
+  <ItemGroup>
     <EmbeddedResource Include="Core\ApplicationEmbedded.txt" />
   </ItemGroup>
     

@@ -11,8 +11,8 @@ public static class DotnetCoreExtensions
         Func<Assembly, string?>? baseNamespace = default
     )
     {
-        entryAssembly ??= Assembly.GetEntryAssembly() ?? Assembly.GetCallingAssembly();
-        baseNamespace ??= assembly => Regexes.AssebmylNameBeforeApplicationSuffix().Match(assembly.FullName ?? string.Empty).Value;
+        entryAssembly ??= Assembly.GetEntryAssembly() ?? throw new("'EntryAssembly' should have existed");
+        baseNamespace ??= assembly => Regexes.AssemblyNameBeforeApplicationSuffix().Match(assembly.FullName ?? string.Empty).Value;
 
         return new(entryAssembly, baseNamespace);
     }

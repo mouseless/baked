@@ -4,8 +4,8 @@ namespace Baked.Test.Runtime;
 
 public class ReadingResources : TestServiceNfr
 {
-    [TestCase("/Core/PhysicalResource.txt", "\"physical resource content\"")]
-    [TestCase("/Core/EmbeddedResource.txt", "\"embedded resource content\"")]
+    [TestCase("/Core/ApplicationPhysical.txt", "\"application physical\"")]
+    [TestCase("/Core/DomainEmbedded.txt", "\"domain embedded\"")]
     [TestCase("/Core/ApplicationEmbedded.txt", "\"application embedded\"")]
     public async Task Contents_of_a_resource_can_be_read(string subPath, string expected)
     {
