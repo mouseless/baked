@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace Baked.Test.Configuration;
+namespace Baked.Test.Core;
 
 public class MockingConfiguration : TestServiceSpec
 {

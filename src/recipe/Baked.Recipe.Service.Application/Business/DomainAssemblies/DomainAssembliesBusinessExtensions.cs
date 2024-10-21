@@ -8,10 +8,20 @@ namespace Baked;
 
 public static class DomainAssembliesBusinessExtensions
 {
-    public static DomainAssembliesBusinessFeature DomainAssemblies(this BusinessConfigurator _, List<Assembly> assemblies,
-        Func<IEnumerable<MethodOverloadModel>, MethodOverloadModel>? defaultOverloadSelector = default
+    public static DomainAssembliesBusinessFeature DomainAssemblies(this BusinessConfigurator configurator, List<Assembly> assemblies,
+        Func<IEnumerable<MethodOverloadModel>, MethodOverloadModel>? defaultOverloadSelector = default,
+        bool addEmbeddedFileProviders = true,
+        string? baseNamespace = default
+    ) => configurator.DomainAssemblies(assemblies.Select(a => (a, baseNamespace)),
+        defaultOverloadSelector: defaultOverloadSelector,
+        addEmbeddedFileProviders: addEmbeddedFileProviders
+    );
+
+    public static DomainAssembliesBusinessFeature DomainAssemblies(this BusinessConfigurator _, IEnumerable<(Assembly, string?)> assemblyDescriptors,
+        Func<IEnumerable<MethodOverloadModel>, MethodOverloadModel>? defaultOverloadSelector = default,
+        bool addEmbeddedFileProviders = true
     ) => new(
-        assemblies,
+        assemblyDescriptors,
         defaultOverloadSelector ?? (overloads =>
             overloads.FirstPublicInstanceWithMostParametersOrDefault() ??
             overloads.FirstNonPublicInstanceWithMostParametersOrDefault() ??
@@ -19,7 +29,8 @@ public static class DomainAssembliesBusinessExtensions
             overloads.FirstNonPublicStaticWithMostParametersOrDefault() ??
             overloads.FirstWithMostParametersOrDefault() ??
             throw new($"Method without an overload should not exist")
-        )
+        ),
+        addEmbeddedFileProviders
     );
 
     public static void AddAction(this ControllerModel controller, TypeModel type, MethodModel method) =>

@@ -7,18 +7,22 @@ using Baked.RestApi.Conventions;
 using Baked.RestApi.Model;
 using Humanizer;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using System.Reflection;
 
 namespace Baked.Business.DomainAssemblies;
 
-public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IEnumerable<MethodOverloadModel>, MethodOverloadModel> _defaultOverloadSelector)
-    : IFeature<BusinessConfigurator>
+public class DomainAssembliesBusinessFeature(
+    IEnumerable<(Assembly assembly, string? baseNamespace)> _assemblyDescriptors,
+    Func<IEnumerable<MethodOverloadModel>, MethodOverloadModel> _defaultOverloadSelector,
+    bool _addEmbeddedFileProviders
+) : IFeature<BusinessConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureDomainTypeCollection(types =>
         {
-            foreach (var assembly in _assemblies)
+            foreach (var (assembly, _) in _assemblyDescriptors)
             {
                 types.AddFromAssembly(assembly,
                     except: type =>
@@ -116,9 +120,20 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
             );
         });
 
+        configurator.ConfigureServiceCollection(services =>
+        {
+            foreach (var (assembly, baseNamespace) in _assemblyDescriptors)
+            {
+                if (_addEmbeddedFileProviders)
+                {
+                    services.AddFileProvider(new EmbeddedFileProvider(assembly, baseNamespace));
+                }
+            }
+        });
+
         configurator.ConfigureApiModel(api =>
         {
-            api.References.AddRange(_assemblies);
+            api.References.AddRange(_assemblyDescriptors.Select(a => a.assembly));
             api.Usings.Add("Swashbuckle.AspNetCore.Annotations");
 
             var domainModel = configurator.Context.GetDomainModel();
@@ -186,7 +201,7 @@ public class DomainAssembliesBusinessFeature(List<Assembly> _assemblies, Func<IE
 
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
-            foreach (var assembly in _assemblies)
+            foreach (var (assembly, _) in _assemblyDescriptors)
             {
                 var xmlPath = XmlComments.GetPath(assembly);
                 if (xmlPath is null) { continue; }

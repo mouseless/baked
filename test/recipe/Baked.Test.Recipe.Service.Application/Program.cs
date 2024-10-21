@@ -1,8 +1,9 @@
 ﻿using Baked.Test.Orm;
+using System.Reflection;
 
 Bake.New
     .Service(
-        business: c => c.DomainAssemblies([typeof(Entity).Assembly]),
+        business: c => c.DomainAssemblies([typeof(Entity).Assembly], baseNamespace: "Baked.Test"),
         authentications: [
             c => c.FixedBearerToken(
                 tokens =>
@@ -27,6 +28,8 @@ Bake.New
             claims: ["User", "Admin", "BaseA", "BaseB", "GivenA", "GivenB", "GivenC"],
             baseClaims: ["BaseA", "BaseB"]
         ),
+        core: c => c.Dotnet(baseNamespace: _ => "Baked.Test")
+            .ForNfr(c.Dotnet(entryAssembly: Assembly.GetExecutingAssembly(), baseNamespace: _ => "Baked.Test")),
         database: c => c
           .PostgreSql()
           .ForDevelopment(c.Sqlite())

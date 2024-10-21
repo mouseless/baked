@@ -3,6 +3,7 @@ using Baked.Runtime;
 using Baked.Testing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Reflection;
@@ -38,6 +39,12 @@ public static class RuntimeExtensions
         var serviceAdder = (IServiceAdder?)Activator.CreateInstance(serviceAdderType) ?? throw new($"Cannot create instance of {serviceAdderType}");
 
         serviceAdder.AddServices(services);
+    }
+
+    public static void AddFileProvider(this IServiceCollection services, IFileProvider implementation)
+    {
+        services.AddKeyedSingleton(RuntimeLayer.FILE_PROVIDERS_KEY, implementation);
+        services.AddSingleton(implementation);
     }
 
     public static void AddJson(this IConfigurationBuilder builder, string json) =>
