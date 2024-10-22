@@ -5,6 +5,7 @@ using Baked.Business;
 using Baked.Caching;
 using Baked.Communication;
 using Baked.Core;
+using Baked.Cors;
 using Baked.Database;
 using Baked.ExceptionHandling;
 using Baked.Greeting;
@@ -22,6 +23,7 @@ public static class BakeExtensions
         Func<CachingConfigurator, IFeature<CachingConfigurator>>? caching = default,
         Func<CommunicationConfigurator, IFeature<CommunicationConfigurator>>? communication = default,
         Func<CoreConfigurator, IFeature<CoreConfigurator>>? core = default,
+        Func<CorsConfigurator, IFeature<CorsConfigurator>>? cors = default,
         Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>>? database = default,
         Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>>? exceptionHandling = default,
         Func<GreetingConfigurator, IFeature<GreetingConfigurator>>? greeting = default,
@@ -35,6 +37,7 @@ public static class BakeExtensions
         caching ??= c => c.ScopedMemory();
         communication ??= c => c.Http();
         core ??= c => c.Dotnet();
+        cors ??= c => c.Disabled();
         database ??= c => c.Sqlite();
         exceptionHandling ??= c => c.Default();
         greeting ??= c => c.Swagger();
@@ -74,6 +77,7 @@ public static class BakeExtensions
             ]);
             app.Features.AddCommunication(communication);
             app.Features.AddCore(core);
+            app.Features.AddCors(cors);
             app.Features.AddDatabase(database);
             app.Features.AddExceptionHandling(exceptionHandling);
             app.Features.AddGreeting(greeting);
