@@ -2,12 +2,14 @@
 
 ## Features
 
-- Beta features are available in do-blueprints-service package;
+- Beta features are available in Baked.Recipe.Service package;
   - `RuntimeLayer`is added which merges the following layers:
       - `Configuration`
       - `DependencyInjection`
       - `Monitoring`
-  - `Oracle` implementation of `Database` feature is now added  
+  - `Oracle` implementation of `Database` feature is now added
+  - `Cors` feature is now added with `NamedPolicy` and ``Disabled` 
+    implementations  
 
 ## Improvements
 
