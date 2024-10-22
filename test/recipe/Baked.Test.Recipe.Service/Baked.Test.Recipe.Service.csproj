@@ -6,15 +6,16 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Core\DomainEmbedded.txt" />
+    <EmbeddedResource Include="Reporting\*\*.sql" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\recipe\Baked.Recipe.Service\Baked.Recipe.Service.csproj" />
-  </ItemGroup>  
+  </ItemGroup>
 
   <ItemGroup>
     <InternalsVisibleTo Include="Baked.g.AutoMapOrmFeature" />
     <InternalsVisibleTo Include="Baked.g.RestApiLayer" />
-  </ItemGroup>  
+  </ItemGroup>
 
 </Project>

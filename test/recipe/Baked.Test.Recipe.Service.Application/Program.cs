@@ -34,7 +34,14 @@ Bake.New
           .PostgreSql()
           .ForDevelopment(c.Sqlite())
           .ForNfr(c.Sqlite(fileName: $"Baked.Test.Recipe.Service.Nfr.db")),
-        exceptionHandling: ex => ex.Default(typeUrlFormat: "https://baked.mouseless.codes/errors/{0}"),
-        configure: app => app.Features.AddConfigurationOverrider()
+        exceptionHandling: c => c.Default(typeUrlFormat: "https://baked.mouseless.codes/errors/{0}"),
+        configure: app =>
+        {
+            app.Features.AddReporting(c => c
+                .NativeSql(basePath: "Reporting/Sqlite")
+                .ForProduction(c.NativeSql(basePath: "Reporting/PostgreSql"))
+            );
+            app.Features.AddConfigurationOverrider();
+        }
     )
     .Run();
