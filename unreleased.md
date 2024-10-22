@@ -7,6 +7,7 @@
       - `Configuration`
       - `DependencyInjection`
       - `Monitoring`
+  - `Oracle` implementation of `Database` feature is now added  
 
 ## Improvements
 
@@ -36,6 +37,7 @@
 
 | Package                                   | Old Version | New Version |
 | ----------------------------------------- | ----------- | ----------- |
+| Oracle.ManagedDataAccess.Core             | new         | 23.5.1      |
 | Microsoft.AspNetCore.Mvc.NewtonsoftJson   | 8.0.8       | 8.0.10      |
 | Microsoft.AspNetCore.Mvc.Testing          | 8.0.8       | 8.0.10      |
 | Microsoft.Data.Sqlite.Core                | 8.0.8       | 8.0.10      |
