@@ -67,7 +67,7 @@ public class HttpServerLayer : LayerBase<AddServices, Build>
             {
                 if (_authentications.Any())
                 {
-                    app.UseAuthentication();
+                    _middlewares.Add(app => app.UseAuthentication(), order: 10);
                 }
 
                 foreach (var middleware in _middlewares.OrderBy(m => m.Order))
