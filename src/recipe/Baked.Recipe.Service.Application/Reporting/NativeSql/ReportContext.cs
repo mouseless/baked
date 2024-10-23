@@ -10,7 +10,7 @@ public class ReportContext(IFileProvider _fileProvider, Func<NHibernate.IStatele
         var queryPath = $"/{Path.Join(_options.BasePath, $"{queryName}.sql")}";
         if (!_fileProvider.Exists(queryPath))
         {
-            throw new("no query");
+            throw new QueryNotFoundException(queryName);
         }
 
         var queryString = await _fileProvider.ReadAsStringAsync(queryPath);

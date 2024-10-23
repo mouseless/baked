@@ -15,7 +15,7 @@
 ## Improvements
 
 - `MockConfiguration` feature now clears `FakeSettings` list on teardown
-- `MocMe.TheClient` helper now provides optional parameter to clear previous
+- `MockMe.TheClient` helper now provides optional parameter to clear previous
   invocations
 - `ConfigureAction` and `OverrideAction` helpers are now added to configure
   `RestApi.ActionModel` before and after conventions
