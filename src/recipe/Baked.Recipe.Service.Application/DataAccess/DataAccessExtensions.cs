@@ -42,7 +42,7 @@ public static class DataAccessExtensions
         initializations.Add(new(initializer));
 
     public static void MaxFetchDepth(this FluentConfiguration configuration, int maxFetchDepth) =>
-      configuration.ExposeConfiguration(c => c.SetProperty(NHEnvironment.MaxFetchDepth, $"{maxFetchDepth}"));
+        configuration.ExposeConfiguration(c => c.SetProperty(NHEnvironment.MaxFetchDepth, $"{maxFetchDepth}"));
 
     public static void UpdateSchema(this FluentConfiguration configuration, bool useStdOut, bool doUpdate) =>
         configuration.ExposeConfiguration(c => new SchemaUpdate(c).Execute(useStdOut, doUpdate));
