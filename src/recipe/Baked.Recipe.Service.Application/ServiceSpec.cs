@@ -3,7 +3,6 @@ using Baked.Business;
 using Baked.Caching;
 using Baked.Communication;
 using Baked.Core;
-using Baked.Cors;
 using Baked.Database;
 using Baked.ExceptionHandling;
 using Baked.MockOverrider;
@@ -24,7 +23,6 @@ public abstract class ServiceSpec : Spec
         Func<CachingConfigurator, IFeature<CachingConfigurator>>? caching = default,
         Func<CommunicationConfigurator, IFeature<CommunicationConfigurator>>? communication = default,
         Func<CoreConfigurator, IFeature<CoreConfigurator>>? core = default,
-        Func<CorsConfigurator, IFeature<CorsConfigurator>>? cors = default,
         Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>>? database = default,
         Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>>? exceptionHandling = default,
         Func<MockOverriderConfigurator, IFeature<MockOverriderConfigurator>>? mockOverrider = default,
@@ -35,7 +33,6 @@ public abstract class ServiceSpec : Spec
         caching ??= c => c.ScopedMemory();
         communication ??= c => c.Mock();
         core ??= c => c.Mock();
-        cors ??= c => c.Disabled();
         database ??= c => c.InMemory();
         exceptionHandling ??= c => c.Default();
         mockOverrider ??= c => c.FirstInterface();
@@ -70,7 +67,6 @@ public abstract class ServiceSpec : Spec
             ]);
             app.Features.AddCommunication(communication);
             app.Features.AddCore(core);
-            app.Features.AddCors(cors);
             app.Features.AddDatabase(database);
             app.Features.AddExceptionHandling(exceptionHandling);
             app.Features.AddLifetimes([

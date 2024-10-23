@@ -8,8 +8,7 @@
       - `DependencyInjection`
       - `Monitoring`
   - `Oracle` implementation of `Database` feature is now added
-  - `Cors` feature is now added with `AllowOrigin` and ``Disabled` 
-    implementations  
+  - `Cors` feature is now added with `AllowOrigin` implementation
 
 ## Improvements
 
