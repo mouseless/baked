@@ -28,12 +28,12 @@ Bake.New
             claims: ["User", "Admin", "BaseA", "BaseB", "GivenA", "GivenB", "GivenC"],
             baseClaims: ["BaseA", "BaseB"]
         ),
-        core: c => c.Dotnet(baseNamespace: _ => "Baked.Test")
+        core: c => c
+            .Dotnet(baseNamespace: _ => "Baked.Test")
             .ForNfr(c.Dotnet(entryAssembly: Assembly.GetExecutingAssembly(), baseNamespace: _ => "Baked.Test")),
         database: c => c
-          .PostgreSql()
-          .ForDevelopment(c.Sqlite())
-          .ForNfr(c.Sqlite(fileName: $"Baked.Test.Recipe.Service.Nfr.db")),
+            .Sqlite()
+            .ForProduction(c.PostgreSql()),
         exceptionHandling: c => c.Default(typeUrlFormat: "https://baked.mouseless.codes/errors/{0}"),
         configure: app =>
         {
