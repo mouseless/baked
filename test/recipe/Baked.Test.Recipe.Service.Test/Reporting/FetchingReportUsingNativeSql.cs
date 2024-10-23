@@ -12,12 +12,12 @@ public class FetchingReportUsingNativeSql : TestServiceNfr
         await Client.PostAsync("/entities", JsonContent.Create(new { @string = "test-1" }));
         await Client.PostAsync("/entities", JsonContent.Create(new { @string = "test-2" }));
 
-        var response = await Client.GetAsync("report-samples/entity?name=test");
+        var response = await Client.GetAsync("report-samples/entity?string=test");
         dynamic? content = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
 
         ((int?)content?[0].count).ShouldBe(2);
-        ((string?)content?[0].name).ShouldBe("test-1");
+        ((string?)content?[0].@string).ShouldBe("test-1");
         ((int?)content?[1].count).ShouldBe(1);
-        ((string?)content?[1].name).ShouldBe("test-2");
+        ((string?)content?[1].@string).ShouldBe("test-2");
     }
 }

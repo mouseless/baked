@@ -2,6 +2,11 @@ using Baked.Reporting;
 
 namespace Baked.Test.Reporting;
 
+/// <note>
+/// Fake data is in `Baked.Test.Recipe.Service/Reporting/Fake/entity.json`.
+/// Look the data in this json file to understand why fake report context
+/// returns below expected results.
+/// </note>
 public class FakingReportResults : TestServiceSpec
 {
     [Test]
@@ -9,7 +14,7 @@ public class FakingReportResults : TestServiceSpec
     {
         var context = GiveMe.AFakeReportContext(basePath: "Reporting/Fake");
 
-        var result = await context.Execute("entity", new() { { "name", "test" } });
+        var result = await context.Execute("entity", new() { { "string", "test" } });
 
         result.Length.ShouldBePositive();
     }
@@ -29,7 +34,7 @@ public class FakingReportResults : TestServiceSpec
     {
         var context = GiveMe.AFakeReportContext(basePath: "Reporting/Fake");
 
-        var result = await context.Execute("entity", new() { { "name", "test" } });
+        var result = await context.Execute("entity", new() { { "string", "test" } });
 
         result[0][0].ShouldDeeplyBe(2);
         result[0][1].ShouldDeeplyBe("test 1");
@@ -42,7 +47,7 @@ public class FakingReportResults : TestServiceSpec
     {
         var context = GiveMe.AFakeReportContext(basePath: "Reporting/Fake");
 
-        var result = await context.Execute("entity", new() { { "name", "filtered" } });
+        var result = await context.Execute("entity", new() { { "string", "filtered" } });
 
         result[0][0].ShouldDeeplyBe(4);
         result[0][1].ShouldDeeplyBe("filtered 1");
@@ -55,7 +60,7 @@ public class FakingReportResults : TestServiceSpec
     {
         var context = GiveMe.AFakeReportContext(basePath: "Reporting/Fake");
 
-        var result = await context.Execute("entity", new() { { "name", "reg" } });
+        var result = await context.Execute("entity", new() { { "string", "reg" } });
 
         result[0][0].ShouldDeeplyBe(6);
         result[0][1].ShouldDeeplyBe("reg-x");
@@ -68,7 +73,7 @@ public class FakingReportResults : TestServiceSpec
     {
         var context = GiveMe.AFakeReportContext(basePath: "Reporting/Fake");
 
-        var result = await context.Execute("entity", new() { { "name", "non-existing" } });
+        var result = await context.Execute("entity", new() { { "string", "non-existing" } });
 
         result.ShouldBeEmpty();
     }

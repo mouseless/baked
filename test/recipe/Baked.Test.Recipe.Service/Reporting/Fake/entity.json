@@ -1,23 +1,23 @@
 [
     {
-        "parameters": { "name": "test" },
+        "parameters": { "string": "test" },
         "result": [
-            { "count" : 2, "name" : "test 1" },
-            { "count" : 1, "name" : "test 2" }
+            { "count" : 2, "string" : "test 1" },
+            { "count" : 1, "string" : "test 2" }
         ]
     },
     {
-        "parameters": { "name": "filtered" },
+        "parameters": { "string": "filtered" },
         "result": [
-            { "count" : 4, "name" : "filtered 1" },
-            { "count" : 3, "name" : "filtered 2" }
+            { "count" : 4, "string" : "filtered 1" },
+            { "count" : 3, "string" : "filtered 2" }
         ]
     },
     {
-        "parameters": { "name": "reg.*" },
+        "parameters": { "string": "reg.*" },
         "result": [
-            { "count" : 6, "name" : "reg-x" },
-            { "count" : 5, "name" : "reg-y" }
+            { "count" : 6, "string" : "reg-x" },
+            { "count" : 5, "string" : "reg-y" }
         ]
     }
 ]

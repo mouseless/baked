@@ -4,6 +4,6 @@ SELECT
 FROM
   Entity e
 WHERE
-  e.String LIKE :name
+  e.String LIKE :string
 GROUP BY
   e.String

@@ -1,3 +1,3 @@
 ﻿namespace Baked.Test.Reporting;
 
-public record EntityReportData(string Name, int Count);
+public record EntityReportData(int Count, string String);
