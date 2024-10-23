@@ -34,6 +34,7 @@
   providers for give assemblies
 - `Dotnet` feature now adds embedded and physical file providers for given
   entry assembly
+- Async overloads for `ShouldPass` and `ShouldFail` are now available
 
 ### Library Upgrades
 

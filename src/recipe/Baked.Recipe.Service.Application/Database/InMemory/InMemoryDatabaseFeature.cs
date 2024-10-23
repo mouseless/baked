@@ -9,7 +9,7 @@ namespace Baked.Database.InMemory;
 
 public class InMemoryDatabaseFeature : IFeature<DatabaseConfigurator>
 {
-    ISession? _globalSession;
+    IStatelessSession? _globalSession;
 
     public void Configure(LayerConfigurator configurator)
     {
@@ -28,7 +28,7 @@ public class InMemoryDatabaseFeature : IFeature<DatabaseConfigurator>
             initializations.AddInitializer(sf =>
             {
                 // In memory db is disposed when last connection is closed, this connection is to keep the db open
-                _globalSession = sf.OpenSession();
+                _globalSession = sf.OpenStatelessSession();
 
                 sp.GetRequiredService<Configuration>().ExportSchema(false, true, false, _globalSession.Connection);
             });
@@ -48,6 +48,5 @@ public class InMemoryDatabaseFeature : IFeature<DatabaseConfigurator>
                 spec.GiveMe.TheSession().Clear();
             });
         });
-
     }
 }

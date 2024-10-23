@@ -43,8 +43,6 @@ public class DataAccessLayer : LayerBase<AddServices, PostBuild>
 
                 services.AddSingleton(sp => _fluentConfiguration.BuildConfiguration());
                 services.AddSingleton(sp => sp.GetRequiredService<NHConfiguration>().BuildSessionFactory());
-                services.AddScoped(sp => sp.GetRequiredService<ISessionFactory>().OpenSession());
-                services.AddSingleton<Func<ISession>>(sp => () => sp.UsingCurrentScope().GetRequiredService<ISession>());
             })
             .Build();
     }

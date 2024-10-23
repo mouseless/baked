@@ -2,13 +2,13 @@ using Microsoft.Extensions.FileProviders;
 
 namespace Baked.Reporting.NativeSql;
 
-public class ReportContext(IFileProvider _fileProvider, Func<NHibernate.IStatelessSession> _getStatelessSession, ReportSettings _options)
+public class ReportContext(IFileProvider _fileProvider, Func<NHibernate.IStatelessSession> _getStatelessSession, ReportOptions _options)
     : IReportContext
 {
-    public async Task<object?[][]> Read(string queryName, Dictionary<string, object> parameters)
+    public async Task<object?[][]> Execute(string queryName, Dictionary<string, object> parameters)
     {
         var queryPath = $"/{Path.Join(_options.BasePath, $"{queryName}.sql")}";
-        if (!_fileProvider.GetFileInfo(queryPath).Exists)
+        if (!_fileProvider.Exists(queryPath))
         {
             throw new("no query");
         }

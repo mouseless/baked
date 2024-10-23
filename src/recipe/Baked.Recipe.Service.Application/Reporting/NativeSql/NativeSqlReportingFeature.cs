@@ -10,9 +10,23 @@ public class NativeSqlReportingFeature(Setting<string> _basePath)
 {
     public void Configure(LayerConfigurator configurator)
     {
+        configurator.ConfigureConfigurationBuilder(configuration =>
+        {
+            configuration.AddJsonAsDefault($$"""
+            {
+              "Logging": {
+                "LogLevel": {
+                  "NHibernate": "None",
+                  "NHibernate.Sql": "{{(configurator.IsDevelopment() ? "Debug" : "None")}}"
+                }
+              }
+            }
+            """);
+        });
+
         configurator.ConfigureServiceCollection(services =>
         {
-            services.AddSingleton(new ReportSettings(_basePath));
+            services.AddSingleton(new ReportOptions(_basePath));
             services.AddSingleton<IReportContext, ReportContext>();
             services.AddScoped(sp => sp.GetRequiredService<ISessionFactory>().OpenStatelessSession());
             services.AddSingleton<Func<IStatelessSession>>(sp => () => sp.UsingCurrentScope().GetRequiredService<IStatelessSession>());
