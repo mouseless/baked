@@ -7,16 +7,10 @@ namespace Baked;
 
 public static class AspNetCoreCorsExtensions
 {
-    /// <summary>
+    /// <note>
     /// Returns 'AspNetCoreCors' feature with a single policy setup with given origins,
     /// any header and any method
-    /// </summary>
-    /// <param name="configurator"></param>
-    /// CorsConfigurator
-    /// <param name="origins">
-    /// Allowed origin addresses
-    /// </param>
-    /// <returns></returns>
+    /// </note>
     public static AspNetCoreCorsFeature AspNetCore(this CorsConfigurator configurator, params Setting<string>[] origins) =>
         configurator.AspNetCore(
             options => options

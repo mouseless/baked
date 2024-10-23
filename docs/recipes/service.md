@@ -53,9 +53,7 @@ Bake.New
 |                    | With Method                      |                                    |
 | Communication      | :white_check_mark: HTTP          | :white_check_mark: Mock            |
 | Core               | :white_check_mark: Dotnet        | :white_check_mark: Mock            |
-| Cors(s)            | :white_check_mark:               | :no_entry:                         |
-|                    | Disabled                         |                                    |
-|                    | AspNetCore                       |                                    |
+| Cors(s)            | :white_check_mark: Disabled      | :no_entry:                         |
 | Database           | :white_check_mark: Sqlite        | :white_check_mark: In Memory       |
 | Exception Handling | :white_check_mark: Default       | :white_check_mark:                 |
 | Greeting           | :white_check_mark: Swagger       | :no_entry:                         |
