@@ -95,6 +95,17 @@ Configures routes and swagger docs to use entity methods as resource actions.
 c => c.RichEntity()
 ```
 
+## Rich Transient
+
+Adds `RichTransientAttribute` to classes that are `Transient` having
+a public `With` method with value type parameter named `Id`
+
+Configures routes and swagger docs to use entity methods as resource actions.
+
+```csharp
+c => c.RichTransient()
+```
+
 ## Scoped by Suffix
 
 Adds `ScopedAttribute` to the services that has name with any of the given
