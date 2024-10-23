@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
+using Baked.Lifetime;
 
 namespace Baked.CodingStyle.RichTransient;
 
@@ -9,17 +10,21 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Conventions.AddTypeMetadata(new LocatableAttribute(),
+            builder.Conventions.AddTypeMetadata(new RichTransientAttribute(),
                 when: c =>
                     c.Type.IsClass && !c.Type.IsAbstract &&
                     c.Type.TryGetMembers(out var members) &&
-                    members.Has<ServiceAttribute>() &&
-                    members.Methods.TryGetValue("With", out var method) && method.Overloads.Any(o => o.IsPublic && o.Parameters.All(p => p.Name == "id")),
-                order: int.MaxValue
+                        members.Has<TransientAttribute>() &&
+                        members.Has<ServiceAttribute>() &&
+                        members.Methods.TryGetValue("With", out var method) &&
+                            method.DefaultOverload.IsPublic &&
+                            method.DefaultOverload.Parameters.Count == 1 &&
+                            method.DefaultOverload.Parameters.Any(p => p.Name == "id" && (p.ParameterType.IsValueType || p.ParameterType.Is<string>())),
+                order: 40
             );
             builder.Conventions.AddMethodMetadata(new ApiMethodAttribute(),
-                when: c => c.Method.Has<InitializerAttribute>() && c.Type.Has<LocatableAttribute>() && c.Method.Overloads.Any(o => o.IsPublic),
-                order: int.MaxValue
+                when: c => c.Method.Has<InitializerAttribute>() && c.Type.Has<RichTransientAttribute>() && c.Method.DefaultOverload.IsPublic,
+                order: 50
             );
         });
 

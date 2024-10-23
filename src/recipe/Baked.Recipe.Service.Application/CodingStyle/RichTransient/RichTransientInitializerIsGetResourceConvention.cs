@@ -1,5 +1,4 @@
 ﻿using Baked.Business;
-using Baked.Orm;
 using Baked.RestApi.Configuration;
 using Humanizer;
 
@@ -10,8 +9,7 @@ public class RichTransientInitializerIsGetResourceConvention : IApiModelConventi
     public void Apply(ParameterModelContext context)
     {
         if (!context.Controller.MappedType.TryGetMetadata(out var metadata)) { return; }
-        if (metadata.Has<EntityAttribute>()) { return; }
-        if (!metadata.Has<LocatableAttribute>()) { return; }
+        if (!metadata.Has<RichTransientAttribute>()) { return; }
         if (context.Action.MappedMethod is null) { return; }
         if (!context.Action.MappedMethod.Has<InitializerAttribute>()) { return; }
         if (context.Parameter.FromServices) { return; }
