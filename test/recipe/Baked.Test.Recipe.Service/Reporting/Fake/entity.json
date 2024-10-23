@@ -1,0 +1,23 @@
+[
+    {
+        "parameters": { "string": "test" },
+        "result": [
+            { "count" : 2, "string" : "test 1" },
+            { "count" : 1, "string" : "test 2" }
+        ]
+    },
+    {
+        "parameters": { "string": "filtered" },
+        "result": [
+            { "count" : 4, "string" : "filtered 1" },
+            { "count" : 3, "string" : "filtered 2" }
+        ]
+    },
+    {
+        "parameters": { "string": "reg.*" },
+        "result": [
+            { "count" : 6, "string" : "reg-x" },
+            { "count" : 5, "string" : "reg-y" }
+        ]
+    }
+]

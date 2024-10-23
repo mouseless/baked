@@ -9,30 +9,33 @@
       - `Monitoring`
   - `Oracle` implementation of `Database` feature is now added
   - `Cors` feature is now added with `AspNetCore` implementation
+  - `Reporting` feature is introduced with three implenmentations `NativeSql`
+    for production, `Mock` and `Fake` for development
 
 ## Improvements
 
 - `MockConfiguration` feature now clears `FakeSettings` list on teardown
-- `MocMe.TheClient` helper now provides optional parameter to clear previous 
+- `MockMe.TheClient` helper now provides optional parameter to clear previous
   invocations
-- `ConfigureAction` and `OverrideAction` helpers are now added to configure 
+- `ConfigureAction` and `OverrideAction` helpers are now added to configure
   `RestApi.ActionModel` before and after conventions
 - `Enum<T>` helper class is added to use enum values within `ValueSource`
   attribute
 - `DataAccess` layer now exposes `FluentConfiguration` as configuration target
-- `DataAccess` layer now introduces `IDatabaseInitializerCollection` 
+- `DataAccess` layer now introduces `IDatabaseInitializerCollection`
   configuration target for registering database initialization actions
-- `IServiceProvider` now has `UseCurrentScope` extensions to resolve services 
-  using the scope provided by `IServiceProviderAccessor` implementations      
-- `TestRun` now creates and disposes a scope for each test run to  
-- `Runtime` layer now provides `IFileProvider`component with 
+- `IServiceProvider` now has `UseCurrentScope` extensions to resolve services
+  using the scope provided by `IServiceProviderAccessor` implementations
+- `TestRun` now creates and disposes a scope for each test run to
+- `Runtime` layer now provides `IFileProvider`component with
   `CompositeFileProvider` implementation
 - `ReadAsString` and `ReadAsStringAsync` helper extensions are now added for
-  `IFileProvider`  
-- `DomainAssemblies` feature now have options to auto add embedded file 
-  providers for give assemblies  
+  `IFileProvider`
+- `DomainAssemblies` feature now have options to auto add embedded file
+  providers for give assemblies
 - `Dotnet` feature now adds embedded and physical file providers for given
-  entry assembly 
+  entry assembly
+- Async overloads for `ShouldPass` and `ShouldFail` are now available
 
 ### Library Upgrades
 

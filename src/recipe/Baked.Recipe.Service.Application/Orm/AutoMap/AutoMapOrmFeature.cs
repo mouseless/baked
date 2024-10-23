@@ -70,6 +70,8 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
         configurator.ConfigureServiceCollection(services =>
         {
             services.AddFromAssembly(configurator.Context.GetGeneratedAssembly(nameof(AutoMapOrmFeature)));
+            services.AddScoped(sp => sp.GetRequiredService<ISessionFactory>().OpenSession());
+            services.AddSingleton<Func<ISession>>(sp => () => sp.UsingCurrentScope().GetRequiredService<ISession>());
             services.AddScoped(typeof(IEntityContext<>), typeof(EntityContext<>));
             services.AddSingleton(typeof(IQueryContext<>), typeof(QueryContext<>));
         });
