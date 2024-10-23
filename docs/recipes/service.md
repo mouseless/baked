@@ -55,7 +55,7 @@ Bake.New
 | Core               | :white_check_mark: Dotnet        | :white_check_mark: Mock            |
 | Cors(s)            | :white_check_mark:               | :no_entry:                         |
 |                    | Disabled                         |                                    |
-|                    | AllowOrigin                      |                                    |
+|                    | AspNetCore                       |                                    |
 | Database           | :white_check_mark: Sqlite        | :white_check_mark: In Memory       |
 | Exception Handling | :white_check_mark: Default       | :white_check_mark:                 |
 | Greeting           | :white_check_mark: Swagger       | :no_entry:                         |

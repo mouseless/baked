@@ -30,7 +30,7 @@ Bake.New
         ),
         core: c => c.Dotnet(baseNamespace: _ => "Baked.Test")
             .ForNfr(c.Dotnet(entryAssembly: Assembly.GetExecutingAssembly(), baseNamespace: _ => "Baked.Test")),
-        cors: c => c.AllowOrigin(Settings.Required<string>("CorsOrigin")),
+        cors: c => c.AspNetCore(Settings.Required<string>("CorsOrigin")),
         database: c => c
           .PostgreSql()
           .ForDevelopment(c.Sqlite())

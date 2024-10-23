@@ -1,7 +1,7 @@
 # Cors
 
-Implementations of this feature adds and configures `AspNetCore` CORS services
-and middleware
+Implementations of this feature adds and configures services and middlewares
+to enable Cross-Origin Resource Sharing (CORS)
 
 Add this feature using `AddCors()` extension;
 
@@ -9,13 +9,12 @@ Add this feature using `AddCors()` extension;
 app.Features.AddCors();
 ```
 
-## Allow Origin
+## AspNetCore
 
-This feature registers a single CORS policy that specifies certain origins 
-while allowing any headers and methods.
+This feature adds `AspNetCore` cors services and middleware.
 
 ```csharp
-c => c.AllowOrigin([...])
+c => c.AspNetCore([...])
 }
 ```
 

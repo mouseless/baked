@@ -8,7 +8,7 @@
       - `DependencyInjection`
       - `Monitoring`
   - `Oracle` implementation of `Database` feature is now added
-  - `Cors` feature is now added with `AllowOrigin` implementation
+  - `Cors` feature is now added with `AspNetCore` implementation
 
 ## Improvements
 
