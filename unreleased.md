@@ -11,6 +11,7 @@
   - `Cors` feature is now added with `AspNetCore` implementation
   - `Reporting` feature is introduced with three implenmentations `NativeSql`
     for production, `Mock` and `Fake` for development
+  - `RichTransient` coding style feature is now added 
 
 ## Improvements
 

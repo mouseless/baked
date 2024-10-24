@@ -36,7 +36,6 @@ public class CommandPatternCodingStyleFeature(IEnumerable<string> _methodNames)
 
         configurator.ConfigureApiModelConventions(conventions =>
         {
-            conventions.Add(new InitializeUsingQueryParametersConvention(), order: -10);
             conventions.Add(new IncludeClassDocsForActionNamesConvention(_methodNames), order: -10);
             conventions.Add(new UseClassNameInsteadOfActionNamesConvention(_methodNames), order: -10);
             conventions.Add(new RemoveFromRouteConvention(_methodNames));
