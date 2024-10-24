@@ -22,6 +22,10 @@ public class RichTransientInitializerIsGetResourceConvention(DomainModel _domain
         parameter.From = RestApi.Model.ParameterModelFrom.Route;
         parameter.RoutePosition = 1;
 
+        var targetParameter = context.Action.Parameter["target"];
+        targetParameter.Name = "newTarget";
+        targetParameter.Type = $"Func<{targetParameter.Type}>";
+
         context.Action.Method = HttpMethod.Get;
         context.Action.RouteParts = [context.Controller.MappedType.Name.Pluralize()];
         context.Action.FindTargetStatement = "newTarget()";

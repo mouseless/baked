@@ -45,7 +45,8 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
         {
             var domainModel = configurator.Context.GetDomainModel();
 
-            conventions.Add(new TargetRichTransientFromRouteConvention(domainModel));
+            conventions.Add(new InitializeUsingQueryParametersConvention(), order: -10);
+            conventions.Add(new InitializeUsingIdParameterConvention(domainModel));
             conventions.Add(new RichTransientInitializerIsGetResourceConvention(domainModel));
         });
     }

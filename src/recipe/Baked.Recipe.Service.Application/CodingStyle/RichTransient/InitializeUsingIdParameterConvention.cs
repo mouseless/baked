@@ -6,7 +6,7 @@ using Humanizer;
 
 namespace Baked.CodingStyle.RichTransient;
 
-public class TargetRichTransientFromRouteConvention(DomainModel _domain)
+public class InitializeUsingIdParameterConvention(DomainModel _domain)
     : IApiModelConvention<ActionModelContext>
 {
     public void Apply(ActionModelContext context)
@@ -30,9 +30,12 @@ public class TargetRichTransientFromRouteConvention(DomainModel _domain)
                 RoutePosition = 1
             };
 
+        var targetParameter = context.Action.Parameter["target"];
+        targetParameter.Name = "newTarget";
+        targetParameter.Type = $"Func<{targetParameter.Type}>";
+
         context.Action.RouteParts.RemoveAt(0);
         context.Action.RouteParts.Insert(0, context.Controller.MappedType.Name.Pluralize());
-
         context.Action.FindTargetStatement = $"newTarget().{initializer.Name}({initializer.DefaultOverload.Parameters.Select(p => $"@{p.Name}").Join(", ")})";
     }
 }

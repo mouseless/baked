@@ -2,14 +2,15 @@
 using Baked.RestApi.Configuration;
 using Baked.RestApi.Model;
 
-namespace Baked.CodingStyle.CommandPattern;
+namespace Baked.CodingStyle.RichTransient;
 
 public class InitializeUsingQueryParametersConvention : IApiModelConvention<ActionModelContext>
 {
     public void Apply(ActionModelContext context)
     {
         if (!context.Controller.MappedType.TryGetMembers(out var members)) { return; }
-        if (!members.Has<PubliclyInitializableAttribute>()) { return; }
+        if (members.Has<LocatableAttribute>()) { return; }
+        if (!members.Methods.Having<InitializerAttribute>().Any()) { return; }
 
         var initializer = members.Methods.Having<InitializerAttribute>().Single();
         foreach (var parameter in initializer.DefaultOverload.Parameters)
