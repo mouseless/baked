@@ -10,6 +10,7 @@ public class RichTransientInitializerIsGetResourceConvention : IApiModelConventi
     {
         if (!context.Controller.MappedType.TryGetMetadata(out var metadata)) { return; }
         if (!metadata.Has<RichTransientAttribute>()) { return; }
+        if (!metadata.Has<HasPublicDataAttribute>()) { return; }
         if (context.Action.MappedMethod is null) { return; }
         if (!context.Action.MappedMethod.Has<InitializerAttribute>()) { return; }
         if (context.Parameter.FromServices) { return; }

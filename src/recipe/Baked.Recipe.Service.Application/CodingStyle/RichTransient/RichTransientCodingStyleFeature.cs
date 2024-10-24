@@ -19,11 +19,18 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                         members.Methods.TryGetValue("With", out var method) &&
                             method.DefaultOverload.IsPublic &&
                             method.DefaultOverload.Parameters.Count == 1 &&
-                            method.DefaultOverload.Parameters.Any(p => p.Name == "id" && (p.ParameterType.IsValueType || p.ParameterType.Is<string>())),
+                            method.DefaultOverload.Parameters.Any(p =>
+                                p.Name == "id" &&
+                                (p.ParameterType.IsValueType || p.ParameterType.Is<string>())
+                            ),
                 order: 40
             );
             builder.Conventions.AddMethodMetadata(new ApiMethodAttribute(),
-                when: c => c.Method.Has<InitializerAttribute>() && c.Type.Has<RichTransientAttribute>() && c.Method.DefaultOverload.IsPublic,
+                when: c =>
+                    c.Type.Has<HasPublicDataAttribute>() &&
+                    c.Method.Has<InitializerAttribute>() &&
+                    c.Method.DefaultOverload.IsPublic &&
+                    c.Type.Has<RichTransientAttribute>(),
                 order: 50
             );
         });

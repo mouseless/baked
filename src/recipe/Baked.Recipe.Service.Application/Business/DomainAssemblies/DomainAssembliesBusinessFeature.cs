@@ -91,6 +91,9 @@ public class DomainAssembliesBusinessFeature(
             builder.Conventions.AddTypeMetadata(new CasterAttribute(),
                 when: c => c.Type.IsClass && !c.Type.IsAbstract && c.Type.IsAssignableTo(typeof(ICasts<,>))
             );
+            builder.Conventions.AddTypeMetadata(new HasPublicDataAttribute(),
+                when: c => c.Type.TryGetMembers(out var members) && members.Properties.Any(p => p.IsPublic)
+            );
         });
 
         configurator.ConfigureDomainModelBuilder(builder =>
