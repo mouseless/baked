@@ -28,14 +28,21 @@ Bake.New
             claims: ["User", "Admin", "BaseA", "BaseB", "GivenA", "GivenB", "GivenC"],
             baseClaims: ["BaseA", "BaseB"]
         ),
-        core: c => c.Dotnet(baseNamespace: _ => "Baked.Test")
+        core: c => c
+            .Dotnet(baseNamespace: _ => "Baked.Test")
             .ForNfr(c.Dotnet(entryAssembly: Assembly.GetExecutingAssembly(), baseNamespace: _ => "Baked.Test")),
         cors: c => c.AspNetCore(Settings.Required<string>("CorsOrigin")),
         database: c => c
-          .PostgreSql()
-          .ForDevelopment(c.Sqlite())
-          .ForNfr(c.Sqlite(fileName: $"Baked.Test.Recipe.Service.Nfr.db")),
-        exceptionHandling: ex => ex.Default(typeUrlFormat: "https://baked.mouseless.codes/errors/{0}"),
-        configure: app => app.Features.AddConfigurationOverrider()
+            .Sqlite()
+            .ForProduction(c.PostgreSql()),
+        exceptionHandling: c => c.Default(typeUrlFormat: "https://baked.mouseless.codes/errors/{0}"),
+        configure: app =>
+        {
+            app.Features.AddReporting(c => c
+                .NativeSql(basePath: "Reporting/Sqlite")
+                .ForProduction(c.NativeSql(basePath: "Reporting/PostgreSql"))
+            );
+            app.Features.AddConfigurationOverrider();
+        }
     )
     .Run();
