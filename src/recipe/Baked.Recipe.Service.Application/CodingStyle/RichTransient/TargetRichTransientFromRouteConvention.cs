@@ -1,34 +1,34 @@
 ﻿using Baked.Business;
+using Baked.Domain.Model;
 using Baked.RestApi.Configuration;
 using Baked.RestApi.Model;
 using Humanizer;
 
 namespace Baked.CodingStyle.RichTransient;
 
-public class TargetRichTransientFromRouteConvention
-    : IApiModelConvention<ParameterModelContext>
+public class TargetRichTransientFromRouteConvention(DomainModel _domain)
+    : IApiModelConvention<ActionModelContext>
 {
-    public void Apply(ParameterModelContext context)
+    public void Apply(ActionModelContext context)
     {
         if (!context.Controller.MappedType.TryGetMetadata(out var metadata)) { return; }
-        if (!metadata.Has<RichTransientAttribute>()) { return; }
+        if (!metadata.Has<LocatableAttribute>()) { return; }
+        if (context.Controller.MappedType.TryGetQueryType(_domain, out var _)) { return; }
         if (!context.Controller.MappedType.TryGetMembers(out var members)) { return; }
         if (context.Action.MappedMethod is null) { return; }
         if (context.Action.MappedMethod.Has<InitializerAttribute>()) { return; }
-        if (context.Parameter.Name == "target") { return; }
 
         var initializer = members.Methods.Having<InitializerAttribute>().Single();
-        foreach (var parameter in initializer.DefaultOverload.Parameters)
-        {
-            context.Action.Parameter[parameter.Name] =
-                new(parameter.ParameterType, ParameterModelFrom.Route, parameter.Name, MappedParameter: parameter)
-                {
-                    IsOptional = parameter.IsOptional,
-                    DefaultValue = parameter.DefaultValue,
-                    IsInvokeMethodParameter = false,
-                    RoutePosition = 1
-                };
-        }
+        if (!initializer.DefaultOverload.Parameters.TryGetValue("id", out var parameter)) { return; }
+
+        context.Action.Parameter["id"] =
+            new(parameter.ParameterType, ParameterModelFrom.Route, parameter.Name, MappedParameter: parameter)
+            {
+                IsOptional = parameter.IsOptional,
+                DefaultValue = parameter.DefaultValue,
+                IsInvokeMethodParameter = false,
+                RoutePosition = 1
+            };
 
         context.Action.RouteParts.RemoveAt(0);
         context.Action.RouteParts.Insert(0, context.Controller.MappedType.Name.Pluralize());

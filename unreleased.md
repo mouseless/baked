@@ -9,6 +9,7 @@
       - `Monitoring`
   - `Oracle` implementation of `Database` feature is now added
   - `Cors` feature is now added with `AspNetCore` implementation
+  - `RichTransient` coding style feature is now added 
 
 ## Improvements
 

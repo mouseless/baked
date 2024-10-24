@@ -10,27 +10,33 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Conventions.AddTypeMetadata(new RichTransientAttribute(),
+            builder.Conventions.AddTypeMetadata(new LocatableAttribute(),
                 when: c =>
                     c.Type.IsClass && !c.Type.IsAbstract &&
                     c.Type.TryGetMembers(out var members) &&
                         members.Has<TransientAttribute>() &&
                         members.Has<ServiceAttribute>() &&
-                        members.Methods.TryGetValue("With", out var method) &&
-                            method.DefaultOverload.IsPublic &&
-                            method.DefaultOverload.Parameters.Count == 1 &&
-                            method.DefaultOverload.Parameters.Any(p =>
+                        members.Methods.Any(m =>
+                            m.Has<InitializerAttribute>() &&
+                            m.DefaultOverload.IsPublic &&
+                            m.DefaultOverload.Parameters.Count == 1 &&
+                            m.DefaultOverload.Parameters.All(p =>
                                 p.Name == "id" &&
                                 (p.ParameterType.IsValueType || p.ParameterType.Is<string>())
-                            ),
+                            )
+                        ),
                 order: 40
             );
             builder.Conventions.AddMethodMetadata(new ApiMethodAttribute(),
                 when: c =>
+                    c.Type.Has<LocatableAttribute>() &&
                     c.Type.Has<HasPublicDataAttribute>() &&
                     c.Method.Has<InitializerAttribute>() &&
                     c.Method.DefaultOverload.IsPublic &&
-                    c.Type.Has<RichTransientAttribute>(),
+                    c.Method.DefaultOverload.Parameters.Count == 1 &&
+                    c.Method.DefaultOverload.Parameters.All(p =>
+                        p.Name == "id" && (p.ParameterType.IsValueType || p.ParameterType.Is<string>())
+                    ),
                 order: 50
             );
         });
@@ -39,8 +45,8 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
         {
             var domainModel = configurator.Context.GetDomainModel();
 
-            conventions.Add(new TargetRichTransientFromRouteConvention());
-            conventions.Add(new RichTransientInitializerIsGetResourceConvention());
+            conventions.Add(new TargetRichTransientFromRouteConvention(domainModel));
+            conventions.Add(new RichTransientInitializerIsGetResourceConvention(domainModel));
         });
     }
 }
