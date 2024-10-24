@@ -37,7 +37,7 @@ public class ClaimBasedAuthorizationFeature(IEnumerable<string> _claims, IEnumer
 
         configurator.ConfigureMiddlewareCollection(middlewares =>
         {
-            middlewares.Add(app => app.UseAuthorization(), order: 10);
+            middlewares.Add(app => app.UseAuthorization(), order: 20);
         });
 
         configurator.ConfigureApiModel(api =>
