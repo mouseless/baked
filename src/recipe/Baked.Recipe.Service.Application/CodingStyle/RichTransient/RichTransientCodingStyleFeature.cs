@@ -10,7 +10,12 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Conventions.AddTypeMetadata(new LocatableAttribute(),
+            builder.Conventions.AddTypeMetadata(
+                apply: (c, add) =>
+                {
+                    add(c.Type, new ApiInputAttribute());
+                    add(c.Type, new LocatableAttribute());
+                },
                 when: c =>
                     c.Type.IsClass && !c.Type.IsAbstract &&
                     c.Type.TryGetMembers(out var members) &&
@@ -45,9 +50,10 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
         {
             var domainModel = configurator.Context.GetDomainModel();
 
-            conventions.Add(new InitializeUsingQueryParametersConvention(), order: -10);
-            conventions.Add(new InitializeUsingIdParameterConvention(domainModel));
-            conventions.Add(new RichTransientInitializerIsGetResourceConvention(domainModel));
+            conventions.Add(new FindTargetFromInitializerConvention(), order: -30);
+            conventions.Add(new InitializeUsingQueryParametersConvention(), order: -30);
+            conventions.Add(new InitializeUsingIdParameterConvention(domainModel), order: -30);
+            conventions.Add(new RichTransientInitializerIsGetResourceConvention(), order: -30);
         });
     }
 }

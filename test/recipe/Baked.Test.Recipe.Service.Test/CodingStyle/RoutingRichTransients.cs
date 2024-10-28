@@ -5,23 +5,27 @@ namespace Baked.Test.CodingStyle;
 
 public class RoutingRichTransients : TestServiceNfr
 {
-    [Test]
-    public async Task Get()
+    [TestCase("1")]
+    [TestCase("59dfa608-9fe4-4e77-b448-a65adcfda605")]
+    public async Task Get(string id)
     {
-        var response = await Client.GetAsync("rich-transient-with-datas/1");
+        var response = await Client.GetAsync($"rich-transient-with-datas/{id}");
 
+        response.StatusCode.ShouldBe(System.Net.HttpStatusCode.OK);
         dynamic? actual = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
-
-        ((string?)actual?.id).ShouldBe("1");
+        ((string?)actual?.id).ShouldBe(id);
     }
 
     [TestCase("rich-transient-with-datas/1/method")]
     [TestCase("rich-transient-no-datas/1/method")]
     public async Task Post(string path)
     {
-        var response = await Client.PostAsync(path, JsonContent.Create(new { data = "text" }));
+        var response = await Client.PostAsync(path, JsonContent.Create(new { text = "text" }));
 
         response.StatusCode.ShouldBe(System.Net.HttpStatusCode.OK);
+        dynamic? actual = JsonConvert.DeserializeObject<dynamic>(await response.Content.ReadAsStringAsync());
+        ((string?)actual?.id).ShouldBe("1");
+        ((object?)actual?.data).ShouldDeeplyBe(new { text = "text" });
     }
 
     [Test]

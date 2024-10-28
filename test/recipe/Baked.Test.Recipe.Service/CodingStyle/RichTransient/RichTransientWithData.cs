@@ -12,5 +12,5 @@ public class RichTransientWithData
     public string Id { get; set; } = default!;
 
     public object Method(object data) =>
-         data;
+        new { Id, data };
 }

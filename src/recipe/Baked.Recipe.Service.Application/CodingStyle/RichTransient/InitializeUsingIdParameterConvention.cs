@@ -11,10 +11,10 @@ public class InitializeUsingIdParameterConvention(DomainModel _domain)
 {
     public void Apply(ActionModelContext context)
     {
-        if (!context.Controller.MappedType.TryGetMetadata(out var metadata)) { return; }
-        if (!metadata.Has<LocatableAttribute>()) { return; }
-        if (context.Controller.MappedType.TryGetQueryType(_domain, out var _)) { return; }
         if (!context.Controller.MappedType.TryGetMembers(out var members)) { return; }
+        if (!members.Methods.Having<InitializerAttribute>().Any()) { return; }
+        if (!members.Has<LocatableAttribute>()) { return; }
+        if (context.Controller.MappedType.TryGetQueryType(_domain, out var _)) { return; }
         if (context.Action.MappedMethod is null) { return; }
         if (context.Action.MappedMethod.Has<InitializerAttribute>()) { return; }
 
@@ -27,15 +27,9 @@ public class InitializeUsingIdParameterConvention(DomainModel _domain)
                 IsOptional = parameter.IsOptional,
                 DefaultValue = parameter.DefaultValue,
                 IsInvokeMethodParameter = false,
-                RoutePosition = 1
+                RoutePosition = 1,
+                AdditionalAttributes = [$"SwaggerSchema(\"Unique value to initialize {context.Controller.MappedType.Name.Humanize().ToLowerInvariant()} resource\")"]
             };
-
-        var targetParameter = context.Action.Parameter["target"];
-        targetParameter.Name = "newTarget";
-        targetParameter.Type = $"Func<{targetParameter.Type}>";
-
-        context.Action.RouteParts.RemoveAt(0);
-        context.Action.RouteParts.Insert(0, context.Controller.MappedType.Name.Pluralize());
-        context.Action.FindTargetStatement = $"newTarget().{initializer.Name}({initializer.DefaultOverload.Parameters.Select(p => $"@{p.Name}").Join(", ")})";
+        context.Action.RouteParts = [context.Controller.MappedType.Name.Pluralize(), context.Action.Name];
     }
 }
