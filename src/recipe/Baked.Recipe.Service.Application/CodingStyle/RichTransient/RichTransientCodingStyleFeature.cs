@@ -19,8 +19,8 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 when: c =>
                     c.Type.IsClass && !c.Type.IsAbstract &&
                     c.Type.TryGetMembers(out var members) &&
-                        members.Has<TransientAttribute>() &&
                         members.Has<ServiceAttribute>() &&
+                        members.Has<TransientAttribute>() &&
                         members.Methods.Any(m =>
                             m.Has<InitializerAttribute>() &&
                             m.DefaultOverload.IsPublic &&
@@ -30,7 +30,7 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                                 (p.ParameterType.IsValueType || p.ParameterType.Is<string>())
                             )
                         ),
-                order: 40
+                order: 10
             );
             builder.Conventions.AddMethodMetadata(new ApiMethodAttribute(),
                 when: c =>
@@ -54,6 +54,8 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
             conventions.Add(new InitializeUsingQueryParametersConvention(), order: -30);
             conventions.Add(new InitializeUsingIdParameterConvention(domainModel), order: -30);
             conventions.Add(new RichTransientInitializerIsGetResourceConvention(), order: -30);
+            conventions.Add(new LookUpTransientByIdConvention(domainModel), order: -30);
+            conventions.Add(new LookUpTransientsByIdsConvention(domainModel), order: -30);
         });
     }
 }
