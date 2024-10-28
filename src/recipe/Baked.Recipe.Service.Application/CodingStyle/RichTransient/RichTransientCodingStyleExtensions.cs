@@ -27,9 +27,9 @@ public static class RichTransientCodingStyleExtensions
         return parameter;
     }
 
-    public static string BuildInitializer(this ParameterModel factoryParameter, string valueExpression)
+    public static string BuildInitializerById(this ParameterModel factoryParameter, string valueExpression)
     {
-        if (factoryParameter.TypeModel is null) { throw new("FactoryParameter shold have mapped parameter"); }
+        if (factoryParameter.TypeModel is null) { throw new("FactoryParameter should have mapped parameter"); }
 
         var initializer = factoryParameter.TypeModel.GetMembers().Methods.Having<InitializerAttribute>().Single();
 
@@ -40,7 +40,7 @@ public static class RichTransientCodingStyleExtensions
         bool isArray = default
     )
     {
-        if (factoryParameter.TypeModel is null) { throw new("FactoryParameter shold have mapped parameter"); }
+        if (factoryParameter.TypeModel is null) { throw new("FactoryParameter should have mapped parameter"); }
 
         var initializer = factoryParameter.TypeModel.GetMembers().Methods.Having<InitializerAttribute>().Single();
         var byIds = $"{valueExpression}.Select(id => new{factoryParameter.TypeModel.Name.Pascalize()}().{initializer.Name}(id))";

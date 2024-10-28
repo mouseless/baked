@@ -34,15 +34,16 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
             );
             builder.Conventions.AddMethodMetadata(new ApiMethodAttribute(),
                 when: c =>
-                    c.Type.Has<LocatableAttribute>() &&
-                    c.Type.Has<HasPublicDataAttribute>() &&
+                    c.Type.Has<TransientAttribute>() &&
+                    c.Type.TryGetMembers(out var members) &&
+                        members.Properties.Any(p => p.IsPublic) &&
                     c.Method.Has<InitializerAttribute>() &&
                     c.Method.DefaultOverload.IsPublic &&
                     c.Method.DefaultOverload.Parameters.Count == 1 &&
                     c.Method.DefaultOverload.Parameters.All(p =>
                         p.Name == "id" && (p.ParameterType.IsValueType || p.ParameterType.Is<string>())
                     ),
-                order: 50
+                order: 20
             );
         });
 

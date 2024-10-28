@@ -18,11 +18,12 @@ public class LookUpTransientByIdConvention(DomainModel _domain)
         if (members.TryGetQueryType(_domain, out var _)) { return; }
 
         var initializer = members.Methods.Having<InitializerAttribute>().Single();
-        if (!initializer.DefaultOverload.Parameters.TryGetValue("id", out var parameter)) { return; }
+        if (!initializer.DefaultOverload.Parameters.TryGetValue("id", out var idParameter)) { return; }
 
         var factoryParameter = context.Action.AddFactoryAsService(context.Parameter.MappedParameter.ParameterType);
+
         context.Parameter.Name = $"{context.Parameter.Name}Id";
-        context.Parameter.Type = "string";
-        context.Parameter.LookupRenderer = p => factoryParameter.BuildInitializer(p);
+        context.Parameter.Type = $"{idParameter.ParameterType.CSharpFriendlyFullName}";
+        context.Parameter.LookupRenderer = p => factoryParameter.BuildInitializerById(p);
     }
 }

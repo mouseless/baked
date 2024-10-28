@@ -8,9 +8,9 @@ public class RichTransientInitializerIsGetResourceConvention : IApiModelConventi
 {
     public void Apply(ActionModelContext context)
     {
-        if (!context.Controller.MappedType.TryGetMetadata(out var metadata)) { return; }
-        if (!metadata.Has<LocatableAttribute>()) { return; }
-        if (!metadata.Has<HasPublicDataAttribute>()) { return; }
+        if (!context.Controller.MappedType.TryGetMembers(out var members)) { return; }
+        if (!members.Has<LocatableAttribute>()) { return; }
+        if (!members.Properties.Any(p => p.IsPublic)) { return; }
         if (context.Action.MappedMethod is null) { return; }
         if (!context.Action.MappedMethod.Has<InitializerAttribute>()) { return; }
         if (!context.Action.Parameter.TryGetValue("id", out var parameter)) { return; }
