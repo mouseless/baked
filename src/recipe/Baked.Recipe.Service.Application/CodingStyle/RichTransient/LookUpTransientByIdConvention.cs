@@ -20,7 +20,7 @@ public class LookUpTransientByIdConvention(DomainModel _domain)
         var initializer = members.Methods.Having<InitializerAttribute>().Single();
         if (!initializer.DefaultOverload.Parameters.TryGetValue("id", out var parameter)) { return; }
 
-        var factoryParameter = context.Action.AddFactoryAsService(_domain, context.Parameter.MappedParameter.ParameterType);
+        var factoryParameter = context.Action.AddFactoryAsService(context.Parameter.MappedParameter.ParameterType);
         context.Parameter.Name = $"{context.Parameter.Name}Id";
         context.Parameter.Type = "string";
         context.Parameter.LookupRenderer = p => factoryParameter.BuildInitializer(p);

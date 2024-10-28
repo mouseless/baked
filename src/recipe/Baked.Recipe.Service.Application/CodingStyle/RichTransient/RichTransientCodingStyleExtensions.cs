@@ -13,7 +13,7 @@ public static class RichTransientCodingStyleExtensions
     public static RichTransientCodingStyleFeature RichTransient(this CodingStyleConfigurator _) =>
         new();
 
-    public static ParameterModel AddFactoryAsService(this ActionModel action, DomainModel domain, TypeModel transientType)
+    public static ParameterModel AddFactoryAsService(this ActionModel action, TypeModel transientType)
     {
         var parameter =
             new ParameterModel(transientType, ParameterModelFrom.Services, $"new{transientType.Name.Pascalize()}")

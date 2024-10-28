@@ -21,7 +21,7 @@ public class LookUpTransientsByIdsConvention(DomainModel _domain)
         var initializer = elementType.GetMembers().Methods.Having<InitializerAttribute>().Single();
         if (!initializer.DefaultOverload.Parameters.TryGetValue("id", out var parameter)) { return; }
 
-        var factoryParameter = context.Action.AddFactoryAsService(_domain, elementType);
+        var factoryParameter = context.Action.AddFactoryAsService(elementType);
 
         context.Parameter.Type = "IEnumerable<string>";
         context.Parameter.Name = $"{context.Parameter.Name.Singularize()}Ids";
