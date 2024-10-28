@@ -11,6 +11,8 @@
   - `Cors` feature is now added with `AspNetCore` implementation
   - `Reporting` feature is introduced with three implenmentations `NativeSql`
     for production, `Mock` and `Fake` for development
+  - `DataSource` recipe is available which minimal features for a data source
+    service recipe
 
 ## Improvements
 
