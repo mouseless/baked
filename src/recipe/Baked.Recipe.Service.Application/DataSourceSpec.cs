@@ -26,7 +26,7 @@ public abstract class DataSourceSpec : Spec
         caching ??= c => c.ScopedMemory();
         core ??= c => c.Mock();
         database ??= c => c.InMemory();
-        exceptionHandling ??= c => c.Default();
+        exceptionHandling ??= c => c.ProblemDetails();
         mockOverrider ??= c => c.FirstInterface();
         reporting ??= c => c.Mock();
         configure ??= _ => { };

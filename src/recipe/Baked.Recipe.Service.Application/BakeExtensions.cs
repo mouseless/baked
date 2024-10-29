@@ -40,7 +40,7 @@ public static class BakeExtensions
         core ??= c => c.Dotnet();
         cors ??= c => c.Disabled();
         database ??= c => c.Sqlite();
-        exceptionHandling ??= c => c.Default();
+        exceptionHandling ??= c => c.ProblemDetails();
         greeting ??= c => c.Swagger();
         logging ??= c => c.Request();
         orm ??= c => c.AutoMap();
@@ -109,7 +109,7 @@ public static class BakeExtensions
         caching ??= c => c.ScopedMemory();
         core ??= c => c.Dotnet();
         database ??= c => c.Sqlite();
-        exceptionHandling ??= c => c.Default();
+        exceptionHandling ??= c => c.ProblemDetails();
         greeting ??= c => c.Swagger();
         logging ??= c => c.Request();
         reporting ??= c => c.NativeSql();

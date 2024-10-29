@@ -35,7 +35,7 @@ public abstract class ServiceSpec : Spec
         communication ??= c => c.Mock();
         core ??= c => c.Mock();
         database ??= c => c.InMemory();
-        exceptionHandling ??= c => c.Default();
+        exceptionHandling ??= c => c.ProblemDetails();
         mockOverrider ??= c => c.FirstInterface();
         orm ??= c => c.AutoMap();
         configure ??= _ => { };

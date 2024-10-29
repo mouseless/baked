@@ -1,4 +1,4 @@
-﻿namespace Baked.ExceptionHandling.Default;
+﻿namespace Baked.ExceptionHandling.ProblemDetails;
 
 public class HandledExceptionHandler : IExceptionHandler
 {

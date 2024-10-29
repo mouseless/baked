@@ -1,8 +1,7 @@
 ﻿using Humanizer;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 
-namespace Baked.ExceptionHandling.Default;
+namespace Baked.ExceptionHandling.ProblemDetails;
 
 public class ExceptionHandler(IEnumerable<IExceptionHandler> _handlers, ExceptionHandlerSettings _settings)
     : Microsoft.AspNetCore.Diagnostics.IExceptionHandler
@@ -24,7 +23,7 @@ public class ExceptionHandler(IEnumerable<IExceptionHandler> _handlers, Exceptio
     IExceptionHandler HandlerFor(Exception exception) =>
         _handlers.FirstOrDefault(h => h.CanHandle(exception)) ?? _unhandledExceptionHandler;
 
-    ProblemDetails ToProblemDetails(ExceptionInfo exceptionInfo) =>
+    Microsoft.AspNetCore.Mvc.ProblemDetails ToProblemDetails(ExceptionInfo exceptionInfo) =>
         new()
         {
             Type = _settings.TypeUrlFormat is not null
