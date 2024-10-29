@@ -49,12 +49,12 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
 
         configurator.ConfigureApiModelConventions(conventions =>
         {
-            conventions.Add(new FindTargetFromInitializerConvention(), order: -30);
-            conventions.Add(new InitializeUsingQueryParametersConvention(), order: -30);
-            conventions.Add(new InitializeUsingIdParameterConvention(), order: -30);
-            conventions.Add(new RichTransientInitializerIsGetResourceConvention(), order: -30);
-            conventions.Add(new LookUpTransientByIdConvention(), order: -30);
-            conventions.Add(new LookUpTransientsByIdsConvention(), order: -30);
+            conventions.Add(new FindTargetFromInitializerConvention(), order: -10);
+            conventions.Add(new InitializeUsingQueryParametersConvention());
+            conventions.Add(new InitializeUsingIdParameterConvention());
+            conventions.Add(new RichTransientInitializerIsGetResourceConvention());
+            conventions.Add(new LookUpTransientByIdConvention());
+            conventions.Add(new LookUpTransientsByIdsConvention());
         });
     }
 }
