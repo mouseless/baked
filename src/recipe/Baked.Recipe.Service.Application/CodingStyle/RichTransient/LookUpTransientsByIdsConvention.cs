@@ -1,12 +1,10 @@
 ﻿using Baked.Business;
-using Baked.Domain.Model;
 using Baked.RestApi.Configuration;
 using Humanizer;
 
 namespace Baked.CodingStyle.RichTransient;
 
-public class LookUpTransientsByIdsConvention(DomainModel _domain)
-    : IApiModelConvention<ParameterModelContext>
+public class LookUpTransientsByIdsConvention : IApiModelConvention<ParameterModelContext>
 {
     public void Apply(ParameterModelContext context)
     {
@@ -16,7 +14,6 @@ public class LookUpTransientsByIdsConvention(DomainModel _domain)
         if (context.Parameter.MappedParameter is null) { return; }
         if (!context.Parameter.MappedParameter.ParameterType.TryGetElementType(out var elementType)) { return; }
         if (!elementType.GetMetadata().Has<LocatableAttribute>()) { return; }
-        if (elementType.TryGetQueryType(_domain, out var _)) { return; }
 
         var initializer = elementType.GetMembers().Methods.Having<InitializerAttribute>().Single();
         if (!initializer.DefaultOverload.Parameters.TryGetValue("id", out var idParameter)) { return; }

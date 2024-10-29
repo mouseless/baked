@@ -24,8 +24,7 @@ public class RoutingRichTransients : TestServiceNfr
 
         response.StatusCode.ShouldBe(System.Net.HttpStatusCode.OK);
         dynamic? actual = JsonConvert.DeserializeObject<dynamic>(await response.Content.ReadAsStringAsync());
-        ((string?)actual?.id).ShouldBe("1");
-        ((object?)actual?.data).ShouldDeeplyBe(new { text = "text" });
+        ((string?)actual).ShouldBe("text");
     }
 
     [Test]

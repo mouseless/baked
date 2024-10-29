@@ -19,24 +19,24 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 when: c =>
                     c.Type.IsClass && !c.Type.IsAbstract &&
                     c.Type.TryGetMembers(out var members) &&
-                        members.Has<ServiceAttribute>() &&
-                        members.Has<TransientAttribute>() &&
-                        members.Methods.Any(m =>
-                            m.Has<InitializerAttribute>() &&
-                            m.DefaultOverload.IsPublic &&
-                            m.DefaultOverload.Parameters.Count == 1 &&
-                            m.DefaultOverload.Parameters.All(p =>
-                                p.Name == "id" &&
-                                (p.ParameterType.IsValueType || p.ParameterType.Is<string>())
-                            )
-                        ),
+                    members.Has<ServiceAttribute>() &&
+                    members.Has<TransientAttribute>() &&
+                    members.Methods.Any(m =>
+                        m.Has<InitializerAttribute>() &&
+                        m.DefaultOverload.IsPublic &&
+                        m.DefaultOverload.Parameters.Count == 1 &&
+                        m.DefaultOverload.Parameters.All(p =>
+                            p.Name == "id" &&
+                            (p.ParameterType.IsValueType || p.ParameterType.Is<string>())
+                        )
+                    ),
                 order: 10
             );
             builder.Conventions.AddMethodMetadata(new ApiMethodAttribute(),
                 when: c =>
                     c.Type.Has<TransientAttribute>() &&
                     c.Type.TryGetMembers(out var members) &&
-                        members.Properties.Any(p => p.IsPublic) &&
+                    members.Properties.Any(p => p.IsPublic) &&
                     c.Method.Has<InitializerAttribute>() &&
                     c.Method.DefaultOverload.IsPublic &&
                     c.Method.DefaultOverload.Parameters.Count == 1 &&
@@ -49,14 +49,12 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
 
         configurator.ConfigureApiModelConventions(conventions =>
         {
-            var domainModel = configurator.Context.GetDomainModel();
-
             conventions.Add(new FindTargetFromInitializerConvention(), order: -30);
             conventions.Add(new InitializeUsingQueryParametersConvention(), order: -30);
-            conventions.Add(new InitializeUsingIdParameterConvention(domainModel), order: -30);
+            conventions.Add(new InitializeUsingIdParameterConvention(), order: -30);
             conventions.Add(new RichTransientInitializerIsGetResourceConvention(), order: -30);
-            conventions.Add(new LookUpTransientByIdConvention(domainModel), order: -30);
-            conventions.Add(new LookUpTransientsByIdsConvention(domainModel), order: -30);
+            conventions.Add(new LookUpTransientByIdConvention(), order: -30);
+            conventions.Add(new LookUpTransientsByIdsConvention(), order: -30);
         });
     }
 }

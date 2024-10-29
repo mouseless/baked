@@ -11,6 +11,6 @@ public class RichTransientNoData
 
     internal string Id { get; set; } = default!;
 
-    public object Method(object data) =>
-        new { Id, data };
+    public string Method(string text) =>
+        text;
 }

@@ -1,20 +1,17 @@
 ﻿using Baked.Business;
-using Baked.Domain.Model;
 using Baked.RestApi.Configuration;
 using Baked.RestApi.Model;
 using Humanizer;
 
 namespace Baked.CodingStyle.RichTransient;
 
-public class InitializeUsingIdParameterConvention(DomainModel _domain)
-    : IApiModelConvention<ActionModelContext>
+public class InitializeUsingIdParameterConvention : IApiModelConvention<ActionModelContext>
 {
     public void Apply(ActionModelContext context)
     {
         if (!context.Controller.MappedType.TryGetMembers(out var members)) { return; }
         if (!members.Methods.Having<InitializerAttribute>().Any()) { return; }
         if (!members.Has<LocatableAttribute>()) { return; }
-        if (context.Controller.MappedType.TryGetQueryType(_domain, out var _)) { return; }
         if (context.Action.MappedMethod is null) { return; }
         if (context.Action.MappedMethod.Has<InitializerAttribute>()) { return; }
 
@@ -28,7 +25,7 @@ public class InitializeUsingIdParameterConvention(DomainModel _domain)
                 DefaultValue = parameter.DefaultValue,
                 IsInvokeMethodParameter = false,
                 RoutePosition = 1,
-                AdditionalAttributes = [$"SwaggerSchema(\"Unique value to initialize {context.Controller.MappedType.Name.Humanize().ToLowerInvariant()} resource\")"]
+                AdditionalAttributes = [$"SwaggerSchema(\"Unique value to find {context.Controller.MappedType.Name.Humanize().ToLowerInvariant()} resource\")"]
             };
         context.Action.RouteParts = [context.Controller.MappedType.Name.Pluralize(), context.Action.Name];
     }
