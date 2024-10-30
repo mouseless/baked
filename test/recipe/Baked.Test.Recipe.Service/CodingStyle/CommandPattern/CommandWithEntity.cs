@@ -5,13 +5,13 @@ namespace Baked.Test.CodingStyle.CommandPattern;
 
 public class CommandWithEntity(ILogger<CommandWithEntity> _logger)
 {
-    Parent _entity = default!;
+    Parent _parent = default!;
     string _string = default!;
 
-    public CommandWithEntity With(Parent entity, string @string)
+    public CommandWithEntity With(Parent parent, string text)
     {
-        _entity = entity;
-        _string = @string;
+        _parent = parent;
+        _string = text;
 
         return this;
     }
@@ -20,6 +20,6 @@ public class CommandWithEntity(ILogger<CommandWithEntity> _logger)
     {
         _logger.LogInformation(_string);
 
-        return _entity;
+        return _parent;
     }
 }

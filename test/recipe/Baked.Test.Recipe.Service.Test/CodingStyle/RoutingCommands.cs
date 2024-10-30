@@ -82,15 +82,15 @@ public class RoutingCommands : TestServiceNfr
     [Test]
     public async Task Initialization_parameters_can_be_entity()
     {
-        var entityResponse = await Client.PostAsync("/entities", JsonContent.Create(
-            new { @string = "test" }
+        var entityResponse = await Client.PostAsync("/parents", JsonContent.Create(
+            new { name = "Parent" }
         ));
         dynamic? content = JsonConvert.DeserializeObject(await entityResponse.Content.ReadAsStringAsync());
 
-        var response = await Client.PostAsync($"/command-with-entity?entityId={content?.id}&string=text", null);
+        var response = await Client.PostAsync($"/command-with-entity?parentId={content?.id}&text=text", null);
 
         var actual = await response.Content.ReadAsStringAsync();
 
-        actual.ShouldContain("text");
+        actual.ShouldContain($"{content?.id}");
     }
 }
