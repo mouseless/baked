@@ -11,8 +11,8 @@
   - `Cors` feature is now added with `AspNetCore` implementation
   - `Reporting` feature is introduced with three implenmentations `NativeSql`
     for production, `Mock` and `Fake` for development
-  - `DataSource` recipe is available which minimal features for a data source
-    service recipe
+  - `DataSource` recipe is available which includes minimal features for a web
+    application that only reads data from given database
 
 ## Improvements
 
@@ -38,6 +38,9 @@
 - `Dotnet` feature now adds embedded and physical file providers for given
   entry assembly
 - Async overloads for `ShouldPass` and `ShouldFail` are now available
+- `Default` exception handler is renamed as `ProblemDetails`
+- `ITextTransformer` is introduced in `Core` feature to allow business to make
+  use of `Humanizer` methods without depending on it
 
 ### Library Upgrades
 
