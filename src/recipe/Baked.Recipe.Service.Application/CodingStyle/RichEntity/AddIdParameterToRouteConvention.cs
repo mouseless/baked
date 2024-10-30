@@ -19,7 +19,7 @@ public class AddIdParameterToRouteConvention(DomainModel _domain)
         if (!metadata.Has<EntityAttribute>()) { return; }
 
         var entityType = context.Controller.MappedType;
-        if (!entityType.TryGetQueryContextType(_domain, out var queryContextType)) { return; }
+        if (!entityType.TryGetQueryContextType(_domain, out var _)) { return; }
 
         var idProperty = entityType.GetMembers().Properties["Id"];
 
