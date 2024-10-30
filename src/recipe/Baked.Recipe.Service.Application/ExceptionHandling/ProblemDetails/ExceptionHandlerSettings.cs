@@ -1,5 +1,5 @@
 ﻿using Baked.Runtime;
 
-namespace Baked.ExceptionHandling.Default;
+namespace Baked.ExceptionHandling.ProblemDetails;
 
 public record ExceptionHandlerSettings(Setting<string>? TypeUrlFormat);

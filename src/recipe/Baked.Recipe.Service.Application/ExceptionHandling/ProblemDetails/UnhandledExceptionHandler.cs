@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Baked.ExceptionHandling.Default;
+namespace Baked.ExceptionHandling.ProblemDetails;
 
 public class UnhandledExceptionHandler : IExceptionHandler
 {

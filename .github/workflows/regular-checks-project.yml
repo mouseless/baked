@@ -1,12 +1,12 @@
-name: Project - Regular Checks
+name: Regular Checks - Project
 on:
   pull_request:
     branches:
       - main
       - 'epic/**'
     paths:
-      - 'src/**'
-      - 'test/**'
+      - 'src/**/*'
+      - 'test/**/*'
       - '.editorconfig'
       - 'Directory.Build.props'
       - 'Directory.Packages.props'

@@ -3,9 +3,9 @@ using Baked.Runtime;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Baked.ExceptionHandling.Default;
+namespace Baked.ExceptionHandling.ProblemDetails;
 
-public class DefaultExceptionHandlingFeature(Setting<string>? _typeUrlFormat = default)
+public class ProblemDetailsExceptionHandlingFeature(Setting<string>? _typeUrlFormat = default)
     : IFeature<ExceptionHandlingConfigurator>
 {
     public void Configure(LayerConfigurator configurator)

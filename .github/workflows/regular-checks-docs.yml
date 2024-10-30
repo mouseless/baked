@@ -1,11 +1,11 @@
-name: Docs - Regular Checks
+name: Regular Checks - Docs
 on:
   pull_request:
     branches:
       - main
       - 'epic/**'
     paths:
-      - 'docs/**'
+      - 'docs/**/*'
 jobs:
   generate:
     name: Generate
