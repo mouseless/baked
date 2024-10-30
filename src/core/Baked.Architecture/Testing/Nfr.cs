@@ -1,9 +1,17 @@
-﻿using NUnit.Framework;
+﻿using System.Reflection;
+using NUnit.Framework;
 
 namespace Baked.Testing;
 
 public abstract class Nfr
 {
+    public static Assembly? EntryAssembly { get; private set; }
+
+    protected static void Init<TEntryPoint>() where TEntryPoint : class
+    {
+        EntryAssembly = typeof(TEntryPoint).Assembly;
+    }
+
     [OneTimeSetUp]
     public virtual Task OneTimeSetUp() => Task.CompletedTask;
 
