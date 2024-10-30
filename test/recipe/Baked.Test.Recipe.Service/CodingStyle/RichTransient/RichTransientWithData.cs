@@ -1,6 +1,6 @@
 ﻿namespace Baked.Test.CodingStyle.RichTransient;
 
-public class RichTransientWithData
+public class RichTransientWithData(TimeProvider _timeProvider)
 {
     public RichTransientWithData With(string id)
     {
@@ -9,7 +9,8 @@ public class RichTransientWithData
         return this;
     }
 
-    public string Id { get; set; } = default!;
+    public string Id { get; private set; } = default!;
+    public string Time => _timeProvider.GetNow().ToString();
 
     public string Method(string text) =>
         text;

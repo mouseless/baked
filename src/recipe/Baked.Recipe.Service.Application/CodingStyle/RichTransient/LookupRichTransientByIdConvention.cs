@@ -7,7 +7,6 @@ public class LookupRichTransientByIdConvention : IApiModelConvention<ParameterMo
 {
     public void Apply(ParameterModelContext context)
     {
-        if (!context.Parameter.IsInvokeMethodParameter) { return; }
         if (context.Parameter.MappedParameter is null) { return; }
         if (!context.Parameter.MappedParameter.ParameterType.TryGetMembers(out var members)) { return; }
         if (!members.Has<LocatableAttribute>()) { return; }

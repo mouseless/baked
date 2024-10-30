@@ -9,7 +9,7 @@ public class RichTransientNoData
         return this;
     }
 
-    internal string Id { get; set; } = default!;
+    internal string Id { get; private set; } = default!;
 
     public string Method(string text) =>
         text;
