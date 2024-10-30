@@ -50,14 +50,15 @@ public class Compiler(GeneratedAssemblyDescriptor _descriptor)
             var errors = new StringBuilder();
             foreach (var diagnostic in failures)
             {
+                errors.AppendLine();
                 errors.AppendLine(diagnostic.GetMessage());
+                errors.AppendLine();
+                errors.AppendLine(diagnostic.FindClosestScopeNode()?.ToString());
                 errors.AppendLine();
             }
 
             throw new Exception($"""
                 {errors}
-
-                {string.Join(Environment.NewLine, _descriptor.Codes)}
             """);
         }
 

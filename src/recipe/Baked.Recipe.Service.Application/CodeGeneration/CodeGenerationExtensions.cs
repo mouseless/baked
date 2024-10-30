@@ -1,6 +1,8 @@
 ﻿using Baked.Architecture;
 using Baked.CodeGeneration;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Reflection;
 
 namespace Baked;
@@ -59,5 +61,21 @@ public static class CodeGenerationExtensions
         descriptor.References.AddRange(references);
 
         return descriptor;
+    }
+
+    internal static SyntaxNode? FindClosestScopeNode(this Diagnostic diagnostic)
+    {
+        var tree = diagnostic.Location.SourceTree;
+        if (tree is null) { return null; }
+
+        return GetScopeNode(tree.GetRoot().FindNode(diagnostic.Location.SourceSpan));
+    }
+
+    static SyntaxNode? GetScopeNode(SyntaxNode? node)
+    {
+        if (node is null) { return null; }
+        if (node is MethodDeclarationSyntax or ClassDeclarationSyntax) { return node; }
+
+        return GetScopeNode(node?.Parent);
     }
 }

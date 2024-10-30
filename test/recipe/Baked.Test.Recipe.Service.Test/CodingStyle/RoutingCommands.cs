@@ -93,4 +93,18 @@ public class RoutingCommands : TestServiceNfr
 
         actual.ShouldContain($"{content?.id}");
     }
+
+    [Test]
+    public async Task Initialization_parameters_can_be_entity_with_single_by_unique()
+    {
+        var entityResponse = await Client.PostAsync("/entities", null);
+
+        dynamic? content = JsonConvert.DeserializeObject(await entityResponse.Content.ReadAsStringAsync());
+
+        var response = await Client.PostAsync($"/command-with-single-by-unique?idOrUniqueOrEnum={content?.id}&text=text", null);
+
+        var actual = await response.Content.ReadAsStringAsync();
+
+        actual.ShouldContain($"{content?.id}");
+    }
 }
