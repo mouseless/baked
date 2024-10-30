@@ -53,8 +53,8 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
             conventions.Add(new InitializeUsingQueryParametersConvention());
             conventions.Add(new InitializeUsingIdParameterConvention());
             conventions.Add(new RichTransientInitializerIsGetResourceConvention());
-            conventions.Add(new LookupTransientByIdConvention());
-            conventions.Add(new LookupTransientsByIdsConvention());
+            conventions.Add(new LookupRichTransientByIdConvention());
+            conventions.Add(new LookupRichTransientsByIdsConvention());
         });
     }
 }
