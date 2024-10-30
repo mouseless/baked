@@ -67,7 +67,7 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
 
             conventions.Add(new EntityUnderEntitiesConvention());
             conventions.Add(new EntityInitializerIsPostResourceConvention());
-            conventions.Add(new TargetEntityFromRouteConvention(domainModel));
+            conventions.Add(new TargetEntityFromRouteConvention(domainModel), order: 20);
         });
     }
 }

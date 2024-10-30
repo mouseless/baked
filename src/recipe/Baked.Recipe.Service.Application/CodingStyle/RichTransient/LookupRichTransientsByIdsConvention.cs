@@ -8,8 +8,6 @@ public class LookupRichTransientsByIdsConvention : IApiModelConvention<Parameter
 {
     public void Apply(ParameterModelContext context)
     {
-        if (context.Action.MappedMethod is null) { return; }
-        if (context.Action.MappedMethod.Has<InitializerAttribute>()) { return; }
         if (!context.Parameter.IsInvokeMethodParameter) { return; }
         if (context.Parameter.MappedParameter is null) { return; }
         if (!context.Parameter.MappedParameter.ParameterType.TryGetElementType(out var elementType)) { return; }

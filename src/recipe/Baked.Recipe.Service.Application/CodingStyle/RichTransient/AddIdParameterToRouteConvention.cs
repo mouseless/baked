@@ -5,7 +5,7 @@ using Humanizer;
 
 namespace Baked.CodingStyle.RichTransient;
 
-public class InitializeUsingIdParameterConvention : IApiModelConvention<ActionModelContext>
+public class AddIdParameterToRouteConvention : IApiModelConvention<ActionModelContext>
 {
     public void Apply(ActionModelContext context)
     {

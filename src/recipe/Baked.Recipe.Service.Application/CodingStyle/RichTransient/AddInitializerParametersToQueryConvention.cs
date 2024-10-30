@@ -4,7 +4,7 @@ using Baked.RestApi.Model;
 
 namespace Baked.CodingStyle.RichTransient;
 
-public class InitializeUsingQueryParametersConvention : IApiModelConvention<ActionModelContext>
+public class AddInitializerParametersToQueryConvention : IApiModelConvention<ActionModelContext>
 {
     public void Apply(ActionModelContext context)
     {
