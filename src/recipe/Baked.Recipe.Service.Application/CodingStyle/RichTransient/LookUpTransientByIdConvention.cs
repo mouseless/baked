@@ -3,7 +3,7 @@ using Baked.RestApi.Configuration;
 
 namespace Baked.CodingStyle.RichTransient;
 
-public class LookUpTransientByIdConvention : IApiModelConvention<ParameterModelContext>
+public class LookupTransientByIdConvention : IApiModelConvention<ParameterModelContext>
 {
     public void Apply(ParameterModelContext context)
     {

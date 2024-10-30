@@ -4,7 +4,7 @@ using Humanizer;
 
 namespace Baked.CodingStyle.RichTransient;
 
-public class LookUpTransientsByIdsConvention : IApiModelConvention<ParameterModelContext>
+public class LookupTransientsByIdsConvention : IApiModelConvention<ParameterModelContext>
 {
     public void Apply(ParameterModelContext context)
     {
