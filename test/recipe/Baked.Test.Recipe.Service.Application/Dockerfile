@@ -10,8 +10,16 @@ ENV ASPNETCORE_URLS=http://+:80
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS publish
 
-COPY --exclude=**/*.cs --exclude=**/*.sql --exclude=**/*.json --exclude=**/*.md --exclude=**/*.yml --exclude=Makefile . .
-RUN dotnet restore
+COPY --parents Directory.Packages.props .
+COPY --parents Directory.Build.props .
+COPY --parents src/Directory.Build.props .
+COPY --parents src/core/Baked.Architecture/Baked.Architecture.csproj .
+COPY --parents src/recipe/Baked.Recipe.Service/Baked.Recipe.Service.csproj .
+COPY --parents src/recipe/Baked.Recipe.Service.Application/Baked.Recipe.Service.Application.csproj .
+COPY --parents test/Directory.Build.props .
+COPY --parents test/recipe/Baked.Test.Recipe.Service/Baked.Test.Recipe.Service.csproj .
+COPY --parents test/recipe/Baked.Test.Recipe.Service.Application/Baked.Test.Recipe.Service.Application.csproj .
+RUN dotnet restore test/recipe/Baked.Test.Recipe.Service.Application
 
 COPY . .
 RUN dotnet publish ./test/recipe/Baked.Test.Recipe.Service.Application -c Release -o /app/publish
