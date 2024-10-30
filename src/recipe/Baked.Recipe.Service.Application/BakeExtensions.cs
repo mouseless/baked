@@ -11,6 +11,7 @@ using Baked.ExceptionHandling;
 using Baked.Greeting;
 using Baked.Logging;
 using Baked.Orm;
+using Baked.Reporting;
 
 namespace Baked;
 
@@ -39,7 +40,7 @@ public static class BakeExtensions
         core ??= c => c.Dotnet();
         cors ??= c => c.Disabled();
         database ??= c => c.Sqlite();
-        exceptionHandling ??= c => c.Default();
+        exceptionHandling ??= c => c.ProblemDetails();
         greeting ??= c => c.Swagger();
         logging ??= c => c.Request();
         orm ??= c => c.AutoMap();
@@ -89,6 +90,64 @@ public static class BakeExtensions
             ]);
             app.Features.AddLogging(logging);
             app.Features.AddOrm(orm);
+
+            configure(app);
+        });
+    }
+
+    public static Application DataSource(this Bake bake,
+        Func<BusinessConfigurator, IFeature<BusinessConfigurator>> business,
+        Func<CachingConfigurator, IFeature<CachingConfigurator>>? caching = default,
+        Func<CoreConfigurator, IFeature<CoreConfigurator>>? core = default,
+        Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>>? database = default,
+        Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>>? exceptionHandling = default,
+        Func<GreetingConfigurator, IFeature<GreetingConfigurator>>? greeting = default,
+        Func<LoggingConfigurator, IFeature<LoggingConfigurator>>? logging = default,
+        Func<ReportingConfigurator, IFeature<ReportingConfigurator>>? reporting = default,
+        Action<ApplicationDescriptor>? configure = default
+    )
+    {
+        caching ??= c => c.ScopedMemory();
+        core ??= c => c.Dotnet();
+        database ??= c => c.Sqlite();
+        exceptionHandling ??= c => c.ProblemDetails();
+        greeting ??= c => c.Swagger();
+        logging ??= c => c.Request();
+        reporting ??= c => c.NativeSql();
+        configure ??= _ => { };
+
+        return bake.Application(app =>
+        {
+            app.Layers.AddCodeGeneration();
+            app.Layers.AddDataAccess();
+            app.Layers.AddDomain();
+            app.Layers.AddHttpServer();
+            app.Layers.AddRestApi();
+            app.Layers.AddRuntime();
+
+            app.Features.AddBusiness(business);
+            app.Features.AddCaching(caching);
+            app.Features.AddCodingStyles([
+                c => c.AddRemoveChild(),
+                c => c.CommandPattern(),
+                c => c.RecordsAreDtos(),
+                c => c.RemainingServicesAreSingleton(),
+                c => c.ScopedBySuffix(),
+                c => c.UseBuiltInTypes(),
+                c => c.UseNullableTypes(),
+                c => c.WithMethod()
+            ]);
+            app.Features.AddCore(core);
+            app.Features.AddDatabase(database);
+            app.Features.AddExceptionHandling(exceptionHandling);
+            app.Features.AddGreeting(greeting);
+            app.Features.AddLifetimes([
+                c => c.Scoped(),
+                c => c.Singleton(),
+                c => c.Transient()
+            ]);
+            app.Features.AddLogging(logging);
+            app.Features.AddReporting(reporting);
 
             configure(app);
         });

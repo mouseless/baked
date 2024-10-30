@@ -35,7 +35,7 @@ Bake.New
         database: c => c
             .Sqlite()
             .ForProduction(c.PostgreSql()),
-        exceptionHandling: c => c.Default(typeUrlFormat: "https://baked.mouseless.codes/errors/{0}"),
+        exceptionHandling: c => c.ProblemDetails(typeUrlFormat: "https://baked.mouseless.codes/errors/{0}"),
         configure: app =>
         {
             app.Features.AddReporting(c => c

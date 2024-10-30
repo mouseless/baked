@@ -11,6 +11,7 @@ public class MockCoreFeature : IFeature<CoreConfigurator>
         configurator.ConfigureServiceCollection(services =>
         {
             services.AddSingleton<TimeProvider, ResettableFakeTimeProvider>();
+            services.AddSingleton<ITextTransformer, HumanizerTextTransformer>();
             services.AddSingleton<FakeSettings>();
         });
 
