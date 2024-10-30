@@ -13,6 +13,7 @@ public class DotnetCoreFeature(Assembly _entryAssembly, Func<Assembly, string?> 
         configurator.ConfigureServiceCollection(services =>
         {
             services.AddSingleton(TimeProvider.System);
+            services.AddSingleton<ITextTransformer, HumanizerTextTransformer>();
 
             services.AddFileProvider(new EmbeddedFileProvider(_entryAssembly, _baseNamespace(_entryAssembly)));
             services.AddFileProvider(new PhysicalFileProvider(Path.GetDirectoryName(_entryAssembly.Location) ??
