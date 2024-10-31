@@ -70,17 +70,16 @@ public class DomainAssembliesBusinessFeature(
             builder.Conventions.AddTypeMetadata(
                 apply: (context, add) =>
                 {
-                    string @namespace = context.Type.Namespace ?? string.Empty;
-
-                    string? baseNamespace = null;
-                    context.Type.Apply(t => BaseNamespaces.TryGetValue(t.Assembly, out baseNamespace));
-                    if (baseNamespace is not null)
+                    var @namespace = context.Type.Namespace ?? string.Empty;
+                    context.Type.Apply(t =>
                     {
+                        if (!BaseNamespaces.TryGetValue(t.Assembly, out var baseNamespace)) { return; }
+
                         @namespace =
                             @namespace == baseNamespace ? string.Empty :
                             @namespace.StartsWith(baseNamespace) ? @namespace[(baseNamespace.Length + 1)..] :
                             @namespace;
-                    }
+                    });
 
                     add(context.Type, new NamespaceAttribute(@namespace));
                 },
