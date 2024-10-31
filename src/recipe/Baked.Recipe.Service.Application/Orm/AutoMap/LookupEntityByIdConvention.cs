@@ -9,7 +9,7 @@ public class LookupEntityByIdConvention(DomainModel _domain)
 {
     public void Apply(ParameterModelContext context)
     {
-        if (context.Parameter.MappedParameter is null) { return; }
+        if (context.Parameter.IsTarget()) { return; }
         if (!context.Parameter.TypeModel.TryGetQueryContextType(_domain, out var queryContextType)) { return; }
 
         var notNull = context.Parameter.MappedParameter?.Has<NotNullAttribute>() == true;

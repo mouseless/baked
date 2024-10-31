@@ -59,6 +59,9 @@ public static class DomainAssembliesBusinessExtensions
             }
         );
 
+    public static bool IsTarget(this RestApi.Model.ParameterModel parameter) =>
+        parameter.Id == "target";
+
     public static MethodOverloadModel? FirstPublicInstanceWithMostParametersOrDefault(this IEnumerable<MethodOverloadModel> overloads) =>
         overloads
             .Where(o => o.IsPublic && !o.IsStatic)
