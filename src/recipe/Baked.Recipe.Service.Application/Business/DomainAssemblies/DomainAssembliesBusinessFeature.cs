@@ -1,4 +1,4 @@
-﻿using Baked.Architecture;
+using Baked.Architecture;
 using Baked.Domain;
 using Baked.Domain.Configuration;
 using Baked.Domain.Model;
@@ -15,9 +15,12 @@ namespace Baked.Business.DomainAssemblies;
 public class DomainAssembliesBusinessFeature(
     IEnumerable<(Assembly assembly, string? baseNamespace)> _assemblyDescriptors,
     Func<IEnumerable<MethodOverloadModel>, MethodOverloadModel> _defaultOverloadSelector,
-    bool _addEmbeddedFileProviders
+    bool _addEmbeddedFileProviders,
+    Func<TypeModel, bool> setNamespaceWhen
 ) : IFeature<BusinessConfigurator>
 {
+    Dictionary<Assembly, string> BaseNamespaces { get; } = _assemblyDescriptors.ToDictionary(kvp => kvp.assembly, kvp => kvp.baseNamespace ?? kvp.assembly.GetName().Name ?? string.Empty);
+
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureDomainTypeCollection(types =>
@@ -64,6 +67,25 @@ public class DomainAssembliesBusinessFeature(
             builder.Index.Type.Add<ServiceAttribute>();
             builder.Index.Type.Add<CasterAttribute>();
 
+            builder.Conventions.AddTypeMetadata(
+                apply: (context, add) =>
+                {
+                    string @namespace = context.Type.Namespace ?? string.Empty;
+
+                    string? baseNamespace = null;
+                    context.Type.Apply(t => BaseNamespaces.TryGetValue(t.Assembly, out baseNamespace));
+                    if (baseNamespace is not null)
+                    {
+                        @namespace =
+                            @namespace == baseNamespace ? string.Empty :
+                            @namespace.StartsWith(baseNamespace) ? @namespace[(baseNamespace.Length + 1)..] :
+                            @namespace;
+                    }
+
+                    add(context.Type, new NamespaceAttribute(@namespace));
+                },
+                when: c => setNamespaceWhen(c.Type)
+            );
             builder.Conventions.AddTypeMetadata(new ServiceAttribute(),
                 when: c =>
                     c.Type.IsPublic &&

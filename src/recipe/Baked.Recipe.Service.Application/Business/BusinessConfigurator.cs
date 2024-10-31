@@ -1,3 +1,3 @@
 ﻿namespace Baked.Business;
 
-public class BusinessConfigurator { }
+public class BusinessConfigurator;

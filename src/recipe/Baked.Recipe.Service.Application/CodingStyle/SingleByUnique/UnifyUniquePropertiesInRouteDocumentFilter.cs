@@ -23,7 +23,15 @@ public class UnifyUniquePropertiesInRouteDocumentFilter : IDocumentFilter
 
             if (!unifiedActions.TryGetValue(action.GroupName, out var unifiedAction))
             {
-                unifiedActions.Add(action.GroupName, unifiedAction = new($"/{route.Template.Split('/').First()}"));
+                var basePathParts = new List<string>();
+                foreach (var part in route.Template.Split('/'))
+                {
+                    if (part.Contains("{")) { break; }
+
+                    basePathParts.Add(part);
+                }
+
+                unifiedActions.Add(action.GroupName, unifiedAction = new($"/{basePathParts.Join('/')}"));
             }
 
             unifiedAction.PathsToRemove.Add($"/{route.Template.Replace(":guid", string.Empty)}");

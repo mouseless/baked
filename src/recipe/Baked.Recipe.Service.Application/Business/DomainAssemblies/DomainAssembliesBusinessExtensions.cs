@@ -11,15 +11,18 @@ public static class DomainAssembliesBusinessExtensions
     public static DomainAssembliesBusinessFeature DomainAssemblies(this BusinessConfigurator configurator, List<Assembly> assemblies,
         Func<IEnumerable<MethodOverloadModel>, MethodOverloadModel>? defaultOverloadSelector = default,
         bool addEmbeddedFileProviders = true,
-        string? baseNamespace = default
+        string? baseNamespace = default,
+        Func<TypeModel, bool>? setNamespaceWhen = default
     ) => configurator.DomainAssemblies(assemblies.Select(a => (a, baseNamespace)),
         defaultOverloadSelector: defaultOverloadSelector,
-        addEmbeddedFileProviders: addEmbeddedFileProviders
+        addEmbeddedFileProviders: addEmbeddedFileProviders,
+        setNamespaceWhen: setNamespaceWhen
     );
 
     public static DomainAssembliesBusinessFeature DomainAssemblies(this BusinessConfigurator _, IEnumerable<(Assembly, string?)> assemblyDescriptors,
         Func<IEnumerable<MethodOverloadModel>, MethodOverloadModel>? defaultOverloadSelector = default,
-        bool addEmbeddedFileProviders = true
+        bool addEmbeddedFileProviders = true,
+        Func<TypeModel, bool>? setNamespaceWhen = default
     ) => new(
         assemblyDescriptors,
         defaultOverloadSelector ?? (overloads =>
@@ -30,7 +33,8 @@ public static class DomainAssembliesBusinessExtensions
             overloads.FirstWithMostParametersOrDefault() ??
             throw new($"Method without an overload should not exist")
         ),
-        addEmbeddedFileProviders
+        addEmbeddedFileProviders,
+        setNamespaceWhen ?? (t => true)
     );
 
     public static void AddAction(this ControllerModel controller, TypeModel type, MethodModel method) =>

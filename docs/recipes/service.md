@@ -41,6 +41,7 @@ Bake.New
 |                    | Command Pattern                    |                                    |
 |                    | Entity Extension via Composition   |                                    |
 |                    | Entity Subclass via Composition    |                                    |
+|                    | Namespace as Route                 |                                    |
 |                    | Object as JSON                     |                                    |
 |                    | Records are DTOs                   |                                    |
 |                    | Remaining Services are Singleton   |                                    |
