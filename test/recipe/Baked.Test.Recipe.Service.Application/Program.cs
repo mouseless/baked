@@ -1,5 +1,4 @@
 ﻿using Baked.Test.Orm;
-using System.Reflection;
 
 Bake.New
     .Service(
@@ -28,9 +27,7 @@ Bake.New
             claims: ["User", "Admin", "BaseA", "BaseB", "GivenA", "GivenB", "GivenC"],
             baseClaims: ["BaseA", "BaseB"]
         ),
-        core: c => c
-            .Dotnet(baseNamespace: _ => "Baked.Test")
-            .ForNfr(c.Dotnet(entryAssembly: Assembly.GetExecutingAssembly(), baseNamespace: _ => "Baked.Test")),
+        core: c => c.Dotnet(baseNamespace: _ => "Baked.Test"),
         cors: c => c.AspNetCore(Settings.Required<string>("CorsOrigin")),
         database: c => c
             .Sqlite()

@@ -1,6 +1,6 @@
 ﻿using System.Net.Http.Json;
 
-namespace Baked.Test.Runtime;
+namespace Baked.Test.Core;
 
 public class ReadingResources : TestServiceNfr
 {

@@ -15,8 +15,10 @@ public abstract class WebApplicationNfr : Nfr
 
     protected static IConfiguration Configuration => ServiceProvider.GetRequiredService<IConfiguration>();
 
-    protected static void Init<TEntryPoint>() where TEntryPoint : class
+    protected static new void Init<TEntryPoint>() where TEntryPoint : class
     {
+        Nfr.Init<TEntryPoint>();
+
         Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", nameof(Nfr));
 
         var webApplicationFactory = new WebApplicationFactory<TEntryPoint>();

@@ -61,7 +61,7 @@ c => c.ObjectAsJson()
 
 ## Records are DTOs
 
-Configures domain type records as valid input paramters. Methods containing
+Configures domain type records as valid input parameters. Methods containing
 record parameters render as api endpoints.
 
 ```csharp
