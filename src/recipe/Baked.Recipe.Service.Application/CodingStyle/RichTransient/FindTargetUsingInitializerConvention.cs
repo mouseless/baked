@@ -13,7 +13,7 @@ public class FindTargetUsingInitializerConvention : IApiModelConvention<ActionMo
         if (context.Action.MappedMethod.Has<InitializerAttribute>()) { return; }
 
         var initializer = members.Methods.Having<InitializerAttribute>().Single();
-        var initilzerParameters = context.Action.Parameters.Where(p => !p.FromServices && !p.IsInvokeMethodParameter && (p.FromQuery || p.FromRoute));
-        context.Action.FindTargetStatement = $"target.{initializer.Name}({initilzerParameters.Select(p => $"{p.InternalName}: {p.RenderLookup($"@{p.Name}")}").Join(", ")})";
+        var initializerParameters = context.Action.Parameters.Where(p => initializer.DefaultOverload.Parameters.Contains(p.Id));
+        context.Action.FindTargetStatement = $"target.{initializer.Name}({initializerParameters.Select(p => $"{p.InternalName}: {p.RenderLookup($"@{p.Name}")}").Join(", ")})";
     }
 }
