@@ -1,5 +1,6 @@
 ﻿using Baked.Business;
 using Baked.RestApi.Configuration;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Baked.CodingStyle.RichTransient;
 
@@ -14,10 +15,13 @@ public class LookupRichTransientByIdConvention : IApiModelConvention<ParameterMo
         var initializer = members.Methods.Having<InitializerAttribute>().Single();
         if (!initializer.DefaultOverload.Parameters.TryGetValue("id", out var idParameter)) { return; }
 
+        var notNull = context.Parameter.MappedParameter.Has<NotNullAttribute>();
         var factoryParameter = context.Action.AddFactoryAsService(context.Parameter.MappedParameter.ParameterType);
 
         context.Parameter.Name = $"{context.Parameter.Name}Id";
         context.Parameter.Type = $"{idParameter.ParameterType.CSharpFriendlyFullName}";
-        context.Parameter.LookupRenderer = p => factoryParameter.BuildInitializerById(p);
+        context.Parameter.LookupRenderer = p => factoryParameter.BuildInitializerById(p,
+            nullable: !notNull
+        );
     }
 }

@@ -4,6 +4,7 @@ using Baked.CodingStyle.RichTransient;
 using Baked.Domain.Model;
 using Baked.RestApi.Model;
 using Humanizer;
+
 using ParameterModel = Baked.RestApi.Model.ParameterModel;
 
 namespace Baked;
@@ -27,13 +28,24 @@ public static class RichTransientCodingStyleExtensions
         return parameter;
     }
 
-    public static string BuildInitializerById(this ParameterModel factoryParameter, string valueExpression)
+    public static string BuildInitializerById(this ParameterModel factoryParameter, string valueExpression,
+        string? notNullValueExpression = default,
+        bool nullable = false
+    )
     {
         if (factoryParameter.TypeModel is null) { throw new("FactoryParameter should have mapped parameter"); }
 
-        var initializer = factoryParameter.TypeModel.GetMembers().Methods.Having<InitializerAttribute>().Single();
+        notNullValueExpression ??= valueExpression;
 
-        return $"new{factoryParameter.TypeModel.Name.Pascalize()}().{initializer.Name}({valueExpression})";
+        var initializer = factoryParameter.TypeModel.GetMembers().Methods.Having<InitializerAttribute>().Single();
+        var initializerById = $"new{factoryParameter.TypeModel.Name.Pascalize()}().{initializer.Name}({notNullValueExpression})";
+
+        if (nullable)
+        {
+            initializerById = $"({valueExpression} != null ? {initializerById} : null)";
+        }
+
+        return initializerById;
     }
 
     public static string BuildInitializerByIds(this ParameterModel factoryParameter, string valueExpression,
