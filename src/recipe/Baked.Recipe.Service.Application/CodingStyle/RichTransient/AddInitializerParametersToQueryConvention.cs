@@ -2,14 +2,15 @@
 using Baked.RestApi.Configuration;
 using Baked.RestApi.Model;
 
-namespace Baked.CodingStyle.CommandPattern;
+namespace Baked.CodingStyle.RichTransient;
 
-public class InitializeUsingQueryParametersConvention : IApiModelConvention<ActionModelContext>
+public class AddInitializerParametersToQueryConvention : IApiModelConvention<ActionModelContext>
 {
     public void Apply(ActionModelContext context)
     {
         if (!context.Controller.MappedType.TryGetMembers(out var members)) { return; }
-        if (!members.Has<PubliclyInitializableAttribute>()) { return; }
+        if (!members.Methods.Having<InitializerAttribute>().Any()) { return; }
+        if (members.Has<LocatableAttribute>()) { return; }
 
         var initializer = members.Methods.Having<InitializerAttribute>().Single();
         foreach (var parameter in initializer.DefaultOverload.Parameters)
@@ -22,11 +23,5 @@ public class InitializeUsingQueryParametersConvention : IApiModelConvention<Acti
                     IsInvokeMethodParameter = false
                 };
         }
-
-        var targetParameter = context.Action.Parameter["target"];
-        targetParameter.Name = "newTarget";
-        targetParameter.Type = $"Func<{targetParameter.Type}>";
-
-        context.Action.FindTargetStatement = $"newTarget().{initializer.Name}({initializer.DefaultOverload.Parameters.Select(p => $"@{p.Name}").Join(", ")})";
     }
 }

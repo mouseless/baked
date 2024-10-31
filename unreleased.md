@@ -13,6 +13,7 @@
     for production, `Mock` and `Fake` for development
   - `DataSource` recipe is available which includes minimal features for a web
     application that only reads data from given database
+  - `RichTransient` coding style feature is now added 
 
 ## Improvements
 

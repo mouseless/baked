@@ -1,4 +1,5 @@
-﻿using Baked.Test.Orm;
+﻿using Baked.Test.CodingStyle.RichTransient;
+using Baked.Test.Orm;
 using Microsoft.Extensions.Logging;
 
 namespace Baked.Test.Business;
@@ -92,6 +93,21 @@ public class MethodSamples(ILogger<MethodSamples> _logger)
     /// </param>
     public IEnumerable<Entity> EntityListParameters(IEnumerable<Entity> entities, Entity[] otherEntities) =>
         [.. entities, .. otherEntities];
+
+    /// <param name="transient">
+    /// Transient description
+    /// </param>
+    public RichTransientWithData TransientParameters(RichTransientWithData transient) =>
+        transient;
+
+    /// <param name="transients">
+    /// Transients description
+    /// </param>
+    /// <param name="otherTransients">
+    /// Other transients description
+    /// </param>
+    public IEnumerable<RichTransientWithData> TransientListParameters(IEnumerable<RichTransientWithData> transients, RichTransientWithData[] otherTransients) =>
+        [.. transients, .. otherTransients];
 
     internal Internal Internal() =>
         new();

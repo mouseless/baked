@@ -13,7 +13,7 @@ public class TargetEntityExtensionFromRouteConvention(DomainModel _domain)
     {
         if (context.Action.MappedMethod is null) { return; }
         if (context.Action.MappedMethod.Has<InitializerAttribute>()) { return; }
-        if (context.Parameter.IsInvokeMethodParameter) { return; }
+        if (!context.Parameter.IsTarget()) { return; }
 
         var entityExtensionType = context.Parameter.TypeModel;
         if (!entityExtensionType.TryGetEntityTypeFromExtension(_domain, out var entityType)) { return; }
