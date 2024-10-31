@@ -13,6 +13,8 @@
     for production, `Mock` and `Fake` for development
   - `DataSource` recipe is available which includes minimal features for a web
     application that only reads data from given database
+  - `NamespaceAsRoute` coding style is introduced where namespaces are directly
+    reflected to the endpoints routes
 
 ## Improvements
 
