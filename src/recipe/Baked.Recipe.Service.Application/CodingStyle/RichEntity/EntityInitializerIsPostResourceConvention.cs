@@ -5,20 +5,17 @@ using Humanizer;
 
 namespace Baked.CodingStyle.RichEntity;
 
-public class EntityInitializerIsPostResourceConvention : IApiModelConvention<ParameterModelContext>
+public class EntityInitializerIsPostResourceConvention : IApiModelConvention<ActionModelContext>
 {
-    public void Apply(ParameterModelContext context)
+    public void Apply(ActionModelContext context)
     {
-        if (context.Parameter.IsInvokeMethodParameter) { return; }
-        if (!context.Parameter.TypeModel.TryGetMetadata(out var metadata)) { return; }
+        if (context.Controller.MappedType is null) { return; }
+        if (!context.Controller.MappedType.TryGetMetadata(out var metadata)) { return; }
         if (!metadata.Has<EntityAttribute>()) { return; }
         if (context.Action.MappedMethod is null) { return; }
         if (!context.Action.MappedMethod.Has<InitializerAttribute>()) { return; }
 
-        context.Parameter.Name = "newTarget";
-        context.Parameter.Type = $"Func<{context.Parameter.Type}>";
-
-        context.Action.FindTargetStatement = "newTarget()";
-        context.Action.RouteParts = [context.Parameter.TypeModel.Name.Pluralize()];
+        context.Action.Method = HttpMethod.Post;
+        context.Action.RouteParts = [context.Controller.MappedType.Name.Pluralize()];
     }
 }

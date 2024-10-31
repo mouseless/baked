@@ -44,9 +44,9 @@ public class SingleByUniqueCodingStyleFeature : IFeature<CodingStyleConfigurator
         {
             var domain = configurator.Context.GetDomainModel();
 
-            conventions.Add(new TargetEntityFromRouteByUniquePropertiesConvention(domain));
             conventions.Add(new UseRouteInSingleByUniqueConvention());
             conventions.Add(new MarkActionAsSingleByUniqueConvention());
+            conventions.Add(new TargetEntityFromRouteByUniquePropertiesConvention(domain), order: 30);
         });
 
         configurator.ConfigureServiceCollection(services =>

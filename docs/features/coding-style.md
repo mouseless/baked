@@ -18,10 +18,7 @@ c => c.AddRemoveChild()
 
 ## Command Pattern
 
-Configures public methods of transient services as api methods. This coding
-style allows you to have a public initializer (`With`) with parameters which
-will render as query parameters. It also removes `Execute` and `Process` names
-from route.
+Uses class names as route and removes `Execute` and `Process` names from route.
 
 ```csharp
 c => c.CommandPattern()
@@ -93,6 +90,21 @@ Configures routes and swagger docs to use entity methods as resource actions.
 
 ```csharp
 c => c.RichEntity()
+```
+
+## Rich Transient
+
+Configures transient services as api services. This coding style allows you to 
+have a public initializer (`With`) with parameters which will render as query 
+parameters or single `id` parameter wich will render from route.
+
+Rich transients with `id` types can be method parameters and located using
+their initializers. 
+
+Configures routes and swagger docs to use entity methods as resource actions.
+
+```csharp
+c => c.RichTransient()
 ```
 
 ## Scoped by Suffix

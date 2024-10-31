@@ -50,9 +50,9 @@ public class EntitySubclassViaCompositionCodingStyleFeature : IFeature<CodingSty
         {
             var domain = configurator.Context.GetDomainModel();
 
-            conventions.Add(new TargetEntitySubclassFromRouteConvention(domain));
             conventions.Add(new EntitySubclassUnderEntitiesConvention(domain));
             conventions.Add(new EntitySubclassInitializerIsPostResourceConvention(domain));
+            conventions.Add(new TargetEntitySubclassFromRouteConvention(domain), order: 20);
         });
     }
 }

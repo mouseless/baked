@@ -16,10 +16,6 @@ public class EntitySubclassInitializerIsPostResourceConvention(DomainModel _doma
         if (context.Action.MappedMethod is null) { return; }
         if (!context.Action.MappedMethod.Has<InitializerAttribute>()) { return; }
 
-        context.Parameter.Name = "newTarget";
-        context.Parameter.Type = $"Func<{context.Parameter.Type}>";
-
-        context.Action.FindTargetStatement = "newTarget()";
         context.Action.RouteParts = [entityType.Name.Pluralize(), subclassName];
     }
 }

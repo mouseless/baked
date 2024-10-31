@@ -13,7 +13,7 @@ public class TargetEntitySubclassFromRouteConvention(DomainModel _domain)
     {
         if (context.Action.MappedMethod is null) { return; }
         if (context.Action.MappedMethod.Has<InitializerAttribute>()) { return; }
-        if (context.Parameter.IsInvokeMethodParameter) { return; }
+        if (!context.Parameter.IsTarget()) { return; }
 
         var entitySubclassType = context.Parameter.TypeModel;
         if (!entitySubclassType.TryGetSubclassName(out var subclassName)) { return; }

@@ -22,7 +22,7 @@ public class TargetEntityFromRouteByUniquePropertiesConvention(DomainModel _doma
 
     public void Apply(ParameterModelContext context)
     {
-        if (context.Parameter.IsInvokeMethodParameter) { return; }
+        if (!context.Parameter.IsTarget()) { return; }
         if (context.Action.MappedMethod is null) { return; }
         if (context.Action.MappedMethod.Has<InitializerAttribute>()) { return; }
 

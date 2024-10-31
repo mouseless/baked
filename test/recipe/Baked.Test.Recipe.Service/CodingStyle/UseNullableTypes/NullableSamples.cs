@@ -1,5 +1,6 @@
 using Baked.Test.Business;
 using Baked.Test.CodingStyle.EntityExtensionViaComposition;
+using Baked.Test.CodingStyle.RichTransient;
 using Baked.Test.Orm;
 using Microsoft.Extensions.Logging;
 
@@ -55,5 +56,13 @@ public class NullableSamples(ILogger<NullableSamples> _logger)
 
     public void EntityExtension(EntityExtension notNull, EntityExtension? nullable,
         EntityExtension? optionalNullable = default
+    ) => _logger.LogInformation($"{notNull} - {nullable} - {optionalNullable}");
+
+    public void GetRichTransient(RichTransientWithData notNull, RichTransientWithData? nullable,
+       RichTransientWithData? optionalNullable = default
+   ) => _logger.LogInformation($"{notNull} - {nullable} - {optionalNullable}");
+
+    public void RichTransient(RichTransientWithData notNull, RichTransientWithData? nullable,
+        RichTransientWithData? optionalNullable = default
     ) => _logger.LogInformation($"{notNull} - {nullable} - {optionalNullable}");
 }
