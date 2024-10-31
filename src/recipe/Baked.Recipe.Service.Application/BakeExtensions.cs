@@ -65,6 +65,7 @@ public static class BakeExtensions
                 c => c.CommandPattern(),
                 c => c.EntityExtensionViaComposition(),
                 c => c.EntitySubclassViaComposition(),
+                c => c.NamespaceAsRoute(),
                 c => c.ObjectAsJson(),
                 c => c.RecordsAreDtos(),
                 c => c.RemainingServicesAreSingleton(),
@@ -130,6 +131,7 @@ public static class BakeExtensions
             app.Features.AddCodingStyles([
                 c => c.AddRemoveChild(),
                 c => c.CommandPattern(),
+                c => c.NamespaceAsRoute(),
                 c => c.RecordsAreDtos(),
                 c => c.RemainingServicesAreSingleton(),
                 c => c.ScopedBySuffix(),

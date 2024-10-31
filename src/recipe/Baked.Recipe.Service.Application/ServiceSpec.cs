@@ -55,6 +55,7 @@ public abstract class ServiceSpec : Spec
                 c => c.CommandPattern(),
                 c => c.EntityExtensionViaComposition(),
                 c => c.EntitySubclassViaComposition(),
+                c => c.NamespaceAsRoute(),
                 c => c.ObjectAsJson(),
                 c => c.RecordsAreDtos(),
                 c => c.RemainingServicesAreSingleton(),

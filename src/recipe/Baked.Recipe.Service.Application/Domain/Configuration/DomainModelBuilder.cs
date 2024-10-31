@@ -34,12 +34,14 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
         }
         while (!_buildQueue.IsEmpty);
 
-        var result = new DomainModel(new(_references.Select(t => t.Model)));
+        return new(new(_references.Select(t => t.Model)));
 
+    }
+
+    public void PostBuild(DomainModel result)
+    {
         ApplyConventions(result);
         BuildIndices(result);
-
-        return result;
     }
 
     TypeModel.Factory GetFactory(Type t)

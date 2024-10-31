@@ -2,7 +2,10 @@
 
 Bake.New
     .Service(
-        business: c => c.DomainAssemblies([typeof(Entity).Assembly], baseNamespace: "Baked.Test"),
+        business: c => c.DomainAssemblies([typeof(Entity).Assembly],
+            baseNamespace: "Baked.Test",
+            setNamespaceWhen: t => t.Namespace is not null && t.Namespace.StartsWith("Baked.Test.CodingStyle.NamespaceAsRoute")
+        ),
         authentications: [
             c => c.FixedBearerToken(
                 tokens =>

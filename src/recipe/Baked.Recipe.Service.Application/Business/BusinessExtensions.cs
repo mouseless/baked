@@ -1,5 +1,6 @@
-﻿using Baked.Architecture;
+using Baked.Architecture;
 using Baked.Business;
+using Baked.Domain.Model;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
@@ -71,6 +72,29 @@ public static class BusinessExtensions
         result = apiDescription.CustomAttributes().OfType<MappedMethodAttribute>().SingleOrDefault();
 
         return result is not null;
+    }
+
+    public static bool TryGetNamespace(this TypeModel type, [NotNullWhen(true)] out string? @namespace)
+    {
+        if (!type.TryGetNamespaceAttribute(out var namespaceAttribute))
+        {
+            @namespace = null;
+
+            return false;
+        }
+
+        @namespace = namespaceAttribute.Value;
+
+        return true;
+    }
+
+    public static bool TryGetNamespaceAttribute(this TypeModel type, [NotNullWhen(true)] out NamespaceAttribute? namespaceAttribute)
+    {
+        namespaceAttribute = default;
+
+        return
+            type.TryGetMetadata(out var metadata) &&
+            metadata.TryGetSingle(out namespaceAttribute);
     }
 
     public static void SetJsonExample(this IDictionary<string, OpenApiMediaType> mediaTypes, XmlNode? documentation, string @for)

@@ -36,6 +36,7 @@ Bake.New
 | Coding Style(s)    | :white_check_mark:                 | :white_check_mark:                 |
 |                    | Add/Remove Child                   |                                    |
 |                    | Command Pattern                    |                                    |
+|                    | Namespace as Route                 |                                    |
 |                    | Records are DTOs                   |                                    |
 |                    | Remaining Services are Singleton   |                                    |
 |                    | Scoped by Suffix                   |                                    |

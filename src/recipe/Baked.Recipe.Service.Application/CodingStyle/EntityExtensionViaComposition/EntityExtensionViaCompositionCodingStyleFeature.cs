@@ -29,6 +29,20 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
                     parameterTypeMetadata.Has<EntityAttribute>(),
                 order: 10
             );
+            builder.Conventions.RemoveTypeMetadata<NamespaceAttribute>(c => c.Type.Has<EntityExtensionAttribute>(), order: 10);
+            builder.Conventions.AddTypeMetadata(
+                apply: (c, add) =>
+                {
+                    var domain = configurator.Context.GetDomainModel();
+                    var entityType = c.Type.GetSingle<EntityExtensionAttribute>().EntityType;
+                    var entityTypeModel = domain.Types[entityType];
+                    if (!entityTypeModel.TryGetNamespaceAttribute(out var namespaceAttribute)) { return; }
+
+                    add(c.Type, namespaceAttribute);
+                },
+                when: c => c.Type.Has<EntityExtensionAttribute>(),
+                order: 10
+            );
             builder.Conventions.AddTypeMetadata(
                 apply: (c, add) =>
                 {
