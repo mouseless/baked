@@ -9,7 +9,7 @@ public class LookupEntityExtensionByIdConvention(DomainModel _domain)
 {
     public void Apply(ParameterModelContext context)
     {
-        if (!context.Parameter.IsInvokeMethodParameter) { return; }
+        if (context.Parameter.IsTarget()) { return; }
 
         var entityExtensionType = context.Parameter.TypeModel;
         if (!entityExtensionType.TryGetEntityTypeFromExtension(_domain, out var entityType)) { return; }

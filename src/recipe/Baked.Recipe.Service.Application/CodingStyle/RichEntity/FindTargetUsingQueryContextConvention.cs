@@ -23,7 +23,7 @@ public class FindTargetUsingQueryContextConvention(DomainModel _domain)
 
         var idProperty = entityType.GetMembers().Properties["Id"];
 
-        var target = context.Action.Parameter["target"];
+        var target = context.Action.Parameters.Single(p => p.IsTarget());
         target.Name = "id";
         target.From = ParameterModelFrom.Route;
         target.RoutePosition = 1;
