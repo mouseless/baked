@@ -1,4 +1,4 @@
 ﻿namespace Baked.Business;
 
 [AttributeUsage(AttributeTargets.Method)]
-public class ExternalAttribute : Attribute { }
+public class ExternalAttribute : Attribute;

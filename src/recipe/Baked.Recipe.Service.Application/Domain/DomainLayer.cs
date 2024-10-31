@@ -41,6 +41,7 @@ public class DomainLayer : LayerBase<AddDomainTypes>
             var model = builder.Build(domainTypes);
 
             Context.Add(model);
+            builder.PostBuild(model);
         }
     }
 }

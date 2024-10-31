@@ -49,6 +49,13 @@ uses the first unique property to discriminate entity records.
 ```csharp
 c => c.EntitySubclassViaComposition()
 ```
+## Namespace as Route
+
+Reflects namespace of a domain class as base route for its endpoints.
+
+```csharp
+c => c.NamespaceAsRoute()
+```
 
 ## Object as JSON
 
@@ -94,12 +101,12 @@ c => c.RichEntity()
 
 ## Rich Transient
 
-Configures transient services as api services. This coding style allows you to 
-have a public initializer (`With`) with parameters which will render as query 
+Configures transient services as api services. This coding style allows you to
+have a public initializer (`With`) with parameters which will render as query
 parameters or single `id` parameter wich will render from route.
 
 Rich transients with `id` types can be method parameters and located using
-their initializers. 
+their initializers.
 
 Configures routes and swagger docs to use entity methods as resource actions.
 
