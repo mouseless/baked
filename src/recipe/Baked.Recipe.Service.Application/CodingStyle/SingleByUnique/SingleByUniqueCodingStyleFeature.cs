@@ -46,7 +46,7 @@ public class SingleByUniqueCodingStyleFeature : IFeature<CodingStyleConfigurator
 
             conventions.Add(new UseRouteInSingleByUniqueConvention());
             conventions.Add(new MarkActionAsSingleByUniqueConvention());
-            conventions.Add(new TargetEntityFromRouteByUniquePropertiesConvention(domain), order: 20);
+            conventions.Add(new TargetEntityFromRouteByUniquePropertiesConvention(domain), order: 30);
         });
 
         configurator.ConfigureServiceCollection(services =>

@@ -53,13 +53,11 @@ public class Compiler(GeneratedAssemblyDescriptor _descriptor)
                 errors.AppendLine();
                 errors.AppendLine(diagnostic.GetMessage());
                 errors.AppendLine();
-                errors.AppendLine(diagnostic.FindClosestScopeNode()?.ToString());
+                errors.AppendLine(diagnostic.FindClosestScopedCode());
                 errors.AppendLine();
             }
 
-            throw new Exception($"""
-                {errors}
-            """);
+            throw new Exception($"{errors}");
         }
 
         ms.Seek(0, SeekOrigin.Begin);

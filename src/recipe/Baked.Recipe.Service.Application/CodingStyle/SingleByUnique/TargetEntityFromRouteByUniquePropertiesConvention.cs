@@ -25,6 +25,7 @@ public class TargetEntityFromRouteByUniquePropertiesConvention(DomainModel _doma
         if (context.Parameter.IsInvokeMethodParameter) { return; }
         if (context.Action.MappedMethod is null) { return; }
         if (context.Action.MappedMethod.Has<InitializerAttribute>()) { return; }
+        if (context.Parameter.MappedParameter is not null) { return; }
 
         if (!TryGetEntityType(context, out var entityType, out var castTo)) { return; }
         if (!entityType.TryGetQueryType(_domain, out var queryType)) { return; }

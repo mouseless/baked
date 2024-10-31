@@ -63,12 +63,12 @@ public static class CodeGenerationExtensions
         return descriptor;
     }
 
-    internal static SyntaxNode? FindClosestScopeNode(this Diagnostic diagnostic)
+    internal static string? FindClosestScopedCode(this Diagnostic diagnostic)
     {
         var tree = diagnostic.Location.SourceTree;
         if (tree is null) { return null; }
 
-        return GetScopeNode(tree.GetRoot().FindNode(diagnostic.Location.SourceSpan));
+        return GetScopeNode(tree.GetRoot().FindNode(diagnostic.Location.SourceSpan))?.ToString() ?? diagnostic.Location.SourceTree?.ToString();
     }
 
     static SyntaxNode? GetScopeNode(SyntaxNode? node)
