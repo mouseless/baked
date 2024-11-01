@@ -13,13 +13,13 @@ using System.Reflection;
 namespace Baked.Business.DomainAssemblies;
 
 public class DomainAssembliesBusinessFeature(
-    IEnumerable<(Assembly assembly, string? baseNamespace)> _assemblyDescriptors,
+    IEnumerable<(Assembly assembly, string baseNamespace)> _assemblyDescriptors,
     Func<IEnumerable<MethodOverloadModel>, MethodOverloadModel> _defaultOverloadSelector,
     bool _addEmbeddedFileProviders,
     Func<TypeModel, bool> setNamespaceWhen
 ) : IFeature<BusinessConfigurator>
 {
-    Dictionary<Assembly, string> BaseNamespaces { get; } = _assemblyDescriptors.ToDictionary(kvp => kvp.assembly, kvp => kvp.baseNamespace ?? kvp.assembly.GetName().Name ?? string.Empty);
+    Dictionary<Assembly, string> BaseNamespaces { get; } = _assemblyDescriptors.ToDictionary(kvp => kvp.assembly, kvp => kvp.baseNamespace);
 
     public void Configure(LayerConfigurator configurator)
     {

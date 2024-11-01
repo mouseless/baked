@@ -7,7 +7,7 @@ public abstract class TestServiceSpec : ServiceSpec
 {
     static TestServiceSpec() =>
         Init(
-            business: c => c.DomainAssemblies([typeof(Entity).Assembly], baseNamespace: "Baked.Test"),
+            business: c => c.DomainAssemblies(typeof(Entity).Assembly, baseNamespace: "Baked.Test"),
             communication: c => c.Mock(defaultResponses: response =>
             {
                 response.ForClient<ExternalSamples>(response: "test result");
