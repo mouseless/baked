@@ -46,6 +46,7 @@ Bake.New
 |                    | Records are DTOs                   |                                    |
 |                    | Remaining Services are Singleton   |                                    |
 |                    | Rich Entity                        |                                    |
+|                    | Rich Transient                     |                                    |
 |                    | Scoped by Suffix                   |                                    |
 |                    | Single by Unique                   |                                    |
 |                    | `Uri` Return is Redirect           |                                    |

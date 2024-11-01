@@ -2,7 +2,7 @@
 
 Bake.New
     .Service(
-        business: c => c.DomainAssemblies([typeof(Entity).Assembly],
+        business: c => c.DomainAssemblies(typeof(Entity).Assembly,
             baseNamespace: "Baked.Test",
             setNamespaceWhen: t => t.Namespace is not null && t.Namespace.StartsWith("Baked.Test.CodingStyle.NamespaceAsRoute")
         ),
@@ -30,7 +30,7 @@ Bake.New
             claims: ["User", "Admin", "BaseA", "BaseB", "GivenA", "GivenB", "GivenC"],
             baseClaims: ["BaseA", "BaseB"]
         ),
-        core: c => c.Dotnet(baseNamespace: _ => "Baked.Test"),
+        core: c => c.Dotnet(baseNamespace: "Baked.Test"),
         cors: c => c.AspNetCore(Settings.Required<string>("CorsOrigin")),
         database: c => c
             .Sqlite()

@@ -29,6 +29,17 @@ public class MockingReportResults : TestServiceSpec
     }
 
     [Test]
+    public void Sets_up_mock_report_to_throw_query_not_found()
+    {
+        MockMe.TheReportContext(queryNotFound: true);
+        var reportSamples = GiveMe.The<ReportSamples>();
+
+        var action = reportSamples.GetEntity("test");
+
+        action.ShouldThrow<QueryNotFoundException>().Message.ShouldContain("entity");
+    }
+
+    [Test]
     public async Task Verifies_execute_with_given_query_and_parameters()
     {
         var reportContext = MockMe.TheReportContext();

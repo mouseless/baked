@@ -11,7 +11,8 @@ public static class ReportingExtensions
         features.Add(configure(new()));
 
     public static IReportContext TheReportContext(this Mocker mockMe,
-        object?[][]? data = default
+        object?[][]? data = default,
+        bool? queryNotFound = default
     )
     {
         data ??= [];
@@ -23,6 +24,13 @@ public static class ReportingExtensions
             result
                 .Setup(df => df.Execute(It.IsAny<string>(), It.IsAny<Dictionary<string, object>>()))
                 .ReturnsAsync(data);
+        }
+
+        if (queryNotFound == true)
+        {
+            result
+                .Setup(c => c.Execute(It.IsAny<string>(), It.IsAny<Dictionary<string, object>>()))
+                .Throws((string queryName, Dictionary<string, object> _) => new QueryNotFoundException(queryName));
         }
 
         return result.Object;

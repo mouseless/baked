@@ -76,7 +76,7 @@ public static class BusinessExtensions
 
     public static bool TryGetNamespace(this TypeModel type, [NotNullWhen(true)] out string? @namespace)
     {
-        if (!type.TryGetNamespaceAttribute(out var namespaceAttribute))
+        if (!type.TryGetNamespaceAttribute(out var namespaceAttribute) || string.IsNullOrWhiteSpace(namespaceAttribute.Value))
         {
             @namespace = null;
 

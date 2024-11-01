@@ -8,11 +8,6 @@ public static class DotnetCoreExtensions
 {
     public static DotnetCoreFeature Dotnet(this CoreConfigurator _,
         Assembly? entryAssembly = default,
-        Func<Assembly, string?>? baseNamespace = default
-    )
-    {
-        baseNamespace ??= assembly => Regexes.AssemblyNameBeforeApplicationSuffix().Match(assembly.FullName ?? string.Empty).Value;
-
-        return new(entryAssembly, baseNamespace);
-    }
+        string? baseNamespace = default
+    ) => new(entryAssembly, baseNamespace is not null ? _ => baseNamespace : a => a.GetNameBeforeApplicationSuffix());
 }
