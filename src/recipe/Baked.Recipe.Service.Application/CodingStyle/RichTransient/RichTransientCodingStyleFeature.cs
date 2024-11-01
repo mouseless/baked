@@ -49,6 +49,7 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
 
         configurator.ConfigureApiModelConventions(conventions =>
         {
+            conventions.Add(new RichTransientUnderPluralGroupConvention());
             conventions.Add(new AddInitializerParametersToQueryConvention());
             conventions.Add(new AddIdParameterToRouteConvention());
             conventions.Add(new LookupRichTransientByIdConvention());

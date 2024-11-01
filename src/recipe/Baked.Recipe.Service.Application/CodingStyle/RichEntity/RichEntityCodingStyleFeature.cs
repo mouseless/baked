@@ -65,7 +65,7 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
         {
             var domainModel = configurator.Context.GetDomainModel();
 
-            conventions.Add(new EntityUnderEntitiesConvention());
+            conventions.Add(new EntityUnderPluralGroupConvention());
             conventions.Add(new EntityInitializerIsPostResourceConvention());
             conventions.Add(new FindTargetUsingQueryContextConvention(domainModel), order: 20);
         });
