@@ -134,6 +134,7 @@ public static class BakeExtensions
                 c => c.NamespaceAsRoute(),
                 c => c.RecordsAreDtos(),
                 c => c.RemainingServicesAreSingleton(),
+                c => c.RichTransient(),
                 c => c.ScopedBySuffix(),
                 c => c.UseBuiltInTypes(),
                 c => c.UseNullableTypes(),

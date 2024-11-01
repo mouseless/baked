@@ -60,6 +60,7 @@ public abstract class ServiceSpec : Spec
                 c => c.RecordsAreDtos(),
                 c => c.RemainingServicesAreSingleton(),
                 c => c.RichEntity(),
+                c => c.RichTransient(),
                 c => c.ScopedBySuffix(),
                 c => c.SingleByUnique(),
                 c => c.UriReturnIsRedirect(),

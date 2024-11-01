@@ -39,6 +39,7 @@ Bake.New
 |                    | Namespace as Route                 |                                    |
 |                    | Records are DTOs                   |                                    |
 |                    | Remaining Services are Singleton   |                                    |
+|                    | Rich Transient                     |                                    |
 |                    | Scoped by Suffix                   |                                    |
 |                    | Use Built-in Types                 |                                    |
 |                    | Use Nullable Types                 |                                    |
