@@ -121,7 +121,8 @@ export default defineNuxtConfig({
         }
       },
       baseURL: "",
-      githubURL: "/mouseless/baked"
+      githubURL: "/mouseless/baked",
+      matrixURL: "#baked:mouseless.org"
     }
   },
   vite: {
