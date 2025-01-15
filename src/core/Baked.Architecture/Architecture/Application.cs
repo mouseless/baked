@@ -5,9 +5,12 @@ public class Application(ApplicationContext _context)
     readonly List<ILayer> _layers = [];
     readonly List<IFeature> _features = [];
     readonly List<IPhase> _phases = [];
+    bool _generate = default!;
 
-    internal Application With(ApplicationDescriptor descriptor)
+    internal Application With(ApplicationDescriptor descriptor, bool generate)
     {
+        _generate = generate;
+
         CheckDuplicates(descriptor.Layers.Select(layer => layer.Id));
         _layers.AddRange(descriptor.Layers);
 
@@ -33,7 +36,7 @@ public class Application(ApplicationContext _context)
     {
         foreach (var layer in _layers)
         {
-            _phases.AddRange(layer.GetPhases());
+            _phases.AddRange(_generate ? layer.GetGeneratePhases() : layer.GetPhases());
         }
 
         _phases.ForEach(p => p.Context = _context);

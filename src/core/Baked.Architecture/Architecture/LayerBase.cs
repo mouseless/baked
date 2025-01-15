@@ -9,6 +9,9 @@ public abstract class LayerBase : ILayer
     protected virtual IEnumerable<IPhase> GetPhases() =>
         [];
 
+    protected virtual IEnumerable<IPhase> GetGeneratePhases() =>
+        [];
+
     protected virtual PhaseContext GetContext(IPhase phase) =>
         phase.CreateEmptyContext();
 
@@ -16,6 +19,9 @@ public abstract class LayerBase : ILayer
 
     IEnumerable<IPhase> ILayer.GetPhases() =>
         GetPhases();
+
+    IEnumerable<IPhase> ILayer.GetGeneratePhases() =>
+        GetGeneratePhases();
 
     PhaseContext ILayer.GetContext(IPhase phase, ApplicationContext context)
     {

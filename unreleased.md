@@ -2,10 +2,11 @@
 
 ## Features
 
-- `LayerBase` now provies `GetPostCompilePhases()` method to enable registering
-  specific phases to post compile mode 
+- `LayerBase` now provies `GetGeneratePhases()` method to enable registering
+  specific phases to run at generate mode 
 
 ## Improvements
 
-- `CodeGeneration` layer now compiles and saves generated assemblies at build time
+- `CodeGeneration` layer now compiles and saves generated assemblies at post 
+  build
   
