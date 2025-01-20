@@ -2,7 +2,6 @@
 using Baked.Business;
 using Baked.Lifetime;
 using Baked.RestApi.Conventions;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Baked.CodingStyle.CommandPattern;
 
@@ -55,7 +54,8 @@ public class CommandPatternCodingStyleFeature(IEnumerable<string> _methodNames)
 
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
-            swaggerGenOptions.OperationFilter<XmlExamplesFromClassOperationFilter>(_methodNames, configurator.Context.GetDomainModel());
+            // TODO this code will be generated
+            //swaggerGenOptions.OperationFilter<XmlExamplesFromClassOperationFilter>(_methodNames, configurator.Context.GetDomainModel());
         });
     }
 }

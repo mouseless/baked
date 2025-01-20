@@ -1,4 +1,6 @@
 ﻿using Baked.Architecture;
+using Baked.CodeGeneration;
+using Baked.Domain.Model;
 using Baked.Runtime;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,22 +30,47 @@ public class ProblemDetailsExceptionHandlingFeature(Setting<string>? _typeUrlFor
             types.Add<HandledException>();
         });
 
+        configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
+        {
+            var domain = configurator.Context.GetDomainModel();
+
+            var domainModel = configurator.Context.GetDomainModel();
+            var exceptionHandlerTypes = domainModel.Types.Where(t => t.IsClass && !t.IsAbstract && t.IsAssignableTo<IExceptionHandler>());
+
+            generatedAssemblies.Add(nameof(ProblemDetailsExceptionHandlingFeature),
+                assembly =>
+                {
+                    assembly
+                        .AddReferenceFrom<ProblemDetailsExceptionHandlingFeature>()
+                        .AddCodes(new ExceptionHandlerAdderTemplate(exceptionHandlerTypes));
+
+                    foreach (var entity in exceptionHandlerTypes)
+                    {
+                        entity.Apply(t => assembly.AddReferenceFrom(t));
+                    }
+                },
+                compilationOptions => compilationOptions.WithUsings(
+                    "Baked",
+                    "Baked.ExceptionHandling",
+                    "Baked.Business",
+                    "Baked.Runtime",
+                    "Microsoft.Extensions.DependencyInjection",
+                    "System",
+                    "System.Linq",
+                    "System.Collections",
+                    "System.Collections.Generic",
+                    "System.Threading.Tasks"
+                )
+            );
+        });
+
         configurator.ConfigureServiceCollection(services =>
         {
+            services.AddFromAssembly(configurator.Context.GetGeneratedAssembly(nameof(ProblemDetailsExceptionHandlingFeature)));
             services.AddSingleton<IExceptionHandler, AuthenticationExceptionHandler>();
             services.AddSingleton<IExceptionHandler, UnauthorizedAccessExceptionHandler>();
             services.AddSingleton<IExceptionHandler, HandledExceptionHandler>();
             services.AddSingleton(new ExceptionHandlerSettings(_typeUrlFormat));
-
-            var domainModel = configurator.Context.GetDomainModel();
-            foreach (var exceptionHandlerType in domainModel.Types.Where(t => t.IsClass && !t.IsAbstract && t.IsAssignableTo<IExceptionHandler>()))
-            {
-                exceptionHandlerType.Apply(t =>
-                {
-                    services.AddSingleton(typeof(IExceptionHandler), t, forward: true);
-                });
-            }
-
             services.AddExceptionHandler<ExceptionHandler>();
             services.AddProblemDetails();
         });
@@ -60,4 +87,24 @@ public class ProblemDetailsExceptionHandlingFeature(Setting<string>? _typeUrlFor
             );
         });
     }
+}
+
+public class ExceptionHandlerAdderTemplate(IEnumerable<TypeModel> _types) : CodeTemplateBase
+{
+    protected override IEnumerable<string> Render() =>
+        [ServiceAdder()];
+
+    string ServiceAdder() => $$"""
+        namespace AutoMapFeature;
+
+        public class SingletonServiceAdder : IServiceAdder
+        {
+            public void AddServices(IServiceCollection services)
+            {
+            {{ForEach(_types, exceptionHandler => $$"""
+                services.AddSingleton<IExceptionHandler,{{exceptionHandler.CSharpFriendlyFullName}}>(forward: true);
+            """)}}
+            }
+        }
+    """;
 }

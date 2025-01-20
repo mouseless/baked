@@ -1,6 +1,4 @@
 ﻿using Baked.Architecture;
-using Baked.Business;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Baked.Lifetime.Singleton;
 
@@ -15,17 +13,37 @@ public class SingletonLifetimeFeature : IFeature<LifetimeConfigurator>
 
         configurator.ConfigureServiceCollection(services =>
         {
-            var domainModel = configurator.Context.GetDomainModel();
-            foreach (var type in domainModel.Types.Having<SingletonAttribute>())
-            {
-                type.Apply(t =>
+            services.AddFromAssembly(configurator.Context.GetGeneratedAssembly(nameof(SingletonLifetimeFeature)));
+        });
+
+        configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
+        {
+            var domain = configurator.Context.GetDomainModel();
+
+            generatedAssemblies.Add(nameof(SingletonLifetimeFeature),
+                assembly =>
                 {
-                    services.AddSingleton(t);
-                    type.GetInheritance().Interfaces
-                        .Where(i => i.Model.TryGetMetadata(out var metadata) && metadata.Has<ServiceAttribute>())
-                        .Apply(i => services.AddSingleton(i, t, forward: true));
-                });
-            }
+                    assembly
+                        .AddReferenceFrom<SingletonLifetimeFeature>()
+                        .AddCodes(new SingletonServiceAdderTemplate(domain));
+
+                    foreach (var entity in domain.Types.Having<SingletonAttribute>())
+                    {
+                        entity.Apply(t => assembly.AddReferenceFrom(t));
+                    }
+                },
+                compilationOptions => compilationOptions.WithUsings(
+                    "Baked",
+                    "Baked.Business",
+                    "Baked.Runtime",
+                    "Microsoft.Extensions.DependencyInjection",
+                    "System",
+                    "System.Linq",
+                    "System.Collections",
+                    "System.Collections.Generic",
+                    "System.Threading.Tasks"
+                )
+            );
         });
     }
 }

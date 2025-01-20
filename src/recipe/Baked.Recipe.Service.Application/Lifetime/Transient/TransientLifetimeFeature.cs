@@ -1,5 +1,4 @@
 ﻿using Baked.Architecture;
-using Baked.Business;
 
 namespace Baked.Lifetime.Transient;
 
@@ -14,17 +13,37 @@ public class TransientLifetimeFeature : IFeature<LifetimeConfigurator>
 
         configurator.ConfigureServiceCollection(services =>
         {
-            var domainModel = configurator.Context.GetDomainModel();
-            foreach (var type in domainModel.Types.Having<TransientAttribute>())
-            {
-                type.Apply(t =>
+            services.AddFromAssembly(configurator.Context.GetGeneratedAssembly(nameof(TransientLifetimeFeature)));
+        });
+
+        configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
+        {
+            var domain = configurator.Context.GetDomainModel();
+
+            generatedAssemblies.Add(nameof(TransientLifetimeFeature),
+                assembly =>
                 {
-                    services.AddTransientWithFactory(t);
-                    type.GetInheritance().Interfaces
-                        .Where(i => i.Model.TryGetMetadata(out var metadata) && metadata.Has<ServiceAttribute>())
-                        .Apply(i => services.AddTransientWithFactory(i, t));
-                });
-            }
+                    assembly
+                        .AddReferenceFrom<TransientLifetimeFeature>()
+                        .AddCodes(new TransientServiceAdderTemplate(domain));
+
+                    foreach (var entity in domain.Types.Having<TransientAttribute>())
+                    {
+                        entity.Apply(t => assembly.AddReferenceFrom(t));
+                    }
+                },
+                compilationOptions => compilationOptions.WithUsings(
+                    "Baked",
+                    "Baked.Business",
+                    "Baked.Runtime",
+                    "Microsoft.Extensions.DependencyInjection",
+                    "System",
+                    "System.Linq",
+                    "System.Collections",
+                    "System.Collections.Generic",
+                    "System.Threading.Tasks"
+                )
+            );
         });
     }
 }

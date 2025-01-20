@@ -174,20 +174,47 @@ public class DomainAssembliesBusinessFeature(
             }
         });
 
+        configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
+        {
+            var domain = configurator.Context.GetDomainModel();
+
+            generatedAssemblies.Add(nameof(DomainAssembliesBusinessFeature),
+                assembly =>
+                {
+                    assembly
+                        .AddReferenceFrom<DomainAssembliesBusinessFeature>()
+                        .AddCodes(new CasterConfigurerTemplate(domain));
+
+                    foreach (var entity in domain.Types.Having<CasterAttribute>())
+                    {
+                        entity.Apply(t => assembly.AddReferenceFrom(t));
+                    }
+                },
+                compilationOptions => compilationOptions.WithUsings(
+                    "Baked",
+                    "Baked.Business",
+                    "Baked.Business.DomainAssemblies",
+                    "Baked.Runtime",
+                    "Microsoft.Extensions.DependencyInjection",
+                    "System",
+                    "System.Linq",
+                    "System.Collections",
+                    "System.Collections.Generic",
+                    "System.Threading.Tasks"
+                )
+            );
+        });
+
         configurator.ConfigureServiceProvider(sp =>
         {
             Caster.SetServiceProvider(sp);
-            var domainModel = configurator.Context.GetDomainModel();
-            foreach (var type in domainModel.Types.Having<CasterAttribute>())
-            {
-                foreach (var @interface in type.GetInheritance().Interfaces.Where(i => i.Model.IsGenericType && !i.Model.IsGenericTypeDefinition && i.Model.IsAssignableTo(typeof(ICasts<,>))))
-                {
-                    type.Apply(t => @interface.Apply(i =>
-                    {
-                        Caster.Add(i.GenericTypeArguments[0], i.GenericTypeArguments[1], sp => sp.UsingCurrentScope().GetRequiredService(t));
-                    }));
-                }
-            }
+
+            var assembly = configurator.Context.GetGeneratedAssembly(nameof(DomainAssembliesBusinessFeature));
+
+            var type = assembly.GetExportedTypes().SingleOrDefault(t => t.Name.Contains("CasterConfigurer")) ?? throw new("ICasterConfigurer implementation not found");
+            var typeInstance = (ICasterConfigurer?)Activator.CreateInstance(type) ?? throw new($"Cannot create instance of {type}");
+
+            typeInstance.Configure();
         });
 
         configurator.ConfigureTestConfiguration(test =>
@@ -257,8 +284,11 @@ public class DomainAssembliesBusinessFeature(
                 return $"{apiDescription.ActionDescriptor.AttributeRouteInfo?.Template}_{methodOrder}";
             });
 
-            swaggerGenOptions.DocumentFilter<ApplyTagDescriptionsDocumentFilter>(configurator.Context.Get<TagDescriptions>());
-            swaggerGenOptions.OperationFilter<XmlExamplesOperationFilter>(configurator.Context.GetDomainModel());
+            //TODO Tags descriptions are added to context during code generation, requires a generated data to access tag descriptions
+            //swaggerGenOptions.DocumentFilter<ApplyTagDescriptionsDocumentFilter>(configurator.Context.Get<TagDescriptions>());
+
+            // TODO this code will be generated
+            //swaggerGenOptions.OperationFilter<XmlExamplesOperationFilter>(configurator.Context.GetDomainModel());
         });
     }
 }

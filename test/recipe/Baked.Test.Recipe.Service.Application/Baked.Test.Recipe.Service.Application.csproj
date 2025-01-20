@@ -4,6 +4,9 @@
     <Content Include="Core\ApplicationPhysical.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="postbuild.bat">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
     
   <ItemGroup>
@@ -18,5 +21,9 @@
   <ItemGroup>
     <InternalsVisibleTo Include="Baked.Test.Recipe.Service.Test" />
   </ItemGroup>
+
+  <Target Name="Generate" AfterTargets="AfterBuild">
+      <Exec Command="call postbuild.bat" />
+  </Target>
 
 </Project>

@@ -1,6 +1,5 @@
 ﻿using Baked.Architecture;
 using Baked.Domain.Configuration;
-using Microsoft.Extensions.Configuration;
 
 using static Baked.Domain.DomainLayer;
 
@@ -17,16 +16,16 @@ public class DomainLayer : LayerBase<AddDomainTypes>
             .Add(_builderOptions)
             .Build();
 
-    protected override IEnumerable<IPhase> GetPhases()
+    protected override IEnumerable<IPhase> GetGeneratePhases()
     {
         yield return new AddDomainTypes(_domainTypes);
         yield return new BuildDomainModel(_builderOptions);
     }
 
     public class AddDomainTypes(IDomainTypeCollection _domainTypes)
-        : PhaseBase<ConfigurationManager>(PhaseOrder.Early)
+        : PhaseBase(PhaseOrder.Earliest)
     {
-        protected override void Initialize(ConfigurationManager _)
+        protected override void Initialize()
         {
             Context.Add(_domainTypes);
         }

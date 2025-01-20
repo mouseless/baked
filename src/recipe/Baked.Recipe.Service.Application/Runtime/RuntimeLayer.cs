@@ -1,6 +1,5 @@
 ﻿using Baked.Architecture;
 using Baked.CodeGeneration;
-using Baked.Domain.Model;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
@@ -64,9 +63,9 @@ public class RuntimeLayer : LayerBase<BuildConfiguration, AddServices, PostBuild
     }
 
     public class AddServices(IServiceCollection _services)
-        : PhaseBase<DomainModel, GeneratedAssemblyProvider>(PhaseOrder.Early)
+        : PhaseBase<GeneratedAssemblyProvider>(PhaseOrder.Early)
     {
-        protected override void Initialize(DomainModel _, GeneratedAssemblyProvider __)
+        protected override void Initialize(GeneratedAssemblyProvider __)
         {
             Context.Add(_services);
         }

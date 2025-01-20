@@ -1,5 +1,4 @@
 ﻿using Baked.Architecture;
-using Baked.Business;
 
 namespace Baked.Lifetime.Scoped;
 
@@ -14,17 +13,37 @@ public class ScopedLifetimeFeature : IFeature<LifetimeConfigurator>
 
         configurator.ConfigureServiceCollection(services =>
         {
-            var domainModel = configurator.Context.GetDomainModel();
-            foreach (var type in domainModel.Types.Having<ScopedAttribute>())
-            {
-                type.Apply(t =>
+            services.AddFromAssembly(configurator.Context.GetGeneratedAssembly(nameof(ScopedLifetimeFeature)));
+        });
+
+        configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
+        {
+            var domain = configurator.Context.GetDomainModel();
+
+            generatedAssemblies.Add(nameof(ScopedLifetimeFeature),
+                assembly =>
                 {
-                    services.AddScopedWithFactory(t);
-                    type.GetInheritance().Interfaces
-                        .Where(i => i.Model.TryGetMetadata(out var metadata) && metadata.Has<ServiceAttribute>())
-                        .Apply(i => services.AddScopedWithFactory(i, t));
-                });
-            }
+                    assembly
+                        .AddReferenceFrom<ScopedLifetimeFeature>()
+                        .AddCodes(new ScopedServiceAdderTemplate(domain));
+
+                    foreach (var entity in domain.Types.Having<ScopedAttribute>())
+                    {
+                        entity.Apply(t => assembly.AddReferenceFrom(t));
+                    }
+                },
+                compilationOptions => compilationOptions.WithUsings(
+                    "Baked",
+                    "Baked.Business",
+                    "Baked.Runtime",
+                    "Microsoft.Extensions.DependencyInjection",
+                    "System",
+                    "System.Linq",
+                    "System.Collections",
+                    "System.Collections.Generic",
+                    "System.Threading.Tasks"
+                )
+            );
         });
     }
 }
