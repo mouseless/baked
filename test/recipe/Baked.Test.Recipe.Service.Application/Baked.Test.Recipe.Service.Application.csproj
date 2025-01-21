@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <Target Name="Generate" AfterTargets="AfterBuild">
-      <Exec Command="dotnet run --no-build --no-start --generate" />
+      <Exec Command="dotnet run $(ProjectDir) --no-build --no-start --generate" />
   </Target>
 
 </Project>
