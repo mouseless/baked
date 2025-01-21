@@ -16,7 +16,7 @@ public class DomainLayer : LayerBase<AddDomainTypes>
             .Add(_builderOptions)
             .Build();
 
-    protected override IEnumerable<IPhase> GetGeneratePhases()
+    protected override IEnumerable<IPhase> GetBakePhases()
     {
         yield return new AddDomainTypes(_domainTypes);
         yield return new BuildDomainModel(_builderOptions);

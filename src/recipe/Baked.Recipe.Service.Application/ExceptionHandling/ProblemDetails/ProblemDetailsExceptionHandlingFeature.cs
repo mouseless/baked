@@ -1,6 +1,4 @@
 ﻿using Baked.Architecture;
-using Baked.CodeGeneration;
-using Baked.Domain.Model;
 using Baked.Runtime;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -87,24 +85,4 @@ public class ProblemDetailsExceptionHandlingFeature(Setting<string>? _typeUrlFor
             );
         });
     }
-}
-
-public class ExceptionHandlerAdderTemplate(IEnumerable<TypeModel> _types) : CodeTemplateBase
-{
-    protected override IEnumerable<string> Render() =>
-        [ServiceAdder()];
-
-    string ServiceAdder() => $$"""
-        namespace AutoMapFeature;
-
-        public class SingletonServiceAdder : IServiceAdder
-        {
-            public void AddServices(IServiceCollection services)
-            {
-            {{ForEach(_types, exceptionHandler => $$"""
-                services.AddSingleton<IExceptionHandler,{{exceptionHandler.CSharpFriendlyFullName}}>(forward: true);
-            """)}}
-            }
-        }
-    """;
 }

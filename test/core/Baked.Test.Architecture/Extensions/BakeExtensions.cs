@@ -9,12 +9,13 @@ public static class BakeExtensions
     public static Bake ABake(this Stubber giveMe,
         IBanner? banner = default,
         ApplicationContext? context = default,
-        bool generate = false
+        bool bake = false,
+        bool start = true
     )
     {
         banner ??= giveMe.Spec.MockMe.ABanner();
         context ??= new();
 
-        return new(banner, () => new(context), generate);
+        return new(banner, () => new(context), bake, start);
     }
 }

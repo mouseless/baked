@@ -1,8 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Domain.Model;
-using Newtonsoft.Json;
 using System.Reflection;
-using System.Text;
 
 using static Baked.CodeGeneration.CodeGenerationLayer;
 
@@ -11,19 +9,27 @@ namespace Baked.CodeGeneration;
 public class CodeGenerationLayer : LayerBase<GenerateCode>
 {
     readonly IGeneratedAssemblyCollection _generatedAssemblies = new GeneratedAssemblyCollection();
+    readonly string _location = default!;
+
+    public CodeGenerationLayer()
+    {
+        _location = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location) ??
+            throw new("'EntryAssembly' should have existed with valid location");
+        _location = Path.Combine(_location, Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? string.Empty);
+    }
 
     protected override PhaseContext GetContext(GenerateCode phase) =>
         phase.CreateContext(_generatedAssemblies);
 
     protected override IEnumerable<IPhase> GetPhases()
     {
-        yield return new LoadGeneratedAssemblies();
+        yield return new LoadGeneratedAssemblies(_location);
     }
 
-    protected override IEnumerable<IPhase> GetGeneratePhases()
+    protected override IEnumerable<IPhase> GetBakePhases()
     {
         yield return new GenerateCode(_generatedAssemblies);
-        yield return new Compile();
+        yield return new Compile(_location);
     }
 
     public class GenerateCode(IGeneratedAssemblyCollection _generatedAssemblies)
@@ -35,43 +41,35 @@ public class CodeGenerationLayer : LayerBase<GenerateCode>
         }
     }
 
-    public class Compile()
+    public class Compile(string location)
         : PhaseBase<IGeneratedAssemblyCollection>(PhaseOrder.Latest)
     {
         protected override void Initialize(IGeneratedAssemblyCollection generatedAssemblies)
         {
-            var entryAssembly = Assembly.GetEntryAssembly() ?? throw new();
-            var location = entryAssembly.Location.Replace($"{entryAssembly.GetName().Name}.dll", string.Empty);
-
-            Dictionary<string, string> generatedAssemblyInfo = new Dictionary<string, string>();
-            foreach (var descriptor in generatedAssemblies)
+            if (!Directory.Exists(location))
             {
-                var assembly = new Compiler(descriptor).Compile(location, $"Baked.g.{descriptor.Name}");
-                generatedAssemblyInfo[$"{descriptor.Name}"] = assembly.Location;
+                Directory.CreateDirectory(location);
             }
 
-            using (var file = new FileStream(Path.Combine(location, "GeneratedAssemblies.json"), FileMode.Create))
+            foreach (var descriptor in generatedAssemblies)
             {
-                file.Write(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(generatedAssemblyInfo)));
+                new Compiler(descriptor).Compile(location, $"Baked.g.{descriptor.Name}");
             }
         }
     }
 
-    public class LoadGeneratedAssemblies() :
-        PhaseBase(PhaseOrder.Early)
+    public class LoadGeneratedAssemblies(string location)
+        : PhaseBase(PhaseOrder.Early)
     {
         protected override void Initialize()
         {
-            var entryAssembly = Assembly.GetEntryAssembly() ?? throw new();
-            var location = entryAssembly.Location.Replace($"{entryAssembly.GetName().Name}.dll", string.Empty);
-
-            var data = File.ReadAllText(Path.Combine(location, "GeneratedAssemblies.json"));
-            var info = JsonConvert.DeserializeObject<Dictionary<string, string>>(data) ?? new Dictionary<string, string>();
+            var info = Directory.GetFiles(location).Where(s => s.Contains("Baked.g"))
+                .ToDictionary(s => Path.GetFileName(s).Replace("Baked.g.", string.Empty).Replace(".dll", string.Empty), s => s);
 
             var provider = new GeneratedAssemblyProvider();
             foreach (var (key, value) in info)
             {
-                provider.Add(key, Assembly.LoadFrom(value));
+                provider.Add(key, Assembly.LoadFile(value));
             }
 
             Context.Add(provider);

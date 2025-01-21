@@ -46,7 +46,7 @@ public class AddingPhases : ArchitectureSpec
             yield return new RuntimePhase();
         }
 
-        protected override IEnumerable<IPhase> GetGeneratePhases()
+        protected override IEnumerable<IPhase> GetBakePhases()
         {
             yield return new GeneratePhase();
         }
@@ -66,7 +66,7 @@ public class AddingPhases : ArchitectureSpec
         phases.Count().ShouldBe(1);
         phases.ShouldContain(phase => phase is LayerWithGeneratePhases.RuntimePhase);
 
-        var generatePhases = layer.GetGeneratePhases();
+        var generatePhases = layer.GetBakePhases();
 
         generatePhases.Count().ShouldBe(1);
         generatePhases.ShouldContain(phase => phase is LayerWithGeneratePhases.GeneratePhase);

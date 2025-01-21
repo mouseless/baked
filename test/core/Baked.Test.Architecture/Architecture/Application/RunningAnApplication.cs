@@ -22,14 +22,14 @@ public class RunningAnApplication : ArchitectureSpec
     }
 
     [Test]
-    public void Application_collects_only_generate_phases_when_specified()
+    public void Application_collects_only_bake_phases_when_specified()
     {
         var phase1 = MockMe.APhase();
         var phase2 = MockMe.APhase();
         var phase3 = MockMe.APhase();
-        var layer1 = MockMe.ALayer(generatePhases: [phase1, phase2]);
+        var layer1 = MockMe.ALayer(bakePhases: [phase1, phase2]);
         var layer2 = MockMe.ALayer(phase: phase3);
-        var app = GiveMe.AnApplication(layers: [layer1, layer2], generate: true);
+        var app = GiveMe.AnApplication(layers: [layer1, layer2], bake: true, start: false);
 
         app.Run();
 

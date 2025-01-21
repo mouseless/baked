@@ -74,7 +74,7 @@ public class Compiler(GeneratedAssemblyDescriptor _descriptor)
                 ms.WriteTo(file);
             }
 
-            return Assembly.LoadFrom(Path.Combine(assemblyLocation, $"{assemblyName}.dll"));
+            return Assembly.LoadFile(Path.Combine(assemblyLocation, $"{assemblyName}.dll"));
         }
 
         return Assembly.Load(ms.ToArray());

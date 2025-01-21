@@ -36,4 +36,18 @@ public abstract class WebApplicationNfr : Nfr
         Caster.SetServiceProvider(ServiceProvider);
         Client = CreateClient(new() { AllowAutoRedirect = AllowAutoRedirect });
     }
+
+    public override void SetUp()
+    {
+        base.SetUp();
+
+        Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", nameof(Nfr));
+    }
+
+    public override void TearDown()
+    {
+        base.TearDown();
+
+        Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", string.Empty);
+    }
 }

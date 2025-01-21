@@ -8,12 +8,16 @@ namespace Baked.Testing;
 public abstract class Spec
 {
     private static ApplicationContext _context = new();
+    private static ApplicationContext _bakeContext = new();
 
     public static ApplicationContext ContextStatic => _context;
+    public static ApplicationContext BakeContextStatic => _bakeContext;
+
     public ApplicationContext Context => _context;
+    public ApplicationContext BakeContext => _bakeContext;
 
     protected static void Init(Action<ApplicationDescriptor> describe) =>
-        new Bake(new Mock<IBanner>().Object, () => new(_context))
+        new Bake(new Mock<IBanner>().Object, () => new(_context, _bakeContext: _bakeContext), _bake: true, _start: true)
             .Application(describe)
             .Run();
 
