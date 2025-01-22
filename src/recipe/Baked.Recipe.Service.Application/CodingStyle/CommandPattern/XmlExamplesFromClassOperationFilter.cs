@@ -1,10 +1,10 @@
-﻿using Baked.Domain.Model;
+﻿using Baked.Business;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Baked.CodingStyle.CommandPattern;
 
-public class XmlExamplesFromClassOperationFilter(IEnumerable<string> actionNames, DomainModel _domain)
+public class XmlExamplesFromClassOperationFilter(IEnumerable<string> actionNames, Dictionary<string, RequestResponseExampleData> _methodExamplesDictionary)
     : IOperationFilter
 {
     readonly HashSet<string> _actionNames = actionNames.ToHashSet();
@@ -12,12 +12,12 @@ public class XmlExamplesFromClassOperationFilter(IEnumerable<string> actionNames
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
     {
         if (!context.ApiDescription.TryGetMappedMethod(out var mappedMethod)) { return; }
-        if (!_domain.Types.TryGetValue(mappedMethod.TypeFullName, out var type)) { return; }
-        if (!type.TryGetMembers(out var members)) { return; }
         if (!_actionNames.Contains(mappedMethod.MethodName)) { return; }
-
-        operation.RequestBody?.Content.SetJsonExample(members.Documentation, @for: "request");
-        operation.Responses.TryGetValue("200", out var response);
-        response?.Content.SetJsonExample(members.Documentation, @for: "response");
+        if (_methodExamplesDictionary.TryGetValue(mappedMethod.TypeFullName, out var example))
+        {
+            operation.RequestBody?.Content.SetJsonExample(example.Request);
+            operation.Responses.TryGetValue("200", out var response);
+            response?.Content.SetJsonExample(example.Response);
+        }
     }
 }

@@ -109,4 +109,16 @@ public static class BusinessExtensions
 
         mediaType.Example = OpenApiAnyFactory.CreateFromJson(example);
     }
+
+    public static void SetJsonExample(this IDictionary<string, OpenApiMediaType> mediaTypes, string? example)
+    {
+        if (example is null) { return; }
+
+        if (!mediaTypes.TryGetValue("application/json", out var mediaType))
+        {
+            mediaTypes["application/json"] = mediaType = new() { };
+        }
+
+        mediaType.Example = OpenApiAnyFactory.CreateFromJson(example);
+    }
 }

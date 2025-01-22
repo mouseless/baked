@@ -221,7 +221,7 @@ public static class DomainExtensions
         string? parameter = default
     )
     {
-        var domainModel = giveMe.Spec.Context.GetDomainModel();
+        var domainModel = giveMe.Spec.BakeContext.GetDomainModel();
         var type = domainModel.Types[typeof(T)];
         if (!type.TryGetMembers(out var members)) { return null; }
 

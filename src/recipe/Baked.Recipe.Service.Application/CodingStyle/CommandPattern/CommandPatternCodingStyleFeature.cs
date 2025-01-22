@@ -2,6 +2,8 @@
 using Baked.Business;
 using Baked.Lifetime;
 using Baked.RestApi.Conventions;
+using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 
 namespace Baked.CodingStyle.CommandPattern;
 
@@ -54,8 +56,12 @@ public class CommandPatternCodingStyleFeature(IEnumerable<string> _methodNames)
 
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
-            // TODO this code will be generated
-            //swaggerGenOptions.OperationFilter<XmlExamplesFromClassOperationFilter>(_methodNames, configurator.Context.GetDomainModel());
+            var fileProvider = configurator.Context.GetGeneratedFileProvider();
+            using (var file = new FileStream(fileProvider["RequestResponseExamples"], FileMode.Open))
+            {
+                var methodExamplesDictionary = JsonConvert.DeserializeObject<Dictionary<string, RequestResponseExampleData>>(new StreamReader(file).ReadToEnd()) ?? [];
+                swaggerGenOptions.OperationFilter<XmlExamplesFromClassOperationFilter>(_methodNames, methodExamplesDictionary);
+            }
         });
     }
 }

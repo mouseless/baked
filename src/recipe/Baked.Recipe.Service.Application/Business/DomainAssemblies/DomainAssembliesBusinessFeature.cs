@@ -1,4 +1,5 @@
 using Baked.Architecture;
+using Baked.CodeGeneration;
 using Baked.Domain;
 using Baked.Domain.Configuration;
 using Baked.Domain.Model;
@@ -158,6 +159,7 @@ public class DomainAssembliesBusinessFeature(
             api.References.AddRange(_assemblyDescriptors.Select(a => a.assembly));
             api.Usings.Add("Swashbuckle.AspNetCore.Annotations");
 
+            var methodExampleDictionary = new Dictionary<string, RequestResponseExampleData>();
             var domainModel = configurator.Context.GetDomainModel();
             foreach (var type in domainModel.Types.Having<ApiServiceAttribute>())
             {
@@ -167,12 +169,28 @@ public class DomainAssembliesBusinessFeature(
                 foreach (var method in type.GetMembers().Methods.Having<ApiMethodAttribute>())
                 {
                     controller.AddAction(type, method);
+
+                    var typeExample = new RequestResponseExampleData(
+                        type.GetMembers().Documentation.GetExampleCode("request"),
+                        type.GetMembers().Documentation.GetExampleCode("response")
+                    );
+
+                    var methodExample = new RequestResponseExampleData(
+                        method.Documentation.GetExampleCode("request"),
+                        method.Documentation.GetExampleCode("response")
+                    );
+
+                    methodExampleDictionary.TryAdd($"{type.FullName}", typeExample);
+                    methodExampleDictionary.TryAdd($"{type.FullName}.{method.Name}", methodExample);
                 }
 
                 if (!controller.Action.Any()) { continue; }
 
                 api.Controller.Add(controller.Id, controller);
             }
+
+            var files = configurator.Context.Get<IGeneratedFileCollection>();
+            files.Add("RequestResponseExamples", JsonConvert.SerializeObject(methodExampleDictionary), "json");
         });
 
         configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
@@ -300,8 +318,11 @@ public class DomainAssembliesBusinessFeature(
                 swaggerGenOptions.DocumentFilter<ApplyTagDescriptionsDocumentFilter>(tagDescriptions);
             }
 
-            // TODO this code will be generated
-            //swaggerGenOptions.OperationFilter<XmlExamplesOperationFilter>(configurator.Context.GetDomainModel());
+            using (var file = new FileStream(fileProvider["RequestResponseExamples"], FileMode.Open))
+            {
+                var methodExamplesDictionary = JsonConvert.DeserializeObject<Dictionary<string, RequestResponseExampleData>>(new StreamReader(file).ReadToEnd()) ?? [];
+                swaggerGenOptions.OperationFilter<XmlExamplesOperationFilter>(methodExamplesDictionary);
+            }
         });
     }
 }
