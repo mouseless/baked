@@ -10,7 +10,7 @@ public class TransientServiceAdderTemplate(DomainModel _domain) : CodeTemplateBa
         [ServiceAdder()];
 
     string ServiceAdder() => $$"""
-        namespace TransientLifetimeFeature;
+        namespace TransientFeature;
 
         public class TransientServiceAdder : IServiceAdder
         {

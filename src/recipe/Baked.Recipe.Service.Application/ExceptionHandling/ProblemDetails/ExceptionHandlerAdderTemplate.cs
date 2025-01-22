@@ -9,9 +9,9 @@ public class ExceptionHandlerAdderTemplate(IEnumerable<TypeModel> _types) : Code
         [ServiceAdder()];
 
     string ServiceAdder() => $$"""
-        namespace ProblemDetailsFeatur;
+        namespace ProblemDetailsFeature;
 
-        public class SingletonServiceAdder : IServiceAdder
+        public class ExceptionHandlerAdder : IServiceAdder
         {
             public void AddServices(IServiceCollection services)
             {

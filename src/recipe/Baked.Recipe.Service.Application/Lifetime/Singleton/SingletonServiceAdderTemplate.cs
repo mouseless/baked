@@ -10,7 +10,7 @@ public class SingletonServiceAdderTemplate(DomainModel _domain) : CodeTemplateBa
         [ServiceAdder()];
 
     string ServiceAdder() => $$"""
-        namespace SingletonLifetimeFeature;
+        namespace SingletonFeature;
 
         public class SingletonServiceAdder : IServiceAdder
         {

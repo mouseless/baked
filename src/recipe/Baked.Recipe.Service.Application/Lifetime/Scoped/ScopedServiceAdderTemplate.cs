@@ -10,7 +10,7 @@ public class ScopedServiceAdderTemplate(DomainModel _domain) : CodeTemplateBase
         [ServiceAdder()];
 
     string ServiceAdder() => $$"""
-        namespace ScopedLifetimeFeature;
+        namespace ScopedFeature;
 
         public class ScopedServiceAdder : IServiceAdder
         {
