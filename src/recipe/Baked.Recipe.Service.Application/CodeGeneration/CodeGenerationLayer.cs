@@ -6,7 +6,7 @@ using static Baked.CodeGeneration.CodeGenerationLayer;
 
 namespace Baked.CodeGeneration;
 
-public class CodeGenerationLayer : LayerBase<GenerateCode>
+public class CodeGenerationLayer : LayerBase<GenerateCode, Compile>
 {
     readonly IGeneratedAssemblyCollection _generatedAssemblies = new GeneratedAssemblyCollection();
     readonly IGeneratedFileCollection _generatedFiles = new GeneratedFileCollection();
@@ -20,10 +20,10 @@ public class CodeGenerationLayer : LayerBase<GenerateCode>
     }
 
     protected override PhaseContext GetContext(GenerateCode phase) =>
-        phase.CreateContextBuilder()
-            .Add(_generatedAssemblies)
-            .Add(_generatedFiles)
-            .Build();
+        phase.CreateContext(_generatedAssemblies);
+
+    protected override PhaseContext GetContext(Compile phase) =>
+        phase.CreateContext(_generatedFiles);
 
     protected override IEnumerable<IPhase> GetPhases()
     {
@@ -44,6 +44,11 @@ public class CodeGenerationLayer : LayerBase<GenerateCode>
         {
             if (!Directory.Exists(_location))
             {
+                Directory.CreateDirectory(_location);
+            }
+            else
+            {
+                Directory.Delete(_location, true);
                 Directory.CreateDirectory(_location);
             }
 
