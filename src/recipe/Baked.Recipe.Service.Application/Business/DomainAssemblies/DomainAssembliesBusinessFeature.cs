@@ -8,6 +8,7 @@ using Baked.RestApi.Model;
 using Humanizer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Newtonsoft.Json;
 using System.Reflection;
 
 namespace Baked.Business.DomainAssemblies;
@@ -247,6 +248,14 @@ public class DomainAssembliesBusinessFeature(
             conventions.Add(new AddMappedMethodAttributeConvention());
         });
 
+        configurator.ConfigureGeneratedFileCollection(files =>
+        {
+            if (configurator.Context.Has<TagDescriptions>())
+            {
+                files.Add(nameof(TagDescriptions), JsonConvert.SerializeObject(configurator.Context.Get<TagDescriptions>()), ".json");
+            }
+        });
+
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
             foreach (var (assembly, _) in _assemblyDescriptors)
@@ -284,8 +293,12 @@ public class DomainAssembliesBusinessFeature(
                 return $"{apiDescription.ActionDescriptor.AttributeRouteInfo?.Template}_{methodOrder}";
             });
 
-            //TODO Tags descriptions are added to context during code generation, requires a generated data to access tag descriptions
-            //swaggerGenOptions.DocumentFilter<ApplyTagDescriptionsDocumentFilter>(configurator.Context.Get<TagDescriptions>());
+            var fileProvider = configurator.Context.GetGeneratedFileProvider();
+            using (var file = new FileStream(fileProvider[nameof(TagDescriptions)], FileMode.Open))
+            {
+                var tagDescriptions = JsonConvert.DeserializeObject<TagDescriptions>(new StreamReader(file).ReadToEnd());
+                swaggerGenOptions.DocumentFilter<ApplyTagDescriptionsDocumentFilter>(tagDescriptions);
+            }
 
             // TODO this code will be generated
             //swaggerGenOptions.OperationFilter<XmlExamplesOperationFilter>(configurator.Context.GetDomainModel());

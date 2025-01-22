@@ -24,6 +24,12 @@ public static class CodeGenerationExtensions
     public static void ConfigureGeneratedAssemblyCollection(this LayerConfigurator configurator, Action<IGeneratedAssemblyCollection> configuration) =>
         configurator.Configure(configuration);
 
+    public static void ConfigureGeneratedFileCollection(this LayerConfigurator configurator, Action<IGeneratedFileCollection> configuration) =>
+       configurator.Configure(configuration);
+
+    public static GeneratedFileProvider GetGeneratedFileProvider(this ApplicationContext context) =>
+        context.Get<GeneratedFileProvider>();
+
     /// <summary>
     /// Adds a descriptor for a generated assembly with given parameters
     ///
@@ -61,6 +67,16 @@ public static class CodeGenerationExtensions
         descriptor.References.AddRange(references);
 
         return descriptor;
+    }
+
+    public static void Add(this IGeneratedFileCollection generatedFiles, string name, string content,
+        string? extension = default
+    )
+    {
+        extension ??= "txt";
+        extension = extension[(extension.LastIndexOf('.') + 1)..];
+
+        generatedFiles.Add(new(name) { Content = content, Extension = extension });
     }
 
     internal static string? FindClosestScopedCode(this Diagnostic diagnostic)
