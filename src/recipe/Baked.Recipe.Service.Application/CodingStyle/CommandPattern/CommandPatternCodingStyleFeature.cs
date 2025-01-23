@@ -56,9 +56,10 @@ public class CommandPatternCodingStyleFeature(IEnumerable<string> _methodNames)
 
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
-            var fileProvider = configurator.Context.GetGeneratedFileProvider();
+            var generatedContext = configurator.Context.GetGeneratedContext();
 
-            var methodExamplesDictionary = JsonConvert.DeserializeObject<Dictionary<string, RequestResponseExampleData>>(fileProvider["RequestResponseExamples"]) ?? [];
+            var fileContent = generatedContext.GetFileContent("RequestResponseExamples");
+            var methodExamplesDictionary = JsonConvert.DeserializeObject<Dictionary<string, RequestResponseExampleData>>(fileContent) ?? [];
             swaggerGenOptions.OperationFilter<XmlExamplesFromClassOperationFilter>(_methodNames, methodExamplesDictionary);
         });
     }

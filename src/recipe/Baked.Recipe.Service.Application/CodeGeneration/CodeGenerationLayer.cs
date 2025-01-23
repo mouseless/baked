@@ -2,11 +2,13 @@
 using Baked.Domain.Model;
 using System.Reflection;
 using System.Text;
+
 using static Baked.CodeGeneration.CodeGenerationLayer;
+using static Baked.Runtime.RuntimeLayer;
 
 namespace Baked.CodeGeneration;
 
-public class CodeGenerationLayer : LayerBase<GenerateCode, Compile>
+public class CodeGenerationLayer : LayerBase<GenerateCode, Compile, BuildConfiguration>
 {
     readonly IGeneratedAssemblyCollection _generatedAssemblies = new GeneratedAssemblyCollection();
     readonly IGeneratedFileCollection _generatedFiles = new GeneratedFileCollection();
@@ -24,18 +26,44 @@ public class CodeGenerationLayer : LayerBase<GenerateCode, Compile>
         phase.CreateContext(_generatedAssemblies);
 
     protected override PhaseContext GetContext(Compile phase) =>
-        phase.CreateContext(_generatedFiles);
+        phase.CreateContextBuilder()
+            .Add(_generatedFiles)
+            .OnDispose(() =>
+            {
+                foreach (var descriptor in _generatedFiles)
+                {
+                    using var file = new FileStream(Path.Combine(_location, $"{descriptor.Name}.{descriptor.Extension}"), FileMode.Create);
+                    file.Write(Encoding.UTF8.GetBytes(descriptor.Content));
+                }
+            })
+            .Build();
 
-    protected override IEnumerable<IPhase> GetPhases()
+    protected override PhaseContext GetContext(BuildConfiguration phase)
     {
-        yield return new LoadGeneratedAssemblies(_location);
+        var directoryfiles = Directory.GetFiles(_location);
+
+        var generatedContext = new GeneratedContext();
+        foreach (var path in directoryfiles)
+        {
+            if (path.Contains("Baked.g"))
+            {
+                generatedContext.Assemblies.Add(Path.GetFileName(path).Replace("Baked.g.", string.Empty).Replace(".dll", string.Empty), Assembly.LoadFile(path));
+            }
+            else
+            {
+                generatedContext.Files.Add(Path.GetFileName(path)[..Path.GetFileName(path).LastIndexOf('.')], path);
+            }
+        }
+
+        Context.Add(generatedContext);
+
+        return PhaseContext.Empty;
     }
 
     protected override IEnumerable<IPhase> GetBakePhases()
     {
         yield return new GenerateCode(_location, _generatedAssemblies, _generatedFiles);
         yield return new Compile(_location);
-        yield return new CreateFiles(_location);
     }
 
     public class GenerateCode(string _location, IGeneratedAssemblyCollection _generatedAssemblies, IGeneratedFileCollection _generatedFiles)
@@ -64,45 +92,6 @@ public class CodeGenerationLayer : LayerBase<GenerateCode, Compile>
             {
                 new Compiler(descriptor).Compile(_location, $"Baked.g.{descriptor.Name}");
             }
-        }
-    }
-
-    public class CreateFiles(string _location)
-        : PhaseBase<IGeneratedFileCollection>(PhaseOrder.Latest)
-    {
-        protected override void Initialize(IGeneratedFileCollection generatedFiles)
-        {
-            foreach (var descriptor in generatedFiles)
-            {
-                using var file = new FileStream(Path.Combine(_location, $"{descriptor.Name}.{descriptor.Extension}"), FileMode.Create);
-                file.Write(Encoding.UTF8.GetBytes(descriptor.Content));
-            }
-        }
-    }
-
-    public class LoadGeneratedAssemblies(string _location)
-        : PhaseBase(PhaseOrder.Early)
-    {
-        protected override void Initialize()
-        {
-            var directoryfiles = Directory.GetFiles(_location);
-
-            var provider = new GeneratedAssemblyProvider();
-            var fileProvider = new GeneratedFileProvider();
-            foreach (var path in directoryfiles)
-            {
-                if (path.Contains("Baked.g"))
-                {
-                    provider.Add(Path.GetFileName(path).Replace("Baked.g.", string.Empty).Replace(".dll", string.Empty), Assembly.LoadFile(path));
-                }
-                else
-                {
-                    fileProvider.Add(Path.GetFileName(path)[..Path.GetFileName(path).LastIndexOf('.')], path);
-                }
-            }
-
-            Context.Add(provider);
-            Context.Add(fileProvider);
         }
     }
 }

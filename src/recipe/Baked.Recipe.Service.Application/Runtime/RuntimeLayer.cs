@@ -63,9 +63,9 @@ public class RuntimeLayer : LayerBase<BuildConfiguration, AddServices, PostBuild
     }
 
     public class AddServices(IServiceCollection _services)
-        : PhaseBase<GeneratedAssemblyProvider>(PhaseOrder.Early)
+        : PhaseBase<GeneratedContext>(PhaseOrder.Early)
     {
-        protected override void Initialize(GeneratedAssemblyProvider __)
+        protected override void Initialize(GeneratedContext __)
         {
             Context.Add(_services);
         }

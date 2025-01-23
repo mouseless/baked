@@ -15,20 +15,17 @@ public static class CodeGenerationExtensions
     public static IGeneratedAssemblyCollection GetGeneratedAssemblyCollection(this ApplicationContext context) =>
         context.Get<IGeneratedAssemblyCollection>();
 
-    public static GeneratedAssemblyProvider GetGeneratedAssemblyProvider(this ApplicationContext context) =>
-        context.Get<GeneratedAssemblyProvider>();
+    public static GeneratedContext GetGeneratedContext(this ApplicationContext context) =>
+        context.Get<GeneratedContext>();
 
     public static Assembly GetGeneratedAssembly(this ApplicationContext context, string name) =>
-        context.GetGeneratedAssemblyProvider()[name];
+        context.Get<GeneratedContext>().Assemblies[name];
 
     public static void ConfigureGeneratedAssemblyCollection(this LayerConfigurator configurator, Action<IGeneratedAssemblyCollection> configuration) =>
         configurator.Configure(configuration);
 
     public static void ConfigureGeneratedFileCollection(this LayerConfigurator configurator, Action<IGeneratedFileCollection> configuration) =>
        configurator.Configure(configuration);
-
-    public static GeneratedFileProvider GetGeneratedFileProvider(this ApplicationContext context) =>
-        context.Get<GeneratedFileProvider>();
 
     /// <summary>
     /// Adds a descriptor for a generated assembly with given parameters

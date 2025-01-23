@@ -305,12 +305,13 @@ public class DomainAssembliesBusinessFeature(
                 return $"{apiDescription.ActionDescriptor.AttributeRouteInfo?.Template}_{methodOrder}";
             });
 
-            var fileProvider = configurator.Context.GetGeneratedFileProvider();
+            var generatedContext = configurator.Context.GetGeneratedContext();
 
-            var tagDescriptions = JsonConvert.DeserializeObject<TagDescriptions>(fileProvider.GetFileContent(nameof(TagDescriptions)));
+            var tagDescriptions = JsonConvert.DeserializeObject<TagDescriptions>(generatedContext.GetFileContent(nameof(TagDescriptions)));
             swaggerGenOptions.DocumentFilter<ApplyTagDescriptionsDocumentFilter>(tagDescriptions);
 
-            var methodExamplesDictionary = JsonConvert.DeserializeObject<Dictionary<string, RequestResponseExampleData>>(fileProvider["RequestResponseExamples"]) ?? [];
+            var fileContent = generatedContext.GetFileContent("RequestResponseExamples");
+            var methodExamplesDictionary = JsonConvert.DeserializeObject<Dictionary<string, RequestResponseExampleData>>(fileContent) ?? [];
             swaggerGenOptions.OperationFilter<XmlExamplesOperationFilter>(methodExamplesDictionary);
         });
     }
