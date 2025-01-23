@@ -14,9 +14,10 @@ public class CodeGenerationLayer : LayerBase<GenerateCode, Compile>
 
     public CodeGenerationLayer()
     {
-        _location = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location) ??
-            throw new("'EntryAssembly' should have existed with valid location");
-        _location = Path.Combine(_location, Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development");
+        _location = Path.Combine(
+            Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location) ?? throw new("'EntryAssembly' should have existed with valid location"),
+            Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development"
+        );
     }
 
     protected override PhaseContext GetContext(GenerateCode phase) =>

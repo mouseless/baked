@@ -13,11 +13,10 @@ public class XmlExamplesFromClassOperationFilter(IEnumerable<string> actionNames
     {
         if (!context.ApiDescription.TryGetMappedMethod(out var mappedMethod)) { return; }
         if (!_actionNames.Contains(mappedMethod.MethodName)) { return; }
-        if (_methodExamplesDictionary.TryGetValue(mappedMethod.TypeFullName, out var example))
-        {
-            operation.RequestBody?.Content.SetJsonExample(example.Request);
-            operation.Responses.TryGetValue("200", out var response);
-            response?.Content.SetJsonExample(example.Response);
-        }
+        if (!_methodExamplesDictionary.TryGetValue(mappedMethod.TypeFullName, out var example)) { return; }
+
+        operation.RequestBody?.Content.SetJsonExample(example.Request);
+        operation.Responses.TryGetValue("200", out var response);
+        response?.Content.SetJsonExample(example.Response);
     }
 }

@@ -306,17 +306,12 @@ public class DomainAssembliesBusinessFeature(
             });
 
             var fileProvider = configurator.Context.GetGeneratedFileProvider();
-            using (var file = new FileStream(fileProvider[nameof(TagDescriptions)], FileMode.Open))
-            {
-                var tagDescriptions = JsonConvert.DeserializeObject<TagDescriptions>(new StreamReader(file).ReadToEnd());
-                swaggerGenOptions.DocumentFilter<ApplyTagDescriptionsDocumentFilter>(tagDescriptions);
-            }
 
-            using (var file = new FileStream(fileProvider["RequestResponseExamples"], FileMode.Open))
-            {
-                var methodExamplesDictionary = JsonConvert.DeserializeObject<Dictionary<string, RequestResponseExampleData>>(new StreamReader(file).ReadToEnd()) ?? [];
-                swaggerGenOptions.OperationFilter<XmlExamplesOperationFilter>(methodExamplesDictionary);
-            }
+            var tagDescriptions = JsonConvert.DeserializeObject<TagDescriptions>(fileProvider.GetFileContent(nameof(TagDescriptions)));
+            swaggerGenOptions.DocumentFilter<ApplyTagDescriptionsDocumentFilter>(tagDescriptions);
+
+            var methodExamplesDictionary = JsonConvert.DeserializeObject<Dictionary<string, RequestResponseExampleData>>(fileProvider["RequestResponseExamples"]) ?? [];
+            swaggerGenOptions.OperationFilter<XmlExamplesOperationFilter>(methodExamplesDictionary);
         });
     }
 }
