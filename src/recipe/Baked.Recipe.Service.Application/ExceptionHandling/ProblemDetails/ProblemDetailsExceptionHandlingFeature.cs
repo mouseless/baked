@@ -47,18 +47,12 @@ public class ProblemDetailsExceptionHandlingFeature(Setting<string>? _typeUrlFor
                         entity.Apply(t => assembly.AddReferenceFrom(t));
                     }
                 },
-                compilationOptions => compilationOptions.WithUsings(
-                    "Baked",
-                    "Baked.ExceptionHandling",
+                usings: [
                     "Baked.Business",
+                    "Baked.ExceptionHandling",
                     "Baked.Runtime",
-                    "Microsoft.Extensions.DependencyInjection",
-                    "System",
-                    "System.Linq",
-                    "System.Collections",
-                    "System.Collections.Generic",
-                    "System.Threading.Tasks"
-                )
+                    "Microsoft.Extensions.DependencyInjection"
+                ]
             );
         });
 

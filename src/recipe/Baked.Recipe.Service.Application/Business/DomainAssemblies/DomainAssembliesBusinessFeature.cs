@@ -209,18 +209,12 @@ public class DomainAssembliesBusinessFeature(
                         entity.Apply(t => assembly.AddReferenceFrom(t));
                     }
                 },
-                compilationOptions => compilationOptions.WithUsings(
-                    "Baked",
+                usings: [
                     "Baked.Business",
                     "Baked.Business.DomainAssemblies",
                     "Baked.Runtime",
-                    "Microsoft.Extensions.DependencyInjection",
-                    "System",
-                    "System.Linq",
-                    "System.Collections",
-                    "System.Collections.Generic",
-                    "System.Threading.Tasks"
-                )
+                    "Microsoft.Extensions.DependencyInjection"
+                ]
             );
         });
 

@@ -39,7 +39,7 @@ public class AddingPhases : ArchitectureSpec
         phases.ShouldContain(phase => phase is TwoPhaseLayer.DoB);
     }
 
-    class LayerWithGeneratePhases : LayerBase
+    class LayerWithBakePhases : LayerBase
     {
         protected override IEnumerable<IPhase> GetPhases()
         {
@@ -57,19 +57,19 @@ public class AddingPhases : ArchitectureSpec
 
     [Test]
 
-    public void Layers_can_add_seperate_phases_for_generate_and_run()
+    public void Layers_can_add_seperate_phases_for_bake_and_start()
     {
-        ILayer layer = new LayerWithGeneratePhases();
+        ILayer layer = new LayerWithBakePhases();
 
         var phases = layer.GetPhases();
 
         phases.Count().ShouldBe(1);
-        phases.ShouldContain(phase => phase is LayerWithGeneratePhases.RuntimePhase);
+        phases.ShouldContain(phase => phase is LayerWithBakePhases.RuntimePhase);
 
         var generatePhases = layer.GetBakePhases();
 
         generatePhases.Count().ShouldBe(1);
-        generatePhases.ShouldContain(phase => phase is LayerWithGeneratePhases.GeneratePhase);
+        generatePhases.ShouldContain(phase => phase is LayerWithBakePhases.GeneratePhase);
     }
 
     class IndependentAddsString(string _artifact)

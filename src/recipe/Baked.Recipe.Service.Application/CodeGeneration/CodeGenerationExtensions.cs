@@ -48,6 +48,28 @@ public static class CodeGenerationExtensions
         generatedAssemblies.Add(descriptor);
     }
 
+    public static void Add(this IGeneratedAssemblyCollection generatedAssemblies, string name, Action<GeneratedAssemblyDescriptor> descriptorBuilder,
+        List<string>? usings = default
+    )
+    {
+        usings ??= [];
+        usings.AddRange([
+            "Baked",
+            "System",
+            "System.Linq",
+            "System.Collections",
+            "System.Collections.Generic",
+            "System.Threading.Tasks"
+        ]);
+
+        var descriptor = new GeneratedAssemblyDescriptor(name);
+
+        descriptorBuilder(descriptor);
+        descriptor.CompilationOptions = descriptor.CompilationOptions.WithUsings(usings);
+
+        generatedAssemblies.Add(descriptor);
+    }
+
     public static GeneratedAssemblyDescriptor AddCode(this GeneratedAssemblyDescriptor descriptor, string code) => descriptor.AddCodes(code);
     public static GeneratedAssemblyDescriptor AddCodes(this GeneratedAssemblyDescriptor descriptor, ICodeTemplate codeTemplate) => descriptor.AddCodes(codeTemplate.Render());
     public static GeneratedAssemblyDescriptor AddCodes(this GeneratedAssemblyDescriptor descriptor, IEnumerable<string> codes) => descriptor.AddCodes(codes.ToArray());
