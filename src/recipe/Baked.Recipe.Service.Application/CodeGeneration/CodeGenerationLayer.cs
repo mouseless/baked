@@ -42,15 +42,12 @@ public class CodeGenerationLayer : LayerBase<GenerateCode, Compile>
     {
         protected override void Initialize(DomainModel _)
         {
-            if (!Directory.Exists(_location))
-            {
-                Directory.CreateDirectory(_location);
-            }
-            else
+            if (Directory.Exists(_location))
             {
                 Directory.Delete(_location, true);
-                Directory.CreateDirectory(_location);
             }
+
+            Directory.CreateDirectory(_location);
 
             Context.Add(_generatedAssemblies);
             Context.Add(_generatedFiles);
@@ -76,10 +73,8 @@ public class CodeGenerationLayer : LayerBase<GenerateCode, Compile>
         {
             foreach (var descriptor in generatedFiles)
             {
-                using (var file = new FileStream(Path.Combine(_location, $"{descriptor.Name}.{descriptor.Extension}"), FileMode.Create))
-                {
-                    file.Write(Encoding.UTF8.GetBytes(descriptor.Content));
-                }
+                using var file = new FileStream(Path.Combine(_location, $"{descriptor.Name}.{descriptor.Extension}"), FileMode.Create);
+                file.Write(Encoding.UTF8.GetBytes(descriptor.Content));
             }
         }
     }
@@ -92,19 +87,20 @@ public class CodeGenerationLayer : LayerBase<GenerateCode, Compile>
             var directoryfiles = Directory.GetFiles(_location);
 
             var provider = new GeneratedAssemblyProvider();
+            var fileProvider = new GeneratedFileProvider();
             foreach (var path in directoryfiles.Where(s => s.Contains("Baked.g")))
             {
-                provider.Add(Path.GetFileName(path).Replace("Baked.g.", string.Empty).Replace(".dll", string.Empty), Assembly.LoadFile(path));
+                if (path.Contains("Baked.g"))
+                {
+                    provider.Add(Path.GetFileName(path).Replace("Baked.g.", string.Empty).Replace(".dll", string.Empty), Assembly.LoadFile(path));
+                }
+                else
+                {
+                    fileProvider.Add(Path.GetFileName(path)[..Path.GetFileName(path).LastIndexOf('.')], path);
+                }
             }
 
             Context.Add(provider);
-
-            var fileProvider = new GeneratedFileProvider();
-            foreach (var path in directoryfiles.Where(s => !s.Contains("Baked.g")))
-            {
-                fileProvider.Add(Path.GetFileName(path)[..Path.GetFileName(path).LastIndexOf('.')], path);
-            }
-
             Context.Add(fileProvider);
         }
     }
