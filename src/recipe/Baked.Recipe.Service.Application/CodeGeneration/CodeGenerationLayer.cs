@@ -88,7 +88,7 @@ public class CodeGenerationLayer : LayerBase<GenerateCode, Compile>
 
             var provider = new GeneratedAssemblyProvider();
             var fileProvider = new GeneratedFileProvider();
-            foreach (var path in directoryfiles.Where(s => s.Contains("Baked.g")))
+            foreach (var path in directoryfiles)
             {
                 if (path.Contains("Baked.g"))
                 {
