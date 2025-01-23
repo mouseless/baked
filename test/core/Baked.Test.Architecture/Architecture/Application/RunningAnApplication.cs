@@ -29,7 +29,7 @@ public class RunningAnApplication : ArchitectureSpec
         var phase3 = MockMe.APhase();
         var layer1 = MockMe.ALayer(bakePhases: [phase1, phase2]);
         var layer2 = MockMe.ALayer(phase: phase3);
-        var app = GiveMe.AnApplication(layers: [layer1, layer2], bake: true, start: false);
+        var app = GiveMe.AnApplication(layers: [layer1, layer2], runFlags: RunFlags.Bake);
 
         app.Run();
 
@@ -46,7 +46,7 @@ public class RunningAnApplication : ArchitectureSpec
         var phase3 = MockMe.APhase();
         var layer1 = MockMe.ALayer(bakePhases: [phase1, phase2]);
         var layer2 = MockMe.ALayer(phase: phase3);
-        var app = GiveMe.AnApplication(layers: [layer1, layer2], bake: true, start: true);
+        var app = GiveMe.AnApplication(layers: [layer1, layer2], runFlags: RunFlags.Bake | RunFlags.Start);
 
         app.Run();
 

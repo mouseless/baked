@@ -10,13 +10,12 @@ public static class BakeExtensions
         IBanner? banner = default,
         ApplicationContext? context = default,
         ApplicationContext? bakeContext = default,
-        bool bake = false,
-        bool start = true
+        RunFlags runflags = RunFlags.Start
     )
     {
         banner ??= giveMe.Spec.MockMe.ABanner();
         context ??= new();
 
-        return new(banner, () => new(context, bakeContext), bake, start);
+        return new(banner, () => new(context, bakeContext), runflags);
     }
 }

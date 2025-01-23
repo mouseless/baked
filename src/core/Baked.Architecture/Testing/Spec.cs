@@ -17,7 +17,7 @@ public abstract class Spec
     public ApplicationContext BakeContext => _bakeContext;
 
     protected static void Init(Action<ApplicationDescriptor> describe) =>
-        new Bake(new Mock<IBanner>().Object, () => new(_context, _bakeContext: _bakeContext), _bake: true, _start: true)
+        new Bake(new Mock<IBanner>().Object, () => new(_context, _bakeContext: _bakeContext), _runFlags: RunFlags.Bake | RunFlags.Start)
             .Application(describe)
             .Run();
 

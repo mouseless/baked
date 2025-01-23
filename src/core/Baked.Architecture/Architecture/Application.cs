@@ -8,13 +8,11 @@ public class Application(ApplicationContext _context,
     readonly List<IFeature> _features = [];
     readonly List<IPhase> _phases = [];
     readonly List<IPhase> _bakePhases = [];
-    bool _bake = default!;
-    bool _start = default!;
+    RunFlags _runFlags = RunFlags.Start!;
 
-    internal Application With(ApplicationDescriptor descriptor, bool bake, bool start)
+    internal Application With(ApplicationDescriptor descriptor, RunFlags runFlags)
     {
-        _bake = bake;
-        _start = start;
+        _runFlags = runFlags;
 
         CheckDuplicates(descriptor.Layers.Select(layer => layer.Id));
         _layers.AddRange(descriptor.Layers);
@@ -39,7 +37,7 @@ public class Application(ApplicationContext _context,
 
     void FillPhases()
     {
-        if (_bake)
+        if (_runFlags.HasFlag(RunFlags.Bake))
         {
             foreach (var layer in _layers)
             {
@@ -51,7 +49,7 @@ public class Application(ApplicationContext _context,
             _bakePhases.Sort((l, r) => l.Order - r.Order);
         }
 
-        if (_start)
+        if (_runFlags.HasFlag(RunFlags.Start))
         {
             foreach (var layer in _layers)
             {
@@ -65,12 +63,12 @@ public class Application(ApplicationContext _context,
 
     public void Run()
     {
-        if (_bake)
+        if (_runFlags.HasFlag(RunFlags.Bake))
         {
             ExecutePhases(_bakePhases, _bakeContext ?? new());
         }
 
-        if (_start)
+        if (_runFlags.HasFlag(RunFlags.Start))
         {
             ExecutePhases(_phases, _context);
         }

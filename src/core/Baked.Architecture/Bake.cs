@@ -5,14 +5,29 @@ using System.Globalization;
 namespace Baked;
 
 public class Bake(IBanner _banner, Func<Application> _newApplication,
-    bool _bake = false,
-    bool _start = true
+    RunFlags _runFlags = RunFlags.Start
 )
 {
-    public static Bake New => new(new BakedBanner(), () => new(new()),
-        _bake: Environment.GetCommandLineArgs().Any(a => a.EndsWith("bake")),
-        _start: !Environment.GetCommandLineArgs().Any(a => a.EndsWith("no-start"))
-    );
+    public static Bake New
+    {
+        get
+        {
+            var runFlags = RunFlags.Start;
+            if (Environment.GetCommandLineArgs().Contains("--bake"))
+            {
+                runFlags |= RunFlags.Bake;
+            }
+
+            if (Environment.GetCommandLineArgs().Contains("--no-start"))
+            {
+                runFlags ^= RunFlags.Start;
+            }
+
+            return new(new BakedBanner(), () => new(new()),
+                _runFlags: runFlags
+            );
+        }
+    }
 
     public Application Application(Action<ApplicationDescriptor> describe)
     {
@@ -25,9 +40,9 @@ public class Bake(IBanner _banner, Func<Application> _newApplication,
 
         if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Nfr")
         {
-            return _newApplication().With(descriptor, true, true);
+            return _newApplication().With(descriptor, RunFlags.Start | RunFlags.Bake);
         }
 
-        return _newApplication().With(descriptor, _bake, _start);
+        return _newApplication().With(descriptor, _runFlags);
     }
 }
