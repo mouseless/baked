@@ -4,4 +4,9 @@
     <Using Include="Baked" />
   </ItemGroup>
 
+  <Target Name="Bake" AfterTargets="AfterBuild">
+    <Exec Command="dotnet run $(ProjectPath) --no-build --no-start --bake" Condition="'$(OS)' != 'Unix'" />
+    <Exec Command="dotnet $(TargetPath) --no-build --no-start --bake" Condition="'$(OS)' == 'Unix'" />
+  </Target>
+
 </Project>
