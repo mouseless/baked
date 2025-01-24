@@ -110,8 +110,10 @@ Bake.New
     .Run();
 ```
 
-Application runs in phases provided by its layers. For example
-`HttpServerLayer` uses ASP.NET Core to build a web application which typically
+Application runs in phases provided by its layers. These phases come from 
+`GetPhases()` or `GetBakePhases()` methods of `ILayer`.
+
+For example `HttpServerLayer` uses ASP.NET Core to build a web application which typically
 runs in three phases;
 
 ```mermaid
@@ -123,8 +125,12 @@ flowchart TB
     CB --> B --> R
 ```
 
-These phases come from layers using `GetPhases()` method of `ILayer`. In the
-above example, `HttpServerLayer` (ASP.NET Core) introduced these three phases.
+> [!TIP]
+>
+> Application has `Bake` and `Start` mode which is configured with `RunFlags` 
+> parameter. `RunFlags` enables running `Bake` and `Start` modes
+> modes individually or respectively. `Bake` mode calls `GetBakePhases()` and
+> `Start` mode calls `GetPhases()` methods to collect phases
 
 At the beginning of each phase, application initializes it by providing an
 `ApplicationContext` instance. This way each phase can add/get certain objects
