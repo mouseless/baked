@@ -1,4 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <Import Project="..\..\..\src\recipe\Baked.Recipe.Service.Application\Baked.Recipe.Service.Application.targets" />  
     
   <ItemGroup>
     <Content Include="Core\ApplicationPhysical.txt">
@@ -18,17 +20,5 @@
   <ItemGroup>
     <InternalsVisibleTo Include="Baked.Test.Recipe.Service.Test" />
   </ItemGroup>
-
-  <Target Name="Bake" AfterTargets="AfterBuild">
-    <Exec Command="dotnet run $(ProjectPath) --no-build --no-start --bake -c $(Configuration)" Condition="'$(OS)' != 'Unix'" />
-    <Exec Command="dotnet $(TargetPath) --no-build --no-start --bake -c $(Configuration)" Condition="'$(OS)' == 'Unix'" />
-  </Target>
-
-  <Target Name="CopyBakedFiles" AfterTargets="Publish">
-    <ItemGroup>
-        <GeneratedFilest Include="$(TargetDir)\$(ASPNETCORE_ENVIRONMENT)\*.*" />
-    </ItemGroup>
-    <Copy SourceFiles="@(GeneratedFilest)" DestinationFolder="$(PublishDir)\$(ASPNETCORE_ENVIRONMENT)" SkipUnchangedFiles="true" />
-  </Target>
 
 </Project>
