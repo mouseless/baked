@@ -38,7 +38,7 @@ configurator.ConfigureDomainBuilderOptions(options =>
 
 ## Phases
 
-This layer introduces following phases to the application it is added;
+This layer introduces following `Bake` phases to the application it is added;
 
 - `AddDomainTypes`: This phase adds an `IDomainTypeCollection` instance to the
   application context

@@ -75,7 +75,8 @@ public class LayerX : LayerBase
 ## Adding Phases
 
 By default `LayerBase` returns no phases. To add one or more phases into the
-application, you need to override `GetPhases()` method as shown below;
+application, you need to override `GetPhases()` or `GetBakePhases()` methods 
+as shown below;
 
 ```csharp
 public class SampleLayer : LayerBase
@@ -83,6 +84,10 @@ public class SampleLayer : LayerBase
     protected override IEnumerable<IPhase> GetPhases()
     {
         yield return new DoA();
+    }
+
+    protected override IEnumerable<IPhase> GetBakePhases()
+    {
         yield return new DoB();
     }
 
@@ -91,7 +96,8 @@ public class SampleLayer : LayerBase
 }
 ```
 
-Here `SampleLayer` adds two phases, `DoA` and `DoB`, to the application.
+Here `SampleLayer` adds two phases, `DoA` to `Start` mode and `DoB` to `Bake` 
+mode of the application.
 
 > [!TIP]
 >

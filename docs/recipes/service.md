@@ -74,25 +74,33 @@ Bake.New
 
 ## Phase Execution Order
 
+### Bake
+
 ```mermaid
 flowchart TD
-    CB(CreateBuilder)
-    BC(BuildConfiguration)
     AD(AddDomainTypes)
     BD(BuildDomainModel)
     GC(GenerateCode)
     C(Compile)
+
+    AD -->|IDomainTypeCollection| BD
+    BD -->|DomainModel| GC
+    GC -->|IGeneratedAssemblyCollection\nIGeneratedAssemblyCollection| C
+```
+
+### Start
+
+```mermaid
+flowchart TD
+    CB(CreateBuilder)
+    BC(BuildConfiguration)
     AS(AddServices)
     B(Build)
     PB(PostBuild)
     R(Run)
 
     CB -->|ConfigurationManager\nWebApplicationBuilder| BC
-    BC --> AD
-    AD -->|IDomainTypeCollection| BD
-    BD -->|DomainModel| GC
-    GC -->|IGeneratedAssemblyCollection| C
-    C -->|GeneratedAssemblyProvider| AS
+    BC -->|GeneratedContext| AS
     AS -->|IServiceCollection| B
     B -->|IServiceProvider\nWebApplication|PB
     PB --> R
