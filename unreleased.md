@@ -35,5 +35,7 @@
   - `Singleton`
   - `AutoMapOrm`
   - `ProblemDetails`
+- `GiveMe.PropertyOf<T>` helper is renamed to `ThePropertyOf<T>`  
+- `GiveMe.MethodOf<T>` helper is renamed to `TheMethodOf<T>`  
   
   
