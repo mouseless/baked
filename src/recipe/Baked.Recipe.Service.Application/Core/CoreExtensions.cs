@@ -77,6 +77,9 @@ public static class CoreExtensions
         return new(url);
     }
 
+    public static void ShouldBe(this string? @string, object? expected, string format) =>
+        @string.ShouldBe(string.Format(format, expected));
+
     public static void ShouldBe(this Uri? uri, string urlString) =>
         uri?.ToString().ShouldBe(urlString);
 
