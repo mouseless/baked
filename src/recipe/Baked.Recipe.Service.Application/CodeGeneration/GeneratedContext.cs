@@ -8,22 +8,14 @@ public class GeneratedContext
     public Dictionary<string, Assembly> Assemblies { get; } = [];
     public Dictionary<string, string> Files { get; } = [];
 
-    public string GetFileContent(string key)
+    public string ReadFile(string key)
     {
-        var result = string.Empty;
-        using (var file = new FileStream(Files[key], FileMode.Open))
-        {
-            using var reader = new StreamReader(file);
-            result = reader.ReadToEnd();
-        }
+        using var file = new FileStream(Files[key], FileMode.Open);
+        using var reader = new StreamReader(file);
 
-        return result;
+        return reader.ReadToEnd();
     }
 
-    public T? LoadFromFile<T>() where T : notnull
-    {
-        var result = GetFileContent(typeof(T).Name);
-
-        return JsonConvert.DeserializeObject<T>(result);
-    }
+    public T? ReadFileAsJson<T>() where T : notnull =>
+        JsonConvert.DeserializeObject<T>(ReadFile(typeof(T).Name));
 }

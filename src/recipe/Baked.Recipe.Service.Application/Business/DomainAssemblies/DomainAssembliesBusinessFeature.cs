@@ -306,10 +306,10 @@ public class DomainAssembliesBusinessFeature(
 
             var generatedContext = configurator.Context.GetGeneratedContext();
 
-            var tagDescriptions = generatedContext.LoadFromFile<TagDescriptions>() ?? [];
+            var tagDescriptions = generatedContext.ReadFileAsJson<TagDescriptions>() ?? [];
             swaggerGenOptions.DocumentFilter<ApplyTagDescriptionsDocumentFilter>(tagDescriptions);
 
-            var examples = generatedContext.LoadFromFile<RequestResponseExamples>() ?? [];
+            var examples = generatedContext.ReadFileAsJson<RequestResponseExamples>() ?? [];
             swaggerGenOptions.OperationFilter<XmlExamplesOperationFilter>(examples);
         });
     }

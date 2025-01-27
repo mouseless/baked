@@ -57,7 +57,7 @@ public class CommandPatternCodingStyleFeature(IEnumerable<string> _methodNames)
         {
             var generatedContext = configurator.Context.GetGeneratedContext();
 
-            var examples = generatedContext.LoadFromFile<RequestResponseExamples>() ?? [];
+            var examples = generatedContext.ReadFileAsJson<RequestResponseExamples>() ?? [];
             swaggerGenOptions.OperationFilter<XmlExamplesFromClassOperationFilter>(_methodNames, examples);
         });
     }
