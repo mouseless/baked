@@ -23,7 +23,6 @@ public abstract class Spec
 
     public Stubber GiveMe { get; private set; } = default!;
     public Mocker MockMe { get; private set; } = default!;
-    public Searcher GetMe { get; private set; } = default!;
 
     [OneTimeSetUp]
     public virtual void OneTimeSetUp() { }
@@ -36,7 +35,6 @@ public abstract class Spec
     {
         GiveMe = new(this);
         MockMe = new(this);
-        GetMe = new(this);
 
         if (_context.Has<ITestRun>())
         {
