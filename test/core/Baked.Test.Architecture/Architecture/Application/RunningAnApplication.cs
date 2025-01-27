@@ -22,6 +22,40 @@ public class RunningAnApplication : ArchitectureSpec
     }
 
     [Test]
+    public void Application_collects_only_bake_phases_when_specified()
+    {
+        var phase1 = MockMe.APhase();
+        var phase2 = MockMe.APhase();
+        var phase3 = MockMe.APhase();
+        var layer1 = MockMe.ALayer(bakePhases: [phase1, phase2]);
+        var layer2 = MockMe.ALayer(phase: phase3);
+        var app = GiveMe.AnApplication(layers: [layer1, layer2], runFlags: RunFlags.Bake);
+
+        app.Run();
+
+        phase1.VerifyInitialized();
+        phase2.VerifyInitialized();
+        phase3.VerifyNotInitialized();
+    }
+
+    [Test]
+    public void Application_collects_bake_and_start_phases_when_specified()
+    {
+        var phase1 = MockMe.APhase();
+        var phase2 = MockMe.APhase();
+        var phase3 = MockMe.APhase();
+        var layer1 = MockMe.ALayer(bakePhases: [phase1, phase2]);
+        var layer2 = MockMe.ALayer(phase: phase3);
+        var app = GiveMe.AnApplication(layers: [layer1, layer2], runFlags: RunFlags.Bake | RunFlags.Start);
+
+        app.Run();
+
+        phase1.VerifyInitialized();
+        phase2.VerifyInitialized();
+        phase3.VerifyInitialized();
+    }
+
+    [Test]
     public void Application_initializes_each_phase_before_they_are_applied_to_layers()
     {
         var values = new List<string>();

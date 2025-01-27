@@ -1,6 +1,7 @@
 ﻿using Baked.Architecture;
 using Baked.RestApi;
 using Baked.RestApi.Conventions;
+using FluentNHibernate;
 using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Mapping;
 using Microsoft.AspNetCore.Builder;
@@ -46,24 +47,22 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
                 {
                     assembly
                         .AddReferenceFrom<AutoMapOrmFeature>()
-                        .AddCodes(new ManyToOneFetcherTemplate(domain));
+                        .AddCodes(new ManyToOneFetcherTemplate(domain))
+                        .AddCodes(new TypeModelTypeSourceTemplate(domain));
 
                     foreach (var entity in domain.Types.Having<EntityAttribute>())
                     {
                         entity.Apply(t => assembly.AddReferenceFrom(t));
                     }
                 },
-                compilationOptions => compilationOptions.WithUsings(
+                usings: [
                     "Baked.Orm",
                     "Baked.Runtime",
+                    "FluentNHibernate",
+                    "FluentNHibernate.Diagnostics",
                     "Microsoft.Extensions.DependencyInjection",
-                    "NHibernate.Linq",
-                    "System",
-                    "System.Linq",
-                    "System.Collections",
-                    "System.Collections.Generic",
-                    "System.Threading.Tasks"
-                )
+                    "NHibernate.Linq"
+                ]
             );
         });
 
@@ -81,8 +80,12 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
 
         configurator.ConfigureAutoPersistenceModel(model =>
         {
-            var domainModel = configurator.Context.GetDomainModel();
-            model.AddTypeSource(new TypeModelTypeSource(domainModel.Types.Having<EntityAttribute>()));
+            var assembly = configurator.Context.GetGeneratedAssembly(nameof(AutoMapOrmFeature));
+
+            var typeSource = assembly.GetExportedTypes().SingleOrDefault(t => t.IsAssignableTo(typeof(ITypeSource))) ?? throw new("`ITypeSource` implementation not found");
+            var typeSourceInstance = (ITypeSource?)Activator.CreateInstance(typeSource) ?? throw new($"Cannot create instance of {typeSource}");
+
+            model.AddTypeSource(typeSourceInstance);
 
             model.Conventions.Add(Table.Is(x => x.EntityType.Name));
             model.Conventions.Add(ConventionBuilder.Id.Always(x => x.GeneratedBy.Guid()));

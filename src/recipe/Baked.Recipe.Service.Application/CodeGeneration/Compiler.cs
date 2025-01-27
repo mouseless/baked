@@ -20,8 +20,13 @@ public class Compiler(GeneratedAssemblyDescriptor _descriptor)
         }
     }
 
-    public Assembly Compile()
+    public Assembly Compile(
+        string? assemblyLocation = default,
+        string? assemblyName = default
+    )
     {
+        assemblyName ??= $"Baked.g.{_descriptor.Name}";
+
         foreach (var assembly in _descriptor.References)
         {
             AddReference(assembly);
@@ -33,7 +38,7 @@ public class Compiler(GeneratedAssemblyDescriptor _descriptor)
         ));
 
         var compilation = CSharpCompilation.Create(
-            $"Baked.g.{_descriptor.Name}",
+            assemblyName: assemblyName,
             syntaxTrees: _descriptor.Codes.Select(c => CSharpSyntaxTree.ParseText(c)),
             references: _references.Values,
             options: _descriptor.CompilationOptions
@@ -61,6 +66,16 @@ public class Compiler(GeneratedAssemblyDescriptor _descriptor)
         }
 
         ms.Seek(0, SeekOrigin.Begin);
+
+        if (assemblyLocation is not null)
+        {
+            using (var file = new FileStream(Path.Combine(assemblyLocation, $"{assemblyName}.dll"), FileMode.Create))
+            {
+                ms.WriteTo(file);
+            }
+
+            return Assembly.LoadFile(Path.Combine(assemblyLocation, $"{assemblyName}.dll"));
+        }
 
         return Assembly.Load(ms.ToArray());
     }

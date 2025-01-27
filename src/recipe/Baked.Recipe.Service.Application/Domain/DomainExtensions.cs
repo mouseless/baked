@@ -4,6 +4,7 @@ using Baked.Domain.Configuration;
 using Baked.Domain.Conventions;
 using Baked.Domain.Model;
 using Baked.Testing;
+using Shouldly;
 using System.Diagnostics.CodeAnalysis;
 using System.Xml;
 
@@ -185,6 +186,22 @@ public static class DomainExtensions
         return result is not null;
     }
 
+    public static void ShouldContain<TAttribute>(this ICustomAttributesModel model,
+        Func<TAttribute, bool>? matcher = default
+    ) where TAttribute : Attribute
+    {
+        matcher ??= _ => true;
+
+        model.TryGetSingle<TAttribute>(out var attribute).ShouldBeTrue();
+        matcher(attribute).ShouldBeTrue();
+    }
+
+    public static MethodModel TheMethod<T>(this Stubber giveMe, string name) =>
+        giveMe
+            .Spec.BakeContext
+            .GetDomainModel().Types[typeof(T)]
+            .GetMembers().Methods[name];
+
     #endregion
 
     #region Documentation
@@ -221,7 +238,7 @@ public static class DomainExtensions
         string? parameter = default
     )
     {
-        var domainModel = giveMe.Spec.Context.GetDomainModel();
+        var domainModel = giveMe.Spec.BakeContext.GetDomainModel();
         var type = domainModel.Types[typeof(T)];
         if (!type.TryGetMembers(out var members)) { return null; }
 

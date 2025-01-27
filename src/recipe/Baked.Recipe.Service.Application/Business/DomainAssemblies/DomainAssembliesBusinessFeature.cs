@@ -1,4 +1,5 @@
 using Baked.Architecture;
+using Baked.CodeGeneration;
 using Baked.Domain;
 using Baked.Domain.Configuration;
 using Baked.Domain.Model;
@@ -157,6 +158,7 @@ public class DomainAssembliesBusinessFeature(
             api.References.AddRange(_assemblyDescriptors.Select(a => a.assembly));
             api.Usings.Add("Swashbuckle.AspNetCore.Annotations");
 
+            var examples = new RequestResponseExamples();
             var domainModel = configurator.Context.GetDomainModel();
             foreach (var type in domainModel.Types.Having<ApiServiceAttribute>())
             {
@@ -166,28 +168,65 @@ public class DomainAssembliesBusinessFeature(
                 foreach (var method in type.GetMembers().Methods.Having<ApiMethodAttribute>())
                 {
                     controller.AddAction(type, method);
+
+                    var typeExample = new RequestResponseExampleData(
+                        type.GetMembers().Documentation.GetExampleCode("request"),
+                        type.GetMembers().Documentation.GetExampleCode("response")
+                    );
+
+                    var methodExample = new RequestResponseExampleData(
+                        method.Documentation.GetExampleCode("request"),
+                        method.Documentation.GetExampleCode("response")
+                    );
+
+                    examples.TryAdd($"{type.FullName}", typeExample);
+                    examples.TryAdd($"{type.FullName}.{method.Name}", methodExample);
                 }
 
                 if (!controller.Action.Any()) { continue; }
 
                 api.Controller.Add(controller.Id, controller);
             }
+
+            var files = configurator.Context.Get<IGeneratedFileCollection>();
+            files.AddAsJson(examples);
+        });
+
+        configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
+        {
+            var domain = configurator.Context.GetDomainModel();
+
+            generatedAssemblies.Add(nameof(DomainAssembliesBusinessFeature),
+                assembly =>
+                {
+                    assembly
+                        .AddReferenceFrom<DomainAssembliesBusinessFeature>()
+                        .AddCodes(new CasterConfigurerTemplate(domain));
+
+                    foreach (var entity in domain.Types.Having<CasterAttribute>())
+                    {
+                        entity.Apply(t => assembly.AddReferenceFrom(t));
+                    }
+                },
+                usings: [
+                    "Baked.Business",
+                    "Baked.Business.DomainAssemblies",
+                    "Baked.Runtime",
+                    "Microsoft.Extensions.DependencyInjection"
+                ]
+            );
         });
 
         configurator.ConfigureServiceProvider(sp =>
         {
             Caster.SetServiceProvider(sp);
-            var domainModel = configurator.Context.GetDomainModel();
-            foreach (var type in domainModel.Types.Having<CasterAttribute>())
-            {
-                foreach (var @interface in type.GetInheritance().Interfaces.Where(i => i.Model.IsGenericType && !i.Model.IsGenericTypeDefinition && i.Model.IsAssignableTo(typeof(ICasts<,>))))
-                {
-                    type.Apply(t => @interface.Apply(i =>
-                    {
-                        Caster.Add(i.GenericTypeArguments[0], i.GenericTypeArguments[1], sp => sp.UsingCurrentScope().GetRequiredService(t));
-                    }));
-                }
-            }
+
+            var assembly = configurator.Context.GetGeneratedAssembly(nameof(DomainAssembliesBusinessFeature));
+
+            var type = assembly.GetExportedTypes().SingleOrDefault(t => t.Name.Contains("CasterConfigurer")) ?? throw new("ICasterConfigurer implementation not found");
+            var typeInstance = (ICasterConfigurer?)Activator.CreateInstance(type) ?? throw new($"Cannot create instance of {type}");
+
+            typeInstance.Configure();
         });
 
         configurator.ConfigureTestConfiguration(test =>
@@ -218,6 +257,14 @@ public class DomainAssembliesBusinessFeature(
             conventions.Add(new ProducesJsonConvention(_when: c => !c.Action.Return.IsVoid), order: 10);
             conventions.Add(new UseDocumentationAsDescriptionConvention(configurator.Context.Get<TagDescriptions>()), order: 10);
             conventions.Add(new AddMappedMethodAttributeConvention());
+        });
+
+        configurator.ConfigureGeneratedFileCollection(files =>
+        {
+            if (configurator.Context.Has<TagDescriptions>())
+            {
+                files.AddAsJson(configurator.Context.Get<TagDescriptions>());
+            }
         });
 
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
@@ -257,8 +304,13 @@ public class DomainAssembliesBusinessFeature(
                 return $"{apiDescription.ActionDescriptor.AttributeRouteInfo?.Template}_{methodOrder}";
             });
 
-            swaggerGenOptions.DocumentFilter<ApplyTagDescriptionsDocumentFilter>(configurator.Context.Get<TagDescriptions>());
-            swaggerGenOptions.OperationFilter<XmlExamplesOperationFilter>(configurator.Context.GetDomainModel());
+            var generatedContext = configurator.Context.GetGeneratedContext();
+
+            var tagDescriptions = generatedContext.ReadFileAsJson<TagDescriptions>() ?? [];
+            swaggerGenOptions.DocumentFilter<ApplyTagDescriptionsDocumentFilter>(tagDescriptions);
+
+            var examples = generatedContext.ReadFileAsJson<RequestResponseExamples>() ?? [];
+            swaggerGenOptions.OperationFilter<XmlExamplesOperationFilter>(examples);
         });
     }
 }

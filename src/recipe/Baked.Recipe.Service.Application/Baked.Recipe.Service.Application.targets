@@ -4,4 +4,15 @@
     <Using Include="Baked" />
   </ItemGroup>
 
+  <Target Name="Bake" AfterTargets="AfterBuild">
+    <Exec Command="dotnet $(TargetPath) --no-build --no-start --bake -c $(Configuration)" />
+  </Target>
+
+  <Target Name="CopyBakedFiles" AfterTargets="Publish">
+    <ItemGroup>
+        <GeneratedFiles Include="$(TargetDir)\$(ASPNETCORE_ENVIRONMENT)\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(GeneratedFiles)" DestinationFolder="$(PublishDir)\$(ASPNETCORE_ENVIRONMENT)" SkipUnchangedFiles="true" />
+  </Target>
+
 </Project>

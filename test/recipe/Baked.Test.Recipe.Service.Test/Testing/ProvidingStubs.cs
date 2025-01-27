@@ -100,11 +100,11 @@ public class ProvidingStubs : TestServiceSpec
     {
         typeof(string).ShouldBe<string>();
 
-        GiveMe.PropertyOf<Abstract>(nameof(Abstract.AbstractProperty))?.ShouldBeAbstract();
-        GiveMe.PropertyOf<Abstract>(nameof(Abstract.VirtualProperty))?.ShouldBeVirtual();
+        GiveMe.ThePropertyOf<Abstract>(nameof(Abstract.AbstractProperty))?.ShouldBeAbstract();
+        GiveMe.ThePropertyOf<Abstract>(nameof(Abstract.VirtualProperty))?.ShouldBeVirtual();
 
-        GiveMe.MethodOf<Abstract>(nameof(Abstract.AbstractMethod))?.ShouldBeAbstract();
-        GiveMe.MethodOf<Abstract>(nameof(Abstract.VirtualMethod))?.ShouldBeVirtual();
-        GiveMe.MethodOf<Abstract>(nameof(Abstract.OneParameterMethod))?.ShouldHaveOneParameter<int>();
+        GiveMe.TheMethodOf<Abstract>(nameof(Abstract.AbstractMethod))?.ShouldBeAbstract();
+        GiveMe.TheMethodOf<Abstract>(nameof(Abstract.VirtualMethod))?.ShouldBeVirtual();
+        GiveMe.TheMethodOf<Abstract>(nameof(Abstract.OneParameterMethod))?.ShouldHaveOneParameter<int>();
     }
 }

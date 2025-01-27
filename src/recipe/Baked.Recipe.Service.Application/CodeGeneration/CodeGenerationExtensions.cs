@@ -3,6 +3,7 @@ using Baked.CodeGeneration;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Newtonsoft.Json;
 using System.Reflection;
 
 namespace Baked;
@@ -15,14 +16,17 @@ public static class CodeGenerationExtensions
     public static IGeneratedAssemblyCollection GetGeneratedAssemblyCollection(this ApplicationContext context) =>
         context.Get<IGeneratedAssemblyCollection>();
 
-    public static GeneratedAssemblyProvider GetGeneratedAssemblyProvider(this ApplicationContext context) =>
-        context.Get<GeneratedAssemblyProvider>();
+    public static GeneratedContext GetGeneratedContext(this ApplicationContext context) =>
+        context.Get<GeneratedContext>();
 
     public static Assembly GetGeneratedAssembly(this ApplicationContext context, string name) =>
-        context.GetGeneratedAssemblyProvider()[name];
+        context.Get<GeneratedContext>().Assemblies[name];
 
     public static void ConfigureGeneratedAssemblyCollection(this LayerConfigurator configurator, Action<IGeneratedAssemblyCollection> configuration) =>
         configurator.Configure(configuration);
+
+    public static void ConfigureGeneratedFileCollection(this LayerConfigurator configurator, Action<IGeneratedFileCollection> configuration) =>
+       configurator.Configure(configuration);
 
     /// <summary>
     /// Adds a descriptor for a generated assembly with given parameters
@@ -38,6 +42,28 @@ public static class CodeGenerationExtensions
 
         descriptorBuilder(descriptor);
         descriptor.CompilationOptions = compilationOptionsBuilder?.Invoke(descriptor.CompilationOptions) ?? descriptor.CompilationOptions;
+
+        generatedAssemblies.Add(descriptor);
+    }
+
+    public static void Add(this IGeneratedAssemblyCollection generatedAssemblies, string name, Action<GeneratedAssemblyDescriptor> descriptorBuilder,
+        List<string>? usings = default
+    )
+    {
+        usings ??= [];
+        usings.AddRange([
+            "Baked",
+            "System",
+            "System.Linq",
+            "System.Collections",
+            "System.Collections.Generic",
+            "System.Threading.Tasks"
+        ]);
+
+        var descriptor = new GeneratedAssemblyDescriptor(name);
+
+        descriptorBuilder(descriptor);
+        descriptor.CompilationOptions = descriptor.CompilationOptions.WithUsings(usings);
 
         generatedAssemblies.Add(descriptor);
     }
@@ -61,6 +87,21 @@ public static class CodeGenerationExtensions
         descriptor.References.AddRange(references);
 
         return descriptor;
+    }
+
+    public static void Add(this IGeneratedFileCollection generatedFiles, string name, string content,
+        string? extension = default
+    )
+    {
+        extension ??= "txt";
+        extension = extension[(extension.LastIndexOf('.') + 1)..];
+
+        generatedFiles.Add(new(name) { Content = content, Extension = extension });
+    }
+
+    public static void AddAsJson<T>(this IGeneratedFileCollection generatedFiles, T instance)
+    {
+        generatedFiles.Add(typeof(T).Name, JsonConvert.SerializeObject(instance), "json");
     }
 
     internal static string? FindClosestScopedCode(this Diagnostic diagnostic)

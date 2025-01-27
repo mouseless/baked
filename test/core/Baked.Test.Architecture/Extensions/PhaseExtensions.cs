@@ -46,4 +46,9 @@ public static class PhaseExtensions
             phaseContext.Context.ShouldBeEquivalentTo(context);
         }
     }
+
+    public static void VerifyNotInitialized(this IPhase phaseContext)
+    {
+        Mock.Get(phaseContext).Verify(p => p.Initialize(), Times.Never);
+    }
 }

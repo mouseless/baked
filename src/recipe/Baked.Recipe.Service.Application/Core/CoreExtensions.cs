@@ -77,6 +77,9 @@ public static class CoreExtensions
         return new(url);
     }
 
+    public static void ShouldBe(this string? @string, object? expected, string format) =>
+        @string.ShouldBe(string.Format(format, expected));
+
     public static void ShouldBe(this Uri? uri, string urlString) =>
         uri?.ToString().ShouldBe(urlString);
 
@@ -91,7 +94,7 @@ public static class CoreExtensions
     public static object? ToJsonObject(this object? payload) =>
         JsonConvert.DeserializeObject(payload.ToJsonString() ?? string.Empty);
 
-    public static PropertyInfo? PropertyOf<T>(this Stubber _, string name) =>
+    public static PropertyInfo? ThePropertyOf<T>(this Stubber _, string name) =>
         typeof(T).GetProperty(name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
 
     public static void ShouldBe<T>(this Type type) =>
@@ -113,7 +116,7 @@ public static class CoreExtensions
         getMethod.ShouldBeVirtual();
     }
 
-    public static MethodInfo? MethodOf<T>(this Stubber _, string name) =>
+    public static MethodInfo? TheMethodOf<T>(this Stubber _, string name) =>
         typeof(T).GetMethod(name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
 
     public static void ShouldBeAbstract(this MethodInfo method)

@@ -1,13 +1,19 @@
 ﻿namespace Baked.Architecture;
 
-public class Application(ApplicationContext _context)
+public class Application(ApplicationContext _context,
+    ApplicationContext? _bakeContext = default
+)
 {
     readonly List<ILayer> _layers = [];
     readonly List<IFeature> _features = [];
     readonly List<IPhase> _phases = [];
+    readonly List<IPhase> _bakePhases = [];
+    RunFlags _runFlags = RunFlags.Start!;
 
-    internal Application With(ApplicationDescriptor descriptor)
+    internal Application With(ApplicationDescriptor descriptor, RunFlags runFlags)
     {
+        _runFlags = runFlags;
+
         CheckDuplicates(descriptor.Layers.Select(layer => layer.Id));
         _layers.AddRange(descriptor.Layers);
 
@@ -31,18 +37,45 @@ public class Application(ApplicationContext _context)
 
     void FillPhases()
     {
-        foreach (var layer in _layers)
+        if (_runFlags.HasFlag(RunFlags.Bake))
         {
-            _phases.AddRange(layer.GetPhases());
+            foreach (var layer in _layers)
+            {
+                _bakePhases.AddRange(layer.GetBakePhases());
+            }
+
+            _bakeContext ??= new();
+            _bakePhases.ForEach(p => p.Context = _bakeContext);
+            _bakePhases.Sort((l, r) => l.Order - r.Order);
         }
 
-        _phases.ForEach(p => p.Context = _context);
-        _phases.Sort((l, r) => l.Order - r.Order);
+        if (_runFlags.HasFlag(RunFlags.Start))
+        {
+            foreach (var layer in _layers)
+            {
+                _phases.AddRange(layer.GetPhases());
+            }
+
+            _phases.ForEach(p => p.Context = _context);
+            _phases.Sort((l, r) => l.Order - r.Order);
+        }
     }
 
     public void Run()
     {
-        var phases = new List<IPhase>(_phases);
+        if (_runFlags.HasFlag(RunFlags.Bake))
+        {
+            ExecutePhases(_bakePhases, _bakeContext ?? new());
+        }
+
+        if (_runFlags.HasFlag(RunFlags.Start))
+        {
+            ExecutePhases(_phases, _context);
+        }
+    }
+
+    void ExecutePhases(List<IPhase> phases, ApplicationContext context)
+    {
         while (phases.Count > 0)
         {
             var phasesOfThisIteration = phases.Where(p => p.IsReady).ToList();
@@ -55,7 +88,7 @@ public class Application(ApplicationContext _context)
             {
                 phase.Initialize();
 
-                Apply(phase);
+                Apply(phase, context);
             }
 
             phases = phases.Except(phasesOfThisIteration).ToList();
@@ -71,9 +104,9 @@ public class Application(ApplicationContext _context)
         }
     }
 
-    void Apply(IPhase phase)
+    void Apply(IPhase phase, ApplicationContext applicationContext)
     {
-        var contexts = _layers.Select(layer => layer.GetContext(phase, _context)).ToList();
+        var contexts = _layers.Select(layer => layer.GetContext(phase, applicationContext)).ToList();
         foreach (var context in contexts)
         {
             foreach (var configurator in context.Configurators)

@@ -12,14 +12,17 @@ public static class LayerExtensions
         PhaseContext? phaseContext = default,
         IPhase? phase = default,
         IPhase[]? phases = default,
-        Action? onApplyPhase = default
+        Action? onApplyPhase = default,
+        IPhase[]? bakePhases = default
     )
     {
         phaseContext ??= mockMe.Spec.GiveMe.APhaseContext(target: target, targets: targets);
         phases ??= [phase ?? mockMe.APhase()];
+        bakePhases ??= [];
 
         var result = new Mock<ILayer>();
         result.Setup(l => l.GetPhases()).Returns(phases);
+        result.Setup(l => l.GetBakePhases()).Returns(bakePhases);
         result.Setup(l => l.Id).Returns(id ?? $"{Guid.NewGuid()}");
 
         var setupGetContext = result

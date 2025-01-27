@@ -1,14 +1,19 @@
 # syntax=docker/dockerfile:1.7-labs
+ARG ENVIRONMENT Production
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 
-ARG ENVIRONMENT=Production
+ARG ENVIRONMENT
 
 EXPOSE 80
-ENV ASPNETCORE_ENVIRONMENT=$ENVIRONMENT
+ENV ASPNETCORE_ENVIRONMENT $ENVIRONMENT
 ENV ASPNETCORE_URLS=http://+:80
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS publish
+
+ARG ENVIRONMENT
+
+ENV ASPNETCORE_ENVIRONMENT $ENVIRONMENT
 
 COPY --parents Directory.Packages.props .
 COPY --parents Directory.Build.props .
