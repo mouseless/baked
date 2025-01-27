@@ -3,6 +3,7 @@ using Baked.CodeGeneration;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Newtonsoft.Json;
 using System.Reflection;
 
 namespace Baked;
@@ -96,6 +97,11 @@ public static class CodeGenerationExtensions
         extension = extension[(extension.LastIndexOf('.') + 1)..];
 
         generatedFiles.Add(new(name) { Content = content, Extension = extension });
+    }
+
+    public static void AddAsJson<T>(this IGeneratedFileCollection generatedFiles, T instance)
+    {
+        generatedFiles.Add(typeof(T).Name, JsonConvert.SerializeObject(instance), "json");
     }
 
     internal static string? FindClosestScopedCode(this Diagnostic diagnostic)

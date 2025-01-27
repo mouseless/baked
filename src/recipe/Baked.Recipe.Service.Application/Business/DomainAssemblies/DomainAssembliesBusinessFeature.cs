@@ -9,7 +9,6 @@ using Baked.RestApi.Model;
 using Humanizer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
-using Newtonsoft.Json;
 using System.Reflection;
 
 namespace Baked.Business.DomainAssemblies;
@@ -159,7 +158,7 @@ public class DomainAssembliesBusinessFeature(
             api.References.AddRange(_assemblyDescriptors.Select(a => a.assembly));
             api.Usings.Add("Swashbuckle.AspNetCore.Annotations");
 
-            var methodExampleDictionary = new Dictionary<string, RequestResponseExampleData>();
+            var examples = new RequestResponseExamples();
             var domainModel = configurator.Context.GetDomainModel();
             foreach (var type in domainModel.Types.Having<ApiServiceAttribute>())
             {
@@ -180,8 +179,8 @@ public class DomainAssembliesBusinessFeature(
                         method.Documentation.GetExampleCode("response")
                     );
 
-                    methodExampleDictionary.TryAdd($"{type.FullName}", typeExample);
-                    methodExampleDictionary.TryAdd($"{type.FullName}.{method.Name}", methodExample);
+                    examples.TryAdd($"{type.FullName}", typeExample);
+                    examples.TryAdd($"{type.FullName}.{method.Name}", methodExample);
                 }
 
                 if (!controller.Action.Any()) { continue; }
@@ -190,7 +189,7 @@ public class DomainAssembliesBusinessFeature(
             }
 
             var files = configurator.Context.Get<IGeneratedFileCollection>();
-            files.Add("RequestResponseExamples", JsonConvert.SerializeObject(methodExampleDictionary), "json");
+            files.AddAsJson(examples);
         });
 
         configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
@@ -264,7 +263,7 @@ public class DomainAssembliesBusinessFeature(
         {
             if (configurator.Context.Has<TagDescriptions>())
             {
-                files.Add(nameof(TagDescriptions), JsonConvert.SerializeObject(configurator.Context.Get<TagDescriptions>()), ".json");
+                files.AddAsJson(configurator.Context.Get<TagDescriptions>());
             }
         });
 
@@ -307,12 +306,11 @@ public class DomainAssembliesBusinessFeature(
 
             var generatedContext = configurator.Context.GetGeneratedContext();
 
-            var tagDescriptions = JsonConvert.DeserializeObject<TagDescriptions>(generatedContext.GetFileContent(nameof(TagDescriptions)));
+            var tagDescriptions = generatedContext.LoadFromFile<TagDescriptions>() ?? [];
             swaggerGenOptions.DocumentFilter<ApplyTagDescriptionsDocumentFilter>(tagDescriptions);
 
-            var fileContent = generatedContext.GetFileContent("RequestResponseExamples");
-            var methodExamplesDictionary = JsonConvert.DeserializeObject<Dictionary<string, RequestResponseExampleData>>(fileContent) ?? [];
-            swaggerGenOptions.OperationFilter<XmlExamplesOperationFilter>(methodExamplesDictionary);
+            var examples = generatedContext.LoadFromFile<RequestResponseExamples>() ?? [];
+            swaggerGenOptions.OperationFilter<XmlExamplesOperationFilter>(examples);
         });
     }
 }

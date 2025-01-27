@@ -12,13 +12,14 @@ public class Bake(IBanner _banner, Func<Application> _newApplication,
     {
         get
         {
+            var args = Environment.GetCommandLineArgs();
             var runFlags = RunFlags.Start;
-            if (Environment.GetCommandLineArgs().Contains("--bake"))
+            if (args.Contains("--bake"))
             {
                 runFlags |= RunFlags.Bake;
             }
 
-            if (Environment.GetCommandLineArgs().Contains("--no-start"))
+            if (args.Contains("--no-start"))
             {
                 runFlags ^= RunFlags.Start;
             }

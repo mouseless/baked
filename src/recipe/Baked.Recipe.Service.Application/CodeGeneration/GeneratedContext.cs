@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using Newtonsoft.Json;
+using System.Reflection;
 
 namespace Baked.CodeGeneration;
 
@@ -17,5 +18,12 @@ public class GeneratedContext
         }
 
         return result;
+    }
+
+    public T? LoadFromFile<T>() where T : notnull
+    {
+        var result = GetFileContent(typeof(T).Name);
+
+        return JsonConvert.DeserializeObject<T>(result);
     }
 }
