@@ -65,14 +65,11 @@ Bake.New
 
 ```mermaid
 flowchart TD;
-    App(Data Source)
-    
     AD(AddDomainTypes)
     BD(BuildDomainModel)
     GC(GenerateCode)
     C(Compile)
 
-    App -->|Bake| AD
     AD -->|IDomainTypeCollection| BD
     BD -->|DomainModel| GC
     GC -->|IGeneratedAssemblyCollection\nIGeneratedFileCollection| C
@@ -84,14 +81,13 @@ flowchart TD;
     PB(PostBuild)
     R(Run)
 
-    App -->|Start| CB
     CB -->|ConfigurationManager\nWebApplicationBuilder| BC
     BC -->|GeneratedContext| AS
     AS -->|IServiceCollection| B
     B -->|IServiceProvider\nWebApplication|PB
     PB --> R
 
-    subgraph Start[ ]
+    subgraph Start
         CB
         BC
         AS
@@ -100,7 +96,7 @@ flowchart TD;
         R
     end
 
-    subgraph Bake[ ]
+    subgraph Bake
         AD
         BD
         GC
