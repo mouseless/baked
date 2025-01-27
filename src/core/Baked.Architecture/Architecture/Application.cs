@@ -104,9 +104,9 @@ public class Application(ApplicationContext _context,
         }
     }
 
-    void Apply(IPhase phase, ApplicationContext appcontext)
+    void Apply(IPhase phase, ApplicationContext applicationContext)
     {
-        var contexts = _layers.Select(layer => layer.GetContext(phase, appcontext)).ToList();
+        var contexts = _layers.Select(layer => layer.GetContext(phase, applicationContext)).ToList();
         foreach (var context in contexts)
         {
             foreach (var configurator in context.Configurators)
