@@ -17,6 +17,9 @@
   generating data files in `Bake` mode
 - `CodeGeneration` layer now introduces `GeneratedContext` at `BuildConfiguration`
   phase which provides access to generated assemblies and files in `Start` mode
+- `Domain` layer now provides a service descriptor collection which will then 
+  be used to generate `IServiceAdder` 
+
 
 ## Improvements
 
