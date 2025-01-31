@@ -67,7 +67,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8
+          dotnet-version: 9
       - name: Pack
         run: |
           dotnet pack -o "packages" -c Release
@@ -109,7 +109,7 @@ jobs:
         with:
           node-version: 22
       - name: Disable AppArmour
-        run: echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns        
+        run: echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns
       - name: Build Docs
         run: |
           cd docs/.theme/

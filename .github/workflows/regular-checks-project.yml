@@ -44,7 +44,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8
+          dotnet-version: 9
       - name: Restore Dependencies
         run: dotnet restore
       - name: Format Solution
@@ -63,7 +63,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8
+          dotnet-version: 9
       - name: Test
         if: ${{ matrix.os != 'ubuntu-latest' }}
         run: dotnet test -c Release
