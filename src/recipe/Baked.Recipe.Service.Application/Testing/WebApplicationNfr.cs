@@ -48,6 +48,6 @@ public abstract class WebApplicationNfr : Nfr
     {
         base.TearDown();
 
-        Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", string.Empty);
+        Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", default);
     }
 }
