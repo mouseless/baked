@@ -42,10 +42,10 @@ public class DomainModelGenerator : IIncrementalGenerator
 using DomainModelOverReflection.Models.Domain;
 
 namespace {{compilation.AssemblyName}};
-                
+
 public class DomainModelWithGeneration : IDomainModel
 {
-    static TypeModel[] _typeModels = new TypeModel[{{counter}}] 
+    static TypeModel[] _typeModels = new TypeModel[{{counter}}]
     {
 {{builder}}
     };

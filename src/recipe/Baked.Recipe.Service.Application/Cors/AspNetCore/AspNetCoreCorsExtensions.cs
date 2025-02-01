@@ -15,7 +15,7 @@ public static class AspNetCoreCorsExtensions
         configurator.AspNetCore(
             options => options
                 .AddPolicy("allow-origin", policy => policy
-                    .WithOrigins(origins.Select(o => o.GetValue()).ToArray())
+                    .WithOrigins([.. origins.Select(o => o.GetValue())])
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                 ),
