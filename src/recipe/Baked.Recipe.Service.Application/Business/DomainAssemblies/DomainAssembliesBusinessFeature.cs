@@ -244,10 +244,10 @@ public class DomainAssembliesBusinessFeature(
             configurator.Context.Add(new TagDescriptions());
 
             conventions.Add(new AutoHttpMethodConvention([
-                (Regexes.StartsWithGet(), HttpMethod.Get),
-                (Regexes.IsUpdateChangeOrSet(), HttpMethod.Put),
-                (Regexes.StartsWithUpdateChangeOrSet(), HttpMethod.Patch),
-                (Regexes.StartsWithDeleteRemoveOrClear(), HttpMethod.Delete)
+                (Regexes.StartsWithGet, HttpMethod.Get),
+                (Regexes.IsUpdateChangeOrSet, HttpMethod.Put),
+                (Regexes.StartsWithUpdateChangeOrSet, HttpMethod.Patch),
+                (Regexes.StartsWithDeleteRemoveOrClear, HttpMethod.Delete)
             ]));
             conventions.Add(new GetAndDeleteAcceptsOnlyQueryConvention());
             conventions.Add(new RemoveFromRouteConvention(["Get"]));
