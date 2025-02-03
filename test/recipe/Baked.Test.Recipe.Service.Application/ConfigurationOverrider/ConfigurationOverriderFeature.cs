@@ -1,5 +1,5 @@
 ﻿using Baked.Architecture;
-using Baked.ExceptionHandling;
+using Baked.ExceptionHandling.ProblemDetails;
 using Baked.RestApi.Model;
 using Baked.Test.Authentication;
 using Baked.Test.Business;

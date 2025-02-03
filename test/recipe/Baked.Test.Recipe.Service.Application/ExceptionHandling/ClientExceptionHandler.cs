@@ -1,5 +1,5 @@
 ﻿using Baked.Communication;
-using Baked.ExceptionHandling;
+using Baked.ExceptionHandling.ProblemDetails;
 using Newtonsoft.Json;
 using System.Net;
 

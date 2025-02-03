@@ -1,4 +1,4 @@
-﻿using Baked.ExceptionHandling;
+﻿using Baked.ExceptionHandling.ProblemDetails;
 using System.Net;
 
 namespace Baked.Test.ExceptionHandling;

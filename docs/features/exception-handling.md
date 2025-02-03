@@ -8,12 +8,39 @@ app.Features.AddExceptionHandling(...);
 
 ## Problem Details
 
-Adds an exception handler implementation that returns errors in problem details
-format. It also adds a middleware that logs exceptions.
+This feature implementation adds `.Net` `ProblemDetails` services with a custom
+`IExceptionHandler` implementation that returns errors in problem details
+format. It also adds a custom middleware that logs exceptions.
 
 ```csharp
 c => c.ProblemDetails(typeUrlFormat: "https://my-service.com/errors/{0}")
 ```
+`IExceptionHandler` implementation loops through `Baked.IExceptionHandler` 
+services and uses first handler which can handle current exception.
+
+Below is a sample `Baked.IExceptionHandler` implementation which handles
+`InvalidOperationException` types and returs a `Baked.ExceptionInfo` which will
+then be converted to `ProblemDetails` in the handler.
+
+```csharp
+public class SampleExceptionHandler : IExceptionHandler
+{
+    public bool CanHandle(Exception ex) => ex is InvalidOperationException;
+    public ExceptionInfo Handle(Exception ex) => new(ex, (int)HttpStatusCode.BadRequest, ex.Message);
+}
+```
+
+`ProblemDetails` feature registers following `Baked.IExceptionHandler` implementations with
+`UnHandledExceptionHandler` fallback;
+
+- `AuthenticationExceptionHandler` for `AuthenticationException`
+- `UnauthorizedAccessExceptionHandler` for `UnauthorizedAccessException`
+- `HandledExceptionHandler` for `HandledException` types
+
+> [!NOTE]
+>
+> `HandledExceptionHandler` provides basic exception handling mechanism which will handle 
+> user exceptions derived from `HandledException` base class
 
 > [!NOTE]
 >

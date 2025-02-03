@@ -1,4 +1,4 @@
-﻿namespace Baked.ExceptionHandling;
+﻿namespace Baked.ExceptionHandling.ProblemDetails;
 
 public record ExceptionInfo(
     Exception Exception,
