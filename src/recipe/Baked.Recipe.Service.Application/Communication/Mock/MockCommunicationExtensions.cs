@@ -49,7 +49,7 @@ public static class MockCommunicationExtensions
         }
         else if (responses is not null)
         {
-            setup().ReturnsAsync(responses.Select(r => new Response(statusCode ?? HttpStatusCode.OK, r.ToJsonString())).ToArray());
+            setup().ReturnsAsync([.. responses.Select(r => new Response(statusCode ?? HttpStatusCode.OK, r.ToJsonString()))]);
         }
         else if (noResponse == true)
         {

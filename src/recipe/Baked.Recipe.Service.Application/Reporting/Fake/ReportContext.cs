@@ -17,6 +17,6 @@ public class ReportContext(IFileProvider _fileProvider, ReportOptions _options)
         var match = fakes.FirstOrDefault(fake => fake.Matches(parameters));
         if (match is null) { return []; }
 
-        return match.Result.Select(row => row.Values.ToArray()).ToArray();
+        return [.. match.Result.Select(row => row.Values.ToArray())];
     }
 }

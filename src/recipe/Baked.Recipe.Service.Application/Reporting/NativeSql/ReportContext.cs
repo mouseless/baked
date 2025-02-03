@@ -22,6 +22,6 @@ public class ReportContext(IFileProvider _fileProvider, Func<NHibernate.IStatele
 
         var result = await query.ListAsync();
 
-        return result.Cast<object[]>().ToArray();
+        return [.. result.Cast<object[]>()];
     }
 }

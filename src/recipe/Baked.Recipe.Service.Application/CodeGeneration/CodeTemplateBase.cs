@@ -4,7 +4,7 @@ public abstract class CodeTemplateBase : ICodeTemplate
 {
     protected abstract IEnumerable<string> Render();
 
-    protected string Join(string separator, params string[] statements) =>
+    protected string Join(string separator, params IEnumerable<string> statements) =>
         statements
             .Where(s => !string.IsNullOrWhiteSpace(s))
             .Join(separator ?? Environment.NewLine);

@@ -25,7 +25,7 @@ public class TypeModelGenerics : TypeModel
 
             if (type.IsGenericType)
             {
-                generics.GenericTypeArguments = new(type.GenericTypeArguments.Select(builder.GetReference));
+                generics.GenericTypeArguments = [.. type.GenericTypeArguments.Select(builder.GetReference)];
                 generics.GenericTypeDefinitionReference = !type.IsGenericTypeDefinition ? builder.GetReference(type.GetGenericTypeDefinition()) : default;
             }
             else

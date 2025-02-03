@@ -1,13 +1,46 @@
 # Unreleased
 
+## .NET Upgrade
+
+Baked now supports .NET 9! Below you can find a task list to upgrade your
+projects.
+
+```markdown
+- [ ] Upgrade .NET and C# versions
+  - [ ] in projects
+  - [ ] in docker files
+  - [ ] in GitHub workflows
+- [ ] Upgrade Baked version
+- [ ] You can use `GeneratedRegex`es in properties instead of methods
+- [ ] If `Base64` encoded information is carried in the url, use `Base64Url`.
+- [ ] `params` arguments should be converted from arrays to `IEnumerable`
+- [ ] Use the new linQ extensions(`CountBy`, `AggregateBy`,
+  `Index<TSource>(IEnumerable<TSource>))`.
+- [ ] Use new `TimeSpan.From*` overloads
+  - `FromDays`
+  - `FromHours`
+  - `FromMinutes`
+  - `FromSeconds`
+  - `FromMilliseconds`
+  - `FromMicroseconds`
+- [ ] Use Keyed Services in Middlewares.
+```
+
+### Upgrade .NET and C# versions
+
+- Upgrade the project's `C#` language to `13`.
+- Framework version upgrade to `net9.0` in the projects.
+- Framework and sdk version upgrade to `9` in `Dockerfile`.
+- Upgrade dotnet version `9` in Github actions.
+
 ## Features
 
-- `Application` now provies `Bake` and `Start` modes which can be run both 
+- `Application` now provies `Bake` and `Start` modes which can be run both
   together or individually with distinct `ApplicationContext`'s.
   - `RunFlags` is introduced for configuring application mode
 - `LayerBase` now provies `GetBakePhases()` method to enable registering
-  specific phases to run at `Bake` mode 
-- `Service` and `Data Source` recipies now triggers `Bake` mode run at post 
+  specific phases to run at `Bake` mode
+- `Service` and `Data Source` recipies now triggers `Bake` mode run at post
   build
 - `Domain` layer's `AddDomainTypes` and `BuildDomainModel` phases now only runs
   in `Bake` mode
@@ -20,22 +53,47 @@
 
 ## Improvements
 
-- `CodeGeneration` layer now compiles and saves generated assemblies and files 
+- `CodeGeneration` layer now compiles and saves generated assemblies and files
   to entry assembly location with `ASPNETCORE_ENVIRONMENT` subfolder
 - `DomainAssemblies` feature now generates
   - `ICasterConfigurer`
-  implementations and 
+  implementations and
   - `TagDescriptor`
   - `RequestResponseExample`
-  json files in `Bake` mode   
-- Following features now generates `IServiceAdder` implementations from 
-  `DomainModel` in `Bake` mode   
+  json files in `Bake` mode
+- Following features now generates `IServiceAdder` implementations from
+  `DomainModel` in `Bake` mode
   - `Transient`
   - `Scoped`
   - `Singleton`
   - `AutoMapOrm`
   - `ProblemDetails`
-- `GiveMe.PropertyOf<T>` helper is renamed to `ThePropertyOf<T>`  
-- `GiveMe.MethodOf<T>` helper is renamed to `TheMethodOf<T>`  
-  
-  
+- `GiveMe.PropertyOf<T>` helper is renamed to `ThePropertyOf<T>`
+- `GiveMe.MethodOf<T>` helper is renamed to `TheMethodOf<T>`
+- Removed namespaces from `SchemaId` created in Swagger.
+
+## Library Upgrades
+
+| Package                                         | Old Version | New Version |
+| ----------------------------------------------- | ----------- | ----------- |
+| coverlet.collector                              | 6.0.2       | 6.0.4       |
+| Microsoft.AspNetCore.Mvc.NewtonsoftJson         | 8.0.8       | 9.0.1       |
+| Microsoft.AspNetCore.Mvc.Testing                | 8.0.10      | 9.0.1       |
+| Microsoft.AspNetCore.Authorization              | 8.0.8       | removed     |
+| Microsoft.CodeAnalysis.CSharp                   | 4.11.0      | 4.12.0      |
+| Microsoft.CodeAnalysis.Analyzers                | 3.3.4       | removed     |
+| Microsoft.Extensions.Caching.Abstraction        | 8.0.0       | 9.0.1       |
+| Microsoft.Extensions.Configuration.Abstractions | 8.0.0       | 9.0.1       |
+| Microsoft.Extensions.Configuration.Binder       | 8.0.2       | 9.0.1       |
+| Microsoft.Extensions.FileProviders.Abstractions | 8.0.0       | 9.0.1       |
+| Microsoft.Extensions.Logging.Abstractions       | 8.0.2       | 9.0.1       |
+| Microsoft.Extensions.TimeProvider.Testing       | 8.10.0      | 9.1.0       |
+| Microsoft.NET.Test.Sdk                          | 17.11.1     | 17.12.0     |
+| MySql.Data                                      | 9.1.0       | 9.2.0       |
+| NHibernate.Extensions.Sqlite                    | 8.0.14      | 9.0.0       |
+| NUnit                                           | 4.2.2       | 4.3.2       |
+| Npgsql                                          | 8.0.5       | 9.0.2       |
+| Oracle.ManagedDataAccess.Core                   | 23.6.0      | 23.7.0      |
+| Shouldly                                        | 4.2.1       | 4.3.0       |
+| Swashbuckle.AspNetCore                          | 6.9.0       | 7.2.0       |
+| Swashbuckle.AspNetCore.Annotations              | 6.9.0       | 7.2.0       |

@@ -18,7 +18,7 @@ public class SingleByUniqueCodingStyleFeature : IFeature<CodingStyleConfigurator
             builder.Conventions.AddMethodMetadata(
                 apply: (c, add) =>
                 {
-                    var match = Regexes.StartsWithSingleBy().Match(c.Method.Name);
+                    var match = Regexes.StartsWithSingleBy.Match(c.Method.Name);
                     var propertyName = match.Groups["Name"].Value;
                     var propertyType = c.Method.DefaultOverload.Parameters[propertyName.Camelize()].ParameterType;
                     if (propertyType.Is<string>() || propertyType.IsEnum)
@@ -31,7 +31,7 @@ public class SingleByUniqueCodingStyleFeature : IFeature<CodingStyleConfigurator
                 },
                 when: c =>
                     c.Type.Has<QueryAttribute>() &&
-                    Regexes.StartsWithSingleBy().IsMatch(c.Method.Name)
+                    Regexes.StartsWithSingleBy.IsMatch(c.Method.Name)
             );
         });
 
