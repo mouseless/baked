@@ -13,8 +13,7 @@ projects.
 - [ ] Upgrade Baked version
 - [ ] You can use `GeneratedRegex`es in properties instead of methods
 - [ ] If `Base64` encoded information is carried in the url, use `Base64Url`.
-  - [ ] If need to take parameters with an `Array` using params
-  and then convert to `IEnumerable` type, use `IEnumerable` instead of `Array`.
+- [ ] `params` arguments should be converted from arrays to `IEnumerable`
 - [ ] Use the new linQ extensions(`CountBy`, `AggregateBy`,
   `Index<TSource>(IEnumerable<TSource>))`.
 - [ ] Use new `TimeSpan.From*` overloads
