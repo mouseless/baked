@@ -28,37 +28,35 @@ public class ProblemDetailsExceptionHandlingFeature(Setting<string>? _typeUrlFor
             types.Add<HandledException>();
         });
 
-        configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
+        configurator.ConfigureDomainServicesModel(model =>
         {
             var domain = configurator.Context.GetDomainModel();
+            var exceptionHandlerTypes = domain.Types.Where(t => t.IsClass && !t.IsAbstract && t.IsAssignableTo<IExceptionHandler>());
 
-            var domainModel = configurator.Context.GetDomainModel();
-            var exceptionHandlerTypes = domainModel.Types.Where(t => t.IsClass && !t.IsAbstract && t.IsAssignableTo<IExceptionHandler>());
+            foreach (var exceptionHandlerType in exceptionHandlerTypes)
+            {
+                model.Services.Add(new(
+                   ServiceType: exceptionHandlerType,
+                   Lifetime: ServiceLifetime.Singleton,
+                   UseFactory: false,
+                   Interfaces: !exceptionHandlerType.TryGetInheritance(out var inheritance) ? [] : inheritance.Interfaces.Where(i => i.Model.Is<IExceptionHandler>()),
+                   Forward: true
+               ));
 
-            generatedAssemblies.Add(nameof(ProblemDetailsExceptionHandlingFeature),
-                assembly =>
-                {
-                    assembly
-                        .AddReferenceFrom<ProblemDetailsExceptionHandlingFeature>()
-                        .AddCodes(new ExceptionHandlerAdderTemplate(exceptionHandlerTypes));
+                exceptionHandlerType.Apply(t => model.References.Add(t.Assembly));
 
-                    foreach (var entity in exceptionHandlerTypes)
-                    {
-                        entity.Apply(t => assembly.AddReferenceFrom(t));
-                    }
-                },
-                usings: [
+                model.Usings.AddRange([
                     "Baked.Business",
                     "Baked.ExceptionHandling",
                     "Baked.Runtime",
                     "Microsoft.Extensions.DependencyInjection"
-                ]
-            );
+                ]);
+            }
+
         });
 
         configurator.ConfigureServiceCollection(services =>
         {
-            services.AddFromAssembly(configurator.Context.GetGeneratedAssembly(nameof(ProblemDetailsExceptionHandlingFeature)));
             services.AddSingleton<IExceptionHandler, AuthenticationExceptionHandler>();
             services.AddSingleton<IExceptionHandler, UnauthorizedAccessExceptionHandler>();
             services.AddSingleton<IExceptionHandler, HandledExceptionHandler>();

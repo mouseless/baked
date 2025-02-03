@@ -1,4 +1,6 @@
 ﻿using Baked.Architecture;
+using Baked.Business;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Baked.Lifetime.Singleton;
 
@@ -11,33 +13,27 @@ public class SingletonLifetimeFeature : IFeature<LifetimeConfigurator>
             builder.Index.Type.Add<SingletonAttribute>();
         });
 
-        configurator.ConfigureServiceCollection(services =>
-        {
-            services.AddFromAssembly(configurator.Context.GetGeneratedAssembly(nameof(SingletonLifetimeFeature)));
-        });
-
-        configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
+        configurator.ConfigureDomainServicesModel(model =>
         {
             var domain = configurator.Context.GetDomainModel();
+            foreach (var singleton in domain.Types.Having<SingletonAttribute>())
+            {
+                model.Services.Add(new(
+                    ServiceType: singleton,
+                    Lifetime: ServiceLifetime.Singleton,
+                    UseFactory: false,
+                    Interfaces: !singleton.TryGetInheritance(out var inheritance) ? [] : inheritance.Interfaces.Where(i => i.Model.TryGetMetadata(out var metadata) && metadata.Has<ServiceAttribute>()),
+                    Forward: true
+                ));
 
-            generatedAssemblies.Add(nameof(SingletonLifetimeFeature),
-                assembly =>
-                {
-                    assembly
-                        .AddReferenceFrom<SingletonLifetimeFeature>()
-                        .AddCodes(new SingletonServiceAdderTemplate(domain));
+                singleton.Apply(t => model.References.Add(t.Assembly));
 
-                    foreach (var entity in domain.Types.Having<SingletonAttribute>())
-                    {
-                        entity.Apply(t => assembly.AddReferenceFrom(t));
-                    }
-                },
-                usings: [
+                model.Usings.AddRange([
                     "Baked.Business",
                     "Baked.Runtime",
                     "Microsoft.Extensions.DependencyInjection"
-                ]
-            );
+                ]);
+            }
         });
     }
 }

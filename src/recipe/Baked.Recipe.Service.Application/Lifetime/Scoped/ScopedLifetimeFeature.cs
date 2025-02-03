@@ -1,4 +1,6 @@
 ﻿using Baked.Architecture;
+using Baked.Business;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Baked.Lifetime.Scoped;
 
@@ -11,34 +13,27 @@ public class ScopedLifetimeFeature : IFeature<LifetimeConfigurator>
             builder.Index.Type.Add<ScopedAttribute>();
         });
 
-        configurator.ConfigureServiceCollection(services =>
-        {
-            services.AddFromAssembly(configurator.Context.GetGeneratedAssembly(nameof(ScopedLifetimeFeature)));
-        });
-
-        configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
+        configurator.ConfigureDomainServicesModel(model =>
         {
             var domain = configurator.Context.GetDomainModel();
+            foreach (var scoped in domain.Types.Having<ScopedAttribute>())
+            {
+                model.Services.Add(new(
+                    ServiceType: scoped,
+                    Lifetime: ServiceLifetime.Scoped,
+                    UseFactory: true,
+                    Interfaces: !scoped.TryGetInheritance(out var inheritance) ? [] : inheritance.Interfaces.Where(i => i.Model.TryGetMetadata(out var metadata) && metadata.Has<ServiceAttribute>()),
+                    Forward: false
+                ));
 
-            generatedAssemblies.Add(nameof(ScopedLifetimeFeature),
-                assembly =>
-                {
-                    assembly
-                        .AddReferenceFrom<ScopedLifetimeFeature>()
-                        .AddCodes(new ScopedServiceAdderTemplate(domain));
+                scoped.Apply(t => model.References.Add(t.Assembly));
 
-                    foreach (var entity in domain.Types.Having<ScopedAttribute>())
-                    {
-                        entity.Apply(t => assembly.AddReferenceFrom(t));
-                    }
-                },
-                usings: [
-                    "Baked",
+                model.Usings.AddRange([
                     "Baked.Business",
                     "Baked.Runtime",
                     "Microsoft.Extensions.DependencyInjection"
-                ]
-            );
+                ]);
+            }
         });
     }
 }

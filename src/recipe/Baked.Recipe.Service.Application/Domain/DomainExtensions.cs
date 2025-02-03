@@ -27,6 +27,9 @@ public static class DomainExtensions
     public static void ConfigureDomainModelBuilder(this LayerConfigurator configurator, Action<DomainModelBuilderOptions> configuration) =>
         configurator.Configure(configuration);
 
+    public static void ConfigureDomainServicesModel(this LayerConfigurator configurator, Action<DomainServicesModel> configuration) =>
+        configurator.Configure(configuration);
+
     public static void Add<T>(this ICollection<Type> types) =>
         types.Add(typeof(T));
 
