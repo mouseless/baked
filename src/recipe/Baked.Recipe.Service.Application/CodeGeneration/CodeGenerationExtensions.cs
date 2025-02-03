@@ -70,7 +70,7 @@ public static class CodeGenerationExtensions
 
     public static GeneratedAssemblyDescriptor AddCode(this GeneratedAssemblyDescriptor descriptor, string code) => descriptor.AddCodes(code);
     public static GeneratedAssemblyDescriptor AddCodes(this GeneratedAssemblyDescriptor descriptor, ICodeTemplate codeTemplate) => descriptor.AddCodes([.. codeTemplate.Render()]);
-    public static GeneratedAssemblyDescriptor AddCodes(this GeneratedAssemblyDescriptor descriptor, params List<string> codes)
+    public static GeneratedAssemblyDescriptor AddCodes(this GeneratedAssemblyDescriptor descriptor, params IEnumerable<string> codes)
     {
         descriptor.Codes.AddRange(codes);
 
