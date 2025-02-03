@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Baked.Domain;
 
-public record DomainServiceDescriptor(
+public record ServiceModel(
     TypeModel ServiceType,
     ServiceLifetime Lifetime,
     bool UseFactory,

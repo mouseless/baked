@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.ExceptionHandling;
 using Baked.RestApi.Model;
 using Baked.Test.Authentication;
 using Baked.Test.Business;
@@ -13,6 +14,11 @@ public class ConfigurationOverriderFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
+        configurator.ConfigureServiceCollection(services =>
+        {
+            services.AddSingleton<IExceptionHandler, ClientExceptionHandler>();
+            services.AddSingleton<IExceptionHandler, SampleExceptionHandler>();
+        });
         configurator.ConfigureAutoPersistenceModel(model =>
         {
             model.Override<Entity>(x => x.Map(e => e.String).Length(500));

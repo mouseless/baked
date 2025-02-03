@@ -1,7 +1,7 @@
 ﻿using Baked.CodeGeneration;
 
 namespace Baked.Domain;
-internal class ServiceAdderTemplate(List<DomainServiceDescriptor> _descriptors) : CodeTemplateBase
+internal class ServiceAdderTemplate(List<ServiceModel> _descriptors) : CodeTemplateBase
 {
     protected override IEnumerable<string> Render() =>
         [ServiceAdder()];

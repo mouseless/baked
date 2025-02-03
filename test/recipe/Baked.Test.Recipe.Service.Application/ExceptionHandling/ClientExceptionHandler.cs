@@ -3,7 +3,7 @@ using Baked.ExceptionHandling;
 using Newtonsoft.Json;
 using System.Net;
 
-namespace Baked.Test.Communication;
+namespace Baked.Test.ExceptionHandling;
 
 public class ClientExceptionHandler : IExceptionHandler
 {

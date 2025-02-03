@@ -17,9 +17,8 @@
   generating data files in `Bake` mode
 - `CodeGeneration` layer now introduces `GeneratedContext` at `BuildConfiguration`
   phase which provides access to generated assemblies and files in `Start` mode
-- `Domain` layer now provides a service descriptor collection which will then 
-  be used to generate `IServiceAdder` 
-
+- `Domain` layer now provides a `DomainServicesModel` configuration target in 
+  `Bake` mode which will then as be used to generate `IServiceAdder` implementation 
 
 ## Improvements
 
@@ -33,12 +32,15 @@
   json files in `Bake` mode   
 - Following features now generates `IServiceAdder` implementations from 
   `DomainModel` in `Bake` mode   
+  - `AutoMapOrm`
+- `GiveMe.PropertyOf<T>` helper is renamed to `ThePropertyOf<T>`  
+- `GiveMe.MethodOf<T>` helper is renamed to `TheMethodOf<T>`  
+- Following features now use `DomainServicesModel` target to register services
   - `Transient`
   - `Scoped`
   - `Singleton`
-  - `AutoMapOrm`
-  - `ProblemDetails`
-- `GiveMe.PropertyOf<T>` helper is renamed to `ThePropertyOf<T>`  
-- `GiveMe.MethodOf<T>` helper is renamed to `TheMethodOf<T>`  
+- `ProblemDetails` feature now no longer searches domain assemblies and
+  `IExceptionHandler` implementations are required to be added in 
+  `ConfigurationOverrider` feature
   
   
