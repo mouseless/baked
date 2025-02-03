@@ -1,6 +1,4 @@
 ﻿using Baked.Architecture;
-using Baked.Business;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Baked.Lifetime.Singleton;
 
@@ -18,13 +16,7 @@ public class SingletonLifetimeFeature : IFeature<LifetimeConfigurator>
             var domain = configurator.Context.GetDomainModel();
             foreach (var singleton in domain.Types.Having<SingletonAttribute>())
             {
-                model.Services.Add(new(
-                    ServiceType: singleton,
-                    Lifetime: ServiceLifetime.Singleton,
-                    UseFactory: false,
-                    Interfaces: !singleton.TryGetInheritance(out var inheritance) ? [] : inheritance.Interfaces.Where(i => i.Model.TryGetMetadata(out var metadata) && metadata.Has<ServiceAttribute>()),
-                    Forward: true
-                ));
+                model.Services.AddSingleton(singleton, forward: true);
 
                 singleton.Apply(t => model.References.Add(t.Assembly));
 

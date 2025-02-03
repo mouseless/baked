@@ -10,8 +10,9 @@ app.Layers.AddDomain();
 
 ## Configuration Targets
 
-This layer provides `IDomainTypeCollection` and `DomainModelBuilderOptions` as
-configuration targets for building `DomainModel`.
+This layer provides `IDomainTypeCollection` and `DomainModelBuilderOptions`
+configuration targets for building `DomainModel` and `DomainServicesModel`
+configuration target to generate `IServiceAdder` implementation.
 
 ### `IDomainTypeCollection`
 
@@ -31,6 +32,17 @@ provided in `AddDomainTypes` phase. To configure it in a feature;
 
 ```csharp
 configurator.ConfigureDomainBuilderOptions(options =>
+{
+    ...
+});
+```
+
+### `DomainServicesModel`
+
+This target is provided in `GenerateCode` phase. To configure it in a feature;
+
+```csharp
+configurator.ConfigureDomainServicesModel(model =>
 {
     ...
 });

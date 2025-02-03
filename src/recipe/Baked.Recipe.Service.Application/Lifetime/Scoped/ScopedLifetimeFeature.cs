@@ -1,6 +1,4 @@
 ﻿using Baked.Architecture;
-using Baked.Business;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Baked.Lifetime.Scoped;
 
@@ -18,13 +16,7 @@ public class ScopedLifetimeFeature : IFeature<LifetimeConfigurator>
             var domain = configurator.Context.GetDomainModel();
             foreach (var scoped in domain.Types.Having<ScopedAttribute>())
             {
-                model.Services.Add(new(
-                    ServiceType: scoped,
-                    Lifetime: ServiceLifetime.Scoped,
-                    UseFactory: true,
-                    Interfaces: !scoped.TryGetInheritance(out var inheritance) ? [] : inheritance.Interfaces.Where(i => i.Model.TryGetMetadata(out var metadata) && metadata.Has<ServiceAttribute>()),
-                    Forward: false
-                ));
+                model.Services.AddScoped(scoped, useFactory: true);
 
                 scoped.Apply(t => model.References.Add(t.Assembly));
 
