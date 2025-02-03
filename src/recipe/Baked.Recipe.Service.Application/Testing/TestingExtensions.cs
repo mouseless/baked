@@ -27,13 +27,13 @@ public static class TestingExtensions
             Setup: setup == default ? default : obj => setup(obj)
         ));
 
-    public static void Returns<TMock, TResult>(this ISetup<TMock, TResult> setup, params TResult[] results) where TMock : class
+    public static void Returns<TMock, TResult>(this ISetup<TMock, TResult> setup, params IList<TResult> results) where TMock : class
     {
         int currentResultIndex = 0;
 
         setup.Returns(() =>
         {
-            if (currentResultIndex >= results.Length)
+            if (currentResultIndex >= results.Count)
             {
                 currentResultIndex = 0;
             }
@@ -42,13 +42,13 @@ public static class TestingExtensions
         });
     }
 
-    public static void ReturnsAsync<TMock, TResult>(this ISetup<TMock, Task<TResult>> setup, params TResult[] results) where TMock : class
+    public static void ReturnsAsync<TMock, TResult>(this ISetup<TMock, Task<TResult>> setup, params IList<TResult> results) where TMock : class
     {
         int currentResultIndex = 0;
 
         setup.ReturnsAsync(() =>
         {
-            if (currentResultIndex >= results.Length)
+            if (currentResultIndex >= results.Count)
             {
                 currentResultIndex = 0;
             }

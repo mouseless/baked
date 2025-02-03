@@ -82,7 +82,7 @@ public class TypeModel : IModel, IEquatable<TypeModel>
         this.TryGetInheritance(out var inheritance) && (inheritance.BaseType?.IsAssignableTo(type) == true || inheritance.Interfaces.Contains(type))
     ;
 
-    public string MakeGenericTypeId(params TypeModel[] typeArguments) =>
+    public string MakeGenericTypeId(params IEnumerable<TypeModel> typeArguments) =>
         TypeModelReference.IdOf(this, typeArguments);
 
     public override bool Equals(object? obj) =>

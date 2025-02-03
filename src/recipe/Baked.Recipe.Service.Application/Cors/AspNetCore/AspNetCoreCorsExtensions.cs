@@ -11,7 +11,7 @@ public static class AspNetCoreCorsExtensions
     /// Returns 'AspNetCoreCors' feature with a single policy setup with given origins,
     /// any header and any method
     /// </note>
-    public static AspNetCoreCorsFeature AspNetCore(this CorsConfigurator configurator, params Setting<string>[] origins) =>
+    public static AspNetCoreCorsFeature AspNetCore(this CorsConfigurator configurator, params IEnumerable<Setting<string>> origins) =>
         configurator.AspNetCore(
             options => options
                 .AddPolicy("allow-origin", policy => policy
