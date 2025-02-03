@@ -279,7 +279,7 @@ public class DomainAssembliesBusinessFeature(
             swaggerGenOptions.EnableAnnotations();
 
             var schemaHelper = new SwaggerSchemaHelper();
-            swaggerGenOptions.CustomSchemaIds(type => schemaHelper.GetSchemaId(type));
+            swaggerGenOptions.CustomSchemaIds(schemaHelper.GetSchemaId);
 
             swaggerGenOptions.OrderActionsBy(apiDescription =>
             {
