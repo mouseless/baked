@@ -6,7 +6,6 @@ using Baked.Domain.Model;
 using Baked.RestApi;
 using Baked.RestApi.Conventions;
 using Baked.RestApi.Model;
-// using Humanizer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using System.Reflection;
@@ -279,7 +278,7 @@ public class DomainAssembliesBusinessFeature(
 
             swaggerGenOptions.EnableAnnotations();
 
-            var schemaHelper = new SwashbuckleSchemaHelper();
+            var schemaHelper = new SwaggerSchemaHelper();
             swaggerGenOptions.CustomSchemaIds(type => schemaHelper.GetSchemaId(type));
 
             swaggerGenOptions.OrderActionsBy(apiDescription =>

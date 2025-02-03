@@ -1,6 +1,6 @@
 namespace Baked.Business.DomainAssemblies;
 
-public class SwashbuckleSchemaHelper
+public class SwaggerSchemaHelper
 {
     private readonly Dictionary<string, List<string>> _schemaNameRepetition = new();
 
