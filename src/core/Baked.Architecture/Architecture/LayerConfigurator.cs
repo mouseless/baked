@@ -37,7 +37,7 @@ public class LayerConfigurator
     readonly ApplicationContext _context;
     readonly List<Target> _targets;
 
-    LayerConfigurator(ApplicationContext context, params Target[] targets)
+    LayerConfigurator(ApplicationContext context, params IEnumerable<Target> targets)
     {
         _context = context;
         _targets = [.. targets];
@@ -66,9 +66,9 @@ public class LayerConfigurator
         configuration(ValueAs<TTarget1>(0), ValueAs<TTarget2>(1), ValueAs<TTarget3>(2));
     }
 
-    bool Matches(params Type[] types)
+    bool Matches(params IList<Type> types)
     {
-        if (_targets.Count != types.Length) { return false; }
+        if (_targets.Count != types.Count) { return false; }
 
         for (var i = 0; i < _targets.Count; i++)
         {

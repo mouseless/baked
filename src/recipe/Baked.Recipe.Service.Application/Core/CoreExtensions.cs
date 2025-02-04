@@ -53,7 +53,7 @@ public static class CoreExtensions
     ) => new(year, month, day, hour, minute, second);
 
     public static Dictionary<string, string> ADictionary(this Stubber giveMe) => giveMe.ADictionary<string, string>();
-    public static Dictionary<TKey, TValue> ADictionary<TKey, TValue>(this Stubber _, params (TKey, TValue)[] pairs)
+    public static Dictionary<TKey, TValue> ADictionary<TKey, TValue>(this Stubber _, params IEnumerable<(TKey, TValue)> pairs)
         where TKey : notnull
     => pairs.ToDictionary(pair => pair.Item1, pair => pair.Item2);
 

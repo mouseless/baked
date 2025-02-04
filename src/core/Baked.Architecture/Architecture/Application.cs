@@ -91,7 +91,7 @@ public class Application(ApplicationContext _context,
                 Apply(phase, context);
             }
 
-            phases = phases.Except(phasesOfThisIteration).ToList();
+            phases = [.. phases.Except(phasesOfThisIteration)];
         }
     }
 

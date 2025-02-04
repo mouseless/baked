@@ -6,7 +6,6 @@ using Baked.Domain.Model;
 using Baked.RestApi;
 using Baked.RestApi.Conventions;
 using Baked.RestApi.Model;
-using Humanizer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using System.Reflection;
@@ -247,10 +246,10 @@ public class DomainAssembliesBusinessFeature(
             configurator.Context.Add(new TagDescriptions());
 
             conventions.Add(new AutoHttpMethodConvention([
-                (Regexes.StartsWithGet(), HttpMethod.Get),
-                (Regexes.IsUpdateChangeOrSet(), HttpMethod.Put),
-                (Regexes.StartsWithUpdateChangeOrSet(), HttpMethod.Patch),
-                (Regexes.StartsWithDeleteRemoveOrClear(), HttpMethod.Delete)
+                (Regexes.StartsWithGet, HttpMethod.Get),
+                (Regexes.IsUpdateChangeOrSet, HttpMethod.Put),
+                (Regexes.StartsWithUpdateChangeOrSet, HttpMethod.Patch),
+                (Regexes.StartsWithDeleteRemoveOrClear, HttpMethod.Delete)
             ]));
             conventions.Add(new GetAndDeleteAcceptsOnlyQueryConvention());
             conventions.Add(new RemoveFromRouteConvention(["Get"]));
@@ -281,19 +280,9 @@ public class DomainAssembliesBusinessFeature(
             }
 
             swaggerGenOptions.EnableAnnotations();
-            swaggerGenOptions.CustomSchemaIds(t =>
-            {
-                string[] splitedNamespace = t.Namespace?.Split(".") ?? [];
-                string name = t.IsNested && t.FullName is not null
-                    ? t.FullName.Replace($"{t.Namespace}.", string.Empty).Replace("+", "_")
-                    : t.Name;
 
-                var result = splitedNamespace.Length > 1
-                    ? $"{splitedNamespace.Skip(1).Join('_')}_{name}"
-                    : name;
-
-                return result.Replace("_", "--").Kebaberize();
-            });
+            var schemaHelper = new SwaggerSchemaHelper();
+            swaggerGenOptions.CustomSchemaIds(schemaHelper.GetSchemaId);
 
             swaggerGenOptions.OrderActionsBy(apiDescription =>
             {

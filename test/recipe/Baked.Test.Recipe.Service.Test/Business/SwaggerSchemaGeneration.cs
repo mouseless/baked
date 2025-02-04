@@ -88,21 +88,21 @@ public class SwaggerSchemaGeneration : TestServiceNfr
         var response = await Client.GetAsync("/swagger/samples/swagger.json");
 
         dynamic? content = await response.Content.Deserialize();
-        var schema = content?.components.schemas["test--business--documentation-samples--method-request"];
+        var schema = content?.components.schemas["MethodRequest"];
 
         ((string?)schema?.properties["parameter1"].description).ShouldBe("Parameter 1 documentation");
         ((string?)schema?.properties["parameter2"].description).ShouldBe("Parameter 2 documentation");
     }
 
-    [TestCase("entity-parameters", "entityId", "Entity description")]
-    [TestCase("entity-list-parameters", "entityIds", "Entities description")]
-    [TestCase("entity-list-parameters", "otherEntityIds", "Other entities description")]
+    [TestCase("EntityParameters", "entityId", "Entity description")]
+    [TestCase("EntityListParameters", "entityIds", "Entities description")]
+    [TestCase("EntityListParameters", "otherEntityIds", "Other entities description")]
     public async Task Entity_parameter_comments_are_kept_even_if_their_name_change(string method, string parameter, string expected)
     {
         var response = await Client.GetAsync("/swagger/samples/swagger.json");
 
         dynamic? content = await response.Content.Deserialize();
-        var schema = content?.components.schemas[$"test--business--method-samples--{method}-request"];
+        var schema = content?.components.schemas[$"{method}Request"];
 
         ((string?)schema?.properties[parameter].description).ShouldBe(expected);
     }
@@ -147,7 +147,7 @@ public class SwaggerSchemaGeneration : TestServiceNfr
         var response = await Client.GetAsync("/swagger/samples/swagger.json");
 
         dynamic? content = await response.Content.Deserialize();
-        var schema = content?.components.schemas["test--business--documented-data"];
+        var schema = content?.components.schemas["DocumentedData"];
 
         ((string?)schema?.description).ShouldBe("Data summary");
         ((string?)schema?.properties["property"].description).ShouldBe("Property summary");
