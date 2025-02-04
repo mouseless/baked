@@ -23,7 +23,7 @@ this domain to outside world. So first component is domain objects;
 
 ```mermaid
 flowchart
-  D((Domain\nObjects))
+  D((Domain<br/>Objects))
 ```
 
 ## Layers
@@ -38,11 +38,11 @@ architecture.
 
 ```mermaid
 flowchart LR
-  HS[[HTTP\nServer\nLayer]]
+  HS[[HTTP<br/>Server<br/>Layer]]
   subgraph DL[Domain Layer]
-    D((Domain\nObjects))
+    D((Domain<br/>Objects))
   end
-  DA[(Data\nAccess\nLayer)]
+  DA[(Data<br/>Access<br/>Layer)]
   HS ~~~ DL ~~~ DA
 ```
 
@@ -85,11 +85,11 @@ from domain objects or from other feature implementations.
 ```mermaid
 flowchart
   subgraph Layers
-    HS[[HTTP\nServer\nLayer]]
+    HS[[HTTP<br/>Server<br/>Layer]]
     subgraph DL[Domain Layer]
-      D((Domain\nObjects))
+      D((Domain<br/>Objects))
     end
-    DA[(Data\nAccess\nLayer)]
+    DA[(Data<br/>Access<br/>Layer)]
   end
 
   subgraph Features
@@ -128,11 +128,11 @@ architecture, showcasing the integration of domain logic, layers and features;
 ```mermaid
 flowchart TB
   subgraph Layers
-    HS[[HTTP\nServer\nLayer]]
+    HS[[HTTP<br/>Server<br/>Layer]]
     subgraph DL[Domain Layer]
-      D((Domain\nObjects))
+      D((Domain<br/>Objects))
     end
-    DA[(Data\nAccess\nLayer)]
+    DA[(Data<br/>Access<br/>Layer)]
   end
 
   subgraph Features
