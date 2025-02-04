@@ -17,14 +17,6 @@ public class TransientLifetimeFeature : IFeature<LifetimeConfigurator>
             foreach (var transient in domain.Types.Having<TransientAttribute>())
             {
                 services.AddTransient(transient, useFactory: true);
-
-                transient.Apply(t => services.References.Add(t.Assembly));
-
-                services.Usings.AddRange([
-                    "Baked.Business",
-                    "Baked.Runtime",
-                    "Microsoft.Extensions.DependencyInjection"
-                ]);
             }
         });
     }

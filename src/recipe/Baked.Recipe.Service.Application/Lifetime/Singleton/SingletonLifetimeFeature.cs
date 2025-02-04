@@ -17,14 +17,6 @@ public class SingletonLifetimeFeature : IFeature<LifetimeConfigurator>
             foreach (var singleton in domain.Types.Having<SingletonAttribute>())
             {
                 services.AddSingleton(singleton, forward: true);
-
-                singleton.Apply(t => services.References.Add(t.Assembly));
-
-                services.Usings.AddRange([
-                    "Baked.Business",
-                    "Baked.Runtime",
-                    "Microsoft.Extensions.DependencyInjection"
-                ]);
             }
         });
     }

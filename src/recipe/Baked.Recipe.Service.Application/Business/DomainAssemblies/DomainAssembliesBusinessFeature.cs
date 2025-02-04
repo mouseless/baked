@@ -216,6 +216,20 @@ public class DomainAssembliesBusinessFeature(
             );
         });
 
+        configurator.ConfigureDomainServiceCollection(services =>
+        {
+            foreach (var (assembly, _) in _assemblyDescriptors)
+            {
+                services.References.Add(assembly);
+            }
+
+            services.Usings.AddRange([
+                "Baked.Business",
+                "Baked.Runtime",
+                "Microsoft.Extensions.DependencyInjection"
+            ]);
+        });
+
         configurator.ConfigureServiceProvider(sp =>
         {
             Caster.SetServiceProvider(sp);

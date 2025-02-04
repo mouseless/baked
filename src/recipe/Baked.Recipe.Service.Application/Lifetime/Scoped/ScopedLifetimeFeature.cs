@@ -17,14 +17,6 @@ public class ScopedLifetimeFeature : IFeature<LifetimeConfigurator>
             foreach (var scoped in domain.Types.Having<ScopedAttribute>())
             {
                 services.AddScoped(scoped, useFactory: true);
-
-                scoped.Apply(t => services.References.Add(t.Assembly));
-
-                services.Usings.AddRange([
-                    "Baked.Business",
-                    "Baked.Runtime",
-                    "Microsoft.Extensions.DependencyInjection"
-                ]);
             }
         });
     }
