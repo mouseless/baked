@@ -150,9 +150,6 @@ public class DomainAssembliesBusinessFeature(
                     services.AddFileProvider(new EmbeddedFileProvider(assembly, baseNamespace));
                 }
             }
-
-            //TODO should be moved to a more appropriate place
-            services.AddFromAssembly(configurator.Context.GetGeneratedAssembly(nameof(DomainLayer)));
         });
 
         configurator.ConfigureApiModel(api =>

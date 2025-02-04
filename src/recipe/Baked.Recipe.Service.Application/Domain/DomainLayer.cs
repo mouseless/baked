@@ -3,10 +3,11 @@ using Baked.Domain.Configuration;
 
 using static Baked.CodeGeneration.CodeGenerationLayer;
 using static Baked.Domain.DomainLayer;
+using static Baked.Runtime.RuntimeLayer;
 
 namespace Baked.Domain;
 
-public class DomainLayer : LayerBase<AddDomainTypes, GenerateCode>
+public class DomainLayer : LayerBase<AddDomainTypes, GenerateCode, AddServices>
 {
     readonly IDomainTypeCollection _domainTypes = new DomainTypeCollection();
     readonly DomainModelBuilderOptions _builderOptions = new();
@@ -17,12 +18,6 @@ public class DomainLayer : LayerBase<AddDomainTypes, GenerateCode>
             .Add(_domainTypes)
             .Add(_builderOptions)
             .Build();
-
-    protected override IEnumerable<IPhase> GetBakePhases()
-    {
-        yield return new AddDomainTypes(_domainTypes);
-        yield return new BuildDomainModel(_builderOptions);
-    }
 
     protected override PhaseContext GetContext(GenerateCode phase)
     {
@@ -50,6 +45,20 @@ public class DomainLayer : LayerBase<AddDomainTypes, GenerateCode>
                 );
             })
             .Build();
+    }
+
+    protected override PhaseContext GetContext(AddServices phase)
+    {
+        var services = Context.GetServiceCollection();
+        services.AddFromAssembly(Context.GetGeneratedAssembly(nameof(DomainLayer)));
+
+        return phase.CreateEmptyContext();
+    }
+
+    protected override IEnumerable<IPhase> GetBakePhases()
+    {
+        yield return new AddDomainTypes(_domainTypes);
+        yield return new BuildDomainModel(_builderOptions);
     }
 
     public class AddDomainTypes(IDomainTypeCollection _domainTypes)

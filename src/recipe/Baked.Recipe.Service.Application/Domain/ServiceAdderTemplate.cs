@@ -1,4 +1,6 @@
 ﻿using Baked.CodeGeneration;
+using Baked.Domain.Model;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Baked.Domain;
 internal class ServiceAdderTemplate(List<ServiceModel> _descriptors) : CodeTemplateBase
@@ -14,24 +16,25 @@ internal class ServiceAdderTemplate(List<ServiceModel> _descriptors) : CodeTempl
             public void AddServices(IServiceCollection services)
             {
             {{ForEach(_descriptors, descriptor => $$"""
-                services.Add{{descriptor.Lifetime}}<{{descriptor.ServiceType.CSharpFriendlyFullName}}>();
-                {{If(descriptor.UseFactory, () => $$"""
-                    services.AddSingleton<Func<{{descriptor.ServiceType.CSharpFriendlyFullName}}>>(sp => () => sp.UsingCurrentScope().GetRequiredService<{{descriptor.ServiceType.CSharpFriendlyFullName}}>());
-                """)}}
+                {{Service(descriptor.ServiceType, descriptor.ServiceType, descriptor.Lifetime)}}
+                {{If(descriptor.UseFactory, () => Factory(descriptor.ServiceType, descriptor.ServiceType))}}
                 {{ForEach(descriptor.Interfaces, @interface => $$"""
                     {{If(descriptor.Forward,
-                    () => $$"""
-                        services.Add{{descriptor.Lifetime}}<{{@interface.Model.CSharpFriendlyFullName}}>(sp => ({{@interface.Model.CSharpFriendlyFullName}})sp.UsingCurrentScope().GetRequiredService<{{descriptor.ServiceType.CSharpFriendlyFullName}}>());
-                    """,
-                    () => $$"""
-                        services.Add{{descriptor.Lifetime}}<{{@interface.Model.CSharpFriendlyFullName}}, {{descriptor.ServiceType.CSharpFriendlyFullName}}> ();
-                    """)}}
-                    {{If(descriptor.UseFactory, () => $$"""
-                        services.AddSingleton<Func<{{@interface.Model.CSharpFriendlyFullName}}>>(sp => () => sp.UsingCurrentScope().GetRequiredService<{{@interface.Model.CSharpFriendlyFullName}}>());
-                    """)}}
+                        () => Forward(@interface.Model, descriptor.ServiceType, descriptor.Lifetime),
+                        () => Service(@interface.Model, descriptor.ServiceType, descriptor.Lifetime))}}
+                    {{If(descriptor.UseFactory, () => Factory(@interface.Model, descriptor.ServiceType))}}
                 """)}}
             """)}}
             }
         }
     """;
+
+    string Service(TypeModel service, TypeModel implementation, ServiceLifetime lifetime) =>
+        $$"""services.Add{{lifetime}}<{{service.CSharpFriendlyFullName}}, {{implementation.CSharpFriendlyFullName}}> ();""";
+
+    string Factory(TypeModel service, TypeModel implementation) =>
+        $$"""services.AddSingleton<Func<{{service.CSharpFriendlyFullName}}>>(sp => () => sp.UsingCurrentScope().GetRequiredService<{{implementation.CSharpFriendlyFullName}}>());""";
+
+    string Forward(TypeModel service, TypeModel implementation, ServiceLifetime lifetime) =>
+        $$"""services.Add{{lifetime}}<{{service.CSharpFriendlyFullName}}>(sp => ({{service.CSharpFriendlyFullName}})sp.UsingCurrentScope().GetRequiredService<{{implementation.CSharpFriendlyFullName}}>());""";
 }

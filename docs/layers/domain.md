@@ -1,7 +1,7 @@
 # Domain
 
 Baked introduces a model generation mechanism to reflect the business domain of
-a project. The generated model instance can be used in directly in layers or in
+a project. The generated model instance can be used directly in layers or in
 features while configuring configuration targets.
 
 ```csharp
@@ -12,7 +12,7 @@ app.Layers.AddDomain();
 
 This layer provides `IDomainTypeCollection` and `DomainModelBuilderOptions`
 configuration targets for building `DomainModel` and `DomainServicesModel`
-configuration target to generate `IServiceAdder` implementation.
+configuration target to generate `IServiceAdder` in `Bake` mode.
 
 ### `IDomainTypeCollection`
 
@@ -39,7 +39,9 @@ configurator.ConfigureDomainBuilderOptions(options =>
 
 ### `DomainServicesModel`
 
-This target is provided in `GenerateCode` phase. To configure it in a feature;
+This target is provided in `GenerateCode` phase and it is used to generated 
+`IServiceAdder` to add domain services during `AddService` phase in `Start` 
+mode. To configure it in a feature;
 
 ```csharp
 configurator.ConfigureDomainServicesModel(model =>

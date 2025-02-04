@@ -63,16 +63,15 @@ projects.
   - `TagDescriptor`
   - `RequestResponseExample`
   json files in `Bake` mode   
-- AutoMapOrm feature now generates `IServiceAdder` implementations from 
+- `AutoMapOrm` feature now generates `IServiceAdder` implementations from 
   `DomainModel` in `Bake` mode
 - `GiveMe.PropertyOf<T>` helper is renamed to `ThePropertyOf<T>`  
 - `GiveMe.MethodOf<T>` helper is renamed to `TheMethodOf<T>`  
 - Following features now use `DomainServicesModel` target to register services
-  json files in `Bake` mode
+  in `Bake` mode
   - `Transient`
   - `Scoped`
-  - `AutoMapOrm`
-  - `ProblemDetails`
+  - `Singleton`
 - `GiveMe.PropertyOf<T>` helper is renamed to `ThePropertyOf<T>`
 - `GiveMe.MethodOf<T>` helper is renamed to `TheMethodOf<T>`
 - Removed namespaces from `SchemaId` created in Swagger.
@@ -105,5 +104,3 @@ projects.
 | Shouldly                                        | 4.2.1       | 4.3.0       |
 | Swashbuckle.AspNetCore                          | 6.9.0       | 7.2.0       |
 | Swashbuckle.AspNetCore.Annotations              | 6.9.0       | 7.2.0       |
-  
-  
