@@ -1,4 +1,5 @@
-﻿using Baked.ExceptionHandling.ProblemDetails;
+﻿using Baked.ExceptionHandling;
+using Baked.ExceptionHandling.ProblemDetails;
 using Baked.Orm;
 using Baked.Test.Orm;
 using System.Net;

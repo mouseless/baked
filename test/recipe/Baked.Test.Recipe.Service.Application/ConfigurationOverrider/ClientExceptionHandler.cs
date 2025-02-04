@@ -1,9 +1,9 @@
 ﻿using Baked.Communication;
-using Baked.ExceptionHandling.ProblemDetails;
+using Baked.ExceptionHandling;
 using Newtonsoft.Json;
 using System.Net;
 
-namespace Baked.Test.ExceptionHandling;
+namespace Baked.Test.ConfigurationOverrider;
 
 public class ClientExceptionHandler : IExceptionHandler
 {
