@@ -3,7 +3,8 @@ using Baked.Domain.Model;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Baked.Domain;
-internal class ServiceAdderTemplate(List<ServiceModel> _descriptors) : CodeTemplateBase
+
+internal class ServiceAdderTemplate(IEnumerable<DomainServiceDescriptor> _descriptors) : CodeTemplateBase
 {
     protected override IEnumerable<string> Render() =>
         [ServiceAdder()];
@@ -21,7 +22,8 @@ internal class ServiceAdderTemplate(List<ServiceModel> _descriptors) : CodeTempl
                 {{ForEach(descriptor.Interfaces, @interface => $$"""
                     {{If(descriptor.Forward,
                         () => Forward(@interface.Model, descriptor.ServiceType, descriptor.Lifetime),
-                        () => Service(@interface.Model, descriptor.ServiceType, descriptor.Lifetime))}}
+                        @else: () => Service(@interface.Model, descriptor.ServiceType, descriptor.Lifetime)
+                     )}}
                     {{If(descriptor.UseFactory, () => Factory(@interface.Model, descriptor.ServiceType))}}
                 """)}}
             """)}}

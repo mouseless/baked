@@ -11,16 +11,16 @@ public class ScopedLifetimeFeature : IFeature<LifetimeConfigurator>
             builder.Index.Type.Add<ScopedAttribute>();
         });
 
-        configurator.ConfigureDomainServicesModel(model =>
+        configurator.ConfigureDomainServiceCollection(services =>
         {
             var domain = configurator.Context.GetDomainModel();
             foreach (var scoped in domain.Types.Having<ScopedAttribute>())
             {
-                model.Services.AddScoped(scoped, useFactory: true);
+                services.AddScoped(scoped, useFactory: true);
 
-                scoped.Apply(t => model.References.Add(t.Assembly));
+                scoped.Apply(t => services.References.Add(t.Assembly));
 
-                model.Usings.AddRange([
+                services.Usings.AddRange([
                     "Baked.Business",
                     "Baked.Runtime",
                     "Microsoft.Extensions.DependencyInjection"

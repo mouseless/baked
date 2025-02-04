@@ -12,24 +12,24 @@ public static class LifetimeExtensions
     public static void AddLifetimes(this List<IFeature> features, IEnumerable<Func<LifetimeConfigurator, IFeature<LifetimeConfigurator>>> configures) =>
         features.AddRange(configures.Select(configure => configure(new())));
 
-    public static void AddTransient(this List<ServiceModel> serviceModels, TypeModel type,
+    public static void AddTransient(this DomainServiceCollection services, TypeModel type,
         bool useFactory = true,
         bool forward = false
-    ) => serviceModels.Add(type, ServiceLifetime.Transient, useFactory: useFactory, forward: forward);
+    ) => services.Add(type, ServiceLifetime.Transient, useFactory: useFactory, forward: forward);
 
-    public static void AddScoped(this List<ServiceModel> serviceModels, TypeModel type,
+    public static void AddScoped(this DomainServiceCollection services, TypeModel type,
         bool useFactory = true,
         bool forward = false
-    ) => serviceModels.Add(type, ServiceLifetime.Scoped, useFactory: useFactory, forward: forward);
+    ) => services.Add(type, ServiceLifetime.Scoped, useFactory: useFactory, forward: forward);
 
-    public static void AddSingleton(this List<ServiceModel> serviceModels, TypeModel type,
+    public static void AddSingleton(this DomainServiceCollection services, TypeModel type,
         bool forward = false
-    ) => serviceModels.Add(type, ServiceLifetime.Singleton, forward: forward);
+    ) => services.Add(type, ServiceLifetime.Singleton, forward: forward);
 
-    public static void Add(this List<ServiceModel> serviceModels, TypeModel type, ServiceLifetime serviceLifetime,
+    public static void Add(this DomainServiceCollection services, TypeModel type, ServiceLifetime serviceLifetime,
         bool useFactory = true,
         bool forward = false
-    ) => serviceModels.Add(
+    ) => services.Add(
             type: type,
             serviceLifetime: serviceLifetime,
             useFactory: useFactory,

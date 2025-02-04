@@ -11,7 +11,7 @@ public class DomainLayer : LayerBase<AddDomainTypes, GenerateCode, AddServices>
 {
     readonly IDomainTypeCollection _domainTypes = new DomainTypeCollection();
     readonly DomainModelBuilderOptions _builderOptions = new();
-    readonly DomainServicesModel _domainServicesModel = new();
+    readonly DomainServiceCollection _domainServiceCollection = new();
 
     protected override PhaseContext GetContext(AddDomainTypes phase) =>
         phase.CreateContextBuilder()
@@ -22,8 +22,8 @@ public class DomainLayer : LayerBase<AddDomainTypes, GenerateCode, AddServices>
     protected override PhaseContext GetContext(GenerateCode phase)
     {
         var generatedAssemblies = Context.GetGeneratedAssemblyCollection();
-        _domainServicesModel.References.Add<DomainLayer>();
-        _domainServicesModel.Usings.AddRange(
+        _domainServiceCollection.References.Add<DomainLayer>();
+        _domainServiceCollection.Usings.AddRange(
         [
             "Baked",
             "System",
@@ -34,14 +34,14 @@ public class DomainLayer : LayerBase<AddDomainTypes, GenerateCode, AddServices>
         ]);
 
         return phase.CreateContextBuilder()
-            .Add(_domainServicesModel)
+            .Add(_domainServiceCollection)
             .OnDispose(() =>
             {
                 generatedAssemblies.Add(nameof(DomainLayer),
                     assembly => assembly
-                        .AddReferences(_domainServicesModel.References)
-                        .AddCodes(new ServiceAdderTemplate(_domainServicesModel.Services)),
-                    compilerOptions => compilerOptions.WithUsings(_domainServicesModel.Usings)
+                        .AddReferences(_domainServiceCollection.References)
+                        .AddCodes(new ServiceAdderTemplate(_domainServiceCollection)),
+                    compilerOptions => compilerOptions.WithUsings(_domainServiceCollection.Usings)
                 );
             })
             .Build();

@@ -8,7 +8,7 @@ app.Features.AddExceptionHandling(...);
 
 ## Problem Details
 
-This feature implementation adds `.Net` `ProblemDetails` services with a custom
+This feature implementation adds `NET` `ProblemDetails` services with a custom
 `IExceptionHandler` implementation that returns errors in problem details
 format. It also adds a custom middleware that logs exceptions.
 
@@ -31,7 +31,7 @@ public class SampleExceptionHandler : IExceptionHandler
 ```
 
 `ProblemDetails` feature registers following `Baked.IExceptionHandler` implementations with
-`UnHandledExceptionHandler` fallback;
+`UnhandledExceptionHandler` fallback;
 
 - `AuthenticationExceptionHandler` for `AuthenticationException`
 - `UnauthorizedAccessExceptionHandler` for `UnauthorizedAccessException`

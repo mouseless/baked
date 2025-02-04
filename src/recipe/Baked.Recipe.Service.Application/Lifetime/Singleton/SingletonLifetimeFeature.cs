@@ -11,16 +11,16 @@ public class SingletonLifetimeFeature : IFeature<LifetimeConfigurator>
             builder.Index.Type.Add<SingletonAttribute>();
         });
 
-        configurator.ConfigureDomainServicesModel(model =>
+        configurator.ConfigureDomainServiceCollection(services =>
         {
             var domain = configurator.Context.GetDomainModel();
             foreach (var singleton in domain.Types.Having<SingletonAttribute>())
             {
-                model.Services.AddSingleton(singleton, forward: true);
+                services.AddSingleton(singleton, forward: true);
 
-                singleton.Apply(t => model.References.Add(t.Assembly));
+                singleton.Apply(t => services.References.Add(t.Assembly));
 
-                model.Usings.AddRange([
+                services.Usings.AddRange([
                     "Baked.Business",
                     "Baked.Runtime",
                     "Microsoft.Extensions.DependencyInjection"

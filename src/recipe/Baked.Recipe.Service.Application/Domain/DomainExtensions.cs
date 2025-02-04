@@ -28,10 +28,10 @@ public static class DomainExtensions
     public static void ConfigureDomainModelBuilder(this LayerConfigurator configurator, Action<DomainModelBuilderOptions> configuration) =>
         configurator.Configure(configuration);
 
-    public static void ConfigureDomainServicesModel(this LayerConfigurator configurator, Action<DomainServicesModel> configuration) =>
+    public static void ConfigureDomainServiceCollection(this LayerConfigurator configurator, Action<DomainServiceCollection> configuration) =>
         configurator.Configure(configuration);
 
-    public static void Add(this List<ServiceModel> serviceModels, TypeModel type, ServiceLifetime serviceLifetime, IEnumerable<TypeModelReference> interfaces,
+    public static void Add(this List<DomainServiceDescriptor> serviceModels, TypeModel type, ServiceLifetime serviceLifetime, IEnumerable<TypeModelReference> interfaces,
         bool useFactory = true,
         bool forward = false
     ) => serviceModels.Add(new(

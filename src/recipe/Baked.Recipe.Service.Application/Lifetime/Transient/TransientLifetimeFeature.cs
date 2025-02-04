@@ -11,16 +11,16 @@ public class TransientLifetimeFeature : IFeature<LifetimeConfigurator>
             builder.Index.Type.Add<TransientAttribute>();
         });
 
-        configurator.ConfigureDomainServicesModel(model =>
+        configurator.ConfigureDomainServiceCollection(services =>
         {
             var domain = configurator.Context.GetDomainModel();
             foreach (var transient in domain.Types.Having<TransientAttribute>())
             {
-                model.Services.AddTransient(transient, useFactory: true);
+                services.AddTransient(transient, useFactory: true);
 
-                transient.Apply(t => model.References.Add(t.Assembly));
+                transient.Apply(t => services.References.Add(t.Assembly));
 
-                model.Usings.AddRange([
+                services.Usings.AddRange([
                     "Baked.Business",
                     "Baked.Runtime",
                     "Microsoft.Extensions.DependencyInjection"
