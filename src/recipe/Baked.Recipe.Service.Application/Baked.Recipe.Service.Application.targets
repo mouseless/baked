@@ -5,7 +5,7 @@
   </ItemGroup>
 
   <Target Name="Bake" AfterTargets="AfterBuild">
-    <Exec Command="dotnet $(TargetPath) --no-build --no-start --bake -c $(Configuration)" />
+    <Exec Command="dotnet $(TargetPath) --no-build --no-start --generate -c $(Configuration)" />
   </Target>
 
   <Target Name="CopyBakedFiles" AfterTargets="Publish">
