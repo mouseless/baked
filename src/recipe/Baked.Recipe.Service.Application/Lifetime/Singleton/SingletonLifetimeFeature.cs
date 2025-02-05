@@ -11,9 +11,8 @@ public class SingletonLifetimeFeature : IFeature<LifetimeConfigurator>
             builder.Index.Type.Add<SingletonAttribute>();
         });
 
-        configurator.ConfigureDomainServiceCollection(services =>
+        configurator.ConfigureDomainServiceCollection((services, domain) =>
         {
-            var domain = configurator.Context.GetDomainModel();
             foreach (var singleton in domain.Types.Having<SingletonAttribute>())
             {
                 services.AddSingleton(singleton, forward: true);

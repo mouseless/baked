@@ -11,9 +11,8 @@ public class TransientLifetimeFeature : IFeature<LifetimeConfigurator>
             builder.Index.Type.Add<TransientAttribute>();
         });
 
-        configurator.ConfigureDomainServiceCollection(services =>
+        configurator.ConfigureDomainServiceCollection((services, domain) =>
         {
-            var domain = configurator.Context.GetDomainModel();
             foreach (var transient in domain.Types.Having<TransientAttribute>())
             {
                 services.AddTransient(transient, useFactory: true);

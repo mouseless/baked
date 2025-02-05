@@ -33,8 +33,10 @@ public class DomainLayer : LayerBase<AddDomainTypes, GenerateCode, AddServices>
             "System.Threading.Tasks"
         ]);
 
+        var domain = Context.GetDomainModel();
+
         return phase.CreateContextBuilder()
-            .Add(_domainServiceCollection)
+            .Add(_domainServiceCollection, domain)
             .OnDispose(() =>
             {
                 generatedAssemblies.Add(nameof(DomainLayer),
