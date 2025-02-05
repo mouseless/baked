@@ -7,6 +7,27 @@ namespace Baked;
 
 public static class RuntimeExtensions
 {
+    public static byte[] ToMD5(this string str)
+    {
+        using var md5 = MD5.Create();
+
+        return md5.ComputeHash(str.ToUtf8Bytes());
+    }
+
+    public static byte[] ToSHA512(this string str)
+    {
+        using var sha512 = SHA512.Create();
+
+        return sha512.ComputeHash(str.ToUtf8Bytes());
+    }
+
+    public static byte[] ToSHA384(this string str)
+    {
+        using var sha384 = SHA384.Create();
+
+        return sha384.ComputeHash(str.ToUtf8Bytes());
+    }
+
     public static byte[] ToSHA256(this string str)
     {
         using var sha256 = SHA256.Create();
@@ -23,12 +44,6 @@ public static class RuntimeExtensions
 
     public static string ToBase64(this byte[] bytes) =>
         Convert.ToBase64String(bytes);
-
-    public static byte[] ToUtf8Bytes(this string @string) =>
-        Encoding.UTF8.GetBytes(@string);
-
-    public static string ToUtf8String(this byte[] bytes) =>
-        Encoding.UTF8.GetString(bytes);
 
     public static string ToBase64(this byte[] bytes, bool urlEncode)
     {
@@ -63,6 +78,12 @@ public static class RuntimeExtensions
 
         return Convert.FromBase64String(@string);
     }
+
+    public static byte[] ToUtf8Bytes(this string @string) =>
+        Encoding.UTF8.GetBytes(@string);
+
+    public static string ToUtf8String(this byte[] bytes) =>
+        Encoding.UTF8.GetString(bytes);
 
     public static bool Exists(this IFileProvider provider, string subpath) =>
         provider.GetFileInfo(subpath).Exists;
