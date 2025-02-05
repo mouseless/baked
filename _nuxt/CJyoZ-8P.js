@@ -1,0 +1,1 @@
+import{_ as a,c as t,a as s,r as o,o as r}from"./2lwfFFTD.js";const c={},n={class:"table-container"};function l(e,d){return r(),t("div",n,[s("table",null,[o(e.$slots,"default",{},void 0,!0)])])}const f=a(c,[["render",l],["__scopeId","data-v-24fe1f69"]]);export{f as default};
