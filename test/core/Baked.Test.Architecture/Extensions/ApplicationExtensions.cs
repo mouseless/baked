@@ -12,15 +12,15 @@ public static class ApplicationExtensions
         ILayer[]? layers = default,
         IFeature? feature = default,
         IFeature[]? features = default,
-        ApplicationContext? bakeContext = default,
-        ApplicationContext? context = default,
+        ApplicationContext? generateContext = default,
+        ApplicationContext? startContext = default,
         RunFlags runFlags = RunFlags.Start
     )
     {
-        layers ??= [layer ?? giveMe.Spec.MockMe.ALayer(phase: phase, phases: phases)];
+        layers ??= [layer ?? giveMe.Spec.MockMe.ALayer(startPhase: phase, startPhases: phases)];
         features ??= [feature ?? giveMe.Spec.MockMe.AFeature()];
 
-        return giveMe.ABake(context: context, bakeContext: bakeContext, runflags: runFlags).Application(app =>
+        return giveMe.ABake(startContext: startContext, generateContext: generateContext, runflags: runFlags).Application(app =>
         {
             app.Layers.AddRange(layers);
             app.Features.AddRange(features);

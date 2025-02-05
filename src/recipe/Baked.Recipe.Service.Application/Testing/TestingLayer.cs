@@ -42,7 +42,7 @@ public class TestingLayer : LayerBase<AddServices>
         );
     }
 
-    protected override IEnumerable<IPhase> GetPhases()
+    protected override IEnumerable<IPhase> GetStartPhases()
     {
         yield return new CreateConfigurationManager();
         yield return new Build(_run);

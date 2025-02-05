@@ -6,10 +6,10 @@ public abstract class LayerBase : ILayer
 
     protected virtual string Id => GetType().Name;
 
-    protected virtual IEnumerable<IPhase> GetPhases() =>
+    protected virtual IEnumerable<IPhase> GetStartPhases() =>
         [];
 
-    protected virtual IEnumerable<IPhase> GetBakePhases() =>
+    protected virtual IEnumerable<IPhase> GetGeneratePhases() =>
         [];
 
     protected virtual PhaseContext GetContext(IPhase phase) =>
@@ -17,11 +17,11 @@ public abstract class LayerBase : ILayer
 
     string ILayer.Id => Id;
 
-    IEnumerable<IPhase> ILayer.GetPhases() =>
-        GetPhases();
+    IEnumerable<IPhase> ILayer.GetStartPhases() =>
+        GetStartPhases();
 
-    IEnumerable<IPhase> ILayer.GetBakePhases() =>
-        GetBakePhases();
+    IEnumerable<IPhase> ILayer.GetGeneratePhases() =>
+        GetGeneratePhases();
 
     PhaseContext ILayer.GetContext(IPhase phase, ApplicationContext context)
     {

@@ -97,7 +97,7 @@ public static class RuntimeExtensions
         sp.GetRequiredService<ServiceProviderAccessor>().GetServiceProvider() ?? sp;
 
     public static IServiceProvider TheServiceProvider(this Stubber giveMe) =>
-        giveMe.Spec.Context.GetServiceProvider().UsingCurrentScope();
+        giveMe.Spec.StartContext.GetServiceProvider().UsingCurrentScope();
 
     public static T The<T>(this Stubber giveMe) where T : notnull =>
         giveMe.TheServiceProvider().GetRequiredService<T>();

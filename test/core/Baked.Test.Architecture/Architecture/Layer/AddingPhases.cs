@@ -10,14 +10,14 @@ public class AddingPhases : ArchitectureSpec
     public void Layer_returns_no_phases_by_default()
     {
         ILayer layer = new NoPhaseLayer();
-        var phases = layer.GetPhases();
+        var phases = layer.GetStartPhases();
 
         phases.Count().ShouldBe(0);
     }
 
     class TwoPhaseLayer : LayerBase
     {
-        protected override IEnumerable<IPhase> GetPhases()
+        protected override IEnumerable<IPhase> GetStartPhases()
         {
             yield return new DoA();
             yield return new DoB();
@@ -31,7 +31,7 @@ public class AddingPhases : ArchitectureSpec
     public void Layer_overrides_base_method_to_add_new_phases()
     {
         ILayer layer = new TwoPhaseLayer();
-        var phases = layer.GetPhases();
+        var phases = layer.GetStartPhases();
 
         phases.Count().ShouldBe(2);
 
@@ -39,14 +39,14 @@ public class AddingPhases : ArchitectureSpec
         phases.ShouldContain(phase => phase is TwoPhaseLayer.DoB);
     }
 
-    class LayerWithBakePhases : LayerBase
+    class LayerWithGeneratePhases : LayerBase
     {
-        protected override IEnumerable<IPhase> GetPhases()
+        protected override IEnumerable<IPhase> GetStartPhases()
         {
             yield return new RuntimePhase();
         }
 
-        protected override IEnumerable<IPhase> GetBakePhases()
+        protected override IEnumerable<IPhase> GetGeneratePhases()
         {
             yield return new GeneratePhase();
         }
@@ -57,19 +57,19 @@ public class AddingPhases : ArchitectureSpec
 
     [Test]
 
-    public void Layers_can_add_seperate_phases_for_bake_and_start()
+    public void Layers_can_add_seperate_phases_for_generate_and_start()
     {
-        ILayer layer = new LayerWithBakePhases();
+        ILayer layer = new LayerWithGeneratePhases();
 
-        var phases = layer.GetPhases();
+        var phases = layer.GetStartPhases();
 
         phases.Count().ShouldBe(1);
-        phases.ShouldContain(phase => phase is LayerWithBakePhases.RuntimePhase);
+        phases.ShouldContain(phase => phase is LayerWithGeneratePhases.RuntimePhase);
 
-        var generatePhases = layer.GetBakePhases();
+        var generatePhases = layer.GetGeneratePhases();
 
         generatePhases.Count().ShouldBe(1);
-        generatePhases.ShouldContain(phase => phase is LayerWithBakePhases.GeneratePhase);
+        generatePhases.ShouldContain(phase => phase is LayerWithGeneratePhases.GeneratePhase);
     }
 
     class IndependentAddsString(string _artifact)
@@ -86,7 +86,7 @@ public class AddingPhases : ArchitectureSpec
     {
         var context = GiveMe.AnApplicationContext();
         IPhase phase = new IndependentAddsString(_artifact: "test");
-        GiveMe.AnApplication(context: context, phase: phase);
+        GiveMe.AnApplication(startContext: context, phase: phase);
 
         phase.Initialize();
 
@@ -149,7 +149,7 @@ public class AddingPhases : ArchitectureSpec
     {
         IPhase phase = new StringDependentAddsInt(_expectedString: GiveMe.AString(), _artifact: GiveMe.AnInt());
         var app = GiveMe.AnApplication(
-            context: GiveMe.AnApplicationContext(content: GiveMe.AnInt()),
+            startContext: GiveMe.AnApplicationContext(content: GiveMe.AnInt()),
             phase: phase
         );
 
@@ -163,7 +163,7 @@ public class AddingPhases : ArchitectureSpec
     {
         var context = GiveMe.AnApplicationContext();
         var app = GiveMe.AnApplication(
-            context: context,
+            startContext: context,
             phases:
             [
                 new StringIntAndBoolDependentAddsChar(

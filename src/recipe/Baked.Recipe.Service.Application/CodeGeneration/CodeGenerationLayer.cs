@@ -60,7 +60,7 @@ public class CodeGenerationLayer : LayerBase<GenerateCode, Compile, BuildConfigu
         return PhaseContext.Empty;
     }
 
-    protected override IEnumerable<IPhase> GetBakePhases()
+    protected override IEnumerable<IPhase> GetGeneratePhases()
     {
         yield return new GenerateCode(_location, _generatedAssemblies, _generatedFiles);
         yield return new Compile(_location);

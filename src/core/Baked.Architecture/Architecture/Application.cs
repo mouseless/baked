@@ -1,13 +1,13 @@
 ﻿namespace Baked.Architecture;
 
-public class Application(ApplicationContext _context,
-    ApplicationContext? _bakeContext = default
+public class Application(ApplicationContext _startContext,
+    ApplicationContext? _generateContext = default
 )
 {
     readonly List<ILayer> _layers = [];
     readonly List<IFeature> _features = [];
-    readonly List<IPhase> _phases = [];
-    readonly List<IPhase> _bakePhases = [];
+    readonly List<IPhase> _startPhases = [];
+    readonly List<IPhase> _generatePhases = [];
     RunFlags _runFlags = RunFlags.Start!;
 
     internal Application With(ApplicationDescriptor descriptor, RunFlags runFlags)
@@ -37,40 +37,40 @@ public class Application(ApplicationContext _context,
 
     void FillPhases()
     {
-        if (_runFlags.HasFlag(RunFlags.Bake))
+        if (_runFlags.HasFlag(RunFlags.Generate))
         {
             foreach (var layer in _layers)
             {
-                _bakePhases.AddRange(layer.GetBakePhases());
+                _generatePhases.AddRange(layer.GetGeneratePhases());
             }
 
-            _bakeContext ??= new();
-            _bakePhases.ForEach(p => p.Context = _bakeContext);
-            _bakePhases.Sort((l, r) => l.Order - r.Order);
+            _generateContext ??= new();
+            _generatePhases.ForEach(p => p.Context = _generateContext);
+            _generatePhases.Sort((l, r) => l.Order - r.Order);
         }
 
         if (_runFlags.HasFlag(RunFlags.Start))
         {
             foreach (var layer in _layers)
             {
-                _phases.AddRange(layer.GetPhases());
+                _startPhases.AddRange(layer.GetStartPhases());
             }
 
-            _phases.ForEach(p => p.Context = _context);
-            _phases.Sort((l, r) => l.Order - r.Order);
+            _startPhases.ForEach(p => p.Context = _startContext);
+            _startPhases.Sort((l, r) => l.Order - r.Order);
         }
     }
 
     public void Run()
     {
-        if (_runFlags.HasFlag(RunFlags.Bake))
+        if (_runFlags.HasFlag(RunFlags.Generate))
         {
-            ExecutePhases(_bakePhases, _bakeContext ?? new());
+            ExecutePhases(_generatePhases, _generateContext ?? new());
         }
 
         if (_runFlags.HasFlag(RunFlags.Start))
         {
-            ExecutePhases(_phases, _context);
+            ExecutePhases(_startPhases, _startContext);
         }
     }
 

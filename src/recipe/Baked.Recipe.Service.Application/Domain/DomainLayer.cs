@@ -57,7 +57,7 @@ public class DomainLayer : LayerBase<AddDomainTypes, GenerateCode, AddServices>
         return phase.CreateEmptyContext();
     }
 
-    protected override IEnumerable<IPhase> GetBakePhases()
+    protected override IEnumerable<IPhase> GetGeneratePhases()
     {
         yield return new AddDomainTypes(_domainTypes);
         yield return new BuildDomainModel(_builderOptions);
