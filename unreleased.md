@@ -12,7 +12,7 @@ projects.
   - [ ] in GitHub workflows
 - [ ] Upgrade Baked version
 - [ ] You can use `GeneratedRegex`es in properties instead of methods
-- [ ] If `Base64` encoded information is carried in the url, use `Base64Url`.
+- [ ] If `Base64` encoded information is carried in the url, use `Base64Url`
 - [ ] `params` arguments should be converted from arrays to `IEnumerable`
 - [ ] Use the new linQ extensions(`CountBy`, `AggregateBy`,
   `Index<TSource>(IEnumerable<TSource>))`.
@@ -47,12 +47,14 @@ projects.
   in `Generate` mode
 - `CodeGeneration` layer's `GenerateCode` and `Compile` phases now only runs
   in `Generate` mode
-- `CodeGeneration` layer now introduces `IGeneratedFileCollection` which enables
-  generating data files in `Generate` mode
-- `CodeGeneration` layer now introduces `GeneratedContext` at `BuildConfiguration`
-  phase which provides access to generated assemblies and files in `Start` mode
-- `Domain` layer now provides a `DomainServicesCollection` configuration target in 
-  `Generate` mode which will then be used to generate `IServiceAdder` implementation 
+- `CodeGeneration` layer now introduces `IGeneratedFileCollection` which 
+  enables generating data files in `Generate` mode
+- `CodeGeneration` layer now introduces `GeneratedContext` at 
+  `BuildConfiguration` phase which provides access to generated assemblies and 
+  files in `Start` mode
+- `Domain` layer now provides a `DomainServicesCollection` configuration target
+  in `Generate` mode which will then be used to generate `IServiceAdder` 
+  implementation 
 
 ## Improvements
 
