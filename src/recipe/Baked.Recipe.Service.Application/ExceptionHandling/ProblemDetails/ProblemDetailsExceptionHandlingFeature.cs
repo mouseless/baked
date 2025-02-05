@@ -28,37 +28,8 @@ public class ProblemDetailsExceptionHandlingFeature(Setting<string>? _typeUrlFor
             types.Add<HandledException>();
         });
 
-        configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
-        {
-            var domain = configurator.Context.GetDomainModel();
-
-            var domainModel = configurator.Context.GetDomainModel();
-            var exceptionHandlerTypes = domainModel.Types.Where(t => t.IsClass && !t.IsAbstract && t.IsAssignableTo<IExceptionHandler>());
-
-            generatedAssemblies.Add(nameof(ProblemDetailsExceptionHandlingFeature),
-                assembly =>
-                {
-                    assembly
-                        .AddReferenceFrom<ProblemDetailsExceptionHandlingFeature>()
-                        .AddCodes(new ExceptionHandlerAdderTemplate(exceptionHandlerTypes));
-
-                    foreach (var entity in exceptionHandlerTypes)
-                    {
-                        entity.Apply(t => assembly.AddReferenceFrom(t));
-                    }
-                },
-                usings: [
-                    "Baked.Business",
-                    "Baked.ExceptionHandling",
-                    "Baked.Runtime",
-                    "Microsoft.Extensions.DependencyInjection"
-                ]
-            );
-        });
-
         configurator.ConfigureServiceCollection(services =>
         {
-            services.AddFromAssembly(configurator.Context.GetGeneratedAssembly(nameof(ProblemDetailsExceptionHandlingFeature)));
             services.AddSingleton<IExceptionHandler, AuthenticationExceptionHandler>();
             services.AddSingleton<IExceptionHandler, UnauthorizedAccessExceptionHandler>();
             services.AddSingleton<IExceptionHandler, HandledExceptionHandler>();

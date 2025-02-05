@@ -4,6 +4,7 @@ using Baked.Domain.Configuration;
 using Baked.Domain.Conventions;
 using Baked.Domain.Model;
 using Baked.Testing;
+using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Diagnostics.CodeAnalysis;
 using System.Xml;
@@ -26,6 +27,23 @@ public static class DomainExtensions
 
     public static void ConfigureDomainModelBuilder(this LayerConfigurator configurator, Action<DomainModelBuilderOptions> configuration) =>
         configurator.Configure(configuration);
+
+    public static void ConfigureDomainServiceCollection(this LayerConfigurator configurator, Action<DomainServiceCollection> configuration) =>
+        configurator.Configure(configuration);
+
+    public static void UsingDomainModel(this LayerConfigurator configurator, Action<DomainModel> configuration) =>
+        configurator.Use(configuration);
+
+    public static void Add(this List<DomainServiceDescriptor> serviceModels, TypeModel type, ServiceLifetime serviceLifetime, IEnumerable<TypeModelReference> interfaces,
+        bool useFactory = true,
+        bool forward = false
+    ) => serviceModels.Add(new(
+            ServiceType: type,
+            Lifetime: serviceLifetime,
+            UseFactory: useFactory,
+            Interfaces: interfaces,
+            Forward: forward
+        ));
 
     public static void Add<T>(this ICollection<Type> types) =>
         types.Add(typeof(T));

@@ -28,6 +28,9 @@ public static class CodeGenerationExtensions
     public static void ConfigureGeneratedFileCollection(this LayerConfigurator configurator, Action<IGeneratedFileCollection> configuration) =>
        configurator.Configure(configuration);
 
+    public static void UsingGeneratedContext(this LayerConfigurator configurator, Action<GeneratedContext> configuration) =>
+        configurator.Use(configuration);
+
     /// <summary>
     /// Adds a descriptor for a generated assembly with given parameters
     ///

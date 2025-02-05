@@ -1,5 +1,4 @@
 ﻿using Baked.Architecture;
-using Baked.Communication;
 using Baked.HttpServer;
 using Baked.Testing;
 using Microsoft.AspNetCore.Authentication;

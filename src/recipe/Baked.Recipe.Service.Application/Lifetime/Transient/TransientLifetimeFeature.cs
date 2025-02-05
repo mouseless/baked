@@ -11,33 +11,15 @@ public class TransientLifetimeFeature : IFeature<LifetimeConfigurator>
             builder.Index.Type.Add<TransientAttribute>();
         });
 
-        configurator.ConfigureServiceCollection(services =>
+        configurator.ConfigureDomainServiceCollection(services =>
         {
-            services.AddFromAssembly(configurator.Context.GetGeneratedAssembly(nameof(TransientLifetimeFeature)));
-        });
-
-        configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
-        {
-            var domain = configurator.Context.GetDomainModel();
-
-            generatedAssemblies.Add(nameof(TransientLifetimeFeature),
-                assembly =>
+            configurator.UsingDomainModel(domain =>
+            {
+                foreach (var transient in domain.Types.Having<TransientAttribute>())
                 {
-                    assembly
-                        .AddReferenceFrom<TransientLifetimeFeature>()
-                        .AddCodes(new TransientServiceAdderTemplate(domain));
-
-                    foreach (var entity in domain.Types.Having<TransientAttribute>())
-                    {
-                        entity.Apply(t => assembly.AddReferenceFrom(t));
-                    }
-                },
-                usings: [
-                    "Baked.Business",
-                    "Baked.Runtime",
-                    "Microsoft.Extensions.DependencyInjection"
-                ]
-            );
+                    services.AddTransient(transient, useFactory: true);
+                }
+            });
         });
     }
 }

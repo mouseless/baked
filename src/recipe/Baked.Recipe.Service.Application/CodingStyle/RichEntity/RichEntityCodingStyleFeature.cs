@@ -63,11 +63,13 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
 
         configurator.ConfigureApiModelConventions(conventions =>
         {
-            var domainModel = configurator.Context.GetDomainModel();
-
             conventions.Add(new EntityUnderPluralGroupConvention());
             conventions.Add(new EntityInitializerIsPostResourceConvention());
-            conventions.Add(new FindTargetUsingQueryContextConvention(domainModel), order: 20);
+
+            configurator.UsingDomainModel(domain =>
+            {
+                conventions.Add(new FindTargetUsingQueryContextConvention(domain), order: 20);
+            });
         });
     }
 }

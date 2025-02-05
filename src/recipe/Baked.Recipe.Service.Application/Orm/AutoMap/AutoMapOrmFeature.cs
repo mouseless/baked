@@ -40,9 +40,9 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
 
         configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
         {
-            var domain = configurator.Context.GetDomainModel();
-
-            generatedAssemblies.Add(nameof(AutoMapOrmFeature),
+            configurator.UsingDomainModel(domain =>
+            {
+                generatedAssemblies.Add(nameof(AutoMapOrmFeature),
                 assembly =>
                 {
                     assembly
@@ -64,11 +64,16 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
                     "NHibernate.Linq"
                 ]
             );
+            });
         });
 
         configurator.ConfigureServiceCollection(services =>
         {
-            services.AddFromAssembly(configurator.Context.GetGeneratedAssembly(nameof(AutoMapOrmFeature)));
+            configurator.UsingGeneratedContext(generatedContext =>
+            {
+                services.AddFromAssembly(generatedContext.Assemblies[nameof(AutoMapOrmFeature)]);
+            });
+
             services.AddScoped(typeof(IEntityContext<>), typeof(EntityContext<>));
             services.AddSingleton(typeof(IQueryContext<>), typeof(QueryContext<>));
         });
@@ -80,12 +85,15 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
 
         configurator.ConfigureAutoPersistenceModel(model =>
         {
-            var assembly = configurator.Context.GetGeneratedAssembly(nameof(AutoMapOrmFeature));
+            configurator.UsingGeneratedContext(generatedContext =>
+            {
+                var assembly = generatedContext.Assemblies[nameof(AutoMapOrmFeature)];
 
-            var typeSource = assembly.GetExportedTypes().SingleOrDefault(t => t.IsAssignableTo(typeof(ITypeSource))) ?? throw new("`ITypeSource` implementation not found");
-            var typeSourceInstance = (ITypeSource?)Activator.CreateInstance(typeSource) ?? throw new($"Cannot create instance of {typeSource}");
+                var typeSource = assembly.GetExportedTypes().SingleOrDefault(t => t.IsAssignableTo(typeof(ITypeSource))) ?? throw new("`ITypeSource` implementation not found");
+                var typeSourceInstance = (ITypeSource?)Activator.CreateInstance(typeSource) ?? throw new($"Cannot create instance of {typeSource}");
 
-            model.AddTypeSource(typeSourceInstance);
+                model.AddTypeSource(typeSourceInstance);
+            });
 
             model.Conventions.Add(Table.Is(x => x.EntityType.Name));
             model.Conventions.Add(ConventionBuilder.Id.Always(x => x.GeneratedBy.Guid()));
@@ -143,14 +151,15 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
 
         configurator.ConfigureApiModelConventions(conventions =>
         {
-            var domainModel = configurator.Context.GetDomainModel();
-
-            conventions.Add(new AutoHttpMethodConvention([(Regexes.StartsWithFirstBySingleByOrBy, HttpMethod.Get)]), order: -10);
-            conventions.Add(new LookupEntityByIdConvention(domainModel));
-            conventions.Add(new LookupEntitiesByIdsConvention(domainModel));
-            conventions.Add(new RemoveFromRouteConvention(["FirstBy", "SingleBy", "By"],
-                _when: c => c.Controller.MappedType.TryGetMetadata(out var metadata) && metadata.Has<QueryAttribute>()
-            ));
+            configurator.UsingDomainModel(domain =>
+            {
+                conventions.Add(new AutoHttpMethodConvention([(Regexes.StartsWithFirstBySingleByOrBy, HttpMethod.Get)]), order: -10);
+                conventions.Add(new LookupEntityByIdConvention(domain));
+                conventions.Add(new LookupEntitiesByIdsConvention(domain));
+                conventions.Add(new RemoveFromRouteConvention(["FirstBy", "SingleBy", "By"],
+                    _when: c => c.Controller.MappedType.TryGetMetadata(out var metadata) && metadata.Has<QueryAttribute>()
+                ));
+            });
         });
     }
 }

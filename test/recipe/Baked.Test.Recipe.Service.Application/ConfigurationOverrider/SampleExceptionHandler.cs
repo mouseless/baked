@@ -1,7 +1,8 @@
 ﻿using Baked.ExceptionHandling;
+using Baked.Test.ExceptionHandling;
 using System.Net;
 
-namespace Baked.Test.ExceptionHandling;
+namespace Baked.Test.ConfigurationOverrider;
 
 public class SampleExceptionHandler : IExceptionHandler
 {

@@ -50,6 +50,8 @@ projects.
   generating data files in `Bake` mode
 - `CodeGeneration` layer now introduces `GeneratedContext` at `BuildConfiguration`
   phase which provides access to generated assemblies and files in `Start` mode
+- `Domain` layer now provides a `DomainServicesCollection` configuration target in 
+  `Bake` mode which will then be used to generate `IServiceAdder` implementation 
 
 ## Improvements
 
@@ -61,16 +63,23 @@ projects.
   - `TagDescriptor`
   - `RequestResponseExample`
   json files in `Bake` mode
-- Following features now generates `IServiceAdder` implementations from
+- `AutoMapOrm` feature now generates `IServiceAdder` implementations from
   `DomainModel` in `Bake` mode
+- `GiveMe.PropertyOf<T>` helper is renamed to `ThePropertyOf<T>`
+- `GiveMe.MethodOf<T>` helper is renamed to `TheMethodOf<T>`
+- Following features now use `DomainServicesModel` target to register services
+  in `Bake` mode
   - `Transient`
   - `Scoped`
   - `Singleton`
-  - `AutoMapOrm`
-  - `ProblemDetails`
 - `GiveMe.PropertyOf<T>` helper is renamed to `ThePropertyOf<T>`
 - `GiveMe.MethodOf<T>` helper is renamed to `TheMethodOf<T>`
 - Removed namespaces from `SchemaId` created in Swagger.
+- `ProblemDetails` feature now no longer searches domain assemblies and
+  `IExceptionHandler` implementations are required to be added in 
+  `ConfigurationOverrider` feature
+- `LayerConfigurator` now provides `Use<T>` helper to use phase artifacts and
+  no longer provides access to application context
 
 ## Library Upgrades
 

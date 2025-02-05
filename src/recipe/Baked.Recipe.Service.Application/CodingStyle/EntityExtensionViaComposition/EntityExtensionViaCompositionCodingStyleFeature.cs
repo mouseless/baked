@@ -33,9 +33,8 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
             builder.Conventions.AddTypeMetadata(
                 apply: (c, add) =>
                 {
-                    var domain = configurator.Context.GetDomainModel();
                     var entityType = c.Type.GetSingle<EntityExtensionAttribute>().EntityType;
-                    var entityTypeModel = domain.Types[entityType];
+                    var entityTypeModel = c.Domain.Types[entityType];
                     if (!entityTypeModel.TryGetNamespaceAttribute(out var namespaceAttribute)) { return; }
 
                     add(c.Type, namespaceAttribute);
@@ -56,13 +55,14 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
 
         configurator.ConfigureApiModelConventions(conventions =>
         {
-            var domain = configurator.Context.GetDomainModel();
-
-            conventions.Add(new EntityExtensionsUnderEntitiesConvention(domain));
-            conventions.Add(new LookupEntityExtensionByIdConvention(domain));
-            conventions.Add(new LookupEntityExtensionsByIdsConvention(domain));
-            conventions.Add(new TargetEntityExtensionFromRouteConvention(domain), order: 20);
-            conventions.Add(new TargetEntityExtensionFromRouteByUniquePropertiesConvention(domain), order: 20);
+            configurator.UsingDomainModel(domain =>
+            {
+                conventions.Add(new EntityExtensionsUnderEntitiesConvention(domain));
+                conventions.Add(new LookupEntityExtensionByIdConvention(domain));
+                conventions.Add(new LookupEntityExtensionsByIdsConvention(domain));
+                conventions.Add(new TargetEntityExtensionFromRouteConvention(domain), order: 20);
+                conventions.Add(new TargetEntityExtensionFromRouteByUniquePropertiesConvention(domain), order: 20);
+            });
         });
     }
 }

@@ -72,7 +72,7 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
             {
                 foreach (var type in model.Types)
                 {
-                    typeConvention.Apply(new() { Type = type });
+                    typeConvention.Apply(new() { Domain = model, Type = type });
                 }
             }
 
@@ -80,7 +80,7 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
             {
                 foreach (var type in model.Types.OfType<TypeModelGenerics>())
                 {
-                    typeGenericsConvention.Apply(new() { Type = type });
+                    typeGenericsConvention.Apply(new() { Domain = model, Type = type });
                 }
             }
 
@@ -88,7 +88,7 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
             {
                 foreach (var type in model.Types.OfType<TypeModelInheritance>())
                 {
-                    typeInheritanceConvention.Apply(new() { Type = type });
+                    typeInheritanceConvention.Apply(new() { Domain = model, Type = type });
                 }
             }
 
@@ -96,7 +96,7 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
             {
                 foreach (var type in model.Types.OfType<TypeModelMetadata>())
                 {
-                    typeMetadataConvention.Apply(new() { Type = type });
+                    typeMetadataConvention.Apply(new() { Domain = model, Type = type });
                 }
             }
 
@@ -104,7 +104,7 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
             {
                 foreach (var type in model.Types.OfType<TypeModelMembers>())
                 {
-                    typeMembersConvention.Apply(new() { Type = type });
+                    typeMembersConvention.Apply(new() { Domain = model, Type = type });
                 }
             }
 
@@ -114,7 +114,7 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
                                                             .SelectMany(t => t.Properties.Select(p => (t, p)))
                 )
                 {
-                    propertyConvention.Apply(new() { Type = type.GetMembers(), Property = property });
+                    propertyConvention.Apply(new() { Domain = model, Type = type.GetMembers(), Property = property });
                 }
 
             }
@@ -125,7 +125,7 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
                                                           .SelectMany(t => t.Methods.Select(m => (t, m)))
                 )
                 {
-                    methodConvention.Apply(new() { Type = type, Method = method });
+                    methodConvention.Apply(new() { Domain = model, Type = type, Method = method });
                 }
             }
 
@@ -137,7 +137,7 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
                                                                                .SelectMany(x => x.o.Parameters.Select(p => (x.t, x.m, x.o, p)))
                 )
                 {
-                    parameterConvention.Apply(new() { Type = type, Method = method, MethodOverload = overload, Parameter = parameter });
+                    parameterConvention.Apply(new() { Domain = model, Type = type, Method = method, MethodOverload = overload, Parameter = parameter });
                 }
             }
         }

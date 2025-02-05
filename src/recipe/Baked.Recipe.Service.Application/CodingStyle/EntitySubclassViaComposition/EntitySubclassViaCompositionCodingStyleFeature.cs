@@ -48,11 +48,12 @@ public class EntitySubclassViaCompositionCodingStyleFeature : IFeature<CodingSty
 
         configurator.ConfigureApiModelConventions(conventions =>
         {
-            var domain = configurator.Context.GetDomainModel();
-
-            conventions.Add(new EntitySubclassUnderEntitiesConvention(domain));
-            conventions.Add(new EntitySubclassInitializerIsPostResourceConvention(domain));
-            conventions.Add(new TargetEntitySubclassFromRouteConvention(domain), order: 20);
+            configurator.UsingDomainModel(domain =>
+            {
+                conventions.Add(new EntitySubclassUnderEntitiesConvention(domain));
+                conventions.Add(new EntitySubclassInitializerIsPostResourceConvention(domain));
+                conventions.Add(new TargetEntitySubclassFromRouteConvention(domain), order: 20);
+            });
         });
     }
 }

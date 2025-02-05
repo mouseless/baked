@@ -2,7 +2,7 @@
 
 namespace Baked.Domain.Configuration;
 
-public class TypeModelContext
+public class TypeModelContext : DomainModelContext
 {
     public required TypeModel Type { get; init; }
 }

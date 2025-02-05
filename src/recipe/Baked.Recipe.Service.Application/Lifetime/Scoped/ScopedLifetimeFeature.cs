@@ -11,34 +11,15 @@ public class ScopedLifetimeFeature : IFeature<LifetimeConfigurator>
             builder.Index.Type.Add<ScopedAttribute>();
         });
 
-        configurator.ConfigureServiceCollection(services =>
+        configurator.ConfigureDomainServiceCollection(services =>
         {
-            services.AddFromAssembly(configurator.Context.GetGeneratedAssembly(nameof(ScopedLifetimeFeature)));
-        });
-
-        configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
-        {
-            var domain = configurator.Context.GetDomainModel();
-
-            generatedAssemblies.Add(nameof(ScopedLifetimeFeature),
-                assembly =>
+            configurator.UsingDomainModel(domain =>
+            {
+                foreach (var scoped in domain.Types.Having<ScopedAttribute>())
                 {
-                    assembly
-                        .AddReferenceFrom<ScopedLifetimeFeature>()
-                        .AddCodes(new ScopedServiceAdderTemplate(domain));
-
-                    foreach (var entity in domain.Types.Having<ScopedAttribute>())
-                    {
-                        entity.Apply(t => assembly.AddReferenceFrom(t));
-                    }
-                },
-                usings: [
-                    "Baked",
-                    "Baked.Business",
-                    "Baked.Runtime",
-                    "Microsoft.Extensions.DependencyInjection"
-                ]
-            );
+                    services.AddScoped(scoped, useFactory: true);
+                }
+            });
         });
     }
 }
