@@ -36,7 +36,7 @@ public class DomainLayer : LayerBase<AddDomainTypes, GenerateCode, AddServices>
         var domain = Context.GetDomainModel();
 
         return phase.CreateContextBuilder()
-            .Add(_domainServiceCollection)
+            .Add(_domainServiceCollection, domain)
             .OnDispose(() =>
             {
                 generatedAssemblies.Add(nameof(DomainLayer),
