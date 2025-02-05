@@ -25,7 +25,7 @@ By default this feature handles following exceptions;
 
 - `AuthenticationException` which returns 401 status code
 - `UnauthorizedAccessExceptionHandler` which returns 403 status code
-- `HandledException` which returns 400 status code
+- `HandledException` which returns 400 status code unless overridden
 
 `HandledException` is an opinionated abstraction which helps providing
 necessary data for a handled exception result. Below is a sample for creating 
