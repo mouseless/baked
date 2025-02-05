@@ -35,7 +35,7 @@ projects.
 
 ## Features
 
-- `Application` now provies `Bake` and `Start` modes which can be run both
+- `Application` now provies `Generate` and `Start` modes which can be run both
   together or individually with distinct `ApplicationContext`'s.
   - `RunFlags` is introduced for configuring application mode
 - `LayerBase` now provies `GetGeneratePhases()` method to enable registering

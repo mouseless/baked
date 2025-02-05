@@ -47,7 +47,7 @@ configurator.ConfigureGeneratedFileCollection(files =>
 
 ## Phases
 
-This layer introduces following `Bake` phases to the application it is added;
+This layer introduces following `Generate` phases to the application it is added;
 
 - `GenerateCode`: This phase creates a `IGeneratedAssemblyCollection` instance
   and places it in the application context
