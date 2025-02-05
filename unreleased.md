@@ -51,7 +51,7 @@ projects.
 - `CodeGeneration` layer now introduces `GeneratedContext` at `BuildConfiguration`
   phase which provides access to generated assemblies and files in `Start` mode
 - `Domain` layer now provides a `DomainServicesCollection` configuration target in 
-  `Bake` mode which will then as be used to generate `IServiceAdder` implementation 
+  `Bake` mode which will then be used to generate `IServiceAdder` implementation 
 
 ## Improvements
 
