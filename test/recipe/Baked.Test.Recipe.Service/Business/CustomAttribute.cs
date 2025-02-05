@@ -1,3 +1,3 @@
 ﻿namespace Baked.Test.Business;
 
-public class CustomAttribute : Attribute { }
+public class CustomAttribute : Attribute;

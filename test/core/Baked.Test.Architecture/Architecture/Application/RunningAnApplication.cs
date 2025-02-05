@@ -10,8 +10,8 @@ public class RunningAnApplication : ArchitectureSpec
         var phase1 = MockMe.APhase();
         var phase2 = MockMe.APhase();
         var phase3 = MockMe.APhase();
-        var layer1 = MockMe.ALayer(phases: [phase1, phase2]);
-        var layer2 = MockMe.ALayer(phase: phase3);
+        var layer1 = MockMe.ALayer(startPhases: [phase1, phase2]);
+        var layer2 = MockMe.ALayer(startPhase: phase3);
         var app = GiveMe.AnApplication(layers: [layer1, layer2]);
 
         app.Run();
@@ -22,14 +22,14 @@ public class RunningAnApplication : ArchitectureSpec
     }
 
     [Test]
-    public void Application_collects_only_bake_phases_when_specified()
+    public void Application_collects_only_generate_phases_when_specified()
     {
         var phase1 = MockMe.APhase();
         var phase2 = MockMe.APhase();
         var phase3 = MockMe.APhase();
-        var layer1 = MockMe.ALayer(bakePhases: [phase1, phase2]);
-        var layer2 = MockMe.ALayer(phase: phase3);
-        var app = GiveMe.AnApplication(layers: [layer1, layer2], runFlags: RunFlags.Bake);
+        var layer1 = MockMe.ALayer(generatePhases: [phase1, phase2]);
+        var layer2 = MockMe.ALayer(startPhase: phase3);
+        var app = GiveMe.AnApplication(layers: [layer1, layer2], runFlags: RunFlags.Generate);
 
         app.Run();
 
@@ -39,14 +39,14 @@ public class RunningAnApplication : ArchitectureSpec
     }
 
     [Test]
-    public void Application_collects_bake_and_start_phases_when_specified()
+    public void Application_collects_generate_and_start_phases_when_specified()
     {
         var phase1 = MockMe.APhase();
         var phase2 = MockMe.APhase();
         var phase3 = MockMe.APhase();
-        var layer1 = MockMe.ALayer(bakePhases: [phase1, phase2]);
-        var layer2 = MockMe.ALayer(phase: phase3);
-        var app = GiveMe.AnApplication(layers: [layer1, layer2], runFlags: RunFlags.Bake | RunFlags.Start);
+        var layer1 = MockMe.ALayer(generatePhases: [phase1, phase2]);
+        var layer2 = MockMe.ALayer(startPhase: phase3);
+        var app = GiveMe.AnApplication(layers: [layer1, layer2], runFlags: RunFlags.Generate | RunFlags.Start);
 
         app.Run();
 
@@ -61,7 +61,7 @@ public class RunningAnApplication : ArchitectureSpec
         var values = new List<string>();
 
         var phase = MockMe.APhase(onInitialize: () => values.Add("phase"));
-        var layer = MockMe.ALayer(phase: phase, onApplyPhase: () => values.Add("layer"));
+        var layer = MockMe.ALayer(startPhase: phase, onApplyPhase: () => values.Add("layer"));
         var app = GiveMe.AnApplication(layer: layer);
 
         app.Run();
@@ -75,8 +75,8 @@ public class RunningAnApplication : ArchitectureSpec
     {
         var phase1 = MockMe.APhase();
         var phase2 = MockMe.APhase();
-        var layer1 = MockMe.ALayer(phase: phase1);
-        var layer2 = MockMe.ALayer(phase: phase2);
+        var layer1 = MockMe.ALayer(startPhase: phase1);
+        var layer2 = MockMe.ALayer(startPhase: phase2);
 
         var app = GiveMe.AnApplication(layers: [layer1, layer2]);
 
@@ -106,11 +106,11 @@ public class RunningAnApplication : ArchitectureSpec
     public void Application_provides_phases_with_a_context()
     {
         var phase = MockMe.APhase();
-        var layer = MockMe.ALayer(phase: phase);
+        var layer = MockMe.ALayer(startPhase: phase);
 
         var context = GiveMe.AnApplicationContext();
         var app = GiveMe.AnApplication(
-            context: context,
+            startContext: context,
             layer: layer
         );
 
@@ -203,7 +203,7 @@ public class RunningAnApplication : ArchitectureSpec
         var phaseA = MockMe.APhase(onInitialize: () => phases.Add("phase a"), isReady: () => phases.Contains("phase b"));
         var phaseB = MockMe.APhase(onInitialize: () => phases.Add("phase b"), isReady: () => phases.Contains("phase c"));
         var phaseC = MockMe.APhase(onInitialize: () => phases.Add("phase c"));
-        var layer = MockMe.ALayer(phases: [phaseA, phaseB, phaseC]);
+        var layer = MockMe.ALayer(startPhases: [phaseA, phaseB, phaseC]);
 
         var app = GiveMe.AnApplication(layer: layer);
 
@@ -221,7 +221,7 @@ public class RunningAnApplication : ArchitectureSpec
 
         var phaseA = MockMe.APhase(onInitialize: () => phases.Add("phase a"), order: PhaseOrder.Late);
         var phaseB = MockMe.APhase(onInitialize: () => phases.Add("phase b"), order: PhaseOrder.Early);
-        var layer = MockMe.ALayer(phases: [phaseA, phaseB]);
+        var layer = MockMe.ALayer(startPhases: [phaseA, phaseB]);
 
         var app = GiveMe.AnApplication(layer: layer);
 
@@ -247,7 +247,7 @@ public class RunningAnApplication : ArchitectureSpec
     {
         var phaseA = MockMe.APhase(order: order);
         var phaseB = MockMe.APhase(order: order);
-        var layer = MockMe.ALayer(phases: [phaseA, phaseB]);
+        var layer = MockMe.ALayer(startPhases: [phaseA, phaseB]);
 
         var app = GiveMe.AnApplication(layer: layer);
         var action = () => app.Run();
@@ -259,7 +259,7 @@ public class RunningAnApplication : ArchitectureSpec
     public void When_a_phase_never_gets_ready_it_gives_error()
     {
         var phase = MockMe.APhase(isReady: () => false);
-        var layer = MockMe.ALayer(phase: phase);
+        var layer = MockMe.ALayer(startPhase: phase);
 
         var app = GiveMe.AnApplication(layer: layer);
         var action = () => app.Run();

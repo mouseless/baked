@@ -1,3 +1,3 @@
 ﻿namespace Baked.Business.DomainAssemblies;
 
-public class TagDescriptions : Dictionary<string, string> { }
+public class TagDescriptions : Dictionary<string, string>;

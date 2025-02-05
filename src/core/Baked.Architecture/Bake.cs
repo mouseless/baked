@@ -14,9 +14,9 @@ public class Bake(IBanner _banner, Func<Application> _newApplication,
         {
             var args = Environment.GetCommandLineArgs();
             var runFlags = RunFlags.Start;
-            if (args.Contains("--bake"))
+            if (args.Contains("--generate"))
             {
-                runFlags |= RunFlags.Bake;
+                runFlags |= RunFlags.Generate;
             }
 
             if (args.Contains("--no-start"))
@@ -41,7 +41,7 @@ public class Bake(IBanner _banner, Func<Application> _newApplication,
 
         if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Nfr")
         {
-            return _newApplication().With(descriptor, RunFlags.Start | RunFlags.Bake);
+            return _newApplication().With(descriptor, RunFlags.Start | RunFlags.Generate);
         }
 
         return _newApplication().With(descriptor, _runFlags);

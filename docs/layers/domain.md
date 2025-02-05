@@ -11,7 +11,7 @@ app.Layers.AddDomain();
 ## Configuration Targets
 
 This layer provides `IDomainTypeCollection` and `DomainModelBuilderOptions`
-configuration targets for building `DomainModel` in `Bake` mode. It also 
+configuration targets for building `DomainModel` in `Generate` mode. It also 
 provides `DomainServiceCollection` configuration target for features to add
 `DomainServiceDescriptor` for domain types which then be used to generate an
 `IServiceAdder` implementation. The generated `IServiceAdder` is then 
@@ -55,7 +55,7 @@ configurator.ConfigureDomainServiceCollection(services =>
 
 ## Phases
 
-This layer introduces following `Bake` phases to the application it is added;
+This layer introduces following `Generate` phases to the application it is added;
 
 - `AddDomainTypes`: This phase adds an `IDomainTypeCollection` instance to the
   application context

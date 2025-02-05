@@ -7,17 +7,17 @@ namespace Baked.Testing;
 
 public abstract class Spec
 {
-    private static ApplicationContext _context = new();
-    private static ApplicationContext _bakeContext = new();
+    private static ApplicationContext _startContext = new();
+    private static ApplicationContext _generateContext = new();
 
-    public static ApplicationContext ContextStatic => _context;
-    public static ApplicationContext BakeContextStatic => _bakeContext;
+    public static ApplicationContext StartContextStatic => _startContext;
+    public static ApplicationContext GenerateContextStatic => _generateContext;
 
-    public ApplicationContext Context => _context;
-    public ApplicationContext BakeContext => _bakeContext;
+    public ApplicationContext StartContext => _startContext;
+    public ApplicationContext GenerateContext => _generateContext;
 
     protected static void Init(Action<ApplicationDescriptor> describe) =>
-        new Bake(new Mock<IBanner>().Object, () => new(_context, _bakeContext: _bakeContext), _runFlags: RunFlags.Bake | RunFlags.Start)
+        new Bake(new Mock<IBanner>().Object, () => new(_startContext, _generateContext: _generateContext), _runFlags: RunFlags.Generate | RunFlags.Start)
             .Application(describe)
             .Run();
 
@@ -36,18 +36,18 @@ public abstract class Spec
         GiveMe = new(this);
         MockMe = new(this);
 
-        if (_context.Has<ITestRun>())
+        if (_startContext.Has<ITestRun>())
         {
-            _context.Get<ITestRun>().SetUp(this);
+            _startContext.Get<ITestRun>().SetUp(this);
         }
     }
 
     [TearDown]
     public virtual void TearDown()
     {
-        if (_context.Has<ITestRun>())
+        if (_startContext.Has<ITestRun>())
         {
-            _context.Get<ITestRun>().TearDown(this);
+            _startContext.Get<ITestRun>().TearDown(this);
         }
     }
 }

@@ -1,3 +1,3 @@
 ﻿namespace Baked.Database;
 
-public class NoTransactionAttribute : Attribute { }
+public class NoTransactionAttribute : Attribute;

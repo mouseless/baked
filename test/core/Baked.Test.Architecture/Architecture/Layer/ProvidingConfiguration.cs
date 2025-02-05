@@ -14,7 +14,7 @@ public class ProvidingConfiguration : ArchitectureSpec
     {
         protected override PhaseContext GetContext(DoA phase) => phase.CreateContext(new LayerXConfigurationA());
 
-        public class DoA : PhaseBase { }
+        public class DoA : PhaseBase;
     }
 
     public record LayerYConfigurationA();
@@ -25,7 +25,7 @@ public class ProvidingConfiguration : ArchitectureSpec
         protected override PhaseContext GetContext(DoA phase) => phase.CreateContext(new LayerYConfigurationA());
         protected override PhaseContext GetContext(DoB phase) => phase.CreateContext(new LayerYConfigurationB());
 
-        public class DoB : PhaseBase { }
+        public class DoB : PhaseBase;
     }
 
     public record LayerZConfigurationA();
@@ -38,7 +38,7 @@ public class ProvidingConfiguration : ArchitectureSpec
         protected override PhaseContext GetContext(DoB phase) => phase.CreateContext(new LayerZConfigurationB());
         protected override PhaseContext GetContext(DoC phase) => phase.CreateContext(new LayerZConfigurationC());
 
-        public class DoC : PhaseBase { }
+        public class DoC : PhaseBase;
     }
 
     [Test]

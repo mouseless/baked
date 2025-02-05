@@ -49,7 +49,7 @@ configurator.ConfigureEndpointRouteBuilder(routes =>
 
 ## Phases
 
-This layer introduces following phases to the application it is added;
+This layer introduces following `Start` phases to the application it is added;
 
 - `CreateBuilder`: This phase is the earliest phase in an application which
   creates and adds a `WebApplicationBuilder` instance to the application context

@@ -7,4 +7,4 @@ public interface IFeature
     public string Id => GetType().Name;
 }
 
-public interface IFeature<T> : IFeature { }
+public interface IFeature<T> : IFeature;

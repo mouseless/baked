@@ -8,14 +8,14 @@ public static class BakeExtensions
 {
     public static Bake ABake(this Stubber giveMe,
         IBanner? banner = default,
-        ApplicationContext? context = default,
-        ApplicationContext? bakeContext = default,
+        ApplicationContext? startContext = default,
+        ApplicationContext? generateContext = default,
         RunFlags runflags = RunFlags.Start
     )
     {
         banner ??= giveMe.Spec.MockMe.ABanner();
-        context ??= new();
+        startContext ??= new();
 
-        return new(banner, () => new(context, bakeContext), runflags);
+        return new(banner, () => new(startContext, generateContext), runflags);
     }
 }

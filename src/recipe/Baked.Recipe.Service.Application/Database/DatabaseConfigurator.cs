@@ -1,3 +1,3 @@
 ﻿namespace Baked.Database;
 
-public class DatabaseConfigurator { }
+public class DatabaseConfigurator;

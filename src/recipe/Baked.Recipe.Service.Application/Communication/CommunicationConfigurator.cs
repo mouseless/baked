@@ -1,3 +1,3 @@
 ﻿namespace Baked.Communication;
 
-public class CommunicationConfigurator { }
+public class CommunicationConfigurator;

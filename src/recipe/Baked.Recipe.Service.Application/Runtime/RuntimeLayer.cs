@@ -46,7 +46,7 @@ public class RuntimeLayer : LayerBase<BuildConfiguration, AddServices, PostBuild
     protected override PhaseContext GetContext(PostBuild phase) =>
         phase.CreateContext(Context.GetServiceProvider());
 
-    protected override IEnumerable<IPhase> GetPhases()
+    protected override IEnumerable<IPhase> GetStartPhases()
     {
         yield return new BuildConfiguration();
         yield return new AddServices(_services);

@@ -36,7 +36,7 @@ public class DomainLayer : LayerBase<AddDomainTypes, GenerateCode, AddServices>
         var domain = Context.GetDomainModel();
 
         return phase.CreateContextBuilder()
-            .Add(_domainServiceCollection)
+            .Add(_domainServiceCollection, domain)
             .OnDispose(() =>
             {
                 generatedAssemblies.Add(nameof(DomainLayer),
@@ -57,7 +57,7 @@ public class DomainLayer : LayerBase<AddDomainTypes, GenerateCode, AddServices>
         return phase.CreateEmptyContext();
     }
 
-    protected override IEnumerable<IPhase> GetBakePhases()
+    protected override IEnumerable<IPhase> GetGeneratePhases()
     {
         yield return new AddDomainTypes(_domainTypes);
         yield return new BuildDomainModel(_builderOptions);

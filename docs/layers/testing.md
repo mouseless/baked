@@ -24,7 +24,7 @@ configurator.ConfigureTestConfiguration(test =>
 
 ## Phases
 
-This layer introduces following phases to the application it is added;
+This layer introduces following `Start` phases to the application it is added;
 
 - `CreateConfigurationManager`: This phase runs as the earliest stage of a test
   run to add an empty `ConfigurationManager` to the application context

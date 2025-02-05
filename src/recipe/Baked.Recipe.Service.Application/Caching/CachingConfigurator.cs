@@ -1,3 +1,3 @@
 ﻿namespace Baked.Caching;
 
-public class CachingConfigurator { }
+public class CachingConfigurator;

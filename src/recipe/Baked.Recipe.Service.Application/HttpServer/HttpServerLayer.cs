@@ -78,7 +78,7 @@ public class HttpServerLayer : LayerBase<AddServices, Build>
             .Build();
     }
 
-    protected override IEnumerable<IPhase> GetPhases()
+    protected override IEnumerable<IPhase> GetStartPhases()
     {
         yield return new CreateBuilder();
         yield return new Build();

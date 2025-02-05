@@ -4,7 +4,7 @@ namespace Baked.Test.Architecture.Layer;
 
 public class CreatingALayer : ArchitectureSpec
 {
-    public class LayerA : LayerBase { }
+    public class LayerA : LayerBase;
 
     [Test]
     public void A_layer_is_created_by_extending_LayerBase()

@@ -29,6 +29,9 @@ public static class DomainExtensions
         configurator.Configure(configuration);
 
     public static void ConfigureDomainServiceCollection(this LayerConfigurator configurator, Action<DomainServiceCollection> configuration) =>
+        configurator.ConfigureDomainServiceCollection((services, _) => configuration(services));
+
+    public static void ConfigureDomainServiceCollection(this LayerConfigurator configurator, Action<DomainServiceCollection, DomainModel> configuration) =>
         configurator.Configure(configuration);
 
     public static void UsingDomainModel(this LayerConfigurator configurator, Action<DomainModel> configuration) =>
@@ -216,7 +219,7 @@ public static class DomainExtensions
 
     public static MethodModel TheMethod<T>(this Stubber giveMe, string name) =>
         giveMe
-            .Spec.BakeContext
+            .Spec.GenerateContext
             .GetDomainModel().Types[typeof(T)]
             .GetMembers().Methods[name];
 
@@ -256,7 +259,7 @@ public static class DomainExtensions
         string? parameter = default
     )
     {
-        var domainModel = giveMe.Spec.BakeContext.GetDomainModel();
+        var domainModel = giveMe.Spec.GenerateContext.GetDomainModel();
         var type = domainModel.Types[typeof(T)];
         if (!type.TryGetMembers(out var members)) { return null; }
 

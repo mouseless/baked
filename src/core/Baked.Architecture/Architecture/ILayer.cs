@@ -3,7 +3,7 @@
 public interface ILayer
 {
     string Id { get; }
-    IEnumerable<IPhase> GetPhases();
-    IEnumerable<IPhase> GetBakePhases();
+    IEnumerable<IPhase> GetStartPhases();
+    IEnumerable<IPhase> GetGeneratePhases();
     PhaseContext GetContext(IPhase phase, ApplicationContext context);
 }
