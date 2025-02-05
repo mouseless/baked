@@ -1,3 +1,3 @@
 ﻿namespace Baked.ExceptionHandling;
 
-public class ExceptionHandlingConfigurator { }
+public class ExceptionHandlingConfigurator;

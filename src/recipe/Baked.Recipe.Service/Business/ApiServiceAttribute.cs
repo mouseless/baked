@@ -1,4 +1,4 @@
 ﻿namespace Baked.Business;
 
 [AttributeUsage(AttributeTargets.Class)]
-public class ApiServiceAttribute : Attribute { }
+public class ApiServiceAttribute : Attribute;

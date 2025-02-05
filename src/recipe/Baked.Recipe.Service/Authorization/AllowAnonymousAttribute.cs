@@ -1,3 +1,3 @@
 ﻿namespace Baked.Authorization;
 
-public class AllowAnonymousAttribute : Attribute { }
+public class AllowAnonymousAttribute : Attribute;

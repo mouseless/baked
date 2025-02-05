@@ -31,7 +31,7 @@ public class ConfiguringLayers : ArchitectureSpec
         configuration.Value.ShouldBe("test");
     }
 
-    public class FeatureConfigurator { }
+    public class FeatureConfigurator;
 
     [Test]
     public void EmptyFeature_does_not_configure_layers()

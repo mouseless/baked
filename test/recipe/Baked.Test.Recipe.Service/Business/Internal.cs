@@ -1,3 +1,3 @@
 ﻿namespace Baked.Test.Business;
 
-internal class Internal { }
+internal class Internal;

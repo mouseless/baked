@@ -1,3 +1,3 @@
 ﻿namespace Baked.Test.Business;
 
-public class CustomList : List<object> { }
+public class CustomList : List<object>;

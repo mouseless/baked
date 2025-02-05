@@ -4,7 +4,7 @@ namespace Baked.Test.Architecture.Feature;
 
 public class CreatingAFeature : ArchitectureSpec
 {
-    public class FeatureAConfigurator { }
+    public class FeatureAConfigurator;
 
     public class FeatureA : IFeature<FeatureAConfigurator>
     {
@@ -35,7 +35,7 @@ public class CreatingAFeature : ArchitectureSpec
         feature.Id.ShouldBe(nameof(FeatureA));
     }
 
-    public class FeatureBConfigurator { }
+    public class FeatureBConfigurator;
 
     public class FeatureB : IFeature<FeatureBConfigurator>
     {

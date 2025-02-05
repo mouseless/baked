@@ -1,3 +1,3 @@
 ﻿namespace Baked.Test.Lifetime;
 
-public class ScopedContext { }
+public class ScopedContext;

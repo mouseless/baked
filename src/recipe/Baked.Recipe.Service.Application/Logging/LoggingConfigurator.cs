@@ -1,3 +1,3 @@
 ﻿namespace Baked.Logging;
 
-public class LoggingConfigurator { }
+public class LoggingConfigurator;

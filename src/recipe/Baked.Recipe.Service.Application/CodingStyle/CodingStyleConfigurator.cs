@@ -1,3 +1,3 @@
 ﻿namespace Baked.CodingStyle;
 
-public class CodingStyleConfigurator { }
+public class CodingStyleConfigurator;

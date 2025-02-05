@@ -4,7 +4,7 @@ namespace Baked.Test.Architecture.Layer;
 
 public class AddingPhases : ArchitectureSpec
 {
-    class NoPhaseLayer : LayerBase { }
+    class NoPhaseLayer : LayerBase;
 
     [Test]
     public void Layer_returns_no_phases_by_default()
@@ -23,8 +23,8 @@ public class AddingPhases : ArchitectureSpec
             yield return new DoB();
         }
 
-        public class DoA : PhaseBase { }
-        public class DoB : PhaseBase { }
+        public class DoA : PhaseBase;
+        public class DoB : PhaseBase;
     }
 
     [Test]
@@ -51,8 +51,8 @@ public class AddingPhases : ArchitectureSpec
             yield return new GeneratePhase();
         }
 
-        public class GeneratePhase : PhaseBase { }
-        public class RuntimePhase : PhaseBase { }
+        public class GeneratePhase : PhaseBase;
+        public class RuntimePhase : PhaseBase;
     }
 
     [Test]
@@ -93,7 +93,7 @@ public class AddingPhases : ArchitectureSpec
         context.ShouldHave("test");
     }
 
-    public class Phase : PhaseBase { }
+    public class Phase : PhaseBase;
 
     [Test]
     public void Base_initialization_does_not_add_any_objects_to_application_context()
@@ -191,8 +191,7 @@ public class AddingPhases : ArchitectureSpec
     }
 
     public class OrderedPhase(PhaseOrder _order)
-        : PhaseBase(_order)
-    { }
+        : PhaseBase(_order);
 
     [TestCase(PhaseOrder.Early)]
     [TestCase(PhaseOrder.Late)]

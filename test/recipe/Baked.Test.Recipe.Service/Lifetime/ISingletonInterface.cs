@@ -1,3 +1,3 @@
 ﻿namespace Baked.Test.Lifetime;
 
-public interface ISingletonInterface { }
+public interface ISingletonInterface;

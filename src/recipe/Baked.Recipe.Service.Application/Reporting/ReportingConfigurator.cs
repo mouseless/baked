@@ -1,3 +1,3 @@
 namespace Baked.Reporting;
 
-public class ReportingConfigurator { }
+public class ReportingConfigurator;

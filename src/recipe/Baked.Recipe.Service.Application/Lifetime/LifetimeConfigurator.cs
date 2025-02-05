@@ -1,3 +1,3 @@
 ﻿namespace Baked.Lifetime;
 
-public class LifetimeConfigurator { }
+public class LifetimeConfigurator;

@@ -3,5 +3,4 @@
 namespace Baked.Test.ExceptionHandling;
 
 public class TestServiceHandledException(string message)
-    : HandledException(message)
-{ }
+    : HandledException(message);

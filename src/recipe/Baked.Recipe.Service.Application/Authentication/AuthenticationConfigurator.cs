@@ -1,3 +1,3 @@
 ﻿namespace Baked.Authentication;
 
-public class AuthenticationConfigurator { }
+public class AuthenticationConfigurator;

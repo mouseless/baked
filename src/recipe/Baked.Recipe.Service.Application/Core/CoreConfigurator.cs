@@ -1,3 +1,3 @@
 ﻿namespace Baked.Core;
 
-public class CoreConfigurator { }
+public class CoreConfigurator;

@@ -24,6 +24,7 @@ projects.
   - `FromMilliseconds`
   - `FromMicroseconds`
 - [ ] Use Keyed Services in Middlewares.
+- [ ] Use semicolon instead of curly braces for empty class declarations
 ```
 
 ### Upgrade .NET and C# versions

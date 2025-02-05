@@ -1,3 +1,3 @@
 ﻿namespace Baked.MockOverrider;
 
-public class MockOverriderConfigurator { }
+public class MockOverriderConfigurator;
