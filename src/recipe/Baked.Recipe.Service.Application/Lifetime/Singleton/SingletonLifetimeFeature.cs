@@ -11,12 +11,15 @@ public class SingletonLifetimeFeature : IFeature<LifetimeConfigurator>
             builder.Index.Type.Add<SingletonAttribute>();
         });
 
-        configurator.ConfigureDomainServiceCollection((services, domain) =>
+        configurator.ConfigureDomainServiceCollection(services =>
         {
-            foreach (var singleton in domain.Types.Having<SingletonAttribute>())
+            configurator.UsingDomainModel(domain =>
             {
-                services.AddSingleton(singleton, forward: true);
-            }
+                foreach (var singleton in domain.Types.Having<SingletonAttribute>())
+                {
+                    services.AddSingleton(singleton, forward: true);
+                }
+            });
         });
     }
 }

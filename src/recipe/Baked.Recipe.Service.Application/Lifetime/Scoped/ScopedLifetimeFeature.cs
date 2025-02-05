@@ -11,12 +11,15 @@ public class ScopedLifetimeFeature : IFeature<LifetimeConfigurator>
             builder.Index.Type.Add<ScopedAttribute>();
         });
 
-        configurator.ConfigureDomainServiceCollection((services, domain) =>
+        configurator.ConfigureDomainServiceCollection(services =>
         {
-            foreach (var scoped in domain.Types.Having<ScopedAttribute>())
+            configurator.UsingDomainModel(domain =>
             {
-                services.AddScoped(scoped, useFactory: true);
-            }
+                foreach (var scoped in domain.Types.Having<ScopedAttribute>())
+                {
+                    services.AddScoped(scoped, useFactory: true);
+                }
+            });
         });
     }
 }
