@@ -15,7 +15,6 @@ This feature adds `AspNetCore` cors services and middleware.
 
 ```csharp
 c => c.AspNetCore([...])
-}
 ```
 
 ## Disabled

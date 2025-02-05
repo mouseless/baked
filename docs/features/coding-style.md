@@ -103,7 +103,7 @@ c => c.RichEntity()
 
 Configures transient services as api services. This coding style allows you to
 have a public initializer (`With`) with parameters which will render as query
-parameters or single `id` parameter wich will render from route.
+parameters or single `id` parameter which will render from route.
 
 Rich transients with `id` types can be method parameters and located using
 their initializers.

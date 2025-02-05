@@ -8,7 +8,7 @@ app.Layers.AddCodeGeneration();
 
 ## Configuration Targets
 
-Code generation layer provides `IGeneratedAssemblyCollection`, 
+Code generation layer provides `IGeneratedAssemblyCollection`,
 `IGeneratedFileCollection` and `GeneratedContext` configuration targets.
 
 ### `IGeneratedAssemblyCollection`
@@ -33,29 +33,29 @@ configurator.ConfigureGeneratedFileCollection(files =>
 });
 ```
 
-### `GeneratedContext`
-
-This target is provided in `BuildConfiguration` phase and contains generated
-assemblies and files data. To configure it in a feature;
-
-```csharp
-configurator.ConfigureGeneratedFileCollection(files =>
-{
-    ...
-});
-```
-
 ## Phases
 
 This layer introduces following `Generate` phases to the application it is added;
 
 - `GenerateCode`: This phase creates a `IGeneratedAssemblyCollection` instance
   and places it in the application context
-- `Compile`: This phase compiles generated code during above phase, saves 
-  generated assemblies and files to entry assembly location with 
+- `Compile`: This phase compiles generated code during above phase, saves
+  generated assemblies and files to entry assembly location with
   `ASPNETCORE_ENVIRONMENT` subfolder
 
 > [!TIP]
 >
-> To access to a generated assembly from a feature use
-> `configurator.Context.GetGeneratedContext().Assemblies["MyAssembly"]` extension method.
+> To access to a generated assembly or file from a feature use below extension method;
+>
+> ```csharp
+> configurator.UsingGeneratedContext(generatedContext =>
+> {
+>     // generated assembly
+>     var assembly = generatedContext.Assemblies[...];
+>
+>     // generated file helpers
+>     var path = generatedContext.Files[...];
+>     var contentString = generatedContext.ReadFile(...);
+>     var data = generatedContext.ReadFileAsJson<...>();
+> });
+> ```

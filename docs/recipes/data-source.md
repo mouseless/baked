@@ -65,7 +65,7 @@ Bake.New
 
 ```mermaid
 flowchart LR;
-    
+
     subgraph Generate
       AD(AddDomainTypes)
       BD(BuildDomainModel)
@@ -74,7 +74,7 @@ flowchart LR;
 
       AD -->|IDomainTypeCollection| BD
       BD -->|DomainModel| GC
-      GC -->|IGeneratedAssemblyCollection<br/>IGeneratedFileCollection<br/>DomainServiceCollection| C
+      GC -->|IGeneratedAssemblyCollection<br/>IGeneratedFileCollection| C
     end
 
     subgraph Start
