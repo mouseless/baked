@@ -8,7 +8,7 @@ app.Features.AddExceptionHandling(...);
 
 ## Problem Details
 
-This feature implementation adds `NET` `ProblemDetails` services with a custom
+This feature implementation adds .NET `ProblemDetails` services with a custom
 `IExceptionHandler` implementation that loops through `Baked.IExceptionHandler` 
 services and uses first matching handler for current exception. It also adds a 
 custom middleware that logs exceptions.
@@ -21,16 +21,25 @@ c => c.ProblemDetails(typeUrlFormat: "https://my-service.com/errors/{0}")
 >
 > More to find at [RFC 7807][rfc] and [Handle errors in ASP.NET Core][dotnet].
 
-By default this feature registers following oppinionated `Baked.IExceptionHandler` 
-implementations with `UnhandledExceptionHandler` fallback;
+By default this feature handles following exceptions;
 
-- `AuthenticationExceptionHandler` for `AuthenticationException`
-- `UnauthorizedAccessExceptionHandler` for `UnauthorizedAccessException`
-- `HandledExceptionHandler` for `HandledException` types
+- `AuthenticationException` which returns 401 status code
+- `UnauthorizedAccessExceptionHandler` which returns 403 status code
+- `HandledException` which returns 400 status code
 
-All exceptions which are not matched by any registered handlers will then be 
-processed by the `UnhandledExceptionHandler` fallback, which returns a `500`
-result with exception type as title and a simple detail message.
+`HandledException` is an opinionated abstraction which helps providing
+necessary data for a handled exception result. Below is a sample for creating 
+a user defined exception;
+
+```csharp
+public class CustomHandledException(string message)
+    : HandledException(message)
+{ }
+```
+
+All remaining exceptions will be handled by the `UnhandledExceptionHandler` 
+fallback, which returns a `500` result with exception type as title and a 
+simple detail message.
 
 ```json
 {
@@ -39,34 +48,6 @@ result with exception type as title and a simple detail message.
   "status": 500,
   "detail": "An unexpected error has occured. Please contact the administrator."
 }
-```
-
-### HandledExceptionHandler
-
-`HandledExceptionHandler` is desinged as a generic exception handler 
-implementation for user defined exceptions which are expected to be
-derived from `HandledException`. 
-
-```csharp
-public class HandledExceptionHandler : IExceptionHandler
-{
-    public bool CanHandle(Exception ex) => ex is HandledException;
-    public ExceptionInfo Handle(Exception ex) => new(ex, (int)((HandledException)ex).StatusCode, ex.Message, ((HandledException)ex).ExtraData);
-}
-```
-
-#### HandledException
-
-`HandledException` is an opinionated abstraction which helps to provide 
-necessary data for an handled exception result.
-
-```csharp
-//
-// User defined exception
-//
-public class CustomHandledException(string message)
-    : HandledException(message)
-{ }
 ```
 
 ### Adding Custom Exception Handlers
