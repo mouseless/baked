@@ -33,8 +33,7 @@ a user defined exception;
 
 ```csharp
 public class CustomHandledException(string message)
-    : HandledException(message)
-{ }
+    : HandledException(message);
 ```
 
 All remaining exceptions will be handled by the `UnhandledExceptionHandler` 

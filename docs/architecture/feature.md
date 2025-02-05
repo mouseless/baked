@@ -145,9 +145,10 @@ To access and use objects stored in application context in a feature,
 action with context phase artifact.
 
 ```csharp
-configurator.Configure<TTarget>(target =>
+configurator.ConfigureApiModel(api =>
 {
-    configurator.Use<TContextTarget>(contextTarget =>{
+    configurator.UseDomainModel(domain =>
+    {
         ...
     });
 });
@@ -155,7 +156,7 @@ configurator.Configure<TTarget>(target =>
 
 > [!WARNING]
 >
-> Unlike configuration targets, phase artifacts may or may not exists in the
+> Unlike configuration targets, phase artifacts may or may not exist in the
 > application context or not configured properly at the moment
 > `LayerConfigurator` applies configurations. Phase execution orders and
 > configurations should be taken into consideration when using phase artifacts.
