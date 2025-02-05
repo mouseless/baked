@@ -25,6 +25,14 @@ Adds MySQL database setup which gets connection parameters from `app.settings`.
 c => c.MySql()
 ```
 
+## Oracle
+
+Adds Oracle database setup which gets connection parameters from `app.settings`.
+
+```csharp
+c => c.Oracle()
+```
+
 ## PostgreSQL
 
 Adds PostgreSQL database setup which gets connection parameters from

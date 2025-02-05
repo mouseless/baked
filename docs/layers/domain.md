@@ -11,10 +11,10 @@ app.Layers.AddDomain();
 ## Configuration Targets
 
 This layer provides `IDomainTypeCollection` and `DomainModelBuilderOptions`
-configuration targets for building `DomainModel` in `Generate` mode. It also 
+configuration targets for building `DomainModel` in `Generate` mode. It also
 provides `DomainServiceCollection` configuration target for features to add
 `DomainServiceDescriptor` for domain types which then be used to generate an
-`IServiceAdder` implementation. The generated `IServiceAdder` is then 
+`IServiceAdder` implementation. The generated `IServiceAdder` is then
 used in `Start` mode for auto registering domain types to service collection.
 
 ### `IDomainTypeCollection`
@@ -42,13 +42,14 @@ configurator.ConfigureDomainBuilderOptions(options =>
 
 ### `DomainServiceCollection`
 
-This target is provided in `GenerateCode` phase and it is used to generated 
-`IServiceAdder` to add domain services during `AddService` phase in `Start` 
+This target is provided in `GenerateCode` phase and it is used to generated
+`IServiceAdder` to add domain services during `AddService` phase in `Start`
 mode. To configure it in a feature;
 
 ```csharp
-configurator.ConfigureDomainServiceCollection(services =>
+configurator.ConfigureDomainServiceCollection((services, domain) =>
 {
+    // use domain metadata to register services at generate time
     ...
 });
 ```
@@ -61,3 +62,15 @@ This layer introduces following `Generate` phases to the application it is added
   application context
 - `BuildDomainModel`: This phase uses domain types to build and add a
   `DomainModel` instance to the application context
+
+> [!TIP]
+>
+> To access the domain model from a feature use below extension method;
+>
+> ```csharp
+> configurator.UsingDomainModel(domain =>
+> {
+>     // use domain metadata to configure any configuration target
+>     ...
+> });
+> ```

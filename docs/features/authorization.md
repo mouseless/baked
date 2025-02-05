@@ -43,7 +43,7 @@ This feature also registers a custom `IAuthorizationMiddlewareResultHandler`
 and this handler directly throws;
 
 - `AuthenticationException` when challenged
-- `UnauthorizedAccessExcetpin` when forbidden
+- `UnauthorizedAccessException` when forbidden
 
 instead of using `IAuthenticationHandler` fallback methods.
 

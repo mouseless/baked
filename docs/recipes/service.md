@@ -76,8 +76,8 @@ Bake.New
 
 ```mermaid
 flowchart LR;
-    
-    subgraph Bake
+
+    subgraph Generate
       AD(AddDomainTypes)
       BD(BuildDomainModel)
       GC(GenerateCode)
@@ -103,5 +103,5 @@ flowchart LR;
       PB --> R
     end
 
-    Bake --> Start
+    Generate --> Start
 ```
