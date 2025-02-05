@@ -34,6 +34,9 @@ public static class DomainExtensions
     public static void ConfigureDomainServiceCollection(this LayerConfigurator configurator, Action<DomainServiceCollection, DomainModel> configuration) =>
         configurator.Configure(configuration);
 
+    public static void UsingDomainModel(this LayerConfigurator configurator, Action<DomainModel> configuration) =>
+       configurator.Use(configuration);
+
     public static void Add(this List<DomainServiceDescriptor> serviceModels, TypeModel type, ServiceLifetime serviceLifetime, IEnumerable<TypeModelReference> interfaces,
         bool useFactory = true,
         bool forward = false

@@ -42,11 +42,13 @@ public class SingleByUniqueCodingStyleFeature : IFeature<CodingStyleConfigurator
 
         configurator.ConfigureApiModelConventions(conventions =>
         {
-            var domain = configurator.Context.GetDomainModel();
-
             conventions.Add(new UseRouteInSingleByUniqueConvention());
             conventions.Add(new MarkActionAsSingleByUniqueConvention());
-            conventions.Add(new TargetEntityFromRouteByUniquePropertiesConvention(domain), order: 30);
+
+            configurator.UsingDomainModel(domain =>
+            {
+                conventions.Add(new TargetEntityFromRouteByUniquePropertiesConvention(domain), order: 30);
+            });
         });
 
         configurator.ConfigureServiceCollection(services =>

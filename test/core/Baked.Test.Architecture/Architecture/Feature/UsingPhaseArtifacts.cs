@@ -12,7 +12,7 @@ public class UsingPhaseArtifacts : ArchitectureSpec
         {
             configurator.Configure((string target) =>
             {
-                Artifact = configurator.Context.Get<int>();
+                configurator.Use<int>(@int => Artifact = @int);
             });
         }
     }

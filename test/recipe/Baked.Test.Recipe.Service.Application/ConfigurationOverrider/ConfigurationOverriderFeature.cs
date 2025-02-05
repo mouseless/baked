@@ -28,8 +28,6 @@ public class ConfigurationOverriderFeature : IFeature
 
         configurator.ConfigureApiModel(api =>
         {
-            var domainModel = configurator.Context.GetDomainModel();
-
             api.ConfigureAction<AuthenticationSamples>(nameof(AuthenticationSamples.FormPostAuthenticate), useForm: true);
             api.ConfigureAction<DocumentationSamples>(nameof(DocumentationSamples.Route), parameter: p =>
             {
@@ -37,7 +35,11 @@ public class ConfigurationOverriderFeature : IFeature
                 p["route"].RoutePosition = 2;
             });
             api.ConfigureAction<ExceptionSamples>(nameof(ExceptionSamples.Throw), parameter: p => p["handled"].From = ParameterModelFrom.Query);
-            api.GetController<Entities>().AddSingleById<Entity>(domainModel);
+
+            configurator.UsingDomainModel(domain =>
+            {
+                api.GetController<Entities>().AddSingleById<Entity>(domain);
+            });
         });
 
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>

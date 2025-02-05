@@ -43,7 +43,13 @@ public class LayerConfigurator
         _targets = [.. targets];
     }
 
-    public ApplicationContext Context => _context;
+    public void Use<T>(Action<T> configuration)
+    {
+        if (_context.Has<T>())
+        {
+            configuration(_context.Get<T>());
+        }
+    }
 
     public void Configure<TTarget>(Action<TTarget> configuration)
     {
