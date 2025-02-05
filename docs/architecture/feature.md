@@ -140,9 +140,18 @@ provides it with its interface not its concrete type.
 
 ### Using Phase Artifacts
 
-To access and use objects stored in application context in a feature, a
-reference to the context is provided through `LayerConfigurator`'s `Context`
-property.
+To access and use objects stored in application context in a feature,
+`LayerConfigurator` provides `Use<T>` helper which will invoke given
+action with context phase artifact.
+
+```csharp
+configurator.Configure<TTarget>(target =>
+{
+    configurator.Use<TContextTarget>(contextTarget =>{
+        ...
+    });
+});
+```
 
 > [!WARNING]
 >
