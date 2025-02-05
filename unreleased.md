@@ -78,6 +78,8 @@ projects.
 - `ProblemDetails` feature now no longer searches domain assemblies and
   `IExceptionHandler` implementations are required to be added in 
   `ConfigurationOverrider` feature
+- `LayerConfigurator` now provides `Use<T>` helper to use phase artifacts and
+  no longer provides access to application context
 
 ## Library Upgrades
 
