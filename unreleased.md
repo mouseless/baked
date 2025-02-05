@@ -65,8 +65,8 @@ projects.
   json files in `Bake` mode
 - `AutoMapOrm` feature now generates `IServiceAdder` implementations from
   `DomainModel` in `Bake` mode
-- `GiveMe.PropertyOf<T>` helper is renamed to `ThePropertyOf<T>`  
-- `GiveMe.MethodOf<T>` helper is renamed to `TheMethodOf<T>`  
+- `GiveMe.PropertyOf<T>` helper is renamed to `ThePropertyOf<T>`
+- `GiveMe.MethodOf<T>` helper is renamed to `TheMethodOf<T>`
 - Following features now use `DomainServicesModel` target to register services
   in `Bake` mode
   - `Transient`
