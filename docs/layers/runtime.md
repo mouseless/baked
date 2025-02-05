@@ -61,7 +61,7 @@ configurator.ConfigureServiceProvider(sp =>
 
 ## Phases
 
-This layer introduces following phases to the application it is added;
+This layer introduces following `Start` phases to the application it is added;
 
 - `BuildConfiguration`: This phase runs in the earliest stage to allow the usage
   of `Settings` API from features
