@@ -1,3 +1,6 @@
+@use "mixins";
+@use "variables";
+
 @import url("./primary.css") (prefers-color-scheme: dark);
 @import url("./secondary.css") (prefers-color-scheme: light);
 
@@ -7,25 +10,25 @@ html, body {
 }
 
 body {
-  font-size: calc($font-size * 1.2);
-  min-width: calc($width-page-min + $space-md);
+  font-size: calc(variables.$font-size * 1.2);
+  min-width: calc(variables.$width-page-min + variables.$space-md);
 }
 
 img.baked {
   &:is(.logo),
   &:is(.logo:is(.full)) {
-    content: $url-logo-full;
+    content: variables.$url-logo-full;
 
     &:is(.mono) {
-      content: $url-logo-full-mono;
+      content: variables.$url-logo-full-mono;
     }
   }
 
   &:is(.logo:is(.mark)) {
-    content: $url-logo-mark;
+    content: variables.$url-logo-mark;
 
     &:is(.mono) {
-      content: $url-logo-mark-mono;
+      content: variables.$url-logo-mark-mono;
     }
   }
 }
@@ -34,16 +37,16 @@ img.baked {
   nav {
     h4 {
       margin-top: 0;
-      margin-bottom: $space-xs;
+      margin-bottom: variables.$space-xs;
       text-transform: uppercase;
 
       a {
-        color: $color-fg-second;
+        color: variables.$color-fg-second;
         text-decoration: none;
         display: inline-block;
 
         &:hover {
-          color: $color-fg-second;
+          color: variables.$color-fg-second;
         }
       }
     }
@@ -57,24 +60,24 @@ img.baked {
 
   p {
     &:has(.diagram) {
-      @include box;
-      border-color: $color-bg-second;
+      @include mixins.box;
+      border-color: variables.$color-bg-second;
       text-align: center;
-      padding: 30px $space-sm 18px $space-sm;
+      padding: 30px variables.$space-sm 18px variables.$space-sm;
     }
   }
 
   code {
-    background-color: $color-bg-code;
-    border-radius: $space-xs;
-    padding: $space-xs $space-xs;
-    color: $color-fg-code;
+    background-color: variables.$color-bg-code;
+    border-radius: variables.$space-xs;
+    padding: variables.$space-xs variables.$space-xs;
+    color: variables.$color-fg-code;
     overflow-wrap: anywhere;
   }
 
   pre {
     overflow: auto;
-    padding: $space-md;
+    padding: variables.$space-md;
 
     code {
       padding: 0;
@@ -86,29 +89,29 @@ img.baked {
   }
 
   ul, ol {
-    padding-inline-start: $space-sm;
+    padding-inline-start: variables.$space-sm;
     list-style-position: inside;
 
     li {
-      margin-bottom: $space-xs;
+      margin-bottom: variables.$space-xs;
 
       ul, ol {
-        margin-top: $space-xs;
+        margin-top: variables.$space-xs;
       }
     }
   }
 
   hr {
-    @include border();
+    @include mixins.border();
 
     margin: 2em 0;
   }
 }
 
-@media (max-width: $width-page-xl) {
+@media (max-width: variables.$width-page-xl) {
   body {
-    font-size: $font-size;
-    line-height: $line-height;
+    font-size: variables.$font-size;
+    line-height: variables.$line-height;
   }
 
   .content {
@@ -118,10 +121,10 @@ img.baked {
   }
 }
 
-@media (max-width: $width-page-l) {
+@media (max-width: variables.$width-page-l) {
   .content {
     h2, h3 {
-      scroll-margin-top: $space-md;
+      scroll-margin-top: variables.$space-md;
     }
   }
 
@@ -129,10 +132,10 @@ img.baked {
     h4 {
       a {
         cursor: pointer;
-        padding: $space-sm;
+        padding: variables.$space-sm;
 
         &:hover {
-          color: $color-brand;
+          color: variables.$color-brand;
         }
       }
     }
