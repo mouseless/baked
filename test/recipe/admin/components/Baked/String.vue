@@ -1,9 +1,9 @@
 <template>
-  {{ data }}
+  <div>{{ data }}</div>
 </template>
 <script setup>
 const { data } = defineProps({
-  schema: { required: true },
-  data: { required: true }
+  schema: { type: null, required: true },
+  data: { type: null, required: true }
 });
 </script>

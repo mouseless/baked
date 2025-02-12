@@ -2,6 +2,7 @@
   <Report
     v-if="data"
     :schema="{
+      title: 'Rich Transient w/ Data',
       props: [
         {
           name: 'id',
@@ -25,11 +26,17 @@
   />
 </template>
 <script setup>
+const { public: { apiBaseURL: baseURL } } = useRuntimeConfig();
+
 const data = ref();
 
-onMounted(async () => {
- data.value = await $fetch("http://localhost:5151/rich-transient-with-datas/test",
-   { headers: { "Authorization": "token-jane"}
- });
-})
+onMounted(async() => {
+  data.value = await $fetch(
+    "rich-transient-with-datas/test",
+    {
+      baseURL,
+      headers: { Authorization: "token-jane" }
+    }
+  );
+});
 </script>
