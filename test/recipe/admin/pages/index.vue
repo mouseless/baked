@@ -1,38 +1,21 @@
 <template>
-  <Report
+  <component
+    :is="schema.$type"
     v-if="data"
-    :schema="{
-      title: 'Rich Transient w/ Data',
-      props: [
-        {
-          name: 'id',
-          component: {
-            $type: 'Data',
-            title: 'ID',
-            component: {
-              $type: 'String'
-            }
-          }
-        },
-        {
-          name: 'time',
-          component: {
-            $type: 'String'
-          }
-        }
-      ]
-    }"
+    :schema="schema"
     :data="data"
   />
 </template>
 <script setup>
+import schema from "~/pages/rich-transient-with-datas.json";
+
 const { public: { apiBaseURL: baseURL } } = useRuntimeConfig();
 
 const data = ref();
 
 onMounted(async() => {
   data.value = await $fetch(
-    "rich-transient-with-datas/test",
+    `${schema.path}/test`,
     {
       baseURL,
       headers: { Authorization: "token-jane" }
