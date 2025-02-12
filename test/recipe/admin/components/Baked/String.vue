@@ -3,13 +3,7 @@
 </template>
 <script setup>
 const { data } = defineProps({
-  schema: {
-    type: Object,
-    required: true
-  },
-  data: {
-    type: Object,
-    required: true
-  }
+  schema: { required: true },
+  data: { required: true }
 });
 </script>

@@ -1,21 +1,22 @@
 <template>
   <Report
+    v-if="data"
     :schema="{
       props: [
         {
           name: 'id',
-          component: 'Data',
-          schema: {
+          component: {
+            $type: 'Data',
             title: 'ID',
-            component: 'String'
+            component: {
+              $type: 'String'
+            }
           }
         },
         {
           name: 'time',
-          component: 'Data',
-          schema: {
-            title: 'Time',
-            component: 'String'
+          component: {
+            $type: 'String'
           }
         }
       ]
@@ -24,7 +25,7 @@
   />
 </template>
 <script setup>
-const data = ref({});
+const data = ref();
 
 onMounted(async () => {
  data.value = await $fetch("http://localhost:5151/rich-transient-with-datas/test",

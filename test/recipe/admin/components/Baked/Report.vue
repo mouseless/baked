@@ -1,21 +1,15 @@
 <template>
   <component
     v-for="prop in props"
-    :is="prop.component"
-    :schema="prop.schema"
+    :is="prop.component.$type"
+    :schema="prop.component"
     :data="data[prop.name]"
   />
 </template>
 <script setup>
 const { schema, data } = defineProps({
-  schema: {
-    type: Object,
-    required: true
-  },
-  data: {
-    type: Object,
-    required: true
-  }
+  schema: { required: true },
+  data: { required: true }
 });
 
 const { props } = schema;

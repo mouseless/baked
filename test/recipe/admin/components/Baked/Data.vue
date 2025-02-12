@@ -3,8 +3,8 @@
     <span>{{ schema.title }}</span>
     <span>
       <component
-        :is="schema.component"
-        :schema="schema"
+        :is="schema.component.$type"
+        :schema="schema.component"
         :data="data"
       />
     </span>
@@ -12,13 +12,7 @@
 </template>
 <script setup>
 const { schema, data } = defineProps({
-  schema: {
-    type: Object,
-    required: true
-  },
-  data: {
-    type: Object,
-    required: true
-  }
+  schema: { required: true },
+  data: { required: true }
 });
 </script>
