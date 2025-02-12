@@ -1,0 +1,9 @@
+.nuxt/
+.output/
+.temp/
+content/
+dist/
+public/
+server/
+**/package-lock.json
+**/tsconfig.json

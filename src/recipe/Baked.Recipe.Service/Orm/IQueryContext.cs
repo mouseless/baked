@@ -8,7 +8,7 @@ public interface IQueryContext<TEntity>
     IQueryable<TEntity> Query(bool fetchParents = true);
 
     public List<TEntity> ByIds(IEnumerable<Guid> ids) =>
-        ids.Select(id => SingleById(id)).ToList();
+        [.. ids.Select(id => SingleById(id))];
 
     public bool AnyBy(
         Expression<Func<TEntity, bool>>? where = null,
