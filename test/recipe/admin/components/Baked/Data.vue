@@ -1,7 +1,7 @@
 <template>
   <div class="flex gap-2">
     <div class="max-w-10">
-      <strong>{{ schema.title }}</strong>
+      <strong>{{ schema.title }}:</strong>
     </div>
     <component
       :is="schema.component.$type"
