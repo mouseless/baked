@@ -1,0 +1,36 @@
+{
+  "$type": "Dashboard",
+  "title": "Dashboard",
+  "menus":[
+    {
+      "name": "1",
+      "component": {
+        "$type": "Navigation",
+        "title": "Rich Transient w/ Datas 1"
+      },
+      "data":{
+        "path": "/rich-transient-with-datas/test1"
+      }
+    },
+    {
+      "name": "2",
+      "component": {
+        "$type": "Navigation",
+        "title": "Rich Transient w/ Datas 2"
+      },
+      "data":{
+        "path": "/rich-transient-with-datas/test2"
+      }
+    },
+    {
+      "name": "3",
+      "component": {
+        "$type": "Navigation",
+        "title": "Rich Transient w/ Datas 3"
+      },
+      "data":{
+        "path": "/rich-transient-with-datas/test3"
+      }
+    }
+  ]
+}

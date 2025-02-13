@@ -18,7 +18,8 @@ const schema = ref();
 provide("params", params);
 
 onMounted(async() => {
-  schema.value = await import(`../../.baked/${params[0]}.json`)
+  const schemaType = params[0] ?? "index";
+  schema.value = await import(`../../.baked/${schemaType}.json`)
     .catch(_ => {
       throw createError({
         statusCode: 404,
