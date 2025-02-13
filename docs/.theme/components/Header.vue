@@ -61,9 +61,9 @@
 import { useRoute, useRuntimeConfig, ref } from "#imports";
 import { useSectionStore } from "~/store/sectionStore";
 
-const store = useSectionStore();
 const runtimeConfig = useRuntimeConfig();
 const route = useRoute();
+const store = useSectionStore();
 
 const menuShown = ref(false);
 const root = computed(() => `/${route.path.split("/")[1]}`);
