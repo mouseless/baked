@@ -7,15 +7,17 @@
   />
 </template>
 <script setup>
-import schema from "~/pages/rich-transient-with-datas.json";
-
 const { public: { apiBaseURL: baseURL } } = useRuntimeConfig();
 
+const route = useRoute();
+const schema = ref();
 const data = ref();
 
 onMounted(async() => {
+  schema.value = await import(`../../pages/${route.params.schema}.json`);
+
   data.value = await $fetch(
-    `${schema.path}/test`,
+    `${schema.value.path}/${route.params.id}`,
     {
       baseURL,
       headers: { Authorization: "token-jane" }
