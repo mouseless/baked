@@ -16,6 +16,17 @@
   </div>
   <Footer />
 </template>
+<script setup lang="ts">
+import { withLeadingSlash } from "ufo";
+import { useSectionStore } from "~/store/sectionStore";
+
+const {sections: order} = await queryCollection("menuOrder").first();
+const menus = await queryCollection("menus").all();
+
+applyOrder(menus, i => withLeadingSlash(order[i]));
+
+useSectionStore().setSections(menus);
+</script>
 <style lang="scss" scoped>
 .content, .full {
   @include width;

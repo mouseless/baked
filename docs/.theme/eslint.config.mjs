@@ -54,9 +54,8 @@ export default withNuxt([
       "prefer-const": "error",
       quotes: ["error", "double"],
       semi: ["error", "always"],
-      "@typescript-eslint/no-explicit-any": "off",
-      "@typescript-eslint/no-dynamic-delete": "off",
       "space-before-function-paren": ["error", "never"],
+      "@typescript-eslint/no-dynamic-delete": "off",
       "vue/multi-word-component-names": "off",
       "vue/html-quotes": ["error", "double"],
       "vue/no-multiple-template-root": "off"

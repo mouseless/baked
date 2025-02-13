@@ -44,17 +44,16 @@
     </ul>
   </nav>
 </template>
-<script lang="ts" setup>
-import type { Toc } from "@nuxt/content/dist/runtime/types";
+<script setup>
 import { onMounted, onBeforeUnmount } from "#imports";
 
-defineProps<{
-  value: Toc
-}>();
+defineProps({
+  value: {}
+});
 
-let observer: IntersectionObserver;
-const activePageId = ref<string>("");
-const shown = ref<boolean>(false);
+let observer;
+const activePageId = ref("");
+const shown = ref(false);
 
 function toggle() { shown.value = !shown.value; }
 function close() { shown.value = false; }
@@ -62,13 +61,13 @@ function close() { shown.value = false; }
 onMounted(() => {
   observer = new IntersectionObserver(onIntersection, { root: document, rootMargin: "-75px" });
 
-  const pageCounts: { [id:string]: number } = { };
-  const pageIndices: { [id:string]: number } = { };
+  const pageCounts = { };
+  const pageIndices = { };
 
   document
     .querySelectorAll(".toc-root > h2[id], .toc-root > h3[id]")
     .forEach((page, index) => {
-      const id = page.getAttribute("id") as string;
+      const id = page.getAttribute("id");
       pageIndices[id] = index;
     });
 
@@ -76,7 +75,7 @@ onMounted(() => {
     .querySelectorAll(".toc-root > *")
     .forEach(page => observer.observe(page));
 
-  function onIntersection(entries: IntersectionObserverEntry[]) {
+  function onIntersection(entries) {
     const entriesWithId = [];
     for(const entry of entries) {
       const id = findPageId(entry.target);
@@ -106,7 +105,7 @@ onMounted(() => {
     activePageId.value = activePages[0] || "";
   }
 
-  function findPageId(element: Element): (string | null) {
+  function findPageId(element) {
     while(pageIndices[element.getAttribute("id") || ""] === undefined) {
       if(!element.previousElementSibling) {
         return null;

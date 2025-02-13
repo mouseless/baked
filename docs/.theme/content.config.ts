@@ -12,15 +12,19 @@ export default defineContentConfig({
     }),
     sections: defineCollection({
       type: "data",
-      source: {
-        include: "**/**.md"
-      },
+      source: "**/*.md",
       schema: z.object({
         path: z.string(),
         title: z.string(),
         pages: z.array(z.string()),
         position: z.number(),
-        sort: z.string()
+        sort: z.object(
+          {
+            by: z.string(),
+            order: z.string(),
+            version: z.boolean()
+          }
+        )
       })
     }),
     menus: defineCollection({

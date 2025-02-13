@@ -57,20 +57,18 @@
     </header>
   </div>
 </template>
-<script lang="ts" setup>
+<script setup>
 import { useRoute, useRuntimeConfig, ref } from "#imports";
-import { withLeadingSlash, withTrailingSlash } from "ufo";
+import { useSectionStore } from "~/store/sectionStore";
 
+const store = useSectionStore();
 const runtimeConfig = useRuntimeConfig();
 const route = useRoute();
 
-const menuShown = ref<boolean>(false);
 const root = computed(() => `/${route.path.split("/")[1]}`);
+const menuShown = ref(false);
 
-const {sections: order} = await queryCollection("menuOrder").first();
-const menus = await queryCollection("menus").all();
-
-applyOrder(menus, (i:number) => withLeadingSlash(order[i]));
+const menus = { ...store.sections };
 
 function toggle() { menuShown.value = !menuShown.value; }
 function close() { menuShown.value = false; }

@@ -12,12 +12,36 @@
   <ContentRenderer v-else :value="notFound" />
 </template>
 <script setup>
-import { useRoute } from "#imports";
+import { usePageStore } from "~/store/pageStore";
+import { withoutTrailingSlash, withLeadingSlash } from "ufo";
 
 const route = useRoute();
+const root = computed(() => withLeadingSlash(route.path.split("/")[1]));
 
 const doc = await queryCollection("content").path(route.path).first();
 const notFound = await queryCollection("notFound").first();
+
+const index = await queryCollection("sections")
+  .path(withLeadingSlash(root.value))
+  .first();
+const unOrderedMenus = await queryCollection("sections")
+  .andWhere(query => query
+    .where("id", "LIKE", `sections${root.value}/%`)
+    .where("path", "<>", root.value))
+  .order("title", "ASC")
+  .all();
+
+if(index?.pages)
+{
+  applyOrder(
+    unOrderedMenus,
+    i => withoutTrailingSlash(`${root.value}/${index.pages[i]}`)
+  );
+} else {
+  unOrderedMenus.sort((a, b) => comparePages(a, b, index.sort ?? undefined));
+}
+
+usePageStore().setPages([index, ...unOrderedMenus]);
 </script>
 <style lang="scss" scoped>
 .container {
