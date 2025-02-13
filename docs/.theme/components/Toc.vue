@@ -48,7 +48,10 @@
 import { onMounted, onBeforeUnmount } from "#imports";
 
 defineProps({
-  value: Object
+  value: {
+    type: Object,
+    default: () => {}
+  }
 });
 
 let observer;

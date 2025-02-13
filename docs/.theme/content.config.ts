@@ -10,7 +10,7 @@ export default defineContentConfig({
       type: "page",
       source: "**/not-found.md"
     }),
-    sections: defineCollection({
+    pageData: defineCollection({
       type: "data",
       source: "**/*.md",
       schema: z.object({
@@ -27,7 +27,7 @@ export default defineContentConfig({
         )
       })
     }),
-    menus: defineCollection({
+    sections: defineCollection({
       type: "data",
       source: {
         include: "**/**/index.md"
@@ -35,11 +35,10 @@ export default defineContentConfig({
       schema: z.object({
         path: z.string(),
         title: z.string(),
-        position: z.number(),
-        sections: z.array(z.string())
+        position: z.number()
       })
     }),
-    menuOrder: defineCollection({
+    sectionOrder: defineCollection({
       type: "data",
       source: {
         include: "index.md"

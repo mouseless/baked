@@ -65,8 +65,8 @@ const store = useSectionStore();
 const runtimeConfig = useRuntimeConfig();
 const route = useRoute();
 
-const root = computed(() => `/${route.path.split("/")[1]}`);
 const menuShown = ref(false);
+const root = computed(() => `/${route.path.split("/")[1]}`);
 
 const menus = { ...store.sections };
 

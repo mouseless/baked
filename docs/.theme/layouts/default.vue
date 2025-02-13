@@ -20,8 +20,8 @@
 import { withLeadingSlash } from "ufo";
 import { useSectionStore } from "~/store/sectionStore";
 
-const {sections: order} = await queryCollection("menuOrder").first();
-const menus = await queryCollection("menus").all();
+const {sections: order} = await queryCollection("sectionOrder").first();
+const menus = await queryCollection("sections").all();
 
 applyOrder(menus, i => withLeadingSlash(order[i]));
 

@@ -21,12 +21,12 @@ const root = computed(() => withLeadingSlash(route.path.split("/")[1]));
 const doc = await queryCollection("content").path(route.path).first();
 const notFound = await queryCollection("notFound").first();
 
-const index = await queryCollection("sections")
+const index = await queryCollection("pageData")
   .path(withLeadingSlash(root.value))
   .first();
-const unOrderedMenus = await queryCollection("sections")
+const unOrderedMenus = await queryCollection("pageData")
   .andWhere(query => query
-    .where("id", "LIKE", `sections${root.value}/%`)
+    .where("id", "LIKE", `pageData${root.value}/%`)
     .where("path", "<>", root.value))
   .order("title", "ASC")
   .all();
