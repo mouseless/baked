@@ -48,7 +48,7 @@
 import { onMounted, onBeforeUnmount } from "#imports";
 
 defineProps({
-  value: {}
+  value: Object
 });
 
 let observer;
