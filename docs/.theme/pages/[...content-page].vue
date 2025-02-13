@@ -12,57 +12,12 @@
   <ContentRenderer v-else :value="notFound" />
 </template>
 <script setup>
-import { clean, compare } from "semver";
-import { withTrailingSlash } from "ufo";
 import { useRoute } from "#imports";
-import { usePageStore } from "~/store/pageStore";
 
 const route = useRoute();
-const store = usePageStore();
-
-const root = `/${route.path.split("/")[1]}`;
 
 const doc = await queryCollection("content").path(route.path).first();
 const notFound = await queryCollection("notFound").first();
-
-const index = await queryContent(root)
-  .where({ _path: { $eq: root } })
-  .only(["_path", "title", "pages", "sort"])
-  .findOne();
-
-const pages = await queryContent(root)
-  .where({ _path: { $ne: root } })
-  .only(["_path", "title"])
-  .find();
-
-if(index.pages) {
-  applyOrder(pages, i => `${index._path}/${index.pages[i]}`);
-} else {
-  pages.sort((a, b) => comparePages(a, b, index.sort));
-}
-
-index._path = withTrailingSlash(index._path);
-
-const sortedPages = root === "/" ? [index] : [index, ...pages];
-
-store.setPages(sortedPages);
-
-function comparePages(a, b, { by, order, version } = { }) {
-  by ||= "title";
-  order ||= "asc";
-  version ||= false;
-
-  const direction = order === "asc" ? 1 : -1;
-
-  if(version) {
-    return compare(clean(a[by] + ".0"), clean(b[by] + ".0")) * direction;
-  } else {
-    if(a[by] < b[by]) { return -1 * direction; }
-    if(a[by] > b[by]) { return 1 * direction; }
-  }
-
-  return 0;
-}
 </script>
 <style lang="scss" scoped>
 .container {

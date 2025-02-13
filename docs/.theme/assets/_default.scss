@@ -60,7 +60,7 @@ img.baked {
 
   p {
     &:has(.diagram) {
-      @include mixins.box;
+      @include box;
       border-color: $color-bg-second;
       text-align: center;
       padding: 30px $space-sm 18px $space-sm;
@@ -102,7 +102,7 @@ img.baked {
   }
 
   hr {
-    @include mixins.border();
+    @include border();
 
     margin: 2em 0;
   }

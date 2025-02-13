@@ -1,8 +1,8 @@
-@use "sass:list";
-@use "variables";
+@use "sass:list" as *;
+@use "variables" as *;
 
 @mixin border($properties...) {
-  @if list.length($properties) == 0 {
+  @if length($properties) == 0 {
     $properties: top, left, bottom, right;
   }
 
@@ -12,7 +12,7 @@
 }
 
 @mixin radius($properties...) {
-  @if list.length($properties) == 0 {
+  @if length($properties) == 0 {
     $properties: top, bottom;
   }
 

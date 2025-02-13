@@ -5,7 +5,7 @@ export const useSectionStore = defineStore("sectionStore", {
     sections: {}
   }),
   actions: {
-    setSections(sections: {}) {
+    setSections(sections: object) {
       this.sections = sections;
     }
   }
