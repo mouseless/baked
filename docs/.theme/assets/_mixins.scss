@@ -7,7 +7,7 @@
   }
 
   @each $property in $properties {
-    border-#{$property}: solid 2px variables.$color-bg-second;
+    border-#{$property}: solid 2px $color-bg-second;
   }
 }
 
@@ -18,35 +18,35 @@
 
   @each $property in $properties {
     border-#{$property}: {
-      left-radius: variables.$border-radius;
-      right-radius: variables.$border-radius;
+      left-radius: $border-radius;
+      right-radius: $border-radius;
     }
   }
 }
 
 @mixin box {
-  background-color: variables.$color-bg-box;
+  background-color: $color-bg-box;
   @include radius();
 }
 
 @mixin width {
-  max-width: calc(variables.$width-page - variables.$width-tolerance);
+  max-width: calc($width-page - $width-tolerance);
   box-sizing: border-box;
-  min-width: variables.$width-page-min;
+  min-width: $width-page-min;
 
-  @media (max-width: variables.$width-page-xl) {
-    max-width: calc(variables.$width-page - variables.$width-tolerance);
+  @media (max-width: $width-page-xl) {
+    max-width: calc($width-page - $width-tolerance);
   }
 
-  @media (max-width: variables.$width-page-l) {
-    max-width: calc(variables.$width-page - variables.$width-side - variables.$width-tolerance);
+  @media (max-width: $width-page-l) {
+    max-width: calc($width-page - $width-side - $width-tolerance);
   }
 
-  @media (max-width: variables.$width-page-m) {
-    max-width: calc(variables.$width-page - (2 * variables.$width-side) - variables.$width-content-margin - variables.$width-tolerance);
+  @media (max-width: $width-page-m) {
+    max-width: calc($width-page - (2 * $width-side) - $width-content-margin - $width-tolerance);
   }
 
-  @media (max-width: variables.$width-page-s) {
+  @media (max-width: $width-page-s) {
     max-width: 82%;
   }
 }

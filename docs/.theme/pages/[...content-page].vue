@@ -1,21 +1,15 @@
 <template>
-  <ContentDoc>
-    <template #default="{ doc }">
-      <div class="container">
-        <div class="content">
-          <ContentRenderer
-            :value="doc"
-            class="toc-root"
-          />
-          <BottomNavigation />
-        </div>
-        <Toc v-if="$route.path !== '/'" :value="doc.body.toc" />
-      </div>
-    </template>
-    <template #not-found>
-      <ContentDoc path="/not-found" :head="false" />
-    </template>
-  </ContentDoc>
+  <div v-if="doc" class="container">
+    <div class="content">
+      <ContentRenderer
+        :value="doc"
+        class="toc-root"
+      />
+      <BottomNavigation />
+    </div>
+    <Toc v-if="$route.path !== '/'" :value="doc.body.toc" />
+  </div>
+  <ContentRenderer v-else :value="notFound" />
 </template>
 <script setup>
 import { clean, compare } from "semver";
@@ -27,6 +21,9 @@ const route = useRoute();
 const store = usePageStore();
 
 const root = `/${route.path.split("/")[1]}`;
+
+const doc = await queryCollection("content").path(route.path).first();
+const notFound = await queryCollection("notFound").first();
 
 const index = await queryContent(root)
   .where({ _path: { $eq: root } })
