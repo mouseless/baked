@@ -1,3 +1,6 @@
+@use "mixins" as *;
+@use "variables" as *;
+
 @import url("./primary.css") (prefers-color-scheme: dark);
 @import url("./secondary.css") (prefers-color-scheme: light);
 

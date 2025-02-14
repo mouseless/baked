@@ -7,20 +7,27 @@
     :class="[ alt ]"
   >
 </template>
-<script setup lang="ts">
+<script setup>
 import { withTrailingSlash, withLeadingSlash, joinURL } from "ufo";
 import { useRuntimeConfig, computed, useRoute } from "#imports";
 
-const props = withDefaults(defineProps<{
-  src: string,
-  alt: string,
-  width?: string | number,
-  height?: string | number
-}>(), {
-  src: "",
-  alt: "",
-  width: undefined,
-  height: undefined
+const props = defineProps({
+  src: {
+    type: String,
+    required: true
+  },
+  alt: {
+    type: String,
+    default: ""
+  },
+  width: {
+    type: [String, Number],
+    default: undefined
+  },
+  height: {
+    type: [String, Number],
+    default: undefined
+  }
 });
 
 const route = useRoute();
@@ -31,15 +38,23 @@ const refinedSrc = computed(() => {
   }
 
   const base = withLeadingSlash(withTrailingSlash(useRuntimeConfig().app.baseURL));
-  const path = parsePath(route.path);
+  const path = parsePath(route);
+  const result = joinURL(base, path, props.src);
 
-  return joinURL(base, path, props.src);
+  return result;
 });
 
-function parsePath(path: string) {
-  return path.endsWith("/")
-    ? path
-    : path.replace(/\/[^/]*\/?$/, "");
+function parsePath(path) {
+  const pieces = path.params.contentpage;
+
+  if(pieces[pieces.length - 1] === "")
+  {
+    pieces.pop();
+  }
+
+  return pieces.length > 1
+    ? joinURL(...pieces.slice(0, pieces.length - 1))
+    : pieces[0];
 }
 </script>
 <style lang="scss" scoped>

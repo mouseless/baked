@@ -5,7 +5,7 @@ export const usePageStore = defineStore("pageStore", {
     pages: {}
   }),
   actions: {
-    setPages(pages: {}) {
+    setPages(pages: object) {
       this.pages = pages;
     }
   }

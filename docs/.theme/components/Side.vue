@@ -6,8 +6,8 @@
         <NuxtLink
           v-for="menu in menus"
           :key="menu.title"
-          :to="menu._path"
-          :class="{ active: menu._path == $route.path }"
+          :to="menu.path"
+          :class="{ active: menu.path == $route.path }"
           @click="close"
         >
           {{ menu.title }}
@@ -16,15 +16,15 @@
     </ul>
   </nav>
 </template>
-<script lang="ts" setup>
+<script setup>
 import { watch, ref } from "#imports";
 import { usePageStore } from "~/store/pageStore";
 
 const store = usePageStore();
 
-const shown = ref<boolean>(false);
+const shown = ref(false);
 
-const menus: any = ref(store.pages);
+const menus = ref(store.pages);
 
 function close() { shown.value = false; }
 function toggle() { shown.value = !shown.value; }
