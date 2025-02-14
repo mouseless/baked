@@ -1,5 +1,5 @@
 <template>
-  <BakedComponentResolver
+  <Baked.Component
     v-if="schema"
     :schema="schema"
   />

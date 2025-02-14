@@ -3,7 +3,7 @@
     <div class="max-w-10">
       <strong>{{ schema.title }}:</strong>
     </div>
-    <BakedComponentResolver
+    <Baked.Component
       :is="schema.component.$type"
       :schema="schema.component"
       :data="data"

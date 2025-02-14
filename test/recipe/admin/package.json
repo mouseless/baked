@@ -7,7 +7,9 @@
     "setup": "npm run lint",
     "predev": "npm run setup --env=development",
     "dev": "nuxt dev --dotenv .env.development",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "prelocaldev": "nuxi generate --dotenv .env.development",
+    "localdev": "npx http-server .output/public -p 3000"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.25.1",
