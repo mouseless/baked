@@ -8,7 +8,7 @@ on:
       - 'test/recipe/admin/**/*'
 jobs:
   generate:
-    name: Generate
+    name: Setup
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -22,6 +22,6 @@ jobs:
         run: echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns
       - name: Generate
         run: |
-          cd test/recipe/admin/.theme/
+          cd test/recipe/admin/
           npm install
           npm run setup
