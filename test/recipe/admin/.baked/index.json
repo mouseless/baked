@@ -24,20 +24,6 @@
           }
         ]
       }
-    },
-    {
-      "name": "menu",
-      "component": {
-        "$type": "Menu",
-        "title": "Menu",
-        "path":"",
-        "data": [
-          {
-            "title": "Rich Transient w/ Datas 1",
-            "path": "/method-samples"
-          }
-        ]
-      }
     }
   ]
 }
