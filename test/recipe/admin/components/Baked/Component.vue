@@ -16,15 +16,7 @@ const components = import.meta.glob("~/components/*/*.vue");
 
 const is = computed(() =>
   components[`/components/Baked/${schema.$type}.vue`]
-    ? defineAsyncComponent(
-      components[`/components/Baked/${schema.$type}.vue`]
-    )
-    : () => {
-      throw createError({
-        statusCode: 404,
-        statusMessage: `'${schema.$type}' Component Not Found`,
-        fatal: true
-      });
-    }
+    ? defineAsyncComponent(components[`/components/Baked/${schema.$type}.vue`])
+    : defineAsyncComponent(components["/components/Baked/Fallback.vue"])
 );
 </script>

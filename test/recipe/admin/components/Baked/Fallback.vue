@@ -1,14 +1,15 @@
 <template>
-  <NuxtLink :to="data.path">
-    {{ schema.title }}
-  </NuxtLink>
+  <code>
+    <pre>
+      {{ json }}
+    </pre>
+  </code>
 </template>
 <script setup>
-import { NuxtLink } from "#components";
-
 const { data } = defineProps({
   schema: { type: null, required: true },
   data: { type: null, required: true }
 });
 
+const json = computed(() => JSON.stringify(data));
 </script>

@@ -1,35 +1,42 @@
 {
   "$type": "Dashboard",
   "title": "Dashboard",
-  "menus":[
+  "path": "",
+  "props":[
     {
-      "name": "1",
+      "name": "menu",
       "component": {
-        "$type": "Navigation",
-        "title": "Rich Transient w/ Datas 1"
-      },
-      "data":{
-        "path": "/rich-transient-with-datas/test1"
+        "$type": "Menu",
+        "title": "Menu",
+        "path":"",
+        "data": [
+          {
+            "title": "Rich Transient w/ Datas 1",
+            "path": "/rich-transient-with-datas/test1"
+          },
+          {
+            "title": "Rich Transient w/ Datas 2",
+            "path": "/rich-transient-with-datas/test2"
+          },
+          {
+            "title": "Rich Transient w/ Datas 3",
+            "path": "/rich-transient-with-datas/test3"
+          }
+        ]
       }
     },
     {
-      "name": "2",
+      "name": "menu",
       "component": {
-        "$type": "Navigation",
-        "title": "Rich Transient w/ Datas 2"
-      },
-      "data":{
-        "path": "/rich-transient-with-datas/test2"
-      }
-    },
-    {
-      "name": "3",
-      "component": {
-        "$type": "Navigation",
-        "title": "Rich Transient w/ Datas 3"
-      },
-      "data":{
-        "path": "/rich-transient-with-datas/test3"
+        "$type": "Menu",
+        "title": "Menu",
+        "path":"",
+        "data": [
+          {
+            "title": "Rich Transient w/ Datas 1",
+            "path": "/method-samples"
+          }
+        ]
       }
     }
   ]

@@ -20,7 +20,7 @@ jobs:
           node-version: 22
       - name: Disable AppArmour
         run: echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns
-      - name: Generate
+      - name: Setup
         run: |
           cd test/recipe/admin/
           npm install
