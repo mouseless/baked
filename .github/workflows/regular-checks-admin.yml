@@ -1,0 +1,27 @@
+name: Regular Checks - Admin
+on:
+  pull_request:
+    branches:
+      - main
+      - 'epic/**'
+    paths:
+      - 'test/recipe/admin/**/*'
+jobs:
+  generate:
+    name: Generate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Disable AppArmour
+        run: echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns
+      - name: Generate
+        run: |
+          cd test/recipe/admin/.theme/
+          npm install
+          npm run setup
