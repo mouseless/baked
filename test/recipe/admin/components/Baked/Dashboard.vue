@@ -2,8 +2,7 @@
   <div class="w-[1000px] mx-auto my-4">
     <Panel v-if="schema" :header="schema.title">
       <div class="grid grid-cols-1 gap-4">
-        <component
-          :is="menu.component.$type"
+        <BakedComponentResolver
           v-for="menu in menus"
           :key="menu.title"
           :schema="menu.component"

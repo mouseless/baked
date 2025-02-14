@@ -1,6 +1,5 @@
 <template>
-  <component
-    :is="schema.$type"
+  <BakedComponentResolver
     v-if="schema"
     :schema="schema"
   />

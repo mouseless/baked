@@ -1,3 +1,3 @@
 <template>
-  <Page :params="$route.params.baked" />
+  <BakedPage :params="$route.params.baked" />
 </template>

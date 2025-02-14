@@ -16,7 +16,6 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
   components: {
     dirs: [
-      { path: "~/components/Baked", global: true },
       "~/components"
     ]
   },
