@@ -16,12 +16,12 @@
   </div>
   <Footer />
 </template>
-<script setup lang="ts">
+<script setup>
 import { withLeadingSlash } from "ufo";
 import { useSectionStore } from "~/store/sectionStore";
 
 const {sections: order} = await queryCollection("sectionOrder").first();
-const menus = await queryCollection("sections").all();
+const menus = await queryCollection("sections").where("path", "<>", "/").all();
 
 applyOrder(menus, i => withLeadingSlash(order[i]));
 
