@@ -16,32 +16,16 @@
   </div>
   <Footer />
 </template>
-<script setup lang="ts">
-import { withLeadingSlash, withTrailingSlash } from "ufo";
+<script setup>
+import { withLeadingSlash } from "ufo";
 import { useSectionStore } from "~/store/sectionStore";
 
-const store = useSectionStore();
+const {sections: order} = await queryCollection("sectionOrder").first();
+const menus = await queryCollection("sections").where("path", "<>", "/").all();
 
-const index = await queryContent()
-  .where({ _path: "/" })
-  .only(["sections"])
-  .findOne();
+applyOrder(menus, i => withLeadingSlash(order[i]));
 
-const sections = await queryContent("/")
-  .only(["_path", "title", "_dir"])
-  .where({
-    _dir: { $eq: "" },
-    _path: { $in: index.sections.map((path: any) => withLeadingSlash(path)) }
-  })
-  .find();
-
-for(const section of sections) {
-  section._path = withTrailingSlash(section._path);
-}
-
-applyOrder(sections, (i:number) => withLeadingSlash(withTrailingSlash(index.sections[i])));
-
-store.setSections(sections);
+useSectionStore().setSections(menus);
 </script>
 <style lang="scss" scoped>
 .content, .full {

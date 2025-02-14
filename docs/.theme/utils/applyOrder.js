@@ -1,7 +1,7 @@
 export default function(collection, pathAtIndex) {
   const map = new Map();
   for(let i = 0; i < collection.length; i++) {
-    map.set(collection[i]._path, collection[i]);
+    map.set(collection[i].path, collection[i]);
   }
 
   for(let i = 0; i < collection.length; i++) {
