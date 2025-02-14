@@ -12,11 +12,6 @@ const { schema, data } = defineProps({
   data: { type: null, required: false, default: {} }
 });
 
-const components = import.meta.glob("~/components/*/*.vue");
+const is = useBakedComponent().resolve(schema.$type, "Fallback");
 
-const is = computed(() =>
-  components[`/components/Baked/${schema.$type}.vue`]
-    ? defineAsyncComponent(components[`/components/Baked/${schema.$type}.vue`])
-    : defineAsyncComponent(components["/components/Baked/Fallback.vue"])
-);
 </script>
