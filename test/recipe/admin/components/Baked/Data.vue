@@ -4,7 +4,6 @@
       <strong>{{ schema.title }}:</strong>
     </div>
     <Baked.Component
-      :is="schema.component.$type"
       :schema="schema.component"
       :data="data"
       class="w-full"
