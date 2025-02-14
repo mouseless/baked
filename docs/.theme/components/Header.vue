@@ -42,7 +42,7 @@
           class="matrix"
           @click="close"
         >
-          <IconMatrix />
+          <Icon.Matrix />
         </NuxtLink>
       </nav>
     </header>
