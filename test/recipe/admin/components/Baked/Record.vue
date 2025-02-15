@@ -23,7 +23,7 @@ const params = inject("params");
 const data = ref();
 
 onMounted(async() => {
-  data.value = await $fetch(
+  data.value = schema.data ?? await $fetch(
     `${path}/${params[1]}`,
     {
       baseURL,

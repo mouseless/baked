@@ -1,5 +1,5 @@
 {
-  "$type": "Dashboard",
+  "$type": "Record",
   "title": "Dashboard",
   "path": "",
   "props":[
@@ -8,22 +8,25 @@
       "component": {
         "$type": "Menu",
         "title": "Menu",
-        "path":"",
-        "data": [
-          {
-            "title": "Rich Transient w/ Datas 1",
-            "path": "/rich-transient-with-datas/test1"
-          },
-          {
-            "title": "Rich Transient w/ Datas 2",
-            "path": "/rich-transient-with-datas/test2"
-          },
-          {
-            "title": "Rich Transient w/ Datas 3",
-            "path": "/rich-transient-with-datas/test3"
-          }
-        ]
+        "path":""
       }
     }
-  ]
+  ],
+  "data":{
+    "menu": [
+      {
+        "title": "Rich Transient w/ Datas 1",
+        "path": "/rich-transient-with-datas/test1"
+      },
+      {
+        "title": "Rich Transient w/ Datas 2",
+        "path": "/rich-transient-with-datas/test2"
+      },
+      {
+        "title": "Rich Transient w/ Datas 3",
+        "path": "/rich-transient-with-datas/test3"
+      }
+    ]
+  }
 }
+

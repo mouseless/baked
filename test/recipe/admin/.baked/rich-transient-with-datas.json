@@ -1,5 +1,5 @@
 {
-  "$type": "Report",
+  "$type": "Record",
   "path": "rich-transient-with-datas",
   "title": "Rich Transient w/ Datas",
   "props": [
