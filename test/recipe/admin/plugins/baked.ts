@@ -1,5 +1,5 @@
 export default defineNuxtPlugin({
-  name: "bakedComponent",
+  name: "baked",
   setup() {
     const components = import.meta.glob("~/components/*/*.vue");
 

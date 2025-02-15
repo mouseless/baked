@@ -12,6 +12,6 @@ const { schema, data } = defineProps({
   data: { type: null, required: false, default: {} }
 });
 
-const is = useBakedComponent().resolve(schema.$type, "Fallback");
-
+const resolver = useBakedComponentResolver();
+const is = resolver.resolve(schema.$type, "Fallback");
 </script>
