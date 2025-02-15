@@ -71,23 +71,37 @@ export default defineNuxtConfig({
     dirs: ["~/components/Prose", "~/components"]
   },
   content: {
-    highlight: {
-      // Theme used in all color schemes.
-      theme: "slack-dark",
-      preload: [
-        "diff",
-        "ts",
-        "js",
-        "css",
-        "java",
-        "markdown",
-        "sql",
-        "xml",
-        "json",
-        "csharp",
-        "md",
-        "bash"
-      ]
+    build: {
+      markdown: {
+        highlight: {
+          theme: "slack-dark",
+          preload: [
+            "diff",
+            "ts",
+            "js",
+            "css",
+            "java",
+            "markdown",
+            "sql",
+            "xml",
+            "json",
+            "csharp",
+            "md",
+            "bash",
+            "dockerfile"
+          ]
+        }
+      }
+    },
+    renderer: {
+      anchorLinks: {
+        h1: false,
+        h2: false,
+        h3: false,
+        h4: false,
+        h5: false,
+        h6: true
+      }
     }
   },
   css: ["~/assets/styles.scss"],
@@ -104,22 +118,11 @@ export default defineNuxtConfig({
   },
   modules: [
     "@nuxt/content",
+    "@nuxt/eslint",
     "@pinia/nuxt"
   ],
   runtimeConfig: {
     public: {
-      mdc: {
-        headings: {
-          anchorLinks: {
-            h1: false,
-            h2: false,
-            h3: false,
-            h4: false,
-            h5: false,
-            h6: false
-          }
-        }
-      },
       baseURL: "",
       githubURL: "/mouseless/baked",
       matrixURL: "#baked:mouseless.org"
@@ -129,7 +132,10 @@ export default defineNuxtConfig({
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: "@import \"@/assets/variables.scss\"; @import \"@/assets/mixins.scss\";"
+          additionalData: `
+            @use "@/assets/variables.scss" as *;
+            @use "@/assets/mixins.scss" as *;
+          `
         }
       }
     }

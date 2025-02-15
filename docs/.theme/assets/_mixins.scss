@@ -1,3 +1,6 @@
+@use "sass:list" as *;
+@use "variables" as *;
+
 @mixin border($properties...) {
   @if length($properties) == 0 {
     $properties: top, left, bottom, right;

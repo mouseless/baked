@@ -11,8 +11,8 @@
         <NuxtLink
           v-for="menu in menus"
           :key="menu.title"
-          :to="menu._path"
-          :class="{ active: menu._path === root }"
+          :to="menu.path"
+          :class="{ active: menu.path === root }"
         >
           {{ menu.title }}
         </NuxtLink>
@@ -45,7 +45,7 @@
     </footer>
   </div>
 </template>
-<script lang="ts" setup>
+<script setup>
 import { useRoute, useRuntimeConfig } from "#imports";
 import { useSectionStore } from "~/store/sectionStore";
 
@@ -55,7 +55,7 @@ const store = useSectionStore();
 
 const root = computed(() => `/${route.path.split("/")[1]}`);
 
-const menus: any = { ...store.sections };
+const menus = { ...store.sections };
 </script>
 <style lang="scss" scoped>
 div.bottom {

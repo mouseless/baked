@@ -1,71 +1,47 @@
 <template>
-  <ContentDoc>
-    <template #default="{ doc }">
-      <div class="container">
-        <div class="content">
-          <ContentRenderer
-            :value="doc"
-            class="toc-root"
-          />
-          <BottomNavigation />
-        </div>
-        <Toc v-if="$route.path !== '/'" :value="doc.body.toc" />
-      </div>
-    </template>
-    <template #not-found>
-      <ContentDoc path="/not-found" :head="false" />
-    </template>
-  </ContentDoc>
+  <div v-if="doc" class="container">
+    <div class="content">
+      <ContentRenderer
+        :value="doc"
+        class="toc-root"
+      />
+      <BottomNavigation />
+    </div>
+    <Toc v-if="$route.path !== '/'" :value="doc.body.toc" />
+  </div>
+  <ContentRenderer v-else :value="notFound" />
 </template>
 <script setup>
-import { clean, compare } from "semver";
-import { withTrailingSlash } from "ufo";
-import { useRoute } from "#imports";
 import { usePageStore } from "~/store/pageStore";
+import { withoutTrailingSlash, withLeadingSlash } from "ufo";
 
 const route = useRoute();
-const store = usePageStore();
+const root = computed(() => withLeadingSlash(route.path.split("/")[1]));
 
-const root = `/${route.path.split("/")[1]}`;
+const doc = await queryCollection("content").path(route.path).first();
+const notFound = await queryCollection("notFound").first();
 
-const index = await queryContent(root)
-  .where({ _path: { $eq: root } })
-  .only(["_path", "title", "pages", "sort"])
-  .findOne();
+const index = await queryCollection("pageData")
+  .path(withLeadingSlash(root.value))
+  .first();
+const unOrderedMenus = await queryCollection("pageData")
+  .andWhere(query => query
+    .where("id", "LIKE", `pageData${root.value}/%`)
+    .where("path", "<>", root.value))
+  .order("title", "ASC")
+  .all();
 
-const pages = await queryContent(root)
-  .where({ _path: { $ne: root } })
-  .only(["_path", "title"])
-  .find();
-
-if(index.pages) {
-  applyOrder(pages, i => `${index._path}/${index.pages[i]}`);
+if(index?.pages)
+{
+  applyOrder(
+    unOrderedMenus,
+    i => withoutTrailingSlash(`${root.value}/${index.pages[i]}`)
+  );
 } else {
-  pages.sort((a, b) => comparePages(a, b, index.sort));
+  unOrderedMenus.sort((a, b) => comparePages(a, b, index.sort ?? undefined));
 }
 
-index._path = withTrailingSlash(index._path);
-
-const sortedPages = root === "/" ? [index] : [index, ...pages];
-
-store.setPages(sortedPages);
-
-function comparePages(a, b, { by, order, version } = { }) {
-  by ||= "title";
-  order ||= "asc";
-  version ||= false;
-
-  const direction = order === "asc" ? 1 : -1;
-
-  if(version) {
-    return compare(clean(a[by] + ".0"), clean(b[by] + ".0")) * direction;
-  } else {
-    if(a[by] < b[by]) { return -1 * direction; }
-    if(a[by] > b[by]) { return 1 * direction; }
-  }
-
-  return 0;
-}
+usePageStore().setPages([index, ...unOrderedMenus]);
 </script>
 <style lang="scss" scoped>
 .container {

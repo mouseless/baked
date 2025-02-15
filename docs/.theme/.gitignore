@@ -6,6 +6,7 @@ node_modules/
 .nitro
 .cache
 .output
+.data
 
 # Nuxt generate
 dist

@@ -26,6 +26,7 @@ export default defineNuxtConfig({
     inlineStyles: false
   },
   modules: [
+    "@nuxt/eslint",
     "@nuxtjs/tailwindcss",
     "@primevue/nuxt-module"
   ],
