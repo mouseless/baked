@@ -28,6 +28,4 @@ const { schema, data } = defineProps({
   schema: { type: null, required: true },
   data: { type: null, required: true }
 });
-
-console.log(schema);
 </script>
