@@ -1,14 +1,13 @@
 {
   "$type": "Record",
   "title": "Dashboard",
-  "path": "",
   "props":[
     {
       "name": "menu",
       "component": {
         "$type": "Menu",
-        "title": "Menu",
-        "path":""
+        "title": "Rich Transients",
+        "icon": "pi pi-palette"
       }
     }
   ],

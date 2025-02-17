@@ -1,7 +1,7 @@
 {
   "$type": "Record",
-  "path": "rich-transient-with-datas",
-  "title": "Rich Transient w/ Datas",
+  "path": "/rich-transient-with-datas/{0}",
+  "title": "Rich Transient w/ Data",
   "props": [
     {
       "name": "id",

@@ -21,10 +21,11 @@ const { props, path } = schema;
 const { public: { apiBaseURL: baseURL } } = useRuntimeConfig();
 const params = inject("params");
 const data = ref();
+const extensions = useStringExtensions();
 
 onMounted(async() => {
   data.value = schema.data ?? await $fetch(
-    `${path}/${params[1]}`,
+    extensions.format(`${path}`, `${params[1]}`),
     {
       baseURL,
       headers: { Authorization: "token-jane" }
