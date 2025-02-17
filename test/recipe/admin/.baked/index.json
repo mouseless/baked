@@ -1,31 +1,30 @@
 {
-  "$type": "Record",
-  "title": "Dashboard",
-  "props":[
-    {
-      "name": "menu",
-      "component": {
-        "$type": "Menu",
-        "title": "Rich Transients",
-        "icon": "pi pi-palette"
-      }
+  "$type": "Detail",
+  "$schema": {
+    "title": "Dashboard",
+    "header": {
+      "$type": "Menu",
+      "$data": [
+        {
+          "label": "Rich Transients",
+          "icon": "pi pi-palette",
+          "items": [
+            {
+              "label": "Rich Transient w/ Datas 1",
+              "url": "/rich-transient-with-datas/test1"
+            },
+            {
+              "label": "Rich Transient w/ Datas 2",
+              "url": "/rich-transient-with-datas/test2"
+            },
+            {
+              "label": "Rich Transient w/ Datas 3",
+              "url": "/rich-transient-with-datas/test3"
+            }
+          ]
+        }
+      ]
     }
-  ],
-  "data":{
-    "menu": [
-      {
-        "title": "Rich Transient w/ Datas 1",
-        "path": "/rich-transient-with-datas/test1"
-      },
-      {
-        "title": "Rich Transient w/ Datas 2",
-        "path": "/rich-transient-with-datas/test2"
-      },
-      {
-        "title": "Rich Transient w/ Datas 3",
-        "path": "/rich-transient-with-datas/test3"
-      }
-    ]
-  }
+  },
+  "$data": null
 }
-

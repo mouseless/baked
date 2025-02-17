@@ -1,23 +1,21 @@
 {
-  "$type": "Record",
-  "path": "/rich-transient-with-datas/{0}",
-  "title": "Rich Transient w/ Data",
-  "props": [
-    {
-      "name": "id",
-      "component": {
-        "$type": "Data",
+  "$type": "Detail",
+  "$schema": {
+    "title": "Rich Transient w/ Data",
+    "props": [
+      {
+        "key": "id",
         "title": "ID",
-        "component": {
-          "$type": "String"
-        }
+        "component": { "$type": "String" }
+      },
+      {
+        "key": "time",
+        "title": "Time",
+        "component": { "$type": "String" }
       }
-    },
-    {
-      "name": "time",
-      "component": {
-        "$type": "String"
-      }
-    }
-  ]
+    ]
+  },
+  "$data": {
+    "$path": "/rich-transient-with-datas/{0}"
+  }
 }
