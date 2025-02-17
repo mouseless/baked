@@ -1,7 +1,7 @@
 <template>
   <Panel :header="schema.title">
     <div v-if="schema.header" class="w-full">
-      <Baked.Component :schema="schema.header" />
+      <Baked.Component :descriptor="schema.header" />
     </div>
     <div v-if="data" class="grid grid-cols-2 gap-4">
       <div
@@ -13,7 +13,7 @@
           <strong>{{ prop.title }}:</strong>
         </div>
         <Baked.Component
-          :schema="{
+          :descriptor="{
             ...prop.component,
             '$data': data[prop.key]
           }"
@@ -28,4 +28,6 @@ const { schema, data } = defineProps({
   schema: { type: null, required: true },
   data: { type: null, required: true }
 });
+
+console.log(schema);
 </script>

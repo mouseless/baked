@@ -4,6 +4,7 @@
     "title": "Dashboard",
     "header": {
       "$type": "Menu",
+      "$schema": null,
       "$data": [
         {
           "label": "Rich Transients",

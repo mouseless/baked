@@ -1,7 +1,7 @@
 <template>
   <Baked.Component
-    v-if="schema"
-    :schema="schema"
+    v-if="pageDescriptor"
+    :descriptor="pageDescriptor"
   />
 </template>
 <script setup>
@@ -12,17 +12,17 @@ const { routeParams } = defineProps({
   }
 });
 
-const schema = ref();
-const schemaName = computed(() => routeParams[0] ?? "index");
+const pageDescriptor = ref();
+const pageName = computed(() => routeParams[0] ?? "index");
 
 provide("routeParams", routeParams);
 
 onMounted(async() => {
-  schema.value = await import(`../../.baked/${schemaName.value}.json`)
+  pageDescriptor.value = await import(`../../.baked/${pageName.value}.json`)
     .catch(_ => {
       throw createError({
         statusCode: 404,
-        statusMessage: `'${schemaName.value}' Page Not Found`,
+        statusMessage: `'${pageName.value}' Page Not Found`,
         fatal: true
       });
     });
