@@ -16,6 +16,7 @@
     ]
   },
   "data": {
-    "$path": "/rich-transient-with-datas/{0}"
+    "type": "remote",
+    "value": "/rich-transient-with-datas/{0}"
   }
 }

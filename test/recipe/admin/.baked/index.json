@@ -3,10 +3,10 @@
   "schema": {
     "title": "Dashboard",
     "header": {
-      "type": "Menu",
+      "type": "Menus",
       "schema": null,
       "data": {
-        "type": "inline/remote",
+        "type": "inline",
         "value":[
           {
             "label": "Rich Transients",
