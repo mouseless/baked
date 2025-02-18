@@ -100,9 +100,12 @@ public static class CodeGenerationExtensions
         generatedFiles.Add(new(name) { Content = content, Extension = extension });
     }
 
-    public static void AddAsJson<T>(this IGeneratedFileCollection generatedFiles, T instance)
+    public static void AddAsJson<T>(this IGeneratedFileCollection generatedFiles, T instance) =>
+        generatedFiles.AddAsJson(typeof(T).Name, instance);
+
+    public static void AddAsJson<T>(this IGeneratedFileCollection generatedFiles, string name, T instance)
     {
-        generatedFiles.Add(typeof(T).Name, JsonConvert.SerializeObject(instance), "json");
+        generatedFiles.Add(name, JsonConvert.SerializeObject(instance, formatting: Formatting.Indented), "json");
     }
 
     internal static string? FindClosestScopedCode(this Diagnostic diagnostic)
