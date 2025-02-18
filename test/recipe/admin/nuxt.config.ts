@@ -5,6 +5,15 @@ const Mouseless = definePreset(Aura, {
   semantic: {
     primary: {
       50: "{red.50}",
+      100: "{red.50}",
+      200: "{red.50}",
+      300: "{red.50}",
+      400: "{red.50}",
+      500: "{red.50}",
+      600: "{red.50}",
+      700: "{red.50}",
+      800: "{red.50}",
+      900: "{red.50}",
       950: "{red.950}"
     }
   }
@@ -16,7 +25,6 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
   components: {
     dirs: [
-      { path: "~/components/Baked", global: true },
       "~/components"
     ]
   },

@@ -1,0 +1,21 @@
+{
+  "type": "Detail",
+  "schema": {
+    "title": "Rich Transient w/ Data",
+    "props": [
+      {
+        "key": "id",
+        "title": "ID",
+        "component": { "type": "String" }
+      },
+      {
+        "key": "time",
+        "title": "Time",
+        "component": { "type": "String" }
+      }
+    ]
+  },
+  "data": {
+    "$path": "/rich-transient-with-datas/{0}"
+  }
+}
