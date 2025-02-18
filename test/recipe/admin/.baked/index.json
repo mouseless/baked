@@ -1,11 +1,11 @@
 {
-  "$type": "Detail",
-  "$schema": {
+  "type": "Detail",
+  "schema": {
     "title": "Dashboard",
     "header": {
-      "$type": "Menu",
-      "$schema": null,
-      "$data": [
+      "type": "Menu",
+      "schema": null,
+      "data": [
         {
           "label": "Rich Transients",
           "icon": "pi pi-palette",
@@ -27,5 +27,5 @@
       ]
     }
   },
-  "$data": null
+  "data": null
 }

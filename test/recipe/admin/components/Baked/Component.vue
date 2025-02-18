@@ -2,7 +2,7 @@
   <component
     :is="is"
     v-if="loaded"
-    :schema="descriptor.$schema"
+    :schema="descriptor.schema"
     :data="data"
   />
 </template>
@@ -17,7 +17,7 @@ const extensions = useStringExtensions();
 
 const routeParams = inject("routeParams");
 
-const is = resolver.resolve(descriptor.$type, "Fallback");
+const is = resolver.resolve(descriptor.type, "Fallback");
 const data = ref();
 const loaded = ref(false);
 
@@ -27,10 +27,10 @@ onMounted(async() => {
 });
 
 async function fetchData() {
-  if(!descriptor.$data?.$path) { return descriptor.$data; }
+  if(!descriptor.data?.$path) { return descriptor.data; }
 
   return await $fetch(
-    extensions.format(`${descriptor.$data.$path}`, routeParams.slice(1)),
+    extensions.format(`${descriptor.data.$path}`, routeParams.slice(1)),
     {
       baseURL,
       headers: { Authorization: "token-jane" }

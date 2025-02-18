@@ -15,7 +15,7 @@
         <Baked.Component
           :descriptor="{
             ...prop.component,
-            '$data': data[prop.key]
+            'data': data[prop.key]
           }"
           class="w-full"
         />
