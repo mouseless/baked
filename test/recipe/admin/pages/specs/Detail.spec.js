@@ -1,5 +1,5 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
-import { primeVue } from "~/utils/locators.js";
+import primeVue from "~/utils/locators/primeVue";
 
 const id = "Basic";
 

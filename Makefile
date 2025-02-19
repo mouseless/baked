@@ -11,7 +11,9 @@ fix:
 build:
 	@ dotnet build
 test:
-	@ dotnet test
+	@ \
+	dotnet test --logger quackers ; \
+	cd test/recipe/admin ; SILENT=1 npm run test ; cd ../../..
 coverage:
 	@ \
 	rm -rdf .coverage ; \

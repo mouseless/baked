@@ -1,4 +1,4 @@
-export default function(){
+export default function() {
   function format(formatString, args) {
     return formatString.replace(/(\{\{\d\}\}|\{\d\})/g, part => {
       if(part.substring(0, 2) === "{{") { return part; } // escape

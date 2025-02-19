@@ -10,6 +10,7 @@
     "postinstall": "nuxt prepare",
     "prelocaldev": "nuxi generate --dotenv .env.development",
     "localdev": "npx http-server .output/public -p 3000",
+    "pretest": "npm run setup --env=production",
     "test": "playwright test"
   },
   "devDependencies": {

@@ -1,9 +1,5 @@
-const primeVue = {
+export default {
   panel: {
     title: ".p-panel-title"
   }
-};
-
-export {
-  primeVue
 };
