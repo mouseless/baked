@@ -1,7 +1,10 @@
 .PHONY: format build test run
 
 format:
-	@ dotnet format --verbosity normal
+	@ \
+	dotnet format --verbosity normal ; \
+	cd test/recipe/admin ; npm run lint -- --fix ; cd ../../.. ; \
+	cd docs/.theme ; npm run lint -- --fix ; cd ../..
 build:
 	@ dotnet build
 test:
