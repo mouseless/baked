@@ -5,7 +5,6 @@ namespace Baked;
 
 public static class AdminThemeExtensions
 {
-    public static AdminThemeFeature Admin(this ThemeConfigurator _,
-        string? schemaDir = default
-    ) => new(schemaDir);
+    public static AdminThemeFeature Admin(this ThemeConfigurator _)
+        => new();
 }

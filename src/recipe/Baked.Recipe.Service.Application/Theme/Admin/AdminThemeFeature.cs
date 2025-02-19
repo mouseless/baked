@@ -5,7 +5,7 @@ using Humanizer;
 
 namespace Baked.Theme.Admin;
 
-public class AdminThemeFeature(string? _schemaDir) : IFeature<ThemeConfigurator>
+public class AdminThemeFeature : IFeature<ThemeConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
@@ -37,8 +37,6 @@ public class AdminThemeFeature(string? _schemaDir) : IFeature<ThemeConfigurator>
 
         configurator.ConfigureComponentDescriptors(components =>
         {
-            components.SchemaDir = _schemaDir;
-
             configurator.UsingDomainModel(domain =>
             {
                 foreach (var type in domain.Types.Where(t => t.HasMetadata() && t.GetMetadata().Has<DetailAttribute>()))

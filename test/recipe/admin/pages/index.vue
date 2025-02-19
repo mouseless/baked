@@ -4,8 +4,6 @@
   </Panel>
 </template>
 <script setup>
-import { Menubar } from "primevue";
-
 const menus = ref([{
   label: "Rich Transients",
   icon: "pi pi-palette",

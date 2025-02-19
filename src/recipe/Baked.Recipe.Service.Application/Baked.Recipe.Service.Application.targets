@@ -4,13 +4,23 @@
     <Using Include="Baked" />
   </ItemGroup>
 
-  <Target Name="Bake" AfterTargets="AfterBuild">
+  <Target Name="Generate" AfterTargets="AfterBuild">
     <Exec Command="dotnet $(TargetPath) --no-build --no-start --generate -c $(Configuration)" />
   </Target>
+  <Target Name="CopyComponentDescriptors" AfterTargets="AfterBuild" Condition="$(CopyComponentDescriptors)AND'$(Configuration)'!='Release'">
+    <ItemGroup Condition="'$(ASPNETCORE_ENVIRONMENT)'==''">
+      <Descriptors Include="$(OutDir)\Development\*.json"/>
+    </ItemGroup>
+    <ItemGroup Condition="'$(ASPNETCORE_ENVIRONMENT)'!=''">
+        <Descriptors Include="$(OutDir)\$(ASPNETCORE_ENVIRONMENT)\*.json"/>
+    </ItemGroup>
+    <Copy SourceFiles="@(Descriptors)" DestinationFolder="$(ComponentDescriptorsDir)" Condition="Exists($(ComponentDescriptorsDir))" />
+    <Message Importance="high" Text="'$(ComponentDescriptorsDir)' does not exists. Failed to copy component descriptors!" Condition="!Exists($(ComponentDescriptorsDir))" />
+  </Target>  
 
   <Target Name="CopyBakedFiles" AfterTargets="Publish">
     <ItemGroup>
-        <GeneratedFiles Include="$(TargetDir)\$(ASPNETCORE_ENVIRONMENT)\*.*" />
+      <GeneratedFiles Include="$(TargetDir)\$(ASPNETCORE_ENVIRONMENT)\*.*" />
     </ItemGroup>
     <Copy SourceFiles="@(GeneratedFiles)" DestinationFolder="$(PublishDir)\$(ASPNETCORE_ENVIRONMENT)" SkipUnchangedFiles="true" />
   </Target>

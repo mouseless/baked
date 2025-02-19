@@ -1,6 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <Import Project="..\..\..\src\recipe\Baked.Recipe.Service.Application\Baked.Recipe.Service.Application.targets" />  
+  <Import Project="..\..\..\src\recipe\Baked.Recipe.Service.Application\Baked.Recipe.Service.Application.targets" />
+  <PropertyGroup>
+    <CopyComponentDescriptors>true</CopyComponentDescriptors>  
+    <ComponentDescriptorsDir>..\..\..\test\recipe\admin\.baked</ComponentDescriptorsDir>
+  </PropertyGroup>  
     
   <ItemGroup>
     <Content Include="Core\ApplicationPhysical.txt">
