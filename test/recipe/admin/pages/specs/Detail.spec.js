@@ -28,6 +28,12 @@ test.describe("Detail", () => {
       await expect(component.getByTestId("prop1")).toHaveText("PROP1 VALUE");
       await expect(component.getByTestId("prop2")).toHaveText("PROP2 VALUE");
     });
+
+    test("visual", async({page}) => {
+      const component = page.getByTestId(id);
+
+      await expect(component).toHaveScreenshot();
+    });
   });
 
   test.describe("Null", () => {
