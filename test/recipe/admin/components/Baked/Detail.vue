@@ -9,7 +9,7 @@
         :key="prop.key"
         class="flex gap-2"
       >
-        <div class="max-w-10">
+        <div>
           <strong>{{ prop.title }}:</strong>
         </div>
         <Baked.Component

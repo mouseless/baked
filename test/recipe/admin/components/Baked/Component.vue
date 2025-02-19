@@ -27,10 +27,10 @@ onMounted(async() => {
 });
 
 async function fetchData() {
-  if(descriptor.data?.type !== "remote") { return descriptor.data?.value ?? descriptor.data; }
+  if(descriptor.data?.type !== "Remote") { return descriptor.data?.value ?? descriptor.data; }
 
   return await $fetch(
-    extensions.format(`${descriptor.data.value}`, routeParams.slice(1)),
+    extensions.format(`${descriptor.data.path}`, routeParams.slice(1)),
     {
       baseURL,
       headers: { Authorization: "token-jane" }

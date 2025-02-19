@@ -1,22 +1,29 @@
 {
   "type": "Detail",
   "schema": {
-    "title": "Rich Transient w/ Data",
+    "title": "Rich Transient With Data",
+    "header": null,
     "props": [
       {
         "key": "id",
-        "title": "ID",
-        "component": { "type": "String" }
+        "title": "Id",
+        "component": {
+          "type": "String",
+          "data": null
+        }
       },
       {
         "key": "time",
         "title": "Time",
-        "component": { "type": "String" }
+        "component": {
+          "type": "String",
+          "data": null
+        }
       }
     ]
   },
   "data": {
-    "type": "remote",
-    "value": "/rich-transient-with-datas/{0}"
+    "type": "Remote",
+    "path": "/rich-transient-with-datas/{0}"
   }
 }

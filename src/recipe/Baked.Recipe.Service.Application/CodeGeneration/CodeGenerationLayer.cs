@@ -32,7 +32,7 @@ public class CodeGenerationLayer : LayerBase<GenerateCode, Compile, BuildConfigu
             {
                 foreach (var descriptor in _generatedFiles)
                 {
-                    using var file = new FileStream(Path.Combine(_location, $"{descriptor.Name}.{descriptor.Extension}"), FileMode.Create);
+                    using var file = new FileStream(Path.Combine(descriptor.Outdir ?? _location, $"{descriptor.Name}.{descriptor.Extension}"), FileMode.Create);
                     file.Write(Encoding.UTF8.GetBytes(descriptor.Content));
                 }
             })
@@ -69,7 +69,7 @@ public class CodeGenerationLayer : LayerBase<GenerateCode, Compile, BuildConfigu
     public class GenerateCode(string _location, IGeneratedAssemblyCollection _generatedAssemblies, IGeneratedFileCollection _generatedFiles)
         : PhaseBase<DomainModel>(PhaseOrder.Early)
     {
-        protected override void Initialize(DomainModel _)
+        protected override void Initialize(DomainModel __)
         {
             if (Directory.Exists(_location))
             {

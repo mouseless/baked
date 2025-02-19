@@ -39,6 +39,8 @@ public class ConfigurationOverriderFeature : IFeature
             configurator.UsingDomainModel(domain =>
             {
                 api.GetController<Entities>().AddSingleById<Entity>(domain);
+                api.GetController<Parents>().AddSingleById<Parent>(domain);
+                api.GetController<Children>().AddSingleById<Child>(domain);
             });
         });
 
