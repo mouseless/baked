@@ -103,10 +103,9 @@ public static class CodeGenerationExtensions
     public static void AddAsJson<T>(this IGeneratedFileCollection generatedFiles, T instance) =>
         generatedFiles.AddAsJson(typeof(T).Name, instance);
 
-    public static void AddAsJson<T>(this IGeneratedFileCollection generatedFiles, string name, T instance)
-    {
-        generatedFiles.Add(name, JsonConvert.SerializeObject(instance, formatting: Formatting.Indented), "json");
-    }
+    public static void AddAsJson<T>(this IGeneratedFileCollection generatedFiles, string name, T instance,
+        JsonSerializerSettings? settings = default
+    ) => generatedFiles.Add(name, JsonConvert.SerializeObject(instance, formatting: Formatting.Indented, settings), "json");
 
     internal static string? FindClosestScopedCode(this Diagnostic diagnostic)
     {

@@ -1,4 +1,6 @@
-﻿namespace Baked.UI.Components;
+﻿using Baked.UI;
+
+namespace Baked.Theme.Admin;
 
 public record DetailSchema : IComponentSchema
 {

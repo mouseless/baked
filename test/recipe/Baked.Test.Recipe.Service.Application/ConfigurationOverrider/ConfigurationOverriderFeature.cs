@@ -5,7 +5,6 @@ using Baked.Test.Authentication;
 using Baked.Test.Business;
 using Baked.Test.ExceptionHandling;
 using Baked.Test.Orm;
-using Baked.UI;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
 
@@ -109,22 +108,5 @@ public class ConfigurationOverriderFeature : IFeature
             );
         });
 
-        configurator.ConfigureComponentDescriptors(components =>
-        {
-            components.Add("Index", new ComponentDescriptor<DetailSchema>(new()
-            {
-                Title = "Rich Transient w/ Data",
-                Props =
-                [
-                    new() { Key = "id", Title = "ID", Component = BakedComponents.String }
-                ]
-            })
-            {
-                Data = new RemoteData
-                {
-                    Path = "/rich-transient-with-datas/{0}"
-                }
-            });
-        });
     }
 }

@@ -8,6 +8,7 @@ using Baked.ExceptionHandling;
 using Baked.MockOverrider;
 using Baked.Orm;
 using Baked.Testing;
+using Baked.Theme;
 
 namespace Baked;
 
@@ -28,6 +29,7 @@ public abstract class ServiceSpec : Spec
         Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>>? exceptionHandling = default,
         Func<MockOverriderConfigurator, IFeature<MockOverriderConfigurator>>? mockOverrider = default,
         Func<OrmConfigurator, IFeature<OrmConfigurator>>? orm = default,
+        Func<ThemeConfigurator, IFeature<ThemeConfigurator>>? theme = default,
         Action<ApplicationDescriptor>? configure = default
     )
     {
@@ -38,6 +40,7 @@ public abstract class ServiceSpec : Spec
         exceptionHandling ??= c => c.ProblemDetails();
         mockOverrider ??= c => c.FirstInterface();
         orm ??= c => c.AutoMap();
+        theme ??= c => c.Admin();
         configure ??= _ => { };
 
         Init(app =>
@@ -47,6 +50,7 @@ public abstract class ServiceSpec : Spec
             app.Layers.AddDomain();
             app.Layers.AddRuntime();
             app.Layers.AddTesting();
+            app.Layers.AddUI();
 
             app.Features.AddBusiness(business);
             app.Features.AddCaching(caching);
@@ -79,6 +83,7 @@ public abstract class ServiceSpec : Spec
             ]);
             app.Features.AddMockOverrider(mockOverrider);
             app.Features.AddOrm(orm);
+            app.Features.AddTheme(theme);
 
             configure(app);
         });
