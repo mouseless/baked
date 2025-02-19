@@ -8,7 +8,7 @@ on:
       - 'test/recipe/admin/**/*'
 jobs:
   generate:
-    name: Setup
+    name: Build & Test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -20,8 +20,15 @@ jobs:
           node-version: 22
       - name: Disable AppArmour
         run: echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns
-      - name: Setup
+      - name: Install dependencies
         run: |
-          cd test/recipe/admin/
-          npm install
+          cd test/recipe/admin
+          npm ci
+      - name: Install Playwright Browsers
+        run: |
+          cd test/recipe/admin
+          npx playwright install --with-deps
+      - name: Run Playwright tests
+        run: |
+          cd test/recipe/admin
           npm test
