@@ -22,7 +22,7 @@ public class AdminThemeFeature : IFeature<ThemeConfigurator>
                     {
                         if (property.IsPublic)
                         {
-                            property.CustomAttributes.Add(new DetailPropertyAttribute());
+                            property.CustomAttributes.Add(new DetailPropertyAttribute(key: property.Name.Camelize(), title: property.Name));
                         }
                     }
                 },
@@ -44,10 +44,14 @@ public class AdminThemeFeature : IFeature<ThemeConfigurator>
                     components.Add(type.Name.Kebaberize().ToLowerInvariant(), new ComponentDescriptor<DetailSchema>(new()
                     {
                         Title = type.Name.Humanize(LetterCasing.Title),
-                        Props = type.GetMembers().Properties
+                        Props = [.. type.GetMembers().Properties
                             .Where(p => p.Has<DetailPropertyAttribute>())
-                            .Select(p => new DetailSchema.Property { Key = p.Name.Camelize(), Title = p.Name, Component = BakedComponents.String })
-                            .ToList()
+                            .Select(p => new DetailSchema.Property{
+                                Key = p.GetSingle<DetailPropertyAttribute>().Key,
+                                Title = p.GetSingle<DetailPropertyAttribute>().Title,
+                                Component = BakedComponents.String
+                            })
+                        ]
                     })
                     {
                         Data = new RemoteData
