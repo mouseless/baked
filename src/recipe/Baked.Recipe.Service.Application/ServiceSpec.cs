@@ -50,7 +50,6 @@ public abstract class ServiceSpec : Spec
             app.Layers.AddDomain();
             app.Layers.AddRuntime();
             app.Layers.AddTesting();
-            app.Layers.AddUI();
 
             app.Features.AddBusiness(business);
             app.Features.AddCaching(caching);
