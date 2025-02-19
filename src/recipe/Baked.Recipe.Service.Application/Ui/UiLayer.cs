@@ -16,7 +16,7 @@ public class UILayer : LayerBase<GenerateCode>
 
     void GenerateUISchemas()
     {
-        if (!Directory.Exists(_componentDescriptors.SchemaDir))
+        if (_componentDescriptors.SchemaDir != null && !Directory.Exists(_componentDescriptors.SchemaDir))
         {
             throw new($"'{_componentDescriptors.SchemaDir}' directory does not exist");
         }

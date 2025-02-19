@@ -36,7 +36,7 @@ Bake.New
             .Sqlite()
             .ForProduction(c.PostgreSql()),
         exceptionHandling: c => c.ProblemDetails(typeUrlFormat: "https://baked.mouseless.codes/errors/{0}"),
-        theme: c => c.Admin(schemaDir: Path.GetFullPath("../admin/.baked")),
+        theme: c => c.Admin(schemaDir: Path.GetFullPath("../admin/.baked")).ForNfr(c.Admin()),
         configure: app =>
         {
             app.Features.AddReporting(c => c
