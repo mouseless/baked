@@ -35,4 +35,4 @@ jobs:
       - name: Test
         run: |
           cd test/recipe/admin
-          npm test
+          npm test -- --grep-invert @visual

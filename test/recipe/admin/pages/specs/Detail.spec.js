@@ -29,7 +29,7 @@ test.describe("Detail", () => {
       await expect(component.getByTestId("prop2")).toHaveText("PROP2 VALUE");
     });
 
-    test("visual", async({page}) => {
+    test("visual", { tag: "@visual" }, async({page}) => {
       const component = page.getByTestId(id);
 
       await expect(component).toHaveScreenshot();

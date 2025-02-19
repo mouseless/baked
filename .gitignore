@@ -17,7 +17,3 @@ bin/
 
 # generated file
 **/.benchmark/**
-
-# playwright
-
-**/test-results/**
