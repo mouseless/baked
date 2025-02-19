@@ -9,8 +9,8 @@ const variants = [
       title: "TITLE TEXT",
       header: giveMe.anExpected({ testId: "header", value: "HEADER TEXT" }),
       props: [
-        giveMe.aDetailProp({ keyAndTestId: "prop1", title: "PROP1" }),
-        giveMe.aDetailProp({ keyAndTestId: "prop2", title: "PROP2" })
+        giveMe.aDetailProp({ keyAndTestId: "prop1", title: "PROP 1" }),
+        giveMe.aDetailProp({ keyAndTestId: "prop2", title: "PROP 2" })
       ],
       data: {
         "prop1": "PROP1 VALUE",
@@ -23,7 +23,8 @@ const variants = [
     descriptor: giveMe.aDetail({
       title: null,
       header: null,
-      props: []
+      props: null,
+      data: null
     })
   },
   {

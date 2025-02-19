@@ -1,23 +1,55 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
-import primeVue from "~/utils/locators/primeVue";
+import primevue from "~/utils/locators/primevue";
+import tailwindcss from "~/utils/locators/tailwindcss";
 
-const id = "Basic";
-
-test.describe("basic", () => {
+test.describe("Detail", () => {
   test.beforeEach(async({goto}) => {
     await goto("/specs/Detail.spec", { waitUntil: "hydration" });
   });
 
-  test("panel title", async({page}) => {
-    const component = page.getByTestId(id);
+  test.describe("Basic", () => {
+    const id = "Basic";
 
-    await expect(component.locator(primeVue.panel.title)).toHaveText("TITLE TEXT");
+    test("panel title", async({page}) => {
+      const component = page.getByTestId(id);
+
+      await expect(component.locator(primevue.panel.title)).toHaveText("TITLE TEXT");
+    });
+
+    test("header", async({page}) => {
+      const component = page.getByTestId(id);
+
+      await expect(component.getByTestId("header")).toHaveText("HEADER TEXT");
+    });
+
+    test("props", async({page}) => {
+      const component = page.getByTestId(id);
+
+      await expect(component.getByTestId("prop1")).toHaveText("PROP1 VALUE");
+      await expect(component.getByTestId("prop2")).toHaveText("PROP2 VALUE");
+    });
   });
 
-  test("header", async({page}) => {
-    const component = page.getByTestId(id);
+  test.describe("Null", () => {
+    const id = "Null";
 
-    await expect(component.getByTestId("header")).toHaveText("HEADER TEXT");
+    test("panel title", async({page}) => {
+      const component = page.getByTestId(id);
+
+      await expect(component.locator(primevue.panel.title)).not.toBeVisible();
+    });
+
+    test("header", async({page}) => {
+      const component = page.getByTestId(id);
+
+      await expect(component.getByTestId("header")).not.toBeVisible();
+    });
+
+    test("props", async({page}) => {
+      const component = page.getByTestId(id);
+
+      await expect(component.locator(tailwindcss.grid)).not.toBeVisible();
+    });
   });
 });
 
