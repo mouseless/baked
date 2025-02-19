@@ -1,50 +1,54 @@
 <template>
-  <Menubar :model="variantLinks" />
-  <div
-    v-for="variant in variants"
-    :key="variant.name"
-    class="my-4"
-  >
-    <h2 :id="variant.name" class="text-xl font-bold mb-2">{{variant.name}}</h2>
-    <Baked.Component :descriptor="variant.descriptor" />
-  </div>
+  <Baked.ComponentSpec :variants="variants" />
 </template>
 <script setup>
+const giveMe = {
+  aDetail(descriptor = { })
+  {
+    descriptor.title = descriptor.title === undefined ? "test title" : descriptor.title;
+
+    return descriptor;
+  }
+};
+
 const variants = [
   {
     name: "Basic",
     descriptor: {
       "type": "Detail",
-      "schema": {
-        "title": "TITLE TEXT",
+      "schema": giveMe.aDetail({
+        title: "TITLE TEXT",
         "header": {
-          "type": "String",
+          "type": "Expected",
+          "schema": "header",
           "data": "HEADER TEXT"
         },
         "props": [
           {
             "key": "prop1",
             "title": "PROP1",
-            "component": { "type": "String" }
+            "component": { "type": "Expected", "schema": "prop1" }
           },
           {
             "key": "prop2",
             "title": "PROP2",
-            "component": { "type": "String" }
+            "component": { "type": "Expected", "schema": "prop2" }
           }
-        ]
-      },
-      "data": {
-        "prop1": "PROP1 VALUE",
-        "prop2": "PROP2 VALUE"
-      }
+        ],
+        "data": {
+          "prop1": "PROP1 VALUE",
+          "prop2": "PROP2 VALUE"
+        }
+      })
     }
   },
   {
     name: "Null",
     descriptor: {
       "type": "Detail",
-      "schema": { }
+      "schema": giveMe.aDetail({
+        title: null
+      })
     }
   },
   {
@@ -56,7 +60,7 @@ const variants = [
           {
             "key": "longProp",
             "title": "A VERY LONG PROP NAME",
-            "component": { "type": "String" }
+            "component": { "type": "Expected", "schema": "longProp" }
           }
         ]
       },
@@ -67,5 +71,4 @@ const variants = [
   }
 ];
 
-const variantLinks = computed(() => variants.map(v => ({ label: v.name, url: `#${v.name}`})));
 </script>
