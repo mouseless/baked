@@ -18,5 +18,10 @@ logs
 .fleet
 .idea
 
+# playwright
+
+**/*.js-snapshots/**
+**/test-results/**
+
 # Baked Descriptors
 *.baked

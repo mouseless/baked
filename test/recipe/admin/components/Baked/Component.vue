@@ -15,7 +15,7 @@ const { public: { apiBaseURL: baseURL } } = useRuntimeConfig();
 const resolver = useBakedComponentResolver();
 const extensions = useStringExtensions();
 
-const routeParams = inject("routeParams");
+const routeParams = inject("routeParams", []);
 
 const is = resolver.resolve(descriptor.type, "Fallback");
 const data = ref();

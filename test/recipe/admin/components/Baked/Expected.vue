@@ -1,5 +1,5 @@
 <template>
-  <span>{{ data }}</span>
+  <span :data-testid="schema">{{ data }}</span>
 </template>
 <script setup>
 const { data } = defineProps({

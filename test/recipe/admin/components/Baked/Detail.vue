@@ -9,7 +9,7 @@
         :key="prop.key"
         class="flex gap-2"
       >
-        <div>
+        <div class="text-nowrap">
           <strong>{{ prop.title }}:</strong>
         </div>
         <Baked.Component

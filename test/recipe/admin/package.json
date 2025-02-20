@@ -9,12 +9,15 @@
     "dev": "nuxt dev --dotenv .env.development",
     "postinstall": "nuxt prepare",
     "prelocaldev": "nuxi generate --dotenv .env.development",
-    "localdev": "npx http-server .output/public -p 3000"
+    "localdev": "npx http-server .output/public -p 3000",
+    "test": "playwright test"
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
     "@nuxt/eslint": "^1.0.1",
+    "@nuxt/test-utils": "^3.15.4",
     "@nuxtjs/tailwindcss": "^6.13.1",
+    "@playwright/test": "^1.50.1",
     "@primevue/nuxt-module": "^4.2.5",
     "cross-env": "^7.0.3",
     "eslint": "^9.20.0",
