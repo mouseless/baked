@@ -1,3 +1,9 @@
-﻿namespace Baked.Theme;
+﻿using Baked.Architecture;
 
-public class ThemeConfigurator;
+namespace Baked.Theme;
+
+public class ThemeConfigurator
+{
+    public IFeature<ThemeConfigurator> Disabled() =>
+        Feature.Empty<ThemeConfigurator>();
+}

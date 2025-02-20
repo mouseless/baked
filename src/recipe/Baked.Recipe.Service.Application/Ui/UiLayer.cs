@@ -21,7 +21,7 @@ public class UILayer : LayerBase<GenerateCode>
         var files = Context.Get<IGeneratedFileCollection>();
         foreach (var (key, component) in _componentDescriptors)
         {
-            files.AddAsJson(key, component, settings: new JsonSerializerSettings
+            files.AddAsJson(key, component, outdir: "UI", settings: new JsonSerializerSettings
             {
                 ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver()
             });

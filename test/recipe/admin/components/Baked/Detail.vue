@@ -22,6 +22,11 @@
       </div>
     </div>
   </Panel>
+  <Panel v-if="schema.tables">
+    <Panel v-for="table in schema.tables" :key="table.schema.title" :header="table.schema.title">
+      <Baked.Component :descriptor="table"/>
+    </Panel>
+  </Panel>
 </template>
 <script setup>
 const { schema, data } = defineProps({

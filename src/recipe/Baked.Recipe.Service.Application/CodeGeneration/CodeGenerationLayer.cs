@@ -32,7 +32,24 @@ public class CodeGenerationLayer : LayerBase<GenerateCode, Compile, BuildConfigu
             {
                 foreach (var descriptor in _generatedFiles)
                 {
-                    using var file = new FileStream(Path.Combine(descriptor.Outdir ?? _location, $"{descriptor.Name}.{descriptor.Extension}"), FileMode.Create);
+                    var directory = _location;
+                    if (descriptor.Outdir != null)
+                    {
+                        if (Path.IsPathRooted(descriptor.Outdir))
+                        {
+                            directory = descriptor.Outdir;
+                        }
+                        else
+                        {
+                            directory = Path.Combine(_location, descriptor.Outdir);
+                            if (!Directory.Exists(directory))
+                            {
+                                Directory.CreateDirectory(directory);
+                            }
+                        }
+                    }
+
+                    using var file = new FileStream(Path.Combine(directory, $"{descriptor.Name}.{descriptor.Extension}"), FileMode.Create);
                     file.Write(Encoding.UTF8.GetBytes(descriptor.Content));
                 }
             })
@@ -69,7 +86,7 @@ public class CodeGenerationLayer : LayerBase<GenerateCode, Compile, BuildConfigu
     public class GenerateCode(string _location, IGeneratedAssemblyCollection _generatedAssemblies, IGeneratedFileCollection _generatedFiles)
         : PhaseBase<DomainModel>(PhaseOrder.Early)
     {
-        protected override void Initialize(DomainModel __)
+        protected override void Initialize(DomainModel _)
         {
             if (Directory.Exists(_location))
             {

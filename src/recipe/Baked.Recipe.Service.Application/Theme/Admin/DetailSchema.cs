@@ -7,6 +7,7 @@ public record DetailSchema : IComponentSchema
     public string Title { get; set; } = default!;
     public IComponentDescriptor Header { get; set; } = default!;
     public List<Property> Props { get; set; } = default!;
+    public List<ComponentDescriptor<TableSchema>> Tables { get; } = [];
 
     public record Property
     {

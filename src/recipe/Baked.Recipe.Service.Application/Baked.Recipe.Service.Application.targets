@@ -9,10 +9,10 @@
   </Target>
   <Target Name="CopyComponentDescriptors" AfterTargets="AfterBuild" Condition="$(CopyComponentDescriptors)AND'$(Configuration)'!='Release'">
     <ItemGroup Condition="'$(ASPNETCORE_ENVIRONMENT)'==''">
-      <Descriptors Include="$(OutDir)\Development\*.json"/>
+      <Descriptors Include="$(OutDir)\Development\UI\*.json"/>
     </ItemGroup>
     <ItemGroup Condition="'$(ASPNETCORE_ENVIRONMENT)'!=''">
-        <Descriptors Include="$(OutDir)\$(ASPNETCORE_ENVIRONMENT)\*.json"/>
+      <Descriptors Include="$(OutDir)\$(ASPNETCORE_ENVIRONMENT)\UI\*.json"/>
     </ItemGroup>
     <Copy SourceFiles="@(Descriptors)" DestinationFolder="$(ComponentDescriptorsDir)" Condition="Exists($(ComponentDescriptorsDir))" />
     <Message Importance="high" Text="'$(ComponentDescriptorsDir)' does not exists. Failed to copy component descriptors!" Condition="!Exists($(ComponentDescriptorsDir))" />
