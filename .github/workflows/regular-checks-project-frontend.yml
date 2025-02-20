@@ -1,4 +1,4 @@
-name: Regular Checks - Admin
+name: Regular Checks - Project - Frontend
 on:
   pull_request:
     branches:
@@ -7,7 +7,7 @@ on:
     paths:
       - 'test/recipe/admin/**/*'
 jobs:
-  generate:
+  build-and-test:
     name: Build & Test
     runs-on: ubuntu-latest
     steps:
