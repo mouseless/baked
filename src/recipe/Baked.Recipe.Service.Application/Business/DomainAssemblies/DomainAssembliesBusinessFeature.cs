@@ -196,24 +196,24 @@ public class DomainAssembliesBusinessFeature(
             configurator.UsingDomainModel(domain =>
             {
                 generatedAssemblies.Add(nameof(DomainAssembliesBusinessFeature),
-                assembly =>
-                {
-                    assembly
-                        .AddReferenceFrom<DomainAssembliesBusinessFeature>()
-                        .AddCodes(new CasterConfigurerTemplate(domain));
-
-                    foreach (var entity in domain.Types.Having<CasterAttribute>())
+                    assembly =>
                     {
-                        entity.Apply(t => assembly.AddReferenceFrom(t));
-                    }
-                },
-                usings: [
-                    "Baked.Business",
-                    "Baked.Business.DomainAssemblies",
-                    "Baked.Runtime",
-                    "Microsoft.Extensions.DependencyInjection"
-                ]
-            );
+                        assembly
+                            .AddReferenceFrom<DomainAssembliesBusinessFeature>()
+                            .AddCodes(new CasterConfigurerTemplate(domain));
+
+                        foreach (var entity in domain.Types.Having<CasterAttribute>())
+                        {
+                            entity.Apply(t => assembly.AddReferenceFrom(t));
+                        }
+                    },
+                    usings: [
+                        "Baked.Business",
+                        "Baked.Business.DomainAssemblies",
+                        "Baked.Runtime",
+                        "Microsoft.Extensions.DependencyInjection"
+                    ]
+                );
             });
         });
 
