@@ -1,7 +1,7 @@
 ﻿using Baked.Business;
 using Baked.Domain.Model;
+using Baked.RestApi;
 using Baked.RestApi.Configuration;
-using Baked.RestApi.Model;
 using Humanizer;
 
 namespace Baked.CodingStyle.EntityExtensionViaComposition;

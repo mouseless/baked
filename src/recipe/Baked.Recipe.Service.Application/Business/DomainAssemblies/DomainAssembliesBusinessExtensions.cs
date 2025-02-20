@@ -1,6 +1,7 @@
 ﻿using Baked.Business;
 using Baked.Business.DomainAssemblies;
 using Baked.Domain.Model;
+using Baked.RestApi;
 using Baked.RestApi.Model;
 using System.Reflection;
 

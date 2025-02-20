@@ -1,4 +1,5 @@
 ﻿using Baked.Business;
+using Baked.RestApi;
 using Baked.RestApi.Configuration;
 using Humanizer;
 
@@ -16,7 +17,7 @@ public class RichTransientInitializerIsGetResourceConvention : IApiModelConventi
         if (!context.Action.Parameter.TryGetValue("id", out var parameter)) { return; }
 
         parameter.IsInvokeMethodParameter = true;
-        parameter.From = RestApi.Model.ParameterModelFrom.Route;
+        parameter.From = ParameterModelFrom.Route;
         parameter.RoutePosition = 1;
 
         context.Action.Method = HttpMethod.Get;

@@ -1,6 +1,7 @@
 ﻿using Baked.Architecture;
 using Baked.Domain.Model;
 using Baked.Orm;
+using Baked.RestApi;
 using Baked.RestApi.Model;
 using Baked.Testing;
 using Humanizer;
