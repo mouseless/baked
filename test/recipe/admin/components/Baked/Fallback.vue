@@ -1,8 +1,6 @@
 <template>
-  <code>
-    <pre>
-      {{ json }}
-    </pre>
+  <code class="bg-red-500 p-4 rounded-md">
+    {{ json }}
   </code>
 </template>
 <script setup>

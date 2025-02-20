@@ -17,3 +17,8 @@ logs
 .DS_Store
 .fleet
 .idea
+
+# playwright
+
+**/*.js-snapshots/**
+**/test-results/**

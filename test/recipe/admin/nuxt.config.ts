@@ -34,6 +34,7 @@ export default defineNuxtConfig({
   features: {
     inlineStyles: false
   },
+  logLevel: process.env.SILENT === "1" ? "silent" : "info",
   modules: [
     "@nuxt/eslint",
     "@nuxtjs/tailwindcss",

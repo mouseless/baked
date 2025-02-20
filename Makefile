@@ -1,11 +1,19 @@
 .PHONY: format build test run
+FILE ?= file_name
 
 format:
-	@ dotnet format --verbosity normal
+	@ \
+	dotnet format --verbosity normal ; \
+	cd test/recipe/admin ; npm run lint -- --fix ; cd ../../.. ; \
+	cd docs/.theme ; npm run lint -- --fix ; cd ../..
+fix:
+	@ cd test/recipe/admin ; npx eslint $(TARGET) --fix ; cd ../../..
 build:
 	@ dotnet build
 test:
-	@ dotnet test
+	@ \
+	dotnet test --logger quackers ; \
+	cd test/recipe/admin ; SILENT=1 npm run test ; cd ../../..
 coverage:
 	@ \
 	rm -rdf .coverage ; \
