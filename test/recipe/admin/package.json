@@ -8,8 +8,11 @@
     "predev": "npm run setup --env=development",
     "dev": "nuxt dev --dotenv .env.development",
     "postinstall": "nuxt prepare",
-    "prelocaldev": "nuxi generate --dotenv .env.development",
-    "localdev": "npx http-server .output/public -p 3000",
+    "build": "cross-env-shell nuxi generate --log-level silent --dotenv .env.$npm_config_env",
+    "build:Development": "npm run build --env=development",
+    "build:Production": "npm run build --env=production",
+    "prelocal":"npm run build:Development",
+    "local": "npx http-server .output/public -p 3000",
     "test": "playwright test"
   },
   "devDependencies": {

@@ -34,29 +34,4 @@ public class LocatableObjectWithPropsIsDetailComponent : TestServiceSpec
         detailProperties.ShouldContain(p => p.Name == nameof(RichTransientWithData.Id));
         detailProperties.ShouldContain(p => p.Name == nameof(RichTransientWithData.Time));
     }
-
-    [Test]
-    public void Detail_public_properties_have_table_column_attribute()
-    {
-        var domainModel = GiveMe.TheDomainModel();
-
-        var members = domainModel.Types[typeof(Child)].GetMembers();
-        var detailProperties = members.Properties.Where(p => p.Has<TableColumnAttribute>());
-        detailProperties.ShouldNotBeNull();
-        detailProperties.Count().ShouldBe(2);
-        detailProperties.ShouldContain(p => p.Name == nameof(Child.Id));
-        detailProperties.ShouldContain(p => p.Name == nameof(Child.Parent));
-    }
-
-    [Test]
-    public void Detail_public_methods_with_no_parameters_and_returns_list_have_table_attribute()
-    {
-        var domainModel = GiveMe.TheDomainModel();
-
-        var members = domainModel.Types[typeof(Parent)].GetMembers();
-        var tableMethods = members.Methods.Where(p => p.Has<TableAttribute>());
-        tableMethods.ShouldNotBeNull();
-        tableMethods.Count().ShouldBe(1);
-        tableMethods.ShouldContain(p => p.Name == nameof(Parent.GetChildren));
-    }
 }

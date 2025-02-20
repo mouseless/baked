@@ -46,3 +46,13 @@ services:
     links:
       - db.mysql
       - db.postgresql
+
+  recipe.admin:
+    build:
+      dockerfile: test/recipe/admin/Dockerfile
+      args:
+        ENVIRONMENT: Production
+    ports:
+      - 3000:3000
+    links:
+      - recipe.service
