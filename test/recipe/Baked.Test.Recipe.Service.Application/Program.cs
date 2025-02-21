@@ -31,7 +31,7 @@ Bake.New
             baseClaims: ["BaseA", "BaseB"]
         ),
         core: c => c.Dotnet(baseNamespace: "Baked.Test"),
-        cors: c => c.AspNetCore(Settings.Required<string>("CorsOrigin")),
+        cors: c => c.AspNetCore(Settings.Required<string>("CorsOrigin:0"), Settings.Required<string>("CorsOrigin:1")),
         database: c => c
             .Sqlite()
             .ForProduction(c.PostgreSql()),
