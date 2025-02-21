@@ -3,5 +3,5 @@
 public class InlineData : IData
 {
     public string Type => "Inline";
-    public dynamic Value { get; set; } = default!;
+    public object Value { get; set; } = default!;
 }

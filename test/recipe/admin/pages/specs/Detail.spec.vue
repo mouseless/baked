@@ -8,7 +8,6 @@ const variants = [
     descriptor: giveMe.aDetail({
       title: "TITLE TEXT",
       header: giveMe.anExpected({ testId: "header", value: "HEADER TEXT" }),
-      menu: giveMe.aMenu([{label:"Root", items:[{label:"Child", url:"#"}]}]),
       props: [
         giveMe.aDetailProp({ keyAndTestId: "prop1", title: "PROP 1" }),
         giveMe.aDetailProp({ keyAndTestId: "prop2", title: "PROP 2" })
@@ -24,7 +23,6 @@ const variants = [
     descriptor: giveMe.aDetail({
       title: null,
       header: null,
-      menu: null,
       props: null,
       data: null
     })

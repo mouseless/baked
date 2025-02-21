@@ -11,7 +11,7 @@ public class RichTransientWithData(TimeProvider _timeProvider)
 
     public string Id { get; private set; } = default!;
     public string Time => _timeProvider.GetNow().ToString();
-    internal string InternalProperty => $"{Guid.NewGuid}";
+    internal string InternalProperty => $"{Guid.NewGuid()}";
 
     public string Method(string text) =>
         text;

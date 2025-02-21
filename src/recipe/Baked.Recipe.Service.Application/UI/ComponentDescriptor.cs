@@ -16,7 +16,5 @@ public class ComponentDescriptor<TSchema>(TSchema schema) : IComponentDescriptor
     public IData? Data { get; set; }
 
     string IComponentDescriptor.Type => Type;
-
-    IComponentSchema? IComponentDescriptor.Schema =>
-        Schema;
+    IComponentSchema? IComponentDescriptor.Schema => Schema;
 }

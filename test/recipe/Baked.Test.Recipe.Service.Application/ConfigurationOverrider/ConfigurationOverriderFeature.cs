@@ -117,19 +117,25 @@ public class ConfigurationOverriderFeature : IFeature
             var index = new ComponentDescriptor<DetailSchema>(new()
             {
                 Title = "Dashboard",
-                Menu = new ComponentDescriptor<MenuSchema>(new()
+                Header = new ComponentDescriptor("Menu")
                 {
-                    Items = [
-                            new(
-                                Label: "Rich Transients",
-                                Items: [
-                                    new(Label: "Rich Transient w/ Datas 1", Url: "/rich-transient-with-datas/test1"),
-                                    new(Label: "Rich Transient w/ Datas 2", Url: "/rich-transient-with-datas/test2"),
-                                    new(Label: "Rich Transient w/ Datas 3", Url: "/rich-transient-with-datas/test3")
-                                ]
-                            )
-                        ]
-                })
+                    Data = new InlineData
+                    {
+                        Value = new object[]
+                        {
+                            new
+                            {
+                                Label = "Rich Transients Menu",
+                                Items = new object[]
+                                {
+                                    new { Label = "Rich Transient w/ Data 1", Url = "/rich-transient-with-datas/test1" },
+                                    new { Label = "Rich Transient w/ Data 2", Url = "/rich-transient-with-datas/test2" },
+                                    new { Label = "Rich Transient w/ Data 3", Url = "/rich-transient-with-datas/test3" }
+                                }
+                            }
+                        }
+                    }
+                }
             });
 
             components.Add(nameof(index), index);

@@ -28,22 +28,6 @@ export default {
     return { key: keyAndTestId, title, component };
   },
 
-  aMenu(items){
-    return {
-      type: "Menu",
-      schema:{
-        items: $(items, [
-          {
-            label: "Menu",
-            items:[
-              { label:"Menu-Item", url:"#" }
-            ]
-          }
-        ])
-      }
-    };
-  },
-
   anExpected({ testId, value }) {
     testId = $(testId, "test-id");
     value = $(value, "test value");
