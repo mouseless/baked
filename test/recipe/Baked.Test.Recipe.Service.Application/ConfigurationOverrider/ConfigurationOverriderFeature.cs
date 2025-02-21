@@ -5,6 +5,8 @@ using Baked.Test.Authentication;
 using Baked.Test.Business;
 using Baked.Test.ExceptionHandling;
 using Baked.Test.Orm;
+using Baked.Theme.Admin;
+using Baked.UI;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
 
@@ -108,6 +110,29 @@ public class ConfigurationOverriderFeature : IFeature
                 mappedMethodName: nameof(OverrideSamples.RequestClass),
                 useRequestClassForBody: false
             );
+        });
+
+        configurator.ConfigureComponentDescriptors(components =>
+        {
+            var index = new ComponentDescriptor<DetailSchema>(new()
+            {
+                Title = "Dashboard",
+                Menu = new ComponentDescriptor<MenuSchema>(new()
+                {
+                    Items = [
+                            new(
+                                Label: "Rich Transients",
+                                Items: [
+                                    new(Label: "Rich Transient w/ Datas 1", Url: "/rich-transient-with-datas/test1"),
+                                    new(Label: "Rich Transient w/ Datas 2", Url: "/rich-transient-with-datas/test2"),
+                                    new(Label: "Rich Transient w/ Datas 3", Url: "/rich-transient-with-datas/test3")
+                                ]
+                            )
+                        ]
+                })
+            });
+
+            components.Add(nameof(index), index);
         });
     }
 }

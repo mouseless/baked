@@ -4,16 +4,17 @@ function $(value, defaultValue) {
 }
 
 export default {
-  aDetail({ title, header, props, data })
+  aDetail({ title, header, menu, props, data })
   {
     title = $(title, "Test Title");
     header = $(header, this.anExpected({testId: "header", value: "Test Header"}));
+    menu = $(menu, this.aMenu());
     props = $(props, []);
     data = $(data, { });
 
     return {
       type: "Detail",
-      schema: { title, header, props },
+      schema: { title, header, menu, props },
       data
     };
   },
@@ -25,6 +26,22 @@ export default {
     component = $(component, this.anExpected({ testId: keyAndTestId }));
 
     return { key: keyAndTestId, title, component };
+  },
+
+  aMenu(items){
+    return {
+      type: "Menu",
+      schema:{
+        items: $(items, [
+          {
+            label: "Menu",
+            items:[
+              { label:"Menu-Item", url:"#" }
+            ]
+          }
+        ])
+      }
+    };
   },
 
   anExpected({ testId, value }) {

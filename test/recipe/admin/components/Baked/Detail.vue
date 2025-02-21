@@ -3,6 +3,9 @@
     <div v-if="schema.header" class="w-full">
       <Baked.Component :descriptor="schema.header" />
     </div>
+    <div v-if="schema.menu" class="w-full">
+      <Baked.Component :descriptor="schema.menu" />
+    </div>
     <div v-if="data" class="grid grid-cols-2 gap-4">
       <div
         v-for="prop in schema.props"

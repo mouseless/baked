@@ -1,8 +1,9 @@
 <template>
-  <Menubar :model="data" />
+  <Menubar v-if="schema" :model="schema.items" />
 </template>
 <script setup>
-const { data } = defineProps({
+const { schema} = defineProps({
+  schema: { type: null, required: true },
   data: { type: null, required: true }
 });
 </script>

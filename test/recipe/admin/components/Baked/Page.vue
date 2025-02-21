@@ -18,10 +18,6 @@ const pageName = computed(() => routeParams[0] ?? "index");
 provide("routeParams", routeParams);
 
 onMounted(async() => {
-  // this is to prevent trowing exception when generated
-  const isServer = import.meta.server ?? false;
-  if(isServer) { return; }
-
   pageDescriptor.value = await import(`../../.baked/${pageName.value}.json`)
     .catch(_ => {
       throw createError({

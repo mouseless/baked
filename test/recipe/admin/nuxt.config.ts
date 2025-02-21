@@ -34,10 +34,6 @@ export default defineNuxtConfig({
   features: {
     inlineStyles: false
   },
-  // this route is to make [...baked] to be generated as baked
-  generate: {
-    routes: ["/baked"]
-  },
   logLevel: process.env.SILENT === "1" ? "silent" : "info",
   modules: [
     "@nuxt/eslint",

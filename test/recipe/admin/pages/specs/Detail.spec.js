@@ -22,6 +22,13 @@ test.describe("Detail", () => {
       await expect(component.getByTestId("header")).toHaveText("HEADER TEXT");
     });
 
+    test("menu", async({page}) => {
+      const component = page.getByTestId(id);
+
+      await expect(component.locator(`.w-full ${primevue.menubar.label}`).nth(0)).toHaveText("Root");
+      await expect(component.locator(`.w-full ${primevue.menubar.label}`).nth(1)).toHaveText("Child");
+    });
+
     test("props", async({page}) => {
       const component = page.getByTestId(id);
 
@@ -49,6 +56,12 @@ test.describe("Detail", () => {
       const component = page.getByTestId(id);
 
       await expect(component.getByTestId("header")).not.toBeVisible();
+    });
+
+    test("menu", async({page}) => {
+      const component = page.getByTestId(id);
+
+      await expect(component.locator(`.w-full ${primevue.menubar.$component}`)).not.toBeVisible();
     });
 
     test("props", async({page}) => {
