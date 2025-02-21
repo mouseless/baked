@@ -50,7 +50,7 @@ public class AdminThemeFeature : IFeature<ThemeConfigurator>
                             .Select(p => new DetailSchema.Property {
                                 Key = p.GetSingle<DetailPropertyAttribute>().Key,
                                 Title = p.GetSingle<DetailPropertyAttribute>().Title,
-                                Component = BakedComponents.String
+                                Component = Components.String
                             })
                         ]
                     })

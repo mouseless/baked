@@ -5,6 +5,6 @@ namespace Baked;
 
 public static class AdminThemeExtensions
 {
-    public static AdminThemeFeature Admin(this ThemeConfigurator _)
-        => new();
+    public static AdminThemeFeature Admin(this ThemeConfigurator _) =>
+        new();
 }

@@ -19,7 +19,7 @@
     <Message Importance="high" Text="'$(ComponentDescriptorsDir)' does not exists. Failed to copy component descriptors!" Condition="!Exists($(ComponentDescriptorsDir))" />
   </Target>  
 
-  <Target Name="CopyBakedFiles" AfterTargets="Publish">
+  <Target Name="CopyGeneratedFiles" AfterTargets="Publish">
     <ItemGroup>
       <GeneratedFiles Include="$(TargetDir)\$(ASPNETCORE_ENVIRONMENT)\*.*" />
     </ItemGroup>
