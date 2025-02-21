@@ -2,7 +2,6 @@
 using Baked.CodingStyle;
 using Baked.CodingStyle.RichTransient;
 using Baked.Domain.Model;
-using Baked.RestApi;
 using Baked.RestApi.Model;
 using Humanizer;
 

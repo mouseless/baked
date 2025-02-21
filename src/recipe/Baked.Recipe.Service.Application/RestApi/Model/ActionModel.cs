@@ -1,43 +1,59 @@
-﻿using Baked.Domain.Model;
-using Humanizer;
+﻿using Humanizer;
 
 namespace Baked.RestApi.Model;
 
-public record ActionModel(
-    string Id,
-    HttpMethod Method,
-    List<string> RouteParts,
-    ReturnModel Return,
-    string FindTargetStatement,
-    MethodModel? MappedMethod = default
-)
+[AttributeUsage(AttributeTargets.Method)]
+public class ActionModel(string method, string[] routeParts,
+    string[]? additionalAttributes = default,
+    string[]? preparationStatements = default
+) : Attribute
 {
-    public string Name { get; set; } = Id;
-    public HttpMethod Method { get; set; } = Method;
-    public List<string> RouteParts { get; set; } = RouteParts;
-    public Func<string, string> RoutePartStylizer { get; set; } = s => s.Kebaberize();
-    public ReturnModel Return { get; set; } = Return;
-    public string FindTargetStatement { get; set; } = FindTargetStatement;
-    public bool UseForm { get; set; } = false;
-    public bool UseRequestClassForBody { get; set; } = true;
-    public int Order { get; set; } = 0;
-
-    public List<string> AdditionalAttributes { get; init; } = [];
-    public Dictionary<string, ParameterModel> Parameter { get; init; } = [];
-    public List<string> PreparationStatements { get; init; } = [];
+    public string Id { get; private set; } = default!;
+    public string Name { get; set; } = default!;
+    public HttpMethod Method { get; set; } = default!;
+    public List<string> RouteParts { get; set; } = default!;
+    public Func<string, string> RoutePartStylizer { get; set; } = default!;
+    public string ReturnType { get; set; } = default!;
+    public bool ReturnIsAsync { get; set; } = default!;
+    public bool ReturnIsVoid { get; set; } = default!;
+    public Func<string, string> ReturnResultRenderer { get; set; } = default!;
+    public string FindTargetStatement { get; set; } = default!;
+    public bool UseForm { get; set; } = default;
+    public bool UseRequestClassForBody { get; set; } = default!;
+    public int Order { get; set; } = default!;
+    public List<string> AdditionalAttributes { get; set; } = default!;
+    public List<string> PreparationStatements { get; set; } = default!;
+    public Dictionary<string, ParameterModel> Parameter { get; private set; } = default!;
 
     public bool HasBody => !UseForm && BodyParameters.Any();
-
-    public IEnumerable<ParameterModel> Parameters { get => Parameter.Values; init => Parameter = value.ToDictionary(p => p.Id); }
-
+    public IEnumerable<ParameterModel> Parameters => Parameter.Values;
     IEnumerable<ParameterModel> ActionParameters => Parameters.Where(p => !p.IsHardCoded).OrderBy(p => p.Order).ThenBy(p => p.IsOptional ? 1 : -1);
     IEnumerable<ParameterModel> RouteParameters => Parameters.Where(p => p.From == ParameterModelFrom.Route).OrderBy(p => p.RoutePosition);
     IEnumerable<ParameterModel> NonServiceParameters => ActionParameters.Where(p => p.From != ParameterModelFrom.Services);
-
     public IEnumerable<ParameterModel> BodyParameters => ActionParameters.Where(p => p.From == ParameterModelFrom.BodyOrForm);
     public IEnumerable<ParameterModel> ServiceParameters => ActionParameters.Where(p => p.From == ParameterModelFrom.Services);
     public IEnumerable<ParameterModel> NonBodyParameters => NonServiceParameters.Where(p => p.From != ParameterModelFrom.BodyOrForm);
     public IEnumerable<ParameterModel> InvokedMethodParameters => Parameters.Where(p => p.IsInvokeMethodParameter);
+
+    internal void Init(string id, string defaultReturnType, bool defaultReturnIsAsync, bool defaultReturnIsVoid, IEnumerable<ParameterModel> parameters)
+    {
+        Id = id;
+        Name ??= id;
+        Method ??= HttpMethod.Parse(method);
+        RouteParts ??= [.. routeParts];
+        RoutePartStylizer ??= s => s.Kebaberize();
+        ReturnType ??= defaultReturnType;
+        ReturnIsAsync ??= defaultReturnIsAsync;
+        ReturnIsVoid ??= defaultReturnIsVoid;
+        ReturnResultRenderer ??= resultExpression => resultExpression;
+        FindTargetStatement ??= "target";
+        UseForm ??= false;
+        UseRequestClassForBody ??= true;
+        Order ??= 0;
+        AdditionalAttributes ??= [.. additionalAttributes];
+        PreparationStatements ??= [.. preparationStatements];
+        Parameter ??= parameters.ToDictionary(p => p.Id);
+    }
 
     public string GetRoute()
     {
@@ -50,4 +66,7 @@ public record ActionModel(
 
         return routeParts.Join('/');
     }
+
+    public string RenderReturnResult(string resultExpression) =>
+        ReturnResultRenderer(resultExpression);
 }

@@ -1,5 +1,4 @@
 ﻿using Baked.Business.DomainAssemblies;
-using Baked.RestApi.Configuration;
 
 namespace Baked.RestApi.Conventions;
 

@@ -1,6 +1,4 @@
 ﻿using Baked.Business;
-using Baked.RestApi;
-using Baked.RestApi.Configuration;
 using Humanizer;
 
 namespace Baked.CodingStyle.RichTransient;

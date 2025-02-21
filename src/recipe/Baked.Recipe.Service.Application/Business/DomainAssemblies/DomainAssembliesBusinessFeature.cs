@@ -118,13 +118,13 @@ public class DomainAssembliesBusinessFeature(
 
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Index.Type.Add<ApiServiceAttribute>();
+            builder.Index.Type.Add<ControllerModel>();
             builder.Index.Type.Add<ApiInputAttribute>();
 
             builder.Index.Method.Add<InitializerAttribute>();
-            builder.Index.Method.Add<ApiMethodAttribute>();
+            builder.Index.Method.Add<ActionModel>();
 
-            builder.Conventions.AddTypeMetadata(new ApiServiceAttribute(),
+            builder.Conventions.AddTypeMetadata(new ControllerModel(),
                 when: c =>
                   c.Type.Has<ServiceAttribute>() &&
                   c.Type.IsClass &&
@@ -133,7 +133,8 @@ public class DomainAssembliesBusinessFeature(
                   c.Type.TryGetMembers(out var members) &&
                   members.Methods.Any(m => m.DefaultOverload.IsPublicInstanceWithNoSpecialName())
             );
-            builder.Conventions.AddMethodMetadata(new ApiMethodAttribute(),
+            builder.Conventions.AddMethodMetadata(
+                attribute: c => new ActionModel(nameof(HttpMethod.Post), [c.Type.Name, c.Method.Name]),
                 when: c =>
                     !c.Method.Has<ExternalAttribute>() &&
                     !c.Method.Has<InitializerAttribute>() &&

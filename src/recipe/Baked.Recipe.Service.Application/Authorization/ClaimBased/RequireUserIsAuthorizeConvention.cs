@@ -1,6 +1,4 @@
-﻿using Baked.RestApi.Configuration;
-
-namespace Baked.Authorization.ClaimBased;
+﻿namespace Baked.Authorization.ClaimBased;
 
 public class RequireUserIsAuthorizeConvention : IApiModelConvention<ActionModelContext>
 {

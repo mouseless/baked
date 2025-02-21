@@ -3,14 +3,11 @@ using Baked.Domain.Model;
 
 namespace Baked.Domain.Conventions;
 
-public class MetadataConvention<TModelContext>(
+public class AddMetadataConvention<TModelContext>(
     Action<TModelContext, Action<ICustomAttributesModel, Attribute>> _apply,
-    Func<TModelContext, bool> _when,
-    int _order = default
-) : IDomainModelConvention<TModelContext>
+    Func<TModelContext, bool> _when
+) : IDomainModelConvention<TModelContext>, IMetadataConvention
 {
-    public int Order => _order;
-
     public void Apply(TModelContext model)
     {
         if (_when(model))

@@ -1,6 +1,4 @@
-﻿using Baked.RestApi.Configuration;
-
-namespace Baked.RestApi.Conventions;
+﻿namespace Baked.RestApi.Conventions;
 
 public class ProducesJsonConvention(
     Func<ActionModelContext, bool>? _when = default

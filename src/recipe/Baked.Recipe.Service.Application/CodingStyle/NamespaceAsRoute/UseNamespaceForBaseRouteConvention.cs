@@ -1,5 +1,3 @@
-using Baked.RestApi.Configuration;
-
 namespace Baked.CodingStyle.NamespaceAsRoute;
 
 public class UseNamespaceForBaseRouteConvention

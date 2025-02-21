@@ -1,7 +1,6 @@
 ﻿using Baked.Business;
 using Baked.CodingStyle.SingleByUnique;
 using Baked.Domain.Model;
-using Baked.RestApi.Configuration;
 using Humanizer;
 
 namespace Baked.CodingStyle.EntitySubclassViaComposition;

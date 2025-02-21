@@ -1,6 +1,4 @@
-﻿using Baked.RestApi.Configuration;
-
-namespace Baked.CodingStyle.SingleByUnique;
+﻿namespace Baked.CodingStyle.SingleByUnique;
 
 public class MarkActionAsSingleByUniqueConvention : IApiModelConvention<ActionModelContext>
 {

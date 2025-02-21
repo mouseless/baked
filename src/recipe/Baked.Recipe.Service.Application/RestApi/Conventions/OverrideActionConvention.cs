@@ -1,5 +1,4 @@
-﻿using Baked.RestApi.Configuration;
-using Baked.RestApi.Model;
+﻿using Baked.RestApi.Model;
 
 namespace Baked.RestApi.Conventions;
 

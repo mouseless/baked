@@ -1,5 +1,4 @@
-﻿using Baked.RestApi.Configuration;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace Baked.CodingStyle.UseNullableTypes;
 

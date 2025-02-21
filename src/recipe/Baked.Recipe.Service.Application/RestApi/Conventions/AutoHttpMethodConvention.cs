@@ -1,5 +1,4 @@
-﻿using Baked.RestApi.Configuration;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace Baked.RestApi.Conventions;
 

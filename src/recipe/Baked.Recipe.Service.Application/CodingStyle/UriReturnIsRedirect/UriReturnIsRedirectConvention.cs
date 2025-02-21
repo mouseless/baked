@@ -1,5 +1,4 @@
-﻿using Baked.RestApi.Configuration;
-using System.Net;
+﻿using System.Net;
 
 namespace Baked.CodingStyle.UriReturnIsRedirect;
 

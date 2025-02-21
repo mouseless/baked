@@ -1,6 +1,5 @@
 ﻿using Baked.Architecture;
 using Baked.RestApi;
-using Baked.RestApi.Configuration;
 using Baked.RestApi.Conventions;
 using Baked.RestApi.Model;
 using Microsoft.AspNetCore.Mvc;

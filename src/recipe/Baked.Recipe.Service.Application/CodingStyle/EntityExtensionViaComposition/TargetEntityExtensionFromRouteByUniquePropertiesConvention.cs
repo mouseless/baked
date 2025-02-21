@@ -1,6 +1,5 @@
 ﻿using Baked.CodingStyle.SingleByUnique;
 using Baked.Domain.Model;
-using Baked.RestApi.Configuration;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Baked.CodingStyle.EntityExtensionViaComposition;

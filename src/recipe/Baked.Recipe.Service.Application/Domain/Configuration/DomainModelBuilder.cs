@@ -40,8 +40,9 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
 
     public void PostBuild(DomainModel result)
     {
-        ApplyConventions(result);
+        ApplyMetadataConventions(result);
         BuildIndices(result);
+        ApplyNonMetadataConventions(result);
     }
 
     TypeModel.Factory GetFactory(Type t)
@@ -64,81 +65,94 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
         return _buildQueue.Enqueue(type);
     }
 
-    void ApplyConventions(DomainModel model)
+    void ApplyMetadataConventions(DomainModel model)
     {
-        foreach (var convention in _options.Conventions.OrderBy(c => c.Order))
+        foreach (var convention in _options.Conventions.OrderBy(c => c.Order).Select(c => c.Convention).OfType<IMetadataConvention>())
         {
-            if (convention is IDomainModelConvention<TypeModelContext> typeConvention)
+            Apply(model, convention);
+        }
+    }
+
+    void ApplyNonMetadataConventions(DomainModel model)
+    {
+        foreach (var convention in _options.Conventions.OrderBy(c => c.Order).Select(c => c.Convention).Where(c => c is not IMetadataConvention))
+        {
+            Apply(model, convention);
+        }
+    }
+
+    void Apply(DomainModel model, IDomainModelConvention convention)
+    {
+        if (convention is IDomainModelConvention<TypeModelContext> typeConvention)
+        {
+            foreach (var type in model.Types)
             {
-                foreach (var type in model.Types)
-                {
-                    typeConvention.Apply(new() { Domain = model, Type = type });
-                }
+                typeConvention.Apply(new() { Domain = model, Type = type });
+            }
+        }
+
+        if (convention is IDomainModelConvention<TypeModelGenericsContext> typeGenericsConvention)
+        {
+            foreach (var type in model.Types.OfType<TypeModelGenerics>())
+            {
+                typeGenericsConvention.Apply(new() { Domain = model, Type = type });
+            }
+        }
+
+        if (convention is IDomainModelConvention<TypeModelInheritanceContext> typeInheritanceConvention)
+        {
+            foreach (var type in model.Types.OfType<TypeModelInheritance>())
+            {
+                typeInheritanceConvention.Apply(new() { Domain = model, Type = type });
+            }
+        }
+
+        if (convention is IDomainModelConvention<TypeModelMetadataContext> typeMetadataConvention)
+        {
+            foreach (var type in model.Types.OfType<TypeModelMetadata>())
+            {
+                typeMetadataConvention.Apply(new() { Domain = model, Type = type });
+            }
+        }
+
+        if (convention is IDomainModelConvention<TypeModelMembersContext> typeMembersConvention)
+        {
+            foreach (var type in model.Types.OfType<TypeModelMembers>())
+            {
+                typeMembersConvention.Apply(new() { Domain = model, Type = type });
+            }
+        }
+
+        if (convention is IDomainModelConvention<PropertyModelContext> propertyConvention)
+        {
+            foreach (var (type, property) in model.Types.OfType<TypeModelMembers>()
+                                                        .SelectMany(t => t.Properties.Select(p => (t, p)))
+            )
+            {
+                propertyConvention.Apply(new() { Domain = model, Type = type.GetMembers(), Property = property });
             }
 
-            if (convention is IDomainModelConvention<TypeModelGenericsContext> typeGenericsConvention)
+        }
+
+        if (convention is IDomainModelConvention<MethodModelContext> methodConvention)
+        {
+            foreach (var (type, method) in model.Types.OfType<TypeModelMembers>()
+                                                      .SelectMany(t => t.Methods.Select(m => (t, m)))
+            )
             {
-                foreach (var type in model.Types.OfType<TypeModelGenerics>())
-                {
-                    typeGenericsConvention.Apply(new() { Domain = model, Type = type });
-                }
+                methodConvention.Apply(new() { Domain = model, Type = type, Method = method });
             }
+        }
 
-            if (convention is IDomainModelConvention<TypeModelInheritanceContext> typeInheritanceConvention)
+        if (convention is IDomainModelConvention<ParameterModelContext> parameterConvention)
+        {
+            foreach (var (type, method, overload, parameter) in model.Types.OfType<TypeModelMembers>()
+                                                                           .SelectMany(t => t.Methods.Select(m => (t, m)))
+                                                                           .SelectMany(x => x.m.Overloads.Select(o => (x.t, x.m, o)))
+                                                                           .SelectMany(x => x.o.Parameters.Select(p => (x.t, x.m, x.o, p)))
+            )
             {
-                foreach (var type in model.Types.OfType<TypeModelInheritance>())
-                {
-                    typeInheritanceConvention.Apply(new() { Domain = model, Type = type });
-                }
-            }
-
-            if (convention is IDomainModelConvention<TypeModelMetadataContext> typeMetadataConvention)
-            {
-                foreach (var type in model.Types.OfType<TypeModelMetadata>())
-                {
-                    typeMetadataConvention.Apply(new() { Domain = model, Type = type });
-                }
-            }
-
-            if (convention is IDomainModelConvention<TypeModelMembersContext> typeMembersConvention)
-            {
-                foreach (var type in model.Types.OfType<TypeModelMembers>())
-                {
-                    typeMembersConvention.Apply(new() { Domain = model, Type = type });
-                }
-            }
-
-            if (convention is IDomainModelConvention<PropertyModelContext> propertyConvention)
-            {
-                foreach (var (type, property) in model.Types.OfType<TypeModelMembers>()
-                                                            .SelectMany(t => t.Properties.Select(p => (t, p)))
-                )
-                {
-                    propertyConvention.Apply(new() { Domain = model, Type = type.GetMembers(), Property = property });
-                }
-
-            }
-
-            if (convention is IDomainModelConvention<MethodModelContext> methodConvention)
-            {
-                foreach (var (type, method) in model.Types.OfType<TypeModelMembers>()
-                                                          .SelectMany(t => t.Methods.Select(m => (t, m)))
-                )
-                {
-                    methodConvention.Apply(new() { Domain = model, Type = type, Method = method });
-                }
-            }
-
-            if (convention is IDomainModelConvention<ParameterModelContext> parameterConvention)
-            {
-                foreach (var (type, method, overload, parameter) in model.Types.OfType<TypeModelMembers>()
-                                                                               .SelectMany(t => t.Methods.Select(m => (t, m)))
-                                                                               .SelectMany(x => x.m.Overloads.Select(o => (x.t, x.m, o)))
-                                                                               .SelectMany(x => x.o.Parameters.Select(p => (x.t, x.m, x.o, p)))
-                )
-                {
-                    parameterConvention.Apply(new() { Domain = model, Type = type, Method = method, MethodOverload = overload, Parameter = parameter });
-                }
+                parameterConvention.Apply(new() { Domain = model, Type = type, Method = method, MethodOverload = overload, Parameter = parameter });
             }
         }
     }

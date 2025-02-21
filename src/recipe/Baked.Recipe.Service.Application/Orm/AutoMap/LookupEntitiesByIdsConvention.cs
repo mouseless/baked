@@ -1,5 +1,4 @@
 ﻿using Baked.Domain.Model;
-using Baked.RestApi.Configuration;
 
 namespace Baked.Orm.AutoMap;
 

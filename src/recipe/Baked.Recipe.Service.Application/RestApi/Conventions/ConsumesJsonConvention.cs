@@ -1,6 +1,4 @@
-﻿using Baked.RestApi.Configuration;
-
-namespace Baked.RestApi.Conventions;
+﻿namespace Baked.RestApi.Conventions;
 
 public class ConsumesJsonConvention(
     Func<ActionModelContext, bool>? _when = default

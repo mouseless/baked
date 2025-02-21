@@ -2,12 +2,11 @@
 
 namespace Baked.RestApi.Model;
 
-public record ParameterModel(
+public class ParameterModel(
     TypeModel TypeModel,
     ParameterModelFrom From,
-    string Id,
-    Domain.Model.ParameterModel? MappedParameter = default
-)
+    string Id
+) : Attribute
 {
     public ParameterModelFrom From { get; set; } = From;
     public string Type { get; set; } = TypeModel.CSharpFriendlyFullName;

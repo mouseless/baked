@@ -1,7 +1,4 @@
-﻿using Baked.RestApi;
-using Baked.RestApi.Configuration;
-
-namespace Baked.CodingStyle.AddRemoveChild;
+﻿namespace Baked.CodingStyle.AddRemoveChild;
 
 public class OnlyEntityParameterIsInRouteForDeleteChildConvention : IApiModelConvention<ActionModelContext>
 {

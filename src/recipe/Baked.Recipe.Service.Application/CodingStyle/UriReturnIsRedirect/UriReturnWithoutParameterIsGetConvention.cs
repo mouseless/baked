@@ -1,6 +1,4 @@
-﻿using Baked.RestApi.Configuration;
-
-namespace Baked.CodingStyle.UriReturnIsRedirect;
+﻿namespace Baked.CodingStyle.UriReturnIsRedirect;
 
 public class UriReturnWithoutParameterIsGetConvention : IApiModelConvention<ActionModelContext>
 {

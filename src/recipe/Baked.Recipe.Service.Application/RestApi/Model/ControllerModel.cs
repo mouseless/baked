@@ -1,13 +1,20 @@
-﻿using Baked.Domain.Model;
+﻿namespace Baked.RestApi.Model;
 
-namespace Baked.RestApi.Model;
-
-public record ControllerModel(TypeModel MappedType)
+[AttributeUsage(AttributeTargets.Class)]
+public class ControllerModel : Attribute
 {
-    public string Id { get; } = MappedType.CSharpFriendlyFullName;
-    public string ClassName { get; set; } = MappedType.Name;
-    public string GroupName { get; set; } = MappedType.Name;
-    public Dictionary<string, ActionModel> Action { get; init; } = [];
+    public string Id { get; private set; } = default!;
+    public string ClassName { get; set; } = default!;
+    public string GroupName { get; set; } = default!;
+    public Dictionary<string, ActionModel> Action { get; private set; } = default!;
 
-    public IEnumerable<ActionModel> Actions { get => Action.Values.OrderBy(a => a.Order); init => Action = value.ToDictionary(a => a.Id); }
+    public IEnumerable<ActionModel> Actions => Action.Values.OrderBy(a => a.Order);
+
+    internal void Init(string id, string defaultClassName, string defaultGroupName, IEnumerable<ActionModel> actions)
+    {
+        Id = id;
+        ClassName ??= defaultClassName;
+        GroupName ??= defaultGroupName;
+        Action = actions.ToDictionary(a => a.Id);
+    }
 }

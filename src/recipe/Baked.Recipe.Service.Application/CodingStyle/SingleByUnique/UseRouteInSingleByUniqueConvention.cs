@@ -1,6 +1,4 @@
-﻿using Baked.RestApi;
-using Baked.RestApi.Configuration;
-using Humanizer;
+﻿using Humanizer;
 
 namespace Baked.CodingStyle.SingleByUnique;
 

@@ -1,6 +1,4 @@
-﻿using Baked.RestApi.Configuration;
-
-namespace Baked.CodingStyle.CommandPattern;
+﻿namespace Baked.CodingStyle.CommandPattern;
 
 public class NoRequestBodyForSingleEnumerableParametersConvention(
     Func<ActionModelContext, bool>? _when = default,

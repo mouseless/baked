@@ -1,5 +1,4 @@
 ﻿using Baked.Business;
-using Baked.RestApi.Configuration;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Baked.CodingStyle.RichTransient;

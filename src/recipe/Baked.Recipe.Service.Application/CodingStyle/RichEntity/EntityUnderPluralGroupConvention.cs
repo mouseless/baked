@@ -1,5 +1,4 @@
 ﻿using Baked.Orm;
-using Baked.RestApi.Configuration;
 using Humanizer;
 
 namespace Baked.CodingStyle.RichEntity;

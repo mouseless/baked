@@ -1,6 +1,4 @@
-﻿using Baked.RestApi.Configuration;
-
-namespace Baked.CodingStyle.UseBuiltInTypes;
+﻿namespace Baked.CodingStyle.UseBuiltInTypes;
 
 public class SetDefaultValueForEnumConvention : IApiModelConvention<ParameterModelContext>
 {

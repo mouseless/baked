@@ -1,5 +1,4 @@
 ﻿using Baked.Domain.Model;
-using Baked.RestApi.Configuration;
 using Humanizer;
 
 namespace Baked.CodingStyle.EntityExtensionViaComposition;

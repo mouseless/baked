@@ -1,5 +1,4 @@
-﻿using Baked.RestApi.Configuration;
-using Humanizer;
+﻿using Humanizer;
 
 namespace Baked.RestApi.Conventions;
 
