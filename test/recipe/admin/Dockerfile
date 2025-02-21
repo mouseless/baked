@@ -1,10 +1,15 @@
 # syntax=docker/dockerfile:1.7-labs
 ARG ENVIRONMENT Production
 
-FROM mcr.microsoft.com/dotnet/sdk:9.0 as build
+FROM node:22-bullseye as init
+
+COPY --parents test/recipe/admin/package.json .
+COPY --parents test/recipe/admin/package-lock.json .
+RUN cd test/recipe/admin; npm install
+
+FROM mcr.microsoft.com/dotnet/sdk:9.0 as restore
 
 ARG ENVIRONMENT
-
 ENV ASPNETCORE_ENVIRONMENT $ENVIRONMENT
 
 COPY --parents Directory.Packages.props .
@@ -18,22 +23,26 @@ COPY --parents test/recipe/Baked.Test.Recipe.Service/Baked.Test.Recipe.Service.c
 COPY --parents test/recipe/Baked.Test.Recipe.Service.Application/Baked.Test.Recipe.Service.Application.csproj .
 RUN dotnet restore test/recipe/Baked.Test.Recipe.Service.Application
 
+FROM restore as build
+
+ARG ENVIRONMENT
+ENV ASPNETCORE_ENVIRONMENT $ENVIRONMENT
+
 COPY . .
 RUN dotnet build ./test/recipe/Baked.Test.Recipe.Service.Application --no-restore -c Release
 
-FROM node:22-bullseye as final
+FROM init as generate
 
 ARG ENVIRONMENT
 
-COPY --from=build  ./test/recipe/admin ./test/recipe/admin
-
-COPY --parents test/recipe/admin/package.json .
-COPY --parents test/recipe/admin/package-lock.json .
-RUN cd test/recipe/admin; npm install
-
 COPY --parents test/recipe/admin .
+COPY --from=build  ./test/recipe/admin/.baked ./test/recipe/admin/.baked
 RUN cd test/recipe/admin ; npm run postinstall ; npm run build:$ENVIRONMENT
 
-EXPOSE 3000
-CMD ["npx", "http-server","./test/recipe/admin/.output/public","-p 3000"]
+FROM nginx AS final
+
+COPY test/recipe/admin/nginx.conf /etc/nginx/nginx.conf
+COPY --from=generate test/recipe/admin/.output/public /www/public
+
+CMD nginx -g "daemon off;"
 
