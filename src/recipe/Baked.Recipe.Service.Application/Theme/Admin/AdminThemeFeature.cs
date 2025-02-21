@@ -24,7 +24,7 @@ public class AdminThemeFeature : IFeature<ThemeConfigurator>
                     {
                         if (property.IsPublic)
                         {
-                            property.CustomAttributes.Add(new DetailPropertyAttribute(key: property.Name.Camelize(), title: property.Name));
+                            add(property, new DetailPropertyAttribute(key: property.Name.Camelize(), title: property.Name));
                         }
                     }
                 },
