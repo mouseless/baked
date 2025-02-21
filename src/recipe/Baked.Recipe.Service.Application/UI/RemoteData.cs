@@ -1,7 +1,7 @@
-﻿namespace Baked.UI;
+﻿namespace Baked.Ui;
 
 public class RemoteData : IData
 {
     public string Type => "Remote";
-    public string Path { get; set; } = default!;
+    public required string Path { get; set; }
 }

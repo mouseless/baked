@@ -1,17 +1,17 @@
-﻿using Baked.UI;
+﻿using Baked.Ui;
 
 namespace Baked.Theme.Admin;
 
 public record DetailSchema : IComponentSchema
 {
-    public string Title { get; set; } = default!;
-    public IComponentDescriptor Header { get; set; } = default!;
-    public List<Property> Props { get; set; } = default!;
+    public required string Title { get; set; }
+    public IComponentDescriptor? Header { get; set; }
+    public List<Property> Props { get; set; } = [];
 
     public record Property
     {
-        public string Key { get; set; } = default!;
-        public string Title { get; set; } = default!;
-        public IComponentDescriptor Component { get; set; } = default!;
+        public required string Key { get; set; }
+        public required string Title { get; set; }
+        public required IComponentDescriptor Component { get; set; }
     }
 }

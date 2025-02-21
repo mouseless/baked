@@ -4,17 +4,16 @@ function $(value, defaultValue) {
 }
 
 export default {
-  aDetail({ title, header, menu, props, data })
+  aDetail({ title, header, props, data })
   {
     title = $(title, "Test Title");
     header = $(header, this.anExpected({testId: "header", value: "Test Header"}));
-    menu = $(menu, this.aMenu());
     props = $(props, []);
     data = $(data, { });
 
     return {
       type: "Detail",
-      schema: { title, header, menu, props },
+      schema: { title, header, props },
       data
     };
   },

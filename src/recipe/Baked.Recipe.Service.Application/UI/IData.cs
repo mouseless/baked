@@ -1,3 +1,3 @@
-﻿namespace Baked.UI;
+﻿namespace Baked.Ui;
 
 public interface IData;

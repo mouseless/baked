@@ -1,6 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
-using Baked.UI;
+using Baked.Ui;
 using Humanizer;
 
 namespace Baked.Theme.Admin;

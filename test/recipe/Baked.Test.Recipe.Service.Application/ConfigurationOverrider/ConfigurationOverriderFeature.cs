@@ -6,7 +6,7 @@ using Baked.Test.Business;
 using Baked.Test.ExceptionHandling;
 using Baked.Test.Orm;
 using Baked.Theme.Admin;
-using Baked.UI;
+using Baked.Ui;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
 

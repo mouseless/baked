@@ -58,7 +58,7 @@ public static class BakeExtensions
             app.Layers.AddHttpServer();
             app.Layers.AddRestApi();
             app.Layers.AddRuntime();
-            app.Layers.AddUI();
+            app.Layers.AddUi();
 
             app.Features.AddAuthentications(authentications);
             app.Features.AddAuthorization(authorization);

@@ -4,9 +4,9 @@ using Newtonsoft.Json;
 
 using static Baked.CodeGeneration.CodeGenerationLayer;
 
-namespace Baked.UI;
+namespace Baked.Ui;
 
-public class UILayer : LayerBase<GenerateCode>
+public class UiLayer : LayerBase<GenerateCode>
 {
     public ComponentDescriptors _componentDescriptors = new();
 
@@ -21,7 +21,7 @@ public class UILayer : LayerBase<GenerateCode>
         var files = Context.Get<IGeneratedFileCollection>();
         foreach (var (key, component) in _componentDescriptors)
         {
-            files.AddAsJson(key, component, outdir: "UI", settings: new JsonSerializerSettings
+            files.AddAsJson(key, component, outdir: "Ui", settings: new JsonSerializerSettings
             {
                 ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver()
             });

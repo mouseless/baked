@@ -1,4 +1,4 @@
-﻿namespace Baked.UI;
+﻿namespace Baked.Ui;
 
 public class Components
 {
