@@ -12,11 +12,11 @@ public class UiLayer : LayerBase<GenerateCode>
 
     protected override PhaseContext GetContext(GenerateCode phase) =>
         phase.CreateContextBuilder()
-        .Add(_componentDescriptors)
-        .OnDispose(GenerateUISchemas)
-        .Build();
+            .Add(_componentDescriptors)
+            .OnDispose(GenerateUiSchemas)
+            .Build();
 
-    void GenerateUISchemas()
+    void GenerateUiSchemas()
     {
         var files = Context.Get<IGeneratedFileCollection>();
         foreach (var (key, component) in _componentDescriptors)
