@@ -1,6 +1,7 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
 using Baked.Orm;
+using Baked.RestApi.Model;
 
 namespace Baked.CodingStyle.EntitySubclassViaComposition;
 
@@ -38,22 +39,17 @@ public class EntitySubclassViaCompositionCodingStyleFeature : IFeature<CodingSty
                 when: c => c.Type.Has<EntitySubclassAttribute>(),
                 order: 10
             );
-            builder.Conventions.AddMethodMetadata(new ApiMethodAttribute(),
+            builder.Conventions.AddMethodMetadata(
+                attribute: c => new ActionModel("Post", [c.Type.Name, c.Method.Name], "target"),
                 when: c =>
                     c.Type.Has<EntitySubclassAttribute>() && c.Method.Has<InitializerAttribute>() &&
                     c.Method.Overloads.Any(o => o.IsPublic && !o.IsStatic && !o.IsSpecialName && o.AllParametersAreApiInput()),
                 order: 30
             );
-        });
 
-        configurator.ConfigureApiModelConventions(conventions =>
-        {
-            configurator.UsingDomainModel(domain =>
-            {
-                conventions.Add(new EntitySubclassUnderEntitiesConvention(domain));
-                conventions.Add(new EntitySubclassInitializerIsPostResourceConvention(domain));
-                conventions.Add(new TargetEntitySubclassFromRouteConvention(domain), order: 20);
-            });
+            builder.Conventions.Add(new EntitySubclassUnderEntitiesConvention());
+            builder.Conventions.Add(new EntitySubclassInitializerIsPostResourceConvention());
+            builder.Conventions.Add(new TargetEntitySubclassFromRouteConvention(), order: 20);
         });
     }
 }

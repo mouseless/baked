@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.RestApi.Model;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
@@ -31,6 +32,9 @@ public class UseNullableTypesCodingStyleFeature : IFeature<CodingStyleConfigurat
                     return !nullable;
                 }
             );
+
+            builder.Conventions.Add(new NonOptionalNotNullParametersAreRequiredConvention());
+            builder.Conventions.Add(new SetDefaultValueForNullableEnumConvention());
         });
 
         configurator.ConfigureApiModel(api =>
@@ -40,12 +44,6 @@ public class UseNullableTypesCodingStyleFeature : IFeature<CodingStyleConfigurat
                 "Newtonsoft.Json",
                 "System.ComponentModel.DataAnnotations"
             ]);
-        });
-
-        configurator.ConfigureApiModelConventions(conventions =>
-        {
-            conventions.Add(new NonOptionalNotNullParametersAreRequiredConvention());
-            conventions.Add(new SetDefaultValueForNullableEnumConvention());
         });
     }
 }

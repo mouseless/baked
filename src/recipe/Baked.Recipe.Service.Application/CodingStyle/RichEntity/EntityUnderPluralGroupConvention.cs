@@ -1,15 +1,18 @@
-﻿using Baked.Orm;
+﻿using Baked.Domain.Configuration;
+using Baked.Orm;
+using Baked.RestApi.Model;
 using Humanizer;
 
 namespace Baked.CodingStyle.RichEntity;
 
-public class EntityUnderPluralGroupConvention : IApiModelConvention<ControllerModelContext>
+public class EntityUnderPluralGroupConvention : IDomainModelConvention<TypeModelContext>
 {
-    public void Apply(ControllerModelContext context)
+    public void Apply(TypeModelContext context)
     {
-        if (!context.Controller.MappedType.TryGetMetadata(out var metadata)) { return; }
+        if (!context.Type.TryGetMetadata(out var metadata)) { return; }
         if (!metadata.Has<EntityAttribute>()) { return; }
+        if (!metadata.TryGetSingle<ControllerModel>(out var controller)) { return; }
 
-        context.Controller.GroupName = context.Controller.GroupName.Pluralize();
+        controller.GroupName = controller.GroupName.Pluralize();
     }
 }

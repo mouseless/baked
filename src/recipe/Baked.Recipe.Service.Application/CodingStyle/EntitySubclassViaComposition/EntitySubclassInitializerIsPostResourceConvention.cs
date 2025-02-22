@@ -14,7 +14,6 @@ public class EntitySubclassInitializerIsPostResourceConvention : IDomainModelCon
         if (!context.Parameter.ParameterType.TryGetSubclassName(out var subclassName)) { return; }
         if (!context.Parameter.ParameterType.TryGetEntityTypeFromSubclass(context.Domain, out var entityType)) { return; }
         if (!context.Method.TryGetSingle<ActionModel>(out var action)) { return; }
-        if (action.ManuallyAdded) { return; }
         if (!context.Method.Has<InitializerAttribute>()) { return; }
 
         action.RouteParts = [entityType.Name.Pluralize(), subclassName];

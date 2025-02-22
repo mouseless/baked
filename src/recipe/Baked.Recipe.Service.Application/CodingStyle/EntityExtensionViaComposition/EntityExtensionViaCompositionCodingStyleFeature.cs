@@ -1,6 +1,7 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
 using Baked.Orm;
+using Baked.RestApi.Model;
 
 namespace Baked.CodingStyle.EntityExtensionViaComposition;
 
@@ -51,18 +52,12 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
                 when: c => c.Type.Has<EntityExtensionAttribute>(),
                 order: 10
             );
-        });
 
-        configurator.ConfigureApiModelConventions(conventions =>
-        {
-            configurator.UsingDomainModel(domain =>
-            {
-                conventions.Add(new EntityExtensionsUnderEntitiesConvention(domain));
-                conventions.Add(new LookupEntityExtensionByIdConvention(domain));
-                conventions.Add(new LookupEntityExtensionsByIdsConvention(domain));
-                conventions.Add(new TargetEntityExtensionFromRouteConvention(domain), order: 20);
-                conventions.Add(new TargetEntityExtensionFromRouteByUniquePropertiesConvention(domain), order: 20);
-            });
+            builder.Conventions.Add(new EntityExtensionsUnderEntitiesConvention());
+            builder.Conventions.Add(new LookupEntityExtensionByIdConvention());
+            builder.Conventions.Add(new LookupEntityExtensionsByIdsConvention());
+            builder.Conventions.Add(new TargetEntityExtensionFromRouteConvention(), order: 20);
+            builder.Conventions.Add(new TargetEntityExtensionFromRouteByUniquePropertiesConvention(), order: 20);
         });
     }
 }

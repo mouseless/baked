@@ -1,21 +1,23 @@
-﻿using Baked.Domain.Model;
+﻿using Baked.Domain.Configuration;
+using Baked.RestApi.Model;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Baked.Orm.AutoMap;
 
-public class LookupEntityByIdConvention(DomainModel _domain)
-    : IApiModelConvention<ParameterModelContext>
+public class LookupEntityByIdConvention : IDomainModelConvention<ParameterModelContext>
 {
     public void Apply(ParameterModelContext context)
     {
-        if (context.Parameter.IsTarget()) { return; }
-        if (!context.Parameter.TypeModel.TryGetQueryContextType(_domain, out var queryContextType)) { return; }
+        if (!context.Method.TryGetSingle<ActionModel>(out var action)) { return; }
+        if (!context.Parameter.TryGetSingle<ParameterModel>(out var parameter)) { return; }
+        if (parameter.IsTarget()) { return; }
+        if (!context.Parameter.ParameterType.TryGetQueryContextType(context.Domain, out var queryContextType)) { return; }
 
-        var notNull = context.Parameter.MappedParameter?.Has<NotNullAttribute>() == true;
-        var queryContextParameter = context.Action.AddQueryContextAsService(queryContextType);
+        var notNull = context.Parameter.Has<NotNullAttribute>();
+        var queryContextParameter = action.AddQueryContextAsService(queryContextType);
 
-        context.Parameter.ConvertToId(nullable: !notNull);
-        context.Parameter.LookupRenderer =
+        parameter.ConvertToId(nullable: !notNull);
+        parameter.LookupRenderer =
             p => queryContextParameter.BuildSingleBy(p,
                 notNullValueExpression: $"(Guid){p}",
                 nullable: !notNull

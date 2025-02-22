@@ -1,23 +1,24 @@
 ﻿using Baked.Business;
 using Baked.CodingStyle.SingleByUnique;
-using Baked.Domain.Model;
+using Baked.Domain.Configuration;
+using Baked.RestApi.Model;
 using Humanizer;
 
 namespace Baked.CodingStyle.EntitySubclassViaComposition;
 
-public class TargetEntitySubclassFromRouteConvention(DomainModel _domain)
-    : IApiModelConvention<ParameterModelContext>
+public class TargetEntitySubclassFromRouteConvention : IDomainModelConvention<ParameterModelContext>
 {
     public void Apply(ParameterModelContext context)
     {
-        if (context.Action.MappedMethod is null) { return; }
-        if (context.Action.MappedMethod.Has<InitializerAttribute>()) { return; }
-        if (!context.Parameter.IsTarget()) { return; }
+        if (!context.Method.TryGetSingle<ActionModel>(out var action)) { return; }
+        if (context.Method.Has<InitializerAttribute>()) { return; }
+        if (!context.Parameter.TryGetSingle<ParameterModel>(out var parameter)) { return; }
+        if (!parameter.IsTarget()) { return; }
 
-        var entitySubclassType = context.Parameter.TypeModel;
+        var entitySubclassType = context.Parameter.ParameterType;
         if (!entitySubclassType.TryGetSubclassName(out var subclassName)) { return; }
-        if (!entitySubclassType.TryGetEntityTypeFromSubclass(_domain, out var entityType)) { return; }
-        if (!entityType.TryGetQueryType(_domain, out var queryType)) { return; }
+        if (!entitySubclassType.TryGetEntityTypeFromSubclass(context.Domain, out var entityType)) { return; }
+        if (!entityType.TryGetQueryType(context.Domain, out var queryType)) { return; }
         if (!queryType.TryGetMembers(out var queryMembers)) { return; }
 
         var singleByUniqueMethod = queryMembers.Methods.Having<SingleByUniqueAttribute>().FirstOrDefault();
@@ -31,10 +32,10 @@ public class TargetEntitySubclassFromRouteConvention(DomainModel _domain)
             ? $"{uniqueParameter.ParameterType.CSharpFriendlyFullName}.{subclassName}"
             : $"\"{subclassName}\"";
 
-        var queryParameter = context.Action.AddAsService(queryType);
+        var queryParameter = action.AddAsService(queryType);
 
-        context.Parameter.IsHardCoded = true;
-        context.Action.RouteParts = [entityType.Name.Pluralize(), subclassName, context.Action.Name];
-        context.Action.FindTargetStatement = queryParameter.BuildSingleBy(valueExpression, property: unique.PropertyName, fromRoute: true, castTo: entitySubclassType);
+        parameter.IsHardCoded = true;
+        action.RouteParts = [entityType.Name.Pluralize(), subclassName, action.Name];
+        action.FindTargetStatement = queryParameter.BuildSingleBy(valueExpression, property: unique.PropertyName, fromRoute: true, castTo: entitySubclassType);
     }
 }

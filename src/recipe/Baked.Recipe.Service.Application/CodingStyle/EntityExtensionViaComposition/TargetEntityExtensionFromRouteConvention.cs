@@ -1,28 +1,29 @@
 ﻿using Baked.Business;
-using Baked.Domain.Model;
+using Baked.Domain.Configuration;
+using Baked.RestApi.Model;
 using Humanizer;
 
 namespace Baked.CodingStyle.EntityExtensionViaComposition;
 
-public class TargetEntityExtensionFromRouteConvention(DomainModel _domain)
-    : IApiModelConvention<ParameterModelContext>
+public class TargetEntityExtensionFromRouteConvention : IDomainModelConvention<ParameterModelContext>
 {
     public void Apply(ParameterModelContext context)
     {
-        if (context.Action.MappedMethod is null) { return; }
-        if (context.Action.MappedMethod.Has<InitializerAttribute>()) { return; }
-        if (!context.Parameter.IsTarget()) { return; }
+        if (!context.Method.TryGetSingle<ActionModel>(out var action)) { return; }
+        if (context.Method.Has<InitializerAttribute>()) { return; }
+        if (!context.Parameter.TryGetSingle<ParameterModel>(out var parameter)) { return; }
+        if (!parameter.IsTarget()) { return; }
 
-        var entityExtensionType = context.Parameter.TypeModel;
-        if (!entityExtensionType.TryGetEntityTypeFromExtension(_domain, out var entityType)) { return; }
-        if (!entityType.TryGetQueryContextType(_domain, out var queryContextType)) { return; }
+        var entityExtensionType = context.Parameter.ParameterType;
+        if (!entityExtensionType.TryGetEntityTypeFromExtension(context.Domain, out var entityType)) { return; }
+        if (!entityType.TryGetQueryContextType(context.Domain, out var queryContextType)) { return; }
 
-        var queryContextParameter = context.Action.AddQueryContextAsService(queryContextType);
+        var queryContextParameter = action.AddQueryContextAsService(queryContextType);
 
-        context.Parameter.ConvertToId(name: "id", dontAddRequired: true);
-        context.Parameter.From = ParameterModelFrom.Route;
-        context.Parameter.RoutePosition = 1;
-        context.Action.RouteParts = [entityType.Name.Pluralize(), context.Action.Name];
-        context.Action.FindTargetStatement = queryContextParameter.BuildSingleBy(context.Parameter.Name, fromRoute: true, castTo: entityExtensionType);
+        parameter.ConvertToId(name: "id", dontAddRequired: true);
+        parameter.From = ParameterModelFrom.Route;
+        parameter.RoutePosition = 1;
+        action.RouteParts = [entityType.Name.Pluralize(), action.Name];
+        action.FindTargetStatement = queryContextParameter.BuildSingleBy(context.Parameter.Name, fromRoute: true, castTo: entityExtensionType);
     }
 }

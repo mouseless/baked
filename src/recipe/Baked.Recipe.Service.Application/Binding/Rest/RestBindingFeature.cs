@@ -62,7 +62,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
             builder.Conventions.Add(new RemoveFromRouteConvention(["Update", "Change", "Set"]));
             builder.Conventions.Add(new RemoveFromRouteConvention(["Delete", "Remove", "Clear"]));
             builder.Conventions.Add(new ConsumesJsonConvention(_when: action => action.HasBody), order: 10);
-            builder.Conventions.Add(new ProducesJsonConvention(_when: action => !action.Return.IsVoid), order: 10);
+            builder.Conventions.Add(new ProducesJsonConvention(_when: action => !action.ReturnIsVoid), order: 10);
             builder.Conventions.Add(new UseDocumentationAsDescriptionConvention(_tagDescriptions), order: 10);
             builder.Conventions.Add(new AddMappedMethodAttributeConvention());
         });

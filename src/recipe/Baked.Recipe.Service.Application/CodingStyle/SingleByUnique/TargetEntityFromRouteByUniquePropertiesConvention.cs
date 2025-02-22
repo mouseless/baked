@@ -1,19 +1,17 @@
 ﻿using Baked.Business;
-using Baked.Domain.Model;
+using Baked.Domain.Configuration;
+using Baked.RestApi.Model;
 using Humanizer;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace Baked.CodingStyle.SingleByUnique;
 
-public class TargetEntityFromRouteByUniquePropertiesConvention(DomainModel _domain)
-    : IApiModelConvention<ParameterModelContext>
+public class TargetEntityFromRouteByUniquePropertiesConvention : IDomainModelConvention<ParameterModelContext>
 {
-    protected DomainModel Domain => _domain;
-
-    protected virtual bool TryGetEntityType(ParameterModelContext context, [NotNullWhen(true)] out TypeModel? entityType, out TypeModel? castTo)
+    protected virtual bool TryGetEntityType(ParameterModelContext context, [NotNullWhen(true)] out Domain.Model.TypeModel? entityType, out Domain.Model.TypeModel? castTo)
     {
-        entityType = context.Parameter.TypeModel;
+        entityType = context.Parameter.ParameterType;
         castTo = null;
 
         return true;
@@ -21,32 +19,33 @@ public class TargetEntityFromRouteByUniquePropertiesConvention(DomainModel _doma
 
     public void Apply(ParameterModelContext context)
     {
-        if (!context.Parameter.IsTarget()) { return; }
-        if (context.Action.MappedMethod is null) { return; }
-        if (context.Action.MappedMethod.Has<InitializerAttribute>()) { return; }
+        if (!context.Parameter.TryGetSingle<ParameterModel>(out var parameter)) { return; }
+        if (!parameter.IsTarget()) { return; }
+        if (!context.Method.TryGetSingle<ActionModel>(out var action)) { return; }
+        if (context.Method.Has<InitializerAttribute>()) { return; }
 
         if (!TryGetEntityType(context, out var entityType, out var castTo)) { return; }
-        if (!entityType.TryGetQueryType(_domain, out var queryType)) { return; }
+        if (!entityType.TryGetQueryType(context.Domain, out var queryType)) { return; }
         if (!queryType.TryGetMembers(out var queryMembers)) { return; }
 
         var singleByUniques = queryMembers.Methods.Having<SingleByUniqueAttribute>();
         if (!singleByUniques.Any()) { return; }
 
         var uniques = singleByUniques.Select(sbu => sbu.GetSingle<SingleByUniqueAttribute>());
-        context.Parameter.Type = "string";
-        context.Parameter.Name = $"idOr{uniques.Select(u => u.PropertyName).Join("Or")}";
-        context.Action.RouteParts = context.Action.RouteParts.Replace("{id:guid}", $"{{{context.Parameter.Name}}}");
+        parameter.Type = "string";
+        parameter.Name = $"idOr{uniques.Select(u => u.PropertyName).Join("Or")}";
+        action.RouteParts = action.RouteParts.Replace("{id:guid}", $"{{{context.Parameter.Name}}}");
 
         var findTargetStatements = new StringBuilder();
         findTargetStatements.Append($$"""
-            {{context.Parameter.TypeModel.CSharpFriendlyFullName}} __foundTarget = null;
+            {{context.Parameter.ParameterType.CSharpFriendlyFullName}} __foundTarget = null;
             if(Guid.TryParse({{context.Parameter.Name}}, out var id))
             {
-                __foundTarget = {{context.Action.FindTargetStatement}};
+                __foundTarget = {{action.FindTargetStatement}};
             }
         """);
 
-        var queryParameter = context.Action.AddAsService(queryType);
+        var queryParameter = action.AddAsService(queryType);
         SingleByUniqueAttribute? fallback = null;
         foreach (var singleByUnique in singleByUniques)
         {
@@ -86,7 +85,7 @@ public class TargetEntityFromRouteByUniquePropertiesConvention(DomainModel _doma
             """);
         }
 
-        context.Action.PreparationStatements.Add(findTargetStatements.ToString());
-        context.Action.FindTargetStatement = "__foundTarget";
+        action.PreparationStatements.Add(findTargetStatements.ToString());
+        action.FindTargetStatement = "__foundTarget";
     }
 }

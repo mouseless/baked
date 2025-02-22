@@ -1,14 +1,16 @@
-﻿using Baked.RestApi.Model;
+﻿using Baked.Domain.Configuration;
+using Baked.RestApi.Model;
 
 namespace Baked.RestApi.Conventions;
 
-public class OverrideActionConvention(Func<ActionModelContext, bool> _when, Action<ActionModel> _configuration) :
-    IApiModelConvention<ActionModelContext>
+public class OverrideActionConvention(Func<MethodModelContext, bool> _when, Action<ActionModel> _configuration)
+    : IDomainModelConvention<MethodModelContext>
 {
-    public void Apply(ActionModelContext context)
+    public void Apply(MethodModelContext context)
     {
+        if (!context.Method.TryGetSingle<ActionModel>(out var action)) { return; }
         if (!_when(context)) { return; }
 
-        _configuration(context.Action);
+        _configuration(action);
     }
 }

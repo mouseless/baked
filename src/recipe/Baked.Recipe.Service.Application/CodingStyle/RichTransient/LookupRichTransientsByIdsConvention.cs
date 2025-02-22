@@ -1,24 +1,30 @@
 ﻿using Baked.Business;
+using Baked.Domain.Configuration;
+using Baked.RestApi.Model;
 using Humanizer;
 
 namespace Baked.CodingStyle.RichTransient;
 
-public class LookupRichTransientsByIdsConvention : IApiModelConvention<ParameterModelContext>
+public class LookupRichTransientsByIdsConvention : IDomainModelConvention<ParameterModelContext>
 {
     public void Apply(ParameterModelContext context)
     {
-        if (!context.Parameter.IsInvokeMethodParameter) { return; }
-        if (context.Parameter.MappedParameter is null) { return; }
-        if (!context.Parameter.MappedParameter.ParameterType.TryGetElementType(out var elementType)) { return; }
+        if (!context.Parameter.TryGetSingle<ParameterModel>(out var parameter)) { return; }
+        if (!context.Type.TryGetSingle<ActionModel>(out var action)) { return; }
+        if (!parameter.IsInvokeMethodParameter) { return; }
+        if (!context.Parameter.ParameterType.TryGetElementType(out var elementType)) { return; }
         if (!elementType.GetMetadata().Has<LocatableAttribute>()) { return; }
 
         var initializer = elementType.GetMembers().Methods.Having<InitializerAttribute>().Single();
         if (!initializer.DefaultOverload.Parameters.TryGetValue("id", out var idParameter)) { return; }
 
-        var factoryParameter = context.Action.AddFactoryAsService(elementType);
+        var factoryParameter = action.AddFactoryAsService(elementType);
 
-        context.Parameter.Type = $"IEnumerable<{idParameter.ParameterType.CSharpFriendlyFullName}>";
-        context.Parameter.Name = $"{context.Parameter.Name.Singularize()}Ids";
-        context.Parameter.LookupRenderer = p => factoryParameter.BuildInitializerByIds(p, isArray: context.Parameter.TypeModel.IsArray);
+        parameter.Type = $"IEnumerable<{idParameter.ParameterType.CSharpFriendlyFullName}>";
+        parameter.Name = $"{context.Parameter.Name.Singularize()}Ids";
+        parameter.LookupRenderer = p => factoryParameter.BuildInitializerByIds(context.Parameter.ParameterType,
+            valueExpression: p,
+            isArray: context.Parameter.ParameterType.IsArray
+        );
     }
 }

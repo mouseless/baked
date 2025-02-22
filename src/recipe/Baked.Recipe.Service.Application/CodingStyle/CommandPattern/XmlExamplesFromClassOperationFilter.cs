@@ -1,4 +1,5 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Baked.Binding;
+using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Baked.CodingStyle.CommandPattern;

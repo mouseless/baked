@@ -1,13 +1,17 @@
-﻿namespace Baked.CodingStyle.UseBuiltInTypes;
+﻿using Baked.Domain.Configuration;
+using Baked.RestApi.Model;
 
-public class SetDefaultValueForEnumConvention : IApiModelConvention<ParameterModelContext>
+namespace Baked.CodingStyle.UseBuiltInTypes;
+
+public class SetDefaultValueForEnumConvention : IDomainModelConvention<ParameterModelContext>
 {
     public void Apply(ParameterModelContext context)
     {
-        if (!context.Parameter.TypeModel.IsEnum) { return; }
+        if (!context.Parameter.ParameterType.IsEnum) { return; }
+        if (!context.Parameter.TryGetSingle<ParameterModel>(out var parameter)) { return; }
 
-        var enumType = context.Parameter.TypeModel;
-        context.Parameter.DefaultValueRenderer = defaultValue =>
+        var enumType = context.Parameter.ParameterType;
+        parameter.DefaultValueRenderer = defaultValue =>
         {
             var enumName = string.Empty;
 

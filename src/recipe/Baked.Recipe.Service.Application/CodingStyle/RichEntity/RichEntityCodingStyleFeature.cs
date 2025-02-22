@@ -1,6 +1,7 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
 using Baked.Orm;
+using Baked.RestApi.Model;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Baked.CodingStyle.RichEntity;
@@ -41,12 +42,17 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 },
                 when: c => c.Type.Has<EntityAttribute>()
             );
-            builder.Conventions.AddMethodMetadata(new ApiMethodAttribute(),
+            builder.Conventions.AddMethodMetadata(
+                attribute: c => new ActionModel("Post", [c.Type.Name, c.Method.Name], "target"),
                 when: c =>
                     c.Type.Has<EntityAttribute>() && c.Method.Has<InitializerAttribute>() &&
                     c.Method.Overloads.Any(o => o.IsPublic && !o.IsStatic && !o.IsSpecialName && o.AllParametersAreApiInput()),
                 order: 30
             );
+
+            builder.Conventions.Add(new EntityUnderPluralGroupConvention());
+            builder.Conventions.Add(new EntityInitializerIsPostResourceConvention());
+            builder.Conventions.Add(new FindTargetUsingQueryContextConvention(), order: 20);
         });
 
         configurator.ConfigureNHibernateInterceptor(interceptor =>
@@ -59,17 +65,6 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
 
                 return result;
             };
-        });
-
-        configurator.ConfigureApiModelConventions(conventions =>
-        {
-            conventions.Add(new EntityUnderPluralGroupConvention());
-            conventions.Add(new EntityInitializerIsPostResourceConvention());
-
-            configurator.UsingDomainModel(domain =>
-            {
-                conventions.Add(new FindTargetUsingQueryContextConvention(domain), order: 20);
-            });
         });
     }
 }

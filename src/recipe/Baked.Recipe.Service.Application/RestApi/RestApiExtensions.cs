@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.Domain;
 using Baked.RestApi;
 using Baked.RestApi.Conventions;
 using Baked.RestApi.Model;
@@ -71,7 +72,7 @@ public static class RestApiExtensions
         var constraint = parameter switch
         {
             { Type: nameof(Guid) } => ":guid",
-            _ when parameter.TypeModel.Is<Guid>() => ":guid",
+            // _ when parameter.TypeModel.Is<Guid>() => ":guid",
             _ => string.Empty
         };
 
@@ -123,7 +124,7 @@ public static class RestApiExtensions
         if (parameter is not null) { parameter(action.Parameter); }
     }
 
-    public static void OverrideAction<T>(this IApiModelConventionCollection conventions,
+    public static void OverrideAction<T>(this IDomainModelConventionCollection conventions,
          string? mappedMethodName = default,
          HttpMethod? method = default,
          List<string>? routeParts = default,
@@ -133,7 +134,7 @@ public static class RestApiExtensions
     {
         conventions.Add(
             new OverrideActionConvention(
-                _when: c => c.Controller.MappedType.Is<T>() && (mappedMethodName == null || c.Action.MappedMethod?.Name == mappedMethodName),
+                _when: c => c.Type.Is<T>() && (mappedMethodName == null || c.Method.Name == mappedMethodName),
                 _configuration: action =>
                 {
                     if (method is not null) { action.Method = method; }

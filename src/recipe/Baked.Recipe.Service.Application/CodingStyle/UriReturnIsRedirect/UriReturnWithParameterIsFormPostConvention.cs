@@ -1,14 +1,17 @@
-﻿namespace Baked.CodingStyle.UriReturnIsRedirect;
+﻿using Baked.Domain.Configuration;
+using Baked.RestApi.Model;
 
-public class UriReturnWithParameterIsFormPostConvention : IApiModelConvention<ActionModelContext>
+namespace Baked.CodingStyle.UriReturnIsRedirect;
+
+public class UriReturnWithParameterIsFormPostConvention : IDomainModelConvention<MethodModelContext>
 {
-    public void Apply(ActionModelContext context)
+    public void Apply(MethodModelContext context)
     {
-        if (context.Action.MappedMethod is null) { return; }
-        if (!context.Action.Return.TypeModel.Is<Uri>(allowAsync: true)) { return; }
-        if (!context.Action.InvokedMethodParameters.Any()) { return; }
+        if (!context.Method.DefaultOverload.ReturnType.Is<Uri>(allowAsync: true)) { return; }
+        if (!context.Method.TryGetSingle<ActionModel>(out var action)) { return; }
+        if (!action.InvokedMethodParameters.Any()) { return; }
 
-        context.Action.Method = HttpMethod.Post;
-        context.Action.UseForm = true;
+        action.Method = HttpMethod.Post;
+        action.UseForm = true;
     }
 }

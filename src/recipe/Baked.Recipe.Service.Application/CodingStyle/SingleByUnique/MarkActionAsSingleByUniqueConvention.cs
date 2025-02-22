@@ -1,21 +1,24 @@
-﻿namespace Baked.CodingStyle.SingleByUnique;
+﻿using Baked.Domain.Configuration;
+using Baked.RestApi.Model;
 
-public class MarkActionAsSingleByUniqueConvention : IApiModelConvention<ActionModelContext>
+namespace Baked.CodingStyle.SingleByUnique;
+
+public class MarkActionAsSingleByUniqueConvention : IDomainModelConvention<MethodModelContext>
 {
-    public void Apply(ActionModelContext context)
+    public void Apply(MethodModelContext context)
     {
-        if (context.Action.Id == "SingleById")
+        if (!context.Method.TryGetSingle<ActionModel>(out var action)) { return; }
+        if (action.Id == "SingleById")
         {
-            context.Action.AdditionalAttributes.Add($"{nameof(SingleByUniqueAttribute)}(\"Id\", typeof(Guid))");
+            action.AdditionalAttributes.Add($"{nameof(SingleByUniqueAttribute)}(\"Id\", typeof(Guid))");
 
             return;
         }
 
-        if (context.Action.MappedMethod is null) { return; }
-        if (context.Action.MappedMethod.TryGetSingle<SingleByUniqueAttribute>(out var unique))
+        if (context.Method is null) { return; }
+        if (context.Method.TryGetSingle<SingleByUniqueAttribute>(out var unique))
         {
-            context.Action.AdditionalAttributes
-                .Add($"{nameof(SingleByUniqueAttribute)}(\"{unique.PropertyName}\", typeof({unique.PropertyType.FullName}))");
+            action.AdditionalAttributes.Add($"{nameof(SingleByUniqueAttribute)}(\"{unique.PropertyName}\", typeof({unique.PropertyType.FullName}))");
         }
     }
 }

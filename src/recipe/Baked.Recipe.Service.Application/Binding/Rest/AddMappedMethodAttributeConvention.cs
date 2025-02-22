@@ -8,7 +8,6 @@ public class AddMappedMethodAttributeConvention : IDomainModelConvention<Paramet
     public void Apply(ParameterModelContext context)
     {
         if (!context.Method.TryGetSingle<ActionModel>(out var action)) { return; }
-        if (action.ManuallyAdded) { return; }
 
         action.AdditionalAttributes.Add($"{typeof(MappedMethodAttribute).FullName}(\"{context.Type.FullName}\", \"{context.Method.Name}\")");
     }

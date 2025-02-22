@@ -34,15 +34,11 @@ public static class OrmExtensions
     {
         name ??= type.Name.Camelize();
 
-        var parameter =
-            new ParameterModel(type, ParameterModelFrom.Services, name)
+        return action.Parameter[name] =
+            new(name, type.CSharpFriendlyFullName, ParameterModelFrom.Services)
             {
                 IsInvokeMethodParameter = false
             };
-
-        action.Parameter[parameter.Name] = parameter;
-
-        return parameter;
     }
 
     public static ParameterModel AddQueryContextAsService(this ActionModel action, TypeModel queryContextType)

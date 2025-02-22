@@ -5,13 +5,15 @@ using Humanizer;
 namespace Baked.RestApi.Conventions;
 
 public class RemoveFromRouteConvention(IEnumerable<string> _parts,
-    Func<ActionModel, bool>? _when = default
+    Func<ActionModel, bool>? _when = default,
+    Func<MethodModelContext, bool>? _whenContext = default
 ) : IDomainModelConvention<MethodModelContext>
 {
     public void Apply(MethodModelContext context)
     {
         if (!context.Method.TryGetSingle<ActionModel>(out var action)) { return; }
         if (_when is not null && !_when(action)) { return; }
+        if (_whenContext is not null && !_whenContext(context)) { return; }
 
         for (var i = 0; i < action.RouteParts.Count; i++)
         {

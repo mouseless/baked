@@ -1,13 +1,17 @@
-﻿namespace Baked.RestApi.Conventions;
+﻿using Baked.Domain.Configuration;
+using Baked.RestApi.Model;
+
+namespace Baked.RestApi.Conventions;
 
 public class ConsumesJsonConvention(
-    Func<ActionModelContext, bool>? _when = default
-) : IApiModelConvention<ActionModelContext>
+    Func<ActionModel, bool>? _when = default
+) : IDomainModelConvention<MethodModelContext>
 {
-    public void Apply(ActionModelContext context)
+    public void Apply(MethodModelContext context)
     {
-        if (_when is not null && !_when(context)) { return; }
+        if (!context.Method.TryGetSingle<ActionModel>(out var action)) { return; }
+        if (_when is not null && !_when(action)) { return; }
 
-        context.Action.AdditionalAttributes.Add("Consumes(\"application/json\")");
+        action.AdditionalAttributes.Add("Consumes(\"application/json\")");
     }
 }

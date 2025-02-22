@@ -1,16 +1,18 @@
-﻿using System.Net;
+﻿using Baked.Domain.Configuration;
+using Baked.RestApi.Model;
+using System.Net;
 
 namespace Baked.CodingStyle.UriReturnIsRedirect;
 
-public class UriReturnIsRedirectConvention : IApiModelConvention<ActionModelContext>
+public class UriReturnIsRedirectConvention : IDomainModelConvention<MethodModelContext>
 {
-    public void Apply(ActionModelContext context)
+    public void Apply(MethodModelContext context)
     {
-        if (context.Action.MappedMethod is null) { return; }
-        if (!context.Action.Return.TypeModel.Is<Uri>(allowAsync: true)) { return; }
+        if (!context.Method.TryGetSingle<ActionModel>(out var action)) { return; }
+        if (context.Method.DefaultOverload.ReturnType.Is<Uri>(allowAsync: true)) { return; }
 
-        context.Action.AdditionalAttributes.Add($"ProducesResponseType((int){nameof(HttpStatusCode)}.Redirect)");
-        context.Action.Return.Type = context.Action.Return.IsAsync ? "Task<RedirectResult>" : "RedirectResult";
-        context.Action.Return.ResultRenderer = resultExpression => $"new RedirectResult($\"{{{resultExpression}}}\", permanent: false)";
+        action.AdditionalAttributes.Add($"ProducesResponseType((int){nameof(HttpStatusCode)}.Redirect)");
+        action.ReturnType = action.ReturnIsAsync ? "Task<RedirectResult>" : "RedirectResult";
+        action.ReturnResultRenderer = resultExpression => $"new RedirectResult($\"{{{resultExpression}}}\", permanent: false)";
     }
 }

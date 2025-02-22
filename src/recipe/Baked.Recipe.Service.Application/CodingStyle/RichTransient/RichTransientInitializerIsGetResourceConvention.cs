@@ -1,24 +1,26 @@
 ﻿using Baked.Business;
+using Baked.Domain.Configuration;
+using Baked.RestApi.Model;
 using Humanizer;
 
 namespace Baked.CodingStyle.RichTransient;
 
-public class RichTransientInitializerIsGetResourceConvention : IApiModelConvention<ActionModelContext>
+public class RichTransientInitializerIsGetResourceConvention : IDomainModelConvention<MethodModelContext>
 {
-    public void Apply(ActionModelContext context)
+    public void Apply(MethodModelContext context)
     {
-        if (!context.Controller.MappedType.TryGetMembers(out var members)) { return; }
+        if (!context.Method.TryGetSingle<ActionModel>(out var action)) { return; }
+        if (!context.Type.TryGetMembers(out var members)) { return; }
         if (!members.Has<LocatableAttribute>()) { return; }
         if (!members.Properties.Any(p => p.IsPublic)) { return; }
-        if (context.Action.MappedMethod is null) { return; }
-        if (!context.Action.MappedMethod.Has<InitializerAttribute>()) { return; }
-        if (!context.Action.Parameter.TryGetValue("id", out var parameter)) { return; }
+        if (!context.Method.Has<InitializerAttribute>()) { return; }
+        if (!action.Parameter.TryGetValue("id", out var parameter)) { return; }
 
         parameter.IsInvokeMethodParameter = true;
         parameter.From = ParameterModelFrom.Route;
         parameter.RoutePosition = 1;
 
-        context.Action.Method = HttpMethod.Get;
-        context.Action.RouteParts = [context.Controller.MappedType.Name.Pluralize()];
+        action.Method = HttpMethod.Get;
+        action.RouteParts = [context.Type.Name.Pluralize()];
     }
 }

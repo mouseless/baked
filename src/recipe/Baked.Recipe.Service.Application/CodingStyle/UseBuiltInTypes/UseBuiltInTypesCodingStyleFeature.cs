@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.RestApi.Model;
 using FluentNHibernate.Conventions.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Converters;
@@ -36,6 +37,10 @@ public class UseBuiltInTypesCodingStyleFeature(IEnumerable<string> _textProperty
                     elementMetadata.Has<ApiInputAttribute>(),
                 order: 20
             );
+
+            builder.Conventions.Add(new BoolDefaultValueConvention());
+            builder.Conventions.Add(new SetDefaultValueForEnumConvention());
+            builder.Conventions.Add(new StringDefaultValueConvention());
         });
 
         configurator.ConfigureAutoPersistenceModel(model =>
@@ -47,13 +52,6 @@ public class UseBuiltInTypesCodingStyleFeature(IEnumerable<string> _textProperty
                 ),
                 x => x.CustomSqlType("TEXT")
             ));
-        });
-
-        configurator.ConfigureApiModelConventions(conventions =>
-        {
-            conventions.Add(new BoolDefaultValueConvention());
-            conventions.Add(new SetDefaultValueForEnumConvention());
-            conventions.Add(new StringDefaultValueConvention());
         });
 
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>

@@ -1,4 +1,5 @@
 using Baked.Architecture;
+using Baked.RestApi.Model;
 
 namespace Baked.CodingStyle.RecordsAreDtos;
 
