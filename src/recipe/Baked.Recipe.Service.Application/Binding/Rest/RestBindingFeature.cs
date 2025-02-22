@@ -23,7 +23,8 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
             builder.Index.Parameter.Add<ParameterModel>();
 
             // domain metadata add/remove
-            builder.Conventions.AddTypeMetadata(new ControllerModel(),
+            builder.Conventions.AddTypeMetadata(
+                attribute: c => new ControllerModel(),
                 when: c =>
                   c.Type.Has<ServiceAttribute>() &&
                   c.Type.IsClass &&

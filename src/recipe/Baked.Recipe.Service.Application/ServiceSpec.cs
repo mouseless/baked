@@ -48,6 +48,7 @@ public abstract class ServiceSpec : Spec
             app.Layers.AddRuntime();
             app.Layers.AddTesting();
 
+            app.Features.AddBinding(c => c.Rest());
             app.Features.AddBusiness(business);
             app.Features.AddCaching(caching);
             app.Features.AddCodingStyles([

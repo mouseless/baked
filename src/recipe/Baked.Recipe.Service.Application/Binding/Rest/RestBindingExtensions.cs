@@ -1,6 +1,5 @@
 using Baked.Binding;
 using Baked.Binding.Rest;
-using Baked.Business;
 using Baked.Domain.Model;
 using Baked.RestApi.Model;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
@@ -13,7 +12,7 @@ namespace Baked;
 
 public static class RestBindingExtensions
 {
-    public static RestBindingFeature RestBinding(this BusinessConfigurator _) =>
+    public static RestBindingFeature Rest(this BindingConfigurator _) =>
         new();
 
     public static bool IsPublicInstanceWithNoSpecialName(this MethodOverloadModel overload) =>

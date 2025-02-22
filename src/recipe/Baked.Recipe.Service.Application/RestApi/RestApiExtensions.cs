@@ -1,7 +1,5 @@
 ﻿using Baked.Architecture;
-using Baked.Domain;
 using Baked.RestApi;
-using Baked.RestApi.Conventions;
 using Baked.RestApi.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -122,28 +120,5 @@ public static class RestApiExtensions
         if (useForm is not null) { action.UseForm = useForm.Value; }
         if (useRequestClassForBody is not null) { action.UseRequestClassForBody = useRequestClassForBody.Value; }
         if (parameter is not null) { parameter(action.Parameter); }
-    }
-
-    public static void OverrideAction<T>(this IDomainModelConventionCollection conventions,
-         string? mappedMethodName = default,
-         HttpMethod? method = default,
-         List<string>? routeParts = default,
-         bool? useRequestClassForBody = default,
-         Action<Dictionary<string, ParameterModel>>? parameter = default
-    )
-    {
-        conventions.Add(
-            new OverrideActionConvention(
-                _when: c => c.Type.Is<T>() && (mappedMethodName == null || c.Method.Name == mappedMethodName),
-                _configuration: action =>
-                {
-                    if (method is not null) { action.Method = method; }
-                    if (routeParts is not null) { action.RouteParts = routeParts; }
-                    if (useRequestClassForBody is not null) { action.UseRequestClassForBody = useRequestClassForBody.Value; }
-                    if (parameter is not null) { parameter(action.Parameter); }
-                }
-            ),
-            order: int.MaxValue
-        );
     }
 }

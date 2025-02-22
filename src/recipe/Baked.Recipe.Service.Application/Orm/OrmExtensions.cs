@@ -18,16 +18,6 @@ public static class OrmExtensions
     public static void AddOrm(this List<IFeature> features, Func<OrmConfigurator, IFeature<OrmConfigurator>> configure) =>
         features.Add(configure(new()));
 
-    public static void AddSingleById<T>(this ControllerModel controller, DomainModel domainModel) =>
-        controller.Action["SingleById"] = new("SingleById", HttpMethod.Get, [controller.MappedType.Name], new(domainModel.Types[typeof(T)]), "target")
-        {
-            Parameters = [
-                new(domainModel.Types[typeof(IQueryContext<T>)], ParameterModelFrom.Services, "target"),
-                new(domainModel.Types[typeof(Guid)], ParameterModelFrom.Route, "id") { RoutePosition = 1 },
-                new(domainModel.Types[typeof(bool)], ParameterModelFrom.Query, "throwNotFound") { IsHardCoded = true, LookupRenderer = _ => "true" }
-            ]
-        };
-
     public static ParameterModel AddAsService(this ActionModel action, TypeModel type,
         string? name = default
     )
@@ -125,6 +115,20 @@ public static class OrmExtensions
         return true;
     }
 
+    public static bool TryGetEntityType(this TypeModel type, DomainModel domain, [NotNullWhen(true)] out TypeModel? entityType)
+    {
+        if (!type.TryGetQueryAttribute(out var queryAttribute))
+        {
+            entityType = default;
+
+            return false;
+        }
+
+        entityType = domain.Types[queryAttribute.EntityType];
+
+        return true;
+    }
+
     public static bool TryGetQueryContextType(this TypeModel type, DomainModel domain, [NotNullWhen(true)] out TypeModel? queryContextType)
     {
         if (!type.TryGetEntityAttribute(out _))
@@ -137,6 +141,15 @@ public static class OrmExtensions
         queryContextType = domain.Types[domain.Types[typeof(IQueryContext<>)].MakeGenericTypeId(type)];
 
         return true;
+    }
+
+    public static bool TryGetQueryAttribute(this TypeModel type, [NotNullWhen(true)] out QueryAttribute? queryAttribute)
+    {
+        queryAttribute = default;
+
+        return
+            type.TryGetMetadata(out var metadata) &&
+            metadata.TryGetSingle(out queryAttribute);
     }
 
     public static bool TryGetEntityAttribute(this TypeModel type, [NotNullWhen(true)] out EntityAttribute? entityAttribute)

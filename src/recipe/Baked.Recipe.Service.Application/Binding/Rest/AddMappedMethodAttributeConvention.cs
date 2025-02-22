@@ -3,9 +3,9 @@ using Baked.RestApi.Model;
 
 namespace Baked.Binding.Rest;
 
-public class AddMappedMethodAttributeConvention : IDomainModelConvention<ParameterModelContext>
+public class AddMappedMethodAttributeConvention : IDomainModelConvention<MethodModelContext>
 {
-    public void Apply(ParameterModelContext context)
+    public void Apply(MethodModelContext context)
     {
         if (!context.Method.TryGetSingle<ActionModel>(out var action)) { return; }
 
