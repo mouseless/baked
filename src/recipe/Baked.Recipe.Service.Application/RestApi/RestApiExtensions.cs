@@ -20,9 +20,6 @@ public static class RestApiExtensions
     public static void ConfigureApiModel(this LayerConfigurator configurator, Action<ApiModel> configuration) =>
         configurator.Configure(configuration);
 
-    public static void ConfigureApiModelConventions(this LayerConfigurator configurator, Action<IApiModelConventionCollection> configuration) =>
-        configurator.Configure(configuration);
-
     public static void ConfigureApplicationParts(this LayerConfigurator configurator, Action<IApplicationPartCollection> configuration) =>
         configurator.Configure(configuration);
 
@@ -56,10 +53,6 @@ public static class RestApiExtensions
 
         return mvcBuilder;
     }
-
-    public static void Add(this IApiModelConventionCollection collection, IApiModelConvention convention,
-        int order = 0
-    ) => collection.Add((convention, order));
 
     public static void Add<T>(this ICollection<Assembly> assemblies) =>
         assemblies.Add(typeof(T).Assembly);

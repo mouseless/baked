@@ -16,7 +16,6 @@ namespace Baked.RestApi;
 public class RestApiLayer : LayerBase<GenerateCode, AddServices, Build>
 {
     readonly ApiModel _apiModel = new();
-    readonly IApiModelConventionCollection _apiModelConventions = new ApiModelConventionCollection();
     readonly IApplicationPartCollection _applicationParts = new ApplicationPartCollection();
     readonly MvcNewtonsoftJsonOptions _mvcNewtonsoftJsonOptions = [];
     readonly SwaggerGenOptions _swaggerGenOptions = new();
@@ -40,11 +39,8 @@ public class RestApiLayer : LayerBase<GenerateCode, AddServices, Build>
 
         return phase.CreateContextBuilder()
             .Add(_apiModel)
-            .Add(_apiModelConventions)
             .OnDispose(() =>
             {
-                _apiModelConventions.Apply(_apiModel);
-
                 generatedAssemblies.Add(nameof(RestApiLayer),
                     assembly => assembly
                         .AddReferences(_apiModel.References)

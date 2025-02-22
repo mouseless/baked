@@ -1,4 +1,4 @@
-﻿using Baked.Business.DomainAssemblies;
+﻿using Baked.Binding.Rest;
 
 namespace Baked.RestApi.Conventions;
 

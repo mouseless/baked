@@ -1,4 +1,4 @@
-﻿namespace Baked.Business;
+﻿namespace Baked.Binding;
 
 [AttributeUsage(AttributeTargets.Method)]
 public class MappedMethodAttribute(string typeFullName, string methodName)

@@ -3,10 +3,10 @@
 [AttributeUsage(AttributeTargets.Class)]
 public class ControllerModel() : Attribute
 {
-    public ControllerModel(string id, string className, string groupName, IEnumerable<ActionModel> actions)
+    public ControllerModel(string id, string className, IEnumerable<ActionModel> actions)
         : this()
     {
-        Init(id, className, groupName, actions);
+        Init(id, className, actions);
 
         ManuallyAdded = true;
     }
@@ -19,11 +19,11 @@ public class ControllerModel() : Attribute
 
     public IEnumerable<ActionModel> Actions => Action.Values.OrderBy(a => a.Order);
 
-    internal ControllerModel Init(string id, string defaultClassName, string defaultGroupName, IEnumerable<ActionModel> actions)
+    internal ControllerModel Init(string id, string className, IEnumerable<ActionModel> actions)
     {
         Id = id;
-        ClassName ??= defaultClassName;
-        GroupName ??= defaultGroupName;
+        ClassName ??= className;
+        GroupName ??= className;
         Action = actions.ToDictionary(a => a.Id);
 
         return this;

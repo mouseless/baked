@@ -1,7 +1,7 @@
 ﻿using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Baked.Business.DomainAssemblies;
+namespace Baked.Binding.Rest;
 
 public class XmlExamplesOperationFilter(RequestResponseExamples _examples) : IOperationFilter
 {

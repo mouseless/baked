@@ -11,7 +11,7 @@ public class ParameterModel(ParameterModelFrom From,
         additionalAttributes: additionalAttributes?.ToArray()
     )
     {
-        Init(id, type);
+        Init(id, type, false, null);
 
         ManuallyAdded = true;
     }
@@ -21,7 +21,16 @@ public class ParameterModel(ParameterModelFrom From,
     public string Type { get; set; } = default!;
     public string Name { get; set; } = default!;
     public string InternalName { get; set; } = default!;
+
+    /// <summary>
+    /// Do NOT set this property directly from the attribute definition, e.g.,
+    /// `[ParameterModel(..., IsOptional = true, ...)]`. Initial value is always
+    /// overridden by the value comes from reflection.
+    ///
+    /// Use conventions to set a custom value.
+    /// </summary>
     public bool IsOptional { get; set; } = false;
+
     public object? DefaultValue { get; set; }
     public bool IsInvokeMethodParameter { get; set; } = From != ParameterModelFrom.Services;
     public bool IsHardCoded { get; set; } = false;
@@ -37,12 +46,14 @@ public class ParameterModel(ParameterModelFrom From,
     public bool FromQuery => From == ParameterModelFrom.Query;
     public bool FromBodyOrForm => From == ParameterModelFrom.BodyOrForm;
 
-    internal ParameterModel Init(string id, string type)
+    internal ParameterModel Init(string id, string type, bool isOptional, object? defaultValue)
     {
         Id = id;
         Type ??= type;
         Name ??= id;
         InternalName ??= id;
+        IsOptional = isOptional;
+        DefaultValue ??= defaultValue;
 
         return this;
     }

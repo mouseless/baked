@@ -2,9 +2,6 @@ using Baked.Architecture;
 using Baked.Domain;
 using Baked.Domain.Configuration;
 using Baked.Domain.Model;
-using Baked.RestApi;
-using Baked.RestApi.Conventions;
-using Baked.RestApi.Model;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using System.Reflection;
@@ -18,8 +15,6 @@ public class DomainAssembliesBusinessFeature(
     Func<TypeModel, bool> setNamespaceWhen
 ) : IFeature<BusinessConfigurator>
 {
-    readonly TagDescriptions _tagDescriptions = new();
-    readonly RequestResponseExamples _examples = [];
 
     Dictionary<Assembly, string> BaseNamespaces { get; } = _assemblyDescriptors.ToDictionary(kvp => kvp.assembly, kvp => kvp.baseNamespace);
 
@@ -68,6 +63,7 @@ public class DomainAssembliesBusinessFeature(
 
             builder.Index.Type.Add<ServiceAttribute>();
             builder.Index.Type.Add<CasterAttribute>();
+            builder.Index.Method.Add<InitializerAttribute>();
 
             builder.Conventions.AddTypeMetadata(
                 apply: (context, add) =>
@@ -116,34 +112,6 @@ public class DomainAssembliesBusinessFeature(
             );
         });
 
-        configurator.ConfigureDomainModelBuilder(builder =>
-        {
-            builder.Index.Type.Add<ControllerModel>();
-            builder.Index.Type.Add<ApiInputAttribute>();
-
-            builder.Index.Method.Add<InitializerAttribute>();
-            builder.Index.Method.Add<ActionModel>();
-
-            builder.Conventions.AddTypeMetadata(new ControllerModel(),
-                when: c =>
-                  c.Type.Has<ServiceAttribute>() &&
-                  c.Type.IsClass &&
-                  !c.Type.IsAbstract &&
-                  !c.Type.IsGenericType &&
-                  c.Type.TryGetMembers(out var members) &&
-                  members.Methods.Any(m => m.DefaultOverload.IsPublicInstanceWithNoSpecialName())
-            );
-            builder.Conventions.AddMethodMetadata(
-                attribute: c => new ActionModel(nameof(HttpMethod.Post), [c.Type.Name, c.Method.Name]),
-                when: c =>
-                    !c.Method.Has<ExternalAttribute>() &&
-                    !c.Method.Has<InitializerAttribute>() &&
-                    c.Method.DefaultOverload.IsPublicInstanceWithNoSpecialName() &&
-                    c.Method.DefaultOverload.AllParametersAreApiInput(),
-                order: int.MaxValue
-            );
-        });
-
         configurator.ConfigureServiceCollection(services =>
         {
             foreach (var (assembly, baseNamespace) in _assemblyDescriptors)
@@ -158,38 +126,6 @@ public class DomainAssembliesBusinessFeature(
         configurator.ConfigureApiModel(api =>
         {
             api.References.AddRange(_assemblyDescriptors.Select(a => a.assembly));
-            api.Usings.Add("Swashbuckle.AspNetCore.Annotations");
-
-            configurator.UsingDomainModel(domain =>
-            {
-                foreach (var type in domain.Types.Having<ApiServiceAttribute>())
-                {
-                    if (type.FullName is null) { continue; }
-
-                    var controller = new ControllerModel(type) { ClassName = type.CSharpFriendlyFullName.Split('.').Skip(1).Join('_') };
-                    foreach (var method in type.GetMembers().Methods.Having<ApiMethodAttribute>())
-                    {
-                        controller.AddAction(type, method);
-
-                        var typeExample = new RequestResponseExampleData(
-                            type.GetMembers().Documentation.GetExampleCode("request"),
-                            type.GetMembers().Documentation.GetExampleCode("response")
-                        );
-
-                        var methodExample = new RequestResponseExampleData(
-                            method.Documentation.GetExampleCode("request"),
-                            method.Documentation.GetExampleCode("response")
-                        );
-
-                        _examples.TryAdd($"{type.FullName}", typeExample);
-                        _examples.TryAdd($"{type.FullName}.{method.Name}", methodExample);
-                    }
-
-                    if (!controller.Action.Any()) { continue; }
-
-                    api.Controller.Add(controller.Id, controller);
-                }
-            });
         });
 
         configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
@@ -220,11 +156,7 @@ public class DomainAssembliesBusinessFeature(
 
         configurator.ConfigureDomainServiceCollection(services =>
         {
-            foreach (var (assembly, _) in _assemblyDescriptors)
-            {
-                services.References.Add(assembly);
-            }
-
+            services.References.AddRange(_assemblyDescriptors.Select(ad => ad.assembly));
             services.Usings.AddRange([
                 "Baked.Business",
                 "Baked.Runtime",
@@ -240,7 +172,7 @@ public class DomainAssembliesBusinessFeature(
             {
                 var assembly = generatedContext.Assemblies[nameof(DomainAssembliesBusinessFeature)];
 
-                var type = assembly.GetExportedTypes().SingleOrDefault(t => t.Name.Contains("CasterConfigurer")) ?? throw new("ICasterConfigurer implementation not found");
+                var type = assembly.GetExportedTypes().SingleOrDefault(t => t.Name.Contains("CasterConfigurer")) ?? throw new("`ICasterConfigurer` implementation not found");
                 var typeInstance = (ICasterConfigurer?)Activator.CreateInstance(type) ?? throw new($"Cannot create instance of {type}");
 
                 typeInstance.Configure();
@@ -255,30 +187,6 @@ public class DomainAssembliesBusinessFeature(
             });
         });
 
-        configurator.ConfigureApiModelConventions(conventions =>
-        {
-            conventions.Add(new AutoHttpMethodConvention([
-                (Regexes.StartsWithGet, HttpMethod.Get),
-                (Regexes.IsUpdateChangeOrSet, HttpMethod.Put),
-                (Regexes.StartsWithUpdateChangeOrSet, HttpMethod.Patch),
-                (Regexes.StartsWithDeleteRemoveOrClear, HttpMethod.Delete)
-            ]));
-            conventions.Add(new GetAndDeleteAcceptsOnlyQueryConvention());
-            conventions.Add(new RemoveFromRouteConvention(["Get"]));
-            conventions.Add(new RemoveFromRouteConvention(["Update", "Change", "Set"]));
-            conventions.Add(new RemoveFromRouteConvention(["Delete", "Remove", "Clear"]));
-            conventions.Add(new ConsumesJsonConvention(_when: c => c.Action.HasBody), order: 10);
-            conventions.Add(new ProducesJsonConvention(_when: c => !c.Action.Return.IsVoid), order: 10);
-            conventions.Add(new UseDocumentationAsDescriptionConvention(_tagDescriptions), order: 10);
-            conventions.Add(new AddMappedMethodAttributeConvention());
-        });
-
-        configurator.ConfigureGeneratedFileCollection(files =>
-        {
-            files.AddAsJson(_tagDescriptions);
-            files.AddAsJson(_examples);
-        });
-
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
         {
             foreach (var (assembly, _) in _assemblyDescriptors)
@@ -288,32 +196,6 @@ public class DomainAssembliesBusinessFeature(
 
                 swaggerGenOptions.IncludeXmlComments(xmlPath);
             }
-
-            swaggerGenOptions.EnableAnnotations();
-
-            var schemaHelper = new SwaggerSchemaHelper();
-            swaggerGenOptions.CustomSchemaIds(schemaHelper.GetSchemaId);
-
-            swaggerGenOptions.OrderActionsBy(apiDescription =>
-            {
-                var methodOrder =
-                    apiDescription.HttpMethod == "POST" ? 0 :
-                    apiDescription.HttpMethod == "GET" ? 1 :
-                    apiDescription.HttpMethod == "PUT" ? 2 :
-                    apiDescription.HttpMethod == "PATCH" ? 3 :
-                    4;
-
-                return $"{apiDescription.ActionDescriptor.AttributeRouteInfo?.Template}_{methodOrder}";
-            });
-
-            configurator.UsingGeneratedContext(generatedContext =>
-            {
-                var tagDescriptions = generatedContext.ReadFileAsJson<TagDescriptions>() ?? [];
-                swaggerGenOptions.DocumentFilter<ApplyTagDescriptionsDocumentFilter>(tagDescriptions);
-
-                var examples = generatedContext.ReadFileAsJson<RequestResponseExamples>() ?? [];
-                swaggerGenOptions.OperationFilter<XmlExamplesOperationFilter>(examples);
-            });
         });
     }
 }
