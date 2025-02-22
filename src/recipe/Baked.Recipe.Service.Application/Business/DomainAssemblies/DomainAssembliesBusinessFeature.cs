@@ -81,8 +81,7 @@ public class DomainAssembliesBusinessFeature(
 
                     add(context.Type, new NamespaceAttribute(@namespace));
                 },
-                when: c => setNamespaceWhen(c.Type),
-                order: -10
+                when: c => setNamespaceWhen(c.Type)
             );
             builder.Conventions.AddTypeMetadata(new ServiceAttribute(),
                 when: c =>
@@ -93,27 +92,23 @@ public class DomainAssembliesBusinessFeature(
                     !c.Type.IsGenericTypeDefinition &&
                     !c.Type.IsAssignableTo<IEnumerable>() &&
                     c.Type.TryGetMembers(out var members) &&
-                    !members.Methods.Contains("<Clone>$"), // if type is record
-                order: -10
+                    !members.Methods.Contains("<Clone>$") // if type is record
             );
             builder.Conventions.AddMethodMetadata(new ExternalAttribute(),
                 when: c =>
                     c.Method.DefaultOverload.DeclaringType is not null &&
                     c.Method.DefaultOverload.DeclaringType.TryGetMetadata(out var metadata) &&
-                    !metadata.Has<ServiceAttribute>(),
-                order: -10
+                    !metadata.Has<ServiceAttribute>()
             );
             builder.Conventions.AddMethodMetadata(new ExternalAttribute(),
                 when: c =>
                     c.Method.DefaultOverload.BaseDefinition is not null &&
                     c.Method.DefaultOverload.BaseDefinition.DeclaringType is not null &&
                     c.Method.DefaultOverload.BaseDefinition.DeclaringType.TryGetMetadata(out var metadata) &&
-                    !metadata.Has<ServiceAttribute>(),
-                order: -10
+                    !metadata.Has<ServiceAttribute>()
             );
             builder.Conventions.AddTypeMetadata(new CasterAttribute(),
-                when: c => c.Type.IsClass && !c.Type.IsAbstract && c.Type.IsAssignableTo(typeof(ICasts<,>)),
-                order: -10
+                when: c => c.Type.IsClass && !c.Type.IsAbstract && c.Type.IsAssignableTo(typeof(ICasts<,>))
             );
         });
 

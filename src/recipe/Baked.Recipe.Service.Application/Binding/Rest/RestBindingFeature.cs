@@ -31,7 +31,8 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
                   !c.Type.IsAbstract &&
                   !c.Type.IsGenericType &&
                   c.Type.TryGetMembers(out var members) &&
-                  members.Methods.Any(m => m.DefaultOverload.IsPublicInstanceWithNoSpecialName())
+                  members.Methods.Any(m => m.DefaultOverload.IsPublicInstanceWithNoSpecialName()),
+                order: int.MaxValue - 10
             );
             builder.Conventions.AddMethodMetadata(
                 attribute: c => new ActionModelAttribute(nameof(HttpMethod.Post), [c.Type.Name, c.Method.Name], "target"),
@@ -40,11 +41,12 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
                     !c.Method.Has<InitializerAttribute>() &&
                     c.Method.DefaultOverload.IsPublicInstanceWithNoSpecialName() &&
                     c.Method.DefaultOverload.AllParametersAreApiInput(),
-                order: int.MaxValue
+                order: int.MaxValue - 10
             );
             builder.Conventions.AddParameterMetadata(
                 attribute: c => new ParameterModelAttribute(ParameterModelFrom.BodyOrForm),
-                when: c => c.Parameter.IsApiInput()
+                when: c => c.Parameter.IsApiInput(),
+                order: int.MaxValue - 10
             );
 
             // init before any domain convention

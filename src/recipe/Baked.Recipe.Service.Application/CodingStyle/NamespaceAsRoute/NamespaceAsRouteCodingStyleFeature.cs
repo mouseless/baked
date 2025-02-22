@@ -8,7 +8,7 @@ public class NamespaceAsRouteCodingStyleFeature : IFeature<CodingStyleConfigurat
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Conventions.Add(new UseNamespaceForBaseRouteConvention(), order: int.MaxValue - 10);
+            builder.Conventions.Add(new UseNamespaceForBaseRouteConvention(), order: int.MaxValue - 20);
         });
     }
 }
