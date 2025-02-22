@@ -1,17 +1,20 @@
-﻿using Humanizer;
+﻿using Baked.Domain.Configuration;
+using Baked.RestApi.Model;
+using Humanizer;
 
 namespace Baked.RestApi.Conventions;
 
 public class PluralizeActionConvention(
-    Func<ActionModelContext, bool>? _when = default
-) : IApiModelConvention<ActionModelContext>
+    Func<ActionModel, bool>? _when = default
+) : IDomainModelConvention<MethodModelContext>
 {
-    public void Apply(ActionModelContext context)
+    public void Apply(MethodModelContext context)
     {
-        if (_when is not null && !_when(context)) { return; }
+        if (!context.Method.TryGetSingle<ActionModel>(out var action)) { return; }
+        if (_when is not null && !_when(action)) { return; }
 
-        var newName = context.Action.Name.Pluralize();
-        context.Action.RouteParts = context.Action.RouteParts.Replace(context.Action.Name, newName);
-        context.Action.Name = newName;
+        var newName = action.Name.Pluralize();
+        action.RouteParts = action.RouteParts.Replace(action.Name, newName);
+        action.Name = newName;
     }
 }

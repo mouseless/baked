@@ -16,11 +16,13 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
+            // domain metadata indices
             builder.Index.Type.Add<ControllerModel>();
             builder.Index.Type.Add<ApiInputAttribute>();
             builder.Index.Method.Add<ActionModel>();
             builder.Index.Parameter.Add<ParameterModel>();
 
+            // domain metadata add/remove
             builder.Conventions.AddTypeMetadata(new ControllerModel(),
                 when: c =>
                   c.Type.Has<ServiceAttribute>() &&
@@ -43,9 +45,12 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
                 attribute: c => new ParameterModel(ParameterModelFrom.BodyOrForm),
                 when: c => c.Parameter.IsApiInput()
             );
+
+            // init before any domain convention
             builder.Conventions.Add(new InitApiModelConvention(), order: int.MinValue);
             builder.Conventions.Add(new AddTargetParameterConvention("target"), order: int.MinValue);
 
+            // rest api conventions
             builder.Conventions.Add(new AutoHttpMethodConvention([
                 (Regexes.StartsWithGet, HttpMethod.Get),
                 (Regexes.IsUpdateChangeOrSet, HttpMethod.Put),
@@ -56,8 +61,8 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
             builder.Conventions.Add(new RemoveFromRouteConvention(["Get"]));
             builder.Conventions.Add(new RemoveFromRouteConvention(["Update", "Change", "Set"]));
             builder.Conventions.Add(new RemoveFromRouteConvention(["Delete", "Remove", "Clear"]));
-            builder.Conventions.Add(new ConsumesJsonConvention(_when: c => c.Action.HasBody), order: 10);
-            builder.Conventions.Add(new ProducesJsonConvention(_when: c => !c.Action.Return.IsVoid), order: 10);
+            builder.Conventions.Add(new ConsumesJsonConvention(_when: action => action.HasBody), order: 10);
+            builder.Conventions.Add(new ProducesJsonConvention(_when: action => !action.Return.IsVoid), order: 10);
             builder.Conventions.Add(new UseDocumentationAsDescriptionConvention(_tagDescriptions), order: 10);
             builder.Conventions.Add(new AddMappedMethodAttributeConvention());
         });
@@ -68,32 +73,12 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
 
             configurator.UsingDomainModel(domain =>
             {
-                foreach (var type in domain.Types.Having<ApiServiceAttribute>())
+                foreach (var type in domain.Types.Having<ControllerModel>())
                 {
-                    if (type.FullName is null) { continue; }
+                    if (!type.TryGetMetadata(out var metadata)) { continue; }
 
-                    var controller = new ControllerModel(type) { ClassName = type.CSharpFriendlyFullName.Split('.').Skip(1).Join('_') };
-                    foreach (var method in type.GetMembers().Methods.Having<ApiMethodAttribute>())
-                    {
-                        controller.AddAction(type, method);
-
-                        var typeExample = new RequestResponseExampleData(
-                            type.GetMembers().Documentation.GetExampleCode("request"),
-                            type.GetMembers().Documentation.GetExampleCode("response")
-                        );
-
-                        var methodExample = new RequestResponseExampleData(
-                            method.Documentation.GetExampleCode("request"),
-                            method.Documentation.GetExampleCode("response")
-                        );
-
-                        _examples.TryAdd($"{type.FullName}", typeExample);
-                        _examples.TryAdd($"{type.FullName}.{method.Name}", methodExample);
-                    }
-
-                    if (!controller.Action.Any()) { continue; }
-
-                    api.Controller.Add(controller.Id, controller);
+                    var controller = metadata.GetSingle<ControllerModel>();
+                    api.Controller[controller.Id] = controller;
                 }
             });
         });

@@ -1,12 +1,17 @@
-﻿namespace Baked.RestApi.Conventions;
+﻿using Baked.Domain.Configuration;
+using Baked.RestApi.Model;
 
-public class GetAndDeleteAcceptsOnlyQueryConvention : IApiModelConvention<ParameterModelContext>
+namespace Baked.RestApi.Conventions;
+
+public class GetAndDeleteAcceptsOnlyQueryConvention : IDomainModelConvention<ParameterModelContext>
 {
     public void Apply(ParameterModelContext context)
     {
-        if (context.Action.Method != HttpMethod.Get && context.Action.Method != HttpMethod.Delete) { return; }
-        if (context.Parameter.FromServices || context.Parameter.FromRoute) { return; }
+        if (!context.Method.TryGetSingle<ActionModel>(out var action)) { return; }
+        if (!context.Parameter.TryGetSingle<ParameterModel>(out var parameter)) { return; }
+        if (action.Method != HttpMethod.Get && action.Method != HttpMethod.Delete) { return; }
+        if (parameter.FromServices || parameter.FromRoute) { return; }
 
-        context.Parameter.From = ParameterModelFrom.Query;
+        parameter.From = ParameterModelFrom.Query;
     }
 }

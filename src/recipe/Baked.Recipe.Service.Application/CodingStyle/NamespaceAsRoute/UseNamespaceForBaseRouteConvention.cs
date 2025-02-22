@@ -1,16 +1,19 @@
+using Baked.Domain.Configuration;
+using Baked.RestApi.Model;
+
 namespace Baked.CodingStyle.NamespaceAsRoute;
 
-public class UseNamespaceForBaseRouteConvention
-  : IApiModelConvention<ActionModelContext>
+public class UseNamespaceForBaseRouteConvention : IDomainModelConvention<MethodModelContext>
 {
-    public void Apply(ActionModelContext context)
+    public void Apply(MethodModelContext context)
     {
-        if (!context.Controller.MappedType.TryGetNamespace(out var @namespace)) { return; }
+        if (!context.Type.TryGetNamespace(out var @namespace)) { return; }
+        if (!context.Method.TryGetSingle<ActionModel>(out var action)) { return; }
 
         var baseRoute = @namespace.Split(".");
 
-        context.Action.RouteParts.InsertRange(0, baseRoute);
-        foreach (var routeParameter in context.Action.Parameters.Where(pm => pm.FromRoute))
+        action.RouteParts.InsertRange(0, baseRoute);
+        foreach (var routeParameter in action.Parameters.Where(pm => pm.FromRoute))
         {
             routeParameter.RoutePosition += baseRoute.Length;
         }

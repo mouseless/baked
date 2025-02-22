@@ -1,17 +1,21 @@
-﻿using System.Text.RegularExpressions;
+﻿using Baked.Domain.Configuration;
+using Baked.RestApi.Model;
+using System.Text.RegularExpressions;
 
 namespace Baked.RestApi.Conventions;
 
 public class AutoHttpMethodConvention(IEnumerable<(Regex Regex, HttpMethod Method)> _mappings)
-    : IApiModelConvention<ActionModelContext>
+    : IDomainModelConvention<MethodModelContext>
 {
-    public void Apply(ActionModelContext context)
+    public void Apply(MethodModelContext context)
     {
+        if (!context.Method.TryGetSingle<ActionModel>(out var action)) { return; }
+
         foreach (var mapping in _mappings)
         {
-            if (!mapping.Regex.IsMatch(context.Action.Name)) { continue; }
+            if (!mapping.Regex.IsMatch(action.Name)) { continue; }
 
-            context.Action.Method = mapping.Method;
+            action.Method = mapping.Method;
 
             return;
         }

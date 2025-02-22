@@ -1,27 +1,30 @@
-﻿using Humanizer;
+﻿using Baked.Domain.Configuration;
+using Baked.RestApi.Model;
+using Humanizer;
 
 namespace Baked.RestApi.Conventions;
 
 public class RemoveFromRouteConvention(IEnumerable<string> _parts,
-    Func<ActionModelContext, bool>? _when = default
-) : IApiModelConvention<ActionModelContext>
+    Func<ActionModel, bool>? _when = default
+) : IDomainModelConvention<MethodModelContext>
 {
-    public void Apply(ActionModelContext context)
+    public void Apply(MethodModelContext context)
     {
-        if (_when is not null && !_when(context)) { return; }
+        if (!context.Method.TryGetSingle<ActionModel>(out var action)) { return; }
+        if (_when is not null && !_when(action)) { return; }
 
-        for (var i = 0; i < context.Action.RouteParts.Count; i++)
+        for (var i = 0; i < action.RouteParts.Count; i++)
         {
-            var routePart = RemoveParts(context.Action.RouteParts[i], _parts);
-            context.Action.RouteParts[i] = routePart;
+            var routePart = RemoveParts(action.RouteParts[i], _parts);
+            action.RouteParts[i] = routePart;
             if (string.IsNullOrWhiteSpace(routePart))
             {
-                context.Action.RouteParts.RemoveAt(i);
+                action.RouteParts.RemoveAt(i);
                 i--;
             }
         }
 
-        context.Action.Name = RemoveParts(context.Action.Name, _parts);
+        action.Name = RemoveParts(action.Name, _parts);
     }
 
     string RemoveParts(string from, IEnumerable<string> parts) =>

@@ -1,11 +1,15 @@
-﻿namespace Baked.Binding.Rest;
+﻿using Baked.Domain.Configuration;
+using Baked.RestApi.Model;
 
-public class AddMappedMethodAttributeConvention : IApiModelConvention<ActionModelContext>
+namespace Baked.Binding.Rest;
+
+public class AddMappedMethodAttributeConvention : IDomainModelConvention<ParameterModelContext>
 {
-    public void Apply(ActionModelContext context)
+    public void Apply(ParameterModelContext context)
     {
-        if (context.Action.MappedMethod is null) { return; }
+        if (!context.Method.TryGetSingle<ActionModel>(out var action)) { return; }
+        if (action.ManuallyAdded) { return; }
 
-        context.Action.AdditionalAttributes.Add($"{typeof(MappedMethodAttribute).FullName}(\"{context.Controller.MappedType.FullName}\", \"{context.Action.MappedMethod.Name}\")");
+        action.AdditionalAttributes.Add($"{typeof(MappedMethodAttribute).FullName}(\"{context.Type.FullName}\", \"{context.Method.Name}\")");
     }
 }

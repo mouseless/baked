@@ -1,21 +1,25 @@
-﻿namespace Baked.CodingStyle.CommandPattern;
+﻿using Baked.Domain.Configuration;
+using Baked.RestApi.Model;
+
+namespace Baked.CodingStyle.CommandPattern;
 
 public class NoRequestBodyForSingleEnumerableParametersConvention(
-    Func<ActionModelContext, bool>? _when = default,
+    Func<ActionModel, bool>? _when = default,
     HttpMethod? _method = default
-) : IApiModelConvention<ActionModelContext>
+) : IDomainModelConvention<MethodModelContext>
 {
-    public void Apply(ActionModelContext context)
+    public void Apply(MethodModelContext context)
     {
-        if (_when is not null && !_when(context)) { return; }
-        if (context.Action.InvokedMethodParameters.Count() != 1) { return; }
+        if (!context.Method.TryGetSingle<ActionModel>(out var action)) { return; }
+        if (_when is not null && !_when(action)) { return; }
+        if (action.InvokedMethodParameters.Count() != 1) { return; }
 
-        var onlyParameter = context.Action.InvokedMethodParameters.Single();
-        if (onlyParameter.MappedParameter is null) { return; }
-        if (!onlyParameter.MappedParameter.ParameterType.IsAssignableTo<IEnumerable>()) { return; }
+        var onlyParameter = action.InvokedMethodParameters.Single();
+        if (onlyParameter.ManuallyAdded) { return; }
+        if (!context.Method.DefaultOverload.Parameters[onlyParameter.Id].ParameterType.IsAssignableTo<IEnumerable>()) { return; }
 
-        context.Action.UseRequestClassForBody = false;
+        action.UseRequestClassForBody = false;
 
-        if (_method is not null) { context.Action.Method = _method; }
+        if (_method is not null) { action.Method = _method; }
     }
 }

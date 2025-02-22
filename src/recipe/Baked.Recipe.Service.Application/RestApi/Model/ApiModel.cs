@@ -8,5 +8,5 @@ public record ApiModel
     public List<string> Usings { get; } = [];
     public Dictionary<string, ControllerModel> Controller { get; init; } = [];
 
-    public IEnumerable<ControllerModel> Controllers { get => Controller.Values; init => Controller = value.ToDictionary(c => c.Id); }
+    public IEnumerable<ControllerModel> Controllers => Controller.Values;
 }
