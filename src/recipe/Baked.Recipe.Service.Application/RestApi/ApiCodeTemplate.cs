@@ -31,7 +31,7 @@ public class ApiCodeTemplate(ApiModel _apiModel)
         [Http{{Method(action.Method)}}]
         [Route("{{action.GetRoute()}}")]
         {{ForEach(action.AdditionalAttributes, Attribute)}}
-        public {{ReturnType(action.Return)}} {{action.Id}}({{Join(", ",
+        public {{ReturnType(action)}} {{action.Id}}({{Join(", ",
             ForEach(action.ServiceParameters, Parameter, separator: ", "),
             If(action.UseForm || action.HasBody, () =>
                 If(action.UseForm,
@@ -52,12 +52,12 @@ public class ApiCodeTemplate(ApiModel _apiModel)
             """)}}
             var __target = {{action.FindTargetStatement}};
 
-            {{If(action.Return.IsVoid, () => $$"""
+            {{If(action.ReturnIsVoid, () => $$"""
                 {{Invoke("__target", action)}};
             """, @else: () => $$"""
                 var __result = {{Invoke("__target", action)}};
 
-                return {{action.Return.RenderResult("__result")}};
+                return {{action.RenderReturnResult("__result")}};
             """)}}
         }
     """;
@@ -73,9 +73,9 @@ public class ApiCodeTemplate(ApiModel _apiModel)
     string Attribute(string attribute) =>
         $"[{attribute}]";
 
-    string ReturnType(ReturnModel @return) =>
-        @return.IsAsync ? $"async {@return.Type}" :
-        @return.Type
+    string ReturnType(ActionModel action) =>
+        action.ReturnIsAsync ? $"async {action.ReturnType}" :
+        action.ReturnType
     ;
 
     string Parameter(ParameterModel parameter) =>
@@ -93,7 +93,7 @@ public class ApiCodeTemplate(ApiModel _apiModel)
             : "[FromForm]";
 
     string Invoke(string target, ActionModel action) => $$"""
-        {{(action.Return.IsAsync ? "await " : string.Empty)}}{{target}}.{{action.Id}}(
+        {{(action.ReturnIsAsync ? "await " : string.Empty)}}{{target}}.{{action.Id}}(
             {{ForEach(action.InvokedMethodParameters, p => $"@{p.InternalName}: {ParameterLookup(p, action.UseForm, action.UseRequestClassForBody)}", separator: ", ")}}
         )
     """;

@@ -6,7 +6,7 @@ namespace Baked.Domain.Conventions;
 public class AddMetadataConvention<TModelContext>(
     Action<TModelContext, Action<ICustomAttributesModel, Attribute>> _apply,
     Func<TModelContext, bool> _when
-) : IDomainModelConvention<TModelContext>, IMetadataConvention
+) : IDomainModelConvention<TModelContext>, IAddRemoveMetadataConvention
 {
     public void Apply(TModelContext model)
     {

@@ -40,9 +40,9 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
 
     public void PostBuild(DomainModel result)
     {
-        ApplyMetadataConventions(result);
+        ApplyAddRemoveMetadataConventions(result);
         BuildIndices(result);
-        ApplyNonMetadataConventions(result);
+        ApplyOtherConventions(result);
     }
 
     TypeModel.Factory GetFactory(Type t)
@@ -65,17 +65,17 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
         return _buildQueue.Enqueue(type);
     }
 
-    void ApplyMetadataConventions(DomainModel model)
+    void ApplyAddRemoveMetadataConventions(DomainModel model)
     {
-        foreach (var convention in _options.Conventions.OrderBy(c => c.Order).Select(c => c.Convention).OfType<IMetadataConvention>())
+        foreach (var convention in _options.Conventions.OrderBy(c => c.Order).Select(c => c.Convention).OfType<IAddRemoveMetadataConvention>())
         {
             Apply(model, convention);
         }
     }
 
-    void ApplyNonMetadataConventions(DomainModel model)
+    void ApplyOtherConventions(DomainModel model)
     {
-        foreach (var convention in _options.Conventions.OrderBy(c => c.Order).Select(c => c.Convention).Where(c => c is not IMetadataConvention))
+        foreach (var convention in _options.Conventions.OrderBy(c => c.Order).Select(c => c.Convention).Where(c => c is not IAddRemoveMetadataConvention))
         {
             Apply(model, convention);
         }
