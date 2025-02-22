@@ -27,7 +27,7 @@ public class CommandPatternCodingStyleFeature(IEnumerable<string> _methodNames)
                     ),
                 order: 40
             );
-            builder.Conventions.RemoveTypeMetadata<ControllerModel>(
+            builder.Conventions.RemoveTypeMetadata<ControllerModelAttribute>(
                 when: c =>
                     c.Type.Has<TransientAttribute>() &&
                     !c.Type.Has<LocatableAttribute>() &&

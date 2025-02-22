@@ -8,7 +8,7 @@ public class SetDefaultValueForEnumConvention : IDomainModelConvention<Parameter
     public void Apply(ParameterModelContext context)
     {
         if (!context.Parameter.ParameterType.IsEnum) { return; }
-        if (!context.Parameter.TryGetSingle<ParameterModel>(out var parameter)) { return; }
+        if (!context.Parameter.TryGetSingle<ParameterModelAttribute>(out var parameter)) { return; }
 
         var enumType = context.Parameter.ParameterType;
         parameter.DefaultValueRenderer = defaultValue =>

@@ -8,8 +8,8 @@ public class UriReturnIsRedirectConvention : IDomainModelConvention<MethodModelC
 {
     public void Apply(MethodModelContext context)
     {
-        if (!context.Method.TryGetSingle<ActionModel>(out var action)) { return; }
-        if (context.Method.DefaultOverload.ReturnType.Is<Uri>(allowAsync: true)) { return; }
+        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
+        if (!context.Method.DefaultOverload.ReturnType.Is<Uri>(allowAsync: true)) { return; }
 
         action.AdditionalAttributes.Add($"ProducesResponseType((int){nameof(HttpStatusCode)}.Redirect)");
         action.ReturnType = action.ReturnIsAsync ? "Task<RedirectResult>" : "RedirectResult";

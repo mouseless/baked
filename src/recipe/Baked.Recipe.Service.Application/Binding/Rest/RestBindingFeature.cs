@@ -1,4 +1,4 @@
-using Baked.Architecture;
+﻿using Baked.Architecture;
 using Baked.Business;
 using Baked.RestApi;
 using Baked.RestApi.Conventions;
@@ -17,14 +17,14 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
         configurator.ConfigureDomainModelBuilder(builder =>
         {
             // domain metadata indices
-            builder.Index.Type.Add<ControllerModel>();
+            builder.Index.Type.Add<ControllerModelAttribute>();
             builder.Index.Type.Add<ApiInputAttribute>();
-            builder.Index.Method.Add<ActionModel>();
-            builder.Index.Parameter.Add<ParameterModel>();
+            builder.Index.Method.Add<ActionModelAttribute>();
+            builder.Index.Parameter.Add<ParameterModelAttribute>();
 
             // domain metadata add/remove
             builder.Conventions.AddTypeMetadata(
-                attribute: c => new ControllerModel(),
+                attribute: c => new ControllerModelAttribute(),
                 when: c =>
                   c.Type.Has<ServiceAttribute>() &&
                   c.Type.IsClass &&
@@ -34,7 +34,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
                   members.Methods.Any(m => m.DefaultOverload.IsPublicInstanceWithNoSpecialName())
             );
             builder.Conventions.AddMethodMetadata(
-                attribute: c => new ActionModel(nameof(HttpMethod.Post), [c.Type.Name, c.Method.Name], "target"),
+                attribute: c => new ActionModelAttribute(nameof(HttpMethod.Post), [c.Type.Name, c.Method.Name], "target"),
                 when: c =>
                     !c.Method.Has<ExternalAttribute>() &&
                     !c.Method.Has<InitializerAttribute>() &&
@@ -43,7 +43,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
                 order: int.MaxValue
             );
             builder.Conventions.AddParameterMetadata(
-                attribute: c => new ParameterModel(ParameterModelFrom.BodyOrForm),
+                attribute: c => new ParameterModelAttribute(ParameterModelFrom.BodyOrForm),
                 when: c => c.Parameter.IsApiInput()
             );
 
@@ -74,11 +74,11 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
 
             configurator.UsingDomainModel(domain =>
             {
-                foreach (var type in domain.Types.Having<ControllerModel>())
+                foreach (var type in domain.Types.Having<ControllerModelAttribute>())
                 {
                     if (!type.TryGetMetadata(out var metadata)) { continue; }
 
-                    var controller = metadata.GetSingle<ControllerModel>();
+                    var controller = metadata.GetSingle<ControllerModelAttribute>();
                     api.Controller[controller.Id] = controller;
                 }
             });

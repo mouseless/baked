@@ -9,8 +9,6 @@ using NHibernate;
 using Shouldly;
 using System.Diagnostics.CodeAnalysis;
 
-using ParameterModel = Baked.RestApi.Model.ParameterModel;
-
 namespace Baked;
 
 public static class OrmExtensions
@@ -18,7 +16,7 @@ public static class OrmExtensions
     public static void AddOrm(this List<IFeature> features, Func<OrmConfigurator, IFeature<OrmConfigurator>> configure) =>
         features.Add(configure(new()));
 
-    public static ParameterModel AddAsService(this ActionModel action, TypeModel type,
+    public static ParameterModelAttribute AddAsService(this ActionModelAttribute action, TypeModel type,
         string? name = default
     )
     {
@@ -31,14 +29,14 @@ public static class OrmExtensions
             };
     }
 
-    public static ParameterModel AddQueryContextAsService(this ActionModel action, TypeModel queryContextType)
+    public static ParameterModelAttribute AddQueryContextAsService(this ActionModelAttribute action, TypeModel queryContextType)
     {
         var entityType = queryContextType.GetGenerics().GenericTypeArguments[0].Model;
 
         return action.AddAsService(queryContextType, name: $"{entityType.Name.Camelize()}Query");
     }
 
-    public static string BuildSingleBy(this ParameterModel queryParameter, string valueExpression,
+    public static string BuildSingleBy(this ParameterModelAttribute queryParameter, string valueExpression,
         string property = "Id",
         string? notNullValueExpression = default,
         bool fromRoute = false,
@@ -62,7 +60,7 @@ public static class OrmExtensions
             : $"({castTo.CSharpFriendlyFullName}){singleBy}";
     }
 
-    public static string BuildByIds(this ParameterModel queryContextParameter, string valueExpression,
+    public static string BuildByIds(this ParameterModelAttribute queryContextParameter, string valueExpression,
         TypeModel? castTo = default,
         bool isArray = false
     )
@@ -78,7 +76,7 @@ public static class OrmExtensions
             : $"{byIds}.ToList()";
     }
 
-    public static void ConvertToId(this ParameterModel parameter,
+    public static void ConvertToId(this ParameterModelAttribute parameter,
         string? name = default,
         bool nullable = false,
         bool dontAddRequired = false
@@ -95,7 +93,7 @@ public static class OrmExtensions
         parameter.Name = name;
     }
 
-    public static void ConvertToIds(this ParameterModel parameter)
+    public static void ConvertToIds(this ParameterModelAttribute parameter)
     {
         parameter.Type = "IEnumerable<Guid>";
         parameter.Name = $"{parameter.Name.Singularize()}Ids";

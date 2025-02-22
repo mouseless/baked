@@ -59,13 +59,13 @@ public static class RestApiExtensions
     public static string GetControllerId(this Type type) =>
         type.GetCSharpFriendlyFullName();
 
-    public static ControllerModel GetController<T>(this ApiModel api) =>
+    public static ControllerModelAttribute GetController<T>(this ApiModel api) =>
         api.Controller[typeof(T).GetControllerId()];
 
-    public static void AddAttribute<T>(this ActionModel action) where T : Attribute =>
+    public static void AddAttribute<T>(this ActionModelAttribute action) where T : Attribute =>
         action.AdditionalAttributes.Add(typeof(T).GetCSharpFriendlyFullName());
 
-    public static string GetRouteString(this ParameterModel parameter)
+    public static string GetRouteString(this ParameterModelAttribute parameter)
     {
         var constraint = parameter switch
         {
@@ -109,7 +109,7 @@ public static class RestApiExtensions
         List<string>? routeParts = default,
         bool? useForm = default,
         bool? useRequestClassForBody = default,
-        Action<Dictionary<string, ParameterModel>>? parameter = default
+        Action<Dictionary<string, ParameterModelAttribute>>? parameter = default
     )
     {
         var controller = api.GetController<T>();

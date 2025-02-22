@@ -3,12 +3,12 @@
 namespace Baked.RestApi.Model;
 
 [AttributeUsage(AttributeTargets.Method)]
-public class ActionModel(string method, string[] routeParts, string findTargetStatement,
+public class ActionModelAttribute(string method, string[] routeParts, string findTargetStatement,
     string[]? additionalAttributes = default,
     string[]? preparationStatements = default
 ) : Attribute
 {
-    public ActionModel(string id, HttpMethod method, IEnumerable<string> routeParts, string findTargetStatement, string returnType, bool returnIsAsync, bool returnIsVoid, IEnumerable<ParameterModel> parameters,
+    public ActionModelAttribute(string id, HttpMethod method, IEnumerable<string> routeParts, string findTargetStatement, string returnType, bool returnIsAsync, bool returnIsVoid, IEnumerable<ParameterModelAttribute> parameters,
         IEnumerable<string>? additionalAttributes = default,
         IEnumerable<string>? preparationStatements = default
     ) : this(method.ToString(), [.. routeParts], findTargetStatement,
@@ -53,27 +53,31 @@ public class ActionModel(string method, string[] routeParts, string findTargetSt
     public int Order { get; set; } = 0;
     public List<string> AdditionalAttributes { get; } = [.. additionalAttributes ?? []];
     public List<string> PreparationStatements { get; } = [.. preparationStatements ?? []];
-    public Dictionary<string, ParameterModel> Parameter { get; private set; } = default!;
+    public Dictionary<string, ParameterModelAttribute> Parameter { get; private set; } = default!;
     public bool ManuallyAdded { get; } = false;
+    internal bool Initialized { get; private set; } = false;
 
     public bool HasBody => !UseForm && BodyParameters.Any();
-    public IEnumerable<ParameterModel> Parameters => Parameter.Values;
-    IEnumerable<ParameterModel> ActionParameters => Parameters.Where(p => !p.IsHardCoded).OrderBy(p => p.Order).ThenBy(p => p.IsOptional ? 1 : -1);
-    IEnumerable<ParameterModel> RouteParameters => Parameters.Where(p => p.From == ParameterModelFrom.Route).OrderBy(p => p.RoutePosition);
-    IEnumerable<ParameterModel> NonServiceParameters => ActionParameters.Where(p => p.From != ParameterModelFrom.Services);
-    public IEnumerable<ParameterModel> BodyParameters => ActionParameters.Where(p => p.From == ParameterModelFrom.BodyOrForm);
-    public IEnumerable<ParameterModel> ServiceParameters => ActionParameters.Where(p => p.From == ParameterModelFrom.Services);
-    public IEnumerable<ParameterModel> NonBodyParameters => NonServiceParameters.Where(p => p.From != ParameterModelFrom.BodyOrForm);
-    public IEnumerable<ParameterModel> InvokedMethodParameters => Parameters.Where(p => p.IsInvokeMethodParameter);
+    public IEnumerable<ParameterModelAttribute> Parameters => Parameter.Values;
+    IEnumerable<ParameterModelAttribute> ActionParameters => Parameters.Where(p => !p.IsHardCoded).OrderBy(p => p.Order).ThenBy(p => p.IsOptional ? 1 : -1);
+    IEnumerable<ParameterModelAttribute> RouteParameters => Parameters.Where(p => p.From == ParameterModelFrom.Route).OrderBy(p => p.RoutePosition);
+    IEnumerable<ParameterModelAttribute> NonServiceParameters => ActionParameters.Where(p => p.From != ParameterModelFrom.Services);
+    public IEnumerable<ParameterModelAttribute> BodyParameters => ActionParameters.Where(p => p.From == ParameterModelFrom.BodyOrForm);
+    public IEnumerable<ParameterModelAttribute> ServiceParameters => ActionParameters.Where(p => p.From == ParameterModelFrom.Services);
+    public IEnumerable<ParameterModelAttribute> NonBodyParameters => NonServiceParameters.Where(p => p.From != ParameterModelFrom.BodyOrForm);
+    public IEnumerable<ParameterModelAttribute> InvokedMethodParameters => Parameters.Where(p => p.IsInvokeMethodParameter);
 
-    internal ActionModel Init(string id, string returnType, bool returnIsAsync, bool returnIsVoid, IEnumerable<ParameterModel> parameters)
+    internal ActionModelAttribute Init(string id, string returnType, bool returnIsAsync, bool returnIsVoid, IEnumerable<ParameterModelAttribute> parameters)
     {
+        if (Initialized) { throw new($"Cannot initialize, already initialized: {Id}"); }
+
         Id = id;
         Name ??= id;
         ReturnType ??= returnType;
         ReturnIsAsync = returnIsAsync;
         ReturnIsVoid = returnIsVoid;
         Parameter ??= parameters.ToDictionary(p => p.Id);
+        Initialized = true;
 
         return this;
     }

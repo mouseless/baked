@@ -7,8 +7,8 @@ public class AddRequireUserClaimsAsAuthorizePolicyConvention : IDomainModelConve
 {
     public void Apply(MethodModelContext context)
     {
+        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
         if (!context.Method.TryGetSingle<RequireUserAttribute>(out var requireUser)) { return; }
-        if (!context.Method.TryGetSingle<ActionModel>(out var action)) { return; }
 
         action.AdditionalAttributes.AddRange(requireUser.Claims.Select(claim => $"Authorize(Policy = \"{claim}\")"));
     }

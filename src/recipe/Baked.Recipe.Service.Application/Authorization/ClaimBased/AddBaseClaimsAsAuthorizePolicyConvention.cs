@@ -8,7 +8,7 @@ public class AddBaseClaimsAsAuthorizePolicyConvention(IEnumerable<string> _baseC
 {
     public void Apply(MethodModelContext context)
     {
-        if (!context.Method.TryGetSingle<ActionModel>(out var action)) { return; }
+        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
         if (context.Method.Has<AllowAnonymousAttribute>()) { return; }
         if (context.Method.TryGetSingle<RequireUserAttribute>(out var requireUser) && requireUser.Override) { return; }
 

@@ -5,8 +5,6 @@ using Baked.Domain.Model;
 using Baked.RestApi.Model;
 using Humanizer;
 
-using ParameterModel = Baked.RestApi.Model.ParameterModel;
-
 namespace Baked;
 
 public static class RichTransientCodingStyleExtensions
@@ -14,10 +12,10 @@ public static class RichTransientCodingStyleExtensions
     public static RichTransientCodingStyleFeature RichTransient(this CodingStyleConfigurator _) =>
         new();
 
-    public static ParameterModel AddFactoryAsService(this ActionModel action, TypeModel transientType)
+    public static ParameterModelAttribute AddFactoryAsService(this ActionModelAttribute action, TypeModel transientType)
     {
         var parameter =
-            new ParameterModel($"new{transientType.Name.Pascalize()}", $"Func<{transientType.CSharpFriendlyFullName}>", ParameterModelFrom.Services)
+            new ParameterModelAttribute($"new{transientType.Name.Pascalize()}", $"Func<{transientType.CSharpFriendlyFullName}>", ParameterModelFrom.Services)
             {
                 IsInvokeMethodParameter = false,
             };
@@ -27,7 +25,7 @@ public static class RichTransientCodingStyleExtensions
         return parameter;
     }
 
-    public static string BuildInitializerById(this ParameterModel factoryParameter, TypeModel type, string valueExpression,
+    public static string BuildInitializerById(this ParameterModelAttribute factoryParameter, TypeModel type, string valueExpression,
         string? notNullValueExpression = default,
         bool nullable = false
     )
@@ -45,7 +43,7 @@ public static class RichTransientCodingStyleExtensions
         return initializerById;
     }
 
-    public static string BuildInitializerByIds(this ParameterModel factoryParameter, TypeModel type, string valueExpression,
+    public static string BuildInitializerByIds(this ParameterModelAttribute factoryParameter, TypeModel type, string valueExpression,
         bool isArray = default
     )
     {

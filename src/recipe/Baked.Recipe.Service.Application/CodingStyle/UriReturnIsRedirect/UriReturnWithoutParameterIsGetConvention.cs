@@ -8,7 +8,7 @@ public class UriReturnWithoutParameterIsGetConvention : IDomainModelConvention<M
     public void Apply(MethodModelContext context)
     {
         if (!context.Method.DefaultOverload.ReturnType.Is<Uri>(allowAsync: true)) { return; }
-        if (!context.Method.TryGetSingle<ActionModel>(out var action)) { return; }
+        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
         if (action.InvokedMethodParameters.Any()) { return; }
 
         action.Method = HttpMethod.Get;

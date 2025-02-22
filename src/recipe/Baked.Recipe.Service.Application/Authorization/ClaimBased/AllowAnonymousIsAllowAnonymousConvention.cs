@@ -7,8 +7,8 @@ public class AllowAnonymousIsAllowAnonymousConvention : IDomainModelConvention<M
 {
     public void Apply(MethodModelContext context)
     {
+        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
         if (!context.Method.Has<AllowAnonymousAttribute>()) { return; }
-        if (!context.Method.TryGetSingle<ActionModel>(out var action)) { return; }
 
         action.AdditionalAttributes.Add("AllowAnonymous");
     }

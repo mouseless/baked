@@ -1,11 +1,11 @@
 ﻿namespace Baked.RestApi.Model;
 
 [AttributeUsage(AttributeTargets.Parameter)]
-public class ParameterModel(ParameterModelFrom From,
+public class ParameterModelAttribute(ParameterModelFrom From,
     string[]? additionalAttributes = default
 ) : Attribute
 {
-    public ParameterModel(string id, string type, ParameterModelFrom @from,
+    public ParameterModelAttribute(string id, string type, ParameterModelFrom @from,
         IEnumerable<string>? additionalAttributes = default
     ) : this(@from,
         additionalAttributes: additionalAttributes?.ToArray()
@@ -40,20 +40,24 @@ public class ParameterModel(ParameterModelFrom From,
     public int RoutePosition { get; set; } = 0;
     public List<string> AdditionalAttributes { get; } = [.. additionalAttributes ?? []];
     public bool ManuallyAdded { get; } = false;
+    internal bool Initialized { get; private set; } = false;
 
     public bool FromServices => From == ParameterModelFrom.Services;
     public bool FromRoute => From == ParameterModelFrom.Route;
     public bool FromQuery => From == ParameterModelFrom.Query;
     public bool FromBodyOrForm => From == ParameterModelFrom.BodyOrForm;
 
-    internal ParameterModel Init(string id, string type, bool isOptional, object? defaultValue)
+    internal ParameterModelAttribute Init(string id, string type, bool isOptional, object? defaultValue)
     {
+        if (Initialized) { throw new($"Cannot initialize, already initialized: {Id}"); }
+
         Id = id;
         Type ??= type;
         Name ??= id;
         InternalName ??= id;
         IsOptional = isOptional;
         DefaultValue ??= defaultValue;
+        Initialized = true;
 
         return this;
     }

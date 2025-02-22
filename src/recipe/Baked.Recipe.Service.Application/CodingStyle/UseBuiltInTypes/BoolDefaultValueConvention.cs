@@ -7,7 +7,7 @@ public class BoolDefaultValueConvention : IDomainModelConvention<ParameterModelC
 {
     public void Apply(ParameterModelContext context)
     {
-        if (!context.Parameter.TryGetSingle<ParameterModel>(out var parameter)) { return; }
+        if (!context.Parameter.TryGetSingle<ParameterModelAttribute>(out var parameter)) { return; }
         if (!context.Parameter.ParameterType.Is<bool>() && !context.Parameter.ParameterType.Is<bool?>()) { return; }
 
         parameter.DefaultValueRenderer = defaultValue => $"{defaultValue}".ToLowerInvariant();

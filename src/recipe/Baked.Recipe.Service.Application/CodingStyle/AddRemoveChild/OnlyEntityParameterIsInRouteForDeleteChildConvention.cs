@@ -7,7 +7,7 @@ public class OnlyEntityParameterIsInRouteForDeleteChildConvention : IDomainModel
 {
     public void Apply(MethodModelContext context)
     {
-        if (!context.Method.TryGetSingle<ActionModel>(out var action)) { return; }
+        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
         if (action.Method != HttpMethod.Delete) { return; }
         if (action.Name == string.Empty) { return; }
         if (action.InvokedMethodParameters.Count() != 1) { return; }

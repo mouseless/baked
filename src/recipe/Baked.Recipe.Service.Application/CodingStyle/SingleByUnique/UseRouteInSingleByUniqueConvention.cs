@@ -9,7 +9,7 @@ public class UseRouteInSingleByUniqueConvention : IDomainModelConvention<MethodM
     public void Apply(MethodModelContext context)
     {
         if (!context.Method.TryGetSingle<SingleByUniqueAttribute>(out var unique)) { return; }
-        if (!context.Method.TryGetSingle<ActionModel>(out var action)) { return; }
+        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
         if (!action.Parameter.TryGetValue(unique.PropertyName.Camelize(), out var uniqueParameter)) { return; }
 
         uniqueParameter.From = ParameterModelFrom.Route;

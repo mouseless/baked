@@ -9,7 +9,7 @@ public class RichTransientInitializerIsGetResourceConvention : IDomainModelConve
 {
     public void Apply(MethodModelContext context)
     {
-        if (!context.Method.TryGetSingle<ActionModel>(out var action)) { return; }
+        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
         if (!context.Type.TryGetMembers(out var members)) { return; }
         if (!members.Has<LocatableAttribute>()) { return; }
         if (!members.Properties.Any(p => p.IsPublic)) { return; }

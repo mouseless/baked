@@ -43,7 +43,7 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 when: c => c.Type.Has<EntityAttribute>()
             );
             builder.Conventions.AddMethodMetadata(
-                attribute: c => new ActionModel("Post", [c.Type.Name, c.Method.Name], "target"),
+                attribute: c => new ActionModelAttribute("Post", [c.Type.Name, c.Method.Name], "target"),
                 when: c =>
                     c.Type.Has<EntityAttribute>() && c.Method.Has<InitializerAttribute>() &&
                     c.Method.Overloads.Any(o => o.IsPublic && !o.IsStatic && !o.IsSpecialName && o.AllParametersAreApiInput()),

@@ -19,9 +19,9 @@ public class TargetEntityFromRouteByUniquePropertiesConvention : IDomainModelCon
 
     public void Apply(ParameterModelContext context)
     {
-        if (!context.Parameter.TryGetSingle<ParameterModel>(out var parameter)) { return; }
+        if (!context.Parameter.TryGetSingle<ParameterModelAttribute>(out var parameter)) { return; }
         if (!parameter.IsTarget()) { return; }
-        if (!context.Method.TryGetSingle<ActionModel>(out var action)) { return; }
+        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
         if (context.Method.Has<InitializerAttribute>()) { return; }
 
         if (!TryGetEntityType(context, out var entityType, out var castTo)) { return; }

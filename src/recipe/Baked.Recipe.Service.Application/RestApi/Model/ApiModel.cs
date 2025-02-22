@@ -6,7 +6,7 @@ public record ApiModel
 {
     public List<Assembly> References { get; init; } = [];
     public List<string> Usings { get; } = [];
-    public Dictionary<string, ControllerModel> Controller { get; init; } = [];
+    public Dictionary<string, ControllerModelAttribute> Controller { get; init; } = [];
 
-    public IEnumerable<ControllerModel> Controllers => Controller.Values;
+    public IEnumerable<ControllerModelAttribute> Controllers => Controller.Values;
 }

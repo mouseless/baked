@@ -1,4 +1,4 @@
-using Baked.Domain.Configuration;
+﻿using Baked.Domain.Configuration;
 using Baked.RestApi.Model;
 
 namespace Baked.Orm;
@@ -9,7 +9,7 @@ public class AddSingleByIdConvention<T> : IDomainModelConvention<TypeModelContex
     {
         if (!context.Type.Is<T>()) { return; }
         if (!context.Type.TryGetMetadata(out var metadata)) { return; }
-        if (!metadata.TryGetSingle<ControllerModel>(out var controller)) { return; }
+        if (!metadata.TryGetSingle<ControllerModelAttribute>(out var controller)) { return; }
         if (!metadata.TryGetEntityType(context.Domain, out var entityType)) { return; }
 
         var queryContextTypeId = context.Domain.Types[typeof(IQueryContext<>)].MakeGenericTypeId(entityType);

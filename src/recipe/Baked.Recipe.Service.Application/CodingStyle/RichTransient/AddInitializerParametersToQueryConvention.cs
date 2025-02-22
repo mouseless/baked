@@ -11,7 +11,7 @@ public class AddInitializerParametersToQueryConvention : IDomainModelConvention<
         if (!context.Type.TryGetMembers(out var members)) { return; }
         if (!members.Methods.Having<InitializerAttribute>().Any()) { return; }
         if (members.Has<LocatableAttribute>()) { return; }
-        if (!context.Method.TryGetSingle<ActionModel>(out var action)) { return; }
+        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
 
         var initializer = members.Methods.Having<InitializerAttribute>().Single();
         foreach (var parameter in initializer.DefaultOverload.Parameters)

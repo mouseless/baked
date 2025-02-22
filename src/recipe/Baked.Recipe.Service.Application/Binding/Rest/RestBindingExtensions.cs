@@ -1,4 +1,4 @@
-using Baked.Binding;
+﻿using Baked.Binding;
 using Baked.Binding.Rest;
 using Baked.Domain.Model;
 using Baked.RestApi.Model;
@@ -21,10 +21,10 @@ public static class RestBindingExtensions
     public static bool AllParametersAreApiInput(this MethodOverloadModel overload) =>
         overload.Parameters.All(IsApiInput);
 
-    public static bool IsApiInput(this Domain.Model.ParameterModel parameter) =>
+    public static bool IsApiInput(this ParameterModel parameter) =>
         parameter.ParameterType.TryGetMetadata(out var metadata) && metadata.Has<ApiInputAttribute>();
 
-    public static bool IsTarget(this RestApi.Model.ParameterModel parameter) =>
+    public static bool IsTarget(this ParameterModelAttribute parameter) =>
         parameter.Id == "target";
 
     public static bool TryGetMappedMethod(this ApiDescription apiDescription, [NotNullWhen(true)] out MappedMethodAttribute? result)

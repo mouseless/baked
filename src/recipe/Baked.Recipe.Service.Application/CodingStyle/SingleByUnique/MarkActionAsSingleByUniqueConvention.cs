@@ -7,7 +7,7 @@ public class MarkActionAsSingleByUniqueConvention : IDomainModelConvention<Metho
 {
     public void Apply(MethodModelContext context)
     {
-        if (!context.Method.TryGetSingle<ActionModel>(out var action)) { return; }
+        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
         if (action.Id == "SingleById")
         {
             action.AdditionalAttributes.Add($"{nameof(SingleByUniqueAttribute)}(\"Id\", typeof(Guid))");

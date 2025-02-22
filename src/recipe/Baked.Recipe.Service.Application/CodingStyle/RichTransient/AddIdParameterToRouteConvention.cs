@@ -9,7 +9,7 @@ public class AddIdParameterToRouteConvention : IDomainModelConvention<MethodMode
 {
     public void Apply(MethodModelContext context)
     {
-        if (!context.Method.TryGetSingle<ActionModel>(out var action)) { return; }
+        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
         if (!context.Type.TryGetMembers(out var members)) { return; }
         if (!members.Methods.Having<InitializerAttribute>().Any()) { return; }
         if (!members.Has<LocatableAttribute>()) { return; }

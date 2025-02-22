@@ -8,25 +8,26 @@ public class InitApiModelConvention : IDomainModelConvention<TypeModelContext>, 
     public void Apply(TypeModelContext context)
     {
         if (!context.Type.TryGetMetadata(out var metadata)) { return; }
-        if (!metadata.TryGetSingle<ControllerModel>(out var controller)) { return; }
+        if (!metadata.TryGetSingle<ControllerModelAttribute>(out var controller)) { return; }
         if (!context.Type.TryGetMembers(out var members)) { return; }
+        if (controller.Initialized) { return; }
 
         controller.Init(
             id: context.Type.CSharpFriendlyFullName,
             className: context.Type.Name,
             actions: members.Methods
-                .Having<ActionModel>()
+                .Having<ActionModelAttribute>()
                 .Select(method => method
-                    .GetSingle<ActionModel>()
+                    .GetSingle<ActionModelAttribute>()
                     .Init(
                         id: method.Name,
                         returnType: method.DefaultOverload.ReturnType.CSharpFriendlyFullName,
                         returnIsAsync: method.DefaultOverload.ReturnType.IsAssignableTo<Task>(),
                         returnIsVoid: method.DefaultOverload.ReturnType.Is(typeof(void)) || method.DefaultOverload.ReturnType.Is<Task>(),
                         parameters: method.DefaultOverload.Parameters
-                            .Having<ParameterModel>()
+                            .Having<ParameterModelAttribute>()
                             .Select(param => param
-                                .GetSingle<ParameterModel>()
+                                .GetSingle<ParameterModelAttribute>()
                                 .Init(
                                     id: param.Name,
                                     type: param.ParameterType.CSharpFriendlyFullName,
@@ -41,18 +42,18 @@ public class InitApiModelConvention : IDomainModelConvention<TypeModelContext>, 
 
     public void Apply(MethodModelContext context)
     {
-        if (!context.Method.TryGetSingle<ActionModel>(out var action)) { return; }
+        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
+        if (action.Initialized) { return; }
 
-        // to make sure action models without controller model attribute are initiated
         action.Init(
             id: context.Method.Name,
             returnType: context.Method.DefaultOverload.ReturnType.CSharpFriendlyFullName,
             returnIsAsync: context.Method.DefaultOverload.ReturnType.IsAssignableTo<Task>(),
             returnIsVoid: context.Method.DefaultOverload.ReturnType.Is(typeof(void)) || context.Method.DefaultOverload.ReturnType.Is<Task>(),
             parameters: context.Method.DefaultOverload.Parameters
-                .Having<ParameterModel>()
+                .Having<ParameterModelAttribute>()
                 .Select(param => param
-                    .GetSingle<ParameterModel>()
+                    .GetSingle<ParameterModelAttribute>()
                     .Init(
                         id: param.Name,
                         type: param.ParameterType.CSharpFriendlyFullName,
@@ -65,9 +66,9 @@ public class InitApiModelConvention : IDomainModelConvention<TypeModelContext>, 
 
     public void Apply(ParameterModelContext context)
     {
-        if (!context.Parameter.TryGetSingle<ParameterModel>(out var parameter)) { return; }
+        if (!context.Parameter.TryGetSingle<ParameterModelAttribute>(out var parameter)) { return; }
+        if (parameter.Initialized) { return; }
 
-        // to make sure action models without action model attribute are initiated
         parameter.Init(
             id: context.Parameter.Name,
             type: context.Parameter.ParameterType.CSharpFriendlyFullName,

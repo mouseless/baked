@@ -8,8 +8,8 @@ public class AddTargetParameterConvention(string parameterName)
 {
     public void Apply(MethodModelContext context)
     {
-        if (!context.Method.TryGetSingle<ActionModel>(out var action)) { return; }
+        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
 
-        action.Parameter[parameterName] = new ParameterModel(parameterName, context.Type.CSharpFriendlyFullName, ParameterModelFrom.Services);
+        action.Parameter[parameterName] = new ParameterModelAttribute(parameterName, context.Type.CSharpFriendlyFullName, ParameterModelFrom.Services);
     }
 }

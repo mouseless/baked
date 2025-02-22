@@ -10,7 +10,7 @@ public class UseClassNameInsteadOfActionNamesConvention(IEnumerable<string> acti
 
     public void Apply(MethodModelContext context)
     {
-        if (!context.Method.TryGetSingle<ActionModel>(out var action)) { return; }
+        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
         if (!_actionNames.Contains(action.Name)) { return; }
 
         action.RouteParts.RemoveAll(action.Name);

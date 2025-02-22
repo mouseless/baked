@@ -40,7 +40,7 @@ public class EntitySubclassViaCompositionCodingStyleFeature : IFeature<CodingSty
                 order: 10
             );
             builder.Conventions.AddMethodMetadata(
-                attribute: c => new ActionModel("Post", [c.Type.Name, c.Method.Name], "target"),
+                attribute: c => new ActionModelAttribute("Post", [c.Type.Name, c.Method.Name], "target"),
                 when: c =>
                     c.Type.Has<EntitySubclassAttribute>() && c.Method.Has<InitializerAttribute>() &&
                     c.Method.Overloads.Any(o => o.IsPublic && !o.IsStatic && !o.IsSpecialName && o.AllParametersAreApiInput()),

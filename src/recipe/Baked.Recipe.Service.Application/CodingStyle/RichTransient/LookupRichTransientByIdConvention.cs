@@ -9,8 +9,8 @@ public class LookupRichTransientByIdConvention : IDomainModelConvention<Paramete
 {
     public void Apply(ParameterModelContext context)
     {
-        if (!context.Method.TryGetSingle<ActionModel>(out var action)) { return; }
-        if (!context.Parameter.TryGetSingle<ParameterModel>(out var parameter)) { return; }
+        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
+        if (!context.Parameter.TryGetSingle<ParameterModelAttribute>(out var parameter)) { return; }
         if (!context.Parameter.ParameterType.TryGetMembers(out var members)) { return; }
         if (!members.Has<LocatableAttribute>()) { return; }
 

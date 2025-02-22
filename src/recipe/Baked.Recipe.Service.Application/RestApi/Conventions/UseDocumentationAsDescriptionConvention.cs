@@ -10,7 +10,7 @@ public class UseDocumentationAsDescriptionConvention(TagDescriptions _descriptio
     public void Apply(TypeModelContext context)
     {
         if (!context.Type.TryGetMembers(out var members)) { return; }
-        if (!members.TryGetSingle<ControllerModel>(out var controller)) { return; }
+        if (!members.TryGetSingle<ControllerModelAttribute>(out var controller)) { return; }
 
         var summary = members.Documentation.GetSummary();
 
@@ -19,7 +19,7 @@ public class UseDocumentationAsDescriptionConvention(TagDescriptions _descriptio
 
     public void Apply(MethodModelContext context)
     {
-        if (!context.Method.TryGetSingle<ActionModel>(out var action)) { return; }
+        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
         if (context.Method.Documentation is null) { return; }
 
         var summary = context.Method.Documentation.GetSummary();
@@ -31,7 +31,7 @@ public class UseDocumentationAsDescriptionConvention(TagDescriptions _descriptio
 
     public void Apply(ParameterModelContext context)
     {
-        if (!context.Parameter.TryGetSingle<ParameterModel>(out var parameter)) { return; }
+        if (!context.Parameter.TryGetSingle<ParameterModelAttribute>(out var parameter)) { return; }
         if (context.Parameter is null) { return; }
         if (context.Parameter.Documentation is null) { return; }
 
