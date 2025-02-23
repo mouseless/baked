@@ -29,6 +29,7 @@
     <PackageVersion Include="NUnit" Version="4.3.2" />
     <PackageVersion Include="NUnit3TestAdapter" Version="4.6.0" />
     <PackageVersion Include="Npgsql" Version="9.0.2" />
+    <PackageVersion Include="Quackers.TestLogger" Version="1.0.25" />
     <PackageVersion Include="Shouldly" Version="4.3.0" />
     <PackageVersion Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.10" />
     <PackageVersion Include="StyleCop.Analyzers.Unstable" Version="1.2.0.556" />

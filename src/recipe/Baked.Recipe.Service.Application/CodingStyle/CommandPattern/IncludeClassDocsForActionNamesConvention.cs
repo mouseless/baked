@@ -5,7 +5,7 @@ namespace Baked.CodingStyle.CommandPattern;
 public class IncludeClassDocsForActionNamesConvention(IEnumerable<string> actionNames)
     : IApiModelConvention<ActionModelContext>
 {
-    readonly HashSet<string> _actionNames = actionNames.ToHashSet();
+    readonly HashSet<string> _actionNames = [.. actionNames];
 
     public void Apply(ActionModelContext context)
     {

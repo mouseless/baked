@@ -1,0 +1,30 @@
+<template>
+  <Baked.Component
+    v-if="pageDescriptor"
+    :descriptor="pageDescriptor"
+  />
+</template>
+<script setup>
+const { routeParams } = defineProps({
+  routeParams: {
+    type: null,
+    required: true
+  }
+});
+
+const pageDescriptor = ref();
+const pageName = computed(() => routeParams[0] ?? "index");
+
+provide("routeParams", routeParams);
+
+onMounted(async() => {
+  pageDescriptor.value = await import(`../../.baked/${pageName.value}.json`)
+    .catch(_ => {
+      throw createError({
+        statusCode: 404,
+        statusMessage: `'${pageName.value}' Page Not Found`,
+        fatal: true
+      });
+    });
+});
+</script>

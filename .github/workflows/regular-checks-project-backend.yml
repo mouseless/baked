@@ -1,4 +1,4 @@
-name: Regular Checks - Project
+name: Regular Checks - Project - Backend
 on:
   pull_request:
     branches:
