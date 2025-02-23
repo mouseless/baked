@@ -1,6 +1,6 @@
 # Theme
 
-This feature implementations configures `DomainModel` metadata attributes and 
+This feature implementations configures `DomainModel` metadata attributes and
 extracts component descriptors for ui theme pages and components of an
 application.
 
