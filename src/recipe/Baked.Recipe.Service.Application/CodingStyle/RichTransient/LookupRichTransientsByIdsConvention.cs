@@ -22,8 +22,7 @@ public class LookupRichTransientsByIdsConvention : IDomainModelConvention<Parame
 
         parameter.Type = $"IEnumerable<{idParameter.ParameterType.CSharpFriendlyFullName}>";
         parameter.Name = $"{context.Parameter.Name.Singularize()}Ids";
-        parameter.LookupRenderer = p => factoryParameter.BuildInitializerByIds(elementType,
-            valueExpression: p,
+        parameter.LookupRenderer = p => elementType.BuildInitializerByIds(p,
             isArray: context.Parameter.ParameterType.IsArray
         );
     }
