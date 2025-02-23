@@ -30,7 +30,8 @@ run:
 	echo "Please select 1-4: " ; \
 	read app ; \
 	if test $$app -eq "1" ; then \
-		dotnet run --project test/recipe/Baked.Test.Recipe.Service.Application ; \
+		dotnet build -v:n ; \
+		dotnet run --no-build --project test/recipe/Baked.Test.Recipe.Service.Application ; \
 	fi ; \
 	if test $$app -eq "2" ; then \
 		docker compose up --build ; \
