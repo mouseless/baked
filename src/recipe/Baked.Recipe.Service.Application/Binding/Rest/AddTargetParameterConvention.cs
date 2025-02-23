@@ -10,6 +10,6 @@ public class AddTargetParameterConvention()
     {
         if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
 
-        action.Parameter[ParameterModelAttribute.TargetParameterName] = new ParameterModelAttribute(ParameterModelAttribute.TargetParameterName, context.Type.CSharpFriendlyFullName, ParameterModelFrom.Services);
+        action.Parameter[ParameterModelAttribute.TargetParameterName] = new(ParameterModelAttribute.TargetParameterName, context.Type.CSharpFriendlyFullName, ParameterModelFrom.Services);
     }
 }
