@@ -12,13 +12,11 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
         configurator.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.AddTypeMetadata(
-                apply: (c, add) =>
+                attribute: context =>
                 {
-                    var entityType = c.Type.GetMembers().GetMethod("op_Implicit").Parameters.Single().ParameterType;
-                    entityType.Apply(t =>
-                    {
-                        add(c.Type, new EntityExtensionAttribute(t));
-                    });
+                    var entityType = context.Type.GetMembers().GetMethod("op_Implicit").Parameters.Single().ParameterType;
+
+                    return entityType.Apply(t => new EntityExtensionAttribute(t));
                 },
                 when: c =>
                     c.Type.IsClass &&

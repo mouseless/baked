@@ -66,7 +66,7 @@ public class DomainAssembliesBusinessFeature(
             builder.Index.Method.Add<InitializerAttribute>();
 
             builder.Conventions.AddTypeMetadata(
-                apply: (context, add) =>
+                attribute: context =>
                 {
                     var @namespace = context.Type.Namespace ?? string.Empty;
                     context.Type.Apply(t =>
@@ -79,7 +79,7 @@ public class DomainAssembliesBusinessFeature(
                             @namespace;
                     });
 
-                    add(context.Type, new NamespaceAttribute(@namespace));
+                    return new NamespaceAttribute(@namespace);
                 },
                 when: c => setNamespaceWhen(c.Type)
             );

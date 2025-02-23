@@ -12,13 +12,11 @@ public class EntitySubclassViaCompositionCodingStyleFeature : IFeature<CodingSty
         configurator.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.AddTypeMetadata(
-                apply: (c, add) =>
+                attribute: c =>
                 {
                     var entityType = c.Type.GetMembers().GetMethod("op_Explicit").Parameters.Single().ParameterType;
-                    entityType.Apply(t =>
-                    {
-                        add(c.Type, new EntitySubclassAttribute(t, c.Type.Name.Replace(t.Name, string.Empty)));
-                    });
+
+                    return entityType.Apply(t => new EntitySubclassAttribute(t, c.Type.Name.Replace(t.Name, string.Empty)));
                 },
                 when: c =>
                     c.Type.IsClass &&
