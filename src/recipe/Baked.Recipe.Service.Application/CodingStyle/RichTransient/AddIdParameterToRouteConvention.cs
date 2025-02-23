@@ -19,15 +19,14 @@ public class AddIdParameterToRouteConvention : IDomainModelConvention<MethodMode
         if (!initializer.DefaultOverload.Parameters.TryGetValue("id", out var parameter)) { return; }
 
         action.Parameter["id"] =
-            new("id", parameter.ParameterType.CSharpFriendlyFullName, ParameterModelFrom.Route,
-                additionalAttributes: [$"SwaggerSchema(\"Unique value to find {context.Type.Name.Humanize().ToLowerInvariant()} resource\")"]
-            )
+            new("id", parameter.ParameterType.CSharpFriendlyFullName, ParameterModelFrom.Route)
             {
                 IsOptional = parameter.IsOptional,
                 DefaultValue = parameter.DefaultValue,
                 IsInvokeMethodParameter = false,
                 RoutePosition = 1
             };
+        action.Parameter["id"].AdditionalAttributes.Add($"SwaggerSchema(\"Unique value to find {context.Type.Name.Humanize().ToLowerInvariant()} resource\")");
         action.RouteParts = [context.Type.Name.Pluralize(), action.Name];
     }
 }

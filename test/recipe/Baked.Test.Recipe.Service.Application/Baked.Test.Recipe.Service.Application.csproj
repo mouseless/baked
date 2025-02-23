@@ -4,7 +4,7 @@
 
   <PropertyGroup>
     <CopyComponentDescriptors>true</CopyComponentDescriptors>
-    <ComponentDescriptorsDir>$(SolutionDir)\test\recipe\admin\.baked</ComponentDescriptorsDir>
+    <ComponentDescriptorsDir>$(ProjectDir)..\admin\.baked</ComponentDescriptorsDir>
   </PropertyGroup>
 
   <ItemGroup>

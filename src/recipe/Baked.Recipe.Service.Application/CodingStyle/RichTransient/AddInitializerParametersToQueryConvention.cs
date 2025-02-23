@@ -16,13 +16,12 @@ public class AddInitializerParametersToQueryConvention : IDomainModelConvention<
         var initializer = members.Methods.Having<InitializerAttribute>().Single();
         foreach (var parameter in initializer.DefaultOverload.Parameters)
         {
-            action.Parameter[parameter.Name] =
-                new(parameter.Name, parameter.ParameterType.CSharpFriendlyFullName, ParameterModelFrom.Query)
-                {
-                    IsOptional = parameter.IsOptional,
-                    DefaultValue = parameter.DefaultValue,
-                    IsInvokeMethodParameter = false
-                };
+            if (!parameter.TryGetSingle<ParameterModelAttribute>(out var parameterModel)) { continue; }
+
+            parameterModel.From = ParameterModelFrom.Query;
+            parameterModel.IsInvokeMethodParameter = false;
+
+            action.Parameter[parameter.Name] = parameterModel;
         }
     }
 }

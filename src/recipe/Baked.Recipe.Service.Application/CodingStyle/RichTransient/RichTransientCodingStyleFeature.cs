@@ -34,7 +34,7 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 order: 10
             );
             builder.Conventions.AddMethodMetadata(
-                attribute: c => new ActionModelAttribute("Post", [c.Type.Name, c.Method.Name], "target"),
+                attribute: c => new ActionModelAttribute(),
                 when: c =>
                     c.Type.Has<TransientAttribute>() &&
                     c.Type.TryGetMembers(out var members) &&

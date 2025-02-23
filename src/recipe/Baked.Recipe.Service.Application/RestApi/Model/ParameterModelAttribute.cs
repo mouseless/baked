@@ -1,15 +1,13 @@
 ﻿namespace Baked.RestApi.Model;
 
 [AttributeUsage(AttributeTargets.Parameter)]
-public class ParameterModelAttribute(ParameterModelFrom From,
+public class ParameterModelAttribute(
+    ParameterModelFrom @from = ParameterModelFrom.BodyOrForm,
     string[]? additionalAttributes = default
 ) : Attribute
 {
-    public ParameterModelAttribute(string id, string type, ParameterModelFrom @from,
-        IEnumerable<string>? additionalAttributes = default
-    ) : this(@from,
-        additionalAttributes: additionalAttributes?.ToArray()
-    )
+    public ParameterModelAttribute(string id, string type, ParameterModelFrom @from)
+      : this(@from)
     {
         Init(id, type, false, null);
 
@@ -17,7 +15,7 @@ public class ParameterModelAttribute(ParameterModelFrom From,
     }
 
     public string Id { get; private set; } = default!;
-    public ParameterModelFrom From { get; set; } = From;
+    public ParameterModelFrom From { get; set; } = @from;
     public string Type { get; set; } = default!;
     public string Name { get; set; } = default!;
     public string InternalName { get; set; } = default!;
@@ -32,7 +30,7 @@ public class ParameterModelAttribute(ParameterModelFrom From,
     public bool IsOptional { get; set; } = false;
 
     public object? DefaultValue { get; set; }
-    public bool IsInvokeMethodParameter { get; set; } = From != ParameterModelFrom.Services;
+    public bool IsInvokeMethodParameter { get; set; } = @from != ParameterModelFrom.Services;
     public bool IsHardCoded { get; set; } = false;
     public Func<string, string> LookupRenderer { get; set; } = parameterExpression => parameterExpression;
     public Func<object, string> DefaultValueRenderer { get; set; } = defaultValue => $"{defaultValue}";

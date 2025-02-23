@@ -20,8 +20,8 @@ public class LookupRichTransientByIdConvention : IDomainModelConvention<Paramete
         var notNull = context.Parameter.Has<NotNullAttribute>();
         var factoryParameter = action.AddFactoryAsService(context.Parameter.ParameterType);
 
-        parameter.Name = $"{context.Parameter.Name}Id";
         parameter.Type = $"{idParameter.ParameterType.CSharpFriendlyFullName}";
+        parameter.Name = $"{context.Parameter.Name}Id";
         parameter.LookupRenderer = p => factoryParameter.BuildInitializerById(context.Parameter.ParameterType,
             valueExpression: p,
             nullable: !notNull

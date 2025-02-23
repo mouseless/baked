@@ -3,28 +3,25 @@
 namespace Baked.RestApi.Model;
 
 [AttributeUsage(AttributeTargets.Method)]
-public class ActionModelAttribute(string method, string[] routeParts, string findTargetStatement,
+public class ActionModelAttribute(
+    string? method = default,
+    string[]? routeParts = default,
     string[]? additionalAttributes = default,
     string[]? preparationStatements = default
 ) : Attribute
 {
-    public ActionModelAttribute(string id, HttpMethod method, IEnumerable<string> routeParts, string findTargetStatement, string returnType, bool returnIsAsync, bool returnIsVoid, IEnumerable<ParameterModelAttribute> parameters,
-        IEnumerable<string>? additionalAttributes = default,
-        IEnumerable<string>? preparationStatements = default
-    ) : this(method.ToString(), [.. routeParts], findTargetStatement,
-        additionalAttributes: additionalAttributes?.ToArray(),
-        preparationStatements: preparationStatements?.ToArray()
-    )
+    public ActionModelAttribute(string id, IEnumerable<string> routeParts, string returnType, bool returnIsAsync, bool returnIsVoid, IEnumerable<ParameterModelAttribute> parameters)
+      : this()
     {
-        Init(id, returnType, returnIsAsync, returnIsVoid, parameters);
+        Init(id, routeParts, returnType, returnIsAsync, returnIsVoid, parameters);
 
         ManuallyAdded = true;
     }
 
     public string Id { get; private set; } = default!;
     public string Name { get; set; } = default!;
-    public HttpMethod Method { get; set; } = HttpMethod.Parse(method);
-    public List<string> RouteParts { get; set; } = [.. routeParts];
+    public HttpMethod Method { get; set; } = HttpMethod.Parse(method ?? "Post");
+    public List<string> RouteParts { get; set; } = [.. routeParts ?? []];
     public Func<string, string> RoutePartStylizer { get; set; } = s => s.Kebaberize();
     public string ReturnType { get; set; } = default!;
 
@@ -47,7 +44,7 @@ public class ActionModelAttribute(string method, string[] routeParts, string fin
     public bool ReturnIsVoid { get; set; } = default!;
 
     public Func<string, string> ReturnResultRenderer { get; set; } = resultExpression => resultExpression;
-    public string FindTargetStatement { get; set; } = findTargetStatement;
+    public string FindTargetStatement { get; set; } = "target";
     public bool UseForm { get; set; } = false;
     public bool UseRequestClassForBody { get; set; } = true;
     public int Order { get; set; } = 0;
@@ -67,12 +64,13 @@ public class ActionModelAttribute(string method, string[] routeParts, string fin
     public IEnumerable<ParameterModelAttribute> NonBodyParameters => NonServiceParameters.Where(p => p.From != ParameterModelFrom.BodyOrForm);
     public IEnumerable<ParameterModelAttribute> InvokedMethodParameters => Parameters.Where(p => p.IsInvokeMethodParameter);
 
-    internal ActionModelAttribute Init(string id, string returnType, bool returnIsAsync, bool returnIsVoid, IEnumerable<ParameterModelAttribute> parameters)
+    internal ActionModelAttribute Init(string id, IEnumerable<string> routeParts, string returnType, bool returnIsAsync, bool returnIsVoid, IEnumerable<ParameterModelAttribute> parameters)
     {
         if (Initialized) { throw new($"Cannot initialize, already initialized: {Id}"); }
 
         Id = id;
         Name ??= id;
+        RouteParts = RouteParts.Any() ? RouteParts : [.. routeParts];
         ReturnType ??= returnType;
         ReturnIsAsync = returnIsAsync;
         ReturnIsVoid = returnIsVoid;

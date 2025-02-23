@@ -9,8 +9,8 @@ public class LookupRichTransientsByIdsConvention : IDomainModelConvention<Parame
 {
     public void Apply(ParameterModelContext context)
     {
+        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
         if (!context.Parameter.TryGetSingle<ParameterModelAttribute>(out var parameter)) { return; }
-        if (!context.Type.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
         if (!parameter.IsInvokeMethodParameter) { return; }
         if (!context.Parameter.ParameterType.TryGetElementType(out var elementType)) { return; }
         if (!elementType.GetMetadata().Has<LocatableAttribute>()) { return; }
@@ -22,7 +22,7 @@ public class LookupRichTransientsByIdsConvention : IDomainModelConvention<Parame
 
         parameter.Type = $"IEnumerable<{idParameter.ParameterType.CSharpFriendlyFullName}>";
         parameter.Name = $"{context.Parameter.Name.Singularize()}Ids";
-        parameter.LookupRenderer = p => factoryParameter.BuildInitializerByIds(context.Parameter.ParameterType,
+        parameter.LookupRenderer = p => factoryParameter.BuildInitializerByIds(elementType,
             valueExpression: p,
             isArray: context.Parameter.ParameterType.IsArray
         );

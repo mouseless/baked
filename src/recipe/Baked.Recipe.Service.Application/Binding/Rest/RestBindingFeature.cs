@@ -35,7 +35,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
               order: 10
             );
             builder.Conventions.AddMethodMetadata(
-                attribute: c => new ActionModelAttribute(nameof(HttpMethod.Post), [c.Type.Name, c.Method.Name], "target"),
+                attribute: c => new ActionModelAttribute(),
                 when: c =>
                     !c.Method.Has<ExternalAttribute>() &&
                     !c.Method.Has<InitializerAttribute>() &&
@@ -44,7 +44,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
                 order: int.MaxValue - 10
             );
             builder.Conventions.AddParameterMetadata(
-                attribute: c => new ParameterModelAttribute(ParameterModelFrom.BodyOrForm),
+                attribute: c => new ParameterModelAttribute(),
                 when: c => c.Parameter.IsApiInput(),
                 order: int.MaxValue - 10
             );

@@ -22,6 +22,7 @@ public class InitApiModelConvention : IDomainModelConvention<TypeModelContext>, 
                     .GetSingle<ActionModelAttribute>()
                     .Init(
                         id: method.Name,
+                        routeParts: [context.Type.Name, method.Name],
                         returnType: method.DefaultOverload.ReturnType.CSharpFriendlyFullName,
                         returnIsAsync: method.DefaultOverload.ReturnType.IsAssignableTo<Task>(),
                         returnIsVoid: method.DefaultOverload.ReturnType.Is(typeof(void)) || method.DefaultOverload.ReturnType.Is<Task>(),
@@ -48,6 +49,7 @@ public class InitApiModelConvention : IDomainModelConvention<TypeModelContext>, 
 
         action.Init(
             id: context.Method.Name,
+            routeParts: [context.Type.Name, context.Method.Name],
             returnType: context.Method.DefaultOverload.ReturnType.CSharpFriendlyFullName,
             returnIsAsync: context.Method.DefaultOverload.ReturnType.IsAssignableTo<Task>(),
             returnIsVoid: context.Method.DefaultOverload.ReturnType.Is(typeof(void)) || context.Method.DefaultOverload.ReturnType.Is<Task>(),

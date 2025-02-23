@@ -16,9 +16,9 @@ public class RichTransientInitializerIsGetResourceConvention : IDomainModelConve
         if (!context.Method.Has<InitializerAttribute>()) { return; }
         if (!action.Parameter.TryGetValue("id", out var parameter)) { return; }
 
-        parameter.IsInvokeMethodParameter = true;
         parameter.From = ParameterModelFrom.Route;
         parameter.RoutePosition = 1;
+        parameter.IsInvokeMethodParameter = true;
 
         action.Method = HttpMethod.Get;
         action.RouteParts = [context.Type.Name.Pluralize()];
