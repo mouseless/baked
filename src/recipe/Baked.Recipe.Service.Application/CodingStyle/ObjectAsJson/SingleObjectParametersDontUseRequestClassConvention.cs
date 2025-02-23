@@ -11,7 +11,7 @@ public class SingleObjectParametersDontUseRequestClassConvention : IDomainModelC
         if (action.BodyParameters.Count() != 1) { return; }
 
         var bodyParameter = action.BodyParameters.Single();
-        if (bodyParameter.ManuallyAdded) { return; }
+        if (bodyParameter.Orphan) { return; }
         if (!context.Method.DefaultOverload.Parameters[bodyParameter.Id].ParameterType.Is<object>()) { return; }
 
         action.UseRequestClassForBody = false;

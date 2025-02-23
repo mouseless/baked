@@ -8,14 +8,14 @@ public class ControllerModelAttribute() : Attribute
     {
         Init(id, className, groupName, actions);
 
-        ManuallyAdded = true;
+        Orphan = true;
     }
 
     public string Id { get; private set; } = default!;
     public string ClassName { get; set; } = default!;
     public string GroupName { get; set; } = default!;
     public Dictionary<string, ActionModelAttribute> Action { get; private set; } = default!;
-    public bool ManuallyAdded { get; }
+    public bool Orphan { get; }
     internal bool Initialized { get; private set; } = false;
 
     public IEnumerable<ActionModelAttribute> Actions => Action.Values.OrderBy(a => a.Order);

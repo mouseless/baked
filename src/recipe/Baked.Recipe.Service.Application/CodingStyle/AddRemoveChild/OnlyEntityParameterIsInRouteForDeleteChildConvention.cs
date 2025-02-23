@@ -13,7 +13,7 @@ public class OnlyEntityParameterIsInRouteForDeleteChildConvention : IDomainModel
         if (action.InvokedMethodParameters.Count() != 1) { return; }
 
         var onlyParameter = action.InvokedMethodParameters.Single();
-        if (onlyParameter.ManuallyAdded) { return; }
+        if (onlyParameter.Orphan) { return; }
         if (!context.Method.DefaultOverload.Parameters[onlyParameter.Id].ParameterType.TryGetEntityAttribute(out var _)) { return; }
 
         onlyParameter.From = ParameterModelFrom.Route;

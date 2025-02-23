@@ -11,7 +11,7 @@ public class ParameterModelAttribute(
     {
         Init(id, type, false, null);
 
-        ManuallyAdded = true;
+        Orphan = true;
     }
 
     public string Id { get; private set; } = default!;
@@ -37,7 +37,7 @@ public class ParameterModelAttribute(
     public int Order { get; set; } = 0;
     public int RoutePosition { get; set; } = 0;
     public List<string> AdditionalAttributes { get; } = [.. additionalAttributes ?? []];
-    public bool ManuallyAdded { get; } = false;
+    public bool Orphan { get; } = false;
     internal bool Initialized { get; private set; } = false;
 
     public bool FromServices => From == ParameterModelFrom.Services;

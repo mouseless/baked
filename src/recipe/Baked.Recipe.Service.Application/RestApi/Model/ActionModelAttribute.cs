@@ -15,7 +15,7 @@ public class ActionModelAttribute(
     {
         Init(id, routeParts, returnType, returnIsAsync, returnIsVoid, parameters);
 
-        ManuallyAdded = true;
+        Orphan = true;
     }
 
     public string Id { get; private set; } = default!;
@@ -51,7 +51,7 @@ public class ActionModelAttribute(
     public List<string> AdditionalAttributes { get; } = [.. additionalAttributes ?? []];
     public List<string> PreparationStatements { get; } = [.. preparationStatements ?? []];
     public Dictionary<string, ParameterModelAttribute> Parameter { get; private set; } = default!;
-    public bool ManuallyAdded { get; } = false;
+    public bool Orphan { get; } = false;
     internal bool Initialized { get; private set; } = false;
 
     public bool HasBody => !UseForm && BodyParameters.Any();
