@@ -5,6 +5,8 @@ using Baked.Test.Authentication;
 using Baked.Test.Business;
 using Baked.Test.ExceptionHandling;
 using Baked.Test.Orm;
+using Baked.Theme.Admin;
+using Baked.Ui;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
 
@@ -39,6 +41,8 @@ public class ConfigurationOverriderFeature : IFeature
             configurator.UsingDomainModel(domain =>
             {
                 api.GetController<Entities>().AddSingleById<Entity>(domain);
+                api.GetController<Parents>().AddSingleById<Parent>(domain);
+                api.GetController<Children>().AddSingleById<Child>(domain);
             });
         });
 
@@ -106,6 +110,35 @@ public class ConfigurationOverriderFeature : IFeature
                 mappedMethodName: nameof(OverrideSamples.RequestClass),
                 useRequestClassForBody: false
             );
+        });
+
+        configurator.ConfigureComponentDescriptors(components =>
+        {
+            var index = new ComponentDescriptor<DetailSchema>(new()
+            {
+                Title = "Dashboard",
+                Header = new ComponentDescriptor("Menu")
+                {
+                    Data = new InlineData
+                    {
+                        Value = new object[]
+                        {
+                            new
+                            {
+                                Label = "Rich Transients Menu",
+                                Items = new object[]
+                                {
+                                    new { Label = "Rich Transient w/ Data 1", Url = "/rich-transient-with-datas/test1" },
+                                    new { Label = "Rich Transient w/ Data 2", Url = "/rich-transient-with-datas/test2" },
+                                    new { Label = "Rich Transient w/ Data 3", Url = "/rich-transient-with-datas/test3" }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            components.Add(nameof(index), index);
         });
     }
 }
