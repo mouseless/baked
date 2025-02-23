@@ -58,12 +58,6 @@ public static class RestApiExtensions
     public static void Add<T>(this ICollection<Assembly> assemblies) =>
         assemblies.Add(typeof(T).Assembly);
 
-    public static string GetControllerId(this Type type) =>
-        type.GetCSharpFriendlyFullName();
-
-    public static ControllerModelAttribute GetController<T>(this ApiModel api) =>
-        api.Controller[typeof(T).GetControllerId()];
-
     public static void AddAttribute<T>(this ActionModelAttribute action) where T : Attribute =>
         action.AdditionalAttributes.Add(typeof(T).GetCSharpFriendlyFullName());
 
@@ -72,7 +66,7 @@ public static class RestApiExtensions
         var constraint = parameter switch
         {
             { Type: nameof(Guid) } => ":guid",
-            // _ when parameter.TypeModel.Is<Guid>() => ":guid",
+            _ when parameter.Type == typeof(Guid).FullName => ":guid",
             _ => string.Empty
         };
 
@@ -127,7 +121,7 @@ public static class RestApiExtensions
         );
     }
 
-    public static void OverrideAction<T>(this ApiModel api, string name,
+    public static void AddOverrideAction<T>(this IDomainModelConventionCollection conventions, string name,
         HttpMethod? method = default,
         List<string>? routeParts = default,
         bool? useForm = default,
@@ -135,13 +129,16 @@ public static class RestApiExtensions
         Action<Dictionary<string, ParameterModelAttribute>>? parameter = default
     )
     {
-        var controller = api.GetController<T>();
-        var action = controller.Action[name];
-
-        if (method is not null) { action.Method = method; }
-        if (routeParts is not null) { action.RouteParts = routeParts; }
-        if (useForm is not null) { action.UseForm = useForm.Value; }
-        if (useRequestClassForBody is not null) { action.UseRequestClassForBody = useRequestClassForBody.Value; }
-        if (parameter is not null) { parameter(action.Parameter); }
+        conventions.Add(
+            new ConfigureActionConvention<T>(name, action =>
+            {
+                if (method is not null) { action.Method = method; }
+                if (routeParts is not null) { action.RouteParts = routeParts; }
+                if (useForm is not null) { action.UseForm = useForm.Value; }
+                if (useRequestClassForBody is not null) { action.UseRequestClassForBody = useRequestClassForBody.Value; }
+                if (parameter is not null) { parameter(action.Parameter); }
+            }),
+            order: int.MaxValue - 10
+        );
     }
 }

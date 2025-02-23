@@ -83,7 +83,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
                     var controller = metadata.GetSingle<ControllerModelAttribute>();
                     if (!controller.Action.Any()) { continue; }
 
-                    api.Controller[controller.Id] = controller;
+                    api.Controllers.Add(controller);
                 }
             });
         });

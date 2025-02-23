@@ -28,6 +28,22 @@ public class ConfigurationOverriderFeature : IFeature
                 p["route"].RoutePosition = 2;
             });
             builder.Conventions.AddConfigureAction<ExceptionSamples>(nameof(ExceptionSamples.Throw), parameter: p => p["handled"].From = ParameterModelFrom.Query);
+
+            builder.Conventions.AddOverrideAction<OverrideSamples>(nameof(OverrideSamples.UpdateRoute),
+                routeParts: ["override-samples", "override", "update-route"],
+                method: HttpMethod.Post
+            );
+            builder.Conventions.AddOverrideAction<OverrideSamples>(nameof(OverrideSamples.Parameter),
+                parameter: parameter =>
+                {
+                    parameter["parameter"].Name = "id";
+                    parameter["parameter"].From = ParameterModelFrom.Route;
+                    parameter["parameter"].RoutePosition = 2;
+                }
+            );
+            builder.Conventions.AddOverrideAction<OverrideSamples>(nameof(OverrideSamples.RequestClass),
+                useRequestClassForBody: false
+            );
         });
 
         configurator.ConfigureServiceCollection(services =>
@@ -40,25 +56,6 @@ public class ConfigurationOverriderFeature : IFeature
         {
             model.Override<Entity>(x => x.Map(e => e.String).Length(500));
             model.Override<Entity>(x => x.Map(e => e.Unique).Column("UniqueString").Unique());
-        });
-
-        configurator.ConfigureApiModel(api =>
-        {
-            api.OverrideAction<OverrideSamples>(nameof(OverrideSamples.UpdateRoute),
-                routeParts: ["override-samples", "override", "update-route"],
-                method: HttpMethod.Post
-            );
-            api.OverrideAction<OverrideSamples>(nameof(OverrideSamples.Parameter),
-                parameter: parameter =>
-                {
-                    parameter["parameter"].Name = "id";
-                    parameter["parameter"].From = ParameterModelFrom.Route;
-                    parameter["parameter"].RoutePosition = 2;
-                }
-            );
-            api.OverrideAction<OverrideSamples>(nameof(OverrideSamples.RequestClass),
-                useRequestClassForBody: false
-            );
         });
 
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
