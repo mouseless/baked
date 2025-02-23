@@ -1,5 +1,6 @@
 ﻿using Baked.Binding;
 using Baked.Binding.Rest;
+using Baked.Business;
 using Baked.Domain.Model;
 using Baked.RestApi.Model;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
@@ -14,6 +15,14 @@ public static class RestBindingExtensions
 {
     public static RestBindingFeature Rest(this BindingConfigurator _) =>
         new();
+
+    public static string GetRoute(this TypeModel type)
+    {
+        var initializer = type.GetMembers().Methods.Having<InitializerAttribute>().Single();
+        var action = initializer.GetSingle<ActionModelAttribute>();
+
+        return action.GetRoute();
+    }
 
     public static bool IsPublicInstanceWithNoSpecialName(this MethodOverloadModel overload) =>
         overload.IsPublic && !overload.IsStatic && !overload.IsSpecialName;

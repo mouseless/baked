@@ -8,22 +8,22 @@ namespace Baked.Ui;
 
 public class UiLayer : LayerBase<GenerateCode>
 {
-    public ComponentDescriptors _componentDescriptors = new();
+    public PageDescriptors _pageDescriptors = new();
 
     protected override PhaseContext GetContext(GenerateCode phase) =>
         phase.CreateContextBuilder()
-            .Add(_componentDescriptors)
+            .Add(_pageDescriptors)
             .OnDispose(GenerateUiSchemas)
             .Build();
 
     void GenerateUiSchemas()
     {
         var files = Context.Get<IGeneratedFileCollection>();
-        foreach (var (key, component) in _componentDescriptors)
+        foreach (var (key, page) in _pageDescriptors)
         {
-            files.AddAsJson(key, component, outdir: "Ui", settings: new JsonSerializerSettings
+            files.AddAsJson(key, page, outdir: "Ui", settings: new JsonSerializerSettings
             {
-                ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver()
+                ContractResolver = new AttributeAwareCamelCasePropertyNamesContractResolver()
             });
         }
     }

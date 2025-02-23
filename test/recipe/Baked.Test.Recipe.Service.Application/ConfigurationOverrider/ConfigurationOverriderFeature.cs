@@ -3,6 +3,7 @@ using Baked.ExceptionHandling;
 using Baked.RestApi.Model;
 using Baked.Test.Authentication;
 using Baked.Test.Business;
+using Baked.Test.CodingStyle.RichTransient;
 using Baked.Test.ExceptionHandling;
 using Baked.Test.Orm;
 using Baked.Theme.Admin;
@@ -100,33 +101,30 @@ public class ConfigurationOverriderFeature : IFeature
             swaggerUIOptions.SwaggerEndpoint($"external/swagger.json", "External");
         });
 
-        configurator.ConfigureComponentDescriptors(components =>
+        configurator.ConfigurePageDescriptors(pages =>
         {
-            var index = new ComponentDescriptor<DetailSchema>(new()
+            configurator.UsingDomainModel(domain =>
             {
-                Title = "Dashboard",
-                Header = new ComponentDescriptor("Menu")
+                var route = domain.Types[typeof(RichTransientWithData)].GetRoute();
+
+                pages.Add("index", new ComponentDescriptorAttribute<Detail>(new()
                 {
-                    Data = new InlineData
+                    Title = "Dashboard",
+                    Header = Components.Menu(new object[]
                     {
-                        Value = new object[]
+                        new
                         {
-                            new
+                            Label = "Rich Transients Menu",
+                            Items = new object[]
                             {
-                                Label = "Rich Transients Menu",
-                                Items = new object[]
-                                {
-                                    new { Label = "Rich Transient w/ Data 1", Url = "/rich-transient-with-datas/test1" },
-                                    new { Label = "Rich Transient w/ Data 2", Url = "/rich-transient-with-datas/test2" },
-                                    new { Label = "Rich Transient w/ Data 3", Url = "/rich-transient-with-datas/test3" }
-                                }
+                                new { Label = "Rich Transient w/ Data 1", Url = $"/{route.Replace("{id}", "test1")}" },
+                                new { Label = "Rich Transient w/ Data 2", Url = $"/{route.Replace("{id}", "test2")}" },
+                                new { Label = "Rich Transient w/ Data 3", Url = $"/{route.Replace("{id}", "test3")}" },
                             }
                         }
-                    }
-                }
+                    })
+                }));
             });
-
-            components.Add(nameof(index), index);
         });
     }
 }
