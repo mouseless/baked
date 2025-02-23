@@ -11,7 +11,7 @@ public class TargetEntityExtensionFromRouteConvention : IDomainModelConvention<M
     {
         if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
         if (context.Method.Has<InitializerAttribute>()) { return; }
-        if (!action.Parameter.TryGetValue("target", out var parameter)) { return; }
+        if (!action.Parameter.TryGetValue(ParameterModelAttribute.TargetParameterName, out var parameter)) { return; }
 
         var entityExtensionType = context.Type;
         if (!entityExtensionType.TryGetEntityTypeFromExtension(context.Domain, out var entityType)) { return; }

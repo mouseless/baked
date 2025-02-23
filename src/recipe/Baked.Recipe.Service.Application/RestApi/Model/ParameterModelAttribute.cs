@@ -6,6 +6,8 @@ public class ParameterModelAttribute(
     string[]? additionalAttributes = default
 ) : Attribute
 {
+    public const string TargetParameterName = "target";
+
     public ParameterModelAttribute(string id, string type, ParameterModelFrom @from)
       : this(@from)
     {

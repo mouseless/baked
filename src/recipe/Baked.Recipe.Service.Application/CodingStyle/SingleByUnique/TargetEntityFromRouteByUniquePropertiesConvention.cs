@@ -20,7 +20,7 @@ public class TargetEntityFromRouteByUniquePropertiesConvention : IDomainModelCon
     public void Apply(MethodModelContext context)
     {
         if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
-        if (!action.Parameter.TryGetValue("target", out var parameter)) { return; }
+        if (!action.Parameter.TryGetValue(ParameterModelAttribute.TargetParameterName, out var parameter)) { return; }
         if (context.Method.Has<InitializerAttribute>()) { return; }
 
         if (!TryGetEntityType(context, out var entityType, out var castTo)) { return; }

@@ -12,7 +12,7 @@ public class TargetEntitySubclassFromRouteConvention : IDomainModelConvention<Me
     {
         if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
         if (context.Method.Has<InitializerAttribute>()) { return; }
-        if (!action.Parameter.TryGetValue("target", out var parameter)) { return; }
+        if (!action.Parameter.TryGetValue(ParameterModelAttribute.TargetParameterName, out var parameter)) { return; }
 
         var entitySubclassType = context.Type;
         if (!entitySubclassType.TryGetSubclassName(out var subclassName)) { return; }

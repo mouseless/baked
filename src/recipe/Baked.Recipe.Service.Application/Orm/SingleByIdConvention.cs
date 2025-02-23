@@ -20,14 +20,14 @@ public class SingleByIdConvention<T> : IDomainModelConvention<TypeModelContext>
             returnIsAsync: false,
             returnIsVoid: false,
             parameters: [
-                new("target", context.Domain.Types[queryContextTypeId].CSharpFriendlyFullName, ParameterModelFrom.Services),
+                new(ParameterModelAttribute.TargetParameterName, context.Domain.Types[queryContextTypeId].CSharpFriendlyFullName, ParameterModelFrom.Services),
                 new("id", context.Domain.Types[typeof(Guid)].CSharpFriendlyFullName, ParameterModelFrom.Route) { RoutePosition = 1 },
                 new("throwNotFound", context.Domain.Types[typeof(bool)].CSharpFriendlyFullName, ParameterModelFrom.Query) { IsHardCoded = true, LookupRenderer = _ => "true" }
             ]
         )
         {
             Method = HttpMethod.Get,
-            FindTargetStatement = "target"
+            FindTargetStatement = ParameterModelAttribute.TargetParameterName
         };
     }
 }

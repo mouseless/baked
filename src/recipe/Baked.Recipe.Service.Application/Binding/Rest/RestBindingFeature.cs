@@ -51,7 +51,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
 
             // init before any domain convention
             builder.Conventions.Add(new InitApiModelConvention(), order: int.MinValue);
-            builder.Conventions.Add(new AddTargetParameterConvention("target"), order: int.MinValue);
+            builder.Conventions.Add(new AddTargetParameterConvention(), order: int.MinValue);
 
             // rest api conventions
             builder.Conventions.Add(new AutoHttpMethodConvention([

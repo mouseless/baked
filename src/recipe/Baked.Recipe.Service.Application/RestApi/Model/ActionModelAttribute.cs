@@ -44,7 +44,7 @@ public class ActionModelAttribute(
     public bool ReturnIsVoid { get; set; } = default!;
 
     public Func<string, string> ReturnResultRenderer { get; set; } = resultExpression => resultExpression;
-    public string FindTargetStatement { get; set; } = "target";
+    public string FindTargetStatement { get; set; } = ParameterModelAttribute.TargetParameterName;
     public bool UseForm { get; set; } = false;
     public bool UseRequestClassForBody { get; set; } = true;
     public int Order { get; set; } = 0;
