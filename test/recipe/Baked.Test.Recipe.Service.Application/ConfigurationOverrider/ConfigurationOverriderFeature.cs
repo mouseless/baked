@@ -105,7 +105,7 @@ public class ConfigurationOverriderFeature : IFeature
         {
             configurator.UsingDomainModel(domain =>
             {
-                var route = domain.Types[typeof(RichTransientWithData)].GetRoute();
+                var route = domain.Types[typeof(RichTransientWithData)].GetActionModel().GetRoute();
 
                 pages.Add("index", new ComponentDescriptorAttribute<Detail>(new()
                 {

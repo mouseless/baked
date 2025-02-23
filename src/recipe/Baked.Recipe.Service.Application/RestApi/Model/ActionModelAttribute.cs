@@ -92,6 +92,9 @@ public class ActionModelAttribute(
         return routeParts.Join('/');
     }
 
+    public string GetRoutePart(int index) =>
+        RoutePartStylizer(RouteParts[index]);
+
     public string RenderReturnResult(string resultExpression) =>
         ReturnResultRenderer(resultExpression);
 }

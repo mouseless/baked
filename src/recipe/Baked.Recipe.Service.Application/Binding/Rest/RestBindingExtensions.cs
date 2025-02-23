@@ -16,12 +16,24 @@ public static class RestBindingExtensions
     public static RestBindingFeature Rest(this BindingConfigurator _) =>
         new();
 
-    public static string GetRoute(this TypeModel type)
+    public static bool TryGetActionModel(this TypeModel type, [NotNullWhen(true)] out ActionModelAttribute? action)
     {
-        var initializer = type.GetMembers().Methods.Having<InitializerAttribute>().Single();
-        var action = initializer.GetSingle<ActionModelAttribute>();
+        action = default;
 
-        return action.GetRoute();
+        if (!type.TryGetMembers(out var members)) { return false; }
+
+        var initializer = members.Methods.Having<InitializerAttribute>().SingleOrDefault();
+        if (initializer is null) { return false; }
+        if (!initializer.TryGetSingle(out action)) { return false; }
+
+        return true;
+    }
+
+    public static ActionModelAttribute GetActionModel(this TypeModel type)
+    {
+        if (!type.TryGetActionModel(out var result)) { throw new($"{type.Name} does not have action model"); }
+
+        return result;
     }
 
     public static bool IsPublicInstanceWithNoSpecialName(this MethodOverloadModel overload) =>
