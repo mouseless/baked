@@ -32,7 +32,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
                   !c.Type.IsGenericType &&
                   c.Type.TryGetMembers(out var members) &&
                   members.Methods.Any(m => m.DefaultOverload.IsPublicInstanceWithNoSpecialName()),
-                order: int.MaxValue - 10
+              order: 10
             );
             builder.Conventions.AddMethodMetadata(
                 attribute: c => new ActionModelAttribute(nameof(HttpMethod.Post), [c.Type.Name, c.Method.Name], "target"),
@@ -66,7 +66,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
             builder.Conventions.Add(new RemoveFromRouteConvention(["Delete", "Remove", "Clear"]));
             builder.Conventions.Add(new ConsumesJsonConvention(_when: action => action.HasBody), order: 10);
             builder.Conventions.Add(new ProducesJsonConvention(_when: action => !action.ReturnIsVoid), order: 10);
-            builder.Conventions.Add(new UseDocumentationAsDescriptionConvention(_tagDescriptions), order: 10);
+            builder.Conventions.Add(new UseDocumentationAsDescriptionConvention(_tagDescriptions, _examples), order: 10);
             builder.Conventions.Add(new AddMappedMethodAttributeConvention());
         });
 
@@ -81,6 +81,8 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
                     if (!type.TryGetMetadata(out var metadata)) { continue; }
 
                     var controller = metadata.GetSingle<ControllerModelAttribute>();
+                    if (!controller.Action.Any()) { continue; }
+
                     api.Controller[controller.Id] = controller;
                 }
             });

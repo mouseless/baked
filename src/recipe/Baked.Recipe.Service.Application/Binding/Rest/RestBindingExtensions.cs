@@ -24,9 +24,6 @@ public static class RestBindingExtensions
     public static bool IsApiInput(this ParameterModel parameter) =>
         parameter.ParameterType.TryGetMetadata(out var metadata) && metadata.Has<ApiInputAttribute>();
 
-    public static bool IsTarget(this ParameterModelAttribute parameter) =>
-        parameter.Id == "target";
-
     public static bool TryGetMappedMethod(this ApiDescription apiDescription, [NotNullWhen(true)] out MappedMethodAttribute? result)
     {
         result = apiDescription.CustomAttributes().OfType<MappedMethodAttribute>().SingleOrDefault();

@@ -7,21 +7,20 @@ using System.Text;
 
 namespace Baked.CodingStyle.SingleByUnique;
 
-public class TargetEntityFromRouteByUniquePropertiesConvention : IDomainModelConvention<ParameterModelContext>
+public class TargetEntityFromRouteByUniquePropertiesConvention : IDomainModelConvention<MethodModelContext>
 {
-    protected virtual bool TryGetEntityType(ParameterModelContext context, [NotNullWhen(true)] out Domain.Model.TypeModel? entityType, out Domain.Model.TypeModel? castTo)
+    protected virtual bool TryGetEntityType(MethodModelContext context, [NotNullWhen(true)] out Domain.Model.TypeModel? entityType, out Domain.Model.TypeModel? castTo)
     {
-        entityType = context.Parameter.ParameterType;
+        entityType = context.Type;
         castTo = null;
 
         return true;
     }
 
-    public void Apply(ParameterModelContext context)
+    public void Apply(MethodModelContext context)
     {
-        if (!context.Parameter.TryGetSingle<ParameterModelAttribute>(out var parameter)) { return; }
-        if (!parameter.IsTarget()) { return; }
         if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
+        if (!action.Parameter.TryGetValue("target", out var parameter)) { return; }
         if (context.Method.Has<InitializerAttribute>()) { return; }
 
         if (!TryGetEntityType(context, out var entityType, out var castTo)) { return; }
@@ -34,12 +33,12 @@ public class TargetEntityFromRouteByUniquePropertiesConvention : IDomainModelCon
         var uniques = singleByUniques.Select(sbu => sbu.GetSingle<SingleByUniqueAttribute>());
         parameter.Type = "string";
         parameter.Name = $"idOr{uniques.Select(u => u.PropertyName).Join("Or")}";
-        action.RouteParts = action.RouteParts.Replace("{id:guid}", $"{{{context.Parameter.Name}}}");
+        action.RouteParts = action.RouteParts.Replace("{id:guid}", $"{{{parameter.Name}}}");
 
         var findTargetStatements = new StringBuilder();
         findTargetStatements.Append($$"""
-            {{context.Parameter.ParameterType.CSharpFriendlyFullName}} __foundTarget = null;
-            if(Guid.TryParse({{context.Parameter.Name}}, out var id))
+            {{context.Type.CSharpFriendlyFullName}} __foundTarget = null;
+            if(Guid.TryParse({{parameter.Name}}, out var id))
             {
                 __foundTarget = {{action.FindTargetStatement}};
             }
@@ -54,7 +53,7 @@ public class TargetEntityFromRouteByUniquePropertiesConvention : IDomainModelCon
             if (uniqueParameter.ParameterType.IsEnum)
             {
                 findTargetStatements.Append($$"""
-                    else if(Enum.TryParse<{{uniqueParameter.ParameterType.CSharpFriendlyFullName}}>({{context.Parameter.Name}}, true, out var @{{uniqueParameter.Name}}))
+                    else if(Enum.TryParse<{{uniqueParameter.ParameterType.CSharpFriendlyFullName}}>({{parameter.Name}}, true, out var @{{uniqueParameter.Name}}))
                     {
                         __foundTarget = {{queryParameter.BuildSingleBy($"@{uniqueParameter.Name}", property: unique.PropertyName, fromRoute: true, castTo: castTo)}};
                     }
@@ -71,7 +70,7 @@ public class TargetEntityFromRouteByUniquePropertiesConvention : IDomainModelCon
             findTargetStatements.Append($$"""
                 else
                 {
-                    __foundTarget = {{queryParameter.BuildSingleBy(context.Parameter.Name, property: fallback.PropertyName, fromRoute: true, castTo: castTo)}};
+                    __foundTarget = {{queryParameter.BuildSingleBy(parameter.Name, property: fallback.PropertyName, fromRoute: true, castTo: castTo)}};
                 }
             """);
         }
@@ -80,7 +79,7 @@ public class TargetEntityFromRouteByUniquePropertiesConvention : IDomainModelCon
             findTargetStatements.Append($$"""
                 else
                 {
-                    throw new {{nameof(RouteParameterIsNotValidException)}}("{{context.Parameter.Name}}", {{context.Parameter.Name}});
+                    throw new {{nameof(RouteParameterIsNotValidException)}}("{{parameter.Name}}", {{parameter.Name}});
                 }
             """);
         }

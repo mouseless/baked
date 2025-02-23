@@ -3,7 +3,7 @@ using Baked.RestApi.Model;
 
 namespace Baked.Orm;
 
-public class AddSingleByIdConvention<T> : IDomainModelConvention<TypeModelContext>
+public class SingleByIdConvention<T> : IDomainModelConvention<TypeModelContext>
 {
     public void Apply(TypeModelContext context)
     {

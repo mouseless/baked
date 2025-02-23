@@ -14,7 +14,8 @@ public class InitApiModelConvention : IDomainModelConvention<TypeModelContext>, 
 
         controller.Init(
             id: context.Type.CSharpFriendlyFullName,
-            className: context.Type.Name,
+            className: context.Type.CSharpFriendlyFullName.Split('.').Skip(1).Join('_'),
+            groupName: context.Type.Name,
             actions: members.Methods
                 .Having<ActionModelAttribute>()
                 .Select(method => method

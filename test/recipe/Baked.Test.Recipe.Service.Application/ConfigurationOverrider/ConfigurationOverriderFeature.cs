@@ -1,6 +1,5 @@
 ﻿using Baked.Architecture;
 using Baked.ExceptionHandling;
-using Baked.Orm;
 using Baked.RestApi.Model;
 using Baked.Test.Authentication;
 using Baked.Test.Business;
@@ -17,7 +16,14 @@ public class ConfigurationOverriderFeature : IFeature
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Conventions.Add(new AddSingleByIdConvention<Entities>());
+            builder.Conventions.AddSingleById<Entities>();
+            builder.Conventions.AddConfigureAction<AuthenticationSamples>(nameof(AuthenticationSamples.FormPostAuthenticate), useForm: true);
+            builder.Conventions.AddConfigureAction<DocumentationSamples>(nameof(DocumentationSamples.Route), parameter: p =>
+            {
+                p["route"].From = ParameterModelFrom.Route;
+                p["route"].RoutePosition = 2;
+            });
+            builder.Conventions.AddConfigureAction<ExceptionSamples>(nameof(ExceptionSamples.Throw), parameter: p => p["handled"].From = ParameterModelFrom.Query);
         });
 
         configurator.ConfigureServiceCollection(services =>
@@ -34,18 +40,11 @@ public class ConfigurationOverriderFeature : IFeature
 
         configurator.ConfigureApiModel(api =>
         {
-            api.ConfigureAction<AuthenticationSamples>(nameof(AuthenticationSamples.FormPostAuthenticate), useForm: true);
-            api.ConfigureAction<DocumentationSamples>(nameof(DocumentationSamples.Route), parameter: p =>
-            {
-                p["route"].From = ParameterModelFrom.Route;
-                p["route"].RoutePosition = 2;
-            });
-            api.ConfigureAction<ExceptionSamples>(nameof(ExceptionSamples.Throw), parameter: p => p["handled"].From = ParameterModelFrom.Query);
-            api.ConfigureAction<OverrideSamples>(nameof(OverrideSamples.UpdateRoute),
+            api.OverrideAction<OverrideSamples>(nameof(OverrideSamples.UpdateRoute),
                 routeParts: ["override-samples", "override", "update-route"],
                 method: HttpMethod.Post
             );
-            api.ConfigureAction<OverrideSamples>(nameof(OverrideSamples.Parameter),
+            api.OverrideAction<OverrideSamples>(nameof(OverrideSamples.Parameter),
                 parameter: parameter =>
                 {
                     parameter["parameter"].Name = "id";
@@ -53,7 +52,7 @@ public class ConfigurationOverriderFeature : IFeature
                     parameter["parameter"].RoutePosition = 2;
                 }
             );
-            api.ConfigureAction<OverrideSamples>(nameof(OverrideSamples.RequestClass),
+            api.OverrideAction<OverrideSamples>(nameof(OverrideSamples.RequestClass),
                 useRequestClassForBody: false
             );
         });

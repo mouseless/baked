@@ -25,7 +25,7 @@ public static class RichTransientCodingStyleExtensions
         return parameter;
     }
 
-    public static string BuildInitializerById(this ParameterModelAttribute factoryParameter, TypeModel type, string valueExpression,
+    public static string BuildInitializerById(this ParameterModelAttribute _, TypeModel type, string valueExpression,
         string? notNullValueExpression = default,
         bool nullable = false
     )
@@ -43,7 +43,7 @@ public static class RichTransientCodingStyleExtensions
         return initializerById;
     }
 
-    public static string BuildInitializerByIds(this ParameterModelAttribute factoryParameter, TypeModel type, string valueExpression,
+    public static string BuildInitializerByIds(this ParameterModelAttribute _, TypeModel type, string valueExpression,
         bool isArray = default
     )
     {

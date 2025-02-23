@@ -1,5 +1,7 @@
 ﻿using Baked.Architecture;
+using Baked.Domain;
 using Baked.RestApi;
+using Baked.RestApi.Conventions;
 using Baked.RestApi.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -104,7 +106,28 @@ public static class RestApiExtensions
         return parts;
     }
 
-    public static void ConfigureAction<T>(this ApiModel api, string name,
+    public static void AddConfigureAction<T>(this IDomainModelConventionCollection conventions, string name,
+        HttpMethod? method = default,
+        List<string>? routeParts = default,
+        bool? useForm = default,
+        bool? useRequestClassForBody = default,
+        Action<Dictionary<string, ParameterModelAttribute>>? parameter = default
+    )
+    {
+        conventions.Add(
+            new ConfigureActionConvention<T>(name, action =>
+            {
+                if (method is not null) { action.Method = method; }
+                if (routeParts is not null) { action.RouteParts = routeParts; }
+                if (useForm is not null) { action.UseForm = useForm.Value; }
+                if (useRequestClassForBody is not null) { action.UseRequestClassForBody = useRequestClassForBody.Value; }
+                if (parameter is not null) { parameter(action.Parameter); }
+            }),
+            order: int.MinValue + 10
+        );
+    }
+
+    public static void OverrideAction<T>(this ApiModel api, string name,
         HttpMethod? method = default,
         List<string>? routeParts = default,
         bool? useForm = default,

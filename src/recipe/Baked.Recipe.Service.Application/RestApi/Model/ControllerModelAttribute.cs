@@ -3,10 +3,10 @@
 [AttributeUsage(AttributeTargets.Class)]
 public class ControllerModelAttribute() : Attribute
 {
-    public ControllerModelAttribute(string id, string className, IEnumerable<ActionModelAttribute> actions)
+    public ControllerModelAttribute(string id, string className, string groupName, IEnumerable<ActionModelAttribute> actions)
         : this()
     {
-        Init(id, className, actions);
+        Init(id, className, groupName, actions);
 
         ManuallyAdded = true;
     }
@@ -20,13 +20,13 @@ public class ControllerModelAttribute() : Attribute
 
     public IEnumerable<ActionModelAttribute> Actions => Action.Values.OrderBy(a => a.Order);
 
-    internal ControllerModelAttribute Init(string id, string className, IEnumerable<ActionModelAttribute> actions)
+    internal ControllerModelAttribute Init(string id, string className, string groupName, IEnumerable<ActionModelAttribute> actions)
     {
         if (Initialized) { throw new($"Cannot initialize, already initialized: {Id}"); }
 
         Id = id;
         ClassName ??= className;
-        GroupName ??= className;
+        GroupName ??= groupName;
         Action = actions.ToDictionary(a => a.Id);
         Initialized = true;
 
