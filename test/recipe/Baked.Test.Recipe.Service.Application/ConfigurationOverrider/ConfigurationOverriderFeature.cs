@@ -5,6 +5,8 @@ using Baked.Test.Authentication;
 using Baked.Test.Business;
 using Baked.Test.ExceptionHandling;
 using Baked.Test.Orm;
+using Baked.Theme.Admin;
+using Baked.Ui;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
 
@@ -17,6 +19,8 @@ public class ConfigurationOverriderFeature : IFeature
         configurator.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.AddSingleById<Entities>();
+            builder.Conventions.AddSingleById<Parents>();
+            builder.Conventions.AddSingleById<Children>();
             builder.Conventions.AddConfigureAction<AuthenticationSamples>(nameof(AuthenticationSamples.FormPostAuthenticate), useForm: true);
             builder.Conventions.AddConfigureAction<DocumentationSamples>(nameof(DocumentationSamples.Route), parameter: p =>
             {
@@ -97,6 +101,35 @@ public class ConfigurationOverriderFeature : IFeature
         {
             swaggerUIOptions.SwaggerEndpoint($"samples/swagger.json", "Samples");
             swaggerUIOptions.SwaggerEndpoint($"external/swagger.json", "External");
+        });
+
+        configurator.ConfigureComponentDescriptors(components =>
+        {
+            var index = new ComponentDescriptor<DetailSchema>(new()
+            {
+                Title = "Dashboard",
+                Header = new ComponentDescriptor("Menu")
+                {
+                    Data = new InlineData
+                    {
+                        Value = new object[]
+                        {
+                            new
+                            {
+                                Label = "Rich Transients Menu",
+                                Items = new object[]
+                                {
+                                    new { Label = "Rich Transient w/ Data 1", Url = "/rich-transient-with-datas/test1" },
+                                    new { Label = "Rich Transient w/ Data 2", Url = "/rich-transient-with-datas/test2" },
+                                    new { Label = "Rich Transient w/ Data 3", Url = "/rich-transient-with-datas/test3" }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            components.Add(nameof(index), index);
         });
     }
 }

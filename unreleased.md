@@ -3,13 +3,19 @@
 ## Features
 
 - Beta features are available;
-  - `@baked/recipe-admin` npm package is released
-  - `UiLayer` is added to `Service` recipe
+  - `@mouseless/baked-recipe-admin` npm package is released
+  - `UiLayer` is added to `Service` recipe, you can now configure
+    `ComponentDescriptors` in features
+  - `Theme` feature is now added with `Admin` implementation with below
+    component schemas
+    - `Detail`
+    - `DetailProperty`
   - `Binding` feature is added with the default `Rest` implementation where all
     the rest api bindings are made for domain objects
 
 ## Improvements
 
+- `GeneratedFileDescriptor` now has optional `Outdir` property
 - All API conventions are migrated to be domain model conventions making it
   possible to access final api model in domain model builder
 - `CodeGenerationLayer` now outputs the generated code next to the generated

@@ -22,3 +22,6 @@ logs
 
 **/*.js-snapshots/**
 **/test-results/**
+
+# Baked Descriptors
+*.baked

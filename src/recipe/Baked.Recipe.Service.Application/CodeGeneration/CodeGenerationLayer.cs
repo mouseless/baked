@@ -32,7 +32,24 @@ public class CodeGenerationLayer : LayerBase<GenerateCode, Compile, BuildConfigu
             {
                 foreach (var descriptor in _generatedFiles)
                 {
-                    using var file = new FileStream(Path.Combine(_location, $"{descriptor.Name}.{descriptor.Extension}"), FileMode.Create);
+                    var directory = _location;
+                    if (descriptor.Outdir != null)
+                    {
+                        if (Path.IsPathRooted(descriptor.Outdir))
+                        {
+                            directory = descriptor.Outdir;
+                        }
+                        else
+                        {
+                            directory = Path.Combine(_location, descriptor.Outdir);
+                            if (!Directory.Exists(directory))
+                            {
+                                Directory.CreateDirectory(directory);
+                            }
+                        }
+                    }
+
+                    using var file = new FileStream(Path.Combine(directory, $"{descriptor.Name}.{descriptor.Extension}"), FileMode.Create);
                     file.Write(Encoding.UTF8.GetBytes(descriptor.Content));
                 }
             })
