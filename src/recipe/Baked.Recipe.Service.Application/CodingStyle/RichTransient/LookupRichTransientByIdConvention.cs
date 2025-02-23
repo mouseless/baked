@@ -1,26 +1,40 @@
 ﻿using Baked.Business;
-using Baked.RestApi.Configuration;
+using Baked.Domain.Configuration;
+using Baked.RestApi.Model;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Baked.CodingStyle.RichTransient;
 
-public class LookupRichTransientByIdConvention : IApiModelConvention<ParameterModelContext>
+public class LookupRichTransientByIdConvention : IDomainModelConvention<ParameterModelContext>
 {
     public void Apply(ParameterModelContext context)
     {
-        if (context.Parameter.MappedParameter is null) { return; }
-        if (!context.Parameter.MappedParameter.ParameterType.TryGetMembers(out var members)) { return; }
+        if (!context.Parameter.TryGetSingle<ParameterModelAttribute>(out var parameter)) { return; }
+        if (!context.Parameter.ParameterType.TryGetMembers(out var members)) { return; }
         if (!members.Has<LocatableAttribute>()) { return; }
 
         var initializer = members.Methods.Having<InitializerAttribute>().Single();
         if (!initializer.DefaultOverload.Parameters.TryGetValue("id", out var idParameter)) { return; }
 
-        var notNull = context.Parameter.MappedParameter.Has<NotNullAttribute>();
-        var factoryParameter = context.Action.AddFactoryAsService(context.Parameter.MappedParameter.ParameterType);
+        if (context.Method.TryGetSingle<ActionModelAttribute>(out var action))
+        {
+            // parameter belongs to an action, add service to the parent action
+            action.AddFactoryAsService(context.Parameter.ParameterType);
+        }
+        else if (context.Method.Has<InitializerAttribute>())
+        {
+            // parameter belongs to an initializer, add service to all actions
+            foreach (var otherAction in context.Type.Methods.Having<ActionModelAttribute>().Select(m => m.GetSingle<ActionModelAttribute>()))
+            {
+                otherAction.AddFactoryAsService(context.Parameter.ParameterType);
+            }
+        }
 
-        context.Parameter.Name = $"{context.Parameter.Name}Id";
-        context.Parameter.Type = $"{idParameter.ParameterType.CSharpFriendlyFullName}";
-        context.Parameter.LookupRenderer = p => factoryParameter.BuildInitializerById(p,
+        var notNull = context.Parameter.Has<NotNullAttribute>();
+
+        parameter.Type = $"{idParameter.ParameterType.CSharpFriendlyFullName}";
+        parameter.Name = $"{context.Parameter.Name}Id";
+        parameter.LookupRenderer = p => context.Parameter.ParameterType.BuildInitializerById(p,
             nullable: !notNull
         );
     }

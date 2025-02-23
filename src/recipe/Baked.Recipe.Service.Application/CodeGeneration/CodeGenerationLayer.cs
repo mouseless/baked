@@ -64,6 +64,8 @@ public class CodeGenerationLayer : LayerBase<GenerateCode, Compile, BuildConfigu
         {
             if (path.Contains("Baked.g"))
             {
+                if (!path.EndsWith(".dll")) { continue; }
+
                 generatedContext.Assemblies.Add(Path.GetFileName(path).Replace("Baked.g.", string.Empty).Replace(".dll", string.Empty), Assembly.LoadFile(path));
             }
             else

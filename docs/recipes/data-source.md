@@ -31,6 +31,7 @@ Bake.New
 
 | Name               | Run                                | Test                               |
 | ------------------ | ---------------------------------- | ---------------------------------- |
+| Binding            | :white_check_mark: Rest            | :white_check_mark:                 |
 | Business           | :white_check_mark: (No Default)    | :white_check_mark:                 |
 | Caching            | :white_check_mark: Scoped Memory   | :white_check_mark:                 |
 | Coding Style(s)    | :white_check_mark:                 | :white_check_mark:                 |

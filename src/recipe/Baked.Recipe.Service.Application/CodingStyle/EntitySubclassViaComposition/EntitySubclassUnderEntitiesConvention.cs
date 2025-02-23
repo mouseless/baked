@@ -1,16 +1,18 @@
-﻿using Baked.Domain.Model;
-using Baked.RestApi.Configuration;
+﻿using Baked.Domain.Configuration;
+using Baked.RestApi.Model;
 using Humanizer;
 
 namespace Baked.CodingStyle.EntitySubclassViaComposition;
 
-public class EntitySubclassUnderEntitiesConvention(DomainModel _domain)
-    : IApiModelConvention<ControllerModelContext>
+public class EntitySubclassUnderEntitiesConvention
+    : IDomainModelConvention<TypeModelContext>
 {
-    public void Apply(ControllerModelContext context)
+    public void Apply(TypeModelContext context)
     {
-        if (!context.Controller.MappedType.TryGetEntityTypeFromSubclass(_domain, out var entityType)) { return; }
+        if (!context.Type.TryGetMetadata(out var metadata)) { return; }
+        if (!metadata.TryGetSingle<ControllerModelAttribute>(out var controller)) { return; }
+        if (!context.Type.TryGetEntityTypeFromSubclass(context.Domain, out var entityType)) { return; }
 
-        context.Controller.GroupName = entityType.Name.Pluralize();
+        controller.GroupName = entityType.Name.Pluralize();
     }
 }

@@ -9,7 +9,7 @@ public class ApiCodeTemplate(ApiModel _apiModel)
     protected override IEnumerable<string> Render() =>
         _apiModel.Controllers.Select(Controller);
 
-    string Controller(ControllerModel controller) => $$"""
+    string Controller(ControllerModelAttribute controller) => $$"""
         namespace RestApiLayer;
 
         [ApiController]
@@ -20,7 +20,7 @@ public class ApiCodeTemplate(ApiModel _apiModel)
         }
     """;
 
-    string Action(ActionModel action) => $$"""
+    string Action(ActionModelAttribute action) => $$"""
         {{If(action.UseForm || action.HasBody && action.UseRequestClassForBody, () => $$"""
         public class {{action.Id}}Request
         {
@@ -31,7 +31,7 @@ public class ApiCodeTemplate(ApiModel _apiModel)
         [Http{{Method(action.Method)}}]
         [Route("{{action.GetRoute()}}")]
         {{ForEach(action.AdditionalAttributes, Attribute)}}
-        public {{ReturnType(action.Return)}} {{action.Id}}({{Join(", ",
+        public {{ReturnType(action)}} {{action.Id}}({{Join(", ",
             ForEach(action.ServiceParameters, Parameter, separator: ", "),
             If(action.UseForm || action.HasBody, () =>
                 If(action.UseForm,
@@ -52,17 +52,17 @@ public class ApiCodeTemplate(ApiModel _apiModel)
             """)}}
             var __target = {{action.FindTargetStatement}};
 
-            {{If(action.Return.IsVoid, () => $$"""
+            {{If(action.ReturnIsVoid, () => $$"""
                 {{Invoke("__target", action)}};
             """, @else: () => $$"""
                 var __result = {{Invoke("__target", action)}};
 
-                return {{action.Return.RenderResult("__result")}};
+                return {{action.RenderReturnResult("__result")}};
             """)}}
         }
     """;
 
-    string Property(ParameterModel parameter) => $$"""
+    string Property(ParameterModelAttribute parameter) => $$"""
         {{Attributes(parameter)}}
         public {{parameter.Type}} @{{parameter.Name}} { get; set; }{{If(parameter.IsOptional, () => $" = {parameter.RenderDefaultValue()};")}}
     """;
@@ -73,18 +73,18 @@ public class ApiCodeTemplate(ApiModel _apiModel)
     string Attribute(string attribute) =>
         $"[{attribute}]";
 
-    string ReturnType(ReturnModel @return) =>
-        @return.IsAsync ? $"async {@return.Type}" :
-        @return.Type
+    string ReturnType(ActionModelAttribute action) =>
+        action.ReturnIsAsync ? $"async {action.ReturnType}" :
+        action.ReturnType
     ;
 
-    string Parameter(ParameterModel parameter) =>
+    string Parameter(ParameterModelAttribute parameter) =>
         $"{From(parameter.From)}{ParameterWithoutFrom(parameter)}";
 
-    string ParameterWithoutFrom(ParameterModel parameter) =>
+    string ParameterWithoutFrom(ParameterModelAttribute parameter) =>
         $"{Attributes(parameter)}{parameter.Type} @{parameter.Name}{If(parameter.IsOptional, () => $" = {parameter.RenderDefaultValue()}")}";
 
-    string Attributes(ParameterModel parameter) =>
+    string Attributes(ParameterModelAttribute parameter) =>
         $"{ForEach(parameter.AdditionalAttributes, Attribute)}";
 
     string From(ParameterModelFrom from) =>
@@ -92,13 +92,13 @@ public class ApiCodeTemplate(ApiModel _apiModel)
             ? $"[From{from}]"
             : "[FromForm]";
 
-    string Invoke(string target, ActionModel action) => $$"""
-        {{(action.Return.IsAsync ? "await " : string.Empty)}}{{target}}.{{action.Id}}(
+    string Invoke(string target, ActionModelAttribute action) => $$"""
+        {{(action.ReturnIsAsync ? "await " : string.Empty)}}{{target}}.{{action.Id}}(
             {{ForEach(action.InvokedMethodParameters, p => $"@{p.InternalName}: {ParameterLookup(p, action.UseForm, action.UseRequestClassForBody)}", separator: ", ")}}
         )
     """;
 
-    string ParameterLookup(ParameterModel parameter, bool useForm, bool useRequestClassForBody) =>
+    string ParameterLookup(ParameterModelAttribute parameter, bool useForm, bool useRequestClassForBody) =>
         $"({parameter.RenderLookup(
             If(useForm || useRequestClassForBody && parameter.FromBodyOrForm,
                 () => $"request.@{parameter.Name}",

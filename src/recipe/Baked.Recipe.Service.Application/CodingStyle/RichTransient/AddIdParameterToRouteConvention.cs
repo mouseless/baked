@@ -1,32 +1,32 @@
 ﻿using Baked.Business;
-using Baked.RestApi.Configuration;
+using Baked.Domain.Configuration;
 using Baked.RestApi.Model;
 using Humanizer;
 
 namespace Baked.CodingStyle.RichTransient;
 
-public class AddIdParameterToRouteConvention : IApiModelConvention<ActionModelContext>
+public class AddIdParameterToRouteConvention : IDomainModelConvention<MethodModelContext>
 {
-    public void Apply(ActionModelContext context)
+    public void Apply(MethodModelContext context)
     {
-        if (!context.Controller.MappedType.TryGetMembers(out var members)) { return; }
+        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
+        if (!context.Type.TryGetMembers(out var members)) { return; }
         if (!members.Methods.Having<InitializerAttribute>().Any()) { return; }
         if (!members.Has<LocatableAttribute>()) { return; }
-        if (context.Action.MappedMethod is null) { return; }
-        if (context.Action.MappedMethod.Has<InitializerAttribute>()) { return; }
+        if (context.Method.Has<InitializerAttribute>()) { return; }
 
         var initializer = members.Methods.Having<InitializerAttribute>().Single();
         if (!initializer.DefaultOverload.Parameters.TryGetValue("id", out var parameter)) { return; }
 
-        context.Action.Parameter["id"] =
-            new(parameter.ParameterType, ParameterModelFrom.Route, parameter.Name, MappedParameter: parameter)
+        action.Parameter["id"] =
+            new("id", parameter.ParameterType.CSharpFriendlyFullName, ParameterModelFrom.Route)
             {
                 IsOptional = parameter.IsOptional,
                 DefaultValue = parameter.DefaultValue,
                 IsInvokeMethodParameter = false,
-                RoutePosition = 1,
-                AdditionalAttributes = [$"SwaggerSchema(\"Unique value to find {context.Controller.MappedType.Name.Humanize().ToLowerInvariant()} resource\")"]
+                RoutePosition = 1
             };
-        context.Action.RouteParts = [context.Controller.MappedType.Name.Pluralize(), context.Action.Name];
+        action.Parameter["id"].AdditionalAttributes.Add($"SwaggerSchema(\"Unique value to find {context.Type.Name.Humanize().ToLowerInvariant()} resource\")");
+        action.RouteParts = [context.Type.Name.Pluralize(), action.Name];
     }
 }

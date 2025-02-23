@@ -1,5 +1,5 @@
 using Baked.Architecture;
-using Baked.Business;
+using Baked.RestApi.Model;
 
 namespace Baked.CodingStyle.RecordsAreDtos;
 

@@ -1,9 +1,6 @@
 ﻿namespace Baked.Domain.Configuration;
 
-public interface IDomainModelConvention
-{
-    int Order { get; }
-}
+public interface IDomainModelConvention;
 
 public interface IDomainModelConvention<TModel> : IDomainModelConvention
 {

@@ -1,19 +1,20 @@
-﻿using Baked.RestApi.Configuration;
+﻿using Baked.Domain.Configuration;
 using Baked.RestApi.Model;
 
 namespace Baked.CodingStyle.AddRemoveChild;
 
-public class OnlyEntityParameterIsInRouteForDeleteChildConvention : IApiModelConvention<ActionModelContext>
+public class OnlyEntityParameterIsInRouteForDeleteChildConvention : IDomainModelConvention<MethodModelContext>
 {
-    public void Apply(ActionModelContext context)
+    public void Apply(MethodModelContext context)
     {
-        if (context.Action.Method != HttpMethod.Delete) { return; }
-        if (context.Action.Name == string.Empty) { return; }
-        if (context.Action.InvokedMethodParameters.Count() != 1) { return; }
+        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
+        if (action.Method != HttpMethod.Delete) { return; }
+        if (action.Name == string.Empty) { return; }
+        if (action.InvokedMethodParameters.Count() != 1) { return; }
 
-        var onlyParameter = context.Action.InvokedMethodParameters.Single();
-        if (onlyParameter.MappedParameter is null) { return; }
-        if (!onlyParameter.MappedParameter.ParameterType.TryGetEntityAttribute(out var _)) { return; }
+        var onlyParameter = action.InvokedMethodParameters.Single();
+        if (onlyParameter.Orphan) { return; }
+        if (!context.Method.DefaultOverload.Parameters[onlyParameter.Id].ParameterType.TryGetEntityAttribute(out var _)) { return; }
 
         onlyParameter.From = ParameterModelFrom.Route;
         onlyParameter.RoutePosition = 3;

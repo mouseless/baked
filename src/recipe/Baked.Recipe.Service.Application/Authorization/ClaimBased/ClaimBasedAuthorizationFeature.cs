@@ -13,13 +13,18 @@ public class ClaimBasedAuthorizationFeature(IEnumerable<string> _claims, IEnumer
         configurator.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.AddMethodMetadata(
-                apply: (c, add) => add(c.Method, c.Type.GetSingle<AllowAnonymousAttribute>()),
+                attribute: c => c.Type.GetSingle<AllowAnonymousAttribute>(),
                 when: c => !c.Method.Has<RequireUserAttribute>() && c.Type.Has<AllowAnonymousAttribute>()
             );
             builder.Conventions.AddMethodMetadata(
-                apply: (c, add) => add(c.Method, c.Type.GetSingle<RequireUserAttribute>()),
+                attribute: c => c.Type.GetSingle<RequireUserAttribute>(),
                 when: c => !c.Method.Has<RequireUserAttribute>() && c.Type.Has<RequireUserAttribute>()
             );
+
+            builder.Conventions.Add(new AllowAnonymousIsAllowAnonymousConvention());
+            builder.Conventions.Add(new RequireUserIsAuthorizeConvention());
+            builder.Conventions.Add(new AddBaseClaimsAsAuthorizePolicyConvention(_baseClaims));
+            builder.Conventions.Add(new AddRequireUserClaimsAsAuthorizePolicyConvention());
         });
 
         configurator.ConfigureServiceCollection(services =>
@@ -43,14 +48,6 @@ public class ClaimBasedAuthorizationFeature(IEnumerable<string> _claims, IEnumer
         configurator.ConfigureApiModel(api =>
         {
             api.Usings.Add("Microsoft.AspNetCore.Authorization");
-        });
-
-        configurator.ConfigureApiModelConventions(conventions =>
-        {
-            conventions.Add(new AllowAnonymousIsAllowAnonymousConvention());
-            conventions.Add(new RequireUserIsAuthorizeConvention());
-            conventions.Add(new AddBaseClaimsAsAuthorizePolicyConvention(_baseClaims));
-            conventions.Add(new AddRequireUserClaimsAsAuthorizePolicyConvention());
         });
     }
 }

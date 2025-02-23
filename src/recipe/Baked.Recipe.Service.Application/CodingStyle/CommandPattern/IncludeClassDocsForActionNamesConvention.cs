@@ -1,22 +1,23 @@
-﻿using Baked.RestApi.Configuration;
+﻿using Baked.Domain.Configuration;
+using Baked.RestApi.Model;
 
 namespace Baked.CodingStyle.CommandPattern;
 
 public class IncludeClassDocsForActionNamesConvention(IEnumerable<string> actionNames)
-    : IApiModelConvention<ActionModelContext>
+    : IDomainModelConvention<MethodModelContext>
 {
     readonly HashSet<string> _actionNames = [.. actionNames];
 
-    public void Apply(ActionModelContext context)
+    public void Apply(MethodModelContext context)
     {
-        if (!_actionNames.Contains(context.Action.Name)) { return; }
-        if (!context.Controller.MappedType.TryGetMembers(out var controllerMembers)) { return; }
-        if (controllerMembers.Documentation is null) { return; }
+        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
+        if (!_actionNames.Contains(action.Name)) { return; }
+        if (context.Type.Documentation is null) { return; }
 
-        var summary = controllerMembers.Documentation.GetSummary();
-        var remarks = controllerMembers.Documentation.GetRemarks();
+        var summary = context.Type.Documentation.GetSummary();
+        var remarks = context.Type.Documentation.GetRemarks();
         if (summary is null && remarks is null) { return; }
 
-        context.Action.AdditionalAttributes.Add($"SwaggerOperation(Summary = \"{summary.EscapeNewLines()}\", Description = \"{remarks.EscapeNewLines()}\")");
+        action.AdditionalAttributes.Add($"SwaggerOperation(Summary = \"{summary.EscapeNewLines()}\", Description = \"{remarks.EscapeNewLines()}\")");
     }
 }

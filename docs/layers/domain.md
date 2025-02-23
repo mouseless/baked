@@ -34,7 +34,7 @@ This target exposes options for configuring built-in `DomainModelBuilder` and is
 provided in `AddDomainTypes` phase. To configure it in a feature;
 
 ```csharp
-configurator.ConfigureDomainBuilderOptions(options =>
+configurator.ConfigureDomainModelBuilder(builder =>
 {
     ...
 });

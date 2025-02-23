@@ -1,6 +1,7 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
 using Baked.Orm;
+using Baked.RestApi.Model;
 
 namespace Baked.CodingStyle.EntitySubclassViaComposition;
 
@@ -11,13 +12,11 @@ public class EntitySubclassViaCompositionCodingStyleFeature : IFeature<CodingSty
         configurator.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.AddTypeMetadata(
-                apply: (c, add) =>
+                attribute: c =>
                 {
                     var entityType = c.Type.GetMembers().GetMethod("op_Explicit").Parameters.Single().ParameterType;
-                    entityType.Apply(t =>
-                    {
-                        add(c.Type, new EntitySubclassAttribute(t, c.Type.Name.Replace(t.Name, string.Empty)));
-                    });
+
+                    return entityType.Apply(t => new EntitySubclassAttribute(t, c.Type.Name.Replace(t.Name, string.Empty)));
                 },
                 when: c =>
                     c.Type.IsClass &&
@@ -38,22 +37,17 @@ public class EntitySubclassViaCompositionCodingStyleFeature : IFeature<CodingSty
                 when: c => c.Type.Has<EntitySubclassAttribute>(),
                 order: 10
             );
-            builder.Conventions.AddMethodMetadata(new ApiMethodAttribute(),
+            builder.Conventions.AddMethodMetadata(
+                attribute: c => new ActionModelAttribute(),
                 when: c =>
                     c.Type.Has<EntitySubclassAttribute>() && c.Method.Has<InitializerAttribute>() &&
                     c.Method.Overloads.Any(o => o.IsPublic && !o.IsStatic && !o.IsSpecialName && o.AllParametersAreApiInput()),
                 order: 30
             );
-        });
 
-        configurator.ConfigureApiModelConventions(conventions =>
-        {
-            configurator.UsingDomainModel(domain =>
-            {
-                conventions.Add(new EntitySubclassUnderEntitiesConvention(domain));
-                conventions.Add(new EntitySubclassInitializerIsPostResourceConvention(domain));
-                conventions.Add(new TargetEntitySubclassFromRouteConvention(domain), order: 20);
-            });
+            builder.Conventions.Add(new EntitySubclassUnderEntitiesConvention());
+            builder.Conventions.Add(new EntitySubclassInitializerIsPostResourceConvention());
+            builder.Conventions.Add(new TargetEntitySubclassFromRouteConvention(), order: 20);
         });
     }
 }

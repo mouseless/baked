@@ -67,6 +67,9 @@ public class TypeModel : IModel, IEquatable<TypeModel>
     public void Apply(Action<Type> action) =>
         action(Type);
 
+    public TResult Apply<TResult>(Func<Type, TResult> function) =>
+        function(Type);
+
     public bool Is<T>() =>
         Is(typeof(T));
 

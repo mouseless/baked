@@ -1,21 +1,19 @@
 ﻿using Baked.Business;
-using Baked.Domain.Model;
-using Baked.RestApi.Configuration;
+using Baked.Domain.Configuration;
+using Baked.RestApi.Model;
 using Humanizer;
 
 namespace Baked.CodingStyle.EntitySubclassViaComposition;
 
-public class EntitySubclassInitializerIsPostResourceConvention(DomainModel _domain)
-    : IApiModelConvention<ParameterModelContext>
+public class EntitySubclassInitializerIsPostResourceConvention : IDomainModelConvention<MethodModelContext>
 {
-    public void Apply(ParameterModelContext context)
+    public void Apply(MethodModelContext context)
     {
-        if (context.Parameter.IsInvokeMethodParameter) { return; }
-        if (!context.Parameter.TypeModel.TryGetSubclassName(out var subclassName)) { return; }
-        if (!context.Parameter.TypeModel.TryGetEntityTypeFromSubclass(_domain, out var entityType)) { return; }
-        if (context.Action.MappedMethod is null) { return; }
-        if (!context.Action.MappedMethod.Has<InitializerAttribute>()) { return; }
+        if (!context.Method.Has<InitializerAttribute>()) { return; }
+        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
+        if (!context.Type.TryGetSubclassName(out var subclassName)) { return; }
+        if (!context.Type.TryGetEntityTypeFromSubclass(context.Domain, out var entityType)) { return; }
 
-        context.Action.RouteParts = [entityType.Name.Pluralize(), subclassName];
+        action.RouteParts = [entityType.Name.Pluralize(), subclassName];
     }
 }

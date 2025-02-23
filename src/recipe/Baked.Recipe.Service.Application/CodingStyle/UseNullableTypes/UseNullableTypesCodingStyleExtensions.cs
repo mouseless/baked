@@ -12,14 +12,11 @@ public static class UseNullableTypesCodingStyleExtensions
     public static UseNullableTypesCodingStyleFeature UseNullableTypes(this CodingStyleConfigurator _) =>
         new();
 
-    public static void AddRequiredAttributes(this ParameterModel parameter,
-        bool? isValueType = default)
+    public static void AddRequiredAttributes(this ParameterModelAttribute parameter, bool isValueType)
     {
         if (parameter.FromRoute || parameter.FromServices) { return; }
 
-        isValueType ??= parameter.TypeModel.IsValueType;
-
-        if (isValueType.Value)
+        if (isValueType)
         {
             parameter.AdditionalAttributes.Add($"{nameof(BindRequiredAttribute)}");
         }

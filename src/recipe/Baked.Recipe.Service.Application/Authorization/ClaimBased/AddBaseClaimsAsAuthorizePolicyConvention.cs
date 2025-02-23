@@ -1,16 +1,17 @@
-﻿using Baked.RestApi.Configuration;
+﻿using Baked.Domain.Configuration;
+using Baked.RestApi.Model;
 
 namespace Baked.Authorization.ClaimBased;
 
 public class AddBaseClaimsAsAuthorizePolicyConvention(IEnumerable<string> _baseClaims)
-    : IApiModelConvention<ActionModelContext>
+    : IDomainModelConvention<MethodModelContext>
 {
-    public void Apply(ActionModelContext context)
+    public void Apply(MethodModelContext context)
     {
-        if (context.Action.MappedMethod is null) { return; }
-        if (context.Action.MappedMethod.Has<AllowAnonymousAttribute>()) { return; }
-        if (context.Action.MappedMethod.TryGetSingle<RequireUserAttribute>(out var requireUser) && requireUser.Override) { return; }
+        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
+        if (context.Method.Has<AllowAnonymousAttribute>()) { return; }
+        if (context.Method.TryGetSingle<RequireUserAttribute>(out var requireUser) && requireUser.Override) { return; }
 
-        context.Action.AdditionalAttributes.AddRange(_baseClaims.Select(claim => $"Authorize(Policy = \"{claim}\")"));
+        action.AdditionalAttributes.AddRange(_baseClaims.Select(claim => $"Authorize(Policy = \"{claim}\")"));
     }
 }

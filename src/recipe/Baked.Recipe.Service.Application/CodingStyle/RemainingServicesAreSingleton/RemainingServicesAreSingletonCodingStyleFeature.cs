@@ -19,7 +19,7 @@ public class RemainingServicesAreSingletonCodingStyleFeature()
                    !members.Has<TransientAttribute>() &&
                    !members.Has<ScopedAttribute>() &&
                    members.Properties.All(p => !p.IsPublic),
-               order: int.MaxValue
+               order: int.MaxValue - 20
             );
         });
     }

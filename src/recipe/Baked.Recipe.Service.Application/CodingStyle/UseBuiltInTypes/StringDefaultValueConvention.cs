@@ -1,14 +1,16 @@
-﻿using Baked.RestApi.Configuration;
+﻿using Baked.Domain.Configuration;
+using Baked.RestApi.Model;
 
 namespace Baked.CodingStyle.UseBuiltInTypes;
 
-public class StringDefaultValueConvention : IApiModelConvention<ParameterModelContext>
+public class StringDefaultValueConvention : IDomainModelConvention<ParameterModelContext>
 {
     public void Apply(ParameterModelContext context)
     {
-        var parameterType = context.Parameter.TypeModel;
+        var parameterType = context.Parameter.ParameterType;
         if (!parameterType.Is<string>()) { return; }
+        if (!context.Parameter.TryGetSingle<ParameterModelAttribute>(out var parameter)) { return; }
 
-        context.Parameter.DefaultValueRenderer = defaultValue => $"\"{defaultValue}\"";
+        parameter.DefaultValueRenderer = defaultValue => $"\"{defaultValue}\"";
     }
 }

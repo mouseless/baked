@@ -1,17 +1,19 @@
-﻿using Baked.RestApi.Configuration;
+﻿using Baked.Domain.Configuration;
+using Baked.RestApi.Model;
 
 namespace Baked.CodingStyle.ObjectAsJson;
 
-public class SingleObjectParametersDontUseRequestClassConvention : IApiModelConvention<ActionModelContext>
+public class SingleObjectParametersDontUseRequestClassConvention : IDomainModelConvention<MethodModelContext>
 {
-    public void Apply(ActionModelContext context)
+    public void Apply(MethodModelContext context)
     {
-        if (context.Action.BodyParameters.Count() != 1) { return; }
+        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
+        if (action.BodyParameters.Count() != 1) { return; }
 
-        var bodyParameter = context.Action.BodyParameters.Single();
-        if (bodyParameter.MappedParameter is null) { return; }
-        if (!bodyParameter.MappedParameter.ParameterType.Is<object>()) { return; }
+        var bodyParameter = action.BodyParameters.Single();
+        if (bodyParameter.Orphan) { return; }
+        if (!context.Method.DefaultOverload.Parameters[bodyParameter.Id].ParameterType.Is<object>()) { return; }
 
-        context.Action.UseRequestClassForBody = false;
+        action.UseRequestClassForBody = false;
     }
 }

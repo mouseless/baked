@@ -1,27 +1,27 @@
 ﻿using Baked.Business;
-using Baked.RestApi.Configuration;
+using Baked.Domain.Configuration;
 using Baked.RestApi.Model;
 
 namespace Baked.CodingStyle.RichTransient;
 
-public class AddInitializerParametersToQueryConvention : IApiModelConvention<ActionModelContext>
+public class AddInitializerParametersToQueryConvention : IDomainModelConvention<MethodModelContext>
 {
-    public void Apply(ActionModelContext context)
+    public void Apply(MethodModelContext context)
     {
-        if (!context.Controller.MappedType.TryGetMembers(out var members)) { return; }
+        if (!context.Type.TryGetMembers(out var members)) { return; }
         if (!members.Methods.Having<InitializerAttribute>().Any()) { return; }
         if (members.Has<LocatableAttribute>()) { return; }
+        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
 
         var initializer = members.Methods.Having<InitializerAttribute>().Single();
         foreach (var parameter in initializer.DefaultOverload.Parameters)
         {
-            context.Action.Parameter[parameter.Name] =
-                new(parameter.ParameterType, ParameterModelFrom.Query, parameter.Name, MappedParameter: parameter)
-                {
-                    IsOptional = parameter.IsOptional,
-                    DefaultValue = parameter.DefaultValue,
-                    IsInvokeMethodParameter = false
-                };
+            if (!parameter.TryGetSingle<ParameterModelAttribute>(out var parameterModel)) { continue; }
+
+            parameterModel.From = ParameterModelFrom.Query;
+            parameterModel.IsInvokeMethodParameter = false;
+
+            action.Parameter[parameter.Name] = parameterModel;
         }
     }
 }

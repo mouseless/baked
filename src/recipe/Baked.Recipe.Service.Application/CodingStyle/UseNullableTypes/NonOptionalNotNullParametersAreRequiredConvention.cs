@@ -1,18 +1,19 @@
-﻿using Baked.RestApi.Configuration;
+﻿using Baked.Domain.Configuration;
+using Baked.RestApi.Model;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Baked.CodingStyle.UseNullableTypes;
 
-public class NonOptionalNotNullParametersAreRequiredConvention : IApiModelConvention<ParameterModelContext>
+public class NonOptionalNotNullParametersAreRequiredConvention : IDomainModelConvention<ParameterModelContext>
 {
     public void Apply(ParameterModelContext context)
     {
+        if (!context.Parameter.TryGetSingle<ParameterModelAttribute>(out var parameter)) { return; }
         if (context.Parameter.IsOptional) { return; }
-        if (context.Parameter.MappedParameter is null) { return; }
-        if (!context.Parameter.MappedParameter.Has<NotNullAttribute>()) { return; }
-        if (context.Parameter.FromRoute) { return; }
-        if (context.Parameter.FromServices) { return; }
+        if (!context.Parameter.Has<NotNullAttribute>()) { return; }
+        if (parameter.FromRoute) { return; }
+        if (parameter.FromServices) { return; }
 
-        context.Parameter.AddRequiredAttributes();
+        parameter.AddRequiredAttributes(isValueType: context.Parameter.ParameterType.IsValueType);
     }
 }

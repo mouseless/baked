@@ -1,3 +1,3 @@
-﻿namespace Baked.Business.DomainAssemblies;
+﻿namespace Baked.Binding.Rest;
 
 public class TagDescriptions : Dictionary<string, string>;

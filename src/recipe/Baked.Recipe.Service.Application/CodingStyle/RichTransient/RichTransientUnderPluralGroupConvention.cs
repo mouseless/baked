@@ -1,16 +1,18 @@
 ﻿using Baked.Business;
-using Baked.RestApi.Configuration;
+using Baked.Domain.Configuration;
+using Baked.RestApi.Model;
 using Humanizer;
 
 namespace Baked.CodingStyle.RichTransient;
 
-public class RichTransientUnderPluralGroupConvention : IApiModelConvention<ControllerModelContext>
+public class RichTransientUnderPluralGroupConvention : IDomainModelConvention<TypeModelContext>
 {
-    public void Apply(ControllerModelContext context)
+    public void Apply(TypeModelContext context)
     {
-        if (!context.Controller.MappedType.TryGetMetadata(out var metadata)) { return; }
+        if (!context.Type.TryGetMetadata(out var metadata)) { return; }
+        if (!metadata.TryGetSingle<ControllerModelAttribute>(out var controller)) { return; }
         if (!metadata.Has<LocatableAttribute>()) { return; }
 
-        context.Controller.GroupName = context.Controller.GroupName.Pluralize();
+        controller.GroupName = controller.GroupName.Pluralize();
     }
 }

@@ -1,21 +1,21 @@
 ﻿using Baked.Business;
+using Baked.Domain.Configuration;
 using Baked.Orm;
-using Baked.RestApi.Configuration;
+using Baked.RestApi.Model;
 using Humanizer;
 
 namespace Baked.CodingStyle.RichEntity;
 
-public class EntityInitializerIsPostResourceConvention : IApiModelConvention<ActionModelContext>
+public class EntityInitializerIsPostResourceConvention : IDomainModelConvention<MethodModelContext>
 {
-    public void Apply(ActionModelContext context)
+    public void Apply(MethodModelContext context)
     {
-        if (context.Controller.MappedType is null) { return; }
-        if (!context.Controller.MappedType.TryGetMetadata(out var metadata)) { return; }
+        if (!context.Type.TryGetMetadata(out var metadata)) { return; }
         if (!metadata.Has<EntityAttribute>()) { return; }
-        if (context.Action.MappedMethod is null) { return; }
-        if (!context.Action.MappedMethod.Has<InitializerAttribute>()) { return; }
+        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
+        if (!context.Method.Has<InitializerAttribute>()) { return; }
 
-        context.Action.Method = HttpMethod.Post;
-        context.Action.RouteParts = [context.Controller.MappedType.Name.Pluralize()];
+        action.Method = HttpMethod.Post;
+        action.RouteParts = [context.Type.Name.Pluralize()];
     }
 }
