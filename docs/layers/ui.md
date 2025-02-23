@@ -4,7 +4,7 @@ Baked introduces a metadata generation template which can be used to transform
 the business domain to ui metadata to be used in dynamic ui applications.
 
 ```csharp
-app.Layers.AddDomain();
+app.Layers.AddUi();
 ```
 
 `UiLayer` provides `ComponentDescriptor`, `IComponentSchema`, `IData` 
