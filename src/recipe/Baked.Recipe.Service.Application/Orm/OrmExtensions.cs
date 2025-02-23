@@ -18,7 +18,7 @@ public static class OrmExtensions
         features.Add(configure(new()));
 
     public static void AddSingleById<TQuery>(this IDomainModelConventionCollection conventions) =>
-        conventions.Add(new SingleByIdConvention<TQuery>());
+        conventions.Add(new SingleByIdConvention<TQuery>(), order: -10);
 
     public static ParameterModelAttribute AddAsService(this ActionModelAttribute action, TypeModel type,
         string? name = default
