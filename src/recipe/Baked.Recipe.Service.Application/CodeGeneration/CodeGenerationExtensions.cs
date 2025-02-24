@@ -126,4 +126,16 @@ public static class CodeGenerationExtensions
 
         return GetScopeNode(node?.Parent);
     }
+
+    public static bool FileExists(string content, string filePath, string hashFilePath)
+    {
+        if (!Path.Exists(hashFilePath) || !Path.Exists(filePath)) { return false; }
+
+        using (StreamReader reader = new(hashFilePath))
+        {
+            string hashValue = reader.ReadToEnd();
+
+            return content.ToSHA256().ToUtf8String() == hashValue;
+        }
+    }
 }

@@ -15,7 +15,7 @@
       <Descriptors Include="$(OutDir)\$(ASPNETCORE_ENVIRONMENT)\Ui\*.json"/>
     </ItemGroup>
     <MakeDir Directories="$(ComponentDescriptorsDir)" Condition="!Exists($(ComponentDescriptorsDir))"/>
-    <Copy SourceFiles="@(Descriptors)" DestinationFolder="$(ComponentDescriptorsDir)" Condition="Exists($(ComponentDescriptorsDir))" />
+    <Copy SourceFiles="@(Descriptors)" DestinationFolder="$(ComponentDescriptorsDir)" SkipUnchangedFiles="true" Condition="Exists($(ComponentDescriptorsDir))" />
     <Message Importance="high" Text="'$(ComponentDescriptorsDir)' does not exists. Failed to copy component descriptors!" Condition="!Exists($(ComponentDescriptorsDir))" />
   </Target>
 

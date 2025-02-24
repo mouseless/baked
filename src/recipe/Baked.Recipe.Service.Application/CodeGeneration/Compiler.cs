@@ -9,17 +9,6 @@ public class Compiler(GeneratedAssemblyDescriptor _descriptor)
 {
     readonly Dictionary<string, MetadataReference> _references = new();
 
-    void AddReference(Assembly assembly)
-    {
-        if (_references.ContainsKey(assembly.Location)) { return; }
-
-        _references.Add(assembly.Location, MetadataReference.CreateFromFile(assembly.Location));
-        foreach (var referencedAssembly in assembly.GetReferencedAssemblies())
-        {
-            AddReference(Assembly.Load(referencedAssembly));
-        }
-    }
-
     public Assembly Compile(
         string? assemblyLocation = default,
         string? assemblyName = default
@@ -27,15 +16,49 @@ public class Compiler(GeneratedAssemblyDescriptor _descriptor)
     {
         assemblyName ??= $"Baked.g.{_descriptor.Name}";
 
-        foreach (var assembly in _descriptor.References)
-        {
-            AddReference(assembly);
-        }
-
         _descriptor.AddCode(string.Join(
             Environment.NewLine,
             _descriptor.CompilationOptions.Usings.Select(u => $"global using global::{u};")
         ));
+
+        // In-memory
+        if (assemblyLocation is null)
+        {
+            using var ms = CreateCSharpCompilation(assemblyName);
+            return Assembly.Load(ms.ToArray());
+        }
+
+        var codes = string.Join(Environment.NewLine, _descriptor.Codes);
+        var dllPath = Path.Combine(Path.Combine(assemblyLocation, $"{assemblyName}.dll"));
+        var hashFilePath = $"{dllPath}.hash";
+        if (CodeGenerationExtensions.FileExists(codes, dllPath, hashFilePath))
+        {
+            return Assembly.LoadFile(dllPath);
+        }
+
+        using (var file = new FileStream(dllPath, FileMode.Create))
+        {
+            using var ms = CreateCSharpCompilation(assemblyName);
+            ms.WriteTo(file);
+        }
+
+        using (var hashfile = new FileStream(hashFilePath, FileMode.Create))
+        {
+            hashfile.Write(codes.ToSHA256());
+        }
+
+        File.WriteAllText($"{dllPath}.cs", codes);
+
+        return Assembly.LoadFile(dllPath);
+
+    }
+
+    MemoryStream CreateCSharpCompilation(string assemblyName)
+    {
+        foreach (var assembly in _descriptor.References)
+        {
+            AddReference(assembly);
+        }
 
         var compilation = CSharpCompilation.Create(
             assemblyName: assemblyName,
@@ -44,7 +67,7 @@ public class Compiler(GeneratedAssemblyDescriptor _descriptor)
             options: _descriptor.CompilationOptions
         );
 
-        using var ms = new MemoryStream();
+        var ms = new MemoryStream();
         var result = compilation.Emit(ms);
         if (!result.Success)
         {
@@ -67,17 +90,17 @@ public class Compiler(GeneratedAssemblyDescriptor _descriptor)
 
         ms.Seek(0, SeekOrigin.Begin);
 
-        if (assemblyLocation is not null)
+        return ms;
+    }
+
+    void AddReference(Assembly assembly)
+    {
+        if (_references.ContainsKey(assembly.Location)) { return; }
+
+        _references.Add(assembly.Location, MetadataReference.CreateFromFile(assembly.Location));
+        foreach (var referencedAssembly in assembly.GetReferencedAssemblies())
         {
-            File.WriteAllText(Path.Combine(assemblyLocation, $"{assemblyName}.cs"), _descriptor.Codes.Join(Environment.NewLine));
-            using (var file = new FileStream(Path.Combine(assemblyLocation, $"{assemblyName}.dll"), FileMode.Create))
-            {
-                ms.WriteTo(file);
-            }
-
-            return Assembly.LoadFile(Path.Combine(assemblyLocation, $"{assemblyName}.dll"));
+            AddReference(Assembly.Load(referencedAssembly));
         }
-
-        return Assembly.Load(ms.ToArray());
     }
 }

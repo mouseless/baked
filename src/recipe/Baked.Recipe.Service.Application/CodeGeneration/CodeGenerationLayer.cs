@@ -1,7 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Domain.Model;
 using System.Reflection;
-using System.Text;
 
 using static Baked.CodeGeneration.CodeGenerationLayer;
 using static Baked.Runtime.RuntimeLayer;
@@ -32,25 +31,7 @@ public class CodeGenerationLayer : LayerBase<GenerateCode, Compile, BuildConfigu
             {
                 foreach (var descriptor in _generatedFiles)
                 {
-                    var directory = _location;
-                    if (descriptor.Outdir != null)
-                    {
-                        if (Path.IsPathRooted(descriptor.Outdir))
-                        {
-                            directory = descriptor.Outdir;
-                        }
-                        else
-                        {
-                            directory = Path.Combine(_location, descriptor.Outdir);
-                            if (!Directory.Exists(directory))
-                            {
-                                Directory.CreateDirectory(directory);
-                            }
-                        }
-                    }
-
-                    using var file = new FileStream(Path.Combine(directory, $"{descriptor.Name}.{descriptor.Extension}"), FileMode.Create);
-                    file.Write(Encoding.UTF8.GetBytes(descriptor.Content));
+                    new FileWriter(descriptor).Create(_location);
                 }
             })
             .Build();
@@ -70,6 +51,8 @@ public class CodeGenerationLayer : LayerBase<GenerateCode, Compile, BuildConfigu
             }
             else
             {
+                if (path.EndsWith(".hash")) { continue; }
+
                 generatedContext.Files.Add(Path.GetFileName(path)[..Path.GetFileName(path).LastIndexOf('.')], path);
             }
         }
@@ -90,12 +73,10 @@ public class CodeGenerationLayer : LayerBase<GenerateCode, Compile, BuildConfigu
     {
         protected override void Initialize(DomainModel _)
         {
-            if (Directory.Exists(_location))
+            if (!Directory.Exists(_location))
             {
-                Directory.Delete(_location, true);
+                Directory.CreateDirectory(_location);
             }
-
-            Directory.CreateDirectory(_location);
 
             Context.Add(_generatedAssemblies);
             Context.Add(_generatedFiles);
