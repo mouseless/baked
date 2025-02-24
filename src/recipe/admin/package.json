@@ -1,5 +1,5 @@
 {
-  "name": "@mouseless/baked-recipe-admin",
+  "name": "baked-recipe-admin",
   "version": "0.13.1",
   "description": "Baked (Objects) is an opinionated framework for .NET. This is a recipe package that brings together all the components one needs for an admin ui.",
   "keywords": [
