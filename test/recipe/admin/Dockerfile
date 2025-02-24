@@ -35,6 +35,7 @@ FROM init as generate
 
 ARG ENVIRONMENT
 
+COPY --parents src/recipe/admin .
 COPY --parents test/recipe/admin .
 COPY --from=build  ./test/recipe/admin/.baked ./test/recipe/admin/.baked
 RUN cd test/recipe/admin ; npm run postinstall ; npm run build:$ENVIRONMENT
@@ -45,4 +46,3 @@ COPY test/recipe/admin/nginx.conf /etc/nginx/nginx.conf
 COPY --from=generate test/recipe/admin/.output/public /www/public
 
 CMD nginx -g "daemon off;"
-

@@ -12,7 +12,7 @@ const { descriptor } = defineProps({
 });
 
 const { public: { apiBaseURL: baseURL } } = useRuntimeConfig();
-const resolver = useBakedComponentResolver();
+const resolver = useComponentResolver();
 const extensions = useStringExtensions();
 
 const routeParams = inject("routeParams", []);

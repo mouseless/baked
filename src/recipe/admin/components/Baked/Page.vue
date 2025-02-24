@@ -18,7 +18,7 @@ const pageName = computed(() => routeParams[0] ?? "index");
 provide("routeParams", routeParams);
 
 onMounted(async() => {
-  pageDescriptor.value = await import(`../../.baked/${pageName.value}.json`)
+  pageDescriptor.value = await import(`~/.baked/${pageName.value}.json`)
     .catch(_ => {
       throw createError({
         statusCode: 404,

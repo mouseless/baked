@@ -5,6 +5,7 @@ on:
       - main
       - 'epic/**'
     paths:
+      - 'src/recipe/admin/**/*'
       - 'test/recipe/admin/**/*'
 jobs:
   build-and-test:

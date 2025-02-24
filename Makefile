@@ -23,8 +23,8 @@ coverage:
 run:
 	@ \
 	echo "(1) Recipe.Service (Development)" ; \
-	echo "(2) Recipe.Service (Production)" ; \
-	echo "(3) Recipe.Admin (Development)" ; \
+	echo "(2) Recipe.Admin (Development)" ; \
+	echo "(3) Recipe.* (Production)" ; \
 	echo "(4) Docs" ; \
 	echo "" ; \
 	echo "Please select 1-4: " ; \
@@ -33,12 +33,12 @@ run:
 		dotnet run --project test/recipe/Baked.Test.Recipe.Service.Application ; \
 	fi ; \
 	if test $$app -eq "2" ; then \
-		docker compose up --build ; \
-	fi ; \
-	if test $$app -eq "3" ; then \
 		cd test/recipe/admin ; \
 		npm run dev ; \
 		cd ../../.. ; \
+	fi ; \
+	if test $$app -eq "3" ; then \
+		docker compose up --build ; \
 	fi ; \
 	if test $$app -eq "4" ; then \
 		cd ./docs ; \

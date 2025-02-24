@@ -1,0 +1,23 @@
+{
+  "name": "@mouseless/baked-recipe-admin",
+  "version": "0.13.1",
+  "description": "Baked (Objects) is an opinionated framework for .NET. This is a recipe package that brings together all the components one needs for an admin ui.",
+  "keywords": [
+    "baked",
+    "objects",
+    "recipe",
+    "admin",
+    "ui"
+  ],
+  "homepage": "https://baked.mouseless.codes",
+  "bugs": {
+    "url": "https://matrix.to/#/#baked:mouseless.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mouseless/baked.git"
+  },
+  "license": "MIT",
+  "author": "mouseless",
+  "type": "module"
+}
