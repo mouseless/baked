@@ -1,13 +1,9 @@
 using Baked.Architecture;
 using Baked.Business;
 using Baked.Domain.Model;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using System.Xml;
 
 namespace Baked;
 
@@ -67,13 +63,6 @@ public static class BusinessExtensions
         return services.AddSingleton(service, sp => sp.UsingCurrentScope().GetRequiredService(implementation));
     }
 
-    public static bool TryGetMappedMethod(this ApiDescription apiDescription, [NotNullWhen(true)] out MappedMethodAttribute? result)
-    {
-        result = apiDescription.CustomAttributes().OfType<MappedMethodAttribute>().SingleOrDefault();
-
-        return result is not null;
-    }
-
     public static bool TryGetNamespace(this TypeModel type, [NotNullWhen(true)] out string? @namespace)
     {
         if (!type.TryGetNamespaceAttribute(out var namespaceAttribute) || string.IsNullOrWhiteSpace(namespaceAttribute.Value))
@@ -95,30 +84,5 @@ public static class BusinessExtensions
         return
             type.TryGetMetadata(out var metadata) &&
             metadata.TryGetSingle(out namespaceAttribute);
-    }
-
-    public static void SetJsonExample(this IDictionary<string, OpenApiMediaType> mediaTypes, XmlNode? documentation, string @for)
-    {
-        var example = documentation.GetExampleCode(@for);
-        if (example is null) { return; }
-
-        if (!mediaTypes.TryGetValue("application/json", out var mediaType))
-        {
-            mediaTypes["application/json"] = mediaType = new() { };
-        }
-
-        mediaType.Example = OpenApiAnyFactory.CreateFromJson(example);
-    }
-
-    public static void SetJsonExample(this IDictionary<string, OpenApiMediaType> mediaTypes, string? example)
-    {
-        if (example is null) { return; }
-
-        if (!mediaTypes.TryGetValue("application/json", out var mediaType))
-        {
-            mediaTypes["application/json"] = mediaType = new() { };
-        }
-
-        mediaType.Example = OpenApiAnyFactory.CreateFromJson(example);
     }
 }

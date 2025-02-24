@@ -1,41 +1,53 @@
-﻿using Baked.Business.DomainAssemblies;
-using Baked.RestApi.Configuration;
+﻿using Baked.Binding;
+using Baked.Binding.Rest;
+using Baked.Domain.Configuration;
+using Baked.RestApi.Model;
 
 namespace Baked.RestApi.Conventions;
 
-public class UseDocumentationAsDescriptionConvention(TagDescriptions _descriptions)
-    : IApiModelConvention<ControllerModelContext>, IApiModelConvention<ActionModelContext>, IApiModelConvention<ParameterModelContext>
+public class UseDocumentationAsDescriptionConvention(TagDescriptions _descriptions, RequestResponseExamples _examples)
+    : IDomainModelConvention<TypeModelContext>, IDomainModelConvention<MethodModelContext>, IDomainModelConvention<ParameterModelContext>
 {
-    public void Apply(ControllerModelContext context)
+    public void Apply(TypeModelContext context)
     {
-        if (context.Controller.MappedType is null) { return; }
-        if (!context.Controller.MappedType.TryGetMembers(out var controllerMembers)) { return; }
+        if (!context.Type.TryGetMembers(out var members)) { return; }
+        if (!members.TryGetSingle<ControllerModelAttribute>(out var controller)) { return; }
 
-        var summary = controllerMembers.Documentation.GetSummary();
+        var summary = members.Documentation.GetSummary();
 
-        _descriptions[context.Controller.GroupName] = summary ?? string.Empty;
+        _descriptions[controller.GroupName] = summary ?? string.Empty;
+        _examples.TryAdd($"{context.Type.FullName}", new(
+            members.Documentation.GetExampleCode("request"),
+            members.Documentation.GetExampleCode("response")
+        ));
     }
 
-    public void Apply(ActionModelContext context)
+    public void Apply(MethodModelContext context)
     {
-        if (context.Action.MappedMethod is null) { return; }
-        if (context.Action.MappedMethod.Documentation is null) { return; }
+        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
+        if (context.Method.Documentation is null) { return; }
 
-        var summary = context.Action.MappedMethod.Documentation.GetSummary();
-        var remarks = context.Action.MappedMethod.Documentation.GetRemarks();
+        _examples.TryAdd($"{context.Type.FullName}.{context.Method.Name}", new(
+            context.Method.Documentation.GetExampleCode("request"),
+            context.Method.Documentation.GetExampleCode("response")
+        ));
+
+        var summary = context.Method.Documentation.GetSummary();
+        var remarks = context.Method.Documentation.GetRemarks();
         if (summary is null && remarks is null) { return; }
 
-        context.Action.AdditionalAttributes.Add($"SwaggerOperation(Summary = \"{summary.EscapeNewLines()}\", Description = \"{remarks.EscapeNewLines()}\")");
+        action.AdditionalAttributes.Add($"SwaggerOperation(Summary = \"{summary.EscapeNewLines()}\", Description = \"{remarks.EscapeNewLines()}\")");
     }
 
     public void Apply(ParameterModelContext context)
     {
-        if (context.Parameter.MappedParameter is null) { return; }
-        if (context.Parameter.MappedParameter.Documentation is null) { return; }
+        if (!context.Parameter.TryGetSingle<ParameterModelAttribute>(out var parameter)) { return; }
+        if (context.Parameter is null) { return; }
+        if (context.Parameter.Documentation is null) { return; }
 
-        var description = context.Parameter.MappedParameter.Documentation.InnerText.Trim();
+        var description = context.Parameter.Documentation.InnerText.Trim();
         if (description is null) { return; }
 
-        context.Parameter.AdditionalAttributes.Add($"SwaggerSchema(\"{description.EscapeNewLines()}\")");
+        parameter.AdditionalAttributes.Add($"SwaggerSchema(\"{description.EscapeNewLines()}\")");
     }
 }

@@ -2,12 +2,9 @@
 
 namespace Baked.Domain.Conventions;
 
-public class RemoveMetadataFromTypeConvention<TAttribute>(Func<TypeModelMetadataContext, bool> _when,
-    int _order = default
-) : IDomainModelConvention<TypeModelMetadataContext> where TAttribute : Attribute
+public class RemoveMetadataFromTypeConvention<TAttribute>(Func<TypeModelMetadataContext, bool> _when)
+    : IDomainModelConvention<TypeModelMetadataContext>, IAddRemoveMetadataConvention where TAttribute : Attribute
 {
-    public int Order => _order;
-
     public void Apply(TypeModelMetadataContext model)
     {
         if (!_when(model)) { return; }

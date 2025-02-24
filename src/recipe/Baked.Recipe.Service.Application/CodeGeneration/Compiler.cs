@@ -69,6 +69,7 @@ public class Compiler(GeneratedAssemblyDescriptor _descriptor)
 
         if (assemblyLocation is not null)
         {
+            File.WriteAllText(Path.Combine(assemblyLocation, $"{assemblyName}.cs"), _descriptor.Codes.Join(Environment.NewLine));
             using (var file = new FileStream(Path.Combine(assemblyLocation, $"{assemblyName}.dll"), FileMode.Create))
             {
                 ms.WriteTo(file);

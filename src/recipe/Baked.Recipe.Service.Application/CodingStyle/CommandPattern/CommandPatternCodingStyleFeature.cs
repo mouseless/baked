@@ -1,7 +1,9 @@
 ﻿using Baked.Architecture;
+using Baked.Binding;
 using Baked.Business;
 using Baked.Lifetime;
 using Baked.RestApi.Conventions;
+using Baked.RestApi.Model;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Baked.CodingStyle.CommandPattern;
@@ -25,30 +27,27 @@ public class CommandPatternCodingStyleFeature(IEnumerable<string> _methodNames)
                     ),
                 order: 40
             );
-            builder.Conventions.RemoveTypeMetadata<ApiServiceAttribute>(
+            builder.Conventions.RemoveTypeMetadata<ControllerModelAttribute>(
                 when: c =>
                     c.Type.Has<TransientAttribute>() &&
                     !c.Type.Has<LocatableAttribute>() &&
                     !c.Type.Has<PubliclyInitializableAttribute>(),
                 order: 40
             );
-        });
 
-        configurator.ConfigureApiModelConventions(conventions =>
-        {
-            conventions.Add(new IncludeClassDocsForActionNamesConvention(_methodNames), order: -10);
-            conventions.Add(new UseClassNameInsteadOfActionNamesConvention(_methodNames), order: -10);
-            conventions.Add(new RemoveFromRouteConvention(_methodNames));
-            conventions.Add(new RemoveFromRouteConvention(["Sync", "Create"]));
-            conventions.Add(new UseRootPathAsGroupNameForSingleMethodNonLocatablesConvention());
+            builder.Conventions.Add(new IncludeClassDocsForActionNamesConvention(_methodNames), order: -10);
+            builder.Conventions.Add(new UseClassNameInsteadOfActionNamesConvention(_methodNames), order: -10);
+            builder.Conventions.Add(new RemoveFromRouteConvention(_methodNames));
+            builder.Conventions.Add(new RemoveFromRouteConvention(["Sync", "Create"]));
+            builder.Conventions.Add(new UseRootPathAsGroupNameForSingleMethodNonLocatablesConvention());
 
-            conventions.Add(new NoRequestBodyForSingleEnumerableParametersConvention(
-                _when: c => c.Action.Name.StartsWith("Sync"),
+            builder.Conventions.Add(new NoRequestBodyForSingleEnumerableParametersConvention(
+                _when: action => action.Name.StartsWith("Sync"),
                 _method: HttpMethod.Put
             ), order: -10);
 
-            conventions.Add(new NoRequestBodyForSingleEnumerableParametersConvention(
-                _when: c => c.Action.Name.StartsWith("Create"),
+            builder.Conventions.Add(new NoRequestBodyForSingleEnumerableParametersConvention(
+                _when: action => action.Name.StartsWith("Create"),
                 _method: HttpMethod.Patch
             ), order: -10);
         });

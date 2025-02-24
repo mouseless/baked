@@ -7,7 +7,7 @@ public class DomainModelBuilderOptions
 {
     public ICollection<TypeBuildLevelFilter> BuildLevels { get; set; } = [];
     public BindingFlagOptions BindingFlags { get; } = new();
-    public ICollection<IDomainModelConvention> Conventions { get; set; } = [];
+    public IDomainModelConventionCollection Conventions { get; set; } = new DomainModelConventionCollection();
     public DomainIndexOptions Index { get; set; } = new();
     public Func<IEnumerable<MethodOverloadModel>, MethodOverloadModel> DefaultOverloadSelector { get; set; } = overloads => overloads.First();
 

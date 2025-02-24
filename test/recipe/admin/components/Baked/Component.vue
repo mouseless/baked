@@ -17,7 +17,7 @@ const extensions = useStringExtensions();
 
 const routeParams = inject("routeParams", []);
 
-const is = resolver.resolve(descriptor.type, "Fallback");
+const is = resolver.resolve(descriptor.type, "None");
 const data = ref();
 const loaded = ref(false);
 

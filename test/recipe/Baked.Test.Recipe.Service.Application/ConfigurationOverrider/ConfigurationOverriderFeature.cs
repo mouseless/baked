@@ -3,6 +3,7 @@ using Baked.ExceptionHandling;
 using Baked.RestApi.Model;
 using Baked.Test.Authentication;
 using Baked.Test.Business;
+using Baked.Test.CodingStyle.RichTransient;
 using Baked.Test.ExceptionHandling;
 using Baked.Test.Orm;
 using Baked.Theme.Admin;
@@ -16,6 +17,36 @@ public class ConfigurationOverriderFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
+        configurator.ConfigureDomainModelBuilder(builder =>
+        {
+            builder.Conventions.AddSingleById<Entities>();
+            builder.Conventions.AddSingleById<Parents>();
+            builder.Conventions.AddSingleById<Children>();
+            builder.Conventions.AddConfigureAction<AuthenticationSamples>(nameof(AuthenticationSamples.FormPostAuthenticate), useForm: true);
+            builder.Conventions.AddConfigureAction<DocumentationSamples>(nameof(DocumentationSamples.Route), parameter: p =>
+            {
+                p["route"].From = ParameterModelFrom.Route;
+                p["route"].RoutePosition = 2;
+            });
+            builder.Conventions.AddConfigureAction<ExceptionSamples>(nameof(ExceptionSamples.Throw), parameter: p => p["handled"].From = ParameterModelFrom.Query);
+
+            builder.Conventions.AddOverrideAction<OverrideSamples>(nameof(OverrideSamples.UpdateRoute),
+                routeParts: ["override-samples", "override", "update-route"],
+                method: HttpMethod.Post
+            );
+            builder.Conventions.AddOverrideAction<OverrideSamples>(nameof(OverrideSamples.Parameter),
+                parameter: parameter =>
+                {
+                    parameter["parameter"].Name = "id";
+                    parameter["parameter"].From = ParameterModelFrom.Route;
+                    parameter["parameter"].RoutePosition = 2;
+                }
+            );
+            builder.Conventions.AddOverrideAction<OverrideSamples>(nameof(OverrideSamples.RequestClass),
+                useRequestClassForBody: false
+            );
+        });
+
         configurator.ConfigureServiceCollection(services =>
         {
             services.AddSingleton<IExceptionHandler, ClientExceptionHandler>();
@@ -26,24 +57,6 @@ public class ConfigurationOverriderFeature : IFeature
         {
             model.Override<Entity>(x => x.Map(e => e.String).Length(500));
             model.Override<Entity>(x => x.Map(e => e.Unique).Column("UniqueString").Unique());
-        });
-
-        configurator.ConfigureApiModel(api =>
-        {
-            api.ConfigureAction<AuthenticationSamples>(nameof(AuthenticationSamples.FormPostAuthenticate), useForm: true);
-            api.ConfigureAction<DocumentationSamples>(nameof(DocumentationSamples.Route), parameter: p =>
-            {
-                p["route"].From = ParameterModelFrom.Route;
-                p["route"].RoutePosition = 2;
-            });
-            api.ConfigureAction<ExceptionSamples>(nameof(ExceptionSamples.Throw), parameter: p => p["handled"].From = ParameterModelFrom.Query);
-
-            configurator.UsingDomainModel(domain =>
-            {
-                api.GetController<Entities>().AddSingleById<Entity>(domain);
-                api.GetController<Parents>().AddSingleById<Parent>(domain);
-                api.GetController<Children>().AddSingleById<Child>(domain);
-            });
         });
 
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
@@ -88,57 +101,30 @@ public class ConfigurationOverriderFeature : IFeature
             swaggerUIOptions.SwaggerEndpoint($"external/swagger.json", "External");
         });
 
-        configurator.ConfigureApiModelConventions(conventions =>
+        configurator.ConfigurePageDescriptors(pages =>
         {
-            conventions.OverrideAction<OverrideSamples>(
-                mappedMethodName: nameof(OverrideSamples.UpdateRoute),
-                routeParts: ["override-samples", "override", "update-route"],
-                method: HttpMethod.Post
-            );
-
-            conventions.OverrideAction<OverrideSamples>(
-                mappedMethodName: nameof(OverrideSamples.Parameter),
-                parameter: parameter =>
-                {
-                    parameter["parameter"].Name = "id";
-                    parameter["parameter"].From = ParameterModelFrom.Route;
-                    parameter["parameter"].RoutePosition = 2;
-                }
-            );
-
-            conventions.OverrideAction<OverrideSamples>(
-                mappedMethodName: nameof(OverrideSamples.RequestClass),
-                useRequestClassForBody: false
-            );
-        });
-
-        configurator.ConfigureComponentDescriptors(components =>
-        {
-            var index = new ComponentDescriptor<DetailSchema>(new()
+            configurator.UsingDomainModel(domain =>
             {
-                Title = "Dashboard",
-                Header = new ComponentDescriptor("Menu")
+                var route = domain.Types[typeof(RichTransientWithData)].GetActionModel().GetRoute();
+
+                pages.Add("index", new ComponentDescriptorAttribute<Detail>(new()
                 {
-                    Data = new InlineData
+                    Title = "Dashboard",
+                    Header = Components.Menu(new object[]
                     {
-                        Value = new object[]
+                        new
                         {
-                            new
+                            Label = "Rich Transients Menu",
+                            Items = new object[]
                             {
-                                Label = "Rich Transients Menu",
-                                Items = new object[]
-                                {
-                                    new { Label = "Rich Transient w/ Data 1", Url = "/rich-transient-with-datas/test1" },
-                                    new { Label = "Rich Transient w/ Data 2", Url = "/rich-transient-with-datas/test2" },
-                                    new { Label = "Rich Transient w/ Data 3", Url = "/rich-transient-with-datas/test3" }
-                                }
+                                new { Label = "Rich Transient w/ Data 1", Url = $"/{route.Replace("{id}", "test1")}" },
+                                new { Label = "Rich Transient w/ Data 2", Url = $"/{route.Replace("{id}", "test2")}" },
+                                new { Label = "Rich Transient w/ Data 3", Url = $"/{route.Replace("{id}", "test3")}" },
                             }
                         }
-                    }
-                }
+                    })
+                }));
             });
-
-            components.Add(nameof(index), index);
         });
     }
 }

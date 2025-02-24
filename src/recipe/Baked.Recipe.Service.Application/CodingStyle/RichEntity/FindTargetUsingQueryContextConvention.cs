@@ -1,37 +1,34 @@
 ﻿using Baked.Business;
-using Baked.Domain.Model;
+using Baked.Domain.Configuration;
 using Baked.Orm;
-using Baked.RestApi.Configuration;
 using Baked.RestApi.Model;
 using Humanizer;
 
 namespace Baked.CodingStyle.RichEntity;
 
-public class FindTargetUsingQueryContextConvention(DomainModel _domain)
-    : IApiModelConvention<ActionModelContext>
+public class FindTargetUsingQueryContextConvention : IDomainModelConvention<MethodModelContext>
 {
-    public void Apply(ActionModelContext context)
+    public void Apply(MethodModelContext context)
     {
-        if (context.Action.MappedMethod is null) { return; }
-        if (context.Action.MappedMethod.Has<InitializerAttribute>()) { return; }
-        if (context.Controller.MappedType is null) { return; }
-        if (!context.Controller.MappedType.TryGetMetadata(out var metadata)) { return; }
+        if (context.Method.Has<InitializerAttribute>()) { return; }
+        if (!context.Type.TryGetMetadata(out var metadata)) { return; }
         if (!metadata.Has<EntityAttribute>()) { return; }
+        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
 
-        var entityType = context.Controller.MappedType;
-        if (!entityType.TryGetQueryContextType(_domain, out var queryContextType)) { return; }
+        var entityType = context.Type;
+        if (!entityType.TryGetQueryContextType(context.Domain, out var queryContextType)) { return; }
 
         var idProperty = entityType.GetMembers().Properties["Id"];
 
-        var target = context.Action.Parameters.Single(p => p.IsTarget());
+        var target = action.Parameter[ParameterModelAttribute.TargetParameterName];
         target.Name = "id";
         target.From = ParameterModelFrom.Route;
         target.RoutePosition = 1;
-        target.AdditionalAttributes.Add($"SwaggerSchema(\"Unique value to find {context.Controller.MappedType.Name.Humanize().ToLowerInvariant()} resource\")");
+        target.AdditionalAttributes.Add($"SwaggerSchema(\"Unique value to find {context.Type.Name.Humanize().ToLowerInvariant()} resource\")");
         target.Type = idProperty.PropertyType.CSharpFriendlyFullName;
 
-        var queryContextParameter = context.Action.AddQueryContextAsService(queryContextType);
-        context.Action.RouteParts = [entityType.Name.Pluralize(), context.Action.Name];
-        context.Action.FindTargetStatement = queryContextParameter.BuildSingleBy("id", fromRoute: true);
+        var queryContextParameter = action.AddQueryContextAsService(queryContextType);
+        action.RouteParts = [entityType.Name.Pluralize(), action.Name];
+        action.FindTargetStatement = queryContextParameter.BuildSingleBy("id", fromRoute: true);
     }
 }

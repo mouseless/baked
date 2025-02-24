@@ -62,6 +62,7 @@ public static class BakeExtensions
 
             app.Features.AddAuthentications(authentications);
             app.Features.AddAuthorization(authorization);
+            app.Features.AddBinding(c => c.Rest());
             app.Features.AddBusiness(business);
             app.Features.AddCaching(caching);
             app.Features.AddCodingStyles([
@@ -131,6 +132,7 @@ public static class BakeExtensions
             app.Layers.AddRestApi();
             app.Layers.AddRuntime();
 
+            app.Features.AddBinding(c => c.Rest());
             app.Features.AddBusiness(business);
             app.Features.AddCaching(caching);
             app.Features.AddCodingStyles([
