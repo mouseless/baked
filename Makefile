@@ -7,7 +7,9 @@ format:
 	cd test/recipe/admin ; npm run lint -- --fix ; cd ../../.. ; \
 	cd docs/.theme ; npm run lint -- --fix ; cd ../..
 fix:
-	@ cd test/recipe/admin ; npx eslint $(TARGET) --fix ; cd ../../..
+	@ \
+	cd src/recipe/admin ; npx eslint $(TARGET) --fix ; cd ../../.. ; \
+	cd test/recipe/admin ; npx eslint $(TARGET) --fix ; cd ../../..
 build:
 	@ \
 	dotnet build ; \

@@ -1,13 +1,6 @@
-import { defineAsyncComponent } from "vue";
-
-const Components = import.meta.glob("./components/*.vue");
-
-const Baked = Object
-  .keys(Components)
-  .reduce((result, path) => {
-      const name = path.slice(path.indexOf("components/") + "components/".length, path.lastIndexOf(".vue"))
-      result[name] = defineAsyncComponent(Components[path]);
-      return result;
-  }, {});
-
-module.exports = Baked;
+export { default as Bake } from "./components/Bake.vue";
+export { default as Detail } from "./components/Detail.vue";
+export { default as Menu } from "./components/Menu.vue";
+export { default as None } from "./components/None.vue";
+export { default as Page } from "./components/Page.vue";
+export { default as String } from "./components/String.vue";

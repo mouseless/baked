@@ -24,4 +24,7 @@ logs
 **/test-results/**
 
 # Baked Descriptors
-*.baked
+.baked/**
+
+# Import Triggers
+**/*.import*.vue

@@ -1,11 +1,11 @@
 <template>
-  <Component
+  <Bake
     v-if="pageDescriptor"
     :descriptor="pageDescriptor"
   />
 </template>
 <script setup>
-import Component from "./Component.vue";
+import Bake from "./Bake.vue";
 
 const { routeParams } = defineProps({
   routeParams: {

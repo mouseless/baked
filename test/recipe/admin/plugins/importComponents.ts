@@ -1,4 +1,4 @@
-import Baked from "baked-recipe-admin";
+import * as Baked from "baked-recipe-admin";
 
 export default defineNuxtPlugin({
   name: "importComponents",

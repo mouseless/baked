@@ -59,18 +59,32 @@ export default defineNuxtConfig({
     }
   },
   ssr: false,
+  tailwindcss: {
+    config: {
+      // to have tailwind classes used in baked components add them to safelist
+      safelist: [
+        { pattern: /bg.*/ },
+        { pattern: /flex.*/ },
+        { pattern: /grid.*/ },
+        { pattern: /gap.*/ },
+        { pattern: /p.*/ },
+        { pattern: /rounded.*/ },
+        { pattern: /space.*/ },
+        { pattern: /text.*/ },
+        { pattern: /w.*/ }
+      ]
+    }
+  },
   vite: {
     optimizeDeps: {
       include: [
         // primevue components were not rendered correctly when they were
         // imported from the package to include all primevue components
         // upfront this was needed
-        "primevue/*"
-      ],
-      exclude: [
-        // adding primevue/* was causing for quill, excluding it workarounds
-        // the problem
-        "quill"
+        //
+        // IMPORTANT: this only works for dev mode, for build mode
+        // `.importPrimeVue.vue` is generated
+        "primevue"
       ]
     }
   }

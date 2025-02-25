@@ -23,7 +23,8 @@ jobs:
         run: echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns
       - name: Install dependencies
         run: |
-          cd test/recipe/admin
+          cd src/recipe/admin ; npm ci ; cd ../../..
+          cd test/recipe/admin ; npm ci ; cd ../../..
           npm ci
       - name: Install Playwright Browsers
         run: |
@@ -31,8 +32,8 @@ jobs:
           npx playwright install --with-deps
       - name: Eslint
         run: |
-          cd test/recipe/admin
-          npm run setup
+          cd src/recipe/admin ; npm run setup ; cd ../../..
+          cd test/recipe/admin ; npm run setup ; cd ../../..
       - name: Test
         run: |
           cd test/recipe/admin

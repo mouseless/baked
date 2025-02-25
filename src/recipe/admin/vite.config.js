@@ -23,7 +23,7 @@ export default defineConfig({
         "primevue",
         "vue",
         "vue-router"
-      ],
+      ]
     }
   },
   plugins: [vue()]

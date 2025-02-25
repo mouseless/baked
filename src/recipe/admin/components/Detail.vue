@@ -1,9 +1,15 @@
 <template>
   <Panel :header="schema.title">
-    <div v-if="schema.header" class="w-full">
-      <Component :descriptor="schema.header" />
+    <div
+      v-if="schema.header"
+      class="w-full"
+    >
+      <Bake :descriptor="schema.header" />
     </div>
-    <div v-if="data" class="grid grid-cols-2 gap-4">
+    <div
+      v-if="data"
+      class="grid grid-cols-2 gap-4"
+    >
       <div
         v-for="prop in schema.props"
         :key="prop.key"
@@ -12,7 +18,7 @@
         <div class="text-nowrap">
           <strong>{{ prop.title }}:</strong>
         </div>
-        <Component
+        <Bake
           :descriptor="{
             ...prop.component,
             'data': data[prop.key]
@@ -25,7 +31,7 @@
 </template>
 <script setup>
 import { Panel } from "primevue";
-import Component from "./Component.vue";
+import Bake from "./Bake.vue";
 
 const { schema, data } = defineProps({
   schema: { type: null, required: true },
