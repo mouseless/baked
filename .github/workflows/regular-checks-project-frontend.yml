@@ -25,7 +25,6 @@ jobs:
         run: |
           cd src/recipe/admin ; npm ci ; cd ../../..
           cd test/recipe/admin ; npm ci ; cd ../../..
-          npm ci
       - name: Install Playwright Browsers
         run: |
           cd test/recipe/admin
