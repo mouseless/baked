@@ -3,8 +3,11 @@ ARG ENVIRONMENT Production
 
 FROM node:22-bullseye as init
 
+COPY --parents src/recipe/admin/package.json .
+COPY --parents src/recipe/admin/package-lock.json .
 COPY --parents test/recipe/admin/package.json .
 COPY --parents test/recipe/admin/package-lock.json .
+RUN cd src/recipe/admin; npm install
 RUN cd test/recipe/admin; npm install
 
 FROM mcr.microsoft.com/dotnet/sdk:9.0 as restore
@@ -38,6 +41,7 @@ ARG ENVIRONMENT
 COPY --parents src/recipe/admin .
 COPY --parents test/recipe/admin .
 COPY --from=build  ./test/recipe/admin/.baked ./test/recipe/admin/.baked
+RUN cd src/recipe/admin ; npm run build
 RUN cd test/recipe/admin ; npm run postinstall ; npm run build:$ENVIRONMENT
 
 FROM nginx AS final

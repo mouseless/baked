@@ -1,10 +1,12 @@
 <template>
-  <Baked.Component
+  <Component
     v-if="pageDescriptor"
     :descriptor="pageDescriptor"
   />
 </template>
 <script setup>
+import Component from "./Component.vue";
+
 const { routeParams } = defineProps({
   routeParams: {
     type: null,

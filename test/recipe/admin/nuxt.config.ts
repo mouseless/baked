@@ -1,9 +1,5 @@
-import { fileURLToPath } from "url";
 import Aura from "@primevue/themes/aura";
 import { definePreset } from "@primevue/themes";
-
-// resolve local package absolute path to add it as alias
-const bakedRecipeAdmin = fileURLToPath(new URL("../../../src/recipe/admin", import.meta.url));
 
 const Mouseless = definePreset(Aura, {
   semantic: {
@@ -25,16 +21,12 @@ const Mouseless = definePreset(Aura, {
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  alias: {
-    "baked-recipe-admin": bakedRecipeAdmin
-  },
   compatibilityDate: "2024-11-01",
   css: ["~/assets/styles.scss"],
   devtools: { enabled: false },
   components: {
     dirs: [
-      "~/components",
-      "baked-recipe-admin/components"
+      "~/components"
     ]
   },
   experimental: {
@@ -42,12 +34,6 @@ export default defineNuxtConfig({
   },
   features: {
     inlineStyles: false
-  },
-  imports: {
-    dirs: [
-      // alias didn't work in composables, so full path was given
-      `${bakedRecipeAdmin}/composables`
-    ]
   },
   logLevel: process.env.SILENT === "1" ? "silent" : "info",
   modules: [
@@ -64,8 +50,7 @@ export default defineNuxtConfig({
     autoImport: true
   },
   plugins: [
-    // local package plugins
-    "baked-recipe-admin/plugins/importComponents"
+    "plugins/importComponents"
   ],
   router: { options: { strict: true } },
   runtimeConfig: {

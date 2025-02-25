@@ -3,9 +3,9 @@ export default function() {
     const nuxtApp = useNuxtApp();
     const components = nuxtApp.$components;
 
-    return components[`/Baked/${type}.vue`]
-      ? defineAsyncComponent(components[`/Baked/${type}.vue`])
-      : defineAsyncComponent(components[`/Baked/${fallback}.vue`]);
+    return components[type]
+      ? components[type]
+      : components[fallback];
   }
 
   return {

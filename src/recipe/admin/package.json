@@ -19,5 +19,34 @@
   },
   "license": "MIT",
   "author": "mouseless",
-  "type": "module"
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/baked-recipe-admin.umd.cjs",
+  "module": "./dist/baked-recipe-admin.js",
+  "exports": {
+    ".": {
+      "import": "./dist/baked-recipe-admin.js",
+      "require": "./dist/baked-recipe-admin.umd.cjs"
+    }
+  },
+  "scripts": {
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@primevue/themes": "^4.2.5",
+    "chart.js": "^4.4.7",
+    "deepmerge": "^4.3.1",
+    "nuxt": "^3.15.4",
+    "primeicons": "^7.0.0",
+    "primevue": "^4.2.5",
+    "vue": "^3.5.13",
+    "vue-router": "^4.4.3"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "vite": "^6.2.0"
+  }
 }

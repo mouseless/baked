@@ -11,6 +11,8 @@
   </div>
 </template>
 <script setup>
+import Baked from "baked-recipe-admin";
+
 const { variants } = defineProps({
   variants: {
     type: Array,

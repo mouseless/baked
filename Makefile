@@ -9,7 +9,9 @@ format:
 fix:
 	@ cd test/recipe/admin ; npx eslint $(TARGET) --fix ; cd ../../..
 build:
-	@ dotnet build
+	@ \
+	dotnet build ; \
+	cd src/recipe/admin ; npm run build ; cd ../../..
 test:
 	@ \
 	dotnet test --logger quackers ; \
