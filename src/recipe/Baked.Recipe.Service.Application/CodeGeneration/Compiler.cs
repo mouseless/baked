@@ -23,7 +23,7 @@ public class Compiler(GeneratedAssemblyDescriptor _descriptor)
         var codes = string.Join(Environment.NewLine, _descriptor.Codes);
         var dllPath = Path.Combine(Path.Combine(assemblyLocation, $"{assemblyName}.dll"));
         var hashFilePath = $"{dllPath}.hash";
-        if (CodeGenerationExtensions.FileExists(codes, dllPath, hashFilePath))
+        if (!CodeGenerationExtensions.RequiresUpdate(codes, dllPath, hashFilePath))
         {
             return dllPath;
         }

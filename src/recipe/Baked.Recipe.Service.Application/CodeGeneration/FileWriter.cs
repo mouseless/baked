@@ -14,7 +14,7 @@ public class FileWriter(GeneratedFileDescriptor _descriptor)
         var filePath = Path.Combine(outdir, $"{fileNameBuilder(_descriptor)}.{_descriptor.Extension}");
         var hashFilePath = $"{filePath}.hash";
 
-        if (CodeGenerationExtensions.FileExists(_descriptor.Content, filePath, hashFilePath))
+        if (!CodeGenerationExtensions.RequiresUpdate(_descriptor.Content, filePath, hashFilePath))
         {
             return filePath;
         }

@@ -7,7 +7,7 @@ public class CompilerErrors : TestServiceSpec
     {
         var compiler = GiveMe.ACompiler(code: "this is not c#");
 
-        var compile = () => compiler.Compile(string.Empty);
+        var compile = () => compiler.Compile(GiveMe.ALocation());
 
         compile.ShouldThrow<Exception>().Message.ShouldContain("this is not c#");
     }
@@ -27,7 +27,7 @@ public class CompilerErrors : TestServiceSpec
         }
         """);
 
-        var compile = () => compiler.Compile(string.Empty);
+        var compile = () => compiler.Compile(GiveMe.ALocation());
 
         var message = compile.ShouldThrow<Exception>().Message;
         message.ShouldContainWithoutWhitespace("""
@@ -51,7 +51,7 @@ public class CompilerErrors : TestServiceSpec
         }
         """);
 
-        var compile = () => compiler.Compile(string.Empty);
+        var compile = () => compiler.Compile(GiveMe.ALocation());
 
         compile.ShouldThrow<Exception>().Message.ShouldContainWithoutWhitespace("""
         public class Sample

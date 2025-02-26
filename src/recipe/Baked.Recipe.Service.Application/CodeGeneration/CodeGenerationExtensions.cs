@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.CodeGeneration;
+using Baked.Testing;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -127,15 +128,18 @@ public static class CodeGenerationExtensions
         return GetScopeNode(node?.Parent);
     }
 
-    public static bool FileExists(string content, string filePath, string hashFilePath)
+    public static bool RequiresUpdate(string content, string filePath, string hashFilePath)
     {
-        if (!Path.Exists(hashFilePath) || !Path.Exists(filePath)) { return false; }
+        if (!Path.Exists(hashFilePath) || !Path.Exists(filePath)) { return true; }
 
         using (StreamReader reader = new(hashFilePath))
         {
             string hashValue = reader.ReadToEnd();
 
-            return content.ToSHA256().ToUtf8String() == hashValue;
+            return content.ToSHA256().ToUtf8String() != hashValue;
         }
     }
+
+    public static string ALocation(this Stubber _) =>
+        Path.GetDirectoryName(Assembly.GetCallingAssembly().Location ?? string.Empty) ?? string.Empty;
 }
