@@ -62,6 +62,7 @@ export default defineNuxtConfig({
   tailwindcss: {
     config: {
       // to have tailwind classes used in baked components add them to safelist
+      // CI REMOVE BEGIN
       safelist: [
         { pattern: /bg.*/ },
         { pattern: /flex.*/ },
@@ -73,6 +74,7 @@ export default defineNuxtConfig({
         { pattern: /text.*/ },
         { pattern: /w.*/ }
       ]
+      // CI REMOVE END
     }
   },
   vite: {
