@@ -1,0 +1,57 @@
+{
+  "name": "baked-recipe-admin",
+  "version": "0.13.1",
+  "description": "Baked (Objects) is an opinionated framework for .NET. This is a recipe package that brings together all the components one needs for an admin ui.",
+  "keywords": [
+    "baked",
+    "objects",
+    "recipe",
+    "admin",
+    "ui"
+  ],
+  "homepage": "https://baked.mouseless.codes",
+  "bugs": {
+    "url": "https://matrix.to/#/#baked:mouseless.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mouseless/baked.git"
+  },
+  "license": "MIT",
+  "author": "mouseless",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/baked-recipe-admin.umd.cjs",
+  "module": "./dist/baked-recipe-admin.js",
+  "exports": {
+    ".": {
+      "import": "./dist/baked-recipe-admin.js",
+      "require": "./dist/baked-recipe-admin.umd.cjs"
+    }
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "setup": "npm run lint",
+    "prebuild": "npm run setup",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@primevue/themes": "^4.2.5",
+    "chart.js": "^4.4.7",
+    "deepmerge": "^4.3.1",
+    "nuxt": "^3.15.4",
+    "primeicons": "^7.0.0",
+    "primevue": "^4.2.5",
+    "vue": "^3.5.13",
+    "vue-router": "^4.4.3"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "eslint": "^9.20.0",
+    "eslint-plugin-vue": "^9.32.0",
+    "vite": "^6.2.0"
+  }
+}

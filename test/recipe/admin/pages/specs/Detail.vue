@@ -1,5 +1,5 @@
 <template>
-  <Baked.ComponentSpec :variants="variants" />
+  <ComponentSpec :variants="variants" />
 </template>
 <script setup>
 const variants = [

@@ -1,8 +1,8 @@
 <template>
-  <span>{{ data }}</span>
+  <span :data-testid="schema">{{ data }}</span>
 </template>
 <script setup>
-const { data } = defineProps({
+defineProps({
   schema: { type: null, required: true },
   data: { type: null, required: true }
 });
