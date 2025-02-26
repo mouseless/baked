@@ -33,7 +33,7 @@
 import { Panel } from "primevue";
 import Bake from "./Bake.vue";
 
-const { schema, data } = defineProps({
+defineProps({
   schema: { type: null, required: true },
   data: { type: null, required: true }
 });

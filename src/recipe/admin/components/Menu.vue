@@ -27,7 +27,7 @@
 import { Menubar } from "primevue";
 import { RouterLink } from "vue-router";
 
-const { data } = defineProps({
+defineProps({
   data: { type: null, required: true }
 });
 </script>
