@@ -10,6 +10,10 @@ fix:
 	@ \
 	cd src/recipe/admin ; npx eslint $(TARGET) --fix ; cd ../../.. ; \
 	cd test/recipe/admin ; npx eslint $(TARGET) --fix ; cd ../../..
+install:
+	@ \
+	cd src/recipe/admin ; npm ci ; cd ../../.. ; \
+	cd test/recipe/admin ; npm ci ; cd ../../..
 build:
 	@ \
 	dotnet build ; \
