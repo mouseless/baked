@@ -16,7 +16,7 @@
       <SourceFolder Condition="'$(ASPNETCORE_ENVIRONMENT)'!=''">$(OutDir)\$(ASPNETCORE_ENVIRONMENT)\Ui</SourceFolder>
     </PropertyGroup>
     
-    <ItemGroup Condition="'$(ASPNETCORE_ENVIRONMENT)'==''">
+    <ItemGroup>
       <Descriptors Include="$(SourceFolder)\*.json"/>
       <DestinationFiles Include="$(ComponentDescriptorsDir)\*.json" />  
     </ItemGroup>
