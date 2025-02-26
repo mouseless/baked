@@ -12,7 +12,7 @@ function main() {
   }
   content += "</template>";
 
-  writeFileSync(resolve("components/.importPrimeVue.vue"), content);
+  writeFileSync(resolve("components/_importPrimeVue.vue"), content);
 }
 
 function startsWithCapital(str) {

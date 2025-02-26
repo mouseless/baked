@@ -27,4 +27,4 @@ logs
 .baked/**
 
 # Import Triggers
-**/*.import*.vue
+**/_import*.vue
