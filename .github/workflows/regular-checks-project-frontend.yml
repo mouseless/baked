@@ -43,16 +43,18 @@ jobs:
           node-version: 22
       - name: Disable AppArmour
         run: echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns
-      - name: Install dependencies
+      - name: Install dependencies (test)
         run: |
           cd test/recipe/admin ; npm ci ; cd ../../..
       - name: Install Playwright Browsers
         run: |
           cd test/recipe/admin
           npx playwright install --with-deps
-      - name: Build local pacakge
+      - name: Install dependencies (src)
         run: |
           cd src/recipe/admin ; npm i ; cd ../../..
+      - name: Build local pacakge
+        run: |
           cd src/recipe/admin ; npm run build ; cd ../../..
       - name: Test
         run: |
