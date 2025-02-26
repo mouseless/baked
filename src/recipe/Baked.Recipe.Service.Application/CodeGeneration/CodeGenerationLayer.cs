@@ -89,7 +89,6 @@ public class CodeGenerationLayer : LayerBase<GenerateCode, Compile, BuildConfigu
     {
         yield return new GenerateCode(_generatedAssemblies, _generatedFiles);
         yield return new Compile(Location, _existingFiles);
-        yield return new Cleanup(_existingFiles);
     }
 
     public class GenerateCode(IGeneratedAssemblyCollection _generatedAssemblies, IGeneratedFileCollection _generatedFiles)
