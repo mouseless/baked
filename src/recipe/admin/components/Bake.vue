@@ -14,7 +14,7 @@ const { descriptor } = defineProps({
   descriptor: { type: null, required: true }
 });
 
-const { public: { apiBaseURL: baseURL } } = useRuntimeConfig();
+const { public: { apiBaseURL: baseURL, devMode } } = useRuntimeConfig();
 const resolver = useComponentResolver();
 const extensions = useStringExtensions();
 
@@ -29,14 +29,22 @@ onMounted(async() => {
   loaded.value = true;
 });
 
+const fetchOptions = {
+  retry: Number.MAX_VALUE,
+  retryDelay: 100,
+  retryStatusCodes: [500]
+};
+
 async function fetchData() {
   if(descriptor.data?.type !== "Remote") { return descriptor.data?.value ?? descriptor.data; }
 
   return await $fetch(
     extensions.format(`${descriptor.data.path}`, routeParams.slice(1)),
     {
+      ... devMode ? fetchOptions : { },
       baseURL,
       headers: { Authorization: "token-jane" }
+
     }
   );
 }

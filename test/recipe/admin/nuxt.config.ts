@@ -55,7 +55,8 @@ export default defineNuxtConfig({
   router: { options: { strict: true } },
   runtimeConfig: {
     public: {
-      apiBaseURL: process.env.API_BASE_URL
+      apiBaseURL: process.env.API_BASE_URL,
+      devMode: true
     }
   },
   ssr: false,
