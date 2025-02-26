@@ -9,8 +9,7 @@ public class Compiler(GeneratedAssemblyDescriptor _descriptor)
 {
     readonly Dictionary<string, MetadataReference> _references = new();
 
-    public Assembly Compile(
-        string? assemblyLocation = default,
+    public string Compile(string assemblyLocation,
         string? assemblyName = default
     )
     {
@@ -21,19 +20,12 @@ public class Compiler(GeneratedAssemblyDescriptor _descriptor)
             _descriptor.CompilationOptions.Usings.Select(u => $"global using global::{u};")
         ));
 
-        // In-memory
-        if (assemblyLocation is null)
-        {
-            using var ms = CreateCSharpCompilation(assemblyName);
-            return Assembly.Load(ms.ToArray());
-        }
-
         var codes = string.Join(Environment.NewLine, _descriptor.Codes);
         var dllPath = Path.Combine(Path.Combine(assemblyLocation, $"{assemblyName}.dll"));
         var hashFilePath = $"{dllPath}.hash";
         if (CodeGenerationExtensions.FileExists(codes, dllPath, hashFilePath))
         {
-            return Assembly.LoadFile(dllPath);
+            return dllPath;
         }
 
         using (var file = new FileStream(dllPath, FileMode.Create))
@@ -49,7 +41,7 @@ public class Compiler(GeneratedAssemblyDescriptor _descriptor)
 
         File.WriteAllText($"{dllPath}.cs", codes);
 
-        return Assembly.LoadFile(dllPath);
+        return dllPath;
 
     }
 
