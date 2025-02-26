@@ -11,7 +11,7 @@ public class CodeGenerationLayer : LayerBase<GenerateCode, Compile, BuildConfigu
 {
     readonly IGeneratedAssemblyCollection _generatedAssemblies = new GeneratedAssemblyCollection();
     readonly IGeneratedFileCollection _generatedFiles = new GeneratedFileCollection();
-    readonly List<string> _remainingFiles = [];
+    readonly HashSet<string> _remainingFiles = [];
 
     string Location
     {
@@ -34,7 +34,7 @@ public class CodeGenerationLayer : LayerBase<GenerateCode, Compile, BuildConfigu
             Directory.CreateDirectory(Location);
         }
 
-        _remainingFiles.AddRange(Directory.GetFiles(Location, "*.*", SearchOption.AllDirectories));
+        _remainingFiles.UnionWith(Directory.GetFiles(Location, "*.*", SearchOption.AllDirectories))
 
         return phase.CreateContext(_generatedAssemblies);
     }
