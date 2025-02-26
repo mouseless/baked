@@ -55,7 +55,18 @@ export default defineNuxtConfig({
   router: { options: { strict: true } },
   runtimeConfig: {
     public: {
-      apiBaseURL: process.env.API_BASE_URL
+      apiBaseURL: process.env.API_BASE_URL,
+      logo: "/baked-logo.svg",
+      menu: {
+        "/": {
+          icon: "pi pi-home",
+          route: "/"
+        },
+        "/specs/Detail": {
+          icon: "pi pi-list-check",
+          route: "/specs/Detail"
+        }
+      }
     }
   },
   ssr: false,
@@ -64,15 +75,21 @@ export default defineNuxtConfig({
       // to have tailwind classes used in baked components add them to safelist
       // CI REMOVE BEGIN
       safelist: [
-        { pattern: /bg.*/ },
-        { pattern: /flex.*/ },
-        { pattern: /grid.*/ },
-        { pattern: /gap.*/ },
-        { pattern: /p.*/ },
-        { pattern: /rounded.*/ },
-        { pattern: /space.*/ },
-        { pattern: /text.*/ },
-        { pattern: /w.*/ }
+        { pattern: /[!]?bg.*/, variants: [ "dark" ] },
+        { pattern: /[!]?content-.*/ },
+        { pattern: /[!]?flex.*/ },
+        { pattern: /[!]?grid.*/ },
+        { pattern: /[!]?gap-.*/ },
+        { pattern: /[!]?(h-|min-h-|max-h-).*/ },
+        { pattern: /[!]?items-.*/ },
+        { pattern: /[!]?justify-.*/ },
+        { pattern: /[!]?(m-|mx-|my-|ml-|mt-|mr-|mb-).*/ },
+        { pattern: /[!]?(p-|px-|py-|pl-|pt-|pr-|pb-).*/ },
+        { pattern: /[!]?rounded.*/ },
+        { pattern: /[!]?shadow.*/ },
+        { pattern: /[!]?space-.*/ },
+        { pattern: /[!]?text-.*/ },
+        { pattern: /[!]?(w-|min-w-|max-w-).*/ }
       ]
       // CI REMOVE END
     }

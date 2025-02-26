@@ -1,5 +1,8 @@
 <template>
-  <div class="w-[1000px] mx-auto my-4">
+  <Layout>
     <slot />
-  </div>
+  </Layout>
 </template>
+<script setup>
+import { Layout } from "baked-recipe-admin";
+</script>

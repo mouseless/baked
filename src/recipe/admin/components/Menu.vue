@@ -1,13 +1,13 @@
 <template>
   <Menubar :model="data">
     <template #item="{ item, props, hasSubmenu }">
-      <router-link
+      <RouterLink
         v-if="item.route"
         :to="item.route"
         v-bind="props.action"
       >
         <span>{{ item.label }}</span>
-      </router-link>
+      </RouterLink>
       <a
         v-else
         :href="item.url"

@@ -1,0 +1,31 @@
+<template>
+  <nav
+    class="
+        p-4 shadow-inner bg-slate-100 dark:bg-zinc-900
+        flex flex-col items-center gap-2
+      "
+  >
+    <img
+      :src="logo"
+      class="my-4 w-8"
+    >
+    <SideMenuItem
+      v-for="path in Object.keys(menu)"
+      :key="menu[path].route"
+      :item="menu[path]"
+    />
+    <div
+      v-if="$slots.bottom"
+      class="mt-auto flex flex-col items-center gap-2"
+    >
+      <slot name="bottom" />
+    </div>
+  </nav>
+</template>
+<script setup>
+import SideMenuItem from "./SideMenuItem.vue";
+
+const { public: { logo, menu } } = useRuntimeConfig();
+
+console.log(menu);
+</script>
