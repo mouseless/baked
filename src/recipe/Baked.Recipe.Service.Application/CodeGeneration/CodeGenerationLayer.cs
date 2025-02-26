@@ -34,7 +34,7 @@ public class CodeGenerationLayer : LayerBase<GenerateCode, Compile, BuildConfigu
             Directory.CreateDirectory(Location);
         }
 
-        _remainingFiles.UnionWith(Directory.GetFiles(Location, "*.*", SearchOption.AllDirectories))
+        _remainingFiles.UnionWith(Directory.GetFiles(Location, "*.*", SearchOption.AllDirectories));
 
         return phase.CreateContext(_generatedAssemblies);
     }
