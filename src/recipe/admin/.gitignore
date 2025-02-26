@@ -17,14 +17,3 @@ logs
 .DS_Store
 .fleet
 .idea
-
-# playwright
-
-**/*.js-snapshots/**
-**/test-results/**
-
-# Baked Descriptors
-.baked/**
-
-# Import Triggers
-**/_import*.vue

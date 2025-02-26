@@ -7,10 +7,12 @@
     class="my-4"
   >
     <h2 :id="variant.name" class="text-xl font-bold mb-2">{{variant.name}}</h2>
-    <Baked.Component :descriptor="variant.descriptor" />
+    <Bake :descriptor="variant.descriptor" />
   </div>
 </template>
 <script setup>
+import { Bake } from "baked-recipe-admin";
+
 const { variants } = defineProps({
   variants: {
     type: Array,

@@ -7,12 +7,15 @@
   />
 </template>
 <script setup>
+import useComponentResolver from "../composables/useComponentResolver.mjs";
+import useStringExtensions from "../composables/useStringExtensions.mjs";
+
 const { descriptor } = defineProps({
   descriptor: { type: null, required: true }
 });
 
 const { public: { apiBaseURL: baseURL } } = useRuntimeConfig();
-const resolver = useBakedComponentResolver();
+const resolver = useComponentResolver();
 const extensions = useStringExtensions();
 
 const routeParams = inject("routeParams", []);

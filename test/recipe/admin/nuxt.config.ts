@@ -5,15 +5,15 @@ const Mouseless = definePreset(Aura, {
   semantic: {
     primary: {
       50: "{red.50}",
-      100: "{red.50}",
-      200: "{red.50}",
-      300: "{red.50}",
-      400: "{red.50}",
-      500: "{red.50}",
-      600: "{red.50}",
-      700: "{red.50}",
-      800: "{red.50}",
-      900: "{red.50}",
+      100: "{red.100}",
+      200: "{red.200}",
+      300: "{red.300}",
+      400: "{red.400}",
+      500: "{red.500}",
+      600: "{red.600}",
+      700: "{red.700}",
+      800: "{red.800}",
+      900: "{red.900}",
       950: "{red.950}"
     }
   }
@@ -22,6 +22,7 @@ const Mouseless = definePreset(Aura, {
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: "2024-11-01",
+  css: ["~/assets/styles.scss"],
   devtools: { enabled: false },
   components: {
     dirs: [
@@ -48,11 +49,45 @@ export default defineNuxtConfig({
     },
     autoImport: true
   },
+  plugins: [
+    "plugins/importComponents"
+  ],
   router: { options: { strict: true } },
   runtimeConfig: {
     public: {
       apiBaseURL: process.env.API_BASE_URL
     }
   },
-  ssr: false
+  ssr: false,
+  tailwindcss: {
+    config: {
+      // to have tailwind classes used in baked components add them to safelist
+      // CI REMOVE BEGIN
+      safelist: [
+        { pattern: /bg.*/ },
+        { pattern: /flex.*/ },
+        { pattern: /grid.*/ },
+        { pattern: /gap.*/ },
+        { pattern: /p.*/ },
+        { pattern: /rounded.*/ },
+        { pattern: /space.*/ },
+        { pattern: /text.*/ },
+        { pattern: /w.*/ }
+      ]
+      // CI REMOVE END
+    }
+  },
+  vite: {
+    optimizeDeps: {
+      include: [
+        // primevue components were not rendered correctly when they were
+        // imported from the package to include all primevue components
+        // upfront this was needed
+        //
+        // IMPORTANT: this only works for dev mode, for build mode
+        // `.importPrimeVue.vue` is generated
+        "primevue"
+      ]
+    }
+  }
 });

@@ -117,9 +117,9 @@ public class ConfigurationOverriderFeature : IFeature
                             Label = "Rich Transients Menu",
                             Items = new object[]
                             {
-                                new { Label = "Rich Transient w/ Data 1", Url = $"/{route.Replace("{id}", "test1")}" },
-                                new { Label = "Rich Transient w/ Data 2", Url = $"/{route.Replace("{id}", "test2")}" },
-                                new { Label = "Rich Transient w/ Data 3", Url = $"/{route.Replace("{id}", "test3")}" },
+                                new { Label = "Rich Transient w/ Data 1", Route = $"/{route.Replace("{id}", "test1")}" },
+                                new { Label = "Rich Transient w/ Data 2", Route = $"/{route.Replace("{id}", "test2")}" },
+                                new { Label = "Rich Transient w/ Data 3", Route = $"/{route.Replace("{id}", "test3")}" },
                             }
                         }
                     })

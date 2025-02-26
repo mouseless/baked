@@ -5,10 +5,11 @@ on:
       - main
       - 'epic/**'
     paths:
+      - 'src/recipe/admin/**/*'
       - 'test/recipe/admin/**/*'
 jobs:
-  build-and-test:
-    name: Build & Test
+  build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -22,17 +23,43 @@ jobs:
         run: echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns
       - name: Install dependencies
         run: |
-          cd test/recipe/admin
-          npm ci
+          cd src/recipe/admin ; npm i ; cd ../../..
+          cd test/recipe/admin ; npm i ; cd ../../..
+      - name: Build projects
+        run: |
+          cd src/recipe/admin ; npm run build ; cd ../../..
+          cd test/recipe/admin ; npm run build:Production ; cd ../../..
+  test:
+    name: Test
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Disable AppArmour
+        run: echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns
+      - name: Install dependencies (test)
+        run: |
+          cd test/recipe/admin ; npm ci ; cd ../../..
       - name: Install Playwright Browsers
         run: |
           cd test/recipe/admin
           npx playwright install --with-deps
-      - name: Eslint
+      - name: Install dependencies (src)
         run: |
-          cd test/recipe/admin
-          npm run setup
+          cd src/recipe/admin ; npm i ; cd ../../..
+      - name: Build local pacakge
+        run: |
+          cd src/recipe/admin ; npm run build ; cd ../../..
       - name: Test
         run: |
           cd test/recipe/admin
+          # remove tailwind css for faster test building
+          # non-visual tests ignore style anyway...
+          sed -i '/\/\/ CI REMOVE BEGIN/,/\/\/ CI REMOVE END/d' nuxt.config.ts
           npm test -- --grep-invert @visual
