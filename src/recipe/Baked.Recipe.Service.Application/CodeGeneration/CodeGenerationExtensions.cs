@@ -117,27 +117,15 @@ public static class CodeGenerationExtensions
         var tree = diagnostic.Location.SourceTree;
         if (tree is null) { return null; }
 
-        return GetScopeNode(tree.GetRoot().FindNode(diagnostic.Location.SourceSpan))?.ToString() ?? diagnostic.Location.SourceTree?.ToString();
+        return tree.GetRoot().FindNode(diagnostic.Location.SourceSpan).GetScopeNode()?.ToString() ?? diagnostic.Location.SourceTree?.ToString();
     }
 
-    static SyntaxNode? GetScopeNode(SyntaxNode? node)
+    static SyntaxNode? GetScopeNode(this SyntaxNode? node)
     {
         if (node is null) { return null; }
         if (node is MethodDeclarationSyntax or ClassDeclarationSyntax) { return node; }
 
         return GetScopeNode(node?.Parent);
-    }
-
-    public static bool RequiresUpdate(string content, string filePath, string hashFilePath)
-    {
-        if (!Path.Exists(hashFilePath) || !Path.Exists(filePath)) { return true; }
-
-        using (StreamReader reader = new(hashFilePath))
-        {
-            string hashValue = reader.ReadToEnd();
-
-            return content.ToSHA256().ToUtf8String() != hashValue;
-        }
     }
 
     public static string ALocation(this Stubber _) =>

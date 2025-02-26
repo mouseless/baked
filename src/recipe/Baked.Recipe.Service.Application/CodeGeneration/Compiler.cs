@@ -21,27 +21,22 @@ public class Compiler(GeneratedAssemblyDescriptor _descriptor)
         ));
 
         var codes = string.Join(Environment.NewLine, _descriptor.Codes);
-        var dllPath = Path.Combine(Path.Combine(assemblyLocation, $"{assemblyName}.dll"));
-        var hashFilePath = $"{dllPath}.hash";
-        if (!CodeGenerationExtensions.RequiresUpdate(codes, dllPath, hashFilePath))
+        var assemblyPath = Path.Combine(Path.Combine(assemblyLocation, $"{assemblyName}.dll"));
+        var hashFilePath = $"{assemblyPath}.hash";
+        if (!GeneratedFileWriter.RequiresUpdate(codes, assemblyPath, hashFilePath))
         {
-            return dllPath;
+            return assemblyPath;
         }
 
-        using (var file = new FileStream(dllPath, FileMode.Create))
+        using (var file = new FileStream(assemblyPath, FileMode.Create))
         {
             using var ms = CreateCSharpCompilation(assemblyName);
             ms.WriteTo(file);
         }
 
-        using (var hashfile = new FileStream(hashFilePath, FileMode.Create))
-        {
-            hashfile.Write(codes.ToSHA256());
-        }
+        GeneratedFileWriter.CreateHashFile(codes, hashFilePath);
 
-        File.WriteAllText($"{dllPath}.cs", codes);
-
-        return dllPath;
+        return assemblyPath;
 
     }
 

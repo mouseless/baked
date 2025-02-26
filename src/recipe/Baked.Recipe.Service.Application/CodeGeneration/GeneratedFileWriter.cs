@@ -4,6 +4,26 @@ namespace Baked.CodeGeneration;
 
 public class GeneratedFileWriter(GeneratedFileDescriptor _descriptor)
 {
+    public static bool RequiresUpdate(string content, string filePath, string hashFilePath)
+    {
+        if (!Path.Exists(hashFilePath) || !Path.Exists(filePath)) { return true; }
+
+        using (StreamReader reader = new(hashFilePath))
+        {
+            string hashValue = reader.ReadToEnd();
+
+            return content.ToSHA256().ToUtf8String() != hashValue;
+        }
+    }
+
+    public static void CreateHashFile(string content, string hashFilePath)
+    {
+        using (var fs = new FileStream(hashFilePath, FileMode.Create))
+        {
+            fs.Write(content.ToSHA256());
+        }
+    }
+
     public virtual string Create(string location,
         Func<GeneratedFileDescriptor, string>? fileNameBuilder = default
     )
@@ -14,7 +34,7 @@ public class GeneratedFileWriter(GeneratedFileDescriptor _descriptor)
         var filePath = Path.Combine(outdir, $"{fileNameBuilder(_descriptor)}.{_descriptor.Extension}");
         var hashFilePath = $"{filePath}.hash";
 
-        if (!CodeGenerationExtensions.RequiresUpdate(_descriptor.Content, filePath, hashFilePath))
+        if (!RequiresUpdate(_descriptor.Content, filePath, hashFilePath))
         {
             return filePath;
         }

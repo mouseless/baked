@@ -44,7 +44,6 @@ async function fetchData() {
       ... devMode ? fetchOptions : { },
       baseURL,
       headers: { Authorization: "token-jane" }
-
     }
   );
 }
