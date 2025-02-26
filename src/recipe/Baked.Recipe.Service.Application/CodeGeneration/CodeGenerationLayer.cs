@@ -24,6 +24,11 @@ public class CodeGenerationLayer : LayerBase<GenerateCode, Compile, BuildConfigu
             environment
         );
 
+        if (!Directory.Exists(_location))
+        {
+            Directory.CreateDirectory(_location);
+        }
+
         _existingFiles = [.. Directory.GetFiles(_location, "*.*", SearchOption.AllDirectories)];
     }
 
@@ -72,21 +77,16 @@ public class CodeGenerationLayer : LayerBase<GenerateCode, Compile, BuildConfigu
 
     protected override IEnumerable<IPhase> GetGeneratePhases()
     {
-        yield return new GenerateCode(_location, _generatedAssemblies, _generatedFiles);
+        yield return new GenerateCode(_generatedAssemblies, _generatedFiles);
         yield return new Compile(_location, _existingFiles);
         yield return new Cleanup(_existingFiles);
     }
 
-    public class GenerateCode(string _location, IGeneratedAssemblyCollection _generatedAssemblies, IGeneratedFileCollection _generatedFiles)
+    public class GenerateCode(IGeneratedAssemblyCollection _generatedAssemblies, IGeneratedFileCollection _generatedFiles)
         : PhaseBase<DomainModel>(PhaseOrder.Early)
     {
         protected override void Initialize(DomainModel _)
         {
-            if (!Directory.Exists(_location))
-            {
-                Directory.CreateDirectory(_location);
-            }
-
             Context.Add(_generatedAssemblies);
             Context.Add(_generatedFiles);
         }
