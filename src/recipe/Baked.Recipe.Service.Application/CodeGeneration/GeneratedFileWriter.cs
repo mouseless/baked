@@ -2,7 +2,7 @@
 
 namespace Baked.CodeGeneration;
 
-public class FileWriter(GeneratedFileDescriptor _descriptor)
+public class GeneratedFileWriter(GeneratedFileDescriptor _descriptor)
 {
     public virtual string Create(string location,
         Func<GeneratedFileDescriptor, string>? fileNameBuilder = default

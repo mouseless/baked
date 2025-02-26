@@ -11,7 +11,7 @@ public class CodeGenerationLayer : LayerBase<GenerateCode, Compile, BuildConfigu
 {
     readonly IGeneratedAssemblyCollection _generatedAssemblies = new GeneratedAssemblyCollection();
     readonly IGeneratedFileCollection _generatedFiles = new GeneratedFileCollection();
-    HashSet<string> _existingFiles = default!;
+    HashSet<string> _existingFiles = [];
 
     string Location
     {
@@ -27,8 +27,17 @@ public class CodeGenerationLayer : LayerBase<GenerateCode, Compile, BuildConfigu
         }
     }
 
-    protected override PhaseContext GetContext(GenerateCode phase) =>
-        phase.CreateContext(_generatedAssemblies);
+    protected override PhaseContext GetContext(GenerateCode phase)
+    {
+        if (!Directory.Exists(Location))
+        {
+            Directory.CreateDirectory(Location);
+        }
+
+        _existingFiles = [.. Directory.GetFiles(Location, "*.*", SearchOption.AllDirectories)];
+
+        return phase.CreateContext(_generatedAssemblies);
+    }
 
     protected override PhaseContext GetContext(Compile phase) =>
         phase.CreateContextBuilder()
@@ -37,9 +46,15 @@ public class CodeGenerationLayer : LayerBase<GenerateCode, Compile, BuildConfigu
             {
                 foreach (var descriptor in _generatedFiles)
                 {
-                    var file = new FileWriter(descriptor).Create(Location);
+                    var file = new GeneratedFileWriter(descriptor).Create(Location);
                     _existingFiles.Remove(file);
                     _existingFiles.Remove(file + ".hash");
+                }
+
+                foreach (var file in _existingFiles)
+                {
+                    File.Delete(file);
+                    File.Delete($"{file}.hash");
                 }
             })
             .Build();
@@ -72,13 +87,6 @@ public class CodeGenerationLayer : LayerBase<GenerateCode, Compile, BuildConfigu
 
     protected override IEnumerable<IPhase> GetGeneratePhases()
     {
-        if (!Directory.Exists(Location))
-        {
-            Directory.CreateDirectory(Location);
-        }
-
-        _existingFiles = [.. Directory.GetFiles(Location, "*.*", SearchOption.AllDirectories)];
-
         yield return new GenerateCode(_generatedAssemblies, _generatedFiles);
         yield return new Compile(Location, _existingFiles);
         yield return new Cleanup(_existingFiles);
@@ -104,19 +112,6 @@ public class CodeGenerationLayer : LayerBase<GenerateCode, Compile, BuildConfigu
                 var assembly = new Compiler(descriptor).Compile(_location, $"Baked.g.{descriptor.Name}");
                 _previousFiles.Remove(assembly);
                 _previousFiles.Remove($"{assembly}.hash");
-            }
-        }
-    }
-
-    public class Cleanup(HashSet<string> _existingFiles)
-        : PhaseBase<IGeneratedFileCollection>(PhaseOrder.Latest)
-    {
-        protected override void Initialize(IGeneratedFileCollection _)
-        {
-            foreach (var file in _existingFiles)
-            {
-                File.Delete(file);
-                File.Delete($"{file}.hash");
             }
         }
     }
