@@ -7,17 +7,22 @@
   <Target Name="Generate" AfterTargets="AfterBuild">
     <Exec Command="dotnet $(TargetPath) --no-build --no-start --generate -c $(Configuration)" />
   </Target>
-    
+
   <Target Name="CopyComponentDescriptors" AfterTargets="AfterBuild" Condition="$(CopyComponentDescriptors)">
-    <ItemGroup Condition="'$(ASPNETCORE_ENVIRONMENT)'==''">
-      <Descriptors Include="$(OutDir)\Development\Ui\*.json"/>
-    </ItemGroup>
-    <ItemGroup Condition="'$(ASPNETCORE_ENVIRONMENT)'!=''">
-      <Descriptors Include="$(OutDir)\$(ASPNETCORE_ENVIRONMENT)\Ui\*.json"/>
-    </ItemGroup> 
     <MakeDir Directories="$(ComponentDescriptorsDir)" Condition="!Exists($(ComponentDescriptorsDir))"/>
-    <Copy SourceFiles="@(Descriptors)" DestinationFolder="$(ComponentDescriptorsDir)" SkipUnchangedFiles="true" Condition="Exists($(ComponentDescriptorsDir))" />
-    <Message Importance="high" Text="'$(ComponentDescriptorsDir)' does not exists. Failed to copy component descriptors!" Condition="!Exists($(ComponentDescriptorsDir))" />
+    
+    <PropertyGroup>
+      <SourceFolder Condition="'$(ASPNETCORE_ENVIRONMENT)'==''">$(OutDir)\Development\Ui</SourceFolder>
+      <SourceFolder Condition="'$(ASPNETCORE_ENVIRONMENT)'!=''">$(OutDir)\$(ASPNETCORE_ENVIRONMENT)\Ui</SourceFolder>
+    </PropertyGroup>
+    
+    <ItemGroup Condition="'$(ASPNETCORE_ENVIRONMENT)'==''">
+      <Descriptors Include="$(SourceFolder)\*.json"/>
+      <DestinationFiles Include="$(ComponentDescriptorsDir)\*.json" />  
+    </ItemGroup>
+      
+    <Delete Files="@(DestinationFiles)" Condition="!Exists('%(FullPath.Replace($(ComponentDescriptorsDir), $(SourceFolder)))')" />
+    <Copy SourceFiles="@(Descriptors)" DestinationFolder="$(ComponentDescriptorsDir)" SkipUnchangedFiles="true" Condition="Exists($(ComponentDescriptorsDir))" />  
   </Target>
 
   <Target Name="CopyGeneratedFiles" AfterTargets="Publish">
