@@ -21,3 +21,5 @@
 - `CodeGenerationLayer` now outputs the generated code next to the generated
   assembly to allow further investigation in case code is not generated as
   expected
+- `CodeGenerationLayer` now skips compiling code if no changes in generated code 
+  are detected

@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.CodeGeneration;
+using Baked.Testing;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -116,14 +117,17 @@ public static class CodeGenerationExtensions
         var tree = diagnostic.Location.SourceTree;
         if (tree is null) { return null; }
 
-        return GetScopeNode(tree.GetRoot().FindNode(diagnostic.Location.SourceSpan))?.ToString() ?? diagnostic.Location.SourceTree?.ToString();
+        return tree.GetRoot().FindNode(diagnostic.Location.SourceSpan).GetScopeNode()?.ToString() ?? diagnostic.Location.SourceTree?.ToString();
     }
 
-    static SyntaxNode? GetScopeNode(SyntaxNode? node)
+    static SyntaxNode? GetScopeNode(this SyntaxNode? node)
     {
         if (node is null) { return null; }
         if (node is MethodDeclarationSyntax or ClassDeclarationSyntax) { return node; }
 
         return GetScopeNode(node?.Parent);
     }
+
+    public static string ALocation(this Stubber _) =>
+        Path.GetDirectoryName(Assembly.GetCallingAssembly().Location ?? string.Empty) ?? string.Empty;
 }
