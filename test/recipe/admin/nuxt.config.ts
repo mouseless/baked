@@ -56,6 +56,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       apiBaseURL: process.env.API_BASE_URL,
+      devMode: true,
       logo: "/baked-logo.svg",
       menu: {
         "/": {
