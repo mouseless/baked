@@ -25,9 +25,7 @@ export default defineNuxtConfig({
   css: ["~/assets/styles.scss"],
   devtools: { enabled: false },
   components: {
-    dirs: [
-      "~/components"
-    ]
+    dirs: ["~/components"]
   },
   experimental: {
     payloadExtraction: false
