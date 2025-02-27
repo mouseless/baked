@@ -25,5 +25,9 @@
 <script setup>
 import SideMenuItem from "./SideMenuItem.vue";
 
-const { public: { logo, menu } } = useRuntimeConfig();
+const { schema } = defineProps({
+  schema: { type: null, required: true }
+});
+
+const { logo, menu } = schema;
 </script>

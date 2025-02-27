@@ -103,7 +103,7 @@ export default defineNuxtConfig({
         // upfront this was needed
         //
         // IMPORTANT: this only works for dev mode, for build mode
-        // `.importPrimeVue.vue` is generated
+        // `_importPrimeVue.vue` is generated
         "primevue"
       ]
     }
