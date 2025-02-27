@@ -26,6 +26,4 @@
 import SideMenuItem from "./SideMenuItem.vue";
 
 const { public: { logo, menu } } = useRuntimeConfig();
-
-console.log(menu);
 </script>
