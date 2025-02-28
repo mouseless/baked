@@ -17,17 +17,3 @@ public record Detail(string Title)
         public IComponentDescriptor Component { get; set; } = Components.String;
     }
 }
-
-public record SideMenu : IComponentSchema
-{
-    public string Logo { get; set; } = "logo.svg";
-    public List<Item> Menu { get; init; } = [];
-
-    public record Item(string Title, string Icon, string Route)
-    {
-        public string Title { get; set; } = Title;
-        public string Icon { get; set; } = Icon;
-        public string Route { get; set; } = Route;
-        public bool Soon { get; set; } = false;
-    }
-}

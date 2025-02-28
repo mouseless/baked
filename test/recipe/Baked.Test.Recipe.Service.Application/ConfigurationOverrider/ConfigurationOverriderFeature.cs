@@ -101,15 +101,32 @@ public class ConfigurationOverriderFeature : IFeature
             swaggerUIOptions.SwaggerEndpoint($"external/swagger.json", "External");
         });
 
+        configurator.ConfigureLayoutDescriptors(layouts =>
+        {
+            layouts.Add("default", new ComponentDescriptorAttribute<DefaultLayout>(new()
+            {
+                SideMenu = new ComponentDescriptorAttribute<SideMenu>(new()
+                {
+                    Menu =
+                    [
+                        new("/", "pi pi-home"),
+                        new("/specs/Detail", "pi pi-list-check")
+                    ]
+                })
+                {
+                    Data = new ComputedData("useRoute")
+                }
+            }));
+        });
+
         configurator.ConfigurePageDescriptors(pages =>
         {
             configurator.UsingDomainModel(domain =>
             {
                 var route = domain.Types[typeof(RichTransientWithData)].GetActionModel().GetRoute();
 
-                pages.Add("index", new ComponentDescriptorAttribute<Detail>(new()
+                pages.Add("index", new ComponentDescriptorAttribute<Detail>(new("Dashboard")
                 {
-                    Title = "Dashboard",
                     Header = Components.Menu(new object[]
                     {
                         new

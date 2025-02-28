@@ -15,14 +15,10 @@
 import { RouterLink } from "vue-router";
 import { Button } from "primevue";
 
-const route = useRoute();
-
-const { item } = defineProps({
-  item: {
-    type: Object,
-    required: true
-  }
+const { item, path } = defineProps({
+  item: { type: Object, required: true },
+  path: { type: String, required: true }
 });
 
-const selected = computed(() => item.route === route.path || (item.route !== "/" && route.path.includes(item.route)));
+const selected = computed(() => item.route === path || (item.route !== "/" && path.includes(item.route)));
 </script>

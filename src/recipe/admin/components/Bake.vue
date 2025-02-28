@@ -4,10 +4,13 @@
     v-if="loaded"
     :schema="descriptor.schema"
     :data="data"
-  />
+  >
+    <slot v-if="$slots.default" />
+  </component>
 </template>
 <script setup>
 import useComponentResolver from "../composables/useComponentResolver.mjs";
+import useComposableResolver from "../composables/useComposableResolver.mjs";
 import useStringExtensions from "../composables/useStringExtensions.mjs";
 
 const { descriptor } = defineProps({
@@ -15,12 +18,13 @@ const { descriptor } = defineProps({
 });
 
 const { public: { apiBaseURL: baseURL, devMode } } = useRuntimeConfig();
-const resolver = useComponentResolver();
+const component = useComponentResolver();
+const composable = useComposableResolver();
 const extensions = useStringExtensions();
 
 const routeParams = inject("routeParams", []);
 
-const is = resolver.resolve(descriptor.type, "None");
+const is = component.resolve(descriptor.type, "None");
 const data = ref();
 const loaded = ref(false);
 
@@ -36,15 +40,25 @@ const fetchOptions = {
 };
 
 async function fetchData() {
-  if(descriptor.data?.type !== "Remote") { return descriptor.data?.value ?? descriptor.data; }
+  if(descriptor.data?.type === "Remote") {
+    return await $fetch(
+      extensions.format(`${descriptor.data.path}`, routeParams.slice(1)),
+      {
+        ... devMode ? fetchOptions : { },
+        baseURL,
+        headers: { Authorization: "token-jane" }
+      }
+    );
+  }
 
-  return await $fetch(
-    extensions.format(`${descriptor.data.path}`, routeParams.slice(1)),
-    {
-      ... devMode ? fetchOptions : { },
-      baseURL,
-      headers: { Authorization: "token-jane" }
-    }
-  );
+  if(descriptor.data?.type === "Computed") {
+    return composable.resolve(descriptor.data.composable)();
+  }
+
+  if(descriptor.data?.type === "Inline") {
+    return descriptor.data?.value;
+  }
+
+  return descriptor.data;
 }
 </script>

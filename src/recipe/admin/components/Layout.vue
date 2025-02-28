@@ -1,26 +1,28 @@
 <template>
-  <div class="flex h-screen">
-    <SideMenu />
-    <article class="w-full px-4 flex flex-col bg-body">
-      <Header :key="route.path" class="w-full" />
-      <slot />
-      <ScrollTop target="parent" :pt="{ root: { class: 'min-h-10 min-w-10' } }" />
-    </article>
-  </div>
+  <Bake
+    v-if="layoutDescriptor"
+    :descriptor="layoutDescriptor"
+  >
+    <slot />
+  </Bake>
 </template>
 <script setup>
-import { ScrollTop } from "primevue";
-import SideMenu from "./SideMenu.vue";
-import Header from "./Header.vue";
+import Bake from "./Bake.vue";
 
-// do NOT remove this without testing. using $route in template doesn't trigger
-// header refresh properly, using setup variable solved the issue.
-const route = useRoute();
+const { name } = defineProps({
+  name: { type: String, required: true }
+});
+
+const layoutDescriptor = ref();
+
+onMounted(async() => {
+  layoutDescriptor.value = await import(`~/.baked/${name}.layout.json`)
+    .catch(_ => {
+      throw createError({
+        statusCode: 404,
+        statusMessage: `'${name}' Layout Not Found`,
+        fatal: true
+      });
+    });
+});
 </script>
-<style scoped>
-/* overflow-x-hidden fixes chart auto width problem under this parent */
-/* see: https://stackoverflow.com/questions/52502837/chart-js-in-flex-element-overflows-instead-of-shrinking */
-article {
-  overflow-x: hidden;
-}
-</style>

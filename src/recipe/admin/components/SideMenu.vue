@@ -6,13 +6,14 @@
       "
   >
     <img
-      :src="logo"
+      :src="`/${logo}`"
       class="my-4 w-8"
     >
     <SideMenuItem
-      v-for="path in Object.keys(menu)"
-      :key="menu[path].route"
-      :item="menu[path]"
+      v-for="item in menu"
+      :key="item.title"
+      :item="item"
+      :path="data.path"
     />
     <div
       v-if="$slots.bottom"
@@ -25,8 +26,9 @@
 <script setup>
 import SideMenuItem from "./SideMenuItem.vue";
 
-const { schema } = defineProps({
-  schema: { type: null, required: true }
+const { schema, data } = defineProps({
+  schema: { type: null, required: true },
+  data: { type: null, required: true }
 });
 
 const { logo, menu } = schema;

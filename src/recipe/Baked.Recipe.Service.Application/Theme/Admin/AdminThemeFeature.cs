@@ -17,7 +17,7 @@ public class AdminThemeFeature(Func<string, string> _defaultPageName)
             builder.Index.Type.Add<ComponentDescriptorAttribute<Detail>>();
 
             builder.Conventions.AddTypeMetadata(
-                attribute: context => new ComponentDescriptorAttribute<Detail>(new() { Title = context.Type.Name.Humanize() }),
+                attribute: context => new ComponentDescriptorAttribute<Detail>(new(context.Type.Name.Humanize())),
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
                     members.Has<LocatableAttribute>() &&

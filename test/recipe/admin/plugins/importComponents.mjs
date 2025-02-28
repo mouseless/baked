@@ -4,20 +4,38 @@ export default defineNuxtPlugin({
   name: "importComponents",
   setup() {
     const projectComponents = import.meta.glob("~/components/*.vue");
-
-    const components = {
-      ...Baked,
-      ...Object.keys(projectComponents).reduce((result, path) => {
-        result[path.slice(path.indexOf("components/") + "components/".length, path.lastIndexOf(".vue"))] = defineAsyncComponent(projectComponents[path]);
-
-        return result;
-      }, { })
-    };
+    const projectComposables = import.meta.glob("~/composables/*.vue");
 
     return {
       provide: {
-        components
+        components: merge({
+          bakedFilter: key => !key.startsWith("use"),
+          projectImports: projectComponents,
+          projectTrimStart: "components/",
+          projectTrimEnd: ".vue"
+        }),
+        composables: merge({
+          bakedFilter: key => key.startsWith("use"),
+          projectImports: projectComposables,
+          projectTrimStart: "composables/",
+          projectTrimEnd: ".vue"
+        })
       }
     };
   }
 });
+
+function merge({ bakedFilter, projectImports, projectTrimStart, projectTrimEnd }) {
+  return {
+    ...Object.keys(Baked).filter(bakedFilter).reduce((result, name) => {
+      result[name] = Baked[name];
+
+      return result;
+    }, { }),
+    ...Object.keys(projectImports).reduce((result, path) => {
+      result[path.slice(path.indexOf(projectTrimStart) + projectTrimStart.length, path.lastIndexOf(projectTrimEnd))] = defineAsyncComponent(projectImports[path]);
+
+      return result;
+    }, { })
+  };
+}
