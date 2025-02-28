@@ -5,17 +5,23 @@
   >
     <Breadcrumb
       v-if="shown"
-      :home="menu['/']"
+      :home="schema.sitemap['/']"
       :model="parts"
       class="!bg-inherit text-sm !p-0"
     >
       <template #item="{ item }">
         <RouterLink
-          :to="$route.path !== item.route ? item.route : ''"
+          :to="data.path !== item.route ? item.route : ''"
           class="p-breadcrumb-item-link"
         >
-          <span :class="[item.icon, 'p-breadcrumb-item-icon']" />
-          <span class="p-breadcrumb-item-label">{{ item.title }}</span>
+          <span
+            v-if="item.icon"
+            :class="[item.icon, 'p-breadcrumb-item-icon']"
+          />
+          <span
+            v-if="item.title"
+            class="p-breadcrumb-item-label"
+          >{{ item.title }}</span>
         </RouterLink>
       </template>
     </Breadcrumb>
@@ -24,18 +30,23 @@
 <script setup>
 import { RouterLink } from "vue-router";
 import { Breadcrumb } from "primevue";
-import usePage from "../composables/usePage.mjs";
 
-const page = usePage();
-const { public: { menu } } = useRuntimeConfig();
-
-const shown = computed(() => page.route !== "/");
-const parts = computed(() => {
-  return shown.value
-    ? !page.parent
-      ? [page]
-      : [page.parent, page]
-    : [];
+const { schema, data } = defineProps({
+  schema: { type: null, required: true },
+  data: { type: null, required: true }
 });
 
+const shown = computed(() => data.path !== "/");
+const parts = computed(() => {
+  const result = [];
+
+  let page = schema.sitemap[data.path];
+  while(page) {
+    result.splice(0, 0, page);
+
+    page = schema.sitemap[page.parentRoute];
+  }
+
+  return result;
+});
 </script>

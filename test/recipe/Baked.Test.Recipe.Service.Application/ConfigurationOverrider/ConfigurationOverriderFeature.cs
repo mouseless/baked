@@ -110,8 +110,20 @@ public class ConfigurationOverriderFeature : IFeature
                     Menu =
                     [
                         new("/", "pi pi-home"),
-                        new("/specs/Detail", "pi pi-list-check")
+                        new("/specs/detail", "pi pi-list-check") { Title = "Detail"}
                     ]
+                })
+                {
+                    Data = new ComputedData("useRoute")
+                },
+                Header = new ComponentDescriptorAttribute<Header>(new()
+                {
+                    Sitemap = new()
+                    {
+                        { "/", new("/") { Icon =  "pi pi-home"}},
+                        { "/specs", new("/specs") { Icon = "pi pi-list-check", Title = "Specs"} },
+                        { "/specs/detail", new("/specs/detail") { Title = "Detail", ParentRoute = "/specs"}},
+                    }
                 })
                 {
                     Data = new ComputedData("useRoute")

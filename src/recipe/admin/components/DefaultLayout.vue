@@ -2,9 +2,9 @@
   <div class="flex h-screen">
     <Bake :descriptor="schema.sideMenu" />
     <article class="w-full px-4 flex flex-col bg-body">
-      <Header
+      <Bake
         :key="route.path"
-        class="w-full"
+        :descriptor="schema.header"
       />
       <slot />
       <ScrollTop
@@ -17,7 +17,6 @@
 <script setup>
 import { ScrollTop } from "primevue";
 import Bake from "./Bake.vue";
-import Header from "./Header.vue";
 
 const { schema } = defineProps({
   schema: { type: null, required: true }

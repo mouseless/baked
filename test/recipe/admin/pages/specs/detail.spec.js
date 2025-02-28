@@ -4,7 +4,7 @@ import tailwindcss from "~/utils/locators/tailwindcss";
 
 test.describe("Detail", () => {
   test.beforeEach(async({goto}) => {
-    await goto("/specs/Detail", { waitUntil: "hydration" });
+    await goto("/specs/detail", { waitUntil: "hydration" });
   });
 
   test.describe("Basic", () => {
