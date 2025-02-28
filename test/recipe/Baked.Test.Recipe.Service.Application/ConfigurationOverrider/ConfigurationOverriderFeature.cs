@@ -123,6 +123,7 @@ public class ConfigurationOverriderFeature : IFeature
                         { "/", new("/") { Icon =  "pi pi-home"}},
                         { "/specs", new("/specs") { Icon = "pi pi-list-check", Title = "Specs"} },
                         { "/specs/detail", new("/specs/detail") { Title = "Detail", ParentRoute = "/specs"}},
+                        { "/specs/side-menu", new("/specs/side-menu") { Title = "Side Menu", ParentRoute = "/specs"}},
                     }
                 })
                 {

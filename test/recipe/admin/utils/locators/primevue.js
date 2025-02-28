@@ -5,5 +5,8 @@ export default {
   button: {
     base: ".p-button",
     icon: ".p-button-icon"
+  },
+  breadcrumb: {
+    item: ".p-breadcrumb-item"
   }
 };

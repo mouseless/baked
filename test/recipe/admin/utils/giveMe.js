@@ -50,6 +50,35 @@ export default {
     };
   },
 
+  aHeader({ sitemapItems, data }) {
+    sitemapItems = $(sitemapItems, [this.aHeaderSitemapItem({ route: "/test" })]);
+    data = $(data, { path: "/test" });
+
+    return {
+      type: "Header",
+      schema: {
+        sitemap: sitemapItems
+          .reduce((result, item) => ({
+            ...result,
+            [item.route]: item
+          }), {})
+      },
+      data
+    };
+  },
+
+  aHeaderSitemapItem({ route, icon, title, parentRoute }) {
+    route = $(route, "/item");
+    icon = $(icon, "pi pi-home");
+
+    return {
+      route,
+      icon,
+      title,
+      parentRoute
+    };
+  },
+
   anExpected({ testId, value }) {
     testId = $(testId, "test-id");
     value = $(value, "test value");
