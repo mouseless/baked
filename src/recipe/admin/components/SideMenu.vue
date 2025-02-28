@@ -1,9 +1,9 @@
 <template>
   <nav
     class="
-        p-4 shadow-inner bg-slate-100 dark:bg-zinc-900
-        flex flex-col items-center gap-2
-      "
+      p-4 shadow-inner bg-slate-100 dark:bg-zinc-900
+      flex flex-col items-center gap-2
+    "
   >
     <img
       :src="`/${logo}`"

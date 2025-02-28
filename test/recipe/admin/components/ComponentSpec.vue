@@ -1,17 +1,36 @@
 <template>
-  <div class="space-y-4">
-    <Menubar :model="variantLinks" />
-    <div class="w-full flex flex-col items-center">
-      <div class="max-w-screen-xl space-y-4">
-        <div
-          v-for="variant in variants"
-          :key="variant.name"
-          :data-testid="variant.name"
-          class="w-full"
+  <div
+    class="flex justify-center w-full"
+    :class="{ 'justify-center': !vertical }"
+  >
+    <div
+       class="max-w-screen-xl flex gap-4 align-top"
+       :class="{
+         'flex-col': !vertical,
+         'items-center': !vertical,
+         'items-start': vertical
+       }"
+    >
+      <div
+        v-for="variant in variants"
+        :key="variant.name"
+        :data-testid="variant.name"
+        :class="{
+          'w-full': !vertical,
+          'text-center': vertical
+        }"
+      >
+        <h2
+          :id="variant.name"
+          class="font-bold"
+          :class="{
+            'text-xl': !vertical,
+            'mb-2': !vertical
+          }"
         >
-          <h2 :id="variant.name" class="text-xl font-bold mb-2">{{variant.name}}</h2>
-          <Bake :descriptor="variant.descriptor" />
-        </div>
+          {{variant.name}}
+        </h2>
+        <Bake :descriptor="variant.descriptor" />
       </div>
     </div>
   </div>
@@ -20,11 +39,7 @@
 import { Bake } from "baked-recipe-admin";
 
 const { variants } = defineProps({
-  variants: {
-    type: Array,
-    required: true
-  }
+  variants: { type: Array, required: true },
+  vertical: { type: Boolean, default: false }
 });
-
-const variantLinks = computed(() => variants.map(v => ({ label: v.name, url: `#${v.name}`})));
 </script>
