@@ -4,7 +4,7 @@ export default defineNuxtPlugin({
   name: "importComponents",
   setup() {
     const projectComponents = import.meta.glob("~/components/*.vue");
-    const projectComposables = import.meta.glob("~/composables/*.vue");
+    const projectComposables = import.meta.glob("~/composables/*.js");
 
     return {
       provide: {
@@ -18,7 +18,7 @@ export default defineNuxtPlugin({
           bakedFilter: key => key.startsWith("use"),
           projectImports: projectComposables,
           projectTrimStart: "composables/",
-          projectTrimEnd: ".vue"
+          projectTrimEnd: ".js"
         })
       }
     };

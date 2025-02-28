@@ -56,18 +56,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       apiBaseURL: process.env.API_BASE_URL,
-      devMode: true,
-      logo: "/baked-logo.svg",
-      menu: {
-        "/": {
-          icon: "pi pi-home",
-          route: "/"
-        },
-        "/specs/Detail": {
-          icon: "pi pi-list-check",
-          route: "/specs/Detail"
-        }
-      }
+      devMode: true
     }
   },
   ssr: false,
