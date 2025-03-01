@@ -110,7 +110,7 @@ public class ConfigurationOverriderFeature : IFeature
                     Menu =
                     [
                         new("/", "pi pi-home"),
-                        new("/specs/detail", "pi pi-list-check") { Title = "Detail"}
+                        new("/specs", "pi pi-list-check") { Title = "Specs"}
                     ]
                 })
                 {
@@ -123,6 +123,7 @@ public class ConfigurationOverriderFeature : IFeature
                         { "/", new("/") { Icon =  "pi pi-home"}},
                         { "/specs", new("/specs") { Icon = "pi pi-list-check", Title = "Specs"} },
                         { "/specs/detail", new("/specs/detail") { Title = "Detail", ParentRoute = "/specs"}},
+                        { "/specs/header", new("/specs/header") { Title = "Header", ParentRoute = "/specs"}},
                         { "/specs/side-menu", new("/specs/side-menu") { Title = "Side Menu", ParentRoute = "/specs"}},
                     }
                 })
@@ -138,24 +139,46 @@ public class ConfigurationOverriderFeature : IFeature
             {
                 var route = domain.Types[typeof(RichTransientWithData)].GetActionModel().GetRoute();
 
-                pages.Add("index", new ComponentDescriptorAttribute<Detail>(new("Dashboard")
+                pages.Add("index", new ComponentDescriptorAttribute<Menu>(new()
                 {
-                    Description = "This index page is created on the fly from backend.",
-                    Header = Components.Menu(new object[]
-                    {
-                        new
-                        {
-                            Label = "Rich Transients",
-                            Items = new object[]
-                            {
-                                new { Label = "w/ Data 1", Route = $"/{route.Replace("{id}", "test1")}" },
-                                new { Label = "w/ Data 2", Route = $"/{route.Replace("{id}", "test2")}" },
-                                new { Label = "w/ Data 3", Route = $"/{route.Replace("{id}", "test3")}" },
-                            }
-                        }
-                    })
+                    Links =
+                    [
+                        new ComponentDescriptorAttribute<CardLink>(new($"/{route.Replace("{id}", "test1")}", "Rich Transient w/ Data 1")),
+                        new ComponentDescriptorAttribute<CardLink>(new($"/{route.Replace("{id}", "test2")}", "Rich Transient w/ Data 2")),
+                        new ComponentDescriptorAttribute<CardLink>(new($"/{route.Replace("{id}", "test3")}", "Rich Transient w/ Data 3")),
+                    ]
                 }));
             });
+
+            pages.Add("specs", new ComponentDescriptorAttribute<Menu>(new()
+            {
+                Title = "Specs",
+                Description = "All UI Specs are listed here",
+                Links =
+                [
+                    new ComponentDescriptorAttribute<CardLink>(
+                        new($"/specs/detail", "Detail")
+                        {
+                            Icon = "pi pi-microchip",
+                            Description = "A page component suitable for rendering entities and rich transients"
+                        }
+                    ),
+                    new ComponentDescriptorAttribute<CardLink>(
+                        new($"/specs/header", "Header")
+                        {
+                            Icon = "pi pi-microchip",
+                            Description = "A layout component that renders a breadcrumb"
+                        }
+                    ),
+                    new ComponentDescriptorAttribute<CardLink>(
+                        new($"/specs/side-menu", "Side Menu")
+                        {
+                            Icon = "pi pi-microchip",
+                            Description = "A layout component to render application menu"
+                        }
+                    ),
+                ]
+            }));
         });
     }
 }

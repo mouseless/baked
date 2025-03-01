@@ -1,33 +1,21 @@
 <template>
-  <Menubar :model="data">
-    <template #item="{ item, props, hasSubmenu }">
-      <RouterLink
-        v-if="item.route"
-        :to="item.route"
-        v-bind="props.action"
-      >
-        <span>{{ item.label }}</span>
-      </RouterLink>
-      <a
-        v-else
-        :href="item.url"
-        :target="item.target"
-        v-bind="props.action"
-      >
-        <span>{{ item.label }}</span>
-        <span
-          v-if="hasSubmenu"
-          class="pi pi-fw pi-angle-down"
-        />
-      </a>
-    </template>
-  </Menubar>
+  <PageTitle
+    v-if="schema.title"
+    :schema="schema"
+  />
+  <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
+    <Bake
+      v-for="link in schema.links"
+      :key="link.schema.route"
+      :descriptor="link"
+    />
+  </div>
 </template>
 <script setup>
-import { Menubar } from "primevue";
-import { RouterLink } from "vue-router";
+import Bake from "./Bake.vue";
+import PageTitle from "./PageTitle.vue";
 
 defineProps({
-  data: { type: null, required: true }
+  schema: { type: null, required: true }
 });
 </script>

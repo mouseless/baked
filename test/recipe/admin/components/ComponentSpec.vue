@@ -1,4 +1,5 @@
 <template>
+  <PageTitle :schema="{ title }" />
   <div class="flex justify-center w-full">
     <div
        class="max-w-screen-xl flex gap-4 align-top"
@@ -31,9 +32,10 @@
   </div>
 </template>
 <script setup>
-import { Bake } from "baked-recipe-admin";
+import { Bake, PageTitle } from "baked-recipe-admin";
 
-const { variants } = defineProps({
+defineProps({
+  title: { type: String, required: true },
   variants: { type: Array, required: true },
   vertical: { type: Boolean, default: false }
 });

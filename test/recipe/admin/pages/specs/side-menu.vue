@@ -1,5 +1,6 @@
 <template>
   <ComponentSpec
+    title="Side Menu"
     :variants="variants"
     :vertical="true"
   />

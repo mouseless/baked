@@ -1,5 +1,8 @@
 <template>
-  <ComponentSpec :variants="variants" />
+  <ComponentSpec
+    title="Header"
+    :variants="variants"
+  />
 </template>
 <script setup>
 const variants = [

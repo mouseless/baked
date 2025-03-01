@@ -73,7 +73,7 @@ export default defineNuxtConfig({
           { pattern: /[-]?[!]?drop-.*/ },
           { pattern: /[-]?[!]?font.*/ },
           { pattern: /[-]?[!]?flex.*/ },
-          { pattern: /[-]?[!]?grid.*/ },
+          { pattern: /[-]?[!]?grid.*/, variants: [ "md", "lg", "xl", "2xl" ] },
           { pattern: /[-]?[!]?gap-.*/ },
           { pattern: /[-]?[!]?(h-|min-h-|max-h-).*/ },
           { pattern: /[-]?[!]?items-.*/ },

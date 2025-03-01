@@ -1,7 +1,7 @@
 <template>
   <div
     id="page-title"
-    class="sticky -top-1 z-10 py-4 space-y-4 bg-body"
+    class="sticky -top-1 z-10 pb-4 space-y-4 bg-body"
   >
     <div class="h-16 flex gap-2">
       <div class="w-full flex flex-col gap-2 justify-end">
@@ -25,6 +25,8 @@ const { schema } = defineProps({
 });
 
 const { title, description } = schema;
+
+useHead({ title });
 
 function toggleClasses(element, toggle, classes) {
   for(const cls of classes) {
