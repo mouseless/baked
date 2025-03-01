@@ -67,21 +67,27 @@ export default defineNuxtConfig({
       // this makes ui tests run faster
       safelist: process.env.SAFELIST === "1"
         ? [
-          { pattern: /[!]?bg.*/, variants: [ "dark" ] },
-          { pattern: /[!]?content-.*/ },
-          { pattern: /[!]?flex.*/ },
-          { pattern: /[!]?grid.*/ },
-          { pattern: /[!]?gap-.*/ },
-          { pattern: /[!]?(h-|min-h-|max-h-).*/ },
-          { pattern: /[!]?items-.*/ },
-          { pattern: /[!]?justify-.*/ },
-          { pattern: /[!]?(m-|mx-|my-|ml-|mt-|mr-|mb-).*/ },
-          { pattern: /[!]?(p-|px-|py-|pl-|pt-|pr-|pb-).*/ },
-          { pattern: /[!]?rounded.*/ },
-          { pattern: /[!]?shadow.*/ },
-          { pattern: /[!]?space-.*/ },
-          { pattern: /[!]?text-.*/ },
-          { pattern: /[!]?(w-|min-w-|max-w-).*/ }
+          { pattern: /[-]?[!]?bg.*/, variants: [ "dark" ] },
+          { pattern: /[-]?[!]?border-.*/, variants: [ "dark" ] },
+          { pattern: /[-]?[!]?content-.*/ },
+          { pattern: /[-]?[!]?drop-.*/ },
+          { pattern: /[-]?[!]?font.*/ },
+          { pattern: /[-]?[!]?flex.*/ },
+          { pattern: /[-]?[!]?grid.*/ },
+          { pattern: /[-]?[!]?gap-.*/ },
+          { pattern: /[-]?[!]?(h-|min-h-|max-h-).*/ },
+          { pattern: /[-]?[!]?items-.*/ },
+          { pattern: /[-]?[!]?justify-.*/ },
+          { pattern: /[-]?[!]?(m-|mx-|my-|ml-|mt-|mr-|mb-).*/ },
+          { pattern: /[-]?[!]?(p-|px-|py-|pl-|pt-|pr-|pb-).*/ },
+          { pattern: /[-]?[!]?rounded.*/ },
+          { pattern: /[-]?[!]?row-span-.*/ },
+          { pattern: /[-]?[!]?shadow.*/ },
+          { pattern: /[-]?[!]?space-.*/ },
+          { pattern: /[-]?[!]?text-.*/, variants: [ "dark" ] },
+          { pattern: /[-]?[!]?top-.*/ },
+          { pattern: /[-]?[!]?(w-|min-w-|max-w-).*/ },
+          { pattern: /[-]?[!]?z-.*/ }
         ]
         : []
     }

@@ -140,16 +140,17 @@ public class ConfigurationOverriderFeature : IFeature
 
                 pages.Add("index", new ComponentDescriptorAttribute<Detail>(new("Dashboard")
                 {
+                    Description = "This index page is created on the fly from backend.",
                     Header = Components.Menu(new object[]
                     {
                         new
                         {
-                            Label = "Rich Transients Menu",
+                            Label = "Rich Transients",
                             Items = new object[]
                             {
-                                new { Label = "Rich Transient w/ Data 1", Route = $"/{route.Replace("{id}", "test1")}" },
-                                new { Label = "Rich Transient w/ Data 2", Route = $"/{route.Replace("{id}", "test2")}" },
-                                new { Label = "Rich Transient w/ Data 3", Route = $"/{route.Replace("{id}", "test3")}" },
+                                new { Label = "w/ Data 1", Route = $"/{route.Replace("{id}", "test1")}" },
+                                new { Label = "w/ Data 2", Route = $"/{route.Replace("{id}", "test2")}" },
+                                new { Label = "w/ Data 3", Route = $"/{route.Replace("{id}", "test3")}" },
                             }
                         }
                     })

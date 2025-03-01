@@ -1,15 +1,24 @@
 <template>
-  <Panel :header="schema.title">
-    <div
-      v-if="schema.header"
-      class="w-full"
-    >
-      <Bake :descriptor="schema.header" />
-    </div>
-    <div
-      v-if="data"
-      class="grid grid-cols-2 gap-4"
-    >
+  <PageTitle
+    :schema="{
+      title: schema.title,
+      description: schema.description
+    }"
+  >
+    <template #actions>
+      <Bake
+        v-if="schema.header"
+        :descriptor="schema.header"
+        class="text-nowrap"
+      />
+    </template>
+  </PageTitle>
+  <Panel
+    v-if="data"
+    header="Details"
+    toggleable
+  >
+    <div class="grid grid-cols-2 gap-4">
       <div
         v-for="prop in schema.props"
         :key="prop.key"
@@ -30,8 +39,9 @@
   </Panel>
 </template>
 <script setup>
-import { Panel } from "primevue";
 import Bake from "./Bake.vue";
+import PageTitle from "./PageTitle.vue";
+import { Panel } from "primevue";
 
 defineProps({
   schema: { type: null, required: true },
