@@ -37,7 +37,6 @@ const { schema, data } = defineProps({
   data: { type: null, required: true }
 });
 
-const shown = computed(() => data.path !== "/");
 const parts = computed(() => {
   const result = [];
 
@@ -50,6 +49,7 @@ const parts = computed(() => {
 
   return result;
 });
+const shown = computed(() => data.path !== "/" && parts.value.length > 0);
 
 function linkOrSpan(item) {
   if(data.path !== item.route) {

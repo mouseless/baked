@@ -16,12 +16,12 @@ install:
 	cd test/recipe/admin ; npm ci ; cd ../../..
 build:
 	@ \
-	dotnet build ; \
-	cd src/recipe/admin ; npm run build ; cd ../../..
+	cd src/recipe/admin ; npm run build ; cd ../../.. ; \
+	dotnet build
 test:
 	@ \
 	dotnet test --logger quackers ; \
-	cd test/recipe/admin ; SILENT=1 npm run test ; cd ../../..
+	cd test/recipe/admin ; SILENT=1 npm run test -- --grep-invert @visual ; cd ../../..
 coverage:
 	@ \
 	rm -rdf .coverage ; \

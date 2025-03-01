@@ -61,5 +61,4 @@ jobs:
           cd test/recipe/admin
           # remove tailwind css for faster test building
           # non-visual tests ignore style anyway...
-          sed -i '/\/\/ CI REMOVE BEGIN/,/\/\/ CI REMOVE END/d' nuxt.config.ts
           npm test -- --grep-invert @visual

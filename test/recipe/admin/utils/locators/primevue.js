@@ -7,6 +7,10 @@ export default {
     icon: ".p-button-icon"
   },
   breadcrumb: {
-    item: ".p-breadcrumb-item"
+    base: ".p-breadcrumb",
+    item: ".p-breadcrumb-item",
+    link: ".p-breadcrumb-item-link",
+    icon: ".p-breadcrumb-item-icon",
+    label: ".p-breadcrumb-item-label"
   }
 };

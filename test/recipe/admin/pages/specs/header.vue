@@ -37,6 +37,20 @@ const variants = [
     })
   },
   {
+    name: "Hidden at Unknown",
+    descriptor: giveMe.aHeader({
+      sitemapItems: [
+        giveMe.aHeaderSitemapItem({ route: "/" }),
+        giveMe.aHeaderSitemapItem({
+          route: "/known",
+          icon: "pi pi-heart",
+          title: "Known Page"
+        })
+      ],
+      data: { path: "/unknown" }
+    })
+  },
+  {
     name: "No Title",
     descriptor: giveMe.aHeader({
       sitemapItems: [

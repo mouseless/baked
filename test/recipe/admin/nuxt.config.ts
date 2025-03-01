@@ -63,25 +63,27 @@ export default defineNuxtConfig({
   tailwindcss: {
     config: {
       // to have tailwind classes used in baked components add them to safelist
-      // CI REMOVE BEGIN
-      safelist: [
-        { pattern: /[!]?bg.*/, variants: [ "dark" ] },
-        { pattern: /[!]?content-.*/ },
-        { pattern: /[!]?flex.*/ },
-        { pattern: /[!]?grid.*/ },
-        { pattern: /[!]?gap-.*/ },
-        { pattern: /[!]?(h-|min-h-|max-h-).*/ },
-        { pattern: /[!]?items-.*/ },
-        { pattern: /[!]?justify-.*/ },
-        { pattern: /[!]?(m-|mx-|my-|ml-|mt-|mr-|mb-).*/ },
-        { pattern: /[!]?(p-|px-|py-|pl-|pt-|pr-|pb-).*/ },
-        { pattern: /[!]?rounded.*/ },
-        { pattern: /[!]?shadow.*/ },
-        { pattern: /[!]?space-.*/ },
-        { pattern: /[!]?text-.*/ },
-        { pattern: /[!]?(w-|min-w-|max-w-).*/ }
-      ]
-      // CI REMOVE END
+      // for now it is only enabled during build or run dev
+      // this makes ui tests run faster
+      safelist: process.env.SAFELIST === "1"
+        ? [
+          { pattern: /[!]?bg.*/, variants: [ "dark" ] },
+          { pattern: /[!]?content-.*/ },
+          { pattern: /[!]?flex.*/ },
+          { pattern: /[!]?grid.*/ },
+          { pattern: /[!]?gap-.*/ },
+          { pattern: /[!]?(h-|min-h-|max-h-).*/ },
+          { pattern: /[!]?items-.*/ },
+          { pattern: /[!]?justify-.*/ },
+          { pattern: /[!]?(m-|mx-|my-|ml-|mt-|mr-|mb-).*/ },
+          { pattern: /[!]?(p-|px-|py-|pl-|pt-|pr-|pb-).*/ },
+          { pattern: /[!]?rounded.*/ },
+          { pattern: /[!]?shadow.*/ },
+          { pattern: /[!]?space-.*/ },
+          { pattern: /[!]?text-.*/ },
+          { pattern: /[!]?(w-|min-w-|max-w-).*/ }
+        ]
+        : []
     }
   },
   vite: {

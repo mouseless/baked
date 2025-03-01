@@ -6,65 +6,94 @@ test.beforeEach(async({goto}) => {
 });
 
 test.describe("Multi Level", () => {
-  const id = "Base";
+  const id = "Multi Level";
 
-  test("has root and three levels", async({page}) => {
+  test("home and three levels", async({page}) => {
     const component = page.getByTestId(id);
 
     await expect(component.locator(primevue.breadcrumb.item)).toHaveCount(4);
   });
 
-  test("item icon", async({page}) => {
+  test("item icons", async({page}) => {
     const component = page.getByTestId(id);
 
-    // TODO assertion
+    await expect(component.locator(primevue.breadcrumb.icon)).toHaveClass([
+      /pi pi-home/,
+      /pi pi-heart/,
+      /pi pi-wave-pulse/,
+      /pi pi-sun/
+    ]);
   });
 
-  test("item title", async({page}) => {
+  test("item titles", async({page}) => {
     const component = page.getByTestId(id);
 
-    // TODO assertion
+    await expect(component.locator(primevue.breadcrumb.label)).toHaveText([
+      "Root Page",
+      "Mid Page",
+      "Leaf Page"
+    ]);
   });
 
   test("not selected pages (root, mid) are link", async({page}) => {
     const component = page.getByTestId(id);
 
-    // TODO assertion
+    const anchors = component.locator("a");
+    await expect(anchors).toHaveCount(3);
+    await expect(anchors.nth(0)).toHaveAttribute("href", "/");
+    await expect(anchors.nth(1)).toHaveAttribute("href", "/root");
+    await expect(anchors.nth(2)).toHaveAttribute("href", "/root/mid");
   });
 
   test("selected page (leaf) is not link", async({page}) => {
     const component = page.getByTestId(id);
 
-    // TODO assertion
+    await expect(component.locator(`span${primevue.breadcrumb.link}`)).toHaveText("Leaf Page");
+  });
+
+  test("visual", { tag: "@visual" }, async({page}) => {
+    const component = page.getByTestId(id);
+
+    await expect(component).toHaveScreenshot();
   });
 });
 
 test.describe("Hidden at Home", () => {
-  const id = "No Icon";
+  const id = "Hidden at Home";
 
-  test("only title", async({page}) => {
+  test("breadcrumb not attached", async({page}) => {
     const component = page.getByTestId(id);
 
-    // TODO assertion
+    expect(component.locator(primevue.breadcrumb.base)).not.toBeAttached();
+  });
+});
+
+test.describe("Hidden at Unknown", () => {
+  const id = "Hidden at Unknown";
+
+  test("breadcrumb not attached", async({page}) => {
+    const component = page.getByTestId(id);
+
+    expect(component.locator(primevue.breadcrumb.base)).not.toBeAttached();
   });
 });
 
 test.describe("No Title", () => {
   const id = "No Title";
 
-  test("only icon", async({page}) => {
+  test("label not attached", async({page}) => {
     const component = page.getByTestId(id);
 
-    // TODO assertion
+    expect(component.locator(primevue.breadcrumb.label)).not.toBeAttached();
   });
 });
 
 test.describe("No Icon", () => {
   const id = "No Icon";
 
-  test("only title", async({page}) => {
+  test("only root has icon", async({page}) => {
     const component = page.getByTestId(id);
 
-    // TODO assertion
+    expect(component.locator(primevue.breadcrumb.icon)).toHaveCount(1);
   });
 });
