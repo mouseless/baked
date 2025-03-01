@@ -84,6 +84,7 @@ export default defineNuxtConfig({
           { pattern: /[-]?[!]?row-span-.*/ },
           { pattern: /[-]?[!]?shadow.*/ },
           { pattern: /[-]?[!]?space-.*/ },
+          { pattern: /[-]?[!]?sticky.*/ },
           { pattern: /[-]?[!]?text-.*/, variants: [ "dark" ] },
           { pattern: /[-]?[!]?top-.*/ },
           { pattern: /[-]?[!]?(w-|min-w-|max-w-).*/ },
