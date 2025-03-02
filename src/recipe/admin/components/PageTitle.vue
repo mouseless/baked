@@ -13,18 +13,28 @@
         </div>
       </div>
       <div class="min-w-min pt-6 flex gap-2 row-span-2 items-end">
-        <slot name="actions" />
+        <Bake
+          v-for="action in actions"
+          :key="action.key"
+          :descriptor="action"
+        />
+        <slot
+          v-if="$slots.actions"
+          name="actions"
+        />
       </div>
     </div>
     <slot name="extra" />
   </div>
 </template>
 <script setup>
+import Bake from "./Bake.vue";
+
 const { schema } = defineProps({
   schema: { type: null, required: true }
 });
 
-const { title, description } = schema;
+const { title, description, actions } = schema;
 
 useHead({ title });
 

@@ -12,6 +12,7 @@ public class FillDetailPageConvention : IDomainModelConvention<TypeModelContext>
         if (!members.TryGetSingle<ComponentDescriptorAttribute<DetailPage>>(out var detail)) { return; }
         if (!members.TryGetActionModel(out var action)) { return; }
 
+        detail.Schema.Header = new ComponentDescriptorAttribute<PageTitle>(new(context.Type.Name.Humanize()));
         foreach (var property in members.Properties.Where(p => p.IsPublic))
         {
             detail.Schema.Props.Add(new(property.Name.Camelize()));

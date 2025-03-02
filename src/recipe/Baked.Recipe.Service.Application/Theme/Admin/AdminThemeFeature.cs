@@ -3,7 +3,6 @@ using Baked.Business;
 using Baked.CodingStyle.EntitySubclassViaComposition;
 using Baked.Orm;
 using Baked.Ui;
-using Humanizer;
 
 namespace Baked.Theme.Admin;
 
@@ -17,7 +16,7 @@ public class AdminThemeFeature(Func<string, string> _defaultPageName)
             builder.Index.Type.Add<ComponentDescriptorAttribute<DetailPage>>();
 
             builder.Conventions.AddTypeMetadata(
-                attribute: context => new ComponentDescriptorAttribute<DetailPage>(new(context.Type.Name.Humanize())),
+                attribute: context => new ComponentDescriptorAttribute<DetailPage>(new()),
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
                     members.Has<LocatableAttribute>() &&

@@ -1,18 +1,8 @@
 <template>
-  <PageTitle
-    :schema="{
-      title: schema.title,
-      description: schema.description
-    }"
-  >
-    <template #actions>
-      <Bake
-        v-if="schema.header"
-        :descriptor="schema.header"
-        class="text-nowrap"
-      />
-    </template>
-  </PageTitle>
+  <Bake
+    v-if="schema.header"
+    :descriptor="schema.header"
+  />
   <Panel
     v-if="data"
     header="Details"
