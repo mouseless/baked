@@ -5,10 +5,12 @@
       flex flex-col items-center gap-2
     "
   >
-    <img
-      :src="`/${logo}`"
-      class="my-4 w-8"
-    >
+    <RouterLink to="/">
+      <img
+        :src="`/${logo}`"
+        class="my-4 w-8"
+      >
+    </RouterLink>
     <SideMenuItem
       v-for="item in menu"
       :key="item.title"
@@ -24,6 +26,7 @@
   </nav>
 </template>
 <script setup>
+import { RouterLink } from "vue-router";
 import SideMenuItem from "./SideMenuItem.vue";
 
 const { schema, data } = defineProps({

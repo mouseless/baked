@@ -14,10 +14,16 @@ test.describe("Base", () => {
     await expect(component.locator("img")).toHaveAttribute("src", "/logo.svg");
   });
 
+  test("logo links to home", async({page}) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.locator("a").nth(0)).toHaveAttribute("href", "/");
+  });
+
   test("item url", async({page}) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator("a")).toHaveAttribute("href", "/menu");
+    await expect(component.locator("a").nth(1)).toHaveAttribute("href", "/menu");
   });
 
   test("item icon", async({page}) => {
@@ -39,8 +45,8 @@ test.describe("Highlight", () => {
   test("button color", async({page}) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator("a:first-of-type button")).toHaveClass(/p-button-primary/);
-    await expect(component.locator("a:last-of-type button")).toHaveClass(/p-button-secondary/);
+    await expect(component.locator("button").nth(0)).toHaveClass(/p-button-primary/);
+    await expect(component.locator("button").nth(1)).toHaveClass(/p-button-secondary/);
   });
 });
 

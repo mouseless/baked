@@ -35,8 +35,8 @@ const { schema } = defineProps({
 });
 
 const { title, description, actions } = schema;
-
-useHead({ title });
+const { public: { title: appTitle } } = useRuntimeConfig();
+useHead({ title: `${appTitle} - ${title}` });
 
 function toggleClasses(element, toggle, classes) {
   for(const cls of classes) {

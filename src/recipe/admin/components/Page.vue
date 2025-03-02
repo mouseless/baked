@@ -14,6 +14,9 @@ const { routeParams } = defineProps({
   }
 });
 
+const { public: { title } } = useRuntimeConfig();
+useHead({ title });
+
 const pageDescriptor = ref();
 const pageName = computed(() => routeParams[0] ?? "index");
 

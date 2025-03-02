@@ -56,7 +56,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       apiBaseURL: process.env.API_BASE_URL,
-      devMode: true
+      devMode: true,
+      title: "Baked Admin"
     }
   },
   ssr: false,
