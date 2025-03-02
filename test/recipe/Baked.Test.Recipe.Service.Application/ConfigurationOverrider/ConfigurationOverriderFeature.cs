@@ -122,7 +122,7 @@ public class ConfigurationOverriderFeature : IFeature
                     {
                         { "/", new("/") { Icon =  "pi pi-home"}},
                         { "/specs", new("/specs") { Icon = "pi pi-list-check", Title = "Specs"} },
-                        { "/specs/detail", new("/specs/detail") { Title = "Detail", ParentRoute = "/specs"}},
+                        { "/specs/detail-page", new("/specs/detail-page") { Title = "Detail", ParentRoute = "/specs"}},
                         { "/specs/header", new("/specs/header") { Title = "Header", ParentRoute = "/specs"}},
                         { "/specs/side-menu", new("/specs/side-menu") { Title = "Side Menu", ParentRoute = "/specs"}},
                     }
@@ -139,7 +139,7 @@ public class ConfigurationOverriderFeature : IFeature
             {
                 var route = domain.Types[typeof(RichTransientWithData)].GetActionModel().GetRoute();
 
-                pages.Add("index", new ComponentDescriptorAttribute<Menu>(new()
+                pages.Add("index", new ComponentDescriptorAttribute<MenuPage>(new()
                 {
                     Links =
                     [
@@ -150,14 +150,14 @@ public class ConfigurationOverriderFeature : IFeature
                 }));
             });
 
-            pages.Add("specs", new ComponentDescriptorAttribute<Menu>(new()
+            pages.Add("specs", new ComponentDescriptorAttribute<MenuPage>(new()
             {
                 Title = "Specs",
                 Description = "All UI Specs are listed here",
                 Links =
                 [
                     new ComponentDescriptorAttribute<CardLink>(
-                        new($"/specs/detail", "Detail")
+                        new($"/specs/detail-page", "Detail Page")
                         {
                             Icon = "pi pi-microchip",
                             Description = "A page component suitable for rendering entities and rich transients"

@@ -3,7 +3,7 @@ import primevue from "~/utils/locators/primevue";
 import tailwindcss from "~/utils/locators/tailwindcss";
 
 test.beforeEach(async({goto}) => {
-  await goto("/specs/detail", { waitUntil: "hydration" });
+  await goto("/specs/detail-page", { waitUntil: "hydration" });
 });
 
 test.describe("Basic", () => {

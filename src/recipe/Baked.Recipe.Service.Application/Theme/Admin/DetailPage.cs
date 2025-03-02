@@ -3,7 +3,7 @@ using Humanizer;
 
 namespace Baked.Theme.Admin;
 
-public record Detail(string Title)
+public record DetailPage(string Title)
     : IComponentSchema
 {
     public string Title { get; set; } = Title;

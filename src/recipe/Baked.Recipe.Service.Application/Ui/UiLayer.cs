@@ -28,7 +28,7 @@ public class UiLayer : LayerBase<GenerateCode>
 
         foreach (var (key, page) in _pageDescriptors)
         {
-            files.AddAsJson(key, page, outdir: "Ui", settings: JsonSettings);
+            files.AddAsJson($"{key}.page", page, outdir: "Ui", settings: JsonSettings);
         }
     }
 

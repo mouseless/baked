@@ -2,7 +2,7 @@
 
 namespace Baked.Theme.Admin;
 
-public record Menu : IComponentSchema
+public record MenuPage : IComponentSchema
 {
     public string? Title { get; set; }
     public string? Description { get; set; }

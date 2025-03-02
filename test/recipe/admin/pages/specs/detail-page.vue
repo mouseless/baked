@@ -1,6 +1,6 @@
 <template>
   <ComponentSpec
-    title="Detail"
+    title="Detail Page"
     :variants="variants"
   />
 </template>
@@ -8,12 +8,12 @@
 const variants = [
   {
     name: "Basic",
-    descriptor: giveMe.aDetail({
+    descriptor: giveMe.aDetailPage({
       title: "TITLE TEXT",
       header: giveMe.anExpected({ testId: "header", value: "HEADER TEXT" }),
       props: [
-        giveMe.aDetailProp({ keyAndTestId: "prop1", title: "PROP 1" }),
-        giveMe.aDetailProp({ keyAndTestId: "prop2", title: "PROP 2" })
+        giveMe.aDetailPageProp({ keyAndTestId: "prop1", title: "PROP 1" }),
+        giveMe.aDetailPageProp({ keyAndTestId: "prop2", title: "PROP 2" })
       ],
       data: {
         "prop1": "PROP1 VALUE",
@@ -23,7 +23,7 @@ const variants = [
   },
   {
     name: "Null",
-    descriptor: giveMe.aDetail({
+    descriptor: giveMe.aDetailPage({
       title: null,
       header: null,
       props: null,
@@ -32,9 +32,9 @@ const variants = [
   },
   {
     name: "Long Property",
-    descriptor: giveMe.aDetail({
+    descriptor: giveMe.aDetailPage({
       props: [
-        giveMe.aDetailProp({
+        giveMe.aDetailPageProp({
           keyAndTestId: "longProp",
           title: "A VERY LONG PROP NAME"
         })

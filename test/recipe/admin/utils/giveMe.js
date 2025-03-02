@@ -4,20 +4,20 @@ function $(value, defaultValue) {
 }
 
 export default {
-  aDetail({ title, header, props, data }) {
+  aDetailPage({ title, header, props, data }) {
     title = $(title, "Test Title");
     header = $(header, this.anExpected({testId: "header", value: "Test Header"}));
     props = $(props, []);
     data = $(data, { });
 
     return {
-      type: "Detail",
+      type: "DetailPage",
       schema: { title, header, props },
       data
     };
   },
 
-  aDetailProp({ keyAndTestId, title, component }) {
+  aDetailPageProp({ keyAndTestId, title, component }) {
     keyAndTestId = $(keyAndTestId, "testKey");
     title = $(title, "Test Prop");
     component = $(component, this.anExpected({ testId: keyAndTestId }));
