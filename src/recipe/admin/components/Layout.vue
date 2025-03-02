@@ -8,21 +8,14 @@
 </template>
 <script setup>
 import Bake from "./Bake.vue";
+import useLayouts from "../composables/useLayouts.mjs";
 
 const { name } = defineProps({
   name: { type: String, required: true }
 });
 
+const layouts = useLayouts();
 const layoutDescriptor = ref();
 
-onMounted(async() => {
-  layoutDescriptor.value = await import(`~/.baked/${name}.layout.json`)
-    .catch(_ => {
-      throw createError({
-        statusCode: 404,
-        statusMessage: `'${name}' Layout Not Found`,
-        fatal: true
-      });
-    });
-});
+onMounted(async() => layoutDescriptor.value = await layouts.fetch(name));
 </script>

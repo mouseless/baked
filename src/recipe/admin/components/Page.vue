@@ -6,6 +6,7 @@
 </template>
 <script setup>
 import Bake from "./Bake.vue";
+import usePages from "../composables/usePages.mjs";
 
 const { routeParams } = defineProps({
   routeParams: {
@@ -14,6 +15,7 @@ const { routeParams } = defineProps({
   }
 });
 
+const pages = usePages();
 const { public: { title } } = useRuntimeConfig();
 useHead({ title });
 
@@ -22,14 +24,5 @@ const pageName = computed(() => routeParams[0] ?? "index");
 
 provide("routeParams", routeParams);
 
-onMounted(async() => {
-  pageDescriptor.value = await import(`~/.baked/${pageName.value}.page.json`)
-    .catch(_ => {
-      throw createError({
-        statusCode: 404,
-        statusMessage: `'${pageName.value}' Page Not Found`,
-        fatal: true
-      });
-    });
-});
+onMounted(async() => pageDescriptor.value = await pages.fetch(pageName.value));
 </script>

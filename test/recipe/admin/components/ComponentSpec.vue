@@ -1,5 +1,8 @@
 <template>
-  <PageTitle :schema="{ title }" />
+  <PageTitle
+    v-if="loaded"
+    :schema="{ title, description }"
+  />
   <div class="flex justify-center w-full">
     <div
        class="max-w-screen-xl flex gap-4 align-top"
@@ -32,11 +35,26 @@
   </div>
 </template>
 <script setup>
-import { Bake, PageTitle } from "baked-recipe-admin";
+import { Bake, PageTitle, usePages } from "baked-recipe-admin";
 
-defineProps({
+const { title } = defineProps({
   title: { type: String, required: true },
   variants: { type: Array, required: true },
   vertical: { type: Boolean, default: false }
+});
+
+const pages = usePages();
+const description = ref();
+const loaded = ref(false);
+
+onMounted(async() => {
+  const specs = await pages.fetch("specs");
+
+  const linksWithTitle = specs.schema.links.filter(l => l.schema.title === title);
+  if(linksWithTitle.length > 0) {
+    description.value = linksWithTitle[0].schema.description;
+  }
+
+  loaded.value = true;
 });
 </script>

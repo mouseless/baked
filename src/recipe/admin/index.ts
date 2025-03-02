@@ -14,4 +14,6 @@ export { default as SideMenuItem } from "./components/SideMenuItem.vue";
 export { default as String } from "./components/String.vue";
 
 // composables
+export { default as useLayouts } from "./composables/useLayouts.mjs";
+export { default as usePages } from "./composables/usePages.mjs";
 export { default as useRoute } from "./composables/useRoute.mjs";
