@@ -15,7 +15,6 @@
       <div
         v-for="variant in variants"
         :key="variant.name"
-        :data-testid="variant.name"
         :class="{
           'w-full': !vertical,
           'text-center': vertical
@@ -31,7 +30,9 @@
           }"
         >{{variant.name}}</h2>
         <Divider v-if="!vertical" />
-        <Bake :descriptor="variant.descriptor" />
+        <div :data-testid="variant.name">
+          <Bake :descriptor="variant.descriptor" />
+        </div>
       </div>
     </div>
   </div>

@@ -24,7 +24,11 @@
       <h2 class="text-lg">
         {{ title }}
       </h2>
-      <div class="text-sm">
+      <div
+        v-if="description"
+        data-testid="description"
+        class="text-sm"
+      >
         {{ description }}
       </div>
     </div>

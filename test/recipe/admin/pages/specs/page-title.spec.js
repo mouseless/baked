@@ -18,11 +18,11 @@ test.describe("Base", () => {
 test.describe("Actions", () => {
   const id = "Actions";
 
-  test("actions ", async({page}) => {
+  test("actions", async({page}) => {
     const component = page.getByTestId(id);
 
-    expect(component.getByTestId("ACTION_1")).toHaveText("VALUE_1");
-    expect(component.getByTestId("ACTION_2")).toHaveText("VALUE_2");
+    await expect(component.getByTestId("ACTION_1")).toHaveText("VALUE_1");
+    await expect(component.getByTestId("ACTION_2")).toHaveText("VALUE_2");
   });
 
   test("visual", { tag: "@visual" }, async({page}) => {
@@ -38,7 +38,7 @@ test.describe("No Description", () => {
   test("description still available with nbsp", async({page}) => {
     const component = page.getByTestId(id);
 
-    expect(component.getByTestId("description")).toHaveText(" ");
+    await expect(component.getByTestId("description")).toHaveText(" ");
   });
 });
 

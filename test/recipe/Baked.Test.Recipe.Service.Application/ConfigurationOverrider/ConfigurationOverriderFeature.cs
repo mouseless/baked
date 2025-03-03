@@ -122,6 +122,7 @@ public class ConfigurationOverriderFeature : IFeature
                     {
                         { "/", new("/") { Icon =  "pi pi-home"}},
                         { "/specs", new("/specs") { Icon = "pi pi-list-check", Title = "Specs"} },
+                        { "/specs/card-link", new("/specs/card-link") { Title = "Card Link", ParentRoute = "/specs"}},
                         { "/specs/detail-page", new("/specs/detail-page") { Title = "Detail Page", ParentRoute = "/specs"}},
                         { "/specs/header", new("/specs/header") { Title = "Header", ParentRoute = "/specs"}},
                         { "/specs/page-title", new("/specs/page-title") { Title = "Page Title", ParentRoute = "/specs"}},
@@ -157,6 +158,13 @@ public class ConfigurationOverriderFeature : IFeature
                 Description = "All UI Specs are listed here",
                 Links =
                 [
+                    new ComponentDescriptorAttribute<CardLink>(
+                        new($"/specs/card-link", "Card Link")
+                        {
+                            Icon = "pi pi-microchip",
+                            Description = "A big card link component to render links in menu-like pages"
+                        }
+                    ),
                     new ComponentDescriptorAttribute<CardLink>(
                         new($"/specs/detail-page", "Detail Page")
                         {

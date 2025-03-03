@@ -64,7 +64,7 @@ test.describe("Hidden at Home", () => {
   test("breadcrumb not attached", async({page}) => {
     const component = page.getByTestId(id);
 
-    expect(component.locator(primevue.breadcrumb.base)).not.toBeAttached();
+    await expect(component.locator(primevue.breadcrumb.base)).not.toBeAttached();
   });
 });
 
@@ -74,7 +74,7 @@ test.describe("Hidden at Unknown", () => {
   test("breadcrumb not attached", async({page}) => {
     const component = page.getByTestId(id);
 
-    expect(component.locator(primevue.breadcrumb.base)).not.toBeAttached();
+    await expect(component.locator(primevue.breadcrumb.base)).not.toBeAttached();
   });
 });
 
@@ -84,7 +84,7 @@ test.describe("No Title", () => {
   test("label not attached", async({page}) => {
     const component = page.getByTestId(id);
 
-    expect(component.locator(primevue.breadcrumb.label)).not.toBeAttached();
+    await expect(component.locator(primevue.breadcrumb.label)).not.toBeAttached();
   });
 });
 
@@ -94,6 +94,6 @@ test.describe("No Icon", () => {
   test("only root has icon", async({page}) => {
     const component = page.getByTestId(id);
 
-    expect(component.locator(primevue.breadcrumb.icon)).toHaveCount(1);
+    await expect(component.locator(primevue.breadcrumb.icon)).toHaveCount(1);
   });
 });

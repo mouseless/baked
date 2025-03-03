@@ -4,15 +4,28 @@ function $(value, defaultValue) {
 }
 
 export default {
-  aDetailPage({ title, header, props, data }) {
-    title = $(title, "Test Title");
+  aCardLink({ route, icon, title, description, disabled, disabledReason }) {
+    route = $(route, "/test-route");
+    icon = $(icon, "pi pi-heart");
+    title = $(title, "Test");
+    description = $(description, "Test description is given for testing purposes");
+    disabled = $(disabled, false);
+    disabledReason = $(disabledReason, disabled ? "REASON" : "");
+
+    return {
+      type: "CardLink",
+      schema: { route, icon, title, description, disabled, disabledReason }
+    };
+  },
+
+  aDetailPage({ header, props, data }) {
     header = $(header, this.anExpected({testId: "header", value: "Test Header"}));
     props = $(props, []);
     data = $(data, { });
 
     return {
       type: "DetailPage",
-      schema: { title, header, props },
+      schema: { header, props },
       data
     };
   },
@@ -46,12 +59,7 @@ export default {
     route = $(route, "/item");
     icon = $(icon, "pi pi-home");
 
-    return {
-      route,
-      icon,
-      title,
-      parentRoute
-    };
+    return { route, icon, title, parentRoute };
   },
 
   aPageTitle({ title, description, actions }) {
@@ -82,12 +90,7 @@ export default {
     icon = $(icon, "pi pi-home");
     soon = $(soon, false);
 
-    return {
-      route,
-      icon,
-      title,
-      soon
-    };
+    return { route, icon, title, soon };
   },
 
   anExpected({ testId, value }) {

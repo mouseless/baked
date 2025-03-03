@@ -1,5 +1,4 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
-import primevue from "~/utils/locators/primevue";
 import tailwindcss from "~/utils/locators/tailwindcss";
 
 test.beforeEach(async({goto}) => {
@@ -8,12 +7,6 @@ test.beforeEach(async({goto}) => {
 
 test.describe("Basic", () => {
   const id = "Basic";
-
-  test("panel title", async({page}) => {
-    const component = page.getByTestId(id);
-
-    await expect(component.locator(primevue.panel.title)).toHaveText("TITLE TEXT");
-  });
 
   test("header", async({page}) => {
     const component = page.getByTestId(id);
@@ -37,12 +30,6 @@ test.describe("Basic", () => {
 
 test.describe("Null", () => {
   const id = "Null";
-
-  test("panel title", async({page}) => {
-    const component = page.getByTestId(id);
-
-    await expect(component.locator(primevue.panel.title)).not.toBeVisible();
-  });
 
   test("header", async({page}) => {
     const component = page.getByTestId(id);

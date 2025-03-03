@@ -9,7 +9,6 @@ const variants = [
   {
     name: "Basic",
     descriptor: giveMe.aDetailPage({
-      title: "TITLE TEXT",
       header: giveMe.anExpected({ testId: "header", value: "HEADER TEXT" }),
       props: [
         giveMe.aDetailPageProp({ keyAndTestId: "prop1", title: "PROP 1" }),
@@ -24,7 +23,6 @@ const variants = [
   {
     name: "Null",
     descriptor: giveMe.aDetailPage({
-      title: null,
       header: null,
       props: null,
       data: null

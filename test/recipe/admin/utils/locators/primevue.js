@@ -1,7 +1,4 @@
 export default {
-  panel: {
-    title: ".p-panel-title"
-  },
   button: {
     base: ".p-button",
     icon: ".p-button-icon"
@@ -12,5 +9,11 @@ export default {
     link: ".p-breadcrumb-item-link",
     icon: ".p-breadcrumb-item-icon",
     label: ".p-breadcrumb-item-label"
+  },
+  panel: {
+    title: ".p-panel-title"
+  },
+  tag: {
+    base: ".p-tag"
   }
 };
