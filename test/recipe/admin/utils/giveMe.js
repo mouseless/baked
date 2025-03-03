@@ -25,31 +25,6 @@ export default {
     return { key: keyAndTestId, title, component };
   },
 
-  aSideMenu({ logo, menu, data }) {
-    logo = $(logo, "logo.svg");
-    menu = $(menu, []);
-    data = $(data, { path: "/test" });
-
-    return {
-      type: "SideMenu",
-      schema: { logo, menu },
-      data
-    };
-  },
-
-  aSideMenuItem({ route, icon, title, soon }) {
-    route = $(route, "/item");
-    icon = $(icon, "pi pi-home");
-    soon = $(soon, false);
-
-    return {
-      route,
-      icon,
-      title,
-      soon
-    };
-  },
-
   aHeader({ sitemapItems, data }) {
     sitemapItems = $(sitemapItems, [this.aHeaderSitemapItem({ route: "/test" })]);
     data = $(data, { path: "/test" });
@@ -76,6 +51,42 @@ export default {
       icon,
       title,
       parentRoute
+    };
+  },
+
+  aPageTitle({ title, description, actions }) {
+    title = $(title, "Test Title");
+    description = $(description, "Test description is given for testing purposes");
+    actions = $(actions, []);
+
+    return {
+      type: "PageTitle",
+      schema: { title, description, actions }
+    };
+  },
+
+  aSideMenu({ logo, menu, data }) {
+    logo = $(logo, "logo.svg");
+    menu = $(menu, []);
+    data = $(data, { path: "/test" });
+
+    return {
+      type: "SideMenu",
+      schema: { logo, menu },
+      data
+    };
+  },
+
+  aSideMenuItem({ route, icon, title, soon }) {
+    route = $(route, "/item");
+    icon = $(icon, "pi pi-home");
+    soon = $(soon, false);
+
+    return {
+      route,
+      icon,
+      title,
+      soon
     };
   },
 

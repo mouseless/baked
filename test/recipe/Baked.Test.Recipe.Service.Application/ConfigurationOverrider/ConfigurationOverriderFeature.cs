@@ -122,8 +122,9 @@ public class ConfigurationOverriderFeature : IFeature
                     {
                         { "/", new("/") { Icon =  "pi pi-home"}},
                         { "/specs", new("/specs") { Icon = "pi pi-list-check", Title = "Specs"} },
-                        { "/specs/detail-page", new("/specs/detail-page") { Title = "Detail", ParentRoute = "/specs"}},
+                        { "/specs/detail-page", new("/specs/detail-page") { Title = "Detail Page", ParentRoute = "/specs"}},
                         { "/specs/header", new("/specs/header") { Title = "Header", ParentRoute = "/specs"}},
+                        { "/specs/page-title", new("/specs/page-title") { Title = "Page Title", ParentRoute = "/specs"}},
                         { "/specs/side-menu", new("/specs/side-menu") { Title = "Side Menu", ParentRoute = "/specs"}},
                     }
                 })
@@ -168,6 +169,13 @@ public class ConfigurationOverriderFeature : IFeature
                         {
                             Icon = "pi pi-microchip",
                             Description = "A layout component that renders a breadcrumb"
+                        }
+                    ),
+                    new ComponentDescriptorAttribute<CardLink>(
+                        new($"/specs/page-title", "Page Title")
+                        {
+                            Icon = "pi pi-microchip",
+                            Description = "A page component to render page title, desc and actions"
                         }
                     ),
                     new ComponentDescriptorAttribute<CardLink>(

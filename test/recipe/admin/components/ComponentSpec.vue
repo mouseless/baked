@@ -5,7 +5,7 @@
   />
   <div class="flex justify-center w-full">
     <div
-       class="max-w-screen-xl flex gap-4 align-top"
+       class="max-w-screen-xl flex gap-4 align-top w-4/5"
        :class="{
          'flex-col': !vertical,
          'items-center': !vertical,
@@ -23,12 +23,14 @@
       >
         <h2
           :id="variant.name"
-          class="font-bold"
+          class="font-semibold"
           :class="{
-            'text-xl': !vertical,
-            'mb-2': !vertical
+            'text-lg': !vertical,
+            'mt-2': !vertical,
+            '-mb-2': !vertical
           }"
         >{{variant.name}}</h2>
+        <Divider v-if="!vertical" />
         <Bake :descriptor="variant.descriptor" />
       </div>
     </div>
