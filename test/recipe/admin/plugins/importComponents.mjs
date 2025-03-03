@@ -1,4 +1,5 @@
 import { defineAsyncComponent } from "vue";
+import { defineNuxtPlugin } from "#app";
 
 export default defineNuxtPlugin({
   name: "importComponents",
@@ -19,9 +20,19 @@ export default defineNuxtPlugin({
       }, { })
     };
 
+    const bakedPages = import.meta.glob("~/.baked/*.json");
+    const pages = {
+      ...Object.keys(bakedPages).reduce((result, path) => {
+        result[path.slice(path.indexOf(".baked/") + ".baked/".length, path.lastIndexOf(".json"))] = bakedPages[path];
+
+        return result;
+      }, { })
+    };
+
     return {
       provide: {
-        components
+        components,
+        pages
       }
     };
   }

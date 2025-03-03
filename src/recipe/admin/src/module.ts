@@ -13,8 +13,11 @@ export default defineNuxtModule<ModuleOptions>({
   async setup(_options, _nuxt) {
     const resolver = createResolver(import.meta.url);
 
-    _nuxt.options.ssr = false
-    _nuxt.options.runtimeConfig.public.theme = _options.theme
+    _nuxt.options.devtools.enabled = false;
+    _nuxt.options.experimental.payloadExtraction = false;
+    _nuxt.options.features.inlineStyles = false;
+    _nuxt.options.runtimeConfig.public.theme = _options.theme;
+    _nuxt.options.ssr = false;
 
     addComponentsDir({
       path: resolver.resolve('./runtime/components'),

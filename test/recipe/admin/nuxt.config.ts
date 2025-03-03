@@ -35,6 +35,9 @@ export default defineNuxtConfig({
   features: {
     inlineStyles: false
   },
+  // Do NOT remove this line, auto imports are disabled for consistency
+  // between local and published package behaviour
+  imports: { autoImport: false },
   logLevel: process.env.SILENT === "1" ? "silent" : "info",
   modules: [
     "@nuxt/eslint",
