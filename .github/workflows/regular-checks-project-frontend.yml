@@ -21,13 +21,13 @@ jobs:
           node-version: 22
       - name: Disable AppArmour
         run: echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns
-      - name: Install dependencies
+      - name: Build src
         run: |
           cd src/recipe/admin ; npm i ; cd ../../..
           cd src/recipe/admin ; npm run build ; cd ../../..
-          cd test/recipe/admin ; npm i ; cd ../../..
-      - name: Build projects
+      - name: Build test
         run: |
+          cd test/recipe/admin ; npm i ; cd ../../..
           cd test/recipe/admin ; npm run build:Production ; cd ../../..
   test:
     name: Test
@@ -43,23 +43,16 @@ jobs:
           node-version: 22
       - name: Disable AppArmour
         run: echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns
-      - name: Install dependencies (src)
-        run: |
-          cd src/recipe/admin ; npm i ; cd ../../..
-      - name: Build local pacakge
-        run: |
-          cd src/recipe/admin ; npm run build ; cd ../../..
-      - name: Install dependencies (test)
-        run: |
-          cd test/recipe/admin ; npm ci ; cd ../../..
       - name: Install Playwright Browsers
         run: |
           cd test/recipe/admin
           npx playwright install --with-deps
+      - name: Build local package
+        run: |
+          cd src/recipe/admin ; npm i ; cd ../../..
+          cd src/recipe/admin ; npm run build ; cd ../../..
       - name: Test
         run: |
+          cd test/recipe/admin ; npm i ; cd ../../..
           cd test/recipe/admin
-          # remove tailwind css for faster test building
-          # non-visual tests ignore style anyway...
-          sed -i '/\/\/ CI REMOVE BEGIN/,/\/\/ CI REMOVE END/d' nuxt.config.ts
           npm test -- --grep-invert @visual
