@@ -33,7 +33,7 @@
     "dist"
   ],
   "scripts": {
-    "prepack": "nuxt-module-build build",
+    "package": "nuxt-module-build build",
     "postinstall": "nuxi prepare",
     "build": "nuxt-module-build build --stub && nuxt-module-build prepare",
     "lint": "eslint ."
