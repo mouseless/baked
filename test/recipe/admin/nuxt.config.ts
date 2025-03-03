@@ -21,7 +21,7 @@ const Mouseless = definePreset(Aura, {
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  baked:{
+  baked: {
     theme: Mouseless
   },
   compatibilityDate: "2025-03-01",
@@ -46,6 +46,5 @@ export default defineNuxtConfig({
       apiBaseURL: process.env.API_BASE_URL,
       devMode: true
     }
-  },
-  ssr:false
+  }
 });
