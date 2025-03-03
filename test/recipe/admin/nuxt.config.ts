@@ -21,6 +21,9 @@ const Mouseless = definePreset(Aura, {
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  baked:{
+    theme: Mouseless
+  },
   compatibilityDate: "2024-11-01",
   css: ["~/assets/styles.scss"],
   devtools: { enabled: false },
@@ -36,17 +39,8 @@ export default defineNuxtConfig({
   logLevel: process.env.SILENT === "1" ? "silent" : "info",
   modules: [
     "@nuxt/eslint",
-    "@nuxtjs/tailwindcss",
-    "@primevue/nuxt-module"
+    "baked-recipe-admin"
   ],
-  primevue: {
-    options: {
-      theme: {
-        preset: Mouseless
-      }
-    },
-    autoImport: true
-  },
   plugins: [
     "plugins/importComponents"
   ],
@@ -55,38 +49,6 @@ export default defineNuxtConfig({
     public: {
       apiBaseURL: process.env.API_BASE_URL,
       devMode: true
-    }
-  },
-  ssr: false,
-  tailwindcss: {
-    config: {
-      // to have tailwind classes used in baked components add them to safelist
-      // CI REMOVE BEGIN
-      safelist: [
-        { pattern: /bg.*/ },
-        { pattern: /flex.*/ },
-        { pattern: /grid.*/ },
-        { pattern: /gap.*/ },
-        { pattern: /p.*/ },
-        { pattern: /rounded.*/ },
-        { pattern: /space.*/ },
-        { pattern: /text.*/ },
-        { pattern: /w.*/ }
-      ]
-      // CI REMOVE END
-    }
-  },
-  vite: {
-    optimizeDeps: {
-      include: [
-        // primevue components were not rendered correctly when they were
-        // imported from the package to include all primevue components
-        // upfront this was needed
-        //
-        // IMPORTANT: this only works for dev mode, for build mode
-        // `.importPrimeVue.vue` is generated
-        "primevue"
-      ]
     }
   }
 });

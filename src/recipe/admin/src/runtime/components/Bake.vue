@@ -7,8 +7,6 @@
   />
 </template>
 <script setup>
-import useComponentResolver from "../composables/useComponentResolver.mjs";
-import useStringExtensions from "../composables/useStringExtensions.mjs";
 
 const { descriptor } = defineProps({
   descriptor: { type: null, required: true }
