@@ -8,7 +8,10 @@
     :disabled="disabled"
   >
     <div class="flex flex-col gap-4 text-start items-start w-full h-full">
-      <div class="flex gap-4">
+      <div
+        v-if="icon || disabled"
+        class="flex gap-4"
+      >
         <span
           v-if="icon"
           :class="icon"
