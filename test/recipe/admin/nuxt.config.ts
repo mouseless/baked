@@ -24,8 +24,7 @@ export default defineNuxtConfig({
   baked:{
     theme: Mouseless
   },
-  compatibilityDate: "2024-11-01",
-  css: ["~/assets/styles.scss"],
+  compatibilityDate: "2025-03-01",
   devtools: { enabled: false },
   components: {
     dirs: ["~/components"]
@@ -41,14 +40,12 @@ export default defineNuxtConfig({
     "@nuxt/eslint",
     "baked-recipe-admin"
   ],
-  plugins: [
-    "plugins/importComponents"
-  ],
   router: { options: { strict: true } },
   runtimeConfig: {
     public: {
       apiBaseURL: process.env.API_BASE_URL,
       devMode: true
     }
-  }
+  },
+  ssr:false
 });

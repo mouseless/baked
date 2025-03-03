@@ -1,3 +1,5 @@
+import { defineAsyncComponent } from "vue";
+
 export default defineNuxtPlugin({
   name: "importComponents",
   setup() {

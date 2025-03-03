@@ -7,7 +7,6 @@
   />
 </template>
 <script setup>
-
 const { descriptor } = defineProps({
   descriptor: { type: null, required: true }
 });
