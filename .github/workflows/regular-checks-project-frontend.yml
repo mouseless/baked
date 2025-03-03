@@ -28,7 +28,7 @@ jobs:
       - name: Build projects
         run: |
           cd src/recipe/admin ; npm run build ; cd ../../..
-          cd test/recipe/admin ; npm run build:Production ; cd ../../..
+          cd test/recipe/admin ; npm run build:CI ; cd ../../..
   test:
     name: Test
     needs: build
@@ -53,7 +53,7 @@ jobs:
       - name: Install dependencies (src)
         run: |
           cd src/recipe/admin ; npm i ; cd ../../..
-      - name: Build local pacakge
+      - name: Build local package
         run: |
           cd src/recipe/admin ; npm run build ; cd ../../..
       - name: Test
