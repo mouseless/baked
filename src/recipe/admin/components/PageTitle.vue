@@ -5,10 +5,7 @@
   >
     <div class="h-16 flex gap-2">
       <div class="w-full flex flex-col gap-2 justify-end">
-        <h1
-          data-testid="title"
-          class="text-xl font-bold"
-        >
+        <h1 class="text-xl font-bold">
           {{ title }}
         </h1>
         <div

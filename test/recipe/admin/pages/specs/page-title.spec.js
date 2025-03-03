@@ -7,10 +7,15 @@ test.beforeEach(async({goto}) => {
 test.describe("Base", () => {
   const id = "Base";
 
-  test("title and description", async({page}) => {
+  test("title", async({page}) => {
     const component = page.getByTestId(id);
 
-    await expect(component.getByTestId("title")).toHaveText("PAGE TITLE");
+    await expect(component.locator("h1")).toHaveText("PAGE TITLE");
+  });
+
+  test("description", async({page}) => {
+    const component = page.getByTestId(id);
+
     await expect(component.getByTestId("description")).toHaveText("PAGE DESCRIPTION");
   });
 });
