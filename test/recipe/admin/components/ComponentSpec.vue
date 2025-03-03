@@ -11,6 +11,8 @@
   </div>
 </template>
 <script setup>
+import { computed } from "vue";
+
 const { variants } = defineProps({
   variants: {
     type: Array,
