@@ -7,8 +7,9 @@
   />
 </template>
 <script setup>
-import useComponentResolver from "../composables/useComponentResolver.mjs";
-import useStringExtensions from "../composables/useStringExtensions.mjs";
+import { inject, onMounted, ref } from "vue";
+import { useRuntimeConfig } from "#app";
+import { useComponentResolver, useStringExtensions } from "#imports"; 
 
 const { descriptor } = defineProps({
   descriptor: { type: null, required: true }

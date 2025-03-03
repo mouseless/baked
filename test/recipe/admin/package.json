@@ -8,11 +8,10 @@
     "predev": "npm run setup --env=development",
     "dev": "nuxt dev --dotenv .env.development",
     "postinstall": "nuxt prepare",
-    "prebuild": "node ./scripts/generateImports",
     "build": "cross-env-shell nuxt generate --log-level silent --dotenv .env.$npm_config_env",
     "build:Development": "npm run build --env=development",
     "build:Production": "npm run build --env=production",
-    "prelocal":"npm run build:Development",
+    "prelocal": "npm run build:Development",
     "local": "npx http-server .output/public -p 3000",
     "test": "playwright test"
   },
@@ -20,20 +19,16 @@
     "@nuxt/devtools": "latest",
     "@nuxt/eslint": "^1.0.1",
     "@nuxt/test-utils": "^3.15.4",
-    "@nuxtjs/tailwindcss": "^6.13.1",
     "@playwright/test": "^1.50.1",
-    "@primevue/nuxt-module": "^4.2.5",
     "cross-env": "^7.0.3",
     "eslint": "^9.20.0",
     "sass": "^1.84.0"
   },
   "dependencies": {
-    "@primevue/themes": "^4.2.5",
+    "@nuxtjs/tailwindcss": "^6.13.1",
+    "@primevue/themes": "~4.2.5",
     "baked-recipe-admin": "file:../../../src/recipe/admin",
-    "chart.js": "^4.4.7",
     "nuxt": "^3.15.4",
-    "primeicons": "^7.0.0",
-    "primevue": "^4.2.5",
     "vue": "^3.5.13",
     "vue-router": "^4.4.3"
   }

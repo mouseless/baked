@@ -4,6 +4,8 @@
   </code>
 </template>
 <script setup>
+import { computed } from "vue";
+
 const { data } = defineProps({
   schema: { type: null, required: true },
   data: { type: null, required: true }

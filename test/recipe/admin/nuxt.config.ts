@@ -21,13 +21,13 @@ const Mouseless = definePreset(Aura, {
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: "2024-11-01",
-  css: ["~/assets/styles.scss"],
+  baked: {
+    theme: Mouseless
+  },
+  compatibilityDate: "2025-03-01",
   devtools: { enabled: false },
   components: {
-    dirs: [
-      "~/components"
-    ]
+    dirs: ["~/components"]
   },
   experimental: {
     payloadExtraction: false
@@ -35,60 +35,19 @@ export default defineNuxtConfig({
   features: {
     inlineStyles: false
   },
+  // Do NOT remove this line, auto imports are disabled for consistency
+  // between local and published package behaviour
+  imports: { autoImport: false },
   logLevel: process.env.SILENT === "1" ? "silent" : "info",
   modules: [
     "@nuxt/eslint",
-    "@nuxtjs/tailwindcss",
-    "@primevue/nuxt-module"
-  ],
-  primevue: {
-    options: {
-      theme: {
-        preset: Mouseless
-      }
-    },
-    autoImport: true
-  },
-  plugins: [
-    "plugins/importComponents"
+    "baked-recipe-admin"
   ],
   router: { options: { strict: true } },
   runtimeConfig: {
     public: {
       apiBaseURL: process.env.API_BASE_URL,
       devMode: true
-    }
-  },
-  ssr: false,
-  tailwindcss: {
-    config: {
-      // to have tailwind classes used in baked components add them to safelist
-      // CI REMOVE BEGIN
-      safelist: [
-        { pattern: /bg.*/ },
-        { pattern: /flex.*/ },
-        { pattern: /grid.*/ },
-        { pattern: /gap.*/ },
-        { pattern: /p.*/ },
-        { pattern: /rounded.*/ },
-        { pattern: /space.*/ },
-        { pattern: /text.*/ },
-        { pattern: /w.*/ }
-      ]
-      // CI REMOVE END
-    }
-  },
-  vite: {
-    optimizeDeps: {
-      include: [
-        // primevue components were not rendered correctly when they were
-        // imported from the package to include all primevue components
-        // upfront this was needed
-        //
-        // IMPORTANT: this only works for dev mode, for build mode
-        // `.importPrimeVue.vue` is generated
-        "primevue"
-      ]
     }
   }
 });

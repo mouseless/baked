@@ -5,6 +5,8 @@
   />
 </template>
 <script setup>
+import { computed, onMounted, provide, ref } from "vue";
+import { createError } from "#app";
 import Bake from "./Bake.vue";
 
 const { routeParams } = defineProps({
@@ -16,17 +18,19 @@ const { routeParams } = defineProps({
 
 const pageDescriptor = ref();
 const pageName = computed(() => routeParams[0] ?? "index");
+const { $pages } = useNuxtApp();
 
 provide("routeParams", routeParams);
 
 onMounted(async() => {
-  pageDescriptor.value = await import(`~/.baked/${pageName.value}.json`)
-    .catch(_ => {
-      throw createError({
+  if(!$pages[pageName.value]){
+    throw createError({
         statusCode: 404,
         statusMessage: `'${pageName.value}' Page Not Found`,
         fatal: true
       });
-    });
+  }
+  
+  pageDescriptor.value = await $pages[pageName.value]();
 });
 </script>

@@ -11,7 +11,7 @@
   </div>
 </template>
 <script setup>
-import { Bake } from "baked-recipe-admin";
+import { computed } from "vue";
 
 const { variants } = defineProps({
   variants: {
