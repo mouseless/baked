@@ -8,7 +8,6 @@
     "predev": "npm run setup --env=development",
     "dev": "nuxt dev --dotenv .env.development",
     "postinstall": "nuxt prepare",
-    "prebuild": "node ./scripts/generateImports",
     "build": "cross-env-shell nuxt generate --log-level silent --dotenv .env.$npm_config_env",
     "build:Development": "npm run build --env=development",
     "build:Production": "npm run build --env=production",
