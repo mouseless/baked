@@ -42,7 +42,7 @@ COPY --parents src/recipe/admin .
 COPY --parents test/recipe/admin .
 COPY --from=build  ./test/recipe/admin/.baked ./test/recipe/admin/.baked
 RUN cd src/recipe/admin ; npm run build
-RUN cd test/recipe/admin ; npm run postinstall ; npm run build:$ENVIRONMENT
+RUN cd test/recipe/admin ; npm run build:$ENVIRONMENT
 
 FROM nginx AS final
 
