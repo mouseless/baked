@@ -7,8 +7,8 @@ export default defineNuxtPlugin({
     const bakedComponents = import.meta.glob("~/node_modules/baked-recipe-admin/dist/runtime/components/*.vue");
     const projectComponents = import.meta.glob("~/components/*.vue");
 
-    const bakedComposables = import.meta.glob("~/node_modules/baked-recipe-admin/dist/runtime/composables/*.js");
-    const projectComposables = import.meta.glob("~/composables/*.js");
+    const bakedComposables = import.meta.glob("~/node_modules/baked-recipe-admin/dist/runtime/composables/*");
+    const projectComposables = import.meta.glob("~/composables/*");
 
     const pages = import.meta.glob("~/.baked/*.page.json");
     const layouts = import.meta.glob("~/.baked/*.layout.json");
@@ -26,7 +26,7 @@ export default defineNuxtPlugin({
           bakedImports: bakedComposables,
           projectImports: projectComposables,
           trimStart: "composables/",
-          trimEnd: ".js"
+          trimEnd: "."
         }),
         pages: jsonFiles(pages, ".baked/", ".page.json"),
         layouts: jsonFiles(layouts, ".baked/", ".layout.json")
