@@ -6,6 +6,8 @@
   />
 </template>
 <script setup>
+import { giveMe } from "#imports";
+
 const variants = [
   {
     name: "Base",

@@ -39,7 +39,8 @@
 </template>
 <script setup>
 import { onMounted, ref } from "vue";
-import { usePages } from "#app";
+import { usePages } from "#imports";
+import { Divider } from "primevue";
 
 const { title } = defineProps({
   title: { type: String, required: true },
