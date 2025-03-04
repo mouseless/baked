@@ -1,5 +1,5 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
-import tailwindcss from "~/utils/locators/tailwindcss";
+import tailwindcss from "../../utils/locators/tailwindcss.js";
 
 test.beforeEach(async({goto}) => {
   await goto("/specs/detail-page", { waitUntil: "hydration" });
