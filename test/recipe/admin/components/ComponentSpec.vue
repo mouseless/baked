@@ -38,7 +38,8 @@
   </div>
 </template>
 <script setup>
-import { Bake, PageTitle, usePages } from "baked-recipe-admin";
+import { onMounted, ref } from "vue";
+import { usePages } from "#app";
 
 const { title } = defineProps({
   title: { type: String, required: true },

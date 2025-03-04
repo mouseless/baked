@@ -1,39 +1,58 @@
-import * as Baked from "baked-recipe-admin";
+import { defineAsyncComponent } from "vue";
+import { defineNuxtPlugin } from "#app";
 
 export default defineNuxtPlugin({
   name: "importComponents",
   setup() {
+    const bakedComponents = import.meta.glob("~/node_modules/baked-recipe-admin/dist/runtime/components/*.vue");
     const projectComponents = import.meta.glob("~/components/*.vue");
+
+    const bakedComposables = import.meta.glob("~/node_modules/baked-recipe-admin/dist/runtime/composables/*.js");
     const projectComposables = import.meta.glob("~/composables/*.js");
+
+    const pages = import.meta.glob("~/.baked/*.page.json");
+    const layouts = import.meta.glob("~/.baked/*.layout.json");
 
     return {
       provide: {
         components: merge({
-          bakedFilter: key => !key.startsWith("use"),
+          bakedImports: bakedComponents,
           projectImports: projectComponents,
-          projectTrimStart: "components/",
-          projectTrimEnd: ".vue"
+          trimStart: "components/",
+          trimEnd: ".vue"
         }),
         composables: merge({
-          bakedFilter: key => key.startsWith("use"),
+          bakedImports: bakedComposables,
           projectImports: projectComposables,
-          projectTrimStart: "composables/",
-          projectTrimEnd: ".js"
-        })
+          trimStart: "composables/",
+          trimEnd: ".js"
+        }),
+        pages: jsonFiles(pages, ".baked/", ".page.json"),
+        layouts: jsonFiles(layouts, ".baked/", ".layout.json")
       }
     };
   }
 });
 
-function merge({ bakedFilter, projectImports, projectTrimStart, projectTrimEnd }) {
+function merge({ bakedImports, projectImports, trimStart, trimEnd }) {
   return {
-    ...Object.keys(Baked).filter(bakedFilter).reduce((result, name) => {
-      result[name] = Baked[name];
+    ...Object.keys(bakedImports).reduce((result, path) => {
+      result[path.slice(path.indexOf(trimStart) + trimStart.length, path.lastIndexOf(trimEnd))] = defineAsyncComponent(bakedImports[path]);
 
       return result;
     }, { }),
     ...Object.keys(projectImports).reduce((result, path) => {
-      result[path.slice(path.indexOf(projectTrimStart) + projectTrimStart.length, path.lastIndexOf(projectTrimEnd))] = defineAsyncComponent(projectImports[path]);
+      result[path.slice(path.indexOf(trimStart) + trimStart.length, path.lastIndexOf(trimEnd))] = defineAsyncComponent(projectImports[path]);
+
+      return result;
+    }, { })
+  };
+}
+
+function jsonFiles(imports, trimStart, trimEnd) {
+  return {
+    ...Object.keys(imports).reduce((result, path) => {
+      result[path.slice(path.indexOf(trimStart) + trimStart.length, path.lastIndexOf(trimEnd))] = imports[path];
 
       return result;
     }, { })

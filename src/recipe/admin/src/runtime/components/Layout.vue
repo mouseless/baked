@@ -7,8 +7,9 @@
   </Bake>
 </template>
 <script setup>
+import { onMounted, ref } from "vue";
+import { useLayouts } from "#app";
 import Bake from "./Bake.vue";
-import useLayouts from "../composables/useLayouts.mjs";
 
 const { name } = defineProps({
   name: { type: String, required: true }

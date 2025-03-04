@@ -1,3 +1,5 @@
+import { useNuxtApp } from "#app";
+
 export default function() {
   function resolve(name) {
     const nuxtApp = useNuxtApp();

@@ -29,9 +29,8 @@
   </Panel>
 </template>
 <script setup>
-import Bake from "./Bake.vue";
-import PageTitle from "./PageTitle.vue";
 import { Panel } from "primevue";
+import Bake from "./Bake.vue";
 
 defineProps({
   schema: { type: null, required: true },

@@ -15,6 +15,7 @@
   </div>
 </template>
 <script setup>
+import { useRoute } from "#app";
 import { ScrollTop } from "primevue";
 import Bake from "./Bake.vue";
 
