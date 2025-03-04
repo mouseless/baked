@@ -32,7 +32,8 @@
 </template>
 <script setup>
 import { onMounted } from "vue";
-import { useHead, useRuntimeConfig } from "#app";
+import { useRuntimeConfig } from "#app";
+import { useHead } from "#imports";
 import Bake from "./Bake.vue";
 
 const { schema } = defineProps({
