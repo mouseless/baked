@@ -4,8 +4,8 @@ import { defineNuxtPlugin } from "#app";
 export default defineNuxtPlugin({
   name: "importComponents",
   setup() {
-    const bakedComponents = import.meta.glob("~/node_modules/baked-recipe-admin/dist/runtime/components/*.vue");
-    const projectComponents = import.meta.glob("~/components/*.vue");
+    const bakedComponents = import.meta.glob("~/node_modules/baked-recipe-admin/dist/runtime/components/*");
+    const projectComponents = import.meta.glob("~/components/*");
 
     const bakedComposables = import.meta.glob("~/node_modules/baked-recipe-admin/dist/runtime/composables/*");
     const projectComposables = import.meta.glob("~/composables/*");
@@ -19,7 +19,7 @@ export default defineNuxtPlugin({
           bakedImports: bakedComponents,
           projectImports: projectComponents,
           trimStart: "components/",
-          trimEnd: ".vue",
+          trimEnd: ".",
           defineAsync: true
         }),
         composables: merge({

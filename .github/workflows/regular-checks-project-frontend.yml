@@ -49,11 +49,10 @@ jobs:
         run: |
           cd src/recipe/admin
           npm i
-          npm run package
+          npm run build
       - name: Test
         run: |
           cd test/recipe/admin
           npm i
-          npm run build:Production
           npx playwright install --with-deps
           npm test -- --grep-invert @visual
