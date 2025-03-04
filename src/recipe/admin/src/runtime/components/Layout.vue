@@ -8,7 +8,7 @@
 </template>
 <script setup>
 import { onMounted, ref } from "vue";
-import { useLayouts } from "#app";
+import { useLayouts } from "#imports";
 import Bake from "./Bake.vue";
 
 const { name } = defineProps({

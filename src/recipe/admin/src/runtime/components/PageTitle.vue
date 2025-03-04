@@ -36,7 +36,8 @@ import { useHead, useRuntimeConfig } from "#app";
 import Bake from "./Bake.vue";
 
 const { schema } = defineProps({
-  schema: { type: null, required: true }
+  schema: { type: null, required: true },
+  data: { type: null, default: null }
 });
 
 const { title, description, actions } = schema;

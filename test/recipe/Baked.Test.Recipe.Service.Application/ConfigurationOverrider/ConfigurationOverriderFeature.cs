@@ -114,7 +114,7 @@ public class ConfigurationOverriderFeature : IFeature
                     ]
                 })
                 {
-                    Data = new ComputedData("useRoute")
+                    Data = new ComputedData("useNuxtRoute")
                 },
                 Header = new ComponentDescriptorAttribute<Header>(new()
                 {
@@ -130,7 +130,7 @@ public class ConfigurationOverriderFeature : IFeature
                     }
                 })
                 {
-                    Data = new ComputedData("useRoute")
+                    Data = new ComputedData("useNuxtRoute")
                 }
             }));
         });

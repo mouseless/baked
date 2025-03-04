@@ -6,7 +6,8 @@
 </template>
 <script setup>
 import { computed, onMounted, provide, ref } from "vue";
-import { useHead, usePages, useRuntimeConfig }  from "#app";
+import { useHead, useRuntimeConfig } from "#app";
+import { usePages } from "#imports";
 import Bake from "./Bake.vue";
 
 const { routeParams } = defineProps({

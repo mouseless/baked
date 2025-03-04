@@ -7,7 +7,7 @@ export default function() {
 
     if(!composables[name]) { throw new Error(`Cannot resolve composable '${name}'`); }
 
-    return composables[name];
+    return composables[name]();
   }
 
   return {

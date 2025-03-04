@@ -20,7 +20,8 @@ import { ScrollTop } from "primevue";
 import Bake from "./Bake.vue";
 
 const { schema } = defineProps({
-  schema: { type: null, required: true }
+  schema: { type: null, required: true },
+  data: { type: null, default: null }
 });
 
 // do NOT remove this without testing. using $route in template doesn't trigger

@@ -16,6 +16,7 @@ import Bake from "./Bake.vue";
 import PageTitle from "./PageTitle.vue";
 
 defineProps({
-  schema: { type: null, required: true }
+  schema: { type: null, required: true },
+  data: { type: null, default: null }
 });
 </script>

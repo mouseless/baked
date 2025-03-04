@@ -19,7 +19,8 @@ export default defineNuxtPlugin({
           bakedImports: bakedComponents,
           projectImports: projectComponents,
           trimStart: "components/",
-          trimEnd: ".vue"
+          trimEnd: ".vue",
+          defineAsync: true
         }),
         composables: merge({
           bakedImports: bakedComposables,
@@ -34,15 +35,15 @@ export default defineNuxtPlugin({
   }
 });
 
-function merge({ bakedImports, projectImports, trimStart, trimEnd }) {
+function merge({ bakedImports, projectImports, trimStart, trimEnd, defineAsync = false }) {
   return {
     ...Object.keys(bakedImports).reduce((result, path) => {
-      result[path.slice(path.indexOf(trimStart) + trimStart.length, path.lastIndexOf(trimEnd))] = defineAsyncComponent(bakedImports[path]);
+      result[path.slice(path.indexOf(trimStart) + trimStart.length, path.lastIndexOf(trimEnd))] = defineAsync ? defineAsyncComponent(bakedImports[path]) : bakedImports[path];
 
       return result;
     }, { }),
     ...Object.keys(projectImports).reduce((result, path) => {
-      result[path.slice(path.indexOf(trimStart) + trimStart.length, path.lastIndexOf(trimEnd))] = defineAsyncComponent(projectImports[path]);
+      result[path.slice(path.indexOf(trimStart) + trimStart.length, path.lastIndexOf(trimEnd))] = defineAsync ? defineAsyncComponent(projectImports[path]) : projectImports[path];
 
       return result;
     }, { })

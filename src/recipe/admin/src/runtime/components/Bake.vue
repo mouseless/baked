@@ -18,13 +18,13 @@ const { descriptor } = defineProps({
 });
 
 const { public: { apiBaseURL: baseURL, devMode } } = useRuntimeConfig();
-const component = useComponentResolver();
-const composable = useComposableResolver();
+const componentResolver = useComponentResolver();
+const composableResolver = useComposableResolver();
 const extensions = useStringExtensions();
 
 const routeParams = inject("routeParams", []);
 
-const is = component.resolve(descriptor.type, "None");
+const is = componentResolver.resolve(descriptor.type, "None");
 const data = ref();
 const loaded = ref(false);
 
@@ -52,7 +52,9 @@ async function fetchData() {
   }
 
   if(descriptor.data?.type === "Computed") {
-    return composable.resolve(descriptor.data.composable)();
+    const composable = await composableResolver.resolve(descriptor.data.composable);
+
+    return composable.default();
   }
 
   if(descriptor.data?.type === "Inline") {
