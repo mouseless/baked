@@ -49,7 +49,7 @@ jobs:
         run: |
           cd src/recipe/admin
           npm i
-          npm run build
+          npm run package
       - name: Test
         run: |
           cd test/recipe/admin
