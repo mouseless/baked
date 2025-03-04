@@ -42,6 +42,8 @@ COPY --parents src/recipe/admin .
 COPY --parents test/recipe/admin .
 COPY --from=build  ./test/recipe/admin/.baked ./test/recipe/admin/.baked
 RUN cd src/recipe/admin ; npm run build
+RUN cd src/recipe/admin ; npm pack --pack-destination ../../..
+RUN cd test/recipe/admin ; npm i $(find ../../.. -name 'baked-recipe-admin-*.tgz' -print -quit)
 RUN cd test/recipe/admin ; npm run build:$ENVIRONMENT
 
 FROM nginx AS final

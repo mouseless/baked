@@ -5,7 +5,7 @@
   />
 </template>
 <script setup>
-import { giveMe } from "#imports";
+import giveMe from "~/utils/giveMe";
 
 const variants = [
   {
