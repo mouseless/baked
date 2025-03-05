@@ -58,6 +58,16 @@ test.describe("Multi Level", () => {
   });
 });
 
+test.describe("Wildcard", () => {
+  const id = "Wildcard";
+
+  test("breadcrumb not attached", async({page}) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.locator(`span${primevue.breadcrumb.link}`)).toHaveText("Entity");
+  });
+});
+
 test.describe("Hidden at Home", () => {
   const id = "Hidden at Home";
 

@@ -39,7 +39,7 @@ export default {
   },
 
   aHeader({ sitemapItems, data } = {}) {
-    sitemapItems = $(sitemapItems, [this.aHeaderSitemapItem({ route: "/test" })]);
+    sitemapItems = $(sitemapItems, [this.aHeaderItem({ route: "/test" })]);
     data = $(data, { path: "/test" });
 
     return {
@@ -55,9 +55,9 @@ export default {
     };
   },
 
-  aHeaderSitemapItem({ route, icon, title, parentRoute } = {}) {
+  aHeaderItem({ route, icon, title, parentRoute } = {}) {
     route = $(route, "/item");
-    icon = $(icon, "pi pi-home");
+    icon = $(icon, route === "/" ? "pi pi-home" : "pi pi-heart");
 
     return { route, icon, title, parentRoute };
   },

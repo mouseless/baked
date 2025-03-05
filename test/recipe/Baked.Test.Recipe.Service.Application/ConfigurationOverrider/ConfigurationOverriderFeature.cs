@@ -6,6 +6,7 @@ using Baked.Test.Business;
 using Baked.Test.CodingStyle.RichTransient;
 using Baked.Test.ExceptionHandling;
 using Baked.Test.Orm;
+using Baked.Theme.Admin;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
 
@@ -104,29 +105,38 @@ public class ConfigurationOverriderFeature : IFeature
 
         configurator.ConfigureLayoutDescriptors(layouts =>
         {
-            layouts.Add("default", DefaultLayout(
-                sideMenu: SideMenu(
-                    menu:
-                    [
-                        SideMenuItem("/", "pi pi-home"),
-                        SideMenuItem("/specs", "pi pi-list-check", title: "Specs")
-                    ],
-                    footer: String(Inline("FT"))
-                ),
-                header: Header(
-                    siteMap:
-                    [
-                        HeaderItem("/", icon: "pi pi-home"),
-                        HeaderItem("/specs", icon: "pi pi-list-check", title : "Specs"),
-                        HeaderItem("/specs/card-link", title: "Card Link", parentRoute: "/specs"),
-                        HeaderItem("/specs/detail-page", title: "Detail Page", parentRoute: "/specs"),
-                        HeaderItem("/specs/header", title: "Header", parentRoute: "/specs"),
-                        HeaderItem("/specs/menu-page", title: "Menu Page", parentRoute: "/specs"),
-                        HeaderItem("/specs/page-title", title: "Page Title", parentRoute: "/specs"),
-                        HeaderItem("/specs/side-menu", title: "Side Menu", parentRoute: "/specs")
-                    ]
-                )
-            ));
+            configurator.UsingDomainModel(domain =>
+            {
+                var rtwd = domain.Types[typeof(RichTransientWithData)];
+                var rtwdRoute = rtwd.GetActionModel().GetRoute();
+                var rtwdDetail = rtwd.Get<DetailPage>();
+                var rtwdPageDetail = (PageTitle)(rtwdDetail.Header?.Schema ?? throw new("RichTransientWithData is expected to have PageTitle in Header"));
+
+                layouts.Add("default", DefaultLayout(
+                    sideMenu: SideMenu(
+                        menu:
+                        [
+                            SideMenuItem("/", "pi pi-home"),
+                            SideMenuItem("/specs", "pi pi-list-check", title: "Specs")
+                        ],
+                        footer: String(Inline("FT"))
+                    ),
+                    header: Header(
+                        siteMap:
+                        [
+                            HeaderItem("/", icon: "pi pi-home"),
+                            HeaderItem($"/{rtwdRoute}", title: rtwdPageDetail.Title),
+                            HeaderItem("/specs", icon: "pi pi-list-check", title: "Specs"),
+                            HeaderItem("/specs/card-link", title: "Card Link", parentRoute: "/specs"),
+                            HeaderItem("/specs/detail-page", title: "Detail Page", parentRoute: "/specs"),
+                            HeaderItem("/specs/header", title: "Header", parentRoute: "/specs"),
+                            HeaderItem("/specs/menu-page", title: "Menu Page", parentRoute: "/specs"),
+                            HeaderItem("/specs/page-title", title: "Page Title", parentRoute: "/specs"),
+                            HeaderItem("/specs/side-menu", title: "Side Menu", parentRoute: "/specs")
+                        ]
+                    )
+                ));
+            });
         });
 
         configurator.ConfigurePageDescriptors(pages =>

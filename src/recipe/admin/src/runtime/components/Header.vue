@@ -41,11 +41,11 @@ const { schema, data } = defineProps({
 const parts = computed(() => {
   const result = [];
 
-  let page = schema.sitemap[data.path];
+  let page = findItem(data.path);
   while(page) {
     result.splice(0, 0, page);
 
-    page = schema.sitemap[page.parentRoute];
+    page = findItem(page.parentRoute);
   }
 
   return result;
@@ -58,5 +58,21 @@ function linkOrSpan(item) {
   }
 
   return "span";
+}
+
+function findItem(route) {
+  if(schema.sitemap[route]) { return schema.sitemap[route]; }
+
+  for(const key in schema.sitemap){
+    const expression = key.replaceAll(/[{][\w\d\-:]*[}]/g, "[\\w\\d\-]*");
+    const matcher = new RegExp(`^${expression}$`, "g");
+
+    if(matcher.test(route)) {
+      return {
+        ...schema.sitemap[key],
+        route
+      };
+    }
+  };
 }
 </script>
