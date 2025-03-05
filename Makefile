@@ -27,7 +27,7 @@ build:
 test:
 	@ \
 	dotnet test --logger quackers ; \
-	cd test/recipe/admin ; SILENT=1 npm test ; cd ../../..
+	cd test/recipe/admin ; BUILD_SILENT=1 npm test ; cd ../../..
 coverage:
 	@ \
 	rm -rdf .coverage ; \
