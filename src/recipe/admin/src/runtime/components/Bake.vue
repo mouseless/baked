@@ -9,7 +9,7 @@
 <script setup>
 import { inject, onMounted, ref } from "vue";
 import { useRuntimeConfig } from "#app";
-import { useComponentResolver, useStringExtensions } from "#imports"; 
+import { useComponentResolver, useStringExtensions } from "#imports";
 
 const { descriptor } = defineProps({
   descriptor: { type: null, required: true }

@@ -2,7 +2,7 @@
   <ComponentSpec :variants="variants" />
 </template>
 <script setup>
-import { giveMe } from '#imports';
+import { giveMe } from "#imports";
 
 const variants = [
   {
