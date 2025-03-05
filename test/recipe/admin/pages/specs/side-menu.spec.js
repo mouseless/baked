@@ -1,4 +1,3 @@
-/*
 import { expect, test } from "@nuxt/test-utils/playwright";
 import primevue from "../../utils/locators/primevue.js";
 
@@ -70,4 +69,3 @@ test.describe("Disabled Item", () => {
     await expect(component.locator(primevue.button.base)).toHaveAttribute("disabled");
   });
 });
-*/
