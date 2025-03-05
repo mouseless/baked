@@ -4,12 +4,16 @@ FILE ?= file_name
 format:
 	@ \
 	dotnet format --verbosity normal ; \
+	cd src/recipe/admin ; npm run lint -- --fix ; cd ../../.. ; \
 	cd test/recipe/admin ; npm run lint -- --fix ; cd ../../.. ; \
 	cd docs/.theme ; npm run lint -- --fix ; cd ../..
 fix:
 	@ \
-	cd src/recipe/admin ; npx eslint $(TARGET) --fix ; cd ../../.. ; \
-	cd test/recipe/admin ; npx eslint $(TARGET) --fix ; cd ../../..
+	if echo "$(FILE)" | grep -q "^src"; then \
+		cd src/recipe/admin && npx eslint $(subst src/recipe/admin/,,$(FILE)) --fix; \
+	elif echo "$(FILE)" | grep -q "^test"; then \
+		cd test/recipe/admin && npx eslint $(subst test/recipe/admin/,,$(FILE)) --fix; \
+	fi
 install:
 	@ \
 	cd src/recipe/admin ; npm ci ; cd ../../.. ; \
