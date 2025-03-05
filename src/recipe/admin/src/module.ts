@@ -32,7 +32,6 @@ export default defineNuxtModule<ModuleOptions>({
       exposeConfig: true,
       cssPath: resolver.resolve('./runtime/assets/tailwind.css'),
       config: {
-        darkMode: 'class',
         content: {
           files: [
             resolver.resolve('./runtime/components/**/*.{vue,mjs,ts}'),
