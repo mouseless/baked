@@ -1,45 +1,47 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
 import tailwindcss from "../../utils/locators/tailwindcss.js";
 
-test.beforeEach(async({goto}) => {
-  await goto("/specs/detail-page", { waitUntil: "hydration" });
-});
-
-test.describe("Basic", () => {
-  const id = "Basic";
-
-  test("header", async({page}) => {
-    const component = page.getByTestId(id);
-
-    await expect(component.getByTestId("header")).toHaveText("HEADER TEXT");
+test.describe("Detail", () => {
+  test.beforeEach(async({goto}) => {
+    await goto("/specs/detail-page", { waitUntil: "hydration" });
   });
 
-  test("props", async({page}) => {
-    const component = page.getByTestId(id);
+  test.describe("Basic", () => {
+    const id = "Basic";
 
-    await expect(component.getByTestId("prop1")).toHaveText("PROP1 VALUE");
-    await expect(component.getByTestId("prop2")).toHaveText("PROP2 VALUE");
+    test("header", async({page}) => {
+      const component = page.getByTestId(id);
+
+      await expect(component.getByTestId("header")).toHaveText("HEADER TEXT");
+    });
+
+    test("props", async({page}) => {
+      const component = page.getByTestId(id);
+
+      await expect(component.getByTestId("prop1")).toHaveText("PROP1 VALUE");
+      await expect(component.getByTestId("prop2")).toHaveText("PROP2 VALUE");
+    });
+
+    test("visual", { tag: "@visual" }, async({page}) => {
+      const component = page.getByTestId(id);
+
+      await expect(component).toHaveScreenshot();
+    });
   });
 
-  test("visual", { tag: "@visual" }, async({page}) => {
-    const component = page.getByTestId(id);
+  test.describe("Null", () => {
+    const id = "Null";
 
-    await expect(component).toHaveScreenshot();
-  });
-});
+    test("header", async({page}) => {
+      const component = page.getByTestId(id);
 
-test.describe("Null", () => {
-  const id = "Null";
+      await expect(component.getByTestId("header")).not.toBeVisible();
+    });
 
-  test("header", async({page}) => {
-    const component = page.getByTestId(id);
+    test("props", async({page}) => {
+      const component = page.getByTestId(id);
 
-    await expect(component.getByTestId("header")).not.toBeVisible();
-  });
-
-  test("props", async({page}) => {
-    const component = page.getByTestId(id);
-
-    await expect(component.locator(tailwindcss.grid)).not.toBeVisible();
+      await expect(component.locator(tailwindcss.grid)).not.toBeVisible();
+    });
   });
 });
