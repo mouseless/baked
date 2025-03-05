@@ -52,7 +52,7 @@ public static class Components
     {
         data ??= Datas.Computed(Composables.UseRoute);
 
-        return new(new() { Menu = [.. menu] }) { Data = data };
+        return new(new() { Menu = [.. menu], Footer = footer }) { Data = data };
     }
 
     public static SideMenu.Item SideMenuItem(string route, string icon,
