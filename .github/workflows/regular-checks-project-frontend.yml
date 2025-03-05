@@ -55,4 +55,4 @@ jobs:
         run: |
           cd test/recipe/admin ; npm i ; cd ../../..
           cd test/recipe/admin
-          npm test -- --grep-invert @visual
+          SILENT=1 npm test -- --grep-invert @visual

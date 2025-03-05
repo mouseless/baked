@@ -1,13 +1,12 @@
 import { useNuxtApp } from "#app";
 
 export default function() {
-  function resolve(type, fallback) {
-    const nuxtApp = useNuxtApp();
-    const components = nuxtApp.$components;
+  const { $components } = useNuxtApp();
 
-    return components[type]
-      ? components[type]
-      : components[fallback];
+  function resolve(type, fallback) {
+    return $components[type]
+      ? $components[type]
+      : $components[fallback];
   }
 
   return {
