@@ -1,5 +1,5 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
-import tailwindcss from "../../utils/locators/tailwindcss.js";
+import tailwindcss from "~/utils/locators/tailwindcss";
 
 test.describe("Detail", () => {
   test.beforeEach(async({goto}) => {
