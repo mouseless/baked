@@ -7,5 +7,5 @@ public record PageTitle(string Title)
 {
     public string Title { get; set; } = Title;
     public string? Description { get; set; }
-    public List<IComponentSchema> Actions { get; init; } = [];
+    public List<IComponentDescriptor> Actions { get; init; } = [];
 }
