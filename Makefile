@@ -16,7 +16,9 @@ fix:
 	fi
 install:
 	@ \
+	cd src/recipe/admin ; npm i ; cd ../../.. ; \
 	cd src/recipe/admin ; npm ci ; cd ../../.. ; \
+	cd test/recipe/admin ; npm i ; cd ../../.. ; \
 	cd test/recipe/admin ; npm ci ; cd ../../..
 build:
 	@ \
