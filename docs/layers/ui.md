@@ -62,8 +62,19 @@ Below is a sample metadata output which can be created;
 
 ## Configuration Targets
 
-This layer provides `PageDescriptors` configuration target for registering pages
-using `ComponentDescriptor` instances.
+This layer provides `LayerDescriptors` and `PageDescriptors` configuration
+target for registering pages using `ComponentDescriptor` instances.
+
+### `LayoutDescriptors`
+
+This target is provided in `GenerateCode` phase. To configure it in a feature;
+
+```csharp
+configurator.ConfigureLayoutDescriptors(layouts =>
+{
+    ...
+});
+```
 
 ### `PageDescriptors`
 
