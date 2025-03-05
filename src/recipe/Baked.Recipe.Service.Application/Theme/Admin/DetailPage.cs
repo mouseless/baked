@@ -12,6 +12,6 @@ public record DetailPage : IComponentSchema
     {
         public string Key { get; } = Key;
         public string Title { get; set; } = Key.Humanize();
-        public IComponentDescriptor Component { get; set; } = Components.String;
+        public IComponentDescriptor Component { get; set; } = Components.String();
     }
 }

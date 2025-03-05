@@ -6,6 +6,7 @@ public record SideMenu : IComponentSchema
 {
     public string Logo { get; set; } = "logo.svg";
     public List<Item> Menu { get; init; } = [];
+    public IComponentDescriptor? Footer { get; set; }
 
     public record Item(string Route, string Icon)
     {

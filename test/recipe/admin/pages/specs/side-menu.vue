@@ -14,7 +14,8 @@ const variants = [
     descriptor: giveMe.aSideMenu({
       menu: [
         giveMe.aSideMenuItem({ route: "/menu", icon: "pi pi-heart" })
-      ]
+      ],
+      footer: giveMe.anExpected({ testId: "footer", value: "FT" })
     })
   },
   {

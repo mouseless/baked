@@ -111,7 +111,8 @@ public class ConfigurationOverriderFeature : IFeature
                     [
                         new("/", "pi pi-home"),
                         new("/specs", "pi pi-list-check") { Title = "Specs"}
-                    ]
+                    ],
+                    Footer = Components.String(new InlineData("FT"))
                 })
                 {
                     Data = new ComputedData("useNuxtRoute")

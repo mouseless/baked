@@ -5,5 +5,11 @@ namespace Baked.Theme.Admin;
 public static class Components
 {
     public static readonly IComponentDescriptor None = new ComponentDescriptor(nameof(None));
-    public static readonly IComponentDescriptor String = new ComponentDescriptor(nameof(String));
+
+    public static IComponentDescriptor String(
+        IData? data = default
+    ) => new ComponentDescriptor(nameof(String))
+    {
+        Data = data
+    };
 }

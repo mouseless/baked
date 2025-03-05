@@ -32,6 +32,12 @@ test.describe("Base", () => {
     await expect(component.locator(primevue.button.icon)).toHaveClass(/pi pi-heart/);
   });
 
+  test("footer", async({page}) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.getByTestId("footer")).toHaveText("FT");
+  });
+
   test("visual", { tag: "@visual" }, async({page}) => {
     const component = page.getByTestId(id);
 

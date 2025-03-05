@@ -4,7 +4,7 @@ function $(value, defaultValue) {
 }
 
 export default {
-  aCardLink({ route, icon, title, description, disabled, disabledReason }) {
+  aCardLink({ route, icon, title, description, disabled, disabledReason } = {}) {
     route = $(route, "/test-route");
     icon = $(icon, "pi pi-heart");
     title = $(title, "Test");
@@ -18,8 +18,8 @@ export default {
     };
   },
 
-  aDetailPage({ header, props, data }) {
-    header = $(header, this.anExpected({testId: "header", value: "Test Header"}));
+  aDetailPage({ header, props, data } = {}) {
+    header = $(header, this.anExpected());
     props = $(props, []);
     data = $(data, { });
 
@@ -30,7 +30,7 @@ export default {
     };
   },
 
-  aDetailPageProp({ keyAndTestId, title, component }) {
+  aDetailPageProp({ keyAndTestId, title, component } = {}) {
     keyAndTestId = $(keyAndTestId, "testKey");
     title = $(title, "Test Prop");
     component = $(component, this.anExpected({ testId: keyAndTestId }));
@@ -38,7 +38,7 @@ export default {
     return { key: keyAndTestId, title, component };
   },
 
-  aHeader({ sitemapItems, data }) {
+  aHeader({ sitemapItems, data } = {}) {
     sitemapItems = $(sitemapItems, [this.aHeaderSitemapItem({ route: "/test" })]);
     data = $(data, { path: "/test" });
 
@@ -55,14 +55,14 @@ export default {
     };
   },
 
-  aHeaderSitemapItem({ route, icon, title, parentRoute }) {
+  aHeaderSitemapItem({ route, icon, title, parentRoute } = {}) {
     route = $(route, "/item");
     icon = $(icon, "pi pi-home");
 
     return { route, icon, title, parentRoute };
   },
 
-  aMenuPage({ title, description, links }) {
+  aMenuPage({ title, description, links } = {}) {
     title = $(title, "Test Title");
     description = $(description, "Test description is given for testing purposes");
     links = $(links, []);
@@ -73,7 +73,7 @@ export default {
     };
   },
 
-  aPageTitle({ title, description, actions }) {
+  aPageTitle({ title, description, actions } = {}) {
     title = $(title, "Test Title");
     description = $(description, "Test description is given for testing purposes");
     actions = $(actions, []);
@@ -84,19 +84,20 @@ export default {
     };
   },
 
-  aSideMenu({ logo, menu, data }) {
+  aSideMenu({ logo, menu, data, footer } = {}) {
     logo = $(logo, "logo.svg");
     menu = $(menu, []);
     data = $(data, { path: "/test" });
+    footer = $(footer, this.anExpected());
 
     return {
       type: "SideMenu",
-      schema: { logo, menu },
+      schema: { logo, menu, footer },
       data
     };
   },
 
-  aSideMenuItem({ route, icon, title, soon }) {
+  aSideMenuItem({ route, icon, title, soon } = {}) {
     route = $(route, "/item");
     icon = $(icon, "pi pi-home");
     soon = $(soon, false);
@@ -104,9 +105,9 @@ export default {
     return { route, icon, title, soon };
   },
 
-  anExpected({ testId, value }) {
+  anExpected({ testId, value } = {}) {
     testId = $(testId, "test-id");
-    value = $(value, "test value");
+    value = $(value, "");
 
     return {
       type: "Expected",

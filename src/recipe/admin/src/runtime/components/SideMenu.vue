@@ -18,15 +18,23 @@
       :path="data.path"
     />
     <div
-      v-if="$slots.bottom"
+      v-if="$slots.footer || footer"
       class="mt-auto flex flex-col items-center gap-2"
     >
-      <slot name="bottom" />
+      <Bake
+        v-if="footer"
+        :descriptor="footer"
+      />
+      <slot
+        v-else
+        name="footer"
+      />
     </div>
   </nav>
 </template>
 <script setup>
 import { RouterLink } from "vue-router";
+import Bake from "./Bake.vue";
 import SideMenuItem from "./SideMenuItem.vue";
 
 const { schema, data } = defineProps({
@@ -34,5 +42,5 @@ const { schema, data } = defineProps({
   data: { type: null, required: true }
 });
 
-const { logo, menu } = schema;
+const { logo, menu, footer } = schema;
 </script>
