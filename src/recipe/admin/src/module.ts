@@ -28,6 +28,7 @@ export default defineNuxtModule<ModuleOptions>({
   async setup(_options, _nuxt) {
     const resolver = createResolver(import.meta.url);
 
+    _nuxt.options.css = ["primeicons/primeicons.css"];
     _nuxt.options.devtools.enabled = false;
     _nuxt.options.experimental.payloadExtraction = false;
     _nuxt.options.features.inlineStyles = false;
