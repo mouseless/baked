@@ -7,6 +7,7 @@ using Baked.Test.CodingStyle.RichTransient;
 using Baked.Test.ExceptionHandling;
 using Baked.Test.Orm;
 using Baked.Theme.Admin;
+using Baked.Ui;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
 
@@ -141,6 +142,13 @@ public class ConfigurationOverriderFeature : IFeature
 
         configurator.ConfigurePageDescriptors(pages =>
         {
+            foreach (var page in pages.Values.OfType<ComponentDescriptorAttribute<DetailPage>>())
+            {
+                if (page.Data is not RemoteData remote) { continue; }
+
+                remote.Headers = Inline(new { Authorization = "token-jane" });
+            }
+
             configurator.UsingDomainModel(domain =>
             {
                 var route = domain.Types[typeof(RichTransientWithData)].GetActionModel().GetRoute();
