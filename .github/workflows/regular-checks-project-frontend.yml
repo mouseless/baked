@@ -23,12 +23,14 @@ jobs:
         run: echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns
       - name: Build src
         run: |
-          cd src/recipe/admin ; npm i ; cd ../../..
-          cd src/recipe/admin ; npm run build ; cd ../../..
+          cd src/recipe/admin
+          npm i
+          npm run build
       - name: Build test
         run: |
-          cd test/recipe/admin ; npm i ; cd ../../..
-          cd test/recipe/admin ; npm run build:Production ; cd ../../..
+          cd test/recipe/admin
+          npm i
+          npm run build:Production
   test:
     name: Test
     needs: build
@@ -41,18 +43,27 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9
       - name: Disable AppArmour
         run: echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns
-      - name: Install Playwright Browsers
-        run: |
-          cd test/recipe/admin
-          npx playwright install --with-deps
       - name: Build local package
         run: |
-          cd src/recipe/admin ; npm i ; cd ../../..
-          cd src/recipe/admin ; npm run build ; cd ../../..
-      - name: Test
+          cd src/recipe/admin
+          npm i
+          npm run build
+      - name: Build descriptors
         run: |
-          cd test/recipe/admin ; npm i ; cd ../../..
+          dotnet build
+      - name: Build test project
+        run: |
           cd test/recipe/admin
-          npm test -- --grep-invert @visual
+          npm i
+          npx playwright install --with-deps
+          npm run build:Production
+      - name: Run tests
+        run: |
+          cd test/recipe/admin
+          BUILD_SILENT=1 npm test -- --grep-invert @visual

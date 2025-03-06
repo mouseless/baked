@@ -34,7 +34,7 @@
   ],
   "scripts": {
     "package": "nuxt-module-build build",
-    "postinstall": "nuxi prepare",
+    "postinstall": "nuxt prepare",
     "build": "nuxt-module-build build --stub && nuxt-module-build prepare",
     "lint": "eslint ."
   },

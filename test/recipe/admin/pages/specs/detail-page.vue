@@ -1,18 +1,20 @@
 <template>
-  <ComponentSpec :variants="variants" />
+  <ComponentSpec
+    title="Detail Page"
+    :variants="variants"
+  />
 </template>
 <script setup>
-import { giveMe } from '#imports';
+import giveMe from "~/utils/giveMe";
 
 const variants = [
   {
     name: "Basic",
-    descriptor: giveMe.aDetail({
-      title: "TITLE TEXT",
+    descriptor: giveMe.aDetailPage({
       header: giveMe.anExpected({ testId: "header", value: "HEADER TEXT" }),
       props: [
-        giveMe.aDetailProp({ keyAndTestId: "prop1", title: "PROP 1" }),
-        giveMe.aDetailProp({ keyAndTestId: "prop2", title: "PROP 2" })
+        giveMe.aDetailPageProp({ keyAndTestId: "prop1", title: "PROP 1" }),
+        giveMe.aDetailPageProp({ keyAndTestId: "prop2", title: "PROP 2" })
       ],
       data: {
         "prop1": "PROP1 VALUE",
@@ -22,8 +24,7 @@ const variants = [
   },
   {
     name: "Null",
-    descriptor: giveMe.aDetail({
-      title: null,
+    descriptor: giveMe.aDetailPage({
       header: null,
       props: null,
       data: null
@@ -31,9 +32,9 @@ const variants = [
   },
   {
     name: "Long Property",
-    descriptor: giveMe.aDetail({
+    descriptor: giveMe.aDetailPage({
       props: [
-        giveMe.aDetailProp({
+        giveMe.aDetailPageProp({
           keyAndTestId: "longProp",
           title: "A VERY LONG PROP NAME"
         })

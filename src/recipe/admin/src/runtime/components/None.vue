@@ -7,7 +7,7 @@
 import { computed } from "vue";
 
 const { data } = defineProps({
-  schema: { type: null, required: true },
+  schema: { type: null, default: null },
   data: { type: null, required: true }
 });
 

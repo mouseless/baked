@@ -3,7 +3,7 @@
 </template>
 <script setup>
 defineProps({
-  schema: { type: null, required: true },
+  schema: { type: null, default: null },
   data: { type: null, required: true }
 });
 </script>

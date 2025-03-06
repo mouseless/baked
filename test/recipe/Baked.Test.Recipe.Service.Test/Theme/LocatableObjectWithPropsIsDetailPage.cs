@@ -4,14 +4,14 @@ using Baked.Ui;
 
 namespace Baked.Test.Theme;
 
-public class LocatableObjectWithPropsIsDetailComponent : TestServiceSpec
+public class LocatableObjectWithPropsIsDetailPage : TestServiceSpec
 {
     [TestCase(typeof(RichTransientWithData), "/rich-transient-with-datas/{0}")]
     public void Locatable_classes_with_public_properties_have_detail_attribute(Type type, string expectedPath)
     {
         var metadata = GiveMe.TheTypeModel(type).GetMetadata();
 
-        metadata.TryGetSingle<ComponentDescriptorAttribute<Detail>>(out var detail).ShouldBeTrue();
+        metadata.TryGetSingle<ComponentDescriptorAttribute<DetailPage>>(out var detail).ShouldBeTrue();
         var data = detail.Data.ShouldBeOfType<RemoteData>();
         data.Path.ShouldBe(expectedPath);
     }
@@ -21,7 +21,7 @@ public class LocatableObjectWithPropsIsDetailComponent : TestServiceSpec
     {
         var domainModel = GiveMe.TheDomainModel();
 
-        var detail = domainModel.Types[typeof(RichTransientWithData)].GetMetadata().GetSingle<ComponentDescriptorAttribute<Detail>>();
+        var detail = domainModel.Types[typeof(RichTransientWithData)].GetMetadata().GetSingle<ComponentDescriptorAttribute<DetailPage>>();
         detail.Schema.Props.Count().ShouldBe(2);
         detail.Schema.Props.ShouldContain(p => p.Key == "id");
         detail.Schema.Props.ShouldContain(p => p.Key == "time");

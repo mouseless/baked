@@ -1,7 +1,8 @@
 ﻿namespace Baked.Ui;
 
-public class InlineData : IData
+public record InlineData(object Value)
+    : IData
 {
     public string Type => "Inline";
-    public required object Value { get; set; }
+    public object Value { get; set; } = Value;
 }

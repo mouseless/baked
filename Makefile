@@ -4,20 +4,30 @@ FILE ?= file_name
 format:
 	@ \
 	dotnet format --verbosity normal ; \
+	cd src/recipe/admin ; npm run lint -- --fix ; cd ../../.. ; \
 	cd test/recipe/admin ; npm run lint -- --fix ; cd ../../.. ; \
 	cd docs/.theme ; npm run lint -- --fix ; cd ../..
 fix:
 	@ \
-	cd src/recipe/admin ; npx eslint $(TARGET) --fix ; cd ../../.. ; \
-	cd test/recipe/admin ; npx eslint $(TARGET) --fix ; cd ../../..
+	if echo "$(FILE)" | grep -q "^src"; then \
+		cd src/recipe/admin && npx eslint $(subst src/recipe/admin/,,$(FILE)) --fix; \
+	elif echo "$(FILE)" | grep -q "^test"; then \
+		cd test/recipe/admin && npx eslint $(subst test/recipe/admin/,,$(FILE)) --fix; \
+	fi
+install:
+	@ \
+	cd src/recipe/admin ; npm i ; cd ../../.. ; \
+	cd src/recipe/admin ; npm ci ; cd ../../.. ; \
+	cd test/recipe/admin ; npm i ; cd ../../.. ; \
+	cd test/recipe/admin ; npm ci ; cd ../../..
 build:
 	@ \
-	dotnet build ; \
-	cd src/recipe/admin ; npm run build ; cd ../../..
+	cd src/recipe/admin ; npm run build ; cd ../../.. ; \
+	dotnet build
 test:
 	@ \
 	dotnet test --logger quackers ; \
-	cd test/recipe/admin ; SILENT=1 npm run test ; cd ../../..
+	cd test/recipe/admin ; BUILD_SILENT=1 npm test ; cd ../../..
 coverage:
 	@ \
 	rm -rdf .coverage ; \
