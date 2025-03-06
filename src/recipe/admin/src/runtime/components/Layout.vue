@@ -20,3 +20,14 @@ const layoutDescriptor = ref();
 
 onMounted(async() => layoutDescriptor.value = await layouts.fetch(name));
 </script>
+<style lang="scss">
+.bg-body {
+  background-color: white;
+}
+
+@media (prefers-color-scheme: dark) {
+  .bg-body {
+    background-color: #121212;
+  }
+}
+</style>
