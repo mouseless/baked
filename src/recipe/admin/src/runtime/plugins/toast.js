@@ -4,6 +4,7 @@ import ToastService from "primevue/toastservice";
 
 export default defineNuxtPlugin({
   name: "toast",
+  enforce: "pre",
   setup(_nuxtApp) {
     _nuxtApp.vueApp.use(ToastService);
     const toast = useToast();
