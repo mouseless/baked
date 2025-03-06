@@ -1,15 +1,14 @@
 <template>
-  <Panel :header="schema.title">
-    <div
-      v-if="schema.header"
-      class="w-full"
-    >
-      <Bake :descriptor="schema.header" />
-    </div>
-    <div
-      v-if="data"
-      class="grid grid-cols-2 gap-4"
-    >
+  <Bake
+    v-if="schema.header"
+    :descriptor="schema.header"
+  />
+  <Panel
+    v-if="data"
+    header="Details"
+    toggleable
+  >
+    <div class="grid grid-cols-2 gap-4">
       <div
         v-for="prop in schema.props"
         :key="prop.key"

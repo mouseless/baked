@@ -1,5 +1,5 @@
 <template>
-  <div class="w-[1000px] mx-auto my-4">
+  <Layout name="default">
     <slot />
-  </div>
+  </Layout>
 </template>

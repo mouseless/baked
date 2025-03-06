@@ -3,12 +3,11 @@
     v-if="pageDescriptor"
     :descriptor="pageDescriptor"
   />
-  <Toast />
 </template>
 <script setup>
-import Toast from "primevue/toast";
 import { computed, onMounted, provide, ref } from "vue";
-import { createError } from "#app";
+import { useRuntimeConfig } from "#app";
+import { useHead, usePages } from "#imports";
 import Bake from "./Bake.vue";
 
 const { routeParams } = defineProps({
@@ -18,21 +17,14 @@ const { routeParams } = defineProps({
   }
 });
 
+const pages = usePages();
+const { public: { title } } = useRuntimeConfig();
+useHead({ title });
+
 const pageDescriptor = ref();
 const pageName = computed(() => routeParams[0] ?? "index");
-const { $pages } = useNuxtApp();
 
 provide("routeParams", routeParams);
 
-onMounted(async() => {
-  if(!$pages[pageName.value]){
-    throw createError({
-      statusCode: 404,
-      statusMessage: `'${pageName.value}' Page Not Found`,
-      fatal: true
-    });
-  }
-
-  pageDescriptor.value = await $pages[pageName.value]();
-});
+onMounted(async() => pageDescriptor.value = await pages.fetch(pageName.value));
 </script>

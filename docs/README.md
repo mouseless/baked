@@ -10,10 +10,10 @@ sections:
 ::banner
 
 # Bake your domain objects
-## into a complete backend application
+## into a complete web application
 
-Baked (Objects) is an opinionated framework for .NET leaning heavily on
-conventions to build (bake) applications from domain objects.
+Baked (Objects) is an opinionated framework leaning heavily on conventions to
+build (bake) applications from domain objects.
 
 It is DDD without saying DDD.
 

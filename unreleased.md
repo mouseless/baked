@@ -5,11 +5,12 @@
 - Beta features are available;
   - `baked-recipe-admin` npm package is released
   - `UiLayer` is added to `Service` recipe, you can now configure
-    `ComponentDescriptors` in features
+    `LayoutDescriptors` and `PageDescriptors` in features
   - `Theme` feature is now added with `Admin` implementation with below
     component schemas
-    - `Detail`
-    - `DetailProperty`
+    - Layouts: `DefaultLayout`
+    - Pages: `DetailPage`, `MenuPage`
+    - Components: `CardLink`, `Header`, `None` `PageTitle`, `SideMenu`, `String`
   - `Binding` feature is added with the default `Rest` implementation where all
     the rest api bindings are made for domain objects
 
@@ -21,5 +22,5 @@
 - `CodeGenerationLayer` now outputs the generated code next to the generated
   assembly to allow further investigation in case code is not generated as
   expected
-- `CodeGenerationLayer` now skips compiling code if no changes in generated code 
+- `CodeGenerationLayer` now skips compiling code if no changes in generated code
   are detected

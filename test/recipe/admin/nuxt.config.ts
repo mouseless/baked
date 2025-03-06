@@ -21,24 +21,18 @@ const Mouseless = definePreset(Aura, {
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  css: ["assets/styles.scss"],
   baked: {
     theme: Mouseless
   },
   compatibilityDate: "2025-03-01",
-  devtools: { enabled: false },
   components: {
     dirs: ["~/components"]
-  },
-  experimental: {
-    payloadExtraction: false
-  },
-  features: {
-    inlineStyles: false
   },
   // Do NOT remove this line, auto imports are disabled for consistency
   // between local and published package behaviour
   imports: { autoImport: false },
-  logLevel: process.env.SILENT === "1" ? "silent" : "info",
+  logLevel: process.env.BUILD_SILENT === "1" ? "silent" : "info",
   modules: [
     "@nuxt/eslint",
     "baked-recipe-admin"
@@ -47,7 +41,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       apiBaseURL: process.env.API_BASE_URL,
-      devMode: true
+      devMode: true,
+      title: "Baked Admin"
     }
   }
 });

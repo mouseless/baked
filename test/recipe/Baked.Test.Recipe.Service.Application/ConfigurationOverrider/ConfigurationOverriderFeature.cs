@@ -7,9 +7,11 @@ using Baked.Test.CodingStyle.RichTransient;
 using Baked.Test.ExceptionHandling;
 using Baked.Test.Orm;
 using Baked.Theme.Admin;
-using Baked.Ui;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
+
+using static Baked.Theme.Admin.Components;
+using static Baked.Ui.Datas;
 
 namespace Baked.Test.ConfigurationOverrider;
 
@@ -101,30 +103,89 @@ public class ConfigurationOverriderFeature : IFeature
             swaggerUIOptions.SwaggerEndpoint($"external/swagger.json", "External");
         });
 
+        configurator.ConfigureLayoutDescriptors(layouts =>
+        {
+            configurator.UsingDomainModel(domain =>
+            {
+                var rtwd = domain.Types[typeof(RichTransientWithData)];
+                var rtwdRoute = rtwd.GetActionModel().GetRoute();
+                var rtwdDetail = rtwd.Get<DetailPage>();
+                var rtwdPageDetail = (PageTitle)(rtwdDetail.Header?.Schema ?? throw new("RichTransientWithData is expected to have PageTitle in Header"));
+
+                layouts.Add("default", DefaultLayout(
+                    sideMenu: SideMenu(
+                        menu:
+                        [
+                            SideMenuItem("/", "pi pi-home"),
+                            SideMenuItem("/specs", "pi pi-list-check", title: "Specs")
+                        ],
+                        footer: String(Inline("FT"))
+                    ),
+                    header: Header(
+                        siteMap:
+                        [
+                            HeaderItem("/", icon: "pi pi-home"),
+                            HeaderItem($"/{rtwdRoute}", title: rtwdPageDetail.Title),
+                            HeaderItem("/specs", icon: "pi pi-list-check", title: "Specs"),
+                            HeaderItem("/specs/card-link", title: "Card Link", parentRoute: "/specs"),
+                            HeaderItem("/specs/detail-page", title: "Detail Page", parentRoute: "/specs"),
+                            HeaderItem("/specs/header", title: "Header", parentRoute: "/specs"),
+                            HeaderItem("/specs/menu-page", title: "Menu Page", parentRoute: "/specs"),
+                            HeaderItem("/specs/page-title", title: "Page Title", parentRoute: "/specs"),
+                            HeaderItem("/specs/side-menu", title: "Side Menu", parentRoute: "/specs")
+                        ]
+                    )
+                ));
+            });
+        });
+
         configurator.ConfigurePageDescriptors(pages =>
         {
             configurator.UsingDomainModel(domain =>
             {
                 var route = domain.Types[typeof(RichTransientWithData)].GetActionModel().GetRoute();
 
-                pages.Add("index", new ComponentDescriptorAttribute<Detail>(new()
-                {
-                    Title = "Dashboard",
-                    Header = Components.Menu(new object[]
-                    {
-                        new
-                        {
-                            Label = "Rich Transients Menu",
-                            Items = new object[]
-                            {
-                                new { Label = "Rich Transient w/ Data 1", Route = $"/{route.Replace("{id}", "test1")}" },
-                                new { Label = "Rich Transient w/ Data 2", Route = $"/{route.Replace("{id}", "test2")}" },
-                                new { Label = "Rich Transient w/ Data 3", Route = $"/{route.Replace("{id}", "test3")}" },
-                            }
-                        }
-                    })
-                }));
+                pages.Add("index", MenuPage(
+                    links:
+                    [
+                        CardLink($"/{route.Replace("{id}", "test1")}", "Rich Transient w/ Data 1"),
+                        CardLink($"/{route.Replace("{id}", "test2")}", "Rich Transient w/ Data 2"),
+                        CardLink($"/{route.Replace("{id}", "test3")}", "Rich Transient w/ Data 3")
+                    ]
+                ));
             });
+
+            pages.Add("specs", MenuPage(
+                title: "Specs",
+                description: "All UI Specs are listed here",
+                links:
+                [
+                    CardLink("/specs/card-link", "Card Link",
+                        icon: "pi pi-microchip",
+                        description: "A big card link component to render links in menu-like pages"
+                    ),
+                    CardLink("/specs/detail-page", "Detail Page",
+                        icon: "pi pi-microchip",
+                        description: "A page component suitable for rendering entities and rich transients"
+                    ),
+                    CardLink("/specs/header", "Header",
+                        icon: "pi pi-microchip",
+                        description: "A layout component that renders a breadcrumb"
+                    ),
+                    CardLink("/specs/menu-page", "Menu Page",
+                        icon: "pi pi-microchip",
+                        description: "A page component suitable for rendering navigation pages"
+                    ),
+                    CardLink("/specs/page-title", "Page Title",
+                        icon: "pi pi-microchip",
+                        description: "A page component to render page title, desc and actions"
+                    ),
+                    CardLink("/specs/side-menu", "Side Menu",
+                        icon: "pi pi-microchip",
+                        description: "A layout component to render application menu"
+                    ),
+                ]
+            ));
         });
     }
 }

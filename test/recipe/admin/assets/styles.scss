@@ -1,0 +1,11 @@
+@use "primeicons/primeicons.css" as *;
+
+.bg-body {
+  background-color: white;
+}
+
+@media (prefers-color-scheme: dark) {
+  .bg-body {
+    background-color: #121212;
+  }
+}
