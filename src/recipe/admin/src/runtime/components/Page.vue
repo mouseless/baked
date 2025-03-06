@@ -18,8 +18,8 @@ const { routeParams } = defineProps({
 });
 
 const pages = usePages();
-const { public: { title } } = useRuntimeConfig();
-useHead({ title });
+const { public: { components } } = useRuntimeConfig();
+useHead({ title: components?.Page?.title });
 
 const pageDescriptor = ref();
 const pageName = computed(() => routeParams[0] ?? "index");

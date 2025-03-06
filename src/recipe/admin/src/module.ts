@@ -1,13 +1,28 @@
-import { defineNuxtModule, addComponentsDir, addImportsDir, addPlugin, createResolver, installModule } from '@nuxt/kit'
+import { defineNuxtModule, addComponentsDir, addImportsDir, addPlugin, createResolver, installModule } from "@nuxt/kit"
 
 export interface ModuleOptions {
-  theme: Object
+  theme: Object,
+  components?: Components
+}
+
+export interface Components {
+  Bake?: BakeOptions,
+  Page?: PageOptions
+}
+
+export interface BakeOptions {
+  baseURL?: String,
+  retryFetch?: Boolean
+}
+
+export interface PageOptions {
+  title?: String
 }
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
-    name: 'baked-recipe-admin',
-    configKey: 'baked',
+    name: "baked-recipe-admin",
+    configKey: "baked",
   },
   defaults: { },
   async setup(_options, _nuxt) {
@@ -17,25 +32,26 @@ export default defineNuxtModule<ModuleOptions>({
     _nuxt.options.experimental.payloadExtraction = false;
     _nuxt.options.features.inlineStyles = false;
     _nuxt.options.runtimeConfig.public.theme = _options.theme;
+    _nuxt.options.runtimeConfig.public.components = _options.components;
     _nuxt.options.ssr = false;
 
     addComponentsDir({
-      path: resolver.resolve('./runtime/components'),
+      path: resolver.resolve("./runtime/components"),
     });
 
-    addImportsDir(resolver.resolve('./runtime/composables'));
+    addImportsDir(resolver.resolve("./runtime/composables"));
 
-    addPlugin(resolver.resolve('./runtime/plugins/addPrimevue'))
+    addPlugin(resolver.resolve("./runtime/plugins/addPrimevue"))
 
-    await installModule('@nuxtjs/tailwindcss', {
+    await installModule("@nuxtjs/tailwindcss", {
       exposeConfig: true,
-      cssPath: resolver.resolve('./runtime/assets/tailwind.css'),
+      cssPath: resolver.resolve("./runtime/assets/tailwind.css"),
       config: {
-        darkMode: 'class',
+        darkMode: "class",
         content: {
           files: [
-            resolver.resolve('./runtime/components/**/*.{vue,mjs,ts}'),
-            resolver.resolve('./runtime/*.{mjs,js,ts}'),
+            resolver.resolve("./runtime/components/**/*.{vue,mjs,ts}"),
+            resolver.resolve("./runtime/*.{mjs,js,ts}"),
           ],
         },
       },

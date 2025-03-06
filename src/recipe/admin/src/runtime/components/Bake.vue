@@ -17,7 +17,7 @@ const { descriptor } = defineProps({
   descriptor: { type: null, required: true }
 });
 
-const { public: { apiBaseURL: baseURL, devMode } } = useRuntimeConfig();
+const { public: { components } } = useRuntimeConfig();
 const componentResolver = useComponentResolver();
 const composableResolver = useComposableResolver();
 const extensions = useStringExtensions();
@@ -44,8 +44,8 @@ async function fetchData() {
     return await $fetch(
       extensions.format(`${descriptor.data.path}`, routeParams.slice(1)),
       {
-        ... devMode ? fetchOptions : { },
-        baseURL,
+        ... components?.Bake?.retryFetch ? fetchOptions : { },
+        baseURL: components?.Bake?.baseURL,
         headers: { Authorization: "token-jane" }
       }
     );
