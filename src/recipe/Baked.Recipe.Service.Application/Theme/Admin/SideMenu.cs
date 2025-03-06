@@ -13,6 +13,6 @@ public record SideMenu : IComponentSchema
         public string Route { get; set; } = Route;
         public string Icon { get; set; } = Icon;
         public string? Title { get; set; }
-        public bool Soon { get; set; } = false;
+        public bool Disabled { get; set; } = false;
     }
 }

@@ -97,12 +97,12 @@ export default {
     };
   },
 
-  aSideMenuItem({ route, icon, title, soon } = {}) {
+  aSideMenuItem({ route, icon, title, disabled } = {}) {
     route = $(route, "/item");
     icon = $(icon, "pi pi-home");
-    soon = $(soon, false);
+    disabled = $(disabled, false);
 
-    return { route, icon, title, soon };
+    return { route, icon, title, disabled };
   },
 
   anExpected({ testId, value } = {}) {

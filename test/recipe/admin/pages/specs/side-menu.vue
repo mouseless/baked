@@ -40,7 +40,7 @@ const variants = [
     name: "Disabled Item",
     descriptor: giveMe.aSideMenu({
       menu: [
-        giveMe.aSideMenuItem({ soon: true })
+        giveMe.aSideMenuItem({ disabled: true })
       ]
     })
   }

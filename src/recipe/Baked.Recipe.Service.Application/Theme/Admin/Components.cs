@@ -57,8 +57,8 @@ public static class Components
 
     public static SideMenu.Item SideMenuItem(string route, string icon,
         string? title = default,
-        bool soon = false
-    ) => new(route, icon) { Title = title, Soon = soon };
+        bool disabled = false
+    ) => new(route, icon) { Title = title, Disabled = disabled };
 
     public static ComponentDescriptor String(
         IData? data = default

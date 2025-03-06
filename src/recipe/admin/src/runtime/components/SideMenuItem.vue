@@ -7,7 +7,7 @@
       :severity="selected ? 'primary':'secondary'"
       size="large"
       class="!px-6 !py-2"
-      :disabled="item.soon"
+      :disabled="item.disabled"
     />
   </RouterLink>
 </template>
