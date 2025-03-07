@@ -17,3 +17,8 @@
 docs/**/*
 research/**/*
 samples/**/*
+**/node_modules
+**/.nuxt
+**/.output
+**/dist
+**/.baked

@@ -9,33 +9,43 @@ public class Compiler(GeneratedAssemblyDescriptor _descriptor)
 {
     readonly Dictionary<string, MetadataReference> _references = new();
 
-    void AddReference(Assembly assembly)
-    {
-        if (_references.ContainsKey(assembly.Location)) { return; }
-
-        _references.Add(assembly.Location, MetadataReference.CreateFromFile(assembly.Location));
-        foreach (var referencedAssembly in assembly.GetReferencedAssemblies())
-        {
-            AddReference(Assembly.Load(referencedAssembly));
-        }
-    }
-
-    public Assembly Compile(
-        string? assemblyLocation = default,
+    public string Compile(string assemblyLocation,
         string? assemblyName = default
     )
     {
         assemblyName ??= $"Baked.g.{_descriptor.Name}";
 
-        foreach (var assembly in _descriptor.References)
-        {
-            AddReference(assembly);
-        }
-
         _descriptor.AddCode(string.Join(
             Environment.NewLine,
             _descriptor.CompilationOptions.Usings.Select(u => $"global using global::{u};")
         ));
+
+        var codes = string.Join(Environment.NewLine, _descriptor.Codes);
+        var assemblyPath = Path.Combine(Path.Combine(assemblyLocation, $"{assemblyName}.dll"));
+        var hashFilePath = $"{assemblyPath}.hash";
+        if (!GeneratedFileWriter.RequiresUpdate(codes, assemblyPath, hashFilePath))
+        {
+            return assemblyPath;
+        }
+
+        using (var file = new FileStream(assemblyPath, FileMode.Create))
+        {
+            using var ms = CreateCSharpCompilation(assemblyName);
+            ms.WriteTo(file);
+        }
+
+        GeneratedFileWriter.CreateHashFile(codes, hashFilePath);
+
+        return assemblyPath;
+
+    }
+
+    MemoryStream CreateCSharpCompilation(string assemblyName)
+    {
+        foreach (var assembly in _descriptor.References)
+        {
+            AddReference(assembly);
+        }
 
         var compilation = CSharpCompilation.Create(
             assemblyName: assemblyName,
@@ -44,7 +54,7 @@ public class Compiler(GeneratedAssemblyDescriptor _descriptor)
             options: _descriptor.CompilationOptions
         );
 
-        using var ms = new MemoryStream();
+        var ms = new MemoryStream();
         var result = compilation.Emit(ms);
         if (!result.Success)
         {
@@ -67,16 +77,17 @@ public class Compiler(GeneratedAssemblyDescriptor _descriptor)
 
         ms.Seek(0, SeekOrigin.Begin);
 
-        if (assemblyLocation is not null)
+        return ms;
+    }
+
+    void AddReference(Assembly assembly)
+    {
+        if (_references.ContainsKey(assembly.Location)) { return; }
+
+        _references.Add(assembly.Location, MetadataReference.CreateFromFile(assembly.Location));
+        foreach (var referencedAssembly in assembly.GetReferencedAssemblies())
         {
-            using (var file = new FileStream(Path.Combine(assemblyLocation, $"{assemblyName}.dll"), FileMode.Create))
-            {
-                ms.WriteTo(file);
-            }
-
-            return Assembly.LoadFile(Path.Combine(assemblyLocation, $"{assemblyName}.dll"));
+            AddReference(Assembly.Load(referencedAssembly));
         }
-
-        return Assembly.Load(ms.ToArray());
     }
 }

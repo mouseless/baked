@@ -33,22 +33,15 @@ public class SingleByUniqueCodingStyleFeature : IFeature<CodingStyleConfigurator
                     c.Type.Has<QueryAttribute>() &&
                     Regexes.StartsWithSingleBy.IsMatch(c.Method.Name)
             );
+
+            builder.Conventions.Add(new UseRouteInSingleByUniqueConvention());
+            builder.Conventions.Add(new MarkActionAsSingleByUniqueConvention());
+            builder.Conventions.Add(new TargetEntityFromRouteByUniquePropertiesConvention(), order: 30);
         });
 
         configurator.ConfigureApiModel(api =>
         {
             api.Usings.Add("Baked.CodingStyle.SingleByUnique");
-        });
-
-        configurator.ConfigureApiModelConventions(conventions =>
-        {
-            conventions.Add(new UseRouteInSingleByUniqueConvention());
-            conventions.Add(new MarkActionAsSingleByUniqueConvention());
-
-            configurator.UsingDomainModel(domain =>
-            {
-                conventions.Add(new TargetEntityFromRouteByUniquePropertiesConvention(domain), order: 30);
-            });
         });
 
         configurator.ConfigureServiceCollection(services =>

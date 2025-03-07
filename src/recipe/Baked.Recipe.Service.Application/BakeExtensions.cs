@@ -12,6 +12,7 @@ using Baked.Greeting;
 using Baked.Logging;
 using Baked.Orm;
 using Baked.Reporting;
+using Baked.Theme;
 
 namespace Baked;
 
@@ -30,6 +31,7 @@ public static class BakeExtensions
         Func<GreetingConfigurator, IFeature<GreetingConfigurator>>? greeting = default,
         Func<LoggingConfigurator, IFeature<LoggingConfigurator>>? logging = default,
         Func<OrmConfigurator, IFeature<OrmConfigurator>>? orm = default,
+        Func<ThemeConfigurator, IFeature<ThemeConfigurator>>? theme = default,
         Action<ApplicationDescriptor>? configure = default
     )
     {
@@ -44,6 +46,7 @@ public static class BakeExtensions
         greeting ??= c => c.Swagger();
         logging ??= c => c.Request();
         orm ??= c => c.AutoMap();
+        theme ??= c => c.Admin();
         configure ??= _ => { };
 
         return bake.Application(app =>
@@ -55,9 +58,11 @@ public static class BakeExtensions
             app.Layers.AddHttpServer();
             app.Layers.AddRestApi();
             app.Layers.AddRuntime();
+            app.Layers.AddUi();
 
             app.Features.AddAuthentications(authentications);
             app.Features.AddAuthorization(authorization);
+            app.Features.AddBinding(c => c.Rest());
             app.Features.AddBusiness(business);
             app.Features.AddCaching(caching);
             app.Features.AddCodingStyles([
@@ -91,6 +96,7 @@ public static class BakeExtensions
             ]);
             app.Features.AddLogging(logging);
             app.Features.AddOrm(orm);
+            app.Features.AddTheme(theme);
 
             configure(app);
         });
@@ -126,6 +132,7 @@ public static class BakeExtensions
             app.Layers.AddRestApi();
             app.Layers.AddRuntime();
 
+            app.Features.AddBinding(c => c.Rest());
             app.Features.AddBusiness(business);
             app.Features.AddCaching(caching);
             app.Features.AddCodingStyles([

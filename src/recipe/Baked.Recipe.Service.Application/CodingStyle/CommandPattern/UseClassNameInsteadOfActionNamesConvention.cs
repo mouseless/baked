@@ -1,17 +1,19 @@
-﻿using Baked.RestApi.Configuration;
+﻿using Baked.Domain.Configuration;
+using Baked.RestApi.Model;
 
 namespace Baked.CodingStyle.CommandPattern;
 
 public class UseClassNameInsteadOfActionNamesConvention(IEnumerable<string> actionNames)
-    : IApiModelConvention<ActionModelContext>
+    : IDomainModelConvention<MethodModelContext>
 {
-    readonly HashSet<string> _actionNames = actionNames.ToHashSet();
+    readonly HashSet<string> _actionNames = [.. actionNames];
 
-    public void Apply(ActionModelContext context)
+    public void Apply(MethodModelContext context)
     {
-        if (!_actionNames.Contains(context.Action.Name)) { return; }
+        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
+        if (!_actionNames.Contains(action.Name)) { return; }
 
-        context.Action.RouteParts.RemoveAll(context.Action.Name);
-        context.Action.Name = context.Controller.MappedType.Name;
+        action.RouteParts.RemoveAll(action.Name);
+        action.Name = context.Type.Name;
     }
 }

@@ -68,31 +68,74 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 9
-      - name: Pack
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: 'https://registry.npmjs.org'
+      - name: Pack Nuget
         run: |
-          dotnet pack -o "packages" -c Release
-      - name: Upload Packages
+          dotnet pack -o "nuget-packages" -c Release
+      - name: Upload Nuget Packages
         uses: actions/upload-artifact@v4
         with:
-          name: packages
-          path: packages/
+          name: nuget-packages
+          path: nuget-packages/
+      - name: Pack npm
+        run: |
+          mkdir npm-packages
+          cd src/recipe/admin
+          npm i
+          npm pack --pack-destination "../../../npm-packages"
+      - name: Upload npm Packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-packages
+          path: npm-packages/
 
-  push-packages:
-    name: Push Packages
+  push-nuget-packages:
+    name: Push Nuget Packages
     needs: pack-projects
     runs-on: ubuntu-latest
     steps:
-      - name: Download Packages
+      - uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9
+      - name: Download Nuget Packages
         uses: actions/download-artifact@v4
         with:
-          name: packages
-      - name: Push
+          name: nuget-packages
+      - name: Push Nuget
         run: |
           dotnet nuget push "*.nupkg" \
             -s https://api.nuget.org/v3/index.json \
             -k ${{ secrets.NUGET_API_KEY }} \
             --skip-duplicate \
             -t 3600
+
+  push-npm-packages:
+    name: Push npm Packages
+    needs: pack-projects
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: 'https://registry.npmjs.org'
+      - name: Download npm Packages
+        uses: actions/download-artifact@v4
+        with:
+          name: npm-packages
+      - name: Push npm
+        run: |
+          for file in *.tgz; do
+            npm publish "$file" --access public
+          done
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
 
   generate-docs:
     needs: check-version

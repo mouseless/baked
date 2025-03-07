@@ -1,14 +1,15 @@
-﻿using Baked.RestApi.Configuration;
+﻿using Baked.Domain.Configuration;
+using Baked.RestApi.Model;
 
 namespace Baked.Authorization.ClaimBased;
 
-public class AddRequireUserClaimsAsAuthorizePolicyConvention : IApiModelConvention<ActionModelContext>
+public class AddRequireUserClaimsAsAuthorizePolicyConvention : IDomainModelConvention<MethodModelContext>
 {
-    public void Apply(ActionModelContext context)
+    public void Apply(MethodModelContext context)
     {
-        if (context.Action.MappedMethod is null) { return; }
-        if (!context.Action.MappedMethod.TryGetSingle<RequireUserAttribute>(out var requireUser)) { return; }
+        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
+        if (!context.Method.TryGetSingle<RequireUserAttribute>(out var requireUser)) { return; }
 
-        context.Action.AdditionalAttributes.AddRange(requireUser.Claims.Select(claim => $"Authorize(Policy = \"{claim}\")"));
+        action.AdditionalAttributes.AddRange(requireUser.Claims.Select(claim => $"Authorize(Policy = \"{claim}\")"));
     }
 }

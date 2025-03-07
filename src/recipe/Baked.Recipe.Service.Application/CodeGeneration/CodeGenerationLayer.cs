@@ -1,7 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Domain.Model;
 using System.Reflection;
-using System.Text;
 
 using static Baked.CodeGeneration.CodeGenerationLayer;
 using static Baked.Runtime.RuntimeLayer;
@@ -12,18 +11,33 @@ public class CodeGenerationLayer : LayerBase<GenerateCode, Compile, BuildConfigu
 {
     readonly IGeneratedAssemblyCollection _generatedAssemblies = new GeneratedAssemblyCollection();
     readonly IGeneratedFileCollection _generatedFiles = new GeneratedFileCollection();
-    readonly string _location = default!;
+    readonly HashSet<string> _remainingFiles = [];
 
-    public CodeGenerationLayer()
+    string Location
     {
-        _location = Path.Combine(
-            Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location) ?? throw new("'EntryAssembly' should have existed with valid location"),
-            Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development"
-        );
+        get
+        {
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            environment = string.IsNullOrEmpty(environment) ? "Development" : environment;
+
+            return Path.Combine(
+                Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location) ?? throw new("'EntryAssembly' should have existed with valid location"),
+                environment
+            );
+        }
     }
 
-    protected override PhaseContext GetContext(GenerateCode phase) =>
-        phase.CreateContext(_generatedAssemblies);
+    protected override PhaseContext GetContext(GenerateCode phase)
+    {
+        if (!Directory.Exists(Location))
+        {
+            Directory.CreateDirectory(Location);
+        }
+
+        _remainingFiles.UnionWith(Directory.GetFiles(Location, "*.*", SearchOption.AllDirectories));
+
+        return phase.CreateContext(_generatedAssemblies);
+    }
 
     protected override PhaseContext GetContext(Compile phase) =>
         phase.CreateContextBuilder()
@@ -32,26 +46,31 @@ public class CodeGenerationLayer : LayerBase<GenerateCode, Compile, BuildConfigu
             {
                 foreach (var descriptor in _generatedFiles)
                 {
-                    using var file = new FileStream(Path.Combine(_location, $"{descriptor.Name}.{descriptor.Extension}"), FileMode.Create);
-                    file.Write(Encoding.UTF8.GetBytes(descriptor.Content));
+                    var file = new GeneratedFileWriter(descriptor).Create(Location);
+
+                    RemoveFromRemainingFiles(file);
                 }
+
+                DeleteRemainingFiles();
             })
             .Build();
 
     protected override PhaseContext GetContext(BuildConfiguration phase)
     {
-        var directoryfiles = Directory.GetFiles(_location);
+        var files = Directory.GetFiles(Location);
 
         var generatedContext = new GeneratedContext();
-        foreach (var path in directoryfiles)
+        foreach (var file in files)
         {
-            if (path.Contains("Baked.g"))
+            if (file.EndsWith(".hash")) { continue; }
+
+            if (file.Contains("Baked.g"))
             {
-                generatedContext.Assemblies.Add(Path.GetFileName(path).Replace("Baked.g.", string.Empty).Replace(".dll", string.Empty), Assembly.LoadFile(path));
+                generatedContext.Assemblies.Add(Path.GetFileName(file).Replace("Baked.g.", string.Empty).Replace(".dll", string.Empty), Assembly.LoadFile(file));
             }
             else
             {
-                generatedContext.Files.Add(Path.GetFileName(path)[..Path.GetFileName(path).LastIndexOf('.')], path);
+                generatedContext.Files.Add(Path.GetFileName(file)[..Path.GetFileName(file).LastIndexOf('.')], file);
             }
         }
 
@@ -62,35 +81,48 @@ public class CodeGenerationLayer : LayerBase<GenerateCode, Compile, BuildConfigu
 
     protected override IEnumerable<IPhase> GetGeneratePhases()
     {
-        yield return new GenerateCode(_location, _generatedAssemblies, _generatedFiles);
-        yield return new Compile(_location);
+        yield return new GenerateCode(_generatedAssemblies, _generatedFiles);
+        yield return new Compile(Location,
+            onCompiled: RemoveFromRemainingFiles
+        );
     }
 
-    public class GenerateCode(string _location, IGeneratedAssemblyCollection _generatedAssemblies, IGeneratedFileCollection _generatedFiles)
+    void RemoveFromRemainingFiles(string path)
+    {
+        _remainingFiles.Remove(path);
+        _remainingFiles.Remove($"{path}.hash");
+    }
+
+    void DeleteRemainingFiles()
+    {
+        foreach (var file in _remainingFiles)
+        {
+            File.Delete(file);
+            File.Delete($"{file}.hash");
+        }
+    }
+
+    public class GenerateCode(IGeneratedAssemblyCollection _generatedAssemblies, IGeneratedFileCollection _generatedFiles)
         : PhaseBase<DomainModel>(PhaseOrder.Early)
     {
         protected override void Initialize(DomainModel _)
         {
-            if (Directory.Exists(_location))
-            {
-                Directory.Delete(_location, true);
-            }
-
-            Directory.CreateDirectory(_location);
-
             Context.Add(_generatedAssemblies);
             Context.Add(_generatedFiles);
         }
     }
 
-    public class Compile(string _location)
-        : PhaseBase<IGeneratedAssemblyCollection>(PhaseOrder.Late)
+    public class Compile(string _location,
+        Action<string>? onCompiled = default
+    ) : PhaseBase<IGeneratedAssemblyCollection>(PhaseOrder.Late)
     {
         protected override void Initialize(IGeneratedAssemblyCollection generatedAssemblies)
         {
             foreach (var descriptor in generatedAssemblies)
             {
-                new Compiler(descriptor).Compile(_location, $"Baked.g.{descriptor.Name}");
+                var assemblyPath = new Compiler(descriptor).Compile(_location, $"Baked.g.{descriptor.Name}");
+
+                onCompiled?.Invoke(assemblyPath);
             }
         }
     }

@@ -1,0 +1,35 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "lint": "eslint .",
+    "setup": "nuxt prepare && npm run lint",
+    "predev": "npm run setup --env=development",
+    "dev": "nuxt dev --dotenv .env.development",
+    "prebuild": "cross-env-shell npm run setup --env=$npm_config_env",
+    "build": "cross-env-shell nuxt generate --log-level silent --dotenv .env.$npm_config_env",
+    "build:Development": "npm run build --env=development",
+    "build:Production": "npm run build --env=production",
+    "prelocal": "npm run build:Development",
+    "local": "npx http-server .output/public -p 3000",
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "latest",
+    "@nuxt/eslint": "^1.0.1",
+    "@nuxt/test-utils": "^3.15.4",
+    "@playwright/test": "^1.50.1",
+    "cross-env": "^7.0.3",
+    "eslint": "^9.20.0",
+    "sass": "^1.84.0"
+  },
+  "dependencies": {
+    "@nuxtjs/tailwindcss": "^6.13.1",
+    "@primevue/themes": "~4.2.5",
+    "baked-recipe-admin": "file:../../../src/recipe/admin",
+    "nuxt": "^3.15.4",
+    "vue": "^3.5.13",
+    "vue-router": "^4.4.3"
+  }
+}

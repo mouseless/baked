@@ -1,7 +1,6 @@
 ﻿using Baked.Business;
 using Baked.Business.DomainAssemblies;
 using Baked.Domain.Model;
-using Baked.RestApi.Model;
 using System.Reflection;
 
 namespace Baked;
@@ -54,35 +53,6 @@ public static class DomainAssembliesBusinessExtensions
         setNamespaceWhen ?? (t => true)
     );
 
-    public static void AddAction(this ControllerModel controller, TypeModel type, MethodModel method) =>
-        controller.Action.Add(
-            method.Name,
-            new(
-                Id: method.Name,
-                Method: HttpMethod.Post,
-                RouteParts: [type.Name, method.Name],
-                Return: new(method.DefaultOverload.ReturnType),
-                FindTargetStatement: "target",
-                MappedMethod: method
-            )
-            {
-                Parameters = [
-                    new(type, ParameterModelFrom.Services, "target"),
-                    .. method.DefaultOverload.Parameters.Select(p =>
-                        new RestApi.Model.ParameterModel(p.ParameterType, ParameterModelFrom.BodyOrForm, p.Name, MappedParameter: p)
-                        {
-                            IsOptional = p.IsOptional,
-                            DefaultValue = p.DefaultValue,
-                            DefaultValueRenderer = defaultValue => $"{defaultValue}"
-                        }
-                    )
-                ]
-            }
-        );
-
-    public static bool IsTarget(this RestApi.Model.ParameterModel parameter) =>
-        parameter.Id == "target";
-
     public static MethodOverloadModel? FirstPublicInstanceWithMostParametersOrDefault(this IEnumerable<MethodOverloadModel> overloads) =>
         overloads
             .Where(o => o.IsPublic && !o.IsStatic)
@@ -111,10 +81,4 @@ public static class DomainAssembliesBusinessExtensions
         overloads
             .OrderByDescending(o => o.Parameters.Count)
             .FirstOrDefault();
-
-    public static bool IsPublicInstanceWithNoSpecialName(this MethodOverloadModel overload) =>
-        overload.IsPublic && !overload.IsStatic && !overload.IsSpecialName;
-
-    public static bool AllParametersAreApiInput(this MethodOverloadModel overload) =>
-        overload.Parameters.All(p => p.ParameterType.TryGetMetadata(out var metadata) && metadata.Has<ApiInputAttribute>());
 }

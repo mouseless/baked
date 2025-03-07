@@ -36,6 +36,13 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
         {
             builder.Index.Type.Add(typeof(QueryAttribute));
             builder.Index.Type.Add(typeof(EntityAttribute));
+
+            builder.Conventions.Add(new AutoHttpMethodConvention([(Regexes.StartsWithFirstBySingleByOrBy, HttpMethod.Get)]), order: -10);
+            builder.Conventions.Add(new LookupEntityByIdConvention());
+            builder.Conventions.Add(new LookupEntitiesByIdsConvention());
+            builder.Conventions.Add(new RemoveFromRouteConvention(["FirstBy", "SingleBy", "By"],
+                _whenContext: c => c.Type.TryGetMetadata(out var metadata) && metadata.Has<QueryAttribute>()
+            ));
         });
 
         configurator.ConfigureGeneratedAssemblyCollection(generatedAssemblies =>
@@ -147,19 +154,6 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
             if (options.SerializerSettings.ContractResolver is null) { return; }
 
             options.SerializerSettings.ContractResolver = new ProxyAwareContractResolver<INHibernateProxy>(options.SerializerSettings.ContractResolver);
-        });
-
-        configurator.ConfigureApiModelConventions(conventions =>
-        {
-            configurator.UsingDomainModel(domain =>
-            {
-                conventions.Add(new AutoHttpMethodConvention([(Regexes.StartsWithFirstBySingleByOrBy, HttpMethod.Get)]), order: -10);
-                conventions.Add(new LookupEntityByIdConvention(domain));
-                conventions.Add(new LookupEntitiesByIdsConvention(domain));
-                conventions.Add(new RemoveFromRouteConvention(["FirstBy", "SingleBy", "By"],
-                    _when: c => c.Controller.MappedType.TryGetMetadata(out var metadata) && metadata.Has<QueryAttribute>()
-                ));
-            });
         });
     }
 }

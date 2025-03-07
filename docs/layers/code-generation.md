@@ -45,7 +45,8 @@ This layer introduces following `Generate` phases to the application it is added
 
 > [!TIP]
 >
-> To access to a generated assembly or file from a feature use below extension method;
+> To access to a generated assembly or file from a feature use below extension
+> method;
 >
 > ```csharp
 > configurator.UsingGeneratedContext(generatedContext =>

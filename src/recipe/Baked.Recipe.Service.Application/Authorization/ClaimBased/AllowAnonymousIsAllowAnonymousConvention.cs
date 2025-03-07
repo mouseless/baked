@@ -1,14 +1,15 @@
-﻿using Baked.RestApi.Configuration;
+﻿using Baked.Domain.Configuration;
+using Baked.RestApi.Model;
 
 namespace Baked.Authorization.ClaimBased;
 
-public class AllowAnonymousIsAllowAnonymousConvention : IApiModelConvention<ActionModelContext>
+public class AllowAnonymousIsAllowAnonymousConvention : IDomainModelConvention<MethodModelContext>
 {
-    public void Apply(ActionModelContext context)
+    public void Apply(MethodModelContext context)
     {
-        if (context.Action.MappedMethod is null) { return; }
-        if (!context.Action.MappedMethod.Has<AllowAnonymousAttribute>()) { return; }
+        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
+        if (!context.Method.Has<AllowAnonymousAttribute>()) { return; }
 
-        context.Action.AdditionalAttributes.Add("AllowAnonymous");
+        action.AdditionalAttributes.Add("AllowAnonymous");
     }
 }

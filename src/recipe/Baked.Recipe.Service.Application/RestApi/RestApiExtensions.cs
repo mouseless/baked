@@ -1,6 +1,6 @@
 ﻿using Baked.Architecture;
+using Baked.Domain;
 using Baked.RestApi;
-using Baked.RestApi.Configuration;
 using Baked.RestApi.Conventions;
 using Baked.RestApi.Model;
 using Microsoft.AspNetCore.Mvc;
@@ -19,9 +19,6 @@ public static class RestApiExtensions
         layers.Add(new RestApiLayer());
 
     public static void ConfigureApiModel(this LayerConfigurator configurator, Action<ApiModel> configuration) =>
-        configurator.Configure(configuration);
-
-    public static void ConfigureApiModelConventions(this LayerConfigurator configurator, Action<IApiModelConventionCollection> configuration) =>
         configurator.Configure(configuration);
 
     public static void ConfigureApplicationParts(this LayerConfigurator configurator, Action<IApplicationPartCollection> configuration) =>
@@ -58,28 +55,18 @@ public static class RestApiExtensions
         return mvcBuilder;
     }
 
-    public static void Add(this IApiModelConventionCollection collection, IApiModelConvention convention,
-        int order = 0
-    ) => collection.Add((convention, order));
-
     public static void Add<T>(this ICollection<Assembly> assemblies) =>
         assemblies.Add(typeof(T).Assembly);
 
-    public static string GetControllerId(this Type type) =>
-        type.GetCSharpFriendlyFullName();
-
-    public static ControllerModel GetController<T>(this ApiModel api) =>
-        api.Controller[typeof(T).GetControllerId()];
-
-    public static void AddAttribute<T>(this ActionModel action) where T : Attribute =>
+    public static void AddAttribute<T>(this ActionModelAttribute action) where T : Attribute =>
         action.AdditionalAttributes.Add(typeof(T).GetCSharpFriendlyFullName());
 
-    public static string GetRouteString(this ParameterModel parameter)
+    public static string GetRouteString(this ParameterModelAttribute parameter)
     {
         var constraint = parameter switch
         {
             { Type: nameof(Guid) } => ":guid",
-            _ when parameter.TypeModel.Is<Guid>() => ":guid",
+            _ when parameter.Type == typeof(Guid).FullName => ":guid",
             _ => string.Empty
         };
 
@@ -113,44 +100,45 @@ public static class RestApiExtensions
         return parts;
     }
 
-    public static void ConfigureAction<T>(this ApiModel api, string name,
+    public static void AddConfigureAction<T>(this IDomainModelConventionCollection conventions, string name,
         HttpMethod? method = default,
         List<string>? routeParts = default,
         bool? useForm = default,
         bool? useRequestClassForBody = default,
-        Action<Dictionary<string, ParameterModel>>? parameter = default
-    )
-    {
-        var controller = api.GetController<T>();
-        var action = controller.Action[name];
-
-        if (method is not null) { action.Method = method; }
-        if (routeParts is not null) { action.RouteParts = routeParts; }
-        if (useForm is not null) { action.UseForm = useForm.Value; }
-        if (useRequestClassForBody is not null) { action.UseRequestClassForBody = useRequestClassForBody.Value; }
-        if (parameter is not null) { parameter(action.Parameter); }
-    }
-
-    public static void OverrideAction<T>(this IApiModelConventionCollection conventions,
-         string? mappedMethodName = default,
-         HttpMethod? method = default,
-         List<string>? routeParts = default,
-         bool? useRequestClassForBody = default,
-         Action<Dictionary<string, ParameterModel>>? parameter = default
+        Action<Dictionary<string, ParameterModelAttribute>>? parameter = default
     )
     {
         conventions.Add(
-            new OverrideActionConvention(
-                _when: c => c.Controller.MappedType.Is<T>() && (mappedMethodName == null || c.Action.MappedMethod?.Name == mappedMethodName),
-                _configuration: action =>
-                {
-                    if (method is not null) { action.Method = method; }
-                    if (routeParts is not null) { action.RouteParts = routeParts; }
-                    if (useRequestClassForBody is not null) { action.UseRequestClassForBody = useRequestClassForBody.Value; }
-                    if (parameter is not null) { parameter(action.Parameter); }
-                }
-            ),
-            order: int.MaxValue
+            new ConfigureActionConvention<T>(name, action =>
+            {
+                if (method is not null) { action.Method = method; }
+                if (routeParts is not null) { action.RouteParts = routeParts; }
+                if (useForm is not null) { action.UseForm = useForm.Value; }
+                if (useRequestClassForBody is not null) { action.UseRequestClassForBody = useRequestClassForBody.Value; }
+                if (parameter is not null) { parameter(action.Parameter); }
+            }),
+            order: int.MinValue + 10
+        );
+    }
+
+    public static void AddOverrideAction<T>(this IDomainModelConventionCollection conventions, string name,
+        HttpMethod? method = default,
+        List<string>? routeParts = default,
+        bool? useForm = default,
+        bool? useRequestClassForBody = default,
+        Action<Dictionary<string, ParameterModelAttribute>>? parameter = default
+    )
+    {
+        conventions.Add(
+            new ConfigureActionConvention<T>(name, action =>
+            {
+                if (method is not null) { action.Method = method; }
+                if (routeParts is not null) { action.RouteParts = routeParts; }
+                if (useForm is not null) { action.UseForm = useForm.Value; }
+                if (useRequestClassForBody is not null) { action.UseRequestClassForBody = useRequestClassForBody.Value; }
+                if (parameter is not null) { parameter(action.Parameter); }
+            }),
+            order: int.MaxValue - 10
         );
     }
 }

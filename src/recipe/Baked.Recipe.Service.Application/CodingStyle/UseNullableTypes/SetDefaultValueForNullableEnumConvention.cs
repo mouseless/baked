@@ -1,19 +1,21 @@
-﻿using Baked.RestApi.Configuration;
+﻿using Baked.Domain.Configuration;
+using Baked.RestApi.Model;
 
 namespace Baked.CodingStyle.UseNullableTypes;
 
-public class SetDefaultValueForNullableEnumConvention : IApiModelConvention<ParameterModelContext>
+public class SetDefaultValueForNullableEnumConvention : IDomainModelConvention<ParameterModelContext>
 {
     public void Apply(ParameterModelContext context)
     {
         if (!context.Parameter.IsOptional) { return; }
-        if (!context.Parameter.TypeModel.IsAssignableTo(typeof(Nullable<>))) { return; }
-        if (!context.Parameter.TypeModel.TryGetGenerics(out var generics)) { return; }
+        if (!context.Parameter.TryGetSingle<ParameterModelAttribute>(out var parameter)) { return; }
+        if (!context.Parameter.ParameterType.IsAssignableTo(typeof(Nullable<>))) { return; }
+        if (!context.Parameter.ParameterType.TryGetGenerics(out var generics)) { return; }
         if (!generics.GenericTypeArguments.Any()) { return; }
         if (!generics.GenericTypeArguments[0].Model.IsEnum) { return; }
 
         var enumType = generics.GenericTypeArguments[0].Model;
-        context.Parameter.DefaultValueRenderer = defaultValue =>
+        parameter.DefaultValueRenderer = defaultValue =>
         {
             var enumName = string.Empty;
 

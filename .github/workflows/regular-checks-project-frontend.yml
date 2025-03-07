@@ -1,0 +1,69 @@
+name: Regular Checks - Project - Frontend
+on:
+  pull_request:
+    branches:
+      - main
+      - 'epic/**'
+    paths:
+      - 'src/recipe/admin/**/*'
+      - 'test/recipe/admin/**/*'
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Disable AppArmour
+        run: echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns
+      - name: Build src
+        run: |
+          cd src/recipe/admin
+          npm i
+          npm run build
+      - name: Build test
+        run: |
+          cd test/recipe/admin
+          npm i
+          npm run build:Production
+  test:
+    name: Test
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9
+      - name: Disable AppArmour
+        run: echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns
+      - name: Build local package
+        run: |
+          cd src/recipe/admin
+          npm i
+          npm run build
+      - name: Build descriptors
+        run: |
+          dotnet build
+      - name: Build test project
+        run: |
+          cd test/recipe/admin
+          npm i
+          npx playwright install --with-deps
+          npm run build:Production
+      - name: Run tests
+        run: |
+          cd test/recipe/admin
+          BUILD_SILENT=1 npm test -- --grep-invert @visual

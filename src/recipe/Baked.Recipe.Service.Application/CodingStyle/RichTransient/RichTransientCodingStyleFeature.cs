@@ -1,6 +1,7 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
 using Baked.Lifetime;
+using Baked.RestApi.Model;
 
 namespace Baked.CodingStyle.RichTransient;
 
@@ -32,7 +33,8 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     ),
                 order: 10
             );
-            builder.Conventions.AddMethodMetadata(new ApiMethodAttribute(),
+            builder.Conventions.AddMethodMetadata(
+                attribute: c => new ActionModelAttribute(),
                 when: c =>
                     c.Type.Has<TransientAttribute>() &&
                     c.Type.TryGetMembers(out var members) &&
@@ -45,17 +47,14 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     ),
                 order: 20
             );
-        });
 
-        configurator.ConfigureApiModelConventions(conventions =>
-        {
-            conventions.Add(new RichTransientUnderPluralGroupConvention());
-            conventions.Add(new AddInitializerParametersToQueryConvention());
-            conventions.Add(new AddIdParameterToRouteConvention());
-            conventions.Add(new LookupRichTransientByIdConvention());
-            conventions.Add(new LookupRichTransientsByIdsConvention());
-            conventions.Add(new RichTransientInitializerIsGetResourceConvention());
-            conventions.Add(new FindTargetUsingInitializerConvention(), order: 10);
+            builder.Conventions.Add(new RichTransientUnderPluralGroupConvention());
+            builder.Conventions.Add(new AddInitializerParametersToQueryConvention());
+            builder.Conventions.Add(new AddIdParameterToRouteConvention());
+            builder.Conventions.Add(new LookupRichTransientByIdConvention());
+            builder.Conventions.Add(new LookupRichTransientsByIdsConvention());
+            builder.Conventions.Add(new RichTransientInitializerIsGetResourceConvention());
+            builder.Conventions.Add(new FindTargetUsingInitializerConvention(), order: 10);
         });
     }
 }

@@ -1,0 +1,64 @@
+{
+  "name": "baked-recipe-admin",
+  "version": "0.13.1",
+  "description": "Baked (Objects) is an opinionated framework for .NET. This is a recipe package that brings together all the components one needs for an admin ui.",
+  "keywords": [
+    "baked",
+    "objects",
+    "recipe",
+    "admin",
+    "ui"
+  ],
+  "homepage": "https://baked.mouseless.codes",
+  "bugs": {
+    "url": "https://matrix.to/#/#baked:mouseless.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mouseless/baked.git"
+  },
+  "license": "MIT",
+  "author": "mouseless",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/types.d.ts",
+      "import": "./dist/module.mjs",
+      "require": "./dist/module.cjs"
+    }
+  },
+  "main": "./dist/module.cjs",
+  "types": "./dist/types.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "prepack": "nuxt-module-build build",
+    "postinstall": "nuxt prepare",
+    "build": "nuxt-module-build build --stub && nuxt-module-build prepare",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@nuxt/kit": "^3.15.4",
+    "@primevue/themes": "~4.2.5",
+    "@nuxtjs/tailwindcss": "^6.13.1",
+    "primeicons": "~7.0.0",
+    "primevue": "~4.2.5"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "^2.1.1",
+    "@nuxt/eslint-config": "^1.1.0",
+    "@nuxt/module-builder": "^0.8.4",
+    "@nuxt/schema": "^3.15.4",
+    "@nuxt/test-utils": "^3.17.0",
+    "@types/node": "latest",
+    "changelogen": "^0.6.0",
+    "eslint": "^9.21.0",
+    "nuxt": "^3.15.4",
+    "sass": "^1.84.0",
+    "typescript": "~5.8.2",
+    "vitest": "^3.0.7",
+    "vue-tsc": "^2.2.4"
+  },
+  "bundleDependencies": ["@primevue/themes", "primevue"]
+}

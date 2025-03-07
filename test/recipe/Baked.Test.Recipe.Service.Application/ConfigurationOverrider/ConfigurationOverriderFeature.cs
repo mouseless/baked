@@ -3,10 +3,16 @@ using Baked.ExceptionHandling;
 using Baked.RestApi.Model;
 using Baked.Test.Authentication;
 using Baked.Test.Business;
+using Baked.Test.CodingStyle.RichTransient;
 using Baked.Test.ExceptionHandling;
 using Baked.Test.Orm;
+using Baked.Theme.Admin;
+using Baked.Ui;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
+
+using static Baked.Theme.Admin.Components;
+using static Baked.Ui.Datas;
 
 namespace Baked.Test.ConfigurationOverrider;
 
@@ -14,6 +20,36 @@ public class ConfigurationOverriderFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
+        configurator.ConfigureDomainModelBuilder(builder =>
+        {
+            builder.Conventions.AddSingleById<Entities>();
+            builder.Conventions.AddSingleById<Parents>();
+            builder.Conventions.AddSingleById<Children>();
+            builder.Conventions.AddConfigureAction<AuthenticationSamples>(nameof(AuthenticationSamples.FormPostAuthenticate), useForm: true);
+            builder.Conventions.AddConfigureAction<DocumentationSamples>(nameof(DocumentationSamples.Route), parameter: p =>
+            {
+                p["route"].From = ParameterModelFrom.Route;
+                p["route"].RoutePosition = 2;
+            });
+            builder.Conventions.AddConfigureAction<ExceptionSamples>(nameof(ExceptionSamples.Throw), parameter: p => p["handled"].From = ParameterModelFrom.Query);
+
+            builder.Conventions.AddOverrideAction<OverrideSamples>(nameof(OverrideSamples.UpdateRoute),
+                routeParts: ["override-samples", "override", "update-route"],
+                method: HttpMethod.Post
+            );
+            builder.Conventions.AddOverrideAction<OverrideSamples>(nameof(OverrideSamples.Parameter),
+                parameter: parameter =>
+                {
+                    parameter["parameter"].Name = "id";
+                    parameter["parameter"].From = ParameterModelFrom.Route;
+                    parameter["parameter"].RoutePosition = 2;
+                }
+            );
+            builder.Conventions.AddOverrideAction<OverrideSamples>(nameof(OverrideSamples.RequestClass),
+                useRequestClassForBody: false
+            );
+        });
+
         configurator.ConfigureServiceCollection(services =>
         {
             services.AddSingleton<IExceptionHandler, ClientExceptionHandler>();
@@ -24,22 +60,6 @@ public class ConfigurationOverriderFeature : IFeature
         {
             model.Override<Entity>(x => x.Map(e => e.String).Length(500));
             model.Override<Entity>(x => x.Map(e => e.Unique).Column("UniqueString").Unique());
-        });
-
-        configurator.ConfigureApiModel(api =>
-        {
-            api.ConfigureAction<AuthenticationSamples>(nameof(AuthenticationSamples.FormPostAuthenticate), useForm: true);
-            api.ConfigureAction<DocumentationSamples>(nameof(DocumentationSamples.Route), parameter: p =>
-            {
-                p["route"].From = ParameterModelFrom.Route;
-                p["route"].RoutePosition = 2;
-            });
-            api.ConfigureAction<ExceptionSamples>(nameof(ExceptionSamples.Throw), parameter: p => p["handled"].From = ParameterModelFrom.Query);
-
-            configurator.UsingDomainModel(domain =>
-            {
-                api.GetController<Entities>().AddSingleById<Entity>(domain);
-            });
         });
 
         configurator.ConfigureSwaggerGenOptions(swaggerGenOptions =>
@@ -84,28 +104,101 @@ public class ConfigurationOverriderFeature : IFeature
             swaggerUIOptions.SwaggerEndpoint($"external/swagger.json", "External");
         });
 
-        configurator.ConfigureApiModelConventions(conventions =>
+        configurator.ConfigureLayoutDescriptors(layouts =>
         {
-            conventions.OverrideAction<OverrideSamples>(
-                mappedMethodName: nameof(OverrideSamples.UpdateRoute),
-                routeParts: ["override-samples", "override", "update-route"],
-                method: HttpMethod.Post
-            );
+            configurator.UsingDomainModel(domain =>
+            {
+                var rtwd = domain.Types[typeof(RichTransientWithData)];
+                var rtwdRoute = rtwd.GetActionModel().GetRoute();
+                var rtwdDetail = rtwd.Get<DetailPage>();
+                var rtwdPageDetail = (PageTitle)(rtwdDetail.Header?.Schema ?? throw new("RichTransientWithData is expected to have PageTitle in Header"));
 
-            conventions.OverrideAction<OverrideSamples>(
-                mappedMethodName: nameof(OverrideSamples.Parameter),
-                parameter: parameter =>
-                {
-                    parameter["parameter"].Name = "id";
-                    parameter["parameter"].From = ParameterModelFrom.Route;
-                    parameter["parameter"].RoutePosition = 2;
-                }
-            );
+                layouts.Add("default", DefaultLayout(
+                    sideMenu: SideMenu(
+                        menu:
+                        [
+                            SideMenuItem("/", "pi pi-home"),
+                            SideMenuItem("/specs", "pi pi-list-check", title: "Specs")
+                        ],
+                        footer: String(Inline("FT"))
+                    ),
+                    header: Header(
+                        siteMap:
+                        [
+                            HeaderItem("/", icon: "pi pi-home"),
+                            HeaderItem($"/{rtwdRoute}", title: rtwdPageDetail.Title),
+                            HeaderItem("/specs", icon: "pi pi-list-check", title: "Specs"),
+                            HeaderItem("/specs/card-link", title: "Card Link", parentRoute: "/specs"),
+                            HeaderItem("/specs/detail-page", title: "Detail Page", parentRoute: "/specs"),
+                            HeaderItem("/specs/header", title: "Header", parentRoute: "/specs"),
+                            HeaderItem("/specs/menu-page", title: "Menu Page", parentRoute: "/specs"),
+                            HeaderItem("/specs/page-title", title: "Page Title", parentRoute: "/specs"),
+                            HeaderItem("/specs/side-menu", title: "Side Menu", parentRoute: "/specs"),
+                            HeaderItem("/specs/toast", title: "Toast", parentRoute: "/specs")
+                        ]
+                    )
+                ));
+            });
+        });
 
-            conventions.OverrideAction<OverrideSamples>(
-                mappedMethodName: nameof(OverrideSamples.RequestClass),
-                useRequestClassForBody: false
-            );
+        configurator.ConfigurePageDescriptors(pages =>
+        {
+            foreach (var page in pages.Values.OfType<ComponentDescriptorAttribute<DetailPage>>())
+            {
+                if (page.Data is not RemoteData remote) { continue; }
+
+                remote.Headers = Inline(new { Authorization = "token-jane" });
+            }
+
+            configurator.UsingDomainModel(domain =>
+            {
+                var route = domain.Types[typeof(RichTransientWithData)].GetActionModel().GetRoute();
+
+                pages.Add("index", MenuPage(
+                    links:
+                    [
+                        CardLink($"/{route.Replace("{id}", "test1")}", "Rich Transient w/ Data 1"),
+                        CardLink($"/{route.Replace("{id}", "test2")}", "Rich Transient w/ Data 2"),
+                        CardLink($"/{route.Replace("{id}", "test3")}", "Rich Transient w/ Data 3")
+                    ]
+                ));
+            });
+
+            pages.Add("specs", MenuPage(
+                title: "Specs",
+                description: "All UI Specs are listed here",
+                links:
+                [
+                    CardLink("/specs/card-link", "Card Link",
+                        icon: "pi pi-microchip",
+                        description: "A big card link component to render links in menu-like pages"
+                    ),
+                    CardLink("/specs/detail-page", "Detail Page",
+                        icon: "pi pi-microchip",
+                        description: "A page component suitable for rendering entities and rich transients"
+                    ),
+                    CardLink("/specs/header", "Header",
+                        icon: "pi pi-microchip",
+                        description: "A layout component that renders a breadcrumb"
+                    ),
+                    CardLink("/specs/menu-page", "Menu Page",
+                        icon: "pi pi-microchip",
+                        description: "A page component suitable for rendering navigation pages"
+                    ),
+                    CardLink("/specs/page-title", "Page Title",
+                        icon: "pi pi-microchip",
+                        description: "A page component to render page title, desc and actions"
+                    ),
+                    CardLink("/specs/side-menu", "Side Menu",
+                        icon: "pi pi-microchip",
+                        description: "A layout component to render application menu"
+                    ),
+                    CardLink("/specs/toast", "Toast",
+                        icon: "pi pi-microchip",
+                        description: "A behavioral component to render alert messages"
+                    )
+                ]
+            ));
         });
     }
 }

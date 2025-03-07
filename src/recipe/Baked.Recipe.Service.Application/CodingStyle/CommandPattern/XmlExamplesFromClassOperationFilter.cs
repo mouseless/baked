@@ -1,4 +1,4 @@
-﻿using Baked.Business;
+﻿using Baked.Binding;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -7,7 +7,7 @@ namespace Baked.CodingStyle.CommandPattern;
 public class XmlExamplesFromClassOperationFilter(IEnumerable<string> actionNames, Dictionary<string, RequestResponseExampleData> _methodExamplesDictionary)
     : IOperationFilter
 {
-    readonly HashSet<string> _actionNames = actionNames.ToHashSet();
+    readonly HashSet<string> _actionNames = [.. actionNames];
 
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
     {
