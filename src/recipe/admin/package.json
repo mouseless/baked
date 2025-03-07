@@ -33,7 +33,7 @@
     "dist"
   ],
   "scripts": {
-    "package": "nuxt-module-build build",
+    "prepack": "nuxt-module-build build",
     "postinstall": "nuxt prepare",
     "build": "nuxt-module-build build --stub && nuxt-module-build prepare",
     "lint": "eslint ."
@@ -55,9 +55,10 @@
     "changelogen": "^0.6.0",
     "eslint": "^9.21.0",
     "nuxt": "^3.15.4",
+    "sass": "^1.84.0",
     "typescript": "~5.8.2",
     "vitest": "^3.0.7",
     "vue-tsc": "^2.2.4"
   },
-  "bundleDependencies": ["@primevue/themes", "primeicons", "primevue"]
+  "bundleDependencies": ["@primevue/themes", "primevue"]
 }

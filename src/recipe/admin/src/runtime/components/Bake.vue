@@ -17,7 +17,7 @@ const { descriptor } = defineProps({
   descriptor: { type: null, required: true }
 });
 
-const { public: { apiBaseURL: baseURL, devMode } } = useRuntimeConfig();
+const { public: { components } } = useRuntimeConfig();
 const componentResolver = useComponentResolver();
 const composableResolver = useComposableResolver();
 const extensions = useStringExtensions();
@@ -29,7 +29,7 @@ const data = ref();
 const loaded = ref(false);
 
 onMounted(async() => {
-  data.value = await fetchData();
+  data.value = await fetchData(descriptor.data);
   loaded.value = true;
 });
 
@@ -39,28 +39,30 @@ const fetchOptions = {
   retryStatusCodes: [500]
 };
 
-async function fetchData() {
-  if(descriptor.data?.type === "Remote") {
+async function fetchData(data) {
+  if(data?.type === "Remote") {
+    const headers = data.headers ? await fetchData(data.headers) : { };
+
     return await $fetch(
-      extensions.format(`${descriptor.data.path}`, routeParams.slice(1)),
+      extensions.format(`${data.path}`, routeParams.slice(1)),
       {
-        ... devMode ? fetchOptions : { },
-        baseURL,
-        headers: { Authorization: "token-jane" }
+        ... components?.Bake?.retryFetch ? fetchOptions : { },
+        baseURL: components?.Bake?.baseURL,
+        headers
       }
     );
   }
 
-  if(descriptor.data?.type === "Computed") {
-    const composable = await composableResolver.resolve(descriptor.data.composable);
+  if(data?.type === "Computed") {
+    const composable = await composableResolver.resolve(data.composable);
 
     return composable.default();
   }
 
-  if(descriptor.data?.type === "Inline") {
-    return descriptor.data?.value;
+  if(data?.type === "Inline") {
+    return data?.value;
   }
 
-  return descriptor.data;
+  return data;
 }
 </script>

@@ -7,6 +7,7 @@ using Baked.Test.CodingStyle.RichTransient;
 using Baked.Test.ExceptionHandling;
 using Baked.Test.Orm;
 using Baked.Theme.Admin;
+using Baked.Ui;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
 
@@ -132,7 +133,8 @@ public class ConfigurationOverriderFeature : IFeature
                             HeaderItem("/specs/header", title: "Header", parentRoute: "/specs"),
                             HeaderItem("/specs/menu-page", title: "Menu Page", parentRoute: "/specs"),
                             HeaderItem("/specs/page-title", title: "Page Title", parentRoute: "/specs"),
-                            HeaderItem("/specs/side-menu", title: "Side Menu", parentRoute: "/specs")
+                            HeaderItem("/specs/side-menu", title: "Side Menu", parentRoute: "/specs"),
+                            HeaderItem("/specs/toast", title: "Toast", parentRoute: "/specs")
                         ]
                     )
                 ));
@@ -141,6 +143,13 @@ public class ConfigurationOverriderFeature : IFeature
 
         configurator.ConfigurePageDescriptors(pages =>
         {
+            foreach (var page in pages.Values.OfType<ComponentDescriptorAttribute<DetailPage>>())
+            {
+                if (page.Data is not RemoteData remote) { continue; }
+
+                remote.Headers = Inline(new { Authorization = "token-jane" });
+            }
+
             configurator.UsingDomainModel(domain =>
             {
                 var route = domain.Types[typeof(RichTransientWithData)].GetActionModel().GetRoute();
@@ -184,6 +193,10 @@ public class ConfigurationOverriderFeature : IFeature
                         icon: "pi pi-microchip",
                         description: "A layout component to render application menu"
                     ),
+                    CardLink("/specs/toast", "Toast",
+                        icon: "pi pi-microchip",
+                        description: "A behavioral component to render alert messages"
+                    )
                 ]
             ));
         });

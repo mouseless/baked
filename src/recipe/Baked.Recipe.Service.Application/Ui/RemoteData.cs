@@ -5,4 +5,5 @@ public record RemoteData(string Path)
 {
     public string Type => "Remote";
     public string Path { get; set; } = Path;
+    public IData? Headers { get; set; }
 }

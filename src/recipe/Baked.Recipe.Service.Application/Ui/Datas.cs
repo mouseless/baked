@@ -8,6 +8,7 @@ public static class Datas
     public static InlineData Inline(object value) =>
         new(value);
 
-    public static RemoteData Remote(string path) =>
-        new(path);
+    public static RemoteData Remote(string path,
+        IData? headers = default
+    ) => new(path) { Headers = headers };
 }
