@@ -5,9 +5,11 @@
   >
     <slot />
   </Bake>
+  <Toast />
 </template>
 <script setup>
 import { onMounted, ref } from "vue";
+import { Toast } from "primevue";
 import { useLayouts } from "#imports";
 import Bake from "./Bake.vue";
 

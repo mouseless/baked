@@ -15,5 +15,10 @@ export default {
   },
   tag: {
     base: ".p-tag"
+  },
+  toast: {
+    base: ".p-toast",
+    summary: ".p-toast-summary",
+    detail: ".p-toast-detail"
   }
 };

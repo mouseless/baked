@@ -133,7 +133,8 @@ public class ConfigurationOverriderFeature : IFeature
                             HeaderItem("/specs/header", title: "Header", parentRoute: "/specs"),
                             HeaderItem("/specs/menu-page", title: "Menu Page", parentRoute: "/specs"),
                             HeaderItem("/specs/page-title", title: "Page Title", parentRoute: "/specs"),
-                            HeaderItem("/specs/side-menu", title: "Side Menu", parentRoute: "/specs")
+                            HeaderItem("/specs/side-menu", title: "Side Menu", parentRoute: "/specs"),
+                            HeaderItem("/specs/toast", title: "Toast", parentRoute: "/specs")
                         ]
                     )
                 ));
@@ -192,6 +193,10 @@ public class ConfigurationOverriderFeature : IFeature
                         icon: "pi pi-microchip",
                         description: "A layout component to render application menu"
                     ),
+                    CardLink("/specs/toast", "Toast",
+                        icon: "pi pi-microchip",
+                        description: "A behavioral component to render alert messages"
+                    )
                 ]
             ));
         });
