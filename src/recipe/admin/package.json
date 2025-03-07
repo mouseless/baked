@@ -1,7 +1,7 @@
 {
   "name": "baked-recipe-admin",
-  "version": "0.13.1",
-  "description": "Baked (Objects) is an opinionated framework for .NET. This is a recipe package that brings together all the components one needs for an admin ui.",
+  "version": "0.14.0",
+  "description": "Baked (Objects) is an opinionated framework for .NET in backend and Nuxt in frontend. This is a recipe package that brings together all the components one needs for an Admin UI.",
   "keywords": [
     "baked",
     "objects",
