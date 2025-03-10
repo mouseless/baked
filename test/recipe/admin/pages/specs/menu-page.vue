@@ -9,25 +9,22 @@ import giveMe from "~/utils/giveMe";
 
 const variants = [
   {
-    name: "Base",
+    name: "Header and Links",
     descriptor: giveMe.aMenuPage({
-      title: "PAGE TITLE",
-      description: "PAGE DESCRIPTION"
-    })
-  },
-  {
-    name: "Links",
-    descriptor: giveMe.aMenuPage({
+      header: giveMe.anExpected({ testId: "header", value: "PAGE TITLE" }),
       links: new Array(12).fill(0).map((_, i) =>
         giveMe.anExpected({ testId: `LINK_${i}`, value: `VALUE_${i}`})
       )
     })
   },
   {
-    name: "No Description",
+    name: "No Header",
     descriptor: giveMe.aMenuPage({
-      title: "PAGE TITLE",
-      description: null
+      header: null,
+      links: [
+        giveMe.anExpected({ value: "Menu Placeholder 1"}) ,
+        giveMe.anExpected({ value: "Menu Placeholder 2"})
+      ]
     })
   }
 ];

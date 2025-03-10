@@ -32,10 +32,9 @@ public static class Components
     ) => new(route) { Icon = icon, Title = title, ParentRoute = parentRoute };
 
     public static ComponentDescriptorAttribute<MenuPage> MenuPage(
-        string? title = default,
-        string? description = default,
+        IComponentDescriptor? header = default,
         IEnumerable<IComponentDescriptor>? links = default
-    ) => new(new() { Title = title, Description = description, Links = [.. links ?? []] });
+    ) => new(new() { Header = header, Links = [.. links ?? []] });
 
     public static ComponentDescriptor None() =>
         new(nameof(None));

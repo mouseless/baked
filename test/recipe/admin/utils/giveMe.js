@@ -62,14 +62,13 @@ export default {
     return { route, icon, title, parentRoute };
   },
 
-  aMenuPage({ title, description, links } = {}) {
-    title = $(title, "Test Title");
-    description = $(description, "Test description is given for testing purposes");
+  aMenuPage({ header, links } = {}) {
+    header = $(header, this.anExpected());
     links = $(links, []);
 
     return {
       type: "MenuPage",
-      schema: { title, description, links }
+      schema: { header, links }
     };
   },
 

@@ -4,24 +4,14 @@ test.beforeEach(async({goto}) => {
   await goto("/specs/menu-page", { waitUntil: "hydration" });
 });
 
-test.describe("Base", () => {
-  const id = "Base";
+test.describe("Header and Links", () => {
+  const id = "Header and Links";
 
-  test("title", async({page}) => {
+  test("header", async({page}) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator("h1")).toHaveText("PAGE TITLE");
+    await expect(component.getByTestId("header")).toHaveText("PAGE TITLE");
   });
-
-  test("description", async({page}) => {
-    const component = page.getByTestId(id);
-
-    await expect(component.getByTestId("description")).toHaveText("PAGE DESCRIPTION");
-  });
-});
-
-test.describe("Links", () => {
-  const id = "Links";
 
   test("actions", async({page}) => {
     const component = page.getByTestId(id);
@@ -38,12 +28,12 @@ test.describe("Links", () => {
   });
 });
 
-test.describe("No Description", () => {
-  const id = "No Description";
+test.describe("No Header", () => {
+  const id = "No Header";
 
-  test("description still available with nbsp", async({page}) => {
+  test("header not found", async({page}) => {
     const component = page.getByTestId(id);
 
-    await expect(component.getByTestId("description")).toHaveText(" ");
+    await expect(component.locator("> *")).toHaveCount(1);
   });
 });

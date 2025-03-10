@@ -1,11 +1,11 @@
 <template>
-  <PageTitle
-    v-if="schema.title"
-    :schema="schema"
+  <Bake
+    v-if="header"
+    :descriptor="header"
   />
   <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
     <Bake
-      v-for="link in schema.links"
+      v-for="link in links"
       :key="link.schema.route"
       :descriptor="link"
     />
@@ -13,10 +13,11 @@
 </template>
 <script setup>
 import Bake from "./Bake.vue";
-import PageTitle from "./PageTitle.vue";
 
-defineProps({
+const { schema } = defineProps({
   schema: { type: null, required: true },
   data: { type: null, default: null }
 });
+
+const { header, links } = schema;
 </script>

@@ -165,8 +165,10 @@ public class ConfigurationOverriderFeature : IFeature
             });
 
             pages.Add("specs", MenuPage(
-                title: "Specs",
-                description: "All UI Specs are listed here",
+                header: PageTitle(
+                  title: "Specs",
+                  description: "All UI Specs are listed here"
+                ),
                 links:
                 [
                     CardLink("/specs/card-link", "Card Link",
