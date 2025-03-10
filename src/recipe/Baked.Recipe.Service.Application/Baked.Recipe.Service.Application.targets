@@ -1,5 +1,9 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
+  <PropertyGroup>
+    <CopyComponentDescriptors>false</CopyComponentDescriptors>
+  </PropertyGroup>  
+    
   <ItemGroup>
     <Using Include="Baked" />
   </ItemGroup>
