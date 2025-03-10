@@ -30,6 +30,7 @@ export default defineNuxtModule<ModuleOptions>({
 
     // this setup runs after `defineNuxtConfig` so it should set only if config
     // is undefined to allow developers override these defaults
+    // if not set, arrays and objects are always not-null and empty
     _nuxt.options.css.push("primeicons/primeicons.css");
     _nuxt.options.devtools.enabled ||= false;
     _nuxt.options.experimental.payloadExtraction ||= false;
