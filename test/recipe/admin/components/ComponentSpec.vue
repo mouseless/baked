@@ -34,6 +34,7 @@
           <Bake :descriptor="variant.descriptor" />
         </div>
       </div>
+      <slot v-if="$slots.default" name="default" />
     </div>
   </div>
 </template>
