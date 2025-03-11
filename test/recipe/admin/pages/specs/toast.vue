@@ -1,11 +1,11 @@
 <template>
-  <ComponentSpec title="Toast" :variants="[]">
+  <UiSpec title="Toast">
     <Message severity="info">
       <span class="text-xl">
         ↗️  Check if page has a success toast at top right ↗️
       </span>
     </Message>
-  </ComponentSpec>
+  </UiSpec>
 </template>
 <script setup>
 import { onMounted } from "vue";

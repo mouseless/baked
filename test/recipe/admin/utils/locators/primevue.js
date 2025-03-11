@@ -10,6 +10,9 @@ export default {
     icon: ".p-breadcrumb-item-icon",
     label: ".p-breadcrumb-item-label"
   },
+  datepicker: {
+    weekday: ".p-datepicker-weekday"
+  },
   panel: {
     title: ".p-panel-title"
   },

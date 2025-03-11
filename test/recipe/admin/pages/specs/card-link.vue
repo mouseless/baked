@@ -1,5 +1,5 @@
 <template>
-  <ComponentSpec
+  <UiSpec
     title="Card Link"
     :variants="variants"
   />

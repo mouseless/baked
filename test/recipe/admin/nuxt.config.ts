@@ -22,7 +22,10 @@ const Mouseless = definePreset(Aura, {
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   baked: {
-    theme: Mouseless,
+    primevue: {
+      theme: Mouseless,
+      locale: { dayNamesMin: [ "sU", "mO", "tU", "wE", "tH", "fR", "sA"] }
+    },
     components: {
       Bake: {
         baseURL: process.env.API_BASE_URL,

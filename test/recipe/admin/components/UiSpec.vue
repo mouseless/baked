@@ -45,7 +45,7 @@ import { Divider } from "primevue";
 
 const { title } = defineProps({
   title: { type: String, required: true },
-  variants: { type: Array, required: true },
+  variants: { type: Array, default: () => [] },
   vertical: { type: Boolean, default: false }
 });
 
