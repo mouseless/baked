@@ -34,7 +34,9 @@
           <Bake :descriptor="variant.descriptor" />
         </div>
       </div>
-      <slot v-if="$slots.default" name="default" />
+      <div v-if="$slots.default" :data-testid="testId">
+        <slot name="default" />
+      </div>
     </div>
   </div>
 </template>
@@ -46,7 +48,8 @@ import { Divider } from "primevue";
 const { title } = defineProps({
   title: { type: String, required: true },
   variants: { type: Array, default: () => [] },
-  vertical: { type: Boolean, default: false }
+  vertical: { type: Boolean, default: false },
+  testId: { type: String, default: "test" }
 });
 
 const pages = usePages();

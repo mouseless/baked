@@ -131,6 +131,7 @@ public class ConfigurationOverriderFeature : IFeature
                             HeaderItem("/specs/card-link", title: "Card Link", parentRoute: "/specs"),
                             HeaderItem("/specs/custom-css", title: "Custom CSS", parentRoute: "/specs"),
                             HeaderItem("/specs/detail-page", title: "Detail Page", parentRoute: "/specs"),
+                            HeaderItem("/specs/error-handling", title: "Error Handling", parentRoute: "/specs"),
                             HeaderItem("/specs/header", title: "Header", parentRoute: "/specs"),
                             HeaderItem("/specs/locale", title: "Locale", parentRoute: "/specs"),
                             HeaderItem("/specs/menu-page", title: "Menu Page", parentRoute: "/specs"),
@@ -184,6 +185,10 @@ public class ConfigurationOverriderFeature : IFeature
                     CardLink("/specs/detail-page", "Detail Page",
                         icon: "pi pi-microchip",
                         description: "A page component suitable for rendering entities and rich transients"
+                    ),
+                    CardLink("/specs/error-handling", "Error Handling",
+                        icon: "pi pi-microchip",
+                        description: "A plugin for handling errors"
                     ),
                     CardLink("/specs/header", "Header",
                         icon: "pi pi-microchip",
