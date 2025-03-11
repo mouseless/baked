@@ -1,7 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <Import Project="..\..\..\src\recipe\Baked.Recipe.Service.Application\Baked.Recipe.Service.Application.targets" />
-
   <PropertyGroup>
     <CopyComponentDescriptors>true</CopyComponentDescriptors>
     <ComponentDescriptorsDir>$(ProjectDir)..\admin\.baked</ComponentDescriptorsDir>
@@ -25,5 +23,9 @@
   <ItemGroup>
     <InternalsVisibleTo Include="Baked.Test.Recipe.Service.Test" />
   </ItemGroup>
+
+  <!--this import statement should be the last element to for 
+  targets to be executed after this file -->
+  <Import Project="..\..\..\src\recipe\Baked.Recipe.Service.Application\Baked.Recipe.Service.Application.targets" />  
 
 </Project>
