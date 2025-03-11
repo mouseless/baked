@@ -1,5 +1,5 @@
 <template>
-  <ComponentSpec
+  <UiSpec
     title="Side Menu"
     :variants="variants"
     :vertical="true"

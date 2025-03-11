@@ -132,6 +132,7 @@ public class ConfigurationOverriderFeature : IFeature
                             HeaderItem("/specs/custom-css", title: "Custom CSS", parentRoute: "/specs"),
                             HeaderItem("/specs/detail-page", title: "Detail Page", parentRoute: "/specs"),
                             HeaderItem("/specs/header", title: "Header", parentRoute: "/specs"),
+                            HeaderItem("/specs/locale", title: "Locale", parentRoute: "/specs"),
                             HeaderItem("/specs/menu-page", title: "Menu Page", parentRoute: "/specs"),
                             HeaderItem("/specs/page-title", title: "Page Title", parentRoute: "/specs"),
                             HeaderItem("/specs/side-menu", title: "Side Menu", parentRoute: "/specs"),
@@ -166,8 +167,10 @@ public class ConfigurationOverriderFeature : IFeature
             });
 
             pages.Add("specs", MenuPage(
-                title: "Specs",
-                description: "All UI Specs are listed here",
+                header: PageTitle(
+                  title: "Specs",
+                  description: "All UI Specs are listed here"
+                ),
                 links:
                 [
                     CardLink("/specs/card-link", "Card Link",
@@ -185,6 +188,10 @@ public class ConfigurationOverriderFeature : IFeature
                     CardLink("/specs/header", "Header",
                         icon: "pi pi-microchip",
                         description: "A layout component that renders a breadcrumb"
+                    ),
+                    CardLink("/specs/locale", "Locale",
+                        icon: "pi pi-microchip",
+                        description: "Allow locale customization and language support"
                     ),
                     CardLink("/specs/menu-page", "Menu Page",
                         icon: "pi pi-microchip",

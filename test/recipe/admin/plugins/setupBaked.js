@@ -2,7 +2,7 @@ import { defineAsyncComponent } from "vue";
 import { defineNuxtPlugin } from "#app";
 
 export default defineNuxtPlugin({
-  name: "importComponents",
+  name: "setupBaked",
   setup() {
     const bakedComponents = import.meta.glob("~/node_modules/baked-recipe-admin/dist/runtime/components/*");
     const projectComponents = import.meta.glob("~/components/*");
