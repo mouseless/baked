@@ -46,6 +46,7 @@ export default defineNuxtModule<ModuleOptions>({
     addImportsDir(resolver.resolve("./runtime/composables"));
 
     addPlugin(resolver.resolve("./runtime/plugins/addPrimevue"));
+    addPlugin(resolver.resolve("./runtime/plugins/errorHandling"));
     addPlugin(resolver.resolve("./runtime/plugins/toast"));
 
     await installModule("@nuxtjs/tailwindcss", {
