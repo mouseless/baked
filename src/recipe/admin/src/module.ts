@@ -1,8 +1,13 @@
 import { defineNuxtModule, addComponentsDir, addImportsDir, addPlugin, createResolver, installModule } from "@nuxt/kit"
 
 export interface ModuleOptions {
-  theme: Object,
+  primevue: PrimeVueOptions,
   components?: Components
+}
+
+export interface PrimeVueOptions {
+  theme: any,
+  locale?: any
 }
 
 export interface Components {
@@ -25,27 +30,28 @@ export default defineNuxtModule<ModuleOptions>({
     configKey: "baked",
   },
   defaults: { },
+
+  // this setup runs after `defineNuxtConfig` so it should set default values
+  // carefully.
   async setup(_options, _nuxt) {
     const resolver = createResolver(import.meta.url);
 
-    // this setup runs after `defineNuxtConfig` so it should set only if config
-    // is undefined to allow developers override these defaults
-    // if not set, arrays and objects are always not-null and empty
-    _nuxt.options.css.push("primeicons/primeicons.css");
-    _nuxt.options.devtools.enabled ||= false;
-    _nuxt.options.experimental.payloadExtraction ||= false;
-    _nuxt.options.features.inlineStyles ||= false;
-    _nuxt.options.runtimeConfig.public.theme = _options.theme;
+    // passing module's options to runtime config for further access
+    _nuxt.options.runtimeConfig.public.primevue = _options.primevue;
     _nuxt.options.runtimeConfig.public.components = _options.components;
-    _nuxt.options.ssr ||= false;
 
-    addComponentsDir({
-      path: resolver.resolve("./runtime/components"),
-    });
+    // by pushing instead of setting, it allows custom css
+    _nuxt.options.css.push("primeicons/primeicons.css");
 
+    // below settings cannot be overriden
+    _nuxt.options.devtools.enabled = false;
+    _nuxt.options.experimental.payloadExtraction = false;
+    _nuxt.options.features.inlineStyles = false;
+    _nuxt.options.ssr = false;
+
+    addComponentsDir({ path: resolver.resolve("./runtime/components"), });
     addImportsDir(resolver.resolve("./runtime/composables"));
-
-    addPlugin(resolver.resolve("./runtime/plugins/addPrimevue"));
+    addPlugin(resolver.resolve("./runtime/plugins/addPrimeVue"));
     addPlugin(resolver.resolve("./runtime/plugins/toast"));
 
     await installModule("@nuxtjs/tailwindcss", {
@@ -55,10 +61,10 @@ export default defineNuxtModule<ModuleOptions>({
         content: {
           files: [
             resolver.resolve("./runtime/components/**/*.{vue,mjs,ts}"),
-            resolver.resolve("./runtime/*.{mjs,js,ts}"),
-          ],
-        },
-      },
+            resolver.resolve("./runtime/*.{mjs,js,ts}")
+          ]
+        }
+      }
     })
   }
 });

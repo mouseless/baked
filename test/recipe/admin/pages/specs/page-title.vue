@@ -1,5 +1,5 @@
 <template>
-  <ComponentSpec
+  <UiSpec
     title="Page Title"
     :variants="variants"
   />
