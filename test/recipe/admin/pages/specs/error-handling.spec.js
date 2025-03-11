@@ -12,7 +12,7 @@ test("full page error", async({page}) => {
 
   await content.getByTestId("full-page-error").click();
 
-  // this expect is for demonstration 
+  // this expect is for demonstration
   // should be changed to expect error page/component
   await expect(page.locator("h1")).toHaveText("404");
 });
