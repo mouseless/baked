@@ -1,8 +1,15 @@
 <template>
-  <div />
+  <ComponentSpec title="Toast" :variants="[]">
+    <Message severity="info">
+      <span class="text-xl">
+        ↗️  Check if page has a success toast at top right ↗️
+      </span>
+    </Message>
+  </ComponentSpec>
 </template>
 <script setup>
 import { onMounted } from "vue";
+import { Message } from "primevue";
 import { useToast } from "#imports";
 
 const toast = useToast();
