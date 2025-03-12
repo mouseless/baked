@@ -18,25 +18,19 @@
 </template>
 <script setup>
 import { Button } from "primevue";
-import { createError, showError } from "#app";
-import { useToast } from "#imports";
-
-const toast = useToast();
+import { createError } from "#app";
 
 function toastError(){
-  toast.add({
-    severity: "error",
-    summary: "Summary",
-    detail: "This is a test detail for a success toast message"
+  throw createError({
+    statusCode: 400,
+    statusMessage: "This error is displayed in toast!"
   });
 }
 
 function fullPageError(){
-  const error = createError({
+  throw createError({
     statusCode: 404,
-    statusMessage: "An error has occured!"
+    statusMessage: "This error displays full page!"
   });
-
-  showError(error);
 }
 </script>

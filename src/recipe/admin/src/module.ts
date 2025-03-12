@@ -1,4 +1,4 @@
-import { defineNuxtModule, addComponentsDir, addImportsDir, addPlugin, createResolver, installModule } from "@nuxt/kit"
+import { defineNuxtModule, addComponentsDir, addImportsDir, addPlugin, createResolver, installModule } from "@nuxt/kit";
 
 export interface ModuleOptions {
   primevue: PrimeVueOptions,
@@ -51,9 +51,10 @@ export default defineNuxtModule<ModuleOptions>({
 
     addComponentsDir({ path: resolver.resolve("./runtime/components"), });
     addImportsDir(resolver.resolve("./runtime/composables"));
+    addImportsDir(resolver.resolve("./runtime/types"));
     addPlugin(resolver.resolve("./runtime/plugins/addPrimeVue"));
+    addPlugin(resolver.resolve("./runtime/plugins/errorHandling"));
     addPlugin(resolver.resolve("./runtime/plugins/toast"));
-
     await installModule("@nuxtjs/tailwindcss", {
       exposeConfig: true,
       cssPath: resolver.resolve("./runtime/assets/tailwind.css"),
