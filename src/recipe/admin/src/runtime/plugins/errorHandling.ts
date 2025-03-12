@@ -1,19 +1,21 @@
 import { defineNuxtPlugin, useRouter, clearError, showError } from "#app";
 import type { ToastServiceMethods } from "primevue";
 import useToast from "../composables/useToast";
-import type { ErrorHandler, MessageOptions } from "../types/errorHandling";
+import type { ErrorHandler } from "../types/errorHandling";
+import type { MessageOptions } from "../types/errorHandling"
 
 const handlers = [] as  Array<ErrorHandler>
 
 export default defineNuxtPlugin({
   name: "errorHandling",
   enforce: "pre",
-  async setup(){
-    handlers.length = 0;
-    
+  
+  setup(){
     const clienthandlerImports = import.meta.glob('@/handlers/*.*');
     const deafultHandlers = import.meta.glob('../handlers/*.*');
     const handlerImports = {...clienthandlerImports, ...deafultHandlers};
+
+    handlers.length = 0;
     Object.values<() => Promise<any>>(handlerImports).forEach(value => {
       value().then(result =>{
         const handler = result.default as ErrorHandler;
@@ -22,24 +24,30 @@ export default defineNuxtPlugin({
         }
       })
     });
+
+    handlers.sort((a,b) => a.order - b.order);
   },
   hooks: {
     "vue:error": async (error:any) => {
       const router = useRouter();
       const toast = useToast() as ToastServiceMethods;
 
+      let handlerResult = error;
       for (let i = 0; i < handlers.length; i++) {
         const handler = handlers[i];
         if(handler.canHandle(router.currentRoute.value.fullPath, error)){
-          const result = handler.handle(router.currentRoute.value.fullPath, error) as MessageOptions;
-          if(result){
-            await clearError(error);
-            toast.add(result);
-          }   
-          return;
+          handlerResult = handler.handle(router.currentRoute.value.fullPath, error);
+          
+          break;
         }
       }
-      showError(error);
+
+      if((handlerResult as  MessageOptions).summary !== undefined){
+        await clearError(error);
+        toast.add({...handlerResult});
+      }else{
+        showError(error);
+      }
     }
   }
 });

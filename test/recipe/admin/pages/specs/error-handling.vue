@@ -3,22 +3,37 @@
     <Button
       data-testid="toast-error"
       type="button"
-      label="Show toast error"
+      label="Toast error"
       class="m-4"
       @click="toastError"
     />
     <Button
       data-testid="full-page-error"
       type="button"
-      label="Show full page error"
+      label="Full page error"
       class="m-4"
       @click="fullPageError"
+    />
+    <Button
+      data-testid="custom-handler-toast"
+      type="button"
+      label="Custom Toast Error"
+      class="m-4"
+      @click="customHandlerToast"
+    />
+    <Button
+      data-testid="custom-handler-full-page"
+      type="button"
+      label="Custom full page Error"
+      class="m-4"
+      @click="customHandlerFullPage"
     />
   </UiSpec>
 </template>
 <script setup>
 import { Button } from "primevue";
 import { createError } from "#app";
+import { FetchError} from "ofetch";
 
 function toastError(){
   throw createError({
@@ -32,5 +47,19 @@ function fullPageError(){
     statusCode: 404,
     statusMessage: "This error displays full page!"
   });
+}
+
+function customHandlerToast(){
+  const error = new FetchError("Bad request");
+  error.statusCode = 400;
+
+  throw error;
+}
+
+function customHandlerFullPage(){
+  const error = new FetchError("Unauthorized");
+  error.statusCode = 403;
+
+  throw error;
 }
 </script>

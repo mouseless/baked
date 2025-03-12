@@ -1,16 +1,23 @@
 import { defineErrorHandler } from "#imports";
+import { FetchError } from "ofetch";
 
 export default defineErrorHandler({
-  canHandle: function() {
-    return true;
+  order: 0,
+  canHandle: function(_, error) {
+    return error instanceof FetchError;
   },
-  handle: function()
+  handle: function(_, error)
   {
-    return {
-      severity: "error",
-      summary: "Custom Beklenmeyen Hata",
-      detail: "Custom Lütfen sistem yöneticisi ile iletişime geçiniz",
-      life: 3000
-    };
+    const fetchError = error as FetchError;
+    if(fetchError.statusCode === 400){
+      return {
+        severity: "error",
+        summary: "Custom Handler",
+        detail: "This fetch error is handled by custom handler",
+        life: 3000
+      };
+    }
+
+    return error;
   }
 });
