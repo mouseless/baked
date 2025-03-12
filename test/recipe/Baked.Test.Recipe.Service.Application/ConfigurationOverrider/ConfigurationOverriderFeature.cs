@@ -128,6 +128,7 @@ public class ConfigurationOverriderFeature : IFeature
                             HeaderItem("/", icon: "pi pi-home"),
                             HeaderItem($"/{rtwdRoute}", title: rtwdPageDetail.Title),
                             HeaderItem("/specs", icon: "pi pi-list-check", title: "Specs"),
+                            HeaderItem("/specs/api-panel", title: "API Panel", parentRoute: "/specs"),
                             HeaderItem("/specs/card-link", title: "Card Link", parentRoute: "/specs"),
                             HeaderItem("/specs/custom-css", title: "Custom CSS", parentRoute: "/specs"),
                             HeaderItem("/specs/detail-page", title: "Detail Page", parentRoute: "/specs"),
@@ -173,6 +174,10 @@ public class ConfigurationOverriderFeature : IFeature
                 ),
                 links:
                 [
+                    CardLink("/specs/api-panel", "API Panel",
+                        icon: "pi pi-microchip",
+                        description: "A page component to lazy load and view a data within a panel"
+                    ),
                     CardLink("/specs/card-link", "Card Link",
                         icon: "pi pi-microchip",
                         description: "A big card link component to render links in menu-like pages"
