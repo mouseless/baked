@@ -11,8 +11,14 @@
         class="my-4 w-8"
       >
     </RouterLink>
+    <Skeleton
+      v-for="_ in new Array(3)"
+      v-if="loading"
+      size="3.1rem"
+    />
     <SideMenuItem
       v-for="item in menu"
+      v-else
       :key="item.title"
       :item="item"
       :path="data.path"
@@ -34,12 +40,14 @@
 </template>
 <script setup>
 import { RouterLink } from "vue-router";
+import { Skeleton } from "primevue";
 import Bake from "./Bake.vue";
 import SideMenuItem from "./SideMenuItem.vue";
 
 const { schema, data } = defineProps({
   schema: { type: null, required: true },
-  data: { type: null, required: true }
+  data: { type: null, required: true },
+  loading: { type: Boolean, default: false }
 });
 
 const { logo, menu, footer } = schema;

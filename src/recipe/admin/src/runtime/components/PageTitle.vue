@@ -57,6 +57,8 @@ function toggleClasses(element, toggle, classes) {
 
 onMounted(() => {
   const el = document.querySelector("#page-title");
+  if(!el) { return; }
+
   const observer = new IntersectionObserver(
     ([e]) => {
       toggleClasses(e.target, e.intersectionRatio < 1,
@@ -70,7 +72,11 @@ onMounted(() => {
     { threshold: [1] }
   );
 
-  observer.observe(el);
+  try {
+    observer.observe(el);
+  } catch (e) {
+    console.warn(e);
+  }
 });
 </script>
 <style scoped>

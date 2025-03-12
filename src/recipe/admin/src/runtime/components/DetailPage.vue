@@ -21,7 +21,10 @@
           <Bake
             :descriptor="{
               ...prop.component,
-              'data': data[prop.key]
+              'data': {
+                type: 'Inline',
+                value: data[prop.key]
+              }
             }"
             class="w-full"
           />

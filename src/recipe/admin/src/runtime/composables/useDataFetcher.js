@@ -1,0 +1,58 @@
+import { useComposableResolver } from "#imports";
+
+export default function() {
+  const composableResolver = useComposableResolver();
+
+  function shouldLoad(dataType) {
+    return dataType === "Remote" || dataType === "Computed";
+  }
+
+  function get(data) {
+    return data?.type === "Inline" ? data.value : null;
+  }
+
+  async function fetch({ baseURL, data, routeParams, options }) {
+    if(data?.type === "Remote") {
+      const headers = data.headers
+        ? await fetch({ baseURL, data: data.headers, routeParams, options })
+        : { };
+
+      return await $fetch(
+        format(`${data.path}`, routeParams.slice(1)),
+        {
+          ...options ?? { },
+          baseURL,
+          headers
+        }
+      );
+    }
+
+    if(data?.type === "Computed") {
+      const composable = await composableResolver.resolve(data.composable);
+
+      return composable.default();
+    }
+
+    if(data?.type === "Inline") {
+      return data.value;
+    }
+
+    throw new Error(`${data?.type} is not a valid data type`);
+  }
+
+  function format(formatString, args) {
+    return formatString.replace(/(\{\{\d\}\}|\{\d\})/g, part => {
+      if(part.substring(0, 2) === "{{") { return part; } // escape
+
+      const index = parseInt(part.match(/\d/)[0]);
+
+      return args[index];
+    });
+  };
+
+  return {
+    shouldLoad,
+    get,
+    fetch
+  };
+}

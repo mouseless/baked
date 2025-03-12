@@ -3,8 +3,13 @@
     :class="{ 'mb-4': shown }"
     class="mt-4"
   >
+    <Skeleton
+      v-if="loading"
+      height="1.28rem"
+      width="15rem"
+    />
     <Breadcrumb
-      v-if="shown"
+      v-else-if="shown"
       :home="schema.sitemap['/']"
       :model="parts"
       class="!bg-inherit text-sm !p-0"
@@ -31,14 +36,17 @@
 <script setup>
 import { computed } from "vue";
 import { RouterLink } from "vue-router";
-import { Breadcrumb } from "primevue";
+import { Breadcrumb, Skeleton } from "primevue";
 
 const { schema, data } = defineProps({
   schema: { type: null, required: true },
-  data: { type: null, required: true }
+  data: { type: null, required: true },
+  loading: { type: Boolean, default: false }
 });
 
 const parts = computed(() => {
+  if(!data) { return []; }
+
   const result = [];
 
   let page = findItem(data.path);
@@ -50,7 +58,7 @@ const parts = computed(() => {
 
   return result;
 });
-const shown = computed(() => data.path !== "/" && parts.value.length > 0);
+const shown = computed(() => data?.path !== "/" && parts.value.length > 0);
 
 function linkOrSpan(item) {
   if(data.path !== item.route) {

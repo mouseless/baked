@@ -1,40 +1,42 @@
 <template>
-  <PageTitle
-    v-if="loaded"
-    :schema="{ title, description }"
-  />
-  <div class="flex justify-center w-full">
-    <div
-       class="max-w-screen-xl flex gap-4 align-top w-4/5"
-       :class="{
-         'flex-col': !vertical,
-         'items-center': !vertical,
-         'items-start': vertical
-       }"
-    >
+  <div class="space-y-4">
+    <PageTitle
+      v-if="loaded"
+      :schema="{ title, description }"
+    />
+    <div class="flex justify-center w-full">
       <div
-        v-for="variant in variants"
-        :key="variant.name"
-        :class="{
-          'w-full': !vertical,
-          'text-center': vertical
-        }"
+         class="max-w-screen-xl flex gap-4 align-top w-4/5"
+         :class="{
+           'flex-col': !vertical,
+           'items-center': !vertical,
+           'items-start': vertical
+         }"
       >
-        <h2
-          :id="variant.name"
-          class="font-semibold"
+        <div
+          v-for="variant in variants"
+          :key="variant.name"
           :class="{
-            'text-lg': !vertical,
-            'mt-2': !vertical,
-            '-mb-2': !vertical
+            'w-full': !vertical,
+            'text-center': vertical
           }"
-        >{{variant.name}}</h2>
-        <Divider v-if="!vertical" />
-        <div :data-testid="variant.name">
-          <Bake :descriptor="variant.descriptor" />
+        >
+          <h2
+            :id="variant.name"
+            class="font-semibold"
+            :class="{
+              'text-lg': !vertical,
+              'mt-2': !vertical,
+              '-mb-2': !vertical
+            }"
+          >{{variant.name}}</h2>
+          <Divider v-if="!vertical" />
+          <div :data-testid="variant.name">
+            <Bake :descriptor="variant.descriptor" />
+          </div>
         </div>
+        <slot v-if="$slots.default" name="default" />
       </div>
-      <slot v-if="$slots.default" name="default" />
     </div>
   </div>
 </template>

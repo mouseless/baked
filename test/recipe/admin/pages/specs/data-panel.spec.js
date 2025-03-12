@@ -39,10 +39,20 @@ test.describe("Collapsed", () => {
 
   test("lazy load", async({page}) => {
     const component = page.getByTestId(id);
-    const expand = component.locator(primevue.panel.header).locator(primevue.button.base);
+    const toggle = component.locator(primevue.panel.header).locator(primevue.button.base);
 
-    await expand.click();
+    await toggle.click(); // expand
 
     await expect(component.getByTestId("content")).toHaveText("DISPLAY ON EXPAND");
+  });
+
+  test("keep content after collapse", async({page}) => {
+    const component = page.getByTestId(id);
+    const toggle = component.locator(primevue.panel.header).locator(primevue.button.base);
+
+    await toggle.click(); // expand
+    await toggle.click(); // collapse
+
+    await expect(component.getByTestId("content")).toBeAttached(); // assert it is still there
   });
 });

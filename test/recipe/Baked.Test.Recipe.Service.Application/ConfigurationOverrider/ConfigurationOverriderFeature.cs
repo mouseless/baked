@@ -131,7 +131,7 @@ public class ConfigurationOverriderFeature : IFeature
                             HeaderItem("/specs", icon: "pi pi-list-check", title: "Specs"),
                             HeaderItem("/specs/card-link", title: "Card Link", parentRoute: "/specs"),
                             HeaderItem("/specs/custom-css", title: "Custom CSS", parentRoute: "/specs"),
-                            HeaderItem("/specs/data-panel", title: "API Panel", parentRoute: "/specs"),
+                            HeaderItem("/specs/data-panel", title: "Data Panel", parentRoute: "/specs"),
                             HeaderItem("/specs/detail-page", title: "Detail Page", parentRoute: "/specs"),
                             HeaderItem("/specs/header", title: "Header", parentRoute: "/specs"),
                             HeaderItem("/specs/locale", title: "Locale", parentRoute: "/specs"),

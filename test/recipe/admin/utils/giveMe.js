@@ -37,7 +37,10 @@ export default {
     return {
       type: "DetailPage",
       schema: { header, props },
-      data
+      data: {
+        type: "Inline",
+        value: data
+      }
     };
   },
 
@@ -62,7 +65,10 @@ export default {
             [item.route]: item
           }), {})
       },
-      data
+      data: {
+        type: "Inline",
+        value: data
+      }
     };
   },
 
@@ -103,7 +109,10 @@ export default {
     return {
       type: "SideMenu",
       schema: { logo, menu, footer },
-      data
+      data: {
+        type: "Inline",
+        value: data
+      }
     };
   },
 
@@ -122,7 +131,10 @@ export default {
     return {
       type: "Expected",
       schema: testId,
-      data: value
+      data: {
+        type: "Inline",
+        value
+      }
     };
   }
 };
