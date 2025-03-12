@@ -17,7 +17,7 @@
     <template #default>
       <Bake
         v-if="loaded"
-        :descriptor="viewer"
+        :descriptor="content"
       />
     </template>
   </Panel>
@@ -32,7 +32,7 @@ const { schema } = defineProps({
   data: { type: null, default: null }
 });
 
-const { collapsed, title, viewer } = schema;
+const { collapsed, content, title } = schema;
 
 // const collapsedState = computed(() => panelStates[statePath] ?? collapsed);
 const collapsedState = computed(() => collapsed);

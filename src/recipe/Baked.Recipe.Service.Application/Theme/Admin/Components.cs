@@ -4,16 +4,16 @@ namespace Baked.Theme.Admin;
 
 public static class Components
 {
-    public static ComponentDescriptorAttribute<ApiPanel> ApiPanel(string title, IComponentDescriptor viewer,
-        bool collapsed = false
-    ) => new(new(title, viewer) { Collapsed = collapsed });
-
     public static ComponentDescriptorAttribute<CardLink> CardLink(string route, string title,
         string? icon = default,
         string? description = default,
         bool disabled = false,
         string? disabledReason = default
     ) => new(new(route, title) { Icon = icon, Description = description, Disabled = disabled, DisabledReason = disabledReason });
+
+    public static ComponentDescriptorAttribute<DataPanel> DataPanel(string title, IComponentDescriptor content,
+        bool collapsed = false
+    ) => new(new(title, content) { Collapsed = collapsed });
 
     public static ComponentDescriptorAttribute<DefaultLayout> DefaultLayout(
         IComponentDescriptor? sideMenu = default,

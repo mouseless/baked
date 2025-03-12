@@ -4,17 +4,6 @@ function $(value, defaultValue) {
 }
 
 export default {
-  anApiPanel({ title, collapsed, viewer }) {
-    title = $(title, "Test Title");
-    collapsed = $(collapsed, false);
-    viewer = $(viewer, this.anExpected());
-
-    return {
-      type: "ApiPanel",
-      schema: { title, collapsed, viewer }
-    };
-  },
-
   aCardLink({ route, icon, title, description, disabled, disabledReason } = {}) {
     route = $(route, "/test-route");
     icon = $(icon, "pi pi-heart");
@@ -26,6 +15,17 @@ export default {
     return {
       type: "CardLink",
       schema: { route, icon, title, description, disabled, disabledReason }
+    };
+  },
+
+  anDataPanel({ title, collapsed, content }) {
+    title = $(title, "Test Title");
+    collapsed = $(collapsed, false);
+    content = $(content, this.anExpected());
+
+    return {
+      type: "DataPanel",
+      schema: { title, collapsed, content }
     };
   },
 

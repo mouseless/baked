@@ -2,10 +2,10 @@
 
 namespace Baked.Theme.Admin;
 
-public record ApiPanel(string Title, IComponentDescriptor Viewer)
+public record DataPanel(string Title, IComponentDescriptor Content)
     : IComponentSchema
 {
     public string Title { get; set; } = Title;
     public bool Collapsed { get; set; }
-    public IComponentDescriptor Viewer { get; set; } = Viewer;
+    public IComponentDescriptor Content { get; set; } = Content;
 }
