@@ -1,5 +1,6 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
 import primevue from "~/utils/locators/primevue.js";
+import baked from "~/utils/locators/baked.js";
 
 test.beforeEach(async({goto}) => {
   await goto("/specs/error-handling", { waitUntil: "hydration" });
@@ -12,7 +13,7 @@ test("full page error", async({page}) => {
 
   await content.getByTestId("full-page-error").click();
 
-  await expect(page.locator(".p-error")).toBeVisible();
+  await expect(page.locator(baked.errorPage.base)).toBeVisible();
 });
 
 test("toast error", async({page}) => {
@@ -29,7 +30,7 @@ test("custom handler full page error", async({page}) => {
 
   await content.getByTestId("custom-handler-full-page").click();
 
-  await expect(page.locator(".p-error")).toBeVisible();
+  await expect(page.locator(baked.errorPage.base)).toBeVisible();
 });
 
 test("custom handler toast error", async({page}) => {

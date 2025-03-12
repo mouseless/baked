@@ -1,10 +1,6 @@
 <template>
-  <Bake :descriptor="descriptor"/>
+  <Error />
 </template>
 <script setup>
-import { Bake } from "#components";
-
-const descriptor = {
-  type: "Error"
-};
+import { Error } from "#components";
 </script>

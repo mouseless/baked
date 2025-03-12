@@ -216,6 +216,24 @@ public class ConfigurationOverriderFeature : IFeature
                     )
                 ]
             ));
+
+            pages.Add("errorPage", ErrorPage(
+                links:
+                [
+                    CardLink("/", "Anasayfa",
+                        icon: "pi pi-microchip"
+                    ),
+                    CardLink("/specs", "Specs",
+                        icon: "pi pi-microchip"
+                    ),
+                ],
+                data: new Dictionary<string, object>
+                {
+                    { "403",  new { title = "Erişim Reddedildi", message = "Belirttiğiniz adresi veya veriyi görüntüleme yetkiniz bulunmamaktadır." } },
+                    { "404", new { title = "Sayfa Bulunamadı", message = "Belirttiğiniz adres yanlış ya da eskimiş olabilir." } },
+                    { "500", new { title = "Beklenmeyen Hata", message = "Lütfen sistem yöneticisi ile iletişime geçiniz" } }
+                }
+            ));
         });
     }
 }

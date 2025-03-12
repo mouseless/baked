@@ -9,23 +9,9 @@ const handlers = [] as  Array<ErrorHandler>
 export default defineNuxtPlugin({
   name: "errorHandling",
   enforce: "pre",
-  
-  setup(){
-    const clienthandlerImports = import.meta.glob('@/handlers/*.*');
-    const deafultHandlers = import.meta.glob('../handlers/*.*');
-    const handlerImports = {...clienthandlerImports, ...deafultHandlers};
-
-    handlers.length = 0;
-    Object.values<() => Promise<any>>(handlerImports).forEach(value => {
-      value().then(result =>{
-        const handler = result.default as ErrorHandler;
-        if(handler){
-          handlers.push(handler);
-        }
-      })
-    });
-
-    handlers.sort((a,b) => a.order - b.order);
+  async setup(){
+    await loadHandlers(handlers);
+    handlers.sort((a,b) => a.order - b.order)
   },
   hooks: {
     "vue:error": async (error:any) => {
@@ -51,4 +37,19 @@ export default defineNuxtPlugin({
     }
   }
 });
+
+async function loadHandlers(handlers: Array<ErrorHandler>) {
+  handlers.length = 0;
+  const clienthandlerImports = import.meta.glob('@/handlers/*.*');
+  const deafultHandlers = import.meta.glob('../handlers/*.*');
+  const handlerImports = Object.values<() => Promise<any>>({...clienthandlerImports, ...deafultHandlers}) ;
+
+  for (let i = 0; i < handlerImports.length; i++) {
+    const element = handlerImports[i];
+      const handler = (await element()).default as ErrorHandler ?? null;
+      if(handler){
+        handlers.push(handler);
+      }
+  }
+}
   

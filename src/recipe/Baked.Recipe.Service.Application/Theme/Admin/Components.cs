@@ -62,4 +62,9 @@ public static class Components
     public static ComponentDescriptor String(
         IData? data = default
     ) => new(nameof(String)) { Data = data };
+
+    public static ComponentDescriptorAttribute<ErrorPage> ErrorPage(
+        IEnumerable<IComponentDescriptor>? links = default,
+        object? data = default
+    ) => new(new() { SafeLinks = [.. links ?? []] }) { Data = new InlineData(data ?? new { }) };
 }

@@ -5,7 +5,7 @@ export default defineErrorHandler({
   canHandle: function(_, error) {
     return error.statusCode !== 403 && error.statusCode !== 404 && error.statusCode !== 500;
   },
-  handle: function(_, error)
+  handle: function()
   {
     return {
       severity: "error",
