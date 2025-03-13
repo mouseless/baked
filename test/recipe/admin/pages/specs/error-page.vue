@@ -2,11 +2,11 @@
   <UiSpec
     title="Error Page"
     :variants="variants"
-    no-loading-variant="true"
+    :no-loading-variant="true"
   />
 </template>
 <script setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { createError } from "#app";
 import giveMe from "~/utils/giveMe";
 
@@ -23,7 +23,7 @@ const variants = [
         { statusCode: 404, title: "Page Notfound", message: "The page you want to view is etiher deleted or outdated." },
         { statusCode: 500, title: "Unexpected Error", message: "Please contact system administrator." }
       ],
-      data: ref(createError({ statusCode: 403 }))
+      data: computed(() => ref(createError({ name:"NuxtError", statusCode: 403 })))
     })
   }
 ];

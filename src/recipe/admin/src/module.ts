@@ -4,7 +4,7 @@ import type { ErrorHandlingOptions } from "./runtime/types/errorHandling";
 export interface ModuleOptions {
   primevue: PrimeVueOptions,
   components?: Components,
-  errorHandling?: ErrorHandlingOptions | boolean
+  errorHandling?: ErrorHandlingOptions
 }
 
 export interface PrimeVueOptions {

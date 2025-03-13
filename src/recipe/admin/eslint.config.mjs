@@ -52,7 +52,7 @@ export default [
 
       "no-multi-spaces": "error",
       "no-multiple-empty-lines": ["error", {
-        "max": 2,
+        "max": 1,
         "maxEOF": 0
       }],
       "no-return-assign": "off",

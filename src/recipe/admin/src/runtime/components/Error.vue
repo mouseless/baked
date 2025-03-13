@@ -5,9 +5,9 @@
   />
 </template>
 <script setup>
+import { ref, onMounted } from "vue";
 import { Bake } from "#components";
 import { usePages } from "#imports";
-import { ref, onMounted } from "vue";
 
 const pages = usePages();
 const pageDescriptor = ref();
