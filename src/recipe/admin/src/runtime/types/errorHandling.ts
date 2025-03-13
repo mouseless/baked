@@ -1,14 +1,13 @@
 import type { ToastMessageOptions } from "primevue";
 
-export interface MessageOptions extends ToastMessageOptions{ }
+export interface MessageOptions extends ToastMessageOptions { }
 
-export interface ErrorHandler{
+export interface ErrorHandler {
   order: number,
   canHandle(route: String, error: Error): boolean,
   handle(route: String,  error: Error): Error | MessageOptions
 }
 
-export function defineErrorHandler(handler: ErrorHandler) : ErrorHandler{
+export function defineErrorHandler(handler: ErrorHandler) : ErrorHandler {
   return handler;
 }
-

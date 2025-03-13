@@ -16,6 +16,12 @@ public static class Components
         IComponentDescriptor? header = default
     ) => new(new() { SideMenu = sideMenu, Header = header });
 
+    public static ComponentDescriptorAttribute<ErrorPage> ErrorPage(
+        IEnumerable<IComponentDescriptor>? links = default,
+        Dictionary<int, object>? errorInfos = default,
+        IData? data = default
+    ) => new(new() { ErrorInfos = errorInfos ?? [], SafeLinks = [.. links ?? []] }) { Data = data };
+
     public static ComponentDescriptorAttribute<Header> Header(IEnumerable<Header.Item> siteMap,
         IData? data = default
     )
@@ -62,9 +68,4 @@ public static class Components
     public static ComponentDescriptor String(
         IData? data = default
     ) => new(nameof(String)) { Data = data };
-
-    public static ComponentDescriptorAttribute<ErrorPage> ErrorPage(
-        IEnumerable<IComponentDescriptor>? links = default,
-        object? data = default
-    ) => new(new() { SafeLinks = [.. links ?? []] }) { Data = new InlineData(data ?? new { }) };
 }

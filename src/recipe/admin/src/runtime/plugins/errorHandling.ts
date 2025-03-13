@@ -19,19 +19,18 @@ export default defineNuxtPlugin({
       const toast = useToast() as ToastServiceMethods;
 
       let handlerResult = error;
-      for (let i = 0; i < handlers.length; i++) {
-        const handler = handlers[i];
-        if(handler.canHandle(router.currentRoute.value.fullPath, error)){
+      for (const handler of handlers) {
+        if(handler.canHandle(router.currentRoute.value.fullPath, error)) {
           handlerResult = handler.handle(router.currentRoute.value.fullPath, error);
           
           break;
         }
       }
 
-      if((handlerResult as  MessageOptions).summary !== undefined){
+      if((handlerResult as  MessageOptions).summary !== undefined) {
         await clearError(error);
         toast.add({...handlerResult});
-      }else{
+      } else {
         showError(error);
       }
     }
@@ -40,16 +39,15 @@ export default defineNuxtPlugin({
 
 async function loadHandlers(handlers: Array<ErrorHandler>) {
   handlers.length = 0;
-  const clienthandlerImports = import.meta.glob('@/handlers/*.*');
-  const deafultHandlers = import.meta.glob('../handlers/*.*');
-  const handlerImports = Object.values<() => Promise<any>>({...clienthandlerImports, ...deafultHandlers}) ;
+  const clientHandlerImports = import.meta.glob('@/handlers/*.*');
+  const defaultHandlers = import.meta.glob('../handlers/*.*');
+  const handlerImports = Object.values<() => Promise<any>>({...clientHandlerImports, ...defaultHandlers});
 
-  for (let i = 0; i < handlerImports.length; i++) {
-    const element = handlerImports[i];
-      const handler = (await element()).default as ErrorHandler ?? null;
-      if(handler){
-        handlers.push(handler);
-      }
+  for (const element of handlerImports) {
+    const handler = (await element()).default as ErrorHandler ?? null;
+    if(handler){
+      handlers.push(handler);
+    }
   }
 }
   

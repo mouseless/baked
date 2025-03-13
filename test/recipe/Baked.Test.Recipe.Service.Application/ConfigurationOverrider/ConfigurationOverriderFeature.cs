@@ -132,6 +132,7 @@ public class ConfigurationOverriderFeature : IFeature
                             HeaderItem("/specs/custom-css", title: "Custom CSS", parentRoute: "/specs"),
                             HeaderItem("/specs/detail-page", title: "Detail Page", parentRoute: "/specs"),
                             HeaderItem("/specs/error-handling", title: "Error Handling", parentRoute: "/specs"),
+                            HeaderItem("/specs/error-page", title: "Error Page", parentRoute: "/specs"),
                             HeaderItem("/specs/header", title: "Header", parentRoute: "/specs"),
                             HeaderItem("/specs/locale", title: "Locale", parentRoute: "/specs"),
                             HeaderItem("/specs/menu-page", title: "Menu Page", parentRoute: "/specs"),
@@ -190,6 +191,10 @@ public class ConfigurationOverriderFeature : IFeature
                         icon: "pi pi-microchip",
                         description: "A plugin for handling errors"
                     ),
+                    CardLink("/specs/error-page", "Error Page",
+                        icon: "pi pi-microchip",
+                        description: "A custom component for full page error"
+                    ),
                     CardLink("/specs/header", "Header",
                         icon: "pi pi-microchip",
                         description: "A layout component that renders a breadcrumb"
@@ -227,12 +232,13 @@ public class ConfigurationOverriderFeature : IFeature
                         icon: "pi pi-microchip"
                     ),
                 ],
-                data: new Dictionary<string, object>
+                errorInfos: new Dictionary<int, object>
                 {
-                    { "403",  new { title = "Access Denied", message = "You do not have the permision to view the address or data specified." } },
-                    { "404", new { title = "Page Notfound", message = "The page you want to view is etiher deleted or outdated." } },
-                    { "500", new { title = "Unexpected Error", message = "Please contact system administrator." } }
-                }
+                    { 403, new { Title = "Access Denied", Message = "You do not have the permision to view the address or data specified." } },
+                    { 404, new { Title = "Page Notfound", Message = "The page you want to view is etiher deleted or outdated." } },
+                    { 500, new { Title = "Unexpected Error", Message = "Please contact system administrator." } }
+                },
+                data: new ComputedData(Composables.UseError)
             ));
         });
     }

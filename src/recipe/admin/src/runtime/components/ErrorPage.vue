@@ -6,14 +6,14 @@
         :value="statusCode"
         class="text-4xl"
       />
-      <h1 class=".b-title text-6xl">
+      <h1 class="b-title text-6xl">
         {{ errorInfo.title }}
       </h1>
-      <div class=".b-message text-2xl">
-        {{ errorInfo.message }}.
+      <div class="b-message text-2xl">
+        {{ errorInfo.message }}
       </div>
       <div class="text-2xl">
-        Try the links from the menu below to view the page you want to access. 
+        Try the links from the menu below to view the page you want to access.
       </div>
     </div>
     <Divider
@@ -38,20 +38,19 @@
   </div>
 </template>
 <script setup>
-import { Tag, Divider, Message } from "primevue";
 import { computed } from "vue";
-import { useError } from "#app";
+import { Tag, Divider, Message } from "primevue";
 
 const { schema, data } = defineProps({
   schema: { type: null, required: true },
   data: { type: null, default: null }
 });
-const { safeLinks } = schema;
 
-const error = useError();
+const { safeLinks, errorInfos } = schema;
+const error = data.value;
 
-const statusCode = error.value?.data?.status ?? error.value?.statusCode ?? 500;
+const statusCode = error?.data?.status ?? error?.statusCode ?? 500;
 const errorInfo = computed(() => {
-  return data[statusCode] ?? data[500];
+  return errorInfos[`${statusCode}`] ?? errorInfos["500"];
 });
 </script>

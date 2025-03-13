@@ -4,7 +4,7 @@
     :as="disabled ? 'button' : 'router-link'"
     outlined
     plain
-    class="w-auto !p-6"
+    class="b-card-link w-auto !p-6"
     :disabled="disabled"
   >
     <div class="flex flex-col gap-4 text-start items-start w-full h-full">
