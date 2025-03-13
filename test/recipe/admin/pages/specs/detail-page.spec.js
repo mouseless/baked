@@ -5,8 +5,8 @@ test.beforeEach(async({goto}) => {
   await goto("/specs/detail-page", { waitUntil: "hydration" });
 });
 
-test.describe("Basic", () => {
-  const id = "Basic";
+test.describe("Base", () => {
+  const id = "Base";
 
   test("header", async({page}) => {
     const component = page.getByTestId(id);

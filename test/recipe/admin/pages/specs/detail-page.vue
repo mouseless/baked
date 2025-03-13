@@ -10,7 +10,7 @@ import giveMe from "~/utils/giveMe";
 
 const variants = [
   {
-    name: "Basic",
+    name: "Base",
     descriptor: giveMe.aDetailPage({
       header: giveMe.anExpected({ testId: "header", value: "HEADER TEXT" }),
       props: [
