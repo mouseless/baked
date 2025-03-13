@@ -9,8 +9,8 @@ export default defineErrorHandler({
   {
     return {
       severity: "error",
-      summary: "Beklenmeyen Hata",
-      detail: "Lütfen sistem yöneticisi ile iletişime geçiniz",
+      summary: "Unexpected Error",
+      detail: "Please contact system administrator",
       life: 3000
     };
   }

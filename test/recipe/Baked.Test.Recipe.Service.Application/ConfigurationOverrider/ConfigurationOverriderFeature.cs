@@ -229,9 +229,9 @@ public class ConfigurationOverriderFeature : IFeature
                 ],
                 data: new Dictionary<string, object>
                 {
-                    { "403",  new { title = "Erişim Reddedildi", message = "Belirttiğiniz adresi veya veriyi görüntüleme yetkiniz bulunmamaktadır." } },
-                    { "404", new { title = "Sayfa Bulunamadı", message = "Belirttiğiniz adres yanlış ya da eskimiş olabilir." } },
-                    { "500", new { title = "Beklenmeyen Hata", message = "Lütfen sistem yöneticisi ile iletişime geçiniz" } }
+                    { "403",  new { title = "Access Denied", message = "You do not have the permision to view the address or data specified." } },
+                    { "404", new { title = "Page Notfound", message = "The page you want to view is etiher deleted or outdated." } },
+                    { "500", new { title = "Unexpected Error", message = "Please contact system administrator." } }
                 }
             ));
         });

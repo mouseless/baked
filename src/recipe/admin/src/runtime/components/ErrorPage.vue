@@ -13,7 +13,7 @@
         {{ errorInfo.message }}.
       </div>
       <div class="text-2xl">
-        Erişmek istediğiniz sayfaya aşağıdaki menü üzerinden ulaşmayı deneyiniz.
+        Try the links from the menu below to view the page you want to access. 
       </div>
     </div>
     <Divider
@@ -33,8 +33,7 @@
     />
     <Message severity="warn">
       <i class="pi pi-exclamation-circle mr-2" />
-      İstediğiniz sayfaya ulaşamıyorsanız, lütfen sistem yöneticisi ile
-      iletişime geçiniz.
+      If you cannot reach the page you want, please contact the system administrator.
     </Message>
   </div>
 </template>
@@ -50,8 +49,6 @@ const { schema, data } = defineProps({
 const { safeLinks } = schema;
 
 const error = useError();
-
-console.log(schema.data);
 
 const statusCode = error.value?.data?.status ?? error.value?.statusCode ?? 500;
 const errorInfo = computed(() => {
