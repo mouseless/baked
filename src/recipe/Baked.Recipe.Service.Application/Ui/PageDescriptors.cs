@@ -1,3 +1,3 @@
 ﻿namespace Baked.Ui;
 
-public class PageDescriptors : Dictionary<string, IComponentDescriptor>;
+public class PageDescriptors : List<IComponentDescriptor>;

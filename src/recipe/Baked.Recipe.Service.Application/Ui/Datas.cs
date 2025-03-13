@@ -2,8 +2,8 @@
 
 public static class Datas
 {
-    public static ComputedData Computed(string composable) =>
-        new(composable);
+    public static ComputedData Computed(string composable, params IEnumerable<object> args) =>
+        new(composable) { Args = [.. args] };
 
     public static InlineData Inline(object value) =>
         new(value);

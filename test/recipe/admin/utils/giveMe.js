@@ -18,6 +18,17 @@ export default {
     };
   },
 
+  aDataPanel({ title, collapsed, content }) {
+    title = $(title, "Test Title");
+    collapsed = $(collapsed, false);
+    content = $(content, this.anExpected());
+
+    return {
+      type: "DataPanel",
+      schema: { title, collapsed, content }
+    };
+  },
+
   aDetailPage({ header, props, data } = {}) {
     header = $(header, this.anExpected());
     props = $(props, []);
@@ -26,7 +37,10 @@ export default {
     return {
       type: "DetailPage",
       schema: { header, props },
-      data
+      data: {
+        type: "Inline",
+        value: data
+      }
     };
   },
 
@@ -51,7 +65,10 @@ export default {
             [item.route]: item
           }), {})
       },
-      data
+      data: {
+        type: "Inline",
+        value: data
+      }
     };
   },
 
@@ -92,7 +109,10 @@ export default {
     return {
       type: "SideMenu",
       schema: { logo, menu, footer },
-      data
+      data: {
+        type: "Inline",
+        value: data
+      }
     };
   },
 
@@ -111,7 +131,10 @@ export default {
     return {
       type: "Expected",
       schema: testId,
-      data: value
+      data: {
+        type: "Inline",
+        value
+      }
     };
   }
 };

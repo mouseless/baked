@@ -1,6 +1,14 @@
 import { useRoute } from "#app";
 
 export default function() {
-  return useRoute();
+  const route = useRoute();
+
+  function compute() {
+    return route;
+  }
+
+  return {
+    compute
+  };
 }
 
