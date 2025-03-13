@@ -14,11 +14,11 @@ export default defineErrorHandler(options => {
     },
     handle: function(route, error)
     {
-      if(!defaultHandlerOptions) {
+      if(!defaultHandlerOptions.config) {
         return error;
       }
 
-      const handleOption = getHandleOption(route, error, defaultHandlerOptions);
+      const handleOption = getHandleOption(route, error, defaultHandlerOptions.config);
 
       if(handleOption && handleOption.result === "toast") {
         return getMessage(error);
@@ -29,12 +29,12 @@ export default defineErrorHandler(options => {
   };
 });
 
-function getHandleOption(route, error, defaultHandlerOptions){
-  if(!defaultHandlerOptions.config) {
+function getHandleOption(route, error, config) {
+  if(!config) {
     return null;
   }
 
-  for(const option of defaultHandlerOptions.config){
+  for(const option of Object.values(config)) {
     if(
       (!option.statusCode || error.statusCode === option.statusCode) &&
       (!option.routePattern || route.match(`/${option.routePattern}/`).length > 0)
@@ -46,8 +46,8 @@ function getHandleOption(route, error, defaultHandlerOptions){
   return null;
 }
 
-function getMessage(error){
-  if(error.name === "FetchError"){
+function getMessage(error) {
+  if(error.name === "FetchError") {
     return {
       severity: "error",
       summary: error.data?.title ?? error.statusCode,
