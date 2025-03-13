@@ -4,6 +4,7 @@ using Baked.RestApi.Model;
 using Baked.Test.Authentication;
 using Baked.Test.Business;
 using Baked.Test.CodingStyle.RichTransient;
+using Baked.Test.Core;
 using Baked.Test.ExceptionHandling;
 using Baked.Test.Orm;
 using Baked.Theme.Admin;
@@ -109,11 +110,11 @@ public class ConfigurationOverriderFeature : IFeature
             configurator.UsingDomainModel(domain =>
             {
                 var rtwd = domain.Types[typeof(RichTransientWithData)];
-                var rtwdRoute = rtwd.GetActionModel().GetRoute();
+                var rtwdRoute = rtwd.GetInitializerActionModel().GetRoute();
                 var rtwdDetail = rtwd.Get<DetailPage>();
-                var rtwdPageDetail = (PageTitle)(rtwdDetail.Header?.Schema ?? throw new("RichTransientWithData is expected to have PageTitle in Header"));
+                var rtwdPageDetail = (PageTitle)(rtwdDetail.Header?.Schema ?? throw new("`RichTransientWithData` is expected to have `PageTitle` in `Header`"));
 
-                layouts.Add("default", DefaultLayout(
+                layouts.Add(DefaultLayout("default",
                     sideMenu: SideMenu(
                         menu:
                         [
@@ -130,6 +131,7 @@ public class ConfigurationOverriderFeature : IFeature
                             HeaderItem("/specs", icon: "pi pi-list-check", title: "Specs"),
                             HeaderItem("/specs/card-link", title: "Card Link", parentRoute: "/specs"),
                             HeaderItem("/specs/custom-css", title: "Custom CSS", parentRoute: "/specs"),
+                            HeaderItem("/specs/data-panel", title: "Data Panel", parentRoute: "/specs"),
                             HeaderItem("/specs/detail-page", title: "Detail Page", parentRoute: "/specs"),
                             HeaderItem("/specs/error-handling", title: "Error Handling", parentRoute: "/specs"),
                             HeaderItem("/specs/error-page", title: "Error Page", parentRoute: "/specs"),
@@ -147,28 +149,33 @@ public class ConfigurationOverriderFeature : IFeature
 
         configurator.ConfigurePageDescriptors(pages =>
         {
-            foreach (var page in pages.Values.OfType<ComponentDescriptorAttribute<DetailPage>>())
+            var headers = Inline(new { Authorization = "token-jane" });
+            foreach (var page in pages.OfType<ComponentDescriptorAttribute<DetailPage>>())
             {
                 if (page.Data is not RemoteData remote) { continue; }
 
-                remote.Headers = Inline(new { Authorization = "token-jane" });
+                remote.Headers = headers;
             }
 
             configurator.UsingDomainModel(domain =>
             {
-                var route = domain.Types[typeof(RichTransientWithData)].GetActionModel().GetRoute();
+                var rtwdRoute = domain.Types[typeof(RichTransientWithData)].GetInitializerActionModel().GetRoute();
+                var timeRoute = domain.Types[typeof(TimeProviderSamples)].GetMembers().Methods[nameof(TimeProviderSamples.GetNow)].GetSingle<ActionModelAttribute>().GetRoute();
 
-                pages.Add("index", MenuPage(
+                pages.Add(MenuPage("index",
+                    header: DataPanel("Expand to see server time", String(Remote($"/{timeRoute}", headers: headers)),
+                        collapsed: true
+                    ),
                     links:
                     [
-                        CardLink($"/{route.Replace("{id}", "test1")}", "Rich Transient w/ Data 1"),
-                        CardLink($"/{route.Replace("{id}", "test2")}", "Rich Transient w/ Data 2"),
-                        CardLink($"/{route.Replace("{id}", "test3")}", "Rich Transient w/ Data 3")
+                        CardLink($"/{rtwdRoute.Replace("{id}", "test1")}", "Rich Transient w/ Data 1"),
+                        CardLink($"/{rtwdRoute.Replace("{id}", "test2")}", "Rich Transient w/ Data 2"),
+                        CardLink($"/{rtwdRoute.Replace("{id}", "test3")}", "Rich Transient w/ Data 3")
                     ]
                 ));
             });
 
-            pages.Add("specs", MenuPage(
+            pages.Add(MenuPage("specs",
                 header: PageTitle(
                   title: "Specs",
                   description: "All UI Specs are listed here"
@@ -182,6 +189,10 @@ public class ConfigurationOverriderFeature : IFeature
                     CardLink("/specs/custom-css", "Custom CSS",
                         icon: "pi pi-microchip",
                         description: "Allow custom configuration to define custom css and more"
+                    ),
+                    CardLink("/specs/data-panel", "Data Panel",
+                        icon: "pi pi-microchip",
+                        description: "A page component to lazy load and view a data within a panel"
                     ),
                     CardLink("/specs/detail-page", "Detail Page",
                         icon: "pi pi-microchip",
@@ -222,7 +233,7 @@ public class ConfigurationOverriderFeature : IFeature
                 ]
             ));
 
-            pages.Add("errorPage", ErrorPage(
+            pages.Add(ErrorPage(
                 links:
                 [
                     CardLink("/", "Anasayfa",
@@ -238,7 +249,7 @@ public class ConfigurationOverriderFeature : IFeature
                     { 404, new { Title = "Page Notfound", Message = "The page you want to view is etiher deleted or outdated." } },
                     { 500, new { Title = "Unexpected Error", Message = "Please contact system administrator." } }
                 },
-                data: new ComputedData(Composables.UseError)
+                data: Computed(Composables.UseError)
             ));
         });
     }

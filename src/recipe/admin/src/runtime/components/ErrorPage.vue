@@ -1,5 +1,5 @@
 <template>
-  <div class="b-error p-8">
+  <div v-if="!loading" class="b-error p-8">
     <div class="pt-8 space-y-4">
       <Tag
         severity="danger"
@@ -38,19 +38,20 @@
   </div>
 </template>
 <script setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { Tag, Divider, Message } from "primevue";
 
 const { schema, data } = defineProps({
   schema: { type: null, required: true },
-  data: { type: null, default: null }
+  data: { type: null, default: null },
+  loading: { type: Boolean, default: false }
 });
 
 const { safeLinks, errorInfos } = schema;
-const error = data.value;
 
-const statusCode = error?.data?.status ?? error?.statusCode ?? 500;
+const statusCode = computed(() => data?.data?.status ?? data?.statusCode ?? 500);
+
 const errorInfo = computed(() => {
-  return errorInfos[`${statusCode}`] ?? errorInfos["500"];
+  return errorInfos[`${statusCode.value}`] ?? errorInfos["500"];
 });
 </script>

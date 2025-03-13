@@ -1,6 +1,7 @@
 <template>
   <Bake
     v-if="layoutDescriptor"
+    name="root"
     :descriptor="layoutDescriptor"
   >
     <slot />

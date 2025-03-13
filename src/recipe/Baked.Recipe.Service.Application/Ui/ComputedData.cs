@@ -5,4 +5,5 @@ public record ComputedData(string Composable)
 {
     public string Type => "Computed";
     public string Composable { get; set; } = Composable;
+    public List<object> Args { get; init; } = [];
 }

@@ -2,6 +2,7 @@
   <UiSpec
     title="Card Link"
     :variants="variants"
+    :no-loading-variant="true"
   />
 </template>
 <script setup>

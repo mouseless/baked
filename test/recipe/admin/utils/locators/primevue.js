@@ -14,7 +14,8 @@ export default {
     weekday: ".p-datepicker-weekday"
   },
   panel: {
-    title: ".p-panel-title"
+    title: ".p-panel-title",
+    header: ".p-panel-header"
   },
   tag: {
     base: ".p-tag"

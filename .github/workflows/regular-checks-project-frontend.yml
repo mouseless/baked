@@ -61,7 +61,7 @@ jobs:
         run: |
           cd test/recipe/admin
           npm i
-          npx playwright install --with-deps
+          npx playwright install --with-deps --only-shell
           npm run build:Production
       - name: Run tests
         run: |
