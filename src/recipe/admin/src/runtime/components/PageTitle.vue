@@ -5,10 +5,24 @@
   >
     <div class="h-16 flex gap-2">
       <div class="w-full flex flex-col gap-2 justify-end">
-        <h1 class="text-xl font-bold">
+        <Skeleton
+          v-if="loading"
+          width="10rem"
+          height="1.5rem"
+        />
+        <h1
+          v-else
+          class="text-xl font-bold"
+        >
           {{ title }}
         </h1>
+        <Skeleton
+          v-if="loading"
+          width="20rem"
+          height="1.25rem"
+        />
         <div
+          v-else
           data-testid="description"
           class="text-sm text-gray-600 dark:text-gray-400"
         >
@@ -34,12 +48,14 @@
 <script setup>
 import { onMounted } from "vue";
 import { useRuntimeConfig } from "#app";
+import { Skeleton } from "primevue";
 import { useHead } from "#imports";
 import Bake from "./Bake.vue";
 
 const { schema } = defineProps({
   schema: { type: null, required: true },
-  data: { type: null, default: null }
+  data: { type: null, default: null },
+  loading: { type: Boolean, default: false }
 });
 
 const { title, description, actions } = schema;

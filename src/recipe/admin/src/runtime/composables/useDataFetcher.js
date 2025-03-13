@@ -28,9 +28,17 @@ export default function() {
     }
 
     if(data?.type === "Computed") {
-      const composable = await composableResolver.resolve(data.composable);
+      const composable = (await composableResolver.resolve(data.composable)).default();
 
-      return composable.default();
+      if(composable.compute) {
+        return composable.compute(...(data.args || []));
+      }
+
+      if(composable.computeAsync) {
+        return await composable.computeAsync(...(data.args || []));
+      }
+
+      throw new Error("Data composable should have either `compute` or `computeAsync`");
     }
 
     if(data?.type === "Inline") {

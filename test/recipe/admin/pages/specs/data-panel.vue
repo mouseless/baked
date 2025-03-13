@@ -2,6 +2,7 @@
   <UiSpec
     title="Data Panel"
     :variants="variants"
+    :no-loading-variant="true"
   />
 </template>
 <script setup>

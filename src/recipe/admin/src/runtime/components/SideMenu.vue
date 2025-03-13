@@ -11,21 +11,24 @@
         class="my-4 w-8"
       >
     </RouterLink>
-    <Skeleton
+    <div
       v-if="loading"
-      size="3.1rem"
-    />
-    <Skeleton
-      v-if="loading"
-      size="3.1rem"
-    />
-    <SideMenuItem
-      v-for="item in menu"
+      class="space-y-2 flex flex-col gap-2"
+    >
+      <Skeleton size="3.1rem" />
+      <Skeleton size="3.1rem" />
+    </div>
+    <div
       v-else
-      :key="item.title"
-      :item="item"
-      :path="data.path"
-    />
+      class="space-y-2 flex flex-col gap-2"
+    >
+      <SideMenuItem
+        v-for="item in menu"
+        :key="item.title"
+        :item="item"
+        :path="data.path"
+      />
+    </div>
     <div
       v-if="$slots.footer || footer"
       class="mt-auto flex flex-col items-center gap-2"
