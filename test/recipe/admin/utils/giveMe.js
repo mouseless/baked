@@ -18,7 +18,7 @@ export default {
     };
   },
 
-  aDataPanel({ title, collapsed, content }) {
+  aDataPanel({ title, collapsed, content } = {}) {
     title = $(title, "Test Title");
     collapsed = $(collapsed, false);
     content = $(content, this.anExpected());
@@ -26,6 +26,38 @@ export default {
     return {
       type: "DataPanel",
       schema: { title, collapsed, content }
+    };
+  },
+
+  aDataTable({ columns, rowCountWhenLoading, data } = {}) {
+    columns = $(columns, [
+      this.aDataTableColumn({ prop: "test" })
+    ]);
+    rowCountWhenLoading = $(rowCountWhenLoading, null);
+    data = $(data, [
+      { test: "value 1" },
+      { test: "value 2" },
+      { test: "value 3" }
+    ]);
+
+    return {
+      type: "DataTable",
+      schema: { columns, rowCountWhenLoading },
+      data: { type: "Inline", value: data }
+    };
+  },
+
+  aDataTableColumn({ title, prop, minWidth, content } = {}) {
+    title = $(title, "Test");
+    prop = $(prop, "test");
+    minWidth = $(minWidth, false);
+    content = $(content, this.anExpected());
+
+    return {
+      title,
+      prop,
+      minWidth,
+      content
     };
   },
 
@@ -37,10 +69,7 @@ export default {
     return {
       type: "DetailPage",
       schema: { header, props },
-      data: {
-        type: "Inline",
-        value: data
-      }
+      data: { type: "Inline", value: data }
     };
   },
 
@@ -65,10 +94,7 @@ export default {
             [item.route]: item
           }), {})
       },
-      data: {
-        type: "Inline",
-        value: data
-      }
+      data: { type: "Inline", value: data }
     };
   },
 
@@ -109,10 +135,7 @@ export default {
     return {
       type: "SideMenu",
       schema: { logo, menu, footer },
-      data: {
-        type: "Inline",
-        value: data
-      }
+      data: { type: "Inline", value: data }
     };
   },
 
@@ -131,10 +154,7 @@ export default {
     return {
       type: "Expected",
       schema: testId,
-      data: {
-        type: "Inline",
-        value
-      }
+      data: { type: "Inline", value }
     };
   }
 };

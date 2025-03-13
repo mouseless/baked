@@ -132,6 +132,7 @@ public class ConfigurationOverriderFeature : IFeature
                             HeaderItem("/specs/card-link", title: "Card Link", parentRoute: "/specs"),
                             HeaderItem("/specs/custom-css", title: "Custom CSS", parentRoute: "/specs"),
                             HeaderItem("/specs/data-panel", title: "Data Panel", parentRoute: "/specs"),
+                            HeaderItem("/specs/data-table", title: "Data Table", parentRoute: "/specs"),
                             HeaderItem("/specs/detail-page", title: "Detail Page", parentRoute: "/specs"),
                             HeaderItem("/specs/header", title: "Header", parentRoute: "/specs"),
                             HeaderItem("/specs/locale", title: "Locale", parentRoute: "/specs"),
@@ -191,6 +192,10 @@ public class ConfigurationOverriderFeature : IFeature
                     CardLink("/specs/data-panel", "Data Panel",
                         icon: "pi pi-microchip",
                         description: "A page component to lazy load and view a data within a panel"
+                    ),
+                    CardLink("/specs/data-table", "Data Table",
+                        icon: "pi pi-microchip",
+                        description: "A page component to view list data in a table"
                     ),
                     CardLink("/specs/detail-page", "Detail Page",
                         icon: "pi pi-microchip",

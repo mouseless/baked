@@ -16,3 +16,4 @@
 - `Bake.vue` now manages `loading` state, making it possible for components to
   show a skeleton during loding
 - `SideMenu`, `PageTitle`, `Header` now supports skeleton
+- `DataTable` page component is added
