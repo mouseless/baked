@@ -114,7 +114,7 @@ public class ConfigurationOverriderFeature : IFeature
                 var rtwdDetail = rtwd.Get<DetailPage>();
                 var rtwdPageDetail = (PageTitle)(rtwdDetail.Header?.Schema ?? throw new("`RichTransientWithData` is expected to have `PageTitle` in `Header`"));
 
-                layouts.Add("default", DefaultLayout(
+                layouts.Add(DefaultLayout("default",
                     sideMenu: SideMenu(
                         menu:
                         [
@@ -148,7 +148,7 @@ public class ConfigurationOverriderFeature : IFeature
         configurator.ConfigurePageDescriptors(pages =>
         {
             var headers = Inline(new { Authorization = "token-jane" });
-            foreach (var page in pages.Values.OfType<ComponentDescriptorAttribute<DetailPage>>())
+            foreach (var page in pages.OfType<ComponentDescriptorAttribute<DetailPage>>())
             {
                 if (page.Data is not RemoteData remote) { continue; }
 
@@ -160,7 +160,7 @@ public class ConfigurationOverriderFeature : IFeature
                 var rtwdRoute = domain.Types[typeof(RichTransientWithData)].GetInitializerActionModel().GetRoute();
                 var timeRoute = domain.Types[typeof(TimeProviderSamples)].GetMembers().Methods[nameof(TimeProviderSamples.GetNow)].GetSingle<ActionModelAttribute>().GetRoute();
 
-                pages.Add("index", MenuPage(
+                pages.Add(MenuPage("index",
                     header: DataPanel("Expand to see server time", String(Remote($"/{timeRoute}", headers: headers)),
                         collapsed: true
                     ),
@@ -173,7 +173,7 @@ public class ConfigurationOverriderFeature : IFeature
                 ));
             });
 
-            pages.Add("specs", MenuPage(
+            pages.Add(MenuPage("specs",
                 header: PageTitle(
                   title: "Specs",
                   description: "All UI Specs are listed here"

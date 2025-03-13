@@ -12,7 +12,10 @@
       >
     </RouterLink>
     <Skeleton
-      v-for="_ in new Array(3)"
+      v-if="loading"
+      size="3.1rem"
+    />
+    <Skeleton
       v-if="loading"
       size="3.1rem"
     />
@@ -29,6 +32,7 @@
     >
       <Bake
         v-if="footer"
+        name="footer"
         :descriptor="footer"
       />
       <slot

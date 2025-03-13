@@ -1,6 +1,7 @@
 <template>
   <Bake
     v-if="pageDescriptor"
+    name="page"
     :descriptor="pageDescriptor"
   />
 </template>

@@ -2,6 +2,7 @@
   <div class="space-y-4">
     <Bake
       v-if="schema.header"
+      name="header"
       :descriptor="schema.header"
     />
     <Panel
@@ -19,6 +20,7 @@
             <strong>{{ prop.title }}:</strong>
           </div>
           <Bake
+            :name="`props/${prop.key}`"
             :descriptor="{
               ...prop.component,
               'data': {

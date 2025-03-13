@@ -55,4 +55,14 @@ test.describe("Collapsed", () => {
 
     await expect(component.getByTestId("content")).toBeAttached(); // assert it is still there
   });
+
+  test("keep panel state", async({page}) => {
+    const component = page.getByTestId(id);
+    const toggle = component.locator(primevue.panel.header).locator(primevue.button.base);
+    await toggle.click(); // expand
+    await page.locator("a[href='/specs']").nth(0).click(); // go back to specs
+    await page.locator("a[href='/specs/data-panel']").nth(0).click(); // go to data panel again
+
+    await expect(component.getByTestId("content")).toBeAttached(); // assert it is still there
+  });
 });

@@ -1,9 +1,13 @@
 <template>
   <div class="flex h-screen">
-    <Bake :descriptor="schema.sideMenu" />
+    <Bake
+      name="sideMenu"
+      :descriptor="schema.sideMenu"
+    />
     <article class="w-full px-4 flex flex-col bg-body">
       <Bake
         :key="route.path"
+        name="header"
         :descriptor="schema.header"
       />
       <slot />

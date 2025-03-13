@@ -15,10 +15,10 @@ public static class Components
         bool collapsed = false
     ) => new(new(title, content) { Collapsed = collapsed });
 
-    public static ComponentDescriptorAttribute<DefaultLayout> DefaultLayout(
+    public static ComponentDescriptorAttribute<DefaultLayout> DefaultLayout(string name,
         IComponentDescriptor? sideMenu = default,
         IComponentDescriptor? header = default
-    ) => new(new() { SideMenu = sideMenu, Header = header });
+    ) => new(new(name) { SideMenu = sideMenu, Header = header });
 
     public static ComponentDescriptorAttribute<Header> Header(IEnumerable<Header.Item> siteMap,
         IData? data = default
@@ -35,10 +35,10 @@ public static class Components
         string? parentRoute = default
     ) => new(route) { Icon = icon, Title = title, ParentRoute = parentRoute };
 
-    public static ComponentDescriptorAttribute<MenuPage> MenuPage(
+    public static ComponentDescriptorAttribute<MenuPage> MenuPage(string name,
         IComponentDescriptor? header = default,
         IEnumerable<IComponentDescriptor>? links = default
-    ) => new(new() { Header = header, Links = [.. links ?? []] });
+    ) => new(new(name) { Header = header, Links = [.. links ?? []] });
 
     public static ComponentDescriptor None() =>
         new(nameof(None));

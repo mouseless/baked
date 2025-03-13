@@ -17,29 +17,33 @@
     <template #default>
       <Bake
         v-if="loaded"
+        name="content"
         :descriptor="content"
       />
     </template>
   </Panel>
 </template>
 <script setup>
-import { computed, ref } from "vue";
+import { computed, inject, ref } from "vue";
 import { Panel } from "primevue";
 import Bake from "./Bake.vue";
+import { useUiStates } from "#imports";
 
 const { schema } = defineProps({
   schema: { type: null, required: true },
   data: { type: null, default: null }
 });
 
-const { collapsed, content, title } = schema;
+const { value: { panelStates } } = useUiStates();
 
-// const collapsedState = computed(() => panelStates[statePath] ?? collapsed);
-const collapsedState = computed(() => collapsed);
+const uiContext = inject("uiContext");
+
+const { collapsed, content, title } = schema;
+const collapsedState = computed(() => panelStates[uiContext] ?? collapsed);
 const loaded = ref(!collapsedState.value);
 
 function onCollapsed(collapsed) {
-  // panelStates[statePath] = collapsed;
+  panelStates[uiContext] = collapsed;
 
   if(!collapsed && !loaded.value) {
     loaded.value = true;

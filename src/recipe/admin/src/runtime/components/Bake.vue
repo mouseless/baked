@@ -9,11 +9,12 @@
   </component>
 </template>
 <script setup>
-import { inject, onMounted, ref } from "vue";
+import { inject, onMounted, provide, ref } from "vue";
 import { useRuntimeConfig } from "#app";
 import { useComponentResolver, useDataFetcher } from "#imports";
 
-const { descriptor } = defineProps({
+const { name, descriptor } = defineProps({
+  name: { type: String, required: true },
   descriptor: { type: null, required: true }
 });
 
@@ -22,6 +23,8 @@ const componentResolver = useComponentResolver();
 const dataFetcher = useDataFetcher();
 
 const routeParams = inject("routeParams", []);
+const uiContext = inject("uiContext", null);
+provide("uiContext", uiContext ? `${uiContext}/${name}` : name);
 
 const is = componentResolver.resolve(descriptor.type, "None");
 const shouldLoad = dataFetcher.shouldLoad(descriptor.data?.type);

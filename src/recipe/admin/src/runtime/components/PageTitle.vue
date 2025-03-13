@@ -18,7 +18,8 @@
       <div class="min-w-min pt-6 flex gap-2 row-span-2 items-end">
         <Bake
           v-for="action in actions"
-          :key="action.key"
+          :key="action.schema.name"
+          :name="`actions/${action.schema.name}`"
           :descriptor="action"
         />
         <slot

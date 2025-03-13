@@ -32,7 +32,10 @@
           >{{variant.name}}</h2>
           <Divider v-if="!vertical" />
           <div :data-testid="variant.name">
-            <Bake :descriptor="variant.descriptor" />
+            <Bake
+              :name="`variants/${camelize(variant.name)}`"
+              :descriptor="variant.descriptor"
+            />
           </div>
         </div>
         <slot v-if="$slots.default" name="default" />
@@ -65,4 +68,10 @@ onMounted(async() => {
 
   loaded.value = true;
 });
+
+function camelize(str) {
+  return str
+    .replace(/\s+(.)/g, (_, char) => char.toUpperCase())
+    .replace(/^[A-Z]/, char => char.toLowerCase());
+}
 </script>
