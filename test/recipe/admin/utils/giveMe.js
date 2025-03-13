@@ -18,7 +18,7 @@ export default {
     };
   },
 
-  anDataPanel({ title, collapsed, content }) {
+  aDataPanel({ title, collapsed, content }) {
     title = $(title, "Test Title");
     collapsed = $(collapsed, false);
     content = $(content, this.anExpected());

@@ -11,7 +11,7 @@ import giveMe from "~/utils/giveMe";
 const variants = [
   {
     name: "Base",
-    descriptor: giveMe.anDataPanel({
+    descriptor: giveMe.aDataPanel({
       title: "TITLE",
       collapsed: false,
       content: giveMe.anExpected({ testId: "content", value: "TEST DATA" })
@@ -19,7 +19,7 @@ const variants = [
   },
   {
     name: "Collapsed",
-    descriptor: giveMe.anDataPanel({
+    descriptor: giveMe.aDataPanel({
       collapsed: true,
       content: giveMe.anExpected({ testId: "content", value: "DISPLAY ON EXPAND" })
     })
