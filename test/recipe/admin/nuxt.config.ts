@@ -34,6 +34,13 @@ export default defineNuxtConfig({
       Page: {
         title: "Baked Admin"
       }
+    },
+    errorHandling:{
+      defaultHandler:{
+        config:[
+          { statusCode: 400, result: "toast"}
+        ]
+      }
     }
   },
   compatibilityDate: "2025-03-01",

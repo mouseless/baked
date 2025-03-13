@@ -4,7 +4,7 @@ import { FetchError } from "ofetch";
 export default defineErrorHandler({
   order: 0,
   canHandle: function(_, error) {
-    return error instanceof FetchError;
+    return error instanceof FetchError && error.statusCode !== 401;
   },
   handle: function(_, error)
   {

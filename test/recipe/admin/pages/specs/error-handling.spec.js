@@ -22,7 +22,7 @@ test("toast error", async({page}) => {
   await content.getByTestId("toast-error").click();
 
   await expect(page.locator(primevue.toast.base)).toBeVisible();
-  await expect(page.locator(primevue.toast.summary)).toHaveText("Unexpected Error");
+  await expect(page.locator(primevue.toast.summary)).toHaveText("400");
 });
 
 test("custom handler full page error", async({page}) => {

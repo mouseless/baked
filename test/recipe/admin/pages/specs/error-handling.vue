@@ -28,6 +28,12 @@
       class="m-4"
       @click="customHandlerFullPage"
     />
+    <Button
+      type="button"
+      label="Fetch error from backend"
+      class="m-4"
+      @click="async () => fetchErrorFromBackend()"
+    />
   </UiSpec>
 </template>
 <script setup>
@@ -35,31 +41,38 @@ import { Button } from "primevue";
 import { createError } from "#app";
 import { FetchError} from "ofetch";
 
-function toastError(){
+function toastError() {
   throw createError({
     statusCode: 400,
     statusMessage: "This error is displayed in toast!"
   });
 }
 
-function fullPageError(){
+function fullPageError() {
   throw createError({
     statusCode: 404,
     statusMessage: "This error displays full page!"
   });
 }
 
-function customHandlerToast(){
+function customHandlerToast() {
   const error = new FetchError("Bad request");
   error.statusCode = 400;
 
   throw error;
 }
 
-function customHandlerFullPage(){
+function customHandlerFullPage() {
   const error = new FetchError("Unauthorized");
   error.statusCode = 403;
 
   throw error;
+}
+
+async function fetchErrorFromBackend() {
+  await $fetch("exception-samples/throw?handled=true", {
+    method: "POST",
+    baseURL: "https://localhost:7254"
+  });
 }
 </script>
