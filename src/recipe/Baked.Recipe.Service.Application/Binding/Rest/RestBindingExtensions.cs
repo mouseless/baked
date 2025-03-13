@@ -16,7 +16,7 @@ public static class RestBindingExtensions
     public static RestBindingFeature Rest(this BindingConfigurator _) =>
         new();
 
-    public static bool TryGetActionModel(this TypeModel type, [NotNullWhen(true)] out ActionModelAttribute? action)
+    public static bool TryGetInitializerActionModel(this TypeModel type, [NotNullWhen(true)] out ActionModelAttribute? action)
     {
         action = default;
 
@@ -29,9 +29,9 @@ public static class RestBindingExtensions
         return true;
     }
 
-    public static ActionModelAttribute GetActionModel(this TypeModel type)
+    public static ActionModelAttribute GetInitializerActionModel(this TypeModel type)
     {
-        if (!type.TryGetActionModel(out var result)) { throw new($"{type.Name} does not have action model"); }
+        if (!type.TryGetInitializerActionModel(out var result)) { throw new($"{type.Name} does not have action model"); }
 
         return result;
     }

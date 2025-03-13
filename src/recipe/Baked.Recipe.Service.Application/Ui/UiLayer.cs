@@ -21,14 +21,18 @@ public class UiLayer : LayerBase<GenerateCode>
     void GenerateUiSchemas()
     {
         var files = Context.Get<IGeneratedFileCollection>();
-        foreach (var (key, layout) in _layoutDescriptors)
+        foreach (var layout in _layoutDescriptors)
         {
-            files.AddAsJson($"{key}.layout", layout, outdir: "Ui", settings: JsonSettings);
+            if (layout.Schema is not INamedComponentSchema schema) { continue; }
+
+            files.AddAsJson($"{schema.Name}.layout", layout, outdir: "Ui", settings: JsonSettings);
         }
 
-        foreach (var (key, page) in _pageDescriptors)
+        foreach (var page in _pageDescriptors)
         {
-            files.AddAsJson($"{key}.page", page, outdir: "Ui", settings: JsonSettings);
+            if (page.Schema is not INamedComponentSchema schema) { continue; }
+
+            files.AddAsJson($"{schema.Name}.page", page, outdir: "Ui", settings: JsonSettings);
         }
     }
 

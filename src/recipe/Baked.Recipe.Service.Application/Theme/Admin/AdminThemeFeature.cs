@@ -6,8 +6,7 @@ using Baked.Ui;
 
 namespace Baked.Theme.Admin;
 
-public class AdminThemeFeature(Func<string, string> _defaultPageName)
-    : IFeature<ThemeConfigurator>
+public class AdminThemeFeature : IFeature<ThemeConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
@@ -16,7 +15,7 @@ public class AdminThemeFeature(Func<string, string> _defaultPageName)
             builder.Index.Type.Add<ComponentDescriptorAttribute<DetailPage>>();
 
             builder.Conventions.AddTypeMetadata(
-                attribute: context => new ComponentDescriptorAttribute<DetailPage>(new()),
+                attribute: context => new ComponentDescriptorAttribute<DetailPage>(new(context.Type.Name)),
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
                     members.Has<LocatableAttribute>() &&
@@ -33,7 +32,7 @@ public class AdminThemeFeature(Func<string, string> _defaultPageName)
         {
             configurator.UsingDomainModel(domain =>
             {
-                components.AddPages<DetailPage>(domain.Types, _defaultPageName);
+                components.AddPages<DetailPage>(domain.Types);
             });
         });
     }

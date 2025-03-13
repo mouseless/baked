@@ -3,8 +3,10 @@ using Humanizer;
 
 namespace Baked.Theme.Admin;
 
-public record DetailPage : IComponentSchema
+public record DetailPage(string Name)
+    : INamedComponentSchema
 {
+    public string Name { get; set; } = Name;
     public IComponentDescriptor? Header { get; set; }
     public List<Property> Props { get; init; } = [];
 
