@@ -64,7 +64,7 @@ onMounted(() => {
     ([e]) => {
       toggleClasses(e.target, e.intersectionRatio < 1,
         [
-          "-mx-4", "px-4",
+          "-mx-4", "px-4", "pb-4",
           "border-b", "border-slate-300", "dark:border-zinc-800",
           "drop-shadow"
         ]

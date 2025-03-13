@@ -1,5 +1,6 @@
 <template>
   <Panel
+    ref="panel"
     :header="title"
     :collapsed="collapsedState"
     toggleable
@@ -24,7 +25,7 @@
   </Panel>
 </template>
 <script setup>
-import { computed, inject, ref } from "vue";
+import { computed, inject, useTemplateRef, ref } from "vue";
 import { Panel } from "primevue";
 import Bake from "./Bake.vue";
 import { useUiStates } from "#imports";
@@ -35,6 +36,7 @@ const { schema } = defineProps({
 });
 
 const { value: { panelStates } } = useUiStates();
+const panel = useTemplateRef("panel");
 
 const uiContext = inject("uiContext");
 
@@ -49,12 +51,10 @@ function onCollapsed(collapsed) {
     loaded.value = true;
   }
 
-  /*
   if(!collapsed) {
     setTimeout(() => {
-      panel.value.$el.scrollIntoView({ behavior: "smooth" });
+      panel.value.$el.scrollIntoView({ behavior: "smooth", block: "nearest" });
     }, 750);
   }
-  */
 }
 </script>
