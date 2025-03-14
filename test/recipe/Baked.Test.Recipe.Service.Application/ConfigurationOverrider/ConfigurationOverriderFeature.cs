@@ -253,5 +253,19 @@ public class ConfigurationOverriderFeature : IFeature
                 data: Computed(Composables.UseError)
             ));
         });
+
+        configurator.ConfigureAppSettings(app =>
+        {
+            app.Add(new ErrorHandlingOptions
+            {
+                DefaultHandler = new()
+                {
+                    Config = new() {
+                        new(StatusCode: 400, Result: "toast"),
+                        new(StatusCode: 401, Result: "toast")
+                    }
+                }
+            });
+        });
     }
 }

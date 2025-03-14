@@ -8,11 +8,13 @@ namespace Baked.Ui;
 
 public class UiLayer : LayerBase<GenerateCode>
 {
+    public AppSettings _appSettings = new();
     public LayoutDescriptors _layoutDescriptors = new();
     public PageDescriptors _pageDescriptors = new();
 
     protected override PhaseContext GetContext(GenerateCode phase) =>
         phase.CreateContextBuilder()
+            .Add(_appSettings)
             .Add(_layoutDescriptors)
             .Add(_pageDescriptors)
             .OnDispose(GenerateUiSchemas)
@@ -34,6 +36,8 @@ public class UiLayer : LayerBase<GenerateCode>
 
             files.AddAsJson($"{schema.Name}.page", page, outdir: "Ui", settings: JsonSettings);
         }
+
+        files.AddAsJson($"app.settings", _appSettings, outdir: "Ui", settings: JsonSettings);
     }
 
     JsonSerializerSettings JsonSettings => new() { ContractResolver = new AttributeAwareCamelCasePropertyNamesContractResolver() };
