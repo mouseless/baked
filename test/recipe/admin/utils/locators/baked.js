@@ -1,12 +1,9 @@
 export default {
-  cardLink:{
-    base: ".b-card-link"
-  },
   errorPage: {
-    base: ".b-error",
-    tag: ".b-error div .p-tag",
-    title: ".b-error div .b-title",
-    message: ".b-error div .b-message",
-    links: ".b-error .b-links"
+    testid: "error-page",
+    tag: ".pt-8 .p-tag",
+    title: ".pt-8 h1",
+    message: ".pt-8 div",
+    links: ".grid"
   }
 };

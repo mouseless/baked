@@ -53,13 +53,12 @@ export default defineNuxtModule<ModuleOptions>({
 
     addComponentsDir({ path: resolver.resolve("./runtime/components"), });
     addImportsDir(resolver.resolve("./runtime/composables"));
-    addImportsDir(resolver.resolve("./runtime/types"));
     addPlugin(resolver.resolve("./runtime/plugins/addPrimeVue"));
     addPlugin(resolver.resolve("./runtime/plugins/toast"));
 
     for(const plugin of _options.app?.plugins ?? []) {
       _nuxt.options.runtimeConfig.public[plugin.name] = plugin;
-      
+
       const pluginPath = `./runtime/plugins/${plugin.name}`;
       addPlugin(resolver.resolve(pluginPath));
     }

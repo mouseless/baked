@@ -1,7 +1,8 @@
 <template>
   <div
     v-if="!loading"
-    class="b-error p-8"
+    data-testid="error-page"
+    class="p-8"
   >
     <div class="pt-8 space-y-4">
       <Tag
@@ -9,10 +10,10 @@
         :value="statusCode"
         class="text-4xl"
       />
-      <h1 class="b-title text-6xl">
+      <h1 class="text-6xl">
         {{ errorInfo.title }}
       </h1>
-      <div class="b-message text-2xl">
+      <div class="text-2xl">
         {{ errorInfo.message }}
       </div>
       <div class="text-2xl">
@@ -23,7 +24,7 @@
       type="dashed"
       class="my-8"
     />
-    <div class="b-links grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
+    <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
       <Bake
         v-for="link in safeLinks"
         :key="link.schema.route"

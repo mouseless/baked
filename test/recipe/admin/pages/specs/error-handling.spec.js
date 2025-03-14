@@ -6,33 +6,31 @@ test.beforeEach(async({goto}) => {
   await goto("/specs/error-handling", { waitUntil: "hydration" });
 });
 
-test.describe("Default Handler", () => {
-  const id = "error-handling";
+const id = "error-handling";
 
-  test("toast error", async({page}) => {
-    const content = page.getByTestId(id);
+test("toast error", async({page}) => {
+  const content = page.getByTestId(id);
 
-    await content.getByTestId("toast-error").click();
+  await content.getByTestId("toast-error").click();
 
-    await expect(page.locator(primevue.toast.base)).toBeVisible();
-    await expect(page.locator(primevue.toast.summary)).toHaveText("400");
-  });
+  await expect(page.locator(primevue.toast.base)).toBeVisible();
+  await expect(page.locator(primevue.toast.summary)).toHaveText("400");
+});
 
-  test("full page error", async({page}) => {
-    const content = page.getByTestId(id);
+test("full page error", async({page}) => {
+  const content = page.getByTestId(id);
 
-    await content.getByTestId("full-page-error").click();
+  await content.getByTestId("full-page-error").click();
 
-    await expect(page.locator(baked.errorPage.base)).toBeVisible();
-  });
+  await expect(page.getByTestId(baked.errorPage.testid)).toBeVisible();
+});
 
-  test("fetch error toast with data", async({page}) => {
-    const content = page.getByTestId(id);
+test("redirect and toast with fetch error data", async({page}) => {
+  const content = page.getByTestId(id);
 
-    await content.getByTestId("toast-options-from-fetch-error-data").click();
+  await content.getByTestId("toast-options-from-fetch-error-data").click();
 
-    await expect(page).toHaveURL("/");
-    await expect(page.locator(primevue.toast.summary)).toHaveText("Authentication");
-    await expect(page.locator(primevue.toast.detail)).toHaveText("Failed to authenticate with given credentials.");
-  });
+  await expect(page).toHaveURL("/");
+  await expect(page.locator(primevue.toast.summary)).toHaveText("Authentication");
+  await expect(page.locator(primevue.toast.detail)).toHaveText("Failed to authenticate with given credentials.");
 });
