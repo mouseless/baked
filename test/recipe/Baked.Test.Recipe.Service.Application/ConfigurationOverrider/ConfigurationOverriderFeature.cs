@@ -106,6 +106,28 @@ public class ConfigurationOverriderFeature : IFeature
             swaggerUIOptions.SwaggerEndpoint($"external/swagger.json", "External");
         });
 
+        configurator.ConfigureAppDescriptor(app =>
+        {
+            app.Error = ErrorPage(
+                links:
+                [
+                    CardLink("/", "Anasayfa",
+                        icon: "pi pi-microchip"
+                    ),
+                    CardLink("/specs", "Specs",
+                        icon: "pi pi-microchip"
+                    ),
+                ],
+                errorInfos: new Dictionary<int, ErrorInfo>
+                {
+                    { 403, new("Access Denied", "You do not have the permision to view the address or data specified." ) },
+                    { 404, new("Page Not Found", "The page you want to view is etiher deleted or outdated.") },
+                    { 500, new("Unexpected Error", "Please contact system administrator.") }
+                },
+                data: Computed(Composables.UseError)
+            );
+        });
+
         configurator.ConfigureLayoutDescriptors(layouts =>
         {
             configurator.UsingDomainModel(domain =>
@@ -233,39 +255,6 @@ public class ConfigurationOverriderFeature : IFeature
                     )
                 ]
             ));
-
-            pages.Add(ErrorPage(
-                links:
-                [
-                    CardLink("/", "Anasayfa",
-                        icon: "pi pi-microchip"
-                    ),
-                    CardLink("/specs", "Specs",
-                        icon: "pi pi-microchip"
-                    ),
-                ],
-                errorInfos: new Dictionary<int, ErrorInfo>
-                {
-                    { 403, new("Access Denied", "You do not have the permision to view the address or data specified." ) },
-                    { 404, new("Page Notfound", "The page you want to view is etiher deleted or outdated.")},
-                    { 500, new("Unexpected Error", "Please contact system administrator.") }
-                },
-                data: Computed(Composables.UseError)
-            ));
-        });
-
-        configurator.ConfigureAppSettings(app =>
-        {
-            app.Add(new ErrorHandlingOptions
-            {
-                DefaultHandler = new()
-                {
-                    Config = new() {
-                        new(StatusCode: 400, Result: "toast"),
-                        new(StatusCode: 401, Result: "toast")
-                    }
-                }
-            });
         });
     }
 }

@@ -1,6 +1,6 @@
 import Aura from "@primevue/themes/aura";
 import { definePreset } from "@primevue/themes";
-import settings from "./.baked/app.settings.json" assert { type: "json" };
+import app from "./.baked/app.json" assert { type: "json" };
 
 const Mouseless = definePreset(Aura, {
   semantic: {
@@ -23,10 +23,7 @@ const Mouseless = definePreset(Aura, {
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   baked: {
-    primevue: {
-      theme: Mouseless,
-      locale: { dayNamesMin: [ "sU", "mO", "tU", "wE", "tH", "fR", "sA"] }
-    },
+    app: app,
     components: {
       Bake: {
         baseURL: process.env.API_BASE_URL,
@@ -36,7 +33,10 @@ export default defineNuxtConfig({
         title: "Baked Admin"
       }
     },
-    errorHandling: settings.errorHandling
+    primevue: {
+      theme: Mouseless,
+      locale: { dayNamesMin: [ "sU", "mO", "tU", "wE", "tH", "fR", "sA"] }
+    }
   },
   compatibilityDate: "2025-03-01",
   components: {

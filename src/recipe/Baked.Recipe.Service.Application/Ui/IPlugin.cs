@@ -1,6 +1,6 @@
 ﻿namespace Baked.Ui;
 
-public interface INamedSettings
+public interface IPlugin
 {
     string Name { get; }
 }

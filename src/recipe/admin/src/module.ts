@@ -1,15 +1,9 @@
 import { defineNuxtModule, addComponentsDir, addImportsDir, addPlugin, createResolver, installModule } from "@nuxt/kit";
-import type { ErrorHandlingOptions } from "./runtime/types/errorHandling";
 
 export interface ModuleOptions {
+  app?: any,
   primevue: PrimeVueOptions,
-  components?: Components,
-  errorHandling?: ErrorHandlingOptions
-}
-
-export interface PrimeVueOptions {
-  theme: any,
-  locale?: any
+  components?: Components
 }
 
 export interface Components {
@@ -26,6 +20,11 @@ export interface PageOptions {
   title?: String
 }
 
+export interface PrimeVueOptions {
+  theme: any,
+  locale?: any
+}
+
 export default defineNuxtModule<ModuleOptions>({
   meta: {
     name: "baked-recipe-admin",
@@ -39,9 +38,9 @@ export default defineNuxtModule<ModuleOptions>({
     const resolver = createResolver(import.meta.url);
 
     // passing module's options to runtime config for further access
+     _nuxt.options.runtimeConfig.public.error = _options.app?.error;
     _nuxt.options.runtimeConfig.public.primevue = _options.primevue;
     _nuxt.options.runtimeConfig.public.components = _options.components;
-    _nuxt.options.runtimeConfig.public.errorHandling = _options.errorHandling;
 
     // by pushing instead of setting, it allows custom css
     _nuxt.options.css.push("primeicons/primeicons.css");
@@ -58,8 +57,11 @@ export default defineNuxtModule<ModuleOptions>({
     addPlugin(resolver.resolve("./runtime/plugins/addPrimeVue"));
     addPlugin(resolver.resolve("./runtime/plugins/toast"));
 
-    if(_options.errorHandling){
-      addPlugin(resolver.resolve("./runtime/plugins/errorHandling"));
+    for(const plugin of _options.app?.plugins ?? []) {
+      _nuxt.options.runtimeConfig.public[plugin.name] = plugin;
+      
+      const pluginPath = `./runtime/plugins/${plugin.name}`;
+      addPlugin(resolver.resolve(pluginPath));
     }
     
     await installModule("@nuxtjs/tailwindcss", {

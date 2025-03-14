@@ -6,11 +6,11 @@
 </template>
 <script setup>
 import { ref, onMounted } from "vue";
+import { useRuntimeConfig } from "#app";
 import { Bake } from "#components";
-import { usePages } from "#imports";
 
-const pages = usePages();
 const pageDescriptor = ref();
+const config = useRuntimeConfig().public.error;
 
-onMounted(async() => pageDescriptor.value = await pages.fetch("errorPage"));
+onMounted(() => pageDescriptor.value = config);
 </script>

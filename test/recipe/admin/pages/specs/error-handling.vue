@@ -23,22 +23,6 @@
         @click="fetchErrorWithData"
       />
     </Panel>
-    <Panel header="Custom Handler" class="mt-4">
-      <Button
-        data-testid="custom-handler-toast"
-        type="button"
-        label="Custom Toast Error"
-        class="m-4"
-        @click="customHandlerToast"
-      />
-      <Button
-        data-testid="custom-handler-full-page"
-        type="button"
-        label="Custom full page Error"
-        class="m-4"
-        @click="customHandlerFullPage"
-      />
-    </Panel>
   </UiSpec>
 </template>
 <script setup>
@@ -69,20 +53,6 @@ function fetchErrorWithData() {
     "status": 401,
     "detail": "Failed to authenticate with given credentials."
   };
-
-  throw error;
-}
-
-function customHandlerToast() {
-  const error = new FetchError("Bad request");
-  error.statusCode = 400;
-
-  throw error;
-}
-
-function customHandlerFullPage() {
-  const error = new FetchError("Unauthorized");
-  error.statusCode = 403;
 
   throw error;
 }
