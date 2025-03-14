@@ -38,8 +38,8 @@ export default defineNuxtConfig({
     errorHandling:{
       defaultHandler:{
         config:[
-          { statusCode: 400, result: "toast"},
-          { statusCode: 401, result: "toast"}
+          { statusCode: 400, result: "toast" },
+          { statusCode: 401, result: "toast" }
         ]
       }
     }

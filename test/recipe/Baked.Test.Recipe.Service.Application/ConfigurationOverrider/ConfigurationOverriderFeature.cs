@@ -204,7 +204,7 @@ public class ConfigurationOverriderFeature : IFeature
                     ),
                     CardLink("/specs/error-page", "Error Page",
                         icon: "pi pi-microchip",
-                        description: "A custom component for full page error"
+                        description: "A page component to display errors in full page"
                     ),
                     CardLink("/specs/header", "Header",
                         icon: "pi pi-microchip",

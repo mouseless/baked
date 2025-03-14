@@ -60,10 +60,7 @@ export default {
 
     return {
       type: "ErrorPage",
-      schema: {
-        safeLinks,
-        errorInfos
-      },
+      schema: { safeLinks, errorInfos },
       data: {
         type: "Inline",
         value: data
