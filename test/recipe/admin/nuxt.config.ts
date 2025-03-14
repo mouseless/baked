@@ -1,6 +1,6 @@
 import Aura from "@primevue/themes/aura";
 import { definePreset } from "@primevue/themes";
-import useAppSettings from "./composables/useAppSettings";
+import settings from "./.baked/app.settings.json" assert { type: "json" };
 
 const Mouseless = definePreset(Aura, {
   semantic: {
@@ -20,8 +20,6 @@ const Mouseless = definePreset(Aura, {
   }
 });
 
-const appSettings = useAppSettings();
-
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   baked: {
@@ -38,7 +36,7 @@ export default defineNuxtConfig({
         title: "Baked Admin"
       }
     },
-    errorHandling: appSettings.errorHandling
+    errorHandling: settings.errorHandling
   },
   compatibilityDate: "2025-03-01",
   components: {
