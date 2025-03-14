@@ -58,6 +58,7 @@ export default [
       "no-return-assign": "off",
       "no-trailing-spaces": "error",
       "no-var": "error",
+      "object-curly-spacing": ["error", "always"],
       "prefer-const": "error",
       quotes: ["error", "double"],
       semi: ["error", "always"],

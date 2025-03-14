@@ -6,7 +6,7 @@ public class ErrorHandlingOptions : INamedSettings
 {
     public DefaultHandlerOptions DefaultHandler { get; init; } = new();
 
-    public string Name => "exceptionHandling";
+    string INamedSettings.Name => "errorHandling";
 
     public class DefaultHandlerOptions
     {
