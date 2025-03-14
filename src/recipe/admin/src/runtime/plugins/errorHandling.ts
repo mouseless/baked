@@ -8,7 +8,7 @@ export default defineNuxtPlugin({
   name: "errorHandling",
   enforce: "pre",
   async setup() {
-    const errorHandlers = [] as  Array<ErrorHandler>
+    const errorHandlers = [] as  Array<ErrorHandler>;
     await loadHandlers(errorHandlers);
     errorHandlers.sort((a,b) => a.order - b.order);
 
