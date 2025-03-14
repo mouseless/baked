@@ -1,6 +1,6 @@
 import Aura from "@primevue/themes/aura";
 import { definePreset } from "@primevue/themes";
-import settings from "~/.baked/app.settings.json" assert { type: "json" };
+import settings from "./.baked/app.settings.json" assert { type: "json" };
 
 const Mouseless = definePreset(Aura, {
   semantic: {
