@@ -52,6 +52,22 @@ export default {
     return { key: keyAndTestId, title, component };
   },
 
+  anErrorPage({ safeLinks, errorResults, data}){
+    const errorInfos = {};
+    errorResults.forEach(element => {
+      errorInfos[element.statusCode] = { ...element };
+    });
+
+    return {
+      type: "ErrorPage",
+      schema: { safeLinks, errorInfos },
+      data: {
+        type: "Inline",
+        value: data
+      }
+    };
+  },
+
   aHeader({ sitemapItems, data } = {}) {
     sitemapItems = $(sitemapItems, [this.aHeaderItem({ route: "/test" })]);
     data = $(data, { path: "/test" });

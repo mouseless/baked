@@ -1,7 +1,9 @@
 ﻿using Baked.Architecture;
 using Baked.Runtime;
+using Baked.Theme.Admin;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using System.Net;
 
 namespace Baked.ExceptionHandling.ProblemDetails;
 
@@ -48,6 +50,19 @@ public class ProblemDetailsExceptionHandlingFeature(Setting<string>? _typeUrlFor
                 },
                 order: -10
             );
+        });
+
+        configurator.ConfigureAppDescriptor(app =>
+        {
+            app.Plugins.Add(new ErrorHandlingPlugin()
+            {
+                Handlers = new()
+                {
+                    new(StatusCode: (int)HttpStatusCode.Unauthorized, Behavior: ErrorHandlingPlugin.HandlerBehavior.Redirect, BehaviorArgument: "/"),
+                    new(StatusCode: (int)HttpStatusCode.BadRequest, Behavior: ErrorHandlingPlugin.HandlerBehavior.Alert),
+                    new(Behavior: ErrorHandlingPlugin.HandlerBehavior.Page),
+                }
+            });
         });
     }
 }

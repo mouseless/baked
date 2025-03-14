@@ -10,6 +10,9 @@ public static class UiExtensions
     public static void AddUi(this List<ILayer> layers) =>
         layers.Add(new UiLayer());
 
+    public static void ConfigureAppDescriptor(this LayerConfigurator configurator, Action<AppDescriptor> configure) =>
+        configurator.Configure(configure);
+
     public static void ConfigureLayoutDescriptors(this LayerConfigurator configurator, Action<LayoutDescriptors> configure) =>
         configurator.Configure(configure);
 

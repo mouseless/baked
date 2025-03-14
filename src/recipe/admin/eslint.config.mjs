@@ -51,14 +51,20 @@ export default [
       ],
 
       "no-multi-spaces": "error",
-      "no-multiple-empty-lines": "error",
+      "no-multiple-empty-lines": ["error", {
+        "max": 1,
+        "maxEOF": 0
+      }],
       "no-return-assign": "off",
       "no-trailing-spaces": "error",
       "no-var": "error",
+      "object-curly-spacing": ["error", "always"],
       "prefer-const": "error",
       quotes: ["error", "double"],
       semi: ["error", "always"],
+      "space-before-blocks": ["error", "always"],
       "space-before-function-paren": ["error", "never"],
+      "template-curly-spacing": ["error", "never"],
       "vue/multi-word-component-names": "off",
       "vue/html-quotes": ["error", "double"],
       "vue/no-multiple-template-root": "off"

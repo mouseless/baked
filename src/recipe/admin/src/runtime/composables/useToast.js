@@ -1,5 +1,5 @@
 import { useNuxtApp } from "#app";
 
-export default function(){
+export default function() {
   return useNuxtApp().$toast;
 }

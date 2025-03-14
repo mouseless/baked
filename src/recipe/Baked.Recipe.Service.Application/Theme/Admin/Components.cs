@@ -1,5 +1,7 @@
 ﻿using Baked.Ui;
 
+using static Baked.Theme.Admin.ErrorPage;
+
 namespace Baked.Theme.Admin;
 
 public static class Components
@@ -19,6 +21,12 @@ public static class Components
         IComponentDescriptor? sideMenu = default,
         IComponentDescriptor? header = default
     ) => new(new(name) { SideMenu = sideMenu, Header = header });
+
+    public static ComponentDescriptorAttribute<ErrorPage> ErrorPage(
+        IEnumerable<IComponentDescriptor>? links = default,
+        Dictionary<int, ErrorInfo>? errorInfos = default,
+        IData? data = default
+    ) => new(new() { ErrorInfos = errorInfos ?? [], SafeLinks = [.. links ?? []] }) { Data = data };
 
     public static ComponentDescriptorAttribute<Header> Header(IEnumerable<Header.Item> siteMap,
         IData? data = default

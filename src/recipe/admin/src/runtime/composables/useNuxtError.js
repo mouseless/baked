@@ -1,10 +1,10 @@
-import { useRoute } from "#app";
+import { useError } from "#app";
 
 export default function() {
-  const route = useRoute();
+  const error = useError();
 
   function compute() {
-    return route;
+    return error;
   }
 
   return {
