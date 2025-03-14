@@ -22,8 +22,7 @@ test("title from schema error infos", async({page}) => {
 test("message from schema error infos", async({page}) => {
   const errorPage = page.getByTestId(id);
 
-  const message = await errorPage.locator(baked.errorPage.message).first();
-  expect(message).toHaveText("You do not have the permision to view the address or data specified.");
+  await expect(errorPage.locator(baked.errorPage.message).first()).toHaveText("You do not have the permision to view the address or data specified.");
 });
 
 test("links from schema safe links", async({page}) => {
