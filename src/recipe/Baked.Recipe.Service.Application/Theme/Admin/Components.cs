@@ -1,5 +1,7 @@
 ﻿using Baked.Ui;
 
+using static Baked.Theme.Admin.ErrorPage;
+
 namespace Baked.Theme.Admin;
 
 public static class Components
@@ -22,7 +24,7 @@ public static class Components
 
     public static ComponentDescriptorAttribute<ErrorPage> ErrorPage(
         IEnumerable<IComponentDescriptor>? links = default,
-        Dictionary<int, object>? errorInfos = default,
+        Dictionary<int, ErrorInfo>? errorInfos = default,
         IData? data = default
     ) => new(new() { ErrorInfos = errorInfos ?? [], SafeLinks = [.. links ?? []] }) { Data = data };
 

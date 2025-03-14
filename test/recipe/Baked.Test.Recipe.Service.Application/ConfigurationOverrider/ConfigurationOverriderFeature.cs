@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
 
 using static Baked.Theme.Admin.Components;
+using static Baked.Theme.Admin.ErrorPage;
 using static Baked.Ui.Datas;
 
 namespace Baked.Test.ConfigurationOverrider;
@@ -243,11 +244,11 @@ public class ConfigurationOverriderFeature : IFeature
                         icon: "pi pi-microchip"
                     ),
                 ],
-                errorInfos: new Dictionary<int, object>
+                errorInfos: new Dictionary<int, ErrorInfo>
                 {
-                    { 403, new { Title = "Access Denied", Message = "You do not have the permision to view the address or data specified." } },
-                    { 404, new { Title = "Page Notfound", Message = "The page you want to view is etiher deleted or outdated." } },
-                    { 500, new { Title = "Unexpected Error", Message = "Please contact system administrator." } }
+                    { 403, new("Access Denied", "You do not have the permision to view the address or data specified." ) },
+                    { 404, new("Page Notfound", "The page you want to view is etiher deleted or outdated.")},
+                    { 500, new("Unexpected Error", "Please contact system administrator.") }
                 },
                 data: Computed(Composables.UseError)
             ));
