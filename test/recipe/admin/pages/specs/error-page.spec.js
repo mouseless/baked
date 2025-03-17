@@ -26,7 +26,7 @@ test.describe("Basic", () =>{
     await expect(component.locator(baked.errorPage.message).first()).toHaveText("You do not have the permision to view the address or data specified.");
   });
 
-  test("message from schema error infos", async({page}) => {
+  test("safe links message from schema", async({page}) => {
     const component = page.getByTestId(id);
 
     await expect(component.locator(baked.errorPage.message).last()).toHaveText("Safe links message");
@@ -42,7 +42,7 @@ test.describe("Basic", () =>{
   test("footer info from schema", async({page}) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator(baked.errorPage.message).last()).toHaveText("Footer info");
+    await expect(component.locator(baked.errorPage.footer)).toHaveText("Footer info");
   });
 
   test("visual", { tag: "@visual" }, async({page}) => {

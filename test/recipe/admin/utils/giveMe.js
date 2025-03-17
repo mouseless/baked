@@ -55,20 +55,20 @@ export default {
   },
 
   anErrorPage({ errorInfos, footerInfo, safeLinks, safeLinksMessage, data } = {}){
-    errorInfos = $(errorInfos, [this.anErrorInfo()]);
+    errorInfos = $(errorInfos, [this.anErrorPageInfo()]);
     footerInfo = $(footerInfo, "Test footer info");
     safeLinks = $(safeLinks, [this.anExpected()]);
     safeLinksMessage = $(safeLinksMessage, "Test links message");
     data = $(data, createError("Test Error", { status: 500 }));
-    
+
     errorInfos = errorInfos.reduce((result, ei) => ({
       ...result,
       [ei.statusCode]: { title: ei.title, message: ei.message}
     }), {});
-    
+
     return {
       type: "ErrorPage",
-      schema: { safeLinks, errorInfos },
+      schema: { errorInfos, footerInfo, safeLinks, safeLinksMessage},
       data: { type: "Inline", value: data }
     };
   },
