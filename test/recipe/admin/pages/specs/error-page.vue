@@ -18,7 +18,7 @@ const variants = [
         giveMe.aCardLink({ route: "/", title: "Home" }),
         giveMe.aCardLink({ route: "/specs", title: "Specs" })
       ],
-      errorResults: [{ statusCode: 403, title: "Access Denied", message: "You do not have the permision to view the address or data specified." }],
+      errorInfos: { "403": { title: "Access Denied", message: "You do not have the permision to view the address or data specified." } },
       data: computed(() => ref(createError({ name:"NuxtError", statusCode: 403 })))
     })
   }

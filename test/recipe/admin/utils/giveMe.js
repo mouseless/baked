@@ -52,12 +52,7 @@ export default {
     return { key: keyAndTestId, title, component };
   },
 
-  anErrorPage({ safeLinks, errorResults, data}){
-    const errorInfos = {};
-    errorResults.forEach(element => {
-      errorInfos[element.statusCode] = { ...element };
-    });
-
+  anErrorPage({ safeLinks, errorInfos, data }){
     return {
       type: "ErrorPage",
       schema: { safeLinks, errorInfos },
