@@ -114,6 +114,17 @@ export default {
     };
   },
 
+  anExpected({ testId, value } = {}) {
+    testId = $(testId, "test-id");
+    value = $(value, "");
+
+    return {
+      type: "Expected",
+      schema: testId,
+      data: { type: "Inline", value }
+    };
+  },
+
   aHeader({ sitemapItems, data } = {}) {
     sitemapItems = $(sitemapItems, [this.aHeaderItem({ route: "/test" })]);
     data = $(data, { path: "/test" });
@@ -138,6 +149,15 @@ export default {
     return { route, icon, title, parentRoute };
   },
 
+  aMoney({ data } = {}) {
+    data = $(data, 100_000);
+
+    return {
+      type: "Money",
+      data: { type: "Inline", value: data }
+    };
+  },
+
   aMenuPage({ header, links } = {}) {
     header = $(header, this.anExpected());
     links = $(links, []);
@@ -156,6 +176,15 @@ export default {
     return {
       type: "PageTitle",
       schema: { title, description, actions }
+    };
+  },
+
+  aRate({ data } = {}) {
+    data = $(data, 0.5);
+
+    return {
+      type: "Rate",
+      data: { type: "Inline", value: data }
     };
   },
 
@@ -178,16 +207,5 @@ export default {
     disabled = $(disabled, false);
 
     return { route, icon, title, disabled };
-  },
-
-  anExpected({ testId, value } = {}) {
-    testId = $(testId, "test-id");
-    value = $(value, "");
-
-    return {
-      type: "Expected",
-      schema: testId,
-      data: { type: "Inline", value }
-    };
   }
 };

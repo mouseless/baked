@@ -162,7 +162,9 @@ public class ConfigurationOverriderFeature : IFeature
                             HeaderItem("/specs/header", title: "Header", parentRoute: "/specs"),
                             HeaderItem("/specs/locale", title: "Locale", parentRoute: "/specs"),
                             HeaderItem("/specs/menu-page", title: "Menu Page", parentRoute: "/specs"),
+                            HeaderItem("/specs/money", title: "Money", parentRoute: "/specs"),
                             HeaderItem("/specs/page-title", title: "Page Title", parentRoute: "/specs"),
+                            HeaderItem("/specs/rate", title: "Rate", parentRoute: "/specs"),
                             HeaderItem("/specs/side-menu", title: "Side Menu", parentRoute: "/specs"),
                             HeaderItem("/specs/toast", title: "Toast", parentRoute: "/specs")
                         ]
@@ -246,9 +248,17 @@ public class ConfigurationOverriderFeature : IFeature
                         icon: "pi pi-microchip",
                         description: "A page component suitable for rendering navigation pages"
                     ),
+                    CardLink("/specs/money", "Money",
+                        icon: "pi pi-microchip",
+                        description: "A page component to render money values"
+                    ),
                     CardLink("/specs/page-title", "Page Title",
                         icon: "pi pi-microchip",
                         description: "A page component to render page title, desc and actions"
+                    ),
+                    CardLink("/specs/rate", "Rate",
+                        icon: "pi pi-microchip",
+                        description: "A page component to render rate values as percentage"
                     ),
                     CardLink("/specs/side-menu", "Side Menu",
                         icon: "pi pi-microchip",

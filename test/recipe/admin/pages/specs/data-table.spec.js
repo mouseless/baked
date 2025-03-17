@@ -5,7 +5,6 @@ test.beforeEach(async({goto}) => {
   await goto("/specs/data-table", { waitUntil: "hydration" });
 });
 
-
 test.describe("Base", () => {
   const id = "Base";
 

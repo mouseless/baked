@@ -51,6 +51,10 @@ public static class Components
         string? parentRoute = default
     ) => new(route) { Icon = icon, Title = title, ParentRoute = parentRoute };
 
+    public static ComponentDescriptor Money(
+        IData? data = default
+    ) => new(nameof(Money)) { Data = data };
+
     public static ComponentDescriptorAttribute<MenuPage> MenuPage(string name,
         IComponentDescriptor? header = default,
         IEnumerable<IComponentDescriptor>? links = default
@@ -63,6 +67,10 @@ public static class Components
         string? description = default,
         IEnumerable<IComponentDescriptor>? actions = default
     ) => new(new(title) { Description = description, Actions = [.. actions ?? []] });
+
+    public static ComponentDescriptor Rate(
+        IData? data = default
+    ) => new(nameof(Rate)) { Data = data };
 
     public static ComponentDescriptorAttribute<SideMenu> SideMenu(IEnumerable<SideMenu.Item> menu,
         IComponentDescriptor? footer = default,
