@@ -1,3 +1,5 @@
+import { createError } from "#app";
+
 // value or default function, named $ for quick access
 function $(value, defaultValue) {
   return value === undefined ? defaultValue : value;
@@ -53,13 +55,31 @@ export default {
   },
 
   anErrorPage({ safeLinks, errorInfos, data }){
+    safeLinks = $(safeLinks, [this.anExpected()]);
+    errorInfos = $(errorInfos, [this.anErrorInfo()]);
+    data = $(data, createError("Test Error", { status: 500 }));
+    console.log(errorInfos);
+    errorInfos = errorInfos.reduce((result, ei) => ({
+      ...result,
+      [ei.statusCode]: { title: ei.title, message: ei.message}
+    }), {});
+    console.log(errorInfos);
     return {
       type: "ErrorPage",
       schema: { safeLinks, errorInfos },
-      data: {
-        type: "Inline",
-        value: data
-      }
+      data: { type: "Inline", value: data }
+    };
+  },
+
+  anErrorInfo({ statusCode, title, message } = {}){
+    statusCode = $(statusCode, "500");
+    title = $(title, "Test Title");
+    message = $(message, "Test Message");
+
+    return {
+      statusCode,
+      title,
+      message
     };
   },
 

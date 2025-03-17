@@ -111,7 +111,7 @@ public class ConfigurationOverriderFeature : IFeature
             app.Error = ErrorPage(
                 links:
                 [
-                    CardLink("/", "Anasayfa",
+                    CardLink("/", "Home",
                         icon: "pi pi-microchip"
                     ),
                     CardLink("/specs", "Specs",

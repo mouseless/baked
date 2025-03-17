@@ -7,32 +7,35 @@ test.beforeEach(async({goto}) => {
 
 const id = "error-page";
 
-test("error status code as tag", async({page}) => {
-  const errorPage = page.getByTestId(id);
+test.describe("Basic", () =>{
+  test("error status code as tag", async({page}) => {
+    const component = page.getByTestId(id);
 
-  await expect(errorPage.locator(baked.errorPage.tag)).toHaveText("403");
+    await expect(component.locator(baked.errorPage.tag)).toHaveText("403");
+  });
+
+  test("title from schema error infos", async({page}) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.locator(baked.errorPage.title)).toHaveText("Access Denied");
+  });
+
+  test("message from schema error infos", async({page}) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.locator(baked.errorPage.message).first()).toHaveText("You do not have the permision to view the address or data specified.");
+  });
+
+  test("links from schema safe links", async({page}) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.getByTestId("LINK_1")).toHaveText("VALUE_1");
+    await expect(component.getByTestId("LINK_2")).toHaveText("VALUE_2");
+  });
+
+  test("visual", { tag: "@visual" }, async({page}) => {
+    const component = page.getByTestId(id);
+
+    await expect(component).toHaveScreenshot();
+  });
 });
-
-test("title from schema error infos", async({page}) => {
-  const errorPage = page.getByTestId(id);
-
-  await expect(errorPage.locator(baked.errorPage.title)).toHaveText("Access Denied");
-});
-
-test("message from schema error infos", async({page}) => {
-  const errorPage = page.getByTestId(id);
-
-  await expect(errorPage.locator(baked.errorPage.message).first()).toHaveText("You do not have the permision to view the address or data specified.");
-});
-
-test("links from schema safe links", async({page}) => {
-  const errorPage = page.getByTestId(id);
-
-  await expect(errorPage.locator(baked.errorPage.links)).toBeVisible();
-
-  const cardlinks = await errorPage.locator(baked.errorPage.links).locator("a").all();
-  expect(cardlinks).toHaveLength(2);
-  await expect(cardlinks[0]).toBeVisible();
-  await expect(cardlinks[1]).toBeVisible();
-});
-

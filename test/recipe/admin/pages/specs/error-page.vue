@@ -15,10 +15,14 @@ const variants = [
     name: "Basic",
     descriptor: giveMe.anErrorPage({
       safeLinks: [
-        giveMe.aCardLink({ route: "/", title: "Home" }),
-        giveMe.aCardLink({ route: "/specs", title: "Specs" })
+        giveMe.anExpected({ testId: "LINK_1", value: "VALUE_1"}),
+        giveMe.anExpected({ testId: "LINK_2", value: "VALUE_2"})
       ],
-      errorInfos: { "403": { title: "Access Denied", message: "You do not have the permision to view the address or data specified." } },
+      errorInfos: [giveMe.anErrorInfo({ 
+        statusCode: "403", 
+        title: "Access Denied", 
+        message: "You do not have the permision to view the address or data specified."
+      })],
       data: computed(() => ref(createError({ name:"NuxtError", statusCode: 403 })))
     })
   }
