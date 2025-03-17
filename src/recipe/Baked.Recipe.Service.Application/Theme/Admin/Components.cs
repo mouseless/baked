@@ -23,10 +23,18 @@ public static class Components
     ) => new(new(name) { SideMenu = sideMenu, Header = header });
 
     public static ComponentDescriptorAttribute<ErrorPage> ErrorPage(
-        IEnumerable<IComponentDescriptor>? links = default,
         Dictionary<int, Info>? errorInfos = default,
+        string? footerInfo = default,
+        IEnumerable<IComponentDescriptor>? safeLinks = default,
+        string? safeLinksMessage = default,
         IData? data = default
-    ) => new(new() { ErrorInfos = errorInfos ?? [], SafeLinks = [.. links ?? []] }) { Data = data };
+    ) => new(
+        new(
+            footerInfo ?? "If you cannot reach the page you want, please contact the system administrator.",
+            safeLinksMessage ?? "Try the links from the menu below to view the page you want to access."
+        )
+        { ErrorInfos = errorInfos ?? [], SafeLinks = [.. safeLinks ?? []] })
+    { Data = data };
 
     public static ComponentDescriptorAttribute<Header> Header(IEnumerable<Header.Item> siteMap,
         IData? data = default

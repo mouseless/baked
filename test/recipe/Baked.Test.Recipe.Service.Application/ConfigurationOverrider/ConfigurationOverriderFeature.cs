@@ -109,7 +109,7 @@ public class ConfigurationOverriderFeature : IFeature
         configurator.ConfigureAppDescriptor(app =>
         {
             app.Error = ErrorPage(
-                links:
+                safeLinks:
                 [
                     CardLink("/", "Home",
                         icon: "pi pi-microchip"

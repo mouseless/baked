@@ -14,10 +14,6 @@ const variants = [
   {
     name: "Basic",
     descriptor: giveMe.anErrorPage({
-      safeLinks: [
-        giveMe.anExpected({ testId: "LINK_1", value: "VALUE_1"}),
-        giveMe.anExpected({ testId: "LINK_2", value: "VALUE_2"})
-      ],
       errorInfos: [
         giveMe.anErrorPageInfo({
           statusCode: "403",
@@ -25,6 +21,12 @@ const variants = [
           message: "You do not have the permision to view the address or data specified."
         })
       ],
+      footerInfo: "Footer info",
+      safeLinks: [
+        giveMe.anExpected({ testId: "LINK_1", value: "VALUE_1"}),
+        giveMe.anExpected({ testId: "LINK_2", value: "VALUE_2"})
+      ],
+      safeLinksMessage: "Safe links message",
       data: computed(() => ref(createError({ name:"NuxtError", statusCode: 403 })))
     })
   }
