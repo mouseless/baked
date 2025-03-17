@@ -7,7 +7,7 @@ public record ErrorPage(string FooterInfo, string SafeLinksMessage) : IComponent
     public Dictionary<int, Info> ErrorInfos { get; init; } = [];
     public string FooterInfo { get; set; } = FooterInfo;
     public List<IComponentDescriptor> SafeLinks { get; init; } = [];
-    public string SafeLinksMessage { get; set; } = SafeLinksMessage; 
+    public string SafeLinksMessage { get; set; } = SafeLinksMessage;
 
     public record Info(string Title, string Message);
 }
