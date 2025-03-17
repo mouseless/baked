@@ -32,7 +32,7 @@ test("links from schema safe links", async({page}) => {
 
   const cardlinks = await errorPage.locator(baked.errorPage.links).locator("a").all();
   expect(cardlinks).toHaveLength(2);
-  for(const link of cardlinks)
-    await expect(link).toBeVisible();
+  await expect(cardlinks[0]).toBeVisible();
+  await expect(cardlinks[1]).toBeVisible();
 });
 

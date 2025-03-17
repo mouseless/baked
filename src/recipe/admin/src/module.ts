@@ -38,7 +38,7 @@ export default defineNuxtModule<ModuleOptions>({
     const resolver = createResolver(import.meta.url);
 
     // passing module's options to runtime config for further access
-     _nuxt.options.runtimeConfig.public.error = _options.app?.error;
+    _nuxt.options.runtimeConfig.public.error = _options.app?.error;
     _nuxt.options.runtimeConfig.public.primevue = _options.primevue;
     _nuxt.options.runtimeConfig.public.components = _options.components;
 
