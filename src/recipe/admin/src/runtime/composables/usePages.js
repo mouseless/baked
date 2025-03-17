@@ -4,7 +4,7 @@ export default function() {
   const { $pages } = useNuxtApp();
 
   async function fetch(name) {
-    if(!$pages[name]){
+    if(!$pages[name]) {
       throw createError({
         statusCode: 404,
         statusMessage: `'${name}' Page Not Found`,

@@ -1,3 +1,5 @@
+import { createError } from "#app";
+
 // value or default function, named $ for quick access
 function $(value, defaultValue) {
   return value === undefined ? defaultValue : value;
@@ -50,6 +52,37 @@ export default {
     component = $(component, this.anExpected({ testId: keyAndTestId }));
 
     return { key: keyAndTestId, title, component };
+  },
+
+  anErrorPage({ errorInfos, footerInfo, safeLinks, safeLinksMessage, data } = {}){
+    errorInfos = $(errorInfos, [this.anErrorPageInfo()]);
+    footerInfo = $(footerInfo, "Test footer info");
+    safeLinks = $(safeLinks, [this.anExpected()]);
+    safeLinksMessage = $(safeLinksMessage, "Test links message");
+    data = $(data, createError("Test Error", { status: 500 }));
+
+    errorInfos = errorInfos.reduce((result, ei) => ({
+      ...result,
+      [ei.statusCode]: { title: ei.title, message: ei.message}
+    }), {});
+
+    return {
+      type: "ErrorPage",
+      schema: { errorInfos, footerInfo, safeLinks, safeLinksMessage},
+      data: { type: "Inline", value: data }
+    };
+  },
+
+  anErrorPageInfo({ statusCode, title, message } = {}){
+    statusCode = $(statusCode, "500");
+    title = $(title, "Test Title");
+    message = $(message, "Test message");
+
+    return {
+      statusCode,
+      title,
+      message
+    };
   },
 
   aHeader({ sitemapItems, data } = {}) {
