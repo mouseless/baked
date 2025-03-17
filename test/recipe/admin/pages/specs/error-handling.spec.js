@@ -11,7 +11,7 @@ const id = "error-handling";
 test("toast error", async({page}) => {
   const content = page.getByTestId(id);
 
-  await content.getByTestId("toast-error").click();
+  await content.getByTestId("alert").click();
 
   await expect(page.locator(primevue.toast.base)).toBeVisible();
   await expect(page.locator(primevue.toast.summary)).toHaveText("400");
@@ -20,7 +20,7 @@ test("toast error", async({page}) => {
 test("full page error", async({page}) => {
   const content = page.getByTestId(id);
 
-  await content.getByTestId("full-page-error").click();
+  await content.getByTestId("page").click();
 
   await expect(page.getByTestId(baked.errorPage.baseTestId)).toBeVisible();
 });
@@ -28,7 +28,7 @@ test("full page error", async({page}) => {
 test("redirect and toast with fetch error data", async({page}) => {
   const content = page.getByTestId(id);
 
-  await content.getByTestId("toast-options-from-fetch-error-data").click();
+  await content.getByTestId("redirect").click();
 
   await expect(page).toHaveURL("/");
   await expect(page.locator(primevue.toast.summary)).toHaveText("Authentication");

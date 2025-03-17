@@ -1,26 +1,26 @@
 <template>
   <UiSpec title="Error Handling" test-id="error-handling">
-    <Panel header="Default Handler" class="mt-4">
+    <Panel header="Error Handlers" class="mt-4">
       <Button
-      data-testid="toast-error"
-      type="button"
-      label="Toast error"
-      class="m-4"
-      @click="toastError"
+        data-testid="alert"
+        type="button"
+        label="Alert"
+        class="m-4"
+        @click="alertError"
       />
       <Button
-        data-testid="full-page-error"
+        data-testid="page"
         type="button"
-        label="Full page error"
+        label="Page"
         class="m-4"
-        @click="fullPageError"
+        @click="pageError"
       />
       <Button
-        data-testid="toast-options-from-fetch-error-data"
+        data-testid="redirect"
         type="button"
-        label="Fetch error with data"
+        label="Redirect"
         class="m-4"
-        @click="fetchErrorWithData"
+        @click="redirectError"
       />
     </Panel>
   </UiSpec>
@@ -30,21 +30,21 @@ import { Button, Panel } from "primevue";
 import { createError } from "#app";
 import { FetchError} from "ofetch";
 
-function toastError() {
+function alertError() {
   throw createError({
     statusCode: 400,
     statusMessage: "This error is displayed in toast!"
   });
 }
 
-function fullPageError() {
+function pageError() {
   throw createError({
     statusCode: 404,
     statusMessage: "This error displays full page!"
   });
 }
 
-function fetchErrorWithData() {
+function redirectError() {
   const error = new FetchError("Unauthorized");
   error.statusCode = 401;
   error.data = {
