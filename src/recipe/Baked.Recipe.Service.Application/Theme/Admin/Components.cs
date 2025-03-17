@@ -1,5 +1,7 @@
 ﻿using Baked.Ui;
 
+using static Baked.Theme.Admin.ErrorPage;
+
 namespace Baked.Theme.Admin;
 
 public static class Components
@@ -19,6 +21,20 @@ public static class Components
         IComponentDescriptor? sideMenu = default,
         IComponentDescriptor? header = default
     ) => new(new(name) { SideMenu = sideMenu, Header = header });
+
+    public static ComponentDescriptorAttribute<ErrorPage> ErrorPage(
+        Dictionary<int, Info>? errorInfos = default,
+        string? footerInfo = default,
+        IEnumerable<IComponentDescriptor>? safeLinks = default,
+        string? safeLinksMessage = default,
+        IData? data = default
+    ) => new(
+        new(
+            footerInfo ?? "If you cannot reach the page you want, please contact the system administrator.",
+            safeLinksMessage ?? "Try the links from the menu below to view the page you want to access."
+        )
+        { ErrorInfos = errorInfos ?? [], SafeLinks = [.. safeLinks ?? []] })
+    { Data = data };
 
     public static ComponentDescriptorAttribute<Header> Header(IEnumerable<Header.Item> siteMap,
         IData? data = default

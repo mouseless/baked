@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
 
 using static Baked.Theme.Admin.Components;
+using static Baked.Theme.Admin.ErrorPage;
 using static Baked.Ui.Datas;
 
 namespace Baked.Test.ConfigurationOverrider;
@@ -105,6 +106,28 @@ public class ConfigurationOverriderFeature : IFeature
             swaggerUIOptions.SwaggerEndpoint($"external/swagger.json", "External");
         });
 
+        configurator.ConfigureAppDescriptor(app =>
+        {
+            app.Error = ErrorPage(
+                safeLinks:
+                [
+                    CardLink("/", "Home",
+                        icon: "pi pi-microchip"
+                    ),
+                    CardLink("/specs", "Specs",
+                        icon: "pi pi-microchip"
+                    ),
+                ],
+                errorInfos: new Dictionary<int, Info>
+                {
+                    { 403, new("Access Denied", "You do not have the permision to view the address or data specified." ) },
+                    { 404, new("Page Not Found", "The page you want to view is etiher deleted or outdated.") },
+                    { 500, new("Unexpected Error", "Please contact system administrator.") }
+                },
+                data: Computed(Composables.UseError)
+            );
+        });
+
         configurator.ConfigureLayoutDescriptors(layouts =>
         {
             configurator.UsingDomainModel(domain =>
@@ -134,6 +157,8 @@ public class ConfigurationOverriderFeature : IFeature
                             HeaderItem("/specs/data-panel", title: "Data Panel", parentRoute: "/specs"),
                             HeaderItem("/specs/data-table", title: "Data Table", parentRoute: "/specs"),
                             HeaderItem("/specs/detail-page", title: "Detail Page", parentRoute: "/specs"),
+                            HeaderItem("/specs/error-handling", title: "Error Handling", parentRoute: "/specs"),
+                            HeaderItem("/specs/error-page", title: "Error Page", parentRoute: "/specs"),
                             HeaderItem("/specs/header", title: "Header", parentRoute: "/specs"),
                             HeaderItem("/specs/locale", title: "Locale", parentRoute: "/specs"),
                             HeaderItem("/specs/menu-page", title: "Menu Page", parentRoute: "/specs"),
@@ -200,6 +225,14 @@ public class ConfigurationOverriderFeature : IFeature
                     CardLink("/specs/detail-page", "Detail Page",
                         icon: "pi pi-microchip",
                         description: "A page component suitable for rendering entities and rich transients"
+                    ),
+                    CardLink("/specs/error-handling", "Error Handling",
+                        icon: "pi pi-microchip",
+                        description: "A plugin for handling errors"
+                    ),
+                    CardLink("/specs/error-page", "Error Page",
+                        icon: "pi pi-microchip",
+                        description: "A page component to display errors in full page"
                     ),
                     CardLink("/specs/header", "Header",
                         icon: "pi pi-microchip",

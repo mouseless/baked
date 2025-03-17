@@ -4,6 +4,9 @@
 
 - Beta features are available in `baked-recipe-admin` package;
   - `DataPanel` is introduced where you can lazy load your data within a panel
+  - `ErrorHandling` plugin is introduced for handling errors and alert or full
+    page error info display
+  - `ErrorPage` schema is added to create descriptor for custom error page  
 
 ## Improvements
 

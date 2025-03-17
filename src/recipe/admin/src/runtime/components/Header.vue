@@ -71,7 +71,7 @@ function linkOrSpan(item) {
 function findItem(route) {
   if(schema.sitemap[route]) { return schema.sitemap[route]; }
 
-  for(const key in schema.sitemap){
+  for(const key in schema.sitemap) {
     const expression = key.replaceAll(/[{][\w\d\-:]*[}]/g, "[\\w\\d\-]*");
     const matcher = new RegExp(`^${expression}$`, "g");
 
