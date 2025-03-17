@@ -6,7 +6,8 @@
   - `DataPanel` is introduced where you can lazy load your data within a panel
   - `ErrorHandling` plugin is introduced for handling errors and alert or full
     page error info display
-  - `ErrorPage` schema is added to create descriptor for custom error page  
+  - `ErrorPage` schema is added to create descriptor for custom error page
+  - `DataTable` page component is added
 
 ## Improvements
 
@@ -19,4 +20,3 @@
 - `Bake.vue` now manages `loading` state, making it possible for components to
   show a skeleton during loding
 - `SideMenu`, `PageTitle`, `Header` now supports skeleton
-- `DataTable` page component is added

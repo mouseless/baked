@@ -38,7 +38,11 @@
             />
           </div>
         </div>
-        <div v-if="$slots.default" :data-testid="testId">
+        <div
+          v-if="$slots.default"
+          :data-testid="testId"
+          class="space-y-4"
+        >
           <slot name="default" />
         </div>
       </div>
