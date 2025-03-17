@@ -54,16 +54,16 @@ export default {
     return { key: keyAndTestId, title, component };
   },
 
-  anErrorPage({ safeLinks, errorInfos, data }){
+  anErrorPage({ safeLinks, errorInfos, data } = {}){
     safeLinks = $(safeLinks, [this.anExpected()]);
     errorInfos = $(errorInfos, [this.anErrorInfo()]);
     data = $(data, createError("Test Error", { status: 500 }));
-    console.log(errorInfos);
+    
     errorInfos = errorInfos.reduce((result, ei) => ({
       ...result,
       [ei.statusCode]: { title: ei.title, message: ei.message}
     }), {});
-    console.log(errorInfos);
+    
     return {
       type: "ErrorPage",
       schema: { safeLinks, errorInfos },
@@ -71,7 +71,7 @@ export default {
     };
   },
 
-  anErrorInfo({ statusCode, title, message } = {}){
+  anErrorPageInfo({ statusCode, title, message } = {}){
     statusCode = $(statusCode, "500");
     title = $(title, "Test Title");
     message = $(message, "Test Message");

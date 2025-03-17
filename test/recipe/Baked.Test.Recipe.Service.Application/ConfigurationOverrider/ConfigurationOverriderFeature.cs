@@ -118,7 +118,7 @@ public class ConfigurationOverriderFeature : IFeature
                         icon: "pi pi-microchip"
                     ),
                 ],
-                errorInfos: new Dictionary<int, ErrorInfo>
+                errorInfos: new Dictionary<int, Info>
                 {
                     { 403, new("Access Denied", "You do not have the permision to view the address or data specified." ) },
                     { 404, new("Page Not Found", "The page you want to view is etiher deleted or outdated.") },

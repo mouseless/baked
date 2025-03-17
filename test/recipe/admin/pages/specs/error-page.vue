@@ -18,11 +18,13 @@ const variants = [
         giveMe.anExpected({ testId: "LINK_1", value: "VALUE_1"}),
         giveMe.anExpected({ testId: "LINK_2", value: "VALUE_2"})
       ],
-      errorInfos: [giveMe.anErrorInfo({ 
-        statusCode: "403", 
-        title: "Access Denied", 
-        message: "You do not have the permision to view the address or data specified."
-      })],
+      errorInfos: [
+        giveMe.anErrorPageInfo({
+          statusCode: "403",
+          title: "Access Denied",
+          message: "You do not have the permision to view the address or data specified."
+        })
+      ],
       data: computed(() => ref(createError({ name:"NuxtError", statusCode: 403 })))
     })
   }

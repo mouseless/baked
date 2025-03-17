@@ -24,7 +24,7 @@ public static class Components
 
     public static ComponentDescriptorAttribute<ErrorPage> ErrorPage(
         IEnumerable<IComponentDescriptor>? links = default,
-        Dictionary<int, ErrorInfo>? errorInfos = default,
+        Dictionary<int, Info>? errorInfos = default,
         IData? data = default
     ) => new(new() { ErrorInfos = errorInfos ?? [], SafeLinks = [.. links ?? []] }) { Data = data };
 

@@ -17,7 +17,7 @@
         {{ errorInfo.message }}
       </div>
       <div class="text-2xl">
-        Try the links from the menu below to view the page you want to access.
+        {{ safeLinksMessage }}
       </div>
     </div>
     <Divider
@@ -37,7 +37,7 @@
     />
     <Message severity="warn">
       <i class="pi pi-exclamation-circle mr-2" />
-      If you cannot reach the page you want, please contact the system administrator.
+      {{ footerInfo }}
     </Message>
   </div>
 </template>
@@ -51,7 +51,7 @@ const { schema, data } = defineProps({
   loading: { type: Boolean, default: false }
 });
 
-const { safeLinks, errorInfos } = schema;
+const { errorInfos, footerInfo, safeLinks, safeLinksMessage } = schema;
 
 const statusCode = computed(() => data.value?.data?.status ?? data.value?.statusCode ?? 500);
 const errorInfo = computed(() => errorInfos[`${statusCode.value}`] ?? errorInfos["500"]);

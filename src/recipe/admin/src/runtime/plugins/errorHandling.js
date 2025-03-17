@@ -5,14 +5,15 @@ export default defineNuxtPlugin({
   name: "errorHandling",
   enforce: "pre",
   async setup() {
-    const config = useRuntimeConfig().public.errorHandling;
+    const { public: { errorHandling } } = useRuntimeConfig();
 
-    const errorHandlers = config.handlers;
+    const errorHandlers = errorHandling.handlers;
     errorHandlers.sort((a,b) => a.order - b.order);
 
     return {
       provide: {
-        errorHandlers
+        errorHandlers,
+        defaultAlert: { title: errorHandling.defaultAlertTitle, message: errorHandling.defaultAlertMessage }
       }
     };
   },
@@ -63,19 +64,21 @@ function getHandler(handlers, route, error) {
 }
 
 function getMessage(error) {
+  const defaultAlert = useNuxtApp().$defaultAlert;
+
   if(error.name === "FetchError") {
     return {
       severity: "error",
-      summary: error.data?.title ?? error.statusCode,
-      detail: error.data?.detail ?? error.message ?? error.cause,
+      summary: error.data?.title ?? error.statusCode ?? defaultAlert.title,
+      detail: error.data?.detail ?? error.message ?? error.cause ?? defaultAlert.message,
       life: 3000
     };
   }
 
   return {
     severity: "error",
-    summary: error.statusCode ?? error.status ?? "Unexpected Error",
-    detail: error.message ?? error.cause ?? "Please contact system administrator",
+    summary: error.statusCode ?? error.status ?? defaultAlert.title,
+    detail: error.message ?? error.cause ?? defaultAlert.message,
     life: 3000
   };
 }

@@ -22,7 +22,7 @@ test("full page error", async({page}) => {
 
   await content.getByTestId("full-page-error").click();
 
-  await expect(page.getByTestId(baked.errorPage.testid)).toBeVisible();
+  await expect(page.getByTestId(baked.errorPage.baseTestId)).toBeVisible();
 });
 
 test("redirect and toast with fetch error data", async({page}) => {
