@@ -56,6 +56,7 @@ public class ConfigurationOverriderFeature : IFeature
         {
             services.AddSingleton<IExceptionHandler, ClientExceptionHandler>();
             services.AddSingleton<IExceptionHandler, SampleExceptionHandler>();
+            services.AddHostedService<SeedDataTrigger>();
         });
 
         configurator.ConfigureAutoPersistenceModel(model =>
