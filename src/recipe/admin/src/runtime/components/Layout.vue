@@ -7,10 +7,19 @@
     <slot />
   </Bake>
   <Toast />
+
+  <!--
+    Skeleton style not loading in production, probably due to `v-if="loading"`
+    delays it. Below ensures styles are loaded properly.
+
+    This is a temporary solution, remove this comment and below hidden
+    component if you solve it permanently.
+  -->
+  <Skeleton class="hidden" />
 </template>
 <script setup>
 import { onMounted, ref } from "vue";
-import { Toast } from "primevue";
+import { Skeleton, Toast } from "primevue";
 import { useLayouts } from "#imports";
 import Bake from "./Bake.vue";
 

@@ -111,12 +111,8 @@ public class ConfigurationOverriderFeature : IFeature
             app.Error = ErrorPage(
                 safeLinks:
                 [
-                    CardLink("/", "Home",
-                        icon: "pi pi-microchip"
-                    ),
-                    CardLink("/specs", "Specs",
-                        icon: "pi pi-microchip"
-                    ),
+                    CardLink("/", "Home", icon: "pi pi-home"),
+                    CardLink("/specs", "Specs", icon: "pi pi-list-check"),
                 ],
                 errorInfos: new Dictionary<int, Info>
                 {
