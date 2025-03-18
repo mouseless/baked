@@ -3,17 +3,14 @@ using Baked.ExceptionHandling;
 using Baked.RestApi.Model;
 using Baked.Test.Authentication;
 using Baked.Test.Business;
-using Baked.Test.CodingStyle.RichTransient;
 using Baked.Test.Core;
 using Baked.Test.ExceptionHandling;
 using Baked.Test.Orm;
 using Baked.Theme.Admin;
-using Baked.Ui;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
 
 using static Baked.Theme.Admin.Components;
-using static Baked.Theme.Admin.ErrorPage;
 using static Baked.Ui.Datas;
 
 namespace Baked.Test.ConfigurationOverrider;
@@ -115,7 +112,7 @@ public class ConfigurationOverriderFeature : IFeature
                     CardLink("/", "Home", icon: "pi pi-home"),
                     CardLink("/specs", "Specs", icon: "pi pi-list-check"),
                 ],
-                errorInfos: new Dictionary<int, Info>
+                errorInfos: new()
                 {
                     { 403, new("Access Denied", "You do not have the permision to view the address or data specified." ) },
                     { 404, new("Page Not Found", "The page you want to view is etiher deleted or outdated.") },
@@ -129,11 +126,6 @@ public class ConfigurationOverriderFeature : IFeature
         {
             configurator.UsingDomainModel(domain =>
             {
-                var rtwd = domain.Types[typeof(RichTransientWithData)];
-                var rtwdRoute = rtwd.GetInitializerActionModel().GetRoute();
-                var rtwdDetail = rtwd.Get<DetailPage>();
-                var rtwdPageDetail = (PageTitle)(rtwdDetail.Header?.Schema ?? throw new("`RichTransientWithData` is expected to have `PageTitle` in `Header`"));
-
                 layouts.Add(DefaultLayout("default",
                     sideMenu: SideMenu(
                         menu:
@@ -147,7 +139,6 @@ public class ConfigurationOverriderFeature : IFeature
                         siteMap:
                         [
                             HeaderItem("/", icon: "pi pi-home"),
-                            HeaderItem($"/{rtwdRoute}", title: rtwdPageDetail.Title),
                             HeaderItem("/specs", icon: "pi pi-list-check", title: "Specs"),
                             HeaderItem("/specs/card-link", title: "Card Link", parentRoute: "/specs"),
                             HeaderItem("/specs/custom-css", title: "Custom CSS", parentRoute: "/specs"),
@@ -172,29 +163,14 @@ public class ConfigurationOverriderFeature : IFeature
 
         configurator.ConfigurePageDescriptors(pages =>
         {
-            var headers = Inline(new { Authorization = "token-jane" });
-            foreach (var page in pages.OfType<ComponentDescriptorAttribute<DetailPage>>())
-            {
-                if (page.Data is not RemoteData remote) { continue; }
-
-                remote.Headers = headers;
-            }
-
             configurator.UsingDomainModel(domain =>
             {
-                var rtwdRoute = domain.Types[typeof(RichTransientWithData)].GetInitializerActionModel().GetRoute();
                 var timeRoute = domain.Types[typeof(TimeProviderSamples)].GetMembers().Methods[nameof(TimeProviderSamples.GetNow)].GetSingle<ActionModelAttribute>().GetRoute();
 
                 pages.Add(MenuPage("index",
-                    header: DataPanel("Expand to see server time", String(Remote($"/{timeRoute}", headers: headers)),
+                    header: DataPanel("Expand to see server time", String(Remote($"/{timeRoute}", headers: Inline(new { Authorization = "token-admin-ui" }))),
                         collapsed: true
-                    ),
-                    links:
-                    [
-                        CardLink($"/{rtwdRoute.Replace("{id}", "test1")}", "Rich Transient w/ Data 1"),
-                        CardLink($"/{rtwdRoute.Replace("{id}", "test2")}", "Rich Transient w/ Data 2"),
-                        CardLink($"/{rtwdRoute.Replace("{id}", "test3")}", "Rich Transient w/ Data 3")
-                    ]
+                    )
                 ));
             });
 
