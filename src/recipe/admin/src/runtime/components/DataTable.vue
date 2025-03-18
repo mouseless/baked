@@ -19,7 +19,7 @@
           v-else
           :name="`rows/${index}/${column.prop}`"
           :descriptor="{
-            ...column.content,
+            ...column.component,
             data: {
               type: 'Inline',
               value: row[column.prop]

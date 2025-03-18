@@ -63,26 +63,6 @@ export default {
     };
   },
 
-  aDetailPage({ header, props, data } = {}) {
-    header = $(header, this.anExpected());
-    props = $(props, []);
-    data = $(data, { });
-
-    return {
-      type: "DetailPage",
-      schema: { header, props },
-      data: { type: "Inline", value: data }
-    };
-  },
-
-  aDetailPageProp({ keyAndTestId, title, component } = {}) {
-    keyAndTestId = $(keyAndTestId, "testKey");
-    title = $(title, "Test Prop");
-    component = $(component, this.anExpected({ testId: keyAndTestId }));
-
-    return { key: keyAndTestId, title, component };
-  },
-
   anErrorPage({ errorInfos, footerInfo, safeLinks, safeLinksMessage, data } = {}){
     errorInfos = $(errorInfos, [this.anErrorPageInfo()]);
     footerInfo = $(footerInfo, "Test footer info");
@@ -185,6 +165,15 @@ export default {
     return {
       type: "Rate",
       data: { type: "Inline", value: data }
+    };
+  },
+
+  aReportPage({ header }) {
+    header = $(header, this.anExpected());
+
+    return {
+      type: "ReportPage",
+      schema: { header }
     };
   },
 

@@ -153,6 +153,7 @@ public class ConfigurationOverriderFeature : IFeature
                             HeaderItem("/specs/money", title: "Money", parentRoute: "/specs"),
                             HeaderItem("/specs/page-title", title: "Page Title", parentRoute: "/specs"),
                             HeaderItem("/specs/rate", title: "Rate", parentRoute: "/specs"),
+                            HeaderItem("/specs/report-page", title: "Report Page", parentRoute: "/specs"),
                             HeaderItem("/specs/side-menu", title: "Side Menu", parentRoute: "/specs"),
                             HeaderItem("/specs/toast", title: "Toast", parentRoute: "/specs")
                         ]
@@ -163,14 +164,81 @@ public class ConfigurationOverriderFeature : IFeature
 
         configurator.ConfigurePageDescriptors(pages =>
         {
+            var headers = Inline(new { Authorization = "token-admin-ui" });
+
             configurator.UsingDomainModel(domain =>
             {
-                var timeRoute = domain.Types[typeof(TimeProviderSamples)].GetMembers().Methods[nameof(TimeProviderSamples.GetNow)].GetSingle<ActionModelAttribute>().GetRoute();
+                var timeProviderSamples = domain.Types[typeof(TimeProviderSamples)].GetMembers();
+                var now = timeProviderSamples.Methods[nameof(TimeProviderSamples.GetNow)].GetSingle<ActionModelAttribute>().GetRoute();
+                var localNow = timeProviderSamples.GetMembers().Methods[nameof(TimeProviderSamples.GetLocalNow)].GetSingle<ActionModelAttribute>().GetRoute();
+                var utcNow = timeProviderSamples.GetMembers().Methods[nameof(TimeProviderSamples.GetUtcNow)].GetSingle<ActionModelAttribute>().GetRoute();
 
-                pages.Add(MenuPage("index",
-                    header: DataPanel("Expand to see server time", String(Remote($"/{timeRoute}", headers: Inline(new { Authorization = "token-admin-ui" }))),
-                        collapsed: true
-                    )
+                var entities = domain.Types[typeof(Entities)].GetMembers().Methods[nameof(Entities.By)].GetSingle<ActionModelAttribute>().GetRoute();
+                var parents = domain.Types[typeof(Parents)].GetMembers().Methods[nameof(Parents.By)].GetSingle<ActionModelAttribute>().GetRoute();
+
+                pages.Add(ReportPage("index",
+                    title: PageTitle("Sample Report", description: "Showcases a  report layout with tabs and data panels"),
+                    tabs:
+                    [
+                        ReportPageTab("time", "Time",
+                            icon: Icon("pi-clock"),
+                            contents:
+                            [
+                                ReportPageTabContent(
+                                    component: DataPanel("Server time",
+                                        content: String(Remote($"/{now}", headers: headers)),
+                                        collapsed: false
+                                    )
+                                ),
+                                ReportPageTabContent(
+                                    component: DataPanel("Server time (local)",
+                                        content: String(Remote($"/{localNow}", headers: headers)),
+                                        collapsed: true
+                                    ),
+                                    narrow: true
+                                ),
+                                ReportPageTabContent(
+                                    component: DataPanel("Server time (utc)",
+                                        content: String(Remote($"/{utcNow}", headers: headers)),
+                                        collapsed: true
+                                    ),
+                                    narrow: true
+                                )
+                            ]
+                        ),
+                        ReportPageTab("from-db", "From DB",
+                            icon: Icon("pi-database"),
+                            contents:
+                            [
+                                ReportPageTabContent(
+                                    component: DataPanel("Entities",
+                                        content: DataTable(
+                                            columns:
+                                            [
+                                                DataTableColumn("id", "ID", minWidth: true),
+                                                DataTableColumn("unique", "Unique"),
+                                                DataTableColumn("dateTime", "DateTime")
+                                            ],
+                                            data: Remote($"/{entities}", headers: headers)
+                                        )
+                                    )
+                                ),
+                                ReportPageTabContent(
+                                    component: DataPanel("Parents",
+                                        content: DataTable(
+                                            columns:
+                                            [
+                                                DataTableColumn("id", "ID", minWidth: true),
+                                                DataTableColumn("name", "Name")
+                                            ],
+                                            data: Remote($"/{parents}", headers: headers)
+                                        ),
+                                        collapsed: true
+                                    )
+                                )
+                            ]
+                        )
+                    ]
                 ));
             });
 
@@ -232,6 +300,10 @@ public class ConfigurationOverriderFeature : IFeature
                     CardLink("/specs/rate", "Rate",
                         icon: "pi pi-microchip",
                         description: "A page component to render rate values as percentage"
+                    ),
+                    CardLink("/specs/report-page", "Report Page",
+                        icon: "pi pi-microchip",
+                        description: "A page component to render report pages"
                     ),
                     CardLink("/specs/side-menu", "Side Menu",
                         icon: "pi pi-microchip",
