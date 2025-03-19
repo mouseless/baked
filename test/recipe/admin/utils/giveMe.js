@@ -129,6 +129,15 @@ export default {
     return { route, icon, title, parentRoute };
   },
 
+  anIcon({ iconClass } = {}) {
+    iconClass = $(iconClass, "pi-heart");
+
+    return {
+      type: "Icon",
+      schema: { iconClass }
+    };
+  },
+
   aMoney({ data } = {}) {
     data = $(data, 100_000);
 
@@ -168,13 +177,31 @@ export default {
     };
   },
 
-  aReportPage({ header }) {
-    header = $(header, this.anExpected());
+  aReportPage({ title, description, tabs } = {}) {
+    title = this.aPageTitle({ title, description }).schema;
+    tabs = $(tabs, [this.aReportPageTab()]);
 
     return {
       type: "ReportPage",
-      schema: { header }
+      schema: { title, tabs }
     };
+  },
+
+  aReportPageTab({ id, title, icon, contents } = {}) {
+    id = $(id, "test-tab");
+    title = $(title, "Test Tab");
+    icon = $(icon, this.anIcon());
+    contents = $(contents, [this.aReportPageTabContent()]);
+
+    return { id, title, icon, contents };
+  },
+
+  aReportPageTabContent({ component, fullScreen, narrow } = {}) {
+    component = $(component, this.anExpected({ value: "Test content is given for testing purposes" }));
+    fullScreen = $(fullScreen, false);
+    narrow = $(narrow, false);
+
+    return { component, fullScreen, narrow };
   },
 
   aSideMenu({ logo, menu, data, footer } = {}) {

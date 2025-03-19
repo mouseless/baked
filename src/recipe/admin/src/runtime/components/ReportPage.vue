@@ -39,7 +39,7 @@
         v-model="currentTab"
         :when="tab.id"
         class="w-full"
-        :class="{ 'max-w-screen-xl': !tab.fullScreen }"
+        :class="{ 'max-w-screen-xl': !(tab.contents.length === 1 && tab.contents[0].fullScreen) }"
       >
         <Bake
           v-if="tab.contents.length === 1 && tab.contents[0].fullScreen"

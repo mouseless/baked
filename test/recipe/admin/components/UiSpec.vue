@@ -6,11 +6,13 @@
     />
     <div class="flex justify-center w-full">
       <div
-         class="max-w-screen-xl flex gap-4 align-top w-4/5"
+         class="flex gap-4 align-top w-4/5"
          :class="{
            'flex-col': !vertical,
            'items-center': !vertical,
-           'items-start': vertical
+           'items-start': vertical,
+           'max-w-screen-xl': !fullPage,
+           'w-full': fullPage
          }"
       >
         <div
@@ -59,7 +61,8 @@ const { title, variants, noLoadingVariant } = defineProps({
   variants: { type: Array, default: () => [] },
   noLoadingVariant: { type: Boolean, default: false },
   vertical: { type: Boolean, default: false },
-  testId: { type: String, default: "test" }
+  testId: { type: String, default: "test" },
+  fullPage: { type: Boolean, default: false }
 });
 
 const pages = usePages();
