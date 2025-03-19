@@ -1,7 +1,6 @@
 <template>
   <Skeleton
     v-if="loading"
-    width="3rem"
     height="1.5rem"
   />
   <span v-else>{{ data }}</span>

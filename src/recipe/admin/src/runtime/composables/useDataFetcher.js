@@ -49,6 +49,8 @@ export default function() {
   }
 
   function format(formatString, args) {
+    // TODO: this path and format call is temporary, final design should handle
+    // path variables using name, not index, e.g., /test/{0} -> /test/{id}
     return formatString.replace(/(\{\{\d\}\}|\{\d\})/g, part => {
       if(part.substring(0, 2) === "{{") { return part; } // escape
 
@@ -61,6 +63,7 @@ export default function() {
   return {
     shouldLoad,
     get,
-    fetch
+    fetch,
+    format
   };
 }

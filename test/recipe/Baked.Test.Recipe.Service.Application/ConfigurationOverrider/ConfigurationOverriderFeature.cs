@@ -115,6 +115,7 @@ public class ConfigurationOverriderFeature : IFeature
             new { Title = "Error Handling", Description = "A plugin for handling errors" },
             new { Title = "Error Page", Description = "A page component to display errors in full page" },
             new { Title = "Header", Description = "A layout component that renders a breadcrumb" },
+            new { Title = "Link", Description = "A component to give a link to a domain object" },
             new { Title = "Icon", Description = "A component that displays built-in icons" },
             new { Title = "Locale", Description = "Allow locale customization and language support" },
             new { Title = "Menu Page", Description = "A page component suitable for rendering navigation pages" },

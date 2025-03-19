@@ -11,7 +11,7 @@
   - `ReportPage` schema is added to create report like pages
     - `DeferredTabContent` component is added to load tab contents lazily in
       report pages
-  - `Icon`, `Money`, `Rate` page components are added
+  - `Icon`, `Money`, `Rate`, `Link` page components are added
   - `useFormat` composable is added for number formatting
 
 ## Improvements

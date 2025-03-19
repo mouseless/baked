@@ -138,6 +138,19 @@ export default {
     };
   },
 
+  aLink({ path, idProp, textProp, data } = {}) {
+    path = $(path, "/some-object/{0}");
+    idProp = $(idProp, "id");
+    textProp = $(textProp, "name");
+    data = $(data, { id: "test-id", name: "Test" });
+
+    return {
+      type: "Link",
+      schema: { path, idProp, textProp },
+      data: { type: "Inline", value: data }
+    };
+  },
+
   aMoney({ data } = {}) {
     data = $(data, 100_000);
 
