@@ -112,12 +112,12 @@ public class ConfigurationOverriderFeature : IFeature
                     CardLink("/", "Home", icon: "pi pi-home"),
                     CardLink("/specs", "Specs", icon: "pi pi-list-check"),
                 ],
-                errorInfos: new()
-                {
-                    { 403, new("Access Denied", "You do not have the permision to view the address or data specified." ) },
-                    { 404, new("Page Not Found", "The page you want to view is etiher deleted or outdated.") },
-                    { 500, new("Unexpected Error", "Please contact system administrator.") }
-                },
+                errorInfos:
+                [
+                    ErrorPageInfo(403, "Access Denied", "You do not have the permision to view the address or data specified." ),
+                    ErrorPageInfo(404, "Page Not Found", "The page you want to view is etiher deleted or outdated."),
+                    ErrorPageInfo(500, "Unexpected Error", "Please contact system administrator.")
+                ],
                 data: Computed(Composables.UseError)
             );
         });
