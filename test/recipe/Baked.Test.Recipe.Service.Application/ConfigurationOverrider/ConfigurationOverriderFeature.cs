@@ -7,6 +7,7 @@ using Baked.Test.Core;
 using Baked.Test.ExceptionHandling;
 using Baked.Test.Orm;
 using Baked.Theme.Admin;
+using Humanizer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
 
@@ -104,6 +105,27 @@ public class ConfigurationOverriderFeature : IFeature
             swaggerUIOptions.SwaggerEndpoint($"external/swagger.json", "External");
         });
 
+        var specs = new[]
+        {
+            new { Title = "Card Link", Description = "A component that renders a link as a big card-like button" },
+            new { Title = "Custom CSS", Description = "Allow custom configuration to define custom css and more" },
+            new { Title = "Data Panel", Description = "A component to lazy load and view a data within a panel" },
+            new { Title = "Data Table", Description = "A component to view list data in a table" },
+            new { Title = "Detail Page", Description = "A page component suitable for rendering entities and rich transients" },
+            new { Title = "Error Handling", Description = "A plugin for handling errors" },
+            new { Title = "Error Page", Description = "A page component to display errors in full page" },
+            new { Title = "Header", Description = "A layout component that renders a breadcrumb" },
+            new { Title = "Icon", Description = "A component that displays built-in icons" },
+            new { Title = "Locale", Description = "Allow locale customization and language support" },
+            new { Title = "Menu Page", Description = "A page component suitable for rendering navigation pages" },
+            new { Title = "Money", Description = "A component to render money values" },
+            new { Title = "Page Title", Description = "A component to render page title, desc and actions" },
+            new { Title = "Rate", Description = "A component to render rate values as percentage" },
+            new { Title = "Report Page", Description = "A page component to render report pages" },
+            new { Title = "Side Menu", Description = "A layout component to render application menu" },
+            new { Title = "Toast", Description = "A behavioral component to render alert messages" }
+        };
+
         configurator.ConfigureAppDescriptor(app =>
         {
             app.Error = ErrorPage(
@@ -140,23 +162,7 @@ public class ConfigurationOverriderFeature : IFeature
                         [
                             HeaderItem("/", icon: "pi pi-home"),
                             HeaderItem("/specs", icon: "pi pi-list-check", title: "Specs"),
-                            HeaderItem("/specs/card-link", title: "Card Link", parentRoute: "/specs"),
-                            HeaderItem("/specs/custom-css", title: "Custom CSS", parentRoute: "/specs"),
-                            HeaderItem("/specs/data-panel", title: "Data Panel", parentRoute: "/specs"),
-                            HeaderItem("/specs/data-table", title: "Data Table", parentRoute: "/specs"),
-                            HeaderItem("/specs/detail-page", title: "Detail Page", parentRoute: "/specs"),
-                            HeaderItem("/specs/error-handling", title: "Error Handling", parentRoute: "/specs"),
-                            HeaderItem("/specs/error-page", title: "Error Page", parentRoute: "/specs"),
-                            HeaderItem("/specs/header", title: "Header", parentRoute: "/specs"),
-                            HeaderItem("/specs/icon", title: "Icon", parentRoute: "/specs"),
-                            HeaderItem("/specs/locale", title: "Locale", parentRoute: "/specs"),
-                            HeaderItem("/specs/menu-page", title: "Menu Page", parentRoute: "/specs"),
-                            HeaderItem("/specs/money", title: "Money", parentRoute: "/specs"),
-                            HeaderItem("/specs/page-title", title: "Page Title", parentRoute: "/specs"),
-                            HeaderItem("/specs/rate", title: "Rate", parentRoute: "/specs"),
-                            HeaderItem("/specs/report-page", title: "Report Page", parentRoute: "/specs"),
-                            HeaderItem("/specs/side-menu", title: "Side Menu", parentRoute: "/specs"),
-                            HeaderItem("/specs/toast", title: "Toast", parentRoute: "/specs")
+                            .. specs.Select(spec => HeaderItem($"/specs/{spec.Title.Kebaberize()}", title: spec.Title, parentRoute: "/specs"))
                         ]
                     )
                 ));
@@ -250,74 +256,10 @@ public class ConfigurationOverriderFeature : IFeature
                 ),
                 links:
                 [
-                    CardLink("/specs/card-link", "Card Link",
+                    .. specs.Select(spec => CardLink($"/specs/{spec.Title.Kebaberize()}", spec.Title,
                         icon: "pi pi-microchip",
-                        description: "A big card link component to render links in menu-like pages"
-                    ),
-                    CardLink("/specs/custom-css", "Custom CSS",
-                        icon: "pi pi-microchip",
-                        description: "Allow custom configuration to define custom css and more"
-                    ),
-                    CardLink("/specs/data-panel", "Data Panel",
-                        icon: "pi pi-microchip",
-                        description: "A page component to lazy load and view a data within a panel"
-                    ),
-                    CardLink("/specs/data-table", "Data Table",
-                        icon: "pi pi-microchip",
-                        description: "A page component to view list data in a table"
-                    ),
-                    CardLink("/specs/detail-page", "Detail Page",
-                        icon: "pi pi-microchip",
-                        description: "A page component suitable for rendering entities and rich transients"
-                    ),
-                    CardLink("/specs/error-handling", "Error Handling",
-                        icon: "pi pi-microchip",
-                        description: "A plugin for handling errors"
-                    ),
-                    CardLink("/specs/error-page", "Error Page",
-                        icon: "pi pi-microchip",
-                        description: "A page component to display errors in full page"
-                    ),
-                    CardLink("/specs/header", "Header",
-                        icon: "pi pi-microchip",
-                        description: "A layout component that renders a breadcrumb"
-                    ),
-                    CardLink("/specs/icon", "Icon",
-                        icon: "pi pi-microchip",
-                        description: "A page component that displays built-in icons"
-                    ),
-                    CardLink("/specs/locale", "Locale",
-                        icon: "pi pi-microchip",
-                        description: "Allow locale customization and language support"
-                    ),
-                    CardLink("/specs/menu-page", "Menu Page",
-                        icon: "pi pi-microchip",
-                        description: "A page component suitable for rendering navigation pages"
-                    ),
-                    CardLink("/specs/money", "Money",
-                        icon: "pi pi-microchip",
-                        description: "A page component to render money values"
-                    ),
-                    CardLink("/specs/page-title", "Page Title",
-                        icon: "pi pi-microchip",
-                        description: "A page component to render page title, desc and actions"
-                    ),
-                    CardLink("/specs/rate", "Rate",
-                        icon: "pi pi-microchip",
-                        description: "A page component to render rate values as percentage"
-                    ),
-                    CardLink("/specs/report-page", "Report Page",
-                        icon: "pi pi-microchip",
-                        description: "A page component to render report pages"
-                    ),
-                    CardLink("/specs/side-menu", "Side Menu",
-                        icon: "pi pi-microchip",
-                        description: "A layout component to render application menu"
-                    ),
-                    CardLink("/specs/toast", "Toast",
-                        icon: "pi pi-microchip",
-                        description: "A behavioral component to render alert messages"
-                    )
+                        description: spec.Description
+                    ))
                 ]
             ));
         });
