@@ -12,11 +12,11 @@ const variants = [
     name: "Base",
     descriptor: giveMe.aDataTable({
       columns: [
-        giveMe.aDataTableColumn({ title: "Label", prop: "label", minWidth: true, content: giveMe.anExpected({ testId: "label" })}),
-        giveMe.aDataTableColumn({ title: "Data 1", prop: "data1", content: giveMe.anExpected({ testId: "prop-1" })}),
-        giveMe.aDataTableColumn({ title: "Data 2", prop: "data2", content: giveMe.anExpected({ testId: "prop-2" })}),
-        giveMe.aDataTableColumn({ title: "Data 3", prop: "data3", content: giveMe.anExpected({ testId: "prop-3" })}),
-        giveMe.aDataTableColumn({ title: "Data 4", prop: "data4", content: giveMe.anExpected({ testId: "prop-4" })})
+        giveMe.aDataTableColumn({ title: "Label", prop: "label", minWidth: true, component: giveMe.anExpected({ testId: "label" })}),
+        giveMe.aDataTableColumn({ title: "Data 1", prop: "data1", component: giveMe.anExpected({ testId: "prop-1" })}),
+        giveMe.aDataTableColumn({ title: "Data 2", prop: "data2", component: giveMe.anExpected({ testId: "prop-2" })}),
+        giveMe.aDataTableColumn({ title: "Data 3", prop: "data3", component: giveMe.anExpected({ testId: "prop-3" })}),
+        giveMe.aDataTableColumn({ title: "Data 4", prop: "data4", component: giveMe.anExpected({ testId: "prop-4" })})
       ],
       rowCountWhenLoading: 3,
       data: [

@@ -49,17 +49,17 @@ export default {
     };
   },
 
-  aDataTableColumn({ title, prop, minWidth, content } = {}) {
+  aDataTableColumn({ title, prop, minWidth, component } = {}) {
     title = $(title, "Test");
     prop = $(prop, "test");
     minWidth = $(minWidth, false);
-    content = $(content, this.anExpected());
+    component = $(component, this.anExpected());
 
     return {
       title,
       prop,
       minWidth,
-      content
+      component
     };
   },
 
