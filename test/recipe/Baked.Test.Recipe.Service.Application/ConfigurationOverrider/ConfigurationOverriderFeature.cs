@@ -148,6 +148,7 @@ public class ConfigurationOverriderFeature : IFeature
                             HeaderItem("/specs/error-handling", title: "Error Handling", parentRoute: "/specs"),
                             HeaderItem("/specs/error-page", title: "Error Page", parentRoute: "/specs"),
                             HeaderItem("/specs/header", title: "Header", parentRoute: "/specs"),
+                            HeaderItem("/specs/icon", title: "Icon", parentRoute: "/specs"),
                             HeaderItem("/specs/locale", title: "Locale", parentRoute: "/specs"),
                             HeaderItem("/specs/menu-page", title: "Menu Page", parentRoute: "/specs"),
                             HeaderItem("/specs/money", title: "Money", parentRoute: "/specs"),
@@ -280,6 +281,10 @@ public class ConfigurationOverriderFeature : IFeature
                     CardLink("/specs/header", "Header",
                         icon: "pi pi-microchip",
                         description: "A layout component that renders a breadcrumb"
+                    ),
+                    CardLink("/specs/icon", "Icon",
+                        icon: "pi pi-microchip",
+                        description: "A page component that displays built-in icons"
                     ),
                     CardLink("/specs/locale", "Locale",
                         icon: "pi pi-microchip",
