@@ -20,7 +20,7 @@ public static class DomainAssembliesBusinessExtensions
     );
 
     public static DomainAssembliesBusinessFeature DomainAssemblies(this BusinessConfigurator configurator, IEnumerable<Assembly> assemblies,
-        Func<Assembly, string>? baseNamespace,
+        Func<Assembly, string>? baseNamespace = default,
         Func<IEnumerable<MethodOverloadModel>, MethodOverloadModel>? defaultOverloadSelector = default,
         bool addEmbeddedFileProviders = true,
         Func<TypeModel, bool>? setNamespaceWhen = default

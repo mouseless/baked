@@ -17,6 +17,9 @@ export default {
     title: ".p-panel-title",
     header: ".p-panel-header"
   },
+  tab: {
+    base: ".p-tab"
+  },
   tag: {
     base: ".p-tag"
   },

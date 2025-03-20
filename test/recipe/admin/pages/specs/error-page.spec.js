@@ -5,8 +5,8 @@ test.beforeEach(async({goto}) => {
   await goto("/specs/error-page", { waitUntil: "hydration" });
 });
 
-test.describe("Basic", () =>{
-  const id = "Basic";
+test.describe("Base", () =>{
+  const id = "Base";
 
   test("error status code as tag", async({page}) => {
     const component = page.getByTestId(id);

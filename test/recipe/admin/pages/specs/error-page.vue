@@ -12,7 +12,7 @@ import giveMe from "~/utils/giveMe";
 
 const variants = [
   {
-    name: "Basic",
+    name: "Base",
     descriptor: giveMe.anErrorPage({
       errorInfos: [
         giveMe.anErrorPageInfo({
