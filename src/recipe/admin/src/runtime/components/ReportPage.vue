@@ -2,9 +2,13 @@
   <div class="space-y-4">
     <PageTitle :schema="title">
       <template #actions>
-        <!--
-          query params here
-        -->
+        <Bake
+          v-for="queryParameter in queryParameters"
+          :key="queryParameter.name"
+          v-model="parameters[queryParameter.name].model"
+          :name="`query-parameters/${queryParameter.name}`"
+          :descriptor="queryParameter.component"
+        />
       </template>
       <template #extra>
         <Tabs
@@ -66,7 +70,8 @@
   </div>
 </template>
 <script setup>
-import { ref } from "vue";
+import { computed, ref, watch } from "vue";
+import { useRoute, useRouter } from "#app";
 import { Tab, TabList, Tabs } from "primevue";
 import Bake from "./Bake.vue";
 import DeferredTabContent from "./DeferredTabContent.vue";
@@ -78,9 +83,40 @@ const { schema } = defineProps({
   loading: { type: Boolean, default: false }
 });
 
-const { title, tabs } = schema;
+const route = useRoute();
+const router = useRouter();
+
+const { title, queryParameters, tabs } = schema;
+
+const parameters = {};
+for(const queryParameter of queryParameters) {
+  const query = computed(() => route.query[queryParameter.name]);
+  const model = ref(query.value);
+
+  parameters[queryParameter.name] = { query, model };
+  watch(query, newQuery => model.value = newQuery);
+}
+
+const allQueryParametersSet = computed(() => Object.values(parameters).reduce((result, p) => result && p.query), true);
+const queryParametersJoined = computed(() => Object.values(parameters).map(p => p.query).join("-"));
 
 const currentTab = ref(tabs.length > 0 ? tabs[0].id : "");
-const allQueryParametersSet = ref(true);
-const queryParametersJoined = ref("--join-query-parameters-here--");
+
+watch(Object.values(parameters).map(p => p.model), newValues => {
+  const action = Object.values(parameters).map(p => p.query).some(q => q.value)
+    ? "push"
+    : "replace"
+  ;
+
+  router[action]({
+    path: route.path,
+    query: Object.keys(parameters).reduce((result, name, i) => {
+      if(newValues[i]) {
+        result[name] = newValues[i];
+      }
+
+      return result;
+    }, {})
+  });
+});
 </script>

@@ -111,7 +111,6 @@ public class ConfigurationOverriderFeature : IFeature
             new { Title = "Custom CSS", Description = "Allow custom configuration to define custom css and more" },
             new { Title = "Data Panel", Description = "A component to lazy load and view a data within a panel" },
             new { Title = "Data Table", Description = "A component to view list data in a table" },
-            new { Title = "Detail Page", Description = "A page component suitable for rendering entities and rich transients" },
             new { Title = "Error Handling", Description = "A plugin for handling errors" },
             new { Title = "Error Page", Description = "A page component to display errors in full page" },
             new { Title = "Header", Description = "A layout component that renders a breadcrumb" },
@@ -186,6 +185,21 @@ public class ConfigurationOverriderFeature : IFeature
 
                 pages.Add(ReportPage("index",
                     title: PageTitle("Sample Report", description: "Showcases a  report layout with tabs and data panels"),
+                    queryParameters:
+                    [
+                        QueryParameter("test1",
+                            Select("Test 1",
+                                data: Inline(new[]
+                                {
+                                  new { text = "Option 1", value = "option-1" },
+                                  new { text = "Option 2", value = "option-2" }
+                                }),
+                                optionLabel: "text",
+                                optionValue: "value"
+                            )
+                        ),
+                        QueryParameter("test2", Select("Test 2", data: Inline(new[] { "1000", "2000" })))
+                    ],
                     tabs:
                     [
                         ReportPageTab("time", "Time",

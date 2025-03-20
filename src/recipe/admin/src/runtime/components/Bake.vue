@@ -1,6 +1,7 @@
 <template>
   <component
     :is="is"
+    v-model="model"
     :schema="descriptor.schema"
     :data="data"
     :loading="loading"
@@ -16,6 +17,11 @@ import { useComponentResolver, useDataFetcher } from "#imports";
 const { name, descriptor } = defineProps({
   name: { type: String, required: true },
   descriptor: { type: null, required: true }
+});
+
+const model = defineModel({
+  type: null,
+  required: false
 });
 
 const { public: { components } } = useRuntimeConfig();

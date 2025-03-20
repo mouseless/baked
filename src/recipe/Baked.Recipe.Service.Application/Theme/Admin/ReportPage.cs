@@ -7,6 +7,7 @@ public record ReportPage(string Name, PageTitle Title) :
 {
     public string Name { get; set; } = Name;
     public PageTitle Title { get; set; } = Title;
+    public List<QueryParameter> QueryParameters { get; init; } = [];
     public List<Tab> Tabs { get; init; } = [];
 
     public record Tab(string Id, string Title)

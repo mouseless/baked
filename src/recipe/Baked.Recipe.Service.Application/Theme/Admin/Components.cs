@@ -83,13 +83,17 @@ public static class Components
         IEnumerable<IComponentDescriptor>? actions = default
     ) => new(new(title) { Description = description, Actions = [.. actions ?? []] });
 
+    public static QueryParameter QueryParameter(string name, IComponentDescriptor component) =>
+        new(name, component);
+
     public static ComponentDescriptor Rate(
         IData? data = default
     ) => new(nameof(Rate)) { Data = data };
 
     public static ComponentDescriptorAttribute<ReportPage> ReportPage(string name, ComponentDescriptorAttribute<PageTitle> title,
+        IEnumerable<QueryParameter>? queryParameters = default,
         IEnumerable<ReportPage.Tab>? tabs = default
-    ) => new(new(name, title.Schema) { Tabs = [.. tabs ?? []] });
+    ) => new(new(name, title.Schema) { QueryParameters = [.. queryParameters ?? []], Tabs = [.. tabs ?? []] });
 
     public static ReportPage.Tab ReportPageTab(string id, string title,
         IComponentDescriptor? icon = default,
@@ -100,6 +104,11 @@ public static class Components
         bool fullScreen = false,
         bool narrow = false
     ) => new(component) { FullScreen = fullScreen, Narrow = narrow };
+
+    public static ComponentDescriptorAttribute<Select> Select(string label, IData data,
+        string? optionLabel = default,
+        string? optionValue = default
+    ) => new(new(label) { OptionLabel = optionLabel, OptionValue = optionValue }) { Data = data };
 
     public static ComponentDescriptorAttribute<SideMenu> SideMenu(IEnumerable<SideMenu.Item> menu,
         IComponentDescriptor? footer = default,
