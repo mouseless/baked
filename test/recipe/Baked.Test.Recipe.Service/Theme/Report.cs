@@ -29,14 +29,14 @@ public class Report
         $"RIGHT: {Value}";
 
     public List<ReportRow> GetFirst() =>
-        Enumerable
+        [.. Enumerable
           .Range(0, 10)
           .Select(row => new ReportRow($"Row {row}", _requiredWithDefault, _required, _optional))
-          .ToList();
+        ];
 
     public List<ReportRow> GetSecond() =>
-        Enumerable
+        [.. Enumerable
           .Range(0, 10)
           .Select(row => new ReportRow($"Row {row}", _requiredWithDefault, _required, _optional))
-          .ToList();
+        ];
 }
