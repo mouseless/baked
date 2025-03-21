@@ -2,12 +2,9 @@
   <div class="space-y-4">
     <PageTitle :schema="title">
       <template #actions>
-        <Bake
-          v-for="queryParameter in queryParameters"
-          :key="queryParameter.name"
-          v-model="parameters[queryParameter.name].model"
-          :name="`query-parameters/${queryParameter.name}`"
-          :descriptor="queryParameter.component"
+        <QueryParameters
+          v-if="schema.queryParameters.length > 0"
+          :parameters="schema.queryParameters"
         />
       </template>
       <template #extra>
@@ -34,7 +31,7 @@
       </template>
     </PageTitle>
     <div
-      v-if="allQueryParametersSet"
+      v-if="requiredQueryParametersSet"
       class="py-4 flex flex-col gap-4 items-center"
     >
       <DeferredTabContent
@@ -70,12 +67,12 @@
   </div>
 </template>
 <script setup>
-import { computed, ref, watch } from "vue";
-import { useRoute, useRouter } from "#app";
+import { computed, ref } from "vue";
 import { Tab, TabList, Tabs } from "primevue";
 import Bake from "./Bake.vue";
 import DeferredTabContent from "./DeferredTabContent.vue";
 import PageTitle from "./PageTitle.vue";
+import QueryParameters from "./QueryParameters.vue";
 
 const { schema } = defineProps({
   schema: { type: null, required: true },
@@ -83,40 +80,18 @@ const { schema } = defineProps({
   loading: { type: Boolean, default: false }
 });
 
-const route = useRoute();
-const router = useRouter();
-
 const { title, queryParameters, tabs } = schema;
 
-const parameters = {};
-for(const queryParameter of queryParameters) {
-  const query = computed(() => route.query[queryParameter.name]);
-  const model = ref(query.value);
-
-  parameters[queryParameter.name] = { query, model };
-  watch(query, newQuery => model.value = newQuery);
-}
-
-const allQueryParametersSet = computed(() => Object.values(parameters).reduce((result, p) => result && p.query), true);
-const queryParametersJoined = computed(() => Object.values(parameters).map(p => p.query).join("-"));
+const requiredQueryParametersSet = computed(() =>
+  queryParameters
+    .filter(qp => qp.required)
+    .reduce((result, qp) => result && parameters[qp.name].query.value, true)
+);
+const queryParametersJoined = computed(() =>
+  Object.values(parameters)
+    .map(p => p.query.value)
+    .join("-")
+);
 
 const currentTab = ref(tabs.length > 0 ? tabs[0].id : "");
-
-watch(Object.values(parameters).map(p => p.model), newValues => {
-  const action = Object.values(parameters).map(p => p.query).some(q => q.value)
-    ? "push"
-    : "replace"
-  ;
-
-  router[action]({
-    path: route.path,
-    query: Object.keys(parameters).reduce((result, name, i) => {
-      if(newValues[i]) {
-        result[name] = newValues[i];
-      }
-
-      return result;
-    }, {})
-  });
-});
 </script>

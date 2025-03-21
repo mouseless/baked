@@ -38,9 +38,9 @@ const uiContext = inject("uiContext");
 const selected = ref({});
 watch(selected, newSelected => {
   if(optionValue) {
-    model.value.value = newSelected?.[optionValue];
+    model.value = newSelected?.[optionValue];
   } else {
-    model.value.value = newSelected;
+    model.value = newSelected;
   }
 });
 watch(model, () => selected.value = getOptionOfModel());
@@ -54,8 +54,8 @@ watch(() => loading, newLoading => {
 
 function getOptionOfModel() {
   return optionValue
-    ? data.filter(o => o[optionValue] === model.value.value)[0]
-    : model.value.value;
+    ? data.filter(o => o[optionValue] === model.value)[0]
+    : model.value;
 }
 </script>
 <style lang="scss">

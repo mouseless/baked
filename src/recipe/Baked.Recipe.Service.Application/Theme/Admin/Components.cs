@@ -1,4 +1,4 @@
-﻿using Baked.Ui;
+using Baked.Ui;
 
 namespace Baked.Theme.Admin;
 
@@ -83,15 +83,17 @@ public static class Components
         IEnumerable<IComponentDescriptor>? actions = default
     ) => new(new(title) { Description = description, Actions = [.. actions ?? []] });
 
-    public static QueryParameter QueryParameter(string name, IComponentDescriptor component) =>
-        new(name, component);
+    public static Parameter Parameter(string name, IComponentDescriptor component,
+        bool required = false,
+        object? @default = default
+    ) => new(name, component) { Required = required, Default = @default };
 
     public static ComponentDescriptor Rate(
         IData? data = default
     ) => new(nameof(Rate)) { Data = data };
 
     public static ComponentDescriptorAttribute<ReportPage> ReportPage(string name, ComponentDescriptorAttribute<PageTitle> title,
-        IEnumerable<QueryParameter>? queryParameters = default,
+        IEnumerable<Parameter>? queryParameters = default,
         IEnumerable<ReportPage.Tab>? tabs = default
     ) => new(new(name, title.Schema) { QueryParameters = [.. queryParameters ?? []], Tabs = [.. tabs ?? []] });
 

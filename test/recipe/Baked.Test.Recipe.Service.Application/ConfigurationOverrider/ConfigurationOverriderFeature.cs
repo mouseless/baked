@@ -1,4 +1,4 @@
-﻿using Baked.Architecture;
+using Baked.Architecture;
 using Baked.ExceptionHandling;
 using Baked.RestApi.Model;
 using Baked.Test.Authentication;
@@ -187,8 +187,8 @@ public class ConfigurationOverriderFeature : IFeature
                     title: PageTitle("Sample Report", description: "Showcases a  report layout with tabs and data panels"),
                     queryParameters:
                     [
-                        QueryParameter("test1",
-                            Select("Test 1",
+                        Parameter("test1",
+                            component: Select("Test 1",
                                 data: Inline(new[]
                                 {
                                   new { text = "Option 1", value = "option-1" },
@@ -196,9 +196,14 @@ public class ConfigurationOverriderFeature : IFeature
                                 }),
                                 optionLabel: "text",
                                 optionValue: "value"
-                            )
+                            ),
+                            @default: "option-1",
+                            required: true
                         ),
-                        QueryParameter("test2", Select("Test 2", data: Inline(new[] { "1000", "2000" })))
+                        Parameter("test2", Select("Test 2", data: Inline(new[] { "1000", "2000" })),
+                            required: true
+                        ),
+                        Parameter("test3", Select("Test 3", data: Inline(new[] { "AAA", "BBB" })))
                     ],
                     tabs:
                     [
