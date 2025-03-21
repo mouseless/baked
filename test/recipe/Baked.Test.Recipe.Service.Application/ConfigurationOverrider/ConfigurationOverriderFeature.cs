@@ -203,7 +203,7 @@ public class ConfigurationOverriderFeature : IFeature
                         Parameter("test2", Select("Test 2", data: Inline(new[] { "1000", "2000" })),
                             required: true
                         ),
-                        Parameter("test3", Select("Test 3", data: Inline(new[] { "AAA", "BBB" })))
+                        Parameter("test3", Select("Test 3", data: Inline(new[] { "AAA", "BBB" }), showClear: true))
                     ],
                     tabs:
                     [

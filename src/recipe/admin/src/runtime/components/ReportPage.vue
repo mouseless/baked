@@ -3,8 +3,10 @@
     <PageTitle :schema="title">
       <template #actions>
         <QueryParameters
-          v-if="schema.queryParameters.length > 0"
-          :parameters="schema.queryParameters"
+          v-if="queryParameters?.length > 0"
+          v-model:ready="ready"
+          v-model:unique-key="uniqueKey"
+          :parameters="queryParameters"
         />
       </template>
       <template #extra>
@@ -31,12 +33,12 @@
       </template>
     </PageTitle>
     <div
-      v-if="requiredQueryParametersSet"
+      v-if="ready"
       class="py-4 flex flex-col gap-4 items-center"
     >
       <DeferredTabContent
         v-for="(tab, i) in tabs"
-        :key="`${queryParametersJoined}-${tab.id}`"
+        :key="`${uniqueKey}-${tab.id}`"
         v-model="currentTab"
         :when="tab.id"
         class="w-full"
@@ -67,7 +69,7 @@
   </div>
 </template>
 <script setup>
-import { computed, ref } from "vue";
+import { ref } from "vue";
 import { Tab, TabList, Tabs } from "primevue";
 import Bake from "./Bake.vue";
 import DeferredTabContent from "./DeferredTabContent.vue";
@@ -82,16 +84,8 @@ const { schema } = defineProps({
 
 const { title, queryParameters, tabs } = schema;
 
-const requiredQueryParametersSet = computed(() =>
-  queryParameters
-    .filter(qp => qp.required)
-    .reduce((result, qp) => result && parameters[qp.name].query.value, true)
-);
-const queryParametersJoined = computed(() =>
-  Object.values(parameters)
-    .map(p => p.query.value)
-    .join("-")
-);
+const ready = ref(true);
+const uniqueKey = ref();
 
 const currentTab = ref(tabs.length > 0 ? tabs[0].id : "");
 </script>

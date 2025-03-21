@@ -7,66 +7,89 @@
     double ref. that's why `.model.value` is passed instead of `.model`
   -->
   <Bake
-    v-for="queryParameter in queryParameters"
-    :key="queryParameter.name"
-    v-model="parameters[queryParameter.name].model.value"
-    :name="`query-parameters/${queryParameter.name}`"
-    :descriptor="queryParameter.component"
+    v-for="parameter in parameters"
+    :key="parameter.name"
+    v-model="values[parameter.name].model.value"
+    :name="`query-parameters/${parameter.name}`"
+    :descriptor="parameter.component"
   />
 </template>
 <script setup>
-import { computed, ref, onMounted, watch } from "vue";
+import { computed, ref, onMounted, watch, watchEffect } from "vue";
 import { useRoute, useRouter } from "#app";
 import Bake from "./Bake.vue";
 
-const { queryParameters } = defineProps({
-  queryParameters: { type: Array, required: true }
+const { parameters } = defineProps({
+  parameters: { type: Array, required: true }
+});
+
+const ready = defineModel("ready", {
+  type: Boolean,
+  default: false
+});
+
+const uniqueKey = defineModel("uniqueKey", {
+  type: String,
+  default: ""
 });
 
 const route = useRoute();
 const router = useRouter();
 
-const parameters = {};
-for(const queryParameter of queryParameters) {
-  const query = computed(() => route.query[queryParameter.name]);
+const values = {};
+for(const parameter of parameters) {
+  const query = computed(() => route.query[parameter.name]);
   const model = ref(query.value);
 
-  parameters[queryParameter.name] = { query, model };
-
-  // binds query to model, needed when query parameters chang due to a
-  // navigation from side menu or header etc.
-  watch(query, newQuery => model.value = newQuery);
+  values[parameter.name] = { query, model };
 }
 
-onMounted(() => {
-  if(queryParameters
-    .filter(qp => qp.required)
-    .map(qp => parameters[qp.name].query)
-    .some(q => !q.value)
-  ) {
-    router.replace({
-      path: route.path,
-      query: queryParameters.reduce((result, qp) => {
-        result[qp.name] = parameters[qp.name].query.value || qp.default;
+// set defaults when first landed on page
+onMounted(async() => await setDefaults());
 
-        return result;
-      }, {})
-    });
+// sets ready state when all required parameters are set
+watchEffect(() => {
+  ready.value = parameters
+    .filter(p => p.required)
+    .reduce((result, p) => result && values[p.name].query.value !== undefined, true);
+});
+
+// calculates unique key to help parent redraw components when a parameter
+// value changes
+watchEffect(() => {
+  uniqueKey.value = Object.values(values)
+    .map(p => p.query.value)
+    .join("-");
+});
+
+// binds query params to models, needed when query parameters change due to a
+// navigation from side menu or header etc.
+watch(Object.values(values).map(p => p.query), async newValues => {
+  // sets defaults when already on the page, but query parameters changed due
+  // to navigation clicks
+  await setDefaults();
+
+  for(let i = 0; i < newValues.length; i++) {
+    values[parameters[i].name].model.value = newValues[i];
   }
 });
 
-watch(Object.values(parameters).map(p => p.model), newValues => {
-  const action = queryParameters
-    .filter(qp => qp.required)
-    .map(qp => parameters[qp.name].query)
+// when any of the parameter values changed from input components, it reroutes
+// to set query param values
+watch(Object.values(values).map(p => p.model), async newValues => {
+  // if any of required paramters that has default doesn't have a value, it
+  // means it's setting default value and route should be replaced, not pushed
+  const action = parameters
+    .filter(p => p.required && p.default)
+    .map(p => values[p.name].query)
     .every(q => q.value)
     ? "push"
     : "replace"
   ;
 
-  router[action]({
+  await router[action]({
     path: route.path,
-    query: Object.keys(parameters).reduce((result, name, i) => {
+    query: Object.keys(values).reduce((result, name, i) => {
       if(newValues[i]) {
         result[name] = newValues[i];
       }
@@ -75,4 +98,24 @@ watch(Object.values(parameters).map(p => p.model), newValues => {
     }, {})
   });
 });
+
+async function setDefaults() {
+  if(!parameters
+    .filter(p => p.required)
+    .map(p => values[p.name].query)
+    .some(q => !q.value)
+  ) { return; }
+
+  await router.replace({
+    path: route.path,
+    query: parameters.reduce((result, p) => {
+      result[p.name] =
+        values[p.name].query.value ||
+        (p.default ? p.default : undefined) // treat null as undefined to avoid empty query string parameters
+      ;
+
+      return result;
+    }, {})
+  });
+}
 </script>

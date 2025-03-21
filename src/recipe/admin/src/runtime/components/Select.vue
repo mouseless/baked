@@ -12,6 +12,7 @@
       :options="data"
       :option-label="optionLabel"
       :placeholder="label"
+      :show-clear
     />
     <label for="period">{{ label }}</label>
   </FloatLabel>
@@ -31,7 +32,7 @@ const model = defineModel({
   required: true
 });
 
-const { label, optionLabel, optionValue } = schema;
+const { label, optionLabel, optionValue, showClear } = schema;
 
 const uiContext = inject("uiContext");
 

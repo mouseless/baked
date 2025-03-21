@@ -109,8 +109,9 @@ public static class Components
 
     public static ComponentDescriptorAttribute<Select> Select(string label, IData data,
         string? optionLabel = default,
-        string? optionValue = default
-    ) => new(new(label) { OptionLabel = optionLabel, OptionValue = optionValue }) { Data = data };
+        string? optionValue = default,
+        bool showClear = false
+    ) => new(new(label) { OptionLabel = optionLabel, OptionValue = optionValue, ShowClear = showClear }) { Data = data };
 
     public static ComponentDescriptorAttribute<SideMenu> SideMenu(IEnumerable<SideMenu.Item> menu,
         IComponentDescriptor? footer = default,
