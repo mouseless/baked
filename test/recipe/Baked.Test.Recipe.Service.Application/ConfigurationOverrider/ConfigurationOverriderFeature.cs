@@ -187,8 +187,9 @@ public class ConfigurationOverriderFeature : IFeature
                     title: PageTitle("Sample Report", description: "Showcases a  report layout with tabs and data panels"),
                     queryParameters:
                     [
-                        Parameter("test1",
-                            component: Select("Test 1",
+                        Parameter(
+                            "test1",
+                            Select("Test 1",
                                 data: Inline(new[]
                                 {
                                   new { text = "Option 1", value = "option-1" },

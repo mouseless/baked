@@ -12,7 +12,8 @@
   - `ReportPage` schema is added to create report like pages
     - `DeferredTabContent` component is added to load tab contents lazily in
       report pages
-    - Query input parameters are rendered in `actions` template of `PageTitle`
+    - `QueryParameters` component is added to render input parameters in
+      `actions` template of `PageTitle`
   - `Icon`, `Money`, `Rate`, `Link` page components are added
   - `useFormat` composable is added for number formatting
   - `Input` component is added for string inputs
