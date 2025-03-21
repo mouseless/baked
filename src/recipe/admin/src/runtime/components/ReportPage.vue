@@ -2,9 +2,12 @@
   <div class="space-y-4">
     <PageTitle :schema="title">
       <template #actions>
-        <!--
-          query params here
-        -->
+        <QueryParameters
+          v-if="queryParameters?.length > 0"
+          v-model:ready="ready"
+          v-model:unique-key="uniqueKey"
+          :parameters="queryParameters"
+        />
       </template>
       <template #extra>
         <Tabs
@@ -30,12 +33,12 @@
       </template>
     </PageTitle>
     <div
-      v-if="allQueryParametersSet"
+      v-if="ready"
       class="py-4 flex flex-col gap-4 items-center"
     >
       <DeferredTabContent
         v-for="(tab, i) in tabs"
-        :key="`${queryParametersJoined}-${tab.id}`"
+        :key="`${uniqueKey}-${tab.id}`"
         v-model="currentTab"
         :when="tab.id"
         class="w-full"
@@ -71,6 +74,7 @@ import { Tab, TabList, Tabs } from "primevue";
 import Bake from "./Bake.vue";
 import DeferredTabContent from "./DeferredTabContent.vue";
 import PageTitle from "./PageTitle.vue";
+import QueryParameters from "./QueryParameters.vue";
 
 const { schema } = defineProps({
   schema: { type: null, required: true },
@@ -78,9 +82,10 @@ const { schema } = defineProps({
   loading: { type: Boolean, default: false }
 });
 
-const { title, tabs } = schema;
+const { title, queryParameters, tabs } = schema;
+
+const ready = ref(true);
+const uniqueKey = ref();
 
 const currentTab = ref(tabs.length > 0 ? tabs[0].id : "");
-const allQueryParametersSet = ref(true);
-const queryParametersJoined = ref("--join-query-parameters-here--");
 </script>
