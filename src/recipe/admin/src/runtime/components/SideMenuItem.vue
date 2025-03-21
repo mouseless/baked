@@ -21,5 +21,5 @@ const { item, path } = defineProps({
   path: { type: String, required: true }
 });
 
-const selected = computed(() => item.route === path || (item.route !== "/" && path.includes(item.route)));
+const selected = computed(() => item.route === path || (item.route !== "/" && path.startsWith(item.route)));
 </script>

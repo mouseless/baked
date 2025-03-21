@@ -9,6 +9,7 @@ public static class Datas
         new(value);
 
     public static RemoteData Remote(string path,
-        IData? headers = default
-    ) => new(path) { Headers = headers };
+        IData? headers = default,
+        IData? query = default
+    ) => new(path) { Headers = headers, Query = query };
 }

@@ -3,9 +3,9 @@ using Baked.ExceptionHandling;
 using Baked.RestApi.Model;
 using Baked.Test.Authentication;
 using Baked.Test.Business;
-using Baked.Test.Core;
 using Baked.Test.ExceptionHandling;
 using Baked.Test.Orm;
+using Baked.Test.Theme;
 using Baked.Theme.Admin;
 using Humanizer;
 using Microsoft.AspNetCore.Authorization;
@@ -153,6 +153,7 @@ public class ConfigurationOverriderFeature : IFeature
                         menu:
                         [
                             SideMenuItem("/", "pi pi-home"),
+                            SideMenuItem("/report", "pi pi-file", title: "Report"),
                             SideMenuItem("/specs", "pi pi-list-check", title: "Specs")
                         ],
                         footer: String(Inline("FT"))
@@ -161,6 +162,7 @@ public class ConfigurationOverriderFeature : IFeature
                         siteMap:
                         [
                             HeaderItem("/", icon: "pi pi-home"),
+                            HeaderItem("/report", icon: "pi pi-file", title: "Report"),
                             HeaderItem("/specs", icon: "pi pi-list-check", title: "Specs"),
                             .. specs.Select(spec => HeaderItem($"/specs/{spec.Title.Kebaberize()}", title: spec.Title, parentRoute: "/specs"))
                         ]
@@ -173,93 +175,109 @@ public class ConfigurationOverriderFeature : IFeature
         {
             var headers = Inline(new { Authorization = "token-admin-ui" });
 
+            pages.Add(MenuPage("index",
+                links:
+                [
+                    CardLink($"/report", "Report",
+                        icon: "pi pi-file",
+                        description: "Showcases a report layout with tabs and data panels"
+                    ),
+                    CardLink($"/specs", "Specs",
+                        icon: "pi pi-list-check",
+                        description: "All UI Specs are listed here"
+                    )
+                ]
+            ));
+
             configurator.UsingDomainModel(domain =>
             {
-                var timeProviderSamples = domain.Types[typeof(TimeProviderSamples)].GetMembers();
-                var now = timeProviderSamples.Methods[nameof(TimeProviderSamples.GetNow)].GetSingle<ActionModelAttribute>().GetRoute();
-                var localNow = timeProviderSamples.GetMembers().Methods[nameof(TimeProviderSamples.GetLocalNow)].GetSingle<ActionModelAttribute>().GetRoute();
-                var utcNow = timeProviderSamples.GetMembers().Methods[nameof(TimeProviderSamples.GetUtcNow)].GetSingle<ActionModelAttribute>().GetRoute();
+                var report = domain.Types[typeof(Report)].GetMembers();
+                var wide = report.Methods[nameof(Report.GetWide)];
+                var left = report.Methods[nameof(Report.GetLeft)];
+                var right = report.Methods[nameof(Report.GetRight)];
+                var first = report.Methods[nameof(Report.GetFirst)];
+                var second = report.Methods[nameof(Report.GetSecond)];
 
-                var entities = domain.Types[typeof(Entities)].GetMembers().Methods[nameof(Entities.By)].GetSingle<ActionModelAttribute>().GetRoute();
-                var parents = domain.Types[typeof(Parents)].GetMembers().Methods[nameof(Parents.By)].GetSingle<ActionModelAttribute>().GetRoute();
-
-                pages.Add(ReportPage("index",
-                    title: PageTitle("Sample Report", description: "Showcases a  report layout with tabs and data panels"),
+                pages.Add(ReportPage("report",
+                    title: PageTitle("Report", description: "Showcases a report layout with tabs and data panels"),
                     queryParameters:
                     [
                         Parameter(
-                            "test1",
-                            Select("Test 1",
+                            "requiredWithDefault",
+                            Select("Required w/ Default",
                                 data: Inline(new[]
                                 {
-                                  new { text = "Option 1", value = "option-1" },
-                                  new { text = "Option 2", value = "option-2" }
+                                  new { text = "Required w/ Default 1", value = "rwd-1" },
+                                  new { text = "Required w/ Default 2", value = "rwd-2" }
                                 }),
                                 optionLabel: "text",
                                 optionValue: "value"
                             ),
-                            @default: "option-1",
+                            @default: "rwd-1",
                             required: true
                         ),
-                        Parameter("test2", Select("Test 2", data: Inline(new[] { "1000", "2000" })),
+                        Parameter("required", Select("Required", data: Inline(new[] { "Required 1", "Required 2" })),
                             required: true
                         ),
-                        Parameter("test3", Select("Test 3", data: Inline(new[] { "AAA", "BBB" }), showClear: true))
+                        Parameter("optional", Select("Optional", data: Inline(new[] { "Optional 1", "Optional 2" }), showClear: true))
                     ],
                     tabs:
                     [
-                        ReportPageTab("time", "Time",
-                            icon: Icon("pi-clock"),
+                        ReportPageTab("single-value", "Single Value",
+                            icon: Icon("pi-box"),
                             contents:
                             [
                                 ReportPageTabContent(
-                                    component: DataPanel("Server time",
-                                        content: String(Remote($"/{now}", headers: headers)),
+                                    component: DataPanel(wide.Name.Humanize(),
+                                        content: String(Remote($"/{wide.GetSingle<ActionModelAttribute>().GetRoute()}", headers: headers, query: Computed(Composables.UseQuery))),
                                         collapsed: false
                                     )
                                 ),
                                 ReportPageTabContent(
-                                    component: DataPanel("Server time (local)",
-                                        content: String(Remote($"/{localNow}", headers: headers)),
+                                    component: DataPanel(left.Name.Humanize(),
+                                        content: String(Remote($"/{left.GetSingle<ActionModelAttribute>().GetRoute()}", headers: headers, query: Computed(Composables.UseQuery))),
                                         collapsed: true
                                     ),
                                     narrow: true
                                 ),
                                 ReportPageTabContent(
-                                    component: DataPanel("Server time (utc)",
-                                        content: String(Remote($"/{utcNow}", headers: headers)),
+                                    component: DataPanel(right.Name.Humanize(),
+                                        content: String(Remote($"/{right.GetSingle<ActionModelAttribute>().GetRoute()}", headers: headers, query: Computed(Composables.UseQuery))),
                                         collapsed: true
                                     ),
                                     narrow: true
                                 )
                             ]
                         ),
-                        ReportPageTab("from-db", "From DB",
-                            icon: Icon("pi-database"),
+                        ReportPageTab("data-table", "Data Table",
+                            icon: Icon("pi-table"),
                             contents:
                             [
                                 ReportPageTabContent(
-                                    component: DataPanel("Entities",
+                                    component: DataPanel(first.Name.Humanize(),
                                         content: DataTable(
                                             columns:
                                             [
-                                                DataTableColumn("id", "ID", minWidth: true),
-                                                DataTableColumn("unique", "Unique"),
-                                                DataTableColumn("dateTime", "DateTime")
+                                                DataTableColumn("label", "Label", minWidth: true),
+                                                DataTableColumn("column1", "Column 1"),
+                                                DataTableColumn("column2", "Column 2"),
+                                                DataTableColumn("column3", "Column 3")
                                             ],
-                                            data: Remote($"/{entities}", headers: headers)
+                                            data: Remote($"/{first.GetSingle<ActionModelAttribute>().GetRoute()}", headers: headers, query: Computed(Composables.UseQuery))
                                         )
                                     )
                                 ),
                                 ReportPageTabContent(
-                                    component: DataPanel("Parents",
+                                    component: DataPanel(second.Name.Humanize(),
                                         content: DataTable(
                                             columns:
                                             [
-                                                DataTableColumn("id", "ID", minWidth: true),
-                                                DataTableColumn("name", "Name")
+                                                DataTableColumn("label", "Label", minWidth: true),
+                                                DataTableColumn("column1", "Column 1"),
+                                                DataTableColumn("column2", "Column 2"),
+                                                DataTableColumn("column3", "Column 3")
                                             ],
-                                            data: Remote($"/{parents}", headers: headers)
+                                            data: Remote($"/{second.GetSingle<ActionModelAttribute>().GetRoute()}", headers: headers, query: Computed(Composables.UseQuery))
                                         ),
                                         collapsed: true
                                     )

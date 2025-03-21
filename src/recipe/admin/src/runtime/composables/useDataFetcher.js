@@ -17,12 +17,17 @@ export default function() {
         ? await fetch({ baseURL, data: data.headers, routeParams, options })
         : { };
 
+      const query = data.query
+        ? await fetch({ baseURL, data: data.query, routeParams, options })
+        : { };
+
       return await $fetch(
         format(`${data.path}`, routeParams.slice(1)),
         {
           ...options ?? { },
           baseURL,
-          headers
+          headers,
+          query
         }
       );
     }
