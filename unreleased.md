@@ -13,6 +13,8 @@
       report pages
   - `Icon`, `Money`, `Rate`, `Link` page components are added
   - `useFormat` composable is added for number formatting
+- Beta features are available in `Baked.Recipe.Service.Application`;
+  - `JWT` authentication feature is now added  
 
 ## Improvements
 
