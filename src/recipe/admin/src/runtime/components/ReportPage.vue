@@ -69,8 +69,10 @@
   </div>
 </template>
 <script setup>
-import { ref } from "vue";
-import { Tab, TabList, Tabs } from "primevue";
+import { defineAsyncComponent, ref } from "vue";
+const Tab = defineAsyncComponent(() => import("primevue/tab"));
+const TabList = defineAsyncComponent(() => import("primevue/tablist"));
+const Tabs = defineAsyncComponent(() => import("primevue/tabs"));
 import Bake from "./Bake.vue";
 import DeferredTabContent from "./DeferredTabContent.vue";
 import PageTitle from "./PageTitle.vue";

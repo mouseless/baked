@@ -12,9 +12,9 @@
   </RouterLink>
 </template>
 <script setup>
-import { computed } from "vue";
+import { computed, defineAsyncComponent } from "vue";
 import { RouterLink } from "vue-router";
-import { Button } from "primevue";
+const Button = defineAsyncComponent(() => import("primevue/button"));
 
 const { item, path } = defineProps({
   item: { type: Object, required: true },

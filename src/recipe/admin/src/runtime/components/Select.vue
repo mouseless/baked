@@ -19,8 +19,10 @@
   </FloatLabel>
 </template>
 <script setup>
-import { inject, ref, watch } from "vue";
-import { FloatLabel, Select, Skeleton } from "primevue";
+import { defineAsyncComponent, inject, ref, watch } from "vue";
+const FloatLabel = defineAsyncComponent(() => import("primevue/floatlabel"));
+const Select = defineAsyncComponent(() => import("primevue/select"));
+const Skeleton = defineAsyncComponent(() => import("primevue/skeleton"));
 
 const { schema, data, loading } = defineProps({
   schema: { type: null, required: true },

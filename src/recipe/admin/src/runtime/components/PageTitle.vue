@@ -46,9 +46,9 @@
   </div>
 </template>
 <script setup>
-import { onMounted } from "vue";
+import { defineAsyncComponent, onMounted } from "vue";
 import { useRuntimeConfig } from "#app";
-import { Skeleton } from "primevue";
+const Skeleton = defineAsyncComponent(() => import("primevue/skeleton"));
 import { useHead } from "#imports";
 import Bake from "./Bake.vue";
 
