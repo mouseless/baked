@@ -15,7 +15,7 @@ public class JwtAuthenticationFeature(Action<JwtBearerOptions> _configureOptions
             authentications.Add(
                 scheme: JwtBearerDefaults.AuthenticationScheme,
                 useBuilder: builder => builder.AddJwtBearer(options => _configureOptions(options)),
-                handles: context => context.Request.Headers.Authorization.Any(h => h is not null && h.Contains("Bearer"))
+                handles: context => context.Request.Headers.Authorization.Any(h => h is not null && h.Contains("Bearer") && h.IsJwt())
             );
         });
 

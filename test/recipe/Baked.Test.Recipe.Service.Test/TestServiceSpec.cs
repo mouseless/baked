@@ -22,5 +22,10 @@ public abstract class TestServiceSpec : ServiceSpec
         );
 
     protected override string? GetDefaultSettingsValue(string key) =>
-        key == "Int" ? $"{GiveMe.AnInteger()}" : GiveMe.AString();
+        key switch
+        {
+            _ when key.EndsWith("Minutes") => null,
+            _ when key == "Int" => $"{GiveMe.AnInteger()}",
+            _ => GiveMe.AString()
+        };
 }

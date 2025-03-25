@@ -2,6 +2,7 @@
 using Baked.Authentication.Jwt;
 using Baked.Testing;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
 using Shouldly;
 using System.IdentityModel.Tokens.Jwt;
 
@@ -13,8 +14,11 @@ public static class JwtAuthenticationExtensions
         Action<JwtBearerOptions>? configureOptions = default
     ) => new(configureOptions ?? (_ => { }));
 
+    public static bool IsJwt(this string token) =>
+       new JwtSecurityTokenHandler().CanReadToken(token);
+
     public static void ShouldBeJwt(this string token) =>
-       new JwtSecurityTokenHandler().CanReadToken(token).ShouldBeTrue();
+       IsJwt(token).ShouldBeTrue();
 
     public static void TheJwtSettings(this Mocker mockMe,
         string? key = null,
@@ -24,19 +28,22 @@ public static class JwtAuthenticationExtensions
         int? expirationForRefresh = null
     )
     {
-        key ??= "f7fee531f838473b83f1f73a808acfb1";
-        issuer ??= "YK";
-        audience ??= "UI";
+        key ??= "9a0dc4b934ca4bb5b79bf43b5dcddcce";
+        issuer ??= "Issuer";
+        audience ??= "Audience";
         expirationForAccess ??= 5;
         expirationForRefresh ??= 50;
 
         mockMe.ASetting(key: "Authentication:Jwt:Key", value: key);
         mockMe.ASetting(key: "Authentication:Jwt:Issuer", value: issuer);
         mockMe.ASetting(key: "Authentication:Jwt:Audience", value: audience);
-        mockMe.ASetting(key: "Authentication:Jwt:ExpiresInMinutes:Access", value: expirationForAccess);
-        mockMe.ASetting(key: "Authentication:Jwt:ExpiresInMinutes:Refresh", value: expirationForRefresh);
+        mockMe.ASetting(key: "Authentication:Jwt:ExpiresInMinutes:Access", value: expirationForAccess.GetValueOrDefault());
+        mockMe.ASetting(key: "Authentication:Jwt:ExpiresInMinutes:Refresh", value: expirationForRefresh.GetValueOrDefault());
     }
 
     public static JwtSecurityToken TheSecurityToken(this Stubber _, string credential) =>
         new JwtSecurityTokenHandler().ReadJwtToken(credential);
+
+    public static JwtTokenBuilder AJwtTokenBuilder(this Stubber giveMe) =>
+        new(giveMe.The<IConfiguration>(), giveMe.The<TimeProvider>());
 }
