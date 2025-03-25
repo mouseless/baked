@@ -5,7 +5,7 @@
   >
     <Skeleton class="min-h-10" />
   </div>
-  <FloatLabel>
+  <FloatLabel v-else>
     <Select
       v-model="selected"
       :input-id="uiContext"

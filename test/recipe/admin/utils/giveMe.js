@@ -217,6 +217,18 @@ export default {
     return { component, fullScreen, narrow };
   },
 
+  aSelect({ label, optionLabel, optionValue, showClear, data } = {}) {
+    label = $(label, "Test");
+    showClear = $(showClear, false);
+    data = $(data, ["Test Option 1", "Test Option 2"]);
+
+    return {
+      type: "Select",
+      schema: { label, optionLabel, optionValue, showClear },
+      data: { type: "Inline", value: data }
+    };
+  },
+
   aSideMenu({ logo, menu, data, footer } = {}) {
     logo = $(logo, "logo.svg");
     menu = $(menu, []);

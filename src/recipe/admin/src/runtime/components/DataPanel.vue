@@ -25,8 +25,8 @@
   </Panel>
 </template>
 <script setup>
-import { computed, inject, useTemplateRef, ref } from "vue";
-import { Panel } from "primevue";
+import { computed, inject, defineAsyncComponent, useTemplateRef, ref } from "vue";
+const Panel = defineAsyncComponent(() => import("primevue/panel"));
 import Bake from "./Bake.vue";
 import { useUiStates } from "#imports";
 

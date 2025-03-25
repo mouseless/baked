@@ -122,6 +122,7 @@ public class ConfigurationOverriderFeature : IFeature
             new { Title = "Page Title", Description = "A component to render page title, desc and actions" },
             new { Title = "Rate", Description = "A component to render rate values as percentage" },
             new { Title = "Report Page", Description = "A page component to render report pages" },
+            new { Title = "Select", Description = "An input component to allow select from given options" },
             new { Title = "Side Menu", Description = "A layout component to render application menu" },
             new { Title = "Toast", Description = "A behavioral component to render alert messages" }
         };
