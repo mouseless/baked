@@ -34,7 +34,7 @@ public class AuthenticationSamples(
     object CreateToken(List<string> claims) =>
         new
         {
-            Access = _tokenBuilder.Build("access", claims.Select(c => new Claim(c, c)).ToList()),
+            Access = _tokenBuilder.Build("access", [.. claims.Select(c => new Claim(c, c))]),
             Refresh = _tokenBuilder.Build("refresh", [new("Refresh", "Refresh")])
         };
 }
