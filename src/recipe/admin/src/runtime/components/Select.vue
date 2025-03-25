@@ -13,6 +13,7 @@
       :option-label="optionLabel"
       :placeholder="label"
       :show-clear
+      class="hide-placeholder"
     />
     <label for="period">{{ label }}</label>
   </FloatLabel>
@@ -37,26 +38,20 @@ const { label, optionLabel, optionValue, showClear } = schema;
 const uiContext = inject("uiContext");
 
 const selected = ref({});
-watch(selected, newSelected => {
-  if(optionValue) {
-    model.value = newSelected?.[optionValue];
-  } else {
-    model.value = newSelected;
-  }
-});
-watch(model, () => selected.value = getOptionOfModel());
+watch(selected, newSelected => setModel(newSelected));
 
-if(!loading) { selected.value = getOptionOfModel(); }
-watch(() => loading, newLoading => {
-  if(newLoading) { return; }
+if(!loading) { setSelected(model.value); }
+watch(model, newModel => setSelected(newModel));
+watch(() => loading, () => setSelected(model.value));
 
-  selected.value = getOptionOfModel();
-});
+function setModel(selected) {
+  model.value = optionValue ? selected?.[optionValue] : selected;
+}
 
-function getOptionOfModel() {
-  return optionValue
-    ? data.filter(o => o[optionValue] === model.value)[0]
-    : model.value;
+function setSelected(value) {
+  selected.value = optionValue
+    ? data.filter(o => o[optionValue] === value)[0]
+    : value;
 }
 </script>
 <style lang="scss">
@@ -64,7 +59,7 @@ function getOptionOfModel() {
 placeholder gives select the initial width, but it overlaps with label so it is
 hidden
 */
-.p-placeholder {
+.hide-placeholder .p-placeholder {
   visibility: hidden;
 }
 </style>
