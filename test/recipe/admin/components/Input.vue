@@ -2,6 +2,7 @@
   <InputText
     v-model="model"
     :data-testid="schema"
+    :placeholder="schema"
   />
 </template>
 <script setup>
