@@ -11,8 +11,9 @@ namespace Baked;
 public static class JwtAuthenticationExtensions
 {
     public static JwtAuthenticationFeature Jwt(this AuthenticationConfigurator _,
-        Action<JwtBearerOptions>? configureOptions = default
-    ) => new(configureOptions ?? (_ => { }));
+        Action<JwtBearerOptions>? configureOptions = default,
+        List<string>? anonymousRoutes = default
+    ) => new(configureOptions ?? (_ => { }), anonymousRoutes ?? []);
 
     public static bool IsJwt(this string token) =>
        new JwtSecurityTokenHandler().CanReadToken(token);

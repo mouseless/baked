@@ -6,7 +6,7 @@ using Microsoft.OpenApi.Models;
 
 namespace Baked.Authentication.Jwt;
 
-public class JwtAuthenticationFeature(Action<JwtBearerOptions> _configureOptions) : IFeature<AuthenticationConfigurator>
+public class JwtAuthenticationFeature(Action<JwtBearerOptions> _configureOptions, List<string> anonymousRoutes) : IFeature<AuthenticationConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
@@ -42,7 +42,7 @@ public class JwtAuthenticationFeature(Action<JwtBearerOptions> _configureOptions
         {
             app.Plugins.Add(new JwtAuthenticationPlugin()
             {
-                AnonymousRoutes = ["/specs.*"]
+                AnonymousRoutes = anonymousRoutes
             });
         });
     }

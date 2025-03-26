@@ -7,7 +7,7 @@ Bake.New
             setNamespaceWhen: t => t.Namespace is not null && t.Namespace.StartsWith("Baked.Test.CodingStyle.NamespaceAsRoute")
         ),
         authentications: [
-            c => c.Jwt(),
+            c => c.Jwt(anonymousRoutes: ["^(?:(?!auth).)*$"]),
             c => c.FixedBearerToken(
                 tokens =>
                 {

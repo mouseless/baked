@@ -46,10 +46,6 @@ onUpdated(() =>{
 async function submit() {
   submitted.value = true;
 
-  if(!username.value || !password.value) {
-    return;
-  }
-
   const result = await $fetch("authentication-samples/login", {
     baseURL: "http://localhost:5151",
     method: "POST",
