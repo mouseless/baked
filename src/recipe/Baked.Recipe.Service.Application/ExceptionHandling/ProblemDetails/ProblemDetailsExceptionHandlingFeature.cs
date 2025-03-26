@@ -58,7 +58,7 @@ public class ProblemDetailsExceptionHandlingFeature(Setting<string>? _typeUrlFor
             {
                 Handlers = new()
                 {
-                    new(StatusCode: (int)HttpStatusCode.Unauthorized, Behavior: ErrorHandlingPlugin.HandlerBehavior.Redirect, BehaviorArgument: "/"),
+                    new(StatusCode: (int)HttpStatusCode.Unauthorized, Behavior: ErrorHandlingPlugin.HandlerBehavior.Redirect, BehaviorArgument: "/specs"),
                     new(StatusCode: (int)HttpStatusCode.BadRequest, Behavior: ErrorHandlingPlugin.HandlerBehavior.Alert),
                     new(Behavior: ErrorHandlingPlugin.HandlerBehavior.Page),
                 }

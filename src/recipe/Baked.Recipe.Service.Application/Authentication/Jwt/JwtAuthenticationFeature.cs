@@ -40,7 +40,10 @@ public class JwtAuthenticationFeature(Action<JwtBearerOptions> _configureOptions
 
         configurator.ConfigureAppDescriptor(app =>
         {
-            app.Plugins.Add(new JwtAuthenticationPlugin());
+            app.Plugins.Add(new JwtAuthenticationPlugin()
+            {
+                AnonymousRoutes = ["/specs.*"]
+            });
         });
     }
 }

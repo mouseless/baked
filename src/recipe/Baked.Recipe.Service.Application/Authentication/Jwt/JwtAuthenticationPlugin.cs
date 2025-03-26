@@ -6,4 +6,5 @@ public class JwtAuthenticationPlugin : IPlugin
 {
     public string Name => "auth";
     public string TokenComposable => "useToken";
+    public List<string> AnonymousRoutes { get; set; } = [];
 }

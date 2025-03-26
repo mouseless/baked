@@ -30,7 +30,7 @@ test("redirect and toast with fetch error data", async({page}) => {
 
   await content.getByTestId("redirect").click();
 
-  await expect(page).toHaveURL("/");
+  await expect(page).toHaveURL("/specs");
   await expect(page.locator(primevue.toast.summary)).toHaveText("Authentication");
   await expect(page.locator(primevue.toast.detail)).toHaveText("Failed to authenticate with given credentials.");
 });
