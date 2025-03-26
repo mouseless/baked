@@ -94,14 +94,15 @@ export default {
     };
   },
 
-  anExpected({ testId, value } = {}) {
+  anExpected({ testId, value, data } = {}) {
     testId = $(testId, "test-id");
     value = $(value, "");
+    data = $(data, { type: "Inline", value });
 
     return {
       type: "Expected",
       schema: testId,
-      data: { type: "Inline", value }
+      data
     };
   },
 
@@ -135,6 +136,15 @@ export default {
     return {
       type: "Icon",
       schema: { iconClass }
+    };
+  },
+
+  anInput({ testId } = {}) {
+    testId = $(testId, "test-input");
+
+    return {
+      type: "Input",
+      schema: testId
     };
   },
 
@@ -181,6 +191,21 @@ export default {
     };
   },
 
+  aParameter({ name, component, required, defaultValue } = {}) {
+    name = $(name, "test");
+    required = $(required, false);
+    component = $(component, this.anInput());
+
+    return { name, required, default: defaultValue, component };
+  },
+
+  theQueryData() {
+    return {
+      type: "Computed",
+      composable: "useQuery"
+    };
+  },
+
   aRate({ data } = {}) {
     data = $(data, 0.5);
 
@@ -190,13 +215,14 @@ export default {
     };
   },
 
-  aReportPage({ title, description, tabs } = {}) {
+  aReportPage({ title, description, queryParameters, tabs } = {}) {
     title = this.aPageTitle({ title, description }).schema;
+    queryParameters = $(queryParameters, []);
     tabs = $(tabs, [this.aReportPageTab()]);
 
     return {
       type: "ReportPage",
-      schema: { title, tabs }
+      schema: { title, queryParameters, tabs }
     };
   },
 

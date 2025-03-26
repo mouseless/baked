@@ -69,6 +69,39 @@ const variants = [
         })
       ]
     })
+  },
+  {
+    name: "Query Parameters",
+    descriptor: giveMe.aReportPage({
+      queryParameters: [
+        giveMe.aParameter({
+          name: "required",
+          required: true,
+          component: giveMe.anInput({
+            testId: "required"
+          })
+        }),
+        giveMe.aParameter({
+          name: "optional",
+          required: false,
+          component: giveMe.anInput({
+            testId: "optional"
+          })
+        })
+      ],
+      tabs: [
+        giveMe.aReportPageTab({
+          contents: [
+            giveMe.aReportPageTabContent({
+              component: giveMe.anExpected({
+                testId: "content",
+                data: giveMe.theQueryData()
+              })
+            })
+          ]
+        })
+      ]
+    })
   }
 ];
 </script>
