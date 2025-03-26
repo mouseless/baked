@@ -4,9 +4,9 @@
       <template #actions>
         <QueryParameters
           v-if="queryParameters?.length > 0"
-          v-model:ready="ready"
-          v-model:unique-key="uniqueKey"
           :parameters="queryParameters"
+          @ready="onReady"
+          @changed="onChanged"
         />
       </template>
       <template #extra>
@@ -90,4 +90,12 @@ const ready = ref(true);
 const uniqueKey = ref();
 
 const currentTab = ref(tabs.length > 0 ? tabs[0].id : "");
+
+function onReady(value) {
+  ready.value = value;
+}
+
+function onChanged(value) {
+  uniqueKey.value = value;
+}
 </script>

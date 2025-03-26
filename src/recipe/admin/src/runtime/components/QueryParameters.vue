@@ -15,7 +15,7 @@
   />
 </template>
 <script setup>
-import { computed, ref, onMounted, watch, watchEffect } from "vue";
+import { computed, defineEmits, ref, onMounted, watch, watchEffect } from "vue";
 import { useRoute, useRouter } from "#app";
 import Bake from "./Bake.vue";
 
@@ -23,15 +23,7 @@ const { parameters } = defineProps({
   parameters: { type: Array, required: true }
 });
 
-const ready = defineModel("ready", {
-  type: Boolean,
-  default: false
-});
-
-const uniqueKey = defineModel("uniqueKey", {
-  type: String,
-  default: ""
-});
+const emit = defineEmits(["ready", "changed"]);
 
 const route = useRoute();
 const router = useRouter();
@@ -49,17 +41,21 @@ onMounted(async() => await setDefaults());
 
 // sets ready state when all required parameters are set
 watchEffect(() => {
-  ready.value = parameters
-    .filter(p => p.required)
-    .reduce((result, p) => result && values[p.name].query.value !== undefined, true);
+  emit("ready",
+    parameters
+      .filter(p => p.required)
+      .reduce((result, p) => result && values[p.name].query.value !== undefined, true)
+  );
 });
 
 // calculates unique key to help parent redraw components when a parameter
 // value changes
 watchEffect(() => {
-  uniqueKey.value = Object.values(values)
-    .map(p => p.query.value)
-    .join("-");
+  emit("changed",
+    Object.values(values)
+      .map(p => p.query.value)
+      .join("-")
+  );
 });
 
 // binds query params to models, needed when query parameters change due to a
@@ -77,7 +73,7 @@ watch(Object.values(values).map(p => p.query), async newValues => {
 // when any of the parameter values changed from input components, it reroutes
 // to set query param values
 watch(Object.values(values).map(p => p.model), async newValues => {
-  // if any of required paramters that has default doesn't have a value, it
+  // if any of required parameters that has default doesn't have a value, it
   // means it's setting default value and route should be replaced, not pushed
   const action = parameters
     .filter(p => p.required && p.default)

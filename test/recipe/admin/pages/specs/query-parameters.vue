@@ -10,9 +10,9 @@
       data-testid="component"
     >
       <QueryParameters
-        v-model:ready="ready"
-        v-model:unique-key="uniqueKey"
         :parameters
+        @ready="onReady"
+        @changed="onChanged"
       />
     </div>
     <Message severity="info">
@@ -73,4 +73,12 @@ const parameters = [
     component: giveMe.anInput({ testId: "optional" })
   })
 ];
+
+function onReady(value) {
+  ready.value = value;
+}
+
+function onChanged(value) {
+  uniqueKey.value = value;
+}
 </script>

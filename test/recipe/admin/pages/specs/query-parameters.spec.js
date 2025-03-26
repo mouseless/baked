@@ -69,7 +69,7 @@ test("query string is set to input", async({page}) => {
 test("ready when all required are set", async({page}) => {
   const component = page.getByTestId(id.component);
   const ready = page.getByTestId(id.ready);
-  await expect(ready).not.toBeVisible();
+  await expect(ready).toHaveText("false");
 
   await component.getByTestId("required").fill("x");
 
