@@ -3,7 +3,7 @@ import useToast from "../composables/useToast";
 
 export default defineNuxtPlugin({
   name: "errorHandling",
-  enforce: "pre",
+  enforce: "pre ",
   async setup() {
     const { public: { errorHandling } } = useRuntimeConfig();
 
