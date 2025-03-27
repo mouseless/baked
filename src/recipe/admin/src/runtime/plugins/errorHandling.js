@@ -1,5 +1,6 @@
 import { defineNuxtPlugin, useRouter, clearError, showError, useNuxtApp, useRuntimeConfig } from "#app";
 import useToast from "../composables/useToast";
+import useComposableResolver from "../composables/useComposableResolver";
 
 export default defineNuxtPlugin({
   name: "errorHandling",
@@ -31,13 +32,17 @@ export default defineNuxtPlugin({
         return;
       }
 
+      const arg = handler.behaviorArgument.type == "Computed"
+        ? (await useComposableResolver().resolve(handler.behaviorArgument.value)).default()
+        : handler.behaviorArgument.value;
+
       if(handler.behavior === "Alert") {
         await clearError(error);
         toast.add({ ...getMessage(error) });
       } else if(handler.behavior === "Redirect") {
         await clearError(error);
         toast.add({ ...getMessage(error) });
-        await router.replace(handler.behaviorArgument);
+        router.replace(arg);
       } else {
         showError(error);
       }

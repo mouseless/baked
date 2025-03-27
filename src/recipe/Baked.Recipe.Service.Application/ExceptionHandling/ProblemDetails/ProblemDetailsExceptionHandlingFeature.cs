@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net;
 
+using static Baked.Theme.Admin.ErrorHandlingPlugin;
+
 namespace Baked.ExceptionHandling.ProblemDetails;
 
 public class ProblemDetailsExceptionHandlingFeature(Setting<string>? _typeUrlFormat = default)
@@ -58,9 +60,9 @@ public class ProblemDetailsExceptionHandlingFeature(Setting<string>? _typeUrlFor
             {
                 Handlers = new()
                 {
-                    new(StatusCode: (int)HttpStatusCode.Unauthorized, Behavior: ErrorHandlingPlugin.HandlerBehavior.Redirect, BehaviorArgument: "/specs"),
-                    new(StatusCode: (int)HttpStatusCode.BadRequest, Behavior: ErrorHandlingPlugin.HandlerBehavior.Alert),
-                    new(Behavior: ErrorHandlingPlugin.HandlerBehavior.Page),
+                    new(StatusCode: (int)HttpStatusCode.Unauthorized, Behavior: HandlerBehavior.Redirect, BehaviorArgument: new(BehaviorArgumentType.Computed, "useLoginRedirect")),
+                    new(StatusCode: (int)HttpStatusCode.BadRequest, Behavior: HandlerBehavior.Alert),
+                    new(Behavior: HandlerBehavior.Page),
                 }
             });
         });

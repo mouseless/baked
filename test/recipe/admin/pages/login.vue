@@ -22,16 +22,11 @@
       </form>
     </div>
   </div>
-  <Toast />
 </template>
 <script setup>
 import { onUpdated, ref } from "vue";
-import { definePageMeta, useToken } from "#imports";
-import { Button, InputText, Password, Toast } from "primevue";
-
-definePageMeta({
-  layout: false
-});
+import { useToken } from "#imports";
+import { Button, InputText, Password } from "primevue";
 
 const token = useToken();
 

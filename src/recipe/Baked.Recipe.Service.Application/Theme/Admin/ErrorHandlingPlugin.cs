@@ -14,7 +14,7 @@ public class ErrorHandlingPlugin : IPlugin
         string? RoutePattern = default,
         int? StatusCode = default,
         HandlerBehavior Behavior = default,
-        string? BehaviorArgument = default,
+        BehaviorArgument? BehaviorArgument = default,
         int Order = 0
     );
 
@@ -24,5 +24,17 @@ public class ErrorHandlingPlugin : IPlugin
         Alert = 1,
         Page = 2,
         Redirect = 3
+    }
+
+    public record BehaviorArgument(BehaviorArgumentType Type, string Value)
+    {
+        public BehaviorArgument(string value) : this(BehaviorArgumentType.Static, value)
+        { }
+    }
+
+    public enum BehaviorArgumentType
+    {
+        Static = 1,
+        Computed = 2
     }
 }
