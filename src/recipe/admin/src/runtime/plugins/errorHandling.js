@@ -32,16 +32,17 @@ export default defineNuxtPlugin({
         return;
       }
 
-      const arg = handler.behaviorArgument.type == "Computed"
-        ? (await useComposableResolver().resolve(handler.behaviorArgument.value)).default()
-        : handler.behaviorArgument.value;
-
       if(handler.behavior === "Alert") {
         await clearError(error);
         toast.add({ ...getMessage(error) });
       } else if(handler.behavior === "Redirect") {
         await clearError(error);
         toast.add({ ...getMessage(error) });
+
+        const arg = handler.behaviorArgument?.type == "Computed"
+        ? (await useComposableResolver().resolve(handler.behaviorArgument.value)).default()
+        : handler.behaviorArgument.value;
+
         router.replace(arg);
       } else {
         showError(error);
