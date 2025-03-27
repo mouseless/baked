@@ -42,7 +42,9 @@ public class JwtAuthenticationFeature(Action<JwtBearerOptions> _configureOptions
         {
             app.Plugins.Add(new JwtAuthenticationPlugin()
             {
-                AnonymousRoutes = anonymousRoutes
+                AnonymousRoutes = anonymousRoutes,
+                LoginRoute = "authentication-samples/login",
+                RefreshRoute = "authentication-samples/refresh"
             });
         });
     }

@@ -1,8 +1,8 @@
-import { useFetch, useRuntimeConfig } from "#app";
-import { useMutex } from "#imports";
+import { useAuth, useMutex } from "#imports";
 
 export default function() {
   const mutex = useMutex();
+  const auth = useAuth();
 
   async function current(
     shouldRefresh = true
@@ -31,16 +31,7 @@ export default function() {
       const token = await current(false);
       if(!token?.accessIsExpired()) { return; }
 
-      const { public: { components } } = useRuntimeConfig();
-
-      const result = await useFetch("authentication-samples/refresh",{
-        baseURL: components?.Bake?.baseURL,
-        method: "POST",
-        headers: {
-          "Authorizataion": `Bearer ${token?.refresh}`
-        },
-        body: { }
-      });
+      const result = await auth.refresh(token?.refresh);
 
       setCurrent(result, false);
     });

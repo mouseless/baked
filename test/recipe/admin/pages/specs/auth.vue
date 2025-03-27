@@ -5,6 +5,13 @@
         This content requires authorization
       </div>
       <Button
+        data-testid="request"
+        type="button"
+        label="Request with token"
+        class="m-4"
+        @click="async() => requestWithToken()"
+      />
+      <Button
         data-testid="exception"
         type="button"
         label="Authentication Exception"
@@ -23,14 +30,29 @@
 </template>
 <script setup>
 import { Button, Panel } from "primevue";
-import { createError, useToken } from "#imports";
+import { createError, useToast, useToken } from "#imports";
 
 const token = useToken();
+const toast = useToast();
 
 function authenticationException() {
   throw createError({
     statusCode: 401,
     statusMessage: "Authentication Failed"
+  });
+}
+
+async function requestWithToken(){
+  const result = await $fetch("time-provider-samples/now", {
+    baseURL: "http://localhost:5151",
+    method: "GET"
+  });
+
+  toast.add({
+    severity: "info",
+    summary: "Server Time",
+    detail: result,
+    life: 3000
   });
 }
 

@@ -1,4 +1,6 @@
 ﻿using Baked.Test.Orm;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 Bake.New
     .Service(
@@ -7,7 +9,21 @@ Bake.New
             setNamespaceWhen: t => t.Namespace is not null && t.Namespace.StartsWith("Baked.Test.CodingStyle.NamespaceAsRoute")
         ),
         authentications: [
-            c => c.Jwt(anonymousRoutes: ["^(?:(?!auth).)*$"]),
+            c => c.Jwt(
+                anonymousRoutes: ["^(?:(?!auth).)*$"],
+                configureOptions: options =>
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ClockSkew = TimeSpan.FromSeconds(Settings.Required<int>("Authentication:Jwt:ClockSkewInSeconds")),
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = Settings.Required<string>("Authentication:Jwt:Issuer"),
+                        ValidAudience = Settings.Required<string>("Authentication:Jwt:Audience"),
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Settings.Required<string>("Authentication:Jwt:Key")))
+                    }
+            ),
             c => c.FixedBearerToken(
                 tokens =>
                 {
@@ -30,7 +46,7 @@ Bake.New
             c => c.ApiKey()
         ],
         authorization: c => c.ClaimBased(
-            claims: ["User", "Admin", "BaseA", "BaseB", "GivenA", "GivenB", "GivenC"],
+            claims: ["User", "Admin", "BaseA", "BaseB", "GivenA", "GivenB", "GivenC", "Refresh"],
             baseClaims: ["BaseA", "BaseB"]
         ),
         core: c => c.Dotnet(baseNamespace: "Baked.Test"),

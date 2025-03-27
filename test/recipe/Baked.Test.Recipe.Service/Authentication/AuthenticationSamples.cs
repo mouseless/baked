@@ -24,12 +24,12 @@ public class AuthenticationSamples(
     [AllowAnonymous]
     public object Login(string username, string password) =>
         !(string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
-        ? CreateToken(["User"])
+        ? CreateToken(["Admin", "User", "BaseA", "BaseB"])
         : throw new InvalidOperationException("No user found with given credentials!");
 
     [RequireUser(["Refresh"], Override = true)]
     public object Refresh() =>
-        CreateToken(["User"]);
+        CreateToken(["Admin", "User", "BaseA", "BaseB"]);
 
     object CreateToken(List<string> claims) =>
         new

@@ -25,9 +25,10 @@
 </template>
 <script setup>
 import { onUpdated, ref } from "vue";
-import { useToken } from "#imports";
+import { useAuth, useToken } from "#imports";
 import { Button, InputText, Password } from "primevue";
 
+const auth = useAuth();
 const token = useToken();
 
 const username = ref();
@@ -41,11 +42,7 @@ onUpdated(() =>{
 async function submit() {
   submitted.value = true;
 
-  const result = await $fetch("authentication-samples/login", {
-    baseURL: "http://localhost:5151",
-    method: "POST",
-    body: { username: username.value, password: password.value }
-  });
+  const result = await auth.login(username.value, password.value);
 
   if(!result) {
     password.value = null;
