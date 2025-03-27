@@ -12,8 +12,9 @@ public static class Components
     ) => new(new(route, title) { Icon = icon, Description = description, Disabled = disabled, DisabledReason = disabledReason });
 
     public static ComponentDescriptorAttribute<DataPanel> DataPanel(string title, IComponentDescriptor content,
+        IEnumerable<Parameter>? parameters = default,
         bool collapsed = false
-    ) => new(new(title, content) { Collapsed = collapsed });
+    ) => new(new(title, content) { Collapsed = collapsed, Parameters = [.. parameters ?? []] });
 
     public static ComponentDescriptorAttribute<DataTable> DataTable(
         IEnumerable<DataTable.Column>? columns = default,

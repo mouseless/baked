@@ -20,14 +20,15 @@ export default {
     };
   },
 
-  aDataPanel({ title, collapsed, content } = {}) {
+  aDataPanel({ title, collapsed, parameters, content } = {}) {
     title = $(title, "Test Title");
     collapsed = $(collapsed, false);
+    parameters = $(parameters, []);
     content = $(content, this.anExpected());
 
     return {
       type: "DataPanel",
-      schema: { title, collapsed, content }
+      schema: { title, collapsed, parameters, content }
     };
   },
 
@@ -136,6 +137,15 @@ export default {
     return {
       type: "Icon",
       schema: { iconClass }
+    };
+  },
+
+  theInjectedData({ key } = {}) {
+    key = $(key, "test");
+
+    return {
+      type: "Injected",
+      key
     };
   },
 

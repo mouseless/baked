@@ -3,6 +3,7 @@
     v-model="model"
     :data-testid="schema"
     :placeholder="schema"
+    class="w-32"
   />
 </template>
 <script setup>

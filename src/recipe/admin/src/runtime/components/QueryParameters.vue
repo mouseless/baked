@@ -44,7 +44,7 @@ watchEffect(() => {
   emit("ready",
     parameters
       .filter(p => p.required)
-      .reduce((result, p) => result && values[p.name].query.value !== undefined, true)
+      .reduce((result, p) => result && values[p.name].query.value?.length > 0, true)
   );
 });
 

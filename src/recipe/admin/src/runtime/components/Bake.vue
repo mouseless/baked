@@ -28,7 +28,6 @@ const { public: { components } } = useRuntimeConfig();
 const componentResolver = useComponentResolver();
 const dataFetcher = useDataFetcher();
 
-const routeParams = inject("routeParams", []);
 const uiContext = inject("uiContext", null);
 provide("uiContext", uiContext ? `${uiContext}/${name}` : name);
 
@@ -51,7 +50,6 @@ onMounted(async() => {
   data.value = await dataFetcher.fetch({
     baseURL: components?.Bake?.baseURL,
     data: descriptor.data,
-    routeParams,
     options: fetchOptions
   });
   loading.value = false;

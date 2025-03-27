@@ -7,17 +7,26 @@
     :pt="{ headerActions: { class: 'flex gap-2 items-center' } }"
     @update:collapsed="onCollapsed"
   >
-    <!--
     <template
-      v-if="$slots.parameters"
+      v-if="$slots.parameters || parameters.length > 0"
       #icons
     >
-      <slot name="parameters" />
+      <Parameters
+        v-if="parameters.length > 0"
+        :parameters="parameters"
+        class="text-xs"
+        @ready="onReady"
+        @changed="onChanged"
+      />
+      <slot
+        v-if="$slots.parameters"
+        name="parameters"
+      />
     </template>
-    -->
     <template #default>
       <Bake
-        v-if="loaded"
+        v-if="loaded && ready"
+        :key="uniqueKey"
         name="content"
         :descriptor="content"
       />
@@ -25,9 +34,9 @@
   </Panel>
 </template>
 <script setup>
-import { computed, inject, defineAsyncComponent, useTemplateRef, ref } from "vue";
+import { computed, inject, defineAsyncComponent, provide, ref, useTemplateRef } from "vue";
 const Panel = defineAsyncComponent(() => import("primevue/panel"));
-import Bake from "./Bake.vue";
+import Parameters from "./Parameters.vue";
 import { useUiStates } from "#imports";
 
 const { schema } = defineProps({
@@ -40,9 +49,14 @@ const panel = useTemplateRef("panel");
 
 const uiContext = inject("uiContext");
 
-const { collapsed, content, title } = schema;
+const { collapsed, content, parameters, title } = schema;
 const collapsedState = computed(() => panelStates[uiContext] ?? collapsed);
 const loaded = ref(!collapsedState.value);
+const ready = ref(parameters.length === 0); // it is ready when there is no parameter
+const uniqueKey = ref("");
+
+const values = ref();
+provide("parameters", values);
 
 function onCollapsed(collapsed) {
   panelStates[uiContext] = collapsed;
@@ -56,5 +70,14 @@ function onCollapsed(collapsed) {
       panel.value.$el.scrollIntoView({ behavior: "smooth", block: "nearest" });
     }, 750);
   }
+}
+
+function onReady(value) {
+  ready.value = value;
+}
+
+function onChanged(event) {
+  uniqueKey.value = event.uniqueKey;
+  values.value = event.values;
 }
 </script>

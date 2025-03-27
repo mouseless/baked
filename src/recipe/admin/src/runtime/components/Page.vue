@@ -6,7 +6,7 @@
   />
 </template>
 <script setup>
-import { computed, onMounted, provide, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useRuntimeConfig } from "#app";
 import { useHead, usePages } from "#imports";
 import Bake from "./Bake.vue";
@@ -24,8 +24,6 @@ useHead({ title: components?.Page?.title });
 
 const pageDescriptor = ref();
 const pageName = computed(() => routeParams[0] ?? "index");
-
-provide("routeParams", routeParams);
 
 onMounted(async() => pageDescriptor.value = await pages.fetch(pageName.value));
 </script>

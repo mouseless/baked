@@ -1,3 +1,4 @@
+import { inject } from "vue";
 import { useComposableResolver } from "#imports";
 
 export default function() {
@@ -8,21 +9,23 @@ export default function() {
   }
 
   function get(data) {
-    return data?.type === "Inline" ? data.value : null;
+    return data?.type === "Inline" ? data.value :
+      data?.type === "Injected" ? inject(data.key) :
+        null;
   }
 
-  async function fetch({ baseURL, data, routeParams, options }) {
+  async function fetch({ baseURL, data, options }) {
     if(data?.type === "Remote") {
       const headers = data.headers
-        ? await fetch({ baseURL, data: data.headers, routeParams, options })
+        ? await fetch({ baseURL, data: data.headers, options })
         : { };
 
       const query = data.query
-        ? await fetch({ baseURL, data: data.query, routeParams, options })
+        ? await fetch({ baseURL, data: data.query, options })
         : { };
 
       return await $fetch(
-        format(`${data.path}`, routeParams.slice(1)),
+        data.path,
         {
           ...options ?? { },
           baseURL,
@@ -48,6 +51,10 @@ export default function() {
 
     if(data?.type === "Inline") {
       return data.value;
+    }
+
+    if(data?.type === "Injected") {
+      throw new Error(`${data?.type} is valid only during setup`);
     }
 
     throw new Error(`${data?.type} is not a valid data type`);

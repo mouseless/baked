@@ -231,20 +231,29 @@ public class ConfigurationOverriderFeature : IFeature
                             [
                                 ReportPageTabContent(
                                     component: DataPanel(wide.Name.Humanize(),
-                                        content: String(Remote($"/{wide.GetSingle<ActionModelAttribute>().GetRoute()}", headers: headers, query: Computed(Composables.UseQuery))),
+                                        content: String(Remote($"/{wide.GetSingle<ActionModelAttribute>().GetRoute()}",
+                                            headers: headers,
+                                            query: Computed(Composables.UseQuery)
+                                        )),
                                         collapsed: false
                                     )
                                 ),
                                 ReportPageTabContent(
                                     component: DataPanel(left.Name.Humanize(),
-                                        content: String(Remote($"/{left.GetSingle<ActionModelAttribute>().GetRoute()}", headers: headers, query: Computed(Composables.UseQuery))),
+                                        content: String(Remote($"/{left.GetSingle<ActionModelAttribute>().GetRoute()}",
+                                            headers: headers,
+                                            query: Computed(Composables.UseQuery)
+                                        )),
                                         collapsed: true
                                     ),
                                     narrow: true
                                 ),
                                 ReportPageTabContent(
                                     component: DataPanel(right.Name.Humanize(),
-                                        content: String(Remote($"/{right.GetSingle<ActionModelAttribute>().GetRoute()}", headers: headers, query: Computed(Composables.UseQuery))),
+                                        content: String(Remote($"/{right.GetSingle<ActionModelAttribute>().GetRoute()}",
+                                            headers: headers,
+                                            query: Computed(Composables.UseQuery)
+                                        )),
                                         collapsed: true
                                     ),
                                     narrow: true
@@ -257,6 +266,12 @@ public class ConfigurationOverriderFeature : IFeature
                             [
                                 ReportPageTabContent(
                                     component: DataPanel(first.Name.Humanize(),
+                                        parameters:
+                                        [
+                                            Parameter("count", Select("Count", data: Inline(new[] { "5", "10", "15", "20" })),
+                                                @default: "10"
+                                            )
+                                        ],
                                         content: DataTable(
                                             columns:
                                             [
@@ -265,12 +280,21 @@ public class ConfigurationOverriderFeature : IFeature
                                                 DataTableColumn("column2", "Column 2"),
                                                 DataTableColumn("column3", "Column 3")
                                             ],
-                                            data: Remote($"/{first.GetSingle<ActionModelAttribute>().GetRoute()}", headers: headers, query: Computed(Composables.UseQuery))
+                                            data: Remote($"/{first.GetSingle<ActionModelAttribute>().GetRoute()}",
+                                                headers: headers,
+                                                query: Computed(Composables.UseQuery)
+                                            )
                                         )
                                     )
                                 ),
                                 ReportPageTabContent(
                                     component: DataPanel(second.Name.Humanize(),
+                                        parameters:
+                                        [
+                                            Parameter("count", Select("Count", data: Inline(new[] { "5", "10", "15", "20" })),
+                                                @default: "10"
+                                            )
+                                        ],
                                         content: DataTable(
                                             columns:
                                             [
@@ -279,7 +303,10 @@ public class ConfigurationOverriderFeature : IFeature
                                                 DataTableColumn("column2", "Column 2"),
                                                 DataTableColumn("column3", "Column 3")
                                             ],
-                                            data: Remote($"/{second.GetSingle<ActionModelAttribute>().GetRoute()}", headers: headers, query: Computed(Composables.UseQuery))
+                                            data: Remote($"/{second.GetSingle<ActionModelAttribute>().GetRoute()}",
+                                                headers: headers,
+                                                query: Computed(Composables.UseQuery)
+                                            )
                                         ),
                                         collapsed: true
                                     )
