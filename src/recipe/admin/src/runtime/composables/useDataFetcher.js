@@ -1,11 +1,12 @@
 import { useComposableResolver, useContext } from "#imports";
+import { deepUnref } from "vue-deepunref";
 
 export default function() {
   const composableResolver = useComposableResolver();
   const context = useContext();
 
   function shouldLoad(dataType) {
-    return dataType === "Remote" || dataType === "Computed";
+    return dataType === "Remote" || dataType === "Computed" || dataType == "Composite";
   }
 
   function get(data) {
@@ -15,24 +16,17 @@ export default function() {
   }
 
   async function fetch({ baseURL, data, options, injectedData }) {
-    if(data?.type === "Remote") {
-      const headers = data.headers
-        ? await fetch({ baseURL, data: data.headers, options })
-        : { };
+    if(data?.type === "Composite") {
+      const result = {};
 
-      const query = data.query
-        ? await fetch({ baseURL, data: data.query, options })
-        : { };
+      for(const part of data.parts) {
+        Object.assign(
+          result,
+          deepUnref(await fetch({ baseURL, data: part, options, injectedData }))
+        );
+      }
 
-      return await $fetch(
-        data.path,
-        {
-          ...options ?? { },
-          baseURL,
-          headers,
-          query
-        }
-      );
+      return result;
     }
 
     if(data?.type === "Computed") {
@@ -49,12 +43,32 @@ export default function() {
       throw new Error("Data composable should have either `compute` or `computeAsync`");
     }
 
+    if(data?.type === "Injected") {
+      return injectedData;
+    }
+
     if(data?.type === "Inline") {
       return data.value;
     }
 
-    if(data?.type === "Injected") {
-      return injectedData;
+    if(data?.type === "Remote") {
+      const headers = data.headers
+        ? deepUnref(await fetch({ baseURL, data: data.headers, options, injectedData }))
+        : { };
+
+      const query = data.query
+        ? deepUnref(await fetch({ baseURL, data: data.query, options, injectedData }))
+        : { };
+
+      return await $fetch(
+        data.path,
+        {
+          ...options ?? { },
+          baseURL,
+          headers: headers,
+          query: query
+        }
+      );
     }
 
     throw new Error(`${data?.type} is not a valid data type`);

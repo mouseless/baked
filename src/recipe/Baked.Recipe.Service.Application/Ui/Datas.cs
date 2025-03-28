@@ -2,8 +2,14 @@
 
 public static class Datas
 {
+    public static CompositeData Composite(IEnumerable<IData> parts) =>
+        new() { Parts = [.. parts] };
+
     public static ComputedData Computed(string composable, params IEnumerable<object> args) =>
         new(composable) { Args = [.. args] };
+
+    public static InjectedData Injected() =>
+        new();
 
     public static InlineData Inline(object value) =>
         new(value);

@@ -27,6 +27,7 @@
   - `useContext` composable is added to manage bake context in ui components
   - `InjectedData` is introduced for components to provide values, e.g.
     parameter data, to its child commponents
+  - `CompositeData` is introduced to combine data from different sources
 
 ## Improvements
 

@@ -282,7 +282,7 @@ public class ConfigurationOverriderFeature : IFeature
                                             ],
                                             data: Remote($"/{first.GetSingle<ActionModelAttribute>().GetRoute()}",
                                                 headers: headers,
-                                                query: Computed(Composables.UseQuery)
+                                                query: Composite([Computed(Composables.UseQuery), Injected()])
                                             )
                                         )
                                     )
@@ -305,7 +305,7 @@ public class ConfigurationOverriderFeature : IFeature
                                             ],
                                             data: Remote($"/{second.GetSingle<ActionModelAttribute>().GetRoute()}",
                                                 headers: headers,
-                                                query: Computed(Composables.UseQuery)
+                                                query: Composite([Computed(Composables.UseQuery), Injected()])
                                             )
                                         ),
                                         collapsed: true

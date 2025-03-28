@@ -56,8 +56,10 @@ const loaded = ref(!collapsedState.value);
 const ready = ref(parameters.length === 0); // it is ready when there is no parameter
 const uniqueKey = ref("");
 
-const values = ref();
-context.setInjectedData(values);
+const values = {};
+if(parameters.length > 0) {
+  context.setInjectedData(values);
+}
 
 function onCollapsed(collapsed) {
   panelStates[path] = collapsed;
@@ -79,6 +81,6 @@ function onReady(value) {
 
 function onChanged(event) {
   uniqueKey.value = event.uniqueKey;
-  values.value = event.values;
+  Object.assign(values, event.values);
 }
 </script>

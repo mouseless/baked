@@ -38,9 +38,9 @@ emitReady();
 
 // when any of the parameter values changed from input components, it emits
 // ready and changed
-watch(Object.values(values), async newValues => {
+watch(Object.values(values), async() => {
   emitReady();
-  emitChanged(newValues);
+  emitChanged();
 });
 
 function emitReady() {
@@ -51,10 +51,10 @@ function emitReady() {
   );
 }
 
-function emitChanged(newValues) {
+function emitChanged() {
   emit("changed", {
-    uniqueKey: Object.values(newValues).join("-"),
-    values: newValues
+    uniqueKey: Object.values(values).map(v => v.value).join("-"),
+    values
   });
 }
 </script>
