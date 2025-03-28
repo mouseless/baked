@@ -66,3 +66,33 @@ test.describe("Collapsed", () => {
     await expect(component.getByTestId("content")).toBeAttached(); // assert it is still there
   });
 });
+
+test.describe("Parameters", () => {
+  const id = "Parameters";
+
+  test("inputs rendered", async({page}) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.getByTestId("required")).toBeVisible();
+    await expect(component.getByTestId("optional")).toBeVisible();
+  });
+
+  test("listens ready model", async({page}) => {
+    const component = page.getByTestId(id);
+    const content = component.getByTestId("content");
+
+    await expect(content).not.toBeVisible();
+    await component.getByTestId("required").fill("any text");
+
+    await expect(content).toBeVisible();
+  });
+
+  test("redraws when unique key changes", async({page}) => {
+    const component = page.getByTestId(id);
+
+    await component.getByTestId("required").fill("value");
+
+    await expect(component.getByTestId("content")).toHaveText(/value/);
+  });
+});
+

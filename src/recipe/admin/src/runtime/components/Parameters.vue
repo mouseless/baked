@@ -17,7 +17,7 @@
   </div>
 </template>
 <script setup>
-import { defineEmits, ref, watch } from "vue";
+import { defineEmits, onMounted, ref, watch } from "vue";
 import Bake from "./Bake.vue";
 
 const { parameters } = defineProps({
@@ -35,6 +35,7 @@ for(const parameter of parameters) {
 
 // initial emit in case it is already ready using default parameters
 emitReady();
+emitChanged();
 
 // when any of the parameter values changed from input components, it emits
 // ready and changed
@@ -53,7 +54,11 @@ function emitReady() {
 
 function emitChanged() {
   emit("changed", {
-    uniqueKey: Object.values(values).map(v => v.value).join("-"),
+    uniqueKey: Object
+      .values(values)
+      .map(v => v.value)
+      .filter(v => v?.length > 0)
+      .join("-"),
     values
   });
 }

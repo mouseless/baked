@@ -54,6 +54,7 @@ watchEffect(() => {
   emit("changed",
     Object.values(values)
       .map(p => p.query.value)
+      .filter(v => v?.length > 0)
       .join("-")
   );
 });

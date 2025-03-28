@@ -120,6 +120,7 @@ public class ConfigurationOverriderFeature : IFeature
             new { Title = "Menu Page", Description = "A page component suitable for rendering navigation pages" },
             new { Title = "Money", Description = "A component to render money values" },
             new { Title = "Page Title", Description = "A component to render page title, desc and actions" },
+            new { Title = "Parameters", Description = "A behavioral component to manage parameters through emits" },
             new { Title = "Query Parameters", Description = "A behavioral component to sync and manage parameters in query string" },
             new { Title = "Rate", Description = "A component to render rate values as percentage" },
             new { Title = "Report Page", Description = "A page component to render report pages" },
