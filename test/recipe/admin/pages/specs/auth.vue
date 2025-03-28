@@ -30,8 +30,10 @@
 </template>
 <script setup>
 import { Button, Panel } from "primevue";
+import { useRuntimeConfig } from "#app";
 import { createError, useToast, useToken } from "#imports";
 
+const { public: { components } } = useRuntimeConfig();
 const token = useToken();
 const toast = useToast();
 
@@ -44,7 +46,7 @@ function authenticationException() {
 
 async function requestWithToken(){
   const result = await $fetch("time-provider-samples/now", {
-    baseURL: "http://localhost:5151",
+    baseURL: components.Bake.baseURL,
     method: "GET"
   });
 

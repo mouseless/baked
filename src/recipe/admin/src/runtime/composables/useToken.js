@@ -1,3 +1,4 @@
+import { createError } from "#imports";
 import { useAuth, useMutex } from "#imports";
 
 export default function() {
@@ -12,9 +13,8 @@ export default function() {
 
     const result = Token(tokenString);
 
-    // this control is for backward compatibility
-    // previous tokens may not contain 'access' value
     if(!result.access) { return null; }
+    if(!result.refresh) { return null; }
 
     if(result.refreshIsExpired()) { return null; }
     if(result.accessIsExpired() && shouldRefresh) {

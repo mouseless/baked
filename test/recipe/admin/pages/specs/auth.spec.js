@@ -1,11 +1,15 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
 import primevue from "~/utils/locators/primevue";
 
-const accessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJJc3N1ZXIiLCJpYXQiOjE3NDMwMTcwNDAsImV4cCI6NDA3ODIzNjI0MCwiYXVkIjoiQXVkaWVuY2UiLCJzdWIiOiIiLCJVc2VyIjoiVXNlciJ9.du9y0K1tvI8BDiBiERa-QeKgOpot1GF8melbgs7qpOk";
-const expiredAccessToken = "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3NDA3MjY2ODksImlhdCI6MTc0MDcyNjY4OX0.vOd6Gg2rZMj1-dXz_MaDSdaJH78W3QFPIuIa3IE-4nI";
-const refreshToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJJc3N1ZXIiLCJpYXQiOjE3NDMwMTcwNDAsImV4cCI6NDA3ODIzNjI0MCwiYXVkIjoiQXVkaWVuY2UiLCJzdWIiOiIiLCJSZWZyZXNoIjoiUmVmcmVzaCJ9.DKVsDLHVct-qopfULCpbDOfvjYHY4iQcQ6EZ6P77Olw";
+//expires at 2999-03-28
+const accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjMyNDc5NjE0MTk0fQ.F4K4GkNqtuUNy6cgyOEtrLtaidgvVQmsw1Ouixyw5a0";
+//expires at 2000-03-28
+const expiredAccessToken = "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjk1NDI0MTM5NH0.ZKPMybdzg1aO1g_xyV1QXUx9NR_vynu9s9z4Zll7WNA";
+//expires at 9999-03-28
+const refreshToken = "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjI1MzM3ODIzNDk5NH0.IO-jutz7t-FbvgrQ87n0y_tSWUsSfiNPpfr3sAzvWhg";
 
-test.beforeEach(async({ page }) => {
+test.beforeEach(async({ goto, page }) => {
+  await goto("/specs", { waitUntil: "hydration" }); 
   await page.route("*/**/authentication-samples/login", async route => {
     const json = {
       access: accessToken,
@@ -18,6 +22,10 @@ test.beforeEach(async({ page }) => {
       access: accessToken,
       refresh: refreshToken
     };
+    await route.fulfill({ json });
+  });
+  await page.route("*/**/time-provider-samples/now", async route => {
+    const json = Date.now();
     await route.fulfill({ json });
   });
 });
@@ -48,33 +56,30 @@ test("view authorized page after login", async({goto, page}) => {
   await goto("/specs/auth", { waitUntil: "hydration" });
   const form = page.locator("form");
 
-  await form.getByPlaceholder("Username").fill("Username");
-  await form.getByPlaceholder("Password").fill("Password");
-  await form.locator(".p-button").click();
+  await login(form);
 
   await expect(page).toHaveURL("/specs/auth");
 });
 
 test("logout redirects to login", async({goto, page}) => {
+  await setSession(page, { access: accessToken, refresh: refreshToken });
   await goto("/specs/auth", { waitUntil: "hydration" });
-  const form = page.locator("form");
-  await login(form);
 
   await page.getByTestId("logout").click();
+
   await expect(page).toHaveURL("/login");
 });
 
 test("redirects to login page when backend returns 401 error", async({goto, page}) => {
+  await setSession(page, { access: accessToken, refresh: refreshToken });
   await goto("/specs/auth", { waitUntil: "hydration" });
-  const form = page.locator("form");
-  await login(form);
-
-  await expect(page).toHaveURL("/specs/auth");
+ 
   await page.getByTestId("exception").click();
+ 
   await expect(page).toHaveURL("login?redirect=/specs/auth");
 });
 
-test("refresh token when access is expired", async({goto, page}) => {
+test("refresh token before navigation when access is expired", async({goto, page}) => {
   await page.route("*/**/authentication-samples/login", async route => {
     const json = {
       access: expiredAccessToken,
@@ -82,22 +87,47 @@ test("refresh token when access is expired", async({goto, page}) => {
     };
     await route.fulfill({ json });
   });
+  const requestPromise = page.waitForRequest(req => req.url().includes("refresh"));
+  await setSession(page, { access: expiredAccessToken, refresh: refreshToken });
+  
   await goto("/specs/auth", { waitUntil: "hydration" });
-  const form = page.locator("form");
-  await form.getByPlaceholder("Username").fill("Username");
-  await form.getByPlaceholder("Password").fill("Password");
-  const responsePromise = page.waitForResponse(resp => {
-    return resp.url().includes("refresh");
-  });
-  await form.locator(".p-button").click();
-
-  const response = await responsePromise;
-  expect(response.url()).toContain("refresh");
+  
+  const request = await requestPromise;
+  expect(request.headers()["authorization"]).toContain(`Bearer ${refreshToken}`);
   await expect(page).toHaveURL("/specs/auth");
+});
+
+test("add access token to fetch requests", async({goto, page}) => {
+  const requestPromise = page.waitForRequest(req => req.url().includes("time-provider-samples/now"));
+  await setSession(page, { access: accessToken, refresh: refreshToken });
+  await goto("/specs/auth", { waitUntil: "hydration" });
+  
+  await page.getByTestId("request").click();
+
+  const request = await requestPromise;
+  expect(request.headers()["authorization"]).toContain(`Bearer ${accessToken}`);
+});
+
+test("refresh token before fetch when access is expired", async({goto, page}) => {
+  const requestPromise = page.waitForRequest(req => req.url().includes("refresh"));
+  await setSession(page, { access: accessToken, refresh: refreshToken });
+  await goto("/specs/auth", { waitUntil: "hydration" });
+  
+  setSession(page, { access: expiredAccessToken, refresh: refreshToken }).then(async () => {
+    await page.getByTestId("request").click();
+  });
+  
+  const request = await requestPromise;
+  expect(request.headers()["authorization"]).toContain(`Bearer ${refreshToken}`);
 });
 
 async function login(form) {
   await form.getByPlaceholder("Username").fill("Username");
   await form.getByPlaceholder("Password").fill("Password");
   await form.locator(".p-button").click();
+}
+
+async function setSession(page, { access, refresh }){
+  await page.evaluate(() => localStorage.clear("token"));
+  await page.evaluate((token) => localStorage.setItem("token", token), JSON.stringify({ access, refresh }));
 }
