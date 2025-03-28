@@ -40,7 +40,7 @@ export default defineNuxtPlugin({
         toast.add({ ...getMessage(error) });
 
         const arg = handler.behaviorArgument?.type == "Computed"
-          ? (await useComposableResolver().resolve(handler.behaviorArgument.value)).default()
+          ? (await useComposableResolver().resolve(handler.behaviorArgument.value)).default().compute()
           : handler.behaviorArgument.value;
 
         router.replace(arg);

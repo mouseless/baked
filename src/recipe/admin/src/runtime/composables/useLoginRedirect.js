@@ -1,7 +1,13 @@
 import { useRoute } from "#app";
 
 export default function() {
-  const route = useRoute();
+  function compute() {
+    const route = useRoute();
 
-  return `/login?redirect=${route.fullPath}`;
+    return `/login?redirect=${route.fullPath}`;
+  }
+
+  return {
+    compute
+  };
 }

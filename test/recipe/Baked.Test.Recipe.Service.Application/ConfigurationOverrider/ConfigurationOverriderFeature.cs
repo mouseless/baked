@@ -7,7 +7,6 @@ using Baked.Test.Core;
 using Baked.Test.ExceptionHandling;
 using Baked.Test.Orm;
 using Baked.Theme.Admin;
-using Baked.Ui;
 using Humanizer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
@@ -158,7 +157,7 @@ public class ConfigurationOverriderFeature : IFeature
                             SideMenuItem("/", "pi pi-home"),
                             SideMenuItem("/specs", "pi pi-list-check", title: "Specs")
                         ],
-                        footer: new ComponentDescriptor("Logout")
+                        footer: String(Inline("FT"))
                     ),
                     header: Header(
                         siteMap:

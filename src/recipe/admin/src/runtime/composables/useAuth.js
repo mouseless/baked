@@ -1,8 +1,7 @@
 import { useRuntimeConfig } from "#app";
 
 export default function() {
-  const { public: { auth } } = useRuntimeConfig();
-  const { public: { components } } = useRuntimeConfig();
+  const { public: { auth, components } } = useRuntimeConfig();
 
   async function login(username, password) {
     return await $fetch(auth.loginPath,
@@ -16,6 +15,7 @@ export default function() {
   async function refresh(refreshToken) {
     const headers = new Headers();
     headers.set("Authorization", `Bearer ${refreshToken}`);
+
     return await $fetch(auth.refreshPath,
       {
         baseURL: components?.Bake?.baseURL,
