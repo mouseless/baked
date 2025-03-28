@@ -2,8 +2,8 @@
   <!--
     [!NOTE]
 
-    unlike usual model passing, `.model` is not enough here in below. for
-    some reason vue rewraps the model which is already a ref, causing a
+    unlike the usual way to pass model, `.model` is not enough here in below.
+    for some reason vue rewraps the model which is already a ref, causing a
     double ref. that's why `.model.value` is passed instead of `.model`
   -->
   <div class="flex gap-2">
@@ -56,6 +56,5 @@ function emitChanged(newValues) {
     uniqueKey: Object.values(newValues).join("-"),
     values: newValues
   });
-
 }
 </script>

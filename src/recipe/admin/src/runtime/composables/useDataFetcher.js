@@ -1,8 +1,8 @@
-import { inject } from "vue";
-import { useComposableResolver } from "#imports";
+import { useComposableResolver, useContext } from "#imports";
 
 export default function() {
   const composableResolver = useComposableResolver();
+  const context = useContext();
 
   function shouldLoad(dataType) {
     return dataType === "Remote" || dataType === "Computed";
@@ -10,11 +10,11 @@ export default function() {
 
   function get(data) {
     return data?.type === "Inline" ? data.value :
-      data?.type === "Injected" ? inject(data.key) :
+      data?.type === "Injected" ? context.injectedData() :
         null;
   }
 
-  async function fetch({ baseURL, data, options }) {
+  async function fetch({ baseURL, data, options, injectedData }) {
     if(data?.type === "Remote") {
       const headers = data.headers
         ? await fetch({ baseURL, data: data.headers, options })
@@ -54,7 +54,7 @@ export default function() {
     }
 
     if(data?.type === "Injected") {
-      throw new Error(`${data?.type} is valid only during setup`);
+      return injectedData;
     }
 
     throw new Error(`${data?.type} is not a valid data type`);

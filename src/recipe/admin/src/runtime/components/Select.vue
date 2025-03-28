@@ -8,7 +8,7 @@
   <FloatLabel v-else>
     <Select
       v-model="selected"
-      :input-id="uiContext"
+      :input-id="path"
       :options="data"
       :option-label="optionLabel"
       :placeholder="label"
@@ -19,10 +19,11 @@
   </FloatLabel>
 </template>
 <script setup>
-import { defineAsyncComponent, inject, ref, watch } from "vue";
+import { defineAsyncComponent, ref, watch } from "vue";
 const FloatLabel = defineAsyncComponent(() => import("primevue/floatlabel"));
 const Select = defineAsyncComponent(() => import("primevue/select"));
 const Skeleton = defineAsyncComponent(() => import("primevue/skeleton"));
+import { useContext } from "#imports";
 
 const { schema, data, loading } = defineProps({
   schema: { type: null, required: true },
@@ -37,7 +38,9 @@ const model = defineModel({
 
 const { label, optionLabel, optionValue, showClear } = schema;
 
-const uiContext = inject("uiContext");
+const context = useContext();
+
+const path = context.path();
 
 const selected = ref({});
 watch(selected, newSelected => setModel(newSelected));

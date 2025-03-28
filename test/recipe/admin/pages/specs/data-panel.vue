@@ -53,7 +53,7 @@ const variants = [
       ],
       content: giveMe.anExpected({
         testId: "content",
-        data: giveMe.theInjectedData({ key: "parameters" })
+        data: giveMe.theInjectedData()
       })
     })
   }

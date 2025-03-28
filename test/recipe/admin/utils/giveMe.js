@@ -140,12 +140,9 @@ export default {
     };
   },
 
-  theInjectedData({ key } = {}) {
-    key = $(key, "test");
-
+  theInjectedData() {
     return {
-      type: "Injected",
-      key
+      type: "Injected"
     };
   },
 

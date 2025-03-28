@@ -34,32 +34,33 @@
   </Panel>
 </template>
 <script setup>
-import { computed, inject, defineAsyncComponent, provide, ref, useTemplateRef } from "vue";
+import { computed, inject, defineAsyncComponent, ref, useTemplateRef } from "vue";
 const Panel = defineAsyncComponent(() => import("primevue/panel"));
 import Parameters from "./Parameters.vue";
-import { useUiStates } from "#imports";
+import { useContext, useUiStates } from "#imports";
 
 const { schema } = defineProps({
   schema: { type: null, required: true },
   data: { type: null, default: null }
 });
 
+const { collapsed, content, parameters, title } = schema;
+
 const { value: { panelStates } } = useUiStates();
+const context = useContext();
 const panel = useTemplateRef("panel");
 
-const uiContext = inject("uiContext");
-
-const { collapsed, content, parameters, title } = schema;
-const collapsedState = computed(() => panelStates[uiContext] ?? collapsed);
+const path = context.path();
+const collapsedState = computed(() => panelStates[path] ?? collapsed);
 const loaded = ref(!collapsedState.value);
 const ready = ref(parameters.length === 0); // it is ready when there is no parameter
 const uniqueKey = ref("");
 
 const values = ref();
-provide("parameters", values);
+context.setInjectedData(values);
 
 function onCollapsed(collapsed) {
-  panelStates[uiContext] = collapsed;
+  panelStates[path] = collapsed;
 
   if(!collapsed && !loaded.value) {
     loaded.value = true;
