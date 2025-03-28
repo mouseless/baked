@@ -41,10 +41,17 @@
             />
           </div>
           <div v-else class="space-x-4">
-            <div :data-testid="variant.name" class="inline-block mt-4">
+            <div :data-testid="variant.name" class="inline-block">
+              <!-- renders given variants -->
               <Bake
                 v-if="index < variants.length"
                 v-model="models[index].value"
+                :name="`variants/${camelize(variant.name)}`"
+                :descriptor="prepareDescriptor(variant)"
+              />
+              <!-- draws remaining variant, e.g., loading variant -->
+              <Bake
+                v-else
                 :name="`variants/${camelize(variant.name)}`"
                 :descriptor="prepareDescriptor(variant)"
               />

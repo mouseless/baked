@@ -56,7 +56,7 @@ const loaded = ref(!collapsedState.value);
 const ready = ref(parameters.length === 0); // it is ready when there is no parameter
 const uniqueKey = ref("");
 
-const values = {};
+const values = ref({});
 if(parameters.length > 0) {
   context.setInjectedData(values);
 }
@@ -81,6 +81,6 @@ function onReady(value) {
 
 function onChanged(event) {
   uniqueKey.value = event.uniqueKey;
-  Object.assign(values, event.values);
+  values.value = event.values;
 }
 </script>

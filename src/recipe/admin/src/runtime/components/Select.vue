@@ -5,7 +5,10 @@
   >
     <Skeleton class="min-h-10" />
   </div>
-  <FloatLabel v-else>
+  <FloatLabel
+    v-else
+    variant="on"
+  >
     <Select
       v-model="selected"
       :input-id="path"
