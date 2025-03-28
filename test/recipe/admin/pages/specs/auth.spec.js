@@ -9,7 +9,7 @@ const expiredAccessToken = "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjk1NDI0MTM5NH0.ZKPMybd
 const refreshToken = "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjI1MzM3ODIzNDk5NH0.IO-jutz7t-FbvgrQ87n0y_tSWUsSfiNPpfr3sAzvWhg";
 
 test.beforeEach(async({ goto, page }) => {
-  await goto("/specs", { waitUntil: "hydration" }); 
+  await goto("/specs", { waitUntil: "hydration" });
   await page.route("*/**/authentication-samples/login", async route => {
     const json = {
       access: accessToken,
@@ -73,9 +73,9 @@ test("logout redirects to login", async({goto, page}) => {
 test("redirects to login page when backend returns 401 error", async({goto, page}) => {
   await setSession(page, { access: accessToken, refresh: refreshToken });
   await goto("/specs/auth", { waitUntil: "hydration" });
- 
+
   await page.getByTestId("exception").click();
- 
+
   await expect(page).toHaveURL("login?redirect=/specs/auth");
 });
 
@@ -89,9 +89,9 @@ test("refresh token before navigation when access is expired", async({goto, page
   });
   const requestPromise = page.waitForRequest(req => req.url().includes("refresh"));
   await setSession(page, { access: expiredAccessToken, refresh: refreshToken });
-  
+
   await goto("/specs/auth", { waitUntil: "hydration" });
-  
+
   const request = await requestPromise;
   expect(request.headers()["authorization"]).toContain(`Bearer ${refreshToken}`);
   await expect(page).toHaveURL("/specs/auth");
@@ -101,7 +101,7 @@ test("add access token to fetch requests", async({goto, page}) => {
   const requestPromise = page.waitForRequest(req => req.url().includes("time-provider-samples/now"));
   await setSession(page, { access: accessToken, refresh: refreshToken });
   await goto("/specs/auth", { waitUntil: "hydration" });
-  
+
   await page.getByTestId("request").click();
 
   const request = await requestPromise;
@@ -112,11 +112,11 @@ test("refresh token before fetch when access is expired", async({goto, page}) =>
   const requestPromise = page.waitForRequest(req => req.url().includes("refresh"));
   await setSession(page, { access: accessToken, refresh: refreshToken });
   await goto("/specs/auth", { waitUntil: "hydration" });
-  
-  setSession(page, { access: expiredAccessToken, refresh: refreshToken }).then(async () => {
+
+  setSession(page, { access: expiredAccessToken, refresh: refreshToken }).then(async() => {
     await page.getByTestId("request").click();
   });
-  
+
   const request = await requestPromise;
   expect(request.headers()["authorization"]).toContain(`Bearer ${refreshToken}`);
 });
@@ -129,5 +129,5 @@ async function login(form) {
 
 async function setSession(page, { access, refresh }){
   await page.evaluate(() => localStorage.clear("token"));
-  await page.evaluate((token) => localStorage.setItem("token", token), JSON.stringify({ access, refresh }));
+  await page.evaluate(token => localStorage.setItem("token", token), JSON.stringify({ access, refresh }));
 }
