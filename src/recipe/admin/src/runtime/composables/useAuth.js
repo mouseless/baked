@@ -5,7 +5,7 @@ export default function() {
   const { public: { components } } = useRuntimeConfig();
 
   async function login(username, password) {
-    return await $fetch(auth.loginRoute,
+    return await $fetch(auth.loginPath,
       {
         baseURL: components?.Bake?.baseURL,
         method: "POST",
@@ -16,7 +16,7 @@ export default function() {
   async function refresh(refreshToken) {
     const headers = new Headers();
     headers.set("Authorization", `Bearer ${refreshToken}`);
-    return await $fetch(auth.refreshRoute,
+    return await $fetch(auth.refreshPath,
       {
         baseURL: components?.Bake?.baseURL,
         method: "POST",

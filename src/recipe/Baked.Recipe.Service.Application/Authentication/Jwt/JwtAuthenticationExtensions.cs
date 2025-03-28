@@ -12,8 +12,8 @@ public static class JwtAuthenticationExtensions
 {
     public static JwtAuthenticationFeature Jwt(this AuthenticationConfigurator _,
         Action<JwtBearerOptions>? configureOptions = default,
-        List<string>? anonymousRoutes = default
-    ) => new(configureOptions ?? (_ => { }), anonymousRoutes ?? []);
+        Action<JwtAuthenticationPlugin>? configurePlugin = default
+    ) => new(configureOptions ?? (_ => { }), configurePlugin);
 
     public static bool IsJwt(this string token) =>
        new JwtSecurityTokenHandler().CanReadToken(token.Replace("Bearer", string.Empty).Trim());

@@ -9,8 +9,10 @@ using static Baked.Theme.Admin.ErrorHandlingPlugin;
 
 namespace Baked.ExceptionHandling.ProblemDetails;
 
-public class ProblemDetailsExceptionHandlingFeature(Setting<string>? _typeUrlFormat = default)
-    : IFeature<ExceptionHandlingConfigurator>
+public class ProblemDetailsExceptionHandlingFeature(
+    Setting<string>? _typeUrlFormat = default,
+    List<Handler>? _handlers = default
+) : IFeature<ExceptionHandlingConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
@@ -56,14 +58,14 @@ public class ProblemDetailsExceptionHandlingFeature(Setting<string>? _typeUrlFor
 
         configurator.ConfigureAppDescriptor(app =>
         {
+            _handlers = [.. _handlers ?? [],
+                new(StatusCode: (int)HttpStatusCode.BadRequest, Behavior: HandlerBehavior.Alert),
+                new(Behavior: HandlerBehavior.Page)
+            ];
+
             app.Plugins.Add(new ErrorHandlingPlugin()
             {
-                Handlers = new()
-                {
-                    new(StatusCode: (int)HttpStatusCode.Unauthorized, Behavior: HandlerBehavior.Redirect, BehaviorArgument: new(BehaviorArgumentType.Computed, "useLoginRedirect")),
-                    new(StatusCode: (int)HttpStatusCode.BadRequest, Behavior: HandlerBehavior.Alert),
-                    new(Behavior: HandlerBehavior.Page),
-                }
+                Handlers = _handlers
             });
         });
     }

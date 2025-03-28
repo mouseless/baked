@@ -1,6 +1,8 @@
 ﻿using Baked.Test.Orm;
 using Microsoft.IdentityModel.Tokens;
+using System.Net;
 using System.Text;
+using static Baked.Theme.Admin.ErrorHandlingPlugin;
 
 Bake.New
     .Service(
@@ -10,7 +12,6 @@ Bake.New
         ),
         authentications: [
             c => c.Jwt(
-                anonymousRoutes: ["^(?:(?!auth).)*$"],
                 configureOptions: options =>
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
@@ -22,7 +23,13 @@ Bake.New
                         ValidIssuer = Settings.Required<string>("Authentication:Jwt:Issuer"),
                         ValidAudience = Settings.Required<string>("Authentication:Jwt:Audience"),
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Settings.Required<string>("Authentication:Jwt:Key")))
-                    }
+                    },
+                configurePlugin: plugin => {
+                    plugin.AnonymousRoutes = ["^(?:(?!auth).)*$"];
+                    plugin.LoginPath = "authentication-samples/login";
+                    plugin.RefreshPath = "authentication-samples/refresh";
+                    plugin.LoginPage = "/login";
+                }
             ),
             c => c.FixedBearerToken(
                 tokens =>
@@ -54,7 +61,10 @@ Bake.New
         database: c => c
             .Sqlite()
             .ForProduction(c.PostgreSql()),
-        exceptionHandling: c => c.ProblemDetails(typeUrlFormat: "https://baked.mouseless.codes/errors/{0}"),
+        exceptionHandling: c => c.ProblemDetails(
+            typeUrlFormat: "https://baked.mouseless.codes/errors/{0}",
+            handlers: [new(StatusCode: (int)HttpStatusCode.Unauthorized, Behavior: HandlerBehavior.Redirect, BehaviorArgument: new(BehaviorArgumentType.Computed, "useLoginRedirect"))]
+        ),
         configure: app =>
         {
             app.Features.AddReporting(c => c

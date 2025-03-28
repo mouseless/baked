@@ -1,7 +1,6 @@
 import { defineNuxtPlugin, useNuxtApp, useRoute, useRuntimeConfig } from "#app";
 import { ofetch } from "ofetch";
 import useToken from "../composables/useToken";
-import path from "path";
 
 export default defineNuxtPlugin({
   name: "auth",
@@ -22,7 +21,7 @@ export default defineNuxtPlugin({
           return;
         }
 
-        if(!request?.includes("refresh") && !request?.includes("login")) {
+        if(!request?.includes(auth.LoginPath) && !request?.includes(auth.RefreshPath)) {
           const result = await token.current(true);
           options.headers.set("Authorization", "Bearer " + result?.access );
         }
@@ -38,18 +37,19 @@ export default defineNuxtPlugin({
       }
 
       const token = useToken();
-      const toLogin = to.path.includes("login");
+      const toLogin = to.path.includes(auth.loginPage);
       const current = await token.current(!toLogin);
 
       if(current && toLogin) {
         await router.replace(to.query.redirect || "/");
       } else if(!current && !toLogin) {
-        await router.replace(`/login?redirect=${to.fullPath}`);
+        await router.replace(`${auth.loginPage}?redirect=${to.fullPath}`);
       }
     });
   },
   hooks: {
     "app:mounted"() {
+      const { public: { auth } } = useRuntimeConfig();
       const nuxtApp = useNuxtApp();
       const router = nuxtApp.$router;
       const route = useRoute();
@@ -60,7 +60,7 @@ export default defineNuxtPlugin({
           if(current) {
             router.push(route.query.redirect || "/");
           } else {
-            router.push("/login");
+            router.push(auth.loginPage);
           }
         });
       });
