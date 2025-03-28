@@ -1,7 +1,9 @@
 ﻿using Baked.Test.Orm;
+using Baked.Ui;
 using Microsoft.IdentityModel.Tokens;
 using System.Net;
 using System.Text;
+
 using static Baked.Theme.Admin.ErrorHandlingPlugin;
 
 Bake.New
@@ -63,7 +65,7 @@ Bake.New
             .ForProduction(c.PostgreSql()),
         exceptionHandling: c => c.ProblemDetails(
             typeUrlFormat: "https://baked.mouseless.codes/errors/{0}",
-            handlers: [new(StatusCode: (int)HttpStatusCode.Unauthorized, Behavior: HandlerBehavior.Redirect, BehaviorArgument: new(BehaviorArgumentType.Computed, "useLoginRedirect"))]
+            handlers: [new(StatusCode: (int)HttpStatusCode.Unauthorized, Behavior: HandlerBehavior.Redirect, BehaviorArgument: new ComputedData("useLoginRedirect"))]
         ),
         configure: app =>
         {

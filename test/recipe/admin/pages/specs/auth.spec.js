@@ -20,7 +20,7 @@ test.beforeEach(async({ goto, page }) => {
 });
 
 test("redirect to login", async({goto, page}) => {
-  await goto("/specs/auth", { waitUntil: "hydration" });
+  await goto("/specs/auth");
 
   await expect(page).toHaveURL("login?redirect=/specs/auth");
 });
@@ -74,7 +74,7 @@ test("refresh token before navigation when access is expired", async({goto, page
   const token = giveMe.aToken(true);
   await mockMe.theSession(page, token);
 
-  await goto("/specs/auth", { waitUntil: "hydration" });
+  await goto("/specs/auth");
 
   const request = await requestPromise;
   expect(request.headers()["authorization"]).toContain(`Bearer ${token.refresh}`);

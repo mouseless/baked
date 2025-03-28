@@ -1,7 +1,7 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
 import baked from "~/utils/locators/baked.js";
-import mockMe from "../../utils/mockMe.js";
-import giveMe from "../../utils/giveMe.js";
+import mockMe from "~/utils/mockMe";
+import giveMe from "~/utils/giveMe";
 
 test.beforeEach(async({goto, page}) => {
   await goto("/specs", { waitUntil: "hydration" });
