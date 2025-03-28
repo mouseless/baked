@@ -37,7 +37,7 @@ for(const parameter of parameters) {
 emitReady();
 
 // when any of the parameter values changed from input components, it emits
-// changed
+// ready and changed
 watch(Object.values(values), async newValues => {
   emitReady();
   emitChanged(newValues);

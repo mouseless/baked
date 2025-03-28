@@ -34,7 +34,7 @@
   </Panel>
 </template>
 <script setup>
-import { computed, inject, defineAsyncComponent, ref, useTemplateRef } from "vue";
+import { computed, defineAsyncComponent, ref, useTemplateRef } from "vue";
 const Panel = defineAsyncComponent(() => import("primevue/panel"));
 import Parameters from "./Parameters.vue";
 import { useContext, useUiStates } from "#imports";

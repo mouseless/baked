@@ -4,7 +4,8 @@
 
 - Beta features are available in `baked-recipe-admin` package;
   - `DataPanel` is introduced where you can lazy load your data within a panel
-    - query inputs are rendered in `icon` template of `Panel`
+    - `Parameters` is added to render input parameters in `icon` templaet of
+      `Panel`
   - `ErrorHandling` plugin is introduced for handling errors and alert or full
     page error info display
   - `ErrorPage` schema is added to create descriptor for custom error page
@@ -18,16 +19,14 @@
   - `useFormat` composable is added for number formatting
   - `Select` and `SelectButton` input components are added
     - `Enum` support is also implemented for options
-  - `Parameters` and `QueryParameters` behavioral components are added to render
-    input parameters
   - `useQuery` composable is added as a computed data to use query parameters in
     place for a data
     - When used in query data of a remote data, it forwards current page's all
       query parameters to a remote call, allowing to use an endpoint of a rich
       transient in a data panel
   - `useContext` composable is added to manage bake context in ui components
-  - `InjectedData` is introduced for components to provide parameter data to its
-    child commponents
+  - `InjectedData` is introduced for components to provide values, e.g.
+    parameter data, to its child commponents
 
 ## Improvements
 
@@ -42,5 +41,3 @@
   show a skeleton during loding
 - `SideMenu`, `PageTitle`, `Header` now supports skeleton
 - `DetailPage` and its conventions are removed
-- `ReportPage` now supports query parameters
-- `DataPanel` now supports parameters

@@ -41,13 +41,15 @@ const { label, optionLabel, optionValue, showClear } = schema;
 const context = useContext();
 
 const path = context.path();
-
 const selected = ref({});
-watch(selected, newSelected => setModel(newSelected));
 
-if(!loading) { setSelected(model.value); }
+if(!loading) {
+  setSelected(model.value);
+}
+
+// two way binding between model and selected
 watch(model, newModel => setSelected(newModel));
-watch(() => loading, () => setSelected(model.value));
+watch(selected, newSelected => setModel(newSelected));
 
 function setModel(selected) {
   model.value = optionValue ? selected?.[optionValue] : selected;

@@ -29,14 +29,6 @@ const variants = [
     descriptor: giveMe.aDataPanel({
       parameters: [
         giveMe.aParameter({
-          name: "requiredWithDefault",
-          required: true,
-          defaultValue: "default value",
-          component: giveMe.anInput({
-            testId: "required-with-default"
-          })
-        }),
-        giveMe.aParameter({
           name: "required",
           required: true,
           component: giveMe.anInput({
