@@ -2,9 +2,9 @@
 
 ## Features
 
-- Beta features are available in `baked-recipe-admin` package;
+- Beta features are available in `baked-recipe-admin`;
   - `DataPanel` is introduced where you can lazy load your data within a panel
-    - `Parameters` is added to render input parameters in `icon` templaet of
+    - `Parameters` is added to render input parameters in `icon` template of
       `Panel`
   - `ErrorHandling` plugin is introduced for handling errors and alert or full
     page error info display
