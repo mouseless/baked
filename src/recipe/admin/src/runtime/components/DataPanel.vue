@@ -30,11 +30,20 @@
         name="content"
         :descriptor="content"
       />
+      <Message
+        v-else-if="!ready"
+        severity="info"
+      >
+        <i class="pi pi-info-circle" />
+        <span class="ml-3">{{ components?.DataPanel?.requiredMessage || "Select required values to view this data" }}</span>
+      </Message>
     </template>
   </Panel>
 </template>
 <script setup>
 import { computed, defineAsyncComponent, ref, useTemplateRef } from "vue";
+import { useRuntimeConfig } from "#app";
+const Message = defineAsyncComponent(() => import("primevue/message"));
 const Panel = defineAsyncComponent(() => import("primevue/panel"));
 import Parameters from "./Parameters.vue";
 import { useContext, useUiStates } from "#imports";
@@ -46,6 +55,7 @@ const { schema } = defineProps({
 
 const { collapsed, content, parameters, title } = schema;
 
+const { public: { components } } = useRuntimeConfig();
 const { value: { panelStates } } = useUiStates();
 const context = useContext();
 const panel = useTemplateRef("panel");

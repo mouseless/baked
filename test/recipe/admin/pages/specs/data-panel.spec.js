@@ -77,6 +77,15 @@ test.describe("Parameters", () => {
     await expect(component.getByTestId("optional")).toBeVisible();
   });
 
+  test("informs only when required params are not selected", async({page}) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.locator(primevue.message.base)).toHaveText("Select required values to view this data");
+
+    await component.getByTestId("required").fill("any text");
+    await expect(component.locator(primevue.message.base)).not.toBeAttached();
+  });
+
   test("listens ready model", async({page}) => {
     const component = page.getByTestId(id);
     const content = component.getByTestId("content");

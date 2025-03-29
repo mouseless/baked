@@ -94,6 +94,17 @@ test.describe("Narrow", () => {
   });
 });
 
+test.describe("Single Tab", () => {
+  const id = "Single Tab";
+
+  test("tab hidden when there is one tab", async({page}) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.getByTestId("content")).toBeAttached(); // required to wait for page to render
+    await expect(component.locator(primevue.tab.base)).not.toBeAttached();
+  });
+});
+
 test.describe("Query Parameters", () => {
   const id = "Query Parameters";
 
@@ -104,14 +115,23 @@ test.describe("Query Parameters", () => {
     await expect(component.getByTestId("optional")).toBeVisible();
   });
 
+  test("informs only when required params are not selected", async({page}) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.locator(primevue.message.base)).toHaveText("Select required values to view this report");
+
+    await component.getByTestId("required").fill("any text");
+    await expect(component.locator(primevue.message.base)).not.toBeAttached();
+  });
+
   test("listens ready model", async({page}) => {
     const component = page.getByTestId(id);
-    const content = component.getByTestId("content");
+    const staticData = component.getByTestId("static-content");
 
-    await expect(content).not.toBeVisible();
+    await expect(staticData).not.toBeVisible();
     await component.getByTestId("required").fill("any text");
 
-    await expect(content).toBeVisible();
+    await expect(staticData).toBeVisible();
   });
 
   test("redraws when unique key changes", async({page}) => {
@@ -119,6 +139,6 @@ test.describe("Query Parameters", () => {
 
     await component.getByTestId("required").fill("value");
 
-    await expect(component.getByTestId("content")).toHaveText(/value/);
+    await expect(component.getByTestId("query-content")).toHaveText(/value/);
   });
 });

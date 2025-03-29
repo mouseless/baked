@@ -11,6 +11,7 @@
       </template>
       <template #extra>
         <Tabs
+          v-if="ready && tabs.length > 1"
           v-model:value="currentTab"
           class="!-mb-4"
         >
@@ -66,10 +67,19 @@
         </div>
       </DeferredTabContent>
     </div>
+    <Message
+      v-else
+      severity="info"
+    >
+      <i class="pi pi-info-circle" />
+      <span class="ml-3">{{ components?.ReportPage?.requiredMessage || "Select required values to view this report" }}</span>
+    </Message>
   </div>
 </template>
 <script setup>
 import { defineAsyncComponent, ref } from "vue";
+import { useRuntimeConfig } from "#app";
+const Message = defineAsyncComponent(() => import("primevue/message"));
 const Tab = defineAsyncComponent(() => import("primevue/tab"));
 const TabList = defineAsyncComponent(() => import("primevue/tablist"));
 const Tabs = defineAsyncComponent(() => import("primevue/tabs"));
@@ -85,10 +95,9 @@ const { schema } = defineProps({
 });
 
 const { title, queryParameters, tabs } = schema;
-
-const ready = ref(true);
+const { public: { components } } = useRuntimeConfig();
+const ready = ref(queryParameters.length === 0);
 const uniqueKey = ref();
-
 const currentTab = ref(tabs.length > 0 ? tabs[0].id : "");
 
 function onReady(value) {

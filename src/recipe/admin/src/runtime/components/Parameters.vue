@@ -17,7 +17,7 @@
   </div>
 </template>
 <script setup>
-import { defineEmits, onMounted, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import Bake from "./Bake.vue";
 
 const { parameters } = defineProps({

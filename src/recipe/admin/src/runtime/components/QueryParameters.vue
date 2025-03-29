@@ -15,7 +15,7 @@
   />
 </template>
 <script setup>
-import { computed, defineEmits, ref, onMounted, watch, watchEffect } from "vue";
+import { computed, ref, onMounted, watch, watchEffect } from "vue";
 import { useRoute, useRouter } from "#app";
 import Bake from "./Bake.vue";
 
