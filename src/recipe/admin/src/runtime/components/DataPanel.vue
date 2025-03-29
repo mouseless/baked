@@ -7,45 +7,72 @@
     :pt="{ headerActions: { class: 'flex gap-2 items-center' } }"
     @update:collapsed="onCollapsed"
   >
-    <!--
     <template
-      v-if="$slots.parameters"
+      v-if="$slots.parameters || parameters.length > 0"
       #icons
     >
-      <slot name="parameters" />
+      <Parameters
+        v-if="parameters.length > 0"
+        :parameters="parameters"
+        class="text-xs"
+        @ready="onReady"
+        @changed="onChanged"
+      />
+      <slot
+        v-if="$slots.parameters"
+        name="parameters"
+      />
     </template>
-    -->
     <template #default>
       <Bake
-        v-if="loaded"
+        v-if="loaded && ready"
+        :key="uniqueKey"
         name="content"
         :descriptor="content"
       />
+      <Message
+        v-else-if="!ready"
+        severity="info"
+      >
+        <i class="pi pi-info-circle" />
+        <span class="ml-3">{{ components?.DataPanel?.requiredMessage || "Select required values to view this data" }}</span>
+      </Message>
     </template>
   </Panel>
 </template>
 <script setup>
-import { computed, inject, useTemplateRef, ref } from "vue";
-import { Panel } from "primevue";
-import Bake from "./Bake.vue";
-import { useUiStates } from "#imports";
+import { computed, defineAsyncComponent, ref, useTemplateRef } from "vue";
+import { useRuntimeConfig } from "#app";
+const Message = defineAsyncComponent(() => import("primevue/message"));
+const Panel = defineAsyncComponent(() => import("primevue/panel"));
+import Parameters from "./Parameters.vue";
+import { useContext, useUiStates } from "#imports";
 
 const { schema } = defineProps({
   schema: { type: null, required: true },
   data: { type: null, default: null }
 });
 
+const { collapsed, content, parameters, title } = schema;
+
+const { public: { components } } = useRuntimeConfig();
 const { value: { panelStates } } = useUiStates();
+const context = useContext();
 const panel = useTemplateRef("panel");
 
-const uiContext = inject("uiContext");
-
-const { collapsed, content, title } = schema;
-const collapsedState = computed(() => panelStates[uiContext] ?? collapsed);
+const path = context.path();
+const collapsedState = computed(() => panelStates[path] ?? collapsed);
 const loaded = ref(!collapsedState.value);
+const ready = ref(parameters.length === 0); // it is ready when there is no parameter
+const uniqueKey = ref("");
+
+const values = ref({});
+if(parameters.length > 0) {
+  context.setInjectedData(values);
+}
 
 function onCollapsed(collapsed) {
-  panelStates[uiContext] = collapsed;
+  panelStates[path] = collapsed;
 
   if(!collapsed && !loaded.value) {
     loaded.value = true;
@@ -56,5 +83,14 @@ function onCollapsed(collapsed) {
       panel.value.$el.scrollIntoView({ behavior: "smooth", block: "nearest" });
     }, 750);
   }
+}
+
+function onReady(value) {
+  ready.value = value;
+}
+
+function onChanged(event) {
+  uniqueKey.value = event.uniqueKey;
+  values.value = event.values;
 }
 </script>

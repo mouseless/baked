@@ -1,4 +1,4 @@
-﻿using Baked.Ui;
+using Baked.Ui;
 
 namespace Baked.Theme.Admin;
 
@@ -12,8 +12,9 @@ public static class Components
     ) => new(new(route, title) { Icon = icon, Description = description, Disabled = disabled, DisabledReason = disabledReason });
 
     public static ComponentDescriptorAttribute<DataPanel> DataPanel(string title, IComponentDescriptor content,
+        IEnumerable<Parameter>? parameters = default,
         bool collapsed = false
-    ) => new(new(title, content) { Collapsed = collapsed });
+    ) => new(new(title, content) { Collapsed = collapsed, Parameters = [.. parameters ?? []] });
 
     public static ComponentDescriptorAttribute<DataTable> DataTable(
         IEnumerable<DataTable.Column>? columns = default,
@@ -83,13 +84,19 @@ public static class Components
         IEnumerable<IComponentDescriptor>? actions = default
     ) => new(new(title) { Description = description, Actions = [.. actions ?? []] });
 
+    public static Parameter Parameter(string name, IComponentDescriptor component,
+        bool required = false,
+        object? @default = default
+    ) => new(name, component) { Required = required, Default = @default };
+
     public static ComponentDescriptor Rate(
         IData? data = default
     ) => new(nameof(Rate)) { Data = data };
 
     public static ComponentDescriptorAttribute<ReportPage> ReportPage(string name, ComponentDescriptorAttribute<PageTitle> title,
+        IEnumerable<Parameter>? queryParameters = default,
         IEnumerable<ReportPage.Tab>? tabs = default
-    ) => new(new(name, title.Schema) { Tabs = [.. tabs ?? []] });
+    ) => new(new(name, title.Schema) { QueryParameters = [.. queryParameters ?? []], Tabs = [.. tabs ?? []] });
 
     public static ReportPage.Tab ReportPageTab(string id, string title,
         IComponentDescriptor? icon = default,
@@ -100,6 +107,12 @@ public static class Components
         bool fullScreen = false,
         bool narrow = false
     ) => new(component) { FullScreen = fullScreen, Narrow = narrow };
+
+    public static ComponentDescriptorAttribute<Select> Select(string label, IData data,
+        string? optionLabel = default,
+        string? optionValue = default,
+        bool showClear = false
+    ) => new(new(label) { OptionLabel = optionLabel, OptionValue = optionValue, ShowClear = showClear }) { Data = data };
 
     public static ComponentDescriptorAttribute<SideMenu> SideMenu(IEnumerable<SideMenu.Item> menu,
         IComponentDescriptor? footer = default,

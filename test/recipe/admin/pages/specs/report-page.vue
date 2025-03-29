@@ -69,6 +69,60 @@ const variants = [
         })
       ]
     })
+  },
+  {
+    name: "Single Tab",
+    descriptor: giveMe.aReportPage({
+      tabs: [
+        giveMe.aReportPageTab({
+          id: "hidden tab",
+          contents: [
+            giveMe.aReportPageTabContent({
+              component: giveMe.anExpected({ testId: "content" })
+            })
+          ]
+        })
+      ]
+    })
+  },
+  {
+    name: "Query Parameters",
+    descriptor: giveMe.aReportPage({
+      queryParameters: [
+        giveMe.aParameter({
+          name: "required",
+          required: true,
+          component: giveMe.anInput({
+            testId: "required"
+          })
+        }),
+        giveMe.aParameter({
+          name: "optional",
+          required: false,
+          component: giveMe.anInput({
+            testId: "optional"
+          })
+        })
+      ],
+      tabs: [
+        giveMe.aReportPageTab({
+          contents: [
+            giveMe.aReportPageTabContent({
+              component: giveMe.anExpected({
+                testId: "static-content",
+                value: "HIDDEN WHEN REQUIRED IS MISSING"
+              })
+            }),
+            giveMe.aReportPageTabContent({
+              component: giveMe.anExpected({
+                testId: "query-content",
+                data: giveMe.theQueryData()
+              })
+            })
+          ]
+        })
+      ]
+    })
   }
 ];
 </script>

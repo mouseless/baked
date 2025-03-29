@@ -31,8 +31,10 @@
   </DataTable>
 </template>
 <script setup>
-import { computed } from "vue";
-import { Column, DataTable, Skeleton } from "primevue";
+import { computed, defineAsyncComponent } from "vue";
+import Column from "primevue/column";
+const DataTable = defineAsyncComponent(() => import("primevue/datatable"));
+const Skeleton = defineAsyncComponent(() => import("primevue/skeleton"));
 import Bake from "./Bake.vue";
 
 const { schema, data } = defineProps({

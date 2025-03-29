@@ -1,6 +1,7 @@
 <template>
   <component
     :is="is"
+    v-model="model"
     :schema="descriptor.schema"
     :data="data"
     :loading="loading"
@@ -9,23 +10,28 @@
   </component>
 </template>
 <script setup>
-import { inject, onMounted, provide, ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useRuntimeConfig } from "#app";
-import { useComponentResolver, useDataFetcher } from "#imports";
+import { useComponentResolver, useContext, useDataFetcher } from "#imports";
 
 const { name, descriptor } = defineProps({
   name: { type: String, required: true },
   descriptor: { type: null, required: true }
 });
 
+const model = defineModel({
+  type: null,
+  required: false
+});
+
 const { public: { components } } = useRuntimeConfig();
 const componentResolver = useComponentResolver();
+const context = useContext();
 const dataFetcher = useDataFetcher();
 
-const routeParams = inject("routeParams", []);
-const uiContext = inject("uiContext", null);
-provide("uiContext", uiContext ? `${uiContext}/${name}` : name);
+context.add(name);
 
+const injectedData = context.injectedData();
 const is = componentResolver.resolve(descriptor.type, "None");
 const shouldLoad = dataFetcher.shouldLoad(descriptor.data?.type);
 const data = ref(dataFetcher.get(descriptor.data));
@@ -45,8 +51,8 @@ onMounted(async() => {
   data.value = await dataFetcher.fetch({
     baseURL: components?.Bake?.baseURL,
     data: descriptor.data,
-    routeParams,
-    options: fetchOptions
+    options: fetchOptions,
+    injectedData
   });
   loading.value = false;
 });

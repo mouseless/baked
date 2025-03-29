@@ -6,8 +6,8 @@
   <span v-else>{{ display }}</span>
 </template>
 <script setup>
-import { computed } from "vue";
-import { Skeleton } from "primevue";
+import { computed, defineAsyncComponent } from "vue";
+const Skeleton = defineAsyncComponent(() => import("primevue/skeleton"));
 import { useFormat } from "#imports";
 
 const { data } = defineProps({

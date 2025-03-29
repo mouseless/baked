@@ -46,8 +46,9 @@
   </nav>
 </template>
 <script setup>
+import { defineAsyncComponent } from "vue";
 import { RouterLink } from "vue-router";
-import { Skeleton } from "primevue";
+const Skeleton = defineAsyncComponent(() => import("primevue/skeleton"));
 import Bake from "./Bake.vue";
 import SideMenuItem from "./SideMenuItem.vue";
 

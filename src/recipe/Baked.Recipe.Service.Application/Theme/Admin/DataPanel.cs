@@ -7,5 +7,6 @@ public record DataPanel(string Title, IComponentDescriptor Content)
 {
     public string Title { get; set; } = Title;
     public bool Collapsed { get; set; }
+    public List<Parameter> Parameters { get; init; } = [];
     public IComponentDescriptor Content { get; set; } = Content;
 }
