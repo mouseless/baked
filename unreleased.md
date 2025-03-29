@@ -21,8 +21,7 @@
     jwt support
   - `AuthorizedContent` component is now introduced for to display/hide
     content
-  - `Select` and `SelectButton` input components are added
-    - `Enum` support is also implemented for options
+  - `Select` input component is added
   - `useQuery` composable is added as a computed data to use query parameters in
     place for a data
     - When used in query data of a remote data, it forwards current page's all
@@ -46,6 +45,6 @@
 - `Bake.vue` now provides a baked component path under `useContext().path()` to
   be used as a unique key within a page
 - `Bake.vue` now manages `loading` state, making it possible for components to
-  show a skeleton during loding
+  show a skeleton during loading
 - `SideMenu`, `PageTitle`, `Header` now supports skeleton
 - `DetailPage` and its conventions are removed
