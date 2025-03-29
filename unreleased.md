@@ -17,6 +17,10 @@
       `actions` template of `PageTitle`
   - `Icon`, `Money`, `Rate`, `Link` page components are added
   - `useFormat` composable is added for number formatting
+  - `Auth` plugin is now introduced for authorized routing and requests with
+    jwt support
+  - `AuthorizedContent` component is now introduced for to display/hide
+    content
   - `Select` and `SelectButton` input components are added
     - `Enum` support is also implemented for options
   - `useQuery` composable is added as a computed data to use query parameters in
@@ -28,6 +32,9 @@
   - `InjectedData` is introduced for components to provide values, e.g.
     parameter data, to its child commponents
   - `CompositeData` is introduced to combine data from different sources
+- Beta features are available in `Baked.Recipe.Service.Application`;
+  - `Jwt` authentication feature implementation is now added with
+    `JwtTokenBuilder` implementation of `ITokenBuilder` service
 
 ## Improvements
 

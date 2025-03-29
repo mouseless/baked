@@ -1,7 +1,12 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
 import baked from "~/utils/locators/baked.js";
+import mockMe from "~/utils/mockMe";
+import giveMe from "~/utils/giveMe";
 
-test.beforeEach(async({goto}) => {
+test.beforeEach(async({goto, page}) => {
+  await goto("/specs", { waitUntil: "hydration" });
+  const token = giveMe.aToken();
+  await mockMe.theSession(page, token);
   await goto("/specs/error-page", { waitUntil: "hydration" });
 });
 
@@ -37,6 +42,15 @@ test.describe("Base", () =>{
 
     await expect(component.getByTestId("LINK_1")).toHaveText("VALUE_1");
     await expect(component.getByTestId("LINK_2")).toHaveText("VALUE_2");
+  });
+
+  test("links require authenticated user", async({goto, page}) => {
+    await mockMe.theSession(page, { });
+    await goto("/specs/error-page", { waitUntil: "hydration" });
+    const component = page.getByTestId(id);
+
+    await expect(component.getByText("VALUE_1")).toHaveCount(0);
+    await expect(component.getByText("VALUE_2")).toHaveCount(0);
   });
 
   test("footer info from schema", async({page}) => {

@@ -1,4 +1,4 @@
-﻿namespace Baked.Test.Authentication;
+﻿namespace Baked.Test.Authentication.FixedBearerToken;
 
 public class BuildingClaimsPrincipal : TestServiceSpec
 {

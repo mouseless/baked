@@ -1,4 +1,9 @@
-import { createError } from "#app";
+//expires at 2999-03-28
+const accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjMyNDc5NjE0MTk0fQ.F4K4GkNqtuUNy6cgyOEtrLtaidgvVQmsw1Ouixyw5a0";
+//expires at 2000-03-28
+const expiredAccessToken = "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjk1NDI0MTM5NH0.ZKPMybdzg1aO1g_xyV1QXUx9NR_vynu9s9z4Zll7WNA";
+//expires at 9999-03-28
+const refreshToken = "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjI1MzM3ODIzNDk5NH0.IO-jutz7t-FbvgrQ87n0y_tSWUsSfiNPpfr3sAzvWhg";
 
 // value or default function, named $ for quick access
 function $(value, defaultValue) {
@@ -69,7 +74,7 @@ export default {
     footerInfo = $(footerInfo, "Test footer info");
     safeLinks = $(safeLinks, [this.anExpected()]);
     safeLinksMessage = $(safeLinksMessage, "Test links message");
-    data = $(data, createError("Test Error", { status: 500 }));
+    data = $(data, new Error("Test Error", { status: 500 }));
 
     errorInfos = errorInfos.reduce((result, ei) => ({
       ...result,
@@ -281,5 +286,12 @@ export default {
     disabled = $(disabled, false);
 
     return { route, icon, title, disabled };
+  },
+
+  aToken(accessExpired) {
+    return {
+      access: accessExpired ? expiredAccessToken : accessToken,
+      refresh: refreshToken
+    };
   }
 };
