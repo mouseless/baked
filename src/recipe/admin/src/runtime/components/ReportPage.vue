@@ -2,12 +2,16 @@
   <div class="space-y-4">
     <PageTitle :schema="title">
       <template #actions>
-        <!--
-          query params here
-        -->
+        <QueryParameters
+          v-if="queryParameters?.length > 0"
+          :parameters="queryParameters"
+          @ready="onReady"
+          @changed="onChanged"
+        />
       </template>
       <template #extra>
         <Tabs
+          v-if="ready && tabs.length > 1"
           v-model:value="currentTab"
           class="!-mb-4"
         >
@@ -30,12 +34,12 @@
       </template>
     </PageTitle>
     <div
-      v-if="allQueryParametersSet"
+      v-if="ready"
       class="py-4 flex flex-col gap-4 items-center"
     >
       <DeferredTabContent
         v-for="(tab, i) in tabs"
-        :key="`${queryParametersJoined}-${tab.id}`"
+        :key="`${uniqueKey}-${tab.id}`"
         v-model="currentTab"
         :when="tab.id"
         class="w-full"
@@ -63,14 +67,26 @@
         </div>
       </DeferredTabContent>
     </div>
+    <Message
+      v-else
+      severity="info"
+    >
+      <i class="pi pi-info-circle" />
+      <span class="ml-3">{{ components?.ReportPage?.requiredMessage || "Select required values to view this report" }}</span>
+    </Message>
   </div>
 </template>
 <script setup>
-import { ref } from "vue";
-import { Tab, TabList, Tabs } from "primevue";
+import { defineAsyncComponent, ref } from "vue";
+import { useRuntimeConfig } from "#app";
+const Message = defineAsyncComponent(() => import("primevue/message"));
+const Tab = defineAsyncComponent(() => import("primevue/tab"));
+const TabList = defineAsyncComponent(() => import("primevue/tablist"));
+const Tabs = defineAsyncComponent(() => import("primevue/tabs"));
 import Bake from "./Bake.vue";
 import DeferredTabContent from "./DeferredTabContent.vue";
 import PageTitle from "./PageTitle.vue";
+import QueryParameters from "./QueryParameters.vue";
 
 const { schema } = defineProps({
   schema: { type: null, required: true },
@@ -78,9 +94,17 @@ const { schema } = defineProps({
   loading: { type: Boolean, default: false }
 });
 
-const { title, tabs } = schema;
-
+const { title, queryParameters, tabs } = schema;
+const { public: { components } } = useRuntimeConfig();
+const ready = ref(queryParameters.length === 0);
+const uniqueKey = ref();
 const currentTab = ref(tabs.length > 0 ? tabs[0].id : "");
-const allQueryParametersSet = ref(true);
-const queryParametersJoined = ref("--join-query-parameters-here--");
+
+function onReady(value) {
+  ready.value = value;
+}
+
+function onChanged(value) {
+  uniqueKey.value = value;
+}
 </script>

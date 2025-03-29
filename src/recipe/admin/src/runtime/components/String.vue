@@ -6,7 +6,8 @@
   <span v-else>{{ data }}</span>
 </template>
 <script setup>
-import { Skeleton } from "primevue";
+import { defineAsyncComponent } from "vue";
+const Skeleton = defineAsyncComponent(() => import("primevue/skeleton"));
 
 defineProps({
   schema: { type: null, default: null },

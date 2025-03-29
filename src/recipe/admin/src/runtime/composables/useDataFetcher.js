@@ -1,30 +1,32 @@
-import { useComposableResolver } from "#imports";
+import { useComposableResolver, useContext } from "#imports";
+import { deepUnref } from "vue-deepunref";
 
 export default function() {
   const composableResolver = useComposableResolver();
+  const context = useContext();
 
   function shouldLoad(dataType) {
-    return dataType === "Remote" || dataType === "Computed";
+    return dataType === "Remote" || dataType === "Computed" || dataType == "Composite";
   }
 
   function get(data) {
-    return data?.type === "Inline" ? data.value : null;
+    return data?.type === "Inline" ? data.value :
+      data?.type === "Injected" ? context.injectedData() :
+        null;
   }
 
-  async function fetch({ baseURL, data, routeParams, options }) {
-    if(data?.type === "Remote") {
-      const headers = data.headers
-        ? await fetch({ baseURL, data: data.headers, routeParams, options })
-        : { };
+  async function fetch({ baseURL, data, options, injectedData }) {
+    if(data?.type === "Composite") {
+      const result = {};
 
-      return await $fetch(
-        format(`${data.path}`, routeParams.slice(1)),
-        {
-          ...options ?? { },
-          baseURL,
-          headers
-        }
-      );
+      for(const part of data.parts) {
+        Object.assign(
+          result,
+          deepUnref(await fetch({ baseURL, data: part, options, injectedData }))
+        );
+      }
+
+      return result;
     }
 
     if(data?.type === "Computed") {
@@ -41,8 +43,32 @@ export default function() {
       throw new Error("Data composable should have either `compute` or `computeAsync`");
     }
 
+    if(data?.type === "Injected") {
+      return injectedData;
+    }
+
     if(data?.type === "Inline") {
       return data.value;
+    }
+
+    if(data?.type === "Remote") {
+      const headers = data.headers
+        ? deepUnref(await fetch({ baseURL, data: data.headers, options, injectedData }))
+        : { };
+
+      const query = data.query
+        ? deepUnref(await fetch({ baseURL, data: data.query, options, injectedData }))
+        : { };
+
+      return await $fetch(
+        data.path,
+        {
+          ...options ?? { },
+          baseURL,
+          headers: headers,
+          query: query
+        }
+      );
     }
 
     throw new Error(`${data?.type} is not a valid data type`);

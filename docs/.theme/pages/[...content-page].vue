@@ -43,7 +43,7 @@ if(index?.pages)
 
 usePageStore().setPages([index, ...unOrderedMenus]);
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 .container {
   display: flex;
 
@@ -54,24 +54,6 @@ usePageStore().setPages([index, ...unOrderedMenus]);
   }
 }
 
-@media (max-width: $width-page-l) {
-  .container {
-    flex-direction: column-reverse;
-    margin-left: $width-content-margin;
-
-    .content {
-      margin: $space-sm 0 0 0;
-    }
-  }
-}
-
-@media (max-width: $width-page-m) {
-  .container {
-    margin-left: 0;
-  }
-}
-</style>
-<style lang="scss">
 .full {
   .container {
     justify-content: center;
@@ -108,11 +90,26 @@ usePageStore().setPages([index, ...unOrderedMenus]);
 }
 
 @media (max-width: $width-page-l) {
+  .container {
+    flex-direction: column-reverse;
+    margin-left: $width-content-margin;
+
+    .content {
+      margin: $space-sm 0 0 0;
+    }
+  }
+
   .full {
     .container {
       flex-direction: row;
       margin-left: 0;
     }
+  }
+}
+
+@media (max-width: $width-page-m) {
+  .container {
+    margin-left: 0;
   }
 }
 </style>

@@ -13,9 +13,16 @@ export default {
   datepicker: {
     weekday: ".p-datepicker-weekday"
   },
+  message: {
+    base: ".p-message"
+  },
   panel: {
     title: ".p-panel-title",
     header: ".p-panel-header"
+  },
+  select: {
+    option: ".p-select-option",
+    clearIcon: ".p-select-clear-icon"
   },
   tab: {
     base: ".p-tab"

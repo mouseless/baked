@@ -16,7 +16,7 @@
          }"
       >
         <div
-          v-for="variant in allVariants"
+          v-for="(variant, index) in allVariants"
           :key="variant.name"
           :class="{
             'w-full': !vertical,
@@ -29,15 +29,39 @@
             :class="{
               'text-lg': !vertical,
               'mt-2': !vertical,
-              '-mb-2': !vertical
+              '-mb-2': !vertical,
+              'mb-2': vertical
             }"
-          >{{variant.name}}</h2>
+          >{{ variant.name }}</h2>
           <Divider v-if="!vertical" />
-          <div :data-testid="variant.name">
+          <div v-if="!useModel" :data-testid="variant.name">
             <Bake
               :name="`variants/${camelize(variant.name)}`"
               :descriptor="prepareDescriptor(variant)"
             />
+          </div>
+          <div v-else class="space-x-4">
+            <div :data-testid="variant.name" class="inline-block">
+              <!-- renders given variants -->
+              <Bake
+                v-if="index < variants.length"
+                v-model="models[index].value"
+                :name="`variants/${camelize(variant.name)}`"
+                :descriptor="prepareDescriptor(variant)"
+              />
+              <!-- draws remaining variant, e.g., loading variant -->
+              <Bake
+                v-else
+                :name="`variants/${camelize(variant.name)}`"
+                :descriptor="prepareDescriptor(variant)"
+              />
+            </div>
+            <div
+              v-if="index < variants.length"
+              class="inline-block border-2 border-gray-500 rounded p-2"
+            >
+            ➡️  <span :data-testid="`${variant.name}:model`">{{ variants[index].model }}</span> ⬅️
+            </div>
           </div>
         </div>
         <div
@@ -62,7 +86,8 @@ const { title, variants, noLoadingVariant } = defineProps({
   noLoadingVariant: { type: Boolean, default: false },
   vertical: { type: Boolean, default: false },
   testId: { type: String, default: "test" },
-  fullPage: { type: Boolean, default: false }
+  fullPage: { type: Boolean, default: false },
+  useModel: { type: Boolean, default: false }
 });
 
 const pages = usePages();
@@ -84,6 +109,8 @@ const allVariants = computed(() => {
 
   return result;
 });
+
+const models = variants.map(v => v.model);
 
 onMounted(async() => {
   const specs = await pages.fetch("specs");
