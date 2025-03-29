@@ -1,4 +1,10 @@
 ﻿using Baked.Test.Orm;
+using Baked.Ui;
+using Microsoft.IdentityModel.Tokens;
+using System.Net;
+using System.Text;
+
+using static Baked.Theme.Admin.ErrorHandlingPlugin;
 
 Bake.New
     .Service(
@@ -7,6 +13,26 @@ Bake.New
             setNamespaceWhen: t => t.Namespace is not null && t.Namespace.StartsWith("Baked.Test.CodingStyle.NamespaceAsRoute")
         ),
         authentications: [
+            c => c.Jwt(
+                configureOptions: options =>
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ClockSkew = TimeSpan.FromSeconds(Settings.Required<int>("Authentication:Jwt:ClockSkewInSeconds")),
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = Settings.Required<string>("Authentication:Jwt:Issuer"),
+                        ValidAudience = Settings.Required<string>("Authentication:Jwt:Audience"),
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Settings.Required<string>("Authentication:Jwt:Key")))
+                    },
+                configurePlugin: plugin => {
+                    plugin.AnonymousRoutes = ["^(?:(?!auth).)*$"];
+                    plugin.LoginPath = "authentication-samples/login";
+                    plugin.RefreshPath = "authentication-samples/refresh";
+                    plugin.LoginPage = "/login";
+                }
+            ),
             c => c.FixedBearerToken(
                 tokens =>
                 {
@@ -29,7 +55,7 @@ Bake.New
             c => c.ApiKey()
         ],
         authorization: c => c.ClaimBased(
-            claims: ["User", "Admin", "BaseA", "BaseB", "GivenA", "GivenB", "GivenC"],
+            claims: ["User", "Admin", "BaseA", "BaseB", "GivenA", "GivenB", "GivenC", "Refresh"],
             baseClaims: ["BaseA", "BaseB"]
         ),
         core: c => c.Dotnet(baseNamespace: "Baked.Test"),
@@ -37,7 +63,10 @@ Bake.New
         database: c => c
             .Sqlite()
             .ForProduction(c.PostgreSql()),
-        exceptionHandling: c => c.ProblemDetails(typeUrlFormat: "https://baked.mouseless.codes/errors/{0}"),
+        exceptionHandling: c => c.ProblemDetails(
+            typeUrlFormat: "https://baked.mouseless.codes/errors/{0}",
+            handlers: [new(StatusCode: (int)HttpStatusCode.Unauthorized, Behavior: HandlerBehavior.Redirect, BehaviorArgument: new ComputedData("useLoginRedirect"))]
+        ),
         configure: app =>
         {
             app.Features.AddReporting(c => c

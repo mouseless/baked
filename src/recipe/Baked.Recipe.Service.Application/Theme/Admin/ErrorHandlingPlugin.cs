@@ -14,7 +14,7 @@ public class ErrorHandlingPlugin : IPlugin
         string? RoutePattern = default,
         int? StatusCode = default,
         HandlerBehavior Behavior = default,
-        string? BehaviorArgument = default,
+        IData? BehaviorArgument = default,
         int Order = 0
     );
 

@@ -13,6 +13,13 @@
       report pages
   - `Icon`, `Money`, `Rate`, `Link` page components are added
   - `useFormat` composable is added for number formatting
+  - `Auth` plugin is now introduced for authorized routing and requests with
+    jwt support
+  - `AuthorizedContent` component is now introduced for to display/hide
+    content
+- Beta features are available in `Baked.Recipe.Service.Application`;
+  - `Jwt` authentication feature implementation is now added with 
+    `JwtTokenBuilder` implementation of `ITokenBuilder` service
 
 ## Improvements
 

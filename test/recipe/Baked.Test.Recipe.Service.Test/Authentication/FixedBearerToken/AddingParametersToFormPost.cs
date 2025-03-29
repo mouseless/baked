@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Baked.Test.Authentication;
+namespace Baked.Test.Authentication.FixedBearerToken;
 
 public class AddingParametersToFormPost : TestServiceNfr
 {
