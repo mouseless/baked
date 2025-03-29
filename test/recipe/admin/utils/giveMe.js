@@ -20,7 +20,7 @@ export default {
     };
   },
 
-  aDataPanel({ title, collapsed, content }) {
+  aDataPanel({ title, collapsed, content } = {}) {
     title = $(title, "Test Title");
     collapsed = $(collapsed, false);
     content = $(content, this.anExpected());
@@ -31,27 +31,36 @@ export default {
     };
   },
 
-  aDetailPage({ header, props, data } = {}) {
-    header = $(header, this.anExpected());
-    props = $(props, []);
-    data = $(data, { });
+  aDataTable({ columns, rowCountWhenLoading, data } = {}) {
+    columns = $(columns, [
+      this.aDataTableColumn({ prop: "test" })
+    ]);
+    rowCountWhenLoading = $(rowCountWhenLoading, null);
+    data = $(data, [
+      { test: "value 1" },
+      { test: "value 2" },
+      { test: "value 3" }
+    ]);
 
     return {
-      type: "DetailPage",
-      schema: { header, props },
-      data: {
-        type: "Inline",
-        value: data
-      }
+      type: "DataTable",
+      schema: { columns, rowCountWhenLoading },
+      data: { type: "Inline", value: data }
     };
   },
 
-  aDetailPageProp({ keyAndTestId, title, component } = {}) {
-    keyAndTestId = $(keyAndTestId, "testKey");
-    title = $(title, "Test Prop");
-    component = $(component, this.anExpected({ testId: keyAndTestId }));
+  aDataTableColumn({ title, prop, minWidth, component } = {}) {
+    title = $(title, "Test");
+    prop = $(prop, "test");
+    minWidth = $(minWidth, false);
+    component = $(component, this.anExpected());
 
-    return { key: keyAndTestId, title, component };
+    return {
+      title,
+      prop,
+      minWidth,
+      component
+    };
   },
 
   anErrorPage({ errorInfos, footerInfo, safeLinks, safeLinksMessage, data } = {}){
@@ -85,6 +94,17 @@ export default {
     };
   },
 
+  anExpected({ testId, value } = {}) {
+    testId = $(testId, "test-id");
+    value = $(value, "");
+
+    return {
+      type: "Expected",
+      schema: testId,
+      data: { type: "Inline", value }
+    };
+  },
+
   aHeader({ sitemapItems, data } = {}) {
     sitemapItems = $(sitemapItems, [this.aHeaderItem({ route: "/test" })]);
     data = $(data, { path: "/test" });
@@ -98,10 +118,7 @@ export default {
             [item.route]: item
           }), {})
       },
-      data: {
-        type: "Inline",
-        value: data
-      }
+      data: { type: "Inline", value: data }
     };
   },
 
@@ -110,6 +127,37 @@ export default {
     icon = $(icon, route === "/" ? "pi pi-home" : "pi pi-heart");
 
     return { route, icon, title, parentRoute };
+  },
+
+  anIcon({ iconClass } = {}) {
+    iconClass = $(iconClass, "pi-heart");
+
+    return {
+      type: "Icon",
+      schema: { iconClass }
+    };
+  },
+
+  aLink({ path, idProp, textProp, data } = {}) {
+    path = $(path, "/some-object/{0}");
+    idProp = $(idProp, "id");
+    textProp = $(textProp, "name");
+    data = $(data, { id: "test-id", name: "Test" });
+
+    return {
+      type: "Link",
+      schema: { path, idProp, textProp },
+      data: { type: "Inline", value: data }
+    };
+  },
+
+  aMoney({ data } = {}) {
+    data = $(data, 100_000);
+
+    return {
+      type: "Money",
+      data: { type: "Inline", value: data }
+    };
   },
 
   aMenuPage({ header, links } = {}) {
@@ -133,6 +181,42 @@ export default {
     };
   },
 
+  aRate({ data } = {}) {
+    data = $(data, 0.5);
+
+    return {
+      type: "Rate",
+      data: { type: "Inline", value: data }
+    };
+  },
+
+  aReportPage({ title, description, tabs } = {}) {
+    title = this.aPageTitle({ title, description }).schema;
+    tabs = $(tabs, [this.aReportPageTab()]);
+
+    return {
+      type: "ReportPage",
+      schema: { title, tabs }
+    };
+  },
+
+  aReportPageTab({ id, title, icon, contents } = {}) {
+    id = $(id, "test-tab");
+    title = $(title, "Test Tab");
+    icon = $(icon, this.anIcon());
+    contents = $(contents, [this.aReportPageTabContent()]);
+
+    return { id, title, icon, contents };
+  },
+
+  aReportPageTabContent({ component, fullScreen, narrow } = {}) {
+    component = $(component, this.anExpected({ value: "Test content is given for testing purposes" }));
+    fullScreen = $(fullScreen, false);
+    narrow = $(narrow, false);
+
+    return { component, fullScreen, narrow };
+  },
+
   aSideMenu({ logo, menu, data, footer } = {}) {
     logo = $(logo, "logo.svg");
     menu = $(menu, []);
@@ -142,10 +226,7 @@ export default {
     return {
       type: "SideMenu",
       schema: { logo, menu, footer },
-      data: {
-        type: "Inline",
-        value: data
-      }
+      data: { type: "Inline", value: data }
     };
   },
 
@@ -155,19 +236,5 @@ export default {
     disabled = $(disabled, false);
 
     return { route, icon, title, disabled };
-  },
-
-  anExpected({ testId, value } = {}) {
-    testId = $(testId, "test-id");
-    value = $(value, "");
-
-    return {
-      type: "Expected",
-      schema: testId,
-      data: {
-        type: "Inline",
-        value
-      }
-    };
   }
 };

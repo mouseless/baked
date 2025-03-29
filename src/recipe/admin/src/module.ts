@@ -4,6 +4,7 @@ export interface ModuleOptions {
   app?: any,
   primevue: PrimeVueOptions,
   components?: Components
+  composables?: Composables
 }
 
 export interface Components {
@@ -25,6 +26,22 @@ export interface PrimeVueOptions {
   locale?: any
 }
 
+export interface Composables {
+  useFormat?: UseFormatOptions,
+}
+
+export interface UseFormatOptions {
+  locale?: String,
+  currency?: String,
+  suffix?: UseFormatSuffixOptions
+}
+
+export interface UseFormatSuffixOptions {
+  billions: String,
+  millions: String,
+  thousands: String
+}
+
 export default defineNuxtModule<ModuleOptions>({
   meta: {
     name: "baked-recipe-admin",
@@ -41,6 +58,7 @@ export default defineNuxtModule<ModuleOptions>({
     _nuxt.options.runtimeConfig.public.error = _options.app?.error;
     _nuxt.options.runtimeConfig.public.primevue = _options.primevue;
     _nuxt.options.runtimeConfig.public.components = _options.components;
+    _nuxt.options.runtimeConfig.public.composables = _options.composables;
 
     // by pushing instead of setting, it allows custom css
     _nuxt.options.css.push("primeicons/primeicons.css");
@@ -51,18 +69,18 @@ export default defineNuxtModule<ModuleOptions>({
     _nuxt.options.features.inlineStyles = false;
     _nuxt.options.ssr = false;
 
+    // default dirs and plugins
     addComponentsDir({ path: resolver.resolve("./runtime/components"), });
     addImportsDir(resolver.resolve("./runtime/composables"));
     addPlugin(resolver.resolve("./runtime/plugins/addPrimeVue"));
     addPlugin(resolver.resolve("./runtime/plugins/toast"));
 
+    // plugins that comes through the app descriptor
     for(const plugin of _options.app?.plugins ?? []) {
       _nuxt.options.runtimeConfig.public[plugin.name] = plugin;
-
-      const pluginPath = `./runtime/plugins/${plugin.name}`;
-      addPlugin(resolver.resolve(pluginPath));
+      addPlugin(resolver.resolve(`./runtime/plugins/${plugin.name}`));
     }
-    
+
     await installModule("@nuxtjs/tailwindcss", {
       exposeConfig: true,
       cssPath: resolver.resolve("./runtime/assets/tailwind.css"),

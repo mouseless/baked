@@ -5,7 +5,7 @@
         ⬇️  Check if day name case is iNVERTED ⬇️
       </span>
     </Message>
-    <div class="border-4 border-gray-500 rounded p-4" data-testid="test">
+    <div class="border-4 border-gray-500 rounded p-4 text-center" data-testid="test">
       <DatePicker inline />
     </div>
   </UiSpec>

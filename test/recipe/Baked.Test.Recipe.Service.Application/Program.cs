@@ -10,9 +10,11 @@ Bake.New
             c => c.FixedBearerToken(
                 tokens =>
                 {
+                    tokens.Add("AdminUI", claims: ["BaseA", "BaseB"]);
                     tokens.Add("Jane", claims: ["User", "BaseA", "BaseB"]);
                     tokens.Add("John", claims: ["User", "Admin", "BaseA", "BaseB"]);
                     tokens.Add("Postman", claims: ["User", "Admin", "BaseA", "BaseB"]);
+                    tokens.Add("System", claims: ["BaseA", "BaseB"]);
 
                     tokens.Add("Authenticated", claims: []);
                     tokens.Add("BaseClaims", claims: ["BaseA", "BaseB"]);
