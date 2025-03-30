@@ -53,16 +53,8 @@ public class HttpServerLayer : LayerBase<AddServices, Build>
             .Build();
     }
 
-    string? FirstAuthenticationThatHandles(HttpContext context)
-    {
-        var result = _authentications.FirstOrDefault(a =>
-        {
-            var handles = a.Handles(context);
-            return handles;
-        })?.Scheme;
-
-        return result;
-    }
+    string? FirstAuthenticationThatHandles(HttpContext context) =>
+        _authentications.FirstOrDefault(a => a.Handles(context))?.Scheme;
 
     protected override PhaseContext GetContext(Build phase)
     {

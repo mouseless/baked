@@ -43,7 +43,7 @@ export default defineNuxtPlugin({
       if(current && toLogin) {
         await router.replace(to.query.redirect || "/");
       } else if(!current && !toLogin) {
-        await router.replace(`${auth.loginPage}?redirect=${to.fullPath}`);
+        await router.replace(`/${auth.loginPage}?redirect=${to.fullPath}`);
       }
     });
   },
@@ -60,7 +60,7 @@ export default defineNuxtPlugin({
           if(current) {
             router.push(route.query.redirect || "/");
           } else {
-            router.push(auth.loginPage);
+            router.push(`/${auth.loginPage}`);
           }
         });
       });

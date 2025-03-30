@@ -6,7 +6,8 @@ using Microsoft.OpenApi.Models;
 
 namespace Baked.Authentication.Jwt;
 
-public class JwtAuthenticationFeature(Action<JwtBearerOptions> _configureOptions, Action<JwtAuthenticationPlugin>? _configurePlugin) : IFeature<AuthenticationConfigurator>
+public class JwtAuthenticationFeature(Action<JwtBearerOptions> _configureOptions, Action<JwtAuthenticationPlugin> _configurePlugin)
+    : IFeature<AuthenticationConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
@@ -40,8 +41,6 @@ public class JwtAuthenticationFeature(Action<JwtBearerOptions> _configureOptions
 
         configurator.ConfigureAppDescriptor(app =>
         {
-            if (_configurePlugin is null) { return; }
-
             var plugin = new JwtAuthenticationPlugin();
             _configurePlugin(plugin);
             app.Plugins.Add(plugin);

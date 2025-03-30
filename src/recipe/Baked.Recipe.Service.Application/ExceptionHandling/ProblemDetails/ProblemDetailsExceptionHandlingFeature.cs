@@ -1,18 +1,14 @@
 ﻿using Baked.Architecture;
 using Baked.Runtime;
-using Baked.Theme.Admin;
+using Baked.Ui;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net;
 
-using static Baked.Theme.Admin.ErrorHandlingPlugin;
-
 namespace Baked.ExceptionHandling.ProblemDetails;
 
-public class ProblemDetailsExceptionHandlingFeature(
-    Setting<string>? _typeUrlFormat = default,
-    List<Handler>? _handlers = default
-) : IFeature<ExceptionHandlingConfigurator>
+public class ProblemDetailsExceptionHandlingFeature(Setting<string>? _typeUrlFormat)
+    : IFeature<ExceptionHandlingConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
@@ -58,14 +54,18 @@ public class ProblemDetailsExceptionHandlingFeature(
 
         configurator.ConfigureAppDescriptor(app =>
         {
-            _handlers = [.. _handlers ?? [],
-                new(StatusCode: (int)HttpStatusCode.BadRequest, Behavior: HandlerBehavior.Alert),
-                new(Behavior: HandlerBehavior.Page)
-            ];
-
             app.Plugins.Add(new ErrorHandlingPlugin()
             {
-                Handlers = _handlers
+                Handlers =
+                [
+                    new(
+                        StatusCode: (int)HttpStatusCode.Unauthorized,
+                        Behavior: ErrorHandlingPlugin.HandlerBehavior.Redirect,
+                        BehaviorArgument: Datas.Computed("useLoginRedirect")
+                    ),
+                    new(StatusCode: (int)HttpStatusCode.BadRequest, Behavior: ErrorHandlingPlugin.HandlerBehavior.Alert),
+                    new(Behavior: ErrorHandlingPlugin.HandlerBehavior.Page),
+                ]
             });
         });
     }

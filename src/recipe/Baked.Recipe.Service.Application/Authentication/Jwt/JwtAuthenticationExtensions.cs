@@ -3,8 +3,10 @@ using Baked.Authentication.Jwt;
 using Baked.Testing;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using Shouldly;
 using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 
 namespace Baked;
 
@@ -13,7 +15,26 @@ public static class JwtAuthenticationExtensions
     public static JwtAuthenticationFeature Jwt(this AuthenticationConfigurator _,
         Action<JwtBearerOptions>? configureOptions = default,
         Action<JwtAuthenticationPlugin>? configurePlugin = default
-    ) => new(configureOptions ?? (_ => { }), configurePlugin);
+    )
+    {
+        configureOptions ??= new(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ClockSkew = TimeSpan.FromSeconds(Settings.Required<int>("Authentication:Jwt:ClockSkewInSeconds")),
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = Settings.Required<string>("Authentication:Jwt:Issuer"),
+                ValidAudience = Settings.Required<string>("Authentication:Jwt:Audience"),
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Settings.Required<string>("Authentication:Jwt:Key")))
+            };
+        });
+        configurePlugin ??= new(_ => { });
+
+        return new(configureOptions, configurePlugin);
+    }
 
     public static bool IsJwt(this string token) =>
        new JwtSecurityTokenHandler().CanReadToken(token.Replace("Bearer", string.Empty).Trim());

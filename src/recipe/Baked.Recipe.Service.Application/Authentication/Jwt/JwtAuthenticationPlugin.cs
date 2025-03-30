@@ -2,11 +2,12 @@
 
 namespace Baked.Authentication.Jwt;
 
-public class JwtAuthenticationPlugin : IPlugin
+public class JwtAuthenticationPlugin()
+    : IPlugin
 {
     public string Name => "auth";
     public List<string> AnonymousRoutes { get; set; } = [];
-    public string LoginPath { get; set; } = default!;
-    public string RefreshPath { get; set; } = default!;
-    public string LoginPage { get; set; } = default!;
+    public string LoginPath { get; set; } = "auth/login";
+    public string RefreshPath { get; set; } = "auth/refresh";
+    public string LoginPage { get; set; } = "auth/login";
 }
