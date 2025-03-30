@@ -27,13 +27,22 @@
       label="Login"
     />
   </form>
+  <Divider />
+  <Button
+    icon="pi pi-home"
+    label="Back to Home Page"
+    severity="secondary"
+    variant="outlined"
+    as="router-link"
+    to="/"
+  />
 </template>
 <script setup>
 import { onUpdated, ref } from "vue";
 import { RouterLink } from "vue-router";
 import { useRuntimeConfig } from "#app";
 import { useToken } from "#imports";
-import { Button, InputText } from "primevue";
+import { Button, Divider, InputText } from "primevue";
 
 const { public: { composables } } = useRuntimeConfig();
 const token = useToken();

@@ -1,27 +1,34 @@
 <template>
   <Bake
-    v-if="layoutDescriptor"
+    :key="descriptor.type"
     name="root"
-    :descriptor="layoutDescriptor"
+    :descriptor="descriptor"
   >
     <slot />
   </Bake>
   <Toast />
 </template>
 <script setup>
-import { defineAsyncComponent, onMounted, ref } from "vue";
+import { defineAsyncComponent, ref, watch } from "vue";
+import { useRoute } from "#app";
 const Toast = defineAsyncComponent(() => import("primevue/toast"));
-import { useLayouts } from "#imports";
+import { useLayouts, usePages } from "#imports";
 import Bake from "./Bake.vue";
 
-const { name } = defineProps({
-  name: { type: String, required: true }
+const route = useRoute();
+const layouts = useLayouts();
+const pages = usePages();
+const descriptor = ref(await findLayout(route.params.baked?.[0]));
+
+watch(() => route.params.baked?.[0], async newPageName => {
+  descriptor.value = await findLayout(newPageName);
 });
 
-const layouts = useLayouts();
-const layoutDescriptor = ref();
+async function findLayout(pageName) {
+  const pageDescriptor = await pages.fetch(pageName || "index", { throwNotFound: false });
 
-onMounted(async() => layoutDescriptor.value = await layouts.fetch(name));
+  return await layouts.fetch(pageDescriptor?.schema?.layout || "default");
+}
 </script>
 <style lang="scss">
 .bg-body {

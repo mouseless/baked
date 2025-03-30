@@ -50,7 +50,12 @@
   show a skeleton during loading
 - `SideMenu`, `PageTitle`, `Header` now supports skeleton
 - `DetailPage` and its conventions are removed
-- `Page` now sets page layout when schema has `layout` property, this allows you
-  to change layout of a page through a page descriptor
+- `Layout` now automatically resolves and changes the page layout when the page
+  schema has `layout` property, which allows you to specify layout of a page
+  through its descriptor from backend
 - `baseURL` is moved from `baked.components.Bake` to
   `baked.composables.useDataFetcher` to make it reusable across the project
+- `route-params` is removed from `Page` and fixed to `baked`, since there is no
+  value in making that something configurable
+- Page and layout descriptors are now loaded in script setup to avoid flickers
+  on page load
