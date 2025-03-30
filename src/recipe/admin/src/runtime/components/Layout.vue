@@ -1,4 +1,5 @@
 <template>
+  <Toast />
   <Bake
     :key="descriptor.type"
     name="root"
@@ -6,7 +7,6 @@
   >
     <slot />
   </Bake>
-  <Toast />
 </template>
 <script setup>
 import { defineAsyncComponent, ref, watch } from "vue";
@@ -33,6 +33,10 @@ async function findLayout(pageName) {
 <style lang="scss">
 .bg-body {
   background-color: white;
+}
+
+.p-toast {
+  z-index: 100;
 }
 
 @media (prefers-color-scheme: dark) {
