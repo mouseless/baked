@@ -7,6 +7,6 @@ public class AttributeAwareCamelCasePropertyNamesContractResolver : CamelCasePro
 {
     protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization) =>
         type.IsAssignableTo(typeof(Attribute))
-            ? base.CreateProperties(type, memberSerialization).Where(p => p.PropertyName != "typeId").ToList()
-            : [.. base.CreateProperties(type, memberSerialization)];
+            ? [.. base.CreateProperties(type, memberSerialization).Where(p => p.PropertyName != "typeId")]
+            : base.CreateProperties(type, memberSerialization);
 }

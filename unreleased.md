@@ -31,6 +31,8 @@
   - `InjectedData` is introduced for components to provide values, e.g.
     parameter data, to its child commponents
   - `CompositeData` is introduced to combine data from different sources
+  - `ModalLayout` is introduced for pages like login
+  - `CustomPage` is introduced to allow custom pages through baked ui
 - Beta features are available in `Baked.Recipe.Service.Application`;
   - `Jwt` authentication feature implementation is now added with
     `JwtTokenBuilder` implementation of `ITokenBuilder` service
@@ -48,3 +50,7 @@
   show a skeleton during loading
 - `SideMenu`, `PageTitle`, `Header` now supports skeleton
 - `DetailPage` and its conventions are removed
+- `Page` now sets page layout when schema has `layout` property, this allows you
+  to change layout of a page through a page descriptor
+- `baseURL` is moved from `baked.components.Bake` to
+  `baked.composables.useDataFetcher` to make it reusable across the project

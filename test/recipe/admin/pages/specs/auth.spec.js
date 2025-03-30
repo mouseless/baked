@@ -109,7 +109,6 @@ test("refresh token before fetch when access is expired", async({goto, page}) =>
 
 async function login(form) {
   await form.getByPlaceholder("Username").fill("Username");
-  await form.getByPlaceholder("Password").fill("Password");
   await form.locator(".p-button").click();
 }
 

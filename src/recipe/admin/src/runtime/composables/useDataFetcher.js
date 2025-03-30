@@ -1,9 +1,11 @@
+import { useRuntimeConfig } from "#app";
 import { useComposableResolver, useContext } from "#imports";
 import { deepUnref } from "vue-deepunref";
 
 export default function() {
   const composableResolver = useComposableResolver();
   const context = useContext();
+  const { public: { composables } } = useRuntimeConfig();
 
   function shouldLoad(dataType) {
     return dataType === "Remote" || dataType === "Computed" || dataType == "Composite";
@@ -16,6 +18,8 @@ export default function() {
   }
 
   async function fetch({ baseURL, data, options, injectedData }) {
+    baseURL = baseURL || composables.useDataFetcher.baseURL;
+
     if(data?.type === "Composite") {
       const result = {};
 

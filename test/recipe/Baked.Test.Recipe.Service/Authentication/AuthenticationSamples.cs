@@ -16,25 +16,26 @@ public class AuthenticationSamples(
 
     public string? FormPostAuthenticate(string value)
     {
-        _logger.LogInformation($"Form post authenticate is called with value:'{value}'");
+        _logger.LogInformation($"Form post authenticate is called with value: '{value}'");
 
         return _getClaims().Identity?.AuthenticationType;
     }
 
     [AllowAnonymous]
-    public object Login(string username, string password) =>
-        !(string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
-        ? CreateToken(["Admin", "User", "BaseA", "BaseB"])
-        : throw new InvalidOperationException("No user found with given credentials!");
+    public Token Login(string username)
+    {
+        if (string.IsNullOrEmpty(username)) { throw new InvalidOperationException("No user found with given credentials!"); }
+
+        return CreateToken(["Admin", "User", "BaseA", "BaseB"]);
+    }
 
     [RequireUser(["Refresh"], Override = true)]
-    public object Refresh() =>
+    public Token Refresh() =>
         CreateToken(["Admin", "User", "BaseA", "BaseB"]);
 
-    object CreateToken(List<string> claims) =>
-        new
-        {
-            Access = _tokenBuilder.Build("access", [.. claims.Select(c => new Claim(c, c))]),
-            Refresh = _tokenBuilder.Build("refresh", [new("Refresh", "Refresh")])
-        };
+    Token CreateToken(List<string> claims) =>
+        new(
+            _tokenBuilder.Build("access", [.. claims.Select(c => new Claim(c, c))]),
+            _tokenBuilder.Build("refresh", [new("Refresh", "Refresh")])
+        );
 }

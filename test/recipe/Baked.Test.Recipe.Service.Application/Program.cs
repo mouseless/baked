@@ -10,10 +10,9 @@ Bake.New
             c => c.Jwt(
                 configurePlugin: plugin =>
                 {
-                    plugin.AnonymousRoutes = ["^(?:(?!auth).)*$"];
-                    plugin.LoginPath = "authentication-samples/login";
-                    plugin.RefreshPath = "authentication-samples/refresh";
-                    plugin.LoginPage = "login";
+                    plugin.AnonymousPageRoutes = ["^(?:(?!auth).)*$"];
+                    plugin.LoginPageRoute = "login";
+                    plugin.RefreshApiRoute = "authentication-samples/refresh";
                 }
             ),
             c => c.FixedBearerToken(

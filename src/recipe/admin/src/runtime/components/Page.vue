@@ -7,7 +7,7 @@
 </template>
 <script setup>
 import { computed, onMounted, ref } from "vue";
-import { useRuntimeConfig } from "#app";
+import { setPageLayout, useRuntimeConfig } from "#app";
 import { useHead, usePages } from "#imports";
 import Bake from "./Bake.vue";
 
@@ -25,5 +25,13 @@ useHead({ title: components?.Page?.title });
 const pageDescriptor = ref();
 const pageName = computed(() => routeParams[0] ?? "index");
 
-onMounted(async() => pageDescriptor.value = await pages.fetch(pageName.value));
+onMounted(async() => {
+  const descriptor = await pages.fetch(pageName.value);
+
+  if(descriptor.schema?.layout) {
+    setPageLayout(descriptor.schema.layout);
+  }
+
+  pageDescriptor.value = descriptor;
+});
 </script>

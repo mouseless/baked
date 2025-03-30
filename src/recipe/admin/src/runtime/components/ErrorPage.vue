@@ -20,11 +20,11 @@
         {{ safeLinksMessage }}
       </div>
     </div>
-    <Divider
-      type="dashed"
-      class="my-8"
-    />
     <AuthorizedContent>
+      <Divider
+        type="dashed"
+        class="my-8"
+      />
       <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
         <Bake
           v-for="link in safeLinks"

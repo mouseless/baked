@@ -6,14 +6,14 @@ export default defineNuxtPlugin({
   name: "auth",
   enforce: "pre",
   setup(nuxtApp) {
-    const { public: { auth, components } } = useRuntimeConfig();
+    const { public: { auth, composables } } = useRuntimeConfig();
     const router = nuxtApp.$router;
 
     globalThis.$fetch = ofetch.create({
       async onRequest({ request, options }) {
         const token = useToken();
 
-        if(options.baseURL !== components.Bake.baseURL) {
+        if(options.baseURL !== composables.useDataFetcher.baseURL) {
           return;
         }
 
@@ -29,7 +29,7 @@ export default defineNuxtPlugin({
     });
 
     router.beforeEach(async(to, _) => {
-      for(const route of auth.anonymousRoutes) {
+      for(const route of auth.anonymousPageRoutes) {
         const pattern = new RegExp(route);
         if(to.path.match(pattern)?.length > 0) {
           return;
@@ -43,7 +43,7 @@ export default defineNuxtPlugin({
       if(current && toLogin) {
         await router.replace(to.query.redirect || "/");
       } else if(!current && !toLogin) {
-        await router.replace(`/${auth.loginPage}?redirect=${to.fullPath}`);
+        await router.replace(`/${auth.loginPageRoute}?redirect=${to.fullPath}`);
       }
     });
   },
@@ -60,7 +60,7 @@ export default defineNuxtPlugin({
           if(current) {
             router.push(route.query.redirect || "/");
           } else {
-            router.push(`/${auth.loginPage}`);
+            router.push(`/${auth.loginPageRoute}`);
           }
         });
       });

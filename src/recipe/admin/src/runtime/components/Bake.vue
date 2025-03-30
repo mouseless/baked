@@ -49,7 +49,6 @@ onMounted(async() => {
   if(!shouldLoad) { return; }
 
   data.value = await dataFetcher.fetch({
-    baseURL: components?.Bake?.baseURL,
     data: descriptor.data,
     options: fetchOptions,
     injectedData

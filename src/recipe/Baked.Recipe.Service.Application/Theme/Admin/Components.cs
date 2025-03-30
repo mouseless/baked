@@ -11,6 +11,10 @@ public static class Components
         string? disabledReason = default
     ) => new(new(route, title) { Icon = icon, Description = description, Disabled = disabled, DisabledReason = disabledReason });
 
+    public static ComponentDescriptor CustomPage(string name, string type,
+        string? layout = default
+    ) => new(type, schema: new CustomPage(name, layout));
+
     public static ComponentDescriptorAttribute<DataPanel> DataPanel(string title, IComponentDescriptor content,
         IEnumerable<Parameter>? parameters = default,
         bool collapsed = false
@@ -67,14 +71,17 @@ public static class Components
     public static ComponentDescriptorAttribute<Icon> Icon(string iconClass) =>
         new(new(iconClass));
 
-    public static ComponentDescriptor Money(
-        IData? data = default
-    ) => new(nameof(Money)) { Data = data };
-
     public static ComponentDescriptorAttribute<MenuPage> MenuPage(string name,
         IComponentDescriptor? header = default,
         IEnumerable<IComponentDescriptor>? links = default
     ) => new(new(name) { Header = header, Links = [.. links ?? []] });
+
+    public static ComponentDescriptorAttribute<ModalLayout> ModalLayout(string name) =>
+        new(new(name));
+
+    public static ComponentDescriptor Money(
+        IData? data = default
+    ) => new(nameof(Money)) { Data = data };
 
     public static ComponentDescriptor None() =>
         new(nameof(None));
