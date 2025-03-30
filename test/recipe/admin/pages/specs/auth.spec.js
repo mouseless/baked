@@ -35,7 +35,7 @@ test("show toast for 400 errors at login page", async({goto, page}) => {
   await goto("/specs/auth", { waitUntil: "hydration" });
   const form = page.locator("form");
 
-  await form.locator(".p-button").click();
+  await form.locator(primevue.button.base).click();
 
   await expect(page.locator(primevue.toast.base)).toBeVisible();
 });
@@ -71,7 +71,7 @@ test("redirects to login page when backend returns 401 error", async({goto, page
 
 test("refresh token before navigation when access is expired", async({goto, page}) => {
   const requestPromise = page.waitForRequest(req => req.url().includes("refresh"));
-  const token = giveMe.aToken(true);
+  const token = giveMe.aToken({ accessExpired: true });
   await mockMe.theSession(page, token);
 
   await goto("/specs/auth");
@@ -99,7 +99,7 @@ test("refresh token before fetch when access is expired", async({goto, page}) =>
   await mockMe.theSession(page, token);
   await goto("/specs/auth", { waitUntil: "hydration" });
 
-  const expiredToken = giveMe.aToken(true);
+  const expiredToken = giveMe.aToken({ accessExpired: true });
   await mockMe.theSession(page, expiredToken);
   await page.getByTestId("request").click();
 
@@ -109,6 +109,6 @@ test("refresh token before fetch when access is expired", async({goto, page}) =>
 
 async function login(form) {
   await form.getByPlaceholder("Username").fill("Username");
-  await form.locator(".p-button").click();
+  await form.locator(primevue.button.base).click();
 }
 
