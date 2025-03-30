@@ -16,9 +16,11 @@
       <div class="text-2xl">
         {{ errorInfo.message }}
       </div>
-      <div class="text-2xl">
-        {{ safeLinksMessage }}
-      </div>
+      <AuthorizedContent>
+        <div class="text-2xl">
+          {{ safeLinksMessage }}
+        </div>
+      </AuthorizedContent>
     </div>
     <AuthorizedContent>
       <Divider

@@ -4,7 +4,7 @@
     @submit.prevent="submit"
   >
     <div class="w-full text-center mb-6">
-        <RouterLink to="/"><img src="/logo.svg" class="mx-auto w-10"></RouterLink>
+      <RouterLink to="/"><img src="/logo.svg" class="mx-auto w-10"></RouterLink>
     </div>
     <div class="text-center">
       <strong class="block text-2xl mb-2">
