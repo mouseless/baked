@@ -225,7 +225,7 @@ public class ConfigurationOverriderFeature : IFeature
                         Parameter("required", Select("Required", data: Inline(new[] { "Required 1", "Required 2" })),
                             required: true
                         ),
-                        Parameter("optional", Select("Optional", data: Inline(new[] { "Optional 1", "Optional 2" }), showClear: true))
+                        Parameter("optional", SelectButton(Inline(new[] { "Optional 1", "Optional 2" }), allowEmpty: true))
                     ],
                     tabs:
                     [
