@@ -288,7 +288,9 @@ export default {
     return { route, icon, title, disabled };
   },
 
-  aToken(accessExpired) {
+  aToken({ accessExpired } = {}) {
+    accessExpired = $(accessExpired, false);
+
     return {
       access: accessExpired ? expiredAccessToken : accessToken,
       refresh: refreshToken

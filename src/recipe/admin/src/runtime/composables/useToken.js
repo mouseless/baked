@@ -1,9 +1,10 @@
+import { useRuntimeConfig } from "#app";
 import { createError } from "#imports";
-import { useAuth, useMutex } from "#imports";
+import { useMutex } from "#imports";
 
 export default function() {
   const mutex = useMutex();
-  const auth = useAuth();
+  const { public: { auth, composables } } = useRuntimeConfig();
 
   async function current(
     shouldRefresh = true
@@ -31,7 +32,15 @@ export default function() {
       const token = await current(false);
       if(!token?.accessIsExpired()) { return; }
 
-      const result = await auth.refresh(token?.refresh);
+      const headers = new Headers();
+      headers.set("Authorization", `Bearer ${token?.refresh}`);
+
+      const result = await $fetch(auth.refreshApiRoute,
+        {
+          baseURL: composables.useDataFetcher.baseURL,
+          method: "POST",
+          headers
+        });
 
       setCurrent(result, false);
     });

@@ -21,8 +21,7 @@
     jwt support
   - `AuthorizedContent` component is now introduced for to display/hide
     content
-  - `Select` and `SelectButton` input components are added
-    - `Enum` support is also implemented for options
+  - `Select` input component is added
   - `useQuery` composable is added as a computed data to use query parameters in
     place for a data
     - When used in query data of a remote data, it forwards current page's all
@@ -32,6 +31,8 @@
   - `InjectedData` is introduced for components to provide values, e.g.
     parameter data, to its child commponents
   - `CompositeData` is introduced to combine data from different sources
+  - `ModalLayout` is introduced for pages like login
+  - `CustomPage` is introduced to allow custom pages through baked ui
 - Beta features are available in `Baked.Recipe.Service.Application`;
   - `Jwt` authentication feature implementation is now added with
     `JwtTokenBuilder` implementation of `ITokenBuilder` service
@@ -46,6 +47,15 @@
 - `Bake.vue` now provides a baked component path under `useContext().path()` to
   be used as a unique key within a page
 - `Bake.vue` now manages `loading` state, making it possible for components to
-  show a skeleton during loding
+  show a skeleton during loading
 - `SideMenu`, `PageTitle`, `Header` now supports skeleton
 - `DetailPage` and its conventions are removed
+- `Layout` now automatically resolves and changes the page layout when the page
+  schema has `layout` property, which allows you to specify layout of a page
+  through its descriptor from backend
+- `baseURL` is moved from `baked.components.Bake` to
+  `baked.composables.useDataFetcher` to make it reusable across the project
+- `route-params` is removed from `Page` and fixed to `baked`, since there is no
+  value in making that something configurable
+- Page and layout descriptors are now loaded in script setup to avoid flickers
+  on page load

@@ -11,10 +11,7 @@
         :descriptor="schema.header"
       />
       <slot />
-      <ScrollTop
-        target="parent"
-        :pt="{ root: { class: 'min-h-10 min-w-10' } }"
-      />
+      <ScrollTop target="parent" />
     </article>
   </div>
 </template>
@@ -38,5 +35,11 @@ const route = useRoute();
 /* see: https://stackoverflow.com/questions/52502837/chart-js-in-flex-element-overflows-instead-of-shrinking */
 article {
   overflow-x: hidden;
+}
+</style>
+<style>
+.p-scrolltop {
+  padding-top: calc(var(--p-button-icon-only-width) / 2);
+  padding-bottom: calc(var(--p-button-icon-only-width) / 2);
 }
 </style>

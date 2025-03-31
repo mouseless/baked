@@ -8,7 +8,9 @@ import { useToken } from "#imports";
 const token = useToken();
 const authorized = ref(false);
 
-onMounted(() => {
-  token.current(false).then(result => authorized.value = result !== null);
+onMounted(async() => {
+  const result = await token.current(false);
+
+  authorized.value = result !== null;
 });
 </script>

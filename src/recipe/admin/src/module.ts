@@ -4,17 +4,22 @@ export interface ModuleOptions {
   app?: any,
   primevue: PrimeVueOptions,
   components?: Components
-  composables?: Composables
+  composables: Composables
 }
 
 export interface Components {
   Bake?: BakeOptions,
-  Page?: PageOptions
+  DataPanel?: DataPanelOptions,
+  Page?: PageOptions,
+  ReportPage?: ReportPageOptions
 }
 
 export interface BakeOptions {
-  baseURL?: String,
   retryFetch?: Boolean
+}
+
+export interface DataPanelOptions {
+  requiredMessage?: String
 }
 
 export interface PageOptions {
@@ -26,8 +31,17 @@ export interface PrimeVueOptions {
   locale?: any
 }
 
+export interface ReportPageOptions {
+  requiredMessage?: String
+}
+
 export interface Composables {
-  useFormat?: UseFormatOptions,
+  useDataFetcher: UseDataFetcherOptions,
+  useFormat?: UseFormatOptions
+}
+
+export interface UseDataFetcherOptions {
+  baseURL: String
 }
 
 export interface UseFormatOptions {

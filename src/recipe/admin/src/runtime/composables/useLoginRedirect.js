@@ -1,10 +1,12 @@
-import { useRoute } from "#app";
+import { useRoute, useRuntimeConfig } from "#app";
 
 export default function() {
+  const { public: { auth } } = useRuntimeConfig();
+
   function compute() {
     const route = useRoute();
 
-    return `/login?redirect=${route.fullPath}`;
+    return `/${auth.loginPageRoute}?redirect=${route.fullPath}`;
   }
 
   return {

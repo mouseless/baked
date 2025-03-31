@@ -33,7 +33,7 @@ import { Button, Panel } from "primevue";
 import { useRuntimeConfig } from "#app";
 import { createError, useToast, useToken } from "#imports";
 
-const { public: { components } } = useRuntimeConfig();
+const { public: { composables } } = useRuntimeConfig();
 const token = useToken();
 const toast = useToast();
 
@@ -46,7 +46,7 @@ function authenticationException() {
 
 async function requestWithToken(){
   const result = await $fetch("time-provider-samples/now", {
-    baseURL: components.Bake.baseURL,
+    baseURL: composables.useDataFetcher.baseURL,
     method: "GET"
   });
 

@@ -150,29 +150,28 @@ public class ConfigurationOverriderFeature : IFeature
 
         configurator.ConfigureLayoutDescriptors(layouts =>
         {
-            configurator.UsingDomainModel(domain =>
-            {
-                layouts.Add(DefaultLayout("default",
-                    sideMenu: SideMenu(
-                        menu:
-                        [
-                            SideMenuItem("/", "pi pi-home"),
-                            SideMenuItem("/report", "pi pi-file", title: "Report"),
-                            SideMenuItem("/specs", "pi pi-list-check", title: "Specs")
-                        ],
-                        footer: String(Inline("FT"))
-                    ),
-                    header: Header(
-                        siteMap:
-                        [
-                            HeaderItem("/", icon: "pi pi-home"),
-                            HeaderItem("/report", icon: "pi pi-file", title: "Report"),
-                            HeaderItem("/specs", icon: "pi pi-list-check", title: "Specs"),
-                            .. specs.Select(spec => HeaderItem($"/specs/{spec.Title.Kebaberize()}", title: spec.Title, parentRoute: "/specs"))
-                        ]
-                    )
-                ));
-            });
+            layouts.Add(DefaultLayout("default",
+                sideMenu: SideMenu(
+                    menu:
+                    [
+                        SideMenuItem("/", "pi pi-home"),
+                        SideMenuItem("/report", "pi pi-file", title: "Report"),
+                        SideMenuItem("/specs", "pi pi-list-check", title: "Specs")
+                    ],
+                    footer: String(Inline("FT"))
+                ),
+                header: Header(
+                    siteMap:
+                    [
+                        HeaderItem("/", icon: "pi pi-home"),
+                        HeaderItem("/report", icon: "pi pi-file", title: "Report"),
+                        HeaderItem("/specs", icon: "pi pi-list-check", title: "Specs"),
+                        .. specs.Select(spec => HeaderItem($"/specs/{spec.Title.Kebaberize()}", title: spec.Title, parentRoute: "/specs"))
+                    ]
+                )
+            ));
+
+            layouts.Add(ModalLayout("modal"));
         });
 
         configurator.ConfigurePageDescriptors(pages =>
@@ -192,6 +191,8 @@ public class ConfigurationOverriderFeature : IFeature
                     )
                 ]
             ));
+
+            pages.Add(CustomPage("login", "Login", layout: "modal"));
 
             configurator.UsingDomainModel(domain =>
             {

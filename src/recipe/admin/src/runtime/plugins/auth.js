@@ -6,30 +6,36 @@ export default defineNuxtPlugin({
   name: "auth",
   enforce: "pre",
   setup(nuxtApp) {
-    const { public: { auth, components } } = useRuntimeConfig();
+    const { public: { auth, composables } } = useRuntimeConfig();
+    const token = useToken();
     const router = nuxtApp.$router;
 
     globalThis.$fetch = ofetch.create({
       async onRequest({ request, options }) {
-        const token = useToken();
+        // filters out `/_nuxt` calls and any other non api calls
+        if(options.baseURL !== composables.useDataFetcher.baseURL) { return; }
 
-        if(options.baseURL !== components.Bake.baseURL) {
-          return;
+        // filters out any api call that already has an authorization header,
+        // such as refresh token api call
+        if(options.headers.has("Authorization") || options.headers.has("authorization")) { return; }
+
+        // try get current token
+        let result = await token.current(false);
+        if(!result || result.accessIsExpired()) {
+          // if api is anonymous no need to have a token, will continue
+          // anonymously
+          if(auth.anonymousApiRoutes.some(route => request?.includes(route))) { return; }
+
+          // force get an access token
+          result = await token.current(true);
         }
 
-        if(options.headers.has("Authorization") || options.headers.has("authorization")) {
-          return;
-        }
-
-        if(!request?.includes(auth.LoginPath) && !request?.includes(auth.RefreshPath)) {
-          const result = await token.current(true);
-          options.headers.set("Authorization", "Bearer " + result?.access );
-        }
+        options.headers.set("Authorization", "Bearer " + result?.access );
       }
     });
 
     router.beforeEach(async(to, _) => {
-      for(const route of auth.anonymousRoutes) {
+      for(const route of auth.anonymousPageRoutes) {
         const pattern = new RegExp(route);
         if(to.path.match(pattern)?.length > 0) {
           return;
@@ -43,7 +49,7 @@ export default defineNuxtPlugin({
       if(current && toLogin) {
         await router.replace(to.query.redirect || "/");
       } else if(!current && !toLogin) {
-        await router.replace(`${auth.loginPage}?redirect=${to.fullPath}`);
+        await router.replace(`/${auth.loginPageRoute}?redirect=${to.fullPath}`);
       }
     });
   },
@@ -60,7 +66,7 @@ export default defineNuxtPlugin({
           if(current) {
             router.push(route.query.redirect || "/");
           } else {
-            router.push(auth.loginPage);
+            router.push(`/${auth.loginPageRoute}`);
           }
         });
       });

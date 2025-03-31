@@ -1,7 +1,7 @@
 ﻿using Baked.Ui;
 using Humanizer;
 
-namespace Baked.Theme.Admin;
+namespace Baked.ExceptionHandling.ProblemDetails;
 
 public class ErrorHandlingPlugin : IPlugin
 {
