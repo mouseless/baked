@@ -16,8 +16,8 @@ export default function() {
 
     if(!result.access) { return null; }
     if(!result.refresh) { return null; }
-    if(result.refreshIsExpired()) { return null; }
 
+    if(result.refreshIsExpired()) { return null; }
     if(result.accessIsExpired() && shouldRefresh) {
       await refresh();
 

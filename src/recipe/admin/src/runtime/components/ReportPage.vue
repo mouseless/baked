@@ -103,7 +103,7 @@ const currentTab = ref(tabs.length > 0 ? tabs[0].id : "");
 
 // this could be computed(() => !ready.value), but message gets duplicated when
 // page is refreshed so this variable is not handled separately. this is
-// probably because `Message` is a component that fades in, and add to dom in
+// probably because `Message` is a component that fades in and added to dom in
 // an unusual way
 const showRequiredMessage = ref(false);
 

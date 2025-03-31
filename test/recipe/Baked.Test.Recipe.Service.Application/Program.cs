@@ -10,7 +10,7 @@ Bake.New
             c => c.Jwt(
                 configurePlugin: plugin =>
                 {
-                    plugin.AnonymousPageRoutes.Add("^(?:(?!auth).)*$");
+                    plugin.AnonymousPageRoutes.Add("^(?!.*auth).*$");
                     plugin.LoginPageRoute = "login";
                     plugin.RefreshApiRoute = "authentication-samples/refresh";
                 }
