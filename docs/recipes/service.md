@@ -26,7 +26,7 @@ Bake.New
 | Rest API             | :white_check_mark: | :no_entry:         |
 | Runtime              | :white_check_mark: | :white_check_mark: |
 | Testing              | :no_entry:         | :white_check_mark: |
-| Ui                   | :white_check_mark: | :no_entry:         |
+| UI                   | :white_check_mark: | :no_entry:         |
 
 ## Features
 
