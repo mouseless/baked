@@ -33,6 +33,7 @@
   - `CompositeData` is introduced to combine data from different sources
   - `ModalLayout` is introduced for pages like login
   - `CustomPage` is introduced to allow custom pages through baked ui
+  - `SelectButton` input component is added
 - Beta features are available in `Baked.Recipe.Service.Application`;
   - `Jwt` authentication feature implementation is now added with
     `JwtTokenBuilder` implementation of `ITokenBuilder` service
