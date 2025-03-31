@@ -125,7 +125,8 @@ public class ConfigurationOverriderFeature : IFeature
             new { Title = "Query Parameters", Description = "A behavioral component to sync and manage parameters in query string" },
             new { Title = "Rate", Description = "A component to render rate values as percentage" },
             new { Title = "Report Page", Description = "A page component to render report pages" },
-            new { Title = "Select", Description = "An input component to allow select from given options" },
+            new { Title = "Select", Description = "An input component to allow select from given options using drow down" },
+            new { Title = "Select Button", Description = "An input component to allow select from given options using buttons" },
             new { Title = "Side Menu", Description = "A layout component to render application menu" },
             new { Title = "Toast", Description = "A behavioral component to render alert messages" }
         };

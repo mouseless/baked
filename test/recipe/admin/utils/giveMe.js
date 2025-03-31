@@ -267,6 +267,17 @@ export default {
     };
   },
 
+  aSelectButton({ allowEmpty, optionLabel, optionValue, data } = {}) {
+    data = $(data, ["Test Option 1", "Test Option 2"]);
+    allowEmpty = $(allowEmpty, false);
+
+    return {
+      type: "SelectButton",
+      schema: { allowEmpty, optionLabel, optionValue },
+      data: { type: "Inline", value: data }
+    };
+  },
+
   aSideMenu({ logo, menu, data, footer } = {}) {
     logo = $(logo, "logo.svg");
     menu = $(menu, []);

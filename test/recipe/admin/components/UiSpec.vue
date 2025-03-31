@@ -41,7 +41,7 @@
             />
           </div>
           <div v-else class="space-x-4">
-            <div :data-testid="variant.name" class="inline-block">
+            <div :data-testid="variant.name" :class="variantClass">
               <!-- renders given variants -->
               <Bake
                 v-if="index < variants.length"
@@ -87,7 +87,8 @@ const { title, variants, noLoadingVariant } = defineProps({
   vertical: { type: Boolean, default: false },
   testId: { type: String, default: "test" },
   fullPage: { type: Boolean, default: false },
-  useModel: { type: Boolean, default: false }
+  useModel: { type: Boolean, default: false },
+  variantClass: { type: String, default: "inline-block" }
 });
 
 const pages = usePages();

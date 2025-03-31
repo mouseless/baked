@@ -121,6 +121,12 @@ public static class Components
         bool showClear = false
     ) => new(new(label) { OptionLabel = optionLabel, OptionValue = optionValue, ShowClear = showClear }) { Data = data };
 
+    public static ComponentDescriptorAttribute<SelectButton> SelectButton(IData data,
+        bool allowEmpty = false,
+        string? optionLabel = default,
+        string? optionValue = default
+    ) => new(new() { AllowEmpty = allowEmpty, OptionLabel = optionLabel, OptionValue = optionValue }) { Data = data };
+
     public static ComponentDescriptorAttribute<SideMenu> SideMenu(IEnumerable<SideMenu.Item> menu,
         IComponentDescriptor? footer = default,
         IData? data = default

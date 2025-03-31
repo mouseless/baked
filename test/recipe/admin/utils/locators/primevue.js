@@ -24,6 +24,10 @@ export default {
     option: ".p-select-option",
     clearIcon: ".p-select-clear-icon"
   },
+  selectbutton: {
+    base: ".p-selectbutton",
+    option: ".p-togglebutton"
+  },
   tab: {
     base: ".p-tab"
   },
