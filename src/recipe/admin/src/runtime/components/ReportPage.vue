@@ -33,6 +33,13 @@
         </Tabs>
       </template>
     </PageTitle>
+    <Message
+      v-if="showRequiredMessage"
+      severity="info"
+    >
+      <i class="pi pi-info-circle" />
+      <span class="ml-3">{{ components?.ReportPage?.requiredMessage || "Select required values to view this report" }}</span>
+    </Message>
     <div
       v-if="ready"
       class="py-4 flex flex-col gap-4 items-center"
@@ -67,17 +74,10 @@
         </div>
       </DeferredTabContent>
     </div>
-    <Message
-      v-else
-      severity="info"
-    >
-      <i class="pi pi-info-circle" />
-      <span class="ml-3">{{ components?.ReportPage?.requiredMessage || "Select required values to view this report" }}</span>
-    </Message>
   </div>
 </template>
 <script setup>
-import { defineAsyncComponent, ref } from "vue";
+import { defineAsyncComponent, onMounted, ref } from "vue";
 import { useRuntimeConfig } from "#app";
 const Message = defineAsyncComponent(() => import("primevue/message"));
 const Tab = defineAsyncComponent(() => import("primevue/tab"));
@@ -96,12 +96,24 @@ const { schema } = defineProps({
 
 const { title, queryParameters, tabs } = schema;
 const { public: { components } } = useRuntimeConfig();
+
 const ready = ref(queryParameters.length === 0);
 const uniqueKey = ref();
 const currentTab = ref(tabs.length > 0 ? tabs[0].id : "");
 
+// this could be computed(() => !ready.value), but message gets duplicated when
+// page is refreshed so this variable is not handled separately. this is
+// probably because `Message` is a component that fades in, and add to dom in
+// an unusual way
+const showRequiredMessage = ref(false);
+
+onMounted(() => {
+  showRequiredMessage.value = !ready.value;
+});
+
 function onReady(value) {
   ready.value = value;
+  showRequiredMessage.value = !value;
 }
 
 function onChanged(value) {

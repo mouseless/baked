@@ -44,6 +44,13 @@ import { useRuntimeConfig } from "#app";
 import { useToken } from "#imports";
 import { Button, Divider, InputText } from "primevue";
 
+defineProps({
+  schema: { type: null, default: null },
+  data: { type: null, default: null },
+  loading: { type: Boolean, default: false }
+});
+defineModel({ type: null, default: null });
+
 const { public: { composables } } = useRuntimeConfig();
 const token = useToken();
 

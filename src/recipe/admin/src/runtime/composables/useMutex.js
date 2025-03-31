@@ -1,9 +1,9 @@
 import { E_CANCELED } from "async-mutex";
 
 export default function() {
-  const mutex = useNuxtApp().$mutex;
-
   async function run(callback) {
+    const mutex = useNuxtApp().$mutex;
+
     try {
       await mutex.acquire();
       await callback();

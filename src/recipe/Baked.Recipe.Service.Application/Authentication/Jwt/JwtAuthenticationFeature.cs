@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.RestApi.Model;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
@@ -42,6 +43,18 @@ public class JwtAuthenticationFeature(Action<JwtBearerOptions> _configureOptions
         configurator.ConfigureAppDescriptor(app =>
         {
             var plugin = new JwtAuthenticationPlugin();
+
+            configurator.UsingDomainModel(domain =>
+            {
+                plugin.AnonymousApiRoutes.AddRange(
+                    domain.Types
+                        .Having<ControllerModelAttribute>()
+                        .SelectMany(t => t.GetMembers().Methods.Having<ActionModelAttribute>())
+                        .Where(m => m.Has<Authorization.AllowAnonymousAttribute>())
+                        .Select(m => m.GetSingle<ActionModelAttribute>().GetRoute())
+                    );
+            });
+
             _configurePlugin(plugin);
             app.Plugins.Add(plugin);
         });
