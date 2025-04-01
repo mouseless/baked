@@ -272,8 +272,8 @@ public class ConfigurationOverriderFeature : IFeature
                                     component: DataPanel(first.Name.Humanize(),
                                         parameters:
                                         [
-                                            Parameter("count", Select("Count", data: Inline(new[] { "5", "10", "20" }), stateful: true),
-                                                @default: "10"
+                                            Parameter("count", Select("Count", data: Inline(Enum.GetNames<CountOptions>()), stateful: true),
+                                                @default: CountOptions.Default
                                             )
                                         ],
                                         content: DataTable(
@@ -295,8 +295,8 @@ public class ConfigurationOverriderFeature : IFeature
                                     component: DataPanel(second.Name.Humanize(),
                                         parameters:
                                         [
-                                            Parameter("count", SelectButton(Inline(new[] { "5", "10", "20" }), stateful: true),
-                                                @default: "10"
+                                            Parameter("count", SelectButton(Inline(Enum.GetNames<CountOptions>()), stateful: true),
+                                                @default: CountOptions.Default
                                             )
                                         ],
                                         content: DataTable(

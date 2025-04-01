@@ -11,6 +11,7 @@
     :allow-empty
     :option-label="optionLabel"
     :data-key="optionValue"
+    :pt="{ pcToggleButton: { root: { class: 'text-[length:inherit]' } } }"
   />
 </template>
 <script setup>

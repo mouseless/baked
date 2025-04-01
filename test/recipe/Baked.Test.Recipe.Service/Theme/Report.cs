@@ -28,15 +28,15 @@ public class Report
     public string GetRight() =>
         $"RIGHT: {Value}";
 
-    public List<ReportRow> GetFirst(int count = 10) =>
+    public List<ReportRow> GetFirst(CountOptions count = CountOptions.Default) =>
         [.. Enumerable
-          .Range(0, count)
+          .Range(0, (int)count)
           .Select(row => new ReportRow($"Row {row}", _requiredWithDefault, _required, _optional))
         ];
 
-    public List<ReportRow> GetSecond(int count = 10) =>
+    public List<ReportRow> GetSecond(CountOptions count = CountOptions.Default) =>
         [.. Enumerable
-          .Range(0, count)
+          .Range(0, (int)count)
           .Select(row => new ReportRow($"Row {row}", _requiredWithDefault, _required, _optional))
         ];
 }
