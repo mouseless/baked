@@ -16,6 +16,10 @@ export default {
   message: {
     base: ".p-message"
   },
+  paginator: {
+    base: ".p-paginator",
+    page: ".p-paginator-page"
+  },
   panel: {
     title: ".p-panel-title",
     header: ".p-panel-header"

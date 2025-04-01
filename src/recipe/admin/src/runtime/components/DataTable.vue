@@ -1,9 +1,12 @@
 <template>
   <DataTable
-    :value="value"
+    :value
     style="min-height: 100px"
     class="text-sm"
     striped-rows
+    :data-key
+    :paginator="paginator && value.length > rows"
+    :rows
   >
     <Column
       v-for="column in columns"
@@ -43,7 +46,7 @@ const { schema, data } = defineProps({
   loading: { type: Boolean, default: false }
 });
 
-const { columns, rowCountWhenLoading } = schema;
+const { columns, dataKey, paginator, rows, rowsWhenLoading } = schema;
 
-const value = computed(() => data ?? new Array(rowCountWhenLoading || 5).fill({ }));
+const value = computed(() => data ?? new Array(rowsWhenLoading || 5).fill({ }));
 </script>

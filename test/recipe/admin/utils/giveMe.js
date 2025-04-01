@@ -37,11 +37,14 @@ export default {
     };
   },
 
-  aDataTable({ columns, rowCountWhenLoading, data } = {}) {
+  aDataTable({ columns, dataKey, paginator, rows, rowsWhenLoading, data } = {}) {
     columns = $(columns, [
       this.aDataTableColumn({ prop: "test" })
     ]);
-    rowCountWhenLoading = $(rowCountWhenLoading, null);
+    dataKey = $(dataKey, null);
+    paginator = $(paginator, false);
+    rows = $(rows, null);
+    rowsWhenLoading = $(rowsWhenLoading, null);
     data = $(data, [
       { test: "value 1" },
       { test: "value 2" },
@@ -50,7 +53,7 @@ export default {
 
     return {
       type: "DataTable",
-      schema: { columns, rowCountWhenLoading },
+      schema: { columns, dataKey, paginator, rows, rowsWhenLoading },
       data: { type: "Inline", value: data }
     };
   },

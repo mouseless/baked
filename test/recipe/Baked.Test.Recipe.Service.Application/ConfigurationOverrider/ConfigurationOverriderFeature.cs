@@ -284,6 +284,9 @@ public class ConfigurationOverriderFeature : IFeature
                                                 DataTableColumn("column2", "Column 2"),
                                                 DataTableColumn("column3", "Column 3")
                                             ],
+                                            dataKey: "label",
+                                            paginator: true,
+                                            rows: 5,
                                             data: Remote($"/{first.GetSingle<ActionModelAttribute>().GetRoute()}",
                                                 headers: headers,
                                                 query: Composite([Computed(Composables.UseQuery), Injected()])
@@ -307,6 +310,9 @@ public class ConfigurationOverriderFeature : IFeature
                                                 DataTableColumn("column2", "Column 2"),
                                                 DataTableColumn("column3", "Column 3")
                                             ],
+                                            dataKey: "label",
+                                            paginator: true,
+                                            rows: 5,
                                             data: Remote($"/{second.GetSingle<ActionModelAttribute>().GetRoute()}",
                                                 headers: headers,
                                                 query: Composite([Computed(Composables.UseQuery), Injected()])

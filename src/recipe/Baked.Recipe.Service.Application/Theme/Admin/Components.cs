@@ -27,9 +27,12 @@ public static class Components
 
     public static ComponentDescriptorAttribute<DataTable> DataTable(
         IEnumerable<DataTable.Column>? columns = default,
-        int? rowCountWhenLoading = default,
+        string? dataKey = default,
+        bool paginator = false,
+        int? rows = default,
+        int? rowsWhenLoading = default,
         IData? data = default
-    ) => new(new() { Columns = [.. columns ?? []], RowCountWhenLoading = rowCountWhenLoading }) { Data = data };
+    ) => new(new() { Columns = [.. columns ?? []], DataKey = dataKey, Paginator = paginator, Rows = rows, RowsWhenLoading = rowsWhenLoading }) { Data = data };
 
     public static DataTable.Column DataTableColumn(string prop, string title,
         IComponentDescriptor? component = default,
