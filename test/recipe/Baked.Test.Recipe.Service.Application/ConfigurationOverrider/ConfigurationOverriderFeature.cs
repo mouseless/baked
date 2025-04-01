@@ -272,7 +272,7 @@ public class ConfigurationOverriderFeature : IFeature
                                     component: DataPanel(first.Name.Humanize(),
                                         parameters:
                                         [
-                                            Parameter("count", Select("Count", data: Inline(new[] { "5", "10", "15", "20" })),
+                                            Parameter("count", Select("Count", data: Inline(new[] { "5", "10", "20" }), stateful: true),
                                                 @default: "10"
                                             )
                                         ],
@@ -295,7 +295,7 @@ public class ConfigurationOverriderFeature : IFeature
                                     component: DataPanel(second.Name.Humanize(),
                                         parameters:
                                         [
-                                            Parameter("count", Select("Count", data: Inline(new[] { "5", "10", "15", "20" })),
+                                            Parameter("count", SelectButton(Inline(new[] { "5", "10", "20" }), stateful: true),
                                                 @default: "10"
                                             )
                                         ],

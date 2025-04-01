@@ -37,6 +37,15 @@ const variants = [
       data: ["OPTION"]
     }),
     model: ref()
+  },
+  {
+    name: "Stateful",
+    descriptor: giveMe.aSelectButton({
+      stateful: true,
+      data: ["OPTION 1", "OPTION 2"]
+    }),
+    model: ref("OPTION 1")
+
   }
 ];
 </script>

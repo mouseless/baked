@@ -83,3 +83,25 @@ test.describe("Allow Empty", () => {
     await expect(model).not.toHaveText("OPTION");
   });
 });
+
+test.describe("Stateful", () => {
+  const id = "Stateful";
+
+  test("initial model is selected when state is empty", async({page}) => {
+    const model = page.getByTestId(`${id}:model`);
+
+    await expect(model).toHaveText("OPTION 1");
+  });
+
+  test("retains selected state", async({page}) => {
+    const component = page.getByTestId(id);
+    const options = component.locator(primevue.selectbutton.option);
+    const model = page.getByTestId(`${id}:model`);
+    await options.nth(1).click();
+
+    await page.locator("a[href='/specs']").nth(0).click();
+    await page.locator("a[href='/specs/select-button']").nth(0).click();
+
+    await expect(model).toHaveText("OPTION 2");
+  });
+});

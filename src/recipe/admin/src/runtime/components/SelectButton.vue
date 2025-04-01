@@ -17,6 +17,7 @@
 import { defineAsyncComponent, ref, watch } from "vue";
 const SelectButton = defineAsyncComponent(() => import("primevue/selectbutton"));
 const Skeleton = defineAsyncComponent(() => import("primevue/skeleton"));
+import { useContext, useUiStates } from "#imports";
 
 const { schema, data, loading } = defineProps({
   schema: { type: null, required: true },
@@ -29,9 +30,17 @@ const model = defineModel({
   required: true
 });
 
-const { allowEmpty, optionLabel, optionValue } = schema;
+const { allowEmpty, optionLabel, optionValue, stateful } = schema;
 
-const selected = ref({});
+const context = useContext();
+const { value: { selectButtonStates } } = useUiStates();
+
+const path = context.path();
+const selected = ref();
+
+if(stateful) {
+  model.value = selectButtonStates[path] || model.value;
+}
 
 if(!loading) {
   setSelected(model.value);
@@ -42,7 +51,12 @@ watch(model, newModel => setSelected(newModel));
 watch(selected, newSelected => setModel(newSelected));
 
 function setModel(selected) {
-  model.value = optionValue ? selected?.[optionValue] : selected;
+  const selectedValue = optionValue ? selected?.[optionValue] : selected;
+  model.value = selectedValue;
+
+  if(stateful) {
+    selectButtonStates[path] = selectedValue;
+  }
 }
 
 function setSelected(value) {

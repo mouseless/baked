@@ -26,7 +26,7 @@ import { defineAsyncComponent, ref, watch } from "vue";
 const FloatLabel = defineAsyncComponent(() => import("primevue/floatlabel"));
 const Select = defineAsyncComponent(() => import("primevue/select"));
 const Skeleton = defineAsyncComponent(() => import("primevue/skeleton"));
-import { useContext } from "#imports";
+import { useContext, useUiStates } from "#imports";
 
 const { schema, data, loading } = defineProps({
   schema: { type: null, required: true },
@@ -39,12 +39,17 @@ const model = defineModel({
   required: true
 });
 
-const { label, optionLabel, optionValue, showClear } = schema;
+const { label, optionLabel, optionValue, showClear, stateful } = schema;
 
 const context = useContext();
+const { value: { selectStates } } = useUiStates();
 
 const path = context.path();
-const selected = ref({});
+const selected = ref();
+
+if(stateful) {
+  model.value = selectStates[path] || model.value;
+}
 
 if(!loading) {
   setSelected(model.value);
@@ -55,7 +60,12 @@ watch(model, newModel => setSelected(newModel));
 watch(selected, newSelected => setModel(newSelected));
 
 function setModel(selected) {
-  model.value = optionValue ? selected?.[optionValue] : selected;
+  const selectedValue = optionValue ? selected?.[optionValue] : selected;
+  model.value = selectedValue;
+
+  if(stateful) {
+    selectStates[path] = selectedValue;
+  }
 }
 
 function setSelected(value) {

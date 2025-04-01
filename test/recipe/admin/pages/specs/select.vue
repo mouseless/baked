@@ -44,6 +44,15 @@ const variants = [
       label: "This is a long label"
     }),
     model: ref()
+  },
+  {
+    name: "Stateful",
+    descriptor: giveMe.aSelect({
+      stateful: true,
+      data: ["OPTION 1", "OPTION 2"]
+    }),
+    model: ref("OPTION 1")
+
   }
 ];
 </script>

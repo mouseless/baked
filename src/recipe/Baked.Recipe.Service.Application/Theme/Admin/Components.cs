@@ -118,14 +118,16 @@ public static class Components
     public static ComponentDescriptorAttribute<Select> Select(string label, IData data,
         string? optionLabel = default,
         string? optionValue = default,
-        bool showClear = false
-    ) => new(new(label) { OptionLabel = optionLabel, OptionValue = optionValue, ShowClear = showClear }) { Data = data };
+        bool showClear = false,
+        bool stateful = false
+    ) => new(new(label) { OptionLabel = optionLabel, OptionValue = optionValue, ShowClear = showClear, Stateful = stateful }) { Data = data };
 
     public static ComponentDescriptorAttribute<SelectButton> SelectButton(IData data,
         bool allowEmpty = false,
         string? optionLabel = default,
-        string? optionValue = default
-    ) => new(new() { AllowEmpty = allowEmpty, OptionLabel = optionLabel, OptionValue = optionValue }) { Data = data };
+        string? optionValue = default,
+        bool stateful = false
+    ) => new(new() { AllowEmpty = allowEmpty, OptionLabel = optionLabel, OptionValue = optionValue, Stateful = stateful }) { Data = data };
 
     public static ComponentDescriptorAttribute<SideMenu> SideMenu(IEnumerable<SideMenu.Item> menu,
         IComponentDescriptor? footer = default,
