@@ -26,7 +26,7 @@ export default {
   },
 
   aDataPanel({ title, collapsed, parameters, content } = {}) {
-    title = $(title, "Test Title");
+    title = $(title, { type: "Inline", value: "Test Title" });
     collapsed = $(collapsed, false);
     parameters = $(parameters, []);
     content = $(content, this.anExpected());

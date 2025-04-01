@@ -18,6 +18,11 @@ public static class Components
     public static ComponentDescriptorAttribute<DataPanel> DataPanel(string title, IComponentDescriptor content,
         IEnumerable<Parameter>? parameters = default,
         bool collapsed = false
+    ) => DataPanel(Datas.Inline(title), content, parameters: parameters, collapsed: collapsed);
+
+    public static ComponentDescriptorAttribute<DataPanel> DataPanel(IData title, IComponentDescriptor content,
+        IEnumerable<Parameter>? parameters = default,
+        bool collapsed = false
     ) => new(new(title, content) { Collapsed = collapsed, Parameters = [.. parameters ?? []] });
 
     public static ComponentDescriptorAttribute<DataTable> DataTable(

@@ -17,7 +17,7 @@ export default function() {
         null;
   }
 
-  async function fetch({ baseURL, data, options, injectedData }) {
+  async function fetch({ baseURL, data, injectedData }) {
     baseURL = baseURL || composables.useDataFetcher.baseURL;
 
     if(data?.type === "Composite") {
@@ -26,7 +26,7 @@ export default function() {
       for(const part of data.parts) {
         Object.assign(
           result,
-          deepUnref(await fetch({ baseURL, data: part, options, injectedData }))
+          deepUnref(await fetch({ baseURL, data: part, injectedData }))
         );
       }
 
@@ -57,11 +57,19 @@ export default function() {
 
     if(data?.type === "Remote") {
       const headers = data.headers
-        ? deepUnref(await fetch({ baseURL, data: data.headers, options, injectedData }))
+        ? deepUnref(await fetch({ baseURL, data: data.headers, injectedData }))
         : { };
 
       const query = data.query
-        ? deepUnref(await fetch({ baseURL, data: data.query, options, injectedData }))
+        ? deepUnref(await fetch({ baseURL, data: data.query, injectedData }))
+        : { };
+
+      const options = composables?.useDataFetcher?.retryFetch
+        ? {
+          retry: Number.MAX_VALUE,
+          retryDelay: 200,
+          retryStatusCodes: [500]
+        }
         : { };
 
       return await $fetch(

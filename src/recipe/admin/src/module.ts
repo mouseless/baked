@@ -8,14 +8,9 @@ export interface ModuleOptions {
 }
 
 export interface Components {
-  Bake?: BakeOptions,
   DataPanel?: DataPanelOptions,
   Page?: PageOptions,
   ReportPage?: ReportPageOptions
-}
-
-export interface BakeOptions {
-  retryFetch?: Boolean
 }
 
 export interface DataPanelOptions {
@@ -42,6 +37,7 @@ export interface Composables {
 
 export interface UseDataFetcherOptions {
   baseURL: String
+  retryFetch?: Boolean
 }
 
 export interface UseFormatOptions {

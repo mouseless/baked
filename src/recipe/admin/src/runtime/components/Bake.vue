@@ -11,7 +11,6 @@
 </template>
 <script setup>
 import { onMounted, ref } from "vue";
-import { useRuntimeConfig } from "#app";
 import { useComponentResolver, useContext, useDataFetcher } from "#imports";
 
 const { name, descriptor } = defineProps({
@@ -24,7 +23,6 @@ const model = defineModel({
   required: false
 });
 
-const { public: { components } } = useRuntimeConfig();
 const componentResolver = useComponentResolver();
 const context = useContext();
 const dataFetcher = useDataFetcher();
@@ -37,20 +35,11 @@ const shouldLoad = dataFetcher.shouldLoad(descriptor.data?.type);
 const data = ref(dataFetcher.get(descriptor.data));
 const loading = ref(shouldLoad);
 
-const fetchOptions = components?.Bake?.retryFetch
-  ? {
-    retry: Number.MAX_VALUE,
-    retryDelay: 100,
-    retryStatusCodes: [500]
-  }
-  : { };
-
 onMounted(async() => {
   if(!shouldLoad) { return; }
 
   data.value = await dataFetcher.fetch({
     data: descriptor.data,
-    options: fetchOptions,
     injectedData
   });
   loading.value = false;
