@@ -67,7 +67,7 @@ test("query string is set to input", async({page}) => {
 });
 
 test("replaces route until defaults are set", async({page}) => {
-  await page.waitForURL(/requiredWithDefault/); // wait for default value to be set
+  await page.waitForURL(/requiredWithDefault/);
 
   const state = await page.evaluate(() => history.state);
 
@@ -78,13 +78,13 @@ test("pushes route when a parameter changes", async({page}) => {
   const component = page.getByTestId(id.component);
 
   await component.getByTestId("required").fill("value 1");
-  await page.waitForURL(/value\+1/); // wait for above fill to take effect
+  await page.waitForURL(/value\+1/);
 
   const state = await page.evaluate(() => history.state);
   expect(state.back).toBe("/specs/query-parameters?requiredWithDefault=default+value");
 
   await component.getByTestId("required").fill("value 2");
-  await page.waitForURL(/value\+2/); // wait for above fill to take effect
+  await page.waitForURL(/value\+2/);
 
   const state2 = await page.evaluate(() => history.state);
   expect(state2.back).toBe("/specs/query-parameters?requiredWithDefault=default+value&required=value+1");
