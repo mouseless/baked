@@ -1,9 +1,21 @@
 <template>
   <UiSpec title="Auth" test-id="auth">
-    <Panel class="mt-4">
-      <div>
-        This content requires authorization
-      </div>
+    <Message severity="warn">
+      <span class="text-xl">
+        This test requires authentication, make sure you are logged in if you
+        see this page
+      </span>
+    </Message>
+    <Divider />
+    <Message severity="info">
+      <span class="text-xl">
+        ⬇️  Check if below button makes a successful request to backend ↗️
+      </span>
+    </Message>
+    <div
+      class="border-4 border-gray-500 rounded"
+      data-testid="component"
+    >
       <Button
         data-testid="request"
         type="button"
@@ -11,6 +23,16 @@
         class="m-4"
         @click="async() => requestWithToken()"
       />
+    </div>
+    <Message severity="info">
+      <span class="text-xl">
+        ⬇️  Check if below button redirects you to login page with an error ↗️
+      </span>
+    </Message>
+    <div
+      class="border-4 border-gray-500 rounded"
+      data-testid="component"
+    >
       <Button
         data-testid="exception"
         type="button"
@@ -18,6 +40,16 @@
         class="m-4"
         @click="authenticationException"
       />
+    </div>
+    <Message severity="info">
+      <span class="text-xl">
+        ⬇️  Check if below button logs you out and redirects to login page ➡️
+      </span>
+    </Message>
+    <div
+      class="border-4 border-gray-500 rounded"
+      data-testid="component"
+    >
       <Button
         data-testid="logout"
         type="button"
@@ -25,11 +57,11 @@
         label="Logout"
         @click="logout"
       />
-    </Panel>
+    </div>
   </UiSpec>
 </template>
 <script setup>
-import { Button, Panel } from "primevue";
+import { Button, Divider, Message } from "primevue";
 import { useRuntimeConfig } from "#app";
 import { createError, useToast, useToken } from "#imports";
 
