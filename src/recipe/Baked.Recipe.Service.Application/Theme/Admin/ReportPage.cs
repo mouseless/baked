@@ -15,6 +15,7 @@ public record ReportPage(string Name, PageTitle Title) :
         public string Id { get; set; } = Id;
         public string Title { get; set; } = Title;
         public IComponentDescriptor? Icon { get; set; }
+        public string? ShowWhen { get; set; }
         public List<Content> Contents { get; init; } = [];
 
         public record Content(IComponentDescriptor Component)
@@ -22,6 +23,8 @@ public record ReportPage(string Name, PageTitle Title) :
             public IComponentDescriptor Component { get; set; } = Component;
             public bool FullScreen { get; set; }
             public bool Narrow { get; set; }
+            public string? Key { get; set; }
+            public string? ShowWhen { get; set; }
         }
     }
 }

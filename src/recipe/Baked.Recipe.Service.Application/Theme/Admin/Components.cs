@@ -115,13 +115,16 @@ public static class Components
 
     public static ReportPage.Tab ReportPageTab(string id, string title,
         IComponentDescriptor? icon = default,
+        string? showWhen = default,
         IEnumerable<ReportPage.Tab.Content>? contents = default
-    ) => new(id, title) { Icon = icon, Contents = [.. contents ?? []] };
+    ) => new(id, title) { Icon = icon, ShowWhen = showWhen, Contents = [.. contents ?? []] };
 
     public static ReportPage.Tab.Content ReportPageTabContent(IComponentDescriptor component,
         bool fullScreen = false,
-        bool narrow = false
-    ) => new(component) { FullScreen = fullScreen, Narrow = narrow };
+        bool narrow = false,
+        string? key = default,
+        string? showWhen = default
+    ) => new(component) { FullScreen = fullScreen, Narrow = narrow, Key = key, ShowWhen = showWhen };
 
     public static ComponentDescriptorAttribute<Select> Select(string label, IData data,
         string? optionLabel = default,
