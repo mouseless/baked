@@ -9,43 +9,8 @@ app.Layers.AddUi();
 
 `UiLayer` provides `IComponentDescriptor`, `IComponentSchema`, `IData` types for
 building UI page metadata. A page metadata will have a component descriptor
-(represented by a `ComponentDescriptorAttribtue` instance) at the top in the
+(represented by a `ComponentDescriptorAttribute` instance) at the top in the
 hierarchy containing `Type`, `Schema`, `Name` and `Data` properties.
-
-Below is a sample metadata output which can be created;
-
-```json
-{
-  "type": "Detail",
-  "schema": {
-    "title": "Parent",
-    "header": null,
-    "props": [
-      {
-        "key": "id",
-        "title": "Id",
-        "component": {
-          "type": "String",
-          "data": null
-        }
-      },
-      {
-        "key": "name",
-        "title": "Name",
-        "component": {
-          "type": "String",
-          "data": null
-        }
-      }
-    ]
-  },
-  "name": "parents",
-  "data": {
-    "type": "Remote",
-    "path": "/parents/{0}"
-  }
-}
-```
 
 > [!NOTE]
 >
@@ -62,8 +27,8 @@ Below is a sample metadata output which can be created;
 
 ## Configuration Targets
 
-This layer provides `AppDescriptor`, `LayerDescriptors` and `PageDescriptors` 
-configuration target for registering pages using `ComponentDescriptor` 
+This layer provides `AppDescriptor`, `LayerDescriptors` and `PageDescriptors`
+configuration target for registering pages using `ComponentDescriptor`
 instances.
 
 ### `AppDescriptor`

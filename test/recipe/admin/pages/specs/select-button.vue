@@ -1,8 +1,9 @@
 <template>
   <UiSpec
-    title="Select"
+    title="Select Button"
     :variants="variants"
     :use-model="true"
+    variant-class="inline"
   />
 </template>
 <script setup>
@@ -12,15 +13,14 @@ import giveMe from "~/utils/giveMe";
 const variants = [
   {
     name: "Base",
-    descriptor: giveMe.aSelect({
-      label: "Label",
+    descriptor: giveMe.aSelectButton({
       data: ["OPTION 1", "OPTION 2"]
     }),
     model: ref()
   },
   {
     name: "Option Label and Value",
-    descriptor: giveMe.aSelect({
+    descriptor: giveMe.aSelectButton({
       optionLabel: "label",
       optionValue: "value",
       data: [
@@ -31,23 +31,16 @@ const variants = [
     model: ref()
   },
   {
-    name: "Show Clear",
-    descriptor: giveMe.aSelect({
-      data: ["OPTION"],
-      showClear: true
-    }),
-    model: ref("OPTION")
-  },
-  {
-    name: "Long Label",
-    descriptor: giveMe.aSelect({
-      label: "This is a long label"
+    name: "Allow Empty",
+    descriptor: giveMe.aSelectButton({
+      allowEmpty: true,
+      data: ["OPTION"]
     }),
     model: ref()
   },
   {
     name: "Stateful",
-    descriptor: giveMe.aSelect({
+    descriptor: giveMe.aSelectButton({
       stateful: true,
       data: ["OPTION 1", "OPTION 2"]
     }),

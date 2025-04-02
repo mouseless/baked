@@ -5,26 +5,18 @@
   >
     <Skeleton class="min-h-10" />
   </div>
-  <FloatLabel
-    v-else
-    variant="on"
-  >
-    <Select
-      v-model="selected"
-      :input-id="path"
-      :options="data"
-      :option-label="optionLabel"
-      :placeholder="label"
-      :show-clear
-      class="hide-placeholder"
-    />
-    <label for="period">{{ label }}</label>
-  </FloatLabel>
+  <SelectButton
+    v-model="selected"
+    :options="data"
+    :allow-empty
+    :option-label="optionLabel"
+    :data-key="optionValue"
+    :pt="{ pcToggleButton: { root: { class: 'text-[length:inherit]' } } }"
+  />
 </template>
 <script setup>
 import { defineAsyncComponent, ref, watch } from "vue";
-const FloatLabel = defineAsyncComponent(() => import("primevue/floatlabel"));
-const Select = defineAsyncComponent(() => import("primevue/select"));
+const SelectButton = defineAsyncComponent(() => import("primevue/selectbutton"));
 const Skeleton = defineAsyncComponent(() => import("primevue/skeleton"));
 import { useContext, useUiStates } from "#imports";
 
@@ -39,16 +31,16 @@ const model = defineModel({
   required: true
 });
 
-const { label, optionLabel, optionValue, showClear, stateful } = schema;
+const { allowEmpty, optionLabel, optionValue, stateful } = schema;
 
 const context = useContext();
-const { value: { selectStates } } = useUiStates();
+const { value: { selectButtonStates } } = useUiStates();
 
 const path = context.path();
 const selected = ref();
 
 if(stateful) {
-  model.value = selectStates[path] || model.value;
+  model.value = selectButtonStates[path] || model.value;
 }
 
 if(!loading) {
@@ -64,7 +56,7 @@ function setModel(selected) {
   model.value = selectedValue;
 
   if(stateful) {
-    selectStates[path] = selectedValue;
+    selectButtonStates[path] = selectedValue;
   }
 }
 
@@ -74,12 +66,3 @@ function setSelected(value) {
     : value;
 }
 </script>
-<style lang="scss">
-/*
-placeholder gives select the initial width, but it overlaps with label so it is
-hidden
-*/
-.hide-placeholder .p-placeholder {
-  visibility: hidden;
-}
-</style>

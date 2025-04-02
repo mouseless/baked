@@ -25,16 +25,14 @@ export default defineNuxtConfig({
   baked: {
     app: app,
     components: {
-      Bake: {
-        retryFetch: true
-      },
       Page: {
         title: "Baked Admin"
       }
     },
     composables: {
       useDataFetcher: {
-        baseURL: process.env.API_BASE_URL
+        baseURL: process.env.API_BASE_URL,
+        retryFetch: true
       }
     },
     primevue: {

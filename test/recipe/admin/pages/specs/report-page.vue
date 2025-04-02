@@ -46,6 +46,21 @@ const variants = [
     })
   },
   {
+    name: "Single Tab",
+    descriptor: giveMe.aReportPage({
+      tabs: [
+        giveMe.aReportPageTab({
+          id: "hidden tab",
+          contents: [
+            giveMe.aReportPageTabContent({
+              component: giveMe.anExpected({ testId: "content" })
+            })
+          ]
+        })
+      ]
+    })
+  },
+  {
     name: "Full Page",
     descriptor: giveMe.aReportPage({
       tabs: [
@@ -65,21 +80,6 @@ const variants = [
           contents: [
             giveMe.aReportPageTabContent({ narrow: true }),
             giveMe.aReportPageTabContent({ narrow: true })
-          ]
-        })
-      ]
-    })
-  },
-  {
-    name: "Single Tab",
-    descriptor: giveMe.aReportPage({
-      tabs: [
-        giveMe.aReportPageTab({
-          id: "hidden tab",
-          contents: [
-            giveMe.aReportPageTabContent({
-              component: giveMe.anExpected({ testId: "content" })
-            })
           ]
         })
       ]

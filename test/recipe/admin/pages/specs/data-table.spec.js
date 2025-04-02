@@ -1,4 +1,5 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
+import primevue from "~/utils/locators/primevue";
 
 test.beforeEach(async({goto}) => {
   await goto("/specs/data-table", { waitUntil: "hydration" });
@@ -33,6 +34,41 @@ test.describe("Base", () => {
     const component = page.getByTestId(id);
 
     await expect(component).toHaveScreenshot();
+  });
+});
+
+test.describe("Pagination", () => {
+  const id = "Pagination";
+
+  test("paginator", async({page}) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.locator(primevue.paginator.base)).toBeVisible();
+  });
+
+  test("page count", async({page}) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.locator(primevue.paginator.page)).toHaveCount(2);
+  });
+
+  test("data update on page changes", async({page}) => {
+    const component = page.getByTestId(id);
+    const pages = component.locator(primevue.paginator.page);
+
+    await pages.nth(1).click();
+
+    await expect(component.locator("td")).toHaveText("Row 3");
+  });
+});
+
+test.describe("Auto Hide Pagination", () => {
+  const id = "Auto Hide Pagination";
+
+  test("no paginator", async({page}) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.locator(primevue.paginator.base)).not.toBeVisible();
   });
 });
 

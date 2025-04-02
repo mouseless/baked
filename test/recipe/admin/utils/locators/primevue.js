@@ -16,6 +16,10 @@ export default {
   message: {
     base: ".p-message"
   },
+  paginator: {
+    base: ".p-paginator",
+    page: ".p-paginator-page"
+  },
   panel: {
     title: ".p-panel-title",
     header: ".p-panel-header"
@@ -23,6 +27,10 @@ export default {
   select: {
     option: ".p-select-option",
     clearIcon: ".p-select-clear-icon"
+  },
+  selectbutton: {
+    base: ".p-selectbutton",
+    option: ".p-togglebutton"
   },
   tab: {
     base: ".p-tab"

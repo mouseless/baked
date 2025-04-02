@@ -17,14 +17,14 @@
         >
           <TabList :pt="{ tabList: { class: '!bg-transparent' } }">
             <Tab
-              v-for="(tab, i) in tabs"
+              v-for="tab in shownTabs"
               :key="tab.id"
               :value="tab.id"
               class="space-x-2"
             >
               <Bake
                 v-if="tab.icon"
-                :name="`tabs/${i}/icon`"
+                :name="`tabs/${tab.id}/icon`"
                 :descriptor="tab.icon"
               />
               <span>{{ tab.title }}</span>
@@ -45,7 +45,7 @@
       class="py-4 flex flex-col gap-4 items-center"
     >
       <DeferredTabContent
-        v-for="(tab, i) in tabs"
+        v-for="tab in shownTabs"
         :key="`${uniqueKey}-${tab.id}`"
         v-model="currentTab"
         :when="tab.id"
@@ -54,7 +54,7 @@
       >
         <Bake
           v-if="tab.contents.length === 1 && tab.contents[0].fullScreen"
-          :name="`tabs/${i}/contents/full-screen`"
+          :name="`tabs/${tab.id}/contents/full-screen`"
           :descriptor="tab.contents[0].component"
         />
         <div
@@ -62,12 +62,12 @@
           class="grid grid-cols-1 lg:grid-cols-2 gap-4"
         >
           <div
-            v-for="(content, j) in tab.contents"
-            :key="`content-${j}`"
+            v-for="(content, i) in tab.contents.filter(content => content.showWhen ? page[content.showWhen] : true)"
+            :key="`content-${content.key || i}`"
             :class="{ 'lg:col-span-2': !content.narrow }"
           >
             <Bake
-              :name="`tabs/${i}/contents/${j}`"
+              :name="`tabs/${tab.id}/contents/${content.key || i}`"
               :descriptor="content.component"
             />
           </div>
@@ -77,12 +77,13 @@
   </div>
 </template>
 <script setup>
-import { defineAsyncComponent, onMounted, ref } from "vue";
+import { computed, defineAsyncComponent, onMounted, ref, watch } from "vue";
 import { useRuntimeConfig } from "#app";
 const Message = defineAsyncComponent(() => import("primevue/message"));
 const Tab = defineAsyncComponent(() => import("primevue/tab"));
 const TabList = defineAsyncComponent(() => import("primevue/tablist"));
 const Tabs = defineAsyncComponent(() => import("primevue/tabs"));
+import { useContext } from "#imports";
 import Bake from "./Bake.vue";
 import DeferredTabContent from "./DeferredTabContent.vue";
 import PageTitle from "./PageTitle.vue";
@@ -95,11 +96,33 @@ const { schema } = defineProps({
 });
 
 const { title, queryParameters, tabs } = schema;
+const context = useContext();
 const { public: { components } } = useRuntimeConfig();
 
+const page = context.page();
 const ready = ref(queryParameters.length === 0);
 const uniqueKey = ref();
 const currentTab = ref(tabs.length > 0 ? tabs[0].id : "");
+const shownTabs = computed(() => tabs.filter(tab => tab.showWhen ? page[tab.showWhen] : true));
+
+const lastTab = ref();
+for(const tab of tabs) {
+  if(!tab.showWhen) { continue; }
+
+  // switch to a shown tab when current tab gets hidden upon page context
+  // change
+  watch(() => page[tab.showWhen], show => {
+    if(currentTab.value === tab.id && !show) {
+      // current tab will be hidden, switch to first shown tab
+      lastTab.value = currentTab.value;
+      currentTab.value = shownTabs.value[0]?.id;
+    } else if(lastTab.value === tab.id && show) {
+      // last tab becomes available, switch back to it
+      currentTab.value = lastTab.value;
+      lastTab.value = null;
+    }
+  });
+}
 
 // this could be computed(() => !ready.value), but message gets duplicated when
 // page is refreshed so this variable is not handled separately. this is

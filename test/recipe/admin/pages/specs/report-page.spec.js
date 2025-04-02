@@ -68,6 +68,17 @@ test.describe("Base", () => {
   });
 });
 
+test.describe("Single Tab", () => {
+  const id = "Single Tab";
+
+  test("tab hidden when there is one tab", async({page}) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.getByTestId("content")).toBeAttached(); // required to wait for page to render
+    await expect(component.locator(primevue.tab.base)).not.toBeAttached();
+  });
+});
+
 test.describe("Full Page", () => {
   const id = "Full Page";
 
@@ -91,17 +102,6 @@ test.describe("Narrow", () => {
     const component = page.getByTestId(id);
 
     await expect(component).toHaveScreenshot();
-  });
-});
-
-test.describe("Single Tab", () => {
-  const id = "Single Tab";
-
-  test("tab hidden when there is one tab", async({page}) => {
-    const component = page.getByTestId(id);
-
-    await expect(component.getByTestId("content")).toBeAttached(); // required to wait for page to render
-    await expect(component.locator(primevue.tab.base)).not.toBeAttached();
   });
 });
 

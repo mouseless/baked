@@ -18,10 +18,20 @@ export default function() {
     provide("__bake_injected_data", value);
   }
 
+  function page() {
+    return inject("__bake_page");
+  }
+
+  function setPage(page) {
+    provide("__bake_page", page);
+  }
+
   return {
     add,
     path,
     injectedData,
-    setInjectedData
+    setInjectedData,
+    page,
+    setPage
   };
 }

@@ -12,7 +12,7 @@ const variants = [
   {
     name: "Base",
     descriptor: giveMe.aDataPanel({
-      title: "TITLE",
+      title: { type: "Inline", value: "TITLE" },
       collapsed: false,
       content: giveMe.anExpected({ testId: "content", value: "TEST DATA" })
     })

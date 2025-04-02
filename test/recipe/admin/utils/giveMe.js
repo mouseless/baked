@@ -26,7 +26,7 @@ export default {
   },
 
   aDataPanel({ title, collapsed, parameters, content } = {}) {
-    title = $(title, "Test Title");
+    title = $(title, { type: "Inline", value: "Test Title" });
     collapsed = $(collapsed, false);
     parameters = $(parameters, []);
     content = $(content, this.anExpected());
@@ -37,11 +37,14 @@ export default {
     };
   },
 
-  aDataTable({ columns, rowCountWhenLoading, data } = {}) {
+  aDataTable({ columns, dataKey, paginator, rows, rowsWhenLoading, data } = {}) {
     columns = $(columns, [
       this.aDataTableColumn({ prop: "test" })
     ]);
-    rowCountWhenLoading = $(rowCountWhenLoading, null);
+    dataKey = $(dataKey, null);
+    paginator = $(paginator, false);
+    rows = $(rows, null);
+    rowsWhenLoading = $(rowsWhenLoading, null);
     data = $(data, [
       { test: "value 1" },
       { test: "value 2" },
@@ -50,7 +53,7 @@ export default {
 
     return {
       type: "DataTable",
-      schema: { columns, rowCountWhenLoading },
+      schema: { columns, dataKey, paginator, rows, rowsWhenLoading },
       data: { type: "Inline", value: data }
     };
   },
@@ -255,14 +258,27 @@ export default {
     return { component, fullScreen, narrow };
   },
 
-  aSelect({ label, optionLabel, optionValue, showClear, data } = {}) {
+  aSelect({ label, optionLabel, optionValue, showClear, stateful, data } = {}) {
     label = $(label, "Test");
     showClear = $(showClear, false);
+    stateful = $(stateful, false);
     data = $(data, ["Test Option 1", "Test Option 2"]);
 
     return {
       type: "Select",
-      schema: { label, optionLabel, optionValue, showClear },
+      schema: { label, optionLabel, optionValue, showClear, stateful },
+      data: { type: "Inline", value: data }
+    };
+  },
+
+  aSelectButton({ allowEmpty, optionLabel, optionValue, stateful, data } = {}) {
+    data = $(data, ["Test Option 1", "Test Option 2"]);
+    allowEmpty = $(allowEmpty, false);
+    stateful = $(stateful, false);
+
+    return {
+      type: "SelectButton",
+      schema: { allowEmpty, optionLabel, optionValue, stateful },
       data: { type: "Inline", value: data }
     };
   },

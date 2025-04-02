@@ -33,6 +33,7 @@
   - `CompositeData` is introduced to combine data from different sources
   - `ModalLayout` is introduced for pages like login
   - `CustomPage` is introduced to allow custom pages through baked ui
+  - `SelectButton` input component is added
 - Beta features are available in `Baked.Recipe.Service.Application`;
   - `Jwt` authentication feature implementation is now added with
     `JwtTokenBuilder` implementation of `ITokenBuilder` service
@@ -53,9 +54,26 @@
 - `Layout` now automatically resolves and changes the page layout when the page
   schema has `layout` property, which allows you to specify layout of a page
   through its descriptor from backend
-- `baseURL` is moved from `baked.components.Bake` to
-  `baked.composables.useDataFetcher` to make it reusable across the project
+- `baseURL` and `retryFetch` are moved from `baked.components.Bake` to
+  `baked.composables.useDataFetcher` to make them reusable across the project
 - `route-params` is removed from `Page` and fixed to `baked`, since there is no
   value in making that something configurable
 - Page and layout descriptors are now loaded in script setup to avoid flickers
   on page load
+
+## Library Upgrades
+
+| NuGet Package                                 | Old Version | New Version |
+| ---                                           | ---         | ---         |
+| Microsoft.AspNetCore.Authentication.JwtBearer | new         | 9.0.3       |
+| System.IdentityModel.Tokens.Jwt               | new         | 8.7.0       |
+
+| npm Package                                   | Old Version | New Version |
+| ---                                           | ---         | ---         |
+| @nuxt/kit                                     | 3.15.4      | 3.16.1      |
+| @nuxtjs/tailwindcss                           | 6.13.1      | 6.13.2      |
+| @primeuix/themes                              | new         | 1.0.0       |
+| @primevue/themes                              | 4.2.5       | removed     |
+| async-mutex                                   | new         | 0.5.0       |
+| primevue                                      | 4.2.5       | 4.3.3       |
+| vue-deepunref                                 | new         | 1.0.1       |

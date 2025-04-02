@@ -41,23 +41,24 @@
   </Panel>
 </template>
 <script setup>
-import { computed, defineAsyncComponent, ref, useTemplateRef } from "vue";
+import { computed, defineAsyncComponent, onMounted, ref, useTemplateRef } from "vue";
 import { useRuntimeConfig } from "#app";
 const Message = defineAsyncComponent(() => import("primevue/message"));
 const Panel = defineAsyncComponent(() => import("primevue/panel"));
 import Parameters from "./Parameters.vue";
-import { useContext, useUiStates } from "#imports";
+import { useContext, useDataFetcher, useUiStates } from "#imports";
 
 const { schema } = defineProps({
   schema: { type: null, required: true },
   data: { type: null, default: null }
 });
 
-const { collapsed, content, parameters, title } = schema;
+const { collapsed, content, parameters, title: titleData } = schema;
 
-const { public: { components } } = useRuntimeConfig();
 const { value: { panelStates } } = useUiStates();
 const context = useContext();
+const dataFetcher = useDataFetcher();
+const { public: { components } } = useRuntimeConfig();
 const panel = useTemplateRef("panel");
 
 const path = context.path();
@@ -70,6 +71,19 @@ const values = ref({});
 if(parameters.length > 0) {
   context.setInjectedData(values);
 }
+
+const shouldLoadTitle = dataFetcher.shouldLoad(titleData);
+const title = ref(dataFetcher.get(titleData));
+
+onMounted(async() => {
+  if(shouldLoadTitle)
+  {
+    title.value = await dataFetcher.fetch({
+      data: titleData,
+      injectedData: values
+    });
+  }
+});
 
 function onCollapsed(collapsed) {
   panelStates[path] = collapsed;

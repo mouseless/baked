@@ -2,12 +2,10 @@ using Baked.Ui;
 
 namespace Baked.Theme.Admin;
 
-public record Select(string Label)
-    : IComponentSchema
+public record SelectButton : IComponentSchema
 {
-    public string Label { get; set; } = Label;
+    public bool AllowEmpty { get; set; }
     public string? OptionLabel { get; set; }
     public string? OptionValue { get; set; }
-    public bool ShowClear { get; set; }
     public bool Stateful { get; set; }
 }

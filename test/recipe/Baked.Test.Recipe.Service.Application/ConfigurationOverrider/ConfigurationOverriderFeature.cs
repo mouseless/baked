@@ -125,7 +125,8 @@ public class ConfigurationOverriderFeature : IFeature
             new { Title = "Query Parameters", Description = "A behavioral component to sync and manage parameters in query string" },
             new { Title = "Rate", Description = "A component to render rate values as percentage" },
             new { Title = "Report Page", Description = "A page component to render report pages" },
-            new { Title = "Select", Description = "An input component to allow select from given options" },
+            new { Title = "Select", Description = "An input component to allow select from given options using drow down" },
+            new { Title = "Select Button", Description = "An input component to allow select from given options using buttons" },
             new { Title = "Side Menu", Description = "A layout component to render application menu" },
             new { Title = "Toast", Description = "A behavioral component to render alert messages" }
         };
@@ -224,7 +225,7 @@ public class ConfigurationOverriderFeature : IFeature
                         Parameter("required", Select("Required", data: Inline(new[] { "Required 1", "Required 2" })),
                             required: true
                         ),
-                        Parameter("optional", Select("Optional", data: Inline(new[] { "Optional 1", "Optional 2" }), showClear: true))
+                        Parameter("optional", SelectButton(Inline(new[] { "Optional 1", "Optional 2" }), allowEmpty: true))
                     ],
                     tabs:
                     [
@@ -271,8 +272,8 @@ public class ConfigurationOverriderFeature : IFeature
                                     component: DataPanel(first.Name.Humanize(),
                                         parameters:
                                         [
-                                            Parameter("count", Select("Count", data: Inline(new[] { "5", "10", "15", "20" })),
-                                                @default: "10"
+                                            Parameter("count", Select("Count", data: Inline(Enum.GetNames<CountOptions>()), stateful: true),
+                                                @default: CountOptions.Default
                                             )
                                         ],
                                         content: DataTable(
@@ -283,6 +284,9 @@ public class ConfigurationOverriderFeature : IFeature
                                                 DataTableColumn("column2", "Column 2"),
                                                 DataTableColumn("column3", "Column 3")
                                             ],
+                                            dataKey: "label",
+                                            paginator: true,
+                                            rows: 5,
                                             data: Remote($"/{first.GetSingle<ActionModelAttribute>().GetRoute()}",
                                                 headers: headers,
                                                 query: Composite([Computed(Composables.UseQuery), Injected()])
@@ -294,8 +298,8 @@ public class ConfigurationOverriderFeature : IFeature
                                     component: DataPanel(second.Name.Humanize(),
                                         parameters:
                                         [
-                                            Parameter("count", Select("Count", data: Inline(new[] { "5", "10", "15", "20" })),
-                                                @default: "10"
+                                            Parameter("count", SelectButton(Inline(Enum.GetNames<CountOptions>()), stateful: true),
+                                                @default: CountOptions.Default
                                             )
                                         ],
                                         content: DataTable(
@@ -306,6 +310,9 @@ public class ConfigurationOverriderFeature : IFeature
                                                 DataTableColumn("column2", "Column 2"),
                                                 DataTableColumn("column3", "Column 3")
                                             ],
+                                            dataKey: "label",
+                                            paginator: true,
+                                            rows: 5,
                                             data: Remote($"/{second.GetSingle<ActionModelAttribute>().GetRoute()}",
                                                 headers: headers,
                                                 query: Composite([Computed(Composables.UseQuery), Injected()])

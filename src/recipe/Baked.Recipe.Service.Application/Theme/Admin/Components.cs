@@ -18,13 +18,21 @@ public static class Components
     public static ComponentDescriptorAttribute<DataPanel> DataPanel(string title, IComponentDescriptor content,
         IEnumerable<Parameter>? parameters = default,
         bool collapsed = false
+    ) => DataPanel(Datas.Inline(title), content, parameters: parameters, collapsed: collapsed);
+
+    public static ComponentDescriptorAttribute<DataPanel> DataPanel(IData title, IComponentDescriptor content,
+        IEnumerable<Parameter>? parameters = default,
+        bool collapsed = false
     ) => new(new(title, content) { Collapsed = collapsed, Parameters = [.. parameters ?? []] });
 
     public static ComponentDescriptorAttribute<DataTable> DataTable(
         IEnumerable<DataTable.Column>? columns = default,
-        int? rowCountWhenLoading = default,
+        string? dataKey = default,
+        bool paginator = false,
+        int? rows = default,
+        int? rowsWhenLoading = default,
         IData? data = default
-    ) => new(new() { Columns = [.. columns ?? []], RowCountWhenLoading = rowCountWhenLoading }) { Data = data };
+    ) => new(new() { Columns = [.. columns ?? []], DataKey = dataKey, Paginator = paginator, Rows = rows, RowsWhenLoading = rowsWhenLoading }) { Data = data };
 
     public static DataTable.Column DataTableColumn(string prop, string title,
         IComponentDescriptor? component = default,
@@ -107,19 +115,30 @@ public static class Components
 
     public static ReportPage.Tab ReportPageTab(string id, string title,
         IComponentDescriptor? icon = default,
+        string? showWhen = default,
         IEnumerable<ReportPage.Tab.Content>? contents = default
-    ) => new(id, title) { Icon = icon, Contents = [.. contents ?? []] };
+    ) => new(id, title) { Icon = icon, ShowWhen = showWhen, Contents = [.. contents ?? []] };
 
     public static ReportPage.Tab.Content ReportPageTabContent(IComponentDescriptor component,
         bool fullScreen = false,
-        bool narrow = false
-    ) => new(component) { FullScreen = fullScreen, Narrow = narrow };
+        bool narrow = false,
+        string? key = default,
+        string? showWhen = default
+    ) => new(component) { FullScreen = fullScreen, Narrow = narrow, Key = key, ShowWhen = showWhen };
 
     public static ComponentDescriptorAttribute<Select> Select(string label, IData data,
         string? optionLabel = default,
         string? optionValue = default,
-        bool showClear = false
-    ) => new(new(label) { OptionLabel = optionLabel, OptionValue = optionValue, ShowClear = showClear }) { Data = data };
+        bool showClear = false,
+        bool stateful = false
+    ) => new(new(label) { OptionLabel = optionLabel, OptionValue = optionValue, ShowClear = showClear, Stateful = stateful }) { Data = data };
+
+    public static ComponentDescriptorAttribute<SelectButton> SelectButton(IData data,
+        bool allowEmpty = false,
+        string? optionLabel = default,
+        string? optionValue = default,
+        bool stateful = false
+    ) => new(new() { AllowEmpty = allowEmpty, OptionLabel = optionLabel, OptionValue = optionValue, Stateful = stateful }) { Data = data };
 
     public static ComponentDescriptorAttribute<SideMenu> SideMenu(IEnumerable<SideMenu.Item> menu,
         IComponentDescriptor? footer = default,
