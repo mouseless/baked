@@ -100,9 +100,9 @@ public class RestApiLayer : LayerBase<GenerateCode, AddServices, Build>
                 app
                     .UseSwagger(config =>
                     {
+                        config.OpenApiVersion = _swaggerOptions.OpenApiVersion;
                         config.PreSerializeFilters.AddRange(_swaggerOptions.PreSerializeFilters);
                         config.RouteTemplate = _swaggerOptions.RouteTemplate;
-                        config.SerializeAsV2 = _swaggerOptions.SerializeAsV2;
                     })
                     .UseSwaggerUI(config =>
                     {
