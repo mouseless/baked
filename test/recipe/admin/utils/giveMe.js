@@ -163,14 +163,14 @@ export default {
     };
   },
 
-  aLink({ path, idProp, textProp, data } = {}) {
+  aNavLink({ path, idProp, textProp, data } = {}) {
     path = $(path, "/some-object/{0}");
     idProp = $(idProp, "id");
     textProp = $(textProp, "name");
     data = $(data, { id: "test-id", name: "Test" });
 
     return {
-      type: "Link",
+      type: "NavLink",
       schema: { path, idProp, textProp },
       data: { type: "Inline", value: data }
     };

@@ -86,6 +86,7 @@ export default defineNuxtModule<ModuleOptions>({
     addPlugin(resolver.resolve("./runtime/plugins/setupBaked"));
     addPlugin(resolver.resolve("./runtime/plugins/mutex"));
     addPlugin(resolver.resolve("./runtime/plugins/toast"));
+    addPlugin(resolver.resolve("./runtime/plugins/trailingSlash"));
 
     // plugins that comes through the app descriptor
     for(const plugin of _options.app?.plugins ?? []) {
