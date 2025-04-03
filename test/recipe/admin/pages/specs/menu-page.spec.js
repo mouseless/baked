@@ -28,6 +28,27 @@ test.describe("Header and Links", () => {
   });
 });
 
+test.describe("Grouped Links", () => {
+  const id = "Grouped Links";
+
+  test("groups", async({page}) => {
+    const component = page.getByTestId(id);
+
+    for(let i = 0; i < 3; i++) {
+      await expect(component.getByTestId(`GROUP_${i}_NAME`)).toHaveText(`Group ${i}`);
+    }
+  });
+
+  test("links under group", async({page}) => {
+    const component = page.getByTestId(id);
+
+    for(let i = 0; i < 12; i++) {
+      const group = component.getByTestId(`GROUP_${i % 3}`);
+      await expect(group.getByTestId(`LINK_${i}`)).toBeVisible();
+    };
+  });
+});
+
 test.describe("No Header", () => {
   const id = "No Header";
 
