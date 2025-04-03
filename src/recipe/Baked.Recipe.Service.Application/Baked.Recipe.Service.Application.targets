@@ -21,8 +21,8 @@
     </PropertyGroup>
     
     <ItemGroup>
-      <Descriptors Include="$(SourceFolder)\**\**\**\*.json"/>
-      <DestinationFiles Include="$(ComponentDescriptorsDir)\**\**\**\*.json" />  
+      <Descriptors Include="$(SourceFolder)\**\*.json" />
+      <DestinationFiles Include="$(ComponentDescriptorsDir)\**\*.json" />  
     </ItemGroup>
       
     <Delete Files="@(DestinationFiles)" Condition="!Exists('%(FullPath.Replace($(ComponentDescriptorsDir), $(SourceFolder)))')" />
@@ -31,7 +31,7 @@
 
   <Target Name="CopyGeneratedFiles" AfterTargets="Publish">
     <ItemGroup>
-      <GeneratedFiles Include="$(TargetDir)\$(ASPNETCORE_ENVIRONMENT)\*.*" />
+      <GeneratedFiles Include="$(TargetDir)\$(ASPNETCORE_ENVIRONMENT)\**\*.*" />
     </ItemGroup>
     <Copy SourceFiles="@(GeneratedFiles)" DestinationFolder="$(PublishDir)\$(ASPNETCORE_ENVIRONMENT)" SkipUnchangedFiles="true" />
   </Target>
