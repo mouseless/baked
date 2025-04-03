@@ -193,7 +193,7 @@ public class ConfigurationOverriderFeature : IFeature
                 ]
             ));
 
-            pages.Add(CustomPage("login", "Login", layout: "modal"));
+            pages.Add(CustomPage<Login>("Login", layout: "modal"));
 
             configurator.UsingDomainModel(domain =>
             {
