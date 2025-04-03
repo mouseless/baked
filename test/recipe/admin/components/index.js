@@ -1,11 +1,13 @@
 import {
   LazyExpected,
   LazyInput,
-  LazyLogin
+  LazyLogin,
+  LazyPageWithRoute
 } from "#components";
 
 export {
   LazyExpected,
   LazyInput,
-  LazyLogin
+  LazyLogin,
+  LazyPageWithRoute
 };

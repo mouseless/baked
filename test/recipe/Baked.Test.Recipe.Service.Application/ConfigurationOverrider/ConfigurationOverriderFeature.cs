@@ -189,11 +189,16 @@ public class ConfigurationOverriderFeature : IFeature
                     CardLink($"/specs", "Specs",
                         icon: "pi pi-list-check",
                         description: "All UI Specs are listed here"
+                    ),
+                    CardLink($"/page/with/route/pageWithRoute", "Page With Route",
+                        icon: "pi pi-list-check",
+                        description: "Demo for route support"
                     )
                 ]
             ));
 
             pages.Add(CustomPage<Login>("login", layout: "modal"));
+            pages.Add(CustomPage<PageWithRoute>("pageWithRoute", layout: "default", route: "page/with/route"));
 
             configurator.UsingDomainModel(domain =>
             {

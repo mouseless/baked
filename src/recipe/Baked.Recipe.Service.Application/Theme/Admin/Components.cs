@@ -15,8 +15,9 @@ public static class Components
         new(typeof(TSchema).Name);
 
     public static ComponentDescriptor CustomPage<TSchema>(string name,
-        string? layout = default
-    ) where TSchema : IComponentSchema => new(typeof(TSchema).Name, schema: new CustomPage(name, layout));
+        string? layout = default,
+        string? route = default
+    ) where TSchema : IComponentSchema => new(typeof(TSchema).Name, schema: new CustomPage(name, layout, route));
 
     public static ComponentDescriptorAttribute<DataPanel> DataPanel(string title, IComponentDescriptor content,
         IEnumerable<Parameter>? parameters = default,

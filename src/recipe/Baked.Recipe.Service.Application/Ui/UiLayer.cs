@@ -38,7 +38,7 @@ public class UiLayer : LayerBase<GenerateCode>
         {
             if (page.Schema is not INamedComponentSchema schema) { continue; }
 
-            files.AddAsJson($"{schema.Name}.page", page, outdir: "Ui", settings: JsonSettings);
+            files.AddAsJson($"{schema.Name}.page", page, outdir: Path.Combine("Ui", schema.Route), settings: JsonSettings);
         }
     }
 
