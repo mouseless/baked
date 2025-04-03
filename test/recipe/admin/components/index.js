@@ -1,11 +1,11 @@
-import Expected from "./Expected.vue";
-import Input from "./Input.vue";
-import Login from "./Login.vue";
-import UiSpec from "./UiSpec.vue";
+import {
+  LazyExpected,
+  LazyInput,
+  LazyLogin
+} from "#components";
 
 export {
-  Expected,
-  Input,
-  Login,
-  UiSpec
+  LazyExpected,
+  LazyInput,
+  LazyLogin
 };

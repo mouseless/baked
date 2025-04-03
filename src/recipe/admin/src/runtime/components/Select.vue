@@ -22,10 +22,8 @@
   </FloatLabel>
 </template>
 <script setup>
-import { defineAsyncComponent, ref, watch } from "vue";
-const FloatLabel = defineAsyncComponent(() => import("primevue/floatlabel"));
-const Select = defineAsyncComponent(() => import("primevue/select"));
-const Skeleton = defineAsyncComponent(() => import("primevue/skeleton"));
+import { ref, watch } from "vue";
+import { FloatLabel, Select, Skeleton } from "primevue";
 import { useContext, useUiStates } from "#imports";
 
 const { schema, data, loading } = defineProps({

@@ -17,7 +17,7 @@
 <script setup>
 import { computed, ref, onMounted, watch, watchEffect } from "vue";
 import { useRoute, useRouter } from "#app";
-import Bake from "./Bake.vue";
+import { Bake } from "#components";
 
 const { parameters } = defineProps({
   parameters: { type: Array, required: true }

@@ -77,17 +77,11 @@
   </div>
 </template>
 <script setup>
-import { computed, defineAsyncComponent, onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useRuntimeConfig } from "#app";
-const Message = defineAsyncComponent(() => import("primevue/message"));
-const Tab = defineAsyncComponent(() => import("primevue/tab"));
-const TabList = defineAsyncComponent(() => import("primevue/tablist"));
-const Tabs = defineAsyncComponent(() => import("primevue/tabs"));
+import { Message, Tab, TabList, Tabs } from "primevue";
 import { useContext } from "#imports";
-import Bake from "./Bake.vue";
-import DeferredTabContent from "./DeferredTabContent.vue";
-import PageTitle from "./PageTitle.vue";
-import QueryParameters from "./QueryParameters.vue";
+import { Bake, DeferredTabContent, PageTitle, QueryParameters } from "#components";
 
 const { schema } = defineProps({
   schema: { type: null, required: true },

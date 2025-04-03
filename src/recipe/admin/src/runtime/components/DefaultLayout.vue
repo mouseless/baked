@@ -16,10 +16,9 @@
   </div>
 </template>
 <script setup>
-import { defineAsyncComponent } from "vue";
 import { useRoute } from "#app";
-const ScrollTop = defineAsyncComponent(() => import("primevue/scrolltop"));
-import Bake from "./Bake.vue";
+import { ScrollTop } from "primevue";
+import { Bake } from "#components";
 
 const { schema } = defineProps({
   schema: { type: null, required: true },

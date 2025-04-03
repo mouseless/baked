@@ -16,7 +16,7 @@
   </div>
 </template>
 <script setup>
-import Bake from "./Bake.vue";
+import { Bake } from "#components";
 
 const { schema } = defineProps({
   schema: { type: null, required: true },

@@ -11,9 +11,12 @@ public static class Components
         string? disabledReason = default
     ) => new(new(route, title) { Icon = icon, Description = description, Disabled = disabled, DisabledReason = disabledReason });
 
-    public static ComponentDescriptor CustomPage(string name, string type,
+    public static ComponentDescriptor Custom<TSchema>() where TSchema : IComponentSchema =>
+        new(typeof(TSchema).Name);
+
+    public static ComponentDescriptor CustomPage<TSchema>(string name,
         string? layout = default
-    ) => new(type, schema: new CustomPage(name, layout));
+    ) where TSchema : IComponentSchema => new(typeof(TSchema).Name, schema: new CustomPage(name, layout));
 
     public static ComponentDescriptorAttribute<DataPanel> DataPanel(string title, IComponentDescriptor content,
         IEnumerable<Parameter>? parameters = default,

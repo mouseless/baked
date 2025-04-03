@@ -15,9 +15,8 @@
   />
 </template>
 <script setup>
-import { defineAsyncComponent, ref, watch } from "vue";
-const SelectButton = defineAsyncComponent(() => import("primevue/selectbutton"));
-const Skeleton = defineAsyncComponent(() => import("primevue/skeleton"));
+import { ref, watch } from "vue";
+import { SelectButton, Skeleton } from "primevue";
 import { useContext, useUiStates } from "#imports";
 
 const { schema, data, loading } = defineProps({

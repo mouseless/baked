@@ -46,10 +46,8 @@
   </div>
 </template>
 <script setup>
-import { computed, defineAsyncComponent } from "vue";
-const Divider = defineAsyncComponent(() => import("primevue/divider"));
-const Message = defineAsyncComponent(() => import("primevue/message"));
-const Tag = defineAsyncComponent(() => import("primevue/tag"));
+import { computed } from "vue";
+import { Divider, Message, Tag } from "primevue";
 
 const { schema, data } = defineProps({
   schema: { type: null, required: true },

@@ -18,7 +18,7 @@
 </template>
 <script setup>
 import { ref, watch } from "vue";
-import Bake from "./Bake.vue";
+import { Bake } from "#components";
 
 const { parameters } = defineProps({
   parameters: { type: Array, required: true }

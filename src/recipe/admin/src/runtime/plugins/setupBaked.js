@@ -1,15 +1,13 @@
-import { defineAsyncComponent } from "vue";
 import { defineNuxtPlugin } from "#app";
 
 export default defineNuxtPlugin({
   name: "setupBaked",
   setup() {
+    const bakedComposables = import.meta.glob("../composables/*");
+    const projectComposables = import.meta.glob("@/composables/*");
 
-    const bakedComposables = import.meta.glob("~/node_modules/baked-recipe-admin/dist/runtime/composables/*");
-    const projectComposables = import.meta.glob("~/composables/*");
-
-    const pages = import.meta.glob("~/.baked/*.page.json");
-    const layouts = import.meta.glob("~/.baked/*.layout.json");
+    const pages = import.meta.glob("@/.baked/*.page.json");
+    const layouts = import.meta.glob("@/.baked/*.layout.json");
 
     return {
       provide: {
@@ -26,15 +24,15 @@ export default defineNuxtPlugin({
   }
 });
 
-function merge({ bakedImports, projectImports, trimStart, trimEnd, defineAsync = false }) {
+function merge({ bakedImports, projectImports, trimStart, trimEnd }) {
   return {
     ...Object.keys(bakedImports).reduce((result, path) => {
-      result[path.slice(path.indexOf(trimStart) + trimStart.length, path.lastIndexOf(trimEnd))] = defineAsync ? defineAsyncComponent(bakedImports[path]) : bakedImports[path];
+      result[path.slice(path.indexOf(trimStart) + trimStart.length, path.lastIndexOf(trimEnd))] = bakedImports[path];
 
       return result;
     }, { }),
     ...Object.keys(projectImports).reduce((result, path) => {
-      result[path.slice(path.indexOf(trimStart) + trimStart.length, path.lastIndexOf(trimEnd))] = defineAsync ? defineAsyncComponent(projectImports[path]) : projectImports[path];
+      result[path.slice(path.indexOf(trimStart) + trimStart.length, path.lastIndexOf(trimEnd))] = projectImports[path];
 
       return result;
     }, { })

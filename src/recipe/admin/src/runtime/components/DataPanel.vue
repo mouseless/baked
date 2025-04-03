@@ -41,11 +41,10 @@
   </Panel>
 </template>
 <script setup>
-import { computed, defineAsyncComponent, onMounted, ref, useTemplateRef } from "vue";
+import { computed, onMounted, ref, useTemplateRef } from "vue";
 import { useRuntimeConfig } from "#app";
-const Message = defineAsyncComponent(() => import("primevue/message"));
-const Panel = defineAsyncComponent(() => import("primevue/panel"));
-import Parameters from "./Parameters.vue";
+import { Message, Panel } from "primevue";
+import { Bake, Parameters } from "#components";
 import { useContext, useDataFetcher, useUiStates } from "#imports";
 
 const { schema } = defineProps({

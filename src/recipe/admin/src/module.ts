@@ -83,8 +83,9 @@ export default defineNuxtModule<ModuleOptions>({
     addComponentsDir({ path: resolver.resolve("./runtime/components"), extensions: [".vue"] });
     addImportsDir(resolver.resolve("./runtime/composables"));
     addPlugin(resolver.resolve("./runtime/plugins/addPrimeVue"));
-    addPlugin(resolver.resolve("./runtime/plugins/toast"));
+    addPlugin(resolver.resolve("./runtime/plugins/setupBaked"));
     addPlugin(resolver.resolve("./runtime/plugins/mutex"));
+    addPlugin(resolver.resolve("./runtime/plugins/toast"));
 
     // plugins that comes through the app descriptor
     for(const plugin of _options.app?.plugins ?? []) {
