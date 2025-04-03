@@ -80,7 +80,7 @@ export default defineNuxtModule<ModuleOptions>({
     _nuxt.options.ssr = false;
 
     // default dirs and plugins
-    addComponentsDir({ path: resolver.resolve("./runtime/components"), });
+    addComponentsDir({ path: resolver.resolve("./runtime/components"), extensions: [".vue"] });
     addImportsDir(resolver.resolve("./runtime/composables"));
     addPlugin(resolver.resolve("./runtime/plugins/addPrimeVue"));
     addPlugin(resolver.resolve("./runtime/plugins/toast"));

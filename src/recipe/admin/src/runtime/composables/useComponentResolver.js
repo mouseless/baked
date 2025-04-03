@@ -1,12 +1,12 @@
-import { useNuxtApp } from "#app";
+
+import * as bakedComponents from "../components";
+import * as clientComponents from "@/components";
 
 export default function() {
-  const { $components } = useNuxtApp();
-
   function resolve(type, fallback) {
-    return $components[type]
-      ? $components[type]
-      : $components[fallback];
+
+    return clientComponents[type] ? clientComponents[type] :
+      bakedComponents[type] ? bakedComponents[type] : bakedComponents[fallback];
   }
 
   return {
