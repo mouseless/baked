@@ -25,7 +25,7 @@ const variants = [
       links: new Array(12).fill(0).map((_, i) =>
         ({
           ...giveMe.anExpected({ testId: `LINK_${i}`, value: `VALUE_${i}`}),
-          group: `GROUP_${i % 3}`
+          group: { id: `GROUP_${i % 3}`, name: `Group ${i % 3}`}
         })
       )
     })

@@ -35,7 +35,7 @@ test.describe("Grouped Links", () => {
     const component = page.getByTestId(id);
 
     for(let i = 0; i < 3; i++) {
-      await expect(component.getByTestId(`GROUP_${i}`)).toHaveText(`Group ${i}`);
+      await expect(component.getByTestId(`GROUP_${i}_NAME`)).toHaveText(`Group ${i}`);
     }
   });
 
@@ -43,7 +43,8 @@ test.describe("Grouped Links", () => {
     const component = page.getByTestId(id);
 
     for(let i = 0; i < 12; i++) {
-      await expect(component.getByTestId(`GROUP_${i % 3}`)).toHaveId(`LINK_${i}`);
+      const group = component.getByTestId(`GROUP_${i % 3}`);
+      await expect(group.getByTestId(`LINK_${i}`)).toBeVisible();
     };
   });
 });
