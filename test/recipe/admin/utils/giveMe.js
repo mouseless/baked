@@ -266,10 +266,14 @@ export default {
     data = $(data, ["Test Option 1", "Test Option 2"]);
     inline = $(inline, true);
 
+    data = inline
+      ? { type: "Inline", value: data }
+      : { type: "Computed", composable: "useDelayedData", args: [1, data] };
+
     return {
       type: "Select",
       schema: { label, optionLabel, optionValue, showClear, stateful },
-      data: inline ? { type: "Inline", value: data } : { type: "Computed", composable: "useDelayedData", args: [1, data] }
+      data
     };
   },
 
@@ -278,11 +282,14 @@ export default {
     inline = $(inline, true);
     allowEmpty = $(allowEmpty, false);
     stateful = $(stateful, false);
+    data = inline
+      ? { type: "Inline", value: data }
+      : { type: "Computed", composable: "useDelayedData", args: [1, data] };
 
     return {
       type: "SelectButton",
       schema: { allowEmpty, optionLabel, optionValue, stateful },
-      data: inline ? { type: "Inline", value: data } : { type: "Computed", composable: "useDelayedData", args: [1, data] }
+      data
     };
   },
 
