@@ -107,3 +107,14 @@ test.describe("Stateful", () => {
     await expect(model).toHaveText("OPTION 2");
   });
 });
+
+test.describe("Set Selected", () => {
+  const id = "Set Selected";
+
+  test("initial model is selected", async({page}) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.locator(primevue.select.label)).toHaveText("ValueB");
+  });
+});
+

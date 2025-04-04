@@ -53,6 +53,14 @@ const variants = [
     }),
     model: ref("OPTION 1")
 
+  },
+  {
+    name: "Set Selected",
+    descriptor: giveMe.aSelect({
+      data: ["ValueA", "ValueB"],
+      inline: false
+    }),
+    model: ref("ValueB")
   }
 ];
 </script>

@@ -258,28 +258,30 @@ export default {
     return { component, fullScreen, narrow };
   },
 
-  aSelect({ label, optionLabel, optionValue, showClear, stateful, data } = {}) {
+  aSelect({ label, optionLabel, optionValue, showClear, stateful, data, inline } = {}) {
     label = $(label, "Test");
     showClear = $(showClear, false);
     stateful = $(stateful, false);
     data = $(data, ["Test Option 1", "Test Option 2"]);
+    inline = $(inline, true);
 
     return {
       type: "Select",
       schema: { label, optionLabel, optionValue, showClear, stateful },
-      data: { type: "Inline", value: data }
+      data: inline ? { type: "Inline", value: data } : { type: "Computed", composable: "useDelayedData", args: [1, data] }
     };
   },
 
-  aSelectButton({ allowEmpty, optionLabel, optionValue, stateful, data } = {}) {
+  aSelectButton({ allowEmpty, optionLabel, optionValue, stateful, data,inline } = {}) {
     data = $(data, ["Test Option 1", "Test Option 2"]);
+    inline = $(inline, true);
     allowEmpty = $(allowEmpty, false);
     stateful = $(stateful, false);
 
     return {
       type: "SelectButton",
       schema: { allowEmpty, optionLabel, optionValue, stateful },
-      data: { type: "Inline", value: data }
+      data: inline ? { type: "Inline", value: data } : { type: "Computed", composable: "useDelayedData", args: [1, data] }
     };
   },
 

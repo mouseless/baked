@@ -51,6 +51,8 @@ if(stateful) {
 
 if(!loading) {
   setSelected(model.value);
+} else {
+  watch(() => data, () => setSelected(model.value));
 }
 
 // two way binding between model and selected
