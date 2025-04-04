@@ -9,11 +9,11 @@
   </Bake>
 </template>
 <script setup>
-import { defineAsyncComponent, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import { useRoute } from "#app";
-const Toast = defineAsyncComponent(() => import("primevue/toast"));
+import { Toast } from "primevue";
 import { useLayouts, usePages } from "#imports";
-import Bake from "./Bake.vue";
+import { Bake } from "#components";
 
 const route = useRoute();
 const layouts = useLayouts();

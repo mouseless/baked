@@ -34,10 +34,9 @@
   </header>
 </template>
 <script setup>
-import { computed, defineAsyncComponent } from "vue";
+import { computed } from "vue";
 import { RouterLink } from "vue-router";
-const Breadcrumb = defineAsyncComponent(() => import("primevue/breadcrumb"));
-const Skeleton = defineAsyncComponent(() => import("primevue/skeleton"));
+import { Breadcrumb, Skeleton } from "primevue";
 
 const { schema, data } = defineProps({
   schema: { type: null, required: true },

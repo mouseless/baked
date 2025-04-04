@@ -46,11 +46,9 @@
   </nav>
 </template>
 <script setup>
-import { defineAsyncComponent } from "vue";
 import { RouterLink } from "vue-router";
-const Skeleton = defineAsyncComponent(() => import("primevue/skeleton"));
-import Bake from "./Bake.vue";
-import SideMenuItem from "./SideMenuItem.vue";
+import { Skeleton } from "primevue";
+import { Bake, SideMenuItem } from "#components";
 
 const { schema, data } = defineProps({
   schema: { type: null, required: true },

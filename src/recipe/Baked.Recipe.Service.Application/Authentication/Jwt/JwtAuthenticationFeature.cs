@@ -56,6 +56,7 @@ public class JwtAuthenticationFeature(Action<JwtBearerOptions> _configureOptions
             });
 
             _configurePlugin(plugin);
+            plugin.AnonymousPageRoutes.Add(plugin.LoginPageRoute);
             app.Plugins.Add(plugin);
         });
     }

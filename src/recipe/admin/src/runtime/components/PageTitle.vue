@@ -46,11 +46,11 @@
   </div>
 </template>
 <script setup>
-import { defineAsyncComponent, onMounted } from "vue";
+import { onMounted } from "vue";
 import { useRuntimeConfig } from "#app";
-const Skeleton = defineAsyncComponent(() => import("primevue/skeleton"));
+import { Skeleton } from "primevue";
 import { useHead } from "#imports";
-import Bake from "./Bake.vue";
+import { Bake } from "#components";
 
 const { schema } = defineProps({
   schema: { type: null, required: true },

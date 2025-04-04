@@ -163,14 +163,14 @@ export default {
     };
   },
 
-  aLink({ path, idProp, textProp, data } = {}) {
+  aNavLink({ path, idProp, textProp, data } = {}) {
     path = $(path, "/some-object/{0}");
     idProp = $(idProp, "id");
     textProp = $(textProp, "name");
     data = $(data, { id: "test-id", name: "Test" });
 
     return {
-      type: "Link",
+      type: "NavLink",
       schema: { path, idProp, textProp },
       data: { type: "Inline", value: data }
     };
@@ -206,12 +206,13 @@ export default {
     };
   },
 
-  aParameter({ name, component, required, defaultValue } = {}) {
+  aParameter({ name, component, required, defaultValue, default_ } = {}) {
     name = $(name, "test");
     required = $(required, false);
     component = $(component, this.anInput());
+    default_ = $(default_, defaultValue ? { type: "Inline", value: defaultValue } : undefined);
 
-    return { name, required, default: defaultValue, component };
+    return { name, required, default: default_, component };
   },
 
   theQueryData() {
@@ -258,28 +259,37 @@ export default {
     return { component, fullScreen, narrow };
   },
 
-  aSelect({ label, optionLabel, optionValue, showClear, stateful, data } = {}) {
+  aSelect({ label, optionLabel, optionValue, showClear, stateful, data, inline } = {}) {
     label = $(label, "Test");
     showClear = $(showClear, false);
     stateful = $(stateful, false);
     data = $(data, ["Test Option 1", "Test Option 2"]);
+    inline = $(inline, true);
+
+    data = inline
+      ? { type: "Inline", value: data }
+      : { type: "Computed", composable: "useDelayedData", args: [1, data] };
 
     return {
       type: "Select",
       schema: { label, optionLabel, optionValue, showClear, stateful },
-      data: { type: "Inline", value: data }
+      data
     };
   },
 
-  aSelectButton({ allowEmpty, optionLabel, optionValue, stateful, data } = {}) {
+  aSelectButton({ allowEmpty, optionLabel, optionValue, stateful, data,inline } = {}) {
     data = $(data, ["Test Option 1", "Test Option 2"]);
+    inline = $(inline, true);
     allowEmpty = $(allowEmpty, false);
     stateful = $(stateful, false);
+    data = inline
+      ? { type: "Inline", value: data }
+      : { type: "Computed", composable: "useDelayedData", args: [1, data] };
 
     return {
       type: "SelectButton",
       schema: { allowEmpty, optionLabel, optionValue, stateful },
-      data: { type: "Inline", value: data }
+      data
     };
   },
 

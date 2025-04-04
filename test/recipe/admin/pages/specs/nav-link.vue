@@ -1,6 +1,6 @@
 <template>
   <UiSpec
-    title="Link"
+    title="NavLink"
     :variants="variants"
   />
 </template>
@@ -10,7 +10,7 @@ import giveMe from "~/utils/giveMe";
 const variants = [
   {
     name: "Base",
-    descriptor: giveMe.aLink({
+    descriptor: giveMe.aNavLink({
       path: "/test-path/{0}",
       idProp: "id",
       textProp: "name",

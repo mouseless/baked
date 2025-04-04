@@ -2,10 +2,10 @@ using Baked.Ui;
 
 namespace Baked.Theme.Admin;
 
-public record ReportPage(string Name, PageTitle Title) :
-    INamedComponentSchema
+public record ReportPage(string Path, PageTitle Title) :
+    IGeneratedComponentSchema
 {
-    public string Name { get; set; } = Name;
+    public string Path { get; set; } = Path;
     public PageTitle Title { get; set; } = Title;
     public List<Parameter> QueryParameters { get; init; } = [];
     public List<Tab> Tabs { get; init; } = [];

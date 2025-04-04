@@ -12,9 +12,8 @@
   />
 </template>
 <script setup>
-import { computed, defineAsyncComponent } from "vue";
-const Button = defineAsyncComponent(() => import("primevue/button"));
-const Skeleton = defineAsyncComponent(() => import("primevue/skeleton"));
+import { computed } from "vue";
+import { Button, Skeleton } from "primevue";
 import { useDataFetcher } from "#imports";
 
 const { schema, data } = defineProps({

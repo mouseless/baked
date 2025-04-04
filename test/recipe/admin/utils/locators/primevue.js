@@ -26,11 +26,13 @@ export default {
   },
   select: {
     option: ".p-select-option",
-    clearIcon: ".p-select-clear-icon"
+    clearIcon: ".p-select-clear-icon",
+    label: ".p-select-label"
   },
   selectbutton: {
     base: ".p-selectbutton",
-    option: ".p-togglebutton"
+    option: ".p-togglebutton",
+    selected: ".p-togglebutton-checked"
   },
   tab: {
     base: ".p-tab"

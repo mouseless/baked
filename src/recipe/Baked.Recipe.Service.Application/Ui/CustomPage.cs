@@ -1,8 +1,8 @@
 ﻿namespace Baked.Ui;
 
-public record CustomPage(string Name, string? Layout)
-    : INamedComponentSchema
+public record CustomPage(string Path, string? Layout)
+    : IGeneratedComponentSchema
 {
-    public string Name { get; } = Name;
+    public string Path { get; } = Path;
     public string? Layout { get; } = Layout;
 }

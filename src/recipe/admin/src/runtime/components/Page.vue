@@ -8,7 +8,7 @@
 import { reactive } from "vue";
 import { useRoute, useRuntimeConfig } from "#app";
 import { useContext, useHead, usePages } from "#imports";
-import Bake from "./Bake.vue";
+import { Bake } from "#components";
 
 const context = useContext();
 const pages = usePages();
@@ -18,6 +18,6 @@ const { public: { components } } = useRuntimeConfig();
 useHead({ title: components?.Page?.title });
 
 context.setPage(reactive({}));
-const name = route.params.baked[0] ?? "index";
+const name = route.params?.baked === "" ? "index" : route.params?.baked.join("/");
 const descriptor = await pages.fetch(name);
 </script>

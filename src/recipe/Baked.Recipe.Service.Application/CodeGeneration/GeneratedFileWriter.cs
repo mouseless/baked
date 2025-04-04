@@ -54,12 +54,14 @@ public class GeneratedFileWriter(GeneratedFileDescriptor _descriptor)
     }
 
     string GetOutputDirectory(string location,
-        string? outDir = default
+        string? outdir = default
     )
     {
-        if (outDir == null) { return location; }
-        if (Path.IsPathRooted(outDir)) { return outDir; }
+        if (outdir == null) { return location; }
 
-        return Path.Combine(location, outDir);
+        outdir = Path.Combine(outdir.Split('/'));
+        if (Path.IsPathRooted(outdir)) { return outdir; }
+
+        return Path.Combine(location, outdir);
     }
 }

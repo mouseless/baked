@@ -11,8 +11,8 @@
   </span>
 </template>
 <script setup>
-import { computed, defineAsyncComponent } from "vue";
-const Skeleton = defineAsyncComponent(() => import("primevue/skeleton"));
+import { computed } from "vue";
+import { Skeleton } from "primevue";
 
 const { data } = defineProps({
   schema: { type: null, default: null },
