@@ -42,7 +42,7 @@ export default defineNuxtConfig({
   },
   compatibilityDate: "2025-03-01",
   components: {
-    dirs: [ { path: "~/components", extensions: [".vue"] } ]
+    dirs: ["~/components"] 
   },
   css: [ "~/assets/styles.scss" ],
   // Do NOT remove this line, auto imports are disabled for consistency

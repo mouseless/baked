@@ -33,16 +33,16 @@ public class UiLayer : LayerBase<GenerateCode>
 
         foreach (var layout in _layoutDescriptors)
         {
-            if (layout.Schema is not INamedComponentSchema schema) { continue; }
+            if (layout.Schema is not IGeneratedComponentSchema schema) { continue; }
 
-            files.AddAsJson($"{schema.Name}.layout", layout, outdir: "Ui", settings: JsonSettings);
+            files.AddAsJson($"{schema.Name}.layout", layout, outdir: Path.Combine("Ui", schema.Dir), settings: JsonSettings);
         }
 
         foreach (var page in _pageDescriptors)
         {
-            if (page.Schema is not INamedComponentSchema schema) { continue; }
+            if (page.Schema is not IGeneratedComponentSchema schema) { continue; }
 
-            files.AddAsJson($"{schema.Name}.page", page, outdir: Path.Combine("Ui", schema.Route), settings: JsonSettings);
+            files.AddAsJson($"{schema.Name}.page", page, outdir: Path.Combine("Ui", schema.Dir), settings: JsonSettings);
         }
     }
 

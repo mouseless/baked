@@ -4,5 +4,5 @@ namespace Baked.Test.ConfigurationOverrider;
 
 public class PageWithRoute : IComponentSchema
 {
-    public IData Title { get; set; } = new InlineData("PageWithRoute");
+    public IData Title { get; set; } = Datas.Inline("Page with route");
 }

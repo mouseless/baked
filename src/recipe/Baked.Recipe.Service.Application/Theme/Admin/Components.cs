@@ -14,10 +14,9 @@ public static class Components
     public static ComponentDescriptor Custom<TSchema>() where TSchema : IComponentSchema =>
         new(typeof(TSchema).Name);
 
-    public static ComponentDescriptor CustomPage<TSchema>(string name,
-        string? layout = default,
-        string? route = default
-    ) where TSchema : IComponentSchema => new(typeof(TSchema).Name, schema: new CustomPage(name, layout, route));
+    public static ComponentDescriptor CustomPage<TSchema>(string path,
+        string? layout = default
+    ) where TSchema : IComponentSchema => new(typeof(TSchema).Name, schema: new CustomPage(path, layout));
 
     public static ComponentDescriptorAttribute<DataPanel> DataPanel(string title, IComponentDescriptor content,
         IEnumerable<Parameter>? parameters = default,
@@ -109,13 +108,13 @@ public static class Components
     public static Parameter Parameter(string name, IComponentDescriptor component,
         bool required = false,
         IData? @default = default,
-        object? @defaultValue = default
+        object? defaultValue = default
     ) => new(name, component)
     {
         Required = required,
         Default =
             @default is not null ? @default :
-            @defaultValue is not null ? Datas.Inline(@defaultValue) :
+            defaultValue is not null ? Datas.Inline(defaultValue) :
             null
     };
 

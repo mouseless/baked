@@ -2,8 +2,8 @@
 
 namespace Baked.Theme.Admin;
 
-public record ModalLayout(string Name)
-    : INamedComponentSchema
+public record ModalLayout(string Path)
+    : IGeneratedComponentSchema
 {
-    public string Name { get; set; } = Name;
+    public string Path { get; set; } = Path;
 }

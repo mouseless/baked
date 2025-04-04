@@ -75,8 +75,7 @@ const shouldLoadTitle = dataFetcher.shouldLoad(titleData.type);
 const title = ref(dataFetcher.get(titleData));
 
 onMounted(async() => {
-  if(shouldLoadTitle)
-  {
+  if(shouldLoadTitle) {
     title.value = await dataFetcher.fetch({
       data: titleData,
       injectedData: values

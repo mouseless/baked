@@ -2,10 +2,10 @@
 
 namespace Baked.Theme.Admin;
 
-public record MenuPage(string Name)
-    : INamedComponentSchema
+public record MenuPage(string Path)
+    : IGeneratedComponentSchema
 {
-    public string Name { get; set; } = Name;
+    public string Path { get; set; } = Path;
     public IComponentDescriptor? Header { get; set; }
     public List<IComponentDescriptor> Links { get; init; } = [];
 }

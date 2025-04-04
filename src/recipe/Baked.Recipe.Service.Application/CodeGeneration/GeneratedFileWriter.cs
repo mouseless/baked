@@ -58,6 +58,8 @@ public class GeneratedFileWriter(GeneratedFileDescriptor _descriptor)
     )
     {
         if (outDir == null) { return location; }
+
+        outDir = Path.Combine(outDir.Split('/'));
         if (Path.IsPathRooted(outDir)) { return outDir; }
 
         return Path.Combine(location, outDir);

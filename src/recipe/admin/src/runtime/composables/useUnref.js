@@ -100,4 +100,10 @@ const unrefObject = obj => {
   return unreffed;
 };
 
-export default function() { return { deepUnref }; }
+// --- END OF `vue-deepunref` --- //
+
+export default function() {
+  return {
+    deepUnref
+  };
+}

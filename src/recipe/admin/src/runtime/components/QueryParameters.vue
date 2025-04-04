@@ -87,7 +87,7 @@ watch(Object.values(values).map(p => p.model), async newValues => {
     ? "push"
     : "replace"
   ;
-  
+
   await router[action]({
     path: route.path,
     query: Object.keys(values).reduce((result, name, i) => {
@@ -110,7 +110,7 @@ async function setDefaults() {
   const query = { };
   for(const p of parameters ) {
     query[p.name] = values[p.name].query.value;
-    
+
     if(!query[p.name] && p.default) {
       query[p.name] = await dataFetcher.fetch({ data: p.default, injectedData });
     }

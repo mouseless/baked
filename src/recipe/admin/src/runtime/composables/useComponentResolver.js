@@ -1,11 +1,11 @@
 
-import * as projectComponents from "@/.baked/components";
+import * as components from "@/.baked/components";
 
 export default function() {
   function resolve(type, fallback) {
     type = `Lazy${type}`;
 
-    return projectComponents[type] ? projectComponents[type] : projectComponents[fallback];
+    return components[type] ? components[type] : components[fallback];
   }
 
   return {

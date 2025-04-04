@@ -198,7 +198,7 @@ public class ConfigurationOverriderFeature : IFeature
             ));
 
             pages.Add(CustomPage<Login>("login", layout: "modal"));
-            pages.Add(CustomPage<PageWithRoute>("pageWithRoute", layout: "default", route: @"page\with\route"));
+            pages.Add(CustomPage<PageWithRoute>("pageWithRoute", layout: "default"));
 
             configurator.UsingDomainModel(domain =>
             {
@@ -224,7 +224,7 @@ public class ConfigurationOverriderFeature : IFeature
                                 optionLabel: "text",
                                 optionValue: "value"
                             ),
-                            @defaultValue: "rwd-1",
+                            defaultValue: "rwd-1",
                             required: true
                         ),
                         Parameter("required", Select("Required", data: Inline(new[] { "Required 1", "Required 2" })),
@@ -278,7 +278,7 @@ public class ConfigurationOverriderFeature : IFeature
                                         parameters:
                                         [
                                             Parameter("count", Select("Count", data: Inline(Enum.GetNames<CountOptions>()), stateful: true),
-                                                @defaultValue: CountOptions.Default
+                                                defaultValue: CountOptions.Default
                                             )
                                         ],
                                         content: DataTable(
@@ -304,7 +304,7 @@ public class ConfigurationOverriderFeature : IFeature
                                         parameters:
                                         [
                                             Parameter("count", SelectButton(Inline(Enum.GetNames<CountOptions>()), stateful: true),
-                                                @defaultValue: CountOptions.Default
+                                                defaultValue: CountOptions.Default
                                             )
                                         ],
                                         content: DataTable(
