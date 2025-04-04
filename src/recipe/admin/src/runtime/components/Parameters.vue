@@ -17,21 +17,34 @@
   </div>
 </template>
 <script setup>
-import { ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { Bake } from "#components";
+import { useContext, useDataFetcher } from "#imports";
 
 const { parameters } = defineProps({
   parameters: { type: Array, required: true }
 });
-
 const emit = defineEmits(["ready", "changed"]);
 
+const dataFetcher = useDataFetcher();
+const context = useContext();
+
+const injectedData = context.injectedData();
 const values = {};
 for(const parameter of parameters) {
-  const model = ref(parameter.default);
-
-  values[parameter.name] = model;
+  values[parameter.name] = ref(dataFetcher.get(parameter.default));
 }
+
+onMounted(async() => {
+  for(const parameter of parameters) {
+    if(!dataFetcher.shouldLoad(parameter.default?.type)) { continue; }
+
+    values[parameter.name].value = await dataFetcher.fetch({
+      data: parameter.default,
+      injectedData
+    });
+  }
+});
 
 // initial emit in case it is already ready using default parameters
 emitReady();

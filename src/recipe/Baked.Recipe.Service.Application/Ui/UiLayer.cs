@@ -49,7 +49,8 @@ public class UiLayer : LayerBase<GenerateCode>
     JsonSerializerSettings JsonSettings => new()
     {
         ContractResolver = new AttributeAwareCamelCasePropertyNamesContractResolver(),
-        Converters = [new StringEnumConverter()]
+        Converters = [new StringEnumConverter()],
+        NullValueHandling = NullValueHandling.Ignore,
     };
 
     string ComponentExports(IEnumerable<string> componentExports) => $$"""

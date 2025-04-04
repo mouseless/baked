@@ -108,8 +108,16 @@ public static class Components
 
     public static Parameter Parameter(string name, IComponentDescriptor component,
         bool required = false,
-        object? @default = default
-    ) => new(name, component) { Required = required, Default = @default is IData data ? data : Datas.Inline(@default) };
+        IData? @default = default,
+        object? @defaultValue = default
+    ) => new(name, component)
+    {
+        Required = required,
+        Default =
+            @default is not null ? @default :
+            @defaultValue is not null ? Datas.Inline(@defaultValue) :
+            null
+    };
 
     public static ComponentDescriptor Rate(
         IData? data = default

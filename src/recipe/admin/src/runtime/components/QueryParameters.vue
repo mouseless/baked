@@ -18,6 +18,7 @@
 import { computed, ref, onMounted, watch, watchEffect } from "vue";
 import { useRoute, useRouter } from "#app";
 import { Bake } from "#components";
+import { useContext, useDataFetcher } from "#imports";
 
 const { parameters } = defineProps({
   parameters: { type: Array, required: true }
@@ -27,7 +28,10 @@ const emit = defineEmits(["ready", "changed"]);
 
 const route = useRoute();
 const router = useRouter();
+const dataFetcher = useDataFetcher();
+const context = useContext();
 
+const injectedData = context.injectedData();
 const values = {};
 for(const parameter of parameters) {
   const query = computed(() => route.query[parameter.name]);
@@ -103,16 +107,17 @@ async function setDefaults() {
     .some(q => !q.value)
   ) { return; }
 
+  const query = { };
+  for(const p of parameters ) {
+    query[p.name] =
+        values[p.name].query.value ||
+        (p.default ? await dataFetcher.fetch({ data: p.default, injectedData: injectedData }) : undefined); // treat null as undefined to avoid empty query string parameters
+
+  }
+
   await router.replace({
     path: route.path,
-    query: parameters.reduce((result, p) => {
-      result[p.name] =
-        values[p.name].query.value ||
-        (p.default ? p.default : undefined) // treat null as undefined to avoid empty query string parameters
-      ;
-
-      return result;
-    }, {})
+    query: query
   });
 }
 </script>
