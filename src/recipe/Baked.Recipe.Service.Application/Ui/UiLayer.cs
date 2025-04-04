@@ -10,12 +10,14 @@ namespace Baked.Ui;
 public class UiLayer : LayerBase<GenerateCode>
 {
     public AppDescriptor _appDescriptor = new();
+    public ComponentExports _componentExports = new();
     public LayoutDescriptors _layoutDescriptors = new();
     public PageDescriptors _pageDescriptors = new();
 
     protected override PhaseContext GetContext(GenerateCode phase) =>
         phase.CreateContextBuilder()
             .Add(_appDescriptor)
+            .Add(_componentExports)
             .Add(_layoutDescriptors)
             .Add(_pageDescriptors)
             .OnDispose(GenerateUiSchemas)
@@ -24,6 +26,8 @@ public class UiLayer : LayerBase<GenerateCode>
     void GenerateUiSchemas()
     {
         var files = Context.Get<IGeneratedFileCollection>();
+
+        files.Add(name: "components", content: ComponentExports(_componentExports.Distinct()), extension: "js", outdir: "Ui");
 
         files.AddAsJson($"app", _appDescriptor, outdir: "Ui", settings: JsonSettings);
 
@@ -47,4 +51,14 @@ public class UiLayer : LayerBase<GenerateCode>
         ContractResolver = new AttributeAwareCamelCasePropertyNamesContractResolver(),
         Converters = [new StringEnumConverter()]
     };
+
+    string ComponentExports(IEnumerable<string> componentExports) => $$"""
+    import {
+        {{string.Join($",{Environment.NewLine}\t", componentExports.Select(e => $"Lazy{e}"))}}
+    } from "#components";
+
+    export {
+        {{string.Join($",{Environment.NewLine}\t", componentExports.Select(e => $"Lazy{e}"))}}
+    }
+    """;
 }

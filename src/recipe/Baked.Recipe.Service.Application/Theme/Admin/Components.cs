@@ -95,6 +95,9 @@ public static class Components
         IData? data = default
     ) => new(nameof(Money)) { Data = data };
 
+    public static ComponentDescriptorAttribute<NavLink> NavLink(string path, string idProp, string textProp) =>
+        new(new(path, idProp, textProp));
+
     public static ComponentDescriptor None() =>
         new(nameof(None));
 
