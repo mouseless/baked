@@ -1,10 +1,10 @@
 import { useRuntimeConfig } from "#app";
-import { useComposableResolver, useContext } from "#imports";
-import { deepUnref } from "vue-deepunref";
+import { useComposableResolver, useContext, useUnref } from "#imports";
 
 export default function() {
   const composableResolver = useComposableResolver();
   const context = useContext();
+  const unref = useUnref();
   const { public: { composables } } = useRuntimeConfig();
 
   function shouldLoad(dataType) {
@@ -26,7 +26,7 @@ export default function() {
       for(const part of data.parts) {
         Object.assign(
           result,
-          deepUnref(await fetch({ baseURL, data: part, injectedData }))
+          unref.deepUnref(await fetch({ baseURL, data: part, injectedData }))
         );
       }
 
@@ -57,11 +57,11 @@ export default function() {
 
     if(data?.type === "Remote") {
       const headers = data.headers
-        ? deepUnref(await fetch({ baseURL, data: data.headers, injectedData }))
+        ? unref.deepUnref(await fetch({ baseURL, data: data.headers, injectedData }))
         : { };
 
       const query = data.query
-        ? deepUnref(await fetch({ baseURL, data: data.query, injectedData }))
+        ? unref.deepUnref(await fetch({ baseURL, data: data.query, injectedData }))
         : { };
 
       const options = composables?.useDataFetcher?.retryFetch
