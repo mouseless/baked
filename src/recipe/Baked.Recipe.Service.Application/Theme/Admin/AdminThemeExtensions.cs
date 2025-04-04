@@ -6,6 +6,6 @@ namespace Baked;
 public static class AdminThemeExtensions
 {
     public static AdminThemeFeature Admin(this ThemeConfigurator _,
-        List<string>? componentExports = default
-    ) => new(componentExports);
+        IEnumerable<string>? componentExports = default
+    ) => new([.. componentExports ?? []]);
 }

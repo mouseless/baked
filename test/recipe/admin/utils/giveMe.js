@@ -206,12 +206,13 @@ export default {
     };
   },
 
-  aParameter({ name, component, required, defaultValue } = {}) {
+  aParameter({ name, component, required, defaultValue, default_ } = {}) {
     name = $(name, "test");
     required = $(required, false);
     component = $(component, this.anInput());
+    default_ = $(default_, defaultValue ? { type: "Inline", value: defaultValue } : undefined);
 
-    return { name, required, default: { type: "Inline", value: defaultValue }, component };
+    return { name, required, default: default_, component };
   },
 
   theQueryData() {
