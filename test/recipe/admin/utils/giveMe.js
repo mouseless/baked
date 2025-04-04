@@ -211,7 +211,7 @@ export default {
     required = $(required, false);
     component = $(component, this.anInput());
 
-    return { name, required, default: defaultValue, component };
+    return { name, required, default: { type: "Inline", value: defaultValue }, component };
   },
 
   theQueryData() {
