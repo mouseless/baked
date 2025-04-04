@@ -198,7 +198,7 @@ public class ConfigurationOverriderFeature : IFeature
             ));
 
             pages.Add(CustomPage<Login>("login", layout: "modal"));
-            pages.Add(CustomPage<PageWithRoute>("pageWithRoute", layout: "default"));
+            pages.Add(CustomPage<PageWithRoute>("page/with/route/pageWithRoute", layout: "default"));
 
             configurator.UsingDomainModel(domain =>
             {
