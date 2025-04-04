@@ -71,7 +71,7 @@ if(parameters.length > 0) {
   context.setInjectedData(values);
 }
 
-const shouldLoadTitle = dataFetcher.shouldLoad(titleData);
+const shouldLoadTitle = dataFetcher.shouldLoad(titleData.type);
 const title = ref(dataFetcher.get(titleData));
 
 onMounted(async() => {

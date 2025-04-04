@@ -1,4 +1,6 @@
-﻿namespace Baked.Ui;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Baked.Ui;
 
 public static class Datas
 {
@@ -11,8 +13,9 @@ public static class Datas
     public static InjectedData Injected() =>
         new();
 
-    public static InlineData Inline(object value) =>
-        new(value);
+    [return: NotNullIfNotNull("value")]
+    public static InlineData? Inline(object? value) =>
+        value != null ? new(value) : null;
 
     public static RemoteData Remote(string path,
         IData? headers = default,

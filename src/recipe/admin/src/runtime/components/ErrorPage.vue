@@ -8,7 +8,7 @@
       <Tag
         severity="danger"
         :value="statusCode"
-        class="text-4xl"
+        class="!text-4xl"
       />
       <h1 class="text-6xl">
         {{ errorInfo.title }}
@@ -29,8 +29,9 @@
       />
       <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
         <Bake
-          v-for="link in safeLinks"
+          v-for="(link, i) in safeLinks"
           :key="link.schema.route"
+          :name="`links/${i}`"
           :descriptor="link"
         />
       </div>
