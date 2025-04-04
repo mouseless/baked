@@ -27,7 +27,7 @@ hierarchy containing `Type`, `Schema`, `Name` and `Data` properties.
 
 ## Configuration Targets
 
-This layer provides `AppDescriptor`, `LayerDescriptors` and `PageDescriptors`
+This layer provides `AppDescriptor`, `ComponentExports`, `LayerDescriptors` and `PageDescriptors`
 configuration target for registering pages using `ComponentDescriptor`
 instances.
 
@@ -37,6 +37,17 @@ This target is provided in `GenerateCode` phase. To configure it in a feature;
 
 ```csharp
 configurator.ConfigureAppDescriptor(app =>
+{
+    ...
+});
+```
+
+### `AppDescriptor`
+
+This target is provided in `GenerateCode` phase. To configure it in a feature;
+
+```csharp
+configurator.ConfigureComponentExports(exports =>
 {
     ...
 });
