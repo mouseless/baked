@@ -9,9 +9,15 @@ public static class Datas
         new(composable) { Args = [.. args] };
 
     public static InjectedData Injected(
-        InjectedData.DataKey key = InjectedData.DataKey.Custom,
+        bool? custom = default,
+        bool? parentData = default,
         string? prop = default
-    ) => new(key) { Prop = prop };
+    ) => new(
+        custom == true ? InjectedData.DataKey.Custom :
+        parentData == true ? InjectedData.DataKey.ParentData :
+        InjectedData.DataKey.Custom
+    )
+    { Prop = prop };
 
     public static InlineData Inline(object value) =>
         new(value);
