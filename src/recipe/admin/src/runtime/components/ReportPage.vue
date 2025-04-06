@@ -83,15 +83,15 @@ import { Message, Tab, TabList, Tabs } from "primevue";
 import { useContext } from "#imports";
 import { Bake, DeferredTabContent, PageTitle, QueryParameters } from "#components";
 
+const context = useContext();
+const { public: { components } } = useRuntimeConfig();
+
 const { schema } = defineProps({
   schema: { type: null, required: true },
-  data: { type: null, default: null },
-  loading: { type: Boolean, default: false }
+  data: { type: null, default: null }
 });
 
 const { title, queryParameters, tabs } = schema;
-const context = useContext();
-const { public: { components } } = useRuntimeConfig();
 
 const page = context.page();
 const ready = ref(queryParameters.length === 0);

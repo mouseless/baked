@@ -12,11 +12,7 @@ const { when } = defineProps({
     required: true
   }
 });
-
-const model = defineModel({
-  type: String,
-  required: true
-});
+const model = defineModel({ type: String, required: true });
 
 const show = computed(() => model.value === when);
 const loaded = ref(show.value);

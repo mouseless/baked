@@ -18,6 +18,14 @@ export default function() {
     provide("__bake_injected_data", value);
   }
 
+  function loading() {
+    return inject("__bake_loading");
+  }
+
+  function setLoading(page) {
+    provide("__bake_loading", page);
+  }
+
   function page() {
     return inject("__bake_page");
   }
@@ -31,6 +39,8 @@ export default function() {
     path,
     injectedData,
     setInjectedData,
+    loading,
+    setLoading,
     page,
     setPage
   };

@@ -21,13 +21,13 @@ import { onMounted, ref, watch } from "vue";
 import { Bake } from "#components";
 import { useContext, useDataFetcher } from "#imports";
 
+const dataFetcher = useDataFetcher();
+const context = useContext();
+
 const { parameters } = defineProps({
   parameters: { type: Array, required: true }
 });
 const emit = defineEmits(["ready", "changed"]);
-
-const dataFetcher = useDataFetcher();
-const context = useContext();
 
 const injectedData = context.injectedData();
 const values = {};

@@ -112,6 +112,6 @@ test.describe("Set Selected", () => {
   test("initial model is selected", async({page}) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator(primevue.selectbutton.selected)).toHaveText("ValueB");
+    await expect(component.locator(primevue.selectbutton.selected)).toHaveText("VALUE_B");
   });
 });

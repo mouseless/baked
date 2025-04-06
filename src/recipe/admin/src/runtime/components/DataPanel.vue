@@ -47,18 +47,18 @@ import { Message, Panel } from "primevue";
 import { Bake, Parameters } from "#components";
 import { useContext, useDataFetcher, useUiStates } from "#imports";
 
+const { value: { panelStates } } = useUiStates();
+const context = useContext();
+const dataFetcher = useDataFetcher();
+const { public: { components } } = useRuntimeConfig();
+const panel = useTemplateRef("panel");
+
 const { schema } = defineProps({
   schema: { type: null, required: true },
   data: { type: null, default: null }
 });
 
 const { collapsed, content, parameters, title: titleData } = schema;
-
-const { value: { panelStates } } = useUiStates();
-const context = useContext();
-const dataFetcher = useDataFetcher();
-const { public: { components } } = useRuntimeConfig();
-const panel = useTemplateRef("panel");
 
 const path = context.path();
 const collapsedState = computed(() => panelStates[path] ?? collapsed);

@@ -17,7 +17,10 @@
       :class="{ 'min-w-40': column.minWidth }"
     >
       <template #body="{ data: row, index }">
-        <Skeleton v-if="loading" />
+        <Skeleton
+          v-if="loading"
+          class="min-h-5"
+        />
         <Bake
           v-else
           :name="`rows/${index}/${column.prop}`"
@@ -38,15 +41,18 @@ import { computed } from "vue";
 import Column from "primevue/column";
 import { DataTable, Skeleton } from "primevue";
 import { Bake } from "#components";
+import { useContext } from "#imports";
+
+const context = useContext();
 
 const { schema, data } = defineProps({
   schema: { type: null, required: true },
-  data: { type: null, required: true },
-  loading: { type: Boolean, default: false }
+  data: { type: null, required: true }
 });
 
 const { columns, dataKey, paginator, rows, rowsWhenLoading } = schema;
 
+const loading = context.loading();
 const value = computed(() => data ?? new Array(rowsWhenLoading || 5).fill({ }));
 
 function findComponent(column, row) {

@@ -7,10 +7,14 @@
 </template>
 <script setup>
 import { Skeleton } from "primevue";
+import { useContext } from "#imports";
+
+const context = useContext();
 
 defineProps({
   schema: { type: null, default: null },
-  data: { type: null, required: true },
-  loading: { type: Boolean, default: false }
+  data: { type: null, required: true }
 });
+
+const loading = context.loading();
 </script>

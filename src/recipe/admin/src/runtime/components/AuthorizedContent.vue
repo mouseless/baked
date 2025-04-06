@@ -6,6 +6,7 @@ import { onMounted, ref } from "vue";
 import { useToken } from "#imports";
 
 const token = useToken();
+
 const authorized = ref(false);
 
 onMounted(async() => {

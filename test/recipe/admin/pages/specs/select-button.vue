@@ -50,10 +50,10 @@ const variants = [
   {
     name: "Set Selected",
     descriptor: giveMe.aSelectButton({
-      data: ["ValueA", "ValueB"],
+      data: ["VALUE_A", "VALUE_B"],
       inline: false
     }),
-    model: ref("ValueB")
+    model: ref("VALUE_B")
   }
 ];
 </script>
