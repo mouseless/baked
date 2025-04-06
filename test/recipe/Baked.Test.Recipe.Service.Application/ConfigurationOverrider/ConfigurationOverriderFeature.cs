@@ -108,6 +108,7 @@ public class ConfigurationOverriderFeature : IFeature
         var specs = new[]
         {
             new { Title = "Auth", Description = "A plugin for authorized routing and client" },
+            new { Title = "Bake", Description = "The core component that renders a dynamic component using given descriptor" },
             new { Title = "Card Link", Description = "A component that renders a link as a big card-like button" },
             new { Title = "Custom CSS", Description = "Allow custom configuration to define custom css and more" },
             new { Title = "Data Panel", Description = "A component to lazy load and view a data within a panel" },

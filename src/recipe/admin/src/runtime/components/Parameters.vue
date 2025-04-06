@@ -32,17 +32,14 @@ const emit = defineEmits(["ready", "changed"]);
 const injectedData = context.injectedData();
 const values = {};
 for(const parameter of parameters) {
-  values[parameter.name] = ref(dataFetcher.get(parameter.default));
+  values[parameter.name] = ref(dataFetcher.get({ data: parameter.default, injectedData }));
 }
 
 onMounted(async() => {
   for(const parameter of parameters) {
     if(!dataFetcher.shouldLoad(parameter.default?.type)) { continue; }
 
-    values[parameter.name].value = await dataFetcher.fetch({
-      data: parameter.default,
-      injectedData
-    });
+    values[parameter.name].value = await dataFetcher.fetch({ data: parameter.default, injectedData });
   }
 });
 

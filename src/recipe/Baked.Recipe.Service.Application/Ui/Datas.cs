@@ -8,8 +8,16 @@ public static class Datas
     public static ComputedData Computed(string composable, params IEnumerable<object> args) =>
         new(composable) { Args = [.. args] };
 
-    public static InjectedData Injected() =>
-        new();
+    public static InjectedData Injected(
+        bool? custom = default,
+        bool? parentData = default,
+        string? prop = default
+    ) => new(
+        custom == true ? InjectedData.DataKey.Custom :
+        parentData == true ? InjectedData.DataKey.ParentData :
+        InjectedData.DataKey.Custom
+    )
+    { Prop = prop };
 
     public static InlineData Inline(object value) =>
         new(value);

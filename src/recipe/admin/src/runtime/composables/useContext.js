@@ -1,4 +1,4 @@
-import { inject, provide } from "vue";
+import { inject, provide, ref } from "vue";
 
 export default function() {
   function add(name) {
@@ -11,15 +11,18 @@ export default function() {
   }
 
   function injectedData() {
-    return inject("__bake_injected_data", null);
+    return {
+      ParentData: inject("__bake_injected_data:ParentData", null),
+      Custom: inject("__bake_injected_data:Custom", null)
+    };
   }
 
-  function setInjectedData(value) {
-    provide("__bake_injected_data", value);
+  function setInjectedData(value, key) {
+    provide(`__bake_injected_data:${key}`, value);
   }
 
   function loading() {
-    return inject("__bake_loading");
+    return inject("__bake_loading", ref(false));
   }
 
   function setLoading(page) {

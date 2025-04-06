@@ -3,7 +3,7 @@
     :is="is"
     v-model="model"
     :schema="descriptor.schema"
-    :data="data"
+    :data
   >
     <slot v-if="$slots.default" />
   </component>
@@ -24,12 +24,17 @@ const model = defineModel({ type: null, required: false });
 
 context.add(name);
 
-const injectedData = context.injectedData();
 const is = componentResolver.resolve(descriptor.type, "None");
+const injectedData = context.injectedData();
+const data = ref(dataFetcher.get({ data: descriptor.data, injectedData }));
 const shouldLoad = dataFetcher.shouldLoad(descriptor.data?.type);
-const data = ref(dataFetcher.get(descriptor.data));
 const loading = ref(shouldLoad);
-context.setLoading(loading);
+
+context.setInjectedData(data, "ParentData");
+
+if(shouldLoad) {
+  context.setLoading(loading);
+}
 
 onMounted(async() => {
   if(!shouldLoad) { return; }

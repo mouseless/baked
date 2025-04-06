@@ -25,6 +25,18 @@ export default {
     };
   },
 
+  aContainer({ content, contents, data }) {
+    content = $(content, this.anExpected());
+    contents = $(contents, [content]);
+    data = $(data, { type: "Inline", value: "Test value" });
+
+    return {
+      type: "Container",
+      schema: { contents },
+      data
+    };
+  },
+
   aDataPanel({ title, collapsed, parameters, content } = {}) {
     title = $(title, { type: "Inline", value: "Test Title" });
     collapsed = $(collapsed, false);
@@ -160,7 +172,8 @@ export default {
 
   theInjectedData() {
     return {
-      type: "Injected"
+      type: "Injected",
+      key: "Custom"
     };
   },
 
@@ -322,6 +335,16 @@ export default {
     disabled = $(disabled, false);
 
     return { route, icon, title, disabled };
+  },
+
+  aString({ value, data } = {}) {
+    value = $(value, "Test string");
+    data = $(data, { type: "Inline", value });
+
+    return {
+      type: "String",
+      data
+    };
   },
 
   aToken({ accessExpired } = {}) {

@@ -1,9 +1,9 @@
+import { computed } from "vue";
 import { useRuntimeConfig } from "#app";
-import { useComposableResolver, useContext, useUnref } from "#imports";
+import { useComposableResolver, useUnref } from "#imports";
 
 export default function() {
   const composableResolver = useComposableResolver();
-  const context = useContext();
   const unref = useUnref();
   const { public: { composables } } = useRuntimeConfig();
 
@@ -11,79 +11,89 @@ export default function() {
     return dataType === "Remote" || dataType === "Computed" || dataType == "Composite";
   }
 
-  function get(data) {
-    return data?.type === "Inline" ? data.value :
-      data?.type === "Injected" ? context.injectedData() :
+  function get({ data, injectedData }) {
+    return data?.type === "Inline" ? inline({ data }) :
+      data?.type === "Injected" ? injected({ data, injectedData }) :
         null;
   }
 
   async function fetch({ baseURL, data, injectedData }) {
     baseURL = baseURL || composables.useDataFetcher.baseURL;
 
-    if(data?.type === "Composite") {
-      const result = {};
+    if(data?.type === "Composite") { return await composite({ baseURL, data, injectedData }); }
+    if(data?.type === "Computed") { return await computed({ data }); }
+    if(data?.type === "Injected") { return injected({ data, injectedData }); }
+    if(data?.type === "Inline") { return inline({ data }); }
+    if(data?.type === "Remote") { return await remote({ baseURL, data, injectedData }); }
 
-      for(const part of data.parts) {
-        Object.assign(
-          result,
-          unref.deepUnref(await fetch({ baseURL, data: part, injectedData }))
-        );
-      }
+    throw new Error(`${data?.type} is not a valid data type`);
+  }
 
-      return result;
-    }
+  async function composite({ baseURL, data, injectedData }) {
+    const result = {};
 
-    if(data?.type === "Computed") {
-      const composable = (await composableResolver.resolve(data.composable)).default();
-
-      if(composable.compute) {
-        return composable.compute(...(data.args || []));
-      }
-
-      if(composable.computeAsync) {
-        return await composable.computeAsync(...(data.args || []));
-      }
-
-      throw new Error("Data composable should have either `compute` or `computeAsync`");
-    }
-
-    if(data?.type === "Injected") {
-      return injectedData;
-    }
-
-    if(data?.type === "Inline") {
-      return data.value;
-    }
-
-    if(data?.type === "Remote") {
-      const headers = data.headers
-        ? unref.deepUnref(await fetch({ baseURL, data: data.headers, injectedData }))
-        : { };
-
-      const query = data.query
-        ? unref.deepUnref(await fetch({ baseURL, data: data.query, injectedData }))
-        : { };
-
-      const options = composables?.useDataFetcher?.retryFetch
-        ? {
-          retry: Number.MAX_VALUE,
-          retryDelay: 200,
-          retryStatusCodes: [500]
-        }
-        : { };
-
-      return await $fetch(
-        data.path,
-        {
-          ...options ?? { },
-          baseURL,
-          headers: headers,
-          query: query
-        }
+    for(const part of data.parts) {
+      Object.assign(
+        result,
+        unref.deepUnref(await fetch({ baseURL, data: part, injectedData }))
       );
     }
 
-    throw new Error(`${data?.type} is not a valid data type`);
+    return result;
+  }
+
+  async function computed({ data }) {
+    const composable = (await composableResolver.resolve(data.composable)).default();
+
+    if(composable.compute) {
+      return composable.compute(...(data.args || []));
+    }
+
+    if(composable.computeAsync) {
+      return await composable.computeAsync(...(data.args || []));
+    }
+
+    throw new Error("Data composable should have either `compute` or `computeAsync`");
+  }
+
+  function injected({ data, injectedData }) {
+    const result = injectedData[data.key];
+
+    if(!data.prop) { return result; }
+
+    return result.value[data.prop];
+  }
+
+  function inline({ data }) {
+    return data.value;
+  }
+
+  async function remote({ baseURL, data, injectedData }) {
+    const headers = data.headers
+      ? unref.deepUnref(await fetch({ baseURL, data: data.headers, injectedData }))
+      : { };
+
+    const query = data.query
+      ? unref.deepUnref(await fetch({ baseURL, data: data.query, injectedData }))
+      : { };
+
+    const options = composables?.useDataFetcher?.retryFetch
+      ? {
+        retry: Number.MAX_VALUE,
+        retryDelay: 200,
+        retryStatusCodes: [500]
+      }
+      : { };
+
+    return await $fetch(
+      data.path,
+      {
+        ...options ?? { },
+        baseURL,
+        headers: headers,
+        query: query
+      }
+    );
   }
 
   function format(formatString, args) {
