@@ -20,16 +20,15 @@ import { useRoute, useRouter } from "#app";
 import { Bake } from "#components";
 import { useContext, useDataFetcher } from "#imports";
 
-const { parameters } = defineProps({
-  parameters: { type: Array, required: true }
-});
-
-const emit = defineEmits(["ready", "changed"]);
-
 const route = useRoute();
 const router = useRouter();
 const dataFetcher = useDataFetcher();
 const context = useContext();
+
+const { parameters } = defineProps({
+  parameters: { type: Array, required: true }
+});
+const emit = defineEmits(["ready", "changed"]);
 
 const injectedData = context.injectedData();
 const values = {};

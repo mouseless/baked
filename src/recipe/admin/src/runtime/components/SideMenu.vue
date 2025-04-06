@@ -49,12 +49,16 @@
 import { RouterLink } from "vue-router";
 import { Skeleton } from "primevue";
 import { Bake, SideMenuItem } from "#components";
+import { useContext } from "#imports";
+
+const context = useContext();
 
 const { schema, data } = defineProps({
   schema: { type: null, required: true },
-  data: { type: null, required: true },
-  loading: { type: Boolean, default: false }
+  data: { type: null, required: true }
 });
 
 const { logo, menu, footer } = schema;
+
+const loading = context.loading();
 </script>

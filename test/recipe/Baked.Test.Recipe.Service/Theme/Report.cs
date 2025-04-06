@@ -28,15 +28,23 @@ public class Report
     public string GetRight() =>
         $"RIGHT: {Value}";
 
-    public List<ReportRow> GetFirst(CountOptions count = CountOptions.Default) =>
-        [.. Enumerable
-          .Range(0, (int)count)
-          .Select(row => new ReportRow($"Row {row}", _requiredWithDefault, _required, _optional))
-        ];
+    public async Task<List<ReportRow>> GetFirst(CountOptions count = CountOptions.Default)
+    {
+        await Task.Delay(200);
 
-    public List<ReportRow> GetSecond(CountOptions count = CountOptions.Default) =>
-        [.. Enumerable
-          .Range(0, (int)count)
-          .Select(row => new ReportRow($"Row {row}", _requiredWithDefault, _required, _optional))
+        return [.. Enumerable
+            .Range(0, (int)count)
+            .Select(row => new ReportRow($"Row {row}", _requiredWithDefault, _required, _optional))
         ];
+    }
+
+    public async Task<List<ReportRow>> GetSecond(CountOptions count = CountOptions.Default)
+    {
+        await Task.Delay(200);
+
+        return [.. Enumerable
+            .Range(0, (int)count)
+            .Select(row => new ReportRow($"Row {row}", _requiredWithDefault, _required, _optional))
+        ];
+    }
 }

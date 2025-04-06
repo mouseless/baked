@@ -49,22 +49,26 @@
 import { onMounted } from "vue";
 import { useRuntimeConfig } from "#app";
 import { Skeleton } from "primevue";
-import { useHead } from "#imports";
 import { Bake } from "#components";
+import { useContext, useHead } from "#imports";
+
+const context = useContext();
+const { public: { components } } = useRuntimeConfig();
 
 const { schema } = defineProps({
   schema: { type: null, required: true },
-  data: { type: null, default: null },
-  loading: { type: Boolean, default: false }
+  data: { type: null, default: null }
 });
 
 const { title, description, actions } = schema;
-const { public: { components } } = useRuntimeConfig();
+
 useHead({
   title: components?.Page?.title
     ? `${components.Page.title} - ${title}`
     : title
 });
+
+const loading = context.loading();
 
 function toggleClasses(element, toggle, classes) {
   for(const cls of classes) {

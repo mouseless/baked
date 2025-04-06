@@ -49,15 +49,18 @@
 <script setup>
 import { computed } from "vue";
 import { Divider, Message, Tag } from "primevue";
+import { useContext } from "#imports";
+
+const context = useContext();
 
 const { schema, data } = defineProps({
   schema: { type: null, required: true },
-  data: { type: null, default: null },
-  loading: { type: Boolean, default: false }
+  data: { type: null, default: null }
 });
 
 const { errorInfos, footerInfo, safeLinks, safeLinksMessage } = schema;
 
+const loading = context.loading();
 const statusCode = computed(() => data.value?.data?.status ?? data.value?.statusCode ?? 500);
 const errorInfo = computed(() => errorInfos[`${statusCode.value}`] ?? errorInfos["500"]);
 </script>

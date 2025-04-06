@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="loading"
-    class="min-w-60"
+    class="min-w-40"
   >
     <Skeleton class="min-h-10" />
   </div>
@@ -26,22 +26,18 @@ import { ref, watch } from "vue";
 import { FloatLabel, Select, Skeleton } from "primevue";
 import { useContext, useUiStates } from "#imports";
 
-const { schema, data, loading } = defineProps({
-  schema: { type: null, required: true },
-  data: { type: null, required: true },
-  loading: { type: Boolean, default: false }
-});
-
-const model = defineModel({
-  type: null,
-  required: true
-});
-
-const { label, optionLabel, optionValue, showClear, stateful } = schema;
-
 const context = useContext();
 const { value: { selectStates } } = useUiStates();
 
+const { schema, data } = defineProps({
+  schema: { type: null, required: true },
+  data: { type: null, required: true }
+});
+const model = defineModel({ type: null, required: true });
+
+const { label, optionLabel, optionValue, showClear, stateful } = schema;
+
+const loading = context.loading();
 const path = context.path();
 const selected = ref();
 
@@ -49,7 +45,7 @@ if(stateful) {
   model.value = selectStates[path] || model.value;
 }
 
-if(!loading) {
+if(!loading.value) {
   setSelected(model.value);
 } else {
   watch(() => data, () => setSelected(model.value));

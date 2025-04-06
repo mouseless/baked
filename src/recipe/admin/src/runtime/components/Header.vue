@@ -10,7 +10,7 @@
     />
     <Breadcrumb
       v-else-if="shown"
-      :home="schema.sitemap['/']"
+      :home="sitemap['/']"
       :model="parts"
       class="!bg-inherit text-sm !p-0"
     >
@@ -37,13 +37,18 @@
 import { computed } from "vue";
 import { RouterLink } from "vue-router";
 import { Breadcrumb, Skeleton } from "primevue";
+import { useContext } from "#imports";
+
+const context = useContext();
 
 const { schema, data } = defineProps({
   schema: { type: null, required: true },
-  data: { type: null, required: true },
-  loading: { type: Boolean, default: false }
+  data: { type: null, required: true }
 });
 
+const { sitemap } = schema;
+
+const loading = context.loading();
 const parts = computed(() => {
   if(!data) { return []; }
 
@@ -69,15 +74,15 @@ function linkOrSpan(item) {
 }
 
 function findItem(route) {
-  if(schema.sitemap[route]) { return schema.sitemap[route]; }
+  if(sitemap[route]) { return sitemap[route]; }
 
-  for(const key in schema.sitemap) {
+  for(const key in sitemap) {
     const expression = key.replaceAll(/[{][\w\d\-:]*[}]/g, "[\\w\\d\-]*");
     const matcher = new RegExp(`^${expression}$`, "g");
 
     if(matcher.test(route)) {
       return {
-        ...schema.sitemap[key],
+        ...sitemap[key],
         route
       };
     }

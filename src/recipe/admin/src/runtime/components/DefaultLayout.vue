@@ -20,14 +20,14 @@ import { useRoute } from "#app";
 import { ScrollTop } from "primevue";
 import { Bake } from "#components";
 
+// do NOT remove this without testing. using $route in template doesn't trigger
+// header refresh properly, using setup variable solved the issue.
+const route = useRoute();
+
 const { schema } = defineProps({
   schema: { type: null, required: true },
   data: { type: null, default: null }
 });
-
-// do NOT remove this without testing. using $route in template doesn't trigger
-// header refresh properly, using setup variable solved the issue.
-const route = useRoute();
 </script>
 <style scoped>
 /* overflow-x-hidden fixes chart auto width problem under this parent */
