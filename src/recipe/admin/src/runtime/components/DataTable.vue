@@ -22,7 +22,7 @@
           v-else
           :name="`rows/${index}/${column.prop}`"
           :descriptor="{
-            ...column.component,
+            ...findComponent(column, row),
             data: {
               type: 'Inline',
               value: row[column.prop]
@@ -48,4 +48,13 @@ const { schema, data } = defineProps({
 const { columns, dataKey, paginator, rows, rowsWhenLoading } = schema;
 
 const value = computed(() => data ?? new Array(rowsWhenLoading || 5).fill({ }));
+
+function findComponent(column, row) {
+  const conditionalComponent = column.conditionalComponents.filter(component => row[component.prop] === component.value);
+  if(conditionalComponent.length > 0) {
+    return conditionalComponent[0].component;
+  }
+
+  return column.component;
+}
 </script>

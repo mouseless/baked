@@ -284,10 +284,10 @@ public class ConfigurationOverriderFeature : IFeature
                                         content: DataTable(
                                             columns:
                                             [
-                                                DataTableColumn("label", "Label", minWidth: true),
-                                                DataTableColumn("column1", "Column 1"),
-                                                DataTableColumn("column2", "Column 2"),
-                                                DataTableColumn("column3", "Column 3")
+                                                DataTableColumn("label", title: "Label", minWidth: true),
+                                                DataTableColumn("column1", title: "Column 1"),
+                                                DataTableColumn("column2", title: "Column 2"),
+                                                DataTableColumn("column3", title: "Column 3")
                                             ],
                                             dataKey: "label",
                                             paginator: true,
@@ -310,10 +310,10 @@ public class ConfigurationOverriderFeature : IFeature
                                         content: DataTable(
                                             columns:
                                             [
-                                                DataTableColumn("label", "Label", minWidth: true),
-                                                DataTableColumn("column1", "Column 1"),
-                                                DataTableColumn("column2", "Column 2"),
-                                                DataTableColumn("column3", "Column 3")
+                                                DataTableColumn("label", title: "Label", minWidth: true),
+                                                DataTableColumn("column1", title: "Column 1"),
+                                                DataTableColumn("column2", title: "Column 2"),
+                                                DataTableColumn("column3", title: "Column 3")
                                             ],
                                             dataKey: "label",
                                             paginator: true,
