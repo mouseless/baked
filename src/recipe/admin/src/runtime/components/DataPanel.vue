@@ -60,6 +60,7 @@ const { schema } = defineProps({
 
 const { collapsed, content, parameters, title: titleData } = schema;
 
+const injectedData = context.injectedData();
 const path = context.path();
 const collapsedState = computed(() => panelStates[path] ?? collapsed);
 const loaded = ref(!collapsedState.value);
@@ -68,18 +69,15 @@ const uniqueKey = ref("");
 
 const values = ref({});
 if(parameters.length > 0) {
-  context.setInjectedData(values);
+  context.setInjectedData(values, "Custom");
 }
 
+const title = ref(dataFetcher.get({ data: titleData, injectedData }));
 const shouldLoadTitle = dataFetcher.shouldLoad(titleData.type);
-const title = ref(dataFetcher.get(titleData));
 
 onMounted(async() => {
   if(shouldLoadTitle) {
-    title.value = await dataFetcher.fetch({
-      data: titleData,
-      injectedData: values
-    });
+    title.value = await dataFetcher.fetch({ data: titleData, injectedData });
   }
 });
 

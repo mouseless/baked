@@ -46,7 +46,7 @@ Bake.New
             .Sqlite()
             .ForProduction(c.PostgreSql()),
         exceptionHandling: c => c.ProblemDetails(typeUrlFormat: "https://baked.mouseless.codes/errors/{0}"),
-        theme: c => c.Admin(componentExports: ["Expected", "Input", "Login", "PageWithRoute"]),
+        theme: c => c.Admin(componentExports: ["Container", "Expected", "Input", "Login", "PageWithRoute"]),
         configure: app =>
         {
             app.Features.AddReporting(c => c
