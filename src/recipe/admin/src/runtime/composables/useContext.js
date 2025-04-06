@@ -1,4 +1,4 @@
-import { inject, provide } from "vue";
+import { inject, provide, ref } from "vue";
 
 export default function() {
   function add(name) {
@@ -19,7 +19,7 @@ export default function() {
   }
 
   function loading() {
-    return inject("__bake_loading");
+    return inject("__bake_loading", ref(false));
   }
 
   function setLoading(page) {

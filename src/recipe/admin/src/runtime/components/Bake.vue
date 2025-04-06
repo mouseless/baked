@@ -29,7 +29,10 @@ const is = componentResolver.resolve(descriptor.type, "None");
 const shouldLoad = dataFetcher.shouldLoad(descriptor.data?.type);
 const data = ref(dataFetcher.get(descriptor.data));
 const loading = ref(shouldLoad);
-context.setLoading(loading);
+
+if(shouldLoad) {
+  context.setLoading(loading);
+}
 
 onMounted(async() => {
   if(!shouldLoad) { return; }
