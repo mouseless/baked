@@ -29,6 +29,24 @@ const variants = [
     })
   },
   {
+    name: "Row Based Component",
+    descriptor: giveMe.aDataTable({
+      columns: [
+        giveMe.aDataTableColumn({
+          prop: "data",
+          conditionalComponents: [
+            giveMe.aDataTableColumnConditionalComponent({ prop: "type", value: "type-1", testId: "component-1" }),
+            giveMe.aDataTableColumnConditionalComponent({ prop: "type", value: "type-2", testId: "component-2" })
+          ]
+        })
+      ],
+      data: [
+        { type: "type-1", data: "Data 1" },
+        { type: "type-2", data: "Data 2" }
+      ]
+    })
+  },
+  {
     name: "Pagination",
     descriptor: giveMe.aDataTable({
       paginator: true,

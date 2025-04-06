@@ -58,18 +58,28 @@ export default {
     };
   },
 
-  aDataTableColumn({ title, prop, minWidth, component } = {}) {
+  aDataTableColumn({ title, prop, minWidth, component, conditionalComponents } = {}) {
     title = $(title, "Test");
     prop = $(prop, "test");
     minWidth = $(minWidth, false);
     component = $(component, this.anExpected());
+    conditionalComponents = $(conditionalComponents, []);
 
     return {
       title,
       prop,
       minWidth,
-      component
+      component,
+      conditionalComponents
     };
+  },
+
+  aDataTableColumnConditionalComponent({ prop, value, testId }) {
+    prop = $(prop, "testProp");
+    value = $(value, "test-value");
+    const component = this.anExpected({ testId });
+
+    return { prop, value, component };
   },
 
   anErrorPage({ errorInfos, footerInfo, safeLinks, safeLinksMessage, data } = {}){
