@@ -19,7 +19,7 @@
       <Skeleton size="3.1rem" />
     </div>
     <div
-      v-else
+      v-else-if="data"
       class="space-y-2 flex flex-col gap-2"
     >
       <SideMenuItem

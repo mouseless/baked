@@ -6,7 +6,7 @@
     <Skeleton class="min-h-10" />
   </div>
   <FloatLabel
-    v-else
+    v-else-if="data"
     variant="on"
   >
     <Select

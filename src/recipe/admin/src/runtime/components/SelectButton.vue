@@ -6,6 +6,7 @@
     <Skeleton class="min-h-10" />
   </div>
   <SelectButton
+    v-else-if="data"
     v-model="selected"
     :options="data"
     :allow-empty

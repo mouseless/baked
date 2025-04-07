@@ -25,16 +25,16 @@ export default function() {
     return inject("__bake_loading", ref(false));
   }
 
-  function setLoading(page) {
-    provide("__bake_loading", page);
+  function setLoading(value) {
+    provide("__bake_loading", value);
   }
 
   function page() {
     return inject("__bake_page");
   }
 
-  function setPage(page) {
-    provide("__bake_page", page);
+  function setPage(value) {
+    provide("__bake_page", value);
   }
 
   return {

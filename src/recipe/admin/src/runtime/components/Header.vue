@@ -1,6 +1,6 @@
 <template>
   <header
-    :class="{ 'mb-4': shown }"
+    :class="{ 'mb-4': shown || loading }"
     class="mt-4"
   >
     <Skeleton
@@ -9,7 +9,7 @@
       width="15rem"
     />
     <Breadcrumb
-      v-else-if="shown"
+      v-else-if="data && shown"
       :home="sitemap['/']"
       :model="parts"
       class="!bg-inherit text-sm !p-0"
