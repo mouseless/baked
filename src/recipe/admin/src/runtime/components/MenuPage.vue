@@ -5,10 +5,10 @@
       name="header"
       :descriptor="header"
     />
-    <template v-if="groups.default">
+    <template v-if="sections.default">
       <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
         <Bake
-          v-for="(link, i) in groups.default.links"
+          v-for="(link, i) in sections.default.links"
           :key="link.schema.route"
           :name="`links/${i}`"
           :descriptor="link"
@@ -18,16 +18,16 @@
     <template v-else>
       <div class="flex flex-col gap-4">
         <div
-          v-for="groupId in Object.keys(groups)"
-          :key="groupId"
-          :data-testid="groupId"
+          v-for="sectionId in Object.keys(sections)"
+          :key="sectionId"
+          :data-testid="sectionId"
         >
-          <h2 :data-testid="`${groupId}_NAME`" class="text-lg font-semibold">
-            {{ groups[groupId].name }}
+          <h2 :data-testid="`${sectionId}_NAME`" class="text-lg font-semibold">
+            {{ sections[sectionId].name }}
           </h2>
           <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
             <Bake
-              v-for="(link, i) in groups[groupId].links"
+              v-for="(link, i) in sections[sectionId].links"
               :key="link.schema.route"
               :name="`links/${i}`"
               :descriptor="link"
@@ -48,13 +48,13 @@ const { schema } = defineProps({
 
 const { header, links } = schema;
 
-const groups = links.reduce((acc, link) => {
-  const group = link.group ?? { id: "default", name: "Default" };
-  if(!acc[group.id]) {
-    acc[group.id] = { name: group.name, links: [] };
+const sections = links.reduce((acc, link) => {
+  const section = link.section ?? { id: "default", name: "Default" };
+  if(!acc[section.id]) {
+    acc[section.id] = { name: section.name, links: [] };
   }
 
-  acc[group.id].links.push(link);
+  acc[section.id].links.push(link);
   return acc;
 }, {});
 </script>
