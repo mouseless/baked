@@ -1,6 +1,7 @@
 <template>
   <component
     :is="is"
+    :key="loading"
     v-model="model"
     :schema="descriptor.schema"
     :data
