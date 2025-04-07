@@ -21,15 +21,15 @@ const variants = [
   {
     name: "Sections",
     descriptor: giveMe.aMenuPage({
-      header: giveMe.anExpected({ testId: "header", value: "PAGE TITLE" }),
+      header: null,
       links: [
         {
           ...giveMe.anExpected({ testId: "LINK_1", value: "VALUE_1"}),
-          group: { id: "SECTION_1", name: "Section 1"}
+          section: { id: "SECTION_1", name: "Section 1"}
         },
         {
           ...giveMe.anExpected({ testId: "LINK_2", value: "VALUE_2"}),
-          group: { id: "SECTION_2", name: "Section 2"}
+          section: { id: "SECTION_2", name: "Section 2"}
         }
       ]
     })
