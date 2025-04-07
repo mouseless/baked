@@ -4,7 +4,7 @@
     height="1.5rem"
   />
   <Button
-    v-else
+    v-else-if="data"
     as="router-link"
     link
     :label="text"

@@ -9,7 +9,7 @@
       width="15rem"
     />
     <Breadcrumb
-      v-else-if="shown"
+      v-else-if="data && shown"
       :home="sitemap['/']"
       :model="parts"
       class="!bg-inherit text-sm !p-0"

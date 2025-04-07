@@ -4,9 +4,10 @@
     height="1.5rem"
   />
   <span
-    v-else
+    v-else-if="data"
     v-tooltip.bottom="tooltip"
   >{{ display }}</span>
+  <span v-else>-</span>
 </template>
 <script setup>
 import { computed } from "vue";

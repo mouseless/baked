@@ -22,7 +22,7 @@
           class="min-h-5"
         />
         <Bake
-          v-else
+          v-else-if="data"
           :name="`rows/${index}/${column.prop}`"
           :descriptor="{
             ...findComponent(column, row),
@@ -32,6 +32,7 @@
             }
           }"
         />
+        <span v-else>-</span>
       </template>
     </Column>
   </DataTable>

@@ -3,7 +3,8 @@
     v-if="loading"
     height="1.5rem"
   />
-  <span v-else>{{ display }}</span>
+  <span v-else-if="data">{{ display }}</span>
+  <span v-else>-</span>
 </template>
 <script setup>
 import { computed } from "vue";

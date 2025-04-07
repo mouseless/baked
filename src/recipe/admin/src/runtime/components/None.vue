@@ -5,7 +5,7 @@
       width="3rem"
       class="inline-block"
     />
-    <code v-else>
+    <code v-else-if="data">
       {{ json }}
     </code>
   </span>
