@@ -61,7 +61,7 @@ export default function() {
 
     if(!data.prop) { return result; }
 
-    return result.value[data.prop];
+    return result.value?.[data.prop];
   }
 
   function inline({ data }) {

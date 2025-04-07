@@ -1,6 +1,6 @@
 <template>
   <header
-    :class="{ 'mb-4': shown }"
+    :class="{ 'mb-4': shown || loading }"
     class="mt-4"
   >
     <Skeleton

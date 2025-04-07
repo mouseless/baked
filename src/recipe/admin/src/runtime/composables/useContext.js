@@ -22,7 +22,7 @@ export default function() {
   }
 
   function loading() {
-    return inject("__bake_loading", ref(false));
+    return inject("__bake_loading", ref(false)).value;
   }
 
   function setLoading(page) {
