@@ -19,15 +19,19 @@ const variants = [
     })
   },
   {
-    name: "Grouped Links",
+    name: "Sections",
     descriptor: giveMe.aMenuPage({
       header: giveMe.anExpected({ testId: "header", value: "PAGE TITLE" }),
-      links: new Array(12).fill(0).map((_, i) =>
-        ({
-          ...giveMe.anExpected({ testId: `LINK_${i}`, value: `VALUE_${i}`}),
-          group: { id: `GROUP_${i % 3}`, name: `Group ${i % 3}`}
-        })
-      )
+      links: [
+        {
+          ...giveMe.anExpected({ testId: "LINK_1", value: "VALUE_1"}),
+          group: { id: "SECTION_1", name: "Section 1"}
+        },
+        {
+          ...giveMe.anExpected({ testId: "LINK_2", value: "VALUE_2"}),
+          group: { id: "SECTION_2", name: "Section 2"}
+        }
+      ]
     })
   },
   {

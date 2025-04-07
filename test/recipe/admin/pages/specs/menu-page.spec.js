@@ -28,24 +28,23 @@ test.describe("Header and Links", () => {
   });
 });
 
-test.describe("Grouped Links", () => {
-  const id = "Grouped Links";
+test.describe("Sections", () => {
+  const id = "Sections";
 
-  test("groups", async({page}) => {
+  test("sections", async({page}) => {
     const component = page.getByTestId(id);
 
-    for(let i = 0; i < 3; i++) {
-      await expect(component.getByTestId(`GROUP_${i}_NAME`)).toHaveText(`Group ${i}`);
-    }
+    await expect(component.getByTestId("SECTION_1_NAME")).toHaveText("Section 1");
+    await expect(component.getByTestId("SECTION_2_NAME")).toHaveText("Section 2");
   });
 
-  test("links under group", async({page}) => {
+  test("links under sections", async({page}) => {
     const component = page.getByTestId(id);
+    const section1 = component.getByTestId("SECTION_1");
+    const section2 = component.getByTestId("SECTION_2");
 
-    for(let i = 0; i < 12; i++) {
-      const group = component.getByTestId(`GROUP_${i % 3}`);
-      await expect(group.getByTestId(`LINK_${i}`)).toBeVisible();
-    };
+    await expect(section1.getByTestId("LINK_1")).toBeVisible();
+    await expect(section2.getByTestId("LINK_2")).toBeVisible();
   });
 });
 
