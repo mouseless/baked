@@ -2,7 +2,7 @@ using Baked.Ui;
 
 namespace Baked.Theme.Admin;
 
-public record Search
+public record Filter
     : IComponentSchema
 {
     public string? Placeholder { get; set; }

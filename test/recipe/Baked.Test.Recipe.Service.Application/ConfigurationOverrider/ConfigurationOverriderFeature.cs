@@ -390,7 +390,7 @@ public class ConfigurationOverriderFeature : IFeature
                 header: PageTitle(
                   title: "Specs",
                   description: "All UI Specs are listed here",
-                  actions: [Search(placeholder: "Search")]
+                  actions: [Filter(placeholder: "Ara")]
                 ),
                 sections:
                 [

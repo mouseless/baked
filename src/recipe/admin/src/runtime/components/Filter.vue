@@ -2,7 +2,7 @@
   <IconField>
     <InputIcon class="pi pi-search" />
     <InputText
-      v-model="searched"
+      v-model="filteringKey"
       :placeholder
     />
   </IconField>
@@ -16,7 +16,7 @@ const { schema, data } = defineProps({
   data: { type: null, required: true }
 });
 
-const searched = ref("");
+const filteringKey = ref("");
 
 const { placeholder } = schema;
 </script>

@@ -1,6 +1,6 @@
 <template>
   <UiSpec
-    title="Search Box"
+    title="Filter"
     :variants="variants"
     :use-model="true"
     variant-class="inline"
@@ -12,8 +12,8 @@ import giveMe from "~/utils/giveMe";
 
 const variants = [
   {
-    name: "Search",
-    descriptor: giveMe.aSearchBox({
+    name: "Filter",
+    descriptor: giveMe.aFilter({
       placeholder: "empty"
     }),
     model: ref()

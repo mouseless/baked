@@ -12,6 +12,13 @@ public record MenuPage(string Path)
     public record Section
     {
         public string? Title { get; set; }
-        public List<IComponentDescriptor> Links { get; init; } = [];
+        public List<Filterable> Links { get; init; } = [];
+
+        public record Filterable(string PageContextKey, string Title, IComponentDescriptor Link)
+            : IComponentSchema
+        {
+
+        }
     }
 }
+

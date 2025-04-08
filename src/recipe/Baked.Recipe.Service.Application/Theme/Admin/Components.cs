@@ -155,7 +155,7 @@ public static class Components
         string? showWhen = default
     ) => new(component) { FullScreen = fullScreen, Narrow = narrow, Key = key, ShowWhen = showWhen };
 
-    public static ComponentDescriptorAttribute<Search> Search(string placeholder) =>
+    public static ComponentDescriptorAttribute<Filter> Filter(string placeholder) =>
         new(new() { Placeholder = placeholder });
 
     public static ComponentDescriptorAttribute<Select> Select(string label, IData data,

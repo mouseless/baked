@@ -283,11 +283,11 @@ export default {
     return { component, fullScreen, narrow };
   },
 
-  aSearchBox({ placeholder } = {}) {
-    placeholder = $(placeholder, "Search");
+  aFilter({ placeholder } = {}) {
+    placeholder = $(placeholder, "Filter");
 
     return {
-      type: "Search",
+      type: "Filter",
       schema: { placeholder }
     };
   },
