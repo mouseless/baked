@@ -5,20 +5,23 @@
       width="3rem"
       class="inline-block"
     />
-    <code v-else>
+    <code v-else-if="data">
       {{ json }}
     </code>
   </span>
 </template>
 <script setup>
-import { computed, defineAsyncComponent } from "vue";
-const Skeleton = defineAsyncComponent(() => import("primevue/skeleton"));
+import { computed } from "vue";
+import { Skeleton } from "primevue";
+import { useContext } from "#imports";
+
+const context = useContext();
 
 const { data } = defineProps({
   schema: { type: null, default: null },
-  data: { type: null, required: true },
-  loading: { type: Boolean, default: false }
+  data: { type: null, required: true }
 });
 
+const loading = context.loading();
 const json = computed(() => JSON.stringify(data));
 </script>

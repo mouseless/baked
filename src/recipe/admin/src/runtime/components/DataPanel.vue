@@ -41,12 +41,17 @@
   </Panel>
 </template>
 <script setup>
-import { computed, defineAsyncComponent, onMounted, ref, useTemplateRef } from "vue";
+import { computed, onMounted, ref, useTemplateRef } from "vue";
 import { useRuntimeConfig } from "#app";
-const Message = defineAsyncComponent(() => import("primevue/message"));
-const Panel = defineAsyncComponent(() => import("primevue/panel"));
-import Parameters from "./Parameters.vue";
+import { Message, Panel } from "primevue";
+import { Bake, Parameters } from "#components";
 import { useContext, useDataFetcher, useUiStates } from "#imports";
+
+const { value: { panelStates } } = useUiStates();
+const context = useContext();
+const dataFetcher = useDataFetcher();
+const { public: { components } } = useRuntimeConfig();
+const panel = useTemplateRef("panel");
 
 const { schema } = defineProps({
   schema: { type: null, required: true },
@@ -55,12 +60,7 @@ const { schema } = defineProps({
 
 const { collapsed, content, parameters, title: titleData } = schema;
 
-const { value: { panelStates } } = useUiStates();
-const context = useContext();
-const dataFetcher = useDataFetcher();
-const { public: { components } } = useRuntimeConfig();
-const panel = useTemplateRef("panel");
-
+const injectedData = context.injectedData();
 const path = context.path();
 const collapsedState = computed(() => panelStates[path] ?? collapsed);
 const loaded = ref(!collapsedState.value);
@@ -69,19 +69,15 @@ const uniqueKey = ref("");
 
 const values = ref({});
 if(parameters.length > 0) {
-  context.setInjectedData(values);
+  context.setInjectedData(values, "Custom");
 }
 
-const shouldLoadTitle = dataFetcher.shouldLoad(titleData);
-const title = ref(dataFetcher.get(titleData));
+const title = ref(dataFetcher.get({ data: titleData, injectedData }));
+const shouldLoadTitle = dataFetcher.shouldLoad(titleData.type);
 
 onMounted(async() => {
-  if(shouldLoadTitle)
-  {
-    title.value = await dataFetcher.fetch({
-      data: titleData,
-      injectedData: values
-    });
+  if(shouldLoadTitle) {
+    title.value = await dataFetcher.fetch({ data: titleData, injectedData });
   }
 });
 

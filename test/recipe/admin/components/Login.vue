@@ -46,8 +46,7 @@ import { Button, Divider, InputText } from "primevue";
 
 defineProps({
   schema: { type: null, default: null },
-  data: { type: null, default: null },
-  loading: { type: Boolean, default: false }
+  data: { type: null, default: null }
 });
 defineModel({ type: null, default: null });
 

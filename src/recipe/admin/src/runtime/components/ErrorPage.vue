@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="!loading"
+    v-if="data"
     data-testid="error-page"
     class="p-8"
   >
@@ -8,7 +8,7 @@
       <Tag
         severity="danger"
         :value="statusCode"
-        class="text-4xl"
+        class="!text-4xl"
       />
       <h1 class="text-6xl">
         {{ errorInfo.title }}
@@ -29,8 +29,9 @@
       />
       <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
         <Bake
-          v-for="link in safeLinks"
+          v-for="(link, i) in safeLinks"
           :key="link.schema.route"
+          :name="`links/${i}`"
           :descriptor="link"
         />
       </div>
@@ -46,15 +47,12 @@
   </div>
 </template>
 <script setup>
-import { computed, defineAsyncComponent } from "vue";
-const Divider = defineAsyncComponent(() => import("primevue/divider"));
-const Message = defineAsyncComponent(() => import("primevue/message"));
-const Tag = defineAsyncComponent(() => import("primevue/tag"));
+import { computed } from "vue";
+import { Divider, Message, Tag } from "primevue";
 
 const { schema, data } = defineProps({
   schema: { type: null, required: true },
-  data: { type: null, default: null },
-  loading: { type: Boolean, default: false }
+  data: { type: null, default: null }
 });
 
 const { errorInfos, footerInfo, safeLinks, safeLinksMessage } = schema;

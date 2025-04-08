@@ -77,27 +77,21 @@
   </div>
 </template>
 <script setup>
-import { computed, defineAsyncComponent, onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useRuntimeConfig } from "#app";
-const Message = defineAsyncComponent(() => import("primevue/message"));
-const Tab = defineAsyncComponent(() => import("primevue/tab"));
-const TabList = defineAsyncComponent(() => import("primevue/tablist"));
-const Tabs = defineAsyncComponent(() => import("primevue/tabs"));
+import { Message, Tab, TabList, Tabs } from "primevue";
 import { useContext } from "#imports";
-import Bake from "./Bake.vue";
-import DeferredTabContent from "./DeferredTabContent.vue";
-import PageTitle from "./PageTitle.vue";
-import QueryParameters from "./QueryParameters.vue";
+import { Bake, DeferredTabContent, PageTitle, QueryParameters } from "#components";
+
+const context = useContext();
+const { public: { components } } = useRuntimeConfig();
 
 const { schema } = defineProps({
   schema: { type: null, required: true },
-  data: { type: null, default: null },
-  loading: { type: Boolean, default: false }
+  data: { type: null, default: null }
 });
 
 const { title, queryParameters, tabs } = schema;
-const context = useContext();
-const { public: { components } } = useRuntimeConfig();
 
 const page = context.page();
 const ready = ref(queryParameters.length === 0);

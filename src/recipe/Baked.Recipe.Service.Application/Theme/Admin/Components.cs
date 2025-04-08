@@ -11,9 +11,12 @@ public static class Components
         string? disabledReason = default
     ) => new(new(route, title) { Icon = icon, Description = description, Disabled = disabled, DisabledReason = disabledReason });
 
-    public static ComponentDescriptor CustomPage(string name, string type,
+    public static ComponentDescriptor Custom<TSchema>() where TSchema : IComponentSchema =>
+        new(typeof(TSchema).Name);
+
+    public static ComponentDescriptor CustomPage<TSchema>(string path,
         string? layout = default
-    ) => new(type, schema: new CustomPage(name, layout));
+    ) where TSchema : IComponentSchema => new(typeof(TSchema).Name, schema: new CustomPage(path, layout));
 
     public static ComponentDescriptorAttribute<DataPanel> DataPanel(string title, IComponentDescriptor content,
         IEnumerable<Parameter>? parameters = default,
@@ -34,10 +37,15 @@ public static class Components
         IData? data = default
     ) => new(new() { Columns = [.. columns ?? []], DataKey = dataKey, Paginator = paginator, Rows = rows, RowsWhenLoading = rowsWhenLoading }) { Data = data };
 
-    public static DataTable.Column DataTableColumn(string prop, string title,
+    public static DataTable.Column DataTableColumn(string prop,
         IComponentDescriptor? component = default,
+        string? title = default,
+        IEnumerable<DataTable.Column.ConditionalComponent>? conditionalComponents = default,
         bool minWidth = false
-    ) => new(prop, title, component ?? String()) { MinWidth = minWidth };
+    ) => new(prop, component ?? String()) { ConditionalComponents = [.. conditionalComponents ?? []], MinWidth = minWidth, Title = title };
+
+    public static DataTable.Column.ConditionalComponent DataTableColumnConditionalComponent(string prop, object value, IComponentDescriptor component) =>
+        new(prop, value, component);
 
     public static ComponentDescriptorAttribute<DefaultLayout> DefaultLayout(string name,
         IComponentDescriptor? sideMenu = default,
@@ -101,6 +109,9 @@ public static class Components
         IData? data = default
     ) => new(nameof(Money)) { Data = data };
 
+    public static ComponentDescriptorAttribute<NavLink> NavLink(string path, string idProp, string textProp) =>
+        new(new(path, idProp, textProp));
+
     public static ComponentDescriptor None() =>
         new(nameof(None));
 
@@ -111,8 +122,16 @@ public static class Components
 
     public static Parameter Parameter(string name, IComponentDescriptor component,
         bool required = false,
-        object? @default = default
-    ) => new(name, component) { Required = required, Default = @default };
+        IData? @default = default,
+        object? defaultValue = default
+    ) => new(name, component)
+    {
+        Required = required,
+        Default =
+            @default is not null ? @default :
+            defaultValue is not null ? Datas.Inline(defaultValue) :
+            null
+    };
 
     public static ComponentDescriptor Rate(
         IData? data = default

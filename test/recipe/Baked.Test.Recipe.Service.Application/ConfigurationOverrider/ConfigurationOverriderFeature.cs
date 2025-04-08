@@ -132,7 +132,6 @@ public class ConfigurationOverriderFeature : IFeature
                 Links = new[]
                 {
                     new { Title = "Card Link", Description = "Renders a link as a big card-like button" },
-                    new { Title = "Data Table", Description = "View list data in a table" },
                     new { Title = "Data Panel", Description = "Lazy load and view a data within a panel" },
                 }
             },
@@ -141,7 +140,8 @@ public class ConfigurationOverriderFeature : IFeature
                 Name = "Display",
                 Links = new[]
                 {
-                    new { Title = "Link", Description = "Give a link to a domain object" },
+                    new { Title = "Data Table", Description = "View list data in a table" },
+                    new { Title = "Nav Link", Description = "A component to give a link to a domain object" },
                     new { Title = "Icon", Description = "Displays built-in icons" },
                     new { Title = "Money", Description = "Render money values" },
                     new { Title = "Rate", Description = "Render rate values as percentage" }
@@ -173,6 +173,7 @@ public class ConfigurationOverriderFeature : IFeature
                 Name = "Behavior",
                 Links = new[]
                 {
+                    new { Title = "Bake", Description = "The core component that renders a dynamic component using given descriptor" },
                     new { Title = "Custom CSS", Description = "Allow custom configuration to define custom css and more" },
                     new { Title = "Parameters", Description = "Manage parameters through emits" },
                     new { Title = "Toast", Description = "Render alert messages" }
@@ -242,11 +243,16 @@ public class ConfigurationOverriderFeature : IFeature
                     CardLink($"/specs", "Specs",
                         icon: "pi pi-list-check",
                         description: "All UI Specs are listed here"
+                    ),
+                    CardLink($"/page/with/route/pageWithRoute", "Page With Route",
+                        icon: "pi pi-list-check",
+                        description: "Demo for route support"
                     )
                 ]
             ));
 
-            pages.Add(CustomPage("login", "Login", layout: "modal"));
+            pages.Add(CustomPage<Login>("login", layout: "modal"));
+            pages.Add(CustomPage<PageWithRoute>("page/with/route/pageWithRoute", layout: "default"));
 
             configurator.UsingDomainModel(domain =>
             {
@@ -272,7 +278,7 @@ public class ConfigurationOverriderFeature : IFeature
                                 optionLabel: "text",
                                 optionValue: "value"
                             ),
-                            @default: "rwd-1",
+                            defaultValue: "rwd-1",
                             required: true
                         ),
                         Parameter("required", Select("Required", data: Inline(new[] { "Required 1", "Required 2" })),
@@ -326,16 +332,16 @@ public class ConfigurationOverriderFeature : IFeature
                                         parameters:
                                         [
                                             Parameter("count", Select("Count", data: Inline(Enum.GetNames<CountOptions>()), stateful: true),
-                                                @default: CountOptions.Default
+                                                defaultValue: CountOptions.Default
                                             )
                                         ],
                                         content: DataTable(
                                             columns:
                                             [
-                                                DataTableColumn("label", "Label", minWidth: true),
-                                                DataTableColumn("column1", "Column 1"),
-                                                DataTableColumn("column2", "Column 2"),
-                                                DataTableColumn("column3", "Column 3")
+                                                DataTableColumn("label", title: "Label", minWidth: true),
+                                                DataTableColumn("column1", title: "Column 1"),
+                                                DataTableColumn("column2", title: "Column 2"),
+                                                DataTableColumn("column3", title: "Column 3")
                                             ],
                                             dataKey: "label",
                                             paginator: true,
@@ -352,16 +358,16 @@ public class ConfigurationOverriderFeature : IFeature
                                         parameters:
                                         [
                                             Parameter("count", SelectButton(Inline(Enum.GetNames<CountOptions>()), stateful: true),
-                                                @default: CountOptions.Default
+                                                defaultValue: CountOptions.Default
                                             )
                                         ],
                                         content: DataTable(
                                             columns:
                                             [
-                                                DataTableColumn("label", "Label", minWidth: true),
-                                                DataTableColumn("column1", "Column 1"),
-                                                DataTableColumn("column2", "Column 2"),
-                                                DataTableColumn("column3", "Column 3")
+                                                DataTableColumn("label", title: "Label", minWidth: true),
+                                                DataTableColumn("column1", title: "Column 1"),
+                                                DataTableColumn("column2", title: "Column 2"),
+                                                DataTableColumn("column3", title: "Column 3")
                                             ],
                                             dataKey: "label",
                                             paginator: true,

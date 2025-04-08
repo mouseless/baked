@@ -1,6 +1,6 @@
 <template>
   <header
-    :class="{ 'mb-4': shown }"
+    :class="{ 'mb-4': shown || loading }"
     class="mt-4"
   >
     <Skeleton
@@ -9,8 +9,8 @@
       width="15rem"
     />
     <Breadcrumb
-      v-else-if="shown"
-      :home="schema.sitemap['/']"
+      v-else-if="data && shown"
+      :home="sitemap['/']"
       :model="parts"
       class="!bg-inherit text-sm !p-0"
     >
@@ -34,17 +34,21 @@
   </header>
 </template>
 <script setup>
-import { computed, defineAsyncComponent } from "vue";
+import { computed } from "vue";
 import { RouterLink } from "vue-router";
-const Breadcrumb = defineAsyncComponent(() => import("primevue/breadcrumb"));
-const Skeleton = defineAsyncComponent(() => import("primevue/skeleton"));
+import { Breadcrumb, Skeleton } from "primevue";
+import { useContext } from "#imports";
+
+const context = useContext();
 
 const { schema, data } = defineProps({
   schema: { type: null, required: true },
-  data: { type: null, required: true },
-  loading: { type: Boolean, default: false }
+  data: { type: null, required: true }
 });
 
+const { sitemap } = schema;
+
+const loading = context.loading();
 const parts = computed(() => {
   if(!data) { return []; }
 
@@ -70,15 +74,15 @@ function linkOrSpan(item) {
 }
 
 function findItem(route) {
-  if(schema.sitemap[route]) { return schema.sitemap[route]; }
+  if(sitemap[route]) { return sitemap[route]; }
 
-  for(const key in schema.sitemap) {
+  for(const key in sitemap) {
     const expression = key.replaceAll(/[{][\w\d\-:]*[}]/g, "[\\w\\d\-]*");
     const matcher = new RegExp(`^${expression}$`, "g");
 
     if(matcher.test(route)) {
       return {
-        ...schema.sitemap[key],
+        ...sitemap[key],
         route
       };
     }

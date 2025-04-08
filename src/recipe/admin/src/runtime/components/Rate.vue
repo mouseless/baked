@@ -3,20 +3,22 @@
     v-if="loading"
     height="1.5rem"
   />
-  <span v-else>{{ display }}</span>
+  <span v-else-if="data">{{ display }}</span>
+  <span v-else>-</span>
 </template>
 <script setup>
-import { computed, defineAsyncComponent } from "vue";
-const Skeleton = defineAsyncComponent(() => import("primevue/skeleton"));
-import { useFormat } from "#imports";
+import { computed } from "vue";
+import { Skeleton } from "primevue";
+import { useContext, useFormat } from "#imports";
+
+const context = useContext();
+const { asPercentage } = useFormat();
 
 const { data } = defineProps({
   schema: { type: null, default: null },
-  data: { type: null, required: true },
-  loading: { type: Boolean, default: false }
+  data: { type: null, required: true }
 });
 
-const { asPercentage } = useFormat();
-
+const loading = context.loading();
 const display = computed(() => asPercentage(data));
 </script>

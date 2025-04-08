@@ -13,7 +13,7 @@ export default withNuxt([
       "**/.prebuild/",
       "**/package-lock.json",
       "**/tsconfig.json",
-      "pages/*.json"
+      "**/.baked/**/*"
     ]
   },
   {

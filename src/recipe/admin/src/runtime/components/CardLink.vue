@@ -38,10 +38,7 @@
   </Button>
 </template>
 <script setup>
-import { defineAsyncComponent } from "vue";
-
-const Button = defineAsyncComponent(() => import("primevue/button"));
-const Tag = defineAsyncComponent(() => import("primevue/tag"));
+import { Button, Tag } from "primevue";
 
 const { schema } = defineProps({
   schema: { type: null, required: true },

@@ -17,36 +17,51 @@
       :class="{ 'min-w-40': column.minWidth }"
     >
       <template #body="{ data: row, index }">
-        <Skeleton v-if="loading" />
+        <Skeleton
+          v-if="loading"
+          class="min-h-5"
+        />
         <Bake
-          v-else
+          v-else-if="data"
           :name="`rows/${index}/${column.prop}`"
           :descriptor="{
-            ...column.component,
+            ...findComponent(column, row),
             data: {
               type: 'Inline',
               value: row[column.prop]
             }
           }"
         />
+        <span v-else>-</span>
       </template>
     </Column>
   </DataTable>
 </template>
 <script setup>
-import { computed, defineAsyncComponent } from "vue";
+import { computed } from "vue";
 import Column from "primevue/column";
-const DataTable = defineAsyncComponent(() => import("primevue/datatable"));
-const Skeleton = defineAsyncComponent(() => import("primevue/skeleton"));
-import Bake from "./Bake.vue";
+import { DataTable, Skeleton } from "primevue";
+import { Bake } from "#components";
+import { useContext } from "#imports";
+
+const context = useContext();
 
 const { schema, data } = defineProps({
   schema: { type: null, required: true },
-  data: { type: null, required: true },
-  loading: { type: Boolean, default: false }
+  data: { type: null, required: true }
 });
 
 const { columns, dataKey, paginator, rows, rowsWhenLoading } = schema;
 
+const loading = context.loading();
 const value = computed(() => data ?? new Array(rowsWhenLoading || 5).fill({ }));
+
+function findComponent(column, row) {
+  const conditionalComponent = column.conditionalComponents.filter(component => row[component.prop] === component.value);
+  if(conditionalComponent.length > 0) {
+    return conditionalComponent[0].component;
+  }
+
+  return column.component;
+}
 </script>

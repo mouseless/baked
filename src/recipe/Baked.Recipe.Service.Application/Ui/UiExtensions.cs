@@ -13,6 +13,9 @@ public static class UiExtensions
     public static void ConfigureAppDescriptor(this LayerConfigurator configurator, Action<AppDescriptor> configure) =>
         configurator.Configure(configure);
 
+    public static void ConfigureComponentExports(this LayerConfigurator configurator, Action<ComponentExports> configure) =>
+        configurator.Configure(configure);
+
     public static void ConfigureLayoutDescriptors(this LayerConfigurator configurator, Action<LayoutDescriptors> configure) =>
         configurator.Configure(configure);
 
@@ -38,5 +41,18 @@ public static class UiExtensions
         if (!type.TryGet<TSchema>(out var result)) { throw new($"{type.Name} does not have ${typeof(TSchema).Name}"); }
 
         return result;
+    }
+
+    public static void AddFromExtensions(this ComponentExports exports, Type type)
+    {
+        var extensions = type.GetMethods(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public) ?? [];
+        var componentTypes = extensions
+            .Where(m =>
+                m.ReturnType.IsAssignableTo(typeof(IComponentDescriptor)) &&
+                !m.GetGenericArguments().Any()
+            )
+            .Select(m => m.Name);
+
+        exports.AddRange(componentTypes);
     }
 }

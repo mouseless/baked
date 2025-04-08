@@ -1,12 +1,13 @@
-import { useNuxtApp } from "#app";
+
+import * as components from "@/.baked/components";
 
 export default function() {
-  const { $components } = useNuxtApp();
-
   function resolve(type, fallback) {
-    return $components[type]
-      ? $components[type]
-      : $components[fallback];
+    type = `Lazy${type}`;
+
+    return components[type]
+      ? components[type]
+      : components[fallback];
   }
 
   return {

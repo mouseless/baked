@@ -46,6 +46,14 @@ const variants = [
     }),
     model: ref("OPTION 1")
 
+  },
+  {
+    name: "Set Selected",
+    descriptor: giveMe.aSelectButton({
+      data: ["VALUE_A", "VALUE_B"],
+      inline: false
+    }),
+    model: ref("VALUE_B")
   }
 ];
 </script>

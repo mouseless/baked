@@ -25,6 +25,18 @@ export default {
     };
   },
 
+  aContainer({ content, contents, data }) {
+    content = $(content, this.anExpected());
+    contents = $(contents, [content]);
+    data = $(data, { type: "Inline", value: "Test value" });
+
+    return {
+      type: "Container",
+      schema: { contents },
+      data
+    };
+  },
+
   aDataPanel({ title, collapsed, parameters, content } = {}) {
     title = $(title, { type: "Inline", value: "Test Title" });
     collapsed = $(collapsed, false);
@@ -58,18 +70,28 @@ export default {
     };
   },
 
-  aDataTableColumn({ title, prop, minWidth, component } = {}) {
+  aDataTableColumn({ title, prop, minWidth, component, conditionalComponents } = {}) {
     title = $(title, "Test");
     prop = $(prop, "test");
     minWidth = $(minWidth, false);
     component = $(component, this.anExpected());
+    conditionalComponents = $(conditionalComponents, []);
 
     return {
       title,
       prop,
       minWidth,
-      component
+      component,
+      conditionalComponents
     };
+  },
+
+  aDataTableColumnConditionalComponent({ prop, value, testId }) {
+    prop = $(prop, "testProp");
+    value = $(value, "test-value");
+    const component = this.anExpected({ testId });
+
+    return { prop, value, component };
   },
 
   anErrorPage({ errorInfos, footerInfo, safeLinks, safeLinksMessage, data } = {}){
@@ -150,7 +172,8 @@ export default {
 
   theInjectedData() {
     return {
-      type: "Injected"
+      type: "Injected",
+      key: "Custom"
     };
   },
 
@@ -163,14 +186,14 @@ export default {
     };
   },
 
-  aLink({ path, idProp, textProp, data } = {}) {
+  aNavLink({ path, idProp, textProp, data } = {}) {
     path = $(path, "/some-object/{0}");
     idProp = $(idProp, "id");
     textProp = $(textProp, "name");
     data = $(data, { id: "test-id", name: "Test" });
 
     return {
-      type: "Link",
+      type: "NavLink",
       schema: { path, idProp, textProp },
       data: { type: "Inline", value: data }
     };
@@ -207,12 +230,13 @@ export default {
     };
   },
 
-  aParameter({ name, component, required, defaultValue } = {}) {
+  aParameter({ name, component, required, defaultValue, default_ } = {}) {
     name = $(name, "test");
     required = $(required, false);
     component = $(component, this.anInput());
+    default_ = $(default_, defaultValue ? { type: "Inline", value: defaultValue } : undefined);
 
-    return { name, required, default: defaultValue, component };
+    return { name, required, default: default_, component };
   },
 
   theQueryData() {
@@ -268,28 +292,37 @@ export default {
     };
   },
 
-  aSelect({ label, optionLabel, optionValue, showClear, stateful, data } = {}) {
+  aSelect({ label, optionLabel, optionValue, showClear, stateful, data, inline } = {}) {
     label = $(label, "Test");
     showClear = $(showClear, false);
     stateful = $(stateful, false);
     data = $(data, ["Test Option 1", "Test Option 2"]);
+    inline = $(inline, true);
+
+    data = inline
+      ? { type: "Inline", value: data }
+      : { type: "Computed", composable: "useDelayedData", args: [1, data] };
 
     return {
       type: "Select",
       schema: { label, optionLabel, optionValue, showClear, stateful },
-      data: { type: "Inline", value: data }
+      data
     };
   },
 
-  aSelectButton({ allowEmpty, optionLabel, optionValue, stateful, data } = {}) {
+  aSelectButton({ allowEmpty, optionLabel, optionValue, stateful, data,inline } = {}) {
     data = $(data, ["Test Option 1", "Test Option 2"]);
+    inline = $(inline, true);
     allowEmpty = $(allowEmpty, false);
     stateful = $(stateful, false);
+    data = inline
+      ? { type: "Inline", value: data }
+      : { type: "Computed", composable: "useDelayedData", args: [1, data] };
 
     return {
       type: "SelectButton",
       schema: { allowEmpty, optionLabel, optionValue, stateful },
-      data: { type: "Inline", value: data }
+      data
     };
   },
 
@@ -312,6 +345,16 @@ export default {
     disabled = $(disabled, false);
 
     return { route, icon, title, disabled };
+  },
+
+  aString({ value, data } = {}) {
+    value = $(value, "Test string");
+    data = $(data, { type: "Inline", value });
+
+    return {
+      type: "String",
+      data
+    };
   },
 
   aToken({ accessExpired } = {}) {

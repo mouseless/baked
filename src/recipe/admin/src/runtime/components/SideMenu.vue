@@ -19,7 +19,7 @@
       <Skeleton size="3.1rem" />
     </div>
     <div
-      v-else
+      v-else-if="data"
       class="space-y-2 flex flex-col gap-2"
     >
       <SideMenuItem
@@ -46,17 +46,19 @@
   </nav>
 </template>
 <script setup>
-import { defineAsyncComponent } from "vue";
 import { RouterLink } from "vue-router";
-const Skeleton = defineAsyncComponent(() => import("primevue/skeleton"));
-import Bake from "./Bake.vue";
-import SideMenuItem from "./SideMenuItem.vue";
+import { Skeleton } from "primevue";
+import { Bake, SideMenuItem } from "#components";
+import { useContext } from "#imports";
+
+const context = useContext();
 
 const { schema, data } = defineProps({
   schema: { type: null, required: true },
-  data: { type: null, required: true },
-  loading: { type: Boolean, default: false }
+  data: { type: null, required: true }
 });
 
 const { logo, menu, footer } = schema;
+
+const loading = context.loading();
 </script>

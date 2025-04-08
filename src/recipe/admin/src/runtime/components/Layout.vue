@@ -9,17 +9,17 @@
   </Bake>
 </template>
 <script setup>
-import { defineAsyncComponent, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import { useRoute } from "#app";
-const Toast = defineAsyncComponent(() => import("primevue/toast"));
+import { Toast } from "primevue";
 import { useLayouts, usePages } from "#imports";
-import Bake from "./Bake.vue";
+import { Bake } from "#components";
 
 const route = useRoute();
 const layouts = useLayouts();
 const pages = usePages();
-const descriptor = ref(await findLayout(route.params.baked?.[0]));
 
+const descriptor = ref(await findLayout(route.params.baked?.[0]));
 watch(() => route.params.baked?.[0], async newPageName => {
   descriptor.value = await findLayout(newPageName);
 });

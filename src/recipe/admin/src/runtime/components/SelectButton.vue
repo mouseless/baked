@@ -6,6 +6,7 @@
     <Skeleton class="min-h-10" />
   </div>
   <SelectButton
+    v-else-if="data"
     v-model="selected"
     :options="data"
     :allow-empty
@@ -15,27 +16,22 @@
   />
 </template>
 <script setup>
-import { defineAsyncComponent, ref, watch } from "vue";
-const SelectButton = defineAsyncComponent(() => import("primevue/selectbutton"));
-const Skeleton = defineAsyncComponent(() => import("primevue/skeleton"));
+import { ref, watch } from "vue";
+import { SelectButton, Skeleton } from "primevue";
 import { useContext, useUiStates } from "#imports";
-
-const { schema, data, loading } = defineProps({
-  schema: { type: null, required: true },
-  data: { type: null, required: true },
-  loading: { type: Boolean, default: false }
-});
-
-const model = defineModel({
-  type: null,
-  required: true
-});
-
-const { allowEmpty, optionLabel, optionValue, stateful } = schema;
 
 const context = useContext();
 const { value: { selectButtonStates } } = useUiStates();
 
+const { schema, data } = defineProps({
+  schema: { type: null, required: true },
+  data: { type: null, required: true }
+});
+const model = defineModel({ type: null, required: true });
+
+const { allowEmpty, optionLabel, optionValue, stateful } = schema;
+
+const loading = context.loading();
 const path = context.path();
 const selected = ref();
 
@@ -43,8 +39,10 @@ if(stateful) {
   model.value = selectButtonStates[path] || model.value;
 }
 
-if(!loading) {
+if(!loading.value) {
   setSelected(model.value);
+} else {
+  watch(() => data, () => setSelected(model.value));
 }
 
 // two way binding between model and selected

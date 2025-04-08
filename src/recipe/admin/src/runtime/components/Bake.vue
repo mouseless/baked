@@ -1,10 +1,10 @@
 <template>
   <component
     :is="is"
+    :key="loading"
     v-model="model"
     :schema="descriptor.schema"
-    :data="data"
-    :loading="loading"
+    :data
   >
     <slot v-if="$slots.default" />
   </component>
@@ -13,27 +13,29 @@
 import { onMounted, ref } from "vue";
 import { useComponentResolver, useContext, useDataFetcher } from "#imports";
 
-const { name, descriptor } = defineProps({
-  name: { type: String, required: true },
-  descriptor: { type: null, required: true }
-});
-
-const model = defineModel({
-  type: null,
-  required: false
-});
-
 const componentResolver = useComponentResolver();
 const context = useContext();
 const dataFetcher = useDataFetcher();
 
+const { name, descriptor } = defineProps({
+  name: { type: String, required: true },
+  descriptor: { type: null, required: true }
+});
+const model = defineModel({ type: null, required: false });
+
 context.add(name);
 
-const injectedData = context.injectedData();
 const is = componentResolver.resolve(descriptor.type, "None");
+const injectedData = context.injectedData();
+const data = ref(dataFetcher.get({ data: descriptor.data, injectedData }));
 const shouldLoad = dataFetcher.shouldLoad(descriptor.data?.type);
-const data = ref(dataFetcher.get(descriptor.data));
 const loading = ref(shouldLoad);
+
+context.setInjectedData(data, "ParentData");
+
+if(shouldLoad) {
+  context.setLoading(loading);
+}
 
 onMounted(async() => {
   if(!shouldLoad) { return; }
