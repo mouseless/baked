@@ -24,7 +24,7 @@
         >
           <h2
             :data-testid="`${section.id}_NAME`"
-            class="text-lg text-gray-400"
+            class="text-zinc-400 dark:text-zinc-600 uppercase"
           >
             {{ section.name }}
           </h2>
