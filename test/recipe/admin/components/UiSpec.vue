@@ -115,7 +115,6 @@ const models = variants.map(v => v.model);
 
 onMounted(async() => {
   const specs = await pages.fetch("specs");
-  console.log(specs);
 
   const linksWithTitle = specs.schema.sections.flatMap(section =>
     section.links.filter(link => link.title === title)
