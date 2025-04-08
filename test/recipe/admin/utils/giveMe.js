@@ -259,6 +259,15 @@ export default {
     return { component, fullScreen, narrow };
   },
 
+  aSearchBox({ placeholder } = {}) {
+    placeholder = $(placeholder, "Search");
+
+    return {
+      type: "Search",
+      schema: { placeholder }
+    };
+  },
+
   aSelect({ label, optionLabel, optionValue, showClear, stateful, data } = {}) {
     label = $(label, "Test");
     showClear = $(showClear, false);
