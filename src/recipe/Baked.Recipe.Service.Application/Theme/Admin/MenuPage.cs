@@ -7,5 +7,12 @@ public record MenuPage(string Name)
 {
     public string Name { get; set; } = Name;
     public IComponentDescriptor? Header { get; set; }
-    public List<IComponentDescriptor> Links { get; init; } = [];
+    public List<Section> Sections { get; init; } = [];
+
+    public record Section
+    {
+        public string? Id { get; set; }
+        public string? Name { get; set; }
+        public List<IComponentDescriptor> Links { get; init; } = [];
+    }
 }

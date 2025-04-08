@@ -82,7 +82,18 @@ public static class Components
     public static ComponentDescriptorAttribute<MenuPage> MenuPage(string name,
         IComponentDescriptor? header = default,
         IEnumerable<IComponentDescriptor>? links = default
-    ) => new(new(name) { Header = header, Links = [.. links ?? []] });
+    ) => MenuPage(name, header: header, sections: [MenuPageSection(links: links)]);
+
+    public static ComponentDescriptorAttribute<MenuPage> MenuPage(string name,
+        IComponentDescriptor? header = default,
+        IEnumerable<MenuPage.Section>? sections = default
+    ) => new(new(name) { Header = header, Sections = [.. sections ?? []] });
+
+    public static MenuPage.Section MenuPageSection(
+        string? id = default,
+        string? name = default,
+        IEnumerable<IComponentDescriptor>? links = default
+    ) => new() { Id = id, Name = name, Links = [.. links ?? []] };
 
     public static ComponentDescriptorAttribute<ModalLayout> ModalLayout(string name) =>
         new(new(name));

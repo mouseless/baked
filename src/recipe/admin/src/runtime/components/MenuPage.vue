@@ -5,10 +5,10 @@
       name="header"
       :descriptor="header"
     />
-    <template v-if="sections.default">
+    <template v-if="!sections">
       <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
         <Bake
-          v-for="(link, i) in sections.default.links"
+          v-for="(link, i) in links"
           :key="link.schema.route"
           :name="`links/${i}`"
           :descriptor="link"
@@ -18,16 +18,16 @@
     <template v-else>
       <div class="flex flex-col gap-4">
         <div
-          v-for="sectionId in Object.keys(sections)"
-          :key="sectionId"
-          :data-testid="sectionId"
+          v-for="section in sections"
+          :key="section.id"
+          :data-testid="section.id"
         >
-          <h2 :data-testid="`${sectionId}_NAME`" class="text-lg font-semibold">
-            {{ sections[sectionId].name }}
+          <h2 :data-testid="`${section.id}_NAME`" class="text-lg font-semibold">
+            {{ section.name }}
           </h2>
           <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
             <Bake
-              v-for="(link, i) in sections[sectionId].links"
+              v-for="(link, i) in section.links"
               :key="link.schema.route"
               :name="`links/${i}`"
               :descriptor="link"
@@ -46,15 +46,5 @@ const { schema } = defineProps({
   data: { type: null, default: null }
 });
 
-const { header, links } = schema;
-
-const sections = links.reduce((acc, link) => {
-  const section = link.section ?? { id: "default", name: "Default" };
-  if(!acc[section.id]) {
-    acc[section.id] = { name: section.name, links: [] };
-  }
-
-  acc[section.id].links.push(link);
-  return acc;
-}, {});
+const { header, links, sections } = schema;
 </script>
