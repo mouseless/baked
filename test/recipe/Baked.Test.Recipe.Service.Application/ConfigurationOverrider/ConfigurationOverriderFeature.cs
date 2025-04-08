@@ -112,8 +112,8 @@ public class ConfigurationOverriderFeature : IFeature
                 Name = "Layout",
                 Links = new[]
                 {
-                    new { Title = "Header", Description = "A layout component that renders a breadcrumb" },
-                    new { Title = "Side Menu", Description = "A layout component to render application menu" }
+                    new { Title = "Header", Description = "Renders a breadcrumb" },
+                    new { Title = "Side Menu", Description = "Renders application menu" }
                 }
             },
             new
@@ -121,9 +121,9 @@ public class ConfigurationOverriderFeature : IFeature
                 Name = "Page",
                 Links = new[]
                 {
-                    new { Title = "Error Page", Description = "A page component to display errors in full page" },
-                    new { Title = "Menu Page", Description = "A page component suitable for rendering navigation pages" },
-                    new { Title = "Report Page", Description = "A page component to render report pages" }
+                    new { Title = "Error Page", Description = "Display errors in full page" },
+                    new { Title = "Menu Page", Description = "Render navigation pages" },
+                    new { Title = "Report Page", Description = "Render report pages" }
                 }
             },
             new
@@ -131,9 +131,9 @@ public class ConfigurationOverriderFeature : IFeature
                 Name = "Container",
                 Links = new[]
                 {
-                    new { Title = "Card Link", Description = "A component that renders a link as a big card-like button" },
-                    new { Title = "Data Table", Description = "A component to view list data in a table" },
-                    new { Title = "Data Panel", Description = "A component to lazy load and view a data within a panel" },
+                    new { Title = "Card Link", Description = "Renders a link as a big card-like button" },
+                    new { Title = "Data Table", Description = "View list data in a table" },
+                    new { Title = "Data Panel", Description = "Lazy load and view a data within a panel" },
                 }
             },
             new
@@ -141,10 +141,10 @@ public class ConfigurationOverriderFeature : IFeature
                 Name = "Display",
                 Links = new[]
                 {
-                    new { Title = "Link", Description = "A component to give a link to a domain object" },
-                    new { Title = "Icon", Description = "A component that displays built-in icons" },
-                    new { Title = "Money", Description = "A component to render money values" },
-                    new { Title = "Rate", Description = "A component to render rate values as percentage" }
+                    new { Title = "Link", Description = "Give a link to a domain object" },
+                    new { Title = "Icon", Description = "Displays built-in icons" },
+                    new { Title = "Money", Description = "Render money values" },
+                    new { Title = "Rate", Description = "Render rate values as percentage" }
                 }
             },
             new
@@ -152,10 +152,10 @@ public class ConfigurationOverriderFeature : IFeature
                 Name = "Input",
                 Links = new[]
                 {
-                    new { Title = "Page Title", Description = "A component to render page title, desc and actions" },
-                    new { Title = "Query Parameters", Description = "A behavioral component to sync and manage parameters in query string" },
-                    new { Title = "Select", Description = "An input component to allow select from given options using drow down" },
-                    new { Title = "Select Button", Description = "An input component to allow select from given options using buttons" }
+                    new { Title = "Page Title", Description = "Render page title, desc and actions" },
+                    new { Title = "Query Parameters", Description = "Sync and manage parameters in query string" },
+                    new { Title = "Select", Description = "Allow select from given options using drow down" },
+                    new { Title = "Select Button", Description = "Allow select from given options using buttons" }
                 }
             },
             new
@@ -163,8 +163,8 @@ public class ConfigurationOverriderFeature : IFeature
                 Name = "Plugins",
                 Links = new[]
                 {
-                    new { Title = "Auth", Description = "A plugin for authorized routing and client" },
-                    new { Title = "Error Handling", Description = "A plugin for handling errors" },
+                    new { Title = "Auth", Description = "Authorized routing and client" },
+                    new { Title = "Error Handling", Description = "Handling errors" },
                     new { Title = "Locale", Description = "Allow locale customization and language support" },
                 }
             },
@@ -174,8 +174,8 @@ public class ConfigurationOverriderFeature : IFeature
                 Links = new[]
                 {
                     new { Title = "Custom CSS", Description = "Allow custom configuration to define custom css and more" },
-                    new { Title = "Parameters", Description = "A behavioral component to manage parameters through emits" },
-                    new { Title = "Toast", Description = "A behavioral component to render alert messages" }
+                    new { Title = "Parameters", Description = "Manage parameters through emits" },
+                    new { Title = "Toast", Description = "Render alert messages" }
                 }
             }
         };
