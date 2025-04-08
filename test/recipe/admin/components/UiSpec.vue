@@ -115,8 +115,11 @@ const models = variants.map(v => v.model);
 
 onMounted(async() => {
   const specs = await pages.fetch("specs");
+  console.log(specs);
 
-  const linksWithTitle = specs.schema.links.filter(l => l.schema.title === title);
+  const linksWithTitle = specs.schema.sections.flatMap(section =>
+    section.links.filter(link => link.title === title)
+  );
   if(linksWithTitle.length > 0) {
     description.value = linksWithTitle[0].schema.description;
   }
