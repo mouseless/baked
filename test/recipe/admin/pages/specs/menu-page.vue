@@ -11,7 +11,7 @@ import giveMe from "~/utils/giveMe";
 const variants = [
   {
     name: "Header and Links",
-    descriptor: giveMe.aLinkMenuPage({
+    descriptor: giveMe.aMenuPage({
       header: giveMe.anExpected({ testId: "header", value: "PAGE TITLE" }),
       links: new Array(12).fill(0).map((_, i) =>
         giveMe.anExpected({ testId: `LINK_${i}`, value: `VALUE_${i}`})
@@ -20,29 +20,23 @@ const variants = [
   },
   {
     name: "Sections",
-    descriptor: giveMe.aSectionMenuPage({
+    descriptor: giveMe.aMenuPage({
       header: null,
       sections: [
         {
-          id: "SECTION_1",
-          name: "Section 1",
-          links: [
-            giveMe.anExpected({ testId: "LINK_1", value: "VALUE_1"})
-          ]
+          title: "Section 1",
+          links: [giveMe.anExpected({ testId: "LINK_1", value: "VALUE_1"})]
         },
         {
-          id: "SECTION_2",
-          name: "Section 2",
-          links: [
-            giveMe.anExpected({ testId: "LINK_2", value: "VALUE_2"})
-          ]
+          title: "Section 2",
+          links: [giveMe.anExpected({ testId: "LINK_2", value: "VALUE_2"})]
         }
       ]
     })
   },
   {
     name: "No Header",
-    descriptor: giveMe.aLinkMenuPage({
+    descriptor: giveMe.aMenuPage({
       header: null,
       links: [
         giveMe.anExpected({ value: "Menu Placeholder 1"}),

@@ -185,19 +185,10 @@ export default {
     };
   },
 
-  aLinkMenuPage({ header, links } = {}) {
+  aMenuPage({ header, links, sections } = {}) {
     header = $(header, this.anExpected());
-    links = $(links, []);
-
-    return {
-      type: "MenuPage",
-      schema: { header, links }
-    };
-  },
-
-  aSectionMenuPage({ header, sections } = {}) {
-    header = $(header, this.anExpected());
-    sections = $(sections, []);
+    links = $(links, [this.anExpected()]);
+    sections = $(sections, [{links}]);
 
     return {
       type: "MenuPage",

@@ -11,8 +11,7 @@ public record MenuPage(string Name)
 
     public record Section
     {
-        public string? Id { get; set; }
-        public string? Name { get; set; }
+        public string? Title { get; set; }
         public List<IComponentDescriptor> Links { get; init; } = [];
     }
 }

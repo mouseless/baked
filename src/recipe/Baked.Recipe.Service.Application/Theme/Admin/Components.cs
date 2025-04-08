@@ -90,10 +90,9 @@ public static class Components
     ) => new(new(name) { Header = header, Sections = [.. sections ?? []] });
 
     public static MenuPage.Section MenuPageSection(
-        string? id = default,
-        string? name = default,
+        string? title = default,
         IEnumerable<IComponentDescriptor>? links = default
-    ) => new() { Id = id, Name = name, Links = [.. links ?? []] };
+    ) => new() { Title = title, Links = [.. links ?? []] };
 
     public static ComponentDescriptorAttribute<ModalLayout> ModalLayout(string name) =>
         new(new(name));

@@ -389,8 +389,7 @@ public class ConfigurationOverriderFeature : IFeature
                 [
                     .. specs.Select(section =>
                         MenuPageSection(
-                            id: section.Name.Kebaberize(),
-                            name: section.Name,
+                            title: section.Name,
                             links:
                             [
                                 .. section.Links.Select(l =>

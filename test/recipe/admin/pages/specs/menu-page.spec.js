@@ -33,18 +33,18 @@ test.describe("Sections", () => {
 
   test("sections", async({page}) => {
     const component = page.getByTestId(id);
+    const titles = component.locator("h2");
 
-    await expect(component.getByTestId("SECTION_1_NAME")).toHaveText("Section 1");
-    await expect(component.getByTestId("SECTION_2_NAME")).toHaveText("Section 2");
+    await expect(titles.nth(0)).toHaveText("Section 1");
+    await expect(titles.nth(1)).toHaveText("Section 2");
   });
 
   test("links under sections", async({page}) => {
     const component = page.getByTestId(id);
-    const section1 = component.getByTestId("SECTION_1");
-    const section2 = component.getByTestId("SECTION_2");
+    const sections = component.locator("div:has(h2)");
 
-    await expect(section1.getByTestId("LINK_1")).toBeVisible();
-    await expect(section2.getByTestId("LINK_2")).toBeVisible();
+    await expect(sections.nth(0).getByTestId("LINK_1")).toBeVisible();
+    await expect(sections.nth(1).getByTestId("LINK_2")).toBeVisible();
   });
 });
 
