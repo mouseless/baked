@@ -6,7 +6,12 @@
   />
 </template>
 <script setup>
+import { reactive } from "vue";
 import giveMe from "~/utils/giveMe";
+import { useContext } from "#imports";
+
+const context = useContext();
+context.setPage(reactive({}));
 
 const variants = [
   {
@@ -30,6 +35,23 @@ const variants = [
         {
           title: "Section 2",
           filterableLinks: [{ link: giveMe.anExpected({ testId: "LINK_2", value: "VALUE_2"}) }]
+        }
+      ]
+    })
+  },
+  {
+    name: "Filter Links",
+    descriptor: giveMe.aMenuPage({
+      pageContextKey: "key",
+      header: giveMe.aFilter({contextKey: "key"}),
+      sections: [
+        {
+          title: "Section 1",
+          filterableLinks: [{ title: "A_VALUE", link: giveMe.anExpected({ testId: "LINK_1", value: "A_VALUE"}) }]
+        },
+        {
+          title: "Section 2",
+          filterableLinks: [{ title: "B_VALUE", link: giveMe.anExpected({ testId: "LINK_2", value: "B_VALUE"}) }]
         }
       ]
     })

@@ -48,6 +48,26 @@ test.describe("Sections", () => {
   });
 });
 
+test.describe("Filter Links", () => {
+  const id = "Filter Links";
+
+  test("filter", async({page}) => {
+    const component = page.getByTestId(id);
+
+    const filter = component.locator("input");
+
+    await filter.fill("A");
+
+    await expect(component.getByTestId("LINK_1")).toBeVisible();
+    await expect(component.getByTestId("LINK_2")).not.toBeVisible();
+
+    await filter.fill("B");
+
+    await expect(component.getByTestId("LINK_2")).toBeVisible();
+    await expect(component.getByTestId("LINK_1")).not.toBeVisible();
+  });
+});
+
 test.describe("No Header", () => {
   const id = "No Header";
 

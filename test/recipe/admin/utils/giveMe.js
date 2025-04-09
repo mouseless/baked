@@ -137,6 +137,19 @@ export default {
     };
   },
 
+  aFilter({ placeholder, contextKey } = {}) {
+    placeholder = $(placeholder, "Filter");
+    contextKey = $(contextKey, "filter");
+
+    return {
+      type: "Filter",
+      schema: {
+        placeholder,
+        contextKey
+      }
+    };
+  },
+
   aHeader({ sitemapItems, data } = {}) {
     sitemapItems = $(sitemapItems, [this.aHeaderItem({ route: "/test" })]);
     data = $(data, { path: "/test" });
@@ -281,15 +294,6 @@ export default {
     narrow = $(narrow, false);
 
     return { component, fullScreen, narrow };
-  },
-
-  aFilter({ placeholder } = {}) {
-    placeholder = $(placeholder, "Filter");
-
-    return {
-      type: "Filter",
-      schema: { placeholder }
-    };
   },
 
   aSelect({ label, optionLabel, optionValue, showClear, stateful, data, inline } = {}) {
