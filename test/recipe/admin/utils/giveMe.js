@@ -150,6 +150,16 @@ export default {
     };
   },
 
+  aFilterable({ title, component } = {}) {
+    title = $(title, "filter title");
+    component = $(component, this.anExpected());
+
+    return {
+      title,
+      component
+    };
+  },
+
   aHeader({ sitemapItems, data } = {}) {
     sitemapItems = $(sitemapItems, [this.aHeaderItem({ route: "/test" })]);
     data = $(data, { path: "/test" });
@@ -221,14 +231,23 @@ export default {
     };
   },
 
-  aMenuPage({ header, links, sections, pageContextKey } = {}) {
+  aMenuPage({ header, sections, pageContextKey } = {}) {
     header = $(header, this.anExpected());
-    links = $(links, [this.anExpected()]);
-    sections = $(sections, [{ filterableLinks: links.map(link => ({link})) }]);
+    sections = $(sections, this.aMenuPageSection());
 
     return {
       type: "MenuPage",
       schema: { header, sections, pageContextKey }
+    };
+  },
+
+  aMenuPageSection({ title, links } = {}) {
+    title = $(title, null);
+    links = $(links, [this.aFilterable()]);
+
+    return {
+      title,
+      links
     };
   },
 

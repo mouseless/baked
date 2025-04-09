@@ -29,26 +29,28 @@
         />
         <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
           <Bake
-            v-for="(filterable, i) in section.filterableLinks"
-            :key="filterable.link.schema.route"
+            v-for="(link, i) in section.links"
+            :key="link.component.schema.route"
             :name="`links/${i}`"
-            :descriptor="filterable.link"
+            :descriptor="link.component"
           />
         </div>
       </div>
     </div>
     <div v-if="sectionsData.length === 0">
-      No item available!
+      {{ components?.MenuPage?.noFoundMessage }}
     </div>
   </div>
 </template>
 <script setup>
-import { ref, watch } from "vue";
-import { Divider } from "primevue";
+import { useRuntimeConfig } from "#app";
 import { Bake } from "#components";
 import { useContext } from "#imports";
+import { Divider } from "primevue";
+import { ref, watch } from "vue";
 
 const context = useContext();
+const { public: { components, composables } } = useRuntimeConfig();
 
 const { schema } = defineProps({
   schema: { type: null, required: true },
@@ -56,6 +58,7 @@ const { schema } = defineProps({
 });
 
 const { header, sections, pageContextKey } = schema;
+const locale = composables?.useFormat?.locale || "en-US";
 const sectionsData = ref(sections);
 
 const page = context.page();
@@ -65,11 +68,12 @@ if(pageContextKey) {
     // Apply filter to links
     const sectionsWithFilteredLinks = sections.map(section => ({
       title: section.title,
-      filterableLinks: section.filterableLinks.filter(filterable => filterable.title.toLowerCase().startsWith(newValue.toLowerCase()))
+      links: section.links.filter(link =>
+        link.title?.toLocaleLowerCase(locale).startsWith(newValue.toLocaleLowerCase(locale)))
     }));
 
     // If there are no links left in the sections after filter, filter the section too
-    sectionsData.value = sectionsWithFilteredLinks.filter(section => section.filterableLinks.length > 0);
+    sectionsData.value = sectionsWithFilteredLinks.filter(section => section.links.length > 0);
   });
 }
 </script>

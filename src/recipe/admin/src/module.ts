@@ -9,12 +9,17 @@ export interface ModuleOptions {
 
 export interface Components {
   DataPanel?: DataPanelOptions,
+  MenuPage?: MenuPageOptions,
   Page?: PageOptions,
   ReportPage?: ReportPageOptions
 }
 
 export interface DataPanelOptions {
   requiredMessage?: String
+}
+
+export interface MenuPageOptions {
+  notFoundMessage?: String
 }
 
 export interface PageOptions {

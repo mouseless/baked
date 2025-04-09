@@ -69,8 +69,12 @@ public static class Components
     public static (int StatusCode, ErrorPage.Info Info) ErrorPageInfo(int statusCode, string title, string message) =>
         (statusCode, new(title, message));
 
-    public static MenuPage.Section.Filterable Filterable(string title, IComponentDescriptor link) =>
-        new(title, link);
+    public static ComponentDescriptorAttribute<Filter> Filter(string pageContextKey,
+        string? placeholder = default
+    ) => new(new(pageContextKey) { Placeholder = placeholder });
+
+    public static MenuPage.Section.Filterable Filterable(string title, IComponentDescriptor component) =>
+        new(title, component);
 
     public static ComponentDescriptorAttribute<Header> Header(IEnumerable<Header.Item> siteMap,
         IData? data = default
@@ -95,23 +99,19 @@ public static class Components
         IEnumerable<IComponentDescriptor>? links = default
     ) => MenuPage(name,
         header: header,
-        sections: [
-            MenuPageSection(
-                filterables: links?.Select(l => Filterable(string.Empty, l))
-            )
-        ]
+        sections: [MenuPageSection(links: links?.Select(l => Filterable(string.Empty, l)))]
     );
 
     public static ComponentDescriptorAttribute<MenuPage> MenuPage(string name,
         IComponentDescriptor? header = default,
         IEnumerable<MenuPage.Section>? sections = default,
-        string? pageContextKey = default
-    ) => new(new(name) { Header = header, PageContextKey = pageContextKey, Sections = [.. sections ?? []] });
+        string? filterPageContextKey = default
+    ) => new(new(name) { Header = header, PageContextKey = filterPageContextKey, Sections = [.. sections ?? []] });
 
     public static MenuPage.Section MenuPageSection(
         string? title = default,
-        IEnumerable<MenuPage.Section.Filterable>? filterables = default
-    ) => new() { Title = title, FilterableLinks = [.. filterables ?? []] };
+        IEnumerable<MenuPage.Section.Filterable>? links = default
+    ) => new() { Title = title, Links = [.. links ?? []] };
 
     public static ComponentDescriptorAttribute<ModalLayout> ModalLayout(string name) =>
         new(new(name));
@@ -165,9 +165,6 @@ public static class Components
         string? key = default,
         string? showWhen = default
     ) => new(component) { FullScreen = fullScreen, Narrow = narrow, Key = key, ShowWhen = showWhen };
-
-    public static ComponentDescriptorAttribute<Filter> Filter(string contextKey, string placeholder) =>
-        new(new(contextKey) { Placeholder = placeholder });
 
     public static ComponentDescriptorAttribute<Select> Select(string label, IData data,
         string? optionLabel = default,

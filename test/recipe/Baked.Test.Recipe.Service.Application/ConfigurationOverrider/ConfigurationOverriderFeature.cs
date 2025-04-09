@@ -109,11 +109,48 @@ public class ConfigurationOverriderFeature : IFeature
         {
             new
             {
+                Name = "Behavior",
+                Links = new[]
+                {
+                    new { Title = "Bake", Description = "The core component that renders a dynamic component using given descriptor" },
+                    new { Title = "Custom CSS", Description = "Allow custom configuration to define custom css and more" },
+                    new { Title = "Locale", Description = "Allow locale customization and language support" },
+                    new { Title = "Parameters", Description = "Manage parameters through emits" },
+                    new { Title = "Query Parameters", Description = "Sync and manage parameters in query string" },
+                    new { Title = "Toast", Description = "Render alert messages" }
+                }
+            },
+            new
+            {
+                Name = "Display",
+                Links = new[]
+                {
+                    new { Title = "Card Link", Description = "Renders a link as a big card-like button" },
+                    new { Title = "Data Table", Description = "View list data in a table" },
+                    new { Title = "Nav Link", Description = "A component to give a link to a domain object" },
+                    new { Title = "Icon", Description = "Displays built-in icons" },
+                    new { Title = "Money", Description = "Render money values" },
+                    new { Title = "Rate", Description = "Render rate values as percentage" }
+                }
+            },
+            new
+            {
                 Name = "Layout",
                 Links = new[]
                 {
+                    new { Title = "Data Panel", Description = "Lazy load and view a data within a panel" },
                     new { Title = "Header", Description = "Renders a breadcrumb" },
+                    new { Title = "Page Title", Description = "Render page title, desc and actions" },
                     new { Title = "Side Menu", Description = "Renders application menu" }
+                }
+            },
+            new
+            {
+                Name = "Input",
+                Links = new[]
+                {
+                    new { Title = "Select", Description = "Allow select from given options using drow down" },
+                    new { Title = "Select Button", Description = "Allow select from given options using buttons" }
                 }
             },
             new
@@ -128,57 +165,13 @@ public class ConfigurationOverriderFeature : IFeature
             },
             new
             {
-                Name = "Container",
-                Links = new[]
-                {
-                    new { Title = "Card Link", Description = "Renders a link as a big card-like button" },
-                    new { Title = "Data Panel", Description = "Lazy load and view a data within a panel" },
-                }
-            },
-            new
-            {
-                Name = "Display",
-                Links = new[]
-                {
-                    new { Title = "Data Table", Description = "View list data in a table" },
-                    new { Title = "Nav Link", Description = "A component to give a link to a domain object" },
-                    new { Title = "Icon", Description = "Displays built-in icons" },
-                    new { Title = "Money", Description = "Render money values" },
-                    new { Title = "Rate", Description = "Render rate values as percentage" }
-                }
-            },
-            new
-            {
-                Name = "Input",
-                Links = new[]
-                {
-                    new { Title = "Page Title", Description = "Render page title, desc and actions" },
-                    new { Title = "Query Parameters", Description = "Sync and manage parameters in query string" },
-                    new { Title = "Select", Description = "Allow select from given options using drow down" },
-                    new { Title = "Select Button", Description = "Allow select from given options using buttons" }
-                }
-            },
-            new
-            {
                 Name = "Plugins",
                 Links = new[]
                 {
                     new { Title = "Auth", Description = "Authorized routing and client" },
                     new { Title = "Error Handling", Description = "Handling errors" },
-                    new { Title = "Locale", Description = "Allow locale customization and language support" },
                 }
             },
-            new
-            {
-                Name = "Behavior",
-                Links = new[]
-                {
-                    new { Title = "Bake", Description = "The core component that renders a dynamic component using given descriptor" },
-                    new { Title = "Custom CSS", Description = "Allow custom configuration to define custom css and more" },
-                    new { Title = "Parameters", Description = "Manage parameters through emits" },
-                    new { Title = "Toast", Description = "Render alert messages" }
-                }
-            }
         };
 
         configurator.ConfigureAppDescriptor(app =>
@@ -387,23 +380,23 @@ public class ConfigurationOverriderFeature : IFeature
             });
 
             pages.Add(MenuPage("specs",
-                pageContextKey: "menuPageContextKey",
+                filterPageContextKey: "menu-page",
                 header: PageTitle(
                   title: "Specs",
                   description: "All UI Specs are listed here",
-                  actions: [Filter(placeholder: "Filter", contextKey: "menuPageContextKey")]
+                  actions: [Filter(placeholder: "Filter", pageContextKey: "menu-page")]
                 ),
                 sections:
                 [
                     .. specs.Select(section =>
                         MenuPageSection(
                             title: section.Name,
-                            filterables:
+                            links:
                             [
                                 .. section.Links.Select(l =>
                                     Filterable(
                                         title: l.Title,
-                                        link: CardLink($"/specs/{l.Title.Kebaberize()}", l.Title,
+                                        component: CardLink($"/specs/{l.Title.Kebaberize()}", l.Title,
                                             icon: "pi pi-microchip",
                                             description: l.Description
                                         )

@@ -2,13 +2,12 @@
   <IconField>
     <InputIcon class="pi pi-search" />
     <InputText
-      v-model="filteringKey"
+      v-model="page[contextKey]"
       :placeholder
     />
   </IconField>
 </template>
 <script setup>
-import { ref } from "vue";
 import { IconField, InputIcon, InputText } from "primevue";
 import { useContext } from "#imports";
 
@@ -19,10 +18,6 @@ const { schema, data } = defineProps({
   data: { type: null, required: true }
 });
 
-const filteringKey = ref("");
-
+const { placeholder, contextKey } = schema;
 const page = context.page();
-page[schema.contextKey] = filteringKey;
-
-const { placeholder } = schema;
 </script>

@@ -117,7 +117,7 @@ onMounted(async() => {
   const specs = await pages.fetch("specs");
 
   const linksWithTitle = specs.schema.sections.flatMap(section =>
-    section.filterableLinks.filter(link => link.title === title).map(filterable => filterable.link)
+    section.links.filter(link => link.title === title).map(link => link.component)
   );
   if(linksWithTitle.length > 0) {
     description.value = linksWithTitle[0].schema.description;
