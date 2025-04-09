@@ -38,7 +38,7 @@
       </div>
     </div>
     <div v-if="sectionsData.length === 0">
-      {{ components?.MenuPage?.noFoundMessage }}
+      {{ components?.MenuPage?.noFoundMessage || "No item available!" }}
     </div>
   </div>
 </template>
