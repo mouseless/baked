@@ -19,4 +19,3 @@ public record MenuPage(string Path)
             : IComponentSchema;
     }
 }
-
