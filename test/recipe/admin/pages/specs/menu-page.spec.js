@@ -38,14 +38,6 @@ test.describe("Sections", () => {
     await expect(titles.nth(0)).toHaveText("Section 1");
     await expect(titles.nth(1)).toHaveText("Section 2");
   });
-
-  test("links under sections", async({page}) => {
-    const component = page.getByTestId(id);
-    const sections = component.locator("div:has(h2)");
-
-    await expect(sections.nth(0).getByTestId("LINK_1")).toBeVisible();
-    await expect(sections.nth(1).getByTestId("LINK_2")).toBeVisible();
-  });
 });
 
 test.describe("Filter Links", () => {

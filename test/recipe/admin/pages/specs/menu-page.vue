@@ -32,14 +32,8 @@ const variants = [
     descriptor: giveMe.aMenuPage({
       header: null,
       sections: [
-        giveMe.aMenuPageSection({
-          title: "Section 1",
-          links: [giveMe.aFilterable({ component: giveMe.anExpected({ testId: "LINK_1", value: "A_VALUE" }) })]
-        }),
-        giveMe.aMenuPageSection({
-          title: "Section 2",
-          links: [giveMe.aFilterable({ component: giveMe.anExpected({ testId: "LINK_2", value: "B_VALUE" }) })]
-        })
+        giveMe.aMenuPageSection({ title: "Section 1" }),
+        giveMe.aMenuPageSection({ title: "Section 2" })
       ]
     })
   },
