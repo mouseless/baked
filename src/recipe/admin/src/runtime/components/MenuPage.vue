@@ -5,7 +5,10 @@
       name="header"
       :descriptor="header"
     />
-    <div class="flex flex-col gap-6">
+    <div
+      v-if="sectionsData.length > 0"
+      class="flex flex-col gap-6"
+    >
       <div
         v-for="section in sectionsData"
         :key="section.title"
@@ -33,6 +36,9 @@
           />
         </div>
       </div>
+    </div>
+    <div v-if="sectionsData.length === 0">
+      No item available!
     </div>
   </div>
 </template>

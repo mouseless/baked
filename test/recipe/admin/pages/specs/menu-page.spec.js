@@ -51,6 +51,13 @@ test.describe("Sections", () => {
 test.describe("Filter Links", () => {
   const id = "Filter Links";
 
+  test("show all", async({page}) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.getByTestId("LINK_1")).toBeVisible();
+    await expect(component.getByTestId("LINK_2")).toBeVisible();
+  });
+
   test("filter", async({page}) => {
     const component = page.getByTestId(id);
 
@@ -65,6 +72,18 @@ test.describe("Filter Links", () => {
 
     await expect(component.getByTestId("LINK_2")).toBeVisible();
     await expect(component.getByTestId("LINK_1")).not.toBeVisible();
+  });
+
+  test("not found", async({page}) => {
+    const component = page.getByTestId(id);
+
+    const filter = component.locator("input");
+
+    await filter.fill("x");
+
+    await expect(component.getByTestId("LINK_1")).not.toBeVisible();
+    await expect(component.getByTestId("LINK_2")).not.toBeVisible();
+    await expect(component).toHaveText("No item available!");
   });
 });
 
