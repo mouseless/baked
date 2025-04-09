@@ -73,7 +73,7 @@ public static class Components
         string? placeholder = default
     ) => new(new(pageContextKey) { Placeholder = placeholder });
 
-    public static MenuPage.Section.Filterable Filterable(string title, IComponentDescriptor component) =>
+    public static Filterable Filterable(string title, IComponentDescriptor component) =>
         new(title, component);
 
     public static ComponentDescriptorAttribute<Header> Header(IEnumerable<Header.Item> siteMap,
@@ -110,7 +110,7 @@ public static class Components
 
     public static MenuPage.Section MenuPageSection(
         string? title = default,
-        IEnumerable<MenuPage.Section.Filterable>? links = default
+        IEnumerable<Filterable>? links = default
     ) => new() { Title = title, Links = [.. links ?? []] };
 
     public static ComponentDescriptorAttribute<ModalLayout> ModalLayout(string name) =>
