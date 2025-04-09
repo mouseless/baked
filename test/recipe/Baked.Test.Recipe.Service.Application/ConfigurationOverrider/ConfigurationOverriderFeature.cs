@@ -387,22 +387,26 @@ public class ConfigurationOverriderFeature : IFeature
             });
 
             pages.Add(MenuPage("specs",
+                pageContextKey: "menuPageContextKey",
                 header: PageTitle(
                   title: "Specs",
                   description: "All UI Specs are listed here",
-                  actions: [Filter(placeholder: "Ara")]
+                  actions: [Filter(placeholder: "Ara", contextKey: "menuPageContextKey")]
                 ),
                 sections:
                 [
                     .. specs.Select(section =>
                         MenuPageSection(
                             title: section.Name,
-                            links:
+                            filterables:
                             [
                                 .. section.Links.Select(l =>
-                                    CardLink($"/specs/{l.Title.Kebaberize()}", l.Title,
-                                        icon: "pi pi-microchip",
-                                        description: l.Description
+                                    Filterable(
+                                        title: l.Title,
+                                        link: CardLink($"/specs/{l.Title.Kebaberize()}", l.Title,
+                                            icon: "pi pi-microchip",
+                                            description: l.Description
+                                        )
                                     )
                                 )
                             ]
