@@ -208,14 +208,14 @@ export default {
     };
   },
 
-  aMenuPage({ header, links, sections } = {}) {
+  aMenuPage({ header, links, sections, pageContextKey } = {}) {
     header = $(header, this.anExpected());
     links = $(links, [this.anExpected()]);
-    sections = $(sections, [{links}]);
+    sections = $(sections, [{ filterableLinks: links.map(link => ({link})) }]);
 
     return {
       type: "MenuPage",
-      schema: { header, sections }
+      schema: { header, sections, pageContextKey }
     };
   },
 

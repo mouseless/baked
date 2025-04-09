@@ -25,11 +25,11 @@ const variants = [
       sections: [
         {
           title: "Section 1",
-          links: [giveMe.anExpected({ testId: "LINK_1", value: "VALUE_1"})]
+          filterableLinks: [{ link: giveMe.anExpected({ testId: "LINK_1", value: "VALUE_1"}) }]
         },
         {
           title: "Section 2",
-          links: [giveMe.anExpected({ testId: "LINK_2", value: "VALUE_2"})]
+          filterableLinks: [{ link: giveMe.anExpected({ testId: "LINK_2", value: "VALUE_2"}) }]
         }
       ]
     })

@@ -49,19 +49,21 @@ const { schema } = defineProps({
   data: { type: null, default: null }
 });
 
-const { header, sections } = schema;
+const { header, sections, pageContextKey } = schema;
 const sectionsData = ref(sections);
 
 const page = context.page();
 // Listen in context if any filter is applied
-watch(() => page[schema.pageContextKey], (newValue, _) => {
-  // Apply filter to links
-  const sectionsWithFilteredLinks = sections.map(section => ({
-    title: section.title,
-    filterableLinks: section.filterableLinks.filter(filterable => filterable.title.toLowerCase().startsWith(newValue.toLowerCase()))
-  }));
+if(pageContextKey) {
+  watch(() => page[pageContextKey], (newValue, _) => {
+    // Apply filter to links
+    const sectionsWithFilteredLinks = sections.map(section => ({
+      title: section.title,
+      filterableLinks: section.filterableLinks.filter(filterable => filterable.title.toLowerCase().startsWith(newValue.toLowerCase()))
+    }));
 
-  // If there are no links left in the sections after filter, filter the section too
-  sectionsData.value = sectionsWithFilteredLinks.filter(section => section.filterableLinks.length > 0);
-});
+    // If there are no links left in the sections after filter, filter the section too
+    sectionsData.value = sectionsWithFilteredLinks.filter(section => section.filterableLinks.length > 0);
+  });
+}
 </script>

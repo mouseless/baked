@@ -391,7 +391,7 @@ public class ConfigurationOverriderFeature : IFeature
                 header: PageTitle(
                   title: "Specs",
                   description: "All UI Specs are listed here",
-                  actions: [Filter(placeholder: "Ara", contextKey: "menuPageContextKey")]
+                  actions: [Filter(placeholder: "Filter", contextKey: "menuPageContextKey")]
                 ),
                 sections:
                 [
