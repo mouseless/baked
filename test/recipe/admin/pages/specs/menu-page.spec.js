@@ -28,6 +28,57 @@ test.describe("Header and Links", () => {
   });
 });
 
+test.describe("Sections", () => {
+  const id = "Sections";
+
+  test("sections", async({page}) => {
+    const component = page.getByTestId(id);
+    const titles = component.locator("h2");
+
+    await expect(titles.nth(0)).toHaveText("Section 1");
+    await expect(titles.nth(1)).toHaveText("Section 2");
+  });
+});
+
+test.describe("Filter Links", () => {
+  const id = "Filter Links";
+
+  test("show all", async({page}) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.getByTestId("LINK_1")).toBeVisible();
+    await expect(component.getByTestId("LINK_2")).toBeVisible();
+  });
+
+  test("filter", async({page}) => {
+    const component = page.getByTestId(id);
+
+    const filter = component.locator("input");
+
+    await filter.fill("A");
+
+    await expect(component.getByTestId("LINK_1")).toBeVisible();
+    await expect(component.getByTestId("LINK_2")).not.toBeVisible();
+
+    await filter.fill("B");
+
+    await expect(component.getByTestId("LINK_2")).toBeVisible();
+    await expect(component.getByTestId("LINK_1")).not.toBeVisible();
+  });
+
+  test("not found", async({page}) => {
+    const component = page.getByTestId(id);
+
+    const filter = component.locator("input");
+
+    await filter.fill("x");
+
+    await expect(component.getByTestId("LINK_1")).not.toBeVisible();
+    await expect(component.getByTestId("LINK_2")).not.toBeVisible();
+    await expect(component).toHaveText("No item available!");
+  });
+});
+
 test.describe("No Header", () => {
   const id = "No Header";
 

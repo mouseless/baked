@@ -6,6 +6,13 @@ public record MenuPage(string Path)
     : IGeneratedComponentSchema
 {
     public string Path { get; set; } = Path;
+    public string? FilterPageContextKey { get; set; }
     public IComponentDescriptor? Header { get; set; }
-    public List<IComponentDescriptor> Links { get; init; } = [];
+    public List<Section> Sections { get; init; } = [];
+
+    public record Section
+    {
+        public string? Title { get; set; }
+        public List<Filterable> Links { get; init; } = [];
+    }
 }

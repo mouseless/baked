@@ -69,6 +69,13 @@ public static class Components
     public static (int StatusCode, ErrorPage.Info Info) ErrorPageInfo(int statusCode, string title, string message) =>
         (statusCode, new(title, message));
 
+    public static ComponentDescriptorAttribute<Filter> Filter(string pageContextKey,
+        string? placeholder = default
+    ) => new(new(pageContextKey) { Placeholder = placeholder });
+
+    public static Filterable Filterable(string title, IComponentDescriptor component) =>
+        new(title, component);
+
     public static ComponentDescriptorAttribute<Header> Header(IEnumerable<Header.Item> siteMap,
         IData? data = default
     )
@@ -90,7 +97,21 @@ public static class Components
     public static ComponentDescriptorAttribute<MenuPage> MenuPage(string name,
         IComponentDescriptor? header = default,
         IEnumerable<IComponentDescriptor>? links = default
-    ) => new(new(name) { Header = header, Links = [.. links ?? []] });
+    ) => MenuPage(name,
+        header: header,
+        sections: [MenuPageSection(links: links?.Select(l => Filterable(string.Empty, l)))]
+    );
+
+    public static ComponentDescriptorAttribute<MenuPage> MenuPage(string name,
+        IComponentDescriptor? header = default,
+        IEnumerable<MenuPage.Section>? sections = default,
+        string? filterPageContextKey = default
+    ) => new(new(name) { Header = header, FilterPageContextKey = filterPageContextKey, Sections = [.. sections ?? []] });
+
+    public static MenuPage.Section MenuPageSection(
+        string? title = default,
+        IEnumerable<Filterable>? links = default
+    ) => new() { Title = title, Links = [.. links ?? []] };
 
     public static ComponentDescriptorAttribute<ModalLayout> ModalLayout(string name) =>
         new(new(name));

@@ -137,6 +137,29 @@ export default {
     };
   },
 
+  aFilter({ placeholder, pageContextKey } = {}) {
+    placeholder = $(placeholder, "Filter");
+    pageContextKey = $(pageContextKey, "filter");
+
+    return {
+      type: "Filter",
+      schema: {
+        placeholder,
+        pageContextKey
+      }
+    };
+  },
+
+  aFilterable({ title, component } = {}) {
+    title = $(title, "filter title");
+    component = $(component, this.anExpected());
+
+    return {
+      title,
+      component
+    };
+  },
+
   aHeader({ sitemapItems, data } = {}) {
     sitemapItems = $(sitemapItems, [this.aHeaderItem({ route: "/test" })]);
     data = $(data, { path: "/test" });
@@ -208,13 +231,23 @@ export default {
     };
   },
 
-  aMenuPage({ header, links } = {}) {
+  aMenuPage({ header, sections, filterPageContextKey } = {}) {
     header = $(header, this.anExpected());
-    links = $(links, []);
+    sections = $(sections, this.aMenuPageSection());
 
     return {
       type: "MenuPage",
-      schema: { header, links }
+      schema: { header, sections, filterPageContextKey }
+    };
+  },
+
+  aMenuPageSection({ title, links } = {}) {
+    title = $(title, null);
+    links = $(links, [this.aFilterable()]);
+
+    return {
+      title,
+      links
     };
   },
 
