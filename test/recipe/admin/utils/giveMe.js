@@ -137,15 +137,15 @@ export default {
     };
   },
 
-  aFilter({ placeholder, contextKey } = {}) {
+  aFilter({ placeholder, contextKey: pageContextKey } = {}) {
     placeholder = $(placeholder, "Filter");
-    contextKey = $(contextKey, "filter");
+    pageContextKey = $(pageContextKey, "filter");
 
     return {
       type: "Filter",
       schema: {
         placeholder,
-        contextKey
+        contextKey: pageContextKey
       }
     };
   },
@@ -231,13 +231,13 @@ export default {
     };
   },
 
-  aMenuPage({ header, sections, pageContextKey } = {}) {
+  aMenuPage({ header, sections, filterPageContextKey } = {}) {
     header = $(header, this.anExpected());
     sections = $(sections, this.aMenuPageSection());
 
     return {
       type: "MenuPage",
-      schema: { header, sections, pageContextKey }
+      schema: { header, sections, filterPageContextKey }
     };
   },
 

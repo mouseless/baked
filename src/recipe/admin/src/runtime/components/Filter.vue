@@ -2,7 +2,7 @@
   <IconField>
     <InputIcon class="pi pi-search" />
     <InputText
-      v-model="page[contextKey]"
+      v-model="page[pageContextKey]"
       :placeholder
     />
   </IconField>
@@ -18,6 +18,6 @@ const { schema, data } = defineProps({
   data: { type: null, required: true }
 });
 
-const { placeholder, contextKey } = schema;
+const { placeholder, pageContextKey } = schema;
 const page = context.page();
 </script>

@@ -30,7 +30,7 @@
         <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
           <Bake
             v-for="(link, i) in section.links"
-            :key="link.component.schema.route"
+            :key="link.title"
             :name="`links/${i}`"
             :descriptor="link.component"
           />
@@ -38,7 +38,7 @@
       </div>
     </div>
     <div v-if="sectionsData.length === 0">
-      {{ components?.MenuPage?.noFoundMessage || "No item available!" }}
+      {{ components?.MenuPage?.notFoundMessage || "No item available!" }}
     </div>
   </div>
 </template>
@@ -57,19 +57,20 @@ const { schema } = defineProps({
   data: { type: null, default: null }
 });
 
-const { header, sections, pageContextKey } = schema;
+const { header, sections, filterPageContextKey } = schema;
 const locale = composables?.useFormat?.locale || "en-US";
 const sectionsData = ref(sections);
 
 const page = context.page();
 // Listen in context if any filter is applied
-if(pageContextKey) {
-  watch(() => page[pageContextKey], (newValue, _) => {
+if(filterPageContextKey) {
+  watch(() => page[filterPageContextKey], (newValue, _) => {
     // Apply filter to links
     const sectionsWithFilteredLinks = sections.map(section => ({
       title: section.title,
       links: section.links.filter(link =>
-        link.title?.toLocaleLowerCase(locale).startsWith(newValue.toLocaleLowerCase(locale)))
+        link.title?.toLocaleLowerCase(locale).startsWith(newValue.toLocaleLowerCase(locale))
+      )
     }));
 
     // If there are no links left in the sections after filter, filter the section too

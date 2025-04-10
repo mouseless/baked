@@ -6,7 +6,7 @@ public record MenuPage(string Path)
     : IGeneratedComponentSchema
 {
     public string Path { get; set; } = Path;
-    public string? PageContextKey { get; set; } = default;
+    public string? FilterPageContextKey { get; set; } = default;
     public IComponentDescriptor? Header { get; set; }
     public List<Section> Sections { get; init; } = [];
 

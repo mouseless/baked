@@ -135,6 +135,15 @@ public class ConfigurationOverriderFeature : IFeature
             },
             new
             {
+                Name = "Input",
+                Links = new[]
+                {
+                    new { Title = "Select", Description = "Allow select from given options using drow down" },
+                    new { Title = "Select Button", Description = "Allow select from given options using buttons" }
+                }
+            },
+            new
+            {
                 Name = "Layout",
                 Links = new[]
                 {
@@ -142,15 +151,6 @@ public class ConfigurationOverriderFeature : IFeature
                     new { Title = "Header", Description = "Renders a breadcrumb" },
                     new { Title = "Page Title", Description = "Render page title, desc and actions" },
                     new { Title = "Side Menu", Description = "Renders application menu" }
-                }
-            },
-            new
-            {
-                Name = "Input",
-                Links = new[]
-                {
-                    new { Title = "Select", Description = "Allow select from given options using drow down" },
-                    new { Title = "Select Button", Description = "Allow select from given options using buttons" }
                 }
             },
             new
@@ -212,7 +212,7 @@ public class ConfigurationOverriderFeature : IFeature
                         HeaderItem("/specs", icon: "pi pi-list-check", title: "Specs"),
                         .. specs.SelectMany(section =>
                             section.Links.Select(link =>
-                                HeaderItem($"/specs/{section.Name.ToLower()}/{link.Title.Kebaberize()}", title: link.Title, parentRoute: "/specs")
+                                HeaderItem($"/specs/{link.Title.Kebaberize()}", title: link.Title, parentRoute: "/specs")
                             )
                         )
                     ]

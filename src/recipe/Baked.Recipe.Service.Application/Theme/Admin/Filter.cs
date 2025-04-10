@@ -2,9 +2,9 @@ using Baked.Ui;
 
 namespace Baked.Theme.Admin;
 
-public record Filter(string ContextKey)
+public record Filter(string PageContextKey)
     : IComponentSchema
 {
-    public string ContextKey { get; set; } = ContextKey;
+    public string PageContextKey { get; set; } = PageContextKey;
     public string? Placeholder { get; set; }
 }

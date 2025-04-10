@@ -106,7 +106,7 @@ public static class Components
         IComponentDescriptor? header = default,
         IEnumerable<MenuPage.Section>? sections = default,
         string? filterPageContextKey = default
-    ) => new(new(name) { Header = header, PageContextKey = filterPageContextKey, Sections = [.. sections ?? []] });
+    ) => new(new(name) { Header = header, FilterPageContextKey = filterPageContextKey, Sections = [.. sections ?? []] });
 
     public static MenuPage.Section MenuPageSection(
         string? title = default,

@@ -40,7 +40,7 @@ const variants = [
   {
     name: "Filter Links",
     descriptor: giveMe.aMenuPage({
-      pageContextKey: "key",
+      filterPageContextKey: "key",
       header: giveMe.aFilter({contextKey: "key"}),
       sections: [
         giveMe.aMenuPageSection({
