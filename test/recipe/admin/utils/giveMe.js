@@ -137,7 +137,7 @@ export default {
     };
   },
 
-  aFilter({ placeholder, contextKey: pageContextKey } = {}) {
+  aFilter({ placeholder, pageContextKey } = {}) {
     placeholder = $(placeholder, "Filter");
     pageContextKey = $(pageContextKey, "filter");
 
@@ -145,7 +145,7 @@ export default {
       type: "Filter",
       schema: {
         placeholder,
-        contextKey: pageContextKey
+        pageContextKey
       }
     };
   },

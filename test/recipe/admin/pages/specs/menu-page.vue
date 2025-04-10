@@ -41,7 +41,7 @@ const variants = [
     name: "Filter Links",
     descriptor: giveMe.aMenuPage({
       filterPageContextKey: "key",
-      header: giveMe.aFilter({contextKey: "key"}),
+      header: giveMe.aFilter({pageContextKey: "key"}),
       sections: [
         giveMe.aMenuPageSection({
           title: "Section 1",
