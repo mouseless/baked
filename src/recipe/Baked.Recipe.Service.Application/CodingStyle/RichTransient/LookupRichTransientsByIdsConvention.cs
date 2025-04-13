@@ -19,11 +19,17 @@ public class LookupRichTransientsByIdsConvention : IDomainModelConvention<Parame
         if (!initializer.DefaultOverload.Parameters.TryGetValue("id", out var idParameter)) { return; }
 
         var factoryParameter = action.AddFactoryAsService(elementType);
+        var actionShouldBeAsync = initializer.DefaultOverload.ReturnType.IsAssignableTo<Task>();
 
         parameter.Type = $"IEnumerable<{idParameter.ParameterType.CSharpFriendlyFullName}>";
         parameter.Name = $"{context.Parameter.Name.Singularize()}Ids";
         parameter.LookupRenderer = p => elementType.BuildInitializerByIds(p,
             isArray: context.Parameter.ParameterType.IsArray
         );
+
+        if (actionShouldBeAsync)
+        {
+            action.MakeAsync();
+        }
     }
 }
