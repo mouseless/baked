@@ -52,7 +52,7 @@ public static class RichTransientCodingStyleExtensions
     )
     {
         var initializer = type.GetMembers().Methods.Having<InitializerAttribute>().Single();
-        var byIds = $"{valueExpression}.Select(id => {$"new{type.Name.Pascalize()}().{initializer.Name}(id)"})";
+        var byIds = $"{valueExpression}.Select(id => new{type.Name.Pascalize()}().{initializer.Name}(id))";
         if (initializer.DefaultOverload.ReturnType.IsAssignableTo<Task>())
         {
             byIds = $"(await Task.WhenAll({byIds}))";
