@@ -93,7 +93,7 @@ public class ApiCodeTemplate(ApiModel _apiModel)
             : "[FromForm]";
 
     string Invoke(string target, ActionModelAttribute action) => $$"""
-        {{(action.ReturnIsAsync ? "await " : string.Empty)}}{{target}}.{{action.Id}}(
+        {{(action.InvocationIsAsync ? "await " : string.Empty)}}{{target}}.{{action.Id}}(
             {{ForEach(action.InvokedMethodParameters, p => $"@{p.InternalName}: {ParameterLookup(p, action.UseForm, action.UseRequestClassForBody)}", separator: ", ")}}
         )
     """;
