@@ -43,6 +43,15 @@ public class ActionModelAttribute(
     /// </summary>
     public bool ReturnIsVoid { get; set; } = default!;
 
+    /// <summary>
+    /// Do NOT set this property directly from the attribute definition, e.g.,
+    /// `[ActionModel(..., InvocationIsAsync = true, ...)]`. Initial value is
+    /// always overridden by the value comes from reflection.
+    ///
+    /// Use conventions to set a custom value.
+    /// </summary>
+    public bool InvocationIsAsync { get; set; } = default!;
+
     public Func<string, string> ReturnResultRenderer { get; set; } = resultExpression => resultExpression;
     public string FindTargetStatement { get; set; } = ParameterModelAttribute.TargetParameterName;
     public bool UseForm { get; set; } = false;
@@ -74,6 +83,7 @@ public class ActionModelAttribute(
         ReturnType ??= returnType;
         ReturnIsAsync = returnIsAsync;
         ReturnIsVoid = returnIsVoid;
+        InvocationIsAsync = returnIsAsync;
         Parameter ??= parameters.ToDictionary(p => p.Id);
         Initialized = true;
 

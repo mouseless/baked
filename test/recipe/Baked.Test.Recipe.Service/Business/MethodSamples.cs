@@ -100,6 +100,9 @@ public class MethodSamples(ILogger<MethodSamples> _logger)
     public RichTransientWithData TransientParameters(RichTransientWithData transient) =>
         transient;
 
+    public RichTransientAsync TransientAsyncParameters(RichTransientAsync transientAsync) =>
+        transientAsync;
+
     /// <param name="transients">
     /// Transients description
     /// </param>
@@ -108,6 +111,9 @@ public class MethodSamples(ILogger<MethodSamples> _logger)
     /// </param>
     public IEnumerable<RichTransientWithData> TransientListParameters(IEnumerable<RichTransientWithData> transients, RichTransientWithData[] otherTransients) =>
         [.. transients, .. otherTransients];
+
+    public IEnumerable<RichTransientAsync> TransientAsyncListParameters(IEnumerable<RichTransientAsync> transientAsyncs, RichTransientAsync[] otherTransientAsyncs) =>
+        [.. transientAsyncs, .. otherTransientAsyncs];
 
     internal Internal Internal() =>
         new();

@@ -16,10 +16,17 @@ public class LookupRichTransientByIdConvention : IDomainModelConvention<Paramete
         var initializer = members.Methods.Having<InitializerAttribute>().Single();
         if (!initializer.DefaultOverload.Parameters.TryGetValue("id", out var idParameter)) { return; }
 
+        var actionShouldBeAsync = initializer.DefaultOverload.ReturnType.IsAssignableTo<Task>();
+
         if (context.Method.TryGetSingle<ActionModelAttribute>(out var action))
         {
             // parameter belongs to an action, add service to the parent action
             action.AddFactoryAsService(context.Parameter.ParameterType);
+
+            if (actionShouldBeAsync)
+            {
+                action.MakeAsync();
+            }
         }
         else if (context.Method.Has<InitializerAttribute>())
         {
@@ -27,6 +34,11 @@ public class LookupRichTransientByIdConvention : IDomainModelConvention<Paramete
             foreach (var otherAction in context.Type.Methods.Having<ActionModelAttribute>().Select(m => m.GetSingle<ActionModelAttribute>()))
             {
                 otherAction.AddFactoryAsService(context.Parameter.ParameterType);
+
+                if (actionShouldBeAsync)
+                {
+                    otherAction.MakeAsync();
+                }
             }
         }
 

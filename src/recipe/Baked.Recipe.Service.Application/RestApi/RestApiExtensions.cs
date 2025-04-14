@@ -100,6 +100,14 @@ public static class RestApiExtensions
         return parts;
     }
 
+    public static void MakeAsync(this ActionModelAttribute action)
+    {
+        if (action.ReturnIsAsync) { return; }
+
+        action.ReturnIsAsync = true;
+        action.ReturnType = action.ReturnIsVoid ? "Task" : $"Task<{action.ReturnType}>";
+    }
+
     public static void AddConfigureAction<T>(this IDomainModelConventionCollection conventions, string name,
         HttpMethod? method = default,
         List<string>? routeParts = default,
