@@ -200,12 +200,16 @@ export default {
     };
   },
 
-  anInput({ testId } = {}) {
+  anInput({ testId, defaultValue } = {}) {
     testId = $(testId, "test-input");
+    defaultValue = $(defaultValue, null);
 
     return {
       type: "Input",
-      schema: testId
+      schema: {
+        testId,
+        defaultValue
+      }
     };
   },
 
@@ -262,13 +266,14 @@ export default {
     };
   },
 
-  aParameter({ name, component, required, defaultValue, default_ } = {}) {
+  aParameter({ name, component, required, defaultValue, default_, selfManagedDefault } = {}) {
     name = $(name, "test");
     required = $(required, false);
     component = $(component, this.anInput());
     default_ = $(default_, defaultValue ? { type: "Inline", value: defaultValue } : undefined);
+    selfManagedDefault = $(selfManagedDefault, false);
 
-    return { name, required, default: default_, component };
+    return { name, required, default: default_, selfManagedDefault, component };
   },
 
   theQueryData() {

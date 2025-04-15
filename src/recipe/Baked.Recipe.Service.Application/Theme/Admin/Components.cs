@@ -133,11 +133,13 @@ public static class Components
 
     public static Parameter Parameter(string name, IComponentDescriptor component,
         bool required = false,
+        bool selfManagedDefault = false,
         IData? @default = default,
         object? defaultValue = default
     ) => new(name, component)
     {
         Required = required,
+        SelfManagedDefault = selfManagedDefault,
         Default =
             @default is not null ? @default :
             defaultValue is not null ? Datas.Inline(defaultValue) :

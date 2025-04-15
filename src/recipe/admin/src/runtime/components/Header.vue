@@ -15,8 +15,7 @@
       class="!bg-inherit text-sm !p-0"
     >
       <template #item="{ item }">
-        <component
-          :is="linkOrSpan(item)"
+        <RouterLink
           :to="data.path !== item.route ? item.route : '#'"
           class="p-breadcrumb-item-link"
         >
@@ -28,7 +27,7 @@
             v-if="item.title"
             class="p-breadcrumb-item-label"
           >{{ item.title }}</span>
-        </component>
+        </RouterLink>
       </template>
     </Breadcrumb>
   </header>
@@ -64,14 +63,6 @@ const parts = computed(() => {
   return result;
 });
 const shown = computed(() => data?.path !== "/" && parts.value.length > 0);
-
-function linkOrSpan(item) {
-  if(data.path !== item.route) {
-    return RouterLink;
-  }
-
-  return "span";
-}
 
 function findItem(route) {
   if(sitemap[route]) { return sitemap[route]; }

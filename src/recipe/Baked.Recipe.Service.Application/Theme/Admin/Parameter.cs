@@ -6,6 +6,7 @@ public record Parameter(string Name, IComponentDescriptor Component)
 {
     public string Name { get; set; } = Name;
     public bool Required { get; set; }
+    public bool SelfManagedDefault { get; set; }
     public IData? Default { get; set; }
     public IComponentDescriptor Component { get; set; } = Component;
 }
