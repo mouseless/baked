@@ -370,12 +370,13 @@ export default {
     return { route, icon, title, disabled };
   },
 
-  aString({ value, data } = {}) {
+  aString({ value, data, maxLength } = {}) {
     value = $(value, "Test string");
     data = $(data, { type: "Inline", value });
 
     return {
       type: "String",
+      schema: { maxLength },
       data
     };
   },

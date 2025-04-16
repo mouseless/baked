@@ -44,5 +44,8 @@ export default {
     base: ".p-toast",
     summary: ".p-toast-summary",
     detail: ".p-toast-detail"
+  },
+  tooltip: {
+    bottom: ".p-tooltip-bottom"
   }
 };

@@ -195,7 +195,8 @@ public static class Components
         bool disabled = false
     ) => new(route, icon) { Title = title, Disabled = disabled };
 
-    public static ComponentDescriptor String(
-        IData? data = default
-    ) => new(nameof(String)) { Data = data };
+    public static ComponentDescriptorAttribute<String> String(
+        IData? data = default,
+        int? maxLength = default
+    ) => new(new(maxLength)) { Data = data };
 }
