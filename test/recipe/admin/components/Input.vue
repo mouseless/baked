@@ -19,7 +19,9 @@ const { testId, defaultValue } = schema;
 
 if(defaultValue) {
   onMounted(() => {
-    model.value = defaultValue;
+    if(!model.value) {
+      model.value = defaultValue;
+    }
   });
 
   watch(model, newValue => {
