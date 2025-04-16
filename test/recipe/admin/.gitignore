@@ -23,8 +23,5 @@ logs
 **/*.js-snapshots/**
 **/test-results/**
 
-# Baked Descriptors
-.baked/**
-
 # Import Triggers
 **/_import*.vue
