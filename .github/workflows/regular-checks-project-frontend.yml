@@ -19,10 +19,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 9    
       - name: Disable AppArmour
         run: echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns
       - name: Build src
@@ -30,9 +26,6 @@ jobs:
           cd src/recipe/admin
           npm i
           npm run build
-      - name: Build descriptors
-        run: |
-          dotnet build    
       - name: Build test
         run: |
           cd test/recipe/admin
@@ -50,10 +43,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 9
       - name: Disable AppArmour
         run: echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns
       - name: Build local package
@@ -61,9 +50,6 @@ jobs:
           cd src/recipe/admin
           npm i
           npm run build
-      - name: Build descriptors
-        run: |
-          dotnet build
       - name: Build test project
         run: |
           cd test/recipe/admin
