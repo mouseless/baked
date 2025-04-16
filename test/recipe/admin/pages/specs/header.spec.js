@@ -59,7 +59,7 @@ test.describe("Wildcard", () => {
   test("breadcrumb not attached", async({page}) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator(`span${primevue.breadcrumb.link}`)).toHaveText("Entity");
+    await expect(component.locator(primevue.breadcrumb.link).last()).toHaveText("Entity");
   });
 });
 

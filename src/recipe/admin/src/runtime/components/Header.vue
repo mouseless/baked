@@ -16,7 +16,7 @@
     >
       <template #item="{ item }">
         <RouterLink
-          :to="data.path !== item.route ? item.route : '#'"
+          :to="item.route"
           class="p-breadcrumb-item-link"
         >
           <span

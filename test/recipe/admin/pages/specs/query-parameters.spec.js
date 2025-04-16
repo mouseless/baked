@@ -37,10 +37,12 @@ test("reset to default value after route to self", async({page}) => {
   await reset.click();
 
   await expect(component.getByTestId("required-with-default")).toHaveValue("default value");
+  await expect(component.getByTestId("required-with-self-managed-default")).toHaveValue("default");
   await expect(component.getByTestId("required")).not.toHaveValue("x");
 
   const params = new URLSearchParams(new URL(page.url()).search);
   expect(params.get("requiredWithDefault")).toBe("default value");
+  expect(params.get("requiredWithSelfManagedDefault")).toBe("default");
   expect(params.get("required")).toBeNull();
 });
 
