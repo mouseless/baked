@@ -80,7 +80,7 @@ watch(Object.values(values).map(p => p.model), async newValues => {
   // if any of required parameters that has default doesn't have a value, it
   // means it's setting default value and route should be replaced, not pushed
   const action = parameters
-    .filter(p => p.required && p.default)
+    .filter(p => p.required && (p.default || p.selfManagedDefault))
     .map(p => values[p.name].query)
     .every(q => q.value)
     ? "push"
