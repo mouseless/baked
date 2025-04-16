@@ -40,11 +40,11 @@ public static class Components
     public static DataTable.Column DataTableColumn(string prop,
         IComponentDescriptor? component = default,
         string? title = default,
-        IEnumerable<DataTable.Column.ConditionalComponent>? conditionalComponents = default,
+        IEnumerable<Conditional>? conditionals = default,
         bool minWidth = false
-    ) => new(prop, component ?? String()) { ConditionalComponents = [.. conditionalComponents ?? []], MinWidth = minWidth, Title = title };
+    ) => new(prop, component ?? String()) { Conditionals = [.. conditionals ?? []], MinWidth = minWidth, Title = title };
 
-    public static DataTable.Column.ConditionalComponent DataTableColumnConditionalComponent(string prop, object value, IComponentDescriptor component) =>
+    public static Conditional Conditional(string prop, object value, IComponentDescriptor component) =>
         new(prop, value, component);
 
     public static ComponentDescriptorAttribute<DefaultLayout> DefaultLayout(string name,

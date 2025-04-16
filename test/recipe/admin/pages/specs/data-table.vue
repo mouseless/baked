@@ -35,8 +35,8 @@ const variants = [
         giveMe.aDataTableColumn({
           prop: "data",
           conditionalComponents: [
-            giveMe.aDataTableColumnConditionalComponent({ prop: "type", value: "type-1", testId: "component-1" }),
-            giveMe.aDataTableColumnConditionalComponent({ prop: "type", value: "type-2", testId: "component-2" })
+            giveMe.aConditional({ prop: "type", value: "type-1", testId: "component-1" }),
+            giveMe.aConditional({ prop: "type", value: "type-2", testId: "component-2" })
           ]
         })
       ],

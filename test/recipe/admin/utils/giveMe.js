@@ -86,7 +86,7 @@ export default {
     };
   },
 
-  aDataTableColumnConditionalComponent({ prop, value, testId }) {
+  aConditional({ prop, value, testId }) {
     prop = $(prop, "testProp");
     value = $(value, "test-value");
     const component = this.anExpected({ testId });

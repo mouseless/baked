@@ -25,9 +25,6 @@ ARG ENVIRONMENT
 COPY --parents src/recipe/admin .
 COPY --parents test/recipe/admin .
 
-# copy descriptor .json files from backend build output
-COPY --from=build  ./test/recipe/admin/.baked ./test/recipe/admin/.baked
-
 # creates a .tgz package file at the root
 RUN cd src/recipe/admin ; npm pack --pack-destination ../../..
 

@@ -248,7 +248,7 @@
                           "type": "String"
                         },
                         "title": "Label",
-                        "conditionalComponents": [],
+                        "conditionals": [],
                         "minWidth": true
                       },
                       {
@@ -257,7 +257,7 @@
                           "type": "String"
                         },
                         "title": "Column 1",
-                        "conditionalComponents": [],
+                        "conditionals": [],
                         "minWidth": false
                       },
                       {
@@ -266,7 +266,7 @@
                           "type": "String"
                         },
                         "title": "Column 2",
-                        "conditionalComponents": [],
+                        "conditionals": [],
                         "minWidth": false
                       },
                       {
@@ -275,7 +275,7 @@
                           "type": "String"
                         },
                         "title": "Column 3",
-                        "conditionalComponents": [],
+                        "conditionals": [],
                         "minWidth": false
                       }
                     ],
@@ -358,7 +358,7 @@
                           "type": "String"
                         },
                         "title": "Label",
-                        "conditionalComponents": [],
+                        "conditionals": [],
                         "minWidth": true
                       },
                       {
@@ -367,7 +367,7 @@
                           "type": "String"
                         },
                         "title": "Column 1",
-                        "conditionalComponents": [],
+                        "conditionals": [],
                         "minWidth": false
                       },
                       {
@@ -376,7 +376,7 @@
                           "type": "String"
                         },
                         "title": "Column 2",
-                        "conditionalComponents": [],
+                        "conditionals": [],
                         "minWidth": false
                       },
                       {
@@ -385,7 +385,7 @@
                           "type": "String"
                         },
                         "title": "Column 3",
-                        "conditionalComponents": [],
+                        "conditionals": [],
                         "minWidth": false
                       }
                     ],
