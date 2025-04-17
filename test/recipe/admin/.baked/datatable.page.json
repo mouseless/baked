@@ -1,0 +1,111 @@
+{
+  "type": "GenericPage",
+  "schema": {
+    "path": "datatable",
+    "title": {
+      "title": "Datatable Demo",
+      "actions": []
+    },
+    "components": [
+      {
+        "type": "DataPanel",
+        "schema": {
+          "title": {
+            "type": "Inline",
+            "value": "DataPanel"
+          },
+          "collapsed": false,
+          "parameters": [],
+          "content": {
+            "type": "DataTable",
+            "schema": {
+              "columns": [
+                {
+                  "prop": "label",
+                  "component": {
+                    "fallback": {
+                      "type": "String",
+                      "schema": {}
+                    },
+                    "conditions": []
+                  },
+                  "title": "Label",
+                  "minWidth": false
+                },
+                {
+                  "prop": "column1",
+                  "component": {
+                    "fallback": {
+                      "type": "String",
+                      "schema": {}
+                    },
+                    "conditions": []
+                  },
+                  "title": "Column1",
+                  "minWidth": false
+                },
+                {
+                  "prop": "column2",
+                  "component": {
+                    "fallback": {
+                      "type": "String",
+                      "schema": {}
+                    },
+                    "conditions": []
+                  },
+                  "title": "Column2",
+                  "minWidth": false
+                },
+                {
+                  "prop": "column3",
+                  "component": {
+                    "fallback": {
+                      "type": "String",
+                      "schema": {}
+                    },
+                    "conditions": []
+                  },
+                  "title": "Column3",
+                  "minWidth": false
+                }
+              ],
+              "dataKey": "Label",
+              "paginator": false,
+              "footer": {
+                "label": "Total",
+                "columns": [
+                  {
+                    "prop": "Column2",
+                    "component": {
+                      "fallback": {
+                        "type": "String",
+                        "schema": {}
+                      },
+                      "conditions": []
+                    },
+                    "minWidth": false
+                  },
+                  {
+                    "prop": "Column3",
+                    "component": {
+                      "fallback": {
+                        "type": "String",
+                        "schema": {}
+                      },
+                      "conditions": []
+                    },
+                    "minWidth": false
+                  }
+                ]
+              }
+            },
+            "data": {
+              "type": "Remote",
+              "path": "data-table/with-footer"
+            }
+          }
+        }
+      }
+    ]
+  }
+}

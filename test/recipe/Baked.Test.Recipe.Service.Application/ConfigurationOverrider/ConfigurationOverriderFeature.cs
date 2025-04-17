@@ -7,6 +7,7 @@ using Baked.Test.ExceptionHandling;
 using Baked.Test.Orm;
 using Baked.Test.Theme;
 using Baked.Theme.Admin;
+using Baked.Ui;
 using Humanizer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
@@ -411,6 +412,27 @@ public class ConfigurationOverriderFeature : IFeature
                     )
                 ]
             ));
+
+            configurator.UsingDomainModel(domain =>
+            {
+                pages.Add(new ComponentDescriptorAttribute<GenericPage>(
+                new("datatable", new PageTitle("Datatable Demo"))
+                {
+                    Components = [
+                        DataPanel("DataPanel",
+                            content: DataTable(
+                                columns: [..domain.Types[typeof(Row)].GetMembers().Properties.Where(p => p.IsPublic).Select(p => DataTableColumn(prop: p.Name.ToLower(), title: p.Name))],
+                                footer: new Baked.Theme.Admin.DataTable.FooterRow("Total"){
+                                    Columns = [new(nameof(Row.Column2), Conditional()), new(nameof(Row.Column3), Conditional())]
+                                },
+                                dataKey: nameof(Row.Label),
+                                data: Remote(domain.Types[typeof(Theme.DataTable)].GetMembers().Methods[nameof(Theme.DataTable.GetWithFooter)].GetSingle<ActionModelAttribute>().GetRoute())
+                            )
+                        )
+                    ]
+                })
+            );
+            });
         });
     }
 }

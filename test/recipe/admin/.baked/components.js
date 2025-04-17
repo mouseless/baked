@@ -1,6 +1,7 @@
 import {
     LazyContainer,
 	LazyExpected,
+	LazyGenericPage,
 	LazyInput,
 	LazyLogin,
 	LazyPageWithRoute,
@@ -30,6 +31,7 @@ import {
 export {
     LazyContainer,
 	LazyExpected,
+	LazyGenericPage,
 	LazyInput,
 	LazyLogin,
 	LazyPageWithRoute,
