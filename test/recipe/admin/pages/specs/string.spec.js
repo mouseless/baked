@@ -21,6 +21,12 @@ test.describe("Base", () => {
     await component.locator(baked.string.text).hover();
     await expect(page.locator(primevue.tooltip.bottom)).not.toBeAttached();
   });
+
+  test("visual", { tag: "@visual" }, async({page}) => {
+    const component = page.getByTestId(id);
+
+    await expect(component).toHaveScreenshot();
+  });
 });
 
 test.describe("Max Length", () => {

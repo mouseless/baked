@@ -30,19 +30,6 @@
                 "disabled": false
               }
             }
-          },
-          {
-            "title": "",
-            "component": {
-              "type": "CardLink",
-              "schema": {
-                "route": "/page/with/route/pageWithRoute",
-                "icon": "pi pi-list-check",
-                "title": "Page With Route",
-                "description": "Demo for route support",
-                "disabled": false
-              }
-            }
           }
         ]
       }

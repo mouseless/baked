@@ -204,7 +204,7 @@ public class ConfigurationOverriderFeature : IFeature
                         SideMenuItem("/report", "pi pi-file", title: "Report"),
                         SideMenuItem("/specs", "pi pi-list-check", title: "Specs")
                     ],
-                    footer: String(Inline("FT"))
+                    footer: String(data: Inline("FT"))
                 ),
                 header: Header(
                     siteMap:
@@ -285,29 +285,35 @@ public class ConfigurationOverriderFeature : IFeature
                             [
                                 ReportPageTabContent(
                                     component: DataPanel(wide.Name.Humanize(),
-                                        content: String(Remote($"/{wide.GetSingle<ActionModelAttribute>().GetRoute()}",
-                                            headers: headers,
-                                            query: Computed(Composables.UseQuery)
-                                        )),
+                                        content: String(
+                                            data: Remote($"/{wide.GetSingle<ActionModelAttribute>().GetRoute()}",
+                                                headers: headers,
+                                                query: Computed(Composables.UseQuery)
+                                            )
+                                        ),
                                         collapsed: false
                                     )
                                 ),
                                 ReportPageTabContent(
                                     component: DataPanel(left.Name.Humanize(),
-                                        content: String(Remote($"/{left.GetSingle<ActionModelAttribute>().GetRoute()}",
-                                            headers: headers,
-                                            query: Computed(Composables.UseQuery)
-                                        )),
+                                        content: String(
+                                            data: Remote($"/{left.GetSingle<ActionModelAttribute>().GetRoute()}",
+                                                headers: headers,
+                                                query: Computed(Composables.UseQuery)
+                                            )
+                                        ),
                                         collapsed: true
                                     ),
                                     narrow: true
                                 ),
                                 ReportPageTabContent(
                                     component: DataPanel(right.Name.Humanize(),
-                                        content: String(Remote($"/{right.GetSingle<ActionModelAttribute>().GetRoute()}",
-                                            headers: headers,
-                                            query: Computed(Composables.UseQuery)
-                                        )),
+                                        content: String(
+                                            data: Remote($"/{right.GetSingle<ActionModelAttribute>().GetRoute()}",
+                                                headers: headers,
+                                                query: Computed(Composables.UseQuery)
+                                            )
+                                        ),
                                         collapsed: true
                                     ),
                                     narrow: true

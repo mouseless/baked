@@ -125,11 +125,12 @@ public static class Components
     public static ComponentDescriptorAttribute<Message> Message(string message,
         string? severity = default,
         string? icon = default
-    ) => Message(Datas.Inline(message), severity: severity, icon: icon);
+    ) => Message(severity: severity, icon: icon, data: Datas.Inline(message));
 
-    public static ComponentDescriptorAttribute<Message> Message(IData data,
+    public static ComponentDescriptorAttribute<Message> Message(
         string? severity = default,
-        string? icon = default
+        string? icon = default,
+        IData? data = default
     )
     {
         severity ??= "info";
@@ -223,7 +224,7 @@ public static class Components
     ) => new(route, icon) { Title = title, Disabled = disabled };
 
     public static ComponentDescriptorAttribute<String> String(
-        IData? data = default,
-        int? maxLength = default
-    ) => new(new(maxLength)) { Data = data };
+        int? maxLength = default,
+        IData? data = default
+    ) => new(new() { MaxLength = maxLength }) { Data = data };
 }

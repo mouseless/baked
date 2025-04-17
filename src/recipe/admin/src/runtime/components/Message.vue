@@ -1,11 +1,7 @@
 <template>
-  <Skeleton
-    v-if="loading"
-    height="1.5rem"
-  />
   <Message
-    v-else-if="data"
     :severity="severity"
+    :pt="{ text: { class: 'min-w-[10rem] min-h-[1.5rem]' } }"
   >
     <template
       v-if="icon"
@@ -13,7 +9,13 @@
     >
       <i :class="`pi ${icon}`" />
     </template>
-    <span>{{ data }}</span>
+    <Skeleton
+      v-if="loading"
+      height="1.5rem"
+      width="100%"
+    />
+    <span v-else-if="data">{{ data }}</span>
+    <span v-else>-</span>
   </Message>
 </template>
 <script setup>
@@ -27,6 +29,7 @@ const { schema } = defineProps({
   data: { type: null, default: null }
 });
 
-const loading = context.loading();
 const { icon, severity } = schema;
+
+const loading = context.loading();
 </script>

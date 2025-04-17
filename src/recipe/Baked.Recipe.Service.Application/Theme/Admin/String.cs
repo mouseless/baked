@@ -2,5 +2,7 @@
 
 namespace Baked.Theme.Admin;
 
-public record String(int? MaxLength)
-    : IComponentSchema;
+public record String : IComponentSchema
+{
+    public int? MaxLength { get; set; }
+}

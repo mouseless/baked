@@ -14,6 +14,12 @@ test.describe("Base", () => {
     await expect(component.locator(primevue.message.content)).toHaveText("Message");
     await expect(component.locator(primevue.message.icon)).toHaveClass("pi pi-info-circle");
   });
+
+  test("visual", { tag: "@visual" }, async({page}) => {
+    const component = page.getByTestId(id);
+
+    await expect(component).toHaveScreenshot();
+  });
 });
 
 test.describe("No icon", () => {
@@ -29,10 +35,10 @@ test.describe("No icon", () => {
 test.describe("No data", () => {
   const id = "No data";
 
-  test("Does not show message component when data is null", async({page}) => {
+  test("Display single dash(-) when data is null", async({page}) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator(primevue.message.base)).not.toBeAttached();
+    await expect(component.locator(primevue.message.content)).toHaveText("-");
   });
 });
 
