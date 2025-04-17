@@ -45,7 +45,10 @@
           :colspan="footerColSpan"
           footer-style="text-align:right"
         />
-        <Column v-for="column in footer.columns">
+        <Column
+          v-for="column in footer.columns"
+          :key="column.prop"
+        >
           <template #footer>
             <Skeleton
               v-if="loading"
