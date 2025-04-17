@@ -69,7 +69,7 @@ public class FakingReportResults : TestServiceSpec
     }
 
     [Test]
-    public async Task Data_can_be_null()
+    public async Task Parameter_value_can_be_null()
     {
         var context = GiveMe.AFakeReportContext(basePath: "Reporting/Fake");
 

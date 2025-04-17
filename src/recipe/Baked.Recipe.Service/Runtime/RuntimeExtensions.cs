@@ -50,7 +50,7 @@ public static class RuntimeExtensions
         Base64Url.EncodeToString(bytes);
 
     public static byte[] FromBase64(this string @string) =>
-    Convert.FromBase64String(@string);
+        Convert.FromBase64String(@string);
 
     public static byte[] FromBase64Url(this string @string) =>
         Base64Url.DecodeFromChars(@string);

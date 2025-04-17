@@ -21,13 +21,11 @@ public record FakeData(
             if (pattern is null)
             {
                 if (value is null) { continue; }
+
                 return false;
             }
 
-            if (Regex.IsMatch(value?.ToString() ?? string.Empty, pattern))
-            {
-                continue;
-            }
+            if (Regex.IsMatch(value?.ToString() ?? string.Empty, pattern)) { continue; }
 
             return false;
         }

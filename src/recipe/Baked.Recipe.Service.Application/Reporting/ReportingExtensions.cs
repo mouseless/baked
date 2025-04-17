@@ -39,7 +39,7 @@ public static class ReportingExtensions
     public static void VerifyExecute(this IReportContext dataFetcher,
         string? queryName = default,
         (string key, object? value)? parameter = default,
-        List<(string key, object value)>? parameters = default
+        List<(string key, object? value)>? parameters = default
     )
     {
         parameters ??= parameter is not null ? [parameter.Value] : [];
