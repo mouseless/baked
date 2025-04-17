@@ -13,7 +13,7 @@
     >
       <i :class="`pi ${icon}`" />
     </template>
-    <span class="ml-3 whitespace-pre">{{ data }}</span>
+    <span>{{ data }}</span>
   </Message>
 </template>
 <script setup>
