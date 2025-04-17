@@ -19,7 +19,7 @@ test.describe("Base", () => {
 test.describe("No icon", () => {
   const id = "No icon";
 
-  test("No icon", async({page}) => {
+  test("Does not attach icon element", async({page}) => {
     const component = page.getByTestId(id);
 
     await expect(component.locator(primevue.message.icon)).not.toBeAttached();
