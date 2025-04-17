@@ -23,6 +23,12 @@ const variants = [
     })
   },
   {
+    name: "No data",
+    descriptor: giveMe.aMessage({
+      data: null
+    })
+  },
+  {
     name: "Info",
     descriptor: giveMe.aMessage({
       message: "Message",

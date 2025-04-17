@@ -26,6 +26,16 @@ test.describe("No icon", () => {
   });
 });
 
+test.describe("No data", () => {
+  const id = "No data";
+
+  test("Does not show message component when data is null", async({page}) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.locator(primevue.message.base)).not.toBeAttached();
+  });
+});
+
 test.describe("Severity", () => {
   test("Info", async({page}) => {
     const component = page.getByTestId("Info");

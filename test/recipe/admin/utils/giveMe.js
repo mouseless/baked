@@ -222,8 +222,9 @@ export default {
     };
   },
 
-  aMessage({ message, icon, severity } = {}) {
+  aMessage({ message, icon, severity, data } = {}) {
     message = $(message, "This is a message");
+    data = $(data, { type: "Inline", value: message });
 
     return {
       type: "Message",
@@ -231,7 +232,7 @@ export default {
         icon,
         severity
       },
-      data: { type: "Inline", value: message}
+      data
     };
   },
 
