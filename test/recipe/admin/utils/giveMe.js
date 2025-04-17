@@ -222,6 +222,19 @@ export default {
     };
   },
 
+  aMessage({ message, icon, severity } = {}) {
+    message = $(message, "This is a message");
+
+    return {
+      type: "Message",
+      schema: {
+        icon,
+        severity
+      },
+      data: { type: "Inline", value: message}
+    };
+  },
+
   aMoney({ data } = {}) {
     data = $(data, 100_000);
 

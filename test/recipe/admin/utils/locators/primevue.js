@@ -14,7 +14,9 @@ export default {
     weekday: ".p-datepicker-weekday"
   },
   message: {
-    base: ".p-message"
+    base: ".p-message",
+    icon: ".pi",
+    content: ".p-message-content"
   },
   paginator: {
     base: ".p-paginator",

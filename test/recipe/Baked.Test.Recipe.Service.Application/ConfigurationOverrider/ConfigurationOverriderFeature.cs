@@ -129,9 +129,10 @@ public class ConfigurationOverriderFeature : IFeature
                     new { Title = "Data Table", Description = "View list data in a table" },
                     new { Title = "Nav Link", Description = "A component to give a link to a domain object" },
                     new { Title = "Icon", Description = "Displays built-in icons" },
+                    new { Title = "Message", Description = "A component to display message" },
                     new { Title = "Money", Description = "Render money values" },
                     new { Title = "Rate", Description = "Render rate values as percentage" },
-                    new { Title = "String", Description = "A component to render string values" }
+                    new { Title = "String", Description = "Render string values" }
                 }
             },
             new
