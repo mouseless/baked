@@ -9,6 +9,7 @@ public record DataTable : IComponentSchema
     public bool Paginator { get; set; }
     public int? Rows { get; set; }
     public int? RowsWhenLoading { get; set; }
+    public FooterRow? Footer { get; set; }
 
     public record Column(string Prop, Conditional Component)
     {
@@ -17,4 +18,11 @@ public record DataTable : IComponentSchema
         public string? Title { get; set; }
         public bool MinWidth { get; set; }
     }
+
+    public record FooterRow(string Label)
+    {
+        public List<FooterColumn> Columns { get; init; } = [];
+    }
+
+    public record FooterColumn(string Prop, Conditional Component);
 }

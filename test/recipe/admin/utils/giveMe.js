@@ -65,7 +65,7 @@ export default {
     };
   },
 
-  aDataTable({ columns, dataKey, paginator, rows, rowsWhenLoading, data } = {}) {
+  aDataTable({ columns, dataKey, footer, paginator, rows, rowsWhenLoading, data } = {}) {
     columns = $(columns, [
       this.aDataTableColumn({ prop: "test" })
     ]);
@@ -81,7 +81,7 @@ export default {
 
     return {
       type: "DataTable",
-      schema: { columns, dataKey, paginator, rows, rowsWhenLoading },
+      schema: { columns, dataKey, footer, paginator, rows, rowsWhenLoading },
       data: { type: "Inline", value: data }
     };
   },

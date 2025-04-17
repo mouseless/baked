@@ -35,12 +35,37 @@
         <span v-else>-</span>
       </template>
     </Column>
+    <ColumnGroup v-if="footer" type="footer">
+      <Row>
+          <Column :footer="footer.label" :colspan="footerColSpan" footerStyle="text-align:right"/>
+          <Column v-for="column in footer.columns">
+            <template #footer>
+              <Skeleton
+                v-if="loading"
+                class="min-h-5"
+              />
+              <Bake
+                v-else-if="data"
+                :name="`rows/footer/${column.prop}`"
+                :descriptor="{
+                  ...conditional.find(column.component, data.footer[column.prop]),
+                  data: {
+                    type: 'Inline',
+                    value: data.footer[column.prop]
+                  }
+                }"
+              />
+              <span v-else>-</span>
+            </template>
+          </Column>
+      </Row>
+    </ColumnGroup>
   </DataTable>
 </template>
 <script setup>
 import { computed } from "vue";
 import Column from "primevue/column";
-import { DataTable, Skeleton } from "primevue";
+import { ColumnGroup, DataTable, Row, Skeleton } from "primevue";
 import { Bake } from "#components";
 import { useConditional, useContext } from "#imports";
 
@@ -52,8 +77,10 @@ const { schema, data } = defineProps({
   data: { type: null, required: true }
 });
 
-const { columns, dataKey, paginator, rows, rowsWhenLoading } = schema;
+const { columns, dataKey, footer, paginator, rows, rowsWhenLoading } = schema;
 
 const loading = context.loading();
-const value = computed(() => data ?? new Array(rowsWhenLoading || 5).fill({ }));
+const dataRows = computed(() => footer?.columns ? data.items : data);
+const value = computed(() => data ? dataRows.value : new Array(rowsWhenLoading || 5).fill({ }));
+const footerColSpan = computed(() => columns.length - footer?.columns.length);
 </script>
