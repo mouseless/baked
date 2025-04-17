@@ -122,10 +122,15 @@ public static class Components
         IEnumerable<Filterable>? links = default
     ) => new() { Title = title, Links = [.. links ?? []] };
 
-    public static ComponentDescriptorAttribute<Message> Message(string message,
+    public static ComponentDescriptorAttribute<Message> Message(
         string? severity = default,
-        string? icon = default
-    ) => Message(severity: severity, icon: icon, data: Datas.Inline(message));
+        string? icon = default,
+        string? message = default
+    ) => Message(
+        severity: severity,
+        icon: icon,
+        data: message is not null ? Datas.Inline(message) : null
+    );
 
     public static ComponentDescriptorAttribute<Message> Message(
         string? severity = default,
@@ -134,9 +139,8 @@ public static class Components
     )
     {
         severity ??= "info";
-        icon ??= "pi-info-circle";
 
-        return new(new(severity, icon)) { Data = data };
+        return new(new(severity) { Icon = icon }) { Data = data };
     }
 
     public static ComponentDescriptorAttribute<ModalLayout> ModalLayout(string name) =>
