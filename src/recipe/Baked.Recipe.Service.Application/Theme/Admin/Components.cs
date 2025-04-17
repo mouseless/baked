@@ -122,6 +122,27 @@ public static class Components
         IEnumerable<Filterable>? links = default
     ) => new() { Title = title, Links = [.. links ?? []] };
 
+    public static ComponentDescriptorAttribute<Message> Message(
+        string? severity = default,
+        string? icon = default,
+        string? message = default
+    ) => Message(
+        severity: severity,
+        icon: icon,
+        data: message is not null ? Datas.Inline(message) : null
+    );
+
+    public static ComponentDescriptorAttribute<Message> Message(
+        string? severity = default,
+        string? icon = default,
+        IData? data = default
+    )
+    {
+        severity ??= "info";
+
+        return new(new(severity) { Icon = icon }) { Data = data };
+    }
+
     public static ComponentDescriptorAttribute<ModalLayout> ModalLayout(string name) =>
         new(new(name));
 
@@ -206,7 +227,8 @@ public static class Components
         bool disabled = false
     ) => new(route, icon) { Title = title, Disabled = disabled };
 
-    public static ComponentDescriptor String(
+    public static ComponentDescriptorAttribute<String> String(
+        int? maxLength = default,
         IData? data = default
-    ) => new(nameof(String)) { Data = data };
+    ) => new(new() { MaxLength = maxLength }) { Data = data };
 }

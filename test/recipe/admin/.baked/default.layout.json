@@ -27,6 +27,7 @@
         ],
         "footer": {
           "type": "String",
+          "schema": {},
           "data": {
             "type": "Inline",
             "value": "FT"
@@ -107,6 +108,11 @@
             "title": "Icon",
             "parentRoute": "/specs"
           },
+          "/specs/message": {
+            "route": "/specs/message",
+            "title": "Message",
+            "parentRoute": "/specs"
+          },
           "/specs/money": {
             "route": "/specs/money",
             "title": "Money",
@@ -115,6 +121,11 @@
           "/specs/rate": {
             "route": "/specs/rate",
             "title": "Rate",
+            "parentRoute": "/specs"
+          },
+          "/specs/string": {
+            "route": "/specs/string",
+            "title": "String",
             "parentRoute": "/specs"
           },
           "/specs/select": {
