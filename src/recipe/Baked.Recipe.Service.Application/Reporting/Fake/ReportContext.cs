@@ -6,7 +6,7 @@ namespace Baked.Reporting.Fake;
 public class ReportContext(IFileProvider _fileProvider, ReportOptions _options)
     : IReportContext
 {
-    public async Task<object?[][]> Execute(string queryName, Dictionary<string, object> parameters)
+    public async Task<object?[][]> Execute(string queryName, Dictionary<string, object?> parameters)
     {
         var dataPath = $"/{Path.Join(_options.BasePath, $"{queryName}.json")}";
         if (!_fileProvider.Exists(dataPath)) { throw new QueryNotFoundException(queryName); }

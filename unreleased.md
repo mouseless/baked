@@ -13,6 +13,7 @@
 - Removed `DeclaredOnly` binding flag from properties.
 - `ConditionalComponent` was renamed to `Conditional` and moved under the
   namespace `Baked.Theme.Admin`.
-- `String` component now has max length property, which will truncate the 
+- `String` component now has max length property, which will truncate the
   text ending with ellipsis and show full text with a tooltip
-
+- `IReportContext`, now allows nulls in parameter dictionary.
+- New `ToBase64Url` and `FromBase64Url` extensions added.
