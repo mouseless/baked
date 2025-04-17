@@ -11,7 +11,7 @@
       {
         "name": "requiredWithDefault",
         "required": true,
-        "selfManagedDefault": false,
+        "defaultSelfManaged": false,
         "default": {
           "type": "Inline",
           "value": "rwd-1"
@@ -43,7 +43,7 @@
       {
         "name": "required",
         "required": true,
-        "selfManagedDefault": false,
+        "defaultSelfManaged": false,
         "component": {
           "type": "Select",
           "schema": {
@@ -63,7 +63,7 @@
       {
         "name": "optional",
         "required": false,
-        "selfManagedDefault": false,
+        "defaultSelfManaged": false,
         "component": {
           "type": "SelectButton",
           "schema": {
@@ -215,7 +215,7 @@
                   {
                     "name": "count",
                     "required": false,
-                    "selfManagedDefault": false,
+                    "defaultSelfManaged": false,
                     "default": {
                       "type": "Inline",
                       "value": "Default"
@@ -245,37 +245,45 @@
                       {
                         "prop": "label",
                         "component": {
-                          "type": "String"
+                          "fallback": {
+                            "type": "String"
+                          },
+                          "conditions": []
                         },
                         "title": "Label",
-                        "conditionals": [],
                         "minWidth": true
                       },
                       {
                         "prop": "column1",
                         "component": {
-                          "type": "String"
+                          "fallback": {
+                            "type": "String"
+                          },
+                          "conditions": []
                         },
                         "title": "Column 1",
-                        "conditionals": [],
                         "minWidth": false
                       },
                       {
                         "prop": "column2",
                         "component": {
-                          "type": "String"
+                          "fallback": {
+                            "type": "String"
+                          },
+                          "conditions": []
                         },
                         "title": "Column 2",
-                        "conditionals": [],
                         "minWidth": false
                       },
                       {
                         "prop": "column3",
                         "component": {
-                          "type": "String"
+                          "fallback": {
+                            "type": "String"
+                          },
+                          "conditions": []
                         },
                         "title": "Column 3",
-                        "conditionals": [],
                         "minWidth": false
                       }
                     ],
@@ -326,7 +334,7 @@
                   {
                     "name": "count",
                     "required": false,
-                    "selfManagedDefault": false,
+                    "defaultSelfManaged": false,
                     "default": {
                       "type": "Inline",
                       "value": "Default"
@@ -355,37 +363,45 @@
                       {
                         "prop": "label",
                         "component": {
-                          "type": "String"
+                          "fallback": {
+                            "type": "String"
+                          },
+                          "conditions": []
                         },
                         "title": "Label",
-                        "conditionals": [],
                         "minWidth": true
                       },
                       {
                         "prop": "column1",
                         "component": {
-                          "type": "String"
+                          "fallback": {
+                            "type": "String"
+                          },
+                          "conditions": []
                         },
                         "title": "Column 1",
-                        "conditionals": [],
                         "minWidth": false
                       },
                       {
                         "prop": "column2",
                         "component": {
-                          "type": "String"
+                          "fallback": {
+                            "type": "String"
+                          },
+                          "conditions": []
                         },
                         "title": "Column 2",
-                        "conditionals": [],
                         "minWidth": false
                       },
                       {
                         "prop": "column3",
                         "component": {
-                          "type": "String"
+                          "fallback": {
+                            "type": "String"
+                          },
+                          "conditions": []
                         },
                         "title": "Column 3",
-                        "conditionals": [],
                         "minWidth": false
                       }
                     ],

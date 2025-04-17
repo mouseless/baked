@@ -11,6 +11,14 @@ public static class Components
         string? disabledReason = default
     ) => new(new(route, title) { Icon = icon, Description = description, Disabled = disabled, DisabledReason = disabledReason });
 
+    public static Conditional Conditional(
+        IComponentDescriptor? fallback = default,
+        IEnumerable<Conditional.Condition>? conditions = default
+    ) => new(fallback ?? String()) { Conditions = [.. conditions ?? []] };
+
+    public static Conditional.Condition ConditionalCondition(string prop, object value, IComponentDescriptor component) =>
+        new(prop, value, component);
+
     public static ComponentDescriptor Custom<TSchema>() where TSchema : IComponentSchema =>
         new(typeof(TSchema).Name);
 
@@ -37,15 +45,16 @@ public static class Components
         IData? data = default
     ) => new(new() { Columns = [.. columns ?? []], DataKey = dataKey, Paginator = paginator, Rows = rows, RowsWhenLoading = rowsWhenLoading }) { Data = data };
 
-    public static DataTable.Column DataTableColumn(string prop,
-        IComponentDescriptor? component = default,
+    public static DataTable.Column DataTableColumn(string prop, IComponentDescriptor component,
         string? title = default,
-        IEnumerable<Conditional>? conditionals = default,
         bool minWidth = false
-    ) => new(prop, component ?? String()) { Conditionals = [.. conditionals ?? []], MinWidth = minWidth, Title = title };
+    ) => DataTableColumn(prop, component: Conditional(fallback: component), title: title, minWidth: minWidth);
 
-    public static Conditional Conditional(string prop, object value, IComponentDescriptor component) =>
-        new(prop, value, component);
+    public static DataTable.Column DataTableColumn(string prop,
+        Conditional? component = default,
+        string? title = default,
+        bool minWidth = false
+    ) => new(prop, component ?? Conditional()) { MinWidth = minWidth, Title = title };
 
     public static ComponentDescriptorAttribute<DefaultLayout> DefaultLayout(string name,
         IComponentDescriptor? sideMenu = default,
