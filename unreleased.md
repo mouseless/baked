@@ -1,5 +1,10 @@
 # Unreleased
 
+## Features
+
+- Beta features are available in `baked-recipe-admin`;
+  - `Message` component is with icon and severity support
+
 ## Improvements
 
 - The `QueryParameter` component now supports subcomponents that manage its own
@@ -8,3 +13,6 @@
 - Removed `DeclaredOnly` binding flag from properties.
 - `ConditionalComponent` was renamed to `Conditional` and moved under the
   namespace `Baked.Theme.Admin`.
+- `String` component now has max length property, which will truncate the 
+  text ending with ellipsis and show full text with a tooltip
+

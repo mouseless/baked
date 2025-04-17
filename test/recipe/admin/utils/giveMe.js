@@ -232,6 +232,20 @@ export default {
     };
   },
 
+  aMessage({ message, icon, severity, data } = {}) {
+    message = $(message, "This is a message");
+    data = $(data, { type: "Inline", value: message });
+
+    return {
+      type: "Message",
+      schema: {
+        icon,
+        severity
+      },
+      data
+    };
+  },
+
   aMoney({ data } = {}) {
     data = $(data, 100_000);
 
@@ -381,12 +395,13 @@ export default {
     return { route, icon, title, disabled };
   },
 
-  aString({ value, data } = {}) {
+  aString({ value, data, maxLength } = {}) {
     value = $(value, "Test string");
     data = $(data, { type: "Inline", value });
 
     return {
       type: "String",
+      schema: { maxLength },
       data
     };
   },

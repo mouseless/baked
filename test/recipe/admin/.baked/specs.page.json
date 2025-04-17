@@ -159,6 +159,19 @@
             }
           },
           {
+            "title": "Message",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/message",
+                "icon": "pi pi-microchip",
+                "title": "Message",
+                "description": "A component to display message",
+                "disabled": false
+              }
+            }
+          },
+          {
             "title": "Money",
             "component": {
               "type": "CardLink",
@@ -180,6 +193,19 @@
                 "icon": "pi pi-microchip",
                 "title": "Rate",
                 "description": "Render rate values as percentage",
+                "disabled": false
+              }
+            }
+          },
+          {
+            "title": "String",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/string",
+                "icon": "pi pi-microchip",
+                "title": "String",
+                "description": "Render string values",
                 "disabled": false
               }
             }

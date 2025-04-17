@@ -14,7 +14,9 @@ export default {
     weekday: ".p-datepicker-weekday"
   },
   message: {
-    base: ".p-message"
+    base: ".p-message",
+    icon: ".pi",
+    content: ".p-message-content"
   },
   paginator: {
     base: ".p-paginator",
@@ -44,5 +46,8 @@ export default {
     base: ".p-toast",
     summary: ".p-toast-summary",
     detail: ".p-toast-detail"
+  },
+  tooltip: {
+    bottom: ".p-tooltip-bottom"
   }
 };

@@ -5,5 +5,8 @@ export default {
     title: ".pt-8 h1",
     message: ".pt-8 div",
     footer: ".p-message-content"
+  },
+  string:{
+    text: "span"
   }
 };

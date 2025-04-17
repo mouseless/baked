@@ -58,10 +58,19 @@ export default function() {
     return value.toLocaleString(locale, { style: "decimal", maximumFractionDigits: 2 });
   }
 
+  function truncate(value, length) {
+    if(!value || !length || value.length <= length - 3) {
+      return value;
+    }
+
+    return value.substring(0, length - 3).concat("...");
+  }
+
   return {
     asCurrency,
     asMonth,
     asPercentage,
-    asDecimal
+    asDecimal,
+    truncate
   };
 };
