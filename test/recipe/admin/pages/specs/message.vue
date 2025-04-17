@@ -31,8 +31,6 @@ const variants = [
   {
     name: "Info",
     descriptor: giveMe.aMessage({
-      message: "Message",
-      icon: "pi-info-circle",
       severity: "info"
     })
   },
