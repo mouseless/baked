@@ -35,29 +35,36 @@
         <span v-else>-</span>
       </template>
     </Column>
-    <ColumnGroup v-if="footer" type="footer">
+    <ColumnGroup
+      v-if="footer"
+      type="footer"
+    >
       <Row>
-          <Column :footer="footer.label" :colspan="footerColSpan" footerStyle="text-align:right"/>
-          <Column v-for="column in footer.columns">
-            <template #footer>
-              <Skeleton
-                v-if="loading"
-                class="min-h-5"
-              />
-              <Bake
-                v-else-if="data"
-                :name="`rows/footer/${column.prop}`"
-                :descriptor="{
-                  ...conditional.find(column.component, data.footer[column.prop]),
-                  data: {
-                    type: 'Inline',
-                    value: data.footer[column.prop]
-                  }
-                }"
-              />
-              <span v-else>-</span>
-            </template>
-          </Column>
+        <Column
+          :footer="footer.label"
+          :colspan="footerColSpan"
+          footer-style="text-align:right"
+        />
+        <Column v-for="column in footer.columns">
+          <template #footer>
+            <Skeleton
+              v-if="loading"
+              class="min-h-5"
+            />
+            <Bake
+              v-else-if="data"
+              :name="`rows/footer/${column.prop}`"
+              :descriptor="{
+                ...conditional.find(column.component, data.footer[column.prop]),
+                data: {
+                  type: 'Inline',
+                  value: data.footer[column.prop]
+                }
+              }"
+            />
+            <span v-else>-</span>
+          </template>
+        </Column>
       </Row>
     </ColumnGroup>
   </DataTable>

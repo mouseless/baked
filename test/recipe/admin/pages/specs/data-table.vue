@@ -87,7 +87,7 @@ const variants = [
         label: "Totals",
         columns: [
           giveMe.aDataTableColumn({ prop: "data3", component: giveMe.aConditional({ testId: "prop-1" })}),
-          giveMe.aDataTableColumn({ prop: "data4", component: giveMe.aConditional({ testId: "prop-2" })}),
+          giveMe.aDataTableColumn({ prop: "data4", component: giveMe.aConditional({ testId: "prop-2" })})
         ]
       },
       rowsWhenLoading: 3,
@@ -103,8 +103,8 @@ const variants = [
           "data3": "100",
           "data4": "200"
         }
-      } 
+      }
     })
-  },
+  }
 ];
 </script>
