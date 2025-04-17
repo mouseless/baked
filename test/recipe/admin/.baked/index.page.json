@@ -1,0 +1,51 @@
+{
+  "type": "MenuPage",
+  "schema": {
+    "path": "index",
+    "sections": [
+      {
+        "links": [
+          {
+            "title": "",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/report",
+                "icon": "pi pi-file",
+                "title": "Report",
+                "description": "Showcases a report layout with tabs and data panels",
+                "disabled": false
+              }
+            }
+          },
+          {
+            "title": "",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs",
+                "icon": "pi pi-list-check",
+                "title": "Specs",
+                "description": "All UI Specs are listed here",
+                "disabled": false
+              }
+            }
+          },
+          {
+            "title": "",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/page/with/route/pageWithRoute",
+                "icon": "pi pi-list-check",
+                "title": "Page With Route",
+                "description": "Demo for route support",
+                "disabled": false
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

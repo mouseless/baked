@@ -1,5 +1,5 @@
 <template>
-  <UiSpec title="Query Parameters">
+  <UiSpec title="Parameters">
     <Message severity="info">
       <span class="text-xl">
         ⬇️  Check if there are 3 parameters, first having `default value` ⬇️

@@ -1,0 +1,184 @@
+{
+  "type": "DefaultLayout",
+  "schema": {
+    "path": "default",
+    "sideMenu": {
+      "type": "SideMenu",
+      "schema": {
+        "logo": "logo.svg",
+        "menu": [
+          {
+            "route": "/",
+            "icon": "pi pi-home",
+            "disabled": false
+          },
+          {
+            "route": "/report",
+            "icon": "pi pi-file",
+            "title": "Report",
+            "disabled": false
+          },
+          {
+            "route": "/specs",
+            "icon": "pi pi-list-check",
+            "title": "Specs",
+            "disabled": false
+          }
+        ],
+        "footer": {
+          "type": "String",
+          "data": {
+            "type": "Inline",
+            "value": "FT"
+          }
+        }
+      },
+      "data": {
+        "type": "Computed",
+        "composable": "useNuxtRoute",
+        "args": []
+      }
+    },
+    "header": {
+      "type": "Header",
+      "schema": {
+        "sitemap": {
+          "/": {
+            "route": "/",
+            "icon": "pi pi-home"
+          },
+          "/report": {
+            "route": "/report",
+            "icon": "pi pi-file",
+            "title": "Report"
+          },
+          "/specs": {
+            "route": "/specs",
+            "icon": "pi pi-list-check",
+            "title": "Specs"
+          },
+          "/specs/bake": {
+            "route": "/specs/bake",
+            "title": "Bake",
+            "parentRoute": "/specs"
+          },
+          "/specs/custom-css": {
+            "route": "/specs/custom-css",
+            "title": "Custom CSS",
+            "parentRoute": "/specs"
+          },
+          "/specs/locale": {
+            "route": "/specs/locale",
+            "title": "Locale",
+            "parentRoute": "/specs"
+          },
+          "/specs/parameters": {
+            "route": "/specs/parameters",
+            "title": "Parameters",
+            "parentRoute": "/specs"
+          },
+          "/specs/query-parameters": {
+            "route": "/specs/query-parameters",
+            "title": "Query Parameters",
+            "parentRoute": "/specs"
+          },
+          "/specs/toast": {
+            "route": "/specs/toast",
+            "title": "Toast",
+            "parentRoute": "/specs"
+          },
+          "/specs/card-link": {
+            "route": "/specs/card-link",
+            "title": "Card Link",
+            "parentRoute": "/specs"
+          },
+          "/specs/data-table": {
+            "route": "/specs/data-table",
+            "title": "Data Table",
+            "parentRoute": "/specs"
+          },
+          "/specs/nav-link": {
+            "route": "/specs/nav-link",
+            "title": "Nav Link",
+            "parentRoute": "/specs"
+          },
+          "/specs/icon": {
+            "route": "/specs/icon",
+            "title": "Icon",
+            "parentRoute": "/specs"
+          },
+          "/specs/money": {
+            "route": "/specs/money",
+            "title": "Money",
+            "parentRoute": "/specs"
+          },
+          "/specs/rate": {
+            "route": "/specs/rate",
+            "title": "Rate",
+            "parentRoute": "/specs"
+          },
+          "/specs/select": {
+            "route": "/specs/select",
+            "title": "Select",
+            "parentRoute": "/specs"
+          },
+          "/specs/select-button": {
+            "route": "/specs/select-button",
+            "title": "Select Button",
+            "parentRoute": "/specs"
+          },
+          "/specs/data-panel": {
+            "route": "/specs/data-panel",
+            "title": "Data Panel",
+            "parentRoute": "/specs"
+          },
+          "/specs/header": {
+            "route": "/specs/header",
+            "title": "Header",
+            "parentRoute": "/specs"
+          },
+          "/specs/page-title": {
+            "route": "/specs/page-title",
+            "title": "Page Title",
+            "parentRoute": "/specs"
+          },
+          "/specs/side-menu": {
+            "route": "/specs/side-menu",
+            "title": "Side Menu",
+            "parentRoute": "/specs"
+          },
+          "/specs/error-page": {
+            "route": "/specs/error-page",
+            "title": "Error Page",
+            "parentRoute": "/specs"
+          },
+          "/specs/menu-page": {
+            "route": "/specs/menu-page",
+            "title": "Menu Page",
+            "parentRoute": "/specs"
+          },
+          "/specs/report-page": {
+            "route": "/specs/report-page",
+            "title": "Report Page",
+            "parentRoute": "/specs"
+          },
+          "/specs/auth": {
+            "route": "/specs/auth",
+            "title": "Auth",
+            "parentRoute": "/specs"
+          },
+          "/specs/error-handling": {
+            "route": "/specs/error-handling",
+            "title": "Error Handling",
+            "parentRoute": "/specs"
+          }
+        }
+      },
+      "data": {
+        "type": "Computed",
+        "composable": "useNuxtRoute",
+        "args": []
+      }
+    }
+  }
+}

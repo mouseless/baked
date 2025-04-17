@@ -1,7 +1,7 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
 
 test.beforeEach(async({goto}) => {
-  await goto("/specs/query-parameters", { waitUntil: "hydration" });
+  await goto("/specs/parameters", { waitUntil: "hydration" });
 });
 
 const id = {

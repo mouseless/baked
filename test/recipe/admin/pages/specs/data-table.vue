@@ -12,11 +12,11 @@ const variants = [
     name: "Base",
     descriptor: giveMe.aDataTable({
       columns: [
-        giveMe.aDataTableColumn({ title: "Label", prop: "label", minWidth: true, component: giveMe.anExpected({ testId: "label" })}),
-        giveMe.aDataTableColumn({ title: "Data 1", prop: "data1", component: giveMe.anExpected({ testId: "prop-1" })}),
-        giveMe.aDataTableColumn({ title: "Data 2", prop: "data2", component: giveMe.anExpected({ testId: "prop-2" })}),
-        giveMe.aDataTableColumn({ title: "Data 3", prop: "data3", component: giveMe.anExpected({ testId: "prop-3" })}),
-        giveMe.aDataTableColumn({ title: "Data 4", prop: "data4", component: giveMe.anExpected({ testId: "prop-4" })})
+        giveMe.aDataTableColumn({ title: "Label", prop: "label", minWidth: true, component: giveMe.aConditional({ testId: "label" })}),
+        giveMe.aDataTableColumn({ title: "Data 1", prop: "data1", component: giveMe.aConditional({ testId: "prop-1" })}),
+        giveMe.aDataTableColumn({ title: "Data 2", prop: "data2", component: giveMe.aConditional({ testId: "prop-2" })}),
+        giveMe.aDataTableColumn({ title: "Data 3", prop: "data3", component: giveMe.aConditional({ testId: "prop-3" })}),
+        giveMe.aDataTableColumn({ title: "Data 4", prop: "data4", component: giveMe.aConditional({ testId: "prop-4" })})
       ],
       rowsWhenLoading: 3,
       data: [
@@ -34,10 +34,12 @@ const variants = [
       columns: [
         giveMe.aDataTableColumn({
           prop: "data",
-          conditionalComponents: [
-            giveMe.aDataTableColumnConditionalComponent({ prop: "type", value: "type-1", testId: "component-1" }),
-            giveMe.aDataTableColumnConditionalComponent({ prop: "type", value: "type-2", testId: "component-2" })
-          ]
+          component: giveMe.aConditional({
+            conditions: [
+              giveMe.aConditionalCondition({ prop: "type", value: "type-1", testId: "component-1" }),
+              giveMe.aConditionalCondition({ prop: "type", value: "type-2", testId: "component-2" })
+            ]
+          })
         })
       ],
       data: [
@@ -53,7 +55,7 @@ const variants = [
       dataKey: "data",
       rows: 2,
       columns: [
-        giveMe.aDataTableColumn({ title: "Data", prop: "data", component: giveMe.anExpected({ testId: "prop" })})
+        giveMe.aDataTableColumn({ title: "Data", prop: "data", component: giveMe.aConditional({ testId: "prop" })})
       ],
       data: [
         { data: "Row 1" },

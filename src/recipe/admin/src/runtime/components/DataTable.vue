@@ -25,7 +25,7 @@
           v-else-if="data"
           :name="`rows/${index}/${column.prop}`"
           :descriptor="{
-            ...findComponent(column, row),
+            ...conditional.find(column.component, row),
             data: {
               type: 'Inline',
               value: row[column.prop]
@@ -42,8 +42,9 @@ import { computed } from "vue";
 import Column from "primevue/column";
 import { DataTable, Skeleton } from "primevue";
 import { Bake } from "#components";
-import { useContext } from "#imports";
+import { useConditional, useContext } from "#imports";
 
+const conditional = useConditional();
 const context = useContext();
 
 const { schema, data } = defineProps({
@@ -55,13 +56,4 @@ const { columns, dataKey, paginator, rows, rowsWhenLoading } = schema;
 
 const loading = context.loading();
 const value = computed(() => data ?? new Array(rowsWhenLoading || 5).fill({ }));
-
-function findComponent(column, row) {
-  const conditionalComponent = column.conditionalComponents.filter(component => row[component.prop] === component.value);
-  if(conditionalComponent.length > 0) {
-    return conditionalComponent[0].component;
-  }
-
-  return column.component;
-}
 </script>

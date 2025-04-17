@@ -15,6 +15,7 @@ test("parameters are rendered", async({page}) => {
   const component = page.getByTestId(id.component);
 
   await expect(component.getByTestId("required-with-default")).toBeVisible();
+  await expect(component.getByTestId("required-with-default-self-managed")).toBeVisible();
   await expect(component.getByTestId("required")).toBeVisible();
   await expect(component.getByTestId("optional")).toBeVisible();
 });
@@ -47,23 +48,26 @@ test("query string is set from input", async({page}) => {
   const component = page.getByTestId(id.component);
 
   await component.getByTestId("required-with-default").fill("value 1");
-  await component.getByTestId("required").fill("value 2");
-  await component.getByTestId("optional").fill("value 3");
-  await page.waitForURL(/requiredWithDefault.*required.*optional/); // wait for above fills to take effect
+  await component.getByTestId("required-with-default-self-managed").fill("value 2");
+  await component.getByTestId("required").fill("value 3");
+  await component.getByTestId("optional").fill("value 4");
+  await page.waitForURL(/requiredWithDefault.*requiredWithDefaultSelfManaged.*required.*optional/); // wait for above fills to take effect
 
   const params = new URLSearchParams(new URL(page.url()).search);
   expect(params.get("requiredWithDefault")).toBe("value 1");
-  expect(params.get("required")).toBe("value 2");
-  expect(params.get("optional")).toBe("value 3");
+  expect(params.get("requiredWithDefaultSelfManaged")).toBe("value 2");
+  expect(params.get("required")).toBe("value 3");
+  expect(params.get("optional")).toBe("value 4");
 });
 
 test("query string is set to input", async({page}) => {
-  await page.goto("/specs/query-parameters?requiredWithDefault=1&required=2&optional=3");
+  await page.goto("/specs/query-parameters?requiredWithDefault=1&requiredWithDefaultSelfManaged=2&required=3&optional=4");
 
   const component = page.getByTestId(id.component);
   await expect(component.getByTestId("required-with-default")).toHaveValue("1");
-  await expect(component.getByTestId("required")).toHaveValue("2");
-  await expect(component.getByTestId("optional")).toHaveValue("3");
+  await expect(component.getByTestId("required-with-default-self-managed")).toHaveValue("2");
+  await expect(component.getByTestId("required")).toHaveValue("3");
+  await expect(component.getByTestId("optional")).toHaveValue("4");
 });
 
 test("replaces route until defaults are set", async({page}) => {
@@ -81,13 +85,13 @@ test("pushes route when a parameter changes", async({page}) => {
   await page.waitForURL(/value\+1/);
 
   const state = await page.evaluate(() => history.state);
-  expect(state.back).toBe("/specs/query-parameters?requiredWithDefault=default+value");
+  expect(state.back).toBe("/specs/query-parameters?requiredWithDefault=default+value&requiredWithDefaultSelfManaged=default");
 
   await component.getByTestId("required").fill("value 2");
   await page.waitForURL(/value\+2/);
 
   const state2 = await page.evaluate(() => history.state);
-  expect(state2.back).toBe("/specs/query-parameters?requiredWithDefault=default+value&required=value+1");
+  expect(state2.back).toBe("/specs/query-parameters?requiredWithDefault=default+value&requiredWithDefaultSelfManaged=default&required=value+1");
 });
 
 test("ready when all required are set", async({page}) => {
@@ -105,8 +109,9 @@ test("unique key changes with parameter values", async({page}) => {
   const uniqueKey = page.getByTestId(id.uniqueKey);
 
   await component.getByTestId("required-with-default").fill("value 1");
-  await component.getByTestId("required").fill("value 2");
-  await component.getByTestId("optional").fill("value 3");
+  await component.getByTestId("required-with-default-self-managed").fill("value 2");
+  await component.getByTestId("required").fill("value 3");
+  await component.getByTestId("optional").fill("value 4");
 
-  await expect(uniqueKey).toHaveText("value 1-value 2-value 3");
+  await expect(uniqueKey).toHaveText("value 1-value 2-value 3-value 4");
 });

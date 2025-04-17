@@ -1,0 +1,89 @@
+{
+  "plugins": [
+    {
+      "name": "auth",
+      "anonymousApiRoutes": [
+        "authorization-samples/anonymous",
+        "authentication-samples/login"
+      ],
+      "anonymousPageRoutes": [
+        "^(?!.*auth).*$",
+        "login"
+      ],
+      "loginPageRoute": "login",
+      "refreshApiRoute": "authentication-samples/refresh"
+    },
+    {
+      "name": "errorHandling",
+      "handlers": [
+        {
+          "statusCode": 401,
+          "behavior": "Redirect",
+          "behaviorArgument": {
+            "type": "Computed",
+            "composable": "useLoginRedirect",
+            "args": []
+          },
+          "order": 0
+        },
+        {
+          "statusCode": 400,
+          "behavior": "Alert",
+          "order": 0
+        },
+        {
+          "behavior": "Page",
+          "order": 0
+        }
+      ],
+      "defaultAlertTitle": "Unexpected Error",
+      "defaultAlertMessage": "Please contact system administrator"
+    }
+  ],
+  "error": {
+    "type": "ErrorPage",
+    "schema": {
+      "errorInfos": {
+        "403": {
+          "title": "Access Denied",
+          "message": "You do not have the permision to view the address or data specified."
+        },
+        "404": {
+          "title": "Page Not Found",
+          "message": "The page you want to view is etiher deleted or outdated."
+        },
+        "500": {
+          "title": "Unexpected Error",
+          "message": "Please contact system administrator."
+        }
+      },
+      "footerInfo": "If you cannot reach the page you want, please contact the system administrator.",
+      "safeLinks": [
+        {
+          "type": "CardLink",
+          "schema": {
+            "route": "/",
+            "icon": "pi pi-home",
+            "title": "Home",
+            "disabled": false
+          }
+        },
+        {
+          "type": "CardLink",
+          "schema": {
+            "route": "/specs",
+            "icon": "pi pi-list-check",
+            "title": "Specs",
+            "disabled": false
+          }
+        }
+      ],
+      "safeLinksMessage": "Try the links from the menu below to view the page you want to access."
+    },
+    "data": {
+      "type": "Computed",
+      "composable": "useNuxtError",
+      "args": []
+    }
+  }
+}
