@@ -9,3 +9,4 @@
 - `ConditionalComponent` was renamed to `Conditional` and moved under the
   namespace `Baked.Theme.Admin`.
 - `IReportContext`, now allows nulls in parameter dictionary.
+- New `ToBase64Url` and `FromBase64Url` extensions added.
