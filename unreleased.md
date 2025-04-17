@@ -8,3 +8,4 @@
 - Removed `DeclaredOnly` binding flag from properties.
 - `ConditionalComponent` was renamed to `Conditional` and moved under the
   namespace `Baked.Theme.Admin`.
+- `IReportContext`, now allows nulls in parameter dictionary.
