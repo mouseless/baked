@@ -22,14 +22,14 @@ public static class ReportingExtensions
         if (data is not null)
         {
             result
-                .Setup(df => df.Execute(It.IsAny<string>(), It.IsAny<Dictionary<string, object>>()))
+                .Setup(df => df.Execute(It.IsAny<string>(), It.IsAny<Dictionary<string, object?>>()))
                 .ReturnsAsync(data);
         }
 
         if (queryNotFound == true)
         {
             result
-                .Setup(c => c.Execute(It.IsAny<string>(), It.IsAny<Dictionary<string, object>>()))
+                .Setup(c => c.Execute(It.IsAny<string>(), It.IsAny<Dictionary<string, object?>>()))
                 .Throws((string queryName, Dictionary<string, object> _) => new QueryNotFoundException(queryName));
         }
 
@@ -38,7 +38,7 @@ public static class ReportingExtensions
 
     public static void VerifyExecute(this IReportContext dataFetcher,
         string? queryName = default,
-        (string key, object value)? parameter = default,
+        (string key, object? value)? parameter = default,
         List<(string key, object value)>? parameters = default
     )
     {
@@ -47,7 +47,7 @@ public static class ReportingExtensions
         Mock.Get(dataFetcher).Verify(
             df => df.Execute(
                 It.Is<string>(q => queryName == null || q == queryName),
-                It.Is<Dictionary<string, object>>(p =>
+                It.Is<Dictionary<string, object?>>(p =>
                     parameters.All((kvp) => p.ContainsKey(kvp.key) && Equals(p[kvp.key], kvp.value))
                 )
             )

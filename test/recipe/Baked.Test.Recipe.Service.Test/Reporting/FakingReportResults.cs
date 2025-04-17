@@ -69,6 +69,17 @@ public class FakingReportResults : TestServiceSpec
     }
 
     [Test]
+    public async Task Data_can_be_null()
+    {
+        var context = GiveMe.AFakeReportContext(basePath: "Reporting/Fake");
+
+        var result = await context.Execute("entity", new() { { "string", null } });
+
+        result[0][0].ShouldDeeplyBe(7);
+        result[0][1].ShouldBeNull();
+    }
+
+    [Test]
     public async Task When_no_data_matches_argument_returns_empty_array()
     {
         var context = GiveMe.AFakeReportContext(basePath: "Reporting/Fake");
