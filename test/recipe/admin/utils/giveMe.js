@@ -266,14 +266,14 @@ export default {
     };
   },
 
-  aParameter({ name, component, required, defaultValue, default_, selfManagedDefault } = {}) {
+  aParameter({ name, component, required, defaultValue, default_, defaultSelfManaged } = {}) {
     name = $(name, "test");
     required = $(required, false);
     component = $(component, this.anInput());
     default_ = $(default_, defaultValue ? { type: "Inline", value: defaultValue } : undefined);
-    selfManagedDefault = $(selfManagedDefault, false);
+    defaultSelfManaged = $(defaultSelfManaged, false);
 
-    return { name, required, default: default_, selfManagedDefault, component };
+    return { name, required, default: default_, defaultSelfManaged, component };
   },
 
   theQueryData() {

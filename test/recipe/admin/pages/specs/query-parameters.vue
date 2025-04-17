@@ -64,10 +64,10 @@ const parameters = [
     defaultValue: "default value"
   }),
   giveMe.aParameter({
-    name: "requiredWithSelfManagedDefault",
+    name: "requiredWithDefaultSelfManaged",
     required: true,
-    selfManagedDefault: true,
-    component: giveMe.anInput({ testId: "required-with-self-managed-default", defaultValue: "default" })
+    defaultSelfManaged: true,
+    component: giveMe.anInput({ testId: "required-with-default-self-managed", defaultValue: "default" })
   }),
   giveMe.aParameter({
     name: "required",
