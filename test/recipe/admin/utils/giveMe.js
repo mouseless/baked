@@ -25,7 +25,23 @@ export default {
     };
   },
 
-  aContainer({ content, contents, data }) {
+  aConditional({ testId, fallback, conditions } = {}) {
+    testId = $(testId, "test");
+    fallback = $(fallback, this.anExpected(testId));
+    conditions = $(conditions, []);
+
+    return { fallback, conditions };
+  },
+
+  aConditionalCondition({ prop, value, testId } = {}) {
+    prop = $(prop, "testProp");
+    value = $(value, "test-value");
+    const component = this.anExpected({ testId });
+
+    return { prop, value, component };
+  },
+
+  aContainer({ content, contents, data } = {}) {
     content = $(content, this.anExpected());
     contents = $(contents, [content]);
     data = $(data, { type: "Inline", value: "Test value" });
@@ -70,28 +86,18 @@ export default {
     };
   },
 
-  aDataTableColumn({ title, prop, minWidth, component, conditionalComponents } = {}) {
+  aDataTableColumn({ title, prop, minWidth, component } = {}) {
     title = $(title, "Test");
     prop = $(prop, "test");
     minWidth = $(minWidth, false);
-    component = $(component, this.anExpected());
-    conditionalComponents = $(conditionalComponents, []);
+    component = $(component, this.aConditional());
 
     return {
       title,
       prop,
       minWidth,
-      component,
-      conditionalComponents
+      component
     };
-  },
-
-  aDataTableColumnConditionalComponent({ prop, value, testId }) {
-    prop = $(prop, "testProp");
-    value = $(value, "test-value");
-    const component = this.anExpected({ testId });
-
-    return { prop, value, component };
   },
 
   anErrorPage({ errorInfos, footerInfo, safeLinks, safeLinksMessage, data } = {}){
@@ -200,12 +206,16 @@ export default {
     };
   },
 
-  anInput({ testId } = {}) {
+  anInput({ testId, defaultValue } = {}) {
     testId = $(testId, "test-input");
+    defaultValue = $(defaultValue, null);
 
     return {
       type: "Input",
-      schema: testId
+      schema: {
+        testId,
+        defaultValue
+      }
     };
   },
 
@@ -262,13 +272,14 @@ export default {
     };
   },
 
-  aParameter({ name, component, required, defaultValue, default_ } = {}) {
+  aParameter({ name, component, required, defaultValue, default_, defaultSelfManaged } = {}) {
     name = $(name, "test");
     required = $(required, false);
     component = $(component, this.anInput());
     default_ = $(default_, defaultValue ? { type: "Inline", value: defaultValue } : undefined);
+    defaultSelfManaged = $(defaultSelfManaged, false);
 
-    return { name, required, default: default_, component };
+    return { name, required, default: default_, defaultSelfManaged, component };
   },
 
   theQueryData() {

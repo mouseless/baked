@@ -1,0 +1,354 @@
+{
+  "type": "MenuPage",
+  "schema": {
+    "path": "specs",
+    "filterPageContextKey": "menu-page",
+    "header": {
+      "type": "PageTitle",
+      "schema": {
+        "title": "Specs",
+        "description": "All UI Specs are listed here",
+        "actions": [
+          {
+            "type": "Filter",
+            "schema": {
+              "pageContextKey": "menu-page",
+              "placeholder": "Filter"
+            }
+          }
+        ]
+      }
+    },
+    "sections": [
+      {
+        "title": "Behavior",
+        "links": [
+          {
+            "title": "Bake",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/bake",
+                "icon": "pi pi-microchip",
+                "title": "Bake",
+                "description": "The core component that renders a dynamic component using given descriptor",
+                "disabled": false
+              }
+            }
+          },
+          {
+            "title": "Custom CSS",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/custom-css",
+                "icon": "pi pi-microchip",
+                "title": "Custom CSS",
+                "description": "Allow custom configuration to define custom css and more",
+                "disabled": false
+              }
+            }
+          },
+          {
+            "title": "Locale",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/locale",
+                "icon": "pi pi-microchip",
+                "title": "Locale",
+                "description": "Allow locale customization and language support",
+                "disabled": false
+              }
+            }
+          },
+          {
+            "title": "Parameters",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/parameters",
+                "icon": "pi pi-microchip",
+                "title": "Parameters",
+                "description": "Manage parameters through emits",
+                "disabled": false
+              }
+            }
+          },
+          {
+            "title": "Query Parameters",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/query-parameters",
+                "icon": "pi pi-microchip",
+                "title": "Query Parameters",
+                "description": "Sync and manage parameters in query string",
+                "disabled": false
+              }
+            }
+          },
+          {
+            "title": "Toast",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/toast",
+                "icon": "pi pi-microchip",
+                "title": "Toast",
+                "description": "Render alert messages",
+                "disabled": false
+              }
+            }
+          }
+        ]
+      },
+      {
+        "title": "Display",
+        "links": [
+          {
+            "title": "Card Link",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/card-link",
+                "icon": "pi pi-microchip",
+                "title": "Card Link",
+                "description": "Renders a link as a big card-like button",
+                "disabled": false
+              }
+            }
+          },
+          {
+            "title": "Data Table",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/data-table",
+                "icon": "pi pi-microchip",
+                "title": "Data Table",
+                "description": "View list data in a table",
+                "disabled": false
+              }
+            }
+          },
+          {
+            "title": "Nav Link",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/nav-link",
+                "icon": "pi pi-microchip",
+                "title": "Nav Link",
+                "description": "A component to give a link to a domain object",
+                "disabled": false
+              }
+            }
+          },
+          {
+            "title": "Icon",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/icon",
+                "icon": "pi pi-microchip",
+                "title": "Icon",
+                "description": "Displays built-in icons",
+                "disabled": false
+              }
+            }
+          },
+          {
+            "title": "Money",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/money",
+                "icon": "pi pi-microchip",
+                "title": "Money",
+                "description": "Render money values",
+                "disabled": false
+              }
+            }
+          },
+          {
+            "title": "Rate",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/rate",
+                "icon": "pi pi-microchip",
+                "title": "Rate",
+                "description": "Render rate values as percentage",
+                "disabled": false
+              }
+            }
+          }
+        ]
+      },
+      {
+        "title": "Input",
+        "links": [
+          {
+            "title": "Select",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/select",
+                "icon": "pi pi-microchip",
+                "title": "Select",
+                "description": "Allow select from given options using drow down",
+                "disabled": false
+              }
+            }
+          },
+          {
+            "title": "Select Button",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/select-button",
+                "icon": "pi pi-microchip",
+                "title": "Select Button",
+                "description": "Allow select from given options using buttons",
+                "disabled": false
+              }
+            }
+          }
+        ]
+      },
+      {
+        "title": "Layout",
+        "links": [
+          {
+            "title": "Data Panel",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/data-panel",
+                "icon": "pi pi-microchip",
+                "title": "Data Panel",
+                "description": "Lazy load and view a data within a panel",
+                "disabled": false
+              }
+            }
+          },
+          {
+            "title": "Header",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/header",
+                "icon": "pi pi-microchip",
+                "title": "Header",
+                "description": "Renders a breadcrumb",
+                "disabled": false
+              }
+            }
+          },
+          {
+            "title": "Page Title",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/page-title",
+                "icon": "pi pi-microchip",
+                "title": "Page Title",
+                "description": "Render page title, desc and actions",
+                "disabled": false
+              }
+            }
+          },
+          {
+            "title": "Side Menu",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/side-menu",
+                "icon": "pi pi-microchip",
+                "title": "Side Menu",
+                "description": "Renders application menu",
+                "disabled": false
+              }
+            }
+          }
+        ]
+      },
+      {
+        "title": "Page",
+        "links": [
+          {
+            "title": "Error Page",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/error-page",
+                "icon": "pi pi-microchip",
+                "title": "Error Page",
+                "description": "Display errors in full page",
+                "disabled": false
+              }
+            }
+          },
+          {
+            "title": "Menu Page",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/menu-page",
+                "icon": "pi pi-microchip",
+                "title": "Menu Page",
+                "description": "Render navigation pages",
+                "disabled": false
+              }
+            }
+          },
+          {
+            "title": "Report Page",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/report-page",
+                "icon": "pi pi-microchip",
+                "title": "Report Page",
+                "description": "Render report pages",
+                "disabled": false
+              }
+            }
+          }
+        ]
+      },
+      {
+        "title": "Plugins",
+        "links": [
+          {
+            "title": "Auth",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/auth",
+                "icon": "pi pi-microchip",
+                "title": "Auth",
+                "description": "Authorized routing and client",
+                "disabled": false
+              }
+            }
+          },
+          {
+            "title": "Error Handling",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/error-handling",
+                "icon": "pi pi-microchip",
+                "title": "Error Handling",
+                "description": "Handling errors",
+                "disabled": false
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

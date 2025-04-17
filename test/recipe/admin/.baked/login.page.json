@@ -1,0 +1,7 @@
+{
+  "type": "Login",
+  "schema": {
+    "path": "login",
+    "layout": "modal"
+  }
+}

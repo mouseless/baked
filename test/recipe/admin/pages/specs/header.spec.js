@@ -39,16 +39,11 @@ test.describe("Multi Level", () => {
     const component = page.getByTestId(id);
 
     const anchors = component.locator("a");
-    await expect(anchors).toHaveCount(3);
+    await expect(anchors).toHaveCount(4);
     await expect(anchors.nth(0)).toHaveAttribute("href", "/");
     await expect(anchors.nth(1)).toHaveAttribute("href", "/root");
     await expect(anchors.nth(2)).toHaveAttribute("href", "/root/mid");
-  });
-
-  test("selected page (leaf) is not link", async({page}) => {
-    const component = page.getByTestId(id);
-
-    await expect(component.locator(`span${primevue.breadcrumb.link}`)).toHaveText("Leaf Page");
+    await expect(anchors.nth(3)).toHaveAttribute("href", "/root/mid/leaf");
   });
 
   test("visual", { tag: "@visual" }, async({page}) => {
@@ -64,7 +59,7 @@ test.describe("Wildcard", () => {
   test("breadcrumb not attached", async({page}) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator(`span${primevue.breadcrumb.link}`)).toHaveText("Entity");
+    await expect(component.locator(primevue.breadcrumb.link).last()).toHaveText("Entity");
   });
 });
 
