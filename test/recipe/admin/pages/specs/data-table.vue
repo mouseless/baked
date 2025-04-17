@@ -84,24 +84,21 @@ const variants = [
         giveMe.aDataTableColumn({ title: "Data 4", prop: "data4", component: giveMe.aConditional({ testId: "prop-4" })})
       ],
       footer: {
-        label: "Totals",
+        label: "Total",
         columns: [
-          giveMe.aDataTableColumn({ prop: "data3", component: giveMe.aConditional({ testId: "prop-1" })}),
-          giveMe.aDataTableColumn({ prop: "data4", component: giveMe.aConditional({ testId: "prop-2" })})
+          giveMe.aDataTableFooterColumn({ prop: "data3"}),
+          giveMe.aDataTableFooterColumn({ prop: "data4"})
         ]
       },
       rowsWhenLoading: 3,
       data: {
         items: [
           { label: "Row 1", data1: "Cell 1.1", data2: "Cell 1.2", data3: "1", data4: "10" },
-          { label: "Row 2", data1: "Cell 2.1", data2: "Cell 2.2", data3: "2", data4: "20" },
-          { label: "Row 3", data1: "Cell 3.1", data2: "Cell 3.2", data3: "3", data4: "30" },
-          { label: "Row 4", data1: "Cell 4.1", data2: "Cell 4.2", data3: "4", data4: "40" },
-          { label: "Row 5", data1: "Cell 5.1", data2: "Cell 5.2", data3: "5", data4: "50" }
+          { label: "Row 2", data1: "Cell 2.1", data2: "Cell 2.2", data3: "2", data4: "20" }
         ],
         footer: {
-          "data3": "100",
-          "data4": "200"
+          "data3": "3",
+          "data4": "30"
         }
       }
     })

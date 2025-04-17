@@ -100,6 +100,18 @@ export default {
     };
   },
 
+  aDataTableFooterColumn({ prop, minWidth, component } = {}) {
+    prop = $(prop, "test");
+    minWidth = $(minWidth, false);
+    component = $(component, this.aConditional());
+
+    return {
+      prop,
+      minWidth,
+      component
+    };
+  },
+
   anErrorPage({ errorInfos, footerInfo, safeLinks, safeLinksMessage, data } = {}){
     errorInfos = $(errorInfos, [this.anErrorPageInfo()]);
     footerInfo = $(footerInfo, "Test footer info");

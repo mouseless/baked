@@ -58,7 +58,7 @@
               v-else-if="data"
               :name="`rows/footer/${column.prop}`"
               :descriptor="{
-                ...conditional.find(column.component, data.footer[column.prop]),
+                ...conditional.find(column.component, data.footer),
                 data: {
                   type: 'Inline',
                   value: data.footer[column.prop]
