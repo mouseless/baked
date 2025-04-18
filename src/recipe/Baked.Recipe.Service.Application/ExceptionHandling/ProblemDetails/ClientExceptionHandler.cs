@@ -27,6 +27,6 @@ public class ClientExceptionHandler(ExceptionHandlerSettings _settings)
             (int)HttpStatusCode.InternalServerError,
             exception.Message,
             new() { ["Content"] = content }
-          );
+        );
     }
 }
