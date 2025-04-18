@@ -96,7 +96,8 @@ const value = computed(() =>
     ? itemsProp
       ? data[itemsProp]
       : data
-    : new Array(rowsWhenLoading || 5).fill({ }));
+    : new Array(rowsWhenLoading || 5).fill({ })
+);
 const footerColSpan = computed(() => columns.length - footerTemplate?.columns.length);
 const scrollable = scrollHeight !== undefined;
 </script>

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.FileProviders;
+using System.Buffers.Text;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -45,39 +46,14 @@ public static class RuntimeExtensions
     public static string ToBase64(this byte[] bytes) =>
         Convert.ToBase64String(bytes);
 
-    public static string ToBase64(this byte[] bytes, bool urlEncode)
-    {
-        if (!urlEncode) { return bytes.ToBase64(); }
+    public static string ToBase64Url(this byte[] bytes) =>
+        Base64Url.EncodeToString(bytes);
 
-        return bytes
-            .ToBase64()
-            .Replace('+', '-')
-            .Replace('/', '_')
-            .TrimEnd('=');
-    }
+    public static byte[] FromBase64(this string @string) =>
+        Convert.FromBase64String(@string);
 
-    public static byte[] FromBase64(this string @string,
-        bool urlDecode = false
-    )
-    {
-        if (urlDecode)
-        {
-            @string = @string.Replace('_', '/').Replace('-', '+');
-            switch (@string.Length % 4)
-            {
-                case 2:
-                    @string += "==";
-                    break;
-                case 3:
-                    @string += "=";
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        return Convert.FromBase64String(@string);
-    }
+    public static byte[] FromBase64Url(this string @string) =>
+        Base64Url.DecodeFromChars(@string);
 
     public static byte[] ToUtf8Bytes(this string @string) =>
         Encoding.UTF8.GetBytes(@string);

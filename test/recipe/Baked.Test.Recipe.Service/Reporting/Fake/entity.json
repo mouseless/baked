@@ -19,5 +19,11 @@
             { "count" : 6, "string" : "reg-x" },
             { "count" : 5, "string" : "reg-y" }
         ]
+    },
+    {
+        "parameters": { "string": null },
+        "result": [
+            { "count" : 7, "string" : null }
+        ]
     }
 ]

@@ -52,7 +52,6 @@ public class ConfigurationOverriderFeature : IFeature
 
         configurator.ConfigureServiceCollection(services =>
         {
-            services.AddSingleton<IExceptionHandler, ClientExceptionHandler>();
             services.AddSingleton<IExceptionHandler, SampleExceptionHandler>();
             services.AddHostedService<SeedDataTrigger>();
         });
@@ -130,7 +129,8 @@ public class ConfigurationOverriderFeature : IFeature
                     new { Title = "Nav Link", Description = "A component to give a link to a domain object" },
                     new { Title = "Icon", Description = "Displays built-in icons" },
                     new { Title = "Message", Description = "A component to display message" },
-                    new { Title = "Money", Description = "Render money values" },
+                    new { Title = "Money", Description = "Shortens and renders money values with the full value shown as tooltip" },
+                    new { Title = "Number", Description = "Shortens and renders numbers with the full value shown as tooltip" },
                     new { Title = "Rate", Description = "Render rate values as percentage" },
                     new { Title = "String", Description = "Render string values" }
                 }

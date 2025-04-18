@@ -1,7 +1,12 @@
+using Baked.Testing;
+
 namespace Baked.Test;
 
 public static class ExceptionExtensions
 {
+    public static Exception AnException(this Stubber _) =>
+        new("TEST EXCEPTION");
+
     public static void ShouldThrowExceptionWithServiceNotRegisteredMessage<T>(this Func<object> func) =>
         func.ShouldThrowExceptionWithServiceNotRegisteredMessage(typeof(T));
 

@@ -175,6 +175,10 @@ public static class Components
     public static ComponentDescriptor None() =>
         new(nameof(None));
 
+    public static ComponentDescriptor Number(
+        IData? data = default
+    ) => new(nameof(Number)) { Data = data };
+
     public static ComponentDescriptorAttribute<PageTitle> PageTitle(string title,
         string? description = default,
         IEnumerable<IComponentDescriptor>? actions = default
