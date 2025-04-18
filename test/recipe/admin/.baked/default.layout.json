@@ -118,6 +118,11 @@
             "title": "Money",
             "parentRoute": "/specs"
           },
+          "/specs/number": {
+            "route": "/specs/number",
+            "title": "Number",
+            "parentRoute": "/specs"
+          },
           "/specs/rate": {
             "route": "/specs/rate",
             "title": "Rate",

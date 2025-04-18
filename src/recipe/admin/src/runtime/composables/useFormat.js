@@ -17,10 +17,34 @@ export default function() {
   function asCurrency(value,
     { shorten, shortenThousands } = { }
   ) {
+    return asNumber(value, {
+      shorten,
+      shortenThousands,
+      formatOptions: {
+        style: "currency",
+        currency
+      }
+    }) ;
+  }
+
+  function asDecimal(value) {
+    value ||= "-";
+
+    return value.toLocaleString(locale, { style: "decimal", maximumFractionDigits: 2 });
+  }
+
+  function asMonth(date) {
+    return date.toLocaleString(locale, { month: "long" });
+  }
+
+  function asNumber(value,
+    { shorten, shortenThousands, formatOptions } = { }
+  ) {
     if(!value) { return "-"; }
 
     shorten ??= true;
     shortenThousands ??= false;
+    formatOptions ??= { };
 
     const stage = shorten
       ? STAGES.find(s => (shortenThousands || s.threshold !== 1_000) && value >= s.threshold) ?? STAGES[STAGES.length - 1]
@@ -28,9 +52,8 @@ export default function() {
     const shownValue = value / stage.divisor;
 
     let formattedResult = shownValue.toLocaleString(locale, {
-      style: "currency",
-      currency,
-      maximumFractionDigits: stage.fraction ? 2 : 0
+      maximumFractionDigits: stage.fraction ? 2 : 0,
+      ...formatOptions
     });
     if(stage.fraction && formattedResult.endsWith("00")) {
       formattedResult = formattedResult.substring(0, formattedResult.length - 3);
@@ -42,20 +65,10 @@ export default function() {
     };
   }
 
-  function asMonth(date) {
-    return date.toLocaleString(locale, { month: "long" });
-  }
-
   function asPercentage(value) {
     value ||= "-";
 
     return value.toLocaleString(locale, { style: "percent", maximumFractionDigits: 2 });
-  }
-
-  function asDecimal(value) {
-    value ||= "-";
-
-    return value.toLocaleString(locale, { style: "decimal", maximumFractionDigits: 2 });
   }
 
   function truncate(value, length) {
@@ -68,9 +81,10 @@ export default function() {
 
   return {
     asCurrency,
-    asMonth,
-    asPercentage,
     asDecimal,
+    asMonth,
+    asNumber,
+    asPercentage,
     truncate
   };
 };

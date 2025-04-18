@@ -275,6 +275,15 @@ export default {
     };
   },
 
+  aNumber({ data } = {}) {
+    data = $(data, 100_000);
+
+    return {
+      type: "Number",
+      data: { type: "Inline", value: data }
+    };
+  },
+
   aPageTitle({ title, description, actions } = {}) {
     title = $(title, "Test Title");
     description = $(description, "Test description is given for testing purposes");
