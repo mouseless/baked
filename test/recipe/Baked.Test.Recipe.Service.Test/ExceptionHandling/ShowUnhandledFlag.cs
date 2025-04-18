@@ -76,8 +76,8 @@ public class ShowUnhandledFlag : TestServiceSpec
 
         var actual = handler.Handle(exception);
 
-        actual.ExtraData?.ShouldContainKey("Content");
-        actual.ExtraData?["Content"].ShouldDeeplyBe(new { test = "content" });
+        actual.ExtraData?.ShouldContainKey("content");
+        actual.ExtraData?["content"].ShouldDeeplyBe(new { test = "content" }, useSystemTextJson: true);
     }
 
     [Test]

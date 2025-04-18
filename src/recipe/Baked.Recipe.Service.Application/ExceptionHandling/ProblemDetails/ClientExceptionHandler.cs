@@ -1,6 +1,6 @@
 using Baked.Communication;
-using Newtonsoft.Json;
 using System.Net;
+using System.Text.Json;
 
 namespace Baked.ExceptionHandling.ProblemDetails;
 
@@ -19,14 +19,14 @@ public class ClientExceptionHandler(ExceptionHandlerSettings _settings)
         }
 
         object content = new { };
-        try { content = JsonConvert.DeserializeObject<object>(exception.Content) ?? content; }
+        try { content = JsonSerializer.Deserialize<object>(exception.Content) ?? content; }
         catch { content = exception.Content; }
 
         return new(
             exception,
             (int)HttpStatusCode.InternalServerError,
             exception.Message,
-            new() { ["Content"] = content }
+            new() { ["content"] = content }
         );
     }
 }
