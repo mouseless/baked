@@ -7,6 +7,8 @@
     :data-key
     :paginator="paginator && value.length > rows"
     :rows
+    :scrollable="scrollHeight"
+    :scroll-height="scrollHeight"
   >
     <Column
       v-for="column in columns"
@@ -87,7 +89,7 @@ const { schema, data } = defineProps({
   data: { type: null, required: true }
 });
 
-const { columns, dataKey, footer, paginator, rows, rowsWhenLoading } = schema;
+const { columns, dataKey, footer, paginator, rows, rowsWhenLoading, scrollHeight } = schema;
 
 const loading = context.loading();
 const dataRows = computed(() => footer?.columns ? data.items : data);

@@ -10,6 +10,19 @@
             "component": {
               "type": "CardLink",
               "schema": {
+                "route": "/datatable",
+                "icon": "pi pi-list-check",
+                "title": "Datatable",
+                "description": "Showcase Datatable component with scrollable and footer options",
+                "disabled": false
+              }
+            }
+          },
+          {
+            "title": "",
+            "component": {
+              "type": "CardLink",
+              "schema": {
                 "route": "/report",
                 "icon": "pi pi-file",
                 "title": "Report",

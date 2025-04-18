@@ -232,6 +232,10 @@ public class ConfigurationOverriderFeature : IFeature
             pages.Add(MenuPage("index",
                 links:
                 [
+                    CardLink($"/datatable", "Datatable",
+                        icon: "pi pi-list-check",
+                        description: "Showcase Datatable component with scrollable and footer options"
+                    ),
                     CardLink($"/report", "Report",
                         icon: "pi pi-file",
                         description: "Showcases a report layout with tabs and data panels"
@@ -420,13 +424,21 @@ public class ConfigurationOverriderFeature : IFeature
                 {
                     Components = [
                         DataPanel("DataPanel",
+                            parameters:[
+                                Parameter("count",  Select("Count", Inline(new string[]{ "10","20" })),
+                                    defaultValue: "10"
+                                )
+                            ],
                             content: DataTable(
                                 columns: [..domain.Types[typeof(Row)].GetMembers().Properties.Where(p => p.IsPublic).Select(p => DataTableColumn(prop: p.Name.ToLower(), title: p.Name))],
-                                footer: new Baked.Theme.Admin.DataTable.FooterRow("Total"){
+                                footer: new DataTable.FooterRow("Total"){
                                     Columns = [new(nameof(Row.Column2), Conditional()), new(nameof(Row.Column3), Conditional())]
                                 },
                                 dataKey: nameof(Row.Label),
-                                data: Remote(domain.Types[typeof(Theme.DataTable)].GetMembers().Methods[nameof(Theme.DataTable.GetWithFooter)].GetSingle<ActionModelAttribute>().GetRoute())
+                                data: Remote(domain.Types[typeof(DataTableSamples)].GetMembers().Methods[nameof(DataTableSamples.GetTableDataWithFooter)].GetSingle<ActionModelAttribute>().GetRoute(),
+                                    query: Injected(custom: true)
+                                ),
+                                scrollHeight: "800px"
                             )
                         )
                     ]

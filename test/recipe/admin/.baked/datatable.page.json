@@ -15,7 +15,32 @@
             "value": "DataPanel"
           },
           "collapsed": false,
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "count",
+              "required": false,
+              "defaultSelfManaged": false,
+              "default": {
+                "type": "Inline",
+                "value": "10"
+              },
+              "component": {
+                "type": "Select",
+                "schema": {
+                  "label": "Count",
+                  "showClear": false,
+                  "stateful": false
+                },
+                "data": {
+                  "type": "Inline",
+                  "value": [
+                    "10",
+                    "20"
+                  ]
+                }
+              }
+            }
+          ],
           "content": {
             "type": "DataTable",
             "schema": {
@@ -71,6 +96,7 @@
               ],
               "dataKey": "Label",
               "paginator": false,
+              "scrollHeight": "800px",
               "footer": {
                 "label": "Total",
                 "columns": [
@@ -101,7 +127,11 @@
             },
             "data": {
               "type": "Remote",
-              "path": "data-table/with-footer"
+              "path": "data-table-samples/table-data-with-footer",
+              "query": {
+                "type": "Injected",
+                "key": "Custom"
+              }
             }
           }
         }

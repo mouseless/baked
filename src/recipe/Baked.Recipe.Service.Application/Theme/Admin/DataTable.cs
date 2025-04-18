@@ -9,6 +9,7 @@ public record DataTable : IComponentSchema
     public bool Paginator { get; set; }
     public int? Rows { get; set; }
     public int? RowsWhenLoading { get; set; }
+    public string? ScrollHeight { get; set; }
     public FooterRow? Footer { get; set; }
 
     public record Column(string Prop, Conditional Component)

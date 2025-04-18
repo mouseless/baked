@@ -42,9 +42,10 @@ public static class Components
         bool paginator = false,
         int? rows = default,
         int? rowsWhenLoading = default,
+        string? scrollHeight = default,
         DataTable.FooterRow? footer = default,
         IData? data = default
-    ) => new(new() { Columns = [.. columns ?? []], DataKey = dataKey, Paginator = paginator, Rows = rows, RowsWhenLoading = rowsWhenLoading, Footer = footer }) { Data = data };
+    ) => new(new() { Columns = [.. columns ?? []], DataKey = dataKey, Paginator = paginator, Rows = rows, RowsWhenLoading = rowsWhenLoading, ScrollHeight = scrollHeight, Footer = footer }) { Data = data };
 
     public static DataTable.Column DataTableColumn(string prop, IComponentDescriptor component,
         string? title = default,
