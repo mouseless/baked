@@ -1,0 +1,152 @@
+{
+  "type": "ReportPage",
+  "schema": {
+    "path": "data-table",
+    "title": {
+      "title": "DataTable Demo",
+      "actions": []
+    },
+    "queryParameters": [],
+    "tabs": [
+      {
+        "id": "",
+        "title": "",
+        "contents": [
+          {
+            "component": {
+              "type": "DataPanel",
+              "schema": {
+                "title": {
+                  "type": "Inline",
+                  "value": "DataPanel"
+                },
+                "collapsed": false,
+                "parameters": [
+                  {
+                    "name": "count",
+                    "required": false,
+                    "defaultSelfManaged": false,
+                    "default": {
+                      "type": "Inline",
+                      "value": "10"
+                    },
+                    "component": {
+                      "type": "Select",
+                      "schema": {
+                        "label": "Count",
+                        "showClear": false,
+                        "stateful": false
+                      },
+                      "data": {
+                        "type": "Inline",
+                        "value": [
+                          "10",
+                          "20"
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "content": {
+                  "type": "DataTable",
+                  "schema": {
+                    "columns": [
+                      {
+                        "prop": "label",
+                        "component": {
+                          "fallback": {
+                            "type": "String",
+                            "schema": {}
+                          },
+                          "conditions": []
+                        },
+                        "title": "Label",
+                        "minWidth": false
+                      },
+                      {
+                        "prop": "column1",
+                        "component": {
+                          "fallback": {
+                            "type": "String",
+                            "schema": {}
+                          },
+                          "conditions": []
+                        },
+                        "title": "Column1",
+                        "minWidth": false
+                      },
+                      {
+                        "prop": "column2",
+                        "component": {
+                          "fallback": {
+                            "type": "String",
+                            "schema": {}
+                          },
+                          "conditions": []
+                        },
+                        "title": "Column2",
+                        "minWidth": false
+                      },
+                      {
+                        "prop": "column3",
+                        "component": {
+                          "fallback": {
+                            "type": "String",
+                            "schema": {}
+                          },
+                          "conditions": []
+                        },
+                        "title": "Column3",
+                        "minWidth": false
+                      }
+                    ],
+                    "dataKey": "label",
+                    "paginator": false,
+                    "scrollHeight": "500px",
+                    "footerTemplate": {
+                      "label": "Total",
+                      "columns": [
+                        {
+                          "prop": "footercolumn1",
+                          "component": {
+                            "fallback": {
+                              "type": "String",
+                              "schema": {}
+                            },
+                            "conditions": []
+                          },
+                          "minWidth": false
+                        },
+                        {
+                          "prop": "footercolumn2",
+                          "component": {
+                            "fallback": {
+                              "type": "String",
+                              "schema": {}
+                            },
+                            "conditions": []
+                          },
+                          "minWidth": false
+                        }
+                      ]
+                    }
+                  },
+                  "data": {
+                    "type": "Remote",
+                    "path": "data-table/table-data-with-footer",
+                    "query": {
+                      "type": "Injected",
+                      "key": "Custom"
+                    }
+                  }
+                }
+              }
+            },
+            "fullScreen": false,
+            "narrow": false
+          }
+        ]
+      }
+    ]
+  }
+}

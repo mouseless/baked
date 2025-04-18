@@ -10,7 +10,7 @@ public record DataTable : IComponentSchema
     public int? Rows { get; set; }
     public int? RowsWhenLoading { get; set; }
     public string? ScrollHeight { get; set; }
-    public FooterRow? Footer { get; set; }
+    public Footer? FooterTemplate { get; set; }
 
     public record Column(string Prop, Conditional Component)
     {
@@ -20,7 +20,7 @@ public record DataTable : IComponentSchema
         public bool MinWidth { get; set; }
     }
 
-    public record FooterRow(string Label)
+    public record Footer(string Label)
     {
         public string Label { get; set; } = Label;
         public List<Column> Columns { get; init; } = [];

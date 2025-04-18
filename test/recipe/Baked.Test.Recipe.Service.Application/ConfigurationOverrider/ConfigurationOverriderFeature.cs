@@ -7,7 +7,6 @@ using Baked.Test.ExceptionHandling;
 using Baked.Test.Orm;
 using Baked.Test.Theme;
 using Baked.Theme.Admin;
-using Baked.Ui;
 using Humanizer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
@@ -232,7 +231,7 @@ public class ConfigurationOverriderFeature : IFeature
             pages.Add(MenuPage("index",
                 links:
                 [
-                    CardLink($"/datatable", "Datatable",
+                    CardLink($"/data-table", "DataTable",
                         icon: "pi pi-list-check",
                         description: "Showcase Datatable component with scrollable and footer options"
                     ),
@@ -419,33 +418,38 @@ public class ConfigurationOverriderFeature : IFeature
 
             configurator.UsingDomainModel(domain =>
             {
-                pages.Add(new ComponentDescriptorAttribute<GenericPage>(
-                new("datatable", new PageTitle("Datatable Demo"))
-                {
-                    Components = [
-                        DataPanel("DataPanel",
-                            parameters:[
-                                Parameter("count",  Select("Count", Inline(new string[]{ "10","20" })),
-                                    defaultValue: "10"
+                pages.Add(ReportPage("data-table", PageTitle("DataTable Demo"),
+                    tabs: [
+                        ReportPageTab(string.Empty, string.Empty,
+                            contents:
+                            [
+                                ReportPageTabContent(
+                                    DataPanel("DataPanel",
+                                        parameters:[
+                                            Parameter("count",  Select("Count", Inline(new string[]{ "10","20" })),
+                                                defaultValue: "10"
+                                            )
+                                        ],
+                                        content: DataTable(
+                                            columns: [.. domain.Types[typeof(TableRow)].GetMembers().Properties.Where(p => p.IsPublic).Select(p => DataTableColumn(p.Name.ToLower(), title: p.Name))],
+                                            footerTemplate: DataTableFooter("Total",
+                                                columns: [
+                                                    DataTableColumn(nameof(TableWithFooter.FooterColumn1).ToLower(), Conditional()),
+                                                    DataTableColumn(nameof(TableWithFooter.FooterColumn2).ToLower(), Conditional())
+                                                ]
+                                            ),
+                                            dataKey: nameof(TableRow.Label).ToLower(),
+                                            data: Remote(domain.Types[typeof(Theme.DataTable)].GetMembers().Methods[nameof(Theme.DataTable.GetTableDataWithFooter)].GetSingle<ActionModelAttribute>().GetRoute(),
+                                                query: Injected(custom: true)
+                                            ),
+                                            scrollHeight: "500px"
+                                        )
+                                    )
                                 )
-                            ],
-                            content: DataTable(
-                                columns: [.. domain.Types[typeof(TableRow)].GetMembers().Properties.Where(p => p.IsPublic).Select(p => DataTableColumn(p.Name.ToLower(), title: p.Name))],
-                                footer: DataTableFooter("Total",
-                                    columns: [
-                                        DataTableFooterColumn(nameof(TableWithFooter.FooterColumn1).ToLower(), Conditional()),
-                                        DataTableFooterColumn(nameof(TableWithFooter.FooterColumn2).ToLower(), Conditional())
-                                    ]
-                                ),
-                                dataKey: nameof(TableRow.Label).ToLower(),
-                                data: Remote(domain.Types[typeof(Theme.DataTable)].GetMembers().Methods[nameof(Theme.DataTable.GetTableDataWithFooter)].GetSingle<ActionModelAttribute>().GetRoute(),
-                                    query: Injected(custom: true)
-                                ),
-                                scrollHeight: "500px"
-                            )
+                            ]
                         )
                     ]
-                }));
+                ));
             });
         });
     }

@@ -10,9 +10,9 @@
             "component": {
               "type": "CardLink",
               "schema": {
-                "route": "/datatable",
+                "route": "/data-table",
                 "icon": "pi pi-list-check",
-                "title": "Datatable",
+                "title": "DataTable",
                 "description": "Showcase Datatable component with scrollable and footer options",
                 "disabled": false
               }
