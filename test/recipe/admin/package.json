@@ -19,17 +19,20 @@
     "@nuxt/devtools": "latest",
     "@nuxt/eslint": "^1.2.0",
     "@nuxt/test-utils": "^3.17.2",
-    "@playwright/test": "^1.51.1",
+    "@playwright/test": "^1.52.0",
     "cross-env": "^7.0.3",
-    "eslint": "^9.23.0",
-    "sass": "^1.86.0"
+    "eslint": "^9.24.0",
+    "sass": "^1.86.3"
   },
   "dependencies": {
     "@nuxtjs/tailwindcss": "^6.13.2",
-    "@primeuix/themes": "^1.0.0",
+    "@primeuix/themes": "^1.0.3",
     "baked-recipe-admin": "file:../../../src/recipe/admin",
     "nuxt": "^3.16.1",
     "vue": "^3.5.13",
     "vue-router": "^4.4.3"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-win32-x64-msvc": "4.40.0"
   }
 }
