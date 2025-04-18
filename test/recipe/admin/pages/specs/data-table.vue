@@ -90,16 +90,14 @@ const variants = [
           giveMe.aDataTableFooterColumn({ prop: "data4"})
         ]
       },
-      rowsWhenLoading: 3,
+      rowsWhenLoading: 2,
       data: {
         items: [
           { label: "Row 1", data1: "Cell 1.1", data2: "Cell 1.2", data3: "1", data4: "10" },
           { label: "Row 2", data1: "Cell 2.1", data2: "Cell 2.2", data3: "2", data4: "20" }
         ],
-        footer: {
-          "data3": "3",
-          "data4": "30"
-        }
+        data3: "3",
+        data4: "30"
       }
     })
   }

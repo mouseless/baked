@@ -100,14 +100,12 @@ export default {
     };
   },
 
-  aDataTableFooterColumn({ prop, minWidth, component } = {}) {
+  aDataTableFooterColumn({ prop, component } = {}) {
     prop = $(prop, "test");
-    minWidth = $(minWidth, false);
     component = $(component, this.aConditional());
 
     return {
       prop,
-      minWidth,
       component
     };
   },

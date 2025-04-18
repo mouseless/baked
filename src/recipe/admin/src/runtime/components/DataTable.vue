@@ -1,13 +1,12 @@
 <template>
   <DataTable
     :value
-    style="min-height: 100px"
-    class="text-sm"
+    class="text-sm min-h-24"
     striped-rows
     :data-key
     :paginator="paginator && value.length > rows"
     :rows
-    :scrollable="scrollHeight"
+    :scrollable="scrollable"
     :scroll-height="scrollHeight"
   >
     <Column
@@ -63,7 +62,7 @@
                 ...conditional.find(column.component, data.footer),
                 data: {
                   type: 'Inline',
-                  value: data.footer[column.prop]
+                  value: data[column.prop]
                 }
               }"
             />
@@ -92,7 +91,13 @@ const { schema, data } = defineProps({
 const { columns, dataKey, footer, paginator, rows, rowsWhenLoading, scrollHeight } = schema;
 
 const loading = context.loading();
-const dataRows = computed(() => footer?.columns ? data.items : data);
-const value = computed(() => data ? dataRows.value : new Array(rowsWhenLoading || 5).fill({ }));
+// accept has footer when schema includes `footer.columns` and
+// data has `items`
+const hasFooterData = computed(() => footer?.columns && data?.items);
+// return `data.items` when has footer, else use data as array
+const dataItems = computed(() => hasFooterData.value ? data.items : data);
+const value = computed(() => data ? dataItems.value : new Array(dataItems?.value?.length || rowsWhenLoading || 5).fill({ }));
+// calculate colspan for footer
 const footerColSpan = computed(() => columns.length - footer?.columns.length);
+const scrollable = scrollHeight !== undefined;
 </script>

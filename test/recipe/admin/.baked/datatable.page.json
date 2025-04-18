@@ -96,31 +96,29 @@
               ],
               "dataKey": "Label",
               "paginator": false,
-              "scrollHeight": "800px",
+              "scrollHeight": "558px",
               "footer": {
                 "label": "Total",
                 "columns": [
                   {
-                    "prop": "Column2",
+                    "prop": "column2",
                     "component": {
                       "fallback": {
                         "type": "String",
                         "schema": {}
                       },
                       "conditions": []
-                    },
-                    "minWidth": false
+                    }
                   },
                   {
-                    "prop": "Column3",
+                    "prop": "column3",
                     "component": {
                       "fallback": {
                         "type": "String",
                         "schema": {}
                       },
                       "conditions": []
-                    },
-                    "minWidth": false
+                    }
                   }
                 ]
               }

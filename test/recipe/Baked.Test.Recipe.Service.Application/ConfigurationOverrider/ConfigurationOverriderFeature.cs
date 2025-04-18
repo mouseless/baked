@@ -430,20 +430,22 @@ public class ConfigurationOverriderFeature : IFeature
                                 )
                             ],
                             content: DataTable(
-                                columns: [..domain.Types[typeof(Row)].GetMembers().Properties.Where(p => p.IsPublic).Select(p => DataTableColumn(prop: p.Name.ToLower(), title: p.Name))],
-                                footer: new DataTable.FooterRow("Total"){
-                                    Columns = [new(nameof(Row.Column2), Conditional()), new(nameof(Row.Column3), Conditional())]
-                                },
+                                columns: [..domain.Types[typeof(Row)].GetMembers().Properties.Where(p => p.IsPublic).Select(p => DataTableColumn(p.Name.ToLower(), title: p.Name))],
+                                footer: DataTableFooter("Total",
+                                    columns: [
+                                        DataTableFooterColumn(nameof(Row.Column2).ToLower(), Conditional()),
+                                        DataTableFooterColumn(nameof(Row.Column3).ToLower(), Conditional())
+                                    ]
+                                ),
                                 dataKey: nameof(Row.Label),
                                 data: Remote(domain.Types[typeof(DataTableSamples)].GetMembers().Methods[nameof(DataTableSamples.GetTableDataWithFooter)].GetSingle<ActionModelAttribute>().GetRoute(),
                                     query: Injected(custom: true)
                                 ),
-                                scrollHeight: "800px"
+                                scrollHeight: "558px"
                             )
                         )
                     ]
-                })
-            );
+                }));
             });
         });
     }

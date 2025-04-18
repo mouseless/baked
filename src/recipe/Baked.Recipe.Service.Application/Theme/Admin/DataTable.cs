@@ -30,6 +30,5 @@ public record DataTable : IComponentSchema
     {
         public string Prop { get; set; } = Prop;
         public Conditional Component { get; set; } = Component;
-        public bool MinWidth { get; set; }
     }
 }
