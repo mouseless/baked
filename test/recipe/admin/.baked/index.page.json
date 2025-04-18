@@ -10,10 +10,10 @@
             "component": {
               "type": "CardLink",
               "schema": {
-                "route": "/data-table",
-                "icon": "pi pi-list-check",
-                "title": "DataTable",
-                "description": "Showcase Datatable component with scrollable and footer options",
+                "route": "/report",
+                "icon": "pi pi-file",
+                "title": "Report",
+                "description": "Showcases a report layout with tabs and data panels",
                 "disabled": false
               }
             }
@@ -23,10 +23,10 @@
             "component": {
               "type": "CardLink",
               "schema": {
-                "route": "/report",
-                "icon": "pi pi-file",
-                "title": "Report",
-                "description": "Showcases a report layout with tabs and data panels",
+                "route": "/data-table",
+                "icon": "pi pi-table",
+                "title": "DataTable",
+                "description": "Showcase DataTable component with scrollable and footer options",
                 "disabled": false
               }
             }

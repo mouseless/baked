@@ -6,8 +6,8 @@
     :data-key
     :paginator="paginator && value.length > rows"
     :rows
-    :scrollable="scrollable"
-    :scroll-height="scrollHeight"
+    :scrollable
+    :scroll-height
   >
     <Column
       v-for="column in columns"
@@ -37,17 +37,17 @@
       </template>
     </Column>
     <ColumnGroup
-      v-if="footer"
+      v-if="footerTemplate"
       type="footer"
     >
       <Row>
         <Column
-          :footer="footer.label"
+          :footer="footerTemplate.label"
           :colspan="footerColSpan"
           footer-style="text-align:right"
         />
         <Column
-          v-for="column in footer.columns"
+          v-for="column in footerTemplate.columns"
           :key="column.prop"
         >
           <template #footer>
@@ -59,7 +59,7 @@
               v-else-if="data"
               :name="`rows/footer/${column.prop}`"
               :descriptor="{
-                ...conditional.find(column.component, data.footer),
+                ...conditional.find(column.component, data),
                 data: {
                   type: 'Inline',
                   value: data[column.prop]
@@ -88,16 +88,15 @@ const { schema, data } = defineProps({
   data: { type: null, required: true }
 });
 
-const { columns, dataKey, footer, paginator, rows, rowsWhenLoading, scrollHeight } = schema;
+const { columns, dataKey, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight } = schema;
 
 const loading = context.loading();
-// accept has footer when schema includes `footer.columns` and
-// data has `items`
-const hasFooterData = computed(() => footer?.columns && data?.items);
-// return `data.items` when has footer, else use data as array
-const dataItems = computed(() => hasFooterData.value ? data.items : data);
-const value = computed(() => data ? dataItems.value : new Array(dataItems?.value?.length || rowsWhenLoading || 5).fill({ }));
-// calculate colspan for footer
-const footerColSpan = computed(() => columns.length - footer?.columns.length);
+const value = computed(() =>
+  data
+    ? itemsProp
+      ? data[itemsProp]
+      : data
+    : new Array(rowsWhenLoading || 5).fill({ }));
+const footerColSpan = computed(() => columns.length - footerTemplate?.columns.length);
 const scrollable = scrollHeight !== undefined;
 </script>

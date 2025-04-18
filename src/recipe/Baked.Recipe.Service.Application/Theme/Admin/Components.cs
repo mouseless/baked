@@ -51,6 +51,7 @@ public static class Components
         {
             Columns = [.. columns ?? []],
             DataKey = dataKey,
+            ItemsProp = itemsProp,
             Paginator = paginator,
             Rows = rows,
             RowsWhenLoading = rowsWhenLoading,

@@ -101,13 +101,14 @@
                       }
                     ],
                     "dataKey": "label",
+                    "itemsProp": "items",
                     "paginator": false,
                     "scrollHeight": "500px",
                     "footerTemplate": {
                       "label": "Total",
                       "columns": [
                         {
-                          "prop": "footercolumn1",
+                          "prop": "footerColumn1",
                           "component": {
                             "fallback": {
                               "type": "String",
@@ -118,7 +119,7 @@
                           "minWidth": false
                         },
                         {
-                          "prop": "footercolumn2",
+                          "prop": "footerColumn2",
                           "component": {
                             "fallback": {
                               "type": "String",

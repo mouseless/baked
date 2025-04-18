@@ -19,6 +19,12 @@
             "disabled": false
           },
           {
+            "route": "/data-table",
+            "icon": "pi pi-table",
+            "title": "DataTable",
+            "disabled": false
+          },
+          {
             "route": "/specs",
             "icon": "pi pi-list-check",
             "title": "Specs",
@@ -52,6 +58,11 @@
             "route": "/report",
             "icon": "pi pi-file",
             "title": "Report"
+          },
+          "/data-table": {
+            "route": "/data-table",
+            "icon": "pi pi-table",
+            "title": "DataTable"
           },
           "/specs": {
             "route": "/specs",

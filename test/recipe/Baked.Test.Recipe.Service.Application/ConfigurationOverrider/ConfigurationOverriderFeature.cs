@@ -202,6 +202,7 @@ public class ConfigurationOverriderFeature : IFeature
                     [
                         SideMenuItem("/", "pi pi-home"),
                         SideMenuItem("/report", "pi pi-file", title: "Report"),
+                        SideMenuItem("/data-table", "pi pi-table", title: "DataTable"),
                         SideMenuItem("/specs", "pi pi-list-check", title: "Specs")
                     ],
                     footer: String(data: Inline("FT"))
@@ -211,6 +212,7 @@ public class ConfigurationOverriderFeature : IFeature
                     [
                         HeaderItem("/", icon: "pi pi-home"),
                         HeaderItem("/report", icon: "pi pi-file", title: "Report"),
+                        HeaderItem("/data-table", icon: "pi pi-table", title: "DataTable"),
                         HeaderItem("/specs", icon: "pi pi-list-check", title: "Specs"),
                         .. specs.SelectMany(section =>
                             section.Links.Select(link =>
@@ -231,13 +233,13 @@ public class ConfigurationOverriderFeature : IFeature
             pages.Add(MenuPage("index",
                 links:
                 [
-                    CardLink($"/data-table", "DataTable",
-                        icon: "pi pi-list-check",
-                        description: "Showcase Datatable component with scrollable and footer options"
-                    ),
                     CardLink($"/report", "Report",
                         icon: "pi pi-file",
                         description: "Showcases a report layout with tabs and data panels"
+                    ),
+                    CardLink($"/data-table", "DataTable",
+                        icon: "pi pi-table",
+                        description: "Showcase DataTable component with scrollable and footer options"
                     ),
                     CardLink($"/specs", "Specs",
                         icon: "pi pi-list-check",
@@ -428,20 +430,20 @@ public class ConfigurationOverriderFeature : IFeature
                                     DataPanel("DataPanel",
                                         parameters:
                                         [
-                                            Parameter("count", Select("Count", Inline(new string[]{ "10","20" })),
+                                            Parameter("count", Select("Count", Inline(new string[]{ "10", "20" })),
                                                 defaultValue: "10"
                                             )
                                         ],
                                         content: DataTable(
-                                            columns: [.. domain.Types[typeof(TableRow)].GetMembers().Properties.Where(p => p.IsPublic).Select(p => DataTableColumn(p.Name.ToLower(), title: p.Name))],
+                                            columns: [.. domain.Types[typeof(TableRow)].GetMembers().Properties.Where(p => p.IsPublic).Select(p => DataTableColumn(p.Name.Camelize(), title: p.Name))],
                                             footerTemplate: DataTableFooter("Total",
                                                 columns:
                                                 [
-                                                    DataTableColumn(nameof(TableWithFooter.FooterColumn1).ToLower(), Conditional()),
-                                                    DataTableColumn(nameof(TableWithFooter.FooterColumn2).ToLower(), Conditional())
+                                                    DataTableColumn(nameof(TableWithFooter.FooterColumn1).Camelize(), Conditional()),
+                                                    DataTableColumn(nameof(TableWithFooter.FooterColumn2).Camelize(), Conditional())
                                                 ]
                                             ),
-                                            dataKey: nameof(TableRow.Label).ToLower(),
+                                            dataKey: nameof(TableRow.Label).Camelize(),
                                             itemsProp: "items",
                                             scrollHeight: "500px",
                                             data: Remote(domain.Types[typeof(Theme.DataTable)].GetMembers().Methods[nameof(Theme.DataTable.GetTableDataWithFooter)].GetSingle<ActionModelAttribute>().GetRoute(),
