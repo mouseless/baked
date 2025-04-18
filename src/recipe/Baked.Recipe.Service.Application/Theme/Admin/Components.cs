@@ -39,6 +39,7 @@ public static class Components
     public static ComponentDescriptorAttribute<DataTable> DataTable(
         IEnumerable<DataTable.Column>? columns = default,
         string? dataKey = default,
+        string? itemsProp = default,
         bool paginator = false,
         int? rows = default,
         int? rowsWhenLoading = default,

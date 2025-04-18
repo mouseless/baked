@@ -6,6 +6,7 @@ public record DataTable : IComponentSchema
 {
     public List<Column> Columns { get; init; } = [];
     public string? DataKey { get; set; }
+    public string? ItemsProp { get; set; }
     public bool Paginator { get; set; }
     public int? Rows { get; set; }
     public int? RowsWhenLoading { get; set; }

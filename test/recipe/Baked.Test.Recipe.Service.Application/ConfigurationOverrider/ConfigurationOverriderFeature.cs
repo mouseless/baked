@@ -419,30 +419,34 @@ public class ConfigurationOverriderFeature : IFeature
             configurator.UsingDomainModel(domain =>
             {
                 pages.Add(ReportPage("data-table", PageTitle("DataTable Demo"),
-                    tabs: [
+                    tabs:
+                    [
                         ReportPageTab(string.Empty, string.Empty,
                             contents:
                             [
                                 ReportPageTabContent(
                                     DataPanel("DataPanel",
-                                        parameters:[
-                                            Parameter("count",  Select("Count", Inline(new string[]{ "10","20" })),
+                                        parameters:
+                                        [
+                                            Parameter("count", Select("Count", Inline(new string[]{ "10","20" })),
                                                 defaultValue: "10"
                                             )
                                         ],
                                         content: DataTable(
                                             columns: [.. domain.Types[typeof(TableRow)].GetMembers().Properties.Where(p => p.IsPublic).Select(p => DataTableColumn(p.Name.ToLower(), title: p.Name))],
                                             footerTemplate: DataTableFooter("Total",
-                                                columns: [
+                                                columns:
+                                                [
                                                     DataTableColumn(nameof(TableWithFooter.FooterColumn1).ToLower(), Conditional()),
                                                     DataTableColumn(nameof(TableWithFooter.FooterColumn2).ToLower(), Conditional())
                                                 ]
                                             ),
                                             dataKey: nameof(TableRow.Label).ToLower(),
+                                            itemsProp: "items",
+                                            scrollHeight: "500px",
                                             data: Remote(domain.Types[typeof(Theme.DataTable)].GetMembers().Methods[nameof(Theme.DataTable.GetTableDataWithFooter)].GetSingle<ActionModelAttribute>().GetRoute(),
                                                 query: Injected(custom: true)
-                                            ),
-                                            scrollHeight: "500px"
+                                            )
                                         )
                                     )
                                 )
