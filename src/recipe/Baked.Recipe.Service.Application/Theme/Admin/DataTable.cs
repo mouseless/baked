@@ -23,12 +23,6 @@ public record DataTable : IComponentSchema
     public record FooterRow(string Label)
     {
         public string Label { get; set; } = Label;
-        public List<FooterColumn> Columns { get; init; } = [];
-    }
-
-    public record FooterColumn(string Prop, Conditional Component)
-    {
-        public string Prop { get; set; } = Prop;
-        public Conditional Component { get; set; } = Component;
+        public List<Column> Columns { get; init; } = [];
     }
 }

@@ -94,38 +94,40 @@
                   "minWidth": false
                 }
               ],
-              "dataKey": "Label",
+              "dataKey": "label",
               "paginator": false,
               "scrollHeight": "558px",
               "footer": {
                 "label": "Total",
                 "columns": [
                   {
-                    "prop": "column2",
+                    "prop": "footercolumn1",
                     "component": {
                       "fallback": {
                         "type": "String",
                         "schema": {}
                       },
                       "conditions": []
-                    }
+                    },
+                    "minWidth": false
                   },
                   {
-                    "prop": "column3",
+                    "prop": "footercolumn2",
                     "component": {
                       "fallback": {
                         "type": "String",
                         "schema": {}
                       },
                       "conditions": []
-                    }
+                    },
+                    "minWidth": false
                   }
                 ]
               }
             },
             "data": {
               "type": "Remote",
-              "path": "data-table-samples/table-data-with-footer",
+              "path": "data-table/table-data-with-footer",
               "query": {
                 "type": "Injected",
                 "key": "Custom"

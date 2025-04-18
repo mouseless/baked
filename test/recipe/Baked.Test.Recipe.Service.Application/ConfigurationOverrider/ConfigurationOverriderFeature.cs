@@ -430,18 +430,18 @@ public class ConfigurationOverriderFeature : IFeature
                                 )
                             ],
                             content: DataTable(
-                                columns: [..domain.Types[typeof(Row)].GetMembers().Properties.Where(p => p.IsPublic).Select(p => DataTableColumn(p.Name.ToLower(), title: p.Name))],
+                                columns: [.. domain.Types[typeof(TableRow)].GetMembers().Properties.Where(p => p.IsPublic).Select(p => DataTableColumn(p.Name.ToLower(), title: p.Name))],
                                 footer: DataTableFooter("Total",
                                     columns: [
-                                        DataTableFooterColumn(nameof(Row.Column2).ToLower(), Conditional()),
-                                        DataTableFooterColumn(nameof(Row.Column3).ToLower(), Conditional())
+                                        DataTableFooterColumn(nameof(TableWithFooter.FooterColumn1).ToLower(), Conditional()),
+                                        DataTableFooterColumn(nameof(TableWithFooter.FooterColumn2).ToLower(), Conditional())
                                     ]
                                 ),
-                                dataKey: nameof(Row.Label),
-                                data: Remote(domain.Types[typeof(DataTableSamples)].GetMembers().Methods[nameof(DataTableSamples.GetTableDataWithFooter)].GetSingle<ActionModelAttribute>().GetRoute(),
+                                dataKey: nameof(TableRow.Label).ToLower(),
+                                data: Remote(domain.Types[typeof(Theme.DataTable)].GetMembers().Methods[nameof(Theme.DataTable.GetTableDataWithFooter)].GetSingle<ActionModelAttribute>().GetRoute(),
                                     query: Injected(custom: true)
                                 ),
-                                scrollHeight: "558px"
+                                scrollHeight: "500px"
                             )
                         )
                     ]

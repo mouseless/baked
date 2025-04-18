@@ -58,10 +58,10 @@ public static class Components
         bool minWidth = false
     ) => new(prop, component ?? Conditional()) { MinWidth = minWidth, Title = title };
 
-    public static DataTable.FooterRow DataTableFooter(string label, List<DataTable.FooterColumn> columns) =>
+    public static DataTable.FooterRow DataTableFooter(string label, List<DataTable.Column> columns) =>
         new(label) { Columns = columns };
 
-    public static DataTable.FooterColumn DataTableFooterColumn(string prop,
+    public static DataTable.Column DataTableFooterColumn(string prop,
         Conditional? component = default
     ) => new(prop, component ?? Conditional());
 
