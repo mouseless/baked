@@ -108,12 +108,14 @@ public static class MockCommunicationExtensions
     public static ClientException AClientException(this Stubber _,
         HttpStatusCode? statusCode = default,
         string? content = default,
+        string? message = default,
         Exception? httpRequestExceptionInner = default
     )
     {
         content ??= "An exception has occured";
+        message ??= content;
         statusCode ??= HttpStatusCode.BadRequest;
 
-        return new(content, new(content, httpRequestExceptionInner, statusCode));
+        return new(content, new(message, httpRequestExceptionInner, statusCode));
     }
 }

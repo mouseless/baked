@@ -19,3 +19,5 @@
   text ending with ellipsis and show full text with a tooltip
 - `IReportContext`, now allows nulls in parameter dictionary.
 - New `ToBase64Url` and `FromBase64Url` extensions added.
+- `showUnhandled` flag is added to exception handling, and enabled by default in
+  staging environment

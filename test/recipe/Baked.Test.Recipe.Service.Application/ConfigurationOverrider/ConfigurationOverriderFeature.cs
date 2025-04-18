@@ -52,7 +52,6 @@ public class ConfigurationOverriderFeature : IFeature
 
         configurator.ConfigureServiceCollection(services =>
         {
-            services.AddSingleton<IExceptionHandler, ClientExceptionHandler>();
             services.AddSingleton<IExceptionHandler, SampleExceptionHandler>();
             services.AddHostedService<SeedDataTrigger>();
         });

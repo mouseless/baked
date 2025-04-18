@@ -2,4 +2,7 @@
 
 namespace Baked.ExceptionHandling.ProblemDetails;
 
-public record ExceptionHandlerSettings(Setting<string>? TypeUrlFormat);
+public record ExceptionHandlerSettings(
+    Setting<string>? TypeUrlFormat,
+    Setting<bool> ShowUnhandled
+);
