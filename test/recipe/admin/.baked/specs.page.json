@@ -179,7 +179,20 @@
                 "route": "/specs/money",
                 "icon": "pi pi-microchip",
                 "title": "Money",
-                "description": "Render money values",
+                "description": "Shortens and renders money values with the full value shown as tooltip",
+                "disabled": false
+              }
+            }
+          },
+          {
+            "title": "Number",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/number",
+                "icon": "pi pi-microchip",
+                "title": "Number",
+                "description": "Shortens and renders numbers with the full value shown as tooltip",
                 "disabled": false
               }
             }

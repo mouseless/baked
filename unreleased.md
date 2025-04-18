@@ -4,6 +4,8 @@
 
 - Beta features are available in `baked-recipe-admin`;
   - `Message` component is with icon and severity support
+  - `Number` component is introduced to display numbers in formatted with
+    tooltips
 
 ## Improvements
 
