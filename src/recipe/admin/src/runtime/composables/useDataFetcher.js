@@ -76,18 +76,15 @@ export default function() {
       ? unref.deepUnref(await fetch({ baseURL, data: data.query, injectedData }))
       : { };
 
-    const options = composables?.useDataFetcher?.retryFetch
-      ? {
-        retry: Number.MAX_VALUE,
-        retryDelay: 200,
-        retryStatusCodes: [500]
-      }
-      : { };
+    const options = composables?.useDataFetcher?.retryFetch ?? { };
 
     return await $fetch(
       data.path,
       {
         ...options ?? { },
+        onResponseError({ options }) {
+          options.retry = 0;
+        },
         baseURL,
         headers: headers,
         query: query
