@@ -83,6 +83,21 @@ test.describe("Auto Hide Pagination", () => {
   });
 });
 
+test.describe("Footer", () => {
+  const id = "Footer";
+
+  test("Show footer row when configured in schema", async({page}) => {
+    const component = page.getByTestId(id);
+    const footer = component.locator(primevue.datatable.footer);
+
+    await expect(footer.locator("td")).toHaveCount(3);
+    await expect(footer.locator("td").first()).toHaveText("Total");
+    expect(await footer.locator("td").first().getAttribute("colspan")).toBe("3");
+    await expect(footer.locator("td").nth(1)).toHaveText("3");
+    await expect(footer.locator("td").nth(2)).toHaveText("30");
+  });
+});
+
 test.describe("Loading", () => {
   const id = "Loading";
 

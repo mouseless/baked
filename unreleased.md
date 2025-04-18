@@ -21,3 +21,5 @@
 - New `ToBase64Url` and `FromBase64Url` extensions added.
 - `showUnhandled` flag is added to exception handling, and enabled by default in
   staging environment
+- `Datatable` component now has footer support
+- `Datatable` component now has scrollable toggle
