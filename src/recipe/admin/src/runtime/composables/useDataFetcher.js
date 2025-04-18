@@ -82,6 +82,9 @@ export default function() {
       data.path,
       {
         ...options ?? { },
+        onResponseError({ options }) {
+          options.retry = 0;
+        },
         baseURL,
         headers: headers,
         query: query
