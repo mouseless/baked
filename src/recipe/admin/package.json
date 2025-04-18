@@ -59,5 +59,8 @@
     "vitest": "^3.1.1",
     "vue-tsc": "^2.2.4"
   },
-  "bundleDependencies": ["@primeuix/themes", "primeicons", "primevue"]
+  "bundleDependencies": ["@primeuix/themes", "primeicons", "primevue"],
+  "optionalDependencies": {
+    "@rollup/rollup-win32-x64-msvc": "4.40.0"
+  }
 }
