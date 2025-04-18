@@ -6,7 +6,7 @@ namespace Baked.ExceptionHandling.ProblemDetails;
 public class ExceptionHandler(IEnumerable<IExceptionHandler> _handlers, ExceptionHandlerSettings _settings)
     : Microsoft.AspNetCore.Diagnostics.IExceptionHandler
 {
-    readonly UnhandledExceptionHandler _unhandledExceptionHandler = new();
+    readonly UnhandledExceptionHandler _unhandledExceptionHandler = new(_settings);
 
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {

@@ -7,7 +7,7 @@ using System.Net;
 
 namespace Baked.ExceptionHandling.ProblemDetails;
 
-public class ProblemDetailsExceptionHandlingFeature(Setting<string>? _typeUrlFormat)
+public class ProblemDetailsExceptionHandlingFeature(Setting<string>? _typeUrlFormat, Setting<bool>? _showUnhandled)
     : IFeature<ExceptionHandlingConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
@@ -33,9 +33,10 @@ public class ProblemDetailsExceptionHandlingFeature(Setting<string>? _typeUrlFor
         configurator.ConfigureServiceCollection(services =>
         {
             services.AddSingleton<IExceptionHandler, AuthenticationExceptionHandler>();
+            services.AddSingleton<IExceptionHandler, ClientExceptionHandler>();
             services.AddSingleton<IExceptionHandler, UnauthorizedAccessExceptionHandler>();
             services.AddSingleton<IExceptionHandler, HandledExceptionHandler>();
-            services.AddSingleton(new ExceptionHandlerSettings(_typeUrlFormat));
+            services.AddSingleton(new ExceptionHandlerSettings(_typeUrlFormat, _showUnhandled ?? configurator.IsStaging()));
             services.AddExceptionHandler<ExceptionHandler>();
             services.AddProblemDetails();
         });

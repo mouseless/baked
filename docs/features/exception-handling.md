@@ -9,12 +9,15 @@ app.Features.AddExceptionHandling(...);
 ## Problem Details
 
 This feature implementation adds .NET `ProblemDetails` services with a custom
-`IExceptionHandler` implementation that loops through `Baked.IExceptionHandler` 
-services and uses first matching handler for current exception. It also adds a 
+`IExceptionHandler` implementation that loops through `Baked.IExceptionHandler`
+services and uses first matching handler for current exception. It also adds a
 custom middleware that logs exceptions.
 
 ```csharp
-c => c.ProblemDetails(typeUrlFormat: "https://my-service.com/errors/{0}")
+c => c.ProblemDetails(
+  typeUrlFormat: "https://my-service.com/errors/{0}",
+  showUnhandled: true
+)
 ```
 
 > [!NOTE]
@@ -28,7 +31,7 @@ By default this feature handles following exceptions;
 - `HandledException` which returns 400 status code unless overridden
 
 `HandledException` is an opinionated abstraction which helps providing
-necessary data for a handled exception result. Below is a sample for creating 
+necessary data for a handled exception result. Below is a sample for creating
 a user defined exception;
 
 ```csharp
@@ -36,8 +39,8 @@ public class CustomHandledException(string message)
     : HandledException(message);
 ```
 
-All remaining exceptions will be handled by the `UnhandledExceptionHandler` 
-fallback, which returns a `500` result with exception type as title and a 
+All remaining exceptions will be handled by the `UnhandledExceptionHandler`
+fallback, which returns a `500` result with exception type as title and a
 simple detail message.
 
 ```json
@@ -51,9 +54,9 @@ simple detail message.
 
 ### Adding Custom Exception Handlers
 
-To add a custom exception handler, you can create a  
+To add a custom exception handler, you can create a
 `Baked.IExceptionHandler` implementation and register it in
-`ConfigurationOverriderFeature`. 
+`ConfigurationOverriderFeature`.
 
 Below is a sample for how to create and register an exception handler
 
