@@ -72,6 +72,35 @@ const variants = [
       columns: [ giveMe.aDataTableColumn({ prop: "data" }) ],
       data: [ { data: "Row 1" } ]
     })
+  },
+  {
+    name: "Footer",
+    descriptor: giveMe.aDataTable({
+      columns: [
+        giveMe.aDataTableColumn({ title: "Label", prop: "label", minWidth: true, component: giveMe.aConditional({ testId: "label" })}),
+        giveMe.aDataTableColumn({ title: "Data 1", prop: "data1", component: giveMe.aConditional({ testId: "prop-1" })}),
+        giveMe.aDataTableColumn({ title: "Data 2", prop: "data2", component: giveMe.aConditional({ testId: "prop-2" })}),
+        giveMe.aDataTableColumn({ title: "Data 3", prop: "data3", component: giveMe.aConditional({ testId: "prop-3" })}),
+        giveMe.aDataTableColumn({ title: "Data 4", prop: "data4", component: giveMe.aConditional({ testId: "prop-4" })})
+      ],
+      footerTemplate: {
+        label: "Total",
+        columns: [
+          giveMe.aDataTableColumn({ prop: "footer1"}),
+          giveMe.aDataTableColumn({ prop: "footer2"})
+        ]
+      },
+      itemsProp: "children",
+      rowsWhenLoading: 2,
+      data: {
+        children: [
+          { label: "Row 1", data1: "Cell 1.1", data2: "Cell 1.2", data3: "1", data4: "10" },
+          { label: "Row 2", data1: "Cell 2.1", data2: "Cell 2.2", data3: "2", data4: "20" }
+        ],
+        footer1: "3",
+        footer2: "30"
+      }
+    })
   }
 ];
 </script>
