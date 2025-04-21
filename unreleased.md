@@ -2,4 +2,4 @@
 
 ## Improvements
 
-- `500` errors are treated as fetch error.
+- `500` exceptions retry issue, fixed.
