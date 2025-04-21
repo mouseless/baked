@@ -65,11 +65,12 @@ export default {
     };
   },
 
-  aDataTable({ columns, dataKey, paginator, rows, rowsWhenLoading, data } = {}) {
+  aDataTable({ columns, dataKey, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, data } = {}) {
     columns = $(columns, [
       this.aDataTableColumn({ prop: "test" })
     ]);
     dataKey = $(dataKey, null);
+    itemsProp = $(itemsProp, footerTemplate ? "items" : undefined);
     paginator = $(paginator, false);
     rows = $(rows, null);
     rowsWhenLoading = $(rowsWhenLoading, null);
@@ -81,7 +82,7 @@ export default {
 
     return {
       type: "DataTable",
-      schema: { columns, dataKey, paginator, rows, rowsWhenLoading },
+      schema: { columns, dataKey, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading },
       data: { type: "Inline", value: data }
     };
   },

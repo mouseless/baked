@@ -83,12 +83,18 @@ public static class CoreExtensions
     public static void ShouldBe(this Uri? uri, string urlString) =>
         uri?.ToString().ShouldBe(urlString);
 
-    public static void ShouldDeeplyBe(this object? payload, object? json) =>
-        payload.ToJsonString().ShouldBe(json.ToJsonString());
+    public static void ShouldDeeplyBe(this object? payload, object? json,
+        bool useSystemTextJson = false
+    ) => payload
+        .ToJsonString(useSystemTextJson: useSystemTextJson)
+        .ShouldBe(json.ToJsonString(useSystemTextJson: useSystemTextJson));
 
     [return: NotNullIfNotNull("payload")]
-    public static string? ToJsonString(this object? payload) =>
-        payload is null ? null : JsonConvert.SerializeObject(payload);
+    public static string? ToJsonString(this object? payload,
+        bool useSystemTextJson = false
+    ) => payload is null ? null :
+        useSystemTextJson ? System.Text.Json.JsonSerializer.Serialize(payload) :
+        JsonConvert.SerializeObject(payload);
 
     [return: NotNullIfNotNull("payload")]
     public static object? ToJsonObject(this object? payload) =>

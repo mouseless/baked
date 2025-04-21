@@ -14,7 +14,10 @@ services and uses first matching handler for current exception. It also adds a
 custom middleware that logs exceptions.
 
 ```csharp
-c => c.ProblemDetails(typeUrlFormat: "https://my-service.com/errors/{0}")
+c => c.ProblemDetails(
+  typeUrlFormat: "https://my-service.com/errors/{0}",
+  showUnhandled: true
+)
 ```
 
 > [!NOTE]

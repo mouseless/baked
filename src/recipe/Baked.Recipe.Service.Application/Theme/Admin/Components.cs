@@ -39,11 +39,27 @@ public static class Components
     public static ComponentDescriptorAttribute<DataTable> DataTable(
         IEnumerable<DataTable.Column>? columns = default,
         string? dataKey = default,
+        string? itemsProp = default,
         bool paginator = false,
         int? rows = default,
         int? rowsWhenLoading = default,
+        string? scrollHeight = default,
+        DataTable.Footer? footerTemplate = default,
         IData? data = default
-    ) => new(new() { Columns = [.. columns ?? []], DataKey = dataKey, Paginator = paginator, Rows = rows, RowsWhenLoading = rowsWhenLoading }) { Data = data };
+    ) => new(
+        new()
+        {
+            Columns = [.. columns ?? []],
+            DataKey = dataKey,
+            ItemsProp = itemsProp,
+            Paginator = paginator,
+            Rows = rows,
+            RowsWhenLoading = rowsWhenLoading,
+            ScrollHeight = scrollHeight,
+            FooterTemplate = footerTemplate
+        }
+    )
+    { Data = data };
 
     public static DataTable.Column DataTableColumn(string prop, IComponentDescriptor component,
         string? title = default,
@@ -55,6 +71,9 @@ public static class Components
         string? title = default,
         bool minWidth = false
     ) => new(prop, component ?? Conditional()) { MinWidth = minWidth, Title = title };
+
+    public static DataTable.Footer DataTableFooter(string label, List<DataTable.Column> columns) =>
+        new(label) { Columns = columns };
 
     public static ComponentDescriptorAttribute<DefaultLayout> DefaultLayout(string name,
         IComponentDescriptor? sideMenu = default,

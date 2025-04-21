@@ -10,6 +10,9 @@ export default {
     icon: ".p-breadcrumb-item-icon",
     label: ".p-breadcrumb-item-label"
   },
+  datatable: {
+    footer: ".p-datatable-tfoot"
+  },
   datepicker: {
     weekday: ".p-datepicker-weekday"
   },
