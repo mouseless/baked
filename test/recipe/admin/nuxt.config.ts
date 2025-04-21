@@ -32,9 +32,9 @@ export default defineNuxtConfig({
     composables: {
       useDataFetcher: {
         baseURL: process.env.API_BASE_URL,
-        retryFetch: {
-          retry: Number.MAX_VALUE,
-          retryDelay: 200
+        retryWhenNoResponse: {
+          maxRetry: Number.MAX_VALUE,
+          delay: 200
         }
       }
     },

@@ -76,7 +76,7 @@ export default function() {
       ? unref.deepUnref(await fetch({ baseURL, data: data.query, injectedData }))
       : { };
 
-    const retryFetchOptions = composables?.useDataFetcher?.retryFetch ?? { };
+    const retryOptions = composables?.useDataFetcher?.retryWhenNoResponse ?? { };
 
     return await fetchWithRetry(
       data.path,
@@ -85,22 +85,22 @@ export default function() {
         headers: headers,
         query: query
       },
-      retryFetchOptions
+      retryOptions
     );
   }
 
   async function fetchWithRetry(url, options, retryOptions) {
     let retries = 0;
-    const { maxRetries = 10, retryDelay = 100 } = retryOptions;
+    const { maxRetry = 10, delay = 100 } = retryOptions;
 
-    while (retries <= maxRetries) {
+    while (retries <= maxRetry) {
       try { return await $fetch(url, options); }
       catch (error) {
         if (error.response) { throw error; }
 
-        if (retries < maxRetries) {
+        if (retries < maxRetry) {
           retries++;
-          await new Promise(resolve => setTimeout(resolve, retryDelay));
+          await new Promise(resolve => setTimeout(resolve, delay));
         } else {
           throw error;
         }
