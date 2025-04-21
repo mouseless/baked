@@ -78,18 +78,34 @@ export default function() {
 
     const retryFetchOptions = composables?.useDataFetcher?.retryFetch ?? { };
 
-    return await $fetch(
+    return await fetchWithRetry(
       data.path,
       {
-        ...retryFetchOptions ?? { },
-        onResponseError({ options }) {
-          options.retry = 0;
-        },
         baseURL,
         headers: headers,
         query: query
-      }
+      },
+      retryFetchOptions
     );
+  }
+
+  async function fetchWithRetry(url, options, retryOptions) {
+    let retries = 0;
+    const { maxRetries = 10, retryDelay = 100 } = retryOptions;
+
+    while (retries <= maxRetries) {
+      try { return await $fetch(url, options); }
+      catch (error) {
+        if (error.response) { throw error; }
+
+        if (retries < maxRetries) {
+          retries++;
+          await new Promise(resolve => setTimeout(resolve, retryDelay));
+        } else {
+          throw error;
+        }
+      }
+    }
   }
 
   function format(formatString, args) {

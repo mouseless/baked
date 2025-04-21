@@ -34,8 +34,7 @@ export default defineNuxtConfig({
         baseURL: process.env.API_BASE_URL,
         retryFetch: {
           retry: Number.MAX_VALUE,
-          retryDelay: 200,
-          retryStatusCodes: [500]
+          retryDelay: 200
         }
       }
     },
