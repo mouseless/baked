@@ -101,6 +101,40 @@ const variants = [
         footer2: "30"
       }
     })
+  },
+  {
+    name: "Export",
+    descriptor: giveMe.aDataTable({
+      columns: [
+        giveMe.aDataTableColumn({ title: "Label", prop: "label", minWidth: true, component: giveMe.aConditional({ testId: "label" }), exportable: true }),
+        giveMe.aDataTableColumn({ title: "Data 1", prop: "data1", component: giveMe.aConditional({ testId: "prop-1" }), exportable: true }),
+        giveMe.aDataTableColumn({ title: "Data 2", prop: "data2", component: giveMe.aConditional({ testId: "prop-2" }), exportable: true }),
+        giveMe.aDataTableColumn({ title: "Data 3", prop: "data3", component: giveMe.aConditional({ testId: "prop-3" }), exportable: true }),
+        giveMe.aDataTableColumn({ title: "Data 4", prop: "data4", component: giveMe.aConditional({ testId: "prop-4" }), exportable: true })
+      ],
+      exportOptions: giveMe.anExportOptions({
+        csvSeperator: ";",
+        formatter: "useCsvFormatter",
+        label: "CSV"
+      }),
+      footerTemplate: {
+        label: "Total",
+        columns: [
+          giveMe.aDataTableColumn({ prop: "footer1", exportable: true}),
+          giveMe.aDataTableColumn({ prop: "footer2", exportable: true})
+        ]
+      },
+      itemsProp: "children",
+      rowsWhenLoading: 2,
+      data: {
+        children: [
+          { label: "Row 1", data1: "Cell 1.1", data2: "Cell 1.2", data3: "1", data4: "10" },
+          { label: "Row 2", data1: "Cell 2.1", data2: "Cell 2.2", data3: "2", data4: "20" }
+        ],
+        footer1: "3",
+        footer2: "30"
+      }
+    })
   }
 ];
 </script>

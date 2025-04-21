@@ -45,6 +45,7 @@ public static class Components
         int? rowsWhenLoading = default,
         string? scrollHeight = default,
         DataTable.Footer? footerTemplate = default,
+        DataTable.Export? exportOptions = default,
         IData? data = default
     ) => new(
         new()
@@ -56,21 +57,28 @@ public static class Components
             Rows = rows,
             RowsWhenLoading = rowsWhenLoading,
             ScrollHeight = scrollHeight,
-            FooterTemplate = footerTemplate
+            FooterTemplate = footerTemplate,
+            ExportOptions = exportOptions
         }
     )
     { Data = data };
 
     public static DataTable.Column DataTableColumn(string prop, IComponentDescriptor component,
         string? title = default,
-        bool minWidth = false
-    ) => DataTableColumn(prop, component: Conditional(fallback: component), title: title, minWidth: minWidth);
+        bool minWidth = false,
+        bool exportable = false,
+        string? exportHeader = default,
+        string? exportFooter = default
+    ) => DataTableColumn(prop, component: Conditional(fallback: component), title: title, minWidth: minWidth, exportable: exportable, exportHeader: exportHeader, exportFooter: exportFooter);
 
     public static DataTable.Column DataTableColumn(string prop,
         Conditional? component = default,
         string? title = default,
-        bool minWidth = false
-    ) => new(prop, component ?? Conditional()) { MinWidth = minWidth, Title = title };
+        bool minWidth = false,
+        bool exportable = false,
+        string? exportHeader = default,
+        string? exportFooter = default
+    ) => new(prop, component ?? Conditional(), exportable) { MinWidth = minWidth, Title = title, ExportHeader = exportHeader, ExportFooter = exportFooter };
 
     public static DataTable.Footer DataTableFooter(string label, List<DataTable.Column> columns) =>
         new(label) { Columns = columns };

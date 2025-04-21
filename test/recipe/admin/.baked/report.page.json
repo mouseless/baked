@@ -255,7 +255,8 @@
                           "conditions": []
                         },
                         "title": "Label",
-                        "minWidth": true
+                        "minWidth": true,
+                        "exportable": false
                       },
                       {
                         "prop": "column1",
@@ -267,7 +268,8 @@
                           "conditions": []
                         },
                         "title": "Column 1",
-                        "minWidth": false
+                        "minWidth": false,
+                        "exportable": false
                       },
                       {
                         "prop": "column2",
@@ -279,7 +281,8 @@
                           "conditions": []
                         },
                         "title": "Column 2",
-                        "minWidth": false
+                        "minWidth": false,
+                        "exportable": false
                       },
                       {
                         "prop": "column3",
@@ -291,7 +294,8 @@
                           "conditions": []
                         },
                         "title": "Column 3",
-                        "minWidth": false
+                        "minWidth": false,
+                        "exportable": false
                       }
                     ],
                     "dataKey": "label",
@@ -377,7 +381,8 @@
                           "conditions": []
                         },
                         "title": "Label",
-                        "minWidth": true
+                        "minWidth": true,
+                        "exportable": false
                       },
                       {
                         "prop": "column1",
@@ -389,7 +394,8 @@
                           "conditions": []
                         },
                         "title": "Column 1",
-                        "minWidth": false
+                        "minWidth": false,
+                        "exportable": false
                       },
                       {
                         "prop": "column2",
@@ -401,7 +407,8 @@
                           "conditions": []
                         },
                         "title": "Column 2",
-                        "minWidth": false
+                        "minWidth": false,
+                        "exportable": false
                       },
                       {
                         "prop": "column3",
@@ -413,7 +420,8 @@
                           "conditions": []
                         },
                         "title": "Column 3",
-                        "minWidth": false
+                        "minWidth": false,
+                        "exportable": false
                       }
                     ],
                     "dataKey": "label",

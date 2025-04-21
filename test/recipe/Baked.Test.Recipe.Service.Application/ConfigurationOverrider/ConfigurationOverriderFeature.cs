@@ -435,17 +435,24 @@ public class ConfigurationOverriderFeature : IFeature
                                             )
                                         ],
                                         content: DataTable(
-                                            columns: [.. domain.Types[typeof(TableRow)].GetMembers().Properties.Where(p => p.IsPublic).Select(p => DataTableColumn(p.Name.Camelize(), title: p.Name))],
+                                            columns: [.. domain.Types[typeof(TableRow)].GetMembers().Properties.Where(p => p.IsPublic).Select(p =>
+                                                DataTableColumn(p.Name.Camelize(),
+                                                    title: p.Name,
+                                                    exportable: true,
+                                                    exportHeader: p.Name.Humanize(LetterCasing.AllCaps)
+                                                ))
+                                            ],
                                             footerTemplate: DataTableFooter("Total",
                                                 columns:
                                                 [
-                                                    DataTableColumn(nameof(TableWithFooter.FooterColumn1).Camelize(), Conditional()),
-                                                    DataTableColumn(nameof(TableWithFooter.FooterColumn2).Camelize(), Conditional())
+                                                    DataTableColumn(nameof(TableWithFooter.FooterColumn1).Camelize(), Conditional(), exportable: true),
+                                                    DataTableColumn(nameof(TableWithFooter.FooterColumn2).Camelize(), Conditional(), exportable : true)
                                                 ]
                                             ),
                                             dataKey: nameof(TableRow.Label).Camelize(),
                                             itemsProp: "items",
                                             scrollHeight: "500px",
+                                            exportOptions: new(";", "data-table-export") { Formatter = "useCsvFormatter" },
                                             data: Remote(domain.Types[typeof(Theme.DataTable)].GetMembers().Methods[nameof(Theme.DataTable.GetTableDataWithFooter)].GetSingle<ActionModelAttribute>().GetRoute(),
                                                 query: Injected(custom: true)
                                             )

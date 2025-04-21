@@ -61,7 +61,9 @@
                           "conditions": []
                         },
                         "title": "Label",
-                        "minWidth": false
+                        "minWidth": false,
+                        "exportable": true,
+                        "exportHeader": "LABEL"
                       },
                       {
                         "prop": "column1",
@@ -73,7 +75,9 @@
                           "conditions": []
                         },
                         "title": "Column1",
-                        "minWidth": false
+                        "minWidth": false,
+                        "exportable": true,
+                        "exportHeader": "COLUMN 1"
                       },
                       {
                         "prop": "column2",
@@ -85,7 +89,9 @@
                           "conditions": []
                         },
                         "title": "Column2",
-                        "minWidth": false
+                        "minWidth": false,
+                        "exportable": true,
+                        "exportHeader": "COLUMN 2"
                       },
                       {
                         "prop": "column3",
@@ -97,7 +103,9 @@
                           "conditions": []
                         },
                         "title": "Column3",
-                        "minWidth": false
+                        "minWidth": false,
+                        "exportable": true,
+                        "exportHeader": "COLUMN 3"
                       }
                     ],
                     "dataKey": "label",
@@ -116,7 +124,10 @@
                             },
                             "conditions": []
                           },
-                          "minWidth": false
+                          "minWidth": false,
+                          "exportable": true,
+                          "exportHeader": "a",
+                          "exportFooter": "b"
                         },
                         {
                           "prop": "footerColumn2",
@@ -127,9 +138,17 @@
                             },
                             "conditions": []
                           },
-                          "minWidth": false
+                          "minWidth": false,
+                          "exportable": true,
+                          "exportHeader": "a",
+                          "exportFooter": "b"
                         }
                       ]
+                    },
+                    "exportOptions": {
+                      "csvSeperator": ";",
+                      "formatter": "useCsvFormatter",
+                      "fileName": "data-table-export"
                     }
                   },
                   "data": {

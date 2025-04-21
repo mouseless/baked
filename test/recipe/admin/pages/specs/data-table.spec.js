@@ -98,6 +98,18 @@ test.describe("Footer", () => {
   });
 });
 
+test.describe("Export", () => {
+  const id = "Export";
+
+  test("Shows export button when configured", async({page}) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.locator(primevue.datatable.header)).toBeAttached();
+    await expect(component.locator(`${primevue.datatable.header} ${primevue.button.base}`)).toBeAttached();
+    await expect(component.locator(`${primevue.datatable.header} ${primevue.button.base}`)).toHaveText("CSV");
+  });
+});
+
 test.describe("Loading", () => {
   const id = "Loading";
 

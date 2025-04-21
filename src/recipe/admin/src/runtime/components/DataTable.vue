@@ -11,7 +11,7 @@
     :scroll-height
     :csv-separator="exportOptions?.csvSeperator"
     :export-filename="exportOptions?.fileName"
-    :export-function="exportFunction"
+    :export-function
   >
     <template
       v-if="exportOptions"
@@ -21,7 +21,7 @@
         <Button
           icon="pi pi-external-link"
           :label="exportOptions?.label"
-          @click="exportDataTable($event)"
+          @click="exportDataTable"
         />
       </div>
     </template>
@@ -32,6 +32,8 @@
       :header="column.title"
       class="text-nowrap"
       :class="{ 'min-w-40': column.minWidth }"
+      :exportable="column.exportable"
+      :export-header="column.exportHeader"
     >
       <template #body="{ data: row, index }">
         <Skeleton
@@ -55,16 +57,21 @@
     <ColumnGroup
       v-if="footerTemplate"
       type="footer"
+      exportparts="true"
     >
       <Row>
         <Column
           :footer="footerTemplate.label"
           :colspan="footerColSpan"
           footer-style="text-align:right"
+          :exportable="true"
         />
         <Column
           v-for="column in footerTemplate.columns"
           :key="column.prop"
+          :exportable="column.exportable"
+          :export-header="column.exportHeader"
+          :export-footer="column.exportFooter"
         >
           <template #footer>
             <Skeleton
@@ -118,15 +125,18 @@ const value = computed(() =>
 );
 const footerColSpan = computed(() => columns.length - footerTemplate?.columns.length);
 const scrollable = scrollHeight !== undefined;
+const formatter = ref();
 
 function exportDataTable() {
-  datatable.value.exportCSV();
-};
+  composableResolver.resolve(exportOptions.formatter).then(result => {
+    formatter.value = result.default();
+    datatable.value.exportCSV();
+  });
+}
 
 function exportFunction({ data, field }) {
-  if(!exportOptions || !exportOptions.formatter) { return data; }
-
-  const formatter = composableResolver.resolve(exportOptions.formatter);
-  return formatter.format(data, field);
+  if(!formatter.value || !formatter.value) { return data; }
+  
+  return formatter.value.format(data, field);;
 }
 </script>

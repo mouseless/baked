@@ -65,7 +65,7 @@ export default {
     };
   },
 
-  aDataTable({ columns, dataKey, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, data } = {}) {
+  aDataTable({ columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, data } = {}) {
     columns = $(columns, [
       this.aDataTableColumn({ prop: "test" })
     ]);
@@ -82,22 +82,26 @@ export default {
 
     return {
       type: "DataTable",
-      schema: { columns, dataKey, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading },
+      schema: { columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading },
       data: { type: "Inline", value: data }
     };
   },
 
-  aDataTableColumn({ title, prop, minWidth, component } = {}) {
+  aDataTableColumn({ title, prop, minWidth, component, exportable, exportHeader, exportFooter } = {}) {
     title = $(title, "Test");
     prop = $(prop, "test");
     minWidth = $(minWidth, false);
     component = $(component, this.aConditional());
+    exportable = $(exportable, false);
 
     return {
       title,
       prop,
       minWidth,
-      component
+      component,
+      exportable,
+      exportHeader,
+      exportFooter
     };
   },
 
@@ -141,6 +145,19 @@ export default {
       type: "Expected",
       schema: testId,
       data
+    };
+  },
+
+  anExportOptions({ csvSeperator, fileName, formatter, label }) {
+    csvSeperator = $(csvSeperator, ";");
+    fileName = $(fileName, `${Date.now()}`);
+    label = $(label, "");
+
+    return {
+      csvSeperator,
+      fileName,
+      formatter,
+      label
     };
   },
 
