@@ -1,5 +1,6 @@
 <template>
   <DataTable
+    ref="datatable"
     :value
     class="text-sm min-h-24"
     striped-rows
@@ -8,7 +9,22 @@
     :rows
     :scrollable
     :scroll-height
+    :csv-separator="exportOptions?.csvSeperator"
+    :export-filename="exportOptions?.fileName"
+    :export-function="exportFunction"
   >
+    <template
+      v-if="exportOptions"
+      #header
+    >
+      <div class="text-end pb-4">
+        <Button
+          icon="pi pi-external-link"
+          :label="exportOptions?.label"
+          @click="exportDataTable($event)"
+        />
+      </div>
+    </template>
     <Column
       v-for="column in columns"
       :key="column.prop"
@@ -74,22 +90,24 @@
   </DataTable>
 </template>
 <script setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import Column from "primevue/column";
-import { ColumnGroup, DataTable, Row, Skeleton } from "primevue";
+import { Button, ColumnGroup, DataTable, Row, Skeleton } from "primevue";
 import { Bake } from "#components";
-import { useConditional, useContext } from "#imports";
+import { useComposableResolver, useConditional, useContext } from "#imports";
 
 const conditional = useConditional();
 const context = useContext();
+const composableResolver = useComposableResolver();
 
 const { schema, data } = defineProps({
   schema: { type: null, required: true },
   data: { type: null, required: true }
 });
 
-const { columns, dataKey, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight } = schema;
+const { columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight } = schema;
 
+const datatable = ref();
 const loading = context.loading();
 const value = computed(() =>
   data
@@ -100,4 +118,15 @@ const value = computed(() =>
 );
 const footerColSpan = computed(() => columns.length - footerTemplate?.columns.length);
 const scrollable = scrollHeight !== undefined;
+
+function exportDataTable() {
+  datatable.value.exportCSV();
+};
+
+function exportFunction({ data, field }) {
+  if(!exportOptions || !exportOptions.formatter) { return data; }
+
+  const formatter = composableResolver.resolve(exportOptions.formatter);
+  return formatter.format(data, field);
+}
 </script>
