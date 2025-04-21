@@ -76,12 +76,12 @@ export default function() {
       ? unref.deepUnref(await fetch({ baseURL, data: data.query, injectedData }))
       : { };
 
-    const options = composables?.useDataFetcher?.retryFetch ?? { };
+    const retryFetchOptions = composables?.useDataFetcher?.retryFetch ?? { };
 
     return await $fetch(
       data.path,
       {
-        ...options ?? { },
+        ...retryFetchOptions ?? { },
         onResponseError({ options }) {
           options.retry = 0;
         },
