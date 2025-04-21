@@ -42,7 +42,12 @@ export interface Composables {
 
 export interface UseDataFetcherOptions {
   baseURL: String
-  retryFetch?: Boolean
+  retryWhenNoResponse?: retryWhenNoResponseOptions
+}
+
+export interface retryWhenNoResponseOptions {
+  maxRetry?: Number,
+  delay?: Number
 }
 
 export interface UseFormatOptions {

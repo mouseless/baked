@@ -90,11 +90,16 @@ export default function() {
   }
 
   async function fetchWithRetry(url, options, retryOptions) {
+    const { maxRetry = 0, delay = 0 } = retryOptions;
     let retries = 0;
-    const { maxRetry = 10, delay = 100 } = retryOptions;
 
     while (retries <= maxRetry) {
-      try { return await $fetch(url, options); }
+      try {
+        return await $fetch(url, {
+          ...options,
+          retry: false
+        });
+      }
       catch (error) {
         if (error.response) { throw error; }
 
