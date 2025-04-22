@@ -32,7 +32,7 @@ export default defineNuxtConfig({
     composables: {
       useDataFetcher: {
         baseURL: process.env.API_BASE_URL,
-        retryFetch: true
+        retry: true
       }
     },
     primevue: {

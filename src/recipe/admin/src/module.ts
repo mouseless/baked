@@ -41,8 +41,13 @@ export interface Composables {
 }
 
 export interface UseDataFetcherOptions {
-  baseURL: String
-  retryFetch?: Boolean
+  baseURL: String,
+  retry?: RetryOptions | Boolean
+}
+
+export interface RetryOptions {
+  maxRetry?: Number,
+  delay?: Number
 }
 
 export interface UseFormatOptions {
