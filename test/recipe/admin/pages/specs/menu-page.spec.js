@@ -35,8 +35,8 @@ test.describe("Sections", () => {
     const component = page.getByTestId(id);
     const titles = component.locator("h2");
 
-    await expect(titles.nth(0)).toHaveText("Section 1");
-    await expect(titles.nth(1)).toHaveText("Section 2");
+    await expect(titles.nth(0)).toHaveText("SECTION 1");
+    await expect(titles.nth(1)).toHaveText("SECTION 2");
   });
 });
 

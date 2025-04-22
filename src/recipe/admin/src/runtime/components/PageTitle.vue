@@ -15,7 +15,10 @@
           {{ description || "&nbsp;" }}
         </div>
       </div>
-      <div class="min-w-min pt-6 flex gap-2 row-span-2 items-end text-nowrap">
+      <div
+        v-focustrap
+        class="min-w-min pt-6 flex gap-2 row-span-2 items-end text-nowrap"
+      >
         <Bake
           v-for="action in actions"
           :key="action.schema.name"

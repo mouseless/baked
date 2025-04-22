@@ -3,6 +3,7 @@
     <InputIcon class="pi pi-search" />
     <InputText
       v-model="page[pageContextKey]"
+      autofocus
       :placeholder
     />
   </IconField>
@@ -13,11 +14,12 @@ import { useContext } from "#imports";
 
 const context = useContext();
 
-const { schema, data } = defineProps({
+const { schema } = defineProps({
   schema: { type: null, required: true },
   data: { type: null, required: true }
 });
 
 const { placeholder, pageContextKey } = schema;
+
 const page = context.page();
 </script>

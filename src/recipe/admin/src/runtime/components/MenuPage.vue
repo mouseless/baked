@@ -16,11 +16,11 @@
         <h2
           v-if="section.title"
           class="
-            text-zinc-400 dark:text-zinc-600
-            uppercase text-xs font-bold
+            text-zinc-500 dark:text-zinc-500
+            text-sm font-bold
           "
         >
-          {{ section.title }}
+          {{ section.title?.toLocaleUpperCase(locale) }}
         </h2>
         <Divider
           v-if="section.title"
