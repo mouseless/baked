@@ -2,4 +2,5 @@
 
 ## Improvements
 
-- `500` exceptions retry issue, fixed.
+- `500` responses from running backend were causing retry instead of redirecting
+  to error page, fixed.
