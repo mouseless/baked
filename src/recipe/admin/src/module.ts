@@ -41,8 +41,8 @@ export interface Composables {
 }
 
 export interface UseDataFetcherOptions {
-  baseURL: String
-  retry?: RetryOptions
+  baseURL: String,
+  retry?: RetryOptions | Boolean
 }
 
 export interface RetryOptions {

@@ -32,10 +32,7 @@ export default defineNuxtConfig({
     composables: {
       useDataFetcher: {
         baseURL: process.env.API_BASE_URL,
-        retry: {
-          maxRetry: Number.MAX_VALUE,
-          delay: 200
-        }
+        retry: true
       }
     },
     primevue: {
