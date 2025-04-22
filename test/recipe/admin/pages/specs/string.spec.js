@@ -9,13 +9,13 @@ test.beforeEach(async({goto}) => {
 test.describe("Base", () => {
   const id = "Base";
 
-  test("Display full text", async({page}) => {
+  test("display full text", async({page}) => {
     const component = page.getByTestId(id);
 
     await expect(component.locator(baked.string.text)).toHaveText("This is a text");
   });
 
-  test("Tooltip is disabled", async({page}) => {
+  test("tooltip is disabled", async({page}) => {
     const component = page.getByTestId(id);
 
     await component.locator(baked.string.text).hover();
@@ -32,16 +32,17 @@ test.describe("Base", () => {
 test.describe("Max Length", () => {
   const id = "Max Length";
 
-  test("Truncate string with elipsis", async({page}) => {
+  test("truncate string with elipsis", async({page}) => {
     const component = page.getByTestId(id);
 
     await expect(component.locator(baked.string.text)).toHaveText("This text sho...");
   });
 
-  test("Show tool tip", async({page}) => {
+  test("show tool tip", async({page}) => {
     const component = page.getByTestId(id);
 
     await component.locator(baked.string.text).hover();
+
     await expect(page.locator(primevue.tooltip.bottom)).toBeAttached();
     await expect(page.locator(primevue.tooltip.bottom)).toBeVisible();
     await expect(page.locator(primevue.tooltip.bottom)).toHaveText("This text should be truncated with elipsis when exceeds max length");
@@ -52,13 +53,13 @@ test.describe("Max Length", () => {
 test.describe("No Data", () => {
   const id = "No Data";
 
-  test("Display single dash(-)", async({page}) => {
+  test("display single dash(-)", async({page}) => {
     const component = page.getByTestId(id);
 
     await expect(component.locator(baked.string.text)).toHaveText("-");
   });
 
-  test("Tooltip is disabled", async({page}) => {
+  test("tooltip is disabled", async({page}) => {
     const component = page.getByTestId(id);
 
     await component.locator(baked.string.text).hover();

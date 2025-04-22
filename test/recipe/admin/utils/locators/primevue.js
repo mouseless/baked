@@ -52,6 +52,7 @@ export default {
     detail: ".p-toast-detail"
   },
   tooltip: {
-    bottom: ".p-tooltip-bottom"
+    bottom: ".p-tooltip-bottom",
+    left: ".p-tooltip-left"
   }
 };

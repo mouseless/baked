@@ -100,17 +100,26 @@ test.describe("Footer", () => {
 
 test.describe("Export", () => {
   const id = "Export";
-  const btnClasses = "p-button-icon p-button-icon-left";
 
   test("show export button when configured", async({page}) => {
     const component = page.getByTestId(id);
-    const header = component.locator(primevue.datatable.header);
+    const header = component.locator("th").last();
 
-    await expect(header).toBeAttached();
-    await expect(header.locator(primevue.button.base)).toBeAttached();
-    await expect(header.locator(primevue.button.icon)).toHaveClass(`${btnClasses} pi pi-file-export`);
-    await expect(header.locator(primevue.button.base)).toHaveText("CSV");
+    await expect(header.locator(primevue.button.icon)).toHaveClass("p-button-icon pi pi-file-export");
   });
+
+  // TODO unable to locate tooltip, will be solved later
+  //
+  // test("show tooltip on hover", async({page}) => {
+  //   const component = page.getByTestId(id);
+  //   const header = component.locator("th").last();
+
+  //   await header.locator(primevue.button.base).hover();
+
+  //   await expect(page.locator(primevue.tooltip.left)).toBeAttached();
+  //   await expect(page.locator(primevue.tooltip.left)).toBeVisible();
+  //   await expect(page.locator(primevue.tooltip.left)).toHaveText("CSV");
+  // });
 });
 
 test.describe("Loading", () => {

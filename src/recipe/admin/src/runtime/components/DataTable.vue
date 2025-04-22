@@ -13,31 +13,43 @@
     :export-filename="exportOptions?.fileName"
     :export-function
   >
-    <template
-      v-if="exportOptions"
-      #header
-    >
-      <div class="text-end pb-4">
-        <Button
-          v-tooltip.left="exportOptions?.buttonLabel"
-          severity="secondary" 
-          variant="text" 
-          aria-label="exportOptions?.buttonLabel"
-          size="small"
-          :icon="exportOptions?.buttonIcon"
-          @click="exportDataTable"
-        />
-      </div>
-    </template>
     <Column
-      v-for="column in columns"
+      v-for="(column, columnIndex) in columns"
       :key="column.prop"
       :field="column.prop"
-      :header="column.title"
       class="text-nowrap"
       :class="{ 'min-w-40': column.minWidth }"
       :exportable="column.exportable"
     >
+      <template #header>
+        <div
+          v-if="exportOptions && (columnIndex == columns.length - 1)"
+          class="flex w-full items-center"
+        >
+          <span
+            class="p-datatable-column-title w-full"
+            data-pc-section="columntitle"
+          >
+            {{ column.title }}
+          </span>
+          <Button
+            v-tooltip.left="exportOptions?.buttonLabel"
+            severity="secondary"
+            variant="text"
+            aria-label="exportOptions?.buttonLabel"
+            size="small"
+            :icon="exportOptions?.buttonIcon"
+            @click="exportDataTable"
+          />
+        </div>
+        <span
+          v-else
+          class="p-datatable-column-title"
+          data-pc-section="columntitle"
+        >
+          {{ column.title }}
+        </span>
+      </template>
       <template #body="{ data: row, index }">
         <Skeleton
           v-if="loading"
@@ -136,6 +148,6 @@ function exportDataTable() {
 function exportFunction({ data, field }) {
   if(!formatter?.value) { return data; }
 
-  return formatter.value.format(data, field);;
+  return formatter.value.format(data, field);
 }
 </script>
