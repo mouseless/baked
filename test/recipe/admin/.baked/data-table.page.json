@@ -62,8 +62,7 @@
                         },
                         "title": "Label",
                         "minWidth": false,
-                        "exportable": true,
-                        "exportHeader": "LABEL"
+                        "exportable": true
                       },
                       {
                         "prop": "column1",
@@ -76,8 +75,7 @@
                         },
                         "title": "Column1",
                         "minWidth": false,
-                        "exportable": true,
-                        "exportHeader": "COLUMN 1"
+                        "exportable": true
                       },
                       {
                         "prop": "column2",
@@ -90,8 +88,7 @@
                         },
                         "title": "Column2",
                         "minWidth": false,
-                        "exportable": true,
-                        "exportHeader": "COLUMN 2"
+                        "exportable": true
                       },
                       {
                         "prop": "column3",
@@ -104,8 +101,7 @@
                         },
                         "title": "Column3",
                         "minWidth": false,
-                        "exportable": true,
-                        "exportHeader": "COLUMN 3"
+                        "exportable": true
                       }
                     ],
                     "dataKey": "label",
@@ -142,10 +138,10 @@
                       ]
                     },
                     "exportOptions": {
-                      "csvSeperator": ";",
+                      "csvSeparator": ";",
                       "formatter": "useCsvFormatter",
                       "fileName": "data-table-export",
-                      "buttonIcon": "pi pi-external-link"
+                      "buttonIcon": "pi pi-download"
                     }
                   },
                   "data": {

@@ -1,6 +1,6 @@
 <template>
   <DataTable
-    ref="datatable"
+    ref="dataTable"
     :value
     class="text-sm min-h-24"
     striped-rows
@@ -9,7 +9,7 @@
     :rows
     :scrollable
     :scroll-height
-    :csv-separator="exportOptions?.csvSeperator"
+    :csv-separator="exportOptions?.csvSeparator"
     :export-filename="exportOptions?.fileName"
     :export-function
   >
@@ -33,7 +33,6 @@
       class="text-nowrap"
       :class="{ 'min-w-40': column.minWidth }"
       :exportable="column.exportable"
-      :export-header="column.exportHeader"
     >
       <template #body="{ data: row, index }">
         <Skeleton
@@ -64,13 +63,10 @@
           :footer="footerTemplate.label"
           :colspan="footerColSpan"
           footer-style="text-align:right"
-          :exportable="true"
         />
         <Column
           v-for="column in footerTemplate.columns"
           :key="column.prop"
-          :exportable="column.exportable"
-          :export-header="column.exportHeader"
         >
           <template #footer>
             <Skeleton
@@ -113,7 +109,7 @@ const { schema, data } = defineProps({
 
 const { columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight } = schema;
 
-const datatable = ref();
+const dataTable = ref();
 const loading = context.loading();
 const value = computed(() =>
   data
@@ -129,12 +125,12 @@ const formatter = ref();
 function exportDataTable() {
   composableResolver.resolve(exportOptions.formatter).then(result => {
     formatter.value = result.default();
-    datatable.value.exportCSV();
+    dataTable.value.exportCSV();
   });
 }
 
 function exportFunction({ data, field }) {
-  if(!formatter.value || !formatter.value) { return data; }
+  if(!formatter?.value) { return data; }
 
   return formatter.value.format(data, field);;
 }

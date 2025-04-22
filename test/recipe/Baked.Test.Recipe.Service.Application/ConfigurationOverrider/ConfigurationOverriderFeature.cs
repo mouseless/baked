@@ -438,8 +438,7 @@ public class ConfigurationOverriderFeature : IFeature
                                             columns: [.. domain.Types[typeof(TableRow)].GetMembers().Properties.Where(p => p.IsPublic).Select(p =>
                                                 DataTableColumn(p.Name.Camelize(),
                                                     title: p.Name,
-                                                    exportable: true,
-                                                    exportHeader: p.Name.Humanize(LetterCasing.AllCaps)
+                                                    exportable: true
                                                 ))
                                             ],
                                             footerTemplate: DataTableFooter("Total",

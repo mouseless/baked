@@ -1,7 +1,7 @@
 export default function() {
 
   function format(data) {
-    return `${data}`.replace(".",",");
+    return `${data}`.replace(".", ",");
   }
 
   return {

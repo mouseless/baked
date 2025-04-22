@@ -47,44 +47,44 @@ public static class Components
         DataTable.Footer? footerTemplate = default,
         DataTable.Export? exportOptions = default,
         IData? data = default
-    )
-    {
-        if (exportOptions is not null)
+    ) => new(
+        new()
         {
-            exportOptions.ButtonIcon ??= "pi pi-external-link";
+            Columns = [.. columns ?? []],
+            DataKey = dataKey,
+            ItemsProp = itemsProp,
+            Paginator = paginator,
+            Rows = rows,
+            RowsWhenLoading = rowsWhenLoading,
+            ScrollHeight = scrollHeight,
+            FooterTemplate = footerTemplate,
+            ExportOptions = DataTableExport(exportOptions)
         }
-
-        return new(
-            new()
-            {
-                Columns = [.. columns ?? []],
-                DataKey = dataKey,
-                ItemsProp = itemsProp,
-                Paginator = paginator,
-                Rows = rows,
-                RowsWhenLoading = rowsWhenLoading,
-                ScrollHeight = scrollHeight,
-                FooterTemplate = footerTemplate,
-                ExportOptions = exportOptions
-            }
-        )
-        { Data = data };
-    }
+    )
+    { Data = data };
 
     public static DataTable.Column DataTableColumn(string prop, IComponentDescriptor component,
         string? title = default,
         bool minWidth = false,
-        bool exportable = false,
-        string? exportHeader = default
-    ) => DataTableColumn(prop, component: Conditional(fallback: component), title: title, minWidth: minWidth, exportable: exportable, exportHeader: exportHeader);
+        bool exportable = false
+    ) => DataTableColumn(prop, component: Conditional(fallback: component), title: title, minWidth: minWidth, exportable: exportable);
 
     public static DataTable.Column DataTableColumn(string prop,
         Conditional? component = default,
         string? title = default,
         bool minWidth = false,
-        bool exportable = false,
-        string? exportHeader = default
-    ) => new(prop, component ?? Conditional(), exportable) { MinWidth = minWidth, Title = title, ExportHeader = exportHeader };
+        bool exportable = false
+    ) => new(prop, component ?? Conditional()) { MinWidth = minWidth, Title = title, Exportable = exportable };
+
+    public static DataTable.Export? DataTableExport(this DataTable.Export? exportOptions)
+    {
+        if (exportOptions is not null)
+        {
+            exportOptions.ButtonIcon ??= "pi pi-download";
+        }
+
+        return exportOptions;
+    }
 
     public static DataTable.Footer DataTableFooter(string label, List<DataTable.Column> columns) =>
         new(label) { Columns = columns };

@@ -87,7 +87,7 @@ export default {
     };
   },
 
-  aDataTableColumn({ title, prop, minWidth, component, exportable, exportHeader } = {}) {
+  aDataTableColumn({ title, prop, minWidth, component, exportable } = {}) {
     title = $(title, "Test");
     prop = $(prop, "test");
     minWidth = $(minWidth, false);
@@ -99,8 +99,22 @@ export default {
       prop,
       minWidth,
       component,
-      exportable,
-      exportHeader
+      exportable
+    };
+  },
+
+  aDataTableExport({ csvSeparator, fileName, formatter, buttonIcon, buttonLabel }) {
+    csvSeparator = $(csvSeparator, ";");
+    fileName = $(fileName, `${Date.now()}`);
+    buttonIcon = $(buttonIcon, "pi pi-external-link");
+    buttonLabel = $(buttonLabel, "");
+
+    return {
+      csvSeparator,
+      fileName,
+      formatter,
+      buttonIcon,
+      buttonLabel
     };
   },
 
@@ -144,21 +158,6 @@ export default {
       type: "Expected",
       schema: testId,
       data
-    };
-  },
-
-  anExportOptions({ csvSeperator, fileName, formatter, buttonIcon, buttonLabel }) {
-    csvSeperator = $(csvSeperator, ";");
-    fileName = $(fileName, `${Date.now()}`);
-    buttonIcon = $(buttonIcon, "pi pi-external-link");
-    buttonLabel = $(buttonLabel, "");
-
-    return {
-      csvSeperator,
-      fileName,
-      formatter,
-      buttonIcon,
-      buttonLabel
     };
   },
 

@@ -86,7 +86,7 @@ test.describe("Auto Hide Pagination", () => {
 test.describe("Footer", () => {
   const id = "Footer";
 
-  test("Show footer row when configured in schema", async({page}) => {
+  test("show footer row when configured in schema", async({page}) => {
     const component = page.getByTestId(id);
     const footer = component.locator(primevue.datatable.footer);
 
@@ -102,7 +102,7 @@ test.describe("Export", () => {
   const id = "Export";
   const btnClasses = "p-button-icon p-button-icon-left";
 
-  test("Shows export button when configured", async({page}) => {
+  test("show export button when configured", async({page}) => {
     const component = page.getByTestId(id);
     const header = component.locator(primevue.datatable.header);
 
