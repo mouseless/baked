@@ -20,12 +20,9 @@
                   "type": "Inline",
                   "value": "DataPanel"
                 },
-                "collapsed": false,
                 "parameters": [
                   {
                     "name": "count",
-                    "required": false,
-                    "defaultSelfManaged": false,
                     "default": {
                       "type": "Inline",
                       "value": "10"
@@ -33,9 +30,7 @@
                     "component": {
                       "type": "Select",
                       "schema": {
-                        "label": "Count",
-                        "showClear": false,
-                        "stateful": false
+                        "label": "Count"
                       },
                       "data": {
                         "type": "Inline",
@@ -61,7 +56,6 @@
                           "conditions": []
                         },
                         "title": "Label",
-                        "minWidth": false,
                         "exportable": true
                       },
                       {
@@ -74,7 +68,6 @@
                           "conditions": []
                         },
                         "title": "Column1",
-                        "minWidth": false,
                         "exportable": true
                       },
                       {
@@ -87,7 +80,6 @@
                           "conditions": []
                         },
                         "title": "Column2",
-                        "minWidth": false,
                         "exportable": true
                       },
                       {
@@ -100,13 +92,11 @@
                           "conditions": []
                         },
                         "title": "Column3",
-                        "minWidth": false,
                         "exportable": true
                       }
                     ],
                     "dataKey": "label",
                     "itemsProp": "items",
-                    "paginator": false,
                     "scrollHeight": "500px",
                     "footerTemplate": {
                       "label": "Total",
@@ -119,9 +109,7 @@
                               "schema": {}
                             },
                             "conditions": []
-                          },
-                          "minWidth": false,
-                          "exportable": false
+                          }
                         },
                         {
                           "prop": "footerColumn2",
@@ -131,9 +119,7 @@
                               "schema": {}
                             },
                             "conditions": []
-                          },
-                          "minWidth": false,
-                          "exportable": false
+                          }
                         }
                       ]
                     },
@@ -155,9 +141,7 @@
                   }
                 }
               }
-            },
-            "fullScreen": false,
-            "narrow": false
+            }
           }
         ]
       }

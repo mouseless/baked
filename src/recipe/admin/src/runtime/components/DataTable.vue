@@ -20,6 +20,7 @@
       class="text-nowrap"
       :class="{ 'min-w-40': column.minWidth }"
       :exportable="column.exportable"
+      :export-header="column.title"
     >
       <template #header>
         <div
@@ -72,7 +73,6 @@
     <ColumnGroup
       v-if="footerTemplate"
       type="footer"
-      exportparts="true"
     >
       <Row>
         <Column
@@ -136,18 +136,15 @@ const value = computed(() =>
 );
 const footerColSpan = computed(() => columns.length - footerTemplate?.columns.length);
 const scrollable = scrollHeight !== undefined;
-const formatter = ref();
+const formatter = exportOptions?.formatter ? (await composableResolver.resolve(exportOptions.formatter)).default() : undefined;
 
 function exportDataTable() {
-  composableResolver.resolve(exportOptions.formatter).then(result => {
-    formatter.value = result.default();
-    dataTable.value.exportCSV();
-  });
+  dataTable.value.exportCSV();
 }
 
 function exportFunction({ data, field }) {
-  if(!formatter?.value) { return data; }
+  if(!formatter) { return data; }
 
-  return formatter.value.format(data, field);
+  return formatter.format(data, field);
 }
 </script>

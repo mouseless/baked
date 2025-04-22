@@ -11,7 +11,6 @@
       {
         "name": "requiredWithDefault",
         "required": true,
-        "defaultSelfManaged": false,
         "default": {
           "type": "Inline",
           "value": "rwd-1"
@@ -21,9 +20,7 @@
           "schema": {
             "label": "Required w/ Default",
             "optionLabel": "text",
-            "optionValue": "value",
-            "showClear": false,
-            "stateful": false
+            "optionValue": "value"
           },
           "data": {
             "type": "Inline",
@@ -43,13 +40,10 @@
       {
         "name": "required",
         "required": true,
-        "defaultSelfManaged": false,
         "component": {
           "type": "Select",
           "schema": {
-            "label": "Required",
-            "showClear": false,
-            "stateful": false
+            "label": "Required"
           },
           "data": {
             "type": "Inline",
@@ -62,13 +56,10 @@
       },
       {
         "name": "optional",
-        "required": false,
-        "defaultSelfManaged": false,
         "component": {
           "type": "SelectButton",
           "schema": {
-            "allowEmpty": true,
-            "stateful": false
+            "allowEmpty": true
           },
           "data": {
             "type": "Inline",
@@ -121,9 +112,7 @@
                   }
                 }
               }
-            },
-            "fullScreen": false,
-            "narrow": false
+            }
           },
           {
             "component": {
@@ -156,7 +145,6 @@
                 }
               }
             },
-            "fullScreen": false,
             "narrow": true
           },
           {
@@ -190,7 +178,6 @@
                 }
               }
             },
-            "fullScreen": false,
             "narrow": true
           }
         ]
@@ -213,12 +200,9 @@
                   "type": "Inline",
                   "value": "Get first"
                 },
-                "collapsed": false,
                 "parameters": [
                   {
                     "name": "count",
-                    "required": false,
-                    "defaultSelfManaged": false,
                     "default": {
                       "type": "Inline",
                       "value": "Default"
@@ -227,7 +211,6 @@
                       "type": "Select",
                       "schema": {
                         "label": "Count",
-                        "showClear": false,
                         "stateful": true
                       },
                       "data": {
@@ -266,8 +249,7 @@
                           },
                           "conditions": []
                         },
-                        "title": "Column 1",
-                        "minWidth": false
+                        "title": "Column 1"
                       },
                       {
                         "prop": "column2",
@@ -278,8 +260,7 @@
                           },
                           "conditions": []
                         },
-                        "title": "Column 2",
-                        "minWidth": false
+                        "title": "Column 2"
                       },
                       {
                         "prop": "column3",
@@ -290,8 +271,7 @@
                           },
                           "conditions": []
                         },
-                        "title": "Column 3",
-                        "minWidth": false
+                        "title": "Column 3"
                       }
                     ],
                     "dataKey": "label",
@@ -324,9 +304,7 @@
                   }
                 }
               }
-            },
-            "fullScreen": false,
-            "narrow": false
+            }
           },
           {
             "component": {
@@ -340,8 +318,6 @@
                 "parameters": [
                   {
                     "name": "count",
-                    "required": false,
-                    "defaultSelfManaged": false,
                     "default": {
                       "type": "Inline",
                       "value": "Default"
@@ -349,7 +325,6 @@
                     "component": {
                       "type": "SelectButton",
                       "schema": {
-                        "allowEmpty": false,
                         "stateful": true
                       },
                       "data": {
@@ -388,8 +363,7 @@
                           },
                           "conditions": []
                         },
-                        "title": "Column 1",
-                        "minWidth": false
+                        "title": "Column 1"
                       },
                       {
                         "prop": "column2",
@@ -400,8 +374,7 @@
                           },
                           "conditions": []
                         },
-                        "title": "Column 2",
-                        "minWidth": false
+                        "title": "Column 2"
                       },
                       {
                         "prop": "column3",
@@ -412,8 +385,7 @@
                           },
                           "conditions": []
                         },
-                        "title": "Column 3",
-                        "minWidth": false
+                        "title": "Column 3"
                       }
                     ],
                     "dataKey": "label",
@@ -446,9 +418,7 @@
                   }
                 }
               }
-            },
-            "fullScreen": false,
-            "narrow": false
+            }
           }
         ]
       }
