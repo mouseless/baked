@@ -19,8 +19,12 @@
     >
       <div class="text-end pb-4">
         <Button
+          v-tooltip.left="exportOptions?.buttonLabel"
+          severity="secondary" 
+          variant="text" 
+          aria-label="exportOptions?.buttonLabel"
+          size="small"
           :icon="exportOptions?.buttonIcon"
-          :label="exportOptions?.buttonLabel"
           @click="exportDataTable"
         />
       </div>

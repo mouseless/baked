@@ -58,7 +58,7 @@ public static class Components
             RowsWhenLoading = rowsWhenLoading,
             ScrollHeight = scrollHeight,
             FooterTemplate = footerTemplate,
-            ExportOptions = DataTableExport(exportOptions)
+            ExportOptions = exportOptions
         }
     )
     { Data = data };
@@ -76,14 +76,15 @@ public static class Components
         bool exportable = false
     ) => new(prop, component ?? Conditional()) { MinWidth = minWidth, Title = title, Exportable = exportable };
 
-    public static DataTable.Export? DataTableExport(this DataTable.Export? exportOptions)
+    public static DataTable.Export DataTableExport(string csvSeparator, string fileName,
+        string? formatter = default,
+        string? buttonIcon = default,
+        string? buttonLabel = default
+    )
     {
-        if (exportOptions is not null)
-        {
-            exportOptions.ButtonIcon ??= "pi pi-download";
-        }
+        buttonIcon ??= "pi pi-download";
 
-        return exportOptions;
+        return new(csvSeparator, fileName) { Formatter = formatter, ButtonIcon = buttonIcon, ButtonLabel = buttonLabel };
     }
 
     public static DataTable.Footer DataTableFooter(string label, List<DataTable.Column> columns) =>

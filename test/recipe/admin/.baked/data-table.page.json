@@ -141,7 +141,8 @@
                       "csvSeparator": ";",
                       "formatter": "useCsvFormatter",
                       "fileName": "data-table-export",
-                      "buttonIcon": "pi pi-download"
+                      "buttonIcon": "pi pi-download",
+                      "buttonLabel": "Export as CSV"
                     }
                   },
                   "data": {
