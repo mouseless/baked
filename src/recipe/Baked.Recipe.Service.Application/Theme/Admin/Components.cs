@@ -67,18 +67,16 @@ public static class Components
         string? title = default,
         bool minWidth = false,
         bool exportable = false,
-        string? exportHeader = default,
-        string? exportFooter = default
-    ) => DataTableColumn(prop, component: Conditional(fallback: component), title: title, minWidth: minWidth, exportable: exportable, exportHeader: exportHeader, exportFooter: exportFooter);
+        string? exportHeader = default
+    ) => DataTableColumn(prop, component: Conditional(fallback: component), title: title, minWidth: minWidth, exportable: exportable, exportHeader: exportHeader);
 
     public static DataTable.Column DataTableColumn(string prop,
         Conditional? component = default,
         string? title = default,
         bool minWidth = false,
         bool exportable = false,
-        string? exportHeader = default,
-        string? exportFooter = default
-    ) => new(prop, component ?? Conditional(), exportable) { MinWidth = minWidth, Title = title, ExportHeader = exportHeader, ExportFooter = exportFooter };
+        string? exportHeader = default
+    ) => new(prop, component ?? Conditional(), exportable) { MinWidth = minWidth, Title = title, ExportHeader = exportHeader };
 
     public static DataTable.Footer DataTableFooter(string label, List<DataTable.Column> columns) =>
         new(label) { Columns = columns };

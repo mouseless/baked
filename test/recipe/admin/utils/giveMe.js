@@ -87,7 +87,7 @@ export default {
     };
   },
 
-  aDataTableColumn({ title, prop, minWidth, component, exportable, exportHeader, exportFooter } = {}) {
+  aDataTableColumn({ title, prop, minWidth, component, exportable, exportHeader } = {}) {
     title = $(title, "Test");
     prop = $(prop, "test");
     minWidth = $(minWidth, false);
@@ -100,8 +100,7 @@ export default {
       minWidth,
       component,
       exportable,
-      exportHeader,
-      exportFooter
+      exportHeader
     };
   },
 

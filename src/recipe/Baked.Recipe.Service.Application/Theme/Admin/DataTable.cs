@@ -22,7 +22,6 @@ public record DataTable : IComponentSchema
         public bool MinWidth { get; set; }
         public bool Exportable { get; set; } = Exportable;
         public string? ExportHeader { get; set; }
-        public string? ExportFooter { get; set; }
     }
 
     public record Footer(string Label)

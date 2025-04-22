@@ -445,8 +445,8 @@ public class ConfigurationOverriderFeature : IFeature
                                             footerTemplate: DataTableFooter("Total",
                                                 columns:
                                                 [
-                                                    DataTableColumn(nameof(TableWithFooter.FooterColumn1).Camelize(), Conditional(), exportable: true),
-                                                    DataTableColumn(nameof(TableWithFooter.FooterColumn2).Camelize(), Conditional(), exportable : true)
+                                                    DataTableColumn(nameof(TableWithFooter.FooterColumn1).Camelize(), Conditional()),
+                                                    DataTableColumn(nameof(TableWithFooter.FooterColumn2).Camelize(), Conditional())
                                                 ]
                                             ),
                                             dataKey: nameof(TableRow.Label).Camelize(),

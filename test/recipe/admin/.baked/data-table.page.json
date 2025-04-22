@@ -125,9 +125,7 @@
                             "conditions": []
                           },
                           "minWidth": false,
-                          "exportable": true,
-                          "exportHeader": "a",
-                          "exportFooter": "b"
+                          "exportable": false
                         },
                         {
                           "prop": "footerColumn2",
@@ -139,9 +137,7 @@
                             "conditions": []
                           },
                           "minWidth": false,
-                          "exportable": true,
-                          "exportHeader": "a",
-                          "exportFooter": "b"
+                          "exportable": false
                         }
                       ]
                     },

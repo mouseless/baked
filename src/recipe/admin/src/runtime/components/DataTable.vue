@@ -71,7 +71,6 @@
           :key="column.prop"
           :exportable="column.exportable"
           :export-header="column.exportHeader"
-          :export-footer="column.exportFooter"
         >
           <template #footer>
             <Skeleton
@@ -136,7 +135,7 @@ function exportDataTable() {
 
 function exportFunction({ data, field }) {
   if(!formatter.value || !formatter.value) { return data; }
-  
+
   return formatter.value.format(data, field);;
 }
 </script>
