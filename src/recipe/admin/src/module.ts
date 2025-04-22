@@ -42,10 +42,10 @@ export interface Composables {
 
 export interface UseDataFetcherOptions {
   baseURL: String
-  retryWhenNoResponse?: retryWhenNoResponseOptions
+  retry?: RetryOptions
 }
 
-export interface retryWhenNoResponseOptions {
+export interface RetryOptions {
   maxRetry?: Number,
   delay?: Number
 }
