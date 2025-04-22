@@ -76,23 +76,39 @@ export default function() {
       ? unref.deepUnref(await fetch({ baseURL, data: data.query, injectedData }))
       : { };
 
-    const options = composables?.useDataFetcher?.retryFetch
-      ? {
-        retry: Number.MAX_VALUE,
-        retryDelay: 200,
-        retryStatusCodes: [500]
-      }
-      : { };
+    const options = { baseURL, headers: headers, query: query };
+    const retry = composables?.useDataFetcher?.retry ?? false;
 
-    return await $fetch(
-      data.path,
-      {
-        ...options ?? { },
-        baseURL,
-        headers: headers,
-        query: query
+    if(retry) {
+      return await fetchWithRetry(data.path, options, retry);
+    }
+
+    return await $fetch(data.path, { ...options, retry: false });
+  }
+
+  async function fetchWithRetry(url, options,
+    { maxRetry = Number.MAX_VALUE, delay = 200 } = { }
+  ) {
+    let lastError = null;
+    for(let i = -1; i < maxRetry; i++) { // i starts at -1 to allow for the first attempt
+      try {
+        return await $fetch(url, { ...options, retry: false });
+      } catch (error) {
+        lastError = error;
+
+        if(error.response) { // server is up and returned and error
+          break;
+        }
+
+        await wait(delay);
       }
-    );
+    }
+
+    throw lastError;
+  }
+
+  function wait(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   function format(formatString, args) {

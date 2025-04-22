@@ -1,4 +1,5 @@
 import PrimeVue from "primevue/config";
+import FocusTrap from "primevue/focustrap";
 import Tooltip from "primevue/tooltip";
 import { defineNuxtPlugin, useRuntimeConfig } from "#app";
 
@@ -20,5 +21,6 @@ export default defineNuxtPlugin(_nuxtApp => {
   if(locale) { options.locale = locale; }
 
   _nuxtApp.vueApp.use(PrimeVue, options);
+  _nuxtApp.vueApp.directive("focustrap", FocusTrap);
   _nuxtApp.vueApp.directive("tooltip", Tooltip);
 });
