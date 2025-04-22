@@ -91,26 +91,21 @@ export default function() {
 
   async function fetchWithRetry(url, options, retryOptions) {
     const { maxRetry = 0, delay = 0 } = retryOptions;
-    let retries = 0;
 
-    while(retries <= maxRetry) {
+    for(let retries = 1; retries <= maxRetry; retries++) {
       try {
-        return await $fetch(url, {
-          ...options,
-          retry: false
-        });
+        return await $fetch(url, { ...options, retry: false });
       }
       catch (error) {
-        if(error.response) { throw error; }
+        if(error.response || retries === maxRetry) { throw error; }
 
-        if(retries < maxRetry) {
-          retries++;
-          await new Promise(resolve => setTimeout(resolve, delay));
-        } else {
-          throw error;
-        }
+        await wait(delay);
       }
     }
+  }
+
+  function wait(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   function format(formatString, args) {
