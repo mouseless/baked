@@ -19,8 +19,8 @@
     >
       <div class="text-end pb-4">
         <Button
-          icon="pi pi-external-link"
-          :label="exportOptions?.label"
+          :icon="exportOptions?.buttonIcon"
+          :label="exportOptions?.buttonLabel"
           @click="exportDataTable"
         />
       </div>

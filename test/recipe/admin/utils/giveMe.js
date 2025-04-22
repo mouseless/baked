@@ -147,16 +147,18 @@ export default {
     };
   },
 
-  anExportOptions({ csvSeperator, fileName, formatter, label }) {
+  anExportOptions({ csvSeperator, fileName, formatter, buttonIcon, buttonLabel }) {
     csvSeperator = $(csvSeperator, ";");
     fileName = $(fileName, `${Date.now()}`);
-    label = $(label, "");
+    buttonIcon = $(buttonIcon, "pi pi-external-link");
+    buttonLabel = $(buttonLabel, "");
 
     return {
       csvSeperator,
       fileName,
       formatter,
-      label
+      buttonIcon,
+      buttonLabel
     };
   },
 

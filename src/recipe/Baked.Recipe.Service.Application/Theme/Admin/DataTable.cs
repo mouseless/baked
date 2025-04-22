@@ -35,6 +35,7 @@ public record DataTable : IComponentSchema
         public string CsvSeperator { get; set; } = CsvSeperator;
         public string? Formatter { get; set; }
         public string FileName { get; set; } = FileName;
-        public string? Label { get; set; }
+        public string? ButtonIcon { get; set; }
+        public string? ButtonLabel { get; set; }
     }
 }

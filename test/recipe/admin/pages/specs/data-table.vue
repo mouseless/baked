@@ -115,7 +115,8 @@ const variants = [
       exportOptions: giveMe.anExportOptions({
         csvSeperator: ";",
         formatter: "useCsvFormatter",
-        label: "CSV"
+        buttonIcon: "pi pi-file-export",
+        buttonLabel: "CSV"
       }),
       footerTemplate: {
         label: "Total",

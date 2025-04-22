@@ -144,7 +144,8 @@
                     "exportOptions": {
                       "csvSeperator": ";",
                       "formatter": "useCsvFormatter",
-                      "fileName": "data-table-export"
+                      "fileName": "data-table-export",
+                      "buttonIcon": "pi pi-external-link"
                     }
                   },
                   "data": {

@@ -100,13 +100,16 @@ test.describe("Footer", () => {
 
 test.describe("Export", () => {
   const id = "Export";
+  const btnClasses = "p-button-icon p-button-icon-left";
 
   test("Shows export button when configured", async({page}) => {
     const component = page.getByTestId(id);
+    const header = component.locator(primevue.datatable.header);
 
-    await expect(component.locator(primevue.datatable.header)).toBeAttached();
-    await expect(component.locator(`${primevue.datatable.header} ${primevue.button.base}`)).toBeAttached();
-    await expect(component.locator(`${primevue.datatable.header} ${primevue.button.base}`)).toHaveText("CSV");
+    await expect(header).toBeAttached();
+    await expect(header.locator(primevue.button.base)).toBeAttached();
+    await expect(header.locator(primevue.button.icon)).toHaveClass(`${btnClasses} pi pi-file-export`);
+    await expect(header.locator(primevue.button.base)).toHaveText("CSV");
   });
 });
 

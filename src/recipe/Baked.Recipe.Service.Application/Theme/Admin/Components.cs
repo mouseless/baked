@@ -47,21 +47,29 @@ public static class Components
         DataTable.Footer? footerTemplate = default,
         DataTable.Export? exportOptions = default,
         IData? data = default
-    ) => new(
-        new()
-        {
-            Columns = [.. columns ?? []],
-            DataKey = dataKey,
-            ItemsProp = itemsProp,
-            Paginator = paginator,
-            Rows = rows,
-            RowsWhenLoading = rowsWhenLoading,
-            ScrollHeight = scrollHeight,
-            FooterTemplate = footerTemplate,
-            ExportOptions = exportOptions
-        }
     )
-    { Data = data };
+    {
+        if (exportOptions is not null)
+        {
+            exportOptions.ButtonIcon ??= "pi pi-external-link";
+        }
+
+        return new(
+            new()
+            {
+                Columns = [.. columns ?? []],
+                DataKey = dataKey,
+                ItemsProp = itemsProp,
+                Paginator = paginator,
+                Rows = rows,
+                RowsWhenLoading = rowsWhenLoading,
+                ScrollHeight = scrollHeight,
+                FooterTemplate = footerTemplate,
+                ExportOptions = exportOptions
+            }
+        )
+        { Data = data };
+    }
 
     public static DataTable.Column DataTableColumn(string prop, IComponentDescriptor component,
         string? title = default,
