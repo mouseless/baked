@@ -21,8 +21,8 @@ public record ReportPage(string Path, PageTitle Title) :
         public record Content(IComponentDescriptor Component)
         {
             public IComponentDescriptor Component { get; set; } = Component;
-            public bool FullScreen { get; set; }
-            public bool Narrow { get; set; }
+            public bool? FullScreen { get; set; }
+            public bool? Narrow { get; set; }
             public string? Key { get; set; }
             public string? ShowWhen { get; set; }
         }

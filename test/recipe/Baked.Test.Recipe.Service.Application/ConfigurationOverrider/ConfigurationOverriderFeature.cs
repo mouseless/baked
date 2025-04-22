@@ -435,7 +435,12 @@ public class ConfigurationOverriderFeature : IFeature
                                             )
                                         ],
                                         content: DataTable(
-                                            columns: [.. domain.Types[typeof(TableRow)].GetMembers().Properties.Where(p => p.IsPublic).Select(p => DataTableColumn(p.Name.Camelize(), title: p.Name))],
+                                            columns: [.. domain.Types[typeof(TableRow)].GetMembers().Properties.Where(p => p.IsPublic).Select(p =>
+                                                DataTableColumn(p.Name.Camelize(),
+                                                    title: p.Name,
+                                                    exportable: true
+                                                ))
+                                            ],
                                             footerTemplate: DataTableFooter("Total",
                                                 columns:
                                                 [
@@ -446,6 +451,7 @@ public class ConfigurationOverriderFeature : IFeature
                                             dataKey: nameof(TableRow.Label).Camelize(),
                                             itemsProp: "items",
                                             scrollHeight: "500px",
+                                            exportOptions: DataTableExport(";", "data-table-export", formatter: "useCsvFormatter", buttonLabel: "Export as CSV"),
                                             data: Remote(domain.Types[typeof(Theme.DataTable)].GetMembers().Methods[nameof(Theme.DataTable.GetTableDataWithFooter)].GetSingle<ActionModelAttribute>().GetRoute(),
                                                 query: Injected(custom: true)
                                             )

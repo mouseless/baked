@@ -101,6 +101,25 @@ const variants = [
         footer2: "30"
       }
     })
+  },
+  {
+    name: "Export",
+    descriptor: giveMe.aDataTable({
+      columns: [
+        giveMe.aDataTableColumn({ title: "Label", prop: "label", minWidth: true, component: giveMe.aConditional({ testId: "label" }), exportable: true }),
+        giveMe.aDataTableColumn({ title: "Data 1", prop: "data1", component: giveMe.aConditional({ testId: "prop-1" }), exportable: true })
+      ],
+      exportOptions: giveMe.aDataTableExport({
+        csvSeparator: ";",
+        formatter: "useCsvFormatter",
+        buttonIcon: "pi pi-file-export",
+        buttonLabel: "CSV"
+      }),
+      data: [
+        { label: "Row 1", data1: "Cell 1.1" },
+        { label: "Row 2", data1: "Cell 2.1" }
+      ]
+    })
   }
 ];
 </script>

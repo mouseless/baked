@@ -1,5 +1,6 @@
 <template>
   <DataTable
+    ref="dataTable"
     :value
     class="text-sm min-h-24"
     striped-rows
@@ -8,15 +9,48 @@
     :rows
     :scrollable
     :scroll-height
+    :csv-separator="exportOptions?.csvSeparator"
+    :export-filename="exportOptions?.fileName"
+    :export-function
   >
     <Column
-      v-for="column in columns"
+      v-for="(column, columnIndex) in columns"
       :key="column.prop"
       :field="column.prop"
-      :header="column.title"
       class="text-nowrap"
       :class="{ 'min-w-40': column.minWidth }"
+      :exportable="column.exportable"
+      :export-header="column.title"
     >
+      <template #header>
+        <div
+          v-if="exportOptions && (columnIndex == columns.length - 1)"
+          class="flex w-full items-center"
+        >
+          <span
+            class="p-datatable-column-title w-full"
+            data-pc-section="columntitle"
+          >
+            {{ column.title }}
+          </span>
+          <Button
+            v-tooltip.left="exportOptions?.buttonLabel"
+            severity="secondary"
+            variant="text"
+            aria-label="exportOptions?.buttonLabel"
+            size="small"
+            :icon="exportOptions?.buttonIcon"
+            @click="exportDataTable"
+          />
+        </div>
+        <span
+          v-else
+          class="p-datatable-column-title"
+          data-pc-section="columntitle"
+        >
+          {{ column.title }}
+        </span>
+      </template>
       <template #body="{ data: row, index }">
         <Skeleton
           v-if="loading"
@@ -74,22 +108,24 @@
   </DataTable>
 </template>
 <script setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import Column from "primevue/column";
-import { ColumnGroup, DataTable, Row, Skeleton } from "primevue";
+import { Button, ColumnGroup, DataTable, Row, Skeleton } from "primevue";
 import { Bake } from "#components";
-import { useConditional, useContext } from "#imports";
+import { useComposableResolver, useConditional, useContext } from "#imports";
 
 const conditional = useConditional();
 const context = useContext();
+const composableResolver = useComposableResolver();
 
 const { schema, data } = defineProps({
   schema: { type: null, required: true },
   data: { type: null, required: true }
 });
 
-const { columns, dataKey, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight } = schema;
+const { columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight } = schema;
 
+const dataTable = ref();
 const loading = context.loading();
 const value = computed(() =>
   data
@@ -100,4 +136,15 @@ const value = computed(() =>
 );
 const footerColSpan = computed(() => columns.length - footerTemplate?.columns.length);
 const scrollable = scrollHeight !== undefined;
+const formatter = exportOptions?.formatter ? (await composableResolver.resolve(exportOptions.formatter)).default() : undefined;
+
+function exportDataTable() {
+  dataTable.value.exportCSV();
+}
+
+function exportFunction({ data, field }) {
+  if(!formatter) { return data; }
+
+  return formatter.format(data, field);
+}
 </script>

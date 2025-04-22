@@ -11,6 +11,7 @@ export default {
     label: ".p-breadcrumb-item-label"
   },
   datatable: {
+    header: ".p-datatable-header",
     footer: ".p-datatable-tfoot"
   },
   datepicker: {
@@ -51,6 +52,7 @@ export default {
     detail: ".p-toast-detail"
   },
   tooltip: {
-    bottom: ".p-tooltip-bottom"
+    bottom: ".p-tooltip-bottom",
+    left: ".p-tooltip-left"
   }
 };

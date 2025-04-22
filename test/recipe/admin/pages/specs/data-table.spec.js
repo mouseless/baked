@@ -86,7 +86,7 @@ test.describe("Auto Hide Pagination", () => {
 test.describe("Footer", () => {
   const id = "Footer";
 
-  test("Show footer row when configured in schema", async({page}) => {
+  test("show footer row when configured in schema", async({page}) => {
     const component = page.getByTestId(id);
     const footer = component.locator(primevue.datatable.footer);
 
@@ -96,6 +96,30 @@ test.describe("Footer", () => {
     await expect(footer.locator("td").nth(1)).toHaveText("3");
     await expect(footer.locator("td").nth(2)).toHaveText("30");
   });
+});
+
+test.describe("Export", () => {
+  const id = "Export";
+
+  test("show export button when configured", async({page}) => {
+    const component = page.getByTestId(id);
+    const header = component.locator("th").last();
+
+    await expect(header.locator(primevue.button.icon)).toHaveClass("p-button-icon pi pi-file-export");
+  });
+
+  // TODO unable to locate tooltip, will be solved later
+  //
+  // test("show tooltip on hover", async({page}) => {
+  //   const component = page.getByTestId(id);
+  //   const header = component.locator("th").last();
+
+  //   await header.locator(primevue.button.base).hover();
+
+  //   await expect(page.locator(primevue.tooltip.left)).toBeAttached();
+  //   await expect(page.locator(primevue.tooltip.left)).toBeVisible();
+  //   await expect(page.locator(primevue.tooltip.left)).toHaveText("CSV");
+  // });
 });
 
 test.describe("Loading", () => {

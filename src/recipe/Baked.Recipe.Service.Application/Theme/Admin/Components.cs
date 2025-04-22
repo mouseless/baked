@@ -7,7 +7,7 @@ public static class Components
     public static ComponentDescriptorAttribute<CardLink> CardLink(string route, string title,
         string? icon = default,
         string? description = default,
-        bool disabled = false,
+        bool? disabled = default,
         string? disabledReason = default
     ) => new(new(route, title) { Icon = icon, Description = description, Disabled = disabled, DisabledReason = disabledReason });
 
@@ -28,23 +28,24 @@ public static class Components
 
     public static ComponentDescriptorAttribute<DataPanel> DataPanel(string title, IComponentDescriptor content,
         IEnumerable<Parameter>? parameters = default,
-        bool collapsed = false
+        bool? collapsed = default
     ) => DataPanel(Datas.Inline(title), content, parameters: parameters, collapsed: collapsed);
 
     public static ComponentDescriptorAttribute<DataPanel> DataPanel(IData title, IComponentDescriptor content,
         IEnumerable<Parameter>? parameters = default,
-        bool collapsed = false
+        bool? collapsed = default
     ) => new(new(title, content) { Collapsed = collapsed, Parameters = [.. parameters ?? []] });
 
     public static ComponentDescriptorAttribute<DataTable> DataTable(
         IEnumerable<DataTable.Column>? columns = default,
         string? dataKey = default,
         string? itemsProp = default,
-        bool paginator = false,
+        bool? paginator = default,
         int? rows = default,
         int? rowsWhenLoading = default,
         string? scrollHeight = default,
         DataTable.Footer? footerTemplate = default,
+        DataTable.Export? exportOptions = default,
         IData? data = default
     ) => new(
         new()
@@ -56,21 +57,35 @@ public static class Components
             Rows = rows,
             RowsWhenLoading = rowsWhenLoading,
             ScrollHeight = scrollHeight,
-            FooterTemplate = footerTemplate
+            FooterTemplate = footerTemplate,
+            ExportOptions = exportOptions
         }
     )
     { Data = data };
 
     public static DataTable.Column DataTableColumn(string prop, IComponentDescriptor component,
         string? title = default,
-        bool minWidth = false
-    ) => DataTableColumn(prop, component: Conditional(fallback: component), title: title, minWidth: minWidth);
+        bool? minWidth = default,
+        bool? exportable = default
+    ) => DataTableColumn(prop, component: Conditional(fallback: component), title: title, minWidth: minWidth, exportable: exportable);
 
     public static DataTable.Column DataTableColumn(string prop,
         Conditional? component = default,
         string? title = default,
-        bool minWidth = false
-    ) => new(prop, component ?? Conditional()) { MinWidth = minWidth, Title = title };
+        bool? minWidth = default,
+        bool? exportable = default
+    ) => new(prop, component ?? Conditional()) { MinWidth = minWidth, Title = title, Exportable = exportable };
+
+    public static DataTable.Export DataTableExport(string csvSeparator, string fileName,
+        string? formatter = default,
+        string? buttonIcon = default,
+        string? buttonLabel = default
+    )
+    {
+        buttonIcon ??= "pi pi-download";
+
+        return new(csvSeparator, fileName) { Formatter = formatter, ButtonIcon = buttonIcon, ButtonLabel = buttonLabel };
+    }
 
     public static DataTable.Footer DataTableFooter(string label, List<DataTable.Column> columns) =>
         new(label) { Columns = columns };
@@ -185,8 +200,8 @@ public static class Components
     ) => new(new(title) { Description = description, Actions = [.. actions ?? []] });
 
     public static Parameter Parameter(string name, IComponentDescriptor component,
-        bool required = false,
-        bool defaultSelfManaged = false,
+        bool? required = default,
+        bool? defaultSelfManaged = default,
         IData? @default = default,
         object? defaultValue = default
     ) => new(name, component)
@@ -215,8 +230,8 @@ public static class Components
     ) => new(id, title) { Icon = icon, ShowWhen = showWhen, Contents = [.. contents ?? []] };
 
     public static ReportPage.Tab.Content ReportPageTabContent(IComponentDescriptor component,
-        bool fullScreen = false,
-        bool narrow = false,
+        bool? fullScreen = default,
+        bool? narrow = default,
         string? key = default,
         string? showWhen = default
     ) => new(component) { FullScreen = fullScreen, Narrow = narrow, Key = key, ShowWhen = showWhen };
@@ -224,15 +239,15 @@ public static class Components
     public static ComponentDescriptorAttribute<Select> Select(string label, IData data,
         string? optionLabel = default,
         string? optionValue = default,
-        bool showClear = false,
-        bool stateful = false
+        bool? showClear = default,
+        bool? stateful = default
     ) => new(new(label) { OptionLabel = optionLabel, OptionValue = optionValue, ShowClear = showClear, Stateful = stateful }) { Data = data };
 
     public static ComponentDescriptorAttribute<SelectButton> SelectButton(IData data,
-        bool allowEmpty = false,
+        bool? allowEmpty = default,
         string? optionLabel = default,
         string? optionValue = default,
-        bool stateful = false
+        bool? stateful = default
     ) => new(new() { AllowEmpty = allowEmpty, OptionLabel = optionLabel, OptionValue = optionValue, Stateful = stateful }) { Data = data };
 
     public static ComponentDescriptorAttribute<SideMenu> SideMenu(IEnumerable<SideMenu.Item> menu,
@@ -247,7 +262,7 @@ public static class Components
 
     public static SideMenu.Item SideMenuItem(string route, string icon,
         string? title = default,
-        bool disabled = false
+        bool? disabled = default
     ) => new(route, icon) { Title = title, Disabled = disabled };
 
     public static ComponentDescriptorAttribute<String> String(

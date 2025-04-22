@@ -9,6 +9,6 @@ public record CardLink(string Route, string Title)
     public string? Icon { get; set; }
     public string Title { get; set; } = Title;
     public string? Description { get; set; }
-    public bool Disabled { get; set; }
+    public bool? Disabled { get; set; }
     public string? DisabledReason { get; set; }
 }
