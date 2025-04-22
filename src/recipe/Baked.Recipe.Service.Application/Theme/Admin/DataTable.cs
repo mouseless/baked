@@ -32,8 +32,8 @@ public record DataTable : IComponentSchema
     public record Export(string CsvSeparator, string FileName)
     {
         public string CsvSeparator { get; set; } = CsvSeparator;
-        public string? Formatter { get; set; }
         public string FileName { get; set; } = FileName;
+        public string? Formatter { get; set; }
         public string? ButtonIcon { get; set; }
         public string? ButtonLabel { get; set; }
     }
