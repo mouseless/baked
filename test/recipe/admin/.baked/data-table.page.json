@@ -36,7 +36,10 @@
                         "type": "Inline",
                         "value": [
                           "10",
-                          "20"
+                          "20",
+                          "100",
+                          "1000",
+                          "10000"
                         ]
                       }
                     }
@@ -98,6 +101,9 @@
                     "dataKey": "label",
                     "itemsProp": "items",
                     "scrollHeight": "500px",
+                    "virtualScrollerOptions": {
+                      "itemSize": 45
+                    },
                     "footerTemplate": {
                       "label": "Total",
                       "columns": [

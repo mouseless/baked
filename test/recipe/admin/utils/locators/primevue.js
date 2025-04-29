@@ -11,6 +11,7 @@ export default {
     label: ".p-breadcrumb-item-label"
   },
   datatable: {
+    container: ".p-datatable-table-container",
     header: ".p-datatable-header",
     footer: ".p-datatable-tfoot"
   },

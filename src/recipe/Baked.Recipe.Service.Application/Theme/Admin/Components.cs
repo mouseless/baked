@@ -44,6 +44,7 @@ public static class Components
         int? rows = default,
         int? rowsWhenLoading = default,
         string? scrollHeight = default,
+        DataTable.VirtualScroller? virtualScrollerOptions = default,
         DataTable.Footer? footerTemplate = default,
         DataTable.Export? exportOptions = default,
         IData? data = default
@@ -57,8 +58,9 @@ public static class Components
             Rows = rows,
             RowsWhenLoading = rowsWhenLoading,
             ScrollHeight = scrollHeight,
+            VirtualScrollerOptions = virtualScrollerOptions,
             FooterTemplate = footerTemplate,
-            ExportOptions = exportOptions
+            ExportOptions = exportOptions,
         }
     )
     { Data = data };
@@ -94,6 +96,9 @@ public static class Components
         IComponentDescriptor? sideMenu = default,
         IComponentDescriptor? header = default
     ) => new(new(name) { SideMenu = sideMenu, Header = header });
+
+    public static DataTable.VirtualScroller DataTableVirtualScroller(int itemSize) =>
+        new(itemSize);
 
     public static ComponentDescriptorAttribute<ErrorPage> ErrorPage(
         IEnumerable<(int StatusCode, ErrorPage.Info Info)>? errorInfos = default,

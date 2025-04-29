@@ -11,3 +11,5 @@
   - `ReportPage` was rendering only first tab content when a tab is full-screen,
     now it renders all contents
 - `DefaultLayout` overflow was not hidden causing unintended scrolls, fixed
+- `DataTable` now has `virtualScrollerOptions` property for increasing 
+  performance when handling large amount of data
