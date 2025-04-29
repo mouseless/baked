@@ -65,8 +65,10 @@ const variants = [
     descriptor: giveMe.aReportPage({
       tabs: [
         giveMe.aReportPageTab({
+          fullScreen: true,
+          overflow: true,
           contents: [
-            giveMe.aReportPageTabContent({ fullScreen: true })
+            giveMe.aReportPageTabContent()
           ]
         })
       ]

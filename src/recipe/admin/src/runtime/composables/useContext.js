@@ -37,6 +37,14 @@ export default function() {
     provide("__bake_page", value);
   }
 
+  function articleOverflow() {
+    return inject("__bake_article_overflow", ref(false));
+  }
+
+  function setArticleOverflow(value) {
+    provide("__bake_article_overflow", value);
+  }
+
   return {
     add,
     path,
@@ -45,6 +53,8 @@ export default function() {
     loading,
     setLoading,
     page,
-    setPage
+    setPage,
+    articleOverflow,
+    setArticleOverflow
   };
 }

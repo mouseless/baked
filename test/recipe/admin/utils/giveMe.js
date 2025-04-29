@@ -350,21 +350,22 @@ export default {
     };
   },
 
-  aReportPageTab({ id, title, icon, contents } = {}) {
+  aReportPageTab({ id, title, contents, fullScreen, icon, overflow } = {}) {
     id = $(id, "test-tab");
     title = $(title, "Test Tab");
-    icon = $(icon, this.anIcon());
     contents = $(contents, [this.aReportPageTabContent()]);
+    fullScreen = $(fullScreen, false);
+    icon = $(icon, this.anIcon());
+    overflow = $(overflow, false);
 
-    return { id, title, icon, contents };
+    return { id, title, contents, fullScreen, icon, overflow };
   },
 
-  aReportPageTabContent({ component, fullScreen, narrow } = {}) {
+  aReportPageTabContent({ component, narrow } = {}) {
     component = $(component, this.anExpected({ value: "Test content is given for testing purposes" }));
-    fullScreen = $(fullScreen, false);
     narrow = $(narrow, false);
 
-    return { component, fullScreen, narrow };
+    return { component, narrow };
   },
 
   aSelect({ label, optionLabel, optionValue, showClear, stateful, data, inline } = {}) {
