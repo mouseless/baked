@@ -9,7 +9,7 @@
     :rows
     :scrollable
     :scroll-height
-    :virtual-scroller-options="scrollHeight ? virtualScrollerOptions: null"
+    :virtual-scroller-options="scrollHeight ? virtualScrollerOptions : null"
     :csv-separator="exportOptions?.csvSeparator"
     :export-filename="exportOptions?.fileName"
     :export-function

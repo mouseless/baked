@@ -101,9 +101,9 @@
                     "dataKey": "label",
                     "itemsProp": "items",
                     "scrollable": true,
-                    "scrollHeight": "800px",
+                    "scrollHeight": "500px",
                     "virtualScrollerOptions": {
-                      "itemSize": 30
+                      "itemSize": 45
                     },
                     "footerTemplate": {
                       "label": "Total",

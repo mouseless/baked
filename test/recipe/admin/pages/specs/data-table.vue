@@ -125,8 +125,8 @@ const variants = [
     name: "Scroll",
     descriptor: giveMe.aDataTable({
       columns: [
-        giveMe.aDataTableColumn({ title: "Label", prop: "label", minWidth: true, component: giveMe.aConditional({ testId: "label" }), exportable: true }),
-        giveMe.aDataTableColumn({ title: "Data 1", prop: "data1", component: giveMe.aConditional({ testId: "prop-1" }), exportable: true })
+        giveMe.aDataTableColumn({ title: "Label", prop: "label", minWidth: true }),
+        giveMe.aDataTableColumn({ title: "Data 1", prop: "data1" })
       ],
       exportOptions: giveMe.aDataTableExport({
         csvSeparator: ";",
@@ -136,32 +136,32 @@ const variants = [
       }),
       scrollable: true,
       scrollHeight: "200px",
-      data: Array(10).fill({ label: "Row Label", data1: "Cell Data" })
+      data: new Array(10).fill({ label: "Row Label", data1: "Cell Data" })
     })
   },
   {
-    name: "VirtualScroll",
+    name: "Virtual Scroll",
     descriptor: giveMe.aDataTable({
       columns: [
-        giveMe.aDataTableColumn({ title: "Label", prop: "label", minWidth: true, component: giveMe.aConditional({ testId: "label" }), exportable: true }),
-        giveMe.aDataTableColumn({ title: "Data 1", prop: "data1", component: giveMe.aConditional({ testId: "prop-1" }), exportable: true })
+        giveMe.aDataTableColumn({ title: "Label", prop: "label", minWidth: true }),
+        giveMe.aDataTableColumn({ title: "Data 1", prop: "data1" })
       ],
       scrollable: true,
       scrollHeight: "300px",
       virtualScrollerOptions: { itemSize: 45 },
-      data: Array(1000).fill({ label: "Row Label", data1: "Cell Data" })
+      data: new Array(100).fill({ label: "Row Label", data1: "Cell Data" })
     })
   },
   {
-    name: "NoVirtualScroll",
+    name: "No Virtual Scroll",
     descriptor: giveMe.aDataTable({
       columns: [
-        giveMe.aDataTableColumn({ title: "Label", prop: "label", minWidth: true, component: giveMe.aConditional({ testId: "label" }), exportable: true }),
-        giveMe.aDataTableColumn({ title: "Data 1", prop: "data1", component: giveMe.aConditional({ testId: "prop-1" }), exportable: true })
+        giveMe.aDataTableColumn({ title: "Label", prop: "label", minWidth: true }),
+        giveMe.aDataTableColumn({ title: "Data 1", prop: "data1" })
       ],
       scrollable: true,
       virtualScrollerOptions: { itemSize: 45 },
-      data: Array(1000).fill({ label: "Row Label", data1: "Cell Data" })
+      data: new Array(20).fill({ label: "Row Label", data1: "Cell Data" })
     })
   }
 ];

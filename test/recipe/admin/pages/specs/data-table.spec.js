@@ -134,7 +134,7 @@ test.describe("Scroll", () => {
 });
 
 test.describe("Virtual Scroll", () => {
-  const id = "VirtualScroll";
+  const id = "Virtual Scroll";
 
   test("toggles virtual scroll when configured", async({page}) => {
     const component = page.getByTestId(id);
@@ -144,7 +144,7 @@ test.describe("Virtual Scroll", () => {
 });
 
 test.describe("No Virtual Scroll", () => {
-  const id = "No VirtualScroll";
+  const id = "No Virtual Scroll";
 
   test("virtual scroll is disabled if scrollHeight is not given", async({page}) => {
     const component = page.getByTestId(id);

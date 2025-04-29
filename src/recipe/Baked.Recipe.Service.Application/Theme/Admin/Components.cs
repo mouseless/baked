@@ -45,7 +45,7 @@ public static class Components
         int? rowsWhenLoading = default,
         bool? scrollable = default,
         string? scrollHeight = default,
-        object? virtualScrollerOptions = default,
+        DataTable.VirtualScroll? virtualScrollerOptions = default,
         DataTable.Footer? footerTemplate = default,
         DataTable.Export? exportOptions = default,
         IData? data = default
