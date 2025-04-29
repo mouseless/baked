@@ -112,11 +112,14 @@ onMounted(() => {
   showRequiredMessage.value = !ready.value;
 });
 
-watch(currentTab, newTabId => {
-  const newTab = shownTabs.value.filter(tab => tab.id === newTabId)[0];
+if(tabs.length > 0) {
+  articleOverflow.value = tabs[0].overflow || false;
+  watch(currentTab, newTabId => {
+    const newTab = tabs.filter(tab => tab.id === newTabId)[0];
 
-  articleOverflow.value = newTab.overflow || false;
-});
+    articleOverflow.value = newTab.overflow || false;
+  });
+}
 
 for(const tab of tabs) {
   if(!tab.showWhen) { continue; }
