@@ -43,7 +43,9 @@ public static class Components
         bool? paginator = default,
         int? rows = default,
         int? rowsWhenLoading = default,
+        bool? scrollable = default,
         string? scrollHeight = default,
+        object? virtualScrollerOptions = default,
         DataTable.Footer? footerTemplate = default,
         DataTable.Export? exportOptions = default,
         IData? data = default
@@ -56,9 +58,11 @@ public static class Components
             Paginator = paginator,
             Rows = rows,
             RowsWhenLoading = rowsWhenLoading,
+            Scrollable = scrollable,
             ScrollHeight = scrollHeight,
+            VirtualScrollerOptions = virtualScrollerOptions,
             FooterTemplate = footerTemplate,
-            ExportOptions = exportOptions
+            ExportOptions = exportOptions,
         }
     )
     { Data = data };

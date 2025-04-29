@@ -10,7 +10,9 @@ public record DataTable : IComponentSchema
     public bool? Paginator { get; set; }
     public int? Rows { get; set; }
     public int? RowsWhenLoading { get; set; }
+    public bool? Scrollable { get; set; }
     public string? ScrollHeight { get; set; }
+    public object? VirtualScrollerOptions { get; set; }
     public Footer? FooterTemplate { get; set; }
     public Export? ExportOptions { get; set; }
 

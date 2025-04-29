@@ -9,6 +9,7 @@
     :rows
     :scrollable
     :scroll-height
+    :virtual-scroller-options="scrollHeight ? virtualScrollerOptions: null"
     :csv-separator="exportOptions?.csvSeparator"
     :export-filename="exportOptions?.fileName"
     :export-function
@@ -123,7 +124,7 @@ const { schema, data } = defineProps({
   data: { type: null, required: true }
 });
 
-const { columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight } = schema;
+const { columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollable, scrollHeight, virtualScrollerOptions } = schema;
 
 const dataTable = ref();
 const loading = context.loading();
@@ -135,7 +136,6 @@ const value = computed(() =>
     : new Array(rowsWhenLoading || 5).fill({ })
 );
 const footerColSpan = computed(() => columns.length - footerTemplate?.columns.length);
-const scrollable = scrollHeight !== undefined;
 const formatter = exportOptions?.formatter ? (await composableResolver.resolve(exportOptions.formatter)).default() : undefined;
 
 function exportDataTable() {

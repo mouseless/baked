@@ -120,6 +120,49 @@ const variants = [
         { label: "Row 2", data1: "Cell 2.1" }
       ]
     })
+  },
+  {
+    name: "Scroll",
+    descriptor: giveMe.aDataTable({
+      columns: [
+        giveMe.aDataTableColumn({ title: "Label", prop: "label", minWidth: true, component: giveMe.aConditional({ testId: "label" }), exportable: true }),
+        giveMe.aDataTableColumn({ title: "Data 1", prop: "data1", component: giveMe.aConditional({ testId: "prop-1" }), exportable: true })
+      ],
+      exportOptions: giveMe.aDataTableExport({
+        csvSeparator: ";",
+        formatter: "useCsvFormatter",
+        buttonIcon: "pi pi-file-export",
+        buttonLabel: "CSV"
+      }),
+      scrollable: true,
+      scrollHeight: "200px",
+      data: Array(10).fill({ label: "Row Label", data1: "Cell Data" })
+    })
+  },
+  {
+    name: "VirtualScroll",
+    descriptor: giveMe.aDataTable({
+      columns: [
+        giveMe.aDataTableColumn({ title: "Label", prop: "label", minWidth: true, component: giveMe.aConditional({ testId: "label" }), exportable: true }),
+        giveMe.aDataTableColumn({ title: "Data 1", prop: "data1", component: giveMe.aConditional({ testId: "prop-1" }), exportable: true })
+      ],
+      scrollable: true,
+      scrollHeight: "300px",
+      virtualScrollerOptions: { itemSize: 45 },
+      data: Array(1000).fill({ label: "Row Label", data1: "Cell Data" })
+    })
+  },
+  {
+    name: "NoVirtualScroll",
+    descriptor: giveMe.aDataTable({
+      columns: [
+        giveMe.aDataTableColumn({ title: "Label", prop: "label", minWidth: true, component: giveMe.aConditional({ testId: "label" }), exportable: true }),
+        giveMe.aDataTableColumn({ title: "Data 1", prop: "data1", component: giveMe.aConditional({ testId: "prop-1" }), exportable: true })
+      ],
+      scrollable: true,
+      virtualScrollerOptions: { itemSize: 45 },
+      data: Array(1000).fill({ label: "Row Label", data1: "Cell Data" })
+    })
   }
 ];
 </script>

@@ -122,6 +122,38 @@ test.describe("Export", () => {
   // });
 });
 
+test.describe("Scroll", () => {
+  const id = "Scroll";
+
+  test("toggles scroll when height is exceeded", async({page}) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.locator(primevue.datatable.container)).toHaveCSS("max-height", "200px");
+    await expect(component.locator(primevue.datatable.container)).toHaveCSS("overflow", "auto");
+  });
+});
+
+test.describe("Virtual Scroll", () => {
+  const id = "VirtualScroll";
+
+  test("toggles virtual scroll when configured", async({page}) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.locator(".p-virtualscroller")).toBeAttached();
+  });
+});
+
+test.describe("No Virtual Scroll", () => {
+  const id = "No VirtualScroll";
+
+  test("virtual scroll is disabled if scrollHeight is not given", async({page}) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.locator(".p-virtualscroller")).not.toBeAttached();
+  });
+});
+
+
 test.describe("Loading", () => {
   const id = "Loading";
 
