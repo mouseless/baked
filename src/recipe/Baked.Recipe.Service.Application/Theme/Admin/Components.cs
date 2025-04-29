@@ -228,17 +228,18 @@ public static class Components
     ) => new(new(name, title.Schema) { QueryParameters = [.. queryParameters ?? []], Tabs = [.. tabs ?? []] });
 
     public static ReportPage.Tab ReportPageTab(string id, string title,
+        IEnumerable<ReportPage.Tab.Content>? contents = default,
+        bool? fullScreen = default,
         IComponentDescriptor? icon = default,
-        string? showWhen = default,
-        IEnumerable<ReportPage.Tab.Content>? contents = default
-    ) => new(id, title) { Icon = icon, ShowWhen = showWhen, Contents = [.. contents ?? []] };
+        bool? overflow = default,
+        string? showWhen = default
+    ) => new(id, title) { Contents = [.. contents ?? []], FullScreen = fullScreen, Icon = icon, Overflow = overflow, ShowWhen = showWhen };
 
     public static ReportPage.Tab.Content ReportPageTabContent(IComponentDescriptor component,
-        bool? fullScreen = default,
-        bool? narrow = default,
         string? key = default,
+        bool? narrow = default,
         string? showWhen = default
-    ) => new(component) { FullScreen = fullScreen, Narrow = narrow, Key = key, ShowWhen = showWhen };
+    ) => new(component) { Key = key, Narrow = narrow, ShowWhen = showWhen };
 
     public static ComponentDescriptorAttribute<Select> Select(string label, IData data,
         string? optionLabel = default,

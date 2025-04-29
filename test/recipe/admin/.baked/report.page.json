@@ -75,12 +75,6 @@
       {
         "id": "single-value",
         "title": "Single Value",
-        "icon": {
-          "type": "Icon",
-          "schema": {
-            "iconClass": "pi-box"
-          }
-        },
         "contents": [
           {
             "component": {
@@ -180,17 +174,17 @@
             },
             "narrow": true
           }
-        ]
+        ],
+        "icon": {
+          "type": "Icon",
+          "schema": {
+            "iconClass": "pi-box"
+          }
+        }
       },
       {
         "id": "data-table",
         "title": "Data Table",
-        "icon": {
-          "type": "Icon",
-          "schema": {
-            "iconClass": "pi-table"
-          }
-        },
         "contents": [
           {
             "component": {
@@ -420,7 +414,13 @@
               }
             }
           }
-        ]
+        ],
+        "icon": {
+          "type": "Icon",
+          "schema": {
+            "iconClass": "pi-table"
+          }
+        }
       }
     ]
   }
