@@ -55,6 +55,7 @@
         <template v-if="tab.fullScreen">
           <Bake
             v-for="(content, i) in tab.contents.filter(content => content.showWhen ? page[content.showWhen] : true)"
+            :key="`content-${content.key || i}`"
             :name="`tabs/${tab.id}/contents/${content.key || i}`"
             :descriptor="content.component"
           />

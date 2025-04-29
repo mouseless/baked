@@ -120,6 +120,49 @@ const variants = [
         { label: "Row 2", data1: "Cell 2.1" }
       ]
     })
+  },
+  {
+    name: "Scroll",
+    descriptor: giveMe.aDataTable({
+      columns: [
+        giveMe.aDataTableColumn({ title: "Label", prop: "label", minWidth: true }),
+        giveMe.aDataTableColumn({ title: "Data 1", prop: "data1" })
+      ],
+      exportOptions: giveMe.aDataTableExport({
+        csvSeparator: ";",
+        formatter: "useCsvFormatter",
+        buttonIcon: "pi pi-file-export",
+        buttonLabel: "CSV"
+      }),
+      scrollable: true,
+      scrollHeight: "200px",
+      data: new Array(10).fill({ label: "Row Label", data1: "Cell Data" })
+    })
+  },
+  {
+    name: "Virtual Scroll",
+    descriptor: giveMe.aDataTable({
+      columns: [
+        giveMe.aDataTableColumn({ title: "Label", prop: "label", minWidth: true }),
+        giveMe.aDataTableColumn({ title: "Data 1", prop: "data1" })
+      ],
+      scrollable: true,
+      scrollHeight: "300px",
+      virtualScrollerOptions: { itemSize: 45 },
+      data: new Array(100).fill({ label: "Row Label", data1: "Cell Data" })
+    })
+  },
+  {
+    name: "No Virtual Scroll",
+    descriptor: giveMe.aDataTable({
+      columns: [
+        giveMe.aDataTableColumn({ title: "Label", prop: "label", minWidth: true }),
+        giveMe.aDataTableColumn({ title: "Data 1", prop: "data1" })
+      ],
+      scrollable: true,
+      virtualScrollerOptions: { itemSize: 45 },
+      data: new Array(20).fill({ label: "Row Label", data1: "Cell Data" })
+    })
   }
 ];
 </script>
