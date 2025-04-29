@@ -100,7 +100,6 @@
                     ],
                     "dataKey": "label",
                     "itemsProp": "items",
-                    "scrollable": true,
                     "scrollHeight": "500px",
                     "virtualScrollerOptions": {
                       "itemSize": 45

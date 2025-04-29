@@ -10,9 +10,8 @@ public record DataTable : IComponentSchema
     public bool? Paginator { get; set; }
     public int? Rows { get; set; }
     public int? RowsWhenLoading { get; set; }
-    public bool? Scrollable { get; set; }
     public string? ScrollHeight { get; set; }
-    public VirtualScroll? VirtualScrollerOptions { get; set; }
+    public VirtualScroller? VirtualScrollerOptions { get; set; }
     public Footer? FooterTemplate { get; set; }
     public Export? ExportOptions { get; set; }
 
@@ -40,5 +39,8 @@ public record DataTable : IComponentSchema
         public string? ButtonLabel { get; set; }
     }
 
-    public record VirtualScroll(int ItemSize);
+    public record VirtualScroller(int ItemSize)
+    {
+        public int ItemSize { get; set; } = ItemSize;
+    }
 }

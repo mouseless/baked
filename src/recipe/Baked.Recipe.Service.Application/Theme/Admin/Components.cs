@@ -43,9 +43,8 @@ public static class Components
         bool? paginator = default,
         int? rows = default,
         int? rowsWhenLoading = default,
-        bool? scrollable = default,
         string? scrollHeight = default,
-        DataTable.VirtualScroll? virtualScrollerOptions = default,
+        DataTable.VirtualScroller? virtualScrollerOptions = default,
         DataTable.Footer? footerTemplate = default,
         DataTable.Export? exportOptions = default,
         IData? data = default
@@ -58,7 +57,6 @@ public static class Components
             Paginator = paginator,
             Rows = rows,
             RowsWhenLoading = rowsWhenLoading,
-            Scrollable = scrollable,
             ScrollHeight = scrollHeight,
             VirtualScrollerOptions = virtualScrollerOptions,
             FooterTemplate = footerTemplate,
@@ -274,4 +272,7 @@ public static class Components
         int? maxLength = default,
         IData? data = default
     ) => new(new() { MaxLength = maxLength }) { Data = data };
+
+    public static DataTable.VirtualScroller VirtualScrollerOptions(int itemSize) =>
+        new(itemSize);
 }

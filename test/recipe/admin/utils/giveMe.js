@@ -65,7 +65,7 @@ export default {
     };
   },
 
-  aDataTable({ columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollable, scrollHeight, virtualScrollerOptions, data } = {}) {
+  aDataTable({ columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions, data } = {}) {
     columns = $(columns, [
       this.aDataTableColumn({ prop: "test" })
     ]);
@@ -74,7 +74,6 @@ export default {
     paginator = $(paginator, false);
     rows = $(rows, null);
     rowsWhenLoading = $(rowsWhenLoading, null);
-    scrollable = $(scrollable, false);
     data = $(data, [
       { test: "value 1" },
       { test: "value 2" },
@@ -83,7 +82,7 @@ export default {
 
     return {
       type: "DataTable",
-      schema: { columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollable, scrollHeight, virtualScrollerOptions },
+      schema: { columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions },
       data: { type: "Inline", value: data }
     };
   },

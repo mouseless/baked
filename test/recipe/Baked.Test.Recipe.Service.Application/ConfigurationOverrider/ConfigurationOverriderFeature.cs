@@ -450,9 +450,8 @@ public class ConfigurationOverriderFeature : IFeature
                                             ),
                                             dataKey: nameof(TableRow.Label).Camelize(),
                                             itemsProp: "items",
-                                            scrollable: true,
                                             scrollHeight: "500px",
-                                            virtualScrollerOptions: new(45),
+                                            virtualScrollerOptions: VirtualScrollerOptions(45),
                                             exportOptions: DataTableExport(";", "data-table-export", formatter: "useCsvFormatter", buttonLabel: "Export as CSV"),
                                             data: Remote(domain.Types[typeof(Theme.DataTable)].GetMembers().Methods[nameof(Theme.DataTable.GetTableDataWithFooter)].GetSingle<ActionModelAttribute>().GetRoute(),
                                                 query: Injected(custom: true)

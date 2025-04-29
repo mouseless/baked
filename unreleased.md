@@ -12,6 +12,6 @@
     now it renders all contents
 - `DefaultLayout` overflow was not hidden causing unintended scrolls, fixed
 - `DataTable` now has 
-  - `virtualScroll` property for increasing performance when handling large 
+  - `virtualScrollerOptions` property for increasing performance when handling large 
     amount of data
-  - `scrollable` toggle which can be configured seperate from `scrollHeight`
+  - `scrollable` toggle which can be configured separate from `scrollHeight`
