@@ -22,6 +22,7 @@ public class Report
     public string GetWide() =>
         $"WIDE: {Value}";
 
+
     public string GetLeft() =>
         $"LEFT: {Value}";
 
