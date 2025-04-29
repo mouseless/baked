@@ -97,6 +97,9 @@ public static class Components
         IComponentDescriptor? header = default
     ) => new(new(name) { SideMenu = sideMenu, Header = header });
 
+    public static DataTable.VirtualScroller DataTableVirtualScroller(int itemSize) =>
+        new(itemSize);
+
     public static ComponentDescriptorAttribute<ErrorPage> ErrorPage(
         IEnumerable<(int StatusCode, ErrorPage.Info Info)>? errorInfos = default,
         string? footerInfo = default,
@@ -272,7 +275,4 @@ public static class Components
         int? maxLength = default,
         IData? data = default
     ) => new(new() { MaxLength = maxLength }) { Data = data };
-
-    public static DataTable.VirtualScroller VirtualScrollerOptions(int itemSize) =>
-        new(itemSize);
 }
