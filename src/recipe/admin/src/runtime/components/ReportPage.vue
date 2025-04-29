@@ -50,13 +50,15 @@
         v-model="currentTab"
         :when="tab.id"
         class="w-full"
-        :class="{ 'max-w-screen-xl': !(tab.contents.length === 1 && tab.contents[0].fullScreen) }"
+        :class="{ 'max-w-screen-xl': !tab.fullScreen }"
       >
-        <Bake
-          v-if="tab.contents.length === 1 && tab.contents[0].fullScreen"
-          :name="`tabs/${tab.id}/contents/full-screen`"
-          :descriptor="tab.contents[0].component"
-        />
+        <template v-if="tab.fullScreen">
+          <Bake
+            v-for="(content, i) in tab.contents.filter(content => content.showWhen ? page[content.showWhen] : true)"
+            :name="`tabs/${tab.id}/contents/${content.key || i}`"
+            :descriptor="content.component"
+          />
+        </template>
         <div
           v-else
           class="grid grid-cols-1 lg:grid-cols-2 gap-4"
@@ -94,12 +96,28 @@ const { schema } = defineProps({
 const { title, queryParameters, tabs } = schema;
 
 const page = context.page();
+const articleOverflow = context.articleOverflow();
 const ready = ref(queryParameters.length === 0);
 const uniqueKey = ref();
 const currentTab = ref(tabs.length > 0 ? tabs[0].id : "");
 const shownTabs = computed(() => tabs.filter(tab => tab.showWhen ? page[tab.showWhen] : true));
-
 const lastTab = ref();
+// this could be computed(() => !ready.value), but message gets duplicated when
+// page is refreshed so this variable is not handled separately. this is
+// probably because `Message` is a component that fades in and added to dom in
+// an unusual way
+const showRequiredMessage = ref(false);
+
+onMounted(() => {
+  showRequiredMessage.value = !ready.value;
+});
+
+watch(currentTab, newTabId => {
+  const newTab = shownTabs.value.filter(tab => tab.id === newTabId)[0];
+
+  articleOverflow.value = newTab.overflow || false;
+});
+
 for(const tab of tabs) {
   if(!tab.showWhen) { continue; }
 
@@ -117,16 +135,6 @@ for(const tab of tabs) {
     }
   });
 }
-
-// this could be computed(() => !ready.value), but message gets duplicated when
-// page is refreshed so this variable is not handled separately. this is
-// probably because `Message` is a component that fades in and added to dom in
-// an unusual way
-const showRequiredMessage = ref(false);
-
-onMounted(() => {
-  showRequiredMessage.value = !ready.value;
-});
 
 function onReady(value) {
   ready.value = value;

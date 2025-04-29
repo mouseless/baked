@@ -1,14 +1,20 @@
 <template>
-  <div class="flex h-screen">
+  <div class="flex h-screen overflow-hidden">
     <Bake
       name="sideMenu"
-      :descriptor="schema.sideMenu"
+      :descriptor="sideMenu"
     />
-    <article class="w-full px-4 flex flex-col bg-body">
+    <article
+      class="w-full px-4 flex flex-col bg-body"
+      :class="{
+        'overflow-x-hidden': !overflow,
+        'overflow-visible': overflow
+      }"
+    >
       <Bake
         :key="route.path"
         name="header"
-        :descriptor="schema.header"
+        :descriptor="header"
       />
       <slot />
       <ScrollTop target="parent" />
@@ -16,10 +22,13 @@
   </div>
 </template>
 <script setup>
+import { ref } from "vue";
 import { useRoute } from "#app";
 import { ScrollTop } from "primevue";
 import { Bake } from "#components";
+import { useContext } from "#imports";
 
+const context = useContext();
 // do NOT remove this without testing. using $route in template doesn't trigger
 // header refresh properly, using setup variable solved the issue.
 const route = useRoute();
@@ -28,14 +37,12 @@ const { schema } = defineProps({
   schema: { type: null, required: true },
   data: { type: null, default: null }
 });
+
+const { header, sideMenu } = schema;
+
+const overflow = ref(false);
+context.setArticleOverflow(overflow);
 </script>
-<style scoped>
-/* overflow-x-hidden fixes chart auto width problem under this parent */
-/* see: https://stackoverflow.com/questions/52502837/chart-js-in-flex-element-overflows-instead-of-shrinking */
-article {
-  overflow-x: hidden;
-}
-</style>
 <style>
 .p-scrolltop {
   padding-top: calc(var(--p-button-icon-only-width) / 2);
