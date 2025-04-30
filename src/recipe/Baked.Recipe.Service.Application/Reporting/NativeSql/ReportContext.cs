@@ -1,8 +1,9 @@
 using Microsoft.Extensions.FileProviders;
+using NHibernate;
 
 namespace Baked.Reporting.NativeSql;
 
-public class ReportContext(IFileProvider _fileProvider, Func<NHibernate.IStatelessSession> _getStatelessSession, ReportOptions _options)
+public class ReportContext(IFileProvider _fileProvider, Func<IStatelessSession> _getStatelessSession, ReportOptions _options)
     : IReportContext
 {
     public async Task<object?[][]> Execute(string queryName, Dictionary<string, object?> parameters)
@@ -17,6 +18,12 @@ public class ReportContext(IFileProvider _fileProvider, Func<NHibernate.IStatele
         var query = _getStatelessSession().CreateSQLQuery(queryString);
         foreach (var (name, value) in parameters)
         {
+            if (value is null)
+            {
+                query.SetParameter(name, null, NHibernateUtil.String);
+                continue;
+            }
+
             query.SetParameter(name, value ?? string.Empty);
         }
 
