@@ -17,7 +17,7 @@ public class ReportContext(IFileProvider _fileProvider, Func<NHibernate.IStatele
         var query = _getStatelessSession().CreateSQLQuery(queryString);
         foreach (var (name, value) in parameters)
         {
-            query.SetParameter(name, value);
+            query.SetParameter(name, value ?? string.Empty);
         }
 
         var result = await query.ListAsync();
