@@ -2,4 +2,4 @@
 
 ## Improvements
 
-- `null` parameters now supported.
+- Error when `null` value is given in query parameters, fixed.
