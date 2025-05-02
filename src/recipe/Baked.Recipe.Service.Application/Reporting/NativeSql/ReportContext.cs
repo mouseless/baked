@@ -24,7 +24,7 @@ public class ReportContext(IFileProvider _fileProvider, Func<IStatelessSession> 
                 continue;
             }
 
-            query.SetParameter(name, value ?? string.Empty);
+            query.SetParameter(name, value);
         }
 
         var result = await query.ListAsync();
