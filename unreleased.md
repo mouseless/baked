@@ -2,4 +2,4 @@
 
 ## Improvements
 
-- Error when `null` value is given in query parameters, fixed.
+- `ReportContext` was throwing error for `null` query parameters, fixed.
