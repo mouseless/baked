@@ -18,15 +18,22 @@ const context = useContext();
 const { truncate } = useFormat();
 
 const { schema, data } = defineProps({
-  schema: { type: null, default: null },
+  schema: { type: null, default: { } },
   data: { type: null, required: true }
 });
 
+const { maxLength } = schema;
+
 const loading = context.loading();
-const lengthIsExceeded = computed(() => schema.maxLength && data.length > schema.maxLength);
-const text = computed(() => lengthIsExceeded.value ? truncate(data, schema.maxLength): data);
+const lengthIsExceeded = computed(() => maxLength && data.length > maxLength);
+const text = computed(() => lengthIsExceeded.value ? truncate(data, maxLength): data);
 const tooltip = computed(() => ({
   value: `${data}`,
-  disabled: !lengthIsExceeded.value
+  disabled: !lengthIsExceeded.value,
+  pt: {
+    root: {
+      style: maxLength ? `min-width: ${maxLength/4}rem;` : ""
+    }
+  }
 }));
 </script>
