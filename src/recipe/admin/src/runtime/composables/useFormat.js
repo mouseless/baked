@@ -14,6 +14,14 @@ export default function() {
     { threshold: Number.MIN_VALUE, divisor: 1, suffix: "", fraction: false }
   ];
 
+  function asClasses(path,
+    prefix = "b--"
+  ) {
+    return path.split("/")
+      .filter(item => item.length > 0)
+      .map(item => `${prefix}${item}`);
+  }
+
   function asCurrency(value,
     { shorten, shortenThousands } = { }
   ) {
@@ -80,6 +88,7 @@ export default function() {
   }
 
   return {
+    asClasses,
     asCurrency,
     asDecimal,
     asMonth,
