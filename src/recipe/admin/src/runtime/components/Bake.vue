@@ -5,17 +5,19 @@
     v-model="model"
     :schema="descriptor.schema"
     :data
+    :class="classes"
   >
     <slot v-if="$slots.default" />
   </component>
 </template>
 <script setup>
 import { onMounted, ref } from "vue";
-import { useComponentResolver, useContext, useDataFetcher } from "#imports";
+import { useComponentResolver, useContext, useDataFetcher, useFormat } from "#imports";
 
 const componentResolver = useComponentResolver();
 const context = useContext();
 const dataFetcher = useDataFetcher();
+const { asClasses } = useFormat();
 
 const { name, descriptor } = defineProps({
   name: { type: String, required: true },
@@ -30,6 +32,7 @@ const injectedData = context.injectedData();
 const data = ref(dataFetcher.get({ data: descriptor.data, injectedData }));
 const shouldLoad = dataFetcher.shouldLoad(descriptor.data?.type);
 const loading = ref(shouldLoad);
+const classes = [`b-component--${descriptor.type}`, ...asClasses(name)];
 
 context.setInjectedData(data, "ParentData");
 

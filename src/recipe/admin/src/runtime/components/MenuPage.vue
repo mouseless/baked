@@ -16,8 +16,8 @@
         <h2
           v-if="section.title"
           class="
-            text-zinc-500 dark:text-zinc-500
-            text-sm font-bold
+            text-zinc-400 dark:text-zinc-600
+            text-xs font-bold
           "
         >
           {{ section.title?.toLocaleUpperCase(locale) }}

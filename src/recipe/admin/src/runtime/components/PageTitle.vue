@@ -10,9 +10,15 @@
         </h1>
         <div
           data-testid="description"
-          class="text-sm text-gray-600 dark:text-gray-400"
+          class="
+            text-sm text-gray-600 dark:text-gray-400
+            text-nowrap overflow-hidden
+          "
         >
-          {{ description || "&nbsp;" }}
+          <String
+            :schema="{ maxLength: 125 }"
+            :data="description || '&nbsp;'"
+          />
         </div>
       </div>
       <div
@@ -37,7 +43,7 @@
 <script setup>
 import { onMounted } from "vue";
 import { useRuntimeConfig } from "#app";
-import { Bake } from "#components";
+import { Bake, String } from "#components";
 import { useHead } from "#imports";
 
 const { public: { components } } = useRuntimeConfig();

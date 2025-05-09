@@ -12,6 +12,18 @@ test.describe("Base", () => {
 
     await expect(component).toHaveText("TEST");
   });
+
+  test("component has marker class for bake path", async({page}) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.locator(".b--variants.b--base")).toBeAttached();
+  });
+
+  test("component has marker class for component type", async({page}) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.locator(".b-component--String")).toBeAttached();
+  });
 });
 
 test.describe("Parent Data", () => {
