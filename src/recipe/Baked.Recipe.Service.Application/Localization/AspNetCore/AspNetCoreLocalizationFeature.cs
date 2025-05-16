@@ -12,7 +12,7 @@ public class AspNetCoreLocalizationFeature
     {
         configurator.ConfigureServiceCollection(services =>
         {
-            services.AddLocalization(option => option.ResourcesPath = "Resourcess");
+            services.AddLocalization(option => option.ResourcesPath = "Resources");
         });
 
         configurator.ConfigureMiddlewareCollection(middlewares =>

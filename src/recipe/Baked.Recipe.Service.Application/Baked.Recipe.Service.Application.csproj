@@ -13,7 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Resources\*.restext" />
+    <EmbeddedResource Include="Resources\*.restext">
+      <LogicalName>Baked.Recipe.Service.Application.Resources.%(Filename).resources</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>

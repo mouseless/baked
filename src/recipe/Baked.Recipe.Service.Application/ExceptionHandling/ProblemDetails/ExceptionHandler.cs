@@ -1,4 +1,5 @@
-﻿using Humanizer;
+﻿using System.Globalization;
+using Humanizer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Localization;
 
@@ -12,7 +13,8 @@ public class ExceptionHandler(IEnumerable<IExceptionHandler> _handlers, Exceptio
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
         var exceptionInfo = HandlerFor(exception).Handle(exception);
-
+        CultureInfo.CurrentCulture = new CultureInfo("en-US");
+        CultureInfo.CurrentUICulture = new CultureInfo("en-US");
         var _localizer = _factory.Create("$", typeof(ExceptionHandler).Assembly.GetName().Name!);
         Console.WriteLine(_localizer["invalid_credentials"]);
 
