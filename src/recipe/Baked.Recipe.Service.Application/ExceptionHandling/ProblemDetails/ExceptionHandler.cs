@@ -1,9 +1,10 @@
 ﻿using Humanizer;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Localization;
 
 namespace Baked.ExceptionHandling.ProblemDetails;
 
-public class ExceptionHandler(IEnumerable<IExceptionHandler> _handlers, ExceptionHandlerSettings _settings)
+public class ExceptionHandler(IEnumerable<IExceptionHandler> _handlers, ExceptionHandlerSettings _settings, IStringLocalizerFactory _factory)
     : Microsoft.AspNetCore.Diagnostics.IExceptionHandler
 {
     readonly UnhandledExceptionHandler _unhandledExceptionHandler = new(_settings);
@@ -11,6 +12,9 @@ public class ExceptionHandler(IEnumerable<IExceptionHandler> _handlers, Exceptio
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
         var exceptionInfo = HandlerFor(exception).Handle(exception);
+
+        var _localizer = _factory.Create("$", typeof(ExceptionHandler).Assembly.GetName().Name!);
+        Console.WriteLine(_localizer["invalid_credentials"]);
 
         httpContext.Response.ContentType = "application/json";
         httpContext.Response.StatusCode = exceptionInfo.Code;

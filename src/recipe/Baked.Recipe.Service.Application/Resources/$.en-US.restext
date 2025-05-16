@@ -1,0 +1,13 @@
+invalid_credentials=Invalid credentials
+enter_your_token_provided_by_the_development_team=Enter your token provided by the development team
+concatenate_all_form_post_parameters_with_secret_token_at_the_end_then_hash_it_using_sha256_and_convert_it_to_base64=Concatenate all form post parameters with secret token at the end, then hash it using `sha256` and convert it to `base64`
+failed_to_authenticate_with_given_credentials=Failed to authenticate with given credentials.
+NAME_does_not_have_action_model={0:N} does not have action model
+method_without_an_overload_should_not_exist=Method without an overload should not exist
+cannot_create_instance_of_TYPE=Cannot create instance of {0:T}
+ICasterConfigurer_implementation_not_found=`ICasterConfigurer` implementation not found
+TYPE_should_have_existed={0:T} should have existed
+should_have_returned_an_IServiceCollection_instance=Should've returned an IServiceCollection instance
+TYPE_should_have_existed_with_valid_location={0:T} should have existed with valid location
+
+key=en son CodeGenerationLayer'da kaldım
