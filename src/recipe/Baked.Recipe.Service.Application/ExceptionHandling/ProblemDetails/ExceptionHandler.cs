@@ -1,11 +1,10 @@
-﻿using System.Globalization;
-using Humanizer;
+﻿using Humanizer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Localization;
 
 namespace Baked.ExceptionHandling.ProblemDetails;
 
-public class ExceptionHandler(IEnumerable<IExceptionHandler> _handlers, ExceptionHandlerSettings _settings, IStringLocalizerFactory _factory)
+public class ExceptionHandler(IEnumerable<IExceptionHandler> _handlers, ExceptionHandlerSettings _settings, IStringLocalizer _localizer)
     : Microsoft.AspNetCore.Diagnostics.IExceptionHandler
 {
     readonly UnhandledExceptionHandler _unhandledExceptionHandler = new(_settings);
@@ -13,10 +12,6 @@ public class ExceptionHandler(IEnumerable<IExceptionHandler> _handlers, Exceptio
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
         var exceptionInfo = HandlerFor(exception).Handle(exception);
-        CultureInfo.CurrentCulture = new CultureInfo("en-US");
-        CultureInfo.CurrentUICulture = new CultureInfo("en-US");
-        var _localizer = _factory.Create("$", typeof(ExceptionHandler).Assembly.GetName().Name!);
-        Console.WriteLine(_localizer["invalid_credentials"]);
 
         httpContext.Response.ContentType = "application/json";
         httpContext.Response.StatusCode = exceptionInfo.Code;
@@ -33,13 +28,21 @@ public class ExceptionHandler(IEnumerable<IExceptionHandler> _handlers, Exceptio
         new()
         {
             Type = _settings.TypeUrlFormat is not null
-                ? string.Format(_settings.TypeUrlFormat.GetValue(), NameOf(exceptionInfo.Exception).Kebaberize())
-                : null,
+                    ? string.Format(_settings.TypeUrlFormat.GetValue(), NameOf(exceptionInfo.Exception).Kebaberize())
+                    : null,
             Title = NameOf(exceptionInfo.Exception).Titleize(),
             Status = exceptionInfo.Code,
-            Detail = exceptionInfo.Body,
+            Detail = GetMessage(exceptionInfo),
             Extensions = exceptionInfo.ExtraData ?? []
         };
+
+    string GetMessage(ExceptionInfo info) =>
+        info.LKey is null
+        ? info.Body
+        : (_localizer[info.LKey, info.LParams ?? []] is var value && value == info.LKey
+            ? info.Body
+            : value
+        );
 
     string NameOf(Exception exception) =>
         exception.GetType().Name.Replace(nameof(Exception), string.Empty);

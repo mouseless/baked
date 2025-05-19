@@ -16,6 +16,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Resources\*.restext">
+      <LogicalName>Baked.Test.Recipe.Service.Application.Resources.%(Filename).resources</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\src\recipe\Baked.Recipe.Service.Application\Baked.Recipe.Service.Application.csproj" />
     <ProjectReference Include="..\Baked.Test.Recipe.Service\Baked.Test.Recipe.Service.csproj" />
   </ItemGroup>

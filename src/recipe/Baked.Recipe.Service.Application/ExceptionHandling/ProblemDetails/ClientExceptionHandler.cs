@@ -26,6 +26,8 @@ public class ClientExceptionHandler(ExceptionHandlerSettings _settings)
             exception,
             (int)HttpStatusCode.InternalServerError,
             exception.Message,
+            exception.LKey,
+            exception.LParams,
             new() { ["content"] = content }
         );
     }
