@@ -6,12 +6,13 @@ export default defineNuxtPlugin({
   async setup(_, nuxt) {
     nuxt.hook("i18n:registerModule", register => {
       register({
-        restructureDir: "",
+        langDir: resolver.resolve("/locales"),
         defaultLocale: "en",
         strategy: "no_prefix",
         locales: [
           {
             code: "en",
+            name: "English",
             file: "en.json"
           }
         ]
