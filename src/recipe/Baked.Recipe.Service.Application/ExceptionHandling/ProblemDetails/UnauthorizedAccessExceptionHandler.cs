@@ -6,6 +6,6 @@ public class UnauthorizedAccessExceptionHandler : IExceptionHandler
 {
     public bool CanHandle(Exception ex) => ex is UnauthorizedAccessException;
     public ExceptionInfo Handle(Exception ex) => new(ex, (int)HttpStatusCode.Forbidden, ex.Message,
-        LKey: "access_to_the_path_is_denied"
+        LKey: "attempted_to_perform_an_unauthorized_operation"
     );
 }
