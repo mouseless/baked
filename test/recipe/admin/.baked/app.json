@@ -38,6 +38,13 @@
       ],
       "defaultAlertTitle": "Unexpected Error",
       "defaultAlertMessage": "Please contact system administrator"
+    },
+    {
+      "name": "localization",
+      "defaultLanguage": "en",
+      "supportedLanguages": [
+        "en"
+      ]
     }
   ],
   "error": {

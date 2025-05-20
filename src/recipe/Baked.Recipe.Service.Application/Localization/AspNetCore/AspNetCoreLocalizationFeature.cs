@@ -42,22 +42,12 @@ public class AspNetCoreLocalizationFeature(Setting<string>? _resourceName, IEnum
             );
         });
 
-        // TODO - Burası admin i yönetecek tabi i18n'i
-        // configurator.ConfigureAppDescriptor(app =>
-        // {
-        //     app.Plugins.Add(new ErrorHandlingPlugin()
-        //     {
-        //         Handlers =
-        //         [
-        //             new(
-        //                 StatusCode: (int)HttpStatusCode.Unauthorized,
-        //                 Behavior: ErrorHandlingPlugin.HandlerBehavior.Redirect,
-        //                 BehaviorArgument: Datas.Computed("useLoginRedirect")
-        //             ),
-        //             new(StatusCode: (int)HttpStatusCode.BadRequest, Behavior: ErrorHandlingPlugin.HandlerBehavior.Alert),
-        //             new(Behavior: ErrorHandlingPlugin.HandlerBehavior.Page),
-        //         ]
-        //     });
-        // });
+        configurator.ConfigureAppDescriptor(app =>
+        {
+            app.Plugins.Add(new LocalizationPlugin()
+            {
+                SupportedLanguages = _supportedLanguages ?? ["en"]
+            });
+        });
     }
 }
