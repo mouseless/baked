@@ -1,22 +1,23 @@
-import { defineNuxtPlugin } from "#app";
+import { defineNuxtPlugin, useRuntimeConfig } from "#app";
 
 export default defineNuxtPlugin({
   name: "localization",
   enforce: "pre",
-  async setup(_, nuxt) {
-    nuxt.hook("i18n:registerModule", register => {
+  hooks: {
+    "i18n:registerModule": register => {
+      const { public: { localization } } = useRuntimeConfig();
       register({
         langDir: resolver.resolve("/locales"),
-        defaultLocale: "en",
+        defaultLocale: localization.defaultLanguage,
         strategy: "no_prefix",
-        locales: [
+        locales: localization.supportedLanguages.map(l => (
           {
-            code: "en",
-            name: "English",
-            file: "en.json"
+            code: l.code,
+            name: l.name,
+            file: `${l.code}.json`
           }
-        ]
+        ))
       });
-    });
+    }
   }
 });

@@ -8,6 +8,6 @@ public static class AspNetCoreLocalizationFeatureExtensions
 {
     public static AspNetCoreLocalizationFeature AspNetCoreLocalization(this LocalizationConfigurator _,
         Setting<string>? _resourceName = null,
-        IEnumerable<string>? _supportedLanguages = null
+        IEnumerable<SupportedLanguage>? _supportedLanguages = null
     ) => new(_resourceName, _supportedLanguages);
 }

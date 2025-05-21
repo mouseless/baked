@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace Baked.Localization.AspNetCore;
 
-public class AspNetCoreLocalizationFeature(Setting<string>? _resourceName, IEnumerable<string>? _supportedLanguages)
+public class AspNetCoreLocalizationFeature(Setting<string>? _resourceName, IEnumerable<SupportedLanguage>? _supportedLanguages)
     : IFeature<LocalizationConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
@@ -29,7 +29,7 @@ public class AspNetCoreLocalizationFeature(Setting<string>? _resourceName, IEnum
                 {
                     var supportedCultures = _supportedLanguages is null
                         ? [new CultureInfo("en")]
-                        : _supportedLanguages.Select(l => new CultureInfo(l)).ToList();
+                        : _supportedLanguages.Select(l => new CultureInfo(l.Code)).ToList();
                     var localizationOptions = new RequestLocalizationOptions
                     {
                         DefaultRequestCulture = new("en"),
@@ -46,7 +46,7 @@ public class AspNetCoreLocalizationFeature(Setting<string>? _resourceName, IEnum
         {
             app.Plugins.Add(new LocalizationPlugin()
             {
-                SupportedLanguages = _supportedLanguages ?? ["en"]
+                SupportedLanguages = _supportedLanguages ?? [new("en", "English")]
             });
         });
     }
