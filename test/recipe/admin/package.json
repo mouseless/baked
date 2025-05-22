@@ -25,6 +25,7 @@
     "sass": "^1.86.3"
   },
   "dependencies": {
+    "@nuxtjs/i18n": "^9.5.4",
     "@nuxtjs/tailwindcss": "^6.13.2",
     "@primeuix/themes": "^1.0.3",
     "baked-recipe-admin": "file:../../../src/recipe/admin",

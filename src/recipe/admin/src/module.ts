@@ -2,9 +2,21 @@ import { defineNuxtModule, addComponentsDir, addImportsDir, addPlugin, createRes
 
 export interface ModuleOptions {
   app?: any,
-  primevue: PrimeVueOptions,
-  components?: Components
-  composables: Composables
+  components?: Components,
+  composables: Composables,
+  localization: LocalizationOptions,
+  primevue: PrimeVueOptions
+}
+
+export interface LocalizationOptions {
+  defaultLanguage: String,
+  supportedLanguages: Array<SupportedLanguageOptions>
+}
+
+export interface SupportedLanguageOptions {
+  code: String,
+  file: String,
+  name: String
 }
 
 export interface Components {
@@ -98,6 +110,11 @@ export default defineNuxtModule<ModuleOptions>({
     addPlugin(resolver.resolve("./runtime/plugins/toast"));
     addPlugin(resolver.resolve("./runtime/plugins/trailingSlash"));
 
+    // TODO - bunun sıralaması önemlimi bilmiyorum. mantıken module eklendikten sonra
+    // i18n:registerModule kullanmak mantıklı olur diye düşündüm o yüzden yukarı aldım
+    // tekrar aşağı taşıyıp test edeceğim
+    await installModule("@nuxtjs/i18n", {});
+
     // plugins that comes through the app descriptor
     for(const plugin of _options.app?.plugins ?? []) {
       _nuxt.options.runtimeConfig.public[plugin.name] = plugin;
@@ -115,6 +132,6 @@ export default defineNuxtModule<ModuleOptions>({
           ]
         }
       }
-    })
+    });
   }
 });

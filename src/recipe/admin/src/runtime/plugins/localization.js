@@ -1,4 +1,5 @@
 import { defineNuxtPlugin, useRuntimeConfig } from "#app";
+import { resolve } from "pathe";
 
 export default defineNuxtPlugin({
   name: "localization",
@@ -7,7 +8,8 @@ export default defineNuxtPlugin({
     "i18n:registerModule": register => {
       const { public: { localization } } = useRuntimeConfig();
       register({
-        langDir: resolver.resolve("/locales"),
+        // TODO - const resolver = createResolver(import.meta.url); e bakılacak
+        langDir: resolve(__dirname, "../locales"),
         defaultLocale: localization.defaultLanguage,
         strategy: "no_prefix",
         locales: localization.supportedLanguages.map(l => (

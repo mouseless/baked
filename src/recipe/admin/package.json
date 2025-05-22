@@ -61,7 +61,6 @@
     "vue-tsc": "^2.2.4"
   },
   "bundleDependencies": [
-    "@nuxtjs/i18n",
     "@primeuix/themes",
     "primeicons",
     "primevue"
