@@ -1,4 +1,4 @@
-import { useI18n } from "@nuxtjs/i18n";
+import { useI18n } from "#imports";
 
 export default function() {
   const { locale, locales, setLocale, t } = useI18n();
