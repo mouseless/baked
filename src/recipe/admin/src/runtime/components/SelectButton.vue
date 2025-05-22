@@ -59,6 +59,9 @@ function setModel(selected) {
 }
 
 function setSelected(value) {
+  // data can be null when data is async
+  if(!data) { return; }
+
   selected.value = optionValue
     ? data.filter(o => o[optionValue] === value)[0]
     : value;
