@@ -111,11 +111,11 @@ test.describe("Alignment", () => {
 test.describe("Export", () => {
   const id = "Export";
 
-  test("show export button when configured", async({page}) => {
+  test("show actions button when configured", async({page}) => {
     const component = page.getByTestId(id);
     const header = component.locator("th").last();
 
-    await expect(header.locator(primevue.button.icon)).toHaveClass("p-button-icon pi pi-file-export");
+    await expect(header.locator(primevue.button.icon)).toHaveClass(/pi-ellipsis-v/);
   });
 
   // TODO unable to locate tooltip, will be solved later

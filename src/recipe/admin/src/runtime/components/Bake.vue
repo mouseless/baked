@@ -24,6 +24,7 @@ const { name, descriptor } = defineProps({
   descriptor: { type: null, required: true }
 });
 const model = defineModel({ type: null, required: false });
+const emit = defineEmits(["loaded"]);
 
 context.add(name);
 
@@ -48,5 +49,6 @@ onMounted(async() => {
     injectedData
   });
   loading.value = false;
+  emit("loaded");
 });
 </script>
