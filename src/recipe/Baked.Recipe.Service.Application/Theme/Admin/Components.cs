@@ -70,7 +70,13 @@ public static class Components
         bool? alignRight = default,
         bool? minWidth = default,
         bool? exportable = default
-    ) => DataTableColumn(prop, component: Conditional(fallback: component), title: title, alignRight: alignRight, minWidth: minWidth, exportable: exportable);
+    ) => DataTableColumn(prop,
+        component: Conditional(fallback: component),
+        title: title ?? " ", // otherwise export shows `label` as label
+        alignRight: alignRight,
+        minWidth: minWidth,
+        exportable: exportable
+    );
 
     public static DataTable.Column DataTableColumn(string prop,
         Conditional? component = default,

@@ -15,8 +15,9 @@
     :export-function
   >
     <Column
-      v-for="(column, columnIndex) in columns"
+      v-for="column in columns"
       :key="column.prop"
+      :header="column.title"
       :field="column.prop"
       class="text-nowrap"
       :class="{ 'min-w-40': column.minWidth, 'text-right': column.alignRight }"
@@ -24,35 +25,6 @@
       :export-header="column.title"
       :pt="{ columnHeaderContent: { class: column.alignRight ? 'justify-end' : '' } }"
     >
-      <template #header>
-        <div
-          v-if="exportOptions && (columnIndex == columns.length - 1)"
-          class="flex w-full items-center"
-        >
-          <span
-            class="p-datatable-column-title w-full"
-            data-pc-section="columntitle"
-          >
-            {{ column.title }}
-          </span>
-          <Button
-            v-tooltip.left="exportOptions?.buttonLabel"
-            severity="secondary"
-            variant="text"
-            aria-label="exportOptions?.buttonLabel"
-            size="small"
-            :icon="exportOptions?.buttonIcon"
-            @click="exportDataTable"
-          />
-        </div>
-        <span
-          v-else
-          class="p-datatable-column-title"
-          data-pc-section="columntitle"
-        >
-          {{ column.title }}
-        </span>
-      </template>
       <template #body="{ data: row, index }">
         <Skeleton
           v-if="loading"
@@ -70,6 +42,26 @@
           }"
         />
         <span v-else>-</span>
+      </template>
+    </Column>
+    <Column
+      v-if="exportOptions"
+      :exportable="false"
+      class="w-0"
+    >
+      <template #header>
+        <Button
+          type="button"
+          icon="pi pi-ellipsis-v"
+          severity="secondary"
+          variant="text"
+          @click="toggleActionsMenu"
+        />
+        <Menu
+          ref="actionsMenu"
+          :model="actions"
+          :popup="true"
+        />
       </template>
     </Column>
     <ColumnGroup
@@ -106,6 +98,11 @@
             <span v-else>-</span>
           </template>
         </Column>
+        <Column
+          v-if="exportOptions"
+          :exportable="false"
+          class="w-0"
+        />
       </Row>
     </ColumnGroup>
   </DataTable>
@@ -113,7 +110,7 @@
 <script setup>
 import { computed, ref } from "vue";
 import Column from "primevue/column";
-import { Button, ColumnGroup, DataTable, Row, Skeleton } from "primevue";
+import { Button, ColumnGroup, DataTable, Menu, Row, Skeleton } from "primevue";
 import { Bake } from "#components";
 import { useComposableResolver, useConditional, useContext } from "#imports";
 
@@ -129,6 +126,8 @@ const { schema, data } = defineProps({
 const { columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions } = schema;
 
 const dataTable = ref();
+const actionsMenu = ref();
+const actions = ref([ ]);
 const loading = context.loading();
 const value = computed(() =>
   data
@@ -140,8 +139,16 @@ const value = computed(() =>
 const footerColSpan = computed(() => columns.length - footerTemplate?.columns.length);
 const formatter = exportOptions?.formatter ? (await composableResolver.resolve(exportOptions.formatter)).default() : undefined;
 
-function exportDataTable() {
-  dataTable.value.exportCSV();
+if(exportOptions) {
+  actions.value.push({
+    label: exportOptions.buttonLabel,
+    icon: exportOptions.buttonIcon,
+    command: () => dataTable.value.exportCSV()
+  });
+}
+
+function toggleActionsMenu(event) {
+  actionsMenu.value.toggle(event);
 }
 
 function exportFunction({ data, field }) {
