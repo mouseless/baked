@@ -26,7 +26,9 @@
           <span
             v-if="item.title"
             class="p-breadcrumb-item-label"
-          >{{ l(item.title) }}</span>
+          >
+            {{ l(item.title) }}
+          </span>
         </RouterLink>
       </template>
     </Breadcrumb>

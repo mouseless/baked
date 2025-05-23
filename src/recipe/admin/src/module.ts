@@ -1,22 +1,11 @@
 import { defineNuxtModule, addComponentsDir, addImportsDir, addPlugin, createResolver, installModule } from "@nuxt/kit";
+import { resolve } from 'pathe';
 
 export interface ModuleOptions {
   app?: any,
   components?: Components,
   composables: Composables,
-  localization: LocalizationOptions,
   primevue: PrimeVueOptions
-}
-
-export interface LocalizationOptions {
-  defaultLanguage: String,
-  supportedLanguages: Array<SupportedLanguageOptions>
-}
-
-export interface SupportedLanguageOptions {
-  code: String,
-  file: String,
-  name: String
 }
 
 export interface Components {
@@ -85,6 +74,7 @@ export default defineNuxtModule<ModuleOptions>({
   // carefully.
   async setup(_options, _nuxt) {
     const resolver = createResolver(import.meta.url);
+    const entryProjectResolve = resolve;
 
     // passing module's options to runtime config for further access
     _nuxt.options.runtimeConfig.public.error = _options.app?.error;
@@ -110,17 +100,25 @@ export default defineNuxtModule<ModuleOptions>({
     addPlugin(resolver.resolve("./runtime/plugins/toast"));
     addPlugin(resolver.resolve("./runtime/plugins/trailingSlash"));
 
-    // TODO - bunun sıralaması önemlimi bilmiyorum. mantıken module eklendikten sonra
-    // i18n:registerModule kullanmak mantıklı olur diye düşündüm o yüzden yukarı aldım
-    // tekrar aşağı taşıyıp test edeceğim
-    await installModule("@nuxtjs/i18n", {});
-
     // plugins that comes through the app descriptor
     for(const plugin of _options.app?.plugins ?? []) {
       _nuxt.options.runtimeConfig.public[plugin.name] = plugin;
       addPlugin(resolver.resolve(`./runtime/plugins/${plugin.name}`));
     }
 
+    const i18nConfiguration = _options.app?.plugins?.filter((p: any) => p.name == "localization")[0];
+    await installModule("@nuxtjs/i18n", {
+      vueI18n: entryProjectResolve(_nuxt.options.rootDir, 'i18n.config.ts'),
+      langDir: entryProjectResolve(_nuxt.options.rootDir, 'locales'),
+      strategy: "no_prefix",
+      locales: i18nConfiguration?.supportedLanguages.map((l: any) =>
+      ({
+        code: l.code,
+        name: l.name,
+        file: entryProjectResolve(_nuxt.options.rootDir, `locales/${l.code}.json`),
+      })),
+      defaultLocale: i18nConfiguration?.defaultLanguage
+    });
     await installModule("@nuxtjs/tailwindcss", {
       exposeConfig: true,
       cssPath: resolver.resolve("./runtime/assets/tailwind.css"),
