@@ -1,0 +1,1 @@
+import{_ as a,c as t,o as s,a as o,y as c}from"./BG3oBLgR.js";const n={},r={class:"table-container"};function l(e,d){return s(),t("div",r,[o("table",null,[c(e.$slots,"default",{},void 0,!0)])])}const f=a(n,[["render",l],["__scopeId","data-v-24fe1f69"]]);export{f as default};
