@@ -98,6 +98,16 @@ test.describe("Footer", () => {
   });
 });
 
+test.describe("Alignment", () => {
+  const id = "Alignment";
+
+  test("visual", { tag: "@visual" }, async({page}) => {
+    const component = page.getByTestId(id);
+
+    await expect(component).toHaveScreenshot();
+  });
+});
+
 test.describe("Export", () => {
   const id = "Export";
 

@@ -19,9 +19,10 @@
       :key="column.prop"
       :field="column.prop"
       class="text-nowrap"
-      :class="{ 'min-w-40': column.minWidth }"
+      :class="{ 'min-w-40': column.minWidth, 'text-right': column.alignRight }"
       :exportable="column.exportable"
       :export-header="column.title"
+      :pt="{ columnHeaderContent: { class: column.alignRight ? 'justify-end' : '' } }"
     >
       <template #header>
         <div
@@ -84,6 +85,7 @@
         <Column
           v-for="column in footerTemplate.columns"
           :key="column.prop"
+          :class="{ 'text-right': column.alignRight }"
         >
           <template #footer>
             <Skeleton

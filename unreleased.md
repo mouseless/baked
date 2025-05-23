@@ -7,3 +7,4 @@
 - `Money`, `Number` and `Rate` aligned to right under data table
 - `DataTable` export button was added to last column, causing misalignment,
   fixed by adding actions column
+- `DataPanel` autoscroll is triggered each time it is loaded
