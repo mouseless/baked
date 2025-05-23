@@ -47,7 +47,7 @@
     <Column
       v-if="exportOptions"
       :exportable="false"
-      class="w-0"
+      class="w-0 py-0"
     >
       <template #header>
         <Button
@@ -55,6 +55,7 @@
           icon="pi pi-ellipsis-v"
           severity="secondary"
           variant="text"
+          size="small"
           @click="toggleActionsMenu"
         />
         <Menu
