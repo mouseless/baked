@@ -87,9 +87,10 @@ export default {
     };
   },
 
-  aDataTableColumn({ title, prop, minWidth, component, exportable } = {}) {
+  aDataTableColumn({ title, prop, alignRight, minWidth, component, exportable } = {}) {
     title = $(title, "Test");
     prop = $(prop, "test");
+    alignRight = $(alignRight, false);
     minWidth = $(minWidth, false);
     component = $(component, this.aConditional());
     exportable = $(exportable, false);
@@ -97,6 +98,7 @@ export default {
     return {
       title,
       prop,
+      alignRight,
       minWidth,
       component,
       exportable

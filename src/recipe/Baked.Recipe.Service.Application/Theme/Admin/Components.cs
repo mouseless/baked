@@ -67,16 +67,24 @@ public static class Components
 
     public static DataTable.Column DataTableColumn(string prop, IComponentDescriptor component,
         string? title = default,
+        bool? alignRight = default,
         bool? minWidth = default,
         bool? exportable = default
-    ) => DataTableColumn(prop, component: Conditional(fallback: component), title: title, minWidth: minWidth, exportable: exportable);
+    ) => DataTableColumn(prop,
+        component: Conditional(fallback: component),
+        title: title ?? " ", // otherwise export shows `label` as label
+        alignRight: alignRight,
+        minWidth: minWidth,
+        exportable: exportable
+    );
 
     public static DataTable.Column DataTableColumn(string prop,
         Conditional? component = default,
         string? title = default,
+        bool? alignRight = default,
         bool? minWidth = default,
         bool? exportable = default
-    ) => new(prop, component ?? Conditional()) { MinWidth = minWidth, Title = title, Exportable = exportable };
+    ) => new(prop, component ?? Conditional()) { AlignRight = alignRight, MinWidth = minWidth, Title = title, Exportable = exportable };
 
     public static DataTable.Export DataTableExport(string csvSeparator, string fileName,
         string? formatter = default,

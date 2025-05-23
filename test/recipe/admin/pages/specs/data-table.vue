@@ -103,6 +103,31 @@ const variants = [
     })
   },
   {
+    name: "Alignment",
+    descriptor: giveMe.aDataTable({
+      columns: [
+        giveMe.aDataTableColumn({ title: "Label", prop: "label", minWidth: true }),
+        giveMe.aDataTableColumn({ title: "Data", prop: "data", alignRight: true })
+      ],
+      footerTemplate: {
+        label: "Total",
+        columns: [
+          giveMe.aDataTableColumn({ prop: "label", alignRight: true })
+        ]
+      },
+      itemsProp: "children",
+      rowsWhenLoading: 2,
+      data: {
+        children: [
+          { label: "Row 1", data: "On" },
+          { label: "Row 2", data: "Your" },
+          { label: "Row 3", data: "Right" }
+        ],
+        label: "On Your Right"
+      }
+    })
+  },
+  {
     name: "Export",
     descriptor: giveMe.aDataTable({
       columns: [

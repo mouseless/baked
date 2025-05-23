@@ -83,6 +83,7 @@
                           "conditions": []
                         },
                         "title": "Column2",
+                        "alignRight": true,
                         "exportable": true
                       },
                       {
@@ -95,6 +96,7 @@
                           "conditions": []
                         },
                         "title": "Column3",
+                        "alignRight": true,
                         "exportable": true
                       }
                     ],
@@ -115,7 +117,8 @@
                               "schema": {}
                             },
                             "conditions": []
-                          }
+                          },
+                          "alignRight": true
                         },
                         {
                           "prop": "footerColumn2",
@@ -125,7 +128,8 @@
                               "schema": {}
                             },
                             "conditions": []
-                          }
+                          },
+                          "alignRight": true
                         }
                       ]
                     },
