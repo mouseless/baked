@@ -107,8 +107,9 @@ export default defineNuxtModule<ModuleOptions>({
     }
 
     const i18nConfiguration = _options.app?.plugins?.filter((p: any) => p.name == "localization")[0];
-    await installModule("@nuxtjs/i18n", {
+    _nuxt.options.i18n = {
       vueI18n: entryProjectResolve(_nuxt.options.rootDir, 'i18n.config.ts'),
+      restructureDir: false,
       langDir: entryProjectResolve(_nuxt.options.rootDir, 'locales'),
       strategy: "no_prefix",
       locales: i18nConfiguration?.supportedLanguages.map((l: any) =>
@@ -118,7 +119,8 @@ export default defineNuxtModule<ModuleOptions>({
         file: entryProjectResolve(_nuxt.options.rootDir, `locales/${l.code}.json`),
       })),
       defaultLocale: i18nConfiguration?.defaultLanguage
-    });
+    }
+    await installModule("@nuxtjs/i18n", {});
     await installModule("@nuxtjs/tailwindcss", {
       exposeConfig: true,
       cssPath: resolver.resolve("./runtime/assets/tailwind.css"),
