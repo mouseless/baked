@@ -149,13 +149,13 @@ test.describe("Frozen Columns", () => {
   test("freezes columns when set", async({page}) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator(primevue.datatable.container).locator("tr").first().locator("th").first()).toHaveCSS("position","sticky");
+    await expect(component.locator(primevue.datatable.container).locator("tr").first().locator("th").first()).toHaveCSS("position", "sticky");
   });
 
   test("action column is frozen by default", async({page}) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator(primevue.datatable.container).locator("tr").first().locator("th").last()).toHaveCSS("position","sticky");
+    await expect(component.locator(primevue.datatable.container).locator("tr").first().locator("th").last()).toHaveCSS("position", "sticky");
   });
 });
 

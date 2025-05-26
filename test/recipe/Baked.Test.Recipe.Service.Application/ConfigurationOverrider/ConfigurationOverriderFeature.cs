@@ -437,13 +437,13 @@ public class ConfigurationOverriderFeature : IFeature
                                         content: DataTable(
                                             columns:
                                             [
-                                              .. domain.Types[typeof(TableRow)].GetMembers().Properties.Where(p => p.IsPublic).Select((p,i) =>
+                                              .. domain.Types[typeof(TableRow)].GetMembers().Properties.Where(p => p.IsPublic).Select((p, i) =>
                                                   DataTableColumn(p.Name.Camelize(),
                                                       title: p.Name,
                                                       exportable: true,
                                                       alignRight: p.PropertyType.Is<string>() ? null : true,
-                                                      frozen: i == 0,
-                                                      minWidth: i == 0
+                                                      frozen: i == 0 ? true : null,
+                                                      minWidth: i == 0 ? true : null
                                                   )
                                                 )
                                             ],

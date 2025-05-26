@@ -73,9 +73,7 @@
                           "conditions": []
                         },
                         "title": "Column1",
-                        "minWidth": false,
-                        "exportable": true,
-                        "frozen": false
+                        "exportable": true
                       },
                       {
                         "prop": "column2",
@@ -88,9 +86,7 @@
                         },
                         "title": "Column2",
                         "alignRight": true,
-                        "minWidth": false,
-                        "exportable": true,
-                        "frozen": false
+                        "exportable": true
                       },
                       {
                         "prop": "column3",
@@ -103,9 +99,7 @@
                         },
                         "title": "Column3",
                         "alignRight": true,
-                        "minWidth": false,
-                        "exportable": true,
-                        "frozen": false
+                        "exportable": true
                       },
                       {
                         "prop": "column4",
@@ -118,9 +112,7 @@
                         },
                         "title": "Column4",
                         "alignRight": true,
-                        "minWidth": false,
-                        "exportable": true,
-                        "frozen": false
+                        "exportable": true
                       },
                       {
                         "prop": "column5",
@@ -133,9 +125,7 @@
                         },
                         "title": "Column5",
                         "alignRight": true,
-                        "minWidth": false,
-                        "exportable": true,
-                        "frozen": false
+                        "exportable": true
                       }
                     ],
                     "dataKey": "label",
