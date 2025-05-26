@@ -69,13 +69,15 @@ public static class Components
         string? title = default,
         bool? alignRight = default,
         bool? minWidth = default,
-        bool? exportable = default
+        bool? exportable = default,
+        bool? frozen = default
     ) => DataTableColumn(prop,
         component: Conditional(fallback: component),
         title: title ?? " ", // otherwise export shows `label` as label
         alignRight: alignRight,
         minWidth: minWidth,
-        exportable: exportable
+        exportable: exportable,
+        frozen: frozen
     );
 
     public static DataTable.Column DataTableColumn(string prop,
@@ -83,8 +85,9 @@ public static class Components
         string? title = default,
         bool? alignRight = default,
         bool? minWidth = default,
-        bool? exportable = default
-    ) => new(prop, component ?? Conditional()) { AlignRight = alignRight, MinWidth = minWidth, Title = title, Exportable = exportable };
+        bool? exportable = default,
+        bool? frozen = default
+    ) => new(prop, component ?? Conditional()) { AlignRight = alignRight, MinWidth = minWidth, Title = title, Exportable = exportable, Frozen = frozen };
 
     public static DataTable.Export DataTableExport(string csvSeparator, string fileName,
         string? formatter = default,

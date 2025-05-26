@@ -165,6 +165,33 @@ const variants = [
     })
   },
   {
+    name: "Frozen Columns",
+    descriptor: giveMe.aDataTable({
+      columns: [
+        giveMe.aDataTableColumn({ title: "Label", prop: "label", minWidth: true, frozen: true }),
+        giveMe.aDataTableColumn({ title: "Data 1", prop: "data1" }),
+        giveMe.aDataTableColumn({ title: "Data 2", prop: "data1" }),
+        giveMe.aDataTableColumn({ title: "Data 3", prop: "data1" }),
+        giveMe.aDataTableColumn({ title: "Data 4", prop: "data1" }),
+        giveMe.aDataTableColumn({ title: "Data 5", prop: "data1" }),
+        giveMe.aDataTableColumn({ title: "Data 6", prop: "data1" }),
+        giveMe.aDataTableColumn({ title: "Data 7", prop: "data1" }),
+        giveMe.aDataTableColumn({ title: "Data 8", prop: "data1" }),
+        giveMe.aDataTableColumn({ title: "Data 9", prop: "data1" }),
+        giveMe.aDataTableColumn({ title: "Data 10", prop: "data1" })
+      ],
+      exportOptions: giveMe.aDataTableExport({
+        csvSeparator: ";",
+        formatter: "useCsvFormatter",
+        buttonIcon: "pi pi-file-export",
+        buttonLabel: "CSV"
+      }),
+      scrollable: true,
+      scrollHeight: "200px",
+      data: new Array(2).fill({ label: "Row Label", data1: "Cell Data" })
+    })
+  },
+  {
     name: "Virtual Scroll",
     descriptor: giveMe.aDataTable({
       columns: [
