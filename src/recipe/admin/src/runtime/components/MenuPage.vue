@@ -38,19 +38,20 @@
       </div>
     </div>
     <div v-if="sectionsData.length === 0">
-      {{ components?.MenuPage?.notFoundMessage || "No item available!" }}
+      {{ components?.MenuPage?.notFoundMessage || l("no_item_avaiable") }}
     </div>
   </div>
 </template>
 <script setup>
 import { useRuntimeConfig } from "#app";
 import { Bake } from "#components";
-import { useContext } from "#imports";
+import { useContext, useLocalization } from "#imports";
 import { Divider } from "primevue";
 import { ref, watch } from "vue";
 
 const context = useContext();
 const { public: { components, composables } } = useRuntimeConfig();
+const { localize: l } = useLocalization();
 
 const { schema } = defineProps({
   schema: { type: null, required: true },

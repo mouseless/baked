@@ -1,11 +1,12 @@
 import { defineNuxtModule, addComponentsDir, addImportsDir, addPlugin, createResolver, installModule } from "@nuxt/kit";
-import { resolve } from 'pathe';
+import type { NuxtI18nOptions } from "@nuxtjs/i18n";
 
 export interface ModuleOptions {
   app?: any,
   components?: Components,
   composables: Composables,
-  primevue: PrimeVueOptions
+  primevue: PrimeVueOptions,
+  i18n: NuxtI18nOptions
 }
 
 export interface Components {
@@ -74,7 +75,7 @@ export default defineNuxtModule<ModuleOptions>({
   // carefully.
   async setup(_options, _nuxt) {
     const resolver = createResolver(import.meta.url);
-    const entryProjectResolve = resolve;
+    const entryProjectResolve = createResolver(_nuxt.options.rootDir);
 
     // passing module's options to runtime config for further access
     _nuxt.options.runtimeConfig.public.error = _options.app?.error;
@@ -107,20 +108,30 @@ export default defineNuxtModule<ModuleOptions>({
     }
 
     const i18nConfiguration = _options.app?.plugins?.filter((p: any) => p.name == "localization")[0];
-    _nuxt.options.i18n = {
-      vueI18n: entryProjectResolve(_nuxt.options.rootDir, 'i18n.config.ts'),
-      restructureDir: false,
-      langDir: entryProjectResolve(_nuxt.options.rootDir, 'locales'),
-      strategy: "no_prefix",
-      locales: i18nConfiguration?.supportedLanguages.map((l: any) =>
-      ({
-        code: l.code,
-        name: l.name,
-        file: entryProjectResolve(_nuxt.options.rootDir, `locales/${l.code}.json`),
-      })),
-      defaultLocale: i18nConfiguration?.defaultLanguage
+    if (i18nConfiguration) {
+      _nuxt.options.i18n = {
+        vueI18n: entryProjectResolve.resolve("./i18n.config.ts"),
+        restructureDir: false,
+        lazy: true,
+        langDir: entryProjectResolve.resolve("./locales"),
+        strategy: "no_prefix",
+        locales: i18nConfiguration.supportedLanguages.map((l: any) => ({
+          code: l.code,
+          name: l.name,
+          file: entryProjectResolve.resolve(`./locales/${l.code}.json`),
+        })),
+        defaultLocale: i18nConfiguration.defaultLanguage,
+        detectBrowserLanguage: {
+          useCookie: true,
+          cookieKey: 'i18n_cookie'
+        },
+        ..._nuxt.options.i18n,
+      }
+    } else {
+      _nuxt.options.i18n = _nuxt.options.i18n || {}
     }
-    await installModule("@nuxtjs/i18n", {});
+
+    await installModule("@nuxtjs/i18n");
     await installModule("@nuxtjs/tailwindcss", {
       exposeConfig: true,
       cssPath: resolver.resolve("./runtime/assets/tailwind.css"),
