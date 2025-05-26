@@ -59,7 +59,9 @@
                           "conditions": []
                         },
                         "title": "Label",
-                        "exportable": true
+                        "minWidth": true,
+                        "exportable": true,
+                        "frozen": true
                       },
                       {
                         "prop": "column1",
@@ -71,7 +73,9 @@
                           "conditions": []
                         },
                         "title": "Column1",
-                        "exportable": true
+                        "minWidth": false,
+                        "exportable": true,
+                        "frozen": false
                       },
                       {
                         "prop": "column2",
@@ -84,7 +88,9 @@
                         },
                         "title": "Column2",
                         "alignRight": true,
-                        "exportable": true
+                        "minWidth": false,
+                        "exportable": true,
+                        "frozen": false
                       },
                       {
                         "prop": "column3",
@@ -97,7 +103,39 @@
                         },
                         "title": "Column3",
                         "alignRight": true,
-                        "exportable": true
+                        "minWidth": false,
+                        "exportable": true,
+                        "frozen": false
+                      },
+                      {
+                        "prop": "column4",
+                        "component": {
+                          "fallback": {
+                            "type": "String",
+                            "schema": {}
+                          },
+                          "conditions": []
+                        },
+                        "title": "Column4",
+                        "alignRight": true,
+                        "minWidth": false,
+                        "exportable": true,
+                        "frozen": false
+                      },
+                      {
+                        "prop": "column5",
+                        "component": {
+                          "fallback": {
+                            "type": "String",
+                            "schema": {}
+                          },
+                          "conditions": []
+                        },
+                        "title": "Column5",
+                        "alignRight": true,
+                        "minWidth": false,
+                        "exportable": true,
+                        "frozen": false
                       }
                     ],
                     "dataKey": "label",

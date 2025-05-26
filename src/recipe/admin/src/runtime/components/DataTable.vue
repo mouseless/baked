@@ -24,6 +24,7 @@
       :exportable="column.exportable"
       :export-header="column.title"
       :pt="{ columnHeaderContent: { class: column.alignRight ? 'justify-end' : '' } }"
+      :frozen="column.frozen"
     >
       <template #body="{ data: row, index }">
         <Skeleton
@@ -48,6 +49,8 @@
       v-if="exportOptions"
       :exportable="false"
       class="w-0 py-0"
+      frozen
+      align-frozen="right"
     >
       <template #header>
         <Button

@@ -87,7 +87,7 @@ export default {
     };
   },
 
-  aDataTableColumn({ title, prop, alignRight, minWidth, component, exportable } = {}) {
+  aDataTableColumn({ title, prop, alignRight, minWidth, component, exportable, frozen } = {}) {
     title = $(title, "Test");
     prop = $(prop, "test");
     alignRight = $(alignRight, false);
@@ -101,7 +101,8 @@ export default {
       alignRight,
       minWidth,
       component,
-      exportable
+      exportable,
+      frozen
     };
   },
 
