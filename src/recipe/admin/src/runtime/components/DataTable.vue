@@ -106,6 +106,8 @@
           v-if="exportOptions"
           :exportable="false"
           class="w-0"
+          frozen
+          align-frozen="right"
         />
       </Row>
     </ColumnGroup>
