@@ -29,7 +29,6 @@
         :key="uniqueKey"
         name="content"
         :descriptor="content"
-        @loaded="onLoaded"
       />
       <Message
         v-else-if="!ready"
@@ -103,11 +102,5 @@ function onReady(value) {
 function onChanged(event) {
   uniqueKey.value = event.uniqueKey;
   values.value = event.values;
-}
-
-function onLoaded() {
-  setTimeout(() => {
-    panel.value.$el.scrollIntoView({ behavior: "auto", block: "nearest" });
-  }, 0);
 }
 </script>
