@@ -4,6 +4,6 @@ namespace Baked.Test.ExceptionHandling;
 
 public class LocalizationSamples(ILocalizer _localizer)
 {
-    public string ReadCultureDataFromQueryOrHeader() =>
+    public string GetLocaleString() =>
         _localizer["test"];
 }
