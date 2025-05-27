@@ -49,6 +49,11 @@ public class AspNetCoreLocalizationFeature(Setting<string>? _resourceName, IEnum
             );
         });
 
+        configurator.ConfigureSwaggerGenOptions(swg =>
+        {
+            swg.OperationFilter<LocalizationOperationFilter>();
+        });
+
         configurator.ConfigureAppDescriptor(app =>
         {
             app.Localization = new LocalizationDescriptor()
