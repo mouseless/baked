@@ -20,7 +20,7 @@
             text-xs font-bold
           "
         >
-          {{ section.title?.toLocaleUpperCase(locale) }}
+          {{ l(section.title?.toLocaleUpperCase(locale)) }}
         </h2>
         <Divider
           v-if="section.title"
@@ -38,7 +38,7 @@
       </div>
     </div>
     <div v-if="sectionsData.length === 0">
-      {{ components?.MenuPage?.notFoundMessage || l("no_item_avaiable") }}
+      {{ l(components?.MenuPage?.notFoundMessage || "no_item_available") }}
     </div>
   </div>
 </template>

@@ -1,5 +1,6 @@
 using Baked.Architecture;
 using Baked.Runtime;
+using Baked.Ui;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
@@ -44,10 +45,10 @@ public class AspNetCoreLocalizationFeature(Setting<string>? _resourceName, IEnum
 
         configurator.ConfigureAppDescriptor(app =>
         {
-            app.Plugins.Add(new LocalizationPlugin()
+            app.Localization = new LocalizationDescriptor()
             {
                 SupportedLanguages = _supportedLanguages ?? [new("en", "English")]
-            });
+            };
         });
     }
 }

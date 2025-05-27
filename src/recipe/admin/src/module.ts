@@ -75,7 +75,7 @@ export default defineNuxtModule<ModuleOptions>({
   // carefully.
   async setup(_options, _nuxt) {
     const resolver = createResolver(import.meta.url);
-    const entryProjectResolve = createResolver(_nuxt.options.rootDir);
+    const entryProjectResolver = createResolver(_nuxt.options.rootDir);
 
     // passing module's options to runtime config for further access
     _nuxt.options.runtimeConfig.public.error = _options.app?.error;
@@ -107,31 +107,22 @@ export default defineNuxtModule<ModuleOptions>({
       addPlugin(resolver.resolve(`./runtime/plugins/${plugin.name}`));
     }
 
-    const i18nConfiguration = _options.app?.plugins?.filter((p: any) => p.name == "localization")[0];
-    if (i18nConfiguration) {
-      _nuxt.options.i18n = {
-        vueI18n: entryProjectResolve.resolve("./i18n.config.ts"),
-        restructureDir: false,
-        lazy: true,
-        langDir: entryProjectResolve.resolve("./locales"),
-        strategy: "no_prefix",
-        locales: i18nConfiguration.supportedLanguages.map((l: any) => ({
-          code: l.code,
-          name: l.name,
-          file: entryProjectResolve.resolve(`./locales/${l.code}.json`),
-        })),
-        defaultLocale: i18nConfiguration.defaultLanguage,
-        detectBrowserLanguage: {
-          useCookie: true,
-          cookieKey: 'i18n_cookie'
-        },
-        ..._nuxt.options.i18n,
-      }
-    } else {
-      _nuxt.options.i18n = _nuxt.options.i18n || {}
-    }
-
-    await installModule("@nuxtjs/i18n");
+    await installModule("@nuxtjs/i18n", {
+      vueI18n: entryProjectResolver.resolve("./i18n.config.ts"),
+      restructureDir: false,
+      langDir: entryProjectResolver.resolve("./locales"),
+      strategy: "no_prefix",
+      locales: _options.app?.localization.supportedLanguages.map((l: any) => ({
+        code: l.code,
+        name: l.name,
+        file: entryProjectResolver.resolve(`./locales/${l.code}.json`),
+      })),
+      defaultLocale: _options.app?.localization.defaultLanguage,
+      detectBrowserLanguage: {
+        useCookie: true,
+        cookieKey: 'i18n_cookie'
+      },
+    });
     await installModule("@nuxtjs/tailwindcss", {
       exposeConfig: true,
       cssPath: resolver.resolve("./runtime/assets/tailwind.css"),

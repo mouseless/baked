@@ -38,16 +38,6 @@
       ],
       "defaultAlertTitle": "Unexpected Error",
       "defaultAlertMessage": "Please contact system administrator"
-    },
-    {
-      "name": "localization",
-      "defaultLanguage": "en",
-      "supportedLanguages": [
-        {
-          "code": "en",
-          "name": "English"
-        }
-      ]
     }
   ],
   "error": {
@@ -93,5 +83,14 @@
       "composable": "useNuxtError",
       "args": []
     }
+  },
+  "localization": {
+    "defaultLanguage": "en",
+    "supportedLanguages": [
+      {
+        "code": "en",
+        "name": "English"
+      }
+    ]
   }
 }
