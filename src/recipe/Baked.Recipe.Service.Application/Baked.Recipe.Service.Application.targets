@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <CopyComponentDescriptors Condition="'$(CopyComponentDescriptors)' != 'true'">false</CopyComponentDescriptors>
-  </PropertyGroup>  
-    
+  </PropertyGroup>
+
   <ItemGroup>
     <Using Include="Baked" />
   </ItemGroup>
@@ -14,17 +14,17 @@
 
   <Target Name="CopyComponentDescriptors" AfterTargets="AfterBuild" Condition="$(CopyComponentDescriptors)">
     <MakeDir Directories="$(ComponentDescriptorsDir)" Condition="!Exists($(ComponentDescriptorsDir))"/>
-    
+
     <PropertyGroup>
       <SourceFolder Condition="'$(ASPNETCORE_ENVIRONMENT)'==''">$(OutDir)\Development\Ui</SourceFolder>
       <SourceFolder Condition="'$(ASPNETCORE_ENVIRONMENT)'!=''">$(OutDir)\$(ASPNETCORE_ENVIRONMENT)\Ui</SourceFolder>
     </PropertyGroup>
-    
+
     <ItemGroup>
       <Descriptors Include="$(SourceFolder)\**\*.json;$(SourceFolder)\**\*.js" />
-      <DestinationFiles Include="$(ComponentDescriptorsDir)\**\*.json;$(ComponentDescriptorsDir)\**\*.js" />  
+      <DestinationFiles Include="$(ComponentDescriptorsDir)\**\*.json;$(ComponentDescriptorsDir)\**\*.js" />
     </ItemGroup>
-      
+
     <Delete Files="@(DestinationFiles)" Condition="!Exists('%(FullPath.Replace($(ComponentDescriptorsDir), $(SourceFolder)))')" />
     <Copy SourceFiles="@(Descriptors)" DestinationFolder="$(ComponentDescriptorsDir)\%(RecursiveDir)" SkipUnchangedFiles="true" Condition="Exists($(ComponentDescriptorsDir))" />
   </Target>

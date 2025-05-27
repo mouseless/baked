@@ -11,3 +11,5 @@ TestServiceHandled=TestServiceHandled
 MustBeUnique=MustBeUnique
 NotMyChild=NotMyChild
 UnauthorizedAccess=UnauthorizedAccess
+
+test=This is test message from English resource file.

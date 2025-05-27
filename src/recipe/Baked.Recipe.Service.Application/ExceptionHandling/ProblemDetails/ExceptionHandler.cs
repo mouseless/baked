@@ -1,10 +1,10 @@
-﻿using Humanizer;
+﻿using Baked.Localization;
+using Humanizer;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Localization;
 
 namespace Baked.ExceptionHandling.ProblemDetails;
 
-public class ExceptionHandler(IEnumerable<IExceptionHandler> _handlers, ExceptionHandlerSettings _settings, IStringLocalizer _localizer)
+public class ExceptionHandler(IEnumerable<IExceptionHandler> _handlers, ExceptionHandlerSettings _settings, ILocalizer _localizer)
     : Microsoft.AspNetCore.Diagnostics.IExceptionHandler
 {
     readonly UnhandledExceptionHandler _unhandledExceptionHandler = new(_settings);

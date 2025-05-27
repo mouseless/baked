@@ -90,6 +90,10 @@
       {
         "code": "en",
         "name": "English"
+      },
+      {
+        "code": "tr",
+        "name": "Türkçe"
       }
     ]
   }

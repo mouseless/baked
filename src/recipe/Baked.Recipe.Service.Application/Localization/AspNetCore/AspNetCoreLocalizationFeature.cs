@@ -1,5 +1,6 @@
 using Baked.Architecture;
 using Baked.Runtime;
+using Baked.Testing;
 using Baked.Ui;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,11 +18,16 @@ public class AspNetCoreLocalizationFeature(Setting<string>? _resourceName, IEnum
         configurator.ConfigureServiceCollection(services =>
         {
             services.AddLocalization(option => option.ResourcesPath = "Resources");
-            var entryAssembly = Assembly.GetEntryAssembly() ?? throw new("'EntryAssembly' should have existed");
+            var entryAssembly = (configurator.IsNfr() ? Nfr.EntryAssembly : Assembly.GetEntryAssembly())
+                ?? throw new("'EntryAssembly' should have existed");
             var resourceName = _resourceName ?? "$";
-            services.AddSingleton(provider =>
-                provider.GetRequiredService<IStringLocalizerFactory>().Create(resourceName, entryAssembly.GetName().Name!)
-            );
+            services.AddSingleton<ILocalizer>(provider =>
+            {
+                var factory = provider.GetRequiredService<IStringLocalizerFactory>();
+                var localizer = factory.Create(resourceName, entryAssembly.GetName().Name!);
+
+                return new LocalizerAdapter(localizer);
+            });
         });
 
         configurator.ConfigureMiddlewareCollection(middlewares =>
