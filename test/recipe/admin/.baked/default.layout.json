@@ -28,11 +28,22 @@
           }
         ],
         "footer": {
-          "type": "String",
-          "schema": {},
-          "data": {
-            "type": "Inline",
-            "value": "FT"
+          "type": "Footer",
+          "schema": {
+            "profile": {
+              "type": "String",
+              "schema": {},
+              "data": {
+                "type": "Inline",
+                "value": "FT"
+              }
+            },
+            "languageSwitcher": {
+              "type": "LanguageSwitcher",
+              "schema": {
+                "direction": "right"
+              }
+            }
           }
         }
       },
