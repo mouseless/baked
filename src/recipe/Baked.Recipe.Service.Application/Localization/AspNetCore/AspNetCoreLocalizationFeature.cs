@@ -56,9 +56,15 @@ public class AspNetCoreLocalizationFeature(Setting<string>? _resourceName, IEnum
 
         configurator.ConfigureAppDescriptor(app =>
         {
+            var supportedLanguages = _supportedLanguages ?? [new("en", "English")];
+            app.Plugins.Add(new LocalizationPlugin()
+            {
+                SupportedLanguages = supportedLanguages
+            });
+
             app.Localization = new LocalizationDescriptor()
             {
-                SupportedLanguages = _supportedLanguages ?? [new("en", "English")]
+                SupportedLanguages = supportedLanguages
             };
         });
     }

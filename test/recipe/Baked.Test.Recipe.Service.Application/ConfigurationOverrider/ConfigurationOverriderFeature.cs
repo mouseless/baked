@@ -205,7 +205,7 @@ public class ConfigurationOverriderFeature : IFeature
                         SideMenuItem("/data-table", "pi pi-table", title: "DataTable"),
                         SideMenuItem("/specs", "pi pi-list-check", title: "Specs")
                     ],
-                    footer: Footer(languageSwitcher: LanguageSwitcher(), profile: String(data: Inline("FT")))
+                    footer: LanguageSwitcher()
                 ),
                 header: Header(
                     siteMap:

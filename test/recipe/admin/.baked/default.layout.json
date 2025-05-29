@@ -28,22 +28,9 @@
           }
         ],
         "footer": {
-          "type": "Footer",
+          "type": "LanguageSwitcher",
           "schema": {
-            "profile": {
-              "type": "String",
-              "schema": {},
-              "data": {
-                "type": "Inline",
-                "value": "FT"
-              }
-            },
-            "languageSwitcher": {
-              "type": "LanguageSwitcher",
-              "schema": {
-                "direction": "right"
-              }
-            }
+            "direction": "right"
           }
         }
       },

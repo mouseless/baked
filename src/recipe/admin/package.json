@@ -41,7 +41,6 @@
     "@nuxtjs/i18n": "^9.5.4",
     "@primeuix/themes": "^1.1.1",
     "@nuxtjs/tailwindcss": "^6.13.2",
-    "@primeuix/themes": "^1.0.3",
     "async-mutex": "^0.5.0",
     "primeicons": "^7.0.0",
     "primevue": "^4.3.4"

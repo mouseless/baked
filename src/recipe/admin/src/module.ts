@@ -103,11 +103,6 @@ export default defineNuxtModule<ModuleOptions>({
     addPlugin(resolver.resolve("./runtime/plugins/toast"));
     addPlugin(resolver.resolve("./runtime/plugins/trailingSlash"));
 
-    // add only if localization is configured
-    if(_options.app?.localization) {
-      addPlugin(resolver.resolve("./runtime/plugins/localization"));
-    }
-
     // plugins that comes through the app descriptor
     for(const plugin of _options.app?.plugins ?? []) {
       _nuxt.options.runtimeConfig.public[plugin.name] = plugin;

@@ -135,10 +135,6 @@ public static class Components
     public static Filterable Filterable(string title, IComponentDescriptor component) =>
         new(title, component);
 
-    public static ComponentDescriptorAttribute<Footer> Footer(IComponentDescriptor profile,
-        IComponentDescriptor? languageSwitcher = default
-    ) => new(new(profile, languageSwitcher));
-
     public static ComponentDescriptorAttribute<Header> Header(IEnumerable<Header.Item> siteMap,
         IData? data = default
     )
@@ -154,9 +150,7 @@ public static class Components
         string? parentRoute = default
     ) => new(route) { Icon = icon, Title = title, ParentRoute = parentRoute };
 
-    public static ComponentDescriptorAttribute<LanguageSwitcher> LanguageSwitcher(
-        string? direction = default
-    ) => new(new() { Direction = direction ?? "right" });
+    public static ComponentDescriptorAttribute<LanguageSwitcher> LanguageSwitcher() => new(new());
 
     public static ComponentDescriptorAttribute<Icon> Icon(string iconClass) =>
         new(new(iconClass));

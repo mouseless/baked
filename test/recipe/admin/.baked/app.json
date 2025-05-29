@@ -38,6 +38,19 @@
       ],
       "defaultAlertTitle": "Unexpected Error",
       "defaultAlertMessage": "Please contact system administrator"
+    },
+    {
+      "name": "localization",
+      "supportedLanguages": [
+        {
+          "code": "en",
+          "name": "English"
+        },
+        {
+          "code": "tr",
+          "name": "Türkçe"
+        }
+      ]
     }
   ],
   "error": {
