@@ -20,6 +20,16 @@ test.describe("Base", () => {
   });
 });
 
+test.describe("Decimal Digits", () => {
+  const id = "Decimal Digits";
+
+  test("format", async({page}) => {
+    const component = page.getByTestId(id);
+
+    await expect(component).toHaveText("$999.99");
+  });
+});
+
 test.describe("Millions", () => {
   const id = "Millions";
 
