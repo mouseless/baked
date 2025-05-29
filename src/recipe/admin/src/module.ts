@@ -95,11 +95,16 @@ export default defineNuxtModule<ModuleOptions>({
     // default dirs and plugins
     addComponentsDir({ path: resolver.resolve("./runtime/components") });
     addImportsDir(resolver.resolve("./runtime/composables"));
-    addPlugin(resolver.resolve("./runtime/plugins/addPrimeVue"));
+    addPlugin(resolver.resolve("./runtime/plugins/primeVue"));
     addPlugin(resolver.resolve("./runtime/plugins/setupBaked"));
     addPlugin(resolver.resolve("./runtime/plugins/mutex"));
     addPlugin(resolver.resolve("./runtime/plugins/toast"));
     addPlugin(resolver.resolve("./runtime/plugins/trailingSlash"));
+
+    // add only if localization is configured
+    if(_options.app?.localization) {
+      addPlugin(resolver.resolve("./runtime/plugins/localization"));
+    }
 
     // plugins that comes through the app descriptor
     for(const plugin of _options.app?.plugins ?? []) {
@@ -121,7 +126,7 @@ export default defineNuxtModule<ModuleOptions>({
       detectBrowserLanguage: {
         useCookie: true,
         cookieKey: 'i18n_cookie'
-      },
+      }
     });
     await installModule("@nuxtjs/tailwindcss", {
       exposeConfig: true,
