@@ -13,6 +13,10 @@ const variants = [
     descriptor: giveMe.aMoney({ data: 1_499 })
   },
   {
+    name: "Decimal Digits",
+    descriptor: giveMe.aMoney({ data: 999.99 })
+  },
+  {
     name: "Millions",
     descriptor: giveMe.aMoney({ data: 1_499_000 })
   },
