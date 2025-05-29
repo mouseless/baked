@@ -103,6 +103,31 @@ const variants = [
     })
   },
   {
+    name: "Alignment",
+    descriptor: giveMe.aDataTable({
+      columns: [
+        giveMe.aDataTableColumn({ title: "Label", prop: "label", minWidth: true }),
+        giveMe.aDataTableColumn({ title: "Data", prop: "data", alignRight: true })
+      ],
+      footerTemplate: {
+        label: "Total",
+        columns: [
+          giveMe.aDataTableColumn({ prop: "label", alignRight: true })
+        ]
+      },
+      itemsProp: "children",
+      rowsWhenLoading: 2,
+      data: {
+        children: [
+          { label: "Row 1", data: "On" },
+          { label: "Row 2", data: "Your" },
+          { label: "Row 3", data: "Right" }
+        ],
+        label: "On Your Right"
+      }
+    })
+  },
+  {
     name: "Export",
     descriptor: giveMe.aDataTable({
       columns: [
@@ -137,6 +162,33 @@ const variants = [
       scrollable: true,
       scrollHeight: "200px",
       data: new Array(10).fill({ label: "Row Label", data1: "Cell Data" })
+    })
+  },
+  {
+    name: "Frozen Columns",
+    descriptor: giveMe.aDataTable({
+      columns: [
+        giveMe.aDataTableColumn({ title: "Label", prop: "label", minWidth: true, frozen: true }),
+        giveMe.aDataTableColumn({ title: "Data 1", prop: "data1" }),
+        giveMe.aDataTableColumn({ title: "Data 2", prop: "data1" }),
+        giveMe.aDataTableColumn({ title: "Data 3", prop: "data1" }),
+        giveMe.aDataTableColumn({ title: "Data 4", prop: "data1" }),
+        giveMe.aDataTableColumn({ title: "Data 5", prop: "data1" }),
+        giveMe.aDataTableColumn({ title: "Data 6", prop: "data1" }),
+        giveMe.aDataTableColumn({ title: "Data 7", prop: "data1" }),
+        giveMe.aDataTableColumn({ title: "Data 8", prop: "data1" }),
+        giveMe.aDataTableColumn({ title: "Data 9", prop: "data1" }),
+        giveMe.aDataTableColumn({ title: "Data 10", prop: "data1" })
+      ],
+      exportOptions: giveMe.aDataTableExport({
+        csvSeparator: ";",
+        formatter: "useCsvFormatter",
+        buttonIcon: "pi pi-file-export",
+        buttonLabel: "CSV"
+      }),
+      scrollable: true,
+      scrollHeight: "200px",
+      data: new Array(2).fill({ label: "Row Label", data1: "Cell Data" })
     })
   },
   {

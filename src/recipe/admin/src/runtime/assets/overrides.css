@@ -1,0 +1,5 @@
+/* Data Table */
+
+.p-datatable-tbody td.p-datatable-frozen-column {
+  background: inherit;
+}

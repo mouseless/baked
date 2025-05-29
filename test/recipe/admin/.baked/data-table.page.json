@@ -59,7 +59,9 @@
                           "conditions": []
                         },
                         "title": "Label",
-                        "exportable": true
+                        "minWidth": true,
+                        "exportable": true,
+                        "frozen": true
                       },
                       {
                         "prop": "column1",
@@ -83,6 +85,7 @@
                           "conditions": []
                         },
                         "title": "Column2",
+                        "alignRight": true,
                         "exportable": true
                       },
                       {
@@ -95,6 +98,33 @@
                           "conditions": []
                         },
                         "title": "Column3",
+                        "alignRight": true,
+                        "exportable": true
+                      },
+                      {
+                        "prop": "column4",
+                        "component": {
+                          "fallback": {
+                            "type": "String",
+                            "schema": {}
+                          },
+                          "conditions": []
+                        },
+                        "title": "Column4",
+                        "alignRight": true,
+                        "exportable": true
+                      },
+                      {
+                        "prop": "column5",
+                        "component": {
+                          "fallback": {
+                            "type": "String",
+                            "schema": {}
+                          },
+                          "conditions": []
+                        },
+                        "title": "Column5",
+                        "alignRight": true,
                         "exportable": true
                       }
                     ],
@@ -115,7 +145,8 @@
                               "schema": {}
                             },
                             "conditions": []
-                          }
+                          },
+                          "alignRight": true
                         },
                         {
                           "prop": "footerColumn2",
@@ -125,7 +156,8 @@
                               "schema": {}
                             },
                             "conditions": []
-                          }
+                          },
+                          "alignRight": true
                         }
                       ]
                     },

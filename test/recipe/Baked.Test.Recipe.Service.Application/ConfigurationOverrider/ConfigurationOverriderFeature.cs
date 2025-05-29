@@ -435,17 +435,23 @@ public class ConfigurationOverriderFeature : IFeature
                                             )
                                         ],
                                         content: DataTable(
-                                            columns: [.. domain.Types[typeof(TableRow)].GetMembers().Properties.Where(p => p.IsPublic).Select(p =>
-                                                DataTableColumn(p.Name.Camelize(),
-                                                    title: p.Name,
-                                                    exportable: true
-                                                ))
+                                            columns:
+                                            [
+                                              .. domain.Types[typeof(TableRow)].GetMembers().Properties.Where(p => p.IsPublic).Select((p, i) =>
+                                                  DataTableColumn(p.Name.Camelize(),
+                                                      title: p.Name,
+                                                      exportable: true,
+                                                      alignRight: p.PropertyType.Is<string>() ? null : true,
+                                                      frozen: i == 0 ? true : null,
+                                                      minWidth: i == 0 ? true : null
+                                                  )
+                                                )
                                             ],
                                             footerTemplate: DataTableFooter("Total",
                                                 columns:
                                                 [
-                                                    DataTableColumn(nameof(TableWithFooter.FooterColumn1).Camelize(), Conditional()),
-                                                    DataTableColumn(nameof(TableWithFooter.FooterColumn2).Camelize(), Conditional())
+                                                    DataTableColumn(nameof(TableWithFooter.FooterColumn1).Camelize(), Conditional(), alignRight: true),
+                                                    DataTableColumn(nameof(TableWithFooter.FooterColumn2).Camelize(), Conditional(), alignRight: true)
                                                 ]
                                             ),
                                             dataKey: nameof(TableRow.Label).Camelize(),

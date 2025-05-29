@@ -1,6 +1,6 @@
 {
   "name": "baked-recipe-admin",
-  "version": "0.16.3",
+  "version": "0.16.7",
   "description": "Baked (Objects) is an opinionated framework for .NET in backend and Nuxt in frontend. This is a recipe package that brings together all the components one needs for an Admin UI.",
   "keywords": [
     "baked",
@@ -39,11 +39,12 @@
   "dependencies": {
     "@nuxt/kit": "^3.16.2",
     "@nuxtjs/i18n": "^9.5.4",
+    "@primeuix/themes": "^1.1.1",
     "@nuxtjs/tailwindcss": "^6.13.2",
     "@primeuix/themes": "^1.0.3",
     "async-mutex": "^0.5.0",
     "primeicons": "^7.0.0",
-    "primevue": "^4.3.3"
+    "primevue": "^4.3.4"
   },
   "devDependencies": {
     "@nuxt/devtools": "^2.4.0",
@@ -53,12 +54,12 @@
     "@nuxt/test-utils": "^3.17.2",
     "@types/node": "latest",
     "changelogen": "^0.6.1",
-    "eslint": "^9.24.0",
+    "eslint": "^9.26.0",
     "nuxt": "^3.16.2",
-    "sass": "^1.86.3",
+    "sass": "^1.89.0",
     "typescript": "~5.8.3",
-    "vitest": "^3.1.1",
-    "vue-tsc": "^2.2.4"
+    "vitest": "^3.1.3",
+    "vue-tsc": "^2.2.10"
   },
   "bundleDependencies": [
     "@primeuix/themes",
@@ -66,6 +67,6 @@
     "primevue"
   ],
   "optionalDependencies": {
-    "@rollup/rollup-win32-x64-msvc": "4.40.0"
+    "@rollup/rollup-win32-x64-msvc": "4.40.2"
   }
 }
