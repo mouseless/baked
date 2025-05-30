@@ -29,9 +29,7 @@
         ],
         "footer": {
           "type": "LanguageSwitcher",
-          "schema": {
-            "direction": "right"
-          }
+          "schema": {}
         }
       },
       "data": {

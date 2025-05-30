@@ -94,20 +94,23 @@ export default defineNuxtModule<ModuleOptions>({
     _nuxt.options.features.inlineStyles = false;
     _nuxt.options.ssr = false;
 
-    // default dirs and plugins
+    // default dirs
     addComponentsDir({ path: resolver.resolve("./runtime/components") });
     addImportsDir(resolver.resolve("./runtime/composables"));
-    addPlugin(resolver.resolve("./runtime/plugins/primeVue"));
-    addPlugin(resolver.resolve("./runtime/plugins/setupBaked"));
-    addPlugin(resolver.resolve("./runtime/plugins/mutex"));
-    addPlugin(resolver.resolve("./runtime/plugins/toast"));
-    addPlugin(resolver.resolve("./runtime/plugins/trailingSlash"));
 
     // plugins that comes through the app descriptor
     for(const plugin of _options.app?.plugins ?? []) {
       _nuxt.options.runtimeConfig.public[plugin.name] = plugin;
       addPlugin(resolver.resolve(`./runtime/plugins/${plugin.name}`));
     }
+
+    //  default plugins (last add, first run)
+    addPlugin(resolver.resolve("./runtime/plugins/primeVue"));
+    addPlugin(resolver.resolve("./runtime/plugins/setupBaked"));
+    addPlugin(resolver.resolve("./runtime/plugins/mutex"));
+    addPlugin(resolver.resolve("./runtime/plugins/toast"));
+    addPlugin(resolver.resolve("./runtime/plugins/trailingSlash"));
+    addPlugin(resolver.resolve("./runtime/plugins/fetch"), {});
 
     await installModule("@nuxtjs/i18n", {
       vueI18n: entryProjectResolver.resolve("./i18n.config.ts"),
