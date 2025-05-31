@@ -113,6 +113,7 @@ public class ConfigurationOverriderFeature : IFeature
                 {
                     new { Title = "Bake", Description = "The core component that renders a dynamic component using given descriptor" },
                     new { Title = "Custom CSS", Description = "Allow custom configuration to define custom css and more" },
+                    new { Title = "Language Switcher", Description = "Allow change site language" },
                     new { Title = "Locale", Description = "Allow locale customization and language support" },
                     new { Title = "Parameters", Description = "Manage parameters through emits" },
                     new { Title = "Query Parameters", Description = "Sync and manage parameters in query string" },
@@ -205,7 +206,7 @@ public class ConfigurationOverriderFeature : IFeature
                         SideMenuItem("/data-table", "pi pi-table", title: "DataTable"),
                         SideMenuItem("/specs", "pi pi-list-check", title: "Specs")
                     ],
-                    footer: String(data: Inline("FT"))
+                    footer: LanguageSwitcher()
                 ),
                 header: Header(
                     siteMap:

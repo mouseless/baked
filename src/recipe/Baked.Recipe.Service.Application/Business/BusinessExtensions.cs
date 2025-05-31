@@ -16,7 +16,7 @@ public static class BusinessExtensions
         throw new("AddTransientWithFactory<TService, TImplementation> should have existed");
 
     static readonly MethodInfo _addScopedWithFactory = typeof(BusinessExtensions).GetMethod(nameof(AddScopedWithFactory), 2, [typeof(IServiceCollection)]) ??
-        throw new Exception("AddScopedWithFactory<TService, TImplementation> should have existed");
+        throw new("AddScopedWithFactory<TService, TImplementation> should have existed");
 
     public static IServiceCollection AddTransientWithFactory(this IServiceCollection services, Type service) =>
         (IServiceCollection?)_addTransientWithFactory.MakeGenericMethod(service, service).Invoke(null, [services]) ??

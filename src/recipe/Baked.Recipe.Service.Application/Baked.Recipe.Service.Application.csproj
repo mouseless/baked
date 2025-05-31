@@ -21,6 +21,7 @@
     <PackageReference Include="Humanizer.Core" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
     <PackageReference Include="Oracle.ManagedDataAccess.Core" />
+    <PackageReference Include="Microsoft.AspNetCore.Localization" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />

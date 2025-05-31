@@ -48,6 +48,18 @@
             }
           },
           {
+            "title": "Language Switcher",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/language-switcher",
+                "icon": "pi pi-microchip",
+                "title": "Language Switcher",
+                "description": "Allow change site language"
+              }
+            }
+          },
+          {
             "title": "Locale",
             "component": {
               "type": "CardLink",

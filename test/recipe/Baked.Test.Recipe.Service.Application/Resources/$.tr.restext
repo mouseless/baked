@@ -1,0 +1,15 @@
+failed_to_authenticate_with_given_credentials=Verilen kimlik bilgileriyle kimlik doğrulaması yapılamadı.
+VALUE_is_not_a_valid_PARAMETER='{0:V}' geçerli bir {1:P} değildir.
+a_handled_exception_was_thrown=Bir hata oluştu.
+NAME_should_be_unique={0:N} benzersiz olmalıdır.
+child_ID_does_not_belong_this_parent=Child#{0:I}, bu parent'a ait değil.
+attempted_to_perform_an_unauthorized_operation=Yetkisiz bir işlem gerçekleştirmeye çalışıldı.
+
+Authentication=Authentication
+RouteParameterIsNotValid=RouteParameterIsNotValid
+TestServiceHandled=TestServiceHandled
+MustBeUnique=MustBeUnique
+NotMyChild=NotMyChild
+UnauthorizedAccess=UnauthorizedAccess
+
+test=Bu Türkçe kaynak dosyasından test mesajıdır.
