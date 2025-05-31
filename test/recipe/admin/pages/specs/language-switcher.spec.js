@@ -5,10 +5,31 @@ test.beforeEach(async({goto}) => {
 });
 
 test.describe("Base", () => {
-  const id = "Base";
+  const id = "component-block";
 
-  test("component", async() => {
+  test("language overlay", async({page}) => {
+    const block = page.getByTestId(id);
+    const button = block.locator(".p-button");
 
+    button.click();
+
+    const menu = page.locator("#overlay_menu");
+    await expect(menu).toBeVisible();
+  });
+
+  test("change language", async({page}) => {
+    const block = page.getByTestId(id);
+    const button = block.locator(".p-button");
+
+    button.click();
+    const menu = page.locator("#overlay_menu");
+
+    await expect(menu.locator("#overlay_menu_1")).toHaveId();
+    const languageTr = menu.locator("#overlay_menu_1");
+
+    languageTr.locator("a").click();
+
+    await expect(menu).toBeVisible();
   });
 
   test("visual", { tag: "@visual" }, async({page}) => {
