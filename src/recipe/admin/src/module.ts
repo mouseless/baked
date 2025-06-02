@@ -139,6 +139,6 @@ export default defineNuxtModule<ModuleOptions>({
           ]
         }
       }
-    });
+    })
   }
 });

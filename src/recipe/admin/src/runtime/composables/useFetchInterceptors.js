@@ -1,5 +1,5 @@
 export default function() {
-  // Global interceptor registry
+  // Global registry
   if(!globalThis.__fetchInterceptors) {
     globalThis.__fetchInterceptors = new Map();
   }
@@ -8,10 +8,6 @@ export default function() {
 
   const register = (name, interceptor, priority = 100) => {
     interceptors.set(name, { interceptor, priority });
-  };
-
-  const unregister = name => {
-    interceptors.delete(name);
   };
 
   const getAll = () => {
@@ -30,7 +26,6 @@ export default function() {
 
   return {
     register,
-    unregister,
     getAll,
     execute
   };

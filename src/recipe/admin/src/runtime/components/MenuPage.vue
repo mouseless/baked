@@ -50,8 +50,8 @@ import { Divider } from "primevue";
 import { ref, watch } from "vue";
 
 const context = useContext();
-const { public: { components, composables } } = useRuntimeConfig();
 const { localize: l } = useLocalization();
+const { public: { components, composables } } = useRuntimeConfig();
 
 const { schema } = defineProps({
   schema: { type: null, required: true },

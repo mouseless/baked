@@ -71,11 +71,6 @@
             "title": "Custom CSS",
             "parentRoute": "/specs"
           },
-          "/specs/language-switcher": {
-            "route": "/specs/language-switcher",
-            "title": "Language Switcher",
-            "parentRoute": "/specs"
-          },
           "/specs/locale": {
             "route": "/specs/locale",
             "title": "Locale",
@@ -139,6 +134,11 @@
           "/specs/string": {
             "route": "/specs/string",
             "title": "String",
+            "parentRoute": "/specs"
+          },
+          "/specs/language-switcher": {
+            "route": "/specs/language-switcher",
+            "title": "Language Switcher",
             "parentRoute": "/specs"
           },
           "/specs/select": {

@@ -28,8 +28,8 @@ public class ExceptionHandler(IEnumerable<IExceptionHandler> _handlers, Exceptio
         new()
         {
             Type = _settings.TypeUrlFormat is not null
-                    ? string.Format(_settings.TypeUrlFormat.GetValue(), NameOf(exceptionInfo.Exception).Kebaberize())
-                    : null,
+                ? string.Format(_settings.TypeUrlFormat.GetValue(), NameOf(exceptionInfo.Exception).Kebaberize())
+                : null,
             Title = NameOf(exceptionInfo.Exception).Titleize(),
             Status = exceptionInfo.Code,
             Detail = GetMessage(exceptionInfo),
