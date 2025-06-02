@@ -20,16 +20,15 @@ test.describe("Base", () => {
   test("change language", async({page}) => {
     const block = page.getByTestId(id);
     const button = block.locator(".p-button");
+    const text = page.getByTestId("text");
+
+    await expect(text).toHaveText("Test Text");
 
     button.click();
-    const menu = page.locator("#overlay_menu");
+    const language = page.locator("#overlay_menu > ul > li:nth-child(2) > div > a");
+    language.click();
 
-    await expect(menu.locator("#overlay_menu_1")).toHaveId();
-    const languageTr = menu.locator("#overlay_menu_1");
-
-    languageTr.locator("a").click();
-
-    await expect(menu).toBeVisible();
+    await expect(text).toHaveText("Test Metni");
   });
 
   test("visual", { tag: "@visual" }, async({page}) => {
