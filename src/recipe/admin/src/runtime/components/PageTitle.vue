@@ -6,7 +6,7 @@
     <div class="h-16 flex gap-2">
       <div class="w-full flex flex-col gap-2 justify-end">
         <h1 class="text-xl font-bold">
-          {{ title }}
+          {{ l(title) }}
         </h1>
         <div
           data-testid="description"
@@ -44,8 +44,9 @@
 import { onMounted } from "vue";
 import { useRuntimeConfig } from "#app";
 import { Bake, String } from "#components";
-import { useHead } from "#imports";
+import { useHead, useLocalization } from "#imports";
 
+const { localize: l } = useLocalization();
 const { public: { components } } = useRuntimeConfig();
 
 const { schema } = defineProps({

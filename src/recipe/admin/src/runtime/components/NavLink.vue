@@ -7,7 +7,7 @@
     v-else-if="data"
     as="router-link"
     link
-    :label="text"
+    :label="l(text)"
     :to
   />
 </template>

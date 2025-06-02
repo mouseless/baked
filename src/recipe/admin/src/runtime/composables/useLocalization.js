@@ -8,7 +8,9 @@ export default function() {
     .filter(l => i18nLocales.value.includes(l.code));
 
   function localize(key, parameters = {}) {
-    return t(key, parameters);
+    // When there are special characters such as '{' in the key, it throws an error.
+    try { return t(key, parameters); }
+    catch { return key; }
   }
 
   return {
