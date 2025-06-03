@@ -7,6 +7,10 @@
     "Entity": "Entity",
     "No item available!": "No item available!",
     "Test Text": "Test Text",
+    "language_switcher": {
+        "Turkish": "Turkish",
+        "English": "English"
+    },
     "primevue": {
         "dayNames": [
             "Sunday",

@@ -7,6 +7,10 @@
     "Entity": "Varlık",
     "No item available!": "No item available!",
     "Test Text": "Test Metni",
+    "language_switcher": {
+        "Turkish": "Türkçe",
+        "English": "İngilizce"
+    },
     "primevue": {
         "dayNames": [
             "Pazar",

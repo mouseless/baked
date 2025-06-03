@@ -10,8 +10,9 @@ using System.Reflection;
 
 namespace Baked.Localization.AspNetCore;
 
-public class AspNetCoreLocalizationFeature(Setting<string>? _resourceName, IEnumerable<SupportedLanguage>? _supportedLanguages)
-    : IFeature<LocalizationConfigurator>
+public class AspNetCoreLocalizationFeature(Setting<string>? _resourceName, CultureInfo _language,
+    IEnumerable<CultureInfo>? _otherLanguages = default
+) : IFeature<LocalizationConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
@@ -20,7 +21,7 @@ public class AspNetCoreLocalizationFeature(Setting<string>? _resourceName, IEnum
             services.AddLocalization(option => option.ResourcesPath = "Resources");
             var entryAssembly = (configurator.IsNfr() ? Nfr.EntryAssembly : Assembly.GetEntryAssembly())
                 ?? throw new("'EntryAssembly' should have existed");
-            var resourceName = _resourceName ?? "$";
+            var resourceName = _resourceName ?? "locale";
             services.AddSingleton<ILocalizer>(provider =>
             {
                 var factory = provider.GetRequiredService<IStringLocalizerFactory>();
@@ -34,12 +35,10 @@ public class AspNetCoreLocalizationFeature(Setting<string>? _resourceName, IEnum
         {
             middlewares.Add(app =>
                 {
-                    var supportedCultures = _supportedLanguages is null
-                        ? [new CultureInfo("en")]
-                        : _supportedLanguages.Select(l => new CultureInfo(l.Code)).ToList();
+                    List<CultureInfo> supportedCultures = [_language, .. _otherLanguages ?? []];
                     var localizationOptions = new RequestLocalizationOptions
                     {
-                        DefaultRequestCulture = new("en"),
+                        DefaultRequestCulture = new(_language.Name),
                         SupportedCultures = supportedCultures,
                         SupportedUICultures = supportedCultures
                     };
@@ -56,13 +55,18 @@ public class AspNetCoreLocalizationFeature(Setting<string>? _resourceName, IEnum
 
         configurator.ConfigureAppDescriptor(app =>
         {
-            var supportedLanguages = _supportedLanguages ?? [new("en", "English")];
+            var supportedLanguages = new List<SupportedLanguage> { new(_language.Name, _language.DisplayName) };
+            if (_otherLanguages is not null)
+            {
+                supportedLanguages.AddRange(_otherLanguages.ToList().Select(l => new SupportedLanguage(l.Name, l.DisplayName)));
+            }
+
             app.Plugins.Add(new LocalizationPlugin()
             {
                 SupportedLanguages = supportedLanguages
             });
 
-            app.Localization = new LocalizationDescriptor()
+            app.I18n = new I18nDescriptor()
             {
                 SupportedLanguages = supportedLanguages
             };

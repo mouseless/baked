@@ -117,12 +117,12 @@ export default defineNuxtModule<ModuleOptions>({
       restructureDir: false,
       langDir: entryProjectResolver.resolve("./locales"),
       strategy: "no_prefix",
-      locales: _options.app?.localization.supportedLanguages.map((l: any) => ({
-        code: l.code,
-        name: l.name,
-        file: entryProjectResolver.resolve(`./locales/${l.code}.json`),
+      locales: _options.app?.i18n.supportedLanguages.map((i: any) => ({
+        code: i.code,
+        name: i.name,
+        file: entryProjectResolver.resolve(`./locales/${i.code}.json`),
       })),
-      defaultLocale: _options.app?.localization.defaultLanguage,
+      defaultLocale: _options.app?.i18n.defaultLanguage,
       detectBrowserLanguage: {
         useCookie: true,
         cookieKey: 'i18n_cookie'
