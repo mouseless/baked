@@ -1,7 +1,6 @@
 using Baked.Architecture;
 using Baked.Runtime;
 using Baked.Testing;
-using Baked.Ui;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
@@ -66,10 +65,7 @@ public class AspNetCoreLocalizationFeature(Setting<string>? _resourceName, Cultu
                 SupportedLanguages = supportedLanguages
             });
 
-            app.I18n = new I18nDescriptor()
-            {
-                SupportedLanguages = supportedLanguages
-            };
+            app.I18n = new(supportedLanguages);
         });
     }
 }
