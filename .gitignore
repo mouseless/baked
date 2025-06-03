@@ -17,3 +17,6 @@ bin/
 
 # generated file
 **/.benchmark/**
+
+# node modules
+**/node_modules/**

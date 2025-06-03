@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Baked.Test.Recipe.Service",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Baked.Test.Recipe.Service.Test", "test\recipe\Baked.Test.Recipe.Service.Test\Baked.Test.Recipe.Service.Test.csproj", "{C56E61A8-3B89-4972-A261-DE8454B2BCFC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Baked.Test.Reciper.Service.Benchmark", "test\recipe\Baked.Test.Reciper.Service.Benchmark\Baked.Test.Reciper.Service.Benchmark.csproj", "{28FDE8BB-157E-47DC-A88A-C1D70E812A38}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{C56E61A8-3B89-4972-A261-DE8454B2BCFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C56E61A8-3B89-4972-A261-DE8454B2BCFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C56E61A8-3B89-4972-A261-DE8454B2BCFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28FDE8BB-157E-47DC-A88A-C1D70E812A38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28FDE8BB-157E-47DC-A88A-C1D70E812A38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28FDE8BB-157E-47DC-A88A-C1D70E812A38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28FDE8BB-157E-47DC-A88A-C1D70E812A38}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -79,6 +85,7 @@ Global
 		{68CBB995-C501-41BB-93B4-01A0CC618A89} = {CDC3A00A-52BD-4CDA-B7D7-1FCFC5DD1CEE}
 		{063A65CC-F465-4E53-816E-048E05BC3F75} = {F1F041D0-E073-455C-96F9-233FDF5CC2A8}
 		{C56E61A8-3B89-4972-A261-DE8454B2BCFC} = {F1F041D0-E073-455C-96F9-233FDF5CC2A8}
+		{28FDE8BB-157E-47DC-A88A-C1D70E812A38} = {F1F041D0-E073-455C-96F9-233FDF5CC2A8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F41E6823-793F-4036-A795-DB6105039AEC}
