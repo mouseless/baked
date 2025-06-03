@@ -7,7 +7,7 @@ namespace Baked;
 
 public static class AspNetCoreLocalizationFeatureExtensions
 {
-    public static AspNetCoreLocalizationFeature AspNetCoreLocalization(this LocalizationConfigurator _,
+    public static AspNetCoreLocalizationFeature AspNetCore(this LocalizationConfigurator _,
         Setting<string>? _resourceName = null,
         IEnumerable<SupportedLanguage>? _supportedLanguages = null
     ) => new(_resourceName, _supportedLanguages);

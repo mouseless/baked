@@ -46,7 +46,7 @@ public static class BakeExtensions
         database ??= c => c.Sqlite();
         exceptionHandling ??= c => c.ProblemDetails();
         greeting ??= c => c.Swagger();
-        localization ??= c => c.AspNetCoreLocalization();
+        localization ??= c => c.AspNetCore();
         logging ??= c => c.Request();
         orm ??= c => c.AutoMap();
         theme ??= c => c.Admin();
@@ -124,7 +124,7 @@ public static class BakeExtensions
         database ??= c => c.Sqlite();
         exceptionHandling ??= c => c.ProblemDetails();
         greeting ??= c => c.Swagger();
-        localization ??= c => c.AspNetCoreLocalization();
+        localization ??= c => c.AspNetCore();
         logging ??= c => c.Request();
         reporting ??= c => c.NativeSql();
         configure ??= _ => { };
