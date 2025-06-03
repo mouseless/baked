@@ -1,3 +1,5 @@
+using Baked.Localization.AspNetCore;
+
 namespace Baked.Ui;
 
 public class LocalizationDescriptor

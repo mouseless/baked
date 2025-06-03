@@ -1,7 +1,6 @@
 using Baked.Localization;
 using Baked.Localization.AspNetCore;
 using Baked.Runtime;
-using Baked.Ui;
 
 namespace Baked;
 

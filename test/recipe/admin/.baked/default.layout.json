@@ -28,8 +28,7 @@
           }
         ],
         "footer": {
-          "type": "LanguageSwitcher",
-          "schema": {}
+          "type": "LanguageSwitcher"
         }
       },
       "data": {
