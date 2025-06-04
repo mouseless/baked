@@ -1,8 +1,21 @@
-var express = require("express");
-var app = express();
+const express = require("express");
+const cors = require("cors");
 
-app.listen(7806, () => {
- console.log("Server running on port 7806");
+const app = express();
+const port = 80;
+
+app.use(
+  cors({
+    allowedHeaders: [ "Access-Control-Allow-Origin", "Authorization", "Origin" ],
+    credentials: true,
+    methods: "GET",
+    origin: [ "http://localhost:5151" ],
+    preflightContinue: false,
+})
+);
+
+app.listen(port, () => {
+ console.log(`Server running on port ${port}`);
 });
 
 app.get("/random-names", (_, res, __) => {

@@ -56,3 +56,9 @@ services:
       - 3000:3000
     links:
       - recipe.service
+
+  api:
+    build:
+      dockerfile: test/recipe/api/Dockerfile
+    ports:
+      - 5467:80

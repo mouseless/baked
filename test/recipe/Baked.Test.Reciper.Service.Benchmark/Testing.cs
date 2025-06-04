@@ -29,7 +29,7 @@ public class Testing
     {
         var tasks = new List<Task>();
 
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 50; i++)
         {
             tasks.Add(_client.SendAsync(new HttpRequestMessage(HttpMethod.Post, "/over-async")));
         }

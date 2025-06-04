@@ -44,8 +44,9 @@ Bake.New
         cors: c => c.AspNetCore(Settings.Required<string>("CorsOrigin:0"), Settings.Required<string>("CorsOrigin:1")),
         database: c => c
             .Sqlite()
-            .ForProduction(c.PostgreSql()),
+            .ForProduction(c.MySql()),
         exceptionHandling: c => c.ProblemDetails(typeUrlFormat: "https://baked.mouseless.codes/errors/{0}"),
+        rateLimiter: c => c.Disabled(),
         theme: c => c.Admin(componentExports: ["Container", "Expected", "Input", "Login", "PageWithRoute"]),
         configure: app =>
         {

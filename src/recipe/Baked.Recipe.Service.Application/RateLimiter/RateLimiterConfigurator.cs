@@ -1,3 +1,9 @@
-﻿namespace Baked.RateLimiter;
+﻿using Baked.Architecture;
 
-public class RateLimiterConfigurator;
+namespace Baked.RateLimiter;
+
+public class RateLimiterConfigurator
+{
+    public IFeature<RateLimiterConfigurator> Disabled() =>
+        Feature.Empty<RateLimiterConfigurator>();
+}
