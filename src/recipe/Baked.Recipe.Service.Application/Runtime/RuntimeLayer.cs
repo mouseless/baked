@@ -15,6 +15,7 @@ public class RuntimeLayer : LayerBase<BuildConfiguration, AddServices, PostBuild
 
     readonly IServiceCollection _services = new ServiceCollection();
     readonly ILoggingBuilder _loggingBuilder;
+    readonly ThreadOptions _threadOptions = new();
 
     public RuntimeLayer()
     {
@@ -33,6 +34,7 @@ public class RuntimeLayer : LayerBase<BuildConfiguration, AddServices, PostBuild
         return phase.CreateContextBuilder()
             .Add(_services)
             .Add(_loggingBuilder)
+            .Add(_threadOptions)
             .OnDispose(() =>
             {
                 services.AddSingleton<IFileProvider>(sp =>
@@ -50,7 +52,7 @@ public class RuntimeLayer : LayerBase<BuildConfiguration, AddServices, PostBuild
     {
         yield return new BuildConfiguration();
         yield return new AddServices(_services);
-        yield return new PostBuild();
+        yield return new PostBuild(_threadOptions);
     }
 
     public class BuildConfiguration()
@@ -71,9 +73,13 @@ public class RuntimeLayer : LayerBase<BuildConfiguration, AddServices, PostBuild
         }
     }
 
-    public class PostBuild
+    public class PostBuild(ThreadOptions _threadOptions)
         : PhaseBase<IServiceProvider>
     {
-        protected override void Initialize(IServiceProvider _) { }
+        protected override void Initialize(IServiceProvider _)
+        {
+            ThreadPool.SetMinThreads(_threadOptions.MinThreadCount, _threadOptions.MinThreadCount * 2);
+            ThreadPool.SetMaxThreads(_threadOptions.MaxThreadCount, _threadOptions.MaxThreadCount * 2);
+        }
     }
 }
