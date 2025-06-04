@@ -43,7 +43,7 @@ public class AspNetCoreLocalizationFeature(Setting<string>? _resourceName, Cultu
                     };
                     app.UseRequestLocalization(localizationOptions);
                 },
-                order: 10
+                order: -20
             );
         });
 
