@@ -18,15 +18,16 @@
       :show-clear
       class="hide-placeholder"
     />
-    <label for="period">{{ label }}</label>
+    <label for="period">{{ l(label) }}</label>
   </FloatLabel>
 </template>
 <script setup>
 import { ref, watch } from "vue";
 import { FloatLabel, Select, Skeleton } from "primevue";
-import { useContext, useUiStates } from "#imports";
+import { useContext, useUiStates, useLocalization } from "#imports";
 
 const context = useContext();
+const { localize: l } = useLocalization();
 const { value: { selectStates } } = useUiStates();
 
 const { schema, data } = defineProps({

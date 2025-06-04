@@ -38,6 +38,19 @@
       ],
       "defaultAlertTitle": "Unexpected Error",
       "defaultAlertMessage": "Please contact system administrator"
+    },
+    {
+      "name": "localization",
+      "supportedLanguages": [
+        {
+          "code": "en",
+          "name": "English"
+        },
+        {
+          "code": "tr",
+          "name": "Turkish"
+        }
+      ]
     }
   ],
   "error": {
@@ -83,5 +96,17 @@
       "composable": "useNuxtError",
       "args": []
     }
+  },
+  "i18n": {
+    "supportedLanguages": [
+      {
+        "code": "en",
+        "name": "English"
+      },
+      {
+        "code": "tr",
+        "name": "Turkish"
+      }
+    ]
   }
 }

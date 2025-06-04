@@ -1,9 +1,10 @@
-﻿using Humanizer;
+﻿using Baked.Localization;
+using Humanizer;
 using Microsoft.AspNetCore.Http;
 
 namespace Baked.ExceptionHandling.ProblemDetails;
 
-public class ExceptionHandler(IEnumerable<IExceptionHandler> _handlers, ExceptionHandlerSettings _settings)
+public class ExceptionHandler(IEnumerable<IExceptionHandler> _handlers, ExceptionHandlerSettings _settings, ILocalizer _localizer)
     : Microsoft.AspNetCore.Diagnostics.IExceptionHandler
 {
     readonly UnhandledExceptionHandler _unhandledExceptionHandler = new(_settings);
@@ -31,10 +32,21 @@ public class ExceptionHandler(IEnumerable<IExceptionHandler> _handlers, Exceptio
                 : null,
             Title = NameOf(exceptionInfo.Exception).Titleize(),
             Status = exceptionInfo.Code,
-            Detail = exceptionInfo.Body,
-            Extensions = exceptionInfo.ExtraData ?? []
+            Detail = GetMessage(exceptionInfo),
+            Extensions = exceptionInfo.ExtraData?
+                .Where(kv => kv.Key != "localizerParams").ToDictionary() ?? []
         };
 
+    string GetMessage(ExceptionInfo info)
+    {
+        if (info.ExtraData is not null && info.ExtraData.TryGetValue("localizerParams", out var localizerParams))
+        {
+            return _localizer[info.Body, localizerParams as object[] ?? []];
+        }
+
+        return _localizer[info.Body];
+    }
+
     string NameOf(Exception exception) =>
-        exception.GetType().Name.Replace(nameof(Exception), string.Empty);
+        _localizer[exception.GetType().Name.Replace(nameof(Exception), string.Empty)];
 }

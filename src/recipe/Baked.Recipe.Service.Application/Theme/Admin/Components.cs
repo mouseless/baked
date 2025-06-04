@@ -150,6 +150,9 @@ public static class Components
         string? parentRoute = default
     ) => new(route) { Icon = icon, Title = title, ParentRoute = parentRoute };
 
+    public static ComponentDescriptor LanguageSwitcher() =>
+        new(nameof(LanguageSwitcher));
+
     public static ComponentDescriptorAttribute<Icon> Icon(string iconClass) =>
         new(new(iconClass));
 

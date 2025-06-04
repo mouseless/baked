@@ -11,6 +11,6 @@ public class UnhandledExceptionHandler(ExceptionHandlerSettings _settings)
         (int)HttpStatusCode.InternalServerError,
         _settings.ShowUnhandled
             ? $"{ex.Message}{Environment.NewLine}{ex}"
-            : "An unexpected error has occured. Please contact the administrator."
+            : "An_unexpected_error_has_occured_please_contact_the_administrator"
     );
 }

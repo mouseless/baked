@@ -1,0 +1,17 @@
+A_handled_exception_was_thrown=A handled exception was thrown
+An_unexpected_error_has_occured_please_contact_the_administrator=An unexpected error has occured. Please contact the administrator.
+Failed_to_authenticate_with_given_credentials=Failed to authenticate with given credentials.
+VALUE_is_not_a_valid_PARAMETER='{0:V}' is not a valid {1:P}
+NAME_should_be_unique={0:N} should be unique.
+Child_ID_does_not_belong_this_parent=Child#{0:I} does not belong this parent
+Attempted_to_perform_an_unauthorized_operation=Attempted to perform an unauthorized operation.
+NAME_with_FIELD__VALUE_does_not_exist={0:N} with {1:F}: '{2:V}' does not exist
+
+Authentication=Authentication
+RouteParameterIsNotValid=RouteParameterIsNotValid
+TestServiceHandled=TestServiceHandled
+MustBeUnique=MustBeUnique
+NotMyChild=NotMyChild
+UnauthorizedAccess=UnauthorizedAccess
+
+test=This is test message from English resource file.

@@ -8,10 +8,10 @@
     </div>
     <div class="text-center">
       <strong class="block text-2xl mb-2">
-        Admin Recipe - Test Login
+        Admin Recipe - {{ l("Test Login") }}
       </strong>
       <div class="text-gray-600 dark:text-gray-400">
-        Enter any username to login.
+        {{ l("Enter any username to login.") }}
       </div>
     </div>
     <InputText
@@ -24,13 +24,13 @@
     <Button
       type="submit"
       class="mt-4"
-      label="Login"
+      :label="l(Login)"
     />
   </form>
   <Divider />
   <Button
     icon="pi pi-home"
-    label="Back to Home Page"
+    :label="l('Back to Home Page')"
     severity="secondary"
     variant="outlined"
     as="router-link"
@@ -41,8 +41,10 @@
 import { onUpdated, ref } from "vue";
 import { RouterLink } from "vue-router";
 import { useRuntimeConfig } from "#app";
-import { useToken } from "#imports";
+import { useToken, useLocalization } from "#imports";
 import { Button, Divider, InputText } from "primevue";
+
+const { localize: l } = useLocalization();
 
 defineProps({
   schema: { type: null, default: null },

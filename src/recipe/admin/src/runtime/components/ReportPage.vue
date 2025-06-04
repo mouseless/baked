@@ -27,7 +27,7 @@
                 :name="`tabs/${tab.id}/icon`"
                 :descriptor="tab.icon"
               />
-              <span>{{ tab.title }}</span>
+              <span>{{ l(tab.title) }}</span>
             </Tab>
           </TabList>
         </Tabs>
@@ -38,7 +38,7 @@
       severity="info"
     >
       <i class="pi pi-info-circle" />
-      <span class="ml-3">{{ components?.ReportPage?.requiredMessage || "Select required values to view this report" }}</span>
+      <span class="ml-3">{{ l(components?.ReportPage?.requiredMessage || "Select required values to view this report") }}</span>
     </Message>
     <div
       v-if="ready"
@@ -83,10 +83,11 @@
 import { computed, onMounted, ref, watch } from "vue";
 import { useRuntimeConfig } from "#app";
 import { Message, Tab, TabList, Tabs } from "primevue";
-import { useContext } from "#imports";
+import { useContext, useLocalization } from "#imports";
 import { Bake, DeferredTabContent, PageTitle, QueryParameters } from "#components";
 
 const context = useContext();
+const { localize: l } = useLocalization();
 const { public: { components } } = useRuntimeConfig();
 
 const { schema } = defineProps({

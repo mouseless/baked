@@ -35,7 +35,7 @@
         severity="info"
       >
         <i class="pi pi-info-circle" />
-        <span class="ml-3">{{ components?.DataPanel?.requiredMessage || "Select required values to view this data" }}</span>
+        <span class="ml-3">{{ l(components?.DataPanel?.requiredMessage || "Select required values to view this data") }}</span>
       </Message>
     </template>
   </Panel>
@@ -45,11 +45,12 @@ import { computed, onMounted, ref, useTemplateRef } from "vue";
 import { useRuntimeConfig } from "#app";
 import { Message, Panel } from "primevue";
 import { Bake, Parameters } from "#components";
-import { useContext, useDataFetcher, useUiStates } from "#imports";
+import { useContext, useDataFetcher, useUiStates, useLocalization } from "#imports";
 
 const { value: { panelStates } } = useUiStates();
 const context = useContext();
 const dataFetcher = useDataFetcher();
+const { localize: l } = useLocalization();
 const { public: { components } } = useRuntimeConfig();
 const panel = useTemplateRef("panel");
 

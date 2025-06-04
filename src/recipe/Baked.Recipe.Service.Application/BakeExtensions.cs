@@ -9,6 +9,7 @@ using Baked.Cors;
 using Baked.Database;
 using Baked.ExceptionHandling;
 using Baked.Greeting;
+using Baked.Localization;
 using Baked.Logging;
 using Baked.Orm;
 using Baked.Reporting;
@@ -29,6 +30,7 @@ public static class BakeExtensions
         Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>>? database = default,
         Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>>? exceptionHandling = default,
         Func<GreetingConfigurator, IFeature<GreetingConfigurator>>? greeting = default,
+        Func<LocalizationConfigurator, IFeature<LocalizationConfigurator>>? localization = default,
         Func<LoggingConfigurator, IFeature<LoggingConfigurator>>? logging = default,
         Func<OrmConfigurator, IFeature<OrmConfigurator>>? orm = default,
         Func<ThemeConfigurator, IFeature<ThemeConfigurator>>? theme = default,
@@ -44,6 +46,7 @@ public static class BakeExtensions
         database ??= c => c.Sqlite();
         exceptionHandling ??= c => c.ProblemDetails();
         greeting ??= c => c.Swagger();
+        localization ??= c => c.AspNetCore();
         logging ??= c => c.Request();
         orm ??= c => c.AutoMap();
         theme ??= c => c.Admin();
@@ -94,6 +97,7 @@ public static class BakeExtensions
                 c => c.Singleton(),
                 c => c.Transient()
             ]);
+            app.Features.AddLocalization(localization);
             app.Features.AddLogging(logging);
             app.Features.AddOrm(orm);
             app.Features.AddTheme(theme);
@@ -109,6 +113,7 @@ public static class BakeExtensions
         Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>>? database = default,
         Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>>? exceptionHandling = default,
         Func<GreetingConfigurator, IFeature<GreetingConfigurator>>? greeting = default,
+        Func<LocalizationConfigurator, IFeature<LocalizationConfigurator>>? localization = default,
         Func<LoggingConfigurator, IFeature<LoggingConfigurator>>? logging = default,
         Func<ReportingConfigurator, IFeature<ReportingConfigurator>>? reporting = default,
         Action<ApplicationDescriptor>? configure = default
@@ -119,6 +124,7 @@ public static class BakeExtensions
         database ??= c => c.Sqlite();
         exceptionHandling ??= c => c.ProblemDetails();
         greeting ??= c => c.Swagger();
+        localization ??= c => c.AspNetCore();
         logging ??= c => c.Request();
         reporting ??= c => c.NativeSql();
         configure ??= _ => { };
@@ -156,6 +162,7 @@ public static class BakeExtensions
                 c => c.Singleton(),
                 c => c.Transient()
             ]);
+            app.Features.AddLocalization(localization);
             app.Features.AddLogging(logging);
             app.Features.AddReporting(reporting);
 

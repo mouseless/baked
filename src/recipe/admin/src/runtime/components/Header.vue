@@ -26,7 +26,7 @@
           <span
             v-if="item.title"
             class="p-breadcrumb-item-label"
-          >{{ item.title }}</span>
+          >{{ l(item.title) }}</span>
         </RouterLink>
       </template>
     </Breadcrumb>
@@ -36,9 +36,10 @@
 import { computed } from "vue";
 import { RouterLink } from "vue-router";
 import { Breadcrumb, Skeleton } from "primevue";
-import { useContext } from "#imports";
+import { useContext, useLocalization } from "#imports";
 
 const context = useContext();
+const { localize: l } = useLocalization();
 
 const { schema, data } = defineProps({
   schema: { type: null, required: true },

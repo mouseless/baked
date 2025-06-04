@@ -211,6 +211,13 @@ export default {
     return { route, icon, title, parentRoute };
   },
 
+  aLanguageSwitcher() {
+    return {
+      type: "LanguageSwitcher",
+      schema: {}
+    };
+  },
+
   anIcon({ iconClass } = {}) {
     iconClass = $(iconClass, "pi-heart");
 

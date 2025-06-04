@@ -140,6 +140,7 @@ public class ConfigurationOverriderFeature : IFeature
                 Name = "Input",
                 Links = new[]
                 {
+                    new { Title = "Language Switcher", Description = "Allow change site language" },
                     new { Title = "Select", Description = "Allow select from given options using drow down" },
                     new { Title = "Select Button", Description = "Allow select from given options using buttons" }
                 }
@@ -205,7 +206,7 @@ public class ConfigurationOverriderFeature : IFeature
                         SideMenuItem("/data-table", "pi pi-table", title: "DataTable"),
                         SideMenuItem("/specs", "pi pi-list-check", title: "Specs")
                     ],
-                    footer: String(data: Inline("FT"))
+                    footer: LanguageSwitcher()
                 ),
                 header: Header(
                     siteMap:
