@@ -105,11 +105,11 @@ export default defineNuxtModule<ModuleOptions>({
     }
 
     //  default plugins (last add, first run)
-    addPlugin(resolver.resolve("./runtime/plugins/primeVue"));
-    addPlugin(resolver.resolve("./runtime/plugins/setupBaked"));
     addPlugin(resolver.resolve("./runtime/plugins/mutex"));
     addPlugin(resolver.resolve("./runtime/plugins/toast"));
     addPlugin(resolver.resolve("./runtime/plugins/trailingSlash"));
+    addPlugin(resolver.resolve("./runtime/plugins/setupBaked"));
+    addPlugin(resolver.resolve("./runtime/plugins/primeVue"));
     addPlugin(resolver.resolve("./runtime/plugins/fetch"), {});
 
     await installModule("@nuxtjs/i18n", {

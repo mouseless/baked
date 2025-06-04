@@ -30,7 +30,7 @@ public class ShowUnhandledFlag : TestServiceSpec
 
         var actual = handler.Handle(new("UNHANDLED"));
 
-        actual.Body.ShouldBe("An unexpected error has occured. Please contact the administrator.");
+        actual.Body.ShouldBe("An_unexpected_error_has_occured_please_contact_the_administrator");
     }
 
     [Test]

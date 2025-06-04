@@ -6,7 +6,7 @@ public class ExceptionSamples
     {
         if (handled)
         {
-            throw new TestServiceHandledException("A handled exception was thrown");
+            throw new TestServiceHandledException();
         }
 
         throw new InvalidOperationException();

@@ -33,16 +33,19 @@ public class ExceptionHandler(IEnumerable<IExceptionHandler> _handlers, Exceptio
             Title = NameOf(exceptionInfo.Exception).Titleize(),
             Status = exceptionInfo.Code,
             Detail = GetMessage(exceptionInfo),
-            Extensions = exceptionInfo.ExtraData ?? []
+            Extensions = exceptionInfo.ExtraData?
+                .Where(kv => kv.Key != "localizerParams").ToDictionary() ?? []
         };
 
-    string GetMessage(ExceptionInfo info) =>
-        info.LKey is null
-        ? info.Body
-        : (_localizer[info.LKey, info.LParams ?? []] is var value && value == info.LKey
-            ? info.Body
-            : value
-        );
+    string GetMessage(ExceptionInfo info)
+    {
+        if (info.ExtraData is not null && info.ExtraData.TryGetValue("localizerParams", out var localizerParams))
+        {
+            return _localizer[info.Body, localizerParams as object[] ?? []];
+        }
+
+        return _localizer[info.Body];
+    }
 
     string NameOf(Exception exception) =>
         _localizer[exception.GetType().Name.Replace(nameof(Exception), string.Empty)];
