@@ -40,6 +40,16 @@ public class RuntimeLayer : LayerBase<BuildConfiguration, AddServices, PostBuild
                 services.AddSingleton<IFileProvider>(sp =>
                     new CompositeFileProvider(sp.UsingCurrentScope().GetKeyedServices<IFileProvider>(FILE_PROVIDERS_KEY))
                 );
+
+                if (_threadOptions.MinThreadCount.HasValue)
+                {
+                    ThreadPool.SetMinThreads(_threadOptions.MinThreadCount.Value, _threadOptions.MinThreadCount.Value * 2);
+                }
+
+                if (_threadOptions.MaxThreadCount.HasValue)
+                {
+                    ThreadPool.SetMaxThreads(_threadOptions.MaxThreadCount.Value, _threadOptions.MaxThreadCount.Value * 2);
+                }
             })
             .Build()
         ;
@@ -52,7 +62,7 @@ public class RuntimeLayer : LayerBase<BuildConfiguration, AddServices, PostBuild
     {
         yield return new BuildConfiguration();
         yield return new AddServices(_services);
-        yield return new PostBuild(_threadOptions);
+        yield return new PostBuild();
     }
 
     public class BuildConfiguration()
@@ -73,13 +83,9 @@ public class RuntimeLayer : LayerBase<BuildConfiguration, AddServices, PostBuild
         }
     }
 
-    public class PostBuild(ThreadOptions _threadOptions)
+    public class PostBuild
         : PhaseBase<IServiceProvider>
     {
-        protected override void Initialize(IServiceProvider _)
-        {
-            ThreadPool.SetMinThreads(_threadOptions.MinThreadCount, _threadOptions.MinThreadCount * 2);
-            ThreadPool.SetMaxThreads(_threadOptions.MaxThreadCount, _threadOptions.MaxThreadCount * 2);
-        }
+        protected override void Initialize(IServiceProvider _) { }
     }
 }

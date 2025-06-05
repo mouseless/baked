@@ -12,6 +12,6 @@ public class AddRequireConcurrencyLimiterConvention : IDomainModelConvention<Met
         if (context.Method.Has<AllowAnonymousAttribute>()) { return; }
         if (context.Method.TryGetSingle<RequireUserAttribute>(out var requireUser) && requireUser.Override) { return; }
 
-        action.AdditionalAttributes.Add("EnableRateLimiting(\"Concurrency\")");
+        action.AdditionalAttributes.Add("""EnableRateLimiting("Concurrency")""");
     }
 }

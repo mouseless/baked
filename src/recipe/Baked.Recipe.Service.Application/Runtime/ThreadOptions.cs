@@ -2,6 +2,6 @@
 
 public class ThreadOptions
 {
-    public int MinThreadCount { get; set; } = 5;
-    public int MaxThreadCount { get; set; } = 10;
+    public int? MinThreadCount { get; set; }
+    public int? MaxThreadCount { get; set; }
 }

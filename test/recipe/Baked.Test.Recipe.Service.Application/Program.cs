@@ -46,7 +46,7 @@ Bake.New
             .Sqlite()
             .ForProduction(c.MySql()),
         exceptionHandling: c => c.ProblemDetails(typeUrlFormat: "https://baked.mouseless.codes/errors/{0}"),
-        rateLimiter: c => c.Concurrency(permitLimit: 10, queueLimit: 10),
+        rateLimiter: c => c.Concurrency(permitLimit: 20, queueLimit: 1000),
         theme: c => c.Admin(componentExports: ["Container", "Expected", "Input", "Login", "PageWithRoute"]),
         configure: app =>
         {
