@@ -12,7 +12,8 @@ app.Layers.AddRuntime();
 ## Configuration Targets
 
 `Runtime` layer provides `IConfigurationBuilder`, `ILoggingBuilder`, 
-`IServiceCollection` and `IServiceProvider` as configuration targets.
+`IServiceCollection`, `IServiceProvider` and `ThreadOptions` as configuration 
+targets.
 
 ### `IConfigurationBuilder`
 
@@ -58,6 +59,12 @@ configurator.ConfigureServiceProvider(sp =>
     ...
 });
 ```
+
+### `ThreadOptions`
+
+This target is provided in add `AddServices` phase. When configured, min and 
+max `workerthreads` and `completionPortThreads` values are set from
+`MinThreadCount` and `MaxThreadCount` value as `1x` and `2x` respectively
 
 ## Phases
 

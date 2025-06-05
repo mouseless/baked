@@ -11,6 +11,7 @@ using Baked.ExceptionHandling;
 using Baked.Greeting;
 using Baked.Logging;
 using Baked.Orm;
+using Baked.RateLimiter;
 using Baked.Reporting;
 using Baked.Theme;
 
@@ -31,6 +32,7 @@ public static class BakeExtensions
         Func<GreetingConfigurator, IFeature<GreetingConfigurator>>? greeting = default,
         Func<LoggingConfigurator, IFeature<LoggingConfigurator>>? logging = default,
         Func<OrmConfigurator, IFeature<OrmConfigurator>>? orm = default,
+        Func<RateLimiterConfigurator, IFeature<RateLimiterConfigurator>>? rateLimiter = default,
         Func<ThemeConfigurator, IFeature<ThemeConfigurator>>? theme = default,
         Action<ApplicationDescriptor>? configure = default
     )
@@ -46,6 +48,7 @@ public static class BakeExtensions
         greeting ??= c => c.Swagger();
         logging ??= c => c.Request();
         orm ??= c => c.AutoMap();
+        rateLimiter ??= c => c.Concurrency();
         theme ??= c => c.Admin();
         configure ??= _ => { };
 
@@ -96,6 +99,7 @@ public static class BakeExtensions
             ]);
             app.Features.AddLogging(logging);
             app.Features.AddOrm(orm);
+            app.Features.AddRateLimiter(rateLimiter);
             app.Features.AddTheme(theme);
 
             configure(app);
@@ -110,6 +114,7 @@ public static class BakeExtensions
         Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>>? exceptionHandling = default,
         Func<GreetingConfigurator, IFeature<GreetingConfigurator>>? greeting = default,
         Func<LoggingConfigurator, IFeature<LoggingConfigurator>>? logging = default,
+        Func<RateLimiterConfigurator, IFeature<RateLimiterConfigurator>>? rateLimiter = default,
         Func<ReportingConfigurator, IFeature<ReportingConfigurator>>? reporting = default,
         Action<ApplicationDescriptor>? configure = default
     )
@@ -120,7 +125,9 @@ public static class BakeExtensions
         exceptionHandling ??= c => c.ProblemDetails();
         greeting ??= c => c.Swagger();
         logging ??= c => c.Request();
+        rateLimiter ??= c => c.Concurrency();
         reporting ??= c => c.NativeSql();
+
         configure ??= _ => { };
 
         return bake.Application(app =>
@@ -157,6 +164,7 @@ public static class BakeExtensions
                 c => c.Transient()
             ]);
             app.Features.AddLogging(logging);
+            app.Features.AddRateLimiter(rateLimiter);
             app.Features.AddReporting(reporting);
 
             configure(app);

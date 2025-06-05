@@ -15,6 +15,7 @@ public class RuntimeLayer : LayerBase<BuildConfiguration, AddServices, PostBuild
 
     readonly IServiceCollection _services = new ServiceCollection();
     readonly ILoggingBuilder _loggingBuilder;
+    readonly ThreadOptions _threadOptions = new();
 
     public RuntimeLayer()
     {
@@ -33,11 +34,22 @@ public class RuntimeLayer : LayerBase<BuildConfiguration, AddServices, PostBuild
         return phase.CreateContextBuilder()
             .Add(_services)
             .Add(_loggingBuilder)
+            .Add(_threadOptions)
             .OnDispose(() =>
             {
                 services.AddSingleton<IFileProvider>(sp =>
                     new CompositeFileProvider(sp.UsingCurrentScope().GetKeyedServices<IFileProvider>(FILE_PROVIDERS_KEY))
                 );
+
+                if (_threadOptions.MinThreadCount.HasValue)
+                {
+                    ThreadPool.SetMinThreads(_threadOptions.MinThreadCount.Value, _threadOptions.MinThreadCount.Value * 2);
+                }
+
+                if (_threadOptions.MaxThreadCount.HasValue)
+                {
+                    ThreadPool.SetMaxThreads(_threadOptions.MaxThreadCount.Value, _threadOptions.MaxThreadCount.Value * 2);
+                }
             })
             .Build()
         ;
