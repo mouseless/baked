@@ -83,6 +83,16 @@ public static class CoreExtensions
     public static void ShouldBe(this Uri? uri, string urlString) =>
         uri?.ToString().ShouldBe(urlString);
 
+    public static void ShouldContainKeys<TKey, TValue>(this Dictionary<TKey, TValue> dictionary,
+        params TKey[] keys
+    ) where TKey : notnull
+    {
+        foreach (var key in keys)
+        {
+            dictionary.ShouldContainKey(key);
+        }
+    }
+
     public static void ShouldDeeplyBe(this object? payload, object? json,
         bool useSystemTextJson = false
     ) => payload
@@ -139,5 +149,16 @@ public static class CoreExtensions
     {
         method.GetParameters().Length.ShouldBe(1);
         method.GetParameters().First().ParameterType.ShouldBe<T>();
+    }
+
+    public static void ValuesShouldBe<TKey, TValue>(this Dictionary<TKey, TValue> dictionary,
+        params TValue[] values
+    ) where TKey : notnull
+    {
+        foreach (var value in dictionary.Values)
+        {
+            value.ShouldBe(values.FirstOrDefault());
+            values = [.. values.Skip(1)];
+        }
     }
 }

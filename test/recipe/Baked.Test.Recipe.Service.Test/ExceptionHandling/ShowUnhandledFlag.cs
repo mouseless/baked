@@ -3,34 +3,23 @@
 public class ShowUnhandledFlag : TestServiceSpec
 {
     [Test]
-    public void It_shows_error_message_when_flag_is_up()
+    public void It_adds_error_details_when_flag_is_up()
     {
         var handler = GiveMe.AnUnhandledExceptionHandler(showUnhandled: true);
 
         var actual = handler.Handle(new("UNHANDLED"));
 
-        actual.Body.ShouldStartWith("UNHANDLED");
+        actual.ExtraData!["message"].ShouldBe("UNHANDLED");
     }
 
     [Test]
-    public void It_includes_exception_detail_when_flag_is_up()
-    {
-        var handler = GiveMe.AnUnhandledExceptionHandler(showUnhandled: true);
-        var exception = GiveMe.AnException();
-
-        var actual = handler.Handle(exception);
-
-        actual.Body.ShouldEndWith(exception.ToString());
-    }
-
-    [Test]
-    public void It_hides_error_message_when_flag_is_down()
+    public void It_hides_error_details_when_flag_is_down()
     {
         var handler = GiveMe.AnUnhandledExceptionHandler(showUnhandled: false);
 
-        var actual = handler.Handle(new("UNHANDLED"));
+        var actual = handler.Handle(new());
 
-        actual.Body.ShouldBe("An_unexpected_error_has_occured_please_contact_the_administrator");
+        actual.ExtraData!.ShouldBeNull();
     }
 
     [Test]

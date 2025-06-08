@@ -6,7 +6,12 @@ namespace Baked.Orm;
 public class RecordNotFoundException(Type entityType, string field, object value, bool notFound)
     : HandledException(
         "NAME_with_FIELD__VALUE_does_not_exist",
-        extraData: new() { { "localizerParams", new object?[] { entityType.Name, field, value.ToString() } } }
+        extraData: new()
+        {
+            ["name"] = entityType.Name,
+            ["field"] = field,
+            ["value"] = value.ToString()
+        }
     )
 {
     public static RecordNotFoundException For<T>(Guid id,

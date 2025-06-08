@@ -41,8 +41,8 @@ public class HandlingExceptions : TestServiceSpec
         );
 
         recordNotFoundException.Message.ShouldBe("NAME_with_FIELD__VALUE_does_not_exist");
-        recordNotFoundException.ExtraData.ShouldContainKey("localizerParams");
-        recordNotFoundException.ExtraData["localizerParams"].ShouldBe(new object[] { "Entity", "Id", GiveMe.AGuid("fadf").ToString() });
+        recordNotFoundException.ExtraData.ShouldContainKeys("name", "field", "value");
+        recordNotFoundException.ExtraData.ValuesShouldBe("Entity", "Id", GiveMe.AGuid("fadf").ToString());
     }
 
     [Test]
