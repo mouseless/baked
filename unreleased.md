@@ -2,9 +2,9 @@
 
 ## Features
 
-- Beta features are available in `Baked.Recipe.Service.Application`;
+- Beta feature is available in `Baked.Recipe.Service.Application`;
   - `localization` feature is now added.
-- Beta features are available in `baked-recipe-admin`;
+- Beta feature is available in `baked-recipe-admin`;
   - `localization` plugin has been introduced along with the `useLocalization`
     composable to manage texts according to culture.
 
