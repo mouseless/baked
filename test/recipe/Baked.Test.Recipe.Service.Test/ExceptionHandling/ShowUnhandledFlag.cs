@@ -9,7 +9,9 @@ public class ShowUnhandledFlag : TestServiceSpec
 
         var actual = handler.Handle(new("UNHANDLED"));
 
-        actual.ExtraData!["message"].ShouldBe("UNHANDLED");
+        actual.Body.ShouldStartWith("An_unexpected_error_has_occured_please_contact_the_administrator__MESSAGE__EXCEPTION");
+        actual.ExtraData.ShouldNotBeNull();
+        actual.ExtraData["message"].ShouldBe("UNHANDLED");
     }
 
     [Test]
@@ -19,7 +21,8 @@ public class ShowUnhandledFlag : TestServiceSpec
 
         var actual = handler.Handle(new());
 
-        actual.ExtraData!.ShouldBeNull();
+        actual.Body.ShouldStartWith("An_unexpected_error_has_occured_please_contact_the_administrator");
+        actual.ExtraData.ShouldBeNull();
     }
 
     [Test]
