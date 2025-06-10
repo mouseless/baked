@@ -5,7 +5,7 @@ using Baked.Runtime;
 
 namespace Baked;
 
-public static class AspNetCoreLocalizationFeatureExtensions
+public static class AspNetCoreLocalizationExtensions
 {
     public static AspNetCoreLocalizationFeature AspNetCore(this LocalizationConfigurator _,
         Setting<string>? _resourceName = null,

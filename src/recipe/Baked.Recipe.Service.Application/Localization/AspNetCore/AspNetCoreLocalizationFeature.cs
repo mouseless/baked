@@ -54,18 +54,18 @@ public class AspNetCoreLocalizationFeature(Setting<string>? _resourceName, Cultu
 
         configurator.ConfigureAppDescriptor(app =>
         {
-            var supportedLanguages = new List<SupportedLanguage> { new(_language.Name, _language.DisplayName) };
+            app.I18n.DefaultLanguage = new(_language.Name, _language.DisplayName);
+            app.I18n.SupportedLanguages.Add(app.I18n.DefaultLanguage);
+
             if (_otherLanguages is not null)
             {
-                supportedLanguages.AddRange(_otherLanguages.ToList().Select(l => new SupportedLanguage(l.Name, l.DisplayName)));
+                app.I18n.SupportedLanguages.AddRange(_otherLanguages.Select(l => new Language(l.Name, l.DisplayName)));
             }
 
             app.Plugins.Add(new LocalizationPlugin()
             {
-                SupportedLanguages = supportedLanguages
+                SupportedLanguages = app.I18n.SupportedLanguages
             });
-
-            app.I18n = new(supportedLanguages);
         });
     }
 }

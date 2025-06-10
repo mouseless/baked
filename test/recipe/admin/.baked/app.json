@@ -98,6 +98,10 @@
     }
   },
   "i18n": {
+    "defaultLanguage": {
+      "code": "en",
+      "name": "English"
+    },
     "supportedLanguages": [
       {
         "code": "en",

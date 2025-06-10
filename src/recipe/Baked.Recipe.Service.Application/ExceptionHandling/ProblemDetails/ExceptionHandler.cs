@@ -40,5 +40,5 @@ public class ExceptionHandler(IEnumerable<IExceptionHandler> _handlers, Exceptio
         };
 
     string NameOf(Exception exception) =>
-        _localizer[exception.GetType().Name.Replace(nameof(Exception), string.Empty)];
+        exception.GetType().Name.Replace(nameof(Exception), string.Empty);
 }

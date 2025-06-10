@@ -8,11 +8,4 @@ NAME_should_be_unique={0:N} should be unique.
 NAME_with_FIELD__VALUE_does_not_exist={0:N} with {1:F}: '{2:V}' does not exist
 VALUE_is_not_a_valid_PARAMETER='{0:V}' is not a valid {1:P}
 
-Authentication=Authentication
-MustBeUnique=MustBeUnique
-NotMyChild=NotMyChild
-UnauthorizedAccess=UnauthorizedAccess
-RouteParameterIsNotValid=RouteParameterIsNotValid
-TestServiceHandled=TestServiceHandled
-
 test=This is test message from English resource file.

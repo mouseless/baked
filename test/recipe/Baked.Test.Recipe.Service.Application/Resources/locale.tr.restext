@@ -8,11 +8,4 @@ NAME_should_be_unique={0:N} benzersiz olmalıdır.
 NAME_with_FIELD__VALUE_does_not_exist=Bu {1:F}: '{2:V}' ile {0:N} yoktur
 VALUE_is_not_a_valid_PARAMETER='{0:V}' geçerli bir {1:P} değildir.
 
-Authentication=Authentication
-MustBeUnique=MustBeUnique
-NotMyChild=NotMyChild
-UnauthorizedAccess=UnauthorizedAccess
-RouteParameterIsNotValid=RouteParameterIsNotValid
-TestServiceHandled=TestServiceHandled
-
 test=Bu Türkçe kaynak dosyasından test mesajıdır.
