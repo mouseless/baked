@@ -6,7 +6,7 @@
     <div class="h-16 flex gap-2">
       <div class="w-full flex flex-col gap-2 justify-end">
         <h1 class="text-xl font-bold">
-          {{ l(title) }}
+          {{ l(`Page_title.${title}`) }}
         </h1>
         <div
           data-testid="description"

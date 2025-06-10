@@ -20,7 +20,7 @@
             text-xs font-bold
           "
         >
-          {{ l(section.title?.toLocaleUpperCase(locale)) }}
+          {{ l(`Menu_page.${section.title ?? ""}`).toLocaleUpperCase(locale) }}
         </h2>
         <Divider
           v-if="section.title"
@@ -38,7 +38,7 @@
       </div>
     </div>
     <div v-if="sectionsData.length === 0">
-      {{ l(components?.MenuPage?.notFoundMessage || "No item available!") }}
+      {{ l("Menu_page.No_item_available") }}
     </div>
   </div>
 </template>
@@ -51,7 +51,7 @@ import { ref, watch } from "vue";
 
 const context = useContext();
 const { localize: l } = useLocalization();
-const { public: { components, composables } } = useRuntimeConfig();
+const { public: { composables } } = useRuntimeConfig();
 
 const { schema } = defineProps({
   schema: { type: null, required: true },

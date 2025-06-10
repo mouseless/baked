@@ -11,14 +11,14 @@
         class="!text-4xl"
       />
       <h1 class="text-6xl">
-        {{ l(errorInfo.title) }}
+        {{ l(`Error_page.${errorInfo.title}`) }}
       </h1>
       <div class="text-2xl">
-        {{ l(errorInfo.message) }}
+        {{ l(`Error_page.${errorInfo.message}`) }}
       </div>
       <AuthorizedContent>
         <div class="text-2xl">
-          {{ l(safeLinksMessage) }}
+          {{ l(`Error_page.${safeLinksMessage}`) }}
         </div>
       </AuthorizedContent>
     </div>
@@ -42,7 +42,7 @@
     />
     <Message severity="warn">
       <i class="pi pi-exclamation-circle mr-2" />
-      {{ l(footerInfo) }}
+      {{ l(`Error_page.${footerInfo}`) }}
     </Message>
   </div>
 </template>

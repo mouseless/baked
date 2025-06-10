@@ -8,10 +8,10 @@
     </div>
     <div class="text-center">
       <strong class="block text-2xl mb-2">
-        Admin Recipe - {{ l("Test Login") }}
+        Admin Recipe - {{ l('Login.Test_login') }}
       </strong>
       <div class="text-gray-600 dark:text-gray-400">
-        {{ l("Enter any username to login.") }}
+        {{ l('Login.Enter_any_username_to_login') }}
       </div>
     </div>
     <InputText
@@ -24,13 +24,13 @@
     <Button
       type="submit"
       class="mt-4"
-      :label="l(Login)"
+      :label="l('Login.Login')"
     />
   </form>
   <Divider />
   <Button
     icon="pi pi-home"
-    :label="l('Back to Home Page')"
+    :label="l('Login.Back_to_Home_Page')"
     severity="secondary"
     variant="outlined"
     as="router-link"
@@ -45,7 +45,6 @@ import { useToken, useLocalization } from "#imports";
 import { Button, Divider, InputText } from "primevue";
 
 const { localize: l } = useLocalization();
-
 defineProps({
   schema: { type: null, default: null },
   data: { type: null, default: null }

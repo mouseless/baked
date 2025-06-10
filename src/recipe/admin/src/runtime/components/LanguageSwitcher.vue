@@ -36,7 +36,7 @@ const menu = ref();
 
 const model = computed(() =>
   locales.map(l => ({
-    label: `${localize(`language_switcher.${l.name}`)} (${l.code.toUpperCase()})`,
+    label: `${localize(`Language_switcher.${l.name}`)} (${l.code.toUpperCase()})`,
     class: locale.value === l.code ? "opacity-50" : "",
     command: () => setLocale(l.code)
   }))

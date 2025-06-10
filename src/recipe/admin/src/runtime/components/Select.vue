@@ -18,7 +18,7 @@
       :show-clear
       class="hide-placeholder"
     />
-    <label for="period">{{ l(label) }}</label>
+    <label for="period">{{ l(`Select.${label}`) }}</label>
   </FloatLabel>
 </template>
 <script setup>

@@ -21,18 +21,18 @@
           v-if="disabled"
           severity="secondary"
         >
-          {{ l(disabledReason) }}
+          {{ l(`Card_link.${disabledReason}`) }}
         </Tag>
       </div>
       <h2 class="text-lg">
-        {{ l(title) }}
+        {{ l(`Card_link.${title}`) }}
       </h2>
       <div
         v-if="description"
         data-testid="description"
         class="text-sm"
       >
-        {{ l(description) }}
+        {{ l(`Card_link.${description}`) }}
       </div>
     </div>
   </Button>
