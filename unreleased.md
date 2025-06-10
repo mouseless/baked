@@ -13,3 +13,7 @@
 | NuGet Package                                  | Old Version | New Version |
 | ---                                            | ---         | ---         |
 | Microsoft.AspNetCore.Localization              | new         | 2.3.0       |
+
+| npm Package          | Old Version | New Version |
+| ---                  | ---         | ---         |
+| @nuxtjs/i18n         | new         | 9.5.4       |
