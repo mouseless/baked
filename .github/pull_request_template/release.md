@@ -7,12 +7,12 @@
 - [ ] Check for library updates
   - [ ] NuGet packages
   - [ ] npm packages
+  - [ ] Check for updates in `PrimeVue` locale keys
 - [ ] Add release notes
 - [ ] Update `baked` version
     - [ ] `src/Directory.Build.props`
     - [ ] `src/recipe/admin/package.json`
     - [ ] reinstall to update package lock files
-- [ ] Check for updates in `PrimeVue` locale keys
 - [ ] Publish packages and docs site
 - [ ] Create GitHub release
 
