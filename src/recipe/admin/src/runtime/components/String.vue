@@ -6,17 +6,16 @@
   <span
     v-else-if="data"
     v-tooltip.bottom="tooltip"
-  >{{ l(text) }}</span>
+  >{{ text }}</span>
   <span v-else>-</span>
 </template>
 <script setup>
 import { computed } from "vue";
 import { Skeleton } from "primevue";
-import { useContext, useFormat, useLocalization } from "#imports";
+import { useContext, useFormat } from "#imports";
 
 const context = useContext();
 const { truncate } = useFormat();
-const { localize: l } = useLocalization();
 
 const { schema, data } = defineProps({
   schema: { type: null, default: { } },
