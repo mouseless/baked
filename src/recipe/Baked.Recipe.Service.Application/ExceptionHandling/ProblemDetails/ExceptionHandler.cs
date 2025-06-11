@@ -1,12 +1,16 @@
-﻿using Humanizer;
+﻿using Baked.Localization;
+using Humanizer;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Baked.ExceptionHandling.ProblemDetails;
 
-public class ExceptionHandler(IEnumerable<IExceptionHandler> _handlers, ExceptionHandlerSettings _settings)
+public class ExceptionHandler(IEnumerable<IExceptionHandler> _handlers, ExceptionHandlerSettings _settings, IServiceProvider _serviceProvider)
     : Microsoft.AspNetCore.Diagnostics.IExceptionHandler
 {
     readonly UnhandledExceptionHandler _unhandledExceptionHandler = new(_settings);
+
+    ILocalizer? Localizer => _serviceProvider.GetService<ILocalizer>();
 
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
@@ -31,7 +35,10 @@ public class ExceptionHandler(IEnumerable<IExceptionHandler> _handlers, Exceptio
                 : null,
             Title = NameOf(exceptionInfo.Exception).Titleize(),
             Status = exceptionInfo.Code,
-            Detail = exceptionInfo.Body,
+            Detail = Localizer?[
+                exceptionInfo.Body,
+                exceptionInfo.ExtraData?.Values.OfType<object>().ToArray() ?? []
+            ],
             Extensions = exceptionInfo.ExtraData ?? []
         };
 

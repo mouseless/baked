@@ -11,14 +11,14 @@
         class="!text-4xl"
       />
       <h1 class="text-6xl">
-        {{ errorInfo.title }}
+        {{ l(errorInfo.title) }}
       </h1>
       <div class="text-2xl">
-        {{ errorInfo.message }}
+        {{ l(errorInfo.message) }}
       </div>
       <AuthorizedContent>
         <div class="text-2xl">
-          {{ safeLinksMessage }}
+          {{ l(safeLinksMessage) }}
         </div>
       </AuthorizedContent>
     </div>
@@ -42,13 +42,16 @@
     />
     <Message severity="warn">
       <i class="pi pi-exclamation-circle mr-2" />
-      {{ footerInfo }}
+      {{ l(footerInfo) }}
     </Message>
   </div>
 </template>
 <script setup>
 import { computed } from "vue";
 import { Divider, Message, Tag } from "primevue";
+import { useLocalization } from "#imports";
+
+const { localize: l } = useLocalization();
 
 const { schema, data } = defineProps({
   schema: { type: null, required: true },

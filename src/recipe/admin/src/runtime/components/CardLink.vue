@@ -21,24 +21,27 @@
           v-if="disabled"
           severity="secondary"
         >
-          {{ disabledReason }}
+          {{ l(disabledReason) }}
         </Tag>
       </div>
       <h2 class="text-lg">
-        {{ title }}
+        {{ l(title) }}
       </h2>
       <div
         v-if="description"
         data-testid="description"
         class="text-sm"
       >
-        {{ description }}
+        {{ l(description) }}
       </div>
     </div>
   </Button>
 </template>
 <script setup>
 import { Button, Tag } from "primevue";
+import { useLocalization } from "#imports";
+
+const { localize: l } = useLocalization();
 
 const { schema } = defineProps({
   schema: { type: null, required: true },

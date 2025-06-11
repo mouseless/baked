@@ -13,7 +13,7 @@
                 "route": "/report",
                 "icon": "pi pi-file",
                 "title": "Report",
-                "description": "Showcases a report layout with tabs and data panels"
+                "description": "Showcases_a_report_layout_with_tabs_and_data_panels"
               }
             }
           },
@@ -25,7 +25,7 @@
                 "route": "/data-table",
                 "icon": "pi pi-table",
                 "title": "DataTable",
-                "description": "Showcase DataTable component with scrollable and footer options"
+                "description": "Showcase_DataTable_component_with_scrollable_and_footer_options"
               }
             }
           },
@@ -37,7 +37,7 @@
                 "route": "/specs",
                 "icon": "pi pi-list-check",
                 "title": "Specs",
-                "description": "All UI Specs are listed here"
+                "description": "All_ui_Specs_are_listed_here"
               }
             }
           }

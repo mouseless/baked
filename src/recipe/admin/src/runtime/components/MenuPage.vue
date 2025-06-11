@@ -20,7 +20,7 @@
             text-xs font-bold
           "
         >
-          {{ section.title?.toLocaleUpperCase(locale) }}
+          {{ l(section.title).toLocaleUpperCase(locale) }}
         </h2>
         <Divider
           v-if="section.title"
@@ -38,19 +38,21 @@
       </div>
     </div>
     <div v-if="sectionsData.length === 0">
-      {{ components?.MenuPage?.notFoundMessage || "No item available!" }}
+      {{ lc("No_item_available") }}
     </div>
   </div>
 </template>
 <script setup>
 import { useRuntimeConfig } from "#app";
 import { Bake } from "#components";
-import { useContext } from "#imports";
+import { useContext, useLocalization } from "#imports";
 import { Divider } from "primevue";
 import { ref, watch } from "vue";
 
 const context = useContext();
-const { public: { components, composables } } = useRuntimeConfig();
+const { localize: l } = useLocalization();
+const { localize: lc } = useLocalization("MenuPage");
+const { public: { composables } } = useRuntimeConfig();
 
 const { schema } = defineProps({
   schema: { type: null, required: true },

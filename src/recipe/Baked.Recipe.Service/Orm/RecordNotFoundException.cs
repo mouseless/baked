@@ -4,7 +4,15 @@ using System.Net;
 namespace Baked.Orm;
 
 public class RecordNotFoundException(Type entityType, string field, object value, bool notFound)
-    : HandledException($"{entityType.Name} with {field}: '{value}' does not exist")
+    : HandledException(
+        "NAME_with_FIELD__VALUE_does_not_exist",
+        extraData: new()
+        {
+            ["name"] = entityType.Name,
+            ["field"] = field,
+            ["value"] = value.ToString()
+        }
+    )
 {
     public static RecordNotFoundException For<T>(Guid id,
         bool notFound = false

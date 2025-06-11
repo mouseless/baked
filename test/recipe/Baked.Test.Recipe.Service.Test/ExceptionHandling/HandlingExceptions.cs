@@ -40,7 +40,9 @@ public class HandlingExceptions : TestServiceSpec
             value: GiveMe.AGuid("fadf")
         );
 
-        recordNotFoundException.Message.ShouldBe($"Entity with Id: '{GiveMe.AGuid("fadf")}' does not exist");
+        recordNotFoundException.Message.ShouldBe("NAME_with_FIELD__VALUE_does_not_exist");
+        recordNotFoundException.ExtraData.ShouldContainKeys("name", "field", "value");
+        recordNotFoundException.ExtraData.ValuesShouldBe("Entity", "Id", GiveMe.AGuid("fadf").ToString());
     }
 
     [Test]

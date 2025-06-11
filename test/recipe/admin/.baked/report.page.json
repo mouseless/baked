@@ -4,7 +4,7 @@
     "path": "report",
     "title": {
       "title": "Report",
-      "description": "Showcases a report layout with tabs and data panels",
+      "description": "Showcases_a_report_layout_with_tabs_and_data_panels",
       "actions": []
     },
     "queryParameters": [
@@ -18,7 +18,7 @@
         "component": {
           "type": "Select",
           "schema": {
-            "label": "Required w/ Default",
+            "label": "Required_w_default",
             "optionLabel": "text",
             "optionValue": "value"
           },
@@ -74,7 +74,7 @@
     "tabs": [
       {
         "id": "single-value",
-        "title": "Single Value",
+        "title": "Single_value",
         "contents": [
           {
             "component": {
@@ -184,7 +184,7 @@
       },
       {
         "id": "data-table",
-        "title": "Data Table",
+        "title": "Data_table",
         "contents": [
           {
             "component": {

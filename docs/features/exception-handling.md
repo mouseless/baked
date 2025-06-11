@@ -85,5 +85,18 @@ public class ConfigurationOverriderFeature : IFeature
 }
 ```
 
+### Localization Support
+
+We provide localization support for exceptions, allowing users to view exception
+messages in their preferred languages.
+
+```csharp
+public class CustomException
+    : HandledException(
+        message: "Custom_exception_message_key__PARAM",
+        extraData: new() { ["param"] = "param_value" }
+    );
+```
+
 [rfc]: https://www.rfc-editor.org/rfc/rfc7807.html
 [dotnet]: https://learn.microsoft.com/en-us/aspnet/core/fundamentals/error-handling?view=aspnetcore-9.0&source=recommendations#problem-details

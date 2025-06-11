@@ -111,12 +111,12 @@ public class ConfigurationOverriderFeature : IFeature
                 Name = "Behavior",
                 Links = new[]
                 {
-                    new { Title = "Bake", Description = "The core component that renders a dynamic component using given descriptor" },
-                    new { Title = "Custom CSS", Description = "Allow custom configuration to define custom css and more" },
-                    new { Title = "Locale", Description = "Allow locale customization and language support" },
-                    new { Title = "Parameters", Description = "Manage parameters through emits" },
-                    new { Title = "Query Parameters", Description = "Sync and manage parameters in query string" },
-                    new { Title = "Toast", Description = "Render alert messages" }
+                    new { Title = "Bake", Description = "The_core_component_that_renders_a_dynamic_component_using_given_descriptor" },
+                    new { Title = "Custom CSS", Description = "Allow_custom_configuration_to_define_custom_css_and_more" },
+                    new { Title = "Locale", Description = "Allow_locale_customization_and_language_support" },
+                    new { Title = "Parameters", Description = "Manage_parameters_through_emits" },
+                    new { Title = "Query Parameters", Description = "Sync_and_manage_parameters_in_query_string" },
+                    new { Title = "Toast", Description = "Render_alert_messages" }
                 }
             },
             new
@@ -124,15 +124,15 @@ public class ConfigurationOverriderFeature : IFeature
                 Name = "Display",
                 Links = new[]
                 {
-                    new { Title = "Card Link", Description = "Renders a link as a big card-like button" },
-                    new { Title = "Data Table", Description = "View list data in a table" },
-                    new { Title = "Nav Link", Description = "A component to give a link to a domain object" },
-                    new { Title = "Icon", Description = "Displays built-in icons" },
-                    new { Title = "Message", Description = "A component to display message" },
-                    new { Title = "Money", Description = "Shortens and renders money values with the full value shown as tooltip" },
-                    new { Title = "Number", Description = "Shortens and renders numbers with the full value shown as tooltip" },
-                    new { Title = "Rate", Description = "Render rate values as percentage" },
-                    new { Title = "String", Description = "Render string values" }
+                    new { Title = "Card Link", Description = "Renders_a_link_as_a_big_card_like_button" },
+                    new { Title = "Data Table", Description = "View_list_data_in_a_table" },
+                    new { Title = "Nav Link", Description = "A_component_to_give_a_link_to_a_domain_object" },
+                    new { Title = "Icon", Description = "Displays_built_in_icons" },
+                    new { Title = "Message", Description = "A_component_to_display_message" },
+                    new { Title = "Money", Description = "Shortens_and_renders_money_values_with_the_full_value_shown_as_tooltip" },
+                    new { Title = "Number", Description = "Shortens_and_renders_numbers_with_the_full_value_shown_as_tooltip" },
+                    new { Title = "Rate", Description = "Render_rate_values_as_percentage" },
+                    new { Title = "String", Description = "Render_string_values" }
                 }
             },
             new
@@ -140,8 +140,9 @@ public class ConfigurationOverriderFeature : IFeature
                 Name = "Input",
                 Links = new[]
                 {
-                    new { Title = "Select", Description = "Allow select from given options using drow down" },
-                    new { Title = "Select Button", Description = "Allow select from given options using buttons" }
+                    new { Title = "Language Switcher", Description = "Allow_change_site_language" },
+                    new { Title = "Select", Description = "Allow_select_from_given_options_using_drow_down" },
+                    new { Title = "Select Button", Description = "Allow_select_from_given_options_using_buttons" }
                 }
             },
             new
@@ -149,10 +150,10 @@ public class ConfigurationOverriderFeature : IFeature
                 Name = "Layout",
                 Links = new[]
                 {
-                    new { Title = "Data Panel", Description = "Lazy load and view a data within a panel" },
-                    new { Title = "Header", Description = "Renders a breadcrumb" },
-                    new { Title = "Page Title", Description = "Render page title, desc and actions" },
-                    new { Title = "Side Menu", Description = "Renders application menu" }
+                    new { Title = "Data Panel", Description = "Lazy_load_and_view_a_data_within_a_panel" },
+                    new { Title = "Header", Description = "Renders_a_breadcrumb" },
+                    new { Title = "Page Title", Description = "Render_page_title_desc_and_actions" },
+                    new { Title = "Side Menu", Description = "Renders_application_menu" }
                 }
             },
             new
@@ -160,9 +161,9 @@ public class ConfigurationOverriderFeature : IFeature
                 Name = "Page",
                 Links = new[]
                 {
-                    new { Title = "Error Page", Description = "Display errors in full page" },
-                    new { Title = "Menu Page", Description = "Render navigation pages" },
-                    new { Title = "Report Page", Description = "Render report pages" }
+                    new { Title = "Error Page", Description = "Display_errors_in_full_page" },
+                    new { Title = "Menu Page", Description = "Render_navigation_pages" },
+                    new { Title = "Report Page", Description = "Render_report_pages" }
                 }
             },
             new
@@ -170,8 +171,8 @@ public class ConfigurationOverriderFeature : IFeature
                 Name = "Plugins",
                 Links = new[]
                 {
-                    new { Title = "Auth", Description = "Authorized routing and client" },
-                    new { Title = "Error Handling", Description = "Handling errors" },
+                    new { Title = "Auth", Description = "Authorized_routing_and_client" },
+                    new { Title = "Error Handling", Description = "Handling_errors" },
                 }
             },
         };
@@ -186,9 +187,9 @@ public class ConfigurationOverriderFeature : IFeature
                 ],
                 errorInfos:
                 [
-                    ErrorPageInfo(403, "Access Denied", "You do not have the permision to view the address or data specified." ),
-                    ErrorPageInfo(404, "Page Not Found", "The page you want to view is etiher deleted or outdated."),
-                    ErrorPageInfo(500, "Unexpected Error", "Please contact system administrator.")
+                    ErrorPageInfo(403, "Access_Denied", "You_do_not_have_the_permision_to_view_the_address_or_data_specified" ),
+                    ErrorPageInfo(404, "Page_Not_Found", "The_page_you_want_to_view_is_etiher_deleted_or_outdated"),
+                    ErrorPageInfo(500, "Unexpected_Error", "Please_contact_system_administrator")
                 ],
                 data: Computed(Composables.UseError)
             );
@@ -205,7 +206,7 @@ public class ConfigurationOverriderFeature : IFeature
                         SideMenuItem("/data-table", "pi pi-table", title: "DataTable"),
                         SideMenuItem("/specs", "pi pi-list-check", title: "Specs")
                     ],
-                    footer: String(data: Inline("FT"))
+                    footer: LanguageSwitcher()
                 ),
                 header: Header(
                     siteMap:
@@ -235,15 +236,15 @@ public class ConfigurationOverriderFeature : IFeature
                 [
                     CardLink($"/report", "Report",
                         icon: "pi pi-file",
-                        description: "Showcases a report layout with tabs and data panels"
+                        description: "Showcases_a_report_layout_with_tabs_and_data_panels"
                     ),
                     CardLink($"/data-table", "DataTable",
                         icon: "pi pi-table",
-                        description: "Showcase DataTable component with scrollable and footer options"
+                        description: "Showcase_DataTable_component_with_scrollable_and_footer_options"
                     ),
                     CardLink($"/specs", "Specs",
                         icon: "pi pi-list-check",
-                        description: "All UI Specs are listed here"
+                        description: "All_ui_Specs_are_listed_here"
                     )
                 ]
             ));
@@ -261,12 +262,12 @@ public class ConfigurationOverriderFeature : IFeature
                 var second = report.Methods[nameof(Report.GetSecond)];
 
                 pages.Add(ReportPage("report",
-                    title: PageTitle("Report", description: "Showcases a report layout with tabs and data panels"),
+                    title: PageTitle("Report", description: "Showcases_a_report_layout_with_tabs_and_data_panels"),
                     queryParameters:
                     [
                         Parameter(
                             "requiredWithDefault",
-                            Select("Required w/ Default",
+                            Select("Required_w_default",
                                 data: Inline(new[]
                                 {
                                   new { text = "Required w/ Default 1", value = "rwd-1" },
@@ -285,7 +286,7 @@ public class ConfigurationOverriderFeature : IFeature
                     ],
                     tabs:
                     [
-                        ReportPageTab("single-value", "Single Value",
+                        ReportPageTab("single-value", "Single_value",
                             icon: Icon("pi-box"),
                             contents:
                             [
@@ -326,7 +327,7 @@ public class ConfigurationOverriderFeature : IFeature
                                 )
                             ]
                         ),
-                        ReportPageTab("data-table", "Data Table",
+                        ReportPageTab("data-table", "Data_table",
                             icon: Icon("pi-table"),
                             contents:
                             [
@@ -393,7 +394,7 @@ public class ConfigurationOverriderFeature : IFeature
                 filterPageContextKey: "menu-page",
                 header: PageTitle(
                   title: "Specs",
-                  description: "All UI Specs are listed here",
+                  description: "All_ui_specs_are_listed_here",
                   actions: [Filter(placeholder: "Filter", pageContextKey: "menu-page")]
                 ),
                 sections:

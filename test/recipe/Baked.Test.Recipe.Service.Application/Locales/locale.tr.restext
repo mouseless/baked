@@ -1,0 +1,12 @@
+An_unexpected_error_has_occured_please_contact_the_administrator=Beklenmeyen bir hata oluştu lütfen sistem yöneticisiyle iletişime geçiniz.
+An_unexpected_error_has_occured_please_contact_the_administrator__MESSAGE__EXCEPTION=Beklenmeyen bir hata oluştu lütfen sistem yöneticisiyle iletişime geçiniz. {0:M}\n{1:E}
+Attempted_to_perform_an_unauthorized_operation=Yetkisiz bir işlem gerçekleştirmeye çalışıldı.
+Failed_to_authenticate_with_given_credentials=Verilen kimlik bilgileriyle kimlik doğrulaması yapılamadı.
+NAME_with_FIELD__VALUE_does_not_exist=Bu {1:F}: '{2:V}' ile {0:N} yoktur
+VALUE_is_not_a_valid_PARAMETER='{0:V}' geçerli bir {1:P} değildir.
+
+A_handled_exception_was_thrown=Bir hata oluştu.
+Child_ID_does_not_belong_this_parent=Child#{0:I}, bu parent'a ait değil.
+NAME_should_be_unique={0:N} benzersiz olmalıdır.
+
+test=Bu Türkçe kaynak dosyasından test mesajıdır.
