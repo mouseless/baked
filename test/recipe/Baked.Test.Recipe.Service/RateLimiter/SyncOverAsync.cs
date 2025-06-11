@@ -9,13 +9,10 @@ public class SyncOverAsync(
     IClient<SyncOverAsync> _client
 )
 {
-
     public async Task<object> Execute()
     {
         var entities = _entities.By();
-
         var response = await _client.Send(new("/random-names", HttpMethod.Get));
-
         _newEntity().With(int32: entities.Count);
 
         return response;

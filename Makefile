@@ -21,7 +21,11 @@ install:
 	cd src/recipe/admin ; npm i ; cd ../../.. ; \
 	cd src/recipe/admin ; npm ci ; cd ../../.. ; \
 	cd test/recipe/admin ; npm i ; cd ../../.. ; \
-	cd test/recipe/admin ; npm ci ; cd ../../..
+	cd test/recipe/admin ; npm ci ; cd ../../.. ; \
+	cd test/recipe/service/load-test ; npm i ; cd ../../.. ; \
+	cd test/recipe/service/load-test ; npm ci ; cd ../../.. ; \
+	cd test/recipe/service/stub-api-dependency ; npm i ; cd ../../.. ; \
+	cd test/recipe/service/stub-api-dependency ; npm ci ; cd ../../..
 build:
 	@ \
 	cd src/recipe/admin ; npm run build ; cd ../../.. ; \

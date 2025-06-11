@@ -11,11 +11,11 @@ app.use(
     methods: "GET",
     origin: [ "http://localhost:5151" ],
     preflightContinue: false,
-})
+  })
 );
 
 app.listen(port, () => {
- console.log(`Server running on port ${port}`);
+  console.log(`Server running on port ${port}`);
 });
 
 app.get("/random-names", (_, res, __) => {

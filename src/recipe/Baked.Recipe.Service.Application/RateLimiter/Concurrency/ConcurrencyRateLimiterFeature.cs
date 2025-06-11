@@ -6,8 +6,8 @@ using System.Threading.RateLimiting;
 namespace Baked.RateLimiter.Concurrency;
 
 public class ConcurrencyRateLimiterFeature(
-    int? permitLimit = default,
-    int? queueLimit = default
+    int? _permitLimit = default,
+    int? _queueLimit = default
 ) : IFeature<RateLimiterConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
@@ -22,15 +22,15 @@ public class ConcurrencyRateLimiterFeature(
             services.AddRateLimiter(options =>
                 options.AddConcurrencyLimiter(policyName: "Concurrency", options =>
                 {
-                    options.PermitLimit = permitLimit ?? (configurator.IsDevelopment() ? 5 : 20);
+                    options.PermitLimit = _permitLimit ?? (configurator.IsDevelopment() ? 5 : 20);
                     options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
-                    options.QueueLimit = queueLimit ?? (configurator.IsDevelopment() ? 100 : 1000);
+                    options.QueueLimit = _queueLimit ?? (configurator.IsDevelopment() ? 100 : 1000);
                 }));
         });
 
         configurator.ConfigureThreadOptions(options =>
         {
-            var limit = permitLimit ?? (configurator.IsDevelopment() ? 5 : 20);
+            var limit = _permitLimit ?? (configurator.IsDevelopment() ? 5 : 20);
             options.MinThreadCount = limit * 2;
             options.MaxThreadCount = limit * 4;
         });
