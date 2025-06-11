@@ -55,12 +55,12 @@ public class AspNetCoreLocalizationFeature(CultureInfo _language,
 
         configurator.ConfigureAppDescriptor(app =>
         {
-            app.I18n.DefaultLanguage = new(_language.Name, _language.DisplayName);
+            app.I18n.DefaultLanguage = new(_language.Name, _language.EnglishName);
             app.I18n.SupportedLanguages.Add(app.I18n.DefaultLanguage);
 
             if (_otherLanguages is not null)
             {
-                app.I18n.SupportedLanguages.AddRange(_otherLanguages.Select(l => new Language(l.Name, l.DisplayName)));
+                app.I18n.SupportedLanguages.AddRange(_otherLanguages.Select(l => new Language(l.Name, l.EnglishName)));
             }
 
             app.Plugins.Add(new LocalizationPlugin()
