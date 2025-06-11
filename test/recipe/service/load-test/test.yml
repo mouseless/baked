@@ -5,12 +5,12 @@ config:
       arrivalCount: 10
       name: Warm up phase
     - duration: '60'
-      arrivalCount: 100
-      maxVusers: 100
+      arrivalRate: 50
+      maxVusers: 1000
       name: Test phase
   defaults:
     headers:
-      authorization: token-jane    
+      authorization: token-jane
 scenarios:
   - flow:
     - loop:
