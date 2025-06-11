@@ -1,15 +1,15 @@
 import { useI18n, useRuntimeConfig } from "#imports";
 import { usePrimeVue } from "primevue";
-import { ref, computed } from "vue";
+import { ref } from "vue";
 
 export default function(group = "") {
   const { locale, locales: i18nLocales, setLocale: i18nSetLocales, t, tm } = useI18n();
   const primevue = usePrimeVue();
   const { public: { localization } } = useRuntimeConfig();
 
-  const locales = computed(() => {
+  function getLocales() {
     return localization.supportedLanguages.filter(l => i18nLocales.value.includes(l.code));
-  });
+  }
 
   async function setLocale(language) {
     await i18nSetLocales(language);
@@ -35,16 +35,18 @@ export default function(group = "") {
   return {
     localize,
     locale,
-    locales,
+    getLocales,
     setLocale
   };
 }
 
 function extractText(val) {
-  if(typeof val === "string") return val;
+  if(typeof val === "string") { return val; }
+
   if(Array.isArray(val)) {
     return [...val.map(extractText)];
   }
+
   if(typeof val === "object") {
     return val.loc?.source || val.value || extractText(val.body || "") || "";
   }

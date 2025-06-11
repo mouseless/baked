@@ -14,7 +14,7 @@
       </span>
     </Message>
     <div class="border-4 border-gray-500 rounded p-4 text-center" data-testid="test-locales">
-      {{ locales.map(l => l.code.toUpperCase()).join(", ") }}
+      {{ locales }}
     </div>
     <Message severity="info">
       <span class="text-xl">
@@ -30,5 +30,7 @@
 import { DatePicker, Message } from "primevue";
 import { useLocalization } from "#imports";
 
-const { locale, locales } = useLocalization();
+const { locale, getLocales } = useLocalization();
+
+const locales = getLocales().map(l => l.code.toUpperCase()).join(", ");
 </script>
