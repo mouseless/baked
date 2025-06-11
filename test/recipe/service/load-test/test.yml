@@ -1,0 +1,19 @@
+config:
+  target: http://localhost:5151
+  phases:
+    - duration: 10
+      arrivalCount: 10
+      name: Warm up phase
+    - duration: '60'
+      arrivalRate: 100
+      maxVusers: 400
+      name: Test phase
+  defaults:
+    headers:
+      authorization: token-jane
+scenarios:
+  - flow:
+    - loop:
+        - post:
+            url: '/over-async'
+      count: 1
