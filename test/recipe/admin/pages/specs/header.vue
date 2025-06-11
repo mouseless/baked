@@ -16,18 +16,18 @@ const variants = [
         giveMe.aHeaderItem({
           route: "/root",
           icon: "pi pi-heart",
-          title: "Root_page"
+          title: "Root Page"
         }),
         giveMe.aHeaderItem({
           route: "/root/mid",
           icon: "pi pi-wave-pulse",
-          title: "Mid_page",
+          title: "Mid Page",
           parentRoute: "/root"
         }),
         giveMe.aHeaderItem({
           route: "/root/mid/leaf",
           icon: "pi pi-sun",
-          title: "Leaf_page",
+          title: "Leaf Page",
           parentRoute: "/root/mid"
         })
       ],

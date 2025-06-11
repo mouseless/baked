@@ -28,7 +28,7 @@ test.describe("Base", () =>{
   test("message from schema error infos", async({page}) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator(baked.errorPage.message).first()).toHaveText("You do not have the permision to view the address or data specified.");
+    await expect(component.locator(baked.errorPage.message).first()).toHaveText("You do not have the permission to view the address or data specified.");
   });
 
   test("safe links message from schema", async({page}) => {

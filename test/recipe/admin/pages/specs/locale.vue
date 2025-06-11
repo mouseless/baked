@@ -2,7 +2,7 @@
   <UiSpec title="Locale">
     <Message severity="info">
       <span class="text-xl">
-        ⬇️  Check if day name case is iNVERTED ⬇️
+        ⬇️  Check if day name case is in current language ⬇️
       </span>
     </Message>
     <div class="border-4 border-gray-500 rounded p-4 text-center" data-testid="test-datepicker">

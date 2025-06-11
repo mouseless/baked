@@ -41,7 +41,7 @@ const variants = [
   {
     name: "Long Label",
     descriptor: giveMe.aSelect({
-      label: "This_is_a_long_label"
+      label: "This is a long label"
     }),
     model: ref()
   },

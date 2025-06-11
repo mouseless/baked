@@ -108,7 +108,7 @@
                 "route": "/specs/card-link",
                 "icon": "pi pi-microchip",
                 "title": "Card Link",
-                "description": "Renders_a_link_as_a_big_card-like_button"
+                "description": "Renders_a_link_as_a_big_card_like_button"
               }
             }
           },

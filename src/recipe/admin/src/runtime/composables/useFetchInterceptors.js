@@ -4,40 +4,33 @@ export default function() {
     globalThis.__fetchInterceptors = new Map();
   }
 
-  const interceptors = globalThis.__fetchInterceptors;
-  let sortedInterceptors = null;
-  let isSorted = false;
+  let interceptors = null;
+  let sorted = false;
 
-  const register = (name, interceptor, priority = 100) => {
-    interceptors.set(name, { interceptor, priority });
-    isSorted = false;
-  };
+  function register(name, interceptor, priority = 100) {
+    globalThis.__fetchInterceptors.set(name, { interceptor, priority });
+    sorted = false;
+  }
 
-  const getAll = () => {
-    if(isSorted && sortedInterceptors) {
-      return sortedInterceptors;
-    }
+  function ensureSorted() {
+    if(sorted && interceptors) { return; }
 
-    sortedInterceptors = Array.from(interceptors.entries())
+    interceptors = Array.from(globalThis.__fetchInterceptors.entries())
       .sort(([, a], [, b]) => a.priority - b.priority)
-      .map(([name, { interceptor }]) => ({ name, interceptor }));
+      .map(([_, { interceptor }]) => interceptor);
+    sorted = true;
+  }
 
-    isSorted = true;
+  async function execute(context, nuxtApp) {
+    ensureSorted();
 
-    return sortedInterceptors;
-  };
-
-  const execute = async(context, nuxtApp) => {
-    const interceptors = getAll();
-
-    for(const { interceptor } of interceptors) {
+    for(const interceptor of interceptors) {
       await interceptor(context, nuxtApp);
     }
-  };
+  }
 
   return {
     register,
-    getAll,
     execute
   };
 };

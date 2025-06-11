@@ -8,7 +8,19 @@ Add this feature implementations using `AddLocalization()` extension;
 app.Features.AddLocalization(...);
 ```
 
-## Resources
+## ASP.NET Core
+
+This feature adds ASP.NET Core's localization service. Add the service using
+`c.AspNetCore(...)` extension method.
+
+```csharp
+c => c.AspNetCore(
+    language: new("en"),
+    otherLanguages: [new("tr")]
+)
+```
+
+### Resources
 
 Keep the localize keys in the `.restext` and `.resx` files under the `Locales`
 folder in the root of your application project.
@@ -19,17 +31,4 @@ App/
 │  ├─ locale.restext
 │  ├─ locale.en.restext
 └─ └─ locale.tr.restext
-```
-
-## Exceptions
-
-We provide localization support for exceptions, allowing users to view exception
-messages in their preferred languages.
-
-```csharp
-public class CustomException
-    : HandledException(
-        message: "Custom_exception_message_key__PARAM",
-        extraData: new() { ["param"] = "param_value" }
-    );
 ```

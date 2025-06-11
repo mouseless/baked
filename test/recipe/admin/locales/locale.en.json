@@ -1,10 +1,7 @@
 {
     "CardLink": {
         "SOON": "SOON",
-        "CARD_TITLE": "CARD TITLE",
-        "CARD_DESCRIPTION": "CARD DESCRIPTION",
         "Test": "Test",
-        "Test_description_is_given_for_testing_purposes": "Test description is given for testing purposes",
         "Bake": "Bake",
         "The_core_component_that_renders_a_dynamic_component_using_given_descriptor": "The core component that renders a dynamic component using given descriptor",
         "Custom CSS": "Custom CSS",
@@ -18,7 +15,7 @@
         "Toast": "Toast",
         "Render_alert_messages": "Render alert messages",
         "Card Link": "Card Link",
-        "Renders_a_link_as_a_big_card-like_button": "Renders a link as a big card-like button",
+        "Renders_a_link_as_a_big_card_like_button": "Renders a link as a big card-like button",
         "Data Table": "Data Table",
         "View_list_data_in_a_table": "View list data in a table",
         "Nav Link": "Nav Link",
@@ -73,8 +70,6 @@
     "ErrorPage": {
         "Access_Denied": "Access Denied",
         "You_do_not_have_the_permision_to_view_the_address_or_data_specified": "You do not have the permision to view the address or data specified.",
-        "Footer_info": "Footer info",
-        "Safe_links_message": "Safe links message",
         "Page_Not_Found": "Page Not Found",
         "The_page_you_want_to_view_is_etiher_deleted_or_outdated": "The page you want to view is etiher deleted or outdated.",
         "Try_the_links_from_the_menu_below_to_view_the_page_you_want_to_access": "Try the links from the menu below to view the page you want to access.",
@@ -96,9 +91,7 @@
         "Plugins": "Plugins",
         "No_item_available": "No item available!",
         "SECTION_1": "SECTION 1",
-        "SECTION_2": "SECTION 2",
-        "Section_1": "Section 1",
-        "Section_2": "Section 2"
+        "SECTION_2": "SECTION 2"
     },
     "Login": {
         "Admin_Recipe__Test_login": "Admin Recipe - Test login",
@@ -109,9 +102,6 @@
     "Header": {
         "Specs": "Specs",
         "Bake": "Bake",
-        "Root_page": "Root Page",
-        "Mid_page": "Mid Page",
-        "Leaf_page": "Leaf Page",
         "Entity": "Entity",
         "Report": "Report",
         "DataTable": "DataTable",
@@ -168,8 +158,6 @@
         "Data Panel": "Data Panel",
         "Header": "Header",
         "Page_title": "Page Title",
-        "PAGE_TITLE": "PAGE TITLE",
-        "PAGE_DESCRIPTION": "PAGE DESCRIPTION",
         "DESCRIPTION": "DESCRIPTION",
         "Side Menu": "Side Menu",
         "Error Page": "Error Page",
@@ -181,14 +169,13 @@
         "TITLE": "TITLE",
         "DataTable Demo": "DataTable Demo",
         "All_ui_specs_are_listed_here": "All UI Specs are listed here",
-        "Test_description_is_given_for_testing_purposes": "Test description is given for testing purposes",
         "The_core_component_that_renders_a_dynamic_component_using_given_descriptor": "The core component that renders a dynamic component using given descriptor",
         "Allow_custom_configuration_to_define_custom_css_and_more": "Allow custom configuration to define custom css and more",
         "Allow_locale_customization_and_language_support": "Allow locale customization and language support",
         "Manage_parameters_through_emits": "Manage parameters through emits",
         "Sync_and_manage_parameters_in_query_string": "Sync and manage parameters in query string",
         "Render_alert_messages": "Render alert messages",
-        "Renders_a_link_as_a_big_card-like_button": "Renders a link as a big card-like button",
+        "Renders_a_link_as_a_big_card_like_button": "Renders a link as a big card-like button",
         "View_list_data_in_a_table": "View list data in a table",
         "A_component_to_give_a_link_to_a_domain_object": "A component to give a link to a domain object",
         "Displays_built-in_icons": "Displays built-in icons",
@@ -210,8 +197,7 @@
         "Authorized_routing_and_client": "Authorized routing and client",
         "Handling_errors": "Handling errors",
         "Showcases_a_report_layout_with_tabs_and_data_panels": "Showcases a report layout with tabs and data panels",
-        "Showcase_DataTable_component_with_scrollable_and_footer_options": "Showcase DataTable component with scrollable and footer options",
-        "Lorem_ipsum": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        "Showcase_DataTable_component_with_scrollable_and_footer_options": "Showcase DataTable component with scrollable and footer options"
     },
     "primevue": {
         "dayNames": [
@@ -273,14 +259,11 @@
     "ReportPage": {
         "Single_value": "Single Value",
         "Data_table": "Data Table",
-        "TAB_1": "TAB 1",
-        "TAB_2": "TAB 2",
         "Select_required_values_to_view_this_report": "Select required values to view this report"
     },
     "Select": {
         "Label": "Label",
         "Test":"Test",
-        "This_is_a_long_label": "This is a long label",
         "Required": "Required",
         "Count": "Count",
         "Required_w_default": "Required w/ Default"

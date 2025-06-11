@@ -105,7 +105,7 @@ export default defineNuxtModule<ModuleOptions>({
       locales: _options.app?.i18n.supportedLanguages.map((i: any) => ({
         code: i.code,
         name: i.name,
-        file: entryProjectResolver.resolve(`./locales/${i.code}.json`),
+        file: entryProjectResolver.resolve(`./locales/locale.${i.code}.json`),
       })),
       defaultLocale: _options.app?.i18n.defaultLanguage,
       detectBrowserLanguage: {

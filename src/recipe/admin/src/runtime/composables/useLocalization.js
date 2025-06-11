@@ -27,8 +27,9 @@ export default function(group = "") {
     if(!key) { return; }
 
     const keyWithGroup = group ? `${group}.${key}` : key;
+    const result = t(keyWithGroup, parameters);
 
-    return t(keyWithGroup, parameters);
+    return result === keyWithGroup ? key : result;
   }
 
   return {

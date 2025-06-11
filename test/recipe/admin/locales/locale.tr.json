@@ -1,10 +1,7 @@
 {
     "CardLink": {
         "SOON": "YAKINDA",
-        "CARD_TITLE": "KART BAŞLIĞI",
-        "CARD_DESCRIPTION": "KART AÇIKLAMASI",
         "Test": "Test",
-        "Test_description_is_given_for_testing_purposes": "Test açıklaması test amaçlı verilmiştir",
         "Bake": "Bake",
         "The_core_component_that_renders_a_dynamic_component_using_given_descriptor": "Verilen tanımlayıcıyı kullanarak dinamik bir bileşen oluşturan ana bileşen",
         "Custom CSS": "Özel CSS",
@@ -13,12 +10,12 @@
         "Allow_locale_customization_and_language_support": "Dil özelleştirmesi ve çoklu dil desteğine izin ver",
         "Parameters": "Parametreler",
         "Manage_parameters_through_emits": "Parametreleri emitler aracılığıyla yönet",
-        "Query_Parameters": "Sorgu Parametreleri",
+        "Query Parameters": "Sorgu Parametreleri",
         "Sync_and_manage_parameters_in_query_string": "Sorgu dizesindeki parametreleri senkronize et ve yönet",
         "Toast": "Uyarı",
         "Render_alert_messages": "Uyarı mesajlarını göster",
         "Card Link": "Kart Bağlantısı",
-        "Renders_a_link_as_a_big_card-like_button": "Bir bağlantıyı büyük kart şeklinde bir buton olarak gösterir",
+        "Renders_a_link_as_a_big_card_like_button": "Bir bağlantıyı büyük kart şeklinde bir buton olarak gösterir",
         "Data Table": "Veri Tablosu",
         "View_list_data_in_a_table": "Liste verilerini bir tabloda görüntüle",
         "Nav Link": "Navigasyon Bağlantısı",
@@ -73,8 +70,6 @@
     "ErrorPage": {
         "Access_Denied": "Erişim Reddedildi",
         "You_do_not_have_the_permision_to_view_the_address_or_data_specified": "Belirtilen adresi veya veriyi görüntüleme izniniz yok.",
-        "Footer_info": "Alt bilgi",
-        "Safe_links_message": "Güvenli bağlantılar mesajı",
         "Page_Not_Found": "Sayfa Bulunamadı",
         "The_page_you_want_to_view_is_etiher_deleted_or_outdated": "Görüntülemek istediğiniz sayfa silinmiş veya güncel değil.",
         "Try_the_links_from_the_menu_below_to_view_the_page_you_want_to_access": "Erişmek istediğiniz sayfayı görmek için aşağıdaki menüden bağlantıları deneyin.",
@@ -96,9 +91,7 @@
         "Plugins": "Eklentiler",
         "No_item_available": "Hiçbir öğe mevcut değil!",
         "SECTION_1": "BÖLÜM 1",
-        "SECTION_2": "BÖLÜM 2",
-        "Section_1": "Bölüm 1",
-        "Section_2": "Bölüm 2"
+        "SECTION_2": "BÖLÜM 2"
     },
     "Login": {
         "Admin_Recipe__Test_login": "Yönetici Teması - Test girişi",
@@ -109,9 +102,6 @@
     "Header": {
         "Specs": "Spesifikasyonlar",
         "Bake": "Bake",
-        "Root_page": "Kök Sayfa",
-        "Mid_page": "Ara Sayfa",
-        "Leaf_page": "Yaprak Sayfa",
         "Entity": "Varlık",
         "Report": "Rapor",
         "DataTable": "VeriTablosu",
@@ -174,21 +164,18 @@
         "Report Page": "Rapor Sayfası",
         "Auth": "Kimlik Doğrulama",
         "Error Handling": "Hata Yönetimi",
-        "PAGE_TITLE": "SAYFA BAŞLIĞI",
-        "PAGE_DESCRIPTION": "SAYFA AÇIKLAMASI",
         "DESCRIPTION": "AÇIKLAMA",
         "Test Title": "Test Başlığı",
         "TITLE": "BAŞLIK",
         "DataTable Demo": "Veri Tablosu Gösterimi",
         "All_ui_specs_are_listed_here": "Bütün arayüz spesifikasyonları burada listelenir",
-        "Test_description_is_given_for_testing_purposes": "Test açıklaması test amaçlı verilmiştir",
         "The_core_component_that_renders_a_dynamic_component_using_given_descriptor": "Verilen tanımlayıcıyı kullanarak dinamik bir bileşen oluşturan ana bileşen",
         "Allow_custom_configuration_to_define_custom_css_and_more": "Özel CSS ve daha fazlasını tanımlamak için özelleştirmeye izin ver",
         "Allow_locale_customization_and_language_support": "Dil özelleştirmesi ve çoklu dil desteğine izin ver",
         "Manage_parameters_through_emits": "Parametreleri emitler aracılığıyla yönet",
         "Sync_and_manage_parameters_in_query_string": "Sorgu dizesindeki parametreleri senkronize et ve yönet",
         "Render_alert_messages": "Uyarı mesajlarını göster",
-        "Renders_a_link_as_a_big_card-like_button": "Bir bağlantıyı büyük kart şeklinde bir buton olarak gösterir",
+        "Renders_a_link_as_a_big_card_like_button": "Bir bağlantıyı büyük kart şeklinde bir buton olarak gösterir",
         "View_list_data_in_a_table": "Liste verilerini bir tabloda görüntüle",
         "A_component_to_give_a_link_to_a_domain_object": "Bir alan nesnesine bağlantı vermek için bir bileşen",
         "Displays_built-in_icons": "Yerleşik simgeleri gösterir",
@@ -210,8 +197,7 @@
         "Authorized_routing_and_client": "Yetkilendirilmiş yönlendirme ve istemci",
         "Handling_errors": "Hataları yönetir",
         "Showcases_a_report_layout_with_tabs_and_data_panels": "Sekmeler ve veri panelleriyle bir rapor düzeni sunar",
-        "Showcase_DataTable_component_with_scrollable_and_footer_options": "Kaydırılabilir ve alt bilgi seçenekleriyle Veri Tablosu bileşenini gösterir",
-        "Lorem_ipsum": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        "Showcase_DataTable_component_with_scrollable_and_footer_options": "Kaydırılabilir ve alt bilgi seçenekleriyle Veri Tablosu bileşenini gösterir"
     },
     "primevue": {
         "dayNames": [
@@ -273,14 +259,11 @@
     "ReportPage": {
         "Single_value": "Tek Değer",
         "Data_table": "Veri Tablosu",
-        "TAB_1": "SEKME 1",
-        "TAB_2": "SEKME 2",
         "Select_required_values_to_view_this_report": "Bu raporu görüntülemek için gerekli değerleri seçin"
     },
     "Select": {
         "Label": "Etiket",
         "Test": "Test",
-        "This_is_a_long_label": "Bu uzun bir etiket",
         "Required": "Zorunlu",
         "Count": "Adet",
         "Required_w_default": "Varsayılanlı Zorunlu"

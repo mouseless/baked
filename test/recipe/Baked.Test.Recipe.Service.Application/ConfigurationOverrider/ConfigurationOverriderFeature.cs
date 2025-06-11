@@ -124,7 +124,7 @@ public class ConfigurationOverriderFeature : IFeature
                 Name = "Display",
                 Links = new[]
                 {
-                    new { Title = "Card Link", Description = "Renders_a_link_as_a_big_card-like_button" },
+                    new { Title = "Card Link", Description = "Renders_a_link_as_a_big_card_like_button" },
                     new { Title = "Data Table", Description = "View_list_data_in_a_table" },
                     new { Title = "Nav Link", Description = "A_component_to_give_a_link_to_a_domain_object" },
                     new { Title = "Icon", Description = "Displays_built-in_icons" },
@@ -262,7 +262,7 @@ public class ConfigurationOverriderFeature : IFeature
                 var second = report.Methods[nameof(Report.GetSecond)];
 
                 pages.Add(ReportPage("report",
-                    title: PageTitle("Report", description: "Showcases a report layout with tabs and data panels"),
+                    title: PageTitle("Report", description: "Showcases_a_report_layout_with_tabs_and_data_panels"),
                     queryParameters:
                     [
                         Parameter(

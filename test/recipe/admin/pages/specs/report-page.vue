@@ -18,7 +18,7 @@ const variants = [
       tabs: [
         giveMe.aReportPageTab({
           id: "tab 1",
-          title: "TAB_1",
+          title: "TAB 1",
           icon: giveMe.anExpected({ testId: "icon 1", value: "I." }),
           contents: [
             giveMe.aReportPageTabContent({
@@ -31,7 +31,7 @@ const variants = [
         }),
         giveMe.aReportPageTab({
           id: "tab 2",
-          title: "TAB_2",
+          title: "TAB 2",
           icon: giveMe.anExpected({ testId: "icon 2", value: "II." }),
           contents: [
             giveMe.aReportPageTabContent({

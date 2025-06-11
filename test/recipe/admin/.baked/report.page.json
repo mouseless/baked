@@ -4,7 +4,7 @@
     "path": "report",
     "title": {
       "title": "Report",
-      "description": "Showcases a report layout with tabs and data panels",
+      "description": "Showcases_a_report_layout_with_tabs_and_data_panels",
       "actions": []
     },
     "queryParameters": [
