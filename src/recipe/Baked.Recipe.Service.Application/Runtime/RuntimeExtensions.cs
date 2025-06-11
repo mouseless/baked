@@ -33,6 +33,9 @@ public static class RuntimeExtensions
     public static void ConfigureConfigurationBuilder(this LayerConfigurator configurator, Action<IConfigurationBuilder> configuration) =>
         configurator.Configure(configuration);
 
+    public static void ConfigureThreadOptions(this LayerConfigurator configurator, Action<ThreadOptions> configuration) =>
+        configurator.Configure(configuration);
+
     public static void AddFromAssembly(this IServiceCollection services, Assembly assembly)
     {
         var serviceAdderType = assembly.GetExportedTypes().SingleOrDefault(t => t.IsAssignableTo(typeof(IServiceAdder))) ?? throw new("`IServiceAdder` implementation not found");

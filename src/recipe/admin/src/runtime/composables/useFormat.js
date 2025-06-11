@@ -11,7 +11,8 @@ export default function() {
     { threshold: 1_000_000_000, divisor: 1_000_000_000, suffix: suffix.billions, fraction: true },
     { threshold: 1_000_000, divisor: 1_000_000, suffix: suffix.millions, fraction: true },
     { threshold: 1_000, divisor: 1_000, suffix: suffix.thousands, fraction: true },
-    { threshold: Number.MIN_VALUE, divisor: 1, suffix: "", fraction: false }
+    { threshold: 999.9999, divisor: 1, suffix: "", fraction: false },
+    { threshold: Number.MIN_VALUE, divisor: 1, suffix: "", fraction: true }
   ];
 
   function asClasses(path,

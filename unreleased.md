@@ -2,7 +2,8 @@
 
 ## Features
 
-- Beta feature is available in `Baked.Recipe.Service.Application`;
+- Beta features are available in `Baked.Recipe.Service.Application`;
+  - `RateLimiter` feature is now added with `ConcurrencyLimiter` implementation
   - `localization` feature is now added.
 - Beta feature is available in `baked-recipe-admin`;
   - `localization` plugin has been introduced along with the `useLocalization`

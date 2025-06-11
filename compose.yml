@@ -31,6 +31,12 @@ services:
       timeout: 5s
       retries: 3
 
+  recipe.service.stub-api-dependency:
+    build:
+      dockerfile: test/recipe/service/stub-api-dependency/Dockerfile
+    ports:
+      - 5467:80
+
   recipe.service:
     build:
       dockerfile: test/recipe/Baked.Test.Recipe.Service.Application/Dockerfile
@@ -46,6 +52,7 @@ services:
     links:
       - db.mysql
       - db.postgresql
+      - recipe.service.stub-api-dependency
 
   recipe.admin:
     build:
