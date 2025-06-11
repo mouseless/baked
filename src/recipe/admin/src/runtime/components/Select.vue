@@ -27,7 +27,7 @@ import { FloatLabel, Select, Skeleton } from "primevue";
 import { useContext, useUiStates, useLocalization } from "#imports";
 
 const context = useContext();
-const { localize: l } = useLocalization("Select");
+const { localize: l } = useLocalization();
 const { value: { selectStates } } = useUiStates();
 
 const { schema, data } = defineProps({

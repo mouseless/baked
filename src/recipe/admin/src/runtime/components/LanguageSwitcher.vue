@@ -25,7 +25,7 @@ import { computed, ref } from "vue";
 import { Button, Menu } from "primevue";
 import { useLocalization } from "#imports";
 
-const { locale, getLocales, setLocale, localize } = useLocalization("LanguageSwitcher");
+const { locale, getLocales, setLocale, localize } = useLocalization();
 
 const { schema } = defineProps({
   schema: { type: null, required: true },

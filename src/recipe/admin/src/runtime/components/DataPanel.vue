@@ -35,7 +35,7 @@
         severity="info"
       >
         <i class="pi pi-info-circle" />
-        <span class="ml-3">{{ l("Select_required_values_to_view_this_data") }}</span>
+        <span class="ml-3">{{ lc("Select_required_values_to_view_this_data") }}</span>
       </Message>
     </template>
   </Panel>
@@ -49,7 +49,7 @@ import { useContext, useDataFetcher, useUiStates, useLocalization } from "#impor
 const { value: { panelStates } } = useUiStates();
 const context = useContext();
 const dataFetcher = useDataFetcher();
-const { localize: l } = useLocalization("DataPanel");
+const { localize: lc } = useLocalization("DataPanel");
 const panel = useTemplateRef("panel");
 
 const { schema } = defineProps({

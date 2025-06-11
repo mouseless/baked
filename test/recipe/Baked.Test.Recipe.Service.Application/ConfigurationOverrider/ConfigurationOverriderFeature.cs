@@ -127,7 +127,7 @@ public class ConfigurationOverriderFeature : IFeature
                     new { Title = "Card Link", Description = "Renders_a_link_as_a_big_card_like_button" },
                     new { Title = "Data Table", Description = "View_list_data_in_a_table" },
                     new { Title = "Nav Link", Description = "A_component_to_give_a_link_to_a_domain_object" },
-                    new { Title = "Icon", Description = "Displays_built-in_icons" },
+                    new { Title = "Icon", Description = "Displays_built_in_icons" },
                     new { Title = "Message", Description = "A_component_to_display_message" },
                     new { Title = "Money", Description = "Shortens_and_renders_money_values_with_the_full_value_shown_as_tooltip" },
                     new { Title = "Number", Description = "Shortens_and_renders_numbers_with_the_full_value_shown_as_tooltip" },

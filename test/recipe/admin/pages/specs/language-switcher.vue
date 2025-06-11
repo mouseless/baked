@@ -17,7 +17,7 @@
       </span>
     </Message>
 		<div class="border-4 border-gray-500 rounded p-4 space-x-4">
-      <span data-testid="text">{{ l("Test_text") }}</span>
+      <span data-testid="text">{{ lc("Test_text") }}</span>
     </div>
 	</UiSpec>
 </template>
@@ -25,5 +25,5 @@
 import { useLocalization } from "#imports";
 import { Message } from "primevue";
 
-const { localize: l } = useLocalization("LanguageSwitcher");
+const { localize: lc } = useLocalization("LanguageSwitcher");
 </script>

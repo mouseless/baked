@@ -38,7 +38,7 @@
       </div>
     </div>
     <div v-if="sectionsData.length === 0">
-      {{ l("No_item_available") }}
+      {{ lc("No_item_available") }}
     </div>
   </div>
 </template>
@@ -50,7 +50,8 @@ import { Divider } from "primevue";
 import { ref, watch } from "vue";
 
 const context = useContext();
-const { localize: l } = useLocalization("MenuPage");
+const { localize: l } = useLocalization();
+const { localize: lc } = useLocalization("MenuPage");
 const { public: { composables } } = useRuntimeConfig();
 
 const { schema } = defineProps({

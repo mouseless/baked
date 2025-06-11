@@ -46,7 +46,7 @@ import { useRuntimeConfig } from "#app";
 import { Bake, String } from "#components";
 import { useHead, useLocalization } from "#imports";
 
-const { localize: l } = useLocalization("PageTitle");
+const { localize: l } = useLocalization();
 const { public: { components } } = useRuntimeConfig();
 
 const { schema } = defineProps({

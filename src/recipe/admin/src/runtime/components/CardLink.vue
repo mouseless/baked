@@ -41,7 +41,7 @@
 import { Button, Tag } from "primevue";
 import { useLocalization } from "#imports";
 
-const { localize: l } = useLocalization("CardLink");
+const { localize: l } = useLocalization();
 
 const { schema } = defineProps({
   schema: { type: null, required: true },

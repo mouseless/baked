@@ -8,10 +8,10 @@
     </div>
     <div class="text-center">
       <strong class="block text-2xl mb-2">
-        {{ l("Admin_Recipe__Test_login") }}
+        {{ lc("Admin_Recipe__Test_login") }}
       </strong>
       <div class="text-gray-600 dark:text-gray-400">
-        {{ l("Enter_any_username_to_login") }}
+        {{ lc("Enter_any_username_to_login") }}
       </div>
     </div>
     <InputText
@@ -24,13 +24,13 @@
     <Button
       type="submit"
       class="mt-4"
-      :label="l('Login')"
+      :label="lc('Login')"
     />
   </form>
   <Divider />
   <Button
     icon="pi pi-home"
-    :label="l('Back_to_Home_Page')"
+    :label="lc('Back_to_Home_Page')"
     severity="secondary"
     variant="outlined"
     as="router-link"
@@ -50,7 +50,7 @@ defineProps({
 });
 defineModel({ type: null, default: null });
 
-const { localize: l } = useLocalization("Login");
+const { localize: lc } = useLocalization("Login");
 const { public: { composables } } = useRuntimeConfig();
 const token = useToken();
 
