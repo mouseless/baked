@@ -11,7 +11,7 @@ public class SyncOverAsync(
 {
     public async Task<object> Execute()
     {
-        var entities = _entities.By();
+        var entities = _entities.By(take: 10);
         var response = await _client.Send(new("/random-names", HttpMethod.Get));
         _newEntity().With(int32: entities.Count);
 

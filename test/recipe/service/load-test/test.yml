@@ -5,8 +5,8 @@ config:
       arrivalCount: 10
       name: Warm up phase
     - duration: '60'
-      arrivalRate: 50
-      maxVusers: 1000
+      arrivalRate: 100
+      maxVusers: 400
       name: Test phase
   defaults:
     headers:
@@ -16,4 +16,4 @@ scenarios:
     - loop:
         - post:
             url: '/over-async'
-      count: 4
+      count: 1
