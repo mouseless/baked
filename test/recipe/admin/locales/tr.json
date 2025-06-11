@@ -1,5 +1,5 @@
 {
-    "Card_link": {
+    "CardLink": {
         "SOON": "YAKINDA",
         "CARD TITLE": "KART BAŞLIĞI",
         "CARD DESCRIPTION": "KART AÇIKLAMASI",
@@ -67,10 +67,10 @@
         "All UI Specs are listed here": "Tüm arayüz spesifikasyonları burada listelenir",
         "Home": "Ana Sayfa"
     },
-    "Data_panel": {
+    "DataPanel": {
         "Select_required_values_to_view_this_data": "Bu veriyi görüntülemek için gerekli değerleri seçin"
     },
-    "Error_page": {
+    "ErrorPage": {
         "Access Denied": "Erişim Reddedildi",
         "You do not have the permision to view the address or data specified": "Belirtilen adresi veya veriyi görüntüleme izniniz yok.",
         "Footer info": "Alt bilgi",
@@ -82,12 +82,12 @@
         "Please contact system administrator": "Lütfen sistem yöneticinizle iletişime geçin.",
         "If you cannot reach the page you want, please contact the system administrator": "İstediğiniz sayfaya ulaşamazsanız lütfen sistem yöneticinizle iletişime geçin."
     },
-    "Language_switcher": {
+    "LanguageSwitcher": {
         "Test Text": "Test Metni",
         "Turkish": "Türkçe",
         "English": "İngilizce"
     },
-    "Menu_page": {
+    "MenuPage": {
         "Behavior": "Davranış",
         "Display": "Görünüm",
         "Input": "Girdi",
@@ -101,7 +101,7 @@
         "Section 2": "Bölüm 2"
     },
     "Login": {
-        "Test_login": "Test girişi",
+        "Admin_Recipe__Test_login": "Yönetici Teması - Test girişi",
         "Enter_any_username_to_login": "Giriş yapmak için herhangi bir kullanıcı adı girin",
         "Back_to_Home_Page": "Ana Sayfaya Dön",
         "Login": "Giriş Yap"
@@ -143,7 +143,7 @@
         "Error Handling": "Hata Yönetimi",
         "No Icon": "Simge Yok"
     },
-    "Page_title": {
+    "PageTitle": {
         "Specs": "Spesifikasyonlar",
         "Bake": "Bake",
         "Entity": "Varlık",
@@ -236,7 +236,7 @@
             "Ara"
         ]
     },
-    "Report_page": {
+    "ReportPage": {
         "Single Value": "Tek Değer",
         "Data Table": "Veri Tablosu",
         "TAB 1": "SEKME 1",

@@ -1,11 +1,12 @@
-A_handled_exception_was_thrown=A handled exception was thrown
 An_unexpected_error_has_occured_please_contact_the_administrator=An unexpected error has occured. Please contact the administrator.
 An_unexpected_error_has_occured_please_contact_the_administrator__MESSAGE__EXCEPTION=An unexpected error has occured. Please contact the administrator. {0:M}\n{1:E}
 Attempted_to_perform_an_unauthorized_operation=Attempted to perform an unauthorized operation.
-Child_ID_does_not_belong_this_parent=Child#{0:I} does not belong this parent
 Failed_to_authenticate_with_given_credentials=Failed to authenticate with given credentials.
-NAME_should_be_unique={0:N} should be unique.
 NAME_with_FIELD__VALUE_does_not_exist={0:N} with {1:F}: '{2:V}' does not exist
 VALUE_is_not_a_valid_PARAMETER='{0:V}' is not a valid {1:P}
+
+A_handled_exception_was_thrown=A handled exception was thrown
+Child_ID_does_not_belong_this_parent=Child#{0:I} does not belong this parent
+NAME_should_be_unique={0:N} should be unique.
 
 test=This is test message from English resource file.

@@ -21,18 +21,18 @@
           v-if="disabled"
           severity="secondary"
         >
-          {{ l(`Card_link.${disabledReason}`) }}
+          {{ l(disabledReason) }}
         </Tag>
       </div>
       <h2 class="text-lg">
-        {{ l(`Card_link.${title}`) }}
+        {{ l(title) }}
       </h2>
       <div
         v-if="description"
         data-testid="description"
         class="text-sm"
       >
-        {{ l(`Card_link.${description}`) }}
+        {{ l(description) }}
       </div>
     </div>
   </Button>
@@ -41,7 +41,7 @@
 import { Button, Tag } from "primevue";
 import { useLocalization } from "#imports";
 
-const { localize: l } = useLocalization();
+const { localize: l } = useLocalization("CardLink");
 
 const { schema } = defineProps({
   schema: { type: null, required: true },

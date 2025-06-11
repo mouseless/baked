@@ -6,17 +6,13 @@ export default defineNuxtPlugin({
   enforce: "pre",
   setup(nuxtApp) {
     const { $fetchInterceptors } = nuxtApp;
-    const { public: { auth, composables } } = useRuntimeConfig();
+    const { public: { auth } } = useRuntimeConfig();
     const token = useToken();
     const router = nuxtApp.$router;
 
     $fetchInterceptors.register(
       "auth",
       async({ request, options }) => {
-
-        // filters out `/_nuxt` calls and any other non api calls
-        if(options.baseURL !== composables.useDataFetcher.baseURL) { return; }
-
         // filters out any api call that already has an authorization header,
         // such as refresh token api call
         if(options.headers.has("Authorization") || options.headers.has("authorization")) { return; }

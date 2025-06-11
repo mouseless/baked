@@ -27,7 +27,7 @@
                 :name="`tabs/${tab.id}/icon`"
                 :descriptor="tab.icon"
               />
-              <span>{{ l(`Report_page.${tab.title}`) }}</span>
+              <span>{{ l(tab.title) }}</span>
             </Tab>
           </TabList>
         </Tabs>
@@ -38,7 +38,7 @@
       severity="info"
     >
       <i class="pi pi-info-circle" />
-      <span class="ml-3">{{ l("Report_page.Select_required_values_to_view_this_report") }}</span>
+      <span class="ml-3">{{ l("Select_required_values_to_view_this_report") }}</span>
     </Message>
     <div
       v-if="ready"
@@ -86,7 +86,7 @@ import { useContext, useLocalization } from "#imports";
 import { Bake, DeferredTabContent, PageTitle, QueryParameters } from "#components";
 
 const context = useContext();
-const { localize: l } = useLocalization();
+const { localize: l } = useLocalization("ReportPage");
 
 const { schema } = defineProps({
   schema: { type: null, required: true },

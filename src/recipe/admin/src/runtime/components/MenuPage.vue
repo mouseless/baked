@@ -20,7 +20,7 @@
             text-xs font-bold
           "
         >
-          {{ l(`Menu_page.${section.title ?? ""}`).toLocaleUpperCase(locale) }}
+          {{ l(section.title).toLocaleUpperCase(locale) }}
         </h2>
         <Divider
           v-if="section.title"
@@ -38,7 +38,7 @@
       </div>
     </div>
     <div v-if="sectionsData.length === 0">
-      {{ l("Menu_page.No_item_available") }}
+      {{ l("No_item_available") }}
     </div>
   </div>
 </template>
@@ -50,7 +50,7 @@ import { Divider } from "primevue";
 import { ref, watch } from "vue";
 
 const context = useContext();
-const { localize: l } = useLocalization();
+const { localize: l } = useLocalization("MenuPage");
 const { public: { composables } } = useRuntimeConfig();
 
 const { schema } = defineProps({

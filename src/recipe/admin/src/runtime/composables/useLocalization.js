@@ -2,7 +2,7 @@ import { useI18n, useRuntimeConfig } from "#imports";
 import { usePrimeVue } from "primevue";
 import { ref } from "vue";
 
-export default function() {
+export default function(group = "") {
   const { locale, locales: i18nLocales, setLocale: i18nSetLocales, t, tm } = useI18n();
   const primevue = usePrimeVue();
   const { public: { localization } } = useRuntimeConfig();
@@ -23,8 +23,9 @@ export default function() {
   }
 
   function localize(key, parameters = {}) {
+    const keyWithGroup = group ? `${group}.${key}` : key;
     // When there are special characters such as '{' in the key, it throws an error.
-    try { return t(key, parameters); }
+    try { return t(keyWithGroup, parameters); }
     catch { return key; }
   }
 

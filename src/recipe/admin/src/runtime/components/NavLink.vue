@@ -14,7 +14,7 @@
 <script setup>
 import { computed } from "vue";
 import { Button, Skeleton } from "primevue";
-import { useContext, useDataFetcher, useLocalization } from "#imports";
+import { useContext, useDataFetcher } from "#imports";
 
 const context = useContext();
 const dataFetcher = useDataFetcher();

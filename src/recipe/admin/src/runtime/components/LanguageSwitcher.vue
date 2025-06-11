@@ -30,13 +30,13 @@ const { schema } = defineProps({
   data: { type: null, default: null }
 });
 
-const { locale, locales, setLocale, localize } = useLocalization();
+const { locale, locales, setLocale, localize } = useLocalization("LanguageSwitcher");
 
 const menu = ref();
 
 const model = computed(() =>
   locales.map(l => ({
-    label: `${localize(`Language_switcher.${l.name}`)} (${l.code.toUpperCase()})`,
+    label: `${localize(l.name)} (${l.code.toUpperCase()})`,
     class: locale.value === l.code ? "opacity-50" : "",
     command: () => setLocale(l.code)
   }))

@@ -1,5 +1,5 @@
 {
-    "Card_link": {
+    "CardLink": {
         "SOON": "SOON",
         "CARD TITLE": "CARD TITLE",
         "CARD DESCRIPTION": "CARD DESCRIPTION",
@@ -67,10 +67,10 @@
         "All UI Specs are listed here": "All UI Specs are listed here",
         "Home": "Home"
     },
-    "Data_panel": {
+    "DataPanel": {
         "Select_required_values_to_view_this_data": "Select required values to view this data"
     },
-    "Error_page": {
+    "ErrorPage": {
         "Access Denied": "Access Denied",
         "You do not have the permision to view the address or data specified": "You do not have the permision to view the address or data specified.",
         "Footer info": "Footer info",
@@ -82,12 +82,12 @@
         "Please contact system administrator": "Please contact system administrator.",
         "If you cannot reach the page you want, please contact the system administrator": "If you cannot reach the page you want, please contact the system administrator."
     },
-    "Language_switcher": {
+    "LanguageSwitcher": {
         "Test Text": "Test Text",
         "Turkish": "Türkçe",
         "English": "English"
     },
-    "Menu_page": {
+    "MenuPage": {
         "Behavior": "Behavior",
         "Display": "Display",
         "Input": "Input",
@@ -101,7 +101,7 @@
         "Section 2": "Section 2"
     },
     "Login": {
-        "Test_login": "Test login",
+        "Admin_Recipe__Test_login": "Admin Recipe - Test login",
         "Enter_any_username_to_login": "Enter any username to login",
         "Back_to_Home_Page": "Back to Home Page",
         "Login": "Login"
@@ -143,7 +143,7 @@
         "Error Handling": "Error Handling",
         "No Icon": "No Icon"
     },
-    "Page_title": {
+    "PageTitle": {
         "Specs": "Specs",
         "Bake": "Bake",
         "Entity": "Entity",
@@ -236,7 +236,7 @@
             "Dec"
         ]
     },
-    "Report_page": {
+    "ReportPage": {
         "Single Value": "Single Value",
         "Data Table": "Data Table",
         "TAB 1": "TAB 1",

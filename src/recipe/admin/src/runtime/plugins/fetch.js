@@ -6,15 +6,19 @@ export default defineNuxtPlugin({
   name: "fetch-manager",
   enforce: "pre",
   setup(nuxtApp) {
-    const { execute } = useFetchInterceptors();
+    const fetchInterceptors = useFetchInterceptors();
+    const { public: { composables, options } } = useRuntimeConfig();
 
     globalThis.$fetch = ofetch.create({
       async onRequest(context) {
-        await execute(context, nuxtApp);
+        // filters out `/_nuxt` calls and any other non api calls
+        if(options.baseURL !== composables.useDataFetcher.baseURL) { return; }
+
+        await fetchInterceptors.execute(context, nuxtApp);
       }
     });
 
     // Add to nuxtApp for access from plugins
-    nuxtApp.provide("fetchInterceptors", useFetchInterceptors());
+    nuxtApp.provide("fetchInterceptors", fetchInterceptors);
   }
 });

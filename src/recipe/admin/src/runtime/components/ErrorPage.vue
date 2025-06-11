@@ -11,14 +11,14 @@
         class="!text-4xl"
       />
       <h1 class="text-6xl">
-        {{ l(`Error_page.${errorInfo.title}`) }}
+        {{ l(errorInfo.title) }}
       </h1>
       <div class="text-2xl">
-        {{ l(`Error_page.${errorInfo.message}`) }}
+        {{ l(errorInfo.message) }}
       </div>
       <AuthorizedContent>
         <div class="text-2xl">
-          {{ l(`Error_page.${safeLinksMessage}`) }}
+          {{ l(safeLinksMessage) }}
         </div>
       </AuthorizedContent>
     </div>
@@ -42,7 +42,7 @@
     />
     <Message severity="warn">
       <i class="pi pi-exclamation-circle mr-2" />
-      {{ l(`Error_page.${footerInfo}`) }}
+      {{ l(footerInfo) }}
     </Message>
   </div>
 </template>
@@ -51,7 +51,7 @@ import { computed } from "vue";
 import { Divider, Message, Tag } from "primevue";
 import { useLocalization } from "#imports";
 
-const { localize: l } = useLocalization();
+const { localize: l } = useLocalization("ErrorPage");
 
 const { schema, data } = defineProps({
   schema: { type: null, required: true },

@@ -6,7 +6,7 @@
     <div class="h-16 flex gap-2">
       <div class="w-full flex flex-col gap-2 justify-end">
         <h1 class="text-xl font-bold">
-          {{ l(`Page_title.${title}`) }}
+          {{ l(title) }}
         </h1>
         <div
           data-testid="description"
@@ -46,7 +46,7 @@ import { useRuntimeConfig } from "#app";
 import { Bake, String } from "#components";
 import { useHead, useLocalization } from "#imports";
 
-const { localize: l } = useLocalization();
+const { localize: l } = useLocalization("PageTitle");
 const { public: { components } } = useRuntimeConfig();
 
 const { schema } = defineProps({

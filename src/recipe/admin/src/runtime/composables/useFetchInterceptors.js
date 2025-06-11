@@ -19,7 +19,7 @@ export default function() {
   const execute = async(context, nuxtApp) => {
     const sortedInterceptors = getAll();
 
-    for(const { name, interceptor } of sortedInterceptors) {
+    for(const { interceptor } of sortedInterceptors) {
       await interceptor(context, nuxtApp);
     }
   };

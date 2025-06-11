@@ -26,7 +26,7 @@
           <span
             v-if="item.title"
             class="p-breadcrumb-item-label"
-          >{{ l(`Header.${item.title}`) }}</span>
+          >{{ l(item.title) }}</span>
         </RouterLink>
       </template>
     </Breadcrumb>
@@ -39,7 +39,7 @@ import { Breadcrumb, Skeleton } from "primevue";
 import { useContext, useLocalization } from "#imports";
 
 const context = useContext();
-const { localize: l } = useLocalization();
+const { localize: l } = useLocalization("Header");
 
 const { schema, data } = defineProps({
   schema: { type: null, required: true },
