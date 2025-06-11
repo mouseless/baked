@@ -46,7 +46,7 @@ Bake.New
             .Sqlite()
             .ForProduction(c.PostgreSql()),
         exceptionHandling: c => c.ProblemDetails(typeUrlFormat: "https://baked.mouseless.codes/errors/{0}"),
-        localization: c => c.AspNetCore("locale", new("en"), [new("tr")]),
+        localization: c => c.AspNetCore(language: new("en"), otherLanguages: [new("tr")]),
         theme: c => c.Admin(componentExports: ["Container", "Expected", "Input", "Login", "PageWithRoute"]),
         configure: app =>
         {

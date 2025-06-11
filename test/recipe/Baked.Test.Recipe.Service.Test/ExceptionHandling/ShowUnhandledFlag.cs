@@ -6,12 +6,14 @@ public class ShowUnhandledFlag : TestServiceSpec
     public void It_adds_error_details_when_flag_is_up()
     {
         var handler = GiveMe.AnUnhandledExceptionHandler(showUnhandled: true);
+        var exception = new Exception("UNHANDLED");
 
-        var actual = handler.Handle(new("UNHANDLED"));
+        var actual = handler.Handle(exception);
 
-        actual.Body.ShouldStartWith("An_unexpected_error_has_occured_please_contact_the_administrator__MESSAGE__EXCEPTION");
+        actual.Body.ShouldBe("An_unexpected_error_has_occured_please_contact_the_administrator__MESSAGE__EXCEPTION");
         actual.ExtraData.ShouldNotBeNull();
-        actual.ExtraData["message"].ShouldBe("UNHANDLED");
+        actual.ExtraData["message"].ShouldBe(exception.Message);
+        actual.ExtraData["exception"].ShouldBe(exception.ToString());
     }
 
     [Test]

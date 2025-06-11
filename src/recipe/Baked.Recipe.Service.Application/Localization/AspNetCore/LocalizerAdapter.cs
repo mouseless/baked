@@ -11,7 +11,9 @@ public class LocalizerAdapter(IStringLocalizer _localizer)
         get
         {
             if (arguments is null || arguments.Length == 0)
+            {
                 return _localizer[key];
+            }
 
             return _localizer[key, arguments];
         }

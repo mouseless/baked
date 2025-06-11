@@ -1,5 +1,4 @@
 using Baked.Architecture;
-using Baked.Runtime;
 using Baked.Testing;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,7 +8,7 @@ using System.Reflection;
 
 namespace Baked.Localization.AspNetCore;
 
-public class AspNetCoreLocalizationFeature(Setting<string>? _resourceName, CultureInfo _language,
+public class AspNetCoreLocalizationFeature(CultureInfo _language,
     IEnumerable<CultureInfo>? _otherLanguages = default
 ) : IFeature<LocalizationConfigurator>
 {
@@ -17,14 +16,16 @@ public class AspNetCoreLocalizationFeature(Setting<string>? _resourceName, Cultu
     {
         configurator.ConfigureServiceCollection(services =>
         {
-            services.AddLocalization(option => option.ResourcesPath = "Resources");
+            services.AddLocalization(option => option.ResourcesPath = "Locales");
             var entryAssembly = (configurator.IsNfr() ? Nfr.EntryAssembly : Assembly.GetEntryAssembly())
                 ?? throw new("'EntryAssembly' should have existed");
-            var resourceName = _resourceName ?? "locale";
+            var entryAssemblyName = entryAssembly.GetName().Name
+                ?? throw new("'EntryAssembly' should have a name");
+
             services.AddSingleton<ILocalizer>(provider =>
             {
                 var factory = provider.GetRequiredService<IStringLocalizerFactory>();
-                var localizer = factory.Create(resourceName, entryAssembly.GetName().Name!);
+                var localizer = factory.Create("locale", entryAssemblyName);
 
                 return new LocalizerAdapter(localizer);
             });

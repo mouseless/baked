@@ -8,6 +8,12 @@
     <Using Include="Baked" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EmbeddedResource Include="Locales\*.restext">
+      <LogicalName>$(AssemblyName).Locales.%(Filename).resources</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+
   <Target Name="Generate" AfterTargets="AfterBuild">
     <Exec Command="dotnet $(TargetPath) --no-build --no-start --generate -c $(Configuration)" />
   </Target>
