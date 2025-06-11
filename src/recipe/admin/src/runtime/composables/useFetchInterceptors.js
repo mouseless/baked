@@ -5,21 +5,32 @@ export default function() {
   }
 
   const interceptors = globalThis.__fetchInterceptors;
+  let sortedInterceptors = null;
+  let isSorted = false;
 
   const register = (name, interceptor, priority = 100) => {
     interceptors.set(name, { interceptor, priority });
+    isSorted = false;
   };
 
   const getAll = () => {
-    return Array.from(interceptors.entries())
+    if(isSorted && sortedInterceptors) {
+      return sortedInterceptors;
+    }
+
+    sortedInterceptors = Array.from(interceptors.entries())
       .sort(([, a], [, b]) => a.priority - b.priority)
       .map(([name, { interceptor }]) => ({ name, interceptor }));
+
+    isSorted = true;
+
+    return sortedInterceptors;
   };
 
   const execute = async(context, nuxtApp) => {
-    const sortedInterceptors = getAll();
+    const interceptors = getAll();
 
-    for(const { interceptor } of sortedInterceptors) {
+    for(const { interceptor } of interceptors) {
       await interceptor(context, nuxtApp);
     }
   };

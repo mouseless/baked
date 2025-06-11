@@ -17,7 +17,7 @@
         >
           <String
             :schema="{ maxLength: 125 }"
-            :data="description || '&nbsp;'"
+            :data="l(description) || '&nbsp;'"
           />
         </div>
       </div>

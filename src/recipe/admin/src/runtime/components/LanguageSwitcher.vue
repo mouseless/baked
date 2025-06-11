@@ -25,17 +25,17 @@ import { computed, ref } from "vue";
 import { Button, Menu } from "primevue";
 import { useLocalization } from "#imports";
 
+const { locale, locales, setLocale, localize } = useLocalization("LanguageSwitcher");
+
 const { schema } = defineProps({
   schema: { type: null, required: true },
   data: { type: null, default: null }
 });
 
-const { locale, locales, setLocale, localize } = useLocalization("LanguageSwitcher");
-
 const menu = ref();
 
 const model = computed(() =>
-  locales.map(l => ({
+  locales.value.map(l => ({
     label: `${localize(l.name)} (${l.code.toUpperCase()})`,
     class: locale.value === l.code ? "opacity-50" : "",
     command: () => setLocale(l.code)

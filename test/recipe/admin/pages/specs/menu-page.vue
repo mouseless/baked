@@ -32,8 +32,8 @@ const variants = [
     descriptor: giveMe.aMenuPage({
       header: null,
       sections: [
-        giveMe.aMenuPageSection({ title: "Section 1" }),
-        giveMe.aMenuPageSection({ title: "Section 2" })
+        giveMe.aMenuPageSection({ title: "Section_1" }),
+        giveMe.aMenuPageSection({ title: "Section_2" })
       ]
     })
   },
@@ -44,13 +44,13 @@ const variants = [
       header: giveMe.aFilter({pageContextKey: "key"}),
       sections: [
         giveMe.aMenuPageSection({
-          title: "Section 1",
+          title: "Section_1",
           links: [
             giveMe.aFilterable({ title: "A_VALUE", component: giveMe.anExpected({ testId: "LINK_1", value: "A_VALUE" })})
           ]
         }),
         giveMe.aMenuPageSection({
-          title: "Section 2",
+          title: "Section_2",
           links: [
             giveMe.aFilterable({ title: "B_VALUE", component: giveMe.anExpected({ testId: "LINK_2", value: "B_VALUE"})})
           ]

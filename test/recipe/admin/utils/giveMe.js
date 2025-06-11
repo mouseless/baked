@@ -15,7 +15,7 @@ export default {
     route = $(route, "/test-route");
     icon = $(icon, "pi pi-heart");
     title = $(title, "Test");
-    description = $(description, "Test description is given for testing purposes");
+    description = $(description, "Test_description_is_given_for_testing_purposes");
     disabled = $(disabled, false);
     disabledReason = $(disabledReason, disabled ? "REASON" : "");
 
@@ -314,7 +314,7 @@ export default {
 
   aPageTitle({ title, description, actions } = {}) {
     title = $(title, "Test Title");
-    description = $(description, "Test description is given for testing purposes");
+    description = $(description, "Test_description_is_given_for_testing_purposes");
     actions = $(actions, []);
 
     return {

@@ -17,16 +17,16 @@ const variants = [
       errorInfos: [
         giveMe.anErrorPageInfo({
           statusCode: "403",
-          title: "Access Denied",
-          message: "You do not have the permision to view the address or data specified"
+          title: "Access_Denied",
+          message: "You_do_not_have_the_permision_to_view_the_address_or_data_specified"
         })
       ],
-      footerInfo: "Footer info",
+      footerInfo: "Footer_info",
       safeLinks: [
         giveMe.anExpected({ testId: "LINK_1", value: "VALUE_1"}),
         giveMe.anExpected({ testId: "LINK_2", value: "VALUE_2"})
       ],
-      safeLinksMessage: "Safe links message",
+      safeLinksMessage: "Safe_links_message",
       data: computed(() => ref(createError({ name:"NuxtError", statusCode: 403 })))
     })
   }

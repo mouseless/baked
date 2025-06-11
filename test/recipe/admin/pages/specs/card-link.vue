@@ -14,8 +14,8 @@ const variants = [
     descriptor: giveMe.aCardLink({
       route: "/some-route",
       icon: "pi pi-wave-pulse",
-      title: "CARD TITLE",
-      description: "CARD DESCRIPTION"
+      title: "CARD_TITLE",
+      description: "CARD_DESCRIPTION"
     })
   },
   {

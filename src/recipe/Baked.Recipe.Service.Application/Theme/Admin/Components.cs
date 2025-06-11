@@ -119,8 +119,8 @@ public static class Components
         IData? data = default
     ) => new(
         new(
-            footerInfo ?? "If you cannot reach the page you want, please contact the system administrator.",
-            safeLinksMessage ?? "Try the links from the menu below to view the page you want to access."
+            footerInfo ?? "If_you_cannot_reach_the_page_you_want_please_contact_the_system_administrator",
+            safeLinksMessage ?? "Try_the_links_from_the_menu_below_to_view_the_page_you_want_to_access"
         )
         { ErrorInfos = (errorInfos ?? []).ToDictionary(i => i.StatusCode, i => i.Info), SafeLinks = [.. safeLinks ?? []] })
     { Data = data };

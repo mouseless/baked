@@ -10,29 +10,16 @@ app.Features.AddLocalization(...);
 
 ## Resources
 
-Keep the localize keys in the `.restext` and `.resx` files under the `Resources`
-folder in the root of your application project, using the name you specified in
-the configuration file.
+Keep the localize keys in the `.restext` and `.resx` files under the `Locales`
+folder in the root of your application project.
 
 ```
 App/
-├─ Resources/
-│  ├─ {NameOfYourGivenInConfig}.restext
-│  ├─ {NameOfYourGivenInConfig}.en.restext
-└─ └─ {NameOfYourGivenInConfig}.tr.restext
+├─ Locales/
+│  ├─ locale.restext
+│  ├─ locale.en.restext
+└─ └─ locale.tr.restext
 ```
-
-> [!NOTE]
->
-> If you want to use a resource file with the `.restext` extension, don't forget
-> to register it as an embedded resource so that dotnet can read it as a
-> resource file during the build.
->
-> ```xml
-> <ItemGroup>
->   <EmbeddedResource Include="Resources\*.restext" />
-> </ItemGroup>
-> ```
 
 ## Exceptions
 

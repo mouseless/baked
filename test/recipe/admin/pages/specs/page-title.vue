@@ -12,8 +12,8 @@ const variants = [
   {
     name: "Base",
     descriptor: giveMe.aPageTitle({
-      title: "PAGE TITLE",
-      description: "PAGE DESCRIPTION"
+      title: "PAGE_TITLE",
+      description: "PAGE_DESCRIPTION"
     })
   },
   {
@@ -28,14 +28,14 @@ const variants = [
   {
     name: "No Description",
     descriptor: giveMe.aPageTitle({
-      title: "PAGE TITLE",
+      title: "PAGE_TITLE",
       description: null
     })
   },
   {
     name: "Long Description",
     descriptor: giveMe.aPageTitle({
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+      description: "Lorem_ipsum"
     })
   }
 ];

@@ -1,4 +1,4 @@
-import { defineNuxtPlugin } from "#app";
+import { defineNuxtPlugin, useRuntimeConfig } from "#app";
 import useFetchInterceptors from "../composables/useFetchInterceptors";
 import { ofetch } from "ofetch";
 
@@ -7,12 +7,12 @@ export default defineNuxtPlugin({
   enforce: "pre",
   setup(nuxtApp) {
     const fetchInterceptors = useFetchInterceptors();
-    const { public: { composables, options } } = useRuntimeConfig();
+    const { public: { composables } } = useRuntimeConfig();
 
     globalThis.$fetch = ofetch.create({
       async onRequest(context) {
         // filters out `/_nuxt` calls and any other non api calls
-        if(options.baseURL !== composables.useDataFetcher.baseURL) { return; }
+        if(context.options.baseURL !== composables.useDataFetcher.baseURL) { return; }
 
         await fetchInterceptors.execute(context, nuxtApp);
       }

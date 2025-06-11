@@ -1,14 +1,15 @@
 import { useI18n, useRuntimeConfig } from "#imports";
 import { usePrimeVue } from "primevue";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
 export default function(group = "") {
   const { locale, locales: i18nLocales, setLocale: i18nSetLocales, t, tm } = useI18n();
   const primevue = usePrimeVue();
   const { public: { localization } } = useRuntimeConfig();
 
-  const locales = localization.supportedLanguages
-    .filter(l => i18nLocales.value.includes(l.code));
+  const locales = computed(() => {
+    return localization.supportedLanguages.filter(l => i18nLocales.value.includes(l.code));
+  });
 
   async function setLocale(language) {
     await i18nSetLocales(language);
@@ -23,10 +24,11 @@ export default function(group = "") {
   }
 
   function localize(key, parameters = {}) {
+    if(!key) { return; }
+
     const keyWithGroup = group ? `${group}.${key}` : key;
-    // When there are special characters such as '{' in the key, it throws an error.
-    try { return t(keyWithGroup, parameters); }
-    catch { return key; }
+
+    return t(keyWithGroup, parameters);
   }
 
   return {
