@@ -144,7 +144,7 @@
                 "route": "/specs/icon",
                 "icon": "pi pi-microchip",
                 "title": "Icon",
-                "description": "Displays_built-in_icons"
+                "description": "Displays_built_in_icons"
               }
             }
           },
