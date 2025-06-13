@@ -64,7 +64,7 @@ export default function() {
       maximumFractionDigits: stage.fraction ? 2 : 0,
       ...formatOptions
     });
-    if(stage.fraction && formattedResult.endsWith("00")) {
+    if(stage.fraction && hasOnlyZeroDecimalPoints(formattedResult)) {
       formattedResult = formattedResult.substring(0, formattedResult.length - 3);
     }
 
@@ -86,6 +86,13 @@ export default function() {
     }
 
     return value.substring(0, length - 3).concat("...");
+  }
+
+  function hasOnlyZeroDecimalPoints(value) {
+    const withDecimal = parseFloat(value);
+    const withoutDecimal = parseInt(value);
+
+    return withDecimal - withoutDecimal == 0 && `${withDecimal}`.length !== `${withoutDecimal}`.length
   }
 
   return {
