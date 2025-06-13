@@ -60,13 +60,12 @@ export default function() {
       : STAGES[STAGES.length - 1];
     const shownValue = value / stage.divisor;
 
+    const fractionDigitCount = stage.fraction ? 2 : 0;
     let formattedResult = shownValue.toLocaleString(locale, {
-      maximumFractionDigits: stage.fraction ? 2 : 0,
+      maximumFractionDigits: fractionDigitCount,
+      trailingZeroDisplay: "stripIfInteger",
       ...formatOptions
     });
-    if(stage.fraction && hasOnlyZeroDecimalPoints(formattedResult)) {
-      formattedResult = formattedResult.substring(0, formattedResult.length - 3);
-    }
 
     return {
       shortened: stage.suffix !== "",
@@ -86,13 +85,6 @@ export default function() {
     }
 
     return value.substring(0, length - 3).concat("...");
-  }
-
-  function hasOnlyZeroDecimalPoints(value) {
-    const withDecimal = parseFloat(value);
-    const withoutDecimal = parseInt(value);
-
-    return withDecimal - withoutDecimal == 0 && `${withDecimal}`.length !== `${withoutDecimal}`.length;
   }
 
   return {

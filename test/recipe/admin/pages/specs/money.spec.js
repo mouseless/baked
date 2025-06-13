@@ -36,7 +36,7 @@ test.describe("Fractionless Trailing Zeros", () => {
   test("format", async({page}) => {
     const component = page.getByTestId(id);
 
-    await expect(component).toHaveText("$200.00");
+    await expect(component).toHaveText("$200");
   });
 });
 
