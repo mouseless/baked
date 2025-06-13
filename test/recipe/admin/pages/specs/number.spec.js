@@ -30,6 +30,16 @@ test.describe("Decimal Digits", () => {
   });
 });
 
+test.describe("Fractionless Trailing Zeros", () => {
+  const id = "Fractionless Trailing Zeros";
+
+  test("format", async({page}) => {
+    const component = page.getByTestId(id);
+
+    await expect(component).toHaveText("200");
+  });
+});
+
 test.describe("Millions", () => {
   const id = "Millions";
 

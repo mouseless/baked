@@ -17,6 +17,10 @@ const variants = [
     descriptor: giveMe.aNumber({ data: 999.99 })
   },
   {
+    name: "Fractionless Trailing Zeros",
+    descriptor: giveMe.aNumber({ data: 200 })
+  },
+  {
     name: "Millions",
     descriptor: giveMe.aNumber({ data: 1_499_000 })
   },

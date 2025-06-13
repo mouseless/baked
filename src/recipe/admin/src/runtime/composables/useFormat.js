@@ -60,13 +60,12 @@ export default function() {
       : STAGES[STAGES.length - 1];
     const shownValue = value / stage.divisor;
 
-    let formattedResult = shownValue.toLocaleString(locale, {
-      maximumFractionDigits: stage.fraction ? 2 : 0,
+    const fractionDigitCount = stage.fraction ? 2 : 0;
+    const formattedResult = shownValue.toLocaleString(locale, {
+      maximumFractionDigits: fractionDigitCount,
+      trailingZeroDisplay: "stripIfInteger",
       ...formatOptions
     });
-    if(stage.fraction && formattedResult.endsWith("00")) {
-      formattedResult = formattedResult.substring(0, formattedResult.length - 3);
-    }
 
     return {
       shortened: stage.suffix !== "",
