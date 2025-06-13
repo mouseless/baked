@@ -92,7 +92,7 @@ export default function() {
     const withDecimal = parseFloat(value);
     const withoutDecimal = parseInt(value);
 
-    return withDecimal - withoutDecimal == 0 && `${withDecimal}`.length !== `${withoutDecimal}`.length
+    return withDecimal - withoutDecimal == 0 && `${withDecimal}`.length !== `${withoutDecimal}`.length;
   }
 
   return {
