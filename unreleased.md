@@ -9,6 +9,10 @@
   - `localization` plugin has been introduced along with the `useLocalization`
     composable to manage texts according to culture.
 
+## Improvements
+
+- `useFormat` was clearing text when number has two trailing zeros, fixed
+
 ## Library Upgrades
 
 | NuGet Package                                  | Old Version | New Version |
