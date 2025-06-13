@@ -61,7 +61,7 @@ export default function() {
     const shownValue = value / stage.divisor;
 
     const fractionDigitCount = stage.fraction ? 2 : 0;
-    let formattedResult = shownValue.toLocaleString(locale, {
+    const formattedResult = shownValue.toLocaleString(locale, {
       maximumFractionDigits: fractionDigitCount,
       trailingZeroDisplay: "stripIfInteger",
       ...formatOptions
