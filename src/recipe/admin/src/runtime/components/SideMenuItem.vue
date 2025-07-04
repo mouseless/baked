@@ -1,7 +1,7 @@
 <template>
   <RouterLink :to="item.route">
     <Button
-      v-tooltip="{ value: item.title, showDelay: 300 }"
+      v-tooltip="{ value: l(item.title), showDelay: 300 }"
       :text="!selected"
       :icon="item.icon"
       :severity="selected ? 'primary':'secondary'"
@@ -15,6 +15,9 @@
 import { computed } from "vue";
 import { RouterLink } from "vue-router";
 import { Button } from "primevue";
+import { useLocalization } from "#imports";
+
+const { localize: l } = useLocalization();
 
 const { item, path } = defineProps({
   item: { type: Object, required: true },

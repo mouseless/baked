@@ -17,12 +17,12 @@
     <Column
       v-for="column in columns"
       :key="column.prop"
-      :header="column.title"
+      :header="l(column.title)"
       :field="column.prop"
       class="text-nowrap"
       :class="{ 'min-w-40': column.minWidth, 'text-right': column.alignRight }"
       :exportable="column.exportable"
-      :export-header="column.title"
+      :export-header="l(column.title)"
       :pt="{ columnHeaderContent: { class: column.alignRight ? 'justify-end' : '' } }"
       :frozen="column.frozen"
     >
@@ -74,7 +74,7 @@
     >
       <Row>
         <Column
-          :footer="footerTemplate.label"
+          :footer="l(footerTemplate.label)"
           :colspan="footerColSpan"
           footer-style="text-align:right"
         />
@@ -118,11 +118,12 @@ import { computed, ref } from "vue";
 import Column from "primevue/column";
 import { Button, ColumnGroup, DataTable, Menu, Row, Skeleton } from "primevue";
 import { Bake } from "#components";
-import { useComposableResolver, useConditional, useContext } from "#imports";
+import { useComposableResolver, useConditional, useContext, useLocalization } from "#imports";
 
 const conditional = useConditional();
 const context = useContext();
 const composableResolver = useComposableResolver();
+const { localize: l } = useLocalization();
 
 const { schema, data } = defineProps({
   schema: { type: null, required: true },

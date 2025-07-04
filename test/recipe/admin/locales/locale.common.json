@@ -1,0 +1,9 @@
+{
+    "DataTable.ColumnKey1": "Data 1",
+    "DataTable.ColumnKey2": "Data 2",
+    "DataTable.ColumnKey3": "Data 3",
+    "DataTable.ColumnKey4": "Data 4",
+    "DataTable.LabelKey": "Label",
+    "DataTable.FooterKey": "Total",
+    "SideMenuItem.Key": "Menu Tooltip"
+}

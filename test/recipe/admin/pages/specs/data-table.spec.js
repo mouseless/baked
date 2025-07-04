@@ -117,19 +117,6 @@ test.describe("Export", () => {
 
     await expect(header.locator(primevue.button.icon)).toHaveClass(/pi-ellipsis-v/);
   });
-
-  // TODO unable to locate tooltip, will be solved later
-  //
-  // test("show tooltip on hover", async({page}) => {
-  //   const component = page.getByTestId(id);
-  //   const header = component.locator("th").last();
-
-  //   await header.locator(primevue.button.base).hover();
-
-  //   await expect(page.locator(primevue.tooltip.left)).toBeAttached();
-  //   await expect(page.locator(primevue.tooltip.left)).toBeVisible();
-  //   await expect(page.locator(primevue.tooltip.left)).toHaveText("CSV");
-  // });
 });
 
 test.describe("Scroll", () => {

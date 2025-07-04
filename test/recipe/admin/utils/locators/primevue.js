@@ -54,6 +54,7 @@ export default {
   },
   tooltip: {
     bottom: ".p-tooltip-bottom",
-    left: ".p-tooltip-left"
+    left: ".p-tooltip-left",
+    right: ".p-tooltip-right"
   }
 };
