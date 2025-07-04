@@ -12,6 +12,7 @@
 ## Improvements
 
 - `useFormat` was clearing text when number has two trailing zeros, fixed
+- `useFormat` shorteners was not working for negative values, fixed
 
 ## Library Upgrades
 
