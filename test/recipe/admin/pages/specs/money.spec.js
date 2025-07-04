@@ -1,4 +1,5 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
+import baked from "~/utils/locators/baked.js";
 
 test.beforeEach(async({goto}) => {
   await goto("/specs/money", { waitUntil: "hydration" });
@@ -10,7 +11,8 @@ test.describe("Base", () => {
   test("format", async({page}) => {
     const component = page.getByTestId(id);
 
-    await expect(component).toHaveText("$1,499");
+    await expect(component.locator(baked.money.base).locator("nth=0")).toHaveText("$1,499");
+    await expect(component.locator(baked.money.base).locator("nth=1")).toHaveText("-$1,499");
   });
 
   test("visual", { tag: "@visual" }, async({page}) => {
@@ -26,7 +28,8 @@ test.describe("Decimal Digits", () => {
   test("format", async({page}) => {
     const component = page.getByTestId(id);
 
-    await expect(component).toHaveText("$999.99");
+    await expect(component.locator(baked.money.base).locator("nth=0")).toHaveText("$999.99");
+    await expect(component.locator(baked.money.base).locator("nth=1")).toHaveText("-$999.99");
   });
 });
 
@@ -36,7 +39,8 @@ test.describe("Fractionless Trailing Zeros", () => {
   test("format", async({page}) => {
     const component = page.getByTestId(id);
 
-    await expect(component).toHaveText("$200");
+    await expect(component.locator(baked.money.base).locator("nth=0")).toHaveText("$200");
+    await expect(component.locator(baked.money.base).locator("nth=1")).toHaveText("-$200");
   });
 });
 
@@ -46,7 +50,8 @@ test.describe("Millions", () => {
   test("format", async({page}) => {
     const component = page.getByTestId(id);
 
-    await expect(component).toHaveText("$1.50M");
+    await expect(component.locator(baked.money.base).locator("nth=0")).toHaveText("$1.50M");
+    await expect(component.locator(baked.money.base).locator("nth=1")).toHaveText("-$1.50M");
   });
 });
 
@@ -56,6 +61,7 @@ test.describe("Billions", () => {
   test("format", async({page}) => {
     const component = page.getByTestId(id);
 
-    await expect(component).toHaveText("$1.50B");
+    await expect(component.locator(baked.money.base).locator("nth=0")).toHaveText("$1.50B");
+    await expect(component.locator(baked.money.base).locator("nth=1")).toHaveText("-$1.50B");
   });
 });
