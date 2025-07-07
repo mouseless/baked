@@ -378,8 +378,9 @@ export default {
     return { component, narrow };
   },
 
-  aSelect({ label, optionLabel, optionValue, showClear, stateful, data, inline } = {}) {
+  aSelect({ label, optionLabel, optionValue, requireLocalization, showClear, stateful, data, inline } = {}) {
     label = $(label, "Test");
+    requireLocalization = $(requireLocalization, false);
     showClear = $(showClear, false);
     stateful = $(stateful, false);
     data = $(data, ["Test Option 1", "Test Option 2"]);
@@ -391,23 +392,24 @@ export default {
 
     return {
       type: "Select",
-      schema: { label, optionLabel, optionValue, showClear, stateful },
+      schema: { label, optionLabel, optionValue, requireLocalization, showClear, stateful },
       data
     };
   },
 
-  aSelectButton({ allowEmpty, optionLabel, optionValue, stateful, data,inline } = {}) {
+  aSelectButton({ allowEmpty, optionLabel, optionValue, stateful, requireLocalization, data, inline } = {}) {
     data = $(data, ["Test Option 1", "Test Option 2"]);
     inline = $(inline, true);
     allowEmpty = $(allowEmpty, false);
     stateful = $(stateful, false);
+    requireLocalization = $(requireLocalization, false);
     data = inline
       ? { type: "Inline", value: data }
       : { type: "Computed", composable: "useDelayedData", args: [1, data] };
 
     return {
       type: "SelectButton",
-      schema: { allowEmpty, optionLabel, optionValue, stateful },
+      schema: { allowEmpty, optionLabel, optionValue, requireLocalization, stateful },
       data
     };
   },

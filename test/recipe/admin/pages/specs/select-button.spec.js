@@ -23,7 +23,7 @@ test.describe("Base", () => {
 
     await options.nth(0).click();
 
-    await expect(model).toHaveText("OPTION 1");
+    await expect(model).toHaveText("OPTION_1");
   });
 
   test("prevent empty after select", async({page}) => {
@@ -34,7 +34,7 @@ test.describe("Base", () => {
     await options.nth(0).click(); // select
     await options.nth(0).click(); // try deselect
 
-    await expect(model).toHaveText("OPTION 1");
+    await expect(model).toHaveText("OPTION_1");
   });
 
   test("visual", { tag: "@visual" }, async({page}) => {

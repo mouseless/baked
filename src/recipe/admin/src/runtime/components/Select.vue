@@ -13,11 +13,19 @@
       v-model="selected"
       :input-id="path"
       :options="data"
-      :option-label="optionLabel"
       :placeholder="label"
       :show-clear
       class="hide-placeholder"
-    />
+    >
+      <template #value="slotProps">
+        <span>
+          {{ getValue(slotProps) }}
+        </span>
+      </template>
+      <template #option="slotProps">
+        <span>{{ getOption(slotProps) }}</span>
+      </template>
+    </Select>
     <label for="period">{{ l(label) }}</label>
   </FloatLabel>
 </template>
@@ -36,7 +44,7 @@ const { schema, data } = defineProps({
 });
 const model = defineModel({ type: null, required: true });
 
-const { label, optionLabel, optionValue, showClear, stateful } = schema;
+const { label, optionLabel, optionValue, requireLocalization, showClear, stateful } = schema;
 
 const loading = context.loading();
 const path = context.path();
@@ -55,6 +63,18 @@ if(!loading.value) {
 // two way binding between model and selected
 watch(model, newModel => setSelected(newModel));
 watch(selected, newSelected => setModel(newSelected));
+
+function getOption(slotProps) {
+  const result = slotProps.option[optionLabel] ?? slotProps.option;
+
+  return requireLocalization ? l(result) : result;
+}
+
+function getValue(slotProps) {
+  const result = slotProps.value?.[optionLabel] ?? slotProps.value ?? label;
+
+  return requireLocalization ? l(result) : result;
+}
 
 function setModel(selected) {
   const selectedValue = optionValue ? selected?.[optionValue] : selected;

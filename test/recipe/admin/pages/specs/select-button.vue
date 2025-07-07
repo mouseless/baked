@@ -14,7 +14,8 @@ const variants = [
   {
     name: "Base",
     descriptor: giveMe.aSelectButton({
-      data: ["OPTION 1", "OPTION 2"]
+      requireLocalization: true,
+      data: ["OPTION_1", "OPTION_2"]
     }),
     model: ref()
   },

@@ -270,19 +270,20 @@ public class ConfigurationOverriderFeature : IFeature
                             Select("Required_w_default",
                                 data: Inline(new[]
                                 {
-                                  new { text = "Required w/ Default 1", value = "rwd-1" },
-                                  new { text = "Required w/ Default 2", value = "rwd-2" }
+                                  new { text = "Required_w_default_1", value = "rwd-1" },
+                                  new { text = "Required_w_default_2", value = "rwd-2" }
                                 }),
                                 optionLabel: "text",
-                                optionValue: "value"
+                                optionValue: "value",
+                                requireLocalization: true
                             ),
                             defaultValue: "rwd-1",
                             required: true
                         ),
-                        Parameter("required", Select("Required", data: Inline(new[] { "Required 1", "Required 2" })),
+                        Parameter("required", Select("Required", Inline(new[] { "Required 1", "Required 2" }), requireLocalization: true),
                             required: true
                         ),
-                        Parameter("optional", SelectButton(Inline(new[] { "Optional 1", "Optional 2" }), allowEmpty: true))
+                        Parameter("optional", SelectButton(Inline(new[] { "Optional 1", "Optional 2" }), allowEmpty: true, requireLocalization: true))
                     ],
                     tabs:
                     [

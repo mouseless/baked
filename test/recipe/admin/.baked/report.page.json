@@ -20,17 +20,18 @@
           "schema": {
             "label": "Required_w_default",
             "optionLabel": "text",
-            "optionValue": "value"
+            "optionValue": "value",
+            "requireLocalization": true
           },
           "data": {
             "type": "Inline",
             "value": [
               {
-                "text": "Required w/ Default 1",
+                "text": "Required_w_default_1",
                 "value": "rwd-1"
               },
               {
-                "text": "Required w/ Default 2",
+                "text": "Required_w_default_2",
                 "value": "rwd-2"
               }
             ]
@@ -43,7 +44,8 @@
         "component": {
           "type": "Select",
           "schema": {
-            "label": "Required"
+            "label": "Required",
+            "requireLocalization": true
           },
           "data": {
             "type": "Inline",
@@ -59,7 +61,8 @@
         "component": {
           "type": "SelectButton",
           "schema": {
-            "allowEmpty": true
+            "allowEmpty": true,
+            "requireLocalization": true
           },
           "data": {
             "type": "Inline",

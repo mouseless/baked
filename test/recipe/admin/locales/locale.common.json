@@ -5,5 +5,13 @@
     "DataTable.ColumnKey4": "Data 4",
     "DataTable.LabelKey": "Label",
     "DataTable.FooterKey": "Total",
-    "SideMenuItem.Key": "Menu Tooltip"
+    "SideMenuItem.Key": "Menu Tooltip",
+    "LABEL 1": "Label 1",
+    "LABEL 2": "Label 2",
+    "LABEL_1": "Label 1",
+    "LABEL_2": "Label 2",
+    "OPTION_1": "Option 1",
+    "OPTION_2": "Option 2",
+    "ValueA": "Value A",
+    "ValueB": "Value B"
 }
