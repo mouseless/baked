@@ -2,6 +2,9 @@
     "CardLink.DisabledReason": "SOON",
     "CardLink.Description": "CARD DESCRIPTION",
     "CardLink.Title": "CARD TITLE",
+    "DataPanel": {
+        "DataPanel.Title": "TITLE"
+    },
     "DataTable.ColumnKey1": "Data 1",
     "DataTable.ColumnKey2": "Data 2",
     "DataTable.ColumnKey3": "Data 3",

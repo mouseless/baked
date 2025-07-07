@@ -1,7 +1,7 @@
 <template>
   <Panel
     ref="panel"
-    :header="title"
+    :header="lc(title)"
     :collapsed="collapsedState"
     toggleable
     :pt="{ headerActions: { class: 'flex gap-2 items-center' } }"
