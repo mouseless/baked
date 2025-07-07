@@ -71,7 +71,7 @@ if(filterPageContextKey) {
     const sectionsWithFilteredLinks = sections.map(section => ({
       title: section.title,
       links: section.links.filter(link =>
-        link.title?.toLocaleLowerCase(locale).startsWith(newValue.toLocaleLowerCase(locale))
+        l(link.title)?.toLocaleLowerCase(locale).startsWith(newValue.toLocaleLowerCase(locale))
       )
     }));
 
