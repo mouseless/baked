@@ -12,8 +12,8 @@ const variants = [
   {
     name: "Base",
     descriptor: giveMe.aPageTitle({
-      title: "PAGE TITLE",
-      description: "PAGE DESCRIPTION"
+      title: "PageTitle.Title",
+      description: "PageTitle.Description"
     })
   },
   {
