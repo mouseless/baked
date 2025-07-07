@@ -12,8 +12,8 @@ test.describe("Base", () => {
     const component = page.getByTestId(id);
     const options = component.locator(primevue.selectbutton.option);
 
-    await expect(options.nth(0)).toHaveText("OPTION 1");
-    await expect(options.nth(1)).toHaveText("OPTION 2");
+    await expect(options.nth(0)).toHaveText("Option 1");
+    await expect(options.nth(1)).toHaveText("Option 2");
   });
 
   test("select option", async({page}) => {
