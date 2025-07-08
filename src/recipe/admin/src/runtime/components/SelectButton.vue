@@ -33,7 +33,7 @@ const { schema, data } = defineProps({
 });
 const model = defineModel({ type: null, required: true });
 
-const { allowEmpty, optionLabel, optionValue, requireLocalization, stateful } = schema;
+const { allowEmpty, localizeLabel, optionLabel, optionValue, stateful } = schema;
 
 const loading = context.loading();
 const path = context.path();
@@ -56,7 +56,7 @@ watch(selected, newSelected => setModel(newSelected));
 function getOption(slotProps) {
   const result = slotProps.option[optionLabel] ?? slotProps.option;
 
-  return requireLocalization ? l(result) : result;
+  return localizeLabel ? l(result) : result;
 }
 
 function setModel(selected) {

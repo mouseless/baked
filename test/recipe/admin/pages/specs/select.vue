@@ -22,7 +22,7 @@ const variants = [
     name: "Base with Localization",
     descriptor: giveMe.aSelect({
       label: "Label",
-      requireLocalization: true,
+      localizeLabel: true,
       data: ["OPTION_1", "OPTION_2"]
     }),
     model: ref()
@@ -44,7 +44,7 @@ const variants = [
     descriptor: giveMe.aSelect({
       optionLabel: "label",
       optionValue: "value",
-      requireLocalization: true,
+      localizeLabel: true,
       data: [
         { label: "LABEL_1", value: "VALUE_1" },
         { label: "LABEL_2", value: "VALUE_2" }
@@ -87,7 +87,7 @@ const variants = [
   {
     name: "Set Selected with Localization",
     descriptor: giveMe.aSelect({
-      requireLocalization: true,
+      localizeLabel: true,
       data: ["ValueA", "ValueB"],
       inline: false
     }),

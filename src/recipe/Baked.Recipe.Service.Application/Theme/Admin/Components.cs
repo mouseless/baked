@@ -259,18 +259,18 @@ public static class Components
     public static ComponentDescriptorAttribute<Select> Select(string label, IData data,
         string? optionLabel = default,
         string? optionValue = default,
-        bool? requireLocalization = default,
+        bool? localizeLabel = default,
         bool? showClear = default,
         bool? stateful = default
-    ) => new(new(label) { OptionLabel = optionLabel, OptionValue = optionValue, RequireLocalization = requireLocalization, ShowClear = showClear, Stateful = stateful }) { Data = data };
+    ) => new(new(label) { OptionLabel = optionLabel, OptionValue = optionValue, LocalizeLabel = localizeLabel, ShowClear = showClear, Stateful = stateful }) { Data = data };
 
     public static ComponentDescriptorAttribute<SelectButton> SelectButton(IData data,
         bool? allowEmpty = default,
         string? optionLabel = default,
         string? optionValue = default,
-        bool? requireLocalization = default,
+        bool? localizeLabel = default,
         bool? stateful = default
-    ) => new(new() { AllowEmpty = allowEmpty, OptionLabel = optionLabel, OptionValue = optionValue, RequireLocalization = requireLocalization, Stateful = stateful }) { Data = data };
+    ) => new(new() { AllowEmpty = allowEmpty, OptionLabel = optionLabel, OptionValue = optionValue, LocalizeLabel = localizeLabel, Stateful = stateful }) { Data = data };
 
     public static ComponentDescriptorAttribute<SideMenu> SideMenu(IEnumerable<SideMenu.Item> menu,
         IComponentDescriptor? footer = default,

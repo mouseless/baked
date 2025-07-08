@@ -21,7 +21,7 @@
             "label": "Required_w_default",
             "optionLabel": "text",
             "optionValue": "value",
-            "requireLocalization": true
+            "localizeLabel": true
           },
           "data": {
             "type": "Inline",
@@ -45,7 +45,7 @@
           "type": "Select",
           "schema": {
             "label": "Required",
-            "requireLocalization": true
+            "localizeLabel": true
           },
           "data": {
             "type": "Inline",
@@ -62,7 +62,7 @@
           "type": "SelectButton",
           "schema": {
             "allowEmpty": true,
-            "requireLocalization": true
+            "localizeLabel": true
           },
           "data": {
             "type": "Inline",

@@ -275,15 +275,15 @@ public class ConfigurationOverriderFeature : IFeature
                                 }),
                                 optionLabel: "text",
                                 optionValue: "value",
-                                requireLocalization: true
+                                localizeLabel: true
                             ),
                             defaultValue: "rwd-1",
                             required: true
                         ),
-                        Parameter("required", Select("Required", Inline(new[] { "Required 1", "Required 2" }), requireLocalization: true),
+                        Parameter("required", Select("Required", Inline(new[] { "Required 1", "Required 2" }), localizeLabel: true),
                             required: true
                         ),
-                        Parameter("optional", SelectButton(Inline(new[] { "Optional 1", "Optional 2" }), allowEmpty: true, requireLocalization: true))
+                        Parameter("optional", SelectButton(Inline(new[] { "Optional 1", "Optional 2" }), allowEmpty: true, localizeLabel: true))
                     ],
                     tabs:
                     [
