@@ -1,47 +1,62 @@
 import PrimeVue, { usePrimeVue } from "primevue/config";
 import FocusTrap from "primevue/focustrap";
 import Tooltip from "primevue/tooltip";
-import { defineNuxtPlugin, useRuntimeConfig } from "#app";
+import { defineNuxtPlugin, useNuxtApp, useRouter, useRuntimeConfig } from "#app";
 import { ref } from "vue";
 
-export default defineNuxtPlugin(_nuxtApp => {
-  const { theme, locale } = useRuntimeConfig().public.primevue;
+export default defineNuxtPlugin({
+  name: "primeVue",
+  setup(nuxtApp) {
+    const router = useRouter();
+    const { theme, locale } = useRuntimeConfig().public.primevue;
+    const shouldLoadLocale = ref(true);
 
-  const options = {
-    theme: {
-      preset: theme,
-      options: {
-        cssLayer: {
-          name: "primevue",
-          order: "tailwind-base, primevue, tailwind-utilities"
+    const options = {
+      theme: {
+        preset: theme,
+        options: {
+          cssLayer: {
+            name: "primevue",
+            order: "tailwind-base, primevue, tailwind-utilities"
+          }
         }
       }
-    }
-  };
+    };
 
-  if(locale) { options.locale = locale; }
+    if(locale) { options.locale = locale; }
 
-  _nuxtApp.vueApp.use(PrimeVue, options);
-  _nuxtApp.vueApp.directive("focustrap", FocusTrap);
-  _nuxtApp.vueApp.directive("tooltip", Tooltip);
+    nuxtApp.vueApp.use(PrimeVue, options);
+    nuxtApp.vueApp.directive("focustrap", FocusTrap);
+    nuxtApp.vueApp.directive("tooltip", Tooltip);
 
-  // TODO - needs refactoring, load primevue messages
-  // only when locale is changed
-  _nuxtApp.$router.beforeEach(() => {
-    const primevue = usePrimeVue();
-
-    if(_nuxtApp.$i18n) {
-      const raw = _nuxtApp.$i18n.tm("primevue");
-      const primevueMessages = ref({});
-
-      for(const key in raw) {
-        primevueMessages.value[key] = extractText(raw[key]);
+    router.beforeEach(() => {
+      if(!shouldLoadLocale.value) {
+        return;
       }
 
-      primevue.config.locale = { ...primevue.config.locale, ...primevueMessages.value };
-    }
-  });
+      if(!nuxtApp.$i18n) {
+        shouldLoadLocale.value = false;
+        return;
+      }
+
+      loadPrimeVueMessages();
+      shouldLoadLocale.value = false;
+    });
+  }
 });
+
+function loadPrimeVueMessages() {
+  const nuxtApp = useNuxtApp();
+  const raw = nuxtApp.$i18n.tm("primevue");
+  const primevue = usePrimeVue();
+  const primevueMessages = ref({});
+
+  for(const key in raw) {
+    primevueMessages.value[key] = extractText(raw[key]);
+  }
+
+  primevue.config.locale = { ...primevue.config.locale, ...primevueMessages.value };
+}
 
 function extractText(val) {
   if(typeof val === "string") { return val; }
@@ -51,7 +66,8 @@ function extractText(val) {
   }
 
   if(typeof val === "object") {
-    return val.loc?.source || val.value || extractText(val.body || "") || "";
+    // 'val.b?.s' is for playwright
+    return val.loc?.source || val.b?.s || val.value || extractText(val.body || "") || "";
   }
 
   return "";

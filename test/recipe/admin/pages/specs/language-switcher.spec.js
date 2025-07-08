@@ -15,7 +15,7 @@ test.describe("Base", () => {
     const block = page.getByTestId(id);
     const button = block.locator(".p-button");
 
-    button.click();
+    await button.click();
 
     const menu = page.locator("#overlay_menu");
     await expect(menu).toBeVisible();
@@ -28,9 +28,9 @@ test.describe("Base", () => {
 
     await expect(text).toHaveText("Test Text");
 
-    button.click();
+    await button.click();
     const language = page.locator("#overlay_menu > ul > li:nth-child(2) > div > a");
-    language.click();
+    await language.click();
 
     await expect(text).toHaveText("Test Metni");
   });
