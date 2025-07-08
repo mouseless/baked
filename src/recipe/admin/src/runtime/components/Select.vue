@@ -19,11 +19,11 @@
     >
       <template #value="slotProps">
         <span>
-          {{ getValue(slotProps) }}
+          {{ getValueLabel(slotProps) }}
         </span>
       </template>
       <template #option="slotProps">
-        <span>{{ getOption(slotProps) }}</span>
+        <span>{{ getOptionLabel(slotProps) }}</span>
       </template>
     </Select>
     <label for="period">{{ l(label) }}</label>
@@ -64,13 +64,13 @@ if(!loading.value) {
 watch(model, newModel => setSelected(newModel));
 watch(selected, newSelected => setModel(newSelected));
 
-function getOption(slotProps) {
+function getOptionLabel(slotProps) {
   const result = slotProps.option[optionLabel] ?? slotProps.option;
 
   return localizeLabel ? l(result) : result;
 }
 
-function getValue(slotProps) {
+function getValueLabel(slotProps) {
   const result = slotProps.value?.[optionLabel] ?? slotProps.value ?? label;
 
   return localizeLabel ? l(result) : result;

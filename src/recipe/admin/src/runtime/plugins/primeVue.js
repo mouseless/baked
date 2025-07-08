@@ -49,13 +49,13 @@ function loadPrimeVueMessages() {
   const nuxtApp = useNuxtApp();
   const raw = nuxtApp.$i18n.tm("primevue");
   const primevue = usePrimeVue();
-  const primevueMessages = ref({});
+  const primevueMessages = {};
 
   for(const key in raw) {
-    primevueMessages.value[key] = extractText(raw[key]);
+    primevueMessages[key] = extractText(raw[key]);
   }
 
-  primevue.config.locale = { ...primevue.config.locale, ...primevueMessages.value };
+  primevue.config.locale = { ...primevue.config.locale, ...primevueMessages };
 }
 
 function extractText(val) {

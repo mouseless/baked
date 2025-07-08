@@ -14,7 +14,7 @@
     :pt="{ pcToggleButton: { root: { class: 'text-[length:inherit]' } } }"
   >
     <template #option="slotProps">
-      <span>{{ getOption(slotProps) }}</span>
+      <span>{{ getOptionLabel(slotProps) }}</span>
     </template>
   </SelectButton>
 </template>
@@ -53,7 +53,7 @@ if(!loading.value) {
 watch(model, newModel => setSelected(newModel));
 watch(selected, newSelected => setModel(newSelected));
 
-function getOption(slotProps) {
+function getOptionLabel(slotProps) {
   const result = slotProps.option[optionLabel] ?? slotProps.option;
 
   return localizeLabel ? l(result) : result;
