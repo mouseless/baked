@@ -36,8 +36,7 @@ export default defineNuxtConfig({
       }
     },
     primevue: {
-      theme: Mouseless,
-      locale: { dayNamesMin: [ "sU", "mO", "tU", "wE", "tH", "fR", "sA"] }
+      theme: Mouseless
     }
   },
   compatibilityDate: "2025-03-01",
