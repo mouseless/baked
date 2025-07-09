@@ -244,7 +244,7 @@ public class ConfigurationOverriderFeature : IFeature
                     ),
                     CardLink($"/specs", "Specs",
                         icon: "pi pi-list-check",
-                        description: "All_ui_Specs_are_listed_here"
+                        description: "All_ui_specs_are_listed_here"
                     )
                 ]
             ));
