@@ -33,15 +33,11 @@ public static class Components
 
     public static ComponentDescriptorAttribute<DataPanel> DataPanel(IData title, IComponentDescriptor content,
         IEnumerable<Parameter>? parameters = default,
-        bool? localizeTitle = default,
         bool? collapsed = default
     ) => new(new(title, content)
     {
         Collapsed = collapsed,
-        LocalizeTitle =
-            localizeTitle is not null ? localizeTitle :
-            title is InlineData ? true :
-            null,
+        LocalizeTitle = title.RequireLocalization,
         Parameters = [.. parameters ?? []]
     });
 
@@ -268,17 +264,13 @@ public static class Components
     public static ComponentDescriptorAttribute<Select> Select(string label, IData data,
         string? optionLabel = default,
         string? optionValue = default,
-        bool? localizeLabel = default,
         bool? showClear = default,
         bool? stateful = default
     ) => new(new(label)
     {
         OptionLabel = optionLabel,
         OptionValue = optionValue,
-        LocalizeLabel =
-            localizeLabel is not null ? localizeLabel :
-            data is InlineData ? true :
-            null,
+        LocalizeLabel = data.RequireLocalization,
         ShowClear = showClear,
         Stateful = stateful
     })
@@ -288,17 +280,13 @@ public static class Components
         bool? allowEmpty = default,
         string? optionLabel = default,
         string? optionValue = default,
-        bool? localizeLabel = default,
         bool? stateful = default
     ) => new(new()
     {
         AllowEmpty = allowEmpty,
         OptionLabel = optionLabel,
         OptionValue = optionValue,
-        LocalizeLabel =
-            localizeLabel is not null ? localizeLabel :
-            data is InlineData ? true :
-            null,
+        LocalizeLabel = data.RequireLocalization,
         Stateful = stateful
     })
     { Data = data };
