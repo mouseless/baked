@@ -8,14 +8,16 @@
 <script setup>
 import giveMe from "~/utils/giveMe";
 
+// TODO - use 'Spec.' prefix for localization keys
+// in all test setups 
 const variants = [
   {
     name: "Base",
     descriptor: giveMe.aCardLink({
       route: "/some-route",
       icon: "pi pi-wave-pulse",
-      title: "CardLink.Title",
-      description: "CardLink.Description"
+      title: "Spec.Title",
+      description: "Spec.Description"
     })
   },
   {
@@ -29,7 +31,7 @@ const variants = [
     name: "Disabled",
     descriptor: giveMe.aCardLink({
       disabled: true,
-      disabledReason: "CardLink.DisabledReason"
+      disabledReason: "Spec.Soon"
     })
   }
 ];

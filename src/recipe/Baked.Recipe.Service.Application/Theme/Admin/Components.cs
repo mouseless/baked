@@ -262,7 +262,18 @@ public static class Components
         bool? localizeLabel = default,
         bool? showClear = default,
         bool? stateful = default
-    ) => new(new(label) { OptionLabel = optionLabel, OptionValue = optionValue, LocalizeLabel = localizeLabel, ShowClear = showClear, Stateful = stateful }) { Data = data };
+    ) => new(new(label)
+    {
+        OptionLabel = optionLabel,
+        OptionValue = optionValue,
+        LocalizeLabel =
+            localizeLabel is not null ? localizeLabel :
+            data is InlineData ? true :
+            null,
+        ShowClear = showClear,
+        Stateful = stateful
+    })
+    { Data = data };
 
     public static ComponentDescriptorAttribute<SelectButton> SelectButton(IData data,
         bool? allowEmpty = default,
@@ -270,7 +281,18 @@ public static class Components
         string? optionValue = default,
         bool? localizeLabel = default,
         bool? stateful = default
-    ) => new(new() { AllowEmpty = allowEmpty, OptionLabel = optionLabel, OptionValue = optionValue, LocalizeLabel = localizeLabel, Stateful = stateful }) { Data = data };
+    ) => new(new()
+    {
+        AllowEmpty = allowEmpty,
+        OptionLabel = optionLabel,
+        OptionValue = optionValue,
+        LocalizeLabel =
+            localizeLabel is not null ? localizeLabel :
+            data is InlineData ? true :
+            null,
+        Stateful = stateful
+    })
+    { Data = data };
 
     public static ComponentDescriptorAttribute<SideMenu> SideMenu(IEnumerable<SideMenu.Item> menu,
         IComponentDescriptor? footer = default,

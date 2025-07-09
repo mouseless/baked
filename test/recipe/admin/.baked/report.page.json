@@ -208,6 +208,7 @@
                       "type": "Select",
                       "schema": {
                         "label": "Count",
+                        "localizeLabel": true,
                         "stateful": true
                       },
                       "data": {
@@ -322,6 +323,7 @@
                     "component": {
                       "type": "SelectButton",
                       "schema": {
+                        "localizeLabel": true,
                         "stateful": true
                       },
                       "data": {

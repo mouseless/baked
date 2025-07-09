@@ -30,7 +30,8 @@
                     "component": {
                       "type": "Select",
                       "schema": {
-                        "label": "Count"
+                        "label": "Count",
+                        "localizeLabel": true
                       },
                       "data": {
                         "type": "Inline",
