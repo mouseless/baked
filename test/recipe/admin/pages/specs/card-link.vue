@@ -8,8 +8,6 @@
 <script setup>
 import giveMe from "~/utils/giveMe";
 
-// TODO - use 'Spec.' prefix for localization keys
-// in all test setups
 const variants = [
   {
     name: "Base",
