@@ -11,13 +11,13 @@ test.describe("Base", () => {
   test("title", async({page}) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator("h1")).toHaveText("TITLE");
+    await expect(component.locator("h1")).toHaveText("Title");
   });
 
   test("description", async({page}) => {
     const component = page.getByTestId(id);
 
-    await expect(component.getByTestId("description")).toHaveText("DESCRIPTION");
+    await expect(component.getByTestId("description")).toHaveText("Description");
   });
 
   test("tabs", async({page}) => {
@@ -25,8 +25,8 @@ test.describe("Base", () => {
 
     const tabs = component.locator(primevue.tab.base);
     await expect(tabs).toHaveCount(2);
-    await expect(tabs.nth(0).locator("span").last()).toHaveText("TAB 1");
-    await expect(tabs.nth(1).locator("span").last()).toHaveText("TAB 2");
+    await expect(tabs.nth(0).locator("span").last()).toHaveText("Tab 1");
+    await expect(tabs.nth(1).locator("span").last()).toHaveText("Tab 2");
   });
 
   test("tab icons", async({page}) => {

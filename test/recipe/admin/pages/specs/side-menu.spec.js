@@ -45,7 +45,7 @@ test.describe("Base", () => {
 
     await expect(page.locator(primevue.tooltip.right)).toBeAttached();
     await expect(page.locator(primevue.tooltip.right)).toBeVisible();
-    await expect(page.locator(primevue.tooltip.right)).toHaveText("Menu Tooltip");
+    await expect(page.locator(primevue.tooltip.right)).toHaveText("Title");
   });
 
   test("visual", { tag: "@visual" }, async({page}) => {

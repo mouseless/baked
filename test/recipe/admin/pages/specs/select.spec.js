@@ -85,8 +85,8 @@ test.describe("Option Label and Value", () => {
     const options = page.locator(primevue.select.option);
     await component.click();
 
-    await expect(options.nth(0)).toHaveText("LABEL 1");
-    await expect(options.nth(1)).toHaveText("LABEL 2");
+    await expect(options.nth(0)).toHaveText("LABEL_1");
+    await expect(options.nth(1)).toHaveText("LABEL_2");
   });
 
   test("select option", async({page}) => {

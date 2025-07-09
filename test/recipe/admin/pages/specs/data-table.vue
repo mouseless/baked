@@ -15,11 +15,11 @@ const variants = [
     name: "Base",
     descriptor: giveMe.aDataTable({
       columns: [
-        giveMe.aDataTableColumn({ title: "DataTable.LabelKey", prop: "label", minWidth: true, component: giveMe.aConditional({ testId: "label" })}),
-        giveMe.aDataTableColumn({ title: "DataTable.ColumnKey1", prop: "data1", component: giveMe.aConditional({ testId: "prop-1" })}),
-        giveMe.aDataTableColumn({ title: "DataTable.ColumnKey2", prop: "data2", component: giveMe.aConditional({ testId: "prop-2" })}),
-        giveMe.aDataTableColumn({ title: "DataTable.ColumnKey3", prop: "data3", component: giveMe.aConditional({ testId: "prop-3" })}),
-        giveMe.aDataTableColumn({ title: "DataTable.ColumnKey4", prop: "data4", component: giveMe.aConditional({ testId: "prop-4" })})
+        giveMe.aDataTableColumn({ title: "Spec.Label", prop: "label", minWidth: true, component: giveMe.aConditional({ testId: "label" })}),
+        giveMe.aDataTableColumn({ title: "Spec.Data_1", prop: "data1", component: giveMe.aConditional({ testId: "prop-1" })}),
+        giveMe.aDataTableColumn({ title: "Spec.Data_2", prop: "data2", component: giveMe.aConditional({ testId: "prop-2" })}),
+        giveMe.aDataTableColumn({ title: "Spec.Data_3", prop: "data3", component: giveMe.aConditional({ testId: "prop-3" })}),
+        giveMe.aDataTableColumn({ title: "Spec.Data_4", prop: "data4", component: giveMe.aConditional({ testId: "prop-4" })})
       ],
       rowsWhenLoading: 3,
       data: [
@@ -87,7 +87,7 @@ const variants = [
         giveMe.aDataTableColumn({ title: "Data 4", prop: "data4", component: giveMe.aConditional({ testId: "prop-4" })})
       ],
       footerTemplate: {
-        label: "DataTable.FooterKey",
+        label: "Spec.Total",
         columns: [
           giveMe.aDataTableColumn({ prop: "footer1"}),
           giveMe.aDataTableColumn({ prop: "footer2"})
