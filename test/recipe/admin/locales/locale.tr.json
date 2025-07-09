@@ -129,7 +129,8 @@
         "Admin_Recipe__Test_login": "Yönetici Teması - Test girişi",
         "Enter_any_username_to_login": "Giriş yapmak için herhangi bir kullanıcı adı girin",
         "Back_to_Home_Page": "Ana Sayfaya Dön",
-        "Login": "Giriş Yap"
+        "Login": "Giriş Yap",
+        "Username": "Kullanıcı Adı"
     },
     "primevue": {
         "dayNames": [

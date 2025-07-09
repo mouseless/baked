@@ -121,7 +121,8 @@
         "Admin_Recipe__Test_login": "Admin Recipe - Test login",
         "Enter_any_username_to_login": "Enter any username to login",
         "Back_to_Home_Page": "Back to Home Page",
-        "Login": "Login"
+        "Login": "Login",
+        "Username": "Username"
     },
     "primevue": {
         "dayNames": [
