@@ -279,7 +279,7 @@ public class ConfigurationOverriderFeature : IFeature
                             defaultValue: "rwd-1",
                             required: true
                         ),
-                        Parameter("required", Select("Required", Inline(new[] { "Required 1", "Required 2" })),
+                        Parameter("required", Select("Required", data: Inline(new[] { "Required 1", "Required 2" })),
                             required: true
                         ),
                         Parameter("optional", SelectButton(Inline(new[] { "Optional 1", "Optional 2" }), allowEmpty: true))
