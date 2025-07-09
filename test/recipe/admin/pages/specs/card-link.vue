@@ -9,7 +9,7 @@
 import giveMe from "~/utils/giveMe";
 
 // TODO - use 'Spec.' prefix for localization keys
-// in all test setups 
+// in all test setups
 const variants = [
   {
     name: "Base",
