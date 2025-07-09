@@ -20,6 +20,7 @@
                   "type": "Inline",
                   "value": "DataPanel"
                 },
+                "localizeTitle": true,
                 "parameters": [
                   {
                     "name": "count",

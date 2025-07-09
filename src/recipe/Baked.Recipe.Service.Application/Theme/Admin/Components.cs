@@ -33,8 +33,17 @@ public static class Components
 
     public static ComponentDescriptorAttribute<DataPanel> DataPanel(IData title, IComponentDescriptor content,
         IEnumerable<Parameter>? parameters = default,
+        bool? localizeTitle = default,
         bool? collapsed = default
-    ) => new(new(title, content) { Collapsed = collapsed, Parameters = [.. parameters ?? []] });
+    ) => new(new(title, content)
+    {
+        Collapsed = collapsed,
+        LocalizeTitle =
+            localizeTitle is not null ? localizeTitle :
+            title is InlineData ? true :
+            null,
+        Parameters = [.. parameters ?? []]
+    });
 
     public static ComponentDescriptorAttribute<DataTable> DataTable(
         IEnumerable<DataTable.Column>? columns = default,

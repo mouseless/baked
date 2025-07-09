@@ -88,6 +88,7 @@
                   "value": "Get wide"
                 },
                 "collapsed": false,
+                "localizeTitle": true,
                 "parameters": [],
                 "content": {
                   "type": "String",
@@ -120,6 +121,7 @@
                   "value": "Get left"
                 },
                 "collapsed": true,
+                "localizeTitle": true,
                 "parameters": [],
                 "content": {
                   "type": "String",
@@ -153,6 +155,7 @@
                   "value": "Get right"
                 },
                 "collapsed": true,
+                "localizeTitle": true,
                 "parameters": [],
                 "content": {
                   "type": "String",
@@ -197,6 +200,7 @@
                   "type": "Inline",
                   "value": "Get first"
                 },
+                "localizeTitle": true,
                 "parameters": [
                   {
                     "name": "count",
@@ -313,6 +317,7 @@
                   "value": "Get second"
                 },
                 "collapsed": true,
+                "localizeTitle": true,
                 "parameters": [
                   {
                     "name": "count",

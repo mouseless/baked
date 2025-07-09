@@ -1,7 +1,7 @@
 <template>
   <Panel
     ref="panel"
-    :header="lc(title)"
+    :header="localizeTitle ? l(title) : title"
     :collapsed="collapsedState"
     toggleable
     :pt="{ headerActions: { class: 'flex gap-2 items-center' } }"
@@ -49,6 +49,7 @@ import { useContext, useDataFetcher, useUiStates, useLocalization } from "#impor
 const { value: { panelStates } } = useUiStates();
 const context = useContext();
 const dataFetcher = useDataFetcher();
+const { localize: l } = useLocalization();
 const { localize: lc } = useLocalization("DataPanel");
 const panel = useTemplateRef("panel");
 
@@ -57,7 +58,7 @@ const { schema } = defineProps({
   data: { type: null, default: null }
 });
 
-const { collapsed, content, parameters, title: titleData } = schema;
+const { collapsed, content, localizeTitle, parameters, title: titleData } = schema;
 
 const injectedData = context.injectedData();
 const path = context.path();
