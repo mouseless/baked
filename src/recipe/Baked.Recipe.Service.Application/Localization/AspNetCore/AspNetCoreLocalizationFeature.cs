@@ -3,6 +3,7 @@ using Baked.Testing;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
+using Newtonsoft.Json;
 using System.Globalization;
 using System.Reflection;
 
@@ -14,6 +15,35 @@ public class AspNetCoreLocalizationFeature(CultureInfo _language,
 {
     public void Configure(LayerConfigurator configurator)
     {
+        configurator.ConfigureGeneratedFileCollection(files =>
+        {
+            if (configurator.IsNfr())
+            {
+                return;
+            }
+
+            var localeOutDir = Path.Combine(Assembly.GetEntryAssembly()?.Location ?? throw new("'EntryAssembly' shoul have existed"), "../../../../Locales");
+
+            configurator.UsingLocaleDictionary(locales =>
+            {
+                files.Add($"locale.{_language.Name}", JsonConvert.SerializeObject(locales, Formatting.Indented),
+                    extension: "json",
+                    outdir: localeOutDir
+                );
+
+                if (_otherLanguages is not null)
+                {
+                    foreach (var language in _otherLanguages)
+                    {
+                        files.Add($"locale.{language.Name}", JsonConvert.SerializeObject(locales, Formatting.Indented),
+                            extension: "json",
+                            outdir: localeOutDir
+                        );
+                    }
+                }
+            });
+        });
+
         configurator.ConfigureServiceCollection(services =>
         {
             services.AddLocalization(option => option.ResourcesPath = "Locales");
