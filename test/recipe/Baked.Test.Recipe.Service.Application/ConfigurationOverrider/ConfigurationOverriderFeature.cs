@@ -244,7 +244,7 @@ public class ConfigurationOverriderFeature : IFeature
                     ),
                     CardLink($"/specs", "Specs",
                         icon: "pi pi-list-check",
-                        description: "All_ui_Specs_are_listed_here"
+                        description: "All_ui_specs_are_listed_here"
                     )
                 ]
             ));
@@ -270,8 +270,8 @@ public class ConfigurationOverriderFeature : IFeature
                             Select("Required_w_default",
                                 data: Inline(new[]
                                 {
-                                  new { text = "Required w/ Default 1", value = "rwd-1" },
-                                  new { text = "Required w/ Default 2", value = "rwd-2" }
+                                  new { text = "Required_w_default_1", value = "rwd-1" },
+                                  new { text = "Required_w_default_2", value = "rwd-2" }
                                 }),
                                 optionLabel: "text",
                                 optionValue: "value"

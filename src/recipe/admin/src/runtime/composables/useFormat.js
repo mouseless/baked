@@ -56,7 +56,7 @@ export default function() {
     formatOptions ??= { };
 
     const stage = shorten
-      ? STAGES.find(s => (shortenThousands || s.threshold !== 1_000) && value >= s.threshold) ?? STAGES[STAGES.length - 1]
+      ? STAGES.find(s => (shortenThousands || s.threshold !== 1_000) && Math.abs(value) >= s.threshold) ?? STAGES[STAGES.length - 1]
       : STAGES[STAGES.length - 1];
     const shownValue = value / stage.divisor;
 

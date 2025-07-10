@@ -14,13 +14,13 @@ test.describe("Base", () => {
     const component = page.getByTestId(datepickerTestId);
     const weekdays = component.locator(primevue.datepicker.weekday);
 
-    await expect(weekdays.nth(0)).toHaveText("sU");
-    await expect(weekdays.nth(1)).toHaveText("mO");
-    await expect(weekdays.nth(2)).toHaveText("tU");
-    await expect(weekdays.nth(3)).toHaveText("wE");
-    await expect(weekdays.nth(4)).toHaveText("tH");
-    await expect(weekdays.nth(5)).toHaveText("fR");
-    await expect(weekdays.nth(6)).toHaveText("sA");
+    await expect(weekdays.nth(0)).toHaveText("Su");
+    await expect(weekdays.nth(1)).toHaveText("Mo");
+    await expect(weekdays.nth(2)).toHaveText("Tu");
+    await expect(weekdays.nth(3)).toHaveText("We");
+    await expect(weekdays.nth(4)).toHaveText("Th");
+    await expect(weekdays.nth(5)).toHaveText("Fr");
+    await expect(weekdays.nth(6)).toHaveText("Sa");
   });
 
   test("locales showed", async({ page }) => {

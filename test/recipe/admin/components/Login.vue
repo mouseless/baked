@@ -18,7 +18,7 @@
       v-model="username"
       :invalid="submitted && !username"
       type="text"
-      placeholder="Username"
+      :placeholder="lc('Username')"
       :class="{ 'animate-shake': submitted && !username }"
     />
     <Button

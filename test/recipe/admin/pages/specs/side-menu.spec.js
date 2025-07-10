@@ -38,6 +38,16 @@ test.describe("Base", () => {
     await expect(component.getByTestId("footer")).toHaveText("FT");
   });
 
+  test("localized tooltip", async({page}) => {
+    const component = page.getByTestId(id);
+
+    await component.hover();
+
+    await expect(page.locator(primevue.tooltip.right)).toBeAttached();
+    await expect(page.locator(primevue.tooltip.right)).toBeVisible();
+    await expect(page.locator(primevue.tooltip.right)).toHaveText("Title");
+  });
+
   test("visual", { tag: "@visual" }, async({page}) => {
     const component = page.getByTestId(id);
 

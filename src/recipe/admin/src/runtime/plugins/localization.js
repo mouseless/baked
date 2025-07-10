@@ -1,11 +1,10 @@
 import { defineNuxtPlugin, useRuntimeConfig } from "#app";
 
 export default defineNuxtPlugin({
-  name: "auth",
+  name: "localization",
   enforce: "pre",
   setup(nuxtApp) {
     const { $fetchInterceptors } = nuxtApp;
-    const { public: { composables } } = useRuntimeConfig();
 
     $fetchInterceptors.register(
       "localization",

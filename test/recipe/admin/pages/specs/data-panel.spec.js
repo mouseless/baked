@@ -5,14 +5,13 @@ test.beforeEach(async({goto}) => {
   await goto("/specs/data-panel", { waitUntil: "hydration" });
 });
 
-
 test.describe("Base", () => {
   const id = "Base";
 
   test("title", async({page}) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator(primevue.panel.title)).toHaveText("TITLE");
+    await expect(component.locator(primevue.panel.title)).toHaveText("Title");
   });
 
   test("content", async({page}) => {
@@ -25,6 +24,16 @@ test.describe("Base", () => {
     const component = page.getByTestId(id);
 
     await expect(component).toHaveScreenshot();
+  });
+});
+
+test.describe("Base with computed title", () => {
+  const id = "Base with computed title";
+
+  test("title value is not localized", async({page}) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.locator(primevue.panel.title)).toHaveText("Spec.Title");
   });
 });
 

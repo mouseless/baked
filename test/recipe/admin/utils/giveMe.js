@@ -53,15 +53,16 @@ export default {
     };
   },
 
-  aDataPanel({ title, collapsed, parameters, content } = {}) {
+  aDataPanel({ title, collapsed, localizeTitle, parameters, content } = {}) {
     title = $(title, { type: "Inline", value: "Test Title" });
     collapsed = $(collapsed, false);
     parameters = $(parameters, []);
     content = $(content, this.anExpected());
+    localizeTitle = $(localizeTitle, title.type === "Inline");
 
     return {
       type: "DataPanel",
-      schema: { title, collapsed, parameters, content }
+      schema: { title, collapsed, localizeTitle, parameters, content }
     };
   },
 
@@ -378,8 +379,9 @@ export default {
     return { component, narrow };
   },
 
-  aSelect({ label, optionLabel, optionValue, showClear, stateful, data, inline } = {}) {
+  aSelect({ label, localizeLabel, optionLabel, optionValue, showClear, stateful, data, inline } = {}) {
     label = $(label, "Test");
+    localizeLabel = $(localizeLabel, false);
     showClear = $(showClear, false);
     stateful = $(stateful, false);
     data = $(data, ["Test Option 1", "Test Option 2"]);
@@ -391,23 +393,24 @@ export default {
 
     return {
       type: "Select",
-      schema: { label, optionLabel, optionValue, showClear, stateful },
+      schema: { label, localizeLabel, optionLabel, optionValue, showClear, stateful },
       data
     };
   },
 
-  aSelectButton({ allowEmpty, optionLabel, optionValue, stateful, data,inline } = {}) {
+  aSelectButton({ allowEmpty, localizeLabel, optionLabel, optionValue, stateful, data, inline } = {}) {
     data = $(data, ["Test Option 1", "Test Option 2"]);
     inline = $(inline, true);
     allowEmpty = $(allowEmpty, false);
     stateful = $(stateful, false);
+    localizeLabel = $(localizeLabel, false);
     data = inline
       ? { type: "Inline", value: data }
       : { type: "Computed", composable: "useDelayedData", args: [1, data] };
 
     return {
       type: "SelectButton",
-      schema: { allowEmpty, optionLabel, optionValue, stateful },
+      schema: { allowEmpty, localizeLabel, optionLabel, optionValue, stateful },
       data
     };
   },

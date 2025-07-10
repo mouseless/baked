@@ -6,6 +6,12 @@ export default {
     message: ".pt-8 div",
     footer: ".p-message-content"
   },
+  number:{
+    base: ".b-component--Number"
+  },
+  money:{
+    base: ".b-component--Money"
+  },
   string:{
     text: "span"
   }

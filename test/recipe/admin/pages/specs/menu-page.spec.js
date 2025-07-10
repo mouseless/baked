@@ -31,7 +31,7 @@ test.describe("Header and Links", () => {
 test.describe("Sections", () => {
   const id = "Sections";
 
-  test("sections", async({page}) => {
+  test("sections are listed with locale upper case titles", async({page}) => {
     const component = page.getByTestId(id);
     const titles = component.locator("h2");
 

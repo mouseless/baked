@@ -11,19 +11,22 @@ public static class Datas
     public static InjectedData Injected(
         bool? custom = default,
         bool? parentData = default,
-        string? prop = default
+        string? prop = default,
+        bool? requireLocalization = default
     ) => new(
         custom == true ? InjectedData.DataKey.Custom :
         parentData == true ? InjectedData.DataKey.ParentData :
         InjectedData.DataKey.Custom
     )
-    { Prop = prop };
+    { Prop = prop, RequireLocalization = requireLocalization };
 
-    public static InlineData Inline(object value) =>
-        new(value);
+    public static InlineData Inline(object value,
+        bool requireLocalization = true
+    ) => new(value) { RequireLocalization = requireLocalization };
 
     public static RemoteData Remote(string path,
         IData? headers = default,
-        IData? query = default
-    ) => new(path) { Headers = headers, Query = query };
+        IData? query = default,
+        bool? requireLocalization = default
+    ) => new(path) { Headers = headers, Query = query, RequireLocalization = requireLocalization };
 }

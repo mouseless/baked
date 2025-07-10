@@ -17,7 +17,7 @@ test.describe("Base", () => {
   test("text", async({page}) => {
     const component = page.getByTestId(id);
 
-    await expect(component).toHaveText("TEST");
+    await expect(component).toHaveText("Name");
   });
 
   test("visual", { tag: "@visual" }, async({page}) => {

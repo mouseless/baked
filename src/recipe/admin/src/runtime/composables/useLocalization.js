@@ -1,26 +1,17 @@
-import { useI18n, useRuntimeConfig } from "#imports";
-import { usePrimeVue } from "primevue";
-import { ref } from "vue";
+import { useI18n, useRouter, useRuntimeConfig } from "#imports";
 
 export default function(group = "") {
-  const { locale, locales: i18nLocales, setLocale: i18nSetLocales, t, tm } = useI18n();
-  const primevue = usePrimeVue();
+  const { locale, locales: i18nLocales, setLocaleCookie, t } = useI18n();
   const { public: { localization } } = useRuntimeConfig();
+  const router = useRouter();
 
   function getLocales() {
     return localization.supportedLanguages.filter(l => i18nLocales.value.includes(l.code));
   }
 
-  async function setLocale(language) {
-    await i18nSetLocales(language);
-    const raw = tm("primevue");
-    const primevueMessages = ref({});
-
-    for(const key in raw) {
-      primevueMessages.value[key] = extractText(raw[key]);
-    }
-
-    primevue.config.locale = { ...primevue.config.locale, ...primevueMessages.value };
+  function setLocale(language) {
+    setLocaleCookie(language);
+    router.go();
   }
 
   function localize(key, parameters = {}) {
@@ -38,18 +29,4 @@ export default function(group = "") {
     getLocales,
     setLocale
   };
-}
-
-function extractText(val) {
-  if(typeof val === "string") { return val; }
-
-  if(Array.isArray(val)) {
-    return [...val.map(extractText)];
-  }
-
-  if(typeof val === "object") {
-    return val.loc?.source || val.value || extractText(val.body || "") || "";
-  }
-
-  return "";
 }

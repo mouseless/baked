@@ -20,6 +20,7 @@
                   "type": "Inline",
                   "value": "DataPanel"
                 },
+                "localizeTitle": true,
                 "parameters": [
                   {
                     "name": "count",
@@ -30,7 +31,8 @@
                     "component": {
                       "type": "Select",
                       "schema": {
-                        "label": "Count"
+                        "label": "Count",
+                        "localizeLabel": true
                       },
                       "data": {
                         "type": "Inline",

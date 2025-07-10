@@ -10,3 +10,4 @@ Child_ID_does_not_belong_this_parent=Child#{0:I}, bu parent'a ait değil.
 NAME_should_be_unique={0:N} benzersiz olmalıdır.
 
 test=Bu Türkçe kaynak dosyasından test mesajıdır.
+This_is_a_label=Bu bir etikettir
