@@ -34,7 +34,7 @@ public class GeneratedFileWriter(GeneratedFileDescriptor _descriptor)
         var filePath = Path.Combine(outdir, $"{fileNameBuilder(_descriptor)}.{_descriptor.Extension}");
         var hashFilePath = $"{filePath}.hash";
 
-        if (!RequiresUpdate(_descriptor.Content, filePath, hashFilePath))
+        if (!_descriptor.ForceUpdate && !RequiresUpdate(_descriptor.Content, filePath, hashFilePath))
         {
             return filePath;
         }
@@ -47,8 +47,11 @@ public class GeneratedFileWriter(GeneratedFileDescriptor _descriptor)
         using var file = new FileStream(filePath, FileMode.Create);
         file.Write(Encoding.UTF8.GetBytes(_descriptor.Content));
 
-        using var hashfile = new FileStream(hashFilePath, FileMode.Create);
-        hashfile.Write(_descriptor.Content.ToSHA256());
+        if (!_descriptor.ForceUpdate)
+        {
+            using var hashfile = new FileStream(hashFilePath, FileMode.Create);
+            hashfile.Write(_descriptor.Content.ToSHA256());
+        }
 
         return filePath;
     }

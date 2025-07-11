@@ -28,7 +28,8 @@ public class AspNetCoreLocalizationFeature(CultureInfo _language,
             {
                 files.Add($"locale.{_language.Name}", JsonConvert.SerializeObject(locales, Formatting.Indented),
                     extension: "json",
-                    outdir: localeOutDir
+                    outdir: localeOutDir,
+                    forceUpdate: true
                 );
 
                 if (_otherLanguages is not null)
@@ -37,7 +38,8 @@ public class AspNetCoreLocalizationFeature(CultureInfo _language,
                     {
                         files.Add($"locale.{language.Name}", JsonConvert.SerializeObject(locales, Formatting.Indented),
                             extension: "json",
-                            outdir: localeOutDir
+                            outdir: localeOutDir,
+                            forceUpdate: true
                         );
                     }
                 }

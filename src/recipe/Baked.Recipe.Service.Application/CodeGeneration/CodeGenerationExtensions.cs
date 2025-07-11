@@ -93,23 +93,28 @@ public static class CodeGenerationExtensions
 
     public static void Add(this IGeneratedFileCollection generatedFiles, string name, string content,
         string? extension = default,
-        string? outdir = default
+        string? outdir = default,
+        bool forceUpdate = false
     )
     {
         extension ??= "txt";
         extension = extension[(extension.LastIndexOf('.') + 1)..];
 
-        generatedFiles.Add(new(name) { Content = content, Extension = extension, Outdir = outdir });
+        generatedFiles.Add(new(name) { Content = content, Extension = extension, Outdir = outdir, ForceUpdate = forceUpdate });
     }
 
-    public static void AddAsJson<T>(this IGeneratedFileCollection generatedFiles, T instance) =>
-        generatedFiles.AddAsJson(typeof(T).Name, instance);
+    public static void AddAsJson<T>(this IGeneratedFileCollection generatedFiles, T instance,
+        string? name = default,
+        bool forceUpdate = false
+    ) => generatedFiles.AddAsJson(name ?? typeof(T).Name, instance, forceUpdate: forceUpdate);
 
     public static void AddAsJson<T>(this IGeneratedFileCollection generatedFiles, string name, T instance,
         JsonSerializerSettings? settings = default,
-        string? outdir = default
+        string? outdir = default,
+        bool forceUpdate = false
     ) => generatedFiles.Add(name, JsonConvert.SerializeObject(instance, formatting: Formatting.Indented, settings), "json",
-            outdir: outdir
+            outdir: outdir,
+            forceUpdate: forceUpdate
         );
 
     internal static string? FindClosestScopedCode(this Diagnostic diagnostic)
