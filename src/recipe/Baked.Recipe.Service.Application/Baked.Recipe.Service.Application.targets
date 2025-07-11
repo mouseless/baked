@@ -19,6 +19,10 @@
   </Target>
 
   <Target Name="CopyComponentDescriptors" AfterTargets="AfterBuild" Condition="$(CopyComponentDescriptors)">
+    <PropertyGroup>
+      <ComponentDescriptorsDir>$(UiAppDir)\.baked</ComponentDescriptorsDir>
+    </PropertyGroup>
+    
     <MakeDir Directories="$(ComponentDescriptorsDir)" Condition="!Exists($(ComponentDescriptorsDir))"/>
 
     <PropertyGroup>
@@ -36,10 +40,15 @@
   </Target>
 
   <Target Name="CopyLocaleFiles" AfterTargets="AfterBuild" Condition="$(CopyComponentDescriptors)">
+      <PropertyGroup>
+          <LocaleFilesDir>$(UiAppDir)\.baked</LocaleFilesDir>
+      </PropertyGroup>
+      
       <ItemGroup>
         <GeneratedLocales Include="$(ProjectDir)\Locales\**\locale.*.json" />
       </ItemGroup>
-      <Copy SourceFiles="@(GeneratedLocales)" DestinationFolder="$(ComponentDescriptorsDir)\%(RecursiveDir)" SkipUnchangedFiles="true" Condition="Exists($(ComponentDescriptorsDir))" />
+      
+      <Copy SourceFiles="@(GeneratedLocales)" DestinationFolder="$(LocaleFilesDir)\%(RecursiveDir)" SkipUnchangedFiles="true" Condition="Exists($(LocaleFilesDir))" />
   </Target>  
 
   <Target Name="CopyGeneratedFiles" AfterTargets="Publish">
