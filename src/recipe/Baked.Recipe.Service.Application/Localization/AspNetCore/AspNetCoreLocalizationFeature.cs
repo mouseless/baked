@@ -1,8 +1,10 @@
 using Baked.Architecture;
 using Baked.Testing;
+using Baked.Ui;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
+using Newtonsoft.Json;
 using System.Globalization;
 using System.Reflection;
 
@@ -14,6 +16,52 @@ public class AspNetCoreLocalizationFeature(CultureInfo _language,
 {
     public void Configure(LayerConfigurator configurator)
     {
+        configurator.ConfigureGeneratedFileCollection(files =>
+        {
+            if (configurator.IsNfr())
+            {
+                return;
+            }
+
+            var localeDir = Path.Combine(Assembly.GetEntryAssembly()?.Location ?? throw new("'EntryAssembly' shoul have existed"), "../../../../Locales");
+
+            configurator.UsingLocaleDictionary(locales =>
+            {
+                files.AddAsJson(FillLocales(_language, localeDir, locales), name: $"locale.{_language.Name}", outdir: "Ui");
+
+                if (_otherLanguages is not null)
+                {
+                    foreach (var language in _otherLanguages)
+                    {
+                        files.AddAsJson(FillLocales(language, localeDir, locales), name: $"locale.{language.Name}", outdir: "Ui");
+                    }
+                }
+            });
+
+            Dictionary<string, string> FillLocales(CultureInfo language, string sourceDir, ILocaleDictionary locales)
+            {
+                var result = new Dictionary<string, string>(locales);
+
+                var sourceFilePath = Path.Combine(sourceDir, $"locale.{language.Name}.json");
+                if (File.Exists(sourceFilePath))
+                {
+                    using (StreamReader reader = new(sourceFilePath))
+                    {
+                        var source = JsonConvert.DeserializeObject<Dictionary<string, string>>(reader.ReadToEnd()) ?? new();
+                        foreach (var (key, value) in source)
+                        {
+                            if (result.ContainsKey(key))
+                            {
+                                result[key] = value;
+                            }
+                        }
+                    }
+                }
+
+                return result;
+            }
+        });
+
         configurator.ConfigureServiceCollection(services =>
         {
             services.AddLocalization(option => option.ResourcesPath = "Locales");

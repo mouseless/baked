@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <CopyComponentDescriptors>true</CopyComponentDescriptors>
-    <ComponentDescriptorsDir>$(ProjectDir)..\admin\.baked</ComponentDescriptorsDir>
+    <UiAppDir>$(ProjectDir)..\admin</UiAppDir>
   </PropertyGroup>
 
   <ItemGroup>

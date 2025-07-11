@@ -3,6 +3,8 @@ using Baked.Domain.Model;
 using Baked.Ui;
 using System.Diagnostics.CodeAnalysis;
 
+using static Baked.Ui.UiLayer;
+
 namespace Baked;
 
 public static class UiExtensions
@@ -21,6 +23,12 @@ public static class UiExtensions
 
     public static void ConfigurePageDescriptors(this LayerConfigurator configurator, Action<PageDescriptors> configure) =>
         configurator.Configure(configure);
+
+    public static void UsingLocalizeTextFactory(this LayerConfigurator configurator, Action<NewLocalizeText> l) =>
+        configurator.Use(l);
+
+    public static void UsingLocaleDictionary(this LayerConfigurator configurator, Action<ILocaleDictionary> locales) =>
+        configurator.Use(locales);
 
     public static bool TryGet<TSchema>(this TypeModel type, [NotNullWhen(true)] out TSchema? schema)
         where TSchema : IComponentSchema
