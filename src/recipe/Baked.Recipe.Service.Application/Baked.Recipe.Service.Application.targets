@@ -35,6 +35,13 @@
     <Copy SourceFiles="@(Descriptors)" DestinationFolder="$(ComponentDescriptorsDir)\%(RecursiveDir)" SkipUnchangedFiles="true" Condition="Exists($(ComponentDescriptorsDir))" />
   </Target>
 
+  <Target Name="CopyLocaleFiles" AfterTargets="AfterBuild" Condition="$(CopyComponentDescriptors)">
+      <ItemGroup>
+        <GeneratedLocales Include="$(ProjectDir)\Locales\**\locale.*.json" />
+      </ItemGroup>
+      <Copy SourceFiles="@(GeneratedLocales)" DestinationFolder="$(ComponentDescriptorsDir)\%(RecursiveDir)" SkipUnchangedFiles="true" Condition="Exists($(ComponentDescriptorsDir))" />
+  </Target>  
+
   <Target Name="CopyGeneratedFiles" AfterTargets="Publish">
     <ItemGroup>
       <GeneratedFiles Include="$(TargetDir)\$(ASPNETCORE_ENVIRONMENT)\**\*.*" />
