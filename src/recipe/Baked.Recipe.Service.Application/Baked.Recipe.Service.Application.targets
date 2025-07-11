@@ -41,7 +41,7 @@
 
   <Target Name="CopyLocaleFiles" AfterTargets="AfterBuild" Condition="$(CopyComponentDescriptors)">
       <PropertyGroup>
-          <LocaleFilesDir>$(UiAppDir)\.baked</LocaleFilesDir>
+        <LocaleFilesDir>$(UiAppDir)\.baked</LocaleFilesDir>
       </PropertyGroup>
       
       <ItemGroup>
