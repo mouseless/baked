@@ -5,4 +5,7 @@ public record CompositeData()
 {
     public string Type => "Composite";
     public List<IData> Parts { get; init; } = [];
+    internal bool? RequireLocalization { get; set; }
+
+    bool? IData.RequireLocalization => RequireLocalization;
 }

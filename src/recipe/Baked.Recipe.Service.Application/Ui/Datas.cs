@@ -2,11 +2,14 @@
 
 public static class Datas
 {
-    public static CompositeData Composite(IEnumerable<IData> parts) =>
-        new() { Parts = [.. parts] };
+    public static CompositeData Composite(IEnumerable<IData> parts,
+        bool? requireLocalization = default
+    ) => new() { Parts = [.. parts], RequireLocalization = requireLocalization };
 
-    public static ComputedData Computed(string composable, params IEnumerable<object> args) =>
-        new(composable) { Args = [.. args] };
+    public static ComputedData Computed(string composable,
+        IEnumerable<object>? args = default,
+        bool? requireLocalization = default
+    ) => new(composable) { Args = [.. args ?? []], RequireLocalization = requireLocalization };
 
     public static InjectedData Injected(
         bool? custom = default,
