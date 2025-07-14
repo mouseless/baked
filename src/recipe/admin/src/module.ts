@@ -109,7 +109,6 @@ export default defineNuxtModule<ModuleOptions>({
           .then((path) => files.push(path) )
           .catch(_ => {});
 
-        console.log(files);
         return {
           code: i.code,
           name: i.name,
