@@ -4,7 +4,6 @@ using Baked.Ui;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
-using Newtonsoft.Json;
 using System.Globalization;
 using System.Reflection;
 
@@ -27,7 +26,7 @@ public class AspNetCoreLocalizationFeature(CultureInfo _language,
 
             configurator.UsingLocaleDictionary(locales =>
             {
-                files.AddAsJson(FillLocales(_language, localeDir, locales), name: $"locale.{_language.Name}", outdir: "Ui");
+                files.AddAsJson(FillLocales(_language, localeDir, locales, defaultLanguage: true), name: $"locale.{_language.Name}", outdir: "Ui");
 
                 if (_otherLanguages is not null)
                 {
@@ -38,27 +37,44 @@ public class AspNetCoreLocalizationFeature(CultureInfo _language,
                 }
             });
 
-            Dictionary<string, string> FillLocales(CultureInfo language, string sourceDir, ILocaleDictionary locales)
+            Dictionary<string, string> FillLocales(CultureInfo language, string resourceDir, ILocaleDictionary locales,
+                bool defaultLanguage = false
+            )
             {
                 var result = new Dictionary<string, string>(locales);
 
-                var sourceFilePath = Path.Combine(sourceDir, $"locale.{language.Name}.json");
-                if (File.Exists(sourceFilePath))
+                var resourceFilePath = Path.Combine(resourceDir, defaultLanguage ? $"locale.resx" : $"locale.{language.Name}.resx");
+                if (File.Exists(resourceFilePath))
                 {
-                    using (StreamReader reader = new(sourceFilePath))
+                    var values = ReadResxFileAsDictionary(resourceFilePath);
+                    foreach (var (key, value) in values)
                     {
-                        var source = JsonConvert.DeserializeObject<Dictionary<string, string>>(reader.ReadToEnd()) ?? new();
-                        foreach (var (key, value) in source)
+                        if (result.ContainsKey(key))
                         {
-                            if (result.ContainsKey(key))
-                            {
-                                result[key] = value;
-                            }
+                            result[key] = value;
                         }
                     }
                 }
 
                 return result;
+            }
+
+            Dictionary<string, string> ReadResxFileAsDictionary(string path)
+            {
+                var values = new Dictionary<string, string>();
+                using (StreamReader reader = new(path))
+                {
+                    string? line = reader.ReadLine();
+                    while (line != null)
+                    {
+                        var keyValue = line.Split('=', StringSplitOptions.TrimEntries);
+                        values.TryAdd(keyValue[0], keyValue[1]);
+
+                        line = reader.ReadLine();
+                    }
+                }
+
+                return values;
             }
         });
 

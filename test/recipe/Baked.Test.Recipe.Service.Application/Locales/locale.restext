@@ -11,3 +11,5 @@ NAME_should_be_unique={0:N} should be unique.
 
 test=This is test message from English resource file.
 This_is_a_label=This is a Label
+
+This_should_not_exist_in_output_locale_files= This_should_not_exist_in_output_locale_files
