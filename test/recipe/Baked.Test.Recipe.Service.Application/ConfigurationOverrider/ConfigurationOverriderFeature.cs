@@ -229,7 +229,7 @@ public class ConfigurationOverriderFeature : IFeature
 
         configurator.ConfigurePageDescriptors(pages =>
         {
-            configurator.UsingLocalizeTextFactory(l =>
+            configurator.UsingNewLocale(l =>
             {
                 var headers = Inline(new { Authorization = "token-admin-ui" });
 

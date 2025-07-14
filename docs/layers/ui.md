@@ -21,15 +21,18 @@ hierarchy containing `Type`, `Schema`, `Name` and `Data` properties.
 >```xml
 > <PropertyGroup>
 >   <CopyComponentDescriptors>true</CopyComponentDescriptors>
->   <ComponentDescriptorsDir>$(ProjectDir)..\admin\.baked</ComponentDescriptorsDir>
+>   <UiAppDir>$(ProjectDir)..\admin</UiAppDir>
 > </PropertyGroup>
 >```
 
 ## Configuration Targets
 
-This layer provides `AppDescriptor`, `ComponentExports`, `LayerDescriptors` and `PageDescriptors`
-configuration target for registering pages using `ComponentDescriptor`
-instances.
+This layer provides `AppDescriptor`, `ComponentExports`, `LayerDescriptors` 
+and `PageDescriptors` configuration target for registering pages using 
+`ComponentDescriptor` instances. 
+
+Also this layer provides `ILocaleDictionary` and `NewLocale` configuration
+targets to generate localization data for generated page descriptors
 
 ### `AppDescriptor`
 
@@ -50,6 +53,34 @@ This target is provided in `GenerateCode` phase. To configure it in a feature;
 configurator.ConfigureComponentExports(exports =>
 {
     ...
+});
+```
+
+### `ILocaleDictionary`
+
+This target is provided in `GenerateCode` phase. To configure it in a feature;
+
+```csharp
+configurator.ConfigurePageDescriptors(pages =>
+{
+    configurator.UsingLocaleDictionay(locales =>
+    {
+        ...
+    });
+});
+```
+
+### `NewLocale`
+
+This target is provided in `GenerateCode` phase. To configure it in a feature;
+
+```csharp
+configurator.ConfigurePageDescriptors(pages =>
+{
+    configurator.UsingNewLocale(l =>
+    {
+        ...
+    });
 });
 ```
 

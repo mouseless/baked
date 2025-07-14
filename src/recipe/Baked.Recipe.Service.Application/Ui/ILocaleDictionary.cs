@@ -1,3 +1,3 @@
 ﻿namespace Baked.Ui;
 
-public interface ILocaleDictionary : IDictionary<string, string>;
+public interface ILocaleDictionary : IReadOnlyDictionary<string, string>;

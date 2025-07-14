@@ -24,7 +24,7 @@ public static class UiExtensions
     public static void ConfigurePageDescriptors(this LayerConfigurator configurator, Action<PageDescriptors> configure) =>
         configurator.Configure(configure);
 
-    public static void UsingLocalizeTextFactory(this LayerConfigurator configurator, Action<NewLocalizeText> l) =>
+    public static void UsingNewLocale(this LayerConfigurator configurator, Action<NewLocale> l) =>
         configurator.Use(l);
 
     public static void UsingLocaleDictionary(this LayerConfigurator configurator, Action<ILocaleDictionary> locales) =>

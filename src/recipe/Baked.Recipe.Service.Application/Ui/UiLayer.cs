@@ -9,23 +9,23 @@ namespace Baked.Ui;
 
 public class UiLayer : LayerBase<GenerateCode>
 {
-    public delegate string NewLocalizeText(string key, string? value = default);
+    public delegate string NewLocale(string key, string? value = default);
 
     public AppDescriptor _appDescriptor = new();
     public ComponentExports _componentExports = new();
     public LayoutDescriptors _layoutDescriptors = new();
     public PageDescriptors _pageDescriptors = new();
-    public LocaleDictionary _localeCollection = new();
-    NewLocalizeText LocalizeTextFactory => (key, value) =>
+    public LocaleDictionary _localeDictionary = new();
+    NewLocale LocaleFactory => (key, value) =>
     {
         value ??= key;
 
-        return _localeCollection[key] = value;
+        return _localeDictionary[key] = value;
     };
 
     protected override PhaseContext GetContext(GenerateCode phase)
     {
-        Context.Add(LocalizeTextFactory);
+        Context.Add(LocaleFactory);
 
         return phase.CreateContextBuilder()
             .Add(_appDescriptor)
@@ -36,7 +36,7 @@ public class UiLayer : LayerBase<GenerateCode>
             .OnDispose(() =>
             {
                 GenerateUiSchemas();
-                Context.Add<ILocaleDictionary>(_localeCollection);
+                Context.Add<ILocaleDictionary>(_localeDictionary);
             })
             .Build();
     }
