@@ -46,7 +46,7 @@ public class AspNetCoreLocalizationFeature(CultureInfo _language,
                 var resourceFilePath = Path.Combine(resourceDir, defaultLanguage ? $"locale.resx" : $"locale.{language.Name}.resx");
                 if (File.Exists(resourceFilePath))
                 {
-                    var values = ReadResxFileAsDictionary(resourceFilePath);
+                    var values = AspNetCoreLocalizationExtensions.ReadResxFileAsDictionary(resourceFilePath);
                     foreach (var (key, value) in values)
                     {
                         if (result.ContainsKey(key))
@@ -57,24 +57,6 @@ public class AspNetCoreLocalizationFeature(CultureInfo _language,
                 }
 
                 return result;
-            }
-
-            Dictionary<string, string> ReadResxFileAsDictionary(string path)
-            {
-                var values = new Dictionary<string, string>();
-                using (StreamReader reader = new(path))
-                {
-                    string? line = reader.ReadLine();
-                    while (line != null)
-                    {
-                        var keyValue = line.Split('=', StringSplitOptions.TrimEntries);
-                        values.TryAdd(keyValue[0], keyValue[1]);
-
-                        line = reader.ReadLine();
-                    }
-                }
-
-                return values;
             }
         });
 

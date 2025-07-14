@@ -1,6 +1,7 @@
 # Localization
 
-This feature allows you to perform localization.
+This feature registers `.NET` localization services and middelware, and 
+generates `.json` resource files for to be used for ui app localization
 
 Add this feature implementations using `AddLocalization()` extension;
 

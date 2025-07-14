@@ -15,4 +15,22 @@ public static class AspNetCoreLocalizationExtensions
 
         return new(language, otherLanguages);
     }
+
+    public static Dictionary<string, string> ReadResxFileAsDictionary(string path)
+    {
+        var values = new Dictionary<string, string>();
+        using (StreamReader reader = new(path))
+        {
+            string? line = reader.ReadLine();
+            while (line != null)
+            {
+                var keyValue = line.Split('=', StringSplitOptions.TrimEntries);
+                values.TryAdd(keyValue[0], keyValue[1]);
+
+                line = reader.ReadLine();
+            }
+        }
+
+        return values;
+    }
 }
