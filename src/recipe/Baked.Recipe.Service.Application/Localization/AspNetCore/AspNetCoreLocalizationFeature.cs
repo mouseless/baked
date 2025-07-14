@@ -43,7 +43,7 @@ public class AspNetCoreLocalizationFeature(CultureInfo _language,
             {
                 var result = new Dictionary<string, string>(locales);
 
-                var resourceFilePath = Path.Combine(resourceDir, defaultLanguage ? $"locale.resx" : $"locale.{language.Name}.resx");
+                var resourceFilePath = Path.Combine(resourceDir, defaultLanguage ? $"locale.restext" : $"locale.{language.Name}.restext");
                 if (File.Exists(resourceFilePath))
                 {
                     var values = AspNetCoreLocalizationExtensions.ReadResxFileAsDictionary(resourceFilePath);

@@ -70,6 +70,17 @@ configurator.ConfigurePageDescriptors(pages =>
 });
 ```
 
+### `LayoutDescriptors`
+
+This target is provided in `GenerateCode` phase. To configure it in a feature;
+
+```csharp
+configurator.ConfigureLayoutDescriptors(layouts =>
+{
+    ...
+});
+```
+
 ### `NewLocale`
 
 This target is provided in `GenerateCode` phase. To configure it in a feature;
@@ -81,17 +92,6 @@ configurator.ConfigurePageDescriptors(pages =>
     {
         ...
     });
-});
-```
-
-### `LayoutDescriptors`
-
-This target is provided in `GenerateCode` phase. To configure it in a feature;
-
-```csharp
-configurator.ConfigureLayoutDescriptors(layouts =>
-{
-    ...
 });
 ```
 

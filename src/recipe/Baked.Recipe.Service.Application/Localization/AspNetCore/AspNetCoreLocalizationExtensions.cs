@@ -24,8 +24,11 @@ public static class AspNetCoreLocalizationExtensions
             string? line = reader.ReadLine();
             while (line != null)
             {
-                var keyValue = line.Split('=', StringSplitOptions.TrimEntries);
-                values.TryAdd(keyValue[0], keyValue[1]);
+                if (!string.IsNullOrWhiteSpace(line.Trim()))
+                {
+                    var keyValue = line.Split('=', StringSplitOptions.TrimEntries);
+                    values.TryAdd(keyValue[0], keyValue[1]);
+                }
 
                 line = reader.ReadLine();
             }

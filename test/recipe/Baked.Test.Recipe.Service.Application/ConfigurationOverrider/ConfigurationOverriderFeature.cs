@@ -179,50 +179,56 @@ public class ConfigurationOverriderFeature : IFeature
 
         configurator.ConfigureAppDescriptor(app =>
         {
-            app.Error = ErrorPage(
-                safeLinks:
-                [
-                    CardLink("/", "Home", icon: "pi pi-home"),
-                    CardLink("/specs", "Specs", icon: "pi pi-list-check"),
-                ],
-                errorInfos:
-                [
-                    ErrorPageInfo(403, "Access_Denied", "You_do_not_have_the_permision_to_view_the_address_or_data_specified" ),
-                    ErrorPageInfo(404, "Page_Not_Found", "The_page_you_want_to_view_is_etiher_deleted_or_outdated"),
-                    ErrorPageInfo(500, "Unexpected_Error", "Please_contact_system_administrator")
-                ],
-                data: Computed(Composables.UseError)
-            );
+            configurator.UsingNewLocale(l =>
+            {
+                app.Error = ErrorPage(
+                    safeLinks:
+                    [
+                        CardLink("/", "Home", icon: "pi pi-home"),
+                        CardLink("/specs", "Specs", icon: "pi pi-list-check"),
+                    ],
+                    errorInfos:
+                    [
+                        ErrorPageInfo(403, l("Access_Denied"), l("You_do_not_have_the_permision_to_view_the_address_or_data_specified") ),
+                        ErrorPageInfo(404, l("Page_Not_Found"), l("The_page_you_want_to_view_is_etiher_deleted_or_outdated")),
+                        ErrorPageInfo(500, l("Unexpected_Error"), l("Please_contact_system_administrator"))
+                    ],
+                    data: Computed(Composables.UseError)
+                );
+            });
         });
 
         configurator.ConfigureLayoutDescriptors(layouts =>
         {
-            layouts.Add(DefaultLayout("default",
-                sideMenu: SideMenu(
-                    menu:
-                    [
-                        SideMenuItem("/", "pi pi-home"),
-                        SideMenuItem("/report", "pi pi-file", title: "Report"),
-                        SideMenuItem("/data-table", "pi pi-table", title: "DataTable"),
-                        SideMenuItem("/specs", "pi pi-list-check", title: "Specs")
-                    ],
-                    footer: LanguageSwitcher()
-                ),
-                header: Header(
-                    siteMap:
-                    [
-                        HeaderItem("/", icon: "pi pi-home"),
-                        HeaderItem("/report", icon: "pi pi-file", title: "Report"),
-                        HeaderItem("/data-table", icon: "pi pi-table", title: "DataTable"),
-                        HeaderItem("/specs", icon: "pi pi-list-check", title: "Specs"),
-                        .. specs.SelectMany(section =>
-                            section.Links.Select(link =>
-                                HeaderItem($"/specs/{link.Title.Kebaberize()}", title: link.Title, parentRoute: "/specs")
+            configurator.UsingNewLocale(l =>
+            {
+                layouts.Add(DefaultLayout("default",
+                    sideMenu: SideMenu(
+                        menu:
+                        [
+                            SideMenuItem("/", "pi pi-home"),
+                            SideMenuItem("/report", "pi pi-file", title: l("Report")),
+                            SideMenuItem("/data-table", "pi pi-table", title: l("DataTable")),
+                            SideMenuItem("/specs", "pi pi-list-check", title: l("Specs"))
+                        ],
+                        footer: LanguageSwitcher()
+                    ),
+                    header: Header(
+                        siteMap:
+                        [
+                            HeaderItem("/", icon: "pi pi-home"),
+                            HeaderItem("/report", icon: "pi pi-file", title: l("Report")),
+                            HeaderItem("/data-table", icon: "pi pi-table", title: l("DataTable")),
+                            HeaderItem("/specs", icon: "pi pi-list-check", title: l("Specs")),
+                            .. specs.SelectMany(section =>
+                                section.Links.Select(link =>
+                                    HeaderItem($"/specs/{link.Title.Kebaberize()}", title: l(link.Title), parentRoute: "/specs")
+                                )
                             )
-                        )
-                    ]
-                )
-            ));
+                        ]
+                    )
+                ));
+            });
 
             layouts.Add(ModalLayout("modal"));
         });
@@ -236,15 +242,15 @@ public class ConfigurationOverriderFeature : IFeature
                 pages.Add(MenuPage("index",
                     links:
                     [
-                        CardLink($"/report", "Report",
+                        CardLink($"/report", l("Report"),
                             icon: "pi pi-file",
                             description: l("Showcases_a_report_layout_with_tabs_and_data_panels")
                         ),
-                        CardLink($"/data-table", "DataTable",
+                        CardLink($"/data-table", l("DataTable"),
                             icon: "pi pi-table",
                             description: l("Showcase_DataTable_component_with_scrollable_and_footer_options")
                         ),
-                        CardLink($"/specs", "Specs",
+                        CardLink($"/specs", l("Specs"),
                             icon: "pi pi-list-check",
                             description: l("All_ui_specs_are_listed_here")
                         )
@@ -269,22 +275,22 @@ public class ConfigurationOverriderFeature : IFeature
                         [
                             Parameter(
                             "requiredWithDefault",
-                            Select("Required_w_default",
-                                data: Inline(new[]
-                                {
-                                  new { text = l("Required_w_default_1"), value = "rwd-1" },
-                                  new { text = l("Required_w_default_2"), value = "rwd-2" }
-                                }),
-                                optionLabel: "text",
-                                optionValue: "value"
+                                Select(l("Required_w_default"),
+                                    data: Inline(new[]
+                                    {
+                                      new { text = l("Required_w_default_1"), value = "rwd-1" },
+                                      new { text = l("Required_w_default_2"), value = "rwd-2" }
+                                    }),
+                                    optionLabel: "text",
+                                    optionValue: "value"
+                                ),
+                                defaultValue: "rwd-1",
+                                required: true
                             ),
-                            defaultValue: "rwd-1",
-                            required: true
-                        ),
-                        Parameter("required", Select("Required", data: Inline(new[] { l("Required 1"), l("Required 2") })),
-                            required: true
-                        ),
-                        Parameter("optional", SelectButton(Inline(new[] { l("Optional 1"), l("Optional 2") }), allowEmpty: true))
+                            Parameter("required", Select("Required", data: Inline(new[] { l("Required 1"), l("Required 2") })),
+                                required: true
+                            ),
+                            Parameter("optional", SelectButton(Inline(new[] { l("Optional 1"), l("Optional 2") }), allowEmpty: true))
                         ],
                         tabs:
                         [
@@ -360,7 +366,7 @@ public class ConfigurationOverriderFeature : IFeature
                                     )
                                 ),
                                 ReportPageTabContent(
-                                    component: DataPanel(second.Name.Humanize(),
+                                    component: DataPanel(l(second.Name.Humanize()),
                                         parameters:
                                         [
                                             Parameter("count", SelectButton(Inline(Enum.GetNames<CountOptions>()), stateful: true),
@@ -395,7 +401,7 @@ public class ConfigurationOverriderFeature : IFeature
                 pages.Add(MenuPage("specs",
                     filterPageContextKey: "menu-page",
                     header: PageTitle(
-                      title: "Specs",
+                      title: l("Specs"),
                       description: l("All_ui_specs_are_listed_here"),
                       actions: [Filter(placeholder: "Filter", pageContextKey: "menu-page")]
                     ),
@@ -409,7 +415,7 @@ public class ConfigurationOverriderFeature : IFeature
                                 .. section.Links.Select(link =>
                                     Filterable(
                                         title: l(link.Title),
-                                        component: CardLink($"/specs/{link.Title.Kebaberize()}", link.Title,
+                                        component: CardLink($"/specs/{link.Title.Kebaberize()}", l(link.Title),
                                             icon: "pi pi-microchip",
                                             description: l(link.Description)
                                         )
