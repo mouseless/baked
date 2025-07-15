@@ -179,7 +179,7 @@ public class ConfigurationOverriderFeature : IFeature
 
         configurator.ConfigureAppDescriptor(app =>
         {
-            configurator.UsingNewLocale(l =>
+            configurator.UsingLocalization(l =>
             {
                 app.Error = ErrorPage(
                     safeLinks:
@@ -200,7 +200,7 @@ public class ConfigurationOverriderFeature : IFeature
 
         configurator.ConfigureLayoutDescriptors(layouts =>
         {
-            configurator.UsingNewLocale(l =>
+            configurator.UsingLocalization(l =>
             {
                 layouts.Add(DefaultLayout("default",
                     sideMenu: SideMenu(
@@ -235,7 +235,7 @@ public class ConfigurationOverriderFeature : IFeature
 
         configurator.ConfigurePageDescriptors(pages =>
         {
-            configurator.UsingNewLocale(l =>
+            configurator.UsingLocalization(l =>
             {
                 var headers = Inline(new { Authorization = "token-admin-ui" });
 

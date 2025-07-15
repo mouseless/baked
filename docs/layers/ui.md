@@ -31,7 +31,7 @@ This layer provides `AppDescriptor`, `ComponentExports`, `LayerDescriptors`
 and `PageDescriptors` configuration target for registering pages using 
 `ComponentDescriptor` instances. 
 
-Also this layer provides `ILocaleDictionary` and `NewLocale` configuration
+Also this layer provides `ILocaleTemplate` and `Localization` configuration
 targets to generate localization data for generated page descriptors
 
 ### `AppDescriptor`
@@ -56,14 +56,14 @@ configurator.ConfigureComponentExports(exports =>
 });
 ```
 
-### `ILocaleDictionary`
+### `ILocaleTemplate`
 
 This target is provided in `GenerateCode` phase. To configure it in a feature;
 
 ```csharp
 configurator.ConfigurePageDescriptors(pages =>
 {
-    configurator.UsingLocaleDictionay(locales =>
+    configurator.UsingLocaleTemplate(locales =>
     {
         ...
     });
@@ -81,14 +81,14 @@ configurator.ConfigureLayoutDescriptors(layouts =>
 });
 ```
 
-### `NewLocale`
+### `Localization`
 
 This target is provided in `GenerateCode` phase. To configure it in a feature;
 
 ```csharp
 configurator.ConfigurePageDescriptors(pages =>
 {
-    configurator.UsingNewLocale(l =>
+    configurator.UsingLocalization(l =>
     {
         ...
     });

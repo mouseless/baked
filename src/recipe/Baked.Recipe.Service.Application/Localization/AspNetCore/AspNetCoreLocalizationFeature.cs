@@ -24,7 +24,7 @@ public class AspNetCoreLocalizationFeature(CultureInfo _language,
 
             var localeDir = Path.Combine(Assembly.GetEntryAssembly()?.Location ?? throw new("'EntryAssembly' shoul have existed"), "../../../../Locales");
 
-            configurator.UsingLocaleDictionary(locales =>
+            configurator.UsingLocaleTemplate(locales =>
             {
                 files.AddAsJson(FillLocales(_language, localeDir, locales, defaultLanguage: true), name: $"locale.{_language.Name}", outdir: "Ui");
 
@@ -37,7 +37,7 @@ public class AspNetCoreLocalizationFeature(CultureInfo _language,
                 }
             });
 
-            Dictionary<string, string> FillLocales(CultureInfo language, string resourceDir, ILocaleDictionary locales,
+            Dictionary<string, string> FillLocales(CultureInfo language, string resourceDir, ILocaleTemplate locales,
                 bool defaultLanguage = false
             )
             {

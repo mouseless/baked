@@ -24,10 +24,10 @@ public static class UiExtensions
     public static void ConfigurePageDescriptors(this LayerConfigurator configurator, Action<PageDescriptors> configure) =>
         configurator.Configure(configure);
 
-    public static void UsingLocaleDictionary(this LayerConfigurator configurator, Action<ILocaleDictionary> locales) =>
+    public static void UsingLocaleTemplate(this LayerConfigurator configurator, Action<ILocaleTemplate> locales) =>
        configurator.Use(locales);
 
-    public static void UsingNewLocale(this LayerConfigurator configurator, Action<NewLocale> l) =>
+    public static void UsingLocalization(this LayerConfigurator configurator, Action<NewLocaleKey> l) =>
         configurator.Use(l);
 
     public static bool TryGet<TSchema>(this TypeModel type, [NotNullWhen(true)] out TSchema? schema)
