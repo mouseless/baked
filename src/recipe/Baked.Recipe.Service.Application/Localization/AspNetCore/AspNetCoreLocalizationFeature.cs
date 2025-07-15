@@ -25,13 +25,13 @@ public class AspNetCoreLocalizationFeature(CultureInfo _language,
 
             configurator.UsingLocaleTemplate(localeTemplate =>
             {
-                files.AddAsJson(new LocalizedTexts(_language, localeTemplate).UseRestext(localeDir, defaultLanguage: true), name: $"locale.{_language.Name}", outdir: "Ui");
+                files.AddAsJson(new LocalizedTexts(_language, localeTemplate).With(localeDir, defaultLanguage: true), name: $"locale.{_language.Name}", outdir: "Ui");
 
                 if (_otherLanguages is not null)
                 {
                     foreach (var language in _otherLanguages)
                     {
-                        files.AddAsJson(new LocalizedTexts(language, localeTemplate).UseRestext(localeDir), name: $"locale.{language.Name}", outdir: "Ui");
+                        files.AddAsJson(new LocalizedTexts(language, localeTemplate).With(localeDir), name: $"locale.{language.Name}", outdir: "Ui");
                     }
                 }
             });

@@ -3,12 +3,10 @@ using System.Globalization;
 
 namespace Baked.Localization.AspNetCore;
 
-public class LocalizedTexts(
-    CultureInfo _language,
-    ILocaleTemplate _template
-) : Dictionary<string, string>(_template)
+public class LocalizedTexts(CultureInfo _language, ILocaleTemplate _template)
+    : Dictionary<string, string>(_template)
 {
-    public LocalizedTexts UseRestext(string resourceDir,
+    public LocalizedTexts With(string resourceDir,
         bool defaultLanguage = false
     )
     {
