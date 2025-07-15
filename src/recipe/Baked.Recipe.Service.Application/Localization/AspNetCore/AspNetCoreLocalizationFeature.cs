@@ -1,6 +1,5 @@
 using Baked.Architecture;
 using Baked.Testing;
-using Baked.Ui;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
@@ -26,38 +25,16 @@ public class AspNetCoreLocalizationFeature(CultureInfo _language,
 
             configurator.UsingLocaleTemplate(locales =>
             {
-                files.AddAsJson(FillLocales(_language, localeDir, locales, defaultLanguage: true), name: $"locale.{_language.Name}", outdir: "Ui");
+                files.AddAsJson(new LocalizedTexts(_language, locales).UseRestext(localeDir, defaultLanguage: true), name: $"locale.{_language.Name}", outdir: "Ui");
 
                 if (_otherLanguages is not null)
                 {
                     foreach (var language in _otherLanguages)
                     {
-                        files.AddAsJson(FillLocales(language, localeDir, locales), name: $"locale.{language.Name}", outdir: "Ui");
+                        files.AddAsJson(new LocalizedTexts(language, locales).UseRestext(localeDir), name: $"locale.{language.Name}", outdir: "Ui");
                     }
                 }
             });
-
-            Dictionary<string, string> FillLocales(CultureInfo language, string resourceDir, ILocaleTemplate locales,
-                bool defaultLanguage = false
-            )
-            {
-                var result = new Dictionary<string, string>(locales);
-
-                var resourceFilePath = Path.Combine(resourceDir, defaultLanguage ? $"locale.restext" : $"locale.{language.Name}.restext");
-                if (File.Exists(resourceFilePath))
-                {
-                    var values = AspNetCoreLocalizationExtensions.ReadResxFileAsDictionary(resourceFilePath);
-                    foreach (var (key, value) in values)
-                    {
-                        if (result.ContainsKey(key))
-                        {
-                            result[key] = value;
-                        }
-                    }
-                }
-
-                return result;
-            }
         });
 
         configurator.ConfigureServiceCollection(services =>
