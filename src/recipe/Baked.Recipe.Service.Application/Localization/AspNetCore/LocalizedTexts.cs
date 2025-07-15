@@ -15,7 +15,7 @@ public class LocalizedTexts(
         var resourceFilePath = Path.Combine(resourceDir, defaultLanguage ? $"locale.restext" : $"locale.{_language.Name}.restext");
         if (File.Exists(resourceFilePath))
         {
-            var values = new Dictionary<string, string>();
+
             using (StreamReader reader = new(resourceFilePath))
             {
                 string? line = reader.ReadLine();
@@ -24,18 +24,13 @@ public class LocalizedTexts(
                     if (!string.IsNullOrWhiteSpace(line.Trim()))
                     {
                         var keyValue = line.Split('=', StringSplitOptions.TrimEntries);
-                        values.TryAdd(keyValue[0], keyValue[1]);
+                        if (ContainsKey(keyValue[0]))
+                        {
+                            this[keyValue[0]] = keyValue[1];
+                        }
                     }
 
                     line = reader.ReadLine();
-                }
-            }
-
-            foreach (var (key, value) in values)
-            {
-                if (ContainsKey(key))
-                {
-                    this[key] = value;
                 }
             }
         }

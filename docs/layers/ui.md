@@ -63,7 +63,7 @@ This target is provided in `GenerateCode` phase. To configure it in a feature;
 ```csharp
 configurator.ConfigurePageDescriptors(pages =>
 {
-    configurator.UsingLocaleTemplate(locales =>
+    configurator.UsingLocaleTemplate(localeTemplate =>
     {
         ...
     });

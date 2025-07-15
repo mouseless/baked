@@ -15,12 +15,12 @@ public class UiLayer : LayerBase<GenerateCode>
     public ComponentExports _componentExports = new();
     public LayoutDescriptors _layoutDescriptors = new();
     public PageDescriptors _pageDescriptors = new();
-    public LocaleTemplate _localeDictionary = new();
+    public LocaleTemplate _localeTemplate = new();
     NewLocaleKey LocaleKeyFactory => (key, value) =>
     {
         value ??= key;
 
-        return _localeDictionary[key] = value;
+        return _localeTemplate[key] = value;
     };
 
     protected override PhaseContext GetContext(GenerateCode phase)
@@ -36,7 +36,7 @@ public class UiLayer : LayerBase<GenerateCode>
             .OnDispose(() =>
             {
                 GenerateUiSchemas();
-                Context.Add<ILocaleTemplate>(_localeDictionary);
+                Context.Add<ILocaleTemplate>(_localeTemplate);
             })
             .Build();
     }
