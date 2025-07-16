@@ -102,8 +102,10 @@ public static class CodeGenerationExtensions
         generatedFiles.Add(new(name) { Content = content, Extension = extension, Outdir = outdir });
     }
 
-    public static void AddAsJson<T>(this IGeneratedFileCollection generatedFiles, T instance) =>
-        generatedFiles.AddAsJson(typeof(T).Name, instance);
+    public static void AddAsJson<T>(this IGeneratedFileCollection generatedFiles, T instance,
+        string? name = default,
+        string? outdir = default
+    ) => generatedFiles.AddAsJson(name ?? typeof(T).Name, instance, outdir: outdir);
 
     public static void AddAsJson<T>(this IGeneratedFileCollection generatedFiles, string name, T instance,
         JsonSerializerSettings? settings = default,

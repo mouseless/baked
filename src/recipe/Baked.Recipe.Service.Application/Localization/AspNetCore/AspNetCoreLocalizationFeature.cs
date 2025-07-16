@@ -14,6 +14,29 @@ public class AspNetCoreLocalizationFeature(CultureInfo _language,
 {
     public void Configure(LayerConfigurator configurator)
     {
+        configurator.ConfigureGeneratedFileCollection(files =>
+        {
+            if (configurator.IsNfr())
+            {
+                return;
+            }
+
+            var localeDir = Path.Combine(Assembly.GetEntryAssembly()?.Location ?? throw new("'EntryAssembly' shoul have existed"), "../../../../Locales");
+
+            configurator.UsingLocaleTemplate(localeTemplate =>
+            {
+                files.AddAsJson(new LocalizedTexts(_language, localeTemplate).With(localeDir, defaultLanguage: true), name: $"locale.{_language.Name}", outdir: "Ui");
+
+                if (_otherLanguages is not null)
+                {
+                    foreach (var language in _otherLanguages)
+                    {
+                        files.AddAsJson(new LocalizedTexts(language, localeTemplate).With(localeDir), name: $"locale.{language.Name}", outdir: "Ui");
+                    }
+                }
+            });
+        });
+
         configurator.ConfigureServiceCollection(services =>
         {
             services.AddLocalization(option => option.ResourcesPath = "Locales");

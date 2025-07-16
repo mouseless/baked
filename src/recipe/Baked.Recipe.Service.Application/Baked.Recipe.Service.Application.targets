@@ -19,6 +19,10 @@
   </Target>
 
   <Target Name="CopyComponentDescriptors" AfterTargets="AfterBuild" Condition="$(CopyComponentDescriptors)">
+    <PropertyGroup>
+      <ComponentDescriptorsDir>$(UiAppDir)\.baked</ComponentDescriptorsDir>
+    </PropertyGroup>
+    
     <MakeDir Directories="$(ComponentDescriptorsDir)" Condition="!Exists($(ComponentDescriptorsDir))"/>
 
     <PropertyGroup>
