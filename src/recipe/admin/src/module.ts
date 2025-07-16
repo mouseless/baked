@@ -71,6 +71,7 @@ export default defineNuxtModule<ModuleOptions>({
     // by pushing instead of setting, it allows custom css
     _nuxt.options.css.push("primeicons/primeicons.css");
     _nuxt.options.css.push(resolver.resolve("./runtime/assets/theme/datatable.css"));
+    _nuxt.options.css.push(resolver.resolve("./runtime/assets/theme/menu.css"));
     _nuxt.options.css.push(resolver.resolve("./runtime/assets/overrides.css"));
 
     // below settings cannot be overriden
