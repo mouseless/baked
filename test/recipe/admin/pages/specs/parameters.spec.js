@@ -47,7 +47,6 @@ test("unique key changes with parameter values", async({page}) => {
 });
 
 test("'onChanged' is emitted before 'onReady' when initialized", async({page}) => {
-  const component = page.getByTestId(id.component);
   const readyValues = page.getByTestId(id.onReadyValues);
   const uniqueKey = page.getByTestId(id.uniqueKey);
 
@@ -59,7 +58,7 @@ test("'onChanged' is emitted before 'onReady' when parameters are changed", asyn
   const component = page.getByTestId(id.component);
   const readyValues = page.getByTestId(id.onReadyValues);
   const uniqueKey = page.getByTestId(id.uniqueKey);
-  
+
   await component.getByTestId("required-with-default").fill("value 1");
 
   await expect(readyValues).toHaveText("value 1");
