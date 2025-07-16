@@ -9,19 +9,14 @@ namespace Baked.Ui;
 
 public class UiLayer : LayerBase<GenerateCode>
 {
-    public delegate string NewLocaleKey(string key, string? value = default);
+    public delegate string NewLocaleKey(string key);
 
     public AppDescriptor _appDescriptor = new();
     public ComponentExports _componentExports = new();
     public LayoutDescriptors _layoutDescriptors = new();
     public PageDescriptors _pageDescriptors = new();
     public LocaleTemplate _localeTemplate = new();
-    NewLocaleKey LocaleKeyFactory => (key, value) =>
-    {
-        value ??= key;
-
-        return _localeTemplate[key] = value;
-    };
+    NewLocaleKey LocaleKeyFactory => (key) => _localeTemplate[key] = key;
 
     protected override PhaseContext GetContext(GenerateCode phase)
     {
