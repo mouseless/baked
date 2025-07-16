@@ -16,11 +16,11 @@ public class UiLayer : LayerBase<GenerateCode>
     public LayoutDescriptors _layoutDescriptors = new();
     public PageDescriptors _pageDescriptors = new();
     public LocaleTemplate _localeTemplate = new();
-    NewLocaleKey LocaleKeyFactory => (key) => _localeTemplate[key] = key;
 
     protected override PhaseContext GetContext(GenerateCode phase)
     {
-        Context.Add(LocaleKeyFactory);
+        NewLocaleKey localeKeyFactory = (key) => _localeTemplate[key] = key;
+        Context.Add(localeKeyFactory);
 
         return phase.CreateContextBuilder()
             .Add(_appDescriptor)
