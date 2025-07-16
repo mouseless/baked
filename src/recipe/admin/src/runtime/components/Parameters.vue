@@ -44,14 +44,14 @@ onMounted(async() => {
 });
 
 // initial emit in case it is already ready using default parameters
-emitReady();
 emitChanged();
+emitReady();
 
 // when any of the parameter values changed from input components, it emits
 // ready and changed
 watch(Object.values(values), async() => {
-  emitReady();
   emitChanged();
+  emitReady();
 });
 
 function emitReady() {
