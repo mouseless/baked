@@ -13,7 +13,6 @@ public class LocalizedTexts(CultureInfo _language, ILocaleTemplate _template)
         var resourceFilePath = Path.Combine(resourceDir, defaultLanguage ? $"locale.restext" : $"locale.{_language.Name}.restext");
         if (File.Exists(resourceFilePath))
         {
-
             using (StreamReader reader = new(resourceFilePath))
             {
                 string? line = reader.ReadLine();
