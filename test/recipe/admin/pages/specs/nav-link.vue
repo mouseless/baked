@@ -16,7 +16,7 @@ const variants = [
       textProp: "name",
       data: {
         id: "test-id",
-        name: "TEST"
+        name: "Spec.Name"
       }
     })
   }

@@ -33,6 +33,15 @@
       <span class="text-gray-500">unique-key=</span>
       <span data-testid="unique-key">{{ uniqueKey }}</span>
     </div>
+    <Message severity="info">
+      <span class="text-xl">
+        ⬇️  Check if 'readyValues' same with 'uniqueKey' ⬇️
+      </span>
+    </Message>
+    <div class="border-4 border-gray-500 rounded p-4">
+      <span class="text-gray-500">onReadyValues-key=</span>
+      <span data-testid="onReadyValues-key">{{ readyValues }}</span>
+    </div>
   </UiSpec>
 </template>
 <script setup>
@@ -42,6 +51,7 @@ import giveMe from "~/utils/giveMe";
 
 const ready = ref();
 const uniqueKey = ref();
+const readyValues = ref();
 
 const parameters = [
   giveMe.aParameter({
@@ -63,6 +73,7 @@ const parameters = [
 
 function onReady(value) {
   ready.value = value;
+  readyValues.value = uniqueKey.value;
 }
 
 function onChanged(event) {

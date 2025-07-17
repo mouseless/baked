@@ -7,17 +7,18 @@
     v-else-if="data"
     as="router-link"
     link
-    :label="text"
+    :label="l(text)"
     :to
   />
 </template>
 <script setup>
 import { computed } from "vue";
 import { Button, Skeleton } from "primevue";
-import { useContext, useDataFetcher } from "#imports";
+import { useContext, useDataFetcher, useLocalization } from "#imports";
 
 const context = useContext();
 const dataFetcher = useDataFetcher();
+const { localize:l } = useLocalization();
 
 const { schema, data } = defineProps({
   schema: { type: null, required: true },

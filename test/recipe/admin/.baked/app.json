@@ -36,8 +36,21 @@
           "order": 0
         }
       ],
-      "defaultAlertTitle": "Unexpected Error",
-      "defaultAlertMessage": "Please contact system administrator"
+      "defaultAlertTitle": "Unexpected_Error",
+      "defaultAlertMessage": "Please_contact_system_administrator"
+    },
+    {
+      "name": "localization",
+      "supportedLanguages": [
+        {
+          "code": "en",
+          "name": "English"
+        },
+        {
+          "code": "tr",
+          "name": "Turkish"
+        }
+      ]
     }
   ],
   "error": {
@@ -45,19 +58,19 @@
     "schema": {
       "errorInfos": {
         "403": {
-          "title": "Access Denied",
-          "message": "You do not have the permision to view the address or data specified."
+          "title": "Access_Denied",
+          "message": "You_do_not_have_the_permision_to_view_the_address_or_data_specified"
         },
         "404": {
-          "title": "Page Not Found",
-          "message": "The page you want to view is etiher deleted or outdated."
+          "title": "Page_Not_Found",
+          "message": "The_page_you_want_to_view_is_etiher_deleted_or_outdated"
         },
         "500": {
-          "title": "Unexpected Error",
-          "message": "Please contact system administrator."
+          "title": "Unexpected_Error",
+          "message": "Please_contact_system_administrator"
         }
       },
-      "footerInfo": "If you cannot reach the page you want, please contact the system administrator.",
+      "footerInfo": "If_you_cannot_reach_the_page_you_want_please_contact_the_system_administrator",
       "safeLinks": [
         {
           "type": "CardLink",
@@ -76,12 +89,28 @@
           }
         }
       ],
-      "safeLinksMessage": "Try the links from the menu below to view the page you want to access."
+      "safeLinksMessage": "Try_the_links_from_the_menu_below_to_view_the_page_you_want_to_access"
     },
     "data": {
       "type": "Computed",
       "composable": "useNuxtError",
       "args": []
     }
+  },
+  "i18n": {
+    "defaultLanguage": {
+      "code": "en",
+      "name": "English"
+    },
+    "supportedLanguages": [
+      {
+        "code": "en",
+        "name": "English"
+      },
+      {
+        "code": "tr",
+        "name": "Turkish"
+      }
+    ]
   }
 }

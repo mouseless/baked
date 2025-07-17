@@ -43,6 +43,7 @@ export default defineNuxtPlugin({
         const redirectPath = await dataFetcher.fetch({ data: handler.behaviorArgument });
         router.replace(redirectPath);
       } else {
+        console.error(error);
         showError(error);
       }
     }

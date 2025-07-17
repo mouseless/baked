@@ -1,25 +1,16 @@
 import { defineNuxtModule, addComponentsDir, addImportsDir, addPlugin, createResolver, installModule } from "@nuxt/kit";
+import type { NuxtI18nOptions } from "@nuxtjs/i18n";
 
 export interface ModuleOptions {
   app?: any,
+  components?: Components,
+  composables: Composables,
   primevue: PrimeVueOptions,
-  components?: Components
-  composables: Composables
+  i18n: NuxtI18nOptions
 }
 
 export interface Components {
-  DataPanel?: DataPanelOptions,
-  MenuPage?: MenuPageOptions,
   Page?: PageOptions,
-  ReportPage?: ReportPageOptions
-}
-
-export interface DataPanelOptions {
-  requiredMessage?: String
-}
-
-export interface MenuPageOptions {
-  notFoundMessage?: String
 }
 
 export interface PageOptions {
@@ -29,10 +20,6 @@ export interface PageOptions {
 export interface PrimeVueOptions {
   theme: any,
   locale?: any
-}
-
-export interface ReportPageOptions {
-  requiredMessage?: String
 }
 
 export interface Composables {
@@ -73,6 +60,7 @@ export default defineNuxtModule<ModuleOptions>({
   // carefully.
   async setup(_options, _nuxt) {
     const resolver = createResolver(import.meta.url);
+    const entryProjectResolver = createResolver(_nuxt.options.rootDir);
 
     // passing module's options to runtime config for further access
     _nuxt.options.runtimeConfig.public.error = _options.app?.error;
@@ -83,6 +71,7 @@ export default defineNuxtModule<ModuleOptions>({
     // by pushing instead of setting, it allows custom css
     _nuxt.options.css.push("primeicons/primeicons.css");
     _nuxt.options.css.push(resolver.resolve("./runtime/assets/theme/datatable.css"));
+    _nuxt.options.css.push(resolver.resolve("./runtime/assets/theme/menu.css"));
     _nuxt.options.css.push(resolver.resolve("./runtime/assets/overrides.css"));
 
     // below settings cannot be overriden
@@ -91,14 +80,9 @@ export default defineNuxtModule<ModuleOptions>({
     _nuxt.options.features.inlineStyles = false;
     _nuxt.options.ssr = false;
 
-    // default dirs and plugins
+    // default dirs
     addComponentsDir({ path: resolver.resolve("./runtime/components") });
     addImportsDir(resolver.resolve("./runtime/composables"));
-    addPlugin(resolver.resolve("./runtime/plugins/addPrimeVue"));
-    addPlugin(resolver.resolve("./runtime/plugins/setupBaked"));
-    addPlugin(resolver.resolve("./runtime/plugins/mutex"));
-    addPlugin(resolver.resolve("./runtime/plugins/toast"));
-    addPlugin(resolver.resolve("./runtime/plugins/trailingSlash"));
 
     // plugins that comes through the app descriptor
     for(const plugin of _options.app?.plugins ?? []) {
@@ -106,6 +90,38 @@ export default defineNuxtModule<ModuleOptions>({
       addPlugin(resolver.resolve(`./runtime/plugins/${plugin.name}`));
     }
 
+    //  default plugins (last add, first run)
+    addPlugin(resolver.resolve("./runtime/plugins/mutex"));
+    addPlugin(resolver.resolve("./runtime/plugins/toast"));
+    addPlugin(resolver.resolve("./runtime/plugins/trailingSlash"));
+    addPlugin(resolver.resolve("./runtime/plugins/setupBaked"));
+    addPlugin(resolver.resolve("./runtime/plugins/primeVue"));
+    addPlugin(resolver.resolve("./runtime/plugins/fetch"), {});
+
+    await installModule("@nuxtjs/i18n", {
+      vueI18n: entryProjectResolver.resolve("./i18n.config.ts"),
+      restructureDir: false,
+      langDir: entryProjectResolver.resolve("./locales"),
+      strategy: "no_prefix",
+      locales: _options.app?.i18n.supportedLanguages.map((i: any) => {
+
+        const files = [entryProjectResolver.resolve(`./.baked/locale.${i.code}.json`)];
+        entryProjectResolver.resolvePath(`./locales/locale.${i.code}.json`)
+          .then((path) => files.push(path) )
+          .catch(_ => {});
+
+        return {
+          code: i.code,
+          name: i.name,
+          files: files
+        }
+      }),
+      defaultLocale: _options.app?.i18n.defaultLanguage,
+      detectBrowserLanguage: {
+        useCookie: true,
+        cookieKey: 'i18n_cookie'
+      }
+    });
     await installModule("@nuxtjs/tailwindcss", {
       exposeConfig: true,
       cssPath: resolver.resolve("./runtime/assets/tailwind.css"),

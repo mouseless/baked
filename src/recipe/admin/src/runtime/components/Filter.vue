@@ -4,15 +4,16 @@
     <InputText
       v-model="page[pageContextKey]"
       autofocus
-      :placeholder
+      :placeholder="l(placeholder)"
     />
   </IconField>
 </template>
 <script setup>
 import { IconField, InputIcon, InputText } from "primevue";
-import { useContext } from "#imports";
+import { useContext, useLocalization } from "#imports";
 
 const context = useContext();
+const { localize: l } = useLocalization();
 
 const { schema } = defineProps({
   schema: { type: null, required: true },

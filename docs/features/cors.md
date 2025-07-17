@@ -9,7 +9,7 @@ Add this feature using `AddCors()` extension;
 app.Features.AddCors();
 ```
 
-## AspNetCore
+## ASP.NET Core
 
 This feature adds `AspNetCore` cors services and middleware.
 

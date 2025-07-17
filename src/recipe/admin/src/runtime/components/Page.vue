@@ -1,6 +1,6 @@
 <template>
   <Bake
-    name="page"
+    :name="name"
     :descriptor="descriptor"
     :class="classes"
   />
@@ -22,5 +22,5 @@ useHead({ title: components?.Page?.title });
 context.setPage(reactive({}));
 const name = route.params?.baked === "" ? "index" : route.params?.baked.join("/");
 const descriptor = await pages.fetch(name);
-const classes = asClasses(name, "b-route--");
+const classes = [asClasses("page"), asClasses(name, "b-route--")];
 </script>

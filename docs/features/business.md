@@ -9,7 +9,7 @@ app.Features.AddBusiness(...);
 ## Domain Assemblies
 
 Adds domain types from given assemblies, configures domain model builder with
-standard behavior, registers embedded file providers for given assemblies and 
+standard behavior, registers embedded file providers for given assemblies and
 builds api model out of domain model.
 
 All types from domain assemblies are treated as domain types except exceptions,

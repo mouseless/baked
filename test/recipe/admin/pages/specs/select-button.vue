@@ -14,7 +14,8 @@ const variants = [
   {
     name: "Base",
     descriptor: giveMe.aSelectButton({
-      data: ["OPTION 1", "OPTION 2"]
+      localizeLabel: true,
+      data: ["OPTION_1", "OPTION_2"]
     }),
     model: ref()
   },
@@ -23,9 +24,10 @@ const variants = [
     descriptor: giveMe.aSelectButton({
       optionLabel: "label",
       optionValue: "value",
+      localizeLabel: true,
       data: [
-        { label: "LABEL 1", value: "VALUE_1" },
-        { label: "LABEL 2", value: "VALUE_2" }
+        { label: "Spec.Label_1", value: "VALUE_1" },
+        { label: "Spec.Label_2", value: "VALUE_2" }
       ]
     }),
     model: ref()

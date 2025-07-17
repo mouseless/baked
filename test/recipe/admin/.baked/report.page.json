@@ -4,7 +4,7 @@
     "path": "report",
     "title": {
       "title": "Report",
-      "description": "Showcases a report layout with tabs and data panels",
+      "description": "Showcases_a_report_layout_with_tabs_and_data_panels",
       "actions": []
     },
     "queryParameters": [
@@ -18,19 +18,20 @@
         "component": {
           "type": "Select",
           "schema": {
-            "label": "Required w/ Default",
+            "label": "Required_w_default",
             "optionLabel": "text",
-            "optionValue": "value"
+            "optionValue": "value",
+            "localizeLabel": true
           },
           "data": {
             "type": "Inline",
             "value": [
               {
-                "text": "Required w/ Default 1",
+                "text": "Required_w_default_1",
                 "value": "rwd-1"
               },
               {
-                "text": "Required w/ Default 2",
+                "text": "Required_w_default_2",
                 "value": "rwd-2"
               }
             ]
@@ -43,7 +44,8 @@
         "component": {
           "type": "Select",
           "schema": {
-            "label": "Required"
+            "label": "Required",
+            "localizeLabel": true
           },
           "data": {
             "type": "Inline",
@@ -59,7 +61,8 @@
         "component": {
           "type": "SelectButton",
           "schema": {
-            "allowEmpty": true
+            "allowEmpty": true,
+            "localizeLabel": true
           },
           "data": {
             "type": "Inline",
@@ -74,7 +77,7 @@
     "tabs": [
       {
         "id": "single-value",
-        "title": "Single Value",
+        "title": "Single_value",
         "contents": [
           {
             "component": {
@@ -85,6 +88,7 @@
                   "value": "Get wide"
                 },
                 "collapsed": false,
+                "localizeTitle": true,
                 "parameters": [],
                 "content": {
                   "type": "String",
@@ -117,6 +121,7 @@
                   "value": "Get left"
                 },
                 "collapsed": true,
+                "localizeTitle": true,
                 "parameters": [],
                 "content": {
                   "type": "String",
@@ -150,6 +155,7 @@
                   "value": "Get right"
                 },
                 "collapsed": true,
+                "localizeTitle": true,
                 "parameters": [],
                 "content": {
                   "type": "String",
@@ -184,7 +190,7 @@
       },
       {
         "id": "data-table",
-        "title": "Data Table",
+        "title": "Data_table",
         "contents": [
           {
             "component": {
@@ -194,6 +200,7 @@
                   "type": "Inline",
                   "value": "Get first"
                 },
+                "localizeTitle": true,
                 "parameters": [
                   {
                     "name": "count",
@@ -205,6 +212,7 @@
                       "type": "Select",
                       "schema": {
                         "label": "Count",
+                        "localizeLabel": true,
                         "stateful": true
                       },
                       "data": {
@@ -309,6 +317,7 @@
                   "value": "Get second"
                 },
                 "collapsed": true,
+                "localizeTitle": true,
                 "parameters": [
                   {
                     "name": "count",
@@ -319,6 +328,7 @@
                     "component": {
                       "type": "SelectButton",
                       "schema": {
+                        "localizeLabel": true,
                         "stateful": true
                       },
                       "data": {

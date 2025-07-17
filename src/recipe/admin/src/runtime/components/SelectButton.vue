@@ -10,17 +10,21 @@
     v-model="selected"
     :options="data"
     :allow-empty
-    :option-label="optionLabel"
     :data-key="optionValue"
     :pt="{ pcToggleButton: { root: { class: 'text-[length:inherit]' } } }"
-  />
+  >
+    <template #option="slotProps">
+      <span>{{ getOptionLabel(slotProps) }}</span>
+    </template>
+  </SelectButton>
 </template>
 <script setup>
 import { ref, watch } from "vue";
 import { SelectButton, Skeleton } from "primevue";
-import { useContext, useUiStates } from "#imports";
+import { useContext, useLocalization, useUiStates } from "#imports";
 
 const context = useContext();
+const { localize: l } = useLocalization();
 const { value: { selectButtonStates } } = useUiStates();
 
 const { schema, data } = defineProps({
@@ -29,7 +33,7 @@ const { schema, data } = defineProps({
 });
 const model = defineModel({ type: null, required: true });
 
-const { allowEmpty, optionLabel, optionValue, stateful } = schema;
+const { allowEmpty, localizeLabel, optionLabel, optionValue, stateful } = schema;
 
 const loading = context.loading();
 const path = context.path();
@@ -48,6 +52,12 @@ if(!loading.value) {
 // two way binding between model and selected
 watch(model, newModel => setSelected(newModel));
 watch(selected, newSelected => setModel(newSelected));
+
+function getOptionLabel(slotProps) {
+  const result = slotProps.option[optionLabel] ?? slotProps.option;
+
+  return localizeLabel ? l(result) : result;
+}
 
 function setModel(selected) {
   const selectedValue = optionValue ? selected?.[optionValue] : selected;

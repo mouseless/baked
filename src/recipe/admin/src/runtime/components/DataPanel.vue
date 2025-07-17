@@ -1,7 +1,7 @@
 <template>
   <Panel
     ref="panel"
-    :header="title"
+    :header="localizeTitle ? l(title) : title"
     :collapsed="collapsedState"
     toggleable
     :pt="{ headerActions: { class: 'flex gap-2 items-center' } }"
@@ -35,22 +35,22 @@
         severity="info"
       >
         <i class="pi pi-info-circle" />
-        <span class="ml-3">{{ components?.DataPanel?.requiredMessage || "Select required values to view this data" }}</span>
+        <span class="ml-3">{{ lc("Select_required_values_to_view_this_data") }}</span>
       </Message>
     </template>
   </Panel>
 </template>
 <script setup>
 import { computed, onMounted, ref, useTemplateRef } from "vue";
-import { useRuntimeConfig } from "#app";
 import { Message, Panel } from "primevue";
 import { Bake, Parameters } from "#components";
-import { useContext, useDataFetcher, useUiStates } from "#imports";
+import { useContext, useDataFetcher, useUiStates, useLocalization } from "#imports";
 
 const { value: { panelStates } } = useUiStates();
 const context = useContext();
 const dataFetcher = useDataFetcher();
-const { public: { components } } = useRuntimeConfig();
+const { localize: l } = useLocalization();
+const { localize: lc } = useLocalization("DataPanel");
 const panel = useTemplateRef("panel");
 
 const { schema } = defineProps({
@@ -58,7 +58,7 @@ const { schema } = defineProps({
   data: { type: null, default: null }
 });
 
-const { collapsed, content, parameters, title: titleData } = schema;
+const { collapsed, content, localizeTitle, parameters, title: titleData } = schema;
 
 const injectedData = context.injectedData();
 const path = context.path();

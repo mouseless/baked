@@ -1,20 +1,18 @@
 import { defineNuxtPlugin, useNuxtApp, useRoute, useRuntimeConfig } from "#app";
-import { ofetch } from "ofetch";
 import useToken from "../composables/useToken";
 
 export default defineNuxtPlugin({
   name: "auth",
   enforce: "pre",
   setup(nuxtApp) {
-    const { public: { auth, composables } } = useRuntimeConfig();
+    const { $fetchInterceptors } = nuxtApp;
+    const { public: { auth } } = useRuntimeConfig();
     const token = useToken();
     const router = nuxtApp.$router;
 
-    globalThis.$fetch = ofetch.create({
-      async onRequest({ request, options }) {
-        // filters out `/_nuxt` calls and any other non api calls
-        if(options.baseURL !== composables.useDataFetcher.baseURL) { return; }
-
+    $fetchInterceptors.register(
+      "auth",
+      async({ request, options }) => {
         // filters out any api call that already has an authorization header,
         // such as refresh token api call
         if(options.headers.has("Authorization") || options.headers.has("authorization")) { return; }
@@ -31,8 +29,9 @@ export default defineNuxtPlugin({
         }
 
         options.headers.set("Authorization", "Bearer " + result?.access );
-      }
-    });
+      },
+      10
+    );
 
     router.beforeEach(async(to, _) => {
       for(const route of auth.anonymousPageRoutes) {

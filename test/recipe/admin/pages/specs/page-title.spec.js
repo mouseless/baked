@@ -10,13 +10,13 @@ test.describe("Base", () => {
   test("title", async({page}) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator("h1")).toHaveText("PAGE TITLE");
+    await expect(component.locator("h1")).toHaveText("Title");
   });
 
   test("description", async({page}) => {
     const component = page.getByTestId(id);
 
-    await expect(component.getByTestId("description")).toHaveText("PAGE DESCRIPTION");
+    await expect(component.getByTestId("description")).toHaveText("Description");
   });
 });
 

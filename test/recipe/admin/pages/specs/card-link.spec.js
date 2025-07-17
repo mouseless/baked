@@ -23,13 +23,13 @@ test.describe("Base", () => {
   test("title", async({page}) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator("h2")).toHaveText("CARD TITLE");
+    await expect(component.locator("h2")).toHaveText("Title");
   });
 
   test("description", async({page}) => {
     const component = page.getByTestId(id);
 
-    await expect(component.getByTestId("description")).toHaveText("CARD DESCRIPTION");
+    await expect(component.getByTestId("description")).toHaveText("Description");
   });
 
   test("visual", { tag: "@visual" }, async({page}) => {
@@ -67,6 +67,6 @@ test.describe("Disabled", () => {
   test("disabled with a reason notice", async({page}) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator(primevue.tag.base)).toHaveText("SOON");
+    await expect(component.locator(primevue.tag.base)).toHaveText("Soon");
   });
 });

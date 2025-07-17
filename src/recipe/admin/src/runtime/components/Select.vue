@@ -13,20 +13,29 @@
       v-model="selected"
       :input-id="path"
       :options="data"
-      :option-label="optionLabel"
       :placeholder="label"
       :show-clear
       class="hide-placeholder"
-    />
-    <label for="period">{{ label }}</label>
+    >
+      <template #value="slotProps">
+        <span>
+          {{ getValueLabel(slotProps) }}
+        </span>
+      </template>
+      <template #option="slotProps">
+        <span>{{ getOptionLabel(slotProps) }}</span>
+      </template>
+    </Select>
+    <label for="period">{{ l(label) }}</label>
   </FloatLabel>
 </template>
 <script setup>
 import { ref, watch } from "vue";
 import { FloatLabel, Select, Skeleton } from "primevue";
-import { useContext, useUiStates } from "#imports";
+import { useContext, useUiStates, useLocalization } from "#imports";
 
 const context = useContext();
+const { localize: l } = useLocalization();
 const { value: { selectStates } } = useUiStates();
 
 const { schema, data } = defineProps({
@@ -35,7 +44,7 @@ const { schema, data } = defineProps({
 });
 const model = defineModel({ type: null, required: true });
 
-const { label, optionLabel, optionValue, showClear, stateful } = schema;
+const { label, localizeLabel, optionLabel, optionValue, showClear, stateful } = schema;
 
 const loading = context.loading();
 const path = context.path();
@@ -54,6 +63,18 @@ if(!loading.value) {
 // two way binding between model and selected
 watch(model, newModel => setSelected(newModel));
 watch(selected, newSelected => setModel(newSelected));
+
+function getOptionLabel(slotProps) {
+  const result = slotProps.option[optionLabel] ?? slotProps.option;
+
+  return localizeLabel ? l(result) : result;
+}
+
+function getValueLabel(slotProps) {
+  const result = slotProps.value?.[optionLabel] ?? slotProps.value ?? label;
+
+  return localizeLabel ? l(result) : result;
+}
 
 function setModel(selected) {
   const selectedValue = optionValue ? selected?.[optionValue] : selected;

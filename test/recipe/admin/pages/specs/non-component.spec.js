@@ -15,8 +15,12 @@ test.describe("Layout", () => {
 });
 
 test.describe("Page", () => {
-  test("has path marker class", async({page}) => {
+  test("has 'page' marker class", async({page}) => {
     await expect(page.locator(".b--page")).toBeAttached();
+  });
+
+  test("has path marker class", async({page}) => {
+    await expect(page.locator(".b--index")).toBeAttached();
   });
 
   test("has component type marker class", async({page}) => {

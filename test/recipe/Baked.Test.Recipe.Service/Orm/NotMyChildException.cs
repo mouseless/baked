@@ -3,4 +3,6 @@
 namespace Baked.Test.Orm;
 
 public class NotMyChildException(Child child)
-    : HandledException($"Child#{child.Id} does not belong this parent");
+    : HandledException("Child_ID_does_not_belong_this_parent",
+        extraData: new() { ["Id"] = child.Id.ToString() }
+    );

@@ -34,7 +34,12 @@ public static class Components
     public static ComponentDescriptorAttribute<DataPanel> DataPanel(IData title, IComponentDescriptor content,
         IEnumerable<Parameter>? parameters = default,
         bool? collapsed = default
-    ) => new(new(title, content) { Collapsed = collapsed, Parameters = [.. parameters ?? []] });
+    ) => new(new(title, content)
+    {
+        Collapsed = collapsed,
+        LocalizeTitle = title.RequireLocalization,
+        Parameters = [.. parameters ?? []]
+    });
 
     public static ComponentDescriptorAttribute<DataTable> DataTable(
         IEnumerable<DataTable.Column>? columns = default,
@@ -119,8 +124,8 @@ public static class Components
         IData? data = default
     ) => new(
         new(
-            footerInfo ?? "If you cannot reach the page you want, please contact the system administrator.",
-            safeLinksMessage ?? "Try the links from the menu below to view the page you want to access."
+            footerInfo ?? "If_you_cannot_reach_the_page_you_want_please_contact_the_system_administrator",
+            safeLinksMessage ?? "Try_the_links_from_the_menu_below_to_view_the_page_you_want_to_access"
         )
         { ErrorInfos = (errorInfos ?? []).ToDictionary(i => i.StatusCode, i => i.Info), SafeLinks = [.. safeLinks ?? []] })
     { Data = data };
@@ -149,6 +154,9 @@ public static class Components
         string? title = default,
         string? parentRoute = default
     ) => new(route) { Icon = icon, Title = title, ParentRoute = parentRoute };
+
+    public static ComponentDescriptor LanguageSwitcher() =>
+        new(nameof(LanguageSwitcher));
 
     public static ComponentDescriptorAttribute<Icon> Icon(string iconClass) =>
         new(new(iconClass));
@@ -258,14 +266,30 @@ public static class Components
         string? optionValue = default,
         bool? showClear = default,
         bool? stateful = default
-    ) => new(new(label) { OptionLabel = optionLabel, OptionValue = optionValue, ShowClear = showClear, Stateful = stateful }) { Data = data };
+    ) => new(new(label)
+    {
+        OptionLabel = optionLabel,
+        OptionValue = optionValue,
+        LocalizeLabel = data.RequireLocalization,
+        ShowClear = showClear,
+        Stateful = stateful
+    })
+    { Data = data };
 
     public static ComponentDescriptorAttribute<SelectButton> SelectButton(IData data,
         bool? allowEmpty = default,
         string? optionLabel = default,
         string? optionValue = default,
         bool? stateful = default
-    ) => new(new() { AllowEmpty = allowEmpty, OptionLabel = optionLabel, OptionValue = optionValue, Stateful = stateful }) { Data = data };
+    ) => new(new()
+    {
+        AllowEmpty = allowEmpty,
+        OptionLabel = optionLabel,
+        OptionValue = optionValue,
+        LocalizeLabel = data.RequireLocalization,
+        Stateful = stateful
+    })
+    { Data = data };
 
     public static ComponentDescriptorAttribute<SideMenu> SideMenu(IEnumerable<SideMenu.Item> menu,
         IComponentDescriptor? footer = default,

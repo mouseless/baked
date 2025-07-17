@@ -18,7 +18,7 @@ const variants = [
         giveMe.anErrorPageInfo({
           statusCode: "403",
           title: "Access Denied",
-          message: "You do not have the permision to view the address or data specified."
+          message: "You do not have the permission to view the address or data specified."
         })
       ],
       footerInfo: "Footer info",

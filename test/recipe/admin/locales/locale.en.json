@@ -1,0 +1,104 @@
+{
+    "OPTION_1": "Option 1",
+    "OPTION_2": "Option 2",
+    "Spec.A_Link": "A Link",
+    "Spec.B_Link": "B Link",
+    "Spec.Data_1": "Data 1",
+    "Spec.Data_2": "Data 2",
+    "Spec.Data_3": "Data 3",
+    "Spec.Data_4": "Data 4",
+    "Spec.Description": "Description",
+    "Spec.Mid_page": "Mid Page",
+    "Spec.Name": "Name",
+    "Spec.Label": "Label",
+    "Spec.Label_1": "Label 1",
+    "Spec.Label_2": "Label 2",
+    "Spec.Leaf_page": "Leaf Page",
+    "Spec.Root_page": "Root Page",
+    "Spec.Section_1": "Section 1",
+    "Spec.Section_2": "Section 2",
+    "Spec.Soon": "Soon",
+    "Spec.Tab_1": "Tab 1",
+    "Spec.Tab_2": "Tab 2",
+    "Spec.Title": "Title",
+    "Spec.Total": "Total",
+    "String": "String",
+    "ValueA": "Value A",
+    "ValueB": "Value B",
+    "DataPanel": {
+        "Select_required_values_to_view_this_data": "Select required values to view this data"
+    },
+    "LanguageSwitcher": {
+        "Test_text": "Test Text"
+    },
+    "MenuPage": {
+        "No_item_available": "No item available!"
+    },
+    "Login": {
+        "Admin_Recipe__Test_login": "Admin Recipe - Test login",
+        "Enter_any_username_to_login": "Enter any username to login",
+        "Back_to_Home_Page": "Back to Home Page",
+        "Login": "Login",
+        "Username": "Username"
+    },
+    "primevue": {
+        "dayNames": [
+            "Sunday",
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday"
+        ],
+        "dayNamesMin": [
+            "Su",
+            "Mo",
+            "Tu",
+            "We",
+            "Th",
+            "Fr",
+            "Sa"
+        ],
+        "dayNamesShort": [
+            "Sun",
+            "Mon",
+            "Tue",
+            "Wed",
+            "Thu",
+            "Fri",
+            "Sat"
+        ],
+        "monthNames": [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December"
+        ],
+        "monthNamesShort": [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec"
+        ]
+    },
+    "ReportPage": {
+        "Select_required_values_to_view_this_report": "Select required values to view this report"
+    }
+}

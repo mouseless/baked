@@ -56,17 +56,16 @@ export default function() {
     formatOptions ??= { };
 
     const stage = shorten
-      ? STAGES.find(s => (shortenThousands || s.threshold !== 1_000) && value >= s.threshold) ?? STAGES[STAGES.length - 1]
+      ? STAGES.find(s => (shortenThousands || s.threshold !== 1_000) && Math.abs(value) >= s.threshold) ?? STAGES[STAGES.length - 1]
       : STAGES[STAGES.length - 1];
     const shownValue = value / stage.divisor;
 
-    let formattedResult = shownValue.toLocaleString(locale, {
-      maximumFractionDigits: stage.fraction ? 2 : 0,
+    const fractionDigitCount = stage.fraction ? 2 : 0;
+    const formattedResult = shownValue.toLocaleString(locale, {
+      maximumFractionDigits: fractionDigitCount,
+      trailingZeroDisplay: "stripIfInteger",
       ...formatOptions
     });
-    if(stage.fraction && formattedResult.endsWith("00")) {
-      formattedResult = formattedResult.substring(0, formattedResult.length - 3);
-    }
 
     return {
       shortened: stage.suffix !== "",

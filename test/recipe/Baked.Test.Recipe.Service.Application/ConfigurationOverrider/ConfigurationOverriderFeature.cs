@@ -111,12 +111,12 @@ public class ConfigurationOverriderFeature : IFeature
                 Name = "Behavior",
                 Links = new[]
                 {
-                    new { Title = "Bake", Description = "The core component that renders a dynamic component using given descriptor" },
-                    new { Title = "Custom CSS", Description = "Allow custom configuration to define custom css and more" },
-                    new { Title = "Locale", Description = "Allow locale customization and language support" },
-                    new { Title = "Parameters", Description = "Manage parameters through emits" },
-                    new { Title = "Query Parameters", Description = "Sync and manage parameters in query string" },
-                    new { Title = "Toast", Description = "Render alert messages" }
+                    new { Title = "Bake", Description = "The_core_component_that_renders_a_dynamic_component_using_given_descriptor" },
+                    new { Title = "Custom CSS", Description = "Allow_custom_configuration_to_define_custom_css_and_more" },
+                    new { Title = "Locale", Description = "Allow_locale_customization_and_language_support" },
+                    new { Title = "Parameters", Description = "Manage_parameters_through_emits" },
+                    new { Title = "Query Parameters", Description = "Sync_and_manage_parameters_in_query_string" },
+                    new { Title = "Toast", Description = "Render_alert_messages" }
                 }
             },
             new
@@ -124,15 +124,15 @@ public class ConfigurationOverriderFeature : IFeature
                 Name = "Display",
                 Links = new[]
                 {
-                    new { Title = "Card Link", Description = "Renders a link as a big card-like button" },
-                    new { Title = "Data Table", Description = "View list data in a table" },
-                    new { Title = "Nav Link", Description = "A component to give a link to a domain object" },
-                    new { Title = "Icon", Description = "Displays built-in icons" },
-                    new { Title = "Message", Description = "A component to display message" },
-                    new { Title = "Money", Description = "Shortens and renders money values with the full value shown as tooltip" },
-                    new { Title = "Number", Description = "Shortens and renders numbers with the full value shown as tooltip" },
-                    new { Title = "Rate", Description = "Render rate values as percentage" },
-                    new { Title = "String", Description = "Render string values" }
+                    new { Title = "Card Link", Description = "Renders_a_link_as_a_big_card_like_button" },
+                    new { Title = "Data Table", Description = "View_list_data_in_a_table" },
+                    new { Title = "Nav Link", Description = "A_component_to_give_a_link_to_a_domain_object" },
+                    new { Title = "Icon", Description = "Displays_built_in_icons" },
+                    new { Title = "Message", Description = "A_component_to_display_message" },
+                    new { Title = "Money", Description = "Shortens_and_renders_money_values_with_the_full_value_shown_as_tooltip" },
+                    new { Title = "Number", Description = "Shortens_and_renders_numbers_with_the_full_value_shown_as_tooltip" },
+                    new { Title = "Rate", Description = "Render_rate_values_as_percentage" },
+                    new { Title = "String", Description = "Render_string_values" }
                 }
             },
             new
@@ -140,8 +140,9 @@ public class ConfigurationOverriderFeature : IFeature
                 Name = "Input",
                 Links = new[]
                 {
-                    new { Title = "Select", Description = "Allow select from given options using drow down" },
-                    new { Title = "Select Button", Description = "Allow select from given options using buttons" }
+                    new { Title = "Language Switcher", Description = "Allow_change_site_language" },
+                    new { Title = "Select", Description = "Allow_select_from_given_options_using_drow_down" },
+                    new { Title = "Select Button", Description = "Allow_select_from_given_options_using_buttons" }
                 }
             },
             new
@@ -149,10 +150,10 @@ public class ConfigurationOverriderFeature : IFeature
                 Name = "Layout",
                 Links = new[]
                 {
-                    new { Title = "Data Panel", Description = "Lazy load and view a data within a panel" },
-                    new { Title = "Header", Description = "Renders a breadcrumb" },
-                    new { Title = "Page Title", Description = "Render page title, desc and actions" },
-                    new { Title = "Side Menu", Description = "Renders application menu" }
+                    new { Title = "Data Panel", Description = "Lazy_load_and_view_a_data_within_a_panel" },
+                    new { Title = "Header", Description = "Renders_a_breadcrumb" },
+                    new { Title = "Page Title", Description = "Render_page_title_desc_and_actions" },
+                    new { Title = "Side Menu", Description = "Renders_application_menu" }
                 }
             },
             new
@@ -160,9 +161,9 @@ public class ConfigurationOverriderFeature : IFeature
                 Name = "Page",
                 Links = new[]
                 {
-                    new { Title = "Error Page", Description = "Display errors in full page" },
-                    new { Title = "Menu Page", Description = "Render navigation pages" },
-                    new { Title = "Report Page", Description = "Render report pages" }
+                    new { Title = "Error Page", Description = "Display_errors_in_full_page" },
+                    new { Title = "Menu Page", Description = "Render_navigation_pages" },
+                    new { Title = "Report Page", Description = "Render_report_pages" }
                 }
             },
             new
@@ -170,122 +171,130 @@ public class ConfigurationOverriderFeature : IFeature
                 Name = "Plugins",
                 Links = new[]
                 {
-                    new { Title = "Auth", Description = "Authorized routing and client" },
-                    new { Title = "Error Handling", Description = "Handling errors" },
+                    new { Title = "Auth", Description = "Authorized_routing_and_client" },
+                    new { Title = "Error Handling", Description = "Handling_errors" },
                 }
             },
         };
 
         configurator.ConfigureAppDescriptor(app =>
         {
-            app.Error = ErrorPage(
-                safeLinks:
-                [
-                    CardLink("/", "Home", icon: "pi pi-home"),
-                    CardLink("/specs", "Specs", icon: "pi pi-list-check"),
-                ],
-                errorInfos:
-                [
-                    ErrorPageInfo(403, "Access Denied", "You do not have the permision to view the address or data specified." ),
-                    ErrorPageInfo(404, "Page Not Found", "The page you want to view is etiher deleted or outdated."),
-                    ErrorPageInfo(500, "Unexpected Error", "Please contact system administrator.")
-                ],
-                data: Computed(Composables.UseError)
-            );
+            configurator.UsingLocalization(l =>
+            {
+                app.Error = ErrorPage(
+                    safeLinks:
+                    [
+                        CardLink("/", "Home", icon: "pi pi-home"),
+                        CardLink("/specs", "Specs", icon: "pi pi-list-check"),
+                    ],
+                    errorInfos:
+                    [
+                        ErrorPageInfo(403, l("Access_Denied"), l("You_do_not_have_the_permision_to_view_the_address_or_data_specified") ),
+                        ErrorPageInfo(404, l("Page_Not_Found"), l("The_page_you_want_to_view_is_etiher_deleted_or_outdated")),
+                        ErrorPageInfo(500, l("Unexpected_Error"), l("Please_contact_system_administrator"))
+                    ],
+                    data: Computed(Composables.UseError)
+                );
+            });
         });
 
         configurator.ConfigureLayoutDescriptors(layouts =>
         {
-            layouts.Add(DefaultLayout("default",
-                sideMenu: SideMenu(
-                    menu:
-                    [
-                        SideMenuItem("/", "pi pi-home"),
-                        SideMenuItem("/report", "pi pi-file", title: "Report"),
-                        SideMenuItem("/data-table", "pi pi-table", title: "DataTable"),
-                        SideMenuItem("/specs", "pi pi-list-check", title: "Specs")
-                    ],
-                    footer: String(data: Inline("FT"))
-                ),
-                header: Header(
-                    siteMap:
-                    [
-                        HeaderItem("/", icon: "pi pi-home"),
-                        HeaderItem("/report", icon: "pi pi-file", title: "Report"),
-                        HeaderItem("/data-table", icon: "pi pi-table", title: "DataTable"),
-                        HeaderItem("/specs", icon: "pi pi-list-check", title: "Specs"),
-                        .. specs.SelectMany(section =>
-                            section.Links.Select(link =>
-                                HeaderItem($"/specs/{link.Title.Kebaberize()}", title: link.Title, parentRoute: "/specs")
+            configurator.UsingLocalization(l =>
+            {
+                layouts.Add(DefaultLayout("default",
+                    sideMenu: SideMenu(
+                        menu:
+                        [
+                            SideMenuItem("/", "pi pi-home"),
+                            SideMenuItem("/report", "pi pi-file", title: l("Report")),
+                            SideMenuItem("/data-table", "pi pi-table", title: l("DataTable")),
+                            SideMenuItem("/specs", "pi pi-list-check", title: l("Specs"))
+                        ],
+                        footer: LanguageSwitcher()
+                    ),
+                    header: Header(
+                        siteMap:
+                        [
+                            HeaderItem("/", icon: "pi pi-home"),
+                            HeaderItem("/report", icon: "pi pi-file", title: l("Report")),
+                            HeaderItem("/data-table", icon: "pi pi-table", title: l("DataTable")),
+                            HeaderItem("/specs", icon: "pi pi-list-check", title: l("Specs")),
+                            .. specs.SelectMany(section =>
+                                section.Links.Select(link =>
+                                    HeaderItem($"/specs/{link.Title.Kebaberize()}", title: l(link.Title), parentRoute: "/specs")
+                                )
                             )
-                        )
-                    ]
-                )
-            ));
+                        ]
+                    )
+                ));
+            });
 
             layouts.Add(ModalLayout("modal"));
         });
 
         configurator.ConfigurePageDescriptors(pages =>
         {
-            var headers = Inline(new { Authorization = "token-admin-ui" });
-
-            pages.Add(MenuPage("index",
-                links:
-                [
-                    CardLink($"/report", "Report",
-                        icon: "pi pi-file",
-                        description: "Showcases a report layout with tabs and data panels"
-                    ),
-                    CardLink($"/data-table", "DataTable",
-                        icon: "pi pi-table",
-                        description: "Showcase DataTable component with scrollable and footer options"
-                    ),
-                    CardLink($"/specs", "Specs",
-                        icon: "pi pi-list-check",
-                        description: "All UI Specs are listed here"
-                    )
-                ]
-            ));
-
-            pages.Add(CustomPage<Login>("login", layout: "modal"));
-            pages.Add(CustomPage<PageWithRoute>("page/with/route/pageWithRoute", layout: "default"));
-
-            configurator.UsingDomainModel(domain =>
+            configurator.UsingLocalization(l =>
             {
-                var report = domain.Types[typeof(Report)].GetMembers();
-                var wide = report.Methods[nameof(Report.GetWide)];
-                var left = report.Methods[nameof(Report.GetLeft)];
-                var right = report.Methods[nameof(Report.GetRight)];
-                var first = report.Methods[nameof(Report.GetFirst)];
-                var second = report.Methods[nameof(Report.GetSecond)];
+                var headers = Inline(new { Authorization = "token-admin-ui" });
 
-                pages.Add(ReportPage("report",
-                    title: PageTitle("Report", description: "Showcases a report layout with tabs and data panels"),
-                    queryParameters:
+                pages.Add(MenuPage("index",
+                    links:
                     [
-                        Parameter(
+                        CardLink($"/report", l("Report"),
+                            icon: "pi pi-file",
+                            description: l("Showcases_a_report_layout_with_tabs_and_data_panels")
+                        ),
+                        CardLink($"/data-table", l("DataTable"),
+                            icon: "pi pi-table",
+                            description: l("Showcase_DataTable_component_with_scrollable_and_footer_options")
+                        ),
+                        CardLink($"/specs", l("Specs"),
+                            icon: "pi pi-list-check",
+                            description: l("All_ui_specs_are_listed_here")
+                        )
+                    ]
+                ));
+
+                pages.Add(CustomPage<Login>("login", layout: "modal"));
+                pages.Add(CustomPage<PageWithRoute>("page/with/route/pageWithRoute", layout: "default"));
+
+                configurator.UsingDomainModel(domain =>
+                {
+                    var report = domain.Types[typeof(Report)].GetMembers();
+                    var wide = report.Methods[nameof(Report.GetWide)];
+                    var left = report.Methods[nameof(Report.GetLeft)];
+                    var right = report.Methods[nameof(Report.GetRight)];
+                    var first = report.Methods[nameof(Report.GetFirst)];
+                    var second = report.Methods[nameof(Report.GetSecond)];
+
+                    pages.Add(ReportPage("report",
+                        title: PageTitle("Report", description: l("Showcases_a_report_layout_with_tabs_and_data_panels")),
+                        queryParameters:
+                        [
+                            Parameter(
                             "requiredWithDefault",
-                            Select("Required w/ Default",
-                                data: Inline(new[]
-                                {
-                                  new { text = "Required w/ Default 1", value = "rwd-1" },
-                                  new { text = "Required w/ Default 2", value = "rwd-2" }
-                                }),
-                                optionLabel: "text",
-                                optionValue: "value"
+                                Select(l("Required_w_default"),
+                                    data: Inline(new[]
+                                    {
+                                      new { text = l("Required_w_default_1"), value = "rwd-1" },
+                                      new { text = l("Required_w_default_2"), value = "rwd-2" }
+                                    }),
+                                    optionLabel: "text",
+                                    optionValue: "value"
+                                ),
+                                defaultValue: "rwd-1",
+                                required: true
                             ),
-                            defaultValue: "rwd-1",
-                            required: true
-                        ),
-                        Parameter("required", Select("Required", data: Inline(new[] { "Required 1", "Required 2" })),
-                            required: true
-                        ),
-                        Parameter("optional", SelectButton(Inline(new[] { "Optional 1", "Optional 2" }), allowEmpty: true))
-                    ],
-                    tabs:
-                    [
-                        ReportPageTab("single-value", "Single Value",
+                            Parameter("required", Select("Required", data: Inline(new[] { l("Required 1"), l("Required 2") })),
+                                required: true
+                            ),
+                            Parameter("optional", SelectButton(Inline(new[] { l("Optional 1"), l("Optional 2") }), allowEmpty: true))
+                        ],
+                        tabs:
+                        [
+                            ReportPageTab("single-value", l("Single_value"),
                             icon: Icon("pi-box"),
                             contents:
                             [
@@ -326,7 +335,7 @@ public class ConfigurationOverriderFeature : IFeature
                                 )
                             ]
                         ),
-                        ReportPageTab("data-table", "Data Table",
+                        ReportPageTab("data-table", l("Data_table"),
                             icon: Icon("pi-table"),
                             contents:
                             [
@@ -357,7 +366,7 @@ public class ConfigurationOverriderFeature : IFeature
                                     )
                                 ),
                                 ReportPageTabContent(
-                                    component: DataPanel(second.Name.Humanize(),
+                                    component: DataPanel(l(second.Name.Humanize()),
                                         parameters:
                                         [
                                             Parameter("count", SelectButton(Inline(Enum.GetNames<CountOptions>()), stateful: true),
@@ -385,45 +394,46 @@ public class ConfigurationOverriderFeature : IFeature
                                 )
                             ]
                         )
-                    ]
-                ));
-            });
+                        ]
+                    ));
+                });
 
-            pages.Add(MenuPage("specs",
-                filterPageContextKey: "menu-page",
-                header: PageTitle(
-                  title: "Specs",
-                  description: "All UI Specs are listed here",
-                  actions: [Filter(placeholder: "Filter", pageContextKey: "menu-page")]
-                ),
-                sections:
-                [
-                    .. specs.Select(section =>
+                pages.Add(MenuPage("specs",
+                    filterPageContextKey: "menu-page",
+                    header: PageTitle(
+                      title: l("Specs"),
+                      description: l("All_ui_specs_are_listed_here"),
+                      actions: [Filter(placeholder: "Filter", pageContextKey: "menu-page")]
+                    ),
+                    sections:
+                    [
+                        .. specs.Select(section =>
                         MenuPageSection(
-                            title: section.Name,
+                            title: l(section.Name),
                             links:
                             [
-                                .. section.Links.Select(l =>
+                                .. section.Links.Select(link =>
                                     Filterable(
-                                        title: l.Title,
-                                        component: CardLink($"/specs/{l.Title.Kebaberize()}", l.Title,
+                                        title: l(link.Title),
+                                        component: CardLink($"/specs/{link.Title.Kebaberize()}", l(link.Title),
                                             icon: "pi pi-microchip",
-                                            description: l.Description
+                                            description: l(link.Description)
                                         )
                                     )
                                 )
                             ]
                         )
                     )
-                ]
-            ));
+                    ]
 
-            configurator.UsingDomainModel(domain =>
-            {
-                pages.Add(ReportPage("data-table", PageTitle("DataTable Demo"),
-                    tabs:
-                    [
-                        ReportPageTab(string.Empty, string.Empty,
+                ));
+
+                configurator.UsingDomainModel(domain =>
+                {
+                    pages.Add(ReportPage("data-table", PageTitle("DataTable Demo"),
+                        tabs:
+                        [
+                            ReportPageTab(string.Empty, string.Empty,
                             contents:
                             [
                                 ReportPageTabContent(
@@ -439,7 +449,7 @@ public class ConfigurationOverriderFeature : IFeature
                                             [
                                               .. domain.Types[typeof(TableRow)].GetMembers().Properties.Where(p => p.IsPublic).Select((p, i) =>
                                                   DataTableColumn(p.Name.Camelize(),
-                                                      title: p.Name,
+                                                      title: l(p.Name),
                                                       exportable: true,
                                                       alignRight: p.PropertyType.Is<string>() ? null : true,
                                                       frozen: i == 0 ? true : null,
@@ -447,7 +457,7 @@ public class ConfigurationOverriderFeature : IFeature
                                                   )
                                                 )
                                             ],
-                                            footerTemplate: DataTableFooter("Total",
+                                            footerTemplate: DataTableFooter(l("Total"),
                                                 columns:
                                                 [
                                                     DataTableColumn(nameof(TableWithFooter.FooterColumn1).Camelize(), Conditional(), alignRight: true),
@@ -467,8 +477,9 @@ public class ConfigurationOverriderFeature : IFeature
                                 )
                             ]
                         )
-                    ]
-                ));
+                        ]
+                    ));
+                });
             });
         });
     }

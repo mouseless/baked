@@ -12,8 +12,8 @@ test.describe("Base", () => {
     const component = page.getByTestId(id);
     const options = component.locator(primevue.selectbutton.option);
 
-    await expect(options.nth(0)).toHaveText("OPTION 1");
-    await expect(options.nth(1)).toHaveText("OPTION 2");
+    await expect(options.nth(0)).toHaveText("Option 1");
+    await expect(options.nth(1)).toHaveText("Option 2");
   });
 
   test("select option", async({page}) => {
@@ -23,7 +23,7 @@ test.describe("Base", () => {
 
     await options.nth(0).click();
 
-    await expect(model).toHaveText("OPTION 1");
+    await expect(model).toHaveText("OPTION_1");
   });
 
   test("prevent empty after select", async({page}) => {
@@ -34,7 +34,7 @@ test.describe("Base", () => {
     await options.nth(0).click(); // select
     await options.nth(0).click(); // try deselect
 
-    await expect(model).toHaveText("OPTION 1");
+    await expect(model).toHaveText("OPTION_1");
   });
 
   test("visual", { tag: "@visual" }, async({page}) => {
@@ -54,8 +54,8 @@ test.describe("Option Label and Value", () => {
     const component = page.getByTestId(id);
     const options = component.locator(primevue.selectbutton.option);
 
-    await expect(options.nth(0)).toHaveText("LABEL 1");
-    await expect(options.nth(1)).toHaveText("LABEL 2");
+    await expect(options.nth(0)).toHaveText("Label 1");
+    await expect(options.nth(1)).toHaveText("Label 2");
   });
 
   test("select option", async({page}) => {

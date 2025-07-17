@@ -1,0 +1,101 @@
+{
+    "Spec.A_Link": "A Bağlantı",
+    "Spec.B_Link": "B Bağlantı",
+    "Spec.Data_1": "Data 1",
+    "Spec.Data_2": "Data 2",
+    "Spec.Data_3": "Data 3",
+    "Spec.Data_4": "Data 4",
+    "Spec.Description": "Açıklama",
+    "Spec.Mid_page": "Orta Sayfa",
+    "Spec.Name": "İsim",
+    "Spec.Label": "Etiket",
+    "Spec.Label_1": "Etiket 1",
+    "Spec.Label_2": "Etiket 2",
+    "Spec.Leaf_page": "Son Sayfa",
+    "Spec.Root_page": "Kök Sayfa",
+    "Spec.Section_1": "Bölüm 1",
+    "Spec.Section_2": "Bölüm 2",
+    "Spec.Soon": "Yakında",
+    "Spec.Tab_1": "Sekme 1",
+    "Spec.Tab_2": "Sekme 2",
+    "Spec.Title": "Başlık",
+    "Spec.Total": "Toplam",
+    "ValueA": "Value A",
+    "ValueB": "Value B",
+    "DataPanel": {
+        "Select_required_values_to_view_this_data": "Bu veriyi görüntülemek için gerekli değerleri seçin"
+    },
+    "LanguageSwitcher": {
+        "Test_text": "Test Metni"
+    },
+    "MenuPage": {
+        "No_item_available": "Hiçbir öğe mevcut değil!"
+    },
+    "Login": {
+        "Admin_Recipe__Test_login": "Yönetici Teması - Test girişi",
+        "Enter_any_username_to_login": "Giriş yapmak için herhangi bir kullanıcı adı girin",
+        "Back_to_Home_Page": "Ana Sayfaya Dön",
+        "Login": "Giriş Yap",
+        "Username": "Kullanıcı Adı"
+    },
+    "primevue": {
+        "dayNames": [
+            "Pazar",
+            "Pazartesi",
+            "Salı",
+            "Çarşamba",
+            "Perşembe",
+            "Cuma",
+            "Cumartesi"
+        ],
+        "dayNamesMin": [
+            "Pz",
+            "Pt",
+            "Sa",
+            "Ça",
+            "Pe",
+            "Cu",
+            "Ct"
+        ],
+        "dayNamesShort": [
+            "Paz",
+            "Pzt",
+            "Sal",
+            "Çar",
+            "Per",
+            "Cum",
+            "Cmt"
+        ],
+        "monthNames": [
+            "Ocak",
+            "Şubat",
+            "Mart",
+            "Nisan",
+            "Mayıs",
+            "Haziran",
+            "Temmuz",
+            "Ağustos",
+            "Eylül",
+            "Ekim",
+            "Kasım",
+            "Aralık"
+        ],
+        "monthNamesShort": [
+            "Oca",
+            "Şub",
+            "Mar",
+            "Nis",
+            "May",
+            "Haz",
+            "Tem",
+            "Ağu",
+            "Eyl",
+            "Eki",
+            "Kas",
+            "Ara"
+        ]
+    },
+    "ReportPage": {
+        "Select_required_values_to_view_this_report": "Bu raporu görüntülemek için gerekli değerleri seçin"
+    }
+}
