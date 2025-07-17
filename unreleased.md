@@ -28,6 +28,8 @@
 | ---                               | ---         | ---         |
 | Microsoft.AspNetCore.Localization | new         | 2.3.0       |
 
-| npm Package  | Old Version | New Version |
-| ---          | ---         | ---         |
-| @nuxtjs/i18n | new         | 9.5.6       |
+| npm Package      | Old Version | New Version |
+| ---              | ---         | ---         |
+| @nuxtjs/i18n     | new         | 9.5.6       |
+| @primeuix/themes | 1.1.1       | 1.2.1       |
+| primevue         | 4.3.4       | 4.3.6       |
