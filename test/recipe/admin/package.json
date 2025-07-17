@@ -25,11 +25,11 @@
     "sass": "1.89.0"
   },
   "dependencies": {
-    "@nuxtjs/i18n": "9.5.5",
+    "@nuxtjs/i18n": "9.5.6",
     "@nuxtjs/tailwindcss": "6.13.2",
-    "@primeuix/themes": "1.1.0",
+    "@primeuix/themes": "1.1.1",
     "baked-recipe-admin": "file:../../../src/recipe/admin",
-    "nuxt": "3.16.1",
+    "nuxt": "3.16.2",
     "vue": "3.5.14",
     "vue-router": "4.5.1"
   },
