@@ -3,6 +3,6 @@
     "test": "artillery run test.yml"
   },
   "dependencies": {
-    "artillery": "^2.0.23"
+    "artillery": "2.0.23"
   }
 }

@@ -30,4 +30,4 @@
 
 | npm Package  | Old Version | New Version |
 | ---          | ---         | ---         |
-| @nuxtjs/i18n | new         | 9.5.4       |
+| @nuxtjs/i18n | new         | 9.5.6       |
