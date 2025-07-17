@@ -6,6 +6,7 @@ test.beforeEach(async({goto}) => {
 
 const id = {
   component: "component",
+  onReadyValues: "onReadyValues-key",
   uniqueKey: "unique-key",
   ready: "ready"
 };
@@ -44,3 +45,23 @@ test("unique key changes with parameter values", async({page}) => {
 
   await expect(uniqueKey).toHaveText("value 1-value 2-value 3");
 });
+
+test("'onChanged' is emitted before 'onReady' when initialized", async({page}) => {
+  const readyValues = page.getByTestId(id.onReadyValues);
+  const uniqueKey = page.getByTestId(id.uniqueKey);
+
+  await expect(readyValues).toHaveText("default value");
+  await expect(uniqueKey).toHaveText("default value");
+});
+
+test("'onChanged' is emitted before 'onReady' when parameters are changed", async({page}) => {
+  const component = page.getByTestId(id.component);
+  const readyValues = page.getByTestId(id.onReadyValues);
+  const uniqueKey = page.getByTestId(id.uniqueKey);
+
+  await component.getByTestId("required-with-default").fill("value 1");
+
+  await expect(readyValues).toHaveText("value 1");
+  await expect(uniqueKey).toHaveText("value 1");
+});
+

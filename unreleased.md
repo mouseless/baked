@@ -15,6 +15,10 @@
 - `useFormat` shorteners was not working for negative values, fixed
 - `Ui` layer now provides `UsingLocaleDictionary` and `UsingNewLocale` helpers 
   for adding and tracking locale keys for generated page descriptors
+- UI components from different page but same route was having state conflicts,
+  fixed
+- `Parameters` component now emits `onChanged` before `onReady` to fix values
+  inconsistency
 
 ## Library Upgrades
 
