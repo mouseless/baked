@@ -13,7 +13,7 @@
 
 - `useFormat` was clearing text when number has two trailing zeros, fixed
 - `useFormat` shorteners was not working for negative values, fixed
-- `Ui` layer now provides `UsingLocaleDictionary` and `UsingNewLocale` helpers 
+- `Ui` layer now provides `UsingLocaleDictionary` and `UsingNewLocale` helpers
   for adding and tracking locale keys for generated page descriptors
 - UI components from different page but same route was having state conflicts,
   fixed
