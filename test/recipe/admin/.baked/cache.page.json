@@ -1,0 +1,92 @@
+{
+  "type": "ReportPage",
+  "schema": {
+    "path": "cache",
+    "title": {
+      "title": "Cache",
+      "description": "Showcases_the_cache_behavior",
+      "actions": []
+    },
+    "queryParameters": [],
+    "tabs": [
+      {
+        "id": "default",
+        "title": "",
+        "contents": [
+          {
+            "component": {
+              "type": "DataPanel",
+              "schema": {
+                "title": {
+                  "type": "Inline",
+                  "value": "Get user"
+                },
+                "localizeTitle": true,
+                "parameters": [],
+                "content": {
+                  "type": "String",
+                  "schema": {},
+                  "data": {
+                    "type": "Remote",
+                    "path": "/cache-samples/user",
+                    "headers": {
+                      "type": "Inline",
+                      "value": {
+                        "authorization": "token-admin-ui"
+                      }
+                    },
+                    "query": {
+                      "type": "Computed",
+                      "composable": "useQuery",
+                      "args": []
+                    },
+                    "options": {
+                      "client-cache": "user"
+                    }
+                  }
+                }
+              }
+            },
+            "narrow": true
+          },
+          {
+            "component": {
+              "type": "DataPanel",
+              "schema": {
+                "title": {
+                  "type": "Inline",
+                  "value": "Get application"
+                },
+                "localizeTitle": true,
+                "parameters": [],
+                "content": {
+                  "type": "String",
+                  "schema": {},
+                  "data": {
+                    "type": "Remote",
+                    "path": "/cache-samples/application",
+                    "headers": {
+                      "type": "Inline",
+                      "value": {
+                        "authorization": "token-admin-ui"
+                      }
+                    },
+                    "query": {
+                      "type": "Computed",
+                      "composable": "useQuery",
+                      "args": []
+                    },
+                    "options": {
+                      "client-cache": "application"
+                    }
+                  }
+                }
+              }
+            },
+            "narrow": true
+          }
+        ]
+      }
+    ]
+  }
+}

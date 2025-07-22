@@ -83,6 +83,30 @@
         {
           "type": "CardLink",
           "schema": {
+            "route": "/cache",
+            "icon": "pi pi-database",
+            "title": "Cache"
+          }
+        },
+        {
+          "type": "CardLink",
+          "schema": {
+            "route": "/data-table",
+            "icon": "pi pi-table",
+            "title": "DataTable"
+          }
+        },
+        {
+          "type": "CardLink",
+          "schema": {
+            "route": "/report",
+            "icon": "pi pi-file",
+            "title": "Report"
+          }
+        },
+        {
+          "type": "CardLink",
+          "schema": {
             "route": "/specs",
             "icon": "pi pi-list-check",
             "title": "Specs"

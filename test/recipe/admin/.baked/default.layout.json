@@ -12,14 +12,19 @@
             "icon": "pi pi-home"
           },
           {
-            "route": "/report",
-            "icon": "pi pi-file",
-            "title": "Report"
+            "route": "/cache",
+            "icon": "pi pi-database",
+            "title": "Cache"
           },
           {
             "route": "/data-table",
             "icon": "pi pi-table",
             "title": "DataTable"
+          },
+          {
+            "route": "/report",
+            "icon": "pi pi-file",
+            "title": "Report"
           },
           {
             "route": "/specs",
@@ -45,15 +50,20 @@
             "route": "/",
             "icon": "pi pi-home"
           },
-          "/report": {
-            "route": "/report",
-            "icon": "pi pi-file",
-            "title": "Report"
+          "/cache": {
+            "route": "/cache",
+            "icon": "pi pi-database",
+            "title": "Cache"
           },
           "/data-table": {
             "route": "/data-table",
             "icon": "pi pi-table",
             "title": "DataTable"
+          },
+          "/report": {
+            "route": "/report",
+            "icon": "pi pi-file",
+            "title": "Report"
           },
           "/specs": {
             "route": "/specs",

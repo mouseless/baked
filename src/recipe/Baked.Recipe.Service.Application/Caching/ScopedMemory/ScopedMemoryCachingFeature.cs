@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Baked.Caching.ScopedMemory;
 
@@ -9,7 +10,8 @@ public class ScopedMemoryCachingFeature : IFeature<CachingConfigurator>
     {
         configurator.ConfigureServiceCollection(services =>
         {
-            services.AddScopedWithFactory<IMemoryCache, MemoryCache>();
+            services.AddSingleton<Func<IMemoryCache>>(sp => () => sp.UsingCurrentScope().GetRequiredKeyedService<IMemoryCache>("ScopedMemory"));
+            services.AddKeyedScoped<IMemoryCache, MemoryCache>("ScopedMemory");
         });
 
         configurator.ConfigureTestConfiguration(test =>
