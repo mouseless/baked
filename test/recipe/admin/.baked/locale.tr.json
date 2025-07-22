@@ -13,6 +13,7 @@
   "Bake": "Bake",
   "Behavior": "Davranış",
   "Cache": "Önbellek",
+  "Caches_api_responses_in_local_storage": "Api çağrılarını yerel depo üzerinden önbelleklileştirir",
   "Card Link": "Kart Bağlantısı",
   "Column1": "Kolon 1",
   "Column2": "Kolon 2",

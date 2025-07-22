@@ -80,11 +80,6 @@
             "title": "Custom CSS",
             "parentRoute": "/specs"
           },
-          "/specs/locale": {
-            "route": "/specs/locale",
-            "title": "Locale",
-            "parentRoute": "/specs"
-          },
           "/specs/parameters": {
             "route": "/specs/parameters",
             "title": "Parameters",
@@ -198,6 +193,16 @@
           "/specs/auth": {
             "route": "/specs/auth",
             "title": "Auth",
+            "parentRoute": "/specs"
+          },
+          "/specs/cache": {
+            "route": "/specs/cache",
+            "title": "Cache",
+            "parentRoute": "/specs"
+          },
+          "/specs/locale": {
+            "route": "/specs/locale",
+            "title": "Locale",
             "parentRoute": "/specs"
           },
           "/specs/error-handling": {

@@ -48,18 +48,6 @@
             }
           },
           {
-            "title": "Locale",
-            "component": {
-              "type": "CardLink",
-              "schema": {
-                "route": "/specs/locale",
-                "icon": "pi pi-microchip",
-                "title": "Locale",
-                "description": "Allow_locale_customization_and_language_support"
-              }
-            }
-          },
-          {
             "title": "Parameters",
             "component": {
               "type": "CardLink",
@@ -357,6 +345,30 @@
                 "icon": "pi pi-microchip",
                 "title": "Auth",
                 "description": "Authorized_routing_and_client"
+              }
+            }
+          },
+          {
+            "title": "Cache",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/cache",
+                "icon": "pi pi-microchip",
+                "title": "Cache",
+                "description": "Caches_api_responses_in_local_storage"
+              }
+            }
+          },
+          {
+            "title": "Locale",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/locale",
+                "icon": "pi pi-microchip",
+                "title": "Locale",
+                "description": "Allow_locale_customization_and_language_support"
               }
             }
           },

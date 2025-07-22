@@ -19,7 +19,7 @@
               "schema": {
                 "title": {
                   "type": "Inline",
-                  "value": "Get user"
+                  "value": "Get scoped"
                 },
                 "localizeTitle": true,
                 "parameters": [],
@@ -28,7 +28,7 @@
                   "schema": {},
                   "data": {
                     "type": "Remote",
-                    "path": "/cache-samples/user",
+                    "path": "/cache-samples/scoped",
                     "headers": {
                       "type": "Inline",
                       "value": {

@@ -114,7 +114,6 @@ public class ConfigurationOverriderFeature : IFeature
                 {
                     new { Title = "Bake", Description = "The_core_component_that_renders_a_dynamic_component_using_given_descriptor" },
                     new { Title = "Custom CSS", Description = "Allow_custom_configuration_to_define_custom_css_and_more" },
-                    new { Title = "Locale", Description = "Allow_locale_customization_and_language_support" },
                     new { Title = "Parameters", Description = "Manage_parameters_through_emits" },
                     new { Title = "Query Parameters", Description = "Sync_and_manage_parameters_in_query_string" },
                     new { Title = "Toast", Description = "Render_alert_messages" }
@@ -173,6 +172,8 @@ public class ConfigurationOverriderFeature : IFeature
                 Links = new[]
                 {
                     new { Title = "Auth", Description = "Authorized_routing_and_client" },
+                    new { Title = "Cache", Description = "Caches_api_responses_in_local_storage" },
+                    new { Title = "Locale", Description = "Allow_locale_customization_and_language_support" },
                     new { Title = "Error Handling", Description = "Handling_errors" },
                 }
             },
@@ -464,7 +465,7 @@ public class ConfigurationOverriderFeature : IFeature
                 configurator.UsingDomainModel(domain =>
                 {
                     var report = domain.Types[typeof(CacheSamples)].GetMembers();
-                    var getUser = report.Methods[nameof(CacheSamples.GetUser)];
+                    var getScoped = report.Methods[nameof(CacheSamples.GetScoped)];
                     var getApplication = report.Methods[nameof(CacheSamples.GetApplication)];
 
                     pages.Add(ReportPage("cache",
@@ -475,9 +476,9 @@ public class ConfigurationOverriderFeature : IFeature
                                 contents:
                                 [
                                     ReportPageTabContent(
-                                        component: DataPanel(getUser.Name.Humanize(),
+                                        component: DataPanel(getScoped.Name.Humanize(),
                                             content: String(
-                                                data: Remote($"/{getUser.GetSingle<ActionModelAttribute>().GetRoute()}",
+                                                data: Remote($"/{getScoped.GetSingle<ActionModelAttribute>().GetRoute()}",
                                                     headers: headers,
                                                     query: Computed(Composables.UseQuery),
                                                     options: [("client-cache", "user")]

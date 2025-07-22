@@ -1,3 +1,4 @@
+using Baked.Authorization;
 using Baked.Caching;
 using Microsoft.Extensions.Caching.Memory;
 
@@ -5,14 +6,16 @@ namespace Baked.Test.Caching;
 
 public class CacheSamples(IMemoryCache _cache, Func<IMemoryCache> _getCache)
 {
-    [ClientCache("User")]
-    public string GetUser() =>
-        _getCache().GetOrCreate(nameof(GetUser), _ =>
+    [AllowAnonymous]
+    [ClientCache("user")]
+    public string GetScoped() =>
+        _getCache().GetOrCreate(nameof(GetScoped), _ =>
         {
             return $"{Guid.NewGuid()}";
         }) ?? throw new("cache returns null");
 
-    [ClientCache("Application")]
+    [AllowAnonymous]
+    [ClientCache("application")]
     public string GetApplication() =>
         _cache.GetOrCreate(nameof(GetApplication), _ =>
         {

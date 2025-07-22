@@ -26,6 +26,7 @@ Authorized_routing_and_client=Authorized routing and client
 Bake=Bake
 Behavior=Behavior
 Cache=Cache
+Caches_api_responses_in_local_storage=Caches api responses in local storage
 Card Link=Card Link
 Count=Count
 Custom CSS=Custom CSS

@@ -3,6 +3,8 @@
     {
       "name": "auth",
       "anonymousApiRoutes": [
+        "cache-samples/scoped",
+        "cache-samples/application",
         "authorization-samples/anonymous",
         "authentication-samples/login"
       ],

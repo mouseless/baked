@@ -27,6 +27,7 @@ Bake=Bake
 Behavior=Davranış
 Cache=Önbellek
 Card Link=Kart Bağlantısı
+Caches_api_responses_in_local_storage=Api çağrılarını yerel depo üzerinden önbelleklileştirir
 Column1=Kolon 1
 Column2=Kolon 2
 Column3=Kolon 3
