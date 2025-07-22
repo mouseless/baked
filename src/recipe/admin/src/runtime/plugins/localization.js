@@ -1,4 +1,4 @@
-import { defineNuxtPlugin, useRuntimeConfig } from "#app";
+import { defineNuxtPlugin } from "#app";
 
 export default defineNuxtPlugin({
   name: "localization",
