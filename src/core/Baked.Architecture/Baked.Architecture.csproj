@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <AssemblyTitle>Baked.Architecture</AssemblyTitle>
-    <Title>Baked (Objects) / Architecture</Title>
-    <Description>Baked (Objects) is an opinionated framework for .NET. This is Baked's core package that provides a simple feature and layer system along with common features and layers.</Description>
+    <Title>Baked / Architecture</Title>
+    <Description>Baked is an opinionated framework for .NET. This is Baked's core package that provides a simple feature and layer system along with common features and layers.</Description>
     <PackageId>Baked.Architecture</PackageId>
     <PackageTags>baked;objects;architecture</PackageTags>
   </PropertyGroup>

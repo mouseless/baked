@@ -12,7 +12,7 @@ sections:
 # Bake your domain objects
 ## into a complete web application
 
-Baked (Objects) is an opinionated framework leaning heavily on conventions to
+Baked is an opinionated framework leaning heavily on conventions to
 build (bake) applications from domain objects.
 
 It is DDD without saying DDD.
@@ -43,7 +43,7 @@ application by combining different components to fit your specific needs.
 
 ### Architecture
 
-Deep dive into how we've built Baked (Objects) and create your own extensions.
+Deep dive into how we've built Baked and create your own extensions.
 Understand the design principles and extend the framework to suit your unique
 requirements.
 
@@ -53,6 +53,6 @@ requirements.
 
 ---
 
-Baked (Objects) pays tribute to the renowned [Naked Objects][] that inspired us.
+Baked pays tribute to the renowned [Naked Objects][] that inspired us.
 
 [Naked Objects]: https://github.com/NakedObjectsGroup/NakedObjectsFramework
