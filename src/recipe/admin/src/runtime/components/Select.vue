@@ -102,4 +102,8 @@ hidden
 .hide-placeholder .p-placeholder {
   visibility: hidden;
 }
+
+.p-select-label {
+  font-size: inherit;
+}
 </style>

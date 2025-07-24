@@ -5,11 +5,13 @@
 - Beta features are available in `Baked.Recipe.Service.Application`;
   - `RateLimiter` feature is now added with `ConcurrencyLimiter` implementation
   - `Localization` feature is now added
-  - `AppCache` is introduced to allow you to cache fetched data in memory or in
-    a configured `ICache` implementation
+  - `Caching.InMemory` is introduced to allow you to cache data in memory for
+    application-wide caching
 - Beta feature is available in `baked-recipe-admin`;
   - `localization` plugin has been introduced along with the `useLocalization`
     composable to manage texts according to culture.
+  - `cacheApplication` and `cacheUser` plugins are introduced to cache api
+    responses in local storage with a configured expiration value
 
 ## Improvements
 
