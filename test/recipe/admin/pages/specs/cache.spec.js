@@ -58,15 +58,16 @@ test.describe("application cache", () => {
   });
 
   test("it invalidates after configured time", async({goto, page}) => {
+    await page.clock.install();
+
     let callCount = 0;
     await page.route("*/**/cache-samples/application", async route => {
       callCount++;
       await route.fulfill({ json: giveMe.anApiResponse() });
     });
 
-    await page.clock.setFixedTime(new Date("2025-07-24T21:10:00"));
     await goto("/specs/cache", { waitUntil: "hydration" }); // hit#1
-    await page.clock.setFixedTime(new Date("2025-07-24T22:10:00"));
+    await page.clock.fastForward("01:00:00");
     await goto("/specs/cache", { waitUntil: "hydration" }); // hit#2
 
     expect(callCount).toBe(2);
@@ -118,15 +119,16 @@ test.describe("user cache", () => {
   });
 
   test("it invalidates after configured time", async({goto, page}) => {
+    await page.clock.install();
+
     let callCount = 0;
     await page.route("*/**/cache-samples/scoped", async route => {
       callCount++;
       await route.fulfill({ json: giveMe.anApiResponse() });
     });
 
-    await page.clock.setFixedTime(new Date("2025-07-24T21:10:00"));
     await goto("/specs/cache", { waitUntil: "hydration" }); // hit#1
-    await page.clock.setFixedTime(new Date("2025-07-24T22:10:00"));
+    await page.clock.fastForward("01:00:00");
     await goto("/specs/cache", { waitUntil: "hydration" }); // hit#2
 
     expect(callCount).toBe(2);
