@@ -21,6 +21,7 @@
   fixed
 - `Parameters` component now emits `onChanged` before `onReady` to fix values
   inconsistency
+- Local storage was getting cleared on logout, fixed
 
 ## Library Upgrades
 
