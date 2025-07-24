@@ -5,10 +5,9 @@ export default defineNuxtPlugin({
   name: "auth",
   enforce: "pre",
   setup(nuxtApp) {
-    const { $fetchInterceptors } = nuxtApp;
     const { public: { auth } } = useRuntimeConfig();
     const token = useToken();
-    const router = nuxtApp.$router;
+    const { $fetchInterceptors, $router } = nuxtApp;
 
     $fetchInterceptors.register(
       "auth",
@@ -30,7 +29,7 @@ export default defineNuxtPlugin({
           result = await token.current(true);
         }
 
-        options.headers.set("Authorization", `Bearer ${result?.access}`);
+        options.headers["Authorization"] = `Bearer ${result?.access}`;
 
         return await next();
       },
@@ -41,7 +40,9 @@ export default defineNuxtPlugin({
       Number.MIN_SAFE_INTEGER - 10
     );
 
-    router.beforeEach(async(to, _) => {
+    $router.beforeEach(async(to, _) => {
+      const token = useToken();
+
       for(const route of auth.anonymousPageRoutes) {
         const pattern = new RegExp(route);
         if(to.path.match(pattern)?.length > 0) {
@@ -49,31 +50,29 @@ export default defineNuxtPlugin({
         }
       }
 
-      const token = useToken();
       const toLogin = to.path.includes(auth.loginPage);
       const current = await token.current(!toLogin);
 
       if(current && toLogin) {
-        await router.replace(to.query.redirect || "/");
+        await $router.replace(to.query.redirect || "/");
       } else if(!current && !toLogin) {
-        await router.replace(`/${auth.loginPageRoute}?redirect=${to.fullPath}`);
+        await $router.replace(`/${auth.loginPageRoute}?redirect=${to.fullPath}`);
       }
     });
   },
   hooks: {
     "app:mounted"() {
+      const { $router } = useNuxtApp();
       const { public: { auth } } = useRuntimeConfig();
-      const nuxtApp = useNuxtApp();
-      const router = nuxtApp.$router;
       const route = useRoute();
       const token = useToken();
 
       token.onChanged(() => {
         token.current().then(current => {
           if(current) {
-            router.push(route.query.redirect || "/");
+            $router.push(route.query.redirect || "/");
           } else {
-            router.push(`/${auth.loginPageRoute}`);
+            $router.push(`/${auth.loginPageRoute}`);
           }
         });
       });

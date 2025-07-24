@@ -6,7 +6,8 @@ export default defineNuxtPlugin({
   enforce: "pre",
   setup(nuxtApp) {
     const fetch = ofetch.create();
-    const interceptors = createInterceptors();
+    const interceptors = Interceptors();
+    const optionsTemplate = { headers: { }, query: { }, options: { } };
 
     // register the actual fetch at the end of the interceptor pipeline
     interceptors.register("actual-fetch",
@@ -15,14 +16,16 @@ export default defineNuxtPlugin({
     );
 
     // wrap $fetch using interceptors to allow around interception
-    globalThis.$fetch = async(request, options) => await interceptors.execute({ request, options });
+    globalThis.$fetch = async(request, options) => {
+      return await interceptors.execute({ request, options: { ...optionsTemplate, ...options } });
+    };
 
     // Add to nuxtApp for access from plugins
     nuxtApp.provide("fetchInterceptors", interceptors);
   }
 });
 
-function createInterceptors() {
+function Interceptors() {
   const { public: { composables } } = useRuntimeConfig();
   const interceptorMap = new Map();
 
