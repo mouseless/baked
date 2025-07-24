@@ -4,14 +4,13 @@ import giveMe from "~/utils/giveMe";
 
 test.beforeEach(async({ page }) => {
   await page.route("*/**/authentication-samples/login", async route => {
-    const json = giveMe.aToken();
-    await route.fulfill({ json });
+    await route.fulfill({ json: giveMe.aToken() });
   });
   await page.route("*/**/cache-samples/application", async route => {
-    await route.fulfill({ json: "" });
+    await route.fulfill({ json: giveMe.anApiResponse() });
   });
   await page.route("*/**/cache-samples/scoped", async route => {
-    await route.fulfill({ json: "" });
+    await route.fulfill({ json: giveMe.anApiResponse() });
   });
 });
 
@@ -20,7 +19,7 @@ test.describe("application cache", () => {
     let callCount = 0;
     await page.route("*/**/cache-samples/application", async route => {
       callCount++;
-      await route.fulfill({ json: "" });
+      await route.fulfill({ json: giveMe.anApiResponse() });
     });
 
     await goto("/specs/cache", { waitUntil: "hydration" }); // hit#1
@@ -31,9 +30,9 @@ test.describe("application cache", () => {
 
   test("it is not cleared after login", async({goto, page}) => {
     let callCount = 0;
-    await page.route("*/**/cache-samples/scoped", async route => {
+    await page.route("*/**/cache-samples/application", async route => {
       callCount++;
-      await route.fulfill({ json: "" });
+      await route.fulfill({ json: giveMe.anApiResponse() });
     });
 
     await goto("/specs/cache", { waitUntil: "hydration" }); // hit#1
@@ -45,9 +44,9 @@ test.describe("application cache", () => {
 
   test("it is not cleared after logout", async({goto, page}) => {
     let callCount = 0;
-    await page.route("*/**/cache-samples/scoped", async route => {
+    await page.route("*/**/cache-samples/application", async route => {
       callCount++;
-      await route.fulfill({ json: "" });
+      await route.fulfill({ json: giveMe.anApiResponse() });
     });
 
     await login({goto, page});
@@ -64,7 +63,7 @@ test.describe("user cache", () => {
     let callCount = 0;
     await page.route("*/**/cache-samples/scoped", async route => {
       callCount++;
-      await route.fulfill({ json: "" });
+      await route.fulfill({ json: giveMe.anApiResponse() });
     });
 
     await goto("/specs/cache", { waitUntil: "hydration" }); // hit#1
@@ -77,7 +76,7 @@ test.describe("user cache", () => {
     let callCount = 0;
     await page.route("*/**/cache-samples/scoped", async route => {
       callCount++;
-      await route.fulfill({ json: "" });
+      await route.fulfill({ json: giveMe.anApiResponse() });
     });
 
     await goto("/specs/cache", { waitUntil: "hydration" }); // hit#1
@@ -92,7 +91,7 @@ test.describe("user cache", () => {
     let callCount = 0;
     await page.route("*/**/cache-samples/scoped", async route => {
       callCount++;
-      await route.fulfill({ json: "" });
+      await route.fulfill({ json: giveMe.anApiResponse() });
     });
 
     await login({goto, page});

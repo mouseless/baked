@@ -47,7 +47,7 @@ export default function() {
     dispatch = true
   ) {
     if(!value) {
-      localStorage.clear("token");
+      localStorage.removeItem("token");
     } else {
       localStorage.setItem("token", JSON.stringify(value));
     }
