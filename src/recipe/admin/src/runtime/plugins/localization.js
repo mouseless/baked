@@ -8,10 +8,12 @@ export default defineNuxtPlugin({
 
     $fetchInterceptors.register(
       "localization",
-      async({ options }, nuxtApp) => {
-        options.headers.set("Accept-Language", nuxtApp.$i18n.locale.value);
-      },
-      20
+      {
+        async onRequest({ options }, nuxtApp) {
+          options.headers.set("Accept-Language", nuxtApp.$i18n.locale.value);
+        },
+        priority: 20
+      }
     );
   }
 });

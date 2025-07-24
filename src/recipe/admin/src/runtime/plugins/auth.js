@@ -12,25 +12,27 @@ export default defineNuxtPlugin({
 
     $fetchInterceptors.register(
       "auth",
-      async({ request, options }) => {
+      {
+        async onRequest({ request, options }) {
         // filters out any api call that already has an authorization header,
         // such as refresh token api call
-        if(options.headers.has("Authorization") || options.headers.has("authorization")) { return; }
+          if(options.headers.has("Authorization") || options.headers.has("authorization")) { return; }
 
-        // try get current token
-        let result = await token.current(false);
-        if(!result || result.accessIsExpired()) {
+          // try get current token
+          let result = await token.current(false);
+          if(!result || result.accessIsExpired()) {
           // if api is anonymous no need to have a token, will continue
           // anonymously
-          if(auth.anonymousApiRoutes.some(route => request?.includes(route))) { return; }
+            if(auth.anonymousApiRoutes.some(route => request?.includes(route))) { return; }
 
-          // force get an access token
-          result = await token.current(true);
-        }
+            // force get an access token
+            result = await token.current(true);
+          }
 
-        options.headers.set("Authorization", "Bearer " + result?.access );
-      },
-      10
+          options.headers.set("Authorization", "Bearer " + result?.access );
+        },
+        priority: 10
+      }
     );
 
     router.beforeEach(async(to, _) => {
