@@ -99,7 +99,7 @@ test.describe("user cache", () => {
     await logout({goto, page});
     await goto("/specs/cache", { waitUntil: "hydration" }); // hit#2
 
-    expect(callCount).toBe(1);
+    expect(callCount).toBe(2);
   });
 });
 

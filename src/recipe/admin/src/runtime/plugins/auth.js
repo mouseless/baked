@@ -1,5 +1,5 @@
 import { defineNuxtPlugin, useNuxtApp, useRoute, useRuntimeConfig } from "#app";
-import useToken from "../composables/useToken";
+import { useToken } from "#imports";
 
 export default defineNuxtPlugin({
   name: "auth",

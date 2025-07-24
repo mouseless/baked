@@ -1,18 +1,34 @@
 import { defineNuxtPlugin } from "#app";
+import { useCache, useToken } from "#imports";
 
 export default defineNuxtPlugin({
   name: "cache-user",
   enforce: "pre",
   setup(nuxtApp) {
+    const cache = useCache("cache:user");
     const { $fetchInterceptors } = nuxtApp;
 
     $fetchInterceptors.register(
       "cache-user",
-      async(_, next) => {
-        return await next();
+      async({ request, options }, next) => {
+        if(options.options["client-cache"] !== "user") {
+          return await next();
+        }
+
+        return await cache.getOrCreate(request, next);
       },
       // should run before other interceptors
       -10
     );
+  },
+  hooks: {
+    "app:mounted"() {
+      const cache = useCache("cache:user");
+      const token = useToken();
+
+      token.onChanged(() => {
+        cache.clear();
+      });
+    }
   }
 });

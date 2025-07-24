@@ -13,7 +13,22 @@ export default function(name) {
     return result;
   }
 
+  function clear() {
+    const keysToClear = [];
+    for(let i = 0; i<localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if(key.startsWith(name)) {
+        keysToClear.push(key);
+      }
+    }
+
+    for(const key of keysToClear) {
+      localStorage.removeItem(key);
+    }
+  }
+
   return {
-    getOrCreate
+    getOrCreate,
+    clear
   };
 }
