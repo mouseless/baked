@@ -17,6 +17,9 @@ export default defineNuxtPlugin({
 
     // wrap $fetch using interceptors to allow around interception
     globalThis.$fetch = async(request, options) => {
+      // not all requests have headers, query, options objects. this might
+      // cause interceptors to fail. options template makes sure every
+      // request has those objects to be set to an empty object.
       return await interceptors.execute({ request, options: { ...optionsTemplate, ...options } });
     };
 

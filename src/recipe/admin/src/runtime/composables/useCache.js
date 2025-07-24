@@ -1,5 +1,5 @@
 export default function(name) {
-  async function getOrCreate(key, factory) {
+  async function getOrCreate(key, create) {
     key = `${name}[${key}]`;
 
     const cached = localStorage.getItem(key);
@@ -7,10 +7,10 @@ export default function(name) {
       return JSON.parse(cached);
     }
 
-    const response = await factory();
-    localStorage.setItem(key, JSON.stringify(response));
+    const result = await create();
+    localStorage.setItem(key, JSON.stringify(result));
 
-    return response;
+    return result;
   }
 
   return {

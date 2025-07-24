@@ -17,7 +17,7 @@ export default defineNuxtPlugin({
 
         return await cache.getOrCreate(request, next);
       },
-      // should run before other interceptor
+      // should run before other interceptors
       -10
     );
   }

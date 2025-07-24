@@ -11,7 +11,7 @@ export default defineNuxtPlugin({
       async(_, next) => {
         return await next();
       },
-      // should run before other interceptor
+      // should run before other interceptors
       -10
     );
   }
