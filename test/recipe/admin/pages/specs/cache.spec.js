@@ -56,6 +56,21 @@ test.describe("application cache", () => {
 
     expect(callCount).toBe(1);
   });
+
+  test("it invalidates after configured time", async({goto, page}) => {
+    let callCount = 0;
+    await page.route("*/**/cache-samples/application", async route => {
+      callCount++;
+      await route.fulfill({ json: giveMe.anApiResponse() });
+    });
+
+    await page.clock.setFixedTime(new Date("2025-07-24T21:10:00"));
+    await goto("/specs/cache", { waitUntil: "hydration" }); // hit#1
+    await page.clock.setFixedTime(new Date("2025-07-24T22:10:00"));
+    await goto("/specs/cache", { waitUntil: "hydration" }); // hit#2
+
+    expect(callCount).toBe(2);
+  });
 });
 
 test.describe("user cache", () => {
@@ -97,6 +112,21 @@ test.describe("user cache", () => {
     await login({goto, page});
     await goto("/specs/cache", { waitUntil: "hydration" }); // hit#1
     await logout({goto, page});
+    await goto("/specs/cache", { waitUntil: "hydration" }); // hit#2
+
+    expect(callCount).toBe(2);
+  });
+
+  test("it invalidates after configured time", async({goto, page}) => {
+    let callCount = 0;
+    await page.route("*/**/cache-samples/scoped", async route => {
+      callCount++;
+      await route.fulfill({ json: giveMe.anApiResponse() });
+    });
+
+    await page.clock.setFixedTime(new Date("2025-07-24T21:10:00"));
+    await goto("/specs/cache", { waitUntil: "hydration" }); // hit#1
+    await page.clock.setFixedTime(new Date("2025-07-24T22:10:00"));
     await goto("/specs/cache", { waitUntil: "hydration" }); // hit#2
 
     expect(callCount).toBe(2);

@@ -1,5 +1,6 @@
 ﻿using Baked.Caching;
 using Baked.Caching.ScopedMemory;
+using Baked.Runtime;
 using Baked.Testing;
 using Microsoft.Extensions.Caching.Memory;
 using Shouldly;
@@ -8,8 +9,9 @@ namespace Baked;
 
 public static class ScopedMemoryCachingExtensions
 {
-    public static ScopedMemoryCachingFeature ScopedMemory(this CachingConfigurator _) =>
-        new();
+    public static ScopedMemoryCachingFeature ScopedMemory(this CachingConfigurator _,
+        Setting<TimeSpan>? clientExpiration = default
+    ) => new(clientExpiration ?? TimeSpan.FromHours(1));
 
     public static IMemoryCache AMemoryCache(this Stubber giveMe,
         bool clear = false

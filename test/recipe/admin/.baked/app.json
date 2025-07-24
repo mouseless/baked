@@ -16,9 +16,11 @@
       "refreshApiRoute": "authentication-samples/refresh"
     },
     {
+      "expirationInMinutes": 60,
       "name": "cacheApplication"
     },
     {
+      "expirationInMinutes": 60,
       "name": "cacheUser"
     },
     {

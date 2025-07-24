@@ -1,14 +1,22 @@
-export default function(name) {
+export default function(name,
+  expirationInMinutes = 60
+) {
   async function getOrCreate(key, create) {
     key = `${name}[${key}]`;
 
     const cached = localStorage.getItem(key);
     if(cached) {
-      return JSON.parse(cached);
+      const entry = JSON.parse(cached);
+      if(Date.now() - entry.createdAt < expirationInMinutes * 60 * 1000) {
+        return entry.data;
+      }
     }
 
     const result = await create();
-    localStorage.setItem(key, JSON.stringify(result));
+    localStorage.setItem(key, JSON.stringify({
+      createdAt: Date.now(),
+      data: result
+    }));
 
     return result;
   }

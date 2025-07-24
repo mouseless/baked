@@ -1,11 +1,12 @@
-import { defineNuxtPlugin } from "#app";
+import { defineNuxtPlugin, useRuntimeConfig } from "#app";
 import { useCache } from "#imports";
 
 export default defineNuxtPlugin({
   name: "cache-application",
   enforce: "pre",
   setup(nuxtApp) {
-    const cache = useCache("cache:application");
+    const { public: { cacheApplication } } = useRuntimeConfig();
+    const cache = useCache("cache:application", cacheApplication.expirationInMinutes);
     const { $fetchInterceptors } = nuxtApp;
 
     $fetchInterceptors.register(
