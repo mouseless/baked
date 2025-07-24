@@ -14,6 +14,11 @@ public class ScopedMemoryCachingFeature : IFeature<CachingConfigurator>
             services.AddKeyedScoped<IMemoryCache, MemoryCache>("ScopedMemory");
         });
 
+        configurator.ConfigureAppDescriptor(app =>
+        {
+            app.Plugins.Add(new CacheUserPlugin());
+        });
+
         configurator.ConfigureTestConfiguration(test =>
         {
             test.TearDowns.Add(spec =>

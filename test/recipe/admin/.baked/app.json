@@ -16,7 +16,12 @@
       "refreshApiRoute": "authentication-samples/refresh"
     },
     {
-      "name": "errorHandling",
+      "name": "cacheApplication"
+    },
+    {
+      "name": "cacheUser"
+    },
+    {
       "handlers": [
         {
           "statusCode": 401,
@@ -39,10 +44,10 @@
         }
       ],
       "defaultAlertTitle": "Unexpected_Error",
-      "defaultAlertMessage": "Please_contact_system_administrator"
+      "defaultAlertMessage": "Please_contact_system_administrator",
+      "name": "errorHandling"
     },
     {
-      "name": "localization",
       "supportedLanguages": [
         {
           "code": "en",
@@ -52,7 +57,8 @@
           "code": "tr",
           "name": "Turkish"
         }
-      ]
+      ],
+      "name": "localization"
     }
   ],
   "error": {

@@ -5,23 +5,17 @@ export default defineNuxtPlugin({
   name: "fetch-manager",
   enforce: "pre",
   setup(nuxtApp) {
+    const fetch = ofetch.create();
     const interceptors = createInterceptors();
-    const { public: { composables } } = useRuntimeConfig();
 
-    globalThis.$fetch = ofetch.create({
-      async onRequest(context) {
-        // filters out `/_nuxt` calls and any other non api calls
-        if(context.options.baseURL !== composables.useDataFetcher.baseURL) { return; }
+    // register the actual fetch at the end of the interceptor pipeline
+    interceptors.register("actual-fetch",
+      async({ request, options }) => await fetch(request, options),
+      Number.MAX_SAFE_INTEGER
+    );
 
-        await interceptors.onRequest(context, nuxtApp);
-      },
-      async onResponse(context) {
-        // filters out `/_nuxt` calls and any other non api calls
-        if(context.options.baseURL !== composables.useDataFetcher.baseURL) { return; }
-
-        await interceptors.onResponse(context, nuxtApp);
-      }
-    });
+    // wrap $fetch using interceptors to allow around interception
+    globalThis.$fetch = async(request, options) => await interceptors.execute({ request, options });
 
     // Add to nuxtApp for access from plugins
     nuxtApp.provide("fetchInterceptors", interceptors);
@@ -29,19 +23,16 @@ export default defineNuxtPlugin({
 });
 
 function createInterceptors() {
+  const { public: { composables } } = useRuntimeConfig();
   const interceptorMap = new Map();
 
   let interceptors = null;
   let sorted = false;
 
-  function register(name,
-    {
-      onRequest = () => { },
-      onResponse = () => { },
-      priority = 100
-    } = { }
+  function register(name, execute,
+    priority = 0
   ) {
-    interceptorMap.set(name, { onRequest, onResponse, priority });
+    interceptorMap.set(name, { execute, priority });
     sorted = false;
   }
 
@@ -54,25 +45,30 @@ function createInterceptors() {
     sorted = true;
   }
 
-  async function onRequest(context, nuxtApp) {
+  async function execute(context) {
     ensureSorted();
 
-    for(const interceptor of interceptors) {
-      await interceptor.onRequest(context, nuxtApp);
+    // doesn't intercept `/_nuxt` calls and any other non api calls
+    if(context.options.baseURL !== composables.useDataFetcher.baseURL) {
+      // directly executes last call, that is the actual fetch
+      return await executeInner(context, interceptors.length - 1);
     }
+
+    return await executeInner(context, 0);
   }
 
-  async function onResponse(context, nuxtApp) {
-    ensureSorted();
+  async function executeInner(context, index) {
+    if(index >= interceptors.length) { return; }
 
-    for(const interceptor of interceptors) {
-      await interceptor.onResponse(context, nuxtApp);
-    }
+    const interceptor = interceptors[index];
+
+    return await interceptor.execute(context, async() => {
+      return await executeInner(context, index + 1);
+    });
   }
 
   return {
     register,
-    onRequest,
-    onResponse
+    execute
   };
 };
