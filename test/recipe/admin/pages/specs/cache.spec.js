@@ -2,7 +2,10 @@ import { expect, test } from "@nuxt/test-utils/playwright";
 import primevue from "~/utils/locators/primevue";
 import giveMe from "~/utils/giveMe";
 
-test.beforeEach(async({ page }) => {
+test.beforeEach(async({ goto, page }) => {
+  await goto("/", { waitUntil: "hydration" });
+  await page.evaluate(() => localStorage.clear());
+
   await page.route("*/**/authentication-samples/login", async route => {
     await route.fulfill({ json: giveMe.aToken() });
   });
