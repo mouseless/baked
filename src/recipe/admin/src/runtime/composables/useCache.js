@@ -3,7 +3,6 @@ export default function(name,
 ) {
   function buildKey(path, query) {
     let result = path;
-
     if(query) {
       const search = new URLSearchParams(query);
       search.sort();
