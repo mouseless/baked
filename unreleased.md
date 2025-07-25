@@ -19,8 +19,8 @@
   fixed
 - `Parameters` component now emits `onChanged` before `onReady` to fix values
   inconsistency
-- Csv formatter now including column and row based format.
-- Removed `(Object)` from the project name in the descriptions.
+- Csv formatter now including column and row based format
+- Removed `(Object)` from the project name in the descriptions
 
 ## Library Upgrades
 
