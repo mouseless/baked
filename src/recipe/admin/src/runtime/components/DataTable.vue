@@ -137,16 +137,21 @@ const actionsMenu = ref();
 const actions = ref([ ]);
 const loading = context.loading();
 const value = computed(() => {
-  const result = data
+  const items = data
     ? itemsProp
       ? data[itemsProp]
       : data
     : new Array(rowsWhenLoading || 5).fill({ });
 
-  for(const row of result) {
+  const result = [];
+  for(const itemRow of items) {
+    const resultRow = { };
+
     for(const column of columns) {
-      row[column.prop] = { value: row[column.prop], $row: row };
+      resultRow[column.prop] = { value: itemRow[column.prop], getRow: () => itemRow };
     }
+
+    result.push(resultRow);
   }
 
   return result;
@@ -169,6 +174,6 @@ function toggleActionsMenu(event) {
 function exportFunction({ data, field }) {
   if(!formatter) { return data.value; }
 
-  return formatter.format(data.value, { prop: field, row: data.$row });
+  return formatter.format(data.value, { prop: field, row: data.getRow() });
 }
 </script>

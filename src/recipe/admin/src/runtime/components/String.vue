@@ -26,13 +26,13 @@ const { maxLength } = schema;
 
 const loading = context.loading();
 const lengthIsExceeded = computed(() => maxLength && data.length > maxLength);
-const text = computed(() => lengthIsExceeded.value ? truncate(data, maxLength): data);
+const text = computed(() => lengthIsExceeded.value ? truncate(data, maxLength) : data);
 const tooltip = computed(() => ({
   value: `${data}`,
   disabled: !lengthIsExceeded.value,
   pt: {
     root: {
-      style: maxLength ? `min-width: ${maxLength/4}rem;` : ""
+      style: maxLength ? `min-width: ${maxLength / 4}rem;` : ""
     }
   }
 }));
