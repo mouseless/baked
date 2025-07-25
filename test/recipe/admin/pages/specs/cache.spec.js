@@ -22,12 +22,13 @@ test.describe("application cache", () => {
     let callCount = 0;
     await page.route("*/**/cache-samples/application", async route => {
       callCount++;
-      await route.fulfill({ json: giveMe.anApiResponse() });
+      await route.fulfill({ json: "loaded" });
     });
 
     await goto("/specs/cache", { waitUntil: "hydration" }); // hit#1
     await goto("/specs/cache", { waitUntil: "hydration" }); // cache hit!
 
+    await expect(page.getByTestId("application")).toHaveText("loaded");
     expect(callCount).toBe(1);
   });
 
@@ -35,13 +36,14 @@ test.describe("application cache", () => {
     let callCount = 0;
     await page.route("*/**/cache-samples/application", async route => {
       callCount++;
-      await route.fulfill({ json: giveMe.anApiResponse() });
+      await route.fulfill({ json: "loaded" });
     });
 
     await goto("/specs/cache", { waitUntil: "hydration" }); // hit#1
     await login({goto, page});
     await goto("/specs/cache", { waitUntil: "hydration" }); // cache hit!
 
+    await expect(page.getByTestId("application")).toHaveText("loaded");
     expect(callCount).toBe(1);
   });
 
@@ -49,7 +51,7 @@ test.describe("application cache", () => {
     let callCount = 0;
     await page.route("*/**/cache-samples/application", async route => {
       callCount++;
-      await route.fulfill({ json: giveMe.anApiResponse() });
+      await route.fulfill({ json: "loaded" });
     });
 
     await login({goto, page});
@@ -57,6 +59,7 @@ test.describe("application cache", () => {
     await logout({goto, page});
     await goto("/specs/cache", { waitUntil: "hydration" }); // cache hit!
 
+    await expect(page.getByTestId("application")).toHaveText("loaded");
     expect(callCount).toBe(1);
   });
 
@@ -66,13 +69,14 @@ test.describe("application cache", () => {
     let callCount = 0;
     await page.route("*/**/cache-samples/application", async route => {
       callCount++;
-      await route.fulfill({ json: giveMe.anApiResponse() });
+      await route.fulfill({ json: "loaded" });
     });
 
     await goto("/specs/cache", { waitUntil: "hydration" }); // hit#1
     await page.clock.fastForward("01:00:00");
     await goto("/specs/cache", { waitUntil: "hydration" }); // hit#2
 
+    await expect(page.getByTestId("application")).toHaveText("loaded");
     expect(callCount).toBe(2);
   });
 });
@@ -82,12 +86,13 @@ test.describe("user cache", () => {
     let callCount = 0;
     await page.route("*/**/cache-samples/scoped", async route => {
       callCount++;
-      await route.fulfill({ json: giveMe.anApiResponse() });
+      await route.fulfill({ json: "loaded" });
     });
 
     await goto("/specs/cache", { waitUntil: "hydration" }); // hit#1
     await goto("/specs/cache", { waitUntil: "hydration" }); // cache hit!
 
+    await expect(page.getByTestId("user")).toHaveText("loaded");
     expect(callCount).toBe(1);
   });
 
@@ -95,7 +100,7 @@ test.describe("user cache", () => {
     let callCount = 0;
     await page.route("*/**/cache-samples/scoped", async route => {
       callCount++;
-      await route.fulfill({ json: giveMe.anApiResponse() });
+      await route.fulfill({ json: "loaded" });
     });
 
     await goto("/specs/cache", { waitUntil: "hydration" }); // hit#1
@@ -103,6 +108,7 @@ test.describe("user cache", () => {
     await goto("/specs/cache", { waitUntil: "hydration" }); // hit#2
     await goto("/specs/cache", { waitUntil: "hydration" }); // cache hit!
 
+    await expect(page.getByTestId("user")).toHaveText("loaded");
     expect(callCount).toBe(2);
   });
 
@@ -110,7 +116,7 @@ test.describe("user cache", () => {
     let callCount = 0;
     await page.route("*/**/cache-samples/scoped", async route => {
       callCount++;
-      await route.fulfill({ json: giveMe.anApiResponse() });
+      await route.fulfill({ json: "loaded" });
     });
 
     await login({goto, page});
@@ -118,6 +124,7 @@ test.describe("user cache", () => {
     await logout({goto, page});
     await goto("/specs/cache", { waitUntil: "hydration" }); // hit#2
 
+    await expect(page.getByTestId("user")).toHaveText("loaded");
     expect(callCount).toBe(2);
   });
 
@@ -127,13 +134,14 @@ test.describe("user cache", () => {
     let callCount = 0;
     await page.route("*/**/cache-samples/scoped", async route => {
       callCount++;
-      await route.fulfill({ json: giveMe.anApiResponse() });
+      await route.fulfill({ json: "loaded" });
     });
 
     await goto("/specs/cache", { waitUntil: "hydration" }); // hit#1
     await page.clock.fastForward("01:00:00");
     await goto("/specs/cache", { waitUntil: "hydration" }); // hit#2
 
+    await expect(page.getByTestId("user")).toHaveText("loaded");
     expect(callCount).toBe(2);
   });
 });

@@ -12,6 +12,7 @@ const variants = [
   {
     name: "Application",
     descriptor: giveMe.anExpected({
+      testId: "application",
       data: {
         type: "Remote",
         path: "/cache-samples/application",
@@ -22,6 +23,7 @@ const variants = [
   {
     name: "User",
     descriptor: giveMe.anExpected({
+      testId: "user",
       data: {
         type: "Remote",
         path: "/cache-samples/scoped",
