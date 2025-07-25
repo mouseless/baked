@@ -14,15 +14,16 @@
       height="1.5rem"
       width="100%"
     />
-    <span v-else-if="data">{{ data }}</span>
+    <span v-else-if="data">{{ l(data) }}</span>
     <span v-else>-</span>
   </Message>
 </template>
 <script setup>
 import { Message, Skeleton } from "primevue";
-import { useContext } from "#imports";
+import { useContext, useLocalization } from "#imports";
 
 const context = useContext();
+const { localize: l } = useLocalization();
 
 const { schema } = defineProps({
   schema: { type: null, default: null },
