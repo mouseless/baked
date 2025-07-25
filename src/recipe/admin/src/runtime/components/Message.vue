@@ -14,7 +14,7 @@
       height="1.5rem"
       width="100%"
     />
-    <span v-else-if="data">{{ l(data) }}</span>
+    <span v-else-if="data">{{ localizeMessage ? l(data) : data }}</span>
     <span v-else>-</span>
   </Message>
 </template>
@@ -30,7 +30,7 @@ const { schema } = defineProps({
   data: { type: null, default: null }
 });
 
-const { icon, severity } = schema;
+const { icon, severity, localizeMessage } = schema;
 
 const loading = context.loading();
 </script>
