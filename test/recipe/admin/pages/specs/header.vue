@@ -87,7 +87,7 @@ const variants = [
         giveMe.aHeaderItem({
           route: "/no-icon",
           icon: null,
-          title: "Spec.No_Icon"
+          title: "Spec.No_icon"
         })
       ],
       data: { path: "/no-icon" }

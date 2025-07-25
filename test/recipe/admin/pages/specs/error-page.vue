@@ -17,7 +17,7 @@ const variants = [
       errorInfos: [
         giveMe.anErrorPageInfo({
           statusCode: "403",
-          title: "Spec.Access_Denied",
+          title: "Spec.Access_denied",
           message: "Spec.You_do_not_have_the_permission_to_view_the_address_or_data_specified"
         })
       ],

@@ -46,13 +46,13 @@ const variants = [
         giveMe.aMenuPageSection({
           title: "Spec.Section_1",
           links: [
-            giveMe.aFilterable({ title: "Spec.A_Link", component: giveMe.anExpected({ testId: "LINK_1", value: "A_VALUE" })})
+            giveMe.aFilterable({ title: "Spec.A_link", component: giveMe.anExpected({ testId: "LINK_1", value: "A_VALUE" })})
           ]
         }),
         giveMe.aMenuPageSection({
           title: "Spec.Section_2",
           links: [
-            giveMe.aFilterable({ title: "Spec.B_Link", component: giveMe.anExpected({ testId: "LINK_2", value: "B_VALUE"})})
+            giveMe.aFilterable({ title: "Spec.B_link", component: giveMe.anExpected({ testId: "LINK_2", value: "B_VALUE"})})
           ]
         })
       ]

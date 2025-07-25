@@ -54,7 +54,7 @@ export default {
   },
 
   aDataPanel({ title, collapsed, localizeTitle, parameters, content } = {}) {
-    title = $(title, { type: "Inline", value: "Spec.Test_Title" });
+    title = $(title, { type: "Inline", value: "Spec.Test_title" });
     collapsed = $(collapsed, false);
     parameters = $(parameters, []);
     content = $(content, this.anExpected());
@@ -314,7 +314,7 @@ export default {
   },
 
   aPageTitle({ title, description, actions } = {}) {
-    title = $(title, "Spec.Test_Title");
+    title = $(title, "Spec.Test_title");
     description = $(description, "Spec.Test_description_is_given_for_testing_purposes");
     actions = $(actions, []);
 

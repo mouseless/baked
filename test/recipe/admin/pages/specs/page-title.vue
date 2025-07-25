@@ -28,7 +28,7 @@ const variants = [
   {
     name: "No Description",
     descriptor: giveMe.aPageTitle({
-      title: "Spec.PAGE_TITLE",
+      title: "Spec.Page_title",
       description: null
     })
   },
