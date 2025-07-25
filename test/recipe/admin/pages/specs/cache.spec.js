@@ -25,10 +25,12 @@ test.describe("application cache", () => {
       await route.fulfill({ json: "loaded" });
     });
 
-    await goto("/specs/cache", { waitUntil: "hydration" }); // hit#1
-    await goto("/specs/cache", { waitUntil: "hydration" }); // cache hit!
+    await goto("/specs/cache", { waitUntil: "hydration" });
+    await expect(page.getByTestId("application")).toHaveText("loaded"); // hit#1
 
-    await expect(page.getByTestId("application")).toHaveText("loaded");
+    await goto("/specs/cache", { waitUntil: "hydration" });
+    await expect(page.getByTestId("application")).toHaveText("loaded"); // cache hit!
+
     expect(callCount).toBe(1);
   });
 
@@ -39,12 +41,18 @@ test.describe("application cache", () => {
       await route.fulfill({ json: "loaded" });
     });
 
-    await goto("/specs/cache?parameter=value_a", { waitUntil: "hydration" }); // hit#1
-    await goto("/specs/cache?parameter=value_b", { waitUntil: "hydration" }); // hit#2!
-    await goto("/specs/cache?parameter=value_a", { waitUntil: "hydration" }); // cache hit!
-    await goto("/specs/cache?parameter=value_b", { waitUntil: "hydration" }); // cache hit!
+    await goto("/specs/cache?parameter=value_a", { waitUntil: "hydration" });
+    await expect(page.getByTestId("application")).toHaveText("loaded"); // hit#1
 
-    await expect(page.getByTestId("application")).toHaveText("loaded");
+    await goto("/specs/cache?parameter=value_b", { waitUntil: "hydration" });
+    await expect(page.getByTestId("application")).toHaveText("loaded"); // hit#2!
+
+    await goto("/specs/cache?parameter=value_a", { waitUntil: "hydration" });
+    await expect(page.getByTestId("application")).toHaveText("loaded"); // cache hit!
+
+    await goto("/specs/cache?parameter=value_b", { waitUntil: "hydration" });
+    await expect(page.getByTestId("application")).toHaveText("loaded"); // cache hit!
+
     expect(callCount).toBe(2);
   });
 
@@ -55,11 +63,14 @@ test.describe("application cache", () => {
       await route.fulfill({ json: "loaded" });
     });
 
-    await goto("/specs/cache", { waitUntil: "hydration" }); // hit#1
-    await login({goto, page});
-    await goto("/specs/cache", { waitUntil: "hydration" }); // cache hit!
+    await goto("/specs/cache", { waitUntil: "hydration" });
+    await expect(page.getByTestId("application")).toHaveText("loaded"); // hit#1
 
-    await expect(page.getByTestId("application")).toHaveText("loaded");
+    await login({goto, page});
+
+    await goto("/specs/cache", { waitUntil: "hydration" });
+    await expect(page.getByTestId("application")).toHaveText("loaded"); // cache hit!
+
     expect(callCount).toBe(1);
   });
 
@@ -71,28 +82,31 @@ test.describe("application cache", () => {
     });
 
     await login({goto, page});
-    await goto("/specs/cache", { waitUntil: "hydration" }); // hit#1
-    await logout({goto, page});
-    await goto("/specs/cache", { waitUntil: "hydration" }); // cache hit!
+    await goto("/specs/cache", { waitUntil: "hydration" });
+    await expect(page.getByTestId("application")).toHaveText("loaded"); // hit#1
 
-    await expect(page.getByTestId("application")).toHaveText("loaded");
+    await logout({goto, page});
+    await goto("/specs/cache", { waitUntil: "hydration" });
+    await expect(page.getByTestId("application")).toHaveText("loaded"); // cache hit!
+
     expect(callCount).toBe(1);
   });
 
   test("it invalidates after configured time", async({goto, page}) => {
-    await page.clock.install();
-
     let callCount = 0;
     await page.route("*/**/cache-samples/application", async route => {
       callCount++;
       await route.fulfill({ json: "loaded" });
     });
 
-    await goto("/specs/cache", { waitUntil: "hydration" }); // hit#1
-    await page.clock.fastForward("01:00:00");
-    await goto("/specs/cache", { waitUntil: "hydration" }); // hit#2
+    await page.clock.install();
+    await goto("/specs/cache", { waitUntil: "hydration" });
+    await expect(page.getByTestId("application")).toHaveText("loaded"); // hit#1
 
-    await expect(page.getByTestId("application")).toHaveText("loaded");
+    await page.clock.fastForward("01:00:00");
+    await goto("/specs/cache", { waitUntil: "hydration" });
+    await expect(page.getByTestId("application")).toHaveText("loaded"); // hit#2
+
     expect(callCount).toBe(2);
   });
 });
@@ -105,10 +119,12 @@ test.describe("user cache", () => {
       await route.fulfill({ json: "loaded" });
     });
 
-    await goto("/specs/cache", { waitUntil: "hydration" }); // hit#1
-    await goto("/specs/cache", { waitUntil: "hydration" }); // cache hit!
+    await goto("/specs/cache", { waitUntil: "hydration" });
+    await expect(page.getByTestId("user")).toHaveText("loaded"); // hit#1
 
-    await expect(page.getByTestId("user")).toHaveText("loaded");
+    await goto("/specs/cache", { waitUntil: "hydration" });
+    await expect(page.getByTestId("user")).toHaveText("loaded"); // cache hit!
+
     expect(callCount).toBe(1);
   });
 
@@ -119,12 +135,18 @@ test.describe("user cache", () => {
       await route.fulfill({ json: "loaded" });
     });
 
-    await goto("/specs/cache?parameter=value_a", { waitUntil: "hydration" }); // hit#1
-    await goto("/specs/cache?parameter=value_b", { waitUntil: "hydration" }); // hit#2!
-    await goto("/specs/cache?parameter=value_a", { waitUntil: "hydration" }); // cache hit!
-    await goto("/specs/cache?parameter=value_b", { waitUntil: "hydration" }); // cache hit!
+    await goto("/specs/cache?parameter=value_a", { waitUntil: "hydration" });
+    await expect(page.getByTestId("user")).toHaveText("loaded"); // hit#1
 
-    await expect(page.getByTestId("user")).toHaveText("loaded");
+    await goto("/specs/cache?parameter=value_b", { waitUntil: "hydration" });
+    await expect(page.getByTestId("user")).toHaveText("loaded"); // hit#2
+
+    await goto("/specs/cache?parameter=value_a", { waitUntil: "hydration" });
+    await expect(page.getByTestId("user")).toHaveText("loaded"); // cache hit!
+
+    await goto("/specs/cache?parameter=value_b", { waitUntil: "hydration" });
+    await expect(page.getByTestId("user")).toHaveText("loaded"); // cache hit!
+
     expect(callCount).toBe(2);
   });
 
@@ -135,12 +157,17 @@ test.describe("user cache", () => {
       await route.fulfill({ json: "loaded" });
     });
 
-    await goto("/specs/cache", { waitUntil: "hydration" }); // hit#1
-    await login({goto, page});
-    await goto("/specs/cache", { waitUntil: "hydration" }); // hit#2
-    await goto("/specs/cache", { waitUntil: "hydration" }); // cache hit!
+    await goto("/specs/cache", { waitUntil: "hydration" });
+    await expect(page.getByTestId("user")).toHaveText("loaded"); // hit#1
 
-    await expect(page.getByTestId("user")).toHaveText("loaded");
+    await login({goto, page});
+
+    await goto("/specs/cache", { waitUntil: "hydration" });
+    await expect(page.getByTestId("user")).toHaveText("loaded"); // hit#2
+
+    await goto("/specs/cache", { waitUntil: "hydration" });
+    await expect(page.getByTestId("user")).toHaveText("loaded"); // cache hit!
+
     expect(callCount).toBe(2);
   });
 
@@ -152,28 +179,31 @@ test.describe("user cache", () => {
     });
 
     await login({goto, page});
-    await goto("/specs/cache", { waitUntil: "hydration" }); // hit#1
-    await logout({goto, page});
-    await goto("/specs/cache", { waitUntil: "hydration" }); // hit#2
+    await goto("/specs/cache", { waitUntil: "hydration" });
+    await expect(page.getByTestId("user")).toHaveText("loaded"); // hit#1
 
-    await expect(page.getByTestId("user")).toHaveText("loaded");
+    await logout({goto, page});
+    await goto("/specs/cache", { waitUntil: "hydration" });
+    await expect(page.getByTestId("user")).toHaveText("loaded"); // hit#2
+
     expect(callCount).toBe(2);
   });
 
   test("it invalidates after configured time", async({goto, page}) => {
-    await page.clock.install();
-
     let callCount = 0;
     await page.route("*/**/cache-samples/scoped", async route => {
       callCount++;
       await route.fulfill({ json: "loaded" });
     });
 
-    await goto("/specs/cache", { waitUntil: "hydration" }); // hit#1
-    await page.clock.fastForward("01:00:00");
-    await goto("/specs/cache", { waitUntil: "hydration" }); // hit#2
+    await page.clock.install();
+    await goto("/specs/cache", { waitUntil: "hydration" });
+    await expect(page.getByTestId("user")).toHaveText("loaded"); // hit#1
 
-    await expect(page.getByTestId("user")).toHaveText("loaded");
+    await page.clock.fastForward("01:00:00");
+    await goto("/specs/cache", { waitUntil: "hydration" });
+    await expect(page.getByTestId("user")).toHaveText("loaded"); // hit#2
+
     expect(callCount).toBe(2);
   });
 });
