@@ -1,6 +1,18 @@
 export default function(name,
   expirationInMinutes = 60
 ) {
+  function buildKey(path, query) {
+    let result = path;
+
+    if(query) {
+      const search = new URLSearchParams(query);
+      search.sort();
+      result += `?${search}`;
+    }
+
+    return result;
+  }
+
   async function getOrCreate(key, create) {
     key = `${name}[${key}]`;
 
@@ -36,6 +48,7 @@ export default function(name,
   }
 
   return {
+    buildKey,
     getOrCreate,
     clear
   };
