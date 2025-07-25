@@ -1,7 +1,6 @@
 ![](https://raw.githubusercontent.com/mouseless/baked/main/docs/.theme/public/logo-readme.png)
 
-Baked is an opinionated framework for .NET in backend and Nuxt in
-frontend.
+Baked is an opinionated framework for .NET in backend and Nuxt in frontend.
 
 It proposes well designed conventions to help you express your application
 logic with ease. It doesn't reinvent libraries that already exists, but brings
