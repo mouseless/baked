@@ -35,7 +35,7 @@
           v-else-if="data"
           :name="`rows/${index}/${column.prop}`"
           :descriptor="{
-            ...conditional.find(column.component, row),
+            ...conditional.find(column.component, row.$getRow()),
             data: {
               type: 'Inline',
               value: row[column.prop].value
@@ -95,7 +95,7 @@
                 ...conditional.find(column.component, data),
                 data: {
                   type: 'Inline',
-                  value: data[column.prop].value
+                  value: data[column.prop]
                 }
               }"
             />
@@ -145,10 +145,10 @@ const value = computed(() => {
 
   const result = [];
   for(const itemRow of items) {
-    const resultRow = { };
+    const resultRow = { $getRow: () => itemRow };
 
     for(const column of columns) {
-      resultRow[column.prop] = { value: itemRow[column.prop], getRow: () => itemRow };
+      resultRow[column.prop] = { value: itemRow[column.prop], $getRow: () => itemRow };
     }
 
     result.push(resultRow);
@@ -174,6 +174,6 @@ function toggleActionsMenu(event) {
 function exportFunction({ data, field }) {
   if(!formatter) { return data.value; }
 
-  return formatter.format(data.value, { prop: field, row: data.getRow() });
+  return formatter.format(data.value, { prop: field, row: data.$getRow() });
 }
 </script>
