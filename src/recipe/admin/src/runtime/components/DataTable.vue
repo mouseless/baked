@@ -38,7 +38,7 @@
             ...conditional.find(column.component, row),
             data: {
               type: 'Inline',
-              value: row[column.prop]
+              value: row[column.prop].value
             }
           }"
         />
@@ -95,7 +95,7 @@
                 ...conditional.find(column.component, data),
                 data: {
                   type: 'Inline',
-                  value: data[column.prop]
+                  value: data[column.prop].value
                 }
               }"
             />
@@ -136,13 +136,21 @@ const dataTable = ref();
 const actionsMenu = ref();
 const actions = ref([ ]);
 const loading = context.loading();
-const value = computed(() =>
-  data
+const value = computed(() => {
+  const result = data
     ? itemsProp
       ? data[itemsProp]
       : data
-    : new Array(rowsWhenLoading || 5).fill({ })
-);
+    : new Array(rowsWhenLoading || 5).fill({ });
+
+  for(const row of result) {
+    for(const column of columns) {
+      row[column.prop] = { value: row[column.prop], $row: row };
+    }
+  }
+
+  return result;
+});
 const footerColSpan = computed(() => columns.length - footerTemplate?.columns.length);
 const formatter = exportOptions?.formatter ? (await composableResolver.resolve(exportOptions.formatter)).default() : undefined;
 
@@ -159,8 +167,8 @@ function toggleActionsMenu(event) {
 }
 
 function exportFunction({ data, field }) {
-  if(!formatter) { return data; }
+  if(!formatter) { return data.value; }
 
-  return formatter.format(data, field);
+  return formatter.format(data.value, { prop: field, row: data.$row });
 }
 </script>
