@@ -7,7 +7,30 @@
       "description": "Showcases_the_cache_behavior",
       "actions": []
     },
-    "queryParameters": [],
+    "queryParameters": [
+      {
+        "name": "parameter",
+        "required": true,
+        "default": {
+          "type": "Inline",
+          "value": "value_a"
+        },
+        "component": {
+          "type": "Select",
+          "schema": {
+            "label": "Parameter",
+            "localizeLabel": true
+          },
+          "data": {
+            "type": "Inline",
+            "value": [
+              "value_a",
+              "value_b"
+            ]
+          }
+        }
+      }
+    ],
     "tabs": [
       {
         "id": "default",

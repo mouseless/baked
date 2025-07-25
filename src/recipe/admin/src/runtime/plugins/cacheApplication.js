@@ -16,7 +16,7 @@ export default defineNuxtPlugin({
           return await next();
         }
 
-        return await cache.getOrCreate(request, next);
+        return await cache.getOrCreate(`${request}?${new URLSearchParams(options.query)}`, next);
       },
       // should run before other interceptors
       -10

@@ -9,16 +9,16 @@ test.beforeEach(async({ goto, page }) => {
   await page.route("*/**/authentication-samples/login", async route => {
     await route.fulfill({ json: giveMe.aToken() });
   });
-  await page.route("*/**/cache-samples/application", async route => {
+  await page.route("*/**/cache-samples/application**", async route => {
     await route.fulfill({ json: giveMe.anApiResponse() });
   });
-  await page.route("*/**/cache-samples/scoped", async route => {
+  await page.route("*/**/cache-samples/scoped**", async route => {
     await route.fulfill({ json: giveMe.anApiResponse() });
   });
 });
 
 test.describe("application cache", () => {
-  test("it is called only the first time", async({goto, page}) => {
+  test("api is called only the first time", async({goto, page}) => {
     let callCount = 0;
     await page.route("*/**/cache-samples/application", async route => {
       callCount++;
@@ -30,6 +30,22 @@ test.describe("application cache", () => {
 
     await expect(page.getByTestId("application")).toHaveText("loaded");
     expect(callCount).toBe(1);
+  });
+
+  test("api is called when parameters change", async({goto, page}) => {
+    let callCount = 0;
+    await page.route("*/**/cache-samples/application?parameter=**", async route => {
+      callCount++;
+      await route.fulfill({ json: "loaded" });
+    });
+
+    await goto("/specs/cache?parameter=value_a", { waitUntil: "hydration" }); // hit#1
+    await goto("/specs/cache?parameter=value_b", { waitUntil: "hydration" }); // hit#2!
+    await goto("/specs/cache?parameter=value_a", { waitUntil: "hydration" }); // cache hit!
+    await goto("/specs/cache?parameter=value_b", { waitUntil: "hydration" }); // cache hit!
+
+    await expect(page.getByTestId("application")).toHaveText("loaded");
+    expect(callCount).toBe(2);
   });
 
   test("it is not cleared after login", async({goto, page}) => {
@@ -82,7 +98,7 @@ test.describe("application cache", () => {
 });
 
 test.describe("user cache", () => {
-  test("it is called only the first time", async({goto, page}) => {
+  test("api is called only the first time", async({goto, page}) => {
     let callCount = 0;
     await page.route("*/**/cache-samples/scoped", async route => {
       callCount++;
@@ -94,6 +110,22 @@ test.describe("user cache", () => {
 
     await expect(page.getByTestId("user")).toHaveText("loaded");
     expect(callCount).toBe(1);
+  });
+
+  test("api is called when parameters change", async({goto, page}) => {
+    let callCount = 0;
+    await page.route("*/**/cache-samples/scoped?parameter=**", async route => {
+      callCount++;
+      await route.fulfill({ json: "loaded" });
+    });
+
+    await goto("/specs/cache?parameter=value_a", { waitUntil: "hydration" }); // hit#1
+    await goto("/specs/cache?parameter=value_b", { waitUntil: "hydration" }); // hit#2!
+    await goto("/specs/cache?parameter=value_a", { waitUntil: "hydration" }); // cache hit!
+    await goto("/specs/cache?parameter=value_b", { waitUntil: "hydration" }); // cache hit!
+
+    await expect(page.getByTestId("user")).toHaveText("loaded");
+    expect(callCount).toBe(2);
   });
 
   test("it is cleared after login", async({goto, page}) => {

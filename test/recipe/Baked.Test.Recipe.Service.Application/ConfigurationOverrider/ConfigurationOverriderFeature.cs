@@ -470,6 +470,13 @@ public class ConfigurationOverriderFeature : IFeature
 
                     pages.Add(ReportPage("cache",
                         title: PageTitle("Cache", description: l("Showcases_the_cache_behavior")),
+                        queryParameters:
+                        [
+                            Parameter("parameter", Select("Parameter", Inline(new[] { "value_a", "value_b" })),
+                                required: true,
+                                defaultValue: "value_a"
+                            )
+                        ],
                         tabs:
                         [
                             ReportPageTab("default", string.Empty,

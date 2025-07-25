@@ -16,6 +16,13 @@
          }"
       >
         <div
+          v-if="$slots.default"
+          :data-testid="testId"
+          class="space-y-4"
+        >
+          <slot name="default" />
+        </div>
+        <div
           v-for="(variant, index) in allVariants"
           :key="variant.name"
           :class="{
@@ -63,13 +70,6 @@
             ➡️  <span :data-testid="`${variant.name}:model`">{{ variants[index].model }}</span> ⬅️
             </div>
           </div>
-        </div>
-        <div
-          v-if="$slots.default"
-          :data-testid="testId"
-          class="space-y-4"
-        >
-          <slot name="default" />
         </div>
       </div>
     </div>
