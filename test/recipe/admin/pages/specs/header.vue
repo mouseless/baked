@@ -39,7 +39,7 @@ const variants = [
     descriptor: giveMe.aHeader({
       sitemapItems: [
         giveMe.aHeaderItem({ route: "/" }),
-        giveMe.aHeaderItem({ route: "/entity/{id}", title: "Entity" })
+        giveMe.aHeaderItem({ route: "/entity/{id}", title: "Spec.Entity" })
       ],
       data: { path: "/entity/adf-123" }
     })
@@ -87,7 +87,7 @@ const variants = [
         giveMe.aHeaderItem({
           route: "/no-icon",
           icon: null,
-          title: "No Icon"
+          title: "Spec.No_Icon"
         })
       ],
       data: { path: "/no-icon" }
