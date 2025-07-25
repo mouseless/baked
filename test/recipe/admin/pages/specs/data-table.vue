@@ -218,6 +218,15 @@ const variants = [
       virtualScrollerOptions: { itemSize: 45 },
       data: new Array(20).fill({ label: "Row Label", data1: "Cell Data" })
     })
+  },
+  {
+    name: "No Record Found",
+    descriptor: giveMe.aDataTable({
+      columns: [
+        giveMe.aDataTableColumn({ title: "Label", prop: "label", component: giveMe.aConditional({ testId: "no-records" }) })
+      ],
+      data: []
+    })
   }
 ];
 </script>

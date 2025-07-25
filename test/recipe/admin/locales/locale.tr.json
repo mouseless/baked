@@ -25,6 +25,9 @@
     "DataPanel": {
         "Select_required_values_to_view_this_data": "Bu veriyi görüntülemek için gerekli değerleri seçin"
     },
+    "DataTable": {
+        "No_records_found": "Kayıt bulunamadı"
+    },
     "LanguageSwitcher": {
         "Test_text": "Test Metni"
     },

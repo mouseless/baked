@@ -28,6 +28,9 @@
     "DataPanel": {
         "Select_required_values_to_view_this_data": "Select required values to view this data"
     },
+    "DataTable": {
+        "No_records_found": "No records found"
+    },
     "LanguageSwitcher": {
         "Test_text": "Test Text"
     },

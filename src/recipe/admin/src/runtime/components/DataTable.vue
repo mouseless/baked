@@ -14,6 +14,9 @@
     :export-filename="exportOptions?.fileName"
     :export-function
   >
+    <template #empty>
+      {{ l("DataTable.No_records_found") }}
+    </template>
     <Column
       v-for="column in columns"
       :key="column.prop"
