@@ -110,9 +110,15 @@ public static class CodeGenerationExtensions
     public static void AddAsJson<T>(this IGeneratedFileCollection generatedFiles, string name, T instance,
         JsonSerializerSettings? settings = default,
         string? outdir = default
-    ) => generatedFiles.Add(name, JsonConvert.SerializeObject(instance, formatting: Formatting.Indented, settings), "json",
-            outdir: outdir
-        );
+    )
+    {
+        settings ??= new();
+        settings.Formatting = Formatting.Indented;
+
+        var writer = new UnixLineEndingStringWriter();
+        JsonSerializer.Create(settings).Serialize(writer, instance);
+        generatedFiles.Add(name, writer.ToString(), "json", outdir: outdir);
+    }
 
     internal static string? FindClosestScopedCode(this Diagnostic diagnostic)
     {

@@ -25,7 +25,7 @@
   inconsistency
 - Local storage was getting cleared on logout, fixed
 - Csv formatter now including column and row based format
-- Removed `(Object)` from the project name in the descriptions
+- `.json` file generation now uses unix-style line endings
 
 ## Library Upgrades
 
