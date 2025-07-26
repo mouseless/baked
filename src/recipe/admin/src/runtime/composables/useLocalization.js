@@ -6,7 +6,9 @@ export default function(group = "") {
   const router = useRouter();
 
   function getLocales() {
-    return localization.supportedLanguages.filter(l => i18nLocales.value.includes(l.code));
+    return localization.supportedLanguages.filter(l =>
+      i18nLocales.value.map(l => l.code).includes(l.code)
+    );
   }
 
   function setLocale(language) {

@@ -100,19 +100,18 @@ export default defineNuxtModule<ModuleOptions>({
 
     await installModule("@nuxtjs/i18n", {
       vueI18n: entryProjectResolver.resolve("./i18n.config.ts"),
-      restructureDir: false,
-      langDir: entryProjectResolver.resolve("./locales"),
+      langDir: entryProjectResolver.resolve("./"),
       strategy: "no_prefix",
       locales: _options.app?.i18n.supportedLanguages.map((i: any) => {
-        const files = [entryProjectResolver.resolve(`./.baked/locale.${i.code}.json`)];
-        entryProjectResolver.resolvePath(`./locales/locale.${i.code}.json`)
-          .then((path) => files.push(path) )
-          .catch(_ => {});
+        const files = [
+          entryProjectResolver.resolve(`.baked/locale.${i.code}.json`),
+          entryProjectResolver.resolve(`./locales/locale.${i.code}.json`)
+        ];
 
         return {
           code: i.code,
           name: i.name,
-          files: files
+          files
         }
       }),
       defaultLocale: _options.app?.i18n.defaultLanguage,
