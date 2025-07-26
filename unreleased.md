@@ -24,6 +24,8 @@
 - `Parameters` component now emits `onChanged` before `onReady` to fix values
   inconsistency
 - Local storage was getting cleared on logout, fixed
+- Csv formatter now including column and row based format
+- `.json` file generation now uses unix-style line endings
 
 ## Library Upgrades
 

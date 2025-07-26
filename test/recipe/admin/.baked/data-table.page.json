@@ -32,7 +32,7 @@
                       "type": "Select",
                       "schema": {
                         "label": "Count",
-                        "localizeLabel": true
+                        "localizeLabel": false
                       },
                       "data": {
                         "type": "Inline",
@@ -64,6 +64,19 @@
                         "minWidth": true,
                         "exportable": true,
                         "frozen": true
+                      },
+                      {
+                        "prop": "formatDigits",
+                        "component": {
+                          "fallback": {
+                            "type": "String",
+                            "schema": {}
+                          },
+                          "conditions": []
+                        },
+                        "title": "FormatDigits",
+                        "alignRight": true,
+                        "exportable": true
                       },
                       {
                         "prop": "column1",

@@ -10,15 +10,16 @@
 <script setup>
 import { onMounted } from "vue";
 import { Message } from "primevue";
-import { useToast } from "#imports";
+import { useToast, useLocalization } from "#imports";
 
 const toast = useToast();
+const { localize: l } = useLocalization();
 
 onMounted(() => {
   toast.add({
     severity: "success",
-    summary: "Summary",
-    detail: "This is a test detail for a success toast message"
+    summary: l("Spec.Summary"),
+    detail: l("Spec.This_is_a_test_detail_for_a_success_toast_message")
   });
 });
 </script>

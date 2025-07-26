@@ -2,6 +2,7 @@
 
 public record TableRow(
     string Label,
+    int FormatDigits,
     string Column1,
     Guid Column2,
     Guid Column3,

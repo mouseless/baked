@@ -27,7 +27,7 @@ import { useLocalization } from "#imports";
 
 const { locale, getLocales, setLocale, localize } = useLocalization();
 
-const { schema } = defineProps({
+defineProps({
   schema: { type: null, required: true },
   data: { type: null, default: null }
 });

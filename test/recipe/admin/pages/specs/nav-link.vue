@@ -1,6 +1,6 @@
 <template>
   <UiSpec
-    title="NavLink"
+    title="Spec.NavLink"
     :variants="variants"
   />
 </template>

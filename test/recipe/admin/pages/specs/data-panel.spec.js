@@ -33,7 +33,7 @@ test.describe("Base with computed title", () => {
   test("title value is not localized", async({page}) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator(primevue.panel.title)).toHaveText("Spec.Title");
+    await expect(component.locator(primevue.panel.title)).toHaveText("Title");
   });
 });
 

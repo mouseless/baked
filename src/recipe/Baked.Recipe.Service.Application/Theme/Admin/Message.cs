@@ -7,4 +7,5 @@ public record Message(string Severity)
 {
     public string Severity { get; set; } = Severity;
     public string? Icon { get; set; }
+    public bool? LocalizeMessage { get; set; }
 }

@@ -58,7 +58,7 @@ const variants = [
       dataKey: "data",
       rows: 2,
       columns: [
-        giveMe.aDataTableColumn({ title: "Data", prop: "data", component: giveMe.aConditional({ testId: "prop" })})
+        giveMe.aDataTableColumn({ title: "Spec.Data", prop: "data", component: giveMe.aConditional({ testId: "prop" })})
       ],
       data: [
         { data: "Row 1" },
@@ -80,11 +80,11 @@ const variants = [
     name: "Footer",
     descriptor: giveMe.aDataTable({
       columns: [
-        giveMe.aDataTableColumn({ title: "Label", prop: "label", minWidth: true, component: giveMe.aConditional({ testId: "label" })}),
-        giveMe.aDataTableColumn({ title: "Data 1", prop: "data1", component: giveMe.aConditional({ testId: "prop-1" })}),
-        giveMe.aDataTableColumn({ title: "Data 2", prop: "data2", component: giveMe.aConditional({ testId: "prop-2" })}),
-        giveMe.aDataTableColumn({ title: "Data 3", prop: "data3", component: giveMe.aConditional({ testId: "prop-3" })}),
-        giveMe.aDataTableColumn({ title: "Data 4", prop: "data4", component: giveMe.aConditional({ testId: "prop-4" })})
+        giveMe.aDataTableColumn({ title: "Spec.Label", prop: "label", minWidth: true, component: giveMe.aConditional({ testId: "label" })}),
+        giveMe.aDataTableColumn({ title: "Spec.Data_1", prop: "data1", component: giveMe.aConditional({ testId: "prop-1" })}),
+        giveMe.aDataTableColumn({ title: "Spec.Data_2", prop: "data2", component: giveMe.aConditional({ testId: "prop-2" })}),
+        giveMe.aDataTableColumn({ title: "Spec.Data_3", prop: "data3", component: giveMe.aConditional({ testId: "prop-3" })}),
+        giveMe.aDataTableColumn({ title: "Spec.Data_4", prop: "data4", component: giveMe.aConditional({ testId: "prop-4" })})
       ],
       footerTemplate: {
         label: "Spec.Total",
@@ -109,8 +109,8 @@ const variants = [
     name: "Alignment",
     descriptor: giveMe.aDataTable({
       columns: [
-        giveMe.aDataTableColumn({ title: "Label", prop: "label", minWidth: true }),
-        giveMe.aDataTableColumn({ title: "Data", prop: "data", alignRight: true })
+        giveMe.aDataTableColumn({ title: "Spec.Label", prop: "label", minWidth: true }),
+        giveMe.aDataTableColumn({ title: "Spec.Data", prop: "data", alignRight: true })
       ],
       footerTemplate: {
         label: "Total",
@@ -134,8 +134,8 @@ const variants = [
     name: "Export",
     descriptor: giveMe.aDataTable({
       columns: [
-        giveMe.aDataTableColumn({ title: "Label", prop: "label", minWidth: true, component: giveMe.aConditional({ testId: "label" }), exportable: true }),
-        giveMe.aDataTableColumn({ title: "Data 1", prop: "data1", component: giveMe.aConditional({ testId: "prop-1" }), exportable: true })
+        giveMe.aDataTableColumn({ title: "Spec.Label", prop: "label", minWidth: true, component: giveMe.aConditional({ testId: "label" }), exportable: true }),
+        giveMe.aDataTableColumn({ title: "Spec.Data_1", prop: "data1", component: giveMe.aConditional({ testId: "prop-1" }), exportable: true })
       ],
       exportOptions: giveMe.aDataTableExport({
         csvSeparator: ";",
@@ -153,8 +153,8 @@ const variants = [
     name: "Scroll",
     descriptor: giveMe.aDataTable({
       columns: [
-        giveMe.aDataTableColumn({ title: "Label", prop: "label", minWidth: true }),
-        giveMe.aDataTableColumn({ title: "Data 1", prop: "data1" })
+        giveMe.aDataTableColumn({ title: "Spec.Label", prop: "label", minWidth: true }),
+        giveMe.aDataTableColumn({ title: "Spec.Data_1", prop: "data1" })
       ],
       exportOptions: giveMe.aDataTableExport({
         csvSeparator: ";",
@@ -171,17 +171,17 @@ const variants = [
     name: "Frozen Columns",
     descriptor: giveMe.aDataTable({
       columns: [
-        giveMe.aDataTableColumn({ title: "Label", prop: "label", minWidth: true, frozen: true }),
-        giveMe.aDataTableColumn({ title: "Data 1", prop: "data1" }),
-        giveMe.aDataTableColumn({ title: "Data 2", prop: "data1" }),
-        giveMe.aDataTableColumn({ title: "Data 3", prop: "data1" }),
-        giveMe.aDataTableColumn({ title: "Data 4", prop: "data1" }),
-        giveMe.aDataTableColumn({ title: "Data 5", prop: "data1" }),
-        giveMe.aDataTableColumn({ title: "Data 6", prop: "data1" }),
-        giveMe.aDataTableColumn({ title: "Data 7", prop: "data1" }),
-        giveMe.aDataTableColumn({ title: "Data 8", prop: "data1" }),
-        giveMe.aDataTableColumn({ title: "Data 9", prop: "data1" }),
-        giveMe.aDataTableColumn({ title: "Data 10", prop: "data1" })
+        giveMe.aDataTableColumn({ title: "Spec.Label", prop: "label", minWidth: true, frozen: true }),
+        giveMe.aDataTableColumn({ title: "Spec.Data_1", prop: "data1" }),
+        giveMe.aDataTableColumn({ title: "Spec.Data_2", prop: "data1" }),
+        giveMe.aDataTableColumn({ title: "Spec.Data_3", prop: "data1" }),
+        giveMe.aDataTableColumn({ title: "Spec.Data_4", prop: "data1" }),
+        giveMe.aDataTableColumn({ title: "Spec.Data_5", prop: "data1" }),
+        giveMe.aDataTableColumn({ title: "Spec.Data_6", prop: "data1" }),
+        giveMe.aDataTableColumn({ title: "Spec.Data_7", prop: "data1" }),
+        giveMe.aDataTableColumn({ title: "Spec.Data_8", prop: "data1" }),
+        giveMe.aDataTableColumn({ title: "Spec.Data_9", prop: "data1" }),
+        giveMe.aDataTableColumn({ title: "Spec.Data_10", prop: "data1" })
       ],
       exportOptions: giveMe.aDataTableExport({
         csvSeparator: ";",
@@ -198,8 +198,8 @@ const variants = [
     name: "Virtual Scroll",
     descriptor: giveMe.aDataTable({
       columns: [
-        giveMe.aDataTableColumn({ title: "Label", prop: "label", minWidth: true }),
-        giveMe.aDataTableColumn({ title: "Data 1", prop: "data1" })
+        giveMe.aDataTableColumn({ title: "Spec.Label", prop: "label", minWidth: true }),
+        giveMe.aDataTableColumn({ title: "Spec.Data_1", prop: "data1" })
       ],
       scrollable: true,
       scrollHeight: "300px",
@@ -211,12 +211,21 @@ const variants = [
     name: "No Virtual Scroll",
     descriptor: giveMe.aDataTable({
       columns: [
-        giveMe.aDataTableColumn({ title: "Label", prop: "label", minWidth: true }),
-        giveMe.aDataTableColumn({ title: "Data 1", prop: "data1" })
+        giveMe.aDataTableColumn({ title: "Spec.Label", prop: "label", minWidth: true }),
+        giveMe.aDataTableColumn({ title: "Spec.Data_1", prop: "data1" })
       ],
       scrollable: true,
       virtualScrollerOptions: { itemSize: 45 },
       data: new Array(20).fill({ label: "Row Label", data1: "Cell Data" })
+    })
+  },
+  {
+    name: "No Record Found",
+    descriptor: giveMe.aDataTable({
+      columns: [
+        giveMe.aDataTableColumn({ title: "Spec.Label", prop: "label", component: giveMe.aConditional({ testId: "no-records" }) })
+      ],
+      data: []
     })
   }
 ];

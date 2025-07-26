@@ -281,7 +281,7 @@ public class ConfigurationOverriderFeature : IFeature
                     var second = report.Methods[nameof(Report.GetSecond)];
 
                     pages.Add(ReportPage("report",
-                        title: PageTitle("Report", description: l("Showcases_a_report_layout_with_tabs_and_data_panels")),
+                        title: PageTitle(l("Report"), description: l("Showcases_a_report_layout_with_tabs_and_data_panels")),
                         queryParameters:
                         [
                             Parameter(
@@ -298,7 +298,7 @@ public class ConfigurationOverriderFeature : IFeature
                                 defaultValue: "rwd-1",
                                 required: true
                             ),
-                            Parameter("required", Select("Required", data: Inline(new[] { l("Required 1"), l("Required 2") })),
+                            Parameter("required", Select(l("Required"), data: Inline(new[] { l("Required 1"), l("Required 2") })),
                                 required: true
                             ),
                             Parameter("optional", SelectButton(Inline(new[] { l("Optional 1"), l("Optional 2") }), allowEmpty: true))
@@ -310,7 +310,7 @@ public class ConfigurationOverriderFeature : IFeature
                             contents:
                             [
                                 ReportPageTabContent(
-                                    component: DataPanel(wide.Name.Humanize(),
+                                    component: DataPanel(l(wide.Name),
                                         content: String(
                                             data: Remote($"/{wide.GetSingle<ActionModelAttribute>().GetRoute()}",
                                                 headers: headers,
@@ -321,7 +321,7 @@ public class ConfigurationOverriderFeature : IFeature
                                     )
                                 ),
                                 ReportPageTabContent(
-                                    component: DataPanel(left.Name.Humanize(),
+                                    component: DataPanel(l(left.Name),
                                         content: String(
                                             data: Remote($"/{left.GetSingle<ActionModelAttribute>().GetRoute()}",
                                                 headers: headers,
@@ -333,7 +333,7 @@ public class ConfigurationOverriderFeature : IFeature
                                     narrow: true
                                 ),
                                 ReportPageTabContent(
-                                    component: DataPanel(right.Name.Humanize(),
+                                    component: DataPanel(l(right.Name),
                                         content: String(
                                             data: Remote($"/{right.GetSingle<ActionModelAttribute>().GetRoute()}",
                                                 headers: headers,
@@ -351,20 +351,20 @@ public class ConfigurationOverriderFeature : IFeature
                             contents:
                             [
                                 ReportPageTabContent(
-                                    component: DataPanel(first.Name.Humanize(),
+                                    component: DataPanel(l(first.Name),
                                         parameters:
                                         [
-                                            Parameter("count", Select("Count", data: Inline(Enum.GetNames<CountOptions>()), stateful: true),
+                                            Parameter("count", Select(l("Count"), data: Inline(Enum.GetNames<CountOptions>(), requireLocalization: false), stateful: true),
                                                 defaultValue: CountOptions.Default
                                             )
                                         ],
                                         content: DataTable(
                                             columns:
                                             [
-                                                DataTableColumn("label", title: "Label", minWidth: true),
-                                                DataTableColumn("column1", title: "Column 1"),
-                                                DataTableColumn("column2", title: "Column 2"),
-                                                DataTableColumn("column3", title: "Column 3")
+                                                DataTableColumn("label", title: l("Label"), minWidth: true),
+                                                DataTableColumn("column1", title: l("Column1")),
+                                                DataTableColumn("column2", title: l("Column2")),
+                                                DataTableColumn("column3", title: l("Column3"))
                                             ],
                                             dataKey: "label",
                                             paginator: true,
@@ -377,20 +377,20 @@ public class ConfigurationOverriderFeature : IFeature
                                     )
                                 ),
                                 ReportPageTabContent(
-                                    component: DataPanel(l(second.Name.Humanize()),
+                                    component: DataPanel(l(second.Name),
                                         parameters:
                                         [
-                                            Parameter("count", SelectButton(Inline(Enum.GetNames<CountOptions>()), stateful: true),
+                                            Parameter("count", SelectButton(Inline(Enum.GetNames<CountOptions>(), requireLocalization: false), stateful: true),
                                                 defaultValue: CountOptions.Default
                                             )
                                         ],
                                         content: DataTable(
                                             columns:
                                             [
-                                                DataTableColumn("label", title: "Label", minWidth: true),
-                                                DataTableColumn("column1", title: "Column 1"),
-                                                DataTableColumn("column2", title: "Column 2"),
-                                                DataTableColumn("column3", title: "Column 3")
+                                                DataTableColumn("label", title: l("Label"), minWidth: true),
+                                                DataTableColumn("column1", title: l("Column1")),
+                                                DataTableColumn("column2", title: l("Column2")),
+                                                DataTableColumn("column3", title: l("Column3"))
                                             ],
                                             dataKey: "label",
                                             paginator: true,
@@ -411,17 +411,17 @@ public class ConfigurationOverriderFeature : IFeature
 
                 configurator.UsingDomainModel(domain =>
                 {
-                    pages.Add(ReportPage("data-table", PageTitle("DataTable Demo"),
+                    pages.Add(ReportPage("data-table", PageTitle(l("DataTable Demo")),
                         tabs:
                         [
                             ReportPageTab(string.Empty, string.Empty,
                                 contents:
                                 [
                                     ReportPageTabContent(
-                                        DataPanel("DataPanel",
+                                        DataPanel(l("DataPanel"),
                                             parameters:
                                             [
-                                                Parameter("count", Select("Count", Inline(new string[]{ "10", "20", "100", "1000", "10000" })),
+                                                Parameter("count", Select(l("Count"), Inline(new string[]{ "10", "20", "100", "1000", "10000" }, requireLocalization: false)),
                                                     defaultValue: "10"
                                                 )
                                             ],
@@ -472,7 +472,7 @@ public class ConfigurationOverriderFeature : IFeature
                         title: PageTitle("Cache", description: l("Showcases_the_cache_behavior")),
                         queryParameters:
                         [
-                            Parameter("parameter", Select("Parameter", Inline(new[] { "value_a", "value_b" })),
+                            Parameter("parameter", Select(l("Parameter"), Inline(new[] { "value_a", "value_b" }, requireLocalization: false)),
                                 required: true,
                                 defaultValue: "value_a"
                             )
@@ -483,7 +483,7 @@ public class ConfigurationOverriderFeature : IFeature
                                 contents:
                                 [
                                     ReportPageTabContent(
-                                        component: DataPanel(getScoped.Name.Humanize(),
+                                        component: DataPanel(l(getScoped.Name),
                                             content: String(
                                                 data: Remote($"/{getScoped.GetSingle<ActionModelAttribute>().GetRoute()}",
                                                     headers: headers,
@@ -495,7 +495,7 @@ public class ConfigurationOverriderFeature : IFeature
                                         narrow: true
                                     ),
                                     ReportPageTabContent(
-                                        component: DataPanel(getApplication.Name.Humanize(),
+                                        component: DataPanel(l(getApplication.Name),
                                             content: String(
                                                 data: Remote($"/{getApplication.GetSingle<ActionModelAttribute>().GetRoute()}",
                                                     headers: headers,

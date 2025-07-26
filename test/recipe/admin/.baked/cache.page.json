@@ -19,7 +19,7 @@
           "type": "Select",
           "schema": {
             "label": "Parameter",
-            "localizeLabel": true
+            "localizeLabel": false
           },
           "data": {
             "type": "Inline",
@@ -42,7 +42,7 @@
               "schema": {
                 "title": {
                   "type": "Inline",
-                  "value": "Get scoped"
+                  "value": "GetScoped"
                 },
                 "localizeTitle": true,
                 "parameters": [],
@@ -78,7 +78,7 @@
               "schema": {
                 "title": {
                   "type": "Inline",
-                  "value": "Get application"
+                  "value": "GetApplication"
                 },
                 "localizeTitle": true,
                 "parameters": [],
