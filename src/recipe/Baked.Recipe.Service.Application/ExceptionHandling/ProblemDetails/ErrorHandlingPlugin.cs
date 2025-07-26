@@ -1,11 +1,9 @@
 ﻿using Baked.Ui;
-using Humanizer;
 
 namespace Baked.ExceptionHandling.ProblemDetails;
 
-public class ErrorHandlingPlugin : IPlugin
+public record ErrorHandlingPlugin : PluginBase
 {
-    public string Name => nameof(ErrorHandlingPlugin).Replace("Plugin", string.Empty).Camelize();
     public List<Handler> Handlers { get; init; } = [];
     public string DefaultAlertTitle { get; init; } = "Unexpected_Error";
     public string DefaultAlertMessage { get; init; } = "Please_contact_system_administrator";

@@ -17,21 +17,21 @@
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
-    "@nuxt/eslint": "^1.2.0",
-    "@nuxt/test-utils": "^3.17.2",
-    "@playwright/test": "^1.52.0",
-    "cross-env": "^7.0.3",
-    "eslint": "^9.26.0",
-    "sass": "^1.89.0"
+    "@nuxt/eslint": "1.2.0",
+    "@nuxt/test-utils": "3.17.2",
+    "@playwright/test": "1.52.0",
+    "cross-env": "7.0.3",
+    "eslint": "9.26.0",
+    "sass": "1.89.0"
   },
   "dependencies": {
-    "@nuxtjs/i18n": "9.5.4",
-    "@nuxtjs/tailwindcss": "^6.13.2",
-    "@primeuix/themes": "^1.1.0",
+    "@nuxtjs/i18n": "9.5.6",
+    "@nuxtjs/tailwindcss": "6.13.2",
+    "@primeuix/themes": "1.2.1",
     "baked-recipe-admin": "file:../../../src/recipe/admin",
-    "nuxt": "^3.16.1",
-    "vue": "^3.5.14",
-    "vue-router": "^4.5.1"
+    "nuxt": "3.16.2",
+    "vue": "3.5.14",
+    "vue-router": "4.5.1"
   },
   "optionalDependencies": {
     "@rollup/rollup-win32-x64-msvc": "4.40.2"

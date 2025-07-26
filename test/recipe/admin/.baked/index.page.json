@@ -10,10 +10,10 @@
             "component": {
               "type": "CardLink",
               "schema": {
-                "route": "/report",
-                "icon": "pi pi-file",
-                "title": "Report",
-                "description": "Showcases_a_report_layout_with_tabs_and_data_panels"
+                "route": "/cache",
+                "icon": "pi pi-database",
+                "title": "Cache",
+                "description": "Showcases_the_cache_behavior"
               }
             }
           },
@@ -26,6 +26,18 @@
                 "icon": "pi pi-table",
                 "title": "DataTable",
                 "description": "Showcase_DataTable_component_with_scrollable_and_footer_options"
+              }
+            }
+          },
+          {
+            "title": "",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/report",
+                "icon": "pi pi-file",
+                "title": "Report",
+                "description": "Showcases_a_report_layout_with_tabs_and_data_panels"
               }
             }
           },

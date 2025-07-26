@@ -8,7 +8,7 @@ export default defineNuxtPlugin({
   name: "primeVue",
   setup(nuxtApp) {
     const router = useRouter();
-    const { theme, locale } = useRuntimeConfig().public.primevue;
+    const { public: { primevue: { theme, locale } } } = useRuntimeConfig();
     const shouldLoadLocale = ref(true);
 
     const options = {
@@ -46,9 +46,10 @@ export default defineNuxtPlugin({
 });
 
 function loadPrimeVueMessages() {
-  const nuxtApp = useNuxtApp();
-  const raw = nuxtApp.$i18n.tm("primevue");
+  const { $i18n } = useNuxtApp();
   const primevue = usePrimeVue();
+
+  const raw = $i18n.tm("primevue");
   const primevueMessages = {};
 
   for(const key in raw) {

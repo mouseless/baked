@@ -3,6 +3,8 @@
     {
       "name": "auth",
       "anonymousApiRoutes": [
+        "cache-samples/scoped",
+        "cache-samples/application",
         "authorization-samples/anonymous",
         "authentication-samples/login"
       ],
@@ -14,7 +16,14 @@
       "refreshApiRoute": "authentication-samples/refresh"
     },
     {
-      "name": "errorHandling",
+      "expirationInMinutes": 60,
+      "name": "cacheApplication"
+    },
+    {
+      "expirationInMinutes": 60,
+      "name": "cacheUser"
+    },
+    {
       "handlers": [
         {
           "statusCode": 401,
@@ -37,10 +46,10 @@
         }
       ],
       "defaultAlertTitle": "Unexpected_Error",
-      "defaultAlertMessage": "Please_contact_system_administrator"
+      "defaultAlertMessage": "Please_contact_system_administrator",
+      "name": "errorHandling"
     },
     {
-      "name": "localization",
       "supportedLanguages": [
         {
           "code": "en",
@@ -50,7 +59,8 @@
           "code": "tr",
           "name": "Turkish"
         }
-      ]
+      ],
+      "name": "localization"
     }
   ],
   "error": {
@@ -78,6 +88,30 @@
             "route": "/",
             "icon": "pi pi-home",
             "title": "Home"
+          }
+        },
+        {
+          "type": "CardLink",
+          "schema": {
+            "route": "/cache",
+            "icon": "pi pi-database",
+            "title": "Cache"
+          }
+        },
+        {
+          "type": "CardLink",
+          "schema": {
+            "route": "/data-table",
+            "icon": "pi pi-table",
+            "title": "DataTable"
+          }
+        },
+        {
+          "type": "CardLink",
+          "schema": {
+            "route": "/report",
+            "icon": "pi pi-file",
+            "title": "Report"
           }
         },
         {
