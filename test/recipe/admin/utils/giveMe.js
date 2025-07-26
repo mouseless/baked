@@ -454,5 +454,9 @@ export default {
       access: accessExpired ? expiredAccessToken : accessToken,
       refresh: refreshToken
     };
+  },
+
+  anApiResponse() {
+    return { sample: "response" };
   }
 };

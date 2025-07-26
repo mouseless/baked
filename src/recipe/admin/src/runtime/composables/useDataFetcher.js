@@ -76,7 +76,7 @@ export default function() {
       ? unref.deepUnref(await fetch({ baseURL, data: data.query, injectedData }))
       : { };
 
-    const options = { baseURL, headers: headers, query: query };
+    const options = { baseURL, headers: headers, query: query, options: data.options };
     const retry = composables?.useDataFetcher?.retry ?? false;
 
     if(retry) {

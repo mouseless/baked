@@ -106,7 +106,8 @@
                       "type": "Computed",
                       "composable": "useQuery",
                       "args": []
-                    }
+                    },
+                    "options": {}
                   }
                 }
               }
@@ -139,7 +140,8 @@
                       "type": "Computed",
                       "composable": "useQuery",
                       "args": []
-                    }
+                    },
+                    "options": {}
                   }
                 }
               }
@@ -173,7 +175,8 @@
                       "type": "Computed",
                       "composable": "useQuery",
                       "args": []
-                    }
+                    },
+                    "options": {}
                   }
                 }
               }
@@ -302,7 +305,8 @@
                           "key": "Custom"
                         }
                       ]
-                    }
+                    },
+                    "options": {}
                   }
                 }
               }
@@ -418,7 +422,8 @@
                           "key": "Custom"
                         }
                       ]
-                    }
+                    },
+                    "options": {}
                   }
                 }
               }

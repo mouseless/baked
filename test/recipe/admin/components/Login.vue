@@ -28,14 +28,16 @@
     />
   </form>
   <Divider />
-  <Button
-    icon="pi pi-home"
-    :label="lc('Back_to_Home_Page')"
-    severity="secondary"
-    variant="outlined"
-    as="router-link"
-    to="/"
-  />
+  <div>
+    <Button
+      icon="pi pi-home"
+      :label="lc('Back_to_Home_Page')"
+      severity="secondary"
+      variant="outlined"
+      as="router-link"
+      to="/"
+    />
+  </div>
 </template>
 <script setup>
 import { onUpdated, ref } from "vue";
