@@ -1,4 +1,4 @@
-namespace Baked;
+namespace Baked.CodeGeneration;
 
 public class UnixLineEndingStringWriter : StringWriter
 {
