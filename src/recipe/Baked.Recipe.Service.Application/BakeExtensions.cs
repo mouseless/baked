@@ -24,7 +24,7 @@ public static class BakeExtensions
         Func<BusinessConfigurator, IFeature<BusinessConfigurator>> business,
         IEnumerable<Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>>? authentications = default,
         Func<AuthorizationConfigurator, IFeature<AuthorizationConfigurator>>? authorization = default,
-        Func<CachingConfigurator, IFeature<CachingConfigurator>>? caching = default,
+        IEnumerable<Func<CachingConfigurator, IFeature<CachingConfigurator>>>? cachings = default,
         Func<CommunicationConfigurator, IFeature<CommunicationConfigurator>>? communication = default,
         Func<CoreConfigurator, IFeature<CoreConfigurator>>? core = default,
         Func<CorsConfigurator, IFeature<CorsConfigurator>>? cors = default,
@@ -41,7 +41,7 @@ public static class BakeExtensions
     {
         authentications ??= [c => c.FixedBearerToken()];
         authorization ??= c => c.ClaimBased();
-        caching ??= c => c.ScopedMemory();
+        cachings ??= [c => c.InMemory(), c => c.ScopedMemory()];
         communication ??= c => c.Http();
         core ??= c => c.Dotnet();
         cors ??= c => c.Disabled();
@@ -70,7 +70,7 @@ public static class BakeExtensions
             app.Features.AddAuthorization(authorization);
             app.Features.AddBinding(c => c.Rest());
             app.Features.AddBusiness(business);
-            app.Features.AddCaching(caching);
+            app.Features.AddCachings(cachings);
             app.Features.AddCodingStyles([
                 c => c.AddRemoveChild(),
                 c => c.CommandPattern(),
@@ -112,7 +112,7 @@ public static class BakeExtensions
 
     public static Application DataSource(this Bake bake,
         Func<BusinessConfigurator, IFeature<BusinessConfigurator>> business,
-        Func<CachingConfigurator, IFeature<CachingConfigurator>>? caching = default,
+        IEnumerable<Func<CachingConfigurator, IFeature<CachingConfigurator>>>? cachings = default,
         Func<CoreConfigurator, IFeature<CoreConfigurator>>? core = default,
         Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>>? database = default,
         Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>>? exceptionHandling = default,
@@ -124,7 +124,7 @@ public static class BakeExtensions
         Action<ApplicationDescriptor>? configure = default
     )
     {
-        caching ??= c => c.ScopedMemory();
+        cachings ??= [c => c.InMemory(), c => c.ScopedMemory()];
         core ??= c => c.Dotnet();
         database ??= c => c.Sqlite();
         exceptionHandling ??= c => c.ProblemDetails();
@@ -147,7 +147,7 @@ public static class BakeExtensions
 
             app.Features.AddBinding(c => c.Rest());
             app.Features.AddBusiness(business);
-            app.Features.AddCaching(caching);
+            app.Features.AddCachings(cachings);
             app.Features.AddCodingStyles([
                 c => c.AddRemoveChild(),
                 c => c.CommandPattern(),

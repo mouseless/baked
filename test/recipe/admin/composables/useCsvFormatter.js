@@ -1,6 +1,15 @@
-export default function() {
+import { useFormat } from "#imports";
 
-  function format(data) {
+export default function() {
+  const { asNumber } = useFormat();
+
+  function format(data, { row, prop }) {
+    if(typeof data === "string") { return data; }
+
+    if(prop === "column5") {
+      return `${asNumber(data, { formatOptions: { maximumFractionDigits: row.formatDigits }})}`;
+    }
+
     return `${data}`.replace(".", ",");
   }
 

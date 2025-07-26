@@ -7,6 +7,7 @@ public record RemoteData(string Path)
     public string Path { get; set; } = Path;
     public IData? Headers { get; set; }
     public IData? Query { get; set; }
+    public Dictionary<string, string> Options { get; init; } = [];
     internal bool? RequireLocalization { get; set; }
 
     bool? IData.RequireLocalization => RequireLocalization;

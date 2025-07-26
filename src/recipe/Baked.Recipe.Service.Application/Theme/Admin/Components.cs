@@ -198,7 +198,7 @@ public static class Components
     {
         severity ??= "info";
 
-        return new(new(severity) { Icon = icon }) { Data = data };
+        return new(new(severity) { Icon = icon, LocalizeMessage = data?.RequireLocalization ?? null }) { Data = data };
     }
 
     public static ComponentDescriptorAttribute<ModalLayout> ModalLayout(string name) =>

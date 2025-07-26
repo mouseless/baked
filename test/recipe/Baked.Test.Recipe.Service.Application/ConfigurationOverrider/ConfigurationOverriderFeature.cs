@@ -3,6 +3,7 @@ using Baked.ExceptionHandling;
 using Baked.RestApi.Model;
 using Baked.Test.Authentication;
 using Baked.Test.Business;
+using Baked.Test.Caching;
 using Baked.Test.ExceptionHandling;
 using Baked.Test.Orm;
 using Baked.Test.Theme;
@@ -113,7 +114,6 @@ public class ConfigurationOverriderFeature : IFeature
                 {
                     new { Title = "Bake", Description = "The_core_component_that_renders_a_dynamic_component_using_given_descriptor" },
                     new { Title = "Custom CSS", Description = "Allow_custom_configuration_to_define_custom_css_and_more" },
-                    new { Title = "Locale", Description = "Allow_locale_customization_and_language_support" },
                     new { Title = "Parameters", Description = "Manage_parameters_through_emits" },
                     new { Title = "Query Parameters", Description = "Sync_and_manage_parameters_in_query_string" },
                     new { Title = "Toast", Description = "Render_alert_messages" }
@@ -172,6 +172,8 @@ public class ConfigurationOverriderFeature : IFeature
                 Links = new[]
                 {
                     new { Title = "Auth", Description = "Authorized_routing_and_client" },
+                    new { Title = "Cache", Description = "Caches_api_responses_in_local_storage" },
+                    new { Title = "Locale", Description = "Allow_locale_customization_and_language_support" },
                     new { Title = "Error Handling", Description = "Handling_errors" },
                 }
             },
@@ -185,7 +187,10 @@ public class ConfigurationOverriderFeature : IFeature
                     safeLinks:
                     [
                         CardLink("/", "Home", icon: "pi pi-home"),
-                        CardLink("/specs", "Specs", icon: "pi pi-list-check"),
+                        CardLink("/cache", title: l("Cache"), "pi pi-database"),
+                        CardLink("/data-table", l("DataTable"), "pi pi-table"),
+                        CardLink("/report", l("Report"), icon: "pi pi-file"),
+                        CardLink("/specs", l("Specs"), icon: "pi pi-list-check"),
                     ],
                     errorInfos:
                     [
@@ -207,8 +212,9 @@ public class ConfigurationOverriderFeature : IFeature
                         menu:
                         [
                             SideMenuItem("/", "pi pi-home"),
-                            SideMenuItem("/report", "pi pi-file", title: l("Report")),
+                            SideMenuItem("/cache", "pi pi-database", title: l("Cache")),
                             SideMenuItem("/data-table", "pi pi-table", title: l("DataTable")),
+                            SideMenuItem("/report", "pi pi-file", title: l("Report")),
                             SideMenuItem("/specs", "pi pi-list-check", title: l("Specs"))
                         ],
                         footer: LanguageSwitcher()
@@ -217,8 +223,9 @@ public class ConfigurationOverriderFeature : IFeature
                         siteMap:
                         [
                             HeaderItem("/", icon: "pi pi-home"),
-                            HeaderItem("/report", icon: "pi pi-file", title: l("Report")),
+                            HeaderItem("/cache", icon: "pi pi-database", title: l("Cache")),
                             HeaderItem("/data-table", icon: "pi pi-table", title: l("DataTable")),
+                            HeaderItem("/report", icon: "pi pi-file", title: l("Report")),
                             HeaderItem("/specs", icon: "pi pi-list-check", title: l("Specs")),
                             .. specs.SelectMany(section =>
                                 section.Links.Select(link =>
@@ -242,13 +249,17 @@ public class ConfigurationOverriderFeature : IFeature
                 pages.Add(MenuPage("index",
                     links:
                     [
-                        CardLink($"/report", l("Report"),
-                            icon: "pi pi-file",
-                            description: l("Showcases_a_report_layout_with_tabs_and_data_panels")
+                        CardLink($"/cache", l("Cache"),
+                            icon: "pi pi-database",
+                            description: l("Showcases_the_cache_behavior")
                         ),
                         CardLink($"/data-table", l("DataTable"),
                             icon: "pi pi-table",
                             description: l("Showcase_DataTable_component_with_scrollable_and_footer_options")
+                        ),
+                        CardLink($"/report", l("Report"),
+                            icon: "pi pi-file",
+                            description: l("Showcases_a_report_layout_with_tabs_and_data_panels")
                         ),
                         CardLink($"/specs", l("Specs"),
                             icon: "pi pi-list-check",
@@ -270,7 +281,7 @@ public class ConfigurationOverriderFeature : IFeature
                     var second = report.Methods[nameof(Report.GetSecond)];
 
                     pages.Add(ReportPage("report",
-                        title: PageTitle("Report", description: l("Showcases_a_report_layout_with_tabs_and_data_panels")),
+                        title: PageTitle(l("Report"), description: l("Showcases_a_report_layout_with_tabs_and_data_panels")),
                         queryParameters:
                         [
                             Parameter(
@@ -287,7 +298,7 @@ public class ConfigurationOverriderFeature : IFeature
                                 defaultValue: "rwd-1",
                                 required: true
                             ),
-                            Parameter("required", Select("Required", data: Inline(new[] { l("Required 1"), l("Required 2") })),
+                            Parameter("required", Select(l("Required"), data: Inline(new[] { l("Required 1"), l("Required 2") })),
                                 required: true
                             ),
                             Parameter("optional", SelectButton(Inline(new[] { l("Optional 1"), l("Optional 2") }), allowEmpty: true))
@@ -299,7 +310,7 @@ public class ConfigurationOverriderFeature : IFeature
                             contents:
                             [
                                 ReportPageTabContent(
-                                    component: DataPanel(wide.Name.Humanize(),
+                                    component: DataPanel(l(wide.Name),
                                         content: String(
                                             data: Remote($"/{wide.GetSingle<ActionModelAttribute>().GetRoute()}",
                                                 headers: headers,
@@ -310,7 +321,7 @@ public class ConfigurationOverriderFeature : IFeature
                                     )
                                 ),
                                 ReportPageTabContent(
-                                    component: DataPanel(left.Name.Humanize(),
+                                    component: DataPanel(l(left.Name),
                                         content: String(
                                             data: Remote($"/{left.GetSingle<ActionModelAttribute>().GetRoute()}",
                                                 headers: headers,
@@ -322,7 +333,7 @@ public class ConfigurationOverriderFeature : IFeature
                                     narrow: true
                                 ),
                                 ReportPageTabContent(
-                                    component: DataPanel(right.Name.Humanize(),
+                                    component: DataPanel(l(right.Name),
                                         content: String(
                                             data: Remote($"/{right.GetSingle<ActionModelAttribute>().GetRoute()}",
                                                 headers: headers,
@@ -340,20 +351,20 @@ public class ConfigurationOverriderFeature : IFeature
                             contents:
                             [
                                 ReportPageTabContent(
-                                    component: DataPanel(first.Name.Humanize(),
+                                    component: DataPanel(l(first.Name),
                                         parameters:
                                         [
-                                            Parameter("count", Select("Count", data: Inline(Enum.GetNames<CountOptions>()), stateful: true),
+                                            Parameter("count", Select(l("Count"), data: Inline(Enum.GetNames<CountOptions>(), requireLocalization: false), stateful: true),
                                                 defaultValue: CountOptions.Default
                                             )
                                         ],
                                         content: DataTable(
                                             columns:
                                             [
-                                                DataTableColumn("label", title: "Label", minWidth: true),
-                                                DataTableColumn("column1", title: "Column 1"),
-                                                DataTableColumn("column2", title: "Column 2"),
-                                                DataTableColumn("column3", title: "Column 3")
+                                                DataTableColumn("label", title: l("Label"), minWidth: true),
+                                                DataTableColumn("column1", title: l("Column1")),
+                                                DataTableColumn("column2", title: l("Column2")),
+                                                DataTableColumn("column3", title: l("Column3"))
                                             ],
                                             dataKey: "label",
                                             paginator: true,
@@ -366,20 +377,20 @@ public class ConfigurationOverriderFeature : IFeature
                                     )
                                 ),
                                 ReportPageTabContent(
-                                    component: DataPanel(l(second.Name.Humanize()),
+                                    component: DataPanel(l(second.Name),
                                         parameters:
                                         [
-                                            Parameter("count", SelectButton(Inline(Enum.GetNames<CountOptions>()), stateful: true),
+                                            Parameter("count", SelectButton(Inline(Enum.GetNames<CountOptions>(), requireLocalization: false), stateful: true),
                                                 defaultValue: CountOptions.Default
                                             )
                                         ],
                                         content: DataTable(
                                             columns:
                                             [
-                                                DataTableColumn("label", title: "Label", minWidth: true),
-                                                DataTableColumn("column1", title: "Column 1"),
-                                                DataTableColumn("column2", title: "Column 2"),
-                                                DataTableColumn("column3", title: "Column 3")
+                                                DataTableColumn("label", title: l("Label"), minWidth: true),
+                                                DataTableColumn("column1", title: l("Column1")),
+                                                DataTableColumn("column2", title: l("Column2")),
+                                                DataTableColumn("column3", title: l("Column3"))
                                             ],
                                             dataKey: "label",
                                             paginator: true,
@@ -398,6 +409,109 @@ public class ConfigurationOverriderFeature : IFeature
                     ));
                 });
 
+                configurator.UsingDomainModel(domain =>
+                {
+                    pages.Add(ReportPage("data-table", PageTitle(l("DataTable Demo")),
+                        tabs:
+                        [
+                            ReportPageTab(string.Empty, string.Empty,
+                                contents:
+                                [
+                                    ReportPageTabContent(
+                                        DataPanel(l("DataPanel"),
+                                            parameters:
+                                            [
+                                                Parameter("count", Select(l("Count"), Inline(new string[]{ "10", "20", "100", "1000", "10000" }, requireLocalization: false)),
+                                                    defaultValue: "10"
+                                                )
+                                            ],
+                                            content: DataTable(
+                                                columns:
+                                                [
+                                                  .. domain.Types[typeof(TableRow)].GetMembers().Properties.Where(p => p.IsPublic).Select((p, i) =>
+                                                      DataTableColumn(p.Name.Camelize(),
+                                                          title: l(p.Name),
+                                                          exportable: true,
+                                                          alignRight: p.PropertyType.Is<string>() ? null : true,
+                                                          frozen: i == 0 ? true : null,
+                                                          minWidth: i == 0 ? true : null
+                                                      )
+                                                    )
+                                                ],
+                                                footerTemplate: DataTableFooter(l("Total"),
+                                                    columns:
+                                                    [
+                                                        DataTableColumn(nameof(TableWithFooter.FooterColumn1).Camelize(), Conditional(), alignRight: true),
+                                                        DataTableColumn(nameof(TableWithFooter.FooterColumn2).Camelize(), Conditional(), alignRight: true)
+                                                    ]
+                                                ),
+                                                dataKey: nameof(TableRow.Label).Camelize(),
+                                                itemsProp: "items",
+                                                scrollHeight: "500px",
+                                                virtualScrollerOptions: DataTableVirtualScroller(45),
+                                                exportOptions: DataTableExport(";", "data-table-export", formatter: "useCsvFormatter", buttonLabel: "Export as CSV"),
+                                                data: Remote(domain.Types[typeof(Theme.DataTable)].GetMembers().Methods[nameof(Theme.DataTable.GetTableDataWithFooter)].GetSingle<ActionModelAttribute>().GetRoute(),
+                                                    query: Injected(custom: true)
+                                                )
+                                            )
+                                        )
+                                    )
+                                ]
+                            )
+                        ]
+                    ));
+                });
+
+                configurator.UsingDomainModel(domain =>
+                {
+                    var report = domain.Types[typeof(CacheSamples)].GetMembers();
+                    var getScoped = report.Methods[nameof(CacheSamples.GetScoped)];
+                    var getApplication = report.Methods[nameof(CacheSamples.GetApplication)];
+
+                    pages.Add(ReportPage("cache",
+                        title: PageTitle("Cache", description: l("Showcases_the_cache_behavior")),
+                        queryParameters:
+                        [
+                            Parameter("parameter", Select(l("Parameter"), Inline(new[] { "value_a", "value_b" }, requireLocalization: false)),
+                                required: true,
+                                defaultValue: "value_a"
+                            )
+                        ],
+                        tabs:
+                        [
+                            ReportPageTab("default", string.Empty,
+                                contents:
+                                [
+                                    ReportPageTabContent(
+                                        component: DataPanel(l(getScoped.Name),
+                                            content: String(
+                                                data: Remote($"/{getScoped.GetSingle<ActionModelAttribute>().GetRoute()}",
+                                                    headers: headers,
+                                                    query: Computed(Composables.UseQuery),
+                                                    options: [("client-cache", "user")]
+                                                )
+                                            )
+                                        ),
+                                        narrow: true
+                                    ),
+                                    ReportPageTabContent(
+                                        component: DataPanel(l(getApplication.Name),
+                                            content: String(
+                                                data: Remote($"/{getApplication.GetSingle<ActionModelAttribute>().GetRoute()}",
+                                                    headers: headers,
+                                                    query: Computed(Composables.UseQuery),
+                                                    options: [("client-cache", "application")]
+                                                )
+                                            )
+                                        ),
+                                        narrow: true
+                                    )
+                                ]
+                            )
+                        ]
+                    ));
+                });
+
                 pages.Add(MenuPage("specs",
                     filterPageContextKey: "menu-page",
                     header: PageTitle(
@@ -408,78 +522,24 @@ public class ConfigurationOverriderFeature : IFeature
                     sections:
                     [
                         .. specs.Select(section =>
-                        MenuPageSection(
-                            title: l(section.Name),
-                            links:
-                            [
-                                .. section.Links.Select(link =>
-                                    Filterable(
-                                        title: l(link.Title),
-                                        component: CardLink($"/specs/{link.Title.Kebaberize()}", l(link.Title),
-                                            icon: "pi pi-microchip",
-                                            description: l(link.Description)
+                            MenuPageSection(
+                                title: l(section.Name),
+                                links:
+                                [
+                                    .. section.Links.Select(link =>
+                                        Filterable(
+                                            title: l(link.Title),
+                                            component: CardLink($"/specs/{link.Title.Kebaberize()}", l(link.Title),
+                                                icon: "pi pi-microchip",
+                                                description: l(link.Description)
+                                            )
                                         )
                                     )
-                                )
-                            ]
+                                ]
+                            )
                         )
-                    )
                     ]
-
                 ));
-
-                configurator.UsingDomainModel(domain =>
-                {
-                    pages.Add(ReportPage("data-table", PageTitle("DataTable Demo"),
-                        tabs:
-                        [
-                            ReportPageTab(string.Empty, string.Empty,
-                            contents:
-                            [
-                                ReportPageTabContent(
-                                    DataPanel("DataPanel",
-                                        parameters:
-                                        [
-                                            Parameter("count", Select("Count", Inline(new string[]{ "10", "20", "100", "1000", "10000" })),
-                                                defaultValue: "10"
-                                            )
-                                        ],
-                                        content: DataTable(
-                                            columns:
-                                            [
-                                              .. domain.Types[typeof(TableRow)].GetMembers().Properties.Where(p => p.IsPublic).Select((p, i) =>
-                                                  DataTableColumn(p.Name.Camelize(),
-                                                      title: l(p.Name),
-                                                      exportable: true,
-                                                      alignRight: p.PropertyType.Is<string>() ? null : true,
-                                                      frozen: i == 0 ? true : null,
-                                                      minWidth: i == 0 ? true : null
-                                                  )
-                                                )
-                                            ],
-                                            footerTemplate: DataTableFooter(l("Total"),
-                                                columns:
-                                                [
-                                                    DataTableColumn(nameof(TableWithFooter.FooterColumn1).Camelize(), Conditional(), alignRight: true),
-                                                    DataTableColumn(nameof(TableWithFooter.FooterColumn2).Camelize(), Conditional(), alignRight: true)
-                                                ]
-                                            ),
-                                            dataKey: nameof(TableRow.Label).Camelize(),
-                                            itemsProp: "items",
-                                            scrollHeight: "500px",
-                                            virtualScrollerOptions: DataTableVirtualScroller(45),
-                                            exportOptions: DataTableExport(";", "data-table-export", formatter: "useCsvFormatter", buttonLabel: "Export as CSV"),
-                                            data: Remote(domain.Types[typeof(Theme.DataTable)].GetMembers().Methods[nameof(Theme.DataTable.GetTableDataWithFooter)].GetSingle<ActionModelAttribute>().GetRoute(),
-                                                query: Injected(custom: true)
-                                            )
-                                        )
-                                    )
-                                )
-                            ]
-                        )
-                        ]
-                    ));
-                });
             });
         });
     }

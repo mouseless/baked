@@ -166,6 +166,17 @@ test.describe("No Virtual Scroll", () => {
   });
 });
 
+test.describe("No Record Found", () => {
+  const id = "No Record Found";
+
+  test("No records found message is displayed when no records are present", async({page}) => {
+    const component = page.getByTestId(id);
+    const rows = component.locator("td");
+
+    await expect(rows).toHaveText("No records found");
+  });
+});
+
 test.describe("Loading", () => {
   const id = "Loading";
 

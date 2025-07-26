@@ -14,6 +14,9 @@
     :export-filename="exportOptions?.fileName"
     :export-function
   >
+    <template #empty>
+      {{ l("DataTable.No_records_found") }}
+    </template>
     <Column
       v-for="column in columns"
       :key="column.prop"
@@ -35,10 +38,10 @@
           v-else-if="data"
           :name="`rows/${index}/${column.prop}`"
           :descriptor="{
-            ...conditional.find(column.component, row),
+            ...conditional.find(column.component, row.$getRow()),
             data: {
               type: 'Inline',
-              value: row[column.prop]
+              value: row[column.prop].value
             }
           }"
         />
@@ -136,13 +139,26 @@ const dataTable = ref();
 const actionsMenu = ref();
 const actions = ref([ ]);
 const loading = context.loading();
-const value = computed(() =>
-  data
+const value = computed(() => {
+  const items = data
     ? itemsProp
       ? data[itemsProp]
       : data
-    : new Array(rowsWhenLoading || 5).fill({ })
-);
+    : new Array(rowsWhenLoading || 5).fill({ });
+
+  const result = [];
+  for(const itemRow of items) {
+    const resultRow = { $getRow: () => itemRow };
+
+    for(const column of columns) {
+      resultRow[column.prop] = { value: itemRow[column.prop], $getRow: () => itemRow };
+    }
+
+    result.push(resultRow);
+  }
+
+  return result;
+});
 const footerColSpan = computed(() => columns.length - footerTemplate?.columns.length);
 const formatter = exportOptions?.formatter ? (await composableResolver.resolve(exportOptions.formatter)).default() : undefined;
 
@@ -159,8 +175,8 @@ function toggleActionsMenu(event) {
 }
 
 function exportFunction({ data, field }) {
-  if(!formatter) { return data; }
+  if(!formatter) { return data.value; }
 
-  return formatter.format(data, field);
+  return formatter.format(data.value, { prop: field, row: data.$getRow() });
 }
 </script>

@@ -22,7 +22,7 @@ public abstract class ServiceSpec : Spec
 
     protected static void Init(
         Func<BusinessConfigurator, IFeature<BusinessConfigurator>> business,
-        Func<CachingConfigurator, IFeature<CachingConfigurator>>? caching = default,
+        IEnumerable<Func<CachingConfigurator, IFeature<CachingConfigurator>>>? cachings = default,
         Func<CommunicationConfigurator, IFeature<CommunicationConfigurator>>? communication = default,
         Func<CoreConfigurator, IFeature<CoreConfigurator>>? core = default,
         Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>>? database = default,
@@ -33,7 +33,7 @@ public abstract class ServiceSpec : Spec
         Action<ApplicationDescriptor>? configure = default
     )
     {
-        caching ??= c => c.ScopedMemory();
+        cachings ??= [c => c.InMemory(), c => c.ScopedMemory()];
         communication ??= c => c.Mock();
         core ??= c => c.Mock();
         database ??= c => c.InMemory();
@@ -53,7 +53,7 @@ public abstract class ServiceSpec : Spec
 
             app.Features.AddBinding(c => c.Rest());
             app.Features.AddBusiness(business);
-            app.Features.AddCaching(caching);
+            app.Features.AddCachings(cachings);
             app.Features.AddCodingStyles([
                 c => c.AddRemoveChild(),
                 c => c.CommandPattern(),

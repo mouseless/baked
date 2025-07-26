@@ -14,8 +14,8 @@ export default {
   aCardLink({ route, icon, title, description, disabled, disabledReason } = {}) {
     route = $(route, "/test-route");
     icon = $(icon, "pi pi-heart");
-    title = $(title, "Test");
-    description = $(description, "Test description is given for testing purposes");
+    title = $(title, "Spec.Test");
+    description = $(description, "Spec.Test_description_is_given_for_testing_purposes");
     disabled = $(disabled, false);
     disabledReason = $(disabledReason, disabled ? "REASON" : "");
 
@@ -54,7 +54,7 @@ export default {
   },
 
   aDataPanel({ title, collapsed, localizeTitle, parameters, content } = {}) {
-    title = $(title, { type: "Inline", value: "Test Title" });
+    title = $(title, { type: "Inline", value: "Spec.Test_title" });
     collapsed = $(collapsed, false);
     parameters = $(parameters, []);
     content = $(content, this.anExpected());
@@ -89,7 +89,7 @@ export default {
   },
 
   aDataTableColumn({ title, prop, alignRight, minWidth, component, exportable, frozen } = {}) {
-    title = $(title, "Test");
+    title = $(title, "Spec.Test");
     prop = $(prop, "test");
     alignRight = $(alignRight, false);
     minWidth = $(minWidth, false);
@@ -261,15 +261,17 @@ export default {
     };
   },
 
-  aMessage({ message, icon, severity, data } = {}) {
-    message = $(message, "This is a message");
+  aMessage({ message, icon, severity, localizeMessage, data } = {}) {
+    message = $(message, "Spec.This_is_a_message");
+    localizeMessage = $(localizeMessage, true);
     data = $(data, { type: "Inline", value: message });
 
     return {
       type: "Message",
       schema: {
         icon,
-        severity
+        severity,
+        localizeMessage
       },
       data
     };
@@ -314,8 +316,8 @@ export default {
   },
 
   aPageTitle({ title, description, actions } = {}) {
-    title = $(title, "Test Title");
-    description = $(description, "Test description is given for testing purposes");
+    title = $(title, "Spec.Test_title");
+    description = $(description, "Spec.Test_description_is_given_for_testing_purposes");
     actions = $(actions, []);
 
     return {
@@ -380,7 +382,7 @@ export default {
   },
 
   aSelect({ label, localizeLabel, optionLabel, optionValue, showClear, stateful, data, inline } = {}) {
-    label = $(label, "Test");
+    label = $(label, "Spec.Test");
     localizeLabel = $(localizeLabel, false);
     showClear = $(showClear, false);
     stateful = $(stateful, false);
@@ -454,5 +456,9 @@ export default {
       access: accessExpired ? expiredAccessToken : accessToken,
       refresh: refreshToken
     };
+  },
+
+  anApiResponse() {
+    return { sample: "response" };
   }
 };

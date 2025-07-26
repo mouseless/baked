@@ -85,7 +85,7 @@
               "schema": {
                 "title": {
                   "type": "Inline",
-                  "value": "Get wide"
+                  "value": "GetWide"
                 },
                 "collapsed": false,
                 "localizeTitle": true,
@@ -106,7 +106,8 @@
                       "type": "Computed",
                       "composable": "useQuery",
                       "args": []
-                    }
+                    },
+                    "options": {}
                   }
                 }
               }
@@ -118,7 +119,7 @@
               "schema": {
                 "title": {
                   "type": "Inline",
-                  "value": "Get left"
+                  "value": "GetLeft"
                 },
                 "collapsed": true,
                 "localizeTitle": true,
@@ -139,7 +140,8 @@
                       "type": "Computed",
                       "composable": "useQuery",
                       "args": []
-                    }
+                    },
+                    "options": {}
                   }
                 }
               }
@@ -152,7 +154,7 @@
               "schema": {
                 "title": {
                   "type": "Inline",
-                  "value": "Get right"
+                  "value": "GetRight"
                 },
                 "collapsed": true,
                 "localizeTitle": true,
@@ -173,7 +175,8 @@
                       "type": "Computed",
                       "composable": "useQuery",
                       "args": []
-                    }
+                    },
+                    "options": {}
                   }
                 }
               }
@@ -198,7 +201,7 @@
               "schema": {
                 "title": {
                   "type": "Inline",
-                  "value": "Get first"
+                  "value": "GetFirst"
                 },
                 "localizeTitle": true,
                 "parameters": [
@@ -212,7 +215,7 @@
                       "type": "Select",
                       "schema": {
                         "label": "Count",
-                        "localizeLabel": true,
+                        "localizeLabel": false,
                         "stateful": true
                       },
                       "data": {
@@ -251,7 +254,7 @@
                           },
                           "conditions": []
                         },
-                        "title": "Column 1"
+                        "title": "Column1"
                       },
                       {
                         "prop": "column2",
@@ -262,7 +265,7 @@
                           },
                           "conditions": []
                         },
-                        "title": "Column 2"
+                        "title": "Column2"
                       },
                       {
                         "prop": "column3",
@@ -273,7 +276,7 @@
                           },
                           "conditions": []
                         },
-                        "title": "Column 3"
+                        "title": "Column3"
                       }
                     ],
                     "dataKey": "label",
@@ -302,7 +305,8 @@
                           "key": "Custom"
                         }
                       ]
-                    }
+                    },
+                    "options": {}
                   }
                 }
               }
@@ -314,7 +318,7 @@
               "schema": {
                 "title": {
                   "type": "Inline",
-                  "value": "Get second"
+                  "value": "GetSecond"
                 },
                 "collapsed": true,
                 "localizeTitle": true,
@@ -328,7 +332,7 @@
                     "component": {
                       "type": "SelectButton",
                       "schema": {
-                        "localizeLabel": true,
+                        "localizeLabel": false,
                         "stateful": true
                       },
                       "data": {
@@ -367,7 +371,7 @@
                           },
                           "conditions": []
                         },
-                        "title": "Column 1"
+                        "title": "Column1"
                       },
                       {
                         "prop": "column2",
@@ -378,7 +382,7 @@
                           },
                           "conditions": []
                         },
-                        "title": "Column 2"
+                        "title": "Column2"
                       },
                       {
                         "prop": "column3",
@@ -389,7 +393,7 @@
                           },
                           "conditions": []
                         },
-                        "title": "Column 3"
+                        "title": "Column3"
                       }
                     ],
                     "dataKey": "label",
@@ -418,7 +422,8 @@
                           "key": "Custom"
                         }
                       ]
-                    }
+                    },
+                    "options": {}
                   }
                 }
               }

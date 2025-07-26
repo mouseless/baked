@@ -12,6 +12,6 @@
   <ItemGroup>
     <InternalsVisibleTo Include="Baked.g.AutoMapOrmFeature"/>
     <InternalsVisibleTo Include="Baked.g.RestApiLayer"/>
-  </ItemGroup>  
+  </ItemGroup>
 
 </Project>

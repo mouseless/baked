@@ -103,7 +103,6 @@ export default defineNuxtModule<ModuleOptions>({
       langDir: entryProjectResolver.resolve("./"),
       strategy: "no_prefix",
       locales: _options.app?.i18n.supportedLanguages.map((i: any) => {
-
         const files = [entryProjectResolver.resolve(`.baked/locale.${i.code}.json`)];
         try {
           files.push(entryProjectResolver.resolve(`./locales/locale.${i.code}.json`))

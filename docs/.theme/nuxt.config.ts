@@ -24,7 +24,7 @@ export default defineNuxtConfig({
         {
           hid: "og:site_name",
           property: "og:site_name",
-          content: "Baked (Objects)"
+          content: "Baked"
         },
         {
           hid: "og:description",

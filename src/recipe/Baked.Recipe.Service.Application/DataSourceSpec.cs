@@ -14,7 +14,7 @@ public abstract class DataSourceSpec : Spec
 {
     protected static void Init(
         Func<BusinessConfigurator, IFeature<BusinessConfigurator>> business,
-        Func<CachingConfigurator, IFeature<CachingConfigurator>>? caching = default,
+        IEnumerable<Func<CachingConfigurator, IFeature<CachingConfigurator>>>? cachings = default,
         Func<CoreConfigurator, IFeature<CoreConfigurator>>? core = default,
         Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>>? database = default,
         Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>>? exceptionHandling = default,
@@ -23,7 +23,7 @@ public abstract class DataSourceSpec : Spec
         Action<ApplicationDescriptor>? configure = default
     )
     {
-        caching ??= c => c.ScopedMemory();
+        cachings ??= [c => c.InMemory(), c => c.ScopedMemory()];
         core ??= c => c.Mock();
         database ??= c => c.InMemory();
         exceptionHandling ??= c => c.ProblemDetails();
@@ -41,7 +41,7 @@ public abstract class DataSourceSpec : Spec
 
             app.Features.AddBinding(c => c.Rest());
             app.Features.AddBusiness(business);
-            app.Features.AddCaching(caching);
+            app.Features.AddCachings(cachings);
             app.Features.AddCodingStyles([
                 c => c.AddRemoveChild(),
                 c => c.CommandPattern(),

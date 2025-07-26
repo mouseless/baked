@@ -1,6 +1,5 @@
-import { defineNuxtPlugin, useRouter, clearError, showError, useNuxtApp, useRuntimeConfig } from "#app";
-import useToast from "../composables/useToast";
-import useDataFetcher from "../composables/useDataFetcher";
+import { defineNuxtPlugin, clearError, showError, useNuxtApp, useRuntimeConfig } from "#app";
+import { useDataFetcher, useToast } from "#imports";
 
 export default defineNuxtPlugin({
   name: "errorHandling",
@@ -20,13 +19,11 @@ export default defineNuxtPlugin({
   },
   hooks: {
     "vue:error": async error => {
-      const handlers = useNuxtApp().$errorHandlers;
-      const router = useRouter();
-      const toast = useToast();
       const dataFetcher = useDataFetcher();
+      const { $errorHandlers, $router } = useNuxtApp();
+      const toast = useToast();
 
-      const handler = getHandler(handlers, router.currentRoute.value.fullPath, error);
-
+      const handler = getHandler($errorHandlers, $router.currentRoute.value.fullPath, error);
       if(!handler) {
         showError(error);
 
@@ -41,7 +38,7 @@ export default defineNuxtPlugin({
         toast.add({ ...getMessage(error) });
 
         const redirectPath = await dataFetcher.fetch({ data: handler.behaviorArgument });
-        router.replace(redirectPath);
+        $router.replace(redirectPath);
       } else {
         console.error(error);
         showError(error);
@@ -69,21 +66,21 @@ function getHandler(handlers, route, error) {
 }
 
 function getMessage(error) {
-  const defaultAlert = useNuxtApp().$defaultAlert;
+  const { $defaultAlert } = useNuxtApp();
 
   if(error.name === "FetchError") {
     return {
       severity: "error",
-      summary: error.data?.title ?? error.statusCode ?? defaultAlert.title,
-      detail: error.data?.detail ?? error.message ?? error.cause ?? defaultAlert.message,
+      summary: error.data?.title ?? error.statusCode ?? $defaultAlert.title,
+      detail: error.data?.detail ?? error.message ?? error.cause ?? $defaultAlert.message,
       life: 3000
     };
   }
 
   return {
     severity: "error",
-    summary: error.statusCode ?? error.status ?? defaultAlert.title,
-    detail: error.message ?? error.cause ?? defaultAlert.message,
+    summary: error.statusCode ?? error.status ?? $defaultAlert.title,
+    detail: error.message ?? error.cause ?? $defaultAlert.message,
     life: 3000
   };
 }

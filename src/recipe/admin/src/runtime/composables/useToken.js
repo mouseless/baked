@@ -1,6 +1,5 @@
 import { useRuntimeConfig } from "#app";
-import { createError } from "#imports";
-import { useMutex } from "#imports";
+import { createError, useMutex } from "#imports";
 
 export default function() {
   const mutex = useMutex();
@@ -32,15 +31,13 @@ export default function() {
       const token = await current(false);
       if(!token?.accessIsExpired()) { return; }
 
-      const headers = new Headers();
-      headers.set("Authorization", `Bearer ${token?.refresh}`);
-
       const result = await $fetch(auth.refreshApiRoute,
         {
           baseURL: composables.useDataFetcher.baseURL,
           method: "POST",
-          headers
-        });
+          headers: { "Authorization": `Bearer ${token?.refresh}` }
+        }
+      );
 
       setCurrent(result, false);
     });
@@ -50,7 +47,7 @@ export default function() {
     dispatch = true
   ) {
     if(!value) {
-      localStorage.clear("token");
+      localStorage.removeItem("token");
     } else {
       localStorage.setItem("token", JSON.stringify(value));
     }

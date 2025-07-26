@@ -5,6 +5,6 @@ namespace Baked;
 
 public static class CachingExtensions
 {
-    public static void AddCaching(this List<IFeature> features, Func<CachingConfigurator, IFeature<CachingConfigurator>> configure) =>
-        features.Add(configure(new()));
+    public static void AddCachings(this List<IFeature> features, IEnumerable<Func<CachingConfigurator, IFeature<CachingConfigurator>>> configures) =>
+        features.AddRange(configures.Select(configure => configure(new())));
 }

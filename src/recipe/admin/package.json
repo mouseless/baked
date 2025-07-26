@@ -1,7 +1,7 @@
 {
   "name": "baked-recipe-admin",
   "version": "0.17.0",
-  "description": "Baked (Objects) is an opinionated framework for .NET in backend and Nuxt in frontend. This is a recipe package that brings together all the components one needs for an Admin UI.",
+  "description": "Baked is an opinionated framework for .NET in backend and Nuxt in frontend. This is a recipe package that brings together all the components one needs for an Admin UI.",
   "keywords": [
     "baked",
     "objects",
@@ -37,7 +37,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@nuxt/kit": "4.0.1",
+    "@nuxt/kit": "3.17.7",
     "@nuxtjs/i18n": "10.0.1",
     "@primeuix/themes": "1.2.1",
     "@nuxtjs/tailwindcss": "6.14.0",
@@ -47,13 +47,13 @@
   },
   "devDependencies": {
     "@nuxt/devtools": "2.6.2",
-    "@nuxt/eslint-config": "1.7.0",
+    "@nuxt/eslint-config": "1.7.1",
     "@nuxt/module-builder": "1.0.1",
-    "@nuxt/schema": "4.0.1",
+    "@nuxt/schema": "3.17.7",
     "@nuxt/test-utils": "3.19.2",
-    "@types/node": "24.0.15",
+    "@types/node": "latest",
     "changelogen": "0.6.2",
-    "eslint": "9.31.0",
+    "eslint": "9.32.0",
     "nuxt": "3.17.7",
     "sass": "1.89.2",
     "typescript": "5.8.3",
