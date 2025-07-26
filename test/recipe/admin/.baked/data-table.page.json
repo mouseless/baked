@@ -32,7 +32,7 @@
                       "type": "Select",
                       "schema": {
                         "label": "Count",
-                        "localizeLabel": true
+                        "localizeLabel": false
                       },
                       "data": {
                         "type": "Inline",

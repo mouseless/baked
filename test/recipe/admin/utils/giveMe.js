@@ -261,15 +261,17 @@ export default {
     };
   },
 
-  aMessage({ message, icon, severity, data } = {}) {
+  aMessage({ message, icon, severity, localizeMessage, data } = {}) {
     message = $(message, "Spec.This_is_a_message");
+    localizeMessage = $(localizeMessage, true);
     data = $(data, { type: "Inline", value: message });
 
     return {
       type: "Message",
       schema: {
         icon,
-        severity
+        severity,
+        localizeMessage
       },
       data
     };
