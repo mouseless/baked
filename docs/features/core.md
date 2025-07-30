@@ -9,7 +9,7 @@ Add this feature using `AddCore()` extension;
 app.Features.AddCore(...);
 ```
 
-## Dotnet
+## .NET
 
 Adds a local implementation of `TimeProvider` to services to be used throughout
 your application.

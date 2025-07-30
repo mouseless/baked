@@ -1,7 +1,7 @@
 ﻿using Baked.Ui;
 using System.Globalization;
 
-namespace Baked.Localization.AspNetCore;
+namespace Baked.Localization.Dotnet;
 
 public class LocalizedTexts(CultureInfo _language, ILocaleTemplate _template)
     : Dictionary<string, string>(_template)

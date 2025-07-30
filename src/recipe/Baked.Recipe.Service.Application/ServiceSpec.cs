@@ -40,7 +40,7 @@ public abstract class ServiceSpec : Spec
         core ??= c => c.Mock();
         database ??= c => c.InMemory();
         exceptionHandling ??= c => c.ProblemDetails();
-        localization ??= c => c.AspNetCore();
+        localization ??= c => c.Dotnet();
         mockOverrider ??= c => c.FirstInterface();
         orm ??= c => c.AutoMap();
         theme ??= c => c.Admin();

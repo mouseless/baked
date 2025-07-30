@@ -6,9 +6,9 @@ using Microsoft.Extensions.Localization;
 using System.Globalization;
 using System.Reflection;
 
-namespace Baked.Localization.AspNetCore;
+namespace Baked.Localization.Dotnet;
 
-public class AspNetCoreLocalizationFeature(CultureInfo _language,
+public class DotnetLocalizationFeature(CultureInfo _language,
     IEnumerable<CultureInfo>? _otherLanguages = default
 ) : IFeature<LocalizationConfigurator>
 {
@@ -45,13 +45,7 @@ public class AspNetCoreLocalizationFeature(CultureInfo _language,
             var entryAssemblyName = entryAssembly.GetName().Name
                 ?? throw new("'EntryAssembly' should have a name");
 
-            services.AddSingleton<ILocalizer>(provider =>
-            {
-                var factory = provider.GetRequiredService<IStringLocalizerFactory>();
-                var localizer = factory.Create("locale", entryAssemblyName);
-
-                return new LocalizerAdapter(localizer);
-            });
+            services.AddSingleton(sp => sp.GetRequiredService<IStringLocalizerFactory>().Create("locale", entryAssemblyName));
         });
 
         configurator.ConfigureMiddlewareCollection(middlewares =>

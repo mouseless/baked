@@ -1,8 +1,8 @@
-﻿using Baked.Localization;
+﻿using Microsoft.Extensions.Localization;
 
 namespace Baked.Test.Theme;
 
-public class DataTable(ILocalizer _l)
+public class DataTable(IStringLocalizer _l)
 {
     public TableWithFooter GetTableDataWithFooter(int count)
     {

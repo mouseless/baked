@@ -11,3 +11,11 @@
 - `ILocalizer` interface was removed, `Baked.Service.Application` now depend on
   `Microsoft.AspNetCore.Localization` and may use `IStringLocalizer` directly
 - `ExceptionHandler` wasn't setting details when there is no localizer, fixed
+
+## Library Upgrades
+
+| NuGet Package                                  | Old Version | New Version |
+| ---                                            | ---         | ---         |
+| Microsoft.AspNetCore.Localization              | 2.3.0       | removed     |
+| Microsoft.Extensions.Localization              | new         | 9.0.7       |
+| Microsoft.Extensions.Localization.Abstractions | new         | 9.0.7       |

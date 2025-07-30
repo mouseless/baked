@@ -1,6 +1,6 @@
 # Localization
 
-This feature registers `.NET` localization services and middleware, and 
+This feature registers `.NET` localization services and middleware, and
 generates `.json` resource files for to be used for UI app localization
 
 Add this feature implementations using `AddLocalization()` extension;
@@ -9,13 +9,13 @@ Add this feature implementations using `AddLocalization()` extension;
 app.Features.AddLocalization(...);
 ```
 
-## ASP.NET Core
+## .NET
 
-This feature adds ASP.NET Core's localization service. Add the service using
-`c.AspNetCore(...)` extension method.
+This feature adds .NET's standard localization service. Add the service using
+`c.Dotnet(...)` extension method.
 
 ```csharp
-c => c.AspNetCore(
+c => c.Dotnet(
     language: new("en"),
     otherLanguages: [new("tr")]
 )
@@ -23,13 +23,23 @@ c => c.AspNetCore(
 
 ### Resources
 
-Keep the localize keys in the `.restext` and `.resx` files under the `Locales`
-folder in the root of your application project.
+Keep the localize keys in the `.restext` and `.json` files under the `Locales`
+and `locales` folder in the root of your backend (app) and frontend projects
+respectively.
 
 ```
 App/
 ├─ Locales/
-│  ├─ locale.restext
 │  ├─ locale.en.restext
 └─ └─ locale.tr.restext
+```
+
+```
+UI/
+├─ .baked/
+│  ├─ locale.en.json
+│  └─ locale.tr.json
+├─ locales/
+│  ├─ locale.en.json
+└─ └─ locale.tr.json
 ```

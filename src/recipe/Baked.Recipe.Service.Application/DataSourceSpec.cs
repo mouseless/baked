@@ -29,7 +29,7 @@ public abstract class DataSourceSpec : Spec
         core ??= c => c.Mock();
         database ??= c => c.InMemory();
         exceptionHandling ??= c => c.ProblemDetails();
-        localization ??= c => c.AspNetCore();
+        localization ??= c => c.Dotnet();
         mockOverrider ??= c => c.FirstInterface();
         reporting ??= c => c.Mock();
         configure ??= _ => { };
