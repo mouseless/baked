@@ -124,10 +124,10 @@ public class ConfigurationOverriderFeature : IFeature
                 Name = "Display",
                 Links = new[]
                 {
-                    new { Title = "Card Link", Description = "Renders a link as a big card like button" },
+                    new { Title = "Card Link", Description = "Renders a link as a big card-like button" },
                     new { Title = "Data Table", Description = "View list data in a table" },
                     new { Title = "Nav Link", Description = "A component to give a link to a domain object" },
-                    new { Title = "Icon", Description = "Displays built in icons" },
+                    new { Title = "Icon", Description = "Displays built-in icons" },
                     new { Title = "Message", Description = "A component to display message" },
                     new { Title = "Money", Description = "Shortens and renders money values with the full value shown as tooltip" },
                     new { Title = "Number", Description = "Shortens and renders numbers with the full value shown as tooltip" },
@@ -152,7 +152,7 @@ public class ConfigurationOverriderFeature : IFeature
                 {
                     new { Title = "Data Panel", Description = "Lazy load and view a data within a panel" },
                     new { Title = "Header", Description = "Renders a breadcrumb" },
-                    new { Title = "Page Title", Description = "Render page title desc and actions" },
+                    new { Title = "Page Title", Description = "Render page title, desc and actions" },
                     new { Title = "Side Menu", Description = "Renders application menu" }
                 }
             },
@@ -194,9 +194,9 @@ public class ConfigurationOverriderFeature : IFeature
                     ],
                     errorInfos:
                     [
-                        ErrorPageInfo(403, l("Access Denied"), l("You do not have the permision to view the address or data specified") ),
-                        ErrorPageInfo(404, l("Page Not Found"), l("The page you want to view is etiher deleted or outdated")),
-                        ErrorPageInfo(500, l("Unexpected Error"), l("Please contact system administrator"))
+                        ErrorPageInfo(403, l("Access Denied"), l("You do not have the permision to view the address or data specified.") ),
+                        ErrorPageInfo(404, l("Page Not Found"), l("The page you want to view is etiher deleted or outdated.")),
+                        ErrorPageInfo(500, l("Unexpected Error"), l("Please contact system administrator."))
                     ],
                     data: Computed(Composables.UseError)
                 );
@@ -263,7 +263,7 @@ public class ConfigurationOverriderFeature : IFeature
                         ),
                         CardLink($"/specs", l("Specs"),
                             icon: "pi pi-list-check",
-                            description: l("All ui specs are listed here")
+                            description: l("All UI Specs are listed here")
                         )
                     ]
                 ));

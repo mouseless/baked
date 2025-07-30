@@ -96,7 +96,7 @@
                 "route": "/specs/card-link",
                 "icon": "pi pi-microchip",
                 "title": "Card Link",
-                "description": "Renders a link as a big card like button"
+                "description": "Renders a link as a big card-like button"
               }
             }
           },
@@ -132,7 +132,7 @@
                 "route": "/specs/icon",
                 "icon": "pi pi-microchip",
                 "title": "Icon",
-                "description": "Displays built in icons"
+                "description": "Displays built-in icons"
               }
             }
           },
@@ -274,7 +274,7 @@
                 "route": "/specs/page-title",
                 "icon": "pi pi-microchip",
                 "title": "Page Title",
-                "description": "Render page title desc and actions"
+                "description": "Render page title, desc and actions"
               }
             }
           },
