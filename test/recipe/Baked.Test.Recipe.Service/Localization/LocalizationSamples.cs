@@ -2,8 +2,8 @@ using Baked.Localization;
 
 namespace Baked.Test.ExceptionHandling;
 
-public class LocalizationSamples(ILocalizer _localizer)
+public class LocalizationSamples(ILocalizer _l)
 {
     public string GetLocaleString() =>
-        _localizer["test"];
+        _l["test"];
 }

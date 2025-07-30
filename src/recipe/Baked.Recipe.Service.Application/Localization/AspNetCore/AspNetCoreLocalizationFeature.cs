@@ -21,11 +21,11 @@ public class AspNetCoreLocalizationFeature(CultureInfo _language,
                 return;
             }
 
-            var localeDir = Path.Combine(Assembly.GetEntryAssembly()?.Location ?? throw new("'EntryAssembly' shoul have existed"), "../../../../Locales");
+            var localeDir = Path.Combine(Assembly.GetEntryAssembly()?.Location ?? throw new("'EntryAssembly' should have existed"), "../../../../Locales");
 
             configurator.UsingLocaleTemplate(localeTemplate =>
             {
-                files.AddAsJson(new LocalizedTexts(_language, localeTemplate).With(localeDir, defaultLanguage: true), name: $"locale.{_language.Name}", outdir: "Ui");
+                files.AddAsJson(new LocalizedTexts(_language, localeTemplate).With(localeDir), name: $"locale.{_language.Name}", outdir: "Ui");
 
                 if (_otherLanguages is not null)
                 {

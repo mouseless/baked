@@ -4,7 +4,7 @@
     "path": "report",
     "title": {
       "title": "Report",
-      "description": "Showcases_a_report_layout_with_tabs_and_data_panels",
+      "description": "Showcases a report layout with tabs and data panels",
       "actions": []
     },
     "queryParameters": [
@@ -18,7 +18,7 @@
         "component": {
           "type": "Select",
           "schema": {
-            "label": "Required_w_default",
+            "label": "Required w/ Default",
             "optionLabel": "text",
             "optionValue": "value",
             "localizeLabel": true
@@ -27,11 +27,11 @@
             "type": "Inline",
             "value": [
               {
-                "text": "Required_w_default_1",
+                "text": "Required w/ Default 1",
                 "value": "rwd-1"
               },
               {
-                "text": "Required_w_default_2",
+                "text": "Required w/ Default 2",
                 "value": "rwd-2"
               }
             ]
@@ -77,7 +77,7 @@
     "tabs": [
       {
         "id": "single-value",
-        "title": "Single_value",
+        "title": "Single Value",
         "contents": [
           {
             "component": {
@@ -193,7 +193,7 @@
       },
       {
         "id": "data-table",
-        "title": "Data_table",
+        "title": "Data Table",
         "contents": [
           {
             "component": {
@@ -215,7 +215,7 @@
                       "type": "Select",
                       "schema": {
                         "label": "Count",
-                        "localizeLabel": false,
+                        "localizeLabel": true,
                         "stateful": true
                       },
                       "data": {
@@ -254,7 +254,7 @@
                           },
                           "conditions": []
                         },
-                        "title": "Column1"
+                        "title": "Column 1"
                       },
                       {
                         "prop": "column2",
@@ -265,7 +265,7 @@
                           },
                           "conditions": []
                         },
-                        "title": "Column2"
+                        "title": "Column 2"
                       },
                       {
                         "prop": "column3",
@@ -276,7 +276,7 @@
                           },
                           "conditions": []
                         },
-                        "title": "Column3"
+                        "title": "Column 3"
                       }
                     ],
                     "dataKey": "label",
@@ -332,7 +332,7 @@
                     "component": {
                       "type": "SelectButton",
                       "schema": {
-                        "localizeLabel": false,
+                        "localizeLabel": true,
                         "stateful": true
                       },
                       "data": {
@@ -371,7 +371,7 @@
                           },
                           "conditions": []
                         },
-                        "title": "Column1"
+                        "title": "Column 1"
                       },
                       {
                         "prop": "column2",
@@ -382,7 +382,7 @@
                           },
                           "conditions": []
                         },
-                        "title": "Column2"
+                        "title": "Column 2"
                       },
                       {
                         "prop": "column3",
@@ -393,7 +393,7 @@
                           },
                           "conditions": []
                         },
-                        "title": "Column3"
+                        "title": "Column 3"
                       }
                     ],
                     "dataKey": "label",

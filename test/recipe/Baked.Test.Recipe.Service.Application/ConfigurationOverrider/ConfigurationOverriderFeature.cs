@@ -112,11 +112,11 @@ public class ConfigurationOverriderFeature : IFeature
                 Name = "Behavior",
                 Links = new[]
                 {
-                    new { Title = "Bake", Description = "The_core_component_that_renders_a_dynamic_component_using_given_descriptor" },
-                    new { Title = "Custom CSS", Description = "Allow_custom_configuration_to_define_custom_css_and_more" },
-                    new { Title = "Parameters", Description = "Manage_parameters_through_emits" },
-                    new { Title = "Query Parameters", Description = "Sync_and_manage_parameters_in_query_string" },
-                    new { Title = "Toast", Description = "Render_alert_messages" }
+                    new { Title = "Bake", Description = "The core component that renders a dynamic component using given descriptor" },
+                    new { Title = "Custom CSS", Description = "Allow custom configuration to define custom css and more" },
+                    new { Title = "Parameters", Description = "Manage parameters through emits" },
+                    new { Title = "Query Parameters", Description = "Sync and manage parameters in query string" },
+                    new { Title = "Toast", Description = "Render alert messages" }
                 }
             },
             new
@@ -124,15 +124,15 @@ public class ConfigurationOverriderFeature : IFeature
                 Name = "Display",
                 Links = new[]
                 {
-                    new { Title = "Card Link", Description = "Renders_a_link_as_a_big_card_like_button" },
-                    new { Title = "Data Table", Description = "View_list_data_in_a_table" },
-                    new { Title = "Nav Link", Description = "A_component_to_give_a_link_to_a_domain_object" },
-                    new { Title = "Icon", Description = "Displays_built_in_icons" },
-                    new { Title = "Message", Description = "A_component_to_display_message" },
-                    new { Title = "Money", Description = "Shortens_and_renders_money_values_with_the_full_value_shown_as_tooltip" },
-                    new { Title = "Number", Description = "Shortens_and_renders_numbers_with_the_full_value_shown_as_tooltip" },
-                    new { Title = "Rate", Description = "Render_rate_values_as_percentage" },
-                    new { Title = "String", Description = "Render_string_values" }
+                    new { Title = "Card Link", Description = "Renders a link as a big card like button" },
+                    new { Title = "Data Table", Description = "View list data in a table" },
+                    new { Title = "Nav Link", Description = "A component to give a link to a domain object" },
+                    new { Title = "Icon", Description = "Displays built in icons" },
+                    new { Title = "Message", Description = "A component to display message" },
+                    new { Title = "Money", Description = "Shortens and renders money values with the full value shown as tooltip" },
+                    new { Title = "Number", Description = "Shortens and renders numbers with the full value shown as tooltip" },
+                    new { Title = "Rate", Description = "Render rate values as percentage" },
+                    new { Title = "String", Description = "Render string values" }
                 }
             },
             new
@@ -140,9 +140,9 @@ public class ConfigurationOverriderFeature : IFeature
                 Name = "Input",
                 Links = new[]
                 {
-                    new { Title = "Language Switcher", Description = "Allow_change_site_language" },
-                    new { Title = "Select", Description = "Allow_select_from_given_options_using_drow_down" },
-                    new { Title = "Select Button", Description = "Allow_select_from_given_options_using_buttons" }
+                    new { Title = "Language Switcher", Description = "Allow change site language" },
+                    new { Title = "Select", Description = "Allow select from given options using drow down" },
+                    new { Title = "Select Button", Description = "Allow select from given options using buttons" }
                 }
             },
             new
@@ -150,10 +150,10 @@ public class ConfigurationOverriderFeature : IFeature
                 Name = "Layout",
                 Links = new[]
                 {
-                    new { Title = "Data Panel", Description = "Lazy_load_and_view_a_data_within_a_panel" },
-                    new { Title = "Header", Description = "Renders_a_breadcrumb" },
-                    new { Title = "Page Title", Description = "Render_page_title_desc_and_actions" },
-                    new { Title = "Side Menu", Description = "Renders_application_menu" }
+                    new { Title = "Data Panel", Description = "Lazy load and view a data within a panel" },
+                    new { Title = "Header", Description = "Renders a breadcrumb" },
+                    new { Title = "Page Title", Description = "Render page title desc and actions" },
+                    new { Title = "Side Menu", Description = "Renders application menu" }
                 }
             },
             new
@@ -161,9 +161,9 @@ public class ConfigurationOverriderFeature : IFeature
                 Name = "Page",
                 Links = new[]
                 {
-                    new { Title = "Error Page", Description = "Display_errors_in_full_page" },
-                    new { Title = "Menu Page", Description = "Render_navigation_pages" },
-                    new { Title = "Report Page", Description = "Render_report_pages" }
+                    new { Title = "Error Page", Description = "Display errors in full page" },
+                    new { Title = "Menu Page", Description = "Render navigation pages" },
+                    new { Title = "Report Page", Description = "Render report pages" }
                 }
             },
             new
@@ -171,10 +171,10 @@ public class ConfigurationOverriderFeature : IFeature
                 Name = "Plugins",
                 Links = new[]
                 {
-                    new { Title = "Auth", Description = "Authorized_routing_and_client" },
-                    new { Title = "Cache", Description = "Caches_api_responses_in_local_storage" },
-                    new { Title = "Locale", Description = "Allow_locale_customization_and_language_support" },
-                    new { Title = "Error Handling", Description = "Handling_errors" },
+                    new { Title = "Auth", Description = "Authorized routing and client" },
+                    new { Title = "Cache", Description = "Caches api responses in local storage" },
+                    new { Title = "Locale", Description = "Allow locale customization and language support" },
+                    new { Title = "Error Handling", Description = "Handling errors" },
                 }
             },
         };
@@ -188,15 +188,15 @@ public class ConfigurationOverriderFeature : IFeature
                     [
                         CardLink("/", "Home", icon: "pi pi-home"),
                         CardLink("/cache", title: l("Cache"), "pi pi-database"),
-                        CardLink("/data-table", l("DataTable"), "pi pi-table"),
+                        CardLink("/data-table", l("Data Table"), "pi pi-table"),
                         CardLink("/report", l("Report"), icon: "pi pi-file"),
                         CardLink("/specs", l("Specs"), icon: "pi pi-list-check"),
                     ],
                     errorInfos:
                     [
-                        ErrorPageInfo(403, l("Access_Denied"), l("You_do_not_have_the_permision_to_view_the_address_or_data_specified") ),
-                        ErrorPageInfo(404, l("Page_Not_Found"), l("The_page_you_want_to_view_is_etiher_deleted_or_outdated")),
-                        ErrorPageInfo(500, l("Unexpected_Error"), l("Please_contact_system_administrator"))
+                        ErrorPageInfo(403, l("Access Denied"), l("You do not have the permision to view the address or data specified") ),
+                        ErrorPageInfo(404, l("Page Not Found"), l("The page you want to view is etiher deleted or outdated")),
+                        ErrorPageInfo(500, l("Unexpected Error"), l("Please contact system administrator"))
                     ],
                     data: Computed(Composables.UseError)
                 );
@@ -213,7 +213,7 @@ public class ConfigurationOverriderFeature : IFeature
                         [
                             SideMenuItem("/", "pi pi-home"),
                             SideMenuItem("/cache", "pi pi-database", title: l("Cache")),
-                            SideMenuItem("/data-table", "pi pi-table", title: l("DataTable")),
+                            SideMenuItem("/data-table", "pi pi-table", title: l("Data Table")),
                             SideMenuItem("/report", "pi pi-file", title: l("Report")),
                             SideMenuItem("/specs", "pi pi-list-check", title: l("Specs"))
                         ],
@@ -224,7 +224,7 @@ public class ConfigurationOverriderFeature : IFeature
                         [
                             HeaderItem("/", icon: "pi pi-home"),
                             HeaderItem("/cache", icon: "pi pi-database", title: l("Cache")),
-                            HeaderItem("/data-table", icon: "pi pi-table", title: l("DataTable")),
+                            HeaderItem("/data-table", icon: "pi pi-table", title: l("Data Table")),
                             HeaderItem("/report", icon: "pi pi-file", title: l("Report")),
                             HeaderItem("/specs", icon: "pi pi-list-check", title: l("Specs")),
                             .. specs.SelectMany(section =>
@@ -251,19 +251,19 @@ public class ConfigurationOverriderFeature : IFeature
                     [
                         CardLink($"/cache", l("Cache"),
                             icon: "pi pi-database",
-                            description: l("Showcases_the_cache_behavior")
+                            description: l("Showcases the cache behavior")
                         ),
-                        CardLink($"/data-table", l("DataTable"),
+                        CardLink($"/data-table", l("Data Table"),
                             icon: "pi pi-table",
-                            description: l("Showcase_DataTable_component_with_scrollable_and_footer_options")
+                            description: l("Showcase DataTable component with scrollable and footer options")
                         ),
                         CardLink($"/report", l("Report"),
                             icon: "pi pi-file",
-                            description: l("Showcases_a_report_layout_with_tabs_and_data_panels")
+                            description: l("Showcases a report layout with tabs and data panels")
                         ),
                         CardLink($"/specs", l("Specs"),
                             icon: "pi pi-list-check",
-                            description: l("All_ui_specs_are_listed_here")
+                            description: l("All ui specs are listed here")
                         )
                     ]
                 ));
@@ -281,16 +281,16 @@ public class ConfigurationOverriderFeature : IFeature
                     var second = report.Methods[nameof(Report.GetSecond)];
 
                     pages.Add(ReportPage("report",
-                        title: PageTitle(l("Report"), description: l("Showcases_a_report_layout_with_tabs_and_data_panels")),
+                        title: PageTitle(l("Report"), description: l("Showcases a report layout with tabs and data panels")),
                         queryParameters:
                         [
                             Parameter(
                             "requiredWithDefault",
-                                Select(l("Required_w_default"),
+                                Select(l("Required w/ Default"),
                                     data: Inline(new[]
                                     {
-                                      new { text = l("Required_w_default_1"), value = "rwd-1" },
-                                      new { text = l("Required_w_default_2"), value = "rwd-2" }
+                                      new { text = l("Required w/ Default 1"), value = "rwd-1" },
+                                      new { text = l("Required w/ Default 2"), value = "rwd-2" }
                                     }),
                                     optionLabel: "text",
                                     optionValue: "value"
@@ -305,7 +305,7 @@ public class ConfigurationOverriderFeature : IFeature
                         ],
                         tabs:
                         [
-                            ReportPageTab("single-value", l("Single_value"),
+                            ReportPageTab("single-value", l("Single Value"),
                             icon: Icon("pi-box"),
                             contents:
                             [
@@ -346,7 +346,7 @@ public class ConfigurationOverriderFeature : IFeature
                                 )
                             ]
                         ),
-                        ReportPageTab("data-table", l("Data_table"),
+                        ReportPageTab("data-table", l("Data Table"),
                             icon: Icon("pi-table"),
                             contents:
                             [
@@ -354,7 +354,8 @@ public class ConfigurationOverriderFeature : IFeature
                                     component: DataPanel(l(first.Name),
                                         parameters:
                                         [
-                                            Parameter("count", Select(l("Count"), data: Inline(Enum.GetNames<CountOptions>(), requireLocalization: false), stateful: true),
+                                            Parameter("count",
+                                                component: Select(l("Count"), Inline(Enum.GetNames<CountOptions>().Select(name => l(name))), stateful: true),
                                                 defaultValue: CountOptions.Default
                                             )
                                         ],
@@ -362,9 +363,9 @@ public class ConfigurationOverriderFeature : IFeature
                                             columns:
                                             [
                                                 DataTableColumn("label", title: l("Label"), minWidth: true),
-                                                DataTableColumn("column1", title: l("Column1")),
-                                                DataTableColumn("column2", title: l("Column2")),
-                                                DataTableColumn("column3", title: l("Column3"))
+                                                DataTableColumn("column1", title: l("Column 1")),
+                                                DataTableColumn("column2", title: l("Column 2")),
+                                                DataTableColumn("column3", title: l("Column 3"))
                                             ],
                                             dataKey: "label",
                                             paginator: true,
@@ -380,7 +381,8 @@ public class ConfigurationOverriderFeature : IFeature
                                     component: DataPanel(l(second.Name),
                                         parameters:
                                         [
-                                            Parameter("count", SelectButton(Inline(Enum.GetNames<CountOptions>(), requireLocalization: false), stateful: true),
+                                            Parameter("count",
+                                                component: SelectButton( data: Inline(Enum.GetNames<CountOptions>().Select(name => l(name))), stateful: true),
                                                 defaultValue: CountOptions.Default
                                             )
                                         ],
@@ -388,9 +390,9 @@ public class ConfigurationOverriderFeature : IFeature
                                             columns:
                                             [
                                                 DataTableColumn("label", title: l("Label"), minWidth: true),
-                                                DataTableColumn("column1", title: l("Column1")),
-                                                DataTableColumn("column2", title: l("Column2")),
-                                                DataTableColumn("column3", title: l("Column3"))
+                                                DataTableColumn("column1", title: l("Column 1")),
+                                                DataTableColumn("column2", title: l("Column 2")),
+                                                DataTableColumn("column3", title: l("Column 3"))
                                             ],
                                             dataKey: "label",
                                             paginator: true,
@@ -411,14 +413,14 @@ public class ConfigurationOverriderFeature : IFeature
 
                 configurator.UsingDomainModel(domain =>
                 {
-                    pages.Add(ReportPage("data-table", PageTitle(l("DataTable Demo")),
+                    pages.Add(ReportPage("data-table", PageTitle(l("Data Table Demo")),
                         tabs:
                         [
                             ReportPageTab(string.Empty, string.Empty,
                                 contents:
                                 [
                                     ReportPageTabContent(
-                                        DataPanel(l("DataPanel"),
+                                        DataPanel(l("Data Panel"),
                                             parameters:
                                             [
                                                 Parameter("count", Select(l("Count"), Inline(new string[]{ "10", "20", "100", "1000", "10000" }, requireLocalization: false)),
@@ -430,7 +432,7 @@ public class ConfigurationOverriderFeature : IFeature
                                                 [
                                                   .. domain.Types[typeof(TableRow)].GetMembers().Properties.Where(p => p.IsPublic).Select((p, i) =>
                                                       DataTableColumn(p.Name.Camelize(),
-                                                          title: l(p.Name),
+                                                          title: l(p.Name.Humanize(LetterCasing.Title)),
                                                           exportable: true,
                                                           alignRight: p.PropertyType.Is<string>() ? null : true,
                                                           frozen: i == 0 ? true : null,
@@ -469,7 +471,7 @@ public class ConfigurationOverriderFeature : IFeature
                     var getApplication = report.Methods[nameof(CacheSamples.GetApplication)];
 
                     pages.Add(ReportPage("cache",
-                        title: PageTitle("Cache", description: l("Showcases_the_cache_behavior")),
+                        title: PageTitle("Cache", description: l("Showcases the cache behavior")),
                         queryParameters:
                         [
                             Parameter("parameter", Select(l("Parameter"), Inline(new[] { "value_a", "value_b" }, requireLocalization: false)),
@@ -516,8 +518,8 @@ public class ConfigurationOverriderFeature : IFeature
                     filterPageContextKey: "menu-page",
                     header: PageTitle(
                       title: l("Specs"),
-                      description: l("All_ui_specs_are_listed_here"),
-                      actions: [Filter(placeholder: "Filter", pageContextKey: "menu-page")]
+                      description: l("All ui specs are listed here"),
+                      actions: [Filter(placeholder: l("Filter"), pageContextKey: "menu-page")]
                     ),
                     sections:
                     [

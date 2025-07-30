@@ -3,7 +3,7 @@
   "schema": {
     "path": "data-table",
     "title": {
-      "title": "DataTable Demo",
+      "title": "Data Table Demo",
       "actions": []
     },
     "queryParameters": [],
@@ -18,7 +18,7 @@
               "schema": {
                 "title": {
                   "type": "Inline",
-                  "value": "DataPanel"
+                  "value": "Data Panel"
                 },
                 "localizeTitle": true,
                 "parameters": [
@@ -74,7 +74,7 @@
                           },
                           "conditions": []
                         },
-                        "title": "FormatDigits",
+                        "title": "Format Digits",
                         "alignRight": true,
                         "exportable": true
                       },
@@ -87,7 +87,7 @@
                           },
                           "conditions": []
                         },
-                        "title": "Column1",
+                        "title": "Column 1",
                         "exportable": true
                       },
                       {
@@ -99,7 +99,7 @@
                           },
                           "conditions": []
                         },
-                        "title": "Column2",
+                        "title": "Column 2",
                         "alignRight": true,
                         "exportable": true
                       },
@@ -112,7 +112,7 @@
                           },
                           "conditions": []
                         },
-                        "title": "Column3",
+                        "title": "Column 3",
                         "alignRight": true,
                         "exportable": true
                       },
@@ -125,7 +125,7 @@
                           },
                           "conditions": []
                         },
-                        "title": "Column4",
+                        "title": "Column 4",
                         "alignRight": true,
                         "exportable": true
                       },
@@ -138,7 +138,7 @@
                           },
                           "conditions": []
                         },
-                        "title": "Column5",
+                        "title": "Column 5",
                         "alignRight": true,
                         "exportable": true
                       }

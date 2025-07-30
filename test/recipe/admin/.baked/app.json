@@ -68,16 +68,16 @@
     "schema": {
       "errorInfos": {
         "403": {
-          "title": "Access_Denied",
-          "message": "You_do_not_have_the_permision_to_view_the_address_or_data_specified"
+          "title": "Access Denied",
+          "message": "You do not have the permision to view the address or data specified"
         },
         "404": {
-          "title": "Page_Not_Found",
-          "message": "The_page_you_want_to_view_is_etiher_deleted_or_outdated"
+          "title": "Page Not Found",
+          "message": "The page you want to view is etiher deleted or outdated"
         },
         "500": {
-          "title": "Unexpected_Error",
-          "message": "Please_contact_system_administrator"
+          "title": "Unexpected Error",
+          "message": "Please contact system administrator"
         }
       },
       "footerInfo": "If_you_cannot_reach_the_page_you_want_please_contact_the_system_administrator",
@@ -103,7 +103,7 @@
           "schema": {
             "route": "/data-table",
             "icon": "pi pi-table",
-            "title": "DataTable"
+            "title": "Data Table"
           }
         },
         {
