@@ -114,7 +114,7 @@ export default defineNuxtModule<ModuleOptions>({
           files
         }
       }),
-      defaultLocale: _options.app?.i18n.defaultLanguage,
+      defaultLocale: _options.app?.i18n.defaultLanguage.code,
       detectBrowserLanguage: {
         useCookie: true,
         cookieKey: 'i18n_cookie'

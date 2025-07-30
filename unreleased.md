@@ -2,6 +2,7 @@
 
 ## Improvements
 
+- UI wasn't using default locale as a fallback, fixed
 - `useFormat` wasn't using locale info from i18n, fixed
 - `locale.en.restext` format wasn't supported for default language when
   generating missing keys, fixed
