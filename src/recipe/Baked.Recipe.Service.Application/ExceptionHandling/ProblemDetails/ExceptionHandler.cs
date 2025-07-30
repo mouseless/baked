@@ -38,7 +38,7 @@ public class ExceptionHandler(IEnumerable<IExceptionHandler> _handlers, Exceptio
             Detail = Localizer?[
                 exceptionInfo.Body,
                 exceptionInfo.ExtraData?.Values.OfType<object>().ToArray() ?? []
-            ],
+            ] ?? exceptionInfo.Body,
             Extensions = exceptionInfo.ExtraData ?? []
         };
 

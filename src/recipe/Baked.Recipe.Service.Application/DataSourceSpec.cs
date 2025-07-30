@@ -4,6 +4,7 @@ using Baked.Caching;
 using Baked.Core;
 using Baked.Database;
 using Baked.ExceptionHandling;
+using Baked.Localization;
 using Baked.MockOverrider;
 using Baked.Reporting;
 using Baked.Testing;
@@ -18,6 +19,7 @@ public abstract class DataSourceSpec : Spec
         Func<CoreConfigurator, IFeature<CoreConfigurator>>? core = default,
         Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>>? database = default,
         Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>>? exceptionHandling = default,
+        Func<LocalizationConfigurator, IFeature<LocalizationConfigurator>>? localization = default,
         Func<MockOverriderConfigurator, IFeature<MockOverriderConfigurator>>? mockOverrider = default,
         Func<ReportingConfigurator, IFeature<ReportingConfigurator>>? reporting = default,
         Action<ApplicationDescriptor>? configure = default
@@ -27,6 +29,7 @@ public abstract class DataSourceSpec : Spec
         core ??= c => c.Mock();
         database ??= c => c.InMemory();
         exceptionHandling ??= c => c.ProblemDetails();
+        localization ??= c => c.AspNetCore();
         mockOverrider ??= c => c.FirstInterface();
         reporting ??= c => c.Mock();
         configure ??= _ => { };
@@ -62,6 +65,7 @@ public abstract class DataSourceSpec : Spec
                 c => c.Singleton(),
                 c => c.Transient()
             ]);
+            app.Features.AddLocalization(localization);
             app.Features.AddMockOverrider(mockOverrider);
             app.Features.AddReporting(reporting);
 

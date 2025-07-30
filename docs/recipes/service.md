@@ -67,10 +67,11 @@ Bake.New
 |                    | Singleton                          |                                    |
 |                    | Scoped                             |                                    |
 |                    | Transient                          |                                    |
+| Localization       | :white_check_mark: ASP NET Core    | :white_check_mark:                 |
 | Logging            | :white_check_mark: Request         | :no_entry:                         |
 | Mocking Overrider  | :no_entry:                         | :white_check_mark: First Interface |
 | ORM                | :white_check_mark: Auto Map        | :white_check_mark:                 |
-| Theme              | :white_check_mark: Admin           | :white_check_mark: Admin           |
+| Theme              | :white_check_mark: Admin           | :white_check_mark:                 |
 
 > [!NOTE]
 >
