@@ -27,7 +27,7 @@ public class GeneratingExceptionResponse : TestServiceNfr
         var problemDetails = response.Content.ReadFromJsonAsync<ProblemDetails>().Result;
 
         problemDetails.ShouldNotBeNull();
-        problemDetails.Detail.ShouldBe("An unexpected error has occured. Please contact the administrator.");
+        problemDetails.Detail.ShouldBe("An unexpected error has occured, please contact the administrator");
         problemDetails.Status.ShouldBe((int)HttpStatusCode.InternalServerError);
         problemDetails.Type.ShouldBe("https://baked.mouseless.codes/errors/invalid-operation");
     }

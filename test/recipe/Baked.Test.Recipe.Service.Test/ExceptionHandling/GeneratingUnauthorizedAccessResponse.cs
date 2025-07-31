@@ -16,7 +16,7 @@ public class GeneratingUnauthorizedAccessResponse : TestServiceNfr
         var problemDetails = response.Content.ReadFromJsonAsync<ProblemDetails>().Result;
 
         problemDetails.ShouldNotBeNull();
-        problemDetails.Detail.ShouldBe("Failed to authenticate with given credentials.");
+        problemDetails.Detail.ShouldBe("Failed to authenticate with given credentials");
         problemDetails.Status.ShouldBe((int)HttpStatusCode.Unauthorized);
         problemDetails.Title.ShouldBe("Authentication");
         problemDetails.Type.ShouldBe("https://baked.mouseless.codes/errors/authentication");
@@ -32,7 +32,7 @@ public class GeneratingUnauthorizedAccessResponse : TestServiceNfr
         var problemDetails = response.Content.ReadFromJsonAsync<ProblemDetails>().Result;
 
         problemDetails.ShouldNotBeNull();
-        problemDetails.Detail.ShouldBe("Attempted to perform an unauthorized operation.");
+        problemDetails.Detail.ShouldBe("Attempted to perform an unauthorized operation");
         problemDetails.Status.ShouldBe((int)HttpStatusCode.Forbidden);
         problemDetails.Title.ShouldBe("Unauthorized Access");
         problemDetails.Type.ShouldBe("https://baked.mouseless.codes/errors/unauthorized-access");

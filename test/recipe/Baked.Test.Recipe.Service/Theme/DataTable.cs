@@ -10,7 +10,7 @@ public class DataTable(IStringLocalizer _l)
             .Select(i => new TableRow(
                 $"{_l["This is a label"]}-{i}",
                 i % 5,
-                $"{_l["This should be a very long Text"]}-{i}",
+                $"{_l["This should be a very long text"]}-{i}",
                 Guid.NewGuid(),
                 Guid.NewGuid(),
                 i * 10,

@@ -5,7 +5,7 @@ namespace Baked.Orm;
 
 public class RecordNotFoundException(Type entityType, string field, object value, bool notFound)
     : HandledException(
-        "NAME_with_FIELD__VALUE_does_not_exist",
+        "{0} with {1}: '{2}' does not exist",
         extraData: new()
         {
             ["name"] = entityType.Name,

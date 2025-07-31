@@ -1,14 +1,15 @@
-An_unexpected_error_has_occured_please_contact_the_administrator=An unexpected error has occured. Please contact the administrator.
-An_unexpected_error_has_occured_please_contact_the_administrator__MESSAGE__EXCEPTION=An unexpected error has occured. Please contact the administrator. {0:M}\n{1:E}
-Attempted_to_perform_an_unauthorized_operation=Attempted to perform an unauthorized operation.
-Failed_to_authenticate_with_given_credentials=Failed to authenticate with given credentials.
-NAME_with_FIELD__VALUE_does_not_exist={0:N} with {1:F}: '{2:V}' does not exist
-VALUE_is_not_a_valid_PARAMETER='{0:V}' is not a valid {1:P}
+An unexpected error has occured, please contact the administrator=An unexpected error has occured, please contact the administrator
+An unexpected error has occured, please contact the administrator: '{0}'\n{1}=An unexpected error has occured, please contact the administrator: '{0}'\n{1}
+Attempted to perform an unauthorized operation=Attempted to perform an unauthorized operation
+Failed to authenticate with given credentials=Failed to authenticate with given credentials
+{0} with {1}: '{2}' does not exist={0} with {1}: '{2}' does not exist
+'{0}' is not a valid {1}='{0}' is not a valid {1}
 
-A_handled_exception_was_thrown=A handled exception was thrown
-Child_ID_does_not_belong_this_parent=Child#{0:I} does not belong this parent
-NAME_should_be_unique={0:N} should be unique.
+A handled exception was thrown=A handled exception was thrown
+Child#{0} does not belong this parent=Child#{0} does not belong this parent
+{0} should be unique={0} should be unique
+This is a label=This is a label
+This should be a very long text=This should be a very long text
 
 test=This is test message from English resource file.
-
 This should not exist in output locale files=This should not exist in output locale files

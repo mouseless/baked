@@ -1,17 +1,18 @@
-An_unexpected_error_has_occured_please_contact_the_administrator=Beklenmeyen bir hata oluştu lütfen sistem yöneticisiyle iletişime geçiniz.
-An_unexpected_error_has_occured_please_contact_the_administrator__MESSAGE__EXCEPTION=Beklenmeyen bir hata oluştu lütfen sistem yöneticisiyle iletişime geçiniz. {0:M}\n{1:E}
-Attempted_to_perform_an_unauthorized_operation=Yetkisiz bir işlem gerçekleştirmeye çalışıldı.
-Failed_to_authenticate_with_given_credentials=Verilen kimlik bilgileriyle kimlik doğrulaması yapılamadı.
-NAME_with_FIELD__VALUE_does_not_exist=Bu {1:F}: '{2:V}' ile {0:N} yoktur
-VALUE_is_not_a_valid_PARAMETER='{0:V}' geçerli bir {1:P} değildir.
+An unexpected error has occured, please contact the administrator=Beklenmeyen bir hata oluştu lütfen sistem yöneticisiyle iletişime geçiniz
+An unexpected error has occured, please contact the administrator: '{0}'\n{1}=Beklenmeyen bir hata oluştu lütfen sistem yöneticisiyle iletişime geçiniz: '{0}'\n{1}
+Attempted to perform an unauthorized operation=Yetkisiz bir işlem gerçekleştirmeye çalışıldı
+Failed to authenticate with given credentials=Verilen kimlik bilgileriyle kimlik doğrulaması yapılamadı
+{0} with {1}: '{2}' does not exist=Bu {1}: '{2}' ile {0} yoktur
+'{0}' is not a valid {1}='{0}' geçerli bir {1} değildir
 
-A_handled_exception_was_thrown=Bir hata oluştu.
-Child_ID_does_not_belong_this_parent=Child#{0:I}, bu parent'a ait değil.
-NAME_should_be_unique={0:N} benzersiz olmalıdır.
+A handled exception was thrown=Bir hata oluştu
+Child#{0} does not belong this parent=Child#{0}, bu parent'a ait değil
+{0} should be unique={0} benzersiz olmalıdır
+This is a label=Bu bir etikettir
+This should be a very long text=Bu da epey uzun bir metin olsa gerektir
 
 test=Bu Türkçe kaynak dosyasından test mesajıdır.
-This is a label=Bu bir etikettir
-This should be a very long Text=Bu da epey uzun bir metin olsa gerektir
+This should not exist in output locale files=Bunun locale çıktılarında bulunmaması gerekiyor
 
 A component to display message=Mesaj göstermek için bir bileşen
 A component to give a link to a domain object=Bir alan nesnesine bağlantı vermek için bir bileşen
