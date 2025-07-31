@@ -51,6 +51,7 @@ Display errors in full page=Hataları tam sayfa olarak gösterir
 Displays built-in icons=Yerleşik simgeleri gösterir
 Error Handling=Hata Yönetimi
 Error Page=Hata Sayfası
+Export as CSV=CSV olarak kaydet
 Filter=Filtre
 Format Digits=Ondalık Basamak Sayısı
 GetApplication=Uygulama Kapsamı

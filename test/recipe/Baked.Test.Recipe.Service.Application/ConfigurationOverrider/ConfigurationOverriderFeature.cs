@@ -451,7 +451,7 @@ public class ConfigurationOverriderFeature : IFeature
                                                 itemsProp: "items",
                                                 scrollHeight: "500px",
                                                 virtualScrollerOptions: DataTableVirtualScroller(45),
-                                                exportOptions: DataTableExport(";", "data-table-export", formatter: "useCsvFormatter", buttonLabel: "Export as CSV"),
+                                                exportOptions: DataTableExport(";", "data-table-export", formatter: "useCsvFormatter", buttonLabel: l("Export as CSV")),
                                                 data: Remote(domain.Types[typeof(Theme.DataTable)].GetMembers().Methods[nameof(Theme.DataTable.GetTableDataWithFooter)].GetSingle<ActionModelAttribute>().GetRoute(),
                                                     query: Injected(custom: true)
                                                 )

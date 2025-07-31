@@ -165,7 +165,7 @@ const formatter = exportOptions?.formatter ? (await composableResolver.resolve(e
 
 if(exportOptions) {
   actions.value.push({
-    label: exportOptions.buttonLabel,
+    label: l(exportOptions.buttonLabel),
     icon: exportOptions.buttonIcon,
     command: () => dataTable.value.exportCSV()
   });
