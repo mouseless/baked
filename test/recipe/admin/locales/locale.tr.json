@@ -11,6 +11,13 @@
   "ReportPage": {
     "Select required values to view this report": "Bu raporu görüntülemek için gerekli seçimleri yapın"
   },
+  "useFormat": {
+    "suffix": {
+      "B": "Mr",
+      "M": "M",
+      "K": "B"
+    }
+  },
   "If you cannot reach the page you want please contact the system administrator": "İstediğiniz sayfaya ulaşamıyorsanız lütfen sistem yöneticisi ile iletişime geçin",
   "Try the links from the menu below to view the page you want to access:": "İstediğiniz sayfaya erişmeyi aşağıdaki menüde bulunan bağlantılar üzerinden deneyin:",
 

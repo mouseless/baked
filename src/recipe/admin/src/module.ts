@@ -38,15 +38,7 @@ export interface RetryOptions {
 }
 
 export interface UseFormatOptions {
-  locale?: String,
-  currency?: String,
-  suffix?: UseFormatSuffixOptions
-}
-
-export interface UseFormatSuffixOptions {
-  billions: String,
-  millions: String,
-  thousands: String
+  currency?: String
 }
 
 export default defineNuxtModule<ModuleOptions>({

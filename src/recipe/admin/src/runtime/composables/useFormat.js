@@ -1,16 +1,20 @@
 import { useRuntimeConfig } from "#app";
+import { useLocalization } from "#imports";
 
 export default function() {
+  const { locale: currentLocale, localize: lc } = useLocalization("useFormat");
   const { public: { composables } } = useRuntimeConfig();
 
-  const locale = composables?.useFormat?.locale || "en-US";
+  const locale = currentLocale.value || "en";
   const currency = composables?.useFormat?.currency || "USD";
-  const suffix = composables?.useFormat?.suffix || { billions: "B", millions: "M", thousands: "K" };
+  const B = lc("suffix.B");
+  const M = lc("suffix.M");
+  const K = lc("suffix.K");
 
   const STAGES = [
-    { threshold: 1_000_000_000, divisor: 1_000_000_000, suffix: suffix.billions, fraction: true },
-    { threshold: 1_000_000, divisor: 1_000_000, suffix: suffix.millions, fraction: true },
-    { threshold: 1_000, divisor: 1_000, suffix: suffix.thousands, fraction: true },
+    { threshold: 1_000_000_000, divisor: 1_000_000_000, suffix: B, fraction: true },
+    { threshold: 1_000_000, divisor: 1_000_000, suffix: M, fraction: true },
+    { threshold: 1_000, divisor: 1_000, suffix: K, fraction: true },
     { threshold: 999.9999, divisor: 1, suffix: "", fraction: false },
     { threshold: Number.MIN_VALUE, divisor: 1, suffix: "", fraction: true }
   ];

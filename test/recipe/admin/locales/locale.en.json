@@ -11,6 +11,13 @@
   "ReportPage": {
     "Select required values to view this report": "Select required values to view this report"
   },
+  "useFormat": {
+    "suffix": {
+      "B": "B",
+      "M": "M",
+      "K": "K"
+    }
+  },
   "If you cannot reach the page you want please contact the system administrator": "If you cannot reach the page you want please contact the system administrator",
   "Try the links from the menu below to view the page you want to access:": "Try the links from the menu below to view the page you want to access:",
 
