@@ -8,6 +8,7 @@ Failed to authenticate with given credentials=Verilen kimlik bilgileriyle kimlik
 A handled exception was thrown=Bir hata oluştu
 Child#{0} does not belong this parent=Child#{0}, bu parent'a ait değil
 {0} should be unique={0} benzersiz olmalıdır
+Parameter value is '{0}'=Parametre değeri '{0}' verildi
 This is a label=Bu bir etikettir
 This should be a very long text=Bu da epey uzun bir metin olsa gerektir
 

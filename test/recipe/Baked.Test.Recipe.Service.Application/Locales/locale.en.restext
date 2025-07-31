@@ -8,6 +8,7 @@ Failed to authenticate with given credentials=Failed to authenticate with given 
 A handled exception was thrown=A handled exception was thrown
 Child#{0} does not belong this parent=Child#{0} does not belong this parent
 {0} should be unique={0} should be unique
+Parameter value is '{0}'=Parameter value is '{0}'
 This is a label=This is a label
 This should be a very long text=This should be a very long text
 
