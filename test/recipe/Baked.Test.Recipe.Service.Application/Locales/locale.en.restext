@@ -23,4 +23,11 @@ This should be a very long text=This should be a very long text
 test=This is test message from English resource file.
 This should not exist in output locale files=This should not exist in output locale files
 
-// english translations for frontend are removed because keys are already in english =//
+// english translations for frontend are mostly removed because keys are already in english =//
+GetApplication=Application
+GetFirst=First
+GetLeft=Left
+GetRight=Right
+GetScoped=Scoped
+GetSecond=Second
+GetWide=Wide
