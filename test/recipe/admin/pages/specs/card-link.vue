@@ -14,8 +14,8 @@ const variants = [
     descriptor: giveMe.aCardLink({
       route: "/some-route",
       icon: "pi pi-wave-pulse",
-      title: "Spec.Title",
-      description: "Spec.Description"
+      title: "Spec: Title",
+      description: "Spec: Description"
     })
   },
   {
@@ -29,7 +29,7 @@ const variants = [
     name: "Disabled",
     descriptor: giveMe.aCardLink({
       disabled: true,
-      disabledReason: "Spec.Soon"
+      disabledReason: "Spec: Soon"
     })
   }
 ];

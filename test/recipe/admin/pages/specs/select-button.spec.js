@@ -12,8 +12,8 @@ test.describe("Base", () => {
     const component = page.getByTestId(id);
     const options = component.locator(primevue.selectbutton.option);
 
-    await expect(options.nth(0)).toHaveText("Option 1");
-    await expect(options.nth(1)).toHaveText("Option 2");
+    await expect(options.nth(0)).toHaveText("OPTION_1");
+    await expect(options.nth(1)).toHaveText("OPTION_2");
   });
 
   test("select option", async({page}) => {
@@ -44,6 +44,18 @@ test.describe("Base", () => {
     await options.nth(0).click();
 
     await expect(component).toHaveScreenshot();
+  });
+});
+
+test.describe("Base w/ Localization", () => {
+  const id = "Base w/ Localization";
+
+  test("options", async({page}) => {
+    const component = page.getByTestId(id);
+    const options = component.locator(primevue.selectbutton.option);
+
+    await expect(options.nth(0)).toHaveText("Option 1");
+    await expect(options.nth(1)).toHaveText("Option 2");
   });
 });
 

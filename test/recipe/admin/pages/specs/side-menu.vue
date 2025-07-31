@@ -13,7 +13,7 @@ const variants = [
     name: "Base",
     descriptor: giveMe.aSideMenu({
       menu: [
-        giveMe.aSideMenuItem({ route: "/menu", icon: "pi pi-heart", title: "Spec.Title" })
+        giveMe.aSideMenuItem({ route: "/menu", icon: "pi pi-heart", title: "Spec: Title" })
       ],
       footer: giveMe.anExpected({ testId: "footer", value: "FT" })
     })
