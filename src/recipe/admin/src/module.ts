@@ -94,7 +94,7 @@ export default defineNuxtModule<ModuleOptions>({
     addPlugin(resolver.resolve("./runtime/plugins/mutex"));
     addPlugin(resolver.resolve("./runtime/plugins/toast"));
     addPlugin(resolver.resolve("./runtime/plugins/trailingSlash"));
-    addPlugin(resolver.resolve("./runtime/plugins/setupBaked"));
+    addPlugin(resolver.resolve("./runtime/plugins/baked"));
     addPlugin(resolver.resolve("./runtime/plugins/primeVue"));
     addPlugin(resolver.resolve("./runtime/plugins/fetch"), {});
 
