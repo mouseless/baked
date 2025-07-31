@@ -7,7 +7,7 @@
       "type": "PageTitle",
       "schema": {
         "title": "Specs",
-        "description": "All ui specs are listed here",
+        "description": "All UI Specs are listed here",
         "actions": [
           {
             "type": "Filter",

@@ -521,7 +521,7 @@ public class ConfigurationOverriderFeature : IFeature
                     filterPageContextKey: "menu-page",
                     header: PageTitle(
                       title: l("Specs"),
-                      description: l("All ui specs are listed here"),
+                      description: l("All UI Specs are listed here"),
                       actions: [Filter(placeholder: l("Filter"), pageContextKey: "menu-page")]
                     ),
                     sections:
