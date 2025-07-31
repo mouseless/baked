@@ -11,7 +11,7 @@
     :scroll-height
     :virtual-scroller-options="scrollHeight ? virtualScrollerOptions : null"
     :csv-separator="exportOptions?.csvSeparator"
-    :export-filename="exportOptions?.fileName"
+    :export-filename="exportOptions?.fileName ? l(exportOptions.fileName) : null"
     :export-function
   >
     <template #empty>
