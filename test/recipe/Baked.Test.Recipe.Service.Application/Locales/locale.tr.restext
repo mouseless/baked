@@ -1,16 +1,22 @@
 // package keys =//
+{0} with {1}: '{2}' does not exist=Bu {1}: '{2}' ile {0} yoktur
+'{0}' is not a valid {1}='{0}' geçerli bir {1} değildir
 An unexpected error has occured, please contact the administrator=Beklenmeyen bir hata oluştu lütfen sistem yöneticisiyle iletişime geçiniz
 An unexpected error has occured, please contact the administrator: '{0}'\n{1}=Beklenmeyen bir hata oluştu lütfen sistem yöneticisiyle iletişime geçiniz: '{0}'\n{1}
 Attempted to perform an unauthorized operation=Yetkisiz bir işlem gerçekleştirmeye çalışıldı
+Authentication=Kimlik Doğrulama
 Failed to authenticate with given credentials=Verilen kimlik bilgileriyle kimlik doğrulaması yapılamadı
-{0} with {1}: '{2}' does not exist=Bu {1}: '{2}' ile {0} yoktur
-'{0}' is not a valid {1}='{0}' geçerli bir {1} değildir
+Record Not Found=Kayıt Bulunamadı
+Route Parameter Is Not Valid=Route Parametresi Geçerli Değil
 
 // test project keys =//
+{0} should be unique={0} benzersiz olmalıdır
 A handled exception was thrown=Bir hata oluştu
 Child#{0} does not belong this parent=Child#{0}, bu parent'a ait değil
-{0} should be unique={0} benzersiz olmalıdır
+Must Be Unique=Tekil Olmalı
+Not My Child=Benim Child'ım Değil
 Parameter value is '{0}'=Parametre değeri '{0}' verildi
+Test Service Handled=Yakalanmış Servis Hatası Testi
 This is a label=Bu bir etikettir
 This should be a very long text=Bu da epey uzun bir metin olsa gerektir
 

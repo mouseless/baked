@@ -45,8 +45,8 @@
           "order": 0
         }
       ],
-      "defaultAlertTitle": "Unexpected_Error",
-      "defaultAlertMessage": "Please_contact_system_administrator",
+      "defaultAlertTitle": "Unexpected Error",
+      "defaultAlertMessage": "Please contact system administrator",
       "name": "errorHandling"
     },
     {

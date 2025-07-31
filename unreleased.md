@@ -3,6 +3,8 @@
 ## Improvements
 
 - UI wasn't using default locale as a fallback, fixed
+- `DataTable` export file name and export button label wasn't using
+  localization, fixed
 - `useFormat` wasn't using locale info from i18n, fixed
 - `locale.en.restext` format wasn't supported for default language when
   generating missing keys, fixed
@@ -12,6 +14,7 @@
 - `ILocalizer` interface was removed, `Baked.Service.Application` now depend on
   `Microsoft.AspNetCore.Localization` and may use `IStringLocalizer` directly
 - `ExceptionHandler` wasn't setting details when there is no localizer, fixed
+- `ExceptionHandler` wasn't using localization for exception titles, fixed
 
 ## Library Upgrades
 

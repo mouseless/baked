@@ -5,8 +5,8 @@ namespace Baked.ExceptionHandling.ProblemDetails;
 public record ErrorHandlingPlugin : PluginBase
 {
     public List<Handler> Handlers { get; init; } = [];
-    public string DefaultAlertTitle { get; init; } = "Unexpected_Error";
-    public string DefaultAlertMessage { get; init; } = "Please_contact_system_administrator";
+    public string DefaultAlertTitle { get; init; } = "Unexpected Error";
+    public string DefaultAlertMessage { get; init; } = "Please contact system administrator";
 
     public record Handler(
         string? RoutePattern = default,
