@@ -7,9 +7,9 @@ export default function() {
 
   const locale = currentLocale.value || "en";
   const currency = composables?.useFormat?.currency || "USD";
-  const B = lc("suffix.B");
-  const M = lc("suffix.M");
-  const K = lc("suffix.K");
+  const B = lc("suffix.B"); // billions
+  const M = lc("suffix.M"); // millions
+  const K = lc("suffix.K"); // thousands
 
   const STAGES = [
     { threshold: 1_000_000_000, divisor: 1_000_000_000, suffix: B, fraction: true },
