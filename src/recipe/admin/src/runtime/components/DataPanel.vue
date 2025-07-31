@@ -35,7 +35,7 @@
         severity="info"
       >
         <i class="pi pi-info-circle" />
-        <span class="ml-3">{{ lc("Select_required_values_to_view_this_data") }}</span>
+        <span class="ml-3">{{ lc("Select required values to view this data") }}</span>
       </Message>
     </template>
   </Panel>

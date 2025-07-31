@@ -38,7 +38,7 @@
       </div>
     </div>
     <div v-if="sectionsData.length === 0">
-      {{ lc("No_item_available") }}
+      {{ lc("No item available!") }}
     </div>
   </div>
 </template>

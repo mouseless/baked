@@ -23,6 +23,11 @@
         to="/specs/cache?parameter=value_b"
       />
     </div>
+    <Message severity="success">
+      <span class="text-xl">
+        💡 Refresh after clicking a button to reload below test variants 💡
+      </span>
+    </Message>
   </UiSpec>
 </template>
 <script setup>

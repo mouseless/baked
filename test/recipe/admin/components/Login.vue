@@ -8,10 +8,10 @@
     </div>
     <div class="text-center">
       <strong class="block text-2xl mb-2">
-        {{ lc("Admin_Recipe__Test_login") }}
+        {{ lc("Admin Recipe - Test login") }}
       </strong>
       <div class="text-gray-600 dark:text-gray-400">
-        {{ lc("Enter_any_username_to_login") }}
+        {{ lc("Enter any username to login") }}
       </div>
     </div>
     <InputText
@@ -31,7 +31,7 @@
   <div>
     <Button
       icon="pi pi-home"
-      :label="lc('Back_to_Home_Page')"
+      :label="lc('Back to Home Page')"
       severity="secondary"
       variant="outlined"
       as="router-link"

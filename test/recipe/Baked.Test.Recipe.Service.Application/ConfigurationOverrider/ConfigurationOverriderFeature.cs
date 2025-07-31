@@ -186,7 +186,7 @@ public class ConfigurationOverriderFeature : IFeature
                 app.Error = ErrorPage(
                     safeLinks:
                     [
-                        CardLink("/", "Home", icon: "pi pi-home"),
+                        CardLink("/", l("Home"), icon: "pi pi-home"),
                         CardLink("/cache", title: l("Cache"), "pi pi-database"),
                         CardLink("/data-table", l("Data Table"), "pi pi-table"),
                         CardLink("/report", l("Report"), icon: "pi pi-file"),

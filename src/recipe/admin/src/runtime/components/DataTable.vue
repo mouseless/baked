@@ -15,7 +15,7 @@
     :export-function
   >
     <template #empty>
-      {{ l("DataTable.No_records_found") }}
+      {{ lc("No records found") }}
     </template>
     <Column
       v-for="column in columns"
@@ -127,6 +127,7 @@ const conditional = useConditional();
 const context = useContext();
 const composableResolver = useComposableResolver();
 const { localize: l } = useLocalization();
+const { localize: lc } = useLocalization("DataTable");
 
 const { schema, data } = defineProps({
   schema: { type: null, required: true },

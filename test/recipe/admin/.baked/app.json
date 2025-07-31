@@ -80,7 +80,7 @@
           "message": "Please contact system administrator."
         }
       },
-      "footerInfo": "If_you_cannot_reach_the_page_you_want_please_contact_the_system_administrator",
+      "footerInfo": "If you cannot reach the page you want please contact the system administrator",
       "safeLinks": [
         {
           "type": "CardLink",
@@ -123,7 +123,7 @@
           }
         }
       ],
-      "safeLinksMessage": "Try_the_links_from_the_menu_below_to_view_the_page_you_want_to_access"
+      "safeLinksMessage": "Try the links from the menu below to view the page you want to access:"
     },
     "data": {
       "type": "Computed",

@@ -1,3 +1,4 @@
+// package keys =//
 An unexpected error has occured, please contact the administrator=An unexpected error has occured, please contact the administrator
 An unexpected error has occured, please contact the administrator: '{0}'\n{1}=An unexpected error has occured, please contact the administrator: '{0}'\n{1}
 Attempted to perform an unauthorized operation=Attempted to perform an unauthorized operation
@@ -5,6 +6,7 @@ Failed to authenticate with given credentials=Failed to authenticate with given 
 {0} with {1}: '{2}' does not exist={0} with {1}: '{2}' does not exist
 '{0}' is not a valid {1}='{0}' is not a valid {1}
 
+// test project keys =//
 A handled exception was thrown=A handled exception was thrown
 Child#{0} does not belong this parent=Child#{0} does not belong this parent
 {0} should be unique={0} should be unique
@@ -12,5 +14,8 @@ Parameter value is '{0}'=Parameter value is '{0}'
 This is a label=This is a label
 This should be a very long text=This should be a very long text
 
+// test case specific keys =//
 test=This is test message from English resource file.
 This should not exist in output locale files=This should not exist in output locale files
+
+// english translations for frontend are removed because keys are already in english =//

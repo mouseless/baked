@@ -1,136 +1,137 @@
 {
-    "Spec: A link": "A Link",
-    "Spec: Access denied": "Access Denied",
-    "Spec: B link": "B Link",
-    "Spec: Data": "Data",
-    "Spec: Data 1": "Data 1",
-    "Spec: Data 2": "Data 2",
-    "Spec: Data 3": "Data 3",
-    "Spec: Data 4": "Data 4",
-    "Spec: Data 5": "Data 5",
-    "Spec: Data 6": "Data 6",
-    "Spec: Data 7": "Data 7",
-    "Spec: Data 8": "Data 8",
-    "Spec: Data 9": "Data 9",
-    "Spec: Data 10": "Data 10",
-    "Spec: Description": "Description",
-    "Spec: Entity": "Entity",
-    "Spec: Footer info": "Footer info",
-    "Spec: Mid Page": "Mid Page",
-    "Spec: NavLink": "Nav Link",
-    "Spec: Name": "Name",
-    "Spec: No Icon": "No Icon",
-    "Spec: Label": "Label",
-    "Spec: Label 1": "Label 1",
-    "Spec: Label 2": "Label 2",
-    "Spec: Leaf Page": "Leaf Page",
-    "Spec: Lorem ipsum...": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    "Spec: Option 1": "Option 1",
-    "Spec: Option 2": "Option 2",
-    "Spec: Page Title": "PAGE TITLE",
-    "Spec: Row label": "Row Label",
-    "Spec: Root Page": "Root Page",
-    "Spec: Safe links message": "Safe links message",
-    "Spec: Section 1": "Section 1",
-    "Spec: Section 2": "Section 2",
-    "Spec: Summary": "Summary",
-    "Spec: Soon": "Soon",
-    "Spec: Tab 1": "Tab 1",
-    "Spec: Tab 2": "Tab 2",
-    "Spec: Test Title": "Test Title",
-    "Spec: Test description is given for testing purposes": "Test description is given for testing purposes",
-    "Spec: Title": "Title",
-    "Spec: This is a long label": "This is a long label",
-    "Spec: This is a message": "This is a message",
-    "Spec: This is a test detail for a success toast message": "This is a test detail for a success toast message.",
-    "Spec: Total": "Total",
-    "Spec: Test": "Test",
-    "Spec: You do not have the permission to view the address or data specified": "You do not have the permission to view the address or data specified.",
+  "DataPanel": {
+    "Select required values to view this data": "Select required values to view this data"
+  },
+  "DataTable": {
+    "No records found": "No records found"
+  },
+  "MenuPage": {
+    "No item available!": "No item available!"
+  },
+  "ReportPage": {
+    "Select required values to view this report": "Select required values to view this report"
+  },
+  "If you cannot reach the page you want please contact the system administrator": "If you cannot reach the page you want please contact the system administrator",
+  "Try the links from the menu below to view the page you want to access:": "Try the links from the menu below to view the page you want to access:",
 
-    "String": "String",
-    "ValueA": "Value A",
-    "ValueB": "Value B",
-    "English": "English",
-    "Turkish": "Türkçe",
+  "Spec: A link": "A Link",
+  "Spec: Access denied": "Access Denied",
+  "Spec: B link": "B Link",
+  "Spec: Data": "Data",
+  "Spec: Data 1": "Data 1",
+  "Spec: Data 2": "Data 2",
+  "Spec: Data 3": "Data 3",
+  "Spec: Data 4": "Data 4",
+  "Spec: Data 5": "Data 5",
+  "Spec: Data 6": "Data 6",
+  "Spec: Data 7": "Data 7",
+  "Spec: Data 8": "Data 8",
+  "Spec: Data 9": "Data 9",
+  "Spec: Data 10": "Data 10",
+  "Spec: Description": "Description",
+  "Spec: Entity": "Entity",
+  "Spec: Footer info": "Footer info",
+  "Spec: Mid Page": "Mid Page",
+  "Spec: NavLink": "Nav Link",
+  "Spec: Name": "Name",
+  "Spec: No Icon": "No Icon",
+  "Spec: Label": "Label",
+  "Spec: Label 1": "Label 1",
+  "Spec: Label 2": "Label 2",
+  "Spec: Leaf Page": "Leaf Page",
+  "Spec: Lorem ipsum...": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  "Spec: Option 1": "Option 1",
+  "Spec: Option 2": "Option 2",
+  "Spec: Page Title": "PAGE TITLE",
+  "Spec: Row label": "Row Label",
+  "Spec: Root Page": "Root Page",
+  "Spec: Safe links message": "Safe links message",
+  "Spec: Section 1": "Section 1",
+  "Spec: Section 2": "Section 2",
+  "Spec: Summary": "Summary",
+  "Spec: Soon": "Soon",
+  "Spec: Tab 1": "Tab 1",
+  "Spec: Tab 2": "Tab 2",
+  "Spec: Test Title": "Test Title",
+  "Spec: Test description is given for testing purposes": "Test description is given for testing purposes",
+  "Spec: Title": "Title",
+  "Spec: This is a long label": "This is a long label",
+  "Spec: This is a message": "This is a message",
+  "Spec: This is a test detail for a success toast message": "This is a test detail for a success toast message.",
+  "Spec: Total": "Total",
+  "Spec: Test": "Test",
+  "Spec: Test Text": "Test Text",
+  "Spec: You do not have the permission to view the address or data specified": "You do not have the permission to view the address or data specified.",
 
-    "DataPanel": {
-        "Select_required_values_to_view_this_data": "Select required values to view this data"
-    },
-    "DataTable": {
-        "No_records_found": "No records found"
-    },
-    "LanguageSwitcher": {
-        "Test_text": "Test Text"
-    },
-    "MenuPage": {
-        "No_item_available": "No item available!"
-    },
-    "Login": {
-        "Admin_Recipe__Test_login": "Admin Recipe - Test login",
-        "Enter_any_username_to_login": "Enter any username to login",
-        "Back_to_Home_Page": "Back to Home Page",
-        "Login": "Login",
-        "Username": "Username"
-    },
-    "ReportPage": {
-        "Select_required_values_to_view_this_report": "Select required values to view this report"
-    },
+  "String": "String",
+  "ValueA": "Value A",
+  "ValueB": "Value B",
+  "English": "English",
+  "Turkish": "Türkçe",
 
-    "primevue": {
-        "dayNames": [
-            "Sunday",
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday"
-        ],
-        "dayNamesMin": [
-            "Su",
-            "Mo",
-            "Tu",
-            "We",
-            "Th",
-            "Fr",
-            "Sa"
-        ],
-        "dayNamesShort": [
-            "Sun",
-            "Mon",
-            "Tue",
-            "Wed",
-            "Thu",
-            "Fri",
-            "Sat"
-        ],
-        "monthNames": [
-            "January",
-            "February",
-            "March",
-            "April",
-            "May",
-            "June",
-            "July",
-            "August",
-            "September",
-            "October",
-            "November",
-            "December"
-        ],
-        "monthNamesShort": [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec"
-        ]
-    }
+  "Login": {
+    "Admin Recipe - Test login": "Admin Recipe - Test login",
+    "Enter any username to login": "Enter any username to login",
+    "Back to Home Page": "Back to Home Page",
+    "Login": "Login",
+    "Username": "Username"
+  },
+
+  "primevue": {
+    "dayNames": [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
+    "dayNamesMin": [
+      "Su",
+      "Mo",
+      "Tu",
+      "We",
+      "Th",
+      "Fr",
+      "Sa"
+    ],
+    "dayNamesShort": [
+      "Sun",
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat"
+    ],
+    "monthNames": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
+    ],
+    "monthNamesShort": [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+    ]
+  }
 }
