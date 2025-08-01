@@ -1,9 +1,12 @@
-using Baked.Localization;
+using Microsoft.Extensions.Localization;
 
-namespace Baked.Test.ExceptionHandling;
+namespace Baked.Test.Localization;
 
-public class LocalizationSamples(ILocalizer _localizer)
+public class LocalizationSamples(IStringLocalizer _l)
 {
     public string GetLocaleString() =>
-        _localizer["test"];
+        _l["test"];
+
+    public string GetParameterized(string param) =>
+        _l["Parameter value is '{0}'", param];
 }

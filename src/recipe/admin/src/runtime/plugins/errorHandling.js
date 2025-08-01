@@ -1,5 +1,5 @@
 import { defineNuxtPlugin, clearError, showError, useNuxtApp, useRuntimeConfig } from "#app";
-import { useDataFetcher, useToast } from "#imports";
+import { useDataFetcher, useLocalization, useToast } from "#imports";
 
 export default defineNuxtPlugin({
   name: "errorHandling",
@@ -13,7 +13,10 @@ export default defineNuxtPlugin({
     return {
       provide: {
         errorHandlers,
-        defaultAlert: { title: errorHandling.defaultAlertTitle, message: errorHandling.defaultAlertMessage }
+        defaultAlert: {
+          title: errorHandling.defaultAlertTitle,
+          message: errorHandling.defaultAlertMessage
+        }
       }
     };
   },
@@ -66,21 +69,21 @@ function getHandler(handlers, route, error) {
 }
 
 function getMessage(error) {
-  const { $defaultAlert } = useNuxtApp();
+  const { $defaultAlert, $i18n: { t: l } } = useNuxtApp();
 
   if(error.name === "FetchError") {
     return {
       severity: "error",
-      summary: error.data?.title ?? error.statusCode ?? $defaultAlert.title,
-      detail: error.data?.detail ?? error.message ?? error.cause ?? $defaultAlert.message,
+      summary: error.data?.title ?? error.statusCode ?? l($defaultAlert.title),
+      detail: error.data?.detail ?? error.message ?? error.cause ?? l($defaultAlert.message),
       life: 3000
     };
   }
 
   return {
     severity: "error",
-    summary: error.statusCode ?? error.status ?? $defaultAlert.title,
-    detail: error.message ?? error.cause ?? $defaultAlert.message,
+    summary: error.statusCode ?? error.status ?? l($defaultAlert.title),
+    detail: error.message ?? error.cause ?? l($defaultAlert.message),
     life: 3000
   };
 }

@@ -7,7 +7,7 @@
       "type": "PageTitle",
       "schema": {
         "title": "Specs",
-        "description": "All_ui_specs_are_listed_here",
+        "description": "All UI Specs are listed here",
         "actions": [
           {
             "type": "Filter",
@@ -31,7 +31,7 @@
                 "route": "/specs/bake",
                 "icon": "pi pi-microchip",
                 "title": "Bake",
-                "description": "The_core_component_that_renders_a_dynamic_component_using_given_descriptor"
+                "description": "The core component that renders a dynamic component using given descriptor"
               }
             }
           },
@@ -43,7 +43,7 @@
                 "route": "/specs/custom-css",
                 "icon": "pi pi-microchip",
                 "title": "Custom CSS",
-                "description": "Allow_custom_configuration_to_define_custom_css_and_more"
+                "description": "Allow custom configuration to define custom css and more"
               }
             }
           },
@@ -55,7 +55,7 @@
                 "route": "/specs/parameters",
                 "icon": "pi pi-microchip",
                 "title": "Parameters",
-                "description": "Manage_parameters_through_emits"
+                "description": "Manage parameters through emits"
               }
             }
           },
@@ -67,7 +67,7 @@
                 "route": "/specs/query-parameters",
                 "icon": "pi pi-microchip",
                 "title": "Query Parameters",
-                "description": "Sync_and_manage_parameters_in_query_string"
+                "description": "Sync and manage parameters in query string"
               }
             }
           },
@@ -79,7 +79,7 @@
                 "route": "/specs/toast",
                 "icon": "pi pi-microchip",
                 "title": "Toast",
-                "description": "Render_alert_messages"
+                "description": "Render alert messages"
               }
             }
           }
@@ -96,7 +96,7 @@
                 "route": "/specs/card-link",
                 "icon": "pi pi-microchip",
                 "title": "Card Link",
-                "description": "Renders_a_link_as_a_big_card_like_button"
+                "description": "Renders a link as a big card-like button"
               }
             }
           },
@@ -108,7 +108,7 @@
                 "route": "/specs/data-table",
                 "icon": "pi pi-microchip",
                 "title": "Data Table",
-                "description": "View_list_data_in_a_table"
+                "description": "View list data in a table"
               }
             }
           },
@@ -120,7 +120,7 @@
                 "route": "/specs/nav-link",
                 "icon": "pi pi-microchip",
                 "title": "Nav Link",
-                "description": "A_component_to_give_a_link_to_a_domain_object"
+                "description": "A component to give a link to a domain object"
               }
             }
           },
@@ -132,7 +132,7 @@
                 "route": "/specs/icon",
                 "icon": "pi pi-microchip",
                 "title": "Icon",
-                "description": "Displays_built_in_icons"
+                "description": "Displays built-in icons"
               }
             }
           },
@@ -144,7 +144,7 @@
                 "route": "/specs/message",
                 "icon": "pi pi-microchip",
                 "title": "Message",
-                "description": "A_component_to_display_message"
+                "description": "A component to display message"
               }
             }
           },
@@ -156,7 +156,7 @@
                 "route": "/specs/money",
                 "icon": "pi pi-microchip",
                 "title": "Money",
-                "description": "Shortens_and_renders_money_values_with_the_full_value_shown_as_tooltip"
+                "description": "Shortens and renders money values with the full value shown as tooltip"
               }
             }
           },
@@ -168,7 +168,7 @@
                 "route": "/specs/number",
                 "icon": "pi pi-microchip",
                 "title": "Number",
-                "description": "Shortens_and_renders_numbers_with_the_full_value_shown_as_tooltip"
+                "description": "Shortens and renders numbers with the full value shown as tooltip"
               }
             }
           },
@@ -180,7 +180,7 @@
                 "route": "/specs/rate",
                 "icon": "pi pi-microchip",
                 "title": "Rate",
-                "description": "Render_rate_values_as_percentage"
+                "description": "Render rate values as percentage"
               }
             }
           },
@@ -192,7 +192,7 @@
                 "route": "/specs/string",
                 "icon": "pi pi-microchip",
                 "title": "String",
-                "description": "Render_string_values"
+                "description": "Render string values"
               }
             }
           }
@@ -209,7 +209,7 @@
                 "route": "/specs/language-switcher",
                 "icon": "pi pi-microchip",
                 "title": "Language Switcher",
-                "description": "Allow_change_site_language"
+                "description": "Allow change site language"
               }
             }
           },
@@ -221,7 +221,7 @@
                 "route": "/specs/select",
                 "icon": "pi pi-microchip",
                 "title": "Select",
-                "description": "Allow_select_from_given_options_using_drow_down"
+                "description": "Allow select from given options using drow down"
               }
             }
           },
@@ -233,7 +233,7 @@
                 "route": "/specs/select-button",
                 "icon": "pi pi-microchip",
                 "title": "Select Button",
-                "description": "Allow_select_from_given_options_using_buttons"
+                "description": "Allow select from given options using buttons"
               }
             }
           }
@@ -250,7 +250,7 @@
                 "route": "/specs/data-panel",
                 "icon": "pi pi-microchip",
                 "title": "Data Panel",
-                "description": "Lazy_load_and_view_a_data_within_a_panel"
+                "description": "Lazy load and view a data within a panel"
               }
             }
           },
@@ -262,7 +262,7 @@
                 "route": "/specs/header",
                 "icon": "pi pi-microchip",
                 "title": "Header",
-                "description": "Renders_a_breadcrumb"
+                "description": "Renders a breadcrumb"
               }
             }
           },
@@ -274,7 +274,7 @@
                 "route": "/specs/page-title",
                 "icon": "pi pi-microchip",
                 "title": "Page Title",
-                "description": "Render_page_title_desc_and_actions"
+                "description": "Render page title, desc and actions"
               }
             }
           },
@@ -286,7 +286,7 @@
                 "route": "/specs/side-menu",
                 "icon": "pi pi-microchip",
                 "title": "Side Menu",
-                "description": "Renders_application_menu"
+                "description": "Renders application menu"
               }
             }
           }
@@ -303,7 +303,7 @@
                 "route": "/specs/error-page",
                 "icon": "pi pi-microchip",
                 "title": "Error Page",
-                "description": "Display_errors_in_full_page"
+                "description": "Display errors in full page"
               }
             }
           },
@@ -315,7 +315,7 @@
                 "route": "/specs/menu-page",
                 "icon": "pi pi-microchip",
                 "title": "Menu Page",
-                "description": "Render_navigation_pages"
+                "description": "Render navigation pages"
               }
             }
           },
@@ -327,7 +327,7 @@
                 "route": "/specs/report-page",
                 "icon": "pi pi-microchip",
                 "title": "Report Page",
-                "description": "Render_report_pages"
+                "description": "Render report pages"
               }
             }
           }
@@ -344,7 +344,7 @@
                 "route": "/specs/auth",
                 "icon": "pi pi-microchip",
                 "title": "Auth",
-                "description": "Authorized_routing_and_client"
+                "description": "Authorized routing and client"
               }
             }
           },
@@ -356,7 +356,7 @@
                 "route": "/specs/cache",
                 "icon": "pi pi-microchip",
                 "title": "Cache",
-                "description": "Caches_api_responses_in_local_storage"
+                "description": "Caches api responses in local storage"
               }
             }
           },
@@ -368,7 +368,7 @@
                 "route": "/specs/locale",
                 "icon": "pi pi-microchip",
                 "title": "Locale",
-                "description": "Allow_locale_customization_and_language_support"
+                "description": "Allow locale customization and language support"
               }
             }
           },
@@ -380,7 +380,7 @@
                 "route": "/specs/error-handling",
                 "icon": "pi pi-microchip",
                 "title": "Error Handling",
-                "description": "Handling_errors"
+                "description": "Handling errors"
               }
             }
           }

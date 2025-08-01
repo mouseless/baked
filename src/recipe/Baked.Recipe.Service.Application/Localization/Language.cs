@@ -1,3 +1,3 @@
-namespace Baked.Localization.AspNetCore;
+namespace Baked.Localization;
 
 public record Language(string Code, string Name);

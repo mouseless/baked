@@ -19,7 +19,7 @@
           {
             "route": "/data-table",
             "icon": "pi pi-table",
-            "title": "DataTable"
+            "title": "Data Table"
           },
           {
             "route": "/report",
@@ -58,7 +58,7 @@
           "/data-table": {
             "route": "/data-table",
             "icon": "pi pi-table",
-            "title": "DataTable"
+            "title": "Data Table"
           },
           "/report": {
             "route": "/report",

@@ -38,7 +38,7 @@
       severity="info"
     >
       <i class="pi pi-info-circle" />
-      <span class="ml-3">{{ l("ReportPage.Select_required_values_to_view_this_report") }}</span>
+      <span class="ml-3">{{ lc("Select required values to view this report") }}</span>
     </Message>
     <div
       v-if="ready"
@@ -87,6 +87,7 @@ import { Bake, DeferredTabContent, PageTitle, QueryParameters } from "#component
 
 const context = useContext();
 const { localize: l } = useLocalization();
+const { localize: lc } = useLocalization("ReportPage");
 
 const { schema } = defineProps({
   schema: { type: null, required: true },

@@ -48,7 +48,7 @@ public static class BakeExtensions
         database ??= c => c.Sqlite();
         exceptionHandling ??= c => c.ProblemDetails();
         greeting ??= c => c.Swagger();
-        localization ??= c => c.AspNetCore();
+        localization ??= c => c.Dotnet();
         logging ??= c => c.Request();
         orm ??= c => c.AutoMap();
         rateLimiter ??= c => c.Concurrency();
@@ -129,7 +129,7 @@ public static class BakeExtensions
         database ??= c => c.Sqlite();
         exceptionHandling ??= c => c.ProblemDetails();
         greeting ??= c => c.Swagger();
-        localization ??= c => c.AspNetCore();
+        localization ??= c => c.Dotnet();
         logging ??= c => c.Request();
         rateLimiter ??= c => c.Concurrency();
         reporting ??= c => c.NativeSql();

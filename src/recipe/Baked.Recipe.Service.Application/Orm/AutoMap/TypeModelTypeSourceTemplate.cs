@@ -3,7 +3,8 @@ using Baked.Domain.Model;
 
 namespace Baked.Orm.AutoMap;
 
-public class TypeModelTypeSourceTemplate(DomainModel _domain) : CodeTemplateBase
+public class TypeModelTypeSourceTemplate(DomainModel _domain)
+    : CodeTemplateBase
 {
     protected override IEnumerable<string> Render() =>
         [TypeModelSource()];

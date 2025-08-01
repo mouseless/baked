@@ -25,7 +25,7 @@ import { computed, ref } from "vue";
 import { Button, Menu } from "primevue";
 import { useLocalization } from "#imports";
 
-const { locale, getLocales, setLocale, localize } = useLocalization();
+const { locale, getLocales, setLocale, localize: l } = useLocalization();
 
 defineProps({
   schema: { type: null, required: true },
@@ -35,10 +35,10 @@ defineProps({
 const menu = ref();
 
 const model = computed(() =>
-  getLocales().map(l => ({
-    label: `${localize(l.name)} (${l.code.toUpperCase()})`,
-    class: locale.value === l.code ? "opacity-50" : "",
-    command: () => setLocale(l.code)
+  getLocales().map(currentLocale => ({
+    label: `${l(currentLocale.name)} (${currentLocale.code.toUpperCase()})`,
+    class: locale.value === currentLocale.code ? "opacity-50" : "",
+    command: () => setLocale(currentLocale.code)
   }))
 );
 

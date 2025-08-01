@@ -34,4 +34,18 @@ public class LocalizeMessages : TestServiceNfr
 
         trResult.ShouldBe("\"Bu Türkçe kaynak dosyasından test mesajıdır.\"");
     }
+
+    [Test]
+    public async Task Variables_are_allowed_in_localized_messages()
+    {
+        var enResponse = await Client.GetAsync("/localization-samples/parameterized?culture=en&param=test");
+        var enResult = await enResponse.Content.ReadAsStringAsync();
+
+        enResult.ShouldBe("\"Parameter value is 'test'\"");
+
+        var trResponse = await Client.GetAsync("/localization-samples/parameterized?culture=tr&param=test");
+        var trResult = await trResponse.Content.ReadAsStringAsync();
+
+        trResult.ShouldBe("\"Parametre değeri 'test' verildi\"");
+    }
 }

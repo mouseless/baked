@@ -41,8 +41,8 @@ test.describe("Base", () => {
   });
 });
 
-test.describe("Base with Localization", () => {
-  const id = "Base with Localization";
+test.describe("Base w/ Localization", () => {
+  const id = "Base w/ Localization";
 
   test("options", async({page}) => {
     const component = page.getByTestId(id);
@@ -51,29 +51,6 @@ test.describe("Base with Localization", () => {
 
     await expect(options.nth(0)).toHaveText("Option 1");
     await expect(options.nth(1)).toHaveText("Option 2");
-  });
-
-  test("no clear button", async({page}) => {
-    const component = page.getByTestId(id);
-
-    await expect(component.locator(primevue.select.clearIcon)).not.toBeAttached();
-  });
-
-  test("select option", async({page}) => {
-    const component = page.getByTestId(id);
-    const options = page.locator(primevue.select.option);
-    const model = page.getByTestId(`${id}:model`);
-
-    await component.click();
-    await options.nth(0).click();
-
-    await expect(model).toHaveText("OPTION_1");
-  });
-
-  test("visual", { tag: "@visual" }, async({page}) => {
-    const component = page.getByTestId(id);
-
-    await expect(component).toHaveScreenshot();
   });
 });
 

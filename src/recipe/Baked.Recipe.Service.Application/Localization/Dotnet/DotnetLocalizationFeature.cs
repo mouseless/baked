@@ -6,9 +6,9 @@ using Microsoft.Extensions.Localization;
 using System.Globalization;
 using System.Reflection;
 
-namespace Baked.Localization.AspNetCore;
+namespace Baked.Localization.Dotnet;
 
-public class AspNetCoreLocalizationFeature(CultureInfo _language,
+public class DotnetLocalizationFeature(CultureInfo _language,
     IEnumerable<CultureInfo>? _otherLanguages = default
 ) : IFeature<LocalizationConfigurator>
 {
@@ -21,11 +21,11 @@ public class AspNetCoreLocalizationFeature(CultureInfo _language,
                 return;
             }
 
-            var localeDir = Path.Combine(Assembly.GetEntryAssembly()?.Location ?? throw new("'EntryAssembly' shoul have existed"), "../../../../Locales");
+            var localeDir = Path.Combine(Assembly.GetEntryAssembly()?.Location ?? throw new("'EntryAssembly' should have existed"), "../../../../Locales");
 
             configurator.UsingLocaleTemplate(localeTemplate =>
             {
-                files.AddAsJson(new LocalizedTexts(_language, localeTemplate).With(localeDir, defaultLanguage: true), name: $"locale.{_language.Name}", outdir: "Ui");
+                files.AddAsJson(new LocalizedTexts(_language, localeTemplate).With(localeDir), name: $"locale.{_language.Name}", outdir: "Ui");
 
                 if (_otherLanguages is not null)
                 {
@@ -45,13 +45,7 @@ public class AspNetCoreLocalizationFeature(CultureInfo _language,
             var entryAssemblyName = entryAssembly.GetName().Name
                 ?? throw new("'EntryAssembly' should have a name");
 
-            services.AddSingleton<ILocalizer>(provider =>
-            {
-                var factory = provider.GetRequiredService<IStringLocalizerFactory>();
-                var localizer = factory.Create("locale", entryAssemblyName);
-
-                return new LocalizerAdapter(localizer);
-            });
+            services.AddSingleton(sp => sp.GetRequiredService<IStringLocalizerFactory>().Create("locale", entryAssemblyName));
         });
 
         configurator.ConfigureMiddlewareCollection(middlewares =>

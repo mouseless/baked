@@ -55,7 +55,7 @@ public class ProblemDetailsExceptionHandlingFeature(Setting<string>? _typeUrlFor
 
         configurator.ConfigureAppDescriptor(app =>
         {
-            app.Plugins.Add(new ErrorHandlingPlugin()
+            app.Plugins.Add(new ErrorHandlingPlugin
             {
                 Handlers =
                 [

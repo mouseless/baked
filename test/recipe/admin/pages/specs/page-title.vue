@@ -12,8 +12,8 @@ const variants = [
   {
     name: "Base",
     descriptor: giveMe.aPageTitle({
-      title: "Spec.Title",
-      description: "Spec.Description"
+      title: "Spec: Title",
+      description: "Spec: Description"
     })
   },
   {
@@ -28,14 +28,14 @@ const variants = [
   {
     name: "No Description",
     descriptor: giveMe.aPageTitle({
-      title: "Spec.Page_title",
+      title: "Spec: Page Title",
       description: null
     })
   },
   {
     name: "Long Description",
     descriptor: giveMe.aPageTitle({
-      description: "Spec.Lorem_ipsum"
+      description: "Spec: Lorem ipsum..."
     })
   }
 ];

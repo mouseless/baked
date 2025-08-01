@@ -55,6 +55,7 @@ Bake.New
 |                    | Singleton                          |                                    |
 |                    | Scoped                             |                                    |
 |                    | Transient                          |                                    |
+| Localization       | :white_check_mark: .NET            | :white_check_mark:                 |
 | Logging            | :white_check_mark: Request         | :no_entry:                         |
 | Mocking Overrider  | :no_entry:                         | :white_check_mark: First Interface |
 | Reporting          | :white_check_mark: NativeSql       | :white_check_mark: Mock            |

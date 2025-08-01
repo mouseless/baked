@@ -13,12 +13,12 @@ const variants = [
   {
     name: "Base",
     descriptor: giveMe.aReportPage({
-      title: "Spec.Title",
-      description: "Spec.Description",
+      title: "Spec: Title",
+      description: "Spec: Description",
       tabs: [
         giveMe.aReportPageTab({
           id: "tab 1",
-          title: "Spec.Tab_1",
+          title: "Spec: Tab 1",
           icon: giveMe.anExpected({ testId: "icon 1", value: "I." }),
           contents: [
             giveMe.aReportPageTabContent({
@@ -31,7 +31,7 @@ const variants = [
         }),
         giveMe.aReportPageTab({
           id: "tab 2",
-          title: "Spec.Tab_2",
+          title: "Spec: Tab 2",
           icon: giveMe.anExpected({ testId: "icon 2", value: "II." }),
           contents: [
             giveMe.aReportPageTabContent({

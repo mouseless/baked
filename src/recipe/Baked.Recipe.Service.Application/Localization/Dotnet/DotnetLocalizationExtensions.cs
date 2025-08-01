@@ -1,12 +1,12 @@
 using Baked.Localization;
-using Baked.Localization.AspNetCore;
+using Baked.Localization.Dotnet;
 using System.Globalization;
 
 namespace Baked;
 
-public static class AspNetCoreLocalizationExtensions
+public static class DotnetLocalizationExtensions
 {
-    public static AspNetCoreLocalizationFeature AspNetCore(this LocalizationConfigurator _,
+    public static DotnetLocalizationFeature Dotnet(this LocalizationConfigurator _,
         CultureInfo? language = null,
         IEnumerable<CultureInfo>? otherLanguages = null
     )

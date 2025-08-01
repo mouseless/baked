@@ -38,15 +38,7 @@ export interface RetryOptions {
 }
 
 export interface UseFormatOptions {
-  locale?: String,
-  currency?: String,
-  suffix?: UseFormatSuffixOptions
-}
-
-export interface UseFormatSuffixOptions {
-  billions: String,
-  millions: String,
-  thousands: String
+  currency?: String
 }
 
 export default defineNuxtModule<ModuleOptions>({
@@ -94,7 +86,7 @@ export default defineNuxtModule<ModuleOptions>({
     addPlugin(resolver.resolve("./runtime/plugins/mutex"));
     addPlugin(resolver.resolve("./runtime/plugins/toast"));
     addPlugin(resolver.resolve("./runtime/plugins/trailingSlash"));
-    addPlugin(resolver.resolve("./runtime/plugins/setupBaked"));
+    addPlugin(resolver.resolve("./runtime/plugins/baked"));
     addPlugin(resolver.resolve("./runtime/plugins/primeVue"));
     addPlugin(resolver.resolve("./runtime/plugins/fetch"), {});
 
@@ -114,7 +106,7 @@ export default defineNuxtModule<ModuleOptions>({
           files
         }
       }),
-      defaultLocale: _options.app?.i18n.defaultLanguage,
+      defaultLocale: _options.app?.i18n.defaultLanguage.code,
       detectBrowserLanguage: {
         useCookie: true,
         cookieKey: 'i18n_cookie'

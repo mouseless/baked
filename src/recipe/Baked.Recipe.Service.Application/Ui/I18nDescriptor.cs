@@ -1,4 +1,4 @@
-using Baked.Localization.AspNetCore;
+using Baked.Localization;
 
 namespace Baked.Ui;
 

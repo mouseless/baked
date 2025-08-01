@@ -11,11 +11,11 @@
     :scroll-height
     :virtual-scroller-options="scrollHeight ? virtualScrollerOptions : null"
     :csv-separator="exportOptions?.csvSeparator"
-    :export-filename="exportOptions?.fileName"
+    :export-filename="exportOptions?.fileName ? l(exportOptions.fileName) : null"
     :export-function
   >
     <template #empty>
-      {{ l("DataTable.No_records_found") }}
+      {{ lc("No records found") }}
     </template>
     <Column
       v-for="column in columns"
@@ -127,6 +127,7 @@ const conditional = useConditional();
 const context = useContext();
 const composableResolver = useComposableResolver();
 const { localize: l } = useLocalization();
+const { localize: lc } = useLocalization("DataTable");
 
 const { schema, data } = defineProps({
   schema: { type: null, required: true },
@@ -164,7 +165,7 @@ const formatter = exportOptions?.formatter ? (await composableResolver.resolve(e
 
 if(exportOptions) {
   actions.value.push({
-    label: exportOptions.buttonLabel,
+    label: l(exportOptions.buttonLabel),
     icon: exportOptions.buttonIcon,
     command: () => dataTable.value.exportCSV()
   });

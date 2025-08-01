@@ -11,12 +11,12 @@ public class UnhandledExceptionHandler(ExceptionHandlerSettings _settings)
             ? new(
                 ex,
                 (int)HttpStatusCode.InternalServerError,
-                "An_unexpected_error_has_occured_please_contact_the_administrator__MESSAGE__EXCEPTION",
+                "An unexpected error has occured, please contact the administrator: '{0}'\n{1}",
                 new() { ["message"] = ex.Message, ["exception"] = ex.ToString() }
             )
             : new(
                 ex,
                 (int)HttpStatusCode.InternalServerError,
-                "An_unexpected_error_has_occured_please_contact_the_administrator"
+                "An unexpected error has occured, please contact the administrator"
             );
 }

@@ -18,8 +18,8 @@ const { localize: l } = useLocalization();
 onMounted(() => {
   toast.add({
     severity: "success",
-    summary: l("Spec.Summary"),
-    detail: l("Spec.This_is_a_test_detail_for_a_success_toast_message")
+    summary: l("Spec: Summary"),
+    detail: l("Spec: This is a test detail for a success toast message")
   });
 });
 </script>

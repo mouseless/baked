@@ -1,6 +1,6 @@
 <template>
   <UiSpec
-    title="Spec.NavLink"
+    title="Spec: NavLink"
     :variants="variants"
   />
 </template>
@@ -16,7 +16,7 @@ const variants = [
       textProp: "name",
       data: {
         id: "test-id",
-        name: "Spec.Name"
+        name: "Spec: Name"
       }
     })
   }

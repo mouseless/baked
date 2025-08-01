@@ -1,12 +1,21 @@
-﻿using Baked.Localization;
+﻿using Microsoft.Extensions.Localization;
 
 namespace Baked.Test.Theme;
 
-public class DataTable(ILocalizer _localizer)
+public class DataTable(IStringLocalizer _l)
 {
     public TableWithFooter GetTableDataWithFooter(int count)
     {
-        var items = Enumerable.Range(0, count).Select(i => new TableRow($"{_localizer["This_is_a_label"]}-{i}", i % 5, $"This should be a very long Text-{i}", Guid.NewGuid(), Guid.NewGuid(), i * 10, ((double)i) / 7));
+        var items = Enumerable.Range(0, count)
+            .Select(i => new TableRow(
+                $"{_l["This is a label"]}-{i}",
+                i % 5,
+                $"{_l["This should be a very long text"]}-{i}",
+                Guid.NewGuid(),
+                Guid.NewGuid(),
+                i * 10,
+                ((double)i) / 7
+            ));
 
         return new(
             Items: items,

@@ -3,7 +3,7 @@
 namespace Baked.CodingStyle.SingleByUnique;
 
 public class RouteParameterIsNotValidException(string parameter, object? value)
-    : HandledException("VALUE_is_not_a_valid_PARAMETER", null,
+    : HandledException("'{0}' is not a valid {1}", null,
         extraData: new()
         {
             { "value", value },

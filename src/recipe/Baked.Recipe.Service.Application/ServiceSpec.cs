@@ -5,6 +5,7 @@ using Baked.Communication;
 using Baked.Core;
 using Baked.Database;
 using Baked.ExceptionHandling;
+using Baked.Localization;
 using Baked.MockOverrider;
 using Baked.Orm;
 using Baked.Testing;
@@ -27,6 +28,7 @@ public abstract class ServiceSpec : Spec
         Func<CoreConfigurator, IFeature<CoreConfigurator>>? core = default,
         Func<DatabaseConfigurator, IFeature<DatabaseConfigurator>>? database = default,
         Func<ExceptionHandlingConfigurator, IFeature<ExceptionHandlingConfigurator>>? exceptionHandling = default,
+        Func<LocalizationConfigurator, IFeature<LocalizationConfigurator>>? localization = default,
         Func<MockOverriderConfigurator, IFeature<MockOverriderConfigurator>>? mockOverrider = default,
         Func<OrmConfigurator, IFeature<OrmConfigurator>>? orm = default,
         Func<ThemeConfigurator, IFeature<ThemeConfigurator>>? theme = default,
@@ -38,6 +40,7 @@ public abstract class ServiceSpec : Spec
         core ??= c => c.Mock();
         database ??= c => c.InMemory();
         exceptionHandling ??= c => c.ProblemDetails();
+        localization ??= c => c.Dotnet();
         mockOverrider ??= c => c.FirstInterface();
         orm ??= c => c.AutoMap();
         theme ??= c => c.Admin();
@@ -81,6 +84,7 @@ public abstract class ServiceSpec : Spec
                 c => c.Singleton(),
                 c => c.Transient()
             ]);
+            app.Features.AddLocalization(localization);
             app.Features.AddMockOverrider(mockOverrider);
             app.Features.AddOrm(orm);
             app.Features.AddTheme(theme);

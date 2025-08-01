@@ -1,16 +1,14 @@
 ﻿using Baked.Ui;
 using System.Globalization;
 
-namespace Baked.Localization.AspNetCore;
+namespace Baked.Localization.Dotnet;
 
 public class LocalizedTexts(CultureInfo _language, ILocaleTemplate _template)
     : Dictionary<string, string>(_template)
 {
-    public LocalizedTexts With(string resourceDir,
-        bool defaultLanguage = false
-    )
+    public LocalizedTexts With(string resourceDir)
     {
-        var resourceFilePath = Path.Combine(resourceDir, defaultLanguage ? $"locale.restext" : $"locale.{_language.Name}.restext");
+        var resourceFilePath = Path.Combine(resourceDir, $"locale.{_language.Name}.restext");
         if (File.Exists(resourceFilePath))
         {
             using (StreamReader reader = new(resourceFilePath))

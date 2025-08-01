@@ -14,8 +14,8 @@ export default {
   aCardLink({ route, icon, title, description, disabled, disabledReason } = {}) {
     route = $(route, "/test-route");
     icon = $(icon, "pi pi-heart");
-    title = $(title, "Spec.Test");
-    description = $(description, "Spec.Test_description_is_given_for_testing_purposes");
+    title = $(title, "Spec: Test");
+    description = $(description, "Spec: Test description is given for testing purposes");
     disabled = $(disabled, false);
     disabledReason = $(disabledReason, disabled ? "REASON" : "");
 
@@ -54,7 +54,7 @@ export default {
   },
 
   aDataPanel({ title, collapsed, localizeTitle, parameters, content } = {}) {
-    title = $(title, { type: "Inline", value: "Spec.Test_title" });
+    title = $(title, { type: "Inline", value: "Spec: Test Title" });
     collapsed = $(collapsed, false);
     parameters = $(parameters, []);
     content = $(content, this.anExpected());
@@ -89,7 +89,7 @@ export default {
   },
 
   aDataTableColumn({ title, prop, alignRight, minWidth, component, exportable, frozen } = {}) {
-    title = $(title, "Spec.Test");
+    title = $(title, "Spec: Test");
     prop = $(prop, "test");
     alignRight = $(alignRight, false);
     minWidth = $(minWidth, false);
@@ -262,7 +262,7 @@ export default {
   },
 
   aMessage({ message, icon, severity, localizeMessage, data } = {}) {
-    message = $(message, "Spec.This_is_a_message");
+    message = $(message, "Spec: This is a message");
     localizeMessage = $(localizeMessage, true);
     data = $(data, { type: "Inline", value: message });
 
@@ -316,8 +316,8 @@ export default {
   },
 
   aPageTitle({ title, description, actions } = {}) {
-    title = $(title, "Spec.Test_title");
-    description = $(description, "Spec.Test_description_is_given_for_testing_purposes");
+    title = $(title, "Spec: Test Title");
+    description = $(description, "Spec: Test description is given for testing purposes");
     actions = $(actions, []);
 
     return {
@@ -382,7 +382,7 @@ export default {
   },
 
   aSelect({ label, localizeLabel, optionLabel, optionValue, showClear, stateful, data, inline } = {}) {
-    label = $(label, "Spec.Test");
+    label = $(label, "Spec: Test");
     localizeLabel = $(localizeLabel, false);
     showClear = $(showClear, false);
     stateful = $(stateful, false);
