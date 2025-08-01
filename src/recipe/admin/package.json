@@ -1,6 +1,6 @@
 {
   "name": "baked-recipe-admin",
-  "version": "0.17.1",
+  "version": "0.17.2",
   "description": "Baked is an opinionated framework for .NET in backend and Nuxt in frontend. This is a recipe package that brings together all the components one needs for an Admin UI.",
   "keywords": [
     "baked",
