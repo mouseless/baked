@@ -147,7 +147,9 @@
                     "itemsProp": "items",
                     "scrollHeight": "500px",
                     "virtualScrollerOptions": {
-                      "itemSize": 45
+                      "itemSize": 45,
+                      "numToleratedItems": 10,
+                      "appendOnly": true
                     },
                     "footerTemplate": {
                       "label": "Total",
