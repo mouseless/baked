@@ -115,7 +115,7 @@ public static class CodeGenerationExtensions
         settings ??= new();
         settings.Formatting = Formatting.Indented;
 
-        var writer = new UnixLineEndingStringWriter();
+        var writer = new StringWriter();
         JsonSerializer.Create(settings).Serialize(writer, instance);
         generatedFiles.Add(name, writer.ToString(), "json", outdir: outdir);
     }
