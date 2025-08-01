@@ -113,8 +113,10 @@ public static class Components
         IComponentDescriptor? header = default
     ) => new(new(name) { SideMenu = sideMenu, Header = header });
 
-    public static DataTable.VirtualScroller DataTableVirtualScroller(int itemSize) =>
-        new(itemSize);
+    public static DataTable.VirtualScroller DataTableVirtualScroller(int itemSize,
+        int? numToleratedItems = 10,
+        bool? appendOnly = true
+    ) => new(itemSize) { NumToleratedItems = numToleratedItems, AppendOnly = appendOnly };
 
     public static ComponentDescriptorAttribute<ErrorPage> ErrorPage(
         IEnumerable<(int StatusCode, ErrorPage.Info Info)>? errorInfos = default,

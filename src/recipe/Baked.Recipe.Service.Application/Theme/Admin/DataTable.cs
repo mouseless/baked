@@ -44,5 +44,7 @@ public record DataTable : IComponentSchema
     public record VirtualScroller(int ItemSize)
     {
         public int ItemSize { get; set; } = ItemSize;
+        public int? NumToleratedItems { get; set; }
+        public bool? AppendOnly { get; set; }
     }
 }

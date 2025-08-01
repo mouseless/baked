@@ -117,7 +117,7 @@
   </DataTable>
 </template>
 <script setup>
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import Column from "primevue/column";
 import { Button, ColumnGroup, DataTable, Menu, Row, Skeleton } from "primevue";
 import { Bake } from "#components";
@@ -161,7 +161,7 @@ const value = computed(() => {
   return result;
 });
 const footerColSpan = computed(() => columns.length - footerTemplate?.columns.length);
-const formatter = exportOptions?.formatter ? (await composableResolver.resolve(exportOptions.formatter)).default() : undefined;
+let formatter = null;
 
 if(exportOptions) {
   actions.value.push({
@@ -170,6 +170,10 @@ if(exportOptions) {
     command: () => dataTable.value.exportCSV()
   });
 }
+
+onMounted(async() => {
+  formatter = exportOptions?.formatter ? (await composableResolver.resolve(exportOptions.formatter)).default() : undefined;
+});
 
 function toggleActionsMenu(event) {
   actionsMenu.value.toggle(event);
