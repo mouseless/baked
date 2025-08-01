@@ -159,10 +159,6 @@ const value = computed(() => {
 const footerColSpan = computed(() => columns.length - footerTemplate?.columns.length);
 let formatter = null;
 
-onMounted(async() => {
-  formatter = exportOptions?.formatter ? (await composableResolver.resolve(exportOptions.formatter)).default() : undefined;
-});
-
 if(exportOptions) {
   actions.value.push({
     label: l(exportOptions.buttonLabel),
@@ -170,6 +166,10 @@ if(exportOptions) {
     command: () => dataTable.value.exportCSV()
   });
 }
+
+onMounted(async() => {
+  formatter = exportOptions?.formatter ? (await composableResolver.resolve(exportOptions.formatter)).default() : undefined;
+});
 
 function toggleActionsMenu(event) {
   actionsMenu.value.toggle(event);
