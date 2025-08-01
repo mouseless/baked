@@ -30,8 +30,12 @@
       :frozen="column.frozen"
     >
       <template #body="{ data: row, index }">
+        <Skeleton
+          v-if="loading"
+          class="min-h-5"
+        />
         <Bake
-          v-if="value"
+          v-else-if="data"
           :name="`rows/${index}/${column.prop}`"
           :descriptor="{
             ...conditional.find(column.component, row.$getRow()),
