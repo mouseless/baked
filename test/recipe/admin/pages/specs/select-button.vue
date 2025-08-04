@@ -48,10 +48,21 @@ const variants = [
     model: ref()
   },
   {
-    name: "Stateful",
+    name: "Stateful and Not Inline",
     descriptor: giveMe.aSelectButton({
       stateful: true,
-      data: ["OPTION 1", "OPTION 2"]
+      data: ["OPTION 1", "OPTION 2"],
+      inline: false
+    }),
+    model: ref("OPTION 1")
+
+  },
+  {
+    name: "Stateful and Inline",
+    descriptor: giveMe.aSelectButton({
+      stateful: true,
+      data: ["OPTION 1", "OPTION 2"],
+      inline: true
     }),
     model: ref("OPTION 1")
 

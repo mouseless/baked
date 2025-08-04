@@ -122,8 +122,31 @@ test.describe("Long Label", () => {
   });
 });
 
-test.describe("Stateful", () => {
-  const id = "Stateful";
+test.describe("Stateful and Not Inline", () => {
+  const id = "Stateful and Not Inline";
+
+  test("initial model is selected when state is empty", async({page}) => {
+    const model = page.getByTestId(`${id}:model`);
+
+    await expect(model).toHaveText("OPTION 1");
+  });
+
+  test("retains selected state", async({page}) => {
+    const component = page.getByTestId(id);
+    const options = page.locator(primevue.select.option);
+    const model = page.getByTestId(`${id}:model`);
+    await component.click();
+    await options.nth(1).click();
+
+    await page.locator("a[href='/specs']").nth(0).click();
+    await page.locator("a[href='/specs/select']").nth(0).click();
+
+    await expect(model).toHaveText("OPTION 2");
+  });
+});
+
+test.describe("Stateful and Inline", () => {
+  const id = "Stateful and Inline";
 
   test("initial model is selected when state is empty", async({page}) => {
     const model = page.getByTestId(`${id}:model`);

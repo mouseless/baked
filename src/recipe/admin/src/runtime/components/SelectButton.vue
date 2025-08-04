@@ -39,18 +39,15 @@ const loading = context.loading();
 const path = context.path();
 const selected = ref();
 
-if(stateful) {
-  model.value = selectButtonStates[path] || model.value;
-}
-
-if(!loading.value) {
-  setSelected(model.value);
-} else {
-  watch(() => data, () => setSelected(model.value));
-}
-
-// two way binding between model and selected
-watch(model, newModel => setSelected(newModel));
+watch(
+  [() => data, () => model.value],
+  ([_data, _model]) => {
+    if(!_data) { return; }
+    const value = stateful ? (selectButtonStates[path] ?? _model) : _model;
+    setSelected(value);
+  },
+  { immediate: true }
+);
 watch(selected, newSelected => setModel(newSelected));
 
 function getOptionLabel(slotProps) {
@@ -75,5 +72,12 @@ function setSelected(value) {
   selected.value = optionValue
     ? data.filter(o => o[optionValue] === value)[0]
     : value;
+
+  if(stateful) {
+    const selectedValue = optionValue ? selected.value?.[optionValue] : selected.value;
+    if(model.value !== selectedValue) {
+      setModel(selected.value);
+    }
+  }
 }
 </script>
