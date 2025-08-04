@@ -140,7 +140,6 @@ test.describe("Stateful and Inline", () => {
   });
 });
 
-
 test.describe("Set Selected", () => {
   const id = "Set Selected";
 

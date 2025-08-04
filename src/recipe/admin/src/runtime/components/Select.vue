@@ -56,7 +56,6 @@ watch(
   ([_data, _model]) => {
     if(!_data) { return; }
     const value = stateful ? (selectStates[path] ?? _model) : _model;
-
     setSelected(value);
   },
   { immediate: true }
