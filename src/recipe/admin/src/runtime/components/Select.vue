@@ -45,7 +45,6 @@ const { schema, data } = defineProps({
 const model = defineModel({ type: null, required: true });
 
 const { label, localizeLabel, optionLabel, optionValue, showClear, stateful } = schema;
-
 const loading = context.loading();
 const path = context.path();
 const selected = ref();
@@ -91,6 +90,13 @@ function setSelected(value) {
   selected.value = optionValue
     ? data.filter(o => o[optionValue] === value)[0]
     : value;
+
+  if(stateful) {
+    const selectedValue = optionValue ? selected.value?.[optionValue] : selected.value;
+    if(model.value !== selectedValue) {
+      setModel(selected.value);
+    }
+  }
 }
 </script>
 <style lang="scss">
