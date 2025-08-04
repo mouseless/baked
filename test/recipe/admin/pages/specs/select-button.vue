@@ -50,7 +50,7 @@ const variants = [
   {
     name: "Stateful and Not Inline",
     descriptor: giveMe.aSelectButton({
-      stateful: false,
+      stateful: true,
       data: ["OPTION 1", "OPTION 2"],
       inline: false
     }),
