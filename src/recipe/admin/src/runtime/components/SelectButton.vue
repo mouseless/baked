@@ -40,10 +40,10 @@ const path = context.path();
 const selected = ref();
 
 watch(
-  [() => data, () => model.value, () => selectButtonStates[path]],
-  ([_data, _model, _stateful]) => {
-    if(!_data) return;
-    const value = stateful ? (_stateful ?? _model) : _model;
+  [() => data, () => model.value],
+  ([_data, _model]) => {
+    if(!_data) { return; }
+    const value = stateful ? (selectButtonStates[path] ?? _model) : _model;
     setSelected(value);
   },
   { immediate: true }
@@ -67,10 +67,17 @@ function setModel(selected) {
 
 function setSelected(value) {
   // data can be null when data is async
-  if(!data) return;
+  if(!data) { return; }
 
   selected.value = optionValue
     ? data.filter(o => o[optionValue] === value)[0]
     : value;
+
+  if(stateful) {
+    const selectedValue = optionValue ? selected.value?.[optionValue] : selected.value;
+    if(model.value !== selectedValue) {
+      setModel(selected.value);
+    }
+  }
 }
 </script>

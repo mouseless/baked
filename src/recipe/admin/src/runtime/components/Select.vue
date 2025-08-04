@@ -45,16 +45,17 @@ const { schema, data } = defineProps({
 const model = defineModel({ type: null, required: true });
 
 const { label, localizeLabel, optionLabel, optionValue, showClear, stateful } = schema;
+
 const loading = context.loading();
 const path = context.path();
 const selected = ref();
 
 // two way binding between model and selected
 watch(
-  [() => data, () => model.value, () => selectStates[path]],
-  ([_data, _model, _state]) => {
-    if(!_data) return;
-    const value = stateful ? (_state ?? _model) : _model;
+  [() => data, () => model.value],
+  ([_data, _model]) => {
+    if(!_data) { return; }
+    const value = stateful ? (selectStates[path] ?? _model) : _model;
 
     setSelected(value);
   },
@@ -85,7 +86,7 @@ function setModel(selected) {
 
 function setSelected(value) {
   // data can be null when data is async
-  if(!data) return;
+  if(!data) { return; }
 
   selected.value = optionValue
     ? data.filter(o => o[optionValue] === value)[0]
