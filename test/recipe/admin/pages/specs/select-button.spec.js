@@ -96,8 +96,8 @@ test.describe("Allow Empty", () => {
   });
 });
 
-test.describe("Stateful", () => {
-  const id = "Stateful";
+test.describe("Stateful and Not Inline", () => {
+  const id = "Stateful and Not Inline";
 
   test("initial model is selected when state is empty", async({page}) => {
     const model = page.getByTestId(`${id}:model`);
@@ -117,6 +117,29 @@ test.describe("Stateful", () => {
     await expect(model).toHaveText("OPTION 2");
   });
 });
+
+test.describe("Stateful and Inline", () => {
+  const id = "Stateful and Inline";
+
+  test("initial model is selected when state is empty", async({page}) => {
+    const model = page.getByTestId(`${id}:model`);
+
+    await expect(model).toHaveText("OPTION 1");
+  });
+
+  test("retains selected state", async({page}) => {
+    const component = page.getByTestId(id);
+    const options = component.locator(primevue.selectbutton.option);
+    const model = page.getByTestId(`${id}:model`);
+    await options.nth(1).click();
+
+    await page.locator("a[href='/specs']").nth(0).click();
+    await page.locator("a[href='/specs/select-button']").nth(0).click();
+
+    await expect(model).toHaveText("OPTION 2");
+  });
+});
+
 
 test.describe("Set Selected", () => {
   const id = "Set Selected";

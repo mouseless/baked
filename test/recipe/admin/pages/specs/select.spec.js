@@ -122,8 +122,8 @@ test.describe("Long Label", () => {
   });
 });
 
-test.describe("Stateful", () => {
-  const id = "Stateful";
+test.describe("Stateful and Not Inline", () => {
+  const id = "Stateful and Not Inline";
 
   test("initial model is selected when state is empty", async({page}) => {
     const model = page.getByTestId(`${id}:model`);
