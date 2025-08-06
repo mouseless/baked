@@ -11,3 +11,5 @@
 - `DataTable.vue` now includes parameter values in export file names
 - `RemoteData.Options` has changed to `RemoteData.Attribute` to avoid confusion
   with `ofetch`'s options parameter
+- The select input on the cache page was not working properly, improved.
+
