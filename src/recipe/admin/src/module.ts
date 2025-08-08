@@ -54,13 +54,13 @@ export default defineNuxtModule<ModuleOptions>({
     const resolver = createResolver(import.meta.url);
     const entryProjectResolver = createResolver(_nuxt.options.rootDir);
 
-    let _app = _options.app;
-    if (!_app) {
+    let { app } = _options;
+    if (!app) {
       try {
-        _app = require(`${_nuxt.options.rootDir}/.baked/app.json`);
+        app = require(`${_nuxt.options.rootDir}/.baked/app.json`);
       } catch {
         try {
-          _app = require(`${_nuxt.options.rootDir}/app.json`);
+          app = require(`${_nuxt.options.rootDir}/app.json`);
         } catch (e) {
           console.warn('[baked-recipe-admin] Could not auto-load app.json:', e);
         }
@@ -68,7 +68,7 @@ export default defineNuxtModule<ModuleOptions>({
     }
 
     // passing module's options to runtime config for further access
-    _nuxt.options.runtimeConfig.public.error = _app?.error;
+    _nuxt.options.runtimeConfig.public.error = app?.error;
     _nuxt.options.runtimeConfig.public.primevue = _options.primevue;
     _nuxt.options.runtimeConfig.public.components = _options.components;
     _nuxt.options.runtimeConfig.public.composables = _options.composables;
@@ -90,7 +90,7 @@ export default defineNuxtModule<ModuleOptions>({
     addImportsDir(resolver.resolve("./runtime/composables"));
 
     // plugins that comes through the app descriptor
-    for(const plugin of _app?.plugins ?? []) {
+    for(const plugin of app?.plugins ?? []) {
       _nuxt.options.runtimeConfig.public[plugin.name] = plugin;
       addPlugin(resolver.resolve(`./runtime/plugins/${plugin.name}`));
     }
@@ -107,10 +107,10 @@ export default defineNuxtModule<ModuleOptions>({
       vueI18n: entryProjectResolver.resolve("./i18n.config.ts"),
       langDir: entryProjectResolver.resolve("./"),
       strategy: "no_prefix",
-      locales: _app?.i18n?.supportedLanguages?.map((i: any) => {
+      locales: app?.i18n?.supportedLanguages?.map((i: any) => {
         const files = [
           entryProjectResolver.resolve(`.baked/locale.${i.code}.json`),
-          entryProjectResolver.resolve(`./locales/locale.${i.code}.json`)
+          entryProjectResolver.resolve(`locales/locale.${i.code}.json`)
         ];
 
         return {
@@ -119,7 +119,7 @@ export default defineNuxtModule<ModuleOptions>({
           files
         }
       }),
-      defaultLocale: _app?.i18n?.defaultLanguage?.code,
+      defaultLocale: app?.i18n?.defaultLanguage?.code,
       detectBrowserLanguage: {
         useCookie: true,
         cookieKey: 'i18n_cookie'
