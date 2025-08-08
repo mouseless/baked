@@ -100,12 +100,6 @@ watch(Object.values(values).map(p => p.model), async newValues => {
 });
 
 async function setDefaults() {
-  if(parameters
-    .filter(p => p.required)
-    .map(p => values[p.name].query)
-    .every(q => q.value)
-  ) { return; }
-
   const query = { };
   for(const p of parameters ) {
     query[p.name] = values[p.name].query.value;
