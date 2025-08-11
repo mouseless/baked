@@ -21,5 +21,13 @@ public class InMemoryCachingFeature(Action<MemoryCacheOptions> _options, Setting
                 new CacheApplicationPlugin { ExpirationInMinutes = (int)clientExpiration.GetValue().TotalMinutes }
             );
         });
+
+        configurator.ConfigureTestConfiguration(test =>
+        {
+            test.TearDowns.Add(spec =>
+            {
+                spec.GiveMe.TheMemoryCache(clear: true);
+            });
+        });
     }
 }

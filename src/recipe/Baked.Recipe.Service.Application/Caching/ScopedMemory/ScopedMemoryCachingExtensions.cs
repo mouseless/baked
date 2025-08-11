@@ -3,7 +3,7 @@ using Baked.Caching.ScopedMemory;
 using Baked.Runtime;
 using Baked.Testing;
 using Microsoft.Extensions.Caching.Memory;
-using Shouldly;
+using NUnit.Framework;
 
 namespace Baked;
 
@@ -22,12 +22,11 @@ public static class ScopedMemoryCachingExtensions
 
         if (clear)
         {
-            (memoryCache as MemoryCache)?.Clear();
+            if (memoryCache is not MemoryCache concreteMemoryCache) { throw new AssertionException("Cache cannot be cleared because it is not a `MemoryCache` instance"); }
+
+            concreteMemoryCache.Clear();
         }
 
         return memoryCache;
     }
-
-    public static void ShouldHaveCount(this IMemoryCache memoryCache, int count) =>
-        ((MemoryCache)memoryCache).Count.ShouldBe(count);
 }
