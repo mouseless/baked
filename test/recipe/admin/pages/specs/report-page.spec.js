@@ -105,6 +105,26 @@ test.describe("Narrow", () => {
   });
 });
 
+test.describe("Show When", () => {
+  const id = "Show When";
+
+  test("tab 2 is hidden when showTab2 is false", async({page}) => {
+    const component = page.getByTestId(id);
+    await expect(component.getByTestId("icon 2")).toBeVisible();
+    await expect(component.getByTestId("tab-2-content")).not.toBeVisible();
+    await expect(component.getByTestId("tab-1-content")).toHaveText("CONTENT 1");
+  });
+
+  test("tab 2 is shown when showTab2 is true", async({page}) => {
+    const component = page.getByTestId(id);
+    await component.locator("[data-testid=\"icon 2\"]").click();
+    await expect(component.getByTestId("icon 1")).toBeVisible();
+    await expect(component.getByTestId("tab-2-content")).toBeVisible();
+    await expect(component.getByTestId("tab-2-content")).toHaveText("CONTENT 2");
+    await expect(component.getByTestId("tab-1-content")).not.toBeVisible();
+  });
+});
+
 test.describe("Query Parameters", () => {
   const id = "Query Parameters";
 

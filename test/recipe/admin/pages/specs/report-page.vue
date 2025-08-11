@@ -46,6 +46,36 @@ const variants = [
     })
   },
   {
+    name: "Show When",
+    descriptor: giveMe.aReportPage({
+      data: {
+        showTab2: false
+      },
+      tabs: [
+        giveMe.aReportPageTab({
+          id: "tab-1",
+          title: "Spec: Tab 1",
+          icon: giveMe.anExpected({ testId: "icon 1", value: "I." }),
+          contents: [
+            giveMe.aReportPageTabContent({
+              component: giveMe.anExpected({ testId: "tab-1-content", value: "CONTENT 1" })
+            })
+          ]
+        }),
+        giveMe.aReportPageTab({
+          id: "tab-2",
+          title: "Spec: Tab 2",
+          icon: giveMe.anExpected({ testId: "icon 2", value: "II." }),
+          contents: [
+            giveMe.aReportPageTabContent({
+              component: giveMe.anExpected({ testId: "tab-2-content", value: "CONTENT 2" })
+            })
+          ]
+        })
+      ]
+    })
+  },
+  {
     name: "Single Tab",
     descriptor: giveMe.aReportPage({
       tabs: [
