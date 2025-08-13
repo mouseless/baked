@@ -79,8 +79,10 @@ function setSelected(value) {
   if(selectionContextKey) {
     for(const other of others) {
       page[`${selectionContextKey}:${other}`] = false;
+      page[`!${selectionContextKey}:${other}`] = true;
     }
     page[`${selectionContextKey}:${selected.value}`] = true;
+    page[`!${selectionContextKey}:${selected.value}`] = false;
   }
 
   if(stateful) {

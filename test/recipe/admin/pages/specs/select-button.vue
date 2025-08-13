@@ -85,7 +85,8 @@ const variants = [
       data: ["OPTION 1", "OPTION 2"],
       selectionContextKey: "test:select-button"
     }),
-    model: ref("OPTION 1")
+    model: ref("OPTION 1"),
+    pageContextKeys: ["test:select-button:OPTION 1", "test:select-button:OPTION 2"]
   }
 ];
 </script>
