@@ -7,8 +7,12 @@
   />
 </template>
 <script setup>
-import { ref } from "vue";
+import { ref, reactive } from "vue";
 import giveMe from "~/utils/giveMe";
+import { useContext } from "#imports";
+
+const context = useContext();
+context.setPage(reactive({}));
 
 const variants = [
   {
@@ -74,6 +78,14 @@ const variants = [
       inline: false
     }),
     model: ref("VALUE_B")
+  },
+  {
+    name: "Set Selected value to page context",
+    descriptor: giveMe.aSelectButton({
+      data: ["OPTION 1", "OPTION 2"],
+      selectionContextKey: "test:select-button"
+    }),
+    model: ref("OPTION 1")
   }
 ];
 </script>

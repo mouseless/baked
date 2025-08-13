@@ -400,19 +400,20 @@ export default {
     };
   },
 
-  aSelectButton({ allowEmpty, localizeLabel, optionLabel, optionValue, stateful, data, inline } = {}) {
+  aSelectButton({ allowEmpty, localizeLabel, optionLabel, optionValue, selectionContextKey, stateful, data, inline } = {}) {
     data = $(data, ["Test Option 1", "Test Option 2"]);
     inline = $(inline, true);
     allowEmpty = $(allowEmpty, false);
     stateful = $(stateful, false);
     localizeLabel = $(localizeLabel, false);
+    selectionContextKey = $(selectionContextKey, false);
     data = inline
       ? { type: "Inline", value: data }
       : { type: "Computed", composable: "useDelayedData", args: [1, data] };
 
     return {
       type: "SelectButton",
-      schema: { allowEmpty, localizeLabel, optionLabel, optionValue, stateful },
+      schema: { allowEmpty, localizeLabel, optionLabel, optionValue, selectionContextKey, stateful },
       data
     };
   },

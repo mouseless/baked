@@ -301,7 +301,7 @@ public class ConfigurationOverriderFeature : IFeature
                             Parameter("required", Select(l("Required"), data: Inline(new[] { l("Required 1"), l("Required 2") })),
                                 required: true
                             ),
-                            Parameter("optional", SelectButton(Inline(new[] { l("Optional 1"), l("Optional 2") }), allowEmpty: true, selectionContextKey: "report:optional"))
+                            Parameter("optional", SelectButton(Inline(new[] { l("Optional 1"), l("Optional 2") }), allowEmpty: true))
                         ],
                         tabs:
                         [
@@ -342,8 +342,7 @@ public class ConfigurationOverriderFeature : IFeature
                                             ),
                                             collapsed: true
                                         ),
-                                        narrow: true,
-                                        showWhen: "report:optional:Optional 1"
+                                        narrow: true
                                     )
                                 ]
                             ),
