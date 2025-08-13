@@ -381,10 +381,11 @@ export default {
     return { component, narrow };
   },
 
-  aSelect({ label, localizeLabel, optionLabel, optionValue, showClear, stateful, data, inline } = {}) {
+  aSelect({ label, localizeLabel, optionLabel, optionValue, showClear, selectionContextKey, stateful, data, inline } = {}) {
     label = $(label, "Spec: Test");
     localizeLabel = $(localizeLabel, false);
     showClear = $(showClear, false);
+    selectionContextKey = $(selectionContextKey, false);
     stateful = $(stateful, false);
     data = $(data, ["Test Option 1", "Test Option 2"]);
     inline = $(inline, true);
@@ -395,7 +396,7 @@ export default {
 
     return {
       type: "Select",
-      schema: { label, localizeLabel, optionLabel, optionValue, showClear, stateful },
+      schema: { label, localizeLabel, optionLabel, optionValue, showClear, selectionContextKey, stateful },
       data
     };
   },
