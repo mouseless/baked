@@ -59,11 +59,7 @@ export default defineNuxtModule<ModuleOptions>({
       try {
         app = require(`${_nuxt.options.rootDir}/.baked/app.json`);
       } catch {
-        try {
-          app = require(`${_nuxt.options.rootDir}/app.json`);
-        } catch (e) {
-          console.warn('[baked-recipe-admin] Could not auto-load app.json:', e);
-        }
+        console.warn('[baked-recipe-admin] Could not auto-load app.json');
       }
     }
 
