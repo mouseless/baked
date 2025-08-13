@@ -62,7 +62,8 @@
           "type": "SelectButton",
           "schema": {
             "allowEmpty": true,
-            "localizeLabel": true
+            "localizeLabel": true,
+            "selectionContextKey": "report:optional"
           },
           "data": {
             "type": "Inline",
@@ -181,7 +182,8 @@
                 }
               }
             },
-            "narrow": true
+            "narrow": true,
+            "showWhen": "report:optional:Optional 1"
           }
         ],
         "icon": {

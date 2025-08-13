@@ -301,112 +301,113 @@ public class ConfigurationOverriderFeature : IFeature
                             Parameter("required", Select(l("Required"), data: Inline(new[] { l("Required 1"), l("Required 2") })),
                                 required: true
                             ),
-                            Parameter("optional", SelectButton(Inline(new[] { l("Optional 1"), l("Optional 2") }), allowEmpty: true))
+                            Parameter("optional", SelectButton(Inline(new[] { l("Optional 1"), l("Optional 2") }), allowEmpty: true, selectionContextKey: "report:optional"))
                         ],
                         tabs:
                         [
                             ReportPageTab("single-value", l("Single Value"),
-                            icon: Icon("pi-box"),
-                            contents:
-                            [
-                                ReportPageTabContent(
-                                    component: DataPanel(l(wide.Name),
-                                        content: String(
-                                            data: Remote($"/{wide.GetSingle<ActionModelAttribute>().GetRoute()}",
-                                                headers: headers,
-                                                query: Computed(Composables.UseQuery)
-                                            )
+                                icon: Icon("pi-box"),
+                                contents:
+                                [
+                                    ReportPageTabContent(
+                                        component: DataPanel(l(wide.Name),
+                                            content: String(
+                                                data: Remote($"/{wide.GetSingle<ActionModelAttribute>().GetRoute()}",
+                                                    headers: headers,
+                                                    query: Computed(Composables.UseQuery)
+                                                )
+                                            ),
+                                            collapsed: false
+                                        )
+                                    ),
+                                    ReportPageTabContent(
+                                        component: DataPanel(l(left.Name),
+                                            content: String(
+                                                data: Remote($"/{left.GetSingle<ActionModelAttribute>().GetRoute()}",
+                                                    headers: headers,
+                                                    query: Computed(Composables.UseQuery)
+                                                )
+                                            ),
+                                            collapsed: true
                                         ),
-                                        collapsed: false
+                                        narrow: true
+                                    ),
+                                    ReportPageTabContent(
+                                        component: DataPanel(l(right.Name),
+                                            content: String(
+                                                data: Remote($"/{right.GetSingle<ActionModelAttribute>().GetRoute()}",
+                                                    headers: headers,
+                                                    query: Computed(Composables.UseQuery)
+                                                )
+                                            ),
+                                            collapsed: true
+                                        ),
+                                        narrow: true,
+                                        showWhen: "report:optional:Optional 1"
                                     )
-                                ),
-                                ReportPageTabContent(
-                                    component: DataPanel(l(left.Name),
-                                        content: String(
-                                            data: Remote($"/{left.GetSingle<ActionModelAttribute>().GetRoute()}",
-                                                headers: headers,
-                                                query: Computed(Composables.UseQuery)
-                                            )
-                                        ),
-                                        collapsed: true
-                                    ),
-                                    narrow: true
-                                ),
-                                ReportPageTabContent(
-                                    component: DataPanel(l(right.Name),
-                                        content: String(
-                                            data: Remote($"/{right.GetSingle<ActionModelAttribute>().GetRoute()}",
-                                                headers: headers,
-                                                query: Computed(Composables.UseQuery)
-                                            )
-                                        ),
-                                        collapsed: true
-                                    ),
-                                    narrow: true
-                                )
-                            ]
-                        ),
-                        ReportPageTab("data-table", l("Data Table"),
-                            icon: Icon("pi-table"),
-                            contents:
-                            [
-                                ReportPageTabContent(
-                                    component: DataPanel(l(first.Name),
-                                        parameters:
-                                        [
-                                            Parameter("count",
-                                                component: Select(l("Count"), Inline(Enum.GetNames<CountOptions>().Select(name => l(name))), stateful: true),
-                                                defaultValue: CountOptions.Default
-                                            )
-                                        ],
-                                        content: DataTable(
-                                            columns:
+                                ]
+                            ),
+                            ReportPageTab("data-table", l("Data Table"),
+                                icon: Icon("pi-table"),
+                                contents:
+                                [
+                                    ReportPageTabContent(
+                                        component: DataPanel(l(first.Name),
+                                            parameters:
                                             [
-                                                DataTableColumn("label", title: l("Label"), minWidth: true),
-                                                DataTableColumn("column1", title: l("Column 1")),
-                                                DataTableColumn("column2", title: l("Column 2")),
-                                                DataTableColumn("column3", title: l("Column 3"))
+                                                Parameter("count",
+                                                    component: Select(l("Count"), Inline(Enum.GetNames<CountOptions>().Select(name => l(name))), stateful: true),
+                                                    defaultValue: CountOptions.Default
+                                                )
                                             ],
-                                            dataKey: "label",
-                                            paginator: true,
-                                            rows: 5,
-                                            data: Remote($"/{first.GetSingle<ActionModelAttribute>().GetRoute()}",
-                                                headers: headers,
-                                                query: Composite([Computed(Composables.UseQuery), Injected()])
+                                            content: DataTable(
+                                                columns:
+                                                [
+                                                    DataTableColumn("label", title: l("Label"), minWidth: true),
+                                                    DataTableColumn("column1", title: l("Column 1")),
+                                                    DataTableColumn("column2", title: l("Column 2")),
+                                                    DataTableColumn("column3", title: l("Column 3"))
+                                                ],
+                                                dataKey: "label",
+                                                paginator: true,
+                                                rows: 5,
+                                                data: Remote($"/{first.GetSingle<ActionModelAttribute>().GetRoute()}",
+                                                    headers: headers,
+                                                    query: Composite([Computed(Composables.UseQuery), Injected()])
+                                                )
                                             )
                                         )
-                                    )
-                                ),
-                                ReportPageTabContent(
-                                    component: DataPanel(l(second.Name),
-                                        parameters:
-                                        [
-                                            Parameter("count",
-                                                component: SelectButton( data: Inline(Enum.GetNames<CountOptions>().Select(name => l(name))), stateful: true),
-                                                defaultValue: CountOptions.Default
-                                            )
-                                        ],
-                                        content: DataTable(
-                                            columns:
+                                    ),
+                                    ReportPageTabContent(
+                                        component: DataPanel(l(second.Name),
+                                            parameters:
                                             [
-                                                DataTableColumn("label", title: l("Label"), minWidth: true),
-                                                DataTableColumn("column1", title: l("Column 1")),
-                                                DataTableColumn("column2", title: l("Column 2")),
-                                                DataTableColumn("column3", title: l("Column 3"))
+                                                Parameter("count",
+                                                    component: SelectButton( data: Inline(Enum.GetNames<CountOptions>().Select(name => l(name))), stateful: true),
+                                                    defaultValue: CountOptions.Default
+                                                )
                                             ],
-                                            dataKey: "label",
-                                            paginator: true,
-                                            rows: 5,
-                                            data: Remote($"/{second.GetSingle<ActionModelAttribute>().GetRoute()}",
-                                                headers: headers,
-                                                query: Composite([Computed(Composables.UseQuery), Injected()])
-                                            )
-                                        ),
-                                        collapsed: true
+                                            content: DataTable(
+                                                columns:
+                                                [
+                                                    DataTableColumn("label", title: l("Label"), minWidth: true),
+                                                    DataTableColumn("column1", title: l("Column 1")),
+                                                    DataTableColumn("column2", title: l("Column 2")),
+                                                    DataTableColumn("column3", title: l("Column 3"))
+                                                ],
+                                                dataKey: "label",
+                                                paginator: true,
+                                                rows: 5,
+                                                data: Remote($"/{second.GetSingle<ActionModelAttribute>().GetRoute()}",
+                                                    headers: headers,
+                                                    query: Composite([Computed(Composables.UseQuery), Injected()])
+                                                )
+                                            ),
+                                            collapsed: true
+                                        )
                                     )
-                                )
-                            ]
-                        )
+                                ]
+                            )
                         ]
                     ));
                 });

@@ -282,14 +282,16 @@ public static class Components
         bool? allowEmpty = default,
         string? optionLabel = default,
         string? optionValue = default,
-        bool? stateful = default
+        bool? stateful = default,
+        string? selectionContextKey = default
     ) => new(new()
     {
         AllowEmpty = allowEmpty,
         OptionLabel = optionLabel,
         OptionValue = optionValue,
         LocalizeLabel = data.RequireLocalization,
-        Stateful = stateful
+        Stateful = stateful,
+        SelectionContextKey = selectionContextKey
     })
     { Data = data };
 
