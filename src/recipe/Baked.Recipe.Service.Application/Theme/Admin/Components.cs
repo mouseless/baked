@@ -97,12 +97,23 @@ public static class Components
     public static DataTable.Export DataTableExport(string csvSeparator, string fileName,
         string? formatter = default,
         string? buttonIcon = default,
-        string? buttonLabel = default
+        string? buttonLabel = default,
+        bool? appendParameters = default,
+        bool? localizeParameters = default,
+        string? parameterSeparator = default
     )
     {
         buttonIcon ??= "pi pi-download";
 
-        return new(csvSeparator, fileName) { Formatter = formatter, ButtonIcon = buttonIcon, ButtonLabel = buttonLabel };
+        return new(csvSeparator, fileName)
+        {
+            Formatter = formatter,
+            ButtonIcon = buttonIcon,
+            ButtonLabel = buttonLabel,
+            AppendParameters = appendParameters,
+            LocalizeParameters = localizeParameters,
+            ParameterSeparator = parameterSeparator
+        };
     }
 
     public static DataTable.Footer DataTableFooter(string label, List<DataTable.Column> columns) =>

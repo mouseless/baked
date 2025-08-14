@@ -39,6 +39,9 @@ public record DataTable : IComponentSchema
         public string? Formatter { get; set; }
         public string? ButtonIcon { get; set; }
         public string? ButtonLabel { get; set; }
+        public bool? AppendParameters { get; set; }
+        public bool? LocalizeParameters { get; set; }
+        public string? ParameterSeparator { get; set; }
     }
 
     public record VirtualScroller(int ItemSize)
