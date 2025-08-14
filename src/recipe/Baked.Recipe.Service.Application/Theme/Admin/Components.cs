@@ -278,14 +278,16 @@ public static class Components
         string? optionLabel = default,
         string? optionValue = default,
         bool? showClear = default,
-        bool? stateful = default
+        bool? stateful = default,
+        string? selectionPageContextKey = default
     ) => new(new(label)
     {
         OptionLabel = optionLabel,
         OptionValue = optionValue,
         LocalizeLabel = data.RequireLocalization,
         ShowClear = showClear,
-        Stateful = stateful
+        Stateful = stateful,
+        SelectionPageContextKey = selectionPageContextKey
     })
     { Data = data };
 
@@ -293,14 +295,16 @@ public static class Components
         bool? allowEmpty = default,
         string? optionLabel = default,
         string? optionValue = default,
-        bool? stateful = default
+        bool? stateful = default,
+        string? selectionPageContextKey = default
     ) => new(new()
     {
         AllowEmpty = allowEmpty,
         OptionLabel = optionLabel,
         OptionValue = optionValue,
         LocalizeLabel = data.RequireLocalization,
-        Stateful = stateful
+        Stateful = stateful,
+        SelectionPageContextKey = selectionPageContextKey
     })
     { Data = data };
 

@@ -11,4 +11,5 @@ public record Select(string Label)
     public bool? LocalizeLabel { get; set; }
     public bool? ShowClear { get; set; }
     public bool? Stateful { get; set; }
+    public string? SelectionPageContextKey { get; set; }
 }
