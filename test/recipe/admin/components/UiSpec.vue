@@ -83,9 +83,12 @@
   </div>
 </template>
 <script setup>
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, reactive, ref } from "vue";
 import { useContext, usePages } from "#imports";
 import { Divider } from "primevue";
+
+const context = useContext();
+const pages = usePages();
 
 const { title, variants, noLoadingVariant } = defineProps({
   title: { type: String, required: true },
@@ -98,12 +101,10 @@ const { title, variants, noLoadingVariant } = defineProps({
   variantClass: { type: String, default: "inline-block" }
 });
 
-const pages = usePages();
-const context = useContext();
-const page = context.page();
+const page = reactive({});
 const description = ref();
 const loaded = ref(false);
-
+const models = variants.map(v => v.model);
 const allVariants = computed(() => {
   if(noLoadingVariant) { return variants; }
   if(variants.length === 0) { return variants; }
@@ -120,7 +121,7 @@ const allVariants = computed(() => {
   return result;
 });
 
-const models = variants.map(v => v.model);
+context.setPage(page);
 
 onMounted(async() => {
   const specs = await pages.fetch("specs");

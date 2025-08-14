@@ -6,12 +6,8 @@
   />
 </template>
 <script setup>
-import { ref, reactive } from "vue";
+import { ref } from "vue";
 import giveMe from "~/utils/giveMe";
-import { useContext } from "#imports";
-
-const context = useContext();
-context.setPage(reactive({}));
 
 const variants = [
   {
