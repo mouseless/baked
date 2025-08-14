@@ -140,19 +140,29 @@ test.describe("Stateful and Inline", () => {
   });
 });
 
-test.describe("Page context", () => {
-  const id = "Page context";
+test.describe("Page Context", () => {
+  const id = "Page Context";
 
   test("selected option is set to the page context with the given key", async({page}) => {
+    const pageContext = page.getByTestId(`${id}:page-context`);
+
+    await expect(pageContext).toHaveText(/test:select-button:OPTION 1/);
+  });
+
+  test("not selected option is set to the page context with the given key with !", async({page}) => {
+    const pageContext = page.getByTestId(`${id}:page-context`);
+
+    await expect(pageContext).toHaveText(/!test:select-button:OPTION 2/);
+  });
+
+  test("when selection changes page context is updated", async({page}) => {
     const component = page.getByTestId(id);
+    const pageContext = page.getByTestId(`${id}:page-context`);
     const options = component.locator(primevue.selectbutton.option);
-    const model = page.getByTestId(`${id}:model`);
 
     await options.nth(1).click();
-    const key = page.getByTestId("test:select-button:OPTION 2");
 
-    await expect(model).toHaveText("OPTION 2");
-    await expect(key).toHaveText("test:select-button:OPTION 2");
+    await expect(pageContext).toHaveText(/test:select-button:OPTION 2/);
   });
 });
 

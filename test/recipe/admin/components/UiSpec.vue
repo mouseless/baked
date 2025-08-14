@@ -71,16 +71,10 @@
             </div>
             <div
               v-if="variant.pageContextKeys"
+              :data-testid="`${variant.name}:page-context`"
               class="inline-block border-2 border-gray-500 rounded p-2"
             >
-              <div
-                v-for="key in variant.pageContextKeys.filter(k => page[k])"
-                :key
-              >
-                <span :data-testid="`${key}`">
-                  {{ key }}
-                </span>
-              </div>
+              {{ variant.pageContextKeys.filter(k => page[k]).join(", ") }}
             </div>
           </div>
         </div>

@@ -94,11 +94,11 @@ function setSelected(value) {
 
   if(selectionPageContextKey) {
     const values = data.filter(o => o !== value);
-
     for(const value of values) {
       page[`${selectionPageContextKey}:${value}`] = false;
       page[`!${selectionPageContextKey}:${value}`] = !page[`${selectionPageContextKey}:${value}`];
     }
+
     page[`${selectionPageContextKey}:${selected.value}`] = true;
     page[`!${selectionPageContextKey}:${selected.value}`] = !page[`${selectionPageContextKey}:${selected.value}`];
   }

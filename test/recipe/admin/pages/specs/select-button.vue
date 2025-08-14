@@ -80,13 +80,13 @@ const variants = [
     model: ref("VALUE_B")
   },
   {
-    name: "Page context",
+    name: "Page Context",
     descriptor: giveMe.aSelectButton({
       data: ["OPTION 1", "OPTION 2"],
       selectionPageContextKey: "test:select-button"
     }),
     model: ref("OPTION 1"),
-    pageContextKeys: ["test:select-button:OPTION 1", "test:select-button:OPTION 2"]
+    pageContextKeys: ["test:select-button:OPTION 1", "test:select-button:OPTION 2", "!test:select-button:OPTION 1", "!test:select-button:OPTION 2"]
   }
 ];
 </script>

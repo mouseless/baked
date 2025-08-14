@@ -188,19 +188,29 @@ test.describe("Set Selected with Localization", () => {
   });
 });
 
-test.describe("Page context", () => {
-  const id = "Page context";
+test.describe("Page Context", () => {
+  const id = "Page Context";
 
   test("selected option is set to the page context with the given key", async({page}) => {
+    const pageContext = page.getByTestId(`${id}:page-context`);
+
+    await expect(pageContext).toHaveText(/test:select:ValueA/);
+  });
+
+  test("not selected option is set to the page context with the given key with !", async({page}) => {
+    const pageContext = page.getByTestId(`${id}:page-context`);
+
+    await expect(pageContext).toHaveText(/test:select:ValueB/);
+  });
+
+  test("when selection changes page context is updated", async({page}) => {
     const component = page.getByTestId(id);
+    const pageContext = page.getByTestId(`${id}:page-context`);
     const options = page.locator(primevue.select.option);
 
-    const model = page.getByTestId(`${id}:model`);
     await component.click();
     await options.nth(1).click();
 
-    const key = page.getByTestId("test:select:ValueB");
-    await expect(model).toHaveText("ValueB");
-    await expect(key).toHaveText("test:select:ValueB");
+    await expect(pageContext).toHaveText(/test:select:ValueB/);
   });
 });
