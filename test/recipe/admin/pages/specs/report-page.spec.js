@@ -108,20 +108,54 @@ test.describe("Narrow", () => {
 test.describe("Show When", () => {
   const id = "Show When";
 
-  test("tab 2 is hidden when showTab2 is false", async({page}) => {
+  test("tab is hidden when there is no selection", async({page}) => {
     const component = page.getByTestId(id);
-    await expect(component.getByTestId("icon 2")).toBeVisible();
-    await expect(component.getByTestId("tab-2-content")).not.toBeVisible();
-    await expect(component.getByTestId("tab-1-content")).toHaveText("CONTENT 1");
+
+    await expect(component.getByTestId("content-2")).not.toBeAttached();
   });
 
-  test("tab 2 is shown when showTab2 is true", async({page}) => {
+  test("tab content is hidden when there is no selection", async({page}) => {
     const component = page.getByTestId(id);
-    await component.locator("[data-testid=\"icon 2\"]").click();
-    await expect(component.getByTestId("icon 1")).toBeVisible();
-    await expect(component.getByTestId("tab-2-content")).toBeVisible();
-    await expect(component.getByTestId("tab-2-content")).toHaveText("CONTENT 2");
-    await expect(component.getByTestId("tab-1-content")).not.toBeVisible();
+
+    await expect(component.getByTestId("content-1")).not.toBeAttached();
+  });
+
+  test("tab content is shown when selection is SHOW", async({page}) => {
+    const component = page.getByTestId(id);
+
+    await component.locator("button").nth(0).click(); // toggle
+
+    await expect(component.getByTestId("content-1")).toHaveText("CONTENT 1");
+  });
+
+  test("tab is shown when selection is SHOW", async({page}) => {
+    const component = page.getByTestId(id);
+
+    await component.locator("button").nth(0).click(); // toggle
+    await component.locator(".b--tab-2").click(); // click Tab 2
+
+    await expect(component.getByTestId("content-2")).toHaveText("CONTENT 2");
+  });
+
+  test("when tab gets hidden, first shown tab is selected ", async({page}) => {
+    const component = page.getByTestId(id);
+
+    await component.locator("button").nth(0).click(); // toggle
+    await component.locator(".b--tab-2").click(); // click Tab 2
+    await component.locator("button").nth(0).click(); // toggle
+
+    await expect(component.locator(".p-tab-active")).toHaveText("Tab 1");
+  });
+
+  test("when hidden tab gets shown again, it is automatically selected", async({page}) => {
+    const component = page.getByTestId(id);
+
+    await component.locator("button").nth(0).click(); // toggle
+    await component.locator(".b--tab-2").click(); // click Tab 2
+    await component.locator("button").nth(0).click(); // toggle
+    await component.locator("button").nth(0).click(); // toggle
+
+    await expect(component.locator(".p-tab-active")).toHaveText("Tab 2");
   });
 });
 

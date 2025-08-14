@@ -48,27 +48,35 @@ const variants = [
   {
     name: "Show When",
     descriptor: giveMe.aReportPage({
-      data: {
-        showTab2: false
-      },
+      queryParameters: [
+        giveMe.aParameter({
+          component: giveMe.aSelectButton({
+            data: ["SHOW"],
+            selectionPageContextKey: "selection-is",
+            allowEmpty: true
+          })
+        })
+      ],
       tabs: [
         giveMe.aReportPageTab({
           id: "tab-1",
           title: "Spec: Tab 1",
-          icon: giveMe.anExpected({ testId: "icon 1", value: "I." }),
           contents: [
+            giveMe.aReportPageTabContent(),
             giveMe.aReportPageTabContent({
-              component: giveMe.anExpected({ testId: "tab-1-content", value: "CONTENT 1" })
+              component: giveMe.anExpected({ testId: "content-1", value: "CONTENT 1" }),
+              showWhen: "selection-is:SHOW"
             })
           ]
         }),
         giveMe.aReportPageTab({
           id: "tab-2",
           title: "Spec: Tab 2",
-          icon: giveMe.anExpected({ testId: "icon 2", value: "II." }),
+          showWhen: "selection-is:SHOW",
           contents: [
             giveMe.aReportPageTabContent({
-              component: giveMe.anExpected({ testId: "tab-2-content", value: "CONTENT 2" })
+              component: giveMe.anExpected({ testId: "content-2", value: "CONTENT 2" }),
+              showWhen: "selection-is:SHOW"
             })
           ]
         })
