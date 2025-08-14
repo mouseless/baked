@@ -147,6 +147,7 @@ test.describe("Page Context", () => {
     const pageContext = page.getByTestId(`${id}:page-context`);
 
     await expect(pageContext).toHaveText(/test:select-button:OPTION 1/);
+    await expect(pageContext).not.toHaveText(/!test:select-button:OPTION 1/);
   });
 
   test("not selected option is set to the page context with the given key with !", async({page}) => {
@@ -163,6 +164,7 @@ test.describe("Page Context", () => {
     await options.nth(1).click();
 
     await expect(pageContext).toHaveText(/test:select-button:OPTION 2/);
+    await expect(pageContext).not.toHaveText(/!test:select-button:OPTION 2/);
   });
 });
 
