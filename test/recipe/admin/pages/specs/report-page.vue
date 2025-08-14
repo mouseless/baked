@@ -46,6 +46,44 @@ const variants = [
     })
   },
   {
+    name: "Show When",
+    descriptor: giveMe.aReportPage({
+      queryParameters: [
+        giveMe.aParameter({
+          component: giveMe.aSelectButton({
+            data: ["SHOW"],
+            selectionPageContextKey: "selection-is",
+            allowEmpty: true
+          })
+        })
+      ],
+      tabs: [
+        giveMe.aReportPageTab({
+          id: "tab-1",
+          title: "Spec: Tab 1",
+          contents: [
+            giveMe.aReportPageTabContent(),
+            giveMe.aReportPageTabContent({
+              component: giveMe.anExpected({ testId: "content-1", value: "CONTENT 1" }),
+              showWhen: "selection-is:SHOW"
+            })
+          ]
+        }),
+        giveMe.aReportPageTab({
+          id: "tab-2",
+          title: "Spec: Tab 2",
+          showWhen: "selection-is:SHOW",
+          contents: [
+            giveMe.aReportPageTabContent({
+              component: giveMe.anExpected({ testId: "content-2", value: "CONTENT 2" }),
+              showWhen: "selection-is:SHOW"
+            })
+          ]
+        })
+      ]
+    })
+  },
+  {
     name: "Single Tab",
     descriptor: giveMe.aReportPage({
       tabs: [

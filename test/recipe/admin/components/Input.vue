@@ -8,7 +8,7 @@
 </template>
 <script setup>
 import { InputText } from "primevue";
-import { onMounted, watch } from "vue";
+import { watch } from "vue";
 
 const { schema } = defineProps({
   schema: { type: null, required: true }
@@ -17,17 +17,15 @@ const model = defineModel({ type: null, required: true });
 
 const { testId, defaultValue } = schema;
 
-if(defaultValue) {
-  onMounted(() => {
-    if(!model.value) {
-      model.value = defaultValue;
-    }
-  });
-
-  watch(model, newValue => {
-    if(!newValue) {
-      model.value = defaultValue;
-    }
-  });
+if(defaultValue !== undefined) {
+  watch(
+    model,
+    newValue => {
+      if(newValue == null) {
+        model.value = defaultValue;
+      }
+    },
+    { immediate: true }
+  );
 }
 </script>

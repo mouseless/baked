@@ -20,9 +20,15 @@ const layouts = useLayouts();
 const pages = usePages();
 
 const descriptor = ref(await findLayout(route.params.baked?.[0]));
-watch(() => route.params.baked?.[0], async newPageName => {
-  descriptor.value = await findLayout(newPageName);
-});
+watch(
+  () => route.params.baked?.[0],
+  async(newPageName, oldPageName) => {
+    if(newPageName !== oldPageName) {
+      descriptor.value = await findLayout(newPageName);
+    }
+  },
+  { immediate: true }
+);
 
 async function findLayout(pageName) {
   const pageDescriptor = await pages.fetch(pageName || "index", { throwNotFound: false });

@@ -115,11 +115,18 @@ onMounted(() => {
 
 if(tabs.length > 0) {
   articleOverflow.value = tabs[0].overflow || false;
-  watch(currentTab, newTabId => {
-    const newTab = tabs.filter(tab => tab.id === newTabId)[0];
+  watch(
+    currentTab,
+    (newTabId, oldTabId) => {
+      if(newTabId === oldTabId) { return; }
 
-    articleOverflow.value = newTab.overflow || false;
-  });
+      const newTab = tabs.find(tab => tab.id === newTabId);
+      if(!newTab) { return; }
+
+      articleOverflow.value = newTab.overflow || false;
+    },
+    { immediate: true }
+  );
 }
 
 for(const tab of tabs) {
@@ -127,17 +134,26 @@ for(const tab of tabs) {
 
   // switch to a shown tab when current tab gets hidden upon page context
   // change
-  watch(() => page[tab.showWhen], show => {
-    if(currentTab.value === tab.id && !show) {
-      // current tab will be hidden, switch to first shown tab
-      lastTab.value = currentTab.value;
-      currentTab.value = shownTabs.value[0]?.id;
-    } else if(lastTab.value === tab.id && show) {
-      // last tab becomes available, switch back to it
-      currentTab.value = lastTab.value;
-      lastTab.value = null;
-    }
-  });
+  watch(
+    () => page[tab.showWhen],
+    (show, previousShow) => {
+      if(show === previousShow) { return; }
+
+      if(currentTab.value === tab.id && !show) {
+        // current tab will be hidden, switch to first shown tab
+        lastTab.value = currentTab.value;
+        const firstAvailableTab = shownTabs.value[0];
+        if(firstAvailableTab) {
+          currentTab.value = firstAvailableTab.id;
+        }
+      } else if(lastTab.value === tab.id && show) {
+        // last tab becomes available, switch back to it
+        currentTab.value = lastTab.value;
+        lastTab.value = null;
+      }
+    },
+    { immediate: true }
+  );
 }
 
 function onReady(value) {

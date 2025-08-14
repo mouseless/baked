@@ -66,17 +66,28 @@ const sectionsData = ref(sections);
 const page = context.page();
 // Listen in context if any filter is applied
 if(filterPageContextKey) {
-  watch(() => page[filterPageContextKey], (newValue, _) => {
-    // Apply filter to links
-    const sectionsWithFilteredLinks = sections.map(section => ({
-      title: section.title,
-      links: section.links.filter(link =>
-        l(link.title)?.toLocaleLowerCase(locale).startsWith(newValue.toLocaleLowerCase(locale))
-      )
-    }));
+  watch(
+    () => page[filterPageContextKey],
+    (newValue, oldValue) => {
+      if(newValue === oldValue || newValue === undefined) { return; }
 
-    // If there are no links left in the sections after filter, filter the section too
-    sectionsData.value = sectionsWithFilteredLinks.filter(section => section.links.length > 0);
-  });
+      if(!newValue.trim()) {
+        sectionsData.value = sections;
+        return;
+      }
+
+      const searchTerm = newValue.toLocaleLowerCase(locale);
+      const sectionsWithFilteredLinks = sections.map(section => ({
+        title: section.title,
+        links: section.links.filter(link => {
+          const title = l(link.title);
+          return title?.toLocaleLowerCase(locale).startsWith(searchTerm);
+        })
+      }));
+
+      sectionsData.value = sectionsWithFilteredLinks.filter(section => section.links.length > 0);
+    },
+    { immediate: true }
+  );
 }
 </script>
