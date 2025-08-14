@@ -187,3 +187,20 @@ test.describe("Set Selected with Localization", () => {
     await expect(component.locator(primevue.select.label)).toHaveText("Value B");
   });
 });
+
+test.describe("Set Selected value to page context", () => {
+  const id = "Set Selected value to page context";
+
+  test("selected option is set to the page context with the given key", async({page}) => {
+    const component = page.getByTestId(id);
+    const options = page.locator(primevue.select.option);
+
+    const model = page.getByTestId(`${id}:model`);
+    await component.click();
+    await options.nth(1).click();
+
+    const key = page.getByTestId("test:select:ValueB");
+    await expect(model).toHaveText("ValueB");
+    await expect(key).toHaveText("test:select:ValueB");
+  });
+});

@@ -140,6 +140,22 @@ test.describe("Stateful and Inline", () => {
   });
 });
 
+test.describe("Set Selected value to page context", () => {
+  const id = "Set Selected value to page context";
+
+  test("selected option is set to the page context with the given key", async({page}) => {
+    const component = page.getByTestId(id);
+    const options = component.locator(primevue.selectbutton.option);
+    const model = page.getByTestId(`${id}:model`);
+
+    await options.nth(1).click();
+    const key = page.getByTestId("test:select-button:OPTION 2");
+
+    await expect(model).toHaveText("OPTION 2");
+    await expect(key).toHaveText("test:select-button:OPTION 2");
+  });
+});
+
 test.describe("Set Selected", () => {
   const id = "Set Selected";
 

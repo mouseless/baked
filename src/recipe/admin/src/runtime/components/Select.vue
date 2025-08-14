@@ -44,10 +44,11 @@ const { schema, data } = defineProps({
 });
 const model = defineModel({ type: null, required: true });
 
-const { label, localizeLabel, optionLabel, optionValue, showClear, stateful } = schema;
+const { label, localizeLabel, optionLabel, optionValue, showClear, selectionContextKey, stateful } = schema;
 
 const loading = context.loading();
 const path = context.path();
+const page = context.page();
 const selected = ref();
 
 // two way binding between model and selected
@@ -90,6 +91,17 @@ function setSelected(value) {
   selected.value = optionValue
     ? data.filter(o => o[optionValue] === value)[0]
     : value;
+
+  const others = data.filter(o => o !== value);
+
+  if(selectionContextKey) {
+    for(const other of others) {
+      page[`${selectionContextKey}:${other}`] = false;
+      page[`!${selectionContextKey}:${other}`] = true;
+    }
+    page[`${selectionContextKey}:${selected.value}`] = true;
+    page[`!${selectionContextKey}:${selected.value}`] = false;
+  }
 
   if(stateful) {
     const selectedValue = optionValue ? selected.value?.[optionValue] : selected.value;

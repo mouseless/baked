@@ -69,6 +69,19 @@
             >
             ➡️  <span :data-testid="`${variant.name}:model`">{{ variants[index].model }}</span> ⬅️
             </div>
+            <div
+              v-if="variant.pageContextKeys"
+              class="inline-block border-2 border-gray-500 rounded p-2"
+            >
+              <div
+                v-for="key in variant.pageContextKeys.filter(k => page[k])"
+                :key
+              >
+                <span :data-testid="`${key}`">
+                  {{ key }}
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -77,7 +90,7 @@
 </template>
 <script setup>
 import { computed, onMounted, ref } from "vue";
-import { usePages } from "#imports";
+import { useContext, usePages } from "#imports";
 import { Divider } from "primevue";
 
 const { title, variants, noLoadingVariant } = defineProps({
@@ -92,6 +105,8 @@ const { title, variants, noLoadingVariant } = defineProps({
 });
 
 const pages = usePages();
+const context = useContext();
+const page = context.page();
 const description = ref();
 const loaded = ref(false);
 
