@@ -9,5 +9,5 @@ public record SelectButton : IComponentSchema
     public string? OptionValue { get; set; }
     public bool? LocalizeLabel { get; set; }
     public bool? Stateful { get; set; }
-    public string? SelectionContextKey { get; set; }
+    public string? SelectionPageContextKey { get; set; }
 }

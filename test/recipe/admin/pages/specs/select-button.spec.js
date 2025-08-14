@@ -140,8 +140,8 @@ test.describe("Stateful and Inline", () => {
   });
 });
 
-test.describe("Set Selected value to page context", () => {
-  const id = "Set Selected value to page context";
+test.describe("Page context", () => {
+  const id = "Page context";
 
   test("selected option is set to the page context with the given key", async({page}) => {
     const component = page.getByTestId(id);

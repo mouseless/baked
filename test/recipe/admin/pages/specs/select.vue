@@ -109,11 +109,11 @@ const variants = [
     model: ref("ValueB")
   },
   {
-    name: "Set Selected value to page context",
+    name: "Page context",
     descriptor: giveMe.aSelect({
       localizeLabel: true,
       data: ["ValueA", "ValueB"],
-      selectionContextKey: "test:select",
+      selectionPageContextKey: "test:select",
       inline: false
     }),
     model: ref("ValueA"),

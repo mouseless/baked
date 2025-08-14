@@ -44,7 +44,7 @@ const { schema, data } = defineProps({
 });
 const model = defineModel({ type: null, required: true });
 
-const { label, localizeLabel, optionLabel, optionValue, showClear, selectionContextKey, stateful } = schema;
+const { label, localizeLabel, optionLabel, optionValue, showClear, selectionPageContextKey, stateful } = schema;
 
 const loading = context.loading();
 const path = context.path();
@@ -92,15 +92,15 @@ function setSelected(value) {
     ? data.filter(o => o[optionValue] === value)[0]
     : value;
 
-  const others = data.filter(o => o !== value);
+  if(selectionPageContextKey) {
+    const values = data.filter(o => o !== value);
 
-  if(selectionContextKey) {
-    for(const other of others) {
-      page[`${selectionContextKey}:${other}`] = false;
-      page[`!${selectionContextKey}:${other}`] = true;
+    for(const value of values) {
+      page[`${selectionPageContextKey}:${value}`] = false;
+      page[`!${selectionPageContextKey}:${value}`] = !page[`${selectionPageContextKey}:${value}`];
     }
-    page[`${selectionContextKey}:${selected.value}`] = true;
-    page[`!${selectionContextKey}:${selected.value}`] = false;
+    page[`${selectionPageContextKey}:${selected.value}`] = true;
+    page[`!${selectionPageContextKey}:${selected.value}`] = !page[`${selectionPageContextKey}:${selected.value}`];
   }
 
   if(stateful) {

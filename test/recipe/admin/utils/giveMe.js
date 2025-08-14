@@ -381,11 +381,11 @@ export default {
     return { component, narrow };
   },
 
-  aSelect({ label, localizeLabel, optionLabel, optionValue, showClear, selectionContextKey, stateful, data, inline } = {}) {
+  aSelect({ label, localizeLabel, optionLabel, optionValue, showClear, selectionPageContextKey, stateful, data, inline } = {}) {
     label = $(label, "Spec: Test");
     localizeLabel = $(localizeLabel, false);
     showClear = $(showClear, false);
-    selectionContextKey = $(selectionContextKey, false);
+    selectionPageContextKey = $(selectionPageContextKey, false);
     stateful = $(stateful, false);
     data = $(data, ["Test Option 1", "Test Option 2"]);
     inline = $(inline, true);
@@ -396,16 +396,16 @@ export default {
 
     return {
       type: "Select",
-      schema: { label, localizeLabel, optionLabel, optionValue, showClear, selectionContextKey, stateful },
+      schema: { label, localizeLabel, optionLabel, optionValue, showClear, selectionPageContextKey, stateful },
       data
     };
   },
 
-  aSelectButton({ allowEmpty, localizeLabel, optionLabel, optionValue, stateful, selectionContextKey, data, inline } = {}) {
+  aSelectButton({ allowEmpty, localizeLabel, optionLabel, optionValue, stateful, selectionPageContextKey, data, inline } = {}) {
     data = $(data, ["Test Option 1", "Test Option 2"]);
     inline = $(inline, true);
     allowEmpty = $(allowEmpty, false);
-    selectionContextKey = $(selectionContextKey, false);
+    selectionPageContextKey = $(selectionPageContextKey, false);
     stateful = $(stateful, false);
     localizeLabel = $(localizeLabel, false);
     data = inline
@@ -414,7 +414,7 @@ export default {
 
     return {
       type: "SelectButton",
-      schema: { allowEmpty, localizeLabel, optionLabel, optionValue, stateful, selectionContextKey },
+      schema: { allowEmpty, localizeLabel, optionLabel, optionValue, stateful, selectionPageContextKey },
       data
     };
   },
