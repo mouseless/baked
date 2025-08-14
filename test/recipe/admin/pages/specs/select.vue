@@ -6,8 +6,12 @@
   />
 </template>
 <script setup>
-import { ref } from "vue";
+import { ref, reactive } from "vue";
 import giveMe from "~/utils/giveMe";
+import { useContext } from "#imports";
+
+const context = useContext();
+context.setPage(reactive({}));
 
 const variants = [
   {
@@ -103,6 +107,17 @@ const variants = [
       inline: false
     }),
     model: ref("ValueB")
+  },
+  {
+    name: "Page Context",
+    descriptor: giveMe.aSelect({
+      localizeLabel: true,
+      data: ["ValueA", "ValueB"],
+      selectionPageContextKey: "test:select",
+      inline: false
+    }),
+    model: ref("ValueA"),
+    pageContextKeys: ["test:select:ValueA", "test:select:ValueB", "!test:select:ValueA", "!test:select:ValueB"]
   }
 ];
 </script>
