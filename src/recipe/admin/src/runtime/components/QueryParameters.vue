@@ -42,74 +42,86 @@ for(const parameter of parameters) {
 // set defaults when first landed on page
 onMounted(async() => await setDefaults());
 
-// sets ready state when all required parameters are set
+// Compute ready state and unique key in a single watchEffect
 watchEffect(() => {
-  emit("ready",
-    parameters
-      .filter(p => p.required)
-      .reduce((result, p) => result && values[p.name].query.value?.length > 0, true)
-  );
+  const queryValues = Object.values(values).map(p => p.query.value);
+
+  const isReady = parameters
+    .filter(p => p.required)
+    .every(p => values[p.name].query.value?.length > 0);
+
+  const uniqueKey = queryValues
+    .filter(v => v?.length > 0)
+    .join("-");
+
+  emit("ready", isReady);
+  emit("changed", uniqueKey);
 });
 
-// calculates unique key to help parent redraw components when a parameter
-// value changes
-watchEffect(() => {
-  emit("changed",
-    Object.values(values)
-      .map(p => p.query.value)
-      .filter(v => v?.length > 0)
-      .join("-")
-  );
-});
+// Watch query parameters for changes and update models accordingly
+watch(
+  Object.values(values).map(p => p.query),
+  async(newValues, oldValues) => {
+    if(JSON.stringify(newValues) === JSON.stringify(oldValues)) { return; }
 
-// binds query params to models, needed when query parameters change due to a
-// navigation from side menu or header etc.
-watch(Object.values(values).map(p => p.query), async newValues => {
-  // sets defaults when already on the page, but query parameters changed due
-  // to navigation clicks
-  await setDefaults();
+    await setDefaults();
 
-  for(let i = 0; i < newValues.length; i++) {
-    values[parameters[i].name].model.value = newValues[i];
-  }
-});
-
-// when any of the parameter values changed from input components, it reroutes
-// to set query param values
-watch(Object.values(values).map(p => p.model), async newValues => {
-  // if any of required parameters that has default doesn't have a value, it
-  // means it's setting default value and route should be replaced, not pushed
-  const action = parameters
-    .filter(p => p.required && (p.default || p.defaultSelfManaged))
-    .map(p => values[p.name].query)
-    .every(q => q.value)
-    ? "push"
-    : "replace"
-  ;
-
-  await router[action]({
-    path: route.path,
-    query: Object.keys(values).reduce((result, name, i) => {
-      if(newValues[i]) {
-        result[name] = newValues[i];
+    parameters.forEach((param, i) => {
+      if(values[param.name]) {
+        values[param.name].model.value = newValues[i] || undefined;
       }
+    });
+  },
+  { deep: true }
+);
 
+// Watch model values for changes and update route query parameters
+watch(
+  Object.values(values).map(p => p.model),
+  async(newValues, oldValues) => {
+    if(JSON.stringify(newValues) === JSON.stringify(oldValues)) { return; }
+
+    // Determine whether to push or replace based on required parameters with defaults
+    const shouldReplace = parameters
+      .filter(p => p.required && (p.default || p.defaultSelfManaged))
+      .some(p => !values[p.name].query.value);
+
+    const action = shouldReplace ? "replace" : "push";
+
+    // Build query object from non-empty values
+    const query = parameters.reduce((result, param, i) => {
+      const value = newValues[i];
+      if(value) {
+        result[param.name] = value;
+      }
       return result;
-    }, {})
-  });
-});
+    }, {});
+
+    await router[action]({
+      path: route.path,
+      query
+    });
+  },
+  { deep: true }
+);
 
 async function setDefaults() {
   const query = { };
-  for(const p of parameters ) {
-    query[p.name] = values[p.name].query.value;
+  for(const p of parameters) {
+    const currentValue = values[p.name].query.value;
 
-    if(!query[p.name] && p.default) {
-      query[p.name] = await dataFetcher.fetch({ data: p.default, injectedData });
+    // Only set value if it exists or parameter has a default
+    if(currentValue || p.default) {
+      if(!currentValue && p.default) {
+        query[p.name] = await dataFetcher.fetch({ data: p.default, injectedData });
+      } else {
+        query[p.name] = currentValue;
+      }
     }
 
-    if(query[p.name] === null) {
-      query[p.name] = undefined; // treat null as undefined to avoid empty query string parameters
+    // Clean up null/empty values
+    if(query[p.name] === null || query[p.name] === "") {
+      query[p.name] = undefined;
     }
   }
 
