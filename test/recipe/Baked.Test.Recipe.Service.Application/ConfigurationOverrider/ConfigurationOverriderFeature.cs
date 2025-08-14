@@ -1,4 +1,4 @@
-using Baked.Architecture;
+﻿using Baked.Architecture;
 using Baked.ExceptionHandling;
 using Baked.RestApi.Model;
 using Baked.Test.Authentication;
@@ -289,8 +289,8 @@ public class ConfigurationOverriderFeature : IFeature
                                 Select(l("Required w/ Default"),
                                     data: Inline(new[]
                                     {
-                                      new { text = l("Required w/ Default 1"), value = "rwd-1" },
-                                      new { text = l("Required w/ Default 2"), value = "rwd-2" }
+                                      new { text = l("Required w/ Default 1"), value = l("rwd-1") },
+                                      new { text = l("Required w/ Default 2"), value = l("rwd-2") }
                                     }),
                                     optionLabel: "text",
                                     optionValue: "value"
@@ -362,14 +362,21 @@ public class ConfigurationOverriderFeature : IFeature
                                             content: DataTable(
                                                 columns:
                                                 [
-                                                    DataTableColumn("label", title: l("Label"), minWidth: true),
-                                                    DataTableColumn("column1", title: l("Column 1")),
-                                                    DataTableColumn("column2", title: l("Column 2")),
-                                                    DataTableColumn("column3", title: l("Column 3"))
+                                                    DataTableColumn("label", title: l("Label"), minWidth: true, exportable: true),
+                                                    DataTableColumn("column1", title: l("Column 1"), exportable: true),
+                                                    DataTableColumn("column2", title: l("Column 2"), exportable: true),
+                                                    DataTableColumn("column3", title: l("Column 3"), exportable: true)
                                                 ],
                                                 dataKey: "label",
                                                 paginator: true,
                                                 rows: 5,
+                                                exportOptions: DataTableExport(";", l("first"),
+                                                    formatter: "useCsvFormatter",
+                                                    buttonLabel: l("Export as CSV"),
+                                                    appendParameters: true,
+                                                    localizeParameters: true,
+                                                    parameterSeparator: "_"
+                                                ),
                                                 data: Remote($"/{first.GetSingle<ActionModelAttribute>().GetRoute()}",
                                                     headers: headers,
                                                     query: Composite([Computed(Composables.UseQuery), Injected()])
@@ -453,7 +460,8 @@ public class ConfigurationOverriderFeature : IFeature
                                                 virtualScrollerOptions: DataTableVirtualScroller(45),
                                                 exportOptions: DataTableExport(";", l("data-table-export"),
                                                     formatter: "useCsvFormatter",
-                                                    buttonLabel: l("Export as CSV")
+                                                    buttonLabel: l("Export as CSV"),
+                                                    appendParameters: true
                                                 ),
                                                 data: Remote(domain.Types[typeof(Theme.DataTable)].GetMembers().Methods[nameof(Theme.DataTable.GetTableDataWithFooter)].GetSingle<ActionModelAttribute>().GetRoute(),
                                                     query: Injected(custom: true)
@@ -493,7 +501,7 @@ public class ConfigurationOverriderFeature : IFeature
                                                 data: Remote($"/{getScoped.GetSingle<ActionModelAttribute>().GetRoute()}",
                                                     headers: headers,
                                                     query: Computed(Composables.UseQuery),
-                                                    options: [("client-cache", "user")]
+                                                    attributes: [("client-cache", "user")]
                                                 )
                                             )
                                         ),
@@ -505,7 +513,7 @@ public class ConfigurationOverriderFeature : IFeature
                                                 data: Remote($"/{getApplication.GetSingle<ActionModelAttribute>().GetRoute()}",
                                                     headers: headers,
                                                     query: Computed(Composables.UseQuery),
-                                                    options: [("client-cache", "application")]
+                                                    attributes: [("client-cache", "application")]
                                                 )
                                             )
                                         ),

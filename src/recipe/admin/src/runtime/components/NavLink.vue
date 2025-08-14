@@ -14,10 +14,10 @@
 <script setup>
 import { computed } from "vue";
 import { Button, Skeleton } from "primevue";
-import { useContext, useDataFetcher, useLocalization } from "#imports";
+import { useContext, useFormat, useLocalization } from "#imports";
 
 const context = useContext();
-const dataFetcher = useDataFetcher();
+const { format } = useFormat();
 const { localize:l } = useLocalization();
 
 const { schema, data } = defineProps({
@@ -28,8 +28,8 @@ const { schema, data } = defineProps({
 const { path, idProp, textProp } = schema;
 
 const loading = context.loading();
-// TODO: this path and format call is temporary, final design should handle
-// path variables using name, not index, e.g., /test/{0} -> /test/{id}
-const to = computed(() => dataFetcher.format(path, [data[idProp]]));
+// TODO: this format call is temporary, final design should handle path
+// variables using name, not index, e.g., /test/{0} -> /test/{id}
+const to = computed(() => format(path, [data[idProp]]));
 const text = computed(() => data[textProp]);
 </script>

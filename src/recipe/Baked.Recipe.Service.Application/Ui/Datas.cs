@@ -30,13 +30,13 @@ public static class Datas
     public static RemoteData Remote(string path,
         IData? headers = default,
         IData? query = default,
-        IEnumerable<(string key, string value)>? options = default,
+        IEnumerable<(string key, string value)>? attributes = default,
         bool? requireLocalization = default
     ) => new(path)
     {
         Headers = headers,
         Query = query,
-        Options = (options ?? []).ToDictionary(kvp => kvp.key, kvp => kvp.value),
+        Attributes = attributes?.ToDictionary(kvp => kvp.key, kvp => kvp.value),
         RequireLocalization = requireLocalization
     };
 }

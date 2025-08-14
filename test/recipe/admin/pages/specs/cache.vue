@@ -47,7 +47,7 @@ const variants = [
           "composable": "useQuery",
           "args": []
         },
-        options: { "client-cache": "application" }
+        attributes: { "client-cache": "application" }
       }
     })
   },
@@ -63,7 +63,7 @@ const variants = [
           "composable": "useQuery",
           "args": []
         },
-        options: { "client-cache": "user" }
+        attributes: { "client-cache": "user" }
       }
     })
   }

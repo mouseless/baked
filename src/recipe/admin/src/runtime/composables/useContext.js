@@ -10,6 +10,14 @@ export default function() {
     return inject("__bake_path", "");
   }
 
+  function dataDescriptor() {
+    return inject("__bake_data_descriptor", null);
+  }
+
+  function setDataDescriptor(value) {
+    return provide("__bake_data_descriptor", value);
+  }
+
   function injectedData() {
     return {
       ParentData: inject("__bake_injected_data:ParentData", null),
@@ -48,6 +56,8 @@ export default function() {
   return {
     add,
     path,
+    dataDescriptor,
+    setDataDescriptor,
     injectedData,
     setInjectedData,
     loading,

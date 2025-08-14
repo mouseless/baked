@@ -106,8 +106,7 @@
                       "type": "Computed",
                       "composable": "useQuery",
                       "args": []
-                    },
-                    "options": {}
+                    }
                   }
                 }
               }
@@ -140,8 +139,7 @@
                       "type": "Computed",
                       "composable": "useQuery",
                       "args": []
-                    },
-                    "options": {}
+                    }
                   }
                 }
               }
@@ -175,8 +173,7 @@
                       "type": "Computed",
                       "composable": "useQuery",
                       "args": []
-                    },
-                    "options": {}
+                    }
                   }
                 }
               }
@@ -243,7 +240,8 @@
                           "conditions": []
                         },
                         "title": "Label",
-                        "minWidth": true
+                        "minWidth": true,
+                        "exportable": true
                       },
                       {
                         "prop": "column1",
@@ -254,7 +252,8 @@
                           },
                           "conditions": []
                         },
-                        "title": "Column 1"
+                        "title": "Column 1",
+                        "exportable": true
                       },
                       {
                         "prop": "column2",
@@ -265,7 +264,8 @@
                           },
                           "conditions": []
                         },
-                        "title": "Column 2"
+                        "title": "Column 2",
+                        "exportable": true
                       },
                       {
                         "prop": "column3",
@@ -276,12 +276,23 @@
                           },
                           "conditions": []
                         },
-                        "title": "Column 3"
+                        "title": "Column 3",
+                        "exportable": true
                       }
                     ],
                     "dataKey": "label",
                     "paginator": true,
-                    "rows": 5
+                    "rows": 5,
+                    "exportOptions": {
+                      "csvSeparator": ";",
+                      "fileName": "first",
+                      "formatter": "useCsvFormatter",
+                      "buttonIcon": "pi pi-download",
+                      "buttonLabel": "Export as CSV",
+                      "appendParameters": true,
+                      "localizeParameters": true,
+                      "parameterSeparator": "_"
+                    }
                   },
                   "data": {
                     "type": "Remote",
@@ -305,8 +316,7 @@
                           "key": "Custom"
                         }
                       ]
-                    },
-                    "options": {}
+                    }
                   }
                 }
               }
@@ -422,8 +432,7 @@
                           "key": "Custom"
                         }
                       ]
-                    },
-                    "options": {}
+                    }
                   }
                 }
               }

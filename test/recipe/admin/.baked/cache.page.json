@@ -63,7 +63,7 @@
                       "composable": "useQuery",
                       "args": []
                     },
-                    "options": {
+                    "attributes": {
                       "client-cache": "user"
                     }
                   }
@@ -99,7 +99,7 @@
                       "composable": "useQuery",
                       "args": []
                     },
-                    "options": {
+                    "attributes": {
                       "client-cache": "application"
                     }
                   }

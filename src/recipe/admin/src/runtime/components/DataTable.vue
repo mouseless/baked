@@ -11,7 +11,7 @@
     :scroll-height
     :virtual-scroller-options="scrollHeight ? virtualScrollerOptions : null"
     :csv-separator="exportOptions?.csvSeparator"
-    :export-filename="exportOptions?.fileName ? l(exportOptions.fileName) : null"
+    :export-filename
     :export-function
   >
     <template #empty>
@@ -121,11 +121,12 @@ import { computed, onMounted, ref } from "vue";
 import Column from "primevue/column";
 import { Button, ColumnGroup, DataTable, Menu, Row, Skeleton } from "primevue";
 import { Bake } from "#components";
-import { useComposableResolver, useConditional, useContext, useLocalization } from "#imports";
+import { useComposableResolver, useConditional, useContext, useDataFetcher, useLocalization } from "#imports";
 
 const conditional = useConditional();
 const context = useContext();
 const composableResolver = useComposableResolver();
+const dataFetcher = useDataFetcher();
 const { localize: l } = useLocalization();
 const { localize: lc } = useLocalization("DataTable");
 
@@ -136,10 +137,13 @@ const { schema, data } = defineProps({
 
 const { columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions } = schema;
 
+const dataDescriptor = context.dataDescriptor();
+const injectedData = context.injectedData();
+const loading = context.loading();
+
 const dataTable = ref();
 const actionsMenu = ref();
 const actions = ref([ ]);
-const loading = context.loading();
 const value = computed(() => {
   const items = data
     ? itemsProp
@@ -161,6 +165,7 @@ const value = computed(() => {
   return result;
 });
 const footerColSpan = computed(() => columns.length - footerTemplate?.columns.length);
+const exportFilename = ref(exportOptions?.fileName ? l(exportOptions.fileName) : null);
 let formatter = null;
 
 if(exportOptions) {
@@ -172,7 +177,20 @@ if(exportOptions) {
 }
 
 onMounted(async() => {
-  formatter = exportOptions?.formatter ? (await composableResolver.resolve(exportOptions.formatter)).default() : undefined;
+  if(exportOptions) {
+    const { formatter: formatterName, appendParameters, localizeParameters, parameterSeparator } = exportOptions;
+
+    formatter = (await composableResolver.resolve(formatterName)).default();
+
+    if(appendParameters && dataDescriptor) {
+      let parameters = await dataFetcher.fetchParameters({ data: dataDescriptor, injectedData });
+      if(localizeParameters) {
+        parameters = parameters.map(p => l(p));
+      }
+
+      exportFilename.value = [exportFilename.value, ...parameters].join(parameterSeparator ?? "-");
+    }
+  }
 });
 
 function toggleActionsMenu(event) {

@@ -12,7 +12,7 @@ export default defineNuxtPlugin({
     $fetchInterceptors.register(
       "cache-application",
       async({ request, options }, next) => {
-        if(options.options["client-cache"] !== "application") {
+        if(options.attributes["client-cache"] !== "application") {
           return await next();
         }
 
