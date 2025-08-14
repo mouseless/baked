@@ -13,3 +13,8 @@
   with `ofetch`'s options parameter
 - The select input on the cache page was not working properly, improved.
 
+- The QueryParameters component setDefaults is not working properly, improved.
+- The `app.json` file is now automatically added to module.ts. improved 
+- Added missing spec for `showWhen` feature in `ReportPage`
+- Added clear cache feature on `InMemoryCachingFeature`, improved
+- Improved `Layout`, `Input`, `MenuPage`, `ReportPage`, `QueryParameters`, `Parameters` components watchers. (immediate, deep and value conditions)
