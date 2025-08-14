@@ -49,10 +49,11 @@ emitReady();
 
 // when any of the parameter values changed from input components, it emits
 // ready and changed
+// be sure value has changed?
 watch(Object.values(values), async() => {
   emitChanged();
   emitReady();
-});
+}, { deep: true } );
 
 function emitReady() {
   emit("ready",
