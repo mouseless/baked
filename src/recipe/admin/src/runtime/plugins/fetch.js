@@ -7,7 +7,7 @@ export default defineNuxtPlugin({
   setup(nuxtApp) {
     const fetch = ofetch.create();
     const interceptors = Interceptors();
-    const optionsTemplate = { headers: { }, query: { }, options: { } };
+    const optionsTemplate = { headers: { }, query: { }, attributes: { } };
 
     // register the actual fetch at the end of the interceptor pipeline
     interceptors.register("actual-fetch",
@@ -17,7 +17,7 @@ export default defineNuxtPlugin({
 
     // wrap $fetch using interceptors to allow around interception
     globalThis.$fetch = async(request, options) => {
-      // not all requests have headers, query, options objects. this might
+      // not all requests have headers, query, attributes objects. this might
       // cause interceptors to fail. options template makes sure every
       // request has those objects to be set to an empty object.
       return await interceptors.execute({ request, options: { ...optionsTemplate, ...options } });

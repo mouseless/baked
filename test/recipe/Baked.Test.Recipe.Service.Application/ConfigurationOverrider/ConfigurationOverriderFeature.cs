@@ -1,4 +1,4 @@
-using Baked.Architecture;
+﻿using Baked.Architecture;
 using Baked.ExceptionHandling;
 using Baked.RestApi.Model;
 using Baked.Test.Authentication;
@@ -501,7 +501,7 @@ public class ConfigurationOverriderFeature : IFeature
                                                 data: Remote($"/{getScoped.GetSingle<ActionModelAttribute>().GetRoute()}",
                                                     headers: headers,
                                                     query: Computed(Composables.UseQuery),
-                                                    options: [("client-cache", "user")]
+                                                    attributes: [("client-cache", "user")]
                                                 )
                                             )
                                         ),
@@ -513,7 +513,7 @@ public class ConfigurationOverriderFeature : IFeature
                                                 data: Remote($"/{getApplication.GetSingle<ActionModelAttribute>().GetRoute()}",
                                                     headers: headers,
                                                     query: Computed(Composables.UseQuery),
-                                                    options: [("client-cache", "application")]
+                                                    attributes: [("client-cache", "application")]
                                                 )
                                             )
                                         ),

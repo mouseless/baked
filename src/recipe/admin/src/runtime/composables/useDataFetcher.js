@@ -40,24 +40,11 @@ export default function() {
       : [];
   }
 
-  function format(formatString, args) {
-    // TODO: this path and format call is temporary, final design should handle
-    // path variables using name, not index, e.g., /test/{0} -> /test/{id}
-    return formatString.replace(/(\{\{\d\}\}|\{\d\})/g, part => {
-      if(part.substring(0, 2) === "{{") { return part; } // escape
-
-      const index = parseInt(part.match(/\d/)[0]);
-
-      return args[index];
-    });
-  };
-
   return {
     shouldLoad,
     get,
     fetch,
-    fetchParameters,
-    format
+    fetchParameters
   };
 }
 
@@ -156,8 +143,8 @@ function Remote({ parentFetch }) {
     const query = await fetchQuery({ data, injectedData });
 
     const options = { baseURL, headers: headers, query: query };
-    if(data.options) {
-      options.options = data.options;
+    if(data.attributes) {
+      options.attributes = data.attributes;
     }
     const retry = composables?.useDataFetcher?.retry ?? false;
 
