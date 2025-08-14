@@ -192,8 +192,7 @@
                     "query": {
                       "type": "Injected",
                       "key": "Custom"
-                    },
-                    "options": {}
+                    }
                   }
                 }
               }

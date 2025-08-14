@@ -4,6 +4,8 @@ const accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjMyNDc5NjE0MTk0fQ.F4K4GkNqtuU
 const expiredAccessToken = "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjk1NDI0MTM5NH0.ZKPMybdzg1aO1g_xyV1QXUx9NR_vynu9s9z4Zll7WNA";
 //expires at 9999-03-28
 const refreshToken = "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjI1MzM3ODIzNDk5NH0.IO-jutz7t-FbvgrQ87n0y_tSWUsSfiNPpfr3sAzvWhg";
+//expires never
+const adminUiToken = "token-admin-ui";
 
 // value or default function, named $ for quick access
 function $(value, defaultValue) {
@@ -153,14 +155,18 @@ export default {
     };
   },
 
-  anExpected({ testId, value, data } = {}) {
+  anExpected({ testId, showDataParams, value, data } = {}) {
     testId = $(testId, "test-id");
+    showDataParams = $(showDataParams, false);
     value = $(value, "");
     data = $(data, { type: "Inline", value });
 
     return {
       type: "Expected",
-      schema: testId,
+      schema: {
+        testId,
+        showDataParams
+      },
       data
     };
   },
@@ -449,11 +455,15 @@ export default {
     };
   },
 
-  aToken({ accessExpired } = {}) {
+  aToken({ accessExpired, admin } = {}) {
     accessExpired = $(accessExpired, false);
+    admin = $(admin, false);
 
     return {
-      access: accessExpired ? expiredAccessToken : accessToken,
+      access:
+        accessExpired ? expiredAccessToken :
+          admin ? adminUiToken :
+            accessToken,
       refresh: refreshToken
     };
   },

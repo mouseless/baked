@@ -11,7 +11,7 @@
     :scroll-height
     :virtual-scroller-options="scrollHeight ? virtualScrollerOptions : null"
     :csv-separator="exportOptions?.csvSeparator"
-    :export-filename="exportOptions?.fileName ? l(exportOptions.fileName) : null"
+    :export-filename
     :export-function
   >
     <template #empty>
@@ -169,6 +169,14 @@ if(exportOptions) {
     icon: exportOptions.buttonIcon,
     command: () => dataTable.value.exportCSV()
   });
+}
+
+let exportFilename = null;
+if(exportOptions) {
+  exportFilename = exportOptions?.fileName ? l(exportOptions.fileName) : null;
+
+  // TODO implement param values here
+  // const dataDescriptor = context.dataDescriptor();
 }
 
 onMounted(async() => {

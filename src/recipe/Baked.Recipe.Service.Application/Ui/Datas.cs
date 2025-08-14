@@ -36,7 +36,7 @@ public static class Datas
     {
         Headers = headers,
         Query = query,
-        Options = (options ?? []).ToDictionary(kvp => kvp.key, kvp => kvp.value),
+        Options = options?.ToDictionary(kvp => kvp.key, kvp => kvp.value),
         RequireLocalization = requireLocalization
     };
 }

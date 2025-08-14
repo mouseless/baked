@@ -10,7 +10,7 @@ import giveMe from "~/utils/giveMe";
 const variants = [
   {
     name: "Base",
-    descriptor: giveMe.aString({ value: "TEST" })
+    descriptor: giveMe.anExpected({ value: "TEST" })
   },
   {
     name: "Parent Data",
@@ -26,6 +26,33 @@ const variants = [
         })
       ],
       data: { type: "Inline", value: { child: "CHILD VALUE" } }
+    })
+  },
+  {
+    name: "Data Descriptor",
+    descriptor: giveMe.anExpected({
+      testId: "test",
+      showDataParams: true,
+      data: {
+        type: "Composite",
+        parts: [
+          { type: "Inline", value: { inline: "inline" } },
+          { type: "Computed", composable: "useFakeComputed", args: ["computed"] },
+          { type: "Injected", key: "ParentData" },
+          {
+            type: "Remote",
+            path: "/report/wide",
+            query: {
+              type: "Inline",
+              value: { requiredWithDefault: "remote-1", required: "remote-2" }
+            },
+            headers: {
+              type: "Inline",
+              value: { "Authorization": `Bearer ${giveMe.aToken({ admin: true }).access}`}
+            }
+          }
+        ]
+      }
     })
   }
 ];

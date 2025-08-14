@@ -1,6 +1,9 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
 
-test.beforeEach(async({goto}) => {
+test.beforeEach(async({goto, page}) => {
+  await page.route("*/**/report/first", async route => {
+    await route.fulfill("fake-response");
+  });
   await goto("/specs/bake", { waitUntil: "hydration" });
 });
 
@@ -22,7 +25,7 @@ test.describe("Base", () => {
   test("component has marker class for component type", async({page}) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator(".b-component--String")).toBeAttached();
+    await expect(component.locator(".b-component--Expected")).toBeAttached();
   });
 });
 
@@ -44,5 +47,17 @@ test.describe("Parent Data", () => {
     const component = page.getByTestId(id);
 
     await expect(component.getByTestId("child-prop")).toHaveText("CHILD VALUE");
+  });
+});
+
+test.describe("Data Descriptor", () => {
+  const id = "Data Descriptor";
+
+  test("provides data parameters to child", async({page}) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.getByTestId("test")).toHaveText(/computed/);
+    await expect(component.getByTestId("test")).toHaveText(/remote-1/);
+    await expect(component.getByTestId("test")).toHaveText(/remote-2/);
   });
 });
