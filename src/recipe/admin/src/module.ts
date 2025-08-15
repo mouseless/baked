@@ -53,7 +53,7 @@ export default defineNuxtModule<ModuleOptions>({
   async setup(_options, _nuxt) {
     const resolver = createResolver(import.meta.url);
     const entryProjectResolver = createResolver(_nuxt.options.rootDir);
-    
+
     let { app } = _options;
     if (!process.argv.includes("prepare") && !app) {
       app = await import(entryProjectResolver.resolve(`./.baked/app.json`), { with: { type: "json" } });
