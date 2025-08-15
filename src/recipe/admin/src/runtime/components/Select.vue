@@ -84,6 +84,10 @@ function setModel(selected) {
   }
 }
 
+function getValueOf(option) {
+  return optionValue ? option?.[optionValue] : option;
+}
+
 function setSelected(value) {
   // data can be null when data is async
   if(!data) { return; }
@@ -93,16 +97,13 @@ function setSelected(value) {
     : value;
 
   if(selectionPageContextKey) {
-    const getValue = o => optionValue ? o[optionValue] : o;
-    for(const v of data.map(getValue).filter(v => v !== value)) {
-      page[`${selectionPageContextKey}:${v}`] = false;
-      page[`!${selectionPageContextKey}:${v}`] = true;
+    for(const currentValue of data.map(getValueOf)) {
+      setPageContext(currentValue, false);
     }
 
-    const selectedValue = getValue(selected.value || {});
-    if(selectedValue != null) {
-      page[`${selectionPageContextKey}:${selectedValue}`] = true;
-      page[`!${selectionPageContextKey}:${selectedValue}`] = false;
+    const selectedValue = getValueOf(selected.value);
+    if(selectedValue !== undefined) {
+      setPageContext(selectedValue, true);
     }
   }
 
@@ -112,6 +113,11 @@ function setSelected(value) {
       setModel(selected.value);
     }
   }
+}
+
+function setPageContext(key, value) {
+  page[`${selectionPageContextKey}:${key}`] = value;
+  page[`!${selectionPageContextKey}:${key}`] = !value;
 }
 </script>
 <style lang="scss">

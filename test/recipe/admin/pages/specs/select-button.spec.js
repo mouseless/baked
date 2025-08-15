@@ -143,7 +143,7 @@ test.describe("Stateful and Inline", () => {
 test.describe("Page Context", () => {
   const id = "Page Context";
 
-  test("when no option selected is set to the page context with the given key", async({page}) => {
+  test("when no option is selected, page context has all options' ! set to true", async({page}) => {
     const pageContext = page.getByTestId(`${id}:page-context`);
 
     await expect(pageContext).toHaveText(/!test:select-button:OPTION 1/);
@@ -189,7 +189,7 @@ test.describe("Page Context", () => {
 test.describe("Page Context - Option Label and Value", () => {
   const id = "Page Context - Option Label and Value";
 
-  test("when no option selected is set to the page context with the given key", async({page}) => {
+  test("when no option is selected, page context has all options' ! set to true", async({page}) => {
     const pageContext = page.getByTestId(`${id}:page-context`);
 
     await expect(pageContext).toHaveText(/!test:select-button:OPTION 1/);
