@@ -53,12 +53,11 @@ export default defineNuxtModule<ModuleOptions>({
   async setup(_options, _nuxt) {
     const resolver = createResolver(import.meta.url);
     const entryProjectResolver = createResolver(_nuxt.options.rootDir);
-
+    
     let { app } = _options;
     if (!app) {
       try {
-        // TODO not working in prod mode, will be fixed later
-        app = require(entryProjectResolver.resolve(`./.baked/app.json`));
+        app = await import(entryProjectResolver.resolve(`./.baked/app.json`), { with: { type: "json" } });
       } catch {
         console.warn('[baked-recipe-admin] Could not auto-load app.json');
       }
