@@ -290,8 +290,8 @@
                       "buttonIcon": "pi pi-download",
                       "buttonLabel": "Export as CSV",
                       "appendParameters": true,
-                      "localizeParameters": true,
-                      "parameterSeparator": "_"
+                      "parameterSeparator": "_",
+                      "parameterFormatter": "useLocaleParameterFormatter"
                     }
                   },
                   "data": {

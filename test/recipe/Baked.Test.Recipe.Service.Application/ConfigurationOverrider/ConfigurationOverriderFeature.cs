@@ -374,8 +374,8 @@ public class ConfigurationOverriderFeature : IFeature
                                                     formatter: "useCsvFormatter",
                                                     buttonLabel: l("Export as CSV"),
                                                     appendParameters: true,
-                                                    localizeParameters: true,
-                                                    parameterSeparator: "_"
+                                                    parameterSeparator: "_",
+                                                    parameterFormatter: "useLocaleParameterFormatter"
                                                 ),
                                                 data: Remote($"/{first.GetSingle<ActionModelAttribute>().GetRoute()}",
                                                     headers: headers,

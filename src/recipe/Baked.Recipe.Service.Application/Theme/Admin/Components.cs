@@ -99,8 +99,8 @@ public static class Components
         string? buttonIcon = default,
         string? buttonLabel = default,
         bool? appendParameters = default,
-        bool? localizeParameters = default,
-        string? parameterSeparator = default
+        string? parameterSeparator = default,
+        string? parameterFormatter = default
     )
     {
         buttonIcon ??= "pi pi-download";
@@ -111,8 +111,8 @@ public static class Components
             ButtonIcon = buttonIcon,
             ButtonLabel = buttonLabel,
             AppendParameters = appendParameters,
-            LocalizeParameters = localizeParameters,
-            ParameterSeparator = parameterSeparator
+            ParameterSeparator = parameterSeparator,
+            ParameterFormatter = parameterFormatter
         };
     }
 
