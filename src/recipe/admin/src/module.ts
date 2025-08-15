@@ -55,12 +55,8 @@ export default defineNuxtModule<ModuleOptions>({
     const entryProjectResolver = createResolver(_nuxt.options.rootDir);
     
     let { app } = _options;
-    if (!app) {
-      try {
-        app = await import(entryProjectResolver.resolve(`./.baked/app.json`), { with: { type: "json" } });
-      } catch {
-        console.warn('[baked-recipe-admin] Could not auto-load app.json');
-      }
+    if (!process.argv.includes("prepare") && !app) {
+      app = await import(entryProjectResolver.resolve(`./.baked/app.json`), { with: { type: "json" } });
     }
 
     // passing module's options to runtime config for further access
