@@ -2,7 +2,6 @@ import { defineNuxtModule, addComponentsDir, addImportsDir, addPlugin, createRes
 import type { NuxtI18nOptions } from "@nuxtjs/i18n";
 
 export interface ModuleOptions {
-  app?: any,
   components?: Components,
   composables: Composables,
   primevue: PrimeVueOptions,
@@ -54,9 +53,10 @@ export default defineNuxtModule<ModuleOptions>({
     const resolver = createResolver(import.meta.url);
     const entryProjectResolver = createResolver(_nuxt.options.rootDir);
 
-    let { app } = _options;
-    if (!process.argv.includes("prepare") && !app) {
-      app = await import(entryProjectResolver.resolve(`./.baked/app.json`), { with: { type: "json" } });
+    let app  = null;
+    if (!process.env.npm_lifecycle_script?.includes("nuxt-module-build") && !app) {
+      var path = entryProjectResolver.resolve(`./.baked/app.json`);
+      app = (await import(path, { with: { type: "json" } })).default;
     }
 
     // passing module's options to runtime config for further access
