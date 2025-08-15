@@ -1,5 +1,6 @@
 import Aura from "@primeuix/themes/aura";
 import { definePreset } from "@primeuix/themes";
+import app from "./.baked/app.json" assert { type: "json" };
 
 const Mouseless = definePreset(Aura, {
   semantic: {
@@ -22,6 +23,7 @@ const Mouseless = definePreset(Aura, {
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   baked: {
+    app: app,
     components: {
       Page: {
         title: "Baked Admin"

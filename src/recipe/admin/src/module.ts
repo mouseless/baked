@@ -2,7 +2,7 @@ import { defineNuxtModule, addComponentsDir, addImportsDir, addPlugin, createRes
 import type { NuxtI18nOptions } from "@nuxtjs/i18n";
 
 export interface ModuleOptions {
-  app?: any, // deprecated, will be auto-loaded if not provided
+  app?: any,
   components?: Components,
   composables: Composables,
   primevue: PrimeVueOptions,
@@ -57,7 +57,8 @@ export default defineNuxtModule<ModuleOptions>({
     let { app } = _options;
     if (!app) {
       try {
-        app = require(`${_nuxt.options.rootDir}/.baked/app.json`);
+        // TODO not working in prod mode, will be fixed later
+        app = require(entryProjectResolver.resolve(`./.baked/app.json`));
       } catch {
         console.warn('[baked-recipe-admin] Could not auto-load app.json');
       }
@@ -105,8 +106,8 @@ export default defineNuxtModule<ModuleOptions>({
       strategy: "no_prefix",
       locales: app?.i18n?.supportedLanguages?.map((i: any) => {
         const files = [
-          entryProjectResolver.resolve(`.baked/locale.${i.code}.json`),
-          entryProjectResolver.resolve(`locales/locale.${i.code}.json`)
+          entryProjectResolver.resolve(`./.baked/locale.${i.code}.json`),
+          entryProjectResolver.resolve(`./locales/locale.${i.code}.json`)
         ];
 
         return {
