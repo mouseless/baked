@@ -178,14 +178,26 @@ if(exportOptions) {
 
 onMounted(async() => {
   if(exportOptions) {
-    const { formatter: formatterName, appendParameters, localizeParameters, parameterSeparator } = exportOptions;
+    const {
+      formatter: formatterName,
+      appendParameters,
+      parameterSeparator,
+      parameterFormatter: parameterFormatterName
+    } = exportOptions;
 
-    formatter = (await composableResolver.resolve(formatterName)).default();
+    if(formatterName) {
+      formatter = (await composableResolver.resolve(formatterName)).default();
+    }
+
+    let parameterFormatter = null;
+    if(parameterFormatterName) {
+      parameterFormatter = (await composableResolver.resolve(parameterFormatterName)).default();
+    }
 
     if(appendParameters && dataDescriptor) {
       let parameters = await dataFetcher.fetchParameters({ data: dataDescriptor, injectedData });
-      if(localizeParameters) {
-        parameters = parameters.map(p => l(p));
+      if(parameterFormatter) {
+        parameters = parameters.map((p, i) => parameterFormatter.format(p, i));
       }
 
       exportFilename.value = [exportFilename.value, ...parameters].join(parameterSeparator ?? "-");
