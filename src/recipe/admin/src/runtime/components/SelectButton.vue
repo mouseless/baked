@@ -75,14 +75,17 @@ function setSelected(value) {
     : value;
 
   if(selectionPageContextKey) {
-    const values = data.filter(o => o !== value);
-    for(const value of values) {
-      page[`${selectionPageContextKey}:${value}`] = false;
-      page[`!${selectionPageContextKey}:${value}`] = !page[`${selectionPageContextKey}:${value}`];
+    const getValue = o => optionValue ? o[optionValue] : o;
+    for(const v of data.map(getValue).filter(v => v !== value)) {
+      page[`${selectionPageContextKey}:${v}`] = false;
+      page[`!${selectionPageContextKey}:${v}`] = true;
     }
 
-    page[`${selectionPageContextKey}:${selected.value}`] = true;
-    page[`!${selectionPageContextKey}:${selected.value}`] = !page[`${selectionPageContextKey}:${selected.value}`];
+    const selectedValue = getValue(selected.value || {});
+    if(selectedValue != null) {
+      page[`${selectionPageContextKey}:${selectedValue}`] = true;
+      page[`!${selectionPageContextKey}:${selectedValue}`] = false;
+    }
   }
 
   if(stateful) {

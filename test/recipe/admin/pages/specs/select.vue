@@ -112,7 +112,21 @@ const variants = [
       selectionPageContextKey: "test:select",
       inline: false
     }),
-    model: ref("ValueA"),
+    model: ref(),
+    pageContextKeys: ["test:select:ValueA", "test:select:ValueB", "!test:select:ValueA", "!test:select:ValueB"]
+  },
+  {
+    name: "Page Context - Option Label and Value",
+    descriptor: giveMe.aSelect({
+      optionLabel: "label",
+      optionValue: "value",
+      selectionPageContextKey: "test:select",
+      data: [
+        { label: "Label 1", value: "ValueA" },
+        { label: "Label 2", value: "ValueB" }
+      ]
+    }),
+    model: ref(),
     pageContextKeys: ["test:select:ValueA", "test:select:ValueB", "!test:select:ValueA", "!test:select:ValueB"]
   }
 ];

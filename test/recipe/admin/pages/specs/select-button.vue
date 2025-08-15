@@ -81,7 +81,21 @@ const variants = [
       data: ["OPTION 1", "OPTION 2"],
       selectionPageContextKey: "test:select-button"
     }),
-    model: ref("OPTION 1"),
+    model: ref(),
+    pageContextKeys: ["test:select-button:OPTION 1", "test:select-button:OPTION 2", "!test:select-button:OPTION 1", "!test:select-button:OPTION 2"]
+  },
+  {
+    name: "Page Context - Option Label and Value",
+    descriptor: giveMe.aSelectButton({
+      optionLabel: "label",
+      optionValue: "value",
+      selectionPageContextKey: "test:select-button",
+      data: [
+        { label: "Label 1", value: "OPTION 1" },
+        { label: "Label 2", value: "OPTION 2" }
+      ]
+    }),
+    model: ref(),
     pageContextKeys: ["test:select-button:OPTION 1", "test:select-button:OPTION 2", "!test:select-button:OPTION 1", "!test:select-button:OPTION 2"]
   }
 ];

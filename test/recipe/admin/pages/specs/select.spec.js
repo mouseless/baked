@@ -191,23 +191,86 @@ test.describe("Set Selected with Localization", () => {
 test.describe("Page Context", () => {
   const id = "Page Context";
 
-  test("selected option is set to the page context with the given key", async({page}) => {
+  test("when no option selected is set to the page context with the given key", async({page}) => {
     const pageContext = page.getByTestId(`${id}:page-context`);
+
+    await expect(pageContext).toHaveText(/!test:select:ValueA/);
+    await expect(pageContext).toHaveText(/!test:select:ValueB/);
+  });
+
+  test("selected option is set to the page context with the given key", async({page}) => {
+    const component = page.getByTestId(id);
+    const options = page.locator(primevue.select.option);
+    const pageContext = page.getByTestId(`${id}:page-context`);
+
+    await component.click();
+    await options.nth(0).click();
 
     await expect(pageContext).toHaveText(/test:select:ValueA/);
     await expect(pageContext).not.toHaveText(/!test:select:ValueA/);
   });
 
   test("not selected option is set to the page context with the given key with !", async({page}) => {
+    const component = page.getByTestId(id);
+    const options = page.locator(primevue.select.option);
     const pageContext = page.getByTestId(`${id}:page-context`);
+
+    await component.click();
+    await options.nth(0).click();
 
     await expect(pageContext).toHaveText(/!test:select:ValueB/);
   });
 
   test("when selection changes page context is updated", async({page}) => {
     const component = page.getByTestId(id);
-    const pageContext = page.getByTestId(`${id}:page-context`);
     const options = page.locator(primevue.select.option);
+    const pageContext = page.getByTestId(`${id}:page-context`);
+
+    await component.click();
+    await options.nth(1).click();
+
+    await expect(pageContext).toHaveText(/test:select:ValueB/);
+    await expect(pageContext).not.toHaveText(/!test:select:ValueB/);
+  });
+});
+
+test.describe("Page Context - Option Label and Value", () => {
+  const id = "Page Context - Option Label and Value";
+
+  test("when no option selected is set to the page context with the given key", async({page}) => {
+    const pageContext = page.getByTestId(`${id}:page-context`);
+
+    await expect(pageContext).toHaveText(/!test:select:ValueA/);
+    await expect(pageContext).toHaveText(/!test:select:ValueB/);
+  });
+
+  test("selected option is set to the page context with the given key", async({page}) => {
+    const component = page.getByTestId(id);
+    const options = page.locator(primevue.select.option);
+    const pageContext = page.getByTestId(`${id}:page-context`);
+
+    await component.click();
+    await options.nth(0).click();
+
+    await expect(pageContext).toHaveText(/test:select:ValueA/);
+    await expect(pageContext).not.toHaveText(/!test:select:ValueA/);
+  });
+
+  test("not selected option is set to the page context with the given key with !", async({page}) => {
+    const component = page.getByTestId(id);
+    const options = page.locator(primevue.select.option);
+    const pageContext = page.getByTestId(`${id}:page-context`);
+
+    await component.click();
+    await options.nth(0).click();
+
+    await expect(pageContext).toHaveText(/!test:select:ValueB/);
+  });
+
+  test("when selection changes page context is updated", async({page}) => {
+    const component = page.getByTestId(id);
+    const options = page.locator(primevue.select.option);
+    const pageContext = page.getByTestId(`${id}:page-context`);
 
     await component.click();
     await options.nth(1).click();
