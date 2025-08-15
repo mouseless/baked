@@ -23,11 +23,10 @@ const descriptor = ref(await findLayout(route.params.baked?.[0]));
 watch(
   () => route.params.baked?.[0],
   async(newPageName, oldPageName) => {
-    if(newPageName !== oldPageName) {
-      descriptor.value = await findLayout(newPageName);
-    }
-  },
-  { immediate: true }
+    if(newPageName === oldPageName) { return; }
+
+    descriptor.value = await findLayout(newPageName);
+  }
 );
 
 async function findLayout(pageName) {

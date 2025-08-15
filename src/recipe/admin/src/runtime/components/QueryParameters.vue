@@ -42,14 +42,16 @@ for(const parameter of parameters) {
 // set defaults when first landed on page
 onMounted(async() => await setDefaults());
 
-// Compute ready state and unique key in a single watchEffect
 watchEffect(() => {
   const queryValues = Object.values(values).map(p => p.query.value);
 
+  // sets ready state when all required parameters are set
   const isReady = parameters
     .filter(p => p.required)
     .every(p => values[p.name].query.value?.length > 0);
 
+  // calculates unique key to help parent redraw components when a parameter
+  // value changes
   const uniqueKey = queryValues
     .filter(v => v?.length > 0)
     .join("-");
@@ -58,46 +60,51 @@ watchEffect(() => {
   emit("changed", uniqueKey);
 });
 
-// Watch query parameters for changes and update models accordingly
+// binds query params to models, needed when query parameters change due to a
+// navigation from side menu or header etc.
 watch(
   Object.values(values).map(p => p.query),
   async(newValues, oldValues) => {
     if(JSON.stringify(newValues) === JSON.stringify(oldValues)) { return; }
 
+    // sets defaults when already on the page, but query parameters changed due
+    // to navigation clicks
     await setDefaults();
 
     parameters.forEach((param, i) => {
-      if(values[param.name]) {
-        values[param.name].model.value = newValues[i] || undefined;
-      }
+      if(!values[param.name]) { return; }
+
+      values[param.name].model.value = newValues[i] || undefined;
     });
   },
   { deep: true }
 );
 
-// Watch model values for changes and update route query parameters
+// when any of the parameter values changed from input components, it reroutes
+// to set query param values
 watch(
   Object.values(values).map(p => p.model),
   async(newValues, oldValues) => {
     if(JSON.stringify(newValues) === JSON.stringify(oldValues)) { return; }
 
-    // Determine whether to push or replace based on required parameters with defaults
+    // if any of required parameters that has default doesn't have a value, it
+    // means it is currently setting default value so route should be replaced,
+    // not pushed
     const shouldReplace = parameters
       .filter(p => p.required && (p.default || p.defaultSelfManaged))
       .some(p => !values[p.name].query.value);
 
-    const action = shouldReplace ? "replace" : "push";
-
-    // Build query object from non-empty values
+    // build query object from non-empty values
     const query = parameters.reduce((result, param, i) => {
       const value = newValues[i];
       if(value) {
         result[param.name] = value;
       }
+
       return result;
     }, {});
 
-    await router[action]({
+    await router[shouldReplace ? "replace" : "push"]({
       path: route.path,
       query
     });
@@ -110,7 +117,7 @@ async function setDefaults() {
   for(const p of parameters) {
     const currentValue = values[p.name].query.value;
 
-    // Only set value if it exists or parameter has a default
+    // only set value if it exists or parameter has a default
     if(currentValue || p.default) {
       if(!currentValue && p.default) {
         query[p.name] = await dataFetcher.fetch({ data: p.default, injectedData });
@@ -119,7 +126,8 @@ async function setDefaults() {
       }
     }
 
-    // Clean up null/empty values
+    // clean up null/empty values to avoid empty query string parameters in the
+    // address bar
     if(query[p.name] === null || query[p.name] === "") {
       query[p.name] = undefined;
     }

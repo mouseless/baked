@@ -64,7 +64,7 @@ const locale = composables?.useFormat?.locale || "en-US";
 const sectionsData = ref(sections);
 
 const page = context.page();
-// Listen in context if any filter is applied
+// listen in context if any filter is applied
 if(filterPageContextKey) {
   watch(
     () => page[filterPageContextKey],
@@ -73,6 +73,7 @@ if(filterPageContextKey) {
 
       if(!newValue.trim()) {
         sectionsData.value = sections;
+
         return;
       }
 
@@ -81,6 +82,7 @@ if(filterPageContextKey) {
         title: section.title,
         links: section.links.filter(link => {
           const title = l(link.title);
+
           return title?.toLocaleLowerCase(locale).startsWith(searchTerm);
         })
       }));
