@@ -50,14 +50,13 @@ export default defineNuxtModule<ModuleOptions>({
   // this setup runs after `defineNuxtConfig` so it should set default values
   // carefully.
   async setup(_options, _nuxt) {
+    if (process.env.npm_lifecycle_script?.includes("nuxt-module-build")) { return; }
+
     const resolver = createResolver(import.meta.url);
     const entryProjectResolver = createResolver(_nuxt.options.rootDir);
 
-    let app  = null;
-    if (!process.env.npm_lifecycle_script?.includes("nuxt-module-build") && !app) {
-      var path = entryProjectResolver.resolve(`./.baked/app.json`);
-      app = (await import(path, { with: { type: "json" } })).default;
-    }
+    const appJsonPath = entryProjectResolver.resolve(`./.baked/app.json`);
+    const app = (await import(appJsonPath, { with: { type: "json" } })).default;
 
     // passing module's options to runtime config for further access
     _nuxt.options.runtimeConfig.public.error = app?.error;
