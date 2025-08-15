@@ -2,7 +2,6 @@ import { defineNuxtModule, addComponentsDir, addImportsDir, addPlugin, createRes
 import type { NuxtI18nOptions } from "@nuxtjs/i18n";
 
 export interface ModuleOptions {
-  app?: any,
   components?: Components,
   composables: Composables,
   primevue: PrimeVueOptions,
@@ -51,18 +50,13 @@ export default defineNuxtModule<ModuleOptions>({
   // this setup runs after `defineNuxtConfig` so it should set default values
   // carefully.
   async setup(_options, _nuxt) {
+    if (process.env.npm_lifecycle_script?.includes("nuxt-module-build")) { return; }
+
     const resolver = createResolver(import.meta.url);
     const entryProjectResolver = createResolver(_nuxt.options.rootDir);
 
-    let { app } = _options;
-    if (!app) {
-      try {
-        // TODO not working in prod mode, will be fixed later
-        app = require(entryProjectResolver.resolve(`./.baked/app.json`));
-      } catch {
-        console.warn('[baked-recipe-admin] Could not auto-load app.json');
-      }
-    }
+    const appJsonPath = entryProjectResolver.resolve(`./.baked/app.json`);
+    const app = (await import(appJsonPath, { with: { type: "json" } })).default;
 
     // passing module's options to runtime config for further access
     _nuxt.options.runtimeConfig.public.error = app?.error;
