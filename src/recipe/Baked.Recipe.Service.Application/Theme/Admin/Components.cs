@@ -1,4 +1,4 @@
-using Baked.Ui;
+﻿using Baked.Ui;
 
 namespace Baked.Theme.Admin;
 
@@ -6,22 +6,15 @@ public static class Components
 {
     public static ComponentDescriptorAttribute<CardLink> CardLink(string route, string title,
         Action<CardLink>? schema = default
-    )
-    {
-        var result = new CardLink(route, title);
-
-        schema?.Invoke(result);
-
-        return new(result);
-    }
+    ) => new(schema.Apply(new(route, title)));
 
     public static Conditional Conditional(
-        IComponentDescriptor? fallback = default,
-        IEnumerable<Conditional.Condition>? conditions = default
-    ) => new(fallback ?? String()) { Conditions = [.. conditions ?? []] };
+        Action<Conditional>? schema = default
+    ) => schema.Apply(new());
 
-    public static Conditional.Condition ConditionalCondition(string prop, object value, IComponentDescriptor component) =>
-        new(prop, value, component);
+    public static Conditional.Condition ConditionalCondition(string prop, object value, IComponentDescriptor component,
+        Action<Conditional.Condition>? schema = default
+    ) => schema.Apply(new(prop, value, component));
 
     public static ComponentDescriptor Custom<TSchema>() where TSchema : IComponentSchema =>
         new(typeof(TSchema).Name);
@@ -81,8 +74,8 @@ public static class Components
         bool? exportable = default,
         bool? frozen = default
     ) => DataTableColumn(prop,
-        component: Conditional(fallback: component),
-        title: title ?? " ", // otherwise export shows `label` as label
+        component: Conditional(schema: s => s.Fallback = component),
+        title: title,
         alignRight: alignRight,
         minWidth: minWidth,
         exportable: exportable,
