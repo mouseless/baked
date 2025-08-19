@@ -3,6 +3,6 @@
 public interface IComponentDescriptor
 {
     string Type { get; }
-    IComponentSchema? Schema { get; }
+    IComponentSchema Schema { get; }
     IData? Data { get; }
 }

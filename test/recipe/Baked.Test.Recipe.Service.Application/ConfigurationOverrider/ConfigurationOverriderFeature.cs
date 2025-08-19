@@ -220,21 +220,43 @@ public class ConfigurationOverriderFeature : IFeature
                         ],
                         footer: LanguageSwitcher()
                     );
-                    s.Header = Header(
-                        siteMap:
-                        [
-                            HeaderItem("/", icon: "pi pi-home"),
-                            HeaderItem("/cache", icon: "pi pi-database", title: l("Cache")),
-                            HeaderItem("/data-table", icon: "pi pi-table", title: l("Data Table")),
-                            HeaderItem("/report", icon: "pi pi-file", title: l("Report")),
-                            HeaderItem("/specs", icon: "pi pi-list-check", title: l("Specs")),
-                            .. specs.SelectMany(section =>
-                                section.Links.Select(link =>
-                                    HeaderItem($"/specs/{link.Title.Kebaberize()}", title: l(link.Title), parentRoute: "/specs")
-                                )
-                            )
-                        ]
-                    );
+                    s.Header = Header(schema: s =>
+                    {
+                        s.Sitemap["/"] = HeaderItem("/", schema: s => s.Icon = "pi pi-home");
+                        s.Sitemap["/cache"] = HeaderItem("/cache", schema: s =>
+                        {
+                            s.Icon = "pi pi-database";
+                            s.Title = l("Cache");
+                        });
+                        s.Sitemap["/data-table"] = HeaderItem("/data-table", schema: s =>
+                        {
+                            s.Icon = "pi pi-table";
+                            s.Title = l("Data Table");
+                        });
+                        s.Sitemap["/report"] = HeaderItem("/report", schema: s =>
+                        {
+                            s.Icon = "pi pi-file";
+                            s.Title = l("Report");
+                        });
+                        s.Sitemap["/specs"] = HeaderItem("/specs", schema: s =>
+                        {
+                            s.Icon = "pi pi-list-check";
+                            s.Title = l("Specs");
+                        });
+
+                        foreach (var spec in specs)
+                        {
+                            foreach (var link in spec.Links)
+                            {
+                                s.Sitemap[$"/specs/{link.Title.Kebaberize()}"] =
+                                    HeaderItem($"/specs/{link.Title.Kebaberize()}", schema: s =>
+                                    {
+                                        s.Title = l(link.Title);
+                                        s.ParentRoute = "/specs";
+                                    });
+                            }
+                        }
+                    });
                 }));
             });
 
@@ -286,12 +308,11 @@ public class ConfigurationOverriderFeature : IFeature
                     var second = report.Methods[nameof(Report.GetSecond)];
 
                     pages.Add(ReportPage("report",
-                        title: PageTitle(l("Report"), description: l("Showcases a report layout with tabs and data panels")),
+                        title: PageTitle(l("Report"), schema: s => s.Description = l("Showcases a report layout with tabs and data panels")),
                         queryParameters:
                         [
-                            Parameter(
-                            "requiredWithDefault",
-                                Select(l("Required w/ Default"),
+                            Parameter("requiredWithDefault",
+                                component: Select(l("Required w/ Default"),
                                     data: Inline(new[]
                                     {
                                       new { text = l("Required w/ Default 1"), value = l("rwd-1") },
@@ -300,13 +321,19 @@ public class ConfigurationOverriderFeature : IFeature
                                     optionLabel: "text",
                                     optionValue: "value"
                                 ),
-                                defaultValue: "rwd-1",
-                                required: true
+                                schema: s =>
+                                {
+                                    s.DefaultValue = "rwd-1";
+                                    s.Required = true;
+                                }
                             ),
-                            Parameter("required", Select(l("Required"), data: Inline(new[] { l("Required 1"), l("Required 2") })),
-                                required: true
+                            Parameter("required",
+                                component: Select(l("Required"), data: Inline(new[] { l("Required 1"), l("Required 2") })),
+                                schema: s => s.Required = true
                             ),
-                            Parameter("optional", SelectButton(Inline(new[] { l("Optional 1"), l("Optional 2") }), allowEmpty: true))
+                            Parameter("optional",
+                                component: SelectButton(Inline(new[] { l("Optional 1"), l("Optional 2") }), allowEmpty: true)
+                            )
                         ],
                         tabs:
                         [
@@ -404,7 +431,7 @@ public class ConfigurationOverriderFeature : IFeature
                                             schema: s => s.Parameters.Add(
                                                 Parameter("count",
                                                     component: Select(l("Count"), Inline(Enum.GetNames<CountOptions>().Select(name => l(name))), stateful: true),
-                                                    defaultValue: CountOptions.Default
+                                                    schema: s => s.DefaultValue = CountOptions.Default
                                                 )
                                             )
                                         )
@@ -439,7 +466,7 @@ public class ConfigurationOverriderFeature : IFeature
                                                 s.Parameters.Add(
                                                     Parameter("count",
                                                         component: SelectButton( data: Inline(Enum.GetNames<CountOptions>().Select(name => l(name))), stateful: true),
-                                                        defaultValue: CountOptions.Default
+                                                        schema: s => s.DefaultValue = CountOptions.Default
                                                     )
                                                 );
                                                 s.Collapsed = true;
@@ -504,8 +531,9 @@ public class ConfigurationOverriderFeature : IFeature
                                                 )
                                             ),
                                             schema: s => s.Parameters.Add(
-                                                Parameter("count", Select(l("Count"), Inline(new string[]{ "10", "20", "100", "1000", "10000" }, requireLocalization: false)),
-                                                    defaultValue: "10"
+                                                Parameter("count",
+                                                    component: Select(l("Count"), Inline(new string[]{ "10", "20", "100", "1000", "10000" }, requireLocalization: false)),
+                                                    schema: s => s.DefaultValue = "10"
                                                 )
                                             )
                                         )
@@ -523,12 +551,16 @@ public class ConfigurationOverriderFeature : IFeature
                     var getApplication = report.Methods[nameof(CacheSamples.GetApplication)];
 
                     pages.Add(ReportPage("cache",
-                        title: PageTitle("Cache", description: l("Showcases the cache behavior")),
+                        title: PageTitle("Cache", schema: s => s.Description = l("Showcases the cache behavior")),
                         queryParameters:
                         [
-                            Parameter("parameter", Select(l("Parameter"), Inline(new[] { "value_a", "value_b" }, requireLocalization: false)),
-                                required: true,
-                                defaultValue: "value_a"
+                            Parameter("parameter",
+                                component: Select(l("Parameter"), Inline(new[] { "value_a", "value_b" }, requireLocalization: false)),
+                                schema: s =>
+                                {
+                                    s.Required = true;
+                                    s.DefaultValue = "value_a";
+                                }
                             )
                         ],
                         tabs:
@@ -567,33 +599,40 @@ public class ConfigurationOverriderFeature : IFeature
                 });
 
                 pages.Add(MenuPage("specs",
-                    filterPageContextKey: "menu-page",
-                    header: PageTitle(
-                      title: l("Specs"),
-                      description: l("All UI Specs are listed here"),
-                      actions: [Filter(placeholder: l("Filter"), pageContextKey: "menu-page")]
-                    ),
-                    sections:
-                    [
-                        .. specs.Select(section =>
-                            MenuPageSection(
-                                title: l(section.Name),
-                                links:
-                                [
-                                    .. section.Links.Select(link =>
-                                        Filterable(
-                                            title: l(link.Title),
-                                            component: CardLink($"/specs/{link.Title.Kebaberize()}", l(link.Title), schema: s =>
-                                            {
-                                                s.Icon = "pi pi-microchip";
-                                                s.Description = l(link.Description);
-                                            })
-                                        )
-                                    )
-                                ]
+                    schema: s =>
+                    {
+                        s.FilterPageContextKey = "menu-page";
+                        s.Header = PageTitle(
+                            title: l("Specs"),
+                            schema: s =>
+                            {
+                                s.Description = l("All UI Specs are listed here");
+                                s.Actions.Add(Filter(pageContextKey: "menu-page", schema: s => s.Placeholder = l("Filter")));
+                            }
+                        );
+                        s.Sections.AddRange(
+                            specs.Select(section =>
+                                MenuPageSection(
+                                    schema: s =>
+                                    {
+                                        s.Title = l(section.Name);
+                                        s.Links.AddRange(
+                                             section.Links.Select(link =>
+                                                Filterable(
+                                                    component: CardLink($"/specs/{link.Title.Kebaberize()}", l(link.Title), schema: s =>
+                                                    {
+                                                        s.Icon = "pi pi-microchip";
+                                                        s.Description = l(link.Description);
+                                                    }),
+                                                    schema: s => s.Title = l(link.Title)
+                                                )
+                                            )
+                                        );
+                                    }
+                                )
                             )
-                        )
-                    ]
+                        );
+                    }
                 ));
             });
         });

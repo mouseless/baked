@@ -33,7 +33,8 @@
           }
         ],
         "footer": {
-          "type": "LanguageSwitcher"
+          "type": "LanguageSwitcher",
+          "schema": {}
         }
       },
       "data": {

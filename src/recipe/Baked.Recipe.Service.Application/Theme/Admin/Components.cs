@@ -75,113 +75,96 @@ public static class Components
     ) => schema.Apply(new(title, message));
 
     public static ComponentDescriptorAttribute<Filter> Filter(string pageContextKey,
-        string? placeholder = default
-    ) => new(new(pageContextKey) { Placeholder = placeholder });
+        Action<Filter>? schema = default
+    ) => new(schema.Apply(new(pageContextKey)));
 
-    public static Filterable Filterable(string title, IComponentDescriptor component) =>
-        new(title, component);
+    public static Filterable Filterable(IComponentDescriptor component,
+        Action<Filterable>? schema = default
+    ) => schema.Apply(new(component));
 
-    public static ComponentDescriptorAttribute<Header> Header(IEnumerable<Header.Item> siteMap,
+    public static ComponentDescriptorAttribute<Header> Header(
+        Action<Header>? schema = default,
         IData? data = default
-    )
-    {
-        data ??= Datas.Computed(Composables.UseRoute);
-
-        return new(new() { Sitemap = siteMap.ToDictionary(i => i.Route, i => i) }) { Data = data };
-    }
+    ) => new(schema.Apply(new())) { Data = data ?? Datas.Computed(Composables.UseRoute) };
 
     public static Header.Item HeaderItem(string route,
-        string? icon = default,
-        string? title = default,
-        string? parentRoute = default
-    ) => new(route) { Icon = icon, Title = title, ParentRoute = parentRoute };
+        Action<Header.Item>? schema = default
+    ) => schema.Apply(new(route));
 
-    public static ComponentDescriptor LanguageSwitcher() =>
-        new(nameof(LanguageSwitcher));
+    public static ComponentDescriptorAttribute<LanguageSwitcher> LanguageSwitcher(
+        Action<LanguageSwitcher>? schema = default
+    ) => new(schema.Apply(new()));
 
-    public static ComponentDescriptorAttribute<Icon> Icon(string iconClass) =>
-        new(new(iconClass));
+    public static ComponentDescriptorAttribute<Icon> Icon(string iconClass,
+        Action<Icon>? schema = default
+    ) => new(schema.Apply(new(iconClass)));
 
-    public static ComponentDescriptorAttribute<MenuPage> MenuPage(string name,
-        IComponentDescriptor? header = default,
-        IEnumerable<IComponentDescriptor>? links = default
+    public static ComponentDescriptorAttribute<MenuPage> MenuPage(string name, IEnumerable<IComponentDescriptor> links,
+        Action<MenuPage>? schema = default
     ) => MenuPage(name,
-        header: header,
-        sections: [MenuPageSection(links: links?.Select(l => Filterable(string.Empty, l)))]
+        schema: s =>
+        {
+            s.Sections.Add(MenuPageSection(schema: s => s.Links.AddRange(links.Select(l => Filterable(l)))));
+
+            schema.Apply(s);
+        }
     );
 
     public static ComponentDescriptorAttribute<MenuPage> MenuPage(string name,
-        IComponentDescriptor? header = default,
-        IEnumerable<MenuPage.Section>? sections = default,
-        string? filterPageContextKey = default
-    ) => new(new(name) { Header = header, FilterPageContextKey = filterPageContextKey, Sections = [.. sections ?? []] });
+        Action<MenuPage>? schema = default
+    ) => new(schema.Apply(new(name)));
 
     public static MenuPage.Section MenuPageSection(
-        string? title = default,
-        IEnumerable<Filterable>? links = default
-    ) => new() { Title = title, Links = [.. links ?? []] };
+        Action<MenuPage.Section>? schema = default
+    ) => schema.Apply(new());
 
     public static ComponentDescriptorAttribute<Message> Message(
-        string? severity = default,
-        string? icon = default,
+        Action<Message>? schema = default,
         string? message = default
     ) => Message(
-        severity: severity,
-        icon: icon,
+        schema: schema,
         data: message is not null ? Datas.Inline(message) : null
     );
 
     public static ComponentDescriptorAttribute<Message> Message(
-        string? severity = default,
-        string? icon = default,
+        Action<Message>? schema = default,
         IData? data = default
-    )
-    {
-        severity ??= "info";
+    ) => new(new() { LocalizeMessage = data?.RequireLocalization ?? null }) { Data = data };
 
-        return new(new(severity) { Icon = icon, LocalizeMessage = data?.RequireLocalization ?? null }) { Data = data };
-    }
+    public static ComponentDescriptorAttribute<ModalLayout> ModalLayout(string name,
+        Action<ModalLayout>? schema = default
+    ) => new(schema.Apply(new(name)));
 
-    public static ComponentDescriptorAttribute<ModalLayout> ModalLayout(string name) =>
-        new(new(name));
-
-    public static ComponentDescriptor Money(
+    public static ComponentDescriptorAttribute<Money> Money(
+        Action<Money>? schema = default,
         IData? data = default
-    ) => new(nameof(Money)) { Data = data };
+    ) => new(schema.Apply(new())) { Data = data };
 
-    public static ComponentDescriptorAttribute<NavLink> NavLink(string path, string idProp, string textProp) =>
-        new(new(path, idProp, textProp));
+    public static ComponentDescriptorAttribute<NavLink> NavLink(string path, string idProp, string textProp,
+        Action<NavLink>? schema = default
+    ) => new(schema.Apply(new(path, idProp, textProp)));
 
-    public static ComponentDescriptor None() =>
-        new(nameof(None));
+    public static ComponentDescriptorAttribute<None> None(
+        Action<None>? schema = default
+    ) => new(schema.Apply(new()));
 
-    public static ComponentDescriptor Number(
+    public static ComponentDescriptorAttribute<Number> Number(
+        Action<Number>? schema = default,
         IData? data = default
-    ) => new(nameof(Number)) { Data = data };
+    ) => new(schema.Apply(new())) { Data = data };
 
     public static ComponentDescriptorAttribute<PageTitle> PageTitle(string title,
-        string? description = default,
-        IEnumerable<IComponentDescriptor>? actions = default
-    ) => new(new(title) { Description = description, Actions = [.. actions ?? []] });
+        Action<PageTitle>? schema = default
+    ) => new(schema.Apply(new(title)));
 
     public static Parameter Parameter(string name, IComponentDescriptor component,
-        bool? required = default,
-        bool? defaultSelfManaged = default,
-        IData? @default = default,
-        object? defaultValue = default
-    ) => new(name, component)
-    {
-        Required = required,
-        DefaultSelfManaged = defaultSelfManaged,
-        Default =
-            @default is not null ? @default :
-            defaultValue is not null ? Datas.Inline(defaultValue) :
-            null
-    };
+        Action<Parameter>? schema = default
+    ) => schema.Apply(new(name, component));
 
-    public static ComponentDescriptor Rate(
+    public static ComponentDescriptorAttribute<Rate> Rate(
+        Action<Rate>? schema = default,
         IData? data = default
-    ) => new(nameof(Rate)) { Data = data };
+    ) => new(schema.Apply(new())) { Data = data };
 
     public static ComponentDescriptorAttribute<ReportPage> ReportPage(string name, ComponentDescriptorAttribute<PageTitle> title,
         IEnumerable<Parameter>? queryParameters = default,

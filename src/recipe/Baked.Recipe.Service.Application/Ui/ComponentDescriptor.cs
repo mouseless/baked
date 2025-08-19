@@ -1,4 +1,6 @@
-﻿namespace Baked.Ui;
+﻿using Baked.Theme.Admin;
+
+namespace Baked.Ui;
 
 public class ComponentDescriptor(string type,
     IComponentSchema? schema = default
@@ -6,6 +8,6 @@ public class ComponentDescriptor(string type,
 {
     public string Type { get; set; } = type;
     public string? Key { get; set; }
-    public IComponentSchema? Schema { get; } = schema;
+    public IComponentSchema Schema { get; set; } = schema ?? Components.None().Schema;
     public IData? Data { get; set; }
 }

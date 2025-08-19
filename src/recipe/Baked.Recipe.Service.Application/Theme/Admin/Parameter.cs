@@ -9,4 +9,6 @@ public record Parameter(string Name, IComponentDescriptor Component)
     public bool? DefaultSelfManaged { get; set; }
     public IData? Default { get; set; }
     public IComponentDescriptor Component { get; set; } = Component;
+
+    public object DefaultValue { set => Default = Datas.Inline(value); }
 }
