@@ -15,7 +15,7 @@ const context = useContext();
 const { asPercentage } = useFormat();
 
 const { data } = defineProps({
-  schema: { type: null, default: null },
+  schema: { type: null, required: true },
   data: { type: null, required: true }
 });
 
