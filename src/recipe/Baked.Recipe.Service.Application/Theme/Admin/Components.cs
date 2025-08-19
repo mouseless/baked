@@ -5,11 +5,15 @@ namespace Baked.Theme.Admin;
 public static class Components
 {
     public static ComponentDescriptorAttribute<CardLink> CardLink(string route, string title,
-        string? icon = default,
-        string? description = default,
-        bool? disabled = default,
-        string? disabledReason = default
-    ) => new(new(route, title) { Icon = icon, Description = description, Disabled = disabled, DisabledReason = disabledReason });
+        Action<CardLink>? schema = default
+    )
+    {
+        var result = new CardLink(route, title);
+
+        schema?.Invoke(result);
+
+        return new(result);
+    }
 
     public static Conditional Conditional(
         IComponentDescriptor? fallback = default,

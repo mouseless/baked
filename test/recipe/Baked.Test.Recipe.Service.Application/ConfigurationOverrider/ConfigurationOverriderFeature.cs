@@ -186,11 +186,11 @@ public class ConfigurationOverriderFeature : IFeature
                 app.Error = ErrorPage(
                     safeLinks:
                     [
-                        CardLink("/", l("Home"), icon: "pi pi-home"),
-                        CardLink("/cache", title: l("Cache"), "pi pi-database"),
-                        CardLink("/data-table", l("Data Table"), "pi pi-table"),
-                        CardLink("/report", l("Report"), icon: "pi pi-file"),
-                        CardLink("/specs", l("Specs"), icon: "pi pi-list-check"),
+                        CardLink("/", l("Home"), schema: s => s.Icon = "pi pi-home"),
+                        CardLink("/cache", l("Cache"), schema: s => s.Icon = "pi pi-database"),
+                        CardLink("/data-table", l("Data Table"), schema: s => s.Icon = "pi pi-table"),
+                        CardLink("/report", l("Report"), schema: s => s.Icon =  "pi pi-file"),
+                        CardLink("/specs", l("Specs"), schema: s => s.Icon = "pi pi-list-check"),
                     ],
                     errorInfos:
                     [
@@ -249,22 +249,26 @@ public class ConfigurationOverriderFeature : IFeature
                 pages.Add(MenuPage("index",
                     links:
                     [
-                        CardLink($"/cache", l("Cache"),
-                            icon: "pi pi-database",
-                            description: l("Showcases the cache behavior")
-                        ),
-                        CardLink($"/data-table", l("Data Table"),
-                            icon: "pi pi-table",
-                            description: l("Showcase DataTable component with scrollable and footer options")
-                        ),
-                        CardLink($"/report", l("Report"),
-                            icon: "pi pi-file",
-                            description: l("Showcases a report layout with tabs and data panels")
-                        ),
-                        CardLink($"/specs", l("Specs"),
-                            icon: "pi pi-list-check",
-                            description: l("All UI Specs are listed here")
-                        )
+                        CardLink($"/cache", l("Cache"), schema: s =>
+                        {
+                            s.Icon = "pi pi-database";
+                            s.Description = l("Showcases the cache behavior");
+                        }),
+                        CardLink($"/data-table", l("Data Table"), schema: s =>
+                        {
+                            s.Icon= "pi pi-table";
+                            s.Description = l("Showcase DataTable component with scrollable and footer options");
+                        }),
+                        CardLink($"/report", l("Report"), schema: s =>
+                        {
+                            s.Icon = "pi pi-file";
+                            s.Description = l("Showcases a report layout with tabs and data panels");
+                        }),
+                        CardLink($"/specs", l("Specs"), schema: s =>
+                        {
+                            s.Icon = "pi pi-list-check";
+                            s.Description = l("All UI Specs are listed here");
+                        })
                     ]
                 ));
 
@@ -542,10 +546,11 @@ public class ConfigurationOverriderFeature : IFeature
                                     .. section.Links.Select(link =>
                                         Filterable(
                                             title: l(link.Title),
-                                            component: CardLink($"/specs/{link.Title.Kebaberize()}", l(link.Title),
-                                                icon: "pi pi-microchip",
-                                                description: l(link.Description)
-                                            )
+                                            component: CardLink($"/specs/{link.Title.Kebaberize()}", l(link.Title), schema: s =>
+                                            {
+                                                s.Icon = "pi pi-microchip";
+                                                s.Description = l(link.Description);
+                                            })
                                         )
                                     )
                                 ]
