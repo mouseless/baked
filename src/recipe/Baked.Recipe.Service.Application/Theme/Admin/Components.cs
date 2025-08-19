@@ -57,32 +57,22 @@ public static class Components
         Action<DataTable.Footer>? schema = default
     ) => schema.Apply(new(label));
 
-    public static ComponentDescriptorAttribute<DefaultLayout> DefaultLayout(string name,
-        IComponentDescriptor? sideMenu = default,
-        IComponentDescriptor? header = default
-    ) => new(new(name) { SideMenu = sideMenu, Header = header });
+    public static DataTable.VirtualScroller DataTableVirtualScroller(
+        Action<DataTable.VirtualScroller>? schema = default
+    ) => schema.Apply(new());
 
-    public static DataTable.VirtualScroller DataTableVirtualScroller(int itemSize,
-        int? numToleratedItems = 10,
-        bool? appendOnly = true
-    ) => new(itemSize) { NumToleratedItems = numToleratedItems, AppendOnly = appendOnly };
+    public static ComponentDescriptorAttribute<DefaultLayout> DefaultLayout(string name,
+        Action<DefaultLayout>? schema = default
+    ) => new(schema.Apply(new(name)));
 
     public static ComponentDescriptorAttribute<ErrorPage> ErrorPage(
-        IEnumerable<(int StatusCode, ErrorPage.Info Info)>? errorInfos = default,
-        string? footerInfo = default,
-        IEnumerable<IComponentDescriptor>? safeLinks = default,
-        string? safeLinksMessage = default,
+        Action<ErrorPage>? schema = default,
         IData? data = default
-    ) => new(
-        new(
-            footerInfo ?? "If you cannot reach the page you want please contact the system administrator",
-            safeLinksMessage ?? "Try the links from the menu below to view the page you want to access:"
-        )
-        { ErrorInfos = (errorInfos ?? []).ToDictionary(i => i.StatusCode, i => i.Info), SafeLinks = [.. safeLinks ?? []] })
-    { Data = data };
+    ) => new(schema.Apply(new())) { Data = data };
 
-    public static (int StatusCode, ErrorPage.Info Info) ErrorPageInfo(int statusCode, string title, string message) =>
-        (statusCode, new(title, message));
+    public static ErrorPage.Info ErrorPageInfo(string title, string message,
+        Action<ErrorPage.Info>? schema = default
+    ) => schema.Apply(new(title, message));
 
     public static ComponentDescriptorAttribute<Filter> Filter(string pageContextKey,
         string? placeholder = default

@@ -184,20 +184,20 @@ public class ConfigurationOverriderFeature : IFeature
             configurator.UsingLocalization(l =>
             {
                 app.Error = ErrorPage(
-                    safeLinks:
-                    [
-                        CardLink("/", l("Home"), schema: s => s.Icon = "pi pi-home"),
-                        CardLink("/cache", l("Cache"), schema: s => s.Icon = "pi pi-database"),
-                        CardLink("/data-table", l("Data Table"), schema: s => s.Icon = "pi pi-table"),
-                        CardLink("/report", l("Report"), schema: s => s.Icon =  "pi pi-file"),
-                        CardLink("/specs", l("Specs"), schema: s => s.Icon = "pi pi-list-check"),
-                    ],
-                    errorInfos:
-                    [
-                        ErrorPageInfo(403, l("Access Denied"), l("You do not have the permision to view the address or data specified.") ),
-                        ErrorPageInfo(404, l("Page Not Found"), l("The page you want to view is etiher deleted or outdated.")),
-                        ErrorPageInfo(500, l("Unexpected Error"), l("Please contact system administrator."))
-                    ],
+                    schema: s =>
+                    {
+                        s.SafeLinks.AddRange(
+                        [
+                            CardLink("/", l("Home"), schema: s => s.Icon = "pi pi-home"),
+                            CardLink("/cache", l("Cache"), schema: s => s.Icon = "pi pi-database"),
+                            CardLink("/data-table", l("Data Table"), schema: s => s.Icon = "pi pi-table"),
+                            CardLink("/report", l("Report"), schema: s => s.Icon =  "pi pi-file"),
+                            CardLink("/specs", l("Specs"), schema: s => s.Icon = "pi pi-list-check"),
+                        ]);
+                        s.ErrorInfos[403] = ErrorPageInfo(l("Access Denied"), l("You do not have the permision to view the address or data specified."));
+                        s.ErrorInfos[404] = ErrorPageInfo(l("Page Not Found"), l("The page you want to view is etiher deleted or outdated."));
+                        s.ErrorInfos[500] = ErrorPageInfo(l("Unexpected Error"), l("Please contact system administrator."));
+                    },
                     data: Computed(Composables.UseError)
                 );
             });
@@ -207,8 +207,9 @@ public class ConfigurationOverriderFeature : IFeature
         {
             configurator.UsingLocalization(l =>
             {
-                layouts.Add(DefaultLayout("default",
-                    sideMenu: SideMenu(
+                layouts.Add(DefaultLayout("default", schema: s =>
+                {
+                    s.SideMenu = SideMenu(
                         menu:
                         [
                             SideMenuItem("/", "pi pi-home"),
@@ -218,8 +219,8 @@ public class ConfigurationOverriderFeature : IFeature
                             SideMenuItem("/specs", "pi pi-list-check", title: l("Specs"))
                         ],
                         footer: LanguageSwitcher()
-                    ),
-                    header: Header(
+                    );
+                    s.Header = Header(
                         siteMap:
                         [
                             HeaderItem("/", icon: "pi pi-home"),
@@ -233,8 +234,8 @@ public class ConfigurationOverriderFeature : IFeature
                                 )
                             )
                         ]
-                    )
-                ));
+                    );
+                }));
             });
 
             layouts.Add(ModalLayout("modal"));
@@ -490,7 +491,7 @@ public class ConfigurationOverriderFeature : IFeature
                                                     s.DataKey = nameof(TableRow.Label).Camelize();
                                                     s.ItemsProp = "items";
                                                     s.ScrollHeight = "500px";
-                                                    s.VirtualScrollerOptions = DataTableVirtualScroller(45);
+                                                    s.VirtualScrollerOptions = DataTableVirtualScroller(schema: s => s.ItemSize = 45);
                                                     s.ExportOptions = DataTableExport(";", l("data-table-export"), schema: s =>
                                                     {
                                                         s.Formatter = "useCsvFormatter";

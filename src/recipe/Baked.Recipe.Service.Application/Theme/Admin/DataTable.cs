@@ -44,10 +44,10 @@ public record DataTable : IComponentSchema
         public string? ParameterFormatter { get; set; }
     }
 
-    public record VirtualScroller(int ItemSize)
+    public record VirtualScroller()
     {
-        public int ItemSize { get; set; } = ItemSize;
-        public int? NumToleratedItems { get; set; }
-        public bool? AppendOnly { get; set; }
+        public int? ItemSize { get; set; }
+        public int? NumToleratedItems { get; set; } = 10;
+        public bool? AppendOnly { get; set; } = true;
     }
 }
