@@ -1,12 +1,10 @@
 using Baked.Ui;
 
-using static Baked.Theme.Admin.Components;
-
 namespace Baked.Theme.Admin;
 
 public record Conditional
 {
-    public IComponentDescriptor Fallback { get; set; } = String();
+    public IComponentDescriptor Fallback { get; set; } = Components.String();
     public List<Condition> Conditions { get; init; } = [];
 
     public record Condition(string Prop, object Value, IComponentDescriptor Component)

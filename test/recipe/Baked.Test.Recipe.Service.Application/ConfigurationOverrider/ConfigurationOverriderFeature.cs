@@ -321,7 +321,7 @@ public class ConfigurationOverriderFeature : IFeature
                                                     query: Computed(Composables.UseQuery)
                                                 )
                                             ),
-                                            collapsed: false
+                                            schema: s => s.Collapsed = false
                                         )
                                     ),
                                     ReportPageTabContent(
@@ -332,7 +332,7 @@ public class ConfigurationOverriderFeature : IFeature
                                                     query: Computed(Composables.UseQuery)
                                                 )
                                             ),
-                                            collapsed: true
+                                            schema: s => s.Collapsed = true
                                         ),
                                         narrow: true
                                     ),
@@ -344,7 +344,7 @@ public class ConfigurationOverriderFeature : IFeature
                                                     query: Computed(Composables.UseQuery)
                                                 )
                                             ),
-                                            collapsed: true
+                                            schema: s => s.Collapsed = true
                                         ),
                                         narrow: true
                                     )
@@ -356,64 +356,93 @@ public class ConfigurationOverriderFeature : IFeature
                                 [
                                     ReportPageTabContent(
                                         component: DataPanel(l(first.Name),
-                                            parameters:
-                                            [
-                                                Parameter("count",
-                                                    component: Select(l("Count"), Inline(Enum.GetNames<CountOptions>().Select(name => l(name))), stateful: true),
-                                                    defaultValue: CountOptions.Default
-                                                )
-                                            ],
                                             content: DataTable(
-                                                columns:
-                                                [
-                                                    DataTableColumn("label", title: l("Label"), minWidth: true, exportable: true),
-                                                    DataTableColumn("column1", title: l("Column 1"), exportable: true),
-                                                    DataTableColumn("column2", title: l("Column 2"), exportable: true),
-                                                    DataTableColumn("column3", title: l("Column 3"), exportable: true)
-                                                ],
-                                                dataKey: "label",
-                                                paginator: true,
-                                                rows: 5,
-                                                exportOptions: DataTableExport(";", l("first"),
-                                                    formatter: "useCsvFormatter",
-                                                    buttonLabel: l("Export as CSV"),
-                                                    appendParameters: true,
-                                                    parameterSeparator: "_",
-                                                    parameterFormatter: "useLocaleParameterFormatter"
-                                                ),
+                                                schema: s =>
+                                                {
+                                                    s.Columns.AddRange(
+                                                    [
+                                                        DataTableColumn("label", schema: s =>
+                                                        {
+                                                            s.Title = l("Label");
+                                                            s.MinWidth = true;
+                                                            s.Exportable = true;
+                                                        }),
+                                                        DataTableColumn("column1", schema: s =>
+                                                        {
+                                                            s.Title = l("Column 1");
+                                                            s.Exportable = true;
+                                                        }),
+                                                        DataTableColumn("column2", schema: s =>
+                                                        {
+                                                            s.Title = l("Column 2");
+                                                            s.Exportable = true;
+                                                        }),
+                                                        DataTableColumn("column3", schema: s =>
+                                                        {
+                                                            s.Title = l("Column 3");
+                                                            s.Exportable = true;
+                                                        })
+                                                    ]);
+                                                    s.DataKey = "label";
+                                                    s.Paginator = true;
+                                                    s.Rows = 5;
+                                                    s.ExportOptions = DataTableExport(";", l("first"), schema: s =>
+                                                    {
+                                                        s.Formatter = "useCsvFormatter";
+                                                        s.ButtonLabel = l("Export as CSV");
+                                                        s.AppendParameters = true;
+                                                        s.ParameterSeparator = "_";
+                                                        s.ParameterFormatter = "useLocaleParameterFormatter";
+                                                    });
+                                                },
                                                 data: Remote($"/{first.GetSingle<ActionModelAttribute>().GetRoute()}",
                                                     headers: headers,
                                                     query: Composite([Computed(Composables.UseQuery), Injected()])
+                                                )
+                                            ),
+                                            schema: s => s.Parameters.Add(
+                                                Parameter("count",
+                                                    component: Select(l("Count"), Inline(Enum.GetNames<CountOptions>().Select(name => l(name))), stateful: true),
+                                                    defaultValue: CountOptions.Default
                                                 )
                                             )
                                         )
                                     ),
                                     ReportPageTabContent(
                                         component: DataPanel(l(second.Name),
-                                            parameters:
-                                            [
-                                                Parameter("count",
-                                                    component: SelectButton( data: Inline(Enum.GetNames<CountOptions>().Select(name => l(name))), stateful: true),
-                                                    defaultValue: CountOptions.Default
-                                                )
-                                            ],
                                             content: DataTable(
-                                                columns:
-                                                [
-                                                    DataTableColumn("label", title: l("Label"), minWidth: true),
-                                                    DataTableColumn("column1", title: l("Column 1")),
-                                                    DataTableColumn("column2", title: l("Column 2")),
-                                                    DataTableColumn("column3", title: l("Column 3"))
-                                                ],
-                                                dataKey: "label",
-                                                paginator: true,
-                                                rows: 5,
+                                                schema: s =>
+                                                {
+                                                    s.Columns.AddRange(
+                                                    [
+                                                        DataTableColumn("label", schema: s =>
+                                                        {
+                                                            s.Title = l("Label");
+                                                            s.MinWidth = true;
+                                                        }),
+                                                        DataTableColumn("column1", schema: s => s.Title = l("Column 1")),
+                                                        DataTableColumn("column2", schema: s => s.Title = l("Column 2")),
+                                                        DataTableColumn("column3", schema: s => s.Title = l("Column 3"))
+                                                    ]);
+                                                    s.DataKey = "label";
+                                                    s.Paginator = true;
+                                                    s.Rows = 5;
+                                                },
                                                 data: Remote($"/{second.GetSingle<ActionModelAttribute>().GetRoute()}",
                                                     headers: headers,
                                                     query: Composite([Computed(Composables.UseQuery), Injected()])
                                                 )
                                             ),
-                                            collapsed: true
+                                            schema: s =>
+                                            {
+                                                s.Parameters.Add(
+                                                    Parameter("count",
+                                                        component: SelectButton( data: Inline(Enum.GetNames<CountOptions>().Select(name => l(name))), stateful: true),
+                                                        defaultValue: CountOptions.Default
+                                                    )
+                                                );
+                                                s.Collapsed = true;
+                                            }
                                         )
                                     )
                                 ]
@@ -432,43 +461,50 @@ public class ConfigurationOverriderFeature : IFeature
                                 [
                                     ReportPageTabContent(
                                         DataPanel(l("Data Panel"),
-                                            parameters:
-                                            [
-                                                Parameter("count", Select(l("Count"), Inline(new string[]{ "10", "20", "100", "1000", "10000" }, requireLocalization: false)),
-                                                    defaultValue: "10"
-                                                )
-                                            ],
                                             content: DataTable(
-                                                columns:
-                                                [
-                                                  .. domain.Types[typeof(TableRow)].GetMembers().Properties.Where(p => p.IsPublic).Select((p, i) =>
-                                                      DataTableColumn(p.Name.Camelize(),
-                                                          title: l(p.Name.Humanize(LetterCasing.Title)),
-                                                          exportable: true,
-                                                          alignRight: p.PropertyType.Is<string>() ? null : true,
-                                                          frozen: i == 0 ? true : null,
-                                                          minWidth: i == 0 ? true : null
-                                                      )
-                                                    )
-                                                ],
-                                                footerTemplate: DataTableFooter(l("Total"),
-                                                    columns:
+                                                schema: s =>
+                                                {
+                                                    s.Columns.AddRange(
                                                     [
-                                                        DataTableColumn(nameof(TableWithFooter.FooterColumn1).Camelize(), Conditional(), alignRight: true),
-                                                        DataTableColumn(nameof(TableWithFooter.FooterColumn2).Camelize(), Conditional(), alignRight: true)
-                                                    ]
-                                                ),
-                                                dataKey: nameof(TableRow.Label).Camelize(),
-                                                itemsProp: "items",
-                                                scrollHeight: "500px",
-                                                virtualScrollerOptions: DataTableVirtualScroller(45),
-                                                exportOptions: DataTableExport(";", l("data-table-export"),
-                                                    formatter: "useCsvFormatter",
-                                                    buttonLabel: l("Export as CSV"),
-                                                    appendParameters: true
-                                                ),
+                                                        .. domain.Types[typeof(TableRow)].GetMembers().Properties.Where(p => p.IsPublic).Select((p, i) =>
+                                                            DataTableColumn(p.Name.Camelize(), schema: s =>
+                                                            {
+                                                                s.Title = l(p.Name.Humanize(LetterCasing.Title));
+                                                                s.Exportable = true;
+                                                                s.AlignRight = p.PropertyType.Is<string>() ? null : true;
+                                                                s.Frozen = i == 0 ? true : null;
+                                                                s.MinWidth = i == 0 ? true : null;
+                                                            })
+                                                        )
+                                                    ]);
+                                                    s.FooterTemplate = DataTableFooter(l("Total"),
+                                                        schema: s =>
+                                                        {
+                                                            s.Columns.AddRange(
+                                                            [
+                                                                DataTableColumn(nameof(TableWithFooter.FooterColumn1).Camelize(), schema: s => s.AlignRight = true),
+                                                                DataTableColumn(nameof(TableWithFooter.FooterColumn2).Camelize(), schema: s => s.AlignRight = true)
+                                                            ]);
+                                                        }
+                                                    );
+                                                    s.DataKey = nameof(TableRow.Label).Camelize();
+                                                    s.ItemsProp = "items";
+                                                    s.ScrollHeight = "500px";
+                                                    s.VirtualScrollerOptions = DataTableVirtualScroller(45);
+                                                    s.ExportOptions = DataTableExport(";", l("data-table-export"), schema: s =>
+                                                    {
+                                                        s.Formatter = "useCsvFormatter";
+                                                        s.ButtonLabel = l("Export as CSV");
+                                                        s.AppendParameters = true;
+                                                    });
+                                                },
                                                 data: Remote(domain.Types[typeof(Theme.DataTable)].GetMembers().Methods[nameof(Theme.DataTable.GetTableDataWithFooter)].GetSingle<ActionModelAttribute>().GetRoute(),
                                                     query: Injected(custom: true)
+                                                )
+                                            ),
+                                            schema: s => s.Parameters.Add(
+                                                Parameter("count", Select(l("Count"), Inline(new string[]{ "10", "20", "100", "1000", "10000" }, requireLocalization: false)),
+                                                    defaultValue: "10"
                                                 )
                                             )
                                         )

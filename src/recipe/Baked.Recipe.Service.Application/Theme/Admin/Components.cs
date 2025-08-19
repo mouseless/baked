@@ -24,97 +24,38 @@ public static class Components
     ) where TSchema : IComponentSchema => new(typeof(TSchema).Name, schema: new CustomPage(path, layout));
 
     public static ComponentDescriptorAttribute<DataPanel> DataPanel(string title, IComponentDescriptor content,
-        IEnumerable<Parameter>? parameters = default,
-        bool? collapsed = default
-    ) => DataPanel(Datas.Inline(title), content, parameters: parameters, collapsed: collapsed);
+        Action<DataPanel>? schema = default
+    ) => DataPanel(Datas.Inline(title), content, schema: schema);
 
     public static ComponentDescriptorAttribute<DataPanel> DataPanel(IData title, IComponentDescriptor content,
-        IEnumerable<Parameter>? parameters = default,
-        bool? collapsed = default
-    ) => new(new(title, content)
-    {
-        Collapsed = collapsed,
-        LocalizeTitle = title.RequireLocalization,
-        Parameters = [.. parameters ?? []]
-    });
+        Action<DataPanel>? schema = default
+    ) => new(schema.Apply(new(title, content)));
 
     public static ComponentDescriptorAttribute<DataTable> DataTable(
-        IEnumerable<DataTable.Column>? columns = default,
-        string? dataKey = default,
-        string? itemsProp = default,
-        bool? paginator = default,
-        int? rows = default,
-        int? rowsWhenLoading = default,
-        string? scrollHeight = default,
-        DataTable.VirtualScroller? virtualScrollerOptions = default,
-        DataTable.Footer? footerTemplate = default,
-        DataTable.Export? exportOptions = default,
+        Action<DataTable>? schema = default,
         IData? data = default
-    ) => new(
-        new()
-        {
-            Columns = [.. columns ?? []],
-            DataKey = dataKey,
-            ItemsProp = itemsProp,
-            Paginator = paginator,
-            Rows = rows,
-            RowsWhenLoading = rowsWhenLoading,
-            ScrollHeight = scrollHeight,
-            VirtualScrollerOptions = virtualScrollerOptions,
-            FooterTemplate = footerTemplate,
-            ExportOptions = exportOptions,
-        }
-    )
-    { Data = data };
+    ) => new(schema.Apply(new())) { Data = data };
 
     public static DataTable.Column DataTableColumn(string prop, IComponentDescriptor component,
-        string? title = default,
-        bool? alignRight = default,
-        bool? minWidth = default,
-        bool? exportable = default,
-        bool? frozen = default
-    ) => DataTableColumn(prop,
-        component: Conditional(schema: s => s.Fallback = component),
-        title: title,
-        alignRight: alignRight,
-        minWidth: minWidth,
-        exportable: exportable,
-        frozen: frozen
-    );
+        Action<DataTable.Column>? schema = default
+    ) => DataTableColumn(prop, schema: s =>
+    {
+        s.Component = Conditional(schema: s => s.Fallback = component);
+
+        schema.Apply(s);
+    });
 
     public static DataTable.Column DataTableColumn(string prop,
-        Conditional? component = default,
-        string? title = default,
-        bool? alignRight = default,
-        bool? minWidth = default,
-        bool? exportable = default,
-        bool? frozen = default
-    ) => new(prop, component ?? Conditional()) { AlignRight = alignRight, MinWidth = minWidth, Title = title, Exportable = exportable, Frozen = frozen };
+        Action<DataTable.Column>? schema = default
+    ) => schema.Apply(new(prop));
 
     public static DataTable.Export DataTableExport(string csvSeparator, string fileName,
-        string? formatter = default,
-        string? buttonIcon = default,
-        string? buttonLabel = default,
-        bool? appendParameters = default,
-        string? parameterSeparator = default,
-        string? parameterFormatter = default
-    )
-    {
-        buttonIcon ??= "pi pi-download";
+        Action<DataTable.Export>? schema = default
+    ) => schema.Apply(new(csvSeparator, fileName));
 
-        return new(csvSeparator, fileName)
-        {
-            Formatter = formatter,
-            ButtonIcon = buttonIcon,
-            ButtonLabel = buttonLabel,
-            AppendParameters = appendParameters,
-            ParameterSeparator = parameterSeparator,
-            ParameterFormatter = parameterFormatter
-        };
-    }
-
-    public static DataTable.Footer DataTableFooter(string label, List<DataTable.Column> columns) =>
-        new(label) { Columns = columns };
+    public static DataTable.Footer DataTableFooter(string label,
+        Action<DataTable.Footer>? schema = default
+    ) => schema.Apply(new(label));
 
     public static ComponentDescriptorAttribute<DefaultLayout> DefaultLayout(string name,
         IComponentDescriptor? sideMenu = default,
