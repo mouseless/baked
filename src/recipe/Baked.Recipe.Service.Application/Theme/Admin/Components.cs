@@ -120,16 +120,16 @@ public static class Components
 
     public static ComponentDescriptorAttribute<Message> Message(
         Action<Message>? schema = default,
-        string? message = default
+        string? data = default
     ) => Message(
         schema: schema,
-        data: message is not null ? Datas.Inline(message) : null
+        data: data is not null ? Datas.Inline(data) : null
     );
 
     public static ComponentDescriptorAttribute<Message> Message(
         Action<Message>? schema = default,
         IData? data = default
-    ) => new(new() { LocalizeMessage = data?.RequireLocalization ?? null }) { Data = data };
+    ) => new(schema.Apply(new() { LocalizeMessage = data?.RequireLocalization ?? null })) { Data = data };
 
     public static ComponentDescriptorAttribute<ModalLayout> ModalLayout(string name,
         Action<ModalLayout>? schema = default
