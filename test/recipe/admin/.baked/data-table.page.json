@@ -9,8 +9,7 @@
     "queryParameters": [],
     "tabs": [
       {
-        "id": "",
-        "title": "",
+        "id": "default",
         "contents": [
           {
             "component": {

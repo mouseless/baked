@@ -34,7 +34,6 @@
     "tabs": [
       {
         "id": "default",
-        "title": "",
         "contents": [
           {
             "component": {

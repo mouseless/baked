@@ -27,7 +27,7 @@
                 :name="`tabs/${tab.id}/icon`"
                 :descriptor="tab.icon"
               />
-              <span>{{ l(tab.title) }}</span>
+              <span v-if="tab.title">{{ l(tab.title) }}</span>
             </Tab>
           </TabList>
         </Tabs>

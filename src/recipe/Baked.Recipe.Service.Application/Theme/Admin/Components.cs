@@ -41,7 +41,6 @@ public static class Components
     ) => DataTableColumn(prop, schema: s =>
     {
         s.Component = Conditional(schema: s => s.Fallback = component);
-
         schema.Apply(s);
     });
 
@@ -105,7 +104,6 @@ public static class Components
         schema: s =>
         {
             s.Sections.Add(MenuPageSection(schema: s => s.Links.AddRange(links.Select(l => Filterable(l)))));
-
             schema.Apply(s);
         }
     );
@@ -167,75 +165,36 @@ public static class Components
     ) => new(schema.Apply(new())) { Data = data };
 
     public static ComponentDescriptorAttribute<ReportPage> ReportPage(string name, ComponentDescriptorAttribute<PageTitle> title,
-        IEnumerable<Parameter>? queryParameters = default,
-        IEnumerable<ReportPage.Tab>? tabs = default
-    ) => new(new(name, title.Schema) { QueryParameters = [.. queryParameters ?? []], Tabs = [.. tabs ?? []] });
+        Action<ReportPage>? schema = default
+    ) => new(schema.Apply(new(name, title.Schema)));
 
-    public static ReportPage.Tab ReportPageTab(string id, string title,
-        IEnumerable<ReportPage.Tab.Content>? contents = default,
-        bool? fullScreen = default,
-        IComponentDescriptor? icon = default,
-        bool? overflow = default,
-        string? showWhen = default
-    ) => new(id, title) { Contents = [.. contents ?? []], FullScreen = fullScreen, Icon = icon, Overflow = overflow, ShowWhen = showWhen };
+    public static ReportPage.Tab ReportPageTab(string id,
+        Action<ReportPage.Tab>? schema = default
+    ) => schema.Apply(new(id));
 
     public static ReportPage.Tab.Content ReportPageTabContent(IComponentDescriptor component,
-        string? key = default,
-        bool? narrow = default,
-        string? showWhen = default
-    ) => new(component) { Key = key, Narrow = narrow, ShowWhen = showWhen };
+        Action<ReportPage.Tab.Content>? schema = default
+    ) => schema.Apply(new(component));
 
     public static ComponentDescriptorAttribute<Select> Select(string label, IData data,
-        string? optionLabel = default,
-        string? optionValue = default,
-        bool? showClear = default,
-        bool? stateful = default,
-        string? selectionPageContextKey = default
-    ) => new(new(label)
-    {
-        OptionLabel = optionLabel,
-        OptionValue = optionValue,
-        LocalizeLabel = data.RequireLocalization,
-        ShowClear = showClear,
-        Stateful = stateful,
-        SelectionPageContextKey = selectionPageContextKey
-    })
-    { Data = data };
+        Action<Select>? schema = default
+    ) => new(schema.Apply(new(label) { LocalizeLabel = data.RequireLocalization })) { Data = data };
 
     public static ComponentDescriptorAttribute<SelectButton> SelectButton(IData data,
-        bool? allowEmpty = default,
-        string? optionLabel = default,
-        string? optionValue = default,
-        bool? stateful = default,
-        string? selectionPageContextKey = default
-    ) => new(new()
-    {
-        AllowEmpty = allowEmpty,
-        OptionLabel = optionLabel,
-        OptionValue = optionValue,
-        LocalizeLabel = data.RequireLocalization,
-        Stateful = stateful,
-        SelectionPageContextKey = selectionPageContextKey
-    })
-    { Data = data };
+        Action<SelectButton>? schema = default
+    ) => new(schema.Apply(new() { LocalizeLabel = data.RequireLocalization })) { Data = data };
 
-    public static ComponentDescriptorAttribute<SideMenu> SideMenu(IEnumerable<SideMenu.Item> menu,
-        IComponentDescriptor? footer = default,
+    public static ComponentDescriptorAttribute<SideMenu> SideMenu(
+        Action<SideMenu>? schema = default,
         IData? data = default
-    )
-    {
-        data ??= Datas.Computed(Composables.UseRoute);
-
-        return new(new() { Menu = [.. menu], Footer = footer }) { Data = data };
-    }
+    ) => new(schema.Apply(new())) { Data = data ?? Datas.Computed(Composables.UseRoute) };
 
     public static SideMenu.Item SideMenuItem(string route, string icon,
-        string? title = default,
-        bool? disabled = default
-    ) => new(route, icon) { Title = title, Disabled = disabled };
+        Action<SideMenu.Item>? schema = default
+    ) => schema.Apply(new(route, icon));
 
     public static ComponentDescriptorAttribute<String> String(
-        int? maxLength = default,
+        Action<String>? schema = default,
         IData? data = default
-    ) => new(new() { MaxLength = maxLength }) { Data = data };
+    ) => new(schema.Apply(new())) { Data = data };
 }
