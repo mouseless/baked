@@ -1,5 +1,6 @@
 import { defineNuxtModule, addComponentsDir, addImportsDir, addPlugin, createResolver, installModule } from "@nuxt/kit";
 import type { NuxtI18nOptions } from "@nuxtjs/i18n";
+import { pathToFileURL } from "url";
 
 export interface ModuleOptions {
   components?: Components,
@@ -55,8 +56,8 @@ export default defineNuxtModule<ModuleOptions>({
     const resolver = createResolver(import.meta.url);
     const entryProjectResolver = createResolver(_nuxt.options.rootDir);
 
-    const appJsonPath = entryProjectResolver.resolve(`./.baked/app.json`);
-    const app = (await import(appJsonPath, { with: { type: "json" } })).default;
+    const appJsonPath = pathToFileURL(entryProjectResolver.resolve(`./.baked/app.json`));
+    const app = (await import(appJsonPath.href, { with: { type: "json" } })).default;
 
     // passing module's options to runtime config for further access
     _nuxt.options.runtimeConfig.public.error = app?.error;
