@@ -5,16 +5,16 @@ namespace Baked.Theme.Admin;
 public static class Components
 {
     public static ComponentDescriptorAttribute<CardLink> CardLink(string route, string title,
-        Action<CardLink>? schema = default
-    ) => new(schema.Apply(new(route, title)));
+        Action<CardLink>? options = default
+    ) => new(options.Apply(new(route, title)));
 
     public static Conditional Conditional(
-        Action<Conditional>? schema = default
-    ) => schema.Apply(new());
+        Action<Conditional>? options = default
+    ) => options.Apply(new());
 
     public static Conditional.Condition ConditionalCondition(string prop, object value, IComponentDescriptor component,
-        Action<Conditional.Condition>? schema = default
-    ) => schema.Apply(new(prop, value, component));
+        Action<Conditional.Condition>? options = default
+    ) => options.Apply(new(prop, value, component));
 
     public static ComponentDescriptor Custom<TSchema>() where TSchema : IComponentSchema =>
         new(typeof(TSchema).Name);
@@ -24,177 +24,177 @@ public static class Components
     ) where TSchema : IComponentSchema => new(typeof(TSchema).Name, schema: new CustomPage(path, layout));
 
     public static ComponentDescriptorAttribute<DataPanel> DataPanel(string title, IComponentDescriptor content,
-        Action<DataPanel>? schema = default
-    ) => DataPanel(Datas.Inline(title), content, schema: schema);
+        Action<DataPanel>? options = default
+    ) => DataPanel(Datas.Inline(title), content, options: options);
 
     public static ComponentDescriptorAttribute<DataPanel> DataPanel(IData title, IComponentDescriptor content,
-        Action<DataPanel>? schema = default
-    ) => new(schema.Apply(new(title, content)));
+        Action<DataPanel>? options = default
+    ) => new(options.Apply(new(title, content)));
 
     public static ComponentDescriptorAttribute<DataTable> DataTable(
-        Action<DataTable>? schema = default,
+        Action<DataTable>? options = default,
         IData? data = default
-    ) => new(schema.Apply(new())) { Data = data };
+    ) => new(options.Apply(new())) { Data = data };
 
     public static DataTable.Column DataTableColumn(string prop, IComponentDescriptor component,
-        Action<DataTable.Column>? schema = default
-    ) => DataTableColumn(prop, schema: s =>
+        Action<DataTable.Column>? options = default
+    ) => DataTableColumn(prop, options: s =>
     {
-        s.Component = Conditional(schema: s => s.Fallback = component);
-        schema.Apply(s);
+        s.Component = Conditional(options: s => s.Fallback = component);
+        options.Apply(s);
     });
 
     public static DataTable.Column DataTableColumn(string prop,
-        Action<DataTable.Column>? schema = default
-    ) => schema.Apply(new(prop));
+        Action<DataTable.Column>? options = default
+    ) => options.Apply(new(prop));
 
     public static DataTable.Export DataTableExport(string csvSeparator, string fileName,
-        Action<DataTable.Export>? schema = default
-    ) => schema.Apply(new(csvSeparator, fileName));
+        Action<DataTable.Export>? options = default
+    ) => options.Apply(new(csvSeparator, fileName));
 
     public static DataTable.Footer DataTableFooter(string label,
-        Action<DataTable.Footer>? schema = default
-    ) => schema.Apply(new(label));
+        Action<DataTable.Footer>? options = default
+    ) => options.Apply(new(label));
 
     public static DataTable.VirtualScroller DataTableVirtualScroller(
-        Action<DataTable.VirtualScroller>? schema = default
-    ) => schema.Apply(new());
+        Action<DataTable.VirtualScroller>? options = default
+    ) => options.Apply(new());
 
     public static ComponentDescriptorAttribute<DefaultLayout> DefaultLayout(string name,
-        Action<DefaultLayout>? schema = default
-    ) => new(schema.Apply(new(name)));
+        Action<DefaultLayout>? options = default
+    ) => new(options.Apply(new(name)));
 
     public static ComponentDescriptorAttribute<ErrorPage> ErrorPage(
-        Action<ErrorPage>? schema = default,
+        Action<ErrorPage>? options = default,
         IData? data = default
-    ) => new(schema.Apply(new())) { Data = data };
+    ) => new(options.Apply(new())) { Data = data };
 
     public static ErrorPage.Info ErrorPageInfo(string title, string message,
-        Action<ErrorPage.Info>? schema = default
-    ) => schema.Apply(new(title, message));
+        Action<ErrorPage.Info>? options = default
+    ) => options.Apply(new(title, message));
 
     public static ComponentDescriptorAttribute<Filter> Filter(string pageContextKey,
-        Action<Filter>? schema = default
-    ) => new(schema.Apply(new(pageContextKey)));
+        Action<Filter>? options = default
+    ) => new(options.Apply(new(pageContextKey)));
 
     public static Filterable Filterable(IComponentDescriptor component,
-        Action<Filterable>? schema = default
-    ) => schema.Apply(new(component));
+        Action<Filterable>? options = default
+    ) => options.Apply(new(component));
 
     public static ComponentDescriptorAttribute<Header> Header(
-        Action<Header>? schema = default,
+        Action<Header>? options = default,
         IData? data = default
-    ) => new(schema.Apply(new())) { Data = data ?? Datas.Computed(Composables.UseRoute) };
+    ) => new(options.Apply(new())) { Data = data ?? Datas.Computed(Composables.UseRoute) };
 
     public static Header.Item HeaderItem(string route,
-        Action<Header.Item>? schema = default
-    ) => schema.Apply(new(route));
+        Action<Header.Item>? options = default
+    ) => options.Apply(new(route));
 
     public static ComponentDescriptorAttribute<LanguageSwitcher> LanguageSwitcher(
-        Action<LanguageSwitcher>? schema = default
-    ) => new(schema.Apply(new()));
+        Action<LanguageSwitcher>? options = default
+    ) => new(options.Apply(new()));
 
     public static ComponentDescriptorAttribute<Icon> Icon(string iconClass,
-        Action<Icon>? schema = default
-    ) => new(schema.Apply(new(iconClass)));
+        Action<Icon>? options = default
+    ) => new(options.Apply(new(iconClass)));
 
     public static ComponentDescriptorAttribute<MenuPage> MenuPage(string name, IEnumerable<IComponentDescriptor> links,
-        Action<MenuPage>? schema = default
+        Action<MenuPage>? options = default
     ) => MenuPage(name,
-        schema: s =>
+        options: s =>
         {
-            s.Sections.Add(MenuPageSection(schema: s => s.Links.AddRange(links.Select(l => Filterable(l)))));
-            schema.Apply(s);
+            s.Sections.Add(MenuPageSection(options: s => s.Links.AddRange(links.Select(l => Filterable(l)))));
+            options.Apply(s);
         }
     );
 
     public static ComponentDescriptorAttribute<MenuPage> MenuPage(string name,
-        Action<MenuPage>? schema = default
-    ) => new(schema.Apply(new(name)));
+        Action<MenuPage>? options = default
+    ) => new(options.Apply(new(name)));
 
     public static MenuPage.Section MenuPageSection(
-        Action<MenuPage.Section>? schema = default
-    ) => schema.Apply(new());
+        Action<MenuPage.Section>? options = default
+    ) => options.Apply(new());
 
     public static ComponentDescriptorAttribute<Message> Message(
-        Action<Message>? schema = default,
+        Action<Message>? options = default,
         string? data = default
     ) => Message(
-        schema: schema,
+        options: options,
         data: data is not null ? Datas.Inline(data) : null
     );
 
     public static ComponentDescriptorAttribute<Message> Message(
-        Action<Message>? schema = default,
+        Action<Message>? options = default,
         IData? data = default
-    ) => new(schema.Apply(new() { LocalizeMessage = data?.RequireLocalization ?? null })) { Data = data };
+    ) => new(options.Apply(new() { LocalizeMessage = data?.RequireLocalization ?? null })) { Data = data };
 
     public static ComponentDescriptorAttribute<ModalLayout> ModalLayout(string name,
-        Action<ModalLayout>? schema = default
-    ) => new(schema.Apply(new(name)));
+        Action<ModalLayout>? options = default
+    ) => new(options.Apply(new(name)));
 
     public static ComponentDescriptorAttribute<Money> Money(
-        Action<Money>? schema = default,
+        Action<Money>? options = default,
         IData? data = default
-    ) => new(schema.Apply(new())) { Data = data };
+    ) => new(options.Apply(new())) { Data = data };
 
     public static ComponentDescriptorAttribute<NavLink> NavLink(string path, string idProp, string textProp,
-        Action<NavLink>? schema = default
-    ) => new(schema.Apply(new(path, idProp, textProp)));
+        Action<NavLink>? options = default
+    ) => new(options.Apply(new(path, idProp, textProp)));
 
     public static ComponentDescriptorAttribute<None> None(
-        Action<None>? schema = default
-    ) => new(schema.Apply(new()));
+        Action<None>? options = default
+    ) => new(options.Apply(new()));
 
     public static ComponentDescriptorAttribute<Number> Number(
-        Action<Number>? schema = default,
+        Action<Number>? options = default,
         IData? data = default
-    ) => new(schema.Apply(new())) { Data = data };
+    ) => new(options.Apply(new())) { Data = data };
 
     public static ComponentDescriptorAttribute<PageTitle> PageTitle(string title,
-        Action<PageTitle>? schema = default
-    ) => new(schema.Apply(new(title)));
+        Action<PageTitle>? options = default
+    ) => new(options.Apply(new(title)));
 
     public static Parameter Parameter(string name, IComponentDescriptor component,
-        Action<Parameter>? schema = default
-    ) => schema.Apply(new(name, component));
+        Action<Parameter>? options = default
+    ) => options.Apply(new(name, component));
 
     public static ComponentDescriptorAttribute<Rate> Rate(
-        Action<Rate>? schema = default,
+        Action<Rate>? options = default,
         IData? data = default
-    ) => new(schema.Apply(new())) { Data = data };
+    ) => new(options.Apply(new())) { Data = data };
 
     public static ComponentDescriptorAttribute<ReportPage> ReportPage(string name, ComponentDescriptorAttribute<PageTitle> title,
-        Action<ReportPage>? schema = default
-    ) => new(schema.Apply(new(name, title.Schema)));
+        Action<ReportPage>? options = default
+    ) => new(options.Apply(new(name, title.Schema)));
 
     public static ReportPage.Tab ReportPageTab(string id,
-        Action<ReportPage.Tab>? schema = default
-    ) => schema.Apply(new(id));
+        Action<ReportPage.Tab>? options = default
+    ) => options.Apply(new(id));
 
     public static ReportPage.Tab.Content ReportPageTabContent(IComponentDescriptor component,
-        Action<ReportPage.Tab.Content>? schema = default
-    ) => schema.Apply(new(component));
+        Action<ReportPage.Tab.Content>? options = default
+    ) => options.Apply(new(component));
 
     public static ComponentDescriptorAttribute<Select> Select(string label, IData data,
-        Action<Select>? schema = default
-    ) => new(schema.Apply(new(label) { LocalizeLabel = data.RequireLocalization })) { Data = data };
+        Action<Select>? options = default
+    ) => new(options.Apply(new(label) { LocalizeLabel = data.RequireLocalization })) { Data = data };
 
     public static ComponentDescriptorAttribute<SelectButton> SelectButton(IData data,
-        Action<SelectButton>? schema = default
-    ) => new(schema.Apply(new() { LocalizeLabel = data.RequireLocalization })) { Data = data };
+        Action<SelectButton>? options = default
+    ) => new(options.Apply(new() { LocalizeLabel = data.RequireLocalization })) { Data = data };
 
     public static ComponentDescriptorAttribute<SideMenu> SideMenu(
-        Action<SideMenu>? schema = default,
+        Action<SideMenu>? options = default,
         IData? data = default
-    ) => new(schema.Apply(new())) { Data = data ?? Datas.Computed(Composables.UseRoute) };
+    ) => new(options.Apply(new())) { Data = data ?? Datas.Computed(Composables.UseRoute) };
 
     public static SideMenu.Item SideMenuItem(string route, string icon,
-        Action<SideMenu.Item>? schema = default
-    ) => schema.Apply(new(route, icon));
+        Action<SideMenu.Item>? options = default
+    ) => options.Apply(new(route, icon));
 
     public static ComponentDescriptorAttribute<String> String(
-        Action<String>? schema = default,
+        Action<String>? options = default,
         IData? data = default
-    ) => new(schema.Apply(new())) { Data = data };
+    ) => new(options.Apply(new())) { Data = data };
 }
