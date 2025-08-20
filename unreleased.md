@@ -2,4 +2,4 @@
 
 ## Improvements
 
-- Errors that occurred while trying to add the `app.json` file, fixed
+- The path of the `app.json` file cannot be resolved in the Windows, fixed
