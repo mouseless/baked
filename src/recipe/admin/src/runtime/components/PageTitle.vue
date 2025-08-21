@@ -4,21 +4,37 @@
     class="sticky -top-1 z-10 space-y-4 bg-body"
   >
     <div class="h-16 flex gap-2">
-      <div class="w-full flex flex-col gap-2 justify-end">
+      <div class="w-full flex flex-row items-center gap-2 justify-start">
         <h1 class="text-xl font-bold">
           {{ l(title) }}
         </h1>
-        <div
-          data-testid="description"
-          class="
-            text-sm text-gray-600 dark:text-gray-400
-            text-nowrap overflow-hidden
-          "
-        >
-          <String
-            :schema="{ maxLength: 125 }"
-            :data="l(description) || '&nbsp;'"
-          />
+        <div class="relative group">
+          <div
+            data-testid="description"
+            class="
+              text-sm text-gray-600 dark:text-gray-400
+              text-nowrap overflow-hidden
+              hidden 2xl:block
+            "
+          >
+            <String
+              :schema="{ maxLength: 125 }"
+              :data="l(description) || '&nbsp;'"
+            />
+          </div>
+          <button
+            v-if="description"
+            class="2xl:hidden inline-flex items-center text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+          >
+            <span class="pi pi-info-circle text-lg" />
+            <div class="absolute left-1/2 transform -translate-x-1/2 top-full mt-2 hidden group-hover:block z-10">
+              <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 max-w-sm b-tooltip">
+                <p class="text-sm text-gray-600 dark:text-gray-400">
+                  {{ l(description) }}
+                </p>
+              </div>
+            </div>
+          </button>
         </div>
       </div>
       <div
