@@ -2,4 +2,5 @@
 
 namespace Baked.Test.ConfigurationOverrider;
 
-public class Login : IComponentSchema;
+public record RoutedPage(string Path)
+    : PageSchemaBase(Path);

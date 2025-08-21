@@ -1,7 +1,6 @@
 {
   "type": "ReportPage",
   "schema": {
-    "path": "report",
     "title": {
       "title": "Report",
       "description": "Showcases a report layout with tabs and data panels",
@@ -446,6 +445,7 @@
           }
         }
       }
-    ]
+    ],
+    "path": "report"
   }
 }

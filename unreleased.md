@@ -15,6 +15,7 @@
 - `Rate`, `Money`, `Number` now have a component schema even if the schemas
   don't have any property
 - `ComponentDescriptor` is removed, all components must have a schema now
+- `IPageSchema` and `PageSchemaBase` are introduced to allow custom pages
 - `ClientCache` is now automatically mapped to `RemoteData` attributes
 - Add/remove metadata extensions are now available property, method and
   parameter as well

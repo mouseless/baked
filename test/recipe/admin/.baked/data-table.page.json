@@ -1,7 +1,6 @@
 {
   "type": "ReportPage",
   "schema": {
-    "path": "data-table",
     "title": {
       "title": "Data Table Demo",
       "actions": []
@@ -9,8 +8,7 @@
     "queryParameters": [],
     "tabs": [
       {
-        "id": "",
-        "title": "",
+        "id": "default",
         "contents": [
           {
             "component": {
@@ -201,6 +199,7 @@
           }
         ]
       }
-    ]
+    ],
+    "path": "data-table"
   }
 }

@@ -1,330 +1,193 @@
-using Baked.Ui;
+﻿using Baked.Ui;
 
 namespace Baked.Theme.Admin;
 
 public static class Components
 {
     public static ComponentDescriptorAttribute<CardLink> CardLink(string route, string title,
-        string? icon = default,
-        string? description = default,
-        bool? disabled = default,
-        string? disabledReason = default
-    ) => new(new(route, title) { Icon = icon, Description = description, Disabled = disabled, DisabledReason = disabledReason });
+        Action<CardLink>? options = default
+    ) => new(options.Apply(new(route, title)));
 
     public static Conditional Conditional(
-        IComponentDescriptor? fallback = default,
-        IEnumerable<Conditional.Condition>? conditions = default
-    ) => new(fallback ?? String()) { Conditions = [.. conditions ?? []] };
+        Action<Conditional>? options = default
+    ) => options.Apply(new());
 
-    public static Conditional.Condition ConditionalCondition(string prop, object value, IComponentDescriptor component) =>
-        new(prop, value, component);
-
-    public static ComponentDescriptor Custom<TSchema>() where TSchema : IComponentSchema =>
-        new(typeof(TSchema).Name);
-
-    public static ComponentDescriptor CustomPage<TSchema>(string path,
-        string? layout = default
-    ) where TSchema : IComponentSchema => new(typeof(TSchema).Name, schema: new CustomPage(path, layout));
+    public static Conditional.Condition ConditionalCondition(string prop, object value, IComponentDescriptor component,
+        Action<Conditional.Condition>? options = default
+    ) => options.Apply(new(prop, value, component));
 
     public static ComponentDescriptorAttribute<DataPanel> DataPanel(string title, IComponentDescriptor content,
-        IEnumerable<Parameter>? parameters = default,
-        bool? collapsed = default
-    ) => DataPanel(Datas.Inline(title), content, parameters: parameters, collapsed: collapsed);
+        Action<DataPanel>? options = default
+    ) => DataPanel(Datas.Inline(title), content, options: options);
 
     public static ComponentDescriptorAttribute<DataPanel> DataPanel(IData title, IComponentDescriptor content,
-        IEnumerable<Parameter>? parameters = default,
-        bool? collapsed = default
-    ) => new(new(title, content)
-    {
-        Collapsed = collapsed,
-        LocalizeTitle = title.RequireLocalization,
-        Parameters = [.. parameters ?? []]
-    });
+        Action<DataPanel>? options = default
+    ) => new(options.Apply(new(title, content)));
 
     public static ComponentDescriptorAttribute<DataTable> DataTable(
-        IEnumerable<DataTable.Column>? columns = default,
-        string? dataKey = default,
-        string? itemsProp = default,
-        bool? paginator = default,
-        int? rows = default,
-        int? rowsWhenLoading = default,
-        string? scrollHeight = default,
-        DataTable.VirtualScroller? virtualScrollerOptions = default,
-        DataTable.Footer? footerTemplate = default,
-        DataTable.Export? exportOptions = default,
+        Action<DataTable>? options = default,
         IData? data = default
-    ) => new(
-        new()
-        {
-            Columns = [.. columns ?? []],
-            DataKey = dataKey,
-            ItemsProp = itemsProp,
-            Paginator = paginator,
-            Rows = rows,
-            RowsWhenLoading = rowsWhenLoading,
-            ScrollHeight = scrollHeight,
-            VirtualScrollerOptions = virtualScrollerOptions,
-            FooterTemplate = footerTemplate,
-            ExportOptions = exportOptions,
-        }
-    )
-    { Data = data };
+    ) => new(options.Apply(new())) { Data = data };
 
     public static DataTable.Column DataTableColumn(string prop, IComponentDescriptor component,
-        string? title = default,
-        bool? alignRight = default,
-        bool? minWidth = default,
-        bool? exportable = default,
-        bool? frozen = default
-    ) => DataTableColumn(prop,
-        component: Conditional(fallback: component),
-        title: title ?? " ", // otherwise export shows `label` as label
-        alignRight: alignRight,
-        minWidth: minWidth,
-        exportable: exportable,
-        frozen: frozen
-    );
+        Action<DataTable.Column>? options = default
+    ) => DataTableColumn(prop, options: s =>
+    {
+        s.Component = Conditional(options: s => s.Fallback = component);
+        options.Apply(s);
+    });
 
     public static DataTable.Column DataTableColumn(string prop,
-        Conditional? component = default,
-        string? title = default,
-        bool? alignRight = default,
-        bool? minWidth = default,
-        bool? exportable = default,
-        bool? frozen = default
-    ) => new(prop, component ?? Conditional()) { AlignRight = alignRight, MinWidth = minWidth, Title = title, Exportable = exportable, Frozen = frozen };
+        Action<DataTable.Column>? options = default
+    ) => options.Apply(new(prop));
 
     public static DataTable.Export DataTableExport(string csvSeparator, string fileName,
-        string? formatter = default,
-        string? buttonIcon = default,
-        string? buttonLabel = default,
-        bool? appendParameters = default,
-        string? parameterSeparator = default,
-        string? parameterFormatter = default
-    )
-    {
-        buttonIcon ??= "pi pi-download";
+        Action<DataTable.Export>? options = default
+    ) => options.Apply(new(csvSeparator, fileName));
 
-        return new(csvSeparator, fileName)
-        {
-            Formatter = formatter,
-            ButtonIcon = buttonIcon,
-            ButtonLabel = buttonLabel,
-            AppendParameters = appendParameters,
-            ParameterSeparator = parameterSeparator,
-            ParameterFormatter = parameterFormatter
-        };
-    }
+    public static DataTable.Footer DataTableFooter(string label,
+        Action<DataTable.Footer>? options = default
+    ) => options.Apply(new(label));
 
-    public static DataTable.Footer DataTableFooter(string label, List<DataTable.Column> columns) =>
-        new(label) { Columns = columns };
+    public static DataTable.VirtualScroller DataTableVirtualScroller(
+        Action<DataTable.VirtualScroller>? options = default
+    ) => options.Apply(new());
 
     public static ComponentDescriptorAttribute<DefaultLayout> DefaultLayout(string name,
-        IComponentDescriptor? sideMenu = default,
-        IComponentDescriptor? header = default
-    ) => new(new(name) { SideMenu = sideMenu, Header = header });
-
-    public static DataTable.VirtualScroller DataTableVirtualScroller(int itemSize,
-        int? numToleratedItems = 10,
-        bool? appendOnly = true
-    ) => new(itemSize) { NumToleratedItems = numToleratedItems, AppendOnly = appendOnly };
+        Action<DefaultLayout>? options = default
+    ) => new(options.Apply(new(name)));
 
     public static ComponentDescriptorAttribute<ErrorPage> ErrorPage(
-        IEnumerable<(int StatusCode, ErrorPage.Info Info)>? errorInfos = default,
-        string? footerInfo = default,
-        IEnumerable<IComponentDescriptor>? safeLinks = default,
-        string? safeLinksMessage = default,
+        Action<ErrorPage>? options = default,
         IData? data = default
-    ) => new(
-        new(
-            footerInfo ?? "If you cannot reach the page you want please contact the system administrator",
-            safeLinksMessage ?? "Try the links from the menu below to view the page you want to access:"
-        )
-        { ErrorInfos = (errorInfos ?? []).ToDictionary(i => i.StatusCode, i => i.Info), SafeLinks = [.. safeLinks ?? []] })
-    { Data = data };
+    ) => new(options.Apply(new())) { Data = data };
 
-    public static (int StatusCode, ErrorPage.Info Info) ErrorPageInfo(int statusCode, string title, string message) =>
-        (statusCode, new(title, message));
+    public static ErrorPage.Info ErrorPageInfo(string title, string message,
+        Action<ErrorPage.Info>? options = default
+    ) => options.Apply(new(title, message));
 
     public static ComponentDescriptorAttribute<Filter> Filter(string pageContextKey,
-        string? placeholder = default
-    ) => new(new(pageContextKey) { Placeholder = placeholder });
+        Action<Filter>? options = default
+    ) => new(options.Apply(new(pageContextKey)));
 
-    public static Filterable Filterable(string title, IComponentDescriptor component) =>
-        new(title, component);
+    public static Filterable Filterable(IComponentDescriptor component,
+        Action<Filterable>? options = default
+    ) => options.Apply(new(component));
 
-    public static ComponentDescriptorAttribute<Header> Header(IEnumerable<Header.Item> siteMap,
+    public static ComponentDescriptorAttribute<Header> Header(
+        Action<Header>? options = default,
         IData? data = default
-    )
-    {
-        data ??= Datas.Computed(Composables.UseRoute);
-
-        return new(new() { Sitemap = siteMap.ToDictionary(i => i.Route, i => i) }) { Data = data };
-    }
+    ) => new(options.Apply(new())) { Data = data ?? Datas.Computed(Composables.UseRoute) };
 
     public static Header.Item HeaderItem(string route,
-        string? icon = default,
-        string? title = default,
-        string? parentRoute = default
-    ) => new(route) { Icon = icon, Title = title, ParentRoute = parentRoute };
+        Action<Header.Item>? options = default
+    ) => options.Apply(new(route));
 
-    public static ComponentDescriptor LanguageSwitcher() =>
-        new(nameof(LanguageSwitcher));
+    public static ComponentDescriptorAttribute<LanguageSwitcher> LanguageSwitcher(
+        Action<LanguageSwitcher>? options = default
+    ) => new(options.Apply(new()));
 
-    public static ComponentDescriptorAttribute<Icon> Icon(string iconClass) =>
-        new(new(iconClass));
+    public static ComponentDescriptorAttribute<Icon> Icon(string iconClass,
+        Action<Icon>? options = default
+    ) => new(options.Apply(new(iconClass)));
 
-    public static ComponentDescriptorAttribute<MenuPage> MenuPage(string name,
-        IComponentDescriptor? header = default,
-        IEnumerable<IComponentDescriptor>? links = default
+    public static ComponentDescriptorAttribute<MenuPage> MenuPage(string name, IEnumerable<IComponentDescriptor> links,
+        Action<MenuPage>? options = default
     ) => MenuPage(name,
-        header: header,
-        sections: [MenuPageSection(links: links?.Select(l => Filterable(string.Empty, l)))]
+        options: s =>
+        {
+            s.Sections.Add(MenuPageSection(options: s => s.Links.AddRange(links.Select(l => Filterable(l)))));
+            options.Apply(s);
+        }
     );
 
     public static ComponentDescriptorAttribute<MenuPage> MenuPage(string name,
-        IComponentDescriptor? header = default,
-        IEnumerable<MenuPage.Section>? sections = default,
-        string? filterPageContextKey = default
-    ) => new(new(name) { Header = header, FilterPageContextKey = filterPageContextKey, Sections = [.. sections ?? []] });
+        Action<MenuPage>? options = default
+    ) => new(options.Apply(new(name)));
 
     public static MenuPage.Section MenuPageSection(
-        string? title = default,
-        IEnumerable<Filterable>? links = default
-    ) => new() { Title = title, Links = [.. links ?? []] };
+        Action<MenuPage.Section>? options = default
+    ) => options.Apply(new());
 
     public static ComponentDescriptorAttribute<Message> Message(
-        string? severity = default,
-        string? icon = default,
-        string? message = default
+        Action<Message>? options = default,
+        string? data = default
     ) => Message(
-        severity: severity,
-        icon: icon,
-        data: message is not null ? Datas.Inline(message) : null
+        options: options,
+        data: data is not null ? Datas.Inline(data) : null
     );
 
     public static ComponentDescriptorAttribute<Message> Message(
-        string? severity = default,
-        string? icon = default,
+        Action<Message>? options = default,
         IData? data = default
-    )
-    {
-        severity ??= "info";
+    ) => new(options.Apply(new() { LocalizeMessage = data?.RequireLocalization ?? null })) { Data = data };
 
-        return new(new(severity) { Icon = icon, LocalizeMessage = data?.RequireLocalization ?? null }) { Data = data };
-    }
+    public static ComponentDescriptorAttribute<ModalLayout> ModalLayout(string name,
+        Action<ModalLayout>? options = default
+    ) => new(options.Apply(new(name)));
 
-    public static ComponentDescriptorAttribute<ModalLayout> ModalLayout(string name) =>
-        new(new(name));
-
-    public static ComponentDescriptor Money(
+    public static ComponentDescriptorAttribute<Money> Money(
+        Action<Money>? options = default,
         IData? data = default
-    ) => new(nameof(Money)) { Data = data };
+    ) => new(options.Apply(new())) { Data = data };
 
-    public static ComponentDescriptorAttribute<NavLink> NavLink(string path, string idProp, string textProp) =>
-        new(new(path, idProp, textProp));
+    public static ComponentDescriptorAttribute<NavLink> NavLink(string path, string idProp, string textProp,
+        Action<NavLink>? options = default
+    ) => new(options.Apply(new(path, idProp, textProp)));
 
-    public static ComponentDescriptor None() =>
-        new(nameof(None));
+    public static ComponentDescriptorAttribute<None> None(
+        Action<None>? options = default
+    ) => new(options.Apply(new()));
 
-    public static ComponentDescriptor Number(
+    public static ComponentDescriptorAttribute<Number> Number(
+        Action<Number>? options = default,
         IData? data = default
-    ) => new(nameof(Number)) { Data = data };
+    ) => new(options.Apply(new())) { Data = data };
 
     public static ComponentDescriptorAttribute<PageTitle> PageTitle(string title,
-        string? description = default,
-        IEnumerable<IComponentDescriptor>? actions = default
-    ) => new(new(title) { Description = description, Actions = [.. actions ?? []] });
+        Action<PageTitle>? options = default
+    ) => new(options.Apply(new(title)));
 
     public static Parameter Parameter(string name, IComponentDescriptor component,
-        bool? required = default,
-        bool? defaultSelfManaged = default,
-        IData? @default = default,
-        object? defaultValue = default
-    ) => new(name, component)
-    {
-        Required = required,
-        DefaultSelfManaged = defaultSelfManaged,
-        Default =
-            @default is not null ? @default :
-            defaultValue is not null ? Datas.Inline(defaultValue) :
-            null
-    };
+        Action<Parameter>? options = default
+    ) => options.Apply(new(name, component));
 
-    public static ComponentDescriptor Rate(
+    public static ComponentDescriptorAttribute<Rate> Rate(
+        Action<Rate>? options = default,
         IData? data = default
-    ) => new(nameof(Rate)) { Data = data };
+    ) => new(options.Apply(new())) { Data = data };
 
     public static ComponentDescriptorAttribute<ReportPage> ReportPage(string name, ComponentDescriptorAttribute<PageTitle> title,
-        IEnumerable<Parameter>? queryParameters = default,
-        IEnumerable<ReportPage.Tab>? tabs = default
-    ) => new(new(name, title.Schema) { QueryParameters = [.. queryParameters ?? []], Tabs = [.. tabs ?? []] });
+        Action<ReportPage>? options = default
+    ) => new(options.Apply(new(name, title.Schema)));
 
-    public static ReportPage.Tab ReportPageTab(string id, string title,
-        IEnumerable<ReportPage.Tab.Content>? contents = default,
-        bool? fullScreen = default,
-        IComponentDescriptor? icon = default,
-        bool? overflow = default,
-        string? showWhen = default
-    ) => new(id, title) { Contents = [.. contents ?? []], FullScreen = fullScreen, Icon = icon, Overflow = overflow, ShowWhen = showWhen };
+    public static ReportPage.Tab ReportPageTab(string id,
+        Action<ReportPage.Tab>? options = default
+    ) => options.Apply(new(id));
 
     public static ReportPage.Tab.Content ReportPageTabContent(IComponentDescriptor component,
-        string? key = default,
-        bool? narrow = default,
-        string? showWhen = default
-    ) => new(component) { Key = key, Narrow = narrow, ShowWhen = showWhen };
+        Action<ReportPage.Tab.Content>? options = default
+    ) => options.Apply(new(component));
 
     public static ComponentDescriptorAttribute<Select> Select(string label, IData data,
-        string? optionLabel = default,
-        string? optionValue = default,
-        bool? showClear = default,
-        bool? stateful = default,
-        string? selectionPageContextKey = default
-    ) => new(new(label)
-    {
-        OptionLabel = optionLabel,
-        OptionValue = optionValue,
-        LocalizeLabel = data.RequireLocalization,
-        ShowClear = showClear,
-        Stateful = stateful,
-        SelectionPageContextKey = selectionPageContextKey
-    })
-    { Data = data };
+        Action<Select>? options = default
+    ) => new(options.Apply(new(label) { LocalizeLabel = data.RequireLocalization })) { Data = data };
 
     public static ComponentDescriptorAttribute<SelectButton> SelectButton(IData data,
-        bool? allowEmpty = default,
-        string? optionLabel = default,
-        string? optionValue = default,
-        bool? stateful = default,
-        string? selectionPageContextKey = default
-    ) => new(new()
-    {
-        AllowEmpty = allowEmpty,
-        OptionLabel = optionLabel,
-        OptionValue = optionValue,
-        LocalizeLabel = data.RequireLocalization,
-        Stateful = stateful,
-        SelectionPageContextKey = selectionPageContextKey
-    })
-    { Data = data };
+        Action<SelectButton>? options = default
+    ) => new(options.Apply(new() { LocalizeLabel = data.RequireLocalization })) { Data = data };
 
-    public static ComponentDescriptorAttribute<SideMenu> SideMenu(IEnumerable<SideMenu.Item> menu,
-        IComponentDescriptor? footer = default,
+    public static ComponentDescriptorAttribute<SideMenu> SideMenu(
+        Action<SideMenu>? options = default,
         IData? data = default
-    )
-    {
-        data ??= Datas.Computed(Composables.UseRoute);
-
-        return new(new() { Menu = [.. menu], Footer = footer }) { Data = data };
-    }
+    ) => new(options.Apply(new())) { Data = data ?? Datas.Computed(Composables.UseRoute) };
 
     public static SideMenu.Item SideMenuItem(string route, string icon,
-        string? title = default,
-        bool? disabled = default
-    ) => new(route, icon) { Title = title, Disabled = disabled };
+        Action<SideMenu.Item>? options = default
+    ) => options.Apply(new(route, icon));
 
     public static ComponentDescriptorAttribute<String> String(
-        int? maxLength = default,
+        Action<String>? options = default,
         IData? data = default
-    ) => new(new() { MaxLength = maxLength }) { Data = data };
+    ) => new(options.Apply(new())) { Data = data };
 }
