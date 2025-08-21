@@ -16,13 +16,6 @@ public static class Components
         Action<Conditional.Condition>? options = default
     ) => options.Apply(new(prop, value, component));
 
-    public static ComponentDescriptor Custom<TSchema>() where TSchema : IComponentSchema =>
-        new(typeof(TSchema).Name);
-
-    public static ComponentDescriptor CustomPage<TSchema>(string path,
-        string? layout = default
-    ) where TSchema : IComponentSchema => new(typeof(TSchema).Name, schema: new CustomPage(path, layout));
-
     public static ComponentDescriptorAttribute<DataPanel> DataPanel(string title, IComponentDescriptor content,
         Action<DataPanel>? options = default
     ) => DataPanel(Datas.Inline(title), content, options: options);

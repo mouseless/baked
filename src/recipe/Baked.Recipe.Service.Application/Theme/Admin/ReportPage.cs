@@ -3,9 +3,8 @@ using Baked.Ui;
 namespace Baked.Theme.Admin;
 
 public record ReportPage(string Path, PageTitle Title) :
-    IGeneratedComponentSchema
+    PageSchemaBase(Path)
 {
-    public string Path { get; set; } = Path;
     public PageTitle Title { get; set; } = Title;
     public List<Parameter> QueryParameters { get; init; } = [];
     public List<Tab> Tabs { get; init; } = [];

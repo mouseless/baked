@@ -8,6 +8,7 @@ using Baked.Test.ExceptionHandling;
 using Baked.Test.Orm;
 using Baked.Test.Theme;
 using Baked.Theme.Admin;
+using Baked.Ui;
 using Humanizer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
@@ -298,8 +299,8 @@ public class ConfigurationOverriderFeature : IFeature
                     ]
                 ));
 
-                pages.Add(CustomPage<Login>("login", layout: "modal"));
-                pages.Add(CustomPage<PageWithRoute>("page/with/route/pageWithRoute", layout: "default"));
+                pages.Add(new ComponentDescriptorAttribute<LoginPage>(new("login") { Layout = "modal" }));
+                pages.Add(new ComponentDescriptorAttribute<RoutedPage>(new("page/with/route/pageWithRoute") { Layout = "default" }));
 
                 configurator.UsingDomainModel(domain =>
                 {

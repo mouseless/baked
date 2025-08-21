@@ -1,7 +1,6 @@
 {
   "type": "ReportPage",
   "schema": {
-    "path": "data-table",
     "title": {
       "title": "Data Table Demo",
       "actions": []
@@ -200,6 +199,7 @@
           }
         ]
       }
-    ]
+    ],
+    "path": "data-table"
   }
 }

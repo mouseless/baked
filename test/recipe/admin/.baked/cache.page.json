@@ -1,7 +1,6 @@
 {
   "type": "ReportPage",
   "schema": {
-    "path": "cache",
     "title": {
       "title": "Cache",
       "description": "Showcases the cache behavior",
@@ -109,6 +108,7 @@
           }
         ]
       }
-    ]
+    ],
+    "path": "cache"
   }
 }
