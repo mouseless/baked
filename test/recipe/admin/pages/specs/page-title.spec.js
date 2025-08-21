@@ -1,3 +1,4 @@
+import giveMe from "~/utils/giveMe";
 import { expect, test } from "@nuxt/test-utils/playwright";
 
 test.beforeEach(async({goto}) => {
@@ -13,10 +14,33 @@ test.describe("Base", () => {
     await expect(component.locator("h1")).toHaveText("Title");
   });
 
-  test("description", async({page}) => {
+  test("description visibility based on screen size", async({page}) => {
     const component = page.getByTestId(id);
+    const description = component.getByTestId("description");
+    const infoIcon = component.locator(".pi-info-circle");
 
-    await expect(component.getByTestId("description")).toHaveText("Description");
+    // Check desktop view (2xl screen)
+    const desktop = giveMe.aScreenSize("2xl");
+    await page.setViewportSize({ ...desktop });
+    await expect(description).toBeVisible();
+    await expect(infoIcon).toBeHidden();
+
+    // Check tablet view (lg screen)
+    const tablet = giveMe.aScreenSize("lg");
+    await page.setViewportSize({ ...tablet });
+    await expect(description).toBeHidden();
+    await expect(infoIcon).toBeVisible();
+
+    // Verify tooltip appears on hover
+    await infoIcon.hover();
+    await expect(component.locator(".b-tooltip")).toBeVisible();
+    await expect(component.locator("p")).toContainText("Description");
+
+    // Check mobile view (sm screen)
+    const mobile = giveMe.aScreenSize("sm");
+    await page.setViewportSize({ ...mobile });
+    await expect(description).toBeHidden();
+    await expect(infoIcon).toBeVisible();
   });
 });
 
