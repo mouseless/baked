@@ -40,7 +40,7 @@ public class UiLayer : LayerBase<GenerateCode>
     {
         var files = Context.Get<IGeneratedFileCollection>();
 
-        files.Add(name: "components", content: ComponentExportsTemplate(_componentExports.Distinct()), extension: "js", outdir: "Ui");
+        files.Add(name: "components", content: ComponentExportsTemplate(_componentExports.Distinct().Order()), extension: "js", outdir: "Ui");
 
         files.AddAsJson($"app", _appDescriptor, outdir: "Ui", settings: JsonSettings);
 

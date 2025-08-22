@@ -47,7 +47,7 @@ Bake.New
             .ForProduction(c.PostgreSql()),
         exceptionHandling: c => c.ProblemDetails(typeUrlFormat: "https://baked.mouseless.codes/errors/{0}"),
         localization: c => c.Dotnet(language: new("en"), otherLanguages: [new("tr")]),
-        theme: c => c.Custom(componentExports: ["Container", "Expected", "Input", "LoginPage", "RoutedPage"]),
+        theme: c => c.Custom(),
         configure: app =>
         {
             app.Features.AddReporting(c => c

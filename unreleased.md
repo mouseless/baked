@@ -25,3 +25,5 @@
     `AllowMultiple` set to `true`
   - `Set{..}Metadata` is now introduced to setting (or overriding) a single
     instance for the attributes that have `AllowMultiple` set to `false`
+- `.baked/components.js` now ensures components are sorted by name to make it
+  easier to spot unexpected changes

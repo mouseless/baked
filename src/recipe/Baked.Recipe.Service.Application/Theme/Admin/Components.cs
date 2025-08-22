@@ -83,13 +83,13 @@ public static class Components
         Action<Header.Item>? options = default
     ) => options.Apply(new(route));
 
-    public static ComponentDescriptorAttribute<LanguageSwitcher> LanguageSwitcher(
-        Action<LanguageSwitcher>? options = default
-    ) => new(options.Apply(new()));
-
     public static ComponentDescriptorAttribute<Icon> Icon(string iconClass,
         Action<Icon>? options = default
     ) => new(options.Apply(new(iconClass)));
+
+    public static ComponentDescriptorAttribute<LanguageSwitcher> LanguageSwitcher(
+        Action<LanguageSwitcher>? options = default
+    ) => new(options.Apply(new()));
 
     public static ComponentDescriptorAttribute<MenuPage> MenuPage(string name, IEnumerable<IComponentDescriptor> links,
         Action<MenuPage>? options = default

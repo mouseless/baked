@@ -2,9 +2,11 @@
 
 namespace Baked.Theme.Admin;
 
-public class AdminThemeFeature(List<string> _componentExports)
+public class AdminThemeFeature(IEnumerable<string> _componentExports)
     : IFeature<ThemeConfigurator>
 {
+    public AdminThemeFeature() : this([]) { }
+
     public virtual void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureComponentExports(exports =>
