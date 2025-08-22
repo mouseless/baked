@@ -2,10 +2,10 @@ using Baked.Architecture;
 using Baked.RestApi.Model;
 using Baked.Test.Caching;
 using Baked.Theme.Admin;
-using Baked.Ui;
 using Humanizer;
 
 using static Baked.Theme.Admin.Components;
+using static Baked.Test.Theme.Custom.Components;
 using static Baked.Ui.Datas;
 
 namespace Baked.Test.Theme.Custom;
@@ -190,8 +190,8 @@ public class CustomThemeFeature : AdminThemeFeature
                     ]
                 ));
 
-                pages.Add(new ComponentDescriptorAttribute<LoginPage>(new("login") { Layout = "modal" }));
-                pages.Add(new ComponentDescriptorAttribute<RoutedPage>(new("page/with/route/pageWithRoute") { Layout = "default" }));
+                pages.Add(LoginPage("login", options: lp => lp.Layout = "modal"));
+                pages.Add(RoutedPage("page/with/route/pageWithRoute", lp => lp.Layout = "default"));
 
                 configurator.UsingDomainModel(domain =>
                 {
