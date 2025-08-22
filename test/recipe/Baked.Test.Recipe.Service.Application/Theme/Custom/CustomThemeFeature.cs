@@ -147,38 +147,31 @@ public class CustomThemeFeature(IEnumerable<Page> _pages)
 
         configurator.ConfigurePageDescriptors(pages =>
         {
+            pages.Add(LoginPage("login", options: lp => lp.Layout = "modal"));
+            pages.Add(RoutedPage("page/with/route/pageWithRoute", lp => lp.Layout = "default"));
+
+            configurator.UsingDomainModel(domain =>
+            {
+                configurator.UsingLocalization(l =>
+                {
+                    foreach (var page in _pages)
+                    {
+                        if (page.Build is null) { continue; }
+
+                        pages.Add(page.Build(new()
+                        {
+                            Page = page,
+                            Sitemap = [.. _pages],
+                            Domain = domain,
+                            NewLocaleKey = l
+                        }));
+                    }
+                });
+            });
+
             configurator.UsingLocalization(l =>
             {
                 var headers = Inline(new { Authorization = "token-admin-ui" });
-
-                pages.Add(MenuPage("index",
-                    links:
-                    [
-                        CardLink($"/cache", l("Cache"), options: cl =>
-                        {
-                            cl.Icon = "pi pi-database";
-                            cl.Description = l("Showcases the cache behavior");
-                        }),
-                        CardLink($"/data-table", l("Data Table"), options: cl =>
-                        {
-                            cl.Icon= "pi pi-table";
-                            cl.Description = l("Showcase DataTable component with scrollable and footer options");
-                        }),
-                        CardLink($"/report", l("Report"), options: cl =>
-                        {
-                            cl.Icon = "pi pi-file";
-                            cl.Description = l("Showcases a report layout with tabs and data panels");
-                        }),
-                        CardLink($"/specs", l("Specs"), options: cl =>
-                        {
-                            cl.Icon = "pi pi-list-check";
-                            cl.Description = l("All UI Specs are listed here");
-                        })
-                    ]
-                ));
-
-                pages.Add(LoginPage("login", options: lp => lp.Layout = "modal"));
-                pages.Add(RoutedPage("page/with/route/pageWithRoute", lp => lp.Layout = "default"));
 
                 configurator.UsingDomainModel(domain =>
                 {

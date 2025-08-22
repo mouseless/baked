@@ -95,7 +95,8 @@
           "schema": {
             "route": "/cache",
             "icon": "pi pi-database",
-            "title": "Cache"
+            "title": "Cache",
+            "description": "Showcases the cache behavior"
           }
         },
         {
@@ -103,7 +104,8 @@
           "schema": {
             "route": "/data-table",
             "icon": "pi pi-table",
-            "title": "Data Table"
+            "title": "Data Table",
+            "description": "Showcase DataTable component with scrollable and footer options"
           }
         },
         {
@@ -111,7 +113,8 @@
           "schema": {
             "route": "/report",
             "icon": "pi pi-file",
-            "title": "Report"
+            "title": "Report",
+            "description": "Showcases a report layout with tabs and data panels"
           }
         },
         {
@@ -119,7 +122,8 @@
           "schema": {
             "route": "/specs",
             "icon": "pi pi-list-check",
-            "title": "Specs"
+            "title": "Specs",
+            "description": "All UI Specs are listed here"
           }
         }
       ],

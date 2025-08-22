@@ -49,13 +49,13 @@ Bake.New
         exceptionHandling: c => c.ProblemDetails(typeUrlFormat: "https://baked.mouseless.codes/errors/{0}"),
         localization: c => c.Dotnet(language: new("en"), otherLanguages: [new("tr")]),
         theme: c => c.Custom(
-            indexPage: Page.CreateIndex(),
+            indexPage: Page.CreateIndex() with { Build = Pages.Menu },
             pages:
             [
-                Page.CreateRoot("/cache", "Cache", "pi pi-database"),
-                Page.CreateRoot("/data-table", "Data Table", "pi pi-table"),
-                Page.CreateRoot("/report", "Report", "pi pi-file"),
-                Page.CreateRoot("/specs", "Specs", "pi pi-list-check")
+                Page.CreateRoot("/cache", "Cache", "pi pi-database") with { Description = "Showcases the cache behavior" },
+                Page.CreateRoot("/data-table", "Data Table", "pi pi-table") with { Description = "Showcase DataTable component with scrollable and footer options" },
+                Page.CreateRoot("/report", "Report", "pi pi-file") with { Description = "Showcases a report layout with tabs and data panels"},
+                Page.CreateRoot("/specs", "Specs", "pi pi-list-check") with { Description = "All UI Specs are listed here" }
             ]
         ),
         configure: app =>
