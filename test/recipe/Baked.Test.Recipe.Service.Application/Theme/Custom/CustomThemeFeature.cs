@@ -10,7 +10,6 @@ namespace Baked.Test.Theme.Custom;
 public class CustomThemeFeature(IEnumerable<Page> _pages)
     : AdminThemeFeature()
 {
-
     public override void Configure(LayerConfigurator configurator)
     {
         base.Configure(configurator);
