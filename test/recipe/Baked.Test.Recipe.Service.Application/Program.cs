@@ -1,4 +1,5 @@
 ﻿using Baked.Test.Orm;
+using Baked.Test.Theme.Custom;
 
 Bake.New
     .Service(
@@ -47,7 +48,16 @@ Bake.New
             .ForProduction(c.PostgreSql()),
         exceptionHandling: c => c.ProblemDetails(typeUrlFormat: "https://baked.mouseless.codes/errors/{0}"),
         localization: c => c.Dotnet(language: new("en"), otherLanguages: [new("tr")]),
-        theme: c => c.Custom(),
+        theme: c => c.Custom(
+            indexPage: Page.CreateIndex(),
+            pages:
+            [
+                Page.CreateRoot("/cache", "Cache", "pi pi-database"),
+                Page.CreateRoot("/data-table", "Data Table", "pi pi-table"),
+                Page.CreateRoot("/report", "Report", "pi pi-file"),
+                Page.CreateRoot("/specs", "Specs", "pi pi-list-check")
+            ]
+        ),
         configure: app =>
         {
             app.Features.AddReporting(c => c

@@ -10,7 +10,8 @@ using static Baked.Ui.Datas;
 
 namespace Baked.Test.Theme.Custom;
 
-public class CustomThemeFeature : AdminThemeFeature
+public class CustomThemeFeature(IEnumerable<Page> _pages)
+    : AdminThemeFeature()
 {
     readonly List<Spec> _specs =
     [
@@ -78,14 +79,7 @@ public class CustomThemeFeature : AdminThemeFeature
                 app.Error = ErrorPage(
                     options: ep =>
                     {
-                        ep.SafeLinks.AddRange(
-                        [
-                            CardLink("/", l("Home"), options: cl => cl.Icon = "pi pi-home"),
-                            CardLink("/cache", l("Cache"), options: cl => cl.Icon = "pi pi-database"),
-                            CardLink("/data-table", l("Data Table"), options: cl => cl.Icon = "pi pi-table"),
-                            CardLink("/report", l("Report"), options: cl => cl.Icon =  "pi pi-file"),
-                            CardLink("/specs", l("Specs"), options: cl => cl.Icon = "pi pi-list-check"),
-                        ]);
+                        ep.SafeLinks.AddRange([.. _pages.Where(p => p.ErrorSafeLink).Select(p => p.AsCardLink(l))]);
                         ep.ErrorInfos[403] = ErrorPageInfo(l("Access Denied"), l("You do not have the permision to view the address or data specified."));
                         ep.ErrorInfos[404] = ErrorPageInfo(l("Page Not Found"), l("The page you want to view is etiher deleted or outdated."));
                         ep.ErrorInfos[500] = ErrorPageInfo(l("Unexpected Error"), l("Please contact system administrator."));
@@ -104,14 +98,7 @@ public class CustomThemeFeature : AdminThemeFeature
                     dl.SideMenu = SideMenu(
                         options: sm =>
                         {
-                            sm.Menu.AddRange(
-                            [
-                                SideMenuItem("/", "pi pi-home"),
-                                SideMenuItem("/cache", "pi pi-database", options: smi => smi.Title = l("Cache")),
-                                SideMenuItem("/data-table", "pi pi-table", options: smi => smi.Title = l("Data Table")),
-                                SideMenuItem("/report", "pi pi-file", options: smi => smi.Title = l("Report")),
-                                SideMenuItem("/specs", "pi pi-list-check", options: smi => smi.Title = l("Specs"))
-                            ]);
+                            sm.Menu.AddRange([.. _pages.Where(p => p.SideMenu).Select(p => p.AsSideMenuItem(l))]);
                             sm.Footer = LanguageSwitcher();
                         }
                     );
