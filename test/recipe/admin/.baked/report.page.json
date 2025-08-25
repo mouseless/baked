@@ -94,7 +94,7 @@
                   "schema": {},
                   "data": {
                     "type": "Remote",
-                    "path": "/report/wide",
+                    "path": "report/wide",
                     "headers": {
                       "type": "Inline",
                       "value": {
@@ -127,7 +127,7 @@
                   "schema": {},
                   "data": {
                     "type": "Remote",
-                    "path": "/report/left",
+                    "path": "report/left",
                     "headers": {
                       "type": "Inline",
                       "value": {
@@ -161,7 +161,7 @@
                   "schema": {},
                   "data": {
                     "type": "Remote",
-                    "path": "/report/right",
+                    "path": "report/left",
                     "headers": {
                       "type": "Inline",
                       "value": {
@@ -295,7 +295,7 @@
                   },
                   "data": {
                     "type": "Remote",
-                    "path": "/report/first",
+                    "path": "report/first",
                     "headers": {
                       "type": "Inline",
                       "value": {
@@ -411,7 +411,7 @@
                   },
                   "data": {
                     "type": "Remote",
-                    "path": "/report/second",
+                    "path": "report/second",
                     "headers": {
                       "type": "Inline",
                       "value": {

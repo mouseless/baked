@@ -1,10 +1,11 @@
 ﻿using Baked.RestApi.Model;
 using Baked.Test.Caching;
-using Baked.Theme.Admin;
 using Baked.Ui;
 using Humanizer;
 
 using static Baked.Theme.Admin.Components;
+using static Baked.Test.Theme.Custom.DomainComponents;
+using static Baked.Test.Theme.Custom.DomainDatas;
 using static Baked.Ui.Datas;
 
 namespace Baked.Test.Theme.Custom;
@@ -68,8 +69,7 @@ public static class PageBuilders
 
     public static IComponentDescriptor Cache(PageContext context)
     {
-        var domain = context.Domain;
-        var l = context.NewLocaleKey;
+        var (domain, l) = context;
         var headers = Inline(new { Authorization = "token-admin-ui" });
 
         var report = domain.Types[typeof(CacheSamples)].GetMembers();
@@ -97,25 +97,13 @@ public static class PageBuilders
                             [
                                 ReportPageTabContent(
                                     component: DataPanel(l(getScoped.Name),
-                                        content: String(
-                                            data: Remote($"/{getScoped.GetSingle<ActionModelAttribute>().GetRoute()}",
-                                                headers: headers,
-                                                query: Computed(Composables.UseQuery),
-                                                attributes: [("client-cache", "user")]
-                                            )
-                                        )
+                                        content: ActionString(getScoped)
                                     ),
                                     options: rptc => rptc.Narrow = true
                                 ),
                                 ReportPageTabContent(
                                     component: DataPanel(l(getApplication.Name),
-                                        content: String(
-                                            data: Remote($"/{getApplication.GetSingle<ActionModelAttribute>().GetRoute()}",
-                                                headers: headers,
-                                                query: Computed(Composables.UseQuery),
-                                                attributes: [("client-cache", "application")]
-                                            )
-                                        )
+                                        content: ActionString(getApplication)
                                     ),
                                     options: rptc => rptc.Narrow = true
                                 )
@@ -129,8 +117,7 @@ public static class PageBuilders
 
     public static IComponentDescriptor DataTable(PageContext context)
     {
-        var domain = context.Domain;
-        var l = context.NewLocaleKey;
+        var (domain, l) = context;
 
         return ReportPage("data-table", PageTitle(l("Data Table Demo")),
             options: rp =>
@@ -203,8 +190,7 @@ public static class PageBuilders
 
     public static IComponentDescriptor Report(PageContext context)
     {
-        var domain = context.Domain;
-        var l = context.NewLocaleKey;
+        var (domain, l) = context;
         var headers = Inline(new { Authorization = "token-admin-ui" });
 
         var report = domain.Types[typeof(Report)].GetMembers();
@@ -258,10 +244,7 @@ public static class PageBuilders
                                 ReportPageTabContent(
                                     component: DataPanel(l(wide.Name),
                                         content: String(
-                                            data: Remote($"/{wide.GetSingle<ActionModelAttribute>().GetRoute()}",
-                                                headers: headers,
-                                                query: Computed(Composables.UseQuery)
-                                            )
+                                            data: ActionRemote(wide, headers: headers)
                                         ),
                                         options: dp => dp.Collapsed = false
                                     )
@@ -269,10 +252,7 @@ public static class PageBuilders
                                 ReportPageTabContent(
                                     component: DataPanel(l(left.Name),
                                         content: String(
-                                            data: Remote($"/{left.GetSingle<ActionModelAttribute>().GetRoute()}",
-                                                headers: headers,
-                                                query: Computed(Composables.UseQuery)
-                                            )
+                                            data: ActionRemote(left, headers: headers)
                                         ),
                                         options: dp => dp.Collapsed = true
                                     ),
@@ -281,10 +261,7 @@ public static class PageBuilders
                                 ReportPageTabContent(
                                     component: DataPanel(l(right.Name),
                                         content: String(
-                                            data: Remote($"/{right.GetSingle<ActionModelAttribute>().GetRoute()}",
-                                                headers: headers,
-                                                query: Computed(Composables.UseQuery)
-                                            )
+                                            data: ActionRemote(left, headers: headers)
                                         ),
                                         options: dp => dp.Collapsed = true
                                     ),
@@ -341,10 +318,7 @@ public static class PageBuilders
                                                     dte.ParameterFormatter = "useLocaleParameterFormatter";
                                                 });
                                             },
-                                            data: Remote($"/{first.GetSingle<ActionModelAttribute>().GetRoute()}",
-                                                headers: headers,
-                                                query: Composite([Computed(Composables.UseQuery), Injected()])
-                                            )
+                                            data: ActionRemote(first, headers: headers)
                                         ),
                                         options: dp => dp.Parameters.Add(
                                             Parameter("count",
@@ -374,10 +348,7 @@ public static class PageBuilders
                                                 dt.Paginator = true;
                                                 dt.Rows = 5;
                                             },
-                                            data: Remote($"/{second.GetSingle<ActionModelAttribute>().GetRoute()}",
-                                                headers: headers,
-                                                query: Composite([Computed(Composables.UseQuery), Injected()])
-                                            )
+                                            data: ActionRemote(second, headers: headers)
                                         ),
                                         options: dp =>
                                         {
