@@ -4,6 +4,7 @@ using Baked.Theme.Admin;
 using Baked.Ui;
 
 using static Baked.Ui.Datas;
+using static Baked.Ui.UiLayer;
 
 namespace Baked.Test.Theme.Custom;
 
@@ -19,8 +20,14 @@ public static class DomainDatas
         attributes: method.TryGetSingle<ClientCacheAttribute>(out var clientCache) ? [("client-cache", clientCache.Type)] : null
     );
 
-    public static InlineData EnumInline(TypeModel type) =>
-        Inline(type.GetEnumNames(),
-            requireLocalization: false
-        );
+    public static InlineData EnumInline(TypeModel type,
+        NewLocaleKey? l = default
+    ) => Inline(
+        value: l is null
+            ? type.GetEnumNames()
+            : type
+                .GetEnumNames()
+                .Select(name => new { text = l($"{type.SkipNullable()}.{name}"), value = name }),
+        requireLocalization: l is not null
+    );
 }

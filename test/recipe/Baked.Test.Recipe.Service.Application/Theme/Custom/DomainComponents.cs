@@ -6,6 +6,7 @@ using Humanizer;
 
 using static Baked.Test.Theme.Custom.DomainDatas;
 using static Baked.Theme.Admin.Components;
+using static Baked.Ui.UiLayer;
 
 namespace Baked.Test.Theme.Custom;
 
@@ -62,15 +63,55 @@ public static class DomainComponents
 
     #region Parameter
 
-    public static Parameter EnumSelectParameter(ParameterModel parameter, ComponentContext context) =>
-        ParameterParameter(parameter,
-            component: p => EnumSelect(context.NewLocaleKey(p.Name.Titleize()), p.ParameterType),
+    public static Parameter EnumSelectButtonParameter(ParameterModel parameter, ComponentContext context,
+        bool requireLocalization = true,
+        Action<Parameter>? options = default
+    )
+    {
+        var (domain, l) = context;
+        var api = parameter.GetSingle<ParameterModelAttribute>();
+
+        return ParameterParameter(parameter,
+            component: p => EnumSelectButton(p.ParameterType,
+                options: s => s.AllowEmpty = api.IsOptional ? true : null,
+                l: requireLocalization ? l : null
+            ),
             options: p =>
             {
-                p.Required = true;
-                p.DefaultValue = parameter.ParameterType.GetEnumNames().First();
+                if (!api.IsOptional)
+                {
+                    p.DefaultValue = parameter.ParameterType.GetEnumNames().First();
+                }
+
+                options.Apply(p);
             }
         );
+    }
+
+    public static Parameter EnumSelectParameter(ParameterModel parameter, ComponentContext context,
+        bool requireLocalization = true,
+        Action<Parameter>? options = default
+    )
+    {
+        var (domain, l) = context;
+        var api = parameter.GetSingle<ParameterModelAttribute>();
+
+        return ParameterParameter(parameter,
+            component: p => EnumSelect(l(p.Name.Titleize()), p.ParameterType,
+                options: s => s.ShowClear = api.IsOptional ? true : null,
+                l: requireLocalization ? l : null
+            ),
+            options: p =>
+            {
+                if (!api.IsOptional)
+                {
+                    p.DefaultValue = parameter.ParameterType.GetEnumNames().First();
+                }
+
+                options.Apply(p);
+            }
+        );
+    }
 
     public static Parameter ParameterParameter(ParameterModel parameter, Func<ParameterModel, IComponentDescriptor> component,
         Action<Parameter>? options = default
@@ -81,6 +122,10 @@ public static class DomainComponents
         return Parameter(api.Name, component(parameter), options: p =>
         {
             p.Required = !api.IsOptional ? true : null;
+            if (api.DefaultValue is not null)
+            {
+                p.DefaultValue = api.DefaultValue;
+            }
 
             options.Apply(p);
         });
@@ -91,9 +136,39 @@ public static class DomainComponents
     #region Select
 
     public static ComponentDescriptorAttribute<Select> EnumSelect(string label, TypeModel enumType,
-        Action<Select>? options = default
-    ) => Select(label, EnumInline(enumType),
-        options: options
+        Action<Select>? options = default,
+        NewLocaleKey? l = default
+    ) => Select(label, EnumInline(enumType, l: l),
+        options: s =>
+        {
+            if (l is not null)
+            {
+                s.OptionLabel = "text";
+                s.OptionValue = "value";
+            }
+
+            options.Apply(s);
+        }
+    );
+
+    #endregion
+
+    #region SelectButton
+
+    public static ComponentDescriptorAttribute<SelectButton> EnumSelectButton(TypeModel enumType,
+        Action<SelectButton>? options = default,
+        NewLocaleKey? l = default
+    ) => SelectButton(EnumInline(enumType, l: l),
+        options: sb =>
+        {
+            if (l is not null)
+            {
+                sb.OptionLabel = "text";
+                sb.OptionValue = "value";
+            }
+
+            options.Apply(sb);
+        }
     );
 
     #endregion

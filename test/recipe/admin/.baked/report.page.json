@@ -12,12 +12,12 @@
         "required": true,
         "default": {
           "type": "Inline",
-          "value": "rwd-1"
+          "value": "RequiredWithDefault1"
         },
         "component": {
           "type": "Select",
           "schema": {
-            "label": "Required w/ Default",
+            "label": "Required With Default",
             "optionLabel": "text",
             "optionValue": "value",
             "localizeLabel": true
@@ -26,12 +26,12 @@
             "type": "Inline",
             "value": [
               {
-                "text": "Required w/ Default 1",
-                "value": "rwd-1"
+                "text": "Baked.Domain.Model.TypeModelMembers.RequiredWithDefault1",
+                "value": "RequiredWithDefault1"
               },
               {
-                "text": "Required w/ Default 2",
-                "value": "rwd-2"
+                "text": "Baked.Domain.Model.TypeModelMembers.RequiredWithDefault2",
+                "value": "RequiredWithDefault2"
               }
             ]
           }
@@ -44,13 +44,21 @@
           "type": "Select",
           "schema": {
             "label": "Required",
+            "optionLabel": "text",
+            "optionValue": "value",
             "localizeLabel": true
           },
           "data": {
             "type": "Inline",
             "value": [
-              "Required 1",
-              "Required 2"
+              {
+                "text": "Baked.Domain.Model.TypeModelMembers.Required1",
+                "value": "Required1"
+              },
+              {
+                "text": "Baked.Domain.Model.TypeModelMembers.Required2",
+                "value": "Required2"
+              }
             ]
           }
         }
@@ -61,13 +69,21 @@
           "type": "SelectButton",
           "schema": {
             "allowEmpty": true,
+            "optionLabel": "text",
+            "optionValue": "value",
             "localizeLabel": true
           },
           "data": {
             "type": "Inline",
             "value": [
-              "Optional 1",
-              "Optional 2"
+              {
+                "text": "Baked.Domain.Model.TypeModelMembers.Optional1",
+                "value": "Optional1"
+              },
+              {
+                "text": "Baked.Domain.Model.TypeModelMembers.Optional2",
+                "value": "Optional2"
+              }
             ]
           }
         }

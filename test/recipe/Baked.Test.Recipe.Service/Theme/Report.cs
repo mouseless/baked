@@ -2,14 +2,14 @@ namespace Baked.Test.Theme;
 
 public class Report
 {
-    string _requiredWithDefault = default!;
-    string _required = default!;
-    string? _optional = default!;
+    RequiredWithDefaultOptions _requiredWithDefault = default!;
+    RequiredOptions _required = default!;
+    OptionalOptions? _optional = default!;
 
     string Value => $"{_requiredWithDefault} - {_required} - {_optional}";
 
-    public Report With(string requiredWithDefault, string required,
-        string? optional = default
+    public Report With(RequiredWithDefaultOptions requiredWithDefault, RequiredOptions required,
+        OptionalOptions? optional = default
     )
     {
         _requiredWithDefault = requiredWithDefault;
@@ -32,9 +32,11 @@ public class Report
     {
         await Task.Delay(200);
 
-        return [.. Enumerable
-            .Range(0, (int)count)
-            .Select(row => new ReportRow($"Row {row}", _requiredWithDefault, _required, _optional))
+        return
+        [
+            .. Enumerable
+                .Range(0, (int)count)
+                .Select(row => new ReportRow($"Row {row}", $"{_requiredWithDefault}", $"{_required}", $"{_optional}"))
         ];
     }
 
@@ -42,9 +44,11 @@ public class Report
     {
         await Task.Delay(200);
 
-        return [.. Enumerable
-            .Range(0, (int)count)
-            .Select(row => new ReportRow($"Row {row}", _requiredWithDefault, _required, _optional))
+        return
+        [
+            .. Enumerable
+                .Range(0, (int)count)
+                .Select(row => new ReportRow($"Row {row}", $"{_requiredWithDefault}", $"{_required}", $"{_optional}"))
         ];
     }
 }

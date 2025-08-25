@@ -71,16 +71,18 @@ public static class PageBuilders
         var (domain, l) = context;
         var headers = Inline(new { Authorization = "token-admin-ui" });
 
-        var report = domain.Types[typeof(CacheSamples)].GetMembers();
-        var initializer = report.Methods.Having<InitializerAttribute>().First().DefaultOverload;
-        var getScoped = report.Methods[nameof(CacheSamples.GetScoped)];
-        var getApplication = report.Methods[nameof(CacheSamples.GetApplication)];
+        var cacheSamples = domain.Types[typeof(CacheSamples)].GetMembers();
+        var initializer = cacheSamples.Methods.Having<InitializerAttribute>().First().DefaultOverload;
+        var getScoped = cacheSamples.Methods[nameof(CacheSamples.GetScoped)];
+        var getApplication = cacheSamples.Methods[nameof(CacheSamples.GetApplication)];
 
         return ReportPage("cache", PageTitle("Cache", options: pt => pt.Description = l("Showcases the cache behavior")),
             options: rp =>
             {
                 rp.QueryParameters.Add(
-                    EnumSelectParameter(initializer.Parameters["parameter"], context.CreateComponentContext("/parameters/parameter"))
+                    EnumSelectParameter(initializer.Parameters["parameter"], context.CreateComponentContext("/parameters/parameter"),
+                        requireLocalization: false
+                    )
                 );
                 rp.Tabs.Add(
                     ReportPageTab("default",
@@ -114,30 +116,28 @@ public static class PageBuilders
         var dataTable = domain.Types[typeof(DataTable)].GetMembers();
         var getTableDataWithFooter = dataTable.Methods[nameof(Theme.DataTable.GetTableDataWithFooter)];
 
-        return ReportPage("data-table", PageTitle(l("Data Table Demo")),
-            options: rp =>
-            {
-                rp.Tabs.AddRange(
-                [
-                    ReportPageTab("default",
-                        options: rpt =>
-                        {
-                            rpt.Contents.AddRange(
-                            [
-                                ReportPageTabContent(
-                                    DataPanel(l("Data Panel"),
-                                        content: TableWithFooterActionDataTable(getTableDataWithFooter, context.CreateComponentContext("/tabs/default/contents/0")),
-                                        options: dp => dp.Parameters.Add(
-                                            EnumSelectParameter(getTableDataWithFooter.DefaultOverload.Parameters["count"], context.CreateComponentContext("/parameters/count"))
-                                        )
+        return ReportPage("data-table", PageTitle(l("Data Table Demo")), options: rp =>
+        {
+            rp.Tabs.AddRange(
+            [
+                ReportPageTab("default", options: rpt =>
+                {
+                    rpt.Contents.AddRange(
+                    [
+                        ReportPageTabContent(
+                            DataPanel(l("Data Panel"),
+                                content: TableWithFooterActionDataTable(getTableDataWithFooter, context.CreateComponentContext("/tabs/default/contents/0")),
+                                options: dp => dp.Parameters.Add(
+                                    EnumSelectParameter(getTableDataWithFooter.DefaultOverload.Parameters["count"], context.CreateComponentContext("/parameters/count"),
+                                        requireLocalization: false
                                     )
                                 )
-                            ]);
-                        }
-                    )
-                ]);
-            }
-        );
+                            )
+                        )
+                    ]);
+                })
+            ]);
+        });
     }
 
     public static IComponentDescriptor Report(PageContext context)
@@ -146,179 +146,151 @@ public static class PageBuilders
         var headers = Inline(new { Authorization = "token-admin-ui" });
 
         var report = domain.Types[typeof(Report)].GetMembers();
+        var initializer = report.Methods.Having<InitializerAttribute>().First().DefaultOverload;
         var wide = report.Methods[nameof(Theme.Report.GetWide)];
         var left = report.Methods[nameof(Theme.Report.GetLeft)];
         var right = report.Methods[nameof(Theme.Report.GetRight)];
         var first = report.Methods[nameof(Theme.Report.GetFirst)];
         var second = report.Methods[nameof(Theme.Report.GetSecond)];
 
-        return ReportPage("report", PageTitle(l("Report"), options: pt => pt.Description = l("Showcases a report layout with tabs and data panels")),
-            options: rp =>
-            {
-                rp.QueryParameters.AddRange(
-                [
-                    Parameter("requiredWithDefault",
-                        component: Select(l("Required w/ Default"),
-                            options: s =>
-                            {
-                                s.OptionLabel = "text";
-                                s.OptionValue = "value";
-                            },
-                            data: Inline(new[]
-                            {
-                              new { text = l("Required w/ Default 1"), value = l("rwd-1") },
-                              new { text = l("Required w/ Default 2"), value = l("rwd-2") }
-                            })
+        return ReportPage("report", PageTitle(l("Report"), options: pt => pt.Description = l("Showcases a report layout with tabs and data panels")), options: rp =>
+        {
+            rp.QueryParameters.AddRange(
+            [
+                EnumSelectParameter(initializer.Parameters["requiredWithDefault"], context.CreateComponentContext("/parameters/requiredWithDefault")),
+                EnumSelectParameter(initializer.Parameters["required"], context.CreateComponentContext("/parameters/required"), options: p => p.Default = null),
+                EnumSelectButtonParameter(initializer.Parameters["optional"], context.CreateComponentContext("/parameters/optional"))
+            ]);
+            rp.Tabs.AddRange(
+            [
+                ReportPageTab("single-value", options: rpt =>
+                {
+                    rpt.Title = l("Single Value");
+                    rpt.Icon = Icon("pi-box");
+                    rpt.Contents.AddRange(
+                    [
+                        ReportPageTabContent(
+                            component: DataPanel(l(wide.Name),
+                                content: String(
+                                    data: ActionRemote(wide, headers: headers)
+                                ),
+                                options: dp => dp.Collapsed = false
+                            )
                         ),
-                        options: p =>
-                        {
-                            p.DefaultValue = "rwd-1";
-                            p.Required = true;
-                        }
-                    ),
-                    Parameter("required",
-                        component: Select(l("Required"), data: Inline(new[] { l("Required 1"), l("Required 2") })),
-                        options: p => p.Required = true
-                    ),
-                    Parameter("optional",
-                        component: SelectButton(Inline(new[] { l("Optional 1"), l("Optional 2") }), options: sb => sb.AllowEmpty = true)
-                    )
-                ]);
-                rp.Tabs.AddRange(
-                [
-                    ReportPageTab("single-value",
-                        options: rpt =>
-                        {
-                            rpt.Title = l("Single Value");
-                            rpt.Icon = Icon("pi-box");
-                            rpt.Contents.AddRange(
-                            [
-                                ReportPageTabContent(
-                                    component: DataPanel(l(wide.Name),
-                                        content: String(
-                                            data: ActionRemote(wide, headers: headers)
-                                        ),
-                                        options: dp => dp.Collapsed = false
-                                    )
+                        ReportPageTabContent(
+                            component: DataPanel(l(left.Name),
+                                content: String(
+                                    data: ActionRemote(left, headers: headers)
                                 ),
-                                ReportPageTabContent(
-                                    component: DataPanel(l(left.Name),
-                                        content: String(
-                                            data: ActionRemote(left, headers: headers)
-                                        ),
-                                        options: dp => dp.Collapsed = true
-                                    ),
-                                    options: rptc => rptc.Narrow = true
+                                options: dp => dp.Collapsed = true
+                            ),
+                            options: rptc => rptc.Narrow = true
+                        ),
+                        ReportPageTabContent(
+                            component: DataPanel(l(right.Name),
+                                content: String(
+                                    data: ActionRemote(right, headers: headers)
                                 ),
-                                ReportPageTabContent(
-                                    component: DataPanel(l(right.Name),
-                                        content: String(
-                                            data: ActionRemote(right, headers: headers)
-                                        ),
-                                        options: dp => dp.Collapsed = true
-                                    ),
-                                    options: rptc => rptc.Narrow = true
-                                )
-                            ]);
-                        }
-                    ),
-                    ReportPageTab("data-table",
-                        options: rpt =>
-                        {
-                            rpt.Title = l("Data Table");
-                            rpt.Icon = Icon("pi-table");
-                            rpt.Contents.AddRange(
-                            [
-                                ReportPageTabContent(
-                                    component: DataPanel(l(first.Name),
-                                        content: Baked.Theme.Admin.Components.DataTable(
-                                            options: dt =>
+                                options: dp => dp.Collapsed = true
+                            ),
+                            options: rptc => rptc.Narrow = true
+                        )
+                    ]);
+                }),
+                ReportPageTab("data-table", options: rpt =>
+                {
+                    rpt.Title = l("Data Table");
+                    rpt.Icon = Icon("pi-table");
+                    rpt.Contents.AddRange(
+                    [
+                        ReportPageTabContent(
+                            component: DataPanel(l(first.Name),
+                                content: Baked.Theme.Admin.Components.DataTable(
+                                    options: dt =>
+                                    {
+                                        dt.Columns.AddRange(
+                                        [
+                                            DataTableColumn("label", options: dtc =>
                                             {
-                                                dt.Columns.AddRange(
-                                                [
-                                                    DataTableColumn("label", options: dtc =>
-                                                    {
-                                                        dtc.Title = l("Label");
-                                                        dtc.MinWidth = true;
-                                                        dtc.Exportable = true;
-                                                    }),
-                                                    DataTableColumn("column1", options: dtc =>
-                                                    {
-                                                        dtc.Title = l("Column 1");
-                                                        dtc.Exportable = true;
-                                                    }),
-                                                    DataTableColumn("column2", options: dtc =>
-                                                    {
-                                                        dtc.Title = l("Column 2");
-                                                        dtc.Exportable = true;
-                                                    }),
-                                                    DataTableColumn("column3", options: dtc =>
-                                                    {
-                                                        dtc.Title = l("Column 3");
-                                                        dtc.Exportable = true;
-                                                    })
-                                                ]);
-                                                dt.DataKey = "label";
-                                                dt.Paginator = true;
-                                                dt.Rows = 5;
-                                                dt.ExportOptions = DataTableExport(";", l("first"), options: dte =>
-                                                {
-                                                    dte.Formatter = "useCsvFormatter";
-                                                    dte.ButtonLabel = l("Export as CSV");
-                                                    dte.AppendParameters = true;
-                                                    dte.ParameterSeparator = "_";
-                                                    dte.ParameterFormatter = "useLocaleParameterFormatter";
-                                                });
-                                            },
-                                            data: ActionRemote(first, headers: headers)
-                                        ),
-                                        options: dp => dp.Parameters.Add(
-                                            Parameter("count",
-                                                component: Select(l("Count"), Inline(Enum.GetNames<CountOptions>().Select(name => l(name))), options: s => s.Stateful = true),
-                                                options: p => p.DefaultValue = CountOptions.Default
-                                            )
-                                        )
-                                    )
-                                ),
-                                ReportPageTabContent(
-                                    component: DataPanel(l(second.Name),
-                                        content: Baked.Theme.Admin.Components.DataTable(
-                                            options: dt =>
+                                                dtc.Title = l("Label");
+                                                dtc.MinWidth = true;
+                                                dtc.Exportable = true;
+                                            }),
+                                            DataTableColumn("column1", options: dtc =>
                                             {
-                                                dt.Columns.AddRange(
-                                                [
-                                                    DataTableColumn("label", options: dtc =>
-                                                    {
-                                                        dtc.Title = l("Label");
-                                                        dtc.MinWidth = true;
-                                                    }),
-                                                    DataTableColumn("column1", options: dtc => dtc.Title = l("Column 1")),
-                                                    DataTableColumn("column2", options: dtc => dtc.Title = l("Column 2")),
-                                                    DataTableColumn("column3", options: dtc => dtc.Title = l("Column 3"))
-                                                ]);
-                                                dt.DataKey = "label";
-                                                dt.Paginator = true;
-                                                dt.Rows = 5;
-                                            },
-                                            data: ActionRemote(second, headers: headers)
-                                        ),
-                                        options: dp =>
+                                                dtc.Title = l("Column 1");
+                                                dtc.Exportable = true;
+                                            }),
+                                            DataTableColumn("column2", options: dtc =>
+                                            {
+                                                dtc.Title = l("Column 2");
+                                                dtc.Exportable = true;
+                                            }),
+                                            DataTableColumn("column3", options: dtc =>
+                                            {
+                                                dtc.Title = l("Column 3");
+                                                dtc.Exportable = true;
+                                            })
+                                        ]);
+                                        dt.DataKey = "label";
+                                        dt.Paginator = true;
+                                        dt.Rows = 5;
+                                        dt.ExportOptions = DataTableExport(";", l("first"), options: dte =>
                                         {
-                                            dp.Parameters.Add(
-                                                Parameter("count",
-                                                    component: SelectButton(Inline(Enum.GetNames<CountOptions>().Select(name => l(name))), options: sb => sb.Stateful = true),
-                                                    options: p => p.DefaultValue = CountOptions.Default
-                                                )
-                                            );
-                                            dp.Collapsed = true;
-                                        }
+                                            dte.Formatter = "useCsvFormatter";
+                                            dte.ButtonLabel = l("Export as CSV");
+                                            dte.AppendParameters = true;
+                                            dte.ParameterSeparator = "_";
+                                            dte.ParameterFormatter = "useLocaleParameterFormatter";
+                                        });
+                                    },
+                                    data: ActionRemote(first, headers: headers)
+                                ),
+                                options: dp => dp.Parameters.Add(
+                                    Parameter("count",
+                                        component: Select(l("Count"), Inline(Enum.GetNames<CountOptions>().Select(name => l(name))), options: s => s.Stateful = true),
+                                        options: p => p.DefaultValue = CountOptions.Default
                                     )
                                 )
-                            ]);
-                        }
-                    )
-                ]);
-            }
-        );
+                            )
+                        ),
+                        ReportPageTabContent(
+                            component: DataPanel(l(second.Name),
+                                content: Baked.Theme.Admin.Components.DataTable(
+                                    options: dt =>
+                                    {
+                                        dt.Columns.AddRange(
+                                        [
+                                            DataTableColumn("label", options: dtc =>
+                                            {
+                                                dtc.Title = l("Label");
+                                                dtc.MinWidth = true;
+                                            }),
+                                            DataTableColumn("column1", options: dtc => dtc.Title = l("Column 1")),
+                                            DataTableColumn("column2", options: dtc => dtc.Title = l("Column 2")),
+                                            DataTableColumn("column3", options: dtc => dtc.Title = l("Column 3"))
+                                        ]);
+                                        dt.DataKey = "label";
+                                        dt.Paginator = true;
+                                        dt.Rows = 5;
+                                    },
+                                    data: ActionRemote(second, headers: headers)
+                                ),
+                                options: dp =>
+                                {
+                                    dp.Parameters.Add(
+                                        Parameter("count",
+                                            component: SelectButton(Inline(Enum.GetNames<CountOptions>().Select(name => l(name))), options: sb => sb.Stateful = true),
+                                            options: p => p.DefaultValue = CountOptions.Default
+                                        )
+                                    );
+                                    dp.Collapsed = true;
+                                }
+                            )
+                        )
+                    ]);
+                })
+            ]);
+        });
     }
 }

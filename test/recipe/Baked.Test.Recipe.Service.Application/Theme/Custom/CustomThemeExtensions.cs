@@ -33,5 +33,13 @@ public static class CustomThemeExtensions
     }
 
     public static IEnumerable<string> GetEnumNames(this TypeModel type) =>
-        [.. type.Apply(t => Enum.GetNames(t).Select(n => n.TrimStart('_')))];
+        [.. type.SkipNullable().Apply(t => Enum.GetNames(t).Select(n => n.TrimStart('_')))];
+
+    public static TypeModel SkipNullable(this TypeModel type)
+    {
+        if (!type.IsAssignableTo(typeof(Nullable<>))) { return type; }
+        if (!type.TryGetGenerics(out var generics)) { throw new InvalidOperationException($"{type.Name} doesn't provide generics information"); }
+
+        return generics.GenericTypeArguments.First().Model;
+    }
 }
