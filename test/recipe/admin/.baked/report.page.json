@@ -161,7 +161,7 @@
                   "schema": {},
                   "data": {
                     "type": "Remote",
-                    "path": "report/left",
+                    "path": "report/right",
                     "headers": {
                       "type": "Inline",
                       "value": {

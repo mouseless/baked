@@ -213,7 +213,7 @@ public static class PageBuilders
                                 ReportPageTabContent(
                                     component: DataPanel(l(right.Name),
                                         content: String(
-                                            data: ActionRemote(left, headers: headers)
+                                            data: ActionRemote(right, headers: headers)
                                         ),
                                         options: dp => dp.Collapsed = true
                                     ),
