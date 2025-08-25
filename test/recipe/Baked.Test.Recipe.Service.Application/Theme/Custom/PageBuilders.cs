@@ -1,8 +1,6 @@
 ﻿using Baked.Business;
-using Baked.RestApi.Model;
 using Baked.Test.Caching;
 using Baked.Ui;
-using Humanizer;
 
 using static Baked.Theme.Admin.Components;
 using static Baked.Test.Theme.Custom.DomainComponents;
@@ -74,7 +72,7 @@ public static class PageBuilders
         var headers = Inline(new { Authorization = "token-admin-ui" });
 
         var report = domain.Types[typeof(CacheSamples)].GetMembers();
-        var with = report.Methods.Having<InitializerAttribute>().First().DefaultOverload;
+        var initializer = report.Methods.Having<InitializerAttribute>().First().DefaultOverload;
         var getScoped = report.Methods[nameof(CacheSamples.GetScoped)];
         var getApplication = report.Methods[nameof(CacheSamples.GetApplication)];
 
@@ -82,7 +80,7 @@ public static class PageBuilders
             options: rp =>
             {
                 rp.QueryParameters.Add(
-                    EnumSelectParameter(with.Parameters["parameter"], context.CreateComponentContext("/parameters/parameter"))
+                    EnumSelectParameter(initializer.Parameters["parameter"], context.CreateComponentContext("/parameters/parameter"))
                 );
                 rp.Tabs.Add(
                     ReportPageTab("default",
@@ -113,6 +111,8 @@ public static class PageBuilders
     public static IComponentDescriptor DataTable(PageContext context)
     {
         var (domain, l) = context;
+        var dataTable = domain.Types[typeof(DataTable)].GetMembers();
+        var getTableDataWithFooter = dataTable.Methods[nameof(Theme.DataTable.GetTableDataWithFooter)];
 
         return ReportPage("data-table", PageTitle(l("Data Table Demo")),
             options: rp =>
@@ -126,52 +126,9 @@ public static class PageBuilders
                             [
                                 ReportPageTabContent(
                                     DataPanel(l("Data Panel"),
-                                        content: Baked.Theme.Admin.Components.DataTable(
-                                            options: dt =>
-                                            {
-                                                dt.Columns.AddRange(
-                                                [
-                                                    .. domain.Types[typeof(TableRow)].GetMembers().Properties.Where(p => p.IsPublic).Select((p, i) =>
-                                                        DataTableColumn(p.Name.Camelize(), options: dtc =>
-                                                        {
-                                                            dtc.Title = l(p.Name.Humanize(LetterCasing.Title));
-                                                            dtc.Exportable = true;
-                                                            dtc.AlignRight = p.PropertyType.Is<string>() ? null : true;
-                                                            dtc.Frozen = i == 0 ? true : null;
-                                                            dtc.MinWidth = i == 0 ? true : null;
-                                                        })
-                                                    )
-                                                ]);
-                                                dt.FooterTemplate = DataTableFooter(l("Total"),
-                                                    options: dtf =>
-                                                    {
-                                                        dtf.Columns.AddRange(
-                                                        [
-                                                            DataTableColumn(nameof(TableWithFooter.FooterColumn1).Camelize(), options: dtc => dtc.AlignRight = true),
-                                                            DataTableColumn(nameof(TableWithFooter.FooterColumn2).Camelize(), options: dtc => dtc.AlignRight = true)
-                                                        ]);
-                                                    }
-                                                );
-                                                dt.DataKey = nameof(TableRow.Label).Camelize();
-                                                dt.ItemsProp = "items";
-                                                dt.ScrollHeight = "500px";
-                                                dt.VirtualScrollerOptions = DataTableVirtualScroller(options: dtvs => dtvs.ItemSize = 45);
-                                                dt.ExportOptions = DataTableExport(";", l("data-table-export"), options: dte =>
-                                                {
-                                                    dte.Formatter = "useCsvFormatter";
-                                                    dte.ButtonLabel = l("Export as CSV");
-                                                    dte.AppendParameters = true;
-                                                });
-                                            },
-                                            data: Remote(domain.Types[typeof(DataTable)].GetMembers().Methods[nameof(Theme.DataTable.GetTableDataWithFooter)].GetSingle<ActionModelAttribute>().GetRoute(),
-                                                query: Injected(custom: true)
-                                            )
-                                        ),
+                                        content: TableWithFooterActionDataTable(getTableDataWithFooter, context.CreateComponentContext("/tabs/default/contents/0")),
                                         options: dp => dp.Parameters.Add(
-                                            Parameter("count",
-                                                component: Select(l("Count"), Inline(new string[]{ "10", "20", "100", "1000", "10000" }, requireLocalization: false)),
-                                                options: p => p.DefaultValue = "10"
-                                            )
+                                            EnumSelectParameter(getTableDataWithFooter.DefaultOverload.Parameters["count"], context.CreateComponentContext("/parameters/count"))
                                         )
                                     )
                                 )
