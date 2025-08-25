@@ -1,4 +1,5 @@
-﻿using Baked.RestApi.Model;
+﻿using Baked.Business;
+using Baked.RestApi.Model;
 using Baked.Test.Caching;
 using Baked.Ui;
 using Humanizer;
@@ -73,6 +74,7 @@ public static class PageBuilders
         var headers = Inline(new { Authorization = "token-admin-ui" });
 
         var report = domain.Types[typeof(CacheSamples)].GetMembers();
+        var with = report.Methods.Having<InitializerAttribute>().First().DefaultOverload;
         var getScoped = report.Methods[nameof(CacheSamples.GetScoped)];
         var getApplication = report.Methods[nameof(CacheSamples.GetApplication)];
 
@@ -80,14 +82,7 @@ public static class PageBuilders
             options: rp =>
             {
                 rp.QueryParameters.Add(
-                    Parameter("parameter",
-                        component: Select(l("Parameter"), Inline(new[] { "value_a", "value_b" }, requireLocalization: false)),
-                        options: p =>
-                        {
-                            p.Required = true;
-                            p.DefaultValue = "value_a";
-                        }
-                    )
+                    EnumSelectParameter(with.Parameters["parameter"], context.CreateComponentContext("/parameters/parameter"))
                 );
                 rp.Tabs.Add(
                     ReportPageTab("default",

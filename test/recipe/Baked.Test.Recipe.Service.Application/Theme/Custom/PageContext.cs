@@ -16,4 +16,14 @@ public record PageContext
         domain = Domain;
         l = NewLocaleKey;
     }
+
+    public virtual ComponentContext CreateComponentContext(string path) =>
+        new()
+        {
+            Page = Page,
+            Sitemap = Sitemap,
+            Domain = Domain,
+            NewLocaleKey = NewLocaleKey,
+            Path = path
+        };
 }

@@ -7,9 +7,9 @@ namespace Baked.Test.Caching;
 [AllowAnonymous]
 public class CacheSamples(IMemoryCache _cache, Func<IMemoryCache> _getCache)
 {
-    string _parameter = default!;
+    CacheKey _parameter = default!;
 
-    public CacheSamples With(string parameter)
+    public CacheSamples With(CacheKey parameter)
     {
         _parameter = parameter;
 

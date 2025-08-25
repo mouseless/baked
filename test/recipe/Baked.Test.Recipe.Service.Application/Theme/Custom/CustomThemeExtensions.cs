@@ -31,4 +31,7 @@ public static class CustomThemeExtensions
 
         return routeParts.Join('/');
     }
+
+    public static string[] GetEnumNames(this TypeModel type) =>
+        type.Apply(t => Enum.GetNames(t));
 }

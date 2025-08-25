@@ -18,4 +18,9 @@ public static class DomainDatas
             : Computed(Composables.UseQuery),
         attributes: method.TryGetSingle<ClientCacheAttribute>(out var clientCache) ? [("client-cache", clientCache.Type)] : null
     );
+
+    public static InlineData EnumInline(TypeModel type) =>
+        Inline(type.GetEnumNames(),
+            requireLocalization: false
+        );
 }
