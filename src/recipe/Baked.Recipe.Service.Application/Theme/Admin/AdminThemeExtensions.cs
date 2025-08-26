@@ -21,7 +21,7 @@ public static class AdminThemeExtensions
     );
 
     public static PageBuilder Menu(this Page.Describer _) =>
-        (PageContext context) =>
+        context =>
         {
             var (_, l) = context;
 

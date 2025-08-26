@@ -62,7 +62,7 @@ public static class CustomThemeExtensions
         ]);
 
     public static PageBuilder Cache(this Page.Describer _) =>
-        (PageContext context) =>
+        context =>
         {
             var (domain, l) = context;
             var headers = Inline(new { Authorization = "token-admin-ui" });
@@ -107,7 +107,7 @@ public static class CustomThemeExtensions
         };
 
     public static PageBuilder DataTable(this Page.Describer _) =>
-        (PageContext context) =>
+        context =>
         {
             var (domain, l) = context;
             var dataTable = domain.Types[typeof(DataTable)].GetMembers();
@@ -138,7 +138,7 @@ public static class CustomThemeExtensions
         };
 
     public static PageBuilder Report(this Page.Describer _) =>
-        (PageContext context) =>
+        context =>
         {
             var (domain, l) = context;
             var headers = Inline(new { Authorization = "token-admin-ui" });
