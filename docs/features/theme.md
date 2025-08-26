@@ -10,10 +10,10 @@ To add `Admin` theme feature;
 
 ```csharp
 c => c.Admin(
-  indexPage: ...,
-  pages: [...],
-  errorPageOptions: ep => ...,
-  sideMenuOptions: sm => ...,
-  hedaerOptions: h => ...
+    indexPage: ...,
+    pages: [...],
+    errorPageOptions: ep => ...,
+    sideMenuOptions: sm => ...,
+    hedaerOptions: h => ...
 )
 ```
