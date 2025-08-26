@@ -13,7 +13,7 @@
     </RouterLink>
     <div
       v-if="loading"
-      class="space-y-2 flex flex-col gap-2"
+      class="md:space-y-2 flex flex-row md:flex-col gap-2"
     >
       <Skeleton size="3.1rem" />
       <Skeleton size="3.1rem" />
