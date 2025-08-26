@@ -1,4 +1,4 @@
-using Baked.Domain.Model;
+﻿using Baked.Domain.Model;
 
 using static Baked.Ui.UiLayer;
 
@@ -6,8 +6,8 @@ namespace Baked.Theme;
 
 public record PageContext
 {
-    public required Page Page { get; init; }
-    public required List<Page> Sitemap { get; init; }
+    public required Route Route { get; init; }
+    public required List<Route> Sitemap { get; init; }
     public required DomainModel Domain { get; init; }
     public required NewLocaleKey NewLocaleKey { get; init; }
 
@@ -20,7 +20,7 @@ public record PageContext
     public virtual ComponentContext CreateComponentContext(string path) =>
         new()
         {
-            Page = Page,
+            Route = Route,
             Sitemap = Sitemap,
             Domain = Domain,
             NewLocaleKey = NewLocaleKey,

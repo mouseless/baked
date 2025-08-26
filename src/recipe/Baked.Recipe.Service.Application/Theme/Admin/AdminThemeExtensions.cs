@@ -9,38 +9,94 @@ namespace Baked;
 
 public static class AdminThemeExtensions
 {
-    public static AdminThemeFeature Admin(this ThemeConfigurator _, Page indexPage,
-        IEnumerable<Page>? pages = default,
+    public static AdminThemeFeature Admin(this ThemeConfigurator _, Func<Router, Route> index,
+        IEnumerable<Func<Router, Route>>? routes = default,
         Action<ErrorPage>? errorPageOptions = default,
         Action<SideMenu>? sideMenuOptions = default,
         Action<Header>? headerOptions = default
-    ) => new([indexPage, .. pages ?? []],
+    ) => new([index(new()), .. routes?.Select(r => r(new())) ?? []],
         _errorPageOptions: errorPageOptions,
         _sideMenuOptions: sideMenuOptions,
         _headerOptions: headerOptions
     );
 
-    public static IComponentDescriptor AsCardLink(this Page page, NewLocaleKey l) =>
-        CardLink(page.Route, l(page.Title), options: cl =>
+    public static PageBuilder Menu(this Page.Describer _) =>
+        (PageContext context) =>
         {
-            cl.Icon = page.Icon;
-            cl.Description = l(page.Description);
-            cl.Disabled = page.Disabled ? true : null;
-            cl.DisabledReason = l(page.DisabledReason);
+            var (_, l) = context;
+
+            if (context.Route.Index)
+            {
+                return MenuPage(context.Route.Name,
+                    links: context.Sitemap
+                        .Where(smp => !smp.Index && smp.SideMenu)
+                        .Select(smp => smp.AsCardLink(l))
+                );
+            }
+
+            var sections = context.Sitemap.GroupBy(smp => smp.Section);
+            if (sections.Count() <= 1)
+            {
+                return MenuPage(context.Route.Name,
+                    links: context.Sitemap
+                        .Where(r => r.ParentPath == context.Route.Path)
+                        .Select(r => r.AsCardLink(l)),
+                    options: mp =>
+                    {
+                        mp.Header = PageTitle(
+                            title: l(context.Route.Title),
+                            options: pt => pt.Description = l(context.Route.Description)
+                        );
+                    }
+                );
+            }
+
+            return MenuPage(context.Route.Name,
+                options: mp =>
+                {
+                    mp.Header = PageTitle(context.Route.Title, options: pt =>
+                    {
+                        pt.Description = l(context.Route.Description);
+                        pt.Actions.Add(Filter("menu-page", options: f => f.Placeholder = l("Filter")));
+                    });
+                    mp.FilterPageContextKey = "menu-page";
+                    mp.Sections.AddRange(
+                        sections.Select(g => MenuPageSection(
+                            options: mps =>
+                            {
+                                mps.Title = l(g.Key);
+                                mps.Links.AddRange(g
+                                    .Where(r => r.ParentPath == context.Route.Path)
+                                    .Select(r => Filterable(r.AsCardLink(l), options: f => f.Title = l(r.Title)))
+                                );
+                            }
+                        )).Where(s => s.Links.Any())
+                    );
+                }
+            );
+        };
+
+    public static IComponentDescriptor AsCardLink(this Route route, NewLocaleKey l) =>
+        CardLink(route.Path, l(route.Title), options: cl =>
+        {
+            cl.Icon = route.Icon;
+            cl.Description = l(route.Description);
+            cl.Disabled = route.Disabled ? true : null;
+            cl.DisabledReason = l(route.DisabledReason);
         });
 
-    public static SideMenu.Item AsSideMenuItem(this Page page, NewLocaleKey l) =>
-        SideMenuItem(page.Route, page.Icon ?? throw new($"Icon is required for pages in side menu: `{page.Route}`"), options: smi =>
+    public static SideMenu.Item AsSideMenuItem(this Route route, NewLocaleKey l) =>
+        SideMenuItem(route.Path, route.Icon ?? throw new($"Icon is required for pages in side menu: `{route.Path}`"), options: smi =>
         {
-            smi.Title = l(page.SideMenuTitle);
-            smi.Disabled = page.Disabled ? true : null;
+            smi.Title = l(route.SideMenuTitle);
+            smi.Disabled = route.Disabled ? true : null;
         });
 
-    public static Header.Item AsHeaderItem(this Page page, NewLocaleKey l) =>
-        HeaderItem(page.Route, options: hi =>
+    public static Header.Item AsHeaderItem(this Route route, NewLocaleKey l) =>
+        HeaderItem(route.Path, options: hi =>
         {
-            hi.Title = l(page.HeaderTitle);
-            hi.Icon = page.Icon;
-            hi.ParentRoute = page.ParentRoute;
+            hi.Title = l(route.HeaderTitle);
+            hi.Icon = route.Icon;
+            hi.ParentRoute = route.ParentPath;
         });
 }

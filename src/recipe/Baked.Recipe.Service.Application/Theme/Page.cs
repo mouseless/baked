@@ -1,36 +1,16 @@
-﻿using Baked.Ui;
+﻿namespace Baked.Theme;
 
-namespace Baked.Theme;
-
-public record Page(
-    string Route,
-    string Title
-)
+public class Page
 {
-    public static Page CreateIndex(
-        string? title = default,
-        string? icon = default
-    ) => CreateRoot("/", title ?? "Home", icon ?? "pi pi-home");
+    public class Generator;
+    public class Describer;
 
-    public static Page CreateRoot(string route, string title, string icon) =>
-        new(route, title) { Icon = icon, SideMenu = true, ErrorSafeLink = true };
+    public PageBuilder Generated(Func<Generator, PageBuilder> generate) =>
+        generate(new());
 
-    public static Page CreateChild(string route, string title, string parentRoute) =>
-        new(route, title) { ParentRoute = parentRoute };
+    public PageBuilder Described(Func<Describer, PageBuilder> describe) =>
+        describe(new());
 
-    public delegate IComponentDescriptor Builder(PageContext conext);
-
-    public Builder? Build { get; set; }
-    public string? Description { get; set; }
-    public bool Disabled { get; set; }
-    public string? DisabledReason { get; set; }
-    public bool ErrorSafeLink { get; set; }
-    public string? HeaderTitle { get; set; } = Route == "/" ? null : Title;
-    public string? Icon { get; set; }
-    public bool Index { get; set; } = Route == "/";
-    public string Name { get; set; } = Route == "/" ? "index" : Route.TrimStart('/');
-    public string? ParentRoute { get; set; }
-    public string? Section { get; set; }
-    public bool SideMenu { get; set; }
-    public string? SideMenuTitle { get; set; } = Route == "/" ? null : Title;
+    public PageBuilder? Implemented() =>
+        null;
 }

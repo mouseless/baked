@@ -7,8 +7,8 @@ using static Baked.Test.Theme.Custom.Components;
 
 namespace Baked.Test.Theme.Custom;
 
-public class CustomThemeFeature(IEnumerable<Page> _pages)
-    : AdminThemeFeature(_pages,
+public class CustomThemeFeature(IEnumerable<Func<Router, Baked.Theme.Route>> _routes)
+    : AdminThemeFeature(_routes.Select(r => r(new())),
         _sideMenuOptions: sm => sm.Footer = LanguageSwitcher()
     )
 {

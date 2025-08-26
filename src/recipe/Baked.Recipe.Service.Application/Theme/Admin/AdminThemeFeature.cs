@@ -5,7 +5,7 @@ using static Baked.Ui.Datas;
 
 namespace Baked.Theme.Admin;
 
-public class AdminThemeFeature(IEnumerable<Page> _pages,
+public class AdminThemeFeature(IEnumerable<Route> _routes,
     Action<ErrorPage>? _errorPageOptions = default,
     Action<SideMenu>? _sideMenuOptions = default,
     Action<Header>? _headerOptions = default
@@ -25,7 +25,7 @@ public class AdminThemeFeature(IEnumerable<Page> _pages,
                 app.Error = ErrorPage(
                     options: ep =>
                     {
-                        ep.SafeLinks.AddRange([.. _pages.Where(p => p.ErrorSafeLink).Select(p => p.AsCardLink(l))]);
+                        ep.SafeLinks.AddRange([.. _routes.Where(r => r.ErrorSafeLink).Select(r => r.AsCardLink(l))]);
                         ep.ErrorInfos[403] = ErrorPageInfo(l("Access Denied"), l("You do not have the permision to view the address or data specified."));
                         ep.ErrorInfos[404] = ErrorPageInfo(l("Page Not Found"), l("The page you want to view is etiher deleted or outdated."));
                         ep.ErrorInfos[500] = ErrorPageInfo(l("Unexpected Error"), l("Please contact system administrator."));
@@ -46,18 +46,18 @@ public class AdminThemeFeature(IEnumerable<Page> _pages,
                     dl.SideMenu = SideMenu(
                         options: sm =>
                         {
-                            sm.Menu.AddRange([.. _pages.Where(p => p.SideMenu).Select(p => p.AsSideMenuItem(l))]);
+                            sm.Menu.AddRange([.. _routes.Where(r => r.SideMenu).Select(r => r.AsSideMenuItem(l))]);
 
                             _sideMenuOptions.Apply(sm);
                         }
                     );
                     dl.Header = Header(options: h =>
                     {
-                        foreach (var page in _pages)
+                        foreach (var route in _routes)
                         {
-                            if (page.Disabled) { continue; }
+                            if (route.Disabled) { continue; }
 
-                            h.Sitemap[page.Route] = page.AsHeaderItem(l);
+                            h.Sitemap[route.Path] = route.AsHeaderItem(l);
                         }
 
                         _headerOptions.Apply(h);
@@ -74,17 +74,19 @@ public class AdminThemeFeature(IEnumerable<Page> _pages,
             {
                 configurator.UsingLocalization(l =>
                 {
-                    foreach (var page in _pages)
+                    foreach (var route in _routes)
                     {
-                        if (page.Build is null) { continue; }
-
-                        pages.Add(page.Build(new()
+                        var page = route.BuildPage(new()
                         {
-                            Page = page,
-                            Sitemap = [.. _pages],
+                            Route = route,
+                            Sitemap = [.. _routes],
                             Domain = domain,
                             NewLocaleKey = l
-                        }));
+                        });
+
+                        if (page is null) { continue; }
+
+                        pages.Add(page);
                     }
                 });
             });

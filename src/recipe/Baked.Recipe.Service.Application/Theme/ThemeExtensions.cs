@@ -17,6 +17,17 @@ public static class ThemeExtensions
         return result;
     }
 
+    public static Route Index(this Router router,
+        string? title = default,
+        string? icon = default
+    ) => router.Root("/", title ?? "Home", icon ?? "pi pi-home");
+
+    public static Route Root(this Router router, string path, string title, string icon) =>
+        router.Create(path, title) with { Icon = icon, SideMenu = true, ErrorSafeLink = true };
+
+    public static Route Child(this Router router, string path, string title, string parentPath) =>
+        router.Create(path, title) with { ParentPath = parentPath };
+
     public static MethodModel GetMethod(this TypeModel type, string name) =>
         type.GetMembers().Methods[name];
 
