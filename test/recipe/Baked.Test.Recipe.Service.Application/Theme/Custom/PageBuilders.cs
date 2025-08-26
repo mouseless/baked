@@ -4,7 +4,6 @@ using Baked.Ui;
 
 using static Baked.Theme.Admin.Components;
 using static Baked.Test.Theme.Custom.DomainComponents;
-using static Baked.Test.Theme.Custom.DomainDatas;
 using static Baked.Ui.Datas;
 
 namespace Baked.Test.Theme.Custom;
@@ -199,83 +198,27 @@ public static class PageBuilders
                     [
                         ReportPageTabContent(
                             component: DataPanel(l(first.Name),
-                                content: Baked.Theme.Admin.Components.DataTable(
-                                    options: dt =>
-                                    {
-                                        dt.Columns.AddRange(
-                                        [
-                                            DataTableColumn("label", options: dtc =>
-                                            {
-                                                dtc.Title = l("Label");
-                                                dtc.MinWidth = true;
-                                                dtc.Exportable = true;
-                                            }),
-                                            DataTableColumn("column1", options: dtc =>
-                                            {
-                                                dtc.Title = l("Column 1");
-                                                dtc.Exportable = true;
-                                            }),
-                                            DataTableColumn("column2", options: dtc =>
-                                            {
-                                                dtc.Title = l("Column 2");
-                                                dtc.Exportable = true;
-                                            }),
-                                            DataTableColumn("column3", options: dtc =>
-                                            {
-                                                dtc.Title = l("Column 3");
-                                                dtc.Exportable = true;
-                                            })
-                                        ]);
-                                        dt.DataKey = "label";
-                                        dt.Paginator = true;
-                                        dt.Rows = 5;
-                                        dt.ExportOptions = DataTableExport(";", l("first"), options: dte =>
-                                        {
-                                            dte.Formatter = "useCsvFormatter";
-                                            dte.ButtonLabel = l("Export as CSV");
-                                            dte.AppendParameters = true;
-                                            dte.ParameterSeparator = "_";
-                                            dte.ParameterFormatter = "useLocaleParameterFormatter";
-                                        });
-                                    },
-                                    data: ActionRemote(first, options: rd => rd.Headers = headers)
+                                content: ReportRowListActionDataTable(first, context.CreateComponentContext("/tabs/data-table/contents/0/content"),
+                                    dataOptions: rd => rd.Headers = headers
                                 ),
                                 options: dp => dp.Parameters.Add(
-                                    Parameter("count",
-                                        component: Select(l("Count"), Inline(Enum.GetNames<CountOptions>().Select(name => l(name))), options: s => s.Stateful = true),
-                                        options: p => p.DefaultValue = CountOptions.Default
+                                    EnumSelectParameter(first.DefaultOverload.Parameters["count"], context.CreateComponentContext("/tabs/data-table/contents/0/parameters/count"),
+                                        selectOptions: s => s.ShowClear = null
                                     )
                                 )
                             )
                         ),
                         ReportPageTabContent(
                             component: DataPanel(l(second.Name),
-                                content: Baked.Theme.Admin.Components.DataTable(
-                                    options: dt =>
-                                    {
-                                        dt.Columns.AddRange(
-                                        [
-                                            DataTableColumn("label", options: dtc =>
-                                            {
-                                                dtc.Title = l("Label");
-                                                dtc.MinWidth = true;
-                                            }),
-                                            DataTableColumn("column1", options: dtc => dtc.Title = l("Column 1")),
-                                            DataTableColumn("column2", options: dtc => dtc.Title = l("Column 2")),
-                                            DataTableColumn("column3", options: dtc => dtc.Title = l("Column 3"))
-                                        ]);
-                                        dt.DataKey = "label";
-                                        dt.Paginator = true;
-                                        dt.Rows = 5;
-                                    },
-                                    data: ActionRemote(second, options: rd => rd.Headers = headers)
+                                content: ReportRowListActionDataTable(second, context.CreateComponentContext("/tabs/data-table/contents/1/content"),
+                                    exportable: false,
+                                    dataOptions: rd => rd.Headers = headers
                                 ),
                                 options: dp =>
                                 {
                                     dp.Parameters.Add(
-                                        Parameter("count",
-                                            component: SelectButton(Inline(Enum.GetNames<CountOptions>().Select(name => l(name))), options: sb => sb.Stateful = true),
-                                            options: p => p.DefaultValue = CountOptions.Default
+                                        EnumSelectButtonParameter(second.DefaultOverload.Parameters["count"], context.CreateComponentContext("/tabs/data-table/contents/1/parameters/count"),
+                                            selectButtonOptions: sb => sb.AllowEmpty = null
                                         )
                                     );
                                     dp.Collapsed = true;

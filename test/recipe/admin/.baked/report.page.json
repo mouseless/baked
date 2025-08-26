@@ -227,15 +227,26 @@
                       "type": "Select",
                       "schema": {
                         "label": "Count",
+                        "optionLabel": "text",
+                        "optionValue": "value",
                         "localizeLabel": true,
                         "stateful": true
                       },
                       "data": {
                         "type": "Inline",
                         "value": [
-                          "Less",
-                          "Default",
-                          "More"
+                          {
+                            "text": "Baked.Domain.Model.TypeModelMembers.Less",
+                            "value": "Less"
+                          },
+                          {
+                            "text": "Baked.Domain.Model.TypeModelMembers.Default",
+                            "value": "Default"
+                          },
+                          {
+                            "text": "Baked.Domain.Model.TypeModelMembers.More",
+                            "value": "More"
+                          }
                         ]
                       }
                     }
@@ -300,7 +311,7 @@
                     "rows": 5,
                     "exportOptions": {
                       "csvSeparator": ";",
-                      "fileName": "first",
+                      "fileName": "GetFirst.ExportFileName",
                       "formatter": "useCsvFormatter",
                       "buttonIcon": "pi pi-download",
                       "buttonLabel": "Export as CSV",
@@ -357,15 +368,26 @@
                     "component": {
                       "type": "SelectButton",
                       "schema": {
+                        "optionLabel": "text",
+                        "optionValue": "value",
                         "localizeLabel": true,
                         "stateful": true
                       },
                       "data": {
                         "type": "Inline",
                         "value": [
-                          "Less",
-                          "Default",
-                          "More"
+                          {
+                            "text": "Baked.Domain.Model.TypeModelMembers.Less",
+                            "value": "Less"
+                          },
+                          {
+                            "text": "Baked.Domain.Model.TypeModelMembers.Default",
+                            "value": "Default"
+                          },
+                          {
+                            "text": "Baked.Domain.Model.TypeModelMembers.More",
+                            "value": "More"
+                          }
                         ]
                       }
                     }

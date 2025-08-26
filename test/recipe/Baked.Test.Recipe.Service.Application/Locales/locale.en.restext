@@ -24,6 +24,9 @@ test=This is test message from English resource file.
 This should not exist in output locale files=This should not exist in output locale files
 
 // english translations for frontend are mostly removed because keys are already in english =//
+Baked.Domain.Model.TypeModelMembers.Default=Default
+Baked.Domain.Model.TypeModelMembers.Less=Less
+Baked.Domain.Model.TypeModelMembers.More=More
 Baked.Domain.Model.TypeModelMembers.Optional1=Optional 1
 Baked.Domain.Model.TypeModelMembers.Optional2=Optional 2
 Baked.Domain.Model.TypeModelMembers.Required1=Required 1
@@ -32,6 +35,7 @@ Baked.Domain.Model.TypeModelMembers.RequiredWithDefault1=Required w/ Default 1
 Baked.Domain.Model.TypeModelMembers.RequiredWithDefault2=Required w/ Default 2
 GetApplication=Application
 GetFirst=First
+GetFirst.ExportFileName=first
 GetLeft=Left
 GetRight=Right
 GetScoped=Scoped
