@@ -1,11 +1,12 @@
 <template>
-  <div class="flex h-screen overflow-hidden">
+  <div class="flex h-screen flex-col md:flex-row md:justify-start md:items-stretch overflow-hidden">
     <Bake
+      class="order-last md:order-first mt-auto md:mt-0"
       name="sideMenu"
       :descriptor="sideMenu"
     />
     <article
-      class="w-full px-4 flex flex-col bg-body"
+      class="w-full px-4 flex flex-col bg-body order-first md:order-last"
       :class="{
         'overflow-x-hidden': !overflow,
         'overflow-visible': overflow

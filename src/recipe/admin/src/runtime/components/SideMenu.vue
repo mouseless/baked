@@ -1,16 +1,18 @@
 <template>
   <nav
     class="
-      p-4 shadow-inner bg-slate-100 dark:bg-zinc-900
-      flex flex-col items-center gap-2
+      p-2 md:p-4 shadow-inner bg-slate-100 dark:bg-zinc-900
+      flex flex-row justify-between md:flex-col md:justify-start items-center gap-2
     "
   >
-    <RouterLink to="/">
-      <img
-        :src="`/${logo}`"
-        class="my-4 w-8"
-      >
-    </RouterLink>
+    <div class="flex item-center justifty-center w-10">
+      <RouterLink to="/">
+        <img
+          :src="`/${logo}`"
+          class="my-4 w-8"
+        >
+      </RouterLink>
+    </div>
     <div
       v-if="loading"
       class="md:space-y-2 flex flex-row md:flex-col gap-2"
@@ -20,7 +22,7 @@
     </div>
     <div
       v-else-if="data"
-      class="space-y-2 flex flex-col gap-2"
+      class="md:space-y-2 flex flex-row md:flex-col gap-2"
     >
       <SideMenuItem
         v-for="item in menu"
@@ -31,7 +33,7 @@
     </div>
     <div
       v-if="$slots.footer || footer"
-      class="mt-auto flex flex-col items-center gap-2"
+      class="md:mt-auto flex flex-row md:flex-col items-center gap-2"
     >
       <Bake
         v-if="footer"
