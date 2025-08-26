@@ -17,7 +17,8 @@ const screens = [
   { name: "md", width: 768, height: 800 },
   { name: "lg", width: 1024, height: 800 },
   { name: "xl", width: 1280, height: 800 },
-  { name: "2xl", width: 1536, height: 800 }
+  { name: "2xl", width: 1536, height: 800 },
+  { name: "3xl", width: 1920, height: 800 }
 ];
 
 export default {

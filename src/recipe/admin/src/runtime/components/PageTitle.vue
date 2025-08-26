@@ -8,7 +8,7 @@
         class="
           w-full flex flex-row gap-2
           items-baseline justify-start
-          xl:flex-col xl:justify-end
+          xl:flex-col mt-1 xl:mt-2
         "
       >
         <h1 class="text-xl font-bold">
@@ -37,6 +37,7 @@
             icon="pi pi-info-circle"
             variant="text"
             size="small"
+            rounded
           />
         </div>
       </div>

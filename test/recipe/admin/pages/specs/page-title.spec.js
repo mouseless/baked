@@ -15,12 +15,12 @@ test.describe("Base", () => {
     await expect(component.locator("h1")).toHaveText("Title");
   });
 
-  test("description visibility based on 2xl screen size", async({page}) => {
+  test("description visibility based on xl screen size", async({page}) => {
     const component = page.getByTestId(id);
     const description = component.getByTestId("description");
     const infoIcon = component.locator(primevue.button.icon);
 
-    const desktop = giveMe.aScreenSize({name: "2xl"});
+    const desktop = giveMe.aScreenSize({name: "xl"});
     await page.setViewportSize({ ...desktop });
     await expect(description).toBeVisible();
     await expect(infoIcon).toBeHidden();
