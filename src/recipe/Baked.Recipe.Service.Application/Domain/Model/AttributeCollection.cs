@@ -4,7 +4,7 @@ namespace Baked.Domain.Model;
 
 public class AttributeCollection
 {
-    readonly Dictionary<Type, HashSet<Attribute>> _attributes = [];
+    readonly Dictionary<Type, List<Attribute>> _attributes = [];
 
     internal AttributeCollection(IEnumerable<Attribute> attributes)
     {

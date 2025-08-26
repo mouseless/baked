@@ -27,3 +27,5 @@
     instance for the attributes that have `AllowMultiple` set to `false`
 - `.baked/components.js` now ensures components are sorted by name to make it
   easier to spot unexpected changes
+- `AttributeCollection` was not keeping the of attributes in the order they were
+  added fixed
