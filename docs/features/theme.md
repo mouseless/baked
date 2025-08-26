@@ -14,6 +14,6 @@ c => c.Admin(
     pages: [...],
     errorPageOptions: ep => ...,
     sideMenuOptions: sm => ...,
-    hedaerOptions: h => ...
+    headerOptions: h => ...
 )
 ```
