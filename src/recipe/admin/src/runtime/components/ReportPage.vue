@@ -49,6 +49,7 @@
         :key="`${uniqueKey}-${tab.id}`"
         v-model="currentTab"
         :when="tab.id"
+        :class="{ 'max-w-screen-xl': !tab.fullScreen }"
         class="w-full 2xl:max-w-screen-2xl"
       >
         <template v-if="tab.fullScreen">
