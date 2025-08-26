@@ -1,5 +1,6 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
 import giveMe from "~/utils/giveMe";
+import primevue from "~/utils/locators/primevue";
 
 test.beforeEach(async({goto}) => {
   await goto("/specs/page-title", { waitUntil: "hydration" });
@@ -14,33 +15,45 @@ test.describe("Base", () => {
     await expect(component.locator("h1")).toHaveText("Title");
   });
 
-  test("description visibility based on screen size", async({page}) => {
+  test("description visibility based on 2xl screen size", async({page}) => {
     const component = page.getByTestId(id);
     const description = component.getByTestId("description");
-    const infoIcon = component.locator(".pi-info-circle");
+    const infoIcon = component.locator(primevue.button.icon);
 
-    // Check desktop view (2xl screen)
     const desktop = giveMe.aScreenSize({name: "2xl"});
     await page.setViewportSize({ ...desktop });
     await expect(description).toBeVisible();
     await expect(infoIcon).toBeHidden();
+  });
+
+  test("description visibility based on lg screen size", async({page}) => {
+    const component = page.getByTestId(id);
+    const description = component.getByTestId("description");
+    const infoIcon = component.locator(primevue.button.icon);
 
     // Check tablet view (lg screen)
     const tablet = giveMe.aScreenSize({name: "lg"});
     await page.setViewportSize({ ...tablet });
     await expect(description).toBeHidden();
     await expect(infoIcon).toBeVisible();
+  });
 
-    // Verify tooltip appears on hover
-    await infoIcon.hover();
-    await expect(component.locator(".b-tooltip")).toBeVisible();
-    await expect(component.locator("p")).toContainText("Description");
+  test("description visibility based on sm screen size", async({page}) => {
+    const component = page.getByTestId(id);
+    const description = component.getByTestId("description");
+    const infoIcon = component.locator(primevue.button.icon);
 
     // Check mobile view (sm screen)
     const mobile = giveMe.aScreenSize({name: "sm"});
     await page.setViewportSize({ ...mobile });
     await expect(description).toBeHidden();
     await expect(infoIcon).toBeVisible();
+
+    // Verify tooltip appears on hover
+    await infoIcon.hover();
+    await expect(page.locator(primevue.tooltip.bottom)).toBeAttached();
+    await expect(page.locator(primevue.tooltip.bottom)).toBeVisible();
+    await expect(page.locator(primevue.tooltip.bottom)).toHaveText("Description");
   });
 });
 
