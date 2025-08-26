@@ -4,20 +4,40 @@
     class="sticky -top-1 z-10 space-y-4 bg-body"
   >
     <div class="h-16 flex gap-2">
-      <div class="w-full flex flex-col gap-2 justify-end">
+      <div
+        class="
+          w-full flex flex-row gap-2
+          items-baseline justify-start
+          xl:flex-col mt-1 xl:mt-2
+        "
+      >
         <h1 class="text-xl font-bold">
           {{ l(title) }}
         </h1>
-        <div
-          data-testid="description"
-          class="
-            text-sm text-gray-600 dark:text-gray-400
-            text-nowrap overflow-hidden
-          "
-        >
-          <String
-            :schema="{ maxLength: 125 }"
-            :data="l(description) || '&nbsp;'"
+        <div class="relative">
+          <div
+            data-testid="description"
+            class="
+              text-sm text-gray-600 dark:text-gray-400
+              text-nowrap overflow-hidden
+              hidden xl:block
+            "
+          >
+            <String
+              :schema="{ maxLength: 125 }"
+              :data="l(description) || '&nbsp;'"
+            />
+          </div>
+          <Button
+            v-if="description"
+            v-tooltip.bottom="{
+              value: l(description)
+            }"
+            class="xl:hidden"
+            icon="pi pi-info-circle"
+            variant="text"
+            size="small"
+            rounded
           />
         </div>
       </div>
@@ -42,6 +62,7 @@
 </template>
 <script setup>
 import { onMounted } from "vue";
+import { Button } from "primevue";
 import { useRuntimeConfig } from "#app";
 import { Bake, String } from "#components";
 import { useHead, useLocalization } from "#imports";

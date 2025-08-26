@@ -11,6 +11,15 @@ const adminUiToken = "token-admin-ui";
 function $(value, defaultValue) {
   return value === undefined ? defaultValue : value;
 }
+// screens breakpoints of tailwind
+const screens = [
+  { name: "sm", width: 640, height: 800 },
+  { name: "md", width: 768, height: 800 },
+  { name: "lg", width: 1024, height: 800 },
+  { name: "xl", width: 1280, height: 800 },
+  { name: "2xl", width: 1536, height: 800 },
+  { name: "3xl", width: 1920, height: 800 }
+];
 
 export default {
   aCardLink({ route, icon, title, description, disabled, disabledReason } = {}) {
@@ -474,5 +483,11 @@ export default {
 
   anApiResponse() {
     return { sample: "response" };
+  },
+
+  aScreenSize({ name } = {}) {
+    name = $(name, "lg");
+
+    return screens.find(screen => screen.name === name) || null;
   }
 };
