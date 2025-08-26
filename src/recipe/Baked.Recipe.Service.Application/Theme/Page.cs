@@ -1,10 +1,6 @@
-﻿using Baked.Theme.Admin;
-using Baked.Ui;
+﻿using Baked.Ui;
 
-using static Baked.Theme.Admin.Components;
-using static Baked.Ui.UiLayer;
-
-namespace Baked.Test.Theme.Custom;
+namespace Baked.Theme;
 
 public record Page(
     string Route,
@@ -37,28 +33,4 @@ public record Page(
     public string? Section { get; set; }
     public bool SideMenu { get; set; }
     public string? SideMenuTitle { get; set; } = Route == "/" ? null : Title;
-
-    public IComponentDescriptor AsCardLink(NewLocaleKey l) =>
-        CardLink(Route, l(Title), options: cl =>
-        {
-            cl.Icon = Icon;
-            cl.Description = l(Description);
-            cl.Disabled = Disabled ? true : null;
-            cl.DisabledReason = l(DisabledReason);
-        });
-
-    public SideMenu.Item AsSideMenuItem(NewLocaleKey l) =>
-        SideMenuItem(Route, Icon ?? throw new($"Icon is required for pages in side menu: `{Route}`"), options: smi =>
-        {
-            smi.Title = l(SideMenuTitle);
-            smi.Disabled = Disabled ? true : null;
-        });
-
-    public Header.Item AsHeaderItem(NewLocaleKey l) =>
-        HeaderItem(Route, options: hi =>
-        {
-            hi.Title = l(HeaderTitle);
-            hi.Icon = Icon;
-            hi.ParentRoute = ParentRoute;
-        });
 }

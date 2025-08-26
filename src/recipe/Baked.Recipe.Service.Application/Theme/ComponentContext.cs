@@ -1,4 +1,4 @@
-namespace Baked.Test.Theme.Custom;
+namespace Baked.Theme;
 
 public record ComponentContext : PageContext
 {

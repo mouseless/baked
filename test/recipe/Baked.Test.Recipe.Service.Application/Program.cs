@@ -1,5 +1,6 @@
 ﻿using Baked.Test.Orm;
 using Baked.Test.Theme.Custom;
+using Baked.Theme;
 
 Bake.New
     .Service(

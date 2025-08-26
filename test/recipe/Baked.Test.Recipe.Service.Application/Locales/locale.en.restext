@@ -1,13 +1,19 @@
 // package keys =//
 {0} with {1}: '{2}' does not exist={0} with {1}: '{2}' does not exist
 '{0}' is not a valid {1}='{0}' is not a valid {1}
+Access Denied=Access Denied
 An unexpected error has occured, please contact the administrator=An unexpected error has occured, please contact the administrator
 An unexpected error has occured, please contact the administrator: '{0}'\n{1}=An unexpected error has occured, please contact the administrator: '{0}'\n{1}
 Attempted to perform an unauthorized operation=Attempted to perform an unauthorized operation
 Authentication=Authentication
 Failed to authenticate with given credentials=Failed to authenticate with given credentials
+Page Not Found=Page Not Found
+Please contact system administrator.=Please contact system administrator.
 Record Not Found=Record Not Found
 Route Parameter Is Not Valid=Route Parameter Is Not Valid
+The page you want to view is etiher deleted or outdated.=The page you want to view is etiher deleted or outdated.
+Unexpected Error=Unexpected Error
+You do not have the permision to view the address or data specified.=You do not have the permision to view the address or data specified.
 
 // test project keys =//
 {0} should be unique={0} should be unique

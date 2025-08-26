@@ -2,7 +2,7 @@ using Baked.Domain.Model;
 
 using static Baked.Ui.UiLayer;
 
-namespace Baked.Test.Theme.Custom;
+namespace Baked.Theme;
 
 public record PageContext
 {
