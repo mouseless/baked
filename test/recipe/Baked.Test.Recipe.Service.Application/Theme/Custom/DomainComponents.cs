@@ -175,8 +175,9 @@ public static class DomainComponents
 
     #region String
 
-    public static ComponentDescriptorAttribute<Baked.Theme.Admin.String> ActionString(MethodModel method) =>
-        String(data: ActionRemote(method));
+    public static ComponentDescriptorAttribute<Baked.Theme.Admin.String> ActionString(MethodModel method,
+        Action<RemoteData>? dataOptions = default
+    ) => String(data: ActionRemote(method, options: dataOptions));
 
     #endregion
 }

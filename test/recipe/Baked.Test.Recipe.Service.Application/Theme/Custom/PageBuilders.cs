@@ -171,26 +171,20 @@ public static class PageBuilders
                     [
                         ReportPageTabContent(
                             component: DataPanel(l(wide.Name),
-                                content: String(
-                                    data: ActionRemote(wide, headers: headers)
-                                ),
+                                content: ActionString(wide, dataOptions: rd => rd.Headers = headers),
                                 options: dp => dp.Collapsed = false
                             )
                         ),
                         ReportPageTabContent(
                             component: DataPanel(l(left.Name),
-                                content: String(
-                                    data: ActionRemote(left, headers: headers)
-                                ),
+                                content: ActionString(left, dataOptions: rd => rd.Headers = headers),
                                 options: dp => dp.Collapsed = true
                             ),
                             options: rptc => rptc.Narrow = true
                         ),
                         ReportPageTabContent(
                             component: DataPanel(l(right.Name),
-                                content: String(
-                                    data: ActionRemote(right, headers: headers)
-                                ),
+                                content: ActionString(right, dataOptions: rd => rd.Headers = headers),
                                 options: dp => dp.Collapsed = true
                             ),
                             options: rptc => rptc.Narrow = true
@@ -244,7 +238,7 @@ public static class PageBuilders
                                             dte.ParameterFormatter = "useLocaleParameterFormatter";
                                         });
                                     },
-                                    data: ActionRemote(first, headers: headers)
+                                    data: ActionRemote(first, options: rd => rd.Headers = headers)
                                 ),
                                 options: dp => dp.Parameters.Add(
                                     Parameter("count",
@@ -274,7 +268,7 @@ public static class PageBuilders
                                         dt.Paginator = true;
                                         dt.Rows = 5;
                                     },
-                                    data: ActionRemote(second, headers: headers)
+                                    data: ActionRemote(second, options: rd => rd.Headers = headers)
                                 ),
                                 options: dp =>
                                 {

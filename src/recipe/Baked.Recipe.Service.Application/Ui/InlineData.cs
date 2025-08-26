@@ -5,7 +5,10 @@ public record InlineData(object Value)
 {
     public string Type => "Inline";
     public object Value { get; set; } = Value;
-    internal bool? RequireLocalization { get; set; }
 
-    bool? IData.RequireLocalization => RequireLocalization;
+    bool? _requireLocalization = true;
+    bool? IData.RequireLocalization => _requireLocalization;
+
+    public void SetRequireLocalization(bool? requireLocalization) =>
+        _requireLocalization = requireLocalization;
 }

@@ -11,13 +11,21 @@ namespace Baked.Test.Theme.Custom;
 public static class DomainDatas
 {
     public static IData ActionRemote(MethodModel method,
-        IData? headers = default
+        Action<RemoteData>? options = default
     ) => Remote(method.GetAction().GetRoute(),
-        headers: headers,
-        query: method.DefaultOverload.Parameters.Any()
-            ? Composite([Computed(Composables.UseQuery), Injected()])
-            : Computed(Composables.UseQuery),
-        attributes: method.TryGetSingle<ClientCacheAttribute>(out var clientCache) ? [("client-cache", clientCache.Type)] : null
+        options: rd =>
+        {
+            rd.Query = method.DefaultOverload.Parameters.Any()
+                ? Composite(options: cd => cd.Parts.AddRange([Computed(Composables.UseQuery), Injected()]))
+                : Computed(Composables.UseQuery);
+
+            if (method.TryGetSingle<ClientCacheAttribute>(out var clientCache))
+            {
+                rd.SetAttribute("client-cache", clientCache.Type);
+            }
+
+            options.Apply(rd);
+        }
     );
 
     public static InlineData EnumInline(TypeModel type,
@@ -28,6 +36,6 @@ public static class DomainDatas
             : type
                 .GetEnumNames()
                 .Select(name => new { text = l($"{type.SkipNullable()}.{name}"), value = name }),
-        requireLocalization: l is not null
+        options: id => id.SetRequireLocalization(l is not null)
     );
 }
