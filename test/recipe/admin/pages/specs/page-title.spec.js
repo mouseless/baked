@@ -1,5 +1,5 @@
-import giveMe from "~/utils/giveMe";
 import { expect, test } from "@nuxt/test-utils/playwright";
+import giveMe from "~/utils/giveMe";
 
 test.beforeEach(async({goto}) => {
   await goto("/specs/page-title", { waitUntil: "hydration" });
@@ -20,13 +20,13 @@ test.describe("Base", () => {
     const infoIcon = component.locator(".pi-info-circle");
 
     // Check desktop view (2xl screen)
-    const desktop = giveMe.aScreenSize("2xl");
+    const desktop = giveMe.aScreenSize({name: "2xl"});
     await page.setViewportSize({ ...desktop });
     await expect(description).toBeVisible();
     await expect(infoIcon).toBeHidden();
 
     // Check tablet view (lg screen)
-    const tablet = giveMe.aScreenSize("lg");
+    const tablet = giveMe.aScreenSize({name: "lg"});
     await page.setViewportSize({ ...tablet });
     await expect(description).toBeHidden();
     await expect(infoIcon).toBeVisible();
@@ -37,7 +37,7 @@ test.describe("Base", () => {
     await expect(component.locator("p")).toContainText("Description");
 
     // Check mobile view (sm screen)
-    const mobile = giveMe.aScreenSize("sm");
+    const mobile = giveMe.aScreenSize({name: "sm"});
     await page.setViewportSize({ ...mobile });
     await expect(description).toBeHidden();
     await expect(infoIcon).toBeVisible();

@@ -484,7 +484,9 @@ export default {
     return { sample: "response" };
   },
 
-  aScreenSize(name) {
+  aScreenSize({ name } = {}) {
+    name = $(name, "lg");
+
     return screens.find(screen => screen.name === name) || null;
   }
 };
