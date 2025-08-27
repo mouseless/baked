@@ -1,8 +1,14 @@
 <template>
   <div>
     <Button
-      v-tooltip="{ value: 'Languages', showDelay: 300 }"
-      class="px-4 py-2"
+      v-tooltip="{ value: lc('Languages'), showDelay: 300, class: '2xl:!hidden max-md:!hidden' }"
+      :pt="{
+        label: { class: 'hidden 2xl:inline' }
+      }"
+      class="
+        py-3 px-4 gap-4 justify-start
+        2xl:w-full 2xl:py-2 max-2xl:p-button-icon-only
+      "
       type="button"
       size="large"
       severity="secondary"
@@ -10,6 +16,7 @@
       aria-controls="overlay_menu"
       :text="true"
       :icon="'pi pi-language'"
+      :label="lc('Languages')"
       @click="toggle"
     />
     <Menu
@@ -26,6 +33,7 @@ import { Button, Menu } from "primevue";
 import { useLocalization } from "#imports";
 
 const { locale, getLocales, setLocale, localize: l } = useLocalization();
+const { localize: lc } = useLocalization("LanguageSwitcher");
 
 defineProps({
   schema: { type: null, required: true },

@@ -1,4 +1,5 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
+import giveMe from "~/utils/giveMe";
 import primevue from "../../utils/locators/primevue.js";
 
 test.beforeEach(async({goto}) => {
@@ -11,7 +12,8 @@ test.describe("Base", () => {
   test("default logo source", async({page}) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator("img")).toHaveAttribute("src", "/logo.svg");
+    await expect(component.locator("img").nth(0)).toHaveAttribute("src", "/logo.svg");
+    await expect(component.locator("img").nth(1)).toHaveAttribute("src", "/logo-full.svg");
   });
 
   test("logo links to home", async({page}) => {
@@ -53,6 +55,22 @@ test.describe("Base", () => {
 
     await expect(component).toHaveScreenshot();
   });
+
+  test("visual mobile", { tag: "@visual" }, async({page}) => {
+    const component = page.getByTestId(id);
+    const desktop = giveMe.aScreenSize({name: "sm"});
+
+    await page.setViewportSize({ ...desktop });
+    await expect(component).toHaveScreenshot();
+  });
+
+  test("visual 2xl", { tag: "@visual" }, async({page}) => {
+    const component = page.getByTestId(id);
+    const desktop = giveMe.aScreenSize({name: "2xl"});
+
+    await page.setViewportSize({ ...desktop });
+    await expect(component).toHaveScreenshot();
+  });
 });
 
 test.describe("Highlight", () => {
@@ -72,7 +90,7 @@ test.describe("Custom Logo", () => {
   test("logo source", async({page}) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator("img")).toHaveAttribute("src", "/e5c4p3.png");
+    await expect(component.locator("img").nth(0)).toHaveAttribute("src", "/e5c4p3.png");
   });
 });
 

@@ -211,7 +211,7 @@ public class ConfigurationOverriderFeature : IFeature
                     sideMenu: SideMenu(
                         menu:
                         [
-                            SideMenuItem("/", "pi pi-home"),
+                            SideMenuItem("/", "pi pi-home", title: l("Home")),
                             SideMenuItem("/cache", "pi pi-database", title: l("Cache")),
                             SideMenuItem("/data-table", "pi pi-table", title: l("Data Table")),
                             SideMenuItem("/report", "pi pi-file", title: l("Report")),

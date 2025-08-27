@@ -1,26 +1,34 @@
 <template>
   <nav
     class="
-      p-4 shadow-inner bg-slate-100 dark:bg-zinc-900
-      flex flex-col items-center gap-2
+      p-2 shadow-inner bg-slate-100 dark:bg-zinc-900
+      flex flex-row justify-between gap-2
+      max-md:items-center md:p-4 md:flex-col md:justify-start 2xl:w-80
     "
   >
-    <RouterLink to="/">
+    <RouterLink
+      to="/"
+      class="flex w-10 md:w-full"
+    >
       <img
         :src="`/${logo}`"
-        class="my-4 w-8"
+        class="my-4 mx-auto h-8 2xl:hidden"
+      >
+      <img
+        :src="`/${largeLogo}`"
+        class="my-4 px-2 h-8 hidden 2xl:block"
       >
     </RouterLink>
     <div
       v-if="loading"
-      class="space-y-2 flex flex-col gap-2"
+      class="md:space-y-2 flex flex-row md:flex-col gap-2"
     >
       <Skeleton size="3.1rem" />
       <Skeleton size="3.1rem" />
     </div>
     <div
       v-else-if="data"
-      class="space-y-2 flex flex-col gap-2"
+      class="md:space-y-2 flex flex-row md:flex-col gap-2"
     >
       <SideMenuItem
         v-for="item in menu"
@@ -31,7 +39,7 @@
     </div>
     <div
       v-if="$slots.footer || footer"
-      class="mt-auto flex flex-col items-center gap-2"
+      class="md:mt-auto flex flex-row md:flex-col gap-2"
     >
       <Bake
         v-if="footer"
@@ -58,7 +66,7 @@ const { schema, data } = defineProps({
   data: { type: null, required: true }
 });
 
-const { logo, menu, footer } = schema;
+const { logo, largeLogo, menu, footer } = schema;
 
 const loading = context.loading();
 </script>
