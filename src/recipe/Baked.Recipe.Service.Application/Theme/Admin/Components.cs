@@ -120,7 +120,7 @@ public static class Components
     public static ComponentDescriptorAttribute<Message> Message(
         Action<Message>? options = default,
         IData? data = default
-    ) => new(options.Apply(new() { LocalizeMessage = data?.RequireLocalization ?? null })) { Data = data };
+    ) => new(options.Apply(new() { LocalizeMessage = data?.RequireLocalization })) { Data = data };
 
     public static ComponentDescriptorAttribute<ModalLayout> ModalLayout(string name,
         Action<ModalLayout>? options = default

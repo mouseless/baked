@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 namespace Baked.Ui;
 
 public record CompositeData()
@@ -6,9 +8,6 @@ public record CompositeData()
     public string Type => "Composite";
     public List<IData> Parts { get; init; } = [];
 
-    bool? _requireLocalization;
-    bool? IData.RequireLocalization => _requireLocalization;
-
-    public void SetRequireLocalization(bool? requireLocalization) =>
-        _requireLocalization = requireLocalization;
+    [JsonIgnore]
+    public bool? RequireLocalization { get; set; }
 }

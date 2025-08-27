@@ -1,4 +1,6 @@
-﻿namespace Baked.Ui;
+﻿using Newtonsoft.Json;
+
+namespace Baked.Ui;
 
 public record ComputedData(string Composable)
     : IData
@@ -7,9 +9,6 @@ public record ComputedData(string Composable)
     public string Composable { get; set; } = Composable;
     public List<object> Args { get; init; } = [];
 
-    bool? _requireLocalization;
-    bool? IData.RequireLocalization => _requireLocalization;
-
-    public void SetRequireLocalization(bool? requireLocalization) =>
-        _requireLocalization = requireLocalization;
+    [JsonIgnore]
+    public bool? RequireLocalization { get; set; }
 }
