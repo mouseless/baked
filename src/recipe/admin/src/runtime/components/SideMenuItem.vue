@@ -2,20 +2,17 @@
   <RouterLink :to="item.route">
     <Button
       :text="!selected"
+      :pt="{
+        label: { class: 'hidden 2xl:inline'}
+      }"
       :icon="item.icon"
       :severity="selected ? 'primary':'secondary'"
       size="large"
-      class="hidden 2xl:flex py-2 px-6 w-full justify-start"
+      class="
+        py-3 px-4 gap-4 justify-start
+        2xl:w-full 2xl:py-2 max-2xl:p-button-icon-only
+      "
       :label="l(item.title)"
-      :disabled="item.disabled"
-    />
-    <Button
-      v-tooltip="{ value: l(item.title), showDelay: 300 }"
-      :text="!selected"
-      :icon="item.icon"
-      :severity="selected ? 'primary':'secondary'"
-      size="large"
-      class="2xl:hidden py-2 px-6"
       :disabled="item.disabled"
     />
   </RouterLink>

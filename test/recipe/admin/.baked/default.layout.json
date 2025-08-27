@@ -6,10 +6,12 @@
       "type": "SideMenu",
       "schema": {
         "logo": "logo.svg",
+        "largeLogo": "logo-full.svg",
         "menu": [
           {
             "route": "/",
-            "icon": "pi pi-home"
+            "icon": "pi pi-home",
+            "title": "Home"
           },
           {
             "route": "/cache",

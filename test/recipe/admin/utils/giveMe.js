@@ -436,15 +436,16 @@ export default {
     };
   },
 
-  aSideMenu({ logo, menu, data, footer } = {}) {
+  aSideMenu({ logo, largeLogo, menu, data, footer } = {}) {
     logo = $(logo, "logo.svg");
+    largeLogo = $(largeLogo, "logo-full.svg");
     menu = $(menu, []);
     data = $(data, { path: "/test" });
     footer = $(footer, this.anExpected());
 
     return {
       type: "SideMenu",
-      schema: { logo, menu, footer },
+      schema: { logo, largeLogo, menu, footer },
       data: { type: "Inline", value: data }
     };
   },

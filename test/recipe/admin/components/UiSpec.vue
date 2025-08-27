@@ -8,9 +8,8 @@
       <div
          class="flex gap-4 align-top w-4/5"
          :class="{
-           'flex-col': !vertical,
-           'items-center': !vertical,
-           'items-start': vertical,
+           'flex-col items-center': !vertical,
+           'flex-wrap items-start': vertical,
            'max-w-screen-xl': !fullPage,
            'w-full': fullPage
          }"
@@ -34,9 +33,7 @@
             :id="variant.name"
             class="font-semibold"
             :class="{
-              'text-lg': !vertical,
-              'mt-2': !vertical,
-              '-mb-2': !vertical,
+              'text-lg mt-2 -mb-2': !vertical,
               'mb-2': vertical
             }"
           >{{ variant.name }}</h2>

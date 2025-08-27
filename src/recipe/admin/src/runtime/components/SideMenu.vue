@@ -1,18 +1,24 @@
 <template>
   <nav
     class="
-      p-2 md:p-4 shadow-inner bg-slate-100 dark:bg-zinc-900
-      flex flex-row justify-between md:flex-col md:justify-start items-center gap-2
+      p-2 shadow-inner bg-slate-100 dark:bg-zinc-900
+      flex flex-row justify-between gap-2
+      max-md:items-center md:p-4 md:flex-col md:justify-start 2xl:w-80
     "
   >
-    <div class="flex item-center justifty-center w-10">
-      <RouterLink to="/">
-        <img
-          :src="`/${logo}`"
-          class="my-4 w-8"
-        >
-      </RouterLink>
-    </div>
+    <RouterLink
+      to="/"
+      class="flex w-10 md:w-full"
+    >
+      <img
+        :src="`/${logo}`"
+        class="my-4 mx-auto h-8 2xl:hidden"
+      >
+      <img
+        :src="`/${largeLogo}`"
+        class="my-4 px-2 h-8 hidden 2xl:block"
+      >
+    </RouterLink>
     <div
       v-if="loading"
       class="md:space-y-2 flex flex-row md:flex-col gap-2"
@@ -60,7 +66,7 @@ const { schema, data } = defineProps({
   data: { type: null, required: true }
 });
 
-const { logo, menu, footer } = schema;
+const { logo, largeLogo, menu, footer } = schema;
 
 const loading = context.loading();
 </script>
