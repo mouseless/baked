@@ -22,6 +22,7 @@
                 "parameters": [
                   {
                     "name": "count",
+                    "required": true,
                     "default": {
                       "type": "Inline",
                       "value": "10"
@@ -29,8 +30,7 @@
                     "component": {
                       "type": "Select",
                       "schema": {
-                        "label": "Count",
-                        "localizeLabel": false
+                        "label": "Count"
                       },
                       "data": {
                         "type": "Inline",
@@ -189,8 +189,18 @@
                     "type": "Remote",
                     "path": "data-table/table-data-with-footer",
                     "query": {
-                      "type": "Injected",
-                      "key": "Custom"
+                      "type": "Composite",
+                      "parts": [
+                        {
+                          "type": "Computed",
+                          "composable": "useQuery",
+                          "args": []
+                        },
+                        {
+                          "type": "Injected",
+                          "key": "Custom"
+                        }
+                      ]
                     }
                   }
                 }

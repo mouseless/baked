@@ -43,7 +43,6 @@ public abstract class ServiceSpec : Spec
         localization ??= c => c.Dotnet();
         mockOverrider ??= c => c.FirstInterface();
         orm ??= c => c.AutoMap();
-        theme ??= c => c.Admin();
         configure ??= _ => { };
 
         Init(app =>
@@ -87,7 +86,11 @@ public abstract class ServiceSpec : Spec
             app.Features.AddLocalization(localization);
             app.Features.AddMockOverrider(mockOverrider);
             app.Features.AddOrm(orm);
-            app.Features.AddTheme(theme);
+
+            if (theme is not null)
+            {
+                app.Features.AddTheme(theme);
+            }
 
             configure(app);
         });

@@ -17,8 +17,7 @@
         "component": {
           "type": "Select",
           "schema": {
-            "label": "Parameter",
-            "localizeLabel": false
+            "label": "Parameter"
           },
           "data": {
             "type": "Inline",
@@ -49,13 +48,7 @@
                   "schema": {},
                   "data": {
                     "type": "Remote",
-                    "path": "/cache-samples/scoped",
-                    "headers": {
-                      "type": "Inline",
-                      "value": {
-                        "authorization": "token-admin-ui"
-                      }
-                    },
+                    "path": "cache-samples/scoped",
                     "query": {
                       "type": "Computed",
                       "composable": "useQuery",
@@ -85,13 +78,7 @@
                   "schema": {},
                   "data": {
                     "type": "Remote",
-                    "path": "/cache-samples/application",
-                    "headers": {
-                      "type": "Inline",
-                      "value": {
-                        "authorization": "token-admin-ui"
-                      }
-                    },
+                    "path": "cache-samples/application",
                     "query": {
                       "type": "Computed",
                       "composable": "useQuery",

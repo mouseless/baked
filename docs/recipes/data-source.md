@@ -18,7 +18,7 @@ Bake.New
 ## Layers
 
 | Name                 | Run                | Test               |
-| -------------------- | ------------------ | ------------------ |
+| ---                  | ---                | ---                |
 | Code Generation      | :white_check_mark: | :white_check_mark: |
 | Data Access          | :white_check_mark: | :white_check_mark: |
 | Domain               | :white_check_mark: | :white_check_mark: |
@@ -30,7 +30,7 @@ Bake.New
 ## Features
 
 | Name               | Run                                | Test                               |
-| ------------------ | ---------------------------------- | ---------------------------------- |
+| ---                | ---                                | ---                                |
 | Binding            | :white_check_mark: Rest            | :white_check_mark:                 |
 | Business           | :white_check_mark: (No Default)    | :white_check_mark:                 |
 | Caching(s)         | :white_check_mark:                 | :white_check_mark:                 |

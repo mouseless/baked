@@ -1,6 +1,6 @@
 ﻿using Baked.Ui;
 
-namespace Baked.Test.ConfigurationOverrider;
+namespace Baked.Test.Theme.Custom;
 
 public record RoutedPage(string Path)
     : PageSchemaBase(Path);

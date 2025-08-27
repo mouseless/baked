@@ -12,12 +12,12 @@
         "required": true,
         "default": {
           "type": "Inline",
-          "value": "rwd-1"
+          "value": "RequiredWithDefault1"
         },
         "component": {
           "type": "Select",
           "schema": {
-            "label": "Required w/ Default",
+            "label": "Required With Default",
             "optionLabel": "text",
             "optionValue": "value",
             "localizeLabel": true
@@ -26,12 +26,12 @@
             "type": "Inline",
             "value": [
               {
-                "text": "Required w/ Default 1",
-                "value": "rwd-1"
+                "text": "RequiredWithDefaultOptions.RequiredWithDefault1",
+                "value": "RequiredWithDefault1"
               },
               {
-                "text": "Required w/ Default 2",
-                "value": "rwd-2"
+                "text": "RequiredWithDefaultOptions.RequiredWithDefault2",
+                "value": "RequiredWithDefault2"
               }
             ]
           }
@@ -44,13 +44,21 @@
           "type": "Select",
           "schema": {
             "label": "Required",
+            "optionLabel": "text",
+            "optionValue": "value",
             "localizeLabel": true
           },
           "data": {
             "type": "Inline",
             "value": [
-              "Required 1",
-              "Required 2"
+              {
+                "text": "RequiredOptions.Required1",
+                "value": "Required1"
+              },
+              {
+                "text": "RequiredOptions.Required2",
+                "value": "Required2"
+              }
             ]
           }
         }
@@ -61,13 +69,21 @@
           "type": "SelectButton",
           "schema": {
             "allowEmpty": true,
+            "optionLabel": "text",
+            "optionValue": "value",
             "localizeLabel": true
           },
           "data": {
             "type": "Inline",
             "value": [
-              "Optional 1",
-              "Optional 2"
+              {
+                "text": "OptionalOptions.Optional1",
+                "value": "Optional1"
+              },
+              {
+                "text": "OptionalOptions.Optional2",
+                "value": "Optional2"
+              }
             ]
           }
         }
@@ -94,7 +110,7 @@
                   "schema": {},
                   "data": {
                     "type": "Remote",
-                    "path": "/report/wide",
+                    "path": "report/wide",
                     "headers": {
                       "type": "Inline",
                       "value": {
@@ -127,7 +143,7 @@
                   "schema": {},
                   "data": {
                     "type": "Remote",
-                    "path": "/report/left",
+                    "path": "report/left",
                     "headers": {
                       "type": "Inline",
                       "value": {
@@ -161,7 +177,7 @@
                   "schema": {},
                   "data": {
                     "type": "Remote",
-                    "path": "/report/right",
+                    "path": "report/right",
                     "headers": {
                       "type": "Inline",
                       "value": {
@@ -211,15 +227,26 @@
                       "type": "Select",
                       "schema": {
                         "label": "Count",
+                        "optionLabel": "text",
+                        "optionValue": "value",
                         "localizeLabel": true,
                         "stateful": true
                       },
                       "data": {
                         "type": "Inline",
                         "value": [
-                          "Less",
-                          "Default",
-                          "More"
+                          {
+                            "text": "CountOptions.Less",
+                            "value": "Less"
+                          },
+                          {
+                            "text": "CountOptions.Default",
+                            "value": "Default"
+                          },
+                          {
+                            "text": "CountOptions.More",
+                            "value": "More"
+                          }
                         ]
                       }
                     }
@@ -284,7 +311,7 @@
                     "rows": 5,
                     "exportOptions": {
                       "csvSeparator": ";",
-                      "fileName": "first",
+                      "fileName": "GetFirst.ExportFileName",
                       "formatter": "useCsvFormatter",
                       "buttonIcon": "pi pi-download",
                       "buttonLabel": "Export as CSV",
@@ -295,7 +322,7 @@
                   },
                   "data": {
                     "type": "Remote",
-                    "path": "/report/first",
+                    "path": "report/first",
                     "headers": {
                       "type": "Inline",
                       "value": {
@@ -341,15 +368,26 @@
                     "component": {
                       "type": "SelectButton",
                       "schema": {
+                        "optionLabel": "text",
+                        "optionValue": "value",
                         "localizeLabel": true,
                         "stateful": true
                       },
                       "data": {
                         "type": "Inline",
                         "value": [
-                          "Less",
-                          "Default",
-                          "More"
+                          {
+                            "text": "CountOptions.Less",
+                            "value": "Less"
+                          },
+                          {
+                            "text": "CountOptions.Default",
+                            "value": "Default"
+                          },
+                          {
+                            "text": "CountOptions.More",
+                            "value": "More"
+                          }
                         ]
                       }
                     }
@@ -411,7 +449,7 @@
                   },
                   "data": {
                     "type": "Remote",
-                    "path": "/report/second",
+                    "path": "report/second",
                     "headers": {
                       "type": "Inline",
                       "value": {

@@ -2,41 +2,23 @@
 
 public static class Datas
 {
-    public static CompositeData Composite(IEnumerable<IData> parts,
-        bool? requireLocalization = default
-    ) => new() { Parts = [.. parts], RequireLocalization = requireLocalization };
+    public static CompositeData Composite(
+        Action<CompositeData>? options = default
+    ) => options.Apply(new());
 
     public static ComputedData Computed(string composable,
-        IEnumerable<object>? args = default,
-        bool? requireLocalization = default
-    ) => new(composable) { Args = [.. args ?? []], RequireLocalization = requireLocalization };
+        Action<ComputedData>? options = default
+    ) => options.Apply(new(composable));
 
     public static InjectedData Injected(
-        bool? custom = default,
-        bool? parentData = default,
-        string? prop = default,
-        bool? requireLocalization = default
-    ) => new(
-        custom == true ? InjectedData.DataKey.Custom :
-        parentData == true ? InjectedData.DataKey.ParentData :
-        InjectedData.DataKey.Custom
-    )
-    { Prop = prop, RequireLocalization = requireLocalization };
+        Action<InjectedData>? options = default
+    ) => options.Apply(new());
 
     public static InlineData Inline(object value,
-        bool requireLocalization = true
-    ) => new(value) { RequireLocalization = requireLocalization };
+        Action<InlineData>? options = default
+    ) => options.Apply(new(value));
 
     public static RemoteData Remote(string path,
-        IData? headers = default,
-        IData? query = default,
-        IEnumerable<(string key, string value)>? attributes = default,
-        bool? requireLocalization = default
-    ) => new(path)
-    {
-        Headers = headers,
-        Query = query,
-        Attributes = attributes?.ToDictionary(kvp => kvp.key, kvp => kvp.value),
-        RequireLocalization = requireLocalization
-    };
+        Action<RemoteData>? options = default
+    ) => options.Apply(new(path));
 }
