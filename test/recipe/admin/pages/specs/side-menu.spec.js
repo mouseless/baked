@@ -1,4 +1,5 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
+import giveMe from "~/utils/giveMe";
 import primevue from "../../utils/locators/primevue.js";
 
 test.beforeEach(async({goto}) => {
@@ -52,6 +53,22 @@ test.describe("Base", () => {
   test("visual", { tag: "@visual" }, async({page}) => {
     const component = page.getByTestId(id);
 
+    await expect(component).toHaveScreenshot();
+  });
+
+  test("visual mobile", { tag: "@visual" }, async({page}) => {
+    const component = page.getByTestId(id);
+    const desktop = giveMe.aScreenSize({name: "sm"});
+
+    await page.setViewportSize({ ...desktop });
+    await expect(component).toHaveScreenshot();
+  });
+
+  test("visual 2xl", { tag: "@visual" }, async({page}) => {
+    const component = page.getByTestId(id);
+    const desktop = giveMe.aScreenSize({name: "2xl"});
+
+    await page.setViewportSize({ ...desktop });
     await expect(component).toHaveScreenshot();
   });
 });
