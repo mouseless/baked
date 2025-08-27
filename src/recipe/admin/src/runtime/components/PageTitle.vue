@@ -3,7 +3,7 @@
     id="page-title"
     class="sticky -top-1 z-10 space-y-4 bg-body"
   >
-    <div class="h-16 flex gap-2">
+    <div class="h-16 flex gap-2 items-center">
       <div
         class="
           w-full flex flex-row gap-2

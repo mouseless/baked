@@ -1,21 +1,39 @@
 <template>
-  <!--
-    [!NOTE]
-
-    unlike usual model passing, `.model` is not enough here in below. for
-    some reason vue rewraps the model which is already a ref, causing a
-    double ref. that's why `.model.value` is passed instead of `.model`
-  -->
+  <Button
+    variant="text"
+    icon="pi pi-filter"
+    class="lg:hidden"
+    rounded
+    @click="togglePopover"
+  />
+  <Popover ref="isPopoverVisible">
+    <div
+      v-if="isPopoverVisible"
+      class="flex flex-col gap-4 flex-start justify-between w-full"
+    >
+      <Bake
+        v-for="parameter in parameters"
+        :key="parameter.name"
+        v-model="values[parameter.name].model.value"
+        :name="`query-parameters/${parameter.name}`"
+        :descriptor="parameter.component"
+        class="w-full text-sm"
+      />
+    </div>
+  </Popover>
   <Bake
     v-for="parameter in parameters"
     :key="parameter.name"
     v-model="values[parameter.name].model.value"
     :name="`query-parameters/${parameter.name}`"
     :descriptor="parameter.component"
+    class="max-lg:hidden flex flex-row"
   />
 </template>
 <script setup>
 import { computed, ref, onMounted, watch, watchEffect } from "vue";
+import Button from "primevue/button";
+import Popover from "primevue/popover";
 import { useRoute, useRouter } from "#app";
 import { Bake } from "#components";
 import { useContext, useDataFetcher } from "#imports";
@@ -28,6 +46,9 @@ const context = useContext();
 const { parameters } = defineProps({
   parameters: { type: Array, required: true }
 });
+
+const isPopoverVisible = ref();
+
 const emit = defineEmits(["ready", "changed"]);
 
 const injectedData = context.injectedData();
@@ -138,4 +159,9 @@ async function setDefaults() {
     query
   });
 }
+
+function togglePopover(event) {
+  isPopoverVisible.value.toggle(event);
+}
+
 </script>
