@@ -26,11 +26,11 @@
             "type": "Inline",
             "value": [
               {
-                "text": "Baked.Domain.Model.TypeModelMembers.RequiredWithDefault1",
+                "text": "RequiredWithDefaultOptions.RequiredWithDefault1",
                 "value": "RequiredWithDefault1"
               },
               {
-                "text": "Baked.Domain.Model.TypeModelMembers.RequiredWithDefault2",
+                "text": "RequiredWithDefaultOptions.RequiredWithDefault2",
                 "value": "RequiredWithDefault2"
               }
             ]
@@ -52,11 +52,11 @@
             "type": "Inline",
             "value": [
               {
-                "text": "Baked.Domain.Model.TypeModelMembers.Required1",
+                "text": "RequiredOptions.Required1",
                 "value": "Required1"
               },
               {
-                "text": "Baked.Domain.Model.TypeModelMembers.Required2",
+                "text": "RequiredOptions.Required2",
                 "value": "Required2"
               }
             ]
@@ -77,11 +77,11 @@
             "type": "Inline",
             "value": [
               {
-                "text": "Baked.Domain.Model.TypeModelMembers.Optional1",
+                "text": "OptionalOptions.Optional1",
                 "value": "Optional1"
               },
               {
-                "text": "Baked.Domain.Model.TypeModelMembers.Optional2",
+                "text": "OptionalOptions.Optional2",
                 "value": "Optional2"
               }
             ]
@@ -236,15 +236,15 @@
                         "type": "Inline",
                         "value": [
                           {
-                            "text": "Baked.Domain.Model.TypeModelMembers.Less",
+                            "text": "CountOptions.Less",
                             "value": "Less"
                           },
                           {
-                            "text": "Baked.Domain.Model.TypeModelMembers.Default",
+                            "text": "CountOptions.Default",
                             "value": "Default"
                           },
                           {
-                            "text": "Baked.Domain.Model.TypeModelMembers.More",
+                            "text": "CountOptions.More",
                             "value": "More"
                           }
                         ]
@@ -377,15 +377,15 @@
                         "type": "Inline",
                         "value": [
                           {
-                            "text": "Baked.Domain.Model.TypeModelMembers.Less",
+                            "text": "CountOptions.Less",
                             "value": "Less"
                           },
                           {
-                            "text": "Baked.Domain.Model.TypeModelMembers.Default",
+                            "text": "CountOptions.Default",
                             "value": "Default"
                           },
                           {
-                            "text": "Baked.Domain.Model.TypeModelMembers.More",
+                            "text": "CountOptions.More",
                             "value": "More"
                           }
                         ]

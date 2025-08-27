@@ -35,7 +35,7 @@ public static class DomainDatas
             ? type.GetEnumNames()
             : type
                 .GetEnumNames()
-                .Select(name => new { text = l($"{type.SkipNullable()}.{name}"), value = name }),
+                .Select(name => new { text = l($"{type.SkipNullable().Name}.{name}"), value = name }),
         options: id => id.RequireLocalization = l is not null ? true : null
     );
 }
