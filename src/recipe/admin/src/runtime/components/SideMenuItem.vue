@@ -1,12 +1,21 @@
 <template>
   <RouterLink :to="item.route">
     <Button
+      :text="!selected"
+      :icon="item.icon"
+      :severity="selected ? 'primary':'secondary'"
+      size="large"
+      class="hidden 2xl:flex py-2 px-6 w-full justify-start"
+      :label="l(item.title)"
+      :disabled="item.disabled"
+    />
+    <Button
       v-tooltip="{ value: l(item.title), showDelay: 300 }"
       :text="!selected"
       :icon="item.icon"
       :severity="selected ? 'primary':'secondary'"
       size="large"
-      class="!px-6 !py-2"
+      class="2xl:hidden py-2 px-6"
       :disabled="item.disabled"
     />
   </RouterLink>
