@@ -1,7 +1,7 @@
 <template>
   <RouterLink :to="item.route">
     <Button
-      v-tooltip="{ value: l(item.title), showDelay: 300 }"
+      v-tooltip="{ value: l(item.title), showDelay: 300, class: '2xl:!hidden max-md:!hidden' }"
       :text="!selected"
       :pt="{
         label: { class: 'hidden 2xl:inline' }

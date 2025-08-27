@@ -22,8 +22,8 @@ const variants = [
     name: "Highlight",
     descriptor: giveMe.aSideMenu({
       menu: [
-        giveMe.aSideMenuItem({ route: "/selected", icon: "pi pi-heart" }),
-        giveMe.aSideMenuItem({ route: "/not-selected", icon: "pi pi-wave-pulse" })
+        giveMe.aSideMenuItem({ route: "/selected", icon: "pi pi-heart", title: "Spec: Selected" }),
+        giveMe.aSideMenuItem({ route: "/not-selected", icon: "pi pi-wave-pulse", title: "Spec: Not Selected" })
       ],
       data: {
         path: "/selected"
@@ -40,7 +40,7 @@ const variants = [
     name: "Disabled Item",
     descriptor: giveMe.aSideMenu({
       menu: [
-        giveMe.aSideMenuItem({ disabled: true })
+        giveMe.aSideMenuItem({ disabled: true, title: "Spec: Disabled" })
       ]
     })
   }
