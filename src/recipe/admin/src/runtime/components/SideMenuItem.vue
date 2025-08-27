@@ -1,9 +1,10 @@
 <template>
   <RouterLink :to="item.route">
     <Button
+      v-tooltip="{ value: l(item.title), showDelay: 300 }"
       :text="!selected"
       :pt="{
-        label: { class: 'hidden 2xl:inline'}
+        label: { class: 'hidden 2xl:inline' }
       }"
       :icon="item.icon"
       :severity="selected ? 'primary':'secondary'"

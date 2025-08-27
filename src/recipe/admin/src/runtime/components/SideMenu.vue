@@ -39,7 +39,7 @@
     </div>
     <div
       v-if="$slots.footer || footer"
-      class="md:mt-auto flex flex-row md:flex-col items-center gap-2"
+      class="md:mt-auto flex flex-row md:flex-col gap-2"
     >
       <Bake
         v-if="footer"

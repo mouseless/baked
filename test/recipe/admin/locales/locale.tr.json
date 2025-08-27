@@ -6,6 +6,9 @@
   "DataTable": {
     "No records found": "Kayıt bulunamadı"
   },
+  "LanguageSwitcher": {
+    "Languages": "Diller"
+  },
   "MenuPage": {
     "No item available!": "Hiçbir öğe mevcut değil!"
   },
