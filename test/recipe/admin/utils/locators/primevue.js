@@ -24,7 +24,7 @@ export default {
     content: ".p-message-content"
   },
   paginator: {
-    base: ".p-paginator",
+    base: ".p-paginator-default",
     page: ".p-paginator-page"
   },
   panel: {
