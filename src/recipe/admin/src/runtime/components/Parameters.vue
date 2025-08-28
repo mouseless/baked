@@ -6,7 +6,7 @@
     for some reason vue rewraps the model which is already a ref, causing a
     double ref. that's why `.model.value` is passed instead of `.model`
   -->
-  <div class="flex gap-2">
+  <div class="flex gap-2 max-md:flex-col">
     <Bake
       v-for="parameter in parameters"
       :key="parameter.name"

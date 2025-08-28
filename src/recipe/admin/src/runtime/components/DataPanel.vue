@@ -11,17 +11,51 @@
       v-if="$slots.parameters || parameters.length > 0"
       #icons
     >
-      <Parameters
-        v-if="parameters.length > 0"
-        :parameters="parameters"
-        class="text-xs"
-        @ready="onReady"
-        @changed="onChanged"
+      <Button
+        v-if="isMaxMd && (parameters.length > 0 || $slots.parameters)"
+        variant="text"
+        icon="pi pi-sliders-h"
+        class="lg:hidden"
+        rounded
+        @click="togglePopover"
       />
-      <slot
-        v-if="$slots.parameters"
-        name="parameters"
-      />
+      <Popover
+        v-if="isMaxMd"
+        ref="popover"
+      >
+        <div
+          class="
+            flex flex-row flex-start
+            justify-between w-full
+            gap-4 text-xs px-2 py-2
+          "
+        >
+          <Parameters
+            v-if="parameters.length > 0"
+            :parameters="parameters"
+            class="text-xs"
+            @ready="onReady"
+            @changed="onChanged"
+          />
+          <slot
+            v-if="$slots.parameters"
+            name="parameters"
+          />
+        </div>
+      </Popover>
+      <template v-else>
+        <Parameters
+          v-if="parameters.length > 0"
+          :parameters="parameters"
+          class="text-xs"
+          @ready="onReady"
+          @changed="onChanged"
+        />
+        <slot
+          v-if="$slots.parameters"
+          name="parameters"
+        />
+      </template>
     </template>
     <template #default>
       <Bake
@@ -42,9 +76,9 @@
 </template>
 <script setup>
 import { computed, onMounted, ref, useTemplateRef } from "vue";
-import { Message, Panel } from "primevue";
+import { Message, Panel, Button, Popover } from "primevue";
 import { Bake, Parameters } from "#components";
-import { useContext, useDataFetcher, useUiStates, useLocalization } from "#imports";
+import { useBreakpoints, useContext, useDataFetcher, useUiStates, useLocalization } from "#imports";
 
 const { value: { panelStates } } = useUiStates();
 const context = useContext();
@@ -52,6 +86,12 @@ const dataFetcher = useDataFetcher();
 const { localize: l } = useLocalization();
 const { localize: lc } = useLocalization("DataPanel");
 const panel = useTemplateRef("panel");
+const { isMaxMd } = useBreakpoints();
+const popover = ref();
+
+function togglePopover(event) {
+  popover.value.toggle(event);
+}
 
 const { schema } = defineProps({
   schema: { type: null, required: true },
