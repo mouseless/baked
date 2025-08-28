@@ -13,7 +13,9 @@ test.describe("Base", () => {
     const component = page.getByTestId(id);
 
     await expect(component.locator("img").nth(0)).toHaveAttribute("src", "/logo.svg");
-    await expect(component.locator("img").nth(1)).toHaveAttribute("src", "/logo-full.svg");
+    await expect(component.locator("img").nth(1)).toHaveAttribute("src", "/dark:logo.svg");
+    await expect(component.locator("img").nth(2)).toHaveAttribute("src", "/logo-full.svg");
+    await expect(component.locator("img").nth(3)).toHaveAttribute("src", "/dark:logo-full.svg");
   });
 
   test("logo links to home", async({page}) => {

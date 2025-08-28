@@ -17,14 +17,14 @@
         max-md:my-0 max-md:w-10
       "
     >
-      <img
-        :src="`/${logo}`"
-        class="mx-auto h-8 2xl:hidden"
-      >
-      <img
-        :src="`/${largeLogo}`"
-        class="mx-auto h-8 hidden 2xl:block"
-      >
+      <Logo
+        :src="logo"
+        class="2xl:hidden"
+      />
+      <Logo
+        :src="largeLogo"
+        class="hidden 2xl:block"
+      />
     </RouterLink>
     <div
       class="
@@ -88,7 +88,7 @@
 import { ref } from "vue";
 import { RouterLink } from "vue-router";
 import { Button, Popover, Skeleton } from "primevue";
-import { Bake, SideMenuItem } from "#components";
+import { Bake, Logo, SideMenuItem } from "#components";
 import { useContext } from "#imports";
 
 const context = useContext();
