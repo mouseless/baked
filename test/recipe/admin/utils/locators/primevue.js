@@ -58,7 +58,7 @@ export default {
     right: ".p-tooltip-right"
   },
   popover: {
-    base: ".p-popover",
-    content: ".p-popover-content"
+    base: ".p-popover:not([style*='display: none'])",
+    content: ".p-popover:not([style*='display: none']) .p-popover-content"
   }
 };

@@ -1,9 +1,11 @@
 <template>
   <div class="space-y-4">
     <PageTitle :schema="title">
-      <template #actions>
+      <template
+        v-if="queryParameters?.length > 0"
+        #actions
+      >
         <QueryParameters
-          v-if="queryParameters?.length > 0"
           :parameters="queryParameters"
           @ready="onReady"
           @changed="onChanged"
@@ -13,7 +15,7 @@
         <Tabs
           v-if="ready && tabs.length > 1"
           v-model:value="currentTab"
-          class="!-mb-4"
+          class="!-mb-4 overflow-x-auto"
         >
           <TabList :pt="{ tabList: { class: '!bg-transparent' } }">
             <Tab

@@ -48,7 +48,7 @@
       </template>
     </div>
     <div v-if="$slots.footer || footer">
-      <div class="max-md:hidden">
+      <div v-if="isMd">
         <Bake
           v-if="footer"
           name="footer"
@@ -59,38 +59,41 @@
           name="footer"
         />
       </div>
-      <Button
-        severity="secondary"
-        icon="pi pi-cog"
-        class="w-[3.25rem] h-[3.25rem] md:hidden"
-        variant="text"
-        rounded
-        @click="toggleFooterPopover"
-      />
-      <Popover
-        ref="footerPopover"
-        class="md:hidden w-1/2 min-w-fit"
-      >
-        <Bake
-          v-if="footer"
-          name="footer"
-          :descriptor="footer"
+      <template v-else>
+        <Button
+          severity="secondary"
+          icon="pi pi-cog"
+          class="w-[3.25rem] h-[3.25rem]"
+          variant="text"
+          rounded
+          @click="togglePopover"
         />
-        <slot
-          v-else
-          name="footer"
-        />
-      </Popover>
+        <PersistentPopover
+          ref="popover"
+          class="w-1/2 min-w-fit"
+        >
+          <Bake
+            v-if="footer"
+            name="footer"
+            :descriptor="footer"
+          />
+          <slot
+            v-else
+            name="footer"
+          />
+        </PersistentPopover>
+      </template>
     </div>
   </nav>
 </template>
 <script setup>
 import { ref } from "vue";
 import { RouterLink } from "vue-router";
-import { Button, Popover, Skeleton } from "primevue";
-import { Bake, Logo, SideMenuItem } from "#components";
-import { useContext } from "#imports";
+import { Button, Skeleton } from "primevue";
+import { Bake, Logo, PersistentPopover, SideMenuItem } from "#components";
+import { useBreakpoints, useContext } from "#imports";
 
+const { isMd } = useBreakpoints();
 const context = useContext();
 
 const { schema, data } = defineProps({
@@ -101,9 +104,9 @@ const { schema, data } = defineProps({
 const { logo, largeLogo, menu, footer } = schema;
 
 const loading = context.loading();
-const footerPopover = ref();
+const popover = ref();
 
-function toggleFooterPopover(event) {
-  footerPopover.value.toggle(event);
+function togglePopover(event) {
+  popover.value.toggle(event);
 }
 </script>

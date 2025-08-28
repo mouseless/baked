@@ -15,6 +15,7 @@
     <article
       class="
         w-full px-4 flex flex-col bg-body
+        max-md:pb-20
       "
       :class="{
         'overflow-x-hidden': !overflow,
