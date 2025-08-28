@@ -6,6 +6,11 @@
     striped-rows
     :data-key
     :paginator="paginator && value.length > rows"
+    :paginator-template="{
+      [screens['2xs']]: 'JumpToPageDropdown',
+      [screens.xs]: 'FirstPageLink PrevPageLink JumpToPageDropdown NextPageLink LastPageLink',
+      default: 'FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink'
+    }"
     :rows
     scrollable
     :scroll-height
@@ -128,6 +133,7 @@
 import { computed, onMounted, ref } from "vue";
 import Column from "primevue/column";
 import { Button, ColumnGroup, DataTable, Menu, Row, Skeleton } from "primevue";
+import { useRuntimeConfig } from "#app";
 import { Bake } from "#components";
 import { useComposableResolver, useConditional, useContext, useDataFetcher, useLocalization } from "#imports";
 
@@ -137,6 +143,7 @@ const composableResolver = useComposableResolver();
 const dataFetcher = useDataFetcher();
 const { localize: l } = useLocalization();
 const { localize: lc } = useLocalization("DataTable");
+const { public: { composables: { useBreakpoints: { screens } } } } = useRuntimeConfig();
 
 const { schema, data } = defineProps({
   schema: { type: null, required: true },

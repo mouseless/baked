@@ -2,9 +2,11 @@ import { ref, onMounted, onBeforeUnmount } from "vue";
 import { useRuntimeConfig } from "#app";
 
 export default function() {
-  const { public: { composables } } = useRuntimeConfig();
+  const { public: { composables: { useBreakpoints: { screens } } } } = useRuntimeConfig();
 
-  const sizes = composables.useBreakpoint.screens;
+  const sizes = Object
+    .keys(screens)
+    .reduce((result, key) => ({ [key]: removePx(screens[key]), ...result }), {});
 
   const is2xs = ref(false);
   const isXs = ref(false);
@@ -22,13 +24,9 @@ export default function() {
   const isMaxXl = ref(false);
   const isMax2xl = ref(false);
   const isMax3xl = ref(false);
-  const removePx = size => typeof size === "string" ? parseInt(size.replace("px", ""), 10) : size;
 
   const update = () => {
     const width = window.innerWidth;
-    Object.keys(sizes).forEach(key => {
-      sizes[key] = removePx(sizes[key]);
-    });
 
     is2xs.value = width >= sizes["2xs"];
     isXs.value = width >= sizes.xs;
@@ -56,6 +54,12 @@ export default function() {
   onBeforeUnmount(() => {
     window.removeEventListener("resize", update);
   });
+
+  function removePx(size) {
+    return typeof size === "string"
+      ? parseInt(size.replace("px", ""), 10)
+      : size;
+  }
 
   return {
     is2xs,
