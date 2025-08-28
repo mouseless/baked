@@ -39,9 +39,7 @@
           </div>
           <Button
             v-if="description"
-            v-tooltip.bottom="{
-              value: l(description)
-            }"
+            v-tooltip.focus.bottom="{ value: l(description) }"
             class="xl:hidden"
             icon="pi pi-info-circle"
             variant="text"
