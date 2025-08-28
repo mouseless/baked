@@ -5,7 +5,7 @@
       class="h-8 dark:hidden"
     >
     <img
-      :src="`/dark:${src}`"
+      :src="`/dark--${src}`"
       class="h-8 hidden dark:block"
     >
   </div>
