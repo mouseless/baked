@@ -1,13 +1,18 @@
 <template>
   <div>
     <Button
-      v-tooltip="{ value: lc('Languages'), showDelay: 300, class: '2xl:!hidden max-md:!hidden' }"
+      v-tooltip="{
+        value: lc('Languages'),
+        showDelay: 300,
+        class: 'max-md:!hidden 2xl:!hidden'
+      }"
       :pt="{
-        label: { class: 'hidden 2xl:inline' }
+        label: { class: 'hidden max-md:inline 2xl:inline' }
       }"
       class="
         py-3 px-4 gap-4 justify-start
-        2xl:w-full 2xl:py-2 max-2xl:p-button-icon-only
+        max-md:w-full max-md:py-2
+        2xl:w-full 2xl:py-2
       "
       type="button"
       size="large"

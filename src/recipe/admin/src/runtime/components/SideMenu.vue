@@ -28,13 +28,14 @@
     </RouterLink>
     <div
       class="
-        flex flex-col gap-2
+        flex flex-col gap-2 h-full
         max-md:flex-row max-md:overflow-x-auto
+        max-md:snap-x
       "
     >
       <template v-if="loading">
-        <Skeleton class="py-6 min-w-[3.25rem]" />
-        <Skeleton class="py-6 min-w-[3.25rem]" />
+        <Skeleton class="py-6 min-w-[3.25rem] max-md:snap-start" />
+        <Skeleton class="py-6 min-w-[3.25rem] max-md:snap-start" />
       </template>
       <template v-else-if="data">
         <SideMenuItem
@@ -42,28 +43,51 @@
           :key="item.title"
           :item="item"
           :path="data.path"
+          class="max-md:snap-start"
         />
       </template>
     </div>
-    <div
-      v-if="$slots.footer || footer"
-      class="flex flex-col gap-2 max-md:flex-col"
-    >
-      <Bake
-        v-if="footer"
-        name="footer"
-        :descriptor="footer"
+    <div v-if="$slots.footer || footer">
+      <div class="max-md:hidden">
+        <Bake
+          v-if="footer"
+          name="footer"
+          :descriptor="footer"
+        />
+        <slot
+          v-else
+          name="footer"
+        />
+      </div>
+      <Button
+        severity="secondary"
+        icon="pi pi-cog"
+        class="w-[3.25rem] h-[3.25rem] md:hidden"
+        variant="text"
+        rounded
+        @click="toggleFooterPopover"
       />
-      <slot
-        v-else
-        name="footer"
-      />
+      <Popover
+        ref="footerPopover"
+        class="md:hidden w-1/2 min-w-fit"
+      >
+        <Bake
+          v-if="footer"
+          name="footer"
+          :descriptor="footer"
+        />
+        <slot
+          v-else
+          name="footer"
+        />
+      </Popover>
     </div>
   </nav>
 </template>
 <script setup>
+import { ref } from "vue";
 import { RouterLink } from "vue-router";
-import { Skeleton } from "primevue";
+import { Button, Popover, Skeleton } from "primevue";
 import { Bake, SideMenuItem } from "#components";
 import { useContext } from "#imports";
 
@@ -77,4 +101,9 @@ const { schema, data } = defineProps({
 const { logo, largeLogo, menu, footer } = schema;
 
 const loading = context.loading();
+const footerPopover = ref();
+
+function toggleFooterPopover(event) {
+  footerPopover.value.toggle(event);
+}
 </script>

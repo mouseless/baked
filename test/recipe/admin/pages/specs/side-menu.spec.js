@@ -30,8 +30,9 @@ test.describe("Base", () => {
 
   test("item icon", async({page}) => {
     const component = page.getByTestId(id);
+    const firstSideMenuItem = component.locator(primevue.button.base).nth(0);
 
-    await expect(component.locator(primevue.button.icon)).toHaveClass(/pi pi-heart/);
+    await expect(firstSideMenuItem.locator(primevue.button.icon)).toHaveClass(/pi pi-heart/);
   });
 
   test("footer", async({page}) => {
@@ -116,7 +117,8 @@ test.describe("Disabled Item", () => {
 
   test("button color", async({page}) => {
     const component = page.getByTestId(id);
+    const firstSideMenuItem = component.locator(primevue.button.base).nth(0);
 
-    await expect(component.locator(primevue.button.base)).toHaveAttribute("disabled");
+    await expect(firstSideMenuItem).toHaveAttribute("disabled");
   });
 });
