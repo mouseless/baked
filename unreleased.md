@@ -7,3 +7,7 @@
 - `SideMenu` component displays labels on larger screens
 - `SideMenu` component snaps to the bottom on mobile screens
 - In `DataTable`, the frozen option has been disabled for mobile screens
+- `PageTitle`'s' description shown info icon on mobile screens
+- In `PageTitle` actions shown popover on mobile screens
+- In `DataPanel` parameters shown popover on mobile screens
+- Added `useBreakpoints` composable for media queries
