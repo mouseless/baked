@@ -26,7 +26,11 @@
       :class="{ 'min-w-40': column.minWidth, 'text-right': column.alignRight }"
       :exportable="column.exportable"
       :export-header="l(column.title)"
-      :pt="{ columnHeaderContent: { class: column.alignRight ? 'justify-end' : '' } }"
+      :pt="{
+        columnHeaderContent: { class: column.alignRight ? 'justify-end' : '' },
+        bodyCell: { class: 'max-xs:!inset-auto' },
+        headerCell: { class: 'max-xs:!inset-auto' }
+      }"
       :frozen="column.frozen"
     >
       <template #body="{ data: row, index }">
@@ -50,6 +54,10 @@
     </Column>
     <Column
       v-if="exportOptions"
+      :pt="{
+        bodyCell: { class: 'max-xs:!inset-auto' },
+        headerCell: { class: 'max-xs:!inset-auto' }
+      }"
       :exportable="false"
       class="w-0 py-0"
       frozen
