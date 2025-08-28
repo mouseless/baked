@@ -56,5 +56,9 @@ export default {
     bottom: ".p-tooltip-bottom",
     left: ".p-tooltip-left",
     right: ".p-tooltip-right"
+  },
+  popover: {
+    base: ".p-popover",
+    content: ".p-popover-content"
   }
 };

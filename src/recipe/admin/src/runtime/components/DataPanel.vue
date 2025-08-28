@@ -25,7 +25,7 @@
       >
         <div
           v-if="isFilterVisible"
-          class="flex flex-col gap-4 flex-start justify-between w-full text-sm px-2 py-2"
+          class="flex flex-col gap-4 flex-start justify-between w-full text-xs px-2 py-2"
         >
           <Parameters
             v-if="parameters.length > 0"
@@ -44,6 +44,7 @@
         <Parameters
           v-if="parameters.length > 0"
           :parameters="parameters"
+          class="text-xs"
           @ready="onReady"
           @changed="onChanged"
         />
@@ -74,8 +75,7 @@
 import { computed, onMounted, ref, useTemplateRef } from "vue";
 import { Message, Panel, Button, Popover } from "primevue";
 import { Bake, Parameters } from "#components";
-import { useContext, useDataFetcher, useUiStates, useLocalization } from "#imports";
-import { useBreakpoint } from "../composables/useBreakpoint";
+import { useBreakpoints, useContext, useDataFetcher, useUiStates, useLocalization } from "#imports";
 
 const { value: { panelStates } } = useUiStates();
 const context = useContext();
@@ -83,7 +83,7 @@ const dataFetcher = useDataFetcher();
 const { localize: l } = useLocalization();
 const { localize: lc } = useLocalization("DataPanel");
 const panel = useTemplateRef("panel");
-const { isMaxMd } = useBreakpoint();
+const { isMaxMd } = useBreakpoints();
 const isFilterVisible = ref();
 
 function toggleFilter(event) {

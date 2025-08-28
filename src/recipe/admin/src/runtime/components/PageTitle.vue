@@ -6,7 +6,7 @@
     <div
       class="
         h-16 flex gap-2 items-end
-        max-lg:items-center max-lg:items-end max-lg:h-12
+        max-lg:items-end max-lg:h-12
         "
     >
       <div
@@ -103,12 +103,11 @@ import { onMounted, ref } from "vue";
 import { Button, Popover } from "primevue";
 import { useRuntimeConfig } from "#app";
 import { Bake, String } from "#components";
-import { useHead, useLocalization } from "#imports";
-import { useBreakpoint } from "../composables/useBreakpoint";
+import { useBreakpoints, useHead, useLocalization } from "#imports";
 
 const { localize: l } = useLocalization();
 const { public: { components } } = useRuntimeConfig();
-const { isMaxMd } = useBreakpoint();
+const { isMaxMd } = useBreakpoints();
 
 const { schema } = defineProps({
   schema: { type: null, required: true },
