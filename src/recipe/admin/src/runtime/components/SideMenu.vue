@@ -3,20 +3,21 @@
     class="
       p-2 shadow-inner bg-slate-100 dark:bg-zinc-900
       flex flex-row justify-between gap-2
-      max-md:items-center md:p-4 md:flex-col md:justify-start 2xl:w-80
+      max-md:items-center md:p-4 md:flex-col md:justify-start
+      2xl:min-w-64
     "
   >
     <RouterLink
       to="/"
-      class="flex w-10 md:w-full"
+      class="flex w-10 h-8 mt-4 mb-8 w-full"
     >
       <img
         :src="`/${logo}`"
-        class="my-4 mx-auto h-8 2xl:hidden"
+        class="mx-auto 2xl:hidden"
       >
       <img
         :src="`/${largeLogo}`"
-        class="my-4 px-2 h-8 hidden 2xl:block"
+        class="mx-auto hidden 2xl:block"
       >
     </RouterLink>
     <div
