@@ -17,15 +17,18 @@
         icon="pi pi-sliders-h"
         class="lg:hidden"
         rounded
-        @click="toggleFilter"
+        @click="togglePopover"
       />
       <Popover
         v-if="isMaxMd"
-        ref="isFilterVisible"
+        ref="popover"
       >
         <div
-          v-if="isFilterVisible"
-          class="flex flex-col gap-4 flex-start justify-between w-full text-xs px-2 py-2"
+          class="
+            flex flex-row flex-start
+            justify-between w-full
+            gap-4 text-xs px-2 py-2
+          "
         >
           <Parameters
             v-if="parameters.length > 0"
@@ -40,7 +43,7 @@
           />
         </div>
       </Popover>
-      <div v-else>
+      <template v-else>
         <Parameters
           v-if="parameters.length > 0"
           :parameters="parameters"
@@ -52,7 +55,7 @@
           v-if="$slots.parameters"
           name="parameters"
         />
-      </div>
+      </template>
     </template>
     <template #default>
       <Bake
@@ -84,10 +87,10 @@ const { localize: l } = useLocalization();
 const { localize: lc } = useLocalization("DataPanel");
 const panel = useTemplateRef("panel");
 const { isMaxMd } = useBreakpoints();
-const isFilterVisible = ref();
+const popover = ref();
 
-function toggleFilter(event) {
-  isFilterVisible.value.toggle(event);
+function togglePopover(event) {
+  popover.value.toggle(event);
 }
 
 const { schema } = defineProps({

@@ -60,11 +60,13 @@
         />
         <Popover
           v-if="isMaxMd"
-          ref="isPopoverVisible"
+          ref="popover"
         >
           <div
-            v-if="isPopoverVisible"
-            class="flex flex-col gap-4 flex-start justify-between w-full text-sm px-2 py-2"
+            class="
+              flex flex-col flex-start
+              justify-between w-full
+              gap-4 text-sm px-2 py-2"
           >
             <Bake
               v-for="action in actions"
@@ -78,10 +80,7 @@
             />
           </div>
         </Popover>
-        <div
-          v-else
-          class="flex gap-2"
-        >
+        <template v-else>
           <Bake
             v-for="action in actions"
             :key="action.schema.name"
@@ -92,7 +91,7 @@
             v-if="$slots.actions"
             name="actions"
           />
-        </div>
+        </template>
       </div>
     </div>
     <slot name="extra" />
@@ -115,10 +114,10 @@ const { schema } = defineProps({
 });
 
 const { title, description, actions } = schema;
-const isPopoverVisible = ref();
+const popover = ref();
 
 function togglePopover(event) {
-  isPopoverVisible.value.toggle(event);
+  popover.value.toggle(event);
 }
 
 useHead({

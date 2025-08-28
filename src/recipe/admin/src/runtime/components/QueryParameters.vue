@@ -6,7 +6,6 @@
     some reason vue rewraps the model which is already a ref, causing a
     double ref. that's why `.model.value` is passed instead of `.model`
   -->
-
   <Bake
     v-for="parameter in parameters"
     :key="parameter.name"
@@ -29,7 +28,6 @@ const context = useContext();
 const { parameters } = defineProps({
   parameters: { type: Array, required: true }
 });
-
 const emit = defineEmits(["ready", "changed"]);
 
 const injectedData = context.injectedData();
@@ -140,5 +138,4 @@ async function setDefaults() {
     query
   });
 }
-
 </script>
