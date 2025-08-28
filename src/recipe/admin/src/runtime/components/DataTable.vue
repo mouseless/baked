@@ -28,8 +28,8 @@
       :export-header="l(column.title)"
       :pt="{
         columnHeaderContent: { class: column.alignRight ? 'justify-end' : '' },
-        bodyCell: { class: 'max-xs:!inset-auto' },
-        headerCell: { class: 'max-xs:!inset-auto' }
+        bodyCell: { class: { 'max-xs:!inset-auto': column.frozen } },
+        headerCell: { class: { 'max-xs:!inset-auto': column.frozen } }
       }"
       :frozen="column.frozen"
     >
