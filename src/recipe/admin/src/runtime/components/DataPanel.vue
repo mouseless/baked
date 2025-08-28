@@ -11,17 +11,47 @@
       v-if="$slots.parameters || parameters.length > 0"
       #icons
     >
-      <Parameters
-        v-if="parameters.length > 0"
-        :parameters="parameters"
-        class="text-xs"
-        @ready="onReady"
-        @changed="onChanged"
+      <Button
+        v-if="isMaxMd && (parameters.length > 0 || $slots.parameters)"
+        variant="text"
+        icon="pi pi-sliders-h"
+        class="lg:hidden"
+        rounded
+        @click="toggleFilter"
       />
-      <slot
-        v-if="$slots.parameters"
-        name="parameters"
-      />
+      <Popover
+        v-if="isMaxMd"
+        ref="isFilterVisible"
+      >
+        <div
+          v-if="isFilterVisible"
+          class="flex flex-col gap-4 flex-start justify-between w-full text-sm px-2 py-2"
+        >
+          <Parameters
+            v-if="parameters.length > 0"
+            :parameters="parameters"
+            class="text-xs"
+            @ready="onReady"
+            @changed="onChanged"
+          />
+          <slot
+            v-if="$slots.parameters"
+            name="parameters"
+          />
+        </div>
+      </Popover>
+      <div v-else>
+        <Parameters
+          v-if="parameters.length > 0"
+          :parameters="parameters"
+          @ready="onReady"
+          @changed="onChanged"
+        />
+        <slot
+          v-if="$slots.parameters"
+          name="parameters"
+        />
+      </div>
     </template>
     <template #default>
       <Bake
@@ -42,9 +72,10 @@
 </template>
 <script setup>
 import { computed, onMounted, ref, useTemplateRef } from "vue";
-import { Message, Panel } from "primevue";
+import { Message, Panel, Button, Popover } from "primevue";
 import { Bake, Parameters } from "#components";
 import { useContext, useDataFetcher, useUiStates, useLocalization } from "#imports";
+import { useBreakpoint } from "../composables/useBreakpoint";
 
 const { value: { panelStates } } = useUiStates();
 const context = useContext();
@@ -52,6 +83,12 @@ const dataFetcher = useDataFetcher();
 const { localize: l } = useLocalization();
 const { localize: lc } = useLocalization("DataPanel");
 const panel = useTemplateRef("panel");
+const { isMaxMd } = useBreakpoint();
+const isFilterVisible = ref();
+
+function toggleFilter(event) {
+  isFilterVisible.value.toggle(event);
+}
 
 const { schema } = defineProps({
   schema: { type: null, required: true },

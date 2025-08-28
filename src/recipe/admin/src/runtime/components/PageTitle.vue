@@ -51,7 +51,7 @@
         class="min-w-min pt-6 flex gap-2 row-span-2 items-end text-nowrap"
       >
         <Button
-          v-if="actions?.length > 0"
+          v-if="isMaxMd && (actions?.length > 0 || $slots.actions)"
           variant="text"
           icon="pi pi-filter"
           class="lg:hidden"
