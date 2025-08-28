@@ -1,30 +1,40 @@
 import { ref, onMounted, onBeforeUnmount } from "vue";
+import { useRuntimeConfig } from "#app";
 
 export function useBreakpoint() {
-  const isXs = ref(false); // < 640px
-  const isSm = ref(false); // >= 640px
-  const isMd = ref(false); // >= 768px
-  const isLg = ref(false); // >= 1024px
-  const isXl = ref(false); // >= 1280px
-  const is2xl = ref(false); // >= 1536px
-  const isMaxSm = ref(false); // <= 768px
-  const isMaxMd = ref(false); // <= 1024px
-  const isMaxLg = ref(false); // <= 1280px
-  const isMaxXl = ref(false); // <= 1536px
+  const { public: { composables } } = useRuntimeConfig();
 
-  // Dont use hard-coded sizes, fetch from common place
+  const sizes = composables.useBreakpoint.screens;
+
+  const isXs = ref(false);
+  const isSm = ref(false);
+  const isMd = ref(false);
+  const isLg = ref(false);
+  const isXl = ref(false);
+  const is2xl = ref(false);
+  const isMaxSm = ref(false);
+  const isMaxMd = ref(false);
+  const isMaxLg = ref(false);
+  const isMaxXl = ref(false);
+
+  const removePx = size => typeof size === "string" ? parseInt(size.replace("px", ""), 10) : size;
+
   const update = () => {
     const width = window.innerWidth;
-    isXs.value = width < 640;
-    isSm.value = width >= 640;
-    isMd.value = width >= 768;
-    isLg.value = width >= 1024;
-    isXl.value = width >= 1280;
-    is2xl.value = width >= 1536;
-    isMaxSm.value = width <= 768;
-    isMaxMd.value = width <= 1024;
-    isMaxLg.value = width <= 1280;
-    isMaxXl.value = width <= 1536;
+    Object.keys(sizes).forEach(key => {
+      sizes[key] = removePx(sizes[key]);
+    });
+
+    isXs.value = width < sizes.md;
+    isSm.value = width >= sizes.sm;
+    isMd.value = width >= sizes.md;
+    isLg.value = width >= sizes.lg;
+    isXl.value = width >= sizes.xl;
+    is2xl.value = width >= sizes["2xl"];
+    isMaxSm.value = width <= sizes.md;
+    isMaxMd.value = width <= sizes.lg;
+    isMaxLg.value = width <= sizes.xl;
+    isMaxXl.value = width <= sizes["2xl"];
   };
 
   onMounted(() => {

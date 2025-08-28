@@ -23,6 +23,7 @@ export interface PrimeVueOptions {
 }
 
 export interface Composables {
+  useBreakpoint?: UseBreakpointOptions,
   useDataFetcher: UseDataFetcherOptions,
   useFormat?: UseFormatOptions
 }
@@ -39,6 +40,19 @@ export interface RetryOptions {
 
 export interface UseFormatOptions {
   currency?: String
+}
+
+export interface UseBreakpointOptions {
+  screens?: ScreenOptions
+}
+
+export interface ScreenOptions {
+  sm: String,
+  md: String,
+  lg: String,
+  xl: String,
+  "2xl": String,
+  "3xl": String,
 }
 
 export default defineNuxtModule<ModuleOptions>({
@@ -58,6 +72,16 @@ export default defineNuxtModule<ModuleOptions>({
 
     const appJsonPath = pathToFileURL(entryProjectResolver.resolve(`./.baked/app.json`));
     const app = (await import(appJsonPath.href, { with: { type: "json" } })).default;
+
+    _options.composables.useBreakpoint ||= {};
+    _options.composables.useBreakpoint.screens ||= {
+      'sm': '640px',
+      'md': '768px',
+      'lg': '1024px',
+      'xl': '1280px',
+      '2xl': '1536px',
+      '3xl': '1920px',
+    };
 
     // passing module's options to runtime config for further access
     _nuxt.options.runtimeConfig.public.error = app?.error;
@@ -128,14 +152,7 @@ export default defineNuxtModule<ModuleOptions>({
           ]
         },
         theme: {
-          screens: {
-            'sm': '640px',
-            'md': '768px',
-            'lg': '1024px',
-            'xl': '1280px',
-            '2xl': '1536px',
-            '3xl': '1920px',
-          }
+          screens: _options.composables.useBreakpoint.screens
         }
       }
     })
