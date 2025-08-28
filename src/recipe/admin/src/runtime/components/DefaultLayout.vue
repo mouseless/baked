@@ -1,19 +1,14 @@
 <template>
   <div
-    class="
-      flex h-screen flex-col overflow-hidden
-      md:flex-row md:justify-start md:items-stretch
-    "
+    class="flex h-screen flex-row overflow-hidden"
   >
     <Bake
-      class="order-last md:order-first mt-auto md:mt-0"
       name="sideMenu"
       :descriptor="sideMenu"
     />
     <article
       class="
-        w-full px-4 flex flex-col bg-body order-first
-        md:order-last
+        w-full px-4 flex flex-col bg-body
       "
       :class="{
         'overflow-x-hidden': !overflow,
@@ -53,8 +48,14 @@ const overflow = ref(false);
 context.setArticleOverflow(overflow);
 </script>
 <style>
+html {
+  @apply max-xs:text-[smaller];
+}
+
 .p-scrolltop {
   padding-top: calc(var(--p-button-icon-only-width) / 2);
   padding-bottom: calc(var(--p-button-icon-only-width) / 2);
+
+  @apply max-md:bottom-24;
 }
 </style>

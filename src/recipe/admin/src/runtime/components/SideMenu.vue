@@ -3,7 +3,10 @@
     class="
       p-4 bg-slate-100 dark:bg-zinc-900
       flex flex-col justify-start gap-2
-      max-md:p-2 max-md:h-16
+      max-md:fixed max-md:bottom-0 max-md:p-2
+      max-md:z-50 max-md:w-full
+      max-md:border-t max-md:border-slate-300 max-md:dark:border-zinc-800
+      max-md:drop-shadow-[0_-2px_2px_rgba(0,0,0,0.1)]
       max-md:flex-row max-md:justify-between
       max-md:items-center
       2xl:min-w-64
@@ -29,8 +32,8 @@
     <div
       class="
         flex flex-col gap-2 h-full
-        max-md:flex-row max-md:overflow-x-auto
-        max-md:snap-x
+        max-md:h-fit max-md:flex-row
+        max-md:overflow-x-auto max-md:snap-x
       "
     >
       <template v-if="loading">
