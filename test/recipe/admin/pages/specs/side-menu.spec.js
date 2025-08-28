@@ -42,8 +42,9 @@ test.describe("Base", () => {
 
   test("localized tooltip", async({page}) => {
     const component = page.getByTestId(id);
+    const firstSideMenuItem = component.locator(primevue.button.base).nth(0);
 
-    await component.hover();
+    await firstSideMenuItem.hover();
 
     await expect(page.locator(primevue.tooltip.right)).toBeAttached();
     await expect(page.locator(primevue.tooltip.right)).toBeVisible();

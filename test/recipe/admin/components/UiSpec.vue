@@ -38,7 +38,11 @@
             }"
           >{{ variant.name }}</h2>
           <Divider v-if="!vertical" />
-          <div v-if="!useModel" :data-testid="variant.name">
+          <div
+            v-if="!useModel"
+            :data-testid="variant.name"
+            :class="{ 'inline-block': vertical }"
+          >
             <Bake
               :name="`variants/${camelize(variant.name)}`"
               :descriptor="prepareDescriptor(variant)"

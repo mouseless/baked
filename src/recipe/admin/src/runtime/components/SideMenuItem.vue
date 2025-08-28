@@ -10,8 +10,7 @@
       :severity="selected ? 'primary':'secondary'"
       size="large"
       class="
-        py-3.5 w-full
-        max-md:px-4
+        px-4 py-3.5 w-full
         2xl:justify-start 2xl:gap-4
       "
       :label="l(item.title)"
