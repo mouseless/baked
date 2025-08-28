@@ -3,7 +3,12 @@
     id="page-title"
     class="sticky -top-1 z-10 space-y-4 bg-body"
   >
-    <div class="h-16 flex gap-2 items-center max-lg:items-end max-lg:h-12">
+    <div
+      class="
+        h-16 flex gap-2 items-end
+        max-lg:items-center max-lg:items-end max-lg:h-12
+        "
+    >
       <div
         class="
           w-full flex flex-row gap-2
@@ -46,6 +51,7 @@
         class="min-w-min pt-6 flex gap-2 row-span-2 items-end text-nowrap"
       >
         <Button
+          v-if="actions?.length > 0"
           variant="text"
           icon="pi pi-filter"
           class="lg:hidden"
