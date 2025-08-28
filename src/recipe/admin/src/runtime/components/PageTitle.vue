@@ -3,7 +3,7 @@
     id="page-title"
     class="sticky -top-1 z-10 space-y-4 bg-body"
   >
-    <div class="h-16 flex gap-2 items-center">
+    <div class="h-16 flex gap-2 items-center max-lg:items-end max-lg:h-12">
       <div
         class="
           w-full flex flex-row gap-2
@@ -45,30 +45,64 @@
         v-focustrap
         class="min-w-min pt-6 flex gap-2 row-span-2 items-end text-nowrap"
       >
-        <Bake
-          v-for="action in actions"
-          :key="action.schema.name"
-          :name="`actions/${action.schema.name}`"
-          :descriptor="action"
+        <Button
+          variant="text"
+          icon="pi pi-filter"
+          class="lg:hidden"
+          rounded
+          @click="togglePopover"
         />
-        <slot
-          v-if="$slots.actions"
-          name="actions"
-        />
+        <Popover
+          v-if="isMaxMd"
+          ref="isPopoverVisible"
+        >
+          <div
+            v-if="isPopoverVisible"
+            class="flex flex-col gap-4 flex-start justify-between w-full text-sm px-2 py-2"
+          >
+            <Bake
+              v-for="action in actions"
+              :key="action.schema.name"
+              :name="`actions/${action.schema.name}`"
+              :descriptor="action"
+            />
+            <slot
+              v-if="$slots.actions"
+              name="actions"
+            />
+          </div>
+        </Popover>
+        <div
+          v-else
+          class="flex gap-2"
+        >
+          <Bake
+            v-for="action in actions"
+            :key="action.schema.name"
+            :name="`actions/${action.schema.name}`"
+            :descriptor="action"
+          />
+          <slot
+            v-if="$slots.actions"
+            name="actions"
+          />
+        </div>
       </div>
     </div>
     <slot name="extra" />
   </div>
 </template>
 <script setup>
-import { onMounted } from "vue";
-import { Button } from "primevue";
+import { onMounted, ref } from "vue";
+import { Button, Popover } from "primevue";
 import { useRuntimeConfig } from "#app";
 import { Bake, String } from "#components";
 import { useHead, useLocalization } from "#imports";
+import { useBreakpoint } from "../composables/useBreakpoint";
 
 const { localize: l } = useLocalization();
 const { public: { components } } = useRuntimeConfig();
+const { isMaxMd } = useBreakpoint();
 
 const { schema } = defineProps({
   schema: { type: null, required: true },
@@ -76,6 +110,11 @@ const { schema } = defineProps({
 });
 
 const { title, description, actions } = schema;
+const isPopoverVisible = ref();
+
+function togglePopover(event) {
+  isPopoverVisible.value.toggle(event);
+}
 
 useHead({
   title: components?.Page?.title
