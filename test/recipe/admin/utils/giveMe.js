@@ -13,6 +13,8 @@ function $(value, defaultValue) {
 }
 // screens breakpoints of tailwind
 const screens = [
+  { name: "2xs", width: 340, height: 800 },
+  { name: "xs", width: 480, height: 800 },
   { name: "sm", width: 640, height: 800 },
   { name: "md", width: 768, height: 800 },
   { name: "lg", width: 1024, height: 800 },

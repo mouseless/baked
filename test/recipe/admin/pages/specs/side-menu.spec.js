@@ -57,17 +57,33 @@ test.describe("Base", () => {
     await expect(component).toHaveScreenshot();
   });
 
-  test("visual mobile", { tag: "@visual" }, async({page}) => {
+  test("visual mini", { tag: "@visual" }, async({page}) => {
     const component = page.getByTestId(id);
-    const desktop = giveMe.aScreenSize({name: "sm"});
+    const desktop = giveMe.aScreenSize({ name: "2xs" });
 
     await page.setViewportSize({ ...desktop });
     await expect(component).toHaveScreenshot();
   });
 
-  test("visual 2xl", { tag: "@visual" }, async({page}) => {
+  test("visual mobile", { tag: "@visual" }, async({page}) => {
     const component = page.getByTestId(id);
-    const desktop = giveMe.aScreenSize({name: "2xl"});
+    const desktop = giveMe.aScreenSize({ name: "xs" });
+
+    await page.setViewportSize({ ...desktop });
+    await expect(component).toHaveScreenshot();
+  });
+
+  test("visual tablet", { tag: "@visual" }, async({page}) => {
+    const component = page.getByTestId(id);
+    const desktop = giveMe.aScreenSize({ name: "sm" });
+
+    await page.setViewportSize({ ...desktop });
+    await expect(component).toHaveScreenshot();
+  });
+
+  test("visual wide", { tag: "@visual" }, async({page}) => {
+    const component = page.getByTestId(id);
+    const desktop = giveMe.aScreenSize({ name: "2xl" });
 
     await page.setViewportSize({ ...desktop });
     await expect(component).toHaveScreenshot();

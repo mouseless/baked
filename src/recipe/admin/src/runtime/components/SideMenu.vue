@@ -12,9 +12,9 @@
     <RouterLink
       to="/"
       class="
-        flex mt-4 mb-8 w-full
-        md:min-w-[3.25rem]
-        max-md:w-10 max-md:my-0
+        flex mt-4 mb-8 w-full min-w-[3.25rem]
+        max-2xs:hidden
+        max-md:my-0 max-md:w-10
       "
     >
       <img
@@ -29,7 +29,7 @@
     <div
       class="
         flex flex-col gap-2
-        max-md:flex-row
+        max-md:flex-row max-md:overflow-x-auto
       "
     >
       <template v-if="loading">
