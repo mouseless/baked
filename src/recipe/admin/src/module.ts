@@ -1,5 +1,6 @@
 import { defineNuxtModule, addComponentsDir, addImportsDir, addPlugin, createResolver, installModule } from "@nuxt/kit";
 import type { NuxtI18nOptions } from "@nuxtjs/i18n";
+import { pathToFileURL } from "url";
 
 export interface ModuleOptions {
   components?: Components,
@@ -22,6 +23,7 @@ export interface PrimeVueOptions {
 }
 
 export interface Composables {
+  useBreakpoints?: UseBreakpointsOptions,
   useDataFetcher: UseDataFetcherOptions,
   useFormat?: UseFormatOptions
 }
@@ -40,6 +42,21 @@ export interface UseFormatOptions {
   currency?: String
 }
 
+export interface UseBreakpointsOptions {
+  screens?: ScreenOptions
+}
+
+export interface ScreenOptions {
+  "2xs": String,
+  xs: String,
+  sm: String,
+  md: String,
+  lg: String,
+  xl: String,
+  "2xl": String,
+  "3xl": String,
+}
+
 export default defineNuxtModule<ModuleOptions>({
   meta: {
     name: "baked-recipe-admin",
@@ -55,8 +72,20 @@ export default defineNuxtModule<ModuleOptions>({
     const resolver = createResolver(import.meta.url);
     const entryProjectResolver = createResolver(_nuxt.options.rootDir);
 
-    const appJsonPath = entryProjectResolver.resolve(`./.baked/app.json`);
-    const app = (await import(appJsonPath, { with: { type: "json" } })).default;
+    const appJsonPath = pathToFileURL(entryProjectResolver.resolve(`./.baked/app.json`));
+    const app = (await import(appJsonPath.href, { with: { type: "json" } })).default;
+
+    _options.composables.useBreakpoints ||= {};
+    _options.composables.useBreakpoints.screens ||= {
+      "2xs": "340px",
+      "xs": "480px",
+      "sm": "640px",
+      "md": "768px",
+      "lg": "1024px",
+      "xl": "1280px",
+      "2xl": "1536px",
+      "3xl": "1920px",
+    };
 
     // passing module's options to runtime config for further access
     _nuxt.options.runtimeConfig.public.error = app?.error;
@@ -125,6 +154,9 @@ export default defineNuxtModule<ModuleOptions>({
             resolver.resolve("./runtime/components/**/*.{vue,mjs,ts}"),
             resolver.resolve("./runtime/*.{mjs,js,ts}")
           ]
+        },
+        theme: {
+          screens: _options.composables.useBreakpoints.screens
         }
       }
     })

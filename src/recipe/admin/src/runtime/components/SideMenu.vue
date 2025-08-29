@@ -1,56 +1,99 @@
 <template>
   <nav
     class="
-      p-4 shadow-inner bg-slate-100 dark:bg-zinc-900
-      flex flex-col items-center gap-2
+      p-4 bg-slate-100 dark:bg-zinc-900
+      flex flex-col justify-start gap-2
+      max-md:p-2
+      max-md:flex-row max-md:justify-between
+      max-md:items-center
+      2xl:min-w-64
     "
   >
-    <RouterLink to="/">
-      <img
-        :src="`/${logo}`"
-        class="my-4 w-8"
-      >
+    <RouterLink
+      to="/"
+      class="
+        flex mt-4 mb-8 w-full min-w-[3.25rem]
+        max-2xs:hidden
+        max-md:my-0 max-md:w-10
+      "
+    >
+      <Logo
+        :src="logo"
+        class="2xl:hidden"
+      />
+      <Logo
+        :src="largeLogo"
+        class="hidden 2xl:block"
+      />
     </RouterLink>
     <div
-      v-if="loading"
-      class="space-y-2 flex flex-col gap-2"
+      class="
+        flex flex-col gap-2 h-full
+        max-md:h-fit max-md:flex-row
+        max-md:overflow-x-auto max-md:snap-x
+      "
     >
-      <Skeleton size="3.1rem" />
-      <Skeleton size="3.1rem" />
+      <template v-if="loading">
+        <Skeleton class="py-6 min-w-[3.25rem] max-md:snap-start" />
+        <Skeleton class="py-6 min-w-[3.25rem] max-md:snap-start" />
+      </template>
+      <template v-else-if="data">
+        <SideMenuItem
+          v-for="item in menu"
+          :key="item.title"
+          :item="item"
+          :path="data.path"
+          class="max-md:snap-start"
+        />
+      </template>
     </div>
-    <div
-      v-else-if="data"
-      class="space-y-2 flex flex-col gap-2"
-    >
-      <SideMenuItem
-        v-for="item in menu"
-        :key="item.title"
-        :item="item"
-        :path="data.path"
-      />
-    </div>
-    <div
-      v-if="$slots.footer || footer"
-      class="mt-auto flex flex-col items-center gap-2"
-    >
-      <Bake
-        v-if="footer"
-        name="footer"
-        :descriptor="footer"
-      />
-      <slot
-        v-else
-        name="footer"
-      />
+    <div v-if="$slots.footer || footer">
+      <div v-if="isMd">
+        <Bake
+          v-if="footer"
+          name="footer"
+          :descriptor="footer"
+        />
+        <slot
+          v-else
+          name="footer"
+        />
+      </div>
+      <template v-else>
+        <Button
+          severity="secondary"
+          icon="pi pi-cog"
+          class="w-[3.25rem] h-[3.25rem]"
+          variant="text"
+          rounded
+          @click="togglePopover"
+        />
+        <PersistentPopover
+          ref="popover"
+          class="w-1/2 min-w-fit"
+        >
+          <Bake
+            v-if="footer"
+            name="footer"
+            :descriptor="footer"
+          />
+          <slot
+            v-else
+            name="footer"
+          />
+        </PersistentPopover>
+      </template>
     </div>
   </nav>
 </template>
 <script setup>
+import { ref } from "vue";
 import { RouterLink } from "vue-router";
-import { Skeleton } from "primevue";
-import { Bake, SideMenuItem } from "#components";
-import { useContext } from "#imports";
+import { Button, Skeleton } from "primevue";
+import { Bake, Logo, PersistentPopover, SideMenuItem } from "#components";
+import { useBreakpoints, useContext } from "#imports";
 
+const { isMd } = useBreakpoints();
 const context = useContext();
 
 const { schema, data } = defineProps({
@@ -58,7 +101,12 @@ const { schema, data } = defineProps({
   data: { type: null, required: true }
 });
 
-const { logo, menu, footer } = schema;
+const { logo, largeLogo, menu, footer } = schema;
 
 const loading = context.loading();
+const popover = ref();
+
+function togglePopover(event) {
+  popover.value.toggle(event);
+}
 </script>

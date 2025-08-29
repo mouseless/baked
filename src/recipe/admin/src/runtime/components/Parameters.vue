@@ -6,13 +6,14 @@
     for some reason vue rewraps the model which is already a ref, causing a
     double ref. that's why `.model.value` is passed instead of `.model`
   -->
-  <div class="flex gap-2">
+  <div class="flex gap-2 max-md:flex-col max-md:min-w-24">
     <Bake
       v-for="parameter in parameters"
       :key="parameter.name"
       v-model="values[parameter.name].value"
       :name="`parameters/${parameter.name}`"
       :descriptor="parameter.component"
+      class="max-md:w-full"
     />
   </div>
 </template>
@@ -43,16 +44,12 @@ onMounted(async() => {
   }
 });
 
-// initial emit in case it is already ready using default parameters
-emitChanged();
-emitReady();
-
 // when any of the parameter values changed from input components, it emits
 // ready and changed
 watch(Object.values(values), async() => {
   emitChanged();
   emitReady();
-});
+}, { immediate: true });
 
 function emitReady() {
   emit("ready",

@@ -6,6 +6,11 @@
     striped-rows
     :data-key
     :paginator="paginator && value.length > rows"
+    :paginator-template="{
+      [screens['2xs']]: 'JumpToPageDropdown',
+      [screens.xs]: 'FirstPageLink PrevPageLink JumpToPageDropdown NextPageLink LastPageLink',
+      default: 'FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink'
+    }"
     :rows
     scrollable
     :scroll-height
@@ -26,7 +31,11 @@
       :class="{ 'min-w-40': column.minWidth, 'text-right': column.alignRight }"
       :exportable="column.exportable"
       :export-header="l(column.title)"
-      :pt="{ columnHeaderContent: { class: column.alignRight ? 'justify-end' : '' } }"
+      :pt="{
+        columnHeaderContent: { class: column.alignRight ? 'justify-end' : '' },
+        bodyCell: { class: { 'max-xs:!inset-auto': column.frozen } },
+        headerCell: { class: { 'max-xs:!inset-auto': column.frozen } }
+      }"
       :frozen="column.frozen"
     >
       <template #body="{ data: row, index }">
@@ -50,6 +59,10 @@
     </Column>
     <Column
       v-if="exportOptions"
+      :pt="{
+        bodyCell: { class: 'max-xs:!inset-auto' },
+        headerCell: { class: 'max-xs:!inset-auto' }
+      }"
       :exportable="false"
       class="w-0 py-0"
       frozen
@@ -120,6 +133,7 @@
 import { computed, onMounted, ref } from "vue";
 import Column from "primevue/column";
 import { Button, ColumnGroup, DataTable, Menu, Row, Skeleton } from "primevue";
+import { useRuntimeConfig } from "#app";
 import { Bake } from "#components";
 import { useComposableResolver, useConditional, useContext, useDataFetcher, useLocalization } from "#imports";
 
@@ -129,6 +143,7 @@ const composableResolver = useComposableResolver();
 const dataFetcher = useDataFetcher();
 const { localize: l } = useLocalization();
 const { localize: lc } = useLocalization("DataTable");
+const { public: { composables: { useBreakpoints: { screens } } } } = useRuntimeConfig();
 
 const { schema, data } = defineProps({
   schema: { type: null, required: true },

@@ -19,7 +19,7 @@ public record Route(
     public string? ParentPath { get; set; }
     public string? Section { get; set; }
     public bool SideMenu { get; set; }
-    public string? SideMenuTitle { get; set; } = Path == "/" ? null : Title;
+    public string? SideMenuTitle { get; set; } = Title;
 
     public IComponentDescriptor? BuildPage(PageContext context) =>
         Page(new())?.Invoke(context);

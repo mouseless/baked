@@ -11,6 +11,17 @@ const adminUiToken = "token-admin-ui";
 function $(value, defaultValue) {
   return value === undefined ? defaultValue : value;
 }
+// screens breakpoints of tailwind
+const screens = [
+  { name: "2xs", width: 340, height: 800 },
+  { name: "xs", width: 480, height: 800 },
+  { name: "sm", width: 640, height: 800 },
+  { name: "md", width: 768, height: 800 },
+  { name: "lg", width: 1024, height: 800 },
+  { name: "xl", width: 1280, height: 800 },
+  { name: "2xl", width: 1536, height: 800 },
+  { name: "3xl", width: 1920, height: 800 }
+];
 
 export default {
   aCardLink({ route, icon, title, description, disabled, disabledReason } = {}) {
@@ -427,15 +438,16 @@ export default {
     };
   },
 
-  aSideMenu({ logo, menu, data, footer } = {}) {
+  aSideMenu({ logo, largeLogo, menu, data, footer } = {}) {
     logo = $(logo, "logo.svg");
+    largeLogo = $(largeLogo, "logo-full.svg");
     menu = $(menu, []);
     data = $(data, { path: "/test" });
     footer = $(footer, this.anExpected());
 
     return {
       type: "SideMenu",
-      schema: { logo, menu, footer },
+      schema: { logo, largeLogo, menu, footer },
       data: { type: "Inline", value: data }
     };
   },
@@ -474,5 +486,11 @@ export default {
 
   anApiResponse() {
     return { sample: "response" };
+  },
+
+  aScreenSize({ name } = {}) {
+    name = $(name, "lg");
+
+    return screens.find(screen => screen.name === name) || null;
   }
 };

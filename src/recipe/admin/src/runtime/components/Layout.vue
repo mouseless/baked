@@ -1,5 +1,5 @@
 <template>
-  <Toast />
+  <Toast position="top-center" />
   <Bake
     :key="descriptor.type"
     name="root"
