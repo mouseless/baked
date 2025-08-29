@@ -1,12 +1,19 @@
 <template>
   <RouterLink :to="item.route">
     <Button
-      v-tooltip="{ value: l(item.title), showDelay: 300 }"
+      v-tooltip="{ value: l(item.title), showDelay: 300, class: '2xl:!hidden max-md:!hidden' }"
       :text="!selected"
+      :pt="{
+        label: { class: 'max-2xl:hidden leading-none' }
+      }"
       :icon="item.icon"
       :severity="selected ? 'primary':'secondary'"
       size="large"
-      class="!px-6 !py-2"
+      class="
+        px-4 py-3.5 w-full
+        2xl:justify-start 2xl:gap-4
+      "
+      :label="l(item.title)"
       :disabled="item.disabled"
     />
   </RouterLink>

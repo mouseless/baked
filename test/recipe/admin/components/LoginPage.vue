@@ -1,10 +1,12 @@
 <template>
   <form
-    class="w-96 flex justify-center flex-col gap-4 px-4"
+    class="w-96 flex justify-center flex-col gap-4 px-4 max-2xs:w-64"
     @submit.prevent="submit"
   >
     <div class="w-full text-center mb-6">
-      <RouterLink to="/"><img src="/logo.svg" class="mx-auto w-10"></RouterLink>
+      <RouterLink to="/" class="inline-block">
+        <Logo src="logo-full.svg"/>
+      </RouterLink>
     </div>
     <div class="text-center">
       <strong class="block text-2xl mb-2">
@@ -42,9 +44,10 @@
 <script setup>
 import { onUpdated, ref } from "vue";
 import { RouterLink } from "vue-router";
-import { useRuntimeConfig } from "#app";
-import { useToken, useLocalization } from "#imports";
 import { Button, Divider, InputText } from "primevue";
+import { useRuntimeConfig } from "#app";
+import { Logo } from "#components";
+import { useToken, useLocalization } from "#imports";
 
 defineProps({
   schema: { type: null, default: null },

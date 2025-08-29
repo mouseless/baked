@@ -1,9 +1,11 @@
 <template>
   <div class="space-y-4">
     <PageTitle :schema="title">
-      <template #actions>
+      <template
+        v-if="queryParameters?.length > 0"
+        #actions
+      >
         <QueryParameters
-          v-if="queryParameters?.length > 0"
           :parameters="queryParameters"
           @ready="onReady"
           @changed="onChanged"
@@ -13,7 +15,7 @@
         <Tabs
           v-if="ready && tabs.length > 1"
           v-model:value="currentTab"
-          class="!-mb-4"
+          class="!-mb-4 overflow-x-auto"
         >
           <TabList :pt="{ tabList: { class: '!bg-transparent' } }">
             <Tab
@@ -49,8 +51,8 @@
         :key="`${uniqueKey}-${tab.id}`"
         v-model="currentTab"
         :when="tab.id"
+        :class="{ 'max-w-screen-xl 3xl:max-w-screen-2xl': !tab.fullScreen }"
         class="w-full"
-        :class="{ 'max-w-screen-xl': !tab.fullScreen }"
       >
         <template v-if="tab.fullScreen">
           <Bake

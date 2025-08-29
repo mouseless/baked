@@ -1,0 +1,11 @@
+<svg width="250" height="40" viewBox="0 0 250 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="230" y="30" width="20" height="10" fill="#FA465B"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M220 40.0001V0H210V10H190V40.0001H220ZM210 20V30H200V20H210Z" fill="black"/>
+<path d="M150 40L180 40L180 30L170 30L170 20L180 20L180 10L150 10L150 40Z" fill="black"/>
+<path d="M110 40V0H120V20H130V10H140V20H130V30H140V40H130V30H120V40H110Z" fill="black"/>
+<path d="M70 10V40H80V30H90V40H100V10H70Z" fill="black"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M30 40.0001V0H40V10H60V40.0001H30ZM40 20V30H50V20H40Z" fill="black"/>
+<path d="M0 20V10H10V20H0Z" fill="#FA465B"/>
+<path d="M10 30V20H20V30H10Z" fill="#FA465B"/>
+<path d="M0 40V30H10V40H0Z" fill="#FA465B"/>
+</svg>

@@ -123,7 +123,7 @@ test.describe("Show When", () => {
   test("tab content is shown when selection is SHOW", async({page}) => {
     const component = page.getByTestId(id);
 
-    await component.locator("button").nth(0).click(); // toggle
+    await component.locator(primevue.selectbutton.option).nth(0).click(); // toggle
 
     await expect(component.getByTestId("content-1")).toHaveText("CONTENT 1");
   });
@@ -131,7 +131,7 @@ test.describe("Show When", () => {
   test("tab is shown when selection is SHOW", async({page}) => {
     const component = page.getByTestId(id);
 
-    await component.locator("button").nth(0).click(); // toggle
+    await component.locator(primevue.selectbutton.option).nth(0).click(); // toggle
     await component.locator(".b--tab-2").click(); // click Tab 2
 
     await expect(component.getByTestId("content-2")).toHaveText("CONTENT 2");
@@ -140,9 +140,9 @@ test.describe("Show When", () => {
   test("when tab gets hidden, first shown tab is selected ", async({page}) => {
     const component = page.getByTestId(id);
 
-    await component.locator("button").nth(0).click(); // toggle
+    await component.locator(primevue.selectbutton.option).nth(0).click(); // toggle
     await component.locator(".b--tab-2").click(); // click Tab 2
-    await component.locator("button").nth(0).click(); // toggle
+    await component.locator(primevue.selectbutton.option).nth(0).click(); // toggle
 
     await expect(component.locator(".p-tab-active")).toHaveText("Tab 1");
   });
@@ -150,10 +150,10 @@ test.describe("Show When", () => {
   test("when hidden tab gets shown again, it is automatically selected", async({page}) => {
     const component = page.getByTestId(id);
 
-    await component.locator("button").nth(0).click(); // toggle
+    await component.locator(primevue.selectbutton.option).nth(0).click(); // toggle
     await component.locator(".b--tab-2").click(); // click Tab 2
-    await component.locator("button").nth(0).click(); // toggle
-    await component.locator("button").nth(0).click(); // toggle
+    await component.locator(primevue.selectbutton.option).nth(0).click(); // toggle
+    await component.locator(primevue.selectbutton.option).nth(0).click(); // toggle
 
     await expect(component.locator(".p-tab-active")).toHaveText("Tab 2");
   });

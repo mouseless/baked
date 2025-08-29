@@ -5,6 +5,7 @@ namespace Baked.Theme.Admin;
 public record SideMenu : IComponentSchema
 {
     public string Logo { get; set; } = "logo.svg";
+    public string LargeLogo { get; set; } = "logo-full.svg";
     public List<Item> Menu { get; init; } = [];
     public IComponentDescriptor? Footer { get; set; }
 
