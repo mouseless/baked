@@ -49,8 +49,8 @@ test.describe("Base", () => {
     await expect(description).toBeHidden();
     await expect(infoIcon).toBeVisible();
 
-    // Verify tooltip appears on hover
-    await infoIcon.hover();
+    // Verify tooltip appears on click
+    await infoIcon.click();
     await expect(page.locator(primevue.tooltip.bottom)).toBeAttached();
     await expect(page.locator(primevue.tooltip.bottom)).toBeVisible();
     await expect(page.locator(primevue.tooltip.bottom)).toHaveText("Description");

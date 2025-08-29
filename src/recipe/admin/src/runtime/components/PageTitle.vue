@@ -1,19 +1,23 @@
 <template>
   <div
     id="page-title"
-    class="sticky -top-1 z-10 space-y-4 bg-body"
+    class="
+      sticky -top-1 z-10 space-y-4 bg-body
+      max-md:space-y-0 max-lg:space-y-2
+    "
   >
     <div
       class="
-        h-16 flex gap-2 items-end
-        max-lg:items-end max-lg:h-12
-        "
+        flex gap-2 items-start
+        md:max-xl:items-center
+      "
     >
       <div
         class="
-          w-full flex flex-row gap-2
+          w-full mt-1
+          flex flex-row gap-2
           items-baseline justify-start
-          xl:flex-col mt-1 xl:mt-2
+          xl:flex-col xl:mt-2
         "
       >
         <h1 class="text-xl font-bold">
@@ -35,9 +39,7 @@
           </div>
           <Button
             v-if="description"
-            v-tooltip.bottom="{
-              value: l(description)
-            }"
+            v-tooltip.focus.bottom="{ value: l(description) }"
             class="xl:hidden"
             icon="pi pi-info-circle"
             variant="text"
@@ -48,39 +50,12 @@
       </div>
       <div
         v-focustrap
-        class="min-w-min pt-6 flex gap-2 row-span-2 items-end text-nowrap"
+        class="
+          min-w-min flex gap-2 row-span-2 items-end text-nowrap
+          max-lg:text-sm md:max-xl:items-center xl:pt-6
+        "
       >
-        <Button
-          v-if="isMaxMd && (actions?.length > 0 || $slots.actions)"
-          variant="text"
-          icon="pi pi-filter"
-          class="lg:hidden"
-          rounded
-          @click="togglePopover"
-        />
-        <Popover
-          v-if="isMaxMd"
-          ref="popover"
-        >
-          <div
-            class="
-              flex flex-col flex-start
-              justify-between w-full
-              gap-4 text-sm px-2 py-2"
-          >
-            <Bake
-              v-for="action in actions"
-              :key="action.schema.name"
-              :name="`actions/${action.schema.name}`"
-              :descriptor="action"
-            />
-            <slot
-              v-if="$slots.actions"
-              name="actions"
-            />
-          </div>
-        </Popover>
-        <template v-else>
+        <template v-if="isMd">
           <Bake
             v-for="action in actions"
             :key="action.schema.name"
@@ -92,6 +67,35 @@
             name="actions"
           />
         </template>
+        <template v-else>
+          <Button
+            v-if="actions?.length > 0 || $slots.actions"
+            variant="text"
+            icon="pi pi-filter"
+            class="lg:hidden"
+            rounded
+            @click="togglePopover"
+          />
+          <PersistentPopover ref="popover">
+            <div
+              class="
+              flex flex-col flex-start
+              justify-between w-full
+              gap-4 text-sm px-2 py-2"
+            >
+              <Bake
+                v-for="action in actions"
+                :key="action.schema.name"
+                :name="`actions/${action.schema.name}`"
+                :descriptor="action"
+              />
+              <slot
+                v-if="$slots.actions"
+                name="actions"
+              />
+            </div>
+          </PersistentPopover>
+        </template>
       </div>
     </div>
     <slot name="extra" />
@@ -99,14 +103,14 @@
 </template>
 <script setup>
 import { onMounted, ref } from "vue";
-import { Button, Popover } from "primevue";
+import { Button } from "primevue";
 import { useRuntimeConfig } from "#app";
-import { Bake, String } from "#components";
+import { Bake, PersistentPopover, String } from "#components";
 import { useBreakpoints, useHead, useLocalization } from "#imports";
 
 const { localize: l } = useLocalization();
 const { public: { components } } = useRuntimeConfig();
-const { isMaxMd } = useBreakpoints();
+const { isMd } = useBreakpoints();
 
 const { schema } = defineProps({
   schema: { type: null, required: true },
@@ -116,21 +120,11 @@ const { schema } = defineProps({
 const { title, description, actions } = schema;
 const popover = ref();
 
-function togglePopover(event) {
-  popover.value.toggle(event);
-}
-
 useHead({
   title: components?.Page?.title
     ? `${components.Page.title} - ${title}`
     : title
 });
-
-function toggleClasses(element, toggle, classes) {
-  for(const cls of classes) {
-    element.classList.toggle(cls, toggle);
-  }
-}
 
 onMounted(() => {
   const el = document.querySelector("#page-title");
@@ -142,7 +136,8 @@ onMounted(() => {
         [
           "-mx-4", "px-4", "pb-4",
           "border-b", "border-slate-300", "dark:border-zinc-800",
-          "drop-shadow"
+          "drop-shadow",
+          "md:max-xl:pt-4"
         ]
       );
     },
@@ -155,6 +150,16 @@ onMounted(() => {
     console.warn(e);
   }
 });
+
+function toggleClasses(element, toggle, classes) {
+  for(const cls of classes) {
+    element.classList.toggle(cls, toggle);
+  }
+}
+
+function togglePopover(event) {
+  popover.value.toggle(event);
+}
 </script>
 <style scoped>
 .sticky {

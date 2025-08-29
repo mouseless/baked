@@ -24,7 +24,7 @@ export default {
     content: ".p-message-content"
   },
   paginator: {
-    base: ".p-paginator",
+    base: ".p-paginator-default",
     page: ".p-paginator-page"
   },
   panel: {
@@ -58,7 +58,7 @@ export default {
     right: ".p-tooltip-right"
   },
   popover: {
-    base: ".p-popover",
-    content: ".p-popover-content"
+    base: ".p-popover:not([style*='display: none'])",
+    content: ".p-popover:not([style*='display: none']) .p-popover-content"
   }
 };

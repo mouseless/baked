@@ -4,14 +4,14 @@
       v-tooltip="{ value: l(item.title), showDelay: 300, class: '2xl:!hidden max-md:!hidden' }"
       :text="!selected"
       :pt="{
-        label: { class: 'hidden 2xl:inline' }
+        label: { class: 'max-2xl:hidden leading-none' }
       }"
       :icon="item.icon"
       :severity="selected ? 'primary':'secondary'"
       size="large"
       class="
-        py-3 px-4 gap-4 justify-start
-        2xl:w-full 2xl:py-2 max-2xl:p-button-icon-only
+        px-4 py-3.5 w-full
+        2xl:justify-start 2xl:gap-4
       "
       :label="l(item.title)"
       :disabled="item.disabled"

@@ -33,7 +33,8 @@ const variants = [
   {
     name: "Custom Logo",
     descriptor: giveMe.aSideMenu({
-      logo: "e5c4p3.png"
+      logo: "e5c4p3.png",
+      largeLogo: "e5c4p3-full.png"
     })
   },
   {

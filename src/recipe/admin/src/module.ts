@@ -23,7 +23,7 @@ export interface PrimeVueOptions {
 }
 
 export interface Composables {
-  useBreakpoint?: UseBreakpointOptions,
+  useBreakpoints?: UseBreakpointsOptions,
   useDataFetcher: UseDataFetcherOptions,
   useFormat?: UseFormatOptions
 }
@@ -42,7 +42,7 @@ export interface UseFormatOptions {
   currency?: String
 }
 
-export interface UseBreakpointOptions {
+export interface UseBreakpointsOptions {
   screens?: ScreenOptions
 }
 
@@ -75,8 +75,8 @@ export default defineNuxtModule<ModuleOptions>({
     const appJsonPath = pathToFileURL(entryProjectResolver.resolve(`./.baked/app.json`));
     const app = (await import(appJsonPath.href, { with: { type: "json" } })).default;
 
-    _options.composables.useBreakpoint ||= {};
-    _options.composables.useBreakpoint.screens ||= {
+    _options.composables.useBreakpoints ||= {};
+    _options.composables.useBreakpoints.screens ||= {
       "2xs": "340px",
       "xs": "480px",
       "sm": "640px",
@@ -156,7 +156,7 @@ export default defineNuxtModule<ModuleOptions>({
           ]
         },
         theme: {
-          screens: _options.composables.useBreakpoint.screens
+          screens: _options.composables.useBreakpoints.screens
         }
       }
     })

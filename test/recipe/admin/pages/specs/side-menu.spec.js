@@ -13,7 +13,9 @@ test.describe("Base", () => {
     const component = page.getByTestId(id);
 
     await expect(component.locator("img").nth(0)).toHaveAttribute("src", "/logo.svg");
-    await expect(component.locator("img").nth(1)).toHaveAttribute("src", "/logo-full.svg");
+    await expect(component.locator("img").nth(1)).toHaveAttribute("src", "/dark--logo.svg");
+    await expect(component.locator("img").nth(2)).toHaveAttribute("src", "/logo-full.svg");
+    await expect(component.locator("img").nth(3)).toHaveAttribute("src", "/dark--logo-full.svg");
   });
 
   test("logo links to home", async({page}) => {
@@ -30,8 +32,9 @@ test.describe("Base", () => {
 
   test("item icon", async({page}) => {
     const component = page.getByTestId(id);
+    const firstSideMenuItem = component.locator(primevue.button.base).nth(0);
 
-    await expect(component.locator(primevue.button.icon)).toHaveClass(/pi pi-heart/);
+    await expect(firstSideMenuItem.locator(primevue.button.icon)).toHaveClass(/pi pi-heart/);
   });
 
   test("footer", async({page}) => {
@@ -42,8 +45,9 @@ test.describe("Base", () => {
 
   test("localized tooltip", async({page}) => {
     const component = page.getByTestId(id);
+    const firstSideMenuItem = component.locator(primevue.button.base).nth(0);
 
-    await component.hover();
+    await firstSideMenuItem.hover();
 
     await expect(page.locator(primevue.tooltip.right)).toBeAttached();
     await expect(page.locator(primevue.tooltip.right)).toBeVisible();
@@ -56,19 +60,35 @@ test.describe("Base", () => {
     await expect(component).toHaveScreenshot();
   });
 
-  test("visual mobile", { tag: "@visual" }, async({page}) => {
+  test("visual mini", { tag: "@visual" }, async({page}) => {
     const component = page.getByTestId(id);
-    const desktop = giveMe.aScreenSize({name: "sm"});
+    const screen = giveMe.aScreenSize({ name: "2xs" });
 
-    await page.setViewportSize({ ...desktop });
+    await page.setViewportSize({ ...screen });
     await expect(component).toHaveScreenshot();
   });
 
-  test("visual 2xl", { tag: "@visual" }, async({page}) => {
+  test("visual mobile", { tag: "@visual" }, async({page}) => {
     const component = page.getByTestId(id);
-    const desktop = giveMe.aScreenSize({name: "2xl"});
+    const screen = giveMe.aScreenSize({ name: "xs" });
 
-    await page.setViewportSize({ ...desktop });
+    await page.setViewportSize({ ...screen });
+    await expect(component).toHaveScreenshot();
+  });
+
+  test("visual tablet", { tag: "@visual" }, async({page}) => {
+    const component = page.getByTestId(id);
+    const screen = giveMe.aScreenSize({ name: "sm" });
+
+    await page.setViewportSize({ ...screen });
+    await expect(component).toHaveScreenshot();
+  });
+
+  test("visual wide", { tag: "@visual" }, async({page}) => {
+    const component = page.getByTestId(id);
+    const screen = giveMe.aScreenSize({ name: "2xl" });
+
+    await page.setViewportSize({ ...screen });
     await expect(component).toHaveScreenshot();
   });
 });
@@ -99,7 +119,8 @@ test.describe("Disabled Item", () => {
 
   test("button color", async({page}) => {
     const component = page.getByTestId(id);
+    const firstSideMenuItem = component.locator(primevue.button.base).nth(0);
 
-    await expect(component.locator(primevue.button.base)).toHaveAttribute("disabled");
+    await expect(firstSideMenuItem).toHaveAttribute("disabled");
   });
 });
