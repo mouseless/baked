@@ -11,7 +11,7 @@ public static class DomainModelExtensions
     public static TypeModel TheTypeModel(this Stubber giveMe, Type type) =>
         giveMe.TheDomainModel().Types[type];
 
-    public static AttributeCollection AnAttributeCollection(this Stubber giveMe,
+    public static AttributeCollection AnAttributeCollection(this Stubber _,
         Attribute? item = default,
         IEnumerable<Attribute>? items = default
     )
