@@ -1,4 +1,5 @@
 ﻿using Baked.Domain.Configuration;
+using Baked.Domain.Model;
 
 namespace Baked.Domain.Conventions;
 
@@ -9,6 +10,6 @@ public class RemoveMetadataFromTypeConvention<TAttribute>(Func<TypeModelMetadata
     {
         if (!_when(model)) { return; }
 
-        model.Type.CustomAttributes.Remove<TAttribute>();
+        ((IMutableAttributeCollection)model.Type.CustomAttributes).Remove<TAttribute>();
     }
 }

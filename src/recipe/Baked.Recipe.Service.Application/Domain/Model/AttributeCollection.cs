@@ -2,11 +2,12 @@
 
 namespace Baked.Domain.Model;
 
-public class AttributeCollection
+public class AttributeCollection()
+    : IMutableAttributeCollection
 {
     readonly Dictionary<Type, List<Attribute>> _attributes = [];
 
-    internal AttributeCollection(IEnumerable<Attribute> attributes)
+    internal AttributeCollection(IEnumerable<Attribute> attributes) : this()
     {
         foreach (var attribute in attributes)
         {
@@ -14,7 +15,7 @@ public class AttributeCollection
         }
     }
 
-    internal void Add(Attribute attribute)
+    void Add(Attribute attribute)
     {
         var type = attribute.GetType();
         if (!_attributes.ContainsKey(type))
@@ -22,13 +23,15 @@ public class AttributeCollection
             _attributes[type] = [];
         }
 
+        if (!attribute.AllowsMultiple())
+        {
+            _attributes[type].Clear();
+        }
+
         _attributes[type].Add(attribute);
     }
 
-    internal void Remove<T>() where T : Attribute =>
-        Remove(typeof(T));
-
-    internal void Remove(Type type)
+    void Remove(Type type)
     {
         if (!_attributes.ContainsKey(type)) { return; }
 
@@ -60,4 +63,10 @@ public class AttributeCollection
 
         return true;
     }
+
+    void IMutableAttributeCollection.Add(Attribute attribute) =>
+        Add(attribute);
+
+    void IMutableAttributeCollection.Remove(Type type) =>
+        Remove(type);
 }

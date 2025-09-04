@@ -111,6 +111,14 @@ public static class DomainExtensions
     public static bool TryGet<T>(this ICustomAttributesModel model, [NotNullWhen(true)] out IEnumerable<T>? result) where T : Attribute =>
         model.CustomAttributes.TryGet(out result);
 
+    public static bool AllowsMultiple(this Attribute attribute) =>
+        attribute
+            .GetType()
+            .GetCustomAttributes(typeof(AttributeUsageAttribute), false)
+            .Cast<AttributeUsageAttribute>()
+            .FirstOrDefault()
+            ?.AllowMultiple == true;
+
     #region IDomainModelConvention
 
     public static void Add(this IDomainModelConventionCollection conventions, IDomainModelConvention convention,

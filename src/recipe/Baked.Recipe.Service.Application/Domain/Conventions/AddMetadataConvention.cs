@@ -16,8 +16,6 @@ public class AddMetadataConvention<TModelContext>(
         }
     }
 
-    void Add(ICustomAttributesModel model, Attribute attribute)
-    {
-        model.CustomAttributes.Add(attribute);
-    }
+    void Add(ICustomAttributesModel model, Attribute attribute) =>
+        ((IMutableAttributeCollection)model.CustomAttributes).Add(attribute);
 }
