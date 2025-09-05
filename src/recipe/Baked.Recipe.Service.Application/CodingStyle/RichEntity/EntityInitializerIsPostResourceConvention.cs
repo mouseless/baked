@@ -12,7 +12,7 @@ public class EntityInitializerIsPostResourceConvention : IDomainModelConvention<
     {
         if (!context.Type.TryGetMetadata(out var metadata)) { return; }
         if (!metadata.Has<EntityAttribute>()) { return; }
-        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
+        if (!context.Method.TryGet<ActionModelAttribute>(out var action)) { return; }
         if (!context.Method.Has<InitializerAttribute>()) { return; }
 
         action.Method = HttpMethod.Post;

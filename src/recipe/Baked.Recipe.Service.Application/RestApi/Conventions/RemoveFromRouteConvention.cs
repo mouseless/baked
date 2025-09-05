@@ -11,7 +11,7 @@ public class RemoveFromRouteConvention(IEnumerable<string> _parts,
 {
     public void Apply(MethodModelContext context)
     {
-        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
+        if (!context.Method.TryGet<ActionModelAttribute>(out var action)) { return; }
         if (_when is not null && !_when(action)) { return; }
         if (_whenContext is not null && !_whenContext(context)) { return; }
 

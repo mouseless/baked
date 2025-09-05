@@ -7,7 +7,7 @@ public class SingleObjectParametersDontUseRequestClassConvention : IDomainModelC
 {
     public void Apply(MethodModelContext context)
     {
-        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
+        if (!context.Method.TryGet<ActionModelAttribute>(out var action)) { return; }
         if (action.BodyParameters.Count() != 1) { return; }
 
         var bodyParameter = action.BodyParameters.Single();

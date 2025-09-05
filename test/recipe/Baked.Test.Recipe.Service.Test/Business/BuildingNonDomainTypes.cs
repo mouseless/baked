@@ -3,7 +3,7 @@ using Baked.Orm;
 using Baked.Test.Lifetime;
 using Baked.Test.Orm;
 
-namespace Baked.Test.Domain;
+namespace Baked.Test.Business;
 
 public class BuildingNonDomainTypes : TestServiceSpec
 {

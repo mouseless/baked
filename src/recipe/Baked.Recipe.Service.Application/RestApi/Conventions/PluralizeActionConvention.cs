@@ -10,7 +10,7 @@ public class PluralizeActionConvention(
 {
     public void Apply(MethodModelContext context)
     {
-        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
+        if (!context.Method.TryGet<ActionModelAttribute>(out var action)) { return; }
         if (_when is not null && !_when(action)) { return; }
 
         var newName = action.Name.Pluralize();

@@ -21,7 +21,7 @@
   parameter as well
 - Domain model now respects `AllowMultiple` property of an attrbute, allowing an
   attribute to be overriden when it is single instance attribute
-  - `Add/Remove{..}Metadata` now only works for the attributes that have
+  - `Add{..}Metadata` now only works for the attributes that have
     `AllowMultiple` set to `true`
   - `Set{..}Metadata` is now introduced to setting (or overriding) a single
     instance for the attributes that have `AllowMultiple` set to `false`

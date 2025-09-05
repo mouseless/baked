@@ -51,7 +51,7 @@ public class JwtAuthenticationFeature(Action<JwtBearerOptions> _configureOptions
                         .Having<ControllerModelAttribute>()
                         .SelectMany(t => t.GetMembers().Methods.Having<ActionModelAttribute>())
                         .Where(m => m.Has<Authorization.AllowAnonymousAttribute>())
-                        .Select(m => m.GetSingle<ActionModelAttribute>().GetRoute())
+                        .Select(m => m.Get<ActionModelAttribute>().GetRoute())
                     );
             });
 

@@ -89,7 +89,7 @@ public class TypeModelMembers : TypeModelMetadata, IDocumentedModel
                     builder.GetReference(property.PropertyType),
                     property.GetMethod?.IsPublic == true,
                     property.GetMethod?.IsVirtual == true,
-                    new(property.GetCustomAttributes())
+                    new($"{type.Name}.{property.Name}", property.GetCustomAttributes())
                 )
                 {
                     Documentation = XmlComments.Get(property)
@@ -107,7 +107,7 @@ public class TypeModelMembers : TypeModelMetadata, IDocumentedModel
                         methodsByName.Key,
                         builder.Options.DefaultOverloadSelector(overloads),
                         overloads,
-                        new(methodsByName.SelectMany(m => m.GetCustomAttributes()))
+                        new($"{type.Name}.{methodsByName.Key}", methodsByName.SelectMany(m => m.GetCustomAttributes()))
                     ));
                 }
 
@@ -142,17 +142,17 @@ public class TypeModelMembers : TypeModelMetadata, IDocumentedModel
 
             ModelCollection<ParameterModel> BuildParameters(MethodBase method, XmlNode? methodDocumentation)
             {
-                return new(method.GetParameters().Select(p => BuildParameter(p, methodDocumentation)));
+                return new(method.GetParameters().Select(p => BuildParameter(method, p, methodDocumentation)));
             }
 
-            ParameterModel BuildParameter(ParameterInfo parameter, XmlNode? methodDocumentation)
+            ParameterModel BuildParameter(MethodBase method, ParameterInfo parameter, XmlNode? methodDocumentation)
             {
                 return new(
                     parameter.Name ?? string.Empty,
                     builder.GetReference(parameter.ParameterType),
                     parameter.IsOptional,
                     parameter.DefaultValue,
-                    new(parameter.Member.GetCustomAttributes()),
+                    new($"{type.Name}.{method.Name}.{parameter.Name}", parameter.Member.GetCustomAttributes()),
                     apply => apply(parameter)
                 )
                 {

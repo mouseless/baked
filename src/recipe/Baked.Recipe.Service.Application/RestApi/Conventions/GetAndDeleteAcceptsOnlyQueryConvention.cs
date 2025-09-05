@@ -7,8 +7,8 @@ public class GetAndDeleteAcceptsOnlyQueryConvention : IDomainModelConvention<Par
 {
     public void Apply(ParameterModelContext context)
     {
-        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
-        if (!context.Parameter.TryGetSingle<ParameterModelAttribute>(out var parameter)) { return; }
+        if (!context.Method.TryGet<ActionModelAttribute>(out var action)) { return; }
+        if (!context.Parameter.TryGet<ParameterModelAttribute>(out var parameter)) { return; }
         if (action.Method != HttpMethod.Get && action.Method != HttpMethod.Delete) { return; }
         if (parameter.FromServices || parameter.FromRoute) { return; }
 

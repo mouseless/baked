@@ -1,4 +1,4 @@
-using Baked.Caching;
+﻿using Baked.Caching;
 using Baked.Domain.Model;
 using Baked.Theme.Admin;
 using Baked.Ui;
@@ -19,7 +19,7 @@ public static class DomainDatas
                 ? Composite(options: cd => cd.Parts.AddRange([Computed(Composables.UseQuery), Injected()]))
                 : Computed(Composables.UseQuery);
 
-            if (method.TryGetSingle<ClientCacheAttribute>(out var clientCache))
+            if (method.TryGet<ClientCacheAttribute>(out var clientCache))
             {
                 rd.SetAttribute("client-cache", clientCache.Type);
             }

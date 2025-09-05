@@ -11,6 +11,7 @@
   >
     <Select
       v-model="selected"
+      v-bind="$attrs"
       :input-id="path"
       :options="data"
       :placeholder="label"

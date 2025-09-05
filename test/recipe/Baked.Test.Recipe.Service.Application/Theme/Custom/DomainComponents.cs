@@ -1,4 +1,4 @@
-using Baked.Domain.Model;
+﻿using Baked.Domain.Model;
 using Baked.RestApi.Model;
 using Baked.Theme;
 using Baked.Theme.Admin;
@@ -123,7 +123,7 @@ public static class DomainComponents
     )
     {
         var (domain, l) = context;
-        var api = parameter.GetSingle<ParameterModelAttribute>();
+        var api = parameter.Get<ParameterModelAttribute>();
 
         return ParameterParameter(parameter,
             component: p => EnumSelectButton(p.ParameterType,
@@ -155,7 +155,7 @@ public static class DomainComponents
     )
     {
         var (domain, l) = context;
-        var api = parameter.GetSingle<ParameterModelAttribute>();
+        var api = parameter.Get<ParameterModelAttribute>();
 
         return ParameterParameter(parameter,
             component: p => EnumSelect(l(p.Name.Titleize()), p.ParameterType,
@@ -184,7 +184,7 @@ public static class DomainComponents
         Action<Parameter>? options = default
     )
     {
-        var api = parameter.GetSingle<ParameterModelAttribute>();
+        var api = parameter.Get<ParameterModelAttribute>();
 
         return Parameter(api.Name, component(parameter), options: p =>
         {

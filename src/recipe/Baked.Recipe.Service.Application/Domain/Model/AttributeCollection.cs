@@ -2,19 +2,21 @@
 
 namespace Baked.Domain.Model;
 
-public class AttributeCollection
+public class AttributeCollection(string name)
+    : IMutableAttributeCollection
 {
+    readonly string _name = name;
     readonly Dictionary<Type, List<Attribute>> _attributes = [];
 
-    internal AttributeCollection(IEnumerable<Attribute> attributes)
+    internal AttributeCollection(string name, IEnumerable<Attribute> attributes) : this(name)
     {
         foreach (var attribute in attributes)
         {
-            Add(attribute);
+            AddInner(attribute);
         }
     }
 
-    internal void Add(Attribute attribute)
+    void AddInner(Attribute attribute)
     {
         var type = attribute.GetType();
         if (!_attributes.ContainsKey(type))
@@ -22,13 +24,35 @@ public class AttributeCollection
             _attributes[type] = [];
         }
 
+        if (!attribute.AllowsMultiple())
+        {
+            _attributes[type].Clear();
+        }
+
         _attributes[type].Add(attribute);
     }
 
-    internal void Remove<T>() where T : Attribute =>
-        Remove(typeof(T));
+    void Set(Attribute attribute)
+    {
+        if (attribute.AllowsMultiple())
+        {
+            throw new InvalidOperationException($"`{attribute.GetType().Name}` cannot be set for `{_name}` because it allows multiple. Please use `Add` for this attribute.");
+        }
 
-    internal void Remove(Type type)
+        AddInner(attribute);
+    }
+
+    void Add(Attribute attribute)
+    {
+        if (!attribute.AllowsMultiple())
+        {
+            throw new InvalidOperationException($"`{attribute.GetType().Name}` cannot be added to `{_name}` because it doesn't allow multiple. Please use `Set` for this attribute.");
+        }
+
+        AddInner(attribute);
+    }
+
+    void Remove(Type type)
     {
         if (!_attributes.ContainsKey(type)) { return; }
 
@@ -41,23 +65,76 @@ public class AttributeCollection
     public bool Contains(Type type) =>
         _attributes.ContainsKey(type);
 
-    public IEnumerable<T> Get<T>() where T : Attribute =>
-        Get(typeof(T)).Cast<T>();
+    public T Get<T>() where T : Attribute =>
+        (T)Get(typeof(T));
 
-    public IEnumerable<Attribute> Get(Type type) =>
-        _attributes[type];
-
-    public bool TryGet<T>([NotNullWhen(true)] out IEnumerable<T>? result) where T : Attribute
+    public Attribute Get(Type type)
     {
-        if (!_attributes.TryGetValue(typeof(T), out var set))
+        if (type.AllowsMultiple())
+        {
+            throw new InvalidOperationException($"Cannot use `Get` for `{type.Name}` in `{_name}` because it allows multiple. Please use `GetAll` for this attribute.");
+        }
+
+        return _attributes[type].Single();
+    }
+
+    public bool TryGet<T>([NotNullWhen(true)] out T? result) where T : Attribute
+    {
+        if (typeof(T).AllowsMultiple())
+        {
+            throw new InvalidOperationException($"Cannot use `TryGet` for `{typeof(T).Name}` in `{_name}` because it allows multiple. Please use `TryGetAll` for this attribute.");
+        }
+
+        if (!_attributes.TryGetValue(typeof(T), out var list))
         {
             result = null;
 
             return false;
         }
 
-        result = set.Cast<T>();
+        result = (T?)list.SingleOrDefault();
+
+        return result is not null;
+    }
+
+    public IEnumerable<T> GetAll<T>() where T : Attribute =>
+        GetAll(typeof(T)).Cast<T>();
+
+    public IEnumerable<Attribute> GetAll(Type type)
+    {
+        if (!type.AllowsMultiple())
+        {
+            throw new InvalidOperationException($"Cannot use `GetAll` for `{type.Name}` in `{_name}` because it doesn't allow multiple. Please use `Get` for this attribute.");
+        }
+
+        return _attributes[type].AsReadOnly();
+    }
+
+    public bool TryGetAll<T>([NotNullWhen(true)] out IEnumerable<T>? result) where T : Attribute
+    {
+        if (!typeof(T).AllowsMultiple())
+        {
+            throw new InvalidOperationException($"Cannot use `TryGetAll` for `{typeof(T).Name}` in `{_name}` because it doesn't allow multiple. Please use `TryGet` for this attribute.");
+        }
+
+        if (!_attributes.TryGetValue(typeof(T), out var list))
+        {
+            result = null;
+
+            return false;
+        }
+
+        result = list.Cast<T>();
 
         return true;
     }
+
+    void IMutableAttributeCollection.Set(Attribute attribute) =>
+        Set(attribute);
+
+    void IMutableAttributeCollection.Add(Attribute attribute) =>
+        Add(attribute);
+
+    void IMutableAttributeCollection.Remove(Type type) =>
+        Remove(type);
 }
