@@ -12,22 +12,37 @@ public static class DomainModelExtensions
         giveMe.TheDomainModel().Types[type];
 
     public static AttributeCollection AnAttributeCollection(this Stubber _,
+        string? name = default,
         Attribute? item = default,
         IEnumerable<Attribute>? items = default
     )
     {
+        name ??= "Test";
         items ??= [];
 
-        var result = new AttributeCollection();
+        var result = new AttributeCollection(name);
 
         if (item is not null)
         {
-            ((IMutableAttributeCollection)result).Add(item);
+            AddOrSet(item);
         }
 
         foreach (var current in items)
         {
-            ((IMutableAttributeCollection)result).Add(current);
+            AddOrSet(current);
+        }
+
+        void AddOrSet(Attribute attribute)
+        {
+            if (attribute.AllowsMultiple())
+            {
+                ((IMutableAttributeCollection)result).Add(attribute);
+            }
+            else
+            {
+                ((IMutableAttributeCollection)result).Set(attribute);
+            }
+
         }
 
         return result;

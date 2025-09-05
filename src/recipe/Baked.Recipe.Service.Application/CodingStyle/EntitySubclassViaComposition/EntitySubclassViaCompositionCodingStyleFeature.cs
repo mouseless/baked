@@ -11,7 +11,7 @@ public class EntitySubclassViaCompositionCodingStyleFeature : IFeature<CodingSty
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Conventions.AddTypeMetadata(
+            builder.Conventions.SetTypeMetadata(
                 attribute: c =>
                 {
                     var entityType = c.Type.GetMembers().GetMethod("op_Explicit").Parameters.Single().ParameterType;
@@ -28,16 +28,16 @@ public class EntitySubclassViaCompositionCodingStyleFeature : IFeature<CodingSty
                     parameterTypeMetadata.Has<EntityAttribute>(),
                 order: 10
             );
-            builder.Conventions.AddTypeMetadata(
-                apply: (c, add) =>
+            builder.Conventions.SetTypeMetadata(
+                apply: (c, set) =>
                 {
-                    add(c.Type, new ApiInputAttribute());
-                    add(c.Type, new LocatableAttribute());
+                    set(c.Type, new ApiInputAttribute());
+                    set(c.Type, new LocatableAttribute());
                 },
                 when: c => c.Type.Has<EntitySubclassAttribute>(),
                 order: 10
             );
-            builder.Conventions.AddMethodMetadata(
+            builder.Conventions.SetMethodMetadata(
                 attribute: c => new ActionModelAttribute(),
                 when: c =>
                     c.Type.Has<EntitySubclassAttribute>() && c.Method.Has<InitializerAttribute>() &&

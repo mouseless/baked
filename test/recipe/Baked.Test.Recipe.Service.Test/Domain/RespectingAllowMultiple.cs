@@ -4,7 +4,7 @@ namespace Baked.Test.Domain;
 
 public class RespectingAllowMultiple : TestServiceSpec
 {
-    [AttributeUsage(AttributeTargets.All, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.All)]
     public class SingleAttribute : Attribute;
 
     [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
@@ -16,10 +16,20 @@ public class RespectingAllowMultiple : TestServiceSpec
         var attributes = GiveMe.AnAttributeCollection(item: new SingleAttribute());
         var lastSingle = new SingleAttribute();
 
-        ((IMutableAttributeCollection)attributes).Add(lastSingle);
+        ((IMutableAttributeCollection)attributes).Set(lastSingle);
 
         attributes.Get<SingleAttribute>().Count().ShouldBe(1);
         attributes.Get<SingleAttribute>().First().ShouldBe(lastSingle);
+    }
+
+    [Test]
+    public void Add_throws_invalid_operation_when_a_single_attribute_is_given()
+    {
+        var attributes = GiveMe.AnAttributeCollection();
+
+        var action = () => ((IMutableAttributeCollection)attributes).Add(new SingleAttribute());
+
+        action.ShouldThrow<InvalidOperationException>();
     }
 
     [Test]
@@ -30,6 +40,16 @@ public class RespectingAllowMultiple : TestServiceSpec
         ((IMutableAttributeCollection)attributes).Add(new MultipleAttribute());
 
         attributes.Get<MultipleAttribute>().Count().ShouldBe(2);
+    }
+
+    [Test]
+    public void Set_throws_invalid_operation_when_a_multiple_attribute_is_given()
+    {
+        var attributes = GiveMe.AnAttributeCollection();
+
+        var action = () => ((IMutableAttributeCollection)attributes).Set(new MultipleAttribute());
+
+        action.ShouldThrow<InvalidOperationException>();
     }
 
     [Test]

@@ -11,7 +11,7 @@ public class ScopedBySuffixCodingStyleFeature(IEnumerable<string> _suffixes)
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Conventions.AddTypeMetadata(new ScopedAttribute(),
+            builder.Conventions.SetTypeMetadata(new ScopedAttribute(),
                 when: c =>
                     c.Type.IsClass && !c.Type.IsAbstract &&
                     c.Type.TryGetMetadata(out var metadata) &&

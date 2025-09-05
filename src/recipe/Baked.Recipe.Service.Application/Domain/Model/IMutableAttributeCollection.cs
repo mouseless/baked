@@ -2,6 +2,7 @@
 
 public interface IMutableAttributeCollection
 {
+    void Set(Attribute attribute);
     void Add(Attribute attribute);
     void Remove(Type type);
 

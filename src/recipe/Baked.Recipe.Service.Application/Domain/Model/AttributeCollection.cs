@@ -2,20 +2,21 @@
 
 namespace Baked.Domain.Model;
 
-public class AttributeCollection()
+public class AttributeCollection(string name)
     : IMutableAttributeCollection
 {
+    readonly string _name = name;
     readonly Dictionary<Type, List<Attribute>> _attributes = [];
 
-    internal AttributeCollection(IEnumerable<Attribute> attributes) : this()
+    internal AttributeCollection(string name, IEnumerable<Attribute> attributes) : this(name)
     {
         foreach (var attribute in attributes)
         {
-            Add(attribute);
+            AddInner(attribute);
         }
     }
 
-    void Add(Attribute attribute)
+    void AddInner(Attribute attribute)
     {
         var type = attribute.GetType();
         if (!_attributes.ContainsKey(type))
@@ -29,6 +30,26 @@ public class AttributeCollection()
         }
 
         _attributes[type].Add(attribute);
+    }
+
+    void Set(Attribute attribute)
+    {
+        if (attribute.AllowsMultiple())
+        {
+            throw new InvalidOperationException($"`{attribute.GetType().Name}` cannot be set for `{_name}` because it allows multiple. Please use `Add` for this attribute.");
+        }
+
+        AddInner(attribute);
+    }
+
+    void Add(Attribute attribute)
+    {
+        if (!attribute.AllowsMultiple())
+        {
+            throw new InvalidOperationException($"`{attribute.GetType().Name}` cannot be added to `{_name}` because it doesn't allow multiple. Please use `Set` for this attribute.");
+        }
+
+        AddInner(attribute);
     }
 
     void Remove(Type type)
@@ -63,6 +84,9 @@ public class AttributeCollection()
 
         return true;
     }
+
+    void IMutableAttributeCollection.Set(Attribute attribute) =>
+        Set(attribute);
 
     void IMutableAttributeCollection.Add(Attribute attribute) =>
         Add(attribute);

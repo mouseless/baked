@@ -1,17 +1,17 @@
-using Baked.Domain.Model;
+﻿using Baked.Domain.Model;
 
 namespace Baked.Test.Domain;
 
-public class AddingAndRemovingMetadata : TestServiceSpec
+public class SettingAndRemovingMetadata : TestServiceSpec
 {
     public class CustomAttribute : Attribute;
 
     [Test]
-    public void Uses_a_mutable_interface_to_add_attribute()
+    public void Uses_a_mutable_interface_to_set_an_attribute()
     {
         var attributes = GiveMe.AnAttributeCollection();
 
-        ((IMutableAttributeCollection)attributes).Add(new CustomAttribute());
+        ((IMutableAttributeCollection)attributes).Set(new CustomAttribute());
 
         attributes.Contains<CustomAttribute>().ShouldBeTrue();
     }

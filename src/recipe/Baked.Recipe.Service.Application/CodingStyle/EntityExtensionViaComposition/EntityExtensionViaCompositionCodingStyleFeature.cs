@@ -11,7 +11,7 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Conventions.AddTypeMetadata(
+            builder.Conventions.SetTypeMetadata(
                 attribute: context =>
                 {
                     var entityType = context.Type.GetMembers().GetMethod("op_Implicit").Parameters.Single().ParameterType;
@@ -28,8 +28,7 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
                     parameterTypeMetadata.Has<EntityAttribute>(),
                 order: 10
             );
-            builder.Conventions.RemoveTypeMetadata<NamespaceAttribute>(c => c.Type.Has<EntityExtensionAttribute>(), order: 10);
-            builder.Conventions.AddTypeMetadata(
+            builder.Conventions.SetTypeMetadata(
                 apply: (c, add) =>
                 {
                     var entityType = c.Type.GetSingle<EntityExtensionAttribute>().EntityType;
@@ -41,11 +40,11 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
                 when: c => c.Type.Has<EntityExtensionAttribute>(),
                 order: 10
             );
-            builder.Conventions.AddTypeMetadata(
-                apply: (c, add) =>
+            builder.Conventions.SetTypeMetadata(
+                apply: (c, set) =>
                 {
-                    add(c.Type, new ApiInputAttribute());
-                    add(c.Type, new LocatableAttribute());
+                    set(c.Type, new ApiInputAttribute());
+                    set(c.Type, new LocatableAttribute());
                 },
                 when: c => c.Type.Has<EntityExtensionAttribute>(),
                 order: 10

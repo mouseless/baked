@@ -125,6 +125,18 @@ public static class DomainExtensions
         int order = default
     ) => conventions.Add((convention, order));
 
+    public static void SetTypeMetadata(this IDomainModelConventionCollection conventions, Attribute attribute, Func<TypeModelMetadataContext, bool> when,
+        int order = default
+    ) => conventions.SetTypeMetadata((context, set) => set(context.Type, attribute), when, order);
+
+    public static void SetTypeMetadata(this IDomainModelConventionCollection conventions, Func<TypeModelMetadataContext, Attribute> attribute, Func<TypeModelMetadataContext, bool> when,
+        int order = default
+    ) => conventions.SetTypeMetadata((context, set) => set(context.Type, attribute(context)), when, order);
+
+    public static void SetTypeMetadata(this IDomainModelConventionCollection conventions, Action<TypeModelMetadataContext, Action<ICustomAttributesModel, Attribute>> apply, Func<TypeModelMetadataContext, bool> when,
+        int order = default
+    ) => conventions.Add(new SetMetadataConvention<TypeModelMetadataContext>(apply, when), order);
+
     public static void AddTypeMetadata(this IDomainModelConventionCollection conventions, Attribute attribute, Func<TypeModelMetadataContext, bool> when,
         int order = default
     ) => conventions.AddTypeMetadata((context, add) => add(context.Type, attribute), when, order);
@@ -142,6 +154,18 @@ public static class DomainExtensions
     ) where TAttribute : Attribute =>
         conventions.Add(new RemoveMetadataFromTypeConvention<TAttribute>(when), order);
 
+    public static void SetPropertyMetadata(this IDomainModelConventionCollection conventions, Attribute attribute, Func<PropertyModelContext, bool> when,
+        int order = default
+    ) => conventions.SetPropertyMetadata((context, set) => set(context.Property, attribute), when, order);
+
+    public static void SetPropertyMetadata(this IDomainModelConventionCollection conventions, Func<PropertyModelContext, Attribute> attribute, Func<PropertyModelContext, bool> when,
+        int order = default
+    ) => conventions.SetPropertyMetadata((context, set) => set(context.Property, attribute(context)), when, order);
+
+    public static void SetPropertyMetadata(this IDomainModelConventionCollection conventions, Action<PropertyModelContext, Action<ICustomAttributesModel, Attribute>> apply, Func<PropertyModelContext, bool> when,
+        int order = default
+    ) => conventions.Add(new SetMetadataConvention<PropertyModelContext>(apply, when), order);
+
     public static void AddPropertyMetadata(this IDomainModelConventionCollection conventions, Attribute attribute, Func<PropertyModelContext, bool> when,
         int order = default
     ) => conventions.AddPropertyMetadata((context, add) => add(context.Property, attribute), when, order);
@@ -154,6 +178,18 @@ public static class DomainExtensions
         int order = default
     ) => conventions.Add(new AddMetadataConvention<PropertyModelContext>(apply, when), order);
 
+    public static void SetMethodMetadata(this IDomainModelConventionCollection conventions, Attribute attribute, Func<MethodModelContext, bool> when,
+        int order = default
+    ) => conventions.SetMethodMetadata((context, set) => set(context.Method, attribute), when, order);
+
+    public static void SetMethodMetadata(this IDomainModelConventionCollection conventions, Func<MethodModelContext, Attribute> attribute, Func<MethodModelContext, bool> when,
+        int order = default
+    ) => conventions.SetMethodMetadata((context, set) => set(context.Method, attribute(context)), when, order);
+
+    public static void SetMethodMetadata(this IDomainModelConventionCollection conventions, Action<MethodModelContext, Action<ICustomAttributesModel, Attribute>> apply, Func<MethodModelContext, bool> when,
+        int order = default
+    ) => conventions.Add(new SetMetadataConvention<MethodModelContext>(apply, when), order);
+
     public static void AddMethodMetadata(this IDomainModelConventionCollection conventions, Attribute attribute, Func<MethodModelContext, bool> when,
         int order = default
     ) => conventions.AddMethodMetadata((context, add) => add(context.Method, attribute), when, order);
@@ -165,6 +201,18 @@ public static class DomainExtensions
     public static void AddMethodMetadata(this IDomainModelConventionCollection conventions, Action<MethodModelContext, Action<ICustomAttributesModel, Attribute>> apply, Func<MethodModelContext, bool> when,
         int order = default
     ) => conventions.Add(new AddMetadataConvention<MethodModelContext>(apply, when), order);
+
+    public static void SetParameterMetadata(this IDomainModelConventionCollection conventions, Attribute attribute, Func<ParameterModelContext, bool> when,
+        int order = default
+    ) => conventions.SetParameterMetadata((context, set) => set(context.Parameter, attribute), when, order);
+
+    public static void SetParameterMetadata(this IDomainModelConventionCollection conventions, Func<ParameterModelContext, Attribute> attribute, Func<ParameterModelContext, bool> when,
+        int order = default
+    ) => conventions.SetParameterMetadata((context, set) => set(context.Parameter, attribute(context)), when, order);
+
+    public static void SetParameterMetadata(this IDomainModelConventionCollection conventions, Action<ParameterModelContext, Action<ICustomAttributesModel, Attribute>> apply, Func<ParameterModelContext, bool> when,
+        int order = default
+    ) => conventions.Add(new SetMetadataConvention<ParameterModelContext>(apply, when), order);
 
     public static void AddParameterMetadata(this IDomainModelConventionCollection conventions, Attribute attribute, Func<ParameterModelContext, bool> when,
         int order = default

@@ -15,7 +15,7 @@ public class CommandPatternCodingStyleFeature(IEnumerable<string> _methodNames)
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Conventions.AddTypeMetadata(new PubliclyInitializableAttribute(),
+            builder.Conventions.SetTypeMetadata(new PubliclyInitializableAttribute(),
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
                     members.Has<TransientAttribute>() &&
