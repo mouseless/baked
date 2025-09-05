@@ -12,8 +12,8 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Conventions.AddTypeMetadata(
-                apply: (context, add) =>
+            builder.Conventions.SetTypeMetadata(
+                apply: (context, set) =>
                 {
                     var query = context.Type;
                     var parameter =
@@ -24,25 +24,25 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
 
                     var entity = parameter.ParameterType.GetGenerics().GenericTypeArguments.First().Model;
                     entity.Apply(t =>
-                        add(query, new QueryAttribute(t))
+                        set(query, new QueryAttribute(t))
                     );
                     query.Apply(t =>
-                        add(entity.GetMetadata(), new EntityAttribute(t))
+                        set(entity.GetMetadata(), new EntityAttribute(t))
                     );
                 },
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
                     members.Constructors.Any(o => o.Parameters.Any(p => p.ParameterType.IsAssignableTo(typeof(IQueryContext<>))))
             );
-            builder.Conventions.AddTypeMetadata(
-                apply: (c, add) =>
+            builder.Conventions.SetTypeMetadata(
+                apply: (c, set) =>
                 {
-                    add(c.Type, new ApiInputAttribute());
-                    add(c.Type, new LocatableAttribute());
+                    set(c.Type, new ApiInputAttribute());
+                    set(c.Type, new LocatableAttribute());
                 },
                 when: c => c.Type.Has<EntityAttribute>()
             );
-            builder.Conventions.AddMethodMetadata(
+            builder.Conventions.SetMethodMetadata(
                 attribute: c => new ActionModelAttribute(),
                 when: c =>
                     c.Type.Has<EntityAttribute>() && c.Method.Has<InitializerAttribute>() &&

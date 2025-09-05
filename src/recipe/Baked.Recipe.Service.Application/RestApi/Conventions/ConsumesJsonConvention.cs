@@ -9,7 +9,7 @@ public class ConsumesJsonConvention(
 {
     public void Apply(MethodModelContext context)
     {
-        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
+        if (!context.Method.TryGet<ActionModelAttribute>(out var action)) { return; }
         if (_when is not null && !_when(action)) { return; }
 
         action.AdditionalAttributes.Add("Consumes(\"application/json\")");

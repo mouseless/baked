@@ -11,7 +11,7 @@ public class UseDocumentationAsDescriptionConvention(TagDescriptions _descriptio
     public void Apply(TypeModelContext context)
     {
         if (!context.Type.TryGetMembers(out var members)) { return; }
-        if (!members.TryGetSingle<ControllerModelAttribute>(out var controller)) { return; }
+        if (!members.TryGet<ControllerModelAttribute>(out var controller)) { return; }
 
         var summary = members.Documentation.GetSummary();
 
@@ -24,7 +24,7 @@ public class UseDocumentationAsDescriptionConvention(TagDescriptions _descriptio
 
     public void Apply(MethodModelContext context)
     {
-        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
+        if (!context.Method.TryGet<ActionModelAttribute>(out var action)) { return; }
         if (context.Method.Documentation is null) { return; }
 
         _examples.TryAdd($"{context.Type.FullName}.{context.Method.Name}", new(
@@ -41,7 +41,7 @@ public class UseDocumentationAsDescriptionConvention(TagDescriptions _descriptio
 
     public void Apply(ParameterModelContext context)
     {
-        if (!context.Parameter.TryGetSingle<ParameterModelAttribute>(out var parameter)) { return; }
+        if (!context.Parameter.TryGet<ParameterModelAttribute>(out var parameter)) { return; }
         if (context.Parameter is null) { return; }
         if (context.Parameter.Documentation is null) { return; }
 

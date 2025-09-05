@@ -10,7 +10,7 @@ public class TargetEntitySubclassFromRouteConvention : IDomainModelConvention<Me
 {
     public void Apply(MethodModelContext context)
     {
-        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
+        if (!context.Method.TryGet<ActionModelAttribute>(out var action)) { return; }
         if (context.Method.Has<InitializerAttribute>()) { return; }
         if (!action.Parameter.TryGetValue(ParameterModelAttribute.TargetParameterName, out var parameter)) { return; }
 
@@ -22,7 +22,7 @@ public class TargetEntitySubclassFromRouteConvention : IDomainModelConvention<Me
 
         var singleByUniqueMethod = queryMembers.Methods.Having<SingleByUniqueAttribute>().FirstOrDefault();
         if (singleByUniqueMethod is null) { return; }
-        if (!singleByUniqueMethod.TryGetSingle<SingleByUniqueAttribute>(out var unique)) { return; }
+        if (!singleByUniqueMethod.TryGet<SingleByUniqueAttribute>(out var unique)) { return; }
 
         var uniqueParameter = singleByUniqueMethod.DefaultOverload.Parameters[unique.PropertyName.Camelize()];
         if (!uniqueParameter.ParameterType.IsEnum && !uniqueParameter.ParameterType.Is<string>()) { return; }

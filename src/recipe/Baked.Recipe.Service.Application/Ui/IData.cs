@@ -2,6 +2,6 @@
 
 public interface IData
 {
-    public string Type { get; }
-    public bool? RequireLocalization => default;
+    string Type { get; }
+    bool? RequireLocalization { get; }
 }

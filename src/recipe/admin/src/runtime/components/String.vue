@@ -18,7 +18,7 @@ const context = useContext();
 const { truncate } = useFormat();
 
 const { schema, data } = defineProps({
-  schema: { type: null, default: { } },
+  schema: { type: null, required: true },
   data: { type: null, required: true }
 });
 

@@ -3,9 +3,8 @@
 namespace Baked.Theme.Admin;
 
 public record MenuPage(string Path)
-    : IGeneratedComponentSchema
+    : PageSchemaBase(Path)
 {
-    public string Path { get; set; } = Path;
     public string? FilterPageContextKey { get; set; }
     public IComponentDescriptor? Header { get; set; }
     public List<Section> Sections { get; init; } = [];

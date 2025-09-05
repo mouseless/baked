@@ -18,7 +18,7 @@ import { useContext } from "#imports";
 const context = useContext();
 
 const { data } = defineProps({
-  schema: { type: null, default: null },
+  schema: { type: null, required: true },
   data: { type: null, required: true }
 });
 

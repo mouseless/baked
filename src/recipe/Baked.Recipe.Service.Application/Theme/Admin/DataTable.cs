@@ -15,10 +15,10 @@ public record DataTable : IComponentSchema
     public Footer? FooterTemplate { get; set; }
     public Export? ExportOptions { get; set; }
 
-    public record Column(string Prop, Conditional Component)
+    public record Column(string Prop)
     {
         public string Prop { get; set; } = Prop;
-        public Conditional Component { get; set; } = Component;
+        public Conditional Component { get; set; } = Components.Conditional();
         public string? Title { get; set; }
         public bool? AlignRight { get; set; }
         public bool? MinWidth { get; set; }
@@ -37,17 +37,17 @@ public record DataTable : IComponentSchema
         public string CsvSeparator { get; set; } = CsvSeparator;
         public string FileName { get; set; } = FileName;
         public string? Formatter { get; set; }
-        public string? ButtonIcon { get; set; }
+        public string? ButtonIcon { get; set; } = "pi pi-download";
         public string? ButtonLabel { get; set; }
         public bool? AppendParameters { get; set; }
         public string? ParameterSeparator { get; set; }
         public string? ParameterFormatter { get; set; }
     }
 
-    public record VirtualScroller(int ItemSize)
+    public record VirtualScroller()
     {
-        public int ItemSize { get; set; } = ItemSize;
-        public int? NumToleratedItems { get; set; }
-        public bool? AppendOnly { get; set; }
+        public int? ItemSize { get; set; }
+        public int? NumToleratedItems { get; set; } = 10;
+        public bool? AppendOnly { get; set; } = true;
     }
 }

@@ -22,8 +22,8 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
             builder.Index.Method.Add<ActionModelAttribute>();
             builder.Index.Parameter.Add<ParameterModelAttribute>();
 
-            // domain metadata add/remove
-            builder.Conventions.AddTypeMetadata(
+            // domain metadata mutations
+            builder.Conventions.SetTypeMetadata(
                 attribute: c => new ControllerModelAttribute(),
                 when: c =>
                   c.Type.Has<ServiceAttribute>() &&
@@ -34,7 +34,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
                   members.Methods.Any(m => m.DefaultOverload.IsPublicInstanceWithNoSpecialName()),
               order: 10
             );
-            builder.Conventions.AddMethodMetadata(
+            builder.Conventions.SetMethodMetadata(
                 attribute: c => new ActionModelAttribute(),
                 when: c =>
                     !c.Method.Has<ExternalAttribute>() &&
@@ -43,7 +43,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
                     c.Method.DefaultOverload.AllParametersAreApiInput(),
                 order: int.MaxValue - 10
             );
-            builder.Conventions.AddParameterMetadata(
+            builder.Conventions.SetParameterMetadata(
                 attribute: c => new ParameterModelAttribute(),
                 when: c => c.Parameter.IsApiInput(),
                 order: int.MaxValue - 10
@@ -80,7 +80,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
                 {
                     if (!type.TryGetMetadata(out var metadata)) { continue; }
 
-                    var controller = metadata.GetSingle<ControllerModelAttribute>();
+                    var controller = metadata.Get<ControllerModelAttribute>();
                     if (!controller.Action.Any()) { continue; }
 
                     api.Controllers.Add(controller);

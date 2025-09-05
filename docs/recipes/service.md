@@ -16,22 +16,22 @@ Bake.New
 
 ## Layers
 
-| Name                 | Run                | Test               |
-| -------------------- | ------------------ | ------------------ |
-| Code Generation      | :white_check_mark: | :white_check_mark: |
-| Data Access          | :white_check_mark: | :white_check_mark: |
-| Domain               | :white_check_mark: | :white_check_mark: |
-| HTTP Client          | :white_check_mark: | :no_entry:         |
-| HTTP Server          | :white_check_mark: | :no_entry:         |
-| Rest API             | :white_check_mark: | :no_entry:         |
-| Runtime              | :white_check_mark: | :white_check_mark: |
-| Testing              | :no_entry:         | :white_check_mark: |
-| UI                   | :white_check_mark: | :no_entry:         |
+| Name                 | Run                                 | Test               |
+| ---                  | ---                                 | ---                |
+| Code Generation      | :white_check_mark:                  | :white_check_mark: |
+| Data Access          | :white_check_mark:                  | :white_check_mark: |
+| Domain               | :white_check_mark:                  | :white_check_mark: |
+| HTTP Client          | :white_check_mark:                  | :no_entry:         |
+| HTTP Server          | :white_check_mark:                  | :no_entry:         |
+| Rest API             | :white_check_mark:                  | :no_entry:         |
+| Runtime              | :white_check_mark:                  | :white_check_mark: |
+| Testing              | :no_entry:                          | :white_check_mark: |
+| UI                   | :white_check_mark: (When Theme Set) | :no_entry:         |
 
 ## Features
 
 | Name               | Run                                | Test                               |
-| ------------------ | ---------------------------------- | ---------------------------------- |
+| ---                | ---                                | ---                                |
 | Authentication(s)  | :white_check_mark:                 | :no_entry:                         |
 |                    | Fixed Bearer Token                 |                                    |
 | Authorization      | :white_check_mark: Claim Based     | :no_entry:                         |
@@ -71,7 +71,7 @@ Bake.New
 | Logging            | :white_check_mark: Request         | :no_entry:                         |
 | Mocking Overrider  | :no_entry:                         | :white_check_mark: First Interface |
 | ORM                | :white_check_mark: Auto Map        | :white_check_mark:                 |
-| Theme              | :white_check_mark: Admin           | :white_check_mark:                 |
+| Theme              | :white_check_mark: (No Default)    | :white_check_mark:                 |
 
 > [!NOTE]
 >

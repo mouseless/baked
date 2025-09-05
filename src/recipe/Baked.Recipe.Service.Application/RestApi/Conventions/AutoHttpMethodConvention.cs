@@ -9,7 +9,7 @@ public class AutoHttpMethodConvention(IEnumerable<(Regex Regex, HttpMethod Metho
 {
     public void Apply(MethodModelContext context)
     {
-        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
+        if (!context.Method.TryGet<ActionModelAttribute>(out var action)) { return; }
 
         foreach (var mapping in _mappings)
         {

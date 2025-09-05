@@ -151,7 +151,7 @@ public static class OrmExtensions
 
         return
             type.TryGetMetadata(out var metadata) &&
-            metadata.TryGetSingle(out queryAttribute);
+            metadata.TryGet(out queryAttribute);
     }
 
     public static bool TryGetEntityAttribute(this TypeModel type, [NotNullWhen(true)] out EntityAttribute? entityAttribute)
@@ -160,7 +160,7 @@ public static class OrmExtensions
 
         return
             type.TryGetMetadata(out var metadata) &&
-            metadata.TryGetSingle(out entityAttribute);
+            metadata.TryGet(out entityAttribute);
     }
 
     public static void ShouldBeDeleted(this object @object) =>

@@ -4,9 +4,9 @@ namespace Baked.Test.Theme;
 
 public class DataTable(IStringLocalizer _l)
 {
-    public TableWithFooter GetTableDataWithFooter(int count)
+    public TableWithFooter GetTableDataWithFooter(RowCount count)
     {
-        var items = Enumerable.Range(0, count)
+        var items = Enumerable.Range(0, (int)count)
             .Select(i => new TableRow(
                 $"{_l["This is a label"]}-{i}",
                 i % 5,

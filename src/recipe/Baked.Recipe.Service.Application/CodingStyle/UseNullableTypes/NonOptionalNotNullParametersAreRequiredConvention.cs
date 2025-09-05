@@ -8,7 +8,7 @@ public class NonOptionalNotNullParametersAreRequiredConvention : IDomainModelCon
 {
     public void Apply(ParameterModelContext context)
     {
-        if (!context.Parameter.TryGetSingle<ParameterModelAttribute>(out var parameter)) { return; }
+        if (!context.Parameter.TryGet<ParameterModelAttribute>(out var parameter)) { return; }
         if (context.Parameter.IsOptional) { return; }
         if (!context.Parameter.Has<NotNullAttribute>()) { return; }
         if (parameter.FromRoute) { return; }

@@ -13,7 +13,7 @@ public class FindTargetUsingQueryContextConvention : IDomainModelConvention<Meth
         if (context.Method.Has<InitializerAttribute>()) { return; }
         if (!context.Type.TryGetMetadata(out var metadata)) { return; }
         if (!metadata.Has<EntityAttribute>()) { return; }
-        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
+        if (!context.Method.TryGet<ActionModelAttribute>(out var action)) { return; }
 
         var entityType = context.Type;
         if (!entityType.TryGetQueryContextType(context.Domain, out var queryContextType)) { return; }

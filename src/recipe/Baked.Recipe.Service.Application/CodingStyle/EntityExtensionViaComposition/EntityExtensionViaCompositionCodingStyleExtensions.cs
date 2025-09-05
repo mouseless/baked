@@ -15,7 +15,7 @@ public static class EntityExtensionViaCompositionCodingStyleExtensions
         entityType = default;
 
         if (!type.TryGetMetadata(out var entityExtensionMetadata)) { return false; }
-        if (!entityExtensionMetadata.TryGetSingle<EntityExtensionAttribute>(out var entityExtensionAttribute)) { return false; }
+        if (!entityExtensionMetadata.TryGet<EntityExtensionAttribute>(out var entityExtensionAttribute)) { return false; }
 
         entityType = domain.Types[entityExtensionAttribute.EntityType];
 

@@ -10,7 +10,7 @@ public class IncludeClassDocsForActionNamesConvention(IEnumerable<string> action
 
     public void Apply(MethodModelContext context)
     {
-        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
+        if (!context.Method.TryGet<ActionModelAttribute>(out var action)) { return; }
         if (!_actionNames.Contains(action.Name)) { return; }
         if (context.Type.Documentation is null) { return; }
 

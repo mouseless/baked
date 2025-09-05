@@ -36,7 +36,7 @@ public static class UiExtensions
         schema = default;
 
         if (!type.TryGetMembers(out var members)) { return false; }
-        if (!members.TryGetSingle<ComponentDescriptorAttribute<TSchema>>(out var descriptor)) { return false; }
+        if (!members.TryGet<ComponentDescriptorAttribute<TSchema>>(out var descriptor)) { return false; }
 
         schema = descriptor.Schema;
 

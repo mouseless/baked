@@ -1,4 +1,4 @@
-using Baked.Architecture;
+﻿using Baked.Architecture;
 using Baked.Business;
 using Baked.Domain.Model;
 using Microsoft.Extensions.DependencyInjection;
@@ -83,6 +83,6 @@ public static class BusinessExtensions
 
         return
             type.TryGetMetadata(out var metadata) &&
-            metadata.TryGetSingle(out namespaceAttribute);
+            metadata.TryGet(out namespaceAttribute);
     }
 }

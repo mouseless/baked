@@ -3,17 +3,16 @@ using Baked.Ui;
 namespace Baked.Theme.Admin;
 
 public record ReportPage(string Path, PageTitle Title) :
-    IGeneratedComponentSchema
+    PageSchemaBase(Path)
 {
-    public string Path { get; set; } = Path;
     public PageTitle Title { get; set; } = Title;
     public List<Parameter> QueryParameters { get; init; } = [];
     public List<Tab> Tabs { get; init; } = [];
 
-    public record Tab(string Id, string Title)
+    public record Tab(string Id)
     {
         public string Id { get; set; } = Id;
-        public string Title { get; set; } = Title;
+        public string? Title { get; set; }
         public List<Content> Contents { get; init; } = [];
         public bool? FullScreen { get; set; }
         public IComponentDescriptor? Icon { get; set; }

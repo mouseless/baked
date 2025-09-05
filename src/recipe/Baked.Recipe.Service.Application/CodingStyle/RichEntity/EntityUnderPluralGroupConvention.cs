@@ -11,7 +11,7 @@ public class EntityUnderPluralGroupConvention : IDomainModelConvention<TypeModel
     {
         if (!context.Type.TryGetMetadata(out var metadata)) { return; }
         if (!metadata.Has<EntityAttribute>()) { return; }
-        if (!metadata.TryGetSingle<ControllerModelAttribute>(out var controller)) { return; }
+        if (!metadata.TryGet<ControllerModelAttribute>(out var controller)) { return; }
 
         controller.GroupName = controller.GroupName.Pluralize();
     }
