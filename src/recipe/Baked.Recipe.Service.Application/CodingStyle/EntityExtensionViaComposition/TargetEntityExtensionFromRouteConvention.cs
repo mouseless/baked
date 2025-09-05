@@ -9,7 +9,7 @@ public class TargetEntityExtensionFromRouteConvention : IDomainModelConvention<M
 {
     public void Apply(MethodModelContext context)
     {
-        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
+        if (!context.Method.TryGet<ActionModelAttribute>(out var action)) { return; }
         if (context.Method.Has<InitializerAttribute>()) { return; }
         if (!action.Parameter.TryGetValue(ParameterModelAttribute.TargetParameterName, out var parameter)) { return; }
 

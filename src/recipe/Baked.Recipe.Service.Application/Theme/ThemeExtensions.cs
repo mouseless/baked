@@ -32,7 +32,7 @@ public static class ThemeExtensions
         type.GetMembers().Methods[name];
 
     public static ActionModelAttribute GetAction(this MethodModel method) =>
-        method.GetSingle<ActionModelAttribute>();
+        method.Get<ActionModelAttribute>();
 
     public static string GetRoute(this ActionModelAttribute action, List<(string key, string value)> routeParameters)
     {

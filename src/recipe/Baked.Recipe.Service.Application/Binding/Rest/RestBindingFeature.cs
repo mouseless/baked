@@ -80,7 +80,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
                 {
                     if (!type.TryGetMetadata(out var metadata)) { continue; }
 
-                    var controller = metadata.GetSingle<ControllerModelAttribute>();
+                    var controller = metadata.Get<ControllerModelAttribute>();
                     if (!controller.Action.Any()) { continue; }
 
                     api.Controllers.Add(controller);

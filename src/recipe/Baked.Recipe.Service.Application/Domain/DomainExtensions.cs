@@ -88,33 +88,26 @@ public static class DomainExtensions
     public static bool Has(this ICustomAttributesModel model, Type type) =>
         model.CustomAttributes.Contains(type);
 
-    public static T GetSingle<T>(this ICustomAttributesModel model) where T : Attribute =>
-        model.Get<T>().Single();
-
-    public static IEnumerable<T> Get<T>(this ICustomAttributesModel model) where T : Attribute =>
+    public static T Get<T>(this ICustomAttributesModel model) where T : Attribute =>
         model.CustomAttributes.Get<T>();
 
-    public static bool TryGetSingle<T>(this ICustomAttributesModel model, [NotNullWhen(true)] out T? result) where T : Attribute
-    {
-        if (!model.TryGet<T>(out var attributes))
-        {
-            result = null;
+    public static IEnumerable<T> GetAll<T>(this ICustomAttributesModel model) where T : Attribute =>
+        model.CustomAttributes.GetAll<T>();
 
-            return false;
-        }
-
-        result = attributes.SingleOrDefault();
-
-        return result is not null;
-    }
-
-    public static bool TryGet<T>(this ICustomAttributesModel model, [NotNullWhen(true)] out IEnumerable<T>? result) where T : Attribute =>
+    public static bool TryGet<T>(this ICustomAttributesModel model, [NotNullWhen(true)] out T? result) where T : Attribute =>
         model.CustomAttributes.TryGet(out result);
+
+    public static bool TryGetAll<T>(this ICustomAttributesModel model, [NotNullWhen(true)] out IEnumerable<T>? result) where T : Attribute =>
+        model.CustomAttributes.TryGetAll(out result);
 
     public static bool AllowsMultiple(this Attribute attribute) =>
         attribute
             .GetType()
-            .GetCustomAttributes(typeof(AttributeUsageAttribute), false)
+            .AllowsMultiple();
+
+    public static bool AllowsMultiple(this Type type) =>
+        type.IsAssignableTo(typeof(Attribute)) &&
+        type.GetCustomAttributes(typeof(AttributeUsageAttribute), false)
             .Cast<AttributeUsageAttribute>()
             .FirstOrDefault()
             ?.AllowMultiple == true;
@@ -289,7 +282,7 @@ public static class DomainExtensions
     {
         matcher ??= _ => true;
 
-        model.TryGetSingle<TAttribute>(out var attribute).ShouldBeTrue();
+        model.TryGet<TAttribute>(out var attribute).ShouldBeTrue();
         matcher(attribute).ShouldBeTrue();
     }
 

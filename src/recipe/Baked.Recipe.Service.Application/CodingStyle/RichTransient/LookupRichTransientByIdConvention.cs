@@ -9,7 +9,7 @@ public class LookupRichTransientByIdConvention : IDomainModelConvention<Paramete
 {
     public void Apply(ParameterModelContext context)
     {
-        if (!context.Parameter.TryGetSingle<ParameterModelAttribute>(out var parameter)) { return; }
+        if (!context.Parameter.TryGet<ParameterModelAttribute>(out var parameter)) { return; }
         if (!context.Parameter.ParameterType.TryGetMembers(out var members)) { return; }
         if (!members.Has<LocatableAttribute>()) { return; }
 
@@ -18,7 +18,7 @@ public class LookupRichTransientByIdConvention : IDomainModelConvention<Paramete
 
         var actionShouldBeAsync = initializer.DefaultOverload.ReturnType.IsAssignableTo<Task>();
 
-        if (context.Method.TryGetSingle<ActionModelAttribute>(out var action))
+        if (context.Method.TryGet<ActionModelAttribute>(out var action))
         {
             // parameter belongs to an action, add service to the parent action
             action.AddFactoryAsService(context.Parameter.ParameterType);
@@ -31,7 +31,7 @@ public class LookupRichTransientByIdConvention : IDomainModelConvention<Paramete
         else if (context.Method.Has<InitializerAttribute>())
         {
             // parameter belongs to an initializer, add service to all actions
-            foreach (var otherAction in context.Type.Methods.Having<ActionModelAttribute>().Select(m => m.GetSingle<ActionModelAttribute>()))
+            foreach (var otherAction in context.Type.Methods.Having<ActionModelAttribute>().Select(m => m.Get<ActionModelAttribute>()))
             {
                 otherAction.AddFactoryAsService(context.Parameter.ParameterType);
 

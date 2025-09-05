@@ -31,7 +31,7 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
             builder.Conventions.SetTypeMetadata(
                 apply: (c, add) =>
                 {
-                    var entityType = c.Type.GetSingle<EntityExtensionAttribute>().EntityType;
+                    var entityType = c.Type.Get<EntityExtensionAttribute>().EntityType;
                     var entityTypeModel = c.Domain.Types[entityType];
                     if (!entityTypeModel.TryGetNamespaceAttribute(out var namespaceAttribute)) { return; }
 

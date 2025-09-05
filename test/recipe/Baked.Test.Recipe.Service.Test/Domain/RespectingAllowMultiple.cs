@@ -4,11 +4,9 @@ namespace Baked.Test.Domain;
 
 public class RespectingAllowMultiple : TestServiceSpec
 {
-    [AttributeUsage(AttributeTargets.All)]
-    public class SingleAttribute : Attribute;
-
     [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
     public class MultipleAttribute : Attribute;
+    public class SingleAttribute : Attribute;
 
     [Test]
     public void When_given_attribute_type_does_not_allow_multiple__it_removes_old_if_any__leaving_single_value()
@@ -18,8 +16,7 @@ public class RespectingAllowMultiple : TestServiceSpec
 
         ((IMutableAttributeCollection)attributes).Set(lastSingle);
 
-        attributes.Get<SingleAttribute>().Count().ShouldBe(1);
-        attributes.Get<SingleAttribute>().First().ShouldBe(lastSingle);
+        attributes.Get<SingleAttribute>().ShouldBe(lastSingle);
     }
 
     [Test]
@@ -39,7 +36,7 @@ public class RespectingAllowMultiple : TestServiceSpec
 
         ((IMutableAttributeCollection)attributes).Add(new MultipleAttribute());
 
-        attributes.Get<MultipleAttribute>().Count().ShouldBe(2);
+        attributes.GetAll<MultipleAttribute>().Count().ShouldBe(2);
     }
 
     [Test]
@@ -53,13 +50,13 @@ public class RespectingAllowMultiple : TestServiceSpec
     }
 
     [Test]
-    public void Removing_clears_when_for_attributes_that_allow_multiple()
+    public void Removing_clears_attributes_that_allow_multiple()
     {
         var attributes = GiveMe.AnAttributeCollection(items: [new MultipleAttribute(), new MultipleAttribute()]);
 
         ((IMutableAttributeCollection)attributes).Remove<MultipleAttribute>();
 
-        attributes.TryGet<MultipleAttribute>(out var result);
+        attributes.TryGetAll<MultipleAttribute>(out var result);
         result.ShouldBeNull();
     }
 }

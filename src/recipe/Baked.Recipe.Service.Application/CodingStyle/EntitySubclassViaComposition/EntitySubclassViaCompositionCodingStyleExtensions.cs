@@ -15,7 +15,7 @@ public static class EntitySubclassViaCompositionCodingStyleExtensions
         subclassName = default;
 
         if (!type.TryGetMetadata(out var entitySubclassMetadata)) { return false; }
-        if (!entitySubclassMetadata.TryGetSingle<EntitySubclassAttribute>(out var entitySubclassAttribute)) { return false; }
+        if (!entitySubclassMetadata.TryGet<EntitySubclassAttribute>(out var entitySubclassAttribute)) { return false; }
 
         subclassName = entitySubclassAttribute.Name;
 
@@ -27,7 +27,7 @@ public static class EntitySubclassViaCompositionCodingStyleExtensions
         entityType = default;
 
         if (!type.TryGetMetadata(out var entitySubclassMetadata)) { return false; }
-        if (!entitySubclassMetadata.TryGetSingle<EntitySubclassAttribute>(out var entitySubclassAttribute)) { return false; }
+        if (!entitySubclassMetadata.TryGet<EntitySubclassAttribute>(out var entitySubclassAttribute)) { return false; }
 
         entityType = domain.Types[entitySubclassAttribute.EntityType];
 

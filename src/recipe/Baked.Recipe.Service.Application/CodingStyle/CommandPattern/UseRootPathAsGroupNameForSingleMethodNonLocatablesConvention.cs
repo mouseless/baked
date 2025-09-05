@@ -11,7 +11,7 @@ public class UseRootPathAsGroupNameForSingleMethodNonLocatablesConvention : IDom
     {
         if (!context.Type.TryGetMetadata(out var metadata)) { return; }
         if (metadata.Has<LocatableAttribute>()) { return; }
-        if (!metadata.TryGetSingle<ControllerModelAttribute>(out var controller)) { return; }
+        if (!metadata.TryGet<ControllerModelAttribute>(out var controller)) { return; }
         if (controller.Action.Count != 1) { return; }
 
         var theOnlyAction = controller.Actions.Single();

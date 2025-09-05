@@ -65,22 +65,66 @@ public class AttributeCollection(string name)
     public bool Contains(Type type) =>
         _attributes.ContainsKey(type);
 
-    public IEnumerable<T> Get<T>() where T : Attribute =>
-        Get(typeof(T)).Cast<T>();
+    public T Get<T>() where T : Attribute =>
+        (T)Get(typeof(T));
 
-    public IEnumerable<Attribute> Get(Type type) =>
-        _attributes[type];
-
-    public bool TryGet<T>([NotNullWhen(true)] out IEnumerable<T>? result) where T : Attribute
+    public Attribute Get(Type type)
     {
-        if (!_attributes.TryGetValue(typeof(T), out var set))
+        if (type.AllowsMultiple())
+        {
+            throw new InvalidOperationException($"Cannot use `Get` for `{type.Name}` in `{_name}` because it allows multiple. Please use `GetAll` for this attribute.");
+        }
+
+        return _attributes[type].Single();
+    }
+
+    public bool TryGet<T>([NotNullWhen(true)] out T? result) where T : Attribute
+    {
+        if (typeof(T).AllowsMultiple())
+        {
+            throw new InvalidOperationException($"Cannot use `TryGet` for `{typeof(T).Name}` in `{_name}` because it allows multiple. Please use `TryGetAll` for this attribute.");
+        }
+
+        if (!_attributes.TryGetValue(typeof(T), out var list))
         {
             result = null;
 
             return false;
         }
 
-        result = set.Cast<T>();
+        result = (T?)list.SingleOrDefault();
+
+        return result is not null;
+    }
+
+    public IEnumerable<T> GetAll<T>() where T : Attribute =>
+        GetAll(typeof(T)).Cast<T>();
+
+    public IEnumerable<Attribute> GetAll(Type type)
+    {
+        if (!type.AllowsMultiple())
+        {
+            throw new InvalidOperationException($"Cannot use `GetAll` for `{type.Name}` in `{_name}` because it doesn't allow multiple. Please use `Get` for this attribute.");
+        }
+
+        return _attributes[type].AsReadOnly();
+    }
+
+    public bool TryGetAll<T>([NotNullWhen(true)] out IEnumerable<T>? result) where T : Attribute
+    {
+        if (!typeof(T).AllowsMultiple())
+        {
+            throw new InvalidOperationException($"Cannot use `TryGetAll` for `{typeof(T).Name}` in `{_name}` because it doesn't allow multiple. Please use `TryGet` for this attribute.");
+        }
+
+        if (!_attributes.TryGetValue(typeof(T), out var list))
+        {
+            result = null;
+
+            return false;
+        }
+
+        result = list.Cast<T>();
 
         return true;
     }

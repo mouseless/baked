@@ -7,7 +7,7 @@ public class RequireUserIsAuthorizeConvention : IDomainModelConvention<MethodMod
 {
     public void Apply(MethodModelContext context)
     {
-        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
+        if (!context.Method.TryGet<ActionModelAttribute>(out var action)) { return; }
         if (!context.Method.Has<RequireUserAttribute>()) { return; }
 
         action.AdditionalAttributes.Add("Authorize");
