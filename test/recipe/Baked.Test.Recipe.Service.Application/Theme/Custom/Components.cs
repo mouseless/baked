@@ -1,4 +1,4 @@
-using Baked.Ui;
+using Baked.Theme;
 
 namespace Baked.Test.Theme.Custom;
 

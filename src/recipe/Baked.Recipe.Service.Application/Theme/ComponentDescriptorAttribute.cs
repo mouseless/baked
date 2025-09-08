@@ -1,4 +1,6 @@
-﻿namespace Baked.Ui;
+using Baked.Ui;
+
+namespace Baked.Theme;
 
 [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
 public class ComponentDescriptorAttribute<TSchema>(TSchema schema)
