@@ -6,7 +6,7 @@
     toggleable
     :pt="
       {
-        headerActions: { 
+        headerActions: {
           class: 'flex gap-2 items-center'
         },
         title: 'max-sm:truncate'
