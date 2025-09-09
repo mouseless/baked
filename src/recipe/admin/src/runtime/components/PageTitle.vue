@@ -17,10 +17,11 @@
           w-full mt-1
           flex flex-row gap-2
           items-baseline justify-start
+          max-sm:truncate
           xl:flex-col xl:mt-2
         "
       >
-        <h1 class="text-xl font-bold">
+        <h1 class="text-xl font-bold max-sm:truncate">
           {{ l(title) }}
         </h1>
         <div class="relative">
