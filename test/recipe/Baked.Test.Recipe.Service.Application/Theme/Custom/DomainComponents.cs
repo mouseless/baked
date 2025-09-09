@@ -1,4 +1,4 @@
-﻿using Baked.Domain.Model;
+using Baked.Domain.Model;
 using Baked.RestApi.Model;
 using Baked.Theme;
 using Baked.Theme.Admin;
@@ -15,7 +15,7 @@ public static class DomainComponents
 {
     #region DataTable
 
-    public static ComponentDescriptorAttribute<Baked.Theme.Admin.DataTable> ReportRowListActionDataTable(MethodModel method, ComponentContext context,
+    public static ComponentDescriptor<Baked.Theme.Admin.DataTable> ReportRowListActionDataTable(MethodModel method, ComponentContext context,
         Action<RemoteData>? dataOptions = default,
         bool exportable = true
     )
@@ -67,7 +67,7 @@ public static class DomainComponents
         );
     }
 
-    public static ComponentDescriptorAttribute<Baked.Theme.Admin.DataTable> TableWithFooterActionDataTable(MethodModel method, ComponentContext context)
+    public static ComponentDescriptor<Baked.Theme.Admin.DataTable> TableWithFooterActionDataTable(MethodModel method, ComponentContext context)
     {
         var (domain, l) = context;
 
@@ -202,7 +202,7 @@ public static class DomainComponents
 
     #region Select
 
-    public static ComponentDescriptorAttribute<Select> EnumSelect(string label, TypeModel enumType,
+    public static ComponentDescriptor<Select> EnumSelect(string label, TypeModel enumType,
         Action<Select>? options = default,
         NewLocaleKey? l = default
     ) => Select(label, EnumInline(enumType, l: l),
@@ -222,7 +222,7 @@ public static class DomainComponents
 
     #region SelectButton
 
-    public static ComponentDescriptorAttribute<SelectButton> EnumSelectButton(TypeModel enumType,
+    public static ComponentDescriptor<SelectButton> EnumSelectButton(TypeModel enumType,
         Action<SelectButton>? options = default,
         NewLocaleKey? l = default
     ) => SelectButton(EnumInline(enumType, l: l),
@@ -242,7 +242,7 @@ public static class DomainComponents
 
     #region String
 
-    public static ComponentDescriptorAttribute<Baked.Theme.Admin.String> ActionString(MethodModel method,
+    public static ComponentDescriptor<Baked.Theme.Admin.String> ActionString(MethodModel method,
         Action<RemoteData>? dataOptions = default
     ) => String(data: ActionRemote(method, options: dataOptions));
 

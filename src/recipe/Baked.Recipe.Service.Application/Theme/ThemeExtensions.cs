@@ -1,9 +1,10 @@
-﻿using Baked.Architecture;
+using Baked.Architecture;
+using Baked.Domain;
+using Baked.Domain.Configuration;
 using Baked.Domain.Model;
 using Baked.RestApi.Model;
 using Baked.Theme;
 using Baked.Ui;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Baked;
 
@@ -62,24 +63,195 @@ public static class ThemeExtensions
         return generics.GenericTypeArguments.First().Model;
     }
 
-    public static bool TryGet<TSchema>(this TypeModel type, [NotNullWhen(true)] out TSchema? schema)
-        where TSchema : IComponentSchema
+    public static IEnumerable<T> WhereAppliesTo<T>(this IEnumerable<T> enumerable, ComponentContext context) =>
+        enumerable.Where(c => c is not IComponentContextFilter when || when.AppliesTo(context));
+
+    public static IComponentDescriptor GetComponentDescriptor(this ICustomAttributesModel metadata, ComponentContext context)
     {
-        schema = default;
+        if (!metadata.TryGetAll<ContextBasedSchemaAttribute>(out var contextBasedComponents)) { throw new($"{metadata} has no compatible component descriptor for {context.Path}"); }
 
-        if (!type.TryGetMembers(out var members)) { return false; }
-        if (!members.TryGet<ComponentDescriptorAttribute<TSchema>>(out var descriptor)) { return false; }
+        var contextBasedComponent = contextBasedComponents.WhereAppliesTo(context).LastOrDefault() ??
+            throw new($"{metadata} has no compatible component descriptor for {context.Path}");
 
-        schema = descriptor.Schema;
+        var builderType = typeof(ComponentDescriptorBuilderAttribute<>).MakeGenericType(contextBasedComponent.SchemaType);
+        if (!metadata.TryGetAll(builderType, out var builders))
+        {
+            throw new($"{metadata} is expected to have a component descriptor builder of type {contextBasedComponent.SchemaType}");
+        }
 
-        return true;
+        return builders
+            .Cast<IComponentContextBasedBuilder<IComponentDescriptor>>()
+            .WhereAppliesTo(context)
+            .LastOrDefault()
+            ?.Build(context) ??
+            throw new($"{metadata} is expected to have a component descriptor builder of type {contextBasedComponent.SchemaType}");
     }
 
-    public static TSchema Get<TSchema>(this TypeModel type)
-        where TSchema : IComponentSchema
+    public static List<TSchema> GetSchemas<TSchema>(this ICustomAttributesModel metadata, ComponentContext context)
     {
-        if (!type.TryGet<TSchema>(out var result)) { throw new($"{type.Name} does not have ${typeof(TSchema).Name}"); }
+        var result = new List<TSchema>();
+
+        if (metadata.TryGetAll<DescriptorBuilderAttribute<TSchema>>(out var builders))
+        {
+            result.AddRange(builders
+                .WhereAppliesTo(context)
+                .Cast<IComponentContextBasedBuilder<TSchema>>()
+                .Select(b => b.Build(context))
+            );
+        }
 
         return result;
+    }
+
+    public static TSchema? GetSchema<TSchema>(this ICustomAttributesModel metadata, ComponentContext context)
+    {
+        if (!metadata.TryGetAll<DescriptorBuilderAttribute<TSchema>>(out var builders)) { return default; }
+
+        var builder = builders
+            .WhereAppliesTo(context)
+            .Cast<IComponentContextBasedBuilder<TSchema>>()
+            .LastOrDefault();
+        if (builder is null) { return default; }
+
+        return builder.Build(context);
+    }
+
+    // TODO ActionModelAttribute is set at int.MaxValue - 10, will set a max for API and min for UI
+    const int ORDER_UI_DEFAULT_VALUE = int.MaxValue - 5;
+
+    public static void AddTypeDescriptor<TSchemaPart>(this IDomainModelConventionCollection conventions,
+        Func<TypeModelMetadataContext, TSchemaPart> schemaPart,
+        Func<TypeModelMetadataContext, bool>? whenType = default,
+        Func<ComponentContext, bool>? whenComponent = default,
+        int? order = default
+    ) => conventions.AddTypeDescriptor(
+        schemaPart: (c, _) => schemaPart(c),
+        whenType: whenType,
+        whenComponent: whenComponent,
+        order: order
+    );
+
+    public static void AddTypeDescriptor<TSchemaPart>(this IDomainModelConventionCollection conventions,
+        Func<TypeModelMetadataContext, ComponentContext, TSchemaPart> schemaPart,
+        Func<TypeModelMetadataContext, bool>? whenType = default,
+        Func<ComponentContext, bool>? whenComponent = default,
+        int? order = default
+    )
+    {
+        whenType ??= c => true;
+        whenComponent ??= c => true;
+        order ??= ORDER_UI_DEFAULT_VALUE;
+
+        conventions.AddTypeMetadata(
+            attribute: c => new DescriptorBuilderAttribute<TSchemaPart>()
+            {
+                Builder = cc => schemaPart(c, cc),
+                Filter = whenComponent
+            },
+            when: whenType,
+            order: order.Value
+        );
+    }
+
+    public static void AddPropertyDescriptor<TSchemaPart>(this IDomainModelConventionCollection conventions,
+        Func<PropertyModelContext, TSchemaPart> schemaPart,
+        Func<PropertyModelContext, bool>? whenProperty = default,
+        Func<ComponentContext, bool>? whenComponent = default,
+        int? order = default
+    ) => conventions.AddPropertyDescriptor(
+        schemaPart: (c, _) => schemaPart(c),
+        whenProperty: whenProperty,
+        whenComponent: whenComponent,
+        order: order
+    );
+
+    public static void AddPropertyDescriptor<TSchemaPart>(this IDomainModelConventionCollection conventions,
+        Func<PropertyModelContext, ComponentContext, TSchemaPart> schemaPart,
+        Func<PropertyModelContext, bool>? whenProperty = default,
+        Func<ComponentContext, bool>? whenComponent = default,
+        int? order = default
+    )
+    {
+        whenProperty ??= c => true;
+        whenComponent ??= c => true;
+        order ??= ORDER_UI_DEFAULT_VALUE;
+
+        conventions.AddPropertyMetadata(
+            attribute: c => new DescriptorBuilderAttribute<TSchemaPart>()
+            {
+                Builder = cc => schemaPart(c, cc),
+                Filter = whenComponent
+            },
+            when: whenProperty,
+            order: order.Value
+        );
+    }
+
+    public static void AddMethodDescriptor<TSchemaPart>(this IDomainModelConventionCollection conventions,
+        Func<MethodModelContext, TSchemaPart> schemaPart,
+        Func<MethodModelContext, bool>? whenMethod = default,
+        Func<ComponentContext, bool>? whenComponent = default,
+        int? order = default
+    ) => conventions.AddMethodDescriptor(
+        schemaPart: (c, _) => schemaPart(c),
+        whenMethod: whenMethod,
+        whenComponent: whenComponent,
+        order: order
+    );
+
+    public static void AddMethodDescriptor<TSchemaPart>(this IDomainModelConventionCollection conventions,
+        Func<MethodModelContext, ComponentContext, TSchemaPart> schemaPart,
+        Func<MethodModelContext, bool>? whenMethod = default,
+        Func<ComponentContext, bool>? whenComponent = default,
+        int? order = default
+    )
+    {
+        whenMethod ??= c => true;
+        whenComponent ??= c => true;
+        order ??= ORDER_UI_DEFAULT_VALUE;
+
+        conventions.AddMethodMetadata(
+            attribute: c => new DescriptorBuilderAttribute<TSchemaPart>()
+            {
+                Builder = cc => schemaPart(c, cc),
+                Filter = whenComponent
+            },
+            when: c => c.Type.Has<ControllerModelAttribute>() && c.Method.Has<ActionModelAttribute>() && whenMethod(c),
+            order: order.Value
+        );
+    }
+
+    public static void AddParameterDescriptor<TSchema>(this IDomainModelConventionCollection conventions,
+        Func<ParameterModelContext, TSchema> schema,
+        Func<ParameterModelContext, bool>? whenParameter = default,
+        Func<ComponentContext, bool>? whenComponent = default,
+        int? order = default
+    ) => conventions.AddParameterDescriptor(
+        schemaPart: (c, _) => schema(c),
+        whenParameter: whenParameter,
+        whenComponent: whenComponent,
+        order: order
+    );
+
+    public static void AddParameterDescriptor<TSchemaPart>(this IDomainModelConventionCollection conventions,
+        Func<ParameterModelContext, ComponentContext, TSchemaPart> schemaPart,
+        Func<ParameterModelContext, bool>? whenParameter = default,
+        Func<ComponentContext, bool>? whenComponent = default,
+        int? order = default
+    )
+    {
+        whenParameter ??= c => true;
+        whenComponent ??= c => true;
+        order ??= ORDER_UI_DEFAULT_VALUE;
+
+        conventions.AddParameterMetadata(
+            attribute: c => new DescriptorBuilderAttribute<TSchemaPart>()
+            {
+                Builder = cc => schemaPart(c, cc),
+                Filter = whenComponent
+            },
+            when: c => c.Type.Has<ControllerModelAttribute>() && c.Parameter.Has<ParameterModelAttribute>() && whenParameter(c),
+            order: order.Value
+        );
     }
 }

@@ -91,14 +91,26 @@ public static class DomainExtensions
     public static T Get<T>(this ICustomAttributesModel model) where T : Attribute =>
         model.CustomAttributes.Get<T>();
 
-    public static IEnumerable<T> GetAll<T>(this ICustomAttributesModel model) where T : Attribute =>
-        model.CustomAttributes.GetAll<T>();
+    public static Attribute Get(this ICustomAttributesModel model, Type attributeType) =>
+        model.CustomAttributes.Get(attributeType);
 
     public static bool TryGet<T>(this ICustomAttributesModel model, [NotNullWhen(true)] out T? result) where T : Attribute =>
         model.CustomAttributes.TryGet(out result);
 
+    public static bool TryGet(this ICustomAttributesModel model, Type attributeType, [NotNullWhen(true)] out Attribute? result) =>
+        model.CustomAttributes.TryGet(attributeType, out result);
+
+    public static IEnumerable<T> GetAll<T>(this ICustomAttributesModel model) where T : Attribute =>
+        model.CustomAttributes.GetAll<T>();
+
+    public static IEnumerable<Attribute> GetAll(this ICustomAttributesModel model, Type attributeType) =>
+        model.CustomAttributes.GetAll(attributeType);
+
     public static bool TryGetAll<T>(this ICustomAttributesModel model, [NotNullWhen(true)] out IEnumerable<T>? result) where T : Attribute =>
         model.CustomAttributes.TryGetAll(out result);
+
+    public static bool TryGetAll(this ICustomAttributesModel model, Type type, [NotNullWhen(true)] out IEnumerable<Attribute>? result) =>
+        model.CustomAttributes.TryGetAll(type, out result);
 
     public static bool AllowsMultiple(this Attribute attribute) =>
         attribute

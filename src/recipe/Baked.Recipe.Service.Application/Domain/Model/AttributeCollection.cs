@@ -80,19 +80,33 @@ public class AttributeCollection(string name)
 
     public bool TryGet<T>([NotNullWhen(true)] out T? result) where T : Attribute
     {
-        if (typeof(T).AllowsMultiple())
-        {
-            throw new InvalidOperationException($"Cannot use `TryGet` for `{typeof(T).Name}` in `{_name}` because it allows multiple. Please use `TryGetAll` for this attribute.");
-        }
-
-        if (!_attributes.TryGetValue(typeof(T), out var list))
+        if (!TryGet(typeof(T), out var attribute))
         {
             result = null;
 
             return false;
         }
 
-        result = (T?)list.SingleOrDefault();
+        result = (T)attribute;
+
+        return true;
+    }
+
+    public bool TryGet(Type type, [NotNullWhen(true)] out Attribute? result)
+    {
+        if (type.AllowsMultiple())
+        {
+            throw new InvalidOperationException($"Cannot use `TryGet` for `{type.Name}` in `{_name}` because it allows multiple. Please use `TryGetAll` for this attribute.");
+        }
+
+        if (!_attributes.TryGetValue(type, out var list))
+        {
+            result = null;
+
+            return false;
+        }
+
+        result = list.SingleOrDefault();
 
         return result is not null;
     }
@@ -112,12 +126,7 @@ public class AttributeCollection(string name)
 
     public bool TryGetAll<T>([NotNullWhen(true)] out IEnumerable<T>? result) where T : Attribute
     {
-        if (!typeof(T).AllowsMultiple())
-        {
-            throw new InvalidOperationException($"Cannot use `TryGetAll` for `{typeof(T).Name}` in `{_name}` because it doesn't allow multiple. Please use `TryGet` for this attribute.");
-        }
-
-        if (!_attributes.TryGetValue(typeof(T), out var list))
+        if (!TryGetAll(typeof(T), out var list))
         {
             result = null;
 
@@ -125,6 +134,25 @@ public class AttributeCollection(string name)
         }
 
         result = list.Cast<T>();
+
+        return true;
+    }
+
+    public bool TryGetAll(Type type, [NotNullWhen(true)] out IEnumerable<Attribute>? result)
+    {
+        if (!type.AllowsMultiple())
+        {
+            throw new InvalidOperationException($"Cannot use `TryGetAll` for `{type.Name}` in `{_name}` because it doesn't allow multiple. Please use `TryGet` for this attribute.");
+        }
+
+        if (!_attributes.TryGetValue(type, out var list))
+        {
+            result = null;
+
+            return false;
+        }
+
+        result = list;
 
         return true;
     }
