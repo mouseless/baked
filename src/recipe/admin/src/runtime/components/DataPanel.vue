@@ -4,7 +4,14 @@
     :header="localizeTitle ? l(title) : title"
     :collapsed="collapsedState"
     toggleable
-    :pt="{ headerActions: { class: 'flex gap-2 items-center' } }"
+    :pt="
+      {
+        headerActions: { 
+          class: 'flex gap-2 items-center'
+        },
+        title: 'max-sm:truncate'
+      }
+    "
     @update:collapsed="onCollapsed"
   >
     <template

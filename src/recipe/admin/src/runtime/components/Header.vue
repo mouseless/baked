@@ -25,7 +25,7 @@
           />
           <span
             v-if="item.title"
-            class="p-breadcrumb-item-label"
+            class="p-breadcrumb-item-label max-sm:truncate"
           >{{ l(item.title) }}</span>
         </RouterLink>
       </template>
