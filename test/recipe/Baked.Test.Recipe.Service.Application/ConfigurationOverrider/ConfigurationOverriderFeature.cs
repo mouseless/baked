@@ -42,6 +42,56 @@ public class ConfigurationOverriderFeature : IFeature
             builder.Conventions.AddOverrideAction<OverrideSamples>(nameof(OverrideSamples.RequestClass),
                 useRequestClassForBody: false
             );
+
+            builder.Conventions.SetTypeMetadata(
+                attribute: _ => new CustomAttribute(),
+                when: c => c.Type.Is<Class>()
+            );
+            builder.Conventions.AddTypeConvention<CustomAttribute>(
+                apply: attr => attr.Value = "FROM CONVENTION",
+                when: (_, c) => c.Type.Is<Class>()
+            );
+
+            builder.Conventions.SetPropertyMetadata(
+                attribute: _ => new CustomAttribute(),
+                when: c =>
+                    c.Type.Is<Record>() &&
+                    c.Property.Name == nameof(Record.Text)
+            );
+            builder.Conventions.AddPropertyConvention<CustomAttribute>(
+                apply: attr => attr.Value = "FROM CONVENTION",
+                when: (_, c) =>
+                    c.Type.Is<Record>() &&
+                    c.Property.Name == nameof(Record.Text)
+            );
+
+            builder.Conventions.SetMethodMetadata(
+                attribute: _ => new CustomAttribute(),
+                when: c =>
+                    c.Type.Is<Class>() &&
+                    c.Method.Name == nameof(Class.Method)
+            );
+            builder.Conventions.AddMethodConvention<CustomAttribute>(
+                apply: attr => attr.Value = "FROM CONVENTION",
+                when: (_, c) =>
+                    c.Type.Is<Class>() &&
+                    c.Method.Name == nameof(Class.Method)
+            );
+
+            builder.Conventions.SetParameterMetadata(
+                attribute: _ => new CustomAttribute(),
+                when: c =>
+                    c.Type.Is<MethodSamples>() &&
+                    c.Method.Name == nameof(MethodSamples.PrimitiveParameters) &&
+                    c.Parameter.Name == "string"
+            );
+            builder.Conventions.AddParameterConvention<CustomAttribute>(
+                apply: attr => attr.Value = "FROM CONVENTION",
+                when: (_, c) =>
+                    c.Type.Is<MethodSamples>() &&
+                    c.Method.Name == nameof(MethodSamples.PrimitiveParameters) &&
+                    c.Parameter.Name == "string"
+            );
         });
 
         configurator.ConfigureServiceCollection(services =>
