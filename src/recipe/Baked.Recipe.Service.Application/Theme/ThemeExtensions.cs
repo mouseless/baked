@@ -1,6 +1,7 @@
 using Baked.Architecture;
 using Baked.Domain;
 using Baked.Domain.Configuration;
+using Baked.Domain.Conventions;
 using Baked.Domain.Model;
 using Baked.RestApi.Model;
 using Baked.Theme;
@@ -69,6 +70,31 @@ public static class ThemeExtensions
     // TODO ActionModelAttribute is set at int.MaxValue - 10, will set a max for API and min for UI
     const int ORDER_UI_DEFAULT_VALUE = int.MaxValue - 5;
 
+    // NOTE
+    //
+    // This is refactored to remove duplication in below conventions but
+    // compromises code readability. It basically wraps the given builder
+    // and applies given function only when given filter (`when`) passes.
+    //
+    // Filter is applied within the function because it is the only
+    // way to access to the component context.
+    static Func<ComponentContext, TSchema> Wrap<TSchema>(
+        this Func<ComponentContext, TSchema> builder,
+        Func<ComponentContext, bool> when,
+        Action<TSchema, ComponentContext> apply
+    ) =>
+        cc =>
+        {
+            var result = builder(cc);
+
+            if (when(cc))
+            {
+                apply(result, cc);
+            }
+
+            return result;
+        };
+
     #region Descriptor Builder & Schema
 
     public static List<TSchema> GetSchemas<TSchema>(this ICustomAttributesModel metadata, ComponentContext context)
@@ -96,6 +122,8 @@ public static class ThemeExtensions
 
         return builder.Build(context);
     }
+
+    #region Add Metadata
 
     public static void AddTypeSchema<TSchema>(this IDomainModelConventionCollection conventions, Func<TSchema> schema,
         Func<TypeModelMetadataContext, bool>? whenType = default,
@@ -271,6 +299,144 @@ public static class ThemeExtensions
 
     #endregion
 
+    #region Add Convention
+
+    public static void AddTypeSchemaConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<TSchema> schema,
+        Func<TypeModelMetadataContext, bool>? whenType = default,
+        Func<ComponentContext, bool>? whenComponent = default
+    ) => conventions.AddTypeSchemaConvention<TSchema>((s, _) => schema(s),
+        whenType: whenType,
+        whenComponent: whenComponent
+    );
+
+    public static void AddTypeSchemaConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<TSchema, TypeModelMetadataContext> schema,
+        Func<TypeModelMetadataContext, bool>? whenType = default,
+        Func<ComponentContext, bool>? whenComponent = default
+    ) => conventions.AddTypeSchemaConvention<TSchema>((s, c, _) => schema(s, c),
+        whenType: whenType,
+        whenComponent: whenComponent
+    );
+
+    public static void AddTypeSchemaConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<TSchema, TypeModelMetadataContext, ComponentContext> schema,
+        Func<TypeModelMetadataContext, bool>? whenType = default,
+        Func<ComponentContext, bool>? whenComponent = default
+    )
+    {
+        whenType ??= _ => true;
+        whenComponent ??= _ => true;
+
+        conventions.Add(new TypeConvention<DescriptorBuilderAttribute<TSchema>>(
+            when: whenType,
+            apply: (attribute, c) => attribute.Builder.Wrap(
+                when: whenComponent,
+                apply: (s, cc) => schema(s, c, cc)
+            )
+        ));
+    }
+
+    public static void AddPropertySchemaConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<TSchema> schema,
+        Func<PropertyModelContext, bool>? whenProperty = default,
+        Func<ComponentContext, bool>? whenComponent = default
+    ) => conventions.AddPropertySchemaConvention<TSchema>((s, _) => schema(s),
+        whenProperty: whenProperty,
+        whenComponent: whenComponent
+    );
+
+    public static void AddPropertySchemaConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<TSchema, PropertyModelContext> schema,
+        Func<PropertyModelContext, bool>? whenProperty = default,
+        Func<ComponentContext, bool>? whenComponent = default
+    ) => conventions.AddPropertySchemaConvention<TSchema>((s, c, _) => schema(s, c),
+        whenProperty: whenProperty,
+        whenComponent: whenComponent
+    );
+
+    public static void AddPropertySchemaConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<TSchema, PropertyModelContext, ComponentContext> schema,
+        Func<PropertyModelContext, bool>? whenProperty = default,
+        Func<ComponentContext, bool>? whenComponent = default
+    )
+    {
+        whenProperty ??= _ => true;
+        whenComponent ??= _ => true;
+
+        conventions.Add(new PropertyConvention<DescriptorBuilderAttribute<TSchema>>(
+            when: whenProperty,
+            apply: (attribute, c) => attribute.Builder.Wrap(
+                when: whenComponent,
+                apply: (s, cc) => schema(s, c, cc)
+            )
+        ));
+    }
+
+    public static void AddMethodSchemaConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<TSchema> schema,
+        Func<MethodModelContext, bool>? whenMethod = default,
+        Func<ComponentContext, bool>? whenComponent = default
+    ) => conventions.AddMethodSchemaConvention<TSchema>((s, _) => schema(s),
+        whenMethod: whenMethod,
+        whenComponent: whenComponent
+    );
+
+    public static void AddMethodSchemaConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<TSchema, MethodModelContext> schema,
+        Func<MethodModelContext, bool>? whenMethod = default,
+        Func<ComponentContext, bool>? whenComponent = default
+    ) => conventions.AddMethodSchemaConvention<TSchema>((s, c, _) => schema(s, c),
+        whenMethod: whenMethod,
+        whenComponent: whenComponent
+    );
+
+    public static void AddMethodSchemaConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<TSchema, MethodModelContext, ComponentContext> schema,
+        Func<MethodModelContext, bool>? whenMethod = default,
+        Func<ComponentContext, bool>? whenComponent = default
+    )
+    {
+        whenMethod ??= _ => true;
+        whenComponent ??= _ => true;
+
+        conventions.Add(new MethodConvention<DescriptorBuilderAttribute<TSchema>>(
+            when: whenMethod,
+            apply: (attribute, c) => attribute.Builder.Wrap(
+                when: whenComponent,
+                apply: (s, cc) => schema(s, c, cc)
+            )
+        ));
+    }
+
+    public static void AddParameterSchemaConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<TSchema> schema,
+        Func<ParameterModelContext, bool>? whenParameter = default,
+        Func<ComponentContext, bool>? whenComponent = default
+    ) => conventions.AddParameterSchemaConvention<TSchema>((s, _) => schema(s),
+        whenParameter: whenParameter,
+        whenComponent: whenComponent
+    );
+
+    public static void AddParameterSchemaConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<TSchema, ParameterModelContext> schema,
+        Func<ParameterModelContext, bool>? whenParameter = default,
+        Func<ComponentContext, bool>? whenComponent = default
+    ) => conventions.AddParameterSchemaConvention<TSchema>((s, c, _) => schema(s, c),
+        whenParameter: whenParameter,
+        whenComponent: whenComponent
+    );
+
+    public static void AddParameterSchemaConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<TSchema, ParameterModelContext, ComponentContext> schema,
+        Func<ParameterModelContext, bool>? whenParameter = default,
+        Func<ComponentContext, bool>? whenComponent = default
+    )
+    {
+        whenParameter ??= _ => true;
+        whenComponent ??= _ => true;
+
+        conventions.Add(new ParameterConvention<DescriptorBuilderAttribute<TSchema>>(
+            when: whenParameter,
+            apply: (attribute, c) => attribute.Builder.Wrap(
+                when: whenComponent,
+                apply: (s, cc) => schema(s, c, cc)
+            )
+        ));
+    }
+
+    #endregion
+
+    #endregion
+
     #region Component Descriptor Builder & Component
 
     public static IComponentDescriptor GetComponent(this ICustomAttributesModel metadata, ComponentContext context)
@@ -293,6 +459,8 @@ public static class ThemeExtensions
             ?.Build(context) ??
             throw new($"{metadata} is expected to have a component descriptor builder of type {contextBasedSchema.SchemaType} for path {context.Path}");
     }
+
+    #region Add Component
 
     public static void AddTypeComponent<TSchema>(this IDomainModelConventionCollection conventions, Func<ComponentDescriptor<TSchema>> component,
         Func<TypeModelMetadataContext, bool>? whenType = default,
@@ -501,6 +669,152 @@ public static class ThemeExtensions
             order: order.Value
         );
     }
+
+    #endregion
+
+    #region Add Convention
+
+    public static void AddTypeComponentConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<ComponentDescriptor<TSchema>> component,
+        Func<TypeModelMetadataContext, bool>? whenType = default,
+        Func<ComponentContext, bool>? whenComponent = default
+    ) where TSchema : IComponentSchema =>
+        conventions.AddTypeComponentConvention<TSchema>((s, _) => component(s),
+            whenType: whenType,
+            whenComponent: whenComponent
+        );
+
+    public static void AddTypeComponentConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<ComponentDescriptor<TSchema>, TypeModelMetadataContext> component,
+        Func<TypeModelMetadataContext, bool>? whenType = default,
+        Func<ComponentContext, bool>? whenComponent = default
+    ) where TSchema : IComponentSchema =>
+        conventions.AddTypeComponentConvention<TSchema>((s, c, _) => component(s, c),
+            whenType: whenType,
+            whenComponent: whenComponent
+        );
+
+    public static void AddTypeComponentConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<ComponentDescriptor<TSchema>, TypeModelMetadataContext, ComponentContext> component,
+        Func<TypeModelMetadataContext, bool>? whenType = default,
+        Func<ComponentContext, bool>? whenComponent = default
+    ) where TSchema : IComponentSchema
+    {
+        whenType ??= _ => true;
+        whenComponent ??= _ => true;
+
+        conventions.Add(new TypeConvention<ComponentDescriptorBuilderAttribute<TSchema>>(
+            when: whenType,
+            apply: (attribute, c) => attribute.Builder.Wrap(
+                when: whenComponent,
+                apply: (d, cc) => component(d, c, cc)
+            )
+        ));
+    }
+
+    public static void AddPropertyComponentConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<ComponentDescriptor<TSchema>> component,
+        Func<PropertyModelContext, bool>? whenProperty = default,
+        Func<ComponentContext, bool>? whenComponent = default
+    ) where TSchema : IComponentSchema =>
+        conventions.AddPropertyComponentConvention<TSchema>((s, _) => component(s),
+            whenProperty: whenProperty,
+            whenComponent: whenComponent
+        );
+
+    public static void AddPropertyComponentConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<ComponentDescriptor<TSchema>, PropertyModelContext> component,
+        Func<PropertyModelContext, bool>? whenProperty = default,
+        Func<ComponentContext, bool>? whenComponent = default
+    ) where TSchema : IComponentSchema =>
+        conventions.AddPropertyComponentConvention<TSchema>((s, c, _) => component(s, c),
+            whenProperty: whenProperty,
+            whenComponent: whenComponent
+        );
+
+    public static void AddPropertyComponentConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<ComponentDescriptor<TSchema>, PropertyModelContext, ComponentContext> component,
+        Func<PropertyModelContext, bool>? whenProperty = default,
+        Func<ComponentContext, bool>? whenComponent = default
+    ) where TSchema : IComponentSchema
+    {
+        whenProperty ??= _ => true;
+        whenComponent ??= _ => true;
+
+        conventions.Add(new PropertyConvention<ComponentDescriptorBuilderAttribute<TSchema>>(
+            when: whenProperty,
+            apply: (attribute, c) => attribute.Builder.Wrap(
+                when: whenComponent,
+                apply: (d, cc) => component(d, c, cc)
+            )
+        ));
+    }
+
+    public static void AddMethodComponentConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<ComponentDescriptor<TSchema>> component,
+        Func<MethodModelContext, bool>? whenMethod = default,
+        Func<ComponentContext, bool>? whenComponent = default
+    ) where TSchema : IComponentSchema =>
+        conventions.AddMethodComponentConvention<TSchema>((s, _) => component(s),
+            whenMethod: whenMethod,
+            whenComponent: whenComponent
+        );
+
+    public static void AddMethodComponentConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<ComponentDescriptor<TSchema>, MethodModelContext> component,
+        Func<MethodModelContext, bool>? whenMethod = default,
+        Func<ComponentContext, bool>? whenComponent = default
+    ) where TSchema : IComponentSchema =>
+        conventions.AddMethodComponentConvention<TSchema>((s, c, _) => component(s, c),
+            whenMethod: whenMethod,
+            whenComponent: whenComponent
+        );
+
+    public static void AddMethodComponentConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<ComponentDescriptor<TSchema>, MethodModelContext, ComponentContext> component,
+        Func<MethodModelContext, bool>? whenMethod = default,
+        Func<ComponentContext, bool>? whenComponent = default
+    ) where TSchema : IComponentSchema
+    {
+        whenMethod ??= _ => true;
+        whenComponent ??= _ => true;
+
+        conventions.Add(new MethodConvention<ComponentDescriptorBuilderAttribute<TSchema>>(
+            when: whenMethod,
+            apply: (attribute, c) => attribute.Builder.Wrap(
+                when: whenComponent,
+                apply: (d, cc) => component(d, c, cc)
+            )
+        ));
+    }
+
+    public static void AddParameterComponentConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<ComponentDescriptor<TSchema>> component,
+        Func<ParameterModelContext, bool>? whenParameter = default,
+        Func<ComponentContext, bool>? whenComponent = default
+    ) where TSchema : IComponentSchema =>
+        conventions.AddParameterComponentConvention<TSchema>((s, _) => component(s),
+            whenParameter: whenParameter,
+            whenComponent: whenComponent
+        );
+
+    public static void AddParameterComponentConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<ComponentDescriptor<TSchema>, ParameterModelContext> component,
+        Func<ParameterModelContext, bool>? whenParameter = default,
+        Func<ComponentContext, bool>? whenComponent = default
+    ) where TSchema : IComponentSchema =>
+        conventions.AddParameterComponentConvention<TSchema>((s, c, _) => component(s, c),
+            whenParameter: whenParameter,
+            whenComponent: whenComponent
+        );
+
+    public static void AddParameterComponentConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<ComponentDescriptor<TSchema>, ParameterModelContext, ComponentContext> component,
+        Func<ParameterModelContext, bool>? whenParameter = default,
+        Func<ComponentContext, bool>? whenComponent = default
+    ) where TSchema : IComponentSchema
+    {
+        whenParameter ??= _ => true;
+        whenComponent ??= _ => true;
+
+        conventions.Add(new ParameterConvention<ComponentDescriptorBuilderAttribute<TSchema>>(
+            when: whenParameter,
+            apply: (attribute, c) => attribute.Builder.Wrap(
+                when: whenComponent,
+                apply: (d, cc) => component(d, c, cc)
+            )
+        ));
+    }
+
+    #endregion
 
     #endregion
 }
