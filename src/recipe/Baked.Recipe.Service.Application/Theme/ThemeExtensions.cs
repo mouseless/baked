@@ -384,7 +384,8 @@ public static class ThemeExtensions
         int order = default
     ) => conventions.AddMethodSchemaConvention<TSchema>((s, _) => schema(s),
         whenMethod: whenMethod,
-        whenComponent: whenComponent
+        whenComponent: whenComponent,
+        order: order
     );
 
     public static void AddMethodSchemaConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<TSchema, MethodModelContext> schema,
@@ -393,7 +394,8 @@ public static class ThemeExtensions
         int order = default
     ) => conventions.AddMethodSchemaConvention<TSchema>((s, c, _) => schema(s, c),
         whenMethod: whenMethod,
-        whenComponent: whenComponent
+        whenComponent: whenComponent,
+        order: order
     );
 
     public static void AddMethodSchemaConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<TSchema, MethodModelContext, ComponentContext> schema,

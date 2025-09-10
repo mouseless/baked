@@ -9,5 +9,5 @@ public class ParameterConvention<TAttribute>(Action<TAttribute, ParameterModelCo
     where TAttribute : Attribute
 {
     protected override ICustomAttributesModel GetMetadata(ParameterModelContext context) =>
-        context.Method;
+        context.Parameter;
 }
