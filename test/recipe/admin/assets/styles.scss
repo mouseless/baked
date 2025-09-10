@@ -21,22 +21,3 @@
     }
   }
 }
-
-.p-popover-content {
-  & > div {
-    @apply max-sm:p-0;
-  }
-
-  .p-selectbutton {
-    @apply max-sm:flex-col;
-
-    .p-togglebutton {
-      &:first-child {
-        @apply max-sm:rounded-t-lg max-sm:rounded-es-none;
-      }
-      &:last-child {
-        @apply max-sm:rounded-b-lg max-sm:rounded-se-none;
-      }
-    }
-  } 
-}
