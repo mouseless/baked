@@ -157,9 +157,9 @@ public static class Components
         IData? data = default
     ) => new(options.Apply(new())) { Data = data };
 
-    public static ComponentDescriptor<ReportPage> ReportPage(string name, ComponentDescriptor<PageTitle> title,
+    public static ComponentDescriptor<ReportPage> ReportPage(string path, ComponentDescriptor<PageTitle> title,
         Action<ReportPage>? options = default
-    ) => new(options.Apply(new(name, title.Schema)));
+    ) => new(options.Apply(new(path, title.Schema)));
 
     public static ReportPage.Tab ReportPageTab(string id,
         Action<ReportPage.Tab>? options = default

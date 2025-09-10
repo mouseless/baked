@@ -3,6 +3,7 @@ using Baked.Domain;
 using Baked.Domain.Configuration;
 using Baked.Domain.Model;
 using Baked.RestApi.Model;
+using Baked.Testing;
 using Baked.Theme;
 using Baked.Ui;
 
@@ -63,6 +64,34 @@ public static class ThemeExtensions
         return generics.GenericTypeArguments.First().Model;
     }
 
+    public static PageContext APageContext(this Stubber giveMe,
+        string? path = default,
+        string? title = default
+    )
+    {
+        path ??= "/";
+        title ??= "TEST PAGE";
+
+        return new()
+        {
+            Route = new(path, title),
+            Sitemap = [],
+            Domain = giveMe.TheDomainModel(),
+            NewLocaleKey = s => s
+        };
+    }
+
+    public static ComponentContext AComponentContext(this Stubber giveMe,
+        string? path = default
+    )
+    {
+        path ??= string.Empty;
+
+        return giveMe
+            .APageContext()
+            .CreateComponentContext(path);
+    }
+
     public static IEnumerable<T> WhereAppliesTo<T>(this IEnumerable<T> enumerable, ComponentContext context) =>
         enumerable.Where(c => c is not IComponentContextFilter when || when.AppliesTo(context));
 
@@ -77,14 +106,17 @@ public static class ThemeExtensions
     //
     // Filter is applied within the function because it is the only
     // way to access to the component context.
-    static Func<ComponentContext, TSchema> Wrap<TSchema>(
-        this Func<ComponentContext, TSchema> builder,
+    static void WrapBuilder<TSchema>(
+        this DescriptorBuilderAttribute<TSchema> attribute,
         Func<ComponentContext, bool> when,
         Action<TSchema, ComponentContext> apply
-    ) =>
-        cc =>
+    )
+    {
+        var prev = attribute.Builder;
+
+        attribute.Builder = cc =>
         {
-            var result = builder(cc);
+            var result = prev(cc);
 
             if (when(cc))
             {
@@ -93,6 +125,7 @@ public static class ThemeExtensions
 
             return result;
         };
+    }
 
     #region Descriptor Builder & Schema
 
@@ -330,7 +363,7 @@ public static class ThemeExtensions
         whenComponent ??= _ => true;
 
         conventions.AddTypeConvention<DescriptorBuilderAttribute<TSchema>>(
-            apply: (attribute, c) => attribute.Builder.Wrap(
+            apply: (attribute, c) => attribute.WrapBuilder(
                 apply: (s, cc) => schema(s, c, cc),
                 when: whenComponent
             ),
@@ -369,7 +402,7 @@ public static class ThemeExtensions
         whenComponent ??= _ => true;
 
         conventions.AddPropertyConvention<DescriptorBuilderAttribute<TSchema>>(
-            apply: (attribute, c) => attribute.Builder.Wrap(
+            apply: (attribute, c) => attribute.WrapBuilder(
                 apply: (s, cc) => schema(s, c, cc),
                 when: whenComponent
             ),
@@ -408,7 +441,7 @@ public static class ThemeExtensions
         whenComponent ??= _ => true;
 
         conventions.AddMethodConvention<DescriptorBuilderAttribute<TSchema>>(
-            apply: (attribute, c) => attribute.Builder.Wrap(
+            apply: (attribute, c) => attribute.WrapBuilder(
                 apply: (s, cc) => schema(s, c, cc),
                 when: whenComponent
             ),
@@ -447,7 +480,7 @@ public static class ThemeExtensions
         whenComponent ??= _ => true;
 
         conventions.AddParameterConvention<DescriptorBuilderAttribute<TSchema>>(
-            apply: (attribute, c) => attribute.Builder.Wrap(
+            apply: (attribute, c) => attribute.WrapBuilder(
                 apply: (s, cc) => schema(s, c, cc),
                 when: whenComponent
             ),
@@ -464,15 +497,15 @@ public static class ThemeExtensions
 
     public static IComponentDescriptor GetComponent(this ICustomAttributesModel metadata, ComponentContext context)
     {
-        if (!metadata.TryGetAll<ContextBasedSchemaAttribute>(out var contextBasedSchemas)) { throw new($"{metadata} has no compatible component descriptor for {context.Path}"); }
+        if (!metadata.TryGetAll<ContextBasedSchemaAttribute>(out var contextBasedSchemas)) { throw new($"{metadata.CustomAttributes.Name} doesn't have a component descriptor"); }
 
         var contextBasedSchema = contextBasedSchemas.WhereAppliesTo(context).LastOrDefault() ??
-            throw new($"{metadata} has no compatible component for {context.Path}");
+            throw new($"{metadata.CustomAttributes.Name} has no compatible component at component path `{context.Path}`");
 
         var builderType = typeof(ComponentDescriptorBuilderAttribute<>).MakeGenericType(contextBasedSchema.SchemaType);
         if (!metadata.TryGetAll(builderType, out var builders))
         {
-            throw new($"{metadata} is expected to have a component descriptor builder of type {contextBasedSchema.SchemaType}");
+            throw new($"{metadata.CustomAttributes.Name} is expected to have a component descriptor builder of type {contextBasedSchema.SchemaType}");
         }
 
         return builders
@@ -480,7 +513,7 @@ public static class ThemeExtensions
             .WhereAppliesTo(context)
             .LastOrDefault()
             ?.Build(context) ??
-            throw new($"{metadata} is expected to have a component descriptor builder of type {contextBasedSchema.SchemaType} for path {context.Path}");
+            throw new($"{metadata.CustomAttributes.Name} is expected to have a component descriptor builder of type {contextBasedSchema.SchemaType} at component path `{context.Path}`");
     }
 
     #region Add Component
@@ -729,7 +762,7 @@ public static class ThemeExtensions
         whenComponent ??= _ => true;
 
         conventions.AddTypeConvention<ComponentDescriptorBuilderAttribute<TSchema>>(
-            apply: (attribute, c) => attribute.Builder.Wrap(
+            apply: (attribute, c) => attribute.WrapBuilder(
                 apply: (d, cc) => component(d, c, cc),
                 when: whenComponent
             ),
@@ -770,7 +803,7 @@ public static class ThemeExtensions
         whenComponent ??= _ => true;
 
         conventions.AddPropertyConvention<ComponentDescriptorBuilderAttribute<TSchema>>(
-            apply: (attribute, c) => attribute.Builder.Wrap(
+            apply: (attribute, c) => attribute.WrapBuilder(
                 apply: (d, cc) => component(d, c, cc),
                 when: whenComponent
             ),
@@ -811,7 +844,7 @@ public static class ThemeExtensions
         whenComponent ??= _ => true;
 
         conventions.AddMethodConvention<ComponentDescriptorBuilderAttribute<TSchema>>(
-            apply: (attribute, c) => attribute.Builder.Wrap(
+            apply: (attribute, c) => attribute.WrapBuilder(
                 apply: (d, cc) => component(d, c, cc),
                 when: whenComponent
             ),
@@ -852,7 +885,7 @@ public static class ThemeExtensions
         whenComponent ??= _ => true;
 
         conventions.AddParameterConvention<ComponentDescriptorBuilderAttribute<TSchema>>(
-            apply: (attribute, c) => attribute.Builder.Wrap(
+            apply: (attribute, c) => attribute.WrapBuilder(
                 apply: (d, cc) => component(d, c, cc),
                 when: whenComponent
             ),

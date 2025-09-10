@@ -124,6 +124,15 @@ public static class DomainExtensions
             .FirstOrDefault()
             ?.AllowMultiple == true;
 
+    public static DomainModel TheDomainModel(this Stubber giveMe) =>
+        giveMe.Spec.GenerateContext.GetDomainModel();
+
+    public static TypeModel TheTypeModel<T>(this Stubber giveMe) =>
+        giveMe.TheTypeModel(typeof(T));
+
+    public static TypeModel TheTypeModel(this Stubber giveMe, Type type) =>
+        giveMe.TheDomainModel().Types[type];
+
     #region IDomainModelConvention
 
     public static void Add(this IDomainModelConventionCollection conventions, IDomainModelConvention convention,

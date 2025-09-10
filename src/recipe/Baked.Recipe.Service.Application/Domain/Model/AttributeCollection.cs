@@ -8,13 +8,16 @@ public class AttributeCollection(string name)
     readonly string _name = name;
     readonly Dictionary<Type, List<Attribute>> _attributes = [];
 
-    internal AttributeCollection(string name, IEnumerable<Attribute> attributes) : this(name)
+    internal AttributeCollection(string name, IEnumerable<Attribute> attributes)
+        : this(name)
     {
         foreach (var attribute in attributes)
         {
             AddInner(attribute);
         }
     }
+
+    public string Name => _name;
 
     void AddInner(Attribute attribute)
     {

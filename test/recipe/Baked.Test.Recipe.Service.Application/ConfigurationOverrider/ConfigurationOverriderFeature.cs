@@ -5,8 +5,13 @@ using Baked.Test.Authentication;
 using Baked.Test.Business;
 using Baked.Test.ExceptionHandling;
 using Baked.Test.Orm;
+using Baked.Test.Theme;
+using Baked.Theme.Admin;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
+
+using static Baked.Theme.Admin.Components;
+using static Baked.Test.Theme.Custom.DomainDatas;
 
 namespace Baked.Test.ConfigurationOverrider;
 
@@ -91,6 +96,51 @@ public class ConfigurationOverriderFeature : IFeature
                     c.Type.Is<MethodSamples>() &&
                     c.Method.Name == nameof(MethodSamples.PrimitiveParameters) &&
                     c.Parameter.Name == "string"
+            );
+
+            builder.Conventions.AddTypeComponent(
+                component: (_, cc) => ReportPage("test-page", PageTitle("Test Page")),
+                whenType: c => c.Type.Is<TestPage>(),
+                whenComponent: cc => cc.Path == "/page"
+            );
+            builder.Conventions.AddTypeComponentConvention<ReportPage>(
+                component: (reportPage, c, cc) => reportPage.Schema.Tabs.AddRange(
+                    c.Type.GetSchemas<ReportPage.Tab>(cc.CreateComponentContext("/tabs"))
+                ),
+                whenType: c => c.Type.Is<TestPage>()
+            );
+            builder.Conventions.AddTypeSchema(
+                schema: (c, cc) => ReportPageTab("default"),
+                whenType: c => c.Type.Is<TestPage>(),
+                whenComponent: cc => cc.Path.EndsWith("/tabs")
+            );
+            builder.Conventions.AddTypeSchemaConvention<ReportPage.Tab>(
+                schema: (tab, c, cc) => tab.Contents.Add(
+                    c.Type
+                        .GetMethod(nameof(TestPage.GetData))
+                        .GetSchema<ReportPage.Tab.Content>(cc.CreateComponentContext($"/{tab.Id}/contents/0"))
+                        ?? throw new($"{nameof(TestPage.GetData)} is expected to have a report page content")
+                ),
+                whenType: c => c.Type.Is<TestPage>()
+            );
+
+            builder.Conventions.AddMethodSchema(
+                schema: (c, cc) => ReportPageTabContent(component: c.Method.GetComponent(cc.CreateComponentContext($"/component"))),
+                whenMethod: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData),
+                whenComponent: c => c.Path.EndsWith("/contents/0")
+            );
+            builder.Conventions.AddMethodSchemaConvention<ReportPage.Tab.Content>(
+                schema: tabContent => tabContent.Narrow = true,
+                whenMethod: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData)
+            );
+            builder.Conventions.AddMethodComponent(
+                component: (c, cc) => String(data: ActionRemote(c.Method)),
+                whenMethod: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData),
+                whenComponent: cc => cc.Path.EndsWith("/component")
+            );
+            builder.Conventions.AddMethodComponentConvention<Baked.Theme.Admin.String>(
+                component: (@string) => @string.Schema.MaxLength = 20,
+                whenMethod: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData)
             );
         });
 
