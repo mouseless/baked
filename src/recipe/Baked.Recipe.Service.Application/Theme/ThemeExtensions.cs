@@ -331,8 +331,8 @@ public static class ThemeExtensions
 
         conventions.AddTypeConvention<DescriptorBuilderAttribute<TSchema>>(
             apply: (attribute, c) => attribute.Builder.Wrap(
-                when: whenComponent,
-                apply: (s, cc) => schema(s, c, cc)
+                apply: (s, cc) => schema(s, c, cc),
+                when: whenComponent
             ),
             when: (_, c) => whenType(c),
             order: order
@@ -370,8 +370,8 @@ public static class ThemeExtensions
 
         conventions.AddPropertyConvention<DescriptorBuilderAttribute<TSchema>>(
             apply: (attribute, c) => attribute.Builder.Wrap(
-                when: whenComponent,
-                apply: (s, cc) => schema(s, c, cc)
+                apply: (s, cc) => schema(s, c, cc),
+                when: whenComponent
             ),
             when: (_, c) => whenProperty(c),
             order: order
@@ -409,8 +409,8 @@ public static class ThemeExtensions
 
         conventions.AddMethodConvention<DescriptorBuilderAttribute<TSchema>>(
             apply: (attribute, c) => attribute.Builder.Wrap(
-                when: whenComponent,
-                apply: (s, cc) => schema(s, c, cc)
+                apply: (s, cc) => schema(s, c, cc),
+                when: whenComponent
             ),
             when: (_, c) => whenMethod(c),
             order: order
@@ -448,8 +448,8 @@ public static class ThemeExtensions
 
         conventions.AddParameterConvention<DescriptorBuilderAttribute<TSchema>>(
             apply: (attribute, c) => attribute.Builder.Wrap(
-                when: whenComponent,
-                apply: (s, cc) => schema(s, c, cc)
+                apply: (s, cc) => schema(s, c, cc),
+                when: whenComponent
             ),
             when: (_, c) => whenParameter(c),
             order: order
@@ -730,8 +730,8 @@ public static class ThemeExtensions
 
         conventions.AddTypeConvention<ComponentDescriptorBuilderAttribute<TSchema>>(
             apply: (attribute, c) => attribute.Builder.Wrap(
-                when: whenComponent,
-                apply: (d, cc) => component(d, c, cc)
+                apply: (d, cc) => component(d, c, cc),
+                when: whenComponent
             ),
             when: (_, c) => whenType(c),
             order: order
@@ -771,8 +771,8 @@ public static class ThemeExtensions
 
         conventions.AddPropertyConvention<ComponentDescriptorBuilderAttribute<TSchema>>(
             apply: (attribute, c) => attribute.Builder.Wrap(
-                when: whenComponent,
-                apply: (d, cc) => component(d, c, cc)
+                apply: (d, cc) => component(d, c, cc),
+                when: whenComponent
             ),
             when: (_, c) => whenProperty(c),
             order: order
@@ -812,8 +812,8 @@ public static class ThemeExtensions
 
         conventions.AddMethodConvention<ComponentDescriptorBuilderAttribute<TSchema>>(
             apply: (attribute, c) => attribute.Builder.Wrap(
-                when: whenComponent,
-                apply: (d, cc) => component(d, c, cc)
+                apply: (d, cc) => component(d, c, cc),
+                when: whenComponent
             ),
             when: (_, c) => whenMethod(c),
             order: order
@@ -853,8 +853,8 @@ public static class ThemeExtensions
 
         conventions.AddParameterConvention<ComponentDescriptorBuilderAttribute<TSchema>>(
             apply: (attribute, c) => attribute.Builder.Wrap(
-                when: whenComponent,
-                apply: (d, cc) => component(d, c, cc)
+                apply: (d, cc) => component(d, c, cc),
+                when: whenComponent
             ),
             when: (_, c) => whenParameter(c),
             order: order
