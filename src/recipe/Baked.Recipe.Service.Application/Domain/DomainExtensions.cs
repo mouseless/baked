@@ -130,6 +130,8 @@ public static class DomainExtensions
         int order = default
     ) => conventions.Add((convention, order));
 
+    #region Metadata
+
     public static void SetTypeMetadata(this IDomainModelConventionCollection conventions, Attribute attribute, Func<TypeModelMetadataContext, bool> when,
         int order = default
     ) => conventions.SetTypeMetadata((context, set) => set(context.Type, attribute), when, order);
@@ -245,6 +247,108 @@ public static class DomainExtensions
         int order = default
     ) where TAttribute : Attribute =>
         conventions.Add(new RemoveMetadataConvention<ParameterModelContext, TAttribute>((context, remove) => remove(context.Parameter), when), order);
+
+    #endregion
+
+    #region Convention
+
+    public static void AddTypeConvention<TAttribute>(this IDomainModelConventionCollection conventions, Action<TAttribute> apply,
+        Func<TAttribute, bool> when, // NOTE this is not optional to avoid ambiguous call when not given
+        int order = default
+    ) where TAttribute : Attribute =>
+        conventions.AddTypeConvention((a, _) => apply(a), when: when, order: order);
+
+    public static void AddTypeConvention<TAttribute>(this IDomainModelConventionCollection conventions, Action<TAttribute> apply,
+        Func<TAttribute, TypeModelMetadataContext, bool>? when = default,
+        int order = default
+    ) where TAttribute : Attribute =>
+        conventions.AddTypeConvention((a, _) => apply(a), when: when, order: order);
+
+    public static void AddTypeConvention<TAttribute>(this IDomainModelConventionCollection conventions, Action<TAttribute, TypeModelMetadataContext> apply,
+        Func<TAttribute, bool> when, // NOTE this is not optional to avoid ambiguous call when not given
+        int order = default
+    ) where TAttribute : Attribute =>
+        conventions.AddTypeConvention(apply, when: (a, _) => when(a), order: order);
+
+    public static void AddTypeConvention<TAttribute>(this IDomainModelConventionCollection conventions, Action<TAttribute, TypeModelMetadataContext> apply,
+        Func<TAttribute, TypeModelMetadataContext, bool>? when = default,
+        int order = default
+    ) where TAttribute : Attribute =>
+        conventions.Add(new TypeConvention<TAttribute>(apply, when: when), order: order);
+
+    public static void AddPropertyConvention<TAttribute>(this IDomainModelConventionCollection conventions, Action<TAttribute> apply,
+        Func<TAttribute, bool> when, // NOTE this is not optional to avoid ambiguous call when not given
+        int order = default
+    ) where TAttribute : Attribute =>
+        conventions.AddPropertyConvention((a, _) => apply(a), when: when, order: order);
+
+    public static void AddPropertyConvention<TAttribute>(this IDomainModelConventionCollection conventions, Action<TAttribute> apply,
+        Func<TAttribute, PropertyModelContext, bool>? when = default,
+        int order = default
+    ) where TAttribute : Attribute =>
+        conventions.AddPropertyConvention((a, _) => apply(a), when: when, order: order);
+
+    public static void AddPropertyConvention<TAttribute>(this IDomainModelConventionCollection conventions, Action<TAttribute, PropertyModelContext> apply,
+        Func<TAttribute, bool> when, // NOTE this is not optional to avoid ambiguous call when not given
+        int order = default
+    ) where TAttribute : Attribute =>
+        conventions.AddPropertyConvention(apply, when: (a, _) => when(a), order: order);
+
+    public static void AddPropertyConvention<TAttribute>(this IDomainModelConventionCollection conventions, Action<TAttribute, PropertyModelContext> apply,
+        Func<TAttribute, PropertyModelContext, bool>? when = default,
+        int order = default
+    ) where TAttribute : Attribute =>
+        conventions.Add(new PropertyConvention<TAttribute>(apply, when: when), order: order);
+
+    public static void AddMethodConvention<TAttribute>(this IDomainModelConventionCollection conventions, Action<TAttribute> apply,
+        Func<TAttribute, bool> when, // NOTE this is not optional to avoid ambiguous call when not given
+        int order = default
+    ) where TAttribute : Attribute =>
+        conventions.AddMethodConvention((a, _) => apply(a), when: when, order: order);
+
+    public static void AddMethodConvention<TAttribute>(this IDomainModelConventionCollection conventions, Action<TAttribute> apply,
+        Func<TAttribute, MethodModelContext, bool>? when = default,
+        int order = default
+    ) where TAttribute : Attribute =>
+        conventions.AddMethodConvention((a, _) => apply(a), when: when, order: order);
+
+    public static void AddMethodConvention<TAttribute>(this IDomainModelConventionCollection conventions, Action<TAttribute, MethodModelContext> apply,
+        Func<TAttribute, bool> when, // NOTE this is not optional to avoid ambiguous call when not given
+        int order = default
+    ) where TAttribute : Attribute =>
+        conventions.AddMethodConvention(apply, when: (a, _) => when(a), order: order);
+
+    public static void AddMethodConvention<TAttribute>(this IDomainModelConventionCollection conventions, Action<TAttribute, MethodModelContext> apply,
+        Func<TAttribute, MethodModelContext, bool>? when = default,
+        int order = default
+    ) where TAttribute : Attribute =>
+        conventions.Add(new MethodConvention<TAttribute>(apply, when: when), order: order);
+
+    public static void AddParameterConvention<TAttribute>(this IDomainModelConventionCollection conventions, Action<TAttribute> apply,
+        Func<TAttribute, bool> when, // NOTE this is not optional to avoid ambiguous call when not given
+        int order = default
+    ) where TAttribute : Attribute =>
+        conventions.AddParameterConvention((a, _) => apply(a), when: when, order: order);
+
+    public static void AddParameterConvention<TAttribute>(this IDomainModelConventionCollection conventions, Action<TAttribute> apply,
+        Func<TAttribute, ParameterModelContext, bool>? when = default,
+        int order = default
+    ) where TAttribute : Attribute =>
+        conventions.AddParameterConvention((a, _) => apply(a), when: when, order: order);
+
+    public static void AddParameterConvention<TAttribute>(this IDomainModelConventionCollection conventions, Action<TAttribute, ParameterModelContext> apply,
+        Func<TAttribute, bool> when, // NOTE this is not optional to avoid ambiguous call when not given
+        int order = default
+    ) where TAttribute : Attribute =>
+        conventions.AddParameterConvention(apply, when: (a, _) => when(a), order: order);
+
+    public static void AddParameterConvention<TAttribute>(this IDomainModelConventionCollection conventions, Action<TAttribute, ParameterModelContext> apply,
+        Func<TAttribute, ParameterModelContext, bool>? when = default,
+        int order = default
+    ) where TAttribute : Attribute =>
+        conventions.Add(new ParameterConvention<TAttribute>(apply, when: when), order: order);
+
+    #endregion
 
     #endregion
 
