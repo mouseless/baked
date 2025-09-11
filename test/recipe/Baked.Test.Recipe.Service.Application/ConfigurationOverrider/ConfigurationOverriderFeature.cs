@@ -106,7 +106,7 @@ public class ConfigurationOverriderFeature : IFeature
             );
             builder.Conventions.AddTypeComponentConvention<ReportPage>(
                 component: (reportPage, c, cc) => reportPage.Schema.Tabs.AddRange(
-                    c.Type.GetSchemas<ReportPage.Tab>(cc.CreateComponentContext("/tabs"))
+                    c.Type.GetSchemas<ReportPage.Tab>(cc.Drill("/tabs"))
                 ),
                 whenType: c => c.Type.Is<TestPage>()
             );
@@ -119,14 +119,14 @@ public class ConfigurationOverriderFeature : IFeature
                 schema: (tab, c, cc) => tab.Contents.Add(
                     c.Type
                         .GetMethod(nameof(TestPage.GetData))
-                        .GetSchema<ReportPage.Tab.Content>(cc.CreateComponentContext($"/{tab.Id}/contents/0"))
+                        .GetSchema<ReportPage.Tab.Content>(cc.Drill($"/{tab.Id}/contents/0"))
                         ?? throw new($"{nameof(TestPage.GetData)} is expected to have a report page content")
                 ),
                 whenType: c => c.Type.Is<TestPage>()
             );
 
             builder.Conventions.AddMethodSchema(
-                schema: (c, cc) => ReportPageTabContent(component: c.Method.GetComponent(cc.CreateComponentContext($"/component"))),
+                schema: (c, cc) => ReportPageTabContent(component: c.Method.GetRequiredComponent(cc.Drill($"/component"))),
                 whenMethod: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData),
                 whenComponent: c => c.Path.EndsWith("/contents/0")
             );
@@ -145,14 +145,24 @@ public class ConfigurationOverriderFeature : IFeature
             );
 
             builder.Conventions.AddTypeSchema(
-                schema: (c, cc) => TypeReportPageTab(c.Type, cc, "Single Value", options: rpt => rpt.Icon = Icon("pi-box")),
+                schema: (c, cc) => TypeReportPageTab(c.Type, cc, "single-value"),
                 whenType: c => c.Type.Is<Report>(),
                 whenComponent: cc => cc.Path.EndsWith("/tabs")
             );
             builder.Conventions.AddTypeSchema(
-                schema: (c, cc) => TypeReportPageTab(c.Type, cc, "Data Table", options: rpt => rpt.Icon = Icon("pi-table")),
+                schema: (c, cc) => TypeReportPageTab(c.Type, cc, "data-table"),
                 whenType: c => c.Type.Is<Report>(),
                 whenComponent: cc => cc.Path.EndsWith("/tabs")
+            );
+            builder.Conventions.AddTypeComponent(
+                component: () => Icon("pi-box"),
+                whenType: c => c.Type.Is<Report>(),
+                whenComponent: cc => cc.Path.EndsWith("/single-value/icon")
+            );
+            builder.Conventions.AddTypeComponent(
+                component: () => Icon("pi-table"),
+                whenType: c => c.Type.Is<Report>(),
+                whenComponent: cc => cc.Path.EndsWith("/data-table/icon")
             );
         });
 

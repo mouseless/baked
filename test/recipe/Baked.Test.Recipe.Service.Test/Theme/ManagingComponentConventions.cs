@@ -12,7 +12,7 @@ public class ManagingComponentConventions : TestServiceSpec
         var type = GiveMe.TheTypeModel<TestPage>().GetMetadata();
         var componentContext = GiveMe.AComponentContext(path: "/page");
 
-        var component = type.GetComponent(componentContext);
+        var component = type.GetRequiredComponent(componentContext);
 
         var reportPage = component.ShouldBeOfType<ComponentDescriptor<ReportPage>>();
         reportPage.Schema.Path.ShouldBe("test-page");
@@ -51,7 +51,7 @@ public class ManagingComponentConventions : TestServiceSpec
         var method = type.Methods[nameof(TestPage.GetData)];
         var componentContext = GiveMe.AComponentContext(path: "/page/tabs/default/contents/0/component");
 
-        var component = method.GetComponent(componentContext);
+        var component = method.GetRequiredComponent(componentContext);
 
         var @string = component.ShouldBeOfType<ComponentDescriptor<Baked.Theme.Admin.String>>();
         @string.Schema.MaxLength.ShouldBe(20);

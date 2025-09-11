@@ -1,4 +1,4 @@
-using Baked.Domain.Model;
+﻿using Baked.Domain.Model;
 using Baked.Ui;
 using Humanizer;
 
@@ -19,7 +19,7 @@ public static class DomainComponents
         {
             pt.Description = l(context.Route.Description);
         });
-        var tabs = type.GetSchemas<ReportPage.Tab>(context.CreateComponentContext("/tabs"));
+        var tabs = type.GetSchemas<ReportPage.Tab>(context.Drill("/tabs"));
 
         return ReportPage(path, title, options: schema =>
         {
@@ -29,21 +29,22 @@ public static class DomainComponents
         });
     }
 
-    public static ReportPage.Tab TypeReportPageTab(TypeModelMetadata type, ComponentContext context, string title,
+    public static ReportPage.Tab TypeReportPageTab(TypeModelMetadata type, ComponentContext context, string id,
         Action<ReportPage.Tab>? options = default
     )
     {
         var (_, l) = context;
 
-        var id = title.Kebaberize();
-        context = context.CreateComponentContext($"/{id}");
-        title = l(title);
-
         return ReportPageTab(id, options: rpt =>
         {
-            rpt.Title = title;
+            rpt.Icon = type.GetComponent(context.Drill($"/{id}/icon"));
 
             options.Apply(rpt);
+
+            if (rpt.Title is null)
+            {
+                rpt.Title = l(id.Replace("-", " ").Titleize());
+            }
         });
     }
 }

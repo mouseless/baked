@@ -108,6 +108,6 @@ public static class AdminThemeExtensions
 
             if (!domain.Types[typeof(T)].TryGetMetadata(out var metadata)) { throw new($"{typeof(T).Name} cannot be used as a report page resource, because its metadata is not included in domain model"); }
 
-            return TypeReportPage(metadata, context.CreateComponentContext("/page"));
+            return TypeReportPage(metadata, context.Drill("/page"));
         };
 }

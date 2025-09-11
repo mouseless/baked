@@ -1,4 +1,4 @@
-using Baked.Architecture;
+﻿using Baked.Architecture;
 using Baked.Domain;
 using Baked.Domain.Configuration;
 using Baked.Domain.Model;
@@ -89,7 +89,7 @@ public static class ThemeExtensions
 
         return giveMe
             .APageContext()
-            .CreateComponentContext(path);
+            .Drill(path);
     }
 
     public static IEnumerable<T> WhereAppliesTo<T>(this IEnumerable<T> enumerable, ComponentContext context) =>
@@ -141,6 +141,10 @@ public static class ThemeExtensions
             .Select(b => b.Build(context))
         ];
     }
+
+    public static TSchema GetRequiredSchema<TSchema>(this ICustomAttributesModel metadata, ComponentContext context) =>
+        metadata.GetSchema<TSchema>(context) ??
+        throw new($"`{metadata.CustomAttributes.Name}` doesn't have descriptor for schema type `{typeof(TSchema).Name}` at path `{context.Path}`");
 
     public static TSchema? GetSchema<TSchema>(this ICustomAttributesModel metadata, ComponentContext context)
     {
@@ -495,12 +499,16 @@ public static class ThemeExtensions
 
     #region Component Descriptor Builder & Component
 
-    public static IComponentDescriptor GetComponent(this ICustomAttributesModel metadata, ComponentContext context)
+    public static IComponentDescriptor GetRequiredComponent(this ICustomAttributesModel metadata, ComponentContext context) =>
+        metadata.GetComponent(context) ??
+        throw new($"{metadata.CustomAttributes.Name} doesn't have any component descriptor at path `{context.Path}`");
+
+    public static IComponentDescriptor? GetComponent(this ICustomAttributesModel metadata, ComponentContext context)
     {
-        if (!metadata.TryGetAll<ContextBasedSchemaAttribute>(out var contextBasedSchemas)) { throw new($"{metadata.CustomAttributes.Name} doesn't have a component descriptor"); }
+        if (!metadata.TryGetAll<ContextBasedSchemaAttribute>(out var contextBasedSchemas)) { return default; }
 
         var contextBasedSchema = contextBasedSchemas.WhereAppliesTo(context).LastOrDefault() ??
-            throw new($"{metadata.CustomAttributes.Name} has no compatible component at component path `{context.Path}`");
+            throw new($"{metadata.CustomAttributes.Name} has no compatible component at path `{context.Path}`");
 
         var builderType = typeof(ComponentDescriptorBuilderAttribute<>).MakeGenericType(contextBasedSchema.SchemaType);
         if (!metadata.TryGetAll(builderType, out var builders))
@@ -513,7 +521,7 @@ public static class ThemeExtensions
             .WhereAppliesTo(context)
             .LastOrDefault()
             ?.Build(context) ??
-            throw new($"{metadata.CustomAttributes.Name} is expected to have a component descriptor builder of type {contextBasedSchema.SchemaType} at component path `{context.Path}`");
+            throw new($"{metadata.CustomAttributes.Name} is expected to have a component descriptor builder of type {contextBasedSchema.SchemaType} at path `{context.Path}`");
     }
 
     #region Add Component

@@ -1,4 +1,4 @@
-using Baked.Business;
+﻿using Baked.Business;
 using Baked.Test.Caching;
 using Baked.Test.Theme;
 using Baked.Test.Theme.Custom;
@@ -78,7 +78,7 @@ public static class CustomThemeExtensions
                 options: rp =>
                 {
                     rp.QueryParameters.Add(
-                        EnumSelectParameter(initializer.Parameters["parameter"], context.CreateComponentContext("/parameters/parameter"),
+                        EnumSelectParameter(initializer.Parameters["parameter"], context.Drill("/parameters/parameter"),
                             requireLocalization: false
                         )
                     );
@@ -125,9 +125,9 @@ public static class CustomThemeExtensions
                         [
                             ReportPageTabContent(
                                 DataPanel(l("Data Panel"),
-                                    content: TableWithFooterActionDataTable(getTableDataWithFooter, context.CreateComponentContext("/tabs/default/contents/0")),
+                                    content: TableWithFooterActionDataTable(getTableDataWithFooter, context.Drill("/tabs/default/contents/0")),
                                     options: dp => dp.Parameters.Add(
-                                        EnumSelectParameter(getTableDataWithFooter.DefaultOverload.Parameters["count"], context.CreateComponentContext("/parameters/count"),
+                                        EnumSelectParameter(getTableDataWithFooter.DefaultOverload.Parameters["count"], context.Drill("/parameters/count"),
                                             requireLocalization: false
                                         )
                                     )
@@ -157,9 +157,9 @@ public static class CustomThemeExtensions
             {
                 rp.QueryParameters.AddRange(
                 [
-                    EnumSelectParameter(initializer.Parameters["requiredWithDefault"], context.CreateComponentContext("/parameters/requiredWithDefault")),
-                    EnumSelectParameter(initializer.Parameters["required"], context.CreateComponentContext("/parameters/required"), options: p => p.Default = null),
-                    EnumSelectButtonParameter(initializer.Parameters["optional"], context.CreateComponentContext("/parameters/optional"))
+                    EnumSelectParameter(initializer.Parameters["requiredWithDefault"], context.Drill("/parameters/requiredWithDefault")),
+                    EnumSelectParameter(initializer.Parameters["required"], context.Drill("/parameters/required"), options: p => p.Default = null),
+                    EnumSelectButtonParameter(initializer.Parameters["optional"], context.Drill("/parameters/optional"))
                 ]);
                 rp.Tabs.AddRange(
                 [
@@ -199,11 +199,11 @@ public static class CustomThemeExtensions
                         [
                             ReportPageTabContent(
                                 component: DataPanel(l(first.Name),
-                                    content: ReportRowListActionDataTable(first, context.CreateComponentContext("/tabs/data-table/contents/0/content"),
+                                    content: ReportRowListActionDataTable(first, context.Drill("/tabs/data-table/contents/0/content"),
                                         dataOptions: rd => rd.Headers = headers
                                     ),
                                     options: dp => dp.Parameters.Add(
-                                        EnumSelectParameter(first.DefaultOverload.Parameters["count"], context.CreateComponentContext("/tabs/data-table/contents/0/parameters/count"),
+                                        EnumSelectParameter(first.DefaultOverload.Parameters["count"], context.Drill("/tabs/data-table/contents/0/parameters/count"),
                                             selectOptions: s => s.ShowClear = null
                                         )
                                     )
@@ -211,14 +211,14 @@ public static class CustomThemeExtensions
                             ),
                             ReportPageTabContent(
                                 component: DataPanel(l(second.Name),
-                                    content: ReportRowListActionDataTable(second, context.CreateComponentContext("/tabs/data-table/contents/1/content"),
+                                    content: ReportRowListActionDataTable(second, context.Drill("/tabs/data-table/contents/1/content"),
                                         exportable: false,
                                         dataOptions: rd => rd.Headers = headers
                                     ),
                                     options: dp =>
                                     {
                                         dp.Parameters.Add(
-                                            EnumSelectButtonParameter(second.DefaultOverload.Parameters["count"], context.CreateComponentContext("/tabs/data-table/contents/1/parameters/count"),
+                                            EnumSelectButtonParameter(second.DefaultOverload.Parameters["count"], context.Drill("/tabs/data-table/contents/1/parameters/count"),
                                                 selectButtonOptions: sb => sb.AllowEmpty = null
                                             )
                                         );

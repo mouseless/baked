@@ -17,7 +17,7 @@ public record PageContext
         l = NewLocaleKey;
     }
 
-    public virtual ComponentContext CreateComponentContext(string path) =>
+    public virtual ComponentContext Drill(string path) =>
         new()
         {
             Route = Route,
