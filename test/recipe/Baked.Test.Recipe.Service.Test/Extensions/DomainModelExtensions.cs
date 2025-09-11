@@ -5,12 +5,6 @@ namespace Baked.Test;
 
 public static class DomainModelExtensions
 {
-    public static DomainModel TheDomainModel(this Stubber giveMe) =>
-        giveMe.Spec.GenerateContext.GetDomainModel();
-
-    public static TypeModel TheTypeModel(this Stubber giveMe, Type type) =>
-        giveMe.TheDomainModel().Types[type];
-
     public static AttributeCollection AnAttributeCollection(this Stubber _,
         string? name = default,
         Attribute? item = default,

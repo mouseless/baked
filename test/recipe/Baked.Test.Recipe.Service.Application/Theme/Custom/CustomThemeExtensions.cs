@@ -13,7 +13,8 @@ namespace Baked;
 public static class CustomThemeExtensions
 {
     public static CustomThemeFeature Custom(this ThemeConfigurator _) =>
-        new([
+        new(
+        [
             r => r.Index() with { Page = p => p.Described(d => d.Menu()) },
             r => r.Root("/cache", "Cache", "pi pi-database") with { Page = p => p.Described(d => d.Cache()), Description = "Showcases the cache behavior" },
             r => r.Root("/data-table", "Data Table", "pi pi-table") with { Page = p => p.Described(d => d.DataTable()), Description = "Showcase DataTable component with scrollable and footer options" },

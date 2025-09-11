@@ -14,9 +14,19 @@ public class GettingMetadata : TestServiceSpec
 
         attributes.Get<SingleAttribute>().ShouldBe(single);
         attributes.Get(typeof(SingleAttribute)).ShouldBe(single);
+        attributes.TryGet<SingleAttribute>(out var actual1).ShouldBeTrue();
+        attributes.TryGet(typeof(SingleAttribute), out var actual2).ShouldBeTrue();
+        actual1.ShouldBe(single);
+        actual2.ShouldBe(single);
+    }
 
-        attributes.TryGet<SingleAttribute>(out var actual);
-        actual.ShouldBe(single);
+    [Test]
+    public void TryGet_returns_false_when_not_found()
+    {
+        var attributes = GiveMe.AnAttributeCollection();
+
+        attributes.TryGet<SingleAttribute>(out var _).ShouldBeFalse();
+        attributes.TryGet(typeof(SingleAttribute), out var _).ShouldBeFalse();
     }
 
     [Test]
@@ -32,6 +42,9 @@ public class GettingMetadata : TestServiceSpec
 
         action = () => { attributes.TryGet<MultipleAttribute>(out var _); };
         action.ShouldThrow<InvalidOperationException>();
+
+        action = () => { attributes.TryGet(typeof(MultipleAttribute), out var _); };
+        action.ShouldThrow<InvalidOperationException>();
     }
 
     [Test]
@@ -42,9 +55,19 @@ public class GettingMetadata : TestServiceSpec
 
         attributes.GetAll<MultipleAttribute>().ShouldBe([multiple]);
         attributes.GetAll(typeof(MultipleAttribute)).ShouldBe([multiple]);
+        attributes.TryGetAll<MultipleAttribute>(out var actual1).ShouldBeTrue();
+        attributes.TryGetAll(typeof(MultipleAttribute), out var actual2).ShouldBeTrue();
+        actual1.ShouldBe([multiple]);
+        actual2.ShouldBe([multiple]);
+    }
 
-        attributes.TryGetAll<MultipleAttribute>(out var actual);
-        actual.ShouldBe([multiple]);
+    [Test]
+    public void TryGetAll_returns_false_when_not_found()
+    {
+        var attributes = GiveMe.AnAttributeCollection();
+
+        attributes.TryGetAll<MultipleAttribute>(out var _).ShouldBeFalse();
+        attributes.TryGetAll(typeof(MultipleAttribute), out var _).ShouldBeFalse();
     }
 
     [Test]
@@ -59,6 +82,9 @@ public class GettingMetadata : TestServiceSpec
         action.ShouldThrow<InvalidOperationException>();
 
         action = () => { attributes.TryGetAll<SingleAttribute>(out var _); };
+        action.ShouldThrow<InvalidOperationException>();
+
+        action = () => { attributes.TryGetAll(typeof(SingleAttribute), out var _); };
         action.ShouldThrow<InvalidOperationException>();
     }
 }

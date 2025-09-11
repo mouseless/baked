@@ -51,7 +51,12 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
 
             // init before any domain convention
             builder.Conventions.Add(new InitApiModelConvention(), order: int.MinValue);
-            builder.Conventions.Add(new AddTargetParameterConvention(), order: int.MinValue);
+            builder.Conventions.AddMethodConvention<ActionModelAttribute>(
+                apply: (action, context) =>
+                    action.Parameter[ParameterModelAttribute.TargetParameterName] =
+                        new(ParameterModelAttribute.TargetParameterName, context.Type.CSharpFriendlyFullName, ParameterModelFrom.Services),
+                order: int.MinValue
+            );
 
             // rest api conventions
             builder.Conventions.Add(new AutoHttpMethodConvention([
@@ -64,10 +69,20 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
             builder.Conventions.Add(new RemoveFromRouteConvention(["Get"]));
             builder.Conventions.Add(new RemoveFromRouteConvention(["Update", "Change", "Set"]));
             builder.Conventions.Add(new RemoveFromRouteConvention(["Delete", "Remove", "Clear"]));
-            builder.Conventions.Add(new ConsumesJsonConvention(_when: action => action.HasBody), order: 10);
-            builder.Conventions.Add(new ProducesJsonConvention(_when: action => !action.ReturnIsVoid), order: 10);
+            builder.Conventions.AddMethodConvention<ActionModelAttribute>(
+                apply: action => action.AdditionalAttributes.Add("Consumes(\"application/json\")"),
+                when: action => action.HasBody,
+                order: 10
+            );
+            builder.Conventions.AddMethodConvention<ActionModelAttribute>(
+                apply: action => action.AdditionalAttributes.Add("Produces(\"application/json\")"),
+                when: action => !action.ReturnIsVoid,
+                order: 10
+            );
             builder.Conventions.Add(new UseDocumentationAsDescriptionConvention(_tagDescriptions, _examples), order: 10);
-            builder.Conventions.Add(new AddMappedMethodAttributeConvention());
+            builder.Conventions.AddMethodConvention<ActionModelAttribute>((action, context) =>
+                action.AdditionalAttributes.Add($"{typeof(MappedMethodAttribute).FullName}(\"{context.Type.FullName}\", \"{context.Method.Name}\")")
+            );
         });
 
         configurator.ConfigureApiModel(api =>

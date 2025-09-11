@@ -1,8 +1,7 @@
 ﻿namespace Baked.Ui;
 
-[AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
-public class ComponentDescriptorAttribute<TSchema>(TSchema schema)
-    : Attribute, IComponentDescriptor where TSchema : IComponentSchema
+public class ComponentDescriptor<TSchema>(TSchema schema)
+    : IComponentDescriptor where TSchema : IComponentSchema
 {
     public string Type => typeof(TSchema).Name;
     public TSchema Schema { get; set; } = schema;
