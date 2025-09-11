@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
 
 using static Baked.Theme.Admin.Components;
+using static Baked.Theme.Admin.DomainComponents;
 using static Baked.Test.Theme.Custom.DomainDatas;
 
 namespace Baked.Test.ConfigurationOverrider;
@@ -141,6 +142,17 @@ public class ConfigurationOverriderFeature : IFeature
             builder.Conventions.AddMethodComponentConvention<Baked.Theme.Admin.String>(
                 component: (@string) => @string.Schema.MaxLength = 20,
                 whenMethod: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData)
+            );
+
+            builder.Conventions.AddTypeSchema(
+                schema: (c, cc) => TypeReportPageTab(c.Type, cc, "Single Value", options: rpt => rpt.Icon = Icon("pi-box")),
+                whenType: c => c.Type.Is<Report>(),
+                whenComponent: cc => cc.Path.EndsWith("/tabs")
+            );
+            builder.Conventions.AddTypeSchema(
+                schema: (c, cc) => TypeReportPageTab(c.Type, cc, "Data Table", options: rpt => rpt.Icon = Icon("pi-table")),
+                whenType: c => c.Type.Is<Report>(),
+                whenComponent: cc => cc.Path.EndsWith("/tabs")
             );
         });
 
