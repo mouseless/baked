@@ -65,7 +65,7 @@ public class DomainAssembliesBusinessFeature(
             builder.Index.Type.Add<CasterAttribute>();
             builder.Index.Method.Add<InitializerAttribute>();
 
-            builder.Conventions.AddTypeMetadata(
+            builder.Conventions.SetTypeMetadata(
                 attribute: context =>
                 {
                     var @namespace = context.Type.Namespace ?? string.Empty;
@@ -83,7 +83,7 @@ public class DomainAssembliesBusinessFeature(
                 },
                 when: c => setNamespaceWhen(c.Type)
             );
-            builder.Conventions.AddTypeMetadata(new ServiceAttribute(),
+            builder.Conventions.SetTypeMetadata(new ServiceAttribute(),
                 when: c =>
                     c.Type.IsPublic &&
                     !c.Type.IsValueType &&
@@ -94,20 +94,20 @@ public class DomainAssembliesBusinessFeature(
                     c.Type.TryGetMembers(out var members) &&
                     !members.Methods.Contains("<Clone>$") // if type is record
             );
-            builder.Conventions.AddMethodMetadata(new ExternalAttribute(),
+            builder.Conventions.SetMethodMetadata(new ExternalAttribute(),
                 when: c =>
                     c.Method.DefaultOverload.DeclaringType is not null &&
                     c.Method.DefaultOverload.DeclaringType.TryGetMetadata(out var metadata) &&
                     !metadata.Has<ServiceAttribute>()
             );
-            builder.Conventions.AddMethodMetadata(new ExternalAttribute(),
+            builder.Conventions.SetMethodMetadata(new ExternalAttribute(),
                 when: c =>
                     c.Method.DefaultOverload.BaseDefinition is not null &&
                     c.Method.DefaultOverload.BaseDefinition.DeclaringType is not null &&
                     c.Method.DefaultOverload.BaseDefinition.DeclaringType.TryGetMetadata(out var metadata) &&
                     !metadata.Has<ServiceAttribute>()
             );
-            builder.Conventions.AddTypeMetadata(new CasterAttribute(),
+            builder.Conventions.SetTypeMetadata(new CasterAttribute(),
                 when: c => c.Type.IsClass && !c.Type.IsAbstract && c.Type.IsAssignableTo(typeof(ICasts<,>))
             );
         });

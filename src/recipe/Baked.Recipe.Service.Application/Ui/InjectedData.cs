@@ -1,14 +1,15 @@
+using Newtonsoft.Json;
+
 namespace Baked.Ui;
 
-public record InjectedData(InjectedData.DataKey Key)
-    : IData
+public record InjectedData : IData
 {
     public string Type => "Injected";
-    public DataKey Key { get; set; } = Key;
+    public DataKey Key { get; set; } = DataKey.Custom;
     public string? Prop { get; set; }
-    internal bool? RequireLocalization { get; set; }
 
-    bool? IData.RequireLocalization => RequireLocalization;
+    [JsonIgnore]
+    public bool? RequireLocalization { get; set; }
 
     public enum DataKey
     {

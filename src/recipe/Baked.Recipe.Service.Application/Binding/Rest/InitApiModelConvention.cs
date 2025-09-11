@@ -8,7 +8,7 @@ public class InitApiModelConvention : IDomainModelConvention<TypeModelContext>, 
     public void Apply(TypeModelContext context)
     {
         if (!context.Type.TryGetMetadata(out var metadata)) { return; }
-        if (!metadata.TryGetSingle<ControllerModelAttribute>(out var controller)) { return; }
+        if (!metadata.TryGet<ControllerModelAttribute>(out var controller)) { return; }
         if (!context.Type.TryGetMembers(out var members)) { return; }
         if (controller.Initialized) { return; }
 
@@ -19,7 +19,7 @@ public class InitApiModelConvention : IDomainModelConvention<TypeModelContext>, 
             actions: members.Methods
                 .Having<ActionModelAttribute>()
                 .Select(method => method
-                    .GetSingle<ActionModelAttribute>()
+                    .Get<ActionModelAttribute>()
                     .Init(
                         id: method.Name,
                         routeParts: [context.Type.Name, method.Name],
@@ -29,7 +29,7 @@ public class InitApiModelConvention : IDomainModelConvention<TypeModelContext>, 
                         parameters: method.DefaultOverload.Parameters
                             .Having<ParameterModelAttribute>()
                             .Select(param => param
-                                .GetSingle<ParameterModelAttribute>()
+                                .Get<ParameterModelAttribute>()
                                 .Init(
                                     id: param.Name,
                                     type: param.ParameterType.CSharpFriendlyFullName,
@@ -44,7 +44,7 @@ public class InitApiModelConvention : IDomainModelConvention<TypeModelContext>, 
 
     public void Apply(MethodModelContext context)
     {
-        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
+        if (!context.Method.TryGet<ActionModelAttribute>(out var action)) { return; }
         if (action.Initialized) { return; }
 
         action.Init(
@@ -56,7 +56,7 @@ public class InitApiModelConvention : IDomainModelConvention<TypeModelContext>, 
             parameters: context.Method.DefaultOverload.Parameters
                 .Having<ParameterModelAttribute>()
                 .Select(param => param
-                    .GetSingle<ParameterModelAttribute>()
+                    .Get<ParameterModelAttribute>()
                     .Init(
                         id: param.Name,
                         type: param.ParameterType.CSharpFriendlyFullName,
@@ -69,7 +69,7 @@ public class InitApiModelConvention : IDomainModelConvention<TypeModelContext>, 
 
     public void Apply(ParameterModelContext context)
     {
-        if (!context.Parameter.TryGetSingle<ParameterModelAttribute>(out var parameter)) { return; }
+        if (!context.Parameter.TryGet<ParameterModelAttribute>(out var parameter)) { return; }
         if (parameter.Initialized) { return; }
 
         parameter.Init(

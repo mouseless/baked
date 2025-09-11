@@ -52,7 +52,6 @@ public static class BakeExtensions
         logging ??= c => c.Request();
         orm ??= c => c.AutoMap();
         rateLimiter ??= c => c.Concurrency();
-        theme ??= c => c.Admin();
         configure ??= _ => { };
 
         return bake.Application(app =>
@@ -64,7 +63,11 @@ public static class BakeExtensions
             app.Layers.AddHttpServer();
             app.Layers.AddRestApi();
             app.Layers.AddRuntime();
-            app.Layers.AddUi();
+
+            if (theme is not null)
+            {
+                app.Layers.AddUi();
+            }
 
             app.Features.AddAuthentications(authentications);
             app.Features.AddAuthorization(authorization);
@@ -104,7 +107,11 @@ public static class BakeExtensions
             app.Features.AddLogging(logging);
             app.Features.AddOrm(orm);
             app.Features.AddRateLimiter(rateLimiter);
-            app.Features.AddTheme(theme);
+
+            if (theme is not null)
+            {
+                app.Features.AddTheme(theme);
+            }
 
             configure(app);
         });

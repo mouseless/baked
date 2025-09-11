@@ -9,5 +9,11 @@ application.
 To add `Admin` theme feature;
 
 ```csharp
-c => c.Admin(componentExports: [ ... ])
+c => c.Admin(
+    indexPage: ...,
+    pages: [...],
+    errorPageOptions: ep => ...,
+    sideMenuOptions: sm => ...,
+    headerOptions: h => ...
+)
 ```

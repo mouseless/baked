@@ -43,7 +43,6 @@ public abstract class ServiceSpec : Spec
         localization ??= c => c.Dotnet();
         mockOverrider ??= c => c.FirstInterface();
         orm ??= c => c.AutoMap();
-        theme ??= c => c.Admin();
         configure ??= _ => { };
 
         Init(app =>
@@ -57,7 +56,8 @@ public abstract class ServiceSpec : Spec
             app.Features.AddBinding(c => c.Rest());
             app.Features.AddBusiness(business);
             app.Features.AddCachings(cachings);
-            app.Features.AddCodingStyles([
+            app.Features.AddCodingStyles(
+            [
                 c => c.AddRemoveChild(),
                 c => c.CommandPattern(),
                 c => c.EntityExtensionViaComposition(),
@@ -79,7 +79,8 @@ public abstract class ServiceSpec : Spec
             app.Features.AddCore(core);
             app.Features.AddDatabase(database);
             app.Features.AddExceptionHandling(exceptionHandling);
-            app.Features.AddLifetimes([
+            app.Features.AddLifetimes(
+            [
                 c => c.Scoped(),
                 c => c.Singleton(),
                 c => c.Transient()
@@ -87,7 +88,11 @@ public abstract class ServiceSpec : Spec
             app.Features.AddLocalization(localization);
             app.Features.AddMockOverrider(mockOverrider);
             app.Features.AddOrm(orm);
-            app.Features.AddTheme(theme);
+
+            if (theme is not null)
+            {
+                app.Features.AddTheme(theme);
+            }
 
             configure(app);
         });

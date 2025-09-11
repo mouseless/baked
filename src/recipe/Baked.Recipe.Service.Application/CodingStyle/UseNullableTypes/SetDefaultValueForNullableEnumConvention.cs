@@ -8,7 +8,7 @@ public class SetDefaultValueForNullableEnumConvention : IDomainModelConvention<P
     public void Apply(ParameterModelContext context)
     {
         if (!context.Parameter.IsOptional) { return; }
-        if (!context.Parameter.TryGetSingle<ParameterModelAttribute>(out var parameter)) { return; }
+        if (!context.Parameter.TryGet<ParameterModelAttribute>(out var parameter)) { return; }
         if (!context.Parameter.ParameterType.IsAssignableTo(typeof(Nullable<>))) { return; }
         if (!context.Parameter.ParameterType.TryGetGenerics(out var generics)) { return; }
         if (!generics.GenericTypeArguments.Any()) { return; }

@@ -12,12 +12,12 @@ public class ClaimBasedAuthorizationFeature(IEnumerable<string> _claims, IEnumer
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Conventions.AddMethodMetadata(
-                attribute: c => c.Type.GetSingle<AllowAnonymousAttribute>(),
+            builder.Conventions.SetMethodMetadata(
+                attribute: c => c.Type.Get<AllowAnonymousAttribute>(),
                 when: c => !c.Method.Has<RequireUserAttribute>() && c.Type.Has<AllowAnonymousAttribute>()
             );
-            builder.Conventions.AddMethodMetadata(
-                attribute: c => c.Type.GetSingle<RequireUserAttribute>(),
+            builder.Conventions.SetMethodMetadata(
+                attribute: c => c.Type.Get<RequireUserAttribute>(),
                 when: c => !c.Method.Has<RequireUserAttribute>() && c.Type.Has<RequireUserAttribute>()
             );
 

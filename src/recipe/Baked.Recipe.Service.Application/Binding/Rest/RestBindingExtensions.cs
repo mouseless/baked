@@ -24,7 +24,7 @@ public static class RestBindingExtensions
 
         var initializer = members.Methods.Having<InitializerAttribute>().SingleOrDefault();
         if (initializer is null) { return false; }
-        if (!initializer.TryGetSingle(out action)) { return false; }
+        if (!initializer.TryGet(out action)) { return false; }
 
         return true;
     }

@@ -1,7 +1,6 @@
 {
   "type": "MenuPage",
   "schema": {
-    "path": "index",
     "sections": [
       {
         "links": [
@@ -55,6 +54,7 @@
           }
         ]
       }
-    ]
+    ],
+    "path": "index"
   }
 }

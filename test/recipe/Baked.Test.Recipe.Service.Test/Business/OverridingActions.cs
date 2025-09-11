@@ -46,7 +46,7 @@ public class OverridingActions : TestServiceNfr
         response = await Client.PostAsync("override-samples/request-class", new StringContent(mediaType: new("application/json"), content: """
         {
            "text": "text",
-            "numeric": 1            
+            "numeric": 1
         }
         """));
         response.StatusCode.ShouldBe(HttpStatusCode.OK);

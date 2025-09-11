@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.RestApi.Model;
 using Baked.Runtime;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.RateLimiting;
@@ -15,7 +16,9 @@ public class ConcurrencyRateLimiterFeature(
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Conventions.Add(new AddRequireConcurrencyLimiterConvention());
+            builder.Conventions.AddMethodConvention<ActionModelAttribute>(action =>
+                action.AdditionalAttributes.Add("""EnableRateLimiting("Concurrency")""")
+            );
         });
 
         configurator.ConfigureServiceCollection(services =>
@@ -26,7 +29,8 @@ public class ConcurrencyRateLimiterFeature(
                     options.PermitLimit = _permitLimit?.GetValue() ?? (configurator.IsDevelopment() ? 5 : 20);
                     options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
                     options.QueueLimit = _queueLimit?.GetValue() ?? (configurator.IsDevelopment() ? 100 : 1000);
-                }));
+                })
+            );
         });
 
         configurator.ConfigureThreadOptions(options =>

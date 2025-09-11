@@ -1,7 +1,5 @@
 ﻿using Baked.Architecture;
-using Baked.Domain.Model;
 using Baked.Ui;
-using System.Diagnostics.CodeAnalysis;
 
 using static Baked.Ui.UiLayer;
 
@@ -29,27 +27,6 @@ public static class UiExtensions
 
     public static void UsingLocalization(this LayerConfigurator configurator, Action<NewLocaleKey> l) =>
         configurator.Use(l);
-
-    public static bool TryGet<TSchema>(this TypeModel type, [NotNullWhen(true)] out TSchema? schema)
-        where TSchema : IComponentSchema
-    {
-        schema = default;
-
-        if (!type.TryGetMembers(out var members)) { return false; }
-        if (!members.TryGetSingle<ComponentDescriptorAttribute<TSchema>>(out var descriptor)) { return false; }
-
-        schema = descriptor.Schema;
-
-        return true;
-    }
-
-    public static TSchema Get<TSchema>(this TypeModel type)
-        where TSchema : IComponentSchema
-    {
-        if (!type.TryGet<TSchema>(out var result)) { throw new($"{type.Name} does not have ${typeof(TSchema).Name}"); }
-
-        return result;
-    }
 
     public static void AddFromExtensions(this ComponentExports exports, Type type)
     {

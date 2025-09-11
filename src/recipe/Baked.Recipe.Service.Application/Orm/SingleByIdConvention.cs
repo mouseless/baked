@@ -9,7 +9,7 @@ public class SingleByIdConvention<T> : IDomainModelConvention<TypeModelContext>
     {
         if (!context.Type.Is<T>()) { return; }
         if (!context.Type.TryGetMetadata(out var metadata)) { return; }
-        if (!metadata.TryGetSingle<ControllerModelAttribute>(out var controller)) { return; }
+        if (!metadata.TryGet<ControllerModelAttribute>(out var controller)) { return; }
         if (!metadata.TryGetEntityType(context.Domain, out var entityType)) { return; }
 
         var queryContextTypeId = context.Domain.Types[typeof(IQueryContext<>)].MakeGenericTypeId(entityType);

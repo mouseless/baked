@@ -14,7 +14,7 @@ public class UseBuiltInTypesCodingStyleFeature(IEnumerable<string> _textProperty
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Conventions.AddTypeMetadata(new ApiInputAttribute(),
+            builder.Conventions.SetTypeMetadata(new ApiInputAttribute(),
                 when: c =>
                   c.Type.IsEnum ||
                   c.Type.Is<Uri>() ||
@@ -22,7 +22,7 @@ public class UseBuiltInTypesCodingStyleFeature(IEnumerable<string> _textProperty
                   c.Type.IsAssignableTo(typeof(string)),
               order: int.MinValue
             );
-            builder.Conventions.AddTypeMetadata(new ApiInputAttribute(),
+            builder.Conventions.SetTypeMetadata(new ApiInputAttribute(),
                 when: c =>
                     c.Type.IsAssignableTo(typeof(IEnumerable<>)) &&
                     c.Type.IsGenericType && c.Type.TryGetGenerics(out var generics) &&
@@ -30,7 +30,7 @@ public class UseBuiltInTypesCodingStyleFeature(IEnumerable<string> _textProperty
                     genericArgMetadata.Has<ApiInputAttribute>(),
                 order: 20
             );
-            builder.Conventions.AddTypeMetadata(new ApiInputAttribute(),
+            builder.Conventions.SetTypeMetadata(new ApiInputAttribute(),
                 when: c =>
                     c.Type.IsArray && c.Type.TryGetGenerics(out var generics) &&
                     generics.ElementType?.TryGetMetadata(out var elementMetadata) == true &&

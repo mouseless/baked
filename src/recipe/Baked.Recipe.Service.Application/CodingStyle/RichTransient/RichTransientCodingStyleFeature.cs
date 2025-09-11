@@ -11,11 +11,11 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Conventions.AddTypeMetadata(
-                apply: (c, add) =>
+            builder.Conventions.SetTypeMetadata(
+                apply: (c, set) =>
                 {
-                    add(c.Type, new ApiInputAttribute());
-                    add(c.Type, new LocatableAttribute());
+                    set(c.Type, new ApiInputAttribute());
+                    set(c.Type, new LocatableAttribute());
                 },
                 when: c =>
                     c.Type.IsClass && !c.Type.IsAbstract &&
@@ -33,7 +33,7 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     ),
                 order: 10
             );
-            builder.Conventions.AddMethodMetadata(
+            builder.Conventions.SetMethodMetadata(
                 attribute: c => new ActionModelAttribute(),
                 when: c =>
                     c.Type.Has<TransientAttribute>() &&
