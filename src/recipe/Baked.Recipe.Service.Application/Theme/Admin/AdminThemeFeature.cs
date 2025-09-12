@@ -41,7 +41,7 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
                 whenParameter: c => c.Type.Has<TransientAttribute>() && c.Method.Has<InitializerAttribute>()
             );
 
-            // NOTE Parameter with an enum that has <=3 members is represented as select button
+            // NOTE Parameter with an enum that has <=3 members is represented as `SelectButton`
             builder.Conventions.AddParameterComponent(
                 component: (c, cc) => EnumSelectButton(c.Parameter, cc),
                 whenParameter: c =>
@@ -49,7 +49,7 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
                     c.Parameter.ParameterType.SkipNullable().GetEnumNames().Count() <= 3
             );
 
-            // NOTE Parameter with an enum that has >3 members is represented as select
+            // NOTE Parameter with an enum that has >3 members is represented as `Select`
             builder.Conventions.AddParameterComponent(
                 component: (c, cc) => EnumSelect(c.Parameter, cc),
                 whenParameter: c =>
@@ -66,7 +66,11 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
                     !api.IsOptional
             );
 
-            // NOTE Select button and select under tabs is stateful
+            // NOTE `Select` and `SelectButton` under tabs is stateful
+            builder.Conventions.AddParameterComponentConvention<Select>(
+                component: sb => sb.Schema.Stateful = true,
+                whenComponent: cc => cc.Path.Contains("Tabs")
+            );
             builder.Conventions.AddParameterComponentConvention<SelectButton>(
                 component: sb => sb.Schema.Stateful = true,
                 whenComponent: cc => cc.Path.Contains("Tabs")

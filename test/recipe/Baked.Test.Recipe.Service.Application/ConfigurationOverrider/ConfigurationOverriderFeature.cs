@@ -154,23 +154,21 @@ public class ConfigurationOverriderFeature : IFeature
             );
             builder.Conventions.AddTypeSchema(
                 schema: (c, cc) => TypeReportPageTab(c.Type, cc, "SingleValue"),
-                whenType: c => c.Type.Is<Report>(),
-                whenComponent: cc => cc.Path.EndsWith(nameof(ReportPageC.Tabs))
+                whenType: c => c.Type.Is<Report>()
             );
             builder.Conventions.AddTypeSchema(
                 schema: (c, cc) => TypeReportPageTab(c.Type, cc, "DataTable"),
-                whenType: c => c.Type.Is<Report>(),
-                whenComponent: cc => cc.Path.EndsWith(nameof(ReportPageC.Tabs))
+                whenType: c => c.Type.Is<Report>()
             );
             builder.Conventions.AddTypeComponent(
                 component: () => Icon("pi-box"),
                 whenType: c => c.Type.Is<Report>(),
-                whenComponent: cc => cc.Path.EndsWith("single-value", nameof(ReportPageC.Tab.Icon))
+                whenComponent: cc => cc.Path.EndsWith("SingleValue", nameof(ReportPageC.Tab.Icon))
             );
             builder.Conventions.AddTypeComponent(
                 component: () => Icon("pi-table"),
                 whenType: c => c.Type.Is<Report>(),
-                whenComponent: cc => cc.Path.EndsWith("data-table", nameof(ReportPageC.Tab.Icon))
+                whenComponent: cc => cc.Path.EndsWith("DataTable", nameof(ReportPageC.Tab.Icon))
             );
             builder.Conventions.AddParameterSchemaConvention<Parameter>(
                 schema: p => p.Default = null,

@@ -8,7 +8,6 @@ using Humanizer;
 using static Baked.Theme.Admin.DomainDatas;
 using static Baked.Test.Theme.Custom.DomainDatas;
 using static Baked.Theme.Admin.Components;
-using static Baked.Ui.UiLayer;
 
 namespace Baked.Test.Theme.Custom;
 
@@ -225,7 +224,6 @@ public static class DomainComponents
 
     public static ComponentDescriptor<SelectButton> EnumSelectButton(TypeModel enumType, ComponentContext context,
         Action<SelectButton>? options = default,
-        NewLocaleKey? l = default,
         bool requireLocalization = true
     ) => SelectButton(EnumInline(enumType, context.Drill("Data"), requireLocalization: requireLocalization),
         options: sb =>
