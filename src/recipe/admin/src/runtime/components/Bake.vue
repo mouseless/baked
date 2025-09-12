@@ -27,7 +27,7 @@ const model = defineModel({ type: null, required: false });
 const emit = defineEmits(["loaded"]);
 
 context.add(name);
-context.setDataDescriptor(descriptor.data);
+context.provideDataDescriptor(descriptor.data);
 
 const is = componentResolver.resolve(descriptor.type, "None");
 const injectedData = context.injectedData();
