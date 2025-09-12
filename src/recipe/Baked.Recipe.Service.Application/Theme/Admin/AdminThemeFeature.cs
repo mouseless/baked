@@ -1,7 +1,8 @@
-﻿using Baked.Architecture;
+using Baked.Architecture;
 using Baked.Business;
 using Baked.Lifetime;
 using Baked.RestApi.Model;
+using Humanizer;
 
 using static Baked.Theme.Admin.Components;
 using static Baked.Theme.Admin.DomainComponents;
@@ -19,6 +20,13 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
+            // Notes Add tab attribute to all actions
+            builder.Conventions.SetMethodMetadata(
+                attribute: _ => new TabAttribute(),
+                when: c => c.Method.Has<ActionModelAttribute>(),
+                order: int.MaxValue - 5
+            );
+
             // NOTE Adds `With` parameters as query parameters of the report page
             builder.Conventions.AddTypeComponentConvention<ReportPage>(
                 component: (reportPage, c, cc) =>
@@ -33,6 +41,41 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
                     );
                 },
                 whenType: c => c.Type.Has<TransientAttribute>() && c.Type.HasMembers()
+            );
+
+            // NOTE Adds `GET` actions under report page tabs as contents
+            builder.Conventions.AddTypeSchemaConvention<ReportPage.Tab>(
+                schema: (tab, c, cc) =>
+                {
+                    var members = c.Type.GetMembers();
+                    foreach (var method in members.Methods.Having<ActionModelAttribute>())
+                    {
+                        var action = method.GetAction();
+                        if (action.Method != HttpMethod.Get) { continue; }
+                        if (!method.TryGet<TabAttribute>(out var group)) { continue; }
+                        if (tab.Id != group.Name.Kebaberize()) { continue; }
+
+                        tab.Contents.Add(
+                            method.GetRequiredSchema<ReportPage.Tab.Content>(
+                                cc.Drill(nameof(ReportPage.Tab.Contents), tab.Contents.Count)
+                            )
+                        );
+                    }
+                },
+                whenType: c => c.Type.HasMembers()
+            );
+
+            // NOTE Adds report page tab content schema to actions
+            builder.Conventions.AddMethodSchema(
+                schema: (c, cc) => MethodReportPageTabContent(c.Method, cc),
+                whenMethod: c => c.Method.Has<ActionModelAttribute>()
+            );
+
+            // NOTE Adds add data panel component for actions
+            builder.Conventions.AddMethodComponent(
+                component: (c, cc) => MethodDataPanel(c.Method, cc),
+                whenMethod: c => c.Method.Has<ActionModelAttribute>(),
+                whenComponent: c => c.Path.Contains(nameof(ReportPage.Tab.Contents)) && c.Path.EndsWith(nameof(ReportPage.Tab.Content.Component))
             );
 
             // NOTE Adds parameter schema to the `With` parameters of rich transients

@@ -1,4 +1,4 @@
-﻿using Baked.Architecture;
+using Baked.Architecture;
 using Baked.ExceptionHandling;
 using Baked.RestApi.Model;
 using Baked.Test.Authentication;
@@ -13,6 +13,7 @@ using Microsoft.OpenApi.Models;
 
 using static Baked.Theme.Admin.Components;
 using static Baked.Theme.Admin.DomainComponents;
+using static Baked.Test.Theme.Custom.DomainComponents;
 using static Baked.Test.Theme.Custom.DomainDatas;
 
 using ReportPageC = Baked.Theme.Admin.ReportPage;
@@ -150,7 +151,7 @@ public class ConfigurationOverriderFeature : IFeature
             builder.Conventions.AddTypeComponent(
                 component: (c, cc) => TypeReportPage(c.Type, cc),
                 whenType: c => c.Type.Is<Report>(),
-                whenComponent: cc => cc.Path.EndsWith(nameof(Page))
+                whenComponent: cc => cc.Path.Is(nameof(Page))
             );
             builder.Conventions.AddTypeSchema(
                 schema: (c, cc) => TypeReportPageTab(c.Type, cc, "SingleValue"),
@@ -177,6 +178,15 @@ public class ConfigurationOverriderFeature : IFeature
             builder.Conventions.AddParameterComponent(
                 component: (c, cc) => EnumSelect(c.Parameter, cc),
                 whenParameter: c => c.Type.Is<Report>() && c.Method.Name == nameof(Report.With) && !c.Parameter.IsOptional
+            );
+            builder.Conventions.AddMethodConvention<TabAttribute>(
+                apply: (tab, c) => tab.Name = c.Method.DefaultOverload.ReturnType.Is<string>() ? "SingleValue" : "DataTable",
+                when: (_, c) => c.Type.Is<Report>()
+            );
+            builder.Conventions.AddMethodComponent(
+                component: c => MethodString(c.Method),
+                whenMethod: c => c.Method.DefaultOverload.ReturnType.Is<string>(),
+                whenComponent: c => c.Path.Matches(Regexes.AnyDataPanelContent)
             );
         });
 

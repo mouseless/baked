@@ -1,4 +1,4 @@
-﻿using Baked.Business;
+using Baked.Business;
 using Baked.Test.Caching;
 using Baked.Test.Theme;
 using Baked.Test.Theme.Custom;
@@ -90,13 +90,13 @@ public static class CustomThemeExtensions
                                 [
                                     ReportPageTabContent(
                                         component: DataPanel(l(getScoped.Name),
-                                            content: ActionString(getScoped)
+                                            content: MethodString(getScoped)
                                         ),
                                         options: rptc => rptc.Narrow = true
                                     ),
                                     ReportPageTabContent(
                                         component: DataPanel(l(getApplication.Name),
-                                            content: ActionString(getApplication)
+                                            content: MethodString(getApplication)
                                         ),
                                         options: rptc => rptc.Narrow = true
                                     )
@@ -171,20 +171,20 @@ public static class CustomThemeExtensions
                         [
                             ReportPageTabContent(
                                 component: DataPanel(l(wide.Name),
-                                    content: ActionString(wide, dataOptions: rd => rd.Headers = headers),
+                                    content: MethodString(wide, dataOptions: rd => rd.Headers = headers),
                                     options: dp => dp.Collapsed = false
                                 )
                             ),
                             ReportPageTabContent(
                                 component: DataPanel(l(left.Name),
-                                    content: ActionString(left, dataOptions: rd => rd.Headers = headers),
+                                    content: MethodString(left, dataOptions: rd => rd.Headers = headers),
                                     options: dp => dp.Collapsed = true
                                 ),
                                 options: rptc => rptc.Narrow = true
                             ),
                             ReportPageTabContent(
                                 component: DataPanel(l(right.Name),
-                                    content: ActionString(right, dataOptions: rd => rd.Headers = headers),
+                                    content: MethodString(right, dataOptions: rd => rd.Headers = headers),
                                     options: dp => dp.Collapsed = true
                                 ),
                                 options: rptc => rptc.Narrow = true

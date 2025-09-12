@@ -5,6 +5,7 @@ using Humanizer;
 
 using static Baked.Theme.Admin.Components;
 using static Baked.Theme.Admin.DomainDatas;
+using static Baked.Ui.Datas;
 
 namespace Baked.Theme.Admin;
 
@@ -46,6 +47,25 @@ public static class DomainComponents
                 rpt.Title = l(id.Titleize()); // moved after apply to avoid an unecessary `l` call
             }
         });
+    }
+
+    public static ReportPage.Tab.Content MethodReportPageTabContent(MethodModel method, ComponentContext context,
+        Action<ReportPage.Tab.Content>? options = default
+    ) => ReportPageTabContent(method.GetRequiredComponent(context.Drill(nameof(ReportPage.Tab.Content.Component))),
+        options: options
+    );
+
+    public static ComponentDescriptor<DataPanel> MethodDataPanel(MethodModel method, ComponentContext context,
+        Action<DataPanel>? options = default
+    )
+    {
+        var (_, l) = context;
+
+        return DataPanel(
+            Inline(l($"{method.DefaultOverload.DeclaringType?.Name}.{method.Name}.Title")),
+            method.GetRequiredComponent(context.Drill(nameof(DataPanel), method.Name, nameof(DataPanel.Content))),
+            options: options
+        );
     }
 
     public static Parameter ParameterParameter(ParameterModel parameter, ComponentContext context,

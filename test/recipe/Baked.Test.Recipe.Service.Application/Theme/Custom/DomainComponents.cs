@@ -242,7 +242,7 @@ public static class DomainComponents
 
     #region String
 
-    public static ComponentDescriptor<Baked.Theme.Admin.String> ActionString(MethodModel method,
+    public static ComponentDescriptor<Baked.Theme.Admin.String> MethodString(MethodModel method,
         Action<RemoteData>? dataOptions = default
     ) => String(data: ActionRemote(method, options: dataOptions));
 

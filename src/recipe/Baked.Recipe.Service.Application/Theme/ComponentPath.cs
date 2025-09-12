@@ -1,4 +1,5 @@
 ﻿using Humanizer;
+using System.Text.RegularExpressions;
 
 namespace Baked.Theme;
 
@@ -12,6 +13,12 @@ public readonly record struct ComponentPath(string Value)
 
     public ComponentPath Drill(params object[] paths) =>
         this with { Value = $"{Value}/{Join(paths)}" };
+
+    public bool Is(params object[] paths) =>
+        Value == $"/{Join(paths)}";
+
+    public bool Matches(Regex regex) =>
+        regex.IsMatch(Value);
 
     public bool Contains(params object[] paths) =>
         Value.Contains($"/{Join(paths)}/");
