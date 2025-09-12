@@ -54,7 +54,7 @@ public static class ThemeExtensions
     }
 
     public static IEnumerable<string> GetEnumNames(this TypeModel type) =>
-        [.. type.SkipNullable().Apply(t => Enum.GetNames(t).Select(n => n.TrimStart('_')))];
+        [.. type.Apply(t => Enum.GetNames(t).Select(n => n.TrimStart('_')))];
 
     public static TypeModel SkipNullable(this TypeModel type)
     {
@@ -63,6 +63,16 @@ public static class ThemeExtensions
 
         return generics.GenericTypeArguments.First().Model;
     }
+
+    public static PageBuilder From<T>(this Page.Generator _) =>
+        context =>
+        {
+            var (domain, l) = context;
+
+            if (!domain.Types[typeof(T)].TryGetMetadata(out var metadata)) { throw new($"{typeof(T).Name} cannot be used as a page source, because its metadata is not included in domain model"); }
+
+            return metadata.GetRequiredComponent(context.Drill(nameof(Page)));
+        };
 
     public static PageContext APageContext(this Stubber giveMe,
         string? path = default,

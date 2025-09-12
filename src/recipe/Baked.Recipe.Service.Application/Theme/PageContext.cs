@@ -17,13 +17,13 @@ public record PageContext
         l = NewLocaleKey;
     }
 
-    public virtual ComponentContext Drill(string path) =>
+    public virtual ComponentContext Drill(params object[] paths) =>
         new()
         {
             Route = Route,
             Sitemap = Sitemap,
             Domain = Domain,
             NewLocaleKey = NewLocaleKey,
-            Path = path
+            Path = new(paths)
         };
 }

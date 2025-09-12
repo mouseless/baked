@@ -1,6 +1,10 @@
 ﻿using Baked.Architecture;
+using Baked.Business;
+using Baked.Lifetime;
+using Baked.RestApi.Model;
 
 using static Baked.Theme.Admin.Components;
+using static Baked.Theme.Admin.DomainComponents;
 using static Baked.Ui.Datas;
 
 namespace Baked.Theme.Admin;
@@ -13,6 +17,62 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
 {
     public virtual void Configure(LayerConfigurator configurator)
     {
+        configurator.ConfigureDomainModelBuilder(builder =>
+        {
+            // NOTE Adds `With` parameters as query parameters of the report page
+            builder.Conventions.AddTypeComponentConvention<ReportPage>(
+                component: (reportPage, c, cc) =>
+                {
+                    var members = c.Type.GetMembers();
+                    var initializer = members.Methods.Having<InitializerAttribute>().Single();
+
+                    reportPage.Schema.QueryParameters.AddRange(
+                        initializer
+                            .DefaultOverload.Parameters
+                            .Select(p => p.GetRequiredSchema<Parameter>(cc.Drill(nameof(ReportPage.QueryParameters))))
+                    );
+                },
+                whenType: c => c.Type.Has<TransientAttribute>() && c.Type.HasMembers()
+            );
+
+            // NOTE Adds parameter schema to the `With` parameters of rich transients
+            builder.Conventions.AddParameterSchema(
+                schema: (c, cc) => ParameterParameter(c.Parameter, cc),
+                whenParameter: c => c.Type.Has<TransientAttribute>() && c.Method.Has<InitializerAttribute>()
+            );
+
+            // NOTE Parameter with an enum that has <=3 members is represented as select button
+            builder.Conventions.AddParameterComponent(
+                component: (c, cc) => EnumSelectButton(c.Parameter, cc),
+                whenParameter: c =>
+                    c.Parameter.ParameterType.SkipNullable().IsEnum &&
+                    c.Parameter.ParameterType.SkipNullable().GetEnumNames().Count() <= 3
+            );
+
+            // NOTE Parameter with an enum that has >3 members is represented as select
+            builder.Conventions.AddParameterComponent(
+                component: (c, cc) => EnumSelect(c.Parameter, cc),
+                whenParameter: c =>
+                    c.Parameter.ParameterType.SkipNullable().IsEnum &&
+                    c.Parameter.ParameterType.SkipNullable().GetEnumNames().Count() > 3
+            );
+
+            // NOTE Default value of a required enum parameter is set to the first enum member
+            builder.Conventions.AddParameterSchemaConvention<Parameter>(
+                schema: (p, c) => p.DefaultValue = c.Parameter.ParameterType.SkipNullable().GetEnumNames().First(),
+                whenParameter: c =>
+                    c.Parameter.ParameterType.SkipNullable().IsEnum &&
+                    c.Parameter.TryGet<ParameterModelAttribute>(out var api) &&
+                    !api.IsOptional
+            );
+
+            // NOTE Select button and select under tabs is stateful
+            builder.Conventions.AddParameterComponentConvention<SelectButton>(
+                component: sb => sb.Schema.Stateful = true,
+                whenComponent: cc => cc.Path.Contains("Tabs")
+            );
+        });
+
         configurator.ConfigureComponentExports(exports =>
         {
             exports.AddFromExtensions(typeof(Components));

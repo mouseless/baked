@@ -6,6 +6,7 @@ using Baked.Test.Business;
 using Baked.Test.ExceptionHandling;
 using Baked.Test.Orm;
 using Baked.Test.Theme;
+using Baked.Theme;
 using Baked.Theme.Admin;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
@@ -13,6 +14,8 @@ using Microsoft.OpenApi.Models;
 using static Baked.Theme.Admin.Components;
 using static Baked.Theme.Admin.DomainComponents;
 using static Baked.Test.Theme.Custom.DomainDatas;
+
+using ReportPageC = Baked.Theme.Admin.ReportPage;
 
 namespace Baked.Test.ConfigurationOverrider;
 
@@ -102,67 +105,80 @@ public class ConfigurationOverriderFeature : IFeature
             builder.Conventions.AddTypeComponent(
                 component: (_, cc) => ReportPage("test-page", PageTitle("Test Page")),
                 whenType: c => c.Type.Is<TestPage>(),
-                whenComponent: cc => cc.Path == "/page"
+                whenComponent: cc => cc.Path.EndsWith(nameof(Page))
             );
-            builder.Conventions.AddTypeComponentConvention<ReportPage>(
+            builder.Conventions.AddTypeComponentConvention<ReportPageC>(
                 component: (reportPage, c, cc) => reportPage.Schema.Tabs.AddRange(
-                    c.Type.GetSchemas<ReportPage.Tab>(cc.Drill("/tabs"))
+                    c.Type.GetSchemas<ReportPageC.Tab>(cc.Drill(nameof(ReportPageC.Tabs)))
                 ),
                 whenType: c => c.Type.Is<TestPage>()
             );
             builder.Conventions.AddTypeSchema(
                 schema: (c, cc) => ReportPageTab("default"),
                 whenType: c => c.Type.Is<TestPage>(),
-                whenComponent: cc => cc.Path.EndsWith("/tabs")
+                whenComponent: cc => cc.Path.EndsWith(nameof(ReportPageC.Tabs))
             );
-            builder.Conventions.AddTypeSchemaConvention<ReportPage.Tab>(
+            builder.Conventions.AddTypeSchemaConvention<ReportPageC.Tab>(
                 schema: (tab, c, cc) => tab.Contents.Add(
                     c.Type
                         .GetMethod(nameof(TestPage.GetData))
-                        .GetSchema<ReportPage.Tab.Content>(cc.Drill($"/{tab.Id}/contents/0"))
+                        .GetSchema<ReportPageC.Tab.Content>(cc.Drill(tab.Id, nameof(ReportPageC.Tab.Contents), 0))
                         ?? throw new($"{nameof(TestPage.GetData)} is expected to have a report page content")
                 ),
                 whenType: c => c.Type.Is<TestPage>()
             );
 
             builder.Conventions.AddMethodSchema(
-                schema: (c, cc) => ReportPageTabContent(component: c.Method.GetRequiredComponent(cc.Drill($"/component"))),
+                schema: (c, cc) => ReportPageTabContent(component: c.Method.GetRequiredComponent(cc.Drill(nameof(ReportPageC.Tab.Content.Component)))),
                 whenMethod: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData),
-                whenComponent: c => c.Path.EndsWith("/contents/0")
+                whenComponent: c => c.Path.EndsWith(nameof(ReportPageC.Tab.Contents), 0)
             );
-            builder.Conventions.AddMethodSchemaConvention<ReportPage.Tab.Content>(
+            builder.Conventions.AddMethodSchemaConvention<ReportPageC.Tab.Content>(
                 schema: tabContent => tabContent.Narrow = true,
                 whenMethod: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData)
             );
             builder.Conventions.AddMethodComponent(
                 component: (c, cc) => String(data: ActionRemote(c.Method)),
                 whenMethod: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData),
-                whenComponent: cc => cc.Path.EndsWith("/component")
+                whenComponent: cc => cc.Path.EndsWith(nameof(ReportPageC.Tab.Content.Component))
             );
             builder.Conventions.AddMethodComponentConvention<Baked.Theme.Admin.String>(
                 component: (@string) => @string.Schema.MaxLength = 20,
                 whenMethod: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData)
             );
 
-            builder.Conventions.AddTypeSchema(
-                schema: (c, cc) => TypeReportPageTab(c.Type, cc, "single-value"),
+            builder.Conventions.AddTypeComponent(
+                component: (c, cc) => TypeReportPage(c.Type, cc),
                 whenType: c => c.Type.Is<Report>(),
-                whenComponent: cc => cc.Path.EndsWith("/tabs")
+                whenComponent: cc => cc.Path.EndsWith(nameof(Page))
             );
             builder.Conventions.AddTypeSchema(
-                schema: (c, cc) => TypeReportPageTab(c.Type, cc, "data-table"),
+                schema: (c, cc) => TypeReportPageTab(c.Type, cc, "SingleValue"),
                 whenType: c => c.Type.Is<Report>(),
-                whenComponent: cc => cc.Path.EndsWith("/tabs")
+                whenComponent: cc => cc.Path.EndsWith(nameof(ReportPageC.Tabs))
+            );
+            builder.Conventions.AddTypeSchema(
+                schema: (c, cc) => TypeReportPageTab(c.Type, cc, "DataTable"),
+                whenType: c => c.Type.Is<Report>(),
+                whenComponent: cc => cc.Path.EndsWith(nameof(ReportPageC.Tabs))
             );
             builder.Conventions.AddTypeComponent(
                 component: () => Icon("pi-box"),
                 whenType: c => c.Type.Is<Report>(),
-                whenComponent: cc => cc.Path.EndsWith("/single-value/icon")
+                whenComponent: cc => cc.Path.EndsWith("single-value", nameof(ReportPageC.Tab.Icon))
             );
             builder.Conventions.AddTypeComponent(
                 component: () => Icon("pi-table"),
                 whenType: c => c.Type.Is<Report>(),
-                whenComponent: cc => cc.Path.EndsWith("/data-table/icon")
+                whenComponent: cc => cc.Path.EndsWith("data-table", nameof(ReportPageC.Tab.Icon))
+            );
+            builder.Conventions.AddParameterSchemaConvention<Parameter>(
+                schema: p => p.Default = null,
+                whenParameter: c => c.Type.Is<Report>() && c.Method.Name == nameof(Report.With) && c.Parameter.Name == "required"
+            );
+            builder.Conventions.AddParameterComponent(
+                component: (c, cc) => EnumSelect(c.Parameter, cc),
+                whenParameter: c => c.Type.Is<Report>() && c.Method.Name == nameof(Report.With) && !c.Parameter.IsOptional
             );
         });
 

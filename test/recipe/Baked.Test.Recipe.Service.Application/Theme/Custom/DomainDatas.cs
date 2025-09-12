@@ -4,7 +4,6 @@ using Baked.Theme.Admin;
 using Baked.Ui;
 
 using static Baked.Ui.Datas;
-using static Baked.Ui.UiLayer;
 
 namespace Baked.Test.Theme.Custom;
 
@@ -26,16 +25,5 @@ public static class DomainDatas
 
             options.Apply(rd);
         }
-    );
-
-    public static InlineData EnumInline(TypeModel type,
-        NewLocaleKey? l = default
-    ) => Inline(
-        value: l is null
-            ? type.GetEnumNames()
-            : type
-                .GetEnumNames()
-                .Select(name => new { text = l($"{type.SkipNullable().Name}.{name}"), value = name }),
-        options: id => id.RequireLocalization = l is not null ? true : null
     );
 }

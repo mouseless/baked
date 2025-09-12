@@ -3,7 +3,6 @@ using Baked.Theme.Admin;
 using Baked.Ui;
 
 using static Baked.Theme.Admin.Components;
-using static Baked.Theme.Admin.DomainComponents;
 using static Baked.Ui.UiLayer;
 
 namespace Baked;
@@ -100,14 +99,4 @@ public static class AdminThemeExtensions
             hi.Icon = route.Icon;
             hi.ParentRoute = route.ParentPath;
         });
-
-    public static PageBuilder ReportPage<T>(this Page.Generator _) =>
-        context =>
-        {
-            var (domain, l) = context;
-
-            if (!domain.Types[typeof(T)].TryGetMetadata(out var metadata)) { throw new($"{typeof(T).Name} cannot be used as a report page resource, because its metadata is not included in domain model"); }
-
-            return TypeReportPage(metadata, context.Drill("/page"));
-        };
 }
