@@ -5,9 +5,8 @@ using Baked.Theme.Admin;
 using Baked.Ui;
 using Humanizer;
 
-using static Baked.Test.Theme.Custom.DomainDatas;
+using static Baked.Theme.Admin.DomainDatas;
 using static Baked.Theme.Admin.Components;
-using static Baked.Ui.UiLayer;
 
 namespace Baked.Test.Theme.Custom;
 
@@ -63,7 +62,7 @@ public static class DomainComponents
                     })
                     : null;
             },
-            data: ActionRemote(method, options: dataOptions)
+            data: MethodRemote(method, options: dataOptions)
         );
     }
 
@@ -108,7 +107,7 @@ public static class DomainComponents
                     dte.AppendParameters = true;
                 });
             },
-            data: ActionRemote(method)
+            data: MethodRemote(method)
         );
     }
 
@@ -126,21 +125,21 @@ public static class DomainComponents
         var api = parameter.Get<ParameterModelAttribute>();
 
         return ParameterParameter(parameter,
-            component: p => EnumSelectButton(p.ParameterType,
+            component: p => EnumSelectButton(p.ParameterType, context.Drill("Component"),
                 options: s =>
                 {
                     s.AllowEmpty = api.IsOptional ? true : null;
-                    s.Stateful = context.Path.Contains("/tabs/") ? true : null;
+                    s.Stateful = context.Path.Contains("Tabs") ? true : null;
 
                     selectButtonOptions.Apply(s);
                 },
-                l: requireLocalization ? l : null
+                requireLocalization: requireLocalization
             ),
             options: p =>
             {
                 if (!api.IsOptional)
                 {
-                    p.DefaultValue = parameter.ParameterType.GetEnumNames().First();
+                    p.DefaultValue = parameter.ParameterType.SkipNullable().GetEnumNames().First();
                 }
 
                 options.Apply(p);
@@ -158,21 +157,21 @@ public static class DomainComponents
         var api = parameter.Get<ParameterModelAttribute>();
 
         return ParameterParameter(parameter,
-            component: p => EnumSelect(l(p.Name.Titleize()), p.ParameterType,
+            component: p => EnumSelect(l(p.Name.Titleize()), p.ParameterType, context.Drill("Component"),
                 options: s =>
                 {
                     s.ShowClear = api.IsOptional ? true : null;
-                    s.Stateful = context.Path.Contains("/tabs/") ? true : null;
+                    s.Stateful = context.Path.Contains("Tabs") ? true : null;
 
                     selectOptions.Apply(s);
                 },
-                l: requireLocalization ? l : null
+                requireLocalization: requireLocalization
             ),
             options: p =>
             {
                 if (!api.IsOptional)
                 {
-                    p.DefaultValue = parameter.ParameterType.GetEnumNames().First();
+                    p.DefaultValue = parameter.ParameterType.SkipNullable().GetEnumNames().First();
                 }
 
                 options.Apply(p);
@@ -202,13 +201,13 @@ public static class DomainComponents
 
     #region Select
 
-    public static ComponentDescriptor<Select> EnumSelect(string label, TypeModel enumType,
+    public static ComponentDescriptor<Select> EnumSelect(string label, TypeModel enumType, ComponentContext context,
         Action<Select>? options = default,
-        NewLocaleKey? l = default
-    ) => Select(label, EnumInline(enumType, l: l),
+        bool requireLocalization = true
+    ) => Select(label, EnumInline(enumType, context.Drill("Data"), requireLocalization: requireLocalization),
         options: s =>
         {
-            if (l is not null)
+            if (requireLocalization)
             {
                 s.OptionLabel = "text";
                 s.OptionValue = "value";
@@ -222,13 +221,13 @@ public static class DomainComponents
 
     #region SelectButton
 
-    public static ComponentDescriptor<SelectButton> EnumSelectButton(TypeModel enumType,
+    public static ComponentDescriptor<SelectButton> EnumSelectButton(TypeModel enumType, ComponentContext context,
         Action<SelectButton>? options = default,
-        NewLocaleKey? l = default
-    ) => SelectButton(EnumInline(enumType, l: l),
+        bool requireLocalization = true
+    ) => SelectButton(EnumInline(enumType, context.Drill("Data"), requireLocalization: requireLocalization),
         options: sb =>
         {
-            if (l is not null)
+            if (requireLocalization)
             {
                 sb.OptionLabel = "text";
                 sb.OptionValue = "value";
@@ -242,9 +241,12 @@ public static class DomainComponents
 
     #region String
 
-    public static ComponentDescriptor<Baked.Theme.Admin.String> ActionString(MethodModel method,
-        Action<RemoteData>? dataOptions = default
-    ) => String(data: ActionRemote(method, options: dataOptions));
+    public static ComponentDescriptor<Baked.Theme.Admin.String> MethodString(MethodModel method, ComponentContext context,
+        Action<Baked.Theme.Admin.String>? options = default
+    ) => String(
+        data: method.GetSchema<RemoteData>(context.Drill(nameof(IComponentDescriptor.Data))),
+        options: options
+    );
 
     #endregion
 }

@@ -1,6 +1,12 @@
-﻿using Baked.Architecture;
+using Baked.Architecture;
+using Baked.Business;
+using Baked.Lifetime;
+using Baked.RestApi.Model;
+using Humanizer;
 
 using static Baked.Theme.Admin.Components;
+using static Baked.Theme.Admin.DomainComponents;
+using static Baked.Theme.Admin.DomainDatas;
 using static Baked.Ui.Datas;
 
 namespace Baked.Theme.Admin;
@@ -13,6 +19,210 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
 {
     public virtual void Configure(LayerConfigurator configurator)
     {
+        configurator.ConfigureDomainModelBuilder(builder =>
+        {
+            // Notes Add tab attribute to all actions
+            builder.Conventions.SetMethodMetadata(
+                attribute: _ => new TabAttribute(),
+                when: c => c.Method.Has<ActionModelAttribute>(),
+                order: int.MaxValue - 5
+            );
+
+            // NOTE Adds `With` parameters as query parameters of the report page
+            builder.Conventions.AddTypeComponentConvention<ReportPage>(
+                component: (reportPage, c, cc) =>
+                {
+                    var members = c.Type.GetMembers();
+                    var initializer = members.Methods.Having<InitializerAttribute>().Single();
+
+                    reportPage.Schema.QueryParameters.AddRange(
+                        initializer
+                            .DefaultOverload.Parameters
+                            .Select(p => p.GetRequiredSchema<Parameter>(cc.Drill(nameof(ReportPage.QueryParameters))))
+                    );
+                },
+                whenType: c => c.Type.Has<TransientAttribute>() && c.Type.HasMembers()
+            );
+
+            // NOTE Adds `GET` actions under report page tabs as contents
+            builder.Conventions.AddTypeSchemaConvention<ReportPage.Tab>(
+                schema: (tab, c, cc) =>
+                {
+                    var members = c.Type.GetMembers();
+                    foreach (var method in members.Methods.Having<ActionModelAttribute>())
+                    {
+                        var action = method.GetAction();
+                        if (action.Method != HttpMethod.Get) { continue; }
+                        if (!method.TryGet<TabAttribute>(out var group)) { continue; }
+                        if (tab.Id != group.Name.Kebaberize()) { continue; }
+
+                        tab.Contents.Add(
+                            method.GetRequiredSchema<ReportPage.Tab.Content>(
+                                cc.Drill(nameof(ReportPage.Tab.Contents), tab.Contents.Count)
+                            )
+                        );
+                    }
+                },
+                whenType: c => c.Type.HasMembers()
+            );
+
+            // NOTE Adds report page tab content schema to actions
+            builder.Conventions.AddMethodSchema(
+                schema: (c, cc) => MethodReportPageTabContent(c.Method, cc),
+                whenMethod: c => c.Method.Has<ActionModelAttribute>()
+            );
+
+            // NOTE Adds add data panel component for actions
+            builder.Conventions.AddMethodComponent(
+                component: (c, cc) => MethodDataPanel(c.Method, cc),
+                whenMethod: c => c.Method.Has<ActionModelAttribute>(),
+                whenComponent: c => c.Path.EndsWith(nameof(ReportPage.Tab.Contents), "*", "*", nameof(ReportPage.Tab.Content.Component))
+            );
+            builder.Conventions.AddMethodSchema(
+                schema: (c, cc) => MethodNameInline(c.Method, cc),
+                whenMethod: c => c.Method.Has<ActionModelAttribute>(),
+                whenComponent: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Title))
+            );
+            builder.Conventions.AddMethodComponentConvention<DataPanel>(
+                component: (dp, c, cc) =>
+                {
+                    foreach (var parameter in c.Method.DefaultOverload.Parameters)
+                    {
+                        dp.Schema.Parameters.Add(ParameterParameter(parameter, cc.Drill(nameof(DataPanel.Parameters))));
+                    }
+                }
+            );
+
+            // NOTE Adds remote data schema for method
+            builder.Conventions.AddMethodSchema(
+                schema: c => MethodRemote(c.Method),
+                whenMethod: c => c.Method.Has<ActionModelAttribute>()
+            );
+
+            // NOTE Adds parameter schema to the `With` parameters of rich transients
+            builder.Conventions.AddParameterSchema(
+                schema: (c, cc) => ParameterParameter(c.Parameter, cc),
+                whenParameter: c => c.Type.Has<TransientAttribute>() && c.Method.Has<InitializerAttribute>()
+            );
+
+            // NOTE Parameter with an enum that has <=3 members is represented as `SelectButton`
+            builder.Conventions.AddParameterComponent(
+                component: (c, cc) => EnumSelectButton(c.Parameter, cc),
+                whenParameter: c =>
+                    c.Parameter.ParameterType.SkipNullable().IsEnum &&
+                    c.Parameter.ParameterType.SkipNullable().GetEnumNames().Count() <= 3
+            );
+
+            // NOTE Parameter with an enum that has >3 members is represented as `Select`
+            builder.Conventions.AddParameterComponent(
+                component: (c, cc) => EnumSelect(c.Parameter, cc),
+                whenParameter: c =>
+                    c.Parameter.ParameterType.SkipNullable().IsEnum &&
+                    c.Parameter.ParameterType.SkipNullable().GetEnumNames().Count() > 3
+            );
+
+            // NOTE Default value of a required enum parameter is set to the first enum member
+            builder.Conventions.AddParameterSchemaConvention<Parameter>(
+                schema: (p, c) => p.DefaultValue = c.Parameter.ParameterType.SkipNullable().GetEnumNames().First(),
+                whenParameter: c =>
+                    c.Parameter.ParameterType.SkipNullable().IsEnum &&
+                    c.Parameter.TryGet<ParameterModelAttribute>(out var api) &&
+                    !api.IsOptional
+            );
+
+            // NOTE `Select` and `SelectButton` under tabs is stateful
+            builder.Conventions.AddParameterComponentConvention<Select>(
+                component: sb => sb.Schema.Stateful = true,
+                whenComponent: cc => cc.Path.Contains("Tabs")
+            );
+            builder.Conventions.AddParameterComponentConvention<SelectButton>(
+                component: sb => sb.Schema.Stateful = true,
+                whenComponent: cc => cc.Path.Contains("Tabs")
+            );
+
+            // NOTE `DataTable` for actions
+            builder.Conventions.AddMethodComponent(
+                component: (c, cc) => MethodDataTable(c.Method, cc),
+                whenMethod: c => c.Method.Has<ActionModelAttribute>() && c.Method.DefaultOverload.ReturnsList(),
+                whenComponent: c => c.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content))
+            );
+
+            // NOTE Adds public properties under data table as columns
+            builder.Conventions.AddMethodComponentConvention<DataTable>(
+                component: (dt, c, cc) =>
+                {
+                    var members = c.Method.DefaultOverload.ReturnType.SkipTask().GetElementType().GetMembers();
+                    foreach (var property in members.Properties.Where(p => p.IsPublic))
+                    {
+                        var column = property.GetSchema<DataTable.Column>(cc.Drill(nameof(DataTable.Columns)));
+                        if (column is null) { continue; }
+
+                        dt.Schema.Columns.Add(column);
+                    }
+                },
+                whenMethod: c =>
+                    c.Method.DefaultOverload.ReturnType.SkipTask().TryGetElementType(out var elementType) &&
+                    elementType.HasMembers()
+            );
+
+            // NOTE Sets default values for `DataTable`
+            builder.Conventions.AddMethodComponentConvention<DataTable>(
+                component: dt =>
+                {
+                    dt.Schema.Rows = 5;
+                    dt.Schema.Paginator = true;
+                }
+            );
+            builder.Conventions.AddMethodSchema(
+                schema: (c, cc) => MethodDataTableExport(c.Method, cc),
+                whenMethod: c => c.Method.Has<ComponentDescriptorBuilderAttribute<DataTable>>()
+            );
+
+            // NOTE `DataTable.Column` for public properties
+            builder.Conventions.AddPropertySchema(
+                schema: (c, cc) => PropertyDataTableColumn(c.Property, cc),
+                whenProperty: c => c.Property.IsPublic
+            );
+            builder.Conventions.AddPropertySchemaConvention<DataTable.Column>(
+                schema: (dtc, c, cc) =>
+                {
+                    var (_, l) = cc;
+
+                    dtc.Title = l(c.Property.Name.Titleize());
+                    dtc.Exportable = true;
+                }
+            );
+            builder.Conventions.AddPropertySchema(
+                schema: (c, cc) => PropertyConditional(c.Property, cc),
+                whenProperty: c => c.Property.IsPublic
+            );
+            builder.Conventions.AddPropertyComponent(
+                component: () => String(),
+                whenProperty: c => c.Property.IsPublic
+            );
+
+            // NOTE Label property convention
+            builder.Conventions.AddPropertySchemaConvention<DataTable.Column>(
+                schema: dtc => dtc.MinWidth = true,
+                whenProperty: c =>
+                    c.Property.PropertyType.Is<string>() &&
+                    (
+                        c.Property.Name == "Display" ||
+                        c.Property.Name == "Label" ||
+                        c.Property.Name == "Name" ||
+                        c.Property.Name == "Title"
+                    )
+            );
+            builder.Conventions.AddMethodComponentConvention<DataTable>(
+                component: dt =>
+                {
+                    if (dt.Schema.DataKey is not null) { return; }
+
+                    dt.Schema.DataKey = dt.Schema.Columns.FirstOrDefault(c => c.MinWidth == true)?.Prop;
+                }
+            );
+        });
+
         configurator.ConfigureComponentExports(exports =>
         {
             exports.AddFromExtensions(typeof(Components));

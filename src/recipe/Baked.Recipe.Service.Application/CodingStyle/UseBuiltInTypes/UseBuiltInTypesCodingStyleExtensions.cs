@@ -24,4 +24,11 @@ public static class UseBuiltInTypesCodingStyleExtensions
 
         return elementType is not null;
     }
+
+    public static TypeModel GetElementType(this TypeModel type)
+    {
+        if (!type.TryGetElementType(out var result)) { throw new($"{type.Name} does not have an element type"); }
+
+        return result;
+    }
 }
