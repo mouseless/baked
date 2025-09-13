@@ -112,7 +112,7 @@ public static class DomainComponents
         Action<SelectButton>? options = default
     )
     {
-        var (domain, l) = context;
+        var (_, l) = context;
         var api = parameter.Get<ParameterModelAttribute>();
 
         return SelectButton(EnumInline(parameter.ParameterType, context.Drill(nameof(IComponentDescriptor.Data))),
@@ -124,6 +124,30 @@ public static class DomainComponents
 
                 options.Apply(sb);
             }
+        );
+    }
+
+    public static ComponentDescriptor<DataTable> MethodDataTable(MethodModel method, ComponentContext context,
+        Action<DataTable>? options = default
+    )
+    {
+        var (_, l) = context;
+
+        return DataTable(
+            options: dt =>
+            {
+                if (method.DefaultOverload.ReturnType.TryGetMetadata(out var returnType))
+                {
+                    dt.Columns.AddRange(returnType.GetSchemas<DataTable.Column>(context.Drill(nameof(DataTable.Columns))));
+                }
+
+                dt.ExportOptions = method.GetSchema<DataTable.Export>(context.Drill(nameof(DataTable.Export)));
+                dt.FooterTemplate = method.GetSchema<DataTable.Footer>(context.Drill(nameof(DataTable.Footer)));
+                dt.VirtualScrollerOptions = method.GetSchema<DataTable.VirtualScroller>(context.Drill(nameof(DataTable.VirtualScroller)));
+
+                options.Apply(dt);
+            },
+            data: method.GetRequiredSchema<RemoteData>(context.Drill(nameof(IComponentDescriptor.Data)))
         );
     }
 }

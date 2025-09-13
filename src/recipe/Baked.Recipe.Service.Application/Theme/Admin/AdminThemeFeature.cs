@@ -6,6 +6,7 @@ using Humanizer;
 
 using static Baked.Theme.Admin.Components;
 using static Baked.Theme.Admin.DomainComponents;
+using static Baked.Theme.Admin.DomainDatas;
 using static Baked.Ui.Datas;
 
 namespace Baked.Theme.Admin;
@@ -78,6 +79,12 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
                 whenComponent: c => c.Path.Contains(nameof(ReportPage.Tab.Contents)) && c.Path.EndsWith(nameof(ReportPage.Tab.Content.Component))
             );
 
+            // NOTE Adds remote data schema for method
+            builder.Conventions.AddMethodSchema(
+                schema: c => MethodRemote(c.Method),
+                whenMethod: c => c.Method.Has<ActionModelAttribute>()
+            );
+
             // NOTE Adds parameter schema to the `With` parameters of rich transients
             builder.Conventions.AddParameterSchema(
                 schema: (c, cc) => ParameterParameter(c.Parameter, cc),
@@ -117,6 +124,13 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
             builder.Conventions.AddParameterComponentConvention<SelectButton>(
                 component: sb => sb.Schema.Stateful = true,
                 whenComponent: cc => cc.Path.Contains("Tabs")
+            );
+
+            // NOTE `DataTable` for actions
+            builder.Conventions.AddMethodComponent(
+                component: (c, cc) => MethodDataTable(c.Method, cc),
+                whenMethod: c => c.Method.Has<ActionModelAttribute>() && c.Method.DefaultOverload.ReturnsList(),
+                whenComponent: c => c.Path.Matches(Regexes.AnyDataPanelContent)
             );
         });
 

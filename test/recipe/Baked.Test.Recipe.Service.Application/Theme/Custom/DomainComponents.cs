@@ -6,7 +6,6 @@ using Baked.Ui;
 using Humanizer;
 
 using static Baked.Theme.Admin.DomainDatas;
-using static Baked.Test.Theme.Custom.DomainDatas;
 using static Baked.Theme.Admin.Components;
 
 namespace Baked.Test.Theme.Custom;
@@ -63,7 +62,7 @@ public static class DomainComponents
                     })
                     : null;
             },
-            data: ActionRemote(method, options: dataOptions)
+            data: MethodRemote(method, options: dataOptions)
         );
     }
 
@@ -108,7 +107,7 @@ public static class DomainComponents
                     dte.AppendParameters = true;
                 });
             },
-            data: ActionRemote(method)
+            data: MethodRemote(method)
         );
     }
 
@@ -242,9 +241,12 @@ public static class DomainComponents
 
     #region String
 
-    public static ComponentDescriptor<Baked.Theme.Admin.String> MethodString(MethodModel method,
-        Action<RemoteData>? dataOptions = default
-    ) => String(data: ActionRemote(method, options: dataOptions));
+    public static ComponentDescriptor<Baked.Theme.Admin.String> MethodString(MethodModel method, ComponentContext context,
+        Action<Baked.Theme.Admin.String>? options = default
+    ) => String(
+        data: method.GetRequiredSchema<RemoteData>(context.Drill(nameof(IComponentDescriptor.Data))),
+        options: options
+    );
 
     #endregion
 }

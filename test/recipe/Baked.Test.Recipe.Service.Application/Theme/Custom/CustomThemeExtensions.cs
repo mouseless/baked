@@ -90,13 +90,13 @@ public static class CustomThemeExtensions
                                 [
                                     ReportPageTabContent(
                                         component: DataPanel(l(getScoped.Name),
-                                            content: MethodString(getScoped)
+                                            content: MethodString(getScoped, context.Drill("DataPanel", getScoped.Name))
                                         ),
                                         options: rptc => rptc.Narrow = true
                                     ),
                                     ReportPageTabContent(
                                         component: DataPanel(l(getApplication.Name),
-                                            content: MethodString(getApplication)
+                                            content: MethodString(getApplication, context.Drill("DataPanel", getScoped.Name))
                                         ),
                                         options: rptc => rptc.Narrow = true
                                     )
@@ -171,20 +171,20 @@ public static class CustomThemeExtensions
                         [
                             ReportPageTabContent(
                                 component: DataPanel(l(wide.Name),
-                                    content: MethodString(wide, dataOptions: rd => rd.Headers = headers),
+                                    content: MethodString(wide, context.Drill("DataPanel", wide.Name)),
                                     options: dp => dp.Collapsed = false
                                 )
                             ),
                             ReportPageTabContent(
                                 component: DataPanel(l(left.Name),
-                                    content: MethodString(left, dataOptions: rd => rd.Headers = headers),
+                                    content: MethodString(left, context.Drill("DataPanel", left.Name)),
                                     options: dp => dp.Collapsed = true
                                 ),
                                 options: rptc => rptc.Narrow = true
                             ),
                             ReportPageTabContent(
                                 component: DataPanel(l(right.Name),
-                                    content: MethodString(right, dataOptions: rd => rd.Headers = headers),
+                                    content: MethodString(right, context.Drill("DataPanel", right.Name)),
                                     options: dp => dp.Collapsed = true
                                 ),
                                 options: rptc => rptc.Narrow = true

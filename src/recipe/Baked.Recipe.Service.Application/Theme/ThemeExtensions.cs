@@ -64,6 +64,14 @@ public static class ThemeExtensions
         return generics.GenericTypeArguments.First().Model;
     }
 
+    public static TypeModel SkipTask(this TypeModel typeModel) =>
+        typeModel.IsAssignableTo<Task>() && typeModel.IsGenericType
+            ? typeModel.GetGenerics().GenericTypeArguments.First().Model
+            : typeModel;
+
+    public static bool ReturnsList(this MethodOverloadModel methodOverload) =>
+        methodOverload.ReturnType.SkipTask().IsAssignableTo<IList>();
+
     public static PageBuilder From<T>(this Page.Generator _) =>
         context =>
         {

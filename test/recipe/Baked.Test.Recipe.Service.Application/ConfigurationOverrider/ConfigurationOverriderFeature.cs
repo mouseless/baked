@@ -8,13 +8,14 @@ using Baked.Test.Orm;
 using Baked.Test.Theme;
 using Baked.Theme;
 using Baked.Theme.Admin;
+using Baked.Ui;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
 
 using static Baked.Theme.Admin.Components;
 using static Baked.Theme.Admin.DomainComponents;
 using static Baked.Test.Theme.Custom.DomainComponents;
-using static Baked.Test.Theme.Custom.DomainDatas;
+using static Baked.Ui.Datas;
 
 using ReportPageC = Baked.Theme.Admin.ReportPage;
 
@@ -139,7 +140,7 @@ public class ConfigurationOverriderFeature : IFeature
                 whenMethod: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData)
             );
             builder.Conventions.AddMethodComponent(
-                component: (c, cc) => String(data: ActionRemote(c.Method)),
+                component: (c, cc) => MethodString(c.Method, cc),
                 whenMethod: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData),
                 whenComponent: cc => cc.Path.EndsWith(nameof(ReportPageC.Tab.Content.Component))
             );
@@ -184,9 +185,14 @@ public class ConfigurationOverriderFeature : IFeature
                 when: (_, c) => c.Type.Is<Report>()
             );
             builder.Conventions.AddMethodComponent(
-                component: c => MethodString(c.Method),
+                component: (c, cc) => MethodString(c.Method, cc),
                 whenMethod: c => c.Method.DefaultOverload.ReturnType.Is<string>(),
                 whenComponent: c => c.Path.Matches(Regexes.AnyDataPanelContent)
+            );
+
+            builder.Conventions.AddMethodSchemaConvention<RemoteData>(
+                schema: rd => rd.Headers = Inline(new { Authorization = "token-admin-ui" }),
+                whenMethod: c => c.Type.Is<Report>()
             );
         });
 
