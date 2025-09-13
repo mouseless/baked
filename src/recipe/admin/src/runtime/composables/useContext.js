@@ -10,11 +10,11 @@ export default function() {
     return inject("__bake_path", "");
   }
 
-  function dataDescriptor() {
+  function injectDataDescriptor() {
     return inject("__bake_data_descriptor", null);
   }
 
-  function setDataDescriptor(value) {
+  function provideDataDescriptor(value) {
     return provide("__bake_data_descriptor", value);
   }
 
@@ -56,8 +56,8 @@ export default function() {
   return {
     add,
     path,
-    dataDescriptor,
-    setDataDescriptor,
+    injectDataDescriptor,
+    provideDataDescriptor,
     injectedData,
     setInjectedData,
     loading,
