@@ -19,7 +19,6 @@ public static class CustomThemeExtensions
             r => r.Root("/cache", "Cache", "pi pi-database") with { Page = p => p.Described(d => d.Cache()), Description = "Showcases the cache behavior" },
             r => r.Root("/data-table", "Data Table", "pi pi-table") with { Page = p => p.Described(d => d.DataTable()), Description = "Showcase DataTable component with scrollable and footer options" },
             r => r.Root("/report", "Report", "pi pi-file") with { Page = p => p.Generated(d => d.From<Report>()), Description = "Showcases a report layout with tabs and data panels"},
-            // r => r.Root("/report", "Report", "pi pi-file") with { Page = p => p.Described(d => d.Report()), Description = "Showcases a report layout with tabs and data panels"},
             r => r.Root("/specs", "Specs", "pi pi-list-check") with { Page = p => p.Described(d => d.Menu()), Description = "All UI Specs are listed here" },
 
             // Behavior

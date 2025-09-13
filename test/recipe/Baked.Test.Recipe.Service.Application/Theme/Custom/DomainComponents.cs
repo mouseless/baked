@@ -244,7 +244,7 @@ public static class DomainComponents
     public static ComponentDescriptor<Baked.Theme.Admin.String> MethodString(MethodModel method, ComponentContext context,
         Action<Baked.Theme.Admin.String>? options = default
     ) => String(
-        data: method.GetRequiredSchema<RemoteData>(context.Drill(nameof(IComponentDescriptor.Data))),
+        data: method.GetSchema<RemoteData>(context.Drill(nameof(IComponentDescriptor.Data))),
         options: options
     );
 

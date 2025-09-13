@@ -100,14 +100,14 @@ public static class ThemeExtensions
     }
 
     public static ComponentContext AComponentContext(this Stubber giveMe,
-        string? path = default
+        object[]? paths = default
     )
     {
-        path ??= string.Empty;
+        paths ??= [];
 
         return giveMe
             .APageContext()
-            .Drill(path);
+            .Drill(paths);
     }
 
     public static IEnumerable<T> WhereAppliesTo<T>(this IEnumerable<T> enumerable, ComponentContext context) =>

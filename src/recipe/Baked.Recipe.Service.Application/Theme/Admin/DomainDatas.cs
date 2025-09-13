@@ -8,6 +8,15 @@ namespace Baked.Theme.Admin;
 
 public static class DomainDatas
 {
+    public static InlineData MethodNameInline(MethodModel method, ComponentContext context,
+        Action<InlineData>? options = default
+    )
+    {
+        var (_, l) = context;
+
+        return Inline(l(method.Name), options: options);
+    }
+
     public static RemoteData MethodRemote(MethodModel method,
         Action<RemoteData>? options = default
     ) => Remote(method.GetAction().GetRoute(),
@@ -25,6 +34,7 @@ public static class DomainDatas
             options.Apply(rd);
         }
     );
+
     public static InlineData EnumInline(TypeModel type, ComponentContext context,
         bool requireLocalization = true
     )

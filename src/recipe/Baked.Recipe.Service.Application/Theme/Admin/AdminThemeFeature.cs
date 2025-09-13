@@ -76,10 +76,13 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
             builder.Conventions.AddMethodComponent(
                 component: (c, cc) => MethodDataPanel(c.Method, cc),
                 whenMethod: c => c.Method.Has<ActionModelAttribute>(),
-                whenComponent: c => c.Path.Contains(nameof(ReportPage.Tab.Contents)) && c.Path.EndsWith(nameof(ReportPage.Tab.Content.Component))
+                whenComponent: c => c.Path.EndsWith(nameof(ReportPage.Tab.Contents), "*", "*", nameof(ReportPage.Tab.Content.Component))
             );
-
-            // NOTE Adds method parameters as panel parameters
+            builder.Conventions.AddMethodSchema(
+                schema: (c, cc) => MethodNameInline(c.Method, cc),
+                whenMethod: c => c.Method.Has<ActionModelAttribute>(),
+                whenComponent: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Title))
+            );
             builder.Conventions.AddMethodComponentConvention<DataPanel>(
                 component: (dp, c, cc) =>
                 {
@@ -141,7 +144,7 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
             builder.Conventions.AddMethodComponent(
                 component: (c, cc) => MethodDataTable(c.Method, cc),
                 whenMethod: c => c.Method.Has<ActionModelAttribute>() && c.Method.DefaultOverload.ReturnsList(),
-                whenComponent: c => c.Path.Matches(Regexes.AnyDataPanelContent)
+                whenComponent: c => c.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content))
             );
 
             // NOTE Adds public properties under data table as columns
@@ -170,19 +173,53 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
                     dt.Schema.Paginator = true;
                 }
             );
+            builder.Conventions.AddMethodSchema(
+                schema: (c, cc) => MethodDataTableExport(c.Method, cc),
+                whenMethod: c => c.Method.Has<ComponentDescriptorBuilderAttribute<DataTable>>()
+            );
 
             // NOTE `DataTable.Column` for public properties
             builder.Conventions.AddPropertySchema(
                 schema: (c, cc) => PropertyDataTableColumn(c.Property, cc),
                 whenProperty: c => c.Property.IsPublic
             );
+            builder.Conventions.AddPropertySchemaConvention<DataTable.Column>(
+                schema: (dtc, c, cc) =>
+                {
+                    var (_, l) = cc;
+
+                    dtc.Title = l(c.Property.Name.Titleize());
+                    dtc.Exportable = true;
+                }
+            );
             builder.Conventions.AddPropertySchema(
                 schema: (c, cc) => PropertyConditional(c.Property, cc),
                 whenProperty: c => c.Property.IsPublic
             );
             builder.Conventions.AddPropertyComponent(
-                component: (c, cc) => PropertyString(c.Property, cc),
+                component: () => String(),
                 whenProperty: c => c.Property.IsPublic
+            );
+
+            // NOTE Label property convention
+            builder.Conventions.AddPropertySchemaConvention<DataTable.Column>(
+                schema: dtc => dtc.MinWidth = true,
+                whenProperty: c =>
+                    c.Property.PropertyType.Is<string>() &&
+                    (
+                        c.Property.Name == "Display" ||
+                        c.Property.Name == "Label" ||
+                        c.Property.Name == "Name" ||
+                        c.Property.Name == "Title"
+                    )
+            );
+            builder.Conventions.AddMethodComponentConvention<DataTable>(
+                component: dt =>
+                {
+                    if (dt.Schema.DataKey is not null) { return; }
+
+                    dt.Schema.DataKey = dt.Schema.Columns.FirstOrDefault(c => c.MinWidth == true)?.Prop;
+                }
             );
         });
 

@@ -5,7 +5,6 @@ using Humanizer;
 
 using static Baked.Theme.Admin.Components;
 using static Baked.Theme.Admin.DomainDatas;
-using static Baked.Ui.Datas;
 
 namespace Baked.Theme.Admin;
 
@@ -51,19 +50,25 @@ public static class DomainComponents
 
     public static ReportPage.Tab.Content MethodReportPageTabContent(MethodModel method, ComponentContext context,
         Action<ReportPage.Tab.Content>? options = default
-    ) => ReportPageTabContent(method.GetRequiredComponent(context.Drill(nameof(ReportPage.Tab.Content.Component))),
-        options: options
-    );
+    )
+    {
+        context = context.Drill(method.Name);
+
+        return ReportPageTabContent(method.GetRequiredComponent(context.Drill(nameof(ReportPage.Tab.Content.Component))),
+            options: options
+        );
+    }
 
     public static ComponentDescriptor<DataPanel> MethodDataPanel(MethodModel method, ComponentContext context,
         Action<DataPanel>? options = default
     )
     {
+        context = context.Drill(nameof(DataPanel));
         var (_, l) = context;
 
         return DataPanel(
-            Inline(l($"{method.DefaultOverload.DeclaringType?.Name}.{method.Name}.Title")),
-            method.GetRequiredComponent(context.Drill(nameof(DataPanel), method.Name, nameof(DataPanel.Content))),
+            method.GetRequiredSchema<InlineData>(context.Drill(nameof(DataPanel.Title))),
+            method.GetRequiredComponent(context.Drill(nameof(DataPanel.Content))),
             options: options
         );
     }
@@ -99,7 +104,7 @@ public static class DomainComponents
         return Select(l(parameter.Name.Titleize()), EnumInline(parameter.ParameterType, context.Drill(nameof(IComponentDescriptor.Data))),
             options: s =>
             {
-                s.ShowClear = api.IsOptional ? true : null;
+                s.ShowClear = api.IsOptional && api.DefaultValue is null ? true : null;
                 s.OptionLabel = "text";
                 s.OptionValue = "value";
 
@@ -118,7 +123,7 @@ public static class DomainComponents
         return SelectButton(EnumInline(parameter.ParameterType, context.Drill(nameof(IComponentDescriptor.Data))),
             options: sb =>
             {
-                sb.AllowEmpty = api.IsOptional ? true : null;
+                sb.AllowEmpty = api.IsOptional && api.DefaultValue is null ? true : null;
                 sb.OptionLabel = "text";
                 sb.OptionValue = "value";
 
@@ -147,6 +152,15 @@ public static class DomainComponents
         );
     }
 
+    public static DataTable.Export MethodDataTableExport(MethodModel method, ComponentContext context,
+        Action<DataTable.Export>? options = default
+    )
+    {
+        var (_, l) = context;
+
+        return DataTableExport(";", l($"{method.Name}.ExportFileName"), options: options);
+    }
+
     public static DataTable.Column PropertyDataTableColumn(PropertyModel property, ComponentContext context,
         Action<DataTable.Column>? options = default
     )
@@ -167,12 +181,11 @@ public static class DomainComponents
     public static Conditional PropertyConditional(PropertyModel property, ComponentContext context,
         Action<Conditional>? options = default
     ) => Conditional(
-        options: c => c.Fallback = property.GetRequiredComponent(
-            context.Drill(nameof(Conditional.Fallback))
-        )
-    );
+        options: c =>
+        {
+            c.Fallback = property.GetRequiredComponent(context.Drill(nameof(Conditional.Fallback)));
 
-    public static ComponentDescriptor<String> PropertyString(PropertyModel property, ComponentContext context,
-        Action<String>? options = default
-    ) => String(options: options);
+            options.Apply(c);
+        }
+    );
 }

@@ -10,7 +10,7 @@ public class ManagingComponentConventions : TestServiceSpec
     public void Adding_component_to_a_type()
     {
         var type = GiveMe.TheTypeModel<TestPage>().GetMetadata();
-        var componentContext = GiveMe.AComponentContext(path: "/page");
+        var componentContext = GiveMe.AComponentContext(paths: ["page"]);
 
         var component = type.GetRequiredComponent(componentContext);
 
@@ -23,7 +23,7 @@ public class ManagingComponentConventions : TestServiceSpec
     public void Adding_schema_to_a_type()
     {
         var type = GiveMe.TheTypeModel<TestPage>().GetMetadata();
-        var componentContext = GiveMe.AComponentContext(path: "/page/tabs");
+        var componentContext = GiveMe.AComponentContext(paths: ["page", "tabs"]);
 
         var tabs = type.GetSchemas<ReportPage.Tab>(componentContext);
 
@@ -36,7 +36,7 @@ public class ManagingComponentConventions : TestServiceSpec
     {
         var type = GiveMe.TheTypeModel<TestPage>().GetMembers();
         var method = type.Methods[nameof(TestPage.GetData)];
-        var componentContext = GiveMe.AComponentContext(path: "/page/tabs/default/contents/0");
+        var componentContext = GiveMe.AComponentContext(paths: ["page", "tabs", "default", "contents", "0"]);
 
         var content = method.GetSchema<ReportPage.Tab.Content>(componentContext);
 
@@ -49,7 +49,7 @@ public class ManagingComponentConventions : TestServiceSpec
     {
         var type = GiveMe.TheTypeModel<TestPage>().GetMembers();
         var method = type.Methods[nameof(TestPage.GetData)];
-        var componentContext = GiveMe.AComponentContext(path: "/page/tabs/default/contents/0/component");
+        var componentContext = GiveMe.AComponentContext(paths: ["page", "tabs", "default", "contents", "0", "component"]);
 
         var component = method.GetRequiredComponent(componentContext);
 
