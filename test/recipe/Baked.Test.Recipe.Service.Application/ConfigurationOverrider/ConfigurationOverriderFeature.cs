@@ -7,15 +7,11 @@ using Baked.Test.ExceptionHandling;
 using Baked.Test.Orm;
 using Baked.Test.Theme;
 using Baked.Theme;
-using Baked.Theme.Admin;
-using Baked.Ui;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
 
 using static Baked.Theme.Admin.Components;
-using static Baked.Theme.Admin.DomainComponents;
 using static Baked.Test.Theme.Custom.DomainComponents;
-using static Baked.Ui.Datas;
 
 using ReportPageC = Baked.Theme.Admin.ReportPage;
 
@@ -147,52 +143,6 @@ public class ConfigurationOverriderFeature : IFeature
             builder.Conventions.AddMethodComponentConvention<Baked.Theme.Admin.String>(
                 component: (@string) => @string.Schema.MaxLength = 20,
                 whenMethod: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData)
-            );
-
-            builder.Conventions.AddTypeComponent(
-                component: (c, cc) => TypeReportPage(c.Type, cc),
-                whenType: c => c.Type.Is<Report>(),
-                whenComponent: cc => cc.Path.Is(nameof(Page))
-            );
-            builder.Conventions.AddTypeSchema(
-                schema: (c, cc) => TypeReportPageTab(c.Type, cc, "SingleValue"),
-                whenType: c => c.Type.Is<Report>()
-            );
-            builder.Conventions.AddTypeSchema(
-                schema: (c, cc) => TypeReportPageTab(c.Type, cc, "DataTable"),
-                whenType: c => c.Type.Is<Report>()
-            );
-            builder.Conventions.AddTypeComponent(
-                component: () => Icon("pi-box"),
-                whenType: c => c.Type.Is<Report>(),
-                whenComponent: cc => cc.Path.EndsWith("SingleValue", nameof(ReportPageC.Tab.Icon))
-            );
-            builder.Conventions.AddTypeComponent(
-                component: () => Icon("pi-table"),
-                whenType: c => c.Type.Is<Report>(),
-                whenComponent: cc => cc.Path.EndsWith("DataTable", nameof(ReportPageC.Tab.Icon))
-            );
-            builder.Conventions.AddParameterSchemaConvention<Parameter>(
-                schema: p => p.Default = null,
-                whenParameter: c => c.Type.Is<Report>() && c.Method.Name == nameof(Report.With) && c.Parameter.Name == "required"
-            );
-            builder.Conventions.AddParameterComponent(
-                component: (c, cc) => EnumSelect(c.Parameter, cc),
-                whenParameter: c => c.Type.Is<Report>() && c.Method.Name == nameof(Report.With) && !c.Parameter.IsOptional
-            );
-            builder.Conventions.AddMethodConvention<TabAttribute>(
-                apply: (tab, c) => tab.Name = c.Method.DefaultOverload.ReturnType.Is<string>() ? "SingleValue" : "DataTable",
-                when: (_, c) => c.Type.Is<Report>()
-            );
-            builder.Conventions.AddMethodComponent(
-                component: (c, cc) => MethodString(c.Method, cc),
-                whenMethod: c => c.Method.DefaultOverload.ReturnType.Is<string>(),
-                whenComponent: c => c.Path.Matches(Regexes.AnyDataPanelContent)
-            );
-
-            builder.Conventions.AddMethodSchemaConvention<RemoteData>(
-                schema: rd => rd.Headers = Inline(new { Authorization = "token-admin-ui" }),
-                whenMethod: c => c.Type.Is<Report>()
             );
         });
 

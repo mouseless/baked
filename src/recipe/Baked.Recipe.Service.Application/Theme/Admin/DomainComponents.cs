@@ -131,16 +131,12 @@ public static class DomainComponents
         Action<DataTable>? options = default
     )
     {
+        context = context.Drill(nameof(DataTable));
         var (_, l) = context;
 
         return DataTable(
             options: dt =>
             {
-                if (method.DefaultOverload.ReturnType.TryGetMetadata(out var returnType))
-                {
-                    dt.Columns.AddRange(returnType.GetSchemas<DataTable.Column>(context.Drill(nameof(DataTable.Columns))));
-                }
-
                 dt.ExportOptions = method.GetSchema<DataTable.Export>(context.Drill(nameof(DataTable.Export)));
                 dt.FooterTemplate = method.GetSchema<DataTable.Footer>(context.Drill(nameof(DataTable.Footer)));
                 dt.VirtualScrollerOptions = method.GetSchema<DataTable.VirtualScroller>(context.Drill(nameof(DataTable.VirtualScroller)));
@@ -150,4 +146,33 @@ public static class DomainComponents
             data: method.GetRequiredSchema<RemoteData>(context.Drill(nameof(IComponentDescriptor.Data)))
         );
     }
+
+    public static DataTable.Column PropertyDataTableColumn(PropertyModel property, ComponentContext context,
+        Action<DataTable.Column>? options = default
+    )
+    {
+        context = context.Drill(property.Name);
+        var (_, l) = context;
+
+        return DataTableColumn(property.Name.Camelize(),
+            options: dtc =>
+            {
+                dtc.Component = property.GetRequiredSchema<Conditional>(context.Drill(nameof(DataTable.Column.Component)));
+
+                options.Apply(dtc);
+            }
+        );
+    }
+
+    public static Conditional PropertyConditional(PropertyModel property, ComponentContext context,
+        Action<Conditional>? options = default
+    ) => Conditional(
+        options: c => c.Fallback = property.GetRequiredComponent(
+            context.Drill(nameof(Conditional.Fallback))
+        )
+    );
+
+    public static ComponentDescriptor<String> PropertyString(PropertyModel property, ComponentContext context,
+        Action<String>? options = default
+    ) => String(options: options);
 }

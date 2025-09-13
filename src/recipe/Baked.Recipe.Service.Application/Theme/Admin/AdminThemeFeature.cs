@@ -79,6 +79,17 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
                 whenComponent: c => c.Path.Contains(nameof(ReportPage.Tab.Contents)) && c.Path.EndsWith(nameof(ReportPage.Tab.Content.Component))
             );
 
+            // NOTE Adds method parameters as panel parameters
+            builder.Conventions.AddMethodComponentConvention<DataPanel>(
+                component: (dp, c, cc) =>
+                {
+                    foreach (var parameter in c.Method.DefaultOverload.Parameters)
+                    {
+                        dp.Schema.Parameters.Add(ParameterParameter(parameter, cc.Drill(nameof(DataPanel.Parameters))));
+                    }
+                }
+            );
+
             // NOTE Adds remote data schema for method
             builder.Conventions.AddMethodSchema(
                 schema: c => MethodRemote(c.Method),
@@ -131,6 +142,47 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
                 component: (c, cc) => MethodDataTable(c.Method, cc),
                 whenMethod: c => c.Method.Has<ActionModelAttribute>() && c.Method.DefaultOverload.ReturnsList(),
                 whenComponent: c => c.Path.Matches(Regexes.AnyDataPanelContent)
+            );
+
+            // NOTE Adds public properties under data table as columns
+            builder.Conventions.AddMethodComponentConvention<DataTable>(
+                component: (dt, c, cc) =>
+                {
+                    var members = c.Method.DefaultOverload.ReturnType.SkipTask().GetElementType().GetMembers();
+                    foreach (var property in members.Properties.Where(p => p.IsPublic))
+                    {
+                        var column = property.GetSchema<DataTable.Column>(cc.Drill(nameof(DataTable.Columns)));
+                        if (column is null) { continue; }
+
+                        dt.Schema.Columns.Add(column);
+                    }
+                },
+                whenMethod: c =>
+                    c.Method.DefaultOverload.ReturnType.SkipTask().TryGetElementType(out var elementType) &&
+                    elementType.HasMembers()
+            );
+
+            // NOTE Sets default values for `DataTable`
+            builder.Conventions.AddMethodComponentConvention<DataTable>(
+                component: dt =>
+                {
+                    dt.Schema.Rows = 5;
+                    dt.Schema.Paginator = true;
+                }
+            );
+
+            // NOTE `DataTable.Column` for public properties
+            builder.Conventions.AddPropertySchema(
+                schema: (c, cc) => PropertyDataTableColumn(c.Property, cc),
+                whenProperty: c => c.Property.IsPublic
+            );
+            builder.Conventions.AddPropertySchema(
+                schema: (c, cc) => PropertyConditional(c.Property, cc),
+                whenProperty: c => c.Property.IsPublic
+            );
+            builder.Conventions.AddPropertyComponent(
+                component: (c, cc) => PropertyString(c.Property, cc),
+                whenProperty: c => c.Property.IsPublic
             );
         });
 
