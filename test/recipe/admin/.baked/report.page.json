@@ -18,7 +18,7 @@
           "type": "Select",
           "schema": {
             "label": "Required With Default",
-            "optionLabel": "text",
+            "optionLabel": "label",
             "optionValue": "value",
             "localizeLabel": true
           },
@@ -26,11 +26,11 @@
             "type": "Inline",
             "value": [
               {
-                "text": "RequiredWithDefaultOptions.RequiredWithDefault1",
+                "label": "RequiredWithDefaultOptions.RequiredWithDefault1",
                 "value": "RequiredWithDefault1"
               },
               {
-                "text": "RequiredWithDefaultOptions.RequiredWithDefault2",
+                "label": "RequiredWithDefaultOptions.RequiredWithDefault2",
                 "value": "RequiredWithDefault2"
               }
             ]
@@ -44,7 +44,7 @@
           "type": "Select",
           "schema": {
             "label": "Required",
-            "optionLabel": "text",
+            "optionLabel": "label",
             "optionValue": "value",
             "localizeLabel": true
           },
@@ -52,11 +52,11 @@
             "type": "Inline",
             "value": [
               {
-                "text": "RequiredOptions.Required1",
+                "label": "RequiredOptions.Required1",
                 "value": "Required1"
               },
               {
-                "text": "RequiredOptions.Required2",
+                "label": "RequiredOptions.Required2",
                 "value": "Required2"
               }
             ]
@@ -69,7 +69,7 @@
           "type": "SelectButton",
           "schema": {
             "allowEmpty": true,
-            "optionLabel": "text",
+            "optionLabel": "label",
             "optionValue": "value",
             "localizeLabel": true
           },
@@ -77,11 +77,11 @@
             "type": "Inline",
             "value": [
               {
-                "text": "OptionalOptions.Optional1",
+                "label": "OptionalOptions.Optional1",
                 "value": "Optional1"
               },
               {
-                "text": "OptionalOptions.Optional2",
+                "label": "OptionalOptions.Optional2",
                 "value": "Optional2"
               }
             ]
@@ -227,7 +227,7 @@
                       "type": "Select",
                       "schema": {
                         "label": "Count",
-                        "optionLabel": "text",
+                        "optionLabel": "label",
                         "optionValue": "value",
                         "localizeLabel": true,
                         "stateful": true
@@ -236,15 +236,15 @@
                         "type": "Inline",
                         "value": [
                           {
-                            "text": "CountOptions.Less",
+                            "label": "CountOptions.Less",
                             "value": "Less"
                           },
                           {
-                            "text": "CountOptions.Default",
+                            "label": "CountOptions.Default",
                             "value": "Default"
                           },
                           {
-                            "text": "CountOptions.More",
+                            "label": "CountOptions.More",
                             "value": "More"
                           }
                         ]
@@ -369,7 +369,7 @@
                     "component": {
                       "type": "SelectButton",
                       "schema": {
-                        "optionLabel": "text",
+                        "optionLabel": "label",
                         "optionValue": "value",
                         "localizeLabel": true,
                         "stateful": true
@@ -378,15 +378,15 @@
                         "type": "Inline",
                         "value": [
                           {
-                            "text": "CountOptions.Less",
+                            "label": "CountOptions.Less",
                             "value": "Less"
                           },
                           {
-                            "text": "CountOptions.Default",
+                            "label": "CountOptions.Default",
                             "value": "Default"
                           },
                           {
-                            "text": "CountOptions.More",
+                            "label": "CountOptions.More",
                             "value": "More"
                           }
                         ]

@@ -21,7 +21,7 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            // Notes Add tab attribute to all actions
+            // NOTE Add tab attribute to all actions
             builder.Conventions.SetMethodMetadata(
                 attribute: _ => new TabAttribute(),
                 when: c => c.Method.Has<ActionModelAttribute>(),
@@ -52,6 +52,19 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
                     );
                 },
                 whenType: c => c.Type.Has<TransientAttribute>() && c.Type.HasMembers()
+            );
+
+            // NOTE Adds tab title for non default tabs
+            builder.Conventions.AddTypeSchemaConvention<ReportPage.Tab>(
+               schema: (rpt, c, cc) =>
+               {
+                   var (_, l) = cc;
+
+                   if (rpt.Id != "default")
+                   {
+                       rpt.Title = l(rpt.Id.Replace("-", "_").Titleize());
+                   }
+               }
             );
 
             // NOTE Adds `GET` actions under report page tabs as contents
@@ -116,6 +129,16 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
                 schema: (c, cc) => ParameterParameter(c.Parameter, cc),
                 whenParameter: c => c.Parameter.Has<ParameterModelAttribute>()
             );
+            builder.Conventions.AddParameterSchemaConvention<Parameter>(
+                schema: (p, c) =>
+                {
+                    var api = c.Parameter.Get<ParameterModelAttribute>();
+
+                    p.Required = !api.IsOptional ? true : null;
+                    p.DefaultValue = api.DefaultValue;
+                },
+                whenParameter: c => c.Parameter.Has<ParameterModelAttribute>()
+            );
 
             // NOTE Parameter with an enum that has <=3 members is represented as `SelectButton`
             builder.Conventions.AddParameterComponent(
@@ -124,6 +147,19 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
                     c.Parameter.ParameterType.SkipNullable().IsEnum &&
                     c.Parameter.ParameterType.SkipNullable().GetEnumNames().Count() <= 3
             );
+            builder.Conventions.AddParameterComponentConvention<SelectButton>(
+                component: (s, c) =>
+                {
+                    var api = c.Parameter.Get<ParameterModelAttribute>();
+
+                    s.Schema.AllowEmpty = api.IsOptional && api.DefaultValue is null ? true : null;
+                    if (s.Data?.RequireLocalization == true)
+                    {
+                        s.Schema.OptionLabel = "label";
+                        s.Schema.OptionValue = "value";
+                    }
+                }
+            );
 
             // NOTE Parameter with an enum that has >3 members is represented as `Select`
             builder.Conventions.AddParameterComponent(
@@ -131,6 +167,19 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
                 whenParameter: c =>
                     c.Parameter.ParameterType.SkipNullable().IsEnum &&
                     c.Parameter.ParameterType.SkipNullable().GetEnumNames().Count() > 3
+            );
+            builder.Conventions.AddParameterComponentConvention<Select>(
+                component: (s, c) =>
+                {
+                    var api = c.Parameter.Get<ParameterModelAttribute>();
+
+                    s.Schema.ShowClear = api.IsOptional && api.DefaultValue is null ? true : null;
+                    if (s.Data?.RequireLocalization == true)
+                    {
+                        s.Schema.OptionLabel = "label";
+                        s.Schema.OptionValue = "value";
+                    }
+                }
             );
 
             // NOTE Default value of a required enum parameter is set to the first enum member

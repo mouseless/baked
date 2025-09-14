@@ -39,11 +39,6 @@ public static class DomainComponents
             rpt.Icon = type.GetComponent(context.Drill(nameof(ReportPage.Tab.Icon)));
 
             options.Apply(rpt);
-
-            if (rpt.Title is null && id != "Default")
-            {
-                rpt.Title = l(id.Titleize());
-            }
         });
     }
 
@@ -79,68 +74,33 @@ public static class DomainComponents
         context = context.Drill(parameter.Name);
         var api = parameter.Get<ParameterModelAttribute>();
 
-        return Parameter(api.Name, parameter.GetRequiredComponent(context.Drill(nameof(Parameter.Component))),
-            options: p =>
-            {
-                p.Required = !api.IsOptional ? true : null;
-                if (api.DefaultValue is not null)
-                {
-                    p.DefaultValue = api.DefaultValue;
-                }
-
-                options.Apply(p);
-            }
-        );
+        return Parameter(api.Name, parameter.GetRequiredComponent(context.Drill(nameof(Parameter.Component))), options: options);
     }
 
     public static ComponentDescriptor<Select> EnumSelect(ParameterModel parameter, ComponentContext context,
         Action<Select>? options = default
     )
     {
+        context = context.Drill(nameof(Select));
         var (_, l) = context;
-        var api = parameter.Get<ParameterModelAttribute>();
         if (!parameter.ParameterType.TryGetMetadata(out var metadata)) { throw new($"{parameter.ParameterType.CSharpFriendlyFullName} cannot be used, its metadata is not present in domain model"); }
 
         var data = metadata.GetRequiredSchema<InlineData>(context.Drill(nameof(IComponentDescriptor.Data)));
 
-        return Select(l(parameter.Name.Titleize()), data,
-            options: s =>
-            {
-                s.ShowClear = api.IsOptional && api.DefaultValue is null ? true : null;
-                if (data.RequireLocalization == true)
-                {
-                    s.OptionLabel = "text";
-                    s.OptionValue = "value";
-                }
-
-                options.Apply(s);
-            }
-        );
+        return Select(l(parameter.Name.Titleize()), data, options: options);
     }
 
     public static ComponentDescriptor<SelectButton> EnumSelectButton(ParameterModel parameter, ComponentContext context,
         Action<SelectButton>? options = default
     )
     {
+        context = context.Drill(nameof(SelectButton));
         var (_, l) = context;
-        var api = parameter.Get<ParameterModelAttribute>();
         if (!parameter.ParameterType.TryGetMetadata(out var metadata)) { throw new($"{parameter.ParameterType.CSharpFriendlyFullName} cannot be used, its metadata is not present in domain model"); }
 
         var data = metadata.GetRequiredSchema<InlineData>(context.Drill(nameof(IComponentDescriptor.Data)));
 
-        return SelectButton(data,
-            options: sb =>
-            {
-                sb.AllowEmpty = api.IsOptional && api.DefaultValue is null ? true : null;
-                if (data.RequireLocalization == true)
-                {
-                    sb.OptionLabel = "text";
-                    sb.OptionValue = "value";
-                }
-
-                options.Apply(sb);
-            }
-        );
+        return SelectButton(data, options: options);
     }
 
     public static ComponentDescriptor<DataTable> MethodDataTable(MethodModel method, ComponentContext context,

@@ -194,7 +194,6 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Baked.Theme.Route>> _ro
                     c.Method.Name == nameof(Report.GetSecond)
             );
 
-            // TODO This true for most classes, move this outside this region above
             builder.Conventions.AddMethodSchemaConvention<RemoteData>(
                 schema: rd => rd.Headers = Inline(new { Authorization = "token-admin-ui" }),
                 whenMethod: c => c.Type.Is<Report>()
