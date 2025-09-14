@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Runtime;
+using Baked.Ui;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,6 +11,14 @@ public class InMemoryCachingFeature(Action<MemoryCacheOptions> _options, Setting
 {
     public void Configure(LayerConfigurator configurator)
     {
+        configurator.ConfigureDomainModelBuilder(builder =>
+        {
+            builder.Conventions.AddMethodSchemaConvention<RemoteData>(
+                schema: rd => rd.SetAttribute("client-cache", "application"),
+                whenMethod: c => c.Method.TryGet<ClientCacheAttribute>(out var clientCache) && clientCache.Type == "application"
+            );
+        });
+
         configurator.ConfigureServiceCollection(services =>
         {
             services.AddMemoryCache(_options);

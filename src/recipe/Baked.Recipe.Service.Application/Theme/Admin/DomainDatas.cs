@@ -1,5 +1,4 @@
-﻿using Baked.Caching;
-using Baked.Domain.Model;
+﻿using Baked.Domain.Model;
 using Baked.Ui;
 
 using static Baked.Ui.Datas;
@@ -25,11 +24,6 @@ public static class DomainDatas
             rd.Query = method.DefaultOverload.Parameters.Any()
                 ? Composite(options: cd => cd.Parts.AddRange([Computed(Composables.UseQuery), Injected()]))
                 : Computed(Composables.UseQuery);
-
-            if (method.TryGet<ClientCacheAttribute>(out var clientCache))
-            {
-                rd.SetAttribute("client-cache", clientCache.Type);
-            }
 
             options.Apply(rd);
         }

@@ -9,7 +9,11 @@ namespace Baked.Theme.Admin;
 
 public static class DomainComponents
 {
-    public static ComponentDescriptor<ReportPage> TypeReportPage(TypeModelMetadata type, ComponentContext context,
+    public static ComponentDescriptor<ReportPage> TypeReportPage(
+#pragma warning disable IDE0060
+        TypeModelMetadata type,
+#pragma warning restore IDE0060
+        ComponentContext context,
         Action<ReportPage>? options = default
     )
     {
