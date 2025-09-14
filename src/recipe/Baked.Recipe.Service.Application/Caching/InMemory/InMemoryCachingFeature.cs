@@ -13,7 +13,7 @@ public class InMemoryCachingFeature(Action<MemoryCacheOptions> _options, Setting
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Conventions.AddMethodSchemaConvention<RemoteData>(
+            builder.Conventions.AddMethodSchemaConfiguration<RemoteData>(
                 schema: rd => rd.SetAttribute("client-cache", "application"),
                 whenMethod: c => c.Method.TryGet<ClientCacheAttribute>(out var clientCache) && clientCache.Type == "application"
             );

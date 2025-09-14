@@ -25,7 +25,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Baked.Theme.Route>> _ro
         configurator.ConfigureDomainModelBuilder(builder =>
         {
             // Custom theme CSV formatter settings
-            builder.Conventions.AddMethodSchemaConvention<Baked.Theme.Admin.DataTable.Export>(
+            builder.Conventions.AddMethodSchemaConfiguration<Baked.Theme.Admin.DataTable.Export>(
                 schema: (dte, _, cc) =>
                 {
                     var (_, l) = cc;
@@ -53,7 +53,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Baked.Theme.Route>> _ro
 
             #region Cache Samples Page Overrides
 
-            builder.Conventions.AddTypeComponentConvention<ReportPage>(
+            builder.Conventions.AddTypeComponentConfiguration<ReportPage>(
                 component: rp =>
                 {
                     rp.Schema.Tabs[0].Contents[0].Narrow = true;
@@ -67,7 +67,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Baked.Theme.Route>> _ro
             #region Data Table Page Overrides
 
             // DataTable fine tuning
-            builder.Conventions.AddMethodComponentConvention<Baked.Theme.Admin.DataTable>(
+            builder.Conventions.AddMethodComponentConfiguration<Baked.Theme.Admin.DataTable>(
                 component: dt =>
                 {
                     dt.Schema.ScrollHeight = "500px";
@@ -76,7 +76,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Baked.Theme.Route>> _ro
                 },
                 whenMethod: c => c.Type.Is<DataTable>()
             );
-            builder.Conventions.AddMethodSchemaConvention<Baked.Theme.Admin.DataTable.Export>(
+            builder.Conventions.AddMethodSchemaConfiguration<Baked.Theme.Admin.DataTable.Export>(
                 schema: dte =>
                 {
                     dte.ParameterFormatter = null;
@@ -94,11 +94,11 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Baked.Theme.Route>> _ro
             #region Report Page Overrides
 
             // Tabs
-            builder.Conventions.AddMethodConvention<TabAttribute>(
+            builder.Conventions.AddMethodConfiguration<TabAttribute>(
                 apply: (tab, c) => tab.Name = "SingleValue",
                 when: (_, c) => c.Type.Is<Report>() && c.Method.DefaultOverload.ReturnType.SkipTask().Is<string>()
             );
-            builder.Conventions.AddMethodConvention<TabAttribute>(
+            builder.Conventions.AddMethodConfiguration<TabAttribute>(
                 apply: (tab, c) => tab.Name = "DataTable",
                 when: (_, c) => c.Type.Is<Report>() && c.Method.DefaultOverload.ReturnsList()
             );
@@ -114,7 +114,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Baked.Theme.Route>> _ro
             );
 
             // Allowing admin token for report api
-            builder.Conventions.AddMethodSchemaConvention<RemoteData>(
+            builder.Conventions.AddMethodSchemaConfiguration<RemoteData>(
                 schema: rd => rd.Headers = Inline(new { Authorization = "token-admin-ui" }),
                 whenMethod: c => c.Type.Is<Report>()
             );
@@ -130,7 +130,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Baked.Theme.Route>> _ro
             );
 
             // Page overrides
-            builder.Conventions.AddTypeComponentConvention<ReportPage>(
+            builder.Conventions.AddTypeComponentConfiguration<ReportPage>(
                 component: rp =>
                 {
                     rp.Schema.QueryParameters.Single(p => p.Name == "required").Default = null;

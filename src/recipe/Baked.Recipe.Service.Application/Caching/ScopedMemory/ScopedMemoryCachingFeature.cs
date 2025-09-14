@@ -13,7 +13,7 @@ public class ScopedMemoryCachingFeature(Setting<TimeSpan> clientExpiration)
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Conventions.AddMethodSchemaConvention<RemoteData>(
+            builder.Conventions.AddMethodSchemaConfiguration<RemoteData>(
                 schema: rd => rd.SetAttribute("client-cache", "user"),
                 whenMethod: c => c.Method.TryGet<ClientCacheAttribute>(out var clientCache) && clientCache.Type == "user"
             );

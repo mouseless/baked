@@ -1,4 +1,4 @@
-using Baked.Architecture;
+﻿using Baked.Architecture;
 using Baked.ExceptionHandling;
 using Baked.RestApi.Model;
 using Baked.Test.Authentication;
@@ -54,7 +54,7 @@ public class ConfigurationOverriderFeature : IFeature
                 attribute: _ => new CustomAttribute(),
                 when: c => c.Type.Is<Class>()
             );
-            builder.Conventions.AddTypeConvention<CustomAttribute>(
+            builder.Conventions.AddTypeConfiguration<CustomAttribute>(
                 apply: attr => attr.Value = "FROM CONVENTION",
                 when: (_, c) => c.Type.Is<Class>()
             );
@@ -78,7 +78,7 @@ public class ConfigurationOverriderFeature : IFeature
                     c.Type.Is<Class>() &&
                     c.Method.Name == nameof(Class.Method)
             );
-            builder.Conventions.AddMethodConvention<CustomAttribute>(
+            builder.Conventions.AddMethodConfiguration<CustomAttribute>(
                 apply: attr => attr.Value = "FROM CONVENTION",
                 when: (_, c) =>
                     c.Type.Is<Class>() &&
@@ -92,7 +92,7 @@ public class ConfigurationOverriderFeature : IFeature
                     c.Method.Name == nameof(MethodSamples.PrimitiveParameters) &&
                     c.Parameter.Name == "string"
             );
-            builder.Conventions.AddParameterConvention<CustomAttribute>(
+            builder.Conventions.AddParameterConfiguration<CustomAttribute>(
                 apply: attr => attr.Value = "FROM CONVENTION",
                 when: (_, c) =>
                     c.Type.Is<MethodSamples>() &&
@@ -105,7 +105,7 @@ public class ConfigurationOverriderFeature : IFeature
                 whenType: c => c.Type.Is<TestPage>(),
                 whenComponent: cc => cc.Path.EndsWith(nameof(Page))
             );
-            builder.Conventions.AddTypeComponentConvention<ReportPageC>(
+            builder.Conventions.AddTypeComponentConfiguration<ReportPageC>(
                 component: (reportPage, c, cc) => reportPage.Schema.Tabs.AddRange(
                     c.Type.GetSchemas<ReportPageC.Tab>(cc.Drill(nameof(ReportPageC.Tabs)))
                 ),
@@ -116,7 +116,7 @@ public class ConfigurationOverriderFeature : IFeature
                 whenType: c => c.Type.Is<TestPage>(),
                 whenComponent: cc => cc.Path.EndsWith(nameof(ReportPageC.Tabs))
             );
-            builder.Conventions.AddTypeSchemaConvention<ReportPageC.Tab>(
+            builder.Conventions.AddTypeSchemaConfiguration<ReportPageC.Tab>(
                 schema: (tab, c, cc) => tab.Contents.Add(
                     c.Type
                         .GetMethod(nameof(TestPage.GetData))
@@ -131,7 +131,7 @@ public class ConfigurationOverriderFeature : IFeature
                 whenMethod: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData),
                 whenComponent: c => c.Path.EndsWith(nameof(ReportPageC.Tab.Contents), 0)
             );
-            builder.Conventions.AddMethodSchemaConvention<ReportPageC.Tab.Content>(
+            builder.Conventions.AddMethodSchemaConfiguration<ReportPageC.Tab.Content>(
                 schema: tabContent => tabContent.Narrow = true,
                 whenMethod: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData)
             );
@@ -140,7 +140,7 @@ public class ConfigurationOverriderFeature : IFeature
                 whenMethod: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData),
                 whenComponent: cc => cc.Path.EndsWith(nameof(ReportPageC.Tab.Content.Component))
             );
-            builder.Conventions.AddMethodComponentConvention<Baked.Theme.Admin.String>(
+            builder.Conventions.AddMethodComponentConfiguration<Baked.Theme.Admin.String>(
                 component: (@string) => @string.Schema.MaxLength = 20,
                 whenMethod: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData)
             );

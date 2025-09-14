@@ -16,7 +16,7 @@ public class ConcurrencyRateLimiterFeature(
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Conventions.AddMethodConvention<ActionModelAttribute>(action =>
+            builder.Conventions.AddMethodConfiguration<ActionModelAttribute>(action =>
                 action.AdditionalAttributes.Add("""EnableRateLimiting("Concurrency")""")
             );
         });

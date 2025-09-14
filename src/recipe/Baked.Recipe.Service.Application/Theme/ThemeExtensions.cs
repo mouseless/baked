@@ -362,27 +362,27 @@ public static class ThemeExtensions
 
     #region Add Convention
 
-    public static void AddTypeSchemaConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<TSchema> schema,
+    public static void AddTypeSchemaConfiguration<TSchema>(this IDomainModelConventionCollection conventions, Action<TSchema> schema,
         Func<TypeModelMetadataContext, bool>? whenType = default,
         Func<ComponentContext, bool>? whenComponent = default,
         int order = default
-    ) => conventions.AddTypeSchemaConvention<TSchema>((s, _) => schema(s),
+    ) => conventions.AddTypeSchemaConfiguration<TSchema>((s, _) => schema(s),
         whenType: whenType,
         whenComponent: whenComponent,
         order: order
     );
 
-    public static void AddTypeSchemaConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<TSchema, TypeModelMetadataContext> schema,
+    public static void AddTypeSchemaConfiguration<TSchema>(this IDomainModelConventionCollection conventions, Action<TSchema, TypeModelMetadataContext> schema,
         Func<TypeModelMetadataContext, bool>? whenType = default,
         Func<ComponentContext, bool>? whenComponent = default,
         int order = default
-    ) => conventions.AddTypeSchemaConvention<TSchema>((s, c, _) => schema(s, c),
+    ) => conventions.AddTypeSchemaConfiguration<TSchema>((s, c, _) => schema(s, c),
         whenType: whenType,
         whenComponent: whenComponent,
         order: order
     );
 
-    public static void AddTypeSchemaConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<TSchema, TypeModelMetadataContext, ComponentContext> schema,
+    public static void AddTypeSchemaConfiguration<TSchema>(this IDomainModelConventionCollection conventions, Action<TSchema, TypeModelMetadataContext, ComponentContext> schema,
         Func<TypeModelMetadataContext, bool>? whenType = default,
         Func<ComponentContext, bool>? whenComponent = default,
         int order = default
@@ -391,7 +391,7 @@ public static class ThemeExtensions
         whenType ??= _ => true;
         whenComponent ??= _ => true;
 
-        conventions.AddTypeConvention<DescriptorBuilderAttribute<TSchema>>(
+        conventions.AddTypeConfiguration<DescriptorBuilderAttribute<TSchema>>(
             apply: (attribute, c) => attribute.WrapBuilder(
                 apply: (s, cc) => schema(s, c, cc),
                 when: whenComponent
@@ -401,27 +401,27 @@ public static class ThemeExtensions
         );
     }
 
-    public static void AddPropertySchemaConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<TSchema> schema,
+    public static void AddPropertySchemaConfiguration<TSchema>(this IDomainModelConventionCollection conventions, Action<TSchema> schema,
         Func<PropertyModelContext, bool>? whenProperty = default,
         Func<ComponentContext, bool>? whenComponent = default,
         int order = default
-    ) => conventions.AddPropertySchemaConvention<TSchema>((s, _) => schema(s),
+    ) => conventions.AddPropertySchemaConfiguration<TSchema>((s, _) => schema(s),
         whenProperty: whenProperty,
         whenComponent: whenComponent,
         order: order
     );
 
-    public static void AddPropertySchemaConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<TSchema, PropertyModelContext> schema,
+    public static void AddPropertySchemaConfiguration<TSchema>(this IDomainModelConventionCollection conventions, Action<TSchema, PropertyModelContext> schema,
         Func<PropertyModelContext, bool>? whenProperty = default,
         Func<ComponentContext, bool>? whenComponent = default,
         int order = default
-    ) => conventions.AddPropertySchemaConvention<TSchema>((s, c, _) => schema(s, c),
+    ) => conventions.AddPropertySchemaConfiguration<TSchema>((s, c, _) => schema(s, c),
         whenProperty: whenProperty,
         whenComponent: whenComponent,
         order: order
     );
 
-    public static void AddPropertySchemaConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<TSchema, PropertyModelContext, ComponentContext> schema,
+    public static void AddPropertySchemaConfiguration<TSchema>(this IDomainModelConventionCollection conventions, Action<TSchema, PropertyModelContext, ComponentContext> schema,
         Func<PropertyModelContext, bool>? whenProperty = default,
         Func<ComponentContext, bool>? whenComponent = default,
         int order = default
@@ -430,7 +430,7 @@ public static class ThemeExtensions
         whenProperty ??= _ => true;
         whenComponent ??= _ => true;
 
-        conventions.AddPropertyConvention<DescriptorBuilderAttribute<TSchema>>(
+        conventions.AddPropertyConfiguration<DescriptorBuilderAttribute<TSchema>>(
             apply: (attribute, c) => attribute.WrapBuilder(
                 apply: (s, cc) => schema(s, c, cc),
                 when: whenComponent
@@ -440,27 +440,27 @@ public static class ThemeExtensions
         );
     }
 
-    public static void AddMethodSchemaConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<TSchema> schema,
+    public static void AddMethodSchemaConfiguration<TSchema>(this IDomainModelConventionCollection conventions, Action<TSchema> schema,
         Func<MethodModelContext, bool>? whenMethod = default,
         Func<ComponentContext, bool>? whenComponent = default,
         int order = default
-    ) => conventions.AddMethodSchemaConvention<TSchema>((s, _) => schema(s),
+    ) => conventions.AddMethodSchemaConfiguration<TSchema>((s, _) => schema(s),
         whenMethod: whenMethod,
         whenComponent: whenComponent,
         order: order
     );
 
-    public static void AddMethodSchemaConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<TSchema, MethodModelContext> schema,
+    public static void AddMethodSchemaConfiguration<TSchema>(this IDomainModelConventionCollection conventions, Action<TSchema, MethodModelContext> schema,
         Func<MethodModelContext, bool>? whenMethod = default,
         Func<ComponentContext, bool>? whenComponent = default,
         int order = default
-    ) => conventions.AddMethodSchemaConvention<TSchema>((s, c, _) => schema(s, c),
+    ) => conventions.AddMethodSchemaConfiguration<TSchema>((s, c, _) => schema(s, c),
         whenMethod: whenMethod,
         whenComponent: whenComponent,
         order: order
     );
 
-    public static void AddMethodSchemaConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<TSchema, MethodModelContext, ComponentContext> schema,
+    public static void AddMethodSchemaConfiguration<TSchema>(this IDomainModelConventionCollection conventions, Action<TSchema, MethodModelContext, ComponentContext> schema,
         Func<MethodModelContext, bool>? whenMethod = default,
         Func<ComponentContext, bool>? whenComponent = default,
         int order = default
@@ -469,7 +469,7 @@ public static class ThemeExtensions
         whenMethod ??= _ => true;
         whenComponent ??= _ => true;
 
-        conventions.AddMethodConvention<DescriptorBuilderAttribute<TSchema>>(
+        conventions.AddMethodConfiguration<DescriptorBuilderAttribute<TSchema>>(
             apply: (attribute, c) => attribute.WrapBuilder(
                 apply: (s, cc) => schema(s, c, cc),
                 when: whenComponent
@@ -479,27 +479,27 @@ public static class ThemeExtensions
         );
     }
 
-    public static void AddParameterSchemaConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<TSchema> schema,
+    public static void AddParameterSchemaConfiguration<TSchema>(this IDomainModelConventionCollection conventions, Action<TSchema> schema,
         Func<ParameterModelContext, bool>? whenParameter = default,
         Func<ComponentContext, bool>? whenComponent = default,
         int order = default
-    ) => conventions.AddParameterSchemaConvention<TSchema>((s, _) => schema(s),
+    ) => conventions.AddParameterSchemaConfiguration<TSchema>((s, _) => schema(s),
         whenParameter: whenParameter,
         whenComponent: whenComponent,
         order: order
     );
 
-    public static void AddParameterSchemaConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<TSchema, ParameterModelContext> schema,
+    public static void AddParameterSchemaConfiguration<TSchema>(this IDomainModelConventionCollection conventions, Action<TSchema, ParameterModelContext> schema,
         Func<ParameterModelContext, bool>? whenParameter = default,
         Func<ComponentContext, bool>? whenComponent = default,
         int order = default
-    ) => conventions.AddParameterSchemaConvention<TSchema>((s, c, _) => schema(s, c),
+    ) => conventions.AddParameterSchemaConfiguration<TSchema>((s, c, _) => schema(s, c),
         whenParameter: whenParameter,
         whenComponent: whenComponent,
         order: order
     );
 
-    public static void AddParameterSchemaConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<TSchema, ParameterModelContext, ComponentContext> schema,
+    public static void AddParameterSchemaConfiguration<TSchema>(this IDomainModelConventionCollection conventions, Action<TSchema, ParameterModelContext, ComponentContext> schema,
         Func<ParameterModelContext, bool>? whenParameter = default,
         Func<ComponentContext, bool>? whenComponent = default,
         int order = default
@@ -508,7 +508,7 @@ public static class ThemeExtensions
         whenParameter ??= _ => true;
         whenComponent ??= _ => true;
 
-        conventions.AddParameterConvention<DescriptorBuilderAttribute<TSchema>>(
+        conventions.AddParameterConfiguration<DescriptorBuilderAttribute<TSchema>>(
             apply: (attribute, c) => attribute.WrapBuilder(
                 apply: (s, cc) => schema(s, c, cc),
                 when: whenComponent
@@ -763,29 +763,29 @@ public static class ThemeExtensions
 
     #region Add Convention
 
-    public static void AddTypeComponentConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<ComponentDescriptor<TSchema>> component,
+    public static void AddTypeComponentConfiguration<TSchema>(this IDomainModelConventionCollection conventions, Action<ComponentDescriptor<TSchema>> component,
         Func<TypeModelMetadataContext, bool>? whenType = default,
         Func<ComponentContext, bool>? whenComponent = default,
         int order = default
     ) where TSchema : IComponentSchema =>
-        conventions.AddTypeComponentConvention<TSchema>((s, _) => component(s),
+        conventions.AddTypeComponentConfiguration<TSchema>((s, _) => component(s),
             whenType: whenType,
             whenComponent: whenComponent,
             order: order
         );
 
-    public static void AddTypeComponentConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<ComponentDescriptor<TSchema>, TypeModelMetadataContext> component,
+    public static void AddTypeComponentConfiguration<TSchema>(this IDomainModelConventionCollection conventions, Action<ComponentDescriptor<TSchema>, TypeModelMetadataContext> component,
         Func<TypeModelMetadataContext, bool>? whenType = default,
         Func<ComponentContext, bool>? whenComponent = default,
         int order = default
     ) where TSchema : IComponentSchema =>
-        conventions.AddTypeComponentConvention<TSchema>((s, c, _) => component(s, c),
+        conventions.AddTypeComponentConfiguration<TSchema>((s, c, _) => component(s, c),
             whenType: whenType,
             whenComponent: whenComponent,
             order: order
         );
 
-    public static void AddTypeComponentConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<ComponentDescriptor<TSchema>, TypeModelMetadataContext, ComponentContext> component,
+    public static void AddTypeComponentConfiguration<TSchema>(this IDomainModelConventionCollection conventions, Action<ComponentDescriptor<TSchema>, TypeModelMetadataContext, ComponentContext> component,
         Func<TypeModelMetadataContext, bool>? whenType = default,
         Func<ComponentContext, bool>? whenComponent = default,
         int order = default
@@ -794,7 +794,7 @@ public static class ThemeExtensions
         whenType ??= _ => true;
         whenComponent ??= _ => true;
 
-        conventions.AddTypeConvention<ComponentDescriptorBuilderAttribute<TSchema>>(
+        conventions.AddTypeConfiguration<ComponentDescriptorBuilderAttribute<TSchema>>(
             apply: (attribute, c) => attribute.WrapBuilder(
                 apply: (d, cc) => component(d, c, cc),
                 when: whenComponent
@@ -804,29 +804,29 @@ public static class ThemeExtensions
         );
     }
 
-    public static void AddPropertyComponentConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<ComponentDescriptor<TSchema>> component,
+    public static void AddPropertyComponentConfiguration<TSchema>(this IDomainModelConventionCollection conventions, Action<ComponentDescriptor<TSchema>> component,
         Func<PropertyModelContext, bool>? whenProperty = default,
         Func<ComponentContext, bool>? whenComponent = default,
         int order = default
     ) where TSchema : IComponentSchema =>
-        conventions.AddPropertyComponentConvention<TSchema>((s, _) => component(s),
+        conventions.AddPropertyComponentConfiguration<TSchema>((s, _) => component(s),
             whenProperty: whenProperty,
             whenComponent: whenComponent,
             order: order
         );
 
-    public static void AddPropertyComponentConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<ComponentDescriptor<TSchema>, PropertyModelContext> component,
+    public static void AddPropertyComponentConfiguration<TSchema>(this IDomainModelConventionCollection conventions, Action<ComponentDescriptor<TSchema>, PropertyModelContext> component,
         Func<PropertyModelContext, bool>? whenProperty = default,
         Func<ComponentContext, bool>? whenComponent = default,
         int order = default
     ) where TSchema : IComponentSchema =>
-        conventions.AddPropertyComponentConvention<TSchema>((s, c, _) => component(s, c),
+        conventions.AddPropertyComponentConfiguration<TSchema>((s, c, _) => component(s, c),
             whenProperty: whenProperty,
             whenComponent: whenComponent,
             order: order
         );
 
-    public static void AddPropertyComponentConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<ComponentDescriptor<TSchema>, PropertyModelContext, ComponentContext> component,
+    public static void AddPropertyComponentConfiguration<TSchema>(this IDomainModelConventionCollection conventions, Action<ComponentDescriptor<TSchema>, PropertyModelContext, ComponentContext> component,
         Func<PropertyModelContext, bool>? whenProperty = default,
         Func<ComponentContext, bool>? whenComponent = default,
         int order = default
@@ -835,7 +835,7 @@ public static class ThemeExtensions
         whenProperty ??= _ => true;
         whenComponent ??= _ => true;
 
-        conventions.AddPropertyConvention<ComponentDescriptorBuilderAttribute<TSchema>>(
+        conventions.AddPropertyConfiguration<ComponentDescriptorBuilderAttribute<TSchema>>(
             apply: (attribute, c) => attribute.WrapBuilder(
                 apply: (d, cc) => component(d, c, cc),
                 when: whenComponent
@@ -845,29 +845,29 @@ public static class ThemeExtensions
         );
     }
 
-    public static void AddMethodComponentConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<ComponentDescriptor<TSchema>> component,
+    public static void AddMethodComponentConfiguration<TSchema>(this IDomainModelConventionCollection conventions, Action<ComponentDescriptor<TSchema>> component,
         Func<MethodModelContext, bool>? whenMethod = default,
         Func<ComponentContext, bool>? whenComponent = default,
         int order = default
     ) where TSchema : IComponentSchema =>
-        conventions.AddMethodComponentConvention<TSchema>((s, _) => component(s),
+        conventions.AddMethodComponentConfiguration<TSchema>((s, _) => component(s),
             whenMethod: whenMethod,
             whenComponent: whenComponent,
             order: order
         );
 
-    public static void AddMethodComponentConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<ComponentDescriptor<TSchema>, MethodModelContext> component,
+    public static void AddMethodComponentConfiguration<TSchema>(this IDomainModelConventionCollection conventions, Action<ComponentDescriptor<TSchema>, MethodModelContext> component,
         Func<MethodModelContext, bool>? whenMethod = default,
         Func<ComponentContext, bool>? whenComponent = default,
         int order = default
     ) where TSchema : IComponentSchema =>
-        conventions.AddMethodComponentConvention<TSchema>((s, c, _) => component(s, c),
+        conventions.AddMethodComponentConfiguration<TSchema>((s, c, _) => component(s, c),
             whenMethod: whenMethod,
             whenComponent: whenComponent,
             order: order
         );
 
-    public static void AddMethodComponentConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<ComponentDescriptor<TSchema>, MethodModelContext, ComponentContext> component,
+    public static void AddMethodComponentConfiguration<TSchema>(this IDomainModelConventionCollection conventions, Action<ComponentDescriptor<TSchema>, MethodModelContext, ComponentContext> component,
         Func<MethodModelContext, bool>? whenMethod = default,
         Func<ComponentContext, bool>? whenComponent = default,
         int order = default
@@ -876,7 +876,7 @@ public static class ThemeExtensions
         whenMethod ??= _ => true;
         whenComponent ??= _ => true;
 
-        conventions.AddMethodConvention<ComponentDescriptorBuilderAttribute<TSchema>>(
+        conventions.AddMethodConfiguration<ComponentDescriptorBuilderAttribute<TSchema>>(
             apply: (attribute, c) => attribute.WrapBuilder(
                 apply: (d, cc) => component(d, c, cc),
                 when: whenComponent
@@ -886,29 +886,29 @@ public static class ThemeExtensions
         );
     }
 
-    public static void AddParameterComponentConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<ComponentDescriptor<TSchema>> component,
+    public static void AddParameterComponentConfiguration<TSchema>(this IDomainModelConventionCollection conventions, Action<ComponentDescriptor<TSchema>> component,
         Func<ParameterModelContext, bool>? whenParameter = default,
         Func<ComponentContext, bool>? whenComponent = default,
         int order = default
     ) where TSchema : IComponentSchema =>
-        conventions.AddParameterComponentConvention<TSchema>((s, _) => component(s),
+        conventions.AddParameterComponentConfiguration<TSchema>((s, _) => component(s),
             whenParameter: whenParameter,
             whenComponent: whenComponent,
             order: order
         );
 
-    public static void AddParameterComponentConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<ComponentDescriptor<TSchema>, ParameterModelContext> component,
+    public static void AddParameterComponentConfiguration<TSchema>(this IDomainModelConventionCollection conventions, Action<ComponentDescriptor<TSchema>, ParameterModelContext> component,
         Func<ParameterModelContext, bool>? whenParameter = default,
         Func<ComponentContext, bool>? whenComponent = default,
         int order = default
     ) where TSchema : IComponentSchema =>
-        conventions.AddParameterComponentConvention<TSchema>((s, c, _) => component(s, c),
+        conventions.AddParameterComponentConfiguration<TSchema>((s, c, _) => component(s, c),
             whenParameter: whenParameter,
             whenComponent: whenComponent,
             order: order
         );
 
-    public static void AddParameterComponentConvention<TSchema>(this IDomainModelConventionCollection conventions, Action<ComponentDescriptor<TSchema>, ParameterModelContext, ComponentContext> component,
+    public static void AddParameterComponentConfiguration<TSchema>(this IDomainModelConventionCollection conventions, Action<ComponentDescriptor<TSchema>, ParameterModelContext, ComponentContext> component,
         Func<ParameterModelContext, bool>? whenParameter = default,
         Func<ComponentContext, bool>? whenComponent = default,
         int order = default
@@ -917,7 +917,7 @@ public static class ThemeExtensions
         whenParameter ??= _ => true;
         whenComponent ??= _ => true;
 
-        conventions.AddParameterConvention<ComponentDescriptorBuilderAttribute<TSchema>>(
+        conventions.AddParameterConfiguration<ComponentDescriptorBuilderAttribute<TSchema>>(
             apply: (attribute, c) => attribute.WrapBuilder(
                 apply: (d, cc) => component(d, c, cc),
                 when: whenComponent
