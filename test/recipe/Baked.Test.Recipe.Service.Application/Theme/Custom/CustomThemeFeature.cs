@@ -24,7 +24,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Baked.Theme.Route>> _ro
 
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            // NOTE Custom theme CSV formatter settings
+            // Custom theme CSV formatter settings
             builder.Conventions.AddMethodSchemaConvention<Baked.Theme.Admin.DataTable.Export>(
                 schema: (dte, _, cc) =>
                 {
@@ -38,14 +38,14 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Baked.Theme.Route>> _ro
                 }
             );
 
-            // TODO Move this to admin feature... Why not!
+            // Move this to admin feature... Why not!
             builder.Conventions.AddMethodComponent(
                 component: (c, cc) => MethodString(c.Method, cc),
                 whenMethod: c => c.Method.DefaultOverload.ReturnType.Is<string>(),
                 whenComponent: c => c.Path.EndsWith(nameof(Baked.Theme.Admin.DataPanel), nameof(Baked.Theme.Admin.DataPanel.Content))
             );
 
-            // NOTE None localized enums
+            // None localized enums
             builder.Conventions.AddTypeSchema(
                 schema: (c, cc) => EnumInline(c.Type, cc, requireLocalization: false),
                 whenType: c => c.Type.Is<CacheKey>() || c.Type.Is<RowCount>()
@@ -53,10 +53,6 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Baked.Theme.Route>> _ro
 
             #region Cache Samples Page Overrides
 
-            builder.Conventions.AddTypeSchema(
-                schema: (c, cc) => TypeReportPageTab(c.Type, cc, "Default"),
-                whenType: c => c.Type.Is<CacheSamples>()
-            );
             builder.Conventions.AddParameterComponent(
                 component: (c, cc) => EnumSelect(c.Parameter, cc),
                 whenParameter: c => c.Type.Is<CacheSamples>()
@@ -79,13 +75,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Baked.Theme.Route>> _ro
 
             #region Data Table Page Overrides
 
-            // NOTE Tabs
-            builder.Conventions.AddTypeSchema(
-                schema: (c, cc) => TypeReportPageTab(c.Type, cc, "Default"),
-                whenType: c => c.Type.Is<DataTable>()
-            );
-
-            // NOTE DataTable fine tuning
+            // DataTable fine tuning
             builder.Conventions.AddMethodComponentConvention<Baked.Theme.Admin.DataTable>(
                 component: dt =>
                 {
@@ -107,22 +97,19 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Baked.Theme.Route>> _ro
                 schema: () => DataTableVirtualScroller(options: dtvs => dtvs.ItemSize = 45),
                 whenMethod: c => c.Type.Is<DataTable>()
             );
+
             #endregion
 
             #region Report Page Overrides
 
-            // NOTE Tabs
-            builder.Conventions.AddTypeSchema(
-                schema: (c, cc) => TypeReportPageTab(c.Type, cc, "SingleValue"),
-                whenType: c => c.Type.Is<Report>()
-            );
-            builder.Conventions.AddTypeSchema(
-                schema: (c, cc) => TypeReportPageTab(c.Type, cc, "DataTable"),
-                whenType: c => c.Type.Is<Report>()
+            // Tabs
+            builder.Conventions.AddMethodConvention<TabAttribute>(
+                apply: (tab, c) => tab.Name = "SingleValue",
+                when: (_, c) => c.Type.Is<Report>() && c.Method.DefaultOverload.ReturnType.SkipTask().Is<string>()
             );
             builder.Conventions.AddMethodConvention<TabAttribute>(
-                apply: (tab, c) => tab.Name = c.Method.DefaultOverload.ReturnType.Is<string>() ? "SingleValue" : "DataTable",
-                when: (_, c) => c.Type.Is<Report>()
+                apply: (tab, c) => tab.Name = "DataTable",
+                when: (_, c) => c.Type.Is<Report>() && c.Method.DefaultOverload.ReturnsList()
             );
             builder.Conventions.AddTypeComponent(
                 component: () => Icon("pi-box"),
@@ -135,11 +122,13 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Baked.Theme.Route>> _ro
                 whenComponent: cc => cc.Path.EndsWith("DataTable", nameof(Baked.Theme.Admin.ReportPage.Tab.Icon))
             );
 
-            // NOTE Parameter tweaks
-            builder.Conventions.AddParameterSchemaConvention<Parameter>(
-                schema: p => p.Default = null,
-                whenParameter: c => c.Type.Is<Report>() && c.Method.Name == nameof(Report.With) && c.Parameter.Name == "required"
+            // Allowing admin token for report api
+            builder.Conventions.AddMethodSchemaConvention<RemoteData>(
+                schema: rd => rd.Headers = Inline(new { Authorization = "token-admin-ui" }),
+                whenMethod: c => c.Type.Is<Report>()
             );
+
+            // Parameter overrides
             builder.Conventions.AddParameterComponent(
                 component: (c, cc) => EnumSelect(c.Parameter, cc),
                 whenParameter: c => c.Type.Is<Report>() && c.Method.Name == nameof(Report.With) && !c.Parameter.IsOptional
@@ -149,54 +138,18 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Baked.Theme.Route>> _ro
                 whenParameter: c => c.Type.Is<Report>() && c.Method.Name == nameof(Report.GetFirst) && c.Parameter.Name == "count"
             );
 
-            // NOTE Panel tweaks
-            builder.Conventions.AddMethodSchemaConvention<ReportPage.Tab.Content>(
-                schema: rtc => rtc.Narrow = true,
-                whenMethod: c =>
-                    c.Type.Is<Report>() &&
-                    (c.Method.Name == nameof(Report.GetLeft) || c.Method.Name == nameof(Report.GetRight))
-            );
-            builder.Conventions.AddMethodComponentConvention<DataPanel>(
-                component: dp => dp.Schema.Collapsed = true,
-                whenMethod: c =>
-                    c.Type.Is<Report>() &&
-                    (
-                        c.Method.Name == nameof(Report.GetLeft) ||
-                        c.Method.Name == nameof(Report.GetRight) ||
-                        c.Method.Name == nameof(Report.GetSecond)
-                    )
-            );
-            builder.Conventions.AddMethodComponentConvention<DataPanel>(
-                component: dp => dp.Schema.Collapsed = false,
-                whenMethod: c =>
-                    c.Type.Is<Report>() &&
-                    c.Method.Name == nameof(Report.GetWide)
-            );
-
-            // NOTE Remove export from `GetSecond`
-            // TODO remove this exception later
-            builder.Conventions.RemoveMethodMetadata<DescriptorBuilderAttribute<Baked.Theme.Admin.DataTable.Export>>(
-                when: c =>
-                    c.Type.Is<Report>() &&
-                    c.Method.Name == nameof(Report.GetSecond),
-                order: int.MaxValue
-            );
-            builder.Conventions.AddMethodComponentConvention<Baked.Theme.Admin.DataTable>(
-                component: dt =>
+            // Page overrides
+            builder.Conventions.AddTypeComponentConvention<ReportPage>(
+                component: rp =>
                 {
-                    foreach (var column in dt.Schema.Columns)
-                    {
-                        column.Exportable = null;
-                    }
+                    rp.Schema.QueryParameters.Single(p => p.Name == "required").Default = null;
+                    rp.Schema.Tabs[0].Contents[1].Narrow = true;
+                    rp.Schema.Tabs[0].Contents[2].Narrow = true;
+                    rp.Schema.Tabs[0].Contents[1].Component.Schema.As<DataPanel>().Collapsed = true;
+                    rp.Schema.Tabs[0].Contents[2].Component.Schema.As<DataPanel>().Collapsed = true;
+                    rp.Schema.Tabs[1].Contents[1].Component.Schema.As<DataPanel>().Collapsed = true;
                 },
-                whenMethod: c =>
-                    c.Type.Is<Report>() &&
-                    c.Method.Name == nameof(Report.GetSecond)
-            );
-
-            builder.Conventions.AddMethodSchemaConvention<RemoteData>(
-                schema: rd => rd.Headers = Inline(new { Authorization = "token-admin-ui" }),
-                whenMethod: c => c.Type.Is<Report>()
+                whenType: c => c.Type.Is<Report>()
             );
 
             #endregion

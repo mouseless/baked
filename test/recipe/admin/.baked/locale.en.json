@@ -43,6 +43,7 @@
   "GetRight": "Right",
   "GetScoped": "Scoped",
   "GetSecond": "Second",
+  "GetSecond.ExportFileName": "second",
   "GetTableDataWithFooter": "Table Data w/ Footer",
   "GetTableDataWithFooter.ExportFileName": "data-table-export",
   "GetTableDataWithFooter.FooterLabel": "Total",

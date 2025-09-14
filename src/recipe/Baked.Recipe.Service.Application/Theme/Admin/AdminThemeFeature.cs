@@ -54,39 +54,50 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
                 whenType: c => c.Type.Has<TransientAttribute>() && c.Type.HasMembers()
             );
 
-            // NOTE Adds tab title for non default tabs
-            builder.Conventions.AddTypeSchemaConvention<ReportPage.Tab>(
-               schema: (rpt, c, cc) =>
-               {
-                   var (_, l) = cc;
-
-                   if (rpt.Id != "default")
-                   {
-                       rpt.Title = l(rpt.Id.Replace("-", "_").Titleize());
-                   }
-               }
-            );
-
-            // NOTE Adds `GET` actions under report page tabs as contents
-            builder.Conventions.AddTypeSchemaConvention<ReportPage.Tab>(
-                schema: (tab, c, cc) =>
+            // NOTE Adds tab and contents using `GET` actions
+            builder.Conventions.AddTypeComponentConvention<ReportPage>(
+                component: (rp, c, cc) =>
                 {
+                    cc = cc.Drill(nameof(ReportPage.Tabs));
+                    var tabs = new Dictionary<string, ReportPage.Tab>();
+
                     var members = c.Type.GetMembers();
                     foreach (var method in members.Methods.Having<ActionModelAttribute>())
                     {
                         var action = method.GetAction();
                         if (action.Method != HttpMethod.Get) { continue; }
-                        if (!method.TryGet<TabAttribute>(out var group)) { continue; }
-                        if (tab.Id != group.Name.Kebaberize()) { continue; }
+                        if (!method.TryGet<TabAttribute>(out var tab)) { continue; }
 
-                        tab.Contents.Add(
+                        if (!tabs.TryGetValue(tab.Name, out var t))
+                        {
+                            tabs.Add(tab.Name, t = TypeReportPageTab(c.Type, cc.Drill(tab.Name), tab.Name));
+                        }
+
+                        t.Contents.Add(
                             method.GetRequiredSchema<ReportPage.Tab.Content>(
-                                cc.Drill(nameof(ReportPage.Tab.Contents), tab.Contents.Count)
+                                cc.Drill(tab.Name, nameof(ReportPage.Tab.Contents), t.Contents.Count)
                             )
                         );
                     }
+
+                    rp.Schema.Tabs.AddRange(tabs.Values);
                 },
                 whenType: c => c.Type.HasMembers()
+            );
+
+            // NOTE Adds tab title for non default tabs
+            builder.Conventions.AddTypeComponentConvention<ReportPage>(
+               component: (rp, c, cc) =>
+               {
+                   var (_, l) = cc;
+
+                   foreach (var rpt in rp.Schema.Tabs)
+                   {
+                       if (rpt.Id == "default") { continue; }
+
+                       rpt.Title = l(rpt.Id.Replace("-", "_").Titleize());
+                   }
+               }
             );
 
             // NOTE Adds report page tab content schema to actions

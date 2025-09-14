@@ -43,6 +43,7 @@ GetLeft=Left
 GetRight=Right
 GetScoped=Scoped
 GetSecond=Second
+GetSecond.ExportFileName=second
 GetWide=Wide
 OptionalOptions.Optional1=Optional 1
 OptionalOptions.Optional2=Optional 2

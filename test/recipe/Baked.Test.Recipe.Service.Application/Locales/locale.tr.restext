@@ -73,6 +73,7 @@ GetLeft=Sol
 GetRight=Sağ
 GetScoped=Kullanıcı Kapsamı
 GetSecond=İkinci
+GetSecond.ExportFileName=ikinci
 GetTableDataWithFooter=Alt Satırlı Veri Tablosu
 GetTableDataWithFooter.ExportFileName=veri-tablosu-ciktisi
 GetTableDataWithFooter.FooterLabel=Toplam

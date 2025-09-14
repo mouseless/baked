@@ -15,26 +15,21 @@ public static class DomainComponents
     {
         context = context.Drill(nameof(ReportPage));
         var (_, l) = context;
+
         var path = context.Route.Path.Trim('/');
         var title = PageTitle(l(context.Route.Title), options: pt => pt.Description = l(context.Route.Description));
-        var tabs = type.GetSchemas<ReportPage.Tab>(context.Drill(nameof(ReportPage.Tabs)));
 
-        return ReportPage(path, title, options: rp =>
-        {
-            rp.Tabs.AddRange(tabs);
-
-            options.Apply(rp);
-        });
+        return ReportPage(path, title, options: options);
     }
 
-    public static ReportPage.Tab TypeReportPageTab(TypeModelMetadata type, ComponentContext context, string id,
+    public static ReportPage.Tab TypeReportPageTab(TypeModelMetadata type, ComponentContext context, string name,
         Action<ReportPage.Tab>? options = default
     )
     {
-        context = context.Drill(id);
+        context = context.Drill(name);
         var (_, l) = context;
 
-        return ReportPageTab(id.Kebaberize(), options: rpt =>
+        return ReportPageTab(name.Kebaberize(), options: rpt =>
         {
             rpt.Icon = type.GetComponent(context.Drill(nameof(ReportPage.Tab.Icon)));
 

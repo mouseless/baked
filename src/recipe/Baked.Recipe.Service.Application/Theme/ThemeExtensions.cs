@@ -83,6 +83,12 @@ public static class ThemeExtensions
             return metadata.GetRequiredComponent(context.Drill(nameof(Page)));
         };
 
+    public static TComponentSchema As<TComponentSchema>(this IComponentSchema schema) where TComponentSchema : IComponentSchema =>
+        (TComponentSchema)schema;
+
+    public static TData As<TData>(this IData data) where TData : IData =>
+        (TData)data;
+
     public static PageContext APageContext(this Stubber giveMe,
         string? path = default,
         string? title = default
