@@ -28,6 +28,16 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
                 order: int.MaxValue - 5
             );
 
+            // NOTE Types with only `GET` methods are report pages
+            builder.Conventions.AddTypeComponent(
+                component: (c, cc) => TypeReportPage(c.Type, cc),
+                whenType: c =>
+                    c.Type.Has<ControllerModelAttribute>() &&
+                    c.Type.TryGetMembers(out var members) &&
+                    members.Methods.Having<ActionModelAttribute>().All(m => m.GetAction().Method == HttpMethod.Get),
+                whenComponent: cc => cc.Path.Is(nameof(Page))
+            );
+
             // NOTE Adds `With` parameters as query parameters of the report page
             builder.Conventions.AddTypeComponentConvention<ReportPage>(
                 component: (reportPage, c, cc) =>
@@ -38,7 +48,7 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
                     reportPage.Schema.QueryParameters.AddRange(
                         initializer
                             .DefaultOverload.Parameters
-                            .Select(p => p.GetRequiredSchema<Parameter>(cc.Drill(nameof(ReportPage.QueryParameters))))
+                            .Select(p => p.GetRequiredSchema<Parameter>(cc.Drill(nameof(ReportPage), nameof(ReportPage.QueryParameters))))
                     );
                 },
                 whenType: c => c.Type.Has<TransientAttribute>() && c.Type.HasMembers()
@@ -88,7 +98,9 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
                 {
                     foreach (var parameter in c.Method.DefaultOverload.Parameters)
                     {
-                        dp.Schema.Parameters.Add(ParameterParameter(parameter, cc.Drill(nameof(DataPanel.Parameters))));
+                        dp.Schema.Parameters.Add(
+                            parameter.GetRequiredSchema<Parameter>(cc.Drill(nameof(DataPanel), nameof(DataPanel.Parameters)))
+                        );
                     }
                 }
             );
@@ -99,10 +111,10 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
                 whenMethod: c => c.Method.Has<ActionModelAttribute>()
             );
 
-            // NOTE Adds parameter schema to the `With` parameters of rich transients
+            // NOTE Adds parameter schema all api parameters
             builder.Conventions.AddParameterSchema(
                 schema: (c, cc) => ParameterParameter(c.Parameter, cc),
-                whenParameter: c => c.Type.Has<TransientAttribute>() && c.Method.Has<InitializerAttribute>()
+                whenParameter: c => c.Parameter.Has<ParameterModelAttribute>()
             );
 
             // NOTE Parameter with an enum that has <=3 members is represented as `SelectButton`
@@ -123,24 +135,30 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
 
             // NOTE Default value of a required enum parameter is set to the first enum member
             builder.Conventions.AddParameterSchemaConvention<Parameter>(
-                schema: (p, c) => p.DefaultValue = c.Parameter.ParameterType.SkipNullable().GetEnumNames().First(),
+                schema: (p, c, cc) => p.DefaultValue = c.Parameter.ParameterType.SkipNullable().GetEnumNames().First(),
                 whenParameter: c =>
                     c.Parameter.ParameterType.SkipNullable().IsEnum &&
                     c.Parameter.TryGet<ParameterModelAttribute>(out var api) &&
                     !api.IsOptional
             );
 
-            // NOTE `Select` and `SelectButton` under tabs is stateful
+            // NOTE `Select` and `SelectButton` of a data panel is stateful
             builder.Conventions.AddParameterComponentConvention<Select>(
                 component: sb => sb.Schema.Stateful = true,
-                whenComponent: cc => cc.Path.Contains("Tabs")
+                whenComponent: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Parameters), "*", nameof(Parameter.Component))
             );
             builder.Conventions.AddParameterComponentConvention<SelectButton>(
                 component: sb => sb.Schema.Stateful = true,
-                whenComponent: cc => cc.Path.Contains("Tabs")
+                whenComponent: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Parameters), "*", nameof(Parameter.Component))
             );
 
-            // NOTE `DataTable` for actions
+            // NOTE Adds inline data schema for enums
+            builder.Conventions.AddTypeSchema(
+                schema: (c, cc) => EnumInline(c.Type, cc),
+                whenType: c => c.Type.SkipNullable().IsEnum
+            );
+
+            // NOTE `DataTable` for actions that return list
             builder.Conventions.AddMethodComponent(
                 component: (c, cc) => MethodDataTable(c.Method, cc),
                 whenMethod: c => c.Method.Has<ActionModelAttribute>() && c.Method.DefaultOverload.ReturnsList(),
@@ -161,8 +179,80 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
                     }
                 },
                 whenMethod: c =>
+                    c.Method.DefaultOverload.ReturnsList() &&
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetElementType(out var elementType) &&
                     elementType.HasMembers()
+            );
+
+            // NOTE `DataTable` for actions that return object with a single list property
+            builder.Conventions.AddMethodComponent(
+                component: (c, cc) => MethodDataTable(c.Method, cc, options: dt =>
+                {
+                    dt.ItemsProp = c.Method.DefaultOverload
+                        .ReturnType.SkipTask().GetMembers()
+                        .Properties.Single(p => p.PropertyType.IsAssignableTo<IEnumerable>())
+                        .Name.Camelize();
+                }),
+                whenMethod: c =>
+                    // TODO migrate to mark usage
+                    c.Method.Has<ActionModelAttribute>() &&
+                    !c.Method.DefaultOverload.ReturnsList() &&
+                    c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMembers(out var returnMembers) &&
+                    returnMembers.Properties.Count(p => p.PropertyType.IsAssignableTo<IEnumerable>()) == 1,
+                whenComponent: c => c.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content))
+            );
+
+            // NOTE Finds the list property, and add its public properties under data table as columns
+            builder.Conventions.AddMethodComponentConvention<DataTable>(
+                component: (dt, c, cc) =>
+                {
+                    var members = c.Method.DefaultOverload
+                        .ReturnType.SkipTask().GetMembers()
+                        .Properties.Single(p => p.PropertyType.IsAssignableTo<IEnumerable>())
+                        .PropertyType.GetElementType().GetMembers();
+                    foreach (var property in members.Properties.Where(p => p.IsPublic))
+                    {
+                        var column = property.GetSchema<DataTable.Column>(cc.Drill(nameof(DataTable.Columns)));
+                        if (column is null) { continue; }
+
+                        dt.Schema.Columns.Add(column);
+                    }
+                },
+                whenMethod: c =>
+                    // TODO migrate to mark usage
+                    !c.Method.DefaultOverload.ReturnsList() &&
+                    c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMembers(out var returnMembers) &&
+                    returnMembers.Properties.Count(p => p.PropertyType.IsAssignableTo<IEnumerable>()) == 1 &&
+                    returnMembers.Properties.Single(p => p.PropertyType.IsAssignableTo<IEnumerable>()).PropertyType.TryGetElementType(out var elementType) &&
+                    elementType.HasMembers()
+            );
+
+            // NOTE Adds footer for non-list data tables
+            builder.Conventions.AddMethodSchema(
+                schema: (c, cc) => MethodDataTableFooter(c.Method, cc),
+                whenMethod: c =>
+                    // TODO migrate to mark usage
+                    !c.Method.DefaultOverload.ReturnsList() &&
+                    c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMembers(out var returnMembers) &&
+                    returnMembers.Properties.Count(p => p.PropertyType.IsAssignableTo<IEnumerable>()) == 1
+            );
+            builder.Conventions.AddMethodSchemaConvention<DataTable.Footer>(
+                schema: (dtf, c, cc) =>
+                {
+                    var members = c.Method.DefaultOverload.ReturnType.SkipTask().GetMembers();
+                    foreach (var property in members.Properties.Where(p => p.IsPublic && !p.PropertyType.IsAssignableTo<IEnumerable>()))
+                    {
+                        var column = property.GetSchema<DataTable.Column>(cc.Drill(nameof(DataTable.Columns)));
+                        if (column is null) { continue; }
+
+                        dtf.Columns.Add(column);
+                    }
+                },
+                whenMethod: c =>
+                    // TODO migrate to mark usage
+                    !c.Method.DefaultOverload.ReturnsList() &&
+                    c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMembers(out var returnMembers) &&
+                    returnMembers.Properties.Count(p => p.PropertyType.IsAssignableTo<IEnumerable>()) == 1
             );
 
             // NOTE Sets default values for `DataTable`
@@ -190,7 +280,18 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
 
                     dtc.Title = l(c.Property.Name.Titleize());
                     dtc.Exportable = true;
-                }
+                },
+                whenComponent: c => !c.Path.Contains(nameof(DataTable), nameof(DataTable.Footer))
+            );
+            builder.Conventions.AddPropertySchemaConvention<DataTable.Column>(
+                schema: dtc => dtc.AlignRight = true,
+                whenProperty: c =>
+                    c.Property.IsPublic &&
+                    (
+                        c.Property.PropertyType.SkipNullable().Is<int>() ||
+                        c.Property.PropertyType.SkipNullable().Is<double>() ||
+                        c.Property.PropertyType.SkipNullable().Is<decimal>()
+                    )
             );
             builder.Conventions.AddPropertySchema(
                 schema: (c, cc) => PropertyConditional(c.Property, cc),
@@ -200,10 +301,26 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
                 component: () => String(),
                 whenProperty: c => c.Property.IsPublic
             );
+            builder.Conventions.AddPropertyComponent(
+                component: () => Number(),
+                whenProperty: c => c.Property.IsPublic && c.Property.PropertyType.SkipNullable().Is<int>()
+            );
+            builder.Conventions.AddPropertyComponent(
+                component: () => Money(),
+                whenProperty: c => c.Property.IsPublic && c.Property.PropertyType.SkipNullable().Is<decimal>()
+            );
+            builder.Conventions.AddPropertyComponent(
+                component: () => Rate(),
+                whenProperty: c => c.Property.IsPublic && c.Property.PropertyType.SkipNullable().Is<double>()
+            );
 
             // NOTE Label property convention
             builder.Conventions.AddPropertySchemaConvention<DataTable.Column>(
-                schema: dtc => dtc.MinWidth = true,
+                schema: dtc =>
+                {
+                    dtc.MinWidth = true;
+                    dtc.Frozen = true;
+                },
                 whenProperty: c =>
                     c.Property.PropertyType.Is<string>() &&
                     (

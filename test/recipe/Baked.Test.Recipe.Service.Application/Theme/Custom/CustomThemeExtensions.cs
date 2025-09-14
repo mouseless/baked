@@ -1,12 +1,7 @@
-using Baked.Business;
 using Baked.Test.Caching;
 using Baked.Test.Theme;
 using Baked.Test.Theme.Custom;
 using Baked.Theme;
-
-using static Baked.Theme.Admin.Components;
-using static Baked.Test.Theme.Custom.DomainComponents;
-using static Baked.Ui.Datas;
 
 namespace Baked;
 
@@ -17,7 +12,7 @@ public static class CustomThemeExtensions
         [
             r => r.Index() with { Page = p => p.Described(d => d.Menu()) },
             r => r.Root("/cache", "Cache", "pi pi-database") with { Page = p => p.Generated(g => g.From<CacheSamples>()), Description = "Showcases the cache behavior" },
-            r => r.Root("/data-table", "Data Table", "pi pi-table") with { Page = p => p.Described(d => d.DataTable()), Description = "Showcase DataTable component with scrollable and footer options" },
+            r => r.Root("/data-table", "Data Table", "pi pi-table") with { Page = p => p.Generated(d => d.From<DataTable>()), Description = "Showcase DataTable component with scrollable and footer options" },
             r => r.Root("/report", "Report", "pi pi-file") with { Page = p => p.Generated(g => g.From<Report>()), Description = "Showcases a report layout with tabs and data panels"},
             r => r.Root("/specs", "Specs", "pi pi-list-check") with { Page = p => p.Described(d => d.Menu()), Description = "All UI Specs are listed here" },
 
@@ -61,80 +56,4 @@ public static class CustomThemeExtensions
             r => r.Child("/specs/locale", "Locale", "/specs") with { Icon = "pi pi-microchip", Description = "Allow locale customization and language support", Section = "Plugins" },
             r => r.Child("/specs/error-handling", "Error Handling", "/specs") with { Icon = "pi pi-microchip", Description = "Handling errors", Section = "Plugins" },
         ]);
-
-    public static PageBuilder Cache(this Page.Describer _) =>
-        context =>
-        {
-            var (domain, l) = context;
-            var headers = Inline(new { Authorization = "token-admin-ui" });
-
-            var cacheSamples = domain.Types[typeof(CacheSamples)].GetMembers();
-            var initializer = cacheSamples.Methods.Having<InitializerAttribute>().First().DefaultOverload;
-            var getScoped = cacheSamples.Methods[nameof(CacheSamples.GetScoped)];
-            var getApplication = cacheSamples.Methods[nameof(CacheSamples.GetApplication)];
-
-            return ReportPage("cache", PageTitle("Cache", options: pt => pt.Description = l("Showcases the cache behavior")),
-                options: rp =>
-                {
-                    rp.QueryParameters.Add(
-                        EnumSelectParameter(initializer.Parameters["parameter"], context.Drill("Parameters", "Parameter"),
-                            requireLocalization: false
-                        )
-                    );
-                    rp.Tabs.Add(
-                        ReportPageTab("default",
-                            options: rpt =>
-                            {
-                                rpt.Contents.AddRange(
-                                [
-                                    ReportPageTabContent(
-                                        component: DataPanel(l(getScoped.Name),
-                                            content: MethodString(getScoped, context.Drill("DataPanel", getScoped.Name))
-                                        ),
-                                        options: rptc => rptc.Narrow = true
-                                    ),
-                                    ReportPageTabContent(
-                                        component: DataPanel(l(getApplication.Name),
-                                            content: MethodString(getApplication, context.Drill("DataPanel", getScoped.Name))
-                                        ),
-                                        options: rptc => rptc.Narrow = true
-                                    )
-                                ]);
-                            }
-                        )
-                    );
-                }
-            );
-        };
-
-    public static PageBuilder DataTable(this Page.Describer _) =>
-        context =>
-        {
-            var (domain, l) = context;
-            var dataTable = domain.Types[typeof(DataTable)].GetMembers();
-            var getTableDataWithFooter = dataTable.Methods[nameof(Test.Theme.DataTable.GetTableDataWithFooter)];
-
-            return ReportPage("data-table", PageTitle(l("Data Table Demo")), options: rp =>
-            {
-                rp.Tabs.AddRange(
-                [
-                    ReportPageTab("default", options: rpt =>
-                    {
-                        rpt.Contents.AddRange(
-                        [
-                            ReportPageTabContent(
-                                DataPanel(l("Data Panel"),
-                                    content: TableWithFooterActionDataTable(getTableDataWithFooter, context.Drill("Tabs", "Default", "Contents", 0)),
-                                    options: dp => dp.Parameters.Add(
-                                        EnumSelectParameter(getTableDataWithFooter.DefaultOverload.Parameters["count"], context.Drill("Parameters", "count"),
-                                            requireLocalization: false
-                                        )
-                                    )
-                                )
-                            )
-                        ]);
-                    })
-                ]);
-            });
-        };
 }

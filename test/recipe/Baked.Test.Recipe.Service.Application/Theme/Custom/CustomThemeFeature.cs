@@ -38,14 +38,78 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Baked.Theme.Route>> _ro
                 }
             );
 
-            #region Report Page Overrides
-
-            // TODO move to conventions
-            builder.Conventions.AddTypeComponent(
-                component: (c, cc) => TypeReportPage(c.Type, cc),
-                whenType: c => c.Type.Is<Report>(),
-                whenComponent: cc => cc.Path.Is(nameof(Page))
+            // TODO Move this to admin feature... Why not!
+            builder.Conventions.AddMethodComponent(
+                component: (c, cc) => MethodString(c.Method, cc),
+                whenMethod: c => c.Method.DefaultOverload.ReturnType.Is<string>(),
+                whenComponent: c => c.Path.EndsWith(nameof(Baked.Theme.Admin.DataPanel), nameof(Baked.Theme.Admin.DataPanel.Content))
             );
+
+            // NOTE None localized enums
+            builder.Conventions.AddTypeSchema(
+                schema: (c, cc) => EnumInline(c.Type, cc, requireLocalization: false),
+                whenType: c => c.Type.Is<CacheKey>() || c.Type.Is<RowCount>()
+            );
+
+            #region Cache Samples Page Overrides
+
+            builder.Conventions.AddTypeSchema(
+                schema: (c, cc) => TypeReportPageTab(c.Type, cc, "Default"),
+                whenType: c => c.Type.Is<CacheSamples>()
+            );
+            builder.Conventions.AddParameterComponent(
+                component: (c, cc) => EnumSelect(c.Parameter, cc),
+                whenParameter: c => c.Type.Is<CacheSamples>()
+            );
+            builder.Conventions.AddParameterComponentConvention<Select>(
+                component: (s, c, cc) => s.Schema.LocalizeLabel = null,
+                whenParameter: c => c.Type.Is<CacheSamples>()
+            );
+            builder.Conventions.AddTypeComponentConvention<ReportPage>(
+                component: rp =>
+                {
+                    var defaultTab = rp.Schema.Tabs.Single(t => t.Id == "default");
+                    defaultTab.Contents[0].Narrow = true;
+                    defaultTab.Contents[1].Narrow = true;
+                },
+                whenType: c => c.Type.Is<CacheSamples>()
+            );
+
+            #endregion
+
+            #region Data Table Page Overrides
+
+            // NOTE Tabs
+            builder.Conventions.AddTypeSchema(
+                schema: (c, cc) => TypeReportPageTab(c.Type, cc, "Default"),
+                whenType: c => c.Type.Is<DataTable>()
+            );
+
+            // NOTE DataTable fine tuning
+            builder.Conventions.AddMethodComponentConvention<Baked.Theme.Admin.DataTable>(
+                component: dt =>
+                {
+                    dt.Schema.ScrollHeight = "500px";
+                    dt.Schema.Paginator = null;
+                    dt.Schema.Rows = null;
+                },
+                whenMethod: c => c.Type.Is<DataTable>()
+            );
+            builder.Conventions.AddMethodSchemaConvention<Baked.Theme.Admin.DataTable.Export>(
+                schema: dte =>
+                {
+                    dte.ParameterFormatter = null;
+                    dte.ParameterSeparator = null;
+                },
+                whenMethod: c => c.Type.Is<DataTable>()
+            );
+            builder.Conventions.AddMethodSchema(
+                schema: () => DataTableVirtualScroller(options: dtvs => dtvs.ItemSize = 45),
+                whenMethod: c => c.Type.Is<DataTable>()
+            );
+            #endregion
+
+            #region Report Page Overrides
 
             // NOTE Tabs
             builder.Conventions.AddTypeSchema(
@@ -134,51 +198,6 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Baked.Theme.Route>> _ro
             builder.Conventions.AddMethodSchemaConvention<RemoteData>(
                 schema: rd => rd.Headers = Inline(new { Authorization = "token-admin-ui" }),
                 whenMethod: c => c.Type.Is<Report>()
-            );
-
-            // TODO Move this to admin feature... Why not!
-            builder.Conventions.AddMethodComponent(
-                component: (c, cc) => MethodString(c.Method, cc),
-                whenMethod: c => c.Method.DefaultOverload.ReturnType.Is<string>(),
-                whenComponent: c => c.Path.EndsWith(nameof(Baked.Theme.Admin.DataPanel), nameof(Baked.Theme.Admin.DataPanel.Content))
-            );
-
-            #endregion
-
-            #region Cache Samples Page Overrides
-
-            // TODO move to conventions
-            builder.Conventions.AddTypeComponent(
-                component: (c, cc) => TypeReportPage(c.Type, cc),
-                whenType: c => c.Type.Is<CacheSamples>(),
-                whenComponent: cc => cc.Path.Is(nameof(Page))
-            );
-            builder.Conventions.AddTypeSchema(
-                schema: (c, cc) => TypeReportPageTab(c.Type, cc, "Default"),
-                whenType: c => c.Type.Is<CacheSamples>()
-            );
-            builder.Conventions.AddParameterComponent(
-                component: (c, cc) => EnumSelect(c.Parameter, cc),
-                whenParameter: c => c.Type.Is<CacheSamples>()
-            );
-            builder.Conventions.AddParameterComponentConvention<Select>(
-                component: (s, c, cc) =>
-                {
-                    s.Schema.OptionLabel = null;
-                    s.Schema.OptionValue = null;
-                    s.Schema.LocalizeLabel = null;
-                    s.Data = EnumInline(c.Parameter.ParameterType, cc, requireLocalization: false);
-                },
-                whenParameter: c => c.Type.Is<CacheSamples>()
-            );
-            builder.Conventions.AddTypeComponentConvention<ReportPage>(
-                component: rp =>
-                {
-                    var defaultTab = rp.Schema.Tabs.Single(t => t.Id == "default");
-                    defaultTab.Contents[0].Narrow = true;
-                    defaultTab.Contents[1].Narrow = true;
-                },
-                whenType: c => c.Type.Is<CacheSamples>()
             );
 
             #endregion

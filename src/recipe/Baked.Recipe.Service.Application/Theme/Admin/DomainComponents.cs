@@ -4,7 +4,6 @@ using Baked.Ui;
 using Humanizer;
 
 using static Baked.Theme.Admin.Components;
-using static Baked.Theme.Admin.DomainDatas;
 
 namespace Baked.Theme.Admin;
 
@@ -43,7 +42,7 @@ public static class DomainComponents
 
             if (rpt.Title is null && id != "Default")
             {
-                rpt.Title = l(id.Titleize()); // moved after apply to avoid an unecessary `l` call
+                rpt.Title = l(id.Titleize());
             }
         });
     }
@@ -100,13 +99,19 @@ public static class DomainComponents
     {
         var (_, l) = context;
         var api = parameter.Get<ParameterModelAttribute>();
+        if (!parameter.ParameterType.TryGetMetadata(out var metadata)) { throw new($"{parameter.ParameterType.CSharpFriendlyFullName} cannot be used, its metadata is not present in domain model"); }
 
-        return Select(l(parameter.Name.Titleize()), EnumInline(parameter.ParameterType, context),
+        var data = metadata.GetRequiredSchema<InlineData>(context.Drill(nameof(IComponentDescriptor.Data)));
+
+        return Select(l(parameter.Name.Titleize()), data,
             options: s =>
             {
                 s.ShowClear = api.IsOptional && api.DefaultValue is null ? true : null;
-                s.OptionLabel = "text";
-                s.OptionValue = "value";
+                if (data.RequireLocalization == true)
+                {
+                    s.OptionLabel = "text";
+                    s.OptionValue = "value";
+                }
 
                 options.Apply(s);
             }
@@ -119,13 +124,19 @@ public static class DomainComponents
     {
         var (_, l) = context;
         var api = parameter.Get<ParameterModelAttribute>();
+        if (!parameter.ParameterType.TryGetMetadata(out var metadata)) { throw new($"{parameter.ParameterType.CSharpFriendlyFullName} cannot be used, its metadata is not present in domain model"); }
 
-        return SelectButton(EnumInline(parameter.ParameterType, context),
+        var data = metadata.GetRequiredSchema<InlineData>(context.Drill(nameof(IComponentDescriptor.Data)));
+
+        return SelectButton(data,
             options: sb =>
             {
                 sb.AllowEmpty = api.IsOptional && api.DefaultValue is null ? true : null;
-                sb.OptionLabel = "text";
-                sb.OptionValue = "value";
+                if (data.RequireLocalization == true)
+                {
+                    sb.OptionLabel = "text";
+                    sb.OptionValue = "value";
+                }
 
                 options.Apply(sb);
             }
@@ -159,6 +170,15 @@ public static class DomainComponents
         var (_, l) = context;
 
         return DataTableExport(";", l($"{method.Name}.ExportFileName"), options: options);
+    }
+
+    public static DataTable.Footer MethodDataTableFooter(MethodModel method, ComponentContext context,
+        Action<DataTable.Footer>? options = default
+    )
+    {
+        var (_, l) = context;
+
+        return DataTableFooter(l($"{method.Name}.FooterLabel"), options: options);
     }
 
     public static DataTable.Column PropertyDataTableColumn(PropertyModel property, ComponentContext context,

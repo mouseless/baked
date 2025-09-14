@@ -2,7 +2,8 @@
   "type": "ReportPage",
   "schema": {
     "title": {
-      "title": "Data Table Demo",
+      "title": "Data Table",
+      "description": "Showcase DataTable component with scrollable and footer options",
       "actions": []
     },
     "queryParameters": [],
@@ -16,7 +17,7 @@
               "schema": {
                 "title": {
                   "type": "Inline",
-                  "value": "Data Panel"
+                  "value": "GetTableDataWithFooter"
                 },
                 "localizeTitle": true,
                 "parameters": [
@@ -30,7 +31,8 @@
                     "component": {
                       "type": "Select",
                       "schema": {
-                        "label": "Count"
+                        "label": "Count",
+                        "stateful": true
                       },
                       "data": {
                         "type": "Inline",
@@ -67,7 +69,7 @@
                         "prop": "formatDigits",
                         "component": {
                           "fallback": {
-                            "type": "String",
+                            "type": "Number",
                             "schema": {}
                           },
                           "conditions": []
@@ -98,7 +100,6 @@
                           "conditions": []
                         },
                         "title": "Column 2",
-                        "alignRight": true,
                         "exportable": true
                       },
                       {
@@ -111,14 +112,13 @@
                           "conditions": []
                         },
                         "title": "Column 3",
-                        "alignRight": true,
                         "exportable": true
                       },
                       {
                         "prop": "column4",
                         "component": {
                           "fallback": {
-                            "type": "String",
+                            "type": "Number",
                             "schema": {}
                           },
                           "conditions": []
@@ -131,12 +131,25 @@
                         "prop": "column5",
                         "component": {
                           "fallback": {
-                            "type": "String",
+                            "type": "Rate",
                             "schema": {}
                           },
                           "conditions": []
                         },
                         "title": "Column 5",
+                        "alignRight": true,
+                        "exportable": true
+                      },
+                      {
+                        "prop": "column6",
+                        "component": {
+                          "fallback": {
+                            "type": "Money",
+                            "schema": {}
+                          },
+                          "conditions": []
+                        },
+                        "title": "Column 6",
                         "alignRight": true,
                         "exportable": true
                       }
@@ -150,13 +163,13 @@
                       "appendOnly": true
                     },
                     "footerTemplate": {
-                      "label": "Total",
+                      "label": "GetTableDataWithFooter.FooterLabel",
                       "columns": [
                         {
                           "prop": "footerColumn1",
                           "component": {
                             "fallback": {
-                              "type": "String",
+                              "type": "Number",
                               "schema": {}
                             },
                             "conditions": []
@@ -167,7 +180,18 @@
                           "prop": "footerColumn2",
                           "component": {
                             "fallback": {
-                              "type": "String",
+                              "type": "Rate",
+                              "schema": {}
+                            },
+                            "conditions": []
+                          },
+                          "alignRight": true
+                        },
+                        {
+                          "prop": "footerColumn3",
+                          "component": {
+                            "fallback": {
+                              "type": "Money",
                               "schema": {}
                             },
                             "conditions": []
@@ -178,7 +202,7 @@
                     },
                     "exportOptions": {
                       "csvSeparator": ";",
-                      "fileName": "data-table-export",
+                      "fileName": "GetTableDataWithFooter.ExportFileName",
                       "formatter": "useCsvFormatter",
                       "buttonIcon": "pi pi-download",
                       "buttonLabel": "Export as CSV",

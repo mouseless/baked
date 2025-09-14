@@ -267,7 +267,8 @@
                         },
                         "title": "Label",
                         "minWidth": true,
-                        "exportable": true
+                        "exportable": true,
+                        "frozen": true
                       },
                       {
                         "prop": "column1",
@@ -407,7 +408,8 @@
                           "conditions": []
                         },
                         "title": "Label",
-                        "minWidth": true
+                        "minWidth": true,
+                        "frozen": true
                       },
                       {
                         "prop": "column1",

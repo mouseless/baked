@@ -60,6 +60,7 @@ public static class ThemeExtensions
     {
         if (!type.IsAssignableTo(typeof(Nullable<>))) { return type; }
         if (!type.TryGetGenerics(out var generics)) { throw new InvalidOperationException($"{type.Name} doesn't provide generics information"); }
+        if (type.IsGenericTypeDefinition) { return type; }
 
         return generics.GenericTypeArguments.First().Model;
     }
