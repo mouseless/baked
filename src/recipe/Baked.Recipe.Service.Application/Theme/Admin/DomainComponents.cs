@@ -16,8 +16,8 @@ public static class DomainComponents
     {
         context = context.Drill(nameof(ReportPage));
         var (_, l) = context;
-        var path = type.Name.Kebaberize();
-        var title = PageTitle(l(type.Name), options: pt => pt.Description = l(context.Route.Description));
+        var path = context.Route.Path.Trim('/');
+        var title = PageTitle(l(context.Route.Title), options: pt => pt.Description = l(context.Route.Description));
         var tabs = type.GetSchemas<ReportPage.Tab>(context.Drill(nameof(ReportPage.Tabs)));
 
         return ReportPage(path, title, options: rp =>
@@ -41,7 +41,7 @@ public static class DomainComponents
 
             options.Apply(rpt);
 
-            if (rpt.Title is null)
+            if (rpt.Title is null && id != "Default")
             {
                 rpt.Title = l(id.Titleize()); // moved after apply to avoid an unecessary `l` call
             }
@@ -101,7 +101,7 @@ public static class DomainComponents
         var (_, l) = context;
         var api = parameter.Get<ParameterModelAttribute>();
 
-        return Select(l(parameter.Name.Titleize()), EnumInline(parameter.ParameterType, context.Drill(nameof(IComponentDescriptor.Data))),
+        return Select(l(parameter.Name.Titleize()), EnumInline(parameter.ParameterType, context),
             options: s =>
             {
                 s.ShowClear = api.IsOptional && api.DefaultValue is null ? true : null;
@@ -120,7 +120,7 @@ public static class DomainComponents
         var (_, l) = context;
         var api = parameter.Get<ParameterModelAttribute>();
 
-        return SelectButton(EnumInline(parameter.ParameterType, context.Drill(nameof(IComponentDescriptor.Data))),
+        return SelectButton(EnumInline(parameter.ParameterType, context),
             options: sb =>
             {
                 sb.AllowEmpty = api.IsOptional && api.DefaultValue is null ? true : null;

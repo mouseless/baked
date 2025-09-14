@@ -525,8 +525,8 @@ public static class ThemeExtensions
     {
         if (!metadata.TryGetAll<ContextBasedSchemaAttribute>(out var contextBasedSchemas)) { return default; }
 
-        var contextBasedSchema = contextBasedSchemas.WhereAppliesTo(context).LastOrDefault() ??
-            throw new($"{metadata.CustomAttributes.Name} has no compatible component at path `{context.Path}`");
+        var contextBasedSchema = contextBasedSchemas.WhereAppliesTo(context).LastOrDefault();
+        if (contextBasedSchema is null) { return default; }
 
         var builderType = typeof(ComponentDescriptorBuilderAttribute<>).MakeGenericType(contextBasedSchema.SchemaType);
         if (!metadata.TryGetAll(builderType, out var builders))

@@ -1,10 +1,12 @@
 using Baked.Architecture;
+using Baked.Test.Caching;
 using Baked.Theme;
 using Baked.Theme.Admin;
 using Baked.Ui;
 
 using static Baked.Theme.Admin.Components;
 using static Baked.Theme.Admin.DomainComponents;
+using static Baked.Theme.Admin.DomainDatas;
 using static Baked.Test.Theme.Custom.DomainComponents;
 using static Baked.Test.Theme.Custom.Components;
 using static Baked.Ui.Datas;
@@ -139,6 +141,44 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Baked.Theme.Route>> _ro
                 component: (c, cc) => MethodString(c.Method, cc),
                 whenMethod: c => c.Method.DefaultOverload.ReturnType.Is<string>(),
                 whenComponent: c => c.Path.EndsWith(nameof(Baked.Theme.Admin.DataPanel), nameof(Baked.Theme.Admin.DataPanel.Content))
+            );
+
+            #endregion
+
+            #region Cache Samples Page Overrides
+
+            // TODO move to conventions
+            builder.Conventions.AddTypeComponent(
+                component: (c, cc) => TypeReportPage(c.Type, cc),
+                whenType: c => c.Type.Is<CacheSamples>(),
+                whenComponent: cc => cc.Path.Is(nameof(Page))
+            );
+            builder.Conventions.AddTypeSchema(
+                schema: (c, cc) => TypeReportPageTab(c.Type, cc, "Default"),
+                whenType: c => c.Type.Is<CacheSamples>()
+            );
+            builder.Conventions.AddParameterComponent(
+                component: (c, cc) => EnumSelect(c.Parameter, cc),
+                whenParameter: c => c.Type.Is<CacheSamples>()
+            );
+            builder.Conventions.AddParameterComponentConvention<Select>(
+                component: (s, c, cc) =>
+                {
+                    s.Schema.OptionLabel = null;
+                    s.Schema.OptionValue = null;
+                    s.Schema.LocalizeLabel = null;
+                    s.Data = EnumInline(c.Parameter.ParameterType, cc, requireLocalization: false);
+                },
+                whenParameter: c => c.Type.Is<CacheSamples>()
+            );
+            builder.Conventions.AddTypeComponentConvention<ReportPage>(
+                component: rp =>
+                {
+                    var defaultTab = rp.Schema.Tabs.Single(t => t.Id == "default");
+                    defaultTab.Contents[0].Narrow = true;
+                    defaultTab.Contents[1].Narrow = true;
+                },
+                whenType: c => c.Type.Is<CacheSamples>()
             );
 
             #endregion
