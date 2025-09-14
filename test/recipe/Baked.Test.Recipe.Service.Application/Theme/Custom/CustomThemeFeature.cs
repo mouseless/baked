@@ -56,9 +56,8 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Baked.Theme.Route>> _ro
             builder.Conventions.AddTypeComponentConvention<ReportPage>(
                 component: rp =>
                 {
-                    var defaultTab = rp.Schema.Tabs.Single(t => t.Id == "default");
-                    defaultTab.Contents[0].Narrow = true;
-                    defaultTab.Contents[1].Narrow = true;
+                    rp.Schema.Tabs[0].Contents[0].Narrow = true;
+                    rp.Schema.Tabs[0].Contents[1].Narrow = true;
                 },
                 whenType: c => c.Type.Is<CacheSamples>()
             );
