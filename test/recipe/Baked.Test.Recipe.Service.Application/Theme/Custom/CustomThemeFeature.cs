@@ -38,7 +38,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Baked.Theme.Route>> _ro
                 }
             );
 
-            // Move this to admin feature... Why not!
+            // String api rendering
             builder.Conventions.AddMethodComponent(
                 component: (c, cc) => MethodString(c.Method, cc),
                 whenMethod: c => c.Method.DefaultOverload.ReturnType.Is<string>(),
@@ -53,14 +53,6 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Baked.Theme.Route>> _ro
 
             #region Cache Samples Page Overrides
 
-            builder.Conventions.AddParameterComponent(
-                component: (c, cc) => EnumSelect(c.Parameter, cc),
-                whenParameter: c => c.Type.Is<CacheSamples>()
-            );
-            builder.Conventions.AddParameterComponentConvention<Select>(
-                component: (s, c, cc) => s.Schema.LocalizeLabel = null,
-                whenParameter: c => c.Type.Is<CacheSamples>()
-            );
             builder.Conventions.AddTypeComponentConvention<ReportPage>(
                 component: rp =>
                 {
