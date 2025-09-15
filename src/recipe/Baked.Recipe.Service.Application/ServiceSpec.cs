@@ -1,4 +1,4 @@
-﻿using Baked.Architecture;
+using Baked.Architecture;
 using Baked.Business;
 using Baked.Caching;
 using Baked.Communication;
@@ -91,6 +91,14 @@ public abstract class ServiceSpec : Spec
 
             if (theme is not null)
             {
+                app.Features.AddUx(
+                [
+                    c => c.ActionsAreGroupedAsTabs(),
+                    c => c.ActionsAsDataPanels(),
+                    c => c.InitializerParameterIsInPageTitle(),
+                    c => c.TypeWithOnlyGetIsReportPage()
+                ]);
+
                 app.Features.AddTheme(theme);
             }
 

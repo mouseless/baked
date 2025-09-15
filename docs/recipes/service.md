@@ -72,6 +72,7 @@ Bake.New
 | Mocking Overrider  | :no_entry:                         | :white_check_mark: First Interface |
 | ORM                | :white_check_mark: Auto Map        | :white_check_mark:                 |
 | Theme              | :white_check_mark: (No Default)    | :white_check_mark:                 |
+| UX(s)              | :white_check_mark:                 | :white_check_mark:                 |
 
 > [!NOTE]
 >

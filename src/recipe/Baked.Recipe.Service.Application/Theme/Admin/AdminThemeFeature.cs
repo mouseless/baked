@@ -1,6 +1,4 @@
 ﻿using Baked.Architecture;
-using Baked.Business;
-using Baked.Lifetime;
 using Baked.RestApi.Model;
 using Humanizer;
 
@@ -21,125 +19,32 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            // NOTE Add tab attribute to all actions
-            builder.Conventions.SetMethodMetadata(
-                attribute: _ => new TabAttribute(),
-                when: c => c.Method.Has<ActionModelAttribute>(),
-                order: int.MaxValue - 5
+            builder.Conventions.AddTypeSchema(
+                schema: (c, cc) => EnumInline(c.Type, cc),
+                whenType: c => c.Type.SkipNullable().IsEnum
             );
-
-            // NOTE Types with only `GET` methods are report pages
-            builder.Conventions.AddTypeComponent(
-                component: (c, cc) => TypeReportPage(c.Type, cc),
-                whenType: c =>
-                    c.Type.Has<ControllerModelAttribute>() &&
-                    c.Type.TryGetMembers(out var members) &&
-                    members.Methods.Having<ActionModelAttribute>().All(m => m.GetAction().Method == HttpMethod.Get),
-                whenComponent: cc => cc.Path.Is(nameof(Page))
+            builder.Conventions.AddPropertySchema(
+                schema: (c, cc) => PropertyConditional(c.Property, cc),
+                whenProperty: c => c.Property.IsPublic
             );
-
-            // NOTE Adds `With` parameters as query parameters of the report page
-            builder.Conventions.AddTypeComponentConfiguration<ReportPage>(
-                component: (reportPage, c, cc) =>
-                {
-                    var members = c.Type.GetMembers();
-                    var initializer = members.Methods.Having<InitializerAttribute>().Single();
-
-                    reportPage.Schema.QueryParameters.AddRange(
-                        initializer
-                            .DefaultOverload.Parameters
-                            .Select(p => p.GetRequiredSchema<Parameter>(cc.Drill(nameof(ReportPage), nameof(ReportPage.QueryParameters))))
-                    );
-                },
-                whenType: c => c.Type.Has<TransientAttribute>() && c.Type.HasMembers()
+            builder.Conventions.AddPropertySchema(
+                schema: (c, cc) => PropertyDataTableColumn(c.Property, cc),
+                whenProperty: c => c.Property.IsPublic
             );
-
-            // NOTE Adds tab and contents using `GET` actions
-            builder.Conventions.AddTypeComponentConfiguration<ReportPage>(
-                component: (rp, c, cc) =>
-                {
-                    cc = cc.Drill(nameof(ReportPage.Tabs));
-                    var tabs = new Dictionary<string, ReportPage.Tab>();
-
-                    var members = c.Type.GetMembers();
-                    foreach (var method in members.Methods.Having<ActionModelAttribute>())
-                    {
-                        var action = method.GetAction();
-                        if (action.Method != HttpMethod.Get) { continue; }
-                        if (!method.TryGet<TabAttribute>(out var tab)) { continue; }
-
-                        if (!tabs.TryGetValue(tab.Name, out var t))
-                        {
-                            tabs.Add(tab.Name, t = TypeReportPageTab(c.Type, cc.Drill(tab.Name), tab.Name));
-                        }
-
-                        t.Contents.Add(
-                            method.GetRequiredSchema<ReportPage.Tab.Content>(
-                                cc.Drill(tab.Name, nameof(ReportPage.Tab.Contents), t.Contents.Count)
-                            )
-                        );
-                    }
-
-                    rp.Schema.Tabs.AddRange(tabs.Values);
-                },
-                whenType: c => c.Type.HasMembers()
+            builder.Conventions.AddPropertyComponent(
+                component: () => String(),
+                whenProperty: c => c.Property.IsPublic
             );
-
-            // NOTE Adds tab title for non default tabs
-            builder.Conventions.AddTypeComponentConfiguration<ReportPage>(
-               component: (rp, c, cc) =>
-               {
-                   var (_, l) = cc;
-
-                   foreach (var rpt in rp.Schema.Tabs)
-                   {
-                       if (rpt.Id == "default") { continue; }
-
-                       rpt.Title = l(rpt.Id.Replace("-", "_").Titleize());
-                   }
-               }
-            );
-
-            // NOTE Adds report page tab content schema to actions
-            builder.Conventions.AddMethodSchema(
-                schema: (c, cc) => MethodReportPageTabContent(c.Method, cc),
-                whenMethod: c => c.Method.Has<ActionModelAttribute>()
-            );
-
-            // NOTE Adds add data panel component for actions
-            builder.Conventions.AddMethodComponent(
-                component: (c, cc) => MethodDataPanel(c.Method, cc),
-                whenMethod: c => c.Method.Has<ActionModelAttribute>(),
-                whenComponent: c => c.Path.EndsWith(nameof(ReportPage.Tab.Contents), "*", "*", nameof(ReportPage.Tab.Content.Component))
-            );
-            builder.Conventions.AddMethodSchema(
-                schema: (c, cc) => MethodNameInline(c.Method, cc),
-                whenMethod: c => c.Method.Has<ActionModelAttribute>(),
-                whenComponent: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Title))
-            );
-            builder.Conventions.AddMethodComponentConfiguration<DataPanel>(
-                component: (dp, c, cc) =>
-                {
-                    foreach (var parameter in c.Method.DefaultOverload.Parameters)
-                    {
-                        dp.Schema.Parameters.Add(
-                            parameter.GetRequiredSchema<Parameter>(cc.Drill(nameof(DataPanel), nameof(DataPanel.Parameters)))
-                        );
-                    }
-                }
-            );
-
-            // NOTE Adds remote data schema for method
             builder.Conventions.AddMethodSchema(
                 schema: c => MethodRemote(c.Method),
                 whenMethod: c => c.Method.Has<ActionModelAttribute>()
             );
-
-            // NOTE Adds parameter schema all api parameters
             builder.Conventions.AddParameterSchema(
                 schema: (c, cc) => ParameterParameter(c.Parameter, cc),
                 whenParameter: c => c.Parameter.Has<ParameterModelAttribute>()
             );
+
+            // TODO move to UX
             builder.Conventions.AddParameterSchemaConfiguration<Parameter>(
                 schema: (p, c) =>
                 {
@@ -210,12 +115,6 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
             builder.Conventions.AddParameterComponentConfiguration<SelectButton>(
                 component: sb => sb.Schema.Stateful = true,
                 whenComponent: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Parameters), "*", nameof(Parameter.Component))
-            );
-
-            // NOTE Adds inline data schema for enums
-            builder.Conventions.AddTypeSchema(
-                schema: (c, cc) => EnumInline(c.Type, cc),
-                whenType: c => c.Type.SkipNullable().IsEnum
             );
 
             // NOTE `DataTable` for actions that return list
@@ -323,15 +222,11 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
                     dt.Schema.Paginator = true;
                 }
             );
+
+            // NOTE Adds Export support
             builder.Conventions.AddMethodSchema(
                 schema: (c, cc) => MethodDataTableExport(c.Method, cc),
                 whenMethod: c => c.Method.Has<ComponentDescriptorBuilderAttribute<DataTable>>()
-            );
-
-            // NOTE `DataTable.Column` for public properties
-            builder.Conventions.AddPropertySchema(
-                schema: (c, cc) => PropertyDataTableColumn(c.Property, cc),
-                whenProperty: c => c.Property.IsPublic
             );
             builder.Conventions.AddPropertySchemaConfiguration<DataTable.Column>(
                 schema: (dtc, c, cc) =>
@@ -343,6 +238,8 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
                 },
                 whenComponent: c => !c.Path.Contains(nameof(DataTable), nameof(DataTable.Footer))
             );
+
+            // NOTE Numeric property rendering
             builder.Conventions.AddPropertySchemaConfiguration<DataTable.Column>(
                 schema: dtc => dtc.AlignRight = true,
                 whenProperty: c =>
@@ -352,14 +249,6 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
                         c.Property.PropertyType.SkipNullable().Is<double>() ||
                         c.Property.PropertyType.SkipNullable().Is<decimal>()
                     )
-            );
-            builder.Conventions.AddPropertySchema(
-                schema: (c, cc) => PropertyConditional(c.Property, cc),
-                whenProperty: c => c.Property.IsPublic
-            );
-            builder.Conventions.AddPropertyComponent(
-                component: () => String(),
-                whenProperty: c => c.Property.IsPublic
             );
             builder.Conventions.AddPropertyComponent(
                 component: () => Number(),
@@ -375,6 +264,7 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
             );
 
             // NOTE Label property convention
+            // TODO Use marks
             builder.Conventions.AddPropertySchemaConfiguration<DataTable.Column>(
                 schema: dtc =>
                 {
@@ -384,6 +274,7 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
                 whenProperty: c =>
                     c.Property.PropertyType.Is<string>() &&
                     (
+                        // TODO move to hashset and make this parametric
                         c.Property.Name == "Display" ||
                         c.Property.Name == "Label" ||
                         c.Property.Name == "Name" ||
