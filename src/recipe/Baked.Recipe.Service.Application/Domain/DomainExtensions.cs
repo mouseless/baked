@@ -283,7 +283,7 @@ public static class DomainExtensions
         Func<TAttribute, TypeModelMetadataContext, bool>? when = default,
         int order = default
     ) where TAttribute : Attribute =>
-        conventions.Add(new TypeConvention<TAttribute>(apply, when: when), order: order);
+        conventions.Add(new TypeConfigurationConvention<TAttribute>(apply, when: when), order: order);
 
     public static void AddPropertyConfiguration<TAttribute>(this IDomainModelConventionCollection conventions, Action<TAttribute> apply,
         Func<TAttribute, bool> when, // NOTE this is not optional to avoid ambiguous call when not given
@@ -307,7 +307,7 @@ public static class DomainExtensions
         Func<TAttribute, PropertyModelContext, bool>? when = default,
         int order = default
     ) where TAttribute : Attribute =>
-        conventions.Add(new PropertyConvention<TAttribute>(apply, when: when), order: order);
+        conventions.Add(new PropertyConfigurationConvention<TAttribute>(apply, when: when), order: order);
 
     public static void AddMethodConfiguration<TAttribute>(this IDomainModelConventionCollection conventions, Action<TAttribute> apply,
         Func<TAttribute, bool> when, // NOTE this is not optional to avoid ambiguous call when not given
@@ -331,7 +331,7 @@ public static class DomainExtensions
         Func<TAttribute, MethodModelContext, bool>? when = default,
         int order = default
     ) where TAttribute : Attribute =>
-        conventions.Add(new MethodConvention<TAttribute>(apply, when: when), order: order);
+        conventions.Add(new MethodConfigurationConvention<TAttribute>(apply, when: when), order: order);
 
     public static void AddParameterConfiguration<TAttribute>(this IDomainModelConventionCollection conventions, Action<TAttribute> apply,
         Func<TAttribute, bool> when, // NOTE this is not optional to avoid ambiguous call when not given
@@ -355,7 +355,7 @@ public static class DomainExtensions
         Func<TAttribute, ParameterModelContext, bool>? when = default,
         int order = default
     ) where TAttribute : Attribute =>
-        conventions.Add(new ParameterConvention<TAttribute>(apply, when: when), order: order);
+        conventions.Add(new ParameterConfigurationConvention<TAttribute>(apply, when: when), order: order);
 
     #endregion
 
