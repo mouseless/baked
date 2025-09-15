@@ -95,6 +95,7 @@ public abstract class ServiceSpec : Spec
                 [
                     c => c.ActionsAreGroupedAsTabs(),
                     c => c.ActionsAsDataPanels(),
+                    c => c.EnumParameterIsSelect(),
                     c => c.InitializerParameterIsInPageTitle(),
                     c => c.TypeWithOnlyGetIsReportPage()
                 ]);

@@ -43,8 +43,6 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
                 schema: (c, cc) => ParameterParameter(c.Parameter, cc),
                 whenParameter: c => c.Parameter.Has<ParameterModelAttribute>()
             );
-
-            // TODO move to UX
             builder.Conventions.AddParameterSchemaConfiguration<Parameter>(
                 schema: (p, c) =>
                 {
@@ -54,57 +52,6 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
                     p.DefaultValue = api.DefaultValue;
                 },
                 whenParameter: c => c.Parameter.Has<ParameterModelAttribute>()
-            );
-
-            // NOTE Parameter with an enum that has <=3 members is represented as `SelectButton`
-            builder.Conventions.AddParameterComponent(
-                component: (c, cc) => EnumSelectButton(c.Parameter, cc),
-                whenParameter: c =>
-                    c.Parameter.ParameterType.SkipNullable().IsEnum &&
-                    c.Parameter.ParameterType.SkipNullable().GetEnumNames().Count() <= 3
-            );
-            builder.Conventions.AddParameterComponentConfiguration<SelectButton>(
-                component: (s, c) =>
-                {
-                    var api = c.Parameter.Get<ParameterModelAttribute>();
-
-                    s.Schema.AllowEmpty = api.IsOptional && api.DefaultValue is null ? true : null;
-                    if (s.Data?.RequireLocalization == true)
-                    {
-                        s.Schema.OptionLabel = "label";
-                        s.Schema.OptionValue = "value";
-                    }
-                }
-            );
-
-            // NOTE Parameter with an enum that has >3 members is represented as `Select`
-            builder.Conventions.AddParameterComponent(
-                component: (c, cc) => EnumSelect(c.Parameter, cc),
-                whenParameter: c =>
-                    c.Parameter.ParameterType.SkipNullable().IsEnum &&
-                    c.Parameter.ParameterType.SkipNullable().GetEnumNames().Count() > 3
-            );
-            builder.Conventions.AddParameterComponentConfiguration<Select>(
-                component: (s, c) =>
-                {
-                    var api = c.Parameter.Get<ParameterModelAttribute>();
-
-                    s.Schema.ShowClear = api.IsOptional && api.DefaultValue is null ? true : null;
-                    if (s.Data?.RequireLocalization == true)
-                    {
-                        s.Schema.OptionLabel = "label";
-                        s.Schema.OptionValue = "value";
-                    }
-                }
-            );
-
-            // NOTE Default value of a required enum parameter is set to the first enum member
-            builder.Conventions.AddParameterSchemaConfiguration<Parameter>(
-                schema: (p, c, cc) => p.DefaultValue = c.Parameter.ParameterType.SkipNullable().GetEnumNames().First(),
-                whenParameter: c =>
-                    c.Parameter.ParameterType.SkipNullable().IsEnum &&
-                    c.Parameter.TryGet<ParameterModelAttribute>(out var api) &&
-                    !api.IsOptional
             );
 
             // NOTE `Select` and `SelectButton` of a data panel is stateful

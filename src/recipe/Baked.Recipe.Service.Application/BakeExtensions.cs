@@ -113,6 +113,7 @@ public static class BakeExtensions
                 [
                     c => c.ActionsAreGroupedAsTabs(),
                     c => c.ActionsAsDataPanels(),
+                    c => c.EnumParameterIsSelect(),
                     c => c.InitializerParameterIsInPageTitle(),
                     c => c.TypeWithOnlyGetIsReportPage()
                 ]);
