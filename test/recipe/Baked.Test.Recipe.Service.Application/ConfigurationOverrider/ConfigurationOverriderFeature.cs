@@ -10,8 +10,8 @@ using Baked.Theme;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
 
-using static Baked.Theme.Admin.Components;
 using static Baked.Test.Theme.Custom.DomainComponents;
+using static Baked.Theme.Admin.Components;
 
 using ReportPageC = Baked.Theme.Admin.ReportPage;
 

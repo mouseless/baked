@@ -4,11 +4,11 @@ using Baked.Theme;
 using Baked.Theme.Admin;
 using Baked.Ui;
 
+using static Baked.Test.Theme.Custom.Components;
+using static Baked.Test.Theme.Custom.DomainComponents;
 using static Baked.Theme.Admin.Components;
 using static Baked.Theme.Admin.DomainComponents;
 using static Baked.Theme.Admin.DomainDatas;
-using static Baked.Test.Theme.Custom.DomainComponents;
-using static Baked.Test.Theme.Custom.Components;
 using static Baked.Ui.Datas;
 
 namespace Baked.Test.Theme.Custom;
