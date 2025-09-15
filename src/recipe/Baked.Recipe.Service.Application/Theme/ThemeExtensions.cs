@@ -360,7 +360,7 @@ public static class ThemeExtensions
 
     #endregion
 
-    #region Add Convention
+    #region Add Configuration
 
     public static void AddTypeSchemaConfiguration<TSchema>(this IDomainModelConventionCollection conventions, Action<TSchema> schema,
         Func<TypeModelMetadataContext, bool>? whenType = default,
@@ -549,7 +549,7 @@ public static class ThemeExtensions
             throw new($"{metadata.CustomAttributes.Name} is expected to have a component descriptor builder of type {contextBasedSchema.SchemaType} at path `{context.Path}`");
     }
 
-    #region Add Component
+    #region Add Metadata
 
     public static void AddTypeComponent<TSchema>(this IDomainModelConventionCollection conventions, Func<ComponentDescriptor<TSchema>> component,
         Func<TypeModelMetadataContext, bool>? whenType = default,
@@ -761,7 +761,7 @@ public static class ThemeExtensions
 
     #endregion
 
-    #region Add Convention
+    #region Add Configuration
 
     public static void AddTypeComponentConfiguration<TSchema>(this IDomainModelConventionCollection conventions, Action<ComponentDescriptor<TSchema>> component,
         Func<TypeModelMetadataContext, bool>? whenType = default,
