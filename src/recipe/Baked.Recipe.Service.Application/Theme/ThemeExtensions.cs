@@ -1,4 +1,4 @@
-using Baked.Architecture;
+﻿using Baked.Architecture;
 using Baked.Domain;
 using Baked.Domain.Configuration;
 using Baked.Domain.Model;
@@ -54,15 +54,40 @@ public static class ThemeExtensions
     }
 
     public static IEnumerable<string> GetEnumNames(this TypeModel type) =>
-        [.. type.SkipNullable().Apply(t => Enum.GetNames(t).Select(n => n.TrimStart('_')))];
+        [.. type.Apply(t => Enum.GetNames(t).Select(n => n.TrimStart('_')))];
 
     public static TypeModel SkipNullable(this TypeModel type)
     {
         if (!type.IsAssignableTo(typeof(Nullable<>))) { return type; }
         if (!type.TryGetGenerics(out var generics)) { throw new InvalidOperationException($"{type.Name} doesn't provide generics information"); }
+        if (type.IsGenericTypeDefinition) { return type; }
 
         return generics.GenericTypeArguments.First().Model;
     }
+
+    public static TypeModel SkipTask(this TypeModel typeModel) =>
+        typeModel.IsAssignableTo<Task>() && typeModel.IsGenericType
+            ? typeModel.GetGenerics().GenericTypeArguments.First().Model
+            : typeModel;
+
+    public static bool ReturnsList(this MethodOverloadModel methodOverload) =>
+        methodOverload.ReturnType.SkipTask().IsAssignableTo<IList>();
+
+    public static PageBuilder From<T>(this Page.Generator _) =>
+        context =>
+        {
+            var (domain, l) = context;
+
+            if (!domain.Types[typeof(T)].TryGetMetadata(out var metadata)) { throw new($"{typeof(T).Name} cannot be used as a page source, because its metadata is not included in domain model"); }
+
+            return metadata.GetRequiredComponent(context.Drill(nameof(Page)));
+        };
+
+    public static TComponentSchema As<TComponentSchema>(this IComponentSchema schema) where TComponentSchema : IComponentSchema =>
+        (TComponentSchema)schema;
+
+    public static TData As<TData>(this IData data) where TData : IData =>
+        (TData)data;
 
     public static PageContext APageContext(this Stubber giveMe,
         string? path = default,
@@ -82,14 +107,14 @@ public static class ThemeExtensions
     }
 
     public static ComponentContext AComponentContext(this Stubber giveMe,
-        string? path = default
+        object[]? paths = default
     )
     {
-        path ??= string.Empty;
+        paths ??= [];
 
         return giveMe
             .APageContext()
-            .CreateComponentContext(path);
+            .Drill(paths);
     }
 
     public static IEnumerable<T> WhereAppliesTo<T>(this IEnumerable<T> enumerable, ComponentContext context) =>
@@ -141,6 +166,10 @@ public static class ThemeExtensions
             .Select(b => b.Build(context))
         ];
     }
+
+    public static TSchema GetRequiredSchema<TSchema>(this ICustomAttributesModel metadata, ComponentContext context) =>
+        metadata.GetSchema<TSchema>(context) ??
+        throw new($"`{metadata.CustomAttributes.Name}` doesn't have descriptor for schema type `{typeof(TSchema).Name}` at path `{context.Path}`");
 
     public static TSchema? GetSchema<TSchema>(this ICustomAttributesModel metadata, ComponentContext context)
     {
@@ -495,12 +524,16 @@ public static class ThemeExtensions
 
     #region Component Descriptor Builder & Component
 
-    public static IComponentDescriptor GetComponent(this ICustomAttributesModel metadata, ComponentContext context)
-    {
-        if (!metadata.TryGetAll<ContextBasedSchemaAttribute>(out var contextBasedSchemas)) { throw new($"{metadata.CustomAttributes.Name} doesn't have a component descriptor"); }
+    public static IComponentDescriptor GetRequiredComponent(this ICustomAttributesModel metadata, ComponentContext context) =>
+        metadata.GetComponent(context) ??
+        throw new($"{metadata.CustomAttributes.Name} doesn't have any component descriptor at path `{context.Path}`");
 
-        var contextBasedSchema = contextBasedSchemas.WhereAppliesTo(context).LastOrDefault() ??
-            throw new($"{metadata.CustomAttributes.Name} has no compatible component at component path `{context.Path}`");
+    public static IComponentDescriptor? GetComponent(this ICustomAttributesModel metadata, ComponentContext context)
+    {
+        if (!metadata.TryGetAll<ContextBasedSchemaAttribute>(out var contextBasedSchemas)) { return default; }
+
+        var contextBasedSchema = contextBasedSchemas.WhereAppliesTo(context).LastOrDefault();
+        if (contextBasedSchema is null) { return default; }
 
         var builderType = typeof(ComponentDescriptorBuilderAttribute<>).MakeGenericType(contextBasedSchema.SchemaType);
         if (!metadata.TryGetAll(builderType, out var builders))
@@ -513,7 +546,7 @@ public static class ThemeExtensions
             .WhereAppliesTo(context)
             .LastOrDefault()
             ?.Build(context) ??
-            throw new($"{metadata.CustomAttributes.Name} is expected to have a component descriptor builder of type {contextBasedSchema.SchemaType} at component path `{context.Path}`");
+            throw new($"{metadata.CustomAttributes.Name} is expected to have a component descriptor builder of type {contextBasedSchema.SchemaType} at path `{context.Path}`");
     }
 
     #region Add Component

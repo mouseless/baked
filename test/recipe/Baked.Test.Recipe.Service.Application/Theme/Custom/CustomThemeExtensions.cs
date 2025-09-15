@@ -1,12 +1,7 @@
-using Baked.Business;
 using Baked.Test.Caching;
 using Baked.Test.Theme;
 using Baked.Test.Theme.Custom;
 using Baked.Theme;
-
-using static Baked.Theme.Admin.Components;
-using static Baked.Test.Theme.Custom.DomainComponents;
-using static Baked.Ui.Datas;
 
 namespace Baked;
 
@@ -16,9 +11,9 @@ public static class CustomThemeExtensions
         new(
         [
             r => r.Index() with { Page = p => p.Described(d => d.Menu()) },
-            r => r.Root("/cache", "Cache", "pi pi-database") with { Page = p => p.Described(d => d.Cache()), Description = "Showcases the cache behavior" },
-            r => r.Root("/data-table", "Data Table", "pi pi-table") with { Page = p => p.Described(d => d.DataTable()), Description = "Showcase DataTable component with scrollable and footer options" },
-            r => r.Root("/report", "Report", "pi pi-file") with { Page = p => p.Described(d => d.Report()), Description = "Showcases a report layout with tabs and data panels"},
+            r => r.Root("/cache", "Cache", "pi pi-database") with { Page = p => p.Generated(g => g.From<CacheSamples>()), Description = "Showcases the cache behavior" },
+            r => r.Root("/data-table", "Data Table", "pi pi-table") with { Page = p => p.Generated(d => d.From<DataTable>()), Description = "Showcase DataTable component with scrollable and footer options" },
+            r => r.Root("/report", "Report", "pi pi-file") with { Page = p => p.Generated(g => g.From<Report>()), Description = "Showcases a report layout with tabs and data panels"},
             r => r.Root("/specs", "Specs", "pi pi-list-check") with { Page = p => p.Described(d => d.Menu()), Description = "All UI Specs are listed here" },
 
             // Behavior
@@ -61,173 +56,4 @@ public static class CustomThemeExtensions
             r => r.Child("/specs/locale", "Locale", "/specs") with { Icon = "pi pi-microchip", Description = "Allow locale customization and language support", Section = "Plugins" },
             r => r.Child("/specs/error-handling", "Error Handling", "/specs") with { Icon = "pi pi-microchip", Description = "Handling errors", Section = "Plugins" },
         ]);
-
-    public static PageBuilder Cache(this Page.Describer _) =>
-        context =>
-        {
-            var (domain, l) = context;
-            var headers = Inline(new { Authorization = "token-admin-ui" });
-
-            var cacheSamples = domain.Types[typeof(CacheSamples)].GetMembers();
-            var initializer = cacheSamples.Methods.Having<InitializerAttribute>().First().DefaultOverload;
-            var getScoped = cacheSamples.Methods[nameof(CacheSamples.GetScoped)];
-            var getApplication = cacheSamples.Methods[nameof(CacheSamples.GetApplication)];
-
-            return ReportPage("cache", PageTitle("Cache", options: pt => pt.Description = l("Showcases the cache behavior")),
-                options: rp =>
-                {
-                    rp.QueryParameters.Add(
-                        EnumSelectParameter(initializer.Parameters["parameter"], context.CreateComponentContext("/parameters/parameter"),
-                            requireLocalization: false
-                        )
-                    );
-                    rp.Tabs.Add(
-                        ReportPageTab("default",
-                            options: rpt =>
-                            {
-                                rpt.Contents.AddRange(
-                                [
-                                    ReportPageTabContent(
-                                        component: DataPanel(l(getScoped.Name),
-                                            content: ActionString(getScoped)
-                                        ),
-                                        options: rptc => rptc.Narrow = true
-                                    ),
-                                    ReportPageTabContent(
-                                        component: DataPanel(l(getApplication.Name),
-                                            content: ActionString(getApplication)
-                                        ),
-                                        options: rptc => rptc.Narrow = true
-                                    )
-                                ]);
-                            }
-                        )
-                    );
-                }
-            );
-        };
-
-    public static PageBuilder DataTable(this Page.Describer _) =>
-        context =>
-        {
-            var (domain, l) = context;
-            var dataTable = domain.Types[typeof(DataTable)].GetMembers();
-            var getTableDataWithFooter = dataTable.Methods[nameof(Test.Theme.DataTable.GetTableDataWithFooter)];
-
-            return ReportPage("data-table", PageTitle(l("Data Table Demo")), options: rp =>
-            {
-                rp.Tabs.AddRange(
-                [
-                    ReportPageTab("default", options: rpt =>
-                    {
-                        rpt.Contents.AddRange(
-                        [
-                            ReportPageTabContent(
-                                DataPanel(l("Data Panel"),
-                                    content: TableWithFooterActionDataTable(getTableDataWithFooter, context.CreateComponentContext("/tabs/default/contents/0")),
-                                    options: dp => dp.Parameters.Add(
-                                        EnumSelectParameter(getTableDataWithFooter.DefaultOverload.Parameters["count"], context.CreateComponentContext("/parameters/count"),
-                                            requireLocalization: false
-                                        )
-                                    )
-                                )
-                            )
-                        ]);
-                    })
-                ]);
-            });
-        };
-
-    public static PageBuilder Report(this Page.Describer _) =>
-        context =>
-        {
-            var (domain, l) = context;
-            var headers = Inline(new { Authorization = "token-admin-ui" });
-
-            var report = domain.Types[typeof(Report)].GetMembers();
-            var initializer = report.Methods.Having<InitializerAttribute>().First().DefaultOverload;
-            var wide = report.Methods[nameof(Test.Theme.Report.GetWide)];
-            var left = report.Methods[nameof(Test.Theme.Report.GetLeft)];
-            var right = report.Methods[nameof(Test.Theme.Report.GetRight)];
-            var first = report.Methods[nameof(Test.Theme.Report.GetFirst)];
-            var second = report.Methods[nameof(Test.Theme.Report.GetSecond)];
-
-            return ReportPage("report", PageTitle(l("Report"), options: pt => pt.Description = l("Showcases a report layout with tabs and data panels")), options: rp =>
-            {
-                rp.QueryParameters.AddRange(
-                [
-                    EnumSelectParameter(initializer.Parameters["requiredWithDefault"], context.CreateComponentContext("/parameters/requiredWithDefault")),
-                    EnumSelectParameter(initializer.Parameters["required"], context.CreateComponentContext("/parameters/required"), options: p => p.Default = null),
-                    EnumSelectButtonParameter(initializer.Parameters["optional"], context.CreateComponentContext("/parameters/optional"))
-                ]);
-                rp.Tabs.AddRange(
-                [
-                    ReportPageTab("single-value", options: rpt =>
-                    {
-                        rpt.Title = l("Single Value");
-                        rpt.Icon = Icon("pi-box");
-                        rpt.Contents.AddRange(
-                        [
-                            ReportPageTabContent(
-                                component: DataPanel(l(wide.Name),
-                                    content: ActionString(wide, dataOptions: rd => rd.Headers = headers),
-                                    options: dp => dp.Collapsed = false
-                                )
-                            ),
-                            ReportPageTabContent(
-                                component: DataPanel(l(left.Name),
-                                    content: ActionString(left, dataOptions: rd => rd.Headers = headers),
-                                    options: dp => dp.Collapsed = true
-                                ),
-                                options: rptc => rptc.Narrow = true
-                            ),
-                            ReportPageTabContent(
-                                component: DataPanel(l(right.Name),
-                                    content: ActionString(right, dataOptions: rd => rd.Headers = headers),
-                                    options: dp => dp.Collapsed = true
-                                ),
-                                options: rptc => rptc.Narrow = true
-                            )
-                        ]);
-                    }),
-                    ReportPageTab("data-table", options: rpt =>
-                    {
-                        rpt.Title = l("Data Table");
-                        rpt.Icon = Icon("pi-table");
-                        rpt.Contents.AddRange(
-                        [
-                            ReportPageTabContent(
-                                component: DataPanel(l(first.Name),
-                                    content: ReportRowListActionDataTable(first, context.CreateComponentContext("/tabs/data-table/contents/0/content"),
-                                        dataOptions: rd => rd.Headers = headers
-                                    ),
-                                    options: dp => dp.Parameters.Add(
-                                        EnumSelectParameter(first.DefaultOverload.Parameters["count"], context.CreateComponentContext("/tabs/data-table/contents/0/parameters/count"),
-                                            selectOptions: s => s.ShowClear = null
-                                        )
-                                    )
-                                )
-                            ),
-                            ReportPageTabContent(
-                                component: DataPanel(l(second.Name),
-                                    content: ReportRowListActionDataTable(second, context.CreateComponentContext("/tabs/data-table/contents/1/content"),
-                                        exportable: false,
-                                        dataOptions: rd => rd.Headers = headers
-                                    ),
-                                    options: dp =>
-                                    {
-                                        dp.Parameters.Add(
-                                            EnumSelectButtonParameter(second.DefaultOverload.Parameters["count"], context.CreateComponentContext("/tabs/data-table/contents/1/parameters/count"),
-                                                selectButtonOptions: sb => sb.AllowEmpty = null
-                                            )
-                                        );
-                                        dp.Collapsed = true;
-                                    }
-                                )
-                            )
-                        ]);
-                    })
-                ]);
-            });
-        };
 }

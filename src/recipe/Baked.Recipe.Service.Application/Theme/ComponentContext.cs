@@ -1,9 +1,9 @@
-namespace Baked.Theme;
+﻿namespace Baked.Theme;
 
 public record ComponentContext : PageContext
 {
-    public required string Path { get; init; }
+    public required ComponentPath Path { get; init; }
 
-    public override ComponentContext CreateComponentContext(string path) =>
-        this with { Path = $"{Path}{path}" };
+    public override ComponentContext Drill(params object[] paths) =>
+        this with { Path = Path.Drill(paths) };
 }

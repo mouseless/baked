@@ -15,10 +15,8 @@
           "value": "value_a"
         },
         "component": {
-          "type": "Select",
-          "schema": {
-            "label": "Parameter"
-          },
+          "type": "SelectButton",
+          "schema": {},
           "data": {
             "type": "Inline",
             "value": [
