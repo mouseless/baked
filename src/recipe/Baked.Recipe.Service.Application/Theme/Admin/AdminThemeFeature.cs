@@ -86,33 +86,6 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
                 schema: (c, cc) => PropertyConditional(c.Property, cc),
                 whenProperty: c => c.Property.IsPublic
             );
-
-            // NOTE Label property convention
-            // TODO Use marks
-            builder.Conventions.AddPropertySchemaConfiguration<DataTable.Column>(
-                schema: dtc =>
-                {
-                    dtc.MinWidth = true;
-                    dtc.Frozen = true;
-                },
-                whenProperty: c =>
-                    c.Property.PropertyType.Is<string>() &&
-                    (
-                        // TODO move to hashset and make this parametric
-                        c.Property.Name == "Display" ||
-                        c.Property.Name == "Label" ||
-                        c.Property.Name == "Name" ||
-                        c.Property.Name == "Title"
-                    )
-            );
-            builder.Conventions.AddMethodComponentConfiguration<DataTable>(
-                component: dt =>
-                {
-                    if (dt.Schema.DataKey is not null) { return; }
-
-                    dt.Schema.DataKey = dt.Schema.Columns.FirstOrDefault(c => c.MinWidth == true)?.Prop;
-                }
-            );
         });
 
         configurator.ConfigureComponentExports(exports =>
