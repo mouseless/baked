@@ -1,0 +1,91 @@
+using Baked.Architecture;
+using Baked.RestApi.Model;
+using Baked.Theme.Admin;
+using Humanizer;
+
+using static Baked.Theme.Admin.DomainComponents;
+
+namespace Baked.Ux.DataTableVisualizesObjectWithList;
+
+public class DataTableVisualizesObjectWithListUxFeature : IFeature<UxConfigurator>
+{
+    public void Configure(LayerConfigurator configurator)
+    {
+        configurator.ConfigureDomainModelBuilder(builder =>
+        {
+            builder.Conventions.SetTypeMetadata(
+                attribute: c => new ObjectWithListAttribute(c.Type.GetMembers().Properties.Single(p => p.PropertyType.IsAssignableTo<IEnumerable>()).Name),
+                when: c =>
+                    c.Type.TryGetMembers(out var members) &&
+                    members.Properties.Count(p => p.IsPublic && p.PropertyType.IsAssignableTo<IEnumerable>()) == 1
+            );
+
+            builder.Conventions.AddMethodComponent(
+                component: (c, cc) => MethodDataTable(c.Method, cc, options: dt =>
+                {
+                    dt.ItemsProp = c.Method.DefaultOverload
+                        .ReturnType.SkipTask()
+                        .GetMetadata()
+                        .Get<ObjectWithListAttribute>()
+                        .ListPropertyName
+                        .Camelize();
+                }),
+                whenMethod: c =>
+                    c.Method.Has<ActionModelAttribute>() &&
+                    c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMetadata(out var returnMetadata) &&
+                    returnMetadata.Has<ObjectWithListAttribute>(),
+                whenComponent: c => c.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content))
+            );
+
+            builder.Conventions.AddMethodComponentConfiguration<DataTable>(
+                component: (dt, c, cc) =>
+                {
+                    var returnMembers = c.Method.DefaultOverload.ReturnType.SkipTask().GetMembers();
+                    var listPropertyName = returnMembers.Get<ObjectWithListAttribute>().ListPropertyName;
+                    var elementType = returnMembers.Properties[listPropertyName].PropertyType.GetElementType();
+
+                    var members = elementType.GetMembers();
+                    foreach (var property in members.Properties.Where(p => p.IsPublic))
+                    {
+                        var column = property.GetSchema<DataTable.Column>(cc.Drill(nameof(DataTable.Columns)));
+                        if (column is null) { continue; }
+
+                        dt.Schema.Columns.Add(column);
+                    }
+                },
+                whenMethod: c =>
+                    c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMembers(out var returnMembers) &&
+                    returnMembers.Has<ObjectWithListAttribute>() &&
+                    returnMembers
+                        .Properties[returnMembers.Get<ObjectWithListAttribute>().ListPropertyName]
+                        .PropertyType.TryGetElementType(out var elementType) &&
+                    elementType.HasMembers()
+            );
+
+            builder.Conventions.AddMethodSchema(
+                schema: (c, cc) => MethodDataTableFooter(c.Method, cc),
+                whenMethod: c =>
+                    c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMetadata(out var returnMetadata) &&
+                    returnMetadata.Has<ObjectWithListAttribute>()
+            );
+            builder.Conventions.AddMethodSchemaConfiguration<DataTable.Footer>(
+                schema: (dtf, c, cc) =>
+                {
+                    var returnMembers = c.Method.DefaultOverload.ReturnType.SkipTask().GetMembers();
+                    var listPropertyName = returnMembers.Get<ObjectWithListAttribute>().ListPropertyName;
+
+                    foreach (var property in returnMembers.Properties.Where(p => p.IsPublic && p.Name != listPropertyName))
+                    {
+                        var column = property.GetSchema<DataTable.Column>(cc.Drill(nameof(DataTable.Columns)));
+                        if (column is null) { continue; }
+
+                        dtf.Columns.Add(column);
+                    }
+                },
+                whenMethod: c =>
+                    c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMembers(out var returnMembers) &&
+                    returnMembers.Has<ObjectWithListAttribute>()
+            );
+        });
+    }
+}
