@@ -117,6 +117,7 @@ public static class BakeExtensions
                     c => c.DataTableVisualizesObjectWithList(),
                     c => c.EnumParameterIsSelect(),
                     c => c.InitializerParametersAreInPageTitle(),
+                    c => c.NumericValuesAreFormatted(),
                     c => c.PanelParametersAreStateful(),
                     c => c.TypeWithOnlyGetIsReportPage()
                 ]);

@@ -19,26 +19,29 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
+            // Enum Data
             builder.Conventions.AddTypeSchema(
                 schema: (c, cc) => EnumInline(c.Type, cc),
                 whenType: c => c.Type.SkipNullable().IsEnum
             );
-            builder.Conventions.AddPropertySchema(
-                schema: (c, cc) => PropertyConditional(c.Property, cc),
-                whenProperty: c => c.Property.IsPublic
-            );
-            builder.Conventions.AddPropertySchema(
-                schema: (c, cc) => PropertyDataTableColumn(c.Property, cc),
-                whenProperty: c => c.Property.IsPublic
+
+            // Property Defaults
+            builder.Conventions.AddPropertyComponent(
+                component: () => None(),
+                order: -10
             );
             builder.Conventions.AddPropertyComponent(
                 component: () => String(),
-                whenProperty: c => c.Property.IsPublic
+                whenProperty: c => c.Property.PropertyType.Is<string>() || c.Property.PropertyType.Is<Guid>()
             );
+
+            // Method Data
             builder.Conventions.AddMethodSchema(
                 schema: c => MethodRemote(c.Method),
                 whenMethod: c => c.Method.Has<ActionModelAttribute>()
             );
+
+            // Parameter Defaults
             builder.Conventions.AddParameterSchema(
                 schema: (c, cc) => ParameterParameter(c.Parameter, cc),
                 whenParameter: c => c.Parameter.Has<ParameterModelAttribute>()
@@ -53,6 +56,8 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
                 },
                 whenParameter: c => c.Parameter.Has<ParameterModelAttribute>()
             );
+
+            // `DataTable` defaults
             builder.Conventions.AddMethodComponentConfiguration<DataTable>(
                 component: dt =>
                 {
@@ -60,11 +65,13 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
                     dt.Schema.Paginator = true;
                 }
             );
-
-            // NOTE Adds Export support
             builder.Conventions.AddMethodSchema(
                 schema: (c, cc) => MethodDataTableExport(c.Method, cc),
                 whenMethod: c => c.Method.Has<ComponentDescriptorBuilderAttribute<DataTable>>()
+            );
+            builder.Conventions.AddPropertySchema(
+                schema: (c, cc) => PropertyDataTableColumn(c.Property, cc),
+                whenProperty: c => c.Property.IsPublic
             );
             builder.Conventions.AddPropertySchemaConfiguration<DataTable.Column>(
                 schema: (dtc, c, cc) =>
@@ -73,32 +80,11 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
 
                     dtc.Title = l(c.Property.Name.Titleize());
                     dtc.Exportable = true;
-                },
-                whenComponent: c => !c.Path.Contains(nameof(DataTable), nameof(DataTable.Footer))
+                }
             );
-
-            // NOTE Numeric property rendering
-            builder.Conventions.AddPropertySchemaConfiguration<DataTable.Column>(
-                schema: dtc => dtc.AlignRight = true,
-                whenProperty: c =>
-                    c.Property.IsPublic &&
-                    (
-                        c.Property.PropertyType.SkipNullable().Is<int>() ||
-                        c.Property.PropertyType.SkipNullable().Is<double>() ||
-                        c.Property.PropertyType.SkipNullable().Is<decimal>()
-                    )
-            );
-            builder.Conventions.AddPropertyComponent(
-                component: () => Number(),
-                whenProperty: c => c.Property.IsPublic && c.Property.PropertyType.SkipNullable().Is<int>()
-            );
-            builder.Conventions.AddPropertyComponent(
-                component: () => Money(),
-                whenProperty: c => c.Property.IsPublic && c.Property.PropertyType.SkipNullable().Is<decimal>()
-            );
-            builder.Conventions.AddPropertyComponent(
-                component: () => Rate(),
-                whenProperty: c => c.Property.IsPublic && c.Property.PropertyType.SkipNullable().Is<double>()
+            builder.Conventions.AddPropertySchema(
+                schema: (c, cc) => PropertyConditional(c.Property, cc),
+                whenProperty: c => c.Property.IsPublic
             );
 
             // NOTE Label property convention

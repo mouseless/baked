@@ -99,6 +99,7 @@ public abstract class ServiceSpec : Spec
                     c => c.DataTableVisualizesObjectWithList(),
                     c => c.EnumParameterIsSelect(),
                     c => c.InitializerParametersAreInPageTitle(),
+                    c => c.NumericValuesAreFormatted(),
                     c => c.PanelParametersAreStateful(),
                     c => c.TypeWithOnlyGetIsReportPage()
                 ]);

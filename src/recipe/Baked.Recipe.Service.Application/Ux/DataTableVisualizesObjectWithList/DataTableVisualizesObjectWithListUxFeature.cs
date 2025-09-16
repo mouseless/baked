@@ -86,6 +86,15 @@ public class DataTableVisualizesObjectWithListUxFeature : IFeature<UxConfigurato
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMembers(out var returnMembers) &&
                     returnMembers.Has<ObjectWithListAttribute>()
             );
+            builder.Conventions.AddPropertySchemaConfiguration<DataTable.Column>(
+                schema: dtc =>
+                {
+                    dtc.Title = null;
+                    dtc.Exportable = null;
+                },
+                whenComponent: c => c.Path.Contains(nameof(DataTable), nameof(DataTable.Footer)),
+                order: 10
+            );
         });
     }
 }
