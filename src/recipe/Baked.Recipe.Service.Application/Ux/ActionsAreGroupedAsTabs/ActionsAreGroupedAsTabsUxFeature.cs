@@ -1,4 +1,4 @@
-using Baked.Architecture;
+﻿using Baked.Architecture;
 using Baked.Theme.Admin;
 using Humanizer;
 
@@ -19,20 +19,20 @@ public class ActionsAreGroupedAsTabsUxFeature : IFeature<UxConfigurator>
                     var tabs = new Dictionary<string, ReportPage.Tab>();
 
                     var members = c.Type.GetMembers();
-                    foreach (var method in members.Methods.Having<TabAttribute>())
+                    foreach (var method in members.Methods.Having<TabNameAttribute>())
                     {
-                        var tab = method.Get<TabAttribute>();
+                        var tabName = method.Get<TabNameAttribute>();
                         var action = method.GetAction();
                         if (action.Method != HttpMethod.Get) { continue; }
 
-                        if (!tabs.TryGetValue(tab.Name, out var t))
+                        if (!tabs.TryGetValue(tabName.Value, out var t))
                         {
-                            tabs.Add(tab.Name, t = TypeReportPageTab(c.Type, cc.Drill(tab.Name), tab.Name));
+                            tabs.Add(tabName.Value, t = TypeReportPageTab(c.Type, cc, tabName.Value));
                         }
 
                         t.Contents.Add(
                             method.GetRequiredSchema<ReportPage.Tab.Content>(
-                                cc.Drill(tab.Name, nameof(ReportPage.Tab.Contents), t.Contents.Count)
+                                cc.Drill(tabName.Value, nameof(ReportPage.Tab.Contents), t.Contents.Count)
                             )
                         );
                     }

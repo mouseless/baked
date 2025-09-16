@@ -94,12 +94,12 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Baked.Theme.Route>> _ro
             #region Report Page Overrides
 
             // Tabs
-            builder.Conventions.AddMethodMetadataConfiguration<TabAttribute>(
-                apply: (tab, c) => tab.Name = "SingleValue",
+            builder.Conventions.AddMethodMetadataConfiguration<TabNameAttribute>(
+                apply: (tabName, c) => tabName.Value = "SingleValue",
                 when: (_, c) => c.Type.Is<Report>() && c.Method.DefaultOverload.ReturnType.SkipTask().Is<string>()
             );
-            builder.Conventions.AddMethodMetadataConfiguration<TabAttribute>(
-                apply: (tab, c) => tab.Name = "DataTable",
+            builder.Conventions.AddMethodMetadataConfiguration<TabNameAttribute>(
+                apply: (tabName, c) => tabName.Value = "DataTable",
                 when: (_, c) => c.Type.Is<Report>() && c.Method.DefaultOverload.ReturnsList()
             );
             builder.Conventions.AddTypeComponent(

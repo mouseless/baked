@@ -36,9 +36,9 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
             );
 
             // Method Defaults
-            builder.Index.Method.Add<TabAttribute>();
+            builder.Index.Method.Add<TabNameAttribute>();
             builder.Conventions.SetMethodMetadata(
-                attribute: _ => new TabAttribute(),
+                attribute: _ => new TabNameAttribute(),
                 when: c => c.Method.Has<ActionModelAttribute>(),
                 order: int.MaxValue - 5 // TODO fix this hacky order
             );
