@@ -1,8 +1,8 @@
 # UX
 
-User eXperience (UX) features are set of component and schema conventions that
-adds a specific behavior to curent theme feature. Add instances of this feature
-using `AddUx()` extension;
+User eXperience (UX) features are sets of component and schema conventions that
+add specific behavior to the current theme feature. Add instances of these
+features using the `AddUx()` extension;
 
 ```csharp
 app.Features.AddUx([...]);
