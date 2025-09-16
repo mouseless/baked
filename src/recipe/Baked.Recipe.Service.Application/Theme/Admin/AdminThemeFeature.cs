@@ -19,13 +19,13 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            // Enum Data
-            builder.Conventions.AddTypeSchema(
-                schema: (c, cc) => EnumInline(c.Type, cc),
-                whenType: c => c.Type.SkipNullable().IsEnum
-            );
-
             // Property Defaults
+            builder.Index.Property.Add<DataAttribute>();
+            builder.Conventions.SetPropertyMetadata(
+                attribute: c => new DataAttribute(c.Property.Name.Camelize()) { Label = c.Property.Name.Titleize() },
+                when: c => c.Property.IsPublic,
+                order: -10
+            );
             builder.Conventions.AddPropertyComponent(
                 component: () => None(),
                 order: -10
@@ -35,7 +35,13 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
                 whenProperty: c => c.Property.PropertyType.Is<string>() || c.Property.PropertyType.Is<Guid>()
             );
 
-            // Method Data
+            // Method Defaults
+            builder.Index.Method.Add<TabAttribute>();
+            builder.Conventions.SetMethodMetadata(
+                attribute: _ => new TabAttribute(),
+                when: c => c.Method.Has<ActionModelAttribute>(),
+                order: int.MaxValue - 5 // TODO fix this hacky order
+            );
             builder.Conventions.AddMethodSchema(
                 schema: c => MethodRemote(c.Method),
                 whenMethod: c => c.Method.Has<ActionModelAttribute>()
@@ -57,6 +63,12 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
                 whenParameter: c => c.Parameter.Has<ParameterModelAttribute>()
             );
 
+            // Enum Data
+            builder.Conventions.AddTypeSchema(
+                schema: (c, cc) => EnumInline(c.Type, cc),
+                whenType: c => c.Type.SkipNullable().IsEnum
+            );
+
             // `DataTable` defaults
             builder.Conventions.AddMethodComponentConfiguration<DataTable>(
                 component: dt =>
@@ -71,20 +83,21 @@ public class AdminThemeFeature(IEnumerable<Route> _routes,
             );
             builder.Conventions.AddPropertySchema(
                 schema: (c, cc) => PropertyDataTableColumn(c.Property, cc),
-                whenProperty: c => c.Property.IsPublic
+                whenProperty: c => c.Property.Has<DataAttribute>()
             );
             builder.Conventions.AddPropertySchemaConfiguration<DataTable.Column>(
                 schema: (dtc, c, cc) =>
                 {
                     var (_, l) = cc;
+                    var data = c.Property.Get<DataAttribute>();
 
-                    dtc.Title = l(c.Property.Name.Titleize());
+                    dtc.Title = data.Label is not null ? l(data.Label) : null;
                     dtc.Exportable = true;
                 }
             );
             builder.Conventions.AddPropertySchema(
                 schema: (c, cc) => PropertyConditional(c.Property, cc),
-                whenProperty: c => c.Property.IsPublic
+                whenProperty: c => c.Property.Has<DataAttribute>()
             );
         });
 

@@ -22,7 +22,7 @@ public class DataTableVisualizesListUxFeature : IFeature<UxConfigurator>
                 component: (dt, c, cc) =>
                 {
                     var members = c.Method.DefaultOverload.ReturnType.SkipTask().GetElementType().GetMembers();
-                    foreach (var property in members.Properties.Where(p => p.IsPublic))
+                    foreach (var property in members.Properties.GetDataProperties())
                     {
                         var column = property.GetSchema<DataTable.Column>(cc.Drill(nameof(DataTable.Columns)));
                         if (column is null) { continue; }

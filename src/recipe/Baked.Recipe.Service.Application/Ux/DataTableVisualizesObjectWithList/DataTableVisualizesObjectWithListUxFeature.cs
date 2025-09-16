@@ -14,10 +14,22 @@ public class DataTableVisualizesObjectWithListUxFeature : IFeature<UxConfigurato
         configurator.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.SetTypeMetadata(
-                attribute: c => new ObjectWithListAttribute(c.Type.GetMembers().Properties.Single(p => p.PropertyType.IsAssignableTo<IEnumerable>()).Name),
+                attribute: c => new ObjectWithListAttribute(
+                    c.Type.GetMembers().Properties
+                        .First(p =>
+                            p.TryGet<DataAttribute>(out var data) &&
+                            data.Visible &&
+                            !p.PropertyType.Is<string>() &&
+                            p.PropertyType.IsAssignableTo<IEnumerable>()).Name
+                ),
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
-                    members.Properties.Count(p => p.IsPublic && p.PropertyType.IsAssignableTo<IEnumerable>()) == 1
+                    members.Properties.Any(p =>
+                        p.TryGet<DataAttribute>(out var data) &&
+                        data.Visible &&
+                        !p.PropertyType.Is<string>() &&
+                        p.PropertyType.IsAssignableTo<IEnumerable>()
+                    )
             );
 
             builder.Conventions.AddMethodComponent(
@@ -45,7 +57,7 @@ public class DataTableVisualizesObjectWithListUxFeature : IFeature<UxConfigurato
                     var elementType = returnMembers.Properties[listPropertyName].PropertyType.GetElementType();
 
                     var members = elementType.GetMembers();
-                    foreach (var property in members.Properties.Where(p => p.IsPublic))
+                    foreach (var property in members.Properties.GetDataProperties())
                     {
                         var column = property.GetSchema<DataTable.Column>(cc.Drill(nameof(DataTable.Columns)));
                         if (column is null) { continue; }
@@ -74,8 +86,12 @@ public class DataTableVisualizesObjectWithListUxFeature : IFeature<UxConfigurato
                     var returnMembers = c.Method.DefaultOverload.ReturnType.SkipTask().GetMembers();
                     var listPropertyName = returnMembers.Get<ObjectWithListAttribute>().ListPropertyName;
 
-                    foreach (var property in returnMembers.Properties.Where(p => p.IsPublic && p.Name != listPropertyName))
+                    foreach (var property in returnMembers.Properties.GetDataProperties())
                     {
+                        if (property.Name == listPropertyName) { continue; }
+
+                        property.Get<DataAttribute>().Label = null;
+
                         var column = property.GetSchema<DataTable.Column>(cc.Drill(nameof(DataTable.Columns)));
                         if (column is null) { continue; }
 

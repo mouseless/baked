@@ -14,12 +14,9 @@ public class NumericValuesAreFormattedUxFeature : IFeature<UxConfigurator>
             builder.Conventions.AddPropertySchemaConfiguration<DataTable.Column>(
                 schema: dtc => dtc.AlignRight = true,
                 whenProperty: c =>
-                    c.Property.IsPublic &&
-                    (
-                        c.Property.PropertyType.SkipNullable().Is<int>() ||
-                        c.Property.PropertyType.SkipNullable().Is<double>() ||
-                        c.Property.PropertyType.SkipNullable().Is<decimal>()
-                    )
+                    c.Property.PropertyType.SkipNullable().Is<int>() ||
+                    c.Property.PropertyType.SkipNullable().Is<double>() ||
+                    c.Property.PropertyType.SkipNullable().Is<decimal>()
             );
             builder.Conventions.AddPropertyComponent(
                 component: () => Number(),

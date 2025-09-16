@@ -1,6 +1,4 @@
 using Baked.Architecture;
-using Baked.RestApi.Model;
-using Baked.Theme;
 using Baked.Theme.Admin;
 using Humanizer;
 
@@ -14,11 +12,6 @@ public class ActionsAreGroupedAsTabsUxFeature : IFeature<UxConfigurator>
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Conventions.SetMethodMetadata(
-                attribute: _ => new TabAttribute(),
-                when: c => c.Method.Has<ActionModelAttribute>(),
-                order: int.MaxValue - 5
-            );
             builder.Conventions.AddTypeComponentConfiguration<ReportPage>(
                 component: (rp, c, cc) =>
                 {
@@ -26,11 +19,11 @@ public class ActionsAreGroupedAsTabsUxFeature : IFeature<UxConfigurator>
                     var tabs = new Dictionary<string, ReportPage.Tab>();
 
                     var members = c.Type.GetMembers();
-                    foreach (var method in members.Methods.Having<ActionModelAttribute>())
+                    foreach (var method in members.Methods.Having<TabAttribute>())
                     {
+                        var tab = method.Get<TabAttribute>();
                         var action = method.GetAction();
                         if (action.Method != HttpMethod.Get) { continue; }
-                        if (!method.TryGet<TabAttribute>(out var tab)) { continue; }
 
                         if (!tabs.TryGetValue(tab.Name, out var t))
                         {
@@ -60,10 +53,6 @@ public class ActionsAreGroupedAsTabsUxFeature : IFeature<UxConfigurator>
                        rpt.Title = l(rpt.Id.Replace("-", "_").Titleize());
                    }
                }
-            );
-            builder.Conventions.AddMethodSchema(
-                schema: (c, cc) => MethodReportPageTabContent(c.Method, cc),
-                whenMethod: c => c.Method.Has<ActionModelAttribute>()
             );
         });
     }

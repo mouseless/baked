@@ -1,4 +1,5 @@
-﻿using Baked.Theme;
+﻿using Baked.Domain.Model;
+using Baked.Theme;
 using Baked.Theme.Admin;
 using Baked.Ui;
 
@@ -99,4 +100,12 @@ public static class AdminThemeExtensions
             hi.Icon = route.Icon;
             hi.ParentRoute = route.ParentPath;
         });
+
+    public static IEnumerable<PropertyModel> GetDataProperties(this ModelCollection<PropertyModel> properties) =>
+        properties
+            .Having<DataAttribute>()
+            .Select(p => (property: p, data: p.Get<DataAttribute>()))
+            .Where(pd => pd.data.Visible)
+            .OrderBy(pd => pd.data.Order)
+            .Select(pd => pd.property);
 }
