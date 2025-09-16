@@ -1,4 +1,4 @@
-using Baked.Architecture;
+﻿using Baked.Architecture;
 using Baked.Test.Caching;
 using Baked.Theme;
 using Baked.Theme.Admin;
@@ -94,11 +94,11 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Baked.Theme.Route>> _ro
             #region Report Page Overrides
 
             // Tabs
-            builder.Conventions.AddMethodConfiguration<TabAttribute>(
+            builder.Conventions.AddMethodMetadataConfiguration<TabAttribute>(
                 apply: (tab, c) => tab.Name = "SingleValue",
                 when: (_, c) => c.Type.Is<Report>() && c.Method.DefaultOverload.ReturnType.SkipTask().Is<string>()
             );
-            builder.Conventions.AddMethodConfiguration<TabAttribute>(
+            builder.Conventions.AddMethodMetadataConfiguration<TabAttribute>(
                 apply: (tab, c) => tab.Name = "DataTable",
                 when: (_, c) => c.Type.Is<Report>() && c.Method.DefaultOverload.ReturnsList()
             );

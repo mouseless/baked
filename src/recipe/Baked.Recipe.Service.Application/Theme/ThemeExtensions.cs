@@ -391,7 +391,7 @@ public static class ThemeExtensions
         whenType ??= _ => true;
         whenComponent ??= _ => true;
 
-        conventions.AddTypeConfiguration<DescriptorBuilderAttribute<TSchema>>(
+        conventions.AddTypeMetadataConfiguration<DescriptorBuilderAttribute<TSchema>>(
             apply: (attribute, c) => attribute.WrapBuilder(
                 apply: (s, cc) => schema(s, c, cc),
                 when: whenComponent
@@ -430,7 +430,7 @@ public static class ThemeExtensions
         whenProperty ??= _ => true;
         whenComponent ??= _ => true;
 
-        conventions.AddPropertyConfiguration<DescriptorBuilderAttribute<TSchema>>(
+        conventions.AddPropertyMetadataConfiguration<DescriptorBuilderAttribute<TSchema>>(
             apply: (attribute, c) => attribute.WrapBuilder(
                 apply: (s, cc) => schema(s, c, cc),
                 when: whenComponent
@@ -469,7 +469,7 @@ public static class ThemeExtensions
         whenMethod ??= _ => true;
         whenComponent ??= _ => true;
 
-        conventions.AddMethodConfiguration<DescriptorBuilderAttribute<TSchema>>(
+        conventions.AddMethodMetadataConfiguration<DescriptorBuilderAttribute<TSchema>>(
             apply: (attribute, c) => attribute.WrapBuilder(
                 apply: (s, cc) => schema(s, c, cc),
                 when: whenComponent
@@ -508,7 +508,7 @@ public static class ThemeExtensions
         whenParameter ??= _ => true;
         whenComponent ??= _ => true;
 
-        conventions.AddParameterConfiguration<DescriptorBuilderAttribute<TSchema>>(
+        conventions.AddParameterMetadataConfiguration<DescriptorBuilderAttribute<TSchema>>(
             apply: (attribute, c) => attribute.WrapBuilder(
                 apply: (s, cc) => schema(s, c, cc),
                 when: whenComponent
@@ -794,7 +794,7 @@ public static class ThemeExtensions
         whenType ??= _ => true;
         whenComponent ??= _ => true;
 
-        conventions.AddTypeConfiguration<ComponentDescriptorBuilderAttribute<TSchema>>(
+        conventions.AddTypeMetadataConfiguration<ComponentDescriptorBuilderAttribute<TSchema>>(
             apply: (attribute, c) => attribute.WrapBuilder(
                 apply: (d, cc) => component(d, c, cc),
                 when: whenComponent
@@ -835,7 +835,7 @@ public static class ThemeExtensions
         whenProperty ??= _ => true;
         whenComponent ??= _ => true;
 
-        conventions.AddPropertyConfiguration<ComponentDescriptorBuilderAttribute<TSchema>>(
+        conventions.AddPropertyMetadataConfiguration<ComponentDescriptorBuilderAttribute<TSchema>>(
             apply: (attribute, c) => attribute.WrapBuilder(
                 apply: (d, cc) => component(d, c, cc),
                 when: whenComponent
@@ -876,7 +876,7 @@ public static class ThemeExtensions
         whenMethod ??= _ => true;
         whenComponent ??= _ => true;
 
-        conventions.AddMethodConfiguration<ComponentDescriptorBuilderAttribute<TSchema>>(
+        conventions.AddMethodMetadataConfiguration<ComponentDescriptorBuilderAttribute<TSchema>>(
             apply: (attribute, c) => attribute.WrapBuilder(
                 apply: (d, cc) => component(d, c, cc),
                 when: whenComponent
@@ -917,7 +917,7 @@ public static class ThemeExtensions
         whenParameter ??= _ => true;
         whenComponent ??= _ => true;
 
-        conventions.AddParameterConfiguration<ComponentDescriptorBuilderAttribute<TSchema>>(
+        conventions.AddParameterMetadataConfiguration<ComponentDescriptorBuilderAttribute<TSchema>>(
             apply: (attribute, c) => attribute.WrapBuilder(
                 apply: (d, cc) => component(d, c, cc),
                 when: whenComponent

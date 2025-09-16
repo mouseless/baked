@@ -3,7 +3,7 @@ using Baked.Domain.Model;
 
 namespace Baked.Domain.Conventions;
 
-public class PropertyConfigurationConvention<TAttribute>(Action<TAttribute, PropertyModelContext> apply,
+public class PropertyMetadataConfigurationConvention<TAttribute>(Action<TAttribute, PropertyModelContext> apply,
     Func<TAttribute, PropertyModelContext, bool>? when = default
 ) : MetadataConfigurationConventionBase<PropertyModelContext, TAttribute>(apply, when: when)
     where TAttribute : Attribute

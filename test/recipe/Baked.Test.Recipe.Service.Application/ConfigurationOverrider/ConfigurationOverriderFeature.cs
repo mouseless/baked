@@ -54,7 +54,7 @@ public class ConfigurationOverriderFeature : IFeature
                 attribute: _ => new CustomAttribute(),
                 when: c => c.Type.Is<Class>()
             );
-            builder.Conventions.AddTypeConfiguration<CustomAttribute>(
+            builder.Conventions.AddTypeMetadataConfiguration<CustomAttribute>(
                 apply: attr => attr.Value = "FROM CONVENTION",
                 when: (_, c) => c.Type.Is<Class>()
             );
@@ -65,7 +65,7 @@ public class ConfigurationOverriderFeature : IFeature
                     c.Type.Is<Record>() &&
                     c.Property.Name == nameof(Record.Text)
             );
-            builder.Conventions.AddPropertyConvention<CustomAttribute>(
+            builder.Conventions.AddPropertyMetadataConvention<CustomAttribute>(
                 apply: attr => attr.Value = "FROM CONVENTION",
                 when: (_, c) =>
                     c.Type.Is<Record>() &&
@@ -78,7 +78,7 @@ public class ConfigurationOverriderFeature : IFeature
                     c.Type.Is<Class>() &&
                     c.Method.Name == nameof(Class.Method)
             );
-            builder.Conventions.AddMethodConfiguration<CustomAttribute>(
+            builder.Conventions.AddMethodMetadataConfiguration<CustomAttribute>(
                 apply: attr => attr.Value = "FROM CONVENTION",
                 when: (_, c) =>
                     c.Type.Is<Class>() &&
@@ -92,7 +92,7 @@ public class ConfigurationOverriderFeature : IFeature
                     c.Method.Name == nameof(MethodSamples.PrimitiveParameters) &&
                     c.Parameter.Name == "string"
             );
-            builder.Conventions.AddParameterConfiguration<CustomAttribute>(
+            builder.Conventions.AddParameterMetadataConfiguration<CustomAttribute>(
                 apply: attr => attr.Value = "FROM CONVENTION",
                 when: (_, c) =>
                     c.Type.Is<MethodSamples>() &&
