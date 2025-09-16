@@ -44,12 +44,12 @@ public class ActionsAreGroupedAsTabsUxFeature : IFeature<UxConfigurator>
             builder.Conventions.AddTypeComponentConfiguration<ReportPage>(
                component: (rp, c, cc) =>
                {
+                   if (rp.Schema.Tabs.Count <= 1) { return; }
+
                    var (_, l) = cc;
 
                    foreach (var rpt in rp.Schema.Tabs)
                    {
-                       if (rpt.Id == "default") { continue; }
-
                        rpt.Title = l(rpt.Id.Replace("-", "_").Titleize());
                    }
                }
