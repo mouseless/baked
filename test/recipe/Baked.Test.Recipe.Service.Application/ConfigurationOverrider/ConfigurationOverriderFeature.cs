@@ -65,7 +65,7 @@ public class ConfigurationOverriderFeature : IFeature
                     c.Type.Is<Record>() &&
                     c.Property.Name == nameof(Record.Text)
             );
-            builder.Conventions.AddPropertyMetadataConvention<CustomAttribute>(
+            builder.Conventions.AddPropertyMetadataConfiguration<CustomAttribute>(
                 apply: attr => attr.Value = "FROM CONVENTION",
                 when: (_, c) =>
                     c.Type.Is<Record>() &&

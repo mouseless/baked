@@ -291,7 +291,7 @@ public static class DomainExtensions
     ) where TAttribute : Attribute =>
         conventions.AddPropertyMetadataConfiguration((a, _) => apply(a), when: when, order: order);
 
-    public static void AddPropertyMetadataConvention<TAttribute>(this IDomainModelConventionCollection conventions, Action<TAttribute> apply,
+    public static void AddPropertyMetadataConfiguration<TAttribute>(this IDomainModelConventionCollection conventions, Action<TAttribute> apply,
         Func<TAttribute, PropertyModelContext, bool>? when = default,
         int order = default
     ) where TAttribute : Attribute =>
