@@ -530,11 +530,11 @@ public static class ThemeExtensions
 
     public static IComponentDescriptor? GetComponent(this ICustomAttributesModel metadata, ComponentContext context)
     {
-        if (!metadata.TryGetAll<ContextBasedSchemaAttribute>(out var contextBasedSchemas)) { return default; }
+        if (!metadata.TryGetAll<ContextBasedComponentAttribute>(out var contextBasedComponents)) { return default; }
 
-        foreach (var contextBasedSchema in contextBasedSchemas.WhereAppliesTo(context).Reverse())
+        foreach (var contextBasedComponent in contextBasedComponents.WhereAppliesTo(context).Reverse())
         {
-            var builderType = typeof(ComponentDescriptorBuilderAttribute<>).MakeGenericType(contextBasedSchema.SchemaType);
+            var builderType = typeof(ComponentDescriptorBuilderAttribute<>).MakeGenericType(contextBasedComponent.SchemaType);
             if (!metadata.TryGetAll(builderType, out var builders)) { continue; }
 
             var builder = builders
@@ -593,7 +593,7 @@ public static class ThemeExtensions
                     Builder = cc => component(c, cc),
                     Filter = whenComponent
                 });
-                add(c.Type, new ContextBasedSchemaAttribute(typeof(TSchema))
+                add(c.Type, new ContextBasedComponentAttribute(typeof(TSchema))
                 {
                     Filter = whenComponent
                 });
@@ -645,7 +645,7 @@ public static class ThemeExtensions
                     Builder = cc => component(c, cc),
                     Filter = whenComponent
                 });
-                add(c.Property, new ContextBasedSchemaAttribute(typeof(TSchema))
+                add(c.Property, new ContextBasedComponentAttribute(typeof(TSchema))
                 {
                     Filter = whenComponent
                 });
@@ -697,7 +697,7 @@ public static class ThemeExtensions
                     Builder = cc => component(c, cc),
                     Filter = whenComponent
                 });
-                add(c.Method, new ContextBasedSchemaAttribute(typeof(TSchema))
+                add(c.Method, new ContextBasedComponentAttribute(typeof(TSchema))
                 {
                     Filter = whenComponent
                 });
@@ -749,7 +749,7 @@ public static class ThemeExtensions
                     Builder = cc => component(c, cc),
                     Filter = whenComponent
                 });
-                add(c.Parameter, new ContextBasedSchemaAttribute(typeof(TSchema))
+                add(c.Parameter, new ContextBasedComponentAttribute(typeof(TSchema))
                 {
                     Filter = whenComponent
                 });
