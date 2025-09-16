@@ -9,7 +9,7 @@
     <Divider />
     <Message severity="info">
       <span class="text-xl">
-        ⬇️  Check if below button makes a successful request to backend ↗️
+        ⬇️  Check if below button makes a successful request to backend ⬆️
       </span>
     </Message>
     <div
@@ -26,7 +26,7 @@
     </div>
     <Message severity="info">
       <span class="text-xl">
-        ⬇️  Check if below button redirects you to login page with an error ↗️
+        ⬇️  Check if below button redirects you to login page with an error ⬆️
       </span>
     </Message>
     <div
