@@ -532,21 +532,21 @@ public static class ThemeExtensions
     {
         if (!metadata.TryGetAll<ContextBasedSchemaAttribute>(out var contextBasedSchemas)) { return default; }
 
-        var contextBasedSchema = contextBasedSchemas.WhereAppliesTo(context).LastOrDefault();
-        if (contextBasedSchema is null) { return default; }
-
-        var builderType = typeof(ComponentDescriptorBuilderAttribute<>).MakeGenericType(contextBasedSchema.SchemaType);
-        if (!metadata.TryGetAll(builderType, out var builders))
+        foreach (var contextBasedSchema in contextBasedSchemas.WhereAppliesTo(context).Reverse())
         {
-            throw new($"{metadata.CustomAttributes.Name} is expected to have a component descriptor builder of type {contextBasedSchema.SchemaType}");
+            var builderType = typeof(ComponentDescriptorBuilderAttribute<>).MakeGenericType(contextBasedSchema.SchemaType);
+            if (!metadata.TryGetAll(builderType, out var builders)) { continue; }
+
+            var builder = builders
+                .Cast<IComponentContextBasedBuilder<IComponentDescriptor>>()
+                .WhereAppliesTo(context)
+                .LastOrDefault();
+            if (builder is null) { continue; }
+
+            return builder.Build(context);
         }
 
-        return builders
-            .Cast<IComponentContextBasedBuilder<IComponentDescriptor>>()
-            .WhereAppliesTo(context)
-            .LastOrDefault()
-            ?.Build(context) ??
-            throw new($"{metadata.CustomAttributes.Name} is expected to have a component descriptor builder of type {contextBasedSchema.SchemaType} at path `{context.Path}`");
+        return default;
     }
 
     #region Add Metadata
