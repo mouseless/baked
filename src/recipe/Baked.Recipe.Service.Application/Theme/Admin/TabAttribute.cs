@@ -1,4 +1,4 @@
-﻿namespace Baked.Theme;
+﻿namespace Baked.Theme.Admin;
 
 public class TabAttribute
     : Attribute

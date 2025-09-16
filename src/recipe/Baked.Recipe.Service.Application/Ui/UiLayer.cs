@@ -28,7 +28,6 @@ public class UiLayer : LayerBase<GenerateCode>
             .Add(_componentExports)
             .Add(_layoutDescriptors)
             .Add(_pageDescriptors)
-            .Add(_pageDescriptors)
             .OnDispose(() =>
             {
                 GenerateUiSchemas();

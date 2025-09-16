@@ -147,7 +147,12 @@ public static class DomainComponents
         context = context.Drill(property.Name);
         var (_, l) = context;
 
-        return DataTableColumn(property.Name.Camelize(),
+        if (!property.TryGet<DataAttribute>(out var data))
+        {
+            data = new(property.Name.Camelize());
+        }
+
+        return DataTableColumn(data.Prop,
             options: dtc =>
             {
                 dtc.Component = property.GetRequiredSchema<Conditional>(context.Drill(nameof(DataTable.Column.Component)));

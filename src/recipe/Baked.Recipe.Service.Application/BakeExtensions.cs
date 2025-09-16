@@ -64,17 +64,13 @@ public static class BakeExtensions
             app.Layers.AddRestApi();
             app.Layers.AddRuntime();
 
-            if (theme is not null)
-            {
-                app.Layers.AddUi();
-            }
-
             app.Features.AddAuthentications(authentications);
             app.Features.AddAuthorization(authorization);
             app.Features.AddBinding(c => c.Rest());
             app.Features.AddBusiness(business);
             app.Features.AddCachings(cachings);
-            app.Features.AddCodingStyles([
+            app.Features.AddCodingStyles(
+            [
                 c => c.AddRemoveChild(),
                 c => c.CommandPattern(),
                 c => c.EntityExtensionViaComposition(),
@@ -98,7 +94,8 @@ public static class BakeExtensions
             app.Features.AddDatabase(database);
             app.Features.AddExceptionHandling(exceptionHandling);
             app.Features.AddGreeting(greeting);
-            app.Features.AddLifetimes([
+            app.Features.AddLifetimes(
+            [
                 c => c.Scoped(),
                 c => c.Singleton(),
                 c => c.Transient()
@@ -110,6 +107,22 @@ public static class BakeExtensions
 
             if (theme is not null)
             {
+                app.Layers.AddUi();
+
+                app.Features.AddUx(
+                [
+                    c => c.ActionsAreGroupedAsTabs(),
+                    c => c.ActionsAsDataPanels(),
+                    c => c.DataTableVisualizesList(),
+                    c => c.DataTableVisualizesObjectWithList(),
+                    c => c.DesignatedStringPropertiesAreLabel(),
+                    c => c.EnumParameterIsSelect(),
+                    c => c.InitializerParametersAreInPageTitle(),
+                    c => c.NumericValuesAreFormatted(),
+                    c => c.PanelParametersAreStateful(),
+                    c => c.TypeWithOnlyGetIsReportPage()
+                ]);
+
                 app.Features.AddTheme(theme);
             }
 
@@ -155,7 +168,8 @@ public static class BakeExtensions
             app.Features.AddBinding(c => c.Rest());
             app.Features.AddBusiness(business);
             app.Features.AddCachings(cachings);
-            app.Features.AddCodingStyles([
+            app.Features.AddCodingStyles(
+            [
                 c => c.AddRemoveChild(),
                 c => c.CommandPattern(),
                 c => c.NamespaceAsRoute(),
@@ -171,7 +185,8 @@ public static class BakeExtensions
             app.Features.AddDatabase(database);
             app.Features.AddExceptionHandling(exceptionHandling);
             app.Features.AddGreeting(greeting);
-            app.Features.AddLifetimes([
+            app.Features.AddLifetimes(
+            [
                 c => c.Scoped(),
                 c => c.Singleton(),
                 c => c.Transient()

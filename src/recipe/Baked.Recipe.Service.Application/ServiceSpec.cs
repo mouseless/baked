@@ -91,6 +91,20 @@ public abstract class ServiceSpec : Spec
 
             if (theme is not null)
             {
+                app.Features.AddUx(
+                [
+                    c => c.ActionsAreGroupedAsTabs(),
+                    c => c.ActionsAsDataPanels(),
+                    c => c.DataTableVisualizesList(),
+                    c => c.DataTableVisualizesObjectWithList(),
+                    c => c.DesignatedStringPropertiesAreLabel(),
+                    c => c.EnumParameterIsSelect(),
+                    c => c.InitializerParametersAreInPageTitle(),
+                    c => c.NumericValuesAreFormatted(),
+                    c => c.PanelParametersAreStateful(),
+                    c => c.TypeWithOnlyGetIsReportPage()
+                ]);
+
                 app.Features.AddTheme(theme);
             }
 
