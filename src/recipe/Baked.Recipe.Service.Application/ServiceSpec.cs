@@ -1,4 +1,4 @@
-using Baked.Architecture;
+﻿using Baked.Architecture;
 using Baked.Business;
 using Baked.Caching;
 using Baked.Communication;
@@ -98,7 +98,7 @@ public abstract class ServiceSpec : Spec
                     c => c.DataTableVisualizesList(),
                     c => c.DataTableVisualizesObjectWithList(),
                     c => c.EnumParameterIsSelect(),
-                    c => c.InitializerParameterIsInPageTitle(),
+                    c => c.InitializerParametersAreInPageTitle(),
                     c => c.PanelParametersAreStateful(),
                     c => c.TypeWithOnlyGetIsReportPage()
                 ]);

@@ -3,9 +3,9 @@ using Baked.Business;
 using Baked.Lifetime;
 using Baked.Theme.Admin;
 
-namespace Baked.Ux.InitializerParameterIsInPageTitle;
+namespace Baked.Ux.InitializerParametersAreInPageTitle;
 
-public class InitializerParameterIsInPageTitleUxFeature : IFeature<UxConfigurator>
+public class InitializerParametersAreInPageTitleUxFeature : IFeature<UxConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {

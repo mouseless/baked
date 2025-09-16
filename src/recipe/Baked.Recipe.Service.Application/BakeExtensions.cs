@@ -1,4 +1,4 @@
-using Baked.Architecture;
+﻿using Baked.Architecture;
 using Baked.Authentication;
 using Baked.Authorization;
 using Baked.Business;
@@ -116,7 +116,7 @@ public static class BakeExtensions
                     c => c.DataTableVisualizesList(),
                     c => c.DataTableVisualizesObjectWithList(),
                     c => c.EnumParameterIsSelect(),
-                    c => c.InitializerParameterIsInPageTitle(),
+                    c => c.InitializerParametersAreInPageTitle(),
                     c => c.PanelParametersAreStateful(),
                     c => c.TypeWithOnlyGetIsReportPage()
                 ]);
