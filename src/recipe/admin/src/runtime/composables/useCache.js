@@ -1,7 +1,6 @@
-export default function(name,
-  expirationInMinutes = 60
-) {
-  function buildKey(path, query) {
+export default function(name, { expirationInMinutes = 60 } = {}) {
+  function buildKey({ path, query }) {
+    console.log(path, query);
     let result = path;
     if(query) {
       const search = new URLSearchParams(query);
@@ -16,7 +15,11 @@ export default function(name,
     return Date.now() - entry.createdAt < expirationInMinutes * 60 * 1000;
   }
 
-  async function getOrCreate(key, create) {
+  async function getOrCreate({ key, create }) {
+    if(typeof create !== "function") {
+      throw new Error("create must be a function");
+    }
+
     key = `${name}[${key}]`;
 
     const cached = localStorage.getItem(key);
