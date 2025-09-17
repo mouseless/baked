@@ -22,5 +22,5 @@ const { schema } = defineProps({
 
 const { placeholder, pageContextKey } = schema;
 
-const page = context.page();
+const page = context.injectPage();
 </script>

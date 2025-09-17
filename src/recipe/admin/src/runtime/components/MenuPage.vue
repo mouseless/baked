@@ -68,7 +68,7 @@ const { header, sections, filterPageContextKey } = schema;
 const locale = composables?.useFormat?.locale || "en-US";
 const sectionsData = ref(sections);
 
-const page = context.page();
+const page = context.injectPage();
 // listen in context if any filter is applied
 if(filterPageContextKey) {
   watch(
