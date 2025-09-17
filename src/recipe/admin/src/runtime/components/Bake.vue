@@ -39,7 +39,7 @@ const classes = [`b-component--${descriptor.type}`, ...asClasses(name)];
 context.setInjectedData(data, "ParentData");
 
 if(shouldLoad) {
-  context.setLoading(loading);
+  context.provideLoading(loading);
 }
 
 onMounted(async() => {
