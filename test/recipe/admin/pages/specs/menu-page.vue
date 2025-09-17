@@ -11,7 +11,7 @@ import giveMe from "~/utils/giveMe";
 import { useContext } from "#imports";
 
 const context = useContext();
-context.setPage(reactive({}));
+context.providePage(reactive({}));
 
 const variants = [
   {
