@@ -2,7 +2,7 @@ import { useRuntimeConfig } from "#app";
 import { useLocalization } from "#imports";
 
 export default function() {
-  const { locale: currentLocale, localize: lc } = useLocalization("useFormat");
+  const { locale: currentLocale, localize: lc } = useLocalization({ group: "useFormat" });
   const { public: { composables } } = useRuntimeConfig();
 
   const locale = currentLocale.value || "en";

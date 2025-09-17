@@ -97,7 +97,7 @@ import { Bake, DeferredTabContent, PageTitle, QueryParameters } from "#component
 
 const context = useContext();
 const { localize: l } = useLocalization();
-const { localize: lc } = useLocalization("ReportPage");
+const { localize: lc } = useLocalization({ group: "ReportPage" });
 
 const { schema } = defineProps({
   schema: { type: null, required: true },

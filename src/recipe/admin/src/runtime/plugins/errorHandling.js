@@ -70,7 +70,7 @@ function getHandler(handlers, route, error) {
 
 function getMessage(error) {
   const { $defaultAlert } = useNuxtApp();
-  const { localize: l } = useLocalization();
+  const { localize: l } = useLocalization({});
 
   if(error.name === "FetchError") {
     return {

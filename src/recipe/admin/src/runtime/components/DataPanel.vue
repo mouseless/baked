@@ -91,7 +91,7 @@ const { isMd } = useBreakpoints();
 const context = useContext();
 const dataFetcher = useDataFetcher();
 const { localize: l } = useLocalization();
-const { localize: lc } = useLocalization("DataPanel");
+const { localize: lc } = useLocalization({ group: "DataPanel" });
 const panel = useTemplateRef("panel");
 const popover = ref();
 

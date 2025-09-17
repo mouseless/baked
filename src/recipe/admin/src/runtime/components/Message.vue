@@ -23,7 +23,7 @@ import { Message, Skeleton } from "primevue";
 import { useContext, useLocalization } from "#imports";
 
 const context = useContext();
-const { localize: l } = useLocalization();
+const { localize: l } = useLocalization({});
 
 const { schema } = defineProps({
   schema: { type: null, default: null },

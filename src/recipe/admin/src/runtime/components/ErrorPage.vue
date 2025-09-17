@@ -51,7 +51,7 @@ import { computed } from "vue";
 import { Divider, Message, Tag } from "primevue";
 import { useLocalization } from "#imports";
 
-const { localize: l } = useLocalization();
+const { localize: l } = useLocalization({});
 
 const { schema, data } = defineProps({
   schema: { type: null, required: true },
