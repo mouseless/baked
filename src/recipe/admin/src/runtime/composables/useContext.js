@@ -25,7 +25,7 @@ export default function() {
     };
   }
 
-  function setInjectedData(value, key) {
+  function provideData(value, key) {
     provide(`__bake_injected_data:${key}`, value);
   }
 
@@ -59,7 +59,7 @@ export default function() {
     injectDataDescriptor,
     provideDataDescriptor,
     injectData,
-    setInjectedData,
+    provideData,
     injectLoading,
     provideLoading,
     injectPage,

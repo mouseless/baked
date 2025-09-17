@@ -36,7 +36,7 @@ const shouldLoad = dataFetcher.shouldLoad(descriptor.data?.type);
 const loading = ref(shouldLoad);
 const classes = [`b-component--${descriptor.type}`, ...asClasses(name)];
 
-context.setInjectedData(data, "ParentData");
+context.provideData(data, "ParentData");
 
 if(shouldLoad) {
   context.provideLoading(loading);
