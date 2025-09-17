@@ -16,7 +16,7 @@ const { data, schema } = defineProps({
 const { testId, showDataParams } = schema;
 
 const dataDescriptor = context.injectDataDescriptor();
-const injectedData = context.injectedData();
+const injectedData = context.injectData();
 
 const value = ref(!showDataParams ? data : null);
 

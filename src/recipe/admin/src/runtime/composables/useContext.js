@@ -18,7 +18,7 @@ export default function() {
     return provide("__bake_data_descriptor", value);
   }
 
-  function injectedData() {
+  function injectData() {
     return {
       ParentData: inject("__bake_injected_data:ParentData", null),
       Custom: inject("__bake_injected_data:Custom", null)
@@ -58,7 +58,7 @@ export default function() {
     path,
     injectDataDescriptor,
     provideDataDescriptor,
-    injectedData,
+    injectData,
     setInjectedData,
     injectLoading,
     provideLoading,

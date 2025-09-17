@@ -30,7 +30,7 @@ context.add(name);
 context.provideDataDescriptor(descriptor.data);
 
 const is = componentResolver.resolve(descriptor.type, "None");
-const injectedData = context.injectedData();
+const injectedData = context.injectData();
 const data = ref(dataFetcher.get({ data: descriptor.data, injectedData }));
 const shouldLoad = dataFetcher.shouldLoad(descriptor.data?.type);
 const loading = ref(shouldLoad);
