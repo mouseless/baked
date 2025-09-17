@@ -107,7 +107,7 @@ const { schema } = defineProps({
 const { title, queryParameters, tabs } = schema;
 
 const page = context.injectPage();
-const articleOverflow = context.articleOverflow();
+const articleOverflow = context.injectArticleOverflow();
 const ready = ref(queryParameters.length === 0);
 const uniqueKey = ref();
 const currentTab = ref(tabs.length > 0 ? tabs[0].id : "");

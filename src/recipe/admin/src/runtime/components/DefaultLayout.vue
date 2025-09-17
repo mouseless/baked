@@ -52,7 +52,7 @@ const { schema } = defineProps({
 const { header, sideMenu } = schema;
 
 const overflow = ref(false);
-context.setArticleOverflow(overflow);
+context.provideArticleOverflow(overflow);
 </script>
 <style>
 html {
