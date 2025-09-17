@@ -154,7 +154,7 @@ const { columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, r
 
 const dataDescriptor = context.injectDataDescriptor();
 const injectedData = context.injectedData();
-const loading = context.loading();
+const loading = context.injectLoading();
 
 const dataTable = ref();
 const actionsMenu = ref();

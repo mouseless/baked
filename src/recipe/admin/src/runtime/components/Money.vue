@@ -22,7 +22,7 @@ const { data } = defineProps({
   data: { type: null, required: true }
 });
 
-const loading = context.loading();
+const loading = context.injectLoading();
 const display = computed(() => asCurrency(data));
 const tooltip = computed(() => display.value.shortened ? `${asCurrency(data, { shorten: false })}` : null);
 </script>

@@ -48,7 +48,7 @@ const { schema, data } = defineProps({
 
 const { sitemap } = schema;
 
-const loading = context.loading();
+const loading = context.injectLoading();
 const parts = computed(() => {
   if(!data) { return []; }
 

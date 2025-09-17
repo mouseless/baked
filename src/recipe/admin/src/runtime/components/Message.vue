@@ -32,5 +32,5 @@ const { schema } = defineProps({
 
 const { icon, severity, localizeMessage } = schema;
 
-const loading = context.loading();
+const loading = context.injectLoading();
 </script>

@@ -19,6 +19,6 @@ const { data } = defineProps({
   data: { type: null, required: true }
 });
 
-const loading = context.loading();
+const loading = context.injectLoading();
 const display = computed(() => asPercentage(data));
 </script>
