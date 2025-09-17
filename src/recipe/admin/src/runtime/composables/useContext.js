@@ -33,7 +33,7 @@ export default function() {
     return inject("__bake_loading", ref(false));
   }
 
-  function setLoading(value) {
+  function provideLoading(value) {
     provide("__bake_loading", value);
   }
 
@@ -61,7 +61,7 @@ export default function() {
     injectedData,
     setInjectedData,
     injectLoading,
-    setLoading,
+    provideLoading,
     injectPage,
     providePage,
     articleOverflow,
