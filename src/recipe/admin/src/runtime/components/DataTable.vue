@@ -153,7 +153,7 @@ const { schema, data } = defineProps({
 const { columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions } = schema;
 
 const dataDescriptor = context.injectDataDescriptor();
-const injectedData = context.injectedData();
+const injectedData = context.injectData();
 const loading = context.injectLoading();
 
 const dataTable = ref();

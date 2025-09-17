@@ -30,7 +30,7 @@ const { parameters } = defineProps({
 });
 const emit = defineEmits(["ready", "changed"]);
 
-const injectedData = context.injectedData();
+const injectedData = context.injectData();
 const values = {};
 for(const parameter of parameters) {
   values[parameter.name] = ref(dataFetcher.get({ data: parameter.default, injectedData }));
