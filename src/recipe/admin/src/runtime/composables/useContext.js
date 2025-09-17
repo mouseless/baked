@@ -41,7 +41,7 @@ export default function() {
     return inject("__bake_page");
   }
 
-  function setPage(value) {
+  function providePage(value) {
     provide("__bake_page", value);
   }
 
@@ -63,7 +63,7 @@ export default function() {
     loading,
     setLoading,
     injectPage,
-    setPage,
+    providePage,
     articleOverflow,
     setArticleOverflow
   };

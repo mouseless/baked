@@ -122,7 +122,7 @@ const allVariants = computed(() => {
   return result;
 });
 
-context.setPage(page);
+context.providePage(page);
 
 onMounted(async() => {
   const specs = await pages.fetch("specs");
