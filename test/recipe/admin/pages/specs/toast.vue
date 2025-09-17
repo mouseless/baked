@@ -13,7 +13,7 @@ import { Message } from "primevue";
 import { useToast, useLocalization } from "#imports";
 
 const toast = useToast();
-const { localize: l } = useLocalization();
+const { localize: l } = useLocalization({});
 
 onMounted(() => {
   toast.add({

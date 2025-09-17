@@ -55,7 +55,7 @@ defineProps({
 });
 defineModel({ type: null, default: null });
 
-const { localize: lc } = useLocalization("Login");
+const { localize: lc } = useLocalization({group: "Login"});
 const { public: { composables } } = useRuntimeConfig();
 const token = useToken();
 

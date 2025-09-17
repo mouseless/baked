@@ -38,7 +38,7 @@ import { Button, Menu } from "primevue";
 import { useLocalization } from "#imports";
 
 const { locale, getLocales, setLocale, localize: l } = useLocalization();
-const { localize: lc } = useLocalization("LanguageSwitcher");
+const { localize: lc } = useLocalization({ group: "LanguageSwitcher" });
 
 defineProps({
   schema: { type: null, required: true },

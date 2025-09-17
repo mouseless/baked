@@ -1,6 +1,7 @@
 import { useNuxtApp, useRouter, useRuntimeConfig } from "#imports";
 
-export default function(group = "") {
+export default function( { group } = {}) {
+
   const { $i18n: { locale, locales: i18nLocales, setLocaleCookie, t } } = useNuxtApp();
   const { public: { localization } } = useRuntimeConfig();
   const router = useRouter();

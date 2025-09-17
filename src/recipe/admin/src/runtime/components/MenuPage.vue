@@ -55,8 +55,8 @@ import { Divider } from "primevue";
 import { ref, watch } from "vue";
 
 const context = useContext();
-const { localize: l } = useLocalization();
-const { localize: lc } = useLocalization("MenuPage");
+const { localize: l } = useLocalization({});
+const { localize: lc } = useLocalization({ group: "MenuPage" });
 const { public: { composables } } = useRuntimeConfig();
 
 const { schema } = defineProps({

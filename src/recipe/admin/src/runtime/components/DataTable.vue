@@ -141,8 +141,8 @@ const conditional = useConditional();
 const context = useContext();
 const composableResolver = useComposableResolver();
 const dataFetcher = useDataFetcher();
-const { localize: l } = useLocalization();
-const { localize: lc } = useLocalization("DataTable");
+const { localize: l } = useLocalization({});
+const { localize: lc } = useLocalization({ group: "DataTable" });
 const { public: { composables: { useBreakpoints: { screens } } } } = useRuntimeConfig();
 
 const { schema, data } = defineProps({

@@ -24,7 +24,7 @@ import { SelectButton, Skeleton } from "primevue";
 import { useContext, useLocalization, useUiStates } from "#imports";
 
 const context = useContext();
-const { localize: l } = useLocalization();
+const { localize: l } = useLocalization({});
 const { value: { selectButtonStates } } = useUiStates();
 
 const { schema, data } = defineProps({
