@@ -1,6 +1,5 @@
 export default function(name, { expirationInMinutes = 60 } = {}) {
   function buildKey({ path, query }) {
-    console.log(path, query);
     let result = path;
     if(query) {
       const search = new URLSearchParams(query);
