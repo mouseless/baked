@@ -49,7 +49,7 @@ const { label, localizeLabel, optionLabel, optionValue, showClear, selectionPage
 
 const loading = context.loading();
 const path = context.path();
-const page = context.page();
+const page = context.injectPage();
 const selected = ref();
 
 // two way binding between model and selected

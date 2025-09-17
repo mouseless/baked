@@ -37,7 +37,7 @@ const { allowEmpty, localizeLabel, optionLabel, optionValue, stateful, selection
 
 const loading = context.loading();
 const path = context.path();
-const page = context.page();
+const page = context.injectPage();
 const selected = ref();
 
 watch(
