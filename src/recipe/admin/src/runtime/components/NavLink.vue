@@ -27,7 +27,7 @@ const { schema, data } = defineProps({
 
 const { path, idProp, textProp } = schema;
 
-const loading = context.loading();
+const loading = context.injectLoading();
 // TODO: this format call is temporary, final design should handle path
 // variables using name, not index, e.g., /test/{0} -> /test/{id}
 const to = computed(() => format(path, [data[idProp]]));

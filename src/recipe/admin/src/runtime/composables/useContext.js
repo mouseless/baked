@@ -29,7 +29,7 @@ export default function() {
     provide(`__bake_injected_data:${key}`, value);
   }
 
-  function loading() {
+  function injectLoading() {
     return inject("__bake_loading", ref(false));
   }
 
@@ -60,7 +60,7 @@ export default function() {
     provideDataDescriptor,
     injectedData,
     setInjectedData,
-    loading,
+    injectLoading,
     setLoading,
     injectPage,
     providePage,
