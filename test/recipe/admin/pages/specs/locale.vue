@@ -30,7 +30,7 @@
 import { DatePicker, Message } from "primevue";
 import { useLocalization } from "#imports";
 
-const { locale, getLocales } = useLocalization({});
+const { locale, getLocales } = useLocalization();
 
 const locales = getLocales().map(l => l.code.toUpperCase()).join(", ");
 </script>

@@ -108,7 +108,7 @@ import { useRuntimeConfig } from "#app";
 import { Bake, PersistentPopover } from "#components";
 import { useBreakpoints, useHead, useLocalization } from "#imports";
 
-const { localize: l } = useLocalization({});
+const { localize: l } = useLocalization();
 const { public: { components } } = useRuntimeConfig();
 const { isMd } = useBreakpoints();
 
