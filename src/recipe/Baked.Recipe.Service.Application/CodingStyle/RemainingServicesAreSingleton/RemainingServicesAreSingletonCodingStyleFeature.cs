@@ -1,6 +1,7 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
 using Baked.Lifetime;
+using Baked.RestApi;
 
 namespace Baked.CodingStyle.RemainingServicesAreSingleton;
 
@@ -19,7 +20,7 @@ public class RemainingServicesAreSingletonCodingStyleFeature()
                    !members.Has<TransientAttribute>() &&
                    !members.Has<ScopedAttribute>() &&
                    members.Properties.All(p => !p.IsPublic),
-               order: int.MaxValue - 20
+               order: RestApiLayer.MaxConventionOrder - 10
             );
         });
     }

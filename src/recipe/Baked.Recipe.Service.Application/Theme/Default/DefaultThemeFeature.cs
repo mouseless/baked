@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.RestApi;
 using Baked.RestApi.Model;
 using Humanizer;
 
@@ -40,7 +41,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             builder.Conventions.SetMethodMetadata(
                 attribute: _ => new TabNameAttribute(),
                 when: c => c.Method.Has<ActionModelAttribute>(),
-                order: int.MaxValue - 5 // TODO fix this hacky order
+                order: RestApiLayer.MaxConventionOrder + 10
             );
             builder.Conventions.AddMethodSchema(
                 schema: c => MethodRemote(c.Method),

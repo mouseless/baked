@@ -2,6 +2,7 @@
 using Baked.Domain;
 using Baked.Domain.Configuration;
 using Baked.Domain.Model;
+using Baked.RestApi;
 using Baked.RestApi.Model;
 using Baked.Testing;
 using Baked.Theme;
@@ -120,9 +121,6 @@ public static class ThemeExtensions
     public static IEnumerable<T> WhereAppliesTo<T>(this IEnumerable<T> enumerable, ComponentContext context) =>
         enumerable.Where(c => c is not IComponentContextFilter when || when.AppliesTo(context));
 
-    // TODO ActionModelAttribute is set at int.MaxValue - 10, will set a max for API and min for UI
-    const int ORDER_UI_DEFAULT_VALUE = int.MaxValue - 5;
-
     // NOTE
     //
     // This is refactored to remove duplication in below conventions but
@@ -189,7 +187,7 @@ public static class ThemeExtensions
     public static void AddTypeSchema<TSchema>(this IDomainModelConventionCollection conventions, Func<TSchema> schema,
         Func<TypeModelMetadataContext, bool>? whenType = default,
         Func<ComponentContext, bool>? whenComponent = default,
-        int? order = default
+        int order = default
     ) => conventions.AddTypeSchema(
         schema: _ => schema(),
         whenType: whenType,
@@ -200,7 +198,7 @@ public static class ThemeExtensions
     public static void AddTypeSchema<TSchema>(this IDomainModelConventionCollection conventions, Func<TypeModelMetadataContext, TSchema> schema,
         Func<TypeModelMetadataContext, bool>? whenType = default,
         Func<ComponentContext, bool>? whenComponent = default,
-        int? order = default
+        int order = default
     ) => conventions.AddTypeSchema(
         schema: (c, _) => schema(c),
         whenType: whenType,
@@ -211,12 +209,12 @@ public static class ThemeExtensions
     public static void AddTypeSchema<TSchema>(this IDomainModelConventionCollection conventions, Func<TypeModelMetadataContext, ComponentContext, TSchema> schema,
         Func<TypeModelMetadataContext, bool>? whenType = default,
         Func<ComponentContext, bool>? whenComponent = default,
-        int? order = default
+        int order = default
     )
     {
         whenType ??= c => true;
         whenComponent ??= c => true;
-        order ??= ORDER_UI_DEFAULT_VALUE;
+        order += RestApiLayer.MaxConventionOrder;
 
         conventions.AddTypeMetadata(
             attribute: c => new DescriptorBuilderAttribute<TSchema>()
@@ -225,14 +223,14 @@ public static class ThemeExtensions
                 Filter = whenComponent
             },
             when: whenType,
-            order: order.Value
+            order: order
         );
     }
 
     public static void AddPropertySchema<TSchema>(this IDomainModelConventionCollection conventions, Func<TSchema> schema,
         Func<PropertyModelContext, bool>? whenProperty = default,
         Func<ComponentContext, bool>? whenComponent = default,
-        int? order = default
+        int order = default
     ) => conventions.AddPropertySchema(
         schema: _ => schema(),
         whenProperty: whenProperty,
@@ -243,7 +241,7 @@ public static class ThemeExtensions
     public static void AddPropertySchema<TSchema>(this IDomainModelConventionCollection conventions, Func<PropertyModelContext, TSchema> schema,
         Func<PropertyModelContext, bool>? whenProperty = default,
         Func<ComponentContext, bool>? whenComponent = default,
-        int? order = default
+        int order = default
     ) => conventions.AddPropertySchema(
         schema: (c, _) => schema(c),
         whenProperty: whenProperty,
@@ -254,12 +252,12 @@ public static class ThemeExtensions
     public static void AddPropertySchema<TSchema>(this IDomainModelConventionCollection conventions, Func<PropertyModelContext, ComponentContext, TSchema> schema,
         Func<PropertyModelContext, bool>? whenProperty = default,
         Func<ComponentContext, bool>? whenComponent = default,
-        int? order = default
+        int order = default
     )
     {
         whenProperty ??= c => true;
         whenComponent ??= c => true;
-        order ??= ORDER_UI_DEFAULT_VALUE;
+        order += RestApiLayer.MaxConventionOrder;
 
         conventions.AddPropertyMetadata(
             attribute: c => new DescriptorBuilderAttribute<TSchema>()
@@ -268,14 +266,14 @@ public static class ThemeExtensions
                 Filter = whenComponent
             },
             when: whenProperty,
-            order: order.Value
+            order: order
         );
     }
 
     public static void AddMethodSchema<TSchema>(this IDomainModelConventionCollection conventions, Func<TSchema> schema,
         Func<MethodModelContext, bool>? whenMethod = default,
         Func<ComponentContext, bool>? whenComponent = default,
-        int? order = default
+        int order = default
     ) => conventions.AddMethodSchema(
         schema: _ => schema(),
         whenMethod: whenMethod,
@@ -286,7 +284,7 @@ public static class ThemeExtensions
     public static void AddMethodSchema<TSchema>(this IDomainModelConventionCollection conventions, Func<MethodModelContext, TSchema> schema,
         Func<MethodModelContext, bool>? whenMethod = default,
         Func<ComponentContext, bool>? whenComponent = default,
-        int? order = default
+        int order = default
     ) => conventions.AddMethodSchema(
         schema: (c, _) => schema(c),
         whenMethod: whenMethod,
@@ -297,12 +295,12 @@ public static class ThemeExtensions
     public static void AddMethodSchema<TSchema>(this IDomainModelConventionCollection conventions, Func<MethodModelContext, ComponentContext, TSchema> schema,
         Func<MethodModelContext, bool>? whenMethod = default,
         Func<ComponentContext, bool>? whenComponent = default,
-        int? order = default
+        int order = default
     )
     {
         whenMethod ??= c => true;
         whenComponent ??= c => true;
-        order ??= ORDER_UI_DEFAULT_VALUE;
+        order += RestApiLayer.MaxConventionOrder;
 
         conventions.AddMethodMetadata(
             attribute: c => new DescriptorBuilderAttribute<TSchema>()
@@ -311,14 +309,14 @@ public static class ThemeExtensions
                 Filter = whenComponent
             },
             when: c => c.Type.Has<ControllerModelAttribute>() && c.Method.Has<ActionModelAttribute>() && whenMethod(c),
-            order: order.Value
+            order: order
         );
     }
 
     public static void AddParameterSchema<TSchema>(this IDomainModelConventionCollection conventions, Func<TSchema> schema,
         Func<ParameterModelContext, bool>? whenParameter = default,
         Func<ComponentContext, bool>? whenComponent = default,
-        int? order = default
+        int order = default
     ) => conventions.AddParameterSchema(
         schema: _ => schema(),
         whenParameter: whenParameter,
@@ -329,7 +327,7 @@ public static class ThemeExtensions
     public static void AddParameterSchema<TSchema>(this IDomainModelConventionCollection conventions, Func<ParameterModelContext, TSchema> schema,
         Func<ParameterModelContext, bool>? whenParameter = default,
         Func<ComponentContext, bool>? whenComponent = default,
-        int? order = default
+        int order = default
     ) => conventions.AddParameterSchema(
         schema: (c, _) => schema(c),
         whenParameter: whenParameter,
@@ -340,12 +338,12 @@ public static class ThemeExtensions
     public static void AddParameterSchema<TSchema>(this IDomainModelConventionCollection conventions, Func<ParameterModelContext, ComponentContext, TSchema> schema,
         Func<ParameterModelContext, bool>? whenParameter = default,
         Func<ComponentContext, bool>? whenComponent = default,
-        int? order = default
+        int order = default
     )
     {
         whenParameter ??= c => true;
         whenComponent ??= c => true;
-        order ??= ORDER_UI_DEFAULT_VALUE;
+        order += RestApiLayer.MaxConventionOrder;
 
         conventions.AddParameterMetadata(
             attribute: c => new DescriptorBuilderAttribute<TSchema>()
@@ -354,7 +352,7 @@ public static class ThemeExtensions
                 Filter = whenComponent
             },
             when: c => c.Type.Has<ControllerModelAttribute>() && c.Parameter.Has<ParameterModelAttribute>() && whenParameter(c),
-            order: order.Value
+            order: order
         );
     }
 
@@ -554,7 +552,7 @@ public static class ThemeExtensions
     public static void AddTypeComponent<TSchema>(this IDomainModelConventionCollection conventions, Func<ComponentDescriptor<TSchema>> component,
         Func<TypeModelMetadataContext, bool>? whenType = default,
         Func<ComponentContext, bool>? whenComponent = default,
-        int? order = default
+        int order = default
     ) where TSchema : IComponentSchema =>
         conventions.AddTypeComponent(
             component: _ => component(),
@@ -566,7 +564,7 @@ public static class ThemeExtensions
     public static void AddTypeComponent<TSchema>(this IDomainModelConventionCollection conventions, Func<TypeModelMetadataContext, ComponentDescriptor<TSchema>> component,
         Func<TypeModelMetadataContext, bool>? whenType = default,
         Func<ComponentContext, bool>? whenComponent = default,
-        int? order = default
+        int order = default
     ) where TSchema : IComponentSchema =>
         conventions.AddTypeComponent(
             component: (c, _) => component(c),
@@ -578,12 +576,12 @@ public static class ThemeExtensions
     public static void AddTypeComponent<TSchema>(this IDomainModelConventionCollection conventions, Func<TypeModelMetadataContext, ComponentContext, ComponentDescriptor<TSchema>> component,
         Func<TypeModelMetadataContext, bool>? whenType = default,
         Func<ComponentContext, bool>? whenComponent = default,
-        int? order = default
+        int order = default
     ) where TSchema : IComponentSchema
     {
         whenType ??= c => true;
         whenComponent ??= c => true;
-        order ??= ORDER_UI_DEFAULT_VALUE;
+        order += RestApiLayer.MaxConventionOrder;
 
         conventions.AddTypeMetadata(
             apply: (c, add) =>
@@ -599,14 +597,14 @@ public static class ThemeExtensions
                 });
             },
             when: c => whenType(c),
-            order: order.Value
+            order: order
         );
     }
 
     public static void AddPropertyComponent<TSchema>(this IDomainModelConventionCollection conventions, Func<ComponentDescriptor<TSchema>> component,
         Func<PropertyModelContext, bool>? whenProperty = default,
         Func<ComponentContext, bool>? whenComponent = default,
-        int? order = default
+        int order = default
     ) where TSchema : IComponentSchema =>
         conventions.AddPropertyComponent(
             component: _ => component(),
@@ -618,7 +616,7 @@ public static class ThemeExtensions
     public static void AddPropertyComponent<TSchema>(this IDomainModelConventionCollection conventions, Func<PropertyModelContext, ComponentDescriptor<TSchema>> component,
         Func<PropertyModelContext, bool>? whenProperty = default,
         Func<ComponentContext, bool>? whenComponent = default,
-        int? order = default
+        int order = default
     ) where TSchema : IComponentSchema =>
         conventions.AddPropertyComponent(
             component: (c, _) => component(c),
@@ -630,12 +628,12 @@ public static class ThemeExtensions
     public static void AddPropertyComponent<TSchema>(this IDomainModelConventionCollection conventions, Func<PropertyModelContext, ComponentContext, ComponentDescriptor<TSchema>> component,
         Func<PropertyModelContext, bool>? whenProperty = default,
         Func<ComponentContext, bool>? whenComponent = default,
-        int? order = default
+        int order = default
     ) where TSchema : IComponentSchema
     {
         whenProperty ??= c => true;
         whenComponent ??= c => true;
-        order ??= ORDER_UI_DEFAULT_VALUE;
+        order += RestApiLayer.MaxConventionOrder;
 
         conventions.AddPropertyMetadata(
             apply: (c, add) =>
@@ -651,14 +649,14 @@ public static class ThemeExtensions
                 });
             },
             when: c => whenProperty(c),
-            order: order.Value
+            order: order
         );
     }
 
     public static void AddMethodComponent<TSchema>(this IDomainModelConventionCollection conventions, Func<ComponentDescriptor<TSchema>> component,
         Func<MethodModelContext, bool>? whenMethod = default,
         Func<ComponentContext, bool>? whenComponent = default,
-        int? order = default
+        int order = default
     ) where TSchema : IComponentSchema =>
         conventions.AddMethodComponent(
             component: _ => component(),
@@ -670,7 +668,7 @@ public static class ThemeExtensions
     public static void AddMethodComponent<TSchema>(this IDomainModelConventionCollection conventions, Func<MethodModelContext, ComponentDescriptor<TSchema>> component,
         Func<MethodModelContext, bool>? whenMethod = default,
         Func<ComponentContext, bool>? whenComponent = default,
-        int? order = default
+        int order = default
     ) where TSchema : IComponentSchema =>
         conventions.AddMethodComponent(
             component: (c, _) => component(c),
@@ -682,12 +680,12 @@ public static class ThemeExtensions
     public static void AddMethodComponent<TSchema>(this IDomainModelConventionCollection conventions, Func<MethodModelContext, ComponentContext, ComponentDescriptor<TSchema>> component,
         Func<MethodModelContext, bool>? whenMethod = default,
         Func<ComponentContext, bool>? whenComponent = default,
-        int? order = default
+        int order = default
     ) where TSchema : IComponentSchema
     {
         whenMethod ??= c => true;
         whenComponent ??= c => true;
-        order ??= ORDER_UI_DEFAULT_VALUE;
+        order += RestApiLayer.MaxConventionOrder;
 
         conventions.AddMethodMetadata(
             apply: (c, add) =>
@@ -703,14 +701,14 @@ public static class ThemeExtensions
                 });
             },
             when: c => whenMethod(c),
-            order: order.Value
+            order: order
         );
     }
 
     public static void AddParameterComponent<TSchema>(this IDomainModelConventionCollection conventions, Func<ComponentDescriptor<TSchema>> component,
         Func<ParameterModelContext, bool>? whenParameter = default,
         Func<ComponentContext, bool>? whenComponent = default,
-        int? order = default
+        int order = default
     ) where TSchema : IComponentSchema =>
         conventions.AddParameterComponent(
             component: _ => component(),
@@ -722,7 +720,7 @@ public static class ThemeExtensions
     public static void AddParameterComponent<TSchema>(this IDomainModelConventionCollection conventions, Func<ParameterModelContext, ComponentDescriptor<TSchema>> component,
         Func<ParameterModelContext, bool>? whenParameter = default,
         Func<ComponentContext, bool>? whenComponent = default,
-        int? order = default
+        int order = default
     ) where TSchema : IComponentSchema =>
         conventions.AddParameterComponent(
             component: (c, _) => component(c),
@@ -734,12 +732,12 @@ public static class ThemeExtensions
     public static void AddParameterComponent<TSchema>(this IDomainModelConventionCollection conventions, Func<ParameterModelContext, ComponentContext, ComponentDescriptor<TSchema>> component,
         Func<ParameterModelContext, bool>? whenParameter = default,
         Func<ComponentContext, bool>? whenComponent = default,
-        int? order = default
+        int order = default
     ) where TSchema : IComponentSchema
     {
         whenParameter ??= c => true;
         whenComponent ??= c => true;
-        order ??= ORDER_UI_DEFAULT_VALUE;
+        order += RestApiLayer.MaxConventionOrder;
 
         conventions.AddParameterMetadata(
             apply: (c, add) =>
@@ -755,7 +753,7 @@ public static class ThemeExtensions
                 });
             },
             when: c => whenParameter(c),
-            order: order.Value
+            order: order
         );
     }
 
