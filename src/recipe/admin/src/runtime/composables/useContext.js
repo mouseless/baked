@@ -1,12 +1,12 @@
 import { inject, provide, ref } from "vue";
 
 export default function() {
-  function add(name) {
+  function providePath(name) {
     const path = inject("__bake_path", null);
     provide("__bake_path", path ? `${path}/${name}` : name);
   }
 
-  function path() {
+  function injectPath() {
     return inject("__bake_path", "");
   }
 
@@ -54,8 +54,8 @@ export default function() {
   }
 
   return {
-    add,
-    path,
+    providePath,
+    injectPath,
     injectDataDescriptor,
     provideDataDescriptor,
     injectData,
