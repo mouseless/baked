@@ -15,8 +15,8 @@ using Route = Baked.Theme.Route;
 
 namespace Baked.Test.Theme.Custom;
 
-public class CustomThemeFeature(IEnumerable<Func<Router, Route>> _routes)
-    : DefaultThemeFeature(_routes.Select(r => r(new())),
+public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
+    : DefaultThemeFeature(routes.Select(r => r(new())),
         _sideMenuOptions: sm => sm.Footer = LanguageSwitcher()
     )
 {

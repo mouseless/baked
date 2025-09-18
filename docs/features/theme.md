@@ -33,8 +33,8 @@ public static class CustomThemeExtensions
         ]);
 }
 
-public class CustomThemeFeature(IEnumerable<Func<Router, Route>> _routes)
-    : DefaultThemeFeature(_routes.Select(r => r(new())))
+public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
+    : DefaultThemeFeature(routes.Select(r => r(new())))
 {
     public override void Configure(LayerConfigurator configurator)
     {
@@ -91,3 +91,47 @@ experiences, see [UX Feature](ux.md)
 |            | `ModalLayout` also included                                                              |
 | Pages      | Builds pages from routes using domain model and localization                             |
 |            | Each route becomes a page if it can be resolved                                          |
+
+### Menu and Routes
+
+`routes:` list is a list of builder functions that takes `Router` as a parameter
+and returns `Route` instance. Three types of route is supported out of the box.
+
+```csharp
+r => r.Index() with { ... },
+r => r.Root("/my-parent", "MyParent", "pi pi-user") with { ... },
+r => r.Child("/my-parent/my-child", "MyChild", "/my-parent") with { ... },
+```
+
+### Page Types
+
+There are three types of page, `.Implemented()`, `.Described(d => ...)` and
+`.Generated(g => ...)`. Each route has a `Page` property that defines what page
+to render at that route.
+
+By default pages use `.Implemented()`, meaning you need to have a `.vue` page at
+the given route, e.g. for `/my-parent` route to work you need to have
+`/pages/my-parent.vue` file in the UI project.
+
+```csharp
+r => r.Root("/my-parent", "MyParent", "pi pi-user") with { Page = p => p.Implemented() }
+
+// or
+
+r => r.Root("/my-parent", "MyParent", "pi pi-user")
+```
+
+`.Described(d => ...)` is appropriate when you decide to fully describe the page
+manually from your theme feature. Add an extension method to `Page.Describer`
+for your custom page and use it in routes.
+
+```csharp
+r => r.Root("/my-parent", "MyParent", "pi pi-user") with { Page = p => p.Described(d => d.MyParent()) }
+```
+
+`.Generated(g => ...)` is appropriate when you have necessary conventions to
+generate a page descriptor out of a domain model.
+
+```csharp
+r => r.Root("/my-parent", "MyParent", "pi pi-user") with { Page = p => p.Generated(g => g.From<MyParent>()) }
+```
