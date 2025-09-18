@@ -1,4 +1,4 @@
-namespace Baked.Ux.DataTableVisualizesObjectWithList;
+﻿namespace Baked.Ux.ObjectWithListIsDataTable;
 
 [AttributeUsage(AttributeTargets.Class)]
 public class ObjectWithListAttribute(string listPropertyName)

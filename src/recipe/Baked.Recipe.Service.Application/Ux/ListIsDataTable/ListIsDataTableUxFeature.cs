@@ -4,9 +4,9 @@ using Baked.Theme.Default;
 
 using static Baked.Theme.Default.DomainComponents;
 
-namespace Baked.Ux.DataTableVisualizesList;
+namespace Baked.Ux.ListIsDataTable;
 
-public class DataTableVisualizesListUxFeature : IFeature<UxConfigurator>
+public class ListIsDataTableUxFeature : IFeature<UxConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
@@ -17,7 +17,6 @@ public class DataTableVisualizesListUxFeature : IFeature<UxConfigurator>
                 whenMethod: c => c.Method.Has<ActionModelAttribute>() && c.Method.DefaultOverload.ReturnsList(),
                 whenComponent: c => c.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content))
             );
-
             builder.Conventions.AddMethodComponentConfiguration<DataTable>(
                 component: (dt, c, cc) =>
                 {

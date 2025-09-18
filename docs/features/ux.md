@@ -41,41 +41,6 @@ c => c.ActionsAsDataPanels()
 - The panel title is taken from the method name
 - Action parameters are added to the panel schema automatically
 
-## Data Table Visualizes List
-
-```csharp
-c => c.DataTableVisualizesList()
-```
-
-Shows list results of controller actions as a `DataTable` inside a `DataPanel`.
-
-- Methods with `ActionModelAttribute` that return a list are rendered as
-  `DataTable`
-- The `DataTable` is placed in the action’s panel content
-- Properties of the list element type are added as table columns automatically
-
-## Data Table Visualizes Object with List
-
-```csharp
-c => c.DataTableVisualizesObjectWithList()
-```
-
-Shows list data from an object result as a `DataTable` inside a `DataPanel`.
-
-- Methods with `ActionModelAttribute` that return an object containing a visible
-  list property are rendered as `DataTable`
-- The list property is detected automatically and used as the data source
-- Properties of the list element type are added as table columns
-- Other properties of the object are shown in the table footer as summary
-  columns
-
-> [!TIP]
->
-> This feature uses `ObjectWithListAttribute` to decide which list property to
-> render in a `DataTable`. You can override an existing attribute to point to
-> another `IEnumerable` property. You can also add this attribute to a type so
-> that actions returning it are rendered as a `DataTable` as well.
-
 ## Designated String Properties are Label
 
 ```csharp
@@ -123,6 +88,19 @@ Adds initializer parameters of a report class to the page title area of a
 - Adds initializer parameters as query parameters of the page
 - Works for types marked with `TransientAttribute`
 
+## List is Data Table
+
+```csharp
+c => c.ListDataTable()
+```
+
+Shows list results of controller actions as a `DataTable` inside a `DataPanel`.
+
+- Methods with `ActionModelAttribute` that return a list are rendered as
+  `DataTable`
+- The `DataTable` is placed in the action’s panel content
+- Properties of the list element type are added as table columns automatically
+
 ## Numeric Values are Formatted
 
 ```csharp
@@ -135,6 +113,28 @@ Right-aligns numeric columns and uses suitable components for each numeric type.
 - `decimal` properties render with `Money`
 - `double` properties render with `Rate`
 - `DataTable` columns for `int`, `double`, `decimal` are right-aligned
+
+## Object with List is Data Table
+
+```csharp
+c => c.ObjectWithListIsDataTable()
+```
+
+Shows list data from an object result as a `DataTable` inside a `DataPanel`.
+
+- Methods with `ActionModelAttribute` that return an object containing a visible
+  list property are rendered as `DataTable`
+- The list property is detected automatically and used as the data source
+- Properties of the list element type are added as table columns
+- Other properties of the object are shown in the table footer as summary
+  columns
+
+> [!TIP]
+>
+> This feature uses `ObjectWithListAttribute` to decide which list property to
+> render in a `DataTable`. You can override an existing attribute to point to
+> another `IEnumerable` property. You can also add this attribute to a type so
+> that actions returning it are rendered as a `DataTable` as well.
 
 ## Panel Parameters are Stateful
 

@@ -95,8 +95,8 @@ public abstract class ServiceSpec : Spec
                 [
                     c => c.ActionsAreGroupedAsTabs(),
                     c => c.ActionsAsDataPanels(),
-                    c => c.DataTableVisualizesList(),
-                    c => c.DataTableVisualizesObjectWithList(),
+                    c => c.ListIsDataTable(),
+                    c => c.ObjectWithListIsDataTable(),
                     c => c.DesignatedStringPropertiesAreLabel(),
                     c => c.EnumParameterIsSelect(),
                     c => c.InitializerParametersAreInPageTitle(),

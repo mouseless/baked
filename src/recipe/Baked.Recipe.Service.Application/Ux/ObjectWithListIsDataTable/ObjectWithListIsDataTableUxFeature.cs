@@ -5,9 +5,9 @@ using Humanizer;
 
 using static Baked.Theme.Default.DomainComponents;
 
-namespace Baked.Ux.DataTableVisualizesObjectWithList;
+namespace Baked.Ux.ObjectWithListIsDataTable;
 
-public class DataTableVisualizesObjectWithListUxFeature : IFeature<UxConfigurator>
+public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
@@ -31,7 +31,6 @@ public class DataTableVisualizesObjectWithListUxFeature : IFeature<UxConfigurato
                         p.PropertyType.IsAssignableTo<IEnumerable>()
                     )
             );
-
             builder.Conventions.AddMethodComponent(
                 component: (c, cc) => MethodDataTable(c.Method, cc, options: dt =>
                 {
@@ -48,7 +47,6 @@ public class DataTableVisualizesObjectWithListUxFeature : IFeature<UxConfigurato
                     returnMetadata.Has<ObjectWithListAttribute>(),
                 whenComponent: c => c.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content))
             );
-
             builder.Conventions.AddMethodComponentConfiguration<DataTable>(
                 component: (dt, c, cc) =>
                 {
@@ -73,7 +71,6 @@ public class DataTableVisualizesObjectWithListUxFeature : IFeature<UxConfigurato
                         .PropertyType.TryGetElementType(out var elementType) &&
                     elementType.HasMembers()
             );
-
             builder.Conventions.AddMethodSchema(
                 schema: (c, cc) => MethodDataTableFooter(c.Method, cc),
                 whenMethod: c =>
