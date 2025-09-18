@@ -1,6 +1,7 @@
 ﻿using Baked.Architecture;
 using Baked.RestApi;
 using Baked.RestApi.Model;
+using Baked.Runtime;
 using Humanizer;
 
 using static Baked.Theme.Default.Components;
@@ -13,7 +14,8 @@ namespace Baked.Theme.Default;
 public class DefaultThemeFeature(IEnumerable<Route> _routes,
     Action<ErrorPage>? _errorPageOptions = default,
     Action<SideMenu>? _sideMenuOptions = default,
-    Action<Header>? _headerOptions = default
+    Action<Header>? _headerOptions = default,
+    Setting<bool>? _debugComponentPaths = default
 ) : IFeature<ThemeConfigurator>
 {
     public virtual void Configure(LayerConfigurator configurator)
@@ -179,6 +181,13 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     }
                 });
             });
+
+            if (_debugComponentPaths?.GetValue() == true)
+            {
+                Console.WriteLine("Component Paths:");
+                Console.WriteLine("---");
+                Console.WriteLine($"{ComponentPath.GetPaths().Join(Environment.NewLine)}");
+            }
         });
     }
 }

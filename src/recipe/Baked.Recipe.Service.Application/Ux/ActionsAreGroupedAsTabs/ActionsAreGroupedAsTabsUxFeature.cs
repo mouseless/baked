@@ -15,7 +15,7 @@ public class ActionsAreGroupedAsTabsUxFeature : IFeature<UxConfigurator>
             builder.Conventions.AddTypeComponentConfiguration<ReportPage>(
                 component: (rp, c, cc) =>
                 {
-                    cc = cc.Drill(nameof(ReportPage.Tabs));
+                    cc = cc.Drill(nameof(ReportPage), nameof(ReportPage.Tabs));
                     var tabs = new Dictionary<string, ReportPage.Tab>();
 
                     var members = c.Type.GetMembers();

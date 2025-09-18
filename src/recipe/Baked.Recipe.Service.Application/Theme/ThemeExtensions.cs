@@ -81,7 +81,7 @@ public static class ThemeExtensions
 
             if (!domain.Types[typeof(T)].TryGetMetadata(out var metadata)) { throw new($"{typeof(T).Name} cannot be used as a page source, because its metadata is not included in domain model"); }
 
-            return metadata.GetRequiredComponent(context.Drill(nameof(Page)));
+            return metadata.GetRequiredComponent(context.Drill(nameof(Page), typeof(T).Name));
         };
 
     public static TComponentSchema As<TComponentSchema>(this IComponentSchema schema) where TComponentSchema : IComponentSchema =>

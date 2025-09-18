@@ -7,5 +7,5 @@ public class ComponentDescriptorBuilderAttribute<TSchema> : DescriptorBuilderAtt
     where TSchema : IComponentSchema
 {
     IComponentDescriptor IComponentContextBasedBuilder<IComponentDescriptor>.Build(ComponentContext context) =>
-        Builder(context);
+        Build(context);
 }

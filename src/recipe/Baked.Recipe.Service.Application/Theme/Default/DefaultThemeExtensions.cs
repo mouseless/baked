@@ -1,4 +1,5 @@
 ﻿using Baked.Domain.Model;
+using Baked.Runtime;
 using Baked.Theme;
 using Baked.Theme.Default;
 using Baked.Ui;
@@ -14,11 +15,13 @@ public static class DefaultThemeExtensions
         IEnumerable<Func<Router, Route>>? routes = default,
         Action<ErrorPage>? errorPageOptions = default,
         Action<SideMenu>? sideMenuOptions = default,
-        Action<Header>? headerOptions = default
+        Action<Header>? headerOptions = default,
+        Setting<bool>? debugComponentPaths = default
     ) => new([index(new()), .. routes?.Select(r => r(new())) ?? []],
         _errorPageOptions: errorPageOptions,
         _sideMenuOptions: sideMenuOptions,
-        _headerOptions: headerOptions
+        _headerOptions: headerOptions,
+        _debugComponentPaths: debugComponentPaths
     );
 
     public static PageBuilder Menu(this Page.Describer _) =>

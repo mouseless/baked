@@ -17,7 +17,8 @@ c => c.Default(
     routes: [...],
     errorPageOptions: ep => ...,
     sideMenuOptions: sm => ...,
-    headerOptions: h => ...
+    headerOptions: h => ...,
+    debugComponentPaths: ...
 )
 ```
 
