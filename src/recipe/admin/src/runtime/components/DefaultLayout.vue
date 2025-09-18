@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex h-screen flex-row overflow-hidden"
+    class="flex flex-row"
   >
     <Bake
       class="
@@ -17,10 +17,6 @@
         w-full px-4 flex flex-col bg-body
         max-md:pb-20
       "
-      :class="{
-        'overflow-x-hidden': !overflow,
-        'overflow-visible': overflow
-      }"
     >
       <Bake
         :key="route.path"
@@ -28,7 +24,7 @@
         :descriptor="header"
       />
       <slot />
-      <ScrollTop target="parent" />
+      <ScrollTop />
     </article>
   </div>
 </template>
