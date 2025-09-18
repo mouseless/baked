@@ -108,9 +108,9 @@ import { useRuntimeConfig } from "#app";
 import { Bake, PersistentPopover, String } from "#components";
 import { useBreakpoints, useHead, useLocalization } from "#imports";
 
+const { isMd } = useBreakpoints();
 const { localize: l } = useLocalization();
 const { public: { components } } = useRuntimeConfig();
-const { isMd } = useBreakpoints();
 
 const { schema } = defineProps({
   schema: { type: null, required: true },
@@ -137,7 +137,7 @@ onMounted(() => {
           "-mx-4", "px-4", "pb-4",
           "border-b", "border-slate-300", "dark:border-zinc-800",
           "drop-shadow",
-          "md:max-xl:pt-4"
+          "md:max-xl:pt-4", "max-md:pt-2"
         ]
       );
     },
@@ -161,8 +161,18 @@ function togglePopover(event) {
   popover.value.toggle(event);
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
 .sticky {
   top: -1px;
+}
+
+div#page-title {
+  @apply max-md:pt-2;
+
+  &.border-b {
+    &:not(:has(.p-tabs)) {
+      @apply max-md:pb-2;
+    }
+  }
 }
 </style>
