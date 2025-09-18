@@ -32,7 +32,8 @@ public class ListIsDataTableUxFeature : IFeature<UxConfigurator>
                 whenMethod: c =>
                     c.Method.DefaultOverload.ReturnsList() &&
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetElementType(out var elementType) &&
-                    elementType.HasMembers()
+                    elementType.HasMembers(),
+                order: -10
             );
         });
     }

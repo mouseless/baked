@@ -113,12 +113,12 @@ public static class BakeExtensions
                 [
                     c => c.ActionsAreGroupedAsTabs(),
                     c => c.ActionsAsDataPanels(),
-                    c => c.ListIsDataTable(),
-                    c => c.ObjectWithListIsDataTable(),
                     c => c.DesignatedStringPropertiesAreLabel(),
                     c => c.EnumParameterIsSelect(),
                     c => c.InitializerParametersAreInPageTitle(),
+                    c => c.ListIsDataTable(),
                     c => c.NumericValuesAreFormatted(),
+                    c => c.ObjectWithListIsDataTable(),
                     c => c.PanelParametersAreStateful(),
                     c => c.TypeWithOnlyGetIsReportPage()
                 ]);

@@ -69,7 +69,8 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                     returnMembers
                         .Properties[returnMembers.Get<ObjectWithListAttribute>().ListPropertyName]
                         .PropertyType.TryGetElementType(out var elementType) &&
-                    elementType.HasMembers()
+                    elementType.HasMembers(),
+                order: -10
             );
             builder.Conventions.AddMethodSchema(
                 schema: (c, cc) => MethodDataTableFooter(c.Method, cc),
