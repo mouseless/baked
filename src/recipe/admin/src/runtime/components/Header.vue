@@ -39,7 +39,7 @@ import { Breadcrumb, Skeleton } from "primevue";
 import { useContext, useLocalization } from "#imports";
 
 const context = useContext();
-const { localize: l } = useLocalization({});
+const { localize: l } = useLocalization();
 
 const { schema, data } = defineProps({
   schema: { type: null, required: true },

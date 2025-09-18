@@ -18,7 +18,7 @@ import { useContext, useFormat, useLocalization } from "#imports";
 
 const context = useContext();
 const { format } = useFormat();
-const { localize: l } = useLocalization({});
+const { localize: l } = useLocalization();
 
 const { schema, data } = defineProps({
   schema: { type: null, required: true },

@@ -43,7 +43,7 @@ import { Button, Message } from "primevue";
 import { useRuntimeConfig } from "#app";
 import { useLocalization } from "#imports";
 
-const { localize: l } = useLocalization({});
+const { localize: l } = useLocalization();
 const { public: { composables } } = useRuntimeConfig();
 
 async function requestWithLanguageHeader(){
