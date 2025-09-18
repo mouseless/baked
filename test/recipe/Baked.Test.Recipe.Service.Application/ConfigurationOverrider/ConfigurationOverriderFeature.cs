@@ -11,9 +11,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
 
 using static Baked.Test.Theme.Custom.DomainComponents;
-using static Baked.Theme.Admin.Components;
+using static Baked.Theme.Default.Components;
 
-using ReportPageC = Baked.Theme.Admin.ReportPage;
+using ReportPageC = Baked.Theme.Default.ReportPage;
 
 namespace Baked.Test.ConfigurationOverrider;
 
@@ -140,7 +140,7 @@ public class ConfigurationOverriderFeature : IFeature
                 whenMethod: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData),
                 whenComponent: cc => cc.Path.EndsWith(nameof(ReportPageC.Tab.Content.Component))
             );
-            builder.Conventions.AddMethodComponentConfiguration<Baked.Theme.Admin.String>(
+            builder.Conventions.AddMethodComponentConfiguration<Baked.Theme.Default.String>(
                 component: (@string) => @string.Schema.MaxLength = 20,
                 whenMethod: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData)
             );

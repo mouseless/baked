@@ -1,9 +1,9 @@
-using Baked.Architecture;
+﻿using Baked.Architecture;
 using Baked.RestApi.Model;
-using Baked.Theme.Admin;
+using Baked.Theme.Default;
 using Humanizer;
 
-using static Baked.Theme.Admin.DomainComponents;
+using static Baked.Theme.Default.DomainComponents;
 
 namespace Baked.Ux.DataTableVisualizesObjectWithList;
 

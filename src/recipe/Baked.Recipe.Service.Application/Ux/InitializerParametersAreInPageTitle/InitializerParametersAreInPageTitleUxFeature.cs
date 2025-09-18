@@ -1,7 +1,7 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
 using Baked.Lifetime;
-using Baked.Theme.Admin;
+using Baked.Theme.Default;
 
 namespace Baked.Ux.InitializerParametersAreInPageTitle;
 

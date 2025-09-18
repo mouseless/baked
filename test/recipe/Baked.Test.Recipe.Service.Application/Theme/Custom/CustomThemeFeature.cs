@@ -1,20 +1,22 @@
 ﻿using Baked.Architecture;
 using Baked.Test.Caching;
 using Baked.Theme;
-using Baked.Theme.Admin;
+using Baked.Theme.Default;
 using Baked.Ui;
 
 using static Baked.Test.Theme.Custom.Components;
 using static Baked.Test.Theme.Custom.DomainComponents;
-using static Baked.Theme.Admin.Components;
-using static Baked.Theme.Admin.DomainComponents;
-using static Baked.Theme.Admin.DomainDatas;
+using static Baked.Theme.Default.Components;
+using static Baked.Theme.Default.DomainComponents;
+using static Baked.Theme.Default.DomainDatas;
 using static Baked.Ui.Datas;
+
+using Route = Baked.Theme.Route;
 
 namespace Baked.Test.Theme.Custom;
 
-public class CustomThemeFeature(IEnumerable<Func<Router, Baked.Theme.Route>> _routes)
-    : AdminThemeFeature(_routes.Select(r => r(new())),
+public class CustomThemeFeature(IEnumerable<Func<Router, Route>> _routes)
+    : DefaultThemeFeature(_routes.Select(r => r(new())),
         _sideMenuOptions: sm => sm.Footer = LanguageSwitcher()
     )
 {
@@ -25,7 +27,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Baked.Theme.Route>> _ro
         configurator.ConfigureDomainModelBuilder(builder =>
         {
             // Custom theme CSV formatter settings
-            builder.Conventions.AddMethodSchemaConfiguration<Baked.Theme.Admin.DataTable.Export>(
+            builder.Conventions.AddMethodSchemaConfiguration<Baked.Theme.Default.DataTable.Export>(
                 schema: (dte, _, cc) =>
                 {
                     var (_, l) = cc;
@@ -42,7 +44,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Baked.Theme.Route>> _ro
             builder.Conventions.AddMethodComponent(
                 component: (c, cc) => MethodString(c.Method, cc),
                 whenMethod: c => c.Method.DefaultOverload.ReturnType.Is<string>(),
-                whenComponent: c => c.Path.EndsWith(nameof(Baked.Theme.Admin.DataPanel), nameof(Baked.Theme.Admin.DataPanel.Content))
+                whenComponent: c => c.Path.EndsWith(nameof(Baked.Theme.Default.DataPanel), nameof(Baked.Theme.Default.DataPanel.Content))
             );
 
             // None localized enums
@@ -67,7 +69,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Baked.Theme.Route>> _ro
             #region Data Table Page Overrides
 
             // DataTable fine tuning
-            builder.Conventions.AddMethodComponentConfiguration<Baked.Theme.Admin.DataTable>(
+            builder.Conventions.AddMethodComponentConfiguration<Baked.Theme.Default.DataTable>(
                 component: dt =>
                 {
                     dt.Schema.ScrollHeight = "500px";
@@ -76,7 +78,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Baked.Theme.Route>> _ro
                 },
                 whenMethod: c => c.Type.Is<DataTable>()
             );
-            builder.Conventions.AddMethodSchemaConfiguration<Baked.Theme.Admin.DataTable.Export>(
+            builder.Conventions.AddMethodSchemaConfiguration<Baked.Theme.Default.DataTable.Export>(
                 schema: dte =>
                 {
                     dte.ParameterFormatter = null;
@@ -105,12 +107,12 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Baked.Theme.Route>> _ro
             builder.Conventions.AddTypeComponent(
                 component: () => Icon("pi-box"),
                 whenType: c => c.Type.Is<Report>(),
-                whenComponent: cc => cc.Path.EndsWith("SingleValue", nameof(Baked.Theme.Admin.ReportPage.Tab.Icon))
+                whenComponent: cc => cc.Path.EndsWith("SingleValue", nameof(Baked.Theme.Default.ReportPage.Tab.Icon))
             );
             builder.Conventions.AddTypeComponent(
                 component: () => Icon("pi-table"),
                 whenType: c => c.Type.Is<Report>(),
-                whenComponent: cc => cc.Path.EndsWith("DataTable", nameof(Baked.Theme.Admin.ReportPage.Tab.Icon))
+                whenComponent: cc => cc.Path.EndsWith("DataTable", nameof(Baked.Theme.Default.ReportPage.Tab.Icon))
             );
 
             // Allowing admin token for report api

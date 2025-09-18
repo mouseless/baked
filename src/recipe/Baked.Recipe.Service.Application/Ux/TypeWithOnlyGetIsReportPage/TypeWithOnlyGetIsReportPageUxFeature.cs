@@ -1,8 +1,8 @@
-using Baked.Architecture;
+﻿using Baked.Architecture;
 using Baked.RestApi.Model;
 using Baked.Theme;
 
-using static Baked.Theme.Admin.DomainComponents;
+using static Baked.Theme.Default.DomainComponents;
 
 namespace Baked.Ux.TypeWithOnlyGetIsReportPage;
 

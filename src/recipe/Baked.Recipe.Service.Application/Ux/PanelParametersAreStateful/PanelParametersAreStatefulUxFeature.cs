@@ -1,5 +1,5 @@
-using Baked.Architecture;
-using Baked.Theme.Admin;
+﻿using Baked.Architecture;
+using Baked.Theme.Default;
 
 namespace Baked.Ux.PanelParametersAreStateful;
 

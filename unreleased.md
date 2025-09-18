@@ -9,6 +9,8 @@
 
 ## Improvements
 
+- `AdminThemeFeature` is renamed as `DefaultThemeFeature` to indicate that it
+  serves as a base for other themes
 - Component initializers now have a `schema:` and optional `data:` function
   parameter, minimizing the need to duplicate schema properties in component
   initializers
