@@ -1,13 +1,12 @@
 <template>
   <div
-    class="
-      flex flex-row
-      md:h-screen md:overflow-hidden
-    "
+    class="flex flex-row"
   >
     <Bake
       class="
-        max-md:fixed max-md:bottom-0
+        fixed
+        md:top-0 md:left-0 md:h-screen
+        max-md:bottom-0
         max-md:z-50 max-md:w-full
         max-md:border-t max-md:border-slate-300 max-md:dark:border-zinc-800
         max-md:drop-shadow-[0_-2px_2px_rgba(0,0,0,0.1)]
@@ -18,12 +17,10 @@
     <article
       class="
         w-full px-4 flex flex-col bg-body
+        md:max-2xl:ml-[5.3rem]
+        2xl:ml-64
         max-md:pb-20
       "
-      :class="{
-        'md:overflow-x-hidden': !overflow,
-        'md:overflow-visible': overflow
-      }"
     >
       <Bake
         :key="route.path"
@@ -31,7 +28,7 @@
         :descriptor="header"
       />
       <slot />
-      <ScrollTop :target="isMd ? 'parent' : 'window'" />
+      <ScrollTop />
     </article>
   </div>
 </template>
@@ -40,9 +37,8 @@ import { ref } from "vue";
 import { useRoute } from "#app";
 import { ScrollTop } from "primevue";
 import { Bake } from "#components";
-import { useBreakpoints, useContext } from "#imports";
+import { useContext } from "#imports";
 
-const { isMd } = useBreakpoints();
 const context = useContext();
 // do NOT remove this without testing. using $route in template doesn't trigger
 // header refresh properly, using setup variable solved the issue.
