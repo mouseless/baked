@@ -26,7 +26,7 @@ const { name, descriptor } = defineProps({
 const model = defineModel({ type: null, required: false });
 const emit = defineEmits(["loaded"]);
 
-context.add(name);
+context.providePath(name);
 context.provideDataDescriptor(descriptor.data);
 
 const is = componentResolver.resolve(descriptor.type, "None");

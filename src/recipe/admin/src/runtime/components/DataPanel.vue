@@ -107,7 +107,7 @@ const { schema } = defineProps({
 const { collapsed, content, localizeTitle, parameters, title: titleData } = schema;
 
 const injectedData = context.injectData();
-const path = context.path();
+const path = context.injectPath();
 const collapsedState = computed(() => panelStates[path] ?? collapsed);
 const loaded = ref(!collapsedState.value);
 const ready = ref(parameters.length === 0); // it is ready when there is no parameter
