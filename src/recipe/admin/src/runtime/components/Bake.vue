@@ -23,7 +23,7 @@ const { name, descriptor } = defineProps({
   name: { type: String, required: true },
   descriptor: { type: null, required: true }
 });
-const model = defineModel({ type: null, required: false });
+const model = defineModel({ type: null });
 const emit = defineEmits(["loaded"]);
 
 context.providePath(name);
