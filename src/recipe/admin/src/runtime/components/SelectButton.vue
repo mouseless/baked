@@ -33,7 +33,7 @@ const { schema, data } = defineProps({
 });
 const model = defineModel({ type: null, required: true });
 
-const { allowEmpty, localizeLabel, optionLabel, optionValue, stateful, selectionPageContextKey } = schema;
+const { allowEmpty = false, localizeLabel, optionLabel, optionValue, stateful, selectionPageContextKey } = schema;
 
 const loading = context.injectLoading();
 const path = context.injectPath();
