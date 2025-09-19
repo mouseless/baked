@@ -60,6 +60,9 @@ const { schema, data } = defineProps({
 
 const { errorInfos, footerInfo, safeLinks, safeLinksMessage } = schema;
 
-const statusCode = computed(() => data.value?.data?.status ?? data.value?.statusCode ?? 500);
+const statusCode = computed(() => {
+  const code = data.value?.data?.status ?? data.value?.statusCode ?? 500;
+  return code === 999 ? "APP" : code;
+});
 const errorInfo = computed(() => errorInfos[`${statusCode.value}`] ?? errorInfos["500"]);
 </script>
