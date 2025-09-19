@@ -1,5 +1,6 @@
 <template>
   <div
+    v-bind="$attrs"
     class="
       flex flex-row
       max-md:flex-col-reverse
@@ -19,8 +20,8 @@
       />
       <slot />
     </article>
-    <ScrollTop />
   </div>
+  <ScrollTop />
 </template>
 <script setup>
 import { ref } from "vue";
