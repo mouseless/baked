@@ -1,11 +1,23 @@
 <template>
-  <nav
+  <div
     class="
+      b-component--SideMenu--placeholder
+      min-w-[5.25rem]
+      max-md:min-h-16 max-md:mt-1 max-md:w-full
+      2xl:min-w-64
+    "
+  />
+  <nav
+    v-bind="$attrs"
+    class="
+      fixed z-20
       p-4 bg-slate-100 dark:bg-zinc-900
       flex flex-col justify-start gap-2
-      max-md:p-2
-      max-md:flex-row max-md:justify-between
-      max-md:items-center
+      md:top-0 md:left-0 md:h-screen
+      max-md:bottom-0 max-md:w-full max-md:p-2
+      max-md:flex-row max-md:justify-between max-md:items-center
+      max-md:border-t max-md:border-slate-300 max-md:dark:border-zinc-800
+      max-md:drop-shadow-[0_-2px_2px_rgba(0,0,0,0.1)]
       2xl:min-w-64
     "
   >

@@ -1,26 +1,16 @@
 <template>
   <div
-    class="flex flex-row"
+    class="
+      flex flex-row
+      max-md:flex-col-reverse
+    "
   >
     <Bake
-      class="
-        fixed
-        md:top-0 md:left-0 md:h-screen
-        max-md:bottom-0
-        max-md:z-50 max-md:w-full
-        max-md:border-t max-md:border-slate-300 max-md:dark:border-zinc-800
-        max-md:drop-shadow-[0_-2px_2px_rgba(0,0,0,0.1)]
-      "
       name="sideMenu"
       :descriptor="sideMenu"
     />
     <article
-      class="
-        w-full px-4 flex flex-col bg-body
-        md:max-2xl:ml-[5.3rem]
-        2xl:ml-64
-        max-md:pb-20
-      "
+      class="w-full px-4 flex flex-col bg-body mb-4"
     >
       <Bake
         :key="route.path"
