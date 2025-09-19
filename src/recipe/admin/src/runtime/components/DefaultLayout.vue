@@ -60,4 +60,8 @@ html {
 .p-tooltip {
   @apply !z-[1002];
 }
+
+.p-toast {
+  @apply !z-[2000];
+}
 </style>
