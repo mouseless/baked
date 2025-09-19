@@ -165,18 +165,8 @@ function togglePopover(event) {
   popover.value.toggle(event);
 }
 </script>
-<style lang="scss" scoped>
+<style scoped>
 .sticky {
   top: -1px;
-}
-
-div#page-title {
-  @apply max-md:pt-2;
-
-  &.border-b {
-    &:not(:has(.p-tabs)) {
-      @apply max-md:pb-2;
-    }
-  }
 }
 </style>

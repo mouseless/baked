@@ -55,4 +55,8 @@ html {
 
   @apply max-md:bottom-24;
 }
+
+.p-tooltip {
+  @apply !z-[1002]
+}
 </style>
