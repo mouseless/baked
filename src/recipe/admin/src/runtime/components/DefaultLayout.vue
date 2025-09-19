@@ -19,8 +19,8 @@
       />
       <slot />
     </article>
+    <ScrollTop />
   </div>
-  <ScrollTop />
 </template>
 <script setup>
 import { ref } from "vue";
