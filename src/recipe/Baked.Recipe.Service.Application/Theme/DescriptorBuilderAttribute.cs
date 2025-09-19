@@ -6,8 +6,15 @@ public class DescriptorBuilderAttribute<T> : Attribute, IComponentContextBasedBu
     public Func<ComponentContext, T> Builder { get; set; } = _ => throw new ArgumentNullException(nameof(Builder), $"`Builder` was not set for this attribute");
     public Func<ComponentContext, bool> Filter { get; set; } = cc => true;
 
+    protected T Build(ComponentContext context)
+    {
+        ComponentPath.AddPath(context.Path);
+
+        return Builder(context);
+    }
+
     T IComponentContextBasedBuilder<T>.Build(ComponentContext context) =>
-        Builder(context);
+        Build(context);
 
     bool IComponentContextFilter.AppliesTo(ComponentContext context) =>
         Filter(context);

@@ -1,7 +1,7 @@
 ﻿using Baked.Architecture;
-using Baked.Theme.Admin;
+using Baked.Theme.Default;
 
-using static Baked.Theme.Admin.Components;
+using static Baked.Theme.Default.Components;
 
 namespace Baked.Ux.NumericValuesAreFormatted;
 

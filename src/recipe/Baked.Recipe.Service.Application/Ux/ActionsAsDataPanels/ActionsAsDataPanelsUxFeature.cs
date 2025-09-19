@@ -1,9 +1,9 @@
-using Baked.Architecture;
+﻿using Baked.Architecture;
 using Baked.RestApi.Model;
-using Baked.Theme.Admin;
+using Baked.Theme.Default;
 
-using static Baked.Theme.Admin.DomainComponents;
-using static Baked.Theme.Admin.DomainDatas;
+using static Baked.Theme.Default.DomainComponents;
+using static Baked.Theme.Default.DomainDatas;
 
 namespace Baked.Ux.ActionsAsDataPanels;
 
@@ -16,7 +16,7 @@ public class ActionsAsDataPanelsUxFeature : IFeature<UxConfigurator>
             builder.Conventions.AddMethodComponent(
                 component: (c, cc) => MethodDataPanel(c.Method, cc),
                 whenMethod: c => c.Method.Has<ActionModelAttribute>(),
-                whenComponent: c => c.Path.EndsWith(nameof(ReportPage.Tab.Contents), "*", "*", nameof(ReportPage.Tab.Content.Component))
+                whenComponent: c => c.Path.EndsWith(nameof(ReportPage.Tabs), "*", nameof(ReportPage.Tab.Contents), "*", "*", nameof(ReportPage.Tab.Content.Component))
             );
             builder.Conventions.AddMethodSchema(
                 schema: (c, cc) => MethodNameInline(c.Method, cc),

@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.RestApi;
 using Baked.RestApi.Model;
 using FluentNHibernate.Conventions.Helpers;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,7 +21,7 @@ public class UseBuiltInTypesCodingStyleFeature(IEnumerable<string> _textProperty
                   c.Type.Is<Uri>() ||
                   c.Type.IsAssignableTo(typeof(IParsable<>)) ||
                   c.Type.IsAssignableTo(typeof(string)),
-              order: int.MinValue
+              order: RestApiLayer.MinConventionOrder
             );
             builder.Conventions.SetTypeMetadata(new ApiInputAttribute(),
                 when: c =>

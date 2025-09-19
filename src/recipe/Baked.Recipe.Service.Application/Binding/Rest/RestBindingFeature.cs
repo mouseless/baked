@@ -41,12 +41,12 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
                     !c.Method.Has<InitializerAttribute>() &&
                     c.Method.DefaultOverload.IsPublicInstanceWithNoSpecialName() &&
                     c.Method.DefaultOverload.AllParametersAreApiInput(),
-                order: int.MaxValue - 10
+                order: RestApiLayer.MaxConventionOrder
             );
             builder.Conventions.SetParameterMetadata(
                 attribute: c => new ParameterModelAttribute(),
                 when: c => c.Parameter.IsApiInput(),
-                order: int.MaxValue - 10
+                order: RestApiLayer.MaxConventionOrder
             );
 
             // init before any domain convention
