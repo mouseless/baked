@@ -1,4 +1,6 @@
-﻿namespace Baked.Ui;
+﻿using Newtonsoft.Json;
+
+namespace Baked.Ui;
 
 public record RemoteData(string Path)
     : IData
@@ -7,8 +9,15 @@ public record RemoteData(string Path)
     public string Path { get; set; } = Path;
     public IData? Headers { get; set; }
     public IData? Query { get; set; }
-    public Dictionary<string, string>? Attributes { get; init; } = [];
-    internal bool? RequireLocalization { get; set; }
+    public Dictionary<string, string>? Attributes { get; private set; }
 
-    bool? IData.RequireLocalization => RequireLocalization;
+    [JsonIgnore]
+    public bool? RequireLocalization { get; set; }
+
+    public void SetAttribute(string key, string value)
+    {
+        if (Attributes is null) { Attributes = []; }
+
+        Attributes[key] = value;
+    }
 }

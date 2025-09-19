@@ -22,8 +22,8 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
             builder.Index.Method.Add<ActionModelAttribute>();
             builder.Index.Parameter.Add<ParameterModelAttribute>();
 
-            // domain metadata add/remove
-            builder.Conventions.AddTypeMetadata(
+            // domain metadata mutations
+            builder.Conventions.SetTypeMetadata(
                 attribute: c => new ControllerModelAttribute(),
                 when: c =>
                   c.Type.Has<ServiceAttribute>() &&
@@ -34,24 +34,29 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
                   members.Methods.Any(m => m.DefaultOverload.IsPublicInstanceWithNoSpecialName()),
               order: 10
             );
-            builder.Conventions.AddMethodMetadata(
+            builder.Conventions.SetMethodMetadata(
                 attribute: c => new ActionModelAttribute(),
                 when: c =>
                     !c.Method.Has<ExternalAttribute>() &&
                     !c.Method.Has<InitializerAttribute>() &&
                     c.Method.DefaultOverload.IsPublicInstanceWithNoSpecialName() &&
                     c.Method.DefaultOverload.AllParametersAreApiInput(),
-                order: int.MaxValue - 10
+                order: RestApiLayer.MaxConventionOrder
             );
-            builder.Conventions.AddParameterMetadata(
+            builder.Conventions.SetParameterMetadata(
                 attribute: c => new ParameterModelAttribute(),
                 when: c => c.Parameter.IsApiInput(),
-                order: int.MaxValue - 10
+                order: RestApiLayer.MaxConventionOrder
             );
 
             // init before any domain convention
             builder.Conventions.Add(new InitApiModelConvention(), order: int.MinValue);
-            builder.Conventions.Add(new AddTargetParameterConvention(), order: int.MinValue);
+            builder.Conventions.AddMethodMetadataConfiguration<ActionModelAttribute>(
+                apply: (action, context) =>
+                    action.Parameter[ParameterModelAttribute.TargetParameterName] =
+                        new(ParameterModelAttribute.TargetParameterName, context.Type.CSharpFriendlyFullName, ParameterModelFrom.Services),
+                order: int.MinValue
+            );
 
             // rest api conventions
             builder.Conventions.Add(new AutoHttpMethodConvention([
@@ -64,10 +69,20 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
             builder.Conventions.Add(new RemoveFromRouteConvention(["Get"]));
             builder.Conventions.Add(new RemoveFromRouteConvention(["Update", "Change", "Set"]));
             builder.Conventions.Add(new RemoveFromRouteConvention(["Delete", "Remove", "Clear"]));
-            builder.Conventions.Add(new ConsumesJsonConvention(_when: action => action.HasBody), order: 10);
-            builder.Conventions.Add(new ProducesJsonConvention(_when: action => !action.ReturnIsVoid), order: 10);
+            builder.Conventions.AddMethodMetadataConfiguration<ActionModelAttribute>(
+                apply: action => action.AdditionalAttributes.Add("Consumes(\"application/json\")"),
+                when: action => action.HasBody,
+                order: 10
+            );
+            builder.Conventions.AddMethodMetadataConfiguration<ActionModelAttribute>(
+                apply: action => action.AdditionalAttributes.Add("Produces(\"application/json\")"),
+                when: action => !action.ReturnIsVoid,
+                order: 10
+            );
             builder.Conventions.Add(new UseDocumentationAsDescriptionConvention(_tagDescriptions, _examples), order: 10);
-            builder.Conventions.Add(new AddMappedMethodAttributeConvention());
+            builder.Conventions.AddMethodMetadataConfiguration<ActionModelAttribute>((action, context) =>
+                action.AdditionalAttributes.Add($"{typeof(MappedMethodAttribute).FullName}(\"{context.Type.FullName}\", \"{context.Method.Name}\")")
+            );
         });
 
         configurator.ConfigureApiModel(api =>
@@ -80,7 +95,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
                 {
                     if (!type.TryGetMetadata(out var metadata)) { continue; }
 
-                    var controller = metadata.GetSingle<ControllerModelAttribute>();
+                    var controller = metadata.Get<ControllerModelAttribute>();
                     if (!controller.Action.Any()) { continue; }
 
                     api.Controllers.Add(controller);

@@ -19,7 +19,7 @@ public class TypeModelMetadata : TypeModelInheritance, ICustomAttributesModel
 
             if (result is not TypeModelMetadata metadata) { return; }
 
-            metadata.CustomAttributes = new(type.GetCustomAttributes());
+            metadata.CustomAttributes = new(result.Name, type.GetCustomAttributes());
         }
     }
 }

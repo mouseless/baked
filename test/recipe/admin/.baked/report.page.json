@@ -1,7 +1,6 @@
 {
   "type": "ReportPage",
   "schema": {
-    "path": "report",
     "title": {
       "title": "Report",
       "description": "Showcases a report layout with tabs and data panels",
@@ -13,13 +12,13 @@
         "required": true,
         "default": {
           "type": "Inline",
-          "value": "rwd-1"
+          "value": "RequiredWithDefault1"
         },
         "component": {
           "type": "Select",
           "schema": {
-            "label": "Required w/ Default",
-            "optionLabel": "text",
+            "label": "Required With Default",
+            "optionLabel": "label",
             "optionValue": "value",
             "localizeLabel": true
           },
@@ -27,12 +26,12 @@
             "type": "Inline",
             "value": [
               {
-                "text": "Required w/ Default 1",
-                "value": "rwd-1"
+                "label": "RequiredWithDefaultOptions.RequiredWithDefault1",
+                "value": "RequiredWithDefault1"
               },
               {
-                "text": "Required w/ Default 2",
-                "value": "rwd-2"
+                "label": "RequiredWithDefaultOptions.RequiredWithDefault2",
+                "value": "RequiredWithDefault2"
               }
             ]
           }
@@ -45,13 +44,21 @@
           "type": "Select",
           "schema": {
             "label": "Required",
+            "optionLabel": "label",
+            "optionValue": "value",
             "localizeLabel": true
           },
           "data": {
             "type": "Inline",
             "value": [
-              "Required 1",
-              "Required 2"
+              {
+                "label": "RequiredOptions.Required1",
+                "value": "Required1"
+              },
+              {
+                "label": "RequiredOptions.Required2",
+                "value": "Required2"
+              }
             ]
           }
         }
@@ -62,13 +69,21 @@
           "type": "SelectButton",
           "schema": {
             "allowEmpty": true,
+            "optionLabel": "label",
+            "optionValue": "value",
             "localizeLabel": true
           },
           "data": {
             "type": "Inline",
             "value": [
-              "Optional 1",
-              "Optional 2"
+              {
+                "label": "OptionalOptions.Optional1",
+                "value": "Optional1"
+              },
+              {
+                "label": "OptionalOptions.Optional2",
+                "value": "Optional2"
+              }
             ]
           }
         }
@@ -87,7 +102,6 @@
                   "type": "Inline",
                   "value": "GetWide"
                 },
-                "collapsed": false,
                 "localizeTitle": true,
                 "parameters": [],
                 "content": {
@@ -95,7 +109,7 @@
                   "schema": {},
                   "data": {
                     "type": "Remote",
-                    "path": "/report/wide",
+                    "path": "report/wide",
                     "headers": {
                       "type": "Inline",
                       "value": {
@@ -128,7 +142,7 @@
                   "schema": {},
                   "data": {
                     "type": "Remote",
-                    "path": "/report/left",
+                    "path": "report/left",
                     "headers": {
                       "type": "Inline",
                       "value": {
@@ -162,7 +176,7 @@
                   "schema": {},
                   "data": {
                     "type": "Remote",
-                    "path": "/report/right",
+                    "path": "report/right",
                     "headers": {
                       "type": "Inline",
                       "value": {
@@ -212,15 +226,26 @@
                       "type": "Select",
                       "schema": {
                         "label": "Count",
+                        "optionLabel": "label",
+                        "optionValue": "value",
                         "localizeLabel": true,
                         "stateful": true
                       },
                       "data": {
                         "type": "Inline",
                         "value": [
-                          "Less",
-                          "Default",
-                          "More"
+                          {
+                            "label": "CountOptions.Less",
+                            "value": "Less"
+                          },
+                          {
+                            "label": "CountOptions.Default",
+                            "value": "Default"
+                          },
+                          {
+                            "label": "CountOptions.More",
+                            "value": "More"
+                          }
                         ]
                       }
                     }
@@ -241,7 +266,8 @@
                         },
                         "title": "Label",
                         "minWidth": true,
-                        "exportable": true
+                        "exportable": true,
+                        "frozen": true
                       },
                       {
                         "prop": "column1",
@@ -285,7 +311,7 @@
                     "rows": 5,
                     "exportOptions": {
                       "csvSeparator": ";",
-                      "fileName": "first",
+                      "fileName": "GetFirst.ExportFileName",
                       "formatter": "useCsvFormatter",
                       "buttonIcon": "pi pi-download",
                       "buttonLabel": "Export as CSV",
@@ -296,7 +322,7 @@
                   },
                   "data": {
                     "type": "Remote",
-                    "path": "/report/first",
+                    "path": "report/first",
                     "headers": {
                       "type": "Inline",
                       "value": {
@@ -342,15 +368,26 @@
                     "component": {
                       "type": "SelectButton",
                       "schema": {
+                        "optionLabel": "label",
+                        "optionValue": "value",
                         "localizeLabel": true,
                         "stateful": true
                       },
                       "data": {
                         "type": "Inline",
                         "value": [
-                          "Less",
-                          "Default",
-                          "More"
+                          {
+                            "label": "CountOptions.Less",
+                            "value": "Less"
+                          },
+                          {
+                            "label": "CountOptions.Default",
+                            "value": "Default"
+                          },
+                          {
+                            "label": "CountOptions.More",
+                            "value": "More"
+                          }
                         ]
                       }
                     }
@@ -370,7 +407,9 @@
                           "conditions": []
                         },
                         "title": "Label",
-                        "minWidth": true
+                        "minWidth": true,
+                        "exportable": true,
+                        "frozen": true
                       },
                       {
                         "prop": "column1",
@@ -381,7 +420,8 @@
                           },
                           "conditions": []
                         },
-                        "title": "Column 1"
+                        "title": "Column 1",
+                        "exportable": true
                       },
                       {
                         "prop": "column2",
@@ -392,7 +432,8 @@
                           },
                           "conditions": []
                         },
-                        "title": "Column 2"
+                        "title": "Column 2",
+                        "exportable": true
                       },
                       {
                         "prop": "column3",
@@ -403,16 +444,27 @@
                           },
                           "conditions": []
                         },
-                        "title": "Column 3"
+                        "title": "Column 3",
+                        "exportable": true
                       }
                     ],
                     "dataKey": "label",
                     "paginator": true,
-                    "rows": 5
+                    "rows": 5,
+                    "exportOptions": {
+                      "csvSeparator": ";",
+                      "fileName": "GetSecond.ExportFileName",
+                      "formatter": "useCsvFormatter",
+                      "buttonIcon": "pi pi-download",
+                      "buttonLabel": "Export as CSV",
+                      "appendParameters": true,
+                      "parameterSeparator": "_",
+                      "parameterFormatter": "useLocaleParameterFormatter"
+                    }
                   },
                   "data": {
                     "type": "Remote",
-                    "path": "/report/second",
+                    "path": "report/second",
                     "headers": {
                       "type": "Inline",
                       "value": {
@@ -446,6 +498,7 @@
           }
         }
       }
-    ]
+    ],
+    "path": "report"
   }
 }

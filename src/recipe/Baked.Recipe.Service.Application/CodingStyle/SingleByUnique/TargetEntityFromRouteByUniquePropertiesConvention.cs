@@ -19,7 +19,7 @@ public class TargetEntityFromRouteByUniquePropertiesConvention : IDomainModelCon
 
     public void Apply(MethodModelContext context)
     {
-        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
+        if (!context.Method.TryGet<ActionModelAttribute>(out var action)) { return; }
         if (!action.Parameter.TryGetValue(ParameterModelAttribute.TargetParameterName, out var parameter)) { return; }
         if (context.Method.Has<InitializerAttribute>()) { return; }
 
@@ -30,7 +30,7 @@ public class TargetEntityFromRouteByUniquePropertiesConvention : IDomainModelCon
         var singleByUniques = queryMembers.Methods.Having<SingleByUniqueAttribute>();
         if (!singleByUniques.Any()) { return; }
 
-        var uniques = singleByUniques.Select(sbu => sbu.GetSingle<SingleByUniqueAttribute>());
+        var uniques = singleByUniques.Select(sbu => sbu.Get<SingleByUniqueAttribute>());
         parameter.Type = "string";
         parameter.Name = $"idOr{uniques.Select(u => u.PropertyName).Join("Or")}";
         action.RouteParts = action.RouteParts.Replace("{id:guid}", $"{{{parameter.Name}}}");
@@ -48,7 +48,7 @@ public class TargetEntityFromRouteByUniquePropertiesConvention : IDomainModelCon
         SingleByUniqueAttribute? fallback = null;
         foreach (var singleByUnique in singleByUniques)
         {
-            var unique = singleByUnique.GetSingle<SingleByUniqueAttribute>();
+            var unique = singleByUnique.Get<SingleByUniqueAttribute>();
             var uniqueParameter = singleByUnique.DefaultOverload.Parameters[unique.PropertyName.Camelize()];
             if (uniqueParameter.ParameterType.IsEnum)
             {

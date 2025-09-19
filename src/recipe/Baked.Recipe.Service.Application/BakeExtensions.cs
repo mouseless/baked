@@ -52,7 +52,6 @@ public static class BakeExtensions
         logging ??= c => c.Request();
         orm ??= c => c.AutoMap();
         rateLimiter ??= c => c.Concurrency();
-        theme ??= c => c.Admin();
         configure ??= _ => { };
 
         return bake.Application(app =>
@@ -64,14 +63,14 @@ public static class BakeExtensions
             app.Layers.AddHttpServer();
             app.Layers.AddRestApi();
             app.Layers.AddRuntime();
-            app.Layers.AddUi();
 
             app.Features.AddAuthentications(authentications);
             app.Features.AddAuthorization(authorization);
             app.Features.AddBinding(c => c.Rest());
             app.Features.AddBusiness(business);
             app.Features.AddCachings(cachings);
-            app.Features.AddCodingStyles([
+            app.Features.AddCodingStyles(
+            [
                 c => c.AddRemoveChild(),
                 c => c.CommandPattern(),
                 c => c.EntityExtensionViaComposition(),
@@ -95,7 +94,8 @@ public static class BakeExtensions
             app.Features.AddDatabase(database);
             app.Features.AddExceptionHandling(exceptionHandling);
             app.Features.AddGreeting(greeting);
-            app.Features.AddLifetimes([
+            app.Features.AddLifetimes(
+            [
                 c => c.Scoped(),
                 c => c.Singleton(),
                 c => c.Transient()
@@ -104,7 +104,27 @@ public static class BakeExtensions
             app.Features.AddLogging(logging);
             app.Features.AddOrm(orm);
             app.Features.AddRateLimiter(rateLimiter);
-            app.Features.AddTheme(theme);
+
+            if (theme is not null)
+            {
+                app.Layers.AddUi();
+
+                app.Features.AddUx(
+                [
+                    c => c.ActionsAreGroupedAsTabs(),
+                    c => c.ActionsAsDataPanels(),
+                    c => c.DesignatedStringPropertiesAreLabel(),
+                    c => c.EnumParameterIsSelect(),
+                    c => c.InitializerParametersAreInPageTitle(),
+                    c => c.ListIsDataTable(),
+                    c => c.NumericValuesAreFormatted(),
+                    c => c.ObjectWithListIsDataTable(),
+                    c => c.PanelParametersAreStateful(),
+                    c => c.TypeWithOnlyGetIsReportPage()
+                ]);
+
+                app.Features.AddTheme(theme);
+            }
 
             configure(app);
         });
@@ -148,7 +168,8 @@ public static class BakeExtensions
             app.Features.AddBinding(c => c.Rest());
             app.Features.AddBusiness(business);
             app.Features.AddCachings(cachings);
-            app.Features.AddCodingStyles([
+            app.Features.AddCodingStyles(
+            [
                 c => c.AddRemoveChild(),
                 c => c.CommandPattern(),
                 c => c.NamespaceAsRoute(),
@@ -164,7 +185,8 @@ public static class BakeExtensions
             app.Features.AddDatabase(database);
             app.Features.AddExceptionHandling(exceptionHandling);
             app.Features.AddGreeting(greeting);
-            app.Features.AddLifetimes([
+            app.Features.AddLifetimes(
+            [
                 c => c.Scoped(),
                 c => c.Singleton(),
                 c => c.Transient()

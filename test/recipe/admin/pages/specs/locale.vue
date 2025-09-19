@@ -10,7 +10,7 @@
     </div>
     <Message severity="info">
       <span class="text-xl">
-        ⬇️  Below you can see the supported locale ⬇️
+        ⬇️  Below you can see the supported locales ⬇️
       </span>
     </Message>
     <div class="border-4 border-gray-500 rounded p-4 text-center" data-testid="test-locales">

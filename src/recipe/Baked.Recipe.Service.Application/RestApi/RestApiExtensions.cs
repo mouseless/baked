@@ -125,7 +125,7 @@ public static class RestApiExtensions
                 if (useRequestClassForBody is not null) { action.UseRequestClassForBody = useRequestClassForBody.Value; }
                 if (parameter is not null) { parameter(action.Parameter); }
             }),
-            order: int.MinValue + 10
+            order: RestApiLayer.MinConventionOrder + 10
         );
     }
 
@@ -146,7 +146,7 @@ public static class RestApiExtensions
                 if (useRequestClassForBody is not null) { action.UseRequestClassForBody = useRequestClassForBody.Value; }
                 if (parameter is not null) { parameter(action.Parameter); }
             }),
-            order: int.MaxValue - 10
+            order: RestApiLayer.MaxConventionOrder - 10
         );
     }
 }

@@ -15,8 +15,8 @@ public class SingleByUniqueCodingStyleFeature : IFeature<CodingStyleConfigurator
         {
             builder.Index.Method.Add<SingleByUniqueAttribute>();
 
-            builder.Conventions.AddMethodMetadata(
-                apply: (c, add) =>
+            builder.Conventions.SetMethodMetadata(
+                apply: (c, set) =>
                 {
                     var match = Regexes.StartsWithSingleBy.Match(c.Method.Name);
                     var propertyName = match.Groups["Name"].Value;
@@ -25,7 +25,7 @@ public class SingleByUniqueCodingStyleFeature : IFeature<CodingStyleConfigurator
                     {
                         propertyType.Apply(t =>
                         {
-                            add(c.Method, new SingleByUniqueAttribute(propertyName, t));
+                            set(c.Method, new SingleByUniqueAttribute(propertyName, t));
                         });
                     }
                 },

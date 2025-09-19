@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Runtime;
+using Baked.Ui;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,6 +11,14 @@ public class ScopedMemoryCachingFeature(Setting<TimeSpan> clientExpiration)
 {
     public void Configure(LayerConfigurator configurator)
     {
+        configurator.ConfigureDomainModelBuilder(builder =>
+        {
+            builder.Conventions.AddMethodSchemaConfiguration<RemoteData>(
+                schema: rd => rd.SetAttribute("client-cache", "user"),
+                whenMethod: c => c.Method.TryGet<ClientCacheAttribute>(out var clientCache) && clientCache.Type == "user"
+            );
+        });
+
         configurator.ConfigureServiceCollection(services =>
         {
             services.AddSingleton<Func<IMemoryCache>>(sp => () => sp.UsingCurrentScope().GetRequiredKeyedService<IMemoryCache>("ScopedMemory"));

@@ -88,34 +88,70 @@ public static class DomainExtensions
     public static bool Has(this ICustomAttributesModel model, Type type) =>
         model.CustomAttributes.Contains(type);
 
-    public static T GetSingle<T>(this ICustomAttributesModel model) where T : Attribute =>
-        model.Get<T>().Single();
-
-    public static IEnumerable<T> Get<T>(this ICustomAttributesModel model) where T : Attribute =>
+    public static T Get<T>(this ICustomAttributesModel model) where T : Attribute =>
         model.CustomAttributes.Get<T>();
 
-    public static bool TryGetSingle<T>(this ICustomAttributesModel model, [NotNullWhen(true)] out T? result) where T : Attribute
-    {
-        if (!model.TryGet<T>(out var attributes))
-        {
-            result = null;
+    public static Attribute Get(this ICustomAttributesModel model, Type attributeType) =>
+        model.CustomAttributes.Get(attributeType);
 
-            return false;
-        }
-
-        result = attributes.SingleOrDefault();
-
-        return result is not null;
-    }
-
-    public static bool TryGet<T>(this ICustomAttributesModel model, [NotNullWhen(true)] out IEnumerable<T>? result) where T : Attribute =>
+    public static bool TryGet<T>(this ICustomAttributesModel model, [NotNullWhen(true)] out T? result) where T : Attribute =>
         model.CustomAttributes.TryGet(out result);
+
+    public static bool TryGet(this ICustomAttributesModel model, Type attributeType, [NotNullWhen(true)] out Attribute? result) =>
+        model.CustomAttributes.TryGet(attributeType, out result);
+
+    public static IEnumerable<T> GetAll<T>(this ICustomAttributesModel model) where T : Attribute =>
+        model.CustomAttributes.GetAll<T>();
+
+    public static IEnumerable<Attribute> GetAll(this ICustomAttributesModel model, Type attributeType) =>
+        model.CustomAttributes.GetAll(attributeType);
+
+    public static bool TryGetAll<T>(this ICustomAttributesModel model, [NotNullWhen(true)] out IEnumerable<T>? result) where T : Attribute =>
+        model.CustomAttributes.TryGetAll(out result);
+
+    public static bool TryGetAll(this ICustomAttributesModel model, Type type, [NotNullWhen(true)] out IEnumerable<Attribute>? result) =>
+        model.CustomAttributes.TryGetAll(type, out result);
+
+    public static bool AllowsMultiple(this Attribute attribute) =>
+        attribute
+            .GetType()
+            .AllowsMultiple();
+
+    public static bool AllowsMultiple(this Type type) =>
+        type.IsAssignableTo(typeof(Attribute)) &&
+        type.GetCustomAttributes(typeof(AttributeUsageAttribute), false)
+            .Cast<AttributeUsageAttribute>()
+            .FirstOrDefault()
+            ?.AllowMultiple == true;
+
+    public static DomainModel TheDomainModel(this Stubber giveMe) =>
+        giveMe.Spec.GenerateContext.GetDomainModel();
+
+    public static TypeModel TheTypeModel<T>(this Stubber giveMe) =>
+        giveMe.TheTypeModel(typeof(T));
+
+    public static TypeModel TheTypeModel(this Stubber giveMe, Type type) =>
+        giveMe.TheDomainModel().Types[type];
 
     #region IDomainModelConvention
 
     public static void Add(this IDomainModelConventionCollection conventions, IDomainModelConvention convention,
         int order = default
     ) => conventions.Add((convention, order));
+
+    #region Metadata Add/Set/Remove
+
+    public static void SetTypeMetadata(this IDomainModelConventionCollection conventions, Attribute attribute, Func<TypeModelMetadataContext, bool> when,
+        int order = default
+    ) => conventions.SetTypeMetadata((context, set) => set(context.Type, attribute), when, order);
+
+    public static void SetTypeMetadata(this IDomainModelConventionCollection conventions, Func<TypeModelMetadataContext, Attribute> attribute, Func<TypeModelMetadataContext, bool> when,
+        int order = default
+    ) => conventions.SetTypeMetadata((context, set) => set(context.Type, attribute(context)), when, order);
+
+    public static void SetTypeMetadata(this IDomainModelConventionCollection conventions, Action<TypeModelMetadataContext, Action<ICustomAttributesModel, Attribute>> apply, Func<TypeModelMetadataContext, bool> when,
+        int order = default
+    ) => conventions.Add(new SetMetadataConvention<TypeModelMetadataContext>(apply, when), order);
 
     public static void AddTypeMetadata(this IDomainModelConventionCollection conventions, Attribute attribute, Func<TypeModelMetadataContext, bool> when,
         int order = default
@@ -132,7 +168,19 @@ public static class DomainExtensions
     public static void RemoveTypeMetadata<TAttribute>(this IDomainModelConventionCollection conventions, Func<TypeModelMetadataContext, bool> when,
         int order = default
     ) where TAttribute : Attribute =>
-        conventions.Add(new RemoveMetadataFromTypeConvention<TAttribute>(when), order);
+        conventions.Add(new RemoveMetadataConvention<TypeModelMetadataContext, TAttribute>((context, remove) => remove(context.Type), when), order);
+
+    public static void SetPropertyMetadata(this IDomainModelConventionCollection conventions, Attribute attribute, Func<PropertyModelContext, bool> when,
+        int order = default
+    ) => conventions.SetPropertyMetadata((context, set) => set(context.Property, attribute), when, order);
+
+    public static void SetPropertyMetadata(this IDomainModelConventionCollection conventions, Func<PropertyModelContext, Attribute> attribute, Func<PropertyModelContext, bool> when,
+        int order = default
+    ) => conventions.SetPropertyMetadata((context, set) => set(context.Property, attribute(context)), when, order);
+
+    public static void SetPropertyMetadata(this IDomainModelConventionCollection conventions, Action<PropertyModelContext, Action<ICustomAttributesModel, Attribute>> apply, Func<PropertyModelContext, bool> when,
+        int order = default
+    ) => conventions.Add(new SetMetadataConvention<PropertyModelContext>(apply, when), order);
 
     public static void AddPropertyMetadata(this IDomainModelConventionCollection conventions, Attribute attribute, Func<PropertyModelContext, bool> when,
         int order = default
@@ -146,6 +194,23 @@ public static class DomainExtensions
         int order = default
     ) => conventions.Add(new AddMetadataConvention<PropertyModelContext>(apply, when), order);
 
+    public static void RemovePropertyMetadata<TAttribute>(this IDomainModelConventionCollection conventions, Func<PropertyModelContext, bool> when,
+        int order = default
+    ) where TAttribute : Attribute =>
+        conventions.Add(new RemoveMetadataConvention<PropertyModelContext, TAttribute>((context, remove) => remove(context.Property), when), order);
+
+    public static void SetMethodMetadata(this IDomainModelConventionCollection conventions, Attribute attribute, Func<MethodModelContext, bool> when,
+        int order = default
+    ) => conventions.SetMethodMetadata((context, set) => set(context.Method, attribute), when, order);
+
+    public static void SetMethodMetadata(this IDomainModelConventionCollection conventions, Func<MethodModelContext, Attribute> attribute, Func<MethodModelContext, bool> when,
+        int order = default
+    ) => conventions.SetMethodMetadata((context, set) => set(context.Method, attribute(context)), when, order);
+
+    public static void SetMethodMetadata(this IDomainModelConventionCollection conventions, Action<MethodModelContext, Action<ICustomAttributesModel, Attribute>> apply, Func<MethodModelContext, bool> when,
+        int order = default
+    ) => conventions.Add(new SetMetadataConvention<MethodModelContext>(apply, when), order);
+
     public static void AddMethodMetadata(this IDomainModelConventionCollection conventions, Attribute attribute, Func<MethodModelContext, bool> when,
         int order = default
     ) => conventions.AddMethodMetadata((context, add) => add(context.Method, attribute), when, order);
@@ -158,6 +223,23 @@ public static class DomainExtensions
         int order = default
     ) => conventions.Add(new AddMetadataConvention<MethodModelContext>(apply, when), order);
 
+    public static void RemoveMethodMetadata<TAttribute>(this IDomainModelConventionCollection conventions, Func<MethodModelContext, bool> when,
+        int order = default
+    ) where TAttribute : Attribute =>
+        conventions.Add(new RemoveMetadataConvention<MethodModelContext, TAttribute>((context, remove) => remove(context.Method), when), order);
+
+    public static void SetParameterMetadata(this IDomainModelConventionCollection conventions, Attribute attribute, Func<ParameterModelContext, bool> when,
+        int order = default
+    ) => conventions.SetParameterMetadata((context, set) => set(context.Parameter, attribute), when, order);
+
+    public static void SetParameterMetadata(this IDomainModelConventionCollection conventions, Func<ParameterModelContext, Attribute> attribute, Func<ParameterModelContext, bool> when,
+        int order = default
+    ) => conventions.SetParameterMetadata((context, set) => set(context.Parameter, attribute(context)), when, order);
+
+    public static void SetParameterMetadata(this IDomainModelConventionCollection conventions, Action<ParameterModelContext, Action<ICustomAttributesModel, Attribute>> apply, Func<ParameterModelContext, bool> when,
+        int order = default
+    ) => conventions.Add(new SetMetadataConvention<ParameterModelContext>(apply, when), order);
+
     public static void AddParameterMetadata(this IDomainModelConventionCollection conventions, Attribute attribute, Func<ParameterModelContext, bool> when,
         int order = default
     ) => conventions.AddParameterMetadata((context, add) => add(context.Parameter, attribute), when, order);
@@ -169,6 +251,113 @@ public static class DomainExtensions
     public static void AddParameterMetadata(this IDomainModelConventionCollection conventions, Action<ParameterModelContext, Action<ICustomAttributesModel, Attribute>> apply, Func<ParameterModelContext, bool> when,
         int order = default
     ) => conventions.Add(new AddMetadataConvention<ParameterModelContext>(apply, when), order);
+
+    public static void RemoveParameterMetadata<TAttribute>(this IDomainModelConventionCollection conventions, Func<ParameterModelContext, bool> when,
+        int order = default
+    ) where TAttribute : Attribute =>
+        conventions.Add(new RemoveMetadataConvention<ParameterModelContext, TAttribute>((context, remove) => remove(context.Parameter), when), order);
+
+    #endregion
+
+    #region Metadata Configuration
+
+    public static void AddTypeMetadataConfiguration<TAttribute>(this IDomainModelConventionCollection conventions, Action<TAttribute> apply,
+        Func<TAttribute, bool> when, // NOTE this is not optional to avoid ambiguous call when not given
+        int order = default
+    ) where TAttribute : Attribute =>
+        conventions.AddTypeMetadataConfiguration((a, _) => apply(a), when: when, order: order);
+
+    public static void AddTypeMetadataConfiguration<TAttribute>(this IDomainModelConventionCollection conventions, Action<TAttribute> apply,
+        Func<TAttribute, TypeModelMetadataContext, bool>? when = default,
+        int order = default
+    ) where TAttribute : Attribute =>
+        conventions.AddTypeMetadataConfiguration((a, _) => apply(a), when: when, order: order);
+
+    public static void AddTypeMetadataConfiguration<TAttribute>(this IDomainModelConventionCollection conventions, Action<TAttribute, TypeModelMetadataContext> apply,
+        Func<TAttribute, bool> when, // NOTE this is not optional to avoid ambiguous call when not given
+        int order = default
+    ) where TAttribute : Attribute =>
+        conventions.AddTypeMetadataConfiguration(apply, when: (a, _) => when(a), order: order);
+
+    public static void AddTypeMetadataConfiguration<TAttribute>(this IDomainModelConventionCollection conventions, Action<TAttribute, TypeModelMetadataContext> apply,
+        Func<TAttribute, TypeModelMetadataContext, bool>? when = default,
+        int order = default
+    ) where TAttribute : Attribute =>
+        conventions.Add(new TypeMetadataConfigurationConvention<TAttribute>(apply, when: when), order: order);
+
+    public static void AddPropertyMetadataConfiguration<TAttribute>(this IDomainModelConventionCollection conventions, Action<TAttribute> apply,
+        Func<TAttribute, bool> when, // NOTE this is not optional to avoid ambiguous call when not given
+        int order = default
+    ) where TAttribute : Attribute =>
+        conventions.AddPropertyMetadataConfiguration((a, _) => apply(a), when: when, order: order);
+
+    public static void AddPropertyMetadataConfiguration<TAttribute>(this IDomainModelConventionCollection conventions, Action<TAttribute> apply,
+        Func<TAttribute, PropertyModelContext, bool>? when = default,
+        int order = default
+    ) where TAttribute : Attribute =>
+        conventions.AddPropertyMetadataConfiguration((a, _) => apply(a), when: when, order: order);
+
+    public static void AddPropertyMetadataConfiguration<TAttribute>(this IDomainModelConventionCollection conventions, Action<TAttribute, PropertyModelContext> apply,
+        Func<TAttribute, bool> when, // NOTE this is not optional to avoid ambiguous call when not given
+        int order = default
+    ) where TAttribute : Attribute =>
+        conventions.AddPropertyMetadataConfiguration(apply, when: (a, _) => when(a), order: order);
+
+    public static void AddPropertyMetadataConfiguration<TAttribute>(this IDomainModelConventionCollection conventions, Action<TAttribute, PropertyModelContext> apply,
+        Func<TAttribute, PropertyModelContext, bool>? when = default,
+        int order = default
+    ) where TAttribute : Attribute =>
+        conventions.Add(new PropertyMetadataConfigurationConvention<TAttribute>(apply, when: when), order: order);
+
+    public static void AddMethodMetadataConfiguration<TAttribute>(this IDomainModelConventionCollection conventions, Action<TAttribute> apply,
+        Func<TAttribute, bool> when, // NOTE this is not optional to avoid ambiguous call when not given
+        int order = default
+    ) where TAttribute : Attribute =>
+        conventions.AddMethodMetadataConfiguration((a, _) => apply(a), when: when, order: order);
+
+    public static void AddMethodMetadataConfiguration<TAttribute>(this IDomainModelConventionCollection conventions, Action<TAttribute> apply,
+        Func<TAttribute, MethodModelContext, bool>? when = default,
+        int order = default
+    ) where TAttribute : Attribute =>
+        conventions.AddMethodMetadataConfiguration((a, _) => apply(a), when: when, order: order);
+
+    public static void AddMethodMetadataConfiguration<TAttribute>(this IDomainModelConventionCollection conventions, Action<TAttribute, MethodModelContext> apply,
+        Func<TAttribute, bool> when, // NOTE this is not optional to avoid ambiguous call when not given
+        int order = default
+    ) where TAttribute : Attribute =>
+        conventions.AddMethodMetadataConfiguration(apply, when: (a, _) => when(a), order: order);
+
+    public static void AddMethodMetadataConfiguration<TAttribute>(this IDomainModelConventionCollection conventions, Action<TAttribute, MethodModelContext> apply,
+        Func<TAttribute, MethodModelContext, bool>? when = default,
+        int order = default
+    ) where TAttribute : Attribute =>
+        conventions.Add(new MethodMetadataConfigurationConvention<TAttribute>(apply, when: when), order: order);
+
+    public static void AddParameterMetadataConfiguration<TAttribute>(this IDomainModelConventionCollection conventions, Action<TAttribute> apply,
+        Func<TAttribute, bool> when, // NOTE this is not optional to avoid ambiguous call when not given
+        int order = default
+    ) where TAttribute : Attribute =>
+        conventions.AddParameterMetadataConfiguration((a, _) => apply(a), when: when, order: order);
+
+    public static void AddParameterMetadataConfiguration<TAttribute>(this IDomainModelConventionCollection conventions, Action<TAttribute> apply,
+        Func<TAttribute, ParameterModelContext, bool>? when = default,
+        int order = default
+    ) where TAttribute : Attribute =>
+        conventions.AddParameterMetadataConfiguration((a, _) => apply(a), when: when, order: order);
+
+    public static void AddParameterMetadataConfiguration<TAttribute>(this IDomainModelConventionCollection conventions, Action<TAttribute, ParameterModelContext> apply,
+        Func<TAttribute, bool> when, // NOTE this is not optional to avoid ambiguous call when not given
+        int order = default
+    ) where TAttribute : Attribute =>
+        conventions.AddParameterMetadataConfiguration(apply, when: (a, _) => when(a), order: order);
+
+    public static void AddParameterMetadataConfiguration<TAttribute>(this IDomainModelConventionCollection conventions, Action<TAttribute, ParameterModelContext> apply,
+        Func<TAttribute, ParameterModelContext, bool>? when = default,
+        int order = default
+    ) where TAttribute : Attribute =>
+        conventions.Add(new ParameterMetadataConfigurationConvention<TAttribute>(apply, when: when), order: order);
+
+    #endregion
 
     #endregion
 
@@ -233,7 +422,7 @@ public static class DomainExtensions
     {
         matcher ??= _ => true;
 
-        model.TryGetSingle<TAttribute>(out var attribute).ShouldBeTrue();
+        model.TryGet<TAttribute>(out var attribute).ShouldBeTrue();
         matcher(attribute).ShouldBeTrue();
     }
 

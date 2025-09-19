@@ -1,7 +1,6 @@
 {
   "type": "MenuPage",
   "schema": {
-    "path": "specs",
     "filterPageContextKey": "menu-page",
     "header": {
       "type": "PageTitle",
@@ -386,6 +385,7 @@
           }
         ]
       }
-    ]
+    ],
+    "path": "specs"
   }
 }

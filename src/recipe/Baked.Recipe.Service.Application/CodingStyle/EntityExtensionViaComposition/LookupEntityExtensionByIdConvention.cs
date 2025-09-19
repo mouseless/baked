@@ -8,8 +8,8 @@ public class LookupEntityExtensionByIdConvention : IDomainModelConvention<Parame
 {
     public void Apply(ParameterModelContext context)
     {
-        if (!context.Method.TryGetSingle<ActionModelAttribute>(out var action)) { return; }
-        if (!context.Parameter.TryGetSingle<ParameterModelAttribute>(out var parameter)) { return; }
+        if (!context.Method.TryGet<ActionModelAttribute>(out var action)) { return; }
+        if (!context.Parameter.TryGet<ParameterModelAttribute>(out var parameter)) { return; }
 
         var entityExtensionType = context.Parameter.ParameterType;
         if (!entityExtensionType.TryGetEntityTypeFromExtension(context.Domain, out var entityType)) { return; }

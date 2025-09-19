@@ -7,5 +7,6 @@ public record TableRow(
     Guid Column2,
     Guid Column3,
     int Column4,
-    double Column5
+    double Column5,
+    decimal Column6
 );

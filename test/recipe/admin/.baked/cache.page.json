@@ -1,7 +1,6 @@
 {
   "type": "ReportPage",
   "schema": {
-    "path": "cache",
     "title": {
       "title": "Cache",
       "description": "Showcases the cache behavior",
@@ -16,11 +15,8 @@
           "value": "value_a"
         },
         "component": {
-          "type": "Select",
-          "schema": {
-            "label": "Parameter",
-            "localizeLabel": false
-          },
+          "type": "SelectButton",
+          "schema": {},
           "data": {
             "type": "Inline",
             "value": [
@@ -34,7 +30,6 @@
     "tabs": [
       {
         "id": "default",
-        "title": "",
         "contents": [
           {
             "component": {
@@ -51,13 +46,7 @@
                   "schema": {},
                   "data": {
                     "type": "Remote",
-                    "path": "/cache-samples/scoped",
-                    "headers": {
-                      "type": "Inline",
-                      "value": {
-                        "authorization": "token-admin-ui"
-                      }
-                    },
+                    "path": "cache-samples/scoped",
                     "query": {
                       "type": "Computed",
                       "composable": "useQuery",
@@ -87,13 +76,7 @@
                   "schema": {},
                   "data": {
                     "type": "Remote",
-                    "path": "/cache-samples/application",
-                    "headers": {
-                      "type": "Inline",
-                      "value": {
-                        "authorization": "token-admin-ui"
-                      }
-                    },
+                    "path": "cache-samples/application",
                     "query": {
                       "type": "Computed",
                       "composable": "useQuery",
@@ -110,6 +93,7 @@
           }
         ]
       }
-    ]
+    ],
+    "path": "cache"
   }
 }

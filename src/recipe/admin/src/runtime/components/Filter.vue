@@ -4,7 +4,7 @@
     <InputText
       v-model="page[pageContextKey]"
       autofocus
-      :placeholder="l(placeholder)"
+      :placeholder="placeholder ? l(placeholder) : undefined"
     />
   </IconField>
 </template>

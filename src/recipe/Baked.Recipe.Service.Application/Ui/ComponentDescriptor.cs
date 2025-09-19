@@ -1,11 +1,12 @@
 ﻿namespace Baked.Ui;
 
-public class ComponentDescriptor(string type,
-    IComponentSchema? schema = default
-) : IComponentDescriptor
+public class ComponentDescriptor<TSchema>(TSchema schema)
+    : IComponentDescriptor where TSchema : IComponentSchema
 {
-    public string Type { get; set; } = type;
-    public string? Key { get; set; }
-    public IComponentSchema? Schema { get; } = schema;
+    public string Type => typeof(TSchema).Name;
+    public TSchema Schema { get; set; } = schema;
     public IData? Data { get; set; }
+
+    string IComponentDescriptor.Type => Type;
+    IComponentSchema IComponentDescriptor.Schema => Schema;
 }
