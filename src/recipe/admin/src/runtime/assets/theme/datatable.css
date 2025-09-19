@@ -1,591 +1,593 @@
-/* datatable variables */
-@layer primevue {
-  :root {
-    --p-datatable-transition-duration:var(--p-transition-duration);
-    --p-datatable-header-background:var(--p-content-background);
-    --p-datatable-header-border-color:var(--p-datatable-border-color);
-    --p-datatable-header-color:var(--p-content-color);
-    --p-datatable-header-border-width:0 0 1px 0;
-    --p-datatable-header-padding:0.75rem 1rem;
-    --p-datatable-header-sm-padding:0.375rem 0.5rem;
-    --p-datatable-header-lg-padding:1rem 1.25rem;
-    --p-datatable-header-cell-background:var(--p-content-background);
-    --p-datatable-header-cell-hover-background:var(--p-content-hover-background);
-    --p-datatable-header-cell-selected-background:var(--p-highlight-background);
-    --p-datatable-header-cell-border-color:var(--p-datatable-border-color);
-    --p-datatable-header-cell-color:var(--p-content-color);
-    --p-datatable-header-cell-hover-color:var(--p-content-hover-color);
-    --p-datatable-header-cell-selected-color:var(--p-highlight-color);
-    --p-datatable-header-cell-gap:0.5rem;
-    --p-datatable-header-cell-padding:0.75rem 1rem;
-    --p-datatable-header-cell-focus-ring-width:var(--p-focus-ring-width);
-    --p-datatable-header-cell-focus-ring-style:var(--p-focus-ring-style);
-    --p-datatable-header-cell-focus-ring-color:var(--p-focus-ring-color);
-    --p-datatable-header-cell-focus-ring-offset:-1px;
-    --p-datatable-header-cell-focus-ring-shadow:var(--p-focus-ring-shadow);
-    --p-datatable-header-cell-sm-padding:0.375rem 0.5rem;--p-datatable-header-cell-lg-padding:1rem 1.25rem;
-    --p-datatable-column-title-font-weight:600;--p-datatable-row-background:var(--p-content-background);
-    --p-datatable-row-hover-background:var(--p-content-hover-background);
-    --p-datatable-row-selected-background:var(--p-highlight-background);
-    --p-datatable-row-color:var(--p-content-color);
-    --p-datatable-row-hover-color:var(--p-content-hover-color);
-    --p-datatable-row-selected-color:var(--p-highlight-color);
-    --p-datatable-row-focus-ring-width:var(--p-focus-ring-width);
-    --p-datatable-row-focus-ring-style:var(--p-focus-ring-style);
-    --p-datatable-row-focus-ring-color:var(--p-focus-ring-color);
-    --p-datatable-row-focus-ring-offset:-1px;--p-datatable-row-focus-ring-shadow:var(--p-focus-ring-shadow);
-    --p-datatable-body-cell-border-color:var(--p-datatable-border-color);
-    --p-datatable-body-cell-padding:0.75rem 1rem;
-    --p-datatable-body-cell-sm-padding:0.375rem 0.5rem;
-    --p-datatable-body-cell-lg-padding:1rem 1.25rem;
-    --p-datatable-footer-cell-background:var(--p-content-background);
-    --p-datatable-footer-cell-border-color:var(--p-datatable-border-color);
-    --p-datatable-footer-cell-color:var(--p-content-color);
-    --p-datatable-footer-cell-padding:0.75rem 1rem;
-    --p-datatable-footer-cell-sm-padding:0.375rem 0.5rem;
-    --p-datatable-footer-cell-lg-padding:1rem 1.25rem;
-    --p-datatable-column-footer-font-weight:600;
-    --p-datatable-footer-background:var(--p-content-background);
-    --p-datatable-footer-border-color:var(--p-datatable-border-color);
-    --p-datatable-footer-color:var(--p-content-color);
-    --p-datatable-footer-border-width:0 0 1px 0;
-    --p-datatable-footer-padding:0.75rem 1rem;
-    --p-datatable-footer-sm-padding:0.375rem 0.5rem;
-    --p-datatable-footer-lg-padding:1rem 1.25rem;
-    --p-datatable-drop-point-color:var(--p-primary-color);
-    --p-datatable-column-resizer-width:0.5rem;
-    --p-datatable-resize-indicator-width:1px;
-    --p-datatable-resize-indicator-color:var(--p-primary-color);
-    --p-datatable-sort-icon-color:var(--p-text-muted-color);
-    --p-datatable-sort-icon-hover-color:var(--p-text-hover-muted-color);
-    --p-datatable-sort-icon-size:0.875rem;
-    --p-datatable-loading-icon-size:2rem;
-    --p-datatable-row-toggle-button-hover-background:var(--p-content-hover-background);
-    --p-datatable-row-toggle-button-selected-hover-background:var(--p-content-background);
-    --p-datatable-row-toggle-button-color:var(--p-text-muted-color);
-    --p-datatable-row-toggle-button-hover-color:var(--p-text-color);
-    --p-datatable-row-toggle-button-selected-hover-color:var(--p-primary-color);
-    --p-datatable-row-toggle-button-size:1.75rem;--p-datatable-row-toggle-button-border-radius:50%;
-    --p-datatable-row-toggle-button-focus-ring-width:var(--p-focus-ring-width);
-    --p-datatable-row-toggle-button-focus-ring-style:var(--p-focus-ring-style);
-    --p-datatable-row-toggle-button-focus-ring-color:var(--p-focus-ring-color);
-    --p-datatable-row-toggle-button-focus-ring-offset:var(--p-focus-ring-offset);
-    --p-datatable-row-toggle-button-focus-ring-shadow:var(--p-focus-ring-shadow);
-    --p-datatable-filter-inline-gap:0.5rem;--p-datatable-filter-overlay-select-background:var(--p-overlay-select-background);
-    --p-datatable-filter-overlay-select-border-color:var(--p-overlay-select-border-color);
-    --p-datatable-filter-overlay-select-border-radius:var(--p-overlay-select-border-radius);
-    --p-datatable-filter-overlay-select-color:var(--p-overlay-select-color);
-    --p-datatable-filter-overlay-select-shadow:var(--p-overlay-select-shadow);
-    --p-datatable-filter-overlay-popover-background:var(--p-overlay-popover-background);
-    --p-datatable-filter-overlay-popover-border-color:var(--p-overlay-popover-border-color);
-    --p-datatable-filter-overlay-popover-border-radius:var(--p-overlay-popover-border-radius);
-    --p-datatable-filter-overlay-popover-color:var(--p-overlay-popover-color);
-    --p-datatable-filter-overlay-popover-shadow:var(--p-overlay-popover-shadow);
-    --p-datatable-filter-overlay-popover-padding:var(--p-overlay-popover-padding);
-    --p-datatable-filter-overlay-popover-gap:0.5rem;
-    --p-datatable-filter-rule-border-color:var(--p-content-border-color);
-    --p-datatable-filter-constraint-list-padding:var(--p-list-padding);
-    --p-datatable-filter-constraint-list-gap:var(--p-list-gap);
-    --p-datatable-filter-constraint-focus-background:var(--p-list-option-focus-background);
-    --p-datatable-filter-constraint-selected-background:var(--p-list-option-selected-background);
-    --p-datatable-filter-constraint-selected-focus-background:var(--p-list-option-selected-focus-background);
-    --p-datatable-filter-constraint-color:var(--p-list-option-color);
-    --p-datatable-filter-constraint-focus-color:var(--p-list-option-focus-color);
-    --p-datatable-filter-constraint-selected-color:var(--p-list-option-selected-color);
-    --p-datatable-filter-constraint-selected-focus-color:var(--p-list-option-selected-focus-color);
-    --p-datatable-filter-constraint-separator-border-color:var(--p-content-border-color);
-    --p-datatable-filter-constraint-padding:var(--p-list-option-padding);
-    --p-datatable-filter-constraint-border-radius:var(--p-list-option-border-radius);
-    --p-datatable-paginator-top-border-color:var(--p-datatable-border-color);
-    --p-datatable-paginator-top-border-width:0 0 1px 0;
-    --p-datatable-paginator-bottom-border-color:var(--p-datatable-border-color);
-    --p-datatable-paginator-bottom-border-width:0 0 1px 0;
-    --p-datatable-border-color:var(--p-content-border-color);
-    --p-datatable-row-striped-background:var(--p-surface-50);
-    --p-datatable-body-cell-selected-border-color:var(--p-primary-100);
-  }
-}
-
-@layer primevue {
-  @media (prefers-color-scheme:dark) {
+/* datatable-variables */
+@layer primevue{
     :root{
-      --p-datatable-border-color:var(--p-surface-800);
-      --p-datatable-row-striped-background:var(--p-surface-950);
-      --p-datatable-body-cell-selected-border-color:var(--p-primary-900);
+        --p-datatable-paginator-bottom-border-color:var(--p-datatable-border-color);
+        --p-datatable-paginator-bottom-border-width:0 0 1px 0;
+        --p-datatable-paginator-top-border-color:var(--p-datatable-border-color);
+        --p-datatable-paginator-top-border-width:0 0 1px 0;
+        --p-datatable-filter-inline-gap:0.5rem;
+        --p-datatable-filter-constraint-focus-background:var(--p-list-option-focus-background);
+        --p-datatable-filter-constraint-selected-background:var(--p-list-option-selected-background);
+        --p-datatable-filter-constraint-selected-focus-background:var(--p-list-option-selected-focus-background);
+        --p-datatable-filter-constraint-color:var(--p-list-option-color);
+        --p-datatable-filter-constraint-focus-color:var(--p-list-option-focus-color);
+        --p-datatable-filter-constraint-selected-color:var(--p-list-option-selected-color);
+        --p-datatable-filter-constraint-selected-focus-color:var(--p-list-option-selected-focus-color);
+        --p-datatable-filter-constraint-padding:var(--p-list-option-padding);
+        --p-datatable-filter-constraint-border-radius:var(--p-list-option-border-radius);
+        --p-datatable-filter-constraint-separator-border-color:var(--p-content-border-color);
+        --p-datatable-filter-constraint-list-padding:var(--p-list-padding);
+        --p-datatable-filter-constraint-list-gap:var(--p-list-gap);
+        --p-datatable-filter-rule-border-color:var(--p-content-border-color);
+        --p-datatable-filter-overlay-popover-background:var(--p-overlay-popover-background);
+        --p-datatable-filter-overlay-popover-border-color:var(--p-overlay-popover-border-color);
+        --p-datatable-filter-overlay-popover-border-radius:var(--p-overlay-popover-border-radius);
+        --p-datatable-filter-overlay-popover-color:var(--p-overlay-popover-color);
+        --p-datatable-filter-overlay-popover-shadow:var(--p-overlay-popover-shadow);
+        --p-datatable-filter-overlay-popover-padding:var(--p-overlay-popover-padding);
+        --p-datatable-filter-overlay-popover-gap:0.5rem;
+        --p-datatable-filter-overlay-select-background:var(--p-overlay-select-background);
+        --p-datatable-filter-overlay-select-border-color:var(--p-overlay-select-border-color);
+        --p-datatable-filter-overlay-select-border-radius:var(--p-overlay-select-border-radius);
+        --p-datatable-filter-overlay-select-color:var(--p-overlay-select-color);
+        --p-datatable-filter-overlay-select-shadow:var(--p-overlay-select-shadow);
+        --p-datatable-row-toggle-button-hover-background:var(--p-content-hover-background);
+        --p-datatable-row-toggle-button-selected-hover-background:var(--p-content-background);
+        --p-datatable-row-toggle-button-color:var(--p-text-muted-color);
+        --p-datatable-row-toggle-button-hover-color:var(--p-text-color);
+        --p-datatable-row-toggle-button-selected-hover-color:var(--p-primary-color);
+        --p-datatable-row-toggle-button-size:1.75rem;
+        --p-datatable-row-toggle-button-border-radius:50%;
+        --p-datatable-row-toggle-button-focus-ring-width:var(--p-focus-ring-width);
+        --p-datatable-row-toggle-button-focus-ring-style:var(--p-focus-ring-style);
+        --p-datatable-row-toggle-button-focus-ring-color:var(--p-focus-ring-color);
+        --p-datatable-row-toggle-button-focus-ring-offset:var(--p-focus-ring-offset);
+        --p-datatable-row-toggle-button-focus-ring-shadow:var(--p-focus-ring-shadow);
+        --p-datatable-loading-icon-size:2rem;
+        --p-datatable-sort-icon-color:var(--p-text-muted-color);
+        --p-datatable-sort-icon-hover-color:var(--p-text-hover-muted-color);
+        --p-datatable-sort-icon-size:0.875rem;
+        --p-datatable-resize-indicator-width:1px;
+        --p-datatable-resize-indicator-color:var(--p-primary-color);
+        --p-datatable-column-resizer-width:0.5rem;
+        --p-datatable-drop-point-color:var(--p-primary-color);
+        --p-datatable-footer-background:var(--p-content-background);
+        --p-datatable-footer-border-color:var(--p-datatable-border-color);
+        --p-datatable-footer-color:var(--p-content-color);
+        --p-datatable-footer-border-width:0 0 1px 0;
+        --p-datatable-footer-padding:0.75rem 1rem;
+        --p-datatable-footer-lg-padding:1rem 1.25rem;
+        --p-datatable-footer-sm-padding:0.375rem 0.5rem;
+        --p-datatable-column-footer-font-weight:600;
+        --p-datatable-footer-cell-background:var(--p-content-background);
+        --p-datatable-footer-cell-border-color:var(--p-datatable-border-color);
+        --p-datatable-footer-cell-color:var(--p-content-color);
+        --p-datatable-footer-cell-padding:0.75rem 1rem;
+        --p-datatable-footer-cell-lg-padding:1rem 1.25rem;
+        --p-datatable-footer-cell-sm-padding:0.375rem 0.5rem;
+        --p-datatable-body-cell-border-color:var(--p-datatable-border-color);
+        --p-datatable-body-cell-padding:0.75rem 1rem;
+        --p-datatable-body-cell-lg-padding:1rem 1.25rem;
+        --p-datatable-body-cell-sm-padding:0.375rem 0.5rem;
+        --p-datatable-row-background:var(--p-content-background);
+        --p-datatable-row-hover-background:var(--p-content-hover-background);
+        --p-datatable-row-selected-background:var(--p-highlight-background);
+        --p-datatable-row-color:var(--p-content-color);
+        --p-datatable-row-hover-color:var(--p-content-hover-color);
+        --p-datatable-row-selected-color:var(--p-highlight-color);
+        --p-datatable-row-focus-ring-width:var(--p-focus-ring-width);
+        --p-datatable-row-focus-ring-style:var(--p-focus-ring-style);
+        --p-datatable-row-focus-ring-color:var(--p-focus-ring-color);
+        --p-datatable-row-focus-ring-offset:-1px;
+        --p-datatable-row-focus-ring-shadow:var(--p-focus-ring-shadow);
+        --p-datatable-column-title-font-weight:600;
+        --p-datatable-header-cell-background:var(--p-content-background);
+        --p-datatable-header-cell-hover-background:var(--p-content-hover-background);
+        --p-datatable-header-cell-selected-background:var(--p-highlight-background);
+        --p-datatable-header-cell-border-color:var(--p-datatable-border-color);
+        --p-datatable-header-cell-color:var(--p-content-color);
+        --p-datatable-header-cell-hover-color:var(--p-content-hover-color);
+        --p-datatable-header-cell-selected-color:var(--p-highlight-color);
+        --p-datatable-header-cell-gap:0.5rem;
+        --p-datatable-header-cell-padding:0.75rem 1rem;
+        --p-datatable-header-cell-lg-padding:1rem 1.25rem;
+        --p-datatable-header-cell-sm-padding:0.375rem 0.5rem;
+        --p-datatable-header-cell-focus-ring-width:var(--p-focus-ring-width);
+        --p-datatable-header-cell-focus-ring-style:var(--p-focus-ring-style);
+        --p-datatable-header-cell-focus-ring-color:var(--p-focus-ring-color);
+        --p-datatable-header-cell-focus-ring-offset:-1px;
+        --p-datatable-header-cell-focus-ring-shadow:var(--p-focus-ring-shadow);
+        --p-datatable-header-background:var(--p-content-background);
+        --p-datatable-header-border-color:var(--p-datatable-border-color);
+        --p-datatable-header-color:var(--p-content-color);
+        --p-datatable-header-border-width:0 0 1px 0;
+        --p-datatable-header-padding:0.75rem 1rem;
+        --p-datatable-header-lg-padding:1rem 1.25rem;
+        --p-datatable-header-sm-padding:0.375rem 0.5rem;
+        --p-datatable-transition-duration:var(--p-transition-duration);
+        --p-datatable-body-cell-selected-border-color:var(--p-primary-100);
+        --p-datatable-row-striped-background:var(--p-surface-50);
+        --p-datatable-border-color:var(--p-content-border-color);
     }
-  }
+}
+@layer primevue{
+    @media (prefers-color-scheme:dark){
+        :root{
+            --p-datatable-body-cell-selected-border-color:var(--p-primary-900);
+            --p-datatable-row-striped-background:var(--p-surface-950);
+            --p-datatable-border-color:var(--p-surface-800);
+        }
+    }
 }
 
-/*datatable style*/
-@layer primevue {
-  .p-datatable {
-    position:relative;
-  }
-  .p-datatable-table {
-    border-spacing:0;
-    border-collapse:separate;
-    width:100%;
-  }
-  .p-datatable-scrollable > .p-datatable-table-container {
-    position:relative;
-  }
-  .p-datatable-scrollable-table > .p-datatable-thead {
-    inset-block-start:0;z-index:1;
-  }
-  .p-datatable-scrollable-table > .p-datatable-frozen-tbody {
-    position:sticky;z-index:1;
-  }
-  .p-datatable-scrollable-table > .p-datatable-tfoot {
-    inset-block-end:0;z-index:1;
-  }
-  .p-datatable-scrollable .p-datatable-frozen-column {
-    position:sticky;
-    background:var(--p-datatable-header-cell-background);
-  }
-  .p-datatable-scrollable th.p-datatable-frozen-column {
-    z-index:1;
-  }
-  .p-datatable-scrollable > .p-datatable-table-container > .p-datatable-table > .p-datatable-thead,.p-datatable-scrollable > .p-datatable-table-container > .p-virtualscroller > .p-datatable-table > .p-datatable-thead {
-    background:var(--p-datatable-header-cell-background);
-  }
-  .p-datatable-scrollable > .p-datatable-table-container > .p-datatable-table > .p-datatable-tfoot,.p-datatable-scrollable > .p-datatable-table-container > .p-virtualscroller > .p-datatable-table > .p-datatable-tfoot {
-    background:var(--p-datatable-footer-cell-background);
-  }
-  .p-datatable-flex-scrollable {
-    display:flex;
-    flex-direction:column;
-    height:100%;
-  }
-  .p-datatable-flex-scrollable > .p-datatable-table-container {
-    display:flex;flex-direction:column;flex:1;height:100%;
-  }
-  .p-datatable-scrollable-table > .p-datatable-tbody > .p-datatable-row-group-header {
-    position:sticky;
-    z-index:1;
-  }
-  .p-datatable-resizable-table > .p-datatable-thead > tr > th,.p-datatable-resizable-table > .p-datatable-tfoot > tr > td,.p-datatable-resizable-table > .p-datatable-tbody > tr > td {
-    overflow:hidden;white-space:nowrap;
-  }
-  .p-datatable-resizable-table > .p-datatable-thead > tr > th.p-datatable-resizable-column:not(.p-datatable-frozen-column) {
-    background-clip:padding-box;position:relative;
-  }
-  .p-datatable-resizable-table-fit > .p-datatable-thead > tr > th.p-datatable-resizable-column:last-child .p-datatable-column-resizer {
-    display:none;
-  }
-  .p-datatable-column-resizer {
-    display:block;
-    position:absolute;
-    inset-block-start:0;
-    inset-inline-end:0;
-    margin:0;
-    width:var(--p-datatable-column-resizer-width);
-    height:100%;
-    padding:0;
-    cursor:col-resize;
-    border:1px solid transparent;
-  }
-  .p-datatable-column-header-content {
-    display:flex;
-    align-items:center;
-    gap:var(--p-datatable-header-cell-gap);
-  }
-  .p-datatable-column-resize-indicator {
-    width:var(--p-datatable-resize-indicator-width);
-    position:absolute;
-    z-index:10;
-    display:none;
-    background:var(--p-datatable-resize-indicator-color);
-  }
-  .p-datatable-row-reorder-indicator-up,.p-datatable-row-reorder-indicator-down {
-    position:absolute;
-    display:none;
-  }
-  .p-datatable-reorderable-column,.p-datatable-reorderable-row-handle {
-    cursor:move;
-  }
-  .p-datatable-mask {
-    position:absolute;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    z-index:2;
-  }
-  .p-datatable-inline-filter {
-    display:flex;
-    align-items:center;
-    width:100%;
-    gap:var(--p-datatable-filter-inline-gap);
-  }
-  .p-datatable-inline-filter .p-datatable-filter-element-container {
-    flex:1 1 auto;
-    width:1%;
-  }
-  .p-datatable-filter-overlay {
-    background:var(--p-datatable-filter-overlay-select-background);
-    color:var(--p-datatable-filter-overlay-select-color);
-    border:1px solid var(--p-datatable-filter-overlay-select-border-color);
-    border-radius:var(--p-datatable-filter-overlay-select-border-radius);
-    box-shadow:var(--p-datatable-filter-overlay-select-shadow);
-    min-width:12.5rem;
-  }
-  .p-datatable-filter-constraint-list {
-    margin:0;
-    list-style:none;
-    display:flex;
-    flex-direction:column;
-    padding:var(--p-datatable-filter-constraint-list-padding);
-    gap:var(--p-datatable-filter-constraint-list-gap);
-  }
-  .p-datatable-filter-constraint {
-    padding:var(--p-datatable-filter-constraint-padding);
-    color:var(--p-datatable-filter-constraint-color);
-    border-radius:var(--p-datatable-filter-constraint-border-radius);
-    cursor:pointer;
-    transition:
-      background var(--p-datatable-transition-duration),
-      color var(--p-datatable-transition-duration),
-      border-color var(--p-datatable-transition-duration),
-      box-shadow var(--p-datatable-transition-duration);
-  }
-  .p-datatable-filter-constraint-selected {
-    background:var(--p-datatable-filter-constraint-selected-background);
-    color:var(--p-datatable-filter-constraint-selected-color);
-  }
-  .p-datatable-filter-constraint:not(.p-datatable-filter-constraint-selected):not(.p-disabled):hover {
-    background:var(--p-datatable-filter-constraint-focus-background);
-    color:var(--p-datatable-filter-constraint-focus-color);
-  }
-  .p-datatable-filter-constraint:focus-visible {
-    outline:0 none;
-    background:var(--p-datatable-filter-constraint-focus-background);
-    color:var(--p-datatable-filter-constraint-focus-color);
-  }
-  .p-datatable-filter-constraint-selected:focus-visible {
-    outline:0 none;
-    background:var(--p-datatable-filter-constraint-selected-focus-background);
-    color:var(--p-datatable-filter-constraint-selected-focus-color);
-  }
-  .p-datatable-filter-constraint-separator {
-    border-block-start:1px solid var(--p-datatable-filter-constraint-separator-border-color);
-  }
-  .p-datatable-popover-filter {
-    display:inline-flex;
-    margin-inline-start:auto;
-  }
-  .p-datatable-filter-overlay-popover {
-    background:var(--p-datatable-filter-overlay-popover-background);
-    color:var(--p-datatable-filter-overlay-popover-color);
-    border:1px solid var(--p-datatable-filter-overlay-popover-border-color);
-    border-radius:var(--p-datatable-filter-overlay-popover-border-radius);
-    box-shadow:var(--p-datatable-filter-overlay-popover-shadow);
-    min-width:12.5rem;
-    padding:var(--p-datatable-filter-overlay-popover-padding);
-    display:flex;flex-direction:column;
-    gap:var(--p-datatable-filter-overlay-popover-gap);
-  }
-  .p-datatable-filter-operator-dropdown {
-    width:100%;
-  }
-  .p-datatable-filter-rule-list,.p-datatable-filter-rule {
-    display:flex;
-    flex-direction:column;
-    gap:var(--p-datatable-filter-overlay-popover-gap);
-  }
-  .p-datatable-filter-rule {
-    border-block-end:1px solid var(--p-datatable-filter-rule-border-color);
-    padding-bottom:var(--p-datatable-filter-overlay-popover-gap);
-  }
-  .p-datatable-filter-rule:last-child {
-    border-block-end:0 none;
-    padding-bottom:0;
-  }
-  .p-datatable-filter-add-rule-button {
-    width:100%;
-  }
-  .p-datatable-filter-remove-rule-button {
-    width:100%;
-  }
-  .p-datatable-filter-buttonbar {
-    padding:0;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-  }
-  .p-datatable-virtualscroller-spacer {
-    display:flex;
-  }
-  .p-datatable .p-virtualscroller .p-virtualscroller-loading {
-    transform:none!important;
-    min-height:0;
-    position:sticky;
-    inset-block-start:0;
-    inset-inline-start:0;
-  }
-  .p-datatable-paginator-top {
-    border-color:var(--p-datatable-paginator-top-border-color);
-    border-style:solid;
-    border-width:var(--p-datatable-paginator-top-border-width);
-  }
-  .p-datatable-paginator-bottom {
-    border-color:var(--p-datatable-paginator-bottom-border-color);
-    border-style:solid;border-width:var(--p-datatable-paginator-bottom-border-width);
-  }
-  .p-datatable-header {
-    background:var(--p-datatable-header-background);
-    color:var(--p-datatable-header-color);
-    border-color:var(--p-datatable-header-border-color);
-    border-style:solid;
-    border-width:var(--p-datatable-header-border-width);
-    padding:var(--p-datatable-header-padding);
-  }
-  .p-datatable-footer {
-    background:var(--p-datatable-footer-background);
-    color:var(--p-datatable-footer-color);
-    border-color:var(--p-datatable-footer-border-color);
-    border-style:solid;border-width:var(--p-datatable-footer-border-width);
-    padding:var(--p-datatable-footer-padding);
-  }
-  .p-datatable-header-cell {
-    padding:var(--p-datatable-header-cell-padding);
-    background:var(--p-datatable-header-cell-background);
-    border-color:var(--p-datatable-header-cell-border-color);
-    border-style:solid;
-    border-width:0 0 1px 0;
-    color:var(--p-datatable-header-cell-color);
-    font-weight:normal;
-    text-align:start;
-    transition:
-      background var(--p-datatable-transition-duration),
-      color var(--p-datatable-transition-duration),
-      border-color var(--p-datatable-transition-duration),
-      outline-color var(--p-datatable-transition-duration),
-      box-shadow var(--p-datatable-transition-duration);
-  }
-  .p-datatable-column-title {
-    font-weight:var(--p-datatable-column-title-font-weight);
-  }
-  .p-datatable-tbody > tr {
-    outline-color:transparent;
-    background:var(--p-datatable-row-background);
-    color:var(--p-datatable-row-color);
-    transition:
-      background var(--p-datatable-transition-duration),
-      color var(--p-datatable-transition-duration),
-      border-color var(--p-datatable-transition-duration),
-      outline-color var(--p-datatable-transition-duration),
-      box-shadow var(--p-datatable-transition-duration);
-  }
-  .p-datatable-tbody > tr > td {
-    text-align:start;
-    border-color:var(--p-datatable-body-cell-border-color);
-    border-style:solid;
-    border-width:0 0 1px 0;
-    padding:var(--p-datatable-body-cell-padding);
-  }
-  .p-datatable-hoverable .p-datatable-tbody > tr:not(.p-datatable-row-selected):hover {
-    background:var(--p-datatable-row-hover-background);
-    color:var(--p-datatable-row-hover-color);
-  }
-  .p-datatable-tbody > tr.p-datatable-row-selected {
-    background:var(--p-datatable-row-selected-background);
-    color:var(--p-datatable-row-selected-color);
-  }
-  .p-datatable-tbody > tr:has(+ .p-datatable-row-selected) > td {
-    border-block-end-color:var(--p-datatable-body-cell-selected-border-color);
-  }
-  .p-datatable-tbody > tr.p-datatable-row-selected > td {
-    border-block-end-color:var(--p-datatable-body-cell-selected-border-color);
-  }
-  .p-datatable-tbody > tr:focus-visible,.p-datatable-tbody > tr.p-datatable-contextmenu-row-selected {
-    box-shadow:var(--p-datatable-row-focus-ring-shadow);
-    outline:var(--p-datatable-row-focus-ring-width) var(--p-datatable-row-focus-ring-style) var(--p-datatable-row-focus-ring-color);
-    outline-offset:var(--p-datatable-row-focus-ring-offset);
-  }
-  .p-datatable-tfoot > tr > td {
-    text-align:start;
-    padding:var(--p-datatable-footer-cell-padding);
-    border-color:var(--p-datatable-footer-cell-border-color);
-    border-style:solid;
-    border-width:0 0 1px 0;
-    color:var(--p-datatable-footer-cell-color);
-    background:var(--p-datatable-footer-cell-background);
-  }
-  .p-datatable-column-footer {
-    font-weight:var(--p-datatable-column-footer-font-weight);
-  }
-  .p-datatable-sortable-column {
-    cursor:pointer;
-    user-select:none;
-    outline-color:transparent;
-  }
-  .p-datatable-column-title,.p-datatable-sort-icon,.p-datatable-sort-badge {
-    vertical-align:middle;
-  }
-  .p-datatable-sort-icon {
-    color:var(--p-datatable-sort-icon-color);
-    font-size:var(--p-datatable-sort-icon-size);
-    width:var(--p-datatable-sort-icon-size);
-    height:var(--p-datatable-sort-icon-size);
-    transition:color var(--p-datatable-transition-duration);
-  }
-  .p-datatable-sortable-column:not(.p-datatable-column-sorted):hover {
-    background:var(--p-datatable-header-cell-hover-background);
-    color:var(--p-datatable-header-cell-hover-color);
-  }
-  .p-datatable-sortable-column:not(.p-datatable-column-sorted):hover .p-datatable-sort-icon{
-    color:var(--p-datatable-sort-icon-hover-color);
-  }
-  .p-datatable-column-sorted {
-    background:var(--p-datatable-header-cell-selected-background);
-    color:var(--p-datatable-header-cell-selected-color);
-  }
-  .p-datatable-column-sorted .p-datatable-sort-icon{
-    color:var(--p-datatable-header-cell-selected-color);
-  }
-  .p-datatable-sortable-column:focus-visible {
-    box-shadow:var(--p-datatable-header-cell-focus-ring-shadow);
-    outline:var(--p-datatable-header-cell-focus-ring-width) var(--p-datatable-header-cell-focus-ring-style) var(--p-datatable-header-cell-focus-ring-color);
-    outline-offset:var(--p-datatable-header-cell-focus-ring-offset);
-  }
-  .p-datatable-hoverable .p-datatable-selectable-row {
-    cursor:pointer;
-  }
-  .p-datatable-tbody > tr.p-datatable-dragpoint-top > td {
-    box-shadow:inset 0 2px 0 0 var(--p-datatable-drop-point-color);
-  }
-  .p-datatable-tbody > tr.p-datatable-dragpoint-bottom > td {
-    box-shadow:inset 0 -2px 0 0 var(--p-datatable-drop-point-color);
-  }
-  .p-datatable-loading-icon {
-    font-size:var(--p-datatable-loading-icon-size);
-    width:var(--p-datatable-loading-icon-size);
-    height:var(--p-datatable-loading-icon-size);
-  }
-  .p-datatable-gridlines .p-datatable-header {
-    border-width:1px 1px 0 1px;
-  }
-  .p-datatable-gridlines .p-datatable-footer {
-    border-width:0 1px 1px 1px;
-  }
-  .p-datatable-gridlines .p-datatable-paginator-top {
-    border-width:1px 1px 0 1px;
-  }
-  .p-datatable-gridlines .p-datatable-paginator-bottom {
-    border-width:0 1px 1px 1px;
-  }
-  .p-datatable-gridlines .p-datatable-thead > tr > th {
-    border-width:1px 0 1px 1px;
-  }
-  .p-datatable-gridlines .p-datatable-thead > tr > th:last-child {
-    border-width:1px;
-  }
-  .p-datatable-gridlines .p-datatable-tbody > tr > td{
-    border-width:1px 0 0 1px;
-  }
-  .p-datatable-gridlines .p-datatable-tbody > tr > td:last-child {
-    border-width:1px 1px 0 1px;
-  }
-  .p-datatable-gridlines .p-datatable-tbody > tr:last-child > td {
-    border-width:1px 0 1px 1px;
-  }
-  .p-datatable-gridlines .p-datatable-tbody > tr:last-child > td:last-child {
-    border-width:1px;
-  }.p-datatable-gridlines .p-datatable-tfoot > tr > td {
-    border-width:1px 0 1px 1px;
-  }
-  .p-datatable-gridlines .p-datatable-tfoot > tr > td:last-child {
-    border-width:1px 1px 1px 1px;
-  }
-  .p-datatable.p-datatable-gridlines .p-datatable-thead + .p-datatable-tfoot > tr > td {
-    border-width:0 0 1px 1px;
-  }
-  .p-datatable.p-datatable-gridlines .p-datatable-thead + .p-datatable-tfoot > tr > td:last-child {
-    border-width:0 1px 1px 1px;
-  }
-  .p-datatable.p-datatable-gridlines:has(.p-datatable-thead):has(.p-datatable-tbody) .p-datatable-tbody > tr > td {
-    border-width:0 0 1px 1px;
-  }
-  .p-datatable.p-datatable-gridlines:has(.p-datatable-thead):has(.p-datatable-tbody) .p-datatable-tbody > tr > td:last-child {
-    border-width:0 1px 1px 1px;
-  }
-  .p-datatable.p-datatable-gridlines:has(.p-datatable-tbody):has(.p-datatable-tfoot) .p-datatable-tbody > tr:last-child > td {
-    border-width:0 0 0 1px;
-  }
-  .p-datatable.p-datatable-gridlines:has(.p-datatable-tbody):has(.p-datatable-tfoot) .p-datatable-tbody > tr:last-child > td:last-child {
-    border-width:0 1px 0 1px;
-  }
-  .p-datatable.p-datatable-striped .p-datatable-tbody > tr.p-row-odd {
-    background:var(--p-datatable-row-striped-background);
-  }
-  .p-datatable.p-datatable-striped .p-datatable-tbody > tr.p-row-odd.p-datatable-row-selected{
-    background:var(--p-datatable-row-selected-background);color:var(--p-datatable-row-selected-color);
-  }
-  .p-datatable-striped.p-datatable-hoverable .p-datatable-tbody > tr:not(.p-datatable-row-selected):hover {
-    background:var(--p-datatable-row-hover-background);color:var(--p-datatable-row-hover-color);
-  }
-  .p-datatable.p-datatable-sm .p-datatable-header {
-    padding:var(--p-datatable-header-sm-padding);
-  }
-  .p-datatable.p-datatable-sm .p-datatable-thead > tr > th {
-    padding:var(--p-datatable-header-cell-sm-padding);
-  }
-  .p-datatable.p-datatable-sm .p-datatable-tbody > tr > td {
-    padding:var(--p-datatable-body-cell-sm-padding);
-  }
-  .p-datatable.p-datatable-sm .p-datatable-tfoot > tr > td {
-    padding:var(--p-datatable-footer-cell-sm-padding);
-  }
-  .p-datatable.p-datatable-sm .p-datatable-footer{
-    padding:var(--p-datatable-footer-sm-padding);
-  }
-  .p-datatable.p-datatable-lg .p-datatable-header {
-    padding:var(--p-datatable-header-lg-padding);
-  }
-  .p-datatable.p-datatable-lg .p-datatable-thead > tr > th {
-    padding:var(--p-datatable-header-cell-lg-padding);
-  }
-  .p-datatable.p-datatable-lg .p-datatable-tbody > tr > td {
-    padding:var(--p-datatable-body-cell-lg-padding);
-  }
-  .p-datatable.p-datatable-lg .p-datatable-tfoot > tr > td {
-    padding:var(--p-datatable-footer-cell-lg-padding);
-  }
-  .p-datatable.p-datatable-lg .p-datatable-footer {
-    padding:var(--p-datatable-footer-lg-padding);
-  }
-  .p-datatable-row-toggle-button {
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    overflow:hidden;
-    position:relative;
-    width:var(--p-datatable-row-toggle-button-size);
-    height:var(--p-datatable-row-toggle-button-size);
-    color:var(--p-datatable-row-toggle-button-color);
-    border:0 none;background:transparent;cursor:pointer;
-    border-radius:var(--p-datatable-row-toggle-button-border-radius);
-    transition:
-      background var(--p-datatable-transition-duration),
-      color var(--p-datatable-transition-duration),
-      border-color var(--p-datatable-transition-duration),
-      outline-color var(--p-datatable-transition-duration),
-      box-shadow var(--p-datatable-transition-duration);
-    outline-color:transparent;user-select:none;
-  }
-  .p-datatable-row-toggle-button:enabled:hover {
-    color:var(--p-datatable-row-toggle-button-hover-color);
-    background:var(--p-datatable-row-toggle-button-hover-background);
-  }
-  .p-datatable-tbody > tr.p-datatable-row-selected .p-datatable-row-toggle-button:hover {
-    background:var(--p-datatable-row-toggle-button-selected-hover-background);
-    color:var(--p-datatable-row-toggle-button-selected-hover-color);
-  }
-  .p-datatable-row-toggle-button:focus-visible {
-    box-shadow:var(--p-datatable-row-toggle-button-focus-ring-shadow);
-    outline:var(--p-datatable-row-toggle-button-focus-ring-width) var(--p-datatable-row-toggle-button-focus-ring-style) var(--p-datatable-row-toggle-button-focus-ring-color);
-    outline-offset:var(--p-datatable-row-toggle-button-focus-ring-offset);
-  }
-  .p-datatable-row-toggle-icon:dir(rtl){
-    transform:rotate(180deg);
-  }
+/* datatable-style */
+@layer primevue{
+     .p-datatable{
+        position:relative;
+    }
+    .p-datatable-table{
+        border-spacing:0;
+        border-collapse:separate;
+        width:100%;
+    }
+    .p-datatable-scrollable > .p-datatable-table-container{
+        position:relative;
+    }
+    .p-datatable-scrollable-table > .p-datatable-thead{
+        inset-block-start:0;
+        z-index:1;
+    }
+    .p-datatable-scrollable-table > .p-datatable-frozen-tbody{
+        position:sticky;
+        z-index:1;
+    }
+    .p-datatable-scrollable-table > .p-datatable-tfoot{
+        inset-block-end:0;
+        z-index:1;
+    }
+    .p-datatable-scrollable .p-datatable-frozen-column{
+        position:sticky;
+        background:var(--p-datatable-header-cell-background);
+    }
+    .p-datatable-scrollable th.p-datatable-frozen-column{
+        z-index:1;
+    }
+    .p-datatable-scrollable > .p-datatable-table-container > .p-datatable-table > .p-datatable-thead,.p-datatable-scrollable > .p-datatable-table-container > .p-virtualscroller > .p-datatable-table > .p-datatable-thead{
+        background:var(--p-datatable-header-cell-background);
+    }
+    .p-datatable-scrollable > .p-datatable-table-container > .p-datatable-table > .p-datatable-tfoot,.p-datatable-scrollable > .p-datatable-table-container > .p-virtualscroller > .p-datatable-table > .p-datatable-tfoot{
+        background:var(--p-datatable-footer-cell-background);
+    }
+    .p-datatable-flex-scrollable{
+        display:flex;
+        flex-direction:column;
+        height:100%;
+    }
+    .p-datatable-flex-scrollable > .p-datatable-table-container{
+        display:flex;
+        flex-direction:column;
+        flex:1;
+        height:100%;
+    }
+    .p-datatable-scrollable-table > .p-datatable-tbody > .p-datatable-row-group-header{
+        position:sticky;
+        z-index:1;
+    }
+    .p-datatable-resizable-table > .p-datatable-thead > tr > th,.p-datatable-resizable-table > .p-datatable-tfoot > tr > td,.p-datatable-resizable-table > .p-datatable-tbody > tr > td{
+        overflow:hidden;
+        white-space:nowrap;
+    }
+    .p-datatable-resizable-table > .p-datatable-thead > tr > th.p-datatable-resizable-column:not(.p-datatable-frozen-column){
+        background-clip:padding-box;
+        position:relative;
+    }
+    .p-datatable-resizable-table-fit > .p-datatable-thead > tr > th.p-datatable-resizable-column:last-child .p-datatable-column-resizer{
+        display:none;
+    }
+    .p-datatable-column-resizer{
+        display:block;
+        position:absolute;
+        inset-block-start:0;
+        inset-inline-end:0;
+        margin:0;
+        width:var(--p-datatable-column-resizer-width);
+        height:100%;
+        padding:0;
+        cursor:col-resize;
+        border:1px solid transparent;
+    }
+    .p-datatable-column-header-content{
+        display:flex;
+        align-items:center;
+        gap:var(--p-datatable-header-cell-gap);
+    }
+    .p-datatable-column-resize-indicator{
+        width:var(--p-datatable-resize-indicator-width);
+        position:absolute;
+        z-index:10;
+        display:none;
+        background:var(--p-datatable-resize-indicator-color);
+    }
+    .p-datatable-row-reorder-indicator-up,.p-datatable-row-reorder-indicator-down{
+        position:absolute;
+        display:none;
+    }
+    .p-datatable-reorderable-column,.p-datatable-reorderable-row-handle{
+        cursor:move;
+    }
+    .p-datatable-mask{
+        position:absolute;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        z-index:2;
+    }
+    .p-datatable-inline-filter{
+        display:flex;
+        align-items:center;
+        width:100%;
+        gap:var(--p-datatable-filter-inline-gap);
+    }
+    .p-datatable-inline-filter .p-datatable-filter-element-container{
+        flex:1 1 auto;
+        width:1%;
+    }
+    .p-datatable-filter-overlay{
+        background:var(--p-datatable-filter-overlay-select-background);
+        color:var(--p-datatable-filter-overlay-select-color);
+        border:1px solid var(--p-datatable-filter-overlay-select-border-color);
+        border-radius:var(--p-datatable-filter-overlay-select-border-radius);
+        box-shadow:var(--p-datatable-filter-overlay-select-shadow);
+        min-width:12.5rem;
+    }
+    .p-datatable-filter-constraint-list{
+        margin:0;
+        list-style:none;
+        display:flex;
+        flex-direction:column;
+        padding:var(--p-datatable-filter-constraint-list-padding);
+        gap:var(--p-datatable-filter-constraint-list-gap);
+    }
+    .p-datatable-filter-constraint{
+        padding:var(--p-datatable-filter-constraint-padding);
+        color:var(--p-datatable-filter-constraint-color);
+        border-radius:var(--p-datatable-filter-constraint-border-radius);
+        cursor:pointer;
+        transition:background var(--p-datatable-transition-duration),color var(--p-datatable-transition-duration),border-color var(--p-datatable-transition-duration),box-shadow var(--p-datatable-transition-duration);
+    }
+    .p-datatable-filter-constraint-selected{
+        background:var(--p-datatable-filter-constraint-selected-background);
+        color:var(--p-datatable-filter-constraint-selected-color);
+    }
+    .p-datatable-filter-constraint:not(.p-datatable-filter-constraint-selected):not(.p-disabled):hover{
+        background:var(--p-datatable-filter-constraint-focus-background);
+        color:var(--p-datatable-filter-constraint-focus-color);
+    }
+    .p-datatable-filter-constraint:focus-visible{
+        outline:0 none;
+        background:var(--p-datatable-filter-constraint-focus-background);
+        color:var(--p-datatable-filter-constraint-focus-color);
+    }
+    .p-datatable-filter-constraint-selected:focus-visible{
+        outline:0 none;
+        background:var(--p-datatable-filter-constraint-selected-focus-background);
+        color:var(--p-datatable-filter-constraint-selected-focus-color);
+    }
+    .p-datatable-filter-constraint-separator{
+        border-block-start:1px solid var(--p-datatable-filter-constraint-separator-border-color);
+    }
+    .p-datatable-popover-filter{
+        display:inline-flex;
+        margin-inline-start:auto;
+    }
+    .p-datatable-filter-overlay-popover{
+        background:var(--p-datatable-filter-overlay-popover-background);
+        color:var(--p-datatable-filter-overlay-popover-color);
+        border:1px solid var(--p-datatable-filter-overlay-popover-border-color);
+        border-radius:var(--p-datatable-filter-overlay-popover-border-radius);
+        box-shadow:var(--p-datatable-filter-overlay-popover-shadow);
+        min-width:12.5rem;
+        padding:var(--p-datatable-filter-overlay-popover-padding);
+        display:flex;
+        flex-direction:column;
+        gap:var(--p-datatable-filter-overlay-popover-gap);
+    }
+    .p-datatable-filter-operator-dropdown{
+        width:100%;
+    }
+    .p-datatable-filter-rule-list,.p-datatable-filter-rule{
+        display:flex;
+        flex-direction:column;
+        gap:var(--p-datatable-filter-overlay-popover-gap);
+    }
+    .p-datatable-filter-rule{
+        border-block-end:1px solid var(--p-datatable-filter-rule-border-color);
+        padding-bottom:var(--p-datatable-filter-overlay-popover-gap);
+    }
+    .p-datatable-filter-rule:last-child{
+        border-block-end:0 none;
+        padding-bottom:0;
+    }
+    .p-datatable-filter-add-rule-button{
+        width:100%;
+    }
+    .p-datatable-filter-remove-rule-button{
+        width:100%;
+    }
+    .p-datatable-filter-buttonbar{
+        padding:0;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+    }
+    .p-datatable-virtualscroller-spacer{
+        display:flex;
+    }
+    .p-datatable .p-virtualscroller .p-virtualscroller-loading{
+        transform:none!important;
+        min-height:0;
+        position:sticky;
+        inset-block-start:0;
+        inset-inline-start:0;
+    }
+    .p-datatable-paginator-top{
+        border-color:var(--p-datatable-paginator-top-border-color);
+        border-style:solid;
+        border-width:var(--p-datatable-paginator-top-border-width);
+    }
+    .p-datatable-paginator-bottom{
+        border-color:var(--p-datatable-paginator-bottom-border-color);
+        border-style:solid;
+        border-width:var(--p-datatable-paginator-bottom-border-width);
+    }
+    .p-datatable-header{
+        background:var(--p-datatable-header-background);
+        color:var(--p-datatable-header-color);
+        border-color:var(--p-datatable-header-border-color);
+        border-style:solid;
+        border-width:var(--p-datatable-header-border-width);
+        padding:var(--p-datatable-header-padding);
+    }
+    .p-datatable-footer{
+        background:var(--p-datatable-footer-background);
+        color:var(--p-datatable-footer-color);
+        border-color:var(--p-datatable-footer-border-color);
+        border-style:solid;
+        border-width:var(--p-datatable-footer-border-width);
+        padding:var(--p-datatable-footer-padding);
+    }
+    .p-datatable-header-cell{
+        padding:var(--p-datatable-header-cell-padding);
+        background:var(--p-datatable-header-cell-background);
+        border-color:var(--p-datatable-header-cell-border-color);
+        border-style:solid;
+        border-width:0 0 1px 0;
+        color:var(--p-datatable-header-cell-color);
+        font-weight:normal;
+        text-align:start;
+        transition:background var(--p-datatable-transition-duration),color var(--p-datatable-transition-duration),border-color var(--p-datatable-transition-duration),outline-color var(--p-datatable-transition-duration),box-shadow var(--p-datatable-transition-duration);
+    }
+    .p-datatable-column-title{
+        font-weight:var(--p-datatable-column-title-font-weight);
+    }
+    .p-datatable-tbody > tr{
+        outline-color:transparent;
+        background:var(--p-datatable-row-background);
+        color:var(--p-datatable-row-color);
+        transition:background var(--p-datatable-transition-duration),color var(--p-datatable-transition-duration),border-color var(--p-datatable-transition-duration),outline-color var(--p-datatable-transition-duration),box-shadow var(--p-datatable-transition-duration);
+    }
+    .p-datatable-tbody > tr > td{
+        text-align:start;
+        border-color:var(--p-datatable-body-cell-border-color);
+        border-style:solid;
+        border-width:0 0 1px 0;
+        padding:var(--p-datatable-body-cell-padding);
+    }
+    .p-datatable-hoverable .p-datatable-tbody > tr:not(.p-datatable-row-selected):hover{
+        background:var(--p-datatable-row-hover-background);
+        color:var(--p-datatable-row-hover-color);
+    }
+    .p-datatable-tbody > tr.p-datatable-row-selected{
+        background:var(--p-datatable-row-selected-background);
+        color:var(--p-datatable-row-selected-color);
+    }
+    .p-datatable-tbody > tr:has(+ .p-datatable-row-selected) > td{
+        border-block-end-color:var(--p-datatable-body-cell-selected-border-color);
+    }
+    .p-datatable-tbody > tr.p-datatable-row-selected > td{
+        border-block-end-color:var(--p-datatable-body-cell-selected-border-color);
+    }
+    .p-datatable-tbody > tr:focus-visible,.p-datatable-tbody > tr.p-datatable-contextmenu-row-selected{
+        box-shadow:var(--p-datatable-row-focus-ring-shadow);
+        outline:var(--p-datatable-row-focus-ring-width) var(--p-datatable-row-focus-ring-style) var(--p-datatable-row-focus-ring-color);
+        outline-offset:var(--p-datatable-row-focus-ring-offset);
+    }
+    .p-datatable-tfoot > tr > td{
+        text-align:start;
+        padding:var(--p-datatable-footer-cell-padding);
+        border-color:var(--p-datatable-footer-cell-border-color);
+        border-style:solid;
+        border-width:0 0 1px 0;
+        color:var(--p-datatable-footer-cell-color);
+        background:var(--p-datatable-footer-cell-background);
+    }
+    .p-datatable-column-footer{
+        font-weight:var(--p-datatable-column-footer-font-weight);
+    }
+    .p-datatable-sortable-column{
+        cursor:pointer;
+        user-select:none;
+        outline-color:transparent;
+    }
+    .p-datatable-column-title,.p-datatable-sort-icon,.p-datatable-sort-badge{
+        vertical-align:middle;
+    }
+    .p-datatable-sort-icon{
+        color:var(--p-datatable-sort-icon-color);
+        font-size:var(--p-datatable-sort-icon-size);
+        width:var(--p-datatable-sort-icon-size);
+        height:var(--p-datatable-sort-icon-size);
+        transition:color var(--p-datatable-transition-duration);
+    }
+    .p-datatable-sortable-column:not(.p-datatable-column-sorted):hover{
+        background:var(--p-datatable-header-cell-hover-background);
+        color:var(--p-datatable-header-cell-hover-color);
+    }
+    .p-datatable-sortable-column:not(.p-datatable-column-sorted):hover .p-datatable-sort-icon{
+        color:var(--p-datatable-sort-icon-hover-color);
+    }
+    .p-datatable-column-sorted{
+        background:var(--p-datatable-header-cell-selected-background);
+        color:var(--p-datatable-header-cell-selected-color);
+    }
+    .p-datatable-column-sorted .p-datatable-sort-icon{
+        color:var(--p-datatable-header-cell-selected-color);
+    }
+    .p-datatable-sortable-column:focus-visible{
+        box-shadow:var(--p-datatable-header-cell-focus-ring-shadow);
+        outline:var(--p-datatable-header-cell-focus-ring-width) var(--p-datatable-header-cell-focus-ring-style) var(--p-datatable-header-cell-focus-ring-color);
+        outline-offset:var(--p-datatable-header-cell-focus-ring-offset);
+    }
+    .p-datatable-hoverable .p-datatable-selectable-row{
+        cursor:pointer;
+    }
+    .p-datatable-tbody > tr.p-datatable-dragpoint-top > td{
+        box-shadow:inset 0 2px 0 0 var(--p-datatable-drop-point-color);
+    }
+    .p-datatable-tbody > tr.p-datatable-dragpoint-bottom > td{
+        box-shadow:inset 0 -2px 0 0 var(--p-datatable-drop-point-color);
+    }
+    .p-datatable-loading-icon{
+        font-size:var(--p-datatable-loading-icon-size);
+        width:var(--p-datatable-loading-icon-size);
+        height:var(--p-datatable-loading-icon-size);
+    }
+    .p-datatable-gridlines .p-datatable-header{
+        border-width:1px 1px 0 1px;
+    }
+    .p-datatable-gridlines .p-datatable-footer{
+        border-width:0 1px 1px 1px;
+    }
+    .p-datatable-gridlines .p-datatable-paginator-top{
+        border-width:1px 1px 0 1px;
+    }
+    .p-datatable-gridlines .p-datatable-paginator-bottom{
+        border-width:0 1px 1px 1px;
+    }
+    .p-datatable-gridlines .p-datatable-thead > tr > th{
+        border-width:1px 0 1px 1px;
+    }
+    .p-datatable-gridlines .p-datatable-thead > tr > th:last-child{
+        border-width:1px;
+    }
+    .p-datatable-gridlines .p-datatable-tbody > tr > td{
+        border-width:1px 0 0 1px;
+    }
+    .p-datatable-gridlines .p-datatable-tbody > tr > td:last-child{
+        border-width:1px 1px 0 1px;
+    }
+    .p-datatable-gridlines .p-datatable-tbody > tr:last-child > td{
+        border-width:1px 0 1px 1px;
+    }
+    .p-datatable-gridlines .p-datatable-tbody > tr:last-child > td:last-child{
+        border-width:1px;
+    }
+    .p-datatable-gridlines .p-datatable-tfoot > tr > td{
+        border-width:1px 0 1px 1px;
+    }
+    .p-datatable-gridlines .p-datatable-tfoot > tr > td:last-child{
+        border-width:1px 1px 1px 1px;
+    }
+    .p-datatable.p-datatable-gridlines .p-datatable-thead + .p-datatable-tfoot > tr > td{
+        border-width:0 0 1px 1px;
+    }
+    .p-datatable.p-datatable-gridlines .p-datatable-thead + .p-datatable-tfoot > tr > td:last-child{
+        border-width:0 1px 1px 1px;
+    }
+    .p-datatable.p-datatable-gridlines:has(.p-datatable-thead):has(.p-datatable-tbody) .p-datatable-tbody > tr > td{
+        border-width:0 0 1px 1px;
+    }
+    .p-datatable.p-datatable-gridlines:has(.p-datatable-thead):has(.p-datatable-tbody) .p-datatable-tbody > tr > td:last-child{
+        border-width:0 1px 1px 1px;
+    }
+    .p-datatable.p-datatable-gridlines:has(.p-datatable-tbody):has(.p-datatable-tfoot) .p-datatable-tbody > tr:last-child > td{
+        border-width:0 0 0 1px;
+    }
+    .p-datatable.p-datatable-gridlines:has(.p-datatable-tbody):has(.p-datatable-tfoot) .p-datatable-tbody > tr:last-child > td:last-child{
+        border-width:0 1px 0 1px;
+    }
+    .p-datatable.p-datatable-striped .p-datatable-tbody > tr.p-row-odd{
+        background:var(--p-datatable-row-striped-background);
+    }
+    .p-datatable.p-datatable-striped .p-datatable-tbody > tr.p-row-odd.p-datatable-row-selected{
+        background:var(--p-datatable-row-selected-background);
+        color:var(--p-datatable-row-selected-color);
+    }
+    .p-datatable-striped.p-datatable-hoverable .p-datatable-tbody > tr:not(.p-datatable-row-selected):hover{
+        background:var(--p-datatable-row-hover-background);
+        color:var(--p-datatable-row-hover-color);
+    }
+    .p-datatable.p-datatable-sm .p-datatable-header{
+        padding:var(--p-datatable-header-sm-padding);
+    }
+    .p-datatable.p-datatable-sm .p-datatable-thead > tr > th{
+        padding:var(--p-datatable-header-cell-sm-padding);
+    }
+    .p-datatable.p-datatable-sm .p-datatable-tbody > tr > td{
+        padding:var(--p-datatable-body-cell-sm-padding);
+    }
+    .p-datatable.p-datatable-sm .p-datatable-tfoot > tr > td{
+        padding:var(--p-datatable-footer-cell-sm-padding);
+    }
+    .p-datatable.p-datatable-sm .p-datatable-footer{
+        padding:var(--p-datatable-footer-sm-padding);
+    }
+    .p-datatable.p-datatable-lg .p-datatable-header{
+        padding:var(--p-datatable-header-lg-padding);
+    }
+    .p-datatable.p-datatable-lg .p-datatable-thead > tr > th{
+        padding:var(--p-datatable-header-cell-lg-padding);
+    }
+    .p-datatable.p-datatable-lg .p-datatable-tbody > tr > td{
+        padding:var(--p-datatable-body-cell-lg-padding);
+    }
+    .p-datatable.p-datatable-lg .p-datatable-tfoot > tr > td{
+        padding:var(--p-datatable-footer-cell-lg-padding);
+    }
+    .p-datatable.p-datatable-lg .p-datatable-footer{
+        padding:var(--p-datatable-footer-lg-padding);
+    }
+    .p-datatable-row-toggle-button{
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        overflow:hidden;
+        position:relative;
+        width:var(--p-datatable-row-toggle-button-size);
+        height:var(--p-datatable-row-toggle-button-size);
+        color:var(--p-datatable-row-toggle-button-color);
+        border:0 none;
+        background:transparent;
+        cursor:pointer;
+        border-radius:var(--p-datatable-row-toggle-button-border-radius);
+        transition:background var(--p-datatable-transition-duration),color var(--p-datatable-transition-duration),border-color var(--p-datatable-transition-duration),outline-color var(--p-datatable-transition-duration),box-shadow var(--p-datatable-transition-duration);
+        outline-color:transparent;
+        user-select:none;
+    }
+    .p-datatable-row-toggle-button:enabled:hover{
+        color:var(--p-datatable-row-toggle-button-hover-color);
+        background:var(--p-datatable-row-toggle-button-hover-background);
+    }
+    .p-datatable-tbody > tr.p-datatable-row-selected .p-datatable-row-toggle-button:hover{
+        background:var(--p-datatable-row-toggle-button-selected-hover-background);
+        color:var(--p-datatable-row-toggle-button-selected-hover-color);
+    }
+    .p-datatable-row-toggle-button:focus-visible{
+        box-shadow:var(--p-datatable-row-toggle-button-focus-ring-shadow);
+        outline:var(--p-datatable-row-toggle-button-focus-ring-width) var(--p-datatable-row-toggle-button-focus-ring-style) var(--p-datatable-row-toggle-button-focus-ring-color);
+        outline-offset:var(--p-datatable-row-toggle-button-focus-ring-offset);
+    }
+    .p-datatable-row-toggle-icon:dir(rtl){
+        transform:rotate(180deg);
+    }
 }
