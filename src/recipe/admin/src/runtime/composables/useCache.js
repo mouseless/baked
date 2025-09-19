@@ -1,7 +1,5 @@
-export default function(name,
-  expirationInMinutes = 60
-) {
-  function buildKey(path, query) {
+export default function(name, { expirationInMinutes = 60 } = {}) {
+  function buildKey({ path, query }) {
     let result = path;
     if(query) {
       const search = new URLSearchParams(query);
@@ -12,13 +10,21 @@ export default function(name,
     return result;
   }
 
-  async function getOrCreate(key, create) {
+  function isCacheValid(entry) {
+    return Date.now() - entry.createdAt < expirationInMinutes * 60 * 1000;
+  }
+
+  async function getOrCreate({ key, create }) {
+    if(typeof create !== "function") {
+      throw new Error("create must be a function");
+    }
+
     key = `${name}[${key}]`;
 
     const cached = localStorage.getItem(key);
     if(cached) {
       const entry = JSON.parse(cached);
-      if(Date.now() - entry.createdAt < expirationInMinutes * 60 * 1000) {
+      if(isCacheValid(entry)) {
         return entry.data;
       }
     }

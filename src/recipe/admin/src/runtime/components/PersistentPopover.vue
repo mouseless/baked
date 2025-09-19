@@ -366,3 +366,11 @@ export default {
   }
 };
 </script>
+
+<style>
+.p-popover-content {
+  & > div {
+    @apply max-sm:p-0;
+  }
+}
+</style>

@@ -17,10 +17,11 @@
           w-full mt-1
           flex flex-row gap-2
           items-baseline justify-start
+          max-sm:truncate
           xl:flex-col xl:mt-2
         "
       >
-        <h1 class="text-xl font-bold">
+        <h1 class="text-xl font-bold max-sm:truncate">
           {{ l(title) }}
         </h1>
         <div class="relative">
@@ -29,13 +30,12 @@
             class="
               text-sm text-gray-600 dark:text-gray-400
               text-nowrap overflow-hidden
-              hidden xl:block
+              hidden xl:grid xl:max-w-9/10
             "
           >
-            <String
-              :schema="{ maxLength: 125 }"
-              :data="l(description) || '&nbsp;'"
-            />
+            <span class="lg:truncate">
+              {{ l(description) || '&nbsp;' }}
+            </span>
           </div>
           <Button
             v-if="description"
@@ -109,7 +109,7 @@
 import { onMounted, ref } from "vue";
 import { Button } from "primevue";
 import { useRuntimeConfig } from "#app";
-import { Bake, PersistentPopover, String } from "#components";
+import { Bake, PersistentPopover } from "#components";
 import { useBreakpoints, useHead, useLocalization } from "#imports";
 
 const { isMd } = useBreakpoints();

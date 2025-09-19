@@ -116,7 +116,7 @@ const { schema, data } = defineProps({
 
 const { logo, largeLogo, menu, footer } = schema;
 
-const loading = context.loading();
+const loading = context.injectLoading();
 const popover = ref();
 
 function togglePopover(event) {

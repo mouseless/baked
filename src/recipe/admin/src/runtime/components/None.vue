@@ -22,6 +22,6 @@ const { data } = defineProps({
   data: { type: null, required: true }
 });
 
-const loading = context.loading();
+const loading = context.injectLoading();
 const json = computed(() => JSON.stringify(data));
 </script>

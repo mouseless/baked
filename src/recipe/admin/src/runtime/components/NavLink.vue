@@ -18,7 +18,7 @@ import { useContext, useFormat, useLocalization } from "#imports";
 
 const context = useContext();
 const { format } = useFormat();
-const { localize:l } = useLocalization();
+const { localize: l } = useLocalization();
 
 const { schema, data } = defineProps({
   schema: { type: null, required: true },
@@ -27,7 +27,7 @@ const { schema, data } = defineProps({
 
 const { path, idProp, textProp } = schema;
 
-const loading = context.loading();
+const loading = context.injectLoading();
 // TODO: this format call is temporary, final design should handle path
 // variables using name, not index, e.g., /test/{0} -> /test/{id}
 const to = computed(() => format(path, [data[idProp]]));

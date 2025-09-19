@@ -56,7 +56,7 @@ import { ref, watch } from "vue";
 
 const context = useContext();
 const { localize: l } = useLocalization();
-const { localize: lc } = useLocalization("MenuPage");
+const { localize: lc } = useLocalization({ group: "MenuPage" });
 const { public: { composables } } = useRuntimeConfig();
 
 const { schema } = defineProps({
@@ -68,7 +68,7 @@ const { header, sections, filterPageContextKey } = schema;
 const locale = composables?.useFormat?.locale || "en-US";
 const sectionsData = ref(sections);
 
-const page = context.page();
+const page = context.injectPage();
 // listen in context if any filter is applied
 if(filterPageContextKey) {
   watch(

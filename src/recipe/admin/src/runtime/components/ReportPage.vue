@@ -55,27 +55,35 @@
         class="w-full"
       >
         <template v-if="tab.fullScreen">
-          <Bake
-            v-for="(content, i) in tab.contents.filter(content => content.showWhen ? page[content.showWhen] : true)"
-            :key="`content-${content.key || i}`"
-            :name="`tabs/${tab.id}/contents/${content.key || i}`"
-            :descriptor="content.component"
-          />
+          <template
+            v-for="(content, i) in tab.contents"
+            :key="content.key ? `content-${content.key}` : `content-${i}`"
+          >
+            <Bake
+              v-if="content.showWhen ? page[content.showWhen] : true"
+              :name="`tabs/${tab.id}/contents/${content.key || i}`"
+              :descriptor="content.component"
+            />
+          </template>
         </template>
         <div
           v-else
           class="grid grid-cols-1 lg:grid-cols-2 gap-4"
         >
-          <div
-            v-for="(content, i) in tab.contents.filter(content => content.showWhen ? page[content.showWhen] : true)"
-            :key="`content-${content.key || i}`"
-            :class="{ 'lg:col-span-2': !content.narrow }"
+          <template
+            v-for="(content, i) in tab.contents"
+            :key="content.key ? `content-${content.key}` : `content-${i}`"
           >
-            <Bake
-              :name="`tabs/${tab.id}/contents/${content.key || i}`"
-              :descriptor="content.component"
-            />
-          </div>
+            <div
+              v-if="content.showWhen ? page[content.showWhen] : true"
+              :class="{ 'lg:col-span-2': !content.narrow }"
+            >
+              <Bake
+                :name="`tabs/${tab.id}/contents/${content.key || i}`"
+                :descriptor="content.component"
+              />
+            </div>
+          </template>
         </div>
       </DeferredTabContent>
     </div>
@@ -89,7 +97,7 @@ import { Bake, DeferredTabContent, PageTitle, QueryParameters } from "#component
 
 const context = useContext();
 const { localize: l } = useLocalization();
-const { localize: lc } = useLocalization("ReportPage");
+const { localize: lc } = useLocalization({ group: "ReportPage" });
 
 const { schema } = defineProps({
   schema: { type: null, required: true },
@@ -98,8 +106,8 @@ const { schema } = defineProps({
 
 const { title, queryParameters, tabs } = schema;
 
-const page = context.page();
-const articleOverflow = context.articleOverflow();
+const page = context.injectPage();
+const articleOverflow = context.injectArticleOverflow();
 const ready = ref(queryParameters.length === 0);
 const uniqueKey = ref();
 const currentTab = ref(tabs.length > 0 ? tabs[0].id : "");
