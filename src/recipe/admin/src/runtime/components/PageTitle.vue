@@ -2,7 +2,7 @@
   <div
     id="page-title"
     class="
-      sticky -top-1 z-10 space-y-4 bg-body
+      sticky -top-1 z-[1002] space-y-4 bg-body
       max-md:space-y-0 max-lg:space-y-2
     "
   >
@@ -76,7 +76,11 @@
             rounded
             @click="togglePopover"
           />
-          <PersistentPopover ref="popover">
+          <PersistentPopover
+            ref="popover"
+            fixed
+            class="!z-[1002]"
+          >
             <div
               class="
               flex flex-col flex-start
@@ -108,9 +112,9 @@ import { useRuntimeConfig } from "#app";
 import { Bake, PersistentPopover, String } from "#components";
 import { useBreakpoints, useHead, useLocalization } from "#imports";
 
+const { isMd } = useBreakpoints();
 const { localize: l } = useLocalization();
 const { public: { components } } = useRuntimeConfig();
-const { isMd } = useBreakpoints();
 
 const { schema } = defineProps({
   schema: { type: null, required: true },
@@ -137,7 +141,7 @@ onMounted(() => {
           "-mx-4", "px-4", "pb-4",
           "border-b", "border-slate-300", "dark:border-zinc-800",
           "drop-shadow",
-          "md:max-xl:pt-4"
+          "md:max-xl:pt-4", "max-md:pt-2"
         ]
       );
     },
