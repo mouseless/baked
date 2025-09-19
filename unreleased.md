@@ -6,6 +6,8 @@
   - Introducing UI Conventions: `UiLayer` and `ThemeFeature` now provides
     several conventions and extension methods to allow you to build your page
     descriptors via conventions instead of configuring them one by one
+  - Introducing UX Features: many `UxFeature` implementations are provided to
+    deliver built-in user experiences that leverage the new UI convention system
 
 ## Improvements
 

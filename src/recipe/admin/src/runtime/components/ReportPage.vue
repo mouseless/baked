@@ -15,7 +15,7 @@
         <Tabs
           v-if="ready && tabs.length > 1"
           v-model:value="currentTab"
-          class="!-mb-4 overflow-x-auto"
+          class="!-mb-4 overflow-x-auto overflow-y-hidden"
         >
           <TabList :pt="{ tabList: { class: '!bg-transparent' } }">
             <Tab

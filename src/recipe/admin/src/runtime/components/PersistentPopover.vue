@@ -66,6 +66,9 @@ export default {
   },
   extends: BasePersistentPopover,
   inheritAttrs: false,
+  props: {
+    fixed: Boolean
+  },
   emits: ["show", "hide"],
   data() {
     return {
@@ -185,6 +188,9 @@ export default {
     },
     alignOverlay() {
       absolutePosition(this.container, this.target, false);
+      if(this.fixed) {
+        this.fixPopoverPosition(this.container, this.target);
+      }
 
       const containerOffset = getOffset(this.container);
       const targetOffset = getOffset(this.target);
@@ -200,6 +206,27 @@ export default {
         this.container.setAttribute("data-p-popover-flipped", "true");
         !this.isUnstyled && addClass(this.container, "p-popover-flipped");
       }
+    },
+    fixPopoverPosition(container, target) {
+      // this is a ChatGPT generated function. provided the `absolutePosition`
+      // function body and asked it to fix the position for a fixed component.
+      // ---
+      // @cihandeniz
+      const rect = target.getBoundingClientRect();
+      const vw = window.innerWidth, vh = window.innerHeight;
+      const w = container.offsetWidth, h = container.offsetHeight;
+
+      let top = rect.bottom;
+      let left = rect.left;
+
+      if(rect.bottom + h > vh) { top = Math.max(0, rect.top - h); }
+      if(rect.left + w > vw) { left = Math.max(0, rect.right - w); }
+
+      Object.assign(container.style, {
+        position: "fixed",
+        top: `${top}px`,
+        left: `${left}px`
+      });
     },
     onContentKeydown(event) {
       if(event.code === "Escape" && this.closeOnEscape) {

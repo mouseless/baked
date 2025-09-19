@@ -1,5 +1,5 @@
 <template>
-  <div class="space-y-4">
+  <div class="space-y-4 mb-40">
     <PageTitle
       v-if="loaded"
       :schema="{ title, description }"
