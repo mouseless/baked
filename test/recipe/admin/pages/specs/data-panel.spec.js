@@ -140,6 +140,7 @@ test.describe("Parameters", () => {
     const content = page.locator(primevue.popover.content);
     await page.setViewportSize({ ...screen });
 
+    await page.mouse.wheel(0, 500);
     const filterIcon = component.locator(primevue.button.icon).nth(0);
     await filterIcon.click();
 
