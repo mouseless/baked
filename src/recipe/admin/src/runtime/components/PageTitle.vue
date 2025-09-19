@@ -2,7 +2,7 @@
   <div
     id="page-title"
     class="
-      sticky -top-1 z-[2000] space-y-4 bg-body
+      sticky -top-1 z-[1002] space-y-4 bg-body
       max-md:space-y-0 max-lg:space-y-2
     "
   >
@@ -79,7 +79,7 @@
           <PersistentPopover
             ref="popover"
             fixed
-            class="!z-[2001]"
+            class="!z-[1002]"
           >
             <div
               class="
