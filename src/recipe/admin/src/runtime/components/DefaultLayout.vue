@@ -28,9 +28,9 @@
         :descriptor="header"
       />
       <slot />
-      <ScrollTop />
     </article>
   </div>
+  <ScrollTop />
 </template>
 <script setup>
 import { ref } from "vue";
