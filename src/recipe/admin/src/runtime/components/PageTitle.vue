@@ -2,7 +2,7 @@
   <div
     id="page-title"
     class="
-      sticky -top-1 z-10 space-y-4 bg-body
+      sticky -top-1 z-[2000] space-y-4 bg-body
       max-md:space-y-0 max-lg:space-y-2
     "
   >
@@ -76,7 +76,11 @@
             rounded
             @click="togglePopover"
           />
-          <PersistentPopover ref="popover">
+          <PersistentPopover
+            ref="popover"
+            fixed
+            class="!z-[2001]"
+          >
             <div
               class="
               flex flex-col flex-start

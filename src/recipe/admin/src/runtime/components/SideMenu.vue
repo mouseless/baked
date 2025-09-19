@@ -10,7 +10,7 @@
   <nav
     v-bind="$attrs"
     class="
-      fixed z-20
+      fixed z-[2000]
       p-4 bg-slate-100 dark:bg-zinc-900
       flex flex-col justify-start gap-2
       md:top-0 md:left-0 md:h-screen
@@ -82,7 +82,8 @@
         />
         <PersistentPopover
           ref="popover"
-          class="w-1/2 min-w-fit"
+          fixed
+          class="w-1/2 min-w-fit !z-[2001]"
         >
           <Bake
             v-if="footer"
