@@ -58,6 +58,6 @@ html {
 }
 
 .p-tooltip {
-  @apply !z-[1002]
+  @apply !z-[1002];
 }
 </style>
