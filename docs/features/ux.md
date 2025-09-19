@@ -43,12 +43,12 @@ c => c.ActionsAsDataPanels()
 
 ## Designated String Properties are Label
 
+Marks selected string properties as labels to have a better display in
+`DataTable` columns.
+
 ```csharp
 c => c.DesignatedStringPropertiesAreLabel(propertyNames: [...])
 ```
-
-Marks selected string properties as labels to have a better display in
-`DataTable` columns.
 
 - Properties with matching names are given `LabelAttribute`
 - Label columns in a `DataTable` are frozen and have minimum width
@@ -60,11 +60,11 @@ Marks selected string properties as labels to have a better display in
 
 ## Enum Parameter is Select
 
+Renders enum parameters as `Select` by default.
+
 ```csharp
 c => c.EnumParameterIsSelect(maxMemberCountForSelectButton: ...)
 ```
-
-Renders enum parameters as `Select` by default.
 
 - By default, enum parameters are shown as a `Select` dropdown
 - When the number of enum members is less than or equal to the given limit, it
@@ -78,23 +78,23 @@ Renders enum parameters as `Select` by default.
 
 ## Initializer Parameters are in Page Title
 
+Adds initializer parameters of a report class to the page title area of a
+`ReportPage`.
+
 ```csharp
 c => c.InitializerParametersAreInPageTitle()
 ```
-
-Adds initializer parameters of a report class to the page title area of a
-`ReportPage`.
 
 - Adds initializer parameters as query parameters of the page
 - Works for types marked with `TransientAttribute`
 
 ## List is Data Table
 
+Shows list results of controller actions as a `DataTable` inside a `DataPanel`.
+
 ```csharp
 c => c.ListDataTable()
 ```
-
-Shows list results of controller actions as a `DataTable` inside a `DataPanel`.
 
 - Methods with `ActionModelAttribute` that return a list are rendered as
   `DataTable`
@@ -103,11 +103,11 @@ Shows list results of controller actions as a `DataTable` inside a `DataPanel`.
 
 ## Numeric Values are Formatted
 
+Right-aligns numeric columns and uses suitable components for each numeric type.
+
 ```csharp
 c => c.NumericValuesAreFormatted()
 ```
-
-Right-aligns numeric columns and uses suitable components for each numeric type.
 
 - `int` properties render with `Number`
 - `decimal` properties render with `Money`
@@ -116,11 +116,11 @@ Right-aligns numeric columns and uses suitable components for each numeric type.
 
 ## Object with List is Data Table
 
+Shows list data from an object result as a `DataTable` inside a `DataPanel`.
+
 ```csharp
 c => c.ObjectWithListIsDataTable()
 ```
-
-Shows list data from an object result as a `DataTable` inside a `DataPanel`.
 
 - Methods with `ActionModelAttribute` that return an object containing a visible
   list property are rendered as `DataTable`
@@ -138,12 +138,12 @@ Shows list data from an object result as a `DataTable` inside a `DataPanel`.
 
 ## Panel Parameters are Stateful
 
+Keeps parameter selections inside a `DataPanel` when the panel reloads.
+Parameters rendered with `Select` and `SelectButton` are marked as stateful.
+
 ```csharp
 c => c.PanelParametersAreStateful()
 ```
-
-Keeps parameter selections inside a `DataPanel` when the panel reloads.
-Parameters rendered with `Select` and `SelectButton` are marked as stateful.
 
 > [!WARNING]
 >
@@ -154,11 +154,11 @@ Parameters rendered with `Select` and `SelectButton` are marked as stateful.
 
 ## Type with Only `GET` is Report Page
 
+Creates a `ReportPage` for controller types that only have `GET` actions.
+
 ```csharp
 c => c.TypeWithOnlyGetIsReportPage()
 ```
-
-Creates a `ReportPage` for controller types that only have `GET` actions.
 
 - Applies to types marked with `ControllerModelAttribute`
 - If all actions are `GET` methods, the type is rendered as a `ReportPage`

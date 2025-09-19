@@ -2,7 +2,7 @@
   <UiSpec title="Toast">
     <Message severity="info">
       <span class="text-xl">
-        ⬆️   Check if page has a success toast at top center ⬆️
+        ⬆️  Check if page has a success toast at top center ⬆️
       </span>
     </Message>
   </UiSpec>

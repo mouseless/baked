@@ -214,7 +214,7 @@ public static class ThemeExtensions
     {
         whenType ??= c => true;
         whenComponent ??= c => true;
-        order += RestApiLayer.MaxConventionOrder;
+        order += RestApiLayer.MaxConventionOrder * 2;
 
         conventions.AddTypeMetadata(
             attribute: c => new DescriptorBuilderAttribute<TSchema>()
@@ -257,7 +257,7 @@ public static class ThemeExtensions
     {
         whenProperty ??= c => true;
         whenComponent ??= c => true;
-        order += RestApiLayer.MaxConventionOrder;
+        order += RestApiLayer.MaxConventionOrder * 2;
 
         conventions.AddPropertyMetadata(
             attribute: c => new DescriptorBuilderAttribute<TSchema>()
@@ -300,7 +300,7 @@ public static class ThemeExtensions
     {
         whenMethod ??= c => true;
         whenComponent ??= c => true;
-        order += RestApiLayer.MaxConventionOrder;
+        order += RestApiLayer.MaxConventionOrder * 2;
 
         conventions.AddMethodMetadata(
             attribute: c => new DescriptorBuilderAttribute<TSchema>()
@@ -343,7 +343,7 @@ public static class ThemeExtensions
     {
         whenParameter ??= c => true;
         whenComponent ??= c => true;
-        order += RestApiLayer.MaxConventionOrder;
+        order += RestApiLayer.MaxConventionOrder * 2;
 
         conventions.AddParameterMetadata(
             attribute: c => new DescriptorBuilderAttribute<TSchema>()
@@ -581,7 +581,7 @@ public static class ThemeExtensions
     {
         whenType ??= c => true;
         whenComponent ??= c => true;
-        order += RestApiLayer.MaxConventionOrder;
+        order += RestApiLayer.MaxConventionOrder * 2;
 
         conventions.AddTypeMetadata(
             apply: (c, add) =>
@@ -633,7 +633,7 @@ public static class ThemeExtensions
     {
         whenProperty ??= c => true;
         whenComponent ??= c => true;
-        order += RestApiLayer.MaxConventionOrder;
+        order += RestApiLayer.MaxConventionOrder * 2;
 
         conventions.AddPropertyMetadata(
             apply: (c, add) =>
@@ -685,7 +685,7 @@ public static class ThemeExtensions
     {
         whenMethod ??= c => true;
         whenComponent ??= c => true;
-        order += RestApiLayer.MaxConventionOrder;
+        order += RestApiLayer.MaxConventionOrder * 2;
 
         conventions.AddMethodMetadata(
             apply: (c, add) =>
@@ -737,7 +737,7 @@ public static class ThemeExtensions
     {
         whenParameter ??= c => true;
         whenComponent ??= c => true;
-        order += RestApiLayer.MaxConventionOrder;
+        order += RestApiLayer.MaxConventionOrder * 2;
 
         conventions.AddParameterMetadata(
             apply: (c, add) =>
