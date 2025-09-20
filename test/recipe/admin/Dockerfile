@@ -5,7 +5,7 @@ ARG ENVIRONMENT Production
 # to install npm packages
 # separated to have these run only when package.json files are changed
 # ---
-FROM node:22-bullseye as init
+FROM node:24-alpine as init
 
 COPY --parents src/recipe/admin/package.json .
 COPY --parents src/recipe/admin/package-lock.json .

@@ -7,7 +7,11 @@
 - [ ] Check for library updates
   - [ ] NuGet packages
   - [ ] npm packages
-  - [ ] Check for updates in `PrimeVue` locale keys
+  - [ ] Check for updates in `PrimeVue`
+    - locale keys
+    - styles
+    - compare latest `Popover.vue` and `BasePopover.vue` with
+      `PersistentPopover.vue` and `BasePersistentPopover.vue`
 - [ ] Add release notes
 - [ ] Update `baked` version
     - [ ] `src/Directory.Build.props`

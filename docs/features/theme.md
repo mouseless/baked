@@ -22,7 +22,7 @@ c => c.Default(
 )
 ```
 
-Or you may prefere to create your custom theme on top of this default theme;
+Or you may prefer to create your custom theme on top of this default theme;
 
 ```csharp
 public static class CustomThemeExtensions
