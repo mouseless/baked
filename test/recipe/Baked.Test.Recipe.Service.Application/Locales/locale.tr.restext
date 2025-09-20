@@ -4,6 +4,7 @@
 Access Denied=Erişim Reddedildi
 An unexpected error has occured, please contact the administrator=Beklenmeyen bir hata oluştu lütfen sistem yöneticisiyle iletişime geçiniz
 An unexpected error has occured, please contact the administrator: '{0}'\n{1}=Beklenmeyen bir hata oluştu lütfen sistem yöneticisiyle iletişime geçiniz: '{0}'\n{1}
+Application Error=Uygulama Hatası
 Attempted to perform an unauthorized operation=Yetkisiz bir işlem gerçekleştirmeye çalışıldı
 Authentication=Kimlik Doğrulama
 Failed to authenticate with given credentials=Verilen kimlik bilgileriyle kimlik doğrulaması yapılamadı
@@ -11,7 +12,7 @@ Page Not Found=Sayfa Bulunamadı
 Please contact system administrator.=Lütfen sistem yöneticinizle iletişime geçin.
 Record Not Found=Kayıt Bulunamadı
 Route Parameter Is Not Valid=Route Parametresi Geçerli Değil
-The page you want to view is etiher deleted or outdated.=Görüntülemek istediğiniz sayfa silinmiş veya güncel değil.
+The page you want to view is either deleted or outdated.=Görüntülemek istediğiniz sayfa silinmiş veya güncel değil.
 Unexpected Error=Beklenmeyen Hata
 You do not have the permision to view the address or data specified.=Belirtilen adresi veya veriyi görüntüleme izniniz yok.
 

@@ -4,6 +4,7 @@
 Access Denied=Access Denied
 An unexpected error has occured, please contact the administrator=An unexpected error has occured, please contact the administrator
 An unexpected error has occured, please contact the administrator: '{0}'\n{1}=An unexpected error has occured, please contact the administrator: '{0}'\n{1}
+Application Error=Application Error
 Attempted to perform an unauthorized operation=Attempted to perform an unauthorized operation
 Authentication=Authentication
 Failed to authenticate with given credentials=Failed to authenticate with given credentials
@@ -11,7 +12,7 @@ Page Not Found=Page Not Found
 Please contact system administrator.=Please contact system administrator.
 Record Not Found=Record Not Found
 Route Parameter Is Not Valid=Route Parameter Is Not Valid
-The page you want to view is etiher deleted or outdated.=The page you want to view is etiher deleted or outdated.
+The page you want to view is either deleted or outdated.=The page you want to view is either deleted or outdated.
 Unexpected Error=Unexpected Error
 You do not have the permision to view the address or data specified.=You do not have the permision to view the address or data specified.
 

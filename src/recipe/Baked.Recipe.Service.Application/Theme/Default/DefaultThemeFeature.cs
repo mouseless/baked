@@ -118,8 +118,9 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     {
                         ep.SafeLinks.AddRange([.. _routes.Where(r => r.ErrorSafeLink).Select(r => r.AsCardLink(l))]);
                         ep.ErrorInfos[403] = ErrorPageInfo(l("Access Denied"), l("You do not have the permision to view the address or data specified."));
-                        ep.ErrorInfos[404] = ErrorPageInfo(l("Page Not Found"), l("The page you want to view is etiher deleted or outdated."));
+                        ep.ErrorInfos[404] = ErrorPageInfo(l("Page Not Found"), l("The page you want to view is either deleted or outdated."));
                         ep.ErrorInfos[500] = ErrorPageInfo(l("Unexpected Error"), l("Please contact system administrator."));
+                        ep.ErrorInfos[999] = ErrorPageInfo(l("Application Error"), l("Please contact system administrator."));
 
                         _errorPageOptions.Apply(ep);
                     },

@@ -73,10 +73,14 @@
         },
         "404": {
           "title": "Page Not Found",
-          "message": "The page you want to view is etiher deleted or outdated."
+          "message": "The page you want to view is either deleted or outdated."
         },
         "500": {
           "title": "Unexpected Error",
+          "message": "Please contact system administrator."
+        },
+        "999": {
+          "title": "Application Error",
           "message": "Please contact system administrator."
         }
       },
