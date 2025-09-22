@@ -10,10 +10,6 @@ html {
   @apply !z-[1002];
 }
 
-.p-toast {
-  @apply z-[2000];
-}
-
 .p-datatable-tbody td.p-datatable-frozen-column {
   background: inherit;
 }
