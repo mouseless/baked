@@ -2,7 +2,7 @@
   <div
     id="page-title"
     class="
-      sticky -top-1 z-[1002] space-y-4 bg-body
+      sticky -top-1 z-10 space-y-4 bg-body
       max-md:space-y-0 max-lg:space-y-2
     "
   >
@@ -20,22 +20,23 @@
           xl:flex-col xl:mt-2
         "
       >
-        <h1 class="text-xl font-bold">
-          {{ l(title) }}
-        </h1>
+        <div class="grid">
+          <h1 class="font-bold text-xl truncate">
+            {{ l(title) }}
+          </h1>
+        </div>
         <div class="relative">
           <div
             data-testid="description"
             class="
               text-sm text-gray-600 dark:text-gray-400
               text-nowrap overflow-hidden
-              hidden xl:block
+              hidden xl:grid
             "
           >
-            <String
-              :schema="{ maxLength: 125 }"
-              :data="l(description) || '&nbsp;'"
-            />
+            <span class="truncate">
+              {{ l(description) || '&nbsp;' }}
+            </span>
           </div>
           <Button
             v-if="description"
@@ -109,7 +110,7 @@
 import { onMounted, ref } from "vue";
 import { Button } from "primevue";
 import { useRuntimeConfig } from "#app";
-import { Bake, PersistentPopover, String } from "#components";
+import { Bake, PersistentPopover } from "#components";
 import { useBreakpoints, useHead, useLocalization } from "#imports";
 
 const { isMd } = useBreakpoints();

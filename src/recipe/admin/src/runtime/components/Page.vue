@@ -19,7 +19,7 @@ const { public: { components } } = useRuntimeConfig();
 
 useHead({ title: components?.Page?.title });
 
-context.setPage(reactive({}));
+context.providePage(reactive({}));
 const name = route.params?.baked === "" ? "index" : route.params?.baked.join("/");
 const descriptor = await pages.fetch(name);
 const classes = [asClasses("page"), asClasses(name, "b-route--")];

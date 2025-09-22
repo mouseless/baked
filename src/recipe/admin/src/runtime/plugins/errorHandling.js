@@ -33,17 +33,23 @@ export default defineNuxtPlugin({
         return;
       }
 
-      if(handler.behavior === "Alert") {
+      switch (handler.behavior) {
+      case "Alert":
         await clearError(error);
-        toast.add({ ...getMessage(error) });
-      } else if(handler.behavior === "Redirect") {
-        await clearError(error);
-        toast.add({ ...getMessage(error) });
+        toast.add(getMessage(error));
+        break;
 
+      case "Redirect":
+        await clearError(error);
+        toast.add(getMessage(error));
         const redirectPath = await dataFetcher.fetch({ data: handler.behaviorArgument });
         $router.replace(redirectPath);
-      } else {
-        console.error(error);
+        break;
+
+      default:
+        if(error.name === "TypeError") {
+          error.statusCode = 999;
+        }
         showError(error);
       }
     }

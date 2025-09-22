@@ -142,7 +142,7 @@ const context = useContext();
 const composableResolver = useComposableResolver();
 const dataFetcher = useDataFetcher();
 const { localize: l } = useLocalization();
-const { localize: lc } = useLocalization("DataTable");
+const { localize: lc } = useLocalization({ group: "DataTable" });
 const { public: { composables: { useBreakpoints: { screens } } } } = useRuntimeConfig();
 
 const { schema, data } = defineProps({
@@ -152,9 +152,9 @@ const { schema, data } = defineProps({
 
 const { columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions } = schema;
 
-const dataDescriptor = context.dataDescriptor();
-const injectedData = context.injectedData();
-const loading = context.loading();
+const dataDescriptor = context.injectDataDescriptor();
+const injectedData = context.injectData();
+const loading = context.injectLoading();
 
 const dataTable = ref();
 const actionsMenu = ref();

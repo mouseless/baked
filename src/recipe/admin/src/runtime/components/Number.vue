@@ -6,6 +6,7 @@
   <span
     v-else-if="data"
     v-tooltip.bottom="tooltip"
+    class="max-sm:select-none"
   >{{ display }}</span>
   <span v-else>-</span>
 </template>
@@ -22,7 +23,7 @@ const { data } = defineProps({
   data: { type: null, required: true }
 });
 
-const loading = context.loading();
+const loading = context.injectLoading();
 const display = computed(() => asNumber(data));
 const tooltip = computed(() => display.value.shortened ? `${asNumber(data, { shorten: false })}` : null);
 </script>

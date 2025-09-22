@@ -47,7 +47,7 @@ public static class DomainComponents
     {
         context = context.Drill(method.Name);
 
-        return ReportPageTabContent(method.GetRequiredComponent(context.Drill(nameof(ReportPage.Tab.Content.Component))),
+        return ReportPageTabContent(method.GetRequiredComponent(context.Drill(nameof(ReportPage.Tab.Content.Component))), method.Name.Kebaberize(),
             options: options
         );
     }

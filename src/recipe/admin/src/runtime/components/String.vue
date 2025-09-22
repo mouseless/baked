@@ -24,7 +24,7 @@ const { schema, data } = defineProps({
 
 const { maxLength } = schema;
 
-const loading = context.loading();
+const loading = context.injectLoading();
 const lengthIsExceeded = computed(() => maxLength && data.length > maxLength);
 const text = computed(() => lengthIsExceeded.value ? truncate(data, maxLength) : data);
 const tooltip = computed(() => ({

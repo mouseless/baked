@@ -47,9 +47,9 @@ const model = defineModel({ type: null, required: true });
 
 const { label, localizeLabel, optionLabel, optionValue, showClear, selectionPageContextKey, stateful } = schema;
 
-const loading = context.loading();
-const path = context.path();
-const page = context.page();
+const loading = context.injectLoading();
+const path = context.injectPath();
+const page = context.injectPage();
 const selected = ref();
 
 // two way binding between model and selected

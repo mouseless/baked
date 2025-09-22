@@ -10,7 +10,7 @@
   <nav
     v-bind="$attrs"
     class="
-      fixed z-[1002]
+      fixed z-10
       p-4 bg-slate-100 dark:bg-zinc-900
       flex flex-col justify-start gap-2
       md:top-0 md:left-0 md:h-screen
@@ -116,7 +116,7 @@ const { schema, data } = defineProps({
 
 const { logo, largeLogo, menu, footer } = schema;
 
-const loading = context.loading();
+const loading = context.injectLoading();
 const popover = ref();
 
 function togglePopover(event) {

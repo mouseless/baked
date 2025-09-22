@@ -58,7 +58,7 @@ test.describe("Base", () => {
   test("grid added", async({page}) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator(".grid")).toBeAttached();
+    await expect(component.locator(".b-ReportPage--grid")).toBeAttached();
   });
 
   test("visual", { tag: "@visual" }, async({page}) => {
@@ -85,7 +85,7 @@ test.describe("Full Page", () => {
   test("grid not added", async({page}) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator(".grid")).not.toBeAttached();
+    await expect(component.locator(".b-ReportPage--grid")).not.toBeAttached();
   });
 
   test("visual", { tag: "@visual" }, async({page}) => {

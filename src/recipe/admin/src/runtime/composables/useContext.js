@@ -1,70 +1,60 @@
 import { inject, provide, ref } from "vue";
 
 export default function() {
-  function add(name) {
+  function providePath(name) {
     const path = inject("__bake_path", null);
     provide("__bake_path", path ? `${path}/${name}` : name);
   }
 
-  function path() {
+  function injectPath() {
     return inject("__bake_path", "");
   }
 
-  function dataDescriptor() {
+  function injectDataDescriptor() {
     return inject("__bake_data_descriptor", null);
   }
 
-  function setDataDescriptor(value) {
+  function provideDataDescriptor(value) {
     return provide("__bake_data_descriptor", value);
   }
 
-  function injectedData() {
+  function injectData() {
     return {
       ParentData: inject("__bake_injected_data:ParentData", null),
       Custom: inject("__bake_injected_data:Custom", null)
     };
   }
 
-  function setInjectedData(value, key) {
+  function provideData(value, key) {
     provide(`__bake_injected_data:${key}`, value);
   }
 
-  function loading() {
+  function injectLoading() {
     return inject("__bake_loading", ref(false));
   }
 
-  function setLoading(value) {
+  function provideLoading(value) {
     provide("__bake_loading", value);
   }
 
-  function page() {
+  function injectPage() {
     return inject("__bake_page");
   }
 
-  function setPage(value) {
+  function providePage(value) {
     provide("__bake_page", value);
   }
 
-  function articleOverflow() {
-    return inject("__bake_article_overflow", ref(false));
-  }
-
-  function setArticleOverflow(value) {
-    provide("__bake_article_overflow", value);
-  }
-
   return {
-    add,
-    path,
-    dataDescriptor,
-    setDataDescriptor,
-    injectedData,
-    setInjectedData,
-    loading,
-    setLoading,
-    page,
-    setPage,
-    articleOverflow,
-    setArticleOverflow
+    injectPath,
+    providePath,
+    injectDataDescriptor,
+    provideDataDescriptor,
+    injectData,
+    provideData,
+    injectLoading,
+    provideLoading,
+    injectPage,
+    providePage
   };
 }

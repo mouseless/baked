@@ -22,6 +22,13 @@
         class="m-4"
         @click="redirectError"
       />
+      <Button
+        data-testid="type"
+        type="button"
+        label="Type"
+        class="m-4"
+        @click="typeError"
+      />
     </Panel>
   </UiSpec>
 </template>
@@ -56,4 +63,18 @@ function redirectError() {
 
   throw error;
 }
+
+function typeError() {
+  try {
+    const obj = undefined;
+
+    // this is intentional, to cause a TypeError
+    console.log(obj.x);
+  } catch (error) {
+    error.message = "This is a TypeError and is handled as application error.";
+
+    throw error;
+  }
+}
+
 </script>

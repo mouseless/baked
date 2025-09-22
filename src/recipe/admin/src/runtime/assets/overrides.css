@@ -1,5 +1,23 @@
-/* Data Table */
+html {
+  @apply max-xs:text-[smaller];
+}
+
+.bg-body {
+  background-color: white;
+}
 
 .p-datatable-tbody td.p-datatable-frozen-column {
   background: inherit;
+}
+
+.p-popover-content {
+  & > div {
+    @apply max-sm:p-0;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .bg-body {
+    background-color: #121212;
+  }
 }

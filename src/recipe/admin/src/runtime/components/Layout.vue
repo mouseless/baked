@@ -1,5 +1,8 @@
 <template>
-  <Toast position="top-center" />
+  <Toast
+    :pt="{ root: 'z-20' }"
+    position="top-center"
+  />
   <Bake
     :key="descriptor.type"
     name="root"
@@ -35,18 +38,3 @@ async function findLayout(pageName) {
   return await layouts.fetch(pageDescriptor?.schema?.layout || "default");
 }
 </script>
-<style lang="scss">
-.bg-body {
-  background-color: white;
-}
-
-.p-toast {
-  z-index: 100;
-}
-
-@media (prefers-color-scheme: dark) {
-  .bg-body {
-    background-color: #121212;
-  }
-}
-</style>

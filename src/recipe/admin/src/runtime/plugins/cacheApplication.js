@@ -6,7 +6,8 @@ export default defineNuxtPlugin({
   enforce: "pre",
   setup(nuxtApp) {
     const { public: { cacheApplication } } = useRuntimeConfig();
-    const cache = useCache("cache:application", cacheApplication.expirationInMinutes);
+    const { expirationInMinutes } = cacheApplication;
+    const cache = useCache("cache:application", { expirationInMinutes });
     const { $fetchInterceptors } = nuxtApp;
 
     $fetchInterceptors.register(
@@ -16,7 +17,8 @@ export default defineNuxtPlugin({
           return await next();
         }
 
-        return await cache.getOrCreate(cache.buildKey(request, options.query), next);
+        const key = cache.buildKey({ path: request, query: options.query });
+        return await cache.getOrCreate({ key, create: next });
       },
       // should run before other interceptors
       -10

@@ -165,9 +165,9 @@ public static class Components
         Action<ReportPage.Tab>? options = default
     ) => options.Apply(new(id));
 
-    public static ReportPage.Tab.Content ReportPageTabContent(IComponentDescriptor component,
+    public static ReportPage.Tab.Content ReportPageTabContent(IComponentDescriptor component, string key,
         Action<ReportPage.Tab.Content>? options = default
-    ) => options.Apply(new(component));
+    ) => options.Apply(new(component, key));
 
     public static ComponentDescriptor<Select> Select(string label, IData data,
         Action<Select>? options = default

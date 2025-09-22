@@ -23,23 +23,23 @@ const { name, descriptor } = defineProps({
   name: { type: String, required: true },
   descriptor: { type: null, required: true }
 });
-const model = defineModel({ type: null, required: false });
+const model = defineModel({ type: null });
 const emit = defineEmits(["loaded"]);
 
-context.add(name);
-context.setDataDescriptor(descriptor.data);
+context.providePath(name);
+context.provideDataDescriptor(descriptor.data);
 
 const is = componentResolver.resolve(descriptor.type, "None");
-const injectedData = context.injectedData();
+const injectedData = context.injectData();
 const data = ref(dataFetcher.get({ data: descriptor.data, injectedData }));
 const shouldLoad = dataFetcher.shouldLoad(descriptor.data?.type);
 const loading = ref(shouldLoad);
 const classes = [`b-component--${descriptor.type}`, ...asClasses(name)];
 
-context.setInjectedData(data, "ParentData");
+context.provideData(data, "ParentData");
 
 if(shouldLoad) {
-  context.setLoading(loading);
+  context.provideLoading(loading);
 }
 
 onMounted(async() => {

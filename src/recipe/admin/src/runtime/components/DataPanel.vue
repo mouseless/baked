@@ -4,7 +4,12 @@
     :header="localizeTitle ? l(title) : title"
     :collapsed="collapsedState"
     toggleable
-    :pt="{ headerActions: { class: 'flex gap-2 items-center' } }"
+    :pt="
+      {
+        headerActions: 'flex gap-2 items-center',
+        title: 'max-sm:truncate'
+      }
+    "
     @update:collapsed="onCollapsed"
   >
     <template
@@ -84,7 +89,7 @@ const { isMd } = useBreakpoints();
 const context = useContext();
 const dataFetcher = useDataFetcher();
 const { localize: l } = useLocalization();
-const { localize: lc } = useLocalization("DataPanel");
+const { localize: lc } = useLocalization({ group: "DataPanel" });
 const panel = useTemplateRef("panel");
 const popover = ref();
 
@@ -99,8 +104,8 @@ const { schema } = defineProps({
 
 const { collapsed, content, localizeTitle, parameters, title: titleData } = schema;
 
-const injectedData = context.injectedData();
-const path = context.path();
+const injectedData = context.injectData();
+const path = context.injectPath();
 const collapsedState = computed(() => panelStates[path] ?? collapsed);
 const loaded = ref(!collapsedState.value);
 const ready = ref(parameters.length === 0); // it is ready when there is no parameter
@@ -108,7 +113,7 @@ const uniqueKey = ref("");
 
 const values = ref({});
 if(parameters.length > 0) {
-  context.setInjectedData(values, "Custom");
+  context.provideData(values, "Custom");
 }
 
 const title = ref(dataFetcher.get({ data: titleData, injectedData }));

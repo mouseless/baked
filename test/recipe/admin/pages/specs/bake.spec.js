@@ -57,7 +57,7 @@ test.describe("Data Descriptor", () => {
     const component = page.getByTestId(id);
 
     await expect(component.getByTestId("test")).toHaveText(/computed/);
-    await expect(component.getByTestId("test")).toHaveText(/remote-1/);
-    await expect(component.getByTestId("test")).toHaveText(/remote-2/);
+    await expect(component.getByTestId("test")).toHaveText(/RequiredWithDefault1/);
+    await expect(component.getByTestId("test")).toHaveText(/Required1/);
   });
 });

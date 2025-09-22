@@ -33,11 +33,11 @@ const { schema, data } = defineProps({
 });
 const model = defineModel({ type: null, required: true });
 
-const { allowEmpty, localizeLabel, optionLabel, optionValue, stateful, selectionPageContextKey } = schema;
+const { allowEmpty = false, localizeLabel, optionLabel, optionValue, stateful, selectionPageContextKey } = schema;
 
-const loading = context.loading();
-const path = context.path();
-const page = context.page();
+const loading = context.injectLoading();
+const path = context.injectPath();
+const page = context.injectPage();
 const selected = ref();
 
 watch(
@@ -102,3 +102,19 @@ function setPageContext(key, value) {
   page[`!${selectionPageContextKey}:${key}`] = !value;
 }
 </script>
+<style>
+.p-popover-content {
+  .p-selectbutton {
+    @apply max-sm:flex-col;
+
+    .p-togglebutton {
+      &:first-child {
+        @apply max-sm:rounded-t-lg max-sm:rounded-es-none;
+      }
+      &:last-child {
+        @apply max-sm:rounded-b-lg max-sm:rounded-se-none;
+      }
+    }
+  }
+}
+</style>
