@@ -107,7 +107,6 @@ const { schema } = defineProps({
 const { title, queryParameters, tabs } = schema;
 
 const page = context.injectPage();
-const articleOverflow = context.injectArticleOverflow();
 const ready = ref(queryParameters.length === 0);
 const uniqueKey = ref();
 const currentTab = ref(tabs.length > 0 ? tabs[0].id : "");
@@ -122,22 +121,6 @@ const showRequiredMessage = ref(false);
 onMounted(() => {
   showRequiredMessage.value = !ready.value;
 });
-
-if(tabs.length > 0) {
-  articleOverflow.value = tabs[0].overflow || false;
-  watch(
-    currentTab,
-    (newTabId, oldTabId) => {
-      if(newTabId === oldTabId) { return; }
-
-      const newTab = tabs.find(tab => tab.id === newTabId);
-      if(!newTab) { return; }
-
-      articleOverflow.value = newTab.overflow || false;
-    },
-    { immediate: true }
-  );
-}
 
 for(const tab of tabs) {
   if(!tab.showWhen) { continue; }

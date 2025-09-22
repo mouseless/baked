@@ -45,14 +45,6 @@ export default function() {
     provide("__bake_page", value);
   }
 
-  function injectArticleOverflow() {
-    return inject("__bake_article_overflow", ref(false));
-  }
-
-  function provideArticleOverflow(value) {
-    provide("__bake_article_overflow", value);
-  }
-
   return {
     providePath,
     injectPath,
@@ -63,8 +55,6 @@ export default function() {
     injectLoading,
     provideLoading,
     injectPage,
-    providePage,
-    injectArticleOverflow,
-    provideArticleOverflow
+    providePage
   };
 }

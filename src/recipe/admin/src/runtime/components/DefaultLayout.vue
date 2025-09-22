@@ -24,13 +24,10 @@
   <ScrollTop />
 </template>
 <script setup>
-import { ref } from "vue";
 import { useRoute } from "#app";
 import { ScrollTop } from "primevue";
 import { Bake } from "#components";
-import { useContext } from "#imports";
 
-const context = useContext();
 // do NOT remove this without testing. using $route in template doesn't trigger
 // header refresh properly, using setup variable solved the issue.
 const route = useRoute();
@@ -41,9 +38,6 @@ const { schema } = defineProps({
 });
 
 const { header, sideMenu } = schema;
-
-const overflow = ref(false);
-context.provideArticleOverflow(overflow);
 </script>
 <style>
 .p-scrolltop {
