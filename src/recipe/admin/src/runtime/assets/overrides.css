@@ -6,10 +6,6 @@ html {
   background-color: white;
 }
 
-.p-tooltip {
-  @apply !z-[1002];
-}
-
 .p-datatable-tbody td.p-datatable-frozen-column {
   background: inherit;
 }

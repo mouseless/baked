@@ -102,8 +102,7 @@ function setPageContext(key, value) {
   page[`!${selectionPageContextKey}:${key}`] = !value;
 }
 </script>
-
-<style scoped>
+<style>
 .p-popover-content {
   .p-selectbutton {
     @apply max-sm:flex-col;
