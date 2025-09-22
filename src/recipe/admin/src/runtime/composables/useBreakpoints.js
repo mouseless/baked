@@ -8,42 +8,19 @@ export default function() {
     .keys(screens)
     .reduce((result, key) => ({ [key]: removePx(screens[key]), ...result }), {});
 
-  const is2xs = ref(false);
-  const isXs = ref(false);
-  const isSm = ref(false);
-  const isMd = ref(false);
-  const isLg = ref(false);
-  const isXl = ref(false);
-  const is2xl = ref(false);
-  const is3xl = ref(false);
-  const isMax2xs = ref(false);
-  const isMaxXs = ref(false);
-  const isMaxSm = ref(false);
-  const isMaxMd = ref(false);
-  const isMaxLg = ref(false);
-  const isMaxXl = ref(false);
-  const isMax2xl = ref(false);
-  const isMax3xl = ref(false);
+  const refs = {};
+  Object.keys(sizes).forEach(key => {
+    refs[`is${capitalize(key)}`] = ref(false);
+    refs[`isMax${capitalize(key)}`] = ref(false);
+  });
 
   const update = () => {
     const width = window.innerWidth;
 
-    is2xs.value = width >= sizes["2xs"];
-    isXs.value = width >= sizes.xs;
-    isSm.value = width >= sizes.sm;
-    isMd.value = width >= sizes.md;
-    isLg.value = width >= sizes.lg;
-    isXl.value = width >= sizes.xl;
-    is2xl.value = width >= sizes["2xl"];
-    is3xl.value = width >= sizes["3xl"];
-    isMax2xs.value = width < sizes["2xs"];
-    isMaxXs.value = width < sizes.xs;
-    isMaxSm.value = width < sizes.sm;
-    isMaxMd.value = width < sizes.md;
-    isMaxLg.value = width < sizes.lg;
-    isMaxXl.value = width < sizes.xl;
-    isMax2xl.value = width < sizes["2xl"];
-    isMax3xl.value = width < sizes["3xl"];
+    Object.keys(sizes).forEach(key => {
+      refs[`is${capitalize(key)}`].value = width >= sizes[key];
+      refs[`isMax${capitalize(key)}`].value = width < sizes[key];
+    });
   };
 
   onMounted(() => {
@@ -56,27 +33,17 @@ export default function() {
   });
 
   function removePx(size) {
+
     return typeof size === "string"
       ? parseInt(size.replace("px", ""), 10)
       : size;
   }
 
-  return {
-    is2xs,
-    isXs,
-    isSm,
-    isMd,
-    isLg,
-    isXl,
-    is2xl,
-    is3xl,
-    isMax2xs,
-    isMaxXs,
-    isMaxSm,
-    isMaxMd,
-    isMaxLg,
-    isMaxXl,
-    isMax2xl,
-    isMax3xl
-  };
+  function capitalize(str) {
+    if(str.length === 0) return str;
+
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  return refs;
 }

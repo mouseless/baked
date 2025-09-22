@@ -47,14 +47,7 @@ export interface UseBreakpointsOptions {
 }
 
 export interface ScreenOptions {
-  "2xs": String,
-  xs: String,
-  sm: String,
-  md: String,
-  lg: String,
-  xl: String,
-  "2xl": String,
-  "3xl": String,
+  [key: string]: string;
 }
 
 export default defineNuxtModule<ModuleOptions>({
