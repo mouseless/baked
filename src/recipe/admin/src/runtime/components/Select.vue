@@ -133,4 +133,8 @@ hidden
 .p-select-label {
   font-size: inherit;
 }
+
+.p-select-overlay {
+  z-index: 1002 !important;
+}
 </style>
