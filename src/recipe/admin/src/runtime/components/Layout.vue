@@ -36,19 +36,8 @@ async function findLayout(pageName) {
 }
 </script>
 <style>
-.bg-body {
-  background-color: white;
-}
-
 html {
   @apply max-xs:text-[smaller];
-}
-
-.p-scrolltop {
-  padding-top: calc(var(--p-button-icon-only-width) / 2);
-  padding-bottom: calc(var(--p-button-icon-only-width) / 2);
-
-  @apply max-md:bottom-24;
 }
 
 .p-tooltip {
