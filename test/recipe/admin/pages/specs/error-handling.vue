@@ -68,10 +68,11 @@ function typeError() {
   try {
     const obj = undefined;
 
-    // it's known console cause of creating TypeError
+    // this is intentional, to cause a TypeError
     console.log(obj.x);
   } catch (error) {
     error.message = "This is a TypeError and is handled as application error.";
+
     throw error;
   }
 }

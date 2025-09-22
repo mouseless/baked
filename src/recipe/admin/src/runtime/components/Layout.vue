@@ -45,7 +45,7 @@ html {
 }
 
 .p-toast {
-  @apply !z-[2000];
+  @apply z-[2000];
 }
 
 @media (prefers-color-scheme: dark) {

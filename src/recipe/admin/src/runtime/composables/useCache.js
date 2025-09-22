@@ -11,7 +11,6 @@ export default function(name, { expirationInMinutes = 60 } = {}) {
   }
 
   function isCacheValid(entry) {
-
     return Date.now() - entry.createdAt < expirationInMinutes * 60 * 1000;
   }
 
@@ -26,7 +25,6 @@ export default function(name, { expirationInMinutes = 60 } = {}) {
     if(cached) {
       const entry = JSON.parse(cached);
       if(isCacheValid(entry)) {
-
         return entry.data;
       }
     }
