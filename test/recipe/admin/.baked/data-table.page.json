@@ -229,7 +229,8 @@
                   }
                 }
               }
-            }
+            },
+            "key": "get-table-data-with-footer"
           }
         ]
       }

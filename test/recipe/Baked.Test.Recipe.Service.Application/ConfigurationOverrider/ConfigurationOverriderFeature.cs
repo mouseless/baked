@@ -7,6 +7,7 @@ using Baked.Test.ExceptionHandling;
 using Baked.Test.Orm;
 using Baked.Test.Theme;
 using Baked.Theme;
+using Humanizer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
 
@@ -127,7 +128,7 @@ public class ConfigurationOverriderFeature : IFeature
             );
 
             builder.Conventions.AddMethodSchema(
-                schema: (c, cc) => ReportPageTabContent(component: c.Method.GetRequiredComponent(cc.Drill(nameof(ReportPageC.Tab.Content.Component)))),
+                schema: (c, cc) => ReportPageTabContent(component: c.Method.GetRequiredComponent(cc.Drill(nameof(ReportPageC.Tab.Content.Component))), c.Method.Name.Kebaberize()),
                 whenMethod: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData),
                 whenComponent: c => c.Path.EndsWith(nameof(ReportPageC.Tab.Contents), 0)
             );

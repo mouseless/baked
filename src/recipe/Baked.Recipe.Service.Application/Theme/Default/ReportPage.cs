@@ -19,10 +19,10 @@ public record ReportPage(string Path, PageTitle Title) :
         public string? ShowWhen { get; set; }
         public bool? Overflow { get; set; }
 
-        public record Content(IComponentDescriptor Component)
+        public record Content(IComponentDescriptor Component, string Key)
         {
             public IComponentDescriptor Component { get; set; } = Component;
-            public string? Key { get; set; }
+            public string Key { get; set; } = Key;
             public bool? Narrow { get; set; }
             public string? ShowWhen { get; set; }
         }

@@ -124,7 +124,8 @@
                   }
                 }
               }
-            }
+            },
+            "key": "get-wide"
           },
           {
             "component": {
@@ -158,6 +159,7 @@
                 }
               }
             },
+            "key": "get-left",
             "narrow": true
           },
           {
@@ -192,6 +194,7 @@
                 }
               }
             },
+            "key": "get-right",
             "narrow": true
           }
         ],
@@ -346,7 +349,8 @@
                   }
                 }
               }
-            }
+            },
+            "key": "get-first"
           },
           {
             "component": {
@@ -488,7 +492,8 @@
                   }
                 }
               }
-            }
+            },
+            "key": "get-second"
           }
         ],
         "icon": {

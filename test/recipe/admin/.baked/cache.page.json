@@ -59,6 +59,7 @@
                 }
               }
             },
+            "key": "get-scoped",
             "narrow": true
           },
           {
@@ -89,6 +90,7 @@
                 }
               }
             },
+            "key": "get-application",
             "narrow": true
           }
         ]
