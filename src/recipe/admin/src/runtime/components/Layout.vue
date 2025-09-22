@@ -35,13 +35,28 @@ async function findLayout(pageName) {
   return await layouts.fetch(pageDescriptor?.schema?.layout || "default");
 }
 </script>
-<style lang="scss">
+<style>
 .bg-body {
   background-color: white;
 }
 
+html {
+  @apply max-xs:text-[smaller];
+}
+
+.p-scrolltop {
+  padding-top: calc(var(--p-button-icon-only-width) / 2);
+  padding-bottom: calc(var(--p-button-icon-only-width) / 2);
+
+  @apply max-md:bottom-24;
+}
+
+.p-tooltip {
+  @apply !z-[1002];
+}
+
 .p-toast {
-  z-index: 100;
+  @apply !z-[2000];
 }
 
 @media (prefers-color-scheme: dark) {

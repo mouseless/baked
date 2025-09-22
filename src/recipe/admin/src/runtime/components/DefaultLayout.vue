@@ -45,23 +45,3 @@ const { header, sideMenu } = schema;
 const overflow = ref(false);
 context.provideArticleOverflow(overflow);
 </script>
-<style>
-html {
-  @apply max-xs:text-[smaller];
-}
-
-.p-scrolltop {
-  padding-top: calc(var(--p-button-icon-only-width) / 2);
-  padding-bottom: calc(var(--p-button-icon-only-width) / 2);
-
-  @apply max-md:bottom-24;
-}
-
-.p-tooltip {
-  @apply !z-[1002];
-}
-
-.p-toast {
-  @apply !z-[2000];
-}
-</style>
