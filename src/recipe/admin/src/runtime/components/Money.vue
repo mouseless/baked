@@ -6,6 +6,7 @@
   <span
     v-else-if="data"
     v-tooltip.bottom="tooltip"
+    class="max-sm:select-none"
   >{{ display }}</span>
   <span v-else>-</span>
 </template>

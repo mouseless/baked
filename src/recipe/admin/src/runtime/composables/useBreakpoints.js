@@ -33,7 +33,6 @@ export default function() {
   });
 
   function removePx(size) {
-
     return typeof size === "string"
       ? parseInt(size.replace("px", ""), 10)
       : size;

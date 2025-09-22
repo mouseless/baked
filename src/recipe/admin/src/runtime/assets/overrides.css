@@ -3,11 +3,3 @@
 .p-datatable-tbody td.p-datatable-frozen-column {
   background: inherit;
 }
-
-.b-component--Money {
-    @apply max-sm:select-none;
-}
-
-.b-component--Number {
-    @apply max-sm:select-none; 
-}
