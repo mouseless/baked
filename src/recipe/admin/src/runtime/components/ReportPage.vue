@@ -68,7 +68,7 @@
         </template>
         <div
           v-else
-          class="grid grid-cols-1 lg:grid-cols-2 gap-4"
+          class="b-ReportPage--grid grid grid-cols-1 lg:grid-cols-2 gap-4"
         >
           <template
             v-for="(content, i) in tab.contents"
