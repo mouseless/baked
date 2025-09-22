@@ -17,23 +17,24 @@
           w-full mt-1
           flex flex-row gap-2
           items-baseline justify-start
-          max-sm:truncate
           xl:flex-col xl:mt-2
         "
       >
-        <h1 class="text-xl font-bold max-sm:truncate">
-          {{ l(title) }}
-        </h1>
+        <div class="grid">
+          <h1 class="font-bold text-xl truncate">
+            {{ l(title) }}
+          </h1>
+        </div>
         <div class="relative">
           <div
             data-testid="description"
             class="
               text-sm text-gray-600 dark:text-gray-400
               text-nowrap overflow-hidden
-              hidden xl:grid xl:max-w-9/10
+              hidden xl:grid
             "
           >
-            <span class="lg:truncate">
+            <span class="truncate">
               {{ l(description) || '&nbsp;' }}
             </span>
           </div>

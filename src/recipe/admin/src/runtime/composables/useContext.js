@@ -46,8 +46,8 @@ export default function() {
   }
 
   return {
-    providePath,
     injectPath,
+    providePath,
     injectDataDescriptor,
     provideDataDescriptor,
     injectData,
