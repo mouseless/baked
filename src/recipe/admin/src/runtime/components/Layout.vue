@@ -35,22 +35,3 @@ async function findLayout(pageName) {
   return await layouts.fetch(pageDescriptor?.schema?.layout || "default");
 }
 </script>
-<style>
-html {
-  @apply max-xs:text-[smaller];
-}
-
-.p-tooltip {
-  @apply !z-[1002];
-}
-
-.p-toast {
-  @apply z-[2000];
-}
-
-@media (prefers-color-scheme: dark) {
-  .bg-body {
-    background-color: #121212;
-  }
-}
-</style>

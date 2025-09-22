@@ -1,5 +1,25 @@
-/* Data Table */
+html {
+  @apply max-xs:text-[smaller];
+}
+
+.bg-body {
+  background-color: white;
+}
+
+.p-tooltip {
+  @apply !z-[1002];
+}
+
+.p-toast {
+  @apply z-[2000];
+}
 
 .p-datatable-tbody td.p-datatable-frozen-column {
   background: inherit;
+}
+
+@media (prefers-color-scheme: dark) {
+  .bg-body {
+    background-color: #121212;
+  }
 }
