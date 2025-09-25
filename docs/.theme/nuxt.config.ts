@@ -1,9 +1,7 @@
 import { defineNuxtConfig } from "nuxt/config";
-import { joinURL } from "ufo";
 
 export default defineNuxtConfig({
   app: {
-    baseURL: process.env.NUXT_PUBLIC_BASE_URL,
     head: {
       meta: [
         { charset: "utf-8" },
@@ -12,47 +10,42 @@ export default defineNuxtConfig({
           content: "width=device-width, initial-scale=1"
         },
         {
-          hid: "og:type",
+          id: "og:type",
           property: "og:type",
           content: "website"
         },
         {
-          hid: "og:locale",
+          id: "og:locale",
           property: "og:locale",
           content: "en_US"
         },
         {
-          hid: "og:site_name",
+          id: "og:site_name",
           property: "og:site_name",
           content: "Baked"
         },
         {
-          hid: "og:description",
+          id: "og:description",
           property: "og:description",
           content: "An opinionated framework for .NET"
         },
         {
-          hid: "og:image",
+          id: "og:image",
           property: "og:image",
           content: "https://baked.mouseless.codes/favicon.ico"
         },
         {
-          hid: "og:image:width",
+          id: "og:image:width",
           property: "og:image:width",
           content: "50"
         },
         {
-          hid: "og:image:height",
+          id: "og:image:height",
           property: "og:image:height",
           content: "50"
         }
       ],
       link: [
-        {
-          rel: "icon",
-          type: "image/x-icon",
-          href: joinURL(process.env.NUXT_PUBLIC_BASE_URL ?? "/", "favicon.ico")
-        },
         {
           rel: "stylesheet",
           type: "text/css",
@@ -124,6 +117,11 @@ export default defineNuxtConfig({
     "@nuxt/eslint",
     "@pinia/nuxt"
   ],
+  nitro: {
+    prerender: {
+      routes: ["/not-found"]
+    }
+  },
   runtimeConfig: {
     public: {
       baseURL: "",
