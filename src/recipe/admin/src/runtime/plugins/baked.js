@@ -6,8 +6,8 @@ export default defineNuxtPlugin({
     const bakedComposables = import.meta.glob("../composables/*");
     const projectComposables = import.meta.glob("@/composables/*");
 
-    const pages = import.meta.glob("@/.baked/**/*.page.json");
-    const layouts = import.meta.glob("@/.baked/**/*.layout.json");
+    const pages = import.meta.glob("@@/.baked/**/*.page.json");
+    const layouts = import.meta.glob("@@/.baked/**/*.layout.json");
 
     return {
       provide: {

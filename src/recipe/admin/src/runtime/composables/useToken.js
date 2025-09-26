@@ -53,12 +53,12 @@ export default function() {
     }
 
     if(dispatch) {
-      window.dispatchEvent(new CustomEvent("token-changed"));
+      globalThis.dispatchEvent(new CustomEvent("token-changed"));
     }
   }
 
   function onChanged(callback) {
-    window.addEventListener("token-changed", callback);
+    globalThis.addEventListener("token-changed", callback);
   }
 
   return {

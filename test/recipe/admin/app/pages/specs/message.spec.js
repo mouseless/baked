@@ -46,7 +46,7 @@ test.describe("Severity", () => {
   test("Info", async({page}) => {
     const component = page.getByTestId("Info");
     const color = await component.evaluate(element =>
-      window.getComputedStyle(element).getPropertyValue("--p-message-info-color")
+      globalThis.getComputedStyle(element).getPropertyValue("--p-message-info-color")
     );
 
     await expect(component.locator(primevue.message.base)).toHaveCSS("color", hexToRGB(color));
@@ -55,7 +55,7 @@ test.describe("Severity", () => {
   test("Warning", async({page}) => {
     const component = page.getByTestId("Warning");
     const color = await component.evaluate(element =>
-      window.getComputedStyle(element).getPropertyValue("--p-message-warn-color")
+      globalThis.getComputedStyle(element).getPropertyValue("--p-message-warn-color")
     );
 
     await expect(component.locator(primevue.message.base)).toHaveCSS("color", hexToRGB(color));
@@ -64,7 +64,7 @@ test.describe("Severity", () => {
   test("Error", async({page}) => {
     const component = page.getByTestId("Error");
     const color = await component.evaluate(element =>
-      window.getComputedStyle(element).getPropertyValue("--p-message-error-color")
+      globalThis.getComputedStyle(element).getPropertyValue("--p-message-error-color")
     );
 
     await expect(component.locator(primevue.message.base)).toHaveCSS("color", hexToRGB(color));

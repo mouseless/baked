@@ -1,4 +1,5 @@
-import { defineContentConfig, defineCollection, z } from "@nuxt/content";
+import { defineContentConfig, defineCollection } from "@nuxt/content";
+import { z } from "zod/v4";
 
 export default defineContentConfig({
   collections: {

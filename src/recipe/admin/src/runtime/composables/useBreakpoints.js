@@ -15,7 +15,7 @@ export default function() {
   });
 
   const update = () => {
-    const width = window.innerWidth;
+    const width = globalThis.innerWidth;
 
     Object.keys(sizes).forEach(key => {
       refs[`is${capitalize(key)}`].value = width >= sizes[key];
@@ -25,11 +25,11 @@ export default function() {
 
   onMounted(() => {
     update();
-    window.addEventListener("resize", update);
+    globalThis.addEventListener("resize", update);
   });
 
   onBeforeUnmount(() => {
-    window.removeEventListener("resize", update);
+    globalThis.removeEventListener("resize", update);
   });
 
   function removePx(size) {
