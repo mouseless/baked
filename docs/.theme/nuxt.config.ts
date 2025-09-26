@@ -109,9 +109,6 @@ export default defineNuxtConfig({
   features: {
     inlineStyles: false
   },
-  generate: {
-    routes: ["/not-found"]
-  },
   modules: [
     "@nuxt/content",
     "@nuxt/eslint",
