@@ -85,6 +85,12 @@ export default defineNuxtModule<ModuleOptions>({
       }
     }
   },
+  onInstall() {
+    // TODO create required project files, e.g., app.vue
+  },
+  onUpgrade() {
+    // Place any update related script here
+  },
   // this setup runs after `defineNuxtConfig` so it should set default values
   // carefully.
   async setup(_options, _nuxt) {
