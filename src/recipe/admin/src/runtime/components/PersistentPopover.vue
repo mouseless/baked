@@ -213,7 +213,7 @@ export default {
       // ---
       // @cihandeniz
       const rect = target.getBoundingClientRect();
-      const vw = window.innerWidth, vh = window.innerHeight;
+      const vw = globalThis.innerWidth, vh = globalThis.innerHeight;
       const w = container.offsetWidth, h = container.offsetHeight;
 
       let top = rect.bottom;
@@ -261,12 +261,12 @@ export default {
     bindDocumentKeyDownListener() {
       if(!this.documentKeydownListener) {
         this.documentKeydownListener = this.onKeyDown.bind(this);
-        window.document.addEventListener("keydown", this.documentKeydownListener);
+        globalThis.document.addEventListener("keydown", this.documentKeydownListener);
       }
     },
     unbindDocumentKeyDownListener() {
       if(this.documentKeydownListener) {
-        window.document.removeEventListener("keydown", this.documentKeydownListener);
+        globalThis.document.removeEventListener("keydown", this.documentKeydownListener);
         this.documentKeydownListener = null;
       }
     },
@@ -314,12 +314,12 @@ export default {
           }
         };
 
-        window.addEventListener("resize", this.resizeListener);
+        globalThis.addEventListener("resize", this.resizeListener);
       }
     },
     unbindResizeListener() {
       if(this.resizeListener) {
-        window.removeEventListener("resize", this.resizeListener);
+        globalThis.removeEventListener("resize", this.resizeListener);
         this.resizeListener = null;
       }
     },
