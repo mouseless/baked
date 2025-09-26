@@ -61,7 +61,7 @@
           >
             <Bake
               v-if="content.showWhen ? page[content.showWhen] : true"
-              :name="`tabs/${tab.id}/contents/${i}/${content.key}`"
+              :name="`tabs/${tab.id}/contents/${content.key}`"
               :descriptor="content.component"
             />
           </template>
@@ -79,7 +79,7 @@
               :class="{ 'lg:col-span-2': !content.narrow }"
             >
               <Bake
-                :name="`tabs/${tab.id}/contents/${i}/${content.key}`"
+                :name="`tabs/${tab.id}/contents/${content.key}`"
                 :descriptor="content.component"
               />
             </div>
