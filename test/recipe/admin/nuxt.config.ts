@@ -29,7 +29,7 @@ export default defineNuxtConfig({
     },
     composables: {
       useDataFetcher: {
-        baseURL: import.meta.API_BASE_URL,
+        baseURL: import.meta.env.API_BASE_URL,
         retry: true
       }
     },
@@ -45,7 +45,7 @@ export default defineNuxtConfig({
   // Do NOT remove this line, auto imports are disabled for consistency
   // between local and published package behaviour
   imports: { autoImport: false },
-  logLevel: import.meta.BUILD_SILENT === "1" ? "silent" : "info",
+  logLevel: import.meta.env.BUILD_SILENT === "1" ? "silent" : "info",
   modules: [
     "@nuxt/eslint",
     "baked-recipe-admin"
