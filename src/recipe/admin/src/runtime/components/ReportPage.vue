@@ -56,8 +56,8 @@
       >
         <template v-if="tab.fullScreen">
           <template
-            v-for="(content, i) in tab.contents"
-            :key="`content-${i}-${content.key}`"
+            v-for="content in tab.contents"
+            :key="`content-${content.key}`"
           >
             <Bake
               v-if="content.showWhen ? page[content.showWhen] : true"
@@ -71,8 +71,8 @@
           class="b-ReportPage--grid grid grid-cols-1 lg:grid-cols-2 gap-4"
         >
           <template
-            v-for="(content, i) in tab.contents"
-            :key="`content-${i}-${content.key}`"
+            v-for="content in tab.contents"
+            :key="`content-${content.key}`"
           >
             <div
               v-if="content.showWhen ? page[content.showWhen] : true"

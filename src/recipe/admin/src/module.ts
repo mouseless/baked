@@ -128,7 +128,7 @@ export default defineNuxtModule<ModuleOptions>({
     _nuxt.options.css.push(resolver.resolve("./runtime/assets/overrides.css"));
 
     // below settings cannot be overriden
-    _nuxt.options.devtools = { enabled: true };
+    _nuxt.options.devtools = { enabled: false };
     _nuxt.options.experimental.payloadExtraction = false;
     _nuxt.options.features.inlineStyles = false;
     _nuxt.options.ssr = false;
