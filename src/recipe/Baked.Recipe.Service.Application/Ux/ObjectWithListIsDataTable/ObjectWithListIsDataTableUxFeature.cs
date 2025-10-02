@@ -49,6 +49,20 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                 whenComponent: c => c.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content))
             );
             builder.Conventions.AddMethodComponentConfiguration<DataTable>(
+                component: (dt, c) =>
+                {
+                    dt.Schema.ItemsProp = c.Method.DefaultOverload
+                        .ReturnType.SkipTask()
+                        .GetMetadata()
+                        .Get<ObjectWithListAttribute>()
+                        .ListPropertyName
+                        .Camelize();
+                },
+                whenMethod: c =>
+                    c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMetadata(out var returnMetadata) &&
+                    returnMetadata.Has<ObjectWithListAttribute>()
+            );
+            builder.Conventions.AddMethodComponentConfiguration<DataTable>(
                 component: (dt, c, cc) =>
                 {
                     var returnMembers = c.Method.DefaultOverload.ReturnType.SkipTask().GetMembers();
