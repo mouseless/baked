@@ -2,6 +2,7 @@
 using Baked.RestApi;
 using Baked.RestApi.Model;
 using Baked.Runtime;
+using Baked.Ux.DesignatedStringPropertiesAreLabel;
 using Humanizer;
 
 using static Baked.Theme.Default.Components;
@@ -24,6 +25,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
         {
             // Property Defaults
             builder.Index.Property.Add<DataAttribute>();
+            builder.Index.Property.Add<LabelAttribute>();
             builder.Conventions.SetPropertyMetadata(
                 attribute: c => new DataAttribute(c.Property.Name.Camelize()) { Label = c.Property.Name.Titleize() },
                 when: c => c.Property.IsPublic,
