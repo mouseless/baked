@@ -31,9 +31,6 @@ This layer provides `AppDescriptor`, `ComponentExports`, `LayerDescriptors`
 and `PageDescriptors` configuration target for registering pages using
 `ComponentDescriptor` instances.
 
-Also this layer provides `ILocaleTemplate` and `Localization` configuration
-targets to generate localization data for generated page descriptors
-
 ### `AppDescriptor`
 
 This target is provided in `GenerateCode` phase. To configure it in a feature;
