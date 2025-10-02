@@ -112,9 +112,9 @@ public static class DomainComponents
         return DataTable(
             options: dt =>
             {
-                dt.ExportOptions = method.GetSchema<DataTable.Export>(context.Drill(nameof(DataTable.Export)));
-                dt.FooterTemplate = method.GetSchema<DataTable.Footer>(context.Drill(nameof(DataTable.Footer)));
-                dt.VirtualScrollerOptions = method.GetSchema<DataTable.VirtualScroller>(context.Drill(nameof(DataTable.VirtualScroller)));
+                dt.ExportOptions = method.GetSchema<DataTable.Export>(context.Drill(nameof(DataTable.ExportOptions)));
+                dt.FooterTemplate = method.GetSchema<DataTable.Footer>(context.Drill(nameof(DataTable.FooterTemplate)));
+                dt.VirtualScrollerOptions = method.GetSchema<DataTable.VirtualScroller>(context.Drill(nameof(DataTable.VirtualScrollerOptions)));
 
                 options.Apply(dt);
             },

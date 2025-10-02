@@ -174,7 +174,8 @@
                             },
                             "conditions": []
                           },
-                          "alignRight": true
+                          "alignRight": true,
+                          "exportable": true
                         },
                         {
                           "prop": "footerColumn2",
@@ -185,7 +186,8 @@
                             },
                             "conditions": []
                           },
-                          "alignRight": true
+                          "alignRight": true,
+                          "exportable": true
                         },
                         {
                           "prop": "footerColumn3",
@@ -196,7 +198,8 @@
                             },
                             "conditions": []
                           },
-                          "alignRight": true
+                          "alignRight": true,
+                          "exportable": true
                         }
                       ]
                     },
