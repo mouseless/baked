@@ -20,7 +20,8 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                             p.TryGet<DataAttribute>(out var data) &&
                             data.Visible &&
                             !p.PropertyType.Is<string>() &&
-                            p.PropertyType.IsAssignableTo<IEnumerable>()).Name
+                            p.PropertyType.IsAssignableTo<IEnumerable>()
+                        ).Name
                 ),
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
@@ -65,9 +66,9 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                 },
                 whenMethod: c =>
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMembers(out var returnMembers) &&
-                    returnMembers.Has<ObjectWithListAttribute>() &&
+                    returnMembers.TryGet<ObjectWithListAttribute>(out var listAttribute) &&
                     returnMembers
-                        .Properties[returnMembers.Get<ObjectWithListAttribute>().ListPropertyName]
+                        .Properties[listAttribute.ListPropertyName]
                         .PropertyType.TryGetElementType(out var elementType) &&
                     elementType.HasMembers(),
                 order: -10
