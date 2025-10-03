@@ -85,4 +85,37 @@ public static class BusinessExtensions
             type.TryGetMetadata(out var metadata) &&
             metadata.TryGet(out namespaceAttribute);
     }
+
+    public static PropertyModel FirstProperty<TAttribute>(this TypeModelMembers members,
+        Func<PropertyModel, bool>? filter = default
+    ) where TAttribute : Attribute =>
+        members.FirstPropertyOrDefault<TAttribute>(filter: filter) ??
+        throw new($"{members.Name} is expected to have at least one property with `{typeof(TAttribute).Name}`");
+
+    public static PropertyModel? FirstPropertyOrDefault<TAttribute>(this TypeModelMembers members,
+        Func<PropertyModel, bool>? filter = default
+    ) where TAttribute : Attribute =>
+        members.Properties.Having<TAttribute>().FirstOrDefault(filter ?? (_ => true));
+
+    public static MethodModel FirstMethod<TAttribute>(this TypeModelMembers members,
+        Func<MethodModel, bool>? filter = default
+    ) where TAttribute : Attribute =>
+        members.FirstMethodOrDefault<TAttribute>(filter: filter) ??
+        throw new($"{members.Name} is expected to have at least one method with `{typeof(TAttribute).Name}`");
+
+    public static MethodModel? FirstMethodOrDefault<TAttribute>(this TypeModelMembers members,
+        Func<MethodModel, bool>? filter = default
+    ) where TAttribute : Attribute =>
+        members.Methods.Having<TAttribute>().FirstOrDefault(filter ?? (_ => true));
+
+    public static ParameterModel FirstParameter<TAttribute>(this MethodModel method,
+        Func<ParameterModel, bool>? filter = default
+    ) where TAttribute : Attribute =>
+        method.FirstParameterOrDefault<TAttribute>(filter: filter) ??
+        throw new($"{method.Name} is expected to have at least one parameter with `{typeof(TAttribute).Name}`");
+
+    public static ParameterModel? FirstParameterOrDefault<TAttribute>(this MethodModel method,
+        Func<ParameterModel, bool>? filter = default
+    ) where TAttribute : Attribute =>
+        method.DefaultOverload.Parameters.Having<TAttribute>().FirstOrDefault(filter ?? (_ => true));
 }

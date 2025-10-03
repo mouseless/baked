@@ -91,9 +91,9 @@ public static class Components
         Action<LanguageSwitcher>? options = default
     ) => new(options.Apply(new()));
 
-    public static ComponentDescriptor<MenuPage> MenuPage(string name, IEnumerable<IComponentDescriptor> links,
+    public static ComponentDescriptor<MenuPage> MenuPage(string path, IEnumerable<IComponentDescriptor> links,
         Action<MenuPage>? options = default
-    ) => MenuPage(name,
+    ) => MenuPage(path,
         options: s =>
         {
             s.Sections.Add(MenuPageSection(options: s => s.Links.AddRange(links.Select(l => Filterable(l)))));
@@ -101,9 +101,9 @@ public static class Components
         }
     );
 
-    public static ComponentDescriptor<MenuPage> MenuPage(string name,
+    public static ComponentDescriptor<MenuPage> MenuPage(string path,
         Action<MenuPage>? options = default
-    ) => new(options.Apply(new(name)));
+    ) => new(options.Apply(new(path)));
 
     public static MenuPage.Section MenuPageSection(
         Action<MenuPage.Section>? options = default

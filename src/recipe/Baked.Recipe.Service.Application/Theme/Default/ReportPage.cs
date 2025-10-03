@@ -2,8 +2,8 @@
 
 namespace Baked.Theme.Default;
 
-public record ReportPage(string Path, PageTitle Title) :
-    PageSchemaBase(Path)
+public record ReportPage(string Path, PageTitle Title)
+    : PageSchemaBase(Path)
 {
     public PageTitle Title { get; set; } = Title;
     public List<Parameter> QueryParameters { get; init; } = [];
@@ -17,7 +17,6 @@ public record ReportPage(string Path, PageTitle Title) :
         public bool? FullScreen { get; set; }
         public IComponentDescriptor? Icon { get; set; }
         public string? ShowWhen { get; set; }
-        public bool? Overflow { get; set; }
 
         public record Content(IComponentDescriptor Component, string Key)
         {

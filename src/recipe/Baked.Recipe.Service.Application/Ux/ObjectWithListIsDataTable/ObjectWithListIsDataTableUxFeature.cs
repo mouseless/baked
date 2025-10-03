@@ -20,7 +20,8 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                             p.TryGet<DataAttribute>(out var data) &&
                             data.Visible &&
                             !p.PropertyType.Is<string>() &&
-                            p.PropertyType.IsAssignableTo<IEnumerable>()).Name
+                            p.PropertyType.IsAssignableTo<IEnumerable>()
+                        ).Name
                 ),
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
@@ -31,6 +32,14 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                         p.PropertyType.IsAssignableTo<IEnumerable>()
                     )
             );
+
+            builder.Conventions.AddPropertyMetadataConfiguration<DataAttribute>(
+                apply: data => data.Visible = false,
+                when: (_, c) =>
+                    c.Type.TryGet<ObjectWithListAttribute>(out var objectWithList) &&
+                    c.Property.Name == objectWithList.ListPropertyName
+            );
+
             builder.Conventions.AddMethodComponent(
                 component: (c, cc) => MethodDataTable(c.Method, cc, options: dt =>
                 {
@@ -48,8 +57,24 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                 whenComponent: c => c.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content))
             );
             builder.Conventions.AddMethodComponentConfiguration<DataTable>(
+                component: (dt, c) =>
+                {
+                    dt.Schema.ItemsProp = c.Method.DefaultOverload
+                        .ReturnType.SkipTask()
+                        .GetMetadata()
+                        .Get<ObjectWithListAttribute>()
+                        .ListPropertyName
+                        .Camelize();
+                },
+                whenMethod: c =>
+                    c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMetadata(out var returnMetadata) &&
+                    returnMetadata.Has<ObjectWithListAttribute>()
+            );
+            builder.Conventions.AddMethodComponentConfiguration<DataTable>(
                 component: (dt, c, cc) =>
                 {
+                    cc = cc.Drill(nameof(DataTable));
+
                     var returnMembers = c.Method.DefaultOverload.ReturnType.SkipTask().GetMembers();
                     var listPropertyName = returnMembers.Get<ObjectWithListAttribute>().ListPropertyName;
                     var elementType = returnMembers.Properties[listPropertyName].PropertyType.GetElementType();
@@ -65,13 +90,14 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                 },
                 whenMethod: c =>
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMembers(out var returnMembers) &&
-                    returnMembers.Has<ObjectWithListAttribute>() &&
+                    returnMembers.TryGet<ObjectWithListAttribute>(out var objectWithList) &&
                     returnMembers
-                        .Properties[returnMembers.Get<ObjectWithListAttribute>().ListPropertyName]
+                        .Properties[objectWithList.ListPropertyName]
                         .PropertyType.TryGetElementType(out var elementType) &&
                     elementType.HasMembers(),
                 order: -10
             );
+
             builder.Conventions.AddMethodSchema(
                 schema: (c, cc) => MethodDataTableFooter(c.Method, cc),
                 whenMethod: c =>
@@ -100,13 +126,14 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMembers(out var returnMembers) &&
                     returnMembers.Has<ObjectWithListAttribute>()
             );
+
             builder.Conventions.AddPropertySchemaConfiguration<DataTable.Column>(
                 schema: dtc =>
                 {
                     dtc.Title = null;
                     dtc.Exportable = null;
                 },
-                whenComponent: c => c.Path.Contains(nameof(DataTable), nameof(DataTable.Footer)),
+                whenComponent: c => c.Path.Contains(nameof(DataTable), nameof(DataTable.FooterTemplate)),
                 order: 10
             );
         });
