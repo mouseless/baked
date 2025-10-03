@@ -110,7 +110,7 @@ export default defineNuxtModule<ModuleOptions>({
       "lg": "1024px",
       "xl": "1280px",
       "2xl": "1536px",
-      "3xl": "1920px",
+      "3xl": "1920px"
     };
 
     // passing module's options to runtime config for further access
@@ -153,7 +153,6 @@ export default defineNuxtModule<ModuleOptions>({
 
     // module overrides
     _nuxt.options.i18n = {
-      ..._nuxt.options.i18n,
       vueI18n: entryProjectResolver.resolve("./i18n.config.ts"),
       langDir: entryProjectResolver.resolve("./"),
       locales: app?.i18n?.supportedLanguages?.map((i: any) => {
@@ -170,12 +169,10 @@ export default defineNuxtModule<ModuleOptions>({
       }),
       defaultLocale: app?.i18n?.defaultLanguage?.code,
     };
-    _nuxt.options.tailwindcss = {
-      ..._nuxt.options.tailwindcss,
+
+    (_nuxt.options as any).tailwindcss = {
       config: {
-        ..._nuxt.options.tailwindcss?.config,
         theme: {
-          ..._nuxt.options.tailwindcss?.config?.theme,
           screens: _options.composables.useBreakpoints.screens
         }
       }
