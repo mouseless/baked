@@ -133,7 +133,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                     dtc.Title = null;
                     dtc.Exportable = null;
                 },
-                whenComponent: c => c.Path.Contains(nameof(DataTable), nameof(DataTable.Footer)),
+                whenComponent: c => c.Path.Contains(nameof(DataTable), nameof(DataTable.FooterTemplate)),
                 order: 10
             );
         });
