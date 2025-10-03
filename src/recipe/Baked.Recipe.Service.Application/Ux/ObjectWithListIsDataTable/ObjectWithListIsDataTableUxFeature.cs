@@ -32,6 +32,14 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                         p.PropertyType.IsAssignableTo<IEnumerable>()
                     )
             );
+
+            builder.Conventions.AddPropertyMetadataConfiguration<DataAttribute>(
+                apply: data => data.Visible = false,
+                when: (_, c) =>
+                    c.Type.TryGet<ObjectWithListAttribute>(out var objectWithList) &&
+                    c.Property.Name == objectWithList.ListPropertyName
+            );
+
             builder.Conventions.AddMethodComponent(
                 component: (c, cc) => MethodDataTable(c.Method, cc, options: dt =>
                 {
@@ -89,6 +97,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                     elementType.HasMembers(),
                 order: -10
             );
+
             builder.Conventions.AddMethodSchema(
                 schema: (c, cc) => MethodDataTableFooter(c.Method, cc),
                 whenMethod: c =>
@@ -117,6 +126,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMembers(out var returnMembers) &&
                     returnMembers.Has<ObjectWithListAttribute>()
             );
+
             builder.Conventions.AddPropertySchemaConfiguration<DataTable.Column>(
                 schema: dtc =>
                 {

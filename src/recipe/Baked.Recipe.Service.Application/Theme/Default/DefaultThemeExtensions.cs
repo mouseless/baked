@@ -111,10 +111,4 @@ public static class DefaultThemeExtensions
             .Where(pd => pd.data.Visible)
             .OrderBy(pd => pd.data.Order)
             .Select(pd => pd.property);
-
-    public static PropertyModel FirstProperty<TAttribute>(this TypeModelMembers members,
-        Func<PropertyModel, bool>? filter = default
-    ) where TAttribute : Attribute =>
-        members.Properties.Having<TAttribute>().FirstOrDefault(filter ?? (_ => true)) ??
-        throw new($"{members.Name} is expected to have at least one property with `{typeof(TAttribute).Name}`");
 }

@@ -20,7 +20,7 @@ public class TargetEntitySubclassFromRouteConvention : IDomainModelConvention<Me
         if (!entityType.TryGetQueryType(context.Domain, out var queryType)) { return; }
         if (!queryType.TryGetMembers(out var queryMembers)) { return; }
 
-        var singleByUniqueMethod = queryMembers.Methods.Having<SingleByUniqueAttribute>().FirstOrDefault();
+        var singleByUniqueMethod = queryMembers.FirstMethodOrDefault<SingleByUniqueAttribute>();
         if (singleByUniqueMethod is null) { return; }
         if (!singleByUniqueMethod.TryGet<SingleByUniqueAttribute>(out var unique)) { return; }
 
