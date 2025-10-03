@@ -20,6 +20,8 @@ public class ListIsDataTableUxFeature : IFeature<UxConfigurator>
             builder.Conventions.AddMethodComponentConfiguration<DataTable>(
                 component: (dt, c, cc) =>
                 {
+                    cc = cc.Drill(nameof(DataTable));
+
                     var members = c.Method.DefaultOverload.ReturnType.SkipTask().GetElementType().GetMembers();
                     foreach (var property in members.Properties.GetDataProperties())
                     {

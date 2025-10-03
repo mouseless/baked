@@ -65,6 +65,8 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
             builder.Conventions.AddMethodComponentConfiguration<DataTable>(
                 component: (dt, c, cc) =>
                 {
+                    cc = cc.Drill(nameof(DataTable));
+
                     var returnMembers = c.Method.DefaultOverload.ReturnType.SkipTask().GetMembers();
                     var listPropertyName = returnMembers.Get<ObjectWithListAttribute>().ListPropertyName;
                     var elementType = returnMembers.Properties[listPropertyName].PropertyType.GetElementType();
@@ -80,9 +82,9 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                 },
                 whenMethod: c =>
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMembers(out var returnMembers) &&
-                    returnMembers.TryGet<ObjectWithListAttribute>(out var listAttribute) &&
+                    returnMembers.TryGet<ObjectWithListAttribute>(out var objectWithList) &&
                     returnMembers
-                        .Properties[listAttribute.ListPropertyName]
+                        .Properties[objectWithList.ListPropertyName]
                         .PropertyType.TryGetElementType(out var elementType) &&
                     elementType.HasMembers(),
                 order: -10
@@ -121,9 +123,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                     dtc.Title = null;
                     dtc.Exportable = null;
                 },
-                whenComponent: c =>
-                    c.Path.Contains(nameof(DataTable)) &&
-                    c.Path.Contains(nameof(DataTable), nameof(DataTable.Footer)),
+                whenComponent: c => c.Path.Contains(nameof(DataTable), nameof(DataTable.Footer)),
                 order: 10
             );
         });
