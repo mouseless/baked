@@ -1,5 +1,5 @@
 
-import * as components from "@/.baked/components";
+import * as components from "@@/.baked/components";
 
 export default function() {
   function resolve(type, fallback) {

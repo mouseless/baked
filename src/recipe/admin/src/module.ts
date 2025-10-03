@@ -1,4 +1,4 @@
-import { addComponentsDir, addImportsDir, addPlugin, createResolver, defineNuxtModule, installModule } from "@nuxt/kit";
+import { addComponentsDir, addImportsDir, addPlugin, createResolver, defineNuxtModule } from "@nuxt/kit";
 import type { NuxtI18nOptions } from "@nuxtjs/i18n";
 import { pathToFileURL } from "url";
 
@@ -50,19 +50,52 @@ export interface ScreenOptions {
   [key: string]: string;
 }
 
+const resolver = createResolver(import.meta.url);
+
 export default defineNuxtModule<ModuleOptions>({
   meta: {
     name: "baked-recipe-admin",
     configKey: "baked",
   },
   defaults: { },
-
+  moduleDependencies: {
+    "@nuxtjs/i18n": {
+      version: "10.1.0",
+      defaults: {
+        strategy: "no_prefix",
+        detectBrowserLanguage: {
+          useCookie: true,
+          cookieKey: "i18n_cookie"
+        }
+      }
+    },
+    "@nuxtjs/tailwindcss": {
+      version: "6.14.0",
+      defaults: {
+        exposeConfig: true,
+        cssPath: resolver.resolve("./runtime/assets/tailwind.css"),
+        config: {
+          content: {
+            files: [
+              resolver.resolve("./runtime/components/**/*.{vue,mjs,ts}"),
+              resolver.resolve("./runtime/*.{mjs,js,ts}")
+            ]
+          }
+        }
+      }
+    }
+  },
+  onInstall() {
+    // TODO create required project files, e.g., app.vue
+  },
+  onUpgrade() {
+    // Place any update related script here
+  },
   // this setup runs after `defineNuxtConfig` so it should set default values
   // carefully.
   async setup(_options, _nuxt) {
     if (process.env.npm_lifecycle_script?.includes("nuxt-module-build")) { return; }
 
-    const resolver = createResolver(import.meta.url);
     const entryProjectResolver = createResolver(_nuxt.options.rootDir);
 
     const appJsonPath = pathToFileURL(entryProjectResolver.resolve(`./.baked/app.json`));
@@ -77,7 +110,7 @@ export default defineNuxtModule<ModuleOptions>({
       "lg": "1024px",
       "xl": "1280px",
       "2xl": "1536px",
-      "3xl": "1920px",
+      "3xl": "1920px"
     };
 
     // passing module's options to runtime config for further access
@@ -95,7 +128,7 @@ export default defineNuxtModule<ModuleOptions>({
     _nuxt.options.css.push(resolver.resolve("./runtime/assets/overrides.css"));
 
     // below settings cannot be overriden
-    _nuxt.options.devtools.enabled = false;
+    _nuxt.options.devtools = { enabled: false };
     _nuxt.options.experimental.payloadExtraction = false;
     _nuxt.options.features.inlineStyles = false;
     _nuxt.options.ssr = false;
@@ -118,10 +151,10 @@ export default defineNuxtModule<ModuleOptions>({
     addPlugin(resolver.resolve("./runtime/plugins/primeVue"));
     addPlugin(resolver.resolve("./runtime/plugins/fetch"), {});
 
-    await installModule("@nuxtjs/i18n", {
+    // module overrides
+    _nuxt.options.i18n = {
       vueI18n: entryProjectResolver.resolve("./i18n.config.ts"),
       langDir: entryProjectResolver.resolve("./"),
-      strategy: "no_prefix",
       locales: app?.i18n?.supportedLanguages?.map((i: any) => {
         const files = [
           entryProjectResolver.resolve(`./.baked/locale.${i.code}.json`),
@@ -135,25 +168,14 @@ export default defineNuxtModule<ModuleOptions>({
         }
       }),
       defaultLocale: app?.i18n?.defaultLanguage?.code,
-      detectBrowserLanguage: {
-        useCookie: true,
-        cookieKey: 'i18n_cookie'
-      }
-    });
-    await installModule("@nuxtjs/tailwindcss", {
-      exposeConfig: true,
-      cssPath: resolver.resolve("./runtime/assets/tailwind.css"),
+    };
+
+    (_nuxt.options as any).tailwindcss = {
       config: {
-        content: {
-          files: [
-            resolver.resolve("./runtime/components/**/*.{vue,mjs,ts}"),
-            resolver.resolve("./runtime/*.{mjs,js,ts}")
-          ]
-        },
         theme: {
           screens: _options.composables.useBreakpoints.screens
         }
       }
-    })
+    };
   }
 });

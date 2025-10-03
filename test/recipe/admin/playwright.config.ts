@@ -3,7 +3,7 @@ import { defineConfig, devices } from "@playwright/test";
 import type { ConfigOptions } from "@nuxt/test-utils/playwright";
 
 export default defineConfig<ConfigOptions>({
-  testDir: "./pages/specs",
+  testDir: "./app/pages/specs",
   timeout: 2 * 60 * 1000,
   reporter: "list",
 
