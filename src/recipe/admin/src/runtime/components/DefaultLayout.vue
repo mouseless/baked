@@ -11,7 +11,10 @@
       :descriptor="sideMenu"
     />
     <article
-      class="w-full px-4 flex flex-col bg-body mb-4"
+      class="
+        w-full px-4 flex flex-col bg-body mb-[5.5rem]
+        max-md:mb-24
+      "
     >
       <Bake
         :key="route.path"
@@ -21,7 +24,7 @@
       <slot />
     </article>
   </div>
-  <ScrollTop />
+  <ScrollTop :threshold="250" />
 </template>
 <script setup>
 import { useRoute } from "#app";
@@ -44,6 +47,6 @@ const { header, sideMenu } = schema;
   padding-top: calc(var(--p-button-icon-only-width) / 2);
   padding-bottom: calc(var(--p-button-icon-only-width) / 2);
 
-  @apply max-md:bottom-24;
+  @apply right-6 bottom-6 max-md:bottom-24;
 }
 </style>

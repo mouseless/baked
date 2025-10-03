@@ -44,7 +44,7 @@
     </Message>
     <div
       v-if="ready"
-      class="py-4 flex flex-col gap-4 items-center"
+      class="pt-4 flex flex-col gap-4 items-center"
     >
       <DeferredTabContent
         v-for="tab in shownTabs"
