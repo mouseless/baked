@@ -6,11 +6,11 @@ function Format {
     Write-Host "🔧 Running formatters..."
     dotnet format --verbosity normal
 
-    Push-Location "ui/src/admin"
+    Push-Location "ui/src"
     npm run lint -- --fix
     Pop-Location
 
-    Push-Location "ui/test/admin"
+    Push-Location "ui/test"
     npm run lint -- --fix
     Pop-Location
 
@@ -21,17 +21,17 @@ function Format {
 
 function Fix {
     if (-not $File) {
-        $File = Read-Host "Enter file path (e.g. ui/src/admin/components/App.vue)"
+        $File = Read-Host "Enter file path (e.g. ui/src/components/App.vue)"
     }
 
     if ($File -match "^src") {
-        Push-Location "ui/src/admin"
-        $relative = $File -replace "^ui/src/admin/", ""
+        Push-Location "ui/src"
+        $relative = $File -replace "^ui/src/", ""
         npx eslint $relative --fix
         Pop-Location
     } elseif ($File -match "^test") {
-        Push-Location "ui/test/admin"
-        $relative = $File -replace "^ui/test/admin/", ""
+        Push-Location "ui/test"
+        $relative = $File -replace "^ui/test/", ""
         npx eslint $relative --fix
         Pop-Location
     } else {
@@ -42,8 +42,8 @@ function Fix {
 function Install {
     $paths = @(
         "docs/.theme",
-        "ui/src/admin",
-        "ui/test/admin",
+        "ui/src",
+        "ui/test",
         "core/test/service/load-test",
         "core/test/service/stub-api-dependency"
     )
@@ -57,7 +57,7 @@ function Install {
 }
 
 function Build {
-    Push-Location "ui/src/admin"
+    Push-Location "ui/src"
     npm run build
     Pop-Location
 
@@ -67,7 +67,7 @@ function Build {
 function Test {
     dotnet test --logger "quackers"
 
-    Push-Location "ui/test/admin"
+    Push-Location "ui/test"
     $env:BUILD_SILENT = "1"
     npm test
     Pop-Location
@@ -84,7 +84,7 @@ function Coverage {
 
 function Run {
     Write-Host "`n(1) Recipe.Service (Development)"
-    Write-Host "(2) Recipe.Admin (Development)"
+    Write-Host "(2) Recipe.UI (Development)"
     Write-Host "(3) Recipe.* (Production)"
     Write-Host "(4) Docs`n"
 
@@ -97,7 +97,7 @@ function Run {
             Pop-Location
         }
         "2" {
-            Push-Location "ui/test/admin"
+            Push-Location "ui/test"
             npm run dev
             Pop-Location
         }

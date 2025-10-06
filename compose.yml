@@ -54,9 +54,9 @@ services:
       - db.postgresql
       - recipe.service.stub-api-dependency
 
-  recipe.admin:
+  ui:
     build:
-      dockerfile: ui/test/admin/Dockerfile
+      dockerfile: ui/test/Dockerfile
       args:
         ENVIRONMENT: Production
     ports:

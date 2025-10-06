@@ -85,7 +85,7 @@ jobs:
       - name: Pack npm
         run: |
           mkdir npm-packages
-          cd ui/src/admin
+          cd ui/src
           npm i
           npm pack --pack-destination "../../../npm-packages"
       - name: Upload npm Packages
