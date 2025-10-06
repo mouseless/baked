@@ -5,8 +5,7 @@ on:
       - main
       - 'epic/**'
     paths:
-      - '*'
-
+      - 'ui/**'
 jobs:
   build:
     name: Build

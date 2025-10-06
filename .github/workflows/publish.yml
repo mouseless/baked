@@ -17,7 +17,6 @@ jobs:
         name: Remove Publish Label
         with:
           labels: 'Publish'
-
   check-version:
     # Start publish when in release branch
     # This job fetches current version from Directory.Build.props and checks if this version already pushed to nuget
@@ -52,7 +51,6 @@ jobs:
            else
             echo "action=pack" >> $GITHUB_OUTPUT
           fi
-
   pack-projects:
     name: Pack Projects
     needs: check-version
@@ -93,7 +91,6 @@ jobs:
         with:
           name: npm-packages
           path: npm-packages/
-
   push-nuget-packages:
     name: Push Nuget Packages
     needs: pack-projects
@@ -115,7 +112,6 @@ jobs:
             -k ${{ secrets.NUGET_API_KEY }} \
             --skip-duplicate \
             -t 3600
-
   push-npm-packages:
     name: Push npm Packages
     needs: pack-projects
@@ -137,7 +133,6 @@ jobs:
           done
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
-
   generate-docs:
     needs: check-version
     name: Generate Docs
@@ -166,7 +161,6 @@ jobs:
           path: docs/.theme/.output/public
           if-no-files-found: error
           include-hidden-files: true
-
   publish-docs:
     needs: generate-docs
     name: Publish Docs
