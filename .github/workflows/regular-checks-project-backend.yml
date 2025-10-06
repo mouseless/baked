@@ -87,14 +87,14 @@ jobs:
         if: ${{ matrix.os == 'ubuntu-latest' }}
         uses: danielpalme/ReportGenerator-GitHub-Action@5.2.0
         with:
-          reports: '.coverage/*/coverage.cobertura.xml'
-          targetdir: 'coveragereport'
+          reports: 'core/.coverage/*/coverage.cobertura.xml'
+          targetdir: 'core/coveragereport'
           reporttypes: 'Cobertura'
       - name: Code Coverage Summary Report
         if: ${{ matrix.os == 'ubuntu-latest' }}
         uses: irongut/CodeCoverageSummary@v1.3.0
         with:
-          filename: coveragereport/Cobertura.xml
+          filename: core/coveragereport/Cobertura.xml
           badge: true
           format: 'markdown'
           output: 'both'
