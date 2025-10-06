@@ -33,13 +33,13 @@ services:
 
   recipe.service.stub-api-dependency:
     build:
-      dockerfile: test/recipe/service/stub-api-dependency/Dockerfile
+      dockerfile: core/test/service/stub-api-dependency/Dockerfile
     ports:
       - 5467:80
 
   recipe.service:
     build:
-      dockerfile: test/recipe/Baked.Test.Recipe.Service.Application/Dockerfile
+      dockerfile: core/test/Baked.Test.Recipe.Service.Application/Dockerfile
       args:
         ENVIRONMENT: Production
     ports:
@@ -56,7 +56,7 @@ services:
 
   recipe.admin:
     build:
-      dockerfile: test/recipe/admin/Dockerfile
+      dockerfile: ui/test/admin/Dockerfile
       args:
         ENVIRONMENT: Production
     ports:

@@ -5,8 +5,7 @@ on:
       - main
       - 'epic/**'
     paths:
-      - 'src/**/*'
-      - 'test/**/*'
+      - 'core/**/*'
       - '.editorconfig'
       - 'Directory.Build.props'
       - 'Directory.Packages.props'
@@ -39,6 +38,9 @@ jobs:
       max-parallel: 2
       matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
     runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: core
     steps:
       - uses: actions/checkout@v4
       - name: Setup .NET
@@ -58,6 +60,9 @@ jobs:
       max-parallel: 2
       matrix: ${{ fromJson(needs.build.outputs.matrix) }}
     runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: core
     steps:
       - uses: actions/checkout@v4
       - name: Setup .NET

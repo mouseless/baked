@@ -75,6 +75,7 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - name: Pack Nuget
         run: |
+          cd core
           dotnet pack -o "nuget-packages" -c Release
       - name: Upload Nuget Packages
         uses: actions/upload-artifact@v4
@@ -84,7 +85,7 @@ jobs:
       - name: Pack npm
         run: |
           mkdir npm-packages
-          cd src/recipe/admin
+          cd ui/src/admin
           npm i
           npm pack --pack-destination "../../../npm-packages"
       - name: Upload npm Packages

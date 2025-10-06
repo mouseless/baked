@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Core\DomainEmbedded.txt" />
+    <EmbeddedResource Include="Reporting\*\*.sql" />
+    <EmbeddedResource Include="Reporting\*\*.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Baked.Recipe.Service\Baked.Recipe.Service.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Baked.g.AutoMapOrmFeature" />
+    <InternalsVisibleTo Include="Baked.g.RestApiLayer" />
+  </ItemGroup>
+
+</Project>
