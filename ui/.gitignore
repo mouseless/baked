@@ -54,3 +54,8 @@ coverage
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# playwright
+
+**/*.js-snapshots/**
+**/test-results/**

@@ -1,4 +1,4 @@
-name: Regular Checks - Project - Frontend
+name: Regular Checks - Project - Ui
 on:
   pull_request:
     branches:
@@ -23,14 +23,13 @@ jobs:
           node-version: 24
       - name: Disable AppArmour
         run: echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns
-      - name: Build src
+      - name: Build
         run: |
-          cd src/admin
           npm i
           npm run build
       - name: Build test
         run: |
-          cd test/admin
+          cd test
           npm i
           npm run build:Production
   test:
@@ -52,16 +51,16 @@ jobs:
         run: echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns
       - name: Build local package
         run: |
-          cd src/admin
+          cd src
           npm i
           npm run build
       - name: Build test project
         run: |
-          cd test/admin
+          cd test
           npm i
           npx playwright install --with-deps --only-shell
           npm run build:Production
       - name: Run tests
         run: |
-          cd test/admin
+          cd test
           BUILD_SILENT=1 npm test -- --grep-invert @visual
