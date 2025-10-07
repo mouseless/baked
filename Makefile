@@ -18,22 +18,22 @@ install:
 	@ \
 	cd docs/.theme ; npm i ; cd ../.. ; \
 	cd docs/.theme ; npm ci ; cd ../.. ; \
-	cd ui/src ; npm i ; cd ../../.. ; \
-	cd ui/src ; npm ci ; cd ../../.. ; \
-	cd ui/test ; npm i ; cd ../../.. ; \
-	cd ui/test ; npm ci ; cd ../../.. ; \
+	cd ui/src ; npm i ; cd ../.. ; \
+	cd ui/src ; npm ci ; cd ../.. ; \
+	cd ui/test ; npm i ; cd ../.. ; \
+	cd ui/test ; npm ci ; cd ../.. ; \
 	cd core/test/service/load-test ; npm i ; cd ../../../.. ; \
 	cd core/test/service/load-test ; npm ci ; cd ../../../.. ; \
 	cd core/test/service/stub-api-dependency ; npm i ; cd ../../../.. ; \
 	cd core/test/service/stub-api-dependency ; npm ci ; cd ../../../..
 build:
 	@ \
-	cd ui/src ; npm run build ; cd ../../.. ; \
+	cd ui/src ; npm run build ; cd ../../core ; \
 	dotnet build
 test:
 	@ \
-	dotnet test --logger quackers ; \
-	cd ui/test ; BUILD_SILENT=1 npm test ; cd ../../..
+	cd core ; dotnet test --logger quackers ; cd .. \
+	cd ui/test ; BUILD_SILENT=1 npm test ; cd ../..
 coverage:
 	@ \
 	cd core ; \
@@ -56,7 +56,7 @@ run:
 	if test $$app -eq "2" ; then \
 		cd ui/test ; \
 		npm run dev ; \
-		cd ../../.. ; \
+		cd ../.. ; \
 	fi ; \
 	if test $$app -eq "3" ; then \
 		docker compose up --build ; \
