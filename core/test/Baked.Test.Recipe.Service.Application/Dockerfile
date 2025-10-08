@@ -24,7 +24,7 @@ COPY --parents core/src/Baked.Recipe.Service.Application/Baked.Recipe.Service.Ap
 COPY --parents core/test/Directory.Build.props .
 COPY --parents core/test/Baked.Test.Recipe.Service/Baked.Test.Recipe.Service.csproj .
 COPY --parents core/test/Baked.Test.Recipe.Service.Application/Baked.Test.Recipe.Service.Application.csproj .
-RUN dotnet restore test/Baked.Test.Recipe.Service.Application
+RUN dotnet restore core/test/Baked.Test.Recipe.Service.Application
 
 COPY . .
 RUN dotnet publish ./core/test/Baked.Test.Recipe.Service.Application -c Release -o /app/publish
