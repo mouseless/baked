@@ -3,59 +3,62 @@ FILE ?= file_name
 
 format:
 	@ \
-	dotnet format --verbosity normal ; \
-	cd src/recipe/admin ; npm run lint -- --fix ; cd ../../.. ; \
-	cd test/recipe/admin ; npm run lint -- --fix ; cd ../../.. ; \
+	cd core ; \
+	dotnet format --verbosity normal ; cd .. ; \
+	cd ui/module ; npm run lint -- --fix ; cd .. ; \
+	cd specs ; npm run lint -- --fix ; cd ../.. ; \
 	cd docs/.theme ; npm run lint -- --fix ; cd ../..
 fix:
 	@ \
 	if echo "$(FILE)" | grep -q "^src"; then \
-		cd src/recipe/admin && npx eslint $(subst src/recipe/admin/,,$(FILE)) --fix; \
+		cd ui/module && npx eslint $(subst ui/module/,,$(FILE)) --fix; \
 	elif echo "$(FILE)" | grep -q "^test"; then \
-		cd test/recipe/admin && npx eslint $(subst test/recipe/admin/,,$(FILE)) --fix; \
+		cd ui/specs && npx eslint $(subst ui/specs/,,$(FILE)) --fix; \
 	fi
 install:
 	@ \
 	cd docs/.theme ; npm i ; cd ../.. ; \
 	cd docs/.theme ; npm ci ; cd ../.. ; \
-	cd src/recipe/admin ; npm i ; cd ../../.. ; \
-	cd src/recipe/admin ; npm ci ; cd ../../.. ; \
-	cd test/recipe/admin ; npm i ; cd ../../.. ; \
-	cd test/recipe/admin ; npm ci ; cd ../../.. ; \
-	cd test/recipe/service/load-test ; npm i ; cd ../../../.. ; \
-	cd test/recipe/service/load-test ; npm ci ; cd ../../../.. ; \
-	cd test/recipe/service/stub-api-dependency ; npm i ; cd ../../../.. ; \
-	cd test/recipe/service/stub-api-dependency ; npm ci ; cd ../../../..
+	cd ui/module ; npm i ; cd .. ; \
+	cd ui/module ; npm ci ; cd .. ; \
+	cd ui/specs ; npm i ; cd ../.. ; \
+	cd ui/specs ; npm ci ; cd ../.. ; \
+	cd core/Baked.Test.Recipe.Service.LoadTest ; npm i ; cd ../../.. ; \
+	cd core/Baked.Test.Recipe.Service.LoadTest ; npm ci ; cd ../../.. ; \
+	cd core/Baked.Test.Recipe.Service.StubApi ; npm i ; cd ../../.. ; \
+	cd core/Baked.Test.Recipe.Service.StubApi ; npm ci ; cd ../../..
 build:
 	@ \
-	cd src/recipe/admin ; npm run build ; cd ../../.. ; \
-	dotnet build
+	cd ui/module ; npm run build ; cd ../.. ; \
+	cd core ; dotnet build
 test:
 	@ \
-	dotnet test --logger quackers ; \
-	cd test/recipe/admin ; BUILD_SILENT=1 npm test ; cd ../../..
+	cd core ; dotnet test --logger quackers ; cd .. ; \
+	cd ui/specs ; BUILD_SILENT=1 npm test ; cd ../..
 coverage:
 	@ \
+	cd core ; \
 	rm -rdf .coverage ; \
 	dotnet test -c Release --collect:"XPlat Code Coverage" --logger trx --results-directory .coverage --settings test/runsettings.xml ; \
 	dotnet reportgenerator -reports:.coverage/*/coverage.cobertura.xml -targetdir:.coverage/html ; \
-	open .coverage/html/index.html
+	open .coverage/html/index.html ; \
+	cd .. ;
 run:
 	@ \
 	echo "(1) Recipe.Service (Development)" ; \
-	echo "(2) Recipe.Admin (Development)" ; \
+	echo "(2) Specs (Development)" ; \
 	echo "(3) Recipe.* (Production)" ; \
 	echo "(4) Docs" ; \
 	echo "" ; \
 	echo "Please select 1-4: " ; \
 	read app ; \
 	if test $$app -eq "1" ; then \
-		dotnet run --project test/recipe/Baked.Test.Recipe.Service.Application ; \
+		dotnet run --project core/test/Baked.Test.Recipe.Service.Application ; \
 	fi ; \
 	if test $$app -eq "2" ; then \
-		cd test/recipe/admin ; \
+		cd ui/specs ; \
 		npm run dev ; \
-		cd ../../.. ; \
+		cd ../.. ; \
 	fi ; \
 	if test $$app -eq "3" ; then \
 		docker compose up --build ; \
