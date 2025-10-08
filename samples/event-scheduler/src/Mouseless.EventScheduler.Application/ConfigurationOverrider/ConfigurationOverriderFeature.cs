@@ -6,9 +6,11 @@ public class ConfigurationOverriderFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
-        configurator.ConfigureApiModelConventions(api =>
+        configurator.ConfigureDomainModelBuilder(builder =>
         {
-            api.OverrideAction<DeleteMeetingContact>(routeParts: ["meeting", "contact"]);
+            builder.Conventions.AddOverrideAction<DeleteMeetingContact>(nameof(DeleteMeetingContact.Execute),
+                routeParts: ["meeting", "contact"]
+            );
         });
     }
 }

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\..\src\recipe\Baked.Recipe.Service\Baked.Recipe.Service.csproj" />
+        <ProjectReference Include="..\..\..\..\core\src\Baked.Recipe.Service\Baked.Recipe.Service.csproj" />
     </ItemGroup>
 
 </Project>

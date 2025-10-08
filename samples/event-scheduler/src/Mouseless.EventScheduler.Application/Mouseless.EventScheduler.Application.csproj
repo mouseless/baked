@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\src\recipe\Baked.Recipe.Service\Baked.Recipe.Service.csproj" />
-    <ProjectReference Include="..\..\..\..\src\recipe\Baked.Recipe.Service.Application\Baked.Recipe.Service.Application.csproj" />
+    <ProjectReference Include="..\..\..\..\core\src\Baked.Recipe.Service\Baked.Recipe.Service.csproj" />
+    <ProjectReference Include="..\..\..\..\core\src\Baked.Recipe.Service.Application\Baked.Recipe.Service.Application.csproj" />
     <ProjectReference Include="..\Mouseless.EventScheduler\Mouseless.EventScheduler.csproj" />
   </ItemGroup>
 
