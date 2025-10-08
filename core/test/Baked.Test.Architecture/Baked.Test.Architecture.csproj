@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\core\Baked.Architecture\Baked.Architecture.csproj" />
+    <ProjectReference Include="..\..\src\Baked.Architecture\Baked.Architecture.csproj" />
   </ItemGroup>
 
   <ItemGroup>
