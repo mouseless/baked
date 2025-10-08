@@ -15,7 +15,6 @@
 **/*.swp
 **/*.md
 docs/**/*
-research/**/*
 samples/**/*
 **/node_modules
 **/.nuxt
