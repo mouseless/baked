@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <CopyComponentDescriptors>true</CopyComponentDescriptors>
-    <UiAppDir>$(ProjectDir)..\..\..\ui\test</UiAppDir>
+    <UiAppDir>$(ProjectDir)..\admin</UiAppDir>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Baked.Recipe.Service.Application\Baked.Recipe.Service.Application.csproj" />
+    <ProjectReference Include="..\..\..\src\recipe\Baked.Recipe.Service.Application\Baked.Recipe.Service.Application.csproj" />
     <ProjectReference Include="..\Baked.Test.Recipe.Service\Baked.Test.Recipe.Service.csproj" />
   </ItemGroup>
 
@@ -26,6 +26,6 @@
 
   <!--this import statement should be the last element to for
   targets to be executed after this file -->
-  <Import Project="..\..\src\Baked.Recipe.Service.Application\Baked.Recipe.Service.Application.targets" />
+  <Import Project="..\..\..\src\recipe\Baked.Recipe.Service.Application\Baked.Recipe.Service.Application.targets" />
 
 </Project>
