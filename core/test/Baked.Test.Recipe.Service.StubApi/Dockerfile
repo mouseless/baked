@@ -2,10 +2,10 @@
 
 FROM node:24-alpine as init
 
-COPY test/recipe/service/stub-api-dependency/package.json .
-COPY test/recipe/service/stub-api-dependency/package-lock.json .
+COPY core/test/Baked.Test.Recipe.Service.StubApi/package.json .
+COPY core/test/Baked.Test.Recipe.Service.StubApi/package-lock.json .
 RUN npm install
 
-COPY test/recipe/service/stub-api-dependency .
+COPY core/test/Baked.Test.Recipe.Service.StubApi .
 
 CMD ["node", "index.js"]
