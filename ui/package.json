@@ -1,0 +1,68 @@
+{
+  "name": "baked-recipe-admin",
+  "version": "0.18.1",
+  "description": "Baked is an opinionated framework for .NET in backend and Nuxt in frontend. This is a recipe package that brings together all the components one needs for an Admin UI.",
+  "keywords": [
+    "baked",
+    "objects",
+    "recipe",
+    "admin",
+    "ui"
+  ],
+  "homepage": "https://baked.mouseless.codes",
+  "bugs": {
+    "url": "https://matrix.to/#/#baked:mouseless.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mouseless/baked.git"
+  },
+  "license": "MIT",
+  "author": "mouseless",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/types.d.mts",
+      "import": "./dist/module.mjs"
+    }
+  },
+  "main": "./dist/module.mjs",
+  "typesVersions": {
+    "*": {
+      ".": [
+        "./dist/types.d.mts"
+      ]
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "prepack": "nuxt-module-build build",
+    "build": "npm run lint && nuxt-module-build build --stub && nuxt-module-build prepare",
+    "dev": "npm run dev:prepare && nuxi dev playground",
+    "dev:build": "nuxi build playground",
+    "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
+    "release": "npm run lint && npm run test && npm run prepack && changelogen --release && npm publish && git push --follow-tags",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest watch",
+    "test:types": "vue-tsc --noEmit && cd playground && vue-tsc --noEmit"
+  },
+  "dependencies": {
+    "@nuxt/kit": "4.1.2"
+  },
+  "devDependencies": {
+    "@nuxt/eslint-config": "1.9.0",
+    "@nuxt/eslint": "1.9.0",
+    "@nuxt/module-builder": "1.0.2",
+    "@nuxt/schema": "4.1.2",
+    "@nuxt/test-utils": "3.19.2",
+    "@types/node": "24.5.2",
+    "changelogen": "0.6.2",
+    "nuxt": "4.1.2",
+    "typescript": "5.9.2",
+    "vitest": "3.2.4",
+    "vue-tsc": "3.0.7"
+  }
+}
