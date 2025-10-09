@@ -25,12 +25,10 @@ jobs:
         run: echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns
       - name: Build src
         run: |
-          cd module
           npm i
           npm run build
       - name: Build test
         run: |
-          cd specs
           npm i
           npm run build:Production
   test:
@@ -52,16 +50,13 @@ jobs:
         run: echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns
       - name: Build local package
         run: |
-          cd module
           npm i
           npm run build
       - name: Build test project
         run: |
-          cd specs
           npm i
           npx playwright install --with-deps --only-shell
           npm run build:Production
       - name: Run tests
         run: |
-          cd specs
           BUILD_SILENT=1 npm test -- --grep-invert @visual
