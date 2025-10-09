@@ -1,20 +1,13 @@
-name: Regular Checks - Project - Backend
+name: Regular Checks - Project - Core
 on:
   pull_request:
     branches:
       - main
       - 'epic/**'
     paths:
-      - 'src/**/*'
-      - 'test/**/*'
-      - '.editorconfig'
-      - 'Directory.Build.props'
-      - 'Directory.Packages.props'
-      - 'Baked.sln'
-
+      - 'core/**/*'
 env:
   MIN_COVERAGE: 85
-
 jobs:
   # outputs matrix json so that windows is only added when head branch is a release branch
   prepare:
@@ -39,6 +32,9 @@ jobs:
       max-parallel: 2
       matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
     runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: core
     steps:
       - uses: actions/checkout@v4
       - name: Setup .NET
@@ -58,6 +54,9 @@ jobs:
       max-parallel: 2
       matrix: ${{ fromJson(needs.build.outputs.matrix) }}
     runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: core
     steps:
       - uses: actions/checkout@v4
       - name: Setup .NET
@@ -82,14 +81,14 @@ jobs:
         if: ${{ matrix.os == 'ubuntu-latest' }}
         uses: danielpalme/ReportGenerator-GitHub-Action@5.2.0
         with:
-          reports: '.coverage/*/coverage.cobertura.xml'
-          targetdir: 'coveragereport'
+          reports: 'core/.coverage/*/coverage.cobertura.xml'
+          targetdir: 'core/coveragereport'
           reporttypes: 'Cobertura'
       - name: Code Coverage Summary Report
         if: ${{ matrix.os == 'ubuntu-latest' }}
         uses: irongut/CodeCoverageSummary@v1.3.0
         with:
-          filename: coveragereport/Cobertura.xml
+          filename: core/coveragereport/Cobertura.xml
           badge: true
           format: 'markdown'
           output: 'both'

@@ -40,7 +40,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Baked.Recipe.Service\Baked.Recipe.Service.csproj" />
-    <ProjectReference Include="..\..\core\Baked.Architecture\Baked.Architecture.csproj" />
+    <ProjectReference Include="..\Baked.Architecture\Baked.Architecture.csproj" />
   </ItemGroup>
 
 </Project>

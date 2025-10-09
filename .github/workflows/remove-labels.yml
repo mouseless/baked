@@ -1,5 +1,4 @@
 name: Remove Labels
-
 on:
   pull_request:
     types: [synchronize]
