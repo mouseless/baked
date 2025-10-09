@@ -12,4 +12,6 @@
     <ProjectReference Include="..\Mouseless.EventScheduler\Mouseless.EventScheduler.csproj" />
   </ItemGroup>
 
+  <Import Project="..\..\..\..\core\src\Baked.Recipe.Service.Application\Baked.Recipe.Service.Application.targets" />
+
 </Project>
