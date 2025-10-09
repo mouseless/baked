@@ -1,0 +1,6 @@
+{
+  "type": "ModalLayout",
+  "schema": {
+    "path": "modal"
+  }
+}

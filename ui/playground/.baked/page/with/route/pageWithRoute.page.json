@@ -1,0 +1,7 @@
+{
+  "type": "RoutedPage",
+  "schema": {
+    "path": "page/with/route/pageWithRoute",
+    "layout": "default"
+  }
+}

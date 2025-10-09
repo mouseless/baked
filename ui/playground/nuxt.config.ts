@@ -1,5 +1,51 @@
+import Aura from "@primeuix/themes/aura";
+import { definePreset } from "@primeuix/themes";
+
+const Mouseless = definePreset(Aura, {
+  semantic: {
+    primary: {
+      50: "{red.50}",
+      100: "{red.100}",
+      200: "{red.200}",
+      300: "{red.300}",
+      400: "{red.400}",
+      500: "{red.500}",
+      600: "{red.600}",
+      700: "{red.700}",
+      800: "{red.800}",
+      900: "{red.900}",
+      950: "{red.950}"
+    }
+  }
+});
+
+// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: ['../src/module'],
-  myModule: {},
-  devtools: { enabled: true },
-})
+  baked: {
+    components: {
+      Page: {
+        title: "Baked Admin"
+      }
+    },
+    composables: {
+      useDataFetcher: {
+        baseURL: import.meta.env.API_BASE_URL,
+        retry: true
+      }
+    },
+    primevue: {
+      theme: Mouseless
+    }
+  },
+  compatibilityDate: "2025-03-01",
+  components: {
+    dirs: ["~/components"]
+  },
+  css: [ "~/assets/styles.scss" ],
+  // Do NOT remove this line, auto imports are disabled for consistency
+  // between local and published package behaviour
+  imports: { autoImport: false },
+  logLevel: import.meta.env.BUILD_SILENT === "1" ? "silent" : "info",
+  modules: ["../src/module"],
+  router: { options: { strict: true } }
+});

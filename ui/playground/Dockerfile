@@ -7,12 +7,12 @@ ARG ENVIRONMENT Production
 # ---
 FROM node:24-alpine as init
 
-COPY --parents ui/module/package.json .
-COPY --parents ui/module/package-lock.json .
-COPY --parents ui/specs/package.json .
-COPY --parents ui/specs/package-lock.json .
-RUN cd ui/module; npm install
-RUN cd ui/specs; npm install
+COPY --parents ui/package.json .
+COPY --parents ui/package-lock.json .
+COPY --parents ui/playground/package.json .
+COPY --parents ui/playground/package-lock.json .
+RUN cd ui; npm install
+RUN cd ui/playground; npm install
 
 # ---
 # to generate nuxt spa project
@@ -22,19 +22,19 @@ FROM init as generate
 ARG ENVIRONMENT
 
 # copy source files
-COPY --parents ui/module .
-COPY --parents ui/specs .
+COPY --parents ui .
+COPY --parents ui/playground .
 
 # creates a .tgz package file at the root
-RUN cd ui/module ; npm pack --pack-destination ../../..
+RUN cd ui ; npm pack --pack-destination ..
 
 # finds package file name including version and installs it on top of existing.
 # this is to have the local npm package isolated from its source to simulate
 # production usage
-RUN cd ui/specs ; npm i $(find ../../.. -name 'baked-recipe-admin-*.tgz' -print -quit)
+RUN cd ui/playground ; npm i $(find ../.. -name 'baked-recipe-admin-*.tgz' -print -quit)
 
 # builds test project
-RUN cd ui/specs ; npm run build:$ENVIRONMENT
+RUN cd ui/playground ; npm run build:$ENVIRONMENT
 
 # ---
 # actual running stage
@@ -42,7 +42,7 @@ RUN cd ui/specs ; npm run build:$ENVIRONMENT
 FROM nginx AS final
 
 # copy nginx config file
-COPY ui/specs/nginx.conf /etc/nginx/nginx.conf
+COPY ui/playground/nginx.conf /etc/nginx/nginx.conf
 
 # copy spa output to nginx public folder
 COPY --from=generate ui/specs/.output/public /www/public

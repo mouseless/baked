@@ -38,19 +38,32 @@
     "dist"
   ],
   "scripts": {
-    "prepack": "nuxt-module-build build",
-    "build": "npm run lint && nuxt-module-build build --stub && nuxt-module-build prepare",
-    "dev": "npm run dev:prepare && nuxi dev playground",
-    "dev:build": "nuxi build playground",
-    "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
-    "release": "npm run lint && npm run test && npm run prepack && changelogen --release && npm publish && git push --follow-tags",
     "lint": "eslint .",
-    "test": "vitest run",
+    "setup": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground && npm run lint",
+    "test": "playwright test",
     "test:watch": "vitest watch",
-    "test:types": "vue-tsc --noEmit && cd playground && vue-tsc --noEmit"
+    "test:types": "vue-tsc --noEmit && cd test && vue-tsc --noEmit",
+    "predev": "npm run setup --env=development",
+    "dev": "npm run dev:prepare && nuxi dev playground --dotenv .env.development --host",
+    "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
+    "dev:build": "nuxi build playground --dotenv .env.development",
+    "prebuild": "cross-env-shell npm run setup --env=$npm_config_env",
+    "build": "cross-env-shell nuxi generate playground --log-level silent --dotenv .env.$npm_config_env",
+    "build:Development": "npm run build --env=development",
+    "build:Production": "npm run build --env=production",
+    "prelocal": "npm run build:Development",
+    "local": "npx http-server playground/.output/public -p 3000",
+    "prepack": "nuxt-module-build build",
+    "release": "npm run lint && npm run test && npm run prepack && changelogen --release && npm publish && git push --follow-tags"
   },
   "dependencies": {
-    "@nuxt/kit": "4.1.2"
+    "@nuxt/kit": "4.1.2",
+    "@nuxtjs/i18n": "10.1.0",
+    "@nuxtjs/tailwindcss": "6.14.0",
+    "@primeuix/themes": "1.2.3",
+    "async-mutex": "0.5.0",
+    "primeicons": "7.0.0",
+    "primevue": "4.3.9"
   },
   "devDependencies": {
     "@nuxt/eslint-config": "1.9.0",
@@ -61,8 +74,10 @@
     "@types/node": "24.5.2",
     "changelogen": "0.6.2",
     "nuxt": "4.1.2",
+    "sass": "1.92.1",
     "typescript": "5.9.2",
     "vitest": "3.2.4",
     "vue-tsc": "3.0.7"
-  }
+  },
+  "bundleDependencies": ["@primeuix/themes", "primeicons", "primevue"]
 }
