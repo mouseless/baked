@@ -128,8 +128,8 @@ echo Installing dependencies...
 cd docs\.theme && npm i && npm ci && cd ..\..
 cd ui\module && npm i && npm ci && cd ..\..
 cd ui\specs && npm i && npm ci && cd ..\..
-cd core\Baked.Test.Recipe.Service.LoadTest && npm i && npm ci && cd ..\..\..
-cd core\Baked.Test.Recipe.Service.StubApi && npm i && npm ci && cd ..\..\..
+cd core\test\Baked.Test.Recipe.Service.LoadTest && npm i && npm ci && cd ..\..\..
+cd core\test\Baked.Test.Recipe.Service.StubApi && npm i && npm ci && cd ..\..\..
 goto end
 
 :end
