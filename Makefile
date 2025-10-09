@@ -21,7 +21,7 @@ install:
 	cd core/test/Baked.Test.Recipe.Service.StubApi ; npm i ; npm ci ; cd ../../..
 build:
 	@ \
-	cd ui ; npm run build ; cd .. ; \
+	cd ui ; npm run build:development ; cd .. ; \
 	cd core ; dotnet build
 test:
 	@ \
