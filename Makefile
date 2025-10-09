@@ -23,10 +23,10 @@ install:
 	cd ui/module ; npm ci ; cd ../.. ; \
 	cd ui/specs ; npm i ; cd ../.. ; \
 	cd ui/specs ; npm ci ; cd ../.. ; \
-	cd core/Baked.Test.Recipe.Service.LoadTest ; npm i ; cd ../../.. ; \
-	cd core/Baked.Test.Recipe.Service.LoadTest ; npm ci ; cd ../../.. ; \
-	cd core/Baked.Test.Recipe.Service.StubApi ; npm i ; cd ../../.. ; \
-	cd core/Baked.Test.Recipe.Service.StubApi ; npm ci ; cd ../../..
+	cd core/test/Baked.Test.Recipe.Service.LoadTest ; npm i ; cd ../../.. ; \
+	cd core/test/Baked.Test.Recipe.Service.LoadTest ; npm ci ; cd ../../.. ; \
+	cd core/test/Baked.Test.Recipe.Service.StubApi ; npm i ; cd ../../.. ; \
+	cd core/test/Baked.Test.Recipe.Service.StubApi ; npm ci ; cd ../../..
 build:
 	@ \
 	cd ui/module ; npm run build ; cd ../.. ; \
