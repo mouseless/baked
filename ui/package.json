@@ -41,8 +41,6 @@
     "lint": "eslint .",
     "setup": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground && npm run lint",
     "test": "playwright test",
-    "test:watch": "vitest watch",
-    "test:types": "vue-tsc --noEmit && cd test && vue-tsc --noEmit",
     "predev": "npm run setup --env=development",
     "dev": "npm run dev:prepare && nuxi dev playground --dotenv .env.development --host",
     "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
@@ -53,8 +51,7 @@
     "build:Production": "npm run build --env=production",
     "prelocal": "npm run build:Development",
     "local": "npx http-server playground/.output/public -p 3000",
-    "prepack": "nuxt-module-build build",
-    "release": "npm run lint && npm run test && npm run prepack && changelogen --release && npm publish && git push --follow-tags"
+    "prepack": "nuxt-module-build build"
   },
   "dependencies": {
     "@nuxt/kit": "4.1.2",

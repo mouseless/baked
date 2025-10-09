@@ -3,38 +3,30 @@ FILE ?= file_name
 
 format:
 	@ \
-	cd core ; \
-	dotnet format --verbosity normal ; cd .. ; \
-	cd ui/module ; npm run lint -- --fix ; cd .. ; \
-	cd specs ; npm run lint -- --fix ; cd ../.. ; \
+	cd core ; dotnet format --verbosity normal ; cd .. ; \
+	cd ui ; npm run lint -- --fix ; cd .. ; \
 	cd docs/.theme ; npm run lint -- --fix ; cd ../..
 fix:
 	@ \
-	if echo "$(FILE)" | grep -q "^src"; then \
-		cd ui/module && npx eslint $(subst ui/module/,,$(FILE)) --fix; \
+	if echo "$(FILE)" then \
+		cd ui && npx eslint $(subst ui/,,$(FILE)) --fix; \
 	elif echo "$(FILE)" | grep -q "^test"; then \
 		cd ui/specs && npx eslint $(subst ui/specs/,,$(FILE)) --fix; \
 	fi
 install:
 	@ \
-	cd docs/.theme ; npm i ; cd ../.. ; \
-	cd docs/.theme ; npm ci ; cd ../.. ; \
-	cd ui/module ; npm i ; cd ../.. ; \
-	cd ui/module ; npm ci ; cd ../.. ; \
-	cd ui/specs ; npm i ; cd ../.. ; \
-	cd ui/specs ; npm ci ; cd ../.. ; \
-	cd core/test/Baked.Test.Recipe.Service.LoadTest ; npm i ; cd ../../.. ; \
-	cd core/test/Baked.Test.Recipe.Service.LoadTest ; npm ci ; cd ../../.. ; \
-	cd core/test/Baked.Test.Recipe.Service.StubApi ; npm i ; cd ../../.. ; \
-	cd core/test/Baked.Test.Recipe.Service.StubApi ; npm ci ; cd ../../..
+	cd docs/.theme ; npm i ; npm ci ; cd ../.. ; \
+	cd ui ; npm i ; npm ci ; cd .. ; \
+	cd core/test/Baked.Test.Recipe.Service.LoadTest ; npm i ; npm ci ; cd ../../.. ; \
+	cd core/test/Baked.Test.Recipe.Service.StubApi ; npm i ; npm ci ; cd ../../..
 build:
 	@ \
-	cd ui/module ; npm run build ; cd ../.. ; \
+	cd ui ; npm run build ; cd .. ; \
 	cd core ; dotnet build
 test:
 	@ \
 	cd core ; dotnet test --logger quackers ; cd .. ; \
-	cd ui/specs ; BUILD_SILENT=1 npm test ; cd ../..
+	cd ui ; BUILD_SILENT=1 npm test ; cd ..
 coverage:
 	@ \
 	cd core ; \
@@ -56,14 +48,15 @@ run:
 		dotnet run --project core/test/Baked.Test.Recipe.Service.Application ; \
 	fi ; \
 	if test $$app -eq "2" ; then \
-		cd ui/specs ; \
+		cd ui ; \
 		npm run dev ; \
-		cd ../.. ; \
+		cd .. ; \
 	fi ; \
 	if test $$app -eq "3" ; then \
 		docker compose up --build ; \
 	fi ; \
 	if test $$app -eq "4" ; then \
-		cd ./docs ; \
+		cd docs ; \
 		make run ; \
+		cd ..
 	fi
