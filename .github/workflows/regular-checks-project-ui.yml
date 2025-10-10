@@ -25,7 +25,7 @@ jobs:
         run: echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns
       - name: Build ui
         run: |
-          npm ci
+          npm i
           npm run build:production
   test:
     name: Test
@@ -46,7 +46,7 @@ jobs:
         run: echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns
       - name: Build ui
         run: |
-          npm ci
+          npm i
           npm run build:production
       - name: Run tests
         run: |
