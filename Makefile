@@ -36,7 +36,7 @@ coverage:
 		open .coverage/html/index.html)
 run:
 	@echo "(1) Recipe.Service (Development)"
-	@echo "(2) Specs (Development)"
+	@echo "(2) UI (Development)"
 	@echo "(3) Recipe.* (Production)"
 	@echo "(4) Docs"
 	@read -p "Please select 1-4: " app; \
