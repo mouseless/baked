@@ -27,7 +27,7 @@ build:
 	@(cd $(CORE_DIR) && dotnet build)
 test:
 	@(cd $(CORE_DIR) && dotnet test --logger quackers)
-	@(cd $(UI_DIR) && BUILD_SILENT=1 npm test)
+	@(cd $(UI_DIR) && BUILD_SILENT=1 npm run test)
 coverage:
 	@(cd $(CORE_DIR) && \
 		rm -rf .coverage && \
