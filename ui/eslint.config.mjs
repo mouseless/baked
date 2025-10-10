@@ -1,6 +1,7 @@
+import withNuxt from "./.nuxt/eslint.config.mjs";
 import pluginVue from "eslint-plugin-vue";
 
-export default [
+export default withNuxt([
   ...pluginVue.configs["flat/recommended"],
   {
     ignores: [
@@ -14,7 +15,7 @@ export default [
       "**/.prebuild/",
       "**/package-lock.json",
       "**/tsconfig.json",
-      "pages/*.json"
+      "**/.baked/**/*"
     ]
   },
   {
@@ -51,23 +52,24 @@ export default [
       ],
 
       "no-multi-spaces": "error",
-      "no-multiple-empty-lines": ["error", {
-        "max": 1,
-        "maxEOF": 0
-      }],
+      "no-multiple-empty-lines": "error",
       "no-return-assign": "off",
       "no-trailing-spaces": "error",
       "no-var": "error",
-      "object-curly-spacing": ["error", "always"],
       "prefer-const": "error",
       quotes: ["error", "double"],
       semi: ["error", "always"],
-      "space-before-blocks": ["error", "always"],
       "space-before-function-paren": ["error", "never"],
-      "template-curly-spacing": ["error", "never"],
+      "no-fallthrough": "off",
+      "no-case-declarations": "off",
       "vue/multi-word-component-names": "off",
       "vue/html-quotes": ["error", "double"],
-      "vue/no-multiple-template-root": "off"
+      "vue/no-multiple-template-root": "off",
+      "vue/multiline-html-element-content-newline": "error",
+      "vue/singleline-html-element-content-newline": "off",
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-unused-expressions": "off",
+      "@typescript-eslint/no-wrapper-object-types": "off"
     }
   }
-];
+]);

@@ -47,7 +47,7 @@ function Interceptors() {
 
     interceptors = Array.from(interceptorMap.entries())
       .sort(([, a], [, b]) => a.priority - b.priority)
-      .map(([_, interceptor]) => interceptor);
+      .map(([, interceptor]) => interceptor);
     sorted = true;
   }
 

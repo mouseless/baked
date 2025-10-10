@@ -56,7 +56,7 @@ export default withNuxt([
       "no-var": "error",
       "prefer-const": "error",
       quotes: ["error", "double"],
-      semi: ["error", "always"],
+      semi: ["error", "none"],
       "space-before-function-paren": ["error", "never"],
       "vue/multi-word-component-names": "off",
       "vue/html-quotes": ["error", "double"],

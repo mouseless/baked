@@ -39,26 +39,19 @@
   ],
   "scripts": {
     "lint": "eslint .",
-    "postinstall": "nuxi prepare playground",
     "test": "playwright test",
-
     "module:prepare": "nuxt-module-build prepare",
     "module:build": "nuxt-module-build build",
     "module:build:stub": "nuxt-module-build build --stub",
-
     "setup": "npm run module:build:stub && npm run module:prepare && nuxi prepare playground && npm run lint",
-
     "dev:development": "npm run setup && nuxi dev playground --dotenv .env.development --host",
     "dev:production": "npm run setup && nuxi dev playground --dotenv .env.production --host",
     "dev": "npm run dev:development",
-
     "build:development": "npm run setup && nuxi generate playground --dotenv .env.development",
     "build:production": "npm run setup && nuxi generate playground --dotenv .env.production",
-
     "local:development": "npm run build:development && npx http-server playground/.output/public -p 3000",
     "local:production": "npm run build:production && npx http-server playground/.output/public -p 3000",
     "local": "npm run local:development",
-
     "prepack": "npm run module:build"
   },
   "dependencies": {
@@ -71,19 +64,27 @@
     "primevue": "4.3.9"
   },
   "devDependencies": {
-    "@nuxt/eslint-config": "1.9.0",
     "@nuxt/eslint": "1.9.0",
+    "@nuxt/eslint-config": "1.9.0",
     "@nuxt/module-builder": "1.0.2",
     "@nuxt/schema": "4.1.2",
     "@nuxt/test-utils": "3.19.2",
+    "@playwright/test": "1.55.0",
     "@types/node": "24.5.2",
     "changelogen": "0.6.2",
-    "@playwright/test": "1.55.0",
     "nuxt": "4.1.2",
     "sass": "1.92.1",
     "typescript": "5.9.2",
     "vitest": "3.2.4",
     "vue-tsc": "3.0.7"
   },
-  "bundleDependencies": ["@primeuix/themes", "primeicons", "primevue"]
+  "bundleDependencies": [
+    "@primeuix/themes",
+    "primeicons",
+    "primevue"
+  ],
+  "optionalDependencies": {
+    "@oxc-parser/binding-linux-x64-musl": "0.94.0",
+    "@oxc-parser/binding-win32-x64-msvc": "0.94.0"
+  }
 }

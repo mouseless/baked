@@ -69,7 +69,7 @@ function findItem(route) {
   if(sitemap[route]) { return sitemap[route]; }
 
   for(const key in sitemap) {
-    const expression = key.replaceAll(/[{][\w\d\-:]*[}]/g, "[\\w\\d\-]*");
+    const expression = key.replaceAll(/[{][\w\d\-:]*[}]/g, "[\\w\\d-]*");
     const matcher = new RegExp(`^${expression}$`, "g");
 
     if(matcher.test(route)) {

@@ -40,7 +40,7 @@ export default defineNuxtPlugin({
       Number.MIN_SAFE_INTEGER - 10
     );
 
-    $router.beforeEach(async(to, _) => {
+    $router.beforeEach(async to => {
       const token = useToken();
 
       for(const route of auth.anonymousPageRoutes) {

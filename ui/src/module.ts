@@ -1,4 +1,4 @@
-import { defineNuxtModule, addPlugin, createResolver, addComponentsDir, addImportsDir } from '@nuxt/kit'
+import { defineNuxtModule, addPlugin, createResolver, addComponentsDir, addImportsDir } from "@nuxt/kit";
 import type { NuxtI18nOptions } from "@nuxtjs/i18n";
 import { pathToFileURL } from "url";
 
@@ -54,8 +54,8 @@ const resolver = createResolver(import.meta.url);
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
-    name: 'baked-recipe-admin',
-    configKey: 'baked',
+    name: "baked-recipe-admin",
+    configKey: "baked"
   },
   defaults: { },
   moduleDependencies: {
@@ -94,11 +94,11 @@ export default defineNuxtModule<ModuleOptions>({
   // this setup runs after `defineNuxtConfig` so it should set default values
   // carefully.
   async setup(_options, _nuxt) {
-    if (process.env.npm_lifecycle_script?.includes("nuxt-module-build")) { return; }
+    if(process.env.npm_lifecycle_script?.includes("nuxt-module-build")) { return; }
 
     const entryProjectResolver = createResolver(_nuxt.options.rootDir);
 
-    const appJsonPath = pathToFileURL(entryProjectResolver.resolve(`./.baked/app.json`));
+    const appJsonPath = pathToFileURL(entryProjectResolver.resolve("./.baked/app.json"));
     const app = (await import(appJsonPath.href, { with: { type: "json" } })).default;
 
     _options.composables.useBreakpoints ||= {};
@@ -165,9 +165,9 @@ export default defineNuxtModule<ModuleOptions>({
           code: i.code,
           name: i.name,
           files
-        }
+        };
       }),
-      defaultLocale: app?.i18n?.defaultLanguage?.code,
+      defaultLocale: app?.i18n?.defaultLanguage?.code
     };
 
     (_nuxt.options as any).tailwindcss = {
@@ -177,5 +177,5 @@ export default defineNuxtModule<ModuleOptions>({
         }
       }
     };
-  },
-})
+  }
+});

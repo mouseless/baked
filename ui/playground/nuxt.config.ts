@@ -46,6 +46,6 @@ export default defineNuxtConfig({
   // between local and published package behaviour
   imports: { autoImport: false },
   logLevel: import.meta.env.BUILD_SILENT === "1" ? "silent" : "info",
-  modules: ["../src/module"],
+  modules: ["@nuxt/eslint","../src/module"],
   router: { options: { strict: true } }
 });

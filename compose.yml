@@ -58,7 +58,7 @@ services:
     build:
       dockerfile: ui/playground/Dockerfile
       args:
-        ENVIRONMENT: Production
+        ENVIRONMENT: production
     ports:
       - 3000:3000
     links:

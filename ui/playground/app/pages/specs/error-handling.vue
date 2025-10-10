@@ -1,6 +1,12 @@
 <template>
-  <UiSpec title="Error Handling" test-id="error-handling">
-    <Panel header="Error Handlers" class="mt-4">
+  <UiSpec
+    title="Error Handling"
+    test-id="error-handling"
+  >
+    <Panel
+      header="Error Handlers"
+      class="mt-4"
+    >
       <Button
         data-testid="alert"
         type="button"

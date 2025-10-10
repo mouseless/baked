@@ -1,11 +1,11 @@
 # syntax=docker/dockerfile:1.7-labs
-ARG ENVIRONMENT Production
+ARG ENVIRONMENT production
 
 # ---
 # to install npm packages
 # separated to have these run only when package.json files are changed
 # ---
-FROM node:24 as init
+FROM node:24-alpine as init
 
 COPY --parents ui/package.json .
 COPY --parents ui/package-lock.json .
@@ -18,7 +18,6 @@ FROM init as generate
 
 ARG ENVIRONMENT
 
-# copy source files
 COPY --parents ui .
 
 # build module

@@ -4,8 +4,11 @@
     @submit.prevent="submit"
   >
     <div class="w-full text-center mb-6">
-      <RouterLink to="/" class="inline-block">
-        <Logo src="logo-full.svg"/>
+      <RouterLink
+        to="/"
+        class="inline-block"
+      >
+        <Logo src="logo-full.svg" />
       </RouterLink>
     </div>
     <div class="text-center">

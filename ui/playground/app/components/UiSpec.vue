@@ -6,13 +6,13 @@
     />
     <div class="flex justify-center w-full">
       <div
-         class="flex gap-4 align-top w-4/5"
-         :class="{
-           'flex-col items-center': !vertical,
-           'flex-wrap items-start': vertical,
-           'max-w-screen-xl': !fullPage,
-           'w-full': fullPage
-         }"
+        class="flex gap-4 align-top w-4/5"
+        :class="{
+          'flex-col items-center': !vertical,
+          'flex-wrap items-start': vertical,
+          'max-w-screen-xl': !fullPage,
+          'w-full': fullPage
+        }"
       >
         <div
           v-if="$slots.default"
@@ -36,7 +36,9 @@
               'text-lg mt-2 -mb-2': !vertical,
               'mb-2': vertical
             }"
-          >{{ variant.name }}</h2>
+          >
+            {{ variant.name }}
+          </h2>
           <Divider v-if="!vertical" />
           <div
             v-if="!useModel"
@@ -48,8 +50,14 @@
               :descriptor="prepareDescriptor(variant)"
             />
           </div>
-          <div v-else class="space-x-4">
-            <div :data-testid="variant.name" :class="variantClass">
+          <div
+            v-else
+            class="space-x-4"
+          >
+            <div
+              :data-testid="variant.name"
+              :class="variantClass"
+            >
               <!-- renders given variants -->
               <Bake
                 v-if="index < variants.length"
@@ -68,7 +76,7 @@
               v-if="index < variants.length"
               class="inline-block border-2 border-gray-500 rounded p-2"
             >
-            ➡️  <span :data-testid="`${variant.name}:model`">{{ variants[index].model }}</span> ⬅️
+              ➡️  <span :data-testid="`${variant.name}:model`">{{ variants[index].model }}</span> ⬅️
             </div>
             <div
               v-if="variant.pageContextKeys"

@@ -5,7 +5,10 @@
         ⬇️  Check if day name case is in current language ⬇️
       </span>
     </Message>
-    <div class="border-4 border-gray-500 rounded p-4 text-center" data-testid="test-datepicker">
+    <div
+      class="border-4 border-gray-500 rounded p-4 text-center"
+      data-testid="test-datepicker"
+    >
       <DatePicker inline />
     </div>
     <Message severity="info">
@@ -13,7 +16,10 @@
         ⬇️  Below you can see the supported locales ⬇️
       </span>
     </Message>
-    <div class="border-4 border-gray-500 rounded p-4 text-center" data-testid="test-locales">
+    <div
+      class="border-4 border-gray-500 rounded p-4 text-center"
+      data-testid="test-locales"
+    >
       {{ locales }}
     </div>
     <Message severity="info">
@@ -21,7 +27,10 @@
         ⬇️  Below you can see the current locale ⬇️
       </span>
     </Message>
-    <div class="border-4 border-gray-500 rounded p-4 text-center" data-testid="test-locale">
+    <div
+      class="border-4 border-gray-500 rounded p-4 text-center"
+      data-testid="test-locale"
+    >
       {{ locale.toUpperCase() }}
     </div>
   </UiSpec>

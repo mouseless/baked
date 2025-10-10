@@ -1,5 +1,8 @@
 <template>
-  <UiSpec title="Auth" test-id="auth">
+  <UiSpec
+    title="Auth"
+    test-id="auth"
+  >
     <Message severity="warn">
       <span class="text-xl">
         This test requires authentication, make sure you are logged in if you
