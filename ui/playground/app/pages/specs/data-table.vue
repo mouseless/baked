@@ -5,7 +5,7 @@
   />
 </template>
 <script setup>
-import giveMe from "~/utils/giveMe";
+import giveMe from "@utils/giveMe";
 import { provide, useLocalization } from "#imports";
 
 provide("use-localization", useLocalization({scope: "local"}));

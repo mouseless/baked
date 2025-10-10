@@ -1,6 +1,6 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
-import giveMe from "~/utils/giveMe";
-import primevue from "~/utils/locators/primevue";
+import giveMe from "../utils/giveMe";
+import primevue from "../utils/locators/primevue";
 
 test.beforeEach(async({goto}) => {
   await goto("/specs/data-panel", { waitUntil: "hydration" });

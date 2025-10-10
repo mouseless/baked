@@ -47,7 +47,7 @@
 <script setup>
 import { ref } from "vue";
 import { Message } from "primevue";
-import giveMe from "~/utils/giveMe";
+import giveMe from "@utils/giveMe";
 
 const ready = ref();
 const uniqueKey = ref();

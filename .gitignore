@@ -20,3 +20,8 @@ bin/
 
 # node modules
 **/node_modules/**
+
+# playwright generations
+*.zip
+test-results/
+ui/**/*-snapshots/

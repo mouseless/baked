@@ -1,6 +1,6 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
-import primevue from "~/utils/locators/primevue.js";
-import baked from "~/utils/locators/baked.js";
+import primevue from "../utils/locators/primevue.js";
+import baked from "../utils/locators/baked.js";
 
 test.beforeEach(async({goto}) => {
   await goto("/specs/error-handling", { waitUntil: "hydration" });

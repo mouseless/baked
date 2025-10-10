@@ -3,7 +3,7 @@ import { defineConfig, devices } from "@playwright/test";
 import type { ConfigOptions } from "@nuxt/test-utils/playwright";
 
 export default defineConfig<ConfigOptions>({
-  testDir: "./app/pages/specs",
+  testDir: "./test/specs",
   timeout: 2 * 60 * 1000,
   reporter: "list",
 
@@ -13,7 +13,7 @@ export default defineConfig<ConfigOptions>({
       use: {
         ...devices["Desktop Chrome"],
         nuxt: {
-          rootDir: fileURLToPath(new URL(".", import.meta.url))
+          rootDir: fileURLToPath(new URL("./playground", import.meta.url))
         }
       }
     }

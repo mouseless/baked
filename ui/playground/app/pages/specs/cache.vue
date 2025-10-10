@@ -32,7 +32,7 @@
 </template>
 <script setup>
 import { Button, Message } from "primevue";
-import giveMe from "~/utils/giveMe";
+import giveMe from "@utils/giveMe";
 
 const variants = [
   {

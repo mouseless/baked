@@ -1,5 +1,7 @@
 import Aura from "@primeuix/themes/aura";
 import { definePreset } from "@primeuix/themes";
+import { fileURLToPath } from "node:url";
+import { resolve } from "pathe";
 
 const Mouseless = definePreset(Aura, {
   semantic: {
@@ -21,6 +23,9 @@ const Mouseless = definePreset(Aura, {
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  alias: {
+    "@utils": resolve(fileURLToPath(new URL(".", import.meta.url)), "../test/utils")
+  },
   baked: {
     components: {
       Page: {
@@ -46,6 +51,6 @@ export default defineNuxtConfig({
   // between local and published package behaviour
   imports: { autoImport: false },
   logLevel: import.meta.env.BUILD_SILENT === "1" ? "silent" : "info",
-  modules: ["@nuxt/eslint","../src/module"],
+  modules: ["@nuxt/eslint", "../src/module"],
   router: { options: { strict: true } }
 });

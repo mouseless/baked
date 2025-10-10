@@ -20,6 +20,11 @@ ARG ENVIRONMENT
 
 COPY --parents ui .
 
+# creates a .tgz package file at the root
+RUN cd ui ; npm pack --pack-destination ..
+
+RUN cd ui ; npm i $(find .. -name 'baked-recipe-admin-*.tgz' -print -quit)
+
 # build module
 RUN cd ui && npm run setup
 

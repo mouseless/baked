@@ -1,6 +1,6 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
-import giveMe from "~/utils/giveMe";
-import primevue from "../../utils/locators/primevue.js";
+import giveMe from "../utils/giveMe";
+import primevue from "../utils/locators/primevue.js";
 
 test.beforeEach(async({goto}) => {
   await goto("/specs/side-menu", { waitUntil: "hydration" });

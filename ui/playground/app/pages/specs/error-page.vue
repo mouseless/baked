@@ -8,7 +8,7 @@
 <script setup>
 import { computed, ref } from "vue";
 import { createError } from "#app";
-import giveMe from "~/utils/giveMe";
+import giveMe from "@utils/giveMe";
 
 const variants = [
   {
