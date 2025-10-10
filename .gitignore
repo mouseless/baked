@@ -1,6 +1,15 @@
-# vscode files
-.vscode
+# VSCode
 .vs
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+# Intellij idea
+*.iml
+.idea
 
 # Vim swap files
 *.swp
@@ -12,16 +21,66 @@
 obj/
 bin/
 
-# coverage reports
-**/.coverage/*
-
 # generated file
 **/.benchmark/**
 
-# node modules
-**/node_modules/**
+# Testing
+reports
+coverage
+*.lcov
+.nyc_output
+**/.coverage/*
+
+# Env
+.env
+.env.local
+
+# Dependencies
+node_modules
+
+# Temp directories
+.temp
+.tmp
+.cache
+
+# Yarn
+**/.yarn/cache
+**/.yarn/*state*
 
 # playwright generations
 *.zip
 test-results/
 ui/**/*-snapshots/
+
+# Nuxt
+.nuxt
+.output
+.data
+
+# OSX
+.DS_Store
+.AppleDouble
+.LSOverride
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Nuxt build
+.nuxt
+.nitro
+.cache
+.output
+.data
+.vercel_build_output
+.build-*
+.netlify
+
+# Nuxt generate
+dist
+
+# prebuild files
+.public
+.temp
+content
