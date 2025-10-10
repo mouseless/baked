@@ -9,7 +9,7 @@ STUBAPI_DIR := core/test/Baked.Test.Recipe.Service.StubApi
 format:
 	@for dir in $(CORE_DIR) $(UI_DIR) $(DOCS_DIR); do \
 		if [ "$$dir" = "$(CORE_DIR)" ]; then \
-			dotnet format --verbosity normal -w $$dir; \
+			dotnet format core/Baked.sln --verbosity normal ; \
 		else \
 			(cd $$dir && npm run lint -- --fix); \
 		fi \
