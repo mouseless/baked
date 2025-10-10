@@ -1,62 +1,49 @@
-.PHONY: format build test run
+.PHONY: format fix install build test coverage run
 FILE ?= file_name
+UI_DIR := ui
+CORE_DIR := core
+DOCS_DIR := docs/.theme
+LOADTEST_DIR := core/test/Baked.Test.Recipe.Service.LoadTest
+STUBAPI_DIR := core/test/Baked.Test.Recipe.Service.StubApi
 
 format:
-	@ \
-	cd core ; dotnet format --verbosity normal ; cd .. ; \
-	cd ui ; npm run lint -- --fix ; cd .. ; \
-	cd docs/.theme ; npm run lint -- --fix ; cd ../..
+	@for dir in $(CORE_DIR) $(UI_DIR) $(DOCS_DIR); do \
+		if [ "$$dir" = "$(CORE_DIR)" ]; then \
+			dotnet format --verbosity normal -w $$dir; \
+		else \
+			(cd $$dir && npm run lint -- --fix); \
+		fi \
+	done
 fix:
-	@ \
-	if echo "$(FILE)" then \
-		cd ui && npx eslint $(subst ui/,,$(FILE)) --fix; \
-	elif echo "$(FILE)" | grep -q "^test"; then \
-		cd ui/specs && npx eslint $(subst ui/specs/,,$(FILE)) --fix; \
+	@if [ -n "$(FILE)" ]; then \
+		npx eslint $(subst ui/,,$(FILE)) --fix; \
 	fi
 install:
-	@ \
-	cd docs/.theme ; npm i ; npm ci ; cd ../.. ; \
-	cd ui ; npm i ; npm ci ; cd .. ; \
-	cd core/test/Baked.Test.Recipe.Service.LoadTest ; npm i ; npm ci ; cd ../../.. ; \
-	cd core/test/Baked.Test.Recipe.Service.StubApi ; npm i ; npm ci ; cd ../../..
+	@for dir in $(DOCS_DIR) $(UI_DIR) $(LOADTEST_DIR) $(STUBAPI_DIR); do \
+		(cd $$dir && npm ci); \
+	done
 build:
-	@ \
-	cd ui ; npm run build:development ; cd .. ; \
-	cd core ; dotnet build
+	@(cd $(UI_DIR) && npm run build:development)
+	@(cd $(CORE_DIR) && dotnet build)
 test:
-	@ \
-	cd core ; dotnet test --logger quackers ; cd .. ; \
-	cd ui ; BUILD_SILENT=1 npm test ; cd ..
+	@(cd $(CORE_DIR) && dotnet test --logger quackers)
+	@(cd $(UI_DIR) && BUILD_SILENT=1 npm test)
 coverage:
-	@ \
-	cd core ; \
-	rm -rdf .coverage ; \
-	dotnet test -c Release --collect:"XPlat Code Coverage" --logger trx --results-directory .coverage --settings test/runsettings.xml ; \
-	dotnet reportgenerator -reports:.coverage/*/coverage.cobertura.xml -targetdir:.coverage/html ; \
-	open .coverage/html/index.html ; \
-	cd .. ;
+	@(cd $(CORE_DIR) && \
+		rm -rf .coverage && \
+		dotnet test -c Release --collect:"XPlat Code Coverage" --logger trx --results-directory .coverage --settings test/runsettings.xml && \
+		dotnet reportgenerator -reports:.coverage/*/coverage.cobertura.xml -targetdir:.coverage/html && \
+		open .coverage/html/index.html)
 run:
-	@ \
-	echo "(1) Recipe.Service (Development)" ; \
-	echo "(2) Specs (Development)" ; \
-	echo "(3) Recipe.* (Production)" ; \
-	echo "(4) Docs" ; \
-	echo "" ; \
-	echo "Please select 1-4: " ; \
-	read app ; \
-	if test $$app -eq "1" ; then \
-		dotnet run --project core/test/Baked.Test.Recipe.Service.Application ; \
-	fi ; \
-	if test $$app -eq "2" ; then \
-		cd ui ; \
-		npm run dev ; \
-		cd .. ; \
-	fi ; \
-	if test $$app -eq "3" ; then \
-		docker compose up --build ; \
-	fi ; \
-	if test $$app -eq "4" ; then \
-		cd docs ; \
-		make run ; \
-		cd ..
-	fi
+	@echo "(1) Recipe.Service (Development)"
+	@echo "(2) Specs (Development)"
+	@echo "(3) Recipe.* (Production)"
+	@echo "(4) Docs"
+	@read -p "Please select 1-4: " app; \
+	case $$app in \
+		1) dotnet run --project $(CORE_DIR)/test/Baked.Test.Recipe.Service.Application ;; \
+		2) (cd $(UI_DIR) && npm run dev) ;; \
+		3) docker compose up --build ;; \
+		4) (cd docs && make run) ;; \
+		*) echo "Invalid option";; \
+	esac
