@@ -47,8 +47,8 @@ jobs:
       - name: Build ui
         run: |
           npm i
+          npx playwright install --with-deps --only-shell
           npm run build:production
       - name: Run tests
         run: |
-          npx playwright install --with-deps --only-shell
           BUILD_SILENT=1 npm test -- --grep-invert @visual
