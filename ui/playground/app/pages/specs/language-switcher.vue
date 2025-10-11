@@ -46,7 +46,7 @@ import { useLocalization } from "#imports";
 const { localize: l } = useLocalization();
 const { public: { composables } } = useRuntimeConfig();
 
-async function requestWithLanguageHeader(){
+async function requestWithLanguageHeader() {
   await $fetch("time-provider-samples/now", {
     baseURL: composables.useDataFetcher.baseURL,
     method: "GET"

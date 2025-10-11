@@ -41,7 +41,7 @@
 <script setup>
 import { Button, Panel } from "primevue";
 import { createError } from "#app";
-import { FetchError} from "ofetch";
+import { FetchError } from "ofetch";
 
 function alertError() {
   throw createError({

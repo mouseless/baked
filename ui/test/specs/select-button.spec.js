@@ -1,14 +1,14 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
 import primevue from "../utils/locators/primevue";
 
-test.beforeEach(async({goto}) => {
+test.beforeEach(async({ goto }) => {
   await goto("/specs/select-button", { waitUntil: "hydration" });
 });
 
 test.describe("Base", () => {
   const id = "Base";
 
-  test("options", async({page}) => {
+  test("options", async({ page }) => {
     const component = page.getByTestId(id);
     const options = component.locator(primevue.selectbutton.option);
 
@@ -16,7 +16,7 @@ test.describe("Base", () => {
     await expect(options.nth(1)).toHaveText("OPTION_2");
   });
 
-  test("select option", async({page}) => {
+  test("select option", async({ page }) => {
     const component = page.getByTestId(id);
     const options = component.locator(primevue.selectbutton.option);
     const model = page.getByTestId(`${id}:model`);
@@ -26,7 +26,7 @@ test.describe("Base", () => {
     await expect(model).toHaveText("OPTION_1");
   });
 
-  test("prevent empty after select", async({page}) => {
+  test("prevent empty after select", async({ page }) => {
     const component = page.getByTestId(id);
     const options = component.locator(primevue.selectbutton.option);
     const model = page.getByTestId(`${id}:model`);
@@ -37,7 +37,7 @@ test.describe("Base", () => {
     await expect(model).toHaveText("OPTION_1");
   });
 
-  test("visual", { tag: "@visual" }, async({page}) => {
+  test("visual", { tag: "@visual" }, async({ page }) => {
     const component = page.getByTestId(id);
     const options = component.locator(primevue.selectbutton.option);
 
@@ -50,7 +50,7 @@ test.describe("Base", () => {
 test.describe("Base w/ Localization", () => {
   const id = "Base w/ Localization";
 
-  test("options", async({page}) => {
+  test("options", async({ page }) => {
     const component = page.getByTestId(id);
     const options = component.locator(primevue.selectbutton.option);
 
@@ -62,7 +62,7 @@ test.describe("Base w/ Localization", () => {
 test.describe("Option Label and Value", () => {
   const id = "Option Label and Value";
 
-  test("options", async({page}) => {
+  test("options", async({ page }) => {
     const component = page.getByTestId(id);
     const options = component.locator(primevue.selectbutton.option);
 
@@ -70,7 +70,7 @@ test.describe("Option Label and Value", () => {
     await expect(options.nth(1)).toHaveText("Label 2");
   });
 
-  test("select option", async({page}) => {
+  test("select option", async({ page }) => {
     const component = page.getByTestId(id);
     const options = component.locator(primevue.selectbutton.option);
     const model = page.getByTestId(`${id}:model`);
@@ -84,7 +84,7 @@ test.describe("Option Label and Value", () => {
 test.describe("Allow Empty", () => {
   const id = "Allow Empty";
 
-  test("clears selection", async({page}) => {
+  test("clears selection", async({ page }) => {
     const component = page.getByTestId(id);
     const option = component.locator(primevue.selectbutton.option);
     const model = page.getByTestId(`${id}:model`);
@@ -99,13 +99,13 @@ test.describe("Allow Empty", () => {
 test.describe("Stateful and Not Inline", () => {
   const id = "Stateful and Not Inline";
 
-  test("initial model is selected when state is empty", async({page}) => {
+  test("initial model is selected when state is empty", async({ page }) => {
     const model = page.getByTestId(`${id}:model`);
 
     await expect(model).toHaveText("OPTION 1");
   });
 
-  test("retains selected state", async({page}) => {
+  test("retains selected state", async({ page }) => {
     const component = page.getByTestId(id);
     const options = component.locator(primevue.selectbutton.option);
     const model = page.getByTestId(`${id}:model`);
@@ -121,13 +121,13 @@ test.describe("Stateful and Not Inline", () => {
 test.describe("Stateful and Inline", () => {
   const id = "Stateful and Inline";
 
-  test("initial model is selected when state is empty", async({page}) => {
+  test("initial model is selected when state is empty", async({ page }) => {
     const model = page.getByTestId(`${id}:model`);
 
     await expect(model).toHaveText("OPTION 1");
   });
 
-  test("retains selected state", async({page}) => {
+  test("retains selected state", async({ page }) => {
     const component = page.getByTestId(id);
     const options = component.locator(primevue.selectbutton.option);
     const model = page.getByTestId(`${id}:model`);
@@ -143,14 +143,14 @@ test.describe("Stateful and Inline", () => {
 test.describe("Page Context", () => {
   const id = "Page Context";
 
-  test("when no option is selected, page context has all options' ! set to true", async({page}) => {
+  test("when no option is selected, page context has all options' ! set to true", async({ page }) => {
     const pageContext = page.getByTestId(`${id}:page-context`);
 
     await expect(pageContext).toHaveText(/!test:select-button:OPTION 1/);
     await expect(pageContext).toHaveText(/!test:select-button:OPTION 2/);
   });
 
-  test("selected option is set to the page context with the given key", async({page}) => {
+  test("selected option is set to the page context with the given key", async({ page }) => {
     const component = page.getByTestId(id);
     const options = component.locator(primevue.selectbutton.option);
     const pageContext = page.getByTestId(`${id}:page-context`);
@@ -162,7 +162,7 @@ test.describe("Page Context", () => {
     await expect(pageContext).not.toHaveText(/!test:select-button:OPTION 1/);
   });
 
-  test("not selected option is set to the page context with the given key with !", async({page}) => {
+  test("not selected option is set to the page context with the given key with !", async({ page }) => {
     const component = page.getByTestId(id);
     const options = component.locator(primevue.selectbutton.option);
     const pageContext = page.getByTestId(`${id}:page-context`);
@@ -173,7 +173,7 @@ test.describe("Page Context", () => {
     await expect(pageContext).toHaveText(/!test:select-button:OPTION 2/);
   });
 
-  test("when selection changes page context is updated", async({page}) => {
+  test("when selection changes page context is updated", async({ page }) => {
     const component = page.getByTestId(id);
     const options = component.locator(primevue.selectbutton.option);
     const pageContext = page.getByTestId(`${id}:page-context`);
@@ -189,14 +189,14 @@ test.describe("Page Context", () => {
 test.describe("Page Context - Option Label and Value", () => {
   const id = "Page Context - Option Label and Value";
 
-  test("when no option is selected, page context has all options' ! set to true", async({page}) => {
+  test("when no option is selected, page context has all options' ! set to true", async({ page }) => {
     const pageContext = page.getByTestId(`${id}:page-context`);
 
     await expect(pageContext).toHaveText(/!test:select-button:OPTION 1/);
     await expect(pageContext).toHaveText(/!test:select-button:OPTION 2/);
   });
 
-  test("selected option is set to the page context with the given key", async({page}) => {
+  test("selected option is set to the page context with the given key", async({ page }) => {
     const component = page.getByTestId(id);
     const options = component.locator(primevue.selectbutton.option);
     const pageContext = page.getByTestId(`${id}:page-context`);
@@ -208,7 +208,7 @@ test.describe("Page Context - Option Label and Value", () => {
     await expect(pageContext).not.toHaveText(/!test:select-button:OPTION 1/);
   });
 
-  test("not selected option is set to the page context with the given key with !", async({page}) => {
+  test("not selected option is set to the page context with the given key with !", async({ page }) => {
     const component = page.getByTestId(id);
     const options = component.locator(primevue.selectbutton.option);
     const pageContext = page.getByTestId(`${id}:page-context`);
@@ -219,7 +219,7 @@ test.describe("Page Context - Option Label and Value", () => {
     await expect(pageContext).toHaveText(/!test:select-button:OPTION 2/);
   });
 
-  test("when selection changes page context is updated", async({page}) => {
+  test("when selection changes page context is updated", async({ page }) => {
     const component = page.getByTestId(id);
     const options = component.locator(primevue.selectbutton.option);
     const pageContext = page.getByTestId(`${id}:page-context`);
@@ -235,7 +235,7 @@ test.describe("Page Context - Option Label and Value", () => {
 test.describe("Set Selected", () => {
   const id = "Set Selected";
 
-  test("initial model is selected", async({page}) => {
+  test("initial model is selected", async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component.locator(primevue.selectbutton.selected)).toHaveText("VALUE_B");

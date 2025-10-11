@@ -18,7 +18,7 @@ test.beforeEach(async({ goto, page }) => {
 });
 
 test.describe("application cache", () => {
-  test("api is called only the first time", async({goto, page}) => {
+  test("api is called only the first time", async({ goto, page }) => {
     let callCount = 0;
     await page.route("*/**/cache-samples/application", async route => {
       callCount++;
@@ -34,7 +34,7 @@ test.describe("application cache", () => {
     expect(callCount).toBe(1);
   });
 
-  test("api is called when parameters change", async({goto, page}) => {
+  test("api is called when parameters change", async({ goto, page }) => {
     let callCount = 0;
     await page.route("*/**/cache-samples/application?parameter=**", async route => {
       callCount++;
@@ -56,7 +56,7 @@ test.describe("application cache", () => {
     expect(callCount).toBe(2);
   });
 
-  test("it is not cleared after login", async({goto, page}) => {
+  test("it is not cleared after login", async({ goto, page }) => {
     let callCount = 0;
     await page.route("*/**/cache-samples/application", async route => {
       callCount++;
@@ -66,7 +66,7 @@ test.describe("application cache", () => {
     await goto("/specs/cache", { waitUntil: "hydration" });
     await expect(page.getByTestId("application")).toHaveText("loaded"); // hit#1
 
-    await login({goto, page});
+    await login({ goto, page });
 
     await goto("/specs/cache", { waitUntil: "hydration" });
     await expect(page.getByTestId("application")).toHaveText("loaded"); // cache hit!
@@ -74,25 +74,25 @@ test.describe("application cache", () => {
     expect(callCount).toBe(1);
   });
 
-  test("it is not cleared after logout", async({goto, page}) => {
+  test("it is not cleared after logout", async({ goto, page }) => {
     let callCount = 0;
     await page.route("*/**/cache-samples/application", async route => {
       callCount++;
       await route.fulfill({ json: "loaded" });
     });
 
-    await login({goto, page});
+    await login({ goto, page });
     await goto("/specs/cache", { waitUntil: "hydration" });
     await expect(page.getByTestId("application")).toHaveText("loaded"); // hit#1
 
-    await logout({goto, page});
+    await logout({ goto, page });
     await goto("/specs/cache", { waitUntil: "hydration" });
     await expect(page.getByTestId("application")).toHaveText("loaded"); // cache hit!
 
     expect(callCount).toBe(1);
   });
 
-  test("it invalidates after configured time", async({goto, page}) => {
+  test("it invalidates after configured time", async({ goto, page }) => {
     let callCount = 0;
     await page.route("*/**/cache-samples/application", async route => {
       callCount++;
@@ -112,7 +112,7 @@ test.describe("application cache", () => {
 });
 
 test.describe("user cache", () => {
-  test("api is called only the first time", async({goto, page}) => {
+  test("api is called only the first time", async({ goto, page }) => {
     let callCount = 0;
     await page.route("*/**/cache-samples/scoped", async route => {
       callCount++;
@@ -128,7 +128,7 @@ test.describe("user cache", () => {
     expect(callCount).toBe(1);
   });
 
-  test("api is called when parameters change", async({goto, page}) => {
+  test("api is called when parameters change", async({ goto, page }) => {
     let callCount = 0;
     await page.route("*/**/cache-samples/scoped?parameter=**", async route => {
       callCount++;
@@ -150,7 +150,7 @@ test.describe("user cache", () => {
     expect(callCount).toBe(2);
   });
 
-  test("it is cleared after login", async({goto, page}) => {
+  test("it is cleared after login", async({ goto, page }) => {
     let callCount = 0;
     await page.route("*/**/cache-samples/scoped", async route => {
       callCount++;
@@ -160,7 +160,7 @@ test.describe("user cache", () => {
     await goto("/specs/cache", { waitUntil: "hydration" });
     await expect(page.getByTestId("user")).toHaveText("loaded"); // hit#1
 
-    await login({goto, page});
+    await login({ goto, page });
 
     await goto("/specs/cache", { waitUntil: "hydration" });
     await expect(page.getByTestId("user")).toHaveText("loaded"); // hit#2
@@ -171,25 +171,25 @@ test.describe("user cache", () => {
     expect(callCount).toBe(2);
   });
 
-  test("it is cleared after logout", async({goto, page}) => {
+  test("it is cleared after logout", async({ goto, page }) => {
     let callCount = 0;
     await page.route("*/**/cache-samples/scoped", async route => {
       callCount++;
       await route.fulfill({ json: "loaded" });
     });
 
-    await login({goto, page});
+    await login({ goto, page });
     await goto("/specs/cache", { waitUntil: "hydration" });
     await expect(page.getByTestId("user")).toHaveText("loaded"); // hit#1
 
-    await logout({goto, page});
+    await logout({ goto, page });
     await goto("/specs/cache", { waitUntil: "hydration" });
     await expect(page.getByTestId("user")).toHaveText("loaded"); // hit#2
 
     expect(callCount).toBe(2);
   });
 
-  test("it invalidates after configured time", async({goto, page}) => {
+  test("it invalidates after configured time", async({ goto, page }) => {
     let callCount = 0;
     await page.route("*/**/cache-samples/scoped", async route => {
       callCount++;
@@ -208,14 +208,14 @@ test.describe("user cache", () => {
   });
 });
 
-async function login({goto, page}) {
+async function login({ goto, page }) {
   await goto("/login");
   const form = page.locator("form");
   await form.getByPlaceholder("Username").fill("test");
   await form.locator(primevue.button.base).click();
 }
 
-async function logout({goto, page}) {
+async function logout({ goto, page }) {
   await goto("/specs/auth", { waitUntil: "hydration" });
   await page.getByTestId("logout").click();
 }

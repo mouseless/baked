@@ -79,7 +79,7 @@ function authenticationException() {
   });
 }
 
-async function requestWithToken(){
+async function requestWithToken() {
   const result = await $fetch("time-provider-samples/now", {
     baseURL: composables.useDataFetcher.baseURL,
     method: "GET"

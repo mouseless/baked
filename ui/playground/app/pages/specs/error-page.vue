@@ -23,8 +23,8 @@ const variants = [
       ],
       footerInfo: "Spec: Footer info",
       safeLinks: [
-        giveMe.anExpected({ testId: "LINK_1", value: "VALUE_1"}),
-        giveMe.anExpected({ testId: "LINK_2", value: "VALUE_2"})
+        giveMe.anExpected({ testId: "LINK_1", value: "VALUE_1" }),
+        giveMe.anExpected({ testId: "LINK_2", value: "VALUE_2" })
       ],
       safeLinksMessage: "Spec: Safe links message",
       data: computed(() => ref(createError({ name:"NuxtError", statusCode: 403 })))

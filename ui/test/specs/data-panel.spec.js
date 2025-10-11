@@ -2,26 +2,26 @@ import { expect, test } from "@nuxt/test-utils/playwright";
 import giveMe from "../utils/giveMe";
 import primevue from "../utils/locators/primevue";
 
-test.beforeEach(async({goto}) => {
+test.beforeEach(async({ goto }) => {
   await goto("/specs/data-panel", { waitUntil: "hydration" });
 });
 
 test.describe("Base", () => {
   const id = "Base";
 
-  test("title", async({page}) => {
+  test("title", async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component.locator(primevue.panel.title)).toHaveText("Title");
   });
 
-  test("content", async({page}) => {
+  test("content", async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component.getByTestId("content")).toHaveText("TEST DATA");
   });
 
-  test("visual", { tag: "@visual" }, async({page}) => {
+  test("visual", { tag: "@visual" }, async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component).toHaveScreenshot();
@@ -31,7 +31,7 @@ test.describe("Base", () => {
 test.describe("Base with computed title", () => {
   const id = "Base with computed title";
 
-  test("title value is not localized", async({page}) => {
+  test("title value is not localized", async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component.locator(primevue.panel.title)).toHaveText("Title");
@@ -41,13 +41,13 @@ test.describe("Base with computed title", () => {
 test.describe("Collapsed", () => {
   const id = "Collapsed";
 
-  test("panel is collapsed", async({page}) => {
+  test("panel is collapsed", async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component.getByTestId("content")).not.toBeAttached();
   });
 
-  test("lazy load", async({page}) => {
+  test("lazy load", async({ page }) => {
     const component = page.getByTestId(id);
     const toggle = component.locator(primevue.panel.header).locator(primevue.button.base);
 
@@ -56,7 +56,7 @@ test.describe("Collapsed", () => {
     await expect(component.getByTestId("content")).toHaveText("DISPLAY ON EXPAND");
   });
 
-  test("keep content after collapse", async({page}) => {
+  test("keep content after collapse", async({ page }) => {
     const component = page.getByTestId(id);
     const toggle = component.locator(primevue.panel.header).locator(primevue.button.base);
 
@@ -66,7 +66,7 @@ test.describe("Collapsed", () => {
     await expect(component.getByTestId("content")).toBeAttached(); // assert it is still there
   });
 
-  test("keep panel state", async({page}) => {
+  test("keep panel state", async({ page }) => {
     const component = page.getByTestId(id);
     const toggle = component.locator(primevue.panel.header).locator(primevue.button.base);
     await toggle.click(); // expand
@@ -80,14 +80,14 @@ test.describe("Collapsed", () => {
 test.describe("Parameters", () => {
   const id = "Parameters";
 
-  test("inputs rendered", async({page}) => {
+  test("inputs rendered", async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component.getByTestId("required")).toBeVisible();
     await expect(component.getByTestId("optional")).toBeVisible();
   });
 
-  test("informs only when required params are not selected", async({page}) => {
+  test("informs only when required params are not selected", async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component.locator(primevue.message.base)).toHaveText("Select required values to view this data");
@@ -96,7 +96,7 @@ test.describe("Parameters", () => {
     await expect(component.locator(primevue.message.base)).not.toBeAttached();
   });
 
-  test("listens ready model", async({page}) => {
+  test("listens ready model", async({ page }) => {
     const component = page.getByTestId(id);
     const content = component.getByTestId("content");
 
@@ -106,7 +106,7 @@ test.describe("Parameters", () => {
     await expect(content).toBeVisible();
   });
 
-  test("redraws when unique key changes", async({page}) => {
+  test("redraws when unique key changes", async({ page }) => {
     const component = page.getByTestId(id);
 
     await component.getByTestId("required").fill("value");
@@ -114,7 +114,7 @@ test.describe("Parameters", () => {
     await expect(component.getByTestId("content")).toHaveText(/value/);
   });
 
-  test("visual for lg", { tag: "@visual" }, async({page}) => {
+  test("visual for lg", { tag: "@visual" }, async({ page }) => {
     const component = page.getByTestId(id);
     const screen = giveMe.aScreenSize({ name: "lg" });
 
@@ -125,7 +125,7 @@ test.describe("Parameters", () => {
     await expect(component).toHaveScreenshot();
   });
 
-  test("visual for mobile", { tag: "@visual" }, async({page}) => {
+  test("visual for mobile", { tag: "@visual" }, async({ page }) => {
     const component = page.getByTestId(id);
     const screen = giveMe.aScreenSize({ name: "sm" });
 
@@ -134,7 +134,7 @@ test.describe("Parameters", () => {
     await expect(component).toHaveScreenshot();
   });
 
-  test("visual for mobile opened", { tag: "@visual" }, async({page}) => {
+  test("visual for mobile opened", { tag: "@visual" }, async({ page }) => {
     const component = page.getByTestId(id);
     const screen = giveMe.aScreenSize({ name: "sm" });
     const content = page.locator(primevue.popover.content);
@@ -147,7 +147,7 @@ test.describe("Parameters", () => {
     await expect(content).toHaveScreenshot();
   });
 
-  test("popover visibility based on mobile screen size", async({page}) => {
+  test("popover visibility based on mobile screen size", async({ page }) => {
     const component = page.getByTestId(id);
     const screen = giveMe.aScreenSize({ name: "sm" });
     await page.setViewportSize({ ...screen });
@@ -159,7 +159,7 @@ test.describe("Parameters", () => {
     await expect(filterIcon).toBeVisible();
   });
 
-  test("popover functionality based on mobile screen size", async({page}) => {
+  test("popover functionality based on mobile screen size", async({ page }) => {
     const component = page.getByTestId(id);
     const screen = giveMe.aScreenSize({ name: "sm" });
     const content = page.locator(primevue.popover.content);

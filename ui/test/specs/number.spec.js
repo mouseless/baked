@@ -1,14 +1,14 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
 import baked from "../utils/locators/baked.js";
 
-test.beforeEach(async({goto}) => {
+test.beforeEach(async({ goto }) => {
   await goto("/specs/number", { waitUntil: "hydration" });
 });
 
 test.describe("Base", () => {
   const id = "Base";
 
-  test("format", async({page}) => {
+  test("format", async({ page }) => {
     const component = page.getByTestId(id);
 
     const numbers = component.locator(baked.number.base);
@@ -16,7 +16,7 @@ test.describe("Base", () => {
     await expect(numbers.nth(1)).toHaveText("-1,499");
   });
 
-  test("visual", { tag: "@visual" }, async({page}) => {
+  test("visual", { tag: "@visual" }, async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component).toHaveScreenshot();
@@ -26,7 +26,7 @@ test.describe("Base", () => {
 test.describe("Decimal Digits", () => {
   const id = "Decimal Digits";
 
-  test("format", async({page}) => {
+  test("format", async({ page }) => {
     const component = page.getByTestId(id);
 
     const numbers = component.locator(baked.number.base);
@@ -38,7 +38,7 @@ test.describe("Decimal Digits", () => {
 test.describe("Fractionless Trailing Zeros", () => {
   const id = "Fractionless Trailing Zeros";
 
-  test("format", async({page}) => {
+  test("format", async({ page }) => {
     const component = page.getByTestId(id);
 
     const numbers = component.locator(baked.number.base);
@@ -50,7 +50,7 @@ test.describe("Fractionless Trailing Zeros", () => {
 test.describe("Millions", () => {
   const id = "Millions";
 
-  test("format", async({page}) => {
+  test("format", async({ page }) => {
     const component = page.getByTestId(id);
 
     const numbers = component.locator(baked.number.base);
@@ -62,7 +62,7 @@ test.describe("Millions", () => {
 test.describe("Billions", () => {
   const id = "Billions";
 
-  test("format", async({page}) => {
+  test("format", async({ page }) => {
     const component = page.getByTestId(id);
 
     const numbers = component.locator(baked.number.base);

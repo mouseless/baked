@@ -19,13 +19,13 @@ test.beforeEach(async({ goto, page }) => {
   });
 });
 
-test("redirect to login", async({goto, page}) => {
+test("redirect to login", async({ goto, page }) => {
   await goto("/specs/auth");
 
   await expect(page).toHaveURL("login?redirect=/specs/auth");
 });
 
-test("show toast for 400 errors at login page", async({goto, page}) => {
+test("show toast for 400 errors at login page", async({ goto, page }) => {
   await page.route("*/**/authentication-samples/login", async route =>
     await route.fulfill({
       status: 400,
@@ -40,7 +40,7 @@ test("show toast for 400 errors at login page", async({goto, page}) => {
   await expect(page.locator(primevue.toast.base)).toBeVisible();
 });
 
-test("view authorized page after login", async({goto, page}) => {
+test("view authorized page after login", async({ goto, page }) => {
   await goto("/specs/auth", { waitUntil: "hydration" });
   const form = page.locator("form");
 
@@ -49,7 +49,7 @@ test("view authorized page after login", async({goto, page}) => {
   await expect(page).toHaveURL("/specs/auth");
 });
 
-test("logout redirects to login", async({goto, page}) => {
+test("logout redirects to login", async({ goto, page }) => {
   const token = giveMe.aToken();
   await mockMe.theSession(page, token);
   await goto("/specs/auth", { waitUntil: "hydration" });
@@ -59,7 +59,7 @@ test("logout redirects to login", async({goto, page}) => {
   await expect(page).toHaveURL("/login");
 });
 
-test("redirects to login page when backend returns 401 error", async({goto, page}) => {
+test("redirects to login page when backend returns 401 error", async({ goto, page }) => {
   const token = giveMe.aToken();
   await mockMe.theSession(page, token);
   await goto("/specs/auth", { waitUntil: "hydration" });
@@ -69,7 +69,7 @@ test("redirects to login page when backend returns 401 error", async({goto, page
   await expect(page).toHaveURL("login?redirect=/specs/auth");
 });
 
-test("refresh token before navigation when access is expired", async({goto, page}) => {
+test("refresh token before navigation when access is expired", async({ goto, page }) => {
   const requestPromise = page.waitForRequest(req => req.url().includes("refresh"));
   const token = giveMe.aToken({ accessExpired: true });
   await mockMe.theSession(page, token);
@@ -81,7 +81,7 @@ test("refresh token before navigation when access is expired", async({goto, page
   await expect(page).toHaveURL("/specs/auth");
 });
 
-test("add access token to fetch requests", async({goto, page}) => {
+test("add access token to fetch requests", async({ goto, page }) => {
   const requestPromise = page.waitForRequest(req => req.url().includes("time-provider-samples/now"));
   const token = giveMe.aToken();
   await mockMe.theSession(page, token);
@@ -93,7 +93,7 @@ test("add access token to fetch requests", async({goto, page}) => {
   expect(request.headers()["authorization"]).toContain(`Bearer ${token.access}`);
 });
 
-test("refresh token before fetch when access is expired", async({goto, page}) => {
+test("refresh token before fetch when access is expired", async({ goto, page }) => {
   const requestPromise = page.waitForRequest(req => req.url().includes("refresh"));
   const token = giveMe.aToken();
   await mockMe.theSession(page, token);
@@ -111,4 +111,3 @@ async function login(form) {
   await form.getByPlaceholder("Username").fill("Username");
   await form.locator(primevue.button.base).click();
 }
-

@@ -1,14 +1,14 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
 import primevue from "../utils/locators/primevue";
 
-test.beforeEach(async({goto}) => {
+test.beforeEach(async({ goto }) => {
   await goto("/specs/data-table", { waitUntil: "hydration" });
 });
 
 test.describe("Base", () => {
   const id = "Base";
 
-  test("columns", async({page}) => {
+  test("columns", async({ page }) => {
     const component = page.getByTestId(id);
     const columns = component.locator("th");
 
@@ -19,7 +19,7 @@ test.describe("Base", () => {
     await expect(columns.nth(4)).toHaveText("Data 4");
   });
 
-  test("cells", async({page}) => {
+  test("cells", async({ page }) => {
     const component = page.getByTestId(id);
     const cells = component.locator("td");
     const cellNo = (x, y) => (x - 1) * 5 + y - 1;
@@ -30,7 +30,7 @@ test.describe("Base", () => {
     await expect(cells.nth(cellNo(5, 5))).toHaveText("Cell 5.4");
   });
 
-  test("visual", { tag: "@visual" }, async({page}) => {
+  test("visual", { tag: "@visual" }, async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component).toHaveScreenshot();
@@ -40,19 +40,19 @@ test.describe("Base", () => {
 test.describe("Pagination", () => {
   const id = "Pagination";
 
-  test("paginator", async({page}) => {
+  test("paginator", async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component.locator(primevue.paginator.base)).toBeVisible();
   });
 
-  test("page count", async({page}) => {
+  test("page count", async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component.locator(primevue.paginator.page)).toHaveCount(2);
   });
 
-  test("data update on page changes", async({page}) => {
+  test("data update on page changes", async({ page }) => {
     const component = page.getByTestId(id);
     const pages = component.locator(primevue.paginator.page);
 
@@ -65,7 +65,7 @@ test.describe("Pagination", () => {
 test.describe("Row Based Component", () => {
   const id = "Row Based Component";
 
-  test("component changes based on data", async({page}) => {
+  test("component changes based on data", async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component.getByTestId("component-1")).toHaveText("Data 1");
@@ -76,7 +76,7 @@ test.describe("Row Based Component", () => {
 test.describe("Auto Hide Pagination", () => {
   const id = "Auto Hide Pagination";
 
-  test("no paginator", async({page}) => {
+  test("no paginator", async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component.locator(primevue.paginator.base)).not.toBeVisible();
@@ -86,7 +86,7 @@ test.describe("Auto Hide Pagination", () => {
 test.describe("Footer", () => {
   const id = "Footer";
 
-  test("show footer row when configured in schema", async({page}) => {
+  test("show footer row when configured in schema", async({ page }) => {
     const component = page.getByTestId(id);
     const footer = component.locator(primevue.datatable.footer);
 
@@ -101,7 +101,7 @@ test.describe("Footer", () => {
 test.describe("Alignment", () => {
   const id = "Alignment";
 
-  test("visual", { tag: "@visual" }, async({page}) => {
+  test("visual", { tag: "@visual" }, async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component).toHaveScreenshot();
@@ -111,7 +111,7 @@ test.describe("Alignment", () => {
 test.describe("Export", () => {
   const id = "Export";
 
-  test("show actions button when configured", async({page}) => {
+  test("show actions button when configured", async({ page }) => {
     const component = page.getByTestId(id);
     const header = component.locator("th").last();
 
@@ -122,7 +122,7 @@ test.describe("Export", () => {
 test.describe("Scroll", () => {
   const id = "Scroll";
 
-  test("toggles scroll when height is exceeded", async({page}) => {
+  test("toggles scroll when height is exceeded", async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component.locator(primevue.datatable.container)).toHaveCSS("max-height", "200px");
@@ -133,13 +133,13 @@ test.describe("Scroll", () => {
 test.describe("Frozen Columns", () => {
   const id = "Frozen Columns";
 
-  test("freezes columns when set", async({page}) => {
+  test("freezes columns when set", async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component.locator(primevue.datatable.container).locator("tr").first().locator("th").first()).toHaveCSS("position", "sticky");
   });
 
-  test("action column is frozen by default", async({page}) => {
+  test("action column is frozen by default", async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component.locator(primevue.datatable.container).locator("tr").first().locator("th").last()).toHaveCSS("position", "sticky");
@@ -149,7 +149,7 @@ test.describe("Frozen Columns", () => {
 test.describe("Virtual Scroll", () => {
   const id = "Virtual Scroll";
 
-  test("toggles virtual scroll when configured", async({page}) => {
+  test("toggles virtual scroll when configured", async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component.locator(".p-virtualscroller")).toBeAttached();
@@ -159,7 +159,7 @@ test.describe("Virtual Scroll", () => {
 test.describe("No Virtual Scroll", () => {
   const id = "No Virtual Scroll";
 
-  test("virtual scroll is disabled if scrollHeight is not given", async({page}) => {
+  test("virtual scroll is disabled if scrollHeight is not given", async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component.locator(".p-virtualscroller")).not.toBeAttached();
@@ -169,7 +169,7 @@ test.describe("No Virtual Scroll", () => {
 test.describe("No Record Found", () => {
   const id = "No Record Found";
 
-  test("No records found message is displayed when no records are present", async({page}) => {
+  test("No records found message is displayed when no records are present", async({ page }) => {
     const component = page.getByTestId(id);
     const rows = component.locator("td");
 
@@ -180,7 +180,7 @@ test.describe("No Record Found", () => {
 test.describe("Loading", () => {
   const id = "Loading";
 
-  test("row count when loading", async({page}) => {
+  test("row count when loading", async({ page }) => {
     const component = page.getByTestId(id);
     const rows = component.locator("tr");
 

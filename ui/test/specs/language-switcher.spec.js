@@ -1,6 +1,6 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
 
-test.beforeEach(async({goto, page}) => {
+test.beforeEach(async({ goto, page }) => {
   await goto("/specs/language-switcher", { waitUntil: "hydration" });
   await page.route("*/**/time-provider-samples/now", async route => {
     const json = Date.now();
@@ -11,7 +11,7 @@ test.beforeEach(async({goto, page}) => {
 test.describe("Base", () => {
   const id = "component-block";
 
-  test("language overlay", async({page}) => {
+  test("language overlay", async({ page }) => {
     const block = page.getByTestId(id);
     const button = block.locator(".p-button");
 
@@ -21,7 +21,7 @@ test.describe("Base", () => {
     await expect(menu).toBeVisible();
   });
 
-  test("change language", async({page}) => {
+  test("change language", async({ page }) => {
     const block = page.getByTestId(id);
     const button = block.locator(".p-button");
     const text = page.getByTestId("text");
@@ -35,7 +35,7 @@ test.describe("Base", () => {
     await expect(text).toHaveText("Test Metni");
   });
 
-  test("send language header with request", async({page}) => {
+  test("send language header with request", async({ page }) => {
     const requestPromise = page.waitForRequest(req => req.url().includes("time-provider-samples"));
     const requestButton = page.getByTestId("requestWithLanguageHeader");
     const block = page.getByTestId(id);
@@ -50,7 +50,7 @@ test.describe("Base", () => {
     expect(request.headers()["accept-language"]).toContain("tr");
   });
 
-  test("visual", { tag: "@visual" }, async({page}) => {
+  test("visual", { tag: "@visual" }, async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component).toHaveScreenshot();

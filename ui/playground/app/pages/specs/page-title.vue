@@ -20,8 +20,8 @@ const variants = [
     name: "Actions",
     descriptor: giveMe.aPageTitle({
       actions: [
-        giveMe.anExpected({ testId: "ACTION_1", value: "VALUE_1"}),
-        giveMe.anExpected({ testId: "ACTION_2", value: "VALUE_2"})
+        giveMe.anExpected({ testId: "ACTION_1", value: "VALUE_1" }),
+        giveMe.anExpected({ testId: "ACTION_2", value: "VALUE_2" })
       ]
     })
   },

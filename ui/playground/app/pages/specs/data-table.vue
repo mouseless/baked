@@ -8,18 +8,18 @@
 import giveMe from "@utils/giveMe";
 import { provide, useLocalization } from "#imports";
 
-provide("use-localization", useLocalization({scope: "local"}));
+provide("use-localization", useLocalization({ scope: "local" }));
 
 const variants = [
   {
     name: "Base",
     descriptor: giveMe.aDataTable({
       columns: [
-        giveMe.aDataTableColumn({ title: "Spec: Label", prop: "label", minWidth: true, component: giveMe.aConditional({ testId: "label" })}),
-        giveMe.aDataTableColumn({ title: "Spec: Data 1", prop: "data1", component: giveMe.aConditional({ testId: "prop-1" })}),
-        giveMe.aDataTableColumn({ title: "Spec: Data 2", prop: "data2", component: giveMe.aConditional({ testId: "prop-2" })}),
-        giveMe.aDataTableColumn({ title: "Spec: Data 3", prop: "data3", component: giveMe.aConditional({ testId: "prop-3" })}),
-        giveMe.aDataTableColumn({ title: "Spec: Data 4", prop: "data4", component: giveMe.aConditional({ testId: "prop-4" })})
+        giveMe.aDataTableColumn({ title: "Spec: Label", prop: "label", minWidth: true, component: giveMe.aConditional({ testId: "label" }) }),
+        giveMe.aDataTableColumn({ title: "Spec: Data 1", prop: "data1", component: giveMe.aConditional({ testId: "prop-1" }) }),
+        giveMe.aDataTableColumn({ title: "Spec: Data 2", prop: "data2", component: giveMe.aConditional({ testId: "prop-2" }) }),
+        giveMe.aDataTableColumn({ title: "Spec: Data 3", prop: "data3", component: giveMe.aConditional({ testId: "prop-3" }) }),
+        giveMe.aDataTableColumn({ title: "Spec: Data 4", prop: "data4", component: giveMe.aConditional({ testId: "prop-4" }) })
       ],
       rowsWhenLoading: 3,
       data: [
@@ -58,7 +58,7 @@ const variants = [
       dataKey: "data",
       rows: 2,
       columns: [
-        giveMe.aDataTableColumn({ title: "Spec: Data", prop: "data", component: giveMe.aConditional({ testId: "prop" })})
+        giveMe.aDataTableColumn({ title: "Spec: Data", prop: "data", component: giveMe.aConditional({ testId: "prop" }) })
       ],
       data: [
         { data: "Row 1" },
@@ -80,17 +80,17 @@ const variants = [
     name: "Footer",
     descriptor: giveMe.aDataTable({
       columns: [
-        giveMe.aDataTableColumn({ title: "Spec: Label", prop: "label", minWidth: true, component: giveMe.aConditional({ testId: "label" })}),
-        giveMe.aDataTableColumn({ title: "Spec: Data 1", prop: "data1", component: giveMe.aConditional({ testId: "prop-1" })}),
-        giveMe.aDataTableColumn({ title: "Spec: Data 2", prop: "data2", component: giveMe.aConditional({ testId: "prop-2" })}),
-        giveMe.aDataTableColumn({ title: "Spec: Data 3", prop: "data3", component: giveMe.aConditional({ testId: "prop-3" })}),
-        giveMe.aDataTableColumn({ title: "Spec: Data 4", prop: "data4", component: giveMe.aConditional({ testId: "prop-4" })})
+        giveMe.aDataTableColumn({ title: "Spec: Label", prop: "label", minWidth: true, component: giveMe.aConditional({ testId: "label" }) }),
+        giveMe.aDataTableColumn({ title: "Spec: Data 1", prop: "data1", component: giveMe.aConditional({ testId: "prop-1" }) }),
+        giveMe.aDataTableColumn({ title: "Spec: Data 2", prop: "data2", component: giveMe.aConditional({ testId: "prop-2" }) }),
+        giveMe.aDataTableColumn({ title: "Spec: Data 3", prop: "data3", component: giveMe.aConditional({ testId: "prop-3" }) }),
+        giveMe.aDataTableColumn({ title: "Spec: Data 4", prop: "data4", component: giveMe.aConditional({ testId: "prop-4" }) })
       ],
       footerTemplate: {
         label: "Spec: Total",
         columns: [
-          giveMe.aDataTableColumn({ prop: "footer1"}),
-          giveMe.aDataTableColumn({ prop: "footer2"})
+          giveMe.aDataTableColumn({ prop: "footer1" }),
+          giveMe.aDataTableColumn({ prop: "footer2" })
         ]
       },
       itemsProp: "children",

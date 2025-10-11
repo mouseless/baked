@@ -1,26 +1,26 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
 import primevue from "../utils/locators/primevue";
 
-test.beforeEach(async({goto}) => {
+test.beforeEach(async({ goto }) => {
   await goto("/specs/report-page", { waitUntil: "hydration" });
 });
 
 test.describe("Base", () => {
   const id = "Base";
 
-  test("title", async({page}) => {
+  test("title", async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component.locator("h1")).toHaveText("Title");
   });
 
-  test("description", async({page}) => {
+  test("description", async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component.getByTestId("description")).toHaveText("Description");
   });
 
-  test("tabs", async({page}) => {
+  test("tabs", async({ page }) => {
     const component = page.getByTestId(id);
 
     const tabs = component.locator(primevue.tab.base);
@@ -29,14 +29,14 @@ test.describe("Base", () => {
     await expect(tabs.nth(1).locator("span").last()).toHaveText("Tab 2");
   });
 
-  test("tab icons", async({page}) => {
+  test("tab icons", async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component.getByTestId("icon 1")).toHaveText("I.");
     await expect(component.getByTestId("icon 2")).toHaveText("II.");
   });
 
-  test("tab content", async({page}) => {
+  test("tab content", async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component.getByTestId("content 1.1")).toHaveText("CONTENT 1.1");
@@ -48,20 +48,20 @@ test.describe("Base", () => {
     await expect(component.getByTestId("content 2.2")).toHaveText("CONTENT 2.2");
   });
 
-  test("tab content is deferred", async({page}) => {
+  test("tab content is deferred", async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component.getByTestId("content 2.1")).not.toBeAttached();
     await expect(component.getByTestId("content 2.2")).not.toBeAttached();
   });
 
-  test("grid added", async({page}) => {
+  test("grid added", async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component.locator(".b-ReportPage--grid")).toBeAttached();
   });
 
-  test("visual", { tag: "@visual" }, async({page}) => {
+  test("visual", { tag: "@visual" }, async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component).toHaveScreenshot();
@@ -71,7 +71,7 @@ test.describe("Base", () => {
 test.describe("Single Tab", () => {
   const id = "Single Tab";
 
-  test("tab hidden when there is one tab", async({page}) => {
+  test("tab hidden when there is one tab", async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component.getByTestId("content")).toBeAttached(); // required to wait for page to render
@@ -82,13 +82,13 @@ test.describe("Single Tab", () => {
 test.describe("Full Page", () => {
   const id = "Full Page";
 
-  test("grid not added", async({page}) => {
+  test("grid not added", async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component.locator(".b-ReportPage--grid")).not.toBeAttached();
   });
 
-  test("visual", { tag: "@visual" }, async({page}) => {
+  test("visual", { tag: "@visual" }, async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component).toHaveScreenshot();
@@ -98,7 +98,7 @@ test.describe("Full Page", () => {
 test.describe("Narrow", () => {
   const id = "Narrow";
 
-  test("visual", { tag: "@visual" }, async({page}) => {
+  test("visual", { tag: "@visual" }, async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component).toHaveScreenshot();
@@ -108,19 +108,19 @@ test.describe("Narrow", () => {
 test.describe("Show When", () => {
   const id = "Show When";
 
-  test("tab is hidden when there is no selection", async({page}) => {
+  test("tab is hidden when there is no selection", async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component.getByTestId("content-2")).not.toBeAttached();
   });
 
-  test("tab content is hidden when there is no selection", async({page}) => {
+  test("tab content is hidden when there is no selection", async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component.getByTestId("content-1")).not.toBeAttached();
   });
 
-  test("tab content is shown when selection is SHOW", async({page}) => {
+  test("tab content is shown when selection is SHOW", async({ page }) => {
     const component = page.getByTestId(id);
 
     await component.locator(primevue.selectbutton.option).nth(0).click(); // toggle
@@ -128,7 +128,7 @@ test.describe("Show When", () => {
     await expect(component.getByTestId("content-1")).toHaveText("CONTENT 1");
   });
 
-  test("tab is shown when selection is SHOW", async({page}) => {
+  test("tab is shown when selection is SHOW", async({ page }) => {
     const component = page.getByTestId(id);
 
     await component.locator(primevue.selectbutton.option).nth(0).click(); // toggle
@@ -137,7 +137,7 @@ test.describe("Show When", () => {
     await expect(component.getByTestId("content-2")).toHaveText("CONTENT 2");
   });
 
-  test("when tab gets hidden, first shown tab is selected ", async({page}) => {
+  test("when tab gets hidden, first shown tab is selected ", async({ page }) => {
     const component = page.getByTestId(id);
 
     await component.locator(primevue.selectbutton.option).nth(0).click(); // toggle
@@ -147,7 +147,7 @@ test.describe("Show When", () => {
     await expect(component.locator(".p-tab-active")).toHaveText("Tab 1");
   });
 
-  test("when hidden tab gets shown again, it is automatically selected", async({page}) => {
+  test("when hidden tab gets shown again, it is automatically selected", async({ page }) => {
     const component = page.getByTestId(id);
 
     await component.locator(primevue.selectbutton.option).nth(0).click(); // toggle
@@ -162,14 +162,14 @@ test.describe("Show When", () => {
 test.describe("Query Parameters", () => {
   const id = "Query Parameters";
 
-  test("inputs rendered", async({page}) => {
+  test("inputs rendered", async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component.getByTestId("required")).toBeVisible();
     await expect(component.getByTestId("optional")).toBeVisible();
   });
 
-  test("informs only when required params are not selected", async({page}) => {
+  test("informs only when required params are not selected", async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component.locator(primevue.message.base)).toHaveText("Select required values to view this report");
@@ -178,7 +178,7 @@ test.describe("Query Parameters", () => {
     await expect(component.locator(primevue.message.base)).not.toBeAttached();
   });
 
-  test("listens ready model", async({page}) => {
+  test("listens ready model", async({ page }) => {
     const component = page.getByTestId(id);
     const staticData = component.getByTestId("static-content");
 
@@ -188,7 +188,7 @@ test.describe("Query Parameters", () => {
     await expect(staticData).toBeVisible();
   });
 
-  test("redraws when unique key changes", async({page}) => {
+  test("redraws when unique key changes", async({ page }) => {
     const component = page.getByTestId(id);
 
     await component.getByTestId("required").fill("value");

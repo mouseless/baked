@@ -7,7 +7,7 @@ export default function() {
     if(typeof data === "string") { return data; }
 
     if(prop === "column5") {
-      return `${asNumber(data, { formatOptions: { maximumFractionDigits: row.formatDigits }})}`;
+      return `${asNumber(data, { formatOptions: { maximumFractionDigits: row.formatDigits } })}`;
     }
 
     return `${data}`.replace(".", ",");

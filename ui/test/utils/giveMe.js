@@ -135,7 +135,7 @@ export default {
     };
   },
 
-  anErrorPage({ errorInfos, footerInfo, safeLinks, safeLinksMessage, data } = {}){
+  anErrorPage({ errorInfos, footerInfo, safeLinks, safeLinksMessage, data } = {}) {
     errorInfos = $(errorInfos, [this.anErrorPageInfo()]);
     footerInfo = $(footerInfo, "Test footer info");
     safeLinks = $(safeLinks, [this.anExpected()]);
@@ -144,17 +144,17 @@ export default {
 
     errorInfos = errorInfos.reduce((result, ei) => ({
       ...result,
-      [ei.statusCode]: { title: ei.title, message: ei.message}
+      [ei.statusCode]: { title: ei.title, message: ei.message }
     }), {});
 
     return {
       type: "ErrorPage",
-      schema: { errorInfos, footerInfo, safeLinks, safeLinksMessage},
+      schema: { errorInfos, footerInfo, safeLinks, safeLinksMessage },
       data: { type: "Inline", value: data }
     };
   },
 
-  anErrorPageInfo({ statusCode, title, message } = {}){
+  anErrorPageInfo({ statusCode, title, message } = {}) {
     statusCode = $(statusCode, "500");
     title = $(title, "Test Title");
     message = $(message, "Test message");

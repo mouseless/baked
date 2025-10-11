@@ -1,6 +1,6 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
 
-test.beforeEach(async({goto}) => {
+test.beforeEach(async({ goto }) => {
   await goto("/specs/query-parameters", { waitUntil: "hydration" });
 });
 
@@ -11,7 +11,7 @@ const id = {
   reset: "reset"
 };
 
-test("parameters are rendered", async({page}) => {
+test("parameters are rendered", async({ page }) => {
   const component = page.getByTestId(id.component);
 
   await expect(component.getByTestId("required-with-default")).toBeVisible();
@@ -20,7 +20,7 @@ test("parameters are rendered", async({page}) => {
   await expect(component.getByTestId("optional")).toBeVisible();
 });
 
-test("default value is set", async({page}) => {
+test("default value is set", async({ page }) => {
   const component = page.getByTestId(id.component);
 
   await expect(component.getByTestId("required-with-default")).toHaveValue("default value");
@@ -29,7 +29,7 @@ test("default value is set", async({page}) => {
   expect(params.get("requiredWithDefault")).toBe("default value");
 });
 
-test("reset to default value after route to self", async({page}) => {
+test("reset to default value after route to self", async({ page }) => {
   const component = page.getByTestId(id.component);
   const reset = page.getByTestId(id.reset);
 
@@ -44,7 +44,7 @@ test("reset to default value after route to self", async({page}) => {
   expect(params.get("required")).toBeNull();
 });
 
-test("query string is set from input", async({page}) => {
+test("query string is set from input", async({ page }) => {
   const component = page.getByTestId(id.component);
 
   await component.getByTestId("required-with-default").fill("value 1");
@@ -60,7 +60,7 @@ test("query string is set from input", async({page}) => {
   expect(params.get("optional")).toBe("value 4");
 });
 
-test("query string is set to input", async({page}) => {
+test("query string is set to input", async({ page }) => {
   await page.goto("/specs/query-parameters?requiredWithDefault=1&requiredWithDefaultSelfManaged=2&required=3&optional=4");
 
   const component = page.getByTestId(id.component);
@@ -70,7 +70,7 @@ test("query string is set to input", async({page}) => {
   await expect(component.getByTestId("optional")).toHaveValue("4");
 });
 
-test("replaces route until defaults are set", async({page}) => {
+test("replaces route until defaults are set", async({ page }) => {
   await page.waitForURL(/requiredWithDefault/);
 
   const state = await page.evaluate(() => history.state);
@@ -78,7 +78,7 @@ test("replaces route until defaults are set", async({page}) => {
   expect(state.back).toBeNull();
 });
 
-test("pushes route when a parameter changes", async({page}) => {
+test("pushes route when a parameter changes", async({ page }) => {
   const component = page.getByTestId(id.component);
 
   await component.getByTestId("required").fill("value 1");
@@ -94,7 +94,7 @@ test("pushes route when a parameter changes", async({page}) => {
   expect(state2.back).toBe("/specs/query-parameters?requiredWithDefault=default+value&requiredWithDefaultSelfManaged=default&required=value+1");
 });
 
-test("ready when all required are set", async({page}) => {
+test("ready when all required are set", async({ page }) => {
   const component = page.getByTestId(id.component);
   const ready = page.getByTestId(id.ready);
   await expect(ready).toHaveText("false");
@@ -104,7 +104,7 @@ test("ready when all required are set", async({page}) => {
   await expect(ready).toHaveText("true");
 });
 
-test("unique key changes with parameter values", async({page}) => {
+test("unique key changes with parameter values", async({ page }) => {
   const component = page.getByTestId(id.component);
   const uniqueKey = page.getByTestId(id.uniqueKey);
 
