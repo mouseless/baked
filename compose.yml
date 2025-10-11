@@ -57,8 +57,6 @@ services:
   recipe.ui:
     build:
       dockerfile: ui/playground/Dockerfile
-      args:
-        ENVIRONMENT: Production
     ports:
       - 3000:3000
     links:

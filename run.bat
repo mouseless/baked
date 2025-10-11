@@ -89,7 +89,7 @@ goto end
 cls
 echo Building projects...
 cd ui
-npm run build:development
+npm run build
 cd ..
 cd core
 dotnet build

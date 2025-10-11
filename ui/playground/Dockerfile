@@ -1,5 +1,4 @@
 # syntax=docker/dockerfile:1.7-labs
-ARG ENVIRONMENT production
 
 # ---
 # to install npm packages

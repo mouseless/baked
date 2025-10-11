@@ -39,20 +39,14 @@
   ],
   "scripts": {
     "lint": "eslint .",
+    "postinstall": "nuxt prepare",
     "test": "playwright test",
-    "module:prepare": "nuxt-module-build prepare",
-    "module:build": "nuxt-module-build build",
-    "module:build:stub": "nuxt-module-build build --stub",
-    "setup": "npm run module:build:stub && npm run module:prepare && nuxi prepare playground && npm run lint",
-    "dev:Development": "npm run setup && nuxi dev playground --dotenv .env.development --host",
-    "dev:Production": "npm run setup && nuxi dev playground --dotenv .env.production --host",
-    "dev": "npm run dev:Development",
-    "build:Development": "npm run setup && nuxi generate playground --dotenv .env.development",
-    "build:Production": "npm run setup && nuxi generate playground --dotenv .env.production",
-    "local:Development": "npm run build:Development && npx http-server playground/.output/public -p 3000",
-    "local:Production": "npm run build:Production && npx http-server playground/.output/public -p 3000",
-    "local": "npm run local:Development",
-    "prepack": "npm run module:build"
+    "dev": "npm run lint && nuxi dev playground --dotenv .env.development --host",
+    "build:playground:Development": "npm run lint && nuxi generate playground --dotenv .env.development",
+    "build:playground:Production": "npm run lint && nuxi generate playground --dotenv .env.production",
+    "local": "npm run build:playground:Development && npx http-server playground/.output/public -p 3000",
+    "build": "npm run lint && nuxt-module-build build --stub && nuxt-module-build prepare",
+    "prepack": "nuxt-module-build build"
   },
   "dependencies": {
     "@nuxt/kit": "4.1.2",

@@ -15,7 +15,7 @@ install:
 	@(cd docs/.theme && npm i && npm ci)
 	@(cd ui && npm i && npm ci)
 build:
-	@(cd ui && npm run build:Development)
+	@(cd ui && npm run build)
 	@(cd core && dotnet build)
 test:
 	@(cd core && dotnet test --logger quackers)

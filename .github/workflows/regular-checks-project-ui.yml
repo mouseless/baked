@@ -23,10 +23,11 @@ jobs:
           node-version: 24
       - name: Disable AppArmour
         run: echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns
-      - name: Build ui
+      - name: Build ui and playground
         run: |
           npm i
-          npm run build:Production
+          npm run build
+          npm run build:playground:Production
   test:
     name: Test
     needs: build
@@ -48,7 +49,7 @@ jobs:
         run: |
           npm i
           npx playwright install --with-deps --only-shell
-          npm run build:Production
+          npm run build
       - name: Run tests
         run: |
           BUILD_SILENT=1 npm test -- --grep-invert @visual
