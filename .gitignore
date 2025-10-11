@@ -14,48 +14,10 @@
 # Vim swap files
 *.swp
 
-# log file
-*.log*
-
-# dotnet build files
-obj/
-bin/
-
-# generated file
-**/.benchmark/**
-
 # Testing
 reports
-coverage
 *.lcov
 .nyc_output
-**/.coverage/*
-
-# Env
-.env
-.env.local
-
-# Dependencies
-node_modules
-
-# Temp directories
-.temp
-.tmp
-.cache
-
-# Yarn
-**/.yarn/cache
-**/.yarn/*state*
-
-# playwright generations
-*.zip
-test-results/
-ui/**/*-snapshots/
-
-# Nuxt
-.nuxt
-.output
-.data
 
 # OSX
 .DS_Store
@@ -66,21 +28,3 @@ ui/**/*-snapshots/
 Network Trash Folder
 Temporary Items
 .apdisk
-
-# Nuxt build
-.nuxt
-.nitro
-.cache
-.output
-.data
-.vercel_build_output
-.build-*
-.netlify
-
-# Nuxt generate
-dist
-
-# prebuild files
-.public
-.temp
-content

@@ -1,0 +1,12 @@
+# log file
+*.log*
+
+# dotnet build files
+obj/
+bin/
+
+# generated file
+**/.benchmark/**
+
+# testing
+.coverage/
