@@ -1,35 +1,27 @@
 .PHONY: format fix install build test coverage run
 FILE ?= file_name
-UI_DIR := ui
-CORE_DIR := core
-DOCS_DIR := docs/.theme
-LOADTEST_DIR := core/test/Baked.Test.Recipe.Service.LoadTest
-STUBAPI_DIR := core/test/Baked.Test.Recipe.Service.StubApi
 
 format:
-	@for dir in $(CORE_DIR) $(UI_DIR) $(DOCS_DIR); do \
-		if [ "$$dir" = "$(CORE_DIR)" ]; then \
-			dotnet format core/Baked.sln --verbosity normal ; \
-		else \
-			(cd $$dir && npm run lint -- --fix); \
-		fi \
-	done
+	@(cd core && dotnet format --verbosity normal)
+	@(cd ui && npm run lint -- --fix)
+	@(cd docs/.theme && npm run lint -- --fix)
 fix:
 	@if [ -n "$(FILE)" ]; then \
 		npx eslint $(subst ui/,,$(FILE)) --fix; \
 	fi
 install:
-	@for dir in $(DOCS_DIR) $(UI_DIR) $(LOADTEST_DIR) $(STUBAPI_DIR); do \
-		(cd $$dir && npm ci); \
-	done
+	@(cd core/test/Baked.Test.Recipe.Service.LoadTest && npm i && npm ci)
+	@(cd core/test/Baked.Test.Recipe.Service.StubApi && npm i && npm ci)
+	@(cd docs/.theme && npm i && npm ci)
+	@(cd ui && npm i && npm ci)
 build:
-	@(cd $(UI_DIR) && npm run build:development)
-	@(cd $(CORE_DIR) && dotnet build)
+	@(cd ui && npm run build:Development)
+	@(cd core && dotnet build)
 test:
-	@(cd $(CORE_DIR) && dotnet test --logger quackers)
-	@(cd $(UI_DIR) && BUILD_SILENT=1 npm run test)
+	@(cd core && dotnet test --logger quackers)
+	@(cd ui && BUILD_SILENT=1 npm run test)
 coverage:
-	@(cd $(CORE_DIR) && \
+	@(cd core && \
 		rm -rf .coverage && \
 		dotnet test -c Release --collect:"XPlat Code Coverage" --logger trx --results-directory .coverage --settings test/runsettings.xml && \
 		dotnet reportgenerator -reports:.coverage/*/coverage.cobertura.xml -targetdir:.coverage/html && \
@@ -41,8 +33,8 @@ run:
 	@echo "(4) Docs"
 	@read -p "Please select 1-4: " app; \
 	case $$app in \
-		1) dotnet run --project $(CORE_DIR)/test/Baked.Test.Recipe.Service.Application ;; \
-		2) (cd $(UI_DIR) && npm run dev) ;; \
+		1) dotnet run --project core/test/Baked.Test.Recipe.Service.Application ;; \
+		2) (cd ui && npm run dev) ;; \
 		3) docker compose up --build ;; \
 		4) (cd docs && make run) ;; \
 		*) echo "Invalid option";; \
