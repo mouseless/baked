@@ -52,7 +52,7 @@ services:
     links:
       - db.mysql
       - db.postgresql
-      - recipe.service.stub-api
+      - service.stub-api
 
   ui:
     build:
@@ -60,4 +60,4 @@ services:
     ports:
       - 3000:3000
     links:
-      - recipe.service
+      - service

@@ -21,11 +21,13 @@ test:
 	@(cd core && dotnet test --logger quackers)
 	@(cd ui && BUILD_SILENT=1 npm run test)
 coverage:
-	@(cd core && \
+	@( \
+		cd core && \
 		rm -rf .coverage && \
 		dotnet test -c Release --collect:"XPlat Code Coverage" --logger trx --results-directory .coverage --settings test/runsettings.xml && \
 		dotnet reportgenerator -reports:.coverage/*/coverage.cobertura.xml -targetdir:.coverage/html && \
-		open .coverage/html/index.html)
+		open .coverage/html/index.html \
+	)
 run:
 	@echo "(1) Service (Development)"
 	@echo "(2) UI (Development)"
