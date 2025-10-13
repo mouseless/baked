@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <CopyComponentDescriptors>true</CopyComponentDescriptors>
-    <UiAppDir>$(ProjectDir)..\..\..\ui\specs</UiAppDir>
+    <UiAppDir>$(ProjectDir)..\..\..\ui\playground</UiAppDir>
   </PropertyGroup>
 
   <ItemGroup>

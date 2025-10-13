@@ -8,9 +8,9 @@ echo.
 echo ================================
 echo         Project Runner
 echo ================================
-echo (1) Recipe.Service (Development)
-echo (2) Specs (Development)
-echo (3) Recipe.* (Production)
+echo (1) Service (Development)
+echo (2) UI (Development)
+echo (3) Docker (Production)
 echo (4) Docs
 echo (5) Format
 echo (6) Build
@@ -22,9 +22,9 @@ echo ================================
 echo.
 set /p choice="Please select 0-9: "
 
-if "%choice%"=="1" goto recipe
-if "%choice%"=="2" goto specs
-if "%choice%"=="3" goto production
+if "%choice%"=="1" goto service
+if "%choice%"=="2" goto ui
+if "%choice%"=="3" goto docker
 if "%choice%"=="4" goto docs
 if "%choice%"=="5" goto format
 if "%choice%"=="6" goto build
@@ -39,21 +39,21 @@ cls
 goto menu
 
 :: ---------------------------------
-:recipe
+:service
 cls
-echo Running Recipe.Service (Development)...
+echo Running Service (Development)...
 dotnet run --project core\test\Baked.Test.Recipe.Service.Application
 goto end
 
-:specs
+:ui
 cls
-echo Starting Specs (Development)...
-cd ui\specs
+echo Starting Playground (Development)...
+cd ui
 npm run dev
-cd ..\..
+cd ..
 goto end
 
-:production
+:docker
 cls
 echo Running Docker (Production)...
 docker compose up --build
@@ -77,12 +77,9 @@ echo Formatting code...
 cd core
 dotnet format --verbosity normal
 cd ..
-cd ui\module
+cd ui
 npm run lint -- --fix
-cd ..\..
-cd ui\specs
-npm run lint -- --fix
-cd ..\..
+cd ..
 cd docs\.theme
 npm run lint -- --fix
 cd ..\..
@@ -91,9 +88,9 @@ goto end
 :build
 cls
 echo Building projects...
-cd ui\module
+cd ui
 npm run build
-cd ..\..
+cd ..
 cd core
 dotnet build
 cd ..
@@ -105,10 +102,10 @@ echo Running tests...
 cd core
 dotnet test --logger quackers
 cd ..
-cd ui\specs
+cd ui
 set BUILD_SILENT=1
 npm test
-cd ..\..
+cd ..
 goto end
 
 :coverage
@@ -126,8 +123,7 @@ goto end
 cls
 echo Installing dependencies...
 cd docs\.theme && npm i && npm ci && cd ..\..
-cd ui\module && npm i && npm ci && cd ..\..
-cd ui\specs && npm i && npm ci && cd ..\..
+cd ui && npm i && npm ci && cd ..
 cd core\test\Baked.Test.Recipe.Service.LoadTest && npm i && npm ci && cd ..\..\..
 cd core\test\Baked.Test.Recipe.Service.StubApi && npm i && npm ci && cd ..\..\..
 goto end

@@ -1,0 +1,509 @@
+{
+  "type": "ReportPage",
+  "schema": {
+    "title": {
+      "title": "Report",
+      "description": "Showcases a report layout with tabs and data panels",
+      "actions": []
+    },
+    "queryParameters": [
+      {
+        "name": "requiredWithDefault",
+        "required": true,
+        "default": {
+          "type": "Inline",
+          "value": "RequiredWithDefault1"
+        },
+        "component": {
+          "type": "Select",
+          "schema": {
+            "label": "Required With Default",
+            "optionLabel": "label",
+            "optionValue": "value",
+            "localizeLabel": true
+          },
+          "data": {
+            "type": "Inline",
+            "value": [
+              {
+                "label": "RequiredWithDefaultOptions.RequiredWithDefault1",
+                "value": "RequiredWithDefault1"
+              },
+              {
+                "label": "RequiredWithDefaultOptions.RequiredWithDefault2",
+                "value": "RequiredWithDefault2"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "name": "required",
+        "required": true,
+        "component": {
+          "type": "Select",
+          "schema": {
+            "label": "Required",
+            "optionLabel": "label",
+            "optionValue": "value",
+            "localizeLabel": true
+          },
+          "data": {
+            "type": "Inline",
+            "value": [
+              {
+                "label": "RequiredOptions.Required1",
+                "value": "Required1"
+              },
+              {
+                "label": "RequiredOptions.Required2",
+                "value": "Required2"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "name": "optional",
+        "component": {
+          "type": "SelectButton",
+          "schema": {
+            "allowEmpty": true,
+            "optionLabel": "label",
+            "optionValue": "value",
+            "localizeLabel": true
+          },
+          "data": {
+            "type": "Inline",
+            "value": [
+              {
+                "label": "OptionalOptions.Optional1",
+                "value": "Optional1"
+              },
+              {
+                "label": "OptionalOptions.Optional2",
+                "value": "Optional2"
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "tabs": [
+      {
+        "id": "single-value",
+        "title": "Single Value",
+        "contents": [
+          {
+            "component": {
+              "type": "DataPanel",
+              "schema": {
+                "title": {
+                  "type": "Inline",
+                  "value": "GetWide"
+                },
+                "localizeTitle": true,
+                "parameters": [],
+                "content": {
+                  "type": "String",
+                  "schema": {},
+                  "data": {
+                    "type": "Remote",
+                    "path": "report/wide",
+                    "headers": {
+                      "type": "Inline",
+                      "value": {
+                        "authorization": "token-admin-ui"
+                      }
+                    },
+                    "query": {
+                      "type": "Computed",
+                      "composable": "useQuery",
+                      "args": []
+                    }
+                  }
+                }
+              }
+            },
+            "key": "get-wide"
+          },
+          {
+            "component": {
+              "type": "DataPanel",
+              "schema": {
+                "title": {
+                  "type": "Inline",
+                  "value": "GetLeft"
+                },
+                "collapsed": true,
+                "localizeTitle": true,
+                "parameters": [],
+                "content": {
+                  "type": "String",
+                  "schema": {},
+                  "data": {
+                    "type": "Remote",
+                    "path": "report/left",
+                    "headers": {
+                      "type": "Inline",
+                      "value": {
+                        "authorization": "token-admin-ui"
+                      }
+                    },
+                    "query": {
+                      "type": "Computed",
+                      "composable": "useQuery",
+                      "args": []
+                    }
+                  }
+                }
+              }
+            },
+            "key": "get-left",
+            "narrow": true
+          },
+          {
+            "component": {
+              "type": "DataPanel",
+              "schema": {
+                "title": {
+                  "type": "Inline",
+                  "value": "GetRight"
+                },
+                "collapsed": true,
+                "localizeTitle": true,
+                "parameters": [],
+                "content": {
+                  "type": "String",
+                  "schema": {},
+                  "data": {
+                    "type": "Remote",
+                    "path": "report/right",
+                    "headers": {
+                      "type": "Inline",
+                      "value": {
+                        "authorization": "token-admin-ui"
+                      }
+                    },
+                    "query": {
+                      "type": "Computed",
+                      "composable": "useQuery",
+                      "args": []
+                    }
+                  }
+                }
+              }
+            },
+            "key": "get-right",
+            "narrow": true
+          }
+        ],
+        "icon": {
+          "type": "Icon",
+          "schema": {
+            "iconClass": "pi-box"
+          }
+        }
+      },
+      {
+        "id": "data-table",
+        "title": "Data Table",
+        "contents": [
+          {
+            "component": {
+              "type": "DataPanel",
+              "schema": {
+                "title": {
+                  "type": "Inline",
+                  "value": "GetFirst"
+                },
+                "localizeTitle": true,
+                "parameters": [
+                  {
+                    "name": "count",
+                    "default": {
+                      "type": "Inline",
+                      "value": "Default"
+                    },
+                    "component": {
+                      "type": "Select",
+                      "schema": {
+                        "label": "Count",
+                        "optionLabel": "label",
+                        "optionValue": "value",
+                        "localizeLabel": true,
+                        "stateful": true
+                      },
+                      "data": {
+                        "type": "Inline",
+                        "value": [
+                          {
+                            "label": "CountOptions.Less",
+                            "value": "Less"
+                          },
+                          {
+                            "label": "CountOptions.Default",
+                            "value": "Default"
+                          },
+                          {
+                            "label": "CountOptions.More",
+                            "value": "More"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "content": {
+                  "type": "DataTable",
+                  "schema": {
+                    "columns": [
+                      {
+                        "prop": "label",
+                        "component": {
+                          "fallback": {
+                            "type": "String",
+                            "schema": {}
+                          },
+                          "conditions": []
+                        },
+                        "title": "Label",
+                        "minWidth": true,
+                        "exportable": true,
+                        "frozen": true
+                      },
+                      {
+                        "prop": "column1",
+                        "component": {
+                          "fallback": {
+                            "type": "String",
+                            "schema": {}
+                          },
+                          "conditions": []
+                        },
+                        "title": "Column 1",
+                        "exportable": true
+                      },
+                      {
+                        "prop": "column2",
+                        "component": {
+                          "fallback": {
+                            "type": "String",
+                            "schema": {}
+                          },
+                          "conditions": []
+                        },
+                        "title": "Column 2",
+                        "exportable": true
+                      },
+                      {
+                        "prop": "column3",
+                        "component": {
+                          "fallback": {
+                            "type": "String",
+                            "schema": {}
+                          },
+                          "conditions": []
+                        },
+                        "title": "Column 3",
+                        "exportable": true
+                      }
+                    ],
+                    "dataKey": "label",
+                    "paginator": true,
+                    "rows": 5,
+                    "exportOptions": {
+                      "csvSeparator": ";",
+                      "fileName": "GetFirst.ExportFileName",
+                      "formatter": "useCsvFormatter",
+                      "buttonIcon": "pi pi-download",
+                      "buttonLabel": "Export as CSV",
+                      "appendParameters": true,
+                      "parameterSeparator": "_",
+                      "parameterFormatter": "useLocaleParameterFormatter"
+                    }
+                  },
+                  "data": {
+                    "type": "Remote",
+                    "path": "report/first",
+                    "headers": {
+                      "type": "Inline",
+                      "value": {
+                        "authorization": "token-admin-ui"
+                      }
+                    },
+                    "query": {
+                      "type": "Composite",
+                      "parts": [
+                        {
+                          "type": "Computed",
+                          "composable": "useQuery",
+                          "args": []
+                        },
+                        {
+                          "type": "Injected",
+                          "key": "Custom"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "key": "get-first"
+          },
+          {
+            "component": {
+              "type": "DataPanel",
+              "schema": {
+                "title": {
+                  "type": "Inline",
+                  "value": "GetSecond"
+                },
+                "collapsed": true,
+                "localizeTitle": true,
+                "parameters": [
+                  {
+                    "name": "count",
+                    "default": {
+                      "type": "Inline",
+                      "value": "Default"
+                    },
+                    "component": {
+                      "type": "SelectButton",
+                      "schema": {
+                        "optionLabel": "label",
+                        "optionValue": "value",
+                        "localizeLabel": true,
+                        "stateful": true
+                      },
+                      "data": {
+                        "type": "Inline",
+                        "value": [
+                          {
+                            "label": "CountOptions.Less",
+                            "value": "Less"
+                          },
+                          {
+                            "label": "CountOptions.Default",
+                            "value": "Default"
+                          },
+                          {
+                            "label": "CountOptions.More",
+                            "value": "More"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "content": {
+                  "type": "DataTable",
+                  "schema": {
+                    "columns": [
+                      {
+                        "prop": "label",
+                        "component": {
+                          "fallback": {
+                            "type": "String",
+                            "schema": {}
+                          },
+                          "conditions": []
+                        },
+                        "title": "Label",
+                        "minWidth": true,
+                        "exportable": true,
+                        "frozen": true
+                      },
+                      {
+                        "prop": "column1",
+                        "component": {
+                          "fallback": {
+                            "type": "String",
+                            "schema": {}
+                          },
+                          "conditions": []
+                        },
+                        "title": "Column 1",
+                        "exportable": true
+                      },
+                      {
+                        "prop": "column2",
+                        "component": {
+                          "fallback": {
+                            "type": "String",
+                            "schema": {}
+                          },
+                          "conditions": []
+                        },
+                        "title": "Column 2",
+                        "exportable": true
+                      },
+                      {
+                        "prop": "column3",
+                        "component": {
+                          "fallback": {
+                            "type": "String",
+                            "schema": {}
+                          },
+                          "conditions": []
+                        },
+                        "title": "Column 3",
+                        "exportable": true
+                      }
+                    ],
+                    "dataKey": "label",
+                    "paginator": true,
+                    "rows": 5,
+                    "exportOptions": {
+                      "csvSeparator": ";",
+                      "fileName": "GetSecond.ExportFileName",
+                      "formatter": "useCsvFormatter",
+                      "buttonIcon": "pi pi-download",
+                      "buttonLabel": "Export as CSV",
+                      "appendParameters": true,
+                      "parameterSeparator": "_",
+                      "parameterFormatter": "useLocaleParameterFormatter"
+                    }
+                  },
+                  "data": {
+                    "type": "Remote",
+                    "path": "report/second",
+                    "headers": {
+                      "type": "Inline",
+                      "value": {
+                        "authorization": "token-admin-ui"
+                      }
+                    },
+                    "query": {
+                      "type": "Composite",
+                      "parts": [
+                        {
+                          "type": "Computed",
+                          "composable": "useQuery",
+                          "args": []
+                        },
+                        {
+                          "type": "Injected",
+                          "key": "Custom"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "key": "get-second"
+          }
+        ],
+        "icon": {
+          "type": "Icon",
+          "schema": {
+            "iconClass": "pi-table"
+          }
+        }
+      }
+    ],
+    "path": "report"
+  }
+}

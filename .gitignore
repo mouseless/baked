@@ -5,18 +5,14 @@
 # Vim swap files
 *.swp
 
-# log file
-*.log*
-
-# dotnet build files
-obj/
-bin/
-
-# coverage reports
-**/.coverage/*
-
-# generated file
-**/.benchmark/**
-
-# node modules
-**/node_modules/**
+# OSX
+.DS_Store
+.fleet
+.idea
+.AppleDouble
+.LSOverride
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk

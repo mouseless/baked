@@ -1,0 +1,7 @@
+{
+  "type": "LoginPage",
+  "schema": {
+    "path": "login",
+    "layout": "modal"
+  }
+}
