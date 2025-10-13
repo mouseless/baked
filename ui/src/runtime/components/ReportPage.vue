@@ -17,7 +17,7 @@
           v-model:value="currentTab"
           class="!-mb-4 overflow-x-auto overflow-y-hidden"
         >
-          <TabList :pt="{ tabList: { class: '!bg-transparent' } }">
+          <TabList :pt="{ root: '!bg-transparent' }">
             <Tab
               v-for="tab in shownTabs"
               :key="tab.id"
