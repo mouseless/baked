@@ -1,0 +1,33 @@
+# Env
+.env
+.env.local
+
+# Dependencies
+node_modules
+
+# Temp directories
+.temp
+.tmp
+.cache
+
+# Nuxt build
+.nuxt
+.nitro
+.cache
+.output
+.data
+.vercel_build_output
+.build-*
+.netlify
+
+# Nuxt generate
+dist/
+
+# prebuild files
+.public
+.temp
+content
+
+# playwright
+**/*.js-snapshots
+**/test-results

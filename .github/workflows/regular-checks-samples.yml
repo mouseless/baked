@@ -5,7 +5,7 @@ on:
       - main
       - 'epic/**'
     paths:
-      - "samples/**/*"
+      - 'samples/**/*'
 jobs:
   prepare:
     name: Prepare

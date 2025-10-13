@@ -1,0 +1,21 @@
+{
+  "name": "baked-recipe-admin-playground",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "lint": "eslint .",
+    "setup": "nuxt prepare && npm run lint",
+    "prebuild": "npm run setup",
+    "generate": "nuxi generate --log-level silent --dotenv .env.production"
+  },
+  "devDependencies": {
+    "@nuxt/eslint": "$@nuxt/eslint",
+    "@nuxtjs/tailwindcss": "$@nuxtjs/tailwindcss",
+    "sass": "$sass"
+  },
+  "dependencies": {
+    "@primeuix/themes": "$@primeuix/themes",
+    "baked-recipe-admin": "$baked-recipe-admin",
+    "nuxt": "$nuxt"
+  }
+}

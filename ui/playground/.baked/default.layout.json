@@ -1,0 +1,253 @@
+{
+  "type": "DefaultLayout",
+  "schema": {
+    "path": "default",
+    "sideMenu": {
+      "type": "SideMenu",
+      "schema": {
+        "logo": "logo.svg",
+        "largeLogo": "logo-full.svg",
+        "menu": [
+          {
+            "route": "/",
+            "icon": "pi pi-home",
+            "title": "Home"
+          },
+          {
+            "route": "/cache",
+            "icon": "pi pi-database",
+            "title": "Cache"
+          },
+          {
+            "route": "/data-table",
+            "icon": "pi pi-table",
+            "title": "Data Table"
+          },
+          {
+            "route": "/report",
+            "icon": "pi pi-file",
+            "title": "Report"
+          },
+          {
+            "route": "/specs",
+            "icon": "pi pi-list-check",
+            "title": "Specs"
+          }
+        ],
+        "footer": {
+          "type": "LanguageSwitcher",
+          "schema": {}
+        }
+      },
+      "data": {
+        "type": "Computed",
+        "composable": "useNuxtRoute",
+        "args": []
+      }
+    },
+    "header": {
+      "type": "Header",
+      "schema": {
+        "sitemap": {
+          "/": {
+            "route": "/",
+            "icon": "pi pi-home"
+          },
+          "/cache": {
+            "route": "/cache",
+            "icon": "pi pi-database",
+            "title": "Cache"
+          },
+          "/data-table": {
+            "route": "/data-table",
+            "icon": "pi pi-table",
+            "title": "Data Table"
+          },
+          "/report": {
+            "route": "/report",
+            "icon": "pi pi-file",
+            "title": "Report"
+          },
+          "/specs": {
+            "route": "/specs",
+            "icon": "pi pi-list-check",
+            "title": "Specs"
+          },
+          "/specs/bake": {
+            "route": "/specs/bake",
+            "icon": "pi pi-microchip",
+            "title": "Bake",
+            "parentRoute": "/specs"
+          },
+          "/specs/custom-css": {
+            "route": "/specs/custom-css",
+            "icon": "pi pi-microchip",
+            "title": "Custom CSS",
+            "parentRoute": "/specs"
+          },
+          "/specs/parameters": {
+            "route": "/specs/parameters",
+            "icon": "pi pi-microchip",
+            "title": "Parameters",
+            "parentRoute": "/specs"
+          },
+          "/specs/query-parameters": {
+            "route": "/specs/query-parameters",
+            "icon": "pi pi-microchip",
+            "title": "Query Parameters",
+            "parentRoute": "/specs"
+          },
+          "/specs/toast": {
+            "route": "/specs/toast",
+            "icon": "pi pi-microchip",
+            "title": "Toast",
+            "parentRoute": "/specs"
+          },
+          "/specs/card-link": {
+            "route": "/specs/card-link",
+            "icon": "pi pi-microchip",
+            "title": "Card Link",
+            "parentRoute": "/specs"
+          },
+          "/specs/data-table": {
+            "route": "/specs/data-table",
+            "icon": "pi pi-microchip",
+            "title": "Data Table",
+            "parentRoute": "/specs"
+          },
+          "/specs/nav-link": {
+            "route": "/specs/nav-link",
+            "icon": "pi pi-microchip",
+            "title": "Nav Link",
+            "parentRoute": "/specs"
+          },
+          "/specs/icon": {
+            "route": "/specs/icon",
+            "icon": "pi pi-microchip",
+            "title": "Icon",
+            "parentRoute": "/specs"
+          },
+          "/specs/message": {
+            "route": "/specs/message",
+            "icon": "pi pi-microchip",
+            "title": "Message",
+            "parentRoute": "/specs"
+          },
+          "/specs/money": {
+            "route": "/specs/money",
+            "icon": "pi pi-microchip",
+            "title": "Money",
+            "parentRoute": "/specs"
+          },
+          "/specs/number": {
+            "route": "/specs/number",
+            "icon": "pi pi-microchip",
+            "title": "Number",
+            "parentRoute": "/specs"
+          },
+          "/specs/rate": {
+            "route": "/specs/rate",
+            "icon": "pi pi-microchip",
+            "title": "Rate",
+            "parentRoute": "/specs"
+          },
+          "/specs/string": {
+            "route": "/specs/string",
+            "icon": "pi pi-microchip",
+            "title": "String",
+            "parentRoute": "/specs"
+          },
+          "/specs/language-switcher": {
+            "route": "/specs/language-switcher",
+            "icon": "pi pi-microchip",
+            "title": "Language Switcher",
+            "parentRoute": "/specs"
+          },
+          "/specs/select": {
+            "route": "/specs/select",
+            "icon": "pi pi-microchip",
+            "title": "Select",
+            "parentRoute": "/specs"
+          },
+          "/specs/select-button": {
+            "route": "/specs/select-button",
+            "icon": "pi pi-microchip",
+            "title": "Select Button",
+            "parentRoute": "/specs"
+          },
+          "/specs/data-panel": {
+            "route": "/specs/data-panel",
+            "icon": "pi pi-microchip",
+            "title": "Data Panel",
+            "parentRoute": "/specs"
+          },
+          "/specs/header": {
+            "route": "/specs/header",
+            "icon": "pi pi-microchip",
+            "title": "Header",
+            "parentRoute": "/specs"
+          },
+          "/specs/page-title": {
+            "route": "/specs/page-title",
+            "icon": "pi pi-microchip",
+            "title": "Page Title",
+            "parentRoute": "/specs"
+          },
+          "/specs/side-menu": {
+            "route": "/specs/side-menu",
+            "icon": "pi pi-microchip",
+            "title": "Side Menu",
+            "parentRoute": "/specs"
+          },
+          "/specs/error-page": {
+            "route": "/specs/error-page",
+            "icon": "pi pi-microchip",
+            "title": "Error Page",
+            "parentRoute": "/specs"
+          },
+          "/specs/menu-page": {
+            "route": "/specs/menu-page",
+            "icon": "pi pi-microchip",
+            "title": "Menu Page",
+            "parentRoute": "/specs"
+          },
+          "/specs/report-page": {
+            "route": "/specs/report-page",
+            "icon": "pi pi-microchip",
+            "title": "Report Page",
+            "parentRoute": "/specs"
+          },
+          "/specs/auth": {
+            "route": "/specs/auth",
+            "icon": "pi pi-microchip",
+            "title": "Auth",
+            "parentRoute": "/specs"
+          },
+          "/specs/cache": {
+            "route": "/specs/cache",
+            "icon": "pi pi-microchip",
+            "title": "Cache",
+            "parentRoute": "/specs"
+          },
+          "/specs/locale": {
+            "route": "/specs/locale",
+            "icon": "pi pi-microchip",
+            "title": "Locale",
+            "parentRoute": "/specs"
+          },
+          "/specs/error-handling": {
+            "route": "/specs/error-handling",
+            "icon": "pi pi-microchip",
+            "title": "Error Handling",
+            "parentRoute": "/specs"
+          }
+        }
+      },
+      "data": {
+        "type": "Computed",
+        "composable": "useNuxtRoute",
+        "args": []
+      }
+    }
+  }
+}

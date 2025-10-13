@@ -1,66 +1,43 @@
-.PHONY: format build test run
+.PHONY: format fix install build test coverage run
 FILE ?= file_name
 
 format:
-	@ \
-	dotnet format --verbosity normal ; \
-	cd src/recipe/admin ; npm run lint -- --fix ; cd ../../.. ; \
-	cd test/recipe/admin ; npm run lint -- --fix ; cd ../../.. ; \
-	cd docs/.theme ; npm run lint -- --fix ; cd ../..
+	@(cd core && dotnet format --verbosity normal)
+	@(cd ui && npm run lint -- --fix)
+	@(cd docs/.theme && npm run lint -- --fix)
 fix:
-	@ \
-	if echo "$(FILE)" | grep -q "^src"; then \
-		cd src/recipe/admin && npx eslint $(subst src/recipe/admin/,,$(FILE)) --fix; \
-	elif echo "$(FILE)" | grep -q "^test"; then \
-		cd test/recipe/admin && npx eslint $(subst test/recipe/admin/,,$(FILE)) --fix; \
+	@if [ -n "$(FILE)" ]; then \
+		npx eslint $(subst ui/,,$(FILE)) --fix; \
 	fi
 install:
-	@ \
-	cd docs/.theme ; npm i ; cd ../.. ; \
-	cd docs/.theme ; npm ci ; cd ../.. ; \
-	cd src/recipe/admin ; npm i ; cd ../../.. ; \
-	cd src/recipe/admin ; npm ci ; cd ../../.. ; \
-	cd test/recipe/admin ; npm i ; cd ../../.. ; \
-	cd test/recipe/admin ; npm ci ; cd ../../.. ; \
-	cd test/recipe/service/load-test ; npm i ; cd ../../../.. ; \
-	cd test/recipe/service/load-test ; npm ci ; cd ../../../.. ; \
-	cd test/recipe/service/stub-api-dependency ; npm i ; cd ../../../.. ; \
-	cd test/recipe/service/stub-api-dependency ; npm ci ; cd ../../../..
+	@(cd core/test/Baked.Test.Recipe.Service.LoadTest && npm i && npm ci)
+	@(cd core/test/Baked.Test.Recipe.Service.StubApi && npm i && npm ci)
+	@(cd docs/.theme && npm i && npm ci)
+	@(cd ui && npm i && npm ci)
 build:
-	@ \
-	cd src/recipe/admin ; npm run build ; cd ../../.. ; \
-	dotnet build
+	@(cd ui && npm run build)
+	@(cd core && dotnet build)
 test:
-	@ \
-	dotnet test --logger quackers ; \
-	cd test/recipe/admin ; BUILD_SILENT=1 npm test ; cd ../../..
+	@(cd core && dotnet test --logger quackers)
+	@(cd ui && BUILD_SILENT=1 npm run test)
 coverage:
-	@ \
-	rm -rdf .coverage ; \
-	dotnet test -c Release --collect:"XPlat Code Coverage" --logger trx --results-directory .coverage --settings test/runsettings.xml ; \
-	dotnet reportgenerator -reports:.coverage/*/coverage.cobertura.xml -targetdir:.coverage/html ; \
-	open .coverage/html/index.html
+	@( \
+		cd core && \
+		rm -rf .coverage && \
+		dotnet test -c Release --collect:"XPlat Code Coverage" --logger trx --results-directory .coverage --settings test/runsettings.xml && \
+		dotnet reportgenerator -reports:.coverage/*/coverage.cobertura.xml -targetdir:.coverage/html && \
+		open .coverage/html/index.html \
+	)
 run:
-	@ \
-	echo "(1) Recipe.Service (Development)" ; \
-	echo "(2) Recipe.Admin (Development)" ; \
-	echo "(3) Recipe.* (Production)" ; \
-	echo "(4) Docs" ; \
-	echo "" ; \
-	echo "Please select 1-4: " ; \
-	read app ; \
-	if test $$app -eq "1" ; then \
-		dotnet run --project test/recipe/Baked.Test.Recipe.Service.Application ; \
-	fi ; \
-	if test $$app -eq "2" ; then \
-		cd test/recipe/admin ; \
-		npm run dev ; \
-		cd ../../.. ; \
-	fi ; \
-	if test $$app -eq "3" ; then \
-		docker compose up --build ; \
-	fi ; \
-	if test $$app -eq "4" ; then \
-		cd ./docs ; \
-		make run ; \
-	fi
+	@echo "(1) Service (Development)"
+	@echo "(2) UI (Development)"
+	@echo "(3) Docker (Production)"
+	@echo "(4) Docs"
+	@read -p "Please select 1-4: " app; \
+	case $$app in \
+		1) dotnet run --project core/test/Baked.Test.Recipe.Service.Application ;; \
+		2) (cd ui && npm run dev) ;; \
+		3) docker compose up --build ;; \
+		4) (cd docs && make run) ;; \
+		*) echo "Invalid option";; \
+	esac

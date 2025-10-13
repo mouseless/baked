@@ -1,0 +1,56 @@
+name: Regular Checks - Project - UI
+on:
+  pull_request:
+    branches:
+      - main
+      - 'epic/**'
+    paths:
+      - 'ui/**/*'
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ui
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Disable AppArmour
+        run: echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns
+      - name: Build src
+        run: |
+          npm i
+          npm run build
+  test:
+    name: Test
+    needs: build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ui
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Disable AppArmour
+        run: echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns
+      - name: Build local package
+        run: |
+          npm i
+          npm run build
+      - name: Prepare
+        run: |
+          npx playwright install --with-deps --only-shell
+      - name: Run tests
+        run: |
+          BUILD_SILENT=1 npm test -- --grep-invert @visual
