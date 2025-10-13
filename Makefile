@@ -27,9 +27,9 @@ coverage:
 		dotnet reportgenerator -reports:.coverage/*/coverage.cobertura.xml -targetdir:.coverage/html && \
 		open .coverage/html/index.html)
 run:
-	@echo "(1) Recipe.Service (Development)"
+	@echo "(1) Service (Development)"
 	@echo "(2) UI (Development)"
-	@echo "(3) Recipe.* (Production)"
+	@echo "(3) Docker (Production)"
 	@echo "(4) Docs"
 	@read -p "Please select 1-4: " app; \
 	case $$app in \

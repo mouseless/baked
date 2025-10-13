@@ -15,12 +15,10 @@ RUN cd ui; npm install
 # ---
 FROM init as generate
 
-ARG ENVIRONMENT
-
 COPY --parents ui .
 
 # build module
-RUN cd ui && npm run setup
+RUN cd ui ; npm run build
 
 # creates a .tgz package file at the root
 RUN cd ui ; npm pack --pack-destination ..
@@ -30,7 +28,7 @@ RUN cd ui ; npm pack --pack-destination ..
 RUN BAKED_VER=$(grep '"version":' ui/package.json | head -1 | awk -F'"' '{print $4}') && \
     sed -i "s/\"\$baked-recipe-admin\"/\"$BAKED_VER\"/" ui/playground/package.json
 ## other packages
-RUN node ui/playground/sync-versions.mjs ../package.json package.json
+RUN node ui/playground/package-sync.mjs ../package.json package.json
 ## module name
 RUN sed -i 's#"\.\./src/module"#"baked-recipe-admin"#g' ui/playground/nuxt.config.ts
 
@@ -40,7 +38,7 @@ RUN sed -i 's#"\.\./src/module"#"baked-recipe-admin"#g' ui/playground/nuxt.confi
 RUN cd ui/playground ; npm i $(find ../.. -name 'baked-recipe-admin-*.tgz' -print -quit)
 
 # generate static site with specified environment
-RUN cd ui/playground && npm run generate
+RUN cd ui/playground ; npm run generate
 
 # ---
 # actual running stage

@@ -31,13 +31,13 @@ services:
       timeout: 5s
       retries: 3
 
-  recipe.service.stub-api:
+  service.stub-api:
     build:
       dockerfile: core/test/Baked.Test.Recipe.Service.StubApi/Dockerfile
     ports:
       - 5467:80
 
-  recipe.service:
+  service:
     build:
       dockerfile: core/test/Baked.Test.Recipe.Service.Application/Dockerfile
       args:
@@ -54,7 +54,7 @@ services:
       - db.postgresql
       - recipe.service.stub-api
 
-  recipe.ui:
+  ui:
     build:
       dockerfile: ui/playground/Dockerfile
     ports:

@@ -8,9 +8,9 @@ echo.
 echo ================================
 echo         Project Runner
 echo ================================
-echo (1) Recipe.Service (Development)
-echo (2) Playground (Development)
-echo (3) Recipe.* (Production)
+echo (1) Service (Development)
+echo (2) UI (Development)
+echo (3) Docker (Production)
 echo (4) Docs
 echo (5) Format
 echo (6) Build
@@ -22,9 +22,9 @@ echo ================================
 echo.
 set /p choice="Please select 0-9: "
 
-if "%choice%"=="1" goto recipe
-if "%choice%"=="2" goto playground
-if "%choice%"=="3" goto production
+if "%choice%"=="1" goto service
+if "%choice%"=="2" goto ui
+if "%choice%"=="3" goto docker
 if "%choice%"=="4" goto docs
 if "%choice%"=="5" goto format
 if "%choice%"=="6" goto build
@@ -39,13 +39,13 @@ cls
 goto menu
 
 :: ---------------------------------
-:recipe
+:service
 cls
-echo Running Recipe.Service (Development)...
+echo Running Service (Development)...
 dotnet run --project core\test\Baked.Test.Recipe.Service.Application
 goto end
 
-:playground
+:ui
 cls
 echo Starting Playground (Development)...
 cd ui
@@ -53,7 +53,7 @@ npm run dev
 cd ..
 goto end
 
-:production
+:docker
 cls
 echo Running Docker (Production)...
 docker compose up --build
