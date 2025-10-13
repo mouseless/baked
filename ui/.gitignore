@@ -10,11 +10,6 @@ node_modules
 .tmp
 .cache
 
-# Nuxt
-.nuxt
-.output
-.data
-
 # Nuxt build
 .nuxt
 .nitro
@@ -33,7 +28,6 @@ dist/
 .temp
 content
 
-# playwright generations
-*.zip
-test-results/
-*-snapshots/
+# playwright
+**/*.js-snapshots
+**/test-results

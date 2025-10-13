@@ -1,19 +1,5 @@
-# Env
-.env
-.env.local
-
-# Dependencies
-node_modules
-
-# Temp directories
-.temp
-.tmp
-.cache
-
-# Nuxt
-.nuxt
-.output
-.data
+# Dependency directories
+node_modules/
 
 # Nuxt build
 .nuxt
@@ -21,12 +7,12 @@ node_modules
 .cache
 .output
 .data
-.vercel_build_output
-.build-*
-.netlify
 
 # Nuxt generate
 dist
+
+# env files
+.env.local
 
 # prebuild files
 .public

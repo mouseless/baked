@@ -139,7 +139,6 @@ function Remote({ parentFetch }) {
 
   async function fetch({ data, injectedData }) {
     const baseURL = composables.useDataFetcher.baseURL;
-
     const headers = await fetchHeaders({ data, injectedData });
     const query = await fetchQuery({ data, injectedData });
 

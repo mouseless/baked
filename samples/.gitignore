@@ -6,7 +6,7 @@ obj/
 bin/
 
 # generated file
-.benchmark/
+**/.benchmark/**
 
 # testing
 .coverage/

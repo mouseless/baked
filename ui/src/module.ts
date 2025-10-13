@@ -1,4 +1,4 @@
-import { defineNuxtModule, addPlugin, createResolver, addComponentsDir, addImportsDir } from "@nuxt/kit";
+import { addComponentsDir, addImportsDir, addPlugin, createResolver, defineNuxtModule } from "@nuxt/kit";
 import type { NuxtI18nOptions } from "@nuxtjs/i18n";
 import { pathToFileURL } from "url";
 

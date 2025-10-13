@@ -1,26 +1,14 @@
 # VSCode
+.vscode
 .vs
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-!.vscode/*.code-snippets
-
-# Intellij idea
-*.iml
-.idea
 
 # Vim swap files
 *.swp
 
-# Testing
-reports
-*.lcov
-.nyc_output
-
 # OSX
 .DS_Store
+.fleet
+.idea
 .AppleDouble
 .LSOverride
 .AppleDB
