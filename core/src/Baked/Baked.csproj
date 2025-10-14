@@ -36,6 +36,8 @@
     <PackageReference Include="Swashbuckle.AspNetCore" />
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
+    <PackageReference Include="NUnit" />
+    <PackageReference Include="Shouldly" />
   </ItemGroup>
 
   <ItemGroup>
