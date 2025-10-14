@@ -42,7 +42,7 @@ goto menu
 :service
 cls
 echo Running Service (Development)...
-dotnet run --project core\test\Baked.Test.Recipe.Service.Application
+dotnet run --project core\test\Baked.Test.Application
 goto end
 
 :ui
@@ -124,8 +124,8 @@ cls
 echo Installing dependencies...
 cd docs\.theme && npm i && npm ci && cd ..\..
 cd ui && npm i && npm ci && cd ..
-cd core\test\Baked.Test.Recipe.Service.LoadTest && npm i && npm ci && cd ..\..\..
-cd core\test\Baked.Test.Recipe.Service.StubApi && npm i && npm ci && cd ..\..\..
+cd core\test\Baked.Test.LoadTest && npm i && npm ci && cd ..\..\..
+cd core\test\Baked.Test.StubApi && npm i && npm ci && cd ..\..\..
 goto end
 
 :end

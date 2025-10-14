@@ -8,7 +8,7 @@
     }
   },
   "profiles": {
-    "Baked.Test.Recipe.Service": {
+    "Baked.Test": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
