@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Baked.Recipe.Service\Baked.Recipe.Service.csproj" />
+    <ProjectReference Include="..\..\src\Baked.Abstractions\Baked.Abstractions.csproj" />
   </ItemGroup>
 
   <ItemGroup>

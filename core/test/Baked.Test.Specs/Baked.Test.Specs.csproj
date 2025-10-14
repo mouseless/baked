@@ -16,7 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Baked.Test.Recipe.Service.Application\Baked.Test.Recipe.Service.Application.csproj" />
+      <ProjectReference Include="..\Baked.Test.Application\Baked.Test.Application.csproj" />
     </ItemGroup>
 
     <ItemGroup>
