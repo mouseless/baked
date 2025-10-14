@@ -22,7 +22,7 @@
     <PropertyGroup>
       <ComponentDescriptorsDir>$(UiAppDir)\.baked</ComponentDescriptorsDir>
     </PropertyGroup>
-    
+
     <MakeDir Directories="$(ComponentDescriptorsDir)" Condition="!Exists($(ComponentDescriptorsDir))"/>
 
     <PropertyGroup>
