@@ -81,7 +81,7 @@ public class RegisteringServices : TestServiceSpec
     [Test]
     public void Non_public_types_are_not_registered()
     {
-        var nonPublicType = Activator.CreateInstance("Baked.Test.Recipe.Service", "Baked.Test.Business.Internal")?.GetType() ??
+        var nonPublicType = Activator.CreateInstance("Baked.Test", "Baked.Test.Business.Internal")?.GetType() ??
             throw new("`Baked.Test.Business.Internal` should have existed");
         var action = () => GiveMe.The(nonPublicType);
 

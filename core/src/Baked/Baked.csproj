@@ -1,15 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <AssemblyTitle>Baked.Recipe.Service.Application</AssemblyTitle>
-    <Title>Baked / Recipe / Service</Title>
-    <Description>Baked is an opinionated framework for .NET. This is a recipe package that brings together all the feature implementations one needs for a service application.</Description>
-    <PackageId>Baked.Recipe.Service.Application</PackageId>
-    <PackageTags>baked;objects;recipe;service;application</PackageTags>
+    <AssemblyTitle>Baked</AssemblyTitle>
+    <Title>Baked</Title>
+    <Description>Baked is an opinionated framework for .NET. This is Baked's core package that provides a feature and layer system along with common features and layers.</Description>
+    <PackageId>Baked.Application</PackageId>
+    <PackageTags>baked</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="Baked.Recipe.Service.Application.targets" Pack="true" PackagePath="build" />
+    <None Include="Baked.targets" Pack="true" PackagePath="build" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,8 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Baked.Recipe.Service\Baked.Recipe.Service.csproj" />
-    <ProjectReference Include="..\Baked.Architecture\Baked.Architecture.csproj" />
+    <ProjectReference Include="..\Baked.Abstractions\Baked.Abstractions.csproj" />
   </ItemGroup>
 
 </Project>

@@ -3,7 +3,7 @@ using Baked.Reporting;
 namespace Baked.Test.Reporting;
 
 /// <note>
-/// Fake data is in `Baked.Test.Recipe.Service/Reporting/Fake/entity.json`.
+/// Fake data is in `Baked.Test/Reporting/Fake/entity.json`.
 /// Look the data in this json file to understand why fake report context
 /// returns below expected results.
 /// </note>

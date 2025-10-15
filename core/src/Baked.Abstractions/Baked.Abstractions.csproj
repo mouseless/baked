@@ -1,15 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <AssemblyTitle>Baked.Recipe.Service</AssemblyTitle>
-    <Title>Baked (Objcts) / Recipe / Service</Title>
-    <Description>Baked is an opinionated framework for .NET. This is a recipe package that brings together all the feature abstractions one needs for a service domain.</Description>
-    <PackageId>Baked.Recipe.Service</PackageId>
-    <PackageTags>baked;objects;recipe;service</PackageTags>
+    <AssemblyTitle>Baked.Abstractions</AssemblyTitle>
+    <Title>Baked Abstractions</Title>
+    <Description>Baked is an opinionated framework for .NET. This is Baked's abstractions package that brings together all the feature abstractions.</Description>
+    <PackageId>Baked.Abstractions</PackageId>
+    <PackageTags>baked;abstractions</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="Baked.Recipe.Service.targets" Pack="true" PackagePath="build" />
+    <None Include="Baked.Abstractions.targets" Pack="true" PackagePath="build" />
   </ItemGroup>
 
   <ItemGroup>
