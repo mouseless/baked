@@ -5,37 +5,15 @@ Collective. It is, and will always be, free and open source.
 
 ## Project Structure
 
-- `/docs`: Documentation site. It is a single website that documents every
-  package
-- `/samples`: sample projects are here. Each project should be in its own folder
-- `/src`: all source code that we ship as nuget packages
-  - `/tools`: CLI tools
-  - `/extensions`: features and/or layers
-  - `/recipe`: recipe packages
-  - `/core`: core packages that every type of project will have a reference to
-- `/test`: test automation projects
-  - `/recipe`: e2e test projects per recipe package
-  - `/core`: unit test projects per package
-
-## Feature project conventions;
-
-- When there is a single implementation, it becomes `Baked.{Feature}` and
-  `Baked.{Feature}.{Implementation}`, and the configurator is embedded in the
-  single implementation project.
-- When there are multiple implementations of a feature, the configurator class
-  is moved to `Baked.{Feature}.Configuration` (or `.Base` :thinking:), and all
-  implementations will depend on this config project.
-- `Baked.csproj` contains ports such as `Logging`, `Setting`, etc. that will be
-  used in all projects.
-- `Baked.Configuration.csproj` contains configurator classes and feature
-  interfaces when a second implementation of these ports are introduced.
-- Sometimes a layer and feature will provide meaningful functionality when they
-  coexist, such as `HttpClient` and `Communication`. In this case, a layer can
-  be bundled with the feature and can be published in a single package like
-  `Baked.Communication`, meaning a layer can come from a package not named after
-  itself.
-  - However, a feature implementation must always be published with the package
-    name matching its own port.
+- `/core`: Core project in .NET that contains both backend runtime and buildtime
+  - `/src`: All source code that we ship as nuget packages
+  - `/test`: Contains test projects (test domain, test app, specs, load test)
+- `/docs`: Documentation site. It is a static website that uses nuxt
+- `/samples`: Sample projects are here. each project should be in its own folder
+- `/ui`: UI project in Nuxt that contains all UI components as a nuxt module
+  - `/playground`: Test app that uses the nuxt module
+  - `/src`: Nuxt module source files
+  - `/test`: Playwright specs that tests playground spec pages
 
 ## Naming Conventions
 
@@ -58,7 +36,7 @@ Collective. It is, and will always be, free and open source.
   - ✅ Correct => `int _id;`
 - Use named arguments when calling methods with optional parameters
   ```csharp
-  public void Method(string required
+  public void Method(string required,
       string? optional = default
   )
   // ⛔ Wrong

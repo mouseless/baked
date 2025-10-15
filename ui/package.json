@@ -68,6 +68,7 @@
   },
   "bundleDependencies": ["@primeuix/themes", "primeicons", "primevue"],
   "optionalDependencies": {
+    "@oxc-parser/binding-linux-arm64-gnu": "0.94.0",
     "@oxc-parser/binding-linux-x64-gnu": "0.94.0",
     "@oxc-parser/binding-linux-x64-musl": "0.94.0",
     "@oxc-parser/binding-win32-x64-msvc": "0.94.0"
