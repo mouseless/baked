@@ -2,7 +2,7 @@
 
 namespace Baked.Test.Caching;
 
-public class UsingScopedMemory : TestServiceSpec
+public class UsingScopedMemory : TestSpec
 {
     [Test]
     public void Objects_can_be_cached_in__scoped_memory()

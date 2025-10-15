@@ -3,7 +3,7 @@ using System.Net.Http.Json;
 
 namespace Baked.Test.CodingStyle;
 
-public class BindingObjects : TestServiceNfr
+public class BindingObjects : TestNfr
 {
     [Test]
     public async Task Binds_single_object_parameter_as_request_body([Values("object", "object-async")] string route)

@@ -2,7 +2,7 @@
 
 namespace Baked.Test.Authentication.FixedBearerToken;
 
-public class ValidatingAuthorizationHeader : TestServiceSpec
+public class ValidatingAuthorizationHeader : TestSpec
 {
     [TestCase("token_a")]
     [TestCase("token_b")]

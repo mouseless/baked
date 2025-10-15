@@ -4,7 +4,7 @@ using System.Net.Http.Json;
 
 namespace Baked.Test.Orm;
 
-public class LazyLoading : TestServiceNfr
+public class LazyLoading : TestNfr
 {
     [Test]
     public async Task Proxy_classes_serialized_correctly()

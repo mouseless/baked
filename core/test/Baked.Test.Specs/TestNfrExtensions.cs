@@ -2,7 +2,7 @@
 
 namespace Baked.Test;
 
-public static class TestServiceNfrExtensions
+public static class TestNfrExtensions
 {
     public async static Task<object?> Deserialize(this HttpContent content)
     {

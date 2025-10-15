@@ -1,7 +1,7 @@
 ﻿using Baked.Test.Orm;
 
 Bake.New
-    .Service(
+    .Monolith(
         business: c => c.DomainAssemblies(typeof(Entity).Assembly,
             baseNamespace: "Baked.Test",
             setNamespaceWhen: t => t.Namespace is not null && t.Namespace.StartsWith("Baked.Test.CodingStyle.NamespaceAsRoute")

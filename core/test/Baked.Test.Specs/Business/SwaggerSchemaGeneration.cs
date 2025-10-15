@@ -2,7 +2,7 @@
 
 namespace Baked.Test.Business;
 
-public class SwaggerSchemaGeneration : TestServiceNfr
+public class SwaggerSchemaGeneration : TestNfr
 {
     [Test]
     public async Task Generates_swagger_json_automatically()

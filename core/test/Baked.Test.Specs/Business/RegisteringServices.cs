@@ -4,7 +4,7 @@ using Baked.Test.Orm;
 
 namespace Baked.Test.Business;
 
-public class RegisteringServices : TestServiceSpec
+public class RegisteringServices : TestSpec
 {
     [Test]
     public void Static_types_are_not_registered()

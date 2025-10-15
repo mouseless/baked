@@ -20,7 +20,7 @@ namespace Baked;
 
 public static class BakeExtensions
 {
-    public static Application Service(this Bake bake,
+    public static Application Monolith(this Bake bake,
         Func<BusinessConfigurator, IFeature<BusinessConfigurator>> business,
         IEnumerable<Func<AuthenticationConfigurator, IFeature<AuthenticationConfigurator>>>? authentications = default,
         Func<AuthorizationConfigurator, IFeature<AuthorizationConfigurator>>? authorization = default,

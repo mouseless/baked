@@ -4,7 +4,7 @@ using NHConfiguration = NHibernate.Cfg.Configuration;
 
 namespace Baked.Test.Orm;
 
-public class MappingEntitiesByConvention : TestServiceSpec
+public class MappingEntitiesByConvention : TestSpec
 {
     [Test]
     public void Maps_only_entities()

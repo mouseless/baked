@@ -2,7 +2,7 @@
 
 namespace Baked.Test.Authentication.FixedBearerToken;
 
-public class ValidatingFormPost : TestServiceSpec
+public class ValidatingFormPost : TestSpec
 {
     [Test]
     public async Task Concats_given_data_with_token_and_compares_it_to_provided_hash()

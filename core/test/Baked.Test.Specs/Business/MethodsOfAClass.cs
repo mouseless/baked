@@ -3,7 +3,7 @@ using System.Net;
 
 namespace Baked.Business;
 
-public class MethodsOfAClass : TestServiceNfr
+public class MethodsOfAClass : TestNfr
 {
     [Test]
     public async Task Method_declared_in_class_is_an_endpoint()

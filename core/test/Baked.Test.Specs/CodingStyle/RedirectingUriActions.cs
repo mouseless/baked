@@ -2,7 +2,7 @@ using System.Net;
 
 namespace Baked.Test.CodingStyle;
 
-public class RedirectingUriActions : TestServiceNfr
+public class RedirectingUriActions : TestNfr
 {
     [Test]
     public async Task Get([Values(["callback", "callback-async"])] string route)

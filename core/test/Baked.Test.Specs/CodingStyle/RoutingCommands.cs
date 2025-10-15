@@ -4,7 +4,7 @@ using System.Net.Http.Json;
 
 namespace Baked.Test.CodingStyle;
 
-public class RoutingCommands : TestServiceNfr
+public class RoutingCommands : TestNfr
 {
     [TestCase("Put", "bulk-command")]
     [TestCase("Patch", "bulk-command")]

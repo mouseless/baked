@@ -3,7 +3,7 @@ using System.Net.Http.Json;
 
 namespace Baked.Test.CodingStyle;
 
-public class RoutingEntityByUniqueProperties : TestServiceNfr
+public class RoutingEntityByUniqueProperties : TestNfr
 {
     [Test]
     public async Task GetByUniqueString()

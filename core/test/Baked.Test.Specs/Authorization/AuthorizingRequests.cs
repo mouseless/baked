@@ -1,6 +1,6 @@
 ﻿namespace Baked.Test.Authorization;
 
-public class AuthorizingRequests : TestServiceNfr
+public class AuthorizingRequests : TestNfr
 {
     [Test]
     public async Task Authorizes_authenticated_user()

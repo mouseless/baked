@@ -3,7 +3,7 @@ using System.Net.Http.Json;
 
 namespace Baked.Test.CodingStyle;
 
-public class BindingRecords : TestServiceNfr
+public class BindingRecords : TestNfr
 {
     [Test]
     public async Task RecordParameters()

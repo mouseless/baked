@@ -2,7 +2,7 @@
 
 namespace Baked.Test.Caching;
 
-public class UsingInMemory : TestServiceSpec
+public class UsingInMemory : TestSpec
 {
     [Test]
     public void Objects_can_be_cached_in_memory()

@@ -4,7 +4,7 @@ using System.Net.Http.Json;
 
 namespace Baked.Test.CodingStyle;
 
-public class RoutingEntities : TestServiceNfr
+public class RoutingEntities : TestNfr
 {
     [Test]
     public async Task Post()

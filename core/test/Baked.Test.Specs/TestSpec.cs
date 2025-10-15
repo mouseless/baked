@@ -3,9 +3,9 @@ using Baked.Test.Orm;
 
 namespace Baked.Test;
 
-public abstract class TestServiceSpec : ServiceSpec
+public abstract class TestSpec : MonolithSpec
 {
-    static TestServiceSpec() =>
+    static TestSpec() =>
         Init(
             business: c => c.DomainAssemblies(typeof(Entity).Assembly, baseNamespace: "Baked.Test"),
             communication: c => c.Mock(defaultResponses: response =>

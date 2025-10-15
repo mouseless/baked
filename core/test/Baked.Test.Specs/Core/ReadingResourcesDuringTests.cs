@@ -2,7 +2,7 @@ using Microsoft.Extensions.FileProviders;
 
 namespace Baked.Test.Core;
 
-public class ReadingResourcesDuringTests : TestServiceSpec
+public class ReadingResourcesDuringTests : TestSpec
 {
     [TestCase("Core/DomainEmbedded.txt")]
     public void Specs_includes_business_resources(string subpath)

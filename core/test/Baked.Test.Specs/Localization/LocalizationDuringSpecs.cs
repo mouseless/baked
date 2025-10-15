@@ -2,7 +2,7 @@ using Microsoft.Extensions.Localization;
 
 namespace Baked.Test.Localization;
 
-public class LocalizationDuringSpecs : TestServiceSpec
+public class LocalizationDuringSpecs : TestSpec
 {
     [Test]
     public void Localizer_is_avaliable_during_specs()

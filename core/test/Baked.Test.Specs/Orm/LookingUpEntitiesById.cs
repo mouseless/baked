@@ -4,7 +4,7 @@ using System.Net.Http.Json;
 
 namespace Baked.Test.Orm;
 
-public class LookingUpEntitiesById : TestServiceNfr
+public class LookingUpEntitiesById : TestNfr
 {
     [Test]
     public async Task ExposedSingleById()

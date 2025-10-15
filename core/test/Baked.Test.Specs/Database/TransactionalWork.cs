@@ -2,7 +2,7 @@
 
 namespace Baked.Test.Database;
 
-public class TransactionalWork : TestServiceSpec
+public class TransactionalWork : TestSpec
 {
     [Test]
     public void Commit_async_takes_nullable_parameters()

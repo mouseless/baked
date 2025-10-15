@@ -1,6 +1,6 @@
 ﻿namespace Baked.Test.ExceptionHandling;
 
-public class ShowUnhandledFlag : TestServiceSpec
+public class ShowUnhandledFlag : TestSpec
 {
     [Test]
     public void It_adds_error_details_when_flag_is_up()

@@ -2,7 +2,7 @@ using Baked.Domain.Model;
 
 namespace Baked.Test.Domain;
 
-public class RespectingAllowMultiple : TestServiceSpec
+public class RespectingAllowMultiple : TestSpec
 {
     [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
     public class MultipleAttribute : Attribute;

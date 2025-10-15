@@ -2,7 +2,7 @@
 
 namespace Baked.Test.Communication;
 
-public class VerifyingClients : TestServiceSpec
+public class VerifyingClients : TestSpec
 {
     [Test]
     public async Task Verify_includes_parameters_only_when_given()

@@ -1,6 +1,6 @@
 ﻿namespace Baked.Test.Authentication.Jwt;
 
-public class BuildingToken : TestServiceSpec
+public class BuildingToken : TestSpec
 {
     [Test]
     public void Creates_token_with_given_claims_and_jwt_settings()

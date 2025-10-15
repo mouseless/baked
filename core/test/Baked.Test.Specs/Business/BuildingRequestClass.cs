@@ -3,7 +3,7 @@ using System.Net.Http.Json;
 
 namespace Baked.Test.Business;
 
-public class BuildingRequestClass : TestServiceNfr
+public class BuildingRequestClass : TestNfr
 {
     [Test]
     public async Task Builds_request_class_from_method_paramaters()

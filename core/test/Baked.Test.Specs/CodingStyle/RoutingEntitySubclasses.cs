@@ -3,7 +3,7 @@ using System.Net.Http.Json;
 
 namespace Baked.Test.CodingStyle;
 
-public class RoutingEntitySubclasses : TestServiceNfr
+public class RoutingEntitySubclasses : TestNfr
 {
     [TestCase("a", "A")]
     [TestCase("b", "B")]

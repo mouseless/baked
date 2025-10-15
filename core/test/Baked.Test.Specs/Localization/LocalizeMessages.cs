@@ -1,6 +1,6 @@
 namespace Baked.Test.Localization;
 
-public class LocalizeMessages : TestServiceNfr
+public class LocalizeMessages : TestNfr
 {
     [Test]
     public async Task Localization_reads_culture_information_from_header()

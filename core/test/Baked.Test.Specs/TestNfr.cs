@@ -7,9 +7,9 @@ using System.Net.Http.Headers;
 
 namespace Baked.Test;
 
-public abstract class TestServiceNfr : ServiceNfr
+public abstract class TestNfr : MonolithNfr
 {
-    static TestServiceNfr() =>
+    static TestNfr() =>
         Init<Program>();
 
     readonly IEnumerable<string> _entityNamesToClear = [nameof(Entity), nameof(Parent), nameof(TypedEntity)];

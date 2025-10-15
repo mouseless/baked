@@ -3,7 +3,7 @@ using System.Net.Http.Headers;
 
 namespace Baked.Test.Authorization;
 
-public class InterceptingUnauthorizedRequests : TestServiceNfr
+public class InterceptingUnauthorizedRequests : TestNfr
 {
     [Test]
     public async Task Returns_unauthorized_access_response_for_not_authenticated_user()

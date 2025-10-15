@@ -3,7 +3,7 @@ using System.Net.Http.Headers;
 
 namespace Baked.Test.HttpServer;
 
-public class ConfiguringMultipleAuthenticationHandlers : TestServiceNfr
+public class ConfiguringMultipleAuthenticationHandlers : TestNfr
 {
     [TestCase("Authorization", "token-jane", "\"FixedBearerToken\"")]
     [TestCase("X-Api-Key", "apikey", "\"ApiKey\"")]

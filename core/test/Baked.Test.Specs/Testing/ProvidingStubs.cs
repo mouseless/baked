@@ -3,7 +3,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Baked.Test.Testing;
 
-public class ProvidingStubs : TestServiceSpec
+public class ProvidingStubs : TestSpec
 {
     [Test]
     public void Give_me_an_integer_returns_42_because_it_is_the_answer()

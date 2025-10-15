@@ -4,7 +4,7 @@ using System.Net.Http.Json;
 
 namespace Baked.Test.Runtime;
 
-public class FetchingReportUsingNativeSql : TestServiceNfr
+public class FetchingReportUsingNativeSql : TestNfr
 {
     [Test]
     public async Task Loads_query_from_resource_and_fetches_data_from_db()

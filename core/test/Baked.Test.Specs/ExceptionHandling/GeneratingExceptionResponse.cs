@@ -4,7 +4,7 @@ using System.Net.Http.Json;
 
 namespace Baked.Test.ExceptionHandling;
 
-public class GeneratingExceptionResponse : TestServiceNfr
+public class GeneratingExceptionResponse : TestNfr
 {
     [Test]
     public async Task Handled_exception_problem_details_are_set_by_its_handler()

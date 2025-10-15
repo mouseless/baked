@@ -1,6 +1,6 @@
 ﻿namespace Baked.Test.Core;
 
-public class ProvidingSystemTime : TestServiceSpec
+public class ProvidingSystemTime : TestSpec
 {
     [Test]
     public void TimeProvider_is_injected_to_access_machine_time()

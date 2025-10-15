@@ -2,7 +2,7 @@
 
 namespace Baked.Test.Authentication.FixedBearerToken;
 
-public class AddingParametersToFormPost : TestServiceNfr
+public class AddingParametersToFormPost : TestNfr
 {
     [Test]
     public async Task Hash_and_configured_additional_parameters_are_added_to_form_post_authenticate_requests()

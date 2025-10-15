@@ -1,14 +1,14 @@
-# Service
+# Monolith
 
-Service recipe is the default backend recipe provided by Baked which includes
+Monolith recipe is the default backend recipe provided by Baked which includes
 necessary layers and feature implementations for any backend application.
 
-To create an application from this recipe, use `Service()` extension of `Bake`
+To create an application from this recipe, use `Monolith()` extension of `Bake`
 class directly in `Program.cs`.
 
 ```csharp
 Bake.New
-    .Service(
+    .Monolith(
         business: c => c.DomainAssemblies([...])
     )
     .Run();

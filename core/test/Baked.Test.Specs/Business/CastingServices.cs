@@ -2,7 +2,7 @@ using Baked.Test.Business.Casting;
 
 namespace Baked.Test.Business;
 
-public class CastingServices : TestServiceSpec
+public class CastingServices : TestSpec
 {
     [Test]
     public void Caster_services_are_registered_in_a_static_context_to_allow_casting_from_extension()

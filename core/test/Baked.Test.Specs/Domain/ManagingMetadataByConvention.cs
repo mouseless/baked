@@ -2,7 +2,7 @@
 
 namespace Baked.Test.Domain;
 
-public class ManagingMetadataByConvention : TestServiceSpec
+public class ManagingMetadataByConvention : TestSpec
 {
     [Test]
     public void Adding_metadata_to_type()

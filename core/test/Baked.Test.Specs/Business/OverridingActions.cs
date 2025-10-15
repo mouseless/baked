@@ -3,7 +3,7 @@ using System.Net.Http.Json;
 
 namespace Baked.Test.Business;
 
-public class OverridingActions : TestServiceNfr
+public class OverridingActions : TestNfr
 {
     [Test]
     public async Task Action_route_parts_can_be_overriden()
