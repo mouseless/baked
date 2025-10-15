@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Baked.Test.CodingStyle;
 
-public class RegisteringServicesByConvention : TestServiceSpec
+public class RegisteringServicesByConvention : TestSpec
 {
     [Test]
     public void Types_containing_a_method_named_with_are_registered_as_transient([Values(typeof(Transient), typeof(TransientAsync))] Type type)

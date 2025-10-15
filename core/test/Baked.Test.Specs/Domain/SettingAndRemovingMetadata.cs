@@ -2,7 +2,7 @@
 
 namespace Baked.Test.Domain;
 
-public class SettingAndRemovingMetadata : TestServiceSpec
+public class SettingAndRemovingMetadata : TestSpec
 {
     public class CustomAttribute : Attribute;
 

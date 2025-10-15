@@ -2,7 +2,7 @@
 
 namespace Baked.Test.Core;
 
-public class TransformingText : TestServiceSpec
+public class TransformingText : TestSpec
 {
     [Test]
     public void A_text_transformer_is_provided()

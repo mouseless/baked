@@ -5,7 +5,7 @@ using Baked.Test.Orm;
 
 namespace Baked.Test.Business;
 
-public class BuildingNonDomainTypes : TestServiceSpec
+public class BuildingNonDomainTypes : TestSpec
 {
     [Test]
     public void Non_domain_types_are_added_to_domain_model([Values(typeof(string), typeof(int), typeof(Task), typeof(Func<Entity>), typeof(IQueryContext<Entity>))] Type type)

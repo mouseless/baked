@@ -3,7 +3,7 @@ using System.Net.Http.Json;
 
 namespace Baked.Test.Database;
 
-public class TransactionRollback : TestServiceNfr
+public class TransactionRollback : TestNfr
 {
     [Test]
     public async Task Entity_created_without_a_transaction_does_not_persists_when_an_error_occurs()

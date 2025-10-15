@@ -2,7 +2,7 @@ using Baked.Test.Business;
 
 namespace Baked.Test.Testing;
 
-public class AccessingXmlComments : TestServiceSpec
+public class AccessingXmlComments : TestSpec
 {
     [Test]
     public void Xml_comments_are_available_through_stubbers()

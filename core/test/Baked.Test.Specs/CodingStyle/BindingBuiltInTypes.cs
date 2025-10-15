@@ -3,7 +3,7 @@ using System.Net.Http.Json;
 
 namespace Baked.Test.CodingStyle;
 
-public class BindingBuiltInTypes : TestServiceNfr
+public class BindingBuiltInTypes : TestNfr
 {
     [Test]
     public async Task PrimitiveParameters()

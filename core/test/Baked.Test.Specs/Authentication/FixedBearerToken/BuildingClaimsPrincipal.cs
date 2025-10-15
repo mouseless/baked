@@ -1,6 +1,6 @@
 ﻿namespace Baked.Test.Authentication.FixedBearerToken;
 
-public class BuildingClaimsPrincipal : TestServiceSpec
+public class BuildingClaimsPrincipal : TestSpec
 {
     [Test]
     public async Task Builds_claims_principal_from_token_when_authentication_succeeds()

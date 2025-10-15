@@ -13,7 +13,7 @@ using Baked.Theme;
 
 namespace Baked;
 
-public abstract class ServiceSpec : Spec
+public abstract class MonolithSpec : Spec
 {
     public class Enum<T> where T : notnull
     {

@@ -2,7 +2,7 @@
 
 namespace Baked.Test.Core;
 
-public class ReadingResources : TestServiceNfr
+public class ReadingResources : TestNfr
 {
     [TestCase("/Core/ApplicationPhysical.txt", "application physical")]
     [TestCase("/Core/ApplicationEmbedded.txt", "application embedded")]

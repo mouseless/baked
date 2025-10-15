@@ -2,7 +2,7 @@
 
 namespace Baked.Test.DataAccess;
 
-public class MappingProperties : TestServiceSpec
+public class MappingProperties : TestSpec
 {
     [Test]
     public async Task Unique()

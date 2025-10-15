@@ -1,6 +1,6 @@
 namespace Baked.Test.Domain;
 
-public class GettingMetadata : TestServiceSpec
+public class GettingMetadata : TestSpec
 {
     [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
     public class MultipleAttribute : Attribute;

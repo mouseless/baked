@@ -1,6 +1,6 @@
 namespace Baked.Test.CodeGeneration;
 
-public class CompilerErrors : TestServiceSpec
+public class CompilerErrors : TestSpec
 {
     [Test]
     public void Compiler_throws_error_with_compiler_errors_and_code()

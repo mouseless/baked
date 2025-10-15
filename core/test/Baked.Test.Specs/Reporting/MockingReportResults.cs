@@ -2,7 +2,7 @@ using Baked.Reporting;
 
 namespace Baked.Test.Reporting;
 
-public class MockingReportResults : TestServiceSpec
+public class MockingReportResults : TestSpec
 {
     [Test]
     public void Mock_report_context_is_provided_during_tests()

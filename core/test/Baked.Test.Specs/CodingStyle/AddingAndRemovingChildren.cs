@@ -4,7 +4,7 @@ using System.Net.Http.Json;
 
 namespace Baked.Test.CodingStyle;
 
-public class AddingAndRemovingChildren : TestServiceNfr
+public class AddingAndRemovingChildren : TestNfr
 {
     [Test]
     public async Task AddChild()

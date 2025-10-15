@@ -3,7 +3,7 @@ using System.Net.Http.Json;
 
 namespace Baked.Test.CodingStyle;
 
-public class RoutingRichTransients : TestServiceNfr
+public class RoutingRichTransients : TestNfr
 {
     [TestCase("1")]
     [TestCase("59dfa608-9fe4-4e77-b448-a65adcfda605")]

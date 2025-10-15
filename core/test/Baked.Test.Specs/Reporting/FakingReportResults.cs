@@ -7,7 +7,7 @@ namespace Baked.Test.Reporting;
 /// Look the data in this json file to understand why fake report context
 /// returns below expected results.
 /// </note>
-public class FakingReportResults : TestServiceSpec
+public class FakingReportResults : TestSpec
 {
     [Test]
     public async Task Loads_fake_data_from_resource_using_configured_base_path()

@@ -1,6 +1,6 @@
 ﻿namespace Baked.Test.Business;
 
-public class IncludingXmlComments : TestServiceSpec
+public class IncludingXmlComments : TestSpec
 {
     [Test]
     public void Accessing_class_documentation()

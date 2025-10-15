@@ -2,7 +2,7 @@
 
 namespace Baked.Test.Communication;
 
-public class MockingClients : TestServiceSpec
+public class MockingClients : TestSpec
 {
     [Test]
     public async Task Mock_communication_allows_default_response_for_a_client()
@@ -12,7 +12,7 @@ public class MockingClients : TestServiceSpec
         var response = await client.Send(new(string.Empty, HttpMethod.Post));
 
         response.ShouldNotBeNull();
-        response.Content.ShouldBe("\"test result\"");  // this reponse result is configured through Communication.Mock feature in TestServiceSpec
+        response.Content.ShouldBe("\"test result\"");  // this reponse result is configured through Communication.Mock feature in TestSpec
     }
 
     [Test]
@@ -22,11 +22,11 @@ public class MockingClients : TestServiceSpec
 
         var response1 = await client.Send(new("path1", HttpMethod.Post));
         response1.ShouldNotBeNull();
-        response1.Content.ShouldBe("\"path1 response\"");  // this reponse result is configured through Communication.Mock feature in TestServiceSpec
+        response1.Content.ShouldBe("\"path1 response\"");  // this reponse result is configured through Communication.Mock feature in TestSpec
 
         var response2 = await client.Send(new("path2", HttpMethod.Post));
         response2.ShouldNotBeNull();
-        response2.Content.ShouldBe("\"path2 response\"");  // this reponse result is configured through Communication.Mock feature in TestServiceSpec
+        response2.Content.ShouldBe("\"path2 response\"");  // this reponse result is configured through Communication.Mock feature in TestSpec
     }
 
     [Test]

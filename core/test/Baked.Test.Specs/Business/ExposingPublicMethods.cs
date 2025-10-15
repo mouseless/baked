@@ -3,7 +3,7 @@ using System.Net.Http.Json;
 
 namespace Baked.Test.Business;
 
-public class ExposingPublicMethods : TestServiceNfr
+public class ExposingPublicMethods : TestNfr
 {
     [Test]
     public async Task Void([Values("void", "void-async")] string route)

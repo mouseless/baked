@@ -4,7 +4,7 @@ using System.Net.Http.Json;
 
 namespace Baked.Test.ExceptionHandling;
 
-public class GeneratingUnauthorizedAccessResponse : TestServiceNfr
+public class GeneratingUnauthorizedAccessResponse : TestNfr
 {
     [Test]
     public async Task Authentication_exceptions_are_handled_with_its_own_handler()

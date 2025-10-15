@@ -2,7 +2,7 @@
 
 namespace Baked.Test.Orm;
 
-public class QueryingEntities : TestServiceSpec
+public class QueryingEntities : TestSpec
 {
     [Test]
     public void When_a_single_entity_is_queried_by_a_unique_property__the_only_result_is_returned()

@@ -3,7 +3,7 @@ using System.Net.Http.Json;
 
 namespace Baked.Test.CodingStyle;
 
-public class LookingUpTransientsById : TestServiceNfr
+public class LookingUpTransientsById : TestNfr
 {
     [Test]
     public async Task TransientParameters()

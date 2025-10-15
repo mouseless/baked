@@ -4,7 +4,7 @@ using System.Net.Http.Json;
 
 namespace Baked.Test.CodingStyle;
 
-public class RoutingEntityExtensions : TestServiceNfr
+public class RoutingEntityExtensions : TestNfr
 {
     [Test]
     public async Task Extensions_are_served_under_entity_routes()

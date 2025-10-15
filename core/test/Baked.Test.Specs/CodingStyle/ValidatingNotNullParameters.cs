@@ -4,7 +4,7 @@ using System.Net.Http.Json;
 
 namespace Baked.Test.CodingStyle;
 
-public class ValidatingNotNullParameters : TestServiceNfr
+public class ValidatingNotNullParameters : TestNfr
 {
     [TestCase("value-type", "notNull")]
     [TestCase("enum", "notNull")]

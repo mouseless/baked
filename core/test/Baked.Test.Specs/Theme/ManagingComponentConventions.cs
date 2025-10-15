@@ -4,7 +4,7 @@ using Baked.Ui;
 
 namespace Baked.Test.Test;
 
-public class ManagingComponentConventions : TestServiceSpec
+public class ManagingComponentConventions : TestSpec
 {
     [Test]
     public void Adding_component_to_a_type()

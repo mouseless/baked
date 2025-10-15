@@ -2,7 +2,7 @@
 
 namespace Baked.Test.DataAccess;
 
-public class PersistingEntity : TestServiceSpec
+public class PersistingEntity : TestSpec
 {
     [Test]
     public void Created_entity_persists([ValueSource(typeof(Enum<Enumeration>), "Values")] Enumeration @enum)

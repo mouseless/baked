@@ -6,7 +6,7 @@ using System.Net;
 
 namespace Baked.Test.ExceptionHandling;
 
-public class HandlingExceptions : TestServiceSpec
+public class HandlingExceptions : TestSpec
 {
     [Test(Description = "Actual behaviour is not testable, this test is included only for documentation and to improve coverage")]
     public void HandledException_is_handled_by_default()

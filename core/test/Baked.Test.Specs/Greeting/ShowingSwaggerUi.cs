@@ -1,6 +1,6 @@
 ﻿namespace Baked.Test.Documentation;
 
-public class ShowingSwaggerUi : TestServiceNfr
+public class ShowingSwaggerUi : TestNfr
 {
     protected override bool AllowAutoRedirect => true;
 

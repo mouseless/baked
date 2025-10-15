@@ -1,6 +1,6 @@
 ﻿namespace Baked.Test.Testing;
 
-public class MockResults : TestServiceSpec
+public class MockResults : TestSpec
 {
     public interface IMockedInterface
     {
