@@ -25,6 +25,21 @@ Collective. It is, and will always be, free and open source.
   - ✅ Correct => `AddingExtensions`
 - Use `Extensions` suffix for static extension classes
 
+## Packaging
+
+We aim to release a single package per platform named `Baked` or `baked` to keep
+things simple. For now, Baked is on NuGet and npm.
+
+- We follow Microsoft's conventions, so we created implementation and
+  abstraction packages named `Baked` and `Baked.Abstractions`, respectively
+- Unfortunately, npm package `baked` is taken, so we used `@mouseless/baked` for
+  this
+  - If we need to release another npm package we'll use `@mouseless/baked-xx`
+    format
+
+If we release a package in another runtime, we'll try to keep things as simple
+and consistent as possible.
+
 ## Coding Standards
 
 - Use file scoped namespaces
