@@ -14,8 +14,8 @@
       `PersistentPopover.vue` and `BasePersistentPopover.vue`
 - [ ] Add release notes
 - [ ] Update `baked` version
-    - [ ] `src/Directory.Build.props`
-    - [ ] `src/recipe/admin/package.json`
+    - [ ] `core/src/Directory.Build.props`
+    - [ ] `ui/package.json`
     - [ ] reinstall to update package lock files
 - [ ] Publish packages and docs site
 - [ ] Create GitHub release

@@ -7,11 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\core\src\Baked.Recipe.Service\Baked.Recipe.Service.csproj" />
-    <ProjectReference Include="..\..\..\..\core\src\Baked.Recipe.Service.Application\Baked.Recipe.Service.Application.csproj" />
+    <ProjectReference Include="..\..\..\..\core\src\Baked.Abstractions\Baked.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\..\core\src\Baked\Baked.csproj" />
     <ProjectReference Include="..\Mouseless.EventScheduler\Mouseless.EventScheduler.csproj" />
   </ItemGroup>
 
-  <Import Project="..\..\..\..\core\src\Baked.Recipe.Service.Application\Baked.Recipe.Service.Application.targets" />
+  <Import Project="..\..\..\..\core\src\Baked\Baked.targets" />
 
 </Project>
