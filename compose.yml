@@ -5,7 +5,7 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: Baked
+      MYSQL_DATABASE: Baked.Test
       MYSQL_TCP_PORT: 3366
     ports:
       - 3366:3366
@@ -21,11 +21,11 @@ services:
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
-      POSTGRES_DB: Baked
+      POSTGRES_DB: Baked.Test
     ports:
       - 5432:5432
     healthcheck:
-      test: ["CMD-SHELL", "sh -c 'pg_isready -U root -d Baked'"]
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U root -d Baked.Test'"]
       start_period: 10s
       interval: 10s
       timeout: 5s

@@ -6,8 +6,8 @@ format:
 	@(cd ui && npm run lint -- --fix)
 	@(cd docs/.theme && npm run lint -- --fix)
 fix:
-	@if [ -n "$(FILE)" ]; then \
-		npx eslint $(subst ui/,,$(FILE)) --fix; \
+	@if [ -n "$(FILE)" ] ; then \
+		npx eslint $(subst ui/,,$(FILE)) --fix ; \
 	fi
 install:
 	@(cd core/test/Baked.Test.LoadTest && npm i && npm ci)
@@ -33,11 +33,11 @@ run:
 	@echo "(2) UI (Development)"
 	@echo "(3) Docker (Production)"
 	@echo "(4) Docs"
-	@read -p "Please select 1-4: " app; \
+	@read -p "Please select 1-4: " app ; \
 	case $$app in \
-		1) dotnet run --project core/test/Baked.Test.Application ;; \
-		2) (cd ui && npm run dev) ;; \
-		3) docker compose up --build ;; \
-		4) (cd docs && make run) ;; \
-		*) echo "Invalid option";; \
+		1) dotnet run --project core/test/Baked.Test.Application ; \
+		2) (cd ui && npm run dev) ; \
+		3) docker compose up --build ; \
+		4) (cd docs && make run) ; \
+		*) echo "Invalid option" ; \
 	esac
