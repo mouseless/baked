@@ -10,6 +10,7 @@ fix:
 		npx eslint $(subst ui/,,$(FILE)) --fix ; \
 	fi
 install:
+	@(cd core && dotnet restore)
 	@(cd core/test/Baked.Test.LoadTest && npm i && npm ci)
 	@(cd core/test/Baked.Test.StubApi && npm i && npm ci)
 	@(cd docs/.theme && npm i && npm ci)

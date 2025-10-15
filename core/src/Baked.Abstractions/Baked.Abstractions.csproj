@@ -3,7 +3,7 @@
   <PropertyGroup>
     <AssemblyTitle>Baked.Abstractions</AssemblyTitle>
     <Title>Baked Abstractions</Title>
-    <Description>Baked is an opinionated framework for .NET. This is Baked's abstractions package that brings together all the feature abstractions.</Description>
+    <Description>Baked is an opinionated framework for .NET and Vue. This is Baked's abstractions package that brings together all the feature abstractions.</Description>
     <PackageId>Baked.Abstractions</PackageId>
     <PackageTags>baked;abstractions</PackageTags>
   </PropertyGroup>

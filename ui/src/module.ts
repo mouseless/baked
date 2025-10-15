@@ -54,7 +54,7 @@ const resolver = createResolver(import.meta.url);
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
-    name: "baked-recipe-admin",
+    name: "@mouseless/baked",
     configKey: "baked"
   },
   defaults: { },

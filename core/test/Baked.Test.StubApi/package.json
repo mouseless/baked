@@ -1,13 +1,6 @@
 {
-  "name": "api",
-  "version": "1.0.0",
+  "name": "Baked.Test.StubApi",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
     "cors": "2.8.5",
     "express": "5.1.0"
