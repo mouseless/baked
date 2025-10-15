@@ -1,5 +1,5 @@
 {
-  "name": "baked-recipe-admin-playground",
+  "name": "@mouseless/baked-playground",
   "private": true,
   "type": "module",
   "scripts": {
@@ -14,8 +14,8 @@
     "sass": "$sass"
   },
   "dependencies": {
+    "@mouseless/baked": "$@mouseless/baked",
     "@primeuix/themes": "$@primeuix/themes",
-    "baked-recipe-admin": "$baked-recipe-admin",
     "nuxt": "$nuxt"
   }
 }
