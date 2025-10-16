@@ -14,6 +14,7 @@
       v-bind="$attrs"
       :input-id="path"
       :options="data"
+      :option-label="optionLabel"
       :placeholder="label"
       :show-clear
       class="hide-placeholder"
