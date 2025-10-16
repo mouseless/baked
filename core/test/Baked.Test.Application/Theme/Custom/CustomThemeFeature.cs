@@ -44,7 +44,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
             builder.Conventions.AddMethodComponent(
                 component: (c, cc) => MethodString(c.Method, cc),
                 when: c => c.Method.DefaultOverload.ReturnType.Is<string>(),
-                whenComponent: c => c.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content))
+                where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content))
             );
 
             // None localized enums
@@ -107,12 +107,12 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
             builder.Conventions.AddTypeComponent(
                 component: () => B.Icon("pi-box"),
                 when: c => c.Type.Is<Report>(),
-                whenComponent: cc => cc.Path.EndsWith("SingleValue", nameof(ReportPage.Tab.Icon))
+                where: cc => cc.Path.EndsWith("SingleValue", nameof(ReportPage.Tab.Icon))
             );
             builder.Conventions.AddTypeComponent(
                 component: () => B.Icon("pi-table"),
                 when: c => c.Type.Is<Report>(),
-                whenComponent: cc => cc.Path.EndsWith("DataTable", nameof(ReportPage.Tab.Icon))
+                where: cc => cc.Path.EndsWith("DataTable", nameof(ReportPage.Tab.Icon))
             );
 
             // Allowing admin token for report api

@@ -15,7 +15,7 @@ public class ListIsDataTableUxFeature : IFeature<UxConfigurator>
             builder.Conventions.AddMethodComponent(
                 component: (c, cc) => MethodDataTable(c.Method, cc),
                 when: c => c.Method.Has<ActionModelAttribute>() && c.Method.DefaultOverload.ReturnsList(),
-                whenComponent: c => c.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content))
+                where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content))
             );
             builder.Conventions.AddMethodComponentConfiguration<DataTable>(
                 component: (dt, c, cc) =>

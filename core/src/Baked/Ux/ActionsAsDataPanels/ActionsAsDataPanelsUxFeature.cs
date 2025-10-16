@@ -16,12 +16,12 @@ public class ActionsAsDataPanelsUxFeature : IFeature<UxConfigurator>
             builder.Conventions.AddMethodComponent(
                 component: (c, cc) => MethodDataPanel(c.Method, cc),
                 when: c => c.Method.Has<ActionModelAttribute>(),
-                whenComponent: c => c.Path.EndsWith(nameof(ReportPage.Tabs), "*", nameof(ReportPage.Tab.Contents), "*", "*", nameof(ReportPage.Tab.Content.Component))
+                where: cc => cc.Path.EndsWith(nameof(ReportPage.Tabs), "*", nameof(ReportPage.Tab.Contents), "*", "*", nameof(ReportPage.Tab.Content.Component))
             );
             builder.Conventions.AddMethodSchema(
                 schema: (c, cc) => MethodNameInline(c.Method, cc),
                 when: c => c.Method.Has<ActionModelAttribute>(),
-                whenComponent: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Title))
+                where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Title))
             );
             builder.Conventions.AddMethodComponentConfiguration<DataPanel>(
                 component: (dp, c, cc) =>

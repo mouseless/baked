@@ -55,7 +55,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                     c.Method.Has<ActionModelAttribute>() &&
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMetadata(out var returnMetadata) &&
                     returnMetadata.Has<ObjectWithListAttribute>(),
-                whenComponent: c => c.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content))
+                where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content))
             );
             builder.Conventions.AddMethodComponentConfiguration<DataTable>(
                 component: (dt, c) =>
@@ -134,7 +134,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                     dtc.Title = null;
                     dtc.Exportable = null;
                 },
-                whenComponent: c => c.Path.Contains(nameof(DataTable), nameof(DataTable.FooterTemplate)),
+                where: cc => cc.Path.Contains(nameof(DataTable), nameof(DataTable.FooterTemplate)),
                 order: 10
             );
         });

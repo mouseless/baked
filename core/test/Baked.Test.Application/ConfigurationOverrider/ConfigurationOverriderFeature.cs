@@ -104,7 +104,7 @@ public class ConfigurationOverriderFeature : IFeature
             builder.Conventions.AddTypeComponent(
                 component: () => B.ReportPage("test-page", B.PageTitle("Test Page")),
                 when: c => c.Type.Is<TestPage>(),
-                whenComponent: cc => cc.Path.EndsWith(nameof(Page))
+                where: cc => cc.Path.EndsWith(nameof(Page))
             );
             builder.Conventions.AddTypeComponentConfiguration<ReportPage>(
                 component: (reportPage, c, cc) => reportPage.Schema.Tabs.AddRange(
@@ -115,7 +115,7 @@ public class ConfigurationOverriderFeature : IFeature
             builder.Conventions.AddTypeSchema(
                 schema: (c, cc) => B.ReportPageTab("default"),
                 when: c => c.Type.Is<TestPage>(),
-                whenComponent: cc => cc.Path.EndsWith(nameof(ReportPage.Tabs))
+                where: cc => cc.Path.EndsWith(nameof(ReportPage.Tabs))
             );
             builder.Conventions.AddTypeSchemaConfiguration<ReportPage.Tab>(
                 schema: (tab, c, cc) => tab.Contents.Add(
@@ -130,7 +130,7 @@ public class ConfigurationOverriderFeature : IFeature
             builder.Conventions.AddMethodSchema(
                 schema: (c, cc) => B.ReportPageTabContent(component: c.Method.GetRequiredComponent(cc.Drill(nameof(ReportPage.Tab.Content.Component))), c.Method.Name.Kebaberize()),
                 when: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData),
-                whenComponent: c => c.Path.EndsWith(nameof(ReportPage.Tab.Contents), 0)
+                where: cc => cc.Path.EndsWith(nameof(ReportPage.Tab.Contents), 0)
             );
             builder.Conventions.AddMethodSchemaConfiguration<ReportPage.Tab.Content>(
                 schema: tabContent => tabContent.Narrow = true,
@@ -139,7 +139,7 @@ public class ConfigurationOverriderFeature : IFeature
             builder.Conventions.AddMethodComponent(
                 component: (c, cc) => MethodString(c.Method, cc),
                 when: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData),
-                whenComponent: cc => cc.Path.EndsWith(nameof(ReportPage.Tab.Content.Component))
+                where: cc => cc.Path.EndsWith(nameof(ReportPage.Tab.Content.Component))
             );
             builder.Conventions.AddMethodComponentConfiguration<Baked.Ui.String>(
                 component: (@string) => @string.Schema.MaxLength = 20,
