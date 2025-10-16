@@ -8,16 +8,16 @@ using static Baked.Test.Theme.Custom.Components;
 using static Baked.Test.Theme.Custom.DomainComponents;
 using static Baked.Theme.Default.DomainComponents;
 using static Baked.Theme.Default.DomainDatas;
-using static Baked.Ui.Components;
 using static Baked.Ui.Datas;
 
+using B = Baked.Ui.Components;
 using Route = Baked.Theme.Route;
 
 namespace Baked.Test.Theme.Custom;
 
 public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
     : DefaultThemeFeature(routes.Select(r => r(new())),
-        _sideMenuOptions: sm => sm.Footer = LanguageSwitcher()
+        _sideMenuOptions: sm => sm.Footer = B.LanguageSwitcher()
     )
 {
     public override void Configure(LayerConfigurator configurator)
@@ -44,7 +44,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
             builder.Conventions.AddMethodComponent(
                 component: (c, cc) => MethodString(c.Method, cc),
                 whenMethod: c => c.Method.DefaultOverload.ReturnType.Is<string>(),
-                whenComponent: c => c.Path.EndsWith(nameof(Ui.DataPanel), nameof(Ui.DataPanel.Content))
+                whenComponent: c => c.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content))
             );
 
             // None localized enums
@@ -87,7 +87,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
                 whenMethod: c => c.Type.Is<DataTable>()
             );
             builder.Conventions.AddMethodSchema(
-                schema: () => DataTableVirtualScroller(options: dtvs => dtvs.ItemSize = 45),
+                schema: () => B.DataTableVirtualScroller(options: dtvs => dtvs.ItemSize = 45),
                 whenMethod: c => c.Type.Is<DataTable>()
             );
 
@@ -105,14 +105,14 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
                 when: (_, c) => c.Type.Is<Report>() && c.Method.DefaultOverload.ReturnsList()
             );
             builder.Conventions.AddTypeComponent(
-                component: () => Icon("pi-box"),
+                component: () => B.Icon("pi-box"),
                 whenType: c => c.Type.Is<Report>(),
-                whenComponent: cc => cc.Path.EndsWith("SingleValue", nameof(Ui.ReportPage.Tab.Icon))
+                whenComponent: cc => cc.Path.EndsWith("SingleValue", nameof(ReportPage.Tab.Icon))
             );
             builder.Conventions.AddTypeComponent(
-                component: () => Icon("pi-table"),
+                component: () => B.Icon("pi-table"),
                 whenType: c => c.Type.Is<Report>(),
-                whenComponent: cc => cc.Path.EndsWith("DataTable", nameof(Ui.ReportPage.Tab.Icon))
+                whenComponent: cc => cc.Path.EndsWith("DataTable", nameof(ReportPage.Tab.Icon))
             );
 
             // Allowing admin token for report api

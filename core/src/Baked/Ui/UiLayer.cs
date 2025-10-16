@@ -3,7 +3,6 @@ using Baked.CodeGeneration;
 using Baked.Ui.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System.Diagnostics.CodeAnalysis;
 
 using static Baked.CodeGeneration.CodeGenerationLayer;
 
@@ -11,9 +10,6 @@ namespace Baked.Ui;
 
 public class UiLayer : LayerBase<GenerateCode>
 {
-    [return: NotNullIfNotNull(nameof(key))]
-    public delegate string? NewLocaleKey(string? key);
-
     public AppDescriptor _appDescriptor = new();
     public ComponentExports _componentExports = new();
     public LayoutDescriptors _layoutDescriptors = new();

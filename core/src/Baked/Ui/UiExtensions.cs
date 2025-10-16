@@ -2,8 +2,6 @@
 using Baked.Ui;
 using Baked.Ui.Configuration;
 
-using static Baked.Ui.UiLayer;
-
 namespace Baked;
 
 public static class UiExtensions
