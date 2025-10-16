@@ -14,14 +14,16 @@ public class UseNullableTypesCodingStyleFeature : IFeature<CodingStyleConfigurat
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Conventions.SetTypeAttribute(new ApiInputAttribute(),
+            builder.Conventions.SetTypeAttribute(
+                attribute: () => new ApiInputAttribute(),
                 when: c =>
                     c.Type.IsAssignableTo(typeof(Nullable<>)) &&
                     c.Type.GenericTypeArguments.FirstOrDefault()?.Model.TryGetMetadata(out var genericArgumentMetadata) == true &&
                     genericArgumentMetadata.Has<ApiInputAttribute>(),
                 order: RestApiLayer.MinConventionOrder
             );
-            builder.Conventions.SetParameterAttribute(new NotNullAttribute(),
+            builder.Conventions.SetParameterAttribute(
+                attribute: () => new NotNullAttribute(),
                 when: c =>
                 {
                     var nullable = false;

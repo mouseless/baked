@@ -14,7 +14,7 @@ public class DesignatedStringPropertiesAreLabelUxFeature(IEnumerable<string> pro
         {
             builder.Index.Property.Add<LabelAttribute>();
             builder.Conventions.SetPropertyAttribute(
-                attribute: new LabelAttribute(),
+                attribute: () => new LabelAttribute(),
                 when: c => c.Property.PropertyType.Is<string>() && _propertyNames.Contains(c.Property.Name)
             );
             builder.Conventions.AddPropertySchemaConfiguration<DataTable.Column>(

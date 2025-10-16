@@ -52,7 +52,7 @@ public class ConfigurationOverriderFeature : IFeature
             );
 
             builder.Conventions.SetTypeAttribute(
-                attribute: _ => new CustomAttribute(),
+                attribute: () => new CustomAttribute(),
                 when: c => c.Type.Is<Class>()
             );
             builder.Conventions.AddTypeAttributeConfiguration<CustomAttribute>(
@@ -61,7 +61,7 @@ public class ConfigurationOverriderFeature : IFeature
             );
 
             builder.Conventions.SetPropertyAttribute(
-                attribute: _ => new CustomAttribute(),
+                attribute: () => new CustomAttribute(),
                 when: c =>
                     c.Type.Is<Record>() &&
                     c.Property.Name == nameof(Record.Text)
@@ -74,7 +74,7 @@ public class ConfigurationOverriderFeature : IFeature
             );
 
             builder.Conventions.SetMethodAttribute(
-                attribute: _ => new CustomAttribute(),
+                attribute: () => new CustomAttribute(),
                 when: c =>
                     c.Type.Is<Class>() &&
                     c.Method.Name == nameof(Class.Method)
@@ -87,7 +87,7 @@ public class ConfigurationOverriderFeature : IFeature
             );
 
             builder.Conventions.SetParameterAttribute(
-                attribute: _ => new CustomAttribute(),
+                attribute: () => new CustomAttribute(),
                 when: c =>
                     c.Type.Is<MethodSamples>() &&
                     c.Method.Name == nameof(MethodSamples.PrimitiveParameters) &&
@@ -102,7 +102,7 @@ public class ConfigurationOverriderFeature : IFeature
             );
 
             builder.Conventions.AddTypeComponent(
-                component: (_, cc) => B.ReportPage("test-page", B.PageTitle("Test Page")),
+                component: () => B.ReportPage("test-page", B.PageTitle("Test Page")),
                 when: c => c.Type.Is<TestPage>(),
                 whenComponent: cc => cc.Path.EndsWith(nameof(Page))
             );

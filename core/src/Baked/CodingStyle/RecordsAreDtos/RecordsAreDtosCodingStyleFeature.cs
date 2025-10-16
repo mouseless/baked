@@ -9,7 +9,8 @@ public class RecordsAreDtosCodingStyleFeature : IFeature<CodingStyleConfigurator
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Conventions.SetTypeAttribute(new ApiInputAttribute(),
+            builder.Conventions.SetTypeAttribute(
+                attribute: () => new ApiInputAttribute(),
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
                     members.Methods.Contains("<Clone>$") // if type is record

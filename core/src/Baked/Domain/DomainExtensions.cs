@@ -141,9 +141,9 @@ public static class DomainExtensions
 
     #region Attribute Add/Set/Remove
 
-    public static void SetTypeAttribute(this IDomainModelConventionCollection conventions, Attribute attribute, Func<TypeModelMetadataContext, bool> when,
+    public static void SetTypeAttribute(this IDomainModelConventionCollection conventions, Func<Attribute> attribute, Func<TypeModelMetadataContext, bool> when,
         int order = default
-    ) => conventions.SetTypeAttribute((context, set) => set(context.Type, attribute), when, order);
+    ) => conventions.SetTypeAttribute((context, set) => set(context.Type, attribute()), when, order);
 
     public static void SetTypeAttribute(this IDomainModelConventionCollection conventions, Func<TypeModelMetadataContext, Attribute> attribute, Func<TypeModelMetadataContext, bool> when,
         int order = default
@@ -153,9 +153,9 @@ public static class DomainExtensions
         int order = default
     ) => conventions.Add(new SetAttributeConvention<TypeModelMetadataContext>(apply, when), order);
 
-    public static void AddTypeAttribute(this IDomainModelConventionCollection conventions, Attribute attribute, Func<TypeModelMetadataContext, bool> when,
+    public static void AddTypeAttribute(this IDomainModelConventionCollection conventions, Func<Attribute> attribute, Func<TypeModelMetadataContext, bool> when,
         int order = default
-    ) => conventions.AddTypeAttribute((context, add) => add(context.Type, attribute), when, order);
+    ) => conventions.AddTypeAttribute((context, add) => add(context.Type, attribute()), when, order);
 
     public static void AddTypeAttribute(this IDomainModelConventionCollection conventions, Func<TypeModelMetadataContext, Attribute> attribute, Func<TypeModelMetadataContext, bool> when,
         int order = default
@@ -170,9 +170,9 @@ public static class DomainExtensions
     ) where TAttribute : Attribute =>
         conventions.Add(new RemoveAttributeConvention<TypeModelMetadataContext, TAttribute>((context, remove) => remove(context.Type), when), order);
 
-    public static void SetPropertyAttribute(this IDomainModelConventionCollection conventions, Attribute attribute, Func<PropertyModelContext, bool> when,
+    public static void SetPropertyAttribute(this IDomainModelConventionCollection conventions, Func<Attribute> attribute, Func<PropertyModelContext, bool> when,
         int order = default
-    ) => conventions.SetPropertyAttribute((context, set) => set(context.Property, attribute), when, order);
+    ) => conventions.SetPropertyAttribute((context, set) => set(context.Property, attribute()), when, order);
 
     public static void SetPropertyAttribute(this IDomainModelConventionCollection conventions, Func<PropertyModelContext, Attribute> attribute, Func<PropertyModelContext, bool> when,
         int order = default
@@ -182,9 +182,9 @@ public static class DomainExtensions
         int order = default
     ) => conventions.Add(new SetAttributeConvention<PropertyModelContext>(apply, when), order);
 
-    public static void AddPropertyAttribute(this IDomainModelConventionCollection conventions, Attribute attribute, Func<PropertyModelContext, bool> when,
+    public static void AddPropertyAttribute(this IDomainModelConventionCollection conventions, Func<Attribute> attribute, Func<PropertyModelContext, bool> when,
         int order = default
-    ) => conventions.AddPropertyAttribute((context, add) => add(context.Property, attribute), when, order);
+    ) => conventions.AddPropertyAttribute((context, add) => add(context.Property, attribute()), when, order);
 
     public static void AddPropertyAttribute(this IDomainModelConventionCollection conventions, Func<PropertyModelContext, Attribute> attribute, Func<PropertyModelContext, bool> when,
         int order = default
@@ -199,9 +199,9 @@ public static class DomainExtensions
     ) where TAttribute : Attribute =>
         conventions.Add(new RemoveAttributeConvention<PropertyModelContext, TAttribute>((context, remove) => remove(context.Property), when), order);
 
-    public static void SetMethodAttribute(this IDomainModelConventionCollection conventions, Attribute attribute, Func<MethodModelContext, bool> when,
+    public static void SetMethodAttribute(this IDomainModelConventionCollection conventions, Func<Attribute> attribute, Func<MethodModelContext, bool> when,
         int order = default
-    ) => conventions.SetMethodAttribute((context, set) => set(context.Method, attribute), when, order);
+    ) => conventions.SetMethodAttribute((context, set) => set(context.Method, attribute()), when, order);
 
     public static void SetMethodAttribute(this IDomainModelConventionCollection conventions, Func<MethodModelContext, Attribute> attribute, Func<MethodModelContext, bool> when,
         int order = default
@@ -211,9 +211,9 @@ public static class DomainExtensions
         int order = default
     ) => conventions.Add(new SetAttributeConvention<MethodModelContext>(apply, when), order);
 
-    public static void AddMethodAttribute(this IDomainModelConventionCollection conventions, Attribute attribute, Func<MethodModelContext, bool> when,
+    public static void AddMethodAttribute(this IDomainModelConventionCollection conventions, Func<Attribute> attribute, Func<MethodModelContext, bool> when,
         int order = default
-    ) => conventions.AddMethodAttribute((context, add) => add(context.Method, attribute), when, order);
+    ) => conventions.AddMethodAttribute((context, add) => add(context.Method, attribute()), when, order);
 
     public static void AddMethodAttribute(this IDomainModelConventionCollection conventions, Func<MethodModelContext, Attribute> attribute, Func<MethodModelContext, bool> when,
         int order = default
@@ -228,9 +228,9 @@ public static class DomainExtensions
     ) where TAttribute : Attribute =>
         conventions.Add(new RemoveAttributeConvention<MethodModelContext, TAttribute>((context, remove) => remove(context.Method), when), order);
 
-    public static void SetParameterAttribute(this IDomainModelConventionCollection conventions, Attribute attribute, Func<ParameterModelContext, bool> when,
+    public static void SetParameterAttribute(this IDomainModelConventionCollection conventions, Func<Attribute> attribute, Func<ParameterModelContext, bool> when,
         int order = default
-    ) => conventions.SetParameterAttribute((context, set) => set(context.Parameter, attribute), when, order);
+    ) => conventions.SetParameterAttribute((context, set) => set(context.Parameter, attribute()), when, order);
 
     public static void SetParameterAttribute(this IDomainModelConventionCollection conventions, Func<ParameterModelContext, Attribute> attribute, Func<ParameterModelContext, bool> when,
         int order = default
@@ -240,9 +240,9 @@ public static class DomainExtensions
         int order = default
     ) => conventions.Add(new SetAttributeConvention<ParameterModelContext>(apply, when), order);
 
-    public static void AddParameterAttribute(this IDomainModelConventionCollection conventions, Attribute attribute, Func<ParameterModelContext, bool> when,
+    public static void AddParameterAttribute(this IDomainModelConventionCollection conventions, Func<Attribute> attribute, Func<ParameterModelContext, bool> when,
         int order = default
-    ) => conventions.AddParameterAttribute((context, add) => add(context.Parameter, attribute), when, order);
+    ) => conventions.AddParameterAttribute((context, add) => add(context.Parameter, attribute()), when, order);
 
     public static void AddParameterAttribute(this IDomainModelConventionCollection conventions, Func<ParameterModelContext, Attribute> attribute, Func<ParameterModelContext, bool> when,
         int order = default
