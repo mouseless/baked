@@ -12,7 +12,7 @@ public class AddRemoveChildCodingStyleFeature : IFeature<CodingStyleConfigurator
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Conventions.AddMethodMetadataConfiguration<ActionModelAttribute>(
+            builder.Conventions.AddMethodAttributeConfiguration<ActionModelAttribute>(
                 attribute: action =>
                 {
                     var newName = action.Name.Pluralize();

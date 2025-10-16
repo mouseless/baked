@@ -96,11 +96,11 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
             #region Report Page Overrides
 
             // Tabs
-            builder.Conventions.AddMethodMetadataConfiguration<TabNameAttribute>(
+            builder.Conventions.AddMethodAttributeConfiguration<TabNameAttribute>(
                 attribute: (tabName, c) => tabName.Value = "SingleValue",
                 when: c => c.Type.Is<Report>() && c.Method.DefaultOverload.ReturnType.SkipTask().Is<string>()
             );
-            builder.Conventions.AddMethodMetadataConfiguration<TabNameAttribute>(
+            builder.Conventions.AddMethodAttributeConfiguration<TabNameAttribute>(
                 attribute: (tabName, c) => tabName.Value = "DataTable",
                 when: c => c.Type.Is<Report>() && c.Method.DefaultOverload.ReturnsList()
             );

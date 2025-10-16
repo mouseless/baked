@@ -51,49 +51,49 @@ public class ConfigurationOverriderFeature : IFeature
                 useRequestClassForBody: false
             );
 
-            builder.Conventions.SetTypeMetadata(
+            builder.Conventions.SetTypeAttribute(
                 attribute: _ => new CustomAttribute(),
                 when: c => c.Type.Is<Class>()
             );
-            builder.Conventions.AddTypeMetadataConfiguration<CustomAttribute>(
+            builder.Conventions.AddTypeAttributeConfiguration<CustomAttribute>(
                 attribute: attr => attr.Value = "FROM CONVENTION",
                 when: c => c.Type.Is<Class>()
             );
 
-            builder.Conventions.SetPropertyMetadata(
+            builder.Conventions.SetPropertyAttribute(
                 attribute: _ => new CustomAttribute(),
                 when: c =>
                     c.Type.Is<Record>() &&
                     c.Property.Name == nameof(Record.Text)
             );
-            builder.Conventions.AddPropertyMetadataConfiguration<CustomAttribute>(
+            builder.Conventions.AddPropertyAttributeConfiguration<CustomAttribute>(
                 attribute: attr => attr.Value = "FROM CONVENTION",
                 when: c =>
                     c.Type.Is<Record>() &&
                     c.Property.Name == nameof(Record.Text)
             );
 
-            builder.Conventions.SetMethodMetadata(
+            builder.Conventions.SetMethodAttribute(
                 attribute: _ => new CustomAttribute(),
                 when: c =>
                     c.Type.Is<Class>() &&
                     c.Method.Name == nameof(Class.Method)
             );
-            builder.Conventions.AddMethodMetadataConfiguration<CustomAttribute>(
+            builder.Conventions.AddMethodAttributeConfiguration<CustomAttribute>(
                 attribute: attr => attr.Value = "FROM CONVENTION",
                 when: c =>
                     c.Type.Is<Class>() &&
                     c.Method.Name == nameof(Class.Method)
             );
 
-            builder.Conventions.SetParameterMetadata(
+            builder.Conventions.SetParameterAttribute(
                 attribute: _ => new CustomAttribute(),
                 when: c =>
                     c.Type.Is<MethodSamples>() &&
                     c.Method.Name == nameof(MethodSamples.PrimitiveParameters) &&
                     c.Parameter.Name == "string"
             );
-            builder.Conventions.AddParameterMetadataConfiguration<CustomAttribute>(
+            builder.Conventions.AddParameterAttributeConfiguration<CustomAttribute>(
                 attribute: attr => attr.Value = "FROM CONVENTION",
                 when: c =>
                     c.Type.Is<MethodSamples>() &&

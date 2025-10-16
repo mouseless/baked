@@ -3,9 +3,9 @@ using Baked.Domain.Model;
 
 namespace Baked.Domain.Conventions;
 
-public class TypeMetadataConfigurationConvention<TAttribute>(Action<TAttribute, TypeModelMetadataContext> apply,
+public class TypeAttributeConfigurationConvention<TAttribute>(Action<TAttribute, TypeModelMetadataContext> apply,
     Func<TypeModelMetadataContext, TAttribute, bool>? when = default
-) : MetadataConfigurationConventionBase<TypeModelMetadataContext, TAttribute>(apply, when: when)
+) : AttributeConfigurationConventionBase<TypeModelMetadataContext, TAttribute>(apply, when: when)
     where TAttribute : Attribute
 {
     protected override ICustomAttributesModel GetMetadata(TypeModelMetadataContext context) =>

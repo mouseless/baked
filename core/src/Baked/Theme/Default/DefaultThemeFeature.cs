@@ -26,7 +26,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
         {
             // Property Defaults
             builder.Index.Property.Add<DataAttribute>();
-            builder.Conventions.SetPropertyMetadata(
+            builder.Conventions.SetPropertyAttribute(
                 attribute: c => new DataAttribute(c.Property.Name.Camelize()) { Label = c.Property.Name.Titleize() },
                 when: c => c.Property.IsPublic,
                 order: -10
@@ -42,7 +42,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
             // Method Defaults
             builder.Index.Method.Add<TabNameAttribute>();
-            builder.Conventions.SetMethodMetadata(
+            builder.Conventions.SetMethodAttribute(
                 attribute: _ => new TabNameAttribute(),
                 when: c => c.Method.Has<ActionModelAttribute>(),
                 order: RestApiLayer.MaxConventionOrder + 10

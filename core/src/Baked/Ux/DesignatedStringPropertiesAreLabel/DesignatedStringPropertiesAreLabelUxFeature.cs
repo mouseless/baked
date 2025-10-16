@@ -13,7 +13,7 @@ public class DesignatedStringPropertiesAreLabelUxFeature(IEnumerable<string> pro
         configurator.ConfigureDomainModelBuilder(builder =>
         {
             builder.Index.Property.Add<LabelAttribute>();
-            builder.Conventions.SetPropertyMetadata(
+            builder.Conventions.SetPropertyAttribute(
                 attribute: new LabelAttribute(),
                 when: c => c.Property.PropertyType.Is<string>() && _propertyNames.Contains(c.Property.Name)
             );

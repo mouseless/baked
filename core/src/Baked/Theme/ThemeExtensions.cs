@@ -216,7 +216,7 @@ public static class ThemeExtensions
         whenComponent ??= c => true;
         order += RestApiLayer.MaxConventionOrder * 2;
 
-        conventions.AddTypeMetadata(
+        conventions.AddTypeAttribute(
             attribute: c => new DescriptorBuilderAttribute<TSchema>()
             {
                 Builder = cc => schema(c, cc),
@@ -259,7 +259,7 @@ public static class ThemeExtensions
         whenComponent ??= c => true;
         order += RestApiLayer.MaxConventionOrder * 2;
 
-        conventions.AddPropertyMetadata(
+        conventions.AddPropertyAttribute(
             attribute: c => new DescriptorBuilderAttribute<TSchema>()
             {
                 Builder = cc => schema(c, cc),
@@ -302,7 +302,7 @@ public static class ThemeExtensions
         whenComponent ??= c => true;
         order += RestApiLayer.MaxConventionOrder * 2;
 
-        conventions.AddMethodMetadata(
+        conventions.AddMethodAttribute(
             attribute: c => new DescriptorBuilderAttribute<TSchema>()
             {
                 Builder = cc => schema(c, cc),
@@ -345,7 +345,7 @@ public static class ThemeExtensions
         whenComponent ??= c => true;
         order += RestApiLayer.MaxConventionOrder * 2;
 
-        conventions.AddParameterMetadata(
+        conventions.AddParameterAttribute(
             attribute: c => new DescriptorBuilderAttribute<TSchema>()
             {
                 Builder = cc => schema(c, cc),
@@ -389,7 +389,7 @@ public static class ThemeExtensions
         when ??= _ => true;
         whenComponent ??= _ => true;
 
-        conventions.AddTypeMetadataConfiguration<DescriptorBuilderAttribute<TSchema>>(
+        conventions.AddTypeAttributeConfiguration<DescriptorBuilderAttribute<TSchema>>(
             attribute: (attribute, c) => attribute.WrapBuilder(
                 apply: (s, cc) => schema(s, c, cc),
                 when: whenComponent
@@ -428,7 +428,7 @@ public static class ThemeExtensions
         when ??= _ => true;
         whenComponent ??= _ => true;
 
-        conventions.AddPropertyMetadataConfiguration<DescriptorBuilderAttribute<TSchema>>(
+        conventions.AddPropertyAttributeConfiguration<DescriptorBuilderAttribute<TSchema>>(
             attribute: (attribute, c) => attribute.WrapBuilder(
                 apply: (s, cc) => schema(s, c, cc),
                 when: whenComponent
@@ -467,7 +467,7 @@ public static class ThemeExtensions
         when ??= _ => true;
         whenComponent ??= _ => true;
 
-        conventions.AddMethodMetadataConfiguration<DescriptorBuilderAttribute<TSchema>>(
+        conventions.AddMethodAttributeConfiguration<DescriptorBuilderAttribute<TSchema>>(
             attribute: (attribute, c) => attribute.WrapBuilder(
                 apply: (s, cc) => schema(s, c, cc),
                 when: whenComponent
@@ -506,7 +506,7 @@ public static class ThemeExtensions
         when ??= _ => true;
         whenComponent ??= _ => true;
 
-        conventions.AddParameterMetadataConfiguration<DescriptorBuilderAttribute<TSchema>>(
+        conventions.AddParameterAttributeConfiguration<DescriptorBuilderAttribute<TSchema>>(
             attribute: (attribute, c) => attribute.WrapBuilder(
                 apply: (s, cc) => schema(s, c, cc),
                 when: whenComponent
@@ -583,7 +583,7 @@ public static class ThemeExtensions
         whenComponent ??= c => true;
         order += RestApiLayer.MaxConventionOrder * 2;
 
-        conventions.AddTypeMetadata(
+        conventions.AddTypeAttribute(
             apply: (c, add) =>
             {
                 add(c.Type, new ComponentDescriptorBuilderAttribute<TSchema>()
@@ -635,7 +635,7 @@ public static class ThemeExtensions
         whenComponent ??= c => true;
         order += RestApiLayer.MaxConventionOrder * 2;
 
-        conventions.AddPropertyMetadata(
+        conventions.AddPropertyAttribute(
             apply: (c, add) =>
             {
                 add(c.Property, new ComponentDescriptorBuilderAttribute<TSchema>()
@@ -687,7 +687,7 @@ public static class ThemeExtensions
         whenComponent ??= c => true;
         order += RestApiLayer.MaxConventionOrder * 2;
 
-        conventions.AddMethodMetadata(
+        conventions.AddMethodAttribute(
             apply: (c, add) =>
             {
                 add(c.Method, new ComponentDescriptorBuilderAttribute<TSchema>()
@@ -739,7 +739,7 @@ public static class ThemeExtensions
         whenComponent ??= c => true;
         order += RestApiLayer.MaxConventionOrder * 2;
 
-        conventions.AddParameterMetadata(
+        conventions.AddParameterAttribute(
             apply: (c, add) =>
             {
                 add(c.Parameter, new ComponentDescriptorBuilderAttribute<TSchema>()
@@ -792,7 +792,7 @@ public static class ThemeExtensions
         when ??= _ => true;
         whenComponent ??= _ => true;
 
-        conventions.AddTypeMetadataConfiguration<ComponentDescriptorBuilderAttribute<TSchema>>(
+        conventions.AddTypeAttributeConfiguration<ComponentDescriptorBuilderAttribute<TSchema>>(
             attribute: (attribute, c) => attribute.WrapBuilder(
                 apply: (d, cc) => component(d, c, cc),
                 when: whenComponent
@@ -833,7 +833,7 @@ public static class ThemeExtensions
         when ??= _ => true;
         whenComponent ??= _ => true;
 
-        conventions.AddPropertyMetadataConfiguration<ComponentDescriptorBuilderAttribute<TSchema>>(
+        conventions.AddPropertyAttributeConfiguration<ComponentDescriptorBuilderAttribute<TSchema>>(
             attribute: (attribute, c) => attribute.WrapBuilder(
                 apply: (d, cc) => component(d, c, cc),
                 when: whenComponent
@@ -874,7 +874,7 @@ public static class ThemeExtensions
         when ??= _ => true;
         whenComponent ??= _ => true;
 
-        conventions.AddMethodMetadataConfiguration<ComponentDescriptorBuilderAttribute<TSchema>>(
+        conventions.AddMethodAttributeConfiguration<ComponentDescriptorBuilderAttribute<TSchema>>(
             attribute: (attribute, c) => attribute.WrapBuilder(
                 apply: (d, cc) => component(d, c, cc),
                 when: whenComponent
@@ -915,7 +915,7 @@ public static class ThemeExtensions
         when ??= _ => true;
         whenComponent ??= _ => true;
 
-        conventions.AddParameterMetadataConfiguration<ComponentDescriptorBuilderAttribute<TSchema>>(
+        conventions.AddParameterAttributeConfiguration<ComponentDescriptorBuilderAttribute<TSchema>>(
             attribute: (attribute, c) => attribute.WrapBuilder(
                 apply: (d, cc) => component(d, c, cc),
                 when: whenComponent

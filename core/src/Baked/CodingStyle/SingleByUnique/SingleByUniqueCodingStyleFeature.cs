@@ -15,7 +15,7 @@ public class SingleByUniqueCodingStyleFeature : IFeature<CodingStyleConfigurator
         {
             builder.Index.Method.Add<SingleByUniqueAttribute>();
 
-            builder.Conventions.SetMethodMetadata(
+            builder.Conventions.SetMethodAttribute(
                 apply: (c, set) =>
                 {
                     var match = Regexes.StartsWithSingleBy.Match(c.Method.Name);

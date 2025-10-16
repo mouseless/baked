@@ -12,7 +12,7 @@ public class ObjectAsJsonCodingStyleFeature : IFeature<CodingStyleConfigurator>
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Conventions.SetTypeMetadata(new ApiInputAttribute(),
+            builder.Conventions.SetTypeAttribute(new ApiInputAttribute(),
                 when: c => c.Type.Is<object>()
             );
 

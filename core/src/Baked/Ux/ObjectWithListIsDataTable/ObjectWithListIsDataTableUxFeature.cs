@@ -14,7 +14,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Conventions.SetTypeMetadata(
+            builder.Conventions.SetTypeAttribute(
                 attribute: c => new ObjectWithListAttribute(
                     c.Type.GetMembers().Properties
                         .First(p =>
@@ -34,7 +34,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                     )
             );
 
-            builder.Conventions.AddPropertyMetadataConfiguration<DataAttribute>(
+            builder.Conventions.AddPropertyAttributeConfiguration<DataAttribute>(
                 attribute: data => data.Visible = false,
                 when: c =>
                     c.Type.TryGet<ObjectWithListAttribute>(out var objectWithList) &&
