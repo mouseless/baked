@@ -151,10 +151,10 @@
             "title": "Rate",
             "parentRoute": "/specs"
           },
-          "/specs/string": {
-            "route": "/specs/string",
+          "/specs/text": {
+            "route": "/specs/text",
             "icon": "pi pi-microchip",
-            "title": "String",
+            "title": "Text",
             "parentRoute": "/specs"
           },
           "/specs/language-switcher": {

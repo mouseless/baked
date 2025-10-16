@@ -32,7 +32,7 @@ public static class CustomThemeExtensions
             r => r.Child("/specs/money", "Money", "/specs") with { Icon = "pi pi-microchip", Description = "Shortens and renders money values with the full value shown as tooltip", Section = "Display" },
             r => r.Child("/specs/number", "Number", "/specs") with { Icon = "pi pi-microchip", Description = "Shortens and renders numbers with the full value shown as tooltip", Section = "Display" },
             r => r.Child("/specs/rate", "Rate", "/specs") with { Icon = "pi pi-microchip", Description = "Render rate values as percentage", Section = "Display" },
-            r => r.Child("/specs/string", "String", "/specs") with { Icon = "pi pi-microchip", Description = "Render string values", Section = "Display" },
+            r => r.Child("/specs/text", "Text", "/specs") with { Icon = "pi pi-microchip", Description = "Render string values", Section = "Display" },
 
             // Input
             r => r.Child("/specs/language-switcher", "Language Switcher", "/specs") with { Icon = "pi pi-microchip", Description = "Allow change site language", Section = "Input" },
