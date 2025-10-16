@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Theme.Default;
+using Baked.Ui.Component;
 using Humanizer;
 
 using static Baked.Theme.Default.DomainComponents;

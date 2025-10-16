@@ -8,8 +8,8 @@ namespace Baked.Test.Theme.Custom;
 
 public static class DomainComponents
 {
-    public static ComponentDescriptor<Baked.Theme.Default.String> MethodString(MethodModel method, ComponentContext context,
-        Action<Baked.Theme.Default.String>? options = default
+    public static ComponentDescriptor<Ui.Component.String> MethodString(MethodModel method, ComponentContext context,
+        Action<Ui.Component.String>? options = default
     ) => String(
         data: method.GetSchema<RemoteData>(context.Drill(nameof(IComponentDescriptor.Data))),
         options: options

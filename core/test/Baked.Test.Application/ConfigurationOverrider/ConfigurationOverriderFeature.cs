@@ -14,7 +14,7 @@ using Microsoft.OpenApi.Models;
 using static Baked.Test.Theme.Custom.DomainComponents;
 using static Baked.Theme.Default.Components;
 
-using ReportPageC = Baked.Theme.Default.ReportPage;
+using ReportPageC = Baked.Ui.Component.ReportPage;
 
 namespace Baked.Test.ConfigurationOverrider;
 
@@ -141,7 +141,7 @@ public class ConfigurationOverriderFeature : IFeature
                 whenMethod: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData),
                 whenComponent: cc => cc.Path.EndsWith(nameof(ReportPageC.Tab.Content.Component))
             );
-            builder.Conventions.AddMethodComponentConfiguration<Baked.Theme.Default.String>(
+            builder.Conventions.AddMethodComponentConfiguration<Ui.Component.String>(
                 component: (@string) => @string.Schema.MaxLength = 20,
                 whenMethod: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData)
             );
