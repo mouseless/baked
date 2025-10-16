@@ -2,8 +2,8 @@ html {
   @apply max-xs:text-[smaller];
 }
 
-.bg-body {
-  background-color: white;
+html, .bg-body {
+  @apply bg-white;
 }
 
 .p-datatable-tbody td.p-datatable-frozen-column {
@@ -17,7 +17,7 @@ html {
 }
 
 @media (prefers-color-scheme: dark) {
-  .bg-body {
-    background-color: #121212;
+  html, .bg-body {
+    @apply bg-neutral-950;
   }
 }
