@@ -55,7 +55,7 @@
                         "prop": "label",
                         "component": {
                           "fallback": {
-                            "type": "String",
+                            "type": "Text",
                             "schema": {}
                           },
                           "conditions": []
@@ -82,7 +82,7 @@
                         "prop": "column1",
                         "component": {
                           "fallback": {
-                            "type": "String",
+                            "type": "Text",
                             "schema": {}
                           },
                           "conditions": []
@@ -94,7 +94,7 @@
                         "prop": "column2",
                         "component": {
                           "fallback": {
-                            "type": "String",
+                            "type": "Text",
                             "schema": {}
                           },
                           "conditions": []
@@ -106,7 +106,7 @@
                         "prop": "column3",
                         "component": {
                           "fallback": {
-                            "type": "String",
+                            "type": "Text",
                             "schema": {}
                           },
                           "conditions": []

@@ -36,7 +36,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 order: -10
             );
             builder.Conventions.AddPropertyComponent(
-                component: () => B.String(),
+                component: () => B.Text(),
                 whenProperty: c => c.Property.PropertyType.Is<string>() || c.Property.PropertyType.Is<Guid>()
             );
 

@@ -184,8 +184,8 @@ public static class Components
         Action<SideMenu.Item>? options = default
     ) => options.Apply(new(route, icon));
 
-    public static ComponentDescriptor<String> String(
-        Action<String>? options = default,
+    public static ComponentDescriptor<Text> Text(
+        Action<Text>? options = default,
         IData? data = default
     ) => new(options.Apply(new())) { Data = data };
 }

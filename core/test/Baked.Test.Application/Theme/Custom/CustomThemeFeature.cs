@@ -42,7 +42,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
 
             // String api rendering
             builder.Conventions.AddMethodComponent(
-                component: (c, cc) => MethodString(c.Method, cc),
+                component: (c, cc) => MethodText(c.Method, cc),
                 whenMethod: c => c.Method.DefaultOverload.ReturnType.Is<string>(),
                 whenComponent: c => c.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content))
             );

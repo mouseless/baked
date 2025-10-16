@@ -137,11 +137,11 @@ public class ConfigurationOverriderFeature : IFeature
                 whenMethod: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData)
             );
             builder.Conventions.AddMethodComponent(
-                component: (c, cc) => MethodString(c.Method, cc),
+                component: (c, cc) => MethodText(c.Method, cc),
                 whenMethod: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData),
                 whenComponent: cc => cc.Path.EndsWith(nameof(ReportPage.Tab.Content.Component))
             );
-            builder.Conventions.AddMethodComponentConfiguration<Baked.Ui.String>(
+            builder.Conventions.AddMethodComponentConfiguration<Text>(
                 component: (@string) => @string.Schema.MaxLength = 20,
                 whenMethod: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData)
             );

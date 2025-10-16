@@ -460,12 +460,12 @@ export default {
     return { route, icon, title, disabled };
   },
 
-  aString({ value, data, maxLength } = {}) {
+  aText({ value, data, maxLength } = {}) {
     value = $(value, "Test string");
     data = $(data, { type: "Inline", value });
 
     return {
-      type: "String",
+      type: "Text",
       schema: { maxLength },
       data
     };
