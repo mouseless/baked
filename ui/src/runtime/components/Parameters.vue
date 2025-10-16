@@ -63,7 +63,7 @@ function emitChanged() {
   emit("changed", {
     uniqueKey: Object
       .values(values)
-      .map(v => v.value)
+      .map(v => String(v.value))
       .filter(v => v?.length > 0)
       .join("-"),
     values
