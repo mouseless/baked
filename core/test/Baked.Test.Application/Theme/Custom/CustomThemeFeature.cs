@@ -4,13 +4,13 @@ using Baked.Theme;
 using Baked.Theme.Default;
 using Baked.Ui;
 
-using static Baked.Test.Theme.Custom.Components;
 using static Baked.Test.Theme.Custom.DomainComponents;
 using static Baked.Theme.Default.DomainComponents;
 using static Baked.Theme.Default.DomainDatas;
 using static Baked.Ui.Datas;
 
 using B = Baked.Ui.Components;
+using C = Baked.Test.Ui.Components;
 using Route = Baked.Theme.Route;
 
 namespace Baked.Test.Theme.Custom;
@@ -27,7 +27,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
         configurator.ConfigureDomainModelBuilder(builder =>
         {
             // Custom theme CSV formatter settings
-            builder.Conventions.AddMethodSchemaConfiguration<Ui.DataTable.Export>(
+            builder.Conventions.AddMethodSchemaConfiguration<Baked.Ui.DataTable.Export>(
                 schema: (dte, _, cc) =>
                 {
                     var (_, l) = cc;
@@ -69,7 +69,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
             #region Data Table Page Overrides
 
             // DataTable fine tuning
-            builder.Conventions.AddMethodComponentConfiguration<Ui.DataTable>(
+            builder.Conventions.AddMethodComponentConfiguration<Baked.Ui.DataTable>(
                 component: dt =>
                 {
                     dt.Schema.ScrollHeight = "500px";
@@ -78,7 +78,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
                 },
                 whenMethod: c => c.Type.Is<DataTable>()
             );
-            builder.Conventions.AddMethodSchemaConfiguration<Ui.DataTable.Export>(
+            builder.Conventions.AddMethodSchemaConfiguration<Baked.Ui.DataTable.Export>(
                 schema: dte =>
                 {
                     dte.ParameterFormatter = null;
@@ -150,13 +150,13 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
 
         configurator.ConfigureComponentExports(c =>
         {
-            c.AddFromExtensions(typeof(Components));
+            c.AddFromExtensions(typeof(C));
         });
 
         configurator.ConfigurePageDescriptors(pages =>
         {
-            pages.Add(LoginPage("login", options: lp => lp.Layout = "modal"));
-            pages.Add(RoutedPage("page/with/route/pageWithRoute", lp => lp.Layout = "default"));
+            pages.Add(C.LoginPage("login", options: lp => lp.Layout = "modal"));
+            pages.Add(C.RoutedPage("page/with/route/pageWithRoute", lp => lp.Layout = "default"));
         });
     }
 }

@@ -141,7 +141,7 @@ public class ConfigurationOverriderFeature : IFeature
                 whenMethod: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData),
                 whenComponent: cc => cc.Path.EndsWith(nameof(ReportPage.Tab.Content.Component))
             );
-            builder.Conventions.AddMethodComponentConfiguration<Ui.String>(
+            builder.Conventions.AddMethodComponentConfiguration<Baked.Ui.String>(
                 component: (@string) => @string.Schema.MaxLength = 20,
                 whenMethod: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData)
             );

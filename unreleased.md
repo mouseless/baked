@@ -7,4 +7,4 @@
 - `Baked.Core` and `Baked.Service` merged into `Baked.Abstractions`
 - Renamed `Service` recipe to `Monolith`
 - `ServiceNfr` and `ServiceSpec` renamed to `MonolithNfr` and `MonolithSpec`
-- ui components moved to `Ui/Components` from `Theme/Default` namespace
+- UI components are moved from `Baked.Theme.Default` to `Baked.Ui` namespace

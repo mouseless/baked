@@ -52,7 +52,7 @@ public class ManagingComponentConventions : TestSpec
 
         var component = method.GetRequiredComponent(componentContext);
 
-        var @string = component.ShouldBeOfType<ComponentDescriptor<Ui.String>>();
+        var @string = component.ShouldBeOfType<ComponentDescriptor<Baked.Ui.String>>();
         @string.Schema.MaxLength.ShouldBe(20);
     }
 }

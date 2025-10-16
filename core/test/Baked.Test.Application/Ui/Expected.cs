@@ -1,6 +1,6 @@
 using Baked.Ui;
 
-namespace Baked.Test.Theme.Custom;
+namespace Baked.Test.Ui;
 
 public record Expected(string TestId)
     : IComponentSchema
