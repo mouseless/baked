@@ -1,6 +1,5 @@
 ﻿using Baked.Test.Theme;
 using Baked.Ui;
-using Baked.Ui.Component;
 
 namespace Baked.Test.Test;
 
@@ -53,7 +52,7 @@ public class ManagingComponentConventions : TestSpec
 
         var component = method.GetRequiredComponent(componentContext);
 
-        var @string = component.ShouldBeOfType<ComponentDescriptor<Ui.Component.String>>();
+        var @string = component.ShouldBeOfType<ComponentDescriptor<Ui.String>>();
         @string.Schema.MaxLength.ShouldBe(20);
     }
 }

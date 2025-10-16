@@ -1,5 +1,5 @@
 ﻿using Baked.Architecture;
-using Baked.Ui.Component;
+using Baked.Ui;
 
 namespace Baked.Ux.DesignatedStringPropertiesAreLabel;
 

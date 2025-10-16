@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.CodeGeneration;
+using Baked.Ui.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.Diagnostics.CodeAnalysis;

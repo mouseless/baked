@@ -1,7 +1,6 @@
 ﻿using Baked.Domain.Model;
 using Baked.RestApi.Model;
 using Baked.Ui;
-using Baked.Ui.Component;
 using Humanizer;
 
 namespace Baked.Theme.Default;

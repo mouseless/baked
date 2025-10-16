@@ -2,10 +2,10 @@
 using Baked.RestApi;
 using Baked.RestApi.Model;
 using Baked.Runtime;
-using Baked.Ui.Component;
+using Baked.Ui;
 using Humanizer;
 
-using static Baked.Theme.Default.Components;
+using static Baked.Ui.Components;
 using static Baked.Theme.Default.DomainComponents;
 using static Baked.Theme.Default.DomainDatas;
 using static Baked.Ui.Datas;
