@@ -56,8 +56,8 @@ public class ConfigurationOverriderFeature : IFeature
                 when: c => c.Type.Is<Class>()
             );
             builder.Conventions.AddTypeMetadataConfiguration<CustomAttribute>(
-                apply: attr => attr.Value = "FROM CONVENTION",
-                when: (_, c) => c.Type.Is<Class>()
+                attribute: attr => attr.Value = "FROM CONVENTION",
+                when: c => c.Type.Is<Class>()
             );
 
             builder.Conventions.SetPropertyMetadata(
@@ -67,8 +67,8 @@ public class ConfigurationOverriderFeature : IFeature
                     c.Property.Name == nameof(Record.Text)
             );
             builder.Conventions.AddPropertyMetadataConfiguration<CustomAttribute>(
-                apply: attr => attr.Value = "FROM CONVENTION",
-                when: (_, c) =>
+                attribute: attr => attr.Value = "FROM CONVENTION",
+                when: c =>
                     c.Type.Is<Record>() &&
                     c.Property.Name == nameof(Record.Text)
             );
@@ -80,8 +80,8 @@ public class ConfigurationOverriderFeature : IFeature
                     c.Method.Name == nameof(Class.Method)
             );
             builder.Conventions.AddMethodMetadataConfiguration<CustomAttribute>(
-                apply: attr => attr.Value = "FROM CONVENTION",
-                when: (_, c) =>
+                attribute: attr => attr.Value = "FROM CONVENTION",
+                when: c =>
                     c.Type.Is<Class>() &&
                     c.Method.Name == nameof(Class.Method)
             );
@@ -94,8 +94,8 @@ public class ConfigurationOverriderFeature : IFeature
                     c.Parameter.Name == "string"
             );
             builder.Conventions.AddParameterMetadataConfiguration<CustomAttribute>(
-                apply: attr => attr.Value = "FROM CONVENTION",
-                when: (_, c) =>
+                attribute: attr => attr.Value = "FROM CONVENTION",
+                when: c =>
                     c.Type.Is<MethodSamples>() &&
                     c.Method.Name == nameof(MethodSamples.PrimitiveParameters) &&
                     c.Parameter.Name == "string"
@@ -103,18 +103,18 @@ public class ConfigurationOverriderFeature : IFeature
 
             builder.Conventions.AddTypeComponent(
                 component: (_, cc) => B.ReportPage("test-page", B.PageTitle("Test Page")),
-                whenType: c => c.Type.Is<TestPage>(),
+                when: c => c.Type.Is<TestPage>(),
                 whenComponent: cc => cc.Path.EndsWith(nameof(Page))
             );
             builder.Conventions.AddTypeComponentConfiguration<ReportPage>(
                 component: (reportPage, c, cc) => reportPage.Schema.Tabs.AddRange(
                     c.Type.GetSchemas<ReportPage.Tab>(cc.Drill(nameof(ReportPage.Tabs)))
                 ),
-                whenType: c => c.Type.Is<TestPage>()
+                when: c => c.Type.Is<TestPage>()
             );
             builder.Conventions.AddTypeSchema(
                 schema: (c, cc) => B.ReportPageTab("default"),
-                whenType: c => c.Type.Is<TestPage>(),
+                when: c => c.Type.Is<TestPage>(),
                 whenComponent: cc => cc.Path.EndsWith(nameof(ReportPage.Tabs))
             );
             builder.Conventions.AddTypeSchemaConfiguration<ReportPage.Tab>(
@@ -124,26 +124,26 @@ public class ConfigurationOverriderFeature : IFeature
                         .GetSchema<ReportPage.Tab.Content>(cc.Drill(tab.Id, nameof(ReportPage.Tab.Contents), 0))
                         ?? throw new($"{nameof(TestPage.GetData)} is expected to have a report page content")
                 ),
-                whenType: c => c.Type.Is<TestPage>()
+                when: c => c.Type.Is<TestPage>()
             );
 
             builder.Conventions.AddMethodSchema(
                 schema: (c, cc) => B.ReportPageTabContent(component: c.Method.GetRequiredComponent(cc.Drill(nameof(ReportPage.Tab.Content.Component))), c.Method.Name.Kebaberize()),
-                whenMethod: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData),
+                when: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData),
                 whenComponent: c => c.Path.EndsWith(nameof(ReportPage.Tab.Contents), 0)
             );
             builder.Conventions.AddMethodSchemaConfiguration<ReportPage.Tab.Content>(
                 schema: tabContent => tabContent.Narrow = true,
-                whenMethod: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData)
+                when: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData)
             );
             builder.Conventions.AddMethodComponent(
                 component: (c, cc) => MethodString(c.Method, cc),
-                whenMethod: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData),
+                when: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData),
                 whenComponent: cc => cc.Path.EndsWith(nameof(ReportPage.Tab.Content.Component))
             );
             builder.Conventions.AddMethodComponentConfiguration<Baked.Ui.String>(
                 component: (@string) => @string.Schema.MaxLength = 20,
-                whenMethod: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData)
+                when: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData)
             );
         });
 

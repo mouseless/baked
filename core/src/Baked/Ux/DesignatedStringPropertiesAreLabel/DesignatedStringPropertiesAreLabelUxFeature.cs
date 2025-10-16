@@ -23,7 +23,7 @@ public class DesignatedStringPropertiesAreLabelUxFeature(IEnumerable<string> pro
                     dtc.Frozen = true;
                     dtc.MinWidth = true;
                 },
-                whenProperty: c => c.Property.Has<LabelAttribute>()
+                when: c => c.Property.Has<LabelAttribute>()
             );
             builder.Conventions.AddMethodComponentConfiguration<DataTable>(
                 component: (dt, c) =>

@@ -52,7 +52,7 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
             // init before any domain convention
             builder.Conventions.Add(new InitApiModelConvention(), order: int.MinValue);
             builder.Conventions.AddMethodMetadataConfiguration<ActionModelAttribute>(
-                apply: (action, context) =>
+                attribute: (action, context) =>
                     action.Parameter[ParameterModelAttribute.TargetParameterName] =
                         new(ParameterModelAttribute.TargetParameterName, context.Type.CSharpFriendlyFullName, ParameterModelFrom.Services),
                 order: int.MinValue
@@ -70,13 +70,13 @@ public class RestBindingFeature : IFeature<BindingConfigurator>
             builder.Conventions.Add(new RemoveFromRouteConvention(["Update", "Change", "Set"]));
             builder.Conventions.Add(new RemoveFromRouteConvention(["Delete", "Remove", "Clear"]));
             builder.Conventions.AddMethodMetadataConfiguration<ActionModelAttribute>(
-                apply: action => action.AdditionalAttributes.Add("Consumes(\"application/json\")"),
-                when: action => action.HasBody,
+                attribute: action => action.AdditionalAttributes.Add("Consumes(\"application/json\")"),
+                when: (_, action) => action.HasBody,
                 order: 10
             );
             builder.Conventions.AddMethodMetadataConfiguration<ActionModelAttribute>(
-                apply: action => action.AdditionalAttributes.Add("Produces(\"application/json\")"),
-                when: action => !action.ReturnIsVoid,
+                attribute: action => action.AdditionalAttributes.Add("Produces(\"application/json\")"),
+                when: (_, action) => !action.ReturnIsVoid,
                 order: 10
             );
             builder.Conventions.Add(new UseDocumentationAsDescriptionConvention(_tagDescriptions, _examples), order: 10);

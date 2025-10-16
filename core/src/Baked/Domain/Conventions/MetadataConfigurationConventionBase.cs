@@ -4,7 +4,7 @@ using Baked.Domain.Model;
 namespace Baked.Domain.Conventions;
 
 public abstract class MetadataConfigurationConventionBase<TModelContext, TAttribute>(Action<TAttribute, TModelContext> apply,
-    Func<TAttribute, TModelContext, bool>? when = default
+    Func<TModelContext, TAttribute, bool>? when = default
 ) : IDomainModelConvention<TModelContext>
     where TAttribute : Attribute
 {
@@ -27,7 +27,7 @@ public abstract class MetadataConfigurationConventionBase<TModelContext, TAttrib
 
         foreach (var attribute in attributes)
         {
-            if (when is not null && !when(attribute, context)) { continue; }
+            if (when is not null && !when(context, attribute)) { continue; }
 
             apply(attribute, context);
         }

@@ -4,7 +4,7 @@ using Baked.Domain.Model;
 namespace Baked.Domain.Conventions;
 
 public class MethodMetadataConfigurationConvention<TAttribute>(Action<TAttribute, MethodModelContext> apply,
-    Func<TAttribute, MethodModelContext, bool>? when = default
+    Func<MethodModelContext, TAttribute, bool>? when = default
 ) : MetadataConfigurationConventionBase<MethodModelContext, TAttribute>(apply, when: when)
     where TAttribute : Attribute
 {
