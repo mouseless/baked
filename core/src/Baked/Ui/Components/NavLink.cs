@@ -1,6 +1,4 @@
-﻿using Baked.Ui;
-
-namespace Baked.Theme.Default;
+﻿namespace Baked.Ui.Component;
 
 public class NavLink(string Path, string IdProp, string TextProp)
     : IComponentSchema

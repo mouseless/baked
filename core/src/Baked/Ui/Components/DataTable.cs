@@ -1,6 +1,6 @@
-﻿using Baked.Ui;
+﻿using Baked.Theme.Default;
 
-namespace Baked.Theme.Default;
+namespace Baked.Ui.Component;
 
 public record DataTable : IComponentSchema
 {

@@ -1,4 +1,7 @@
 ﻿using Baked.Ui;
+using Baked.Ui.Component;
+
+using String = Baked.Ui.Component.String;
 
 namespace Baked.Theme.Default;
 

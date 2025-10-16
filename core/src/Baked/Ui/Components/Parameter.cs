@@ -1,6 +1,4 @@
-﻿using Baked.Ui;
-
-namespace Baked.Theme.Default;
+﻿namespace Baked.Ui.Component;
 
 public record Parameter(string Name, IComponentDescriptor Component)
 {

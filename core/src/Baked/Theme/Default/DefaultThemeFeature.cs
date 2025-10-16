@@ -2,6 +2,7 @@
 using Baked.RestApi;
 using Baked.RestApi.Model;
 using Baked.Runtime;
+using Baked.Ui.Component;
 using Humanizer;
 
 using static Baked.Theme.Default.Components;

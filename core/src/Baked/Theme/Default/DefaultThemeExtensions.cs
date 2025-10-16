@@ -3,6 +3,7 @@ using Baked.Runtime;
 using Baked.Theme;
 using Baked.Theme.Default;
 using Baked.Ui;
+using Baked.Ui.Component;
 
 using static Baked.Theme.Default.Components;
 using static Baked.Ui.UiLayer;

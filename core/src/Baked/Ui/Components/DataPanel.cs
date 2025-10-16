@@ -1,6 +1,4 @@
-﻿using Baked.Ui;
-
-namespace Baked.Theme.Default;
+﻿namespace Baked.Ui.Component;
 
 public record DataPanel(IData Title, IComponentDescriptor Content)
     : IComponentSchema
