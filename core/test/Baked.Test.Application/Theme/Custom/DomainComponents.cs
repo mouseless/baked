@@ -2,15 +2,15 @@
 using Baked.Theme;
 using Baked.Ui;
 
-using static Baked.Theme.Default.Components;
+using B = Baked.Ui.Components;
 
 namespace Baked.Test.Theme.Custom;
 
 public static class DomainComponents
 {
-    public static ComponentDescriptor<Baked.Theme.Default.String> MethodString(MethodModel method, ComponentContext context,
-        Action<Baked.Theme.Default.String>? options = default
-    ) => String(
+    public static ComponentDescriptor<Baked.Ui.String> MethodString(MethodModel method, ComponentContext context,
+        Action<Baked.Ui.String>? options = default
+    ) => B.String(
         data: method.GetSchema<RemoteData>(context.Drill(nameof(IComponentDescriptor.Data))),
         options: options
     );

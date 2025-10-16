@@ -1,4 +1,5 @@
 ﻿using Baked.Ui;
+using Baked.Ui.Configuration;
 
 namespace Baked.ExceptionHandling.ProblemDetails;
 

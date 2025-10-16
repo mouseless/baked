@@ -4,20 +4,20 @@ using Baked.Theme;
 using Baked.Theme.Default;
 using Baked.Ui;
 
-using static Baked.Test.Theme.Custom.Components;
 using static Baked.Test.Theme.Custom.DomainComponents;
-using static Baked.Theme.Default.Components;
 using static Baked.Theme.Default.DomainComponents;
 using static Baked.Theme.Default.DomainDatas;
 using static Baked.Ui.Datas;
 
+using B = Baked.Ui.Components;
+using C = Baked.Test.Ui.Components;
 using Route = Baked.Theme.Route;
 
 namespace Baked.Test.Theme.Custom;
 
 public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
     : DefaultThemeFeature(routes.Select(r => r(new())),
-        _sideMenuOptions: sm => sm.Footer = LanguageSwitcher()
+        _sideMenuOptions: sm => sm.Footer = B.LanguageSwitcher()
     )
 {
     public override void Configure(LayerConfigurator configurator)
@@ -27,7 +27,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
         configurator.ConfigureDomainModelBuilder(builder =>
         {
             // Custom theme CSV formatter settings
-            builder.Conventions.AddMethodSchemaConfiguration<Baked.Theme.Default.DataTable.Export>(
+            builder.Conventions.AddMethodSchemaConfiguration<Baked.Ui.DataTable.Export>(
                 schema: (dte, _, cc) =>
                 {
                     var (_, l) = cc;
@@ -44,7 +44,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
             builder.Conventions.AddMethodComponent(
                 component: (c, cc) => MethodString(c.Method, cc),
                 whenMethod: c => c.Method.DefaultOverload.ReturnType.Is<string>(),
-                whenComponent: c => c.Path.EndsWith(nameof(Baked.Theme.Default.DataPanel), nameof(Baked.Theme.Default.DataPanel.Content))
+                whenComponent: c => c.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content))
             );
 
             // None localized enums
@@ -69,7 +69,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
             #region Data Table Page Overrides
 
             // DataTable fine tuning
-            builder.Conventions.AddMethodComponentConfiguration<Baked.Theme.Default.DataTable>(
+            builder.Conventions.AddMethodComponentConfiguration<Baked.Ui.DataTable>(
                 component: dt =>
                 {
                     dt.Schema.ScrollHeight = "500px";
@@ -78,7 +78,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
                 },
                 whenMethod: c => c.Type.Is<DataTable>()
             );
-            builder.Conventions.AddMethodSchemaConfiguration<Baked.Theme.Default.DataTable.Export>(
+            builder.Conventions.AddMethodSchemaConfiguration<Baked.Ui.DataTable.Export>(
                 schema: dte =>
                 {
                     dte.ParameterFormatter = null;
@@ -87,7 +87,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
                 whenMethod: c => c.Type.Is<DataTable>()
             );
             builder.Conventions.AddMethodSchema(
-                schema: () => DataTableVirtualScroller(options: dtvs => dtvs.ItemSize = 45),
+                schema: () => B.DataTableVirtualScroller(options: dtvs => dtvs.ItemSize = 45),
                 whenMethod: c => c.Type.Is<DataTable>()
             );
 
@@ -105,14 +105,14 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
                 when: (_, c) => c.Type.Is<Report>() && c.Method.DefaultOverload.ReturnsList()
             );
             builder.Conventions.AddTypeComponent(
-                component: () => Icon("pi-box"),
+                component: () => B.Icon("pi-box"),
                 whenType: c => c.Type.Is<Report>(),
-                whenComponent: cc => cc.Path.EndsWith("SingleValue", nameof(Baked.Theme.Default.ReportPage.Tab.Icon))
+                whenComponent: cc => cc.Path.EndsWith("SingleValue", nameof(ReportPage.Tab.Icon))
             );
             builder.Conventions.AddTypeComponent(
-                component: () => Icon("pi-table"),
+                component: () => B.Icon("pi-table"),
                 whenType: c => c.Type.Is<Report>(),
-                whenComponent: cc => cc.Path.EndsWith("DataTable", nameof(Baked.Theme.Default.ReportPage.Tab.Icon))
+                whenComponent: cc => cc.Path.EndsWith("DataTable", nameof(ReportPage.Tab.Icon))
             );
 
             // Allowing admin token for report api
@@ -150,13 +150,13 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
 
         configurator.ConfigureComponentExports(c =>
         {
-            c.AddFromExtensions(typeof(Components));
+            c.AddFromExtensions(typeof(C));
         });
 
         configurator.ConfigurePageDescriptors(pages =>
         {
-            pages.Add(LoginPage("login", options: lp => lp.Layout = "modal"));
-            pages.Add(RoutedPage("page/with/route/pageWithRoute", lp => lp.Layout = "default"));
+            pages.Add(C.LoginPage("login", options: lp => lp.Layout = "modal"));
+            pages.Add(C.RoutedPage("page/with/route/pageWithRoute", lp => lp.Layout = "default"));
         });
     }
 }

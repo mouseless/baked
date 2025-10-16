@@ -2,12 +2,14 @@
 using Baked.RestApi;
 using Baked.RestApi.Model;
 using Baked.Runtime;
+using Baked.Ui;
 using Humanizer;
 
-using static Baked.Theme.Default.Components;
 using static Baked.Theme.Default.DomainComponents;
 using static Baked.Theme.Default.DomainDatas;
 using static Baked.Ui.Datas;
+
+using B = Baked.Ui.Components;
 
 namespace Baked.Theme.Default;
 
@@ -30,11 +32,11 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 order: -10
             );
             builder.Conventions.AddPropertyComponent(
-                component: () => None(),
+                component: () => B.None(),
                 order: -10
             );
             builder.Conventions.AddPropertyComponent(
-                component: () => String(),
+                component: () => B.String(),
                 whenProperty: c => c.Property.PropertyType.Is<string>() || c.Property.PropertyType.Is<Guid>()
             );
 
@@ -106,21 +108,21 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
         configurator.ConfigureComponentExports(exports =>
         {
-            exports.AddFromExtensions(typeof(Components));
+            exports.AddFromExtensions(typeof(B));
         });
 
         configurator.ConfigureAppDescriptor(app =>
         {
             configurator.UsingLocalization(l =>
             {
-                app.Error = ErrorPage(
+                app.Error = B.ErrorPage(
                     options: ep =>
                     {
                         ep.SafeLinks.AddRange([.. _routes.Where(r => r.ErrorSafeLink).Select(r => r.AsCardLink(l))]);
-                        ep.ErrorInfos[403] = ErrorPageInfo(l("Access Denied"), l("You do not have the permision to view the address or data specified."));
-                        ep.ErrorInfos[404] = ErrorPageInfo(l("Page Not Found"), l("The page you want to view is either deleted or outdated."));
-                        ep.ErrorInfos[500] = ErrorPageInfo(l("Unexpected Error"), l("Please contact system administrator."));
-                        ep.ErrorInfos[999] = ErrorPageInfo(l("Application Error"), l("Please contact system administrator."));
+                        ep.ErrorInfos[403] = B.ErrorPageInfo(l("Access Denied"), l("You do not have the permision to view the address or data specified."));
+                        ep.ErrorInfos[404] = B.ErrorPageInfo(l("Page Not Found"), l("The page you want to view is either deleted or outdated."));
+                        ep.ErrorInfos[500] = B.ErrorPageInfo(l("Unexpected Error"), l("Please contact system administrator."));
+                        ep.ErrorInfos[999] = B.ErrorPageInfo(l("Application Error"), l("Please contact system administrator."));
 
                         _errorPageOptions.Apply(ep);
                     },
@@ -133,9 +135,9 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
         {
             configurator.UsingLocalization(l =>
             {
-                layouts.Add(DefaultLayout("default", options: dl =>
+                layouts.Add(B.DefaultLayout("default", options: dl =>
                 {
-                    dl.SideMenu = SideMenu(
+                    dl.SideMenu = B.SideMenu(
                         options: sm =>
                         {
                             sm.Menu.AddRange([.. _routes.Where(r => r.SideMenu).Select(r => r.AsSideMenuItem(l))]);
@@ -143,7 +145,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                             _sideMenuOptions.Apply(sm);
                         }
                     );
-                    dl.Header = Header(options: h =>
+                    dl.Header = B.Header(options: h =>
                     {
                         foreach (var route in _routes)
                         {
@@ -157,7 +159,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 }));
             });
 
-            layouts.Add(ModalLayout("modal"));
+            layouts.Add(B.ModalLayout("modal"));
         });
 
         configurator.ConfigurePageDescriptors(pages =>

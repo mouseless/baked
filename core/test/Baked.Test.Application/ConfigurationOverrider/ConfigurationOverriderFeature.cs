@@ -7,14 +7,14 @@ using Baked.Test.ExceptionHandling;
 using Baked.Test.Orm;
 using Baked.Test.Theme;
 using Baked.Theme;
+using Baked.Ui;
 using Humanizer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
 
 using static Baked.Test.Theme.Custom.DomainComponents;
-using static Baked.Theme.Default.Components;
 
-using ReportPageC = Baked.Theme.Default.ReportPage;
+using B = Baked.Ui.Components;
 
 namespace Baked.Test.ConfigurationOverrider;
 
@@ -102,46 +102,46 @@ public class ConfigurationOverriderFeature : IFeature
             );
 
             builder.Conventions.AddTypeComponent(
-                component: (_, cc) => ReportPage("test-page", PageTitle("Test Page")),
+                component: (_, cc) => B.ReportPage("test-page", B.PageTitle("Test Page")),
                 whenType: c => c.Type.Is<TestPage>(),
                 whenComponent: cc => cc.Path.EndsWith(nameof(Page))
             );
-            builder.Conventions.AddTypeComponentConfiguration<ReportPageC>(
+            builder.Conventions.AddTypeComponentConfiguration<ReportPage>(
                 component: (reportPage, c, cc) => reportPage.Schema.Tabs.AddRange(
-                    c.Type.GetSchemas<ReportPageC.Tab>(cc.Drill(nameof(ReportPageC.Tabs)))
+                    c.Type.GetSchemas<ReportPage.Tab>(cc.Drill(nameof(ReportPage.Tabs)))
                 ),
                 whenType: c => c.Type.Is<TestPage>()
             );
             builder.Conventions.AddTypeSchema(
-                schema: (c, cc) => ReportPageTab("default"),
+                schema: (c, cc) => B.ReportPageTab("default"),
                 whenType: c => c.Type.Is<TestPage>(),
-                whenComponent: cc => cc.Path.EndsWith(nameof(ReportPageC.Tabs))
+                whenComponent: cc => cc.Path.EndsWith(nameof(ReportPage.Tabs))
             );
-            builder.Conventions.AddTypeSchemaConfiguration<ReportPageC.Tab>(
+            builder.Conventions.AddTypeSchemaConfiguration<ReportPage.Tab>(
                 schema: (tab, c, cc) => tab.Contents.Add(
                     c.Type
                         .GetMethod(nameof(TestPage.GetData))
-                        .GetSchema<ReportPageC.Tab.Content>(cc.Drill(tab.Id, nameof(ReportPageC.Tab.Contents), 0))
+                        .GetSchema<ReportPage.Tab.Content>(cc.Drill(tab.Id, nameof(ReportPage.Tab.Contents), 0))
                         ?? throw new($"{nameof(TestPage.GetData)} is expected to have a report page content")
                 ),
                 whenType: c => c.Type.Is<TestPage>()
             );
 
             builder.Conventions.AddMethodSchema(
-                schema: (c, cc) => ReportPageTabContent(component: c.Method.GetRequiredComponent(cc.Drill(nameof(ReportPageC.Tab.Content.Component))), c.Method.Name.Kebaberize()),
+                schema: (c, cc) => B.ReportPageTabContent(component: c.Method.GetRequiredComponent(cc.Drill(nameof(ReportPage.Tab.Content.Component))), c.Method.Name.Kebaberize()),
                 whenMethod: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData),
-                whenComponent: c => c.Path.EndsWith(nameof(ReportPageC.Tab.Contents), 0)
+                whenComponent: c => c.Path.EndsWith(nameof(ReportPage.Tab.Contents), 0)
             );
-            builder.Conventions.AddMethodSchemaConfiguration<ReportPageC.Tab.Content>(
+            builder.Conventions.AddMethodSchemaConfiguration<ReportPage.Tab.Content>(
                 schema: tabContent => tabContent.Narrow = true,
                 whenMethod: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData)
             );
             builder.Conventions.AddMethodComponent(
                 component: (c, cc) => MethodString(c.Method, cc),
                 whenMethod: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData),
-                whenComponent: cc => cc.Path.EndsWith(nameof(ReportPageC.Tab.Content.Component))
+                whenComponent: cc => cc.Path.EndsWith(nameof(ReportPage.Tab.Content.Component))
             );
-            builder.Conventions.AddMethodComponentConfiguration<Baked.Theme.Default.String>(
+            builder.Conventions.AddMethodComponentConfiguration<Baked.Ui.String>(
                 component: (@string) => @string.Schema.MaxLength = 20,
                 whenMethod: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData)
             );

@@ -4,8 +4,7 @@ using Baked.Theme;
 using Baked.Theme.Default;
 using Baked.Ui;
 
-using static Baked.Theme.Default.Components;
-using static Baked.Ui.UiLayer;
+using B = Baked.Ui.Components;
 
 namespace Baked;
 
@@ -31,7 +30,7 @@ public static class DefaultThemeExtensions
 
             if (context.Route.Index)
             {
-                return MenuPage(context.Route.Name,
+                return B.MenuPage(context.Route.Name,
                     links: context.Sitemap
                         .Where(smp => !smp.Index && smp.SideMenu)
                         .Select(smp => smp.AsCardLink(l))
@@ -41,13 +40,13 @@ public static class DefaultThemeExtensions
             var sections = context.Sitemap.GroupBy(smp => smp.Section);
             if (sections.Count() <= 1)
             {
-                return MenuPage(context.Route.Name,
+                return B.MenuPage(context.Route.Name,
                     links: context.Sitemap
                         .Where(r => r.ParentPath == context.Route.Path)
                         .Select(r => r.AsCardLink(l)),
                     options: mp =>
                     {
-                        mp.Header = PageTitle(
+                        mp.Header = B.PageTitle(
                             title: l(context.Route.Title),
                             options: pt => pt.Description = l(context.Route.Description)
                         );
@@ -55,23 +54,23 @@ public static class DefaultThemeExtensions
                 );
             }
 
-            return MenuPage(context.Route.Name,
+            return B.MenuPage(context.Route.Name,
                 options: mp =>
                 {
-                    mp.Header = PageTitle(context.Route.Title, options: pt =>
+                    mp.Header = B.PageTitle(context.Route.Title, options: pt =>
                     {
                         pt.Description = l(context.Route.Description);
-                        pt.Actions.Add(Filter("menu-page", options: f => f.Placeholder = l("Filter")));
+                        pt.Actions.Add(B.Filter("menu-page", options: f => f.Placeholder = l("Filter")));
                     });
                     mp.FilterPageContextKey = "menu-page";
                     mp.Sections.AddRange(
-                        sections.Select(g => MenuPageSection(
+                        sections.Select(g => B.MenuPageSection(
                             options: mps =>
                             {
                                 mps.Title = l(g.Key);
                                 mps.Links.AddRange(g
                                     .Where(r => r.ParentPath == context.Route.Path)
-                                    .Select(r => Filterable(r.AsCardLink(l), options: f => f.Title = l(r.Title)))
+                                    .Select(r => B.Filterable(r.AsCardLink(l), options: f => f.Title = l(r.Title)))
                                 );
                             }
                         )).Where(s => s.Links.Any())
@@ -81,7 +80,7 @@ public static class DefaultThemeExtensions
         };
 
     public static IComponentDescriptor AsCardLink(this Route route, NewLocaleKey l) =>
-        CardLink(route.Path, l(route.Title), options: cl =>
+        B.CardLink(route.Path, l(route.Title), options: cl =>
         {
             cl.Icon = route.Icon;
             cl.Description = l(route.Description);
@@ -90,14 +89,14 @@ public static class DefaultThemeExtensions
         });
 
     public static SideMenu.Item AsSideMenuItem(this Route route, NewLocaleKey l) =>
-        SideMenuItem(route.Path, route.Icon ?? throw new($"Icon is required for pages in side menu: `{route.Path}`"), options: smi =>
+        B.SideMenuItem(route.Path, route.Icon ?? throw new($"Icon is required for pages in side menu: `{route.Path}`"), options: smi =>
         {
             smi.Title = l(route.SideMenuTitle);
             smi.Disabled = route.Disabled ? true : null;
         });
 
     public static Header.Item AsHeaderItem(this Route route, NewLocaleKey l) =>
-        HeaderItem(route.Path, options: hi =>
+        B.HeaderItem(route.Path, options: hi =>
         {
             hi.Title = l(route.HeaderTitle);
             hi.Icon = route.Icon;

@@ -1,6 +1,5 @@
 ﻿using Baked.Domain.Model;
-
-using static Baked.Ui.UiLayer;
+using Baked.Ui;
 
 namespace Baked.Theme;
 

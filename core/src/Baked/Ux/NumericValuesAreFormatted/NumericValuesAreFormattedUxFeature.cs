@@ -1,7 +1,7 @@
 ﻿using Baked.Architecture;
-using Baked.Theme.Default;
+using Baked.Ui;
 
-using static Baked.Theme.Default.Components;
+using B = Baked.Ui.Components;
 
 namespace Baked.Ux.NumericValuesAreFormatted;
 
@@ -19,15 +19,15 @@ public class NumericValuesAreFormattedUxFeature : IFeature<UxConfigurator>
                     c.Property.PropertyType.SkipNullable().Is<decimal>()
             );
             builder.Conventions.AddPropertyComponent(
-                component: () => Number(),
+                component: () => B.Number(),
                 whenProperty: c => c.Property.PropertyType.SkipNullable().Is<int>()
             );
             builder.Conventions.AddPropertyComponent(
-                component: () => Money(),
+                component: () => B.Money(),
                 whenProperty: c => c.Property.PropertyType.SkipNullable().Is<decimal>()
             );
             builder.Conventions.AddPropertyComponent(
-                component: () => Rate(),
+                component: () => B.Rate(),
                 whenProperty: c => c.Property.PropertyType.SkipNullable().Is<double>()
             );
         });

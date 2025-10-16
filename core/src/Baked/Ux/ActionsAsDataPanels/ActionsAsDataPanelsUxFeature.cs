@@ -1,6 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.RestApi.Model;
-using Baked.Theme.Default;
+using Baked.Ui;
 
 using static Baked.Theme.Default.DomainComponents;
 using static Baked.Theme.Default.DomainDatas;
