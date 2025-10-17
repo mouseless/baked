@@ -13,8 +13,8 @@ public class DesignatedStringPropertiesAreLabelUxFeature(IEnumerable<string> pro
         configurator.ConfigureDomainModelBuilder(builder =>
         {
             builder.Index.Property.Add<LabelAttribute>();
-            builder.Conventions.SetPropertyMetadata(
-                attribute: new LabelAttribute(),
+            builder.Conventions.SetPropertyAttribute(
+                attribute: () => new LabelAttribute(),
                 when: c => c.Property.PropertyType.Is<string>() && _propertyNames.Contains(c.Property.Name)
             );
             builder.Conventions.AddPropertySchemaConfiguration<DataTable.Column>(
@@ -23,7 +23,7 @@ public class DesignatedStringPropertiesAreLabelUxFeature(IEnumerable<string> pro
                     dtc.Frozen = true;
                     dtc.MinWidth = true;
                 },
-                whenProperty: c => c.Property.Has<LabelAttribute>()
+                when: c => c.Property.Has<LabelAttribute>()
             );
             builder.Conventions.AddMethodComponentConfiguration<DataTable>(
                 component: (dt, c) =>

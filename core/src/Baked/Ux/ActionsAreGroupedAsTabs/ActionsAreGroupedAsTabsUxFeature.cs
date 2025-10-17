@@ -40,7 +40,7 @@ public class ActionsAreGroupedAsTabsUxFeature : IFeature<UxConfigurator>
 
                     rp.Schema.Tabs.AddRange(tabs.Values);
                 },
-                whenType: c => c.Type.HasMembers(),
+                when: c => c.Type.HasMembers(),
                 order: -10
             );
             builder.Conventions.AddTypeComponentConfiguration<ReportPage>(

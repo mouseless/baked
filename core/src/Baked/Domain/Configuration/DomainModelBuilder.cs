@@ -40,7 +40,7 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
 
     public void PostBuild(DomainModel result)
     {
-        ApplyAddRemoveMetadataConventions(result);
+        ApplyAddRemoveAttributeConventions(result);
         BuildIndices(result);
         ApplyOtherConventions(result);
     }
@@ -65,9 +65,9 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
         return _buildQueue.Enqueue(type);
     }
 
-    void ApplyAddRemoveMetadataConventions(DomainModel model)
+    void ApplyAddRemoveAttributeConventions(DomainModel model)
     {
-        foreach (var convention in _options.Conventions.OrderBy(c => c.Order).Select(c => c.Convention).OfType<IAddRemoveMetadataConvention>())
+        foreach (var convention in _options.Conventions.OrderBy(c => c.Order).Select(c => c.Convention).OfType<IAddRemoveAttributeConvention>())
         {
             Apply(model, convention);
         }
@@ -75,7 +75,7 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
 
     void ApplyOtherConventions(DomainModel model)
     {
-        foreach (var convention in _options.Conventions.OrderBy(c => c.Order).Select(c => c.Convention).Where(c => c is not IAddRemoveMetadataConvention))
+        foreach (var convention in _options.Conventions.OrderBy(c => c.Order).Select(c => c.Convention).Where(c => c is not IAddRemoveAttributeConvention))
         {
             Apply(model, convention);
         }

@@ -13,22 +13,22 @@ public class NumericValuesAreFormattedUxFeature : IFeature<UxConfigurator>
         {
             builder.Conventions.AddPropertySchemaConfiguration<DataTable.Column>(
                 schema: dtc => dtc.AlignRight = true,
-                whenProperty: c =>
+                when: c =>
                     c.Property.PropertyType.SkipNullable().Is<int>() ||
                     c.Property.PropertyType.SkipNullable().Is<double>() ||
                     c.Property.PropertyType.SkipNullable().Is<decimal>()
             );
             builder.Conventions.AddPropertyComponent(
                 component: () => B.Number(),
-                whenProperty: c => c.Property.PropertyType.SkipNullable().Is<int>()
+                when: c => c.Property.PropertyType.SkipNullable().Is<int>()
             );
             builder.Conventions.AddPropertyComponent(
                 component: () => B.Money(),
-                whenProperty: c => c.Property.PropertyType.SkipNullable().Is<decimal>()
+                when: c => c.Property.PropertyType.SkipNullable().Is<decimal>()
             );
             builder.Conventions.AddPropertyComponent(
                 component: () => B.Rate(),
-                whenProperty: c => c.Property.PropertyType.SkipNullable().Is<double>()
+                when: c => c.Property.PropertyType.SkipNullable().Is<double>()
             );
         });
     }

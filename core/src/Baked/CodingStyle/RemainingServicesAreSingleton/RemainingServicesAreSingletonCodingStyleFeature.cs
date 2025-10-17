@@ -12,7 +12,8 @@ public class RemainingServicesAreSingletonCodingStyleFeature()
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Conventions.SetTypeMetadata(new SingletonAttribute(),
+            builder.Conventions.SetTypeAttribute(
+               attribute: () => new SingletonAttribute(),
                when: c =>
                    c.Type.IsClass && !c.Type.IsAbstract &&
                    c.Type.TryGetMembers(out var members) &&
