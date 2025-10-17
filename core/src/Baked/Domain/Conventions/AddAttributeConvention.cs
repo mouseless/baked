@@ -3,10 +3,10 @@ using Baked.Domain.Model;
 
 namespace Baked.Domain.Conventions;
 
-public class AddMetadataConvention<TModelContext>(
+public class AddAttributeConvention<TModelContext>(
     Action<TModelContext, Action<ICustomAttributesModel, Attribute>> _apply,
     Func<TModelContext, bool> _when
-) : IDomainModelConvention<TModelContext>, IAddRemoveMetadataConvention
+) : IDomainModelConvention<TModelContext>, IAddRemoveAttributeConvention
 {
     public void Apply(TModelContext model)
     {
