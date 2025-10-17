@@ -1,6 +1,6 @@
 <template>
   <UiSpec
-    title="Title"
+    title="Text"
     :variants="variants"
     :vertical="false"
   />
