@@ -1,5 +1,4 @@
-﻿using Baked.Binding;
-using Baked.Binding.Rest;
+﻿using Baked.Binding.Rest;
 using Baked.Domain.Configuration;
 using Baked.RestApi.Model;
 

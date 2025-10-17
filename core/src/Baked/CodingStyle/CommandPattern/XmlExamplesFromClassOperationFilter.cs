@@ -1,4 +1,4 @@
-﻿using Baked.Binding;
+﻿using Baked.Binding.Rest;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
