@@ -1,6 +1,6 @@
 ﻿using Baked.Communication;
 
-namespace Baked.Test.ConfigurationOverrider;
+namespace Baked.Test.Override.Runtime;
 
 public class SeedDataTrigger(IHostApplicationLifetime _lifetime, IConfiguration _configuration, ILogger<SeedDataTrigger> _logger, IClient<SeedDataTrigger> _client)
     : IHostedService

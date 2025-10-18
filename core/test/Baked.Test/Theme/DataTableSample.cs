@@ -2,7 +2,7 @@
 
 namespace Baked.Test.Theme;
 
-public class DataTable(IStringLocalizer _l)
+public class DataTableSample(IStringLocalizer _l)
 {
     public TableWithFooter GetTableDataWithFooter(RowCount count)
     {

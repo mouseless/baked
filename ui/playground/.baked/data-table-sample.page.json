@@ -211,7 +211,7 @@
                   },
                   "data": {
                     "type": "Remote",
-                    "path": "data-table/table-data-with-footer",
+                    "path": "data-table-sample/table-data-with-footer",
                     "query": {
                       "type": "Composite",
                       "parts": [
@@ -235,6 +235,6 @@
         ]
       }
     ],
-    "path": "data-table"
+    "path": "data-table-sample"
   }
 }

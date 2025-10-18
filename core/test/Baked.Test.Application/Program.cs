@@ -55,7 +55,7 @@ Bake.New
                 .NativeSql(basePath: "Reporting/Sqlite")
                 .ForProduction(c.NativeSql(basePath: "Reporting/PostgreSql"))
             );
-            app.Features.AddConfigurationOverrider();
+            app.Features.AddOverrides();
         }
     )
     .Run();

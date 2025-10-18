@@ -1,6 +1,6 @@
 namespace Baked.Test.Theme;
 
-public class Report
+public class ReportPageSample
 {
     RequiredWithDefaultOptions _requiredWithDefault = default!;
     RequiredOptions _required = default!;
@@ -8,7 +8,7 @@ public class Report
 
     string Value => $"{_requiredWithDefault} - {_required} - {_optional}";
 
-    public Report With(RequiredWithDefaultOptions requiredWithDefault, RequiredOptions required,
+    public ReportPageSample With(RequiredWithDefaultOptions requiredWithDefault, RequiredOptions required,
         OptionalOptions? optional = default
     )
     {

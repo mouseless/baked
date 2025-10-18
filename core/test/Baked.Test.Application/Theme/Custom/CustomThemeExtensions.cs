@@ -11,9 +11,9 @@ public static class CustomThemeExtensions
         new(
         [
             r => r.Index() with { Page = p => p.Described(d => d.Menu()) },
-            r => r.Root("/cache", "Cache", "pi pi-database") with { Page = p => p.Generated(g => g.From<CacheSamples>()), Description = "Showcases the cache behavior" },
-            r => r.Root("/data-table", "Data Table", "pi pi-table") with { Page = p => p.Generated(d => d.From<DataTable>()), Description = "Showcase DataTable component with scrollable and footer options" },
-            r => r.Root("/report", "Report", "pi pi-file") with { Page = p => p.Generated(g => g.From<Report>()), Description = "Showcases a report layout with tabs and data panels"},
+            r => r.Root("/cache-samples", "Cache", "pi pi-database") with { Page = p => p.Generated(g => g.From<CacheSamples>()), Description = "Showcases the cache behavior" },
+            r => r.Root("/data-table-sample", "Data Table", "pi pi-table") with { Page = p => p.Generated(d => d.From<DataTableSample>()), Description = "Showcase DataTable component with scrollable and footer options" },
+            r => r.Root("/report-page-sample", "Report", "pi pi-file") with { Page = p => p.Generated(g => g.From<ReportPageSample>()), Description = "Showcases a report layout with tabs and data panels"},
             r => r.Root("/specs", "Specs", "pi pi-list-check") with { Page = p => p.Described(d => d.Menu()), Description = "All UI Specs are listed here" },
 
             // Behavior
