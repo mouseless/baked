@@ -1,7 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.Ui;
-
-using static Baked.Ui.UiLayer;
+using Baked.Ui.Configuration;
 
 namespace Baked;
 

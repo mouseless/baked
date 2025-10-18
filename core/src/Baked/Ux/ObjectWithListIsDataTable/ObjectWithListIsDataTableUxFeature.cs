@@ -1,6 +1,7 @@
 ﻿using Baked.Architecture;
 using Baked.RestApi.Model;
 using Baked.Theme.Default;
+using Baked.Ui;
 using Humanizer;
 
 using static Baked.Theme.Default.DomainComponents;
@@ -13,7 +14,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Conventions.SetTypeMetadata(
+            builder.Conventions.SetTypeAttribute(
                 attribute: c => new ObjectWithListAttribute(
                     c.Type.GetMembers().Properties
                         .First(p =>
@@ -33,9 +34,9 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                     )
             );
 
-            builder.Conventions.AddPropertyMetadataConfiguration<DataAttribute>(
-                apply: data => data.Visible = false,
-                when: (_, c) =>
+            builder.Conventions.AddPropertyAttributeConfiguration<DataAttribute>(
+                attribute: data => data.Visible = false,
+                when: c =>
                     c.Type.TryGet<ObjectWithListAttribute>(out var objectWithList) &&
                     c.Property.Name == objectWithList.ListPropertyName
             );
@@ -50,11 +51,11 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                         .ListPropertyName
                         .Camelize();
                 }),
-                whenMethod: c =>
+                when: c =>
                     c.Method.Has<ActionModelAttribute>() &&
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMetadata(out var returnMetadata) &&
                     returnMetadata.Has<ObjectWithListAttribute>(),
-                whenComponent: c => c.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content))
+                where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content))
             );
             builder.Conventions.AddMethodComponentConfiguration<DataTable>(
                 component: (dt, c) =>
@@ -66,7 +67,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                         .ListPropertyName
                         .Camelize();
                 },
-                whenMethod: c =>
+                when: c =>
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMetadata(out var returnMetadata) &&
                     returnMetadata.Has<ObjectWithListAttribute>()
             );
@@ -88,7 +89,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                         dt.Schema.Columns.Add(column);
                     }
                 },
-                whenMethod: c =>
+                when: c =>
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMembers(out var returnMembers) &&
                     returnMembers.TryGet<ObjectWithListAttribute>(out var objectWithList) &&
                     returnMembers
@@ -100,7 +101,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
 
             builder.Conventions.AddMethodSchema(
                 schema: (c, cc) => MethodDataTableFooter(c.Method, cc),
-                whenMethod: c =>
+                when: c =>
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMetadata(out var returnMetadata) &&
                     returnMetadata.Has<ObjectWithListAttribute>()
             );
@@ -122,7 +123,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                         dtf.Columns.Add(column);
                     }
                 },
-                whenMethod: c =>
+                when: c =>
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMembers(out var returnMembers) &&
                     returnMembers.Has<ObjectWithListAttribute>()
             );
@@ -133,7 +134,7 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                     dtc.Title = null;
                     dtc.Exportable = null;
                 },
-                whenComponent: c => c.Path.Contains(nameof(DataTable), nameof(DataTable.FooterTemplate)),
+                where: cc => cc.Path.Contains(nameof(DataTable), nameof(DataTable.FooterTemplate)),
                 order: 10
             );
         });

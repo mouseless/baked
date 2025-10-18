@@ -12,7 +12,7 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Conventions.SetTypeMetadata(
+            builder.Conventions.SetTypeAttribute(
                 apply: (context, set) =>
                 {
                     var query = context.Type;
@@ -34,7 +34,7 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     c.Type.TryGetMembers(out var members) &&
                     members.Constructors.Any(o => o.Parameters.Any(p => p.ParameterType.IsAssignableTo(typeof(IQueryContext<>))))
             );
-            builder.Conventions.SetTypeMetadata(
+            builder.Conventions.SetTypeAttribute(
                 apply: (c, set) =>
                 {
                     set(c.Type, new ApiInputAttribute());
@@ -42,7 +42,7 @@ public class RichEntityCodingStyleFeature : IFeature<CodingStyleConfigurator>
                 },
                 when: c => c.Type.Has<EntityAttribute>()
             );
-            builder.Conventions.SetMethodMetadata(
+            builder.Conventions.SetMethodAttribute(
                 attribute: c => new ActionModelAttribute(),
                 when: c =>
                     c.Type.Has<EntityAttribute>() && c.Method.Has<InitializerAttribute>() &&

@@ -1,7 +1,7 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
 using Baked.Lifetime;
-using Baked.Theme.Default;
+using Baked.Ui;
 
 namespace Baked.Ux.InitializerParametersAreInPageTitle;
 
@@ -23,7 +23,7 @@ public class InitializerParametersAreInPageTitleUxFeature : IFeature<UxConfigura
                             .Select(p => p.GetRequiredSchema<Parameter>(cc.Drill(nameof(ReportPage), nameof(ReportPage.QueryParameters))))
                     );
                 },
-                whenType: c => c.Type.Has<TransientAttribute>() && c.Type.HasMembers()
+                when: c => c.Type.Has<TransientAttribute>() && c.Type.HasMembers()
             );
         });
     }

@@ -22,4 +22,9 @@
     <PackageReference Include="Newtonsoft.Json" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="Baked" />
+    <InternalsVisibleTo Include="Baked.g.DomainAssembliesBusinessFeature" />
+  </ItemGroup>
+
 </Project>

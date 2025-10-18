@@ -17,7 +17,7 @@ public abstract class TestSpec : MonolithSpec
             configure: app =>
             {
                 app.Features.AddReporting(c => c.Mock());
-                app.Features.AddConfigurationOverrider();
+                app.Features.AddOverrides();
             }
         );
 

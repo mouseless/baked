@@ -10,8 +10,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <InternalsVisibleTo Include="Baked.g.AutoMapOrmFeature"/>
-    <InternalsVisibleTo Include="Baked.g.RestApiLayer"/>
+    <InternalsVisibleTo Include="Baked.g.AutoMapOrmFeature" />
+    <InternalsVisibleTo Include="Baked.g.RestApiLayer" />
   </ItemGroup>
 
 </Project>
