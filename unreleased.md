@@ -18,3 +18,4 @@
   - All metadata convention and configurations are renamed as attribute, e.g.,
     `SetTypeMetadata` -> `SetTypeAttribute`
   - `whenComponent:` is renamed as `where:` for better readability
+- `String` ui component is renamed to `Text`

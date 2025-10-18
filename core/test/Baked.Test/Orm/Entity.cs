@@ -182,7 +182,8 @@ public class Entities(IQueryContext<Entity> _context)
         int? take = default,
         int? skip = default
     ) => _context.By(
-            whereIf: [
+            whereIf:
+            [
                 (guid is not null, e => e.Guid == guid),
                 (@string is not null, e => e.String == @string),
                 (stringData is not null, e => e.StringData == @stringData),

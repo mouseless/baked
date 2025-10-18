@@ -3,7 +3,7 @@ import primevue from "../utils/locators/primevue.js";
 import baked from "../utils/locators/baked.js";
 
 test.beforeEach(async({ goto }) => {
-  await goto("/specs/string", { waitUntil: "hydration" });
+  await goto("/specs/text", { waitUntil: "hydration" });
 });
 
 test.describe("Base", () => {

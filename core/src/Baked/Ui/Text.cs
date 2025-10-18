@@ -1,6 +1,6 @@
 ﻿namespace Baked.Ui;
 
-public record String : IComponentSchema
+public record Text : IComponentSchema
 {
     public int? MaxLength { get; set; }
 }

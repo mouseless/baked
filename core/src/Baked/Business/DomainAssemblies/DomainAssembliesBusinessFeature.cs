@@ -148,7 +148,8 @@ public class DomainAssembliesBusinessFeature(
                             entity.Apply(t => assembly.AddReferenceFrom(t));
                         }
                     },
-                    usings: [
+                    usings:
+                    [
                         "Baked.Business",
                         "Baked.Business.DomainAssemblies",
                         "Baked.Runtime",

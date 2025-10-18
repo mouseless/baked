@@ -8,9 +8,9 @@ namespace Baked.Test.Theme.Custom;
 
 public static class DomainComponents
 {
-    public static ComponentDescriptor<Baked.Ui.String> MethodString(MethodModel method, ComponentContext context,
-        Action<Baked.Ui.String>? options = default
-    ) => B.String(
+    public static ComponentDescriptor<Text> MethodText(MethodModel method, ComponentContext context,
+        Action<Text>? options = default
+    ) => B.Text(
         data: method.GetSchema<RemoteData>(context.Drill(nameof(IComponentDescriptor.Data))),
         options: options
     );

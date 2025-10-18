@@ -11,9 +11,9 @@ public static class CustomThemeExtensions
         new(
         [
             r => r.Index() with { Page = p => p.Described(d => d.Menu()) },
-            r => r.Root("/cache", "Cache", "pi pi-database") with { Page = p => p.Generated(g => g.From<CacheSamples>()), Description = "Showcases the cache behavior" },
-            r => r.Root("/data-table", "Data Table", "pi pi-table") with { Page = p => p.Generated(d => d.From<DataTable>()), Description = "Showcase DataTable component with scrollable and footer options" },
-            r => r.Root("/report", "Report", "pi pi-file") with { Page = p => p.Generated(g => g.From<Report>()), Description = "Showcases a report layout with tabs and data panels"},
+            r => r.Root("/cache-samples", "Cache", "pi pi-database") with { Page = p => p.Generated(g => g.From<CacheSamples>()), Description = "Showcases the cache behavior" },
+            r => r.Root("/data-table-sample", "Data Table", "pi pi-table") with { Page = p => p.Generated(d => d.From<DataTableSample>()), Description = "Showcase DataTable component with scrollable and footer options" },
+            r => r.Root("/report-page-sample", "Report", "pi pi-file") with { Page = p => p.Generated(g => g.From<ReportPageSample>()), Description = "Showcases a report layout with tabs and data panels"},
             r => r.Root("/specs", "Specs", "pi pi-list-check") with { Page = p => p.Described(d => d.Menu()), Description = "All UI Specs are listed here" },
 
             // Behavior
@@ -32,7 +32,7 @@ public static class CustomThemeExtensions
             r => r.Child("/specs/money", "Money", "/specs") with { Icon = "pi pi-microchip", Description = "Shortens and renders money values with the full value shown as tooltip", Section = "Display" },
             r => r.Child("/specs/number", "Number", "/specs") with { Icon = "pi pi-microchip", Description = "Shortens and renders numbers with the full value shown as tooltip", Section = "Display" },
             r => r.Child("/specs/rate", "Rate", "/specs") with { Icon = "pi pi-microchip", Description = "Render rate values as percentage", Section = "Display" },
-            r => r.Child("/specs/string", "String", "/specs") with { Icon = "pi pi-microchip", Description = "Render string values", Section = "Display" },
+            r => r.Child("/specs/text", "Text", "/specs") with { Icon = "pi pi-microchip", Description = "Render string values", Section = "Display" },
 
             // Input
             r => r.Child("/specs/language-switcher", "Language Switcher", "/specs") with { Icon = "pi pi-microchip", Description = "Allow change site language", Section = "Input" },

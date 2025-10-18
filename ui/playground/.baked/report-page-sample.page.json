@@ -105,11 +105,11 @@
                 "localizeTitle": true,
                 "parameters": [],
                 "content": {
-                  "type": "String",
+                  "type": "Text",
                   "schema": {},
                   "data": {
                     "type": "Remote",
-                    "path": "report/wide",
+                    "path": "report-page-sample/wide",
                     "headers": {
                       "type": "Inline",
                       "value": {
@@ -139,11 +139,11 @@
                 "localizeTitle": true,
                 "parameters": [],
                 "content": {
-                  "type": "String",
+                  "type": "Text",
                   "schema": {},
                   "data": {
                     "type": "Remote",
-                    "path": "report/left",
+                    "path": "report-page-sample/left",
                     "headers": {
                       "type": "Inline",
                       "value": {
@@ -174,11 +174,11 @@
                 "localizeTitle": true,
                 "parameters": [],
                 "content": {
-                  "type": "String",
+                  "type": "Text",
                   "schema": {},
                   "data": {
                     "type": "Remote",
-                    "path": "report/right",
+                    "path": "report-page-sample/right",
                     "headers": {
                       "type": "Inline",
                       "value": {
@@ -262,7 +262,7 @@
                         "prop": "label",
                         "component": {
                           "fallback": {
-                            "type": "String",
+                            "type": "Text",
                             "schema": {}
                           },
                           "conditions": []
@@ -276,7 +276,7 @@
                         "prop": "column1",
                         "component": {
                           "fallback": {
-                            "type": "String",
+                            "type": "Text",
                             "schema": {}
                           },
                           "conditions": []
@@ -288,7 +288,7 @@
                         "prop": "column2",
                         "component": {
                           "fallback": {
-                            "type": "String",
+                            "type": "Text",
                             "schema": {}
                           },
                           "conditions": []
@@ -300,7 +300,7 @@
                         "prop": "column3",
                         "component": {
                           "fallback": {
-                            "type": "String",
+                            "type": "Text",
                             "schema": {}
                           },
                           "conditions": []
@@ -325,7 +325,7 @@
                   },
                   "data": {
                     "type": "Remote",
-                    "path": "report/first",
+                    "path": "report-page-sample/first",
                     "headers": {
                       "type": "Inline",
                       "value": {
@@ -405,7 +405,7 @@
                         "prop": "label",
                         "component": {
                           "fallback": {
-                            "type": "String",
+                            "type": "Text",
                             "schema": {}
                           },
                           "conditions": []
@@ -419,7 +419,7 @@
                         "prop": "column1",
                         "component": {
                           "fallback": {
-                            "type": "String",
+                            "type": "Text",
                             "schema": {}
                           },
                           "conditions": []
@@ -431,7 +431,7 @@
                         "prop": "column2",
                         "component": {
                           "fallback": {
-                            "type": "String",
+                            "type": "Text",
                             "schema": {}
                           },
                           "conditions": []
@@ -443,7 +443,7 @@
                         "prop": "column3",
                         "component": {
                           "fallback": {
-                            "type": "String",
+                            "type": "Text",
                             "schema": {}
                           },
                           "conditions": []
@@ -468,7 +468,7 @@
                   },
                   "data": {
                     "type": "Remote",
-                    "path": "report/second",
+                    "path": "report-page-sample/second",
                     "headers": {
                       "type": "Inline",
                       "value": {
@@ -504,6 +504,6 @@
         }
       }
     ],
-    "path": "report"
+    "path": "report-page-sample"
   }
 }

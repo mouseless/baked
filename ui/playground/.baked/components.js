@@ -26,7 +26,7 @@ import {
 	LazySelect,
 	LazySelectButton,
 	LazySideMenu,
-	LazyString
+	LazyText
 } from "#components";
 
 export {
@@ -57,5 +57,5 @@ export {
 	LazySelect,
 	LazySelectButton,
 	LazySideMenu,
-	LazyString
+	LazyText
 }

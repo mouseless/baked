@@ -42,7 +42,7 @@
                 "localizeTitle": true,
                 "parameters": [],
                 "content": {
-                  "type": "String",
+                  "type": "Text",
                   "schema": {},
                   "data": {
                     "type": "Remote",
@@ -73,7 +73,7 @@
                 "localizeTitle": true,
                 "parameters": [],
                 "content": {
-                  "type": "String",
+                  "type": "Text",
                   "schema": {},
                   "data": {
                     "type": "Remote",
@@ -96,6 +96,6 @@
         ]
       }
     ],
-    "path": "cache"
+    "path": "cache-samples"
   }
 }

@@ -2,7 +2,7 @@
 using Baked.Test.ExceptionHandling;
 using System.Net;
 
-namespace Baked.Test.ConfigurationOverrider;
+namespace Baked.Test.Override.Runtime;
 
 public class SampleExceptionHandler : IExceptionHandler
 {
