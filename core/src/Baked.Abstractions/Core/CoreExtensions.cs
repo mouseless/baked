@@ -8,14 +8,8 @@ namespace Baked;
 
 public static class CoreExtensions
 {
-    #region Time
-
     public static DateTime GetNow(this TimeProvider timeProvider) =>
         timeProvider.GetLocalNow().DateTime;
-
-    #endregion
-
-    #region Service
 
     public static T GetRequiredValue<T>(this IConfiguration configuration, string key,
         T? defaultValue = default
@@ -26,18 +20,12 @@ public static class CoreExtensions
     ) => configuration.GetValue(type, key, defaultValue) ??
            throw new InvalidOperationException($"Looked for a value {key} in Configurations, but could not found");
 
-    #endregion
-
-    #region List
-
     public static string Join<T>(this IEnumerable<T> enumerable, char separator) =>
         enumerable.Join($"{separator}");
 
     public static string Join<T>(this IEnumerable<T> enumerable,
         string? separator = default
     ) => string.Join(separator ?? string.Empty, enumerable);
-
-    #endregion
 
     #region Encryption
 
@@ -96,8 +84,6 @@ public static class CoreExtensions
 
     #endregion
 
-    #region File reading
-
     public static bool Exists(this IFileProvider provider, string subpath) =>
         provider.GetFileInfo(subpath).Exists;
 
@@ -122,6 +108,4 @@ public static class CoreExtensions
 
         return new(fileInfo.CreateReadStream(), Encoding.UTF8);
     }
-
-    #endregion
 }

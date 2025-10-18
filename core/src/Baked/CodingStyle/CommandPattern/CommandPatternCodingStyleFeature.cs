@@ -1,5 +1,5 @@
 ﻿using Baked.Architecture;
-using Baked.Binding.Rest;
+using Baked.Binding;
 using Baked.Business;
 using Baked.Lifetime;
 using Baked.RestApi.Conventions;
