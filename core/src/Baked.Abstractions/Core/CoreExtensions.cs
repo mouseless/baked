@@ -1,8 +1,8 @@
-﻿using System.Buffers.Text;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.FileProviders;
+using System.Buffers.Text;
 using System.Security.Cryptography;
 using System.Text;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.FileProviders;
 
 namespace Baked;
 
@@ -26,6 +26,31 @@ public static class CoreExtensions
     public static string Join<T>(this IEnumerable<T> enumerable,
         string? separator = default
     ) => string.Join(separator ?? string.Empty, enumerable);
+
+    public static bool Exists(this IFileProvider provider, string subpath) =>
+        provider.GetFileInfo(subpath).Exists;
+
+    public static string? ReadAsString(this IFileProvider provider, string subpath)
+    {
+        using var streamReader = provider.CreateStreamReader(subpath);
+
+        return streamReader.ReadToEnd();
+    }
+
+    public static async Task<string?> ReadAsStringAsync(this IFileProvider provider, string subpath)
+    {
+        using var streamReader = provider.CreateStreamReader(subpath);
+
+        return await streamReader.ReadToEndAsync();
+    }
+
+    static StreamReader CreateStreamReader(this IFileProvider provider, string subpath)
+    {
+        var fileInfo = provider.GetFileInfo(subpath);
+        if (!fileInfo.Exists) { return StreamReader.Null; }
+
+        return new(fileInfo.CreateReadStream(), Encoding.UTF8);
+    }
 
     #region Encryption
 
@@ -83,29 +108,4 @@ public static class CoreExtensions
         Encoding.UTF8.GetString(bytes);
 
     #endregion
-
-    public static bool Exists(this IFileProvider provider, string subpath) =>
-        provider.GetFileInfo(subpath).Exists;
-
-    public static string? ReadAsString(this IFileProvider provider, string subpath)
-    {
-        using var streamReader = provider.CreateStreamReader(subpath);
-
-        return streamReader.ReadToEnd();
-    }
-
-    public static async Task<string?> ReadAsStringAsync(this IFileProvider provider, string subpath)
-    {
-        using var streamReader = provider.CreateStreamReader(subpath);
-
-        return await streamReader.ReadToEndAsync();
-    }
-
-    static StreamReader CreateStreamReader(this IFileProvider provider, string subpath)
-    {
-        var fileInfo = provider.GetFileInfo(subpath);
-        if (!fileInfo.Exists) { return StreamReader.Null; }
-
-        return new(fileInfo.CreateReadStream(), Encoding.UTF8);
-    }
 }
