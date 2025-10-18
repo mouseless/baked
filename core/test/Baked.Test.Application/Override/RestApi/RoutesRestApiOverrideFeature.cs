@@ -7,7 +7,7 @@ using Baked.Test.Orm;
 
 namespace Baked.Test.Override.RestApi;
 
-public class RouteRestApiOverrideFeature : IFeature
+public class RoutesRestApiOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {

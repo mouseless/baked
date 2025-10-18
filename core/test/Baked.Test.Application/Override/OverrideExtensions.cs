@@ -9,7 +9,7 @@ public static class OverrideExtensions
         features.Add(new Test.Override.DataAccess.MappingsDataAccessOverrideFeature());
         features.Add(new Test.Override.Domain.CustomAttributeDomainOverrideFeature());
         features.Add(new Test.Override.RestApi.MultiDocumentRestApiOverrideFeature());
-        features.Add(new Test.Override.RestApi.RouteRestApiOverrideFeature());
+        features.Add(new Test.Override.RestApi.RoutesRestApiOverrideFeature());
         features.Add(new Test.Override.RestApi.ExternalSecurityRestApiOverrideFeature());
         features.Add(new Test.Override.Runtime.ServicesRuntimeOverrideFeature());
         features.Add(new Test.Override.Ui.CacheSamplesUiOverrideFeature());
