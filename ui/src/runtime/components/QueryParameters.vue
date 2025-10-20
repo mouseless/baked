@@ -39,6 +39,11 @@ for(const parameter of parameters) {
   values[parameter.name] = { query, model };
 }
 
+// check if a value is set (not null/undefined/empty or type number)
+function checkValue(value) {
+  return value != null && (typeof value === "number" || value?.length > 0);
+}
+
 // set defaults when first landed on page
 onMounted(async() => await setDefaults());
 
@@ -48,12 +53,12 @@ watchEffect(() => {
   // sets ready state when all required parameters are set
   const isReady = parameters
     .filter(p => p.required)
-    .every(p => values[p.name].query.value?.length > 0);
+    .every(p => checkValue(values[p.name].query.value));
 
   // calculates unique key to help parent redraw components when a parameter
   // value changes
   const uniqueKey = queryValues
-    .filter(v => v?.length > 0)
+    .filter(checkValue)
     .join("-");
 
   emit("ready", isReady);
@@ -97,7 +102,7 @@ watch(
     // build query object from non-empty values
     const query = parameters.reduce((result, param, i) => {
       const value = newValues[i];
-      if(value) {
+      if(checkValue(value)) {
         result[param.name] = value;
       }
 

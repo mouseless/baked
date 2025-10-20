@@ -1,4 +1,5 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
+import primevue from "../utils/locators/primevue";
 
 test.beforeEach(async({ goto }) => {
   await goto("/specs/query-parameters", { waitUntil: "hydration" });
@@ -18,6 +19,7 @@ test("parameters are rendered", async({ page }) => {
   await expect(component.getByTestId("required-with-default-self-managed")).toBeVisible();
   await expect(component.getByTestId("required")).toBeVisible();
   await expect(component.getByTestId("optional")).toBeVisible();
+  await expect(component.getByTestId("num-required")).toBeVisible();
 });
 
 test("default value is set", async({ page }) => {
@@ -100,6 +102,8 @@ test("ready when all required are set", async({ page }) => {
   await expect(ready).toHaveText("false");
 
   await component.getByTestId("required").fill("x");
+  await component.locator(primevue.inputNumber.base).click();
+  await page.keyboard.press("Digit0");
 
   await expect(ready).toHaveText("true");
 });
@@ -112,6 +116,8 @@ test("unique key changes with parameter values", async({ page }) => {
   await component.getByTestId("required-with-default-self-managed").fill("value 2");
   await component.getByTestId("required").fill("value 3");
   await component.getByTestId("optional").fill("value 4");
+  await component.locator(primevue.inputNumber.base).click();
+  await page.keyboard.press("Digit0");
 
-  await expect(uniqueKey).toHaveText("value 1-value 2-value 3-value 4");
+  await expect(uniqueKey).toHaveText("value 1-value 2-value 3-value 4-0");
 });
