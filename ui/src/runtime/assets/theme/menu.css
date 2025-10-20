@@ -1,6 +1,7 @@
 /* menu-variables */
 @layer primevue{
-    :root{
+    :root,
+    :host{
         --p-menu-separator-border-color:var(--p-content-border-color);
         --p-menu-submenu-label-padding:var(--p-navigation-submenu-label-padding);
         --p-menu-submenu-label-font-weight:var(--p-navigation-submenu-label-font-weight);
@@ -47,6 +48,7 @@
         transition:background var(--p-menu-transition-duration),color var(--p-menu-transition-duration);
         border-radius:var(--p-menu-item-border-radius);
         color:var(--p-menu-item-color);
+        overflow: hidden;
     }
     .p-menu-item-link{
         cursor:pointer;

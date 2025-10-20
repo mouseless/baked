@@ -1,6 +1,7 @@
 /* popover-variables */
 @layer primevue{
-    :root{
+    :root,
+    :host{
         --p-popover-content-padding:var(--p-overlay-popover-padding);
         --p-popover-background:var(--p-overlay-popover-background);
         --p-popover-border-color:var(--p-overlay-popover-border-color);

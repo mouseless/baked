@@ -1,6 +1,7 @@
 /* datatable-variables */
 @layer primevue{
-    :root{
+    :root,
+    :host {
         --p-datatable-paginator-bottom-border-color:var(--p-datatable-border-color);
         --p-datatable-paginator-bottom-border-width:0 0 1px 0;
         --p-datatable-paginator-top-border-color:var(--p-datatable-border-color);
@@ -112,7 +113,8 @@
 }
 @layer primevue{
     @media (prefers-color-scheme:dark){
-        :root{
+        :root,
+        :host {
             --p-datatable-body-cell-selected-border-color:var(--p-primary-900);
             --p-datatable-row-striped-background:var(--p-surface-950);
             --p-datatable-border-color:var(--p-surface-800);
@@ -124,6 +126,7 @@
 @layer primevue{
      .p-datatable{
         position:relative;
+        display: block;
     }
     .p-datatable-table{
         border-spacing:0;

@@ -1,6 +1,7 @@
 /* paginator-variables */
 @layer primevue{
-    :root{
+    :root,
+    :host{
         --p-paginator-jump-to-page-input-max-width:2.5rem;
         --p-paginator-current-page-report-color:var(--p-text-muted-color);
         --p-paginator-nav-button-background:transparent;
