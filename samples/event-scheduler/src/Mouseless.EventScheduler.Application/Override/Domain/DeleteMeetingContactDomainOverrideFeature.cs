@@ -1,8 +1,8 @@
 ﻿using Baked.Architecture;
 
-namespace Mouseless.EventScheduler.Application.ConfigurationOverrider;
+namespace Mouseless.EventScheduler.Application.Override.Domain;
 
-public class ConfigurationOverriderFeature : IFeature
+public class DeleteMeetingContactDomainOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
