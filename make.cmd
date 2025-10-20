@@ -86,7 +86,7 @@ start .coverage\html\index.html
 cd ..
 goto end
 
-:run_menu
+:run
 echo (1) API (Development)
 echo (2) UI (Development)
 echo (3) Docker (Production)
