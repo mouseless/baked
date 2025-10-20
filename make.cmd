@@ -13,7 +13,6 @@ if "%1"=="" (
 set CMD=%1
 
 if /i "%CMD%"=="format" goto format
-if /i "%CMD%"=="format" goto fix
 if /i "%CMD%"=="install" goto install
 if /i "%CMD%"=="build" goto build
 if /i "%CMD%"=="test" goto test
@@ -34,17 +33,6 @@ cd ..
 cd docs\.theme
 npm run lint -- --fix
 cd ..\..
-goto end
-
-:fix
-cls
-echo Running ESLint fix...
-if not "%FILE%"=="" (
-    echo Fixing file %FILE%...
-    npx eslint %FILE% --fix
-) else (
-    echo No FILE specified.
-)
 goto end
 
 :install
@@ -117,8 +105,8 @@ goto end
 
 :docs
 echo Running Docs...
-cd docs\.theme
-npm run dev
+cd docs
+make run
 cd ..
 goto end
 

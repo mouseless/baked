@@ -31,7 +31,7 @@
     <PackageVersion Include="NUnit" Version="4.4.0" />
     <PackageVersion Include="NUnit3TestAdapter" Version="5.2.0" />
     <PackageVersion Include="Npgsql" Version="9.0.4" />
-    <PackageVersion Include="Oracle.ManagedDataAccess.Core" Version="23.9.1" />
+    <PackageVersion Include="Oracle.ManagedDataAccess.Core" Version="23.26.0" />
     <PackageVersion Include="Quackers.TestLogger" Version="1.0.25" />
     <PackageVersion Include="Shouldly" Version="4.3.0" />
     <PackageVersion Include="SQLitePCLRaw.bundle_e_sqlite3" Version="3.0.2" />
