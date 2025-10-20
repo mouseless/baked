@@ -2,7 +2,7 @@
 
 ## Improvements
 
-- Folder reorganization
+- folder reorganization
 - `Baked.Architecture` and `Baked.Recipe.Service` merged into `Baked`
 - `Baked.Core` and `Baked.Service` merged into `Baked.Abstractions`
 - Renamed `Service` recipe to `Monolith`
@@ -21,5 +21,5 @@
 - `String` ui component is renamed to `Text`
 - Style improvement:  `PageTitle`, `bg-color`
 - Style improvement:  `PageTitle`, `bg-color`
-- Nested types were causing compilation error in generated controllers 
-  when used as parameter or return type, fixed
+- Nested types were causing compilation error in generated controllers when 
+  used as parameter or return type, fixed
