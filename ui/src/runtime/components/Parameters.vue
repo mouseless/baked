@@ -10,7 +10,7 @@
     <Bake
       v-for="parameter in parameters"
       :key="parameter.name"
-      v-model="values[parameter.name].value"
+      v-model="values[parameter.name]"
       :name="`parameters/${parameter.name}`"
       :descriptor="parameter.component"
       class="max-md:w-full"
@@ -18,7 +18,7 @@
   </div>
 </template>
 <script setup>
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch, reactive } from "vue";
 import { Bake } from "#components";
 import { useContext, useDataFetcher } from "#imports";
 
@@ -31,9 +31,15 @@ const { parameters } = defineProps({
 const emit = defineEmits(["ready", "changed"]);
 
 const injectedData = context.injectData();
-const values = {};
+const values = reactive({});
+
 for(const parameter of parameters) {
   values[parameter.name] = ref(dataFetcher.get({ data: parameter.default, injectedData }));
+}
+
+// check if a value is set (not null/undefined/empty or type number)
+function checkValue(value) {
+  return value != null && (typeof value === "number" || value?.length > 0);
 }
 
 onMounted(async() => {
@@ -42,29 +48,31 @@ onMounted(async() => {
 
     values[parameter.name].value = await dataFetcher.fetch({ data: parameter.default, injectedData });
   }
+
+  emitChanged();
+  emitReady();
 });
 
 // when any of the parameter values changed from input components, it emits
 // ready and changed
-watch(Object.values(values), async() => {
+watch(values, async() => {
   emitChanged();
   emitReady();
-}, { immediate: true });
+}, { deep: true });
 
 function emitReady() {
   emit("ready",
     parameters
       .filter(p => p.required)
-      .reduce((result, p) => result && values[p.name].value?.length > 0, true)
+      .reduce((result, p) => result && checkValue(values[p.name]), true)
   );
 }
 
 function emitChanged() {
   emit("changed", {
-    uniqueKey: Object
-      .values(values)
-      .map(v => String(v.value || ""))
-      .filter(v => v?.length > 0)
+    uniqueKey: parameters
+      .map(p => values[p.name])
+      .filter(checkValue)
       .join("-"),
     values
   });

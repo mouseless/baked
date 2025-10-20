@@ -68,6 +68,11 @@ const parameters = [
   giveMe.aParameter({
     name: "optional",
     component: giveMe.anInput({ testId: "optional" })
+  }),
+  giveMe.aParameter({
+    name: "num-required",
+    component: giveMe.anInputNumber({ testId: "num-required" }),
+    required: true
   })
 ];
 
