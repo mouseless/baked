@@ -5,6 +5,7 @@
     :data-testid="testId"
     :placeholder="testId"
     class="w-32"
+    @input="onInput"
   />
 </template>
 <script setup>
@@ -17,6 +18,10 @@ const { schema } = defineProps({
 const model = defineModel({ type: null, required: true });
 
 const { testId, defaultValue } = schema;
+
+function onInput(event) {
+  model.value = event.value;
+}
 
 if(defaultValue !== undefined) {
   watch(
