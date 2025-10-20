@@ -1,6 +1,6 @@
 ﻿namespace Baked.Test.Business;
 
-public class NestedRecordClass
+public class NestedTypeInApi
 {
     public record Input(string Text);
     public record Result(string Text);
