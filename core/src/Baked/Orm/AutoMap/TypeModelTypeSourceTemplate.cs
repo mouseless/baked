@@ -22,12 +22,11 @@ public class TypeModelTypeSourceTemplate(DomainModel _domain)
 
         IEnumerable<Type> ITypeSource.GetTypes()
         {
-            {{If(!_entities.Value.Any(), () =>
-                "return Array.Empty<Type>();",
-            @else: () =>
-                ForEach(_entities.Value, entity =>
-                    $$"""yield return typeof({{entity.CSharpFriendlyFullName}});"""
-                )
+            {{If(!_entities.Value.Any(), () => """
+            return Array.Empty<Type>();
+            """, @else: () => ForEach(_entities.Value, entity => $$"""
+            yield return typeof({{entity.CSharpFriendlyFullName}});
+            """)
             )}}
         }
 
