@@ -6,48 +6,22 @@ title Project Runner
 if "%1"=="" (
     echo Usage: %0 ^<command^>
     echo.
-    echo Available commands: api, ui, docker, docs, format, build, test, coverage, install
+    echo Available commands: run, format, build, test, coverage, install
     exit /b 1
 )
 
 set CMD=%1
 
-if /i "%CMD%"=="api" goto api
-if /i "%CMD%"=="ui" goto ui
-if /i "%CMD%"=="docker" goto docker
-if /i "%CMD%"=="docs" goto docs
 if /i "%CMD%"=="format" goto format
+if /i "%CMD%"=="format" goto fix
+if /i "%CMD%"=="install" goto install
 if /i "%CMD%"=="build" goto build
 if /i "%CMD%"=="test" goto test
 if /i "%CMD%"=="coverage" goto coverage
-if /i "%CMD%"=="install" goto install
+if /i "%CMD%"=="run" goto run
 
 echo Invalid command: %CMD%
 exit /b 1
-
-:api
-echo Running API (Development)...
-dotnet run --project core\test\Baked.Test.Application
-goto end
-
-:ui
-echo Starting Playground (Development)...
-cd ui
-npm run dev
-cd ..
-goto end
-
-:docker
-echo Running Docker (Production)...
-docker compose up --build
-goto end
-
-:docs
-echo Running Docs...
-cd docs\.theme
-npm run dev
-cd ..
-goto end
 
 :format
 echo Formatting code...
@@ -60,6 +34,25 @@ cd ..
 cd docs\.theme
 npm run lint -- --fix
 cd ..\..
+goto end
+
+:fix
+cls
+echo Running ESLint fix...
+if not "%FILE%"=="" (
+    echo Fixing file %FILE%...
+    npx eslint %FILE% --fix
+) else (
+    echo No FILE specified.
+)
+goto end
+
+:install
+echo Installing dependencies...
+cd docs\.theme && npm i && cd ..\..
+cd ui && npm i && cd ..
+cd core\test\Baked.Test.LoadTest && npm i && cd ..\..\..
+cd core\test\Baked.Test.StubApi && npm i && cd ..\..\..
 goto end
 
 :build
@@ -93,12 +86,40 @@ start .coverage\html\index.html
 cd ..
 goto end
 
-:install
-echo Installing dependencies...
-cd docs\.theme && npm i && cd ..\..
-cd ui && npm i && cd ..
-cd core\test\Baked.Test.LoadTest && npm i && cd ..\..\..
-cd core\test\Baked.Test.StubApi && npm i && cd ..\..\..
+:run_menu
+echo (1) API (Development)
+echo (2) UI (Development)
+echo (3) Docker (Production)
+echo (4) Docs
+set /p choice="Please select 1-4: "
+
+if "%choice%"=="1" goto api
+if "%choice%"=="2" goto ui
+if "%choice%"=="3" goto docker
+if "%choice%"=="4" goto docs
+
+:api
+echo Running API (Development)...
+dotnet run --project core\test\Baked.Test.Application
+goto end
+
+:ui
+echo Starting Playground (Development)...
+cd ui
+npm run dev
+cd ..
+goto end
+
+:docker
+echo Running Docker (Production)...
+docker compose up --build
+goto end
+
+:docs
+echo Running Docs...
+cd docs\.theme
+npm run dev
+cd ..
 goto end
 
 :end
