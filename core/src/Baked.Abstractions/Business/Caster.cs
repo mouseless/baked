@@ -7,12 +7,12 @@ public static class Caster
     static readonly ConcurrentDictionary<Type, ConcurrentDictionary<Type, Func<IServiceProvider, object>>> _from = [];
     static IServiceProvider? _serviceProvider;
 
-    public static void SetServiceProvider(IServiceProvider serviceProvider) =>
+    internal static void SetServiceProvider(IServiceProvider serviceProvider) =>
         _serviceProvider = serviceProvider;
 
     static IServiceProvider ServiceProvider => _serviceProvider ?? throw new InvalidOperationException("Cannot use Caster before setting IServiceProvider");
 
-    public static void Add(Type fromType, Type toType, Func<IServiceProvider, object> getCaster)
+    internal static void Add(Type fromType, Type toType, Func<IServiceProvider, object> getCaster)
     {
         if (!_from.TryGetValue(fromType, out var to))
         {

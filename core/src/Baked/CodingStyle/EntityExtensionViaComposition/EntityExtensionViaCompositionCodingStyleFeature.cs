@@ -11,7 +11,7 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Conventions.SetTypeMetadata(
+            builder.Conventions.SetTypeAttribute(
                 attribute: context =>
                 {
                     var entityType = context.Type.GetMembers().GetMethod("op_Implicit").Parameters.Single().ParameterType;
@@ -28,7 +28,7 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
                     parameterTypeMetadata.Has<EntityAttribute>(),
                 order: 10
             );
-            builder.Conventions.SetTypeMetadata(
+            builder.Conventions.SetTypeAttribute(
                 apply: (c, add) =>
                 {
                     var entityType = c.Type.Get<EntityExtensionAttribute>().EntityType;
@@ -40,7 +40,7 @@ public class EntityExtensionViaCompositionCodingStyleFeature : IFeature<CodingSt
                 when: c => c.Type.Has<EntityExtensionAttribute>(),
                 order: 10
             );
-            builder.Conventions.SetTypeMetadata(
+            builder.Conventions.SetTypeAttribute(
                 apply: (c, set) =>
                 {
                     set(c.Type, new ApiInputAttribute());

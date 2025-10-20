@@ -6,7 +6,8 @@ Bake.New
             baseNamespace: "Baked.Test",
             setNamespaceWhen: t => t.Namespace is not null && t.Namespace.StartsWith("Baked.Test.CodingStyle.NamespaceAsRoute")
         ),
-        authentications: [
+        authentications:
+        [
             c => c.Jwt(
                 configurePlugin: plugin =>
                 {
@@ -54,7 +55,7 @@ Bake.New
                 .NativeSql(basePath: "Reporting/Sqlite")
                 .ForProduction(c.NativeSql(basePath: "Reporting/PostgreSql"))
             );
-            app.Features.AddConfigurationOverrider();
+            app.Features.AddOverrides();
         }
     )
     .Run();

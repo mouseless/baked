@@ -1,0 +1,101 @@
+{
+  "type": "ReportPage",
+  "schema": {
+    "title": {
+      "title": "Cache",
+      "description": "Showcases the cache behavior",
+      "actions": []
+    },
+    "queryParameters": [
+      {
+        "name": "parameter",
+        "required": true,
+        "default": {
+          "type": "Inline",
+          "value": "value_a"
+        },
+        "component": {
+          "type": "SelectButton",
+          "schema": {},
+          "data": {
+            "type": "Inline",
+            "value": [
+              "value_a",
+              "value_b"
+            ]
+          }
+        }
+      }
+    ],
+    "tabs": [
+      {
+        "id": "default",
+        "contents": [
+          {
+            "component": {
+              "type": "DataPanel",
+              "schema": {
+                "title": {
+                  "type": "Inline",
+                  "value": "GetScoped"
+                },
+                "localizeTitle": true,
+                "parameters": [],
+                "content": {
+                  "type": "Text",
+                  "schema": {},
+                  "data": {
+                    "type": "Remote",
+                    "path": "cache-samples/scoped",
+                    "query": {
+                      "type": "Computed",
+                      "composable": "useQuery",
+                      "args": []
+                    },
+                    "attributes": {
+                      "client-cache": "user"
+                    }
+                  }
+                }
+              }
+            },
+            "key": "get-scoped",
+            "narrow": true
+          },
+          {
+            "component": {
+              "type": "DataPanel",
+              "schema": {
+                "title": {
+                  "type": "Inline",
+                  "value": "GetApplication"
+                },
+                "localizeTitle": true,
+                "parameters": [],
+                "content": {
+                  "type": "Text",
+                  "schema": {},
+                  "data": {
+                    "type": "Remote",
+                    "path": "cache-samples/application",
+                    "query": {
+                      "type": "Computed",
+                      "composable": "useQuery",
+                      "args": []
+                    },
+                    "attributes": {
+                      "client-cache": "application"
+                    }
+                  }
+                }
+              }
+            },
+            "key": "get-application",
+            "narrow": true
+          }
+        ]
+      }
+    ],
+    "path": "cache-samples"
+  }
+}

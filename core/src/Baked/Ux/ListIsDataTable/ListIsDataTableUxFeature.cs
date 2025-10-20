@@ -1,6 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.RestApi.Model;
-using Baked.Theme.Default;
+using Baked.Ui;
 
 using static Baked.Theme.Default.DomainComponents;
 
@@ -14,8 +14,8 @@ public class ListIsDataTableUxFeature : IFeature<UxConfigurator>
         {
             builder.Conventions.AddMethodComponent(
                 component: (c, cc) => MethodDataTable(c.Method, cc),
-                whenMethod: c => c.Method.Has<ActionModelAttribute>() && c.Method.DefaultOverload.ReturnsList(),
-                whenComponent: c => c.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content))
+                when: c => c.Method.Has<ActionModelAttribute>() && c.Method.DefaultOverload.ReturnsList(),
+                where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content))
             );
             builder.Conventions.AddMethodComponentConfiguration<DataTable>(
                 component: (dt, c, cc) =>
@@ -31,7 +31,7 @@ public class ListIsDataTableUxFeature : IFeature<UxConfigurator>
                         dt.Schema.Columns.Add(column);
                     }
                 },
-                whenMethod: c =>
+                when: c =>
                     c.Method.DefaultOverload.ReturnsList() &&
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetElementType(out var elementType) &&
                     elementType.HasMembers(),

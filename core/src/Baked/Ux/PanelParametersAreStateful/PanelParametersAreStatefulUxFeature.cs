@@ -1,5 +1,5 @@
 ﻿using Baked.Architecture;
-using Baked.Theme.Default;
+using Baked.Ui;
 
 namespace Baked.Ux.PanelParametersAreStateful;
 
@@ -11,11 +11,11 @@ public class PanelParametersAreStatefulUxFeature : IFeature<UxConfigurator>
         {
             builder.Conventions.AddParameterComponentConfiguration<Select>(
                 component: sb => sb.Schema.Stateful = true,
-                whenComponent: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Parameters), "*", nameof(Parameter.Component))
+                where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Parameters), "*", nameof(Parameter.Component))
             );
             builder.Conventions.AddParameterComponentConfiguration<SelectButton>(
                 component: sb => sb.Schema.Stateful = true,
-                whenComponent: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Parameters), "*", nameof(Parameter.Component))
+                where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Parameters), "*", nameof(Parameter.Component))
             );
         });
     }

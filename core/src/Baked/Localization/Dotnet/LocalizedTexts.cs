@@ -1,4 +1,4 @@
-﻿using Baked.Ui;
+﻿using Baked.Ui.Configuration;
 using System.Globalization;
 
 namespace Baked.Localization.Dotnet;
