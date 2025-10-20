@@ -1,4 +1,4 @@
-using Baked.Ui;
+using Baked.Ui.Configuration;
 
 namespace Baked.Caching.ScopedMemory;
 

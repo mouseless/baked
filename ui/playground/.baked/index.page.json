@@ -9,7 +9,7 @@
             "component": {
               "type": "CardLink",
               "schema": {
-                "route": "/cache",
+                "route": "/cache-samples",
                 "icon": "pi pi-database",
                 "title": "Cache",
                 "description": "Showcases the cache behavior"
@@ -21,7 +21,7 @@
             "component": {
               "type": "CardLink",
               "schema": {
-                "route": "/data-table",
+                "route": "/data-table-sample",
                 "icon": "pi pi-table",
                 "title": "Data Table",
                 "description": "Showcase DataTable component with scrollable and footer options"
@@ -33,7 +33,7 @@
             "component": {
               "type": "CardLink",
               "schema": {
-                "route": "/report",
+                "route": "/report-page-sample",
                 "icon": "pi pi-file",
                 "title": "Report",
                 "description": "Showcases a report layout with tabs and data panels"

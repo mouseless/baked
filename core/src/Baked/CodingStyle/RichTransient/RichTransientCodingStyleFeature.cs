@@ -11,7 +11,7 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Conventions.SetTypeMetadata(
+            builder.Conventions.SetTypeAttribute(
                 apply: (c, set) =>
                 {
                     set(c.Type, new ApiInputAttribute());
@@ -33,7 +33,7 @@ public class RichTransientCodingStyleFeature : IFeature<CodingStyleConfigurator>
                     ),
                 order: 10
             );
-            builder.Conventions.SetMethodMetadata(
+            builder.Conventions.SetMethodAttribute(
                 attribute: c => new ActionModelAttribute(),
                 when: c =>
                     c.Type.Has<TransientAttribute>() &&

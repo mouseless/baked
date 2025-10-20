@@ -1,4 +1,4 @@
-using Baked.Architecture;
+﻿using Baked.Architecture;
 using Baked.Domain;
 using Baked.Domain.Configuration;
 using Baked.Domain.Model;
@@ -65,7 +65,7 @@ public class DomainAssembliesBusinessFeature(
             builder.Index.Type.Add<CasterAttribute>();
             builder.Index.Method.Add<InitializerAttribute>();
 
-            builder.Conventions.SetTypeMetadata(
+            builder.Conventions.SetTypeAttribute(
                 attribute: context =>
                 {
                     var @namespace = context.Type.Namespace ?? string.Empty;
@@ -83,7 +83,8 @@ public class DomainAssembliesBusinessFeature(
                 },
                 when: c => setNamespaceWhen(c.Type)
             );
-            builder.Conventions.SetTypeMetadata(new ServiceAttribute(),
+            builder.Conventions.SetTypeAttribute(
+                attribute: () => new ServiceAttribute(),
                 when: c =>
                     c.Type.IsPublic &&
                     !c.Type.IsValueType &&
@@ -94,20 +95,23 @@ public class DomainAssembliesBusinessFeature(
                     c.Type.TryGetMembers(out var members) &&
                     !members.Methods.Contains("<Clone>$") // if type is record
             );
-            builder.Conventions.SetMethodMetadata(new ExternalAttribute(),
+            builder.Conventions.SetMethodAttribute(
+                attribute: () => new ExternalAttribute(),
                 when: c =>
                     c.Method.DefaultOverload.DeclaringType is not null &&
                     c.Method.DefaultOverload.DeclaringType.TryGetMetadata(out var metadata) &&
                     !metadata.Has<ServiceAttribute>()
             );
-            builder.Conventions.SetMethodMetadata(new ExternalAttribute(),
+            builder.Conventions.SetMethodAttribute(
+                attribute: () => new ExternalAttribute(),
                 when: c =>
                     c.Method.DefaultOverload.BaseDefinition is not null &&
                     c.Method.DefaultOverload.BaseDefinition.DeclaringType is not null &&
                     c.Method.DefaultOverload.BaseDefinition.DeclaringType.TryGetMetadata(out var metadata) &&
                     !metadata.Has<ServiceAttribute>()
             );
-            builder.Conventions.SetTypeMetadata(new CasterAttribute(),
+            builder.Conventions.SetTypeAttribute(
+                attribute: () => new CasterAttribute(),
                 when: c => c.Type.IsClass && !c.Type.IsAbstract && c.Type.IsAssignableTo(typeof(ICasts<,>))
             );
         });
@@ -144,7 +148,8 @@ public class DomainAssembliesBusinessFeature(
                             entity.Apply(t => assembly.AddReferenceFrom(t));
                         }
                     },
-                    usings: [
+                    usings:
+                    [
                         "Baked.Business",
                         "Baked.Business.DomainAssemblies",
                         "Baked.Runtime",

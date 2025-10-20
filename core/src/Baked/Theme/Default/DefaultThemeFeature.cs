@@ -2,12 +2,14 @@
 using Baked.RestApi;
 using Baked.RestApi.Model;
 using Baked.Runtime;
+using Baked.Ui;
 using Humanizer;
 
-using static Baked.Theme.Default.Components;
 using static Baked.Theme.Default.DomainComponents;
 using static Baked.Theme.Default.DomainDatas;
 using static Baked.Ui.Datas;
+
+using B = Baked.Ui.Components;
 
 namespace Baked.Theme.Default;
 
@@ -24,36 +26,36 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
         {
             // Property Defaults
             builder.Index.Property.Add<DataAttribute>();
-            builder.Conventions.SetPropertyMetadata(
+            builder.Conventions.SetPropertyAttribute(
                 attribute: c => new DataAttribute(c.Property.Name.Camelize()) { Label = c.Property.Name.Titleize() },
                 when: c => c.Property.IsPublic,
                 order: -10
             );
             builder.Conventions.AddPropertyComponent(
-                component: () => None(),
+                component: () => B.None(),
                 order: -10
             );
             builder.Conventions.AddPropertyComponent(
-                component: () => String(),
-                whenProperty: c => c.Property.PropertyType.Is<string>() || c.Property.PropertyType.Is<Guid>()
+                component: () => B.Text(),
+                when: c => c.Property.PropertyType.Is<string>() || c.Property.PropertyType.Is<Guid>()
             );
 
             // Method Defaults
             builder.Index.Method.Add<TabNameAttribute>();
-            builder.Conventions.SetMethodMetadata(
-                attribute: _ => new TabNameAttribute(),
+            builder.Conventions.SetMethodAttribute(
+                attribute: () => new TabNameAttribute(),
                 when: c => c.Method.Has<ActionModelAttribute>(),
                 order: RestApiLayer.MaxConventionOrder + 10
             );
             builder.Conventions.AddMethodSchema(
                 schema: c => MethodRemote(c.Method),
-                whenMethod: c => c.Method.Has<ActionModelAttribute>()
+                when: c => c.Method.Has<ActionModelAttribute>()
             );
 
             // Parameter Defaults
             builder.Conventions.AddParameterSchema(
                 schema: (c, cc) => ParameterParameter(c.Parameter, cc),
-                whenParameter: c => c.Parameter.Has<ParameterModelAttribute>()
+                when: c => c.Parameter.Has<ParameterModelAttribute>()
             );
             builder.Conventions.AddParameterSchemaConfiguration<Parameter>(
                 schema: (p, c) =>
@@ -63,13 +65,13 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     p.Required = !api.IsOptional ? true : null;
                     p.DefaultValue = api.DefaultValue;
                 },
-                whenParameter: c => c.Parameter.Has<ParameterModelAttribute>()
+                when: c => c.Parameter.Has<ParameterModelAttribute>()
             );
 
             // Enum Data
             builder.Conventions.AddTypeSchema(
                 schema: (c, cc) => EnumInline(c.Type, cc),
-                whenType: c => c.Type.SkipNullable().IsEnum
+                when: c => c.Type.SkipNullable().IsEnum
             );
 
             // `DataTable` defaults
@@ -82,11 +84,11 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
             builder.Conventions.AddMethodSchema(
                 schema: (c, cc) => MethodDataTableExport(c.Method, cc),
-                whenMethod: c => c.Method.Has<ComponentDescriptorBuilderAttribute<DataTable>>()
+                when: c => c.Method.Has<ComponentDescriptorBuilderAttribute<DataTable>>()
             );
             builder.Conventions.AddPropertySchema(
                 schema: (c, cc) => PropertyDataTableColumn(c.Property, cc),
-                whenProperty: c => c.Property.Has<DataAttribute>()
+                when: c => c.Property.Has<DataAttribute>()
             );
             builder.Conventions.AddPropertySchemaConfiguration<DataTable.Column>(
                 schema: (dtc, c, cc) =>
@@ -100,27 +102,27 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
             builder.Conventions.AddPropertySchema(
                 schema: (c, cc) => PropertyConditional(c.Property, cc),
-                whenProperty: c => c.Property.Has<DataAttribute>()
+                when: c => c.Property.Has<DataAttribute>()
             );
         });
 
         configurator.ConfigureComponentExports(exports =>
         {
-            exports.AddFromExtensions(typeof(Components));
+            exports.AddFromExtensions(typeof(B));
         });
 
         configurator.ConfigureAppDescriptor(app =>
         {
             configurator.UsingLocalization(l =>
             {
-                app.Error = ErrorPage(
+                app.Error = B.ErrorPage(
                     options: ep =>
                     {
                         ep.SafeLinks.AddRange([.. _routes.Where(r => r.ErrorSafeLink).Select(r => r.AsCardLink(l))]);
-                        ep.ErrorInfos[403] = ErrorPageInfo(l("Access Denied"), l("You do not have the permision to view the address or data specified."));
-                        ep.ErrorInfos[404] = ErrorPageInfo(l("Page Not Found"), l("The page you want to view is either deleted or outdated."));
-                        ep.ErrorInfos[500] = ErrorPageInfo(l("Unexpected Error"), l("Please contact system administrator."));
-                        ep.ErrorInfos[999] = ErrorPageInfo(l("Application Error"), l("Please contact system administrator."));
+                        ep.ErrorInfos[403] = B.ErrorPageInfo(l("Access Denied"), l("You do not have the permision to view the address or data specified."));
+                        ep.ErrorInfos[404] = B.ErrorPageInfo(l("Page Not Found"), l("The page you want to view is either deleted or outdated."));
+                        ep.ErrorInfos[500] = B.ErrorPageInfo(l("Unexpected Error"), l("Please contact system administrator."));
+                        ep.ErrorInfos[999] = B.ErrorPageInfo(l("Application Error"), l("Please contact system administrator."));
 
                         _errorPageOptions.Apply(ep);
                     },
@@ -133,9 +135,9 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
         {
             configurator.UsingLocalization(l =>
             {
-                layouts.Add(DefaultLayout("default", options: dl =>
+                layouts.Add(B.DefaultLayout("default", options: dl =>
                 {
-                    dl.SideMenu = SideMenu(
+                    dl.SideMenu = B.SideMenu(
                         options: sm =>
                         {
                             sm.Menu.AddRange([.. _routes.Where(r => r.SideMenu).Select(r => r.AsSideMenuItem(l))]);
@@ -143,7 +145,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                             _sideMenuOptions.Apply(sm);
                         }
                     );
-                    dl.Header = Header(options: h =>
+                    dl.Header = B.Header(options: h =>
                     {
                         foreach (var route in _routes)
                         {
@@ -157,7 +159,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 }));
             });
 
-            layouts.Add(ModalLayout("modal"));
+            layouts.Add(B.ModalLayout("modal"));
         });
 
         configurator.ConfigurePageDescriptors(pages =>

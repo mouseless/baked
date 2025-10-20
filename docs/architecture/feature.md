@@ -32,15 +32,15 @@ implementing a new feature;
    suffix, e.g., `WelcomePageGreetingFeature`.
 1. Features depend on other features through their abstraction parts. Direct
    dependency between feature implementations is forbidden.
-1. To create a configuration overrider, add an extension and feature class
-   directly under the feature folder, e.g.,
-   `ConfigurationOverrider/ConfigurationOverriderExtensions.cs` and
-   `ConfigurationOverrider/ConfigurationOverriderFeature.cs`.
-    1. Unlike regular features, provide `AddConfigurationOverrider()` extension
-       method directly to allow `app.Features.AddConfigurationOverrider()`
-       usage.
-    1. Implement `IFeature` in `ConfigurationOverriderFeature` where you add
-       all your configuration overrides.
+1. To create an override, add an extension class directly under the feature
+   folder, e.g., `Override/OverrideExtensions.cs`
+    1. Unlike regular features, provide `AddOverrides()` extension method
+       directly to allow `app.Features.AddOverrides()` usage.
+    1. Create as many override features as you need under the folders specific
+       to the layers you want to configure, e.g.,
+       `Override/Runtime/ServicesRuntimeOverrideFeature.cs`
+    1. Add all override features to `List<IFeature>` in `AddOverrides()`
+       extension method.
 
 Please refer to existing features in [github.com/mouseless/baked][] for
 examples.
