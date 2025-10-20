@@ -184,13 +184,13 @@
             }
           },
           {
-            "title": "String",
+            "title": "Text",
             "component": {
               "type": "CardLink",
               "schema": {
-                "route": "/specs/string",
+                "route": "/specs/text",
                 "icon": "pi pi-microchip",
-                "title": "String",
+                "title": "Text",
                 "description": "Render string values"
               }
             }

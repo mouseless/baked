@@ -10,8 +10,8 @@ public class DelegatedInterceptor(IServiceProvider _serviceProvider, Interceptor
 
     public override object Instantiate(string clazz, object id)
     {
-        var metaData = SessionFactory.GetClassMetadata(clazz);
-        var context = new InstantiationContext(metaData, _serviceProvider);
+        var metadata = SessionFactory.GetClassMetadata(clazz);
+        var context = new InstantiationContext(metadata, _serviceProvider);
 
         return
             _interceptorConfiguration.Instantiator.Invoke(context, id) ??

@@ -14,17 +14,17 @@
             "title": "Home"
           },
           {
-            "route": "/cache",
+            "route": "/cache-samples",
             "icon": "pi pi-database",
             "title": "Cache"
           },
           {
-            "route": "/data-table",
+            "route": "/data-table-sample",
             "icon": "pi pi-table",
             "title": "Data Table"
           },
           {
-            "route": "/report",
+            "route": "/report-page-sample",
             "icon": "pi pi-file",
             "title": "Report"
           },
@@ -53,18 +53,18 @@
             "route": "/",
             "icon": "pi pi-home"
           },
-          "/cache": {
-            "route": "/cache",
+          "/cache-samples": {
+            "route": "/cache-samples",
             "icon": "pi pi-database",
             "title": "Cache"
           },
-          "/data-table": {
-            "route": "/data-table",
+          "/data-table-sample": {
+            "route": "/data-table-sample",
             "icon": "pi pi-table",
             "title": "Data Table"
           },
-          "/report": {
-            "route": "/report",
+          "/report-page-sample": {
+            "route": "/report-page-sample",
             "icon": "pi pi-file",
             "title": "Report"
           },
@@ -151,10 +151,10 @@
             "title": "Rate",
             "parentRoute": "/specs"
           },
-          "/specs/string": {
-            "route": "/specs/string",
+          "/specs/text": {
+            "route": "/specs/text",
             "icon": "pi pi-microchip",
-            "title": "String",
+            "title": "Text",
             "parentRoute": "/specs"
           },
           "/specs/language-switcher": {

@@ -19,7 +19,8 @@ public class SingleByIdConvention<T> : IDomainModelConvention<TypeModelContext>
             returnType: entityType.CSharpFriendlyFullName,
             returnIsAsync: false,
             returnIsVoid: false,
-            parameters: [
+            parameters:
+            [
                 new(ParameterModelAttribute.TargetParameterName, context.Domain.Types[queryContextTypeId].CSharpFriendlyFullName, ParameterModelFrom.Services),
                 new("id", context.Domain.Types[typeof(Guid)].CSharpFriendlyFullName, ParameterModelFrom.Route) { RoutePosition = 1 },
                 new("throwNotFound", context.Domain.Types[typeof(bool)].CSharpFriendlyFullName, ParameterModelFrom.Query) { IsHardCoded = true, LookupRenderer = _ => "true" }

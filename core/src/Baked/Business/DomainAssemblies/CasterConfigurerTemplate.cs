@@ -2,6 +2,7 @@
 using Baked.Domain.Model;
 
 namespace Baked.Business.DomainAssemblies;
+
 public class CasterConfigurerTemplate(DomainModel _domain) : CodeTemplateBase
 {
     protected override IEnumerable<string> Render() =>

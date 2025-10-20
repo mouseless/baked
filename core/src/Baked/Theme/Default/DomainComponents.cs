@@ -3,7 +3,7 @@ using Baked.RestApi.Model;
 using Baked.Ui;
 using Humanizer;
 
-using static Baked.Theme.Default.Components;
+using B = Baked.Ui.Components;
 
 namespace Baked.Theme.Default;
 
@@ -21,9 +21,9 @@ public static class DomainComponents
         var (_, l) = context;
 
         var path = context.Route.Path.Trim('/');
-        var title = PageTitle(l(context.Route.Title), options: pt => pt.Description = l(context.Route.Description));
+        var title = B.PageTitle(l(context.Route.Title), options: pt => pt.Description = l(context.Route.Description));
 
-        return ReportPage(path, title, options: options);
+        return B.ReportPage(path, title, options: options);
     }
 
     public static ReportPage.Tab TypeReportPageTab(TypeModelMetadata type, ComponentContext context, string name,
@@ -33,7 +33,7 @@ public static class DomainComponents
         context = context.Drill(name);
         var (_, l) = context;
 
-        return ReportPageTab(name.Kebaberize(), options: rpt =>
+        return B.ReportPageTab(name.Kebaberize(), options: rpt =>
         {
             rpt.Icon = type.GetComponent(context.Drill(nameof(ReportPage.Tab.Icon)));
 
@@ -47,7 +47,7 @@ public static class DomainComponents
     {
         context = context.Drill(method.Name);
 
-        return ReportPageTabContent(method.GetRequiredComponent(context.Drill(nameof(ReportPage.Tab.Content.Component))), method.Name.Kebaberize(),
+        return B.ReportPageTabContent(method.GetRequiredComponent(context.Drill(nameof(ReportPage.Tab.Content.Component))), method.Name.Kebaberize(),
             options: options
         );
     }
@@ -59,7 +59,7 @@ public static class DomainComponents
         context = context.Drill(nameof(DataPanel));
         var (_, l) = context;
 
-        return DataPanel(
+        return B.DataPanel(
             method.GetRequiredSchema<InlineData>(context.Drill(nameof(DataPanel.Title))),
             method.GetRequiredComponent(context.Drill(nameof(DataPanel.Content))),
             options: options
@@ -73,7 +73,7 @@ public static class DomainComponents
         context = context.Drill(parameter.Name);
         var api = parameter.Get<ParameterModelAttribute>();
 
-        return Parameter(api.Name, parameter.GetRequiredComponent(context.Drill(nameof(Parameter.Component))), options: options);
+        return B.Parameter(api.Name, parameter.GetRequiredComponent(context.Drill(nameof(Parameter.Component))), options: options);
     }
 
     public static ComponentDescriptor<Select> EnumSelect(ParameterModel parameter, ComponentContext context,
@@ -86,7 +86,7 @@ public static class DomainComponents
 
         var data = metadata.GetRequiredSchema<InlineData>(context.Drill(nameof(IComponentDescriptor.Data)));
 
-        return Select(l(parameter.Name.Titleize()), data, options: options);
+        return B.Select(l(parameter.Name.Titleize()), data, options: options);
     }
 
     public static ComponentDescriptor<SelectButton> EnumSelectButton(ParameterModel parameter, ComponentContext context,
@@ -99,7 +99,7 @@ public static class DomainComponents
 
         var data = metadata.GetRequiredSchema<InlineData>(context.Drill(nameof(IComponentDescriptor.Data)));
 
-        return SelectButton(data, options: options);
+        return B.SelectButton(data, options: options);
     }
 
     public static ComponentDescriptor<DataTable> MethodDataTable(MethodModel method, ComponentContext context,
@@ -109,7 +109,7 @@ public static class DomainComponents
         context = context.Drill(nameof(DataTable));
         var (_, l) = context;
 
-        return DataTable(
+        return B.DataTable(
             options: dt =>
             {
                 dt.ExportOptions = method.GetSchema<DataTable.Export>(context.Drill(nameof(DataTable.ExportOptions)));
@@ -128,7 +128,7 @@ public static class DomainComponents
     {
         var (_, l) = context;
 
-        return DataTableExport(";", l($"{method.Name}.ExportFileName"), options: options);
+        return B.DataTableExport(";", l($"{method.Name}.ExportFileName"), options: options);
     }
 
     public static DataTable.Footer MethodDataTableFooter(MethodModel method, ComponentContext context,
@@ -137,7 +137,7 @@ public static class DomainComponents
     {
         var (_, l) = context;
 
-        return DataTableFooter(l($"{method.Name}.FooterLabel"), options: options);
+        return B.DataTableFooter(l($"{method.Name}.FooterLabel"), options: options);
     }
 
     public static DataTable.Column PropertyDataTableColumn(PropertyModel property, ComponentContext context,
@@ -152,7 +152,7 @@ public static class DomainComponents
             data = new(property.Name.Camelize());
         }
 
-        return DataTableColumn(data.Prop,
+        return B.DataTableColumn(data.Prop,
             options: dtc =>
             {
                 dtc.Component = property.GetRequiredSchema<Conditional>(context.Drill(nameof(DataTable.Column.Component)));
@@ -164,7 +164,7 @@ public static class DomainComponents
 
     public static Conditional PropertyConditional(PropertyModel property, ComponentContext context,
         Action<Conditional>? options = default
-    ) => Conditional(
+    ) => B.Conditional(
         options: c =>
         {
             c.Fallback = property.GetRequiredComponent(context.Drill(nameof(Conditional.Fallback)));

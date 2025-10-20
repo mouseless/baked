@@ -62,7 +62,8 @@ public class AutoMapOrmFeature : IFeature<OrmConfigurator>
                         entity.Apply(t => assembly.AddReferenceFrom(t));
                     }
                 },
-                usings: [
+                usings:
+                [
                     "Baked.Orm",
                     "Baked.Runtime",
                     "FluentNHibernate",

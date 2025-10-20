@@ -12,14 +12,14 @@ public class AddRemoveChildCodingStyleFeature : IFeature<CodingStyleConfigurator
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Conventions.AddMethodMetadataConfiguration<ActionModelAttribute>(
-                apply: action =>
+            builder.Conventions.AddMethodAttributeConfiguration<ActionModelAttribute>(
+                attribute: action =>
                 {
                     var newName = action.Name.Pluralize();
                     action.RouteParts = action.RouteParts.Replace(action.Name, newName);
                     action.Name = newName;
                 },
-                when: action =>
+                when: (_, action) =>
                     (action.Method == HttpMethod.Delete && action.RouteParts.Count >= 2) ||
                     (action.Method == HttpMethod.Post && Regexes.StartsWithAddOrCreate.IsMatch(action.Name) && action.RouteParts.Count >= 2)
             );

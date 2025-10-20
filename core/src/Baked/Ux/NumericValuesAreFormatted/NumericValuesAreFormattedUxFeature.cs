@@ -1,7 +1,7 @@
 ﻿using Baked.Architecture;
-using Baked.Theme.Default;
+using Baked.Ui;
 
-using static Baked.Theme.Default.Components;
+using B = Baked.Ui.Components;
 
 namespace Baked.Ux.NumericValuesAreFormatted;
 
@@ -13,22 +13,22 @@ public class NumericValuesAreFormattedUxFeature : IFeature<UxConfigurator>
         {
             builder.Conventions.AddPropertySchemaConfiguration<DataTable.Column>(
                 schema: dtc => dtc.AlignRight = true,
-                whenProperty: c =>
+                when: c =>
                     c.Property.PropertyType.SkipNullable().Is<int>() ||
                     c.Property.PropertyType.SkipNullable().Is<double>() ||
                     c.Property.PropertyType.SkipNullable().Is<decimal>()
             );
             builder.Conventions.AddPropertyComponent(
-                component: () => Number(),
-                whenProperty: c => c.Property.PropertyType.SkipNullable().Is<int>()
+                component: () => B.Number(),
+                when: c => c.Property.PropertyType.SkipNullable().Is<int>()
             );
             builder.Conventions.AddPropertyComponent(
-                component: () => Money(),
-                whenProperty: c => c.Property.PropertyType.SkipNullable().Is<decimal>()
+                component: () => B.Money(),
+                when: c => c.Property.PropertyType.SkipNullable().Is<decimal>()
             );
             builder.Conventions.AddPropertyComponent(
-                component: () => Rate(),
-                whenProperty: c => c.Property.PropertyType.SkipNullable().Is<double>()
+                component: () => B.Rate(),
+                when: c => c.Property.PropertyType.SkipNullable().Is<double>()
             );
         });
     }
