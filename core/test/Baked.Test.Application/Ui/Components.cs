@@ -16,6 +16,10 @@ public static class Components
         Action<Input>? options = default
     ) => new(options.Apply(new(testId)));
 
+    public static ComponentDescriptor<InputNumber> InputNumber(string testId,
+        Action<InputNumber>? options = default
+    ) => new(options.Apply(new(testId)));
+
     public static ComponentDescriptor<LoginPage> LoginPage(string path,
         Action<LoginPage>? options = default
     ) => new(options.Apply(new(path)));

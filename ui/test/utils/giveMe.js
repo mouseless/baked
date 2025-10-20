@@ -265,6 +265,19 @@ export default {
     };
   },
 
+  anInputNumber({ testId, defaultValue } = {}) {
+    testId = $(testId, "test-input");
+    defaultValue = $(defaultValue, null);
+
+    return {
+      type: "InputNumber",
+      schema: {
+        testId,
+        defaultValue
+      }
+    };
+  },
+
   aNavLink({ path, idProp, textProp, data } = {}) {
     path = $(path, "/some-object/{0}");
     idProp = $(idProp, "id");
