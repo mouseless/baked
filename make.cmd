@@ -3,50 +3,34 @@
 setlocal enabledelayedexpansion
 title Project Runner
 
-:menu
-echo.
-echo ================================
-echo         Project Runner
-echo ================================
-echo (1) Service (Development)
-echo (2) UI (Development)
-echo (3) Docker (Production)
-echo (4) Docs
-echo (5) Format
-echo (6) Build
-echo (7) Test
-echo (8) Coverage
-echo (9) Install dependencies
-echo (0) Exit
-echo ================================
-echo.
-set /p choice="Please select 0-9: "
+if "%1"=="" (
+    echo Usage: %0 ^<command^>
+    echo.
+    echo Available commands: api, ui, docker, docs, format, build, test, coverage, install
+    exit /b 1
+)
 
-if "%choice%"=="1" goto service
-if "%choice%"=="2" goto ui
-if "%choice%"=="3" goto docker
-if "%choice%"=="4" goto docs
-if "%choice%"=="5" goto format
-if "%choice%"=="6" goto build
-if "%choice%"=="7" goto test
-if "%choice%"=="8" goto coverage
-if "%choice%"=="9" goto install
-if "%choice%"=="0" exit /b 0
+set CMD=%1
 
-echo Invalid choice!
-pause
-cls
-goto menu
+if /i "%CMD%"=="api" goto api
+if /i "%CMD%"=="ui" goto ui
+if /i "%CMD%"=="docker" goto docker
+if /i "%CMD%"=="docs" goto docs
+if /i "%CMD%"=="format" goto format
+if /i "%CMD%"=="build" goto build
+if /i "%CMD%"=="test" goto test
+if /i "%CMD%"=="coverage" goto coverage
+if /i "%CMD%"=="install" goto install
 
-:: ---------------------------------
-:service
-cls
-echo Running Service (Development)...
+echo Invalid command: %CMD%
+exit /b 1
+
+:api
+echo Running API (Development)...
 dotnet run --project core\test\Baked.Test.Application
 goto end
 
 :ui
-cls
 echo Starting Playground (Development)...
 cd ui
 npm run dev
@@ -54,25 +38,18 @@ cd ..
 goto end
 
 :docker
-cls
 echo Running Docker (Production)...
 docker compose up --build
 goto end
 
 :docs
-cls
 echo Running Docs...
-cd docs
-if exist run.bat (
-    call run.bat
-) else (
-    echo No run.bat found in docs folder.
-)
+cd docs\.theme
+npm run dev
 cd ..
 goto end
 
 :format
-cls
 echo Formatting code...
 cd core
 dotnet format --verbosity normal
@@ -86,7 +63,6 @@ cd ..\..
 goto end
 
 :build
-cls
 echo Building projects...
 cd core
 dotnet build
@@ -97,7 +73,6 @@ cd ..
 goto end
 
 :test
-cls
 echo Running tests...
 cd core
 dotnet test --logger quackers
@@ -109,7 +84,6 @@ cd ..
 goto end
 
 :coverage
-cls
 echo Generating coverage report...
 cd core
 if exist .coverage rmdir /s /q .coverage
@@ -120,7 +94,6 @@ cd ..
 goto end
 
 :install
-cls
 echo Installing dependencies...
 cd docs\.theme && npm i && cd ..\..
 cd ui && npm i && cd ..
@@ -129,7 +102,4 @@ cd core\test\Baked.Test.StubApi && npm i && cd ..\..\..
 goto end
 
 :end
-echo.
-pause
-cls
-goto menu
+echo Done.

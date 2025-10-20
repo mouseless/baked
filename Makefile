@@ -30,7 +30,7 @@ coverage:
 		open .coverage/html/index.html \
 	)
 run:
-	@echo "(1) Service (Development)"
+	@echo "(1) API (Development)"
 	@echo "(2) UI (Development)"
 	@echo "(3) Docker (Production)"
 	@echo "(4) Docs"
