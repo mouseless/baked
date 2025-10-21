@@ -63,7 +63,6 @@
     "vitest": "3.2.4",
     "vue-tsc": "3.1.1"
   },
-  "bundleDependencies": ["@primeuix/themes", "primeicons", "primevue"],
   "optionalDependencies": {
     "@oxc-parser/binding-darwin-arm64": "0.95.0",
     "@oxc-parser/binding-linux-arm64-gnu": "0.95.0",
