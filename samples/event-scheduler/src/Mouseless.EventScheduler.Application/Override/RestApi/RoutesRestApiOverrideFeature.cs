@@ -1,8 +1,8 @@
 ﻿using Baked.Architecture;
 
-namespace Mouseless.EventScheduler.Application.ConfigurationOverrider;
+namespace Mouseless.EventScheduler.Override.RestApi;
 
-public class ConfigurationOverriderFeature : IFeature
+public class RoutesRestApiOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {

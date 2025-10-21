@@ -2,6 +2,10 @@
 
   <Import Project="..\Directory.Build.props" />
 
+  <PropertyGroup>
+    <RootNamespace>Mouseless.EventScheduler</RootNamespace>
+  </PropertyGroup>
+
   <ItemGroup>
     <Using Include="Mouseless.EventScheduler" />
   </ItemGroup>

@@ -1,5 +1,6 @@
 using Baked.Architecture;
 using Baked.Test.Theme;
+using Baked.Ui;
 
 using B = Baked.Ui.Components;
 
@@ -12,7 +13,7 @@ public class DataTableSampleUiOverrideFeature : IFeature
         configurator.ConfigureDomainModelBuilder(builder =>
         {
             // DataTable fine tuning
-            builder.Conventions.AddMethodComponentConfiguration<Baked.Ui.DataTable>(
+            builder.Conventions.AddMethodComponentConfiguration<DataTable>(
                 component: dt =>
                 {
                     dt.Schema.ScrollHeight = "500px";
@@ -21,7 +22,7 @@ public class DataTableSampleUiOverrideFeature : IFeature
                 },
                 when: c => c.Type.Is<DataTableSample>()
             );
-            builder.Conventions.AddMethodSchemaConfiguration<Baked.Ui.DataTable.Export>(
+            builder.Conventions.AddMethodSchemaConfiguration<DataTable.Export>(
                 schema: dte =>
                 {
                     dte.ParameterFormatter = null;
