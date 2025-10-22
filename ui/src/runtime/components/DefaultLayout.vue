@@ -25,7 +25,6 @@
     </article>
   </div>
   <ScrollTop
-    v-if="scrollTopOptions"
     v-bind="scrollTopOptions"
   />
 </template>
@@ -43,8 +42,8 @@ const { schema } = defineProps({
   data: { type: null, default: null }
 });
 
-const { header, sideMenu, layoutOptions } = schema;
-const scrollTopOptions = layoutOptions?.scrollTopOptions || { threshold: 500, icon: "pi pi-arrow-up" };
+const { header, sideMenu } = schema;
+const scrollTopOptions = { threshold: 250, ...schema.scrollTopOptions };
 </script>
 <style>
 .p-scrolltop {

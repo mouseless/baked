@@ -6,16 +6,11 @@ public record DefaultLayout(string Path)
     public string Path { get; set; } = Path;
     public IComponentDescriptor? SideMenu { get; set; }
     public IComponentDescriptor? Header { get; set; }
-    public LayoutOptions? LayoutOptions { get; set; }
-}
+    public ScrollTop? ScrollTopOptions { get; set; }
 
-public record ScrollTopOptions
-{
-    public int? Threshold { get; set; }
-    public string? Icon { get; set; }
-}
-
-public record LayoutOptions
-{
-    public ScrollTopOptions? ScrollTopOptions { get; set; }
+    public record ScrollTop
+    {
+        public int? Threshold { get; set; }
+        public string? Icon { get; set; }
+    }
 }
