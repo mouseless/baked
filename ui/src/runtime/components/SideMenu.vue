@@ -83,7 +83,7 @@
         <PersistentPopover
           ref="popover"
           fixed
-          class="w-1/2 min-w-fit !z-[1002]"
+          class="w-1/2 min-w-fit"
         >
           <Bake
             v-if="footer"

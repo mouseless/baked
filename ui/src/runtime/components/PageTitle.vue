@@ -80,7 +80,6 @@
           <PersistentPopover
             ref="popover"
             fixed
-            class="!z-[1002]"
           >
             <div
               class="

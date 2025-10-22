@@ -1,6 +1,6 @@
 <template>
   <Toast
-    :pt="{ root: 'z-20' }"
+    :pt="{ root: 'z-10' }"
     position="top-center"
   />
   <Bake
