@@ -139,7 +139,7 @@ export default defineNuxtModule<ModuleOptions>({
       addPlugin(resolver.resolve(`./runtime/plugins/${plugin.name}`));
     }
 
-    //  default plugins (last add, first run)
+    // default plugins (last add, first run)
     addPlugin(resolver.resolve("./runtime/plugins/mutex"));
     addPlugin(resolver.resolve("./runtime/plugins/toast"));
     addPlugin(resolver.resolve("./runtime/plugins/trailingSlash"));
@@ -148,6 +148,9 @@ export default defineNuxtModule<ModuleOptions>({
     addPlugin(resolver.resolve("./runtime/plugins/fetch"), {});
 
     // module overrides
+    _nuxt.options.vite.optimizeDeps ||= {};
+    _nuxt.options.vite.optimizeDeps.noDiscovery = true;
+
     _nuxt.options.i18n = {
       vueI18n: entryProjectResolver.resolve("./i18n.config.ts"),
       langDir: entryProjectResolver.resolve("./"),
