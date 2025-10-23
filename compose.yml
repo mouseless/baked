@@ -32,12 +32,13 @@ services:
       retries: 3
 
   api.load-test:
+  stub-api:
     build:
       dockerfile: core/test/Baked.Test.LoadTest/Dockerfile
     ports:
       - 5467:80
 
-  service:
+  api:
     build:
       dockerfile: core/test/Baked.Test.Application/Dockerfile
       args:
@@ -60,4 +61,4 @@ services:
     ports:
       - 3000:3000
     links:
-      - service
+      - api

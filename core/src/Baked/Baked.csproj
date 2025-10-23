@@ -4,7 +4,7 @@
     <AssemblyTitle>Baked</AssemblyTitle>
     <Title>Baked</Title>
     <Description>Baked is an opinionated framework for .NET and Vue. This is Baked's core package that provides a feature and layer system along with common features and layers.</Description>
-    <PackageId>Baked.Application</PackageId>
+    <PackageId>Baked</PackageId>
     <PackageTags>baked</PackageTags>
   </PropertyGroup>
 

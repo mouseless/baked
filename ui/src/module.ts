@@ -60,7 +60,7 @@ export default defineNuxtModule<ModuleOptions>({
   defaults: { },
   moduleDependencies: {
     "@nuxtjs/i18n": {
-      version: "10.1.0",
+      version: "10.1.1",
       defaults: {
         strategy: "no_prefix",
         detectBrowserLanguage: {
@@ -121,10 +121,6 @@ export default defineNuxtModule<ModuleOptions>({
 
     // by pushing instead of setting, it allows custom css
     _nuxt.options.css.push("primeicons/primeicons.css");
-    _nuxt.options.css.push(resolver.resolve("./runtime/assets/theme/datatable.css"));
-    _nuxt.options.css.push(resolver.resolve("./runtime/assets/theme/menu.css"));
-    _nuxt.options.css.push(resolver.resolve("./runtime/assets/theme/paginator.css"));
-    _nuxt.options.css.push(resolver.resolve("./runtime/assets/theme/popover.css"));
     _nuxt.options.css.push(resolver.resolve("./runtime/assets/overrides.css"));
 
     // below settings cannot be overriden
@@ -143,7 +139,7 @@ export default defineNuxtModule<ModuleOptions>({
       addPlugin(resolver.resolve(`./runtime/plugins/${plugin.name}`));
     }
 
-    //  default plugins (last add, first run)
+    // default plugins (last add, first run)
     addPlugin(resolver.resolve("./runtime/plugins/mutex"));
     addPlugin(resolver.resolve("./runtime/plugins/toast"));
     addPlugin(resolver.resolve("./runtime/plugins/trailingSlash"));
@@ -152,6 +148,9 @@ export default defineNuxtModule<ModuleOptions>({
     addPlugin(resolver.resolve("./runtime/plugins/fetch"), {});
 
     // module overrides
+    _nuxt.options.vite.optimizeDeps ||= {};
+    _nuxt.options.vite.optimizeDeps.noDiscovery = true;
+
     _nuxt.options.i18n = {
       vueI18n: entryProjectResolver.resolve("./i18n.config.ts"),
       langDir: entryProjectResolver.resolve("./"),

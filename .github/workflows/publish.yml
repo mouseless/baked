@@ -76,7 +76,7 @@ jobs:
       - name: Pack Nuget
         run: |
           cd core
-          dotnet pack -o "nuget-packages" -c Release
+          dotnet pack -o "../nuget-packages" -c Release
       - name: Upload Nuget Packages
         uses: actions/upload-artifact@v4
         with:
@@ -87,7 +87,7 @@ jobs:
           mkdir npm-packages
           cd ui
           npm i
-          npm pack --pack-destination "../../../npm-packages"
+          npm pack --pack-destination "../npm-packages"
       - name: Upload npm Packages
         uses: actions/upload-artifact@v4
         with:
@@ -110,7 +110,6 @@ jobs:
           name: nuget-packages
       - name: Push Nuget
         run: |
-          cd core
           dotnet nuget push "*.nupkg" \
             -s https://api.nuget.org/v3/index.json \
             -k ${{ secrets.NUGET_API_KEY }} \
