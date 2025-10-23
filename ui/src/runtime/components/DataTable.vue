@@ -170,8 +170,8 @@ const value = computed(() => {
   for(const itemRow of items) {
     const resultRow = { $getRow: () => itemRow };
 
-    for(const column of columns) {
-      resultRow[column.prop] = { value: itemRow[column.prop], $getRow: () => itemRow };
+    for(const key in itemRow) {
+      resultRow[key] = { value: itemRow[key], $getRow: () => itemRow };
     }
 
     result.push(resultRow);
