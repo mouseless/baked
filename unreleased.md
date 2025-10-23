@@ -24,3 +24,4 @@
 - Nested types were causing compilation error in generated controllers when
   used as parameter or return type, fixed
 - Logo is now hidden during generate
+- UI generation can now be disabled to allow backend-only builds in docker
