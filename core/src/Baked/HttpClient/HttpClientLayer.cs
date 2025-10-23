@@ -7,7 +7,7 @@ namespace Baked.HttpClient;
 
 public class HttpClientLayer : LayerBase<AddServices>
 {
-    public static string DefaultConfigKey = "Default";
+    public const string DefaultConfigKey = "Default";
 
     readonly List<HttpClientDescriptor> _httpClients = [];
 

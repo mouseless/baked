@@ -46,7 +46,7 @@ public static class RuntimeExtensions
 
     public static void AddFileProvider(this IServiceCollection services, IFileProvider implementation)
     {
-        services.AddKeyedSingleton(RuntimeLayer.FILE_PROVIDERS_KEY, implementation);
+        services.AddKeyedSingleton(RuntimeLayer.FileProvidersKey, implementation);
         services.AddSingleton(implementation);
     }
 

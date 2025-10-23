@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <Target Name="Generate" AfterTargets="AfterBuild">
-    <Exec Command="dotnet $(TargetPath) --no-build --no-start --generate -c $(Configuration)" />
+    <Exec Command="dotnet $(TargetPath) --no-build --no-start --generate $(GenerateArgs) -c $(Configuration)" />
   </Target>
 
   <Target Name="CopyComponentDescriptors" AfterTargets="AfterBuild" Condition="$(CopyComponentDescriptors)">

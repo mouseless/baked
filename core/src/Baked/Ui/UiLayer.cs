@@ -10,14 +10,18 @@ namespace Baked.Ui;
 
 public class UiLayer : LayerBase<GenerateCode>
 {
-    public AppDescriptor _appDescriptor = new();
-    public ComponentExports _componentExports = new();
-    public LayoutDescriptors _layoutDescriptors = new();
-    public PageDescriptors _pageDescriptors = new();
-    public LocaleTemplate _localeTemplate = new();
+    readonly AppDescriptor _appDescriptor = new();
+    readonly ComponentExports _componentExports = new();
+    readonly LayoutDescriptors _layoutDescriptors = new();
+    readonly PageDescriptors _pageDescriptors = new();
+    readonly LocaleTemplate _localeTemplate = new();
+
+    bool NoUiFlag => Environment.GetCommandLineArgs().Contains("--no-ui");
 
     protected override PhaseContext GetContext(GenerateCode phase)
     {
+        if (NoUiFlag) { return phase.CreateEmptyContext(); }
+
         Context.Add<NewLocaleKey>(LocaleKeyFactory);
 
         return phase.CreateContextBuilder()
