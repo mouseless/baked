@@ -172,7 +172,14 @@ export default defineNuxtModule<ModuleOptions>({
     (_nuxt.options as any).tailwindcss = {
       config: {
         theme: {
-          screens: _options.composables.useBreakpoints.screens
+          screens: _options.composables.useBreakpoints.screens,
+          extend: {
+            colors: {
+              zinc: {
+                925: "#121214"
+              }
+            }
+          }
         }
       }
     };
