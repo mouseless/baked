@@ -10,6 +10,10 @@ html, .bg-body {
   background: inherit;
 }
 
+.p-inputwrapper > .p-inputnumber-input {
+    @apply w-0;
+  }
+
 .p-popover-content {
   & > div {
     @apply max-sm:p-0;
