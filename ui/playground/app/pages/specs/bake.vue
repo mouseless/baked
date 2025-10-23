@@ -41,7 +41,7 @@ const variants = [
           { type: "Inline", value: { inline: "inline" } },
           {
             type: "Remote",
-            path: "/report/wide",
+            path: "/report-page-sample/wide",
             query: {
               type: "Composite", // merges ["RequiredWithDefault1"] and ["Required1"]
               parts: [

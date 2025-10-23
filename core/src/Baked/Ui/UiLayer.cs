@@ -77,11 +77,11 @@ public class UiLayer : LayerBase<GenerateCode>
 
     string ComponentExportsTemplate(IEnumerable<string> componentExports) => $$"""
         import {
-            {{string.Join($",{Environment.NewLine}\t", componentExports.Select(e => $"Lazy{e}"))}}
+            {{string.Join($",{Environment.NewLine}\t", componentExports)}}
         } from "#components";
 
         export {
-            {{string.Join($",{Environment.NewLine}\t", componentExports.Select(e => $"Lazy{e}"))}}
+            {{string.Join($",{Environment.NewLine}\t", componentExports)}}
         }
         """;
 }

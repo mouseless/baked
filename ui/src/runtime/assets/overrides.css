@@ -18,6 +18,6 @@ html, .bg-body {
 
 @media (prefers-color-scheme: dark) {
   html, .bg-body {
-    @apply bg-neutral-950;
+    @apply bg-zinc-925;
   }
 }
