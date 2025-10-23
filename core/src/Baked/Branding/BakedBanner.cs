@@ -1,9 +1,14 @@
-﻿namespace Baked.Branding;
+﻿using Baked.Architecture;
 
-public sealed class BakedBanner : IBanner
+namespace Baked.Branding;
+
+public sealed class BakedBanner(RunFlags _runFlags)
+    : IBanner
 {
     public void Print()
     {
+        if (_runFlags == RunFlags.Generate) { return; }
+
         var assembly = GetType().Assembly;
         var version = assembly.GetName().Version ?? new(0, 0, 0);
         var versionString = $"{version.Major}.{version.Minor}.{version.Build}";

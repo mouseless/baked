@@ -8,7 +8,7 @@ public class Application(ApplicationContext _startContext,
     readonly List<IFeature> _features = [];
     readonly List<IPhase> _startPhases = [];
     readonly List<IPhase> _generatePhases = [];
-    RunFlags _runFlags = RunFlags.Start!;
+    RunFlags _runFlags = RunFlags.Start;
 
     internal Application With(ApplicationDescriptor descriptor, RunFlags runFlags)
     {

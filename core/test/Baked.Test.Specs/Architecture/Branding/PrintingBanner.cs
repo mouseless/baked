@@ -1,4 +1,5 @@
-﻿using Baked.Branding;
+﻿using Baked.Architecture;
+using Baked.Branding;
 using System.Diagnostics;
 
 namespace Baked.Test.Architecture.Branding;
@@ -56,5 +57,15 @@ public class PrintingBanner : ArchitectureSpec
         source: https://github.com/mouseless/baked
 
         """);
+    }
+
+    [Test]
+    public void Baked_banner_does_not_print_on_generate_mode()
+    {
+        var banner = GiveMe.ABakedBanner(runFlags: RunFlags.Generate);
+
+        banner.Print();
+
+        ConsoleOutput.ShouldBe(string.Empty);
     }
 }

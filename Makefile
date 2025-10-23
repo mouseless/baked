@@ -12,12 +12,11 @@ fix:
 install:
 	@(cd core && dotnet restore)
 	@(cd core/test/Baked.Test.LoadTest && npm i && npm ci)
-	@(cd core/test/Baked.Test.StubApi && npm i && npm ci)
 	@(cd docs/.theme && npm i && npm ci)
 	@(cd ui && npm i && npm ci)
 build:
-	@(cd ui && npm run build)
 	@(cd core && dotnet build)
+	@(cd ui && npm run build)
 test:
 	@(cd core && dotnet test --logger quackers)
 	@(cd ui && BUILD_SILENT=1 npm run test)

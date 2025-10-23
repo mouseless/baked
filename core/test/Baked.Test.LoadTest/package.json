@@ -1,8 +1,14 @@
 {
+  "name": "Baked.Test.LoadTest",
+  "main": "index.js",
   "scripts": {
     "test": "artillery run test.yml"
   },
   "dependencies": {
+    "cors": "2.8.5",
+    "express": "5.1.0"
+  },
+  "devDependencies": {
     "artillery": "2.0.25"
   }
 }
