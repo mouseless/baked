@@ -26,7 +26,7 @@ COPY --parents core/test/Baked.Test.Application/Baked.Test.Application.csproj .
 RUN dotnet restore core/test/Baked.Test.Application
 
 COPY . .
-RUN dotnet publish ./core/test/Baked.Test.Application -c Release -o /app/publish
+RUN dotnet publish ./core/test/Baked.Test.Application -c Release -o /app/publish /p:GenerateArgs="--no-ui"
 
 FROM base AS final
 

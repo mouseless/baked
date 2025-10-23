@@ -8,6 +8,7 @@ public class DataTableSample(IStringLocalizer _l)
     {
         var items = Enumerable.Range(0, (int)count)
             .Select(i => new TableRow(
+                $"id-{i}",
                 $"{_l["This is a label"]}-{i}",
                 i % 5,
                 $"{_l["This should be a very long text"]}-{i}",

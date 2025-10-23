@@ -24,7 +24,9 @@
       <slot />
     </article>
   </div>
-  <ScrollTop :threshold="250" />
+  <ScrollTop
+    v-bind="scrollTopOptions"
+  />
 </template>
 <script setup>
 import { useRoute } from "#app";
@@ -41,6 +43,7 @@ const { schema } = defineProps({
 });
 
 const { header, sideMenu } = schema;
+const scrollTopOptions = { threshold: 250, ...schema.scrollTopOptions };
 </script>
 <style>
 .p-scrolltop {

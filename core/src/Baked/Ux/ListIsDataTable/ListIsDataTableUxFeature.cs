@@ -1,5 +1,6 @@
 ﻿using Baked.Architecture;
 using Baked.RestApi.Model;
+using Baked.Theme.Default;
 using Baked.Ui;
 
 using static Baked.Theme.Default.DomainComponents;
@@ -29,6 +30,11 @@ public class ListIsDataTableUxFeature : IFeature<UxConfigurator>
                         if (column is null) { continue; }
 
                         dt.Schema.Columns.Add(column);
+                    }
+
+                    if (dt.Schema.DataKey is null && members.Properties.Having<IdAttribute>().Any())
+                    {
+                        dt.Schema.DataKey = members.Properties.Having<IdAttribute>().Single().Get<DataAttribute>().Prop;
                     }
                 },
                 when: c =>

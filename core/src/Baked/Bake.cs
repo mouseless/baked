@@ -24,7 +24,7 @@ public class Bake(IBanner _banner, Func<Application> _newApplication,
                 runFlags ^= RunFlags.Start;
             }
 
-            return new(new BakedBanner(), () => new(new()),
+            return new(new BakedBanner(runFlags), () => new(new()),
                 _runFlags: runFlags
             );
         }

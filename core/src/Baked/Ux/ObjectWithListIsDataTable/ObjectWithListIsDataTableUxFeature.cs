@@ -88,6 +88,11 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
 
                         dt.Schema.Columns.Add(column);
                     }
+
+                    if (dt.Schema.DataKey is null && members.Properties.Having<IdAttribute>().Any())
+                    {
+                        dt.Schema.DataKey = members.Properties.Having<IdAttribute>().Single().Get<DataAttribute>().Prop;
+                    }
                 },
                 when: c =>
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMembers(out var returnMembers) &&

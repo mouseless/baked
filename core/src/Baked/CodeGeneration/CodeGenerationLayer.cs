@@ -76,7 +76,7 @@ public class CodeGenerationLayer : LayerBase<GenerateCode, Compile, BuildConfigu
 
         Context.Add(generatedContext);
 
-        return PhaseContext.Empty;
+        return phase.CreateEmptyContext();
     }
 
     protected override IEnumerable<IPhase> GetGeneratePhases()

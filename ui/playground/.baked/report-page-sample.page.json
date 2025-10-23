@@ -309,7 +309,7 @@
                         "exportable": true
                       }
                     ],
-                    "dataKey": "label",
+                    "dataKey": "id",
                     "paginator": true,
                     "rows": 5,
                     "exportOptions": {
@@ -452,7 +452,7 @@
                         "exportable": true
                       }
                     ],
-                    "dataKey": "label",
+                    "dataKey": "id",
                     "paginator": true,
                     "rows": 5,
                     "exportOptions": {

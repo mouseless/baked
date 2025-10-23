@@ -154,7 +154,7 @@
                         "exportable": true
                       }
                     ],
-                    "dataKey": "label",
+                    "dataKey": "id",
                     "itemsProp": "items",
                     "scrollHeight": "500px",
                     "virtualScrollerOptions": {

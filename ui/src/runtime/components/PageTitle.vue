@@ -80,7 +80,6 @@
           <PersistentPopover
             ref="popover"
             fixed
-            class="!z-[1002]"
           >
             <div
               class="
@@ -141,7 +140,7 @@ onMounted(() => {
         [
           "-mx-4", "px-4", "pb-4",
           "border-b", "border-slate-300", "dark:border-zinc-800",
-          "drop-shadow",
+          "drop-shadow", "z-[9]",
           "md:max-xl:pt-4", "max-md:pt-2"
         ]
       );

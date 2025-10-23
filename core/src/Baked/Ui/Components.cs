@@ -55,6 +55,10 @@ public static class Components
         Action<DefaultLayout>? options = default
     ) => new(options.Apply(new(name)));
 
+    public static DefaultLayout.ScrollTop DefaultLayoutScrollTop(
+        Action<DefaultLayout.ScrollTop>? options = default
+    ) => options.Apply(new());
+
     public static ComponentDescriptor<ErrorPage> ErrorPage(
         Action<ErrorPage>? options = default,
         IData? data = default

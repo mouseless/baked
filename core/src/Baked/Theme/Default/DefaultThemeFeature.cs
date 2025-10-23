@@ -25,11 +25,20 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
         configurator.ConfigureDomainModelBuilder(builder =>
         {
             // Property Defaults
+            builder.Index.Property.Add<IdAttribute>();
             builder.Index.Property.Add<DataAttribute>();
+            builder.Conventions.SetPropertyAttribute(
+                attribute: () => new IdAttribute(),
+                when: c => c.Property.Name == "Id"
+            );
             builder.Conventions.SetPropertyAttribute(
                 attribute: c => new DataAttribute(c.Property.Name.Camelize()) { Label = c.Property.Name.Titleize() },
                 when: c => c.Property.IsPublic,
                 order: -10
+            );
+            builder.Conventions.AddPropertyAttributeConfiguration<DataAttribute>(
+                attribute: data => data.Visible = false,
+                when: c => c.Property.Has<IdAttribute>()
             );
             builder.Conventions.AddPropertyComponent(
                 component: () => B.None(),

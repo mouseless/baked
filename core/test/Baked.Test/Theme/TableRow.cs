@@ -1,6 +1,7 @@
 ﻿namespace Baked.Test.Theme;
 
 public record TableRow(
+    string Id,
     string Label,
     int FormatDigits,
     string Column1,

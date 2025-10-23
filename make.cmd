@@ -40,7 +40,6 @@ echo Installing dependencies...
 cd docs\.theme && npm i && cd ..\..
 cd ui && npm i && cd ..
 cd core\test\Baked.Test.LoadTest && npm i && cd ..\..\..
-cd core\test\Baked.Test.StubApi && npm i && cd ..\..\..
 goto end
 
 :build
