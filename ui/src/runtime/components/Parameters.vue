@@ -37,9 +37,12 @@ for(const parameter of parameters) {
   values[parameter.name] = ref(dataFetcher.get({ data: parameter.default, injectedData }));
 }
 
-// check if a value is set (not null/undefined/empty or type number)
 function checkValue(value) {
-  return value != null && (typeof value === "number" || value?.length > 0);
+  if(typeof value === "string") {
+    return value !== "";
+  }
+
+  return value !== undefined && value !== null;
 }
 
 onMounted(async() => {
