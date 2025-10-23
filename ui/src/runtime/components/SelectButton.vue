@@ -11,7 +11,6 @@
     :options="data"
     :allow-empty
     :data-key="optionValue"
-    :option-label
     :pt="{ pcToggleButton: { root: { class: 'text-[length:inherit]' } } }"
   >
     <template #option="slotProps">
