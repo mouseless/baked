@@ -1,0 +1,37 @@
+<template>
+  <InputNumber
+    v-model="model"
+    :name="testId"
+    :data-testid="testId"
+    :placeholder="testId"
+    class="w-32"
+    @input="onInput"
+  />
+</template>
+<script setup>
+import { InputNumber } from "primevue";
+import { watch } from "vue";
+
+const { schema } = defineProps({
+  schema: { type: null, required: true }
+});
+const model = defineModel({ type: null, required: true });
+
+const { testId, defaultValue } = schema;
+
+function onInput(event) {
+  model.value = event.value;
+}
+
+if(defaultValue !== undefined) {
+  watch(
+    model,
+    newValue => {
+      if(newValue == null) {
+        model.value = defaultValue;
+      }
+    },
+    { immediate: true }
+  );
+}
+</script>

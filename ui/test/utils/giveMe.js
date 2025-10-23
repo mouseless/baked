@@ -252,12 +252,25 @@ export default {
     };
   },
 
-  anInput({ testId, defaultValue } = {}) {
+  anInputText({ testId, defaultValue } = {}) {
     testId = $(testId, "test-input");
     defaultValue = $(defaultValue, null);
 
     return {
-      type: "Input",
+      type: "InputText",
+      schema: {
+        testId,
+        defaultValue
+      }
+    };
+  },
+
+  anInputNumber({ testId, defaultValue } = {}) {
+    testId = $(testId, "test-input");
+    defaultValue = $(defaultValue, null);
+
+    return {
+      type: "InputNumber",
       schema: {
         testId,
         defaultValue
@@ -346,7 +359,7 @@ export default {
   aParameter({ name, component, required, defaultValue, default_, defaultSelfManaged } = {}) {
     name = $(name, "test");
     required = $(required, false);
-    component = $(component, this.anInput());
+    component = $(component, this.anInputText());
     default_ = $(default_, defaultValue ? { type: "Inline", value: defaultValue } : undefined);
     defaultSelfManaged = $(defaultSelfManaged, false);
 

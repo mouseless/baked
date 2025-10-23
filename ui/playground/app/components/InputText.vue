@@ -1,6 +1,7 @@
 <template>
   <InputText
     v-model="model"
+    :name="testId"
     :data-testid="testId"
     :placeholder="testId"
     class="w-32"

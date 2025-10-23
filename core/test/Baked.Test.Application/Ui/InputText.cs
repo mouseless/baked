@@ -2,7 +2,7 @@ using Baked.Ui;
 
 namespace Baked.Test.Ui;
 
-public record Input(string TestId)
+public record InputText(string TestId)
     : IComponentSchema
 {
     public string TestId { get; set; } = TestId;
