@@ -36,7 +36,7 @@ public class ReportPageSample
         [
             .. Enumerable
                 .Range(0, (int)count)
-                .Select(row => new ReportRow($"Row {row}", $"{_requiredWithDefault}", $"{_required}", $"{_optional}"))
+                .Select(row => new ReportRow($"id-{row}", $"Row {row}", $"{_requiredWithDefault}", $"{_required}", $"{_optional}"))
         ];
     }
 
@@ -48,7 +48,7 @@ public class ReportPageSample
         [
             .. Enumerable
                 .Range(0, (int)count)
-                .Select(row => new ReportRow($"Row {row}", $"{_requiredWithDefault}", $"{_required}", $"{_optional}"))
+                .Select(row => new ReportRow($"id-{row}", $"Row {row}", $"{_requiredWithDefault}", $"{_required}", $"{_optional}"))
         ];
     }
 }
