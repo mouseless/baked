@@ -20,12 +20,7 @@ public class UiLayer : LayerBase<GenerateCode>
 
     protected override PhaseContext GetContext(GenerateCode phase)
     {
-        if (NoUiFlag)
-        {
-            Console.WriteLine("Skipping UI generation");
-
-            return phase.CreateEmptyContext();
-        }
+        if (NoUiFlag) { return phase.CreateEmptyContext(); }
 
         Context.Add<NewLocaleKey>(LocaleKeyFactory);
 
