@@ -11,7 +11,7 @@ namespace Baked.Runtime;
 
 public class RuntimeLayer : LayerBase<BuildConfiguration, AddServices, PostBuild>
 {
-    public const string FILE_PROVIDERS_KEY = "CompositeFileProvider";
+    public const string FileProvidersKey = "CompositeFileProvider";
 
     readonly IServiceCollection _services = new ServiceCollection();
     readonly ILoggingBuilder _loggingBuilder;
@@ -38,7 +38,7 @@ public class RuntimeLayer : LayerBase<BuildConfiguration, AddServices, PostBuild
             .OnDispose(() =>
             {
                 services.AddSingleton<IFileProvider>(sp =>
-                    new CompositeFileProvider(sp.UsingCurrentScope().GetKeyedServices<IFileProvider>(FILE_PROVIDERS_KEY))
+                    new CompositeFileProvider(sp.UsingCurrentScope().GetKeyedServices<IFileProvider>(FileProvidersKey))
                 );
 
                 if (_threadOptions.MinThreadCount.HasValue)
