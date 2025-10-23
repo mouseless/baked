@@ -56,18 +56,18 @@ const readyValues = ref();
 const parameters = [
   giveMe.aParameter({
     name: "requiredWithDefault",
-    component: giveMe.anInput({ testId: "required-with-default" }),
+    component: giveMe.anInputText({ testId: "required-with-default" }),
     required: true,
     defaultValue: "default value"
   }),
   giveMe.aParameter({
     name: "required",
-    component: giveMe.anInput({ testId: "required" }),
+    component: giveMe.anInputText({ testId: "required" }),
     required: true
   }),
   giveMe.aParameter({
     name: "optional",
-    component: giveMe.anInput({ testId: "optional" })
+    component: giveMe.anInputText({ testId: "optional" })
   }),
   giveMe.aParameter({
     name: "num-required",

@@ -12,7 +12,7 @@ public static class Components
         Action<Expected>? options = default
     ) => new(options.Apply(new(testId)));
 
-    public static ComponentDescriptor<InputText> Input(string testId,
+    public static ComponentDescriptor<InputText> InputText(string testId,
         Action<InputText>? options = default
     ) => new(options.Apply(new(testId)));
 

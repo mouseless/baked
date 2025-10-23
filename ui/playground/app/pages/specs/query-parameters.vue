@@ -59,7 +59,7 @@ const uniqueKey = ref();
 const parameters = [
   giveMe.aParameter({
     name: "requiredWithDefault",
-    component: giveMe.anInput({ testId: "required-with-default" }),
+    component: giveMe.anInputText({ testId: "required-with-default" }),
     required: true,
     defaultValue: "default value"
   }),
@@ -67,16 +67,16 @@ const parameters = [
     name: "requiredWithDefaultSelfManaged",
     required: true,
     defaultSelfManaged: true,
-    component: giveMe.anInput({ testId: "required-with-default-self-managed", defaultValue: "default" })
+    component: giveMe.anInputText({ testId: "required-with-default-self-managed", defaultValue: "default" })
   }),
   giveMe.aParameter({
     name: "required",
-    component: giveMe.anInput({ testId: "required" }),
+    component: giveMe.anInputText({ testId: "required" }),
     required: true
   }),
   giveMe.aParameter({
     name: "optional",
-    component: giveMe.anInput({ testId: "optional" })
+    component: giveMe.anInputText({ testId: "optional" })
   }),
   giveMe.aParameter({
     name: "num-required",

@@ -132,14 +132,14 @@ const variants = [
         giveMe.aParameter({
           name: "required",
           required: true,
-          component: giveMe.anInput({
+          component: giveMe.anInputText({
             testId: "required"
           })
         }),
         giveMe.aParameter({
           name: "optional",
           required: false,
-          component: giveMe.anInput({
+          component: giveMe.anInputText({
             testId: "optional"
           })
         })
