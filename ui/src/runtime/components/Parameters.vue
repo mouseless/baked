@@ -42,7 +42,7 @@ onMounted(async() => {
   for(const parameter of parameters) {
     if(!dataFetcher.shouldLoad(parameter.default?.type)) { continue; }
 
-    values[parameter.name].value = await dataFetcher.fetch({ data: parameter.default, injectedData });
+    values[parameter.name] = await dataFetcher.fetch({ data: parameter.default, injectedData });
   }
 
   emitChanged();
