@@ -139,6 +139,7 @@ nav {
   width: $width-side;
   margin-top: $space-md;
   font-size: 0.9em;
+  font-family: $font-default;
   overflow: hidden;
   white-space: nowrap;
 
@@ -149,7 +150,6 @@ nav {
     li {
       margin: 0;
       list-style: none;
-      line-height: 24px;
 
       a {
         color: $color-fg-second;
@@ -172,6 +172,7 @@ nav {
 
         &.return-to-top {
           margin-top: $space-sm;
+          color: $color-fg-third;
         }
       }
 

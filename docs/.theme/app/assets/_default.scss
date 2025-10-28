@@ -70,21 +70,24 @@ img.baked {
   code {
     background-color: $color-bg-code;
     border-radius: $space-xs;
-    padding: $space-xs $space-xs;
+    padding: calc($space-xs/2) $space-xs;
     color: $color-fg-code;
     overflow-wrap: anywhere;
   }
 
   pre {
     overflow: auto;
-    padding: $space-md;
+    padding: $space-sm;
 
     code {
       padding: 0;
       background-color: transparent;
       display: block;
       max-width: 0;
-      line-height: 1.5em;
+
+      span {
+        line-height: 1.5em;
+      }
     }
   }
 
