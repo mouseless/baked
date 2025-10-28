@@ -19,7 +19,7 @@
         >
           {{ link.text }}
         </NuxtLink>
-        <ul>
+        <ul v-show="link.id === activePageId || link.children?.some(c => c.id === activePageId)">
           <li
             v-for="child in link.children"
             :key="child.id"
@@ -136,12 +136,16 @@ nav {
   position: sticky;
   align-self: start;
   top: $space-sm;
-  width: $width-side;
+  min-width: $width-side;
   margin-top: $space-md;
   font-size: 0.9em;
   font-family: $font-default;
-  overflow: hidden;
   white-space: nowrap;
+
+  & > ul {
+    max-height: calc(100vh - 5rem);
+    overflow: auto;
+  }
 
   ul {
     margin: 0;
@@ -215,6 +219,7 @@ nav {
       padding: $space-sm;
       padding-left: 0;
       margin-bottom: $space-md;
+      max-height: calc(100vh - 10rem);
 
       &.active {
         display: block;
