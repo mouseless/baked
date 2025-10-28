@@ -47,6 +47,8 @@ nav {
   ul {
     margin: 0;
     padding: 0;
+    max-height: calc(100vh - 8rem);
+    overflow-y: auto;
 
     li {
       margin: 0;
@@ -100,6 +102,7 @@ nav {
       border-radius: $space-sm;
       padding: $space-sm;
       box-sizing: border-box;
+      max-height: calc(100vh - 10rem);
 
       &.active {
         display: block;

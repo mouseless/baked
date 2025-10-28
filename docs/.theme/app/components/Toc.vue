@@ -144,7 +144,7 @@ nav {
 
   & > ul {
     max-height: calc(100vh - 5rem);
-    overflow: auto;
+    overflow-y: auto;
   }
 
   ul {
