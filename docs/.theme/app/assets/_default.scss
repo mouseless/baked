@@ -7,11 +7,18 @@
 html, body {
   margin: 0;
   padding: 0;
+  height: 100%;
 }
 
 body {
   font-size: calc($font-size * 1.2);
   min-width: calc($width-page-min + $space-md);
+}
+
+#__nuxt {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 img.baked {
@@ -70,21 +77,25 @@ img.baked {
   code {
     background-color: $color-bg-code;
     border-radius: $space-xs;
-    padding: $space-xs $space-xs;
+    padding: calc($space-xs/2) $space-xs;
     color: $color-fg-code;
     overflow-wrap: anywhere;
+    font-size: smaller;
   }
 
   pre {
     overflow: auto;
-    padding: $space-md;
+    padding: $space-sm;
 
     code {
       padding: 0;
       background-color: transparent;
       display: block;
       max-width: 0;
-      line-height: 1.5em;
+
+      span {
+        line-height: 1.5em;
+      }
     }
   }
 

@@ -1,3 +1,9 @@
+:root {
+  --width-content: 100ch;
+  --font-size: 16px;
+  --border-radius: var(--space-xs);
+}
+
 $border-radius: var(--border-radius);
 
 $color-brand: var(--color-logo-mark);
@@ -22,7 +28,7 @@ $color-fg: var(--color-fg);
 $color-fg-heading: var(--color-logo-text);
 $color-fg-second: var(--color-fg-soft);
 $color-fg-third: var(--color-fg-mute);
-$color-fg-code: var(--color-soft);
+$color-fg-code: var(--color-fg-soft);
 
 $space-xs: var(--space-xs);
 $space-sm: var(--space-sm);
@@ -48,8 +54,8 @@ $width-content-margin: $space-md;
 $width-side: 15em;
 $width-tolerance: 50px;
 $width-page: calc($width-content + (2 * $width-side) + $width-content-margin + $width-tolerance);
-$width-page-xl: 1780px + $width-tolerance;
-$width-page-l: 1280px + $width-tolerance;
-$width-page-m: 1024px + $width-tolerance;
-$width-page-s: 768px + $width-tolerance;
+$width-page-xl: 1880px + $width-tolerance;
+$width-page-l: 1480px + $width-tolerance;
+$width-page-m: 1280px + $width-tolerance;
+$width-page-s: 980px + $width-tolerance;
 $width-page-min: 270px;

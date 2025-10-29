@@ -19,7 +19,7 @@
         >
           {{ link.text }}
         </NuxtLink>
-        <ul>
+        <ul v-show="link.id === activePageId || link.children?.some(c => c.id === activePageId)">
           <li
             v-for="child in link.children"
             :key="child.id"
@@ -136,11 +136,20 @@ nav {
   position: sticky;
   align-self: start;
   top: $space-sm;
-  width: $width-side;
+  min-width: $width-side;
   margin-top: $space-md;
   font-size: 0.9em;
-  overflow: hidden;
+  font-family: $font-default;
   white-space: nowrap;
+
+  & > ul {
+    max-height: calc(100vh - 5rem);
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 
   ul {
     margin: 0;
@@ -149,7 +158,6 @@ nav {
     li {
       margin: 0;
       list-style: none;
-      line-height: 24px;
 
       a {
         color: $color-fg-second;
@@ -167,11 +175,12 @@ nav {
         }
 
         &.active {
-          border-left-color: $color-bg-third;
+          border-left-color: $color-brand;
         }
 
         &.return-to-top {
           margin-top: $space-sm;
+          color: $color-fg-third;
         }
       }
 
@@ -214,6 +223,7 @@ nav {
       padding: $space-sm;
       padding-left: 0;
       margin-bottom: $space-md;
+      max-height: calc(100vh - 10rem);
 
       &.active {
         display: block;

@@ -1,7 +1,10 @@
 <template>
   <Header />
-  <div v-if="$route.path === '/'">
-    <article class="full">
+  <div
+    v-if="$route.path === '/'"
+    class="full"
+   >
+    <article>
       <slot />
     </article>
   </div>
@@ -33,6 +36,8 @@ useSectionStore().setSections(menus);
 
   & {
     margin: auto;
+    margin-top: 0;
+    margin-bottom: auto;
   }
 }
 

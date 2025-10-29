@@ -2,10 +2,11 @@
   <nav>
     <h4><a @click="toggle">Pages</a></h4>
     <ul :class="{ active: shown }">
-      <li>
+      <li
+        v-for="menu in menus"
+        :key="menu.title"
+      >
         <NuxtLink
-          v-for="menu in menus"
-          :key="menu.title"
           :to="menu.path"
           :class="{ active: menu.path == $route.path }"
           @click="close"
@@ -47,13 +48,27 @@ nav {
   ul {
     margin: 0;
     padding: 0;
+    max-height: calc(100vh - 8rem);
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
 
     li {
       margin: 0;
       list-style: none;
 
+      &:not(:first-child) {
+        a::before {
+          content: "> ";
+          color: $color-brand;
+          font-weight: bold;
+        }
+      }
+
       a {
-        font-size: 1em;
+        font-size: .9em;
         display: block;
         text-decoration: none;
         color: $color-fg-second;
@@ -100,6 +115,7 @@ nav {
       border-radius: $space-sm;
       padding: $space-sm;
       box-sizing: border-box;
+      max-height: calc(100vh - 10rem);
 
       &.active {
         display: block;

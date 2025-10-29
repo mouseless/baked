@@ -48,8 +48,7 @@ usePageStore().setPages([index, ...unOrderedMenus]);
   display: flex;
 
   .content {
-    width: 100%;
-    max-width: $width-content;
+    width: $width-content;
     margin: 0 $width-content-margin;
   }
 }
@@ -59,7 +58,7 @@ usePageStore().setPages([index, ...unOrderedMenus]);
     justify-content: center;
 
     .content {
-      max-width: $width-page;
+      width: $width-page;
       margin-left: 0;
       margin-right: 0;
 
@@ -83,6 +82,10 @@ usePageStore().setPages([index, ...unOrderedMenus]);
 
         &:hover {
           color: var(--color-green-0);
+        }
+
+        &:not(:first-child) {
+          margin-left: $space-xs;
         }
       }
     }
@@ -110,6 +113,21 @@ usePageStore().setPages([index, ...unOrderedMenus]);
 @media (max-width: $width-page-m) {
   .container {
     margin-left: 0;
+  }
+}
+
+@media (max-width: $width-page-s) {
+  .container {
+    .content {
+      width: 100%;
+    }
+  }
+  .full {
+    .container {
+      .content {
+        width: 100%;
+      }
+    }
   }
 }
 </style>
