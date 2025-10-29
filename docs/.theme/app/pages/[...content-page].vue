@@ -115,4 +115,19 @@ usePageStore().setPages([index, ...unOrderedMenus]);
     margin-left: 0;
   }
 }
+
+@media (max-width: $width-page-s) {
+  .container {
+    .content {
+      width: 100%;
+    }
+  }
+  .full {
+    .container {
+      .content {
+        width: 100%;
+      }
+    }
+  }
+}
 </style>
