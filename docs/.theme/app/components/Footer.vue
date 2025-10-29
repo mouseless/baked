@@ -70,9 +70,7 @@ footer {
   @include width;
 
   & {
-    margin: auto;
-    margin-top: $space-sm;
-    margin-bottom: $space-sm;
+    margin: $space-sm auto;
     display: flex;
     flex-direction: row;
     align-items: flex-start;

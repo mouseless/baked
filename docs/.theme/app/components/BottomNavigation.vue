@@ -3,7 +3,7 @@
     <div v-if="prev != null" class="button left">
       <NuxtLink :to="prev.path">
         <div class="link-text">
-          <i class="fa-solid fa-caret-left" /> Previous
+          <span><i class="fa-solid fa-caret-left" /> Previous</span>
           <h3>
             {{ prev?.title }}
           </h3>
@@ -13,7 +13,7 @@
     <div v-if="next != null" class="button right">
       <NuxtLink :to="next?.path">
         <div class="link-text">
-          Next <i class="fa-solid fa-caret-right" />
+          <span>Next <i class="fa-solid fa-caret-right" /></span>
           <h3>
             {{ next?.title }}
           </h3>
@@ -51,13 +51,16 @@ const next = currentPageNumber < menus.length + 1 ? menus[currentPageNumber + 1]
       text-decoration: none;
 
       .link-text {
-        color: $color-fg-third;
-        font-size: 0.75em;
+        color: $color-brand;
+
+        span {
+          font-size: .8em;
+        }
 
         h3 {
           color: $color-fg-second;
-          margin-top: 0;
-          font-size: 1.5em;
+          margin-top: -0.25em;
+          font-size: 1.125em;
         }
       }
 

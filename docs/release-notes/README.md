@@ -16,4 +16,4 @@ Releases follow `[major].[minor].[patch]` [Semantic Versioning][] format;
 - `[patch]`: For release that has only a bugfix or an improvement, patch number
   will increase
 
-[Semantic Versioning]:https://semver.org/
+[Semantic Versioning]: https://semver.org/

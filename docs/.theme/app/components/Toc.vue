@@ -145,6 +145,10 @@ nav {
   & > ul {
     max-height: calc(100vh - 5rem);
     overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   ul {
@@ -171,7 +175,7 @@ nav {
         }
 
         &.active {
-          border-left-color: $color-bg-third;
+          border-left-color: $color-brand;
         }
 
         &.return-to-top {

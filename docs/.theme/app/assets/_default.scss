@@ -7,11 +7,18 @@
 html, body {
   margin: 0;
   padding: 0;
+  height: 100%;
 }
 
 body {
   font-size: calc($font-size * 1.2);
   min-width: calc($width-page-min + $space-md);
+}
+
+#__nuxt {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 img.baked {
@@ -73,6 +80,7 @@ img.baked {
     padding: calc($space-xs/2) $space-xs;
     color: $color-fg-code;
     overflow-wrap: anywhere;
+    font-size: smaller;
   }
 
   pre {

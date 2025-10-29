@@ -1,5 +1,7 @@
 :root {
-  --width-content: 120ch
+  --width-content: 100ch;
+  --font-size: 16px;
+  --border-radius: var(--space-xs);
 }
 
 $border-radius: var(--border-radius);

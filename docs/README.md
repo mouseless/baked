@@ -49,9 +49,3 @@ the design principles and extend the framework to suit your unique requirements.
 [See more](architecture/README.md)
 
 ::
-
----
-
-Baked pays tribute to the renowned [Naked Objects][] that inspired us.
-
-[Naked Objects]: https://github.com/NakedObjectsGroup/NakedObjectsFramework
