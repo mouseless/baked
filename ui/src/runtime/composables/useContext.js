@@ -29,6 +29,14 @@ export default function() {
     provide(`__bake_injected_data:${key}`, value);
   }
 
+  function injectEvents() {
+    return inject("__bake_events");
+  }
+
+  function provideEvents(value) {
+    provide("__bake_events", value);
+  }
+
   function injectLoading() {
     return inject("__bake_loading", ref(false));
   }
@@ -52,6 +60,8 @@ export default function() {
     provideDataDescriptor,
     injectData,
     provideData,
+    injectEvents,
+    provideEvents,
     injectLoading,
     provideLoading,
     injectPage,

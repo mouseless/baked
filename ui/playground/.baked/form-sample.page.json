@@ -1,0 +1,100 @@
+{
+  "type": "ReportPage",
+  "schema": {
+    "title": {
+      "title": "Form",
+      "description": "Vibe coding form components",
+      "actions": []
+    },
+    "queryParameters": [],
+    "tabs": [
+      {
+        "id": "default",
+        "contents": [
+          {
+            "component": {
+              "type": "DataPanel",
+              "schema": {
+                "title": {
+                  "type": "Inline",
+                  "value": "ChangeState"
+                },
+                "localizeTitle": true,
+                "parameters": [],
+                "content": {
+                  "type": "VibeForm",
+                  "schema": {
+                    "label": "ChangeState",
+                    "endpoint": {
+                      "path": "form-sample/state",
+                      "method": "PATCH"
+                    },
+                    "submitEventName": "something-changed"
+                  }
+                }
+              }
+            },
+            "key": "change-state"
+          },
+          {
+            "component": {
+              "type": "DataPanel",
+              "schema": {
+                "title": {
+                  "type": "Inline",
+                  "value": "GetStates"
+                },
+                "localizeTitle": true,
+                "parameters": [],
+                "content": {
+                  "type": "DataTable",
+                  "schema": {
+                    "columns": [
+                      {
+                        "prop": "status",
+                        "component": {
+                          "fallback": {
+                            "type": "Text",
+                            "schema": {}
+                          },
+                          "conditions": []
+                        },
+                        "title": "Status",
+                        "exportable": true
+                      }
+                    ],
+                    "dataKey": "id",
+                    "paginator": true,
+                    "rows": 5,
+                    "exportOptions": {
+                      "csvSeparator": ";",
+                      "fileName": "GetStates.ExportFileName",
+                      "formatter": "useCsvFormatter",
+                      "buttonIcon": "pi pi-download",
+                      "buttonLabel": "Export as CSV",
+                      "appendParameters": true,
+                      "parameterSeparator": "_",
+                      "parameterFormatter": "useLocaleParameterFormatter"
+                    }
+                  },
+                  "data": {
+                    "type": "Remote",
+                    "path": "form-sample/states",
+                    "query": {
+                      "type": "Computed",
+                      "composable": "useQuery",
+                      "args": []
+                    }
+                  },
+                  "binding": "something-changed"
+                }
+              }
+            },
+            "key": "get-states"
+          }
+        ]
+      }
+    ],
+    "path": "form-sample"
+  }
+}

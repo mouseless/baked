@@ -33,6 +33,18 @@
             "component": {
               "type": "CardLink",
               "schema": {
+                "route": "/form-sample",
+                "icon": "pi pi-file-edit",
+                "title": "Form",
+                "description": "Vibe coding form components"
+              }
+            }
+          },
+          {
+            "title": "",
+            "component": {
+              "type": "CardLink",
+              "schema": {
                 "route": "/report-page-sample",
                 "icon": "pi pi-file",
                 "title": "Report",

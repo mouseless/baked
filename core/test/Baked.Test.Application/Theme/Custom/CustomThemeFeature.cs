@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.RestApi.Model;
 using Baked.Test.Caching;
 using Baked.Theme;
 using Baked.Theme.Default;
@@ -49,6 +50,50 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
             builder.Conventions.AddTypeSchema(
                 schema: (c, cc) => EnumInline(c.Type, cc, requireLocalization: false),
                 when: c => c.Type.Is<CacheKey>() || c.Type.Is<RowCount>()
+            );
+
+            // below this point is vibe coding
+            builder.Conventions.AddTypeComponentConfiguration<ReportPage>(
+                component: (rp, c, cc) =>
+                {
+                    var forms = new List<ReportPage.Tab.Content>();
+                    var firstTab = rp.Schema.Tabs.First();
+
+                    foreach (var method in c.Type.GetMembers().Methods.Having<ActionModelAttribute>())
+                    {
+                        var action = method.GetAction();
+                        if (action.Method == HttpMethod.Get) { continue; }
+
+                        forms.Add(method.GetRequiredSchema<ReportPage.Tab.Content>(
+                            cc.Drill(nameof(ReportPage.Tabs), firstTab.Id, nameof(ReportPage.Tab.Contents), firstTab.Contents.Count + forms.Count)
+                        ));
+                    }
+
+                    firstTab.Contents.InsertRange(0, forms);
+                }
+            );
+            builder.Conventions.AddMethodComponent(
+                when: c => !c.Method.Name.StartsWith("Get"),
+                where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content)),
+                component: c => C.VibeForm(options: vf =>
+                {
+                    var action = c.Method.GetAction();
+
+                    vf.Label = c.Method.Name;
+                    vf.Endpoint.Path = action.GetRoute();
+                    vf.Endpoint.Method = action.Method.ToString().ToUpperInvariant();
+                    vf.SubmitEventName = "something-changed";
+                })
+            );
+            builder.Conventions.AddMethodComponentConfiguration<DataPanel>(
+                when: c =>
+                    c.Method.Name.StartsWith("Get") &&
+                    c.Type.TryGetMembers(out var members) &&
+                    members.Methods.Having<ActionModelAttribute>().Any(m => !m.Name.StartsWith("Get")),
+                component: dp =>
+                {
+                    dp.Schema.Content.Binding = "something-changed";
+                }
             );
         });
 
