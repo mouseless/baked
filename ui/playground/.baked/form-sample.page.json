@@ -33,6 +33,7 @@
                     "parameters": [
                       {
                         "name": "state",
+                        "required": true,
                         "component": {
                           "type": "InputText",
                           "schema": {
@@ -42,6 +43,7 @@
                       },
                       {
                         "name": "reason",
+                        "required": true,
                         "component": {
                           "type": "InputText",
                           "schema": {
@@ -51,6 +53,7 @@
                       },
                       {
                         "name": "count",
+                        "required": true,
                         "component": {
                           "type": "InputNumber",
                           "schema": {
@@ -60,9 +63,11 @@
                       },
                       {
                         "name": "countOptions",
+                        "required": false,
                         "component": {
                           "type": "SelectButton",
                           "schema": {
+                            "allowEmpty": true,
                             "optionLabel": "label",
                             "optionValue": "value",
                             "localizeLabel": true

@@ -108,7 +108,10 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
 
                     foreach (var parameter in c.Method.DefaultOverload.Parameters)
                     {
-                        vf.Schema.Parameters.Add(ParameterParameter(parameter, cc.Drill(nameof(VibeForm.Parameters))));
+                        vf.Schema.Parameters.Add(ParameterParameter(parameter, cc.Drill(nameof(VibeForm.Parameters)), options: p =>
+                        {
+                            p.Required = !parameter.IsOptional;
+                        }));
                     }
                 }
             );

@@ -7,7 +7,9 @@ public class FormSample(TimeProvider _timeProvider)
 {
     static readonly List<StateLog> _states = [];
 
-    public void AddState(string state, string reason, int count, CountOptions countOptions)
+    public void AddState(string state, string reason, int count,
+        CountOptions? countOptions = default
+    )
     {
         foreach (var i in Enumerable.Range(0, count))
         {

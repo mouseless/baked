@@ -34,7 +34,7 @@ const { label, endpoint, submitEventName, parameters } = schema;
 
 const events = context.injectEvents();
 const loading = ref(false);
-const ready = ref(true);
+const ready = ref(parameters.length === 0);
 const body = ref();
 
 function onReady(value) {
