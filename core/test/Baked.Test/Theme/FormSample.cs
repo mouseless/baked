@@ -5,18 +5,23 @@ namespace Baked.Test.Theme;
 [AllowAnonymous]
 public class FormSample(TimeProvider _timeProvider)
 {
-    static readonly List<StateLog> _stateLogs = [];
-    static bool _on = false;
+    static readonly List<StateLog> _states = [];
 
-    public void ChangeState()
+    public void AddState(string state, string reason, int count, CountOptions countOptions)
     {
-        _on = !_on;
+        foreach (var i in Enumerable.Range(0, count))
+        {
+            _states.Add(new($"{state}-{_timeProvider.GetNow()}", $"State is switched to {state}-{reason}-{i}-{countOptions}: {_timeProvider.GetNow()}"));
+        }
+    }
 
-        _stateLogs.Add(new($"{_on}-{_timeProvider.GetNow()}", $"State is switched to {_on}"));
+    public void ClearStates()
+    {
+        _states.Clear();
     }
 
     public List<StateLog> GetStates() =>
-        _stateLogs;
+        _states;
 }
 
 public record StateLog(string Id, string Status);

@@ -3,7 +3,8 @@
     {
       "name": "auth",
       "anonymousApiRoutes": [
-        "form-sample/state",
+        "form-sample/states",
+        "form-sample/states",
         "form-sample/states",
         "cache-samples/scoped",
         "cache-samples/application",

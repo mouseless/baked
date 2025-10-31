@@ -1,11 +1,13 @@
 ﻿using Baked.Architecture;
 using Baked.RestApi.Model;
 using Baked.Test.Caching;
+using Baked.Test.Ui;
 using Baked.Theme;
 using Baked.Theme.Default;
 using Baked.Ui;
 
 using static Baked.Test.Theme.Custom.DomainComponents;
+using static Baked.Theme.Default.DomainComponents;
 using static Baked.Theme.Default.DomainDatas;
 
 using B = Baked.Ui.Components;
@@ -72,6 +74,20 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
                     firstTab.Contents.InsertRange(0, forms);
                 }
             );
+            builder.Conventions.AddMethodSchemaConfiguration<ReportPage.Tab.Content>(
+                when: c => !c.Method.Name.StartsWith("Get"),
+                schema: rptc => rptc.Narrow = true
+            );
+            builder.Conventions.AddMethodComponentConfiguration<DataPanel>(
+                when: c =>
+                    c.Method.Name.StartsWith("Get") &&
+                    c.Type.TryGetMembers(out var members) &&
+                    members.Methods.Having<ActionModelAttribute>().Any(m => !m.Name.StartsWith("Get")),
+                component: dp =>
+                {
+                    dp.Schema.Content.Binding = "something-changed";
+                }
+            );
             builder.Conventions.AddMethodComponent(
                 when: c => !c.Method.Name.StartsWith("Get"),
                 where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content)),
@@ -85,15 +101,24 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
                     vf.SubmitEventName = "something-changed";
                 })
             );
-            builder.Conventions.AddMethodComponentConfiguration<DataPanel>(
-                when: c =>
-                    c.Method.Name.StartsWith("Get") &&
-                    c.Type.TryGetMembers(out var members) &&
-                    members.Methods.Having<ActionModelAttribute>().Any(m => !m.Name.StartsWith("Get")),
-                component: dp =>
+            builder.Conventions.AddMethodComponentConfiguration<VibeForm>(
+                component: (vf, c, cc) =>
                 {
-                    dp.Schema.Content.Binding = "something-changed";
+                    cc = cc.Drill(nameof(VibeForm));
+
+                    foreach (var parameter in c.Method.DefaultOverload.Parameters)
+                    {
+                        vf.Schema.Parameters.Add(ParameterParameter(parameter, cc.Drill(nameof(VibeForm.Parameters))));
+                    }
                 }
+            );
+            builder.Conventions.AddParameterComponent(
+                when: c => c.Parameter.ParameterType.Is<string>(),
+                component: c => C.InputText(c.Parameter.Name)
+            );
+            builder.Conventions.AddParameterComponent(
+                when: c => c.Parameter.ParameterType.Is<int>(),
+                component: c => C.InputNumber(c.Parameter.Name)
             );
         });
 
