@@ -29,6 +29,15 @@ export default function() {
     provide(`__bake_injected_data:${key}`, value);
   }
 
+  // TODO - review this in form components
+  function injectEvents() {
+    return inject("__bake_events");
+  }
+  // TODO - review this in form components
+  function provideEvents(value) {
+    provide("__bake_events", value);
+  }
+
   function injectLoading() {
     return inject("__bake_loading", ref(false));
   }
@@ -52,6 +61,8 @@ export default function() {
     provideDataDescriptor,
     injectData,
     provideData,
+    injectEvents,
+    provideEvents,
     injectLoading,
     provideLoading,
     injectPage,

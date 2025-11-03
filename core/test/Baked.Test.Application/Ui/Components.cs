@@ -27,4 +27,9 @@ public static class Components
     public static ComponentDescriptor<RoutedPage> RoutedPage(string path,
         Action<RoutedPage>? options = default
     ) => new(options.Apply(new(path)));
+
+    // TODO - review this in form components
+    public static ComponentDescriptor<VibeForm> VibeForm(
+        Action<VibeForm>? options = default
+    ) => new(options.Apply(new()));
 }

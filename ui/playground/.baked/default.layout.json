@@ -24,6 +24,11 @@
             "title": "Data Table"
           },
           {
+            "route": "/form-sample",
+            "icon": "pi pi-file-edit",
+            "title": "Form"
+          },
+          {
             "route": "/report-page-sample",
             "icon": "pi pi-file",
             "title": "Report"
@@ -62,6 +67,11 @@
             "route": "/data-table-sample",
             "icon": "pi pi-table",
             "title": "Data Table"
+          },
+          "/form-sample": {
+            "route": "/form-sample",
+            "icon": "pi pi-file-edit",
+            "title": "Form"
           },
           "/report-page-sample": {
             "route": "/report-page-sample",

@@ -32,7 +32,8 @@ public class ActionsAsDataPanelsUxFeature : IFeature<UxConfigurator>
                             parameter.GetRequiredSchema<Parameter>(cc.Drill(nameof(DataPanel), nameof(DataPanel.Parameters)))
                         );
                     }
-                }
+                },
+                when: c => c.Method.GetAction().Method == HttpMethod.Get
             );
         });
     }

@@ -1,0 +1,190 @@
+{
+  "type": "ReportPage",
+  "schema": {
+    "title": {
+      "title": "Form",
+      "description": "Vibe coding form components",
+      "actions": []
+    },
+    "queryParameters": [],
+    "tabs": [
+      {
+        "id": "default",
+        "contents": [
+          {
+            "component": {
+              "type": "DataPanel",
+              "schema": {
+                "title": {
+                  "type": "Inline",
+                  "value": "AddState"
+                },
+                "localizeTitle": true,
+                "parameters": [],
+                "content": {
+                  "type": "VibeForm",
+                  "schema": {
+                    "label": "AddState",
+                    "action": {
+                      "path": "form-sample/states",
+                      "method": "POST"
+                    },
+                    "submitEventName": "something-changed",
+                    "parameters": [
+                      {
+                        "name": "state",
+                        "required": true,
+                        "component": {
+                          "type": "InputText",
+                          "schema": {
+                            "testId": "state"
+                          }
+                        }
+                      },
+                      {
+                        "name": "reason",
+                        "required": true,
+                        "component": {
+                          "type": "InputText",
+                          "schema": {
+                            "testId": "reason"
+                          }
+                        }
+                      },
+                      {
+                        "name": "count",
+                        "required": true,
+                        "component": {
+                          "type": "InputNumber",
+                          "schema": {
+                            "testId": "count"
+                          }
+                        }
+                      },
+                      {
+                        "name": "countOptions",
+                        "required": false,
+                        "component": {
+                          "type": "SelectButton",
+                          "schema": {
+                            "allowEmpty": true,
+                            "optionLabel": "label",
+                            "optionValue": "value",
+                            "localizeLabel": true
+                          },
+                          "data": {
+                            "type": "Inline",
+                            "value": [
+                              {
+                                "label": "CountOptions.Less",
+                                "value": "Less"
+                              },
+                              {
+                                "label": "CountOptions.Default",
+                                "value": "Default"
+                              },
+                              {
+                                "label": "CountOptions.More",
+                                "value": "More"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "key": "add-state",
+            "narrow": true
+          },
+          {
+            "component": {
+              "type": "DataPanel",
+              "schema": {
+                "title": {
+                  "type": "Inline",
+                  "value": "ClearStates"
+                },
+                "localizeTitle": true,
+                "parameters": [],
+                "content": {
+                  "type": "VibeForm",
+                  "schema": {
+                    "label": "ClearStates",
+                    "action": {
+                      "path": "form-sample/states",
+                      "method": "DELETE"
+                    },
+                    "submitEventName": "something-changed",
+                    "parameters": []
+                  }
+                }
+              }
+            },
+            "key": "clear-states",
+            "narrow": true
+          },
+          {
+            "component": {
+              "type": "DataPanel",
+              "schema": {
+                "title": {
+                  "type": "Inline",
+                  "value": "GetStates"
+                },
+                "localizeTitle": true,
+                "parameters": [],
+                "content": {
+                  "type": "DataTable",
+                  "schema": {
+                    "columns": [
+                      {
+                        "prop": "status",
+                        "component": {
+                          "fallback": {
+                            "type": "Text",
+                            "schema": {}
+                          },
+                          "conditions": []
+                        },
+                        "title": "Status",
+                        "exportable": true
+                      }
+                    ],
+                    "dataKey": "id",
+                    "paginator": true,
+                    "rows": 5,
+                    "exportOptions": {
+                      "csvSeparator": ";",
+                      "fileName": "GetStates.ExportFileName",
+                      "formatter": "useCsvFormatter",
+                      "buttonIcon": "pi pi-download",
+                      "buttonLabel": "Export as CSV",
+                      "appendParameters": true,
+                      "parameterSeparator": "_",
+                      "parameterFormatter": "useLocaleParameterFormatter"
+                    }
+                  },
+                  "data": {
+                    "type": "Remote",
+                    "path": "form-sample/states",
+                    "query": {
+                      "type": "Computed",
+                      "composable": "useQuery",
+                      "args": []
+                    }
+                  },
+                  "binding": "something-changed"
+                }
+              }
+            },
+            "key": "get-states"
+          }
+        ]
+      }
+    ],
+    "path": "form-sample"
+  }
+}
