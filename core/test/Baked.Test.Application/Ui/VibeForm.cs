@@ -2,6 +2,7 @@ using Baked.Ui;
 
 namespace Baked.Test.Ui;
 
+// TODO - review this in form components
 public record VibeForm : IComponentSchema
 {
     public string? Label { get; set; }

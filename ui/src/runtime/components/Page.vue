@@ -20,12 +20,14 @@ const { public: { components } } = useRuntimeConfig();
 useHead({ title: components?.Page?.title });
 
 context.providePage(reactive({}));
+// TODO - review this in form components
 context.provideEvents(Events());
 
 const name = route.params?.baked === "" ? "index" : route.params?.baked.join("/");
 const descriptor = await pages.fetch(name);
 const classes = [asClasses("page"), asClasses(name, "b-route--")];
 
+// TODO - review this in form components
 function Events() {
   const listeners = {};
 

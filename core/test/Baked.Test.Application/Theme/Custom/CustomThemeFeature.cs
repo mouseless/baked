@@ -54,6 +54,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
                 when: c => c.Type.Is<CacheKey>() || c.Type.Is<RowCount>()
             );
 
+            // TODO - review this in form components
             // below this point is vibe coding
             builder.Conventions.AddTypeComponentConfiguration<ReportPage>(
                 component: (rp, c, cc) =>
@@ -123,6 +124,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
                 when: c => c.Parameter.ParameterType.Is<int>(),
                 component: c => C.InputNumber(c.Parameter.Name)
             );
+            // END OF TODO - review this in form components
         });
 
         configurator.ConfigureComponentExports(c =>

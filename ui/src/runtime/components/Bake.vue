@@ -40,6 +40,7 @@ const classes = [`b-component--${descriptor.type}`, ...asClasses(name)];
 
 context.provideData(data, "ParentData");
 
+// TODO - review this in form components
 if(descriptor.binding) {
   events.on(descriptor.binding, path, load);
 }
@@ -54,6 +55,7 @@ onMounted(async() => {
   await load();
 });
 
+// TODO - review this in form components
 onUnmounted(() => {
   if(descriptor.binding) {
     events.off(descriptor.binding, path);

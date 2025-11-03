@@ -2,6 +2,7 @@ using Baked.Authorization;
 
 namespace Baked.Test.Theme;
 
+// TODO - review this in form components
 [AllowAnonymous]
 public class FormSample(TimeProvider _timeProvider)
 {
