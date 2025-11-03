@@ -96,8 +96,8 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
                     var action = c.Method.GetAction();
 
                     vf.Label = c.Method.Name;
-                    vf.Endpoint.Path = action.GetRoute();
-                    vf.Endpoint.Method = action.Method.ToString().ToUpperInvariant();
+                    vf.Action.Path = action.GetRoute();
+                    vf.Action.Method = action.Method.ToString().ToUpperInvariant();
                     vf.SubmitEventName = "something-changed";
                 })
             );

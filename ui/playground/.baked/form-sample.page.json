@@ -25,7 +25,7 @@
                   "type": "VibeForm",
                   "schema": {
                     "label": "AddState",
-                    "endpoint": {
+                    "action": {
                       "path": "form-sample/states",
                       "method": "POST"
                     },
@@ -113,7 +113,7 @@
                   "type": "VibeForm",
                   "schema": {
                     "label": "ClearStates",
-                    "endpoint": {
+                    "action": {
                       "path": "form-sample/states",
                       "method": "DELETE"
                     },

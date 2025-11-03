@@ -44,7 +44,7 @@ function Events() {
     if(!listeners[name]) { return; }
 
     for(const id in listeners[name]) {
-      await listeners[name][id]();
+      listeners[name][id]();
     }
   }
 

@@ -9,10 +9,11 @@
       @changed="onChanged"
     />
     <Button
-      @click="submit"
-      :loading icon="pi pi-save"
+      icon="pi pi-save"
+      :loading
       :disabled="!ready"
       :label
+      @click="submit"
     />
   </div>
 </template>
@@ -30,7 +31,7 @@ const { schema } = defineProps({
   schema: { type: null, required: true }
 });
 
-const { label, endpoint, submitEventName, parameters } = schema;
+const { label, action, submitEventName, parameters } = schema;
 
 const events = context.injectEvents();
 const loading = ref(false);
@@ -42,17 +43,15 @@ function onReady(value) {
 }
 
 function onChanged({ values }) {
-  console.log(values);
-
   body.value = values;
 }
 
 async function submit() {
   loading.value = true;
-  await $fetch(endpoint.path,
+  await $fetch(action.path,
     {
       baseURL: composables.useDataFetcher.baseURL,
-      method: endpoint.method,
+      method: action.method,
       body: body.value
     }
   );
