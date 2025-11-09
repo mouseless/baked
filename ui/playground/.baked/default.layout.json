@@ -34,9 +34,9 @@
             "title": "Report"
           },
           {
-            "route": "/route-parameter-sample",
+            "route": "/route-parameters-sample",
             "icon": "pi pi-file-edit",
-            "title": "Route Parameter"
+            "title": "Route Parameters"
           },
           {
             "route": "/specs",
@@ -83,10 +83,10 @@
             "icon": "pi pi-file",
             "title": "Report"
           },
-          "/route-parameter-sample": {
-            "route": "/route-parameter-sample",
+          "/route-parameters-sample": {
+            "route": "/route-parameters-sample",
             "icon": "pi pi-file-edit",
-            "title": "Route Parameter"
+            "title": "Route Parameters"
           },
           "/specs": {
             "route": "/specs",
@@ -115,6 +115,12 @@
             "route": "/specs/query-parameters",
             "icon": "pi pi-microchip",
             "title": "Query Parameters",
+            "parentRoute": "/specs"
+          },
+          "/specs/route-parameters": {
+            "route": "/specs/route-parameters",
+            "icon": "pi pi-microchip",
+            "title": "Route Parameters",
             "parentRoute": "/specs"
           },
           "/specs/toast": {

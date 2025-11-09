@@ -6,8 +6,8 @@
         "form-sample/states",
         "form-sample/states",
         "form-sample/states",
-        "route-parameter-samples/{id}",
-        "route-parameter-samples/{id}/items",
+        "route-parameters-samples/{id}",
+        "route-parameters-samples/{id}/items",
         "cache-samples/scoped",
         "cache-samples/application",
         "authorization-samples/anonymous",
@@ -138,9 +138,9 @@
         {
           "type": "CardLink",
           "schema": {
-            "route": "/route-parameter-sample",
+            "route": "/route-parameters-sample",
             "icon": "pi pi-file-edit",
-            "title": "Route Parameter",
+            "title": "Route Parameters",
             "description": "Showcase route parameter support"
           }
         },

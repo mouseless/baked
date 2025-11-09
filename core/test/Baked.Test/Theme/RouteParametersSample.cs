@@ -3,9 +3,9 @@
 namespace Baked.Test.Theme;
 
 [AllowAnonymous]
-public class RouteParameterSample
+public class RouteParametersSample
 {
-    public RouteParameterSample With(string id)
+    public RouteParametersSample With(string id)
     {
         Id = id;
 

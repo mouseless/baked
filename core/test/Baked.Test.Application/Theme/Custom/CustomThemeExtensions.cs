@@ -16,7 +16,7 @@ public static class CustomThemeExtensions
             // TODO - review this in form components
             r => r.Root("/form-sample", "Form", "pi pi-file-edit") with { Page = p => p.Generated(d => d.From<FormSample>()), Description = "Vibe coding form components" },
             r => r.Root("/report-page-sample", "Report", "pi pi-file") with { Page = p => p.Generated(g => g.From<ReportPageSample>()), Description = "Showcases a report layout with tabs and data panels"},
-            r => r.Root("/route-parameter-sample", "Route Parameter", "pi pi-file-edit") with { Page = p => p.Generated(d => d.From<RouteParameterSample>()), Description = "Showcase route parameter support" },
+            r => r.Root("/route-parameters-sample", "Route Parameters", "pi pi-file-edit") with { Page = p => p.Generated(d => d.From<RouteParametersSample>()), Description = "Showcase route parameter support" },
             r => r.Root("/specs", "Specs", "pi pi-list-check") with { Page = p => p.Described(d => d.Menu()), Description = "All UI Specs are listed here" },
 
             // Behavior
@@ -24,6 +24,7 @@ public static class CustomThemeExtensions
             r => r.Child("/specs/custom-css", "Custom CSS", "/specs") with { Icon = "pi pi-microchip", Description = "Allow custom configuration to define custom css and more", Section = "Behavior" },
             r => r.Child("/specs/parameters", "Parameters", "/specs") with { Icon = "pi pi-microchip", Description = "Manage parameters through emits", Section = "Behavior" },
             r => r.Child("/specs/query-parameters", "Query Parameters", "/specs") with { Icon = "pi pi-microchip", Description = "Sync and manage parameters in query string", Section = "Behavior" },
+            r => r.Child("/specs/route-parameters", "Route Parameters", "/specs") with { Icon = "pi pi-microchip", Description = "Use and provide route parameters", Section = "Behavior" },
             r => r.Child("/specs/toast", "Toast", "/specs") with { Icon = "pi pi-microchip", Description = "Render alert messages", Section = "Behavior" },
 
             // Display

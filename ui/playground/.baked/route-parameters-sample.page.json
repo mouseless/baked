@@ -44,7 +44,7 @@
             },
             "data": {
               "type": "Remote",
-              "path": "route-parameter-samples/{id}/items",
+              "path": "route-parameters-samples/{id}/items",
               "query": {
                 "type": "Computed",
                 "composable": "useQuery",
@@ -56,6 +56,6 @@
         }
       }
     ],
-    "path": "route-parameter-sample"
+    "path": "route-parameters-sample"
   }
 }
