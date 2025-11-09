@@ -1,0 +1,61 @@
+{
+  "type": "ContainerPage",
+  "schema": {
+    "contents": [
+      {
+        "type": "DataPanel",
+        "schema": {
+          "title": {
+            "type": "Inline",
+            "value": "GetItems"
+          },
+          "localizeTitle": true,
+          "parameters": [],
+          "content": {
+            "type": "DataTable",
+            "schema": {
+              "columns": [
+                {
+                  "prop": "value",
+                  "component": {
+                    "fallback": {
+                      "type": "Text",
+                      "schema": {}
+                    },
+                    "conditions": []
+                  },
+                  "title": "Value",
+                  "exportable": true
+                }
+              ],
+              "dataKey": "id",
+              "paginator": true,
+              "rows": 5,
+              "exportOptions": {
+                "csvSeparator": ";",
+                "fileName": "GetItems.ExportFileName",
+                "formatter": "useCsvFormatter",
+                "buttonIcon": "pi pi-download",
+                "buttonLabel": "Export as CSV",
+                "appendParameters": true,
+                "parameterSeparator": "_",
+                "parameterFormatter": "useLocaleParameterFormatter"
+              }
+            },
+            "data": {
+              "type": "Remote",
+              "path": "route-parameter-samples/{id}/items",
+              "query": {
+                "type": "Computed",
+                "composable": "useQuery",
+                "args": []
+              }
+            },
+            "binding": "something-changed"
+          }
+        }
+      }
+    ],
+    "path": "route-parameter-sample"
+  }
+}

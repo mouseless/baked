@@ -54,6 +54,37 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
                 when: c => c.Type.Is<CacheKey>() || c.Type.Is<RowCount>()
             );
 
+            // Route parameters sample
+            builder.Conventions.AddMethodComponent(
+                when: c => c.Type.Is<RouteParameterSample>() && c.Method.DefaultOverload.ReturnsList(),
+                where: cc => cc.Path.EndsWith(nameof(Page), nameof(RouteParameterSample), nameof(ContainerPage), nameof(ContainerPage.Contents), "*"),
+                component: (c, cc) => MethodDataPanel(c.Method, cc)
+            );
+
+            builder.Conventions.AddTypeComponent(
+                when: c => c.Type.Is<RouteParameterSample>(),
+                where: cc => cc.Path.EndsWith(nameof(Page), nameof(RouteParameterSample)),
+                component: (c, cc) => TypeContainerPage(c.Type, cc)
+            );
+
+            builder.Conventions.AddTypeComponentConfiguration<ContainerPage>(
+                when: c => c.Type.Is<RouteParameterSample>(),
+                where: cc => true,
+                component: (container, c, cc) =>
+                {
+                    var contentContext = cc.Drill(nameof(ContainerPage), nameof(ContainerPage.Contents));
+
+                    foreach (var method in c.Type.GetMembers().Methods)
+                    {
+                        var component = method.GetComponent(contentContext.Drill(container.Schema.Contents.Count));
+                        if (component is null) { continue; }
+
+                        container.Schema.Contents.Add(component);
+                    }
+                },
+                order: int.MaxValue
+            );
+
             // TODO - review this in form components
             // below this point is vibe coding
             builder.Conventions.AddTypeComponentConfiguration<ReportPage>(

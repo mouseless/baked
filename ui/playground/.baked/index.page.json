@@ -57,6 +57,18 @@
             "component": {
               "type": "CardLink",
               "schema": {
+                "route": "/route-parameter-sample",
+                "icon": "pi pi-file-edit",
+                "title": "Route Parameter",
+                "description": "Showcase route parameter support"
+              }
+            }
+          },
+          {
+            "title": "",
+            "component": {
+              "type": "CardLink",
+              "schema": {
                 "route": "/specs",
                 "icon": "pi pi-list-check",
                 "title": "Specs",

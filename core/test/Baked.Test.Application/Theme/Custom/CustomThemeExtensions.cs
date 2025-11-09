@@ -16,6 +16,7 @@ public static class CustomThemeExtensions
             // TODO - review this in form components
             r => r.Root("/form-sample", "Form", "pi pi-file-edit") with { Page = p => p.Generated(d => d.From<FormSample>()), Description = "Vibe coding form components" },
             r => r.Root("/report-page-sample", "Report", "pi pi-file") with { Page = p => p.Generated(g => g.From<ReportPageSample>()), Description = "Showcases a report layout with tabs and data panels"},
+            r => r.Root("/route-parameter-sample", "Route Parameter", "pi pi-file-edit") with { Page = p => p.Generated(d => d.From<RouteParameterSample>()), Description = "Showcase route parameter support" },
             r => r.Root("/specs", "Specs", "pi pi-list-check") with { Page = p => p.Described(d => d.Menu()), Description = "All UI Specs are listed here" },
 
             // Behavior

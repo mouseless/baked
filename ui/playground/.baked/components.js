@@ -1,6 +1,7 @@
 import {
     CardLink,
 	Container,
+	ContainerPage,
 	DataPanel,
 	DataTable,
 	DefaultLayout,
@@ -34,6 +35,7 @@ import {
 export {
     CardLink,
 	Container,
+	ContainerPage,
 	DataPanel,
 	DataTable,
 	DefaultLayout,

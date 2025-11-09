@@ -6,6 +6,8 @@
         "form-sample/states",
         "form-sample/states",
         "form-sample/states",
+        "route-parameter-samples/{id}",
+        "route-parameter-samples/{id}/items",
         "cache-samples/scoped",
         "cache-samples/application",
         "authorization-samples/anonymous",
@@ -131,6 +133,15 @@
             "icon": "pi pi-file",
             "title": "Report",
             "description": "Showcases a report layout with tabs and data panels"
+          }
+        },
+        {
+          "type": "CardLink",
+          "schema": {
+            "route": "/route-parameter-sample",
+            "icon": "pi pi-file-edit",
+            "title": "Route Parameter",
+            "description": "Showcase route parameter support"
           }
         },
         {

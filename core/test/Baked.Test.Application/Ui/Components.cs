@@ -8,6 +8,10 @@ public static class Components
         Action<Container>? options = default
     ) => new(options.Apply(new()));
 
+    public static ComponentDescriptor<ContainerPage> ContainerPage(string path,
+        Action<ContainerPage>? options = default
+    ) => new(options.Apply(new(path)));
+
     public static ComponentDescriptor<Expected> Expected(string testId,
         Action<Expected>? options = default
     ) => new(options.Apply(new(testId)));
