@@ -8,9 +8,9 @@
       </span>
     </Message>
     <Button
-      as="a"
+      as="routerLink"
       label="/route-parameters-sample/42"
-      href="/route-parameters-sample/42"
+      to="/route-parameters-sample/42"
     />
   </UiSpec>
 </template>

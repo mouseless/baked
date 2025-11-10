@@ -177,5 +177,11 @@
         "name": "Turkish"
       }
     ]
-  }
+  },
+  "routePatterns": [
+    {
+      "name": "route-parameters-sample",
+      "value": "/:routeParts(route-parameters-sample)/:id"
+    }
+  ]
 }
