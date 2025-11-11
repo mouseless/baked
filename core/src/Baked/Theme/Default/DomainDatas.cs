@@ -1,4 +1,6 @@
-﻿using Baked.Domain.Model;
+﻿using Baked.Business;
+using Baked.Domain.Configuration;
+using Baked.Domain.Model;
 using Baked.Ui;
 
 using static Baked.Ui.Datas;
@@ -16,16 +18,19 @@ public static class DomainDatas
         return Inline(l(method.Name), options: options);
     }
 
-    public static RemoteData MethodRemote(MethodModel method,
+    public static RemoteData MethodRemote(MethodModelContext context,
         Action<RemoteData>? options = default
-    ) => Remote(method.GetAction().GetRoute(),
+    ) => Remote(context.Method.GetAction().GetRoute(),
         options: rd =>
         {
-            rd.Query = method.DefaultOverload.Parameters.Any()
+            rd.Query = context.Method.DefaultOverload.Parameters.Any()
                 ? Composite(options: cd => cd.Parts.AddRange([Computed(Composables.UseQuery), Injected()]))
                 : Computed(Composables.UseQuery);
 
-            rd.Params = Computed(Composables.UseParams);
+            if (context.Type.Has<LocatableAttribute>())
+            {
+                rd.Params = Computed(Composables.UseParams);
+            }
 
             options.Apply(rd);
         }

@@ -120,11 +120,6 @@
                       "type": "Computed",
                       "composable": "useQuery",
                       "args": []
-                    },
-                    "params": {
-                      "type": "Computed",
-                      "composable": "useParams",
-                      "args": []
                     }
                   }
                 }
@@ -158,11 +153,6 @@
                     "query": {
                       "type": "Computed",
                       "composable": "useQuery",
-                      "args": []
-                    },
-                    "params": {
-                      "type": "Computed",
-                      "composable": "useParams",
                       "args": []
                     }
                   }
@@ -198,11 +188,6 @@
                     "query": {
                       "type": "Computed",
                       "composable": "useQuery",
-                      "args": []
-                    },
-                    "params": {
-                      "type": "Computed",
-                      "composable": "useParams",
                       "args": []
                     }
                   }
@@ -360,11 +345,6 @@
                           "key": "Custom"
                         }
                       ]
-                    },
-                    "params": {
-                      "type": "Computed",
-                      "composable": "useParams",
-                      "args": []
                     }
                   }
                 }
@@ -508,11 +488,6 @@
                           "key": "Custom"
                         }
                       ]
-                    },
-                    "params": {
-                      "type": "Computed",
-                      "composable": "useParams",
-                      "args": []
                     }
                   }
                 }

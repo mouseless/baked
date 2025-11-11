@@ -174,11 +174,6 @@
                       "type": "Computed",
                       "composable": "useQuery",
                       "args": []
-                    },
-                    "params": {
-                      "type": "Computed",
-                      "composable": "useParams",
-                      "args": []
                     }
                   },
                   "binding": "something-changed"
