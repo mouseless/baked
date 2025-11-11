@@ -143,7 +143,7 @@ function Remote({ parentFetch }) {
     const query = await fetchQuery({ data, injectedData });
     const params = await fetchParams({ data, injectedData });
 
-    const path = buildRoute(data.path, params);
+    const path = buildPath(data.path, params);
 
     const options = { baseURL, headers: headers, query: query };
     if(data.attributes) {
@@ -158,14 +158,13 @@ function Remote({ parentFetch }) {
     return await $fetch(path, { ...options, retry: false });
   }
 
-  function buildRoute(route, params) {
+  function buildPath(path, params) {
     Object.entries(params).forEach(([key, value]) => {
-      if(route.includes("{"+key+"}")) {
-        route = route.replace("{"+key+"}", value);
-      }
+      // match either {key} or {anything:key}
+      const regex = new RegExp(`\\{(?:[\\w-]+:)?${key}\\}`, 'g');
+      path = path.replace(regex, value);
     });
-
-    return route;
+    return path;
   }
 
   async function fetchHeaders({ data, injectedData }) {

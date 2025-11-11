@@ -22,7 +22,7 @@ export default function() {
     return {
       ParentData: inject("__bake_injected_data:ParentData", null),
       Custom: inject("__bake_injected_data:Custom", null),
-      Route: inject("__bake_injected_data:Route", null)
+      Params: inject("__bake_injected_data:Params", null)
     };
   }
 
