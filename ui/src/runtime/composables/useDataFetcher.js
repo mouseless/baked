@@ -161,7 +161,7 @@ function Remote({ parentFetch }) {
   function buildPath(path, params) {
     Object.entries(params).forEach(([key, value]) => {
       // match either {key} or {anything:key}
-      const regex = new RegExp(`\\{(?:[\\w-]+:)?${key}\\}`, 'g');
+      const regex = new RegExp(`\\{(?:[\\w-]+:)?${key}\\}`, "g");
       path = path.replace(regex, value);
     });
     return path;
