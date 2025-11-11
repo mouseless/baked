@@ -1,6 +1,7 @@
 import { defineNuxtPlugin } from "#app";
 
 export default defineNuxtPlugin({
+  enforce: "pre",
   name: "baked",
   setup() {
     const bakedComposables = import.meta.glob("../composables/*");
@@ -21,6 +22,19 @@ export default defineNuxtPlugin({
         layouts: jsonFiles(layouts, ".baked/", ".layout.json")
       }
     };
+  },
+  hooks: {
+    "app:created"(app) {
+      const pages = app.$nuxt.$pages;
+
+      Object.keys(pages).forEach(key => {
+        app.$nuxt.$router.addRoute({
+          name: key,
+          path: keyToRoutePattern(key),
+          component: () => import("../components/Page.vue")
+        });
+      });
+    }
   }
 });
 
@@ -47,4 +61,12 @@ function jsonFiles(imports, trimStart, trimEnd) {
       return result;
     }, { })
   };
+}
+
+function keyToRoutePattern(key) {
+  if(key === "index") {
+    return "/";
+  }
+
+  return "/" + key.replace(/\[([^\]]+)\]/g, ":$1([a-zA-Z0-9-]+)");
 }

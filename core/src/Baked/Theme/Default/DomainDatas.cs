@@ -25,6 +25,8 @@ public static class DomainDatas
                 ? Composite(options: cd => cd.Parts.AddRange([Computed(Composables.UseQuery), Injected()]))
                 : Computed(Composables.UseQuery);
 
+            rd.Params = Computed(Composables.UseParams);
+
             options.Apply(rd);
         }
     );

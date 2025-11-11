@@ -52,6 +52,11 @@
                       "composable": "useQuery",
                       "args": []
                     },
+                    "params": {
+                      "type": "Computed",
+                      "composable": "useParams",
+                      "args": []
+                    },
                     "attributes": {
                       "client-cache": "user"
                     }
@@ -81,6 +86,11 @@
                     "query": {
                       "type": "Computed",
                       "composable": "useQuery",
+                      "args": []
+                    },
+                    "params": {
+                      "type": "Computed",
+                      "composable": "useParams",
                       "args": []
                     },
                     "attributes": {

@@ -7,14 +7,14 @@
 </template>
 <script setup>
 import { reactive } from "vue";
-import { useRuntimeConfig } from "#app";
-import { useBakedRoute, useContext, useFormat, useHead, usePages } from "#imports";
+import { useRoute, useRuntimeConfig } from "#app";
+import { useContext, useFormat, useHead, usePages } from "#imports";
 import { Bake } from "#components";
 
 const context = useContext();
 const { asClasses } = useFormat();
 const pages = usePages();
-const bakedRoute = useBakedRoute();
+const route = useRoute();
 const { public: { components } } = useRuntimeConfig();
 
 useHead({ title: components?.Page?.title });
@@ -23,9 +23,12 @@ context.providePage(reactive({}));
 // TODO - review this in form components
 context.provideEvents(Events());
 
-const name = bakedRoute.path === undefined ? "index" : bakedRoute.path;
+const name = route.matched[0].name;
+const className = name.replace(/\[([^\]]+)\]/g, "$1");
+context.provideData({ ... route.params }, "Route");
+
 const descriptor = await pages.fetch(name);
-const classes = [asClasses("page"), asClasses(name, "b-route--")];
+const classes = [asClasses("page"), asClasses(className, "b-route--")];
 
 // TODO - review this in form components
 function Events() {

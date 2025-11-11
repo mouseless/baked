@@ -168,10 +168,5 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
             pages.Add(C.LoginPage("login", options: lp => lp.Layout = "modal"));
             pages.Add(C.RoutedPage("page/with/route/pageWithRoute", lp => lp.Layout = "default"));
         });
-
-        configurator.ConfigureAppDescriptor(app =>
-        {
-            app.RoutePatterns.Add(new("route-parameters-sample", "/:routeParts(route-parameters-sample)/:id"));
-        });
     }
 }

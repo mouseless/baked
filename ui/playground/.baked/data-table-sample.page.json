@@ -225,6 +225,11 @@
                           "key": "Custom"
                         }
                       ]
+                    },
+                    "params": {
+                      "type": "Computed",
+                      "composable": "useParams",
+                      "args": []
                     }
                   }
                 }

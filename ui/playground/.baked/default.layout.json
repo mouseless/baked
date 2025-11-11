@@ -34,11 +34,6 @@
             "title": "Report"
           },
           {
-            "route": "/route-parameters-sample",
-            "icon": "pi pi-file-edit",
-            "title": "Route Parameters"
-          },
-          {
             "route": "/specs",
             "icon": "pi pi-list-check",
             "title": "Specs"
@@ -83,10 +78,10 @@
             "icon": "pi pi-file",
             "title": "Report"
           },
-          "/route-parameters-sample": {
-            "route": "/route-parameters-sample",
-            "icon": "pi pi-file-edit",
-            "title": "Route Parameters"
+          "/route-parameters-sample/[id]": {
+            "route": "/route-parameters-sample/[id]",
+            "title": "Route Parameters",
+            "parentRoute": "pi pi-file-edit"
           },
           "/specs": {
             "route": "/specs",

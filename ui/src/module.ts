@@ -147,17 +147,6 @@ export default defineNuxtModule<ModuleOptions>({
     addPlugin(resolver.resolve("./runtime/plugins/primeVue"));
     addPlugin(resolver.resolve("./runtime/plugins/fetch"), {});
 
-    // route patterns
-    _nuxt.hook("pages:extend", pages => {
-      for(const routePattern of app?.routePatterns ?? []) {
-        pages.push({
-          name: routePattern.name,
-          path: routePattern.value,
-          file: resolver.resolve("./runtime/components/Page.vue")
-        });
-      }
-    });
-
     // module overrides
     _nuxt.options.vite.optimizeDeps ||= {};
     _nuxt.options.vite.optimizeDeps.noDiscovery = true;

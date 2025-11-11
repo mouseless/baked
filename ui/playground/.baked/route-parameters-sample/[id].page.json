@@ -49,6 +49,11 @@
                 "type": "Computed",
                 "composable": "useQuery",
                 "args": []
+              },
+              "params": {
+                "type": "Computed",
+                "composable": "useParams",
+                "args": []
               }
             },
             "binding": "something-changed"
@@ -56,6 +61,6 @@
         }
       }
     ],
-    "path": "route-parameters-sample"
+    "path": "route-parameters-sample/[id]"
   }
 }
