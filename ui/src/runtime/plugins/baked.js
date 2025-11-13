@@ -1,7 +1,6 @@
 import { defineNuxtPlugin } from "#app";
 
 export default defineNuxtPlugin({
-  enforce: "pre",
   name: "baked",
   setup() {
     const bakedComposables = import.meta.glob("../composables/*");
