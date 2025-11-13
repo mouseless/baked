@@ -57,7 +57,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 order: RestApiLayer.MaxConventionOrder + 10
             );
             builder.Conventions.AddMethodSchema(
-                schema: c => MethodRemote(c),
+                schema: c => MethodRemote(c.Method, type: c.Type),
                 when: c => c.Method.Has<ActionModelAttribute>()
             );
 
