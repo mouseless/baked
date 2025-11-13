@@ -24,8 +24,8 @@ public static class DomainDatas
         options: rd =>
         {
             rd.Query = method.DefaultOverload.Parameters.Any()
-                ? Composite(options: cd => cd.Parts.AddRange([Computed(Composables.UseRoute, options: o => o.Args.Add("params")), Injected()]))
-                : Computed(Composables.UseRoute, options: o => o.Args.Add("params"));
+                ? Composite(options: cd => cd.Parts.AddRange([Computed(Composables.UseRoute, options: o => o.Args.Add("query")), Injected()]))
+                : Computed(Composables.UseRoute, options: o => o.Args.Add("query"));
 
             if (type is not null && type.Has<LocatableAttribute>())
             {
