@@ -9,8 +9,18 @@
     </Message>
     <Button
       as="routerLink"
-      label="/route-parameters-sample/42"
-      to="/route-parameters-sample/42"
+      label="/page/with/route/pageWithRoute"
+      to="/page/with/route/pageWithRoute"
+    />
+    <Button
+      as="routerLink"
+      label="/parent/a6db0515-a885-4cf6-8343-c2c4a0510392"
+      to="/parent/a6db0515-a885-4cf6-8343-c2c4a0510392"
+    />
+    <Button
+      as="routerLink"
+      label="/parent/1/children/2"
+      to="/parent/1/children/2"
     />
   </UiSpec>
 </template>

@@ -172,8 +172,10 @@
                     "path": "form-sample/states",
                     "query": {
                       "type": "Computed",
-                      "composable": "useQuery",
-                      "args": []
+                      "composable": "useNuxtRoute",
+                      "args": [
+                        "params"
+                      ]
                     }
                   },
                   "binding": "something-changed"

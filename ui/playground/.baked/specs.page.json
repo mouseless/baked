@@ -71,14 +71,14 @@
             }
           },
           {
-            "title": "Route Parameters",
+            "title": "Routing",
             "component": {
               "type": "CardLink",
               "schema": {
-                "route": "/specs/route-parameters",
+                "route": "/specs/routing",
                 "icon": "pi pi-microchip",
-                "title": "Route Parameters",
-                "description": "Use and provide route parameters"
+                "title": "Routing",
+                "description": "Use page descriptors as route template and extract parameters"
               }
             }
           },

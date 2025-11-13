@@ -47,13 +47,17 @@
               "path": "route-parameters-samples/{id}/items",
               "query": {
                 "type": "Computed",
-                "composable": "useQuery",
-                "args": []
+                "composable": "useNuxtRoute",
+                "args": [
+                  "params"
+                ]
               },
               "params": {
                 "type": "Computed",
-                "composable": "useParams",
-                "args": []
+                "composable": "useNuxtRoute",
+                "args": [
+                  "params"
+                ]
               }
             },
             "binding": "something-changed"

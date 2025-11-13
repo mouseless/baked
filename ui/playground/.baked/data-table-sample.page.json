@@ -217,8 +217,10 @@
                       "parts": [
                         {
                           "type": "Computed",
-                          "composable": "useQuery",
-                          "args": []
+                          "composable": "useNuxtRoute",
+                          "args": [
+                            "params"
+                          ]
                         },
                         {
                           "type": "Injected",

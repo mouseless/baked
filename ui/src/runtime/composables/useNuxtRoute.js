@@ -3,8 +3,8 @@ import { useRoute } from "#app";
 export default function() {
   const route = useRoute();
 
-  function compute() {
-    return route;
+  function compute(property) {
+    return property ? route[property] : route;
   }
 
   return {

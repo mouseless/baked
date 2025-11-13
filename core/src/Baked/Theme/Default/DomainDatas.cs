@@ -24,12 +24,12 @@ public static class DomainDatas
         options: rd =>
         {
             rd.Query = context.Method.DefaultOverload.Parameters.Any()
-                ? Composite(options: cd => cd.Parts.AddRange([Computed(Composables.UseQuery), Injected()]))
-                : Computed(Composables.UseQuery);
+                ? Composite(options: cd => cd.Parts.AddRange([Computed(Composables.UseRoute, options: o => o.Args.Add("params")), Injected()]))
+                : Computed(Composables.UseRoute, options: o => o.Args.Add("params"));
 
             if (context.Type.Has<LocatableAttribute>())
             {
-                rd.Params = Computed(Composables.UseParams);
+                rd.Params = Computed(Composables.UseRoute, options: o => o.Args.Add("params"));
             }
 
             options.Apply(rd);

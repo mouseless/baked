@@ -167,6 +167,8 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
         {
             pages.Add(C.LoginPage("login", options: lp => lp.Layout = "modal"));
             pages.Add(C.RoutedPage("page/with/route/pageWithRoute", lp => lp.Layout = "default"));
+            pages.Add(C.RoutedPage("parent/[id]", lp => lp.Layout = "default"));
+            pages.Add(C.RoutedPage("parent/[parentId]/children/[childId]", lp => lp.Layout = "default"));
         });
     }
 }

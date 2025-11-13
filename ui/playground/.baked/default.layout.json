@@ -111,10 +111,10 @@
             "title": "Query Parameters",
             "parentRoute": "/specs"
           },
-          "/specs/route-parameters": {
-            "route": "/specs/route-parameters",
+          "/specs/routing": {
+            "route": "/specs/routing",
             "icon": "pi pi-microchip",
-            "title": "Route Parameters",
+            "title": "Routing",
             "parentRoute": "/specs"
           },
           "/specs/toast": {

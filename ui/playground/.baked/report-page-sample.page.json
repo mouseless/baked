@@ -118,8 +118,10 @@
                     },
                     "query": {
                       "type": "Computed",
-                      "composable": "useQuery",
-                      "args": []
+                      "composable": "useNuxtRoute",
+                      "args": [
+                        "params"
+                      ]
                     }
                   }
                 }
@@ -152,8 +154,10 @@
                     },
                     "query": {
                       "type": "Computed",
-                      "composable": "useQuery",
-                      "args": []
+                      "composable": "useNuxtRoute",
+                      "args": [
+                        "params"
+                      ]
                     }
                   }
                 }
@@ -187,8 +191,10 @@
                     },
                     "query": {
                       "type": "Computed",
-                      "composable": "useQuery",
-                      "args": []
+                      "composable": "useNuxtRoute",
+                      "args": [
+                        "params"
+                      ]
                     }
                   }
                 }
@@ -337,8 +343,10 @@
                       "parts": [
                         {
                           "type": "Computed",
-                          "composable": "useQuery",
-                          "args": []
+                          "composable": "useNuxtRoute",
+                          "args": [
+                            "params"
+                          ]
                         },
                         {
                           "type": "Injected",
@@ -480,8 +488,10 @@
                       "parts": [
                         {
                           "type": "Computed",
-                          "composable": "useQuery",
-                          "args": []
+                          "composable": "useNuxtRoute",
+                          "args": [
+                            "params"
+                          ]
                         },
                         {
                           "type": "Injected",

@@ -49,8 +49,10 @@
                     "path": "cache-samples/scoped",
                     "query": {
                       "type": "Computed",
-                      "composable": "useQuery",
-                      "args": []
+                      "composable": "useNuxtRoute",
+                      "args": [
+                        "params"
+                      ]
                     },
                     "attributes": {
                       "client-cache": "user"
@@ -80,8 +82,10 @@
                     "path": "cache-samples/application",
                     "query": {
                       "type": "Computed",
-                      "composable": "useQuery",
-                      "args": []
+                      "composable": "useNuxtRoute",
+                      "args": [
+                        "params"
+                      ]
                     },
                     "attributes": {
                       "client-cache": "application"
