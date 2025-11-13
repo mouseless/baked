@@ -6,6 +6,8 @@
         "form-sample/states",
         "form-sample/states",
         "form-sample/states",
+        "route-parameters-samples/{id}",
+        "route-parameters-samples/{id}/items",
         "cache-samples/scoped",
         "cache-samples/application",
         "authorization-samples/anonymous",

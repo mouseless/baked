@@ -78,6 +78,10 @@
             "icon": "pi pi-file",
             "title": "Report"
           },
+          "/route-parameters-sample/[id]": {
+            "route": "/route-parameters-sample/[id]",
+            "title": "Route Parameters"
+          },
           "/specs": {
             "route": "/specs",
             "icon": "pi pi-list-check",
@@ -105,6 +109,12 @@
             "route": "/specs/query-parameters",
             "icon": "pi pi-microchip",
             "title": "Query Parameters",
+            "parentRoute": "/specs"
+          },
+          "/specs/routing": {
+            "route": "/specs/routing",
+            "icon": "pi pi-microchip",
+            "title": "Routing",
             "parentRoute": "/specs"
           },
           "/specs/toast": {

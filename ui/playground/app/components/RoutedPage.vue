@@ -1,6 +1,7 @@
 <template>
   <Panel header="Page with route">
-    {{ $route.fullPath }}
+    <p data-testid="fullPath">{{ $route.fullPath }}</p>
+    <p data-testid="params">{{ $route.params }}</p>
   </Panel>
 </template>
 <script setup>

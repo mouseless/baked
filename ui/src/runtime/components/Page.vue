@@ -23,9 +23,11 @@ context.providePage(reactive({}));
 // TODO - review this in form components
 context.provideEvents(Events());
 
-const name = route.params?.baked === "" ? "index" : route.params?.baked.join("/");
+const name = route.matched[0].name;
+const className = name.replace("[", "").replace("]", "");
+
 const descriptor = await pages.fetch(name);
-const classes = [asClasses("page"), asClasses(name, "b-route--")];
+const classes = [asClasses("page"), asClasses(className, "b-route--")];
 
 // TODO - review this in form components
 function Events() {

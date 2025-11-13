@@ -1,0 +1,7 @@
+{
+  "type": "RoutedPage",
+  "schema": {
+    "path": "parent/[parentId]/children/[childId]",
+    "layout": "default"
+  }
+}

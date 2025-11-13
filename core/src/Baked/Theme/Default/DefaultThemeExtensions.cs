@@ -32,7 +32,7 @@ public static class DefaultThemeExtensions
             {
                 return B.MenuPage(context.Route.Name,
                     links: context.Sitemap
-                        .Where(smp => !smp.Index && smp.SideMenu)
+                        .Where(smp => smp.SideMenu && !smp.Index)
                         .Select(smp => smp.AsCardLink(l))
                 );
             }
