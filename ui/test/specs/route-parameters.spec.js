@@ -1,7 +1,6 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
-import primevue from "../utils/locators/primevue";
 
-test.beforeEach(async({ goto, page }) => {
+test.beforeEach(async({ page }) => {
   await page.route("*/**/route-parameters-samples/*/items", async route => {
     const url = new URL(route.request().url());
     const parts = url.pathname.split("/");
@@ -10,27 +9,19 @@ test.beforeEach(async({ goto, page }) => {
     const json = [{ id: 1, value: `${idParameter}-1` }];
     await route.fulfill({ json });
   });
-
-  await goto("/specs/route-parameters", { waitUntil: "hydration" });
 });
 
 test.describe("Base", () =>{
 
-  test("parse route and find correct page descriptor", async({ page }) => {
-    const component = page.getByTestId("test");
-
-    await component.locator(primevue.button.base).click();
-    await page.waitForLoadState("networkidle");
+  test("parse route and find correct page descriptor", async({ goto, page }) => {
+    await goto("/route-parameters-sample/42", { waitUntil: "hydration" });
 
     await expect(page.getByText(404).nth(0)).not.toBeAttached();
     await expect(page.getByText("Application Error").nth(0)).not.toBeAttached();
   });
 
-  test("provide route parameters", async({ page }) => {
-    const component = page.getByTestId("test");
-
-    await component.locator(primevue.button.base).click();
-    await page.waitForLoadState("networkidle");
+  test("uses provided route parameters when fetching data", async({ page }) => {
+    await goto("/route-parameters-sample/42", { waitUntil: "hydration" });
 
     const cells = page.locator("td");
     const cellNo = (x, y) => (x - 1) * 5 + y - 1;
