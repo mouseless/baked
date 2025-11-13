@@ -69,5 +69,5 @@ function keyToRoutePattern(key) {
 
   // AI GEN
   // convert route part 'route/[id]' to 'route/:id'
-  return `/${key.replace(/\[([^\]]+)\]/g, ":$1([a-zA-Z0-9-]+)")}` ;
+  return `/${key.replace(/\[([^\]]+)\]/g, ":$1([a-zA-Z0-9-]+)")}`;
 }

@@ -16,6 +16,4 @@ public class RouteParametersSample
 
     public List<Item> GetItems() =>
         [.. Enumerable.Repeat(0, 10).Select((_, index) => new Item($"{index}", $"{Id} - {index}"))];
-
-    public record Item(string Id, string Value);
 }
