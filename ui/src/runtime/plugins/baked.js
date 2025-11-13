@@ -68,5 +68,7 @@ function keyToRoutePattern(key) {
     return "/";
   }
 
+  // convert route part 'route/[id]' to 'route/:id'
+  // ai genereted regex
   return "/" + key.replace(/\[([^\]]+)\]/g, ":$1([a-zA-Z0-9-]+)");
 }

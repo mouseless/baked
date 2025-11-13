@@ -17,7 +17,6 @@ public record Route(
     public bool Index { get; set; } = Path == "/";
     public string Name { get; set; } = Path == "/" ? "index" : Path.TrimStart('/');
     public string? ParentPath { get; set; }
-    public bool Parameterized { get; set; } = false;
     public string? Section { get; set; }
     public bool SideMenu { get; set; }
     public string? SideMenuTitle { get; set; } = Title;

@@ -80,8 +80,7 @@
           },
           "/route-parameters-sample/[id]": {
             "route": "/route-parameters-sample/[id]",
-            "title": "Route Parameters",
-            "parentRoute": "pi pi-file-edit"
+            "title": "Route Parameters"
           },
           "/specs": {
             "route": "/specs",

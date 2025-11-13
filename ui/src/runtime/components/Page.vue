@@ -24,7 +24,7 @@ context.providePage(reactive({}));
 context.provideEvents(Events());
 
 const name = route.matched[0].name;
-const className = name.replace(/\[([^\]]+)\]/g, "$1");
+const className = name.replace("[", "").replace("]", "");
 context.provideData({ ... route.params }, "Params");
 
 const descriptor = await pages.fetch(name);
