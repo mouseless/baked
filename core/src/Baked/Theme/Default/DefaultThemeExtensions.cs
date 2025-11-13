@@ -32,7 +32,7 @@ public static class DefaultThemeExtensions
             {
                 return B.MenuPage(context.Route.Name,
                     links: context.Sitemap
-                        .Where(smp => !smp.Index && smp.SideMenu)
+                        .Where(smp => !smp.Index && !smp.Parameterized && smp.SideMenu)
                         .Select(smp => smp.AsCardLink(l))
                 );
             }
@@ -42,7 +42,7 @@ public static class DefaultThemeExtensions
             {
                 return B.MenuPage(context.Route.Name,
                     links: context.Sitemap
-                        .Where(r => r.ParentPath == context.Route.Path)
+                        .Where(r => r.ParentPath == context.Route.Path && !r.Parameterized)
                         .Select(r => r.AsCardLink(l)),
                     options: mp =>
                     {
@@ -69,7 +69,7 @@ public static class DefaultThemeExtensions
                             {
                                 mps.Title = l(g.Key);
                                 mps.Links.AddRange(g
-                                    .Where(r => r.ParentPath == context.Route.Path)
+                                    .Where(r => r.ParentPath == context.Route.Path && !r.Parameterized)
                                     .Select(r => B.Filterable(r.AsCardLink(l), options: f => f.Title = l(r.Title)))
                                 );
                             }
