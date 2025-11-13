@@ -20,7 +20,7 @@ test.describe("Base", () =>{
     await expect(page.getByText("Application Error").nth(0)).not.toBeAttached();
   });
 
-  test("uses provided route parameters when fetching data", async({ page }) => {
+  test("uses provided route parameters when fetching data", async({ goto, page }) => {
     await goto("/route-parameters-sample/42", { waitUntil: "hydration" });
 
     const cells = page.locator("td");
