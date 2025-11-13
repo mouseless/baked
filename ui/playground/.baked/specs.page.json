@@ -71,6 +71,18 @@
             }
           },
           {
+            "title": "Routing",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/routing",
+                "icon": "pi pi-microchip",
+                "title": "Routing",
+                "description": "Use page descriptors as route template and extract parameters"
+              }
+            }
+          },
+          {
             "title": "Toast",
             "component": {
               "type": "CardLink",

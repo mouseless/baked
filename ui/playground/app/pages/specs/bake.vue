@@ -41,12 +41,19 @@ const variants = [
           { type: "Inline", value: { inline: "inline" } },
           {
             type: "Remote",
-            path: "/report-page-sample/wide",
+            path: "/report-page-sample/wide/{id}",
             query: {
               type: "Composite", // merges ["RequiredWithDefault1"] and ["Required1"]
               parts: [
                 { type: "Inline", value: { requiredWithDefault: "RequiredWithDefault1" } }, // provides "RequiredWithDefault1"
                 { type: "Inline", value: { required: "Required1" } } // provides "Required1"
+              ]
+            },
+            params: {
+              type: "Composite",
+              parts: [
+                { type: "Inline", value: { id: 15 } },
+                { type: "Inline", value: { id: "7b6b67bb-30b5-423e-81b4-a2a0cd59b7f9" } }
               ]
             },
             headers: {

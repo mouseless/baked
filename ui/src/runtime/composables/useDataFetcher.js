@@ -141,6 +141,9 @@ function Remote({ parentFetch }) {
     const baseURL = composables.useDataFetcher.baseURL;
     const headers = await fetchHeaders({ data, injectedData });
     const query = await fetchQuery({ data, injectedData });
+    const params = await fetchParams({ data, injectedData });
+
+    const path = buildPath(data.path, params);
 
     const options = { baseURL, headers: headers, query: query };
     if(data.attributes) {
@@ -149,10 +152,20 @@ function Remote({ parentFetch }) {
     const retry = composables?.useDataFetcher?.retry ?? false;
 
     if(retry) {
-      return await fetchWithRetry(data.path, options, retry);
+      return await fetchWithRetry(path, options, retry);
     }
 
-    return await $fetch(data.path, { ...options, retry: false });
+    return await $fetch(path, { ...options, retry: false });
+  }
+
+  function buildPath(path, params) {
+    Object.entries(params).forEach(([key, value]) => {
+      // AI-GEN
+      // match either {key} or {anything:key}
+      const regex = new RegExp(`\\{(?:[\\w-]+:)?${key}\\}`, "g");
+      path = path.replace(regex, value);
+    });
+    return path;
   }
 
   async function fetchHeaders({ data, injectedData }) {
@@ -164,6 +177,12 @@ function Remote({ parentFetch }) {
   async function fetchQuery({ data, injectedData }) {
     return data.query
       ? unref.deepUnref(await parentFetch({ data: data.query, injectedData }))
+      : { };
+  }
+
+  async function fetchParams({ data, injectedData }) {
+    return data.params
+      ? unref.deepUnref(await parentFetch({ data: data.params, injectedData }))
       : { };
   }
 

@@ -1,6 +1,7 @@
 import {
     CardLink,
 	Container,
+	ContainerPage,
 	DataPanel,
 	DataTable,
 	DefaultLayout,
@@ -27,12 +28,14 @@ import {
 	Select,
 	SelectButton,
 	SideMenu,
-	Text
+	Text,
+	VibeForm
 } from "#components";
 
 export {
     CardLink,
 	Container,
+	ContainerPage,
 	DataPanel,
 	DataTable,
 	DefaultLayout,
@@ -59,5 +62,6 @@ export {
 	Select,
 	SelectButton,
 	SideMenu,
-	Text
+	Text,
+	VibeForm
 }

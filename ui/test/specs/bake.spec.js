@@ -4,6 +4,9 @@ test.beforeEach(async({ goto, page }) => {
   await page.route("*/**/report/first", async route => {
     await route.fulfill("fake-response");
   });
+  await page.route("*/**/report-page-sample/wide/*", async route => {
+    await route.fulfill("fake-response");
+  });
   await goto("/specs/bake", { waitUntil: "hydration" });
 });
 
@@ -59,5 +62,12 @@ test.describe("Data Descriptor", () => {
     await expect(component.getByTestId("test")).toHaveText(/computed/);
     await expect(component.getByTestId("test")).toHaveText(/RequiredWithDefault1/);
     await expect(component.getByTestId("test")).toHaveText(/Required1/);
+  });
+
+  test("builds path with given params data", async({ page }) => {
+    const requestPromise = page.waitForRequest(req => req.url().includes("/report-page-sample"));
+
+    const request = await requestPromise;
+    expect(request.url()).toContain("/report-page-sample/wide/7b6b67bb-30b5-423e-81b4-a2a0cd59b7f9");
   });
 });

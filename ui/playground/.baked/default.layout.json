@@ -24,6 +24,11 @@
             "title": "Data Table"
           },
           {
+            "route": "/form-sample",
+            "icon": "pi pi-file-edit",
+            "title": "Form"
+          },
+          {
             "route": "/report-page-sample",
             "icon": "pi pi-file",
             "title": "Report"
@@ -63,10 +68,19 @@
             "icon": "pi pi-table",
             "title": "Data Table"
           },
+          "/form-sample": {
+            "route": "/form-sample",
+            "icon": "pi pi-file-edit",
+            "title": "Form"
+          },
           "/report-page-sample": {
             "route": "/report-page-sample",
             "icon": "pi pi-file",
             "title": "Report"
+          },
+          "/route-parameters-sample/[id]": {
+            "route": "/route-parameters-sample/[id]",
+            "title": "Route Parameters"
           },
           "/specs": {
             "route": "/specs",
@@ -95,6 +109,12 @@
             "route": "/specs/query-parameters",
             "icon": "pi pi-microchip",
             "title": "Query Parameters",
+            "parentRoute": "/specs"
+          },
+          "/specs/routing": {
+            "route": "/specs/routing",
+            "icon": "pi pi-microchip",
+            "title": "Routing",
             "parentRoute": "/specs"
           },
           "/specs/toast": {

@@ -7,6 +7,7 @@
       :name="`parameters/${parameter.name}`"
       :descriptor="parameter.component"
       class="max-md:w-full"
+      :class="parameterClass"
     />
   </div>
 </template>
@@ -19,7 +20,8 @@ const dataFetcher = useDataFetcher();
 const context = useContext();
 
 const { parameters } = defineProps({
-  parameters: { type: Array, required: true }
+  parameters: { type: Array, required: true },
+  parameterClass: { type: String, default: "" }
 });
 const emit = defineEmits(["ready", "changed"]);
 
