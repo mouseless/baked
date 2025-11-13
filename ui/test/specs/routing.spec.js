@@ -7,7 +7,7 @@ test.describe("Base", () => {
 
     await expect(page.getByText(404).nth(0)).not.toBeAttached();
     await expect(page.getByText("Application Error").nth(0)).not.toBeAttached();
-    await expect(page.getByTestId(primevue.panel.header)).toHaveText("Page with route");
+    await expect(page.getByTestId(primevue.panel.title)).toHaveText("Page with route");
   });
 
   test("parse dynamic route and extract route parameters", async({ goto, page }) => {

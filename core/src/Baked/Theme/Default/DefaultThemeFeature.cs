@@ -1,4 +1,5 @@
 ﻿using Baked.Architecture;
+using Baked.Business;
 using Baked.RestApi;
 using Baked.RestApi.Model;
 using Baked.Runtime;
@@ -57,10 +58,13 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 order: RestApiLayer.MaxConventionOrder + 10
             );
             builder.Conventions.AddMethodSchema(
-                schema: c => MethodRemote(c.Method, type: c.Type),
+                schema: c => MethodRemote(c.Method),
                 when: c => c.Method.Has<ActionModelAttribute>()
             );
-
+            builder.Conventions.AddMethodSchemaConfiguration<RemoteData>(
+                when: c => c.Type.Has<LocatableAttribute>(),
+                schema: rd => rd.Params = Computed(Composables.UseRoute, options: o => o.Args.Add("params"))
+            );
             // Parameter Defaults
             builder.Conventions.AddParameterSchema(
                 schema: (c, cc) => ParameterParameter(c.Parameter, cc),

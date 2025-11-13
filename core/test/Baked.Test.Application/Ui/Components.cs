@@ -8,6 +8,7 @@ public static class Components
         Action<Container>? options = default
     ) => new(options.Apply(new()));
 
+    // TODO - review this in form components
     public static ComponentDescriptor<ContainerPage> ContainerPage(string path,
         Action<ContainerPage>? options = default
     ) => new(options.Apply(new(path)));
