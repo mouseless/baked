@@ -1,5 +1,5 @@
 <template>
-  <div class="container-page flex gap-4">
+  <div class="flex gap-4 [&>*]:w-full">
     <Bake
       v-for="(content, i) in contents"
       :key="`contents/${i}`"

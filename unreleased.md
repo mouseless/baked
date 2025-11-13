@@ -5,10 +5,6 @@
 - Dynamic routing is now supported and can be used when;
   - navigating through pages
   - fetching data from backend
-  
-## Improvements
-
-- `Parameters` now accept parameter class attribute for each parameter
 
 ## Breaking Changes
 
@@ -27,3 +23,7 @@
   data = Computed(Composables.UseRoute, options: o => o.Args.Add("params"))
 }
 ```
+  
+## Improvements
+
+- `Parameters` now accept parameter class attribute for each parameter
