@@ -25,7 +25,6 @@ context.provideEvents(Events());
 
 const name = route.matched[0].name;
 const className = name.replace("[", "").replace("]", "");
-context.provideData({ ... route.params }, "Params");
 
 const descriptor = await pages.fetch(name);
 const classes = [asClasses("page"), asClasses(className, "b-route--")];

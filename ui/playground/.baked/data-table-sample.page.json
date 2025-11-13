@@ -219,7 +219,7 @@
                           "type": "Computed",
                           "composable": "useNuxtRoute",
                           "args": [
-                            "params"
+                            "query"
                           ]
                         },
                         {
