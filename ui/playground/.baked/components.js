@@ -1,5 +1,6 @@
 import {
-    CardLink,
+    Button,
+	CardLink,
 	Container,
 	ContainerPage,
 	DataPanel,
@@ -33,7 +34,8 @@ import {
 } from "#components";
 
 export {
-    CardLink,
+    Button,
+	CardLink,
 	Container,
 	ContainerPage,
 	DataPanel,
