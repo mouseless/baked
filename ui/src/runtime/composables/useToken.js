@@ -59,6 +59,10 @@ export default function() {
 
   function onChanged(callback) {
     globalThis.addEventListener("token-changed", callback);
+
+    return () => {
+      globalThis.removeEventListener("token-changed", callback);
+    };
   }
 
   return {
