@@ -5,6 +5,7 @@
 - Dynamic routing is now supported and can be used when;
   - navigating through pages
   - fetching data from backend
+- `Button` component is now added  
 
 ## Breaking Changes
 
