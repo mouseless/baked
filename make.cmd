@@ -37,9 +37,15 @@ goto end
 
 :install
 echo Installing dependencies...
-cd docs\.theme && npm i && cd ..\..
-cd ui && npm i && cd ..
-cd core\test\Baked.Test.LoadTest && npm i && cd ..\..\..
+cd docs\.theme
+call npm i
+cd ..\..
+cd ui
+call npm i
+cd ..
+cd core\test\Baked.Test.LoadTest
+call npm i
+cd ..\..\..
 goto end
 
 :build
