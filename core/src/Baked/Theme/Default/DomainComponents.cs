@@ -66,6 +66,58 @@ public static class DomainComponents
         );
     }
 
+    public static ComponentDescriptor<DataTable> MethodDataTable(MethodModel method, ComponentContext context,
+    Action<DataTable>? options = default
+)
+    {
+        context = context.Drill(nameof(DataTable));
+        var (_, l) = context;
+
+        return B.DataTable(
+            options: dt =>
+            {
+                dt.ExportOptions = method.GetSchema<DataTable.Export>(context.Drill(nameof(DataTable.ExportOptions)));
+                dt.FooterTemplate = method.GetSchema<DataTable.Footer>(context.Drill(nameof(DataTable.FooterTemplate)));
+                dt.VirtualScrollerOptions = method.GetSchema<DataTable.VirtualScroller>(context.Drill(nameof(DataTable.VirtualScrollerOptions)));
+
+                options.Apply(dt);
+            },
+            data: method.GetRequiredSchema<RemoteData>(context.Drill(nameof(IComponentDescriptor.Data)))
+        );
+    }
+
+    public static DataTable.Export MethodDataTableExport(MethodModel method, ComponentContext context,
+        Action<DataTable.Export>? options = default
+    )
+    {
+        var (_, l) = context;
+
+        return B.DataTableExport(";", l($"{method.Name}.ExportFileName"), options: options);
+    }
+
+    public static DataTable.Footer MethodDataTableFooter(MethodModel method, ComponentContext context,
+        Action<DataTable.Footer>? options = default
+    )
+    {
+        var (_, l) = context;
+
+        return B.DataTableFooter(l($"{method.Name}.FooterLabel"), options: options);
+    }
+
+    public static ComponentDescriptor<Button> MethodButton(MethodModel method, ComponentContext context,
+        Action<Button>? options = default
+    )
+    {
+        return B.Button(method.Name, method.GetRequiredSchema<RemoteAction>(context),
+            options: button =>
+            {
+                button.ActionEventName = method.Name.Kebaberize();
+
+                options?.Invoke(button);
+            }
+        );
+    }
+
     public static Parameter ParameterParameter(ParameterModel parameter, ComponentContext context,
         Action<Parameter>? options = default
     )
@@ -100,44 +152,6 @@ public static class DomainComponents
         var data = metadata.GetRequiredSchema<InlineData>(context.Drill(nameof(IComponentDescriptor.Data)));
 
         return B.SelectButton(data, options: options);
-    }
-
-    public static ComponentDescriptor<DataTable> MethodDataTable(MethodModel method, ComponentContext context,
-        Action<DataTable>? options = default
-    )
-    {
-        context = context.Drill(nameof(DataTable));
-        var (_, l) = context;
-
-        return B.DataTable(
-            options: dt =>
-            {
-                dt.ExportOptions = method.GetSchema<DataTable.Export>(context.Drill(nameof(DataTable.ExportOptions)));
-                dt.FooterTemplate = method.GetSchema<DataTable.Footer>(context.Drill(nameof(DataTable.FooterTemplate)));
-                dt.VirtualScrollerOptions = method.GetSchema<DataTable.VirtualScroller>(context.Drill(nameof(DataTable.VirtualScrollerOptions)));
-
-                options.Apply(dt);
-            },
-            data: method.GetRequiredSchema<RemoteData>(context.Drill(nameof(IComponentDescriptor.Data)))
-        );
-    }
-
-    public static DataTable.Export MethodDataTableExport(MethodModel method, ComponentContext context,
-        Action<DataTable.Export>? options = default
-    )
-    {
-        var (_, l) = context;
-
-        return B.DataTableExport(";", l($"{method.Name}.ExportFileName"), options: options);
-    }
-
-    public static DataTable.Footer MethodDataTableFooter(MethodModel method, ComponentContext context,
-        Action<DataTable.Footer>? options = default
-    )
-    {
-        var (_, l) = context;
-
-        return B.DataTableFooter(l($"{method.Name}.FooterLabel"), options: options);
     }
 
     public static DataTable.Column PropertyDataTableColumn(PropertyModel property, ComponentContext context,

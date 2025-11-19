@@ -43,9 +43,9 @@ export default function() {
     const remoteClient = useRemoteClient();
 
     async function execute(action) {
-      const headers = await dataFetcher.fetch({ data: action.headers });
-      const query = await dataFetcher.fetch({ data: action.query });
-      const params = await dataFetcher.fetch({ data: action.params });
+      const headers = action.headers ? await dataFetcher.fetch({ data: action.headers }) : { };
+      const query = action.query ? await dataFetcher.fetch({ data: action.query }) : { };
+      const params = action.params ? await dataFetcher.fetch({ data: action.params }) : { };
 
       await remoteClient.send({
         path: action.path,
