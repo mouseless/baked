@@ -55,6 +55,6 @@ test.describe("Actions", () => {
     const request = await requestPromise;
     expect(request.headers()["authorization"]).toContain("token-admin-ui");
     expect(request.url()).toContain("/rich-transient-with-datas/1/method");
-    expect(request.url()).toContain("?query=value")
+    expect(request.url()).toContain("?query=value");
   });
 });
