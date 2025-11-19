@@ -128,9 +128,20 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     options: ep =>
                     {
                         ep.SafeLinks.AddRange([.. _routes.Where(r => r.ErrorSafeLink).Select(r => r.AsCardLink(l))]);
-                        ep.ErrorInfos[403] = B.ErrorPageInfo(l("Access Denied"), l("You do not have the permision to view the address or data specified."));
-                        ep.ErrorInfos[404] = B.ErrorPageInfo(l("Page Not Found"), l("The page you want to view is either deleted or outdated."));
+                        ep.ErrorInfos[403] = B.ErrorPageInfo(
+                            title: l("Access Denied"),
+                            message: l("You do not have the permission to view the address or data specified."),
+                            options: epi => epi.ShowSafeLinks = true
+                        );
+                        ep.ErrorInfos[404] = B.ErrorPageInfo(
+                            title: l("Page Not Found"),
+                            message: l("The page you want to view is either deleted or outdated."),
+                            options: epi => epi.ShowSafeLinks = true
+                        );
                         ep.ErrorInfos[500] = B.ErrorPageInfo(l("Unexpected Error"), l("Please contact system administrator."));
+                        ep.ErrorInfos[502] = B.ErrorPageInfo(l("Bad Gateway"), l("The server received an invalid response from the upstream server. Please try again later."));
+                        ep.ErrorInfos[503] = B.ErrorPageInfo(l("Service Unavailable"), l("The service is currently unavailable. Please try again later."));
+                        ep.ErrorInfos[504] = B.ErrorPageInfo(l("Gateway Timeout"), l("The server did not receive a timely response from the upstream server. Please try again later."));
                         ep.ErrorInfos[999] = B.ErrorPageInfo(l("Application Error"), l("Please contact system administrator."));
 
                         _errorPageOptions.Apply(ep);

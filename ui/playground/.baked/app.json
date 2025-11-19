@@ -69,19 +69,38 @@
       "errorInfos": {
         "403": {
           "title": "Access Denied",
-          "message": "You do not have the permision to view the address or data specified."
+          "message": "You do not have the permission to view the address or data specified.",
+          "showSafeLinks": true
         },
         "404": {
           "title": "Page Not Found",
-          "message": "The page you want to view is either deleted or outdated."
+          "message": "The page you want to view is either deleted or outdated.",
+          "showSafeLinks": true
         },
         "500": {
           "title": "Unexpected Error",
-          "message": "Please contact system administrator."
+          "message": "Please contact system administrator.",
+          "showSafeLinks": false
+        },
+        "502": {
+          "title": "Bad Gateway",
+          "message": "The server received an invalid response from the upstream server. Please try again later.",
+          "showSafeLinks": false
+        },
+        "503": {
+          "title": "Service Unavailable",
+          "message": "The service is currently unavailable. Please try again later.",
+          "showSafeLinks": false
+        },
+        "504": {
+          "title": "Gateway Timeout",
+          "message": "The server did not receive a timely response from the upstream server. Please try again later.",
+          "showSafeLinks": false
         },
         "999": {
           "title": "Application Error",
-          "message": "Please contact system administrator."
+          "message": "Please contact system administrator.",
+          "showSafeLinks": false
         }
       },
       "footerInfo": "If you cannot reach the page you want please contact the system administrator",

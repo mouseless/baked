@@ -7,5 +7,8 @@ public record ErrorPage : IComponentSchema
     public List<IComponentDescriptor> SafeLinks { get; init; } = [];
     public string SafeLinksMessage { get; set; } = "Try the links from the menu below to view the page you want to access:";
 
-    public record Info(string Title, string Message);
+    public record Info(string Title, string Message)
+    {
+        public bool ShowSafeLinks { get; set; } = false;
+    }
 }

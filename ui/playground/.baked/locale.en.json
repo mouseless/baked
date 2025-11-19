@@ -11,6 +11,7 @@
   "Application Error": "Application Error",
   "Auth": "Auth",
   "Authorized routing and client": "Authorized routing and client",
+  "Bad Gateway": "Bad Gateway",
   "Bake": "Bake",
   "Behavior": "Behavior",
   "Cache": "Cache",
@@ -37,6 +38,7 @@
   "Export as CSV": "Export as CSV",
   "Filter": "Filter",
   "Format Digits": "Format Digits",
+  "Gateway Timeout": "Gateway Timeout",
   "GetApplication": "Application",
   "GetFirst": "First",
   "GetFirst.ExportFileName": "first",
@@ -94,6 +96,7 @@
   "RequiredWithDefaultOptions.RequiredWithDefault2": "Required w/ Default 2",
   "Select": "Select",
   "Select Button": "Select Button",
+  "Service Unavailable": "Service Unavailable",
   "Shortens and renders money values with the full value shown as tooltip": "Shortens and renders money values with the full value shown as tooltip",
   "Shortens and renders numbers with the full value shown as tooltip": "Shortens and renders numbers with the full value shown as tooltip",
   "Showcase DataTable component with scrollable and footer options": "Showcase DataTable component with scrollable and footer options",
@@ -106,8 +109,11 @@
   "Text": "Text",
   "The core component that renders a dynamic component using given descriptor": "The core component that renders a dynamic component using given descriptor",
   "The page you want to view is either deleted or outdated.": "The page you want to view is either deleted or outdated.",
+  "The server did not receive a timely response from the upstream server. Please try again later.": "The server did not receive a timely response from the upstream server. Please try again later.",
+  "The server received an invalid response from the upstream server. Please try again later.": "The server received an invalid response from the upstream server. Please try again later.",
+  "The service is currently unavailable. Please try again later.": "The service is currently unavailable. Please try again later.",
   "Toast": "Toast",
   "Unexpected Error": "Unexpected Error",
   "View list data in a table": "View list data in a table",
-  "You do not have the permision to view the address or data specified.": "You do not have the permision to view the address or data specified."
+  "You do not have the permission to view the address or data specified.": "You do not have the permission to view the address or data specified."
 }

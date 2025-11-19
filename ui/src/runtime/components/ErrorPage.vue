@@ -16,13 +16,13 @@
       <div class="text-2xl">
         {{ l(errorInfo.message) }}
       </div>
-      <AuthorizedContent>
+      <AuthorizedContent v-if="errorInfo.showSafeLinks">
         <div class="text-2xl">
           {{ l(safeLinksMessage) }}
         </div>
       </AuthorizedContent>
     </div>
-    <AuthorizedContent>
+    <AuthorizedContent v-if="errorInfo.showSafeLinks">
       <Divider
         type="dashed"
         class="my-8"

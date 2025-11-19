@@ -16,7 +16,13 @@ Record Not Found=Kayıt Bulunamadı
 Route Parameter Is Not Valid=Route Parametresi Geçerli Değil
 The page you want to view is either deleted or outdated.=Görüntülemek istediğiniz sayfa silinmiş veya güncel değil.
 Unexpected Error=Beklenmeyen Hata
-You do not have the permision to view the address or data specified.=Belirtilen adresi veya veriyi görüntüleme izniniz yok.
+You do not have the permission to view the address or data specified.=Belirtilen adresi veya veriyi görüntüleme izniniz yok.
+Bad Gateway=Kötü Ağ Geçidi
+The server received an invalid response from the upstream server. Please try again later.=Sunucu, üst sunucudan geçersiz bir yanıt aldı. Lütfen daha sonra tekrar deneyin.
+Service Unavailable=Servis Kullanılamıyor
+The service is currently unavailable. Please try again later.=Servis şu anda kullanılamıyor. Lütfen daha sonra tekrar deneyin.
+Gateway Timeout=Ağ Geçidi Zaman Aşımı
+The server did not receive a timely response from the upstream server. Please try again later.=Sunucu, üst sunucudan zamanında yanıt alamadı. Lütfen daha sonra tekrar deneyin.
 
 // test project keys =//
 {0} should be unique={0} benzersiz olmalıdır
