@@ -42,6 +42,18 @@ const variants = [
         type: "Remote",
         path: "/rich-transient-with-datas/{id}/method",
         method: "POST",
+        headers: {
+          type: "Inline",
+          value: {
+            Authorization: "token-admin-ui"
+          }
+        },
+        query: {
+          type: "Inline",
+          value: {
+            query: "value"
+          }
+        },
         params: {
           type: "Inline",
           value: {
