@@ -10,8 +10,8 @@ test.beforeEach(async({ goto, page }) => {
   await goto("/specs/error-page", { waitUntil: "hydration" });
 });
 
-test.describe("Base", () =>{
-  const id = "Base";
+test.describe("With safe links", () => {
+  const id = "With safe links";
 
   test("error status code as tag", async({ page }) => {
     const component = page.getByTestId(id);
@@ -63,5 +63,16 @@ test.describe("Base", () =>{
     const component = page.getByTestId(id);
 
     await expect(component).toHaveScreenshot();
+  });
+});
+
+test.describe("Without safe links", () => {
+  const id = "Without safe links";
+
+  test("links not renders when showSafeLinks is false", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.getByText("VALUE_1")).toHaveCount(0);
+    await expect(component.getByText("VALUE_2")).toHaveCount(0);
   });
 });

@@ -12,7 +12,7 @@ import giveMe from "@utils/giveMe";
 
 const variants = [
   {
-    name: "Base",
+    name: "With safe links",
     descriptor: giveMe.anErrorPage({
       errorInfos: [
         giveMe.anErrorPageInfo({
@@ -29,6 +29,26 @@ const variants = [
       ],
       safeLinksMessage: "Spec: Safe links message",
       data: computed(() => ref(createError({ name:"NuxtError", statusCode: 403 })))
+    })
+  },
+  {
+    name: "Without safe links",
+    descriptor: giveMe.anErrorPage({
+      errorInfos: [
+        giveMe.anErrorPageInfo({
+          statusCode: "503",
+          title: "Spec: Service Unavailable",
+          message: "Spec: The server is currently unable to handle the request due to a temporary overloading or maintenance of the server",
+          showSafeLinks: false
+        })
+      ],
+      footerInfo: "Spec: Footer info",
+      safeLinks: [
+        giveMe.anExpected({ testId: "LINK_1", value: "VALUE_1" }),
+        giveMe.anExpected({ testId: "LINK_2", value: "VALUE_2" })
+      ],
+      safeLinksMessage: "Spec: Safe links message",
+      data: computed(() => ref(createError({ name:"NuxtError", statusCode: 503 })))
     })
   }
 ];
