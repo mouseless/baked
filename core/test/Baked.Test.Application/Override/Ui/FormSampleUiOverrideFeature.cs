@@ -20,6 +20,7 @@ public class FormSampleUiOverrideFeature : IFeature
             // TODO - review this in form components
             // below this point is vibe coding
             builder.Conventions.AddTypeComponentConfiguration<ReportPage>(
+                when: c => c.Type.Is<FormSample>(),
                 component: (rp, c, cc) =>
                 {
                     var forms = new List<ReportPage.Tab.Content>();
