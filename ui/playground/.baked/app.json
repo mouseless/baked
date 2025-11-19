@@ -85,29 +85,17 @@
           "showSafeLinks": false,
           "customMessage": false
         },
-        "502": {
-          "title": "Bad Gateway",
-          "message": "The server received an invalid response from the upstream server. Please try again later.",
+        "999": {
+          "title": "Application Error",
+          "message": "Please contact system administrator.",
           "showSafeLinks": false,
-          "customMessage": true
+          "customMessage": false
         },
         "503": {
           "title": "Service Unavailable",
           "message": "The service is currently unavailable. Please try again later.",
           "showSafeLinks": false,
           "customMessage": true
-        },
-        "504": {
-          "title": "Gateway Timeout",
-          "message": "The server did not receive a timely response from the upstream server. Please try again later.",
-          "showSafeLinks": false,
-          "customMessage": true
-        },
-        "999": {
-          "title": "Application Error",
-          "message": "Please contact system administrator.",
-          "showSafeLinks": false,
-          "customMessage": false
         }
       },
       "footerInfo": "If you cannot reach the page you want please contact the system administrator",

@@ -144,7 +144,12 @@ export default {
 
     errorInfos = errorInfos.reduce((result, ei) => ({
       ...result,
-      [ei.statusCode]: { title: ei.title, message: ei.message, showSafeLinks: ei.showSafeLinks }
+      [ei.statusCode]: {
+        title: ei.title,
+        message: ei.message,
+        showSafeLinks: ei.showSafeLinks,
+        customMessage: ei.customMessage
+      }
     }), {});
 
     return {
@@ -154,17 +159,19 @@ export default {
     };
   },
 
-  anErrorPageInfo({ statusCode, title, message, showSafeLinks } = {}) {
+  anErrorPageInfo({ statusCode, title, message, showSafeLinks, customMessage } = {}) {
     statusCode = $(statusCode, "500");
     title = $(title, "Test Title");
     message = $(message, "Test message");
     showSafeLinks = $(showSafeLinks, false);
+    customMessage = $(customMessage, false);
 
     return {
       statusCode,
       title,
       message,
-      showSafeLinks
+      showSafeLinks,
+      customMessage
     };
   },
 

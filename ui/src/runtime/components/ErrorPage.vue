@@ -66,14 +66,17 @@ const statusCode = computed(() => {
   return code === 999 ? "APP" : code;
 });
 const errorInfo = computed(() => {
-  const error = errorInfos[`${statusCode.value}`];
+  let result = errorInfos[`${statusCode.value}`];
 
-  if(!error) { return errorInfos["999"]; }
+  if(!result) { return errorInfos["999"]; }
 
-  if(error.customMessage) {
-    error.message = data.value?.data?.detail ?? data.value?.message ?? error.message;
+  if(result.customMessage) {
+    result = {
+      ...result,
+      message: data.value?.data?.detail ?? data.value?.message ?? result.message
+    };
   }
 
-  return error;
+  return result;
 });
 </script>
