@@ -139,9 +139,21 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                             options: epi => epi.ShowSafeLinks = true
                         );
                         ep.ErrorInfos[500] = B.ErrorPageInfo(l("Unexpected Error"), l("Please contact system administrator."));
-                        ep.ErrorInfos[502] = B.ErrorPageInfo(l("Bad Gateway"), l("The server received an invalid response from the upstream server. Please try again later."));
-                        ep.ErrorInfos[503] = B.ErrorPageInfo(l("Service Unavailable"), l("The service is currently unavailable. Please try again later."));
-                        ep.ErrorInfos[504] = B.ErrorPageInfo(l("Gateway Timeout"), l("The server did not receive a timely response from the upstream server. Please try again later."));
+                        ep.ErrorInfos[502] = B.ErrorPageInfo(
+                            l("Bad Gateway"),
+                            l("The server received an invalid response from the upstream server. Please try again later."),
+                            options: epi => epi.CustomMessage = true
+                        );
+                        ep.ErrorInfos[503] = B.ErrorPageInfo(
+                            l("Service Unavailable"),
+                            l("The service is currently unavailable. Please try again later."),
+                            options: epi => epi.CustomMessage = true
+                        );
+                        ep.ErrorInfos[504] = B.ErrorPageInfo(
+                            l("Gateway Timeout"),
+                            l("The server did not receive a timely response from the upstream server. Please try again later."),
+                            options: epi => epi.CustomMessage = true
+                        );
                         ep.ErrorInfos[999] = B.ErrorPageInfo(l("Application Error"), l("Please contact system administrator."));
 
                         _errorPageOptions.Apply(ep);

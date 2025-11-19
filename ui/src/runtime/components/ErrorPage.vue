@@ -65,5 +65,15 @@ const statusCode = computed(() => {
 
   return code === 999 ? "APP" : code;
 });
-const errorInfo = computed(() => errorInfos[`${statusCode.value}`] ?? errorInfos["999"]);
+const errorInfo = computed(() => {
+  const error = errorInfos[`${statusCode.value}`];
+
+  if(!error) { return errorInfos["999"]; }
+
+  if(error.customMessage) {
+    error.message = data.value?.data?.detail ?? data.value?.message ?? error.message;
+  }
+
+  return error;
+});
 </script>
