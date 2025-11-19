@@ -2,9 +2,9 @@
 
 public static class Components
 {
-    public static ComponentDescriptor<Button> Button(string label, IAction action,
+    public static ComponentDescriptor<Button> Button(string label, IAction action, IAction postAction,
         Action<Button>? options = default
-    ) => new(options.Apply(new(label, action)));
+    ) => new(options.Apply(new(label, action, postAction)));
 
     public static ComponentDescriptor<CardLink> CardLink(string route, string title,
         Action<CardLink>? options = default

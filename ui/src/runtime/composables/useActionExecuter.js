@@ -14,11 +14,15 @@ export default function() {
     async function execute(action) {
       const composable = (await composableResolver.resolve(action.composable)).default();
 
+      if(composable.execute) {
+        return composable.execute(action.args);
+      }
+
       if(composable.executeAsync) {
         return await composable.executeAsync(action.args);
       }
 
-      throw new Error("Action composable should `executeAsync`");
+      throw new Error("Action composable should have either `execute` or `executeAsync`");
     }
 
     return {

@@ -2,7 +2,9 @@ import { defineNuxtPlugin } from "#app";
 
 export default defineNuxtPlugin({
   name: "baked",
+  enforce: "pre",
   setup() {
+    const events = Events();
     const bakedComposables = import.meta.glob("../composables/*");
     const projectComposables = import.meta.glob("@/composables/*");
 
@@ -17,6 +19,7 @@ export default defineNuxtPlugin({
           trimStart: "composables/",
           trimEnd: "."
         }),
+        events: events,
         pages: jsonFiles(pages, ".baked/", ".page.json"),
         layouts: jsonFiles(layouts, ".baked/", ".layout.json")
       }
@@ -70,4 +73,34 @@ function keyToRoutePattern(key) {
   // AI GEN
   // convert route part 'route/[id]' to 'route/:id'
   return `/${key.replace(/\[([^\]]+)\]/g, ":$1([a-zA-Z0-9-]+)")}`;
+}
+
+// TODO - review this in form components
+function Events() {
+  const listeners = {};
+
+  function on(name, id, callback) {
+    listeners[name] ||= {};
+
+    listeners[name][id] = callback;
+  }
+
+  function off(name, id) {
+    delete listeners[name][id];
+  }
+
+  async function emit(name) {
+    console.log(listeners);
+    if(!listeners[name]) { return; }
+
+    for(const id in listeners[name]) {
+      listeners[name][id]();
+    }
+  }
+
+  return {
+    on,
+    off,
+    emit
+  };
 }

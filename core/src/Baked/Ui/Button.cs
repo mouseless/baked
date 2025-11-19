@@ -1,10 +1,10 @@
 ﻿namespace Baked.Ui;
 
-public record Button(string Label, IAction Action)
+public record Button(string Label, IAction Action, IAction PostAction)
     : IComponentSchema
 {
     public IAction Action { get; set; } = Action;
-    public string? ActionEventName { get; set; } = Label;
+    public IAction PostAction { get; set; } = PostAction;
     public string? Icon { get; set; }
     public string Label { get; set; } = Label;
 }

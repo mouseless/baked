@@ -34,7 +34,7 @@ const { schema } = defineProps({
 
 const { label, action, submitEventName, parameters } = schema;
 
-const events = context.injectEvents();
+const events = context.events();
 const loading = ref(false);
 const ready = ref(parameters.length === 0);
 const body = ref();
@@ -59,7 +59,7 @@ async function submit() {
   loading.value = false;
 
   if(submitEventName) {
-    events.emit(submitEventName);
+    await events.emit(submitEventName);
   }
 }
 </script>

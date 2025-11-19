@@ -13,7 +13,13 @@
               "path": "form-sample/states",
               "method": "DELETE"
             },
-            "actionEventName": "something-changed",
+            "postAction": {
+              "type": "Local",
+              "composable": "useEmitEvent",
+              "args": [
+                "something-changed"
+              ]
+            },
             "label": "ClearStates"
           }
         }
