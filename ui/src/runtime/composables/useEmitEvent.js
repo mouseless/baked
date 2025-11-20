@@ -1,8 +1,6 @@
 export default function() {
-  async function executeAsync(eventNames, events) {
-    for(const event of eventNames) {
-      events.emit(event);
-    }
+  async function executeAsync(eventName, events) {
+    events.emit(eventName);
   }
 
   return {

@@ -7,6 +7,7 @@ using Baked.Ui;
 using static Baked.Theme.Default.DomainComponents;
 
 using C = Baked.Test.Ui.Components;
+using DA = Baked.Theme.Default.DomainActions;
 
 namespace Baked.Test.Override.Ui;
 
@@ -96,19 +97,16 @@ public class FormSampleUiOverrideFeature : IFeature
             builder.Conventions.RemoveMethodSchema<ReportPage.Tab.Content>(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.ClearStates))
             );
-
             builder.Conventions.AddMethodSchema(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.ClearStates)),
                 where: cc => true,
-                schema: (c, _) => Baked.Theme.Default.DomainActions.MethodRemoteAction(c.Method)
+                schema: (c, _) => DA.MethodRemote(c.Method)
             );
-
             builder.Conventions.AddMethodComponent(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.ClearStates)),
                 where: cc => cc.Path.EndsWith(nameof(PageTitle.Actions)),
                 component: (c, cc) => MethodButton(c.Method, cc)
             );
-
             builder.Conventions.AddMethodComponentConfiguration<Button>(
                 when: c => c.Method.Name.Equals(nameof(FormSample.ClearStates)),
                 where: cc => cc.Path.EndsWith(nameof(PageTitle.Actions)),
@@ -117,7 +115,6 @@ public class FormSampleUiOverrideFeature : IFeature
                     button.Schema.PostAction = Actions.Local(Composables.UseEmitEvent, o => o.Args.Add("something-changed"));
                 }
             );
-
             builder.Conventions.AddTypeComponentConfiguration<ReportPage>(
                 when: c => c.Type.Is<FormSample>(),
                 component: (rp, c, cc) =>

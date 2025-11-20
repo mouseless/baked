@@ -18,16 +18,16 @@ const variants = [
           {
             type: "Local",
             composable: "useShowMessage",
-            args: {
-              message: "Execute Action"
-            }
+            args: [
+              { message: "Execute Action" }
+            ]
           },
           {
             type: "Local",
             composable: "useDelay",
-            args: {
-              time: "100"
-            }
+            args:[
+              100
+            ]
           },
           {
             type: "Remote",
@@ -63,9 +63,9 @@ const variants = [
       postAction: {
         type: "Local",
         composable: "useShowMessage",
-        args: {
-          message: "Execute Post Action"
-        }
+        args: [
+          { message: "Execute Post Action" }
+        ]
       },
       label: "Base",
       icon: "pi-play-circle"

@@ -7,7 +7,7 @@ namespace Baked.Theme.Default;
 
 public static class DomainActions
 {
-    public static RemoteAction MethodRemoteAction(MethodModel method,
+    public static RemoteAction MethodRemote(MethodModel method,
         Action<RemoteAction>? options = default
     ) => Remote(method.GetAction().GetRoute(),
         options: ra =>
