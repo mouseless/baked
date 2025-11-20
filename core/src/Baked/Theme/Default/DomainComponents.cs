@@ -66,6 +66,42 @@ public static class DomainComponents
         );
     }
 
+    public static Parameter ParameterParameter(ParameterModel parameter, ComponentContext context,
+        Action<Parameter>? options = default
+    )
+    {
+        context = context.Drill(parameter.Name);
+        var api = parameter.Get<ParameterModelAttribute>();
+
+        return B.Parameter(api.Name, parameter.GetRequiredComponent(context.Drill(nameof(Parameter.Component))), options: options);
+    }
+
+    public static ComponentDescriptor<Select> EnumSelect(ParameterModel parameter, ComponentContext context,
+        Action<Select>? options = default
+    )
+    {
+        context = context.Drill(nameof(Select));
+        var (_, l) = context;
+        if (!parameter.ParameterType.TryGetMetadata(out var metadata)) { throw new($"{parameter.ParameterType.CSharpFriendlyFullName} cannot be used, its metadata is not present in domain model"); }
+
+        var data = metadata.GetRequiredSchema<InlineData>(context.Drill(nameof(IComponentDescriptor.Data)));
+
+        return B.Select(l(parameter.Name.Titleize()), data, options: options);
+    }
+
+    public static ComponentDescriptor<SelectButton> EnumSelectButton(ParameterModel parameter, ComponentContext context,
+        Action<SelectButton>? options = default
+    )
+    {
+        context = context.Drill(nameof(SelectButton));
+        var (_, l) = context;
+        if (!parameter.ParameterType.TryGetMetadata(out var metadata)) { throw new($"{parameter.ParameterType.CSharpFriendlyFullName} cannot be used, its metadata is not present in domain model"); }
+
+        var data = metadata.GetRequiredSchema<InlineData>(context.Drill(nameof(IComponentDescriptor.Data)));
+
+        return B.SelectButton(data, options: options);
+    }
+
     public static ComponentDescriptor<DataTable> MethodDataTable(MethodModel method, ComponentContext context,
     Action<DataTable>? options = default
 )
@@ -109,42 +145,6 @@ public static class DomainComponents
     ) => B.Button(method.Name, method.GetRequiredSchema<RemoteAction>(context),
             options: options
         );
-
-    public static Parameter ParameterParameter(ParameterModel parameter, ComponentContext context,
-        Action<Parameter>? options = default
-    )
-    {
-        context = context.Drill(parameter.Name);
-        var api = parameter.Get<ParameterModelAttribute>();
-
-        return B.Parameter(api.Name, parameter.GetRequiredComponent(context.Drill(nameof(Parameter.Component))), options: options);
-    }
-
-    public static ComponentDescriptor<Select> EnumSelect(ParameterModel parameter, ComponentContext context,
-        Action<Select>? options = default
-    )
-    {
-        context = context.Drill(nameof(Select));
-        var (_, l) = context;
-        if (!parameter.ParameterType.TryGetMetadata(out var metadata)) { throw new($"{parameter.ParameterType.CSharpFriendlyFullName} cannot be used, its metadata is not present in domain model"); }
-
-        var data = metadata.GetRequiredSchema<InlineData>(context.Drill(nameof(IComponentDescriptor.Data)));
-
-        return B.Select(l(parameter.Name.Titleize()), data, options: options);
-    }
-
-    public static ComponentDescriptor<SelectButton> EnumSelectButton(ParameterModel parameter, ComponentContext context,
-        Action<SelectButton>? options = default
-    )
-    {
-        context = context.Drill(nameof(SelectButton));
-        var (_, l) = context;
-        if (!parameter.ParameterType.TryGetMetadata(out var metadata)) { throw new($"{parameter.ParameterType.CSharpFriendlyFullName} cannot be used, its metadata is not present in domain model"); }
-
-        var data = metadata.GetRequiredSchema<InlineData>(context.Drill(nameof(IComponentDescriptor.Data)));
-
-        return B.SelectButton(data, options: options);
-    }
 
     public static DataTable.Column PropertyDataTableColumn(PropertyModel property, ComponentContext context,
         Action<DataTable.Column>? options = default
