@@ -17,6 +17,13 @@ const variants = [
         parts: [
           {
             type: "Local",
+            composable: "useShowMessage",
+            args: {
+              message: "Execute Action"
+            }
+          },
+          {
+            type: "Local",
             composable: "useDelay",
             args: {
               time: "100"
@@ -24,44 +31,51 @@ const variants = [
           },
           {
             type: "Local",
-            composable: "useShowMessage",
+            composable: "useDelay",
             args: {
-              message: "Message from button click"
+              time: "100"
+            }
+          },
+          {
+            type: "Remote",
+            path: "/rich-transient-with-datas/{id}/method",
+            method: "POST",
+            headers: {
+              type: "Inline",
+              value: {
+                Authorization: "token-admin-ui"
+              }
+            },
+            query: {
+              type: "Inline",
+              value: {
+                val: "2"
+              }
+            },
+            params: {
+              type: "Inline",
+              value: {
+                id: 1
+              }
+            },
+            body: {
+              type: "Inline",
+              value: {
+                text: "text"
+              }
             }
           }
         ]
       },
-      label: "Base",
-      icon: "pi-play-circle"
-    })
-  },
-  {
-    name: "Remote",
-    descriptor: giveMe.aButton({
-      action: {
-        type: "Remote",
-        path: "/rich-transient-with-datas/{id}/method",
-        method: "POST",
-        headers: {
-          type: "Inline",
-          value: {
-            Authorization: "token-admin-ui"
-          }
-        },
-        query: {
-          type: "Inline",
-          value: {
-            query: "value"
-          }
-        },
-        params: {
-          type: "Inline",
-          value: {
-            id: 1
-          }
+      postAction: {
+        type: "Local",
+        composable: "useShowMessage",
+        args: {
+          message: "Execute Post Action"
         }
       },
-      label: "Remote"
+      label: "Base",
+      icon: "pi-play-circle"
     })
   }
 ];

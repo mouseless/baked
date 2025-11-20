@@ -48,15 +48,18 @@ export default function() {
 
     async function execute(action) {
       const headers = action.headers ? await dataFetcher.fetch({ data: action.headers }) : { };
-      const query = action.query ? await dataFetcher.fetch({ data: action.query }) : { };
+      const query = action.query ? await dataFetcher.fetch({ data: action.query }) : null;
       const params = action.params ? await dataFetcher.fetch({ data: action.params }) : { };
+      const body = action.body ? await dataFetcher.fetch({ data: action.body })
+        : (action.method === "GET" ? null : { });
 
       await remoteClient.send({
         path: action.path,
         method: action.method,
         headers: headers,
         query: query,
-        params: params
+        params: params,
+        body: body
       });
     }
 

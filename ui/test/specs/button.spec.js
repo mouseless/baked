@@ -44,17 +44,33 @@ test.describe("Base", () => {
 });
 
 test.describe("Actions", () => {
-  test("Remote", async({ page }) => {
-    const id = "Remote";
+  const id = "Base";
+
+  test("Execute given composite action", async({ page }) => {
     const requestPromise = page.waitForRequest(req => req.url().includes("rich-transient-with-datas"));
     const component = page.getByTestId(id);
     const button = component.locator(primevue.button.base);
 
     await button.click();
 
+    await expect(page.locator(primevue.toast.base)).toBeVisible();
+    await expect(page.locator(primevue.toast.summary)).toHaveText("Execute Action");
+
     const request = await requestPromise;
+    expect(request.method()).toBe("POST");
     expect(request.headers()["authorization"]).toContain("token-admin-ui");
     expect(request.url()).toContain("/rich-transient-with-datas/1/method");
-    expect(request.url()).toContain("?query=value");
+    expect(request.url()).toContain("?val=2");
+    expect(request.postDataJSON()).toEqual({ text: "text" });
+  });
+
+  test("Execute given post action", async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base);
+
+    await button.click();
+
+    await expect(page.locator(primevue.toast.base).last()).toBeVisible();
+    await expect(page.locator(primevue.toast.summary).last()).toHaveText("Execute Post Action");
   });
 });

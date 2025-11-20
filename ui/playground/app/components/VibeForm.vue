@@ -59,7 +59,7 @@ async function submit() {
   loading.value = false;
 
   if(submitEventName) {
-    await events.emit(submitEventName);
+    events.emit(submitEventName);
   }
 }
 </script>

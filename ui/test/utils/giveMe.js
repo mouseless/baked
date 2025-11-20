@@ -24,12 +24,12 @@ const screens = [
 ];
 
 export default {
-  aButton({ action, icon, label } = {}) {
+  aButton({ action, icon, label, postAction } = {}) {
     label = $(label, "Button Title");
 
     return {
       type: "Button",
-      schema: { action, icon, label }
+      schema: { action, icon, label, postAction }
     };
   },
 
