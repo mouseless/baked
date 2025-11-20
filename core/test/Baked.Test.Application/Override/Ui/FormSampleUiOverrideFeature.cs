@@ -1,12 +1,11 @@
 ﻿using Baked.Architecture;
-using Baked.Domain.Conventions;
-using Baked.Domain.Model;
 using Baked.RestApi.Model;
 using Baked.Test.Theme;
 using Baked.Test.Ui;
-using Baked.Theme;
 using Baked.Ui;
+
 using static Baked.Theme.Default.DomainComponents;
+
 using C = Baked.Test.Ui.Components;
 
 namespace Baked.Test.Override.Ui;
@@ -94,15 +93,8 @@ public class FormSampleUiOverrideFeature : IFeature
             );
             // END OF TODO - review this in form components
 
-            builder.Conventions.Add(
-                new MethodAttributeConfigurationConvention<DescriptorBuilderAttribute<ReportPage.Tab.Content>>(
-                    apply: (a, c) =>
-                    {
-                        ((IMutableAttributeCollection)c.Method.CustomAttributes).Remove(a.GetType());
-                    },
-                    when: (c, _) => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.ClearStates))
-                ),
-                order: int.MaxValue
+            builder.Conventions.RemoveMethodSchema<ReportPage.Tab.Content>(
+                when: c => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.ClearStates))
             );
 
             builder.Conventions.AddMethodSchema(

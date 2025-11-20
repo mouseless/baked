@@ -1,8 +1,8 @@
 <template>
   <Button
     :icon="`pi ${icon}`"
-    :label="label"
-    :loading="loading"
+    :label
+    :loading
     @click="onClick"
   />
 </template>
@@ -20,6 +20,7 @@ const { schema } = defineProps({
 });
 
 const { action, icon, label, postAction } = schema;
+
 const loading = ref(false);
 const injectedData = context.injectData();
 const events = context.injectEvents();
