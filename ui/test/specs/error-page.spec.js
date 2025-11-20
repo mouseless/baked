@@ -10,7 +10,7 @@ test.beforeEach(async({ goto, page }) => {
   await goto("/specs/error-page", { waitUntil: "hydration" });
 });
 
-test.describe("Base", () =>{
+test.describe("Base", () => {
   const id = "Base";
 
   test("error status code as tag", async({ page }) => {
@@ -63,5 +63,23 @@ test.describe("Base", () =>{
     const component = page.getByTestId(id);
 
     await expect(component).toHaveScreenshot();
+  });
+});
+
+test.describe("503 custom exception", () => {
+  const id = "503 custom exception";
+
+  test("no safelinks", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.getByText("Safe links message")).toHaveCount(0);
+    await expect(component.getByText("VALUE_1")).toHaveCount(0);
+    await expect(component.getByText("VALUE_2")).toHaveCount(0);
+  });
+
+  test("custom message", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.getByText("Custom Exception Message")).toHaveCount(1);
   });
 });

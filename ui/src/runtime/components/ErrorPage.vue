@@ -16,13 +16,13 @@
       <div class="text-2xl">
         {{ l(errorInfo.message) }}
       </div>
-      <AuthorizedContent>
+      <AuthorizedContent v-if="errorInfo.showSafeLinks">
         <div class="text-2xl">
           {{ l(safeLinksMessage) }}
         </div>
       </AuthorizedContent>
     </div>
-    <AuthorizedContent>
+    <AuthorizedContent v-if="errorInfo.showSafeLinks">
       <Divider
         type="dashed"
         class="my-8"
@@ -65,5 +65,18 @@ const statusCode = computed(() => {
 
   return code === 999 ? "APP" : code;
 });
-const errorInfo = computed(() => errorInfos[`${statusCode.value}`] ?? errorInfos["999"]);
+const errorInfo = computed(() => {
+  let result = errorInfos[`${statusCode.value}`];
+
+  if(!result) { return errorInfos["999"]; }
+
+  if(result.customMessage) {
+    result = {
+      ...result,
+      message: data.value?.data?.detail ?? data.value?.message ?? result.message
+    };
+  }
+
+  return result;
+});
 </script>

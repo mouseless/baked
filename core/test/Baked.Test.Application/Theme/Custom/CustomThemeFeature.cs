@@ -15,7 +15,15 @@ namespace Baked.Test.Theme.Custom;
 
 public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
     : DefaultThemeFeature(routes.Select(r => r(new())),
-        _sideMenuOptions: sm => sm.Footer = B.LanguageSwitcher()
+        _sideMenuOptions: sm => sm.Footer = B.LanguageSwitcher(),
+        _errorPageOptions: ep =>
+        {
+            ep.ErrorInfos[503] = B.ErrorPageInfo(
+                title: "Service Unavailable",
+                message: "The service is currently unavailable. Please try again later.",
+                options: epi => epi.CustomMessage = true
+            );
+        }
     )
 {
     public override void Configure(LayerConfigurator configurator)
