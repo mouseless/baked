@@ -5,7 +5,9 @@
 - Dynamic routing is now supported and can be used when;
   - navigating through pages
   - fetching data from backend
-- `Button` component is now added  
+- `Button` component is now added
+- `useActionExecuter` is now added which is a composable that executes `Local`, 
+  `Remote` or `Composite` actions with given configuration
 
 ## Breaking Changes
 
@@ -28,3 +30,4 @@
 ## Improvements
 
 - `Parameters` now accept parameter class attribute for each parameter
+- `RemoveComponent` and `RemoveSchema` helper extensions are now added

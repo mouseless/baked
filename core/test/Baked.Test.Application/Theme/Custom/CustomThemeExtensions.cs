@@ -39,7 +39,7 @@ public static class CustomThemeExtensions
             r => r.Child("/specs/text", "Text", "/specs") with { Icon = "pi pi-microchip", Description = "Render string values", Section = "Display" },
 
             // Input
-            r => r.Child("/specs/button", "Button", "/specs") with { Icon = "pi pi-microchip", Description = "Showcase interactions using button componnt ", Section = "Input" },
+            r => r.Child("/specs/button", "Button", "/specs") with { Icon = "pi pi-microchip", Description = "Showcase interactions using button component", Section = "Input" },
             r => r.Child("/specs/language-switcher", "Language Switcher", "/specs") with { Icon = "pi pi-microchip", Description = "Allow change site language", Section = "Input" },
             r => r.Child("/specs/select", "Select", "/specs") with { Icon = "pi pi-microchip", Description = "Allow select from given options using drow down", Section = "Input" },
             r => r.Child("/specs/select-button", "Select Button", "/specs") with { Icon = "pi pi-microchip", Description = "Allow select from given options using buttons", Section = "Input" },
