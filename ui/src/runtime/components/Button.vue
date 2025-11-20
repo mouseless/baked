@@ -8,10 +8,11 @@
 </template>
 <script setup>
 import { ref } from "vue";
-import { useActionExecuter } from "#imports";
+import { useActionExecuter, useContext } from "#imports";
 import { Button } from "primevue";
 
 const actionExecuter = useActionExecuter();
+const context = useContext();
 
 const { schema } = defineProps({
   schema: { type: null, required: true },
@@ -20,13 +21,14 @@ const { schema } = defineProps({
 
 const { action, icon, label, postAction } = schema;
 const loading = ref(false);
+const events = context.injectEvents();
 
 async function onClick() {
   loading.value = true;
-  await actionExecuter.execute(action);
+  await actionExecuter.execute({ action, events });
 
   if(postAction) {
-    await actionExecuter.execute(postAction);
+    await actionExecuter.execute({ action: postAction, events });
   }
   loading.value = false;
 }

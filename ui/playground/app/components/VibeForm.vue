@@ -34,7 +34,7 @@ const { schema } = defineProps({
 
 const { label, action, submitEventName, parameters } = schema;
 
-const events = context.events();
+const events = context.injectEvents();
 const loading = ref(false);
 const ready = ref(parameters.length === 0);
 const body = ref();

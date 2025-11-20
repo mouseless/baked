@@ -1,5 +1,4 @@
 import { inject, provide, ref } from "vue";
-import { useNuxtApp } from "#app";
 
 export default function() {
   function providePath(name) {
@@ -31,8 +30,12 @@ export default function() {
   }
 
   // TODO - review this in form components
-  function events() {
-    return useNuxtApp().$events;
+  function injectEvents() {
+    return inject("__bake_events");
+  }
+  // TODO - review this in form components
+  function provideEvents(value) {
+    provide("__bake_events", value);
   }
 
   function injectLoading() {
@@ -58,7 +61,8 @@ export default function() {
     provideDataDescriptor,
     injectData,
     provideData,
-    events,
+    injectEvents,
+    provideEvents,
     injectLoading,
     provideLoading,
     injectPage,

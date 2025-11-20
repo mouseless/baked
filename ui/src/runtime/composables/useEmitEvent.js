@@ -1,12 +1,8 @@
-import { useNuxtApp } from "#app";
-
 export default function() {
-  const nuxtApp = useNuxtApp();
-  const events = nuxtApp.$events;
 
-  async function executeAsync(eventNames) {
+  async function executeAsync(eventNames, events) {
     for(const event of eventNames) {
-      await events.emit(event);
+      events.emit(event);
     }
   }
 

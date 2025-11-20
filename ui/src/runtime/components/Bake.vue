@@ -30,7 +30,7 @@ context.providePath(name);
 context.provideDataDescriptor(descriptor.data);
 
 const path = context.injectPath();
-const events = context.events();
+const events = context.injectEvents();
 const is = componentResolver.resolve(descriptor.type, "None");
 const injectedData = context.injectData();
 const data = ref(dataFetcher.get({ data: descriptor.data, injectedData }));

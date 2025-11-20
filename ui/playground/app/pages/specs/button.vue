@@ -30,13 +30,6 @@ const variants = [
             }
           },
           {
-            type: "Local",
-            composable: "useDelay",
-            args: {
-              time: "100"
-            }
-          },
-          {
             type: "Remote",
             path: "/rich-transient-with-datas/{id}/method",
             method: "POST",

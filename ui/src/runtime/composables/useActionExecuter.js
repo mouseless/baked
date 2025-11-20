@@ -11,15 +11,15 @@ export default function() {
   function Client() {
     const composableResolver = useComposableResolver();
 
-    async function execute(action) {
+    async function execute(action, events) {
       const composable = (await composableResolver.resolve(action.composable)).default();
 
       if(composable.execute) {
-        return composable.execute(action.args);
+        return composable.execute(action.args, events);
       }
 
       if(composable.executeAsync) {
-        return await composable.executeAsync(action.args);
+        return await composable.executeAsync(action.args, events);
       }
 
       throw new Error("Action composable should have either `execute` or `executeAsync`");
@@ -31,9 +31,9 @@ export default function() {
   }
 
   function Composite({ actionExecuter }) {
-    async function execute(action) {
+    async function execute(action, events) {
       for(const part of action.parts) {
-        await actionExecuter.execute(part);
+        await actionExecuter.execute({ action: part, events });
       }
     }
 
@@ -68,10 +68,10 @@ export default function() {
     };
   }
 
-  async function execute(action) {
+  async function execute({ action, events }) {
     const executer = actions[action?.type];
 
-    await executer.execute(action);
+    await executer.execute(action, events);
   }
 
   return {
