@@ -103,8 +103,8 @@ public static class DomainComponents
     }
 
     public static ComponentDescriptor<DataTable> MethodDataTable(MethodModel method, ComponentContext context,
-        Action<DataTable>? options = default
-    )
+    Action<DataTable>? options = default
+)
     {
         context = context.Drill(nameof(DataTable));
         var (_, l) = context;
@@ -139,6 +139,12 @@ public static class DomainComponents
 
         return B.DataTableFooter(l($"{method.Name}.FooterLabel"), options: options);
     }
+
+    public static ComponentDescriptor<Button> MethodButton(MethodModel method, ComponentContext context,
+        Action<Button>? options = default
+    ) => B.Button(method.Name, method.GetRequiredSchema<RemoteAction>(context),
+            options: options
+        );
 
     public static DataTable.Column PropertyDataTableColumn(PropertyModel property, ComponentContext context,
         Action<DataTable.Column>? options = default

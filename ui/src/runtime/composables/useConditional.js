@@ -1,5 +1,4 @@
 export default function() {
-
   function find(conditional, data) {
     const conditions = conditional.conditions.filter(component => data[component.prop] === component.value);
     if(conditions.length > 0) {

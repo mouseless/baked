@@ -24,6 +24,15 @@ const screens = [
 ];
 
 export default {
+  aButton({ action, icon, label, postAction } = {}) {
+    label = $(label, "Button Title");
+
+    return {
+      type: "Button",
+      schema: { action, icon, label, postAction }
+    };
+  },
+
   aCardLink({ route, icon, title, description, disabled, disabledReason } = {}) {
     route = $(route, "/test-route");
     icon = $(icon, "pi pi-heart");
