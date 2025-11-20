@@ -70,31 +70,24 @@
         "403": {
           "title": "Access Denied",
           "message": "You do not have the permission to view the address or data specified.",
-          "showSafeLinks": true,
-          "customMessage": false
+          "showSafeLinks": true
         },
         "404": {
           "title": "Page Not Found",
           "message": "The page you want to view is either deleted or outdated.",
-          "showSafeLinks": true,
-          "customMessage": false
+          "showSafeLinks": true
         },
         "500": {
           "title": "Unexpected Error",
-          "message": "Please contact system administrator.",
-          "showSafeLinks": false,
-          "customMessage": false
+          "message": "Please contact system administrator."
         },
         "999": {
           "title": "Application Error",
-          "message": "Please contact system administrator.",
-          "showSafeLinks": false,
-          "customMessage": false
+          "message": "Please contact system administrator."
         },
         "503": {
           "title": "Service Unavailable",
           "message": "The service is currently unavailable. Please try again later.",
-          "showSafeLinks": false,
           "customMessage": true
         }
       },

@@ -9,7 +9,7 @@ public record ErrorPage : IComponentSchema
 
     public record Info(string Title, string Message)
     {
-        public bool ShowSafeLinks { get; set; } = false;
-        public bool CustomMessage { get; set; } = false;
+        public bool? ShowSafeLinks { get; set; }
+        public bool? CustomMessage { get; set; }
     }
 }
