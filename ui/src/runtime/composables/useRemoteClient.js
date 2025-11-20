@@ -1,7 +1,6 @@
 import { useRuntimeConfig } from "#app";
 
 export default function() {
-
   async function send({ path, method, params, headers, query, body }) {
     const { public: { composables } } = useRuntimeConfig();
 

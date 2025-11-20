@@ -122,7 +122,7 @@ public class FormSampleUiOverrideFeature : IFeature
                 where: cc => cc.Path.EndsWith(nameof(PageTitle.Actions)),
                 component: button =>
                 {
-                    button.Schema.PostAction = Actions.Local(Composables.UseEmiEvent, o => o.Args.Add("something-changed"));
+                    button.Schema.PostAction = Actions.Local(Composables.UseEmitEvent, o => o.Args.Add("something-changed"));
                 }
             );
 

@@ -1,7 +1,6 @@
 import { useComposableResolver, useDataFetcher, useRemoteClient } from "#imports";
 
 export default function() {
-
   const actions = {
     "Composite": Composite({ actionExecuter: { execute } }),
     "Local": Client(),
@@ -11,15 +10,15 @@ export default function() {
   function Client() {
     const composableResolver = useComposableResolver();
 
-    async function execute(action, events) {
+    async function execute(action, injectedData, events) {
       const composable = (await composableResolver.resolve(action.composable)).default();
 
       if(composable.execute) {
-        return composable.execute(action.args, events);
+        return composable.execute(action.args, injectedData, events);
       }
 
       if(composable.executeAsync) {
-        return await composable.executeAsync(action.args, events);
+        return await composable.executeAsync(action.args, injectedData, events);
       }
 
       throw new Error("Action composable should have either `execute` or `executeAsync`");
@@ -31,9 +30,9 @@ export default function() {
   }
 
   function Composite({ actionExecuter }) {
-    async function execute(action, events) {
+    async function execute(action, injectData, events) {
       for(const part of action.parts) {
-        await actionExecuter.execute({ action: part, events });
+        await actionExecuter.execute({ action: part, injectData, events });
       }
     }
 
@@ -46,11 +45,11 @@ export default function() {
     const dataFetcher = useDataFetcher();
     const remoteClient = useRemoteClient();
 
-    async function execute(action) {
-      const headers = action.headers ? await dataFetcher.fetch({ data: action.headers }) : { };
-      const query = action.query ? await dataFetcher.fetch({ data: action.query }) : null;
-      const params = action.params ? await dataFetcher.fetch({ data: action.params }) : { };
-      const body = action.body ? await dataFetcher.fetch({ data: action.body })
+    async function execute(action, injectedData) {
+      const headers = action.headers ? await dataFetcher.fetch({ data: action.headers, injectedData }) : { };
+      const query = action.query ? await dataFetcher.fetch({ data: action.query, injectedData }) : null;
+      const params = action.params ? await dataFetcher.fetch({ data: action.params, injectedData }) : { };
+      const body = action.body ? await dataFetcher.fetch({ data: action.body, injectedData })
         : (action.method === "GET" ? null : { });
 
       await remoteClient.send({
@@ -68,10 +67,10 @@ export default function() {
     };
   }
 
-  async function execute({ action, events }) {
+  async function execute({ action, injectedData, events }) {
     const executer = actions[action?.type];
 
-    await executer.execute(action, events);
+    await executer.execute(action, injectedData, events);
   }
 
   return {

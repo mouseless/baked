@@ -21,14 +21,15 @@ const { schema } = defineProps({
 
 const { action, icon, label, postAction } = schema;
 const loading = ref(false);
+const injectedData = context.injectData();
 const events = context.injectEvents();
 
 async function onClick() {
   loading.value = true;
-  await actionExecuter.execute({ action, events });
+  await actionExecuter.execute({ action, injectedData, events });
 
   if(postAction) {
-    await actionExecuter.execute({ action: postAction, events });
+    await actionExecuter.execute({ action: postAction, injectedData, events });
   }
   loading.value = false;
 }
