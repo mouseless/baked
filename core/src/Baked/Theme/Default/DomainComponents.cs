@@ -106,7 +106,7 @@ public static class DomainComponents
 
     public static ComponentDescriptor<Button> MethodButton(MethodModel method, ComponentContext context,
         Action<Button>? options = default
-    ) => B.Button(method.Name, method.GetRequiredSchema<RemoteAction>(context), Actions.Local(Composables.UseEmiEvent, options: o => o.Args.Add(method.Name.Kebaberize())),
+    ) => B.Button(method.Name, method.GetRequiredSchema<RemoteAction>(context),
             options: options
         );
 
