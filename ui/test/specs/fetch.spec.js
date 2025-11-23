@@ -11,13 +11,27 @@ test.beforeEach(async({ goto, page }) => {
 });
 
 test("refresh is executed for requests sent with an expired token", async({ goto, page }) => {
-  const requestPromise = page.waitForRequest(req => req.url().includes("time-provider-samples/now"));
-  const token = giveMe.aToken();
+  const requests = [];
+
+  page.on("request", request => {
+    if(request.url().includes("time-provider-samples/now")) {
+      requests.push(request);
+    }
+  });
+
+  const token = giveMe.aToken({ expiresInSeconds: 3 });
+
   await mockMe.theSession(page, token);
   await goto("/specs/auth", { waitUntil: "hydration" });
 
   await page.getByTestId("request").click();
+  await page.waitForTimeout(3500);
 
-  const request = await requestPromise;
-  expect(request.headers()["authorization"]).toBe("NOT IMPLEMENTED YET");
+  await page.getByTestId("request").click();
+  await page.waitForTimeout(100);
+
+  expect(requests.length).toBe(2);
+  expect(requests[0].headers()["authorization"]).toBeDefined();
+  expect(requests[1].headers()["authorization"]).toBeDefined();
+  expect(requests[0].headers()["authorization"]).not.toBe(requests[1].headers()["authorization"]);
 });
