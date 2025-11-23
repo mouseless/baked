@@ -493,17 +493,17 @@ export default {
     };
   },
 
-  aToken({ accessExpired, admin, expiresInSeconds } = {}) {
+  aToken({ accessExpired, admin, expiresAt } = {}) {
     accessExpired = $(accessExpired, false);
     admin = $(admin, false);
-    expiresInSeconds = $(expiresInSeconds, null);
+    expiresAt = $(expiresAt, null);
 
     let access = accessExpired ? expiredAccessToken :
       admin ? adminUiToken :
         accessToken;
 
-    if(expiresInSeconds !== null) {
-      const exp = Math.floor(Date.now() / 1000) + expiresInSeconds;
+    if(expiresAt !== null) {
+      const exp = Math.floor(expiresAt / 1000);
       const payload = Buffer.from(JSON.stringify({ exp })).toString("base64");
       access = `eyJhbGciOiJIUzI1NiJ9.${payload}.F4K4GkNqtuUNy6cgyOEtrLtaidgvVQmsw1Ouixyw5a0`;
     }

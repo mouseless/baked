@@ -18,14 +18,14 @@ test("refresh is executed for requests sent with an expired token", async({ goto
       requests.push(request);
     }
   });
-
-  const token = giveMe.aToken({ expiresInSeconds: 3 });
+  const datetime = Date.now();
+  const token = giveMe.aToken({ expiresAt: datetime + 5000 });
 
   await mockMe.theSession(page, token);
   await goto("/specs/auth", { waitUntil: "hydration" });
 
   await page.getByTestId("request").click();
-  await page.waitForTimeout(3500);
+  await page.clock.setFixedTime(datetime + 6000);
 
   await page.getByTestId("request").click();
   await page.waitForTimeout(100);
