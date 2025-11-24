@@ -26,5 +26,4 @@ const loading = context.injectLoading();
 async function onClick() {
   emit("submit");
 }
-
 </script>

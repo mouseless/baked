@@ -105,7 +105,7 @@ public class FormSampleUiOverrideFeature : IFeature
             builder.Conventions.AddMethodComponent(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.ClearStates)),
                 where: cc => cc.Path.EndsWith(nameof(PageTitle.Actions)),
-                component: (c, cc) => MethodButton(c.Method, cc)
+                component: (c, cc) => MethodButton(c.Method, cc.Drill(c.Method.Name))
             );
             builder.Conventions.AddMethodComponentConfiguration<Button>(
                 when: c => c.Method.Name.Equals(nameof(FormSample.ClearStates)),

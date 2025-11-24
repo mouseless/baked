@@ -3,8 +3,9 @@
 public static class Components
 {
     public static ComponentDescriptor<Button> Button(string label, IAction action,
+        IAction? postAction = default,
         Action<Button>? options = default
-    ) => new(options.Apply(new(label))) { Action = action };
+    ) => new(options.Apply(new(label))) { Action = action, PostAction = postAction };
 
     public static ComponentDescriptor<CardLink> CardLink(string route, string title,
         Action<CardLink>? options = default
