@@ -284,7 +284,7 @@ public static class ThemeExtensions
         );
     }
 
-    public static void RemovePropertyTypeSchema<TSchema>(this IDomainModelConventionCollection conventions, Func<PropertyModelContext, bool> when,
+    public static void RemovePropertySchema<TSchema>(this IDomainModelConventionCollection conventions, Func<PropertyModelContext, bool> when,
         int order = default
     )
     {
