@@ -75,7 +75,7 @@ async function load() {
 }
 
 async function onSubmit() {
-  if(!descriptor.action && !descriptor.postAction) { return; }
+  if(!descriptor.action) { return; }
 
   loading.value = true;
   await actionExecuter.execute({ action: descriptor.action, injectedData, events });
