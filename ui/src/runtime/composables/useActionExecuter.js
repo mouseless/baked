@@ -19,62 +19,61 @@ export default function() {
   };
 }
 
-
-  function Composite({ actionExecuter }) {
-    async function execute({ action, injectData, events }) {
-      for(const part of action.parts) {
-        await actionExecuter.execute({ action: part, injectData, events });
-      }
+function Composite({ actionExecuter }) {
+  async function execute({ action, injectData, events }) {
+    for(const part of action.parts) {
+      await actionExecuter.execute({ action: part, injectData, events });
     }
-
-    return {
-      execute
-    };
   }
 
-  function Local() {
-    const composableResolver = useComposableResolver();
+  return {
+    execute
+  };
+}
 
-    async function execute({ action, events }) {
-      const composable = (await composableResolver.resolve(action.composable)).default();
+function Local() {
+  const composableResolver = useComposableResolver();
 
-      if(composable.executeAsync) {
-        return await composable.executeAsync(...(action.args || []), events);
-      }
+  async function execute({ action, events }) {
+    const composable = (await composableResolver.resolve(action.composable)).default();
 
-      throw new Error("Action composable should have `executeAsync`");
+    if(composable.executeAsync) {
+      return await composable.executeAsync(...(action.args || []), events);
     }
 
-    return {
-      execute
-    };
+    throw new Error("Action composable should have `executeAsync`");
   }
 
-  function Remote() {
-    const { public: { composables } } = useRuntimeConfig();
-    const dataFetcher = useDataFetcher();
-    const pathBuilder = usePathBuilder();
+  return {
+    execute
+  };
+}
 
-    async function execute({ action, injectedData }) {
-      const headers = action.headers ? await dataFetcher.fetch({ data: action.headers, injectedData }) : { };
-      const query = action.query ? await dataFetcher.fetch({ data: action.query, injectedData }) : null;
-      const params = action.params ? await dataFetcher.fetch({ data: action.params, injectedData }) : { };
-      const body = action.body ? await dataFetcher.fetch({ data: action.body, injectedData })
-        : (action.method === "GET" ? null : { });
+function Remote() {
+  const { public: { composables } } = useRuntimeConfig();
+  const dataFetcher = useDataFetcher();
+  const pathBuilder = usePathBuilder();
 
-      const result = await $fetch(pathBuilder.build(action.path, params),
-        {
-          baseURL: composables.useDataFetcher.baseURL,
-          method: action.method,
-          headers: headers,
-          query: query,
-          body: body
-        });
+  async function execute({ action, injectedData }) {
+    const headers = action.headers ? await dataFetcher.fetch({ data: action.headers, injectedData }) : { };
+    const query = action.query ? await dataFetcher.fetch({ data: action.query, injectedData }) : null;
+    const params = action.params ? await dataFetcher.fetch({ data: action.params, injectedData }) : { };
+    const body = action.body ? await dataFetcher.fetch({ data: action.body, injectedData })
+      : (action.method === "GET" ? null : { });
 
-      return result;
-    }
+    const result = await $fetch(pathBuilder.build(action.path, params),
+      {
+        baseURL: composables.useDataFetcher.baseURL,
+        method: action.method,
+        headers: headers,
+        query: query,
+        body: body
+      });
 
-    return {
-      execute
-    };
+    return result;
   }
+
+  return {
+    execute
+  };
+}
