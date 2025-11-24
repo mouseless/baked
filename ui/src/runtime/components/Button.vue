@@ -1,18 +1,19 @@
 <template>
   <Button
     :icon="`pi ${icon}`"
-    :label
+    :label="l(label)"
     :loading
     @click="onClick"
   />
 </template>
 <script setup>
 import { ref } from "vue";
-import { useActionExecuter, useContext } from "#imports";
+import { useActionExecuter, useContext, useLocalization } from "#imports";
 import { Button } from "primevue";
 
 const actionExecuter = useActionExecuter();
 const context = useContext();
+const { localize: l } = useLocalization();
 
 const { schema } = defineProps({
   schema: { type: null, required: true },

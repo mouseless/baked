@@ -4,25 +4,27 @@ import { useComposableResolver, useDataFetcher, usePathBuilder } from "#imports"
 export default function() {
   const actions = {
     "Composite": Composite({ actionExecuter: { execute } }),
-    "Local": Client(),
+    "Local": Local(),
     "Remote": Remote()
   };
 
-  function Client() {
-    const composableResolver = useComposableResolver();
+  async function execute({ action, injectedData, events }) {
+    const executer = actions[action?.type];
 
-    async function execute({ action, events }) {
-      const composable = (await composableResolver.resolve(action.composable)).default();
+    await executer.execute({ action, injectedData, events });
+  }
 
-      if(composable.execute) {
-        return composable.execute(...(action.args || []), events);
+  return {
+    execute
+  };
+}
+
+
+  function Composite({ actionExecuter }) {
+    async function execute({ action, injectData, events }) {
+      for(const part of action.parts) {
+        await actionExecuter.execute({ action: part, injectData, events });
       }
-
-      if(composable.executeAsync) {
-        return await composable.executeAsync(...(action.args || []), events);
-      }
-
-      throw new Error("Action composable should have either `execute` or `executeAsync`");
     }
 
     return {
@@ -30,11 +32,17 @@ export default function() {
     };
   }
 
-  function Composite({ actionExecuter }) {
-    async function execute({ action, injectData, events }) {
-      for(const part of action.parts) {
-        await actionExecuter.execute({ action: part, injectData, events });
+  function Local() {
+    const composableResolver = useComposableResolver();
+
+    async function execute({ action, events }) {
+      const composable = (await composableResolver.resolve(action.composable)).default();
+
+      if(composable.executeAsync) {
+        return await composable.executeAsync(...(action.args || []), events);
       }
+
+      throw new Error("Action composable should have `executeAsync`");
     }
 
     return {
@@ -70,14 +78,3 @@ export default function() {
       execute
     };
   }
-
-  async function execute({ action, injectedData, events }) {
-    const executer = actions[action?.type];
-
-    await executer.execute({ action, injectedData, events });
-  }
-
-  return {
-    execute
-  };
-}
