@@ -493,15 +493,23 @@ export default {
     };
   },
 
-  aToken({ accessExpired, admin } = {}) {
+  aToken({ accessExpired, admin, expiresAt } = {}) {
     accessExpired = $(accessExpired, false);
     admin = $(admin, false);
+    expiresAt = $(expiresAt, null);
+
+    let access = accessExpired ? expiredAccessToken :
+      admin ? adminUiToken :
+        accessToken;
+
+    if(expiresAt !== null) {
+      const exp = Math.floor(expiresAt / 1000);
+      const payload = Buffer.from(JSON.stringify({ exp })).toString("base64");
+      access = `eyJhbGciOiJIUzI1NiJ9.${payload}.F4K4GkNqtuUNy6cgyOEtrLtaidgvVQmsw1Ouixyw5a0`;
+    }
 
     return {
-      access:
-        accessExpired ? expiredAccessToken :
-          admin ? adminUiToken :
-            accessToken,
+      access,
       refresh: refreshToken
     };
   },
