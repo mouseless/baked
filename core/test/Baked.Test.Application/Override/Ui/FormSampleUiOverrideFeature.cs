@@ -112,7 +112,7 @@ public class FormSampleUiOverrideFeature : IFeature
                 where: cc => cc.Path.EndsWith(nameof(PageTitle.Actions)),
                 component: button =>
                 {
-                    button.Schema.PostAction = Actions.Emit("something-changed");
+                    button.PostAction = Actions.Emit("something-changed");
                 }
             );
             builder.Conventions.AddTypeComponentConfiguration<ReportPage>(

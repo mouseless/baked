@@ -26,7 +26,7 @@ const variants = [
             type: "Local",
             composable: "useDelay",
             args:[
-              100
+              500
             ]
           },
           {

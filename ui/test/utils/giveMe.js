@@ -29,7 +29,9 @@ export default {
 
     return {
       type: "Button",
-      schema: { action, icon, label, postAction }
+      schema: { icon, label },
+      action,
+      postAction
     };
   },
 

@@ -8,16 +8,16 @@
         {
           "type": "Button",
           "schema": {
-            "action": {
-              "type": "Remote",
-              "path": "form-sample/states",
-              "method": "DELETE"
-            },
-            "postAction": {
-              "type": "Emit",
-              "eventKey": "something-changed"
-            },
             "label": "ClearStates"
+          },
+          "action": {
+            "type": "Remote",
+            "path": "form-sample/states",
+            "method": "DELETE"
+          },
+          "postAction": {
+            "type": "Emit",
+            "eventKey": "something-changed"
           }
         }
       ]

@@ -5,6 +5,13 @@
 - Dynamic routing is now supported and can be used when;
   - navigating through pages
   - fetching data from backend
+- `Bake` now executes given `Action` and `PostAction` defined in 
+  `ComponentDescriptor` implementations
+  ```javascript
+  async function onClick() {
+    emit("submit");
+  }
+  ```  
 - `Button` component is now added
 - `useActionExecuter` is now added which is a composable that executes `Emit`, 
   `Local`, `Remote` or `Composite` actions with given configuration
