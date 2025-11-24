@@ -45,14 +45,14 @@ function Emit() {
 function Local() {
   const composableResolver = useComposableResolver();
 
-  async function execute({ action, events }) {
+  async function execute({ action }) {
     const composable = (await composableResolver.resolve(action.composable)).default();
 
-    if(composable.execute) {
-      return await composable.execute(...(action.args || []), events);
+    if(composable.run) {
+      return await composable.run(...(action.args || []));
     }
 
-    throw new Error("Action composable should have async `execute`");
+    throw new Error("Action composable should have async `run`");
   }
 
   return {
@@ -61,9 +61,9 @@ function Local() {
 }
 
 function Remote() {
-  const { public: { baseURL } } = useRuntimeConfig();
   const dataFetcher = useDataFetcher();
   const pathBuilder = usePathBuilder();
+  const { public: { baseURL } } = useRuntimeConfig();
 
   async function execute({ action, injectedData }) {
     // TODO make sure `ref` values are unreffed
