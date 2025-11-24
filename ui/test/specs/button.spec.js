@@ -20,7 +20,7 @@ test.describe("Base", () => {
   test("label", async({ page }) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator(primevue.button.base)).toHaveText("Base");
+    await expect(component.locator(primevue.button.base)).toHaveText("Button");
   });
 
   test("loading", async({ page }) => {
@@ -35,16 +35,6 @@ test.describe("Base", () => {
     await expect(spinner).toBeVisible();
     await expect(button).toBeDisabled();
   });
-
-  test("visual", { tag: "@visual" }, async({ page }) => {
-    const component = page.getByTestId(id);
-
-    await expect(component).toHaveScreenshot();
-  });
-});
-
-test.describe("Actions", () => {
-  const id = "Base";
 
   test("Execute given composite action", async({ page }) => {
     const requestPromise = page.waitForRequest(req => req.url().includes("rich-transient-with-datas"));
@@ -72,5 +62,11 @@ test.describe("Actions", () => {
 
     await expect(page.locator(primevue.toast.base).last()).toBeVisible();
     await expect(page.locator(primevue.toast.summary).last()).toHaveText("Execute Post Action");
+  });
+
+  test("visual", { tag: "@visual" }, async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component).toHaveScreenshot();
   });
 });

@@ -67,7 +67,7 @@ const variants = [
           { message: "Execute Post Action" }
         ]
       },
-      label: "Base",
+      label: "Spec: Button",
       icon: "pi-play-circle"
     })
   }
