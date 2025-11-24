@@ -34,7 +34,7 @@ function Composite({ actionExecuter }) {
 
 function Emit() {
   async function execute({ action, events }) {
-    events.emit(action.eventKey);
+    await events.emit(action.eventKey);
   }
 
   return {
@@ -73,14 +73,13 @@ function Remote() {
     const body = action.body ? await dataFetcher.fetch({ data: action.body, injectedData })
       : (action.method === "GET" ? null : { });
 
-    const result = await $fetch(pathBuilder.build(action.path, params),
-      {
-        baseURL: apiBaseURL,
-        method: action.method,
-        headers: headers,
-        query: query,
-        body: body
-      });
+    const result = await $fetch(pathBuilder.build(action.path, params), {
+      baseURL: apiBaseURL,
+      method: action.method,
+      headers: headers,
+      query: query,
+      body: body
+    });
 
     return result;
   }

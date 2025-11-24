@@ -23,7 +23,7 @@ const { icon, label } = schema;
 
 const loading = context.injectLoading();
 
-async function onClick() {
+function onClick() {
   emit("submit");
 }
 </script>

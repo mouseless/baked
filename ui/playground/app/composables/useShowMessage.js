@@ -9,8 +9,6 @@ export default function() {
       summary: message,
       life: 3000
     });
-
-    await Promise.resolve();
   }
 
   return {
