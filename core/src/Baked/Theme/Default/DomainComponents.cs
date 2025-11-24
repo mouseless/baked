@@ -148,7 +148,6 @@ public static class DomainComponents
         context = context.Drill(nameof(Button));
 
         return B.Button(l(method.Name), method.GetRequiredSchema<RemoteAction>(context.Drill(nameof(IComponentDescriptor.Action))),
-            postAction: method.GetSchema<RemoteAction>(context.Drill(nameof(IComponentDescriptor.PostAction))),
             options: options
         );
     }
