@@ -80,4 +80,20 @@ public class DocumentationSamples
     /// commodo.
     /// </remarks>
     public void Multiline() { }
+
+    /// <summary>
+    /// Generic class summary
+    /// </summary>
+    public class Generic<T>
+    {
+        /// <summary>
+        /// Method of generic class summary
+        /// </summary>
+        public void MyMethod(MyClass _) { }
+
+        /// <summary>
+        /// Nested summary
+        /// </summary>
+        public class MyClass;
+    }
 }

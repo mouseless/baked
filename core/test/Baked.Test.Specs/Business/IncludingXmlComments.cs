@@ -103,4 +103,17 @@ public class IncludingXmlComments : TestSpec
         summary.ShouldNotBeNull();
         summary.InnerText.Trim().ShouldBe("Property summary");
     }
+
+    [Test]
+    public void Xml_comments_for_generic_classes_are_not_included_for_now()
+    {
+        var domainModel = GiveMe.TheDomainModel();
+        var type =
+            domainModel
+                .Types[typeof(DocumentationSamples.Generic<>)]
+                .GetMembers();
+
+        var summary = type.Documentation?["summary"];
+        summary.ShouldBeNull();
+    }
 }

@@ -100,7 +100,7 @@ public class XmlComments
             return $"{XmlTypeName(type.GetElementType())}[]";
         }
 
-        var fullName = type.FullName ?? type.Name;
+        var fullName = type.FullName ?? $"{type}";
 
         if (type.IsGenericType)
         {
