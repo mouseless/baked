@@ -2,8 +2,8 @@ import { expect, test } from "@nuxt/test-utils/playwright";
 import primevue from "../utils/locators/primevue.js";
 
 test.beforeEach(async({ goto, page }) => {
-  await goto("/specs/button", { waitUntil: "hydration" });
-  await page.route("*/**/rich-transient-with-datas/1/method", async route => {
+  await goto("/specs/button?val=2", { waitUntil: "hydration" });
+  await page.route("*/**/rich-transient-with-datas/12/method", async route => {
     await route.fulfill("fake-response");
   });
 });
@@ -49,7 +49,7 @@ test.describe("Base", () => {
     const request = await requestPromise;
     expect(request.method()).toBe("POST");
     expect(request.headers()["authorization"]).toContain("token-admin-ui");
-    expect(request.url()).toContain("/rich-transient-with-datas/1/method");
+    expect(request.url()).toContain("/rich-transient-with-datas/12/method");
     expect(request.url()).toContain("?val=2");
     expect(request.postDataJSON()).toEqual({ text: "text" });
   });

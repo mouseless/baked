@@ -6,7 +6,12 @@
   />
 </template>
 <script setup>
+import { useContext } from "#imports";
 import giveMe from "@utils/giveMe";
+
+const context = useContext();
+
+context.provideData({ id: 12 }, "ParentData");
 
 const variants = [
   {
@@ -40,16 +45,15 @@ const variants = [
               }
             },
             query: {
-              type: "Inline",
-              value: {
-                val: "2"
-              }
+              type: "Computed",
+              composable: "useNuxtRoute",
+              args: [
+                "query"
+              ]
             },
             params: {
-              type: "Inline",
-              value: {
-                id: 1
-              }
+              type: "Injected",
+              key: "ParentData"
             },
             body: {
               type: "Inline",

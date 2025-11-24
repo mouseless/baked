@@ -21,9 +21,9 @@ export default function() {
 }
 
 function Composite({ actionExecuter }) {
-  async function execute({ action, injectData, events }) {
+  async function execute({ action, injectedData, events }) {
     for(const part of action.parts) {
-      await actionExecuter.execute({ action: part, injectData, events });
+      await actionExecuter.execute({ action: part, injectedData, events });
     }
   }
 
@@ -66,6 +66,7 @@ function Remote() {
   const pathBuilder = usePathBuilder();
 
   async function execute({ action, injectedData }) {
+    // TODO make sure `ref` values are unreffed
     const headers = action.headers ? await dataFetcher.fetch({ data: action.headers, injectedData }) : { };
     const query = action.query ? await dataFetcher.fetch({ data: action.query, injectedData }) : null;
     const params = action.params ? await dataFetcher.fetch({ data: action.params, injectedData }) : { };
