@@ -6,7 +6,7 @@
     :schema="descriptor.schema"
     :data
     :class="classes"
-    @submit="execute"
+    @submit="onSubmit"
   >
     <slot v-if="$slots.default" />
   </component>
@@ -74,10 +74,8 @@ async function load() {
   emit("loaded");
 }
 
-async function execute() {
-  if(!descriptor.action && !descriptor.postAction) {
-    return await Promise.resolve();
-  }
+async function onSubmit() {
+  if(!descriptor.action && !descriptor.postAction) { return; }
 
   loading.value = true;
   await actionExecuter.execute({ action: descriptor.action, injectedData, events });
