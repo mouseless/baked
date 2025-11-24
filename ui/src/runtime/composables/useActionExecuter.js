@@ -63,7 +63,7 @@ function Local() {
 function Remote() {
   const dataFetcher = useDataFetcher();
   const pathBuilder = usePathBuilder();
-  const { public: { baseURL } } = useRuntimeConfig();
+  const { public: { apiBaseURL } } = useRuntimeConfig();
 
   async function execute({ action, injectedData }) {
     // TODO make sure `ref` values are unreffed
@@ -75,7 +75,7 @@ function Remote() {
 
     const result = await $fetch(pathBuilder.build(action.path, params),
       {
-        baseURL: baseURL,
+        baseURL: apiBaseURL,
         method: action.method,
         headers: headers,
         query: query,

@@ -24,7 +24,7 @@ const variants = [
             type: "Local",
             composable: "useShowMessage",
             args: [
-              { message: "Execute Action" }
+              "Execute Action"
             ]
           },
           {
@@ -68,7 +68,7 @@ const variants = [
         type: "Local",
         composable: "useShowMessage",
         args: [
-          { message: "Execute Post Action" }
+          "Execute Post Action"
         ]
       },
       label: "Spec: Button",

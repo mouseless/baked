@@ -25,7 +25,7 @@ import { useRuntimeConfig } from "#app";
 import { useContext } from "#imports";
 import { Parameters } from "#components";
 
-const { public: { baseURL } } = useRuntimeConfig();
+const { public: { apiBaseURL } } = useRuntimeConfig();
 const context = useContext();
 
 const { schema } = defineProps({
@@ -51,7 +51,7 @@ async function submit() {
   loading.value = true;
   await $fetch(action.path,
     {
-      baseURL: baseURL,
+      baseURL: apiBaseURL,
       method: action.method,
       body: body.value
     }

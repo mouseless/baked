@@ -68,7 +68,7 @@ import { Button, Divider, Message } from "primevue";
 import { useRuntimeConfig } from "#app";
 import { createError, useToast, useToken } from "#imports";
 
-const { public: { baseURL } } = useRuntimeConfig();
+const { public: { apiBaseURL } } = useRuntimeConfig();
 const token = useToken();
 const toast = useToast();
 
@@ -81,7 +81,7 @@ function authenticationException() {
 
 async function requestWithToken() {
   const result = await $fetch("time-provider-samples/now", {
-    baseURL: baseURL,
+    baseURL: apiBaseURL,
     method: "GET"
   });
 

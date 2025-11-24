@@ -3,7 +3,7 @@ import type { NuxtI18nOptions } from "@nuxtjs/i18n";
 import { pathToFileURL } from "url";
 
 export interface ModuleOptions {
-  baseURL: String,
+  apiBaseURL: String,
   components?: Components,
   composables: Composables,
   primevue: PrimeVueOptions,
@@ -118,7 +118,7 @@ export default defineNuxtModule<ModuleOptions>({
     _nuxt.options.runtimeConfig.public.primevue = _options.primevue;
     _nuxt.options.runtimeConfig.public.components = _options.components;
     _nuxt.options.runtimeConfig.public.composables = _options.composables;
-    _nuxt.options.runtimeConfig.public.baseURL = _options.baseURL;
+    _nuxt.options.runtimeConfig.public.apiBaseURL = _options.apiBaseURL;
 
     // by pushing instead of setting, it allows custom css
     _nuxt.options.css.push("primeicons/primeicons.css");

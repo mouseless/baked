@@ -59,7 +59,7 @@ defineProps({
 defineModel({ type: null, default: null });
 
 const { localize: lc } = useLocalization({ group: "Login" });
-const { public: { baseURL } } = useRuntimeConfig();
+const { public: { apiBaseURL } } = useRuntimeConfig();
 const token = useToken();
 
 const username = ref();
@@ -72,7 +72,7 @@ async function submit() {
 
   const result = await $fetch("/authentication-samples/login",
     {
-      baseURL: baseURL,
+      baseURL: apiBaseURL,
       method: "POST",
       body: { username: username.value }
     });

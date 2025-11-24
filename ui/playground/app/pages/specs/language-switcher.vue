@@ -44,11 +44,11 @@ import { useRuntimeConfig } from "#app";
 import { useLocalization } from "#imports";
 
 const { localize: l } = useLocalization();
-const { public: { baseURL } } = useRuntimeConfig();
+const { public: { apiBaseURL } } = useRuntimeConfig();
 
 async function requestWithLanguageHeader() {
   await $fetch("time-provider-samples/now", {
-    baseURL: baseURL,
+    baseURL: apiBaseURL,
     method: "GET"
   }).catch(_ => { });
 }

@@ -135,7 +135,7 @@ function Inline() {
 
 function Remote({ parentFetch }) {
   const pathBuilder = usePathBuilder();
-  const { public: { baseURL, composables } } = useRuntimeConfig();
+  const { public: { apiBaseURL, composables } } = useRuntimeConfig();
   const unref = useUnref();
 
   async function fetch({ data, injectedData }) {
@@ -145,7 +145,7 @@ function Remote({ parentFetch }) {
 
     const path = pathBuilder.build(data.path, params);
 
-    const options = { baseURL, headers: headers, query: query };
+    const options = { baseURL: apiBaseURL, headers: headers, query: query };
     if(data.attributes) {
       options.attributes = data.attributes;
     }

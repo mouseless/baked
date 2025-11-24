@@ -33,6 +33,8 @@
   data = Computed(Composables.UseRoute, options: o => o.Args.Add("params"))
 }
 ```
+- `baseURL` is renamed to `apiBaseUrl` and config is now set in root of `bake`
+  module options and no longer awailable through `dataFetcher`
   
 ## Improvements
 

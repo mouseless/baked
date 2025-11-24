@@ -3,7 +3,7 @@ import { useToast } from "#imports";
 export default function() {
   const toast = useToast();
 
-  async function run({ message }) {
+  async function run(message) {
     toast.add({
       severity: "info",
       summary: message,
