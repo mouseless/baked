@@ -4,7 +4,23 @@
     "title": {
       "title": "Form",
       "description": "Vibe coding form components",
-      "actions": []
+      "actions": [
+        {
+          "type": "Button",
+          "schema": {
+            "label": "ClearStates"
+          },
+          "action": {
+            "type": "Remote",
+            "path": "form-sample/states",
+            "method": "DELETE"
+          },
+          "postAction": {
+            "type": "Emit",
+            "eventKey": "something-changed"
+          }
+        }
+      ]
     },
     "queryParameters": [],
     "tabs": [
@@ -97,33 +113,6 @@
               }
             },
             "key": "add-state",
-            "narrow": true
-          },
-          {
-            "component": {
-              "type": "DataPanel",
-              "schema": {
-                "title": {
-                  "type": "Inline",
-                  "value": "ClearStates"
-                },
-                "localizeTitle": true,
-                "parameters": [],
-                "content": {
-                  "type": "VibeForm",
-                  "schema": {
-                    "label": "ClearStates",
-                    "action": {
-                      "path": "form-sample/states",
-                      "method": "DELETE"
-                    },
-                    "submitEventName": "something-changed",
-                    "parameters": []
-                  }
-                }
-              }
-            },
-            "key": "clear-states",
             "narrow": true
           },
           {

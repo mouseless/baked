@@ -213,6 +213,18 @@
         "title": "Input",
         "links": [
           {
+            "title": "Button",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/button",
+                "icon": "pi pi-microchip",
+                "title": "Button",
+                "description": "Showcase interactions using button component"
+              }
+            }
+          },
+          {
             "title": "Language Switcher",
             "component": {
               "type": "CardLink",

@@ -6,14 +6,16 @@
     :schema="descriptor.schema"
     :data
     :class="classes"
+    @submit="onSubmit"
   >
     <slot v-if="$slots.default" />
   </component>
 </template>
 <script setup>
 import { onMounted, onUnmounted, ref } from "vue";
-import { useComponentResolver, useContext, useDataFetcher, useFormat } from "#imports";
+import { useActionExecuter, useComponentResolver, useContext, useDataFetcher, useFormat } from "#imports";
 
+const actionExecuter = useActionExecuter();
 const componentResolver = useComponentResolver();
 const context = useContext();
 const dataFetcher = useDataFetcher();
@@ -45,7 +47,7 @@ if(descriptor.binding) {
   events.on(descriptor.binding, path, load);
 }
 
-if(shouldLoad) {
+if(shouldLoad || descriptor.action || descriptor.postAction) {
   context.provideLoading(loading);
 }
 
@@ -70,5 +72,17 @@ async function load() {
   });
   loading.value = false;
   emit("loaded");
+}
+
+async function onSubmit() {
+  if(!descriptor.action) { return; }
+
+  loading.value = true;
+  await actionExecuter.execute({ action: descriptor.action, injectedData, events });
+
+  if(descriptor.postAction) {
+    await actionExecuter.execute({ action: descriptor.postAction, injectedData, events });
+  }
+  loading.value = false;
 }
 </script>

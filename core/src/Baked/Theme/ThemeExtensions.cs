@@ -185,7 +185,7 @@ public static class ThemeExtensions
         return builder.Build(context);
     }
 
-    #region Add Metadata
+    #region Add / Remove Metadata
 
     public static void AddTypeSchema<TSchema>(this IDomainModelConventionCollection conventions, Func<TSchema> schema,
         Func<TypeModelMetadataContext, bool>? when = default,
@@ -226,6 +226,17 @@ public static class ThemeExtensions
                 Filter = where
             },
             when: when,
+            order: order
+        );
+    }
+
+    public static void RemoveTypeSchema<TSchema>(this IDomainModelConventionCollection conventions, Func<TypeModelMetadataContext, bool> when,
+        int order = default
+    )
+    {
+        order += RestApiLayer.MaxConventionOrder * 2;
+
+        conventions.RemoveTypeAttribute<DescriptorBuilderAttribute<TSchema>>(when: when,
             order: order
         );
     }
@@ -273,6 +284,17 @@ public static class ThemeExtensions
         );
     }
 
+    public static void RemovePropertySchema<TSchema>(this IDomainModelConventionCollection conventions, Func<PropertyModelContext, bool> when,
+        int order = default
+    )
+    {
+        order += RestApiLayer.MaxConventionOrder * 2;
+
+        conventions.RemovePropertyAttribute<DescriptorBuilderAttribute<TSchema>>(when: when,
+            order: order
+        );
+    }
+
     public static void AddMethodSchema<TSchema>(this IDomainModelConventionCollection conventions, Func<TSchema> schema,
         Func<MethodModelContext, bool>? when = default,
         Func<ComponentContext, bool>? where = default,
@@ -316,6 +338,17 @@ public static class ThemeExtensions
         );
     }
 
+    public static void RemoveMethodSchema<TSchema>(this IDomainModelConventionCollection conventions, Func<MethodModelContext, bool> when,
+        int order = default
+    )
+    {
+        order += RestApiLayer.MaxConventionOrder * 2;
+
+        conventions.RemoveMethodAttribute<DescriptorBuilderAttribute<TSchema>>(when: when,
+            order: order
+        );
+    }
+
     public static void AddParameterSchema<TSchema>(this IDomainModelConventionCollection conventions, Func<TSchema> schema,
         Func<ParameterModelContext, bool>? when = default,
         Func<ComponentContext, bool>? where = default,
@@ -355,6 +388,17 @@ public static class ThemeExtensions
                 Filter = where
             },
             when: c => c.Type.Has<ControllerModelAttribute>() && c.Parameter.Has<ParameterModelAttribute>() && when(c),
+            order: order
+        );
+    }
+
+    public static void RemoveParameterSchema<TSchema>(this IDomainModelConventionCollection conventions, Func<ParameterModelContext, bool> when,
+        int order = default
+    )
+    {
+        order += RestApiLayer.MaxConventionOrder * 2;
+
+        conventions.RemoveParameterSchema<DescriptorBuilderAttribute<TSchema>>(when: when,
             order: order
         );
     }
@@ -550,7 +594,7 @@ public static class ThemeExtensions
         return default;
     }
 
-    #region Add Metadata
+    #region Add / Remove Metadata
 
     public static void AddTypeComponent<TSchema>(this IDomainModelConventionCollection conventions, Func<ComponentDescriptor<TSchema>> component,
         Func<TypeModelMetadataContext, bool>? when = default,
@@ -600,6 +644,17 @@ public static class ThemeExtensions
                 });
             },
             when: c => when(c),
+            order: order
+        );
+    }
+
+    public static void RemoveTypeComponent<TSchema>(this IDomainModelConventionCollection conventions, Func<TypeModelMetadataContext, bool> when,
+        int order = default
+    ) where TSchema : IComponentSchema
+    {
+        order += RestApiLayer.MaxConventionOrder * 2;
+
+        conventions.RemoveTypeAttribute<ComponentDescriptorBuilderAttribute<TSchema>>(when,
             order: order
         );
     }
@@ -656,6 +711,17 @@ public static class ThemeExtensions
         );
     }
 
+    public static void RemovePropertyComponent<TSchema>(this IDomainModelConventionCollection conventions, Func<PropertyModelContext, bool> when,
+        int order = default
+    ) where TSchema : IComponentSchema
+    {
+        order += RestApiLayer.MaxConventionOrder * 2;
+
+        conventions.RemovePropertyAttribute<ComponentDescriptorBuilderAttribute<TSchema>>(when,
+            order: order
+        );
+    }
+
     public static void AddMethodComponent<TSchema>(this IDomainModelConventionCollection conventions, Func<ComponentDescriptor<TSchema>> component,
         Func<MethodModelContext, bool>? when = default,
         Func<ComponentContext, bool>? where = default,
@@ -708,6 +774,17 @@ public static class ThemeExtensions
         );
     }
 
+    public static void RemoveMethodComponent<TSchema>(this IDomainModelConventionCollection conventions, Func<MethodModelContext, bool> when,
+        int order = default
+    ) where TSchema : IComponentSchema
+    {
+        order += RestApiLayer.MaxConventionOrder * 2;
+
+        conventions.RemoveMethodAttribute<ComponentDescriptorBuilderAttribute<TSchema>>(when,
+            order: order
+        );
+    }
+
     public static void AddParameterComponent<TSchema>(this IDomainModelConventionCollection conventions, Func<ComponentDescriptor<TSchema>> component,
         Func<ParameterModelContext, bool>? when = default,
         Func<ComponentContext, bool>? where = default,
@@ -756,6 +833,17 @@ public static class ThemeExtensions
                 });
             },
             when: c => when(c),
+            order: order
+        );
+    }
+
+    public static void RemoveParameterComponent<TSchema>(this IDomainModelConventionCollection conventions, Func<ParameterModelContext, bool> when,
+        int order = default
+    ) where TSchema : IComponentSchema
+    {
+        order += RestApiLayer.MaxConventionOrder * 2;
+
+        conventions.RemoveParameterAttribute<ComponentDescriptorBuilderAttribute<TSchema>>(when,
             order: order
         );
     }

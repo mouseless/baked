@@ -1,5 +1,5 @@
 import { useRuntimeConfig } from "#app";
-import { useComposableResolver, useUnref } from "#imports";
+import { useComposableResolver, usePathBuilder, useUnref } from "#imports";
 
 export default function() {
   const datas = {
@@ -134,18 +134,18 @@ function Inline() {
 }
 
 function Remote({ parentFetch }) {
-  const { public: { composables } } = useRuntimeConfig();
+  const pathBuilder = usePathBuilder();
+  const { public: { apiBaseURL, composables } } = useRuntimeConfig();
   const unref = useUnref();
 
   async function fetch({ data, injectedData }) {
-    const baseURL = composables.useDataFetcher.baseURL;
     const headers = await fetchHeaders({ data, injectedData });
     const query = await fetchQuery({ data, injectedData });
     const params = await fetchParams({ data, injectedData });
 
-    const path = buildPath(data.path, params);
+    const path = pathBuilder.build(data.path, params);
 
-    const options = { baseURL, headers: headers, query: query };
+    const options = { baseURL: apiBaseURL, headers: headers, query: query };
     if(data.attributes) {
       options.attributes = data.attributes;
     }
@@ -156,16 +156,6 @@ function Remote({ parentFetch }) {
     }
 
     return await $fetch(path, { ...options, retry: false });
-  }
-
-  function buildPath(path, params) {
-    Object.entries(params).forEach(([key, value]) => {
-      // AI-GEN
-      // match either {key} or {anything:key}
-      const regex = new RegExp(`\\{(?:[\\w-]+:)?${key}\\}`, "g");
-      path = path.replace(regex, value);
-    });
-    return path;
   }
 
   async function fetchHeaders({ data, injectedData }) {

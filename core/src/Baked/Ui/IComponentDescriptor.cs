@@ -7,4 +7,6 @@ public interface IComponentDescriptor
     IData? Data { get; set; }
     // TODO - review this in form components
     string? Binding { get; set; }
+    public IAction? Action { get; set; }
+    public IAction? PostAction { get; set; }
 }

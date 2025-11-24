@@ -27,6 +27,7 @@ export default defineNuxtConfig({
     "@utils": resolve(fileURLToPath(new URL(".", import.meta.url)), "../test/utils")
   },
   baked: {
+    apiBaseURL: import.meta.env.API_BASE_URL,
     components: {
       Page: {
         title: "Baked Admin"
@@ -34,7 +35,6 @@ export default defineNuxtConfig({
     },
     composables: {
       useDataFetcher: {
-        baseURL: import.meta.env.API_BASE_URL,
         retry: true
       }
     },

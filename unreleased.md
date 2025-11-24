@@ -5,6 +5,16 @@
 - Dynamic routing is now supported and can be used when;
   - navigating through pages
   - fetching data from backend
+- `Bake` now executes given `Action` and `PostAction` defined in 
+  `ComponentDescriptor` implementations
+  ```javascript
+  async function onClick() {
+    emit("submit");
+  }
+  ```  
+- `Button` component is now added
+- `useActionExecuter` is now added which is a composable that executes `Emit`, 
+  `Local`, `Remote` or `Composite` actions with given configuration
 
 ## Breaking Changes
 
@@ -23,7 +33,10 @@
   data = Computed(Composables.UseRoute, options: o => o.Args.Add("params"))
 }
 ```
+- `baseURL` is renamed to `apiBaseUrl` and config is now set in root of `bake`
+  module options and no longer awailable through `dataFetcher`
   
 ## Improvements
 
 - `Parameters` now accept parameter class attribute for each parameter
+- `RemoveComponent` and `RemoveSchema` helper extensions are now added
