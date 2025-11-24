@@ -1,9 +1,9 @@
 <template>
   <Button
-    :icon="`pi ${icon}`"
+    :icon
     :label="l(label)"
     :loading
-    @click="onClick"
+    @click="$emit('submit')"
   />
 </template>
 <script setup>
@@ -17,13 +17,9 @@ const { schema } = defineProps({
   schema: { type: null, required: true },
   data: { type: null, default: null }
 });
-const emit = defineEmits(["submit"]);
+defineEmits(["submit"]);
 
 const { icon, label } = schema;
 
 const loading = context.injectLoading();
-
-function onClick() {
-  emit("submit");
-}
 </script>

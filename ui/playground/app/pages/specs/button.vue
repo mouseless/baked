@@ -72,7 +72,7 @@ const variants = [
         ]
       },
       label: "Spec: Button",
-      icon: "pi-play-circle"
+      icon: "pi pi-play-circle"
     })
   }
 ];
