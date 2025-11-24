@@ -4,6 +4,7 @@ import { useComposableResolver, useDataFetcher, usePathBuilder } from "#imports"
 export default function() {
   const actions = {
     "Composite": Composite({ actionExecuter: { execute } }),
+    "Emit": Emit(),
     "Local": Local(),
     "Remote": Remote()
   };
@@ -24,6 +25,16 @@ function Composite({ actionExecuter }) {
     for(const part of action.parts) {
       await actionExecuter.execute({ action: part, injectData, events });
     }
+  }
+
+  return {
+    execute
+  };
+}
+
+function Emit() {
+  async function execute({ action, events }) {
+    events.emit(action.eventKey);
   }
 
   return {

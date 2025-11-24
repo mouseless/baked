@@ -134,9 +134,9 @@ function Inline() {
 }
 
 function Remote({ parentFetch }) {
+  const pathBuilder = usePathBuilder();
   const { public: { composables } } = useRuntimeConfig();
   const unref = useUnref();
-  const pathBuilder = usePathBuilder();
 
   async function fetch({ data, injectedData }) {
     const baseURL = composables.useDataFetcher.baseURL;

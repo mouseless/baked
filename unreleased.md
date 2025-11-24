@@ -6,8 +6,8 @@
   - navigating through pages
   - fetching data from backend
 - `Button` component is now added
-- `useActionExecuter` is now added which is a composable that executes `Local`, 
-  `Remote` or `Composite` actions with given configuration
+- `useActionExecuter` is now added which is a composable that executes `Emit`, 
+  `Local`, `Remote` or `Composite` actions with given configuration
 
 ## Breaking Changes
 

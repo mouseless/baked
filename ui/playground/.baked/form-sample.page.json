@@ -14,11 +14,8 @@
               "method": "DELETE"
             },
             "postAction": {
-              "type": "Local",
-              "composable": "useEmitEvent",
-              "args": [
-                "something-changed"
-              ]
+              "type": "Emit",
+              "eventKey": "something-changed"
             },
             "label": "ClearStates"
           }

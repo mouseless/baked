@@ -6,6 +6,10 @@ public static class Actions
         Action<CompositeAction>? options = default
     ) => options.Apply(new());
 
+    public static EmitAction Emit(string eventKey,
+        Action<EmitAction>? options = default
+    ) => options.Apply(new(eventKey));
+
     public static LocalAction Local(string composable,
         Action<LocalAction>? options = default
     ) => options.Apply(new(composable));
