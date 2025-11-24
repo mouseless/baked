@@ -48,11 +48,11 @@ function Local() {
   async function execute({ action, events }) {
     const composable = (await composableResolver.resolve(action.composable)).default();
 
-    if(composable.executeAsync) {
-      return await composable.executeAsync(...(action.args || []), events);
+    if(composable.execute) {
+      return await composable.execute(...(action.args || []), events);
     }
 
-    throw new Error("Action composable should have `executeAsync`");
+    throw new Error("Action composable should have async `execute`");
   }
 
   return {
@@ -61,7 +61,7 @@ function Local() {
 }
 
 function Remote() {
-  const { public: { composables } } = useRuntimeConfig();
+  const { public: { baseURL } } = useRuntimeConfig();
   const dataFetcher = useDataFetcher();
   const pathBuilder = usePathBuilder();
 
@@ -74,7 +74,7 @@ function Remote() {
 
     const result = await $fetch(pathBuilder.build(action.path, params),
       {
-        baseURL: composables.useDataFetcher.baseURL,
+        baseURL: baseURL,
         method: action.method,
         headers: headers,
         query: query,

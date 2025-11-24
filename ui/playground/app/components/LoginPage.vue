@@ -59,7 +59,7 @@ defineProps({
 defineModel({ type: null, default: null });
 
 const { localize: lc } = useLocalization({ group: "Login" });
-const { public: { composables } } = useRuntimeConfig();
+const { public: { baseURL } } = useRuntimeConfig();
 const token = useToken();
 
 const username = ref();
@@ -72,7 +72,7 @@ async function submit() {
 
   const result = await $fetch("/authentication-samples/login",
     {
-      baseURL: composables.useDataFetcher.baseURL,
+      baseURL: baseURL,
       method: "POST",
       body: { username: username.value }
     });

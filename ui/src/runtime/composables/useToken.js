@@ -3,7 +3,7 @@ import { createError, useMutex } from "#imports";
 
 export default function() {
   const mutex = useMutex();
-  const { public: { auth, composables } } = useRuntimeConfig();
+  const { public: { auth, baseURL } } = useRuntimeConfig();
 
   async function current(
     shouldRefresh = true
@@ -33,7 +33,7 @@ export default function() {
 
       const result = await $fetch(auth.refreshApiRoute,
         {
-          baseURL: composables.useDataFetcher.baseURL,
+          baseURL: baseURL,
           method: "POST",
           headers: { "Authorization": `Bearer ${token?.refresh}` }
         }

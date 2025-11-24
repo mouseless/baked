@@ -3,7 +3,7 @@ import { useToast } from "#imports";
 export default function() {
   const toast = useToast();
 
-  async function executeAsync({ message }) {
+  async function execute({ message }) {
     toast.add({
       severity: "info",
       summary: message,
@@ -14,6 +14,6 @@ export default function() {
   }
 
   return {
-    executeAsync
+    execute
   };
 }
