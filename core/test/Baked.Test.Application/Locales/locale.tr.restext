@@ -50,6 +50,7 @@ Button=Buton
 Cache=Önbellek
 Card Link=Kart Bağlantısı
 Caches api responses in local storage=Api çağrılarını yerel depo üzerinden önbelleklileştirir
+Clear States= Hepsini Sil
 Column 1=Kolon 1
 Column 2=Kolon 2
 Column 3=Kolon 3
