@@ -6,7 +6,7 @@
       "description": "Showcases a report layout with tabs and data panels",
       "actions": []
     },
-    "queryParameters": [
+    "queryInputs": [
       {
         "name": "requiredWithDefault",
         "required": true,
@@ -103,7 +103,7 @@
                   "value": "GetWide"
                 },
                 "localizeTitle": true,
-                "parameters": [],
+                "inputs": [],
                 "content": {
                   "type": "Text",
                   "schema": {},
@@ -139,7 +139,7 @@
                 },
                 "collapsed": true,
                 "localizeTitle": true,
-                "parameters": [],
+                "inputs": [],
                 "content": {
                   "type": "Text",
                   "schema": {},
@@ -176,7 +176,7 @@
                 },
                 "collapsed": true,
                 "localizeTitle": true,
-                "parameters": [],
+                "inputs": [],
                 "content": {
                   "type": "Text",
                   "schema": {},
@@ -224,7 +224,7 @@
                   "value": "GetFirst"
                 },
                 "localizeTitle": true,
-                "parameters": [
+                "inputs": [
                   {
                     "name": "count",
                     "default": {
@@ -370,7 +370,7 @@
                 },
                 "collapsed": true,
                 "localizeTitle": true,
-                "parameters": [
+                "inputs": [
                   {
                     "name": "count",
                     "default": {

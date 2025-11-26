@@ -1,23 +1,23 @@
 <template>
-  <UiSpec title="Parameters">
+  <UiSpec title="Query Inputs">
     <Message severity="info">
       <span class="text-xl">
-        ⬇️  Check if there are 3 parameters, first having `default value` ⬇️
+        ⬆️  Check if values sync with query string above ⬆️
       </span>
     </Message>
     <div
       class="border-4 border-gray-500 rounded p-4 space-x-4"
       data-testid="component"
     >
-      <Parameters
-        :parameters
+      <QueryInputs
+        :inputs
         @ready="onReady"
         @changed="onChanged"
       />
     </div>
     <Message severity="info">
       <span class="text-xl">
-        ⬇️  Check if ready is true when all required parameters are set ⬇️
+        ⬇️  Check if ready is true when all required inputs are set ⬇️
       </span>
     </Message>
     <div class="border-4 border-gray-500 rounded p-4">
@@ -35,41 +35,50 @@
     </div>
     <Message severity="info">
       <span class="text-xl">
-        ⬇️  Check if 'readyValues' same with 'uniqueKey' ⬇️
+        ⬇️  Click and check if resets all inputs except required with default ⬆️
       </span>
     </Message>
     <div class="border-4 border-gray-500 rounded p-4">
-      <span class="text-gray-500">onReadyValues-key=</span>
-      <span data-testid="onReadyValues-key">{{ readyValues }}</span>
+      <Button
+        as="router-link"
+        label="RESET"
+        to="/specs/query-inputs"
+        data-testid="reset"
+      />
     </div>
   </UiSpec>
 </template>
 <script setup>
 import { ref } from "vue";
-import { Message } from "primevue";
+import { Button, Message } from "primevue";
 import giveMe from "@utils/giveMe";
 
 const ready = ref();
 const uniqueKey = ref();
-const readyValues = ref();
 
-const parameters = [
-  giveMe.aParameter({
+const inputs = [
+  giveMe.anInput({
     name: "requiredWithDefault",
     component: giveMe.anInputText({ testId: "required-with-default" }),
     required: true,
     defaultValue: "default value"
   }),
-  giveMe.aParameter({
+  giveMe.anInput({
+    name: "requiredWithDefaultSelfManaged",
+    required: true,
+    defaultSelfManaged: true,
+    component: giveMe.anInputText({ testId: "required-with-default-self-managed", defaultValue: "default" })
+  }),
+  giveMe.anInput({
     name: "required",
     component: giveMe.anInputText({ testId: "required" }),
     required: true
   }),
-  giveMe.aParameter({
+  giveMe.anInput({
     name: "optional",
     component: giveMe.anInputText({ testId: "optional" })
   }),
-  giveMe.aParameter({
+  giveMe.anInput({
     name: "num-required",
     component: giveMe.anInputNumber({ testId: "num-required" }),
     required: true
@@ -78,10 +87,9 @@ const parameters = [
 
 function onReady(value) {
   ready.value = value;
-  readyValues.value = uniqueKey.value;
 }
 
-function onChanged(event) {
-  uniqueKey.value = event.uniqueKey;
+function onChanged(value) {
+  uniqueKey.value = value;
 }
 </script>

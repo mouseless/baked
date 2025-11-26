@@ -155,8 +155,8 @@ public static class Components
         Action<PageTitle>? options = default
     ) => new(options.Apply(new(title)));
 
-    public static Parameter Parameter(string name, IComponentDescriptor component,
-        Action<Parameter>? options = default
+    public static Input Input(string name, IComponentDescriptor component,
+        Action<Input>? options = default
     ) => options.Apply(new(name, component));
 
     public static ComponentDescriptor<Rate> Rate(

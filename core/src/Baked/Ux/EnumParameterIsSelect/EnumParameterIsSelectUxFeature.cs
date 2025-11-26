@@ -56,7 +56,7 @@ public class EnumParameterIsSelectUxFeature(int _maxMemberCountForSelectButton)
             );
 
             // Default value of a required enum parameter is set to the first enum member
-            builder.Conventions.AddParameterSchemaConfiguration<Parameter>(
+            builder.Conventions.AddParameterSchemaConfiguration<Input>(
                 schema: (p, c, cc) => p.DefaultValue = c.Parameter.ParameterType.SkipNullable().GetEnumNames().First(),
                 when: c =>
                     c.Parameter.ParameterType.SkipNullable().IsEnum &&

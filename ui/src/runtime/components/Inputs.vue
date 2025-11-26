@@ -1,13 +1,13 @@
 <template>
   <div class="flex gap-2 max-md:flex-col max-md:min-w-24">
     <Bake
-      v-for="parameter in parameters"
-      :key="parameter.name"
-      v-model="values[parameter.name]"
-      :name="`parameters/${parameter.name}`"
-      :descriptor="parameter.component"
+      v-for="input in inputs"
+      :key="input.name"
+      v-model="values[input.name]"
+      :name="`inputs/${input.name}`"
+      :descriptor="input.component"
       class="max-md:w-full"
-      :class="parameterClass"
+      :class="inputClass"
     />
   </div>
 </template>
@@ -19,17 +19,17 @@ import { useContext, useDataFetcher } from "#imports";
 const dataFetcher = useDataFetcher();
 const context = useContext();
 
-const { parameters } = defineProps({
-  parameters: { type: Array, required: true },
-  parameterClass: { type: String, default: "" }
+const { inputs } = defineProps({
+  inputs: { type: Array, required: true },
+  inputClass: { type: String, default: "" }
 });
 const emit = defineEmits(["ready", "changed"]);
 
 const injectedData = context.injectData();
 const values = reactive({});
 
-for(const parameter of parameters) {
-  values[parameter.name] = ref(dataFetcher.get({ data: parameter.default, injectedData }));
+for(const input of inputs) {
+  values[input.name] = ref(dataFetcher.get({ data: input.default, injectedData }));
 }
 
 function checkValue(value) {
@@ -41,17 +41,17 @@ function checkValue(value) {
 }
 
 onMounted(async() => {
-  for(const parameter of parameters) {
-    if(!dataFetcher.shouldLoad(parameter.default?.type)) { continue; }
+  for(const input of inputs) {
+    if(!dataFetcher.shouldLoad(input.default?.type)) { continue; }
 
-    values[parameter.name] = await dataFetcher.fetch({ data: parameter.default, injectedData });
+    values[input.name] = await dataFetcher.fetch({ data: input.default, injectedData });
   }
 
   emitChanged();
   emitReady();
 });
 
-// when any of the parameter values changed from input components, it emits
+// when any of the inputs values changed from input components, it emits
 // ready and changed
 watch(values, async() => {
   emitChanged();
@@ -60,16 +60,16 @@ watch(values, async() => {
 
 function emitReady() {
   emit("ready",
-    parameters
-      .filter(p => p.required)
-      .reduce((result, p) => result && checkValue(values[p.name]), true)
+    inputs
+      .filter(i => i.required)
+      .reduce((result, i) => result && checkValue(values[i.name]), true)
   );
 }
 
 function emitChanged() {
   emit("changed", {
-    uniqueKey: parameters
-      .map(p => values[p.name])
+    uniqueKey: inputs
+      .map(i => values[i.name])
       .filter(checkValue)
       .join("-"),
     values

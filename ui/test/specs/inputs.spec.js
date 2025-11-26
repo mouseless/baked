@@ -2,7 +2,7 @@ import { expect, test } from "@nuxt/test-utils/playwright";
 import primevue from "../utils/locators/primevue";
 
 test.beforeEach(async({ goto }) => {
-  await goto("/specs/parameters", { waitUntil: "hydration" });
+  await goto("/specs/inputs", { waitUntil: "hydration" });
 });
 
 const id = {
@@ -12,7 +12,7 @@ const id = {
   ready: "ready"
 };
 
-test("parameters are rendered", async({ page }) => {
+test("inputs are rendered", async({ page }) => {
   const component = page.getByTestId(id.component);
 
   await expect(component.getByTestId("required-with-default")).toBeVisible();
@@ -39,7 +39,7 @@ test("ready when all required are set", async({ page }) => {
   await expect(ready).toHaveText("true");
 });
 
-test("unique key changes with parameter values", async({ page }) => {
+test("unique key changes with input values", async({ page }) => {
   const component = page.getByTestId(id.component);
   const uniqueKey = page.getByTestId(id.uniqueKey);
 
@@ -60,7 +60,7 @@ test("'onChanged' is emitted before 'onReady' when initialized", async({ page })
   await expect(uniqueKey).toHaveText("default value");
 });
 
-test("'onChanged' is emitted before 'onReady' when parameters are changed", async({ page }) => {
+test("'onChanged' is emitted before 'onReady' when inputs are changed", async({ page }) => {
   const component = page.getByTestId(id.component);
   const readyValues = page.getByTestId(id.onReadyValues);
   const uniqueKey = page.getByTestId(id.uniqueKey);

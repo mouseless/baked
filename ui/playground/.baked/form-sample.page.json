@@ -22,7 +22,7 @@
         }
       ]
     },
-    "queryParameters": [],
+    "queryInputs": [],
     "tabs": [
       {
         "id": "default",
@@ -36,7 +36,7 @@
                   "value": "AddState"
                 },
                 "localizeTitle": true,
-                "parameters": [],
+                "inputs": [],
                 "content": {
                   "type": "VibeForm",
                   "schema": {
@@ -46,7 +46,7 @@
                       "method": "POST"
                     },
                     "submitEventName": "something-changed",
-                    "parameters": [
+                    "inputs": [
                       {
                         "name": "state",
                         "required": true,
@@ -124,7 +124,7 @@
                   "value": "GetStates"
                 },
                 "localizeTitle": true,
-                "parameters": [],
+                "inputs": [],
                 "content": {
                   "type": "DataTable",
                   "schema": {

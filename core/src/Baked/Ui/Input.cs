@@ -1,6 +1,6 @@
 ﻿namespace Baked.Ui;
 
-public record Parameter(string Name, IComponentDescriptor Component)
+public record Input(string Name, IComponentDescriptor Component)
 {
     public string Name { get; set; } = Name;
     public bool? Required { get; set; }

@@ -32,17 +32,17 @@ const variants = [
     })
   },
   {
-    name: "Parameters",
+    name: "Inputs",
     descriptor: giveMe.aDataPanel({
-      parameters: [
-        giveMe.aParameter({
+      inputs: [
+        giveMe.anInput({
           name: "required",
           required: true,
           component: giveMe.anInputText({
             testId: "required"
           })
         }),
-        giveMe.aParameter({
+        giveMe.anInput({
           name: "optional",
           required: false,
           component: giveMe.anInputText({

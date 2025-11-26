@@ -99,16 +99,16 @@
             "title": "Custom CSS",
             "parentRoute": "/specs"
           },
-          "/specs/parameters": {
-            "route": "/specs/parameters",
+          "/specs/inputs": {
+            "route": "/specs/inputs",
             "icon": "pi pi-microchip",
-            "title": "Parameters",
+            "title": "Inputs",
             "parentRoute": "/specs"
           },
-          "/specs/query-parameters": {
-            "route": "/specs/query-parameters",
+          "/specs/query-inputs": {
+            "route": "/specs/query-inputs",
             "icon": "pi pi-microchip",
-            "title": "Query Parameters",
+            "title": "Query Inputs",
             "parentRoute": "/specs"
           },
           "/specs/routing": {

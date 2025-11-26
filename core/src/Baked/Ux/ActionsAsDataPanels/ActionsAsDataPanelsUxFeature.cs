@@ -28,8 +28,8 @@ public class ActionsAsDataPanelsUxFeature : IFeature<UxConfigurator>
                 {
                     foreach (var parameter in c.Method.DefaultOverload.Parameters)
                     {
-                        dp.Schema.Parameters.Add(
-                            parameter.GetRequiredSchema<Parameter>(cc.Drill(nameof(DataPanel), nameof(DataPanel.Parameters)))
+                        dp.Schema.Inputs.Add(
+                            parameter.GetRequiredSchema<Input>(cc.Drill(nameof(DataPanel), nameof(DataPanel.Inputs)))
                         );
                     }
                 },

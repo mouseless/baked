@@ -77,16 +77,16 @@ export default {
     };
   },
 
-  aDataPanel({ title, collapsed, localizeTitle, parameters, content } = {}) {
+  aDataPanel({ title, collapsed, localizeTitle, inputs, content } = {}) {
     title = $(title, { type: "Inline", value: "Spec: Test Title" });
     collapsed = $(collapsed, false);
-    parameters = $(parameters, []);
+    inputs = $(inputs, []);
     content = $(content, this.anExpected());
     localizeTitle = $(localizeTitle, title.type === "Inline");
 
     return {
       type: "DataPanel",
-      schema: { title, collapsed, localizeTitle, parameters, content }
+      schema: { title, collapsed, localizeTitle, inputs, content }
     };
   },
 
@@ -263,6 +263,16 @@ export default {
     };
   },
 
+  anInput({ name, component, required, defaultValue, default_, defaultSelfManaged } = {}) {
+    name = $(name, "test");
+    required = $(required, false);
+    component = $(component, this.anInputText());
+    default_ = $(default_, defaultValue ? { type: "Inline", value: defaultValue } : undefined);
+    defaultSelfManaged = $(defaultSelfManaged, false);
+
+    return { name, required, default: default_, defaultSelfManaged, component };
+  },
+
   anInputText({ testId, defaultValue } = {}) {
     testId = $(testId, "test-input");
     defaultValue = $(defaultValue, null);
@@ -367,16 +377,6 @@ export default {
     };
   },
 
-  aParameter({ name, component, required, defaultValue, default_, defaultSelfManaged } = {}) {
-    name = $(name, "test");
-    required = $(required, false);
-    component = $(component, this.anInputText());
-    default_ = $(default_, defaultValue ? { type: "Inline", value: defaultValue } : undefined);
-    defaultSelfManaged = $(defaultSelfManaged, false);
-
-    return { name, required, default: default_, defaultSelfManaged, component };
-  },
-
   theQueryData() {
     return {
       type: "Computed",
@@ -393,14 +393,14 @@ export default {
     };
   },
 
-  aReportPage({ title, description, queryParameters, tabs } = {}) {
+  aReportPage({ title, description, queryInputs, tabs } = {}) {
     title = this.aPageTitle({ title, description }).schema;
-    queryParameters = $(queryParameters, []);
+    queryInputs = $(queryInputs, []);
     tabs = $(tabs, [this.aReportPageTab()]);
 
     return {
       type: "ReportPage",
-      schema: { title, queryParameters, tabs }
+      schema: { title, queryInputs, tabs }
     };
   },
 

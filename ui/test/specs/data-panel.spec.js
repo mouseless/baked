@@ -77,8 +77,8 @@ test.describe("Collapsed", () => {
   });
 });
 
-test.describe("Parameters", () => {
-  const id = "Parameters";
+test.describe("Inputs", () => {
+  const id = "Inputs";
 
   test("inputs rendered", async({ page }) => {
     const component = page.getByTestId(id);
@@ -87,7 +87,7 @@ test.describe("Parameters", () => {
     await expect(component.getByTestId("optional")).toBeVisible();
   });
 
-  test("informs only when required params are not selected", async({ page }) => {
+  test("informs only when required inputs are not selected", async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component.locator(primevue.message.base)).toHaveText("Select required values to view this data");

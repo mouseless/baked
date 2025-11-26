@@ -67,10 +67,10 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
             // Parameter Defaults
             builder.Conventions.AddParameterSchema(
-                schema: (c, cc) => ParameterParameter(c.Parameter, cc),
+                schema: (c, cc) => ParameterInput(c.Parameter, cc),
                 when: c => c.Parameter.Has<ParameterModelAttribute>()
             );
-            builder.Conventions.AddParameterSchemaConfiguration<Parameter>(
+            builder.Conventions.AddParameterSchemaConfiguration<Input>(
                 schema: (p, c) =>
                 {
                     var api = c.Parameter.Get<ParameterModelAttribute>();

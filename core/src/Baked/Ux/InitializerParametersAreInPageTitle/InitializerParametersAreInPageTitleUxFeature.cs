@@ -17,10 +17,10 @@ public class InitializerParametersAreInPageTitleUxFeature : IFeature<UxConfigura
                     var members = c.Type.GetMembers();
                     var initializer = members.Methods.Having<InitializerAttribute>().Single();
 
-                    reportPage.Schema.QueryParameters.AddRange(
+                    reportPage.Schema.QueryInputs.AddRange(
                         initializer
                             .DefaultOverload.Parameters
-                            .Select(p => p.GetRequiredSchema<Parameter>(cc.Drill(nameof(ReportPage), nameof(ReportPage.QueryParameters))))
+                            .Select(p => p.GetRequiredSchema<Input>(cc.Drill(nameof(ReportPage), nameof(ReportPage.QueryInputs))))
                     );
                 },
                 when: c => c.Type.Has<TransientAttribute>() && c.Type.HasMembers()
