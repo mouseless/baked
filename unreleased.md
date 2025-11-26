@@ -40,3 +40,5 @@
 
 - `Parameters` now accept parameter class attribute for each parameter
 - `RemoveComponent` and `RemoveSchema` helper extensions are now added
+- `Renderer` helper component is now added which contains slots to help 
+  rendering content with `loading` and `data` states
