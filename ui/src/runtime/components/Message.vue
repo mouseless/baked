@@ -9,20 +9,21 @@
     >
       <i :class="`pi ${icon}`" />
     </template>
-    <Skeleton
-      v-if="loading"
-      height="1.5rem"
-      width="100%"
-    />
-    <span v-else-if="data">{{ localizeMessage ? l(data) : data }}</span>
-    <span v-else>-</span>
+    <Renderer
+      :skeleton="{ height: '1.5rem', width: '100%' }"
+      :when="data"
+    >
+      <template #content>
+        <span>{{ localizeMessage ? l(data) : data }}</span>
+      </template>
+    </Renderer>
   </Message>
 </template>
 <script setup>
-import { Message, Skeleton } from "primevue";
-import { useContext, useLocalization } from "#imports";
+import { Message } from "primevue";
+import { useLocalization } from "#imports";
+import { Renderer } from "#components";
 
-const context = useContext();
 const { localize: l } = useLocalization();
 
 const { schema } = defineProps({
@@ -31,6 +32,4 @@ const { schema } = defineProps({
 });
 
 const { icon, severity, localizeMessage } = schema;
-
-const loading = context.injectLoading();
 </script>

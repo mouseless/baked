@@ -1,21 +1,21 @@
 <template>
-  <Skeleton
-    v-if="loading"
-    height="1.5rem"
-  />
-  <span
-    v-else-if="data"
-    v-tooltip.bottom="tooltip"
-    class="max-sm:select-none"
-  >{{ display }}</span>
-  <span v-else>-</span>
+  <Renderer
+    :skeleton="{ height: '1.5rem' }"
+    :when="data"
+  >
+    <template #content>
+      <span
+        v-tooltip.bottom="tooltip"
+        class="max-sm:select-none"
+      >{{ display }}</span>
+    </template>
+  </Renderer>
 </template>
 <script setup>
 import { computed } from "vue";
-import { Skeleton } from "primevue";
-import { useContext, useFormat } from "#imports";
+import { useFormat } from "#imports";
+import { Renderer } from "#components";
 
-const context = useContext();
 const { asNumber } = useFormat();
 
 const { data } = defineProps({
@@ -23,7 +23,6 @@ const { data } = defineProps({
   data: { type: null, required: true }
 });
 
-const loading = context.injectLoading();
 const display = computed(() => asNumber(data));
 const tooltip = computed(() => display.value.shortened ? `${asNumber(data, { shorten: false })}` : null);
 </script>
