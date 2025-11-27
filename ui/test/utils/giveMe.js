@@ -393,14 +393,14 @@ export default {
     };
   },
 
-  aReportPage({ title, description, queryInputs, tabs } = {}) {
+  aReportPage({ title, description, inputs, tabs } = {}) {
     title = this.aPageTitle({ title, description }).schema;
-    queryInputs = $(queryInputs, []);
+    inputs = $(inputs, []);
     tabs = $(tabs, [this.aReportPageTab()]);
 
     return {
       type: "ReportPage",
-      schema: { title, queryInputs, tabs }
+      schema: { title, inputs, tabs }
     };
   },
 

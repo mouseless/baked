@@ -6,7 +6,7 @@
       "description": "Showcases a report layout with tabs and data panels",
       "actions": []
     },
-    "queryInputs": [
+    "inputs": [
       {
         "name": "requiredWithDefault",
         "required": true,

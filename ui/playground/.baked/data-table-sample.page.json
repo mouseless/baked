@@ -6,7 +6,7 @@
       "description": "Showcase DataTable component with scrollable and footer options",
       "actions": []
     },
-    "queryInputs": [],
+    "inputs": [],
     "tabs": [
       {
         "id": "default",

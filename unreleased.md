@@ -39,13 +39,13 @@
   - `ParameterParameter` domain component helper is renamed to `ParameterInput`
   - `Parameter` component helper is renamed to `Input`
 - `DataPanel.Parameters` property is renamed to `Inputs`    
-- `ReportPage.QueryParameters` property is renamed to `QueryInputs`    
+- `ReportPage.QueryParameters` property is renamed to `Inputs`    
 - `Parameters.vue` is renamed to `Inputs.vue`
-- `QueryParameters.vue` is renamed to `QueryInputs.vue`  
+- `QueryParameters.vue` is renamed to `QueryBoundInputs.vue`  
   
 ## Improvements
 
 - `Parameters` now accept parameter class attribute for each parameter
 - `RemoveComponent` and `RemoveSchema` helper extensions are now added
-- `Renderer` helper component is now added which contains slots to help 
-  rendering content with `loading` and `data` states
+- `AwaitLoading` utility component is now added which contains slots to help 
+  rendering skeleton and content according to `loading` state

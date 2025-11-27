@@ -56,7 +56,7 @@ public class ReportPageSampleUiOverrideFeature : IFeature
             builder.Conventions.AddTypeComponentConfiguration<ReportPage>(
                 component: rp =>
                 {
-                    rp.Schema.QueryInputs.Single(p => p.Name == "required").Default = null;
+                    rp.Schema.Inputs.Single(p => p.Name == "required").Default = null;
                     rp.Schema.Tabs[0].Contents[1].Narrow = true;
                     rp.Schema.Tabs[0].Contents[2].Narrow = true;
                     rp.Schema.Tabs[0].Contents[1].Component.Schema.As<DataPanel>().Collapsed = true;

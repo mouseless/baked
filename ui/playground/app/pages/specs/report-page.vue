@@ -48,7 +48,7 @@ const variants = [
   {
     name: "Show When",
     descriptor: giveMe.aReportPage({
-      queryInputs: [
+      inputs: [
         giveMe.anInput({
           component: giveMe.aSelectButton({
             data: ["SHOW"],
@@ -126,9 +126,9 @@ const variants = [
     })
   },
   {
-    name: "Query Inputs",
+    name: "Inputs",
     descriptor: giveMe.aReportPage({
-      queryInputs: [
+      inputs: [
         giveMe.anInput({
           name: "required",
           required: true,

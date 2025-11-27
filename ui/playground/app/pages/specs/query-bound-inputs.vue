@@ -1,5 +1,5 @@
 <template>
-  <UiSpec title="Query Inputs">
+  <UiSpec title="Query Bound Inputs">
     <Message severity="info">
       <span class="text-xl">
         ⬆️  Check if values sync with query string above ⬆️
@@ -9,7 +9,7 @@
       class="border-4 border-gray-500 rounded p-4 space-x-4"
       data-testid="component"
     >
-      <QueryInputs
+      <QueryBoundInputs
         :inputs
         @ready="onReady"
         @changed="onChanged"
@@ -42,7 +42,7 @@
       <Button
         as="router-link"
         label="RESET"
-        to="/specs/query-inputs"
+        to="/specs/query-bound-inputs"
         data-testid="reset"
       />
     </div>

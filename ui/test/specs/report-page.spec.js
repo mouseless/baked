@@ -159,8 +159,8 @@ test.describe("Show When", () => {
   });
 });
 
-test.describe("Query Inputs", () => {
-  const id = "Query Inputs";
+test.describe("Inputs", () => {
+  const id = "Inputs";
 
   test("inputs rendered", async({ page }) => {
     const component = page.getByTestId(id);

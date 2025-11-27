@@ -10,7 +10,7 @@
     v-for="input in inputs"
     :key="input.name"
     v-model="values[input.name].model.value"
-    :name="`query-inputs/${input.name}`"
+    :name="`query-bound-inputs/${input.name}`"
     :descriptor="input.component"
   />
 </template>

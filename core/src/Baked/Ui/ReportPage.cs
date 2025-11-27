@@ -4,7 +4,7 @@ public record ReportPage(string Path, PageTitle Title)
     : PageSchemaBase(Path)
 {
     public PageTitle Title { get; set; } = Title;
-    public List<Input> QueryInputs { get; init; } = [];
+    public List<Input> Inputs { get; init; } = [];
     public List<Tab> Tabs { get; init; } = [];
 
     public record Tab(string Id)

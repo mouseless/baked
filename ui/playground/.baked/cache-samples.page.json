@@ -6,7 +6,7 @@
       "description": "Showcases the cache behavior",
       "actions": []
     },
-    "queryInputs": [
+    "inputs": [
       {
         "name": "parameter",
         "required": true,

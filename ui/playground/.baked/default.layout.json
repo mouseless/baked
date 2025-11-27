@@ -105,10 +105,10 @@
             "title": "Inputs",
             "parentRoute": "/specs"
           },
-          "/specs/query-inputs": {
-            "route": "/specs/query-inputs",
+          "/specs/query-bound-inputs": {
+            "route": "/specs/query-bound-inputs",
             "icon": "pi pi-microchip",
-            "title": "Query Inputs",
+            "title": "Query Bound Inputs",
             "parentRoute": "/specs"
           },
           "/specs/routing": {

@@ -59,13 +59,13 @@
             }
           },
           {
-            "title": "Query Inputs",
+            "title": "Query Bound Inputs",
             "component": {
               "type": "CardLink",
               "schema": {
-                "route": "/specs/query-inputs",
+                "route": "/specs/query-bound-inputs",
                 "icon": "pi pi-microchip",
-                "title": "Query Inputs",
+                "title": "Query Bound Inputs",
                 "description": "Sync and manage parameters in query string"
               }
             }
