@@ -9,16 +9,16 @@
     >
       <i :class="`pi ${icon}`" />
     </template>
-    <Loading :skeleton="{ height: '1.5rem', width: '100%' }">
+    <AwaitLoading :skeleton="{ height: '1.5rem', width: '100%' }">
       <span v-if="data">{{ localizeMessage ? l(data) : data }}</span>
       <span v-else>-</span>
-    </Loading>
+    </AwaitLoading>
   </Message>
 </template>
 <script setup>
 import { Message } from "primevue";
 import { useLocalization } from "#imports";
-import { Loading } from "#components";
+import { AwaitLoading } from "#components";
 
 const { localize: l } = useLocalization();
 

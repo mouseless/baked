@@ -1,14 +1,13 @@
 <template>
-  <Loading>
+  <AwaitLoading>
     <template #loading>
-      <div class="min-w-60" >
+      <div class="min-w-60">
         <Skeleton class="min-h-10" />
       </div>
     </template>
     <template #default>
       <SelectButton
         v-if="data"
-        v-bind="$attrs"
         v-model="selected"
         :options="data"
         :allow-empty
@@ -20,13 +19,13 @@
         </template>
       </SelectButton>
     </template>
-  </Loading>
+  </AwaitLoading>
 </template>
 <script setup>
 import { ref, watch } from "vue";
 import { SelectButton, Skeleton } from "primevue";
 import { useContext, useLocalization, useUiStates } from "#imports";
-import { Loading } from "#components";
+import { AwaitLoading } from "#components";
 
 const context = useContext();
 const { localize: l } = useLocalization();

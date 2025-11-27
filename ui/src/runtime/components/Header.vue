@@ -3,7 +3,7 @@
     :class="{ 'mb-4': shown || loading }"
     class="mt-4"
   >
-    <Loading :skeleton="{ height: '1.28rem', width: '15rem' }">
+    <AwaitLoading :skeleton="{ height: '1.28rem', width: '15rem' }">
       <Breadcrumb
         v-if="data && shown"
         :home="sitemap['/']"
@@ -26,7 +26,7 @@
           </RouterLink>
         </template>
       </Breadcrumb>
-    </Loading>
+    </AwaitLoading>
   </header>
 </template>
 <script setup>
@@ -34,7 +34,7 @@ import { computed } from "vue";
 import { RouterLink } from "vue-router";
 import { Breadcrumb } from "primevue";
 import { useContext, useLocalization } from "#imports";
-import { Loading } from "#components";
+import { AwaitLoading } from "#components";
 
 const context = useContext();
 const { localize: l } = useLocalization();

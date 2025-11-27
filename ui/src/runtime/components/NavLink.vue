@@ -1,19 +1,18 @@
 <template>
-  <Loading :skeleton="{ height: '1.5rem' }">
+  <AwaitLoading :skeleton="{ height: '1.5rem' }">
     <Button
-      v-bind="$attrs"
       as="router-link"
       link
       :label="l(text)"
       :to
     />
-  </Loading>
+  </AwaitLoading>
 </template>
 <script setup>
 import { computed } from "vue";
 import { Button } from "primevue";
 import { useFormat, useLocalization } from "#imports";
-import { Loading } from "#components";
+import { AwaitLoading } from "#components";
 
 const { format } = useFormat();
 const { localize: l } = useLocalization();

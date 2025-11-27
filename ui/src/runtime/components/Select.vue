@@ -1,5 +1,5 @@
 <template>
-  <Loading>
+  <AwaitLoading>
     <template #loading>
       <div class="min-w-40">
         <Skeleton class="min-h-10" />
@@ -9,7 +9,6 @@
       <FloatLabel variant="on">
         <Select
           v-model="selected"
-          v-bind="$attrs"
           :input-id="path"
           :options="data"
           :placeholder="label"
@@ -28,13 +27,13 @@
         <label for="period">{{ l(label) }}</label>
       </FloatLabel>
     </template>
-  </Loading>
+  </AwaitLoading>
 </template>
 <script setup>
 import { ref, watch } from "vue";
 import { FloatLabel, Select, Skeleton } from "primevue";
 import { useContext, useUiStates, useLocalization } from "#imports";
-import { Loading } from "#components";
+import { AwaitLoading } from "#components";
 
 const context = useContext();
 const { localize: l } = useLocalization();

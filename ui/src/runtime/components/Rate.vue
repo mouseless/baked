@@ -1,16 +1,13 @@
 <template>
-  <Loading :skeleton="{ height: '1.5rem' }">
-    <span
-      v-if="data"
-      v-bind="$attrs"
-    >{{ display }}</span>
+  <AwaitLoading :skeleton="{ height: '1.5rem' }">
+    <span v-if="data">{{ display }}</span>
     <span v-else>-</span>
-  </Loading>
+  </AwaitLoading>
 </template>
 <script setup>
 import { computed } from "vue";
 import { useFormat } from "#imports";
-import { Loading } from "#components";
+import { AwaitLoading } from "#components";
 
 const { asPercentage } = useFormat();
 

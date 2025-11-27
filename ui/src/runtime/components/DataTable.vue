@@ -39,7 +39,7 @@
       :frozen="column.frozen"
     >
       <template #body="{ data: row, index }">
-        <Loading :skeleton="{ class:'min-h-5' }">
+        <AwaitLoading :skeleton="{ class:'min-h-5' }">
           <Bake
             v-if="data"
             :name="`rows/${index}/${column.prop}`"
@@ -52,7 +52,7 @@
             }"
           />
           <span v-else>-</span>
-        </Loading>
+        </AwaitLoading>
       </template>
     </Column>
     <Column
@@ -98,7 +98,7 @@
           :class="{ 'text-right': column.alignRight }"
         >
           <template #footer>
-            <Loading :skeleton="{ class:'min-h-5' }">
+            <AwaitLoading :skeleton="{ class:'min-h-5' }">
               <Bake
                 v-if="data"
                 :name="`rows/footer/${column.prop}`"
@@ -111,7 +111,7 @@
                 }"
               />
               <span v-else>-</span>
-            </Loading>
+            </AwaitLoading>
           </template>
         </Column>
         <Column
@@ -130,7 +130,7 @@ import { computed, onMounted, ref } from "vue";
 import Column from "primevue/column";
 import { Button, ColumnGroup, DataTable, Menu, Row } from "primevue";
 import { useRuntimeConfig } from "#app";
-import { Bake, Loading } from "#components";
+import { Bake, AwaitLoading } from "#components";
 import { useComposableResolver, useConditional, useContext, useDataFetcher, useLocalization } from "#imports";
 
 const conditional = useConditional();

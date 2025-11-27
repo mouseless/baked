@@ -1,18 +1,17 @@
 <template>
-  <Loading :skeleton="{ height: '1.5rem' }">
+  <AwaitLoading :skeleton="{ height: '1.5rem' }">
     <span
       v-if="data"
       v-tooltip.bottom="tooltip"
-      v-bind="$attrs"
       class="max-sm:select-none"
     >{{ display }}</span>
     <span v-else>-</span>
-  </Loading>
+  </AwaitLoading>
 </template>
 <script setup>
 import { computed } from "vue";
 import { useFormat } from "#imports";
-import { Loading } from "#components";
+import { AwaitLoading } from "#components";
 
 const { asCurrency } = useFormat();
 
