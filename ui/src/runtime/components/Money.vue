@@ -12,7 +12,7 @@
 <script setup>
 import { computed } from "vue";
 import { useFormat } from "#imports";
-import { Loading } from "#components"
+import { Loading } from "#components";
 
 const { asCurrency } = useFormat();
 

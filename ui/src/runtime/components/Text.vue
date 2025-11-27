@@ -2,8 +2,8 @@
   <Loading :skeleton="{ height: '1.5rem' }">
     <span
       v-if="data"
-      v-bind="$attrs"
       v-tooltip.bottom="tooltip"
+      v-bind="$attrs"
     >{{ text }}</span>
     <span v-else>-</span>
   </Loading>
