@@ -1,17 +1,19 @@
 <template>
-  <Renderer
+  <Loading
     :skeleton="{ height: '1.5rem' }"
-    :when="data"
   >
-    <template #content>
-      <span>{{ display }}</span>
-    </template>
-  </Renderer>
+    <span
+      v-if="data"
+    >{{ display }}</span>
+    <span
+      v-else
+    >-</span>
+  </Loading>
 </template>
 <script setup>
 import { computed } from "vue";
 import { useFormat } from "#imports";
-import { Renderer } from "#components";
+import { Loading } from "#components";
 
 const { asPercentage } = useFormat();
 

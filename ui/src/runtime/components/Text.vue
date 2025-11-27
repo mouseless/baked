@@ -1,19 +1,20 @@
 <template>
-  <Renderer
+  <Loading
     :skeleton="{ height: '1.5rem' }"
-    :when="data"
   >
-    <template #content>
-      <span
-        v-tooltip.bottom="tooltip"
-      >{{ text }}</span>
-    </template>
-  </Renderer>
+    <span
+      v-if="data"
+      v-tooltip.bottom="tooltip"
+    >{{ text }}</span>
+    <span
+      v-else
+    >-</span>
+  </Loading>
 </template>
 <script setup>
 import { computed } from "vue";
 import { useFormat } from "#imports";
-import { Renderer } from "#components";
+import { Loading } from "#components";
 
 const { truncate } = useFormat();
 

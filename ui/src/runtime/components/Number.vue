@@ -1,20 +1,21 @@
 <template>
-  <Renderer
+  <Loading
     :skeleton="{ height: '1.5rem' }"
-    :when="data"
   >
-    <template #content>
-      <span
-        v-tooltip.bottom="tooltip"
-        class="max-sm:select-none"
-      >{{ display }}</span>
-    </template>
-  </Renderer>
+    <span
+      v-if="data"
+      v-tooltip.bottom="tooltip"
+      class="max-sm:select-none"
+    >{{ display }}</span>
+    <span
+      v-else
+    >-</span>
+  </Loading>
 </template>
 <script setup>
 import { computed } from "vue";
 import { useFormat } from "#imports";
-import { Renderer } from "#components";
+import { Loading } from "#components";
 
 const { asNumber } = useFormat();
 

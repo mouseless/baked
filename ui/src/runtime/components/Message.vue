@@ -9,20 +9,22 @@
     >
       <i :class="`pi ${icon}`" />
     </template>
-    <Renderer
+    <Loading
       :skeleton="{ height: '1.5rem', width: '100%' }"
-      :when="data"
     >
-      <template #content>
-        <span>{{ localizeMessage ? l(data) : data }}</span>
-      </template>
-    </Renderer>
+      <span
+        v-if="data"
+      >{{ localizeMessage ? l(data) : data }}</span>
+      <span
+        v-else
+      >-</span>
+    </Loading>
   </Message>
 </template>
 <script setup>
 import { Message } from "primevue";
 import { useLocalization } from "#imports";
-import { Renderer } from "#components";
+import { Loading } from "#components";
 
 const { localize: l } = useLocalization();
 

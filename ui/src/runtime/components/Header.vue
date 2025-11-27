@@ -3,43 +3,42 @@
     :class="{ 'mb-4': shown || loading }"
     class="mt-4"
   >
-    <Renderer
+    <Loading
       :skeleton="{ height: '1.28rem', width: '15rem' }"
-      :when="data && shown"
     >
-      <template #content>
-        <Breadcrumb
-          :home="sitemap['/']"
-          :model="parts"
-          class="!bg-inherit text-sm !p-0"
-        >
-          <template #item="{ item }">
-            <RouterLink
-              :to="item.route"
-              class="p-breadcrumb-item-link"
-            >
-              <span
-                v-if="item.icon"
-                :class="[item.icon, 'p-breadcrumb-item-icon']"
-              />
-              <span
-                v-if="item.title"
-                class="p-breadcrumb-item-label max-sm:truncate"
-              >{{ l(item.title) }}</span>
-            </RouterLink>
-          </template>
-        </Breadcrumb>
-      </template>
-    </Renderer>
+      <Breadcrumb
+        v-if="data && shown"
+        :home="sitemap['/']"
+        :model="parts"
+        class="!bg-inherit text-sm !p-0"
+      >
+        <template #item="{ item }">
+          <RouterLink
+            :to="item.route"
+            class="p-breadcrumb-item-link"
+          >
+            <span
+              v-if="item.icon"
+              :class="[item.icon, 'p-breadcrumb-item-icon']"
+            />
+            <span
+              v-if="item.title"
+              class="p-breadcrumb-item-label max-sm:truncate"
+            >{{ l(item.title) }}</span>
+          </RouterLink>
+        </template>
+      </Breadcrumb>
+    </Loading>
   </header>
 </template>
 <script setup>
 import { computed } from "vue";
 import { RouterLink } from "vue-router";
 import { Breadcrumb } from "primevue";
-import { useLocalization } from "#imports";
-import { Renderer } from "#components";
+import { useContext, useLocalization } from "#imports";
+import { Loading } from "#components";
 
+const context = useContext();
 const { localize: l } = useLocalization();
 
 const { schema, data } = defineProps({
@@ -49,6 +48,7 @@ const { schema, data } = defineProps({
 
 const { sitemap } = schema;
 
+const loading = context.injectLoading();
 const parts = computed(() => {
   if(!data) { return []; }
 

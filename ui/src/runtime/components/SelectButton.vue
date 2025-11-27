@@ -1,7 +1,5 @@
 <template>
-  <Renderer
-    :when="data"
-  >
+  <Loading>
     <template #loading>
       <div
         class="min-w-60"
@@ -9,8 +7,9 @@
         <Skeleton class="min-h-10" />
       </div>
     </template>
-    <template #content>
+    <template #default>
       <SelectButton
+        v-if="data"
         v-model="selected"
         :options="data"
         :allow-empty
@@ -22,13 +21,13 @@
         </template>
       </SelectButton>
     </template>
-  </Renderer>
+  </Loading>
 </template>
 <script setup>
 import { ref, watch } from "vue";
 import { SelectButton, Skeleton } from "primevue";
 import { useContext, useLocalization, useUiStates } from "#imports";
-import { Renderer } from "#components";
+import { Loading } from "#components";
 
 const context = useContext();
 const { localize: l } = useLocalization();
