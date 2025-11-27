@@ -10,6 +10,7 @@
     <template #default>
       <SelectButton
         v-if="data"
+        v-bind="$attrs"
         v-model="selected"
         :options="data"
         :allow-empty

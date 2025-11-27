@@ -1,15 +1,12 @@
 <template>
-  <Loading
-    :skeleton="{ height: '1.5rem' }"
-  >
+  <Loading :skeleton="{ height: '1.5rem' }">
     <span
       v-if="data"
       v-tooltip.bottom="tooltip"
+      v-bind="$attrs"
       class="max-sm:select-none"
     >{{ display }}</span>
-    <span
-      v-else
-    >-</span>
+    <span v-else>-</span>
   </Loading>
 </template>
 <script setup>

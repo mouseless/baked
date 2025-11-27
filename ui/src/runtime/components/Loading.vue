@@ -1,17 +1,13 @@
 <template>
-  <div>
-    <slot
-      v-if="$slots.loading && loading"
-      name="loading"
-    />
-    <Skeleton
-      v-else-if="loading"
-      v-bind="skeleton"
-    />
-    <slot
-      v-else
-    />
-  </div>
+  <slot
+    v-if="$slots.loading && loading"
+    name="loading"
+  />
+  <Skeleton
+    v-else-if="loading"
+    v-bind="skeleton"
+  />
+  <slot v-else />
 </template>
 <script setup>
 import { useContext } from "#imports";

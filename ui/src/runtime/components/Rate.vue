@@ -1,13 +1,10 @@
 <template>
-  <Loading
-    :skeleton="{ height: '1.5rem' }"
-  >
+  <Loading :skeleton="{ height: '1.5rem' }">
     <span
       v-if="data"
+      v-bind="$attrs"
     >{{ display }}</span>
-    <span
-      v-else
-    >-</span>
+    <span v-else>-</span>
   </Loading>
 </template>
 <script setup>

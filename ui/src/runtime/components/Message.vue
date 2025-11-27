@@ -9,15 +9,9 @@
     >
       <i :class="`pi ${icon}`" />
     </template>
-    <Loading
-      :skeleton="{ height: '1.5rem', width: '100%' }"
-    >
-      <span
-        v-if="data"
-      >{{ localizeMessage ? l(data) : data }}</span>
-      <span
-        v-else
-      >-</span>
+    <Loading :skeleton="{ height: '1.5rem', width: '100%' }">
+      <span v-if="data">{{ localizeMessage ? l(data) : data }}</span>
+      <span v-else>-</span>
     </Loading>
   </Message>
 </template>

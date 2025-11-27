@@ -3,9 +3,7 @@
     :class="{ 'mb-4': shown || loading }"
     class="mt-4"
   >
-    <Loading
-      :skeleton="{ height: '1.28rem', width: '15rem' }"
-    >
+    <Loading :skeleton="{ height: '1.28rem', width: '15rem' }">
       <Breadcrumb
         v-if="data && shown"
         :home="sitemap['/']"
