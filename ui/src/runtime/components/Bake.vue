@@ -1,6 +1,6 @@
 <template>
   <component
-    :is="is()"
+    :is="render()"
     :key="loading"
     :class="classes"
   >
@@ -60,7 +60,7 @@ onUnmounted(() => {
   }
 });
 
-function is() {
+function render() {
   const props = { };
   if(descriptor.schema) { props.schema = descriptor.schema; }
   if(descriptor.data) { props.data = data.value; }
