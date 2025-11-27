@@ -1,9 +1,7 @@
 <template>
   <Loading>
     <template #loading>
-      <div
-        class="min-w-60"
-      >
+      <div class="min-w-60" >
         <Skeleton class="min-h-10" />
       </div>
     </template>
