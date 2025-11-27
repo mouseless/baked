@@ -5,28 +5,26 @@
         <Skeleton class="min-h-10" />
       </div>
     </template>
-    <template #default>
-      <FloatLabel variant="on">
-        <Select
-          v-model="selected"
-          :input-id="path"
-          :options="data"
-          :placeholder="label"
-          :show-clear
-          class="hide-placeholder"
-        >
-          <template #value="slotProps">
-            <span>
-              {{ getValueLabel(slotProps) }}
-            </span>
-          </template>
-          <template #option="slotProps">
-            <span>{{ getOptionLabel(slotProps) }}</span>
-          </template>
-        </Select>
-        <label for="period">{{ l(label) }}</label>
-      </FloatLabel>
-    </template>
+    <FloatLabel variant="on">
+      <Select
+        v-model="selected"
+        :input-id="path"
+        :options="data"
+        :placeholder="label"
+        :show-clear
+        class="hide-placeholder"
+      >
+        <template #value="slotProps">
+          <span>
+            {{ getValueLabel(slotProps) }}
+          </span>
+        </template>
+        <template #option="slotProps">
+          <span>{{ getOptionLabel(slotProps) }}</span>
+        </template>
+      </Select>
+      <label for="period">{{ l(label) }}</label>
+    </FloatLabel>
   </AwaitLoading>
 </template>
 <script setup>

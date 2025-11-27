@@ -5,20 +5,18 @@
         <Skeleton class="min-h-10" />
       </div>
     </template>
-    <template #default>
-      <SelectButton
-        v-if="data"
-        v-model="selected"
-        :options="data"
-        :allow-empty
-        :data-key="optionValue"
-        :pt="{ pcToggleButton: { root: { class: 'text-[length:inherit]' } } }"
-      >
-        <template #option="slotProps">
-          <span>{{ getOptionLabel(slotProps) }}</span>
-        </template>
-      </SelectButton>
-    </template>
+    <SelectButton
+      v-if="data"
+      v-model="selected"
+      :options="data"
+      :allow-empty
+      :data-key="optionValue"
+      :pt="{ pcToggleButton: { root: { class: 'text-[length:inherit]' } } }"
+    >
+      <template #option="slotProps">
+        <span>{{ getOptionLabel(slotProps) }}</span>
+      </template>
+    </SelectButton>
   </AwaitLoading>
 </template>
 <script setup>

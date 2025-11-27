@@ -41,7 +41,7 @@
 - `DataPanel.Parameters` property is renamed to `Inputs`    
 - `ReportPage.QueryParameters` property is renamed to `Inputs`    
 - `Parameters.vue` is renamed to `Inputs.vue`
-- `QueryParameters.vue` is renamed to `QueryBoundInputs.vue`  
+- `QueryParameters.vue` is renamed to `QueryBoundInputs.vue`
   
 ## Improvements
 

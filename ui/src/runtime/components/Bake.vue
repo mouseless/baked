@@ -1,18 +1,14 @@
 <template>
   <component
-    :is="is"
+    :is="is()"
     :key="loading"
-    v-model="model"
-    :schema="descriptor.schema"
-    :data
     :class="classes"
-    @submit="onSubmit"
   >
     <slot v-if="$slots.default" />
   </component>
 </template>
 <script setup>
-import { onMounted, onUnmounted, ref } from "vue";
+import { h, onMounted, onUnmounted, ref } from "vue";
 import { useActionExecuter, useComponentResolver, useContext, useDataFetcher, useFormat } from "#imports";
 
 const actionExecuter = useActionExecuter();
@@ -63,6 +59,19 @@ onUnmounted(() => {
     events.off(descriptor.binding, path);
   }
 });
+
+function is() {
+  const props = { };
+  if(descriptor.schema) { props.schema = descriptor.schema; }
+  if(descriptor.data) { props.data = data.value; }
+  if(descriptor.action) { props.onSubmit = onSubmit; }
+  if(is.props?.modelValue) {
+    props.modelValue = model.value;
+    props["onUpdate:modelValue"] = value => model.value = value;
+  }
+
+  return h(is, props);
+}
 
 async function load() {
   loading.value = true;
