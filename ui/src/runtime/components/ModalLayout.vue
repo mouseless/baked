@@ -6,8 +6,4 @@
   </div>
 </template>
 <script setup>
-defineProps({
-  schema: { type: null, default: null },
-  data: { type: null, default: null }
-});
 </script>

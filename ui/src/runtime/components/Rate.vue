@@ -12,7 +12,6 @@ import { AwaitLoading } from "#components";
 const { asPercentage } = useFormat();
 
 const { data } = defineProps({
-  schema: { type: null, required: true },
   data: { type: null, required: true }
 });
 

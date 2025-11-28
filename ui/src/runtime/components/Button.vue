@@ -14,9 +14,9 @@ const context = useContext();
 const { localize: l } = useLocalization();
 
 const { schema } = defineProps({
-  schema: { type: null, required: true },
-  data: { type: null, default: null }
+  schema: { type: null, required: true }
 });
+
 defineEmits(["submit"]);
 
 const { icon, label } = schema;

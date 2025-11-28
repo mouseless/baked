@@ -32,6 +32,7 @@ export default {
     header: ".p-panel-header"
   },
   select: {
+    base: ".p-select",
     option: ".p-select-option",
     clearIcon: ".p-select-clear-icon",
     label: ".p-select-label"

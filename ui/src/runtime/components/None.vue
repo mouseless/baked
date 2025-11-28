@@ -10,7 +10,6 @@ import { computed } from "vue";
 import { AwaitLoading } from "#components";
 
 const { data } = defineProps({
-  schema: { type: null, required: true },
   data: { type: null, required: true }
 });
 

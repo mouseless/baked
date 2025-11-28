@@ -16,8 +16,7 @@ const context = useContext();
 const { localize: l } = useLocalization();
 
 const { schema } = defineProps({
-  schema: { type: null, required: true },
-  data: { type: null, required: true }
+  schema: { type: null, required: true }
 });
 
 const { placeholder, pageContextKey } = schema;

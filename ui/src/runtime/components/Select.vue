@@ -7,6 +7,7 @@
     </template>
     <FloatLabel variant="on">
       <Select
+        v-bind="$attrs"
         v-model="selected"
         :input-id="path"
         :options="data"

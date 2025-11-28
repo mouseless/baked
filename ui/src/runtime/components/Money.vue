@@ -16,7 +16,6 @@ import { AwaitLoading } from "#components";
 const { asCurrency } = useFormat();
 
 const { data } = defineProps({
-  schema: { type: null, required: true },
   data: { type: null, required: true }
 });
 

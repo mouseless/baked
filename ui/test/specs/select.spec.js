@@ -34,6 +34,12 @@ test.describe("Base", () => {
     await expect(model).toHaveText("OPTION_1");
   });
 
+  test("class", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.locator(primevue.select.base).nth(0)).toHaveClass(/b-component--Select/);
+  });
+
   test("visual", { tag: "@visual" }, async({ page }) => {
     const component = page.getByTestId(id);
 
