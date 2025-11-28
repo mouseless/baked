@@ -7,11 +7,11 @@
     double ref. that's why `.model.value` is passed instead of `.model`
   -->
   <Bake
-    v-for="parameter in parameters"
-    :key="parameter.name"
-    v-model="values[parameter.name].model.value"
-    :name="`query-parameters/${parameter.name}`"
-    :descriptor="parameter.component"
+    v-for="input in inputs"
+    :key="input.name"
+    v-model="values[input.name].model.value"
+    :name="`query-bound-inputs/${input.name}`"
+    :descriptor="input.component"
   />
 </template>
 <script setup>
@@ -25,18 +25,18 @@ const router = useRouter();
 const dataFetcher = useDataFetcher();
 const context = useContext();
 
-const { parameters } = defineProps({
-  parameters: { type: Array, required: true }
+const { inputs } = defineProps({
+  inputs: { type: Array, required: true }
 });
 const emit = defineEmits(["ready", "changed"]);
 
 const injectedData = context.injectData();
 const values = {};
-for(const parameter of parameters) {
-  const query = computed(() => route.query[parameter.name]);
+for(const input of inputs) {
+  const query = computed(() => route.query[input.name]);
   const model = ref(query.value);
 
-  values[parameter.name] = { query, model };
+  values[input.name] = { query, model };
 }
 
 function checkValue(value) {
@@ -54,9 +54,9 @@ watchEffect(() => {
   const queryValues = Object.values(values).map(p => p.query.value);
 
   // sets ready state when all required parameters are set
-  const isReady = parameters
-    .filter(p => p.required)
-    .every(p => checkValue(values[p.name].query.value));
+  const isReady = inputs
+    .filter(i => i.required)
+    .every(i => checkValue(values[i.name].query.value));
 
   // calculates unique key to help parent redraw components when a parameter
   // value changes
@@ -79,34 +79,34 @@ watch(
     // to navigation clicks
     await setDefaults();
 
-    parameters.forEach((param, i) => {
-      if(!values[param.name]) { return; }
+    inputs.forEach((input, i) => {
+      if(!values[input.name]) { return; }
 
-      values[param.name].model.value = newValues[i] || undefined;
+      values[input.name].model.value = newValues[i] || undefined;
     });
   },
   { deep: true }
 );
 
-// when any of the parameter values changed from input components, it reroutes
+// when any of the input values changed from input components, it reroutes
 // to set query param values
 watch(
   Object.values(values).map(p => p.model),
   async(newValues, oldValues) => {
     if(JSON.stringify(newValues) === JSON.stringify(oldValues)) { return; }
 
-    // if any of required parameters that has default doesn't have a value, it
+    // if any of required inputs that has default doesn't have a value, it
     // means it is currently setting default value so route should be replaced,
     // not pushed
-    const shouldReplace = parameters
-      .filter(p => p.required && (p.default || p.defaultSelfManaged))
-      .some(p => !values[p.name].query.value);
+    const shouldReplace = inputs
+      .filter(input => input.required && (input.default || input.defaultSelfManaged))
+      .some(input => !values[input.name].query.value);
 
     // build query object from non-empty values
-    const query = parameters.reduce((result, param, i) => {
+    const query = inputs.reduce((result, input, i) => {
       const value = newValues[i];
       if(checkValue(value)) {
-        result[param.name] = value;
+        result[input.name] = value;
       }
 
       return result;
@@ -122,22 +122,22 @@ watch(
 
 async function setDefaults() {
   const query = { };
-  for(const p of parameters) {
-    const currentValue = values[p.name].query.value;
+  for(const input of inputs) {
+    const currentValue = values[input.name].query.value;
 
-    // only set value if it exists or parameter has a default
-    if(currentValue || p.default) {
-      if(!currentValue && p.default) {
-        query[p.name] = await dataFetcher.fetch({ data: p.default, injectedData });
+    // only set value if it exists or input has a default
+    if(currentValue || input.default) {
+      if(!currentValue && input.default) {
+        query[input.name] = await dataFetcher.fetch({ data: input.default, injectedData });
       } else {
-        query[p.name] = currentValue;
+        query[input.name] = currentValue;
       }
     }
 
     // clean up null/empty values to avoid empty query string parameters in the
     // address bar
-    if(query[p.name] === null || query[p.name] === "") {
-      query[p.name] = undefined;
+    if(query[input.name] === null || query[input.name] === "") {
+      query[input.name] = undefined;
     }
   }
 

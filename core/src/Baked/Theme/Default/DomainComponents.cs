@@ -66,14 +66,14 @@ public static class DomainComponents
         );
     }
 
-    public static Parameter ParameterParameter(ParameterModel parameter, ComponentContext context,
-        Action<Parameter>? options = default
+    public static Input ParameterInput(ParameterModel parameter, ComponentContext context,
+        Action<Input>? options = default
     )
     {
         context = context.Drill(parameter.Name);
         var api = parameter.Get<ParameterModelAttribute>();
 
-        return B.Parameter(api.Name, parameter.GetRequiredComponent(context.Drill(nameof(Parameter.Component))), options: options);
+        return B.Input(api.Name, parameter.GetRequiredComponent(context.Drill(nameof(Input.Component))), options: options);
     }
 
     public static ComponentDescriptor<Select> EnumSelect(ParameterModel parameter, ComponentContext context,

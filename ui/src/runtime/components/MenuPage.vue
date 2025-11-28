@@ -60,8 +60,7 @@ const { localize: lc } = useLocalization({ group: "MenuPage" });
 const { public: { composables } } = useRuntimeConfig();
 
 const { schema } = defineProps({
-  schema: { type: null, required: true },
-  data: { type: null, default: null }
+  schema: { type: null, required: true }
 });
 
 const { header, sections, filterPageContextKey } = schema;

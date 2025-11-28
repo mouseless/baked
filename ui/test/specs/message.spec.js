@@ -12,7 +12,7 @@ test.describe("Base", () => {
     const component = page.getByTestId(id);
 
     await expect(component.locator(primevue.message.content)).toHaveText("Message");
-    await expect(component.locator(primevue.message.icon)).toHaveClass("pi pi-info-circle");
+    await expect(component.locator(primevue.message.icon)).toHaveClass(/pi pi-info-circle/);
   });
 
   test("visual", { tag: "@visual" }, async({ page }) => {

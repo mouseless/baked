@@ -2,11 +2,11 @@
   <div class="space-y-4">
     <PageTitle :schema="title">
       <template
-        v-if="queryParameters?.length > 0"
+        v-if="inputs?.length > 0"
         #actions
       >
-        <QueryParameters
-          :parameters="queryParameters"
+        <QueryBoundInputs
+          :inputs
           @ready="onReady"
           @changed="onChanged"
         />
@@ -93,7 +93,7 @@
 import { computed, onMounted, ref, watch } from "vue";
 import { Message, Tab, TabList, Tabs } from "primevue";
 import { useContext, useLocalization } from "#imports";
-import { Bake, DeferredTabContent, PageTitle, QueryParameters } from "#components";
+import { Bake, DeferredTabContent, QueryBoundInputs, PageTitle } from "#components";
 
 const context = useContext();
 const { localize: l } = useLocalization();
@@ -104,10 +104,10 @@ const { schema } = defineProps({
   data: { type: null, default: null }
 });
 
-const { title, queryParameters, tabs } = schema;
+const { title, inputs, tabs } = schema;
 
 const page = context.injectPage();
-const ready = ref(queryParameters.length === 0);
+const ready = ref(inputs.length === 0);
 const uniqueKey = ref();
 const currentTab = ref(tabs.length > 0 ? tabs[0].id : "");
 const shownTabs = computed(() => tabs.filter(tab => tab.showWhen ? page[tab.showWhen] : true));

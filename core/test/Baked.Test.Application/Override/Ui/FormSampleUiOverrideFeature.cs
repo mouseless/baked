@@ -77,9 +77,9 @@ public class FormSampleUiOverrideFeature : IFeature
 
                     foreach (var parameter in c.Method.DefaultOverload.Parameters)
                     {
-                        vf.Schema.Parameters.Add(ParameterParameter(parameter, cc.Drill(nameof(VibeForm.Parameters)), options: p =>
+                        vf.Schema.Inputs.Add(ParameterInput(parameter, cc.Drill(nameof(VibeForm.Inputs)), options: i =>
                         {
-                            p.Required = !parameter.IsOptional;
+                            i.Required = !parameter.IsOptional;
                         }));
                     }
                 }

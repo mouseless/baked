@@ -39,22 +39,20 @@
       :frozen="column.frozen"
     >
       <template #body="{ data: row, index }">
-        <Skeleton
-          v-if="loading"
-          class="min-h-5"
-        />
-        <Bake
-          v-else-if="data"
-          :name="`rows/${index}/${column.prop}`"
-          :descriptor="{
-            ...conditional.find(column.component, row.$getRow()),
-            data: {
-              type: 'Inline',
-              value: row[column.prop].value
-            }
-          }"
-        />
-        <span v-else>-</span>
+        <AwaitLoading :skeleton="{ class:'min-h-5' }">
+          <Bake
+            v-if="data"
+            :name="`rows/${index}/${column.prop}`"
+            :descriptor="{
+              ...conditional.find(column.component, row.$getRow()),
+              data: {
+                type: 'Inline',
+                value: row[column.prop].value
+              }
+            }"
+          />
+          <span v-else>-</span>
+        </AwaitLoading>
       </template>
     </Column>
     <Column
@@ -100,22 +98,20 @@
           :class="{ 'text-right': column.alignRight }"
         >
           <template #footer>
-            <Skeleton
-              v-if="loading"
-              class="min-h-5"
-            />
-            <Bake
-              v-else-if="data"
-              :name="`rows/footer/${column.prop}`"
-              :descriptor="{
-                ...conditional.find(column.component, data),
-                data: {
-                  type: 'Inline',
-                  value: data[column.prop]
-                }
-              }"
-            />
-            <span v-else>-</span>
+            <AwaitLoading :skeleton="{ class:'min-h-5' }">
+              <Bake
+                v-if="data"
+                :name="`rows/footer/${column.prop}`"
+                :descriptor="{
+                  ...conditional.find(column.component, data),
+                  data: {
+                    type: 'Inline',
+                    value: data[column.prop]
+                  }
+                }"
+              />
+              <span v-else>-</span>
+            </AwaitLoading>
           </template>
         </Column>
         <Column
@@ -132,9 +128,9 @@
 <script setup>
 import { computed, onMounted, ref } from "vue";
 import Column from "primevue/column";
-import { Button, ColumnGroup, DataTable, Menu, Row, Skeleton } from "primevue";
+import { Button, ColumnGroup, DataTable, Menu, Row } from "primevue";
 import { useRuntimeConfig } from "#app";
-import { Bake } from "#components";
+import { Bake, AwaitLoading } from "#components";
 import { useComposableResolver, useConditional, useContext, useDataFetcher, useLocalization } from "#imports";
 
 const conditional = useConditional();
@@ -154,7 +150,6 @@ const { columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, r
 
 const dataDescriptor = context.injectDataDescriptor();
 const injectedData = context.injectData();
-const loading = context.injectLoading();
 
 const dataTable = ref();
 const actionsMenu = ref();

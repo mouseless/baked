@@ -1,27 +1,17 @@
 <template>
   <span class="bg-red-500 p-1 rounded-md">
-    <Skeleton
-      v-if="loading"
-      width="3rem"
-      class="inline-block"
-    />
-    <code v-else-if="data">
-      {{ json }}
-    </code>
+    <AwaitLoading :skeleton="{ width:'3rem', class:'inline-block' }">
+      <code>{{ json }}</code>
+    </AwaitLoading>
   </span>
 </template>
 <script setup>
 import { computed } from "vue";
-import { Skeleton } from "primevue";
-import { useContext } from "#imports";
-
-const context = useContext();
+import { AwaitLoading } from "#components";
 
 const { data } = defineProps({
-  schema: { type: null, required: true },
   data: { type: null, required: true }
 });
 
-const loading = context.injectLoading();
 const json = computed(() => JSON.stringify(data));
 </script>

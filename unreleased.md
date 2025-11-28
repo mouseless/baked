@@ -35,8 +35,17 @@
 ```
 - `baseURL` is renamed to `apiBaseUrl` and config is now set in root of `bake`
   module options and no longer awailable through `dataFetcher`
+- `Parameter` schema is renamed to `Inputs`
+  - `ParameterParameter` domain component helper is renamed to `ParameterInput`
+  - `Parameter` component helper is renamed to `Input`
+- `DataPanel.Parameters` property is renamed to `Inputs`    
+- `ReportPage.QueryParameters` property is renamed to `Inputs`    
+- `Parameters.vue` is renamed to `Inputs.vue`
+- `QueryParameters.vue` is renamed to `QueryBoundInputs.vue`
   
 ## Improvements
 
 - `Parameters` now accept parameter class attribute for each parameter
 - `RemoveComponent` and `RemoveSchema` helper extensions are now added
+- `AwaitLoading` utility component is now added which contains slots to help 
+  rendering skeleton and content according to `loading` state

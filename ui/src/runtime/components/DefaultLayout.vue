@@ -38,8 +38,7 @@ import { Bake } from "#components";
 const route = useRoute();
 
 const { schema } = defineProps({
-  schema: { type: null, required: true },
-  data: { type: null, default: null }
+  schema: { type: null, required: true }
 });
 
 const { header, sideMenu } = schema;

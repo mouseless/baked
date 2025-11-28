@@ -1,39 +1,38 @@
 <template>
-  <div
-    v-if="loading"
-    class="min-w-40"
-  >
-    <Skeleton class="min-h-10" />
-  </div>
-  <FloatLabel
-    v-else-if="data"
-    variant="on"
-  >
-    <Select
-      v-model="selected"
-      v-bind="$attrs"
-      :input-id="path"
-      :options="data"
-      :placeholder="label"
-      :show-clear
-      class="hide-placeholder"
-    >
-      <template #value="slotProps">
-        <span>
-          {{ getValueLabel(slotProps) }}
-        </span>
-      </template>
-      <template #option="slotProps">
-        <span>{{ getOptionLabel(slotProps) }}</span>
-      </template>
-    </Select>
-    <label for="period">{{ l(label) }}</label>
-  </FloatLabel>
+  <AwaitLoading>
+    <template #loading>
+      <div class="min-w-40">
+        <Skeleton class="min-h-10" />
+      </div>
+    </template>
+    <FloatLabel variant="on">
+      <Select
+        v-bind="$attrs"
+        v-model="selected"
+        :input-id="path"
+        :options="data"
+        :placeholder="label"
+        :show-clear
+        class="hide-placeholder"
+      >
+        <template #value="slotProps">
+          <span>
+            {{ getValueLabel(slotProps) }}
+          </span>
+        </template>
+        <template #option="slotProps">
+          <span>{{ getOptionLabel(slotProps) }}</span>
+        </template>
+      </Select>
+      <label for="period">{{ l(label) }}</label>
+    </FloatLabel>
+  </AwaitLoading>
 </template>
 <script setup>
 import { ref, watch } from "vue";
 import { FloatLabel, Select, Skeleton } from "primevue";
 import { useContext, useUiStates, useLocalization } from "#imports";
+import { AwaitLoading } from "#components";
 
 const context = useContext();
 const { localize: l } = useLocalization();
@@ -47,7 +46,6 @@ const model = defineModel({ type: null, required: true });
 
 const { label, localizeLabel, optionLabel, optionValue, showClear, selectionPageContextKey, stateful } = schema;
 
-const loading = context.injectLoading();
 const path = context.injectPath();
 const page = context.injectPage();
 const selected = ref();

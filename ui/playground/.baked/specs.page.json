@@ -47,25 +47,25 @@
             }
           },
           {
-            "title": "Parameters",
+            "title": "Inputs",
             "component": {
               "type": "CardLink",
               "schema": {
-                "route": "/specs/parameters",
+                "route": "/specs/inputs",
                 "icon": "pi pi-microchip",
-                "title": "Parameters",
-                "description": "Manage parameters through emits"
+                "title": "Inputs",
+                "description": "Manage inputs through emits"
               }
             }
           },
           {
-            "title": "Query Parameters",
+            "title": "Query Bound Inputs",
             "component": {
               "type": "CardLink",
               "schema": {
-                "route": "/specs/query-parameters",
+                "route": "/specs/query-bound-inputs",
                 "icon": "pi pi-microchip",
-                "title": "Query Parameters",
+                "title": "Query Bound Inputs",
                 "description": "Sync and manage parameters in query string"
               }
             }

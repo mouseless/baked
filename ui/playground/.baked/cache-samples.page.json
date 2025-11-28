@@ -6,7 +6,7 @@
       "description": "Showcases the cache behavior",
       "actions": []
     },
-    "queryParameters": [
+    "inputs": [
       {
         "name": "parameter",
         "required": true,
@@ -40,7 +40,7 @@
                   "value": "GetScoped"
                 },
                 "localizeTitle": true,
-                "parameters": [],
+                "inputs": [],
                 "content": {
                   "type": "Text",
                   "schema": {},
@@ -73,7 +73,7 @@
                   "value": "GetApplication"
                 },
                 "localizeTitle": true,
-                "parameters": [],
+                "inputs": [],
                 "content": {
                   "type": "Text",
                   "schema": {},

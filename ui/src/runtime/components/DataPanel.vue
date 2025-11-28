@@ -13,25 +13,25 @@
     @update:collapsed="onCollapsed"
   >
     <template
-      v-if="$slots.parameters || parameters.length > 0"
+      v-if="$slots.inputs || inputs.length > 0"
       #icons
     >
       <template v-if="isMd">
-        <Parameters
-          v-if="parameters.length > 0"
-          :parameters="parameters"
+        <Inputs
+          v-if="inputs.length > 0"
+          :inputs="inputs"
           class="text-xs"
           @ready="onReady"
           @changed="onChanged"
         />
         <slot
-          v-if="$slots.parameters"
-          name="parameters"
+          v-if="$slots.inputs"
+          name="inputs"
         />
       </template>
       <template v-else>
         <Button
-          v-if="parameters.length > 0 || $slots.parameters"
+          v-if="inputs.length > 0 || $slots.inputs"
           variant="text"
           icon="pi pi-sliders-h"
           class="lg:hidden"
@@ -46,16 +46,16 @@
               gap-4 text-xs px-2 py-2
             "
           >
-            <Parameters
-              v-if="parameters.length > 0"
-              :parameters="parameters"
+            <Inputs
+              v-if="inputs.length > 0"
+              :inputs="inputs"
               class="text-xs"
               @ready="onReady"
               @changed="onChanged"
             />
             <slot
-              v-if="$slots.parameters"
-              name="parameters"
+              v-if="$slots.inputs"
+              name="inputs"
             />
           </div>
         </PersistentPopover>
@@ -81,7 +81,7 @@
 <script setup>
 import { computed, onMounted, ref, useTemplateRef } from "vue";
 import { Message, Panel, Button } from "primevue";
-import { Bake, Parameters, PersistentPopover } from "#components";
+import { Bake, Inputs, PersistentPopover } from "#components";
 import { useBreakpoints, useContext, useDataFetcher, useUiStates, useLocalization } from "#imports";
 
 const { value: { panelStates } } = useUiStates();
@@ -102,17 +102,17 @@ const { schema } = defineProps({
   data: { type: null, default: null }
 });
 
-const { collapsed, content, localizeTitle, parameters, title: titleData } = schema;
+const { collapsed, content, inputs, localizeTitle, title: titleData } = schema;
 
 const injectedData = context.injectData();
 const path = context.injectPath();
 const collapsedState = computed(() => panelStates[path] ?? collapsed);
 const loaded = ref(!collapsedState.value);
-const ready = ref(parameters.length === 0); // it is ready when there is no parameter
+const ready = ref(inputs.length === 0); // it is ready when there is no parameter
 const uniqueKey = ref("");
 
 const values = ref({});
-if(parameters.length > 0) {
+if(inputs.length > 0) {
   context.provideData(values, "Custom");
 }
 

@@ -75,7 +75,8 @@ export default withNuxt([
       "vue/singleline-html-element-content-newline": "off",
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-unused-expressions": "off",
-      "@typescript-eslint/no-wrapper-object-types": "off"
+      "@typescript-eslint/no-wrapper-object-types": "off",
+      "no-undef": 2
     }
   }
 ]);

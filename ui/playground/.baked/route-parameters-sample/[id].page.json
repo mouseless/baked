@@ -10,7 +10,7 @@
             "value": "GetItems"
           },
           "localizeTitle": true,
-          "parameters": [],
+          "inputs": [],
           "content": {
             "type": "DataTable",
             "schema": {

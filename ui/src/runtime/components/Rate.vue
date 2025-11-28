@@ -1,24 +1,19 @@
 <template>
-  <Skeleton
-    v-if="loading"
-    height="1.5rem"
-  />
-  <span v-else-if="data">{{ display }}</span>
-  <span v-else>-</span>
+  <AwaitLoading :skeleton="{ height: '1.5rem' }">
+    <span v-if="data">{{ display }}</span>
+    <span v-else>-</span>
+  </AwaitLoading>
 </template>
 <script setup>
 import { computed } from "vue";
-import { Skeleton } from "primevue";
-import { useContext, useFormat } from "#imports";
+import { useFormat } from "#imports";
+import { AwaitLoading } from "#components";
 
-const context = useContext();
 const { asPercentage } = useFormat();
 
 const { data } = defineProps({
-  schema: { type: null, required: true },
   data: { type: null, required: true }
 });
 
-const loading = context.injectLoading();
 const display = computed(() => asPercentage(data));
 </script>

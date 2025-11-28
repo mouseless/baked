@@ -1,9 +1,9 @@
 <template>
   <div class="flex flex-col gap-4">
-    <Parameters
-      v-if="parameters"
-      :parameters="parameters"
-      parameter-class="w-full"
+    <Inputs
+      v-if="inputs"
+      :inputs="inputs"
+      input-class="w-full"
       class="flex-col"
       @ready="onReady"
       @changed="onChanged"
@@ -23,7 +23,7 @@ import { ref } from "vue";
 import { Button } from "primevue";
 import { useRuntimeConfig } from "#app";
 import { useContext } from "#imports";
-import { Parameters } from "#components";
+import { Inputs } from "#components";
 
 const { public: { apiBaseURL } } = useRuntimeConfig();
 const context = useContext();
@@ -32,11 +32,11 @@ const { schema } = defineProps({
   schema: { type: null, required: true }
 });
 
-const { label, action, submitEventName, parameters } = schema;
+const { label, action, submitEventName, inputs } = schema;
 
 const events = context.injectEvents();
 const loading = ref(false);
-const ready = ref(parameters.length === 0);
+const ready = ref(inputs.length === 0);
 const body = ref();
 
 function onReady(value) {

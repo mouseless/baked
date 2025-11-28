@@ -3,40 +3,38 @@
     :class="{ 'mb-4': shown || loading }"
     class="mt-4"
   >
-    <Skeleton
-      v-if="loading"
-      height="1.28rem"
-      width="15rem"
-    />
-    <Breadcrumb
-      v-else-if="data && shown"
-      :home="sitemap['/']"
-      :model="parts"
-      class="!bg-inherit text-sm !p-0"
-    >
-      <template #item="{ item }">
-        <RouterLink
-          :to="item.route"
-          class="p-breadcrumb-item-link"
-        >
-          <span
-            v-if="item.icon"
-            :class="[item.icon, 'p-breadcrumb-item-icon']"
-          />
-          <span
-            v-if="item.title"
-            class="p-breadcrumb-item-label max-sm:truncate"
-          >{{ l(item.title) }}</span>
-        </RouterLink>
-      </template>
-    </Breadcrumb>
+    <AwaitLoading :skeleton="{ height: '1.28rem', width: '15rem' }">
+      <Breadcrumb
+        v-if="data && shown"
+        :home="sitemap['/']"
+        :model="parts"
+        class="!bg-inherit text-sm !p-0"
+      >
+        <template #item="{ item }">
+          <RouterLink
+            :to="item.route"
+            class="p-breadcrumb-item-link"
+          >
+            <span
+              v-if="item.icon"
+              :class="[item.icon, 'p-breadcrumb-item-icon']"
+            />
+            <span
+              v-if="item.title"
+              class="p-breadcrumb-item-label max-sm:truncate"
+            >{{ l(item.title) }}</span>
+          </RouterLink>
+        </template>
+      </Breadcrumb>
+    </AwaitLoading>
   </header>
 </template>
 <script setup>
 import { computed } from "vue";
 import { RouterLink } from "vue-router";
-import { Breadcrumb, Skeleton } from "primevue";
+import { Breadcrumb } from "primevue";
 import { useContext, useLocalization } from "#imports";
+import { AwaitLoading } from "#components";
 
 const context = useContext();
 const { localize: l } = useLocalization();

@@ -22,8 +22,8 @@ public static class CustomThemeExtensions
             // Behavior
             r => r.Child("/specs/bake", "Bake", "/specs") with { Icon = "pi pi-microchip", Description = "The core component that renders a dynamic component using given descriptor", Section = "Behavior" },
             r => r.Child("/specs/custom-css", "Custom CSS", "/specs") with { Icon = "pi pi-microchip", Description = "Allow custom configuration to define custom css and more", Section = "Behavior" },
-            r => r.Child("/specs/parameters", "Parameters", "/specs") with { Icon = "pi pi-microchip", Description = "Manage parameters through emits", Section = "Behavior" },
-            r => r.Child("/specs/query-parameters", "Query Parameters", "/specs") with { Icon = "pi pi-microchip", Description = "Sync and manage parameters in query string", Section = "Behavior" },
+            r => r.Child("/specs/inputs", "Inputs", "/specs") with { Icon = "pi pi-microchip", Description = "Manage inputs through emits", Section = "Behavior" },
+            r => r.Child("/specs/query-bound-inputs", "Query Bound Inputs", "/specs") with { Icon = "pi pi-microchip", Description = "Sync and manage parameters in query string", Section = "Behavior" },
             r => r.Child("/specs/routing", "Routing", "/specs") with { Icon = "pi pi-microchip", Description = "Use page descriptors as route template and extract parameters", Section = "Behavior" },
             r => r.Child("/specs/toast", "Toast", "/specs") with { Icon = "pi pi-microchip", Description = "Render alert messages", Section = "Behavior" },
 
