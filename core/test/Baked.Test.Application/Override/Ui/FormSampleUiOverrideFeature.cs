@@ -3,8 +3,10 @@ using Baked.RestApi.Model;
 using Baked.Test.Theme;
 using Baked.Test.Ui;
 using Baked.Ui;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 using static Baked.Theme.Default.DomainComponents;
+using static Baked.Test.Theme.Custom.DomainComponents;
 
 using C = Baked.Test.Ui.Components;
 using DA = Baked.Theme.Default.DomainActions;
@@ -127,6 +129,35 @@ public class FormSampleUiOverrideFeature : IFeature
 
                         rp.Schema.Title.Actions.Add(component);
                     }
+                }
+            );
+            builder.Conventions.AddMethodComponent(
+                when: c => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.AddState)),
+                where: cc => cc.Path.EndsWith(nameof(Page), nameof(FormSample), nameof(FormSample.AddState)),
+                component: (c, cc) => MethodContainerPage(c.Method, cc.Drill(c.Method.Name))
+            );
+            builder.Conventions.AddMethodComponent(
+                when: c => !c.Method.Name.StartsWith("Get") && c.Method.Has<ActionModelAttribute>(),
+                where: cc => cc.Path.EndsWith(nameof(FormSample), nameof(FormSample.AddState), nameof(ContainerPage), nameof(ContainerPage.Contents), "*"),
+                component: c => C.VibeForm(options: vf =>
+                {
+                    var action = c.Method.GetAction();
+
+                    vf.Label = c.Method.Name;
+                    vf.Action.Path = action.GetRoute();
+                    vf.Action.Method = action.Method.ToString().ToUpperInvariant();
+                    vf.SubmitEventName = "something-changed";
+                })
+            );
+            // TODO - move to default feature
+            builder.Conventions.AddMethodComponentConfiguration<ContainerPage>(
+                where: cc => cc.Path.Contains(nameof(FormSample), nameof(FormSample.AddState)),
+                component: (container, c, cc) =>
+                {
+                    cc = cc.Drill(nameof(ContainerPage), nameof(ContainerPage.Contents));
+
+                    var component = c.Method.GetRequiredComponent(cc.Drill(container.Schema.Contents.Count));
+                    container.Schema.Contents.Add(component);
                 }
             );
         });

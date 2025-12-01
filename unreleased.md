@@ -43,7 +43,9 @@
 - `ReportPage.QueryParameters` property is renamed to `Inputs`    
 - `Parameters.vue` is renamed to `Inputs.vue`
 - `QueryParameters.vue` is renamed to `QueryBoundInputs.vue`
-  
+- `TypeWithOnlyGetIsReportPage` ux feature is removed, and adding `ReportPage`
+  component to a type is moved to `DefaultThemeFeature`
+
 ## Improvements
 
 - `Parameters` now accept parameter class attribute for each parameter

@@ -18,6 +18,7 @@ public static class DomainComponents
     )
     {
         context = context.Drill(nameof(ReportPage));
+
         var (_, l) = context;
 
         var path = context.Route.Path.Trim('/');

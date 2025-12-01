@@ -33,4 +33,20 @@ public static class DomainComponents
 
         return C.ContainerPage(path, options);
     }
+
+    public static ComponentDescriptor<ContainerPage> MethodContainerPage(
+#pragma warning disable IDE0060
+        MethodModel method,
+#pragma warning restore IDE0060
+        ComponentContext context,
+        Action<ContainerPage>? options = default
+    )
+    {
+        context = context.Drill(nameof(ContainerPage));
+        var (_, l) = context;
+
+        var path = context.Route.Path.Trim('/');
+
+        return C.ContainerPage(path, options);
+    }
 }

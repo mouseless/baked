@@ -1,7 +1,9 @@
 using Baked.Test.Caching;
 using Baked.Test.Theme;
 using Baked.Test.Theme.Custom;
+using Baked.Test.Ui;
 using Baked.Theme;
+using Baked.Ui;
 
 namespace Baked;
 
@@ -11,12 +13,13 @@ public static class CustomThemeExtensions
         new(
         [
             r => r.Index() with { Page = p => p.Described(d => d.Menu()) },
-            r => r.Root("/cache-samples", "Cache", "pi pi-database") with { Page = p => p.Generated(g => g.From<CacheSamples>()), Description = "Showcases the cache behavior" },
-            r => r.Root("/data-table-sample", "Data Table", "pi pi-table") with { Page = p => p.Generated(d => d.From<DataTableSample>()), Description = "Showcase DataTable component with scrollable and footer options" },
+            r => r.Root("/cache-samples", "Cache", "pi pi-database") with { Page = p => p.Generated(g => g.Type<CacheSamples, ReportPage>()), Description = "Showcases the cache behavior" },
+            r => r.Root("/data-table-sample", "Data Table", "pi pi-table") with { Page = p => p.Generated(g => g.Type<DataTableSample, ReportPage>()), Description = "Showcase DataTable component with scrollable and footer options" },
             // TODO - review this in form components
-            r => r.Root("/form-sample", "Form", "pi pi-file-edit") with { Page = p => p.Generated(d => d.From<FormSample>()), Description = "Vibe coding form components" },
-            r => r.Root("/report-page-sample", "Report", "pi pi-file") with { Page = p => p.Generated(g => g.From<ReportPageSample>()), Description = "Showcases a report layout with tabs and data panels"},
-            r => r.Dynamic("/route-parameters-sample/[id]", "Route Parameters") with { Page = p => p.Generated(d => d.From<RouteParametersSample>()), Description = "Showcase route parameter support" },
+            r => r.Root("/form-sample", "Form", "pi pi-file-edit") with { Page = p => p.Generated(g => g.Type<FormSample, ReportPage>()), Description = "Vibe coding form components" },
+            r => r.Root("/form-sample/new-state", "Method Page ", "pi pi-file-edit") with { Page = p => p.Generated(g => g.Method<FormSample, ContainerPage>(nameof(FormSample.AddState))), Description = "Vibe coding form components" },
+            r => r.Root("/report-page-sample", "Report", "pi pi-file") with { Page = p => p.Generated(g => g.Type<ReportPageSample, ReportPage>()), Description = "Showcases a report layout with tabs and data panels"},
+            r => r.Dynamic("/route-parameters-sample/[id]", "Route Parameters") with { Page = p => p.Generated(g => g.Type<RouteParametersSample, ContainerPage>()), Description = "Showcase route parameter support" },
             r => r.Root("/specs", "Specs", "pi pi-list-check") with { Page = p => p.Described(d => d.Menu()), Description = "All UI Specs are listed here" },
 
             // Behavior

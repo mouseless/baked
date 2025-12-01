@@ -151,15 +151,3 @@ c => c.PanelParametersAreStateful()
 > report or navigating to different pages __without__ refreshing. When a refresh
 > occurs, client app is reloaded and all panel states are reset to their
 > default.
-
-## Type with Only `GET` is Report Page
-
-Creates a `ReportPage` for controller types that only have `GET` actions.
-
-```csharp
-c => c.TypeWithOnlyGetIsReportPage()
-```
-
-- Applies to types marked with `ControllerModelAttribute`
-- If all actions are `GET` methods, the type is rendered as a `ReportPage`
-- Each `GET` action is added as a tab content in the page
