@@ -48,10 +48,10 @@ function Local() {
 
   async function execute({ action, contextData }) {
     const composable = (await composableResolver.resolve(action.composable)).default();
-    
+
     if(composable.run) {
       const options = action.options ? await dataFetcher.fetch({ data: action.options, contextData }) : { };
-      console.log(options);
+      
       return await composable.run(options);
     }
 

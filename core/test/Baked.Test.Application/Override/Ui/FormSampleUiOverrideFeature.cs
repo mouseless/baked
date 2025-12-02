@@ -114,7 +114,7 @@ public class FormSampleUiOverrideFeature : IFeature
             builder.Conventions.AddMethodComponent(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.AddState)),
                 where: cc => cc.Path.EndsWith(nameof(PageTitle.Actions)),
-                component: (c, cc) => Baked.Ui.Components.Button(c.Method.Name, Actions.Local("useRedirect", o => o.Args.Add("/form-sample/new-state")))
+                component: (c, cc) => Baked.Ui.Components.Button(c.Method.Name, Actions.Local(ActionComposables.UseRedirect, o => o.Options = Datas.Inline(new { Route = "/form-sample/new-state" })))
             );
             builder.Conventions.AddMethodComponentConfiguration<Button>(
                 when: c => c.Method.Name.Equals(nameof(FormSample.ClearStates)),
@@ -155,7 +155,7 @@ public class FormSampleUiOverrideFeature : IFeature
                 where: cc => cc.Path.EndsWith(nameof(Page), nameof(FormSample), nameof(FormSample.AddState), nameof(ContainerPage), nameof(ContainerPage.Contents), "*"),
                 component: sf =>
                 {
-                    sf.PostAction = Actions.Local("useRedirect", o => o.Args.Add("/form-sample"));
+                    sf.PostAction = Actions.Local(ActionComposables.UseRedirect, o => o.Options = Datas.Inline(new { Route = "/form-sample" }));
                 }
             );
             // TODO - move to default feature

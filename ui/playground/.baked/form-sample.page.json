@@ -13,9 +13,12 @@
           "action": {
             "type": "Local",
             "composable": "useRedirect",
-            "args": [
-              "/form-sample/new-state"
-            ]
+            "options": {
+              "type": "Inline",
+              "value": {
+                "route": "/form-sample/new-state"
+              }
+            }
           }
         },
         {

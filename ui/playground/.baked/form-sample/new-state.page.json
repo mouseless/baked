@@ -81,9 +81,12 @@
         "postAction": {
           "type": "Local",
           "composable": "useRedirect",
-          "args": [
-            "/form-sample"
-          ]
+          "options": {
+            "type": "Inline",
+            "value": {
+              "route": "/form-sample"
+            }
+          }
         }
       }
     ],

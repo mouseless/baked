@@ -47,7 +47,6 @@
   component to a type is moved to `DefaultThemeFeature`
 - `UseDataFetcher.Injected` is renamed to `Context`
   - `Custom` data key is renamed to `ModelData`
-// TODO data args => options in Computed and Context, change composables
 
 ## Improvements
 
@@ -55,3 +54,5 @@
 - `RemoveComponent` and `RemoveSchema` helper extensions are now added
 - `AwaitLoading` utility component is now added which contains slots to help 
   rendering skeleton and content according to `loading` state
+- `ContextData` now has `TargetProp` property to map give `Prop` key value to
+  corresponding property   
