@@ -51,7 +51,7 @@ function Local() {
 
     if(composable.run) {
       const options = action.options ? await dataFetcher.fetch({ data: action.options, contextData }) : { };
-      
+
       return await composable.run(options);
     }
 
