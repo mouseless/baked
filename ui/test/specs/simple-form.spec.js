@@ -25,14 +25,16 @@ test.describe("Base", () => {
   test("Execute given remote action", async({ page }) => {
     const requestPromise = page.waitForRequest(req => req.url().includes("form-sample/state"));
     const component = page.getByTestId(id);
+    const number = component.locator(".b-component--InputNumber .p-inputnumber-input");
     const select = component.locator(primevue.select.base);
-    const text = component.locator(primevue.inputeText.base);
+    const text = component.locator(".b-component--InputText");
     const options = page.locator(primevue.select.option);
     const button = component.locator(primevue.button.base);
 
-    await text.fill("text");
+    await number.fill("1");
     await select.click();
     await options.nth(0).click();
+    await text.fill("text");
     await button.click();
 
     const request = await requestPromise;
