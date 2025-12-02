@@ -1,7 +1,89 @@
 {
   "type": "ContainerPage",
   "schema": {
-    "contents": [],
+    "contents": [
+      {
+        "type": "SimpleForm",
+        "schema": {
+          "label": "AddState",
+          "inputs": [
+            {
+              "name": "state",
+              "required": true,
+              "component": {
+                "type": "InputText",
+                "schema": {
+                  "testId": "state"
+                }
+              }
+            },
+            {
+              "name": "reason",
+              "required": true,
+              "component": {
+                "type": "InputText",
+                "schema": {
+                  "testId": "reason"
+                }
+              }
+            },
+            {
+              "name": "count",
+              "required": true,
+              "component": {
+                "type": "InputNumber",
+                "schema": {
+                  "testId": "count"
+                }
+              }
+            },
+            {
+              "name": "countOptions",
+              "required": false,
+              "component": {
+                "type": "SelectButton",
+                "schema": {
+                  "allowEmpty": true,
+                  "optionLabel": "label",
+                  "optionValue": "value",
+                  "localizeLabel": true
+                },
+                "data": {
+                  "type": "Inline",
+                  "value": [
+                    {
+                      "label": "CountOptions.Less",
+                      "value": "Less"
+                    },
+                    {
+                      "label": "CountOptions.Default",
+                      "value": "Default"
+                    },
+                    {
+                      "label": "CountOptions.More",
+                      "value": "More"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "action": {
+          "type": "Remote",
+          "path": "form-sample/states",
+          "method": "POST",
+          "body": {
+            "type": "Injected",
+            "key": "Model"
+          }
+        },
+        "postAction": {
+          "type": "Emit",
+          "eventKey": "something-changed"
+        }
+      }
+    ],
     "path": "form-sample/new-state"
   }
 }

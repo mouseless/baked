@@ -147,7 +147,7 @@ public class FormSampleUiOverrideFeature : IFeature
             );
             builder.Conventions.AddMethodComponent(
                 when: c => !c.Method.Name.StartsWith("Get") && c.Method.Has<ActionModelAttribute>(),
-                where: cc => cc.Path.EndsWith(nameof(FormSample), nameof(FormSample.AddState), nameof(ContainerPage), nameof(ContainerPage.Contents), "*"),
+                where: cc => cc.Path.EndsWith(nameof(Page), nameof(FormSample), nameof(FormSample.AddState), nameof(ContainerPage), nameof(ContainerPage.Contents), "*"),
                 component: c => Baked.Ui.Components.SimpleForm(options: vf =>
                 {
                     vf.Label = c.Method.Name;
@@ -155,7 +155,7 @@ public class FormSampleUiOverrideFeature : IFeature
             );
             // TODO - move to default feature
             builder.Conventions.AddMethodComponentConfiguration<ContainerPage>(
-                where: cc => cc.Path.Contains(nameof(FormSample), nameof(FormSample.AddState)),
+                where: cc => cc.Path.EndsWith(nameof(FormSample), nameof(FormSample.AddState)),
                 component: (container, c, cc) =>
                 {
                     cc = cc.Drill(nameof(ContainerPage), nameof(ContainerPage.Contents));

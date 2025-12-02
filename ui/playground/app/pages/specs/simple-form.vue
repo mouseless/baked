@@ -43,7 +43,8 @@ const variants = [
             data: ["OPTION_1", "OPTION_2"]
           })
         })
-      ]
+      ],
+      label: "Submit"
     })
   }
 ];
