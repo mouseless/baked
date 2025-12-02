@@ -484,6 +484,21 @@ export default {
     return { route, icon, title, disabled };
   },
 
+  aSimpleForm({ label, inputs, action, postAction }) {
+    label = $(label, "Label");
+    inputs = $(inputs, []);
+
+    return {
+      type: "SimpleForm",
+      schema: {
+        label,
+        inputs
+      },
+      action,
+      postAction
+    };
+  },
+
   aText({ value, data, maxLength } = {}) {
     value = $(value, "Test string");
     data = $(data, { type: "Inline", value });

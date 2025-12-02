@@ -87,7 +87,7 @@ async function onSubmit() {
   if(!descriptor.action) { return; }
 
   loading.value = true;
-  await actionExecuter.execute({ action: descriptor.action, injectedData, events });
+  await actionExecuter.execute({ action: descriptor.action, injectedData: { ...injectedData, Model: model.value }, events });
 
   if(descriptor.postAction) {
     await actionExecuter.execute({ action: descriptor.postAction, injectedData, events });

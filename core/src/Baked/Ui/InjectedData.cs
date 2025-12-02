@@ -14,6 +14,7 @@ public record InjectedData : IData
     public enum DataKey
     {
         Custom,
-        ParentData
+        ParentData,
+        Model
     }
 }

@@ -1,5 +1,5 @@
 import { useRuntimeConfig } from "#app";
-import { useComposableResolver, useDataFetcher, usePathBuilder } from "#imports";
+import { useComposableResolver, useDataFetcher, usePathBuilder, useUnref } from "#imports";
 
 export default function() {
   const actions = {
@@ -64,14 +64,15 @@ function Remote() {
   const dataFetcher = useDataFetcher();
   const pathBuilder = usePathBuilder();
   const { public: { apiBaseURL } } = useRuntimeConfig();
+  const unref = useUnref();
 
   async function execute({ action, injectedData }) {
     // TODO make sure `ref` values are unreffed
     const headers = action.headers ? await dataFetcher.fetch({ data: action.headers, injectedData }) : { };
     const query = action.query ? await dataFetcher.fetch({ data: action.query, injectedData }) : null;
     const params = action.params ? await dataFetcher.fetch({ data: action.params, injectedData }) : { };
-    const body = action.body ? await dataFetcher.fetch({ data: action.body, injectedData })
-      : (action.method === "GET" ? null : { });
+    const body = unref.deepUnref(action.body ? await dataFetcher.fetch({ data: action.body, injectedData })
+      : (action.method === "GET" ? null : { }));
 
     const result = await $fetch(pathBuilder.build(action.path, params), {
       baseURL: apiBaseURL,

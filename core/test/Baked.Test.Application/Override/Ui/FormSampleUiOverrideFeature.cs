@@ -4,10 +4,8 @@ using Baked.Test.Theme;
 using Baked.Test.Ui;
 using Baked.Ui;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-
-using static Baked.Theme.Default.DomainComponents;
 using static Baked.Test.Theme.Custom.DomainComponents;
-
+using static Baked.Theme.Default.DomainComponents;
 using C = Baked.Test.Ui.Components;
 using DA = Baked.Theme.Default.DomainActions;
 
@@ -59,27 +57,38 @@ public class FormSampleUiOverrideFeature : IFeature
                     dp.Schema.Content.Binding = "something-changed";
                 }
             );
+            builder.Conventions.AddMethodSchema(
+                when: c => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.AddState)),
+                where: cc => true,
+                schema: (c, _) => DA.MethodRemote(c.Method)
+            );
+            builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
+                when: c => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.AddState)),
+                where: cc => true,
+                schema: ra =>
+                {
+                    ra.Body = Datas.Injected(o => o.Key = InjectedData.DataKey.Model);
+                }
+            );
             builder.Conventions.AddMethodComponent(
                 when: c => !c.Method.Name.StartsWith("Get"),
                 where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content)),
-                component: c => C.VibeForm(options: vf =>
+                component: c => Baked.Ui.Components.SimpleForm(options: vf =>
                 {
-                    var action = c.Method.GetAction();
-
                     vf.Label = c.Method.Name;
-                    vf.Action.Path = action.GetRoute();
-                    vf.Action.Method = action.Method.ToString().ToUpperInvariant();
-                    vf.SubmitEventName = "something-changed";
                 })
             );
-            builder.Conventions.AddMethodComponentConfiguration<VibeForm>(
-                component: (vf, c, cc) =>
+            builder.Conventions.AddMethodComponentConfiguration<SimpleForm>(
+                component: (sf, c, cc) =>
                 {
-                    cc = cc.Drill(nameof(VibeForm));
+                    sf.Action = c.Method.GetRequiredSchema<RemoteAction>(cc.Drill(nameof(IComponentDescriptor.Action)));
+                    sf.PostAction = Actions.Emit("something-changed");
+
+                    cc = cc.Drill(nameof(SimpleForm));
 
                     foreach (var parameter in c.Method.DefaultOverload.Parameters)
                     {
-                        vf.Schema.Inputs.Add(ParameterInput(parameter, cc.Drill(nameof(VibeForm.Inputs)), options: i =>
+                        sf.Schema.Inputs.Add(ParameterInput(parameter, cc.Drill(nameof(SimpleForm.Inputs)), options: i =>
                         {
                             i.Required = !parameter.IsOptional;
                         }));
@@ -139,14 +148,9 @@ public class FormSampleUiOverrideFeature : IFeature
             builder.Conventions.AddMethodComponent(
                 when: c => !c.Method.Name.StartsWith("Get") && c.Method.Has<ActionModelAttribute>(),
                 where: cc => cc.Path.EndsWith(nameof(FormSample), nameof(FormSample.AddState), nameof(ContainerPage), nameof(ContainerPage.Contents), "*"),
-                component: c => C.VibeForm(options: vf =>
+                component: c => Baked.Ui.Components.SimpleForm(options: vf =>
                 {
-                    var action = c.Method.GetAction();
-
                     vf.Label = c.Method.Name;
-                    vf.Action.Path = action.GetRoute();
-                    vf.Action.Method = action.Method.ToString().ToUpperInvariant();
-                    vf.SubmitEventName = "something-changed";
                 })
             );
             // TODO - move to default feature

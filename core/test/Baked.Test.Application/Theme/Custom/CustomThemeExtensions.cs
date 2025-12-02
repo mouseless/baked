@@ -41,6 +41,9 @@ public static class CustomThemeExtensions
             r => r.Child("/specs/rate", "Rate", "/specs") with { Icon = "pi pi-microchip", Description = "Render rate values as percentage", Section = "Display" },
             r => r.Child("/specs/text", "Text", "/specs") with { Icon = "pi pi-microchip", Description = "Render string values", Section = "Display" },
 
+            // Form
+            r => r.Child("/specs/simple-form", "SimpleForm", "/specs") with { Icon = "pi pi-microchip", Description = "Showcase simple form component with inputs", Section = "Form" },
+
             // Input
             r => r.Child("/specs/button", "Button", "/specs") with { Icon = "pi pi-microchip", Description = "Showcase interactions using button component", Section = "Input" },
             r => r.Child("/specs/language-switcher", "Language Switcher", "/specs") with { Icon = "pi pi-microchip", Description = "Allow change site language", Section = "Input" },

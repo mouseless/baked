@@ -210,6 +210,23 @@
         ]
       },
       {
+        "title": "Form",
+        "links": [
+          {
+            "title": "SimpleForm",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/simple-form",
+                "icon": "pi pi-microchip",
+                "title": "SimpleForm",
+                "description": "Showcase simple form component with inputs"
+              }
+            }
+          }
+        ]
+      },
+      {
         "title": "Input",
         "links": [
           {

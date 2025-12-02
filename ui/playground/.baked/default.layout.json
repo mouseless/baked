@@ -187,6 +187,12 @@
             "title": "Text",
             "parentRoute": "/specs"
           },
+          "/specs/simple-form": {
+            "route": "/specs/simple-form",
+            "icon": "pi pi-microchip",
+            "title": "SimpleForm",
+            "parentRoute": "/specs"
+          },
           "/specs/button": {
             "route": "/specs/button",
             "icon": "pi pi-microchip",

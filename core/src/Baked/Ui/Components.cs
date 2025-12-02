@@ -193,6 +193,10 @@ public static class Components
         Action<SideMenu.Item>? options = default
     ) => options.Apply(new(route, icon));
 
+    public static ComponentDescriptor<SimpleForm> SimpleForm(
+        Action<SimpleForm>? options = default
+    ) => new(options.Apply(new()));
+
     public static ComponentDescriptor<Text> Text(
         Action<Text>? options = default,
         IData? data = default
