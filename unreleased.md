@@ -45,6 +45,9 @@
 - `QueryParameters.vue` is renamed to `QueryBoundInputs.vue`
 - `TypeWithOnlyGetIsReportPage` ux feature is removed, and adding `ReportPage`
   component to a type is moved to `DefaultThemeFeature`
+- `UseDataFetcher.Injected` is renamed to `Context`
+  - `Custom` data key is renamed to `ModelData`
+// TODO data args => options in Computed and Context, change composables
 
 ## Improvements
 

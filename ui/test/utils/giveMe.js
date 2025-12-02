@@ -258,8 +258,8 @@ export default {
 
   theInjectedData() {
     return {
-      type: "Injected",
-      key: "Custom"
+      type: "Context",
+      key: "ModelData"
     };
   },
 

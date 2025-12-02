@@ -349,8 +349,8 @@
                           ]
                         },
                         {
-                          "type": "Injected",
-                          "key": "Custom"
+                          "type": "Context",
+                          "key": "ModelData"
                         }
                       ]
                     }
@@ -494,8 +494,8 @@
                           ]
                         },
                         {
-                          "type": "Injected",
-                          "key": "Custom"
+                          "type": "Context",
+                          "key": "ModelData"
                         }
                       ]
                     }

@@ -10,8 +10,8 @@ public static class Datas
         Action<ComputedData>? options = default
     ) => options.Apply(new(composable));
 
-    public static InjectedData Injected(
-        Action<InjectedData>? options = default
+    public static ContextData Context(
+        Action<ContextData>? options = default
     ) => options.Apply(new());
 
     public static InlineData Inline(object value,

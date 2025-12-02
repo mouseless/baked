@@ -2,10 +2,10 @@ using Newtonsoft.Json;
 
 namespace Baked.Ui;
 
-public record InjectedData : IData
+public record ContextData : IData
 {
-    public string Type => "Injected";
-    public DataKey Key { get; set; } = DataKey.Custom;
+    public string Type => "Context";
+    public DataKey Key { get; set; } = DataKey.ModelData;
     public string? Prop { get; set; }
 
     [JsonIgnore]
@@ -13,8 +13,7 @@ public record InjectedData : IData
 
     public enum DataKey
     {
-        Custom,
         ParentData,
-        Model
+        ModelData
     }
 }

@@ -2,7 +2,7 @@
   <UiSpec
     title="SimpleForm"
     :variants="variants"
-    :no-loading-variant="true"
+    no-loading-variant
   />
 </template>
 <script setup>
@@ -13,18 +13,13 @@ const variants = [
     name: "Base",
     descriptor: giveMe.aSimpleForm({
       action: {
-        type: "Remote",
-        path: "/form-sample/states",
-        method: "POST",
-        headers: {
-          type: "Inline",
-          value: {
-            Authorization: "token-admin-ui"
-          }
-        },
-        body: {
-          type: "Injected",
-          key: "Model"
+        type: "Local",
+        composable: "useShowMessage",
+        options: {
+          type: "Context",
+          key: "ModelData",
+          prop: "text",
+          targetProp: "message"
         }
       },
       inputs: [

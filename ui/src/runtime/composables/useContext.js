@@ -21,7 +21,7 @@ export default function() {
   function injectData() {
     return {
       ParentData: inject("__bake_injected_data:ParentData", null),
-      Custom: inject("__bake_injected_data:Custom", null)
+      ModelData: inject("__bake_injected_data:ModelData", null)
     };
   }
 

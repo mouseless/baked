@@ -23,16 +23,18 @@ const variants = [
           {
             type: "Local",
             composable: "useShowMessage",
-            args: [
-              "Execute Action"
-            ]
+            options: {
+              type: "Inline",
+              value: { message: "Execute Action" }
+            }
           },
           {
             type: "Local",
             composable: "useDelay",
-            args:[
-              500
-            ]
+            options: {
+              type: "Inline",
+              value: { time: 100 }
+            }
           },
           {
             type: "Remote",
@@ -52,7 +54,7 @@ const variants = [
               ]
             },
             params: {
-              type: "Injected",
+              type: "Context",
               key: "ParentData"
             },
             body: {
@@ -67,9 +69,10 @@ const variants = [
       postAction: {
         type: "Local",
         composable: "useShowMessage",
-        args: [
-          "Execute Post Action"
-        ]
+        options: {
+          type: "Inline",
+          value: { message: "Execute Post Action" }
+        }
       },
       label: "Spec: Button",
       icon: "pi pi-play-circle"

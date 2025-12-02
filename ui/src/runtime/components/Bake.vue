@@ -31,7 +31,7 @@ const path = context.injectPath();
 const events = context.injectEvents();
 const is = componentResolver.resolve(descriptor.type, "None");
 const injectedData = context.injectData();
-const data = ref(dataFetcher.get({ data: descriptor.data, injectedData }));
+const data = ref(dataFetcher.get({ data: descriptor.data, contextData: injectedData }));
 const shouldLoad = dataFetcher.shouldLoad(descriptor.data?.type);
 const loading = ref(shouldLoad);
 const classes = [`b-component--${descriptor.type}`, ...asClasses(name)];
@@ -64,10 +64,10 @@ function render() {
   const props = { };
   if(descriptor.schema) { props.schema = descriptor.schema; }
   if(descriptor.data) { props.data = data.value; }
-  if(descriptor.action) { props.onSubmit = onSubmit; }
+  if(is.emits?.includes("submit")) { props.onSubmit = onModelUpdate; }
   if(is.props?.modelValue) {
     props.modelValue = model.value;
-    props["onUpdate:modelValue"] = value => model.value = value;
+    props["onUpdate:modelValue"] = onModelUpdate;
   }
 
   return h(is, props);
@@ -77,21 +77,33 @@ async function load() {
   loading.value = true;
   data.value = await dataFetcher.fetch({
     data: descriptor.data,
-    injectedData
+    contextData: injectedData
   });
   loading.value = false;
   emit("loaded");
 }
 
-async function onSubmit() {
+async function onModelUpdate(newModel) {
+  if(is.props?.modelValue) {
+    model.value = newModel;
+  }
+
   if(!descriptor.action) { return; }
 
-  loading.value = true;
-  await actionExecuter.execute({ action: descriptor.action, injectedData: { ...injectedData, Model: model.value }, events });
-
-  if(descriptor.postAction) {
-    await actionExecuter.execute({ action: descriptor.postAction, injectedData, events });
+  const contextData = { ...injectedData };
+  if(newModel) {
+    contextData.ModelData = newModel;
   }
-  loading.value = false;
+
+  try {
+    loading.value = true;
+    await actionExecuter.execute({ action: descriptor.action, contextData, events });
+
+    if(descriptor.postAction) {
+      await actionExecuter.execute({ action: descriptor.postAction, contextData, events });
+    }
+  } finally {
+    loading.value = false;
+  }
 }
 </script>

@@ -74,13 +74,16 @@
           "path": "form-sample/states",
           "method": "POST",
           "body": {
-            "type": "Injected",
-            "key": "Model"
+            "type": "Context",
+            "key": "ModelData"
           }
         },
         "postAction": {
-          "type": "Emit",
-          "eventKey": "something-changed"
+          "type": "Local",
+          "composable": "useRedirect",
+          "args": [
+            "/form-sample"
+          ]
         }
       }
     ],

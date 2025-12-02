@@ -18,11 +18,11 @@ const variants = [
       contents: [
         giveMe.anExpected({
           testId: "child-root",
-          data: { type: "Injected", key: "ParentData" }
+          data: { type: "Context", key: "ParentData" }
         }),
         giveMe.anExpected({
           testId: "child-prop",
-          data: { type: "Injected", key: "ParentData", prop: "child" }
+          data: { type: "Context", key: "ParentData", prop: "child" }
         })
       ],
       data: { type: "Inline", value: { child: "CHILD VALUE" } }
@@ -37,7 +37,7 @@ const variants = [
         type: "Composite", // merges ["computed"] and ["RequiredWithDefault1", "Required1"]
         parts: [
           { type: "Computed", composable: "useFakeComputed", args: ["computed"] }, // provides "computed"
-          { type: "Injected", key: "ParentData" },
+          { type: "Context", key: "ParentData" },
           { type: "Inline", value: { inline: "inline" } },
           {
             type: "Remote",

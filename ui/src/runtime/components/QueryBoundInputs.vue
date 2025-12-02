@@ -128,7 +128,7 @@ async function setDefaults() {
     // only set value if it exists or input has a default
     if(currentValue || input.default) {
       if(!currentValue && input.default) {
-        query[input.name] = await dataFetcher.fetch({ data: input.default, injectedData });
+        query[input.name] = await dataFetcher.fetch({ data: input.default, contextData: injectedData });
       } else {
         query[input.name] = currentValue;
       }

@@ -13,7 +13,7 @@
       :loading
       :disabled="!ready"
       :label
-      @click="$emit('submit')"
+      @click="$emit('submit', model)"
     />
   </div>
 </template>
@@ -28,9 +28,9 @@ const context = useContext();
 const { schema } = defineProps({
   schema: { type: null, required: true }
 });
-
-const body = defineModel({ type: null });
 defineEmits(["submit"]);
+
+const model = ref({});
 
 const { label, inputs } = schema;
 
@@ -42,6 +42,6 @@ function onReady(value) {
 }
 
 function onChanged({ values }) {
-  body.value = values;
+  model.value = values;
 }
 </script>

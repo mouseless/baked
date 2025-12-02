@@ -68,16 +68,8 @@ public class FormSampleUiOverrideFeature : IFeature
                 where: cc => true,
                 schema: ra =>
                 {
-                    ra.Body = Datas.Injected(o => o.Key = InjectedData.DataKey.Model);
+                    ra.Body = Datas.Context(o => o.Key = ContextData.DataKey.ModelData);
                 }
-            );
-            builder.Conventions.AddMethodComponent(
-                when: c => !c.Method.Name.StartsWith("Get"),
-                where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content)),
-                component: c => Baked.Ui.Components.SimpleForm(options: vf =>
-                {
-                    vf.Label = c.Method.Name;
-                })
             );
             builder.Conventions.AddMethodComponentConfiguration<SimpleForm>(
                 component: (sf, c, cc) =>
@@ -107,7 +99,7 @@ public class FormSampleUiOverrideFeature : IFeature
             // END OF TODO - review this in form components
 
             builder.Conventions.RemoveMethodSchema<ReportPage.Tab.Content>(
-                when: c => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.ClearStates))
+                when: c => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.ClearStates)) || c.Method.Name.Equals(nameof(FormSample.AddState))
             );
             builder.Conventions.AddMethodSchema(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.ClearStates)),
@@ -118,6 +110,11 @@ public class FormSampleUiOverrideFeature : IFeature
                 when: c => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.ClearStates)),
                 where: cc => cc.Path.EndsWith(nameof(PageTitle.Actions)),
                 component: (c, cc) => MethodButton(c.Method, cc.Drill(c.Method.Name))
+            );
+            builder.Conventions.AddMethodComponent(
+                when: c => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.AddState)),
+                where: cc => cc.Path.EndsWith(nameof(PageTitle.Actions)),
+                component: (c, cc) => Baked.Ui.Components.Button(c.Method.Name, Actions.Local("useRedirect", o => o.Args.Add("/form-sample/new-state")))
             );
             builder.Conventions.AddMethodComponentConfiguration<Button>(
                 when: c => c.Method.Name.Equals(nameof(FormSample.ClearStates)),
@@ -153,6 +150,13 @@ public class FormSampleUiOverrideFeature : IFeature
                 {
                     vf.Label = c.Method.Name;
                 })
+            );
+            builder.Conventions.AddMethodComponentConfiguration<SimpleForm>(
+                where: cc => cc.Path.EndsWith(nameof(Page), nameof(FormSample), nameof(FormSample.AddState), nameof(ContainerPage), nameof(ContainerPage.Contents), "*"),
+                component: sf =>
+                {
+                    sf.PostAction = Actions.Local("useRedirect", o => o.Args.Add("/form-sample"));
+                }
             );
             // TODO - move to default feature
             builder.Conventions.AddMethodComponentConfiguration<ContainerPage>(
