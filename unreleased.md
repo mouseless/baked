@@ -47,6 +47,14 @@
   component to a type is moved to `DefaultThemeFeature`
 - `UseDataFetcher.Injected` is renamed to `Context`
   - `Custom` data key is renamed to `ModelData`
+- `Composables` now provide helpers instead of ui composable file keys
+```csharp
+// previous usage
+data: Computed(Composables.UseError)
+
+// current
+data: Composables.UseError()
+```  
 
 ## Improvements
 

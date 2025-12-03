@@ -4,7 +4,7 @@ import { useComposableResolver, usePathBuilder, useUnref } from "#imports";
 export default function() {
   const datas = {
     "Composite": Composite({ parentFetch: fetch, parentFetchParameters: fetchParameters }),
-    "Computed": Computed(),
+    "Computed": Computed({ parentFetch: fetch}),
     "Context": Context(),
     "Inline": Inline(),
     "Remote": Remote({ parentFetch: fetch })
@@ -82,25 +82,27 @@ function Composite({ parentFetch, parentFetchParameters }) {
   };
 }
 
-function Computed() {
+function Computed({ parentFetch }) {
   const composableResolver = useComposableResolver();
+  const unref = useUnref();
 
-  async function fetch({ data }) {
+  async function fetch({ data, contextData }) {
     const composable = (await composableResolver.resolve(data.composable)).default();
+    const options = data.options ? unref.deepUnref(await parentFetch({ data: data.options, contextData })) : { };
 
     if(composable.compute) {
-      return composable.compute(...(data.args || []));
+      return composable.compute(options);
     }
 
     if(composable.computeAsync) {
-      return await composable.computeAsync(...(data.args || []));
+      return await composable.computeAsync(options);
     }
 
     throw new Error("Data composable should have either `compute` or `computeAsync`");
   }
 
-  function fetchParameters({ data }) {
-    return data.args;
+  async function fetchParameters({ data }) {
+    return data.options ? await parentFetch({ data: data.options }) : { };
   }
 
   return {

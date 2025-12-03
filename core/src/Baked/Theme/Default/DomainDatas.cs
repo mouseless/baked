@@ -22,8 +22,8 @@ public static class DomainDatas
         options: rd =>
         {
             rd.Query = method.DefaultOverload.Parameters.Any()
-                ? Composite(options: cd => cd.Parts.AddRange([Computed(Composables.UseRoute, options: o => o.Args.Add("query")), Context()]))
-                : Computed(Composables.UseRoute, options: o => o.Args.Add("query"));
+                ? Composite(options: cd => cd.Parts.AddRange([Composables.UseRoute("query"), Context()]))
+                : Composables.UseRoute("query");
 
             options.Apply(rd);
         }

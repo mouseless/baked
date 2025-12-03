@@ -1,5 +1,5 @@
 export default function() {
-  function compute(data) {
+  function compute({ data }) {
     return data;
   }
 

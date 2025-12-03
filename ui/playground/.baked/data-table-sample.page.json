@@ -218,9 +218,12 @@
                         {
                           "type": "Computed",
                           "composable": "useNuxtRoute",
-                          "args": [
-                            "query"
-                          ]
+                          "options": {
+                            "type": "Inline",
+                            "value": {
+                              "property": "query"
+                            }
+                          }
                         },
                         {
                           "type": "Context",

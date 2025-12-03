@@ -35,8 +35,7 @@
           "behavior": "Redirect",
           "behaviorArgument": {
             "type": "Computed",
-            "composable": "useLoginRedirect",
-            "args": []
+            "composable": "useLoginRedirect"
           },
           "order": 0
         },
@@ -149,8 +148,7 @@
     },
     "data": {
       "type": "Computed",
-      "composable": "useNuxtError",
-      "args": []
+      "composable": "useNuxtError"
     }
   },
   "i18n": {

@@ -36,7 +36,7 @@ const variants = [
       data: {
         type: "Composite", // merges ["computed"] and ["RequiredWithDefault1", "Required1"]
         parts: [
-          { type: "Computed", composable: "useFakeComputed", args: ["computed"] }, // provides "computed"
+          { type: "Computed", composable: "useFakeComputed", options: { type: "Inline", value: { data: "computed" } } }, // provides "computed"
           { type: "Context", key: "ParentData" },
           { type: "Inline", value: { inline: "inline" } },
           {
