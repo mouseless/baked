@@ -47,6 +47,8 @@
   component to a type is moved to `DefaultThemeFeature`
 - `UseDataFetcher.Injected` is renamed to `Context`
   - `Custom` data key is renamed to `ModelData`
+- `ComputedData.Args` is now changed to `Options` with `IData` type
+  - Built-in composables now have object parameters with named fields
 - `Composables` now provide helpers instead of ui composable file keys
 ```csharp
 // previous usage
