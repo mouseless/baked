@@ -62,8 +62,6 @@ export default function() {
     return provide("__bake_waitingAction", value);
   }
 
-  
-
   return {
     injectPath,
     providePath,
