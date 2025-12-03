@@ -41,6 +41,8 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 attribute: data => data.Visible = false,
                 when: c => c.Property.Has<IdAttribute>()
             );
+
+            // TODO add none to all
             builder.Conventions.AddPropertyComponent(
                 component: () => B.None(),
                 order: -10
