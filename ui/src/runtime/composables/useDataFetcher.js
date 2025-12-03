@@ -4,7 +4,7 @@ import { useComposableResolver, usePathBuilder, useUnref } from "#imports";
 export default function() {
   const datas = {
     "Composite": Composite({ parentFetch: fetch, parentFetchParameters: fetchParameters }),
-    "Computed": Computed({ parentFetch: fetch}),
+    "Computed": Computed({ parentFetch: fetch }),
     "Context": Context(),
     "Inline": Inline(),
     "Remote": Remote({ parentFetch: fetch })
@@ -69,7 +69,7 @@ function Composite({ parentFetch, parentFetchParameters }) {
 
     for(const part of data.parts) {
       result.push(
-        ...unref.deepUnref(await parentFetchParameters({ data: part, contextData }))
+        unref.deepUnref(await parentFetchParameters({ data: part, contextData }))
       );
     }
 
@@ -102,7 +102,7 @@ function Computed({ parentFetch }) {
   }
 
   async function fetchParameters({ data }) {
-    return data.options ? await parentFetch({ data: data.options }) : { };
+    return data.options ? unref.deepUnref(await parentFetch({ data: data.options })) : null;
   }
 
   return {

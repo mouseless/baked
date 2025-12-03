@@ -49,9 +49,10 @@ const variants = [
             query: {
               type: "Computed",
               composable: "useNuxtRoute",
-              args: [
-                "query"
-              ]
+              options: {
+                type: "Inline",
+                value:{ property: "query" }
+              }
             },
             params: {
               type: "Context",

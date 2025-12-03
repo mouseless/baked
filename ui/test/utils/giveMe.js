@@ -435,7 +435,7 @@ export default {
 
     data = inline
       ? { type: "Inline", value: data }
-      : { type: "Computed", composable: "useDelayedData", options: { type: "Inline", value: {ms: 1, data } } };
+      : { type: "Computed", composable: "useDelayedData", options: { type: "Inline", value: { ms: 1, data } } };
 
     return {
       type: "Select",
@@ -453,7 +453,7 @@ export default {
     localizeLabel = $(localizeLabel, false);
     data = inline
       ? { type: "Inline", value: data }
-      : { type: "Computed", composable: "useDelayedData", options: { type: "Inline", value: { ms:1, data } }  };
+      : { type: "Computed", composable: "useDelayedData", options: { type: "Inline", value: { ms:1, data } } };
 
     return {
       type: "SelectButton",
