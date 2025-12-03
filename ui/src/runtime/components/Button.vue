@@ -2,7 +2,7 @@
   <Button
     :icon
     :label="l(label)"
-    :loading
+    :loading="waitingAction"
     @click="$emit('submit')"
   />
 </template>
@@ -21,5 +21,5 @@ defineEmits(["submit"]);
 
 const { icon, label } = schema;
 
-const loading = context.injectLoading();
+const waitingAction = context.injectWaitingAction();
 </script>

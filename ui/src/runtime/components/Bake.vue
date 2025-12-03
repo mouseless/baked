@@ -34,9 +34,11 @@ const injectedData = context.injectData();
 const data = ref(dataFetcher.get({ data: descriptor.data, contextData: injectedData }));
 const shouldLoad = dataFetcher.shouldLoad(descriptor.data?.type);
 const loading = ref(shouldLoad);
+const waitingAction = ref(false);
 const classes = [`b-component--${descriptor.type}`, ...asClasses(name)];
 
 context.provideData(data, "ParentData");
+context.provideWaitingAction(waitingAction);
 
 // TODO - review this in form components
 if(descriptor.binding) {
@@ -96,14 +98,14 @@ async function onModelUpdate(newModel) {
   }
 
   try {
-    loading.value = true;
+    waitingAction.value = true;
     await actionExecuter.execute({ action: descriptor.action, contextData, events });
 
     if(descriptor.postAction) {
       await actionExecuter.execute({ action: descriptor.postAction, contextData, events });
     }
   } finally {
-    loading.value = false;
+    waitingAction.value = false;
   }
 }
 </script>

@@ -54,6 +54,16 @@ export default function() {
     provide("__bake_page", value);
   }
 
+  function injectWaitingAction() {
+    return inject("__bake_waitingAction", ref(false));
+  }
+
+  function provideWaitingAction(value) {
+    return provide("__bake_waitingAction", value);
+  }
+
+  
+
   return {
     injectPath,
     providePath,
@@ -66,6 +76,8 @@ export default function() {
     injectLoading,
     provideLoading,
     injectPage,
-    providePage
+    providePage,
+    injectWaitingAction,
+    provideWaitingAction
   };
 }

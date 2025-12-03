@@ -11,7 +11,7 @@
     <Button
       icon="pi pi-save"
       :loading
-      :disabled="!ready"
+      :disabled="!ready || waitingAction"
       :label
       @click="$emit('submit', model)"
     />
@@ -35,6 +35,7 @@ const model = ref({});
 const { label, inputs } = schema;
 
 const loading = context.injectLoading();
+const waitingAction = context.injectWaitingAction();
 const ready = ref(inputs.length === 0);
 
 function onReady(value) {
