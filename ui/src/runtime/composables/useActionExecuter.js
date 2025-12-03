@@ -73,7 +73,7 @@ function Remote() {
     const headers = action.headers ? unref.deepUnref(await dataFetcher.fetch({ data: action.headers, contextData })) : { };
     const query = action.query ? unref.deepUnref(await dataFetcher.fetch({ data: action.query, contextData })) : null;
     const params = action.params ? unref.deepUnref(await dataFetcher.fetch({ data: action.params, contextData })) : { };
-    const body = action.method === "GET" ? null 
+    const body = action.method === "GET" ? null
       : (action.body ? unref.deepUnref(await dataFetcher.fetch({ data: action.body, contextData })) : { });
 
     const result = await $fetch(pathBuilder.build(action.path, params), {
