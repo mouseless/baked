@@ -1,10 +1,12 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
+import baked from "../utils/locators/baked";
+import primevue from "../utils/locators/primevue";
 
 test.beforeEach(async({ goto, page }) => {
   await page.route("*/**/report/first", async route => {
     await route.fulfill("fake-response");
   });
-  await page.route("*/**/report-page-sample/wide/*", async route => {
+  await page.route("*/**/route-parameters-samples/*", async route => {
     await route.fulfill("fake-response");
   });
   await goto("/specs/bake", { waitUntil: "hydration" });
@@ -65,9 +67,33 @@ test.describe("Data Descriptor", () => {
   });
 
   test("builds path with given params data", async({ page }) => {
-    const requestPromise = page.waitForRequest(req => req.url().includes("/report-page-sample"));
+    const requestPromise = page.waitForRequest(req => req.url().includes("/route-parameters-samples"));
 
     const request = await requestPromise;
-    expect(request.url()).toContain("/report-page-sample/wide/7b6b67bb-30b5-423e-81b4-a2a0cd59b7f9");
+    expect(request.url()).toContain("/route-parameters-samples/7b6b67bb-30b5-423e-81b4-a2a0cd59b7f9");
+  });
+});
+
+test.describe("Model Update", () => {
+  const id = "Model Update";
+
+  test("updates model value", async({ page }) => {
+    const component = page.getByTestId(id);
+    const input = component.locator(primevue.inputeText.base);
+    const model = page.getByTestId(`${id}:model`);
+
+    await input.fill("Test");
+
+    await expect(model).toHaveText("Test");
+  });
+
+  test("model data can be injected", async({ page }) => {
+    const component = page.getByTestId(id);
+    const input = component.locator(primevue.inputeText.base);
+    const text = component.locator(baked.string.text);
+
+    await input.fill("Test");
+
+    await expect(text).toHaveText("Test");
   });
 });

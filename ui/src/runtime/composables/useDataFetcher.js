@@ -116,7 +116,7 @@ function Context() {
     let result = contextData[data.key];
 
     // TODO use unref instead of hardcoded .value access
-    if(result.value) {
+    if(result?.value) {
       result = result.value;
     }
 

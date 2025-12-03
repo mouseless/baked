@@ -3,19 +3,25 @@
     <Bake
       v-for="(content, i) in contents"
       :key="`contents/${i}`"
+      v-model="model"
       :name="`contents/${i}`"
       :descriptor="content"
     />
   </div>
 </template>
 <script setup>
+import { useContext } from "#imports";
 import { Bake } from "#components";
+
+const context = useContext();
 
 const { schema } = defineProps({
   schema: { type: null, required: true },
   data: { type: null, required: true }
 });
-defineModel({ type: null, required: false });
+const model = defineModel({ type: null, required: false });
 
 const { contents } = schema;
+
+context.provideData(model, "ModelData");
 </script>

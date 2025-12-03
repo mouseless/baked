@@ -5,6 +5,7 @@
   />
 </template>
 <script setup>
+import { ref } from "vue";
 import giveMe from "@utils/giveMe";
 
 const variants = [
@@ -41,7 +42,7 @@ const variants = [
           { type: "Inline", value: { inline: "inline" } },
           {
             type: "Remote",
-            path: "/report-page-sample/wide/{id}",
+            path: "/route-parameters-samples/{id}",
             query: {
               type: "Composite", // merges ["RequiredWithDefault1"] and ["Required1"]
               parts: [
@@ -64,6 +65,21 @@ const variants = [
         ]
       }
     })
+  },
+  {
+    name: "Model Update",
+    descriptor: giveMe.aContainer({
+      contents:[
+        giveMe.anInputText(),
+        giveMe.aText({
+          data: {
+            type: "Context",
+            key: "ModelData"
+          }
+        })
+      ]
+    }),
+    model: ref()
   }
 ];
 </script>
