@@ -45,7 +45,7 @@ if(descriptor.binding) {
   events.on(descriptor.binding, path, load);
 }
 
-if(shouldLoad || descriptor.action || descriptor.postAction) {
+if(shouldLoad) {
   context.provideLoading(loading);
 }
 

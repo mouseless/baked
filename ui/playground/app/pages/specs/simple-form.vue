@@ -13,30 +13,33 @@ const variants = [
     name: "Base",
     descriptor: giveMe.aSimpleForm({
       action: {
-        type: "Local",
-        composable: "useShowMessage",
-        options: {
-          type: "Context",
-          key: "ModelData",
-          prop: "text",
-          targetProp: "message"
-        }
+        type: "Composite",
+        parts: [
+          {
+            type: "Local",
+            composable: "useDelay",
+            options: {
+              type: "Inline",
+              value: { time: 500 }
+            }
+          },
+          {
+            type: "Local",
+            composable: "useShowMessage",
+            options: {
+              type: "Context",
+              key: "ModelData",
+              prop: "text",
+              targetProp: "message"
+            }
+          }
+        ]
       },
       inputs: [
         giveMe.anInput({
           name: "text",
-          component: giveMe.anInputText()
-        }),
-        giveMe.anInput({
-          name: "number",
-          component: giveMe.anInputNumber()
-        }),
-        giveMe.anInput({
-          name: "select",
-          component: giveMe.aSelect({
-            label: "Label",
-            data: ["OPTION_1", "OPTION_2"]
-          })
+          component: giveMe.anInputText(),
+          required: true
         })
       ],
       label: "Submit"

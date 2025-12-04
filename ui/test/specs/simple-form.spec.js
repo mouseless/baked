@@ -10,30 +10,54 @@ test.describe("Base", () => {
 
   test("Renders form with given inputs", async({ page }) => {
     const component = page.getByTestId(id);
-    const number = component.locator(primevue.select.base);
-    const select = component.locator(primevue.select.base);
-    const text = component.locator(primevue.select.base);
+    const text = component.locator(".b-component--InputText");
+    const button = component.locator(primevue.button.base);
 
-    await expect(number).toBeAttached();
-    await expect(select).toBeAttached();
     await expect(text).toBeAttached();
+    await expect(button).toBeAttached();
+  });
+
+  test("Button is disabled when inputs are not ready", async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base);
+
+    await expect(button).toBeDisabled();
+  });
+
+  test("Button is enabled when inputs are ready", async({ page }) => {
+    const component = page.getByTestId(id);
+    const text = component.locator(".b-component--InputText");
+    const button = component.locator(primevue.button.base);
+
+    await text.fill("text");
+
+    await expect(button).not.toBeDisabled();
   });
 
   test("Execute given remote action", async({ page }) => {
     const component = page.getByTestId(id);
-    const number = component.locator(".b-component--InputNumber .p-inputnumber-input");
-    const select = component.locator(primevue.select.base);
     const text = component.locator(".b-component--InputText");
-    const options = page.locator(primevue.select.option);
     const button = component.locator(primevue.button.base);
 
-    await number.fill("1");
-    await select.click();
-    await options.nth(0).click();
     await text.fill("text");
     await button.click();
 
     await expect(page.locator(primevue.toast.base)).toBeVisible();
     await expect(page.locator(primevue.toast.summary)).toHaveText("text");
+  });
+
+  test("Button is disabled until action is completed", async({ page }) => {
+    const component = page.getByTestId(id);
+    const text = component.locator(".b-component--InputText");
+    const button = component.locator(primevue.button.base);
+
+    await text.fill("text");
+    await button.click();
+
+    await expect(button).toBeDisabled();
+    const spinner = button.locator(".p-button-loading-icon, .pi-spinner");
+    await expect(spinner).toBeVisible();
+    await expect(page.locator(primevue.toast.base)).toBeVisible();
+    await expect(button).not.toBeDisabled();
   });
 });

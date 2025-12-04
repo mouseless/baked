@@ -10,10 +10,10 @@
     />
     <Button
       icon="pi pi-save"
-      :loading
+      :loading="waitingAction"
       :disabled="!ready || waitingAction"
       :label
-      @click="$emit('submit', model)"
+      @click="$emit('submit', formData)"
     />
   </div>
 </template>
@@ -30,11 +30,10 @@ const { schema } = defineProps({
 });
 defineEmits(["submit"]);
 
-const model = ref({});
+const formData = ref({});
 
 const { label, inputs } = schema;
 
-const loading = context.injectLoading();
 const waitingAction = context.injectWaitingAction();
 const ready = ref(inputs.length === 0);
 
@@ -43,6 +42,6 @@ function onReady(value) {
 }
 
 function onChanged({ values }) {
-  model.value = values;
+  formData.value = values;
 }
 </script>
