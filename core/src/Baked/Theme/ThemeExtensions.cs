@@ -570,9 +570,26 @@ public static class ThemeExtensions
 
     #region Component Descriptor Builder & Component
 
-    public static IComponentDescriptor GetRequiredComponent(this ICustomAttributesModel metadata, ComponentContext context) =>
-        metadata.GetComponent(context) ??
-        B.None();
+    public static IComponentDescriptor GetRequiredComponent(this ICustomAttributesModel metadata, ComponentContext context)
+    {
+        var result = metadata.GetComponent(context);
+
+        if (result is null)
+        {
+            Console.WriteLine($"warning: `{metadata.CustomAttributes.Name}` doesn't have any component descriptor at path `{context.Path}`");
+
+            result = B.None(options: n =>
+            {
+                n.Path.AddRange(context.Path.GetParts());
+                n.Source = B.NoneDomainSource(metadata.GetType().Name, options: nds =>
+                {
+                    nds.Path.AddRange(metadata.CustomAttributes.Name.Split('.'));
+                });
+            });
+        }
+
+        return result;
+    }
 
     public static IComponentDescriptor? GetComponent(this ICustomAttributesModel metadata, ComponentContext context)
     {

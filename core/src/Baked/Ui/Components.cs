@@ -146,6 +146,10 @@ public static class Components
         Action<None>? options = default
     ) => new(options.Apply(new()));
 
+    public static None.DomainSource NoneDomainSource(string type,
+        Action<None.DomainSource>? options = default
+    ) => options.Apply(new(type));
+
     public static ComponentDescriptor<Number> Number(
         Action<Number>? options = default,
         IData? data = default
