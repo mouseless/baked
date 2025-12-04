@@ -49,6 +49,8 @@
 - `RemoveComponent` and `RemoveSchema` helper extensions are now added
 - `AwaitLoading` utility component is now added which contains slots to help
   rendering skeleton and content according to `loading` state
-- `None` component is now added as a default in development mode
+- `UiLayer` now has `MinConventionOrder` and `MaxConventionOrder` to allow
+  inserting conventions before or after all conventions
+- `None` component is now added as a default when no component was configured
 - `None` component now contains a sample code to help developer add the missing
   component to the path

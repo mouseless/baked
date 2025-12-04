@@ -10,6 +10,9 @@ namespace Baked.Ui;
 
 public class UiLayer : LayerBase<GenerateCode>
 {
+    public const int MinConventionOrder = -ConventionOrderLimit;
+    public const int MaxConventionOrder = ConventionOrderLimit;
+
     readonly AppDescriptor _appDescriptor = new();
     readonly ComponentExports _componentExports = new();
     readonly LayoutDescriptors _layoutDescriptors = new();

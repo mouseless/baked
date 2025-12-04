@@ -45,7 +45,7 @@ goto end
 :build
 echo Building projects...
 cd core
-dotnet build
+dotnet build -v d
 cd ..
 cd ui
 npm run build

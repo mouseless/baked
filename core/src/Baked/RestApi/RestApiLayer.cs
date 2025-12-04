@@ -15,8 +15,8 @@ namespace Baked.RestApi;
 
 public class RestApiLayer : LayerBase<GenerateCode, AddServices, Build>
 {
-    public const int MinConventionOrder = -1000;
-    public const int MaxConventionOrder = 1000;
+    public const int MinConventionOrder = -ConventionOrderLimit;
+    public const int MaxConventionOrder = ConventionOrderLimit;
 
     readonly ApiModel _apiModel = new();
     readonly IApplicationPartCollection _applicationParts = new ApplicationPartCollection();
