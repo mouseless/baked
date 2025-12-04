@@ -51,6 +51,9 @@
   rendering skeleton and content according to `loading` state
 - `UiLayer` now has `MinConventionOrder` and `MaxConventionOrder` to allow
   inserting conventions before or after all conventions
-- `None` component is now added as a default when no component was configured
+- `None` component is now added when a component is required but none was
+  configured
+  - It also leaves a post-build warning that includes the domain source name and
+    the component path
 - `None` component now contains a sample code to help developer add the missing
   component to the path

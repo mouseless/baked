@@ -357,6 +357,21 @@ export default {
     };
   },
 
+  aNone({ data, path, source } = {}) {
+    data = $(data, null);
+    path = $(path, []);
+    source = $(source, null);
+
+    return {
+      type: "None",
+      schema: {
+        path,
+        source
+      },
+      data: { type: "Inline", value: data }
+    };
+  },
+
   aNumber({ data } = {}) {
     data = $(data, 100_000);
 
