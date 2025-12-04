@@ -112,16 +112,17 @@ function Computed({ parentFetch }) {
 }
 
 function Context() {
+  const unref = useUnref();
+
   function get({ data, contextData }) {
     let result = contextData[data.key];
 
-    // TODO use unref instead of hardcoded .value access
-    if(result?.value) {
-      result = result.value;
-    }
+    if(!result) { return null; }
+
+    result = unref.deepUnref(result);
 
     if(data.prop) {
-      result = result?.[data.prop];
+      result = result[data.prop];
     }
 
     if(data.targetProp) {

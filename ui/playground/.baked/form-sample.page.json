@@ -98,7 +98,11 @@
                       }
                     }
                   },
-                  "binding": "something-changed"
+                  "reaction": {
+                    "something-changed": {
+                      "type": "Reload"
+                    }
+                  }
                 }
               }
             },

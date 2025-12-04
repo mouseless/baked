@@ -14,6 +14,9 @@ public static class Actions
         Action<LocalAction>? options = default
     ) => options.Apply(new(composable));
 
+    public static ReloadAction Reload() =>
+        new();
+
     public static RemoteAction Remote(string path,
         Action<RemoteAction>? options = default
     ) => options.Apply(new(path));

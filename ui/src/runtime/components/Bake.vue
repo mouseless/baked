@@ -41,8 +41,10 @@ context.provideData(data, "ParentData");
 context.provideWaitingAction(waitingAction);
 
 // TODO - review this in form components
-if(descriptor.binding) {
-  events.on(descriptor.binding, path, load);
+if(descriptor.reaction) {
+  Object.entries(descriptor.reaction).forEach(([eventKey, action]) =>{
+    events.on(eventKey, path, () => onReact(action));
+  });
 }
 
 if(shouldLoad) {
@@ -57,8 +59,10 @@ onMounted(async() => {
 
 // TODO - review this in form components
 onUnmounted(() => {
-  if(descriptor.binding) {
-    events.off(descriptor.binding, path);
+  if(descriptor.reaction) {
+    Object.keys(descriptor.reaction).forEach(eventKey =>{
+      events.off(eventKey, path);
+    });
   }
 });
 
@@ -107,5 +111,11 @@ async function onModelUpdate(newModel) {
   } finally {
     waitingAction.value = false;
   }
+}
+
+function onReact(action) {
+  const contextData = { ...injectedData, ModelData: model };
+
+  actionExecuter.execute({ action, contextData, events, reloadAction: load });
 }
 </script>

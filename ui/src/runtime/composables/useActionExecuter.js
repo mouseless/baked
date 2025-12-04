@@ -6,13 +6,14 @@ export default function() {
     "Composite": Composite({ actionExecuter: { execute } }),
     "Emit": Emit(),
     "Local": Local(),
+    "Reload": Reload(),
     "Remote": Remote()
   };
 
-  async function execute({ action, contextData, events }) {
+  async function execute({ action, contextData, events, reloadAction }) {
     const executer = actions[action?.type];
 
-    await executer.execute({ action, contextData, events });
+    await executer.execute({ action, contextData, events, reloadAction });
   }
 
   return {
@@ -56,6 +57,16 @@ function Local() {
     }
 
     throw new Error("Action composable should have async `run`");
+  }
+
+  return {
+    execute
+  };
+}
+
+function Reload() {
+  async function execute({ reloadAction }) {
+    await reloadAction();
   }
 
   return {

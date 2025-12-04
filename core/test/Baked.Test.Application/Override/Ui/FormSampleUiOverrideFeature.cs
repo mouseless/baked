@@ -55,7 +55,7 @@ public class FormSampleUiOverrideFeature : IFeature
                     members.Methods.Having<ActionModelAttribute>().Any(m => !m.Name.StartsWith("Get")),
                 component: dp =>
                 {
-                    dp.Schema.Content.Binding = "something-changed";
+                    dp.Schema.Content.Reaction = new() { { "something-changed", Actions.Reload() } };
                 }
             );
             builder.Conventions.AddMethodSchema(
