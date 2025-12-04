@@ -10,10 +10,7 @@
   </div>
 </template>
 <script setup>
-import { useContext } from "#imports";
 import { Bake } from "#components";
-
-const context = useContext();
 
 const { schema } = defineProps({
   schema: { type: null, required: true },
@@ -22,6 +19,4 @@ const { schema } = defineProps({
 const model = defineModel({ type: null, required: false });
 
 const { contents } = schema;
-
-context.provideData(model, "ModelData");
 </script>

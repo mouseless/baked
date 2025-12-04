@@ -1,5 +1,4 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
-import baked from "../utils/locators/baked";
 import primevue from "../utils/locators/primevue";
 
 test.beforeEach(async({ goto, page }) => {
@@ -9,7 +8,10 @@ test.beforeEach(async({ goto, page }) => {
   await page.route("*/**/route-parameters-samples/*", async route => {
     await route.fulfill("fake-response");
   });
-  await goto("/specs/bake", { waitUntil: "hydration" });
+  await page.route("*/**/rich-transient-with-datas/12/method", async route => {
+    await route.fulfill("fake-response");
+  });
+  await goto("/specs/bake?val=2", { waitUntil: "hydration" });
 });
 
 test.describe("Base", () => {
@@ -74,10 +76,17 @@ test.describe("Data Descriptor", () => {
   });
 });
 
-test.describe("Model Update", () => {
-  const id = "Model Update";
+test.describe("Model", () => {
+  const id = "Model";
 
-  test("updates model value", async({ page }) => {
+  test("model is passed when a component defines model", async({ page }) => {
+    const component = page.getByTestId(id);
+    const input = component.locator(primevue.inputeText.base);
+
+    await expect(input).toHaveValue("Model Data");
+  });
+
+  test("model value can be updated", async({ page }) => {
     const component = page.getByTestId(id);
     const input = component.locator(primevue.inputeText.base);
     const model = page.getByTestId(`${id}:model`);
@@ -86,14 +95,36 @@ test.describe("Model Update", () => {
 
     await expect(model).toHaveText("Test");
   });
+});
 
-  test("model data can be injected", async({ page }) => {
+test.describe("Action", () =>{
+  const id = "Action";
+
+  test("Execute given composite action", async({ page }) => {
+    const requestPromise = page.waitForRequest(req => req.url().includes("rich-transient-with-datas"));
     const component = page.getByTestId(id);
-    const input = component.locator(primevue.inputeText.base);
-    const text = component.locator(baked.string.text);
+    const button = component.locator(primevue.button.base);
 
-    await input.fill("Test");
+    await button.click();
 
-    await expect(text).toHaveText("Test");
+    await expect(page.locator(primevue.toast.base)).toBeVisible();
+    await expect(page.locator(primevue.toast.summary)).toHaveText("Execute Action");
+
+    const request = await requestPromise;
+    expect(request.method()).toBe("POST");
+    expect(request.headers()["authorization"]).toContain("token-admin-ui");
+    expect(request.url()).toContain("/rich-transient-with-datas/12/method");
+    expect(request.url()).toContain("?val=2");
+    expect(request.postDataJSON()).toEqual({ text: "text" });
+  });
+
+  test("Execute given post action", async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base);
+
+    await button.click();
+
+    await expect(page.locator(primevue.toast.base).last()).toBeVisible();
+    await expect(page.locator(primevue.toast.summary).last()).toHaveText("Execute Post Action");
   });
 });

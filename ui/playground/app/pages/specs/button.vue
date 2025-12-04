@@ -6,12 +6,7 @@
   />
 </template>
 <script setup>
-import { useContext } from "#imports";
 import giveMe from "@utils/giveMe";
-
-const context = useContext();
-
-context.provideData({ id: 12 }, "ParentData");
 
 const variants = [
   {
@@ -22,14 +17,6 @@ const variants = [
         parts: [
           {
             type: "Local",
-            composable: "useShowMessage",
-            options: {
-              type: "Inline",
-              value: { message: "Execute Action" }
-            }
-          },
-          {
-            type: "Local",
             composable: "useDelay",
             options: {
               type: "Inline",
@@ -37,43 +24,14 @@ const variants = [
             }
           },
           {
-            type: "Remote",
-            path: "/rich-transient-with-datas/{id}/method",
-            method: "POST",
-            headers: {
+            type: "Local",
+            composable: "useShowMessage",
+            options: {
               type: "Inline",
-              value: {
-                Authorization: "token-admin-ui"
-              }
-            },
-            query: {
-              type: "Computed",
-              composable: "useNuxtRoute",
-              options: {
-                type: "Inline",
-                value:{ property: "query" }
-              }
-            },
-            params: {
-              type: "Context",
-              key: "ParentData"
-            },
-            body: {
-              type: "Inline",
-              value: {
-                text: "text"
-              }
+              value: { message: "Execute Action" }
             }
           }
         ]
-      },
-      postAction: {
-        type: "Local",
-        composable: "useShowMessage",
-        options: {
-          type: "Inline",
-          value: { message: "Execute Post Action" }
-        }
       },
       label: "Spec: Button",
       icon: "pi pi-play-circle"
