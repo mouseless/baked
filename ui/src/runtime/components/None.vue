@@ -47,21 +47,33 @@
         />
         <!-- eslint-disable vue/no-v-html -->
         <pre
-          class="
-            -mt-[2.5em]
-            block rounded-lg overflow-auto bg-zinc-950 p-4
-            text-xs text-sky-300
-          "
+          class="-mt-[2.5em]"
           v-html="highlightedCode"
         />
         <!-- eslint-enable vue/no-v-html -->
       </code>
+      <template v-if="!inlinesData && data">
+        <Divider class="m-0" />
+        <Panel
+          header="Expand to see the data"
+          collapsed
+          toggleable
+          class="border-none"
+          :pt="{ header: 'p-0', content: 'px-0' }"
+        >
+          <code>
+            <!-- eslint-disable vue/no-v-html -->
+            <pre v-html="highlightedData" />
+            <!-- eslint-enable vue/no-v-html -->
+          </code>
+        </Panel>
+      </template>
     </div>
   </Dialog>
 </template>
 <script setup>
 import { computed, ref } from "vue";
-import { Button, Dialog } from "primevue";
+import { Button, Dialog, Panel, Divider } from "primevue";
 import { AwaitLoading } from "#components";
 
 const { schema, data } = defineProps({
@@ -91,6 +103,12 @@ const highlightedCode = computed(() => {
   if(!code.value) { return null; }
 
   return highlightCSharp(code.value);
+});
+
+const highlightedData = computed(() => {
+  if(inlinesData) { return null; }
+
+  return highlightJson(JSON.stringify(data, null, 2));
 });
 
 function renderTypeSample([ type ]) {
@@ -157,6 +175,23 @@ function highlightCSharp(src) {
 
   return s;
 }
+
+// AI-GEN provide above code samples and ask for the simplest json syntax
+// higlighter in js.
+function highlightJson(src) {
+  if(!src) return "";
+
+  let s = src
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/=/g, "&equals;");
+
+  s = s.replace(/"([^"]*)"/g, "<span class='c--code-string'>\"$1\"</span>");
+  s = s.replace(/(\{|\}|\[|\]|&equals;)/g, "<span class='c--code-symbol'>$1</span>");
+
+  return s;
+}
 </script>
 <style>
 code:not(:has(pre)) {
@@ -164,6 +199,8 @@ code:not(:has(pre)) {
 }
 
 pre {
+  @apply block rounded-lg overflow-auto max-h-[20em] bg-zinc-950 p-4 text-xs text-sky-300;
+
   .c--code-string { @apply text-orange-300; }
   .c--code-keyword { @apply text-purple-400; }
   .c--code-symbol { @apply text-gray-100; }

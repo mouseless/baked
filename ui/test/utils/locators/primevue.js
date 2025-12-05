@@ -31,6 +31,7 @@ export default {
     page: ".p-paginator-page"
   },
   panel: {
+    base: ".p-panel",
     title: ".p-panel-title",
     header: ".p-panel-header"
   },

@@ -43,7 +43,11 @@ const variants = [
       source: {
         type: "MethodModel",
         path: ["TestPage", "GetData"]
-      }
+      },
+      data: [
+        { "test": "large data" },
+        { "test": "large data" }
+      ]
     })
   },
   {
