@@ -15,7 +15,7 @@ install:
 	@(cd docs/.theme && npm i && npm ci)
 	@(cd ui && npm i && npm ci)
 build:
-	@(cd core && dotnet build -v d)
+	@(cd core && dotnet build -v d /p:GenerateArgs="--warn-for-none")
 	@(cd ui && npm run build)
 test:
 	@(cd core && dotnet test --logger quackers)

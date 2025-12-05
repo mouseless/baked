@@ -39,7 +39,7 @@ public class UsingNoneWhenNoComponentWasConfigured : TestSpec
     }
 
     [Test]
-    public void When_used__None_leaves_a_warning_log_in_build_output()
+    public void When_used__None_leaves_an_error_log_in_build_output()
     {
         var type = GiveMe.TheTypeModel<TestPage>().GetMetadata();
         var componentContext = GiveMe.AComponentContext(paths: ["page", "with-no-config"]);
@@ -47,7 +47,7 @@ public class UsingNoneWhenNoComponentWasConfigured : TestSpec
         type.GetRequiredComponent(componentContext);
 
         ConsoleOutput.ShouldContainWithoutWhitespace("""
-        warning: `TestPage` doesn't have any component descriptor at path `/page/with-no-config`
+        error: `TestPage` doesn't have any component descriptor at path `/page/with-no-config`
         """);
     }
 

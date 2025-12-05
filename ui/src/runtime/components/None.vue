@@ -176,8 +176,7 @@ function highlightCSharp(src) {
   return s;
 }
 
-// AI-GEN provide above code samples and ask for the simplest json syntax
-// higlighter in js.
+// AI-GEN ask for the simplest json syntax higlighter in js.
 function highlightJson(src) {
   if(!src) return "";
 

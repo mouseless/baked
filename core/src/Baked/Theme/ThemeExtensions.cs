@@ -576,7 +576,8 @@ public static class ThemeExtensions
 
         if (result is null)
         {
-            Console.WriteLine($"warning: `{metadata.CustomAttributes.Name}` doesn't have any component descriptor at path `{context.Path}`");
+            var level = UiLayer.WarnForNone ? "warning" : "error";
+            Console.WriteLine($"{level}: `{metadata.CustomAttributes.Name}` doesn't have any component descriptor at path `{context.Path}`");
 
             result = B.None(options: n =>
             {
