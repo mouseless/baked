@@ -2,18 +2,18 @@ import { useRuntimeConfig } from "#app";
 import { useComposableResolver, useDataFetcher, usePathBuilder, useUnref } from "#imports";
 
 export default function() {
+  // TODO make this configurable from plugin or elsewhere
   const actions = {
     "Composite": Composite({ actionExecuter: { execute } }),
     "Emit": Emit(),
     "Local": Local(),
-    "Reload": Reload(),
-    "Remote": Remote()
+    "Remote": Remote({ actionExecuter: { execute } })
   };
 
-  async function execute({ action, contextData, events, reloadAction }) {
+  async function execute({ action, contextData, events }) {
     const executer = actions[action?.type];
 
-    await executer.execute({ action, contextData, events, reloadAction });
+    await executer.execute({ action, contextData, events });
   }
 
   return {
@@ -35,7 +35,7 @@ function Composite({ actionExecuter }) {
 
 function Emit() {
   async function execute({ action, events }) {
-    await events.emit(action.eventKey);
+    await events.emit(action.event);
   }
 
   return {
@@ -64,30 +64,20 @@ function Local() {
   };
 }
 
-function Reload() {
-  async function execute({ reloadAction }) {
-    await reloadAction();
-  }
-
-  return {
-    execute
-  };
-}
-
-function Remote() {
+function Remote({ actionExecuter }) {
   const dataFetcher = useDataFetcher();
   const pathBuilder = usePathBuilder();
   const { public: { apiBaseURL } } = useRuntimeConfig();
   const unref = useUnref();
 
-  async function execute({ action, contextData }) {
+  async function execute({ action, contextData, events }) {
     const headers = action.headers ? unref.deepUnref(await dataFetcher.fetch({ data: action.headers, contextData })) : { };
     const query = action.query ? unref.deepUnref(await dataFetcher.fetch({ data: action.query, contextData })) : null;
     const params = action.params ? unref.deepUnref(await dataFetcher.fetch({ data: action.params, contextData })) : { };
     const body = action.method === "GET" ? null
       : (action.body ? unref.deepUnref(await dataFetcher.fetch({ data: action.body, contextData })) : { });
 
-    const result = await $fetch(pathBuilder.build(action.path, params), {
+    await $fetch(pathBuilder.build(action.path, params), {
       baseURL: apiBaseURL,
       method: action.method,
       headers: headers,
@@ -95,7 +85,7 @@ function Remote() {
       body: body
     });
 
-    return result;
+    await actionExecuter.execute({ action: action.postAction, contextData, events });
   }
 
   return {

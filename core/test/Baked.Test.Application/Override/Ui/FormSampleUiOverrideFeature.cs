@@ -4,7 +4,7 @@ using Baked.Test.Theme;
 using Baked.Test.Ui;
 using Baked.Theme;
 using Baked.Ui;
-
+using Humanizer;
 using static Baked.Test.Theme.Custom.DomainComponents;
 using static Baked.Theme.Default.DomainComponents;
 using C = Baked.Test.Ui.Components;
@@ -55,7 +55,7 @@ public class FormSampleUiOverrideFeature : IFeature
                     members.Methods.Having<ActionModelAttribute>().Any(m => !m.Name.StartsWith("Get")),
                 component: dp =>
                 {
-                    dp.Schema.Content.Reaction = new() { { "something-changed", Actions.Reload() } };
+                    dp.Schema.Content.When = new() { { nameof(FormSample.ClearStates).Kebaberize(), Reaction.Reload } };
                 }
             );
             builder.Conventions.AddMethodSchema(
@@ -75,7 +75,6 @@ public class FormSampleUiOverrideFeature : IFeature
                 component: (sf, c, cc) =>
                 {
                     sf.Action = c.Method.GetRequiredSchema<RemoteAction>(cc.Drill(nameof(IComponentDescriptor.Action)));
-                    sf.PostAction = Actions.Emit("something-changed");
 
                     cc = cc.Drill(nameof(SimpleForm));
 
@@ -116,14 +115,6 @@ public class FormSampleUiOverrideFeature : IFeature
                 where: cc => cc.Path.EndsWith(nameof(PageTitle.Actions)),
                 component: (c, cc) => Baked.Ui.Components.Button(c.Method.Name, ActionComposables.UseRedirect("/form-sample/new-state"))
             );
-            builder.Conventions.AddMethodComponentConfiguration<Button>(
-                when: c => c.Method.Name.Equals(nameof(FormSample.ClearStates)),
-                where: cc => cc.Path.EndsWith(nameof(PageTitle.Actions)),
-                component: button =>
-                {
-                    button.PostAction = Actions.Emit("something-changed");
-                }
-            );
             builder.Conventions.AddTypeComponentConfiguration<ReportPage>(
                 when: c => c.Type.Is<FormSample>(),
                 component: (rp, c, cc) =>
@@ -148,14 +139,14 @@ public class FormSampleUiOverrideFeature : IFeature
                 where: cc => cc.Path.EndsWith(nameof(Page), nameof(FormSample), nameof(FormSample.AddState), nameof(ContainerPage), nameof(ContainerPage.Contents), "*"),
                 component: c => Baked.Ui.Components.SimpleForm(options: vf =>
                 {
-                    vf.Label = c.Method.Name;
+                    vf.ButtonLabel = c.Method.Name;
                 })
             );
-            builder.Conventions.AddMethodComponentConfiguration<SimpleForm>(
-                where: cc => cc.Path.EndsWith(nameof(Page), nameof(FormSample), nameof(FormSample.AddState), nameof(ContainerPage), nameof(ContainerPage.Contents), "*"),
-                component: sf =>
+            builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
+                when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.AddState),
+                schema: ra =>
                 {
-                    sf.PostAction = ActionComposables.UseRedirect("/form-sample");
+                    ra.PostAction = ActionComposables.UseRedirect("/form-sample");
                 }
             );
             // TODO - move to default feature

@@ -2,6 +2,7 @@ import { useRuntimeConfig } from "#app";
 import { useComposableResolver, usePathBuilder, useUnref } from "#imports";
 
 export default function() {
+  // TODO make this configurable from plugin or elsewhere
   const datas = {
     "Composite": Composite({ parentFetch: fetch, parentFetchParameters: fetchParameters }),
     "Computed": Computed({ parentFetch: fetch }),

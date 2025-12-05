@@ -66,10 +66,8 @@
                 }
               }
             },
-            "reaction": {
-              "something-changed": {
-                "type": "Reload"
-              }
+            "when": {
+              "clear-states": "Reload"
             }
           }
         }

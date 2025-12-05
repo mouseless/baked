@@ -35,14 +35,14 @@ const variants = [
           }
         ]
       },
+      buttonLabel: "Submit",
       inputs: [
         giveMe.anInput({
           name: "text",
           component: giveMe.anInputText(),
           required: true
         })
-      ],
-      label: "Submit"
+      ]
     })
   }
 ];

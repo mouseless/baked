@@ -9,10 +9,10 @@
       @changed="onChanged"
     />
     <Button
-      icon="pi pi-save"
-      :loading="waitingAction"
-      :disabled="!ready || waitingAction"
-      :label
+      :icon="buttonIcon"
+      :loading="executing"
+      :disabled="!ready || executing"
+      :label="buttonLabel"
       @click="$emit('submit', formData)"
     />
   </div>
@@ -32,9 +32,9 @@ defineEmits(["submit"]);
 
 const formData = ref({});
 
-const { label, inputs } = schema;
+const { buttonIcon, buttonLabel, inputs } = schema;
 
-const waitingAction = context.injectWaitingAction();
+const executing = context.injectExecuting();
 const ready = ref(inputs.length === 0);
 
 function onReady(value) {

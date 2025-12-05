@@ -2,10 +2,10 @@
 
 public static class Components
 {
+    //TODO add domain component
     public static ComponentDescriptor<Button> Button(string label, IAction action,
-        IAction? postAction = default,
         Action<Button>? options = default
-    ) => new(options.Apply(new(label))) { Action = action, PostAction = postAction };
+    ) => new(options.Apply(new(label))) { Action = action };
 
     public static ComponentDescriptor<CardLink> CardLink(string route, string title,
         Action<CardLink>? options = default
@@ -194,8 +194,9 @@ public static class Components
     ) => options.Apply(new(route, icon));
 
     public static ComponentDescriptor<SimpleForm> SimpleForm(
+        IAction? action = default,
         Action<SimpleForm>? options = default
-    ) => new(options.Apply(new()));
+    ) => new(options.Apply(new())) { Action = action };
 
     public static ComponentDescriptor<Text> Text(
         Action<Text>? options = default,

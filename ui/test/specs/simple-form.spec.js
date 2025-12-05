@@ -15,6 +15,7 @@ test.describe("Base", () => {
 
     await expect(text).toBeAttached();
     await expect(button).toBeAttached();
+    await expect(button).toHaveText("Submit");
   });
 
   test("Button is disabled when inputs are not ready", async({ page }) => {

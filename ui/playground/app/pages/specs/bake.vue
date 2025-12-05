@@ -128,17 +128,17 @@ const variants = [
                   value: {
                     text: "text"
                   }
+                },
+                postAction: {
+                  type: "Local",
+                  composable: "useShowMessage",
+                  options: {
+                    type: "Inline",
+                    value: { message: "Execute Post Action" }
+                  }
                 }
               }
             ]
-          },
-          postAction: {
-            type: "Local",
-            composable: "useShowMessage",
-            options: {
-              type: "Inline",
-              value: { message: "Execute Post Action" }
-            }
           },
           label: "Spec: Button",
           icon: "pi pi-play-circle"

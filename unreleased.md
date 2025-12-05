@@ -31,7 +31,7 @@
   data = Computed(Composables.UseQuery)
 
   // Use `UseRoute` with args
-  data = Computed(Composables.UseRoute, options: o => o.Args.Add("params"))
+  data = Computed("UseRoute", options: o => o.Args.Add("query"))
 }
 ```
 - `baseURL` is renamed to `apiBaseUrl` and config is now set in root of `bake`

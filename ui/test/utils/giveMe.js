@@ -484,14 +484,16 @@ export default {
     return { route, icon, title, disabled };
   },
 
-  aSimpleForm({ label, inputs, action, postAction }) {
-    label = $(label, "Label");
+  aSimpleForm({ buttonIcon, buttonLabel, inputs, action, postAction }) {
+    buttonIcon = $(buttonIcon, "pi pi-save");
+    buttonLabel = $(buttonLabel, "Button Label");
     inputs = $(inputs, []);
 
     return {
       type: "SimpleForm",
       schema: {
-        label,
+        buttonIcon,
+        buttonLabel,
         inputs
       },
       action,

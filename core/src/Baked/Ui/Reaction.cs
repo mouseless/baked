@@ -1,3 +1,8 @@
 ﻿namespace Baked.Ui;
 
-public class Reaction : Dictionary<string, IAction>;
+public enum Reaction
+{
+    Reload,
+    Show,
+    Hide
+}

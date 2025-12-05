@@ -34,16 +34,17 @@ const injectedData = context.injectData();
 const data = ref(dataFetcher.get({ data: descriptor.data, contextData: injectedData }));
 const shouldLoad = dataFetcher.shouldLoad(descriptor.data?.type);
 const loading = ref(shouldLoad);
-const waitingAction = ref(false);
+const executing = ref(false);
 const classes = [`b-component--${descriptor.type}`, ...asClasses(name)];
 
 context.provideData(data, "ParentData");
-context.provideWaitingAction(waitingAction);
+context.provideExecuting(executing);
 
-// TODO - review this in form components
-if(descriptor.reaction) {
-  Object.entries(descriptor.reaction).forEach(([eventKey, action]) =>{
-    events.on(eventKey, path, () => onReact(action));
+if(descriptor.when) {
+  Object.entries(descriptor.when).forEach(([event, reaction]) => {
+    if(reaction === "Reload") {
+      events.on(event, path, load);
+    }
   });
 }
 
@@ -59,9 +60,9 @@ onMounted(async() => {
 
 // TODO - review this in form components
 onUnmounted(() => {
-  if(descriptor.reaction) {
-    Object.keys(descriptor.reaction).forEach(eventKey =>{
-      events.off(eventKey, path);
+  if(descriptor.when) {
+    Object.keys(descriptor.when).forEach(event =>{
+      events.off(event, path);
     });
   }
 });
@@ -102,20 +103,10 @@ async function onModelUpdate(newModel) {
   }
 
   try {
-    waitingAction.value = true;
+    executing.value = true;
     await actionExecuter.execute({ action: descriptor.action, contextData, events });
-
-    if(descriptor.postAction) {
-      await actionExecuter.execute({ action: descriptor.postAction, contextData, events });
-    }
   } finally {
-    waitingAction.value = false;
+    executing.value = false;
   }
-}
-
-function onReact(action) {
-  const contextData = { ...injectedData, ModelData: model };
-
-  actionExecuter.execute({ action, contextData, events, reloadAction: load });
 }
 </script>

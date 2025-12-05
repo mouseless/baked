@@ -29,13 +29,20 @@ export default function() {
     provide(`__bake_injected_data:${key}`, value);
   }
 
-  // TODO - review this in form components
   function injectEvents() {
     return inject("__bake_events");
   }
-  // TODO - review this in form components
+
   function provideEvents(value) {
     provide("__bake_events", value);
+  }
+
+  function injectExecuting() {
+    return inject("__bake_executing", ref(false));
+  }
+
+  function provideExecuting(value) {
+    return provide("__bake_executing", value);
   }
 
   function injectLoading() {
@@ -54,14 +61,6 @@ export default function() {
     provide("__bake_page", value);
   }
 
-  function injectWaitingAction() {
-    return inject("__bake_waitingAction", ref(false));
-  }
-
-  function provideWaitingAction(value) {
-    return provide("__bake_waitingAction", value);
-  }
-
   return {
     injectPath,
     providePath,
@@ -71,11 +70,11 @@ export default function() {
     provideData,
     injectEvents,
     provideEvents,
+    injectExecuting,
+    provideExecuting,
     injectLoading,
     provideLoading,
     injectPage,
-    providePage,
-    injectWaitingAction,
-    provideWaitingAction
+    providePage
   };
 }

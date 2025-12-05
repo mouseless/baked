@@ -29,11 +29,11 @@
           "action": {
             "type": "Remote",
             "path": "form-sample/states",
-            "method": "DELETE"
-          },
-          "postAction": {
-            "type": "Emit",
-            "eventKey": "something-changed"
+            "method": "DELETE",
+            "postAction": {
+              "type": "Emit",
+              "event": "clear-states"
+            }
           }
         }
       ]
@@ -98,10 +98,8 @@
                       }
                     }
                   },
-                  "reaction": {
-                    "something-changed": {
-                      "type": "Reload"
-                    }
+                  "when": {
+                    "clear-states": "Reload"
                   }
                 }
               }

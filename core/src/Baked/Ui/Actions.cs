@@ -6,18 +6,15 @@ public static class Actions
         Action<CompositeAction>? options = default
     ) => options.Apply(new());
 
-    public static EmitAction Emit(string eventKey,
+    public static EmitAction Emit(string @event,
         Action<EmitAction>? options = default
-    ) => options.Apply(new(eventKey));
+    ) => options.Apply(new(@event));
 
     public static LocalAction Local(string composable,
         Action<LocalAction>? options = default
     ) => options.Apply(new(composable));
 
-    public static ReloadAction Reload() =>
-        new();
-
-    public static RemoteAction Remote(string path,
+    public static RemoteAction Remote(string path, IAction postAction,
         Action<RemoteAction>? options = default
-    ) => options.Apply(new(path));
+    ) => options.Apply(new(path, postAction));
 }

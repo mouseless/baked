@@ -5,7 +5,7 @@
       {
         "type": "SimpleForm",
         "schema": {
-          "label": "AddState",
+          "buttonLabel": "AddState",
           "inputs": [
             {
               "name": "state",
@@ -76,15 +76,15 @@
           "body": {
             "type": "Context",
             "key": "ModelData"
-          }
-        },
-        "postAction": {
-          "type": "Local",
-          "composable": "useRedirect",
-          "options": {
-            "type": "Inline",
-            "value": {
-              "route": "/form-sample"
+          },
+          "postAction": {
+            "type": "Local",
+            "composable": "useRedirect",
+            "options": {
+              "type": "Inline",
+              "value": {
+                "route": "/form-sample"
+              }
             }
           }
         }
