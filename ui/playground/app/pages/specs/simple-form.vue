@@ -35,7 +35,7 @@ const variants = [
           }
         ]
       },
-      buttonLabel: "Submit",
+      buttonLabel: "Spec: SimpleFormButton",
       inputs: [
         giveMe.anInput({
           name: "text",

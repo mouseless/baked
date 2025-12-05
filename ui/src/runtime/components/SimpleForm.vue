@@ -12,7 +12,7 @@
       :icon="buttonIcon"
       :loading="executing"
       :disabled="!ready || executing"
-      :label="buttonLabel"
+      :label="l(buttonLabel)"
       @click="$emit('submit', formData)"
     />
   </div>
@@ -20,10 +20,11 @@
 <script setup>
 import { ref } from "vue";
 import { Button } from "primevue";
-import { useContext } from "#imports";
+import { useContext, useLocalization } from "#imports";
 import { Inputs } from "#components";
 
 const context = useContext();
+const { localize: l } = useLocalization();
 
 const { schema } = defineProps({
   schema: { type: null, required: true }

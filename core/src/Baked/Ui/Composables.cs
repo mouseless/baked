@@ -5,10 +5,14 @@ public static class Composables
     [Obsolete("Use 'UseRoute' instead.")]
     public static readonly string UseQuery = "useQuery";
 
-    public static ComputedData UseError() =>
-        Datas.Computed("useNuxtError");
+    public static ComputedData UseError(
+        IData? options = default
+    ) => Datas.Computed("useNuxtError", o => o.Options = options);
+
+    public static ComputedData UseRoute(string property) =>
+        UseRoute(Datas.Inline(new { property }));
 
     public static ComputedData UseRoute(
-        string? property = default
-    ) => Datas.Computed("useNuxtRoute", o => o.Options = property is null ? null : Datas.Inline(new { property }));
+        IData? options = default
+    ) => Datas.Computed("useNuxtRoute", o => o.Options = options);
 }

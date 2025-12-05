@@ -42,7 +42,7 @@ public static class CustomThemeExtensions
             r => r.Child("/specs/text", "Text", "/specs") with { Icon = "pi pi-microchip", Description = "Render string values", Section = "Display" },
 
             // Form
-            r => r.Child("/specs/simple-form", "SimpleForm", "/specs") with { Icon = "pi pi-microchip", Description = "Showcase simple form component with inputs", Section = "Form" },
+            r => r.Child("/specs/simple-form", "Simple Form", "/specs") with { Icon = "pi pi-microchip", Description = "Showcase simple form component with inputs", Section = "Form" },
 
             // Input
             r => r.Child("/specs/button", "Button", "/specs") with { Icon = "pi pi-microchip", Description = "Showcase interactions using button component", Section = "Input" },
