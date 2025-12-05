@@ -73,6 +73,7 @@
   "Message": "Message",
   "Money": "Money",
   "Nav Link": "Nav Link",
+  "New State ": "New State ",
   "Number": "Number",
   "OptionalOptions.Optional1": "Optional 1",
   "OptionalOptions.Optional2": "Optional 2",
@@ -108,9 +109,12 @@
   "Shortens and renders numbers with the full value shown as tooltip": "Shortens and renders numbers with the full value shown as tooltip",
   "Showcase DataTable component with scrollable and footer options": "Showcase DataTable component with scrollable and footer options",
   "Showcase interactions using button component": "Showcase interactions using button component",
+  "Showcase simple form component with inputs": "Showcase simple form component with inputs",
   "Showcases a report layout with tabs and data panels": "Showcases a report layout with tabs and data panels",
+  "Showcases action, form components and events": "Showcases action, form components and events",
   "Showcases the cache behavior": "Showcases the cache behavior",
   "Side Menu": "Side Menu",
+  "Simple Form": "Simple Form",
   "Single Value": "Single Value",
   "Specs": "Specs",
   "Status": "Status",
@@ -122,7 +126,6 @@
   "Unexpected Error": "Unexpected Error",
   "Use page descriptors as route template and extract parameters": "Use page descriptors as route template and extract parameters",
   "Value": "Value",
-  "Vibe coding form components": "Vibe coding form components",
   "View list data in a table": "View list data in a table",
   "You do not have the permision to view the address or data specified.": "You do not have the permision to view the address or data specified."
 }

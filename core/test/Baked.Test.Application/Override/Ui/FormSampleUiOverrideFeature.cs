@@ -2,10 +2,11 @@
 using Baked.RestApi.Model;
 using Baked.Test.Theme;
 using Baked.Test.Ui;
+using Baked.Theme;
 using Baked.Ui;
-
+using Humanizer;
+using static Baked.Test.Theme.Custom.DomainComponents;
 using static Baked.Theme.Default.DomainComponents;
-
 using C = Baked.Test.Ui.Components;
 using DA = Baked.Theme.Default.DomainActions;
 
@@ -54,30 +55,32 @@ public class FormSampleUiOverrideFeature : IFeature
                     members.Methods.Having<ActionModelAttribute>().Any(m => !m.Name.StartsWith("Get")),
                 component: dp =>
                 {
-                    dp.Schema.Content.Binding = "something-changed";
+                    dp.Schema.Content.When = new() { { nameof(FormSample.ClearStates).Kebaberize(), Reaction.Reload } };
                 }
             );
-            builder.Conventions.AddMethodComponent(
-                when: c => !c.Method.Name.StartsWith("Get"),
-                where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content)),
-                component: c => C.VibeForm(options: vf =>
-                {
-                    var action = c.Method.GetAction();
-
-                    vf.Label = c.Method.Name;
-                    vf.Action.Path = action.GetRoute();
-                    vf.Action.Method = action.Method.ToString().ToUpperInvariant();
-                    vf.SubmitEventName = "something-changed";
-                })
+            builder.Conventions.AddMethodSchema(
+                when: c => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.AddState)),
+                where: cc => true,
+                schema: (c, _) => DA.MethodRemote(c.Method)
             );
-            builder.Conventions.AddMethodComponentConfiguration<VibeForm>(
-                component: (vf, c, cc) =>
+            builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
+                when: c => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.AddState)),
+                where: cc => true,
+                schema: ra =>
                 {
-                    cc = cc.Drill(nameof(VibeForm));
+                    ra.Body = Datas.Context(o => o.Key = ContextData.DataKey.ModelData);
+                }
+            );
+            builder.Conventions.AddMethodComponentConfiguration<SimpleForm>(
+                component: (sf, c, cc) =>
+                {
+                    sf.Action = c.Method.GetRequiredSchema<RemoteAction>(cc.Drill(nameof(IComponentDescriptor.Action)));
+
+                    cc = cc.Drill(nameof(SimpleForm));
 
                     foreach (var parameter in c.Method.DefaultOverload.Parameters)
                     {
-                        vf.Schema.Inputs.Add(ParameterInput(parameter, cc.Drill(nameof(VibeForm.Inputs)), options: i =>
+                        sf.Schema.Inputs.Add(ParameterInput(parameter, cc.Drill(nameof(SimpleForm.Inputs)), options: i =>
                         {
                             i.Required = !parameter.IsOptional;
                         }));
@@ -95,7 +98,7 @@ public class FormSampleUiOverrideFeature : IFeature
             // END OF TODO - review this in form components
 
             builder.Conventions.RemoveMethodSchema<ReportPage.Tab.Content>(
-                when: c => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.ClearStates))
+                when: c => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.ClearStates)) || c.Method.Name.Equals(nameof(FormSample.AddState))
             );
             builder.Conventions.AddMethodSchema(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.ClearStates)),
@@ -107,14 +110,17 @@ public class FormSampleUiOverrideFeature : IFeature
                 where: cc => cc.Path.EndsWith(nameof(PageTitle.Actions)),
                 component: (c, cc) => MethodButton(c.Method, cc.Drill(c.Method.Name))
             );
-            builder.Conventions.AddMethodComponentConfiguration<Button>(
-                when: c => c.Method.Name.Equals(nameof(FormSample.ClearStates)),
+            builder.Conventions.AddMethodComponent(
+                when: c => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.AddState)),
                 where: cc => cc.Path.EndsWith(nameof(PageTitle.Actions)),
-                component: button =>
-                {
-                    button.PostAction = Actions.Emit("something-changed");
-                }
+                component: (c, cc) => MethodButton(c.Method, cc.Drill(c.Method.Name))
             );
+            builder.Conventions.AddMethodComponentConfiguration<Button>(
+                when: c => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.AddState)),
+                where: cc => cc.Path.EndsWith(nameof(PageTitle.Actions)),
+                component: b => b.Action = ActionComposables.UseRedirect("/form-sample/new-state")
+            );
+
             builder.Conventions.AddTypeComponentConfiguration<ReportPage>(
                 when: c => c.Type.Is<FormSample>(),
                 component: (rp, c, cc) =>
@@ -127,6 +133,37 @@ public class FormSampleUiOverrideFeature : IFeature
 
                         rp.Schema.Title.Actions.Add(component);
                     }
+                }
+            );
+            builder.Conventions.AddMethodComponent(
+                when: c => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.AddState)),
+                where: cc => cc.Path.EndsWith(nameof(Page), nameof(FormSample), nameof(FormSample.AddState)),
+                component: (c, cc) => MethodContainerPage(c.Method, cc.Drill(c.Method.Name))
+            );
+            builder.Conventions.AddMethodComponent(
+                when: c => !c.Method.Name.StartsWith("Get") && c.Method.Has<ActionModelAttribute>(),
+                where: cc => cc.Path.EndsWith(nameof(Page), nameof(FormSample), nameof(FormSample.AddState), nameof(ContainerPage), nameof(ContainerPage.Contents), "*"),
+                component: c => Baked.Ui.Components.SimpleForm(options: vf =>
+                {
+                    vf.ButtonLabel = c.Method.Name;
+                })
+            );
+            builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
+                when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.AddState),
+                schema: ra =>
+                {
+                    ra.PostAction = ActionComposables.UseRedirect("/form-sample");
+                }
+            );
+            // TODO - move to default feature
+            builder.Conventions.AddMethodComponentConfiguration<ContainerPage>(
+                where: cc => cc.Path.EndsWith(nameof(FormSample), nameof(FormSample.AddState)),
+                component: (container, c, cc) =>
+                {
+                    cc = cc.Drill(nameof(ContainerPage), nameof(ContainerPage.Contents));
+
+                    var component = c.Method.GetRequiredComponent(cc.Drill(container.Schema.Contents.Count));
+                    container.Schema.Contents.Add(component);
                 }
             );
         });

@@ -21,7 +21,7 @@ export default function() {
   function injectData() {
     return {
       ParentData: inject("__bake_injected_data:ParentData", null),
-      Custom: inject("__bake_injected_data:Custom", null)
+      ModelData: inject("__bake_injected_data:ModelData", null)
     };
   }
 
@@ -29,13 +29,20 @@ export default function() {
     provide(`__bake_injected_data:${key}`, value);
   }
 
-  // TODO - review this in form components
   function injectEvents() {
     return inject("__bake_events");
   }
-  // TODO - review this in form components
+
   function provideEvents(value) {
     provide("__bake_events", value);
+  }
+
+  function injectExecuting() {
+    return inject("__bake_executing", ref(false));
+  }
+
+  function provideExecuting(value) {
+    return provide("__bake_executing", value);
   }
 
   function injectLoading() {
@@ -63,6 +70,8 @@ export default function() {
     provideData,
     injectEvents,
     provideEvents,
+    injectExecuting,
+    provideExecuting,
     injectLoading,
     provideLoading,
     injectPage,

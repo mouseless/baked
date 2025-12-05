@@ -18,6 +18,12 @@ export default {
   datepicker: {
     weekday: ".p-datepicker-weekday"
   },
+  inputNumber: {
+    base: ".p-inputnumber"
+  },
+  inputeText: {
+    base: ".p-inputtext"
+  },
   message: {
     base: ".p-message",
     icon: ".pi",
@@ -61,8 +67,5 @@ export default {
   popover: {
     base: ".p-popover:not([style*='display: none'])",
     content: ".p-popover:not([style*='display: none']) .p-popover-content"
-  },
-  inputNumber: {
-    base: ".p-inputnumber-input"
   }
 };

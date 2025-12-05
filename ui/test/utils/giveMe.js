@@ -24,14 +24,13 @@ const screens = [
 ];
 
 export default {
-  aButton({ action, icon, label, postAction } = {}) {
+  aButton({ action, icon, label } = {}) {
     label = $(label, "Button Title");
 
     return {
       type: "Button",
       schema: { icon, label },
-      action,
-      postAction
+      action
     };
   },
 
@@ -65,7 +64,7 @@ export default {
     return { prop, value, component };
   },
 
-  aContainer({ content, contents, data } = {}) {
+  aContainer({ content, contents, data, when } = {}) {
     content = $(content, this.anExpected());
     contents = $(contents, [content]);
     data = $(data, { type: "Inline", value: "Test value" });
@@ -73,7 +72,8 @@ export default {
     return {
       type: "Container",
       schema: { contents },
-      data
+      data,
+      when
     };
   },
 
@@ -258,8 +258,8 @@ export default {
 
   theInjectedData() {
     return {
-      type: "Injected",
-      key: "Custom"
+      type: "Context",
+      key: "ModelData"
     };
   },
 
@@ -435,7 +435,7 @@ export default {
 
     data = inline
       ? { type: "Inline", value: data }
-      : { type: "Computed", composable: "useDelayedData", args: [1, data] };
+      : { type: "Computed", composable: "useDelayedData", options: { type: "Inline", value: { ms: 1, data } } };
 
     return {
       type: "Select",
@@ -453,7 +453,7 @@ export default {
     localizeLabel = $(localizeLabel, false);
     data = inline
       ? { type: "Inline", value: data }
-      : { type: "Computed", composable: "useDelayedData", args: [1, data] };
+      : { type: "Computed", composable: "useDelayedData", options: { type: "Inline", value: { ms:1, data } } };
 
     return {
       type: "SelectButton",
@@ -482,6 +482,22 @@ export default {
     disabled = $(disabled, false);
 
     return { route, icon, title, disabled };
+  },
+
+  aSimpleForm({ buttonIcon, buttonLabel, inputs, action }) {
+    buttonIcon = $(buttonIcon, "pi pi-save");
+    buttonLabel = $(buttonLabel, "Button Label");
+    inputs = $(inputs, []);
+
+    return {
+      type: "SimpleForm",
+      schema: {
+        buttonIcon,
+        buttonLabel,
+        inputs
+      },
+      action
+    };
   },
 
   aText({ value, data, maxLength } = {}) {

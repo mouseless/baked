@@ -24,7 +24,7 @@ onMounted(async() => {
   if(showDataParams) {
     value.value = await dataFetcher.fetchParameters({
       data: dataDescriptor,
-      injectedData
+      contextData: injectedData
     });
   }
 });

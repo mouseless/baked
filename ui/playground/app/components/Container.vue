@@ -3,6 +3,7 @@
     <Bake
       v-for="(content, i) in contents"
       :key="`contents/${i}`"
+      v-model="model"
       :name="`contents/${i}`"
       :descriptor="content"
     />
@@ -15,7 +16,7 @@ const { schema } = defineProps({
   schema: { type: null, required: true },
   data: { type: null, required: true }
 });
-defineModel({ type: null, required: false });
+const model = defineModel({ type: null, required: false });
 
 const { contents } = schema;
 </script>

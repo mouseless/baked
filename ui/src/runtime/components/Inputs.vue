@@ -29,7 +29,7 @@ const injectedData = context.injectData();
 const values = reactive({});
 
 for(const input of inputs) {
-  values[input.name] = ref(dataFetcher.get({ data: input.default, injectedData }));
+  values[input.name] = ref(dataFetcher.get({ data: input.default, contextData: injectedData }));
 }
 
 function checkValue(value) {
@@ -44,7 +44,7 @@ onMounted(async() => {
   for(const input of inputs) {
     if(!dataFetcher.shouldLoad(input.default?.type)) { continue; }
 
-    values[input.name] = await dataFetcher.fetch({ data: input.default, injectedData });
+    values[input.name] = await dataFetcher.fetch({ data: input.default, contextData: injectedData });
   }
 
   emitChanged();

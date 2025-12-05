@@ -31,19 +31,25 @@ const path = context.injectPath();
 const events = context.injectEvents();
 const is = componentResolver.resolve(descriptor.type, "None");
 const injectedData = context.injectData();
-const data = ref(dataFetcher.get({ data: descriptor.data, injectedData }));
+const data = ref(dataFetcher.get({ data: descriptor.data, contextData: injectedData }));
 const shouldLoad = dataFetcher.shouldLoad(descriptor.data?.type);
 const loading = ref(shouldLoad);
+const executing = ref(false);
 const classes = [`b-component--${descriptor.type}`, ...asClasses(name)];
 
 context.provideData(data, "ParentData");
+context.provideExecuting(executing);
 
-// TODO - review this in form components
-if(descriptor.binding) {
-  events.on(descriptor.binding, path, load);
+//TODO implement remainig reactions
+if(descriptor.when) {
+  Object.keys(descriptor.when).forEach(event => {
+    if(descriptor.when[event] === "Reload") {
+      events.on(event, path, load);
+    }
+  });
 }
 
-if(shouldLoad || descriptor.action || descriptor.postAction) {
+if(shouldLoad) {
   context.provideLoading(loading);
 }
 
@@ -55,8 +61,10 @@ onMounted(async() => {
 
 // TODO - review this in form components
 onUnmounted(() => {
-  if(descriptor.binding) {
-    events.off(descriptor.binding, path);
+  if(descriptor.when) {
+    Object.keys(descriptor.when).forEach(event =>{
+      events.off(event, path);
+    });
   }
 });
 
@@ -64,10 +72,10 @@ function render() {
   const props = { };
   if(descriptor.schema) { props.schema = descriptor.schema; }
   if(descriptor.data) { props.data = data.value; }
-  if(descriptor.action) { props.onSubmit = onSubmit; }
+  if(is.emits?.includes("submit")) { props.onSubmit = onModelUpdate; }
   if(is.props?.modelValue) {
     props.modelValue = model.value;
-    props["onUpdate:modelValue"] = value => model.value = value;
+    props["onUpdate:modelValue"] = onModelUpdate;
   }
 
   return h(is, props);
@@ -77,21 +85,29 @@ async function load() {
   loading.value = true;
   data.value = await dataFetcher.fetch({
     data: descriptor.data,
-    injectedData
+    contextData: injectedData
   });
   loading.value = false;
   emit("loaded");
 }
 
-async function onSubmit() {
+async function onModelUpdate(newModel) {
+  if(is.props?.modelValue) {
+    model.value = newModel;
+  }
+
   if(!descriptor.action) { return; }
 
-  loading.value = true;
-  await actionExecuter.execute({ action: descriptor.action, injectedData, events });
-
-  if(descriptor.postAction) {
-    await actionExecuter.execute({ action: descriptor.postAction, injectedData, events });
+  const contextData = { ...injectedData };
+  if(newModel) {
+    contextData.ModelData = newModel;
   }
-  loading.value = false;
+
+  try {
+    executing.value = true;
+    await actionExecuter.execute({ action: descriptor.action, contextData, events });
+  } finally {
+    executing.value = false;
+  }
 }
 </script>

@@ -29,8 +29,8 @@ import {
 	Select,
 	SelectButton,
 	SideMenu,
-	Text,
-	VibeForm
+	SimpleForm,
+	Text
 } from "#components";
 
 export {
@@ -64,6 +64,6 @@ export {
 	Select,
 	SelectButton,
 	SideMenu,
-	Text,
-	VibeForm
+	SimpleForm,
+	Text
 }

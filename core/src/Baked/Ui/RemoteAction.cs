@@ -1,6 +1,6 @@
 ﻿namespace Baked.Ui;
 
-public record RemoteAction(string Path)
+public record RemoteAction(string Path, IAction PostAction)
     : IAction
 {
     public string Type => "Remote";
@@ -10,4 +10,5 @@ public record RemoteAction(string Path)
     public IData? Query { get; set; }
     public IData? Params { get; set; }
     public IData? Body { get; set; }
+    public IAction PostAction { get; set; } = PostAction;
 }

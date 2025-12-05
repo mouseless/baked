@@ -82,7 +82,6 @@ Bake.New
 |                    | Initializer Parameters are in Page Title |                                    |
 |                    | Numeric Values are Formatted             |                                    |
 |                    | Panel Parameters are Stateful            |                                    |
-|                    | Type with Only `GET` is Report Page      |                                    |
 
 > [!NOTE]
 >
