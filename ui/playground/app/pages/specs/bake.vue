@@ -145,6 +145,27 @@ const variants = [
         })
       ]
     })
+  },
+  {
+    name: "Reaction",
+    descriptor: giveMe.aContainer({
+      contents:[
+        giveMe.aButton({
+          action:{
+            type: "Emit",
+            event: "changed"
+          }
+        })
+      ],
+      data: {
+        type: "Remote",
+        path: "form-sample/states"
+      },
+      when: {
+        changed: "Reload"
+      }
+    })
+
   }
 ];
 </script>

@@ -42,8 +42,8 @@ context.provideExecuting(executing);
 
 //TODO implement remainig reactions
 if(descriptor.when) {
-  Object.entries(descriptor.when).forEach(([event, reaction]) => {
-    if(reaction === "Reload") {
+  Object.keys(descriptor.when).forEach(event => {
+    if(descriptor.when[event] === "Reload") {
       events.on(event, path, load);
     }
   });

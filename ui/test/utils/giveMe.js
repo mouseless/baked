@@ -24,14 +24,13 @@ const screens = [
 ];
 
 export default {
-  aButton({ action, icon, label, postAction } = {}) {
+  aButton({ action, icon, label } = {}) {
     label = $(label, "Button Title");
 
     return {
       type: "Button",
       schema: { icon, label },
-      action,
-      postAction
+      action
     };
   },
 
@@ -65,7 +64,7 @@ export default {
     return { prop, value, component };
   },
 
-  aContainer({ content, contents, data } = {}) {
+  aContainer({ content, contents, data, when } = {}) {
     content = $(content, this.anExpected());
     contents = $(contents, [content]);
     data = $(data, { type: "Inline", value: "Test value" });
@@ -73,7 +72,8 @@ export default {
     return {
       type: "Container",
       schema: { contents },
-      data
+      data,
+      when
     };
   },
 
@@ -484,7 +484,7 @@ export default {
     return { route, icon, title, disabled };
   },
 
-  aSimpleForm({ buttonIcon, buttonLabel, inputs, action, postAction }) {
+  aSimpleForm({ buttonIcon, buttonLabel, inputs, action }) {
     buttonIcon = $(buttonIcon, "pi pi-save");
     buttonLabel = $(buttonLabel, "Button Label");
     inputs = $(inputs, []);
@@ -496,8 +496,7 @@ export default {
         buttonLabel,
         inputs
       },
-      action,
-      postAction
+      action
     };
   },
 

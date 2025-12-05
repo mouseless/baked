@@ -93,10 +93,11 @@
 </template>
 <script setup>
 import { computed, onMounted, reactive, ref } from "vue";
-import { useContext, usePages } from "#imports";
+import { useContext, useEvents, usePages } from "#imports";
 import { Divider } from "primevue";
 
 const context = useContext();
+const events = useEvents();
 const pages = usePages();
 
 const { title, variants, noLoadingVariant } = defineProps({
@@ -129,6 +130,7 @@ const allVariants = computed(() => {
   return result;
 });
 
+context.provideEvents(events);
 context.providePage(page);
 
 onMounted(async() => {

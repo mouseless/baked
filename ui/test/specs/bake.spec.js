@@ -2,7 +2,7 @@ import { expect, test } from "@nuxt/test-utils/playwright";
 import primevue from "../utils/locators/primevue";
 
 test.beforeEach(async({ goto, page }) => {
-  await page.route("*/**/report/first", async route => {
+  await page.route("*/**/form-sample/states", async route => {
     await route.fulfill("fake-response");
   });
   await page.route("*/**/route-parameters-samples/*", async route => {
@@ -118,7 +118,7 @@ test.describe("Action", () =>{
     expect(request.postDataJSON()).toEqual({ text: "text" });
   });
 
-  test("Execute given post action", async({ page }) => {
+  test("Execute given remote post action", async({ page }) => {
     const component = page.getByTestId(id);
     const button = component.locator(primevue.button.base);
 
@@ -126,5 +126,20 @@ test.describe("Action", () =>{
 
     await expect(page.locator(primevue.toast.base).last()).toBeVisible();
     await expect(page.locator(primevue.toast.summary).last()).toHaveText("Execute Post Action");
+  });
+});
+
+test.describe("Reaction", () =>{
+  const id = "Reaction";
+
+  test("Reacts to given event with reload", async({ page }) => {
+    const requestPromise = page.waitForRequest(req => req.url().includes("form-sample/states"));
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base);
+
+    await button.click();
+
+    const request = await requestPromise;
+    expect(request.url()).toContain("form-sample/states");
   });
 });
