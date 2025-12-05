@@ -85,11 +85,11 @@ public class FormSampleUiOverrideFeature : IFeature
                 }
             );
             builder.Conventions.AddParameterComponent(
-                when: c => c.Parameter.ParameterType.Is<string>(),
+                when: c => c.Type.Is<FormSample>() && c.Parameter.ParameterType.Is<string>(),
                 component: c => C.InputText(c.Parameter.Name)
             );
             builder.Conventions.AddParameterComponent(
-                when: c => c.Parameter.ParameterType.Is<int>(),
+                when: c => c.Type.Is<FormSample>() && c.Parameter.ParameterType.Is<int>(),
                 component: c => C.InputNumber(c.Parameter.Name)
             );
             // END OF TODO - review this in form components

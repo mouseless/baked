@@ -2,6 +2,8 @@
 
 public abstract class LayerBase : ILayer
 {
+    public const int ConventionOrderLimit = 1000;
+
     protected ApplicationContext Context { get; private set; } = default!;
 
     protected virtual string Id => GetType().Name;

@@ -42,10 +42,6 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 when: c => c.Property.Has<IdAttribute>()
             );
             builder.Conventions.AddPropertyComponent(
-                component: () => B.None(),
-                order: -10
-            );
-            builder.Conventions.AddPropertyComponent(
                 component: () => B.Text(),
                 when: c => c.Property.PropertyType.Is<string>() || c.Property.PropertyType.Is<Guid>()
             );
@@ -65,6 +61,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 when: c => c.Type.Has<LocatableAttribute>(),
                 schema: rd => rd.Params = Computed(Composables.UseRoute, options: o => o.Args.Add("params"))
             );
+
             // Parameter Defaults
             builder.Conventions.AddParameterSchema(
                 schema: (c, cc) => ParameterInput(c.Parameter, cc),

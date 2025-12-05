@@ -1,3 +1,13 @@
 ﻿namespace Baked.Ui;
 
-public record None : IComponentSchema;
+public record None : IComponentSchema
+{
+    public List<string> Path { get; init; } = [];
+    public DomainSource? Source { get; set; }
+
+    public record DomainSource(string Type)
+    {
+        public string Type { get; set; } = Type;
+        public List<string> Path { get; init; } = [];
+    }
+}
