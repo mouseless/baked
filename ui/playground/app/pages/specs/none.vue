@@ -22,24 +22,24 @@ const variants = [
       path: ["page"],
       source: {
         type: "TypeModelMembers",
-        path: ["TestPage", "GetData"]
+        path: ["TestPage"]
       }
     })
   },
   {
     name: "Property",
     descriptor: giveMe.aNone({
-      path: ["page", "data-table", "columns", "test"],
+      path: ["page", "data-table", "columns", "text"],
       source: {
         type: "PropertyModel",
-        path: ["TestPage", "GetData"]
+        path: ["Record", "Text"]
       }
     })
   },
   {
     name: "Method",
     descriptor: giveMe.aNone({
-      path: ["page", "data-panel", "data-table"],
+      path: ["page", "data-panel"],
       source: {
         type: "MethodModel",
         path: ["TestPage", "GetData"]
@@ -49,10 +49,20 @@ const variants = [
   {
     name: "Parameter",
     descriptor: giveMe.aNone({
-      path: ["page", "data-panel", "parameters", "test"],
+      path: ["page", "data-panel", "parameters"],
       source: {
         type: "ParameterModel",
         path: ["TestPage", "GetData", "panel"]
+      }
+    })
+  },
+  {
+    name: "TypeMetadata",
+    descriptor: giveMe.aNone({
+      path: ["page"],
+      source: {
+        type: "TypeModelMetadata",
+        path: ["TestPage"]
       }
     })
   }

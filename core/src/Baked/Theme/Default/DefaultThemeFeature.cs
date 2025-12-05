@@ -41,7 +41,6 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 attribute: data => data.Visible = false,
                 when: c => c.Property.Has<IdAttribute>()
             );
-
             builder.Conventions.AddPropertyComponent(
                 component: () => B.Text(),
                 when: c => c.Property.PropertyType.Is<string>() || c.Property.PropertyType.Is<Guid>()

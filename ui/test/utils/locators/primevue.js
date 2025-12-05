@@ -18,6 +18,9 @@ export default {
   datepicker: {
     weekday: ".p-datepicker-weekday"
   },
+  dialog: {
+    base: ".p-dialog"
+  },
   message: {
     base: ".p-message",
     icon: ".pi",
