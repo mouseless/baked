@@ -93,29 +93,6 @@ const highlightedCode = computed(() => {
   return highlightCSharp(code.value);
 });
 
-// AI-GEN provide below code samples and asked for the minimal csharp syntax
-// higlighter.
-function highlightCSharp(src) {
-  if(!src) return "";
-
-  let s = src
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/=/g, "&equals;");
-
-  const kw = ["nameof"];
-  const kwRe = new RegExp(`\\b(${kw.join("|")})\\b`, "g");
-  s = s.replace(kwRe, "<span class='c--code-keyword'>$1</span>");
-
-  s = s.replace(/"([^"]*)"/g, "<span class='c--code-string'>\"$1\"</span>");
-  s = s.replace(/&lt;([^&]+)&gt;/g, "<span class='c--code-type'>&lt;$1&gt;</span>");
-  s = s.replace(/(\w+)\s*\(/g, "<span class='c--code-method'>$1</span>(");
-  s = s.replace(/(\.|\(|\)|&amp;|&lt;|&gt;|&equals;)/g, "<span class='c--code-symbol'>$1</span>");
-
-  return s;
-}
-
 function renderTypeSample([ type ]) {
   return String.raw`builder.Conventions.AddTypeComponent(
     when: c => c.Type.Is<${type}>(),
@@ -156,7 +133,29 @@ async function copyToClipboard() {
   } catch {
     console.log("clipboard copy failed");
   }
+}
 
+// AI-GEN provide above code samples and ask for the simplest csharp syntax
+// higlighter in js.
+function highlightCSharp(src) {
+  if(!src) return "";
+
+  let s = src
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/=/g, "&equals;");
+
+  const kw = ["nameof"];
+  const kwRe = new RegExp(`\\b(${kw.join("|")})\\b`, "g");
+  s = s.replace(kwRe, "<span class='c--code-keyword'>$1</span>");
+
+  s = s.replace(/"([^"]*)"/g, "<span class='c--code-string'>\"$1\"</span>");
+  s = s.replace(/&lt;([^&]+)&gt;/g, "<span class='c--code-type'>&lt;$1&gt;</span>");
+  s = s.replace(/(\w+)\s*\(/g, "<span class='c--code-method'>$1</span>(");
+  s = s.replace(/(\.|\(|\)|&amp;|&lt;|&gt;|&equals;)/g, "<span class='c--code-symbol'>$1</span>");
+
+  return s;
 }
 </script>
 <style>
