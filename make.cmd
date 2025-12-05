@@ -45,7 +45,7 @@ goto end
 :build
 echo Building projects...
 cd core
-dotnet build -v d
+dotnet build -v d /p:GenerateArgs="--warn-for-none"
 cd ..
 cd ui
 npm run build
