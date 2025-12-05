@@ -122,7 +122,7 @@
             "route": "/form-sample",
             "icon": "pi pi-file-edit",
             "title": "Form",
-            "description": "Vibe coding form components"
+            "description": "Showcases action, form components and events"
           }
         },
         {

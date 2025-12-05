@@ -3,7 +3,7 @@
   "schema": {
     "title": {
       "title": "Form",
-      "description": "Vibe coding form components",
+      "description": "Showcases action, form components and events",
       "actions": [
         {
           "type": "Button",

@@ -113,8 +113,14 @@ public class FormSampleUiOverrideFeature : IFeature
             builder.Conventions.AddMethodComponent(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.AddState)),
                 where: cc => cc.Path.EndsWith(nameof(PageTitle.Actions)),
-                component: (c, cc) => Baked.Ui.Components.Button(c.Method.Name, ActionComposables.UseRedirect("/form-sample/new-state"))
+                component: (c, cc) => MethodButton(c.Method, cc.Drill(c.Method.Name))
             );
+            builder.Conventions.AddMethodComponentConfiguration<Button>(
+                when: c => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.AddState)),
+                where: cc => cc.Path.EndsWith(nameof(PageTitle.Actions)),
+                component: b => b.Action = ActionComposables.UseRedirect("/form-sample/new-state")
+            );
+
             builder.Conventions.AddTypeComponentConfiguration<ReportPage>(
                 when: c => c.Type.Is<FormSample>(),
                 component: (rp, c, cc) =>
