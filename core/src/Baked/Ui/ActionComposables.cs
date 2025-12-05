@@ -3,5 +3,8 @@
 public static class ActionComposables
 {
     public static LocalAction UseRedirect(string route) =>
-        Actions.Local("useRedirect", o => o.Options = Datas.Inline(new { route }));
+        UseRedirect(Datas.Inline(new { route }));
+
+    public static LocalAction UseRedirect(IData options) =>
+        Actions.Local("useRedirect", o => o.Options = options);
 }

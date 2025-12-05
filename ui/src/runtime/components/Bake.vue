@@ -40,6 +40,7 @@ const classes = [`b-component--${descriptor.type}`, ...asClasses(name)];
 context.provideData(data, "ParentData");
 context.provideExecuting(executing);
 
+//TODO implement remainig reactions
 if(descriptor.when) {
   Object.entries(descriptor.when).forEach(([event, reaction]) => {
     if(reaction === "Reload") {
