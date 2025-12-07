@@ -5,7 +5,7 @@ namespace Baked.Ui;
 public record ContextData : IData
 {
     public string Type => "Context";
-    public DataKey Key { get; set; } = DataKey.ModelData;
+    public DataKey Key { get; set; } = DataKey.Model;
     public string? Prop { get; set; }
     public string? TargetProp { get; set; }
 
@@ -15,6 +15,6 @@ public record ContextData : IData
     public enum DataKey
     {
         ParentData,
-        ModelData
+        Model
     }
 }

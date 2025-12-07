@@ -28,7 +28,7 @@ const variants = [
             composable: "useShowMessage",
             options: {
               type: "Context",
-              key: "ModelData",
+              key: "Model",
               prop: "text",
               targetProp: "message"
             }

@@ -113,7 +113,7 @@ const uniqueKey = ref("");
 
 const values = ref({});
 if(inputs.length > 0) {
-  context.provideData(values, "ModelData");
+  context.provideData(values, "Model");
 }
 
 const title = ref(dataFetcher.get({ data: titleData, injectedData }));

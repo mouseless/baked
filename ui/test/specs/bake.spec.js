@@ -3,13 +3,16 @@ import primevue from "../utils/locators/primevue";
 
 test.beforeEach(async({ goto, page }) => {
   await page.route("*/**/form-sample/states", async route => {
-    await route.fulfill("fake-response");
+    await route.fulfill({ body: "fake-response" });
   });
   await page.route("*/**/route-parameters-samples/*", async route => {
-    await route.fulfill("fake-response");
+    await route.fulfill({ body: "fake-response" });
   });
   await page.route("*/**/rich-transient-with-datas/12/method", async route => {
-    await route.fulfill("fake-response");
+    await route.fulfill({ body: "fake-response" });
+  });
+  await page.route("*/**/localization-samples/locale-string", async route => {
+    await route.fulfill({ body: "fake-response" });
   });
   await goto("/specs/bake?val=2", { waitUntil: "hydration" });
 });
@@ -132,14 +135,21 @@ test.describe("Action", () =>{
 test.describe("Reaction", () =>{
   const id = "Reaction";
 
+  // Initial data load completes before this text execution
+  // because page is waited till hydration, request count is
+  // expected to be one
   test("Reacts to given event with reload", async({ page }) => {
-    const requestPromise = page.waitForRequest(req => req.url().includes("form-sample/states"));
+    let reloaded = false;
+    page.on("request", req => {
+      if(req.url().includes("localization-samples/locale-string")) {
+        reloaded = true;
+      }
+    });
     const component = page.getByTestId(id);
     const button = component.locator(primevue.button.base);
 
     await button.click();
 
-    const request = await requestPromise;
-    expect(request.url()).toContain("form-sample/states");
+    expect(reloaded).toBe(true);
   });
 });

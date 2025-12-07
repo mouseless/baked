@@ -64,7 +64,7 @@ export default {
     return { prop, value, component };
   },
 
-  aContainer({ content, contents, data, when } = {}) {
+  aContainer({ content, contents, data } = {}) {
     content = $(content, this.anExpected());
     contents = $(contents, [content]);
     data = $(data, { type: "Inline", value: "Test value" });
@@ -72,8 +72,7 @@ export default {
     return {
       type: "Container",
       schema: { contents },
-      data,
-      when
+      data
     };
   },
 
@@ -259,7 +258,7 @@ export default {
   theInjectedData() {
     return {
       type: "Context",
-      key: "ModelData"
+      key: "Model"
     };
   },
 
@@ -500,14 +499,15 @@ export default {
     };
   },
 
-  aText({ value, data, maxLength } = {}) {
+  aText({ value, data, maxLength, when } = {}) {
     value = $(value, "Test string");
     data = $(data, { type: "Inline", value });
 
     return {
       type: "Text",
       schema: { maxLength },
-      data
+      data,
+      when
     };
   },
 

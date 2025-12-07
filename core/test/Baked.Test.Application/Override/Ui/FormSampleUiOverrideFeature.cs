@@ -5,8 +5,10 @@ using Baked.Test.Ui;
 using Baked.Theme;
 using Baked.Ui;
 using Humanizer;
+
 using static Baked.Test.Theme.Custom.DomainComponents;
 using static Baked.Theme.Default.DomainComponents;
+
 using C = Baked.Test.Ui.Components;
 using DA = Baked.Theme.Default.DomainActions;
 
@@ -68,7 +70,7 @@ public class FormSampleUiOverrideFeature : IFeature
                 where: cc => true,
                 schema: ra =>
                 {
-                    ra.Body = Datas.Context(o => o.Key = ContextData.DataKey.ModelData);
+                    ra.Body = Datas.Context(o => o.Key = ContextData.DataKey.Model);
                 }
             );
             builder.Conventions.AddMethodComponentConfiguration<SimpleForm>(

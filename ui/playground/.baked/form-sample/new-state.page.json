@@ -75,7 +75,7 @@
           "method": "POST",
           "body": {
             "type": "Context",
-            "key": "ModelData"
+            "key": "Model"
           },
           "postAction": {
             "type": "Local",

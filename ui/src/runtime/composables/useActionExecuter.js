@@ -2,7 +2,6 @@ import { useRuntimeConfig } from "#app";
 import { useComposableResolver, useDataFetcher, usePathBuilder, useUnref } from "#imports";
 
 export default function() {
-  // TODO make this configurable from plugin or elsewhere
   const actions = {
     "Composite": Composite({ actionExecuter: { execute } }),
     "Emit": Emit(),

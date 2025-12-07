@@ -5,13 +5,8 @@
 - Dynamic routing is now supported and can be used when;
   - navigating through pages
   - fetching data from backend
-- `Bake` now executes given `Action` and `PostAction` defined in 
-  `ComponentDescriptor` implementations
-  ```javascript
-  async function onClick() {
-    emit("submit");
-  }
-  ```  
+- `Bake` now executes given `Action` defined in `ComponentDescriptor` 
+  implementations upon model change or `submit` event
 - `Button` component is now added
 - `useActionExecuter` is now added which is a composable that executes `Emit`, 
   `Local`, `Remote` or `Composite` actions with given configuration
@@ -25,15 +20,15 @@
   `params`, `query`
   - `useQuery` composable is now deprecated and will be removed in 
   further releases
-```csharp
-{
-  // Obsolete
-  data = Computed(Composables.UseQuery)
+  ```csharp
+  {
+    // Obsolete
+    data = Computed(Composables.UseQuery)
 
-  // Use `UseRoute` with args
-  data = Computed("UseRoute", options: o => o.Args.Add("query"))
-}
-```
+    // Use `UseRoute` with args
+    data = Computed("UseRoute", options: o => o.Args.Add("query"))
+  }
+  ```
 - `baseURL` is renamed to `apiBaseUrl` and config is now set in root of `bake`
   module options and no longer awailable through `dataFetcher`
 - `Parameter` schema is renamed to `Inputs`
@@ -43,20 +38,20 @@
 - `ReportPage.QueryParameters` property is renamed to `Inputs`    
 - `Parameters.vue` is renamed to `Inputs.vue`
 - `QueryParameters.vue` is renamed to `QueryBoundInputs.vue`
-- `TypeWithOnlyGetIsReportPage` ux feature is removed, and adding `ReportPage`
+- `TypeWithOnlyGetIsReportPage` UX feature is removed, and adding `ReportPage`
   component to a type is moved to `DefaultThemeFeature`
-- `UseDataFetcher.Injected` is renamed to `Context`
-  - `Custom` data key is renamed to `ModelData`
+- `InjectedData` is renamed to `ContextData`, also `Injected()` to `Context()`
+  - `Custom` data key is renamed to `Model`
 - `ComputedData.Args` is now changed to `Options` with `IData` type
   - Built-in composables now have object parameters with named fields
 - `Composables` now provide helpers instead of ui composable file keys
-```csharp
-// previous usage
-data: Computed(Composables.UseError)
+  ```csharp
+  // previous usage
+  data: Computed(Composables.UseError)
 
-// current
-data: Composables.UseError()
-```  
+  // current
+  data: Composables.UseError()
+  ```  
 
 ## Improvements
 
@@ -64,5 +59,5 @@ data: Composables.UseError()
 - `RemoveComponent` and `RemoveSchema` helper extensions are now added
 - `AwaitLoading` utility component is now added which contains slots to help 
   rendering skeleton and content according to `loading` state
-- `ContextData` now has `TargetProp` property to map give `Prop` key value to
-  corresponding property   
+- `InjectedData`, now `ContextData` now has `TargetProp` property to map give 
+  `Prop` key value to corresponding property   

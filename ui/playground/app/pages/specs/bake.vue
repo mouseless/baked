@@ -68,82 +68,74 @@ const variants = [
   },
   {
     name: "Model",
-    descriptor: giveMe.aContainer({
-      contents:[
-        giveMe.anInputText()
-      ]
-    }),
+    descriptor: giveMe.anInputText(),
     model: ref("Model Data")
   },
   {
     name: "Action",
-    descriptor: giveMe.aContainer({
-      contents:[
-        giveMe.aButton({
-          action: {
-            type: "Composite",
-            parts: [
-              {
-                type: "Local",
-                composable: "useShowMessage",
-                options: {
-                  type: "Inline",
-                  value: { message: "Execute Action" }
-                }
-              },
-              {
-                type: "Local",
-                composable: "useDelay",
-                options: {
-                  type: "Inline",
-                  value: { time: 100 }
-                }
-              },
-              {
-                type: "Remote",
-                path: "/rich-transient-with-datas/{id}/method",
-                method: "POST",
-                headers: {
-                  type: "Inline",
-                  value: {
-                    Authorization: "token-admin-ui"
-                  }
-                },
-                query: {
-                  type: "Computed",
-                  composable: "useNuxtRoute",
-                  options: {
-                    type: "Inline",
-                    value:{ property: "query" }
-                  }
-                },
-                params: {
-                  type: "Inline",
-                  value: {
-                    id: 12
-                  }
-                },
-                body: {
-                  type: "Inline",
-                  value: {
-                    text: "text"
-                  }
-                },
-                postAction: {
-                  type: "Local",
-                  composable: "useShowMessage",
-                  options: {
-                    type: "Inline",
-                    value: { message: "Execute Post Action" }
-                  }
-                }
-              }
-            ]
+    descriptor: giveMe.aButton({
+      action: {
+        type: "Composite",
+        parts: [
+          {
+            type: "Local",
+            composable: "useShowMessage",
+            options: {
+              type: "Inline",
+              value: { message: "Execute Action" }
+            }
           },
-          label: "Spec: Button",
-          icon: "pi pi-play-circle"
-        })
-      ]
+          {
+            type: "Local",
+            composable: "useDelay",
+            options: {
+              type: "Inline",
+              value: { time: 100 }
+            }
+          },
+          {
+            type: "Remote",
+            path: "/rich-transient-with-datas/{id}/method",
+            method: "POST",
+            headers: {
+              type: "Inline",
+              value: {
+                Authorization: "token-admin-ui"
+              }
+            },
+            query: {
+              type: "Computed",
+              composable: "useNuxtRoute",
+              options: {
+                type: "Inline",
+                value:{ property: "query" }
+              }
+            },
+            params: {
+              type: "Inline",
+              value: {
+                id: 12
+              }
+            },
+            body: {
+              type: "Inline",
+              value: {
+                text: "text"
+              }
+            },
+            postAction: {
+              type: "Local",
+              composable: "useShowMessage",
+              options: {
+                type: "Inline",
+                value: { message: "Execute Post Action" }
+              }
+            }
+          }
+        ]
+      },
+      label: "Spec: Button",
+      icon: "pi pi-play-circle"
     })
   },
   {
@@ -155,17 +147,24 @@ const variants = [
             type: "Emit",
             event: "changed"
           }
+        }),
+        giveMe.aText({
+          data: {
+            type: "Remote",
+            path: "/localization-samples/locale-string",
+            headers: {
+              type: "Inline",
+              value: {
+                Authorization: "token-admin-ui"
+              }
+            }
+          },
+          when: {
+            changed: "Reload"
+          }
         })
-      ],
-      data: {
-        type: "Remote",
-        path: "form-sample/states"
-      },
-      when: {
-        changed: "Reload"
-      }
+      ]
     })
-
   }
 ];
 </script>

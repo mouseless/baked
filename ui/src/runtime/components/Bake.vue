@@ -100,7 +100,7 @@ async function onModelUpdate(newModel) {
 
   const contextData = { ...injectedData };
   if(newModel) {
-    contextData.ModelData = newModel;
+    contextData.Model = newModel;
   }
 
   try {
