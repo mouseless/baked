@@ -1,5 +1,4 @@
-﻿
-namespace Baked.Ui;
+﻿namespace Baked.Ui;
 
 public class ComponentDescriptor<TSchema>(TSchema schema)
     : IComponentDescriptor where TSchema : IComponentSchema
