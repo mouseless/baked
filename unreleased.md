@@ -18,15 +18,14 @@
   route patterns and rendered directly with `Page.vue`
 - `useRoute` composable now accepts property name as parameter to access 
   `params`, `query`
-  - `useQuery` composable is now deprecated and will be removed in 
-  further releases
+  - `useQuery` composable is now removed
   ```csharp
   {
-    // Obsolete
+    // Removed
     data = Computed(Composables.UseQuery)
 
     // Use `UseRoute` with args
-    data = Computed("UseRoute", options: o => o.Args.Add("query"))
+    data = Computed.UseRoute("query")
   }
   ```
 - `baseURL` is renamed to `apiBaseUrl` and config is now set in root of `bake`

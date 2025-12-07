@@ -8,6 +8,7 @@ using Humanizer;
 
 using static Baked.Theme.Default.DomainComponents;
 using static Baked.Theme.Default.DomainDatas;
+using static Baked.Ui.Datas;
 
 using B = Baked.Ui.Components;
 
@@ -62,7 +63,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
             builder.Conventions.AddMethodSchemaConfiguration<RemoteData>(
                 when: c => c.Type.Has<LocatableAttribute>(),
-                schema: rd => rd.Params = Composables.UseRoute("params")
+                schema: rd => rd.Params = Computed.UseRoute("params")
             );
 
             // Parameter Defaults
@@ -149,7 +150,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
                         _errorPageOptions.Apply(ep);
                     },
-                    data: Composables.UseError()
+                    data: Computed.UseError()
                 );
             });
         });

@@ -7,10 +7,11 @@ using Baked.Ui;
 using Humanizer;
 
 using static Baked.Test.Theme.Custom.DomainComponents;
+using static Baked.Theme.Default.DomainActions;
 using static Baked.Theme.Default.DomainComponents;
+using static Baked.Ui.Datas;
 
 using C = Baked.Test.Ui.Components;
-using DA = Baked.Theme.Default.DomainActions;
 
 namespace Baked.Test.Override.Ui;
 
@@ -63,14 +64,14 @@ public class FormSampleUiOverrideFeature : IFeature
             builder.Conventions.AddMethodSchema(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.AddState)),
                 where: cc => true,
-                schema: (c, _) => DA.MethodRemote(c.Method)
+                schema: (c, _) => MethodRemote(c.Method)
             );
             builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.AddState)),
                 where: cc => true,
                 schema: ra =>
                 {
-                    ra.Body = Datas.Context(o => o.Key = ContextData.DataKey.Model);
+                    ra.Body = Context(o => o.Key = ContextData.DataKey.Model);
                 }
             );
             builder.Conventions.AddMethodComponentConfiguration<SimpleForm>(
@@ -105,7 +106,7 @@ public class FormSampleUiOverrideFeature : IFeature
             builder.Conventions.AddMethodSchema(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.ClearStates)),
                 where: cc => true,
-                schema: (c, _) => DA.MethodRemote(c.Method)
+                schema: (c, _) => MethodRemote(c.Method)
             );
             builder.Conventions.AddMethodComponent(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.ClearStates)),
@@ -120,7 +121,7 @@ public class FormSampleUiOverrideFeature : IFeature
             builder.Conventions.AddMethodComponentConfiguration<Button>(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.AddState)),
                 where: cc => cc.Path.EndsWith(nameof(PageTitle.Actions)),
-                component: b => b.Action = ActionComposables.UseRedirect("/form-sample/new-state")
+                component: b => b.Action = Actions.Local.UseRedirect("/form-sample/new-state")
             );
 
             builder.Conventions.AddTypeComponentConfiguration<ReportPage>(
@@ -154,7 +155,7 @@ public class FormSampleUiOverrideFeature : IFeature
                 when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.AddState),
                 schema: ra =>
                 {
-                    ra.PostAction = ActionComposables.UseRedirect("/form-sample");
+                    ra.PostAction = Actions.Local.UseRedirect("/form-sample");
                 }
             );
             // TODO - move to default feature

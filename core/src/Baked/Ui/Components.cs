@@ -2,7 +2,6 @@
 
 public static class Components
 {
-    //TODO add domain component
     public static ComponentDescriptor<Button> Button(string label, IAction action,
         Action<Button>? options = default
     ) => new(options.Apply(new(label))) { Action = action };
@@ -84,7 +83,7 @@ public static class Components
     public static ComponentDescriptor<Header> Header(
         Action<Header>? options = default,
         IData? data = default
-    ) => new(options.Apply(new())) { Data = data ?? Composables.UseRoute() };
+    ) => new(options.Apply(new())) { Data = data ?? Datas.Computed.UseRoute() };
 
     public static Header.Item HeaderItem(string route,
         Action<Header.Item>? options = default
@@ -187,7 +186,7 @@ public static class Components
     public static ComponentDescriptor<SideMenu> SideMenu(
         Action<SideMenu>? options = default,
         IData? data = default
-    ) => new(options.Apply(new())) { Data = data ?? Composables.UseRoute() };
+    ) => new(options.Apply(new())) { Data = data ?? Datas.Computed.UseRoute() };
 
     public static SideMenu.Item SideMenuItem(string route, string icon,
         Action<SideMenu.Item>? options = default

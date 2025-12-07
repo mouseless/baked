@@ -379,7 +379,11 @@ export default {
   theQueryData() {
     return {
       type: "Computed",
-      composable: "useQuery"
+      composable: "useNuxtRoute",
+      options: {
+        type: "Inline",
+        value: { property: "query" }
+      }
     };
   },
 

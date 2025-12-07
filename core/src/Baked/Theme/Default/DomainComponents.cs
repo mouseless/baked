@@ -18,7 +18,6 @@ public static class DomainComponents
     )
     {
         context = context.Drill(nameof(ReportPage));
-
         var (_, l) = context;
 
         var path = context.Route.Path.Trim('/');
@@ -83,6 +82,7 @@ public static class DomainComponents
     {
         context = context.Drill(nameof(Select));
         var (_, l) = context;
+
         if (!parameter.ParameterType.TryGetMetadata(out var metadata)) { throw new($"{parameter.ParameterType.CSharpFriendlyFullName} cannot be used, its metadata is not present in domain model"); }
 
         var data = metadata.GetRequiredSchema<InlineData>(context.Drill(nameof(IComponentDescriptor.Data)));
@@ -96,6 +96,7 @@ public static class DomainComponents
     {
         context = context.Drill(nameof(SelectButton));
         var (_, l) = context;
+
         if (!parameter.ParameterType.TryGetMetadata(out var metadata)) { throw new($"{parameter.ParameterType.CSharpFriendlyFullName} cannot be used, its metadata is not present in domain model"); }
 
         var data = metadata.GetRequiredSchema<InlineData>(context.Drill(nameof(IComponentDescriptor.Data)));
