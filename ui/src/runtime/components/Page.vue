@@ -21,7 +21,7 @@ const { public: { components } } = useRuntimeConfig();
 useHead({ title: components?.Page?.title });
 
 context.providePage(reactive({}));
-context.provideEvents(events);
+context.provideEvents(events.create());
 
 const name = route.matched[0].name;
 const className = name.replace("[", "").replace("]", "");

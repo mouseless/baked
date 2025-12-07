@@ -8,9 +8,9 @@
 - `Bake` now executes given `Action` defined in `ComponentDescriptor` 
   implementations upon model change or `submit` event
 - `Button` component is now added
-- `useActionExecuter` is now added which is a composable that executes `Emit`, 
+- `useActionExecuter` is now added which is a composable that executes `Emit`,
   `Local`, `Remote` or `Composite` actions with given configuration
-- `SimpleForm` component is now edit for rendering a basic form with inputs
+- `SimpleForm` component is now added for rendering a basic form with inputs
 
 ## Breaking Changes
 
