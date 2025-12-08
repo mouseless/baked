@@ -16,7 +16,7 @@ const { data, schema } = defineProps({
 const { testId, showDataParams } = schema;
 
 const dataDescriptor = context.injectDataDescriptor();
-const injectedData = context.injectData();
+const parentContext = context.injectParentContext();
 
 const value = ref(!showDataParams ? data : null);
 
@@ -24,7 +24,7 @@ onMounted(async() => {
   if(showDataParams) {
     value.value = await dataFetcher.fetchParameters({
       data: dataDescriptor,
-      contextData: injectedData
+      contextData: { parent: parentContext }
     });
   }
 });

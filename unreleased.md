@@ -42,8 +42,18 @@
 - `QueryParameters.vue` is renamed to `QueryBoundInputs.vue`
 - `TypeWithOnlyGetIsReportPage` UX feature is removed, and adding `ReportPage`
   component to a type is moved to `DefaultThemeFeature`
-- `InjectedData` is renamed to `ContextData`, also `Injected()` to `Context()`
-  - `Custom` data key is renamed to `Model`
+- `InjectedData` is renamed to `ContextData` 
+  - `Injected()` is now removed, use `Parent` and `Model` factory methods
+    - `Parent` injected data now has `data` and `parameters` properties
+    ```csharp
+    Context.Parent(options: cd => cd.Prop = "parameters")
+    ```
+  - Data keys are removed
+  - `Prop` now supports property chaining
+  - `useContext` methods; 
+    - `injectData` is renamed to `injectParentContext`
+     - `provideData` is renamed to `provideParentContext`
+  
 - `ComputedData.Args` is now changed to `Options` with `IData` type
   - Built-in composables now have object parameters with named fields
 - `Composables` now provide helpers instead of ui composable file keys

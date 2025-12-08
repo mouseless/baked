@@ -30,17 +30,17 @@ context.provideDataDescriptor(descriptor.data);
 const path = context.injectPath();
 const events = context.injectEvents();
 const is = componentResolver.resolve(descriptor.type, "None");
-const injectedData = context.injectData();
-const data = ref(dataFetcher.get({ data: descriptor.data, contextData: injectedData }));
+const parentContext = context.injectParentContext();
+const data = ref(dataFetcher.get({ data: descriptor.data, contextData: { parent: parentContext } }));
 const shouldLoad = dataFetcher.shouldLoad(descriptor.data?.type);
 const loading = ref(shouldLoad);
 const executing = ref(false);
 const classes = [`b-component--${descriptor.type}`, ...asClasses(name)];
 
-context.provideData(data, "ParentData");
+context.provideParentContext({ ...parentContext, data });
 context.provideExecuting(executing);
 
-//TODO implement remainig reactions
+// TODO implement remaining reactions
 if(descriptor.on) {
   Object.keys(descriptor.on).forEach(event => {
     if(descriptor.on[event] === "Reload") {
@@ -85,7 +85,7 @@ async function load() {
   loading.value = true;
   data.value = await dataFetcher.fetch({
     data: descriptor.data,
-    contextData: injectedData
+    contextData: { parent: parentContext }
   });
   loading.value = false;
   emit("loaded");
@@ -98,9 +98,9 @@ async function onModelUpdate(newModel) {
 
   if(!descriptor.action) { return; }
 
-  const contextData = { ...injectedData };
+  const contextData = { parent: parentContext };
   if(newModel) {
-    contextData.Model = newModel;
+    contextData.model = newModel;
   }
 
   try {

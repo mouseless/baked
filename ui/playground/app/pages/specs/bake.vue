@@ -19,11 +19,11 @@ const variants = [
       contents: [
         giveMe.anExpected({
           testId: "child-root",
-          data: { type: "Context", key: "ParentData" }
+          data: { type: "Context", key: "parent" }
         }),
         giveMe.anExpected({
           testId: "child-prop",
-          data: { type: "Context", key: "ParentData", prop: "child" }
+          data: { type: "Context", key: "parent", prop: "data.child" }
         })
       ],
       data: { type: "Inline", value: { child: "CHILD VALUE" } }
@@ -38,7 +38,7 @@ const variants = [
         type: "Composite", // merges ["computed"] and ["RequiredWithDefault1", "Required1"]
         parts: [
           { type: "Computed", composable: "useFakeComputed", options: { type: "Inline", value: { data: "computed" } } }, // provides "computed"
-          { type: "Context", key: "ParentData" },
+          { type: "Context", key: "parent" },
           { type: "Inline", value: { inline: "inline" } },
           {
             type: "Remote",
@@ -59,7 +59,7 @@ const variants = [
             },
             headers: {
               type: "Inline",
-              value: { "Authorization": `Bearer ${giveMe.aToken({ admin: true }).access}` }
+              value: { "Authorization": `Bearer ${giveMe.aToken({ admin: true }).access }` }
             }
           }
         ]
@@ -143,7 +143,7 @@ const variants = [
     descriptor: giveMe.aContainer({
       contents:[
         giveMe.aButton({
-          action:{
+          action: {
             type: "Emit",
             event: "changed"
           }

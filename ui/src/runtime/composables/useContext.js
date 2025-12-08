@@ -18,17 +18,6 @@ export default function() {
     return provide("__bake_data_descriptor", value);
   }
 
-  function injectData() {
-    return {
-      ParentData: inject("__bake_injected_data:ParentData", null),
-      Model: inject("__bake_injected_data:Model", null)
-    };
-  }
-
-  function provideData(value, key) {
-    provide(`__bake_injected_data:${key}`, value);
-  }
-
   function injectEvents() {
     return inject("__bake_events");
   }
@@ -61,13 +50,19 @@ export default function() {
     provide("__bake_page", value);
   }
 
+  function injectParentContext() {
+    return inject("__bake_injected_parent_context", null);
+  }
+
+  function provideParentContext(value) {
+    provide("__bake_injected_parent_context", value);
+  }
+
   return {
     injectPath,
     providePath,
     injectDataDescriptor,
     provideDataDescriptor,
-    injectData,
-    provideData,
     injectEvents,
     provideEvents,
     injectExecuting,
@@ -75,6 +70,8 @@ export default function() {
     injectLoading,
     provideLoading,
     injectPage,
-    providePage
+    providePage,
+    injectParentContext,
+    provideParentContext
   };
 }

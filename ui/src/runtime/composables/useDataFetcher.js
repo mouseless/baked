@@ -122,7 +122,10 @@ function Context() {
     result = unref.deepUnref(result);
 
     if(data.prop) {
-      result = result[data.prop];
+      const path = data.prop.split(".");
+      for(const prop of path) {
+        result = result?.[prop];
+      }
     }
 
     if(data.targetProp) {

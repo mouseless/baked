@@ -52,7 +52,7 @@ const variants = [
       ],
       content: giveMe.anExpected({
         testId: "content",
-        data: giveMe.theInjectedData()
+        data: giveMe.theParentContext()
       })
     })
   }

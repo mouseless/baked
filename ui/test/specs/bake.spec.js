@@ -48,7 +48,9 @@ test.describe("Parent Data", () => {
     await expect(component.getByTestId("child-root"))
       .toHaveText(`
         {
-          "child": "CHILD VALUE"
+          "data": {
+            "child": "CHILD VALUE"
+          }
         }`
       );
   });

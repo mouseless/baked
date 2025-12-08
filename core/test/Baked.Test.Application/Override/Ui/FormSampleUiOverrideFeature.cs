@@ -71,7 +71,7 @@ public class FormSampleUiOverrideFeature : IFeature
                 where: cc => true,
                 schema: ra =>
                 {
-                    ra.Body = Context(o => o.Key = ContextData.DataKey.Model);
+                    ra.Body = Context.Model();
                 }
             );
             builder.Conventions.AddMethodComponentConfiguration<SimpleForm>(

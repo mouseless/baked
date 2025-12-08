@@ -362,7 +362,8 @@
                         },
                         {
                           "type": "Context",
-                          "key": "Model"
+                          "key": "parent",
+                          "prop": "parameters"
                         }
                       ]
                     }
@@ -510,7 +511,8 @@
                         },
                         {
                           "type": "Context",
-                          "key": "Model"
+                          "key": "parent",
+                          "prop": "parameters"
                         }
                       ]
                     }

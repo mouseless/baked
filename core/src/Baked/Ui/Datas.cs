@@ -3,13 +3,10 @@
 public static class Datas
 {
     public static Composables Computed { get; } = new();
+    public static ContextDatas Context { get; } = new();
 
     public static CompositeData Composite(
         Action<CompositeData>? options = default
-    ) => options.Apply(new());
-
-    public static ContextData Context(
-        Action<ContextData>? options = default
     ) => options.Apply(new());
 
     public static InlineData Inline(object value,
@@ -19,6 +16,17 @@ public static class Datas
     public static RemoteData Remote(string path,
         Action<RemoteData>? options = default
     ) => options.Apply(new(path));
+
+    public class ContextDatas
+    {
+        public ContextData Parent(
+            Action<ContextData>? options = default
+        ) => options.Apply(new("parent") { Prop = "data" });
+
+        public ContextData Model(
+            Action<ContextData>? options = default
+        ) => options.Apply(new("model"));
+    }
 
     public class Composables
     {

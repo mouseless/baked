@@ -2,19 +2,14 @@ using Newtonsoft.Json;
 
 namespace Baked.Ui;
 
-public record ContextData : IData
+public record ContextData(string Key)
+    : IData
 {
     public string Type => "Context";
-    public DataKey Key { get; set; } = DataKey.Model;
+    public string Key { get; set; } = Key;
     public string? Prop { get; set; }
     public string? TargetProp { get; set; }
 
     [JsonIgnore]
     public bool? RequireLocalization { get; set; }
-
-    public enum DataKey
-    {
-        ParentData,
-        Model
-    }
 }
