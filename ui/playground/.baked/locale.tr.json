@@ -92,7 +92,7 @@
   "Render report pages": "Rapor sayfalarını gösterir",
   "Render string values": "Metin değerlerini gösterir",
   "Renders a breadcrumb": "Gezinti yolu (breadcrumb) gösterir",
-  "Renders a helper in a place where a component was expected": "Bileşen olması gereken yerde ıskalanan bileşeni eklemeye yardımcı olur",
+  "Renders a helper in a place where a component was expected": "Bileşen olması gereken yerde eksik bileşeni eklemeye yardımcı olur",
   "Renders a link as a big card-like button": "Bir bağlantıyı büyük kart şeklinde bir buton olarak gösterir",
   "Renders application menu": "Uygulama menüsünü gösterir",
   "Report": "Rapor",
