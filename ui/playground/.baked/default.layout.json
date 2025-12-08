@@ -139,12 +139,6 @@
             "title": "Data Table",
             "parentRoute": "/specs"
           },
-          "/specs/nav-link": {
-            "route": "/specs/nav-link",
-            "icon": "pi pi-microchip",
-            "title": "Nav Link",
-            "parentRoute": "/specs"
-          },
           "/specs/icon": {
             "route": "/specs/icon",
             "icon": "pi pi-microchip",
@@ -157,10 +151,22 @@
             "title": "Message",
             "parentRoute": "/specs"
           },
+          "/specs/missing-component": {
+            "route": "/specs/missing-component",
+            "icon": "pi pi-microchip",
+            "title": "Missing Component",
+            "parentRoute": "/specs"
+          },
           "/specs/money": {
             "route": "/specs/money",
             "icon": "pi pi-microchip",
             "title": "Money",
+            "parentRoute": "/specs"
+          },
+          "/specs/nav-link": {
+            "route": "/specs/nav-link",
+            "icon": "pi pi-microchip",
+            "title": "Nav Link",
             "parentRoute": "/specs"
           },
           "/specs/number": {

@@ -37,15 +37,15 @@ goto end
 
 :install
 echo Installing dependencies...
-cd docs\.theme && npm i && cd ..\..
-cd ui && npm i && cd ..
-cd core\test\Baked.Test.LoadTest && npm i && cd ..\..\..
+cd docs\.theme && call npm i && cd ..\..
+cd ui && call npm i && cd ..
+cd core\test\Baked.Test.LoadTest && call npm i && cd ..\..\..
 goto end
 
 :build
 echo Building projects...
 cd core
-dotnet build
+dotnet build -v d /p:GenerateArgs="--warn-for-missing-component"
 cd ..
 cd ui
 npm run build
@@ -87,7 +87,7 @@ if "%choice%"=="4" goto docs
 
 :api
 echo Running API (Development)...
-dotnet run --project core\test\Baked.Test.Application
+dotnet run --project core\test\Baked.Test.Application /p:GenerateArgs="--warn-for-missing-component"
 goto end
 
 :ui

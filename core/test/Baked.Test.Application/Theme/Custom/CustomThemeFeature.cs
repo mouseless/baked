@@ -45,7 +45,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
                 where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content))
             );
 
-            // None localized enums
+            // Non-localized enums
             builder.Conventions.AddTypeSchema(
                 schema: (c, cc) => EnumInline(c.Type, cc, requireLocalization: false),
                 when: c => c.Type.Is<CacheKey>() || c.Type.Is<RowCount>()

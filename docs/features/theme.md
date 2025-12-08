@@ -67,7 +67,6 @@ experiences, see [UX Feature](ux.md)
 | Group      | Rules                                                                                    |
 | ---        | ---                                                                                      |
 | Property   | All public properties get a `DataAttribute` with a camelized name and titleized label    |
-|            | Default component is `None`                                                              |
 |            | `string` and `Guid` properties render with `String`                                      |
 | Method     | All actions with `ActionModelAttribute` get a `TabAttribute`                             |
 |            | Each action is wired as a remote method with `MethodRemote`                              |

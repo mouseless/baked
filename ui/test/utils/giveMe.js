@@ -356,6 +356,23 @@ export default {
     };
   },
 
+  aMissingComponent({ data, component, path, source } = {}) {
+    data = $(data, null);
+    component = $(component, null);
+    path = $(path, []);
+    source = $(source, null);
+
+    return {
+      type: "MissingComponent",
+      schema: {
+        component,
+        path,
+        source
+      },
+      data: { type: "Inline", value: data }
+    };
+  },
+
   aNumber({ data } = {}) {
     data = $(data, 100_000);
 

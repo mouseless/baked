@@ -10,17 +10,20 @@ namespace Baked.Ui;
 
 public class UiLayer : LayerBase<GenerateCode>
 {
+    public const int MinConventionOrder = -ConventionOrderLimit;
+    public const int MaxConventionOrder = ConventionOrderLimit;
+
+    static bool NoUi => Environment.GetCommandLineArgs().Contains("--no-ui");
+
     readonly AppDescriptor _appDescriptor = new();
     readonly ComponentExports _componentExports = new();
     readonly LayoutDescriptors _layoutDescriptors = new();
     readonly PageDescriptors _pageDescriptors = new();
     readonly LocaleTemplate _localeTemplate = new();
 
-    bool NoUiFlag => Environment.GetCommandLineArgs().Contains("--no-ui");
-
     protected override PhaseContext GetContext(GenerateCode phase)
     {
-        if (NoUiFlag) { return phase.CreateEmptyContext(); }
+        if (NoUi) { return phase.CreateEmptyContext(); }
 
         Context.Add<NewLocaleKey>(LocaleKeyFactory);
 

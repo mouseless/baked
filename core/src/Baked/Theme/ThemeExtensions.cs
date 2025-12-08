@@ -6,6 +6,7 @@ using Baked.RestApi;
 using Baked.RestApi.Model;
 using Baked.Testing;
 using Baked.Theme;
+using Baked.Theme.Default;
 using Baked.Ui;
 
 namespace Baked;
@@ -235,7 +236,7 @@ public static class ThemeExtensions
     {
         when ??= c => true;
         where ??= c => true;
-        order += RestApiLayer.MaxConventionOrder * 2;
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
 
         conventions.AddTypeAttribute(
             attribute: c => new DescriptorBuilderAttribute<TSchema>()
@@ -252,7 +253,7 @@ public static class ThemeExtensions
         int order = default
     )
     {
-        order += RestApiLayer.MaxConventionOrder * 2;
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
 
         conventions.RemoveTypeAttribute<DescriptorBuilderAttribute<TSchema>>(when: when,
             order: order
@@ -289,7 +290,7 @@ public static class ThemeExtensions
     {
         when ??= c => true;
         where ??= c => true;
-        order += RestApiLayer.MaxConventionOrder * 2;
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
 
         conventions.AddPropertyAttribute(
             attribute: c => new DescriptorBuilderAttribute<TSchema>()
@@ -306,7 +307,7 @@ public static class ThemeExtensions
         int order = default
     )
     {
-        order += RestApiLayer.MaxConventionOrder * 2;
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
 
         conventions.RemovePropertyAttribute<DescriptorBuilderAttribute<TSchema>>(when: when,
             order: order
@@ -343,7 +344,7 @@ public static class ThemeExtensions
     {
         when ??= c => true;
         where ??= c => true;
-        order += RestApiLayer.MaxConventionOrder * 2;
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
 
         conventions.AddMethodAttribute(
             attribute: c => new DescriptorBuilderAttribute<TSchema>()
@@ -360,7 +361,7 @@ public static class ThemeExtensions
         int order = default
     )
     {
-        order += RestApiLayer.MaxConventionOrder * 2;
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
 
         conventions.RemoveMethodAttribute<DescriptorBuilderAttribute<TSchema>>(when: when,
             order: order
@@ -397,7 +398,7 @@ public static class ThemeExtensions
     {
         when ??= c => true;
         where ??= c => true;
-        order += RestApiLayer.MaxConventionOrder * 2;
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
 
         conventions.AddParameterAttribute(
             attribute: c => new DescriptorBuilderAttribute<TSchema>()
@@ -414,7 +415,7 @@ public static class ThemeExtensions
         int order = default
     )
     {
-        order += RestApiLayer.MaxConventionOrder * 2;
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
 
         conventions.RemoveParameterSchema<DescriptorBuilderAttribute<TSchema>>(when: when,
             order: order
@@ -587,13 +588,23 @@ public static class ThemeExtensions
 
     #region Component Descriptor Builder & Component
 
+    static bool WarnForMissingComponent => Environment.GetCommandLineArgs().Contains("--warn-for-missing-component");
+
     public static IComponentDescriptor GetRequiredComponent<T>(this ICustomAttributesModel metadata, ComponentContext context) where T : IComponentSchema =>
         metadata.GetRequiredComponent(context, componentType: typeof(T));
 
     public static IComponentDescriptor GetRequiredComponent(this ICustomAttributesModel metadata, ComponentContext context,
         Type? componentType = default
-    ) => metadata.GetComponent(context, componentType: componentType) ??
-        throw new($"{metadata.CustomAttributes.Name} doesn't have any component descriptor{(componentType is null ? string.Empty : $" of type {componentType.Name}")} at path `{context.Path}`");
+    )
+    {
+        var result = metadata.GetComponent(context, componentType: componentType);
+        if (result is not null) { return result; }
+
+        var level = WarnForMissingComponent ? "warning" : "error";
+        Console.WriteLine($"{level}: `{metadata.CustomAttributes.Name}` doesn't have any component descriptor{(componentType is null ? string.Empty : $" of type {componentType.Name}")} at path `{context.Path}`");
+
+        return DomainComponents.CustomAttributesMissingComponent(metadata, context, options: mc => mc.Component = componentType?.Name);
+    }
 
     public static IComponentDescriptor? GetComponent<T>(this ICustomAttributesModel metadata, ComponentContext context) where T : IComponentSchema =>
         metadata.GetComponent(context, componentType: typeof(T));
@@ -655,7 +666,7 @@ public static class ThemeExtensions
     {
         when ??= c => true;
         where ??= c => true;
-        order += RestApiLayer.MaxConventionOrder * 2;
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
 
         conventions.AddTypeAttribute(
             apply: (c, add) =>
@@ -679,7 +690,7 @@ public static class ThemeExtensions
         int order = default
     ) where TSchema : IComponentSchema
     {
-        order += RestApiLayer.MaxConventionOrder * 2;
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
 
         conventions.RemoveTypeAttribute<ComponentDescriptorBuilderAttribute<TSchema>>(when,
             order: order
@@ -718,7 +729,7 @@ public static class ThemeExtensions
     {
         when ??= c => true;
         where ??= c => true;
-        order += RestApiLayer.MaxConventionOrder * 2;
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
 
         conventions.AddPropertyAttribute(
             apply: (c, add) =>
@@ -742,7 +753,7 @@ public static class ThemeExtensions
         int order = default
     ) where TSchema : IComponentSchema
     {
-        order += RestApiLayer.MaxConventionOrder * 2;
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
 
         conventions.RemovePropertyAttribute<ComponentDescriptorBuilderAttribute<TSchema>>(when,
             order: order
@@ -781,7 +792,7 @@ public static class ThemeExtensions
     {
         when ??= c => true;
         where ??= c => true;
-        order += RestApiLayer.MaxConventionOrder * 2;
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
 
         conventions.AddMethodAttribute(
             apply: (c, add) =>
@@ -805,7 +816,7 @@ public static class ThemeExtensions
         int order = default
     ) where TSchema : IComponentSchema
     {
-        order += RestApiLayer.MaxConventionOrder * 2;
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
 
         conventions.RemoveMethodAttribute<ComponentDescriptorBuilderAttribute<TSchema>>(when,
             order: order
@@ -844,7 +855,7 @@ public static class ThemeExtensions
     {
         when ??= c => true;
         where ??= c => true;
-        order += RestApiLayer.MaxConventionOrder * 2;
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
 
         conventions.AddParameterAttribute(
             apply: (c, add) =>
@@ -868,7 +879,7 @@ public static class ThemeExtensions
         int order = default
     ) where TSchema : IComponentSchema
     {
-        order += RestApiLayer.MaxConventionOrder * 2;
+        order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
 
         conventions.RemoveParameterAttribute<ComponentDescriptorBuilderAttribute<TSchema>>(when,
             order: order

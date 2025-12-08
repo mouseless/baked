@@ -18,6 +18,9 @@ export default {
   datepicker: {
     weekday: ".p-datepicker-weekday"
   },
+  dialog: {
+    base: ".p-dialog"
+  },
   inputNumber: {
     base: ".p-inputnumber"
   },
@@ -34,6 +37,7 @@ export default {
     page: ".p-paginator-page"
   },
   panel: {
+    base: ".p-panel",
     title: ".p-panel-title",
     header: ".p-panel-header"
   },

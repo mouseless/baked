@@ -9,6 +9,19 @@ namespace Baked.Theme.Default;
 
 public static class DomainComponents
 {
+    public static ComponentDescriptor<MissingComponent> CustomAttributesMissingComponent(ICustomAttributesModel metadata, ComponentContext context,
+        Action<MissingComponent>? options = default
+    ) => B.MissingComponent(options: mc =>
+    {
+        mc.Path.AddRange(context.Path.GetParts());
+        mc.Source = B.MissingComponentDomainSource(metadata.GetType().Name, options: mcds =>
+        {
+            mcds.Path.AddRange(metadata.CustomAttributes.Name.Split('.'));
+        });
+
+        options.Apply(mc);
+    });
+
     public static ComponentDescriptor<ReportPage> TypeReportPage(
 #pragma warning disable IDE0060
         TypeModelMetadata type,
