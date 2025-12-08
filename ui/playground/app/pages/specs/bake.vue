@@ -59,7 +59,7 @@ const variants = [
             },
             headers: {
               type: "Inline",
-              value: { "Authorization": `Bearer ${giveMe.aToken({ admin: true }).access }` }
+              value: { "Authorization": `Bearer ${giveMe.aToken({ admin: true }).access}` }
             }
           }
         ]
