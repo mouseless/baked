@@ -148,6 +148,18 @@
             }
           },
           {
+            "title": "Missing Component",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/missing-component",
+                "icon": "pi pi-microchip",
+                "title": "Missing Component",
+                "description": "Renders a helper in a place where a component was expected"
+              }
+            }
+          },
+          {
             "title": "Money",
             "component": {
               "type": "CardLink",
@@ -168,18 +180,6 @@
                 "icon": "pi pi-microchip",
                 "title": "Nav Link",
                 "description": "A component to give a link to a domain object"
-              }
-            }
-          },
-          {
-            "title": "None",
-            "component": {
-              "type": "CardLink",
-              "schema": {
-                "route": "/specs/none",
-                "icon": "pi pi-microchip",
-                "title": "None",
-                "description": "Renders a helper in a place where a component was expected"
               }
             }
           },

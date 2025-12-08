@@ -1,6 +1,6 @@
 ﻿namespace Baked.Ui;
 
-public record None : IComponentSchema
+public record MissingComponent : IComponentSchema
 {
     public List<string> Path { get; init; } = [];
     public DomainSource? Source { get; set; }

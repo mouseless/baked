@@ -29,7 +29,7 @@ context.provideDataDescriptor(descriptor.data);
 
 const path = context.injectPath();
 const events = context.injectEvents();
-const is = componentResolver.resolve(descriptor.type, "None");
+const is = componentResolver.resolve(descriptor.type, "MissingComponent");
 const parentContext = context.injectParentContext();
 const data = ref(dataFetcher.get({ data: descriptor.data, contextData: { parent: parentContext } }));
 const shouldLoad = dataFetcher.shouldLoad(descriptor.data?.type);

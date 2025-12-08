@@ -132,6 +132,14 @@ public static class Components
         Action<ModalLayout>? options = default
     ) => new(options.Apply(new(name)));
 
+    public static ComponentDescriptor<MissingComponent> MissingComponent(
+        Action<MissingComponent>? options = default
+    ) => new(options.Apply(new()));
+
+    public static MissingComponent.DomainSource MissingComponentDomainSource(string type,
+        Action<MissingComponent.DomainSource>? options = default
+    ) => options.Apply(new(type));
+
     public static ComponentDescriptor<Money> Money(
         Action<Money>? options = default,
         IData? data = default
@@ -140,14 +148,6 @@ public static class Components
     public static ComponentDescriptor<NavLink> NavLink(string path, string idProp, string textProp,
         Action<NavLink>? options = default
     ) => new(options.Apply(new(path, idProp, textProp)));
-
-    public static ComponentDescriptor<None> None(
-        Action<None>? options = default
-    ) => new(options.Apply(new()));
-
-    public static None.DomainSource NoneDomainSource(string type,
-        Action<None.DomainSource>? options = default
-    ) => options.Apply(new(type));
 
     public static ComponentDescriptor<Number> Number(
         Action<Number>? options = default,

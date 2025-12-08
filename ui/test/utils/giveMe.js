@@ -356,13 +356,13 @@ export default {
     };
   },
 
-  aNone({ data, path, source } = {}) {
+  aMissingComponent({ data, path, source } = {}) {
     data = $(data, null);
     path = $(path, []);
     source = $(source, null);
 
     return {
-      type: "None",
+      type: "MissingComponent",
       schema: {
         path,
         source

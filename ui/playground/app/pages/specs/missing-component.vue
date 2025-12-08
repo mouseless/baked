@@ -1,6 +1,6 @@
 <template>
   <UiSpec
-    title="None"
+    title="Missing Component"
     :variants="variants"
     :vertical="false"
   />
@@ -11,14 +11,14 @@ import giveMe from "@utils/giveMe";
 const variants = [
   {
     name: "Base",
-    descriptor: giveMe.aNone({
+    descriptor: giveMe.aMissingComponent({
       path: ["test", "path"],
       data: "Sample Data"
     })
   },
   {
     name: "Type",
-    descriptor: giveMe.aNone({
+    descriptor: giveMe.aMissingComponent({
       path: ["page"],
       source: {
         type: "TypeModelMembers",
@@ -28,7 +28,7 @@ const variants = [
   },
   {
     name: "Property",
-    descriptor: giveMe.aNone({
+    descriptor: giveMe.aMissingComponent({
       path: ["page", "data-table", "columns", "text"],
       source: {
         type: "PropertyModel",
@@ -38,7 +38,7 @@ const variants = [
   },
   {
     name: "Method",
-    descriptor: giveMe.aNone({
+    descriptor: giveMe.aMissingComponent({
       path: ["page", "data-panel"],
       source: {
         type: "MethodModel",
@@ -52,7 +52,7 @@ const variants = [
   },
   {
     name: "Parameter",
-    descriptor: giveMe.aNone({
+    descriptor: giveMe.aMissingComponent({
       path: ["page", "data-panel", "parameters"],
       source: {
         type: "ParameterModel",
@@ -62,7 +62,7 @@ const variants = [
   },
   {
     name: "TypeMetadata",
-    descriptor: giveMe.aNone({
+    descriptor: giveMe.aMissingComponent({
       path: ["page"],
       source: {
         type: "TypeModelMetadata",

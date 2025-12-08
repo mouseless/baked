@@ -151,6 +151,12 @@
             "title": "Message",
             "parentRoute": "/specs"
           },
+          "/specs/missing-component": {
+            "route": "/specs/missing-component",
+            "icon": "pi pi-microchip",
+            "title": "Missing Component",
+            "parentRoute": "/specs"
+          },
           "/specs/money": {
             "route": "/specs/money",
             "icon": "pi pi-microchip",
@@ -161,12 +167,6 @@
             "route": "/specs/nav-link",
             "icon": "pi pi-microchip",
             "title": "Nav Link",
-            "parentRoute": "/specs"
-          },
-          "/specs/none": {
-            "route": "/specs/none",
-            "icon": "pi pi-microchip",
-            "title": "None",
             "parentRoute": "/specs"
           },
           "/specs/number": {

@@ -588,7 +588,7 @@ public static class ThemeExtensions
 
     #region Component Descriptor Builder & Component
 
-    static bool WarnForNone => Environment.GetCommandLineArgs().Contains("--warn-for-none");
+    static bool WarnForMissingComponent => Environment.GetCommandLineArgs().Contains("--warn-for-missing-component");
 
     public static IComponentDescriptor GetRequiredComponent<T>(this ICustomAttributesModel metadata, ComponentContext context) where T : IComponentSchema =>
         metadata.GetRequiredComponent(context, componentType: typeof(T));
@@ -600,10 +600,10 @@ public static class ThemeExtensions
         var result = metadata.GetComponent(context, componentType: componentType);
         if (result is not null) { return result; }
 
-        var level = WarnForNone ? "warning" : "error";
+        var level = WarnForMissingComponent ? "warning" : "error";
         Console.WriteLine($"{level}: `{metadata.CustomAttributes.Name}` doesn't have any component descriptor{(componentType is null ? string.Empty : $" of type {componentType.Name}")} at path `{context.Path}`");
 
-        return DomainComponents.CustomAttributesNone(metadata, context);
+        return DomainComponents.CustomAttributesMissingComponent(metadata, context);
     }
 
     public static IComponentDescriptor? GetComponent<T>(this ICustomAttributesModel metadata, ComponentContext context) where T : IComponentSchema =>

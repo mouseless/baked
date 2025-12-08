@@ -19,7 +19,7 @@ const variants = [
       contents: [
         giveMe.anExpected({
           testId: "child-root",
-          data: { type: "Context", key: "parent" }
+          data: { type: "Context", key: "parent", prop: "data" }
         }),
         giveMe.anExpected({
           testId: "child-prop",

@@ -64,6 +64,7 @@
   // current
   data: Composables.UseError()
   ```
+- `None` is renamed to `MissingComponent`
 
 ## Improvements
 
@@ -75,9 +76,9 @@
   `Prop` key value to corresponding property
 - `UiLayer` now has `MinConventionOrder` and `MaxConventionOrder` to allow
   inserting conventions before or after all conventions
-- `None` component is now added when a component is required but none was
-  configured
+- `MissingComponent` component is now added when a component is required but
+  none was configured
   - It also leaves a post-build warning that includes the domain source name and
     the component path
-- `None` component now contains a sample code to help developer add the missing
-  component to the path
+- `MissingComponent` component now contains a sample code to help developer add
+  the missing component to the path

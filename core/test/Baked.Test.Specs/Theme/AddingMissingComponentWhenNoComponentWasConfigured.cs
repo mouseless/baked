@@ -5,7 +5,7 @@ using Baked.Ui;
 
 namespace Baked.Test.Test;
 
-public class UsingNoneWhenNoComponentWasConfigured : TestSpec
+public class AddingMissingComponentWhenNoComponentWasConfigured : TestSpec
 {
     TextWriter _realOut = default!;
     TextWriter _fakeOut = default!;
@@ -28,18 +28,18 @@ public class UsingNoneWhenNoComponentWasConfigured : TestSpec
     string ConsoleOutput => _fakeOut?.ToString() ?? string.Empty;
 
     [Test]
-    public void When_no_component_is_found__it_returns_None()
+    public void When_no_component_is_found__it_returns_MissingComponent()
     {
         var type = GiveMe.TheTypeModel<TestPage>().GetMetadata();
         var componentContext = GiveMe.AComponentContext(paths: ["page", "with-no-config"]);
 
         var component = type.GetRequiredComponent(componentContext);
 
-        component.ShouldBeOfType<ComponentDescriptor<None>>();
+        component.ShouldBeOfType<ComponentDescriptor<MissingComponent>>();
     }
 
     [Test]
-    public void When_used__None_leaves_an_error_log_in_build_output()
+    public void When_used__MissingComponent_leaves_an_error_log_in_build_output()
     {
         var type = GiveMe.TheTypeModel<TestPage>().GetMetadata();
         var componentContext = GiveMe.AComponentContext(paths: ["page", "with-no-config"]);
@@ -52,32 +52,32 @@ public class UsingNoneWhenNoComponentWasConfigured : TestSpec
     }
 
     [Test]
-    public void None_contains_component_path_to_build_a_sample_config_code()
+    public void MissingComponent_contains_component_path_to_build_a_sample_config_code()
     {
         var type = GiveMe.TheTypeModel<TestPage>().GetMetadata();
         var componentContext = GiveMe.AComponentContext(paths: ["page", "with-no-config"]);
 
         var component = type.GetRequiredComponent(componentContext);
 
-        var none = component.ShouldBeOfType<ComponentDescriptor<None>>();
-        none.Schema.Path.ShouldBe(["page", "with-no-config"]);
+        var missingComponent = component.ShouldBeOfType<ComponentDescriptor<MissingComponent>>();
+        missingComponent.Schema.Path.ShouldBe(["page", "with-no-config"]);
     }
 
     [Test]
-    public void When_used_in_a_type__None_contains_type_info()
+    public void When_used_in_a_type__MissingComponent_contains_type_info()
     {
         var type = GiveMe.TheTypeModel<TestPage>().GetMetadata();
         var componentContext = GiveMe.AComponentContext(paths: ["page", "with-no-config"]);
 
         var component = type.GetRequiredComponent(componentContext);
 
-        var none = component.ShouldBeOfType<ComponentDescriptor<None>>();
-        none.Schema.Source?.Type.ShouldBe(nameof(TypeModelMembers));
-        none.Schema.Source?.Path.ShouldBe([nameof(TestPage)]);
+        var missingComponent = component.ShouldBeOfType<ComponentDescriptor<MissingComponent>>();
+        missingComponent.Schema.Source?.Type.ShouldBe(nameof(TypeModelMembers));
+        missingComponent.Schema.Source?.Path.ShouldBe([nameof(TestPage)]);
     }
 
     [Test]
-    public void When_used_in_a_property__None_contains_property_info()
+    public void When_used_in_a_property__MissingComponent_contains_property_info()
     {
         var type = GiveMe.TheTypeModel<Record>().GetMembers();
         var property = type.Properties[nameof(Record.Text)];
@@ -85,13 +85,13 @@ public class UsingNoneWhenNoComponentWasConfigured : TestSpec
 
         var component = property.GetRequiredComponent(componentContext);
 
-        var none = component.ShouldBeOfType<ComponentDescriptor<None>>();
-        none.Schema.Source?.Type.ShouldBe(nameof(PropertyModel));
-        none.Schema.Source?.Path.ShouldBe([nameof(Record), nameof(Record.Text)]);
+        var missingComponent = component.ShouldBeOfType<ComponentDescriptor<MissingComponent>>();
+        missingComponent.Schema.Source?.Type.ShouldBe(nameof(PropertyModel));
+        missingComponent.Schema.Source?.Path.ShouldBe([nameof(Record), nameof(Record.Text)]);
     }
 
     [Test]
-    public void When_used_in_a_method__None_contains_method_info()
+    public void When_used_in_a_method__MissingComponent_contains_method_info()
     {
         var type = GiveMe.TheTypeModel<TestPage>().GetMembers();
         var method = type.Methods[nameof(TestPage.GetData)];
@@ -99,13 +99,13 @@ public class UsingNoneWhenNoComponentWasConfigured : TestSpec
 
         var component = method.GetRequiredComponent(componentContext);
 
-        var none = component.ShouldBeOfType<ComponentDescriptor<None>>();
-        none.Schema.Source?.Type.ShouldBe(nameof(MethodModel));
-        none.Schema.Source?.Path.ShouldBe([nameof(TestPage), nameof(TestPage.GetData)]);
+        var missingComponent = component.ShouldBeOfType<ComponentDescriptor<MissingComponent>>();
+        missingComponent.Schema.Source?.Type.ShouldBe(nameof(MethodModel));
+        missingComponent.Schema.Source?.Path.ShouldBe([nameof(TestPage), nameof(TestPage.GetData)]);
     }
 
     [Test]
-    public void When_used_in_a_parameter__None_contains_parameter_info()
+    public void When_used_in_a_parameter__MissingComponent_contains_parameter_info()
     {
         var type = GiveMe.TheTypeModel<TestPage>().GetMembers();
         var method = type.Methods[nameof(TestPage.GetData)];
@@ -114,8 +114,8 @@ public class UsingNoneWhenNoComponentWasConfigured : TestSpec
 
         var component = parameter.GetRequiredComponent(componentContext);
 
-        var none = component.ShouldBeOfType<ComponentDescriptor<None>>();
-        none.Schema.Source?.Type.ShouldBe(nameof(ParameterModel));
-        none.Schema.Source?.Path.ShouldBe([nameof(TestPage), nameof(TestPage.GetData), "panel"]);
+        var missingComponent = component.ShouldBeOfType<ComponentDescriptor<MissingComponent>>();
+        missingComponent.Schema.Source?.Type.ShouldBe(nameof(ParameterModel));
+        missingComponent.Schema.Source?.Path.ShouldBe([nameof(TestPage), nameof(TestPage.GetData), "panel"]);
     }
 }
