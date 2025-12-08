@@ -14,7 +14,6 @@ public class UiLayer : LayerBase<GenerateCode>
     public const int MaxConventionOrder = ConventionOrderLimit;
 
     static bool NoUi => Environment.GetCommandLineArgs().Contains("--no-ui");
-    internal static bool WarnForNone => Environment.GetCommandLineArgs().Contains("--warn-for-none");
 
     readonly AppDescriptor _appDescriptor = new();
     readonly ComponentExports _componentExports = new();
