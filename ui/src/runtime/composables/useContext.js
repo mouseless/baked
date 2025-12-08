@@ -51,11 +51,11 @@ export default function() {
   }
 
   function injectParentContext() {
-    return inject("__bake_injected_parent_context", null);
+    return inject("__bake_parent_context", null);
   }
 
   function provideParentContext(value) {
-    provide("__bake_injected_parent_context", value);
+    provide("__bake_parent_context", value);
   }
 
   return {
