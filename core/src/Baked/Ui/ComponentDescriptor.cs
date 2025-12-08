@@ -7,7 +7,7 @@ public class ComponentDescriptor<TSchema>(TSchema schema)
     public TSchema Schema { get; set; } = schema;
     public IData? Data { get; set; }
     public IAction? Action { get; set; }
-    public Dictionary<string, Reaction>? When { get; set; }
+    public Dictionary<string, Reaction>? On { get; set; }
 
     string IComponentDescriptor.Type => Type;
     IComponentSchema IComponentDescriptor.Schema => Schema;

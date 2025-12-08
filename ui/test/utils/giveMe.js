@@ -503,7 +503,7 @@ export default {
     };
   },
 
-  aText({ value, data, maxLength, when } = {}) {
+  aText({ value, data, maxLength, on } = {}) {
     value = $(value, "Test string");
     data = $(data, { type: "Inline", value });
 
@@ -511,7 +511,7 @@ export default {
       type: "Text",
       schema: { maxLength },
       data,
-      when
+      on
     };
   },
 

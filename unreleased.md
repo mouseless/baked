@@ -10,6 +10,9 @@
 - `Button` component is now added
 - `useActionExecuter` is now added which is a composable that executes `Emit`,
   `Local`, `Remote` or `Composite` actions with given configuration
+- `Bake` now supports reload, show and hide reactions which handles `Emit`
+  action
+  - `Page` component now provides event bus to publish page-wide events   
 - `SimpleForm` component is now added for rendering a basic form with inputs
 
 ## Breaking Changes

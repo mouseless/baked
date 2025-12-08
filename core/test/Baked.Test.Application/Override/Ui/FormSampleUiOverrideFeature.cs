@@ -58,7 +58,7 @@ public class FormSampleUiOverrideFeature : IFeature
                     members.Methods.Having<ActionModelAttribute>().Any(m => !m.Name.StartsWith("Get")),
                 component: dp =>
                 {
-                    dp.Schema.Content.When = new() { { nameof(FormSample.ClearStates).Kebaberize(), Reaction.Reload } };
+                    dp.Schema.Content.ReloadOn(nameof(FormSample.ClearStates).Kebaberize());
                 }
             );
             builder.Conventions.AddMethodSchema(

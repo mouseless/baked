@@ -41,9 +41,9 @@ context.provideData(data, "ParentData");
 context.provideExecuting(executing);
 
 //TODO implement remainig reactions
-if(descriptor.when) {
-  Object.keys(descriptor.when).forEach(event => {
-    if(descriptor.when[event] === "Reload") {
+if(descriptor.on) {
+  Object.keys(descriptor.on).forEach(event => {
+    if(descriptor.on[event] === "Reload") {
       events.on(event, path, load);
     }
   });
@@ -61,8 +61,8 @@ onMounted(async() => {
 
 // TODO - review this in form components
 onUnmounted(() => {
-  if(descriptor.when) {
-    Object.keys(descriptor.when).forEach(event =>{
+  if(descriptor.on) {
+    Object.keys(descriptor.on).forEach(event =>{
       events.off(event, path);
     });
   }

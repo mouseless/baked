@@ -98,7 +98,7 @@
                       }
                     }
                   },
-                  "when": {
+                  "on": {
                     "clear-states": "Reload"
                   }
                 }

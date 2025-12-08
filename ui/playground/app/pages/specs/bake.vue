@@ -159,7 +159,7 @@ const variants = [
               }
             }
           },
-          when: {
+          on: {
             changed: "Reload"
           }
         })
