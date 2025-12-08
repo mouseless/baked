@@ -356,14 +356,16 @@ export default {
     };
   },
 
-  aMissingComponent({ data, path, source } = {}) {
+  aMissingComponent({ data, component, path, source } = {}) {
     data = $(data, null);
+    component = $(component, null);
     path = $(path, []);
     source = $(source, null);
 
     return {
       type: "MissingComponent",
       schema: {
+        component,
         path,
         source
       },

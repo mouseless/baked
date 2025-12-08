@@ -11,15 +11,15 @@ public static class DomainComponents
 {
     public static ComponentDescriptor<MissingComponent> CustomAttributesMissingComponent(ICustomAttributesModel metadata, ComponentContext context,
         Action<MissingComponent>? options = default
-    ) => B.MissingComponent(options: n =>
+    ) => B.MissingComponent(options: mc =>
     {
-        n.Path.AddRange(context.Path.GetParts());
-        n.Source = B.MissingComponentDomainSource(metadata.GetType().Name, options: nds =>
+        mc.Path.AddRange(context.Path.GetParts());
+        mc.Source = B.MissingComponentDomainSource(metadata.GetType().Name, options: mcds =>
         {
-            nds.Path.AddRange(metadata.CustomAttributes.Name.Split('.'));
+            mcds.Path.AddRange(metadata.CustomAttributes.Name.Split('.'));
         });
 
-        options.Apply(n);
+        options.Apply(mc);
     });
 
     public static ComponentDescriptor<ReportPage> TypeReportPage(

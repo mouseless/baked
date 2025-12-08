@@ -81,7 +81,7 @@ const { schema, data } = defineProps({
   data: { type: null, required: true }
 });
 
-const { path, source } = schema;
+const { component, path, source } = schema;
 
 const inlinesData = data !== undefined && typeof data !== "object";
 const label = inlinesData ? data : "Configure";
@@ -112,34 +112,34 @@ const highlightedData = computed(() => {
 });
 
 function renderTypeSample([ type ]) {
-  return String.raw`builder.Conventions.AddTypeComponent(
+  return String.raw`builder.Conventions.AddTypeComponent${component ? `<${component}>` : ""}(
     when: c => c.Type.Is<${type}>(),
     where: cc => cc.Path.EndsWith(${path.map(p => `"${p}"`).join(", ")}),
-    component: () => B.Text()
+    component: () => ${component ? "..." : "B.Text()"}
 );`;
 }
 
 function renderPropertySample([ type, property ]) {
-  return String.raw`builder.Conventions.AddPropertyComponent(
+  return String.raw`builder.Conventions.AddPropertyComponent${component ? `<${component}>` : ""}(
     when: c => c.Type.Is<${type}>() && c.Property.Name == nameof(${type}.${property}),
     where: cc => cc.Path.EndsWith(${path.map(p => `"${p}"`).join(", ")}),
-    component: () => B.Text()
+    component: () => ${component ? "..." : "B.Text()"}
 );`;
 }
 
 function renderMethodSample([ type, method ]) {
-  return String.raw`builder.Conventions.AddMethodComponent(
+  return String.raw`builder.Conventions.AddMethodComponent${component ? `<${component}>` : ""}(
     when: c => c.Type.Is<${type}>() && c.Method.Name == nameof(${type}.${method}),
     where: cc => cc.Path.EndsWith(${path.map(p => `"${p}"`).join(", ")}),
-    component: () => B.Text()
+    component: () => ${component ? "..." : "B.DataTable()"}
 );`;
 }
 
 function renderParameterSample([ type, method, parameter ]) {
-  return String.raw`builder.Conventions.AddParameterComponent(
+  return String.raw`builder.Conventions.AddParameterComponent${component ? `<${component}>` : ""}(
     when: c => c.Type.Is<${type}>() && c.Method.Name == nameof(${type}.${method}) && c.Parameter.Name == "${parameter}",
     where: cc => cc.Path.EndsWith(${path.map(p => `"${p}"`).join(", ")}),
-    component: () => B.InputText()
+    component: () => ${component ? "..." : "B.InputText()"}
 );`;
 }
 
@@ -168,9 +168,16 @@ function highlightCSharp(src) {
   const kwRe = new RegExp(`\\b(${kw.join("|")})\\b`, "g");
   s = s.replace(kwRe, "<span class='c--code-keyword'>$1</span>");
 
+  s = s.replace(/\/\/.*$/gm, m => `<span class='c--code-comment'>${m}</span>`);
   s = s.replace(/"([^"]*)"/g, "<span class='c--code-string'>\"$1\"</span>");
-  s = s.replace(/&lt;([^&]+)&gt;/g, "<span class='c--code-type'>&lt;$1&gt;</span>");
-  s = s.replace(/(\w+)\s*\(/g, "<span class='c--code-method'>$1</span>(");
+  s = s.replace(
+    /(\w+)\s*(&lt;[^&]+&gt;)?\s*\(/g,
+    (_, name, generic) =>
+      `<span class='c--code-method'>${name}</span>` +
+      (generic ? `<span class='c--code-type'>${generic}</span>` : "") +
+      "("
+  );
+  s = s.replace(/((\w|&lt;|&gt;)+)\s*\(/g, "<span class='c--code-method'>$1</span>(");
   s = s.replace(/(\.|\(|\)|&amp;|&lt;|&gt;|&equals;)/g, "<span class='c--code-symbol'>$1</span>");
 
   return s;
@@ -194,13 +201,14 @@ function highlightJson(src) {
 </script>
 <style>
 code:not(:has(pre)) {
-  @apply rounded p-1 text-xs bg-zinc-50 text-orange-700 dark:bg-zinc-950 dark:text-orange-300;
+  @apply rounded p-1 text-xs bg-zinc-50 text-orange-700 dark:bg-zinc-950 dark:text-orange-400;
 }
 
 pre {
   @apply block rounded-lg overflow-auto max-h-[20em] bg-zinc-950 p-4 text-xs text-sky-300;
 
-  .c--code-string { @apply text-orange-300; }
+  .c--code-comment { @apply text-green-800; }
+  .c--code-string { @apply text-orange-400; }
   .c--code-keyword { @apply text-purple-400; }
   .c--code-symbol { @apply text-gray-100; }
   .c--code-type { @apply text-blue-400; }

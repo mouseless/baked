@@ -18,56 +18,101 @@ const variants = [
   },
   {
     name: "Type",
-    descriptor: giveMe.aMissingComponent({
-      path: ["page"],
-      source: {
-        type: "TypeModelMembers",
-        path: ["TestPage"]
-      }
+    descriptor: giveMe.aContainer({
+      contents: [
+        giveMe.aMissingComponent({
+          path: ["page"],
+          source: {
+            type: "TypeModelMembers",
+            path: ["TestPage"]
+          }
+        }),
+        giveMe.aMissingComponent({
+          path: ["page"],
+          source: {
+            type: "TypeModelMetadata",
+            path: ["TestPage"]
+          }
+        }),
+        giveMe.aMissingComponent({
+          component: "ReportPage",
+          path: ["page"],
+          source: {
+            type: "TypeModelMembers",
+            path: ["TestPage"]
+          }
+        })
+      ]
     })
   },
   {
     name: "Property",
-    descriptor: giveMe.aMissingComponent({
-      path: ["page", "data-table", "columns", "text"],
-      source: {
-        type: "PropertyModel",
-        path: ["Record", "Text"]
-      }
+    descriptor: giveMe.aContainer({
+      contents: [
+        giveMe.aMissingComponent({
+          path: ["page", "data-table", "columns", "text"],
+          source: {
+            type: "PropertyModel",
+            path: ["Record", "Text"]
+          }
+        }),
+        giveMe.aMissingComponent({
+          component: "Money",
+          path: ["page", "data-table", "columns", "text"],
+          source: {
+            type: "PropertyModel",
+            path: ["Record", "Text"]
+          }
+        })
+      ]
     })
   },
   {
     name: "Method",
-    descriptor: giveMe.aMissingComponent({
-      path: ["page", "data-panel"],
-      source: {
-        type: "MethodModel",
-        path: ["TestPage", "GetData"]
-      },
-      data: [
-        { "test": "large data" },
-        { "test": "large data" }
+    descriptor: giveMe.aContainer({
+      contents: [
+        giveMe.aMissingComponent({
+          path: ["page", "data-panel"],
+          source: {
+            type: "MethodModel",
+            path: ["TestPage", "GetData"]
+          },
+          data: [
+            { "test": "large data" },
+            { "test": "large data" }
+          ]
+        }),
+        giveMe.aMissingComponent({
+          component: "SimpleForm",
+          path: ["page", "data-panel"],
+          source: {
+            type: "MethodModel",
+            path: ["TestPage", "GetData"]
+          }
+        })
       ]
     })
   },
   {
     name: "Parameter",
-    descriptor: giveMe.aMissingComponent({
-      path: ["page", "data-panel", "parameters"],
-      source: {
-        type: "ParameterModel",
-        path: ["TestPage", "GetData", "panel"]
-      }
-    })
-  },
-  {
-    name: "TypeMetadata",
-    descriptor: giveMe.aMissingComponent({
-      path: ["page"],
-      source: {
-        type: "TypeModelMetadata",
-        path: ["TestPage"]
-      }
+    descriptor: giveMe.aContainer({
+      contents: [
+        giveMe.aMissingComponent({
+          path: ["page", "data-panel", "parameters"],
+          source: {
+            type: "ParameterModel",
+            path: ["TestPage", "GetData", "panel"]
+          }
+        }),
+        giveMe.aMissingComponent({
+          component: "InputNumber",
+          path: ["page", "data-panel", "parameters"],
+          source: {
+            type: "ParameterModel",
+            path: ["TestPage", "GetData", "panel"]
+          }
+        })
+      ]
     })
   }
 ];

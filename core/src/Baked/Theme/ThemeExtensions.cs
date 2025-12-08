@@ -603,7 +603,7 @@ public static class ThemeExtensions
         var level = WarnForMissingComponent ? "warning" : "error";
         Console.WriteLine($"{level}: `{metadata.CustomAttributes.Name}` doesn't have any component descriptor{(componentType is null ? string.Empty : $" of type {componentType.Name}")} at path `{context.Path}`");
 
-        return DomainComponents.CustomAttributesMissingComponent(metadata, context);
+        return DomainComponents.CustomAttributesMissingComponent(metadata, context, options: mc => mc.Component = componentType?.Name);
     }
 
     public static IComponentDescriptor? GetComponent<T>(this ICustomAttributesModel metadata, ComponentContext context) where T : IComponentSchema =>

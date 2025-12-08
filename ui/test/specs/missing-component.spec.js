@@ -63,14 +63,14 @@ test.describe("Type", () => {
   test("shows configure button", async({ page }) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator("button")).toHaveText("Configure");
+    await expect(component.locator("button").nth(0)).toHaveText("Configure");
   });
 
   test("shows configuration helper", async({ page }) => {
     const component = page.getByTestId(id);
     const dialog = page.locator(primevue.dialog.base);
 
-    await component.locator("button").click();
+    await component.locator("button").nth(0).click();
 
     await expect(dialog).toBeAttached();
     await expect(dialog.locator("pre")).toHaveText(
@@ -82,17 +82,37 @@ test.describe("Type", () => {
     );
   });
 
+  test("metadata types also shows type configuration helper", async({ page }) => {
+    const component = page.getByTestId(id);
+    const dialog = page.locator(primevue.dialog.base);
+
+    await component.locator("button").nth(1).click();
+
+    await expect(dialog).toBeAttached();
+    await expect(dialog.locator("pre")).toHaveText(/AddTypeComponent/);
+  });
+
+  test("show specific component name when component is present", async({ page }) => {
+    const component = page.getByTestId(id);
+    const dialog = page.locator(primevue.dialog.base);
+
+    await component.locator("button").nth(2).click();
+
+    await expect(dialog).toBeAttached();
+    await expect(dialog.locator("pre")).toHaveText(/<ReportPage>/);
+  });
+
   test("visual", { tag: "@visual" }, async({ page }) => {
     const component = page.getByTestId(id);
 
-    await expect(component).toHaveScreenshot();
+    await expect(component.locator("button").nth(0)).toHaveScreenshot();
   });
 
   test("visual for dialog", { tag: "@visual" }, async({ page }) => {
     const component = page.getByTestId(id);
     const dialog = page.locator(primevue.dialog.base);
 
-    await component.locator("button").click();
+    await component.locator("button").nth(0).click();
 
     await expect(dialog).toBeAttached();
     await expect(dialog).toHaveScreenshot();
@@ -106,7 +126,7 @@ test.describe("Property", () => {
     const component = page.getByTestId(id);
     const dialog = page.locator(primevue.dialog.base);
 
-    await component.locator("button").click();
+    await component.locator("button").nth(0).click();
 
     await expect(dialog).toBeAttached();
     await expect(dialog.locator("pre")).toHaveText(
@@ -117,6 +137,16 @@ test.describe("Property", () => {
 );`
     );
   });
+
+  test("show specific component name when component is present", async({ page }) => {
+    const component = page.getByTestId(id);
+    const dialog = page.locator(primevue.dialog.base);
+
+    await component.locator("button").nth(1).click();
+
+    await expect(dialog).toBeAttached();
+    await expect(dialog.locator("pre")).toHaveText(/<Money>/);
+  });
 });
 
 test.describe("Method", () => {
@@ -126,23 +156,33 @@ test.describe("Method", () => {
     const component = page.getByTestId(id);
     const dialog = page.locator(primevue.dialog.base);
 
-    await component.locator("button").click();
+    await component.locator("button").nth(0).click();
 
     await expect(dialog).toBeAttached();
     await expect(dialog.locator("pre").nth(0)).toHaveText(
       String.raw`builder.Conventions.AddMethodComponent(
     when: c => c.Type.Is<TestPage>() && c.Method.Name == nameof(TestPage.GetData),
     where: cc => cc.Path.EndsWith("page", "data-panel"),
-    component: () => B.Text()
+    component: () => B.DataTable()
 );`
     );
+  });
+
+  test("show specific component name when component is present", async({ page }) => {
+    const component = page.getByTestId(id);
+    const dialog = page.locator(primevue.dialog.base);
+
+    await component.locator("button").nth(1).click();
+
+    await expect(dialog).toBeAttached();
+    await expect(dialog.locator("pre")).toHaveText(/<SimpleForm>/);
   });
 
   test("shows data panel when data is object", async({ page }) => {
     const component = page.getByTestId(id);
     const dialog = page.locator(primevue.dialog.base);
 
-    await component.locator("button").click();
+    await component.locator("button").nth(0).click();
 
     await expect(dialog).toBeAttached();
     await expect(dialog).toHaveText(/Expand to see the data/);
@@ -152,7 +192,7 @@ test.describe("Method", () => {
     const component = page.getByTestId(id);
     const dialog = page.locator(primevue.dialog.base);
 
-    await component.locator("button").click();
+    await component.locator("button").nth(0).click();
     await dialog.locator(primevue.panel.header).locator("button").click();
 
     await expect(dialog.locator("pre").nth(1)).toHaveText(
@@ -171,7 +211,7 @@ test.describe("Method", () => {
     const component = page.getByTestId(id);
     const dialog = page.locator(primevue.dialog.base);
 
-    await component.locator("button").click();
+    await component.locator("button").nth(0).click();
     await dialog.locator(primevue.panel.header).locator("button").click();
 
     await expect(dialog).toHaveScreenshot();
@@ -185,7 +225,7 @@ test.describe("Parameter", () => {
     const component = page.getByTestId(id);
     const dialog = page.locator(primevue.dialog.base);
 
-    await component.locator("button").click();
+    await component.locator("button").nth(0).click();
 
     await expect(dialog).toBeAttached();
     await expect(dialog.locator("pre")).toHaveText(
@@ -196,18 +236,14 @@ test.describe("Parameter", () => {
 );`
     );
   });
-});
 
-test.describe("TypeMetadata", () => {
-  const id = "TypeMetadata";
-
-  test("metadata types also shows type configuration helper", async({ page }) => {
+  test("show specific component name when component is present", async({ page }) => {
     const component = page.getByTestId(id);
     const dialog = page.locator(primevue.dialog.base);
 
-    await component.locator("button").click();
+    await component.locator("button").nth(1).click();
 
     await expect(dialog).toBeAttached();
-    await expect(dialog.locator("pre")).toHaveText(/AddTypeComponent/);
+    await expect(dialog.locator("pre")).toHaveText(/<InputNumber>/);
   });
 });
