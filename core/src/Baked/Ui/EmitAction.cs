@@ -1,8 +1,8 @@
 ﻿namespace Baked.Ui;
 
-public record EmitAction(string EventKey)
+public record EmitAction(string Event)
     : IAction
 {
     public string Type => "Emit";
-    public string EventKey { get; set; } = EventKey;
+    public string Event { get; set; } = Event;
 }

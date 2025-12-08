@@ -1,8 +1,8 @@
 <template>
   <UiSpec
-    title="Button"
+    title="SimpleForm"
     :variants="variants"
-    :no-loading-variant="true"
+    no-loading-variant
   />
 </template>
 <script setup>
@@ -11,7 +11,7 @@ import giveMe from "@utils/giveMe";
 const variants = [
   {
     name: "Base",
-    descriptor: giveMe.aButton({
+    descriptor: giveMe.aSimpleForm({
       action: {
         type: "Composite",
         parts: [
@@ -20,21 +20,29 @@ const variants = [
             composable: "useDelay",
             options: {
               type: "Inline",
-              value: { time: 100 }
+              value: { time: 500 }
             }
           },
           {
             type: "Local",
             composable: "useShowMessage",
             options: {
-              type: "Inline",
-              value: { message: "Execute Action" }
+              type: "Context",
+              key: "model",
+              prop: "text",
+              targetProp: "message"
             }
           }
         ]
       },
-      label: "Spec: Button",
-      icon: "pi pi-play-circle"
+      buttonLabel: "Spec: SimpleFormButton",
+      inputs: [
+        giveMe.anInput({
+          name: "text",
+          component: giveMe.anInputText(),
+          required: true
+        })
+      ]
     })
   }
 ];

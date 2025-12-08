@@ -25,11 +25,11 @@ const { inputs } = defineProps({
 });
 const emit = defineEmits(["ready", "changed"]);
 
-const injectedData = context.injectData();
+const parentContext = context.injectParentContext();
 const values = reactive({});
 
 for(const input of inputs) {
-  values[input.name] = ref(dataFetcher.get({ data: input.default, injectedData }));
+  values[input.name] = ref(dataFetcher.get({ data: input.default, contextData: { parent: parentContext } }));
 }
 
 function checkValue(value) {
@@ -44,7 +44,7 @@ onMounted(async() => {
   for(const input of inputs) {
     if(!dataFetcher.shouldLoad(input.default?.type)) { continue; }
 
-    values[input.name] = await dataFetcher.fetch({ data: input.default, injectedData });
+    values[input.name] = await dataFetcher.fetch({ data: input.default, contextData: { parent: parentContext } });
   }
 
   emitChanged();

@@ -119,9 +119,12 @@
                     "query": {
                       "type": "Computed",
                       "composable": "useNuxtRoute",
-                      "args": [
-                        "query"
-                      ]
+                      "options": {
+                        "type": "Inline",
+                        "value": {
+                          "property": "query"
+                        }
+                      }
                     }
                   }
                 }
@@ -155,9 +158,12 @@
                     "query": {
                       "type": "Computed",
                       "composable": "useNuxtRoute",
-                      "args": [
-                        "query"
-                      ]
+                      "options": {
+                        "type": "Inline",
+                        "value": {
+                          "property": "query"
+                        }
+                      }
                     }
                   }
                 }
@@ -192,9 +198,12 @@
                     "query": {
                       "type": "Computed",
                       "composable": "useNuxtRoute",
-                      "args": [
-                        "query"
-                      ]
+                      "options": {
+                        "type": "Inline",
+                        "value": {
+                          "property": "query"
+                        }
+                      }
                     }
                   }
                 }
@@ -344,13 +353,17 @@
                         {
                           "type": "Computed",
                           "composable": "useNuxtRoute",
-                          "args": [
-                            "query"
-                          ]
+                          "options": {
+                            "type": "Inline",
+                            "value": {
+                              "property": "query"
+                            }
+                          }
                         },
                         {
-                          "type": "Injected",
-                          "key": "Custom"
+                          "type": "Context",
+                          "key": "parent",
+                          "prop": "parameters"
                         }
                       ]
                     }
@@ -489,13 +502,17 @@
                         {
                           "type": "Computed",
                           "composable": "useNuxtRoute",
-                          "args": [
-                            "query"
-                          ]
+                          "options": {
+                            "type": "Inline",
+                            "value": {
+                              "property": "query"
+                            }
+                          }
                         },
                         {
-                          "type": "Injected",
-                          "key": "Custom"
+                          "type": "Context",
+                          "key": "parent",
+                          "prop": "parameters"
                         }
                       ]
                     }

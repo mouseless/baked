@@ -20,7 +20,7 @@ const variants = [
   {
     name: "Base with computed title",
     descriptor: giveMe.aDataPanel({
-      title: { type: "Computed", composable: "useDelayedData", args: [1, "Title"] },
+      title: { type: "Computed", composable: "useDelayedData", options: { type: "Inline", value: { ms: 1, data: "Title" } } },
       collapsed: false
     })
   },
@@ -52,7 +52,7 @@ const variants = [
       ],
       content: giveMe.anExpected({
         testId: "content",
-        data: giveMe.theInjectedData()
+        data: giveMe.theParentContext()
       })
     })
   }

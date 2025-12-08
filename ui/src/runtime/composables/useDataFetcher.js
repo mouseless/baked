@@ -4,8 +4,8 @@ import { useComposableResolver, usePathBuilder, useUnref } from "#imports";
 export default function() {
   const datas = {
     "Composite": Composite({ parentFetch: fetch, parentFetchParameters: fetchParameters }),
-    "Computed": Computed(),
-    "Injected": Injected(),
+    "Computed": Computed({ parentFetch: fetch }),
+    "Context": Context(),
     "Inline": Inline(),
     "Remote": Remote({ parentFetch: fetch })
   };
@@ -14,29 +14,29 @@ export default function() {
     return datas[dataType]?.fetch !== undefined;
   }
 
-  function get({ data, injectedData }) {
+  function get({ data, contextData }) {
     const type = data?.type;
     if(!type) { return null; }
     if(!datas[type]) { return null; }
     if(!datas[type].get) { return null; }
 
-    return datas[type].get({ data, injectedData });
+    return datas[type].get({ data, contextData });
   }
 
-  async function fetch({ data, injectedData }) {
+  async function fetch({ data, contextData }) {
     const fetcher = datas[data?.type];
     if(!fetcher) { throw new Error(`${data?.type} is not a valid data type`); }
 
     return fetcher.get
-      ? fetcher.get({ data, injectedData })
-      : await fetcher.fetch({ data, injectedData });
+      ? fetcher.get({ data, contextData })
+      : await fetcher.fetch({ data, contextData });
   }
 
-  async function fetchParameters({ data, injectedData }) {
+  async function fetchParameters({ data, contextData }) {
     const fetcher = datas[data?.type];
 
     return fetcher?.fetchParameters
-      ? fetcher.fetchParameters({ data, injectedData })
+      ? fetcher.fetchParameters({ data, contextData })
       : [];
   }
 
@@ -51,25 +51,25 @@ export default function() {
 function Composite({ parentFetch, parentFetchParameters }) {
   const unref = useUnref();
 
-  async function fetch({ data, injectedData }) {
+  async function fetch({ data, contextData }) {
     const result = {};
 
     for(const part of data.parts) {
       Object.assign(
         result,
-        unref.deepUnref(await parentFetch({ data: part, injectedData }))
+        unref.deepUnref(await parentFetch({ data: part, contextData }))
       );
     }
 
     return result;
   }
 
-  async function fetchParameters({ data, injectedData }) {
+  async function fetchParameters({ data, contextData }) {
     const result = [];
 
     for(const part of data.parts) {
       result.push(
-        ...unref.deepUnref(await parentFetchParameters({ data: part, injectedData }))
+        unref.deepUnref(await parentFetchParameters({ data: part, contextData }))
       );
     }
 
@@ -82,25 +82,27 @@ function Composite({ parentFetch, parentFetchParameters }) {
   };
 }
 
-function Computed() {
+function Computed({ parentFetch }) {
   const composableResolver = useComposableResolver();
+  const unref = useUnref();
 
-  async function fetch({ data }) {
+  async function fetch({ data, contextData }) {
     const composable = (await composableResolver.resolve(data.composable)).default();
+    const options = data.options ? unref.deepUnref(await parentFetch({ data: data.options, contextData })) : { };
 
     if(composable.compute) {
-      return composable.compute(...(data.args || []));
+      return composable.compute(options);
     }
 
     if(composable.computeAsync) {
-      return await composable.computeAsync(...(data.args || []));
+      return await composable.computeAsync(options);
     }
 
     throw new Error("Data composable should have either `compute` or `computeAsync`");
   }
 
-  function fetchParameters({ data }) {
-    return data.args;
+  async function fetchParameters({ data }) {
+    return data.options ? unref.deepUnref(await parentFetch({ data: data.options })) : null;
   }
 
   return {
@@ -109,13 +111,28 @@ function Computed() {
   };
 }
 
-function Injected() {
-  function get({ data, injectedData }) {
-    const result = injectedData[data.key];
+function Context() {
+  const unref = useUnref();
 
-    if(!data.prop) { return result; }
+  function get({ data, contextData }) {
+    let result = contextData[data.key];
 
-    return result.value?.[data.prop];
+    if(!result) { return null; }
+
+    result = unref.deepUnref(result);
+
+    if(data.prop) {
+      const path = data.prop.split(".");
+      for(const prop of path) {
+        result = result?.[prop];
+      }
+    }
+
+    if(data.targetProp) {
+      result = { [data.targetProp]: result };
+    }
+
+    return result;
   }
 
   return {
@@ -138,10 +155,10 @@ function Remote({ parentFetch }) {
   const { public: { apiBaseURL, composables } } = useRuntimeConfig();
   const unref = useUnref();
 
-  async function fetch({ data, injectedData }) {
-    const headers = await fetchHeaders({ data, injectedData });
-    const query = await fetchQuery({ data, injectedData });
-    const params = await fetchParams({ data, injectedData });
+  async function fetch({ data, contextData }) {
+    const headers = await fetchHeaders({ data, contextData });
+    const query = await fetchQuery({ data, contextData });
+    const params = await fetchParams({ data, contextData });
 
     const path = pathBuilder.build(data.path, params);
 
@@ -158,21 +175,21 @@ function Remote({ parentFetch }) {
     return await $fetch(path, { ...options, retry: false });
   }
 
-  async function fetchHeaders({ data, injectedData }) {
+  async function fetchHeaders({ data, contextData }) {
     return data.headers
-      ? unref.deepUnref(await parentFetch({ data: data.headers, injectedData }))
+      ? unref.deepUnref(await parentFetch({ data: data.headers, contextData }))
       : { };
   }
 
-  async function fetchQuery({ data, injectedData }) {
+  async function fetchQuery({ data, contextData }) {
     return data.query
-      ? unref.deepUnref(await parentFetch({ data: data.query, injectedData }))
+      ? unref.deepUnref(await parentFetch({ data: data.query, contextData }))
       : { };
   }
 
-  async function fetchParams({ data, injectedData }) {
+  async function fetchParams({ data, contextData }) {
     return data.params
-      ? unref.deepUnref(await parentFetch({ data: data.params, injectedData }))
+      ? unref.deepUnref(await parentFetch({ data: data.params, contextData }))
       : { };
   }
 

@@ -91,11 +91,6 @@ const dataFetcher = useDataFetcher();
 const { localize: l } = useLocalization();
 const { localize: lc } = useLocalization({ group: "DataPanel" });
 const panel = useTemplateRef("panel");
-const popover = ref();
-
-function togglePopover(event) {
-  popover.value.toggle(event);
-}
 
 const { schema } = defineProps({
   schema: { type: null, required: true },
@@ -104,26 +99,31 @@ const { schema } = defineProps({
 
 const { collapsed, content, inputs, localizeTitle, title: titleData } = schema;
 
-const injectedData = context.injectData();
+const parentContext = context.injectParentContext();
 const path = context.injectPath();
 const collapsedState = computed(() => panelStates[path] ?? collapsed);
 const loaded = ref(!collapsedState.value);
 const ready = ref(inputs.length === 0); // it is ready when there is no parameter
 const uniqueKey = ref("");
+const popover = ref();
 
 const values = ref({});
 if(inputs.length > 0) {
-  context.provideData(values, "Custom");
+  parentContext["parameters"] = values;
 }
 
-const title = ref(dataFetcher.get({ data: titleData, injectedData }));
+const title = ref(dataFetcher.get({ data: titleData, contextData: { parent: parentContext } }));
 const shouldLoadTitle = dataFetcher.shouldLoad(titleData.type);
 
 onMounted(async() => {
   if(shouldLoadTitle) {
-    title.value = await dataFetcher.fetch({ data: titleData, injectedData });
+    title.value = await dataFetcher.fetch({ data: titleData, contextData: { parent: parentContext } });
   }
 });
+
+function togglePopover(event) {
+  popover.value.toggle(event);
+}
 
 function onCollapsed(collapsed) {
   panelStates[path] = collapsed;

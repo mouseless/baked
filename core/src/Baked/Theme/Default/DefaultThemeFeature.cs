@@ -63,8 +63,9 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
             builder.Conventions.AddMethodSchemaConfiguration<RemoteData>(
                 when: c => c.Type.Has<LocatableAttribute>(),
-                schema: rd => rd.Params = Computed(Composables.UseRoute, options: o => o.Args.Add("params"))
+                schema: rd => rd.Params = Computed.UseRoute("params")
             );
+
             // Parameter Defaults
             builder.Conventions.AddParameterSchema(
                 schema: (c, cc) => ParameterInput(c.Parameter, cc),
@@ -117,6 +118,16 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 schema: (c, cc) => PropertyConditional(c.Property, cc),
                 when: c => c.Property.Has<DataAttribute>()
             );
+
+            // Pages
+            builder.Conventions.AddTypeComponent(
+                component: (c, cc) => TypeReportPage(c.Type, cc),
+                where: cc => cc.Path.Is(nameof(Page), "*")
+            );
+            builder.Conventions.AddMethodSchema(
+                schema: (c, cc) => MethodReportPageTabContent(c.Method, cc),
+                when: c => c.Method.Has<ActionModelAttribute>()
+            );
         });
 
         configurator.ConfigureComponentExports(exports =>
@@ -139,7 +150,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
                         _errorPageOptions.Apply(ep);
                     },
-                    data: Computed(Composables.UseError)
+                    data: Computed.UseError()
                 );
             });
         });
