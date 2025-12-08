@@ -1,12 +1,9 @@
 ﻿namespace Baked.Ui;
 
-public interface IComponentDescriptor
+public interface IComponentDescriptor : ISupportsReaction
 {
     string Type { get; }
     IComponentSchema Schema { get; }
     IData? Data { get; set; }
-    // TODO - review this in form components
-    string? Binding { get; set; }
     public IAction? Action { get; set; }
-    public IAction? PostAction { get; set; }
 }

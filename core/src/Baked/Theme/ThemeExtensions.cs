@@ -78,14 +78,32 @@ public static class ThemeExtensions
     public static bool ReturnsList(this MethodOverloadModel methodOverload) =>
         methodOverload.ReturnType.SkipTask().IsAssignableTo<IList>();
 
-    public static PageBuilder From<T>(this Page.Generator _) =>
+    public static PageBuilder Method<TDomainType, TPageSchema>(this Page.Generator _, string methodName) where TPageSchema : IPageSchema =>
         context =>
         {
             var (domain, l) = context;
 
-            if (!domain.Types[typeof(T)].TryGetMetadata(out var metadata)) { throw new($"{typeof(T).Name} cannot be used as a page source, because its metadata is not included in domain model"); }
+            if (!domain.Types[typeof(TDomainType)].TryGetMembers(out var members))
+            {
+                throw new($"{typeof(TDomainType).Name}.{methodName} cannot be used as a page source, because members of {typeof(TDomainType).Name} are not included in domain model");
+            }
 
-            return metadata.GetRequiredComponent(context.Drill(nameof(Page), typeof(T).Name));
+            if (!members.Methods.TryGetValue(methodName, out var method))
+            {
+                throw new($"{typeof(TDomainType).Name} does not have a method named '{methodName}'");
+            }
+
+            return method.GetRequiredComponent<TPageSchema>(context.Drill(nameof(Page), typeof(TDomainType).Name, method.Name));
+        };
+
+    public static PageBuilder Type<TDomainType, TPageSchema>(this Page.Generator _) where TPageSchema : IPageSchema =>
+        context =>
+        {
+            var (domain, l) = context;
+
+            if (!domain.Types[typeof(TDomainType)].TryGetMetadata(out var metadata)) { throw new($"{typeof(TDomainType).Name} cannot be used as a page source, because its metadata is not included in domain model"); }
+
+            return metadata.GetRequiredComponent<TPageSchema>(context.Drill(nameof(Page), typeof(TDomainType).Name));
         };
 
     public static TComponentSchema As<TComponentSchema>(this IComponentSchema schema) where TComponentSchema : IComponentSchema =>
@@ -572,22 +590,32 @@ public static class ThemeExtensions
 
     static bool WarnForNone => Environment.GetCommandLineArgs().Contains("--warn-for-none");
 
-    public static IComponentDescriptor GetRequiredComponent(this ICustomAttributesModel metadata, ComponentContext context)
+    public static IComponentDescriptor GetRequiredComponent<T>(this ICustomAttributesModel metadata, ComponentContext context) where T : IComponentSchema =>
+        metadata.GetRequiredComponent(context, componentType: typeof(T));
+
+    public static IComponentDescriptor GetRequiredComponent(this ICustomAttributesModel metadata, ComponentContext context,
+        Type? componentType = default
+    )
     {
-        var result = metadata.GetComponent(context);
+        var result = metadata.GetComponent(context, componentType: componentType);
         if (result is not null) { return result; }
 
         var level = WarnForNone ? "warning" : "error";
-        Console.WriteLine($"{level}: `{metadata.CustomAttributes.Name}` doesn't have any component descriptor at path `{context.Path}`");
+        Console.WriteLine($"{level}: `{metadata.CustomAttributes.Name}` doesn't have any component descriptor{(componentType is null ? string.Empty : $" of type {componentType.Name}")} at path `{context.Path}`");
 
         return DomainComponents.CustomAttributesNone(metadata, context);
     }
 
-    public static IComponentDescriptor? GetComponent(this ICustomAttributesModel metadata, ComponentContext context)
+    public static IComponentDescriptor? GetComponent<T>(this ICustomAttributesModel metadata, ComponentContext context) where T : IComponentSchema =>
+        metadata.GetComponent(context, componentType: typeof(T));
+
+    public static IComponentDescriptor? GetComponent(this ICustomAttributesModel metadata, ComponentContext context,
+        Type? componentType = default
+    )
     {
         if (!metadata.TryGetAll<ContextBasedComponentAttribute>(out var contextBasedComponents)) { return default; }
 
-        foreach (var contextBasedComponent in contextBasedComponents.WhereAppliesTo(context).Reverse())
+        foreach (var contextBasedComponent in contextBasedComponents.WhereAppliesTo(context).Where(cbc => componentType is null || cbc.SchemaType == componentType).Reverse())
         {
             var builderType = typeof(ComponentDescriptorBuilderAttribute<>).MakeGenericType(contextBasedComponent.SchemaType);
             if (!metadata.TryGetAll(builderType, out var builders)) { continue; }

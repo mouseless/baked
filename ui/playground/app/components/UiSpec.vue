@@ -22,7 +22,7 @@
           <slot name="default" />
         </div>
         <div
-          v-for="(variant, index) in allVariants"
+          v-for="variant in allVariants"
           :key="variant.name"
           :class="{
             'w-full': !vertical,
@@ -41,7 +41,7 @@
           </h2>
           <Divider v-if="!vertical" />
           <div
-            v-if="!useModel"
+            v-if="!useModel && !variant.model"
             :data-testid="variant.name"
             :class="{ 'inline-block': vertical }"
           >
@@ -60,8 +60,8 @@
             >
               <!-- renders given variants -->
               <Bake
-                v-if="index < variants.length"
-                v-model="models[index].value"
+                v-if="variant.model"
+                v-model="variant.model.value"
                 :name="`variants/${camelize(variant.name)}`"
                 :descriptor="prepareDescriptor(variant)"
               />
@@ -73,10 +73,10 @@
               />
             </div>
             <div
-              v-if="index < variants.length"
+              v-if="variant.model"
               class="inline-block border-2 border-gray-500 rounded p-2"
             >
-              ➡️  <span :data-testid="`${variant.name}:model`">{{ variants[index].model }}</span> ⬅️
+              ➡️  <span :data-testid="`${variant.name}:model`">{{ variant.model }}</span> ⬅️
             </div>
             <div
               v-if="variant.pageContextKeys"
@@ -93,10 +93,11 @@
 </template>
 <script setup>
 import { computed, onMounted, reactive, ref } from "vue";
-import { useContext, usePages } from "#imports";
+import { useContext, useEvents, usePages } from "#imports";
 import { Divider } from "primevue";
 
 const context = useContext();
+const events = useEvents();
 const pages = usePages();
 
 const { title, variants, noLoadingVariant } = defineProps({
@@ -113,7 +114,6 @@ const { title, variants, noLoadingVariant } = defineProps({
 const page = reactive({});
 const description = ref();
 const loaded = ref(false);
-const models = variants.map(v => v.model);
 const allVariants = computed(() => {
   if(noLoadingVariant) { return variants; }
   if(variants.length === 0) { return variants; }
@@ -130,6 +130,7 @@ const allVariants = computed(() => {
   return result;
 });
 
+context.provideEvents(events.create());
 context.providePage(page);
 
 onMounted(async() => {
@@ -156,7 +157,7 @@ function prepareDescriptor(variant) {
     variant.descriptor.data = {
       type: "Computed",
       composable: "useDelayedData",
-      args: [variant.delay, variant.descriptor.data?.value]
+      options: { type: "Inline", value: { ms: variant.delay, data: variant.descriptor.data?.value } }
     };
   }
 

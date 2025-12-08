@@ -48,19 +48,27 @@
               "query": {
                 "type": "Computed",
                 "composable": "useNuxtRoute",
-                "args": [
-                  "query"
-                ]
+                "options": {
+                  "type": "Inline",
+                  "value": {
+                    "property": "query"
+                  }
+                }
               },
               "params": {
                 "type": "Computed",
                 "composable": "useNuxtRoute",
-                "args": [
-                  "params"
-                ]
+                "options": {
+                  "type": "Inline",
+                  "value": {
+                    "property": "params"
+                  }
+                }
               }
             },
-            "binding": "something-changed"
+            "on": {
+              "clear-states": "Reload"
+            }
           }
         }
       }

@@ -1,0 +1,95 @@
+{
+  "type": "ContainerPage",
+  "schema": {
+    "contents": [
+      {
+        "type": "SimpleForm",
+        "schema": {
+          "buttonLabel": "AddState",
+          "inputs": [
+            {
+              "name": "state",
+              "required": true,
+              "component": {
+                "type": "InputText",
+                "schema": {
+                  "testId": "state"
+                }
+              }
+            },
+            {
+              "name": "reason",
+              "required": true,
+              "component": {
+                "type": "InputText",
+                "schema": {
+                  "testId": "reason"
+                }
+              }
+            },
+            {
+              "name": "count",
+              "required": true,
+              "component": {
+                "type": "InputNumber",
+                "schema": {
+                  "testId": "count"
+                }
+              }
+            },
+            {
+              "name": "countOptions",
+              "required": false,
+              "component": {
+                "type": "SelectButton",
+                "schema": {
+                  "allowEmpty": true,
+                  "optionLabel": "label",
+                  "optionValue": "value",
+                  "localizeLabel": true
+                },
+                "data": {
+                  "type": "Inline",
+                  "value": [
+                    {
+                      "label": "CountOptions.Less",
+                      "value": "Less"
+                    },
+                    {
+                      "label": "CountOptions.Default",
+                      "value": "Default"
+                    },
+                    {
+                      "label": "CountOptions.More",
+                      "value": "More"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "action": {
+          "type": "Remote",
+          "path": "form-sample/states",
+          "method": "POST",
+          "body": {
+            "type": "Context",
+            "key": "model"
+          },
+          "postAction": {
+            "type": "Local",
+            "composable": "useRedirect",
+            "options": {
+              "type": "Inline",
+              "value": {
+                "route": "/form-sample"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "path": "form-sample/new-state"
+  }
+}

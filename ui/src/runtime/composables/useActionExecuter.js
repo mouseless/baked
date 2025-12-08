@@ -1,18 +1,18 @@
 import { useRuntimeConfig } from "#app";
-import { useComposableResolver, useDataFetcher, usePathBuilder } from "#imports";
+import { useComposableResolver, useDataFetcher, usePathBuilder, useUnref } from "#imports";
 
 export default function() {
   const actions = {
     "Composite": Composite({ actionExecuter: { execute } }),
     "Emit": Emit(),
     "Local": Local(),
-    "Remote": Remote()
+    "Remote": Remote({ actionExecuter: { execute } })
   };
 
-  async function execute({ action, injectedData, events }) {
+  async function execute({ action, contextData, events }) {
     const executer = actions[action?.type];
 
-    await executer.execute({ action, injectedData, events });
+    await executer.execute({ action, contextData, events });
   }
 
   return {
@@ -21,9 +21,9 @@ export default function() {
 }
 
 function Composite({ actionExecuter }) {
-  async function execute({ action, injectedData, events }) {
+  async function execute({ action, contextData, events }) {
     for(const part of action.parts) {
-      await actionExecuter.execute({ action: part, injectedData, events });
+      await actionExecuter.execute({ action: part, contextData, events });
     }
   }
 
@@ -34,7 +34,7 @@ function Composite({ actionExecuter }) {
 
 function Emit() {
   async function execute({ action, events }) {
-    await events.emit(action.eventKey);
+    await events.emit(action.event);
   }
 
   return {
@@ -44,12 +44,15 @@ function Emit() {
 
 function Local() {
   const composableResolver = useComposableResolver();
+  const dataFetcher = useDataFetcher();
 
-  async function execute({ action }) {
+  async function execute({ action, contextData }) {
     const composable = (await composableResolver.resolve(action.composable)).default();
 
     if(composable.run) {
-      return await composable.run(...(action.args || []));
+      const options = action.options ? await dataFetcher.fetch({ data: action.options, contextData }) : { };
+
+      return await composable.run(options);
     }
 
     throw new Error("Action composable should have async `run`");
@@ -60,20 +63,20 @@ function Local() {
   };
 }
 
-function Remote() {
+function Remote({ actionExecuter }) {
   const dataFetcher = useDataFetcher();
   const pathBuilder = usePathBuilder();
   const { public: { apiBaseURL } } = useRuntimeConfig();
+  const unref = useUnref();
 
-  async function execute({ action, injectedData }) {
-    // TODO make sure `ref` values are unreffed
-    const headers = action.headers ? await dataFetcher.fetch({ data: action.headers, injectedData }) : { };
-    const query = action.query ? await dataFetcher.fetch({ data: action.query, injectedData }) : null;
-    const params = action.params ? await dataFetcher.fetch({ data: action.params, injectedData }) : { };
-    const body = action.body ? await dataFetcher.fetch({ data: action.body, injectedData })
-      : (action.method === "GET" ? null : { });
+  async function execute({ action, contextData, events }) {
+    const headers = action.headers ? unref.deepUnref(await dataFetcher.fetch({ data: action.headers, contextData })) : { };
+    const query = action.query ? unref.deepUnref(await dataFetcher.fetch({ data: action.query, contextData })) : null;
+    const params = action.params ? unref.deepUnref(await dataFetcher.fetch({ data: action.params, contextData })) : { };
+    const body = action.method === "GET" ? null
+      : (action.body ? unref.deepUnref(await dataFetcher.fetch({ data: action.body, contextData })) : { });
 
-    const result = await $fetch(pathBuilder.build(action.path, params), {
+    await $fetch(pathBuilder.build(action.path, params), {
       baseURL: apiBaseURL,
       method: action.method,
       headers: headers,
@@ -81,7 +84,7 @@ function Remote() {
       body: body
     });
 
-    return result;
+    await actionExecuter.execute({ action: action.postAction, contextData, events });
   }
 
   return {

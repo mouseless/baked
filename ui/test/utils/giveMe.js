@@ -24,14 +24,13 @@ const screens = [
 ];
 
 export default {
-  aButton({ action, icon, label, postAction } = {}) {
+  aButton({ action, icon, label } = {}) {
     label = $(label, "Button Title");
 
     return {
       type: "Button",
       schema: { icon, label },
-      action,
-      postAction
+      action
     };
   },
 
@@ -256,10 +255,10 @@ export default {
     };
   },
 
-  theInjectedData() {
+  theParentContext() {
     return {
-      type: "Injected",
-      key: "Custom"
+      type: "Context",
+      key: "parent"
     };
   },
 
@@ -395,7 +394,11 @@ export default {
   theQueryData() {
     return {
       type: "Computed",
-      composable: "useQuery"
+      composable: "useNuxtRoute",
+      options: {
+        type: "Inline",
+        value: { property: "query" }
+      }
     };
   },
 
@@ -450,7 +453,7 @@ export default {
 
     data = inline
       ? { type: "Inline", value: data }
-      : { type: "Computed", composable: "useDelayedData", args: [1, data] };
+      : { type: "Computed", composable: "useDelayedData", options: { type: "Inline", value: { ms: 1, data } } };
 
     return {
       type: "Select",
@@ -468,7 +471,7 @@ export default {
     localizeLabel = $(localizeLabel, false);
     data = inline
       ? { type: "Inline", value: data }
-      : { type: "Computed", composable: "useDelayedData", args: [1, data] };
+      : { type: "Computed", composable: "useDelayedData", options: { type: "Inline", value: { ms: 1, data } } };
 
     return {
       type: "SelectButton",
@@ -499,14 +502,31 @@ export default {
     return { route, icon, title, disabled };
   },
 
-  aText({ value, data, maxLength } = {}) {
+  aSimpleForm({ buttonIcon, buttonLabel, inputs, action }) {
+    buttonIcon = $(buttonIcon, "pi pi-save");
+    buttonLabel = $(buttonLabel, "Button Label");
+    inputs = $(inputs, []);
+
+    return {
+      type: "SimpleForm",
+      schema: {
+        buttonIcon,
+        buttonLabel,
+        inputs
+      },
+      action
+    };
+  },
+
+  aText({ value, data, maxLength, on } = {}) {
     value = $(value, "Test string");
     data = $(data, { type: "Inline", value });
 
     return {
       type: "Text",
       schema: { maxLength },
-      data
+      data,
+      on
     };
   },
 

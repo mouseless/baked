@@ -5,6 +5,7 @@
   />
 </template>
 <script setup>
+import { ref } from "vue";
 import giveMe from "@utils/giveMe";
 
 const variants = [
@@ -18,11 +19,11 @@ const variants = [
       contents: [
         giveMe.anExpected({
           testId: "child-root",
-          data: { type: "Injected", key: "ParentData" }
+          data: { type: "Context", key: "parent" }
         }),
         giveMe.anExpected({
           testId: "child-prop",
-          data: { type: "Injected", key: "ParentData", prop: "child" }
+          data: { type: "Context", key: "parent", prop: "data.child" }
         })
       ],
       data: { type: "Inline", value: { child: "CHILD VALUE" } }
@@ -36,12 +37,12 @@ const variants = [
       data: {
         type: "Composite", // merges ["computed"] and ["RequiredWithDefault1", "Required1"]
         parts: [
-          { type: "Computed", composable: "useFakeComputed", args: ["computed"] }, // provides "computed"
-          { type: "Injected", key: "ParentData" },
+          { type: "Computed", composable: "useFakeComputed", options: { type: "Inline", value: { data: "computed" } } }, // provides "computed"
+          { type: "Context", key: "parent" },
           { type: "Inline", value: { inline: "inline" } },
           {
             type: "Remote",
-            path: "/report-page-sample/wide/{id}",
+            path: "/route-parameters-samples/{id}",
             query: {
               type: "Composite", // merges ["RequiredWithDefault1"] and ["Required1"]
               parts: [
@@ -63,6 +64,106 @@ const variants = [
           }
         ]
       }
+    })
+  },
+  {
+    name: "Model",
+    descriptor: giveMe.anInputText(),
+    model: ref("Model Data")
+  },
+  {
+    name: "Action",
+    descriptor: giveMe.aButton({
+      action: {
+        type: "Composite",
+        parts: [
+          {
+            type: "Local",
+            composable: "useShowMessage",
+            options: {
+              type: "Inline",
+              value: { message: "Execute Action" }
+            }
+          },
+          {
+            type: "Local",
+            composable: "useDelay",
+            options: {
+              type: "Inline",
+              value: { time: 100 }
+            }
+          },
+          {
+            type: "Remote",
+            path: "/rich-transient-with-datas/{id}/method",
+            method: "POST",
+            headers: {
+              type: "Inline",
+              value: {
+                Authorization: "token-admin-ui"
+              }
+            },
+            query: {
+              type: "Computed",
+              composable: "useNuxtRoute",
+              options: {
+                type: "Inline",
+                value:{ property: "query" }
+              }
+            },
+            params: {
+              type: "Inline",
+              value: {
+                id: 12
+              }
+            },
+            body: {
+              type: "Inline",
+              value: {
+                text: "text"
+              }
+            },
+            postAction: {
+              type: "Local",
+              composable: "useShowMessage",
+              options: {
+                type: "Inline",
+                value: { message: "Execute Post Action" }
+              }
+            }
+          }
+        ]
+      },
+      label: "Spec: Button",
+      icon: "pi pi-play-circle"
+    })
+  },
+  {
+    name: "Reaction",
+    descriptor: giveMe.aContainer({
+      contents:[
+        giveMe.aButton({
+          action: {
+            type: "Emit",
+            event: "changed"
+          }
+        }),
+        giveMe.aText({
+          data: {
+            type: "Remote",
+            path: "/localization-samples/locale-string",
+            headers: {
+              type: "Inline",
+              value: {
+                Authorization: "token-admin-ui"
+              }
+            }
+          },
+          on: {
+            changed: "Reload"
+          }
+        })
+      ]
     })
   }
 ];

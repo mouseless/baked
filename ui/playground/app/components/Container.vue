@@ -15,7 +15,6 @@ const { schema } = defineProps({
   schema: { type: null, required: true },
   data: { type: null, required: true }
 });
-defineModel({ type: null, required: false });
 
 const { contents } = schema;
 </script>

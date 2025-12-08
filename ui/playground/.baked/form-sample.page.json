@@ -3,8 +3,24 @@
   "schema": {
     "title": {
       "title": "Form",
-      "description": "Vibe coding form components",
+      "description": "Showcases action, form components and events",
       "actions": [
+        {
+          "type": "Button",
+          "schema": {
+            "label": "AddState"
+          },
+          "action": {
+            "type": "Local",
+            "composable": "useRedirect",
+            "options": {
+              "type": "Inline",
+              "value": {
+                "route": "/form-sample/new-state"
+              }
+            }
+          }
+        },
         {
           "type": "Button",
           "schema": {
@@ -13,11 +29,11 @@
           "action": {
             "type": "Remote",
             "path": "form-sample/states",
-            "method": "DELETE"
-          },
-          "postAction": {
-            "type": "Emit",
-            "eventKey": "something-changed"
+            "method": "DELETE",
+            "postAction": {
+              "type": "Emit",
+              "event": "clear-states"
+            }
           }
         }
       ]
@@ -27,94 +43,6 @@
       {
         "id": "default",
         "contents": [
-          {
-            "component": {
-              "type": "DataPanel",
-              "schema": {
-                "title": {
-                  "type": "Inline",
-                  "value": "AddState"
-                },
-                "localizeTitle": true,
-                "inputs": [],
-                "content": {
-                  "type": "VibeForm",
-                  "schema": {
-                    "label": "AddState",
-                    "action": {
-                      "path": "form-sample/states",
-                      "method": "POST"
-                    },
-                    "submitEventName": "something-changed",
-                    "inputs": [
-                      {
-                        "name": "state",
-                        "required": true,
-                        "component": {
-                          "type": "InputText",
-                          "schema": {
-                            "testId": "state"
-                          }
-                        }
-                      },
-                      {
-                        "name": "reason",
-                        "required": true,
-                        "component": {
-                          "type": "InputText",
-                          "schema": {
-                            "testId": "reason"
-                          }
-                        }
-                      },
-                      {
-                        "name": "count",
-                        "required": true,
-                        "component": {
-                          "type": "InputNumber",
-                          "schema": {
-                            "testId": "count"
-                          }
-                        }
-                      },
-                      {
-                        "name": "countOptions",
-                        "required": false,
-                        "component": {
-                          "type": "SelectButton",
-                          "schema": {
-                            "allowEmpty": true,
-                            "optionLabel": "label",
-                            "optionValue": "value",
-                            "localizeLabel": true
-                          },
-                          "data": {
-                            "type": "Inline",
-                            "value": [
-                              {
-                                "label": "CountOptions.Less",
-                                "value": "Less"
-                              },
-                              {
-                                "label": "CountOptions.Default",
-                                "value": "Default"
-                              },
-                              {
-                                "label": "CountOptions.More",
-                                "value": "More"
-                              }
-                            ]
-                          }
-                        }
-                      }
-                    ]
-                  }
-                }
-              }
-            },
-            "key": "add-state",
-            "narrow": true
-          },
           {
             "component": {
               "type": "DataPanel",
@@ -162,12 +90,17 @@
                     "query": {
                       "type": "Computed",
                       "composable": "useNuxtRoute",
-                      "args": [
-                        "query"
-                      ]
+                      "options": {
+                        "type": "Inline",
+                        "value": {
+                          "property": "query"
+                        }
+                      }
                     }
                   },
-                  "binding": "something-changed"
+                  "on": {
+                    "clear-states": "Reload"
+                  }
                 }
               }
             },

@@ -50,9 +50,12 @@
                     "query": {
                       "type": "Computed",
                       "composable": "useNuxtRoute",
-                      "args": [
-                        "query"
-                      ]
+                      "options": {
+                        "type": "Inline",
+                        "value": {
+                          "property": "query"
+                        }
+                      }
                     },
                     "attributes": {
                       "client-cache": "user"
@@ -83,9 +86,12 @@
                     "query": {
                       "type": "Computed",
                       "composable": "useNuxtRoute",
-                      "args": [
-                        "query"
-                      ]
+                      "options": {
+                        "type": "Inline",
+                        "value": {
+                          "property": "query"
+                        }
+                      }
                     },
                     "attributes": {
                       "client-cache": "application"

@@ -35,8 +35,7 @@
           "behavior": "Redirect",
           "behaviorArgument": {
             "type": "Computed",
-            "composable": "useLoginRedirect",
-            "args": []
+            "composable": "useLoginRedirect"
           },
           "order": 0
         },
@@ -123,7 +122,7 @@
             "route": "/form-sample",
             "icon": "pi pi-file-edit",
             "title": "Form",
-            "description": "Vibe coding form components"
+            "description": "Showcases action, form components and events"
           }
         },
         {
@@ -149,8 +148,7 @@
     },
     "data": {
       "type": "Computed",
-      "composable": "useNuxtError",
-      "args": []
+      "composable": "useNuxtError"
     }
   },
   "i18n": {

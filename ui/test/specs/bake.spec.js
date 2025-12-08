@@ -1,13 +1,20 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
+import primevue from "../utils/locators/primevue";
 
 test.beforeEach(async({ goto, page }) => {
-  await page.route("*/**/report/first", async route => {
-    await route.fulfill("fake-response");
+  await page.route("*/**/form-sample/states", async route => {
+    await route.fulfill({ body: "fake-response" });
   });
-  await page.route("*/**/report-page-sample/wide/*", async route => {
-    await route.fulfill("fake-response");
+  await page.route("*/**/route-parameters-samples/*", async route => {
+    await route.fulfill({ body: "fake-response" });
   });
-  await goto("/specs/bake", { waitUntil: "hydration" });
+  await page.route("*/**/rich-transient-with-datas/12/method", async route => {
+    await route.fulfill({ body: "fake-response" });
+  });
+  await page.route("*/**/localization-samples/locale-string", async route => {
+    await route.fulfill({ body: "fake-response" });
+  });
+  await goto("/specs/bake?val=2", { waitUntil: "hydration" });
 });
 
 test.describe("Base", () => {
@@ -41,7 +48,9 @@ test.describe("Parent Data", () => {
     await expect(component.getByTestId("child-root"))
       .toHaveText(`
         {
-          "child": "CHILD VALUE"
+          "data": {
+            "child": "CHILD VALUE"
+          }
         }`
       );
   });
@@ -65,9 +74,84 @@ test.describe("Data Descriptor", () => {
   });
 
   test("builds path with given params data", async({ page }) => {
-    const requestPromise = page.waitForRequest(req => req.url().includes("/report-page-sample"));
+    const requestPromise = page.waitForRequest(req => req.url().includes("/route-parameters-samples"));
 
     const request = await requestPromise;
-    expect(request.url()).toContain("/report-page-sample/wide/7b6b67bb-30b5-423e-81b4-a2a0cd59b7f9");
+    expect(request.url()).toContain("/route-parameters-samples/7b6b67bb-30b5-423e-81b4-a2a0cd59b7f9");
+  });
+});
+
+test.describe("Model", () => {
+  const id = "Model";
+
+  test("model is passed when a component defines model", async({ page }) => {
+    const component = page.getByTestId(id);
+    const input = component.locator(primevue.inputeText.base);
+
+    await expect(input).toHaveValue("Model Data");
+  });
+
+  test("model value can be updated", async({ page }) => {
+    const component = page.getByTestId(id);
+    const input = component.locator(primevue.inputeText.base);
+    const model = page.getByTestId(`${id}:model`);
+
+    await input.fill("Test");
+
+    await expect(model).toHaveText("Test");
+  });
+});
+
+test.describe("Action", () =>{
+  const id = "Action";
+
+  test("Execute given composite action", async({ page }) => {
+    const requestPromise = page.waitForRequest(req => req.url().includes("rich-transient-with-datas"));
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base);
+
+    await button.click();
+
+    await expect(page.locator(primevue.toast.base)).toBeVisible();
+    await expect(page.locator(primevue.toast.summary)).toHaveText("Execute Action");
+
+    const request = await requestPromise;
+    expect(request.method()).toBe("POST");
+    expect(request.headers()["authorization"]).toContain("token-admin-ui");
+    expect(request.url()).toContain("/rich-transient-with-datas/12/method");
+    expect(request.url()).toContain("?val=2");
+    expect(request.postDataJSON()).toEqual({ text: "text" });
+  });
+
+  test("Execute given remote post action", async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base);
+
+    await button.click();
+
+    await expect(page.locator(primevue.toast.base).last()).toBeVisible();
+    await expect(page.locator(primevue.toast.summary).last()).toHaveText("Execute Post Action");
+  });
+});
+
+test.describe("Reaction", () =>{
+  const id = "Reaction";
+
+  // Initial data load completes before this text execution
+  // because page is waited till hydration, request count is
+  // expected to be one
+  test("Reacts to given event with reload", async({ page }) => {
+    let reloaded = false;
+    page.on("request", req => {
+      if(req.url().includes("localization-samples/locale-string")) {
+        reloaded = true;
+      }
+    });
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base);
+
+    await button.click();
+
+    expect(reloaded).toBe(true);
   });
 });

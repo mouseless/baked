@@ -32,11 +32,11 @@ public class RouteParametersSampleUiOverrideFeature : IFeature
                 where: cc => true,
                 component: (container, c, cc) =>
                 {
-                    var contentContext = cc.Drill(nameof(ContainerPage), nameof(ContainerPage.Contents));
+                    cc = cc.Drill(nameof(ContainerPage), nameof(ContainerPage.Contents));
 
                     foreach (var method in c.Type.GetMembers().Methods)
                     {
-                        var component = method.GetComponent(contentContext.Drill(container.Schema.Contents.Count));
+                        var component = method.GetComponent(cc.Drill(container.Schema.Contents.Count));
                         if (component is null) { continue; }
 
                         container.Schema.Contents.Add(component);

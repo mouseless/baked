@@ -62,7 +62,7 @@ public class ProblemDetailsExceptionHandlingFeature(Setting<string>? _typeUrlFor
                     new(
                         StatusCode: (int)HttpStatusCode.Unauthorized,
                         Behavior: ErrorHandlingPlugin.HandlerBehavior.Redirect,
-                        BehaviorArgument: Datas.Computed("useLoginRedirect")
+                        BehaviorArgument: Datas.Computed.Use("LoginRedirect")
                     ),
                     new(StatusCode: (int)HttpStatusCode.BadRequest, Behavior: ErrorHandlingPlugin.HandlerBehavior.Alert),
                     new(Behavior: ErrorHandlingPlugin.HandlerBehavior.Page),

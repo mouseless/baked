@@ -5,16 +5,15 @@
 - Dynamic routing is now supported and can be used when;
   - navigating through pages
   - fetching data from backend
-- `Bake` now executes given `Action` and `PostAction` defined in
-  `ComponentDescriptor` implementations
-  ```javascript
-  async function onClick() {
-    emit("submit");
-  }
-  ```
+- `Bake` now executes given `Action` defined in `ComponentDescriptor`
+  implementations upon model change or `submit` event
 - `Button` component is now added
 - `useActionExecuter` is now added which is a composable that executes `Emit`,
   `Local`, `Remote` or `Composite` actions with given configuration
+- `Bake` now supports reload, show and hide reactions which handles `Emit`
+  action
+  - `Page` component now provides event bus to publish page-wide events
+- `SimpleForm` component is now added for rendering a basic form with inputs
 
 ## Breaking Changes
 
@@ -22,15 +21,14 @@
   route patterns and rendered directly with `Page.vue`
 - `useRoute` composable now accepts property name as parameter to access
   `params`, `query`
-  - `useQuery` composable is now deprecated and will be removed in
-  further releases
+  - `useQuery` composable is now removed
   ```csharp
   {
-    // Obsolete
+    // Removed
     data = Computed(Composables.UseQuery)
 
     // Use `UseRoute` with args
-    data = Computed(Composables.UseRoute, options: o => o.Args.Add("params"))
+    data = Computed.UseRoute("query")
   }
   ```
 - `baseURL` is renamed to `apiBaseUrl` and config is now set in root of `bake`
@@ -42,6 +40,30 @@
 - `ReportPage.QueryParameters` property is renamed to `Inputs`
 - `Parameters.vue` is renamed to `Inputs.vue`
 - `QueryParameters.vue` is renamed to `QueryBoundInputs.vue`
+- `TypeWithOnlyGetIsReportPage` UX feature is removed, and adding `ReportPage`
+  component to a type is moved to `DefaultThemeFeature`
+- `InjectedData` is renamed to `ContextData`
+  - `Injected()` is now removed, use `Parent` and `Model` factory methods
+    - `Parent` injected data now has `data` and `parameters` properties
+    ```csharp
+    Context.Parent(options: cd => cd.Prop = "parameters")
+    ```
+  - Data keys are removed
+  - `Prop` now supports property chaining
+  - `useContext` methods;
+    - `injectData` is renamed to `injectParentContext`
+     - `provideData` is renamed to `provideParentContext`
+
+- `ComputedData.Args` is now changed to `Options` with `IData` type
+  - Built-in composables now have object parameters with named fields
+- `Composables` now provide helpers instead of ui composable file keys
+  ```csharp
+  // previous usage
+  data: Computed(Composables.UseError)
+
+  // current
+  data: Composables.UseError()
+  ```
 
 ## Improvements
 
@@ -49,6 +71,8 @@
 - `RemoveComponent` and `RemoveSchema` helper extensions are now added
 - `AwaitLoading` utility component is now added which contains slots to help
   rendering skeleton and content according to `loading` state
+- `InjectedData`, now `ContextData` now has `TargetProp` property to map give
+  `Prop` key value to corresponding property
 - `UiLayer` now has `MinConventionOrder` and `MaxConventionOrder` to allow
   inserting conventions before or after all conventions
 - `None` component is now added when a component is required but none was

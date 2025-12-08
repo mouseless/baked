@@ -46,8 +46,7 @@
       },
       "data": {
         "type": "Computed",
-        "composable": "useNuxtRoute",
-        "args": []
+        "composable": "useNuxtRoute"
       }
     },
     "header": {
@@ -72,6 +71,11 @@
             "route": "/form-sample",
             "icon": "pi pi-file-edit",
             "title": "Form"
+          },
+          "/form-sample/new-state": {
+            "route": "/form-sample/new-state",
+            "title": "New State ",
+            "parentRoute": "/form-sample"
           },
           "/report-page-sample": {
             "route": "/report-page-sample",
@@ -183,6 +187,12 @@
             "title": "Text",
             "parentRoute": "/specs"
           },
+          "/specs/simple-form": {
+            "route": "/specs/simple-form",
+            "icon": "pi pi-microchip",
+            "title": "Simple Form",
+            "parentRoute": "/specs"
+          },
           "/specs/button": {
             "route": "/specs/button",
             "icon": "pi pi-microchip",
@@ -277,8 +287,7 @@
       },
       "data": {
         "type": "Computed",
-        "composable": "useNuxtRoute",
-        "args": []
+        "composable": "useNuxtRoute"
       }
     }
   }

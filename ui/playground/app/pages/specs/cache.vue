@@ -43,9 +43,12 @@ const variants = [
         type: "Remote",
         path: "/cache-samples/application",
         query: {
-          "type": "Computed",
-          "composable": "useQuery",
-          "args": []
+          type: "Computed",
+          composable: "useNuxtRoute",
+          options: {
+            type: "Inline",
+            value: { property: "query" }
+          }
         },
         attributes: { "client-cache": "application" }
       }
@@ -59,9 +62,12 @@ const variants = [
         type: "Remote",
         path: "/cache-samples/scoped",
         query: {
-          "type": "Computed",
-          "composable": "useQuery",
-          "args": []
+          type: "Computed",
+          composable: "useNuxtRoute",
+          options: {
+            type: "Inline",
+            value: { property: "query" }
+          }
         },
         attributes: { "client-cache": "user" }
       }
