@@ -580,7 +580,7 @@ public static class ThemeExtensions
         var level = WarnForNone ? "warning" : "error";
         Console.WriteLine($"{level}: `{metadata.CustomAttributes.Name}` doesn't have any component descriptor at path `{context.Path}`");
 
-        return DomainComponents.CustomAttributesModelNone(metadata, context);
+        return DomainComponents.CustomAttributesNone(metadata, context);
     }
 
     public static IComponentDescriptor? GetComponent(this ICustomAttributesModel metadata, ComponentContext context)

@@ -9,7 +9,7 @@ namespace Baked.Theme.Default;
 
 public static class DomainComponents
 {
-    public static ComponentDescriptor<None> CustomAttributesModelNone(ICustomAttributesModel metadata, ComponentContext context,
+    public static ComponentDescriptor<None> CustomAttributesNone(ICustomAttributesModel metadata, ComponentContext context,
         Action<None>? options = default
     ) => B.None(options: n =>
     {
