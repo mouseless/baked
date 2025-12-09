@@ -1,7 +1,6 @@
 import { addComponentsDir, addImportsDir, addPlugin, createResolver, defineNuxtModule } from "@nuxt/kit";
 import type { NuxtI18nOptions } from "@nuxtjs/i18n";
 import { pathToFileURL } from "url";
-import fs from "fs";
 
 export interface ModuleOptions {
   components?: Components,
@@ -137,9 +136,8 @@ export default defineNuxtModule<ModuleOptions>({
     // plugins that comes through the app descriptor
     for(const plugin of app?.plugins ?? []) {
       _nuxt.options.runtimeConfig.public[plugin.name] = plugin;
-      const modulePath = resolver.resolve(`./runtime/plugins/${plugin.name}`);
 
-      if(fs.existsSync(`${modulePath}.js`)) { addPlugin(modulePath); }
+      if(plugin.module) { addPlugin(resolver.resolve(`./runtime/plugins/${plugin.name}`)); }
       else { addPlugin(entryProjectResolver.resolve(`./app/plugins/${plugin.name}`)); }
     }
 

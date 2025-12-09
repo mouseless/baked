@@ -13,14 +13,17 @@
         "login"
       ],
       "loginPageRoute": "login",
-      "refreshApiRoute": "authentication-samples/refresh"
+      "refreshApiRoute": "authentication-samples/refresh",
+      "module": true
     },
     {
       "expirationInMinutes": 60,
+      "module": true,
       "name": "cacheApplication"
     },
     {
       "expirationInMinutes": 60,
+      "module": true,
       "name": "cacheUser"
     },
     {
@@ -47,6 +50,7 @@
       ],
       "defaultAlertTitle": "Unexpected Error",
       "defaultAlertMessage": "Please contact system administrator",
+      "module": true,
       "name": "errorHandling"
     },
     {
@@ -60,9 +64,11 @@
           "name": "Turkish"
         }
       ],
+      "module": true,
       "name": "localization"
     },
     {
+      "module": false,
       "name": "sample"
     }
   ],

@@ -3,7 +3,8 @@ using Baked.Ui.Configuration;
 
 namespace Baked.ExceptionHandling.ProblemDetails;
 
-public record ErrorHandlingPlugin : PluginBase
+public record ErrorHandlingPlugin()
+    : PluginBase(Module: true)
 {
     public List<Handler> Handlers { get; init; } = [];
     public string DefaultAlertTitle { get; init; } = "Unexpected Error";
