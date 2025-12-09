@@ -97,6 +97,7 @@ export default defineNuxtModule<ModuleOptions>({
   // carefully.
   async setup(_options, _nuxt) {
     if(process.env.npm_lifecycle_script?.includes("nuxt-module-build")) { return; }
+
     const resolver: any = {
       metaUrl: metaUrlResolver,
       rootDir: createResolver(_nuxt.options.rootDir)
