@@ -14,6 +14,7 @@
   action
   - `Page` component now provides event bus to publish page-wide events
 - `SimpleForm` component is now added for rendering a basic form with inputs
+- `DataTable` now supports row based actions
 
 ## Breaking Changes
 
