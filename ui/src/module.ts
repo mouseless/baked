@@ -145,12 +145,12 @@ export default defineNuxtModule<ModuleOptions>({
     }
 
     // default plugins (last add, first run)
-    addPlugin(metaUrlResolver.resolve("./runtime/plugins/mutex"));
-    addPlugin(metaUrlResolver.resolve("./runtime/plugins/toast"));
-    addPlugin(metaUrlResolver.resolve("./runtime/plugins/trailingSlash"));
-    addPlugin(metaUrlResolver.resolve("./runtime/plugins/baked"));
-    addPlugin(metaUrlResolver.resolve("./runtime/plugins/primeVue"));
-    addPlugin(metaUrlResolver.resolve("./runtime/plugins/fetch"), {});
+    addPlugin(resolver.metaUrl.resolve("./runtime/plugins/mutex"));
+    addPlugin(resolver.metaUrl.resolve("./runtime/plugins/toast"));
+    addPlugin(resolver.metaUrl.resolve("./runtime/plugins/trailingSlash"));
+    addPlugin(resolver.metaUrl.resolve("./runtime/plugins/baked"));
+    addPlugin(resolver.metaUrl.resolve("./runtime/plugins/primeVue"));
+    addPlugin(resolver.metaUrl.resolve("./runtime/plugins/fetch"), {});
 
     // module overrides
     _nuxt.options.vite.optimizeDeps ||= {};
