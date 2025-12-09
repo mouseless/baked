@@ -7,7 +7,8 @@ public record ReportPage(string Path, PageTitle Title)
     public List<Input> Inputs { get; init; } = [];
     public List<Tab> Tabs { get; init; } = [];
 
-    public record Tab(string Id) : ISupportsReaction
+    public record Tab(string Id)
+        : ISupportsReaction
     {
         public string Id { get; set; } = Id;
         public string? Title { get; set; }
@@ -16,7 +17,8 @@ public record ReportPage(string Path, PageTitle Title)
         public IComponentDescriptor? Icon { get; set; }
         public Dictionary<string, Reaction>? On { get; set; }
 
-        public record Content(IComponentDescriptor Component, string Key) : ISupportsReaction
+        public record Content(IComponentDescriptor Component, string Key)
+            : ISupportsReaction
         {
             public IComponentDescriptor Component { get; set; } = Component;
             public string Key { get; set; } = Key;

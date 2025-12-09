@@ -24,11 +24,8 @@
   - `useQuery` composable is now removed
   ```csharp
   {
-    // Removed
-    data = Computed(Composables.UseQuery)
-
-    // Use `UseRoute` with args
-    data = Computed.UseRoute("query")
+    data = Computed(Composables.UseQuery) // old usage
+    data = Computed.UseRoute("query") // new usage
   }
   ```
 - `baseURL` is renamed to `apiBaseUrl` and config is now set in root of `bake`
@@ -58,22 +55,24 @@
   - Built-in composables now have object parameters with named fields
 - `Composables` now provide helpers instead of ui composable file keys
   ```csharp
-  // previous usage
-  data: Computed(Composables.UseError)
-
-  // current
-  data: Composables.UseError()
+  data: Computed(Composables.UseError) // old usage
+  data: Composables.UseError() // new usage
   ```
 - `None` is renamed to `MissingComponent`
-- All `ShowWhen` properties are now removed from components and schemas, use the
-  new `on:` event bus system
+- UI page context is now removed (`context.injectPage()`,
+  `context.providePage`), use the new event bus system for communication between
+  components
+- All `ShowWhen` and `PageContextKey` properties are now removed from components
+  and schemas, use the new `on:` event bus system
   ```csharp
-  // Removed
-  content.ShowWhen = "some-page-context-key";
+  content.ShowWhen = "page-context-key"; // old usage
+  content.ShowOn("event"); // new usage
 
-  // Use EventBus
-  content.ShowOn("some-event");
-  content.HideOn("!some-event");
+  content.ShowWhen = "page-context-key:value"; // old usage
+  content.ShowOn("event:value"); // new usage
+
+  content.ShowWhen = "!page-context-key:value"; // old usage
+  content.ShowOn("event:!value"); // new usage
   ```
 
 ## Improvements

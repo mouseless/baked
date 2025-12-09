@@ -1,6 +1,7 @@
 <template>
   <component
     :is="render()"
+    v-if="visible"
     :key="loading"
     :class="classes"
   >
@@ -29,6 +30,7 @@ context.provideDataDescriptor(descriptor.data);
 
 const path = context.injectPath();
 const events = context.injectEvents();
+const visible = ref(true);
 const is = componentResolver.resolve(descriptor.type, "MissingComponent");
 const parentContext = context.injectParentContext();
 const data = ref(dataFetcher.get({ data: descriptor.data, contextData: { parent: parentContext } }));
@@ -40,12 +42,54 @@ const classes = [`b-component--${descriptor.type}`, ...asClasses(name)];
 context.provideParentContext({ ...parentContext, data });
 context.provideExecuting(executing);
 
-// TODO implement remaining reactions
 if(descriptor.on) {
-  Object.keys(descriptor.on).forEach(event => {
-    if(descriptor.on[event] === "Reload") {
-      events.on(event, path, load);
+  const reactions = {
+    Reload(success) {
+      if(success) {
+        load();
+      }
+    },
+    Show(success) {
+      visible.value = success;
+    },
+    Hide(success) {
+      visible.value = !success;
     }
+  };
+
+  Object.keys(descriptor.on).forEach(key => {
+    const [event, expected] = key.split(":");
+    const react = reactions[descriptor.on[event]];
+
+    events.on(event, `${path}:bake`, value => {
+      react(
+        // if expected is NOT given
+        // it is a success
+        expected === undefined ||
+
+        // if expected doesn't start with !
+        //    and expected equals to value
+        // it is a success
+        // e.g.
+        //   assume it expects "A"
+        //     when value is "A" => "A" === "A" => true
+        //     when value is "B" => "A" === "B" => false
+        //     when value is "C" => "A" === "C" => false
+        //   so it is a success as long as value is "A"
+        !expected.startsWith("!") && expected === `${value}` ||
+
+        // if expected starts with !
+        //    and expected doesn't equal to !value
+        // it is a success
+        // e.g.
+        //   assume it expects "!A"
+        //     when value is "A" => "!A" !== "!A" => false
+        //     when value is "B" => "!A" !== "!B" => true
+        //     when value is "C" => "!A" !== "!C" => true
+        //   so it is a success as long as value is NOT "A"
+        expected.startsWith("!") && expected !== `!${value}`
+      );
+    });
   });
 }
 
@@ -59,11 +103,10 @@ onMounted(async() => {
   await load();
 });
 
-// TODO - review this in form components
 onUnmounted(() => {
   if(descriptor.on) {
     Object.keys(descriptor.on).forEach(event =>{
-      events.off(event, path);
+      events.off(event, `${path}:bake`);
     });
   }
 });

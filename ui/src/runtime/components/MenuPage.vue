@@ -65,17 +65,18 @@ const { schema } = defineProps({
 
 const { header, sections, filterEvent } = schema;
 
+const path = context.injectPath();
 const locale = composables?.useFormat?.locale || "en-US";
 const events = context.injectEvents();
 const sectionsData = ref(sections);
 
 if(filterEvent) {
-  events.on(filterEvent, filterSections);
+  events.on(filterEvent, path, filterSections);
 }
 
 onUnmounted(() => {
   if(filterEvent) {
-    events.off(filterSections);
+    events.off(filterEvent, path);
   }
 });
 
