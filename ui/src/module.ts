@@ -2,7 +2,6 @@ import { addComponentsDir, addImportsDir, addPlugin, createResolver, defineNuxtM
 import type { NuxtI18nOptions } from "@nuxtjs/i18n";
 import { pathToFileURL } from "url";
 import { join } from "path";
-import { camelCase } from "lodash";
 
 export interface ModuleOptions {
   components?: Components,
@@ -141,7 +140,7 @@ export default defineNuxtModule<ModuleOptions>({
     // plugins that comes through the app descriptor
     for(const plugin of app?.plugins ?? []) {
       _nuxt.options.runtimeConfig.public[plugin.name] = plugin;
-      addPlugin(resolver[camelCase(plugin.resolver)].resolve(join(plugin.basePath, plugin.name)));
+      addPlugin(resolver[camelize(plugin.resolver)].resolve(join(plugin.basePath, plugin.name)));
     }
 
     // default plugins (last add, first run)
@@ -190,3 +189,9 @@ export default defineNuxtModule<ModuleOptions>({
     };
   }
 });
+
+function camelize(str: string): string {
+  if(!str) { return str; }
+
+  return `${str.charAt(0).toLowerCase()}${str.slice(1)}`;
+}
