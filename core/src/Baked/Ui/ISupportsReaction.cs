@@ -2,7 +2,7 @@
 
 public interface ISupportsReaction
 {
-    public Dictionary<string, Reaction>? On { get; set; }
+    Dictionary<string, Reaction>? On { get; set; }
 
     public void ReloadOn(string @event) =>
         OnEvent(@event, Reaction.Reload);

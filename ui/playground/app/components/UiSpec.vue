@@ -92,7 +92,7 @@
   </div>
 </template>
 <script setup>
-import { computed, onMounted, reactive, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useContext, useEvents, usePages } from "#imports";
 import { Divider } from "primevue";
 
@@ -111,7 +111,6 @@ const { title, variants, noLoadingVariant } = defineProps({
   variantClass: { type: String, default: "inline-block" }
 });
 
-const page = reactive({});
 const description = ref();
 const loaded = ref(false);
 const allVariants = computed(() => {
@@ -131,7 +130,6 @@ const allVariants = computed(() => {
 });
 
 context.provideEvents(events.create());
-context.providePage(page);
 
 onMounted(async() => {
   const specs = await pages.fetch("specs");
