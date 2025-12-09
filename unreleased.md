@@ -65,6 +65,16 @@
   data: Composables.UseError()
   ```
 - `None` is renamed to `MissingComponent`
+- All `ShowWhen` properties are now removed from components and schemas, use the
+  new `on:` event bus system
+  ```csharp
+  // Removed
+  content.ShowWhen = "some-page-context-key";
+
+  // Use EventBus
+  content.ShowOn("some-event");
+  content.HideOn("!some-event");
+  ```
 
 ## Improvements
 
