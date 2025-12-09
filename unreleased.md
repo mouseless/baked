@@ -19,15 +19,6 @@
 
 - `[...baked].vue` page is now not used, `*.page.json` file paths are used as
   route patterns and rendered directly with `Page.vue`
-- `useRoute` composable now accepts property name as parameter to access
-  `params`, `query`
-  - `useQuery` composable is now removed
-  ```csharp
-  {
-    data = Computed(Composables.UseQuery) // old usage
-    data = Computed.UseRoute("query") // new usage
-  }
-  ```
 - `baseURL` is renamed to `apiBaseUrl` and config is now set in root of `bake`
   module options and no longer awailable through `dataFetcher`
 - `Parameter` schema is renamed to `Inputs`
@@ -58,12 +49,22 @@
   data: Computed(Composables.UseError) // old usage
   data: Composables.UseError() // new usage
   ```
+- `useRoute` composable now accepts property name as parameter to access
+  `params`, `query`
+- `useQuery` composable is now removed, use `useRoute` composable with `query`
+  option
+  ```csharp
+  {
+    data = Computed(Composables.UseQuery) // old usage
+    data = Computed.UseRoute("query") // new usage
+  }
+  ```
 - `None` is renamed to `MissingComponent`
 - UI page context is now removed (`context.injectPage()`,
   `context.providePage`), use the new event bus system for communication between
   components
-- All `ShowWhen` and `PageContextKey` properties are now removed from components
-  and schemas, use the new `on:` event bus system
+- `ShowWhen` and `*PageContextKey` properties are now removed from components
+  and schemas, use the new event bus system
   ```csharp
   content.ShowWhen = "page-context-key"; // old usage
   content.ShowOn("event"); // new usage
