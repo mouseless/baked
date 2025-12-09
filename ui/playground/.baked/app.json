@@ -14,17 +14,20 @@
       ],
       "loginPageRoute": "login",
       "refreshApiRoute": "authentication-samples/refresh",
-      "module": true
+      "basePath": "./runtime/plugins/",
+      "resolver": "MetaUrl"
     },
     {
       "expirationInMinutes": 60,
-      "module": true,
-      "name": "cacheApplication"
+      "basePath": "./runtime/plugins/",
+      "name": "cacheApplication",
+      "resolver": "MetaUrl"
     },
     {
       "expirationInMinutes": 60,
-      "module": true,
-      "name": "cacheUser"
+      "basePath": "./runtime/plugins/",
+      "name": "cacheUser",
+      "resolver": "MetaUrl"
     },
     {
       "handlers": [
@@ -50,8 +53,9 @@
       ],
       "defaultAlertTitle": "Unexpected Error",
       "defaultAlertMessage": "Please contact system administrator",
-      "module": true,
-      "name": "errorHandling"
+      "basePath": "./runtime/plugins/",
+      "name": "errorHandling",
+      "resolver": "MetaUrl"
     },
     {
       "supportedLanguages": [
@@ -64,12 +68,14 @@
           "name": "Turkish"
         }
       ],
-      "module": true,
-      "name": "localization"
+      "basePath": "./runtime/plugins/",
+      "name": "localization",
+      "resolver": "MetaUrl"
     },
     {
-      "module": false,
-      "name": "sample"
+      "basePath": "./app/plugins/",
+      "name": "sample",
+      "resolver": "RootDir"
     }
   ],
   "error": {

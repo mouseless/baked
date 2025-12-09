@@ -2,8 +2,7 @@
 
 namespace Baked.Caching.InMemory;
 
-public record CacheApplicationPlugin()
-    : PluginBase(Module: true)
+public record CacheApplicationPlugin : ModulePluginBase
 {
     public int ExpirationInMinutes { get; set; } = 60;
 }
