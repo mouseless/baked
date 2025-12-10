@@ -63,10 +63,10 @@ export default {
     };
   },
 
-  aConditionalCondition({ prop, value, testId } = {}) {
+  aConditionalCondition({ prop, value, testId, component } = {}) {
     prop = $(prop, "testProp");
     value = $(value, "test-value");
-    const component = this.anExpected({ testId });
+    component = $(component, this.anExpected({ testId }));
 
     return { prop, value, component };
   },
@@ -123,7 +123,7 @@ export default {
     key = $(key, "test");
     alignRight = $(alignRight, false);
     minWidth = $(minWidth, false);
-    component = $(component, this.aConditional());
+    component = $(component, this.anExpected({ data: this.aRowData({ propChain: key ? `${key}.value`: key }) }));
     exportable = $(exportable, false);
 
     return {
@@ -154,7 +154,6 @@ export default {
 
   aRowData({ propChain } = {}) {
     const prop = propChain ? "row." + propChain : "row";
-    console.log(prop);
 
     return {
       type: "Context",

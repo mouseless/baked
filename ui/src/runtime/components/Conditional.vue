@@ -1,5 +1,6 @@
 <template>
   <Bake
+    v-if="data"
     :name="`${path}/${component.type}`"
     :descriptor="component"
   />
@@ -17,13 +18,22 @@ const { data, schema } = defineProps({
 
 const path = context.injectPath();
 const { conditions, fallback } = schema;
-const component = computed(() =>find(conditions, data, fallback));
+// TODO review this usage
+const component = computed(() => find(conditions, data, fallback));
 
 function find(conditions, data, fallback) {
+  if(!conditions) {
+    return fallback;
+  }
+
   const comps = conditions.filter(condition => {
-    console.log(data[condition.prop]);
+    if(!condition.prop) {
+      return false;
+    }
+
     return data[condition.prop] === condition.value;
   });
+
   if(comps.length > 0) {
     return comps[0].component;
   }

@@ -113,21 +113,15 @@
         />
         <Column
           v-for="column in footerTemplate.columns"
-          :key="column.prop"
+          :key="column.key"
           :class="{ 'text-right': column.alignRight }"
         >
           <template #footer>
             <AwaitLoading :skeleton="{ class:'min-h-5' }">
               <Bake
                 v-if="data"
-                :name="`rows/footer/${column.prop}`"
-                :descriptor="{
-                  ...conditional.find(column.component.schema, data),
-                  data: {
-                    type: 'Inline',
-                    value: data[column.prop]
-                  }
-                }"
+                :name="`rows/footer/${column.key}`"
+                :descriptor="column.component"
               />
               <span v-else>-</span>
             </AwaitLoading>
@@ -150,9 +144,8 @@ import Column from "primevue/column";
 import { Button, ColumnGroup, DataTable, Menu, Row } from "primevue";
 import { useRuntimeConfig } from "#app";
 import { AwaitLoading, Bake, ProvideParentContext } from "#components";
-import { useComposableResolver, useConditional, useContext, useDataFetcher, useLocalization } from "#imports";
+import { useComposableResolver, useContext, useDataFetcher, useLocalization } from "#imports";
 
-const conditional = useConditional();
 const context = useContext();
 const composableResolver = useComposableResolver();
 const dataFetcher = useDataFetcher();

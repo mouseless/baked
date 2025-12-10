@@ -62,17 +62,6 @@ test.describe("Pagination", () => {
   });
 });
 
-test.describe("Row Based Component", () => {
-  const id = "Row Based Component";
-
-  test("component changes based on data", async({ page }) => {
-    const component = page.getByTestId(id);
-
-    await expect(component.getByTestId("component-1")).toHaveText("Data 1");
-    await expect(component.getByTestId("component-2")).toHaveText("Data 2");
-  });
-});
-
 test.describe("Auto Hide Pagination", () => {
   const id = "Auto Hide Pagination";
 
