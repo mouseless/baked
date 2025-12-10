@@ -98,8 +98,10 @@
                       }
                     }
                   },
-                  "on": {
-                    "clear-states": "Reload"
+                  "reactions": {
+                    "reload": {
+                      "on": "clear-states"
+                    }
                   }
                 }
               }

@@ -58,17 +58,17 @@ if(descriptor.on) {
   };
 
   Object.keys(descriptor.on).forEach(key => {
-    const [event, expected] = key.split(":");
+    const [event, constraint] = key.split(":");
     const react = reactions[descriptor.on[event]];
 
     events.on(event, `${path}:bake`, value => {
       react(
-        // if expected is NOT given
+        // if constraint is NOT given
         // it is a success
-        expected === undefined ||
+        constraint === undefined ||
 
-        // if expected doesn't start with !
-        //    and expected equals to value
+        // if constraint doesn't start with !
+        //    and constraint equals to value
         // it is a success
         // e.g.
         //   assume it expects "A"
@@ -76,10 +76,10 @@ if(descriptor.on) {
         //     when value is "B" => "A" === "B" => false
         //     when value is "C" => "A" === "C" => false
         //   so it is a success as long as value is "A"
-        !expected.startsWith("!") && expected === `${value}` ||
+        !constraint.startsWith("!") && constraint === `${value}` ||
 
-        // if expected starts with !
-        //    and expected doesn't equal to !value
+        // if constraint starts with !
+        //    and constraint doesn't equal to !value
         // it is a success
         // e.g.
         //   assume it expects "!A"
@@ -87,7 +87,7 @@ if(descriptor.on) {
         //     when value is "B" => "!A" !== "!B" => true
         //     when value is "C" => "!A" !== "!C" => true
         //   so it is a success as long as value is NOT "A"
-        expected.startsWith("!") && expected !== `!${value}`
+        constraint.startsWith("!") && constraint !== `!${value}`
       );
     });
   });

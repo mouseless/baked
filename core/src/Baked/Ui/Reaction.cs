@@ -3,6 +3,5 @@
 public enum Reaction
 {
     Reload,
-    Show,
-    Hide
+    Show
 }
