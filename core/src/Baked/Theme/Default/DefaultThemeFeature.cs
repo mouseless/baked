@@ -5,7 +5,6 @@ using Baked.RestApi.Model;
 using Baked.Runtime;
 using Baked.Ui;
 using Humanizer;
-
 using static Baked.Theme.Default.DomainComponents;
 using static Baked.Theme.Default.DomainDatas;
 using static Baked.Ui.Datas;
@@ -108,11 +107,17 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
                     dtc.Title = data.Label is not null ? l(data.Label) : null;
                     dtc.Exportable = true;
+                    dtc.Component = c.Property.GetRequiredComponent(cc.Drill(nameof(DataTable.Column), nameof(DataTable.Column.Component)));
                 }
             );
-            builder.Conventions.AddPropertySchema(
-                schema: (c, cc) => PropertyConditional(c.Property, cc),
-                when: c => c.Property.Has<DataAttribute>()
+            builder.Conventions.AddPropertyComponent(
+                where: cc => cc.Path.EndsWith(nameof(DataTable.Column), nameof(DataTable.Column.Component)),
+                component: (c) => B.Text(
+                    data: Context.Parent(options: o =>
+                    {
+                        o.Prop = $"row.{c.Property.Name.Camelize()}.value";
+                    })
+                )
             );
 
             // Pages

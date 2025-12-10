@@ -58,13 +58,15 @@
                   "schema": {
                     "columns": [
                       {
-                        "prop": "status",
+                        "key": "status",
                         "component": {
-                          "fallback": {
-                            "type": "Text",
-                            "schema": {}
-                          },
-                          "conditions": []
+                          "type": "Text",
+                          "schema": {},
+                          "data": {
+                            "type": "Context",
+                            "key": "parent",
+                            "prop": "row.status.value"
+                          }
                         },
                         "title": "Status",
                         "exportable": true

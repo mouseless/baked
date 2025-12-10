@@ -52,13 +52,15 @@
                   "schema": {
                     "columns": [
                       {
-                        "prop": "label",
+                        "key": "label",
                         "component": {
-                          "fallback": {
-                            "type": "Text",
-                            "schema": {}
-                          },
-                          "conditions": []
+                          "type": "Text",
+                          "schema": {},
+                          "data": {
+                            "type": "Context",
+                            "key": "parent",
+                            "prop": "row.label.value"
+                          }
                         },
                         "title": "Label",
                         "minWidth": true,
@@ -66,88 +68,102 @@
                         "frozen": true
                       },
                       {
-                        "prop": "formatDigits",
+                        "key": "formatDigits",
                         "component": {
-                          "fallback": {
-                            "type": "Number",
-                            "schema": {}
-                          },
-                          "conditions": []
+                          "type": "Text",
+                          "schema": {},
+                          "data": {
+                            "type": "Context",
+                            "key": "parent",
+                            "prop": "row.formatDigits.value"
+                          }
                         },
                         "title": "Format Digits",
                         "alignRight": true,
                         "exportable": true
                       },
                       {
-                        "prop": "column1",
+                        "key": "column1",
                         "component": {
-                          "fallback": {
-                            "type": "Text",
-                            "schema": {}
-                          },
-                          "conditions": []
+                          "type": "Text",
+                          "schema": {},
+                          "data": {
+                            "type": "Context",
+                            "key": "parent",
+                            "prop": "row.column1.value"
+                          }
                         },
                         "title": "Column 1",
                         "exportable": true
                       },
                       {
-                        "prop": "column2",
+                        "key": "column2",
                         "component": {
-                          "fallback": {
-                            "type": "Text",
-                            "schema": {}
-                          },
-                          "conditions": []
+                          "type": "Text",
+                          "schema": {},
+                          "data": {
+                            "type": "Context",
+                            "key": "parent",
+                            "prop": "row.column2.value"
+                          }
                         },
                         "title": "Column 2",
                         "exportable": true
                       },
                       {
-                        "prop": "column3",
+                        "key": "column3",
                         "component": {
-                          "fallback": {
-                            "type": "Text",
-                            "schema": {}
-                          },
-                          "conditions": []
+                          "type": "Text",
+                          "schema": {},
+                          "data": {
+                            "type": "Context",
+                            "key": "parent",
+                            "prop": "row.column3.value"
+                          }
                         },
                         "title": "Column 3",
                         "exportable": true
                       },
                       {
-                        "prop": "column4",
+                        "key": "column4",
                         "component": {
-                          "fallback": {
-                            "type": "Number",
-                            "schema": {}
-                          },
-                          "conditions": []
+                          "type": "Text",
+                          "schema": {},
+                          "data": {
+                            "type": "Context",
+                            "key": "parent",
+                            "prop": "row.column4.value"
+                          }
                         },
                         "title": "Column 4",
                         "alignRight": true,
                         "exportable": true
                       },
                       {
-                        "prop": "column5",
+                        "key": "column5",
                         "component": {
-                          "fallback": {
-                            "type": "Rate",
-                            "schema": {}
-                          },
-                          "conditions": []
+                          "type": "Text",
+                          "schema": {},
+                          "data": {
+                            "type": "Context",
+                            "key": "parent",
+                            "prop": "row.column5.value"
+                          }
                         },
                         "title": "Column 5",
                         "alignRight": true,
                         "exportable": true
                       },
                       {
-                        "prop": "column6",
+                        "key": "column6",
                         "component": {
-                          "fallback": {
-                            "type": "Money",
-                            "schema": {}
-                          },
-                          "conditions": []
+                          "type": "Text",
+                          "schema": {},
+                          "data": {
+                            "type": "Context",
+                            "key": "parent",
+                            "prop": "row.column6.value"
+                          }
                         },
                         "title": "Column 6",
                         "alignRight": true,
@@ -166,35 +182,41 @@
                       "label": "GetTableDataWithFooter.FooterLabel",
                       "columns": [
                         {
-                          "prop": "footerColumn1",
+                          "key": "footerColumn1",
                           "component": {
-                            "fallback": {
-                              "type": "Number",
-                              "schema": {}
-                            },
-                            "conditions": []
+                            "type": "Text",
+                            "schema": {},
+                            "data": {
+                              "type": "Context",
+                              "key": "parent",
+                              "prop": "row.footerColumn1.value"
+                            }
                           },
                           "alignRight": true
                         },
                         {
-                          "prop": "footerColumn2",
+                          "key": "footerColumn2",
                           "component": {
-                            "fallback": {
-                              "type": "Rate",
-                              "schema": {}
-                            },
-                            "conditions": []
+                            "type": "Text",
+                            "schema": {},
+                            "data": {
+                              "type": "Context",
+                              "key": "parent",
+                              "prop": "row.footerColumn2.value"
+                            }
                           },
                           "alignRight": true
                         },
                         {
-                          "prop": "footerColumn3",
+                          "key": "footerColumn3",
                           "component": {
-                            "fallback": {
-                              "type": "Money",
-                              "schema": {}
-                            },
-                            "conditions": []
+                            "type": "Text",
+                            "schema": {},
+                            "data": {
+                              "type": "Context",
+                              "key": "parent",
+                              "prop": "row.footerColumn3.value"
+                            }
                           },
                           "alignRight": true
                         }
