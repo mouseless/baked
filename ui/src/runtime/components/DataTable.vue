@@ -66,7 +66,10 @@
       frozen
       align-frozen="right"
     >
-      <template #header v-if="exportOptions">
+      <template
+        v-if="exportOptions"
+        #header
+      >
         <Button
           type="button"
           icon="pi pi-ellipsis-v"
@@ -81,7 +84,10 @@
           :popup="true"
         />
       </template>
-      <template #body="{ data: row, index }" v-if="actionTemplate">
+      <template
+        v-if="actionTemplate"
+        #body="{ data: row, index }"
+      >
         <AwaitLoading :skeleton="{ class:'min-h-5' }">
           <ProvideParentContext
             v-if="data"

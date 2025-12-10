@@ -241,7 +241,7 @@ const variants = [
             type: "Local",
             composable: "useShowMessage",
             options: {
-              type: "Context", 
+              type: "Context",
               key: "parent",
               prop: "row",
               targetProp: "message"
