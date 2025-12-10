@@ -227,6 +227,35 @@ const variants = [
       ],
       data: []
     })
+  },
+  {
+    name: "Row Actions",
+    descriptor: giveMe.aDataTable({
+      columns: [
+        giveMe.aDataTableColumn({ title: "Spec: Label", prop: "label", minWidth: true, component: giveMe.aConditional({ testId: "label" }) }),
+        giveMe.aDataTableColumn({ title: "Spec: Data 1", prop: "data1", component: giveMe.aConditional({ testId: "prop-1" }) })
+      ],
+      rowActions: [
+        giveMe.aButton({
+          action:{
+            type: "Local",
+            composable: "useShowMessage",
+            options: {
+              type: "Context",
+              key: "parent",
+              prop: "row",
+              targetProp: "message"
+            }
+          },
+          label: "Spec: Row Action"
+        })
+      ],
+      rowsWhenLoading: 3,
+      data: [
+        { label: "Row 1", data1: "Cell 1.1" },
+        { label: "Row 2", data1: "Cell 2.1" }
+      ]
+    })
   }
 ];
 </script>

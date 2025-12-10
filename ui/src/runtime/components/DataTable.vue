@@ -56,6 +56,32 @@
       </template>
     </Column>
     <Column
+      v-if="rowActions"
+      frozen
+      align-frozen="right"
+      body-class="flex items-center justify-end"
+    >
+      <template #body="{ data: row, index }">
+        <AwaitLoading :skeleton="{ class:'min-h-5' }">
+          <template
+            v-for="rowAction in rowActions"
+            :key="rowAction.schema.label"
+          >
+            <ProvideContextData
+              v-if="data"
+              :data="row"
+              data-key="row"
+            >
+              <Bake
+                :name="`rows/${index}/rowActions`"
+                :descriptor="rowAction"
+              />
+            </ProvideContextData>
+          </template>
+        </AwaitLoading>
+      </template>
+    </Column>
+    <Column
       v-if="exportOptions"
       :pt="{
         bodyCell: { class: 'max-xs:!inset-auto' },
@@ -130,7 +156,7 @@ import { computed, onMounted, ref } from "vue";
 import Column from "primevue/column";
 import { Button, ColumnGroup, DataTable, Menu, Row } from "primevue";
 import { useRuntimeConfig } from "#app";
-import { Bake, AwaitLoading } from "#components";
+import { AwaitLoading, Bake, ProvideContextData } from "#components";
 import { useComposableResolver, useConditional, useContext, useDataFetcher, useLocalization } from "#imports";
 
 const conditional = useConditional();
@@ -146,7 +172,7 @@ const { schema, data } = defineProps({
   data: { type: null, required: true }
 });
 
-const { columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions } = schema;
+const { columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowActions, rowsWhenLoading, scrollHeight, virtualScrollerOptions } = schema;
 
 const dataDescriptor = context.injectDataDescriptor();
 const parentContext = context.injectParentContext();

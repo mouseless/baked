@@ -89,7 +89,7 @@ export default {
     };
   },
 
-  aDataTable({ columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions, data } = {}) {
+  aDataTable({ columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowActions, rowsWhenLoading, scrollHeight, virtualScrollerOptions, data } = {}) {
     columns = $(columns, [
       this.aDataTableColumn({ prop: "test" })
     ]);
@@ -106,7 +106,7 @@ export default {
 
     return {
       type: "DataTable",
-      schema: { columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions },
+      schema: { columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowActions, rowsWhenLoading, scrollHeight, virtualScrollerOptions },
       data: { type: "Inline", value: data }
     };
   },
