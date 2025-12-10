@@ -24,9 +24,9 @@
     </template>
     <Column
       v-for="column in columns"
-      :key="column.prop"
+      :key="column.key"
       :header="l(column.title)"
-      :field="column.prop"
+      :field="column.key"
       class="text-nowrap"
       :class="{ 'min-w-40': column.minWidth, 'text-right': column.alignRight }"
       :exportable="column.exportable"
@@ -40,17 +40,16 @@
     >
       <template #body="{ data: row, index }">
         <AwaitLoading :skeleton="{ class:'min-h-5' }">
-          <Bake
+          <ProvideParentContext
             v-if="data"
-            :name="`rows/${index}/${column.prop}`"
-            :descriptor="{
-              ...conditional.find(column.component, row.$getRow()),
-              data: {
-                type: 'Inline',
-                value: row[column.prop].value
-              }
-            }"
-          />
+            :data="row"
+            data-key="row"
+          >
+            <Bake
+              :name="`rows/${index}/${column.key}`"
+              :descriptor="column.component"
+            />
+          </ProvideParentContext>
           <span v-else>-</span>
         </AwaitLoading>
       </template>
@@ -123,7 +122,7 @@
                 v-if="data"
                 :name="`rows/footer/${column.prop}`"
                 :descriptor="{
-                  ...conditional.find(column.component, data),
+                  ...conditional.find(column.component.schema, data),
                   data: {
                     type: 'Inline',
                     value: data[column.prop]

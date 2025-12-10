@@ -48,12 +48,19 @@ export default {
     };
   },
 
-  aConditional({ testId, fallback, conditions } = {}) {
+  aConditional({ testId, fallback, conditions, data } = {}) {
     testId = $(testId, "test");
     fallback = $(fallback, this.anExpected(testId));
     conditions = $(conditions, []);
 
-    return { fallback, conditions };
+    return {
+      type: "Conditional",
+      schema: {
+        fallback,
+        conditions
+      },
+      data
+    };
   },
 
   aConditionalCondition({ prop, value, testId } = {}) {
@@ -111,9 +118,9 @@ export default {
     };
   },
 
-  aDataTableColumn({ title, prop, alignRight, minWidth, component, exportable, frozen } = {}) {
+  aDataTableColumn({ title, key, alignRight, minWidth, component, exportable, frozen } = {}) {
     title = $(title, "Spec: Test");
-    prop = $(prop, "test");
+    key = $(key, "test");
     alignRight = $(alignRight, false);
     minWidth = $(minWidth, false);
     component = $(component, this.aConditional());
@@ -121,7 +128,7 @@ export default {
 
     return {
       title,
-      prop,
+      key,
       alignRight,
       minWidth,
       component,
@@ -142,6 +149,17 @@ export default {
       formatter,
       buttonIcon,
       buttonLabel
+    };
+  },
+
+  aRowData({ propChain } = {}) {
+    const prop = propChain ? "row." + propChain : "row";
+    console.log(prop);
+
+    return {
+      type: "Context",
+      key: "parent",
+      prop
     };
   },
 

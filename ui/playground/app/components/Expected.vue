@@ -13,6 +13,7 @@ const { data, schema } = defineProps({
   data: { type: null, required: true }
 });
 
+console.log(data);
 const { testId, showDataParams } = schema;
 
 const dataDescriptor = context.injectDataDescriptor();

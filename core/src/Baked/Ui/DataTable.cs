@@ -23,14 +23,10 @@ public record DataTable : IComponentSchema
         }
     }
 
-    public record Column(string Prop)
+    public record Column(string Key)
     {
-        // TODO
-
-        // this should be renamed to key
-        public string Prop { get; set; } = Prop;
-        // this should be a component and fetch its own data
-        public Conditional Component { get; set; } = Components.Conditional();
+        public string Key { get; set; } = Key;
+        public IComponentDescriptor Component { get; set; } = Components.Conditional();
         public string? Title { get; set; }
         public bool? AlignRight { get; set; }
         public bool? MinWidth { get; set; }

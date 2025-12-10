@@ -182,14 +182,14 @@ public static class DomainComponents
         return B.DataTableColumn(data.Prop,
             options: dtc =>
             {
-                dtc.Component = property.GetRequiredSchema<Conditional>(context.Drill(nameof(DataTable.Column.Component)));
+                dtc.Component = property.GetRequiredComponent<Conditional>(context.Drill(nameof(DataTable.Column.Component)));
 
                 options.Apply(dtc);
             }
         );
     }
 
-    public static Conditional PropertyConditional(PropertyModel property, ComponentContext context,
+    public static ComponentDescriptor<Conditional> PropertyConditional(PropertyModel property, ComponentContext context,
         Action<Conditional>? options = default
     ) => B.Conditional(
         options: c =>

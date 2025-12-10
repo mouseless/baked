@@ -10,9 +10,9 @@ public static class Components
         Action<CardLink>? options = default
     ) => new(options.Apply(new(route, title)));
 
-    public static Conditional Conditional(
+    public static ComponentDescriptor<Conditional> Conditional(
         Action<Conditional>? options = default
-    ) => options.Apply(new());
+    ) => new(options.Apply(new()));
 
     public static Conditional.Condition ConditionalCondition(string prop, object value, IComponentDescriptor component,
         Action<Conditional.Condition>? options = default

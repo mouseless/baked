@@ -30,7 +30,7 @@ public class DesignatedStringPropertiesAreLabelUxFeature(IEnumerable<string> pro
                 {
                     if (dt.Schema.DataKey is not null) { return; }
 
-                    dt.Schema.DataKey = dt.Schema.Columns.FirstOrDefault(dtc => dtc.Frozen == true)?.Prop;
+                    dt.Schema.DataKey = dt.Schema.Columns.FirstOrDefault(dtc => dtc.Frozen == true)?.Key;
                 }
             );
         });
