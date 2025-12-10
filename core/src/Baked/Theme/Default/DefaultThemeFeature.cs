@@ -107,17 +107,11 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
                     dtc.Title = data.Label is not null ? l(data.Label) : null;
                     dtc.Exportable = true;
-                    dtc.Component = c.Property.GetRequiredComponent(cc.Drill(nameof(DataTable.Column), nameof(DataTable.Column.Component)));
-                }
-            );
-            builder.Conventions.AddPropertyComponent(
-                where: cc => cc.Path.EndsWith(nameof(DataTable.Column), nameof(DataTable.Column.Component)),
-                component: (c) => B.Text(
-                    data: Context.Parent(options: o =>
+                    dtc.Component.Data = Context.Parent(options: o =>
                     {
                         o.Prop = $"row.{c.Property.Name.Camelize()}.value";
-                    })
-                )
+                    });
+                }
             );
 
             // Pages

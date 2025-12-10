@@ -70,7 +70,7 @@
                       {
                         "key": "formatDigits",
                         "component": {
-                          "type": "Text",
+                          "type": "Number",
                           "schema": {},
                           "data": {
                             "type": "Context",
@@ -127,7 +127,7 @@
                       {
                         "key": "column4",
                         "component": {
-                          "type": "Text",
+                          "type": "Number",
                           "schema": {},
                           "data": {
                             "type": "Context",
@@ -142,7 +142,7 @@
                       {
                         "key": "column5",
                         "component": {
-                          "type": "Text",
+                          "type": "Rate",
                           "schema": {},
                           "data": {
                             "type": "Context",
@@ -157,7 +157,7 @@
                       {
                         "key": "column6",
                         "component": {
-                          "type": "Text",
+                          "type": "Money",
                           "schema": {},
                           "data": {
                             "type": "Context",
@@ -184,7 +184,7 @@
                         {
                           "key": "footerColumn1",
                           "component": {
-                            "type": "Text",
+                            "type": "Number",
                             "schema": {},
                             "data": {
                               "type": "Context",
@@ -197,7 +197,7 @@
                         {
                           "key": "footerColumn2",
                           "component": {
-                            "type": "Text",
+                            "type": "Rate",
                             "schema": {},
                             "data": {
                               "type": "Context",
@@ -210,7 +210,7 @@
                         {
                           "key": "footerColumn3",
                           "component": {
-                            "type": "Text",
+                            "type": "Money",
                             "schema": {},
                             "data": {
                               "type": "Context",
