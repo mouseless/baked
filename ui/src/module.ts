@@ -1,6 +1,7 @@
 import { addComponentsDir, addImportsDir, addPlugin, createResolver, defineNuxtModule } from "@nuxt/kit";
 import type { NuxtI18nOptions } from "@nuxtjs/i18n";
 import { pathToFileURL } from "url";
+import { join } from "path";
 
 export interface ModuleOptions {
   components?: Components,
@@ -50,7 +51,7 @@ export interface ScreenOptions {
   [key: string]: string;
 }
 
-const resolver = createResolver(import.meta.url);
+const metaUrlResolver = createResolver(import.meta.url);
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
@@ -73,12 +74,12 @@ export default defineNuxtModule<ModuleOptions>({
       version: "6.14.0",
       defaults: {
         exposeConfig: true,
-        cssPath: resolver.resolve("./runtime/assets/tailwind.css"),
+        cssPath: metaUrlResolver.resolve("./runtime/assets/tailwind.css"),
         config: {
           content: {
             files: [
-              resolver.resolve("./runtime/components/**/*.{vue,mjs,ts}"),
-              resolver.resolve("./runtime/*.{mjs,js,ts}")
+              metaUrlResolver.resolve("./runtime/components/**/*.{vue,mjs,ts}"),
+              metaUrlResolver.resolve("./runtime/*.{mjs,js,ts}")
             ]
           }
         }
@@ -96,9 +97,12 @@ export default defineNuxtModule<ModuleOptions>({
   async setup(_options, _nuxt) {
     if(process.env.npm_lifecycle_script?.includes("nuxt-module-build")) { return; }
 
-    const entryProjectResolver = createResolver(_nuxt.options.rootDir);
+    const resolver: any = {
+      metaUrl: metaUrlResolver,
+      rootDir: createResolver(_nuxt.options.rootDir)
+    };
 
-    const appJsonPath = pathToFileURL(entryProjectResolver.resolve("./.baked/app.json"));
+    const appJsonPath = pathToFileURL(resolver.rootDir.resolve("./.baked/app.json"));
     const app = (await import(appJsonPath.href, { with: { type: "json" } })).default;
 
     _options.composables.useBreakpoints ||= {};
@@ -121,7 +125,7 @@ export default defineNuxtModule<ModuleOptions>({
 
     // by pushing instead of setting, it allows custom css
     _nuxt.options.css.push("primeicons/primeicons.css");
-    _nuxt.options.css.push(resolver.resolve("./runtime/assets/overrides.css"));
+    _nuxt.options.css.push(resolver.metaUrl.resolve("./runtime/assets/overrides.css"));
 
     // below settings cannot be overriden
     _nuxt.options.devtools = { enabled: false };
@@ -130,34 +134,34 @@ export default defineNuxtModule<ModuleOptions>({
     _nuxt.options.ssr = false;
 
     // default dirs
-    addComponentsDir({ path: resolver.resolve("./runtime/components") });
-    addImportsDir(resolver.resolve("./runtime/composables"));
+    addComponentsDir({ path: resolver.metaUrl.resolve("./runtime/components") });
+    addImportsDir(resolver.metaUrl.resolve("./runtime/composables"));
 
     // plugins that comes through the app descriptor
     for(const plugin of app?.plugins ?? []) {
       _nuxt.options.runtimeConfig.public[plugin.name] = plugin;
-      addPlugin(resolver.resolve(`./runtime/plugins/${plugin.name}`));
+      addPlugin(resolver[camelize(plugin.resolver)].resolve(join(plugin.basePath, plugin.name)));
     }
 
     // default plugins (last add, first run)
-    addPlugin(resolver.resolve("./runtime/plugins/mutex"));
-    addPlugin(resolver.resolve("./runtime/plugins/toast"));
-    addPlugin(resolver.resolve("./runtime/plugins/trailingSlash"));
-    addPlugin(resolver.resolve("./runtime/plugins/baked"));
-    addPlugin(resolver.resolve("./runtime/plugins/primeVue"));
-    addPlugin(resolver.resolve("./runtime/plugins/fetch"), {});
+    addPlugin(resolver.metaUrl.resolve("./runtime/plugins/mutex"));
+    addPlugin(resolver.metaUrl.resolve("./runtime/plugins/toast"));
+    addPlugin(resolver.metaUrl.resolve("./runtime/plugins/trailingSlash"));
+    addPlugin(resolver.metaUrl.resolve("./runtime/plugins/baked"));
+    addPlugin(resolver.metaUrl.resolve("./runtime/plugins/primeVue"));
+    addPlugin(resolver.metaUrl.resolve("./runtime/plugins/fetch"), {});
 
     // module overrides
     _nuxt.options.vite.optimizeDeps ||= {};
     _nuxt.options.vite.optimizeDeps.noDiscovery = true;
 
     _nuxt.options.i18n = {
-      vueI18n: entryProjectResolver.resolve("./i18n.config.ts"),
-      langDir: entryProjectResolver.resolve("./"),
+      vueI18n: resolver.rootDir.resolve("./i18n.config.ts"),
+      langDir: resolver.rootDir.resolve("./"),
       locales: app?.i18n?.supportedLanguages?.map((i: any) => {
         const files = [
-          entryProjectResolver.resolve(`./.baked/locale.${i.code}.json`),
-          entryProjectResolver.resolve(`./locales/locale.${i.code}.json`)
+          resolver.rootDir.resolve(`./.baked/locale.${i.code}.json`),
+          resolver.rootDir.resolve(`./locales/locale.${i.code}.json`)
         ];
 
         return {
@@ -185,3 +189,9 @@ export default defineNuxtModule<ModuleOptions>({
     };
   }
 });
+
+function camelize(str: string): string {
+  if(!str) { return str; }
+
+  return `${str.charAt(0).toLowerCase()}${str.slice(1)}`;
+}

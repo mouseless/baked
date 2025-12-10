@@ -2,7 +2,7 @@
 
 namespace Baked.Authentication.Jwt;
 
-public record JwtAuthenticationPlugin : PluginBase
+public record JwtAuthenticationPlugin : ModulePluginBase
 {
     public override string Name => "auth";
     public List<string> AnonymousApiRoutes { get; init; } = [];
