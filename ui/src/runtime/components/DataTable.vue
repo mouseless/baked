@@ -56,33 +56,7 @@
       </template>
     </Column>
     <Column
-      v-if="rowActions"
-      frozen
-      align-frozen="right"
-      body-class="flex items-center justify-end"
-    >
-      <template #body="{ data: row, index }">
-        <AwaitLoading :skeleton="{ class:'min-h-5' }">
-          <template
-            v-for="rowAction in rowActions"
-            :key="rowAction.schema.label"
-          >
-            <ProvideContextData
-              v-if="data"
-              :data="row"
-              data-key="row"
-            >
-              <Bake
-                :name="`rows/${index}/rowActions`"
-                :descriptor="rowAction"
-              />
-            </ProvideContextData>
-          </template>
-        </AwaitLoading>
-      </template>
-    </Column>
-    <Column
-      v-if="exportOptions"
+      v-if="exportOptions || actionTemplate"
       :pt="{
         bodyCell: { class: 'max-xs:!inset-auto' },
         headerCell: { class: 'max-xs:!inset-auto' }
@@ -92,7 +66,7 @@
       frozen
       align-frozen="right"
     >
-      <template #header>
+      <template #header v-if="exportOptions">
         <Button
           type="button"
           icon="pi pi-ellipsis-v"
@@ -106,6 +80,20 @@
           :model="actions"
           :popup="true"
         />
+      </template>
+      <template #body="{ data: row, index }" v-if="actionTemplate">
+        <AwaitLoading :skeleton="{ class:'min-h-5' }">
+          <ProvideParentContext
+            v-if="data"
+            :data="row"
+            data-key="row"
+          >
+            <Bake
+              :name="`rows/${index}/rowActions`"
+              :descriptor="actionTemplate.component"
+            />
+          </ProvideParentContext>
+        </AwaitLoading>
       </template>
     </Column>
     <ColumnGroup
@@ -156,7 +144,7 @@ import { computed, onMounted, ref } from "vue";
 import Column from "primevue/column";
 import { Button, ColumnGroup, DataTable, Menu, Row } from "primevue";
 import { useRuntimeConfig } from "#app";
-import { AwaitLoading, Bake, ProvideContextData } from "#components";
+import { AwaitLoading, Bake, ProvideParentContext } from "#components";
 import { useComposableResolver, useConditional, useContext, useDataFetcher, useLocalization } from "#imports";
 
 const conditional = useConditional();
@@ -172,7 +160,7 @@ const { schema, data } = defineProps({
   data: { type: null, required: true }
 });
 
-const { columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowActions, rowsWhenLoading, scrollHeight, virtualScrollerOptions } = schema;
+const { actionTemplate, columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions } = schema;
 
 const dataDescriptor = context.injectDataDescriptor();
 const parentContext = context.injectParentContext();

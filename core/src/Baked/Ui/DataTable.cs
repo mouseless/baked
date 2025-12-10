@@ -12,10 +12,24 @@ public record DataTable : IComponentSchema
     public VirtualScroller? VirtualScrollerOptions { get; set; }
     public Footer? FooterTemplate { get; set; }
     public Export? ExportOptions { get; set; }
+    public Action? ActionTemplate { get; set; }
+
+    public record Action : Column
+    {
+        public Action() : base("Action")
+        {
+            Exportable = false;
+            Frozen = false;
+        }
+    }
 
     public record Column(string Prop)
     {
+        // TODO
+
+        // this should be renamed to key
         public string Prop { get; set; } = Prop;
+        // this should be a component and fetch its own data
         public Conditional Component { get; set; } = Components.Conditional();
         public string? Title { get; set; }
         public bool? AlignRight { get; set; }
