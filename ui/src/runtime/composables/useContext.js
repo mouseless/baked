@@ -42,6 +42,14 @@ export default function() {
     provide("__bake_loading", value);
   }
 
+  function injectPage() {
+    return inject("__bake_page");
+  }
+
+  function providePage(value) {
+    provide("__bake_page", value);
+  }
+
   function injectParentContext() {
     return inject("__bake_parent_context", null);
   }
@@ -61,6 +69,8 @@ export default function() {
     provideExecuting,
     injectLoading,
     provideLoading,
+    injectPage,
+    providePage,
     injectParentContext,
     provideParentContext
   };

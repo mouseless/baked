@@ -1,3 +1,6 @@
 ﻿namespace Baked.Ui;
 
-public interface IAction;
+public interface IAction
+{
+    string Type { get; }
+}
