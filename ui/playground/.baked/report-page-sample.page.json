@@ -281,7 +281,7 @@
                           "data": {
                             "type": "Context",
                             "key": "parent",
-                            "prop": "row.label.value"
+                            "prop": "row.label"
                           }
                         },
                         "title": "Label",
@@ -297,7 +297,7 @@
                           "data": {
                             "type": "Context",
                             "key": "parent",
-                            "prop": "row.column1.value"
+                            "prop": "row.column1"
                           }
                         },
                         "title": "Column 1",
@@ -311,7 +311,7 @@
                           "data": {
                             "type": "Context",
                             "key": "parent",
-                            "prop": "row.column2.value"
+                            "prop": "row.column2"
                           }
                         },
                         "title": "Column 2",
@@ -325,7 +325,7 @@
                           "data": {
                             "type": "Context",
                             "key": "parent",
-                            "prop": "row.column3.value"
+                            "prop": "row.column3"
                           }
                         },
                         "title": "Column 3",
@@ -438,7 +438,7 @@
                           "data": {
                             "type": "Context",
                             "key": "parent",
-                            "prop": "row.label.value"
+                            "prop": "row.label"
                           }
                         },
                         "title": "Label",
@@ -454,7 +454,7 @@
                           "data": {
                             "type": "Context",
                             "key": "parent",
-                            "prop": "row.column1.value"
+                            "prop": "row.column1"
                           }
                         },
                         "title": "Column 1",
@@ -468,7 +468,7 @@
                           "data": {
                             "type": "Context",
                             "key": "parent",
-                            "prop": "row.column2.value"
+                            "prop": "row.column2"
                           }
                         },
                         "title": "Column 2",
@@ -482,7 +482,7 @@
                           "data": {
                             "type": "Context",
                             "key": "parent",
-                            "prop": "row.column3.value"
+                            "prop": "row.column3"
                           }
                         },
                         "title": "Column 3",

@@ -65,7 +65,7 @@
                           "data": {
                             "type": "Context",
                             "key": "parent",
-                            "prop": "row.status.value"
+                            "prop": "row.status"
                           }
                         },
                         "title": "Status",

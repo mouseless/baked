@@ -59,7 +59,7 @@
                           "data": {
                             "type": "Context",
                             "key": "parent",
-                            "prop": "row.label.value"
+                            "prop": "row.label"
                           }
                         },
                         "title": "Label",
@@ -75,7 +75,7 @@
                           "data": {
                             "type": "Context",
                             "key": "parent",
-                            "prop": "row.formatDigits.value"
+                            "prop": "row.formatDigits"
                           }
                         },
                         "title": "Format Digits",
@@ -90,7 +90,7 @@
                           "data": {
                             "type": "Context",
                             "key": "parent",
-                            "prop": "row.column1.value"
+                            "prop": "row.column1"
                           }
                         },
                         "title": "Column 1",
@@ -104,7 +104,7 @@
                           "data": {
                             "type": "Context",
                             "key": "parent",
-                            "prop": "row.column2.value"
+                            "prop": "row.column2"
                           }
                         },
                         "title": "Column 2",
@@ -118,7 +118,7 @@
                           "data": {
                             "type": "Context",
                             "key": "parent",
-                            "prop": "row.column3.value"
+                            "prop": "row.column3"
                           }
                         },
                         "title": "Column 3",
@@ -132,7 +132,7 @@
                           "data": {
                             "type": "Context",
                             "key": "parent",
-                            "prop": "row.column4.value"
+                            "prop": "row.column4"
                           }
                         },
                         "title": "Column 4",
@@ -147,7 +147,7 @@
                           "data": {
                             "type": "Context",
                             "key": "parent",
-                            "prop": "row.column5.value"
+                            "prop": "row.column5"
                           }
                         },
                         "title": "Column 5",
@@ -162,7 +162,7 @@
                           "data": {
                             "type": "Context",
                             "key": "parent",
-                            "prop": "row.column6.value"
+                            "prop": "row.column6"
                           }
                         },
                         "title": "Column 6",
@@ -189,7 +189,7 @@
                             "data": {
                               "type": "Context",
                               "key": "parent",
-                              "prop": "row.footerColumn1.value"
+                              "prop": "row.footerColumn1"
                             }
                           },
                           "alignRight": true
@@ -202,7 +202,7 @@
                             "data": {
                               "type": "Context",
                               "key": "parent",
-                              "prop": "row.footerColumn2.value"
+                              "prop": "row.footerColumn2"
                             }
                           },
                           "alignRight": true
@@ -215,7 +215,7 @@
                             "data": {
                               "type": "Context",
                               "key": "parent",
-                              "prop": "row.footerColumn3.value"
+                              "prop": "row.footerColumn3"
                             }
                           },
                           "alignRight": true

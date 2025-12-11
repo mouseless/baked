@@ -23,7 +23,7 @@
                     "data": {
                       "type": "Context",
                       "key": "parent",
-                      "prop": "row.value.value"
+                      "prop": "row.value"
                     }
                   },
                   "title": "Value",
