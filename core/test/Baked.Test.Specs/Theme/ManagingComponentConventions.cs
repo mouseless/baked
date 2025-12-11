@@ -1,7 +1,6 @@
-﻿using Baked.Test.Theme;
-using Baked.Ui;
+﻿using Baked.Ui;
 
-namespace Baked.Test.Test;
+namespace Baked.Test.Theme;
 
 public class ManagingComponentConventions : TestSpec
 {

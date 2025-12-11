@@ -3,6 +3,7 @@
 public record OnTrigger(string On)
     : ITrigger
 {
+    public string Type => nameof(On);
     public string On { get; set; } = On;
     public IConstraint? Constraint { get; set; }
 }
