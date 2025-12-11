@@ -31,26 +31,18 @@ public static class Datas
     public class Composables
     {
         public ComputedData UseError(
-           IData? options = default
-        ) => Use("NuxtError", o => o.Options = options);
+            Action<ComputedData>? options = default
+        ) => Use("NuxtError", options: options);
 
         public ComputedData UseRoute(string property) =>
-            UseRoute(Inline(new { property }));
+            UseRoute(options: cd => cd.Options = Inline(new { property }));
 
         public ComputedData UseRoute(
-            IData? options = default
-        ) => Use("NuxtRoute", o => o.Options = options);
+            Action<ComputedData>? options = default
+        ) => Use("NuxtRoute", options);
 
         public ComputedData Use(string composable,
             Action<ComputedData>? options = default
-        )
-        {
-            composable = composable.StartsWith("use") ? composable : $"use{composable}";
-            var result = new ComputedData(composable);
-
-            options?.Invoke(result);
-
-            return result;
-        }
+        ) => options.Apply(new(composable.StartsWith("use") ? composable : $"use{composable}"));
     }
 }

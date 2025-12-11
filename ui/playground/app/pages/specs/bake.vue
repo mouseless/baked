@@ -19,14 +19,14 @@ const variants = [
       contents: [
         giveMe.anExpected({
           testId: "child-root",
-          data: { type: "Context", key: "parent", prop: "data" }
+          data: giveMe.aContextData({ key: "parent", prop: "data" })
         }),
         giveMe.anExpected({
           testId: "child-prop",
-          data: { type: "Context", key: "parent", prop: "data.child" }
+          data: giveMe.aContextData({ key: "parent", prop: "data.child" })
         })
       ],
-      data: { type: "Inline", value: { child: "CHILD VALUE" } }
+      data: giveMe.anInlineData({ child: "CHILD VALUE" })
     })
   },
   {
@@ -34,36 +34,23 @@ const variants = [
     descriptor: giveMe.anExpected({
       testId: "test",
       showDataParams: true,
-      data: {
-        type: "Composite", // merges ["computed"] and ["RequiredWithDefault1", "Required1"]
-        parts: [
-          { type: "Computed", composable: "useFakeComputed", options: { type: "Inline", value: { data: "computed" } } }, // provides "computed"
-          { type: "Context", key: "parent" },
-          { type: "Inline", value: { inline: "inline" } },
-          {
-            type: "Remote",
-            path: "/route-parameters-samples/{id}",
-            query: {
-              type: "Composite", // merges ["RequiredWithDefault1"] and ["Required1"]
-              parts: [
-                { type: "Inline", value: { requiredWithDefault: "RequiredWithDefault1" } }, // provides "RequiredWithDefault1"
-                { type: "Inline", value: { required: "Required1" } } // provides "Required1"
-              ]
-            },
-            params: {
-              type: "Composite",
-              parts: [
-                { type: "Inline", value: { id: 15 } },
-                { type: "Inline", value: { id: "7b6b67bb-30b5-423e-81b4-a2a0cd59b7f9" } }
-              ]
-            },
-            headers: {
-              type: "Inline",
-              value: { "Authorization": `Bearer ${giveMe.aToken({ admin: true }).access}` }
-            }
-          }
-        ]
-      }
+      data: giveMe.aCompositeData([ // merges ["computed"] and ["RequiredWithDefault1", "Required1"]
+        giveMe.aComputedData({ composable: "useFakeComputed", options: giveMe.anInlineData({ data: "computed" }) }), // provides "computed"
+        giveMe.aContextData({ key: "parent" }),
+        giveMe.anInlineData({ inline: "inline" }),
+        giveMe.aRemoteData({
+          path: "/route-parameters-samples/{id}",
+          query: giveMe.aCompositeData([
+            giveMe.anInlineData({ requiredWithDefault: "RequiredWithDefault1" }), // provides "RequiredWithDefault1"
+            giveMe.anInlineData({ required: "Required1" }) // provides "Required1"
+          ]),
+          params: giveMe.aCompositeData([
+            giveMe.anInlineData({ id: 15 }),
+            giveMe.anInlineData({ id: "7b6b67bb-30b5-423e-81b4-a2a0cd59b7f9" })
+          ]),
+          headers: giveMe.anInlineData({ Authorization: `Bearer ${giveMe.aToken({ admin: true }).access}` })
+        })
+      ])
     })
   },
   {
@@ -80,56 +67,25 @@ const variants = [
           {
             type: "Local",
             composable: "useShowMessage",
-            options: {
-              type: "Inline",
-              value: { message: "Execute Action" }
-            }
+            options: giveMe.anInlineData({ message: "Execute Action" })
           },
           {
             type: "Local",
             composable: "useDelay",
-            options: {
-              type: "Inline",
-              value: { time: 100 }
-            }
+            options: giveMe.anInlineData({ time: 100 })
           },
           {
             type: "Remote",
             path: "/rich-transient-with-datas/{id}/method",
             method: "POST",
-            headers: {
-              type: "Inline",
-              value: {
-                Authorization: "token-admin-ui"
-              }
-            },
-            query: {
-              type: "Computed",
-              composable: "useNuxtRoute",
-              options: {
-                type: "Inline",
-                value:{ property: "query" }
-              }
-            },
-            params: {
-              type: "Inline",
-              value: {
-                id: 12
-              }
-            },
-            body: {
-              type: "Inline",
-              value: {
-                text: "text"
-              }
-            },
+            headers: giveMe.anInlineData({ Authorization: "token-admin-ui" }),
+            query: giveMe.theQueryData(),
+            params: giveMe.anInlineData({ id: 12 }),
+            body: giveMe.anInlineData({ text: "text" }),
             postAction: {
               type: "Local",
               composable: "useShowMessage",
-              options: {
-                type: "Inline",
-                value: { message: "Execute Post Action" }
-              }
+              options: giveMe.anInlineData({ message: "Execute Post Action" })
             }
           }
         ]
@@ -141,26 +97,25 @@ const variants = [
   {
     name: "Reaction",
     descriptor: giveMe.aContainer({
-      contents:[
+      contents: [
         giveMe.aButton({
           action: {
             type: "Emit",
-            event: "changed"
+            event: "clicked"
           }
         }),
+        giveMe.anInputText({ testId: "input", action: { type: "PageContext", key: "input" } }),
         giveMe.aText({
-          data: {
-            type: "Remote",
+          data: giveMe.aRemoteData({
             path: "/localization-samples/locale-string",
-            headers: {
-              type: "Inline",
-              value: {
-                Authorization: "token-admin-ui"
-              }
-            }
-          },
-          on: {
-            changed: "Reload"
+            headers: giveMe.anInlineData({ Authorization: "token-admin-ui" })
+          }),
+          reactions: {
+            reload: giveMe.anOnTrigger({ on: "clicked" }),
+            show: giveMe.aWhenTrigger({
+              when: "input",
+              constraint: { type: "Is", isNot: "hide" } // TODO more cases
+            })
           }
         })
       ]

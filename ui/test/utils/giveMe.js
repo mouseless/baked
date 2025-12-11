@@ -24,6 +24,10 @@ const screens = [
 ];
 
 export default {
+  anApiResponse() {
+    return { sample: "response" };
+  },
+
   aButton({ action, icon, label } = {}) {
     label = $(label, "Button Title");
 
@@ -48,6 +52,26 @@ export default {
     };
   },
 
+  aCompositeData(parts) {
+    parts = $(parts, [this.anInlineData()]);
+
+    return {
+      type: "Composite",
+      parts
+    };
+  },
+
+  aComputedData({ composable, options } = {}) {
+    composable = $(composable, "useFakeComputed");
+    options = $(options, this.anInlineData({ data: "fake" }));
+
+    return {
+      type: "Computed",
+      composable,
+      options
+    };
+  },
+
   aConditional({ testId, fallback, conditions } = {}) {
     testId = $(testId, "test");
     fallback = $(fallback, this.anExpected(testId));
@@ -67,7 +91,7 @@ export default {
   aContainer({ content, contents, data } = {}) {
     content = $(content, this.anExpected());
     contents = $(contents, [content]);
-    data = $(data, { type: "Inline", value: "Test value" });
+    data = $(data, this.anInlineData("Test value"));
 
     return {
       type: "Container",
@@ -76,8 +100,19 @@ export default {
     };
   },
 
+  aContextData({ key, prop } = {}) {
+    key = $(key, "parent");
+    prop = $(prop, "data");
+
+    return {
+      type: "Context",
+      key,
+      prop
+    };
+  },
+
   aDataPanel({ title, collapsed, localizeTitle, inputs, content } = {}) {
-    title = $(title, { type: "Inline", value: "Spec: Test Title" });
+    title = $(title, this.anInlineData("Spec: Test Title"));
     collapsed = $(collapsed, false);
     inputs = $(inputs, []);
     content = $(content, this.anExpected());
@@ -107,7 +142,7 @@ export default {
     return {
       type: "DataTable",
       schema: { columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions },
-      data: { type: "Inline", value: data }
+      data: this.anInlineData(data)
     };
   },
 
@@ -160,7 +195,7 @@ export default {
     return {
       type: "ErrorPage",
       schema: { errorInfos, footerInfo, safeLinks, safeLinksMessage },
-      data: { type: "Inline", value: data }
+      data: this.anInlineData(data)
     };
   },
 
@@ -180,7 +215,7 @@ export default {
     testId = $(testId, "test-id");
     showDataParams = $(showDataParams, false);
     value = $(value, "");
-    data = $(data, { type: "Inline", value });
+    data = $(data, this.anInlineData(value));
 
     return {
       type: "Expected",
@@ -228,7 +263,7 @@ export default {
             [item.route]: item
           }), {})
       },
-      data: { type: "Inline", value: data }
+      data: this.anInlineData(data)
     };
   },
 
@@ -237,13 +272,6 @@ export default {
     icon = $(icon, route === "/" ? "pi pi-home" : "pi pi-heart");
 
     return { route, icon, title, parentRoute };
-  },
-
-  aLanguageSwitcher() {
-    return {
-      type: "LanguageSwitcher",
-      schema: {}
-    };
   },
 
   anIcon({ iconClass } = {}) {
@@ -255,10 +283,12 @@ export default {
     };
   },
 
-  theParentContext() {
+  anInlineData(value) {
+    value = $(value, null);
+
     return {
-      type: "Context",
-      key: "parent"
+      type: "Inline",
+      value
     };
   },
 
@@ -266,7 +296,7 @@ export default {
     name = $(name, "test");
     required = $(required, false);
     component = $(component, this.anInputText());
-    default_ = $(default_, defaultValue ? { type: "Inline", value: defaultValue } : undefined);
+    default_ = $(default_, defaultValue ? this.anInlineData(defaultValue) : undefined);
     defaultSelfManaged = $(defaultSelfManaged, false);
 
     return { name, required, default: default_, defaultSelfManaged, component };
@@ -298,6 +328,13 @@ export default {
     };
   },
 
+  aLanguageSwitcher() {
+    return {
+      type: "LanguageSwitcher",
+      schema: {}
+    };
+  },
+
   aNavLink({ path, idProp, textProp, data } = {}) {
     path = $(path, "/some-object/{0}");
     idProp = $(idProp, "id");
@@ -307,14 +344,14 @@ export default {
     return {
       type: "NavLink",
       schema: { path, idProp, textProp },
-      data: { type: "Inline", value: data }
+      data: this.anInlineData(data)
     };
   },
 
   aMessage({ message, icon, severity, localizeMessage, data } = {}) {
     message = $(message, "Spec: This is a message");
     localizeMessage = $(localizeMessage, true);
-    data = $(data, { type: "Inline", value: message });
+    data = $(data, this.anInlineData(message));
 
     return {
       type: "Message",
@@ -332,17 +369,17 @@ export default {
 
     return {
       type: "Money",
-      data: { type: "Inline", value: data }
+      data: this.anInlineData(data)
     };
   },
 
-  aMenuPage({ header, sections, filterPageContextKey } = {}) {
+  aMenuPage({ header, sections, filterEvent } = {}) {
     header = $(header, this.anExpected());
     sections = $(sections, this.aMenuPageSection());
 
     return {
       type: "MenuPage",
-      schema: { header, sections, filterPageContextKey }
+      schema: { header, sections, filterEvent }
     };
   },
 
@@ -369,7 +406,7 @@ export default {
         path,
         source
       },
-      data: { type: "Inline", value: data }
+      data: this.anInlineData(data)
     };
   },
 
@@ -378,7 +415,16 @@ export default {
 
     return {
       type: "Number",
-      data: { type: "Inline", value: data }
+      data: this.anInlineData(data)
+    };
+  },
+
+  anOnTrigger({ on } = {}) {
+    on = $(on, "something-happened");
+
+    return {
+      type: "On",
+      on
     };
   },
 
@@ -393,15 +439,18 @@ export default {
     };
   },
 
-  theQueryData() {
+  theParentContext() {
     return {
-      type: "Computed",
-      composable: "useNuxtRoute",
-      options: {
-        type: "Inline",
-        value: { property: "query" }
-      }
+      type: "Context",
+      key: "parent"
     };
+  },
+
+  theQueryData() {
+    return this.aComputedData({
+      composable: "useNuxtRoute",
+      options: this.anInlineData({ property: "query" })
+    });
   },
 
   aRate({ data } = {}) {
@@ -409,7 +458,19 @@ export default {
 
     return {
       type: "Rate",
-      data: { type: "Inline", value: data }
+      data: this.anInlineData(data)
+    };
+  },
+
+  aRemoteData({ path, query, params, headers } = {}) {
+    path = $(path, "/fake-remote");
+
+    return {
+      type: "Remote",
+      path,
+      query,
+      params,
+      headers
     };
   },
 
@@ -444,40 +505,50 @@ export default {
     return { component, narrow, showWhen };
   },
 
-  aSelect({ label, localizeLabel, optionLabel, optionValue, showClear, selectionPageContextKey, stateful, data, inline } = {}) {
+  aScreenSize({ name } = {}) {
+    name = $(name, "lg");
+
+    return screens.find(screen => screen.name === name) || null;
+  },
+
+  aSelect({ label, localizeLabel, optionLabel, optionValue, showClear, stateful, data, inline } = {}) {
     label = $(label, "Spec: Test");
     localizeLabel = $(localizeLabel, false);
     showClear = $(showClear, false);
-    selectionPageContextKey = $(selectionPageContextKey, false);
     stateful = $(stateful, false);
     data = $(data, ["Test Option 1", "Test Option 2"]);
     inline = $(inline, true);
 
     data = inline
-      ? { type: "Inline", value: data }
-      : { type: "Computed", composable: "useDelayedData", options: { type: "Inline", value: { ms: 1, data } } };
+      ? this.anInlineData(data)
+      : this.aComputedData({
+        composable: "useDelayedData",
+        options: this.anInlineData({ ms: 1, data })
+      });
 
     return {
       type: "Select",
-      schema: { label, localizeLabel, optionLabel, optionValue, showClear, selectionPageContextKey, stateful },
+      schema: { label, localizeLabel, optionLabel, optionValue, showClear, stateful },
       data
     };
   },
 
-  aSelectButton({ allowEmpty, localizeLabel, optionLabel, optionValue, stateful, selectionPageContextKey, data, inline } = {}) {
+  aSelectButton({ allowEmpty, localizeLabel, optionLabel, optionValue, stateful, data, inline } = {}) {
     data = $(data, ["Test Option 1", "Test Option 2"]);
     inline = $(inline, true);
     allowEmpty = $(allowEmpty, false);
-    selectionPageContextKey = $(selectionPageContextKey, false);
     stateful = $(stateful, false);
     localizeLabel = $(localizeLabel, false);
     data = inline
-      ? { type: "Inline", value: data }
-      : { type: "Computed", composable: "useDelayedData", options: { type: "Inline", value: { ms: 1, data } } };
+      ? this.anInlineData(data)
+      : this.aComputedData({
+        composable: "useDelayedData",
+        options: this.anInlineData({ ms: 1, data })
+      });
 
     return {
       type: "SelectButton",
-      schema: { allowEmpty, localizeLabel, optionLabel, optionValue, stateful, selectionPageContextKey },
+      schema: { allowEmpty, localizeLabel, optionLabel, optionValue, stateful },
       data
     };
   },
@@ -492,7 +563,7 @@ export default {
     return {
       type: "SideMenu",
       schema: { logo, largeLogo, menu, footer },
-      data: { type: "Inline", value: data }
+      data: this.anInlineData(data)
     };
   },
 
@@ -520,15 +591,15 @@ export default {
     };
   },
 
-  aText({ value, data, maxLength, on } = {}) {
+  aText({ value, data, maxLength, reactions } = {}) {
     value = $(value, "Test string");
-    data = $(data, { type: "Inline", value });
+    data = $(data, this.anInlineData(value));
 
     return {
       type: "Text",
       schema: { maxLength },
       data,
-      on
+      reactions
     };
   },
 
@@ -545,13 +616,12 @@ export default {
     };
   },
 
-  anApiResponse() {
-    return { sample: "response" };
-  },
+  aWhenTrigger({ when } = {}) {
+    when = $(when, "a-key");
 
-  aScreenSize({ name } = {}) {
-    name = $(name, "lg");
-
-    return screens.find(screen => screen.name === name) || null;
+    return {
+      type: "When",
+      when
+    };
   }
 };
