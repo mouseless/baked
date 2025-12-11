@@ -9,11 +9,13 @@
   implementations upon model change or `submit` event
 - `Button` component is now added
 - `useActionExecuter` is now added which is a composable that executes `Emit`,
-  `Local`, `Remote` or `Composite` actions with given configuration
-- `Bake` now supports reload, show and hide reactions which handles `Emit`
-  action
-  - `Page` component now provides event bus to publish page-wide events
+  `PageContext`, `Local`, `Remote` or `Composite` actions with given
+  configuration
+- `Page` component now provides an event bus to publish page-wide events
 - `SimpleForm` component is now added for rendering a basic form with inputs
+- `Bake` now supports reload and show/hide reactions
+  - Use `ReloadOn` and `ShowOn` to bind them to an `Emit` action event
+  - Use `ReloadWhen` and `ShowWhen` to bind them to a `PageContext` value change
 
 ## Breaking Changes
 
@@ -60,21 +62,23 @@
   }
   ```
 - `None` is renamed to `MissingComponent`
-- UI page context is now removed (`context.injectPage()`,
-  `context.providePage`), use the new event bus system for communication between
-  components
-- `ShowWhen` and `*PageContextKey` properties are now removed from components
-  and schemas, use the new event bus system
-  ```csharp
-  content.ShowWhen = "page-context-key"; // old usage
-  content.ShowOn("event"); // new usage
+- `*PageContextKey` properties are now removed from components and schemas
+  - use the new page context action to publish values to page context
+    ```csharp
+    component.PageContextKey = "key"
+    component.Action = PageContext("key");
+    ```
+  - use the new reaction system to subscribe to page context changes
+    ```csharp
+    content.ShowWhen = "key"; // old usage
+    content.ShowWhen("key"); // new usage
 
-  content.ShowWhen = "page-context-key:value"; // old usage
-  content.ShowOn("event:value"); // new usage
+    content.ShowWhen = "key:value"; // old usage
+    content.ShowWhen("key", constraint: Is("value")); // new usage
 
-  content.ShowWhen = "!page-context-key:value"; // old usage
-  content.ShowOn("event:!value"); // new usage
-  ```
+    content.ShowWhen = "!key:value"; // old usage
+    content.ShowWhen("key", constraint: IsNot("value")); // new usage
+    ```
 
 ## Improvements
 
