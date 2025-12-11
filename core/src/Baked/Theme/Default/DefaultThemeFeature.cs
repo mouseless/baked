@@ -109,7 +109,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     dtc.Exportable = true;
                     dtc.Component.Data = Context.Parent(options: o =>
                     {
-                        o.Prop = $"row.{c.Property.Name.Camelize()}.value";
+                        o.Prop = $"row.{c.Property.Name.Camelize()}";
                     });
                 }
             );

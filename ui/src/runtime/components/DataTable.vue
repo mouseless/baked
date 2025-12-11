@@ -42,7 +42,7 @@
         <AwaitLoading :skeleton="{ class:'min-h-5' }">
           <ProvideParentContext
             v-if="data"
-            :data="row"
+            :data="row.$getRow()"
             data-key="row"
           >
             <Bake
@@ -90,7 +90,7 @@
         <AwaitLoading :skeleton="{ class:'min-h-5' }">
           <ProvideParentContext
             v-if="data"
-            :data="row"
+            :data="row.$getRow()"
             data-key="row"
           >
             <Bake

@@ -123,7 +123,7 @@ export default {
     key = $(key, "test");
     alignRight = $(alignRight, false);
     minWidth = $(minWidth, false);
-    component = $(component, this.anExpected({ data: this.aRowData({ propChain: key ? `${key}.value`: key }) }));
+    component = $(component, this.anExpected({ data: this.aRowData({ propChain: key }) }));
     exportable = $(exportable, false);
 
     return {
