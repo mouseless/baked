@@ -3,15 +3,42 @@
     {
       "name": "auth",
       "anonymousApiRoutes": [
-        "form-sample/states",
-        "form-sample/states",
-        "form-sample/states",
-        "route-parameters-samples/{id}",
-        "route-parameters-samples/{id}/items",
-        "cache-samples/scoped",
-        "cache-samples/application",
-        "authorization-samples/anonymous",
-        "authentication-samples/login"
+        {
+          "method": "POST",
+          "path": "form-sample/states"
+        },
+        {
+          "method": "DELETE",
+          "path": "form-sample/states"
+        },
+        {
+          "method": "GET",
+          "path": "form-sample/states"
+        },
+        {
+          "method": "GET",
+          "path": "route-parameters-samples/{id}"
+        },
+        {
+          "method": "GET",
+          "path": "route-parameters-samples/{id}/items"
+        },
+        {
+          "method": "GET",
+          "path": "cache-samples/scoped"
+        },
+        {
+          "method": "GET",
+          "path": "cache-samples/application"
+        },
+        {
+          "method": "POST",
+          "path": "authorization-samples/anonymous"
+        },
+        {
+          "method": "POST",
+          "path": "authentication-samples/login"
+        }
       ],
       "anonymousPageRoutes": [
         "^(?!.*auth).*$",

@@ -18,13 +18,15 @@ export default defineNuxtPlugin({
           return await next();
         }
 
+        // if api is anonymous no need to have a token, will continue
+        // anonymously
+        if(auth.anonymousApiRoutes.some(route => options.method === route.method && request?.includes(route.path))) {
+          return await next();
+        }
+
         // try get current token
         let result = await token.current(false);
         if(!result || result.accessIsExpired()) {
-          // if api is anonymous no need to have a token, will continue
-          // anonymously
-          if(auth.anonymousApiRoutes.some(route => request?.includes(route))) { return await next(); }
-
           // force get an access token
           result = await token.current(true);
         }
