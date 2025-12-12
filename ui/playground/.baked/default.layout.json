@@ -19,11 +19,6 @@
             "title": "Cache"
           },
           {
-            "route": "/data-table-sample",
-            "icon": "pi pi-table",
-            "title": "Data Table"
-          },
-          {
             "route": "/form-sample",
             "icon": "pi pi-file-edit",
             "title": "Form"
@@ -62,19 +57,14 @@
             "icon": "pi pi-database",
             "title": "Cache"
           },
-          "/data-table-sample": {
-            "route": "/data-table-sample",
-            "icon": "pi pi-table",
-            "title": "Data Table"
-          },
           "/form-sample": {
             "route": "/form-sample",
             "icon": "pi pi-file-edit",
             "title": "Form"
           },
-          "/form-sample/new-state": {
-            "route": "/form-sample/new-state",
-            "title": "New State ",
+          "/form-sample/new-parent": {
+            "route": "/form-sample/new-parent",
+            "title": "New Parent",
             "parentRoute": "/form-sample"
           },
           "/report-page-sample": {

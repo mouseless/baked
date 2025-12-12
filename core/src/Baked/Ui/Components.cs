@@ -31,17 +31,17 @@ public static class Components
         IData? data = default
     ) => new(options.Apply(new())) { Data = data };
 
-    public static DataTable.Column DataTableColumn(string prop, IComponentDescriptor component,
+    public static DataTable.Column DataTableColumn(string key, IComponentDescriptor component,
         Action<DataTable.Column>? options = default
-    ) => DataTableColumn(prop, options: s =>
+    ) => DataTableColumn(key, options: s =>
     {
         s.Component = Conditional(options: s => s.Fallback = component);
         options.Apply(s);
     });
 
-    public static DataTable.Column DataTableColumn(string prop,
+    public static DataTable.Column DataTableColumn(string key,
         Action<DataTable.Column>? options = default
-    ) => options.Apply(new(prop));
+    ) => options.Apply(new(key));
 
     public static DataTable.Export DataTableExport(string csvSeparator, string fileName,
         Action<DataTable.Export>? options = default

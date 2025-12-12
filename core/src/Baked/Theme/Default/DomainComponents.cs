@@ -130,6 +130,7 @@ public static class DomainComponents
                 dt.ExportOptions = method.GetSchema<DataTable.Export>(context.Drill(nameof(DataTable.ExportOptions)));
                 dt.FooterTemplate = method.GetSchema<DataTable.Footer>(context.Drill(nameof(DataTable.FooterTemplate)));
                 dt.VirtualScrollerOptions = method.GetSchema<DataTable.VirtualScroller>(context.Drill(nameof(DataTable.VirtualScrollerOptions)));
+                dt.ActionTemplate = method.GetSchema<DataTable.Column>(context.Drill(nameof(DataTable.ActionTemplate)));
 
                 options.Apply(dt);
             },
@@ -162,7 +163,7 @@ public static class DomainComponents
         var (_, l) = context;
         context = context.Drill(nameof(Button));
 
-        return B.Button(l(method.Name), method.GetRequiredSchema<RemoteAction>(context.Drill(nameof(IComponentDescriptor.Action))),
+        return B.Button(l(method.Name.Humanize().Titleize()), method.GetRequiredSchema<RemoteAction>(context.Drill(nameof(IComponentDescriptor.Action))),
             options: options
         );
     }

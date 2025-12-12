@@ -69,7 +69,8 @@
               }
             },
             "on": {
-              "clear-states": "Reload"
+              "clear-parents": "Reload",
+              "delete": "Reload"
             }
           }
         }

@@ -5,15 +5,15 @@
       "anonymousApiRoutes": [
         {
           "method": "POST",
-          "path": "form-sample/states"
+          "path": "form-sample/new-parent"
         },
         {
           "method": "DELETE",
-          "path": "form-sample/states"
+          "path": "form-sample/parents"
         },
         {
           "method": "GET",
-          "path": "form-sample/states"
+          "path": "form-sample/parents"
         },
         {
           "method": "GET",
@@ -132,15 +132,6 @@
             "icon": "pi pi-database",
             "title": "Cache",
             "description": "Showcases the cache behavior"
-          }
-        },
-        {
-          "type": "CardLink",
-          "schema": {
-            "route": "/data-table-sample",
-            "icon": "pi pi-table",
-            "title": "Data Table",
-            "description": "Showcase DataTable component with scrollable and footer options"
           }
         },
         {
