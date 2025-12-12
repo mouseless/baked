@@ -20,7 +20,6 @@ public class NumericValuesAreFormattedUxFeature : IFeature<UxConfigurator>
             );
             builder.Conventions.AddPropertyComponent(
                 when: c => c.Property.PropertyType.SkipNullable().Is<int>(),
-                where: c => c.Path.EndsWith(nameof(DataTable.Columns), "*", nameof(DataTable.Column.Component)),
                 component: (c) => B.Number()
             );
             builder.Conventions.AddPropertyComponent(

@@ -1,13 +1,15 @@
 <template>
-  <Bake
-    v-if="data"
-    :name="`${path}/${component.type}`"
-    :descriptor="component"
-  />
+  <AwaitLoading>
+    <Bake
+      v-if="data"
+      :name="`${path}/${component.type}`"
+      :descriptor="component"
+    />
+  </AwaitLoading>
 </template>
 <script setup>
 import { computed, useContext } from "#imports";
-import { Bake } from "#components";
+import { AwaitLoading, Bake } from "#components";
 
 const context = useContext();
 

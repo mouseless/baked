@@ -15,7 +15,7 @@ const variants = [
     name: "Base",
     descriptor: giveMe.aDataTable({
       columns: [
-        giveMe.aDataTableColumn({ title: "Spec: Label", key: "label", minWidth: true, component: giveMe.anExpected({ testId: "label",data: giveMe.aRowData({ propChain: "label" }) }) }),
+        giveMe.aDataTableColumn({ title: "Spec: Label", key: "label", minWidth: true, component: giveMe.anExpected({ testId: "label", data: giveMe.aRowData({ propChain: "label" }) }) }),
         giveMe.aDataTableColumn({ title: "Spec: Data 1", key: "data1", component: giveMe.anExpected({ testId: "prop-1", data: giveMe.aRowData({ propChain: "data1" }) }) }),
         giveMe.aDataTableColumn({ title: "Spec: Data 2", key: "data2", component: giveMe.anExpected({ testId: "prop-2", data: giveMe.aRowData({ propChain: "data2" }) }) }),
         giveMe.aDataTableColumn({ title: "Spec: Data 3", key: "data3", component: giveMe.anExpected({ testId: "prop-3", data: giveMe.aRowData({ propChain: "data3" }) }) }),

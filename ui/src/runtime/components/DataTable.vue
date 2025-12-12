@@ -94,7 +94,7 @@
             data-key="row"
           >
             <Bake
-              :name="`rows/${index}/rowActions`"
+              :name="`rows/${index}/row-actions`"
               :descriptor="actionTemplate.component"
             />
           </ProvideParentContext>

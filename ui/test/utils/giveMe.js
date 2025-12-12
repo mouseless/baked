@@ -152,16 +152,6 @@ export default {
     };
   },
 
-  aRowData({ propChain } = {}) {
-    const prop = propChain ? "row." + propChain : "row";
-
-    return {
-      type: "Context",
-      key: "parent",
-      prop
-    };
-  },
-
   anErrorPage({ errorInfos, footerInfo, safeLinks, safeLinksMessage, data } = {}) {
     errorInfos = $(errorInfos, [this.anErrorPageInfo()]);
     footerInfo = $(footerInfo, "Test footer info");
@@ -269,13 +259,6 @@ export default {
     return {
       type: "Icon",
       schema: { iconClass }
-    };
-  },
-
-  theParentContext() {
-    return {
-      type: "Context",
-      key: "parent"
     };
   },
 
@@ -421,6 +404,13 @@ export default {
     };
   },
 
+  theParentContext() {
+    return {
+      type: "Context",
+      key: "parent"
+    };
+  },
+
   aRate({ data } = {}) {
     data = $(data, 0.5);
 
@@ -459,6 +449,16 @@ export default {
     showWhen = $(showWhen, undefined);
 
     return { component, narrow, showWhen };
+  },
+
+  aRowData({ propChain } = {}) {
+    const prop = propChain ? "row." + propChain : "row";
+
+    return {
+      type: "Context",
+      key: "parent",
+      prop
+    };
   },
 
   aSelect({ label, localizeLabel, optionLabel, optionValue, showClear, selectionPageContextKey, stateful, data, inline } = {}) {
