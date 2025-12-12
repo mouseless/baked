@@ -8,14 +8,15 @@
 - `Bake` now executes given `Action` defined in `ComponentDescriptor`
   implementations upon model change or `submit` event
 - `Button` component is now added
-- `useActionExecuter` is now added which is a composable that executes `Emit`,
-  `PageContext`, `Local`, `Remote` or `Composite` actions with given
-  configuration
+- `useActionExecuter` composable is now added to execute `Composite`, `Emit`,
+  `Local`, `PageContext` and `Remote` actions with given configuration
 - `Page` component now provides an event bus to publish page-wide events
 - `SimpleForm` component is now added for rendering a basic form with inputs
 - `Bake` now supports reload and show/hide reactions
   - Use `ReloadOn` and `ShowOn` to bind them to an `Emit` action event
   - Use `ReloadWhen` and `ShowWhen` to bind them to a `PageContext` value change
+- `Constraints` now allows you to define constraints on values of triggers so
+  that reactions can happen only on certain conditions
 
 ## Breaking Changes
 
@@ -74,10 +75,10 @@
     content.ShowWhen("key"); // new usage
 
     content.ShowWhen = "key:value"; // old usage
-    content.ShowWhen("key", constraint: Is("value")); // new usage
+    content.ShowWhen("key", Is("value")); // new usage
 
     content.ShowWhen = "!key:value"; // old usage
-    content.ShowWhen("key", constraint: IsNot("value")); // new usage
+    content.ShowWhen("key", IsNot("value")); // new usage
     ```
 
 ## Improvements

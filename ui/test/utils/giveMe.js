@@ -477,7 +477,7 @@ export default {
     };
   },
 
-  aPageContextAction({ key } = {}) {
+  aPageContextAction(key) {
     key = $(key, "test");
 
     return {

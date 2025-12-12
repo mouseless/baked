@@ -86,7 +86,13 @@ const variants = [
         giveMe.aButton({
           action: giveMe.anEmitAction("clicked")
         }),
-        giveMe.anInputText({ testId: "input", action: giveMe.aPageContextAction({ key: "input" }) }),
+        giveMe.anInputText({
+          testId: "input",
+          action: giveMe.aCompositeAction([
+            giveMe.anEmitAction("input-changed"),
+            giveMe.aPageContextAction("input")
+          ])
+        }),
         giveMe.aText({
           data: giveMe.aRemoteData({
             path: "/localization-samples/locale-string",
@@ -96,6 +102,7 @@ const variants = [
             reload: giveMe.aTrigger({
               parts: [
                 giveMe.aTrigger({ on: "clicked" }),
+                giveMe.aTrigger({ on: "input-changed", constraint: giveMe.aConstraint({ is: "emit" }) }),
                 giveMe.aTrigger({ when: "input", constraint: giveMe.aConstraint({ is: "click" }) }),
                 giveMe.aTrigger({
                   when: "input",
@@ -106,7 +113,7 @@ const variants = [
                 })
               ]
             }),
-            show: giveMe.aTrigger({ when: "input", isNot: "hide" })
+            show: giveMe.aTrigger({ when: "input", constraint: giveMe.aConstraint({ isNot: "hide" }) })
           }
         })
       ]
