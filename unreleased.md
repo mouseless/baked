@@ -34,17 +34,17 @@
 - `TypeWithOnlyGetIsReportPage` UX feature is removed, and adding `ReportPage`
   component to a type is moved to `DefaultThemeFeature`
 - `InjectedData` is renamed to `ContextData`
-  - `Injected()` is now removed, use `Parent` and `Model` factory methods
+  - `Injected()` is now removed, use `Model`, `Page` and `Model` factory methods
     - `Parent` injected data now has `data` and `parameters` properties
-    ```csharp
-    Context.Parent(options: cd => cd.Prop = "parameters")
-    ```
+      ```csharp
+      Context.Parent(options: cd => cd.Prop = "parameters")
+      ```
+    - `Page` now allows access to page context values using context data
   - Data keys are removed
   - `Prop` now supports property chaining
   - `useContext` methods;
     - `injectData` is renamed to `injectParentContext`
-     - `provideData` is renamed to `provideParentContext`
-
+    - `provideData` is renamed to `provideParentContext`
 - `ComputedData.Args` is now changed to `Options` with `IData` type
   - Built-in composables now have object parameters with named fields
 - `Composables` now provide helpers instead of ui composable file keys
@@ -64,21 +64,21 @@
   ```
 - `None` is renamed to `MissingComponent`
 - `*PageContextKey` properties are now removed from components and schemas
-  - use the new page context action to publish values to page context
+  - use the new emit action to publish values to page context
     ```csharp
-    component.PageContextKey = "key"
-    component.Action = Emit.PageContextValue("key");
+    component.Schema.PageContextKey = "key" // old usage
+    component.Action = Emit.PageContextValue("key"); // new usage
     ```
   - use the new reaction system to subscribe to page context changes
     ```csharp
-    content.ShowWhen = "key"; // old usage
-    content.ShowWhen("key"); // new usage
+    component.Schema.ShowWhen = "key"; // old usage
+    component.ShowWhen("key"); // new usage
 
-    content.ShowWhen = "key:value"; // old usage
-    content.ShowWhen("key", Is("value")); // new usage
+    component.Schema.ShowWhen = "key:value"; // old usage
+    component.ShowWhen("key", Is("value")); // new usage
 
-    content.ShowWhen = "!key:value"; // old usage
-    content.ShowWhen("key", IsNot("value")); // new usage
+    component.Schema.ShowWhen = "!key:value"; // old usage
+    component.ShowWhen("key", IsNot("value")); // new usage
     ```
 - In `useContext` composable, `injectPage` and `providePage` are renamed to
   `injectPageContext` and `providePageContext` respectively
@@ -100,5 +100,6 @@
 - `MissingComponent` component now contains a sample code to help developer add
   the missing component to the path
 - `useContext` now has `injectContextData` helper to get all the default context
-  data `useDataFetcher` requires, you may pass `context.injectContextData()` to
-  `contextData` option of `useDataFetcher`
+  data `useDataFetcher` requires, so that you can pass
+  `context.injectContextData()` directly to `contextData` option when fetching
+  data using `useDataFetcher`

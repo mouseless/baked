@@ -131,7 +131,7 @@ const allVariants = computed(() => {
 });
 
 context.provideEvents(events.create());
-context.providePageContext(reactive({}));
+context.providePageContext(page);
 
 onMounted(async() => {
   const specs = await pages.fetch("specs");
