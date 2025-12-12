@@ -67,10 +67,6 @@
                   }
                 }
               }
-            },
-            "on": {
-              "clear-parents": "Reload",
-              "delete": "Reload"
             }
           }
         }

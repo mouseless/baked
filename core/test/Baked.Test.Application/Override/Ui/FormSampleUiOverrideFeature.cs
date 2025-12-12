@@ -54,6 +54,7 @@ public class FormSampleUiOverrideFeature : IFeature
             );
             builder.Conventions.AddMethodComponentConfiguration<DataPanel>(
                 when: c =>
+                    c.Type.Is<FormSample>() &&
                     c.Method.Name.StartsWith("Get") &&
                     c.Type.TryGetMembers(out var members) &&
                     members.Methods.Having<ActionModelAttribute>().Any(m => !m.Name.StartsWith("Get")),
