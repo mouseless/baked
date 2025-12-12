@@ -2,6 +2,7 @@
   <UiSpec
     title="Bake"
     :variants="variants"
+    no-loading-variant
   />
 </template>
 <script setup>
@@ -61,35 +62,19 @@ const variants = [
   {
     name: "Action",
     descriptor: giveMe.aButton({
-      action: {
-        type: "Composite",
-        parts: [
-          {
-            type: "Local",
-            composable: "useShowMessage",
-            options: giveMe.anInlineData({ message: "Execute Action" })
-          },
-          {
-            type: "Local",
-            composable: "useDelay",
-            options: giveMe.anInlineData({ time: 100 })
-          },
-          {
-            type: "Remote",
-            path: "/rich-transient-with-datas/{id}/method",
-            method: "POST",
-            headers: giveMe.anInlineData({ Authorization: "token-admin-ui" }),
-            query: giveMe.theQueryData(),
-            params: giveMe.anInlineData({ id: 12 }),
-            body: giveMe.anInlineData({ text: "text" }),
-            postAction: {
-              type: "Local",
-              composable: "useShowMessage",
-              options: giveMe.anInlineData({ message: "Execute Post Action" })
-            }
-          }
-        ]
-      },
+      action: giveMe.aCompositeAction([
+        giveMe.aLocalAction({ showMessage: "Execute Action" }),
+        giveMe.aLocalAction({ delay: 100 }),
+        giveMe.aRemoteAction({
+          path: "/rich-transient-with-datas/{id}/method",
+          method: "POST",
+          headers: giveMe.anInlineData({ Authorization: "token-admin-ui" }),
+          query: giveMe.theQueryData(),
+          params: giveMe.anInlineData({ id: 12 }),
+          body: giveMe.anInlineData({ text: "text" }),
+          postAction: giveMe.aLocalAction({ showMessage: "Execute Post Action" })
+        })
+      ]),
       label: "Spec: Button",
       icon: "pi pi-play-circle"
     })
@@ -99,23 +84,29 @@ const variants = [
     descriptor: giveMe.aContainer({
       contents: [
         giveMe.aButton({
-          action: {
-            type: "Emit",
-            event: "clicked"
-          }
+          action: giveMe.anEmitAction("clicked")
         }),
-        giveMe.anInputText({ testId: "input", action: { type: "PageContext", key: "input" } }),
+        giveMe.anInputText({ testId: "input", action: giveMe.aPageContextAction({ key: "input" }) }),
         giveMe.aText({
           data: giveMe.aRemoteData({
             path: "/localization-samples/locale-string",
             headers: giveMe.anInlineData({ Authorization: "token-admin-ui" })
           }),
           reactions: {
-            reload: giveMe.anOnTrigger({ on: "clicked" }),
-            show: giveMe.aWhenTrigger({
-              when: "input",
-              constraint: { type: "Is", isNot: "hide" } // TODO more cases
-            })
+            reload: giveMe.aTrigger({
+              parts: [
+                giveMe.aTrigger({ on: "clicked" }),
+                giveMe.aTrigger({ when: "input", constraint: giveMe.aConstraint({ is: "click" }) }),
+                giveMe.aTrigger({
+                  when: "input",
+                  constraint: giveMe.aConstraint({
+                    composable: "useFakeEvaluator",
+                    options: giveMe.anInlineData({ expected: "evaluate" })
+                  })
+                })
+              ]
+            }),
+            show: giveMe.aTrigger({ when: "input", isNot: "hide" })
           }
         })
       ]

@@ -52,6 +52,15 @@ export default {
     };
   },
 
+  aCompositeAction(parts) {
+    parts = $(parts, []);
+
+    return {
+      type: "Composite",
+      parts
+    };
+  },
+
   aCompositeData(parts) {
     parts = $(parts, [this.anInlineData()]);
 
@@ -86,6 +95,30 @@ export default {
     const component = this.anExpected({ testId });
 
     return { prop, value, component };
+  },
+
+  aConstraint({ is, isNot, composable, options }) {
+    if(composable) {
+      return {
+        type: "Composable",
+        composable,
+        options
+      };
+    }
+
+    if(isNot) {
+      return {
+        type: "IsNot",
+        isNot
+      };
+    }
+
+    is = $(is, "expected");
+
+    return {
+      type: "Is",
+      is
+    };
   },
 
   aContainer({ content, contents, data } = {}) {
@@ -208,6 +241,15 @@ export default {
       statusCode,
       title,
       message
+    };
+  },
+
+  anEmitAction(event) {
+    event = $("something-happened");
+
+    return {
+      type: "Emit",
+      event
     };
   },
 
@@ -335,6 +377,22 @@ export default {
     };
   },
 
+  aLocalAction({ composable, options, showMessage, delay } = {}) {
+    composable = $(composable, delay ? "useDelay" : "useShowMessage");
+    options = $(options,
+      this.anInlineData(delay
+        ? { time: delay }
+        : { message: $(showMessage, "Test") }
+      )
+    );
+
+    return {
+      type: "Local",
+      composable,
+      options
+    };
+  },
+
   aNavLink({ path, idProp, textProp, data } = {}) {
     path = $(path, "/some-object/{0}");
     idProp = $(idProp, "id");
@@ -419,12 +477,12 @@ export default {
     };
   },
 
-  anOnTrigger({ on } = {}) {
-    on = $(on, "something-happened");
+  aPageContextAction({ key } = {}) {
+    key = $(key, "test");
 
     return {
-      type: "On",
-      on
+      type: "PageContext",
+      key
     };
   },
 
@@ -459,6 +517,20 @@ export default {
     return {
       type: "Rate",
       data: this.anInlineData(data)
+    };
+  },
+
+  aRemoteAction({ path, query, params, headers, body, postAction } = {}) {
+    path = $(path, "/fake-remote");
+
+    return {
+      type: "Remote",
+      path,
+      query,
+      params,
+      headers,
+      body,
+      postAction
     };
   },
 
@@ -616,12 +688,28 @@ export default {
     };
   },
 
-  aWhenTrigger({ when } = {}) {
-    when = $(when, "a-key");
+  aTrigger({ on, when, parts, constraint } = {}) {
+    if(when) {
+      return {
+        type: "When",
+        when,
+        constraint
+      };
+    }
+
+    if(parts) {
+      return {
+        type: "Composite",
+        parts
+      };
+    }
+
+    on = $(on, "something-happened");
 
     return {
-      type: "When",
-      when
+      type: "On",
+      on,
+      constraint
     };
   }
 };
