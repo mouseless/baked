@@ -14,15 +14,6 @@ public record DataTable : IComponentSchema
     public Export? ExportOptions { get; set; }
     public Column? ActionTemplate { get; set; }
 
-    public record Action : Column
-    {
-        public Action() : base("Action")
-        {
-            Exportable = false;
-            Frozen = false;
-        }
-    }
-
     public record Column(string Key)
     {
         public string Key { get; set; } = Key;
