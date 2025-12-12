@@ -4,15 +4,12 @@ namespace Baked.Ui;
 
 public static class Actions
 {
+    public static Emits Emit { get; } = new();
     public static Composables Local { get; } = new();
 
     public static CompositeAction Composite(
         Action<CompositeAction>? options = default
     ) => options.Apply(new());
-
-    public static EmitAction Emit(string @event,
-        Action<EmitAction>? options = default
-    ) => options.Apply(new(@event));
 
     public static RemoteAction Remote(string path, IAction postAction,
         Action<RemoteAction>? options = default
@@ -30,5 +27,16 @@ public static class Actions
         public LocalAction Use(string composable,
             Action<LocalAction>? options = default
         ) => options.Apply(new(composable.StartsWith("use") ? composable : $"use{composable}"));
+    }
+
+    public class Emits
+    {
+        public EmitAction Event(string @event,
+            Action<EmitAction>? options = default
+        ) => options.Apply(new() { Event = @event });
+
+        public EmitAction PageContextValue(string key,
+            Action<EmitAction>? options = default
+        ) => options.Apply(new() { PageContextKey = key });
     }
 }

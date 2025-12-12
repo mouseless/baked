@@ -33,8 +33,14 @@ function Composite({ actionExecuter }) {
 }
 
 function Emit() {
-  async function execute({ action, events }) {
-    await events.emit(action.event);
+  async function execute({ action, contextData, events }) {
+    if(action.event) {
+      await events.emit(action.event, contextData.model);
+    }
+
+    if(action.pageContextKey) {
+      contextData.page[action.pageContextKey] = contextData.model;
+    }
   }
 
   return {

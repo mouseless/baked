@@ -9,12 +9,12 @@
   implementations upon model change or `submit` event
 - `Button` component is now added
 - `useActionExecuter` composable is now added to execute `Composite`, `Emit`,
-  `Local`, `PageContext` and `Remote` actions with given configuration
-- `Page` component now provides an event bus to publish page-wide events
+  `Local` and `Remote` actions with given configuration
+  - `Page` component now provides an event bus to publish page-wide events
 - `SimpleForm` component is now added for rendering a basic form with inputs
 - `Bake` now supports reload and show/hide reactions
-  - Use `ReloadOn` and `ShowOn` to bind them to an `Emit` action event
-  - Use `ReloadWhen` and `ShowWhen` to bind them to a `PageContext` value change
+  - Use `ReloadOn` and `ShowOn` to bind them to an event
+  - Use `ReloadWhen` and `ShowWhen` to bind them to a page context value
 - `Constraints` now allows you to define constraints on values of triggers so
   that reactions can happen only on certain conditions
 
@@ -67,7 +67,7 @@
   - use the new page context action to publish values to page context
     ```csharp
     component.PageContextKey = "key"
-    component.Action = PageContext("key");
+    component.Action = Emit.PageContextValue("key");
     ```
   - use the new reaction system to subscribe to page context changes
     ```csharp
@@ -80,6 +80,8 @@
     content.ShowWhen = "!key:value"; // old usage
     content.ShowWhen("key", IsNot("value")); // new usage
     ```
+- In `useContext` composable, `injectPage` and `providePage` are renamed to
+  `injectPageContext` and `providePageContext` respectively
 
 ## Improvements
 
@@ -97,3 +99,6 @@
     the component path
 - `MissingComponent` component now contains a sample code to help developer add
   the missing component to the path
+- `useContext` now has `injectContextData` helper to get all the default context
+  data `useDataFetcher` requires, you may pass `context.injectContextData()` to
+  `contextData` option of `useDataFetcher`

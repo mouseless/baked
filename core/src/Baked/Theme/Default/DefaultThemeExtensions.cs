@@ -62,7 +62,7 @@ public static class DefaultThemeExtensions
                         pt.Description = l(context.Route.Description);
                         pt.Actions.Add(B.Filter(
                             options: f => f.Placeholder = l("Filter"),
-                            action: Actions.Emit("filter-changed")
+                            action: Actions.Emit.Event("filter-changed")
                         ));
                     });
                     mp.FilterEvent = "filter-changed";

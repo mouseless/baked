@@ -84,16 +84,17 @@ const variants = [
     descriptor: giveMe.aContainer({
       contents: [
         giveMe.aButton({
-          action: giveMe.anEmitAction("clicked")
+          action: giveMe.anEmitAction({ event: "clicked" })
         }),
         giveMe.anInputText({
           testId: "input",
           action: giveMe.aCompositeAction([
-            giveMe.anEmitAction("input-changed"),
-            giveMe.aPageContextAction("input")
+            giveMe.anEmitAction({ event: "input-changed" }),
+            giveMe.anEmitAction({ pageContextKey: "input" })
           ])
         }),
-        giveMe.aText({
+        giveMe.anExpected({
+          testId: "output",
           data: giveMe.aRemoteData({
             path: "/localization-samples/locale-string",
             headers: giveMe.anInlineData({ Authorization: "token-admin-ui" })
@@ -103,12 +104,12 @@ const variants = [
               parts: [
                 giveMe.aTrigger({ on: "clicked" }),
                 giveMe.aTrigger({ on: "input-changed", constraint: giveMe.aConstraint({ is: "emit" }) }),
-                giveMe.aTrigger({ when: "input", constraint: giveMe.aConstraint({ is: "click" }) }),
+                giveMe.aTrigger({ when: "input", constraint: giveMe.aConstraint({ is: "page-context" }) }),
                 giveMe.aTrigger({
                   when: "input",
                   constraint: giveMe.aConstraint({
-                    composable: "useFakeEvaluator",
-                    options: giveMe.anInlineData({ expected: "evaluate" })
+                    composable: "useFakeValidator",
+                    options: giveMe.anInlineData({ expected: "validate" })
                   })
                 })
               ]

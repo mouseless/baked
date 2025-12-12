@@ -19,13 +19,17 @@ public static class Datas
 
     public class ContextDatas
     {
-        public ContextData Parent(
-            Action<ContextData>? options = default
-        ) => options.Apply(new("parent") { Prop = "data" });
-
         public ContextData Model(
             Action<ContextData>? options = default
         ) => options.Apply(new("model"));
+
+        public ContextData Page(
+            Action<ContextData>? options = default
+        ) => options.Apply(new("page"));
+
+        public ContextData Parent(
+            Action<ContextData>? options = default
+        ) => options.Apply(new("parent") { Prop = "data" });
     }
 
     public class Composables

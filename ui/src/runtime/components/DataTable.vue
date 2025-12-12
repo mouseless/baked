@@ -148,8 +148,8 @@ const { schema, data } = defineProps({
 
 const { columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions } = schema;
 
+const contextData = context.injectContextData();
 const dataDescriptor = context.injectDataDescriptor();
-const parentContext = context.injectParentContext();
 
 const dataTable = ref();
 const actionsMenu = ref();
@@ -205,7 +205,7 @@ onMounted(async() => {
     }
 
     if(appendParameters && dataDescriptor) {
-      let parameters = await dataFetcher.fetchParameters({ data: dataDescriptor, contextData: { parent: parentContext } });
+      let parameters = await dataFetcher.fetchParameters({ data: dataDescriptor, contextData });
       if(parameterFormatter) {
         parameters = parameters.map((p, i) => parameterFormatter.format(p, i));
       }

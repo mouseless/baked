@@ -1,9 +1,9 @@
 export default function({ expected } = {}) {
-  function evaluate(data) {
+  function validate(data) {
     return data === expected;
   }
 
   return {
-    evaluate
+    validate
   };
 }

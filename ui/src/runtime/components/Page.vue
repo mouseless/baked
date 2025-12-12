@@ -6,6 +6,7 @@
   />
 </template>
 <script setup>
+import { reactive } from "vue";
 import { useRoute, useRuntimeConfig } from "#app";
 import { useContext, useEvents, useFormat, useHead, usePages } from "#imports";
 import { Bake } from "#components";
@@ -20,6 +21,7 @@ const { public: { components } } = useRuntimeConfig();
 useHead({ title: components?.Page?.title });
 
 context.provideEvents(events.create());
+context.providePageContext(reactive({}));
 
 const name = route.matched[0].name;
 const className = name.replace("[", "").replace("]", "");

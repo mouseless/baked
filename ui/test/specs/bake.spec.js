@@ -135,10 +135,19 @@ test.describe("Action", () =>{
 test.describe("Reaction", () =>{
   const id = "Reaction";
 
-  // Initial data load completes before this text execution
-  // because page is waited till hydration, request count is
-  // expected to be one
-  test("Reacts to given event with reload", async({ page }) => {
+  // Initial data load completes before this text execution because page is
+  // waited till hydration, request count is expected to be one. To catch if
+  // reload occured below code is used
+  // ```js
+  // let reloaded = false;
+  // page.on("request", req => {
+  //   if(req.url().includes("localization-samples/locale-string")) {
+  //     reloaded = true;
+  //   }
+  // });
+  // ```
+
+  test("Reload reaction with composite and emit triggers", async({ page }) => {
     let reloaded = false;
     page.on("request", req => {
       if(req.url().includes("localization-samples/locale-string")) {
@@ -151,5 +160,75 @@ test.describe("Reaction", () =>{
     await button.click();
 
     expect(reloaded).toBe(true);
+  });
+
+  test("Reaction is filtered out when emitted value doesn't match constraint", async({ page }) => {
+    let reloaded = false;
+    page.on("request", req => {
+      if(req.url().includes("localization-samples/locale-string")) {
+        reloaded = true;
+      }
+    });
+    const component = page.getByTestId(id);
+    const input = component.getByTestId("input");
+
+    await input.fill("something else");
+
+    expect(reloaded).toBe(false);
+  });
+
+  test("Reaction occurs when emitted value matches constraint", async({ page }) => {
+    let reloaded = false;
+    page.on("request", req => {
+      if(req.url().includes("localization-samples/locale-string")) {
+        reloaded = true;
+      }
+    });
+    const component = page.getByTestId(id);
+    const input = component.getByTestId("input");
+
+    await input.fill("emit");
+
+    expect(reloaded).toBe(true);
+  });
+
+  test("Page context action and trigger", async({ page }) => {
+    let reloaded = false;
+    page.on("request", req => {
+      if(req.url().includes("localization-samples/locale-string")) {
+        reloaded = true;
+      }
+    });
+    const component = page.getByTestId(id);
+    const input = component.getByTestId("input");
+
+    await input.fill("page-context");
+
+    expect(reloaded).toBe(true);
+  });
+
+  test("Composable constraint", async({ page }) => {
+    let reloaded = false;
+    page.on("request", req => {
+      if(req.url().includes("localization-samples/locale-string")) {
+        reloaded = true;
+      }
+    });
+    const component = page.getByTestId(id);
+    const input = component.getByTestId("input");
+
+    await input.fill("validate");
+
+    expect(reloaded).toBe(true);
+  });
+
+  test("Show/hide reaction with isNot constraint", async({ page }) => {
+    const component = page.getByTestId(id);
+    const input = component.getByTestId("input");
+    await expect(component.getByTestId("output")).toBeAttached();
+
+    await input.fill("hide");
+
+    await expect(component.getByTestId("output")).not.toBeAttached();
   });
 });

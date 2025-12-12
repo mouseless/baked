@@ -244,16 +244,19 @@ export default {
     };
   },
 
-  anEmitAction(event) {
-    event = $("something-happened");
+  anEmitAction({ event, pageContextKey }) {
+    if(!pageContextKey) {
+      event = $(event, "something-happened");
+    }
 
     return {
       type: "Emit",
-      event
+      event,
+      pageContextKey
     };
   },
 
-  anExpected({ testId, showDataParams, value, data } = {}) {
+  anExpected({ testId, showDataParams, value, data, reactions } = {}) {
     testId = $(testId, "test-id");
     showDataParams = $(showDataParams, false);
     value = $(value, "");
@@ -265,19 +268,18 @@ export default {
         testId,
         showDataParams
       },
-      data
+      data,
+      reactions
     };
   },
 
-  aFilter({ placeholder, pageContextKey } = {}) {
+  aFilter({ placeholder } = {}) {
     placeholder = $(placeholder, "Filter");
-    pageContextKey = $(pageContextKey, "filter");
 
     return {
       type: "Filter",
       schema: {
-        placeholder,
-        pageContextKey
+        placeholder
       }
     };
   },
@@ -477,15 +479,6 @@ export default {
     };
   },
 
-  aPageContextAction(key) {
-    key = $(key, "test");
-
-    return {
-      type: "PageContext",
-      key
-    };
-  },
-
   aPageTitle({ title, description, actions } = {}) {
     title = $(title, "Spec: Test Title");
     description = $(description, "Spec: Test description is given for testing purposes");
@@ -663,15 +656,14 @@ export default {
     };
   },
 
-  aText({ value, data, maxLength, reactions } = {}) {
+  aText({ value, data, maxLength } = {}) {
     value = $(value, "Test string");
     data = $(data, this.anInlineData(value));
 
     return {
       type: "Text",
       schema: { maxLength },
-      data,
-      reactions
+      data
     };
   },
 

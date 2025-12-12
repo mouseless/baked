@@ -20,17 +20,17 @@ import { useRoute, useRouter } from "#app";
 import { Bake } from "#components";
 import { useContext, useDataFetcher } from "#imports";
 
+const context = useContext();
+const dataFetcher = useDataFetcher();
 const route = useRoute();
 const router = useRouter();
-const dataFetcher = useDataFetcher();
-const context = useContext();
 
 const { inputs } = defineProps({
   inputs: { type: Array, required: true }
 });
 const emit = defineEmits(["ready", "changed"]);
 
-const parentContext = context.injectParentContext();
+const contextData = context.injectContextData();
 const values = {};
 for(const input of inputs) {
   const query = computed(() => route.query[input.name]);
@@ -128,7 +128,7 @@ async function setDefaults() {
     // only set value if it exists or input has a default
     if(currentValue || input.default) {
       if(!currentValue && input.default) {
-        query[input.name] = await dataFetcher.fetch({ data: input.default, contextData: { parent: parentContext } });
+        query[input.name] = await dataFetcher.fetch({ data: input.default, contextData });
       } else {
         query[input.name] = currentValue;
       }

@@ -30,16 +30,16 @@ context.provideDataDescriptor(descriptor.data);
 
 const path = context.injectPath();
 const events = context.injectEvents();
-const visible = ref(true);
+const contextData = context.injectContextData();
 const is = componentResolver.resolve(descriptor.type, "MissingComponent");
-const parentContext = context.injectParentContext();
-const data = ref(dataFetcher.get({ data: descriptor.data, contextData: { parent: parentContext } }));
+const data = ref(dataFetcher.get({ data: descriptor.data, contextData }));
 const shouldLoad = dataFetcher.shouldLoad(descriptor.data?.type);
 const loading = ref(shouldLoad);
 const executing = ref(false);
+const visible = ref(true);
 const classes = [`b-component--${descriptor.type}`, ...asClasses(name)];
 
-context.provideParentContext({ ...parentContext, data });
+context.provideParentContext({ ...contextData.parent, data });
 context.provideExecuting(executing);
 
 if(descriptor.on) {
@@ -128,7 +128,7 @@ async function load() {
   loading.value = true;
   data.value = await dataFetcher.fetch({
     data: descriptor.data,
-    contextData: { parent: parentContext }
+    contextData
   });
   loading.value = false;
   emit("loaded");
@@ -141,14 +141,14 @@ async function onModelUpdate(newModel) {
 
   if(!descriptor.action) { return; }
 
-  const contextData = { parent: parentContext };
+  const contextDataWithModel = { ...contextData };
   if(newModel) {
-    contextData.model = newModel;
+    contextDataWithModel.model = newModel;
   }
 
   try {
     executing.value = true;
-    await actionExecuter.execute({ action: descriptor.action, contextData, events });
+    await actionExecuter.execute({ action: descriptor.action, contextData: contextDataWithModel, events });
   } finally {
     executing.value = false;
   }
