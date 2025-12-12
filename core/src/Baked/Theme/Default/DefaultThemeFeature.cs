@@ -5,6 +5,7 @@ using Baked.RestApi.Model;
 using Baked.Runtime;
 using Baked.Ui;
 using Humanizer;
+
 using static Baked.Theme.Default.DomainComponents;
 using static Baked.Theme.Default.DomainDatas;
 using static Baked.Ui.Datas;
@@ -107,10 +108,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
                     dtc.Title = data.Label is not null ? l(data.Label) : null;
                     dtc.Exportable = true;
-                    dtc.Component.Data = Context.Parent(options: o =>
-                    {
-                        o.Prop = $"row.{c.Property.Name.Camelize()}";
-                    });
+                    dtc.Component.Data ??= Context.Parent(options: o => o.Prop = $"row.{c.Property.Get<DataAttribute>().Prop}");
                 }
             );
 
