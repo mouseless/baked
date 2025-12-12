@@ -62,17 +62,6 @@ test.describe("Pagination", () => {
   });
 });
 
-test.describe("Row Based Component", () => {
-  const id = "Row Based Component";
-
-  test("component changes based on data", async({ page }) => {
-    const component = page.getByTestId(id);
-
-    await expect(component.getByTestId("component-1")).toHaveText("Data 1");
-    await expect(component.getByTestId("component-2")).toHaveText("Data 2");
-  });
-});
-
 test.describe("Auto Hide Pagination", () => {
   const id = "Auto Hide Pagination";
 
@@ -174,6 +163,36 @@ test.describe("No Record Found", () => {
     const rows = component.locator("td");
 
     await expect(rows).toHaveText("No records found");
+  });
+});
+
+test.describe("Row Actions", () => {
+  const id = "Row Actions";
+
+  test("Displays given action component in last column", async({ page }) => {
+    const component = page.getByTestId(id);
+    const cells = component.locator("td");
+    const cellNo = (x, y) => (x - 1) * 3 + y - 1;
+    const button = cells.nth(cellNo(1, 3)).locator(".b-component--Button");
+
+    await expect(button).toBeAttached();
+    await expect(button).toHaveText("Row Action");
+  });
+
+  test("Provides row data to action", async({ page }) => {
+    const component = page.getByTestId(id);
+    const cells = component.locator("td");
+    const cellNo = (x, y) => (x - 1) * 3 + y - 1;
+    const firstRowButton = cells.nth(cellNo(1, 3)).locator(".b-component--Button");
+    const secondRowButton = cells.nth(cellNo(2, 3)).locator(".b-component--Button");
+
+    await firstRowButton.click();
+
+    await expect(page.locator(primevue.toast.base)).toHaveText(/Row 1/);
+
+    await secondRowButton.click();
+
+    await expect(page.locator(primevue.toast.base)).toHaveText(/Row 2/);
   });
 });
 

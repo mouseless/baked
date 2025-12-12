@@ -1,30 +1,26 @@
 using Baked.Authorization;
+using Baked.Test.Orm;
 
 namespace Baked.Test.Theme;
 
 // TODO - review this in form components
 [AllowAnonymous]
-public class FormSample(TimeProvider _timeProvider)
+public class FormSample(Parents _parents, Func<Parent> _newParent)
 {
-    static readonly List<StateLog> _states = [];
-
-    public void AddState(string state, string reason, int count,
-        CountOptions? countOptions = default
-    )
+    public void NewParent(string name)
     {
-        foreach (var i in Enumerable.Range(0, count))
+        _newParent().With(name);
+    }
+
+    public void ClearParents()
+    {
+        var parents = GetParents();
+        foreach (var parent in parents)
         {
-            _states.Add(new($"{state}-{_timeProvider.GetNow()}", $"State is switched to {state}-{reason}-{i}-{countOptions}: {_timeProvider.GetNow()}"));
+            parent.Delete();
         }
     }
 
-    public void ClearStates()
-    {
-        _states.Clear();
-    }
-
-    public List<StateLog> GetStates() =>
-        _states;
+    public List<Parent> GetParents() =>
+        _parents.By();
 }
-
-public record StateLog(string Id, string Status);

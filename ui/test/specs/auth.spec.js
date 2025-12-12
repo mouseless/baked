@@ -81,6 +81,17 @@ test("refresh token before navigation when access is expired", async({ goto, pag
   await expect(page).toHaveURL("/specs/auth");
 });
 
+test("no token added when fetch anonymous routes", async({ goto, page }) => {
+  const requestPromise = page.waitForRequest(req => req.url().includes("login"));
+  await goto("/specs/auth", { waitUntil: "hydration" });
+  const form = page.locator("form");
+
+  await login(form);
+
+  const request = await requestPromise;
+  expect(request.headers()["authorization"]).toBeUndefined();
+});
+
 test("add access token to fetch requests", async({ goto, page }) => {
   const requestPromise = page.waitForRequest(req => req.url().includes("time-provider-samples/now"));
   const token = giveMe.aToken();

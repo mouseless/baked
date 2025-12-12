@@ -1,6 +1,6 @@
 ﻿namespace Baked.Ui;
 
-public record Conditional
+public record Conditional : IComponentSchema
 {
     public IComponentDescriptor Fallback { get; set; } = Components.Text();
     public List<Condition> Conditions { get; init; } = [];

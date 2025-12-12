@@ -10,9 +10,9 @@ public static class Components
         Action<CardLink>? options = default
     ) => new(options.Apply(new(route, title)));
 
-    public static Conditional Conditional(
+    public static ComponentDescriptor<Conditional> Conditional(
         Action<Conditional>? options = default
-    ) => options.Apply(new());
+    ) => new(options.Apply(new()));
 
     public static Conditional.Condition ConditionalCondition(string prop, object value, IComponentDescriptor component,
         Action<Conditional.Condition>? options = default
@@ -31,17 +31,17 @@ public static class Components
         IData? data = default
     ) => new(options.Apply(new())) { Data = data };
 
-    public static DataTable.Column DataTableColumn(string prop, IComponentDescriptor component,
+    public static DataTable.Column DataTableColumn(string key, IComponentDescriptor component,
         Action<DataTable.Column>? options = default
-    ) => DataTableColumn(prop, options: s =>
+    ) => DataTableColumn(key, options: s =>
     {
         s.Component = Conditional(options: s => s.Fallback = component);
         options.Apply(s);
     });
 
-    public static DataTable.Column DataTableColumn(string prop,
+    public static DataTable.Column DataTableColumn(string key,
         Action<DataTable.Column>? options = default
-    ) => options.Apply(new(prop));
+    ) => options.Apply(new(key));
 
     public static DataTable.Export DataTableExport(string csvSeparator, string fileName,
         Action<DataTable.Export>? options = default

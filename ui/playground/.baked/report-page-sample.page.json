@@ -274,13 +274,15 @@
                   "schema": {
                     "columns": [
                       {
-                        "prop": "label",
+                        "key": "label",
                         "component": {
-                          "fallback": {
-                            "type": "Text",
-                            "schema": {}
-                          },
-                          "conditions": []
+                          "type": "Text",
+                          "schema": {},
+                          "data": {
+                            "type": "Context",
+                            "key": "parent",
+                            "prop": "row.label"
+                          }
                         },
                         "title": "Label",
                         "minWidth": true,
@@ -288,37 +290,43 @@
                         "frozen": true
                       },
                       {
-                        "prop": "column1",
+                        "key": "column1",
                         "component": {
-                          "fallback": {
-                            "type": "Text",
-                            "schema": {}
-                          },
-                          "conditions": []
+                          "type": "Text",
+                          "schema": {},
+                          "data": {
+                            "type": "Context",
+                            "key": "parent",
+                            "prop": "row.column1"
+                          }
                         },
                         "title": "Column 1",
                         "exportable": true
                       },
                       {
-                        "prop": "column2",
+                        "key": "column2",
                         "component": {
-                          "fallback": {
-                            "type": "Text",
-                            "schema": {}
-                          },
-                          "conditions": []
+                          "type": "Text",
+                          "schema": {},
+                          "data": {
+                            "type": "Context",
+                            "key": "parent",
+                            "prop": "row.column2"
+                          }
                         },
                         "title": "Column 2",
                         "exportable": true
                       },
                       {
-                        "prop": "column3",
+                        "key": "column3",
                         "component": {
-                          "fallback": {
-                            "type": "Text",
-                            "schema": {}
-                          },
-                          "conditions": []
+                          "type": "Text",
+                          "schema": {},
+                          "data": {
+                            "type": "Context",
+                            "key": "parent",
+                            "prop": "row.column3"
+                          }
                         },
                         "title": "Column 3",
                         "exportable": true
@@ -423,13 +431,15 @@
                   "schema": {
                     "columns": [
                       {
-                        "prop": "label",
+                        "key": "label",
                         "component": {
-                          "fallback": {
-                            "type": "Text",
-                            "schema": {}
-                          },
-                          "conditions": []
+                          "type": "Text",
+                          "schema": {},
+                          "data": {
+                            "type": "Context",
+                            "key": "parent",
+                            "prop": "row.label"
+                          }
                         },
                         "title": "Label",
                         "minWidth": true,
@@ -437,37 +447,43 @@
                         "frozen": true
                       },
                       {
-                        "prop": "column1",
+                        "key": "column1",
                         "component": {
-                          "fallback": {
-                            "type": "Text",
-                            "schema": {}
-                          },
-                          "conditions": []
+                          "type": "Text",
+                          "schema": {},
+                          "data": {
+                            "type": "Context",
+                            "key": "parent",
+                            "prop": "row.column1"
+                          }
                         },
                         "title": "Column 1",
                         "exportable": true
                       },
                       {
-                        "prop": "column2",
+                        "key": "column2",
                         "component": {
-                          "fallback": {
-                            "type": "Text",
-                            "schema": {}
-                          },
-                          "conditions": []
+                          "type": "Text",
+                          "schema": {},
+                          "data": {
+                            "type": "Context",
+                            "key": "parent",
+                            "prop": "row.column2"
+                          }
                         },
                         "title": "Column 2",
                         "exportable": true
                       },
                       {
-                        "prop": "column3",
+                        "key": "column3",
                         "component": {
-                          "fallback": {
-                            "type": "Text",
-                            "schema": {}
-                          },
-                          "conditions": []
+                          "type": "Text",
+                          "schema": {},
+                          "data": {
+                            "type": "Context",
+                            "key": "parent",
+                            "prop": "row.column3"
+                          }
                         },
                         "title": "Column 3",
                         "exportable": true

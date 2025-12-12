@@ -1,0 +1,45 @@
+{
+  "type": "ContainerPage",
+  "schema": {
+    "contents": [
+      {
+        "type": "SimpleForm",
+        "schema": {
+          "buttonLabel": "NewParent",
+          "inputs": [
+            {
+              "name": "name",
+              "required": true,
+              "component": {
+                "type": "InputText",
+                "schema": {
+                  "testId": "name"
+                }
+              }
+            }
+          ]
+        },
+        "action": {
+          "type": "Remote",
+          "path": "form-sample/new-parent",
+          "method": "POST",
+          "body": {
+            "type": "Context",
+            "key": "model"
+          },
+          "postAction": {
+            "type": "Local",
+            "composable": "useRedirect",
+            "options": {
+              "type": "Inline",
+              "value": {
+                "route": "/form-sample"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "path": "form-sample/new-parent"
+  }
+}

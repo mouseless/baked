@@ -21,18 +21,6 @@
             "component": {
               "type": "CardLink",
               "schema": {
-                "route": "/data-table-sample",
-                "icon": "pi pi-table",
-                "title": "Data Table",
-                "description": "Showcase DataTable component with scrollable and footer options"
-              }
-            }
-          },
-          {
-            "title": "",
-            "component": {
-              "type": "CardLink",
-              "schema": {
                 "route": "/form-sample",
                 "icon": "pi pi-file-edit",
                 "title": "Form",

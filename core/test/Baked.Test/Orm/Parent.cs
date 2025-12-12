@@ -40,6 +40,8 @@ public class Parent(IEntityContext<Parent> _context, Func<Child> _newChild, Chil
         {
             child.Delete();
         }
+
+        _context.Delete(this);
     }
 }
 

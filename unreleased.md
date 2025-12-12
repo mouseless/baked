@@ -14,6 +14,7 @@
   action
   - `Page` component now provides event bus to publish page-wide events
 - `SimpleForm` component is now added for rendering a basic form with inputs
+- `DataTable` now supports row based actions via `ActionTemplate` property
 
 ## Breaking Changes
 
@@ -65,6 +66,9 @@
   data: Composables.UseError()
   ```
 - `None` is renamed to `MissingComponent`
+- `DataTable.Column.Prop` is renamed to `Key`
+- `DataTable.Component` type is changed to `IComponentDescriptor`
+- `Conditional` is changed from `Schema` to `Component`
 
 ## Improvements
 

@@ -12,11 +12,12 @@ public record DataTable : IComponentSchema
     public VirtualScroller? VirtualScrollerOptions { get; set; }
     public Footer? FooterTemplate { get; set; }
     public Export? ExportOptions { get; set; }
+    public Column? ActionTemplate { get; set; }
 
-    public record Column(string Prop)
+    public record Column(string Key)
     {
-        public string Prop { get; set; } = Prop;
-        public Conditional Component { get; set; } = Components.Conditional();
+        public string Key { get; set; } = Key;
+        public IComponentDescriptor Component { get; set; } = Components.Text();
         public string? Title { get; set; }
         public bool? AlignRight { get; set; }
         public bool? MinWidth { get; set; }

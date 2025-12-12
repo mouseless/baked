@@ -24,9 +24,9 @@
     </template>
     <Column
       v-for="column in columns"
-      :key="column.prop"
+      :key="column.key"
       :header="l(column.title)"
-      :field="column.prop"
+      :field="column.key"
       class="text-nowrap"
       :class="{ 'min-w-40': column.minWidth, 'text-right': column.alignRight }"
       :exportable="column.exportable"
@@ -40,23 +40,22 @@
     >
       <template #body="{ data: row, index }">
         <AwaitLoading :skeleton="{ class:'min-h-5' }">
-          <Bake
+          <ProvideParentContext
             v-if="data"
-            :name="`rows/${index}/${column.prop}`"
-            :descriptor="{
-              ...conditional.find(column.component, row.$getRow()),
-              data: {
-                type: 'Inline',
-                value: row[column.prop].value
-              }
-            }"
-          />
+            :data="row.$getRow()"
+            data-key="row"
+          >
+            <Bake
+              :name="`rows/${index}/${column.key}`"
+              :descriptor="column.component"
+            />
+          </ProvideParentContext>
           <span v-else>-</span>
         </AwaitLoading>
       </template>
     </Column>
     <Column
-      v-if="exportOptions"
+      v-if="exportOptions || actionTemplate"
       :pt="{
         bodyCell: { class: 'max-xs:!inset-auto' },
         headerCell: { class: 'max-xs:!inset-auto' }
@@ -66,7 +65,10 @@
       frozen
       align-frozen="right"
     >
-      <template #header>
+      <template
+        v-if="exportOptions"
+        #header
+      >
         <Button
           type="button"
           icon="pi pi-ellipsis-v"
@@ -81,6 +83,23 @@
           :popup="true"
         />
       </template>
+      <template
+        v-if="actionTemplate"
+        #body="{ data: row, index }"
+      >
+        <AwaitLoading :skeleton="{ class:'min-h-5' }">
+          <ProvideParentContext
+            v-if="data"
+            :data="row.$getRow()"
+            data-key="row"
+          >
+            <Bake
+              :name="`rows/${index}/row-actions`"
+              :descriptor="actionTemplate.component"
+            />
+          </ProvideParentContext>
+        </AwaitLoading>
+      </template>
     </Column>
     <ColumnGroup
       v-if="footerTemplate"
@@ -94,21 +113,15 @@
         />
         <Column
           v-for="column in footerTemplate.columns"
-          :key="column.prop"
+          :key="column.key"
           :class="{ 'text-right': column.alignRight }"
         >
           <template #footer>
             <AwaitLoading :skeleton="{ class:'min-h-5' }">
               <Bake
                 v-if="data"
-                :name="`rows/footer/${column.prop}`"
-                :descriptor="{
-                  ...conditional.find(column.component, data),
-                  data: {
-                    type: 'Inline',
-                    value: data[column.prop]
-                  }
-                }"
+                :name="`rows/footer/${column.key}`"
+                :descriptor="column.component"
               />
               <span v-else>-</span>
             </AwaitLoading>
@@ -130,10 +143,9 @@ import { computed, onMounted, ref } from "vue";
 import Column from "primevue/column";
 import { Button, ColumnGroup, DataTable, Menu, Row } from "primevue";
 import { useRuntimeConfig } from "#app";
-import { Bake, AwaitLoading } from "#components";
-import { useComposableResolver, useConditional, useContext, useDataFetcher, useLocalization } from "#imports";
+import { AwaitLoading, Bake, ProvideParentContext } from "#components";
+import { useComposableResolver, useContext, useDataFetcher, useLocalization } from "#imports";
 
-const conditional = useConditional();
 const context = useContext();
 const composableResolver = useComposableResolver();
 const dataFetcher = useDataFetcher();
@@ -146,7 +158,7 @@ const { schema, data } = defineProps({
   data: { type: null, required: true }
 });
 
-const { columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions } = schema;
+const { actionTemplate, columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions } = schema;
 
 const dataDescriptor = context.injectDataDescriptor();
 const parentContext = context.injectParentContext();
