@@ -1,7 +1,7 @@
 {
   "type": "MenuPage",
   "schema": {
-    "filterPageContextKey": "menu-page",
+    "filterEvent": "filter-changed",
     "header": {
       "type": "PageTitle",
       "schema": {
@@ -11,8 +11,11 @@
           {
             "type": "Filter",
             "schema": {
-              "pageContextKey": "menu-page",
               "placeholder": "Filter"
+            },
+            "action": {
+              "type": "Emit",
+              "event": "filter-changed"
             }
           }
         ]

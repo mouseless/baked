@@ -1,9 +1,8 @@
 ﻿using Baked.Domain.Model;
 using Baked.Test.Business;
-using Baked.Test.Theme;
 using Baked.Ui;
 
-namespace Baked.Test.Test;
+namespace Baked.Test.Theme;
 
 public class AddingMissingComponentWhenNoComponentWasConfigured : TestSpec
 {

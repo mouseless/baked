@@ -99,7 +99,7 @@ const { schema } = defineProps({
 
 const { collapsed, content, inputs, localizeTitle, title: titleData } = schema;
 
-const parentContext = context.injectParentContext();
+const contextData = context.injectContextData();
 const path = context.injectPath();
 const collapsedState = computed(() => panelStates[path] ?? collapsed);
 const loaded = ref(!collapsedState.value);
@@ -109,15 +109,15 @@ const popover = ref();
 
 const values = ref({});
 if(inputs.length > 0) {
-  parentContext["parameters"] = values;
+  contextData.parent["parameters"] = values;
 }
 
-const title = ref(dataFetcher.get({ data: titleData, contextData: { parent: parentContext } }));
+const title = ref(dataFetcher.get({ data: titleData, contextData }));
 const shouldLoadTitle = dataFetcher.shouldLoad(titleData.type);
 
 onMounted(async() => {
   if(shouldLoadTitle) {
-    title.value = await dataFetcher.fetch({ data: titleData, contextData: { parent: parentContext } });
+    title.value = await dataFetcher.fetch({ data: titleData, contextData });
   }
 });
 

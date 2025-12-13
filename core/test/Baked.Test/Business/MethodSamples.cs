@@ -39,6 +39,13 @@ public class MethodSamples(ILogger<MethodSamples> _logger)
         _logger.LogInformation($"{nameof(VoidAsync)} was called");
     }
 
+    public async Task<string> GetAsync(int ms)
+    {
+        await Task.Delay(ms);
+
+        return "this is from server";
+    }
+
     public Record RequestClass(string text, int numeric) =>
          new(text, numeric);
 

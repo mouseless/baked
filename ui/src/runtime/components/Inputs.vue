@@ -16,8 +16,8 @@ import { onMounted, ref, watch, reactive } from "vue";
 import { Bake } from "#components";
 import { useContext, useDataFetcher } from "#imports";
 
-const dataFetcher = useDataFetcher();
 const context = useContext();
+const dataFetcher = useDataFetcher();
 
 const { inputs } = defineProps({
   inputs: { type: Array, required: true },
@@ -25,11 +25,11 @@ const { inputs } = defineProps({
 });
 const emit = defineEmits(["ready", "changed"]);
 
-const parentContext = context.injectParentContext();
+const contextData = context.injectContextData();
 const values = reactive({});
 
 for(const input of inputs) {
-  values[input.name] = ref(dataFetcher.get({ data: input.default, contextData: { parent: parentContext } }));
+  values[input.name] = ref(dataFetcher.get({ data: input.default, contextData }));
 }
 
 function checkValue(value) {
@@ -44,7 +44,7 @@ onMounted(async() => {
   for(const input of inputs) {
     if(!dataFetcher.shouldLoad(input.default?.type)) { continue; }
 
-    values[input.name] = await dataFetcher.fetch({ data: input.default, contextData: { parent: parentContext } });
+    values[input.name] = await dataFetcher.fetch({ data: input.default, contextData });
   }
 
   emitChanged();

@@ -59,11 +59,12 @@
             v-for="content in tab.contents"
             :key="`content-${content.key}`"
           >
-            <Bake
-              v-if="content.showWhen ? page[content.showWhen] : true"
-              :name="`tabs/${tab.id}/contents/${content.key}`"
-              :descriptor="content.component"
-            />
+            <template v-if="content.showWhen ? true /* page[content.showWhen] */ : true">
+              <Bake
+                :name="`tabs/${tab.id}/contents/${content.key}`"
+                :descriptor="content.component"
+              />
+            </template>
           </template>
         </template>
         <div
@@ -75,7 +76,7 @@
             :key="`content-${content.key}`"
           >
             <div
-              v-if="content.showWhen ? page[content.showWhen] : true"
+              v-if="content.showWhen ? true /* page[content.showWhen] */ : true"
               :class="{ 'lg:col-span-2': !content.narrow }"
             >
               <Bake
@@ -90,12 +91,11 @@
   </div>
 </template>
 <script setup>
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { Message, Tab, TabList, Tabs } from "primevue";
-import { useContext, useLocalization } from "#imports";
+import { useLocalization } from "#imports";
 import { Bake, DeferredTabContent, QueryBoundInputs, PageTitle } from "#components";
 
-const context = useContext();
 const { localize: l } = useLocalization();
 const { localize: lc } = useLocalization({ group: "ReportPage" });
 
@@ -106,12 +106,11 @@ const { schema } = defineProps({
 
 const { title, inputs, tabs } = schema;
 
-const page = context.injectPage();
 const ready = ref(inputs.length === 0);
 const uniqueKey = ref();
 const currentTab = ref(tabs.length > 0 ? tabs[0].id : "");
-const shownTabs = computed(() => tabs.filter(tab => tab.showWhen ? page[tab.showWhen] : true));
-const lastTab = ref();
+const shownTabs = computed(() => tabs.filter(tab => tab.showWhen ? true /* page[tab.showWhen] */ : true));
+// const lastTab = ref();
 // this could be computed(() => !ready.value), but message gets duplicated when
 // page is refreshed so this variable is not handled separately. this is
 // probably because `Message` is a component that fades in and added to dom in
@@ -127,6 +126,7 @@ for(const tab of tabs) {
 
   // switch to a shown tab when current tab gets hidden upon page context
   // change
+  /*
   watch(
     () => page[tab.showWhen],
     (show, previousShow) => {
@@ -147,6 +147,7 @@ for(const tab of tabs) {
     },
     { immediate: true }
   );
+  */
 }
 
 function onReady(value) {

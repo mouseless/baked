@@ -1,6 +1,6 @@
 ﻿namespace Baked.Ui;
 
-public interface IAction
+public interface IConstraint
 {
     string Type { get; }
 }

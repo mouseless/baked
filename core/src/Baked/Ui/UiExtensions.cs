@@ -39,4 +39,28 @@ public static class UiExtensions
 
         exports.AddRange(componentTypes);
     }
+
+    public static void ReloadOn(this ISupportsReaction source, string @event,
+        IConstraint? constraint = default
+    ) => source.AddReaction("reload", new OnTrigger(@event) { Constraint = constraint });
+
+    public static void ReloadWhen(this ISupportsReaction source, string key,
+        IConstraint? constraint = default
+    ) => source.AddReaction("reload", new WhenTrigger(key) { Constraint = constraint });
+
+    public static void ShowOn(this ISupportsReaction source, string @event,
+        IConstraint? constraint = default
+    ) => source.AddReaction("show", new OnTrigger(@event) { Constraint = constraint });
+
+    public static void ShowWhen(this ISupportsReaction source, string key,
+        IConstraint? constraint = default
+    ) => source.AddReaction("show", new WhenTrigger(key) { Constraint = constraint });
+
+    public static void AddReaction(this ISupportsReaction source, string reaction, ITrigger trigger)
+    {
+        source.Reactions ??= new();
+
+        source.Reactions.TryGetValue(reaction, out var current);
+        source.Reactions[reaction] = current + trigger;
+    }
 }

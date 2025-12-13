@@ -1,6 +1,7 @@
 <template>
   <component
     :is="render()"
+    v-if="visible"
     :key="loading"
     :class="classes"
   >
@@ -8,11 +9,12 @@
   </component>
 </template>
 <script setup>
-import { h, onMounted, onUnmounted, ref } from "vue";
-import { useActionExecuter, useComponentResolver, useContext, useDataFetcher, useFormat } from "#imports";
+import { h, onMounted, onUnmounted, ref, watch } from "vue";
+import { useActionExecuter, useComponentResolver, useConstraintEvaluator, useContext, useDataFetcher, useFormat } from "#imports";
 
 const actionExecuter = useActionExecuter();
 const componentResolver = useComponentResolver();
+const constraintEvaluator = useConstraintEvaluator();
 const context = useContext();
 const dataFetcher = useDataFetcher();
 const { asClasses } = useFormat();
@@ -29,28 +31,43 @@ context.provideDataDescriptor(descriptor.data);
 
 const path = context.injectPath();
 const events = context.injectEvents();
+const contextData = context.injectContextData();
 const is = componentResolver.resolve(descriptor.type, "MissingComponent");
-const parentContext = context.injectParentContext();
-const data = ref(dataFetcher.get({ data: descriptor.data, contextData: { parent: parentContext } }));
+const data = ref(dataFetcher.get({ data: descriptor.data, contextData }));
 const shouldLoad = dataFetcher.shouldLoad(descriptor.data?.type);
 const loading = ref(shouldLoad);
 const executing = ref(false);
+const visible = ref(true);
 const classes = [`b-component--${descriptor.type}`, ...asClasses(name)];
+const eventsToUnsubscribe = [];
 
-context.provideParentContext({ ...parentContext, data });
+context.provideParentContext({ ...contextData.parent, data });
 context.provideExecuting(executing);
-
-// TODO implement remaining reactions
-if(descriptor.on) {
-  Object.keys(descriptor.on).forEach(event => {
-    if(descriptor.on[event] === "Reload") {
-      events.on(event, path, load);
-    }
-  });
-}
 
 if(shouldLoad) {
   context.provideLoading(loading);
+}
+
+if(descriptor.reactions) {
+  const reactions = {
+    reload(success) {
+      if(success) {
+        load();
+      }
+    },
+    show(success) {
+      visible.value = success;
+    }
+  };
+
+  for(const reaction in descriptor.reactions) {
+    const trigger = descriptor.reactions[reaction];
+    const react = reactions[reaction];
+
+    eventsToUnsubscribe.push(
+      ...hook(trigger, react)
+    );
+  }
 }
 
 onMounted(async() => {
@@ -59,12 +76,9 @@ onMounted(async() => {
   await load();
 });
 
-// TODO - review this in form components
 onUnmounted(() => {
-  if(descriptor.on) {
-    Object.keys(descriptor.on).forEach(event =>{
-      events.off(event, path);
-    });
+  for(const event of eventsToUnsubscribe) {
+    events.off(event, `${path}:bake`);
   }
 });
 
@@ -85,7 +99,7 @@ async function load() {
   loading.value = true;
   data.value = await dataFetcher.fetch({
     data: descriptor.data,
-    contextData: { parent: parentContext }
+    contextData
   });
   loading.value = false;
   emit("loaded");
@@ -98,16 +112,42 @@ async function onModelUpdate(newModel) {
 
   if(!descriptor.action) { return; }
 
-  const contextData = { parent: parentContext };
-  if(newModel) {
-    contextData.model = newModel;
-  }
-
   try {
     executing.value = true;
-    await actionExecuter.execute({ action: descriptor.action, contextData, events });
+    await actionExecuter.execute({
+      action: descriptor.action,
+      contextData: { ...contextData, model: newModel },
+      events
+    });
   } finally {
     executing.value = false;
+  }
+}
+
+function hook(trigger, react) {
+  if(trigger.type === "On") {
+    events.on(trigger.on, `${path}:bake`, async value => {
+      react(await constraintEvaluator.evaluate({ constraint: trigger.constraint, value, contextData }));
+    });
+
+    return [trigger.on];
+  } else if(trigger.type === "When") {
+    watch(() => contextData.page[trigger.when], async(value, oldValue) => {
+      if(value === oldValue || value === undefined) { return; }
+
+      react(await constraintEvaluator.evaluate({ constraint: trigger.constraint, value, contextData }));
+    }, { immediate: true });
+
+    return [];
+  } else if(trigger.type === "Composite") {
+    const result = [];
+    for(const part of trigger.parts) {
+      result.push(
+        ...hook(part, react)
+      );
+    }
+
+    return result;
   }
 }
 </script>
