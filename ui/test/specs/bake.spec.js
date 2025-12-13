@@ -2,9 +2,6 @@ import { expect, test } from "@nuxt/test-utils/playwright";
 import primevue from "../utils/locators/primevue";
 
 test.beforeEach(async({ goto, page }) => {
-  await page.route("*/**/form-sample/states", async route => {
-    await route.fulfill({ body: "fake-response" });
-  });
   await page.route("*/**/route-parameters-samples/*", async route => {
     await route.fulfill({ body: "fake-response" });
   });
@@ -72,9 +69,7 @@ test.describe("Data Descriptor", () => {
   });
 
   test("builds path with given params data", async({ page }) => {
-    const requestPromise = page.waitForRequest(req => req.url().includes("/route-parameters-samples"));
-
-    const request = await requestPromise;
+    const request = await page.waitForRequest(req => req.url().includes("/route-parameters-samples"));
     expect(request.url()).toContain("/route-parameters-samples/7b6b67bb-30b5-423e-81b4-a2a0cd59b7f9");
   });
 });
@@ -104,7 +99,6 @@ test.describe("Action", () =>{
   const id = "Action";
 
   test("Execute given composite action", async({ page }) => {
-    const requestPromise = page.waitForRequest(req => req.url().includes("rich-transient-with-datas"));
     const component = page.getByTestId(id);
     const button = component.locator(primevue.button.base);
 
@@ -113,7 +107,7 @@ test.describe("Action", () =>{
     await expect(page.locator(primevue.toast.base)).toBeVisible();
     await expect(page.locator(primevue.toast.summary)).toHaveText("Execute Action");
 
-    const request = await requestPromise;
+    const request = await page.waitForRequest(req => req.url().includes("rich-transient-with-datas"));
     expect(request.method()).toBe("POST");
     expect(request.headers()["authorization"]).toContain("token-admin-ui");
     expect(request.url()).toContain("/rich-transient-with-datas/12/method");

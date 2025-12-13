@@ -82,7 +82,7 @@ const variants = [
       action: giveMe.anEmitAction({ pageContextKey: "test:select-button" })
     }),
     model: ref(),
-    pageContextKeys: ["test:select-button"]
+    pageContextKey: "test:select-button"
   },
   {
     name: "Page Context - Option Label and Value",
@@ -96,7 +96,7 @@ const variants = [
       action: giveMe.anEmitAction({ pageContextKey: "test:select-button" })
     }),
     model: ref(),
-    pageContextKeys: ["test:select-button"]
+    pageContextKey: "test:select-button"
   }
 ];
 </script>

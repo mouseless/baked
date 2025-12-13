@@ -79,11 +79,11 @@
               ➡️  <span :data-testid="`${variant.name}:model`">{{ variant.model }}</span> ⬅️
             </div>
             <div
-              v-if="variant.pageContextKeys"
+              v-if="variant.pageContextKey"
               :data-testid="`${variant.name}:page-context`"
               class="inline-block border-2 border-gray-500 rounded p-2"
             >
-              {{ variant.pageContextKeys.filter(k => page[k]).join(", ") }}
+              {{ pageContext[variant.pageContextKey] }}
             </div>
           </div>
         </div>
@@ -111,7 +111,7 @@ const { title, variants, noLoadingVariant } = defineProps({
   variantClass: { type: String, default: "inline-block" }
 });
 
-const page = reactive({});
+const pageContext = reactive({});
 const description = ref();
 const loaded = ref(false);
 const allVariants = computed(() => {
@@ -131,7 +131,7 @@ const allVariants = computed(() => {
 });
 
 context.provideEvents(events.create());
-context.providePageContext(page);
+context.providePageContext(pageContext);
 
 onMounted(async() => {
   const specs = await pages.fetch("specs");

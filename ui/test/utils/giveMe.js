@@ -515,15 +515,16 @@ export default {
     };
   },
 
-  aRemoteAction({ path, query, params, headers, body, postAction } = {}) {
+  aRemoteAction({ path, method, headers, query, params, body, postAction } = {}) {
     path = $(path, "/fake-remote");
 
     return {
       type: "Remote",
       path,
+      method,
+      headers,
       query,
       params,
-      headers,
       body,
       postAction
     };
@@ -578,7 +579,7 @@ export default {
     return screens.find(screen => screen.name === name) || null;
   },
 
-  aSelect({ label, localizeLabel, optionLabel, optionValue, showClear, stateful, data, inline } = {}) {
+  aSelect({ label, localizeLabel, optionLabel, optionValue, showClear, stateful, data, inline, action } = {}) {
     label = $(label, "Spec: Test");
     localizeLabel = $(localizeLabel, false);
     showClear = $(showClear, false);
@@ -596,7 +597,8 @@ export default {
     return {
       type: "Select",
       schema: { label, localizeLabel, optionLabel, optionValue, showClear, stateful },
-      data
+      data,
+      action
     };
   },
 
