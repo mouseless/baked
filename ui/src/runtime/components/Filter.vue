@@ -17,7 +17,7 @@ const { localize: l } = useLocalization();
 const { schema } = defineProps({
   schema: { type: null, required: true }
 });
-defineModel({ type: null, required: true });
+const model = defineModel({ type: null, required: true });
 
 const { placeholder } = schema;
 </script>

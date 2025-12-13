@@ -12,15 +12,20 @@
   </Bake>
 </template>
 <script setup>
-import { ref, watch } from "vue";
+import { reactive, ref, watch } from "vue";
 import { useRoute } from "#app";
 import { Toast } from "primevue";
-import { useLayouts, usePages } from "#imports";
+import { useContext, useEvents, useLayouts, usePages } from "#imports";
 import { Bake } from "#components";
 
-const route = useRoute();
+const context = useContext();
+const events = useEvents();
 const layouts = useLayouts();
 const pages = usePages();
+const route = useRoute();
+
+context.provideEvents(events.create());
+context.providePageContext(reactive({}));
 
 const descriptor = ref(await findLayout(route.params.baked?.[0]));
 watch(

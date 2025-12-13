@@ -29,7 +29,7 @@ export default {
   },
 
   aButton({ action, icon, label } = {}) {
-    label = $(label, "Button Title");
+    label = $(label, "Button");
 
     return {
       type: "Button",
@@ -273,14 +273,15 @@ export default {
     };
   },
 
-  aFilter({ placeholder } = {}) {
+  aFilter({ placeholder, action } = {}) {
     placeholder = $(placeholder, "Filter");
 
     return {
       type: "Filter",
       schema: {
         placeholder
-      }
+      },
+      action
     };
   },
 
@@ -346,7 +347,7 @@ export default {
     return { name, required, default: default_, defaultSelfManaged, component };
   },
 
-  anInputText({ testId, defaultValue } = {}) {
+  anInputText({ testId, defaultValue, action } = {}) {
     testId = $(testId, "test-input");
     defaultValue = $(defaultValue, null);
 
@@ -355,7 +356,8 @@ export default {
       schema: {
         testId,
         defaultValue
-      }
+      },
+      action
     };
   },
 
@@ -598,7 +600,7 @@ export default {
     };
   },
 
-  aSelectButton({ allowEmpty, localizeLabel, optionLabel, optionValue, stateful, data, inline } = {}) {
+  aSelectButton({ allowEmpty, localizeLabel, optionLabel, optionValue, stateful, data, inline, action } = {}) {
     data = $(data, ["Test Option 1", "Test Option 2"]);
     inline = $(inline, true);
     allowEmpty = $(allowEmpty, false);
@@ -614,7 +616,8 @@ export default {
     return {
       type: "SelectButton",
       schema: { allowEmpty, localizeLabel, optionLabel, optionValue, stateful },
-      data
+      data,
+      action
     };
   },
 

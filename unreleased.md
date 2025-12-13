@@ -103,3 +103,5 @@
   data `useDataFetcher` requires, so that you can pass
   `context.injectContextData()` directly to `contextData` option when fetching
   data using `useDataFetcher`
+- `Layout` now supports app-wide `pageContext` and `events` that are different
+  from those coming from `Page` which are page-wide

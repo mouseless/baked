@@ -1,9 +1,12 @@
 <template>
-  <span :data-testid="testId">{{ value }}</span>
+  <AwaitLoading :skeleton="{ height: '1.5em', width: '10em' }">
+    <span :data-testid="testId">{{ value }}</span>
+  </AwaitLoading>
 </template>
 <script setup>
 import { onMounted, ref } from "vue";
 import { useContext, useDataFetcher } from "#imports";
+import { AwaitLoading } from "#components";
 
 const context = useContext();
 const dataFetcher = useDataFetcher();

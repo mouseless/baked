@@ -8,7 +8,9 @@ export default function() {
   };
 
   async function evaluate({ constraint, value, contextData }) {
-    const evaluator = constraints[constraint?.type];
+    if(!constraint) { return true; }
+
+    const evaluator = constraints[constraint.type];
 
     return await evaluator.evaluate({ constraint, contextData, value });
   }

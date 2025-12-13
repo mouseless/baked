@@ -52,8 +52,8 @@ const variants = [
         giveMe.anInput({
           component: giveMe.aSelectButton({
             data: ["SHOW"],
-            selectionPageContextKey: "selection-is",
-            allowEmpty: true
+            allowEmpty: true,
+            action: giveMe.anEmitAction({ pageContextKey: "selection" })
           })
         })
       ],
@@ -65,7 +65,9 @@ const variants = [
             giveMe.aReportPageTabContent(),
             giveMe.aReportPageTabContent({
               component: giveMe.anExpected({ testId: "content-1", value: "CONTENT 1" }),
-              showWhen: "selection-is:SHOW"
+              reactions: {
+                show: giveMe.aTrigger({ when: "selection", constraint: giveMe.aConstraint({ is: "SHOW" }) })
+              }
             })
           ]
         }),
@@ -76,7 +78,9 @@ const variants = [
           contents: [
             giveMe.aReportPageTabContent({
               component: giveMe.anExpected({ testId: "content-2", value: "CONTENT 2" }),
-              showWhen: "selection-is:SHOW"
+              reactions: {
+                show: giveMe.aTrigger({ when: "selection", constraint: giveMe.aConstraint({ is: "SHOW" }) })
+              }
             })
           ]
         })

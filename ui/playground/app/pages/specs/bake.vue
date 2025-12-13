@@ -84,6 +84,7 @@ const variants = [
     descriptor: giveMe.aContainer({
       contents: [
         giveMe.aButton({
+          label: "Spec: Reload",
           action: giveMe.anEmitAction({ event: "clicked" })
         }),
         giveMe.anInputText({
@@ -96,7 +97,7 @@ const variants = [
         giveMe.anExpected({
           testId: "output",
           data: giveMe.aRemoteData({
-            path: "/localization-samples/locale-string",
+            path: "/method-samples/async?ms=10",
             headers: giveMe.anInlineData({ Authorization: "token-admin-ui" })
           }),
           reactions: {

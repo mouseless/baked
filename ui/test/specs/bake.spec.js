@@ -11,7 +11,7 @@ test.beforeEach(async({ goto, page }) => {
   await page.route("*/**/rich-transient-with-datas/12/method", async route => {
     await route.fulfill({ body: "fake-response" });
   });
-  await page.route("*/**/localization-samples/locale-string", async route => {
+  await page.route("*/**/method-samples/async", async route => {
     await route.fulfill({ body: "fake-response" });
   });
   await goto("/specs/bake?val=2", { waitUntil: "hydration" });
@@ -141,7 +141,7 @@ test.describe("Reaction", () =>{
   // ```js
   // let reloaded = false;
   // page.on("request", req => {
-  //   if(req.url().includes("localization-samples/locale-string")) {
+  //   if(req.url().includes("method-samples/async")) {
   //     reloaded = true;
   //   }
   // });
@@ -150,7 +150,7 @@ test.describe("Reaction", () =>{
   test("Reload reaction with composite and emit triggers", async({ page }) => {
     let reloaded = false;
     page.on("request", req => {
-      if(req.url().includes("localization-samples/locale-string")) {
+      if(req.url().includes("method-samples/async")) {
         reloaded = true;
       }
     });
@@ -165,7 +165,7 @@ test.describe("Reaction", () =>{
   test("Reaction is filtered out when emitted value doesn't match constraint", async({ page }) => {
     let reloaded = false;
     page.on("request", req => {
-      if(req.url().includes("localization-samples/locale-string")) {
+      if(req.url().includes("method-samples/async")) {
         reloaded = true;
       }
     });
@@ -180,7 +180,7 @@ test.describe("Reaction", () =>{
   test("Reaction occurs when emitted value matches constraint", async({ page }) => {
     let reloaded = false;
     page.on("request", req => {
-      if(req.url().includes("localization-samples/locale-string")) {
+      if(req.url().includes("method-samples/async")) {
         reloaded = true;
       }
     });
@@ -195,7 +195,7 @@ test.describe("Reaction", () =>{
   test("Page context action and trigger", async({ page }) => {
     let reloaded = false;
     page.on("request", req => {
-      if(req.url().includes("localization-samples/locale-string")) {
+      if(req.url().includes("method-samples/async")) {
         reloaded = true;
       }
     });
@@ -210,7 +210,7 @@ test.describe("Reaction", () =>{
   test("Composable constraint", async({ page }) => {
     let reloaded = false;
     page.on("request", req => {
-      if(req.url().includes("localization-samples/locale-string")) {
+      if(req.url().includes("method-samples/async")) {
         reloaded = true;
       }
     });
