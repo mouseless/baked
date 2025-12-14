@@ -32,7 +32,11 @@
             "method": "DELETE",
             "postAction": {
               "type": "Emit",
-              "event": "clear-states"
+              "event": "clear-states",
+              "data": {
+                "type": "Context",
+                "key": "response"
+              }
             }
           }
         }

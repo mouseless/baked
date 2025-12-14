@@ -30,6 +30,10 @@ public static class Datas
         public ContextData Parent(
             Action<ContextData>? options = default
         ) => options.Apply(new("parent") { Prop = "data" });
+
+        public ContextData Response(
+            Action<ContextData>? options = default
+        ) => options.Apply(new("response"));
     }
 
     public class Composables

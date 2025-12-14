@@ -15,7 +15,11 @@
             },
             "action": {
               "type": "Emit",
-              "event": "filter-changed"
+              "event": "filter-changed",
+              "data": {
+                "type": "Context",
+                "key": "model"
+              }
             }
           }
         ]

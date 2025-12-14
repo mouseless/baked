@@ -34,12 +34,15 @@
 - `TypeWithOnlyGetIsReportPage` UX feature is removed, and adding `ReportPage`
   component to a type is moved to `DefaultThemeFeature`
 - `InjectedData` is renamed to `ContextData`
-  - `Injected()` is now removed, use `Model`, `Page` and `Model` factory methods
+  - `Injected()` is now removed, use `Context` property
+    - Use `Context.Model(...)` to access model data during actions
     - `Parent` injected data now has `data` and `parameters` properties
       ```csharp
       Context.Parent(options: cd => cd.Prop = "parameters")
       ```
-    - `Page` now allows access to page context values using context data
+    - Use `Context.Page(...)` to access to page context values
+    - Use `Context.Response(...)` to access to remote action's response which is
+      available only for the post action of a remote action
   - Data keys are removed
   - `Prop` now supports property chaining
   - `useContext` methods;
@@ -93,7 +96,7 @@
 - `RemoveComponent` and `RemoveSchema` helper extensions are now added
 - `AwaitLoading` utility component is now added which contains slots to help
   rendering skeleton and content according to `loading` state
-- `InjectedData`, now `ContextData` now has `TargetProp` property to map give
+- `InjectedData`, now `ContextData`, now has `TargetProp` property to map give
   `Prop` key value to corresponding property
 - `UiLayer` now has `MinConventionOrder` and `MaxConventionOrder` to allow
   inserting conventions before or after all conventions

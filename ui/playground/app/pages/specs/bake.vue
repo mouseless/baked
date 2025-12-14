@@ -72,7 +72,10 @@ const variants = [
           query: giveMe.theQueryData(),
           params: giveMe.anInlineData({ id: 12 }),
           body: giveMe.anInlineData({ text: "text" }),
-          postAction: giveMe.aLocalAction({ showMessage: "Execute Post Action" })
+          postAction: giveMe.aLocalAction({
+            composable: "useShowMessage",
+            options: giveMe.aContextData({ key: "response", targetProp: "message" })
+          })
         })
       ]),
       label: "Spec: Button",

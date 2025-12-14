@@ -133,14 +133,15 @@ export default {
     };
   },
 
-  aContextData({ key, prop } = {}) {
+  aContextData({ key, prop, targetProp } = {}) {
     key = $(key, "parent");
-    prop = $(prop, "data");
+    prop = $(prop, key === "parent" ? "data" : undefined);
 
     return {
       type: "Context",
       key,
-      prop
+      prop,
+      targetProp
     };
   },
 
@@ -244,15 +245,18 @@ export default {
     };
   },
 
-  anEmitAction({ event, pageContextKey }) {
+  anEmitAction({ event, pageContextKey, data }) {
     if(!pageContextKey) {
       event = $(event, "something-happened");
     }
 
+    data = $(data, this.aContextData({ key: "model" }));
+
     return {
       type: "Emit",
       event,
-      pageContextKey
+      pageContextKey,
+      data
     };
   },
 

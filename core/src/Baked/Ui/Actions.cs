@@ -33,10 +33,10 @@ public static class Actions
     {
         public EmitAction Event(string @event,
             Action<EmitAction>? options = default
-        ) => options.Apply(new() { Event = @event });
+        ) => options.Apply(new() { Event = @event, Data = Context.Model() });
 
         public EmitAction PageContextValue(string key,
             Action<EmitAction>? options = default
-        ) => options.Apply(new() { PageContextKey = key });
+        ) => options.Apply(new() { PageContextKey = key, Data = Context.Model() });
     }
 }

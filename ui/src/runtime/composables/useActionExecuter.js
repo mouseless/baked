@@ -33,13 +33,17 @@ function Composite({ actionExecuter }) {
 }
 
 function Emit() {
+  const dataFetcher = useDataFetcher();
+
   async function execute({ action, contextData, events }) {
+    const data = action.data ? await dataFetcher.fetch({ data: action.data, contextData }) : undefined;
+
     if(action.event) {
-      await events.emit(action.event, contextData.model);
+      await events.emit(action.event, data);
     }
 
     if(action.pageContextKey) {
-      contextData.page[action.pageContextKey] = contextData.model;
+      contextData.page[action.pageContextKey] = data;
     }
   }
 
@@ -82,7 +86,7 @@ function Remote({ actionExecuter }) {
     const body = action.method === "GET" ? null
       : (action.body ? unref.deepUnref(await dataFetcher.fetch({ data: action.body, contextData })) : { });
 
-    await $fetch(pathBuilder.build(action.path, params), {
+    const response = await $fetch(pathBuilder.build(action.path, params), {
       baseURL: apiBaseURL,
       method: action.method,
       headers: headers,
@@ -90,7 +94,11 @@ function Remote({ actionExecuter }) {
       body: body
     });
 
-    await actionExecuter.execute({ action: action.postAction, contextData, events });
+    await actionExecuter.execute({
+      action: action.postAction,
+      contextData: { ...contextData, response },
+      events
+    });
   }
 
   return {

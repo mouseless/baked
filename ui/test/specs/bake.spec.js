@@ -5,7 +5,7 @@ test.beforeEach(async({ goto, page }) => {
   await page.route("*/**/route-parameters-samples/*", async route => {
     await route.fulfill({ body: "fake-response" });
   });
-  await page.route("*/**/rich-transient-with-datas/12/method", async route => {
+  await page.route("*/**/rich-transient-with-datas/**/*", async route => {
     await route.fulfill({ body: "fake-response" });
   });
   await page.route("*/**/method-samples/async", async route => {
@@ -115,18 +115,18 @@ test.describe("Action", () =>{
     expect(request.postDataJSON()).toEqual({ text: "text" });
   });
 
-  test("Execute given remote post action", async({ page }) => {
+  test("Execute given remote post action using response", async({ page }) => {
     const component = page.getByTestId(id);
     const button = component.locator(primevue.button.base);
 
     await button.click();
 
     await expect(page.locator(primevue.toast.base).last()).toBeVisible();
-    await expect(page.locator(primevue.toast.summary).last()).toHaveText("Execute Post Action");
+    await expect(page.locator(primevue.toast.summary).last()).toHaveText("fake-response");
   });
 });
 
-test.describe("Reaction", () =>{
+test.describe("Reaction", () => {
   const id = "Reaction";
 
   // Initial data load completes before this text execution because page is
