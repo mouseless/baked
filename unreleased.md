@@ -12,6 +12,7 @@
   `Local` and `Remote` actions with given configuration
   - `Page` component now provides an event bus to publish page-wide events
 - `SimpleForm` component is now added for rendering a basic form with inputs
+- `DataTable` now supports row based actions via `ActionTemplate` property
 - `Bake` now supports reload and show/hide reactions
   - Use `ReloadOn` and `ShowOn` to bind them to an event
   - Use `ReloadWhen` and `ShowWhen` to bind them to a page context value
@@ -66,6 +67,9 @@
   }
   ```
 - `None` is renamed to `MissingComponent`
+- `DataTable.Column.Prop` is renamed to `Key`
+- `DataTable.Component` type is changed to `IComponentDescriptor`
+- `Conditional` is changed from `Schema` to `Component`
 - `*PageContextKey` properties are now removed from components and schemas
   - use the new emit action to publish values to page context
     ```csharp

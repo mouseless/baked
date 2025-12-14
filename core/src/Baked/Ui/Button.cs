@@ -5,4 +5,6 @@ public record Button(string Label)
 {
     public string? Icon { get; set; }
     public string Label { get; set; } = Label;
+    public string? Variant { get; set; }
+    public bool? Rounded { get; set; }
 }

@@ -14,16 +14,16 @@ public static class CustomThemeExtensions
         [
             r => r.Index() with { Page = p => p.Described(d => d.Menu()) },
             r => r.Root("/cache-samples", "Cache", "pi pi-database") with { Page = p => p.Generated(g => g.Type<CacheSamples, ReportPage>()), Description = "Showcases the cache behavior" },
-            r => r.Root("/data-table-sample", "Data Table", "pi pi-table") with { Page = p => p.Generated(g => g.Type<DataTableSample, ReportPage>()), Description = "Showcase DataTable component with scrollable and footer options" },
             // TODO - review this in form components
             r => r.Root("/form-sample", "Form", "pi pi-file-edit") with { Page = p => p.Generated(g => g.Type<FormSample, ReportPage>()), Description = "Showcases action, form components and events" },
-            r => r.Child("/form-sample/new-state", "New State ", "/form-sample") with { Page = p => p.Generated(g => g.Method<FormSample, ContainerPage>(nameof(FormSample.AddState))), SideMenu= false },
+            r => r.Child("/form-sample/new-parent", "New Parent", "/form-sample") with { Page = p => p.Generated(g => g.Method<FormSample, ContainerPage>(nameof(FormSample.NewParent))), SideMenu= false },
             r => r.Root("/report-page-sample", "Report", "pi pi-file") with { Page = p => p.Generated(g => g.Type<ReportPageSample, ReportPage>()), Description = "Showcases a report layout with tabs and data panels"},
             r => r.Dynamic("/route-parameters-sample/[id]", "Route Parameters") with { Page = p => p.Generated(g => g.Type<RouteParametersSample, ContainerPage>()), Description = "Showcase route parameter support" },
             r => r.Root("/specs", "Specs", "pi pi-list-check") with { Page = p => p.Described(d => d.Menu()), Description = "All UI Specs are listed here" },
 
             // Behavior
             r => r.Child("/specs/bake", "Bake", "/specs") with { Icon = "pi pi-microchip", Description = "The core component that renders a dynamic component using given descriptor", Section = "Behavior" },
+            r => r.Child("/specs/conditional", "Conditional", "/specs") with { Icon = "pi pi-microchip", Description = "Allow rendering component based on configured condition", Section = "Behavior" },
             r => r.Child("/specs/custom-css", "Custom CSS", "/specs") with { Icon = "pi pi-microchip", Description = "Allow custom configuration to define custom css and more", Section = "Behavior" },
             r => r.Child("/specs/inputs", "Inputs", "/specs") with { Icon = "pi pi-microchip", Description = "Manage inputs through emits", Section = "Behavior" },
             r => r.Child("/specs/query-bound-inputs", "Query Bound Inputs", "/specs") with { Icon = "pi pi-microchip", Description = "Sync and manage parameters in query string", Section = "Behavior" },

@@ -108,11 +108,8 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
                     dtc.Title = data.Label is not null ? l(data.Label) : null;
                     dtc.Exportable = true;
+                    dtc.Component.Data ??= Context.Parent(options: o => o.Prop = $"row.{data.Prop}");
                 }
-            );
-            builder.Conventions.AddPropertySchema(
-                schema: (c, cc) => PropertyConditional(c.Property, cc),
-                when: c => c.Property.Has<DataAttribute>()
             );
 
             // Pages

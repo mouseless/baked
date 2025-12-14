@@ -28,12 +28,12 @@ export default {
     return { sample: "response" };
   },
 
-  aButton({ action, icon, label } = {}) {
+  aButton({ action, icon, label, variant, rounded } = {}) {
     label = $(label, "Button");
 
     return {
       type: "Button",
-      schema: { icon, label },
+      schema: { icon, label, variant, rounded },
       action
     };
   },
@@ -81,18 +81,25 @@ export default {
     };
   },
 
-  aConditional({ testId, fallback, conditions } = {}) {
+  aConditional({ testId, fallback, conditions, data } = {}) {
     testId = $(testId, "test");
     fallback = $(fallback, this.anExpected(testId));
     conditions = $(conditions, []);
 
-    return { fallback, conditions };
+    return {
+      type: "Conditional",
+      schema: {
+        fallback,
+        conditions
+      },
+      data
+    };
   },
 
-  aConditionalCondition({ prop, value, testId } = {}) {
+  aConditionalCondition({ prop, value, testId, component } = {}) {
     prop = $(prop, "testProp");
     value = $(value, "test-value");
-    const component = this.anExpected({ testId });
+    component = $(component, this.anExpected({ testId }));
 
     return { prop, value, component };
   },
@@ -158,7 +165,7 @@ export default {
     };
   },
 
-  aDataTable({ columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions, data } = {}) {
+  aDataTable({ actionTemplate, columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions, data } = {}) {
     columns = $(columns, [
       this.aDataTableColumn({ prop: "test" })
     ]);
@@ -175,22 +182,28 @@ export default {
 
     return {
       type: "DataTable",
-      schema: { columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions },
+      schema: { actionTemplate, columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions },
       data: this.anInlineData(data)
     };
   },
 
-  aDataTableColumn({ title, prop, alignRight, minWidth, component, exportable, frozen } = {}) {
+  aDataTableColumn({ title, key, alignRight, minWidth, component, exportable, frozen, footer } = {}) {
     title = $(title, "Spec: Test");
-    prop = $(prop, "test");
+    key = $(key, "test");
     alignRight = $(alignRight, false);
     minWidth = $(minWidth, false);
-    component = $(component, this.aConditional());
+    component = $(component,
+      this.anExpected({
+        data: footer ?
+          this.aContextData({ key: "parent", prop: `data.${key}` }) :
+          this.aContextData({ key: "parent", prop: `row.${key}` })
+      })
+    );
     exportable = $(exportable, false);
 
     return {
       title,
-      prop,
+      key,
       alignRight,
       minWidth,
       component,

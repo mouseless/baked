@@ -8,7 +8,7 @@
         {
           "type": "Button",
           "schema": {
-            "label": "AddState"
+            "label": "New Parent"
           },
           "action": {
             "type": "Local",
@@ -16,7 +16,7 @@
             "options": {
               "type": "Inline",
               "value": {
-                "route": "/form-sample/new-state"
+                "route": "/form-sample/new-parent"
               }
             }
           }
@@ -24,15 +24,15 @@
         {
           "type": "Button",
           "schema": {
-            "label": "ClearStates"
+            "label": "Clear Parents"
           },
           "action": {
             "type": "Remote",
-            "path": "form-sample/states",
+            "path": "form-sample/parents",
             "method": "DELETE",
             "postAction": {
               "type": "Emit",
-              "event": "clear-states"
+              "event": "clear-parents"
             }
           }
         }
@@ -49,7 +49,7 @@
               "schema": {
                 "title": {
                   "type": "Inline",
-                  "value": "GetStates"
+                  "value": "GetParents"
                 },
                 "localizeTitle": true,
                 "inputs": [],
@@ -58,16 +58,20 @@
                   "schema": {
                     "columns": [
                       {
-                        "prop": "status",
+                        "key": "name",
                         "component": {
-                          "fallback": {
-                            "type": "Text",
-                            "schema": {}
-                          },
-                          "conditions": []
+                          "type": "Text",
+                          "schema": {},
+                          "data": {
+                            "type": "Context",
+                            "key": "parent",
+                            "prop": "row.name"
+                          }
                         },
-                        "title": "Status",
-                        "exportable": true
+                        "title": "Name",
+                        "minWidth": true,
+                        "exportable": true,
+                        "frozen": true
                       }
                     ],
                     "dataKey": "id",
@@ -75,18 +79,47 @@
                     "rows": 5,
                     "exportOptions": {
                       "csvSeparator": ";",
-                      "fileName": "GetStates.ExportFileName",
+                      "fileName": "GetParents.ExportFileName",
                       "formatter": "useCsvFormatter",
                       "buttonIcon": "pi pi-download",
                       "buttonLabel": "Export as CSV",
                       "appendParameters": true,
                       "parameterSeparator": "_",
                       "parameterFormatter": "useLocaleParameterFormatter"
+                    },
+                    "actionTemplate": {
+                      "key": "Actions",
+                      "component": {
+                        "type": "Button",
+                        "schema": {
+                          "icon": "pi pi-trash",
+                          "label": "",
+                          "variant": "text",
+                          "rounded": true
+                        },
+                        "action": {
+                          "type": "Remote",
+                          "path": "parents/{id:guid}/",
+                          "method": "DELETE",
+                          "params": {
+                            "type": "Context",
+                            "key": "parent",
+                            "prop": "row"
+                          },
+                          "postAction": {
+                            "type": "Emit",
+                            "event": "delete"
+                          }
+                        }
+                      },
+                      "alignRight": true,
+                      "exportable": false,
+                      "frozen": true
                     }
                   },
                   "data": {
                     "type": "Remote",
-                    "path": "form-sample/states",
+                    "path": "form-sample/parents",
                     "query": {
                       "type": "Computed",
                       "composable": "useNuxtRoute",
@@ -100,14 +133,23 @@
                   },
                   "reactions": {
                     "reload": {
-                      "type": "On",
-                      "on": "clear-states"
+                      "type": "Composite",
+                      "parts": [
+                        {
+                          "type": "On",
+                          "on": "clear-parents"
+                        },
+                        {
+                          "type": "On",
+                          "on": "delete"
+                        }
+                      ]
                     }
                   }
                 }
               }
             },
-            "key": "get-states"
+            "key": "get-parents"
           }
         ]
       }

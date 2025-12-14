@@ -42,6 +42,18 @@
             }
           },
           {
+            "title": "Conditional",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/conditional",
+                "icon": "pi pi-microchip",
+                "title": "Conditional",
+                "description": "Allow rendering component based on configured condition"
+              }
+            }
+          },
+          {
             "title": "Custom CSS",
             "component": {
               "type": "CardLink",

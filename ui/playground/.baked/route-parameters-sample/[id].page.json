@@ -16,13 +16,15 @@
             "schema": {
               "columns": [
                 {
-                  "prop": "value",
+                  "key": "value",
                   "component": {
-                    "fallback": {
-                      "type": "Text",
-                      "schema": {}
-                    },
-                    "conditions": []
+                    "type": "Text",
+                    "schema": {},
+                    "data": {
+                      "type": "Context",
+                      "key": "parent",
+                      "prop": "row.value"
+                    }
                   },
                   "title": "Value",
                   "exportable": true
@@ -64,12 +66,6 @@
                     "property": "params"
                   }
                 }
-              }
-            },
-            "reactions": {
-              "reload": {
-                "type": "On",
-                "on": "clear-states"
               }
             }
           }
