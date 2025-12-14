@@ -13,7 +13,7 @@ public static class DomainActions
         Action<RemoteAction>? options = default
     ) => Remote(method.GetAction().GetRoute(),
         postAction: Emit.Event(method.Name.Kebaberize(),
-            options: ea => ea.Data = Context.Response()
+            options: ea => ea.Data = method.DefaultOverload.ReturnsVoid() ? null : Context.Response()
         ),
         options: ra =>
         {

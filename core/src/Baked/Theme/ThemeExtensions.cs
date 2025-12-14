@@ -78,6 +78,9 @@ public static class ThemeExtensions
     public static bool ReturnsList(this MethodOverloadModel methodOverload) =>
         methodOverload.ReturnType.SkipTask().IsAssignableTo<IList>();
 
+    public static bool ReturnsVoid(this MethodOverloadModel methodOverload) =>
+        methodOverload.ReturnType.Is(typeof(void)) || methodOverload.ReturnType.Is<Task>();
+
     public static PageBuilder Method<TDomainType, TPageSchema>(this Page.Generator _, string methodName) where TPageSchema : IPageSchema =>
         context =>
         {
