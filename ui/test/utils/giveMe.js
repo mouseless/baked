@@ -48,18 +48,25 @@ export default {
     };
   },
 
-  aConditional({ testId, fallback, conditions } = {}) {
+  aConditional({ testId, fallback, conditions, data } = {}) {
     testId = $(testId, "test");
     fallback = $(fallback, this.anExpected(testId));
     conditions = $(conditions, []);
 
-    return { fallback, conditions };
+    return {
+      type: "Conditional",
+      schema: {
+        fallback,
+        conditions
+      },
+      data
+    };
   },
 
-  aConditionalCondition({ prop, value, testId } = {}) {
+  aConditionalCondition({ prop, value, testId, component } = {}) {
     prop = $(prop, "testProp");
     value = $(value, "test-value");
-    const component = this.anExpected({ testId });
+    component = $(component, this.anExpected({ testId }));
 
     return { prop, value, component };
   },
@@ -89,7 +96,7 @@ export default {
     };
   },
 
-  aDataTable({ columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions, data } = {}) {
+  aDataTable({ actionTemplate, columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions, data } = {}) {
     columns = $(columns, [
       this.aDataTableColumn({ prop: "test" })
     ]);
@@ -106,22 +113,22 @@ export default {
 
     return {
       type: "DataTable",
-      schema: { columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions },
+      schema: { actionTemplate, columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions },
       data: { type: "Inline", value: data }
     };
   },
 
-  aDataTableColumn({ title, prop, alignRight, minWidth, component, exportable, frozen } = {}) {
+  aDataTableColumn({ title, key, alignRight, minWidth, component, exportable, frozen } = {}) {
     title = $(title, "Spec: Test");
-    prop = $(prop, "test");
+    key = $(key, "test");
     alignRight = $(alignRight, false);
     minWidth = $(minWidth, false);
-    component = $(component, this.aConditional());
+    component = $(component, this.anExpected({ data: this.aRowData({ propChain: key }) }));
     exportable = $(exportable, false);
 
     return {
       title,
-      prop,
+      key,
       alignRight,
       minWidth,
       component,
@@ -442,6 +449,16 @@ export default {
     showWhen = $(showWhen, undefined);
 
     return { component, narrow, showWhen };
+  },
+
+  aRowData({ propChain } = {}) {
+    const prop = propChain ? "row." + propChain : "row";
+
+    return {
+      type: "Context",
+      key: "parent",
+      prop
+    };
   },
 
   aSelect({ label, localizeLabel, optionLabel, optionValue, showClear, selectionPageContextKey, stateful, data, inline } = {}) {
