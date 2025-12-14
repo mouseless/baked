@@ -262,6 +262,13 @@ export default {
     };
   },
 
+  theParentContext() {
+    return {
+      type: "Context",
+      key: "parent"
+    };
+  },
+
   anInput({ name, component, required, defaultValue, default_, defaultSelfManaged } = {}) {
     name = $(name, "test");
     required = $(required, false);
@@ -401,13 +408,6 @@ export default {
         type: "Inline",
         value: { property: "query" }
       }
-    };
-  },
-
-  theParentContext() {
-    return {
-      type: "Context",
-      key: "parent"
     };
   },
 

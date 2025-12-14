@@ -192,12 +192,17 @@ public static class DomainComponents
 
     public static ComponentDescriptor<Conditional> PropertyConditional(PropertyModel property, ComponentContext context,
         Action<Conditional>? options = default
-    ) => B.Conditional(
-        options: c =>
-        {
-            c.Fallback = property.GetRequiredComponent(context.Drill(nameof(Conditional.Fallback)));
+    )
+    {
+        context = context.Drill(nameof(Conditional));
 
-            options.Apply(c);
-        }
-    );
+        return B.Conditional(
+            options: c =>
+            {
+                c.Fallback = property.GetRequiredComponent(context.Drill(nameof(Conditional.Fallback)));
+
+                options.Apply(c);
+            }
+        );
+    }
 }

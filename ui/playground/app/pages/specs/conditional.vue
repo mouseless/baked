@@ -2,7 +2,6 @@
   <UiSpec
     title="Conditional"
     :variants="variants"
-    :no-loading-variant="true"
   />
 </template>
 <script setup>
