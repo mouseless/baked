@@ -9,15 +9,15 @@
   </component>
 </template>
 <script setup>
-import { h, onMounted, onUnmounted, ref, watch } from "vue";
-import { useActionExecuter, useComponentResolver, useConstraintEvaluator, useContext, useDataFetcher, useFormat } from "#imports";
+import { h, onBeforeUnmount, onMounted, ref } from "vue";
+import { useActionExecuter, useComponentResolver, useContext, useDataFetcher, useFormat, useReactionHandler } from "#imports";
 
 const actionExecuter = useActionExecuter();
 const componentResolver = useComponentResolver();
-const constraintEvaluator = useConstraintEvaluator();
 const context = useContext();
 const dataFetcher = useDataFetcher();
 const { asClasses } = useFormat();
+const reactionHandler = useReactionHandler();
 
 const { name, descriptor } = defineProps({
   name: { type: String, required: true },
@@ -26,10 +26,8 @@ const { name, descriptor } = defineProps({
 const model = defineModel({ type: null });
 const emit = defineEmits(["loaded"]);
 
-context.providePath(name);
-context.provideDataDescriptor(descriptor.data);
-
-const path = context.injectPath();
+const parentPath = context.injectPath();
+const path = parentPath && parentPath !== "" ? `${parentPath}/${name}` : name;
 const events = context.injectEvents();
 const contextData = context.injectContextData();
 const is = componentResolver.resolve(descriptor.type, "MissingComponent");
@@ -39,8 +37,10 @@ const loading = ref(shouldLoad);
 const executing = ref(false);
 const visible = ref(true);
 const classes = [`b-component--${descriptor.type}`, ...asClasses(name)];
-const eventsToUnsubscribe = [];
+let reactions = null;
 
+context.providePath(path);
+context.provideDataDescriptor(descriptor.data);
 context.provideParentContext({ ...contextData.parent, data });
 context.provideExecuting(executing);
 
@@ -49,25 +49,17 @@ if(shouldLoad) {
 }
 
 if(descriptor.reactions) {
-  const reactions = {
+  reactions = reactionHandler.create(`${path}:bake`, {
     reload(success) {
-      if(success) {
-        load();
-      }
+      if(!success) { return; }
+
+      load();
     },
     show(success) {
       visible.value = success;
     }
-  };
-
-  for(const reaction in descriptor.reactions) {
-    const trigger = descriptor.reactions[reaction];
-    const react = reactions[reaction];
-
-    eventsToUnsubscribe.push(
-      ...hook(trigger, react)
-    );
-  }
+  });
+  reactions.bind(descriptor.reactions);
 }
 
 onMounted(async() => {
@@ -76,11 +68,21 @@ onMounted(async() => {
   await load();
 });
 
-onUnmounted(() => {
-  for(const event of eventsToUnsubscribe) {
-    events.off(event, `${path}:bake`);
+onBeforeUnmount(() => {
+  if(descriptor.reactions) {
+    reactions.unbind();
   }
 });
+
+async function load() {
+  loading.value = true;
+  data.value = await dataFetcher.fetch({
+    data: descriptor.data,
+    contextData
+  });
+  loading.value = false;
+  emit("loaded");
+}
 
 function render() {
   const props = { };
@@ -93,16 +95,6 @@ function render() {
   }
 
   return h(is, props);
-}
-
-async function load() {
-  loading.value = true;
-  data.value = await dataFetcher.fetch({
-    data: descriptor.data,
-    contextData
-  });
-  loading.value = false;
-  emit("loaded");
 }
 
 async function onModelUpdate(newModel) {
@@ -121,33 +113,6 @@ async function onModelUpdate(newModel) {
     });
   } finally {
     executing.value = false;
-  }
-}
-
-function hook(trigger, react) {
-  if(trigger.type === "On") {
-    events.on(trigger.on, `${path}:bake`, async value => {
-      react(await constraintEvaluator.evaluate({ constraint: trigger.constraint, value, contextData }));
-    });
-
-    return [trigger.on];
-  } else if(trigger.type === "When") {
-    watch(() => contextData.page[trigger.when], async(value, oldValue) => {
-      if(value === oldValue || value === undefined) { return; }
-
-      react(await constraintEvaluator.evaluate({ constraint: trigger.constraint, value, contextData }));
-    }, { immediate: true });
-
-    return [];
-  } else if(trigger.type === "Composite") {
-    const result = [];
-    for(const part of trigger.parts) {
-      result.push(
-        ...hook(part, react)
-      );
-    }
-
-    return result;
   }
 }
 </script>

@@ -59,12 +59,10 @@
             v-for="content in tab.contents"
             :key="`content-${content.key}`"
           >
-            <template v-if="content.showWhen ? true /* page[content.showWhen] */ : true">
-              <Bake
-                :name="`tabs/${tab.id}/contents/${content.key}`"
-                :descriptor="content.component"
-              />
-            </template>
+            <Bake
+              :name="`tabs/${tab.id}/contents/${content.key}`"
+              :descriptor="content.component"
+            />
           </template>
         </template>
         <div
@@ -75,15 +73,11 @@
             v-for="content in tab.contents"
             :key="`content-${content.key}`"
           >
-            <div
-              v-if="content.showWhen ? true /* page[content.showWhen] */ : true"
+            <Bake
+              :name="`tabs/${tab.id}/contents/${content.key}`"
+              :descriptor="content.component"
               :class="{ 'lg:col-span-2': !content.narrow }"
-            >
-              <Bake
-                :name="`tabs/${tab.id}/contents/${content.key}`"
-                :descriptor="content.component"
-              />
-            </div>
+            />
           </template>
         </div>
       </DeferredTabContent>
@@ -91,13 +85,15 @@
   </div>
 </template>
 <script setup>
-import { computed, onMounted, ref } from "vue";
+import { computed, onBeforeUnmount, onMounted, reactive, ref } from "vue";
 import { Message, Tab, TabList, Tabs } from "primevue";
-import { useLocalization } from "#imports";
+import { useContext, useLocalization, useReactionHandler } from "#imports";
 import { Bake, DeferredTabContent, QueryBoundInputs, PageTitle } from "#components";
 
+const context = useContext();
 const { localize: l } = useLocalization();
 const { localize: lc } = useLocalization({ group: "ReportPage" });
+const reactionHandler = useReactionHandler();
 
 const { schema } = defineProps({
   schema: { type: null, required: true },
@@ -106,49 +102,57 @@ const { schema } = defineProps({
 
 const { title, inputs, tabs } = schema;
 
+const path = context.injectPath();
 const ready = ref(inputs.length === 0);
 const uniqueKey = ref();
 const currentTab = ref(tabs.length > 0 ? tabs[0].id : "");
-const shownTabs = computed(() => tabs.filter(tab => tab.showWhen ? true /* page[tab.showWhen] */ : true));
-// const lastTab = ref();
+const tabVisible = reactive(tabs.reduce((prev, cur) => ({ ...prev, [cur.id]: true }), {}));
+const shownTabs = computed(() => tabs.filter(tab => tabVisible[tab.id]));
+const lastTab = ref();
+const tabReactions = [];
 // this could be computed(() => !ready.value), but message gets duplicated when
 // page is refreshed so this variable is not handled separately. this is
 // probably because `Message` is a component that fades in and added to dom in
 // an unusual way
 const showRequiredMessage = ref(false);
 
-onMounted(() => {
-  showRequiredMessage.value = !ready.value;
-});
-
 for(const tab of tabs) {
-  if(!tab.showWhen) { continue; }
+  if(!tab.reactions) { continue; }
 
-  // switch to a shown tab when current tab gets hidden upon page context
-  // change
-  /*
-  watch(
-    () => page[tab.showWhen],
-    (show, previousShow) => {
-      if(show === previousShow) { return; }
+  const tabReaction = reactionHandler.create(`${path}/tabs/${tab.id}`, {
+    reload() { },
+    show(visible) {
+      tabVisible[tab.id] = visible;
 
-      if(currentTab.value === tab.id && !show) {
+      // switch to a shown tab when current tab gets hidden upon page context
+      // change
+      if(currentTab.value === tab.id && !visible) {
         // current tab will be hidden, switch to first shown tab
         lastTab.value = currentTab.value;
         const firstAvailableTab = shownTabs.value[0];
         if(firstAvailableTab) {
           currentTab.value = firstAvailableTab.id;
         }
-      } else if(lastTab.value === tab.id && show) {
+      } else if(lastTab.value === tab.id && visible) {
         // last tab becomes available, switch back to it
         currentTab.value = lastTab.value;
         lastTab.value = null;
       }
-    },
-    { immediate: true }
-  );
-  */
+    }
+  });
+  tabReaction.bind(tab.reactions);
+  tabReactions.push(tabReaction);
 }
+
+onMounted(() => {
+  showRequiredMessage.value = !ready.value;
+});
+
+onBeforeUnmount(() => {
+  for(const tabReaction of tabReactions) {
+    tabReaction.unbind();
+  }
+});
 
 function onReady(value) {
   ready.value = value;

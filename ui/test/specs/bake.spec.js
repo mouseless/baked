@@ -153,6 +153,7 @@ test.describe("Reaction", () =>{
 
     await button.click();
 
+    await page.waitForLoadState("networkidle");
     expect(reloaded).toBe(true);
   });
 
@@ -168,6 +169,7 @@ test.describe("Reaction", () =>{
 
     await input.fill("something else");
 
+    await page.waitForLoadState("networkidle");
     expect(reloaded).toBe(false);
   });
 
@@ -183,6 +185,7 @@ test.describe("Reaction", () =>{
 
     await input.fill("emit");
 
+    await page.waitForLoadState("networkidle");
     expect(reloaded).toBe(true);
   });
 
@@ -198,6 +201,7 @@ test.describe("Reaction", () =>{
 
     await input.fill("page-context");
 
+    await page.waitForLoadState("networkidle");
     expect(reloaded).toBe(true);
   });
 
@@ -213,6 +217,7 @@ test.describe("Reaction", () =>{
 
     await input.fill("validate");
 
+    await page.waitForLoadState("networkidle");
     expect(reloaded).toBe(true);
   });
 
@@ -223,6 +228,7 @@ test.describe("Reaction", () =>{
 
     await input.fill("hide");
 
+    await page.waitForLoadState("networkidle");
     await expect(component.getByTestId("output")).not.toBeAttached();
   });
 });

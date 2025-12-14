@@ -553,24 +553,24 @@ export default {
     };
   },
 
-  aReportPageTab({ id, title, contents, fullScreen, icon, overflow, showWhen } = {}) {
+  aReportPageTab({ id, title, contents, fullScreen, icon, overflow, reactions } = {}) {
     id = $(id, "test-tab");
     title = $(title, "Test Tab");
     contents = $(contents, [this.aReportPageTabContent()]);
     fullScreen = $(fullScreen, false);
     icon = $(icon, this.anIcon());
     overflow = $(overflow, false);
-    showWhen = $(showWhen, undefined);
+    reactions = $(reactions, undefined);
 
-    return { id, title, contents, fullScreen, icon, overflow, showWhen };
+    return { id, title, contents, fullScreen, icon, overflow, reactions };
   },
 
-  aReportPageTabContent({ component, narrow, showWhen } = {}) {
+  aReportPageTabContent({ component, narrow, key } = {}) {
     component = $(component, this.anExpected({ value: "Test content is given for testing purposes" }));
     narrow = $(narrow, false);
-    showWhen = $(showWhen, undefined);
+    key = $(key, "content");
 
-    return { component, narrow, showWhen };
+    return { component, narrow, key };
   },
 
   aScreenSize({ name } = {}) {

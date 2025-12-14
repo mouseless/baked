@@ -64,23 +64,27 @@ const variants = [
           contents: [
             giveMe.aReportPageTabContent(),
             giveMe.aReportPageTabContent({
-              component: giveMe.anExpected({ testId: "content-1", value: "CONTENT 1" }),
-              reactions: {
-                show: giveMe.aTrigger({ when: "selection", constraint: giveMe.aConstraint({ is: "SHOW" }) })
-              }
+              key: "content-1",
+              component: giveMe.anExpected({
+                testId: "content-1",
+                value: "CONTENT 1" ,
+                reactions: {
+                  show: giveMe.aTrigger({ when: "selection", constraint: giveMe.aConstraint({ is: "SHOW" }) })
+                }
+              })
             })
           ]
         }),
         giveMe.aReportPageTab({
           id: "tab-2",
           title: "Spec: Tab 2",
-          showWhen: "selection-is:SHOW",
+          reactions: {
+            show: giveMe.aTrigger({ when: "selection", constraint: giveMe.aConstraint({ is: "SHOW" }) })
+          },
           contents: [
             giveMe.aReportPageTabContent({
-              component: giveMe.anExpected({ testId: "content-2", value: "CONTENT 2" }),
-              reactions: {
-                show: giveMe.aTrigger({ when: "selection", constraint: giveMe.aConstraint({ is: "SHOW" }) })
-              }
+              key: "content-2",
+              component: giveMe.anExpected({ testId: "content-2", value: "CONTENT 2" })
             })
           ]
         })

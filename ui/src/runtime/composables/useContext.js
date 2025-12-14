@@ -1,9 +1,8 @@
 import { inject, provide, ref } from "vue";
 
 export default function() {
-  function providePath(name) {
-    const path = inject("__bake_path", null);
-    provide("__bake_path", path ? `${path}/${name}` : name);
+  function providePath(value) {
+    provide("__bake_path", value);
   }
 
   function injectPath() {

@@ -18,12 +18,10 @@ public record ReportPage(string Path, PageTitle Title)
         public Dictionary<string, ITrigger>? Reactions { get; set; }
 
         public record Content(IComponentDescriptor Component, string Key)
-            : ISupportsReaction
         {
             public IComponentDescriptor Component { get; set; } = Component;
             public string Key { get; set; } = Key;
             public bool? Narrow { get; set; }
-            public Dictionary<string, ITrigger>? Reactions { get; set; }
         }
     }
 }

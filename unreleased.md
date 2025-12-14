@@ -80,6 +80,10 @@
     component.Schema.ShowWhen = "!key:value"; // old usage
     component.ShowWhen("key", IsNot("value")); // new usage
     ```
+- `ReportPage.Tab.Content` support for `showWhen` is completely removed, use its
+  component's reaction system to hide a content
+  - `lg:col-span-2` class is now passed directly to content's component instead
+    of a wrapper `div`
 - In `useContext` composable, `injectPage` and `providePage` are renamed to
   `injectPageContext` and `providePageContext` respectively
 
