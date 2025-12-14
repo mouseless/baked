@@ -12,8 +12,16 @@ const variants = [
     name: "Base",
     descriptor: giveMe.aConditional({
       conditions: [
-        giveMe.aConditionalCondition({ prop: "type", value: "type-1", component: giveMe.anExpected({ testId: "component-1", data: { type: "Context", key: "parent", prop: "data.type" } }) }),
-        giveMe.aConditionalCondition({ prop: "type", value: "type-2", component: giveMe.anExpected({ testId: "component-2", data: { type: "Context", key: "parent", prop: "data.type" } }) })
+        giveMe.aConditionalCondition({ 
+          prop: "type", 
+          value: "type-1", 
+          component: giveMe.anExpected({ testId: "component-1", data: { type: "Context", key: "parent", prop: "data.type" } }) 
+        }),
+        giveMe.aConditionalCondition({ 
+          prop: "type", 
+          value: "type-2", 
+          component: giveMe.anExpected({ testId: "component-2", data: { type: "Context", key: "parent", prop: "data.type" } }) 
+        })
       ],
       data: {
         type: "Inline",
@@ -25,8 +33,16 @@ const variants = [
     name: "Fallback",
     descriptor: giveMe.aConditional({
       conditions: [
-        giveMe.aConditionalCondition({ prop: "type", value: "type-1", component: giveMe.anExpected({ testId: "component-1", data: { type: "Context", key: "parent", prop: "data.type" } }) }),
-        giveMe.aConditionalCondition({ prop: "type", value: "type-2", component: giveMe.anExpected({ testId: "component-2", data: { type: "Context", key: "parent", prop: "data.type" } }) })
+        giveMe.aConditionalCondition({ 
+          prop: "type", 
+          value: "type-1", 
+          component: giveMe.anExpected({ testId: "component-1", data: { type: "Context", key: "parent", prop: "data.type" } }) 
+        }),
+        giveMe.aConditionalCondition({ 
+          prop: "type", 
+          value: "type-2", 
+          component: giveMe.anExpected({ testId: "component-2", data: { type: "Context", key: "parent", prop: "data.type" } }) 
+        })
       ],
       fallback: giveMe.anExpected({ testId: "component-3", data: { type: "Context", key: "parent", prop: "data.type" } }),
       data: {
