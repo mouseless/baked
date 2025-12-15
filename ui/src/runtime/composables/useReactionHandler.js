@@ -5,37 +5,40 @@ export default function() {
   const constraintEvaluator = useConstraintEvaluator();
   const context = useContext();
 
+  const events = context.injectEvents();
+  const contextData = context.injectContextData();
+
   function create(eventId, reactions) {
-    const contextData = context.injectContextData();
-    const events = context.injectEvents();
+    const handlers = {
+      "On": On({ evaluate, events, eventId }),
+      "When": When({ contextData, evaluate }),
+      "Composite": Composite({ parentBind: bindInternal })
+    };
+
+    async function evaluate(constraint, value) {
+      return await constraintEvaluator.evaluate({
+        constraint,
+        value,
+        contextData
+      });
+    }
 
     const eventsToUnbind = [];
-
     function bind(reactionsDescriptor) {
       for(const reaction in reactionsDescriptor) {
         const trigger = reactionsDescriptor[reaction];
         const react = reactions[reaction];
 
-        bindRecursive(trigger, react);
+        eventsToUnbind.push(
+          ...bindInternal({ trigger, react })
+        );
       }
     }
 
-    function bindRecursive(trigger, react) {
-      if(trigger.type === "On") {
-        events.on(trigger.on, eventId, async value => {
-          react(await constraintEvaluator.evaluate({ constraint: trigger.constraint, value, contextData }));
-        });
+    function bindInternal({ trigger, react }) {
+      const handler = handlers[trigger.type];
 
-        eventsToUnbind.push(trigger.on);
-      } else if(trigger.type === "When") {
-        watch(() => contextData.page[trigger.when], async value => {
-          react(await constraintEvaluator.evaluate({ constraint: trigger.constraint, value, contextData }));
-        }, { immediate: true });
-      } else if(trigger.type === "Composite") {
-        for(const part of trigger.parts) {
-          bindRecursive(part, react);
-        }
-      }
+      return handler.bind({ trigger, react });
     }
 
     function unbind() {
@@ -52,5 +55,50 @@ export default function() {
 
   return {
     create
+  };
+}
+
+function On({ evaluate, eventId, events }) {
+  function bind({ trigger, react }) {
+    events.on(trigger.on, eventId, async value => {
+      react(await evaluate(trigger.constraint, value));
+    });
+
+    return [trigger.on];
+  }
+
+  return {
+    bind
+  };
+}
+
+function When({ contextData, evaluate }) {
+  function bind({ trigger, react }) {
+    watch(() => contextData.page[trigger.when], async value => {
+      react(await evaluate(trigger.constraint, value));
+    }, { immediate: true });
+
+    return [];
+  }
+
+  return {
+    bind
+  };
+}
+
+function Composite({ parentBind }) {
+  function bind({ trigger, react }) {
+    const result = [];
+    for(const part of trigger.parts) {
+      result.push(
+        ...parentBind({ trigger: part, react })
+      );
+    }
+
+    return result;
+  }
+
+  return {
+    bind
   };
 }

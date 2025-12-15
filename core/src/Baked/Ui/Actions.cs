@@ -4,7 +4,7 @@ namespace Baked.Ui;
 
 public static class Actions
 {
-    public static Publishments Publish { get; } = new();
+    public static Publishes Publish { get; } = new();
     public static Composables Local { get; } = new();
 
     public static CompositeAction Composite(
@@ -29,7 +29,7 @@ public static class Actions
         ) => options.Apply(new(composable.StartsWith("use") ? composable : $"use{composable}"));
     }
 
-    public class Publishments
+    public class Publishes
     {
         public PublishAction Event(string @event,
             Action<PublishAction>? options = default
