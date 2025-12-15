@@ -19,38 +19,38 @@ public static class Datas
 
     public class ContextDatas
     {
+        public ContextData Model(
+            Action<ContextData>? options = default
+        ) => options.Apply(new("model"));
+
+        public ContextData Page(
+            Action<ContextData>? options = default
+        ) => options.Apply(new("page"));
+
         public ContextData Parent(
             Action<ContextData>? options = default
         ) => options.Apply(new("parent") { Prop = "data" });
 
-        public ContextData Model(
+        public ContextData Response(
             Action<ContextData>? options = default
-        ) => options.Apply(new("model"));
+        ) => options.Apply(new("response"));
     }
 
     public class Composables
     {
         public ComputedData UseError(
-           IData? options = default
-        ) => Use("NuxtError", o => o.Options = options);
+            Action<ComputedData>? options = default
+        ) => Use("NuxtError", options: options);
 
         public ComputedData UseRoute(string property) =>
-            UseRoute(Inline(new { property }));
+            UseRoute(options: cd => cd.Options = Inline(new { property }));
 
         public ComputedData UseRoute(
-            IData? options = default
-        ) => Use("NuxtRoute", o => o.Options = options);
+            Action<ComputedData>? options = default
+        ) => Use("NuxtRoute", options);
 
         public ComputedData Use(string composable,
             Action<ComputedData>? options = default
-        )
-        {
-            composable = composable.StartsWith("use") ? composable : $"use{composable}";
-            var result = new ComputedData(composable);
-
-            options?.Invoke(result);
-
-            return result;
-        }
+        ) => options.Apply(new(composable.StartsWith("use") ? composable : $"use{composable}"));
     }
 }

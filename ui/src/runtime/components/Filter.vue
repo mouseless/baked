@@ -2,7 +2,7 @@
   <IconField>
     <InputIcon class="pi pi-search" />
     <InputText
-      v-model="page[pageContextKey]"
+      v-model="model"
       autofocus
       :placeholder="placeholder ? l(placeholder) : undefined"
     />
@@ -10,16 +10,14 @@
 </template>
 <script setup>
 import { IconField, InputIcon, InputText } from "primevue";
-import { useContext, useLocalization } from "#imports";
+import { useLocalization } from "#imports";
 
-const context = useContext();
 const { localize: l } = useLocalization();
 
 const { schema } = defineProps({
   schema: { type: null, required: true }
 });
+const model = defineModel({ type: null, required: true });
 
-const { placeholder, pageContextKey } = schema;
-
-const page = context.injectPage();
+const { placeholder } = schema;
 </script>

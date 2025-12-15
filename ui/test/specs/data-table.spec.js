@@ -176,7 +176,7 @@ test.describe("Row Actions", () => {
     const button = cells.nth(cellNo(1, 3)).locator(".b-component--Button");
 
     await expect(button).toBeAttached();
-    await expect(button).toHaveText("Row Action");
+    await expect(button).toHaveText("Action");
   });
 
   test("Provides row data to action", async({ page }) => {

@@ -72,9 +72,10 @@ public static class Components
         Action<ErrorPage.Info>? options = default
     ) => options.Apply(new(title, message));
 
-    public static ComponentDescriptor<Filter> Filter(string pageContextKey,
-        Action<Filter>? options = default
-    ) => new(options.Apply(new(pageContextKey)));
+    public static ComponentDescriptor<Filter> Filter(
+        Action<Filter>? options = default,
+        IAction? action = default
+    ) => new(options.Apply(new())) { Action = action };
 
     public static Filterable Filterable(IComponentDescriptor component,
         Action<Filterable>? options = default

@@ -39,38 +39,22 @@ const variants = [
     name: "Application",
     descriptor: giveMe.anExpected({
       testId: "application",
-      data: {
-        type: "Remote",
+      data: giveMe.aRemoteData({
         path: "/cache-samples/application",
-        query: {
-          type: "Computed",
-          composable: "useNuxtRoute",
-          options: {
-            type: "Inline",
-            value: { property: "query" }
-          }
-        },
+        query: giveMe.theQueryData(),
         attributes: { "client-cache": "application" }
-      }
+      })
     })
   },
   {
     name: "User",
     descriptor: giveMe.anExpected({
       testId: "user",
-      data: {
-        type: "Remote",
+      data: giveMe.aRemoteData({
         path: "/cache-samples/scoped",
-        query: {
-          type: "Computed",
-          composable: "useNuxtRoute",
-          options: {
-            type: "Inline",
-            value: { property: "query" }
-          }
-        },
+        query: giveMe.theQueryData(),
         attributes: { "client-cache": "user" }
-      }
+      })
     })
   }
 ];

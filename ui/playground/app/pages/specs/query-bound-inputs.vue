@@ -38,12 +38,17 @@
         ⬇️  Click and check if resets all inputs except required with default ⬆️
       </span>
     </Message>
-    <div class="border-4 border-gray-500 rounded p-4">
+    <div class="border-4 border-gray-500 rounded p-4 flex gap-4">
       <Button
         as="router-link"
         label="RESET"
         to="/specs/query-bound-inputs"
         data-testid="reset"
+      />
+      <Bake
+        name="reactor"
+        :descriptor="reactor"
+        class="border border-green-500 rounded p-2"
       />
     </div>
   </UiSpec>
@@ -76,7 +81,10 @@ const inputs = [
   }),
   giveMe.anInput({
     name: "optional",
-    component: giveMe.anInputText({ testId: "optional" })
+    component: giveMe.anInputText({
+      testId: "optional",
+      action: giveMe.aPublishAction({ pageContextKey: "optional" })
+    })
   }),
   giveMe.anInput({
     name: "num-required",
@@ -84,6 +92,17 @@ const inputs = [
     required: true
   })
 ];
+
+const reactor = giveMe.anExpected({
+  testId: "reactor",
+  value: "Reacting...",
+  reactions: {
+    show: giveMe.aTrigger({
+      when: "optional",
+      constraint: giveMe.aConstraint({ is: "react" })
+    })
+  }
+});
 
 function onReady(value) {
   ready.value = value;

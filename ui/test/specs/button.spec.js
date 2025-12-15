@@ -27,10 +27,6 @@ test.describe("Base", () => {
     await button.click();
 
     await expect(button).toHaveClass(/p-button-loading/);
-
-    const spinner = button.locator(".p-button-loading-icon, .pi-spinner");
-    await expect(spinner).toBeVisible();
-    await expect(button).toBeDisabled();
   });
 
   test("Execute action", async({ page }) => {

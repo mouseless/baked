@@ -2,16 +2,13 @@ import { expect, test } from "@nuxt/test-utils/playwright";
 import primevue from "../utils/locators/primevue";
 
 test.beforeEach(async({ goto, page }) => {
-  await page.route("*/**/form-sample/states", async route => {
-    await route.fulfill({ body: "fake-response" });
-  });
   await page.route("*/**/route-parameters-samples/*", async route => {
     await route.fulfill({ body: "fake-response" });
   });
-  await page.route("*/**/rich-transient-with-datas/12/method", async route => {
+  await page.route("*/**/rich-transient-with-datas/**/*", async route => {
     await route.fulfill({ body: "fake-response" });
   });
-  await page.route("*/**/localization-samples/locale-string", async route => {
+  await page.route("*/**/method-samples/async", async route => {
     await route.fulfill({ body: "fake-response" });
   });
   await goto("/specs/bake?val=2", { waitUntil: "hydration" });
@@ -72,9 +69,7 @@ test.describe("Data Descriptor", () => {
   });
 
   test("builds path with given params data", async({ page }) => {
-    const requestPromise = page.waitForRequest(req => req.url().includes("/route-parameters-samples"));
-
-    const request = await requestPromise;
+    const request = await page.waitForRequest(req => req.url().includes("/route-parameters-samples"));
     expect(request.url()).toContain("/route-parameters-samples/7b6b67bb-30b5-423e-81b4-a2a0cd59b7f9");
   });
 });
@@ -104,7 +99,6 @@ test.describe("Action", () =>{
   const id = "Action";
 
   test("Execute given composite action", async({ page }) => {
-    const requestPromise = page.waitForRequest(req => req.url().includes("rich-transient-with-datas"));
     const component = page.getByTestId(id);
     const button = component.locator(primevue.button.base);
 
@@ -113,7 +107,7 @@ test.describe("Action", () =>{
     await expect(page.locator(primevue.toast.base)).toBeVisible();
     await expect(page.locator(primevue.toast.summary)).toHaveText("Execute Action");
 
-    const request = await requestPromise;
+    const request = await page.waitForRequest(req => req.url().includes("rich-transient-with-datas"));
     expect(request.method()).toBe("POST");
     expect(request.headers()["authorization"]).toContain("token-admin-ui");
     expect(request.url()).toContain("/rich-transient-with-datas/12/method");
@@ -121,27 +115,36 @@ test.describe("Action", () =>{
     expect(request.postDataJSON()).toEqual({ text: "text" });
   });
 
-  test("Execute given remote post action", async({ page }) => {
+  test("Execute given remote post action using response", async({ page }) => {
     const component = page.getByTestId(id);
     const button = component.locator(primevue.button.base);
 
     await button.click();
 
     await expect(page.locator(primevue.toast.base).last()).toBeVisible();
-    await expect(page.locator(primevue.toast.summary).last()).toHaveText("Execute Post Action");
+    await expect(page.locator(primevue.toast.summary).last()).toHaveText("fake-response");
   });
 });
 
-test.describe("Reaction", () =>{
+test.describe("Reaction", () => {
   const id = "Reaction";
 
-  // Initial data load completes before this text execution
-  // because page is waited till hydration, request count is
-  // expected to be one
-  test("Reacts to given event with reload", async({ page }) => {
+  // Initial data load completes before this text execution because page is
+  // waited till hydration, request count is expected to be one. To catch if
+  // reload occured below code is used
+  // ```js
+  // let reloaded = false;
+  // page.on("request", req => {
+  //   if(req.url().includes("method-samples/async")) {
+  //     reloaded = true;
+  //   }
+  // });
+  // ```
+
+  test("Reload reaction with composite and publish triggers", async({ page }) => {
     let reloaded = false;
     page.on("request", req => {
-      if(req.url().includes("localization-samples/locale-string")) {
+      if(req.url().includes("method-samples/async")) {
         reloaded = true;
       }
     });
@@ -150,6 +153,82 @@ test.describe("Reaction", () =>{
 
     await button.click();
 
+    await page.waitForLoadState("networkidle");
     expect(reloaded).toBe(true);
+  });
+
+  test("Reaction is filtered out when published event value doesn't match constraint", async({ page }) => {
+    let reloaded = false;
+    page.on("request", req => {
+      if(req.url().includes("method-samples/async")) {
+        reloaded = true;
+      }
+    });
+    const component = page.getByTestId(id);
+    const input = component.getByTestId("input");
+
+    await input.fill("something else");
+
+    await page.waitForLoadState("networkidle");
+    expect(reloaded).toBe(false);
+  });
+
+  test("Reaction occurs when published event value matches constraint", async({ page }) => {
+    let reloaded = false;
+    page.on("request", req => {
+      if(req.url().includes("method-samples/async")) {
+        reloaded = true;
+      }
+    });
+    const component = page.getByTestId(id);
+    const input = component.getByTestId("input");
+
+    await input.fill("event");
+
+    await page.waitForLoadState("networkidle");
+    expect(reloaded).toBe(true);
+  });
+
+  test("Page context action and trigger", async({ page }) => {
+    let reloaded = false;
+    page.on("request", req => {
+      if(req.url().includes("method-samples/async")) {
+        reloaded = true;
+      }
+    });
+    const component = page.getByTestId(id);
+    const input = component.getByTestId("input");
+
+    await input.fill("page-context");
+
+    await page.waitForLoadState("networkidle");
+    expect(reloaded).toBe(true);
+  });
+
+  test("Composable constraint", async({ page }) => {
+    let reloaded = false;
+    page.on("request", req => {
+      if(req.url().includes("method-samples/async")) {
+        reloaded = true;
+      }
+    });
+    const component = page.getByTestId(id);
+    const input = component.getByTestId("input");
+
+    await input.fill("validate");
+
+    await page.waitForLoadState("networkidle");
+    expect(reloaded).toBe(true);
+  });
+
+  test("Show/hide reaction with isNot constraint", async({ page }) => {
+    const component = page.getByTestId(id);
+    const input = component.getByTestId("input");
+    await expect(component.getByTestId("output")).toBeAttached();
+
+    await input.fill("hide");
+
+    await page.waitForLoadState("networkidle");
+    await expect(component.getByTestId("output")).not.toBeAttached();
   });
 });

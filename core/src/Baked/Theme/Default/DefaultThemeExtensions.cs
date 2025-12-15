@@ -4,6 +4,8 @@ using Baked.Theme;
 using Baked.Theme.Default;
 using Baked.Ui;
 
+using static Baked.Ui.Actions;
+
 using B = Baked.Ui.Components;
 
 namespace Baked;
@@ -60,9 +62,12 @@ public static class DefaultThemeExtensions
                     mp.Header = B.PageTitle(context.Route.Title, options: pt =>
                     {
                         pt.Description = l(context.Route.Description);
-                        pt.Actions.Add(B.Filter("menu-page", options: f => f.Placeholder = l("Filter")));
+                        pt.Actions.Add(B.Filter(
+                            options: f => f.Placeholder = l("Filter"),
+                            action: Publish.Event("filter-changed")
+                        ));
                     });
-                    mp.FilterPageContextKey = "menu-page";
+                    mp.FilterEvent = "filter-changed";
                     mp.Sections.AddRange(
                         sections.Select(g => B.MenuPageSection(
                             options: mps =>

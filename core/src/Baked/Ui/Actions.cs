@@ -1,16 +1,15 @@
-﻿namespace Baked.Ui;
+﻿using static Baked.Ui.Datas;
+
+namespace Baked.Ui;
 
 public static class Actions
 {
+    public static Publishes Publish { get; } = new();
     public static Composables Local { get; } = new();
 
     public static CompositeAction Composite(
         Action<CompositeAction>? options = default
     ) => options.Apply(new());
-
-    public static EmitAction Emit(string @event,
-        Action<EmitAction>? options = default
-    ) => options.Apply(new(@event));
 
     public static RemoteAction Remote(string path, IAction postAction,
         Action<RemoteAction>? options = default
@@ -19,21 +18,25 @@ public static class Actions
     public class Composables
     {
         public LocalAction UseRedirect(string route) =>
-            UseRedirect(Datas.Inline(new { route }));
+            UseRedirect(options: la => la.Options = Inline(new { route }));
 
-        public LocalAction UseRedirect(IData options) =>
-            Use("Redirect", o => o.Options = options);
+        public LocalAction UseRedirect(
+            Action<LocalAction>? options = default
+        ) => Use("Redirect", options);
 
         public LocalAction Use(string composable,
             Action<LocalAction>? options = default
-        )
-        {
-            composable = composable.StartsWith("use") ? composable : $"use{composable}";
-            var result = new LocalAction(composable);
+        ) => options.Apply(new(composable.StartsWith("use") ? composable : $"use{composable}"));
+    }
 
-            options?.Invoke(result);
+    public class Publishes
+    {
+        public PublishAction Event(string @event,
+            Action<PublishAction>? options = default
+        ) => options.Apply(new() { Event = @event, Data = Context.Model() });
 
-            return result;
-        }
+        public PublishAction PageContextValue(string key,
+            Action<PublishAction>? options = default
+        ) => options.Apply(new() { PageContextKey = key, Data = Context.Model() });
     }
 }

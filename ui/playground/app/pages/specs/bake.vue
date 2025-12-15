@@ -2,6 +2,7 @@
   <UiSpec
     title="Bake"
     :variants="variants"
+    no-loading-variant
   />
 </template>
 <script setup>
@@ -19,14 +20,14 @@ const variants = [
       contents: [
         giveMe.anExpected({
           testId: "child-root",
-          data: { type: "Context", key: "parent", prop: "data" }
+          data: giveMe.aContextData({ key: "parent", prop: "data" })
         }),
         giveMe.anExpected({
           testId: "child-prop",
-          data: { type: "Context", key: "parent", prop: "data.child" }
+          data: giveMe.aContextData({ key: "parent", prop: "data.child" })
         })
       ],
-      data: { type: "Inline", value: { child: "CHILD VALUE" } }
+      data: giveMe.anInlineData({ child: "CHILD VALUE" })
     })
   },
   {
@@ -34,36 +35,23 @@ const variants = [
     descriptor: giveMe.anExpected({
       testId: "test",
       showDataParams: true,
-      data: {
-        type: "Composite", // merges ["computed"] and ["RequiredWithDefault1", "Required1"]
-        parts: [
-          { type: "Computed", composable: "useFakeComputed", options: { type: "Inline", value: { data: "computed" } } }, // provides "computed"
-          { type: "Context", key: "parent" },
-          { type: "Inline", value: { inline: "inline" } },
-          {
-            type: "Remote",
-            path: "/route-parameters-samples/{id}",
-            query: {
-              type: "Composite", // merges ["RequiredWithDefault1"] and ["Required1"]
-              parts: [
-                { type: "Inline", value: { requiredWithDefault: "RequiredWithDefault1" } }, // provides "RequiredWithDefault1"
-                { type: "Inline", value: { required: "Required1" } } // provides "Required1"
-              ]
-            },
-            params: {
-              type: "Composite",
-              parts: [
-                { type: "Inline", value: { id: 15 } },
-                { type: "Inline", value: { id: "7b6b67bb-30b5-423e-81b4-a2a0cd59b7f9" } }
-              ]
-            },
-            headers: {
-              type: "Inline",
-              value: { "Authorization": `Bearer ${giveMe.aToken({ admin: true }).access}` }
-            }
-          }
-        ]
-      }
+      data: giveMe.aCompositeData([
+        giveMe.aComputedData({ composable: "useFakeComputed", options: giveMe.anInlineData({ data: "computed" }) }),
+        giveMe.aContextData({ key: "parent" }),
+        giveMe.anInlineData({ inline: "inline" }),
+        giveMe.aRemoteData({
+          path: "/route-parameters-samples/{id}",
+          query: giveMe.aCompositeData([
+            giveMe.anInlineData({ requiredWithDefault: "RequiredWithDefault1" }),
+            giveMe.anInlineData({ required: "Required1" })
+          ]),
+          params: giveMe.aCompositeData([
+            giveMe.anInlineData({ id: 15 }),
+            giveMe.anInlineData({ id: "7b6b67bb-30b5-423e-81b4-a2a0cd59b7f9" })
+          ]),
+          headers: giveMe.anInlineData({ Authorization: `Bearer ${giveMe.aToken({ admin: true }).access}` })
+        })
+      ])
     })
   },
   {
@@ -74,66 +62,22 @@ const variants = [
   {
     name: "Action",
     descriptor: giveMe.aButton({
-      action: {
-        type: "Composite",
-        parts: [
-          {
-            type: "Local",
+      action: giveMe.aCompositeAction([
+        giveMe.aLocalAction({ showMessage: "Execute Action" }),
+        giveMe.aLocalAction({ delay: 100 }),
+        giveMe.aRemoteAction({
+          path: "/rich-transient-with-datas/{id}/method",
+          method: "POST",
+          headers: giveMe.anInlineData({ Authorization: "token-admin-ui" }),
+          query: giveMe.theQueryData(),
+          params: giveMe.anInlineData({ id: 12 }),
+          body: giveMe.anInlineData({ text: "text" }),
+          postAction: giveMe.aLocalAction({
             composable: "useShowMessage",
-            options: {
-              type: "Inline",
-              value: { message: "Execute Action" }
-            }
-          },
-          {
-            type: "Local",
-            composable: "useDelay",
-            options: {
-              type: "Inline",
-              value: { time: 100 }
-            }
-          },
-          {
-            type: "Remote",
-            path: "/rich-transient-with-datas/{id}/method",
-            method: "POST",
-            headers: {
-              type: "Inline",
-              value: {
-                Authorization: "token-admin-ui"
-              }
-            },
-            query: {
-              type: "Computed",
-              composable: "useNuxtRoute",
-              options: {
-                type: "Inline",
-                value:{ property: "query" }
-              }
-            },
-            params: {
-              type: "Inline",
-              value: {
-                id: 12
-              }
-            },
-            body: {
-              type: "Inline",
-              value: {
-                text: "text"
-              }
-            },
-            postAction: {
-              type: "Local",
-              composable: "useShowMessage",
-              options: {
-                type: "Inline",
-                value: { message: "Execute Post Action" }
-              }
-            }
-          }
-        ]
-      },
+            options: giveMe.aContextData({ key: "response", targetProp: "message" })
+          })
+        })
+      ]),
       label: "Spec: Button",
       icon: "pi pi-play-circle"
     })
@@ -141,26 +85,40 @@ const variants = [
   {
     name: "Reaction",
     descriptor: giveMe.aContainer({
-      contents:[
+      contents: [
         giveMe.aButton({
-          action: {
-            type: "Emit",
-            event: "changed"
-          }
+          label: "Spec: Reload",
+          action: giveMe.aPublishAction({ event: "clicked" })
         }),
-        giveMe.aText({
-          data: {
-            type: "Remote",
-            path: "/localization-samples/locale-string",
-            headers: {
-              type: "Inline",
-              value: {
-                Authorization: "token-admin-ui"
-              }
-            }
-          },
-          on: {
-            changed: "Reload"
+        giveMe.anInputText({
+          testId: "input",
+          action: giveMe.aCompositeAction([
+            giveMe.aPublishAction({ event: "input-changed" }),
+            giveMe.aPublishAction({ pageContextKey: "input" })
+          ])
+        }),
+        giveMe.anExpected({
+          testId: "output",
+          data: giveMe.aRemoteData({
+            path: "/method-samples/async?ms=10",
+            headers: giveMe.anInlineData({ Authorization: "token-admin-ui" })
+          }),
+          reactions: {
+            reload: giveMe.aTrigger({
+              parts: [
+                giveMe.aTrigger({ on: "clicked" }),
+                giveMe.aTrigger({ on: "input-changed", constraint: giveMe.aConstraint({ is: "event" }) }),
+                giveMe.aTrigger({ when: "input", constraint: giveMe.aConstraint({ is: "page-context" }) }),
+                giveMe.aTrigger({
+                  when: "input",
+                  constraint: giveMe.aConstraint({
+                    composable: "useFakeValidator",
+                    options: giveMe.anInlineData({ expected: "validate" })
+                  })
+                })
+              ]
+            }),
+            show: giveMe.aTrigger({ when: "input", constraint: giveMe.aConstraint({ isNot: "hide" }) })
           }
         })
       ]

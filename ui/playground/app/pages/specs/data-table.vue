@@ -15,11 +15,11 @@ const variants = [
     name: "Base",
     descriptor: giveMe.aDataTable({
       columns: [
-        giveMe.aDataTableColumn({ title: "Spec: Label", key: "label", minWidth: true, component: giveMe.anExpected({ testId: "label", data: giveMe.aRowData({ propChain: "label" }) }) }),
-        giveMe.aDataTableColumn({ title: "Spec: Data 1", key: "data1", component: giveMe.anExpected({ testId: "prop-1", data: giveMe.aRowData({ propChain: "data1" }) }) }),
-        giveMe.aDataTableColumn({ title: "Spec: Data 2", key: "data2", component: giveMe.anExpected({ testId: "prop-2", data: giveMe.aRowData({ propChain: "data2" }) }) }),
-        giveMe.aDataTableColumn({ title: "Spec: Data 3", key: "data3", component: giveMe.anExpected({ testId: "prop-3", data: giveMe.aRowData({ propChain: "data3" }) }) }),
-        giveMe.aDataTableColumn({ title: "Spec: Data 4", key: "data4", component: giveMe.anExpected({ testId: "prop-4", data: giveMe.aRowData({ propChain: "data4" }) }) })
+        giveMe.aDataTableColumn({ title: "Spec: Label", key: "label", minWidth: true, component: giveMe.anExpected({ testId: "label", data: giveMe.aContextData({ key: "parent", prop: "row.label" }) }) }),
+        giveMe.aDataTableColumn({ title: "Spec: Data 1", key: "data1", component: giveMe.anExpected({ testId: "prop-1", data: giveMe.aContextData({ key: "parent", prop: "row.data1" }) }) }),
+        giveMe.aDataTableColumn({ title: "Spec: Data 2", key: "data2", component: giveMe.anExpected({ testId: "prop-2", data: giveMe.aContextData({ key: "parent", prop: "row.data2" }) }) }),
+        giveMe.aDataTableColumn({ title: "Spec: Data 3", key: "data3", component: giveMe.anExpected({ testId: "prop-3", data: giveMe.aContextData({ key: "parent", prop: "row.data3" }) }) }),
+        giveMe.aDataTableColumn({ title: "Spec: Data 4", key: "data4", component: giveMe.anExpected({ testId: "prop-4", data: giveMe.aContextData({ key: "parent", prop: "row.data4" }) }) })
       ],
       rowsWhenLoading: 3,
       data: [
@@ -38,7 +38,7 @@ const variants = [
       dataKey: "data",
       rows: 2,
       columns: [
-        giveMe.aDataTableColumn({ title: "Spec: Data", key: "data", component: giveMe.anExpected({ testId: "prop", data: giveMe.aRowData({ propChain: "data" }) }) })
+        giveMe.aDataTableColumn({ title: "Spec: Data", key: "data", component: giveMe.anExpected({ testId: "prop", data: giveMe.aContextData({ key: "parent", prop: "row.data" }) }) })
       ],
       data: [
         { data: "Row 1" },
@@ -69,8 +69,8 @@ const variants = [
       footerTemplate: {
         label: "Spec: Total",
         columns: [
-          giveMe.aDataTableColumn({ key: "footer1", component: giveMe.anExpected({ data: { type: "Context", key: "parent", prop: "data.footer1" } }) }),
-          giveMe.aDataTableColumn({ key: "footer2", component: giveMe.anExpected({ data: { type: "Context", key: "parent", prop: "data.footer2" } }) })
+          giveMe.aDataTableColumn({ key: "footer1", footer: true }),
+          giveMe.aDataTableColumn({ key: "footer2", footer: true })
         ]
       },
       itemsProp: "children",
@@ -95,7 +95,7 @@ const variants = [
       footerTemplate: {
         label: "Total",
         columns: [
-          giveMe.aDataTableColumn({ key: "label", alignRight: true })
+          giveMe.aDataTableColumn({ key: "label", alignRight: true, footer: true })
         ]
       },
       itemsProp: "children",
@@ -217,17 +217,13 @@ const variants = [
       ],
       actionTemplate: giveMe.aDataTableColumn({
         component: giveMe.aButton({
-          action: {
-            type: "Local",
+          label: "Spec: Action",
+          action: giveMe.aLocalAction({
             composable: "useShowMessage",
-            options: {
-              type: "Context",
-              key: "parent",
-              prop: "row",
-              targetProp: "message"
-            }
-          },
-          label: "Spec: Row Action"
+            options: giveMe.aContextData({ key: "parent", prop: "row", targetProp: "message" })
+          }),
+          variant: "text",
+          rounded: true
         })
       }),
       rowsWhenLoading: 3,

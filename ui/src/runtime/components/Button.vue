@@ -3,6 +3,8 @@
     :icon
     :label="l(label)"
     :loading="executing"
+    :variant
+    :rounded
     @click="$emit('submit')"
   />
 </template>
@@ -19,7 +21,7 @@ const { schema } = defineProps({
 
 defineEmits(["submit"]);
 
-const { icon, label } = schema;
+const { icon, label, variant, rounded } = schema;
 
 const executing = context.injectExecuting();
 </script>

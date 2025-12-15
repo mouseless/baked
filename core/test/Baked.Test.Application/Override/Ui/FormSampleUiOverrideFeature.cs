@@ -12,6 +12,7 @@ using static Baked.Theme.Default.DomainActions;
 using static Baked.Theme.Default.DomainComponents;
 using static Baked.Ui.Datas;
 
+using B = Baked.Ui.Components;
 using C = Baked.Test.Ui.Components;
 
 namespace Baked.Test.Override.Ui;
@@ -149,10 +150,7 @@ public class FormSampleUiOverrideFeature : IFeature
             builder.Conventions.AddMethodComponent(
                 when: c => !c.Method.Name.StartsWith("Get") && c.Method.Has<ActionModelAttribute>(),
                 where: cc => cc.Path.EndsWith(nameof(Page), nameof(FormSample), nameof(FormSample.NewParent), nameof(ContainerPage), nameof(ContainerPage.Contents), "*"),
-                component: c => Baked.Ui.Components.SimpleForm(options: vf =>
-                {
-                    vf.ButtonLabel = c.Method.Name;
-                })
+                component: c => B.SimpleForm(options: vf => vf.ButtonLabel = c.Method.Name)
             );
             builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.NewParent),
@@ -169,20 +167,25 @@ public class FormSampleUiOverrideFeature : IFeature
             );
             builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
                 when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.Delete),
-                schema: ra =>
-                {
-                    ra.Params = Context.Parent(options: o => o.Prop = "row");
-                }
+                schema: ra => ra.Params = Context.Parent(options: o => o.Prop = "row")
             );
             builder.Conventions.AddMethodComponent(
                 when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.Delete),
                 where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.ActionTemplate)),
-                component: (c, cc) => MethodButton(c.Method, cc)
+                component: (c, cc) => MethodButton(c.Method, cc,
+                    options: b =>
+                    {
+                        b.Icon = "pi pi-trash";
+                        b.Label = string.Empty;
+                        b.Variant = "text";
+                        b.Rounded = true;
+                    }
+                )
             );
             builder.Conventions.AddMethodSchema(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.GetParents),
                 where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.ActionTemplate)),
-                schema: (c, cc) => Baked.Ui.Components.DataTableColumn("Actions")
+                schema: (c, cc) => B.DataTableColumn("Actions")
             );
             builder.Conventions.AddMethodSchemaConfiguration<DataTable.Column>(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.GetParents),

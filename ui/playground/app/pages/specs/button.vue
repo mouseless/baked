@@ -12,27 +12,10 @@ const variants = [
   {
     name: "Base",
     descriptor: giveMe.aButton({
-      action: {
-        type: "Composite",
-        parts: [
-          {
-            type: "Local",
-            composable: "useDelay",
-            options: {
-              type: "Inline",
-              value: { time: 100 }
-            }
-          },
-          {
-            type: "Local",
-            composable: "useShowMessage",
-            options: {
-              type: "Inline",
-              value: { message: "Execute Action" }
-            }
-          }
-        ]
-      },
+      action: giveMe.aCompositeAction([
+        giveMe.aLocalAction({ delay: 100 }),
+        giveMe.aLocalAction({ showMessage: "Execute Action" })
+      ]),
       label: "Spec: Button",
       icon: "pi pi-play-circle"
     })

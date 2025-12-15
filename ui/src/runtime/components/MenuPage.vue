@@ -48,11 +48,11 @@
   </div>
 </template>
 <script setup>
+import { onBeforeUnmount, ref } from "vue";
+import { Divider } from "primevue";
 import { useRuntimeConfig } from "#app";
 import { Bake } from "#components";
 import { useContext, useLocalization } from "#imports";
-import { Divider } from "primevue";
-import { ref, watch } from "vue";
 
 const context = useContext();
 const { localize: l } = useLocalization();
@@ -63,37 +63,40 @@ const { schema } = defineProps({
   schema: { type: null, required: true }
 });
 
-const { header, sections, filterPageContextKey } = schema;
+const { header, sections, filterEvent } = schema;
+
+const path = context.injectPath();
 const locale = composables?.useFormat?.locale || "en-US";
+const events = context.injectEvents();
 const sectionsData = ref(sections);
 
-const page = context.injectPage();
-// listen in context if any filter is applied
-if(filterPageContextKey) {
-  watch(
-    () => page[filterPageContextKey],
-    (newValue, oldValue) => {
-      if(newValue === oldValue || newValue === undefined) { return; }
+if(filterEvent) {
+  events.on(filterEvent, path, filterSections);
+}
 
-      if(!newValue.trim()) {
-        sectionsData.value = sections;
+onBeforeUnmount(() => {
+  if(filterEvent) {
+    events.off(filterEvent, path);
+  }
+});
 
-        return;
-      }
+function filterSections(filter) {
+  if(!filter.trim()) {
+    sectionsData.value = sections;
 
-      const searchTerm = newValue.toLocaleLowerCase(locale);
-      const sectionsWithFilteredLinks = sections.map(section => ({
-        title: section.title,
-        links: section.links.filter(link => {
-          const title = l(link.title);
+    return;
+  }
 
-          return title?.toLocaleLowerCase(locale).startsWith(searchTerm);
-        })
-      }));
+  const searchTerm = filter.toLocaleLowerCase(locale);
+  const sectionsWithFilteredLinks = sections.map(section => ({
+    title: section.title,
+    links: section.links.filter(link => {
+      const title = l(link.title);
 
-      sectionsData.value = sectionsWithFilteredLinks.filter(section => section.links.length > 0);
-    },
-    { immediate: true }
-  );
+      return title?.toLocaleLowerCase(locale).startsWith(searchTerm);
+    })
+  }));
+
+  sectionsData.value = sectionsWithFilteredLinks.filter(section => section.links.length > 0);
 }
 </script>

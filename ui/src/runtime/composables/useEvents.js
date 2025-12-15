@@ -12,18 +12,18 @@ export default function() {
       delete listeners[name][id];
     }
 
-    async function emit(name) {
+    async function publish(name, value) {
       if(!listeners[name]) { return; }
 
       for(const id in listeners[name]) {
-        listeners[name][id]();
+        listeners[name][id](value);
       }
     }
 
     return {
       on,
       off,
-      emit
+      publish
     };
   }
 

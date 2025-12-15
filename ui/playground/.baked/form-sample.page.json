@@ -31,7 +31,7 @@
             "path": "form-sample/parents",
             "method": "DELETE",
             "postAction": {
-              "type": "Emit",
+              "type": "Publish",
               "event": "clear-parents"
             }
           }
@@ -92,7 +92,10 @@
                       "component": {
                         "type": "Button",
                         "schema": {
-                          "label": "Delete"
+                          "icon": "pi pi-trash",
+                          "label": "",
+                          "variant": "text",
+                          "rounded": true
                         },
                         "action": {
                           "type": "Remote",
@@ -104,7 +107,7 @@
                             "prop": "row"
                           },
                           "postAction": {
-                            "type": "Emit",
+                            "type": "Publish",
                             "event": "delete"
                           }
                         }
@@ -128,9 +131,20 @@
                       }
                     }
                   },
-                  "on": {
-                    "clear-parents": "Reload",
-                    "delete": "Reload"
+                  "reactions": {
+                    "reload": {
+                      "type": "Composite",
+                      "parts": [
+                        {
+                          "type": "On",
+                          "on": "clear-parents"
+                        },
+                        {
+                          "type": "On",
+                          "on": "delete"
+                        }
+                      ]
+                    }
                   }
                 }
               }

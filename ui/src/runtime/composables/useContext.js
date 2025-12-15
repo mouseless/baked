@@ -1,13 +1,19 @@
 import { inject, provide, ref } from "vue";
 
 export default function() {
-  function providePath(name) {
-    const path = inject("__bake_path", null);
-    provide("__bake_path", path ? `${path}/${name}` : name);
+  function providePath(value) {
+    provide("__bake_path", value);
   }
 
   function injectPath() {
     return inject("__bake_path", "");
+  }
+
+  function injectContextData() {
+    return {
+      page: injectPageContext(),
+      parent: injectParentContext()
+    };
   }
 
   function injectDataDescriptor() {
@@ -42,12 +48,12 @@ export default function() {
     provide("__bake_loading", value);
   }
 
-  function injectPage() {
-    return inject("__bake_page");
+  function injectPageContext() {
+    return inject("__bake_page_context");
   }
 
-  function providePage(value) {
-    provide("__bake_page", value);
+  function providePageContext(value) {
+    provide("__bake_page_context", value);
   }
 
   function injectParentContext() {
@@ -61,6 +67,7 @@ export default function() {
   return {
     injectPath,
     providePath,
+    injectContextData,
     injectDataDescriptor,
     provideDataDescriptor,
     injectEvents,
@@ -69,8 +76,8 @@ export default function() {
     provideExecuting,
     injectLoading,
     provideLoading,
-    injectPage,
-    providePage,
+    injectPageContext,
+    providePageContext,
     injectParentContext,
     provideParentContext
   };

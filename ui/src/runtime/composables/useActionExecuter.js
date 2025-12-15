@@ -4,8 +4,8 @@ import { useComposableResolver, useDataFetcher, usePathBuilder, useUnref } from 
 export default function() {
   const actions = {
     "Composite": Composite({ actionExecuter: { execute } }),
-    "Emit": Emit(),
     "Local": Local(),
+    "Publish": Publish(),
     "Remote": Remote({ actionExecuter: { execute } })
   };
 
@@ -25,16 +25,6 @@ function Composite({ actionExecuter }) {
     for(const part of action.parts) {
       await actionExecuter.execute({ action: part, contextData, events });
     }
-  }
-
-  return {
-    execute
-  };
-}
-
-function Emit() {
-  async function execute({ action, events }) {
-    await events.emit(action.event);
   }
 
   return {
@@ -63,6 +53,26 @@ function Local() {
   };
 }
 
+function Publish() {
+  const dataFetcher = useDataFetcher();
+
+  async function execute({ action, contextData, events }) {
+    const data = action.data ? await dataFetcher.fetch({ data: action.data, contextData }) : undefined;
+
+    if(action.event) {
+      await events.publish(action.event, data);
+    }
+
+    if(action.pageContextKey) {
+      contextData.page[action.pageContextKey] = data;
+    }
+  }
+
+  return {
+    execute
+  };
+}
+
 function Remote({ actionExecuter }) {
   const dataFetcher = useDataFetcher();
   const pathBuilder = usePathBuilder();
@@ -76,7 +86,7 @@ function Remote({ actionExecuter }) {
     const body = action.method === "GET" ? null
       : (action.body ? unref.deepUnref(await dataFetcher.fetch({ data: action.body, contextData })) : { });
 
-    await $fetch(pathBuilder.build(action.path, params), {
+    const response = await $fetch(pathBuilder.build(action.path, params), {
       baseURL: apiBaseURL,
       method: action.method,
       headers: headers,
@@ -84,7 +94,11 @@ function Remote({ actionExecuter }) {
       body: body
     });
 
-    await actionExecuter.execute({ action: action.postAction, contextData, events });
+    await actionExecuter.execute({
+      action: action.postAction,
+      contextData: { ...contextData, response },
+      events
+    });
   }
 
   return {

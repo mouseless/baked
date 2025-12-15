@@ -79,24 +79,24 @@ const variants = [
     name: "Page Context",
     descriptor: giveMe.aSelectButton({
       data: ["OPTION 1", "OPTION 2"],
-      selectionPageContextKey: "test:select-button"
+      action: giveMe.aPublishAction({ pageContextKey: "test:select-button" })
     }),
     model: ref(),
-    pageContextKeys: ["test:select-button:OPTION 1", "test:select-button:OPTION 2", "!test:select-button:OPTION 1", "!test:select-button:OPTION 2"]
+    pageContextKey: "test:select-button"
   },
   {
     name: "Page Context - Option Label and Value",
     descriptor: giveMe.aSelectButton({
       optionLabel: "label",
       optionValue: "value",
-      selectionPageContextKey: "test:select-button",
       data: [
         { label: "Label 1", value: "OPTION 1" },
         { label: "Label 2", value: "OPTION 2" }
-      ]
+      ],
+      action: giveMe.aPublishAction({ pageContextKey: "test:select-button" })
     }),
     model: ref(),
-    pageContextKeys: ["test:select-button:OPTION 1", "test:select-button:OPTION 2", "!test:select-button:OPTION 1", "!test:select-button:OPTION 2"]
+    pageContextKey: "test:select-button"
   }
 ];
 </script>

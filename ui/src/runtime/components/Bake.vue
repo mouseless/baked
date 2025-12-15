@@ -1,6 +1,7 @@
 <template>
   <component
     :is="render()"
+    v-if="visible"
     :key="loading"
     :class="classes"
   >
@@ -8,14 +9,15 @@
   </component>
 </template>
 <script setup>
-import { h, onMounted, onUnmounted, ref } from "vue";
-import { useActionExecuter, useComponentResolver, useContext, useDataFetcher, useFormat } from "#imports";
+import { h, nextTick, onBeforeUnmount, onMounted, ref } from "vue";
+import { useActionExecuter, useComponentResolver, useContext, useDataFetcher, useFormat, useReactionHandler } from "#imports";
 
 const actionExecuter = useActionExecuter();
 const componentResolver = useComponentResolver();
 const context = useContext();
 const dataFetcher = useDataFetcher();
 const { asClasses } = useFormat();
+const reactionHandler = useReactionHandler();
 
 const { name, descriptor } = defineProps({
   name: { type: String, required: true },
@@ -24,88 +26,105 @@ const { name, descriptor } = defineProps({
 const model = defineModel({ type: null });
 const emit = defineEmits(["loaded"]);
 
-context.providePath(name);
-context.provideDataDescriptor(descriptor.data);
-
-const path = context.injectPath();
+const parentPath = context.injectPath();
+const path = parentPath && parentPath !== "" ? `${parentPath}/${name}` : name;
 const events = context.injectEvents();
-const is = componentResolver.resolve(descriptor.type, "MissingComponent");
-const parentContext = context.injectParentContext();
-const data = ref(dataFetcher.get({ data: descriptor.data, contextData: { parent: parentContext } }));
+const contextData = context.injectContextData();
+const component = componentResolver.resolve(descriptor.type, "MissingComponent");
+const componentProps = buildComponentProps();
+const data = ref(dataFetcher.get({ data: descriptor.data, contextData }));
 const shouldLoad = dataFetcher.shouldLoad(descriptor.data?.type);
 const loading = ref(shouldLoad);
 const executing = ref(false);
+const visible = ref(true);
 const classes = [`b-component--${descriptor.type}`, ...asClasses(name)];
+let reactions = null;
 
-context.provideParentContext({ ...parentContext, data });
+context.providePath(path);
+context.provideDataDescriptor(descriptor.data);
+context.provideParentContext({ ...contextData.parent, data });
 context.provideExecuting(executing);
-
-// TODO implement remaining reactions
-if(descriptor.on) {
-  Object.keys(descriptor.on).forEach(event => {
-    if(descriptor.on[event] === "Reload") {
-      events.on(event, path, load);
-    }
-  });
-}
 
 if(shouldLoad) {
   context.provideLoading(loading);
 }
 
-onMounted(async() => {
-  if(!shouldLoad) { return; }
+if(descriptor.reactions) {
+  reactions = reactionHandler.create(`${path}:bake`, {
+    reload(success) {
+      if(!success) { return; }
 
-  await load();
-});
-
-// TODO - review this in form components
-onUnmounted(() => {
-  if(descriptor.on) {
-    Object.keys(descriptor.on).forEach(event =>{
-      events.off(event, path);
-    });
-  }
-});
-
-function render() {
-  const props = { };
-  if(descriptor.schema) { props.schema = descriptor.schema; }
-  if(descriptor.data) { props.data = data.value; }
-  if(is.emits?.includes("submit")) { props.onSubmit = onModelUpdate; }
-  if(is.props?.modelValue) {
-    props.modelValue = model.value;
-    props["onUpdate:modelValue"] = onModelUpdate;
-  }
-
-  return h(is, props);
+      load();
+    },
+    show(success) {
+      visible.value = success;
+    }
+  });
+  reactions.bind(descriptor.reactions);
 }
+
+onMounted(async() => {
+  if(shouldLoad) {
+    await load();
+  }
+});
+
+onBeforeUnmount(() => {
+  if(descriptor.reactions) {
+    reactions.unbind();
+  }
+});
 
 async function load() {
   loading.value = true;
   data.value = await dataFetcher.fetch({
     data: descriptor.data,
-    contextData: { parent: parentContext }
+    contextData
   });
   loading.value = false;
   emit("loaded");
 }
 
+function buildComponentProps() {
+  const result = {};
+
+  if(descriptor.schema) { result.schema = descriptor.schema; }
+  if(component.emits?.includes("submit")) { result.onSubmit = onModelUpdate; }
+  if(component.props?.modelValue) {
+    result["onUpdate:modelValue"] = onModelUpdate;
+
+    nextTick(() => onModelUpdate(model.value));
+  }
+
+  return result;
+}
+
+function render() {
+  if(descriptor.data) {
+    componentProps.data = data.value;
+  }
+
+  if(component.props?.modelValue) {
+    componentProps.modelValue = model.value;
+  }
+
+  return h(component, componentProps);
+}
+
 async function onModelUpdate(newModel) {
-  if(is.props?.modelValue) {
+  if(component.props?.modelValue) {
     model.value = newModel;
   }
 
   if(!descriptor.action) { return; }
 
-  const contextData = { parent: parentContext };
-  if(newModel) {
-    contextData.model = newModel;
-  }
-
   try {
     executing.value = true;
-    await actionExecuter.execute({ action: descriptor.action, contextData, events });
+    await actionExecuter.execute({
+      action: descriptor.action,
+      contextData: { ...contextData, model: newModel },
+      events
+    });
   } finally {
     executing.value = false;
   }
