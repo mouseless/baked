@@ -29,33 +29,33 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             builder.Index.Property.Add<IdAttribute>();
             builder.Index.Property.Add<DataAttribute>();
             builder.Conventions.SetPropertyAttribute(
-                attribute: () => new IdAttribute(),
-                when: c => c.Property.Name == "Id"
+                when: c => c.Property.Name == "Id",
+                attribute: () => new IdAttribute()
             );
             builder.Conventions.SetPropertyAttribute(
-                attribute: c => new DataAttribute(c.Property.Name.Camelize()) { Label = c.Property.Name.Titleize() },
                 when: c => c.Property.IsPublic,
+                attribute: c => new DataAttribute(c.Property.Name.Camelize()) { Label = c.Property.Name.Titleize() },
                 order: -10
             );
             builder.Conventions.AddPropertyAttributeConfiguration<DataAttribute>(
-                attribute: data => data.Visible = false,
-                when: c => c.Property.Has<IdAttribute>()
+                when: c => c.Property.Has<IdAttribute>(),
+                attribute: data => data.Visible = false
             );
             builder.Conventions.AddPropertyComponent(
-                component: () => B.Text(),
-                when: c => c.Property.PropertyType.Is<string>() || c.Property.PropertyType.Is<Guid>()
+                when: c => c.Property.PropertyType.Is<string>() || c.Property.PropertyType.Is<Guid>(),
+                component: () => B.Text()
             );
 
             // Method Defaults
             builder.Index.Method.Add<TabNameAttribute>();
             builder.Conventions.SetMethodAttribute(
-                attribute: () => new TabNameAttribute(),
                 when: c => c.Method.Has<ActionModelAttribute>(),
+                attribute: () => new TabNameAttribute(),
                 order: RestApiLayer.MaxConventionOrder + 10
             );
             builder.Conventions.AddMethodSchema(
-                schema: c => MethodRemote(c.Method),
-                when: c => c.Method.Has<ActionModelAttribute>()
+                when: c => c.Method.Has<ActionModelAttribute>(),
+                schema: c => MethodRemote(c.Method)
             );
             builder.Conventions.AddMethodSchemaConfiguration<RemoteData>(
                 when: c => c.Type.Has<LocatableAttribute>(),
@@ -64,24 +64,24 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
             // Parameter Defaults
             builder.Conventions.AddParameterSchema(
-                schema: (c, cc) => ParameterInput(c.Parameter, cc),
-                when: c => c.Parameter.Has<ParameterModelAttribute>()
+                when: c => c.Parameter.Has<ParameterModelAttribute>(),
+                schema: (c, cc) => ParameterInput(c.Parameter, cc)
             );
             builder.Conventions.AddParameterSchemaConfiguration<Input>(
+                when: c => c.Parameter.Has<ParameterModelAttribute>(),
                 schema: (p, c) =>
                 {
                     var api = c.Parameter.Get<ParameterModelAttribute>();
 
                     p.Required = !api.IsOptional ? true : null;
                     p.DefaultValue = api.DefaultValue;
-                },
-                when: c => c.Parameter.Has<ParameterModelAttribute>()
+                }
             );
 
             // Enum Data
             builder.Conventions.AddTypeSchema(
-                schema: (c, cc) => EnumInline(c.Type, cc),
-                when: c => c.Type.SkipNullable().IsEnum
+                when: c => c.Type.SkipNullable().IsEnum,
+                schema: (c, cc) => EnumInline(c.Type, cc)
             );
 
             // `DataTable` defaults
@@ -93,12 +93,12 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 }
             );
             builder.Conventions.AddMethodSchema(
-                schema: (c, cc) => MethodDataTableExport(c.Method, cc),
-                when: c => c.Method.Has<ComponentDescriptorBuilderAttribute<DataTable>>()
+                when: c => c.Method.Has<ComponentDescriptorBuilderAttribute<DataTable>>(),
+                schema: (c, cc) => MethodDataTableExport(c.Method, cc)
             );
             builder.Conventions.AddPropertySchema(
-                schema: (c, cc) => PropertyDataTableColumn(c.Property, cc),
-                when: c => c.Property.Has<DataAttribute>()
+                when: c => c.Property.Has<DataAttribute>(),
+                schema: (c, cc) => PropertyDataTableColumn(c.Property, cc)
             );
             builder.Conventions.AddPropertySchemaConfiguration<DataTable.Column>(
                 schema: (dtc, c, cc) =>
@@ -108,18 +108,27 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
 
                     dtc.Title = data.Label is not null ? l(data.Label) : null;
                     dtc.Exportable = true;
-                    dtc.Component.Data ??= Context.Parent(options: o => o.Prop = $"row.{data.Prop}");
                 }
+            );
+            builder.Conventions.AddPropertySchemaConfiguration<DataTable.Column>(
+                schema: (dtc, c, cc) =>
+                {
+                    var data = c.Property.Get<DataAttribute>();
+
+                    var rootProp = cc.Path.Contains(nameof(DataTable.FooterTemplate)) ? "data" : "row";
+                    dtc.Component.Data ??= Context.Parent(options: o => o.Prop = $"{rootProp}.{data.Prop}");
+                },
+                order: UiLayer.MaxConventionOrder - 10
             );
 
             // Pages
             builder.Conventions.AddTypeComponent(
-                component: (c, cc) => TypeReportPage(c.Type, cc),
-                where: cc => cc.Path.Is(nameof(Page), "*")
+                where: cc => cc.Path.Is(nameof(Page), "*"),
+                component: (c, cc) => TypeReportPage(c.Type, cc)
             );
             builder.Conventions.AddMethodSchema(
-                schema: (c, cc) => MethodReportPageTabContent(c.Method, cc),
-                when: c => c.Method.Has<ActionModelAttribute>()
+                when: c => c.Method.Has<ActionModelAttribute>(),
+                schema: (c, cc) => MethodReportPageTabContent(c.Method, cc)
             );
         });
 
