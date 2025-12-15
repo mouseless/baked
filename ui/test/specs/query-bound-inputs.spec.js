@@ -9,7 +9,8 @@ const id = {
   component: "component",
   uniqueKey: "unique-key",
   ready: "ready",
-  reset: "reset"
+  reset: "reset",
+  reactor: "reactor"
 };
 
 test("parameters are rendered", async({ page }) => {
@@ -120,4 +121,12 @@ test("unique key changes with parameter values", async({ page }) => {
   await page.keyboard.press("Digit0");
 
   await expect(uniqueKey).toHaveText("value 1-value 2-value 3-value 4-0");
+});
+
+test("when reacting, bake should respect initial values", async({ page, goto }) => {
+  await goto("/specs/query-bound-inputs?optional=react", { waitUntil: "hydration" });
+  const reactor = page.getByTestId(id.reactor);
+
+  await expect(reactor).toBeAttached();
+  await expect(reactor).toHaveText("Reacting...");
 });

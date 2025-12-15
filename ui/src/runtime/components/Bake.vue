@@ -9,7 +9,7 @@
   </component>
 </template>
 <script setup>
-import { h, onBeforeUnmount, onMounted, ref } from "vue";
+import { h, nextTick, onBeforeUnmount, onMounted, ref } from "vue";
 import { useActionExecuter, useComponentResolver, useContext, useDataFetcher, useFormat, useReactionHandler } from "#imports";
 
 const actionExecuter = useActionExecuter();
@@ -30,7 +30,8 @@ const parentPath = context.injectPath();
 const path = parentPath && parentPath !== "" ? `${parentPath}/${name}` : name;
 const events = context.injectEvents();
 const contextData = context.injectContextData();
-const is = componentResolver.resolve(descriptor.type, "MissingComponent");
+const component = componentResolver.resolve(descriptor.type, "MissingComponent");
+const componentProps = buildComponentProps();
 const data = ref(dataFetcher.get({ data: descriptor.data, contextData }));
 const shouldLoad = dataFetcher.shouldLoad(descriptor.data?.type);
 const loading = ref(shouldLoad);
@@ -63,9 +64,9 @@ if(descriptor.reactions) {
 }
 
 onMounted(async() => {
-  if(!shouldLoad) { return; }
-
-  await load();
+  if(shouldLoad) {
+    await load();
+  }
 });
 
 onBeforeUnmount(() => {
@@ -84,21 +85,34 @@ async function load() {
   emit("loaded");
 }
 
-function render() {
-  const props = { };
-  if(descriptor.schema) { props.schema = descriptor.schema; }
-  if(descriptor.data) { props.data = data.value; }
-  if(is.emits?.includes("submit")) { props.onSubmit = onModelUpdate; }
-  if(is.props?.modelValue) {
-    props.modelValue = model.value;
-    props["onUpdate:modelValue"] = onModelUpdate;
+function buildComponentProps() {
+  const result = {};
+
+  if(descriptor.schema) { result.schema = descriptor.schema; }
+  if(component.emits?.includes("submit")) { result.onSubmit = onModelUpdate; }
+  if(component.props?.modelValue) {
+    result["onUpdate:modelValue"] = onModelUpdate;
+
+    nextTick(() => onModelUpdate(model.value));
   }
 
-  return h(is, props);
+  return result;
+}
+
+function render() {
+  if(descriptor.data) {
+    componentProps.data = data.value;
+  }
+
+  if(component.props?.modelValue) {
+    componentProps.modelValue = model.value;
+  }
+
+  return h(component, componentProps);
 }
 
 async function onModelUpdate(newModel) {
-  if(is.props?.modelValue) {
+  if(component.props?.modelValue) {
     model.value = newModel;
   }
 
