@@ -15,12 +15,18 @@ const variants = [
         giveMe.aConditionalCondition({
           prop: "type",
           value: "type-1",
-          component: giveMe.anExpected({ testId: "component-1", data: { type: "Context", key: "parent", prop: "data.type" } })
+          component: giveMe.anExpected({
+            testId: "component-1",
+            data: giveMe.aContextData({ key: "parent", prop: "data.type" })
+          })
         }),
         giveMe.aConditionalCondition({
           prop: "type",
           value: "type-2",
-          component: giveMe.anExpected({ testId: "component-2", data: { type: "Context", key: "parent", prop: "data.type" } })
+          component: giveMe.anExpected({
+            testId: "component-2",
+            data: giveMe.aContextData({ key: "parent", prop: "data.type" })
+          })
         })
       ],
       data: {
@@ -36,19 +42,25 @@ const variants = [
         giveMe.aConditionalCondition({
           prop: "type",
           value: "type-1",
-          component: giveMe.anExpected({ testId: "component-1", data: { type: "Context", key: "parent", prop: "data.type" } })
+          component: giveMe.anExpected({
+            testId: "component-1",
+            data: giveMe.aContextData({ key: "parent", prop: "data.type" })
+          })
         }),
         giveMe.aConditionalCondition({
           prop: "type",
           value: "type-2",
-          component: giveMe.anExpected({ testId: "component-2", data: { type: "Context", key: "parent", prop: "data.type" } })
+          component: giveMe.anExpected({
+            testId: "component-2",
+            data: giveMe.aContextData({ key: "parent", prop: "data.type" })
+          })
         })
       ],
-      fallback: giveMe.anExpected({ testId: "component-3", data: { type: "Context", key: "parent", prop: "data.type" } }),
-      data: {
-        type: "Inline",
-        value: { type: "type-3" }
-      }
+      fallback: giveMe.anExpected({
+        testId: "component-3",
+        data: giveMe.aContextData({ key: "parent", prop: "data.type" })
+      }),
+      data: giveMe.anInlineData({ type: "type-3" })
     })
   }
 ];

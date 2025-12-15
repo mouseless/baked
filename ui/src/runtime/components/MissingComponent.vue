@@ -21,8 +21,9 @@
   </AwaitLoading>
   <Dialog
     v-model:visible="visible"
-    modal
     header="Missing Component"
+    modal
+    dismissable-mask
     class="min-w-[500px] max-w-[750px] mx-4"
   >
     <div class="flex flex-col gap-4 w-full">

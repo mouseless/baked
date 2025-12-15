@@ -547,7 +547,7 @@ export default {
     };
   },
 
-  aRemoteData({ path, query, params, headers } = {}) {
+  aRemoteData({ path, query, params, headers, attributes } = {}) {
     path = $(path, "/fake-remote");
 
     return {
@@ -555,7 +555,8 @@ export default {
       path,
       query,
       params,
-      headers
+      headers,
+      attributes
     };
   },
 

@@ -116,3 +116,8 @@
   data using `useDataFetcher`
 - `Layout` now supports app-wide `pageContext` and `events` that are different
   from those coming from `Page` which are page-wide
+- `IAction` and `IData` now implement `+` operator to easily convert them into a
+  `CompositeAction` and `CompositeData`
+  ```csharp
+  component.Data += Context.Parent(options: cd => cd.Prop = "parameters");
+  ```
