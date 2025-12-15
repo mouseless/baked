@@ -35,15 +35,15 @@ const variants = [
     descriptor: giveMe.anExpected({
       testId: "test",
       showDataParams: true,
-      data: giveMe.aCompositeData([ // merges ["computed"] and ["RequiredWithDefault1", "Required1"]
-        giveMe.aComputedData({ composable: "useFakeComputed", options: giveMe.anInlineData({ data: "computed" }) }), // provides "computed"
+      data: giveMe.aCompositeData([
+        giveMe.aComputedData({ composable: "useFakeComputed", options: giveMe.anInlineData({ data: "computed" }) }),
         giveMe.aContextData({ key: "parent" }),
         giveMe.anInlineData({ inline: "inline" }),
         giveMe.aRemoteData({
           path: "/route-parameters-samples/{id}",
           query: giveMe.aCompositeData([
-            giveMe.anInlineData({ requiredWithDefault: "RequiredWithDefault1" }), // provides "RequiredWithDefault1"
-            giveMe.anInlineData({ required: "Required1" }) // provides "Required1"
+            giveMe.anInlineData({ requiredWithDefault: "RequiredWithDefault1" }),
+            giveMe.anInlineData({ required: "Required1" })
           ]),
           params: giveMe.aCompositeData([
             giveMe.anInlineData({ id: 15 }),
