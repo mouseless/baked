@@ -122,9 +122,9 @@ domain model, usually to a type, use the `AddTypeComponent` extension of
 configurator.ConfigureDomainModelBuilder(builder =>
 {
     builder.Conventions.AddTypeComponent(
-        component: (c, cc) => ...,
-        whenType: c => c.Type...,
-        whenComponent: cc => cc.Path.EndsWith("Page")
+        when: c => c.Type...,
+        where: cc => cc.Path.EndsWith("Page"),
+        component: (c, cc) => ...
     );
 });
 ```
@@ -133,16 +133,14 @@ configurator.ConfigureDomainModelBuilder(builder =>
   `ComponentContext cc` as parameters, and is expected to return a
   `ComponentDescriptor<TComponentSchema>` instance, such as
   `ComponentDescriptor<ReportPage>`
-- `whenType:` is a predicate function that takes `TypeModelMetadataContext c` as
-  a parameter and is used as a filter to choose which types this convention
-  applies to
-- `whenComponent:` is a predicate funtion that takes `ComponentContext cc` as a
-  parameter and is used as a filter to determine at which component path this
+- `when:` is a predicate function that takes `TypeModelMetadataContext c` as a
+  parameter and is a query for the types this convention applies to
+- `where:` is a predicate funtion that takes `ComponentContext cc` as a
+  parameter and is a selector that determines at which component path this
   convention should be applied
 
 `AddPropertyComponent`, `AddMethodComponent` and `AddParameterComponent`
-extensions works the same way, except instead of `whenType:` they accept
-`whenProperty:`, `whenMethod:` and `whenParameter:` respectively.
+extensions works the same way.
 
 Once you add a component for a domain model at a specific component path, it
 will return that component instance when asked at that component path. You may
@@ -187,3 +185,76 @@ methods.
 To add a convention that configures an existing schema, there are
 `Add...ComponentConfiguration<TComponentSchema>` and
 `Add...SchemaConfiguration<TSchema>` helpers.
+
+## `Bake.vue`
+
+`Bake.vue` is the core utility component that interprets a component descriptor
+and sets up the defined component so that it integrates with the rest of the
+page.
+
+### Data System
+
+Data system allows `Bake.vue` to fetch data and pass it to the component. Use
+`Baked.Ui.Datas` builder class to create different types of data for a
+component. Below you can find some example data usages.
+
+```csharp
+using static Baked.Ui.Datas; // static using is handy for builder classes
+
+...
+// inline a static value
+Inline("a string");
+Inline(new { an: "object" });
+// set a dynamic value that is fetched from an api endpoint
+Remote("some/endpoint", options: rd => ...);
+// set a dynamic value fetched using a composable, `useRoute` in this case
+Computed.UseRoute("query");
+// set a context value, model in this case
+Context.Model();
+...
+```
+
+### Action System
+
+Action system allows `Bake.vue` to execute actions upon model change or `submit`
+event of the component. Use `Baked.Ui.Actions` builder class to create different
+types of actions for a component. Below you can find some example action usages.
+
+```csharp
+using static Baked.Ui.Actions;
+
+...
+// publishes a page-wide event
+Publish.Event("my-button-clicked");
+// sets value to a page-wide context with given key
+Publish.PageContextValue("my-value");
+// redirects app to given route
+Local.UseRedirect("/return-page");
+// sends configrued request to remote endpoint
+Remote("some/endpoint",
+  // goes to a page after remote action
+  postAction: Local.UseRedirect("/return-page"),
+  options: ra => ...
+);
+...
+```
+
+### Reaction System
+
+Reaction system allows `Bake.vue` to react to publish actions, either event or
+page context value. Available reactions are `Reload` and `Show`. Below you can
+find some example action usages.
+
+```csharp
+using static Baked.Ui.Constraints;
+
+// reacts on an event
+component.ReloadOn("my-button-clicked");
+// reacts when a page context value changes
+component.ReloadWhen("my-value");
+// shows/hides component depending on the constraint
+component.ShowOn("input-changed", Is("show"));
+// shows when `selection` value is valid using a custom validator composable
+// `useMyCustomValidator`
+component.ShowWhen("selection", Composable.Use("MyCustomValidator"));
+```

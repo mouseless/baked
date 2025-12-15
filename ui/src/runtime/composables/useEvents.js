@@ -12,7 +12,7 @@ export default function() {
       delete listeners[name][id];
     }
 
-    async function emit(name, value) {
+    async function publish(name, value) {
       if(!listeners[name]) { return; }
 
       for(const id in listeners[name]) {
@@ -23,7 +23,7 @@ export default function() {
     return {
       on,
       off,
-      emit
+      publish
     };
   }
 

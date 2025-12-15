@@ -141,7 +141,7 @@ test.describe("Reaction", () => {
   // });
   // ```
 
-  test("Reload reaction with composite and emit triggers", async({ page }) => {
+  test("Reload reaction with composite and publish triggers", async({ page }) => {
     let reloaded = false;
     page.on("request", req => {
       if(req.url().includes("method-samples/async")) {
@@ -157,7 +157,7 @@ test.describe("Reaction", () => {
     expect(reloaded).toBe(true);
   });
 
-  test("Reaction is filtered out when emitted value doesn't match constraint", async({ page }) => {
+  test("Reaction is filtered out when published event value doesn't match constraint", async({ page }) => {
     let reloaded = false;
     page.on("request", req => {
       if(req.url().includes("method-samples/async")) {
@@ -173,7 +173,7 @@ test.describe("Reaction", () => {
     expect(reloaded).toBe(false);
   });
 
-  test("Reaction occurs when emitted value matches constraint", async({ page }) => {
+  test("Reaction occurs when published event value matches constraint", async({ page }) => {
     let reloaded = false;
     page.on("request", req => {
       if(req.url().includes("method-samples/async")) {
@@ -183,7 +183,7 @@ test.describe("Reaction", () => {
     const component = page.getByTestId(id);
     const input = component.getByTestId("input");
 
-    await input.fill("emit");
+    await input.fill("event");
 
     await page.waitForLoadState("networkidle");
     expect(reloaded).toBe(true);

@@ -4,7 +4,7 @@ namespace Baked.Ui;
 
 public static class Actions
 {
-    public static Emits Emit { get; } = new();
+    public static Publishments Publish { get; } = new();
     public static Composables Local { get; } = new();
 
     public static CompositeAction Composite(
@@ -29,14 +29,14 @@ public static class Actions
         ) => options.Apply(new(composable.StartsWith("use") ? composable : $"use{composable}"));
     }
 
-    public class Emits
+    public class Publishments
     {
-        public EmitAction Event(string @event,
-            Action<EmitAction>? options = default
+        public PublishAction Event(string @event,
+            Action<PublishAction>? options = default
         ) => options.Apply(new() { Event = @event, Data = Context.Model() });
 
-        public EmitAction PageContextValue(string key,
-            Action<EmitAction>? options = default
+        public PublishAction PageContextValue(string key,
+            Action<PublishAction>? options = default
         ) => options.Apply(new() { PageContextKey = key, Data = Context.Model() });
     }
 }

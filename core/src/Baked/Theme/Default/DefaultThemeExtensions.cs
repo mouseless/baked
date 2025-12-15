@@ -4,6 +4,8 @@ using Baked.Theme;
 using Baked.Theme.Default;
 using Baked.Ui;
 
+using static Baked.Ui.Actions;
+
 using B = Baked.Ui.Components;
 
 namespace Baked;
@@ -62,7 +64,7 @@ public static class DefaultThemeExtensions
                         pt.Description = l(context.Route.Description);
                         pt.Actions.Add(B.Filter(
                             options: f => f.Placeholder = l("Filter"),
-                            action: Actions.Emit.Event("filter-changed")
+                            action: Publish.Event("filter-changed")
                         ));
                     });
                     mp.FilterEvent = "filter-changed";

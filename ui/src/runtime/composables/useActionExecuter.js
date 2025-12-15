@@ -4,8 +4,8 @@ import { useComposableResolver, useDataFetcher, usePathBuilder, useUnref } from 
 export default function() {
   const actions = {
     "Composite": Composite({ actionExecuter: { execute } }),
-    "Emit": Emit(),
     "Local": Local(),
+    "Publish": Publish(),
     "Remote": Remote({ actionExecuter: { execute } })
   };
 
@@ -32,26 +32,6 @@ function Composite({ actionExecuter }) {
   };
 }
 
-function Emit() {
-  const dataFetcher = useDataFetcher();
-
-  async function execute({ action, contextData, events }) {
-    const data = action.data ? await dataFetcher.fetch({ data: action.data, contextData }) : undefined;
-
-    if(action.event) {
-      await events.emit(action.event, data);
-    }
-
-    if(action.pageContextKey) {
-      contextData.page[action.pageContextKey] = data;
-    }
-  }
-
-  return {
-    execute
-  };
-}
-
 function Local() {
   const composableResolver = useComposableResolver();
   const dataFetcher = useDataFetcher();
@@ -66,6 +46,26 @@ function Local() {
     }
 
     throw new Error("Action composable should have async `run`");
+  }
+
+  return {
+    execute
+  };
+}
+
+function Publish() {
+  const dataFetcher = useDataFetcher();
+
+  async function execute({ action, contextData, events }) {
+    const data = action.data ? await dataFetcher.fetch({ data: action.data, contextData }) : undefined;
+
+    if(action.event) {
+      await events.publish(action.event, data);
+    }
+
+    if(action.pageContextKey) {
+      contextData.page[action.pageContextKey] = data;
+    }
   }
 
   return {

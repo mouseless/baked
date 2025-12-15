@@ -53,7 +53,7 @@ const variants = [
           component: giveMe.aSelectButton({
             data: ["SHOW"],
             allowEmpty: true,
-            action: giveMe.anEmitAction({ pageContextKey: "selection" })
+            action: giveMe.aPublishAction({ pageContextKey: "selection" })
           })
         })
       ],

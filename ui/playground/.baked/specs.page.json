@@ -14,7 +14,7 @@
               "placeholder": "Filter"
             },
             "action": {
-              "type": "Emit",
+              "type": "Publish",
               "event": "filter-changed",
               "data": {
                 "type": "Context",

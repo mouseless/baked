@@ -110,7 +110,7 @@ const variants = [
       localizeLabel: true,
       data: ["ValueA", "ValueB"],
       inline: false,
-      action: giveMe.anEmitAction({ pageContextKey: "test:select" })
+      action: giveMe.aPublishAction({ pageContextKey: "test:select" })
     }),
     model: ref(),
     pageContextKey: "test:select"
@@ -124,7 +124,7 @@ const variants = [
         { label: "Label 1", value: "ValueA" },
         { label: "Label 2", value: "ValueB" }
       ],
-      action: giveMe.anEmitAction({ pageContextKey: "test:select" })
+      action: giveMe.aPublishAction({ pageContextKey: "test:select" })
     }),
     model: ref(),
     pageContextKey: "test:select"

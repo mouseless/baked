@@ -8,8 +8,8 @@
 - `Bake` now executes given `Action` defined in `ComponentDescriptor`
   implementations upon model change or `submit` event
 - `Button` component is now added
-- `useActionExecuter` composable is now added to execute `Composite`, `Emit`,
-  `Local` and `Remote` actions with given configuration
+- `useActionExecuter` composable is now added to execute `Composite`, `Local`,
+  `Publish` and `Remote` actions with given configuration
   - `Page` component now provides an event bus to publish page-wide events
 - `SimpleForm` component is now added for rendering a basic form with inputs
 - `DataTable` now supports row based actions via `ActionTemplate` property
@@ -71,10 +71,10 @@
 - `DataTable.Component` type is changed to `IComponentDescriptor`
 - `Conditional` is changed from `Schema` to `Component`
 - `*PageContextKey` properties are now removed from components and schemas
-  - use the new emit action to publish values to page context
+  - use the new publish action to publish values to page context
     ```csharp
     component.Schema.PageContextKey = "key" // old usage
-    component.Action = Emit.PageContextValue("key"); // new usage
+    component.Action = Publish.PageContextValue("key"); // new usage
     ```
   - use the new reaction system to subscribe to page context changes
     ```csharp

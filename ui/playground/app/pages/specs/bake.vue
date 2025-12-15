@@ -88,13 +88,13 @@ const variants = [
       contents: [
         giveMe.aButton({
           label: "Spec: Reload",
-          action: giveMe.anEmitAction({ event: "clicked" })
+          action: giveMe.aPublishAction({ event: "clicked" })
         }),
         giveMe.anInputText({
           testId: "input",
           action: giveMe.aCompositeAction([
-            giveMe.anEmitAction({ event: "input-changed" }),
-            giveMe.anEmitAction({ pageContextKey: "input" })
+            giveMe.aPublishAction({ event: "input-changed" }),
+            giveMe.aPublishAction({ pageContextKey: "input" })
           ])
         }),
         giveMe.anExpected({
@@ -107,7 +107,7 @@ const variants = [
             reload: giveMe.aTrigger({
               parts: [
                 giveMe.aTrigger({ on: "clicked" }),
-                giveMe.aTrigger({ on: "input-changed", constraint: giveMe.aConstraint({ is: "emit" }) }),
+                giveMe.aTrigger({ on: "input-changed", constraint: giveMe.aConstraint({ is: "event" }) }),
                 giveMe.aTrigger({ when: "input", constraint: giveMe.aConstraint({ is: "page-context" }) }),
                 giveMe.aTrigger({
                   when: "input",

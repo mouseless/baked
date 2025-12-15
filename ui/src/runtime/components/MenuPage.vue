@@ -48,7 +48,7 @@
   </div>
 </template>
 <script setup>
-import { onUnmounted, ref } from "vue";
+import { onBeforeUnmount, ref } from "vue";
 import { Divider } from "primevue";
 import { useRuntimeConfig } from "#app";
 import { Bake } from "#components";
@@ -74,7 +74,7 @@ if(filterEvent) {
   events.on(filterEvent, path, filterSections);
 }
 
-onUnmounted(() => {
+onBeforeUnmount(() => {
   if(filterEvent) {
     events.off(filterEvent, path);
   }

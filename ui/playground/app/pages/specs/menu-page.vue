@@ -37,7 +37,7 @@ const variants = [
     descriptor: giveMe.aMenuPage({
       filterEvent: "filter",
       header: giveMe.aFilter({
-        action: giveMe.anEmitAction({ event: "filter" })
+        action: giveMe.aPublishAction({ event: "filter" })
       }),
       sections: [
         giveMe.aMenuPageSection({

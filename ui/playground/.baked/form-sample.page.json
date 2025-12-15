@@ -31,7 +31,7 @@
             "path": "form-sample/parents",
             "method": "DELETE",
             "postAction": {
-              "type": "Emit",
+              "type": "Publish",
               "event": "clear-parents"
             }
           }
@@ -107,7 +107,7 @@
                             "prop": "row"
                           },
                           "postAction": {
-                            "type": "Emit",
+                            "type": "Publish",
                             "event": "delete"
                           }
                         }

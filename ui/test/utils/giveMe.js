@@ -258,21 +258,6 @@ export default {
     };
   },
 
-  anEmitAction({ event, pageContextKey, data }) {
-    if(!pageContextKey) {
-      event = $(event, "something-happened");
-    }
-
-    data = $(data, this.aContextData({ key: "model" }));
-
-    return {
-      type: "Emit",
-      event,
-      pageContextKey,
-      data
-    };
-  },
-
   anExpected({ testId, showDataParams, value, data, reactions } = {}) {
     testId = $(testId, "test-id");
     showDataParams = $(showDataParams, false);
@@ -513,6 +498,21 @@ export default {
     return {
       type: "Context",
       key: "parent"
+    };
+  },
+
+  aPublishAction({ event, pageContextKey, data }) {
+    if(!pageContextKey) {
+      event = $(event, "something-happened");
+    }
+
+    data = $(data, this.aContextData({ key: "model" }));
+
+    return {
+      type: "Publish",
+      event,
+      pageContextKey,
+      data
     };
   },
 
