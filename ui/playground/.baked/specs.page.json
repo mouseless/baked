@@ -338,6 +338,18 @@
             }
           },
           {
+            "title": "Modal",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/modal",
+                "icon": "pi pi-microchip",
+                "title": "Modal",
+                "description": "Renders a modal dialog with given contents"
+              }
+            }
+          },
+          {
             "title": "Page Title",
             "component": {
               "type": "CardLink",

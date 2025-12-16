@@ -474,6 +474,18 @@ export default {
     };
   },
 
+  aModal({ content, footer, header, label }) {
+    return {
+      type: "Modal",
+      schema: {
+        content,
+        header,
+        footer,
+        label
+      }
+    };
+  },
+
   aNumber({ data } = {}) {
     data = $(data, 100_000);
 

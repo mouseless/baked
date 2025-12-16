@@ -141,6 +141,10 @@ public static class Components
         Action<MissingComponent.DomainSource>? options = default
     ) => options.Apply(new(type));
 
+    public static ComponentDescriptor<Modal> Modal(string label,
+       Action<Modal>? options = default
+   ) => new(options.Apply(new(label)));
+
     public static ComponentDescriptor<Money> Money(
         Action<Money>? options = default,
         IData? data = default

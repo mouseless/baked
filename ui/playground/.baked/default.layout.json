@@ -225,6 +225,12 @@
             "title": "Header",
             "parentRoute": "/specs"
           },
+          "/specs/modal": {
+            "route": "/specs/modal",
+            "icon": "pi pi-microchip",
+            "title": "Modal",
+            "parentRoute": "/specs"
+          },
           "/specs/page-title": {
             "route": "/specs/page-title",
             "icon": "pi pi-microchip",

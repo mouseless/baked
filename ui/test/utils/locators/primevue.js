@@ -19,7 +19,10 @@ export default {
     weekday: ".p-datepicker-weekday"
   },
   dialog: {
-    base: ".p-dialog"
+    base: ".p-dialog",
+    content: ".p-dialog-content",
+    footer: ".p-dialog-footer",
+    header: ".p-dialog-header"
   },
   inputNumber: {
     base: ".p-inputnumber"

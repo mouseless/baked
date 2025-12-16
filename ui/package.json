@@ -39,7 +39,7 @@
     "postinstall": "nuxt prepare",
     "build": "npm run lint && nuxt-module-build build --stub && nuxt-module-build prepare",
     "dev": "npm run lint && nuxi dev playground --dotenv .env.development --host",
-    "test": "playwright test",
+    "test": "npm run lint && playwright test",
     "lint": "eslint ."
   },
   "dependencies": {
