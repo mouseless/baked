@@ -1,15 +1,12 @@
 <template>
-  <div class="flex gap-2 max-md:flex-col max-md:min-w-24">
-    <Bake
-      v-for="input in inputs"
-      :key="input.name"
-      v-model="values[input.name]"
-      :name="`inputs/${input.name}`"
-      :descriptor="input.component"
-      class="max-md:w-full"
-      :class="inputClass"
-    />
-  </div>
+  <Bake
+    v-for="input in inputs"
+    :key="input.name"
+    v-model="values[input.name]"
+    :name="`inputs/${input.name}`"
+    :descriptor="input.component"
+    :class="inputClass"
+  />
 </template>
 <script setup>
 import { onMounted, ref, watch, reactive } from "vue";

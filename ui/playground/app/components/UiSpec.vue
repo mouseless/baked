@@ -6,7 +6,7 @@
     />
     <div class="flex justify-center w-full">
       <div
-        class="flex gap-4 align-top w-4/5"
+        class="flex gap-4 align-top w-4/5 max-md:w-full"
         :class="{
           'flex-col items-center': !vertical,
           'flex-wrap items-start': vertical,

@@ -1,6 +1,6 @@
 <template>
   <UiSpec
-    title="SimpleForm"
+    title="Simple Form"
     :variants="variants"
     no-loading-variant
   />
@@ -13,7 +13,7 @@ const variants = [
     name: "Base",
     descriptor: giveMe.aSimpleForm({
       action: giveMe.aCompositeAction([
-        giveMe.aLocalAction({ delay: 500 }),
+        giveMe.aLocalAction({ delay: 100 }),
         giveMe.aLocalAction({
           composable: "useShowMessage",
           options: giveMe.aContextData({
@@ -29,6 +29,27 @@ const variants = [
           name: "text",
           component: giveMe.anInputText(),
           required: true
+        })
+      ]
+    })
+  },
+  {
+    name: "Multiple Inputs",
+    descriptor: giveMe.aSimpleForm({
+      action: giveMe.aLocalAction({ showMessage: "ok" }),
+      buttonLabel: "Spec: SimpleFormButton",
+      inputs: [
+        giveMe.anInput({
+          name: "param-1",
+          component: giveMe.anInputText()
+        }),
+        giveMe.anInput({
+          name: "param-2",
+          component: giveMe.anInputText()
+        }),
+        giveMe.anInput({
+          name: "param-3",
+          component: giveMe.anInputText()
         })
       ]
     })

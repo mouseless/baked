@@ -62,3 +62,13 @@ test.describe("Base", () => {
     await expect(button).not.toBeDisabled();
   });
 });
+
+test.describe("Multiple Inputs", () => {
+  const id = "Multiple Inputs";
+
+  test("visual", { tag: "@visual" }, async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component).toHaveScreenshot();
+  });
+});

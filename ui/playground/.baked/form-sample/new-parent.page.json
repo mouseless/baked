@@ -5,7 +5,7 @@
       {
         "type": "SimpleForm",
         "schema": {
-          "buttonLabel": "NewParent",
+          "buttonLabel": "New Parent",
           "inputs": [
             {
               "name": "name",

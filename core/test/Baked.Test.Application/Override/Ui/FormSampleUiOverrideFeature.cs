@@ -150,7 +150,12 @@ public class FormSampleUiOverrideFeature : IFeature
             builder.Conventions.AddMethodComponent(
                 when: c => !c.Method.Name.StartsWith("Get") && c.Method.Has<ActionModelAttribute>(),
                 where: cc => cc.Path.EndsWith(nameof(Page), nameof(FormSample), nameof(FormSample.NewParent), nameof(ContainerPage), nameof(ContainerPage.Contents), "*"),
-                component: c => B.SimpleForm(options: vf => vf.ButtonLabel = c.Method.Name)
+                component: (c, cc) =>
+                {
+                    var (_, l) = cc;
+
+                    return B.SimpleForm(options: vf => vf.ButtonLabel = l(c.Method.Name.Titleize()));
+                }
             );
             builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.NewParent),

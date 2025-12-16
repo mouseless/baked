@@ -364,7 +364,7 @@ export default {
   },
 
   anInputNumber({ testId, defaultValue } = {}) {
-    testId = $(testId, "test-input");
+    testId = $(testId, "test-input-number");
     defaultValue = $(defaultValue, null);
 
     return {

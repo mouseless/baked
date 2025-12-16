@@ -6,7 +6,7 @@
       </span>
     </Message>
     <div
-      class="border-4 border-gray-500 rounded p-4 space-x-4"
+      class="flex gap-4 border-4 border-gray-500 rounded p-4"
       data-testid="component"
     >
       <Inputs
@@ -66,13 +66,13 @@ const inputs = [
     required: true
   }),
   giveMe.anInput({
-    name: "optional",
-    component: giveMe.anInputText({ testId: "optional" })
+    name: "num-required",
+    component: giveMe.anInputNumber({ testId: "required-number" }),
+    required: true
   }),
   giveMe.anInput({
-    name: "num-required",
-    component: giveMe.anInputNumber({ testId: "num-required" }),
-    required: true
+    name: "optional",
+    component: giveMe.anInputText({ testId: "optional" })
   })
 ];
 

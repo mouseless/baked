@@ -17,17 +17,18 @@
       #icons
     >
       <template v-if="isMd">
-        <Inputs
-          v-if="inputs.length > 0"
-          :inputs="inputs"
-          class="text-xs"
-          @ready="onReady"
-          @changed="onChanged"
-        />
-        <slot
-          v-if="$slots.inputs"
-          name="inputs"
-        />
+        <div class="flex gap-2 text-xs">
+          <Inputs
+            v-if="inputs.length > 0"
+            :inputs="inputs"
+            @ready="onReady"
+            @changed="onChanged"
+          />
+          <slot
+            v-if="$slots.inputs"
+            name="inputs"
+          />
+        </div>
       </template>
       <template v-else>
         <Button
@@ -41,15 +42,14 @@
         <PersistentPopover ref="popover">
           <div
             class="
-              flex flex-row flex-start
-              justify-between w-full
-              gap-4 text-xs px-2 py-2
+              flex flex-col gap-2 min-w-24
+              w-full px-2 py-2 text-xs
             "
           >
             <Inputs
               v-if="inputs.length > 0"
               :inputs="inputs"
-              class="text-xs"
+              input-class="max-md:w-full"
               @ready="onReady"
               @changed="onChanged"
             />
