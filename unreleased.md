@@ -18,9 +18,7 @@
   - Use `ReloadWhen` and `ShowWhen` to bind them to a page context value
 - `Constraints` now allows you to define constraints on values of triggers so
   that reactions can happen only on certain conditions
-- `Dialog` component is now added which displays given conten in modal
-- `FormDialog` component is now added renders the given form within a modal
-  view with button toggle  
+- `Modal` component is now added which displays given conten in modal view
 
 ## Breaking Changes
 
