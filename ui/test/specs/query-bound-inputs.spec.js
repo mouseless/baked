@@ -19,8 +19,8 @@ test("parameters are rendered", async({ page }) => {
   await expect(component.getByTestId("required-with-default")).toBeVisible();
   await expect(component.getByTestId("required-with-default-self-managed")).toBeVisible();
   await expect(component.getByTestId("required")).toBeVisible();
+  await expect(component.getByTestId("required-number")).toBeVisible();
   await expect(component.getByTestId("optional")).toBeVisible();
-  await expect(component.getByTestId("num-required")).toBeVisible();
 });
 
 test("default value is set", async({ page }) => {
@@ -116,11 +116,11 @@ test("unique key changes with parameter values", async({ page }) => {
   await component.getByTestId("required-with-default").fill("value 1");
   await component.getByTestId("required-with-default-self-managed").fill("value 2");
   await component.getByTestId("required").fill("value 3");
-  await component.getByTestId("optional").fill("value 4");
   await component.locator(primevue.inputNumber.base).click();
-  await page.keyboard.press("Digit0");
+  await page.keyboard.press("Digit4");
+  await component.getByTestId("optional").fill("value 5");
 
-  await expect(uniqueKey).toHaveText("value 1-value 2-value 3-value 4-0");
+  await expect(uniqueKey).toHaveText("value 1-value 2-value 3-4-value 5");
 });
 
 test("when reacting, bake should respect initial values", async({ page, goto }) => {

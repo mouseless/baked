@@ -1,20 +1,18 @@
 <template>
-  <Bake
+  <Input
     v-for="input in inputs"
     :key="input.name"
     v-model="values[input.name]"
-    :name="`inputs/${input.name}`"
-    :descriptor="input.component"
+    :input
     :class="inputClass"
   />
 </template>
 <script setup>
-import { onMounted, ref, watch, reactive } from "vue";
-import { Bake } from "#components";
-import { useContext, useDataFetcher } from "#imports";
+import { onMounted, watch, reactive } from "vue";
+import { useContext } from "#imports";
+import { Input } from "#components";
 
 const context = useContext();
-const dataFetcher = useDataFetcher();
 
 const { inputs } = defineProps({
   inputs: { type: Array, required: true },
@@ -22,38 +20,20 @@ const { inputs } = defineProps({
 });
 const emit = defineEmits(["ready", "changed"]);
 
-const contextData = context.injectContextData();
+const parentPath = context.injectPath();
 const values = reactive({});
 
-for(const input of inputs) {
-  values[input.name] = ref(dataFetcher.get({ data: input.default, contextData }));
-}
+context.providePath(`${parentPath}/inputs`);
 
-function checkValue(value) {
-  if(typeof value === "string") {
-    return value !== "";
-  }
-
-  return value !== undefined && value !== null;
-}
-
-onMounted(async() => {
-  for(const input of inputs) {
-    if(!dataFetcher.shouldLoad(input.default?.type)) { continue; }
-
-    values[input.name] = await dataFetcher.fetch({ data: input.default, contextData });
-  }
-
-  emitChanged();
-  emitReady();
-});
-
-// when any of the inputs values changed from input components, it emits
-// ready and changed
 watch(values, async() => {
   emitChanged();
   emitReady();
 }, { deep: true });
+
+onMounted(async() => {
+  emitChanged();
+  emitReady();
+});
 
 function emitReady() {
   emit("ready",
@@ -71,5 +51,13 @@ function emitChanged() {
       .join("-"),
     values
   });
+}
+
+function checkValue(value) {
+  if(typeof value === "string") {
+    return value !== "";
+  }
+
+  return value !== undefined && value !== null;
 }
 </script>

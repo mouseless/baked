@@ -95,6 +95,8 @@
     of a wrapper `div`
 - In `useContext` composable, `injectPage` and `providePage` are renamed to
   `injectPageContext` and `providePageContext` respectively
+- `Inputs` now doesn't have a layout styling, any component that uses it should
+  wrap it and introduce `flex` styling
 
 ## Improvements
 
@@ -123,3 +125,5 @@
   ```csharp
   component.Data += Context.Parent(options: cd => cd.Prop = "parameters");
   ```
+- `Inputs` has become a pure utility component after removing wrapper div and
+  `flex` styling

@@ -2,7 +2,7 @@
   <UiSpec title="Inputs">
     <Message severity="info">
       <span class="text-xl">
-        ⬇️  Check if there are 3 inputs, first having `default value` ⬇️
+        ⬇️  Check if there are 4 inputs, first having `default value` ⬇️
       </span>
     </Message>
     <div
