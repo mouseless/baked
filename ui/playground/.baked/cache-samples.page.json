@@ -14,6 +14,7 @@
           "type": "Inline",
           "value": "value_a"
         },
+        "queryBound": true,
         "component": {
           "type": "SelectButton",
           "schema": {},

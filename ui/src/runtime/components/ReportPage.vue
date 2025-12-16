@@ -5,7 +5,7 @@
         v-if="inputs?.length > 0"
         #actions
       >
-        <QueryBoundInputs
+        <Inputs
           :inputs
           @ready="onReady"
           @changed="onChanged"
@@ -88,7 +88,7 @@
 import { computed, onBeforeUnmount, onMounted, reactive, ref } from "vue";
 import { Message, Tab, TabList, Tabs } from "primevue";
 import { useContext, useLocalization, useReactionHandler } from "#imports";
-import { Bake, DeferredTabContent, QueryBoundInputs, PageTitle } from "#components";
+import { Bake, DeferredTabContent, Inputs, PageTitle } from "#components";
 
 const context = useContext();
 const { localize: l } = useLocalization();
@@ -159,7 +159,7 @@ function onReady(value) {
   showRequiredMessage.value = !value;
 }
 
-function onChanged(value) {
-  uniqueKey.value = value;
+function onChanged(event) {
+  uniqueKey.value = event.uniqueKey;
 }
 </script>

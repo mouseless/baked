@@ -50,6 +50,7 @@ const variants = [
     descriptor: giveMe.aReportPage({
       inputs: [
         giveMe.anInput({
+          queryBound: true,
           component: giveMe.aSelectButton({
             data: ["SHOW"],
             allowEmpty: true,
@@ -140,6 +141,7 @@ const variants = [
         giveMe.anInput({
           name: "required",
           required: true,
+          queryBound: true,
           component: giveMe.anInputText({
             testId: "required"
           })
@@ -147,6 +149,7 @@ const variants = [
         giveMe.anInput({
           name: "optional",
           required: false,
+          queryBound: true,
           component: giveMe.anInputText({
             testId: "optional"
           })

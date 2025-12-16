@@ -66,7 +66,7 @@ const inputs = [
     required: true
   }),
   giveMe.anInput({
-    name: "num-required",
+    name: "required-number",
     component: giveMe.anInputNumber({ testId: "required-number" }),
     required: true
   }),

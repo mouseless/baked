@@ -25,6 +25,10 @@ public class InitializerParametersAreInPageTitleUxFeature : IFeature<UxConfigura
                 },
                 when: c => c.Type.Has<TransientAttribute>() && c.Type.HasMembers()
             );
+            builder.Conventions.AddParameterSchemaConfiguration<Input>(
+                where: cc => cc.Path.EndsWith(nameof(ReportPage), nameof(ReportPage.Inputs)),
+                schema: i => i.QueryBound = true
+            );
         });
     }
 }

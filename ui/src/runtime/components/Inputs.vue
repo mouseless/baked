@@ -3,7 +3,7 @@
     v-for="input in inputs"
     :key="input.name"
     v-model="values[input.name]"
-    :input
+    :schema="input"
     :class="inputClass"
   />
 </template>

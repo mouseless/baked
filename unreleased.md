@@ -97,6 +97,10 @@
   `injectPageContext` and `providePageContext` respectively
 - `Inputs` now doesn't have a layout styling, any component that uses it should
   wrap it and introduce `flex` styling
+- `QueryBoundInputs` is now removed, use `Inputs` with all of its input's
+  `queryBound` set to `true` to get the same behavior
+  - `QueryBoundInputs` was passing `uniqueKey` to `onChanged` event, but
+    `Inputs` pass an event object `{ uniqueKey, values }`
 
 ## Improvements
 

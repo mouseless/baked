@@ -339,14 +339,15 @@ export default {
     };
   },
 
-  anInput({ name, component, required, defaultValue, default_, defaultSelfManaged } = {}) {
+  anInput({ name, required, defaultValue, default_, defaultSelfManaged, queryBound, component } = {}) {
     name = $(name, "test");
     required = $(required, false);
     component = $(component, this.anInputText());
     default_ = $(default_, defaultValue ? this.anInlineData(defaultValue) : undefined);
     defaultSelfManaged = $(defaultSelfManaged, false);
+    queryBound = $(queryBound, undefined);
 
-    return { name, required, default: default_, defaultSelfManaged, component };
+    return { name, required, default: default_, defaultSelfManaged, queryBound, component };
   },
 
   anInputText({ testId, defaultValue, action } = {}) {
