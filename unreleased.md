@@ -18,6 +18,8 @@
   - Use `ReloadWhen` and `ShowWhen` to bind them to a page context value
 - `Constraints` now allows you to define constraints on values of triggers so
   that reactions can happen only on certain conditions
+- `InputText` and `InputNumber` components are now added to be used in
+  `SimpleForm`
 
 ## Breaking Changes
 
