@@ -99,7 +99,7 @@ test.describe("Type", () => {
     await component.locator("button").nth(2).click();
 
     await expect(dialog).toBeAttached();
-    await expect(dialog.locator("pre")).toHaveText(/<ReportPage>/);
+    await expect(dialog.locator("pre")).toHaveText(/<TabbedPage>/);
   });
 
   test("visual", { tag: "@visual" }, async({ page }) => {

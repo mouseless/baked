@@ -25,12 +25,12 @@ import {
 	Number,
 	PageTitle,
 	Rate,
-	ReportPage,
 	RoutedPage,
 	Select,
 	SelectButton,
 	SideMenu,
 	SimpleForm,
+	TabbedPage,
 	Text
 } from "#components";
 
@@ -61,11 +61,11 @@ export {
 	Number,
 	PageTitle,
 	Rate,
-	ReportPage,
 	RoutedPage,
 	Select,
 	SelectButton,
 	SideMenu,
 	SimpleForm,
+	TabbedPage,
 	Text
 }

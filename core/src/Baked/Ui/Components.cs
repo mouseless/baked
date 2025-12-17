@@ -168,10 +168,6 @@ public static class Components
         IData? data = default
     ) => new(options.Apply(new())) { Data = data };
 
-    public static ComponentDescriptor<ReportPage> ReportPage(string path, ComponentDescriptor<PageTitle> title,
-        Action<ReportPage>? options = default
-    ) => new(options.Apply(new(path, title.Schema)));
-
     public static ComponentDescriptor<Select> Select(string label, IData data,
         Action<Select>? options = default
     ) => new(options.Apply(new(label) { LocalizeLabel = data.RequireLocalization })) { Data = data };
@@ -201,6 +197,10 @@ public static class Components
     public static Tab.Content TabContent(IComponentDescriptor component, string key,
         Action<Tab.Content>? options = default
     ) => options.Apply(new(component, key));
+
+    public static ComponentDescriptor<TabbedPage> TabbedPage(string path, ComponentDescriptor<PageTitle> title,
+        Action<TabbedPage>? options = default
+    ) => new(options.Apply(new(path, title.Schema)));
 
     public static ComponentDescriptor<Text> Text(
         Action<Text>? options = default,

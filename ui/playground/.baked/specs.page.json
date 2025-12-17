@@ -391,14 +391,14 @@
             }
           },
           {
-            "title": "Report Page",
+            "title": "Tabbed Page",
             "component": {
               "type": "CardLink",
               "schema": {
-                "route": "/specs/report-page",
+                "route": "/specs/tabbed-page",
                 "icon": "pi pi-microchip",
-                "title": "Report Page",
-                "description": "Render report pages"
+                "title": "Tabbed Page",
+                "description": "Render tabbed pages"
               }
             }
           }

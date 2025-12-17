@@ -12,9 +12,9 @@ public class ManagingComponentConventions : TestSpec
 
         var component = type.GetRequiredComponent(componentContext);
 
-        var reportPage = component.ShouldBeOfType<ComponentDescriptor<ReportPage>>();
-        reportPage.Schema.Path.ShouldBe("test-page");
-        reportPage.Schema.Title.Title.ShouldBe("Test Page");
+        var page = component.ShouldBeOfType<ComponentDescriptor<TabbedPage>>();
+        page.Schema.Path.ShouldBe("test-page");
+        page.Schema.Title.Title.ShouldBe("Test Page");
     }
 
     [Test]

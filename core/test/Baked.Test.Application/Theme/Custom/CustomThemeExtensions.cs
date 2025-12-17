@@ -1,4 +1,4 @@
-using Baked.Test.Caching;
+﻿using Baked.Test.Caching;
 using Baked.Test.Theme;
 using Baked.Test.Theme.Custom;
 using Baked.Test.Ui;
@@ -13,11 +13,11 @@ public static class CustomThemeExtensions
         new(
         [
             r => r.Index() with { Page = p => p.Described(d => d.Menu()) },
-            r => r.Root("/cache-samples", "Cache", "pi pi-database") with { Page = p => p.Generated(g => g.Type<CacheSamples, ReportPage>()), Description = "Showcases the cache behavior" },
+            r => r.Root("/cache-samples", "Cache", "pi pi-database") with { Page = p => p.Generated(g => g.Type<CacheSamples, TabbedPage>()), Description = "Showcases the cache behavior" },
             // TODO - review this in form components
-            r => r.Root("/form-sample", "Form", "pi pi-file-edit") with { Page = p => p.Generated(g => g.Type<FormSample, ReportPage>()), Description = "Showcases action, form components and events" },
+            r => r.Root("/form-sample", "Form", "pi pi-file-edit") with { Page = p => p.Generated(g => g.Type<FormSample, TabbedPage>()), Description = "Showcases action, form components and events" },
             r => r.Child("/form-sample/new-parent", "New Parent", "/form-sample") with { Page = p => p.Generated(g => g.Method<FormSample, ContainerPage>(nameof(FormSample.NewParent))), SideMenu= false },
-            r => r.Root("/report-page-sample", "Report", "pi pi-file") with { Page = p => p.Generated(g => g.Type<ReportPageSample, ReportPage>()), Description = "Showcases a report layout with tabs and data panels"},
+            r => r.Root("/report-page-sample", "Report", "pi pi-file") with { Page = p => p.Generated(g => g.Type<ReportPageSample, TabbedPage>()), Description = "Showcases a report layout with tabs and data panels"},
             r => r.Dynamic("/route-parameters-sample/[id]", "Route Parameters") with { Page = p => p.Generated(g => g.Type<RouteParametersSample, ContainerPage>()), Description = "Showcase route parameter support" },
             r => r.Root("/specs", "Specs", "pi pi-list-check") with { Page = p => p.Described(d => d.Menu()), Description = "All UI Specs are listed here" },
 
@@ -60,7 +60,7 @@ public static class CustomThemeExtensions
             // Page
             r => r.Child("/specs/error-page", "Error Page", "/specs") with { Icon = "pi pi-microchip", Description = "Display errors in full page", Section = "Page" },
             r => r.Child("/specs/menu-page", "Menu Page", "/specs") with { Icon = "pi pi-microchip", Description = "Render navigation pages", Section = "Page" },
-            r => r.Child("/specs/report-page", "Report Page", "/specs") with { Icon = "pi pi-microchip", Description = "Render report pages", Section = "Page" },
+            r => r.Child("/specs/tabbed-page", "Tabbed Page", "/specs") with { Icon = "pi pi-microchip", Description = "Render tabbed pages", Section = "Page" },
 
             // Plugins
             r => r.Child("/specs/auth", "Auth", "/specs") with { Icon = "pi pi-microchip", Description = "Authorized routing and client", Section = "Plugins" },

@@ -11,22 +11,22 @@ public class InitializerParametersAreInPageTitleUxFeature : IFeature<UxConfigura
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Conventions.AddTypeComponentConfiguration<ReportPage>(
-                component: (reportPage, c, cc) =>
+            builder.Conventions.AddTypeComponentConfiguration<TabbedPage>(
+                component: (tp, c, cc) =>
                 {
                     var members = c.Type.GetMembers();
                     var initializer = members.Methods.Having<InitializerAttribute>().Single();
 
-                    reportPage.Schema.Inputs.AddRange(
+                    tp.Schema.Inputs.AddRange(
                         initializer
                             .DefaultOverload.Parameters
-                            .Select(p => p.GetRequiredSchema<Input>(cc.Drill(nameof(ReportPage), nameof(ReportPage.Inputs))))
+                            .Select(p => p.GetRequiredSchema<Input>(cc.Drill(nameof(TabbedPage), nameof(TabbedPage.Inputs))))
                     );
                 },
                 when: c => c.Type.Has<TransientAttribute>() && c.Type.HasMembers()
             );
             builder.Conventions.AddParameterSchemaConfiguration<Input>(
-                where: cc => cc.Path.EndsWith(nameof(ReportPage), nameof(ReportPage.Inputs)),
+                where: cc => cc.Path.EndsWith(nameof(TabbedPage), nameof(TabbedPage.Inputs)),
                 schema: i => i.QueryBound = true
             );
         });

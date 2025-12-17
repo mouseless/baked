@@ -1,4 +1,4 @@
-using Baked.Architecture;
+﻿using Baked.Architecture;
 using Baked.Test.Theme;
 using Baked.Theme.Default;
 using Baked.Ui;
@@ -18,52 +18,52 @@ public class ReportPageSampleUiOverrideFeature : IFeature
         {
             // Tabs
             builder.Conventions.AddMethodAttributeConfiguration<TabNameAttribute>(
-                attribute: (tabName, c) => tabName.Value = "SingleValue",
-                when: c => c.Type.Is<ReportPageSample>() && c.Method.DefaultOverload.ReturnType.SkipTask().Is<string>()
+                when: c => c.Type.Is<ReportPageSample>() && c.Method.DefaultOverload.ReturnType.SkipTask().Is<string>(),
+                attribute: (tabName, c) => tabName.Value = "SingleValue"
             );
             builder.Conventions.AddMethodAttributeConfiguration<TabNameAttribute>(
-                attribute: (tabName, c) => tabName.Value = "DataTable",
-                when: c => c.Type.Is<ReportPageSample>() && c.Method.DefaultOverload.ReturnsList()
+                when: c => c.Type.Is<ReportPageSample>() && c.Method.DefaultOverload.ReturnsList(),
+                attribute: (tabName, c) => tabName.Value = "DataTable"
             );
             builder.Conventions.AddTypeComponent(
-                component: () => B.Icon("pi-box"),
                 when: c => c.Type.Is<ReportPageSample>(),
-                where: cc => cc.Path.EndsWith("SingleValue", nameof(Tab.Icon))
+                where: cc => cc.Path.EndsWith("SingleValue", nameof(Tab.Icon)),
+                component: () => B.Icon("pi-box")
             );
             builder.Conventions.AddTypeComponent(
-                component: () => B.Icon("pi-table"),
                 when: c => c.Type.Is<ReportPageSample>(),
-                where: cc => cc.Path.EndsWith("DataTable", nameof(Tab.Icon))
+                where: cc => cc.Path.EndsWith("DataTable", nameof(Tab.Icon)),
+                component: () => B.Icon("pi-table")
             );
 
             // Allowing admin token for report api
             builder.Conventions.AddMethodSchemaConfiguration<RemoteData>(
-                schema: rd => rd.Headers = Inline(new { Authorization = "token-admin-ui" }),
-                when: c => c.Type.Is<ReportPageSample>()
+                when: c => c.Type.Is<ReportPageSample>(),
+                schema: rd => rd.Headers = Inline(new { Authorization = "token-admin-ui" })
             );
 
             // Parameter overrides
             builder.Conventions.AddParameterComponent(
-                component: (c, cc) => EnumSelect(c.Parameter, cc),
-                when: c => c.Type.Is<ReportPageSample>() && c.Method.Name == nameof(ReportPageSample.With) && !c.Parameter.IsOptional
+                when: c => c.Type.Is<ReportPageSample>() && c.Method.Name == nameof(ReportPageSample.With) && !c.Parameter.IsOptional,
+                component: (c, cc) => EnumSelect(c.Parameter, cc)
             );
             builder.Conventions.AddParameterComponent(
-                component: (c, cc) => EnumSelect(c.Parameter, cc),
-                when: c => c.Type.Is<ReportPageSample>() && c.Method.Name == nameof(ReportPageSample.GetFirst) && c.Parameter.Name == "count"
+                when: c => c.Type.Is<ReportPageSample>() && c.Method.Name == nameof(ReportPageSample.GetFirst) && c.Parameter.Name == "count",
+                component: (c, cc) => EnumSelect(c.Parameter, cc)
             );
 
             // Page overrides
-            builder.Conventions.AddTypeComponentConfiguration<ReportPage>(
-                component: rp =>
+            builder.Conventions.AddTypeComponentConfiguration<TabbedPage>(
+                when: c => c.Type.Is<ReportPageSample>(),
+                component: tp =>
                 {
-                    rp.Schema.Inputs.Single(p => p.Name == "required").Default = null;
-                    rp.Schema.Tabs[0].Contents[1].Narrow = true;
-                    rp.Schema.Tabs[0].Contents[2].Narrow = true;
-                    rp.Schema.Tabs[0].Contents[1].Component.Schema.As<DataPanel>().Collapsed = true;
-                    rp.Schema.Tabs[0].Contents[2].Component.Schema.As<DataPanel>().Collapsed = true;
-                    rp.Schema.Tabs[1].Contents[1].Component.Schema.As<DataPanel>().Collapsed = true;
-                },
-                when: c => c.Type.Is<ReportPageSample>()
+                    tp.Schema.Inputs.Single(p => p.Name == "required").Default = null;
+                    tp.Schema.Tabs[0].Contents[1].Narrow = true;
+                    tp.Schema.Tabs[0].Contents[2].Narrow = true;
+                    tp.Schema.Tabs[0].Contents[1].Component.Schema.As<DataPanel>().Collapsed = true;
+                    tp.Schema.Tabs[0].Contents[2].Component.Schema.As<DataPanel>().Collapsed = true;
+                    tp.Schema.Tabs[1].Contents[1].Component.Schema.As<DataPanel>().Collapsed = true;
+                }
             );
         });
     }

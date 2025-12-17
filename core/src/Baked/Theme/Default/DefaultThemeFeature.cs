@@ -124,7 +124,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             // Pages
             builder.Conventions.AddTypeComponent(
                 where: cc => cc.Path.Is(nameof(Page), "*"),
-                component: (c, cc) => TypeReportPage(c.Type, cc)
+                component: (c, cc) => TypeTabbedPage(c.Type, cc)
             );
             builder.Conventions.AddMethodSchema(
                 when: c => c.Method.Has<ActionModelAttribute>(),

@@ -561,21 +561,10 @@ export default {
     };
   },
 
-  aReportPage({ title, description, inputs, tabs } = {}) {
-    title = this.aPageTitle({ title, description }).schema;
-    inputs = $(inputs, []);
-    tabs = $(tabs, [this.aReportPageTab()]);
-
-    return {
-      type: "ReportPage",
-      schema: { title, inputs, tabs }
-    };
-  },
-
-  aReportPageTab({ id, title, contents, fullScreen, icon, overflow, reactions } = {}) {
+  aTab({ id, title, contents, fullScreen, icon, overflow, reactions } = {}) {
     id = $(id, "test-tab");
     title = $(title, "Test Tab");
-    contents = $(contents, [this.aReportPageTabContent()]);
+    contents = $(contents, [this.aTabContent()]);
     fullScreen = $(fullScreen, false);
     icon = $(icon, this.anIcon());
     overflow = $(overflow, false);
@@ -584,12 +573,23 @@ export default {
     return { id, title, contents, fullScreen, icon, overflow, reactions };
   },
 
-  aReportPageTabContent({ component, narrow, key } = {}) {
+  aTabContent({ component, narrow, key } = {}) {
     component = $(component, this.anExpected({ value: "Test content is given for testing purposes" }));
     narrow = $(narrow, false);
     key = $(key, "content");
 
     return { component, narrow, key };
+  },
+
+  aTabbedPage({ title, description, inputs, tabs } = {}) {
+    title = this.aPageTitle({ title, description }).schema;
+    inputs = $(inputs, []);
+    tabs = $(tabs, [this.aTab()]);
+
+    return {
+      type: "TabbedPage",
+      schema: { title, inputs, tabs }
+    };
   },
 
   aScreenSize({ name } = {}) {

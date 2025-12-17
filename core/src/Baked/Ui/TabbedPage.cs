@@ -1,6 +1,6 @@
 ﻿namespace Baked.Ui;
 
-public record ReportPage(string Path, PageTitle Title)
+public record TabbedPage(string Path, PageTitle Title)
     : PageSchemaBase(Path)
 {
     public PageTitle Title { get; set; } = Title;

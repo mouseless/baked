@@ -12,8 +12,8 @@
   "MenuPage": {
     "No item available!": "No item available!"
   },
-  "ReportPage": {
-    "Select required values to view this report": "Select required values to view this report"
+  "TabbedPage": {
+    "Select required values to view this page": "Select required values to view this page"
   },
   "useFormat": {
     "suffix": {

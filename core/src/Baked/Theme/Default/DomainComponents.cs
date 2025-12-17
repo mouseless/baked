@@ -22,21 +22,21 @@ public static class DomainComponents
         options.Apply(mc);
     });
 
-    public static ComponentDescriptor<ReportPage> TypeReportPage(
+    public static ComponentDescriptor<TabbedPage> TypeTabbedPage(
 #pragma warning disable IDE0060
         TypeModelMetadata type,
 #pragma warning restore IDE0060
         ComponentContext context,
-        Action<ReportPage>? options = default
+        Action<TabbedPage>? options = default
     )
     {
-        context = context.Drill(nameof(ReportPage));
+        context = context.Drill(nameof(TabbedPage));
         var (_, l) = context;
 
         var path = context.Route.Path.Trim('/');
         var title = B.PageTitle(l(context.Route.Title), options: pt => pt.Description = l(context.Route.Description));
 
-        return B.ReportPage(path, title, options: options);
+        return B.TabbedPage(path, title, options: options);
     }
 
     public static Tab TypeTab(TypeModelMetadata type, ComponentContext context, string name,
@@ -46,11 +46,11 @@ public static class DomainComponents
         context = context.Drill(name);
         var (_, l) = context;
 
-        return B.Tab(name.Kebaberize(), options: rpt =>
+        return B.Tab(name.Kebaberize(), options: t =>
         {
-            rpt.Icon = type.GetComponent(context.Drill(nameof(Tab.Icon)));
+            t.Icon = type.GetComponent(context.Drill(nameof(Tab.Icon)));
 
-            options.Apply(rpt);
+            options.Apply(t);
         });
     }
 

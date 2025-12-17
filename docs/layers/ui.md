@@ -132,7 +132,7 @@ configurator.ConfigureDomainModelBuilder(builder =>
 - `component:` is a builder function that takes `TypeModelMetadataContext c` and
   `ComponentContext cc` as parameters, and is expected to return a
   `ComponentDescriptor<TComponentSchema>` instance, such as
-  `ComponentDescriptor<ReportPage>`
+  `ComponentDescriptor<TabbedPage>`
 - `when:` is a predicate function that takes `TypeModelMetadataContext c` as a
   parameter and is a query for the types this convention applies to
 - `where:` is a predicate funtion that takes `ComponentContext cc` as a
@@ -170,9 +170,8 @@ For non-component schemas, similar extensions are provided for domain models;
 - `AddParameterSchema`
 
 Use these extensions to associate domain models with non-component schemas such
-as `ReportPage.Tab` or `Parameter`. Once you add a schema for a domain model,
-you can access it using `GetSchema<TSchema>` or `GetSchemas<TSchema>` extension
-methods.
+as `Tab` or `Parameter`. Once you add a schema for a domain model, you can
+access it using `GetSchema<TSchema>` or `GetSchemas<TSchema>` extension methods.
 
 > [!TIP]
 >

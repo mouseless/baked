@@ -3,7 +3,7 @@
     <PageTitle :schema="title">
       <template
         v-if="inputs?.length > 0"
-        #actions
+        #inputs
       >
         <Inputs
           :inputs
@@ -40,7 +40,7 @@
       severity="info"
     >
       <i class="pi pi-info-circle" />
-      <span class="ml-3">{{ lc("Select required values to view this report") }}</span>
+      <span class="ml-3">{{ lc("Select required values to view this page") }}</span>
     </Message>
     <div
       v-if="ready"
@@ -67,7 +67,7 @@
         </template>
         <div
           v-else
-          class="b-ReportPage--grid grid grid-cols-1 lg:grid-cols-2 gap-4"
+          class="b-TabbedPage--grid grid grid-cols-1 lg:grid-cols-2 gap-4"
         >
           <template
             v-for="content in tab.contents"
@@ -92,7 +92,7 @@ import { Bake, DeferredTabContent, Inputs, PageTitle } from "#components";
 
 const context = useContext();
 const { localize: l } = useLocalization();
-const { localize: lc } = useLocalization({ group: "ReportPage" });
+const { localize: lc } = useLocalization({ group: "TabbedPage" });
 const reactionHandler = useReactionHandler();
 
 const { schema } = defineProps({

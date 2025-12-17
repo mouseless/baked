@@ -2,7 +2,7 @@ import { expect, test } from "@nuxt/test-utils/playwright";
 import primevue from "../utils/locators/primevue";
 
 test.beforeEach(async({ goto }) => {
-  await goto("/specs/report-page", { waitUntil: "hydration" });
+  await goto("/specs/tabbed-page", { waitUntil: "hydration" });
 });
 
 test.describe("Base", () => {
@@ -58,7 +58,7 @@ test.describe("Base", () => {
   test("grid added", async({ page }) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator(".b-ReportPage--grid")).toBeAttached();
+    await expect(component.locator(".b-TabbedPage--grid")).toBeAttached();
   });
 
   test("visual", { tag: "@visual" }, async({ page }) => {
@@ -85,7 +85,7 @@ test.describe("Full Page", () => {
   test("grid not added", async({ page }) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator(".b-ReportPage--grid")).not.toBeAttached();
+    await expect(component.locator(".b-TabbedPage--grid")).not.toBeAttached();
   });
 
   test("visual", { tag: "@visual" }, async({ page }) => {
@@ -177,7 +177,7 @@ test.describe("Inputs", () => {
   test("informs only when required params are not selected", async({ page }) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator(primevue.message.base)).toHaveText("Select required values to view this report");
+    await expect(component.locator(primevue.message.base)).toHaveText("Select required values to view this page");
 
     await component.getByTestId("required").fill("any text");
     await expect(component.locator(primevue.message.base)).not.toBeAttached();

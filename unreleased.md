@@ -27,11 +27,16 @@
   route patterns and rendered directly with `Page.vue`
 - `baseURL` is renamed to `apiBaseUrl` and config is now set in root of `bake`
   module options and no longer awailable through `dataFetcher`
+- `ReportPage` is renamed to `TabbedPage`
+  - All `Components` and `DomainComponents` helpers are updated accordingly
+- `ReportPage.Tab` and `ReportPage.Tab.Content` is now `Tab` and `Tab.Content`
+  - All `Components` and `DomainComponents` helpers are updated accordingly
 - `Parameter` schema is renamed to `Inputs`
   - `ParameterParameter` domain component helper is renamed to `ParameterInput`
   - `Parameter` component helper is renamed to `Input`
 - `DataPanel.Parameters` property is renamed to `Inputs`
-- `ReportPage.QueryParameters` property is renamed to `Inputs`
+- `QueryParameters` property of `TabbedPage` (former `ReportPage`) is renamed to
+  `Inputs`
 - `Parameters.vue` is renamed to `Inputs.vue`
 - `QueryParameters.vue` is renamed to `QueryBoundInputs.vue`
 - `TypeWithOnlyGetIsReportPage` UX feature is removed, and adding `ReportPage`
@@ -89,8 +94,6 @@
     component.Schema.ShowWhen = "!key:value"; // old usage
     component.ShowWhen("key", IsNot("value")); // new usage
     ```
-- `ReportPage.Tab` and `ReportPage.Tab.Content` is now `Tab` and `Tab.Content`
-  - All `Components` and `DomainComponents` helpers are updated accordingly
 - `Tab.Content` support for `showWhen` is completely removed, use its
   component's reaction system to hide a content
   - `lg:col-span-2` class is now passed directly to content's component instead

@@ -12,8 +12,8 @@
   "MenuPage": {
     "No item available!": "Hiçbir öğe mevcut değil!"
   },
-  "ReportPage": {
-    "Select required values to view this report": "Bu raporu görüntülemek için gerekli seçimleri yapın"
+  "TabbedPage": {
+    "Select required values to view this page": "Bu sayfayı görüntülemek için gerekli seçimleri yapın"
   },
   "useFormat": {
     "suffix": {

@@ -249,10 +249,10 @@
             "title": "Menu Page",
             "parentRoute": "/specs"
           },
-          "/specs/report-page": {
-            "route": "/specs/report-page",
+          "/specs/tabbed-page": {
+            "route": "/specs/tabbed-page",
             "icon": "pi pi-microchip",
-            "title": "Report Page",
+            "title": "Tabbed Page",
             "parentRoute": "/specs"
           },
           "/specs/auth": {

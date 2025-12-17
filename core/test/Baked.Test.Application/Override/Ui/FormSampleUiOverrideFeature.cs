@@ -25,12 +25,12 @@ public class FormSampleUiOverrideFeature : IFeature
         {
             // TODO - review this in form components
             // below this point is vibe coding
-            builder.Conventions.AddTypeComponentConfiguration<ReportPage>(
+            builder.Conventions.AddTypeComponentConfiguration<TabbedPage>(
                 when: c => c.Type.Is<FormSample>(),
-                component: (rp, c, cc) =>
+                component: (tp, c, cc) =>
                 {
                     var forms = new List<Tab.Content>();
-                    var firstTab = rp.Schema.Tabs.First();
+                    var firstTab = tp.Schema.Tabs.First();
 
                     foreach (var method in c.Type.GetMembers().Methods.Having<ActionModelAttribute>())
                     {
@@ -38,7 +38,7 @@ public class FormSampleUiOverrideFeature : IFeature
                         if (action.Method == HttpMethod.Get) { continue; }
 
                         var schema = method.GetSchema<Tab.Content>(
-                            cc.Drill(nameof(ReportPage.Tabs), firstTab.Id, nameof(Tab.Contents), firstTab.Contents.Count + forms.Count)
+                            cc.Drill(nameof(TabbedPage.Tabs), firstTab.Id, nameof(Tab.Contents), firstTab.Contents.Count + forms.Count)
                         );
 
                         if (schema is null) { continue; }
@@ -51,7 +51,7 @@ public class FormSampleUiOverrideFeature : IFeature
             );
             builder.Conventions.AddMethodSchemaConfiguration<Tab.Content>(
                 when: c => !c.Method.Name.StartsWith("Get"),
-                schema: rptc => rptc.Narrow = true
+                schema: tc => tc.Narrow = true
             );
             builder.Conventions.AddMethodComponentConfiguration<DataPanel>(
                 when: c =>
@@ -128,17 +128,17 @@ public class FormSampleUiOverrideFeature : IFeature
                 component: b => b.Action = Actions.Local.UseRedirect("/form-sample/new-parent")
             );
 
-            builder.Conventions.AddTypeComponentConfiguration<ReportPage>(
+            builder.Conventions.AddTypeComponentConfiguration<TabbedPage>(
                 when: c => c.Type.Is<FormSample>(),
-                component: (rp, c, cc) =>
+                component: (tp, c, cc) =>
                 {
-                    cc = cc.Drill(nameof(ReportPage), nameof(ReportPage.Title));
+                    cc = cc.Drill(nameof(TabbedPage), nameof(TabbedPage.Title));
                     foreach (var method in c.Type.GetMembers().Methods)
                     {
                         var component = method.GetComponent(cc.Drill(nameof(PageTitle.Actions)));
                         if (component is null) { continue; }
 
-                        rp.Schema.Title.Actions.Add(component);
+                        tp.Schema.Title.Actions.Add(component);
                     }
                 }
             );
