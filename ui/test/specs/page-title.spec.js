@@ -63,8 +63,8 @@ test.describe("Actions", () => {
   test("actions", async({ page }) => {
     const component = page.getByTestId(id);
 
-    await expect(component.getByTestId("ACTION_1")).toHaveText("VALUE_1");
-    await expect(component.getByTestId("ACTION_2")).toHaveText("VALUE_2");
+    await expect(component.locator("button").nth(1)).toHaveText("ACTION_1");
+    await expect(component.locator("button").nth(2)).toHaveText("ACTION_2");
   });
 
   test("visual", { tag: "@visual" }, async({ page }) => {
@@ -82,4 +82,47 @@ test.describe("No Description", () => {
 
     await expect(component.getByTestId("description")).toHaveText(" ");
   });
+});
+
+test.describe("Inputs", () => {
+  const id = "Inputs";
+
+  test("visual", { tag: "@visual" }, async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component).toHaveScreenshot();
+  });
+
+  test("visual mini", { tag: "@visual" }, async({ page }) => {
+    const component = page.getByTestId(id);
+    const screen = giveMe.aScreenSize({ name: "2xs" });
+
+    await page.setViewportSize({ ...screen });
+    await expect(component).toHaveScreenshot();
+  });
+
+  test("visual mobile", { tag: "@visual" }, async({ page }) => {
+    const component = page.getByTestId(id);
+    const screen = giveMe.aScreenSize({ name: "xs" });
+
+    await page.setViewportSize({ ...screen });
+    await expect(component).toHaveScreenshot();
+  });
+
+  test("visual tablet", { tag: "@visual" }, async({ page }) => {
+    const component = page.getByTestId(id);
+    const screen = giveMe.aScreenSize({ name: "sm" });
+
+    await page.setViewportSize({ ...screen });
+    await expect(component).toHaveScreenshot();
+  });
+
+  test("visual small window", { tag: "@visual" }, async({ page }) => {
+    const component = page.getByTestId(id);
+    const screen = giveMe.aScreenSize({ name: "md" });
+
+    await page.setViewportSize({ ...screen });
+    await expect(component).toHaveScreenshot();
+  });
+
 });

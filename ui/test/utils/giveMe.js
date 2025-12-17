@@ -30,6 +30,7 @@ export default {
 
   aButton({ action, icon, label, variant, rounded } = {}) {
     label = $(label, "Button");
+    action = $(action, this.aLocalAction({ showMessage: `${label} clicked` }));
 
     return {
       type: "Button",
