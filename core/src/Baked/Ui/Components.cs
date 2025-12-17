@@ -63,6 +63,10 @@ public static class Components
         Action<DefaultLayout.ScrollTop>? options = default
     ) => options.Apply(new());
 
+    public static ComponentDescriptor<Dialog> Dialog(string label, string header, IComponentDescriptor content,
+       Action<Dialog>? options = default
+    ) => new(options.Apply(new(new(label), header, content)));
+
     public static ComponentDescriptor<ErrorPage> ErrorPage(
         Action<ErrorPage>? options = default,
         IData? data = default
@@ -140,10 +144,6 @@ public static class Components
     public static MissingComponent.DomainSource MissingComponentDomainSource(string type,
         Action<MissingComponent.DomainSource>? options = default
     ) => options.Apply(new(type));
-
-    public static ComponentDescriptor<Modal> Modal(string label,
-       Action<Modal>? options = default
-   ) => new(options.Apply(new(label)));
 
     public static ComponentDescriptor<Money> Money(
         Action<Money>? options = default,

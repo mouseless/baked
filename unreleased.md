@@ -18,7 +18,8 @@
   - Use `ReloadWhen` and `ShowWhen` to bind them to a page context value
 - `Constraints` now allows you to define constraints on values of triggers so
   that reactions can happen only on certain conditions
-- `Modal` component is now added which displays given conten in modal view
+- `Dialog` component is now added which displays given content in dialog
+  with action support
 
 ## Breaking Changes
 
@@ -122,3 +123,4 @@
   ```csharp
   component.Data += Context.Parent(options: cd => cd.Prop = "parameters");
   ```
+- `SimpleForm` now supports dialog mode

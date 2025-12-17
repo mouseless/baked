@@ -27,6 +27,13 @@ public class Parent(IEntityContext<Parent> _context, Func<Child> _newChild, Chil
         _newChild().With(this);
     }
 
+    public virtual async Task Update(string name)
+    {
+        await Task.Delay(2000);
+
+        Name = name;
+    }
+
     public virtual void RemoveChild(Child child)
     {
         if (child.Parent != this) { throw new NotMyChildException(child); }

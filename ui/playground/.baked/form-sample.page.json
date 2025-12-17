@@ -90,26 +90,73 @@
                     "actionTemplate": {
                       "key": "Actions",
                       "component": {
-                        "type": "Button",
+                        "type": "Container",
                         "schema": {
-                          "icon": "pi pi-trash",
-                          "label": "",
-                          "variant": "text",
-                          "rounded": true
-                        },
-                        "action": {
-                          "type": "Remote",
-                          "path": "parents/{id:guid}/",
-                          "method": "DELETE",
-                          "params": {
-                            "type": "Context",
-                            "key": "parent",
-                            "prop": "row"
-                          },
-                          "postAction": {
-                            "type": "Publish",
-                            "event": "delete"
-                          }
+                          "contents": [
+                            {
+                              "type": "SimpleForm",
+                              "schema": {
+                                "buttonIcon": "pi pi-pencil",
+                                "buttonLabel": "Update",
+                                "buttonVariant": "text",
+                                "buttonRounded": true,
+                                "inputs": [
+                                  {
+                                    "name": "name",
+                                    "required": true,
+                                    "component": {
+                                      "type": "InputText",
+                                      "schema": {
+                                        "testId": "name"
+                                      }
+                                    }
+                                  }
+                                ],
+                                "dialog": true
+                              },
+                              "action": {
+                                "type": "Remote",
+                                "path": "parents/{id:guid}/",
+                                "method": "PUT",
+                                "params": {
+                                  "type": "Context",
+                                  "key": "parent",
+                                  "prop": "row"
+                                },
+                                "body": {
+                                  "type": "Context",
+                                  "key": "model"
+                                },
+                                "postAction": {
+                                  "type": "Publish",
+                                  "event": "update"
+                                }
+                              }
+                            },
+                            {
+                              "type": "Button",
+                              "schema": {
+                                "icon": "pi pi-trash",
+                                "label": "",
+                                "variant": "text",
+                                "rounded": true
+                              },
+                              "action": {
+                                "type": "Remote",
+                                "path": "parents/{id:guid}/",
+                                "method": "DELETE",
+                                "params": {
+                                  "type": "Context",
+                                  "key": "parent",
+                                  "prop": "row"
+                                },
+                                "postAction": {
+                                  "type": "Publish",
+                                  "event": "delete"
+                                }
+                              }
+                            }
+                          ]
                         }
                       },
                       "alignRight": true,
@@ -142,6 +189,10 @@
                         {
                           "type": "On",
                           "on": "delete"
+                        },
+                        {
+                          "type": "On",
+                          "on": "update"
                         }
                       ]
                     }

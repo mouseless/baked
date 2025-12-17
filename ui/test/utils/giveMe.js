@@ -227,6 +227,22 @@ export default {
     };
   },
 
+  aDialog({ action, actionButton, dialogButton, content, header }) {
+    header = $(header, "Dialog Header");
+    dialogButton = $(dialogButton, { label: "Show" });
+
+    return {
+      type: "Dialog",
+      schema: {
+        actionButton,
+        content,
+        dialogButton,
+        header
+      },
+      action
+    };
+  },
+
   anErrorPage({ errorInfos, footerInfo, safeLinks, safeLinksMessage, data } = {}) {
     errorInfos = $(errorInfos, [this.anErrorPageInfo()]);
     footerInfo = $(footerInfo, "Test footer info");
@@ -471,18 +487,6 @@ export default {
         source
       },
       data: this.anInlineData(data)
-    };
-  },
-
-  aModal({ content, footer, header, label }) {
-    return {
-      type: "Modal",
-      schema: {
-        content,
-        header,
-        footer,
-        label
-      }
     };
   },
 

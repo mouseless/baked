@@ -338,14 +338,14 @@
             }
           },
           {
-            "title": "Modal",
+            "title": "Dialog",
             "component": {
               "type": "CardLink",
               "schema": {
-                "route": "/specs/modal",
+                "route": "/specs/dialog",
                 "icon": "pi pi-microchip",
-                "title": "Modal",
-                "description": "Renders a modal dialog with given contents"
+                "title": "Dialog",
+                "description": "Renders a dialog with given contents"
               }
             }
           },
