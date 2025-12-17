@@ -39,28 +39,28 @@ public static class DomainComponents
         return B.ReportPage(path, title, options: options);
     }
 
-    public static ReportPage.Tab TypeReportPageTab(TypeModelMetadata type, ComponentContext context, string name,
-        Action<ReportPage.Tab>? options = default
+    public static Tab TypeTab(TypeModelMetadata type, ComponentContext context, string name,
+        Action<Tab>? options = default
     )
     {
         context = context.Drill(name);
         var (_, l) = context;
 
-        return B.ReportPageTab(name.Kebaberize(), options: rpt =>
+        return B.Tab(name.Kebaberize(), options: rpt =>
         {
-            rpt.Icon = type.GetComponent(context.Drill(nameof(ReportPage.Tab.Icon)));
+            rpt.Icon = type.GetComponent(context.Drill(nameof(Tab.Icon)));
 
             options.Apply(rpt);
         });
     }
 
-    public static ReportPage.Tab.Content MethodReportPageTabContent(MethodModel method, ComponentContext context,
-        Action<ReportPage.Tab.Content>? options = default
+    public static Tab.Content MethodTabContent(MethodModel method, ComponentContext context,
+        Action<Tab.Content>? options = default
     )
     {
         context = context.Drill(method.Name);
 
-        return B.ReportPageTabContent(method.GetRequiredComponent(context.Drill(nameof(ReportPage.Tab.Content.Component))), method.Name.Kebaberize(),
+        return B.TabContent(method.GetRequiredComponent(context.Drill(nameof(Tab.Content.Component))), method.Name.Kebaberize(),
             options: options
         );
     }

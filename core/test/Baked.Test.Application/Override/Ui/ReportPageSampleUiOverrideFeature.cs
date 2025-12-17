@@ -28,12 +28,12 @@ public class ReportPageSampleUiOverrideFeature : IFeature
             builder.Conventions.AddTypeComponent(
                 component: () => B.Icon("pi-box"),
                 when: c => c.Type.Is<ReportPageSample>(),
-                where: cc => cc.Path.EndsWith("SingleValue", nameof(ReportPage.Tab.Icon))
+                where: cc => cc.Path.EndsWith("SingleValue", nameof(Tab.Icon))
             );
             builder.Conventions.AddTypeComponent(
                 component: () => B.Icon("pi-table"),
                 when: c => c.Type.Is<ReportPageSample>(),
-                where: cc => cc.Path.EndsWith("DataTable", nameof(ReportPage.Tab.Icon))
+                where: cc => cc.Path.EndsWith("DataTable", nameof(Tab.Icon))
             );
 
             // Allowing admin token for report api

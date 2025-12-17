@@ -29,7 +29,7 @@ public class FormSampleUiOverrideFeature : IFeature
                 when: c => c.Type.Is<FormSample>(),
                 component: (rp, c, cc) =>
                 {
-                    var forms = new List<ReportPage.Tab.Content>();
+                    var forms = new List<Tab.Content>();
                     var firstTab = rp.Schema.Tabs.First();
 
                     foreach (var method in c.Type.GetMembers().Methods.Having<ActionModelAttribute>())
@@ -37,8 +37,8 @@ public class FormSampleUiOverrideFeature : IFeature
                         var action = method.GetAction();
                         if (action.Method == HttpMethod.Get) { continue; }
 
-                        var schema = method.GetSchema<ReportPage.Tab.Content>(
-                            cc.Drill(nameof(ReportPage.Tabs), firstTab.Id, nameof(ReportPage.Tab.Contents), firstTab.Contents.Count + forms.Count)
+                        var schema = method.GetSchema<Tab.Content>(
+                            cc.Drill(nameof(ReportPage.Tabs), firstTab.Id, nameof(Tab.Contents), firstTab.Contents.Count + forms.Count)
                         );
 
                         if (schema is null) { continue; }
@@ -49,7 +49,7 @@ public class FormSampleUiOverrideFeature : IFeature
                     firstTab.Contents.InsertRange(0, forms);
                 }
             );
-            builder.Conventions.AddMethodSchemaConfiguration<ReportPage.Tab.Content>(
+            builder.Conventions.AddMethodSchemaConfiguration<Tab.Content>(
                 when: c => !c.Method.Name.StartsWith("Get"),
                 schema: rptc => rptc.Narrow = true
             );
@@ -104,7 +104,7 @@ public class FormSampleUiOverrideFeature : IFeature
             );
             // END OF TODO - review this in form components
 
-            builder.Conventions.RemoveMethodSchema<ReportPage.Tab.Content>(
+            builder.Conventions.RemoveMethodSchema<Tab.Content>(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.ClearParents)) || c.Method.Name.Equals(nameof(FormSample.NewParent))
             );
             builder.Conventions.AddMethodSchema(

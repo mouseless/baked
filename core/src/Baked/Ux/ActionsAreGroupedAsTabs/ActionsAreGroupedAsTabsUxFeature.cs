@@ -17,7 +17,7 @@ public class ActionsAreGroupedAsTabsUxFeature : IFeature<UxConfigurator>
                 component: (rp, c, cc) =>
                 {
                     cc = cc.Drill(nameof(ReportPage), nameof(ReportPage.Tabs));
-                    var tabs = new Dictionary<string, ReportPage.Tab>();
+                    var tabs = new Dictionary<string, Tab>();
 
                     var members = c.Type.GetMembers();
                     foreach (var method in members.Methods.Having<TabNameAttribute>())
@@ -28,12 +28,12 @@ public class ActionsAreGroupedAsTabsUxFeature : IFeature<UxConfigurator>
 
                         if (!tabs.TryGetValue(tabName.Value, out var t))
                         {
-                            tabs.Add(tabName.Value, t = TypeReportPageTab(c.Type, cc, tabName.Value));
+                            tabs.Add(tabName.Value, t = TypeTab(c.Type, cc, tabName.Value));
                         }
 
                         t.Contents.Add(
-                            method.GetRequiredSchema<ReportPage.Tab.Content>(
-                                cc.Drill(tabName.Value, nameof(ReportPage.Tab.Contents), t.Contents.Count)
+                            method.GetRequiredSchema<Tab.Content>(
+                                cc.Drill(tabName.Value, nameof(Tab.Contents), t.Contents.Count)
                             )
                         );
                     }

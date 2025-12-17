@@ -23,7 +23,7 @@ public class ManagingComponentConventions : TestSpec
         var type = GiveMe.TheTypeModel<TestPage>().GetMetadata();
         var componentContext = GiveMe.AComponentContext(paths: ["page", "tabs"]);
 
-        var tabs = type.GetSchemas<ReportPage.Tab>(componentContext);
+        var tabs = type.GetSchemas<Tab>(componentContext);
 
         tabs.Count.ShouldBe(1);
         tabs[0].Id.ShouldBe("default");
@@ -36,7 +36,7 @@ public class ManagingComponentConventions : TestSpec
         var method = type.Methods[nameof(TestPage.GetData)];
         var componentContext = GiveMe.AComponentContext(paths: ["page", "tabs", "default", "contents", "0"]);
 
-        var content = method.GetSchema<ReportPage.Tab.Content>(componentContext);
+        var content = method.GetSchema<Tab.Content>(componentContext);
 
         content.ShouldNotBeNull();
         content.Narrow.GetValueOrDefault().ShouldBeTrue();

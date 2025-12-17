@@ -128,7 +128,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
             builder.Conventions.AddMethodSchema(
                 when: c => c.Method.Has<ActionModelAttribute>(),
-                schema: (c, cc) => MethodReportPageTabContent(c.Method, cc)
+                schema: (c, cc) => MethodTabContent(c.Method, cc)
             );
         });
 

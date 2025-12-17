@@ -172,14 +172,6 @@ public static class Components
         Action<ReportPage>? options = default
     ) => new(options.Apply(new(path, title.Schema)));
 
-    public static ReportPage.Tab ReportPageTab(string id,
-        Action<ReportPage.Tab>? options = default
-    ) => options.Apply(new(id));
-
-    public static ReportPage.Tab.Content ReportPageTabContent(IComponentDescriptor component, string key,
-        Action<ReportPage.Tab.Content>? options = default
-    ) => options.Apply(new(component, key));
-
     public static ComponentDescriptor<Select> Select(string label, IData data,
         Action<Select>? options = default
     ) => new(options.Apply(new(label) { LocalizeLabel = data.RequireLocalization })) { Data = data };
@@ -201,6 +193,14 @@ public static class Components
         IAction? action = default,
         Action<SimpleForm>? options = default
     ) => new(options.Apply(new())) { Action = action };
+
+    public static Tab Tab(string id,
+        Action<Tab>? options = default
+    ) => options.Apply(new(id));
+
+    public static Tab.Content TabContent(IComponentDescriptor component, string key,
+        Action<Tab.Content>? options = default
+    ) => options.Apply(new(component, key));
 
     public static ComponentDescriptor<Text> Text(
         Action<Text>? options = default,

@@ -16,7 +16,7 @@ public class ActionsAsDataPanelsUxFeature : IFeature<UxConfigurator>
             builder.Conventions.AddMethodComponent(
                 component: (c, cc) => MethodDataPanel(c.Method, cc),
                 when: c => c.Method.Has<ActionModelAttribute>(),
-                where: cc => cc.Path.EndsWith(nameof(ReportPage.Tabs), "*", nameof(ReportPage.Tab.Contents), "*", "*", nameof(ReportPage.Tab.Content.Component))
+                where: cc => cc.Path.EndsWith(nameof(ReportPage.Tabs), "*", nameof(Tab.Contents), "*", "*", nameof(Tab.Content.Component))
             );
             builder.Conventions.AddMethodSchema(
                 schema: (c, cc) => MethodNameInline(c.Method, cc),
