@@ -50,7 +50,6 @@ const variants = [
     descriptor: giveMe.aReportPage({
       inputs: [
         giveMe.anInput({
-          queryBound: true,
           component: giveMe.aSelectButton({
             data: ["SHOW"],
             allowEmpty: true,

@@ -160,6 +160,11 @@ test.describe("Show When", () => {
 });
 
 test.describe("Inputs", () => {
+  test.beforeEach(async({ page }) => {
+    // resets `useRoute().query` value between tests
+    await page.reload({ waitUntil: "load" });
+  });
+
   const id = "Inputs";
 
   test("inputs rendered", async({ page }) => {
@@ -191,6 +196,7 @@ test.describe("Inputs", () => {
   test("redraws when unique key changes", async({ page }) => {
     const component = page.getByTestId(id);
 
+    await component.getByTestId("required").click();
     await component.getByTestId("required").fill("value");
 
     await expect(component.getByTestId("query-content")).toHaveText(/value/);
