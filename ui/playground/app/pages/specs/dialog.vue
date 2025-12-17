@@ -1,6 +1,6 @@
 <template>
   <UiSpec
-    title="Modal"
+    title="Dialog"
     :variants="variants"
     no-loading-variant
   />

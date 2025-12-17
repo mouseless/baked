@@ -679,7 +679,7 @@ export default {
     return { route, icon, title, disabled };
   },
 
-  aSimpleForm({ buttonIcon, buttonLabel, inputs, action }) {
+  aSimpleForm({ buttonIcon, buttonLabel, dialog, inputs, action }) {
     buttonIcon = $(buttonIcon, "pi pi-save");
     buttonLabel = $(buttonLabel, "Button Label");
     inputs = $(inputs, []);
@@ -689,6 +689,7 @@ export default {
       schema: {
         buttonIcon,
         buttonLabel,
+        dialog,
         inputs
       },
       action

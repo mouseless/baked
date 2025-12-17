@@ -32,6 +32,31 @@ const variants = [
         })
       ]
     })
+  },
+  {
+    name: "Dialog",
+    descriptor: giveMe.aSimpleForm({
+      action: giveMe.aCompositeAction([
+        giveMe.aLocalAction({ delay: 500 }),
+        giveMe.aLocalAction({
+          composable: "useShowMessage",
+          options: giveMe.aContextData({
+            key: "model",
+            prop: "text",
+            targetProp: "message"
+          })
+        })
+      ]),
+      buttonLabel: "Spec: SimpleFormButton",
+      dialog: true,
+      inputs: [
+        giveMe.anInput({
+          name: "text",
+          component: giveMe.anInputText(),
+          required: true
+        })
+      ]
+    })
   }
 ];
 </script>

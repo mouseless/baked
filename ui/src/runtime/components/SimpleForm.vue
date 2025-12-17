@@ -5,6 +5,7 @@
         :disabled="executing"
         :icon="buttonIcon"
         :loading="executing"
+        :label="l(buttonLabel)"
         :rounded="buttonRounded"
         :variant="buttonVariant"
         @click="visible = true"
@@ -13,7 +14,7 @@
         v-model:visible="visible"
         modal
         :style="{ width: '50rem' }"
-        @after-hide="afterSubmit"
+        @after-hide="submit"
       >
         <Inputs
           v-if="inputs"
@@ -32,7 +33,7 @@
           <Button
             :disabled="!ready"
             :label="l(buttonLabel)"
-            @click="submit"
+            @click="execute"
           />
         </template>
       </Dialog>
@@ -89,12 +90,12 @@ function onChanged({ values }) {
   formData.value = values;
 }
 
-function submit() {
+function execute() {
   submitted.value = true;
   visible.value = false;
 }
 
-function afterSubmit() {
+function submit() {
   if(submitted.value) {
     submitted.value = false;
     emit("submit", formData.value);

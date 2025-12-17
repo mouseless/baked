@@ -22,7 +22,8 @@ export default {
     base: ".p-dialog",
     content: ".p-dialog-content",
     footer: ".p-dialog-footer",
-    header: ".p-dialog-header"
+    header: ".p-dialog-header",
+    close: ".p-dialog-close-button"
   },
   inputNumber: {
     base: ".p-inputnumber"

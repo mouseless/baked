@@ -62,3 +62,25 @@ test.describe("Base", () => {
     await expect(button).not.toBeDisabled();
   });
 });
+
+test.describe("Dialog", () => {
+  const id = "Dialog";
+
+  test("A button with given label is rendered", async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base);
+
+    await expect(button).toBeAttached();
+    await expect(button).toHaveText("Submit");
+  });
+
+  test("Button click shows dialog with inputs as content with submit button", async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base);
+    const dialog = page.locator(primevue.dialog.base);
+
+    await button.click();
+
+    await expect(dialog.locator(".b-component--InputText")).toBeAttached();
+  });
+});

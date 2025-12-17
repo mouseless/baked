@@ -71,4 +71,16 @@ test.describe("Action", () => {
     await expect(page.locator(primevue.toast.summary)).toHaveText("Execute Action");
     await expect(dialog).not.toBeAttached();
   });
+
+  test("Does not execute action when closed", async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base);
+    const dialog = page.locator(primevue.dialog.base);
+    const dialogClose = dialog.locator(primevue.dialog.close);
+
+    await button.click();
+    await dialogClose.click();
+
+    await expect(page.locator(primevue.toast.base)).not.toBeVisible();
+  });
 });
