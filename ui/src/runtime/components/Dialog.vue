@@ -40,7 +40,5 @@ const { schema } = defineProps({
 defineEmits(["submit"]);
 
 const { actionButton, content, dialogButton, header } = schema;
-console.log(actionButton);
-
 const visible = ref(false);
 </script>
