@@ -1,9 +1,9 @@
 <template>
   <UiSpec
     title="Tabbed Page"
-    :variants="variants"
-    :no-loading-variant="true"
-    :full-page="true"
+    :variants
+    no-loading-variant
+    full-page
   />
 </template>
 <script setup>

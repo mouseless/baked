@@ -249,6 +249,12 @@
             "title": "Menu Page",
             "parentRoute": "/specs"
           },
+          "/specs/simple-page": {
+            "route": "/specs/simple-page",
+            "icon": "pi pi-microchip",
+            "title": "Simple Page",
+            "parentRoute": "/specs"
+          },
           "/specs/tabbed-page": {
             "route": "/specs/tabbed-page",
             "icon": "pi pi-microchip",

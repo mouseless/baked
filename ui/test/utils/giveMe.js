@@ -562,6 +562,16 @@ export default {
     };
   },
 
+  aSimplePage({ title, contents } = {}) {
+    title = $(title, this.anExpected({ value: "Test Simple Page" }));
+    contents = $(contents, [this.anExpected({ value: "Test Simple Page Content" })]);
+
+    return {
+      type: "SimplePage",
+      schema: { title, contents }
+    };
+  },
+
   aTab({ id, title, contents, fullScreen, icon, overflow, reactions } = {}) {
     id = $(id, "test-tab");
     title = $(title, "Test Tab");

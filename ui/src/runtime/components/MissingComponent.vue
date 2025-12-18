@@ -27,7 +27,7 @@
     class="min-w-[500px] max-w-[750px] mx-4"
   >
     <div class="flex flex-col gap-4 w-full">
-      <code>{{ path.join('/') }}</code>
+      <code v-if="path">{{ path.join('/') }}</code>
       <span>A component descriptor is required but missing here.</span>
       <span v-if="code">
         You can use below convention in your theme feature
