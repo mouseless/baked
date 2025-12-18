@@ -14,16 +14,17 @@ public class ActionsAsDataPanelsUxFeature : IFeature<UxConfigurator>
         configurator.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.AddMethodComponent(
-                component: (c, cc) => MethodDataPanel(c.Method, cc),
                 when: c => c.Method.Has<ActionModelAttribute>(),
-                where: cc => cc.Path.EndsWith(nameof(TabbedPage.Tabs), "*", nameof(Tab.Contents), "*", "*", nameof(Tab.Content.Component))
+                where: cc => cc.Path.EndsWith(nameof(TabbedPage.Tabs), "*", nameof(Tab.Contents), "*", "*", nameof(Tab.Content.Component)),
+                component: (c, cc) => MethodDataPanel(c.Method, cc)
             );
             builder.Conventions.AddMethodSchema(
-                schema: (c, cc) => MethodNameInline(c.Method, cc),
                 when: c => c.Method.Has<ActionModelAttribute>(),
-                where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Title))
+                where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Title)),
+                schema: (c, cc) => MethodNameInline(c.Method, cc)
             );
             builder.Conventions.AddMethodComponentConfiguration<DataPanel>(
+                when: c => c.Method.GetAction().Method == HttpMethod.Get,
                 component: (dp, c, cc) =>
                 {
                     foreach (var parameter in c.Method.DefaultOverload.Parameters)
@@ -32,8 +33,7 @@ public class ActionsAsDataPanelsUxFeature : IFeature<UxConfigurator>
                             parameter.GetRequiredSchema<Input>(cc.Drill(nameof(DataPanel), nameof(DataPanel.Inputs)))
                         );
                     }
-                },
-                when: c => c.Method.GetAction().Method == HttpMethod.Get
+                }
             );
         });
     }

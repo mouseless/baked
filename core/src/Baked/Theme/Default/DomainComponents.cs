@@ -22,11 +22,41 @@ public static class DomainComponents
         options.Apply(mc);
     });
 
-    public static ComponentDescriptor<TabbedPage> TypeTabbedPage(
+    public static ComponentDescriptor<SimplePage> TypeSimplePage(TypeModelMetadata type, ComponentContext context,
+        Action<SimplePage>? options = default
+    )
+    {
+        context = context.Drill(nameof(SimplePage));
+        var (_, l) = context;
+
+        var path = context.Route.Path.Trim('/');
+        var title =
+            type.GetComponent(context.Drill(nameof(SimplePage.Title))) ??
+            TypePageTitle(type, context.Drill(nameof(SimplePage.Title)));
+
+        return B.SimplePage(path, title, options: options);
+    }
+
+    public static ComponentDescriptor<PageTitle> TypePageTitle(
 #pragma warning disable IDE0060
         TypeModelMetadata type,
 #pragma warning restore IDE0060
         ComponentContext context,
+        Action<PageTitle>? options = default
+    )
+    {
+        context = context.Drill(nameof(PageTitle));
+        var (_, l) = context;
+
+        return B.PageTitle(l(context.Route.Title), options: pt =>
+        {
+            pt.Description = l(context.Route.Description);
+
+            options.Apply(pt);
+        });
+    }
+
+    public static ComponentDescriptor<TabbedPage> TypeTabbedPage(TypeModelMetadata type, ComponentContext context,
         Action<TabbedPage>? options = default
     )
     {
@@ -34,7 +64,9 @@ public static class DomainComponents
         var (_, l) = context;
 
         var path = context.Route.Path.Trim('/');
-        var title = B.PageTitle(l(context.Route.Title), options: pt => pt.Description = l(context.Route.Description));
+        var title =
+            type.GetComponent<PageTitle>(context.Drill(nameof(TabbedPage.Title))) as ComponentDescriptor<PageTitle> ??
+            TypePageTitle(type, context.Drill(nameof(TabbedPage.Title)));
 
         return B.TabbedPage(path, title, options: options);
     }
@@ -52,6 +84,17 @@ public static class DomainComponents
 
             options.Apply(t);
         });
+    }
+
+    public static SimplePage.Content MethodSimplePageContent(MethodModel method, ComponentContext context,
+        Action<SimplePage.Content>? options = default
+    )
+    {
+        context = context.Drill(method.Name);
+
+        return B.SimplePageContent(method.GetRequiredComponent(context.Drill(nameof(SimplePage.Content.Component))), method.Name.Kebaberize(),
+            options: options
+        );
     }
 
     public static Tab.Content MethodTabContent(MethodModel method, ComponentContext context,

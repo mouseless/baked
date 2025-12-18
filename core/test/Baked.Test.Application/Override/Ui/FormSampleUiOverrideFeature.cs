@@ -24,73 +24,99 @@ public class FormSampleUiOverrideFeature : IFeature
         configurator.ConfigureDomainModelBuilder(builder =>
         {
             // TODO - review this in form components
-            // below this point is vibe coding
-            builder.Conventions.AddTypeComponentConfiguration<TabbedPage>(
+            builder.Conventions.AddTypeComponent(
                 when: c => c.Type.Is<FormSample>(),
-                component: (tp, c, cc) =>
-                {
-                    var forms = new List<Tab.Content>();
-                    var firstTab = tp.Schema.Tabs.First();
+                where: cc => cc.Path.Is(nameof(Page), "*"),
+                component: (c, cc) => TypeSimplePage(c.Type, cc)
+            );
 
+            // contents
+            builder.Conventions.AddTypeComponentConfiguration<SimplePage>(
+                when: c => c.Type.Is<FormSample>(),
+                component: (sp, c, cc) =>
+                {
                     foreach (var method in c.Type.GetMembers().Methods.Having<ActionModelAttribute>())
                     {
                         var action = method.GetAction();
-                        if (action.Method == HttpMethod.Get) { continue; }
+                        if (action.Method != HttpMethod.Get) { continue; }
 
-                        var schema = method.GetSchema<Tab.Content>(
-                            cc.Drill(nameof(TabbedPage.Tabs), firstTab.Id, nameof(Tab.Contents), firstTab.Contents.Count + forms.Count)
+                        var schema = method.GetSchema<SimplePage.Content>(
+                            cc.Drill(nameof(SimplePage.Contents), sp.Schema.Contents.Count)
                         );
-
                         if (schema is null) { continue; }
 
-                        forms.Add(schema);
+                        sp.Schema.Contents.Add(schema);
                     }
-
-                    firstTab.Contents.InsertRange(0, forms);
                 }
             );
-            builder.Conventions.AddMethodSchemaConfiguration<Tab.Content>(
-                when: c => !c.Method.Name.StartsWith("Get"),
-                schema: tc => tc.Narrow = true
+            builder.Conventions.AddMethodSchema(
+                when: c => c.Type.Is<FormSample>() && c.Method.Has<ActionModelAttribute>() && c.Method.Name.StartsWith("Get"),
+                schema: (c, cc) => MethodSimplePageContent(c.Method, cc)
+            );
+            builder.Conventions.AddMethodComponent(
+                when: c => c.Type.Is<FormSample>() && c.Method.Has<ActionModelAttribute>(),
+                where: cc => cc.Path.EndsWith(nameof(SimplePage.Contents), "*", "*", nameof(SimplePage.Content.Component)),
+                component: (c, cc) => MethodDataPanel(c.Method, cc)
             );
             builder.Conventions.AddMethodComponentConfiguration<DataPanel>(
-                when: c =>
-                    c.Type.Is<FormSample>() &&
-                    c.Method.Name.StartsWith("Get") &&
-                    c.Type.TryGetMembers(out var members) &&
-                    members.Methods.Having<ActionModelAttribute>().Any(m => !m.Name.StartsWith("Get")),
+                when: c => c.Type.Is<FormSample>(),
                 component: dp =>
                 {
                     dp.Schema.Content.ReloadOn(nameof(FormSample.ClearParents).Kebaberize());
                     dp.Schema.Content.ReloadOn(nameof(Parent.Delete).Kebaberize());
                 }
             );
+
+            // actions
+            builder.Conventions.AddTypeComponent(
+                when: c => c.Type.Is<FormSample>(),
+                where: cc => cc.Path.EndsWith(nameof(SimplePage.Title)),
+                component: (c, cc) => TypePageTitle(c.Type, cc)
+            );
+            builder.Conventions.AddTypeComponentConfiguration<PageTitle>(
+                when: c => c.Type.Is<FormSample>(),
+                component: (pt, c, cc) =>
+                {
+                    foreach (var method in c.Type.GetMembers().Methods.Having<ActionModelAttribute>())
+                    {
+                        var action = method.GetAction();
+                        if (action.Method == HttpMethod.Get) { continue; }
+
+                        var actionComponent = method.GetComponent(cc.Drill(nameof(PageTitle.Actions), method.Name));
+                        if (actionComponent is null) { continue; }
+
+                        pt.Schema.Actions.Add(actionComponent);
+                    }
+                }
+            );
+            builder.Conventions.AddMethodComponent(
+                when: c => c.Type.Is<FormSample>() && c.Method.Has<ActionModelAttribute>() && !c.Method.Name.StartsWith("Get"),
+                where: cc => cc.Path.EndsWith(nameof(PageTitle.Actions), "*"),
+                component: (c, cc) => MethodButton(c.Method, cc)
+            );
+
             builder.Conventions.AddMethodSchema(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.NewParent)),
                 where: cc => true,
-                schema: (c, _) => MethodRemote(c.Method)
+                schema: c => MethodRemote(c.Method)
             );
             builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.NewParent)),
                 where: cc => true,
-                schema: ra =>
-                {
-                    ra.Body = Context.Model();
-                }
+                schema: ra => ra.Body = Context.Model()
             );
             builder.Conventions.AddMethodComponentConfiguration<SimpleForm>(
                 component: (sf, c, cc) =>
                 {
-                    sf.Action = c.Method.GetRequiredSchema<RemoteAction>(cc.Drill(nameof(IComponentDescriptor.Action)));
-
                     cc = cc.Drill(nameof(SimpleForm));
+
+                    sf.Action = c.Method.GetRequiredSchema<RemoteAction>(cc.Drill(nameof(IComponentDescriptor.Action)));
 
                     foreach (var parameter in c.Method.DefaultOverload.Parameters)
                     {
-                        sf.Schema.Inputs.Add(ParameterInput(parameter, cc.Drill(nameof(SimpleForm.Inputs)), options: i =>
-                        {
-                            i.Required = !parameter.IsOptional;
-                        }));
+                        sf.Schema.Inputs.Add(
+                            parameter.GetRequiredSchema<Input>(cc.Drill(nameof(SimpleForm.Inputs), parameter.Name))
+                        );
                     }
                 }
             );
@@ -103,45 +129,17 @@ public class FormSampleUiOverrideFeature : IFeature
                 component: c => C.InputNumber(c.Parameter.Name)
             );
             // END OF TODO - review this in form components
-
-            builder.Conventions.RemoveMethodSchema<Tab.Content>(
-                when: c => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.ClearParents)) || c.Method.Name.Equals(nameof(FormSample.NewParent))
-            );
             builder.Conventions.AddMethodSchema(
-                when: c => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.ClearParents)),
+                when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.ClearParents),
                 where: cc => true,
                 schema: (c, _) => MethodRemote(c.Method)
             );
-            builder.Conventions.AddMethodComponent(
-                when: c => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.ClearParents)),
-                where: cc => cc.Path.EndsWith(nameof(PageTitle.Actions)),
-                component: (c, cc) => MethodButton(c.Method, cc.Drill(c.Method.Name))
-            );
-            builder.Conventions.AddMethodComponent(
-                when: c => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.NewParent)),
-                where: cc => cc.Path.EndsWith(nameof(PageTitle.Actions)),
-                component: (c, cc) => MethodButton(c.Method, cc.Drill(c.Method.Name))
-            );
             builder.Conventions.AddMethodComponentConfiguration<Button>(
-                when: c => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.NewParent)),
-                where: cc => cc.Path.EndsWith(nameof(PageTitle.Actions)),
+                when: c => c.Type.Is<FormSample>(),
+                where: cc => cc.Path.EndsWith(nameof(PageTitle.Actions), nameof(FormSample.NewParent)),
                 component: b => b.Action = Actions.Local.UseRedirect("/form-sample/new-parent")
             );
 
-            builder.Conventions.AddTypeComponentConfiguration<TabbedPage>(
-                when: c => c.Type.Is<FormSample>(),
-                component: (tp, c, cc) =>
-                {
-                    cc = cc.Drill(nameof(TabbedPage), nameof(TabbedPage.Title));
-                    foreach (var method in c.Type.GetMembers().Methods)
-                    {
-                        var component = method.GetComponent(cc.Drill(nameof(PageTitle.Actions)));
-                        if (component is null) { continue; }
-
-                        tp.Schema.Title.Actions.Add(component);
-                    }
-                }
-            );
             builder.Conventions.AddMethodComponent(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.NewParent)),
                 where: cc => cc.Path.EndsWith(nameof(Page), nameof(FormSample), nameof(FormSample.NewParent)),
@@ -159,10 +157,7 @@ public class FormSampleUiOverrideFeature : IFeature
             );
             builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.NewParent),
-                schema: ra =>
-                {
-                    ra.PostAction = Actions.Local.UseRedirect("/form-sample");
-                }
+                schema: ra => ra.PostAction = Actions.Local.UseRedirect("/form-sample")
             );
 
             // TODO row action

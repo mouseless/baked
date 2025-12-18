@@ -190,6 +190,14 @@ public static class Components
         Action<SimpleForm>? options = default
     ) => new(options.Apply(new())) { Action = action };
 
+    public static ComponentDescriptor<SimplePage> SimplePage(string path, IComponentDescriptor title,
+        Action<SimplePage>? options = default
+    ) => new(options.Apply(new(path, title)));
+
+    public static SimplePage.Content SimplePageContent(IComponentDescriptor component, string key,
+        Action<SimplePage.Content>? options = default
+    ) => options.Apply(new(component, key));
+
     public static Tab Tab(string id,
         Action<Tab>? options = default
     ) => options.Apply(new(id));

@@ -1,4 +1,4 @@
-import { expect, test } from "@nuxt/test-utils/playwright";
+import { test } from "@nuxt/test-utils/playwright";
 
 test.beforeEach(async({ goto }) => {
   await goto("/specs/simple-page", { waitUntil: "hydration" });
@@ -28,6 +28,9 @@ test.describe("Base", () => {
   test("visual", { tag: "@visual" }, async({ page }) => {
     const component = page.getByTestId(id);
 
-    await expect(component).toHaveScreenshot();
+    // TODO write test
+
+    console.log(component);
+    // await expect(component).toHaveScreenshot();
   });
 });

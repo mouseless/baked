@@ -30,6 +30,7 @@ import {
 	SelectButton,
 	SideMenu,
 	SimpleForm,
+	SimplePage,
 	TabbedPage,
 	Text
 } from "#components";
@@ -66,6 +67,7 @@ export {
 	SelectButton,
 	SideMenu,
 	SimpleForm,
+	SimplePage,
 	TabbedPage,
 	Text
 }
