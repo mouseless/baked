@@ -5,6 +5,11 @@
 - Dynamic routing is now supported and can be used when;
   - navigating through pages
   - fetching data from backend
+- Two new page generator functions are implemented
+  - `Type<TDomainType, TPageSchema>()`: Renders given domain type as a page
+    using given page schema
+  - `Method<TDomainType, TPageSchema>(methodName:)`: Renders given domain method
+    as a page using given page schema
 - `Bake` now executes given `Action` defined in `ComponentDescriptor`
   implementations upon model change or `submit` event
 - `Button` component is now added
@@ -27,6 +32,8 @@
   route patterns and rendered directly with `Page.vue`
 - `baseURL` is renamed to `apiBaseUrl` and config is now set in root of `bake`
   module options and no longer awailable through `dataFetcher`
+- `FromType<TDomainType>()` page generator is removed, now you need to specify
+  page schema upfront in `Type<TDomainType, TPageSchema>()`
 - `ReportPage` is renamed to `TabbedPage`
   - All `Components` and `DomainComponents` helpers are updated accordingly
 - `ReportPage.Tab` and `ReportPage.Tab.Content` is now `Tab` and `Tab.Content`
@@ -39,8 +46,8 @@
   `Inputs`
 - `Parameters.vue` is renamed to `Inputs.vue`
 - `QueryParameters.vue` is renamed to `QueryBoundInputs.vue`
-- `TypeWithOnlyGetIsReportPage` UX feature is removed, and adding `ReportPage`
-  component to a type is moved to `DefaultThemeFeature`
+- `TypeWithOnlyGetIsReportPage` UX feature is removed, and adding `TabbedPage`
+  (former `ReportPage`) component to a type is moved to `DefaultThemeFeature`
 - `InjectedData` is renamed to `ContextData`
   - `Injected()` is now removed, use `Context` property
     - Use `Context.Model(...)` to access model data during actions
