@@ -74,7 +74,7 @@ test.describe("Dialog", () => {
     await expect(button).toHaveText("Submit");
   });
 
-  test("Button click shows dialog with inputs as content with submit button", async({ page }) => {
+  test("Button click shows dialog with inputs as content with submit and cancel button", async({ page }) => {
     const component = page.getByTestId(id);
     const button = component.locator(primevue.button.base);
     const dialog = page.locator(primevue.dialog.base);

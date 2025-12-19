@@ -5,9 +5,10 @@
   />
   <Dialog
     v-model:visible="visible"
-    modal
+    closable
     :header="l(header)"
-    :style="{ width: '25rem' }"
+    modal
+    :style="{ width: 'min(450px, 90vw)' }"
     @after-hide="submit"
   >
     <Bake
@@ -21,6 +22,7 @@
       <Button
         :schema="actionButton"
         @click="execute"
+        class="w-full"
       />
     </template>
   </Dialog>

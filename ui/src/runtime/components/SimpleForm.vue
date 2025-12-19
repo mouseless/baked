@@ -12,8 +12,10 @@
       />
       <Dialog
         v-model:visible="visible"
+        closable
+        :header="l(header)"
         modal
-        :style="{ width: '50rem' }"
+        :style="{ width: 'min(450px, 90vw)' }"
         @after-hide="submit"
       >
         <Inputs
