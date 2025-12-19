@@ -1,5 +1,4 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
-import giveMe from "../utils/giveMe";
 import primevue from "../utils/locators/primevue";
 
 test.beforeEach(async({ goto }) => {
@@ -56,12 +55,6 @@ test.describe("Base", () => {
     await expect(component.getByTestId("content 2.2")).not.toBeAttached();
   });
 
-  test("content width is restricted", async({ page }) => {
-    const component = page.getByTestId(id);
-
-    await expect(component.locator(".max-w-screen-xl")).toBeAttached();
-  });
-
   test("visual", { tag: "@visual" }, async({ page }) => {
     const component = page.getByTestId(id);
 
@@ -77,35 +70,6 @@ test.describe("Single Tab", () => {
 
     await expect(component.getByTestId("content")).toBeAttached(); // required to wait for page to render
     await expect(component.locator(primevue.tab.base)).not.toBeAttached();
-  });
-});
-
-test.describe("Full Page", () => {
-  const id = "Full Page";
-
-  test("content width is not restricted", async({ page }) => {
-    const component = page.getByTestId(id);
-
-    await expect(component.locator(".max-w-screen-xl")).not.toBeAttached();
-  });
-
-  test("visual", { tag: "@visual" }, async({ page }) => {
-    const component = page.getByTestId(id);
-    const screen = giveMe.aScreenSize({ name: "3xl" });
-
-    await page.setViewportSize({ ...screen });
-
-    await expect(component).toHaveScreenshot();
-  });
-});
-
-test.describe("Narrow", () => {
-  const id = "Narrow";
-
-  test("visual", { tag: "@visual" }, async({ page }) => {
-    const component = page.getByTestId(id);
-
-    await expect(component).toHaveScreenshot();
   });
 });
 

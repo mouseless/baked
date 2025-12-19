@@ -17,7 +17,7 @@ import { Bake } from "#components";
 
 const { namePrefix } = defineProps({
   contents: { type: Array, default: () => [] },
-  path: { type: String, default: null },
+  namePrefix: { type: String, default: null },
   fullScreen: { type: Boolean, default: false }
 });
 

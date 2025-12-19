@@ -93,6 +93,12 @@
             "title": "Conditional",
             "parentRoute": "/specs"
           },
+          "/specs/contents": {
+            "route": "/specs/contents",
+            "icon": "pi pi-microchip",
+            "title": "Contents",
+            "parentRoute": "/specs"
+          },
           "/specs/custom-css": {
             "route": "/specs/custom-css",
             "icon": "pi pi-microchip",

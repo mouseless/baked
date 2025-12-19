@@ -54,6 +54,18 @@
             }
           },
           {
+            "title": "Contents",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/contents",
+                "icon": "pi pi-microchip",
+                "title": "Contents",
+                "description": "Allows multiple components to be rendered in a simple grid"
+              }
+            }
+          },
+          {
             "title": "Custom CSS",
             "component": {
               "type": "CardLink",

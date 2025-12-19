@@ -141,6 +141,14 @@ export default {
     };
   },
 
+  aContent({ component, narrow, key } = {}) {
+    component = $(component, this.anExpected({ value: "Test content is given for testing purposes" }));
+    narrow = $(narrow, false);
+    key = $(key, "content");
+
+    return { component, narrow, key };
+  },
+
   aContextData({ key, prop, targetProp } = {}) {
     key = $(key, "parent");
     prop = $(prop, key === "parent" ? "data" : undefined);
@@ -564,7 +572,7 @@ export default {
 
   aSimplePage({ title, contents } = {}) {
     title = $(title, this.anExpected({ value: "Test Simple Page" }));
-    contents = $(contents, [this.anExpected({ value: "Test Simple Page Content" })]);
+    contents = $(contents, [this.aContent()]);
 
     return {
       type: "SimplePage",
@@ -575,21 +583,13 @@ export default {
   aTab({ id, title, contents, fullScreen, icon, overflow, reactions } = {}) {
     id = $(id, "test-tab");
     title = $(title, "Test Tab");
-    contents = $(contents, [this.aTabContent()]);
+    contents = $(contents, [this.aContent()]);
     fullScreen = $(fullScreen, false);
     icon = $(icon, this.anIcon());
     overflow = $(overflow, false);
     reactions = $(reactions, undefined);
 
     return { id, title, contents, fullScreen, icon, overflow, reactions };
-  },
-
-  aTabContent({ component, narrow, key } = {}) {
-    component = $(component, this.anExpected({ value: "Test content is given for testing purposes" }));
-    narrow = $(narrow, false);
-    key = $(key, "content");
-
-    return { component, narrow, key };
   },
 
   aTabbedPage({ title, description, inputs, tabs } = {}) {

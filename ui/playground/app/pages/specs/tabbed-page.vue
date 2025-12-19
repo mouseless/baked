@@ -3,7 +3,6 @@
     title="Tabbed Page"
     :variants
     no-loading-variant
-    full-page
   />
 </template>
 <script setup>
@@ -21,10 +20,10 @@ const variants = [
           title: "Spec: Tab 1",
           icon: giveMe.anExpected({ testId: "icon 1", value: "I." }),
           contents: [
-            giveMe.aTabContent({
+            giveMe.aContent({
               component: giveMe.anExpected({ testId: "content 1.1", value: "CONTENT 1.1" })
             }),
-            giveMe.aTabContent({
+            giveMe.aContent({
               component: giveMe.anExpected({ testId: "content 1.2", value: "CONTENT 1.2" })
             })
           ]
@@ -34,10 +33,10 @@ const variants = [
           title: "Spec: Tab 2",
           icon: giveMe.anExpected({ testId: "icon 2", value: "II." }),
           contents: [
-            giveMe.aTabContent({
+            giveMe.aContent({
               component: giveMe.anExpected({ testId: "content 2.1", value: "CONTENT 2.1" })
             }),
-            giveMe.aTabContent({
+            giveMe.aContent({
               component: giveMe.anExpected({ testId: "content 2.2", value: "CONTENT 2.2" })
             })
           ]
@@ -62,8 +61,8 @@ const variants = [
           id: "tab-1",
           title: "Spec: Tab 1",
           contents: [
-            giveMe.aTabContent(),
-            giveMe.aTabContent({
+            giveMe.aContent(),
+            giveMe.aContent({
               key: "content-1",
               component: giveMe.anExpected({
                 testId: "content-1",
@@ -82,7 +81,7 @@ const variants = [
             show: giveMe.aTrigger({ when: "selection", constraint: giveMe.aConstraint({ is: "SHOW" }) })
           },
           contents: [
-            giveMe.aTabContent({
+            giveMe.aContent({
               key: "content-2",
               component: giveMe.anExpected({ testId: "content-2", value: "CONTENT 2" })
             })
@@ -98,36 +97,9 @@ const variants = [
         giveMe.aTab({
           id: "hidden tab",
           contents: [
-            giveMe.aTabContent({
+            giveMe.aContent({
               component: giveMe.anExpected({ testId: "content" })
             })
-          ]
-        })
-      ]
-    })
-  },
-  {
-    name: "Full Page",
-    descriptor: giveMe.aTabbedPage({
-      tabs: [
-        giveMe.aTab({
-          fullScreen: true,
-          overflow: true,
-          contents: [
-            giveMe.aTabContent()
-          ]
-        })
-      ]
-    })
-  },
-  {
-    name: "Narrow",
-    descriptor: giveMe.aTabbedPage({
-      tabs: [
-        giveMe.aTab({
-          contents: [
-            giveMe.aTabContent({ narrow: true }),
-            giveMe.aTabContent({ narrow: true })
           ]
         })
       ]
@@ -157,13 +129,13 @@ const variants = [
       tabs: [
         giveMe.aTab({
           contents: [
-            giveMe.aTabContent({
+            giveMe.aContent({
               component: giveMe.anExpected({
                 testId: "static-content",
                 value: "HIDDEN WHEN REQUIRED IS MISSING"
               })
             }),
-            giveMe.aTabContent({
+            giveMe.aContent({
               component: giveMe.anExpected({
                 testId: "query-content",
                 data: giveMe.theQueryData()
