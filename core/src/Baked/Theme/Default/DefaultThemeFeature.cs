@@ -61,6 +61,10 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 when: c => c.Type.Has<LocatableAttribute>(),
                 schema: rd => rd.Params = Computed.UseRoute("params")
             );
+            builder.Conventions.AddMethodSchema(
+                when: c => c.Method.Has<ActionModelAttribute>(),
+                schema: (c, cc) => MethodContent(c.Method, cc)
+            );
 
             // Parameter Defaults
             builder.Conventions.AddParameterSchema(
@@ -126,9 +130,9 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 where: cc => cc.Path.Is(nameof(Page), "*"),
                 component: (c, cc) => TypeTabbedPage(c.Type, cc)
             );
-            builder.Conventions.AddMethodSchema(
-                when: c => c.Method.Has<ActionModelAttribute>(),
-                schema: (c, cc) => MethodTabContent(c.Method, cc)
+            builder.Conventions.AddTypeComponent(
+                where: cc => cc.Path.Is(nameof(Page), "*"),
+                component: (c, cc) => TypeSimplePage(c.Type, cc)
             );
         });
 

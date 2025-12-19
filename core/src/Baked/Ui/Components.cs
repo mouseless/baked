@@ -18,6 +18,10 @@ public static class Components
         Action<Conditional.Condition>? options = default
     ) => options.Apply(new(prop, value, component));
 
+    public static Content Content(IComponentDescriptor component, string key,
+        Action<Content>? options = default
+    ) => options.Apply(new(component, key));
+
     public static ComponentDescriptor<DataPanel> DataPanel(string title, IComponentDescriptor content,
         Action<DataPanel>? options = default
     ) => DataPanel(Datas.Inline(title), content, options: options);
@@ -194,17 +198,9 @@ public static class Components
         Action<SimplePage>? options = default
     ) => new(options.Apply(new(path, title)));
 
-    public static SimplePage.Content SimplePageContent(IComponentDescriptor component, string key,
-        Action<SimplePage.Content>? options = default
-    ) => options.Apply(new(component, key));
-
     public static Tab Tab(string id,
         Action<Tab>? options = default
     ) => options.Apply(new(id));
-
-    public static Tab.Content TabContent(IComponentDescriptor component, string key,
-        Action<Tab.Content>? options = default
-    ) => options.Apply(new(component, key));
 
     public static ComponentDescriptor<TabbedPage> TabbedPage(string path, ComponentDescriptor<PageTitle> title,
         Action<TabbedPage>? options = default

@@ -1,4 +1,5 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
+import giveMe from "../utils/giveMe";
 import primevue from "../utils/locators/primevue";
 
 test.beforeEach(async({ goto }) => {
@@ -55,10 +56,10 @@ test.describe("Base", () => {
     await expect(component.getByTestId("content 2.2")).not.toBeAttached();
   });
 
-  test("grid added", async({ page }) => {
+  test("content width is restricted", async({ page }) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator(".b-TabbedPage--grid")).toBeAttached();
+    await expect(component.locator(".max-w-screen-xl")).toBeAttached();
   });
 
   test("visual", { tag: "@visual" }, async({ page }) => {
@@ -82,14 +83,17 @@ test.describe("Single Tab", () => {
 test.describe("Full Page", () => {
   const id = "Full Page";
 
-  test("grid not added", async({ page }) => {
+  test("content width is not restricted", async({ page }) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator(".b-TabbedPage--grid")).not.toBeAttached();
+    await expect(component.locator(".max-w-screen-xl")).not.toBeAttached();
   });
 
   test("visual", { tag: "@visual" }, async({ page }) => {
     const component = page.getByTestId(id);
+    const screen = giveMe.aScreenSize({ name: "3xl" });
+
+    await page.setViewportSize({ ...screen });
 
     await expect(component).toHaveScreenshot();
   });

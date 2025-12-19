@@ -15,7 +15,7 @@ public class ActionsAsDataPanelsUxFeature : IFeature<UxConfigurator>
         {
             builder.Conventions.AddMethodComponent(
                 when: c => c.Method.Has<ActionModelAttribute>(),
-                where: cc => cc.Path.EndsWith(nameof(TabbedPage.Tabs), "*", nameof(Tab.Contents), "*", "*", nameof(Tab.Content.Component)),
+                where: cc => cc.Path.EndsWith("Contents", "*", "*", nameof(Content.Component)),
                 component: (c, cc) => MethodDataPanel(c.Method, cc)
             );
             builder.Conventions.AddMethodSchema(

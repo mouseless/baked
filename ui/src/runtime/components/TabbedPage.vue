@@ -51,35 +51,15 @@
         :key="`${uniqueKey}-${tab.id}`"
         v-model="currentTab"
         :when="tab.id"
-        :class="{ 'max-w-screen-xl 3xl:max-w-screen-2xl': !tab.fullScreen }"
-        class="w-full"
       >
-        <template v-if="tab.fullScreen">
-          <template
-            v-for="content in tab.contents"
-            :key="`content-${content.key}`"
-          >
-            <Bake
-              :name="`tabs/${tab.id}/contents/${content.key}`"
-              :descriptor="content.component"
-            />
-          </template>
+        <template #default="{ hidden }">
+          <Contents
+            :contents="tab.contents"
+            :name-prefix="`tabs/${tab.id}`"
+            :full-screen="tab.fullScreen"
+            :class="{ hidden }"
+          />
         </template>
-        <div
-          v-else
-          class="b-TabbedPage--grid grid grid-cols-1 lg:grid-cols-2 gap-4"
-        >
-          <template
-            v-for="content in tab.contents"
-            :key="`content-${content.key}`"
-          >
-            <Bake
-              :name="`tabs/${tab.id}/contents/${content.key}`"
-              :descriptor="content.component"
-              :class="{ 'lg:col-span-2': !content.narrow }"
-            />
-          </template>
-        </div>
       </DeferredTabContent>
     </div>
   </div>
@@ -88,7 +68,7 @@
 import { computed, onBeforeUnmount, onMounted, reactive, ref } from "vue";
 import { Message, Tab, TabList, Tabs } from "primevue";
 import { useContext, useLocalization, useReactionHandler } from "#imports";
-import { Bake, DeferredTabContent, Inputs, PageTitle } from "#components";
+import { Bake, Contents, DeferredTabContent, Inputs, PageTitle } from "#components";
 
 const context = useContext();
 const { localize: l } = useLocalization();

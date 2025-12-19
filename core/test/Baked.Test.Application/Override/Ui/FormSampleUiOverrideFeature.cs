@@ -24,12 +24,6 @@ public class FormSampleUiOverrideFeature : IFeature
         configurator.ConfigureDomainModelBuilder(builder =>
         {
             // TODO - review this in form components
-            builder.Conventions.AddTypeComponent(
-                when: c => c.Type.Is<FormSample>(),
-                where: cc => cc.Path.Is(nameof(Page), "*"),
-                component: (c, cc) => TypeSimplePage(c.Type, cc)
-            );
-
             // contents
             builder.Conventions.AddTypeComponentConfiguration<SimplePage>(
                 when: c => c.Type.Is<FormSample>(),
@@ -40,7 +34,7 @@ public class FormSampleUiOverrideFeature : IFeature
                         var action = method.GetAction();
                         if (action.Method != HttpMethod.Get) { continue; }
 
-                        var schema = method.GetSchema<SimplePage.Content>(
+                        var schema = method.GetSchema<Content>(
                             cc.Drill(nameof(SimplePage.Contents), sp.Schema.Contents.Count)
                         );
                         if (schema is null) { continue; }
@@ -48,15 +42,6 @@ public class FormSampleUiOverrideFeature : IFeature
                         sp.Schema.Contents.Add(schema);
                     }
                 }
-            );
-            builder.Conventions.AddMethodSchema(
-                when: c => c.Type.Is<FormSample>() && c.Method.Has<ActionModelAttribute>() && c.Method.Name.StartsWith("Get"),
-                schema: (c, cc) => MethodSimplePageContent(c.Method, cc)
-            );
-            builder.Conventions.AddMethodComponent(
-                when: c => c.Type.Is<FormSample>() && c.Method.Has<ActionModelAttribute>(),
-                where: cc => cc.Path.EndsWith(nameof(SimplePage.Contents), "*", "*", nameof(SimplePage.Content.Component)),
-                component: (c, cc) => MethodDataPanel(c.Method, cc)
             );
             builder.Conventions.AddMethodComponentConfiguration<DataPanel>(
                 when: c => c.Type.Is<FormSample>(),

@@ -9,11 +9,4 @@ public record Tab(string Id)
     public bool? FullScreen { get; set; }
     public IComponentDescriptor? Icon { get; set; }
     public Dictionary<string, ITrigger>? Reactions { get; set; }
-
-    public record Content(IComponentDescriptor Component, string Key)
-    {
-        public IComponentDescriptor Component { get; set; } = Component;
-        public string Key { get; set; } = Key;
-        public bool? Narrow { get; set; }
-    }
 }

@@ -86,24 +86,13 @@ public static class DomainComponents
         });
     }
 
-    public static SimplePage.Content MethodSimplePageContent(MethodModel method, ComponentContext context,
-        Action<SimplePage.Content>? options = default
+    public static Content MethodContent(MethodModel method, ComponentContext context,
+        Action<Content>? options = default
     )
     {
         context = context.Drill(method.Name);
 
-        return B.SimplePageContent(method.GetRequiredComponent(context.Drill(nameof(SimplePage.Content.Component))), method.Name.Kebaberize(),
-            options: options
-        );
-    }
-
-    public static Tab.Content MethodTabContent(MethodModel method, ComponentContext context,
-        Action<Tab.Content>? options = default
-    )
-    {
-        context = context.Drill(method.Name);
-
-        return B.TabContent(method.GetRequiredComponent(context.Drill(nameof(Tab.Content.Component))), method.Name.Kebaberize(),
+        return B.Content(method.GetRequiredComponent(context.Drill(nameof(Content.Component))), method.Name.Kebaberize(),
             options: options
         );
     }

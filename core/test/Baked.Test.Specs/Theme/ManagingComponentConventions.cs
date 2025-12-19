@@ -36,7 +36,7 @@ public class ManagingComponentConventions : TestSpec
         var method = type.Methods[nameof(TestPage.GetData)];
         var componentContext = GiveMe.AComponentContext(paths: ["page", "tabs", "default", "contents", "0"]);
 
-        var content = method.GetSchema<Tab.Content>(componentContext);
+        var content = method.GetSchema<Content>(componentContext);
 
         content.ShouldNotBeNull();
         content.Narrow.GetValueOrDefault().ShouldBeTrue();

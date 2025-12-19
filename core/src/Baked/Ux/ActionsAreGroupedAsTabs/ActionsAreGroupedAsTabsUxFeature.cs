@@ -32,7 +32,7 @@ public class ActionsAreGroupedAsTabsUxFeature : IFeature<UxConfigurator>
                         }
 
                         t.Contents.Add(
-                            method.GetRequiredSchema<Tab.Content>(
+                            method.GetRequiredSchema<Content>(
                                 cc.Drill(tabName.Value, nameof(Tab.Contents), t.Contents.Count)
                             )
                         );

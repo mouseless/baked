@@ -25,6 +25,14 @@
   that reactions can happen only on certain conditions
 - `InputText` and `InputNumber` components are now added to be used in
   `SimpleForm`
+- `SimplePage` is now added to render simple pages with title and contents
+  - Default theme includes necessary conventions to render any type using
+    `SimplePage`
+- `Contents` utility component is now added that renders `List<Content>` with
+  responsive styling
+  - `ActionsAsDataPanelsUxFeature` is modified to add data panel to any content
+    in any page, expect `Get` methods to be rendered as data panel under any
+    page's content list
 
 ## Breaking Changes
 
@@ -36,7 +44,10 @@
   page schema upfront in `Type<TDomainType, TPageSchema>()`
 - `ReportPage` is renamed to `TabbedPage`
   - All `Components` and `DomainComponents` helpers are updated accordingly
-- `ReportPage.Tab` and `ReportPage.Tab.Content` is now `Tab` and `Tab.Content`
+  - `.b-ReportPage--grid` class is now removed, use `.b-Contents` to override
+    css for that element
+- `ReportPage.Tab` and `ReportPage.Tab.Content` is now `Tab` and `Content`
+  respectively
   - All `Components` and `DomainComponents` helpers are updated accordingly
 - `Parameter` schema is renamed to `Inputs`
   - `ParameterParameter` domain component helper is renamed to `ParameterInput`
@@ -101,10 +112,12 @@
     component.Schema.ShowWhen = "!key:value"; // old usage
     component.ShowWhen("key", IsNot("value")); // new usage
     ```
-- `Tab.Content` support for `showWhen` is completely removed, use its
-  component's reaction system to hide a content
+- `Content` (former `ReportPage.Tab.Content`) support for `showWhen` is
+  completely removed, use its component's reaction system to hide a content
   - `lg:col-span-2` class is now passed directly to content's component instead
     of a wrapper `div`
+- `DeferredTabContent` had a div to show/hide child, it is now removed and
+  `hidden` prop is passed directly to the grid div
 - In `useContext` composable, `injectPage` and `providePage` are renamed to
   `injectPageContext` and `providePageContext` respectively
 - `Inputs` now doesn't have a layout styling, any component that uses it should
