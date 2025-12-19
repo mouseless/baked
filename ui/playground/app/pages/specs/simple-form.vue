@@ -48,9 +48,10 @@ const variants = [
           })
         })
       ]),
-      dialogCancelButton: giveMe.aButtonSchema({ label: "Spec: Cancel" }),
-      dialogToggleButton: giveMe.aButtonSchema({ label: "Spec: Toggle Dialog" }),
-      dialog: true,
+      dialogTemplate: {
+        cancelButton: giveMe.aButtonSchema({ label: "Spec: Cancel" }),
+        toggleButton: giveMe.aButtonSchema({ label: "Spec: Toggle Dialog" })
+      },
       name: "Spec: Simple Form",
       inputs: [
         giveMe.anInput({

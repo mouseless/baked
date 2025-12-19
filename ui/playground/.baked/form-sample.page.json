@@ -112,15 +112,16 @@
                                     }
                                   }
                                 ],
-                                "dialog": true,
-                                "dialogToggleButton": {
-                                  "icon": "pi pi-pencil",
-                                  "label": "",
-                                  "variant": "text",
-                                  "rounded": true
-                                },
-                                "dialogCancelButton": {
-                                  "label": "Cancel"
+                                "dialogTemplate": {
+                                  "toggleButton": {
+                                    "icon": "pi pi-pencil",
+                                    "label": "",
+                                    "variant": "text",
+                                    "rounded": true
+                                  },
+                                  "cancelButton": {
+                                    "label": "Cancel"
+                                  }
                                 }
                               },
                               "action": {

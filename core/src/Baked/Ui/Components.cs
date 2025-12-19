@@ -208,6 +208,10 @@ public static class Components
         Action = action,
     };
 
+    public static SimpleForm.Dialog SimpleFormDialogTemplate(Button toggleButton, Button cancelButton,
+        Action<SimpleForm.Dialog>? options = default
+    ) => options.Apply(new(toggleButton, cancelButton));
+
     public static ComponentDescriptor<Text> Text(
         Action<Text>? options = default,
         IData? data = default

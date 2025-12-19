@@ -1,9 +1,9 @@
 <template>
   <div>
-    <template v-if="dialog">
+    <template v-if="dialogTemplate">
       <Button
         :disabled="executing"
-        :schema="dialogToggleButton"
+        :schema="dialogTemplate.toggleButton"
         @click="visible = true"
       />
       <Dialog
@@ -25,7 +25,7 @@
         <template #footer>
           <Button
             :disabled="executing"
-            :schema="dialogCancelButton"
+            :schema="dialogTemplate.cancelButton"
             @submit="() => visible = false"
           />
           <Button
@@ -75,7 +75,7 @@ const emit = defineEmits(["submit"]);
 const formData = ref({});
 const submitted = ref(false);
 
-const { dialog, dialogCancelButton, dialogToggleButton, inputs, name, submitButton } = schema;
+const { dialogTemplate, inputs, name, submitButton } = schema;
 
 const executing = context.injectExecuting();
 const ready = ref(inputs.length === 0);

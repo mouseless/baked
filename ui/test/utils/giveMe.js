@@ -690,7 +690,7 @@ export default {
     return { route, icon, title, disabled };
   },
 
-  aSimpleForm({ dialog, dialogCancelButton, dialogToggleButton, inputs, name, submitButton, action }) {
+  aSimpleForm({ dialogTemplate, inputs, name, submitButton, action }) {
     inputs = $(inputs, []);
     name = $(name, "Simple Form");
     submitButton = $(submitButton, this.aButtonSchema({ label: "Submit" }));
@@ -698,9 +698,7 @@ export default {
     return {
       type: "SimpleForm",
       schema: {
-        dialog,
-        dialogCancelButton,
-        dialogToggleButton,
+        dialogTemplate,
         name,
         inputs,
         submitButton

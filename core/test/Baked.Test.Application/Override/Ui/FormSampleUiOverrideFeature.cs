@@ -199,14 +199,15 @@ public class FormSampleUiOverrideFeature : IFeature
                 component: (c, cc) => MethodSimpleForm(c.Method, cc,
                     options: sf =>
                     {
-                        sf.Dialog = true;
-                        sf.DialogToggleButton = new(string.Empty)
-                        {
-                            Icon = "pi pi-pencil",
-                            Variant = "text",
-                            Rounded = true
-                        };
-                        sf.DialogCancelButton = new("Cancel");
+                        sf.DialogTemplate = B.SimpleFormDialogTemplate(
+                            new(string.Empty)
+                            {
+                                Icon = "pi pi-pencil",
+                                Variant = "text",
+                                Rounded = true
+                            },
+                            new("Cancel")
+                        );
                     }
                 )
             );

@@ -9,6 +9,14 @@ export default defineNuxtPlugin({
     const token = useToken();
     const { $fetchInterceptors, $router } = nuxtApp;
 
+    const anonymousApiRoutes = auth.anonymousApiRoutes.reduce((result, item) => {
+       // routes have no leading slash 
+       // add to item.path to match request
+      result[withLeadingSlash(item.path)] = { ...item };
+
+      return result;
+    }, {});
+
     $fetchInterceptors.register(
       "auth",
       async({ request, options }, next) => {
@@ -23,7 +31,7 @@ export default defineNuxtPlugin({
         if(!result || result.accessIsExpired()) {
           // if api is anonymous no need to have a token, will continue
           // anonymously
-          if(auth.anonymousApiRoutes.some(route => options.method === route.method && request?.includes(route.path))) {
+          if(anonymousApiRoutes[request] && anonymousApiRoutes[request].method === options.method) {
             return await next();
           }
           // force get an access token
@@ -80,3 +88,7 @@ export default defineNuxtPlugin({
     }
   }
 });
+
+function withLeadingSlash(str) {
+  return str.startsWith("/") ? str : "/" + str;
+}
