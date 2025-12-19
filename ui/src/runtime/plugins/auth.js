@@ -10,8 +10,8 @@ export default defineNuxtPlugin({
     const { $fetchInterceptors, $router } = nuxtApp;
 
     const anonymousApiRoutes = auth.anonymousApiRoutes.reduce((result, item) => {
-       // routes have no leading slash 
-       // add to item.path to match request
+      // routes have no leading slash
+      // add to item.path to match request
       result[withLeadingSlash(item.path)] = { ...item };
 
       return result;
