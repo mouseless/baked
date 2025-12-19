@@ -61,6 +61,10 @@
             v-if="$slots.inputs"
             name="inputs"
           />
+          <slot
+            v-if="$slots.actions"
+            name="actions"
+          />
           <Bake
             v-for="action in actions"
             :key="action.schema.name"
@@ -94,7 +98,7 @@
             </div>
           </PersistentPopover>
           <Button
-            v-if="actions?.length > 0"
+            v-if="$slots.actions || actions?.length > 0"
             variant="text"
             icon="pi pi-ellipsis-h"
             class="lg:hidden"
@@ -111,6 +115,10 @@
               justify-between w-full min-w-52
               gap-4 text-sm px-2 py-2"
             >
+              <slot
+                v-if="$slots.actions"
+                name="actions"
+              />
               <Bake
                 v-for="action in actions"
                 :key="action.schema.name"

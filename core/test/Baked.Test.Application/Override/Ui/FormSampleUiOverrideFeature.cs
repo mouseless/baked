@@ -1,13 +1,11 @@
 ﻿using Baked.Architecture;
+using Baked.Business;
 using Baked.RestApi.Model;
 using Baked.Test.Orm;
 using Baked.Test.Theme;
-using Baked.Test.Ui;
-using Baked.Theme;
 using Baked.Ui;
 using Humanizer;
 
-using static Baked.Test.Theme.Custom.DomainComponents;
 using static Baked.Theme.Default.DomainActions;
 using static Baked.Theme.Default.DomainComponents;
 using static Baked.Ui.Datas;
@@ -17,29 +15,29 @@ using C = Baked.Test.Ui.Components;
 
 namespace Baked.Test.Override.Ui;
 
+// TODO - extract conventions and simplify this
 public class FormSampleUiOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            // TODO - review this in form components
             // contents
             builder.Conventions.AddTypeComponentConfiguration<SimplePage>(
                 when: c => c.Type.Is<FormSample>(),
                 component: (sp, c, cc) =>
                 {
+                    cc = cc.Drill(nameof(SimplePage.Contents));
+
                     foreach (var method in c.Type.GetMembers().Methods.Having<ActionModelAttribute>())
                     {
-                        var action = method.GetAction();
-                        if (action.Method != HttpMethod.Get) { continue; }
+                        if (method.Has<InitializerAttribute>()) { continue; }
+                        if (method.GetAction().Method != HttpMethod.Get) { continue; }
 
-                        var schema = method.GetSchema<Content>(
-                            cc.Drill(nameof(SimplePage.Contents), sp.Schema.Contents.Count)
-                        );
-                        if (schema is null) { continue; }
+                        var content = method.GetSchema<Content>(cc.Drill(sp.Schema.Contents.Count));
+                        if (content is null) { continue; }
 
-                        sp.Schema.Contents.Add(schema);
+                        sp.Schema.Contents.Add(content);
                     }
                 }
             );
@@ -80,17 +78,15 @@ public class FormSampleUiOverrideFeature : IFeature
                 where: cc => true,
                 schema: ra => ra.Body = Context.Model()
             );
-            builder.Conventions.AddMethodComponentConfiguration<SimpleForm>(
+            builder.Conventions.AddMethodComponentConfiguration<FormPage>(
                 component: (sf, c, cc) =>
                 {
-                    cc = cc.Drill(nameof(SimpleForm));
-
-                    sf.Action = c.Method.GetRequiredSchema<RemoteAction>(cc.Drill(nameof(IComponentDescriptor.Action)));
+                    cc = cc.Drill(nameof(FormPage.Inputs));
 
                     foreach (var parameter in c.Method.DefaultOverload.Parameters)
                     {
                         sf.Schema.Inputs.Add(
-                            parameter.GetRequiredSchema<Input>(cc.Drill(nameof(SimpleForm.Inputs), parameter.Name))
+                            parameter.GetRequiredSchema<Input>(cc.Drill(parameter.Name))
                         );
                     }
                 }
@@ -103,7 +99,7 @@ public class FormSampleUiOverrideFeature : IFeature
                 when: c => c.Type.Is<FormSample>() && c.Parameter.ParameterType.Is<int>(),
                 component: c => C.InputNumber(c.Parameter.Name)
             );
-            // END OF TODO - review this in form components
+
             builder.Conventions.AddMethodSchema(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.ClearParents),
                 where: cc => true,
@@ -115,27 +111,11 @@ public class FormSampleUiOverrideFeature : IFeature
                 component: b => b.Action = Actions.Local.UseRedirect("/form-sample/new-parent")
             );
 
-            builder.Conventions.AddMethodComponent(
-                when: c => c.Type.Is<FormSample>() && c.Method.Name.Equals(nameof(FormSample.NewParent)),
-                where: cc => cc.Path.EndsWith(nameof(Page), nameof(FormSample), nameof(FormSample.NewParent)),
-                component: (c, cc) => MethodContainerPage(c.Method, cc.Drill(c.Method.Name))
-            );
-            builder.Conventions.AddMethodComponent(
-                when: c => !c.Method.Name.StartsWith("Get") && c.Method.Has<ActionModelAttribute>(),
-                where: cc => cc.Path.EndsWith(nameof(Page), nameof(FormSample), nameof(FormSample.NewParent), nameof(ContainerPage), nameof(ContainerPage.Contents), "*"),
-                component: (c, cc) =>
-                {
-                    var (_, l) = cc;
-
-                    return B.SimpleForm(options: vf => vf.ButtonLabel = l(c.Method.Name.Titleize()));
-                }
-            );
             builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.NewParent),
                 schema: ra => ra.PostAction = Actions.Local.UseRedirect("/form-sample")
             );
 
-            // TODO row action
             builder.Conventions.AddMethodSchema(
                 when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.Delete),
                 schema: (c, cc) => MethodRemote(c.Method)
@@ -184,18 +164,6 @@ public class FormSampleUiOverrideFeature : IFeature
                     col.Exportable = false;
                     // temporarily add first action
                     col.Component = rowActions.First();
-                }
-            );
-
-            // TODO - move to default feature
-            builder.Conventions.AddMethodComponentConfiguration<ContainerPage>(
-                where: cc => cc.Path.EndsWith(nameof(FormSample), nameof(FormSample.NewParent)),
-                component: (container, c, cc) =>
-                {
-                    cc = cc.Drill(nameof(ContainerPage), nameof(ContainerPage.Contents));
-
-                    var component = c.Method.GetRequiredComponent(cc.Drill(container.Schema.Contents.Count));
-                    container.Schema.Contents.Add(component);
                 }
             );
         });

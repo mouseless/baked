@@ -112,6 +112,7 @@
   "Showcases interactions using button component": "Buton ile yapılabilecek eylemleri gösterir",
   "Showcases simple form component with inputs": "Girdiler ile birlikte basit form bileşeni gösterir",
   "Showcases the cache behavior": "Önbellek davranışını örneklendirir",
+  "Showcases the route parameter support": "Yol parametresini örneklendirir",
   "Shows list data as a table": "Liste verilerini tablo olarak görüntüler",
   "Side Menu": "Yan Menü",
   "Simple Form": "Sade Form",

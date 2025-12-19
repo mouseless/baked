@@ -2,7 +2,8 @@
 
 public static class Components
 {
-    public static ComponentDescriptor<Button> Button(string label, IAction action,
+    public static ComponentDescriptor<Button> Button(string label,
+        IAction? action = default,
         Action<Button>? options = default
     ) => new(options.Apply(new(label))) { Action = action };
 
@@ -84,6 +85,11 @@ public static class Components
     public static Filterable Filterable(IComponentDescriptor component,
         Action<Filterable>? options = default
     ) => options.Apply(new(component));
+
+    public static ComponentDescriptor<FormPage> FormPage(string path, ComponentDescriptor<PageTitle> title, ComponentDescriptor<Button> button,
+        IAction? action = default,
+        Action<FormPage>? options = default
+    ) => new(options.Apply(new(path, title.Schema, button.Schema))) { Action = action };
 
     public static ComponentDescriptor<Header> Header(
         Action<Header>? options = default,

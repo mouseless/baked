@@ -1,5 +1,5 @@
 <template>
-  <div class="space-y-4">
+  <div class="flex flex-col gap-4">
     <PageTitle :schema="title">
       <template
         v-if="inputs?.length > 0"

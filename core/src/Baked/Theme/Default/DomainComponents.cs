@@ -56,6 +56,46 @@ public static class DomainComponents
         });
     }
 
+    public static ComponentDescriptor<FormPage> MethodFormPage(MethodModel method, ComponentContext context,
+        Action<FormPage>? options = default
+    )
+    {
+        context = context.Drill(nameof(FormPage));
+        var (_, l) = context;
+
+        var path = context.Route.Path.Trim('/');
+        var title =
+            method.GetComponent<PageTitle>(context.Drill(nameof(FormPage.Title))) as ComponentDescriptor<PageTitle> ??
+            MethodPageTitle(method, context.Drill(nameof(FormPage.Title)));
+        var button =
+            method.GetComponent<Button>(context.Drill(nameof(FormPage.Button))) as ComponentDescriptor<Button> ??
+            MethodButton(method, context.Drill(nameof(FormPage.Title)));
+
+        return B.FormPage(path, title, button,
+            action: method.GetSchema<RemoteAction>(context.Drill(nameof(IComponentDescriptor.Action))),
+            options: options
+        );
+    }
+
+    public static ComponentDescriptor<PageTitle> MethodPageTitle(
+#pragma warning disable IDE0060
+        MethodModel method,
+#pragma warning restore IDE0060
+        ComponentContext context,
+        Action<PageTitle>? options = default
+    )
+    {
+        context = context.Drill(nameof(PageTitle));
+        var (_, l) = context;
+
+        return B.PageTitle(l(context.Route.Title), options: pt =>
+        {
+            pt.Description = l(context.Route.Description);
+
+            options.Apply(pt);
+        });
+    }
+
     public static ComponentDescriptor<TabbedPage> TypeTabbedPage(TypeModelMetadata type, ComponentContext context,
         Action<TabbedPage>? options = default
     )
@@ -188,18 +228,6 @@ public static class DomainComponents
         return B.DataTableFooter(l($"{method.Name}.FooterLabel"), options: options);
     }
 
-    public static ComponentDescriptor<Button> MethodButton(MethodModel method, ComponentContext context,
-        Action<Button>? options = default
-    )
-    {
-        var (_, l) = context;
-        context = context.Drill(nameof(Button));
-
-        return B.Button(l(method.Name.Humanize().Titleize()), method.GetRequiredSchema<RemoteAction>(context.Drill(nameof(IComponentDescriptor.Action))),
-            options: options
-        );
-    }
-
     public static DataTable.Column PropertyDataTableColumn(PropertyModel property, ComponentContext context,
         Action<DataTable.Column>? options = default
     )
@@ -234,6 +262,37 @@ public static class DomainComponents
                 c.Fallback = property.GetRequiredComponent(context.Drill(nameof(Conditional.Fallback)));
 
                 options.Apply(c);
+            }
+        );
+    }
+
+    public static ComponentDescriptor<Button> MethodButton(MethodModel method, ComponentContext context,
+        Action<Button>? options = default
+    )
+    {
+        var (_, l) = context;
+        context = context.Drill(nameof(Button));
+
+        return B.Button(l(method.Name.Humanize().Titleize()),
+            action: method.GetSchema<RemoteAction>(context.Drill(nameof(IComponentDescriptor.Action))),
+            options: options
+        );
+    }
+
+    public static ComponentDescriptor<SimpleForm> MethodSimpleForm(MethodModel method, ComponentContext context,
+        Action<SimpleForm>? options = default
+    )
+    {
+        context = context.Drill(nameof(FormPage));
+        var (_, l) = context;
+
+        return B.SimpleForm(
+            action: method.GetSchema<RemoteAction>(context.Drill(nameof(IComponentDescriptor.Action))),
+            options: sf =>
+            {
+                sf.ButtonLabel = l(method.Name.Titleize());
+
+                options.Apply(sf);
             }
         );
     }

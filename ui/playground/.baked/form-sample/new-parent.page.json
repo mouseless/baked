@@ -1,49 +1,48 @@
 {
-  "type": "ContainerPage",
+  "type": "FormPage",
   "schema": {
-    "contents": [
+    "title": {
+      "title": "New Parent",
+      "actions": []
+    },
+    "button": {
+      "label": "New Parent"
+    },
+    "inputs": [
       {
-        "type": "SimpleForm",
-        "schema": {
-          "buttonLabel": "New Parent",
-          "inputs": [
-            {
-              "name": "name",
-              "required": true,
-              "default": {
-                "type": "Inline",
-                "value": null
-              },
-              "component": {
-                "type": "InputText",
-                "schema": {
-                  "testId": "name"
-                }
-              }
-            }
-          ]
+        "name": "name",
+        "required": true,
+        "default": {
+          "type": "Inline",
+          "value": null
         },
-        "action": {
-          "type": "Remote",
-          "path": "form-sample/new-parent",
-          "method": "POST",
-          "body": {
-            "type": "Context",
-            "key": "model"
-          },
-          "postAction": {
-            "type": "Local",
-            "composable": "useRedirect",
-            "options": {
-              "type": "Inline",
-              "value": {
-                "route": "/form-sample"
-              }
-            }
+        "component": {
+          "type": "InputText",
+          "schema": {
+            "testId": "name"
           }
         }
       }
     ],
     "path": "form-sample/new-parent"
+  },
+  "action": {
+    "type": "Remote",
+    "path": "form-sample/new-parent",
+    "method": "POST",
+    "body": {
+      "type": "Context",
+      "key": "model"
+    },
+    "postAction": {
+      "type": "Local",
+      "composable": "useRedirect",
+      "options": {
+        "type": "Inline",
+        "value": {
+          "route": "/form-sample"
+        }
+      }
+    }
   }
 }

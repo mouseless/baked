@@ -143,6 +143,10 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 where: cc => cc.Path.EndsWith(nameof(SimplePage), nameof(SimplePage.Title)),
                 component: (c, cc) => TypePageTitle(c.Type, cc)
             );
+            builder.Conventions.AddMethodComponent(
+                where: cc => cc.Path.Is(nameof(Page), "*", "*"),
+                component: (c, cc) => MethodFormPage(c.Method, cc)
+            );
         });
 
         configurator.ConfigureComponentExports(exports =>

@@ -32,11 +32,10 @@ const { schema } = defineProps({
 });
 defineEmits(["submit"]);
 
-const formData = ref({});
-
 const { buttonIcon, buttonLabel, inputs } = schema;
 
 const executing = context.injectExecuting();
+const formData = ref({});
 const ready = ref(inputs.length === 0);
 
 function onReady(value) {

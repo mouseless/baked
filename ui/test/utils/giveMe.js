@@ -306,6 +306,22 @@ export default {
     };
   },
 
+  aFormPage({ action, title, description, button, inputs } = {}) {
+    title = this.aPageTitle({ title, description }).schema;
+    button = $(button, this.aButton({ label: "Test Submit" }));
+    inputs = $(inputs, []);
+
+    return {
+      type: "FormPage",
+      schema: {
+        title,
+        button: button.schema,
+        inputs
+      },
+      action
+    };
+  },
+
   aHeader({ sitemapItems, data } = {}) {
     sitemapItems = $(sitemapItems, [this.aHeaderItem({ route: "/test" })]);
     data = $(data, { path: "/test" });
@@ -677,7 +693,7 @@ export default {
 
   aSimpleForm({ buttonIcon, buttonLabel, inputs, action }) {
     buttonIcon = $(buttonIcon, "pi pi-save");
-    buttonLabel = $(buttonLabel, "Button Label");
+    buttonLabel = $(buttonLabel, "Test Submit");
     inputs = $(inputs, []);
 
     return {

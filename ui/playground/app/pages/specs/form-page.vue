@@ -1,6 +1,6 @@
 <template>
   <UiSpec
-    title="Simple Form"
+    title="Form Page"
     :variants="variants"
     no-loading-variant
   />
@@ -11,7 +11,7 @@ import giveMe from "@utils/giveMe";
 const variants = [
   {
     name: "Base",
-    descriptor: giveMe.aSimpleForm({
+    descriptor: giveMe.aFormPage({
       action: giveMe.aCompositeAction([
         giveMe.aLocalAction({ delay: 100 }),
         giveMe.aLocalAction({
@@ -23,7 +23,9 @@ const variants = [
           })
         })
       ]),
-      buttonLabel: "Spec: Submit",
+      title: "Spec: Title",
+      description: "Spec: Description",
+      button: giveMe.aButton({ label: "Spec: Submit" }),
       inputs: [
         giveMe.anInput({
           name: "text",
@@ -35,7 +37,7 @@ const variants = [
   },
   {
     name: "Multiple Inputs",
-    descriptor: giveMe.aSimpleForm({
+    descriptor: giveMe.aFormPage({
       action: giveMe.aLocalAction({ showMessage: "ok" }),
       inputs: [
         giveMe.anInput({

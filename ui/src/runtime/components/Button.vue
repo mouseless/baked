@@ -3,6 +3,7 @@
     :icon
     :label="l(label)"
     :loading="executing"
+    :disabled="!ready || executing"
     :variant
     :rounded
     @click="$emit('submit')"
@@ -18,6 +19,7 @@ const { localize: l } = useLocalization();
 const { schema } = defineProps({
   schema: { type: null, required: true }
 });
+const ready = defineModel("ready", { type: Boolean, default: true });
 
 defineEmits(["submit"]);
 
