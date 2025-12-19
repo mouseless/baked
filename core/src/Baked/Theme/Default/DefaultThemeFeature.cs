@@ -66,6 +66,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 schema: (c, cc) => MethodContent(c.Method, cc)
             );
             builder.Conventions.AddMethodComponent(
+                when: c => c.Method.Has<ActionModelAttribute>(),
                 where: cc => cc.Path.EndsWith(nameof(PageTitle.Actions), "*"),
                 component: (c, cc) => MethodButton(c.Method, cc)
             );
