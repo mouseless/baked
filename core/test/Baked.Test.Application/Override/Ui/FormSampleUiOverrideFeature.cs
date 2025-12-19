@@ -53,11 +53,6 @@ public class FormSampleUiOverrideFeature : IFeature
             );
 
             // actions
-            builder.Conventions.AddTypeComponent(
-                when: c => c.Type.Is<FormSample>(),
-                where: cc => cc.Path.EndsWith(nameof(SimplePage.Title)),
-                component: (c, cc) => TypePageTitle(c.Type, cc)
-            );
             builder.Conventions.AddTypeComponentConfiguration<PageTitle>(
                 when: c => c.Type.Is<FormSample>(),
                 component: (pt, c, cc) =>
@@ -73,11 +68,6 @@ public class FormSampleUiOverrideFeature : IFeature
                         pt.Schema.Actions.Add(actionComponent);
                     }
                 }
-            );
-            builder.Conventions.AddMethodComponent(
-                when: c => c.Type.Is<FormSample>() && c.Method.Has<ActionModelAttribute>() && !c.Method.Name.StartsWith("Get"),
-                where: cc => cc.Path.EndsWith(nameof(PageTitle.Actions), "*"),
-                component: (c, cc) => MethodButton(c.Method, cc)
             );
 
             builder.Conventions.AddMethodSchema(

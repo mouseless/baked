@@ -65,6 +65,10 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 when: c => c.Method.Has<ActionModelAttribute>(),
                 schema: (c, cc) => MethodContent(c.Method, cc)
             );
+            builder.Conventions.AddMethodComponent(
+                where: cc => cc.Path.EndsWith(nameof(PageTitle.Actions), "*"),
+                component: (c, cc) => MethodButton(c.Method, cc)
+            );
 
             // Parameter Defaults
             builder.Conventions.AddParameterSchema(
@@ -133,6 +137,10 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             builder.Conventions.AddTypeComponent(
                 where: cc => cc.Path.Is(nameof(Page), "*"),
                 component: (c, cc) => TypeSimplePage(c.Type, cc)
+            );
+            builder.Conventions.AddTypeComponent(
+                where: cc => cc.Path.EndsWith(nameof(SimplePage), nameof(SimplePage.Title)),
+                component: (c, cc) => TypePageTitle(c.Type, cc)
             );
         });
 
