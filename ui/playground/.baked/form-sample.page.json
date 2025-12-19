@@ -96,10 +96,10 @@
                             {
                               "type": "SimpleForm",
                               "schema": {
-                                "buttonIcon": "pi pi-pencil",
-                                "buttonLabel": "Update",
-                                "buttonVariant": "text",
-                                "buttonRounded": true,
+                                "name": "Update",
+                                "submitButton": {
+                                  "label": "Submit"
+                                },
                                 "inputs": [
                                   {
                                     "name": "name",
@@ -112,7 +112,16 @@
                                     }
                                   }
                                 ],
-                                "dialog": true
+                                "dialog": true,
+                                "dialogToggleButton": {
+                                  "icon": "pi pi-pencil",
+                                  "label": "",
+                                  "variant": "text",
+                                  "rounded": true
+                                },
+                                "dialogCancelButton": {
+                                  "label": "Cancel"
+                                }
                               },
                               "action": {
                                 "type": "Remote",

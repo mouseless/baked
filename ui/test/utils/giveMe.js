@@ -38,6 +38,17 @@ export default {
     };
   },
 
+  aButtonSchema({ icon, label, variant, rounded } = {}) {
+    label = $(label, "Button");
+
+    return {
+      icon,
+      label,
+      variant,
+      rounded
+    };
+  },
+
   aCardLink({ route, icon, title, description, disabled, disabledReason } = {}) {
     route = $(route, "/test-route");
     icon = $(icon, "pi pi-heart");
@@ -679,18 +690,20 @@ export default {
     return { route, icon, title, disabled };
   },
 
-  aSimpleForm({ buttonIcon, buttonLabel, dialog, inputs, action }) {
-    buttonIcon = $(buttonIcon, "pi pi-save");
-    buttonLabel = $(buttonLabel, "Button Label");
+  aSimpleForm({ dialog, dialogCancelButton, dialogToggleButton, inputs, name, submitButton, action }) {
     inputs = $(inputs, []);
+    name = $(name, "Simple Form");
+    submitButton = $(submitButton, this.aButtonSchema({ label: "Submit" }));
 
     return {
       type: "SimpleForm",
       schema: {
-        buttonIcon,
-        buttonLabel,
         dialog,
-        inputs
+        dialogCancelButton,
+        dialogToggleButton,
+        name,
+        inputs,
+        submitButton
       },
       action
     };

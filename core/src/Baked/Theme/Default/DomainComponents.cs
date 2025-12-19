@@ -79,6 +79,20 @@ public static class DomainComponents
         );
     }
 
+    public static ComponentDescriptor<SimpleForm> MethodSimpleForm(MethodModel method, ComponentContext context,
+        Action<SimpleForm>? options = default
+    )
+    {
+        context = context.Drill(nameof(SimpleForm));
+        var (_, l) = context;
+
+        return B.SimpleForm(
+            l(method.Name),
+            method.GetRequiredSchema<RemoteAction>(context),
+            options: options
+        );
+    }
+
     public static Input ParameterInput(ParameterModel parameter, ComponentContext context,
         Action<Input>? options = default
     )

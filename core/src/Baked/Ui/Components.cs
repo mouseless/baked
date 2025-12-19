@@ -201,10 +201,12 @@ public static class Components
         Action<SideMenu.Item>? options = default
     ) => options.Apply(new(route, icon));
 
-    public static ComponentDescriptor<SimpleForm> SimpleForm(
-        IAction? action = default,
+    public static ComponentDescriptor<SimpleForm> SimpleForm(string name, IAction action,
         Action<SimpleForm>? options = default
-    ) => new(options.Apply(new())) { Action = action };
+    ) => new(options.Apply(new(name, new("Submit"))))
+    {
+        Action = action,
+    };
 
     public static ComponentDescriptor<Text> Text(
         Action<Text>? options = default,

@@ -21,8 +21,8 @@
     >
       <Button
         :schema="actionButton"
-        @click="execute"
         class="w-full"
+        @click="execute"
       />
     </template>
   </Dialog>

@@ -3,19 +3,15 @@
     <template v-if="dialog">
       <Button
         :disabled="executing"
-        :icon="buttonIcon"
-        :loading="executing"
-        :label="l(buttonLabel)"
-        :rounded="buttonRounded"
-        :variant="buttonVariant"
+        :schema="dialogToggleButton"
         @click="visible = true"
       />
       <Dialog
         v-model:visible="visible"
         closable
-        :header="l(header)"
+        :header="l(name)"
         modal
-        :style="{ width: 'min(450px, 90vw)' }"
+        :style="{ width: 'min(700px, 90vw)' }"
         @after-hide="submit"
       >
         <Inputs
@@ -29,19 +25,22 @@
         <template #footer>
           <Button
             :disabled="executing"
-            :label="l('Cancel')"
-            @click="() => visible = false"
+            :schema="dialogCancelButton"
+            @submit="() => visible = false"
           />
           <Button
             :disabled="!ready"
-            :label="l(buttonLabel)"
-            @click="execute"
+            :schema="submitButton"
+            @submit="execute"
           />
         </template>
       </Dialog>
     </template>
     <template v-else>
       <div class="flex flex-col gap-4">
+        <h1 class="font-bold text-xl truncate">
+          {{ l(name) }}
+        </h1>
         <Inputs
           v-if="inputs"
           :inputs="inputs"
@@ -51,11 +50,9 @@
           @changed="onChanged"
         />
         <Button
-          :icon="buttonIcon"
-          :loading="executing"
           :disabled="!ready || executing"
-          :label="l(buttonLabel)"
-          @click="$emit('submit', formData)"
+          :schema="submitButton"
+          @submit="$emit('submit', formData)"
         />
       </div>
     </template>
@@ -63,9 +60,9 @@
 </template>
 <script setup>
 import { ref } from "vue";
-import { Button, Dialog } from "primevue";
+import { Dialog } from "primevue";
 import { useContext, useLocalization } from "#imports";
-import { Inputs } from "#components";
+import { Button, Inputs } from "#components";
 
 const context = useContext();
 const { localize: l } = useLocalization();
@@ -78,7 +75,7 @@ const emit = defineEmits(["submit"]);
 const formData = ref({});
 const submitted = ref(false);
 
-const { buttonIcon, buttonLabel, buttonRounded, buttonVariant, dialog, inputs } = schema;
+const { dialog, dialogCancelButton, dialogToggleButton, inputs, name, submitButton } = schema;
 
 const executing = context.injectExecuting();
 const ready = ref(inputs.length === 0);

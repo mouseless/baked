@@ -156,7 +156,7 @@ public class FormSampleUiOverrideFeature : IFeature
             builder.Conventions.AddMethodComponent(
                 when: c => !c.Method.Name.StartsWith("Get") && c.Method.Has<ActionModelAttribute>(),
                 where: cc => cc.Path.EndsWith(nameof(Page), nameof(FormSample), nameof(FormSample.NewParent), nameof(ContainerPage), nameof(ContainerPage.Contents), "*"),
-                component: c => B.SimpleForm(options: sf => sf.ButtonLabel = c.Method.Name)
+                component: (c, cc) => MethodSimpleForm(c.Method, cc)
             );
             builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.NewParent),
@@ -196,14 +196,19 @@ public class FormSampleUiOverrideFeature : IFeature
             builder.Conventions.AddMethodComponent(
                 when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.Update),
                 where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.ActionTemplate)),
-                component: c => B.SimpleForm(options: sf =>
-                {
-                    sf.ButtonLabel = c.Method.Name;
-                    sf.Dialog = true;
-                    sf.ButtonIcon = "pi pi-pencil";
-                    sf.ButtonVariant = "text";
-                    sf.ButtonRounded = true;
-                })
+                component: (c, cc) => MethodSimpleForm(c.Method, cc,
+                    options: sf =>
+                    {
+                        sf.Dialog = true;
+                        sf.DialogToggleButton = new(string.Empty)
+                        {
+                            Icon = "pi pi-pencil",
+                            Variant = "text",
+                            Rounded = true
+                        };
+                        sf.DialogCancelButton = new("Cancel");
+                    }
+                )
             );
 
             builder.Conventions.AddMethodSchema(

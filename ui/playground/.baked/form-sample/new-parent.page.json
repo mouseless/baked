@@ -5,7 +5,10 @@
       {
         "type": "SimpleForm",
         "schema": {
-          "buttonLabel": "NewParent",
+          "name": "NewParent",
+          "submitButton": {
+            "label": "Submit"
+          },
           "inputs": [
             {
               "name": "name",

@@ -23,14 +23,15 @@ const variants = [
           })
         })
       ]),
-      buttonLabel: "Spec: SimpleFormButton",
+      name: "Spec: Simple Form",
       inputs: [
         giveMe.anInput({
           name: "text",
           component: giveMe.anInputText(),
           required: true
         })
-      ]
+      ],
+      submitButton: giveMe.aButtonSchema({ label: "Spec: Submit" })
     })
   },
   {
@@ -47,15 +48,18 @@ const variants = [
           })
         })
       ]),
-      buttonLabel: "Spec: SimpleFormButton",
+      dialogCancelButton: giveMe.aButtonSchema({ label: "Spec: Cancel" }),
+      dialogToggleButton: giveMe.aButtonSchema({ label: "Spec: Toggle Dialog" }),
       dialog: true,
+      name: "Spec: Simple Form",
       inputs: [
         giveMe.anInput({
           name: "text",
           component: giveMe.anInputText(),
           required: true
         })
-      ]
+      ],
+      submitButton: giveMe.aButtonSchema({ label: "Spec: Submit" })
     })
   }
 ];
