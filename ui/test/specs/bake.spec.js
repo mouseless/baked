@@ -79,14 +79,14 @@ test.describe("Model", () => {
 
   test("model is passed when a component defines model", async({ page }) => {
     const component = page.getByTestId(id);
-    const input = component.locator(primevue.inputeText.base);
+    const input = component.getByTestId("input");
 
     await expect(input).toHaveValue("Model Data");
   });
 
   test("model value can be updated", async({ page }) => {
     const component = page.getByTestId(id);
-    const input = component.locator(primevue.inputeText.base);
+    const input = component.getByTestId("input");
     const model = page.getByTestId(`${id}:model`);
 
     await input.fill("Test");

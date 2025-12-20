@@ -161,6 +161,16 @@ public static class DomainComponents
         return B.Input(api.Name, parameter.GetRequiredComponent(context.Drill(nameof(Input.Component))), options: options);
     }
 
+    public static ComponentDescriptor<InputText> AnyInputText(ParameterModel parameter, ComponentContext context,
+        Action<InputText>? options = default
+    )
+    {
+        context = context.Drill(nameof(InputText));
+        var (_, l) = context;
+
+        return B.InputText(l(parameter.Name.Titleize()), options: options);
+    }
+
     public static ComponentDescriptor<Select> EnumSelect(ParameterModel parameter, ComponentContext context,
         Action<Select>? options = default
     )

@@ -389,19 +389,21 @@ export default {
     return { name, required, default: default_, defaultSelfManaged, queryBound, component };
   },
 
-  anInputText({ action } = {}) {
+  anInputText({ label } = {}) {
     return {
       type: "InputText",
-      schema: { },
-      action
+      schema: {
+        label
+      }
     };
   },
 
-  anInputNumber({ action } = {}) {
+  anInputNumber({ label } = {}) {
     return {
       type: "InputNumber",
-      schema: { },
-      action
+      schema: {
+        label
+      }
     };
   },
 

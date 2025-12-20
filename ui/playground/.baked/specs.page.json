@@ -285,6 +285,18 @@
             }
           },
           {
+            "title": "Input Text",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/input-text",
+                "icon": "pi pi-microchip",
+                "title": "Input Text",
+                "description": "Allows regular text input"
+              }
+            }
+          },
+          {
             "title": "Language Switcher",
             "component": {
               "type": "CardLink",

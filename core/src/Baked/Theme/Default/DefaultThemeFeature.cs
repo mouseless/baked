@@ -88,7 +88,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 }
             );
             builder.Conventions.AddParameterComponent(
-                component: c => B.InputText(),
+                component: (c, cc) => AnyInputText(c.Parameter, cc),
                 order: UiLayer.MinConventionOrder + 10
             );
             builder.Conventions.AddParameterComponent(

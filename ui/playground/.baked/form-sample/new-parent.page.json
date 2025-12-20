@@ -38,7 +38,9 @@
         },
         "component": {
           "type": "InputText",
-          "schema": {}
+          "schema": {
+            "label": "Name"
+          }
         }
       }
     ],

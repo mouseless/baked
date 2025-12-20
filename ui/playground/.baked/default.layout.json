@@ -201,6 +201,12 @@
             "title": "Button",
             "parentRoute": "/specs"
           },
+          "/specs/input-text": {
+            "route": "/specs/input-text",
+            "icon": "pi pi-microchip",
+            "title": "Input Text",
+            "parentRoute": "/specs"
+          },
           "/specs/language-switcher": {
             "route": "/specs/language-switcher",
             "icon": "pi pi-microchip",

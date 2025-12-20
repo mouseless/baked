@@ -56,7 +56,7 @@ const variants = [
   },
   {
     name: "Model",
-    descriptor: giveMe.anExpectedInput(),
+    descriptor: giveMe.anExpectedInput({ testId: "input" }),
     model: ref("Model Data")
   },
   {

@@ -104,9 +104,9 @@ public static class Components
         Action<Icon>? options = default
     ) => new(options.Apply(new(iconClass)));
 
-    public static ComponentDescriptor<InputText> InputText(
+    public static ComponentDescriptor<InputText> InputText(string label,
         Action<InputText>? options = default
-    ) => new(options.Apply(new()));
+    ) => new(options.Apply(new(label)));
 
     public static ComponentDescriptor<InputNumber> InputNumber(
         Action<InputNumber>? options = default
