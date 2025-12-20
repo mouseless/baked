@@ -45,11 +45,11 @@ public class ReportPageSampleUiOverrideFeature : IFeature
             // Parameter overrides
             builder.Conventions.AddParameterComponent(
                 when: c => c.Type.Is<ReportPageSample>() && c.Method.Name == nameof(ReportPageSample.With) && !c.Parameter.IsOptional,
-                component: (c, cc) => EnumSelect(c.Parameter, cc)
+                component: (c, cc) => ParameterSelect(c.Parameter, cc)
             );
             builder.Conventions.AddParameterComponent(
                 when: c => c.Type.Is<ReportPageSample>() && c.Method.Name == nameof(ReportPageSample.GetFirst) && c.Parameter.Name == "count",
-                component: (c, cc) => EnumSelect(c.Parameter, cc)
+                component: (c, cc) => ParameterSelect(c.Parameter, cc)
             );
 
             // Page overrides

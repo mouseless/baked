@@ -297,6 +297,18 @@
             }
           },
           {
+            "title": "Input Number",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/input-number",
+                "icon": "pi pi-microchip",
+                "title": "Input Number",
+                "description": "Allows number input"
+              }
+            }
+          },
+          {
             "title": "Language Switcher",
             "component": {
               "type": "CardLink",

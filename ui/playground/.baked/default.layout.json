@@ -207,6 +207,12 @@
             "title": "Input Text",
             "parentRoute": "/specs"
           },
+          "/specs/input-number": {
+            "route": "/specs/input-number",
+            "icon": "pi pi-microchip",
+            "title": "Input Number",
+            "parentRoute": "/specs"
+          },
           "/specs/language-switcher": {
             "route": "/specs/language-switcher",
             "icon": "pi pi-microchip",

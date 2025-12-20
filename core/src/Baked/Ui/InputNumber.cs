@@ -1,3 +1,7 @@
 namespace Baked.Ui;
 
-public record InputNumber : IComponentSchema;
+public record InputNumber(string Label)
+    : IComponentSchema
+{
+    public string Label { get; set; } = Label;
+}

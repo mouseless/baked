@@ -88,12 +88,12 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 }
             );
             builder.Conventions.AddParameterComponent(
-                component: (c, cc) => AnyInputText(c.Parameter, cc),
+                component: (c, cc) => ParameterInputText(c.Parameter, cc),
                 order: UiLayer.MinConventionOrder + 10
             );
             builder.Conventions.AddParameterComponent(
                 when: c => c.Parameter.ParameterType.Is<int>(),
-                component: c => B.InputNumber(),
+                component: (c, cc) => ParameterInputNumber(c.Parameter, cc),
                 order: UiLayer.MinConventionOrder + 10
             );
 

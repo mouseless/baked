@@ -108,9 +108,9 @@ public static class Components
         Action<InputText>? options = default
     ) => new(options.Apply(new(label)));
 
-    public static ComponentDescriptor<InputNumber> InputNumber(
+    public static ComponentDescriptor<InputNumber> InputNumber(string label,
         Action<InputNumber>? options = default
-    ) => new(options.Apply(new()));
+    ) => new(options.Apply(new(label)));
 
     public static ComponentDescriptor<LanguageSwitcher> LanguageSwitcher(
         Action<LanguageSwitcher>? options = default

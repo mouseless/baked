@@ -126,6 +126,9 @@
   `queryBound` set to `true` to get the same behavior
   - `QueryBoundInputs` was passing `uniqueKey` to `onChanged` event, but
     `Inputs` pass an event object `{ uniqueKey, values }`
+- `EnumSelect` and `EnumSelectButton` in `DomainComponents` are renamed to
+  `ParameterSelect` and `ParameterSelectButton`
+  - They still require an `InlineData` schema on the parameter type
 
 ## Improvements
 
