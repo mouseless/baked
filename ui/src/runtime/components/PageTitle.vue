@@ -61,15 +61,15 @@
             v-if="$slots.inputs"
             name="inputs"
           />
+          <slot
+            v-if="$slots.actions"
+            name="actions"
+          />
           <Bake
             v-for="action in actions"
             :key="action.schema.name"
             :name="`actions/${action.schema.name}`"
             :descriptor="action"
-          />
-          <slot
-            v-if="$slots.actions"
-            name="actions"
           />
         </template>
         <template v-else>
@@ -115,15 +115,15 @@
               justify-between w-full min-w-52
               gap-4 text-sm px-2 py-2"
             >
+              <slot
+                v-if="$slots.actions"
+                name="actions"
+              />
               <Bake
                 v-for="action in actions"
                 :key="action.schema.name"
                 :name="`actions/${action.schema.name}`"
                 :descriptor="action"
-              />
-              <slot
-                v-if="$slots.actions"
-                name="actions"
               />
             </div>
           </PersistentPopover>

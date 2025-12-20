@@ -3,6 +3,7 @@ using Baked.Business;
 using Baked.RestApi.Model;
 using Baked.Test.Orm;
 using Baked.Test.Theme;
+using Baked.Theme;
 using Baked.Ui;
 using Humanizer;
 
@@ -113,6 +114,7 @@ public class FormSampleUiOverrideFeature : IFeature
 
             builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.NewParent),
+                where: cc => cc.Path.StartsWith(nameof(Page), "*", "*", nameof(FormPage)),
                 schema: ra => ra.PostAction = Actions.Local.UseRedirect("/form-sample")
             );
 

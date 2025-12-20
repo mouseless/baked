@@ -69,7 +69,7 @@ public static class DomainComponents
             MethodPageTitle(method, context.Drill(nameof(FormPage.Title)));
         var button =
             method.GetComponent<Button>(context.Drill(nameof(FormPage.Button))) as ComponentDescriptor<Button> ??
-            MethodButton(method, context.Drill(nameof(FormPage.Title)));
+            B.Button(l("Save"));
 
         return B.FormPage(path, title, button,
             action: method.GetSchema<RemoteAction>(context.Drill(nameof(IComponentDescriptor.Action))),

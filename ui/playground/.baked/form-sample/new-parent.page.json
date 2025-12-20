@@ -3,10 +3,30 @@
   "schema": {
     "title": {
       "title": "New Parent",
-      "actions": []
+      "description": "Fill out the form and hit save to create new parent",
+      "actions": [
+        {
+          "type": "Button",
+          "schema": {
+            "label": "Back",
+            "variant": "text",
+            "severity": "secondary"
+          },
+          "action": {
+            "type": "Local",
+            "composable": "useRedirect",
+            "options": {
+              "type": "Inline",
+              "value": {
+                "back": true
+              }
+            }
+          }
+        }
+      ]
     },
     "button": {
-      "label": "New Parent"
+      "label": "Save"
     },
     "inputs": [
       {

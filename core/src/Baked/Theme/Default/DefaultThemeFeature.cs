@@ -9,6 +9,7 @@ using Humanizer;
 using static Baked.Theme.Default.DomainComponents;
 using static Baked.Theme.Default.DomainDatas;
 using static Baked.Ui.Datas;
+using static Baked.Ui.Actions;
 
 using B = Baked.Ui.Components;
 
@@ -146,6 +147,21 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             builder.Conventions.AddMethodComponent(
                 where: cc => cc.Path.Is(nameof(Page), "*", "*"),
                 component: (c, cc) => MethodFormPage(c.Method, cc)
+            );
+            builder.Conventions.AddMethodComponentConfiguration<FormPage>(
+                component: (fp, _, cc) =>
+                {
+                    var (_, l) = cc;
+
+                    fp.Schema.Title.Actions.Add(B.Button(l("Back"),
+                        action: Local.UseRedirectBack(),
+                        options: b =>
+                        {
+                            b.Severity = "secondary";
+                            b.Variant = "text";
+                        })
+                    );
+                }
             );
         });
 

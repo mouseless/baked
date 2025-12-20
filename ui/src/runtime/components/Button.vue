@@ -1,11 +1,12 @@
 <template>
   <Button
+    :disabled="!ready || executing"
+    :loading="executing"
     :icon
     :label="l(label)"
-    :loading="executing"
-    :disabled="!ready || executing"
-    :variant
     :rounded
+    :severity
+    :variant
     @click="$emit('submit')"
   />
 </template>
@@ -23,7 +24,7 @@ const ready = defineModel("ready", { type: Boolean, default: true });
 
 defineEmits(["submit"]);
 
-const { icon, label, variant, rounded } = schema;
+const { icon, label, rounded, severity, variant } = schema;
 
 const executing = context.injectExecuting();
 </script>
