@@ -22,9 +22,8 @@ test.describe("Base", () => {
 
   test("inputs", async({ page }) => {
     const component = page.getByTestId(id);
-    const text = component.locator(".b-component--InputText");
 
-    await expect(text).toBeAttached();
+    await expect(component.getByTestId("input")).toBeAttached();
   });
 
   test("button", async({ page }) => {
@@ -43,20 +42,20 @@ test.describe("Base", () => {
 
   test("button is enabled when inputs are ready", async({ page }) => {
     const component = page.getByTestId(id);
-    const text = component.locator(".b-component--InputText");
+    const input = component.getByTestId("input");
     const button = component.locator(primevue.button.base).nth(1);
 
-    await text.fill("text");
+    await input.fill("text");
 
     await expect(button).not.toBeDisabled();
   });
 
   test("action", async({ page }) => {
     const component = page.getByTestId(id);
-    const text = component.locator(".b-component--InputText");
+    const input = component.getByTestId("input");
     const button = component.locator(primevue.button.base).nth(1);
 
-    await text.fill("text");
+    await input.fill("text");
     await button.click();
 
     await expect(page.locator(primevue.toast.base)).toBeVisible();
@@ -65,10 +64,10 @@ test.describe("Base", () => {
 
   test("button is disabled until action is completed", async({ page }) => {
     const component = page.getByTestId(id);
-    const text = component.locator(".b-component--InputText");
+    const input = component.getByTestId("input");
     const button = component.locator(primevue.button.base).nth(1);
 
-    await text.fill("text");
+    await input.fill("text");
     await button.click();
 
     await expect(button).toBeDisabled();

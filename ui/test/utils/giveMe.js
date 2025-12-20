@@ -284,6 +284,20 @@ export default {
     };
   },
 
+  anExpectedInput({ testId, defaultValue, number, action } = {}) {
+    testId = $(testId, "test-id");
+
+    return {
+      type: "ExpectedInput",
+      schema: {
+        testId,
+        defaultValue,
+        number
+      },
+      action
+    };
+  },
+
   aFilter({ placeholder, action } = {}) {
     placeholder = $(placeholder, "Filter");
 
@@ -367,7 +381,7 @@ export default {
   anInput({ name, required, defaultValue, default_, defaultSelfManaged, queryBound, component } = {}) {
     name = $(name, "test");
     required = $(required, false);
-    component = $(component, this.anInputText());
+    component = $(component, this.anExpectedInput());
     default_ = $(default_, defaultValue ? this.anInlineData(defaultValue) : undefined);
     defaultSelfManaged = $(defaultSelfManaged, false);
     queryBound = $(queryBound, undefined);
@@ -375,30 +389,19 @@ export default {
     return { name, required, default: default_, defaultSelfManaged, queryBound, component };
   },
 
-  anInputText({ testId, defaultValue, action } = {}) {
-    testId = $(testId, "test-input");
-    defaultValue = $(defaultValue, null);
-
+  anInputText({ action } = {}) {
     return {
       type: "InputText",
-      schema: {
-        testId,
-        defaultValue
-      },
+      schema: { },
       action
     };
   },
 
-  anInputNumber({ testId, defaultValue } = {}) {
-    testId = $(testId, "test-input-number");
-    defaultValue = $(defaultValue, null);
-
+  anInputNumber({ action } = {}) {
     return {
       type: "InputNumber",
-      schema: {
-        testId,
-        defaultValue
-      }
+      schema: { },
+      action
     };
   },
 

@@ -104,6 +104,14 @@ public static class Components
         Action<Icon>? options = default
     ) => new(options.Apply(new(iconClass)));
 
+    public static ComponentDescriptor<InputText> InputText(
+        Action<InputText>? options = default
+    ) => new(options.Apply(new()));
+
+    public static ComponentDescriptor<InputNumber> InputNumber(
+        Action<InputNumber>? options = default
+    ) => new(options.Apply(new()));
+
     public static ComponentDescriptor<LanguageSwitcher> LanguageSwitcher(
         Action<LanguageSwitcher>? options = default
     ) => new(options.Apply(new()));

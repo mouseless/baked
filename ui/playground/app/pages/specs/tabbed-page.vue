@@ -113,7 +113,7 @@ const variants = [
           name: "required",
           required: true,
           queryBound: true,
-          component: giveMe.anInputText({
+          component: giveMe.anExpectedInput({
             testId: "required"
           })
         }),
@@ -121,7 +121,7 @@ const variants = [
           name: "optional",
           required: false,
           queryBound: true,
-          component: giveMe.anInputText({
+          component: giveMe.anExpectedInput({
             testId: "optional"
           })
         })

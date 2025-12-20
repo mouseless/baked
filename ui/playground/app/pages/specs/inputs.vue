@@ -56,23 +56,23 @@ const readyValues = ref();
 const inputs = [
   giveMe.anInput({
     name: "requiredWithDefault",
-    component: giveMe.anInputText({ testId: "required-with-default" }),
+    component: giveMe.anExpectedInput({ testId: "required-with-default" }),
     required: true,
     defaultValue: "default value"
   }),
   giveMe.anInput({
     name: "required",
-    component: giveMe.anInputText({ testId: "required" }),
+    component: giveMe.anExpectedInput({ testId: "required" }),
     required: true
   }),
   giveMe.anInput({
     name: "required-number",
-    component: giveMe.anInputNumber({ testId: "required-number" }),
+    component: giveMe.anExpectedInput({ testId: "required-number", number: true }),
     required: true
   }),
   giveMe.anInput({
     name: "optional",
-    component: giveMe.anInputText({ testId: "optional" })
+    component: giveMe.anExpectedInput({ testId: "optional" })
   })
 ];
 

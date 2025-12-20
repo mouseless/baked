@@ -52,7 +52,7 @@ onMounted(async() => {
       }
 
       model.value = newValue;
-    });
+    }, { immediate: true });
   }
 
   watch(model, async newValue => {

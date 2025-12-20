@@ -38,9 +38,7 @@
         },
         "component": {
           "type": "InputText",
-          "schema": {
-            "testId": "name"
-          }
+          "schema": {}
         }
       }
     ],

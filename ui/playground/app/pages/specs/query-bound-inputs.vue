@@ -67,31 +67,31 @@ const inputs = [
     required: true,
     defaultValue: "default value",
     queryBound: true,
-    component: giveMe.anInputText({ testId: "required-with-default" })
+    component: giveMe.anExpectedInput({ testId: "required-with-default" })
   }),
   giveMe.anInput({
     name: "requiredWithDefaultSelfManaged",
     required: true,
     defaultSelfManaged: true,
     queryBound: true,
-    component: giveMe.anInputText({ testId: "required-with-default-self-managed", defaultValue: "default" })
+    component: giveMe.anExpectedInput({ testId: "required-with-default-self-managed", defaultValue: "default" })
   }),
   giveMe.anInput({
     name: "required",
     required: true,
     queryBound: true,
-    component: giveMe.anInputText({ testId: "required" })
+    component: giveMe.anExpectedInput({ testId: "required" })
   }),
   giveMe.anInput({
     name: "required-number",
     required: true,
     queryBound: true,
-    component: giveMe.anInputNumber({ testId: "required-number" })
+    component: giveMe.anExpectedInput({ testId: "required-number", number: true })
   }),
   giveMe.anInput({
     name: "optional",
     queryBound: true,
-    component: giveMe.anInputText({
+    component: giveMe.anExpectedInput({
       testId: "optional",
       action: giveMe.aPublishAction({ pageContextKey: "optional" })
     })

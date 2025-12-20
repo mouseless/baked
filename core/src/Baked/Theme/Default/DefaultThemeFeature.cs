@@ -87,6 +87,14 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     p.DefaultValue = api.DefaultValue;
                 }
             );
+            builder.Conventions.AddParameterComponent(
+                when: c => c.Parameter.ParameterType.Is<string>(),
+                component: c => B.InputText()
+            );
+            builder.Conventions.AddParameterComponent(
+                when: c => c.Parameter.ParameterType.Is<int>(),
+                component: c => B.InputNumber()
+            );
 
             // Enum Data
             builder.Conventions.AddTypeSchema(

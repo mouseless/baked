@@ -12,7 +12,6 @@ using static Baked.Theme.Default.DomainComponents;
 using static Baked.Ui.Datas;
 
 using B = Baked.Ui.Components;
-using C = Baked.Test.Ui.Components;
 
 namespace Baked.Test.Override.Ui;
 
@@ -91,14 +90,6 @@ public class FormSampleUiOverrideFeature : IFeature
                         );
                     }
                 }
-            );
-            builder.Conventions.AddParameterComponent(
-                when: c => c.Type.Is<FormSample>() && c.Parameter.ParameterType.Is<string>(),
-                component: c => C.InputText(c.Parameter.Name)
-            );
-            builder.Conventions.AddParameterComponent(
-                when: c => c.Type.Is<FormSample>() && c.Parameter.ParameterType.Is<int>(),
-                component: c => C.InputNumber(c.Parameter.Name)
             );
 
             builder.Conventions.AddMethodSchema(
