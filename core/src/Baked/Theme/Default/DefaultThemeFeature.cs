@@ -88,12 +88,13 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 }
             );
             builder.Conventions.AddParameterComponent(
-                when: c => c.Parameter.ParameterType.Is<string>(),
-                component: c => B.InputText()
+                component: c => B.InputText(),
+                order: UiLayer.MinConventionOrder + 10
             );
             builder.Conventions.AddParameterComponent(
                 when: c => c.Parameter.ParameterType.Is<int>(),
-                component: c => B.InputNumber()
+                component: c => B.InputNumber(),
+                order: UiLayer.MinConventionOrder + 10
             );
 
             // Enum Data
