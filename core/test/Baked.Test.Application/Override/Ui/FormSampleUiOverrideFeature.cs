@@ -79,22 +79,10 @@ public class FormSampleUiOverrideFeature : IFeature
                     ra.Body = Context.Model();
                 }
             );
-            builder.Conventions.AddParameterComponent(
-                when: c => c.Type.Is<FormSample>() && c.Parameter.ParameterType.Is<string>(),
-                component: c => C.InputText(c.Parameter.Name)
-            );
-            builder.Conventions.AddParameterComponent(
-                when: c => c.Type.Is<Parent>() && c.Parameter.ParameterType.Is<string>(),
-                component: c => C.InputText(c.Parameter.Name)
-            );
-            builder.Conventions.AddParameterComponent(
-                when: c => c.Type.Is<FormSample>() && c.Parameter.ParameterType.Is<int>(),
-                component: c => C.InputNumber(c.Parameter.Name)
-            );
             builder.Conventions.AddMethodComponentConfiguration<SimpleForm>(
                component: (sf, c, cc) =>
                {
-                   Console.WriteLine(c.Method.Name);
+
                    sf.Action = c.Method.GetRequiredSchema<RemoteAction>(cc.Drill(nameof(IComponentDescriptor.Action)));
 
                    cc = cc.Drill(nameof(SimpleForm));
@@ -107,7 +95,20 @@ public class FormSampleUiOverrideFeature : IFeature
                        }));
                    }
                }
-           );
+            );
+            builder.Conventions.AddParameterComponent(
+                when: c => c.Type.Is<FormSample>() && c.Parameter.ParameterType.Is<string>(),
+                component: c => C.InputText(c.Parameter.Name)
+            );
+            builder.Conventions.AddParameterComponent(
+                when: c => c.Type.Is<Parent>() && c.Parameter.ParameterType.Is<string>(),
+                component: c => C.InputText(c.Parameter.Name)
+            );
+            builder.Conventions.AddParameterComponent(
+                when: c => c.Type.Is<FormSample>() && c.Parameter.ParameterType.Is<int>(),
+                component: c => C.InputNumber(c.Parameter.Name)
+            );
+
             // END OF TODO - review this in form components
 
             builder.Conventions.RemoveMethodSchema<ReportPage.Tab.Content>(

@@ -204,10 +204,7 @@ public static class Components
 
     public static ComponentDescriptor<SimpleForm> SimpleForm(string name, Button submitButton, IAction action,
         Action<SimpleForm>? options = default
-    ) => new(options.Apply(new(name, submitButton)))
-    {
-        Action = action,
-    };
+    ) => new(options.Apply(new(name, submitButton))) { Action = action };
 
     public static SimpleForm.Dialog SimpleFormDialogTemplate(Button toggleButton, Button cancelButton,
         Action<SimpleForm.Dialog>? options = default

@@ -86,10 +86,7 @@ public static class DomainComponents
         context = context.Drill(nameof(SimpleForm));
         var (_, l) = context;
 
-        return B.SimpleForm(
-            l(method.Name),
-            new(l("Submit")),
-            method.GetRequiredSchema<RemoteAction>(context),
+        return B.SimpleForm(l(method.Name), new(l("Submit")), method.GetRequiredSchema<RemoteAction>(context),
             options: options
         );
     }
