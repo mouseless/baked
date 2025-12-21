@@ -80,20 +80,20 @@ public class FormSampleUiOverrideFeature : IFeature
                 }
             );
             builder.Conventions.AddMethodComponentConfiguration<SimpleForm>(
-               component: (sf, c, cc) =>
-               {
-                   sf.Action = c.Method.GetRequiredSchema<RemoteAction>(cc.Drill(nameof(IComponentDescriptor.Action)));
+                component: (sf, c, cc) =>
+                {
+                    sf.Action = c.Method.GetRequiredSchema<RemoteAction>(cc.Drill(nameof(IComponentDescriptor.Action)));
 
-                   cc = cc.Drill(nameof(SimpleForm));
+                    cc = cc.Drill(nameof(SimpleForm));
 
-                   foreach (var parameter in c.Method.DefaultOverload.Parameters)
-                   {
-                       sf.Schema.Inputs.Add(ParameterInput(parameter, cc.Drill(nameof(SimpleForm.Inputs)), options: i =>
-                       {
-                           i.Required = !parameter.IsOptional;
-                       }));
-                   }
-               }
+                    foreach (var parameter in c.Method.DefaultOverload.Parameters)
+                    {
+                        sf.Schema.Inputs.Add(ParameterInput(parameter, cc.Drill(nameof(SimpleForm.Inputs)), options: i =>
+                        {
+                            i.Required = !parameter.IsOptional;
+                        }));
+                    }
+                }
             );
             builder.Conventions.AddParameterComponent(
                 when: c => c.Type.Is<FormSample>() && c.Parameter.ParameterType.Is<string>(),
