@@ -191,7 +191,6 @@ public class FormSampleUiOverrideFeature : IFeature
                     }
                 )
             );
-
             builder.Conventions.AddMethodComponent(
                 when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.Update),
                 where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.ActionTemplate)),
@@ -212,7 +211,6 @@ public class FormSampleUiOverrideFeature : IFeature
                     }
                 )
             );
-
             builder.Conventions.AddMethodSchema(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.GetParents),
                 where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.ActionTemplate)),
