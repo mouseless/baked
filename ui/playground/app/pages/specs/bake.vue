@@ -56,7 +56,7 @@ const variants = [
   },
   {
     name: "Model",
-    descriptor: giveMe.anInputText(),
+    descriptor: giveMe.anExpectedInput({ testId: "input" }),
     model: ref("Model Data")
   },
   {
@@ -90,7 +90,7 @@ const variants = [
           label: "Spec: Reload",
           action: giveMe.aPublishAction({ event: "clicked" })
         }),
-        giveMe.anInputText({
+        giveMe.anExpectedInput({
           testId: "input",
           action: giveMe.aCompositeAction([
             giveMe.aPublishAction({ event: "input-changed" }),

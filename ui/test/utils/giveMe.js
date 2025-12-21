@@ -30,6 +30,7 @@ export default {
 
   aButton({ action, icon, label, variant, rounded } = {}) {
     label = $(label, "Button");
+    action = $(action, this.aLocalAction({ showMessage: `${label} clicked` }));
 
     return {
       type: "Button",
@@ -149,6 +150,14 @@ export default {
       schema: { contents },
       data
     };
+  },
+
+  aContent({ component, narrow, key } = {}) {
+    component = $(component, this.anExpected({ value: "Test content is given for testing purposes" }));
+    narrow = $(narrow, false);
+    key = $(key, "content");
+
+    return { component, narrow, key };
   },
 
   aContextData({ key, prop, targetProp } = {}) {
@@ -302,6 +311,20 @@ export default {
     };
   },
 
+  anExpectedInput({ testId, defaultValue, number, action } = {}) {
+    testId = $(testId, "test-id");
+
+    return {
+      type: "ExpectedInput",
+      schema: {
+        testId,
+        defaultValue,
+        number
+      },
+      action
+    };
+  },
+
   aFilter({ placeholder, action } = {}) {
     placeholder = $(placeholder, "Filter");
 
@@ -321,6 +344,22 @@ export default {
     return {
       title,
       component
+    };
+  },
+
+  aFormPage({ action, title, description, button, inputs } = {}) {
+    title = this.aPageTitle({ title, description }).schema;
+    button = $(button, this.aButton({ label: "Test Submit" }));
+    inputs = $(inputs, []);
+
+    return {
+      type: "FormPage",
+      schema: {
+        title,
+        button: button.schema,
+        inputs
+      },
+      action
     };
   },
 
@@ -366,39 +405,31 @@ export default {
     };
   },
 
-  anInput({ name, component, required, defaultValue, default_, defaultSelfManaged } = {}) {
+  anInput({ name, required, defaultValue, default_, defaultSelfManaged, queryBound, component } = {}) {
     name = $(name, "test");
     required = $(required, false);
-    component = $(component, this.anInputText());
+    component = $(component, this.anExpectedInput());
     default_ = $(default_, defaultValue ? this.anInlineData(defaultValue) : undefined);
     defaultSelfManaged = $(defaultSelfManaged, false);
+    queryBound = $(queryBound, undefined);
 
-    return { name, required, default: default_, defaultSelfManaged, component };
+    return { name, required, default: default_, defaultSelfManaged, queryBound, component };
   },
 
-  anInputText({ testId, defaultValue, action } = {}) {
-    testId = $(testId, "test-input");
-    defaultValue = $(defaultValue, null);
-
+  anInputText({ label } = {}) {
     return {
       type: "InputText",
       schema: {
-        testId,
-        defaultValue
-      },
-      action
+        label
+      }
     };
   },
 
-  anInputNumber({ testId, defaultValue } = {}) {
-    testId = $(testId, "test-input");
-    defaultValue = $(defaultValue, null);
-
+  anInputNumber({ label } = {}) {
     return {
       type: "InputNumber",
       schema: {
-        testId,
-        defaultValue
+        label
       }
     };
   },
@@ -587,21 +618,20 @@ export default {
     };
   },
 
-  aReportPage({ title, description, inputs, tabs } = {}) {
-    title = this.aPageTitle({ title, description }).schema;
-    inputs = $(inputs, []);
-    tabs = $(tabs, [this.aReportPageTab()]);
+  aSimplePage({ title, contents } = {}) {
+    title = $(title, this.anExpected({ value: "Test Simple Page" }));
+    contents = $(contents, [this.aContent()]);
 
     return {
-      type: "ReportPage",
-      schema: { title, inputs, tabs }
+      type: "SimplePage",
+      schema: { title, contents }
     };
   },
 
-  aReportPageTab({ id, title, contents, fullScreen, icon, overflow, reactions } = {}) {
+  aTab({ id, title, contents, fullScreen, icon, overflow, reactions } = {}) {
     id = $(id, "test-tab");
     title = $(title, "Test Tab");
-    contents = $(contents, [this.aReportPageTabContent()]);
+    contents = $(contents, [this.aContent()]);
     fullScreen = $(fullScreen, false);
     icon = $(icon, this.anIcon());
     overflow = $(overflow, false);
@@ -610,12 +640,15 @@ export default {
     return { id, title, contents, fullScreen, icon, overflow, reactions };
   },
 
-  aReportPageTabContent({ component, narrow, key } = {}) {
-    component = $(component, this.anExpected({ value: "Test content is given for testing purposes" }));
-    narrow = $(narrow, false);
-    key = $(key, "content");
+  aTabbedPage({ title, description, inputs, tabs } = {}) {
+    title = this.aPageTitle({ title, description }).schema;
+    inputs = $(inputs, []);
+    tabs = $(tabs, [this.aTab()]);
 
-    return { component, narrow, key };
+    return {
+      type: "TabbedPage",
+      schema: { title, inputs, tabs }
+    };
   },
 
   aScreenSize({ name } = {}) {

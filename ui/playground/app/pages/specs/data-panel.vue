@@ -38,14 +38,14 @@ const variants = [
         giveMe.anInput({
           name: "required",
           required: true,
-          component: giveMe.anInputText({
+          component: giveMe.anExpectedInput({
             testId: "required"
           })
         }),
         giveMe.anInput({
           name: "optional",
           required: false,
-          component: giveMe.anInputText({
+          component: giveMe.anExpectedInput({
             testId: "optional"
           })
         })

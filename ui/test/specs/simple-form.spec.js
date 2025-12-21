@@ -8,54 +8,63 @@ test.beforeEach(async({ goto }) => {
 test.describe("Base", () => {
   const id = "Base";
 
-  test("Renders form with given inputs", async({ page }) => {
+  test("title", async({ page }) => {
     const component = page.getByTestId(id);
-    const text = component.locator(".b-component--InputText");
-    const button = component.locator(primevue.button.base);
     const title = component.locator("h1");
 
     await expect(title).toBeAttached();
     await expect(title).toHaveText("Simple Form");
-    await expect(text).toBeAttached();
+  });
+
+  test("inputs", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.getByTestId("input")).toBeAttached();
+  });
+
+  test("button", async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base);
+
     await expect(button).toBeAttached();
     await expect(button).toHaveText("Submit");
   });
 
-  test("Button is disabled when inputs are not ready", async({ page }) => {
+  test("button is disabled when inputs are not ready", async({ page }) => {
     const component = page.getByTestId(id);
     const button = component.locator(primevue.button.base);
 
     await expect(button).toBeDisabled();
   });
 
-  test("Button is enabled when inputs are ready", async({ page }) => {
+  test("button is enabled when inputs are ready", async({ page }) => {
     const component = page.getByTestId(id);
-    const text = component.locator(".b-component--InputText");
+    const input = component.getByTestId("input");
     const button = component.locator(primevue.button.base);
 
-    await text.fill("text");
+    await input.fill("text");
 
     await expect(button).not.toBeDisabled();
   });
 
-  test("Execute given remote action", async({ page }) => {
+  test("action", async({ page }) => {
     const component = page.getByTestId(id);
-    const text = component.locator(".b-component--InputText");
+    const input = component.getByTestId("input");
     const button = component.locator(primevue.button.base);
 
-    await text.fill("text");
+    await input.fill("text");
     await button.click();
 
     await expect(page.locator(primevue.toast.base)).toBeVisible();
     await expect(page.locator(primevue.toast.summary)).toHaveText("text");
   });
 
-  test("Button is disabled until action is completed", async({ page }) => {
+  test("button is disabled until action is completed", async({ page }) => {
     const component = page.getByTestId(id);
-    const text = component.locator(".b-component--InputText");
+    const input = component.getByTestId("input");
     const button = component.locator(primevue.button.base);
 
-    await text.fill("text");
+    await input.fill("text");
     await button.click();
 
     await expect(button).toBeDisabled();
@@ -64,20 +73,36 @@ test.describe("Base", () => {
     await expect(page.locator(primevue.toast.base)).toBeVisible();
     await expect(button).not.toBeDisabled();
   });
+
+  test("visual", { tag: "@visual" }, async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component).toHaveScreenshot();
+  });
+});
+
+test.describe("Multiple Inputs", () => {
+  const id = "Multiple Inputs";
+
+  test("visual", { tag: "@visual" }, async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component).toHaveScreenshot();
+  });
 });
 
 test.describe("Dialog", () => {
   const id = "Dialog";
 
-  test("A toggle button with given label is rendered", async({ page }) => {
+  test("open button", async({ page }) => {
     const component = page.getByTestId(id);
     const button = component.locator(primevue.button.base);
 
     await expect(button).toBeAttached();
     await expect(button).toHaveText("Toggle Dialog");
   });
-
-  test("Button click shows dialog with inputs as content with submit and cancel button", async({ page }) => {
+  // TODO split this test for inputs and buttons
+  test("dialog with inputs as content with submit and cancel button", async({ page }) => {
     const component = page.getByTestId(id);
     const button = component.locator(primevue.button.base);
     const dialog = page.locator(primevue.dialog.base);
@@ -90,7 +115,7 @@ test.describe("Dialog", () => {
     await expect(dialog.locator(primevue.dialog.footer).locator(primevue.button.base).nth(1)).toHaveText("Submit");
   });
 
-  test("Executes action after close", async({ page }) => {
+  test("executes action after close", async({ page }) => {
     const component = page.getByTestId(id);
     const button = component.locator(primevue.button.base);
     const dialog = page.locator(primevue.dialog.base);
@@ -105,7 +130,7 @@ test.describe("Dialog", () => {
     await expect(page.locator(primevue.toast.base)).toBeVisible();
   });
 
-  test("Does not execute action when closed", async({ page }) => {
+  test("does not execute action when closed", async({ page }) => {
     const component = page.getByTestId(id);
     const button = component.locator(primevue.button.base);
     const dialog = page.locator(primevue.dialog.base);

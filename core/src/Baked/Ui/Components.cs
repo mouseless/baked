@@ -19,6 +19,10 @@ public static class Components
         Action<Conditional.Condition>? options = default
     ) => options.Apply(new(prop, value, component));
 
+    public static Content Content(IComponentDescriptor component, string key,
+        Action<Content>? options = default
+    ) => options.Apply(new(component, key));
+
     public static ComponentDescriptor<DataPanel> DataPanel(string title, IComponentDescriptor content,
         Action<DataPanel>? options = default
     ) => DataPanel(Datas.Inline(title), content, options: options);
@@ -86,6 +90,11 @@ public static class Components
         Action<Filterable>? options = default
     ) => options.Apply(new(component));
 
+    public static ComponentDescriptor<FormPage> FormPage(string path, ComponentDescriptor<PageTitle> title, ComponentDescriptor<Button> button,
+        IAction? action = default,
+        Action<FormPage>? options = default
+    ) => new(options.Apply(new(path, title.Schema, button.Schema))) { Action = action };
+
     public static ComponentDescriptor<Header> Header(
         Action<Header>? options = default,
         IData? data = default
@@ -98,6 +107,14 @@ public static class Components
     public static ComponentDescriptor<Icon> Icon(string iconClass,
         Action<Icon>? options = default
     ) => new(options.Apply(new(iconClass)));
+
+    public static ComponentDescriptor<InputText> InputText(string label,
+        Action<InputText>? options = default
+    ) => new(options.Apply(new(label)));
+
+    public static ComponentDescriptor<InputNumber> InputNumber(string label,
+        Action<InputNumber>? options = default
+    ) => new(options.Apply(new(label)));
 
     public static ComponentDescriptor<LanguageSwitcher> LanguageSwitcher(
         Action<LanguageSwitcher>? options = default
@@ -173,18 +190,6 @@ public static class Components
         IData? data = default
     ) => new(options.Apply(new())) { Data = data };
 
-    public static ComponentDescriptor<ReportPage> ReportPage(string path, ComponentDescriptor<PageTitle> title,
-        Action<ReportPage>? options = default
-    ) => new(options.Apply(new(path, title.Schema)));
-
-    public static ReportPage.Tab ReportPageTab(string id,
-        Action<ReportPage.Tab>? options = default
-    ) => options.Apply(new(id));
-
-    public static ReportPage.Tab.Content ReportPageTabContent(IComponentDescriptor component, string key,
-        Action<ReportPage.Tab.Content>? options = default
-    ) => options.Apply(new(component, key));
-
     public static ComponentDescriptor<Select> Select(string label, IData data,
         Action<Select>? options = default
     ) => new(options.Apply(new(label) { LocalizeLabel = data.RequireLocalization })) { Data = data };
@@ -202,13 +207,26 @@ public static class Components
         Action<SideMenu.Item>? options = default
     ) => options.Apply(new(route, icon));
 
-    public static ComponentDescriptor<SimpleForm> SimpleForm(string name, Button submitButton, IAction action,
+    public static ComponentDescriptor<SimpleForm> SimpleForm(string title, Button submitButton,
+        IAction? action = default,
         Action<SimpleForm>? options = default
-    ) => new(options.Apply(new(name, submitButton))) { Action = action };
+    ) => new(options.Apply(new(title, submitButton))) { Action = action };
 
     public static SimpleForm.Dialog SimpleFormDialogTemplate(Button toggleButton, Button cancelButton,
         Action<SimpleForm.Dialog>? options = default
     ) => options.Apply(new(toggleButton, cancelButton));
+
+    public static ComponentDescriptor<SimplePage> SimplePage(string path, IComponentDescriptor title,
+        Action<SimplePage>? options = default
+    ) => new(options.Apply(new(path, title)));
+
+    public static Tab Tab(string id,
+        Action<Tab>? options = default
+    ) => options.Apply(new(id));
+
+    public static ComponentDescriptor<TabbedPage> TabbedPage(string path, ComponentDescriptor<PageTitle> title,
+        Action<TabbedPage>? options = default
+    ) => new(options.Apply(new(path, title.Schema)));
 
     public static ComponentDescriptor<Text> Text(
         Action<Text>? options = default,

@@ -17,6 +17,9 @@ public static class Actions
 
     public class Composables
     {
+        public LocalAction UseRedirectBack() =>
+            UseRedirect(options: la => la.Options = Inline(new { back = true }));
+
         public LocalAction UseRedirect(string route) =>
             UseRedirect(options: la => la.Options = Inline(new { route }));
 

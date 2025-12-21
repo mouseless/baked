@@ -1,10 +1,12 @@
 <template>
   <Button
+    :disabled="!ready || executing"
+    :loading="executing"
     :icon
     :label="l(label)"
-    :loading="executing"
-    :variant
     :rounded
+    :severity
+    :variant
     @click="$emit('submit')"
   />
 </template>
@@ -18,10 +20,11 @@ const { localize: l } = useLocalization();
 const { schema } = defineProps({
   schema: { type: null, required: true }
 });
+const ready = defineModel("ready", { type: Boolean, default: true });
 
 defineEmits(["submit"]);
 
-const { icon, label, variant, rounded } = schema;
+const { icon, label, rounded, severity, variant } = schema;
 
 const executing = context.injectExecuting();
 </script>

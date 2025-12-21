@@ -57,28 +57,32 @@
         "
       >
         <template v-if="isMd">
+          <slot
+            v-if="$slots.inputs"
+            name="inputs"
+          />
+          <slot
+            v-if="$slots.actions"
+            name="actions"
+          />
           <Bake
             v-for="action in actions"
             :key="action.schema.name"
             :name="`actions/${action.schema.name}`"
             :descriptor="action"
           />
-          <slot
-            v-if="$slots.actions"
-            name="actions"
-          />
         </template>
         <template v-else>
           <Button
-            v-if="actions?.length > 0 || $slots.actions"
+            v-if="$slots.inputs"
             variant="text"
             icon="pi pi-filter"
             class="lg:hidden"
             rounded
-            @click="togglePopover"
+            @click="togglePopoverInputs"
           />
           <PersistentPopover
-            ref="popover"
+            ref="popoverInputs"
             fixed
           >
             <div
@@ -87,15 +91,39 @@
               justify-between w-full
               gap-4 text-sm px-2 py-2"
             >
+              <slot
+                v-if="$slots.inputs"
+                name="inputs"
+              />
+            </div>
+          </PersistentPopover>
+          <Button
+            v-if="$slots.actions || actions?.length > 0"
+            variant="text"
+            icon="pi pi-ellipsis-h"
+            class="lg:hidden"
+            rounded
+            @click="togglePopoverActions"
+          />
+          <PersistentPopover
+            ref="popoverActions"
+            fixed
+          >
+            <div
+              class="
+              flex flex-col flex-start
+              justify-between w-full min-w-52
+              gap-4 text-sm px-2 py-2"
+            >
+              <slot
+                v-if="$slots.actions"
+                name="actions"
+              />
               <Bake
                 v-for="action in actions"
                 :key="action.schema.name"
                 :name="`actions/${action.schema.name}`"
                 :descriptor="action"
-              />
-              <slot
-                v-if="$slots.actions"
-                name="actions"
               />
             </div>
           </PersistentPopover>
@@ -117,12 +145,12 @@ const { localize: l } = useLocalization();
 const { public: { components } } = useRuntimeConfig();
 
 const { schema } = defineProps({
-  schema: { type: null, required: true },
-  data: { type: null, default: null }
+  schema: { type: null, required: true }
 });
 
 const { title, description, actions } = schema;
-const popover = ref();
+const popoverInputs = ref();
+const popoverActions = ref();
 
 useHead({
   title: components?.Page?.title
@@ -161,8 +189,12 @@ function toggleClasses(element, toggle, classes) {
   }
 }
 
-function togglePopover(event) {
-  popover.value.toggle(event);
+function togglePopoverInputs(event) {
+  popoverInputs.value.toggle(event);
+}
+
+function togglePopoverActions(event) {
+  popoverActions.value.toggle(event);
 }
 </script>
 <style scoped>

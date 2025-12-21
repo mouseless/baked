@@ -1,9 +1,8 @@
 <template>
   <UiSpec
-    title="Report Page"
-    :variants="variants"
-    :no-loading-variant="true"
-    :full-page="true"
+    title="Tabbed Page"
+    :variants
+    no-loading-variant
   />
 </template>
 <script setup>
@@ -12,32 +11,32 @@ import giveMe from "@utils/giveMe";
 const variants = [
   {
     name: "Base",
-    descriptor: giveMe.aReportPage({
+    descriptor: giveMe.aTabbedPage({
       title: "Spec: Title",
       description: "Spec: Description",
       tabs: [
-        giveMe.aReportPageTab({
+        giveMe.aTab({
           id: "tab 1",
           title: "Spec: Tab 1",
           icon: giveMe.anExpected({ testId: "icon 1", value: "I." }),
           contents: [
-            giveMe.aReportPageTabContent({
+            giveMe.aContent({
               component: giveMe.anExpected({ testId: "content 1.1", value: "CONTENT 1.1" })
             }),
-            giveMe.aReportPageTabContent({
+            giveMe.aContent({
               component: giveMe.anExpected({ testId: "content 1.2", value: "CONTENT 1.2" })
             })
           ]
         }),
-        giveMe.aReportPageTab({
+        giveMe.aTab({
           id: "tab 2",
           title: "Spec: Tab 2",
           icon: giveMe.anExpected({ testId: "icon 2", value: "II." }),
           contents: [
-            giveMe.aReportPageTabContent({
+            giveMe.aContent({
               component: giveMe.anExpected({ testId: "content 2.1", value: "CONTENT 2.1" })
             }),
-            giveMe.aReportPageTabContent({
+            giveMe.aContent({
               component: giveMe.anExpected({ testId: "content 2.2", value: "CONTENT 2.2" })
             })
           ]
@@ -47,7 +46,7 @@ const variants = [
   },
   {
     name: "Show When",
-    descriptor: giveMe.aReportPage({
+    descriptor: giveMe.aTabbedPage({
       inputs: [
         giveMe.anInput({
           component: giveMe.aSelectButton({
@@ -58,12 +57,12 @@ const variants = [
         })
       ],
       tabs: [
-        giveMe.aReportPageTab({
+        giveMe.aTab({
           id: "tab-1",
           title: "Spec: Tab 1",
           contents: [
-            giveMe.aReportPageTabContent(),
-            giveMe.aReportPageTabContent({
+            giveMe.aContent(),
+            giveMe.aContent({
               key: "content-1",
               component: giveMe.anExpected({
                 testId: "content-1",
@@ -75,14 +74,14 @@ const variants = [
             })
           ]
         }),
-        giveMe.aReportPageTab({
+        giveMe.aTab({
           id: "tab-2",
           title: "Spec: Tab 2",
           reactions: {
             show: giveMe.aTrigger({ when: "selection", constraint: giveMe.aConstraint({ is: "SHOW" }) })
           },
           contents: [
-            giveMe.aReportPageTabContent({
+            giveMe.aContent({
               key: "content-2",
               component: giveMe.anExpected({ testId: "content-2", value: "CONTENT 2" })
             })
@@ -93,12 +92,12 @@ const variants = [
   },
   {
     name: "Single Tab",
-    descriptor: giveMe.aReportPage({
+    descriptor: giveMe.aTabbedPage({
       tabs: [
-        giveMe.aReportPageTab({
+        giveMe.aTab({
           id: "hidden tab",
           contents: [
-            giveMe.aReportPageTabContent({
+            giveMe.aContent({
               component: giveMe.anExpected({ testId: "content" })
             })
           ]
@@ -107,61 +106,36 @@ const variants = [
     })
   },
   {
-    name: "Full Page",
-    descriptor: giveMe.aReportPage({
-      tabs: [
-        giveMe.aReportPageTab({
-          fullScreen: true,
-          overflow: true,
-          contents: [
-            giveMe.aReportPageTabContent()
-          ]
-        })
-      ]
-    })
-  },
-  {
-    name: "Narrow",
-    descriptor: giveMe.aReportPage({
-      tabs: [
-        giveMe.aReportPageTab({
-          contents: [
-            giveMe.aReportPageTabContent({ narrow: true }),
-            giveMe.aReportPageTabContent({ narrow: true })
-          ]
-        })
-      ]
-    })
-  },
-  {
     name: "Inputs",
-    descriptor: giveMe.aReportPage({
+    descriptor: giveMe.aTabbedPage({
       inputs: [
         giveMe.anInput({
           name: "required",
           required: true,
-          component: giveMe.anInputText({
+          queryBound: true,
+          component: giveMe.anExpectedInput({
             testId: "required"
           })
         }),
         giveMe.anInput({
           name: "optional",
           required: false,
-          component: giveMe.anInputText({
+          queryBound: true,
+          component: giveMe.anExpectedInput({
             testId: "optional"
           })
         })
       ],
       tabs: [
-        giveMe.aReportPageTab({
+        giveMe.aTab({
           contents: [
-            giveMe.aReportPageTabContent({
+            giveMe.aContent({
               component: giveMe.anExpected({
                 testId: "static-content",
                 value: "HIDDEN WHEN REQUIRED IS MISSING"
               })
             }),
-            giveMe.aReportPageTabContent({
+            giveMe.aContent({
               component: giveMe.anExpected({
                 testId: "query-content",
                 data: giveMe.theQueryData()

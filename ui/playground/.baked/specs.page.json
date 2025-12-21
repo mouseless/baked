@@ -49,7 +49,19 @@
                 "route": "/specs/conditional",
                 "icon": "pi pi-microchip",
                 "title": "Conditional",
-                "description": "Allow rendering component based on configured condition"
+                "description": "Allows rendering component based on configured condition"
+              }
+            }
+          },
+          {
+            "title": "Contents",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/contents",
+                "icon": "pi pi-microchip",
+                "title": "Contents",
+                "description": "Allows multiple components to be rendered in a simple grid"
               }
             }
           },
@@ -61,7 +73,7 @@
                 "route": "/specs/custom-css",
                 "icon": "pi pi-microchip",
                 "title": "Custom CSS",
-                "description": "Allow custom configuration to define custom css and more"
+                "description": "Allows custom configuration to define custom css and more"
               }
             }
           },
@@ -73,19 +85,19 @@
                 "route": "/specs/inputs",
                 "icon": "pi pi-microchip",
                 "title": "Inputs",
-                "description": "Manage inputs through emits"
+                "description": "Manages inputs through emits"
               }
             }
           },
           {
-            "title": "Query Bound Inputs",
+            "title": "Inputs - Query Bound",
             "component": {
               "type": "CardLink",
               "schema": {
-                "route": "/specs/query-bound-inputs",
+                "route": "/specs/inputs--query-bound",
                 "icon": "pi pi-microchip",
-                "title": "Query Bound Inputs",
-                "description": "Sync and manage parameters in query string"
+                "title": "Inputs - Query Bound",
+                "description": "Manages inputs in sync with query string"
               }
             }
           },
@@ -97,7 +109,7 @@
                 "route": "/specs/routing",
                 "icon": "pi pi-microchip",
                 "title": "Routing",
-                "description": "Use page descriptors as route template and extract parameters"
+                "description": "Uses page descriptors as route template and extract parameters"
               }
             }
           },
@@ -109,7 +121,7 @@
                 "route": "/specs/toast",
                 "icon": "pi pi-microchip",
                 "title": "Toast",
-                "description": "Render alert messages"
+                "description": "Renders alert messages"
               }
             }
           }
@@ -138,7 +150,7 @@
                 "route": "/specs/data-table",
                 "icon": "pi pi-microchip",
                 "title": "Data Table",
-                "description": "View list data in a table"
+                "description": "Shows list data as a table"
               }
             }
           },
@@ -222,7 +234,7 @@
                 "route": "/specs/rate",
                 "icon": "pi pi-microchip",
                 "title": "Rate",
-                "description": "Render rate values as percentage"
+                "description": "Renders rate values as percentage"
               }
             }
           },
@@ -234,7 +246,7 @@
                 "route": "/specs/text",
                 "icon": "pi pi-microchip",
                 "title": "Text",
-                "description": "Render string values"
+                "description": "Renders string values"
               }
             }
           }
@@ -251,7 +263,7 @@
                 "route": "/specs/simple-form",
                 "icon": "pi pi-microchip",
                 "title": "Simple Form",
-                "description": "Showcase simple form component with inputs"
+                "description": "Showcases simple form component with inputs"
               }
             }
           }
@@ -268,7 +280,31 @@
                 "route": "/specs/button",
                 "icon": "pi pi-microchip",
                 "title": "Button",
-                "description": "Showcase interactions using button component"
+                "description": "Showcases interactions using button component"
+              }
+            }
+          },
+          {
+            "title": "Input Text",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/input-text",
+                "icon": "pi pi-microchip",
+                "title": "Input Text",
+                "description": "Allows regular text input"
+              }
+            }
+          },
+          {
+            "title": "Input Number",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/input-number",
+                "icon": "pi pi-microchip",
+                "title": "Input Number",
+                "description": "Allows number input"
               }
             }
           },
@@ -280,7 +316,7 @@
                 "route": "/specs/language-switcher",
                 "icon": "pi pi-microchip",
                 "title": "Language Switcher",
-                "description": "Allow change site language"
+                "description": "Allows change site language"
               }
             }
           },
@@ -292,7 +328,7 @@
                 "route": "/specs/select",
                 "icon": "pi pi-microchip",
                 "title": "Select",
-                "description": "Allow select from given options using drow down"
+                "description": "Allows select from given options using drow down"
               }
             }
           },
@@ -304,7 +340,7 @@
                 "route": "/specs/select-button",
                 "icon": "pi pi-microchip",
                 "title": "Select Button",
-                "description": "Allow select from given options using buttons"
+                "description": "Allows select from given options using buttons"
               }
             }
           }
@@ -321,7 +357,7 @@
                 "route": "/specs/data-panel",
                 "icon": "pi pi-microchip",
                 "title": "Data Panel",
-                "description": "Lazy load and view a data within a panel"
+                "description": "Lazy loads and views a data within a panel"
               }
             }
           },
@@ -357,7 +393,7 @@
                 "route": "/specs/page-title",
                 "icon": "pi pi-microchip",
                 "title": "Page Title",
-                "description": "Render page title, desc and actions"
+                "description": "Renders page title, desc and actions"
               }
             }
           },
@@ -386,7 +422,7 @@
                 "route": "/specs/error-page",
                 "icon": "pi pi-microchip",
                 "title": "Error Page",
-                "description": "Display errors in full page"
+                "description": "Displays errors in full page"
               }
             }
           },
@@ -398,19 +434,31 @@
                 "route": "/specs/menu-page",
                 "icon": "pi pi-microchip",
                 "title": "Menu Page",
-                "description": "Render navigation pages"
+                "description": "Renders navigation pages"
               }
             }
           },
           {
-            "title": "Report Page",
+            "title": "Simple Page",
             "component": {
               "type": "CardLink",
               "schema": {
-                "route": "/specs/report-page",
+                "route": "/specs/simple-page",
                 "icon": "pi pi-microchip",
-                "title": "Report Page",
-                "description": "Render report pages"
+                "title": "Simple Page",
+                "description": "Renders a basic page with a title and contents"
+              }
+            }
+          },
+          {
+            "title": "Tabbed Page",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/tabbed-page",
+                "icon": "pi pi-microchip",
+                "title": "Tabbed Page",
+                "description": "Renders more complicated pages with input in title and tab panel support"
               }
             }
           }
@@ -451,7 +499,7 @@
                 "route": "/specs/locale",
                 "icon": "pi pi-microchip",
                 "title": "Locale",
-                "description": "Allow locale customization and language support"
+                "description": "Allows locale customization and language support"
               }
             }
           },

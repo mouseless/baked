@@ -52,12 +52,6 @@ import { useRuntimeConfig } from "#app";
 import { Logo } from "#components";
 import { useToken, useLocalization } from "#imports";
 
-defineProps({
-  schema: { type: null, default: null },
-  data: { type: null, default: null }
-});
-defineModel({ type: null, default: null });
-
 const { localize: lc } = useLocalization({ group: "Login" });
 const { public: { apiBaseURL } } = useRuntimeConfig();
 const token = useToken();

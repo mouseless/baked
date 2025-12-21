@@ -25,6 +25,9 @@ export default {
     header: ".p-dialog-header",
     close: ".p-dialog-close-button"
   },
+  floatLabel: {
+    base: ".p-floatlabel"
+  },
   inputNumber: {
     base: ".p-inputnumber"
   },

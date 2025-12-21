@@ -2,7 +2,7 @@ import { expect, test } from "@nuxt/test-utils/playwright";
 import primevue from "../utils/locators/primevue";
 
 test.beforeEach(async({ goto }) => {
-  await goto("/specs/report-page", { waitUntil: "hydration" });
+  await goto("/specs/tabbed-page", { waitUntil: "hydration" });
 });
 
 test.describe("Base", () => {
@@ -55,12 +55,6 @@ test.describe("Base", () => {
     await expect(component.getByTestId("content 2.2")).not.toBeAttached();
   });
 
-  test("grid added", async({ page }) => {
-    const component = page.getByTestId(id);
-
-    await expect(component.locator(".b-ReportPage--grid")).toBeAttached();
-  });
-
   test("visual", { tag: "@visual" }, async({ page }) => {
     const component = page.getByTestId(id);
 
@@ -76,32 +70,6 @@ test.describe("Single Tab", () => {
 
     await expect(component.getByTestId("content")).toBeAttached(); // required to wait for page to render
     await expect(component.locator(primevue.tab.base)).not.toBeAttached();
-  });
-});
-
-test.describe("Full Page", () => {
-  const id = "Full Page";
-
-  test("grid not added", async({ page }) => {
-    const component = page.getByTestId(id);
-
-    await expect(component.locator(".b-ReportPage--grid")).not.toBeAttached();
-  });
-
-  test("visual", { tag: "@visual" }, async({ page }) => {
-    const component = page.getByTestId(id);
-
-    await expect(component).toHaveScreenshot();
-  });
-});
-
-test.describe("Narrow", () => {
-  const id = "Narrow";
-
-  test("visual", { tag: "@visual" }, async({ page }) => {
-    const component = page.getByTestId(id);
-
-    await expect(component).toHaveScreenshot();
   });
 });
 
@@ -172,7 +140,7 @@ test.describe("Inputs", () => {
   test("informs only when required params are not selected", async({ page }) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator(primevue.message.base)).toHaveText("Select required values to view this report");
+    await expect(component.locator(primevue.message.base)).toHaveText("Select required values to view this page");
 
     await component.getByTestId("required").fill("any text");
     await expect(component.locator(primevue.message.base)).not.toBeAttached();
@@ -189,10 +157,11 @@ test.describe("Inputs", () => {
   });
 
   test("redraws when unique key changes", async({ page }) => {
+    await page.goto("/specs/tabbed-page?required=value", { waitUntil: "load" });
+
     const component = page.getByTestId(id);
 
-    await component.getByTestId("required").fill("value");
-
+    await expect(component.getByTestId("required")).toHaveValue("value");
     await expect(component.getByTestId("query-content")).toHaveText(/value/);
   });
 });

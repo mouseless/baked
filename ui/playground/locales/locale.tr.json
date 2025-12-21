@@ -12,8 +12,8 @@
   "MenuPage": {
     "No item available!": "Hiçbir öğe mevcut değil!"
   },
-  "ReportPage": {
-    "Select required values to view this report": "Bu raporu görüntülemek için gerekli seçimleri yapın"
+  "TabbedPage": {
+    "Select required values to view this page": "Bu sayfayı görüntülemek için gerekli seçimleri yapın"
   },
   "useFormat": {
     "suffix": {
@@ -102,10 +102,10 @@
 
   "Show": "Göster",
   "// test case specific keys": "//",
-  "Spec: A link": "A Bağlantı",
+  "Spec: A link": "A bağlantısı",
   "Spec: Access denied": "Erişim Reddedildi",
   "Spec: Action": "Aksiyon",
-  "Spec: B link": "B Bağlantı",
+  "Spec: B link": "B bağlantısı",
   "Spec: Button": "Buton",
   "Spec: Cancel": "Vazgeç",
   "Spec: Data": "Veri",
@@ -155,7 +155,7 @@
   "Spec: Test Title": "Test Başlığı",
   "Spec: Test description is given for testing purposes": "Test açıklaması test etme amacıyla verilmiştir",
   "Spec: Title": "Başlık",
-  "Spec: This is a long label": "Bu uzun bir etikettir",
+  "Spec: This is a very very very very long label": "Bu çok ama çok ama çok ama çok uzun bir etikettir",
   "Spec: This is a message": "Bu bir mesajdır",
   "Spec: This is a test detail for a success toast message": "Bu bir 'başarılı' uyarı mesajı için test detaydır.",
   "Spec: Toggle Dialog": "Dialog Aç",

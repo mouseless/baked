@@ -35,7 +35,7 @@ const variants = [
           }
         }),
         giveMe.aMissingComponent({
-          component: "ReportPage",
+          component: "TabbedPage",
           path: ["page"],
           source: {
             type: "TypeModelMembers",

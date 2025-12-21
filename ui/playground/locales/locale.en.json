@@ -12,8 +12,8 @@
   "MenuPage": {
     "No item available!": "No item available!"
   },
-  "ReportPage": {
-    "Select required values to view this report": "Select required values to view this report"
+  "TabbedPage": {
+    "Select required values to view this page": "Select required values to view this page"
   },
   "useFormat": {
     "suffix": {
@@ -101,10 +101,10 @@
   },
 
   "// test case specific keys": "//",
-  "Spec: A link": "A Link",
+  "Spec: A link": "A link",
   "Spec: Access denied": "Access Denied",
   "Spec: Action": "Action",
-  "Spec: B link": "B Link",
+  "Spec: B link": "B link",
   "Spec: Button": "Button",
   "Spec: Cancel": "Cancel",
   "Spec: Data": "Data",
@@ -155,6 +155,7 @@
   "Spec: Test description is given for testing purposes": "Test description is given for testing purposes",
   "Spec: Title": "Title",
   "Spec: This is a long label": "This is a long label",
+  "Spec: This is a very very very very long label": "This is a very very very very long label",
   "Spec: This is a message": "This is a message",
   "Spec: This is a test detail for a success toast message": "This is a test detail for a success toast message.",
   "Spec: Total": "Total",

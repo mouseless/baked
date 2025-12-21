@@ -1,8 +1,8 @@
 namespace Baked.Ui;
 
-public record SimpleForm(string Name, Button SubmitButton) : IComponentSchema
+public record SimpleForm(string Title, Button SubmitButton) : IComponentSchema
 {
-    public string Name { get; set; } = Name;
+    public string Title { get; set; } = Title;
     public Button SubmitButton { get; set; } = SubmitButton;
     public List<Input> Inputs { get; init; } = [];
     public Dialog? DialogTemplate { get; set; }

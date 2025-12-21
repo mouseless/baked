@@ -1,75 +1,86 @@
 {
-  "type": "ContainerPage",
+  "type": "SimplePage",
   "schema": {
+    "title": {
+      "type": "PageTitle",
+      "schema": {
+        "title": "Route Parameters",
+        "description": "Showcases the route parameter support",
+        "actions": []
+      }
+    },
     "contents": [
       {
-        "type": "DataPanel",
-        "schema": {
-          "title": {
-            "type": "Inline",
-            "value": "GetItems"
-          },
-          "localizeTitle": true,
-          "inputs": [],
-          "content": {
-            "type": "DataTable",
-            "schema": {
-              "columns": [
-                {
-                  "key": "value",
-                  "component": {
-                    "type": "Text",
-                    "schema": {},
-                    "data": {
-                      "type": "Context",
-                      "key": "parent",
-                      "prop": "row.value"
-                    }
-                  },
-                  "title": "Value",
-                  "exportable": true
-                }
-              ],
-              "dataKey": "id",
-              "paginator": true,
-              "rows": 5,
-              "exportOptions": {
-                "csvSeparator": ";",
-                "fileName": "GetItems.ExportFileName",
-                "formatter": "useCsvFormatter",
-                "buttonIcon": "pi pi-download",
-                "buttonLabel": "Export as CSV",
-                "appendParameters": true,
-                "parameterSeparator": "_",
-                "parameterFormatter": "useLocaleParameterFormatter"
-              }
+        "component": {
+          "type": "DataPanel",
+          "schema": {
+            "title": {
+              "type": "Inline",
+              "value": "GetItems"
             },
-            "data": {
-              "type": "Remote",
-              "path": "route-parameters-samples/{id}/items",
-              "query": {
-                "type": "Computed",
-                "composable": "useNuxtRoute",
-                "options": {
-                  "type": "Inline",
-                  "value": {
-                    "property": "query"
+            "localizeTitle": true,
+            "inputs": [],
+            "content": {
+              "type": "DataTable",
+              "schema": {
+                "columns": [
+                  {
+                    "key": "value",
+                    "component": {
+                      "type": "Text",
+                      "schema": {},
+                      "data": {
+                        "type": "Context",
+                        "key": "parent",
+                        "prop": "row.value"
+                      }
+                    },
+                    "title": "Value",
+                    "exportable": true
                   }
+                ],
+                "dataKey": "id",
+                "paginator": true,
+                "rows": 5,
+                "exportOptions": {
+                  "csvSeparator": ";",
+                  "fileName": "GetItems.ExportFileName",
+                  "formatter": "useCsvFormatter",
+                  "buttonIcon": "pi pi-download",
+                  "buttonLabel": "Export as CSV",
+                  "appendParameters": true,
+                  "parameterSeparator": "_",
+                  "parameterFormatter": "useLocaleParameterFormatter"
                 }
               },
-              "params": {
-                "type": "Computed",
-                "composable": "useNuxtRoute",
-                "options": {
-                  "type": "Inline",
-                  "value": {
-                    "property": "params"
+              "data": {
+                "type": "Remote",
+                "path": "route-parameters-samples/{id}/items",
+                "query": {
+                  "type": "Computed",
+                  "composable": "useNuxtRoute",
+                  "options": {
+                    "type": "Inline",
+                    "value": {
+                      "property": "query"
+                    }
+                  }
+                },
+                "params": {
+                  "type": "Computed",
+                  "composable": "useNuxtRoute",
+                  "options": {
+                    "type": "Inline",
+                    "value": {
+                      "property": "params"
+                    }
                   }
                 }
               }
             }
           }
-        }
+        },
+        "key": "get-items"
       }
     ],
     "path": "route-parameters-sample/[id]"

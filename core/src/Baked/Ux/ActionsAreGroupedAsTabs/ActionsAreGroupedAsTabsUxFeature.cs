@@ -13,11 +13,11 @@ public class ActionsAreGroupedAsTabsUxFeature : IFeature<UxConfigurator>
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            builder.Conventions.AddTypeComponentConfiguration<ReportPage>(
-                component: (rp, c, cc) =>
+            builder.Conventions.AddTypeComponentConfiguration<TabbedPage>(
+                component: (tp, c, cc) =>
                 {
-                    cc = cc.Drill(nameof(ReportPage), nameof(ReportPage.Tabs));
-                    var tabs = new Dictionary<string, ReportPage.Tab>();
+                    cc = cc.Drill(nameof(TabbedPage), nameof(TabbedPage.Tabs));
+                    var tabs = new Dictionary<string, Tab>();
 
                     var members = c.Type.GetMembers();
                     foreach (var method in members.Methods.Having<TabNameAttribute>())
@@ -28,31 +28,31 @@ public class ActionsAreGroupedAsTabsUxFeature : IFeature<UxConfigurator>
 
                         if (!tabs.TryGetValue(tabName.Value, out var t))
                         {
-                            tabs.Add(tabName.Value, t = TypeReportPageTab(c.Type, cc, tabName.Value));
+                            tabs.Add(tabName.Value, t = TypeTab(c.Type, cc, tabName.Value));
                         }
 
                         t.Contents.Add(
-                            method.GetRequiredSchema<ReportPage.Tab.Content>(
-                                cc.Drill(tabName.Value, nameof(ReportPage.Tab.Contents), t.Contents.Count)
+                            method.GetRequiredSchema<Content>(
+                                cc.Drill(tabName.Value, nameof(Tab.Contents), t.Contents.Count)
                             )
                         );
                     }
 
-                    rp.Schema.Tabs.AddRange(tabs.Values);
+                    tp.Schema.Tabs.AddRange(tabs.Values);
                 },
                 when: c => c.Type.HasMembers(),
                 order: -10
             );
-            builder.Conventions.AddTypeComponentConfiguration<ReportPage>(
-               component: (rp, c, cc) =>
+            builder.Conventions.AddTypeComponentConfiguration<TabbedPage>(
+               component: (tp, c, cc) =>
                {
-                   if (rp.Schema.Tabs.Count <= 1) { return; }
+                   if (tp.Schema.Tabs.Count <= 1) { return; }
 
                    var (_, l) = cc;
 
-                   foreach (var rpt in rp.Schema.Tabs)
+                   foreach (var tab in tp.Schema.Tabs)
                    {
-                       rpt.Title = l(rpt.Id.Replace("-", "_").Titleize());
+                       tab.Title = l(tab.Id.Replace("-", "_").Titleize());
                    }
                }
             );

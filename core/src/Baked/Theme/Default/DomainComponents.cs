@@ -22,45 +22,117 @@ public static class DomainComponents
         options.Apply(mc);
     });
 
-    public static ComponentDescriptor<ReportPage> TypeReportPage(
+    public static ComponentDescriptor<SimplePage> TypeSimplePage(TypeModelMetadata type, ComponentContext context,
+        Action<SimplePage>? options = default
+    )
+    {
+        context = context.Drill(nameof(SimplePage));
+        var (_, l) = context;
+
+        var path = context.Route.Path.Trim('/');
+        var title =
+            type.GetComponent(context.Drill(nameof(SimplePage.Title))) ??
+            TypePageTitle(type, context.Drill(nameof(SimplePage.Title)));
+
+        return B.SimplePage(path, title, options: options);
+    }
+
+    public static ComponentDescriptor<PageTitle> TypePageTitle(
 #pragma warning disable IDE0060
         TypeModelMetadata type,
 #pragma warning restore IDE0060
         ComponentContext context,
-        Action<ReportPage>? options = default
+        Action<PageTitle>? options = default
     )
     {
-        context = context.Drill(nameof(ReportPage));
+        context = context.Drill(nameof(PageTitle));
+        var (_, l) = context;
+
+        return B.PageTitle(l(context.Route.Title), options: pt =>
+        {
+            pt.Description = l(context.Route.Description);
+
+            options.Apply(pt);
+        });
+    }
+
+    public static ComponentDescriptor<FormPage> MethodFormPage(MethodModel method, ComponentContext context,
+        Action<FormPage>? options = default
+    )
+    {
+        context = context.Drill(nameof(FormPage));
         var (_, l) = context;
 
         var path = context.Route.Path.Trim('/');
-        var title = B.PageTitle(l(context.Route.Title), options: pt => pt.Description = l(context.Route.Description));
+        var title =
+            method.GetComponent<PageTitle>(context.Drill(nameof(FormPage.Title))) as ComponentDescriptor<PageTitle> ??
+            MethodPageTitle(method, context.Drill(nameof(FormPage.Title)));
+        var button =
+            method.GetComponent<Button>(context.Drill(nameof(FormPage.Button))) as ComponentDescriptor<Button> ??
+            B.Button(l("Save"));
 
-        return B.ReportPage(path, title, options: options);
+        return B.FormPage(path, title, button,
+            action: method.GetSchema<RemoteAction>(context.Drill(nameof(IComponentDescriptor.Action))),
+            options: options
+        );
     }
 
-    public static ReportPage.Tab TypeReportPageTab(TypeModelMetadata type, ComponentContext context, string name,
-        Action<ReportPage.Tab>? options = default
+    public static ComponentDescriptor<PageTitle> MethodPageTitle(
+#pragma warning disable IDE0060
+        MethodModel method,
+#pragma warning restore IDE0060
+        ComponentContext context,
+        Action<PageTitle>? options = default
+    )
+    {
+        context = context.Drill(nameof(PageTitle));
+        var (_, l) = context;
+
+        return B.PageTitle(l(context.Route.Title), options: pt =>
+        {
+            pt.Description = l(context.Route.Description);
+
+            options.Apply(pt);
+        });
+    }
+
+    public static ComponentDescriptor<TabbedPage> TypeTabbedPage(TypeModelMetadata type, ComponentContext context,
+        Action<TabbedPage>? options = default
+    )
+    {
+        context = context.Drill(nameof(TabbedPage));
+        var (_, l) = context;
+
+        var path = context.Route.Path.Trim('/');
+        var title =
+            type.GetComponent<PageTitle>(context.Drill(nameof(TabbedPage.Title))) as ComponentDescriptor<PageTitle> ??
+            TypePageTitle(type, context.Drill(nameof(TabbedPage.Title)));
+
+        return B.TabbedPage(path, title, options: options);
+    }
+
+    public static Tab TypeTab(TypeModelMetadata type, ComponentContext context, string name,
+        Action<Tab>? options = default
     )
     {
         context = context.Drill(name);
         var (_, l) = context;
 
-        return B.ReportPageTab(name.Kebaberize(), options: rpt =>
+        return B.Tab(name.Kebaberize(), options: t =>
         {
-            rpt.Icon = type.GetComponent(context.Drill(nameof(ReportPage.Tab.Icon)));
+            t.Icon = type.GetComponent(context.Drill(nameof(Tab.Icon)));
 
-            options.Apply(rpt);
+            options.Apply(t);
         });
     }
 
-    public static ReportPage.Tab.Content MethodReportPageTabContent(MethodModel method, ComponentContext context,
-        Action<ReportPage.Tab.Content>? options = default
+    public static Content MethodContent(MethodModel method, ComponentContext context,
+        Action<Content>? options = default
     )
     {
         context = context.Drill(method.Name);
 
-        return B.ReportPageTabContent(method.GetRequiredComponent(context.Drill(nameof(ReportPage.Tab.Content.Component))), method.Name.Kebaberize(),
+        return B.Content(method.GetRequiredComponent(context.Drill(nameof(Content.Component))), method.Name.Kebaberize(),
             options: options
         );
     }
@@ -79,18 +151,6 @@ public static class DomainComponents
         );
     }
 
-    public static ComponentDescriptor<SimpleForm> MethodSimpleForm(MethodModel method, ComponentContext context,
-        Action<SimpleForm>? options = default
-    )
-    {
-        context = context.Drill(nameof(SimpleForm));
-        var (_, l) = context;
-
-        return B.SimpleForm(l(method.Name), new(l("Submit")), method.GetRequiredSchema<RemoteAction>(context),
-            options: options
-        );
-    }
-
     public static Input ParameterInput(ParameterModel parameter, ComponentContext context,
         Action<Input>? options = default
     )
@@ -101,7 +161,27 @@ public static class DomainComponents
         return B.Input(api.Name, parameter.GetRequiredComponent(context.Drill(nameof(Input.Component))), options: options);
     }
 
-    public static ComponentDescriptor<Select> EnumSelect(ParameterModel parameter, ComponentContext context,
+    public static ComponentDescriptor<InputText> ParameterInputText(ParameterModel parameter, ComponentContext context,
+        Action<InputText>? options = default
+    )
+    {
+        context = context.Drill(nameof(InputText));
+        var (_, l) = context;
+
+        return B.InputText(l(parameter.Name.Titleize()), options: options);
+    }
+
+    public static ComponentDescriptor<InputNumber> ParameterInputNumber(ParameterModel parameter, ComponentContext context,
+        Action<InputNumber>? options = default
+    )
+    {
+        context = context.Drill(nameof(InputNumber));
+        var (_, l) = context;
+
+        return B.InputNumber(l(parameter.Name.Titleize()), options: options);
+    }
+
+    public static ComponentDescriptor<Select> ParameterSelect(ParameterModel parameter, ComponentContext context,
         Action<Select>? options = default
     )
     {
@@ -115,7 +195,7 @@ public static class DomainComponents
         return B.Select(l(parameter.Name.Titleize()), data, options: options);
     }
 
-    public static ComponentDescriptor<SelectButton> EnumSelectButton(ParameterModel parameter, ComponentContext context,
+    public static ComponentDescriptor<SelectButton> ParameterSelectButton(ParameterModel parameter, ComponentContext context,
         Action<SelectButton>? options = default
     )
     {
@@ -168,18 +248,6 @@ public static class DomainComponents
         return B.DataTableFooter(l($"{method.Name}.FooterLabel"), options: options);
     }
 
-    public static ComponentDescriptor<Button> MethodButton(MethodModel method, ComponentContext context,
-        Action<Button>? options = default
-    )
-    {
-        var (_, l) = context;
-        context = context.Drill(nameof(Button));
-
-        return B.Button(l(method.Name.Humanize().Titleize()), method.GetRequiredSchema<RemoteAction>(context.Drill(nameof(IComponentDescriptor.Action))),
-            options: options
-        );
-    }
-
     public static DataTable.Column PropertyDataTableColumn(PropertyModel property, ComponentContext context,
         Action<DataTable.Column>? options = default
     )
@@ -215,6 +283,36 @@ public static class DomainComponents
 
                 options.Apply(c);
             }
+        );
+    }
+
+    public static ComponentDescriptor<Button> MethodButton(MethodModel method, ComponentContext context,
+        Action<Button>? options = default
+    )
+    {
+        var (_, l) = context;
+        context = context.Drill(nameof(Button));
+
+        return B.Button(l(method.Name.Humanize().Titleize()),
+            action: method.GetSchema<RemoteAction>(context.Drill(nameof(IComponentDescriptor.Action))),
+            options: options
+        );
+    }
+
+    public static ComponentDescriptor<SimpleForm> MethodSimpleForm(MethodModel method, ComponentContext context,
+        Action<SimpleForm>? options = default
+    )
+    {
+        context = context.Drill(nameof(SimpleForm));
+        var (_, l) = context;
+
+        var submitButton =
+            method.GetComponent<Button>(context.Drill(nameof(SimpleForm.SubmitButton))) as ComponentDescriptor<Button> ??
+            MethodButton(method, context.Drill(nameof(SimpleForm.SubmitButton)));
+
+        return B.SimpleForm(l(method.Name.Titleize()), submitButton.Schema,
+            action: method.GetSchema<RemoteAction>(context.Drill(nameof(IComponentDescriptor.Action))),
+            options: options
         );
     }
 }

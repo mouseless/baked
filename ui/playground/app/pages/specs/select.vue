@@ -1,8 +1,8 @@
 <template>
   <UiSpec
     title="Select"
-    :variants="variants"
-    :use-model="true"
+    :variants
+    use-model
   />
 </template>
 <script setup>

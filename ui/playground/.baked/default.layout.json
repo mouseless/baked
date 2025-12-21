@@ -93,6 +93,12 @@
             "title": "Conditional",
             "parentRoute": "/specs"
           },
+          "/specs/contents": {
+            "route": "/specs/contents",
+            "icon": "pi pi-microchip",
+            "title": "Contents",
+            "parentRoute": "/specs"
+          },
           "/specs/custom-css": {
             "route": "/specs/custom-css",
             "icon": "pi pi-microchip",
@@ -105,10 +111,10 @@
             "title": "Inputs",
             "parentRoute": "/specs"
           },
-          "/specs/query-bound-inputs": {
-            "route": "/specs/query-bound-inputs",
+          "/specs/inputs--query-bound": {
+            "route": "/specs/inputs--query-bound",
             "icon": "pi pi-microchip",
-            "title": "Query Bound Inputs",
+            "title": "Inputs - Query Bound",
             "parentRoute": "/specs"
           },
           "/specs/routing": {
@@ -195,6 +201,18 @@
             "title": "Button",
             "parentRoute": "/specs"
           },
+          "/specs/input-text": {
+            "route": "/specs/input-text",
+            "icon": "pi pi-microchip",
+            "title": "Input Text",
+            "parentRoute": "/specs"
+          },
+          "/specs/input-number": {
+            "route": "/specs/input-number",
+            "icon": "pi pi-microchip",
+            "title": "Input Number",
+            "parentRoute": "/specs"
+          },
           "/specs/language-switcher": {
             "route": "/specs/language-switcher",
             "icon": "pi pi-microchip",
@@ -255,10 +273,16 @@
             "title": "Menu Page",
             "parentRoute": "/specs"
           },
-          "/specs/report-page": {
-            "route": "/specs/report-page",
+          "/specs/simple-page": {
+            "route": "/specs/simple-page",
             "icon": "pi pi-microchip",
-            "title": "Report Page",
+            "title": "Simple Page",
+            "parentRoute": "/specs"
+          },
+          "/specs/tabbed-page": {
+            "route": "/specs/tabbed-page",
+            "icon": "pi pi-microchip",
+            "title": "Tabbed Page",
             "parentRoute": "/specs"
           },
           "/specs/auth": {

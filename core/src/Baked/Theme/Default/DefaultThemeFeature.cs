@@ -9,6 +9,7 @@ using Humanizer;
 using static Baked.Theme.Default.DomainComponents;
 using static Baked.Theme.Default.DomainDatas;
 using static Baked.Ui.Datas;
+using static Baked.Ui.Actions;
 
 using B = Baked.Ui.Components;
 
@@ -61,6 +62,15 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 when: c => c.Type.Has<LocatableAttribute>(),
                 schema: rd => rd.Params = Computed.UseRoute("params")
             );
+            builder.Conventions.AddMethodSchema(
+                when: c => c.Method.Has<ActionModelAttribute>(),
+                schema: (c, cc) => MethodContent(c.Method, cc)
+            );
+            builder.Conventions.AddMethodComponent(
+                when: c => c.Method.Has<ActionModelAttribute>(),
+                where: cc => cc.Path.EndsWith(nameof(PageTitle.Actions), "*"),
+                component: (c, cc) => MethodButton(c.Method, cc)
+            );
 
             // Parameter Defaults
             builder.Conventions.AddParameterSchema(
@@ -76,6 +86,15 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     p.Required = !api.IsOptional ? true : null;
                     p.DefaultValue = api.DefaultValue;
                 }
+            );
+            builder.Conventions.AddParameterComponent(
+                component: (c, cc) => ParameterInputText(c.Parameter, cc),
+                order: UiLayer.MinConventionOrder + 10
+            );
+            builder.Conventions.AddParameterComponent(
+                when: c => c.Parameter.ParameterType.Is<int>(),
+                component: (c, cc) => ParameterInputNumber(c.Parameter, cc),
+                order: UiLayer.MinConventionOrder + 10
             );
 
             // Enum Data
@@ -124,11 +143,34 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             // Pages
             builder.Conventions.AddTypeComponent(
                 where: cc => cc.Path.Is(nameof(Page), "*"),
-                component: (c, cc) => TypeReportPage(c.Type, cc)
+                component: (c, cc) => TypeTabbedPage(c.Type, cc)
             );
-            builder.Conventions.AddMethodSchema(
-                when: c => c.Method.Has<ActionModelAttribute>(),
-                schema: (c, cc) => MethodReportPageTabContent(c.Method, cc)
+            builder.Conventions.AddTypeComponent(
+                where: cc => cc.Path.Is(nameof(Page), "*"),
+                component: (c, cc) => TypeSimplePage(c.Type, cc)
+            );
+            builder.Conventions.AddTypeComponent(
+                where: cc => cc.Path.EndsWith(nameof(SimplePage), nameof(SimplePage.Title)),
+                component: (c, cc) => TypePageTitle(c.Type, cc)
+            );
+            builder.Conventions.AddMethodComponent(
+                where: cc => cc.Path.Is(nameof(Page), "*", "*"),
+                component: (c, cc) => MethodFormPage(c.Method, cc)
+            );
+            builder.Conventions.AddMethodComponentConfiguration<FormPage>(
+                component: (fp, _, cc) =>
+                {
+                    var (_, l) = cc;
+
+                    fp.Schema.Title.Actions.Add(B.Button(l("Back"),
+                        action: Local.UseRedirectBack(),
+                        options: b =>
+                        {
+                            b.Severity = "secondary";
+                            b.Variant = "text";
+                        })
+                    );
+                }
             );
         });
 
