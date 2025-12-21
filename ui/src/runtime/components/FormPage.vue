@@ -2,7 +2,7 @@
   <div class="flex flex-col gap-8">
     <PageTitle :schema="title">
       <template
-        v-if="inputs?.length > 0"
+        v-if="inputs.length > 0"
         #actions
       >
         <Button

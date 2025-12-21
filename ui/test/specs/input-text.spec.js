@@ -11,7 +11,7 @@ test.describe("Base", () => {
   test("placeholder", async({ page }) => {
     const component = page.getByTestId(id);
 
-    await expect(component).toHaveText("Label");
+    await expect(component.locator(primevue.floatLabel.base)).toHaveText("Label");
   });
 
   test("model", async({ page }) => {
@@ -30,7 +30,7 @@ test.describe("Base", () => {
 
     await input.fill("x");
 
-    await expect(component).toHaveText("Label");
+    await expect(component.locator(primevue.floatLabel.base)).toHaveText("Label");
   });
 
   test("visual", { tag: "@visual" }, async({ page }) => {
