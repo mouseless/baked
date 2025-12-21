@@ -199,6 +199,8 @@ public class FormSampleUiOverrideFeature : IFeature
                 component: (c, cc) => MethodSimpleForm(c.Method, cc,
                     options: sf =>
                     {
+                        var (_, l) = cc;
+
                         sf.DialogTemplate = B.SimpleFormDialogTemplate(
                             new(string.Empty)
                             {
@@ -206,7 +208,7 @@ public class FormSampleUiOverrideFeature : IFeature
                                 Variant = "text",
                                 Rounded = true
                             },
-                            new("Cancel")
+                            new(l("Cancel"))
                         );
                     }
                 )

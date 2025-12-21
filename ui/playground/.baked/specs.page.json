@@ -345,7 +345,7 @@
                 "route": "/specs/dialog",
                 "icon": "pi pi-microchip",
                 "title": "Dialog",
-                "description": "Renders a dialog with given contents"
+                "description": "Renders a dialog with given contents and a button if given an action"
               }
             }
           },

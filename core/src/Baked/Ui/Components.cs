@@ -2,7 +2,8 @@
 
 public static class Components
 {
-    public static ComponentDescriptor<Button> Button(string label, IAction action,
+    public static ComponentDescriptor<Button> Button(string label,
+        IAction? action = default,
         Action<Button>? options = default
     ) => new(options.Apply(new(label))) { Action = action };
 
@@ -201,9 +202,9 @@ public static class Components
         Action<SideMenu.Item>? options = default
     ) => options.Apply(new(route, icon));
 
-    public static ComponentDescriptor<SimpleForm> SimpleForm(string name, IAction action,
+    public static ComponentDescriptor<SimpleForm> SimpleForm(string name, Button submitButton, IAction action,
         Action<SimpleForm>? options = default
-    ) => new(options.Apply(new(name, new("Submit"))))
+    ) => new(options.Apply(new(name, submitButton)))
     {
         Action = action,
     };

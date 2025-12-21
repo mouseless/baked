@@ -88,6 +88,7 @@ public static class DomainComponents
 
         return B.SimpleForm(
             l(method.Name),
+            new(l("Submit")),
             method.GetRequiredSchema<RemoteAction>(context),
             options: options
         );

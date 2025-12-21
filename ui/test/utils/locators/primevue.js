@@ -28,7 +28,7 @@ export default {
   inputNumber: {
     base: ".p-inputnumber"
   },
-  inputeText: {
+  inputText: {
     base: ".p-inputtext"
   },
   message: {
