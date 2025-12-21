@@ -2,7 +2,7 @@ import { expect, test } from "@nuxt/test-utils/playwright";
 import primevue from "../utils/locators/primevue";
 
 test.beforeEach(async({ goto }) => {
-  await goto("/specs/query-bound-inputs", { waitUntil: "hydration" });
+  await goto("/specs/inputs--query-bound", { waitUntil: "hydration" });
 });
 
 const id = {
@@ -70,7 +70,7 @@ test("query string is set from input", async({ page }) => {
 });
 
 test("query string is set to input", async({ page }) => {
-  await page.goto("/specs/query-bound-inputs?requiredWithDefault=1&requiredWithDefaultSelfManaged=2&required=3&optional=4");
+  await page.goto("/specs/inputs--query-bound?requiredWithDefault=1&requiredWithDefaultSelfManaged=2&required=3&optional=4");
 
   const component = page.getByTestId(id.component);
   await expect(component.getByTestId("required-with-default")).toHaveValue("1");
@@ -95,14 +95,14 @@ test("pushes route when a parameter changes", async({ page }) => {
   await page.waitForURL(/value\+1/);
 
   const state = await page.evaluate(() => history.state);
-  expect(state.back).toBe("/specs/query-bound-inputs?requiredWithDefault=default+value&requiredWithDefaultSelfManaged=default");
+  expect(state.back).toBe("/specs/inputs--query-bound?requiredWithDefault=default+value&requiredWithDefaultSelfManaged=default");
 
   await component.getByTestId("required").click();
   await component.getByTestId("required").fill("value 2");
   await page.waitForURL(/value\+2/);
 
   const state2 = await page.evaluate(() => history.state);
-  expect(state2.back).toBe("/specs/query-bound-inputs?requiredWithDefault=default+value&requiredWithDefaultSelfManaged=default&required=value+1");
+  expect(state2.back).toBe("/specs/inputs--query-bound?requiredWithDefault=default+value&requiredWithDefaultSelfManaged=default&required=value+1");
 });
 
 test("ready when all required are set", async({ page }) => {
@@ -137,7 +137,7 @@ test("unique key changes with parameter values", async({ page }) => {
 });
 
 test("when reacting, bake should respect initial values", async({ page, goto }) => {
-  await goto("/specs/query-bound-inputs?optional=react", { waitUntil: "hydration" });
+  await goto("/specs/inputs--query-bound?optional=react", { waitUntil: "hydration" });
   const reactor = page.getByTestId(id.reactor);
 
   await expect(reactor).toBeAttached();

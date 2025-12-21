@@ -1,5 +1,5 @@
 <template>
-  <UiSpec title="Query Bound Inputs">
+  <UiSpec title="Inputs - Query Bound">
     <Message severity="info">
       <span class="text-xl">
         ⬆️  Check if values sync with query string above ⬆️
@@ -42,7 +42,7 @@
       <Button
         as="router-link"
         label="RESET"
-        to="/specs/query-bound-inputs"
+        to="/specs/inputs--query-bound"
         data-testid="reset"
       />
       <Bake

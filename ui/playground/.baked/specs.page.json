@@ -90,14 +90,14 @@
             }
           },
           {
-            "title": "Query Bound Inputs",
+            "title": "Inputs - Query Bound",
             "component": {
               "type": "CardLink",
               "schema": {
-                "route": "/specs/query-bound-inputs",
+                "route": "/specs/inputs--query-bound",
                 "icon": "pi pi-microchip",
-                "title": "Query Bound Inputs",
-                "description": "Syncs and manages parameters in query string"
+                "title": "Inputs - Query Bound",
+                "description": "Manages inputs in sync with query string"
               }
             }
           },
