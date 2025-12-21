@@ -16,21 +16,21 @@ app.Features.AddUx([...]);
 
 ## Actions are Grouped as Tabs
 
-Groups controller actions into tabs on a `ReportPage`.
+Groups controller actions into tabs on a `TabbedPage`.
 
 ```csharp
 c => c.ActionsAreGroupedAsTabs()
 ```
 
 - Methods with `TabAttribute` are collected
-- Each unique tab name creates a new `ReportPage.Tab`
-- Actions inside that tab are added as `ReportPage.Tab.Content`
+- Each unique tab name creates a new `Tab`
+- Actions inside that tab are added as `Tab.Content`
 - Tab titles are automatically localized and formatted (e.g., `SampleTab` →
   `Sample Tab`) when there are more than one tabs
 
 ## Actions as Data Panels
 
-Renders controller actions as `DataPanel` components inside a `ReportPage`.
+Renders controller actions as `DataPanel` components inside a `TabbedPage`.
 
 ```csharp
 c => c.ActionsAsDataPanels()
@@ -79,7 +79,7 @@ c => c.EnumParameterIsSelect(maxMemberCountForSelectButton: ...)
 ## Initializer Parameters are in Page Title
 
 Adds initializer parameters of a report class to the page title area of a
-`ReportPage`.
+`TabbedPage`.
 
 ```csharp
 c => c.InitializerParametersAreInPageTitle()

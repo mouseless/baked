@@ -2,11 +2,11 @@
   <UiSpec title="Inputs">
     <Message severity="info">
       <span class="text-xl">
-        ⬇️  Check if there are 3 inputs, first having `default value` ⬇️
+        ⬇️  Check if there are 4 inputs, first having `default value` ⬇️
       </span>
     </Message>
     <div
-      class="border-4 border-gray-500 rounded p-4 space-x-4"
+      class="flex gap-4 border-4 border-gray-500 rounded p-4"
       data-testid="component"
     >
       <Inputs
@@ -56,23 +56,23 @@ const readyValues = ref();
 const inputs = [
   giveMe.anInput({
     name: "requiredWithDefault",
-    component: giveMe.anInputText({ testId: "required-with-default" }),
+    component: giveMe.anExpectedInput({ testId: "required-with-default" }),
     required: true,
     defaultValue: "default value"
   }),
   giveMe.anInput({
     name: "required",
-    component: giveMe.anInputText({ testId: "required" }),
+    component: giveMe.anExpectedInput({ testId: "required" }),
+    required: true
+  }),
+  giveMe.anInput({
+    name: "required-number",
+    component: giveMe.anExpectedInput({ testId: "required-number", number: true }),
     required: true
   }),
   giveMe.anInput({
     name: "optional",
-    component: giveMe.anInputText({ testId: "optional" })
-  }),
-  giveMe.anInput({
-    name: "num-required",
-    component: giveMe.anInputNumber({ testId: "num-required" }),
-    required: true
+    component: giveMe.anExpectedInput({ testId: "optional" })
   })
 ];
 

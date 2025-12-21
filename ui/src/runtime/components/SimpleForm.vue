@@ -1,13 +1,14 @@
 <template>
-  <div class="flex flex-col gap-4">
-    <Inputs
-      v-if="inputs"
-      :inputs="inputs"
-      input-class="w-full"
-      class="flex-col"
-      @ready="onReady"
-      @changed="onChanged"
-    />
+  <div class="flex flex-col gap-8">
+    <div class="flex flex-col gap-4">
+      <Inputs
+        v-if="inputs"
+        :inputs="inputs"
+        input-class="w-full"
+        @ready="onReady"
+        @changed="onChanged"
+      />
+    </div>
     <Button
       :icon="buttonIcon"
       :loading="executing"
@@ -31,11 +32,10 @@ const { schema } = defineProps({
 });
 defineEmits(["submit"]);
 
-const formData = ref({});
-
 const { buttonIcon, buttonLabel, inputs } = schema;
 
 const executing = context.injectExecuting();
+const formData = ref({});
 const ready = ref(inputs.length === 0);
 
 function onReady(value) {

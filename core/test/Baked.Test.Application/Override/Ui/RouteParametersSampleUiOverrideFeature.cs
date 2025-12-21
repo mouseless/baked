@@ -1,9 +1,10 @@
 ﻿using Baked.Architecture;
+using Baked.Business;
+using Baked.RestApi.Model;
 using Baked.Test.Theme;
-using Baked.Test.Ui;
 using Baked.Theme;
+using Baked.Ui;
 
-using static Baked.Test.Theme.Custom.DomainComponents;
 using static Baked.Theme.Default.DomainComponents;
 
 namespace Baked.Test.Override.Ui;
@@ -17,32 +18,27 @@ public class RouteParametersSampleUiOverrideFeature : IFeature
             // Route parameters sample
             builder.Conventions.AddMethodComponent(
                 when: c => c.Type.Is<RouteParametersSample>() && c.Method.DefaultOverload.ReturnsList(),
-                where: cc => cc.Path.EndsWith(nameof(Page), nameof(RouteParametersSample), nameof(ContainerPage), nameof(ContainerPage.Contents), "*"),
+                where: cc => cc.Path.EndsWith(nameof(Page), nameof(RouteParametersSample), nameof(SimplePage), nameof(SimplePage.Contents), "*"),
                 component: (c, cc) => MethodDataPanel(c.Method, cc)
             );
 
-            builder.Conventions.AddTypeComponent(
+            builder.Conventions.AddTypeComponentConfiguration<SimplePage>(
                 when: c => c.Type.Is<RouteParametersSample>(),
-                where: cc => cc.Path.EndsWith(nameof(Page), nameof(RouteParametersSample)),
-                component: (c, cc) => TypeContainerPage(c.Type, cc)
-            );
-
-            builder.Conventions.AddTypeComponentConfiguration<ContainerPage>(
-                when: c => c.Type.Is<RouteParametersSample>(),
-                where: cc => true,
-                component: (container, c, cc) =>
+                component: (sp, c, cc) =>
                 {
-                    cc = cc.Drill(nameof(ContainerPage), nameof(ContainerPage.Contents));
+                    cc = cc.Drill(nameof(SimplePage.Contents));
 
-                    foreach (var method in c.Type.GetMembers().Methods)
+                    foreach (var method in c.Type.GetMembers().Methods.Having<ActionModelAttribute>())
                     {
-                        var component = method.GetComponent(cc.Drill(container.Schema.Contents.Count));
-                        if (component is null) { continue; }
+                        if (method.Has<InitializerAttribute>()) { continue; }
+                        if (method.GetAction().Method != HttpMethod.Get) { continue; }
 
-                        container.Schema.Contents.Add(component);
+                        var content = method.GetSchema<Content>(cc.Drill(sp.Schema.Contents.Count));
+                        if (content is null) { continue; }
+
+                        sp.Schema.Contents.Add(content);
                     }
-                },
-                order: int.MaxValue
+                }
             );
         });
     }

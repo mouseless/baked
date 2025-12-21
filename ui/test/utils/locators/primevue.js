@@ -21,10 +21,13 @@ export default {
   dialog: {
     base: ".p-dialog"
   },
+  floatLabel: {
+    base: ".p-floatlabel"
+  },
   inputNumber: {
     base: ".p-inputnumber"
   },
-  inputeText: {
+  inputText: {
     base: ".p-inputtext"
   },
   message: {

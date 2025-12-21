@@ -17,8 +17,8 @@ test("inputs are rendered", async({ page }) => {
 
   await expect(component.getByTestId("required-with-default")).toBeVisible();
   await expect(component.getByTestId("required")).toBeVisible();
+  await expect(component.getByTestId("required-number")).toBeVisible();
   await expect(component.getByTestId("optional")).toBeVisible();
-  await expect(component.getByTestId("num-required")).toBeVisible();
 });
 
 test("default value is set", async({ page }) => {
@@ -45,11 +45,11 @@ test("unique key changes with input values", async({ page }) => {
 
   await component.getByTestId("required-with-default").fill("value 1");
   await component.getByTestId("required").fill("value 2");
-  await component.getByTestId("optional").fill("value 3");
   await component.locator(primevue.inputNumber.base).click();
   await page.keyboard.press("Digit1");
+  await component.getByTestId("optional").fill("value 3");
 
-  await expect(uniqueKey).toHaveText("value 1-value 2-value 3-1");
+  await expect(uniqueKey).toHaveText("value 1-value 2-1-value 3");
 });
 
 test("'onChanged' is emitted before 'onReady' when initialized", async({ page }) => {

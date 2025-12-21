@@ -1,5 +1,5 @@
 <template>
-  <UiSpec title="Query Bound Inputs">
+  <UiSpec title="Inputs - Query Bound">
     <Message severity="info">
       <span class="text-xl">
         ⬆️  Check if values sync with query string above ⬆️
@@ -9,7 +9,7 @@
       class="border-4 border-gray-500 rounded p-4 space-x-4"
       data-testid="component"
     >
-      <QueryBoundInputs
+      <Inputs
         :inputs
         @ready="onReady"
         @changed="onChanged"
@@ -42,7 +42,7 @@
       <Button
         as="router-link"
         label="RESET"
-        to="/specs/query-bound-inputs"
+        to="/specs/inputs--query-bound"
         data-testid="reset"
       />
       <Bake
@@ -64,32 +64,37 @@ const uniqueKey = ref();
 const inputs = [
   giveMe.anInput({
     name: "requiredWithDefault",
-    component: giveMe.anInputText({ testId: "required-with-default" }),
     required: true,
-    defaultValue: "default value"
+    defaultValue: "default value",
+    queryBound: true,
+    component: giveMe.anExpectedInput({ testId: "required-with-default" })
   }),
   giveMe.anInput({
     name: "requiredWithDefaultSelfManaged",
     required: true,
     defaultSelfManaged: true,
-    component: giveMe.anInputText({ testId: "required-with-default-self-managed", defaultValue: "default" })
+    queryBound: true,
+    component: giveMe.anExpectedInput({ testId: "required-with-default-self-managed", defaultValue: "default" })
   }),
   giveMe.anInput({
     name: "required",
-    component: giveMe.anInputText({ testId: "required" }),
-    required: true
+    required: true,
+    queryBound: true,
+    component: giveMe.anExpectedInput({ testId: "required" })
+  }),
+  giveMe.anInput({
+    name: "required-number",
+    required: true,
+    queryBound: true,
+    component: giveMe.anExpectedInput({ testId: "required-number", number: true })
   }),
   giveMe.anInput({
     name: "optional",
-    component: giveMe.anInputText({
+    queryBound: true,
+    component: giveMe.anExpectedInput({
       testId: "optional",
       action: giveMe.aPublishAction({ pageContextKey: "optional" })
     })
-  }),
-  giveMe.anInput({
-    name: "num-required",
-    component: giveMe.anInputNumber({ testId: "num-required" }),
-    required: true
   })
 ];
 
@@ -108,7 +113,7 @@ function onReady(value) {
   ready.value = value;
 }
 
-function onChanged(value) {
-  uniqueKey.value = value;
+function onChanged(event) {
+  uniqueKey.value = event.uniqueKey;
 }
 </script>

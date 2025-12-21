@@ -21,18 +21,12 @@ const { data, schema } = defineProps({
 const path = context.injectPath();
 const { conditions, fallback } = schema;
 
-const component = computed(() => find(conditions, data, fallback));
-
-function find(conditions, data, fallback) {
-  if(!conditions) {
-    return fallback;
-  }
+const component = computed(() => {
+  if(!conditions) { return fallback; }
 
   const successConditions = conditions.filter(condition => condition.prop && data[condition.prop] === condition.value);
-  if(successConditions.length > 0) {
-    return successConditions[0].component;
-  }
+  if(successConditions.length <= 0) { return fallback; }
 
-  return fallback;
-}
+  return successConditions[0].component;
+});
 </script>

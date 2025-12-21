@@ -1,8 +1,8 @@
 <template>
   <UiSpec
     title="Select Button"
-    :variants="variants"
-    :use-model="true"
+    :variants
+    use-model
     variant-class="inline"
   />
 </template>

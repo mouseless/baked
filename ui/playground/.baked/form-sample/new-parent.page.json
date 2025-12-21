@@ -1,45 +1,68 @@
 {
-  "type": "ContainerPage",
+  "type": "FormPage",
   "schema": {
-    "contents": [
-      {
-        "type": "SimpleForm",
-        "schema": {
-          "buttonLabel": "NewParent",
-          "inputs": [
-            {
-              "name": "name",
-              "required": true,
-              "component": {
-                "type": "InputText",
-                "schema": {
-                  "testId": "name"
-                }
-              }
-            }
-          ]
-        },
-        "action": {
-          "type": "Remote",
-          "path": "form-sample/new-parent",
-          "method": "POST",
-          "body": {
-            "type": "Context",
-            "key": "model"
+    "title": {
+      "title": "New Parent",
+      "description": "Fill out the form and hit save to create new parent",
+      "actions": [
+        {
+          "type": "Button",
+          "schema": {
+            "label": "Back",
+            "variant": "text",
+            "severity": "secondary"
           },
-          "postAction": {
+          "action": {
             "type": "Local",
             "composable": "useRedirect",
             "options": {
               "type": "Inline",
               "value": {
-                "route": "/form-sample"
+                "back": true
               }
             }
+          }
+        }
+      ]
+    },
+    "button": {
+      "label": "Save"
+    },
+    "inputs": [
+      {
+        "name": "name",
+        "required": true,
+        "default": {
+          "type": "Inline",
+          "value": null
+        },
+        "component": {
+          "type": "InputText",
+          "schema": {
+            "label": "Name"
           }
         }
       }
     ],
     "path": "form-sample/new-parent"
+  },
+  "action": {
+    "type": "Remote",
+    "path": "form-sample/new-parent",
+    "method": "POST",
+    "body": {
+      "type": "Context",
+      "key": "model"
+    },
+    "postAction": {
+      "type": "Local",
+      "composable": "useRedirect",
+      "options": {
+        "type": "Inline",
+        "value": {
+          "route": "/form-sample"
+        }
+      }
+    }
   }
 }

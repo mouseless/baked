@@ -11,7 +11,7 @@
         v-model="selected"
         :input-id="path"
         :options="data"
-        :placeholder="label"
+        :placeholder="l(label)"
         :show-clear
         class="hide-placeholder"
       >
@@ -24,7 +24,7 @@
           <span>{{ getOptionLabel(slotProps) }}</span>
         </template>
       </Select>
-      <label for="period">{{ l(label) }}</label>
+      <label :for="path">{{ l(label) }}</label>
     </FloatLabel>
   </AwaitLoading>
 </template>

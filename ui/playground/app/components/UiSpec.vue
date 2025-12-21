@@ -6,7 +6,7 @@
     />
     <div class="flex justify-center w-full">
       <div
-        class="flex gap-4 align-top w-4/5"
+        class="flex gap-4 align-top w-4/5 max-md:w-full"
         :class="{
           'flex-col items-center': !vertical,
           'flex-wrap items-start': vertical,
@@ -14,13 +14,6 @@
           'w-full': fullPage
         }"
       >
-        <div
-          v-if="$slots.default"
-          :data-testid="testId"
-          class="space-y-4"
-        >
-          <slot name="default" />
-        </div>
         <div
           v-for="variant in allVariants"
           :key="variant.name"
@@ -87,14 +80,21 @@
             </div>
           </div>
         </div>
+        <div
+          v-if="$slots.default"
+          :data-testid="testId"
+          class="w-full flex flex-col gap-4"
+        >
+          <slot name="default" />
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script setup>
 import { computed, onMounted, reactive, ref } from "vue";
-import { useContext, useEvents, usePages } from "#imports";
 import { Divider } from "primevue";
+import { useContext, useEvents, usePages } from "#imports";
 
 const context = useContext();
 const events = useEvents();

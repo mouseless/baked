@@ -5,6 +5,11 @@
 - Dynamic routing is now supported and can be used when;
   - navigating through pages
   - fetching data from backend
+- Two new page generator functions are implemented
+  - `Type<TDomainType, TPageSchema>()`: Renders given domain type as a page
+    using given page schema
+  - `Method<TDomainType, TPageSchema>(methodName:)`: Renders given domain method
+    as a page using given page schema
 - `Bake` now executes given `Action` defined in `ComponentDescriptor`
   implementations upon model change or `submit` event
 - `Button` component is now added
@@ -18,6 +23,16 @@
   - Use `ReloadWhen` and `ShowWhen` to bind them to a page context value
 - `Constraints` now allows you to define constraints on values of triggers so
   that reactions can happen only on certain conditions
+- `InputText` and `InputNumber` components are now introduced along with their
+  basic conventions
+- `SimplePage` is now added to render simple pages with title and contents
+  - Default theme includes necessary conventions to render any type using
+    `SimplePage`
+- `Contents` utility component is now added that renders `List<Content>` with
+  responsive styling
+  - `ActionsAsDataPanelsUxFeature` is modified to add data panel to any content
+    in any page, expect `Get` methods to be rendered as data panel under any
+    page's content list
 
 ## Breaking Changes
 
@@ -25,15 +40,25 @@
   route patterns and rendered directly with `Page.vue`
 - `baseURL` is renamed to `apiBaseUrl` and config is now set in root of `bake`
   module options and no longer awailable through `dataFetcher`
+- `FromType<TDomainType>()` page generator is removed, now you need to specify
+  page schema upfront in `Type<TDomainType, TPageSchema>()`
+- `ReportPage` is renamed to `TabbedPage`
+  - All `Components` and `DomainComponents` helpers are updated accordingly
+  - `.b-ReportPage--grid` class is now removed, use `.b-Contents` to override
+    css for that element
+- `ReportPage.Tab` and `ReportPage.Tab.Content` is now `Tab` and `Content`
+  respectively
+  - All `Components` and `DomainComponents` helpers are updated accordingly
 - `Parameter` schema is renamed to `Inputs`
   - `ParameterParameter` domain component helper is renamed to `ParameterInput`
   - `Parameter` component helper is renamed to `Input`
 - `DataPanel.Parameters` property is renamed to `Inputs`
-- `ReportPage.QueryParameters` property is renamed to `Inputs`
+- `QueryParameters` property of `TabbedPage` (former `ReportPage`) is renamed to
+  `Inputs`
 - `Parameters.vue` is renamed to `Inputs.vue`
 - `QueryParameters.vue` is renamed to `QueryBoundInputs.vue`
-- `TypeWithOnlyGetIsReportPage` UX feature is removed, and adding `ReportPage`
-  component to a type is moved to `DefaultThemeFeature`
+- `TypeWithOnlyGetIsReportPage` UX feature is removed, and adding `TabbedPage`
+  (former `ReportPage`) component to a type is moved to `DefaultThemeFeature`
 - `InjectedData` is renamed to `ContextData`
   - `Injected()` is now removed, use `Context` property
     - Use `Context.Model(...)` to access model data during actions
@@ -87,12 +112,23 @@
     component.Schema.ShowWhen = "!key:value"; // old usage
     component.ShowWhen("key", IsNot("value")); // new usage
     ```
-- `ReportPage.Tab.Content` support for `showWhen` is completely removed, use its
-  component's reaction system to hide a content
+- `Content` (former `ReportPage.Tab.Content`) support for `showWhen` is
+  completely removed, use its component's reaction system to hide a content
   - `lg:col-span-2` class is now passed directly to content's component instead
     of a wrapper `div`
+- `DeferredTabContent` had a div to show/hide child, it is now removed and
+  `hidden` prop is passed directly to the grid div
 - In `useContext` composable, `injectPage` and `providePage` are renamed to
   `injectPageContext` and `providePageContext` respectively
+- `Inputs` now doesn't have a layout styling, any component that uses it should
+  wrap it and introduce `flex` styling
+- `QueryBoundInputs` is now removed, use `Inputs` with all of its inputs'
+  `queryBound` set to `true` to get the same behavior
+  - `QueryBoundInputs` was passing `uniqueKey` to `onChanged` event, but
+    `Inputs` pass an event object `{ uniqueKey, values }`
+- `EnumSelect` and `EnumSelectButton` in `DomainComponents` are renamed to
+  `ParameterSelect` and `ParameterSelectButton`
+  - They still require an `InlineData` schema on the parameter type
 
 ## Improvements
 
@@ -121,3 +157,5 @@
   ```csharp
   component.Data += Context.Parent(options: cd => cd.Prop = "parameters");
   ```
+- `Inputs` has become a pure utility component after removing wrapper div and
+  `flex` styling

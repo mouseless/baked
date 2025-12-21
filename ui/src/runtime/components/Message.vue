@@ -22,9 +22,9 @@ import { AwaitLoading } from "#components";
 
 const { localize: l } = useLocalization();
 
-const { schema } = defineProps({
-  schema: { type: null, default: null },
-  data: { type: null, default: null }
+const { schema, data } = defineProps({
+  schema: { type: null, required: true },
+  data: { type: null, required: true }
 });
 
 const { icon, severity, localizeMessage } = schema;

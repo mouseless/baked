@@ -81,7 +81,7 @@ onBeforeUnmount(() => {
 });
 
 function filterSections(filter) {
-  if(!filter.trim()) {
+  if(!filter?.trim()) {
     sectionsData.value = sections;
 
     return;

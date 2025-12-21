@@ -8,51 +8,54 @@ test.beforeEach(async({ goto }) => {
 test.describe("Base", () => {
   const id = "Base";
 
-  test("Renders form with given inputs", async({ page }) => {
+  test("inputs", async({ page }) => {
     const component = page.getByTestId(id);
-    const text = component.locator(".b-component--InputText");
+
+    await expect(component.getByTestId("input")).toBeAttached();
+  });
+
+  test("button", async({ page }) => {
+    const component = page.getByTestId(id);
     const button = component.locator(primevue.button.base);
 
-    await expect(text).toBeAttached();
-    await expect(button).toBeAttached();
     await expect(button).toHaveText("Submit");
   });
 
-  test("Button is disabled when inputs are not ready", async({ page }) => {
+  test("button is disabled when inputs are not ready", async({ page }) => {
     const component = page.getByTestId(id);
     const button = component.locator(primevue.button.base);
 
     await expect(button).toBeDisabled();
   });
 
-  test("Button is enabled when inputs are ready", async({ page }) => {
+  test("button is enabled when inputs are ready", async({ page }) => {
     const component = page.getByTestId(id);
-    const text = component.locator(".b-component--InputText");
+    const input = component.getByTestId("input");
     const button = component.locator(primevue.button.base);
 
-    await text.fill("text");
+    await input.fill("text");
 
     await expect(button).not.toBeDisabled();
   });
 
-  test("Execute given remote action", async({ page }) => {
+  test("action", async({ page }) => {
     const component = page.getByTestId(id);
-    const text = component.locator(".b-component--InputText");
+    const input = component.getByTestId("input");
     const button = component.locator(primevue.button.base);
 
-    await text.fill("text");
+    await input.fill("text");
     await button.click();
 
     await expect(page.locator(primevue.toast.base)).toBeVisible();
     await expect(page.locator(primevue.toast.summary)).toHaveText("text");
   });
 
-  test("Button is disabled until action is completed", async({ page }) => {
+  test("button is disabled until action is completed", async({ page }) => {
     const component = page.getByTestId(id);
-    const text = component.locator(".b-component--InputText");
+    const input = component.getByTestId("input");
     const button = component.locator(primevue.button.base);
 
-    await text.fill("text");
+    await input.fill("text");
     await button.click();
 
     await expect(button).toBeDisabled();
@@ -60,5 +63,21 @@ test.describe("Base", () => {
     await expect(spinner).toBeVisible();
     await expect(page.locator(primevue.toast.base)).toBeVisible();
     await expect(button).not.toBeDisabled();
+  });
+
+  test("visual", { tag: "@visual" }, async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component).toHaveScreenshot();
+  });
+});
+
+test.describe("Multiple Inputs", () => {
+  const id = "Multiple Inputs";
+
+  test("visual", { tag: "@visual" }, async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component).toHaveScreenshot();
   });
 });
