@@ -76,8 +76,7 @@ const { localize: lc } = useLocalization({ group: "TabbedPage" });
 const reactionHandler = useReactionHandler();
 
 const { schema } = defineProps({
-  schema: { type: null, required: true },
-  data: { type: null, default: null }
+  schema: { type: null, required: true }
 });
 
 const { title, inputs, tabs } = schema;

@@ -93,8 +93,7 @@ const { localize: lc } = useLocalization({ group: "DataPanel" });
 const panel = useTemplateRef("panel");
 
 const { schema } = defineProps({
-  schema: { type: null, required: true },
-  data: { type: null, default: null }
+  schema: { type: null, required: true }
 });
 
 const { collapsed, content, inputs, localizeTitle, title: titleData } = schema;

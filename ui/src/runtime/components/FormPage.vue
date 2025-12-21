@@ -30,8 +30,7 @@ import { ref } from "vue";
 import { Button, Contents, Inputs, PageTitle } from "#components";
 
 const { schema } = defineProps({
-  schema: { type: null, required: true },
-  data: { type: null, required: true }
+  schema: { type: null, required: true }
 });
 const emit = defineEmits(["submit"]);
 

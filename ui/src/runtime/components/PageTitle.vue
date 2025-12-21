@@ -145,8 +145,7 @@ const { localize: l } = useLocalization();
 const { public: { components } } = useRuntimeConfig();
 
 const { schema } = defineProps({
-  schema: { type: null, required: true },
-  data: { type: null, default: null }
+  schema: { type: null, required: true }
 });
 
 const { title, description, actions } = schema;

@@ -13,8 +13,7 @@
 import { Contents } from "#components";
 
 const { schema } = defineProps({
-  schema: { type: null, required: true },
-  data: { type: null, default: null }
+  schema: { type: null, required: true }
 });
 
 const { title, contents } = schema;
