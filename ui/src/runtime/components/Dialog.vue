@@ -1,6 +1,6 @@
 <template>
   <Button
-    :schema="dialogButton"
+    :schema="open"
     @submit="visible = true"
   />
   <Dialog
@@ -9,7 +9,7 @@
     :header="l(header)"
     modal
     :style="{ width: 'min(450px, 90vw)' }"
-    @after-hide="submit"
+    @after-hide="emitSubmit"
   >
     <Bake
       name="dialog/content"
@@ -20,7 +20,7 @@
       #footer
     >
       <Button
-        :schema="actionButton"
+        :schema="submit"
         class="w-full"
         @click="execute"
       />
@@ -40,7 +40,7 @@ const { schema } = defineProps({
 });
 const emit = defineEmits(["submit"]);
 
-const { actionButton, content, dialogButton, header } = schema;
+const { content, header, open, submit } = schema;
 const visible = ref(false);
 const submitted = ref(false);
 
@@ -49,7 +49,7 @@ function execute() {
   submitted.value = true;
 }
 
-function submit() {
+function emitSubmit() {
   if(submitted.value) {
     submitted.value = false;
 

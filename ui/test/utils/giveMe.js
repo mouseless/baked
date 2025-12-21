@@ -28,25 +28,14 @@ export default {
     return { sample: "response" };
   },
 
-  aButton({ action, icon, label, variant, rounded } = {}) {
+  aButton({ action, icon, label, variant, severity, rounded } = {}) {
     label = $(label, "Button");
     action = $(action, this.aLocalAction({ showMessage: `${label} clicked` }));
 
     return {
       type: "Button",
-      schema: { icon, label, variant, rounded },
+      schema: { icon, label, variant, severity, rounded },
       action
-    };
-  },
-
-  aButtonSchema({ icon, label, variant, rounded } = {}) {
-    label = $(label, "Button");
-
-    return {
-      icon,
-      label,
-      variant,
-      rounded
     };
   },
 
@@ -247,17 +236,17 @@ export default {
     };
   },
 
-  aDialog({ action, actionButton, dialogButton, content, header }) {
+  aDialog({ action, content, header, open, submit }) {
     header = $(header, "Dialog Header");
-    dialogButton = $(dialogButton, { label: "Show" });
+    open = $(open, { label: "Show" });
 
     return {
       type: "Dialog",
       schema: {
-        actionButton,
         content,
-        dialogButton,
-        header
+        header,
+        open,
+        submit
       },
       action
     };
@@ -723,18 +712,18 @@ export default {
     return { route, icon, title, disabled };
   },
 
-  aSimpleForm({ dialogTemplate, inputs, name, submitButton, action }) {
+  aSimpleForm({ dialogOptions, inputs, submit, title, action }) {
     inputs = $(inputs, []);
-    name = $(name, "Simple Form");
-    submitButton = $(submitButton, this.aButtonSchema({ label: "Submit" }));
+    title = $(title, "Simple Form");
+    submit = $(submit, this.aButton({ label: "Submit" }).schema);
 
     return {
       type: "SimpleForm",
       schema: {
-        dialogTemplate,
-        name,
+        dialogOptions,
         inputs,
-        submitButton
+        submit,
+        title
       },
       action
     };

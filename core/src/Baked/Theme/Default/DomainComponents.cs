@@ -306,11 +306,11 @@ public static class DomainComponents
         context = context.Drill(nameof(SimpleForm));
         var (_, l) = context;
 
-        var submitButton =
-            method.GetComponent<Button>(context.Drill(nameof(SimpleForm.SubmitButton))) as ComponentDescriptor<Button> ??
-            MethodButton(method, context.Drill(nameof(SimpleForm.SubmitButton)));
+        var submit =
+            method.GetComponent<Button>(context.Drill(nameof(SimpleForm.Submit))) as ComponentDescriptor<Button> ??
+            MethodButton(method, context.Drill(nameof(SimpleForm.Submit)));
 
-        return B.SimpleForm(l(method.Name.Titleize()), submitButton.Schema,
+        return B.SimpleForm(l(method.Name.Titleize()), submit.Schema,
             action: method.GetSchema<RemoteAction>(context.Drill(nameof(IComponentDescriptor.Action))),
             options: options
         );

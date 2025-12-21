@@ -23,7 +23,6 @@ const variants = [
           })
         })
       ]),
-      name: "Spec: Simple Form",
       inputs: [
         giveMe.anInput({
           name: "text",
@@ -31,7 +30,8 @@ const variants = [
           required: true
         })
       ],
-      submitButton: giveMe.aButtonSchema({ label: "Spec: Submit" })
+      submit: giveMe.aButton({ label: "Spec: Submit" }).schema,
+      title: "Spec: Simple Form"
     })
   },
   {
@@ -68,11 +68,10 @@ const variants = [
           })
         })
       ]),
-      dialogTemplate: {
-        cancelButton: giveMe.aButtonSchema({ label: "Spec: Cancel" }),
-        toggleButton: giveMe.aButtonSchema({ label: "Spec: Toggle Dialog" })
+      dialogOptions: {
+        open: giveMe.aButton({ label: "Spec: Open" }).schema,
+        cancel: giveMe.aButton({ label: "Spec: Cancel" }).schema
       },
-      name: "Spec: Simple Form",
       inputs: [
         giveMe.anInput({
           name: "text",
@@ -80,7 +79,8 @@ const variants = [
           required: true
         })
       ],
-      submitButton: giveMe.aButtonSchema({ label: "Spec: Submit" })
+      submit: giveMe.aButton({ label: "Spec: Submit" }).schema,
+      title: "Spec: Simple Form"
     })
   }
 ];

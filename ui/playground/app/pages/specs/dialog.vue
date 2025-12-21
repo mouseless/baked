@@ -13,8 +13,8 @@ const variants = [
     name: "Base",
     descriptor: giveMe.aDialog({
       content: giveMe.aText( { value: "Dialog Content" }),
-      dialogButton: { label: "Spec: Dialog Button" },
-      header: "Spec: Dialog Header"
+      header: "Spec: Dialog Header",
+      open: giveMe.aButton({ label: "Spec: Dialog Button" }).schema
     })
   },
   {
@@ -24,9 +24,9 @@ const variants = [
         giveMe.aLocalAction({ delay: 100 }),
         giveMe.aLocalAction({ showMessage: "Execute Action" })
       ]),
-      actionButton: { label: "Spec: Dialog Action" },
       content: giveMe.aText( { value: "Dialog Content" }),
-      header: "Spec: Dialog Header"
+      header: "Spec: Dialog Header",
+      submit: giveMe.aButton({ label: "Spec: Dialog Action" })
     })
   }
 ];

@@ -144,7 +144,7 @@ public class FormSampleUiOverrideFeature : IFeature
                     {
                         var (_, l) = cc;
 
-                        sf.DialogTemplate = B.SimpleFormDialogTemplate(
+                        sf.DialogOptions = B.SimpleFormDialog(
                             new(string.Empty)
                             {
                                 Icon = "pi pi-pencil",

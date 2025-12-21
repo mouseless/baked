@@ -1,18 +1,18 @@
 <template>
   <div>
-    <template v-if="dialogTemplate">
+    <template v-if="dialogOptions">
       <Button
         :disabled="executing"
-        :schema="dialogTemplate.toggleButton"
+        :schema="dialogOptions.open"
         @click="visible = true"
       />
       <Dialog
         v-model:visible="visible"
         closable
-        :header="l(name)"
+        :header="l(title)"
         modal
         :style="{ width: 'min(700px, 90vw)' }"
-        @after-hide="submit"
+        @after-hide="emitSubmit"
       >
         <div class="flex flex-col gap-4">
           <Inputs
@@ -26,12 +26,12 @@
         <template #footer>
           <Button
             :disabled="executing"
-            :schema="dialogTemplate.cancelButton"
+            :schema="dialogOptions.cancel"
             @submit="() => visible = false"
           />
           <Button
             :disabled="!ready"
-            :schema="submitButton"
+            :schema="submit"
             @submit="execute"
           />
         </template>
@@ -40,7 +40,7 @@
     <template v-else>
       <div class="flex flex-col gap-8">
         <h1 class="font-bold text-xl truncate">
-          {{ l(name) }}
+          {{ l(title) }}
         </h1>
         <div class="flex flex-col gap-4">
           <Inputs
@@ -53,7 +53,7 @@
         </div>
         <Button
           :disabled="!ready || executing"
-          :schema="submitButton"
+          :schema="submit"
           @submit="$emit('submit', formData)"
         />
       </div>
@@ -74,7 +74,7 @@ const { schema } = defineProps({
 });
 const emit = defineEmits(["submit"]);
 
-const { dialogTemplate, inputs, name, submitButton } = schema;
+const { dialogOptions, inputs, submit, title } = schema;
 
 const executing = context.injectExecuting();
 const formData = ref({});
@@ -95,7 +95,7 @@ function execute() {
   visible.value = false;
 }
 
-function submit() {
+function emitSubmit() {
   if(submitted.value) {
     submitted.value = false;
     emit("submit", formData.value);

@@ -68,9 +68,9 @@ public static class Components
         Action<DefaultLayout.ScrollTop>? options = default
     ) => options.Apply(new());
 
-    public static ComponentDescriptor<Dialog> Dialog(string label, string header, IComponentDescriptor content,
+    public static ComponentDescriptor<Dialog> Dialog(Button open, string header, IComponentDescriptor content,
        Action<Dialog>? options = default
-    ) => new(options.Apply(new(new(label), header, content)));
+    ) => new(options.Apply(new(open, header, content)));
 
     public static ComponentDescriptor<ErrorPage> ErrorPage(
         Action<ErrorPage>? options = default,
@@ -207,14 +207,14 @@ public static class Components
         Action<SideMenu.Item>? options = default
     ) => options.Apply(new(route, icon));
 
-    public static ComponentDescriptor<SimpleForm> SimpleForm(string title, Button submitButton,
+    public static ComponentDescriptor<SimpleForm> SimpleForm(string title, Button submit,
         IAction? action = default,
         Action<SimpleForm>? options = default
-    ) => new(options.Apply(new(title, submitButton))) { Action = action };
+    ) => new(options.Apply(new(title, submit))) { Action = action };
 
-    public static SimpleForm.Dialog SimpleFormDialogTemplate(Button toggleButton, Button cancelButton,
+    public static SimpleForm.Dialog SimpleFormDialog(Button open, Button cancel,
         Action<SimpleForm.Dialog>? options = default
-    ) => options.Apply(new(toggleButton, cancelButton));
+    ) => options.Apply(new(open, cancel));
 
     public static ComponentDescriptor<SimplePage> SimplePage(string path, IComponentDescriptor title,
         Action<SimplePage>? options = default

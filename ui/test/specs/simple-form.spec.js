@@ -99,7 +99,7 @@ test.describe("Dialog", () => {
     const button = component.locator(primevue.button.base);
 
     await expect(button).toBeAttached();
-    await expect(button).toHaveText("Toggle Dialog");
+    await expect(button).toHaveText("Open");
   });
   // TODO split this test for inputs and buttons
   test("dialog with inputs as content with submit and cancel button", async({ page }) => {

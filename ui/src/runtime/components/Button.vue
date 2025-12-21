@@ -24,7 +24,7 @@ const ready = defineModel("ready", { type: Boolean, default: true });
 
 defineEmits(["submit"]);
 
-const { icon, label, rounded, severity, variant } = schema;
+const { icon, label, rounded, severity = "secondary", variant } = schema;
 
 const executing = context.injectExecuting();
 </script>
