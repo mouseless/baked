@@ -132,6 +132,8 @@
 - `EnumSelect` and `EnumSelectButton` in `DomainComponents` are renamed to
   `ParameterSelect` and `ParameterSelectButton`
   - They still require an `InlineData` schema on the parameter type
+- Data composables `compute` is renamd to `computeSync`
+  and `computeAsync` is renamd to `compute`
 
 ## Improvements
 
