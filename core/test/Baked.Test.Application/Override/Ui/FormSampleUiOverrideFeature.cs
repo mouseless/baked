@@ -142,6 +142,19 @@ public class FormSampleUiOverrideFeature : IFeature
                     d.Open.Rounded = true;
                 }
             );
+            builder.Conventions.AddMethodComponentConfiguration<SimpleForm>(
+                component: (sf, c, cc) =>
+                {
+                    cc = cc.Drill(nameof(SimpleForm.Inputs));
+
+                    foreach (var parameter in c.Method.DefaultOverload.Parameters)
+                    {
+                        sf.Schema.Inputs.Add(
+                            parameter.GetRequiredSchema<Input>(cc.Drill(parameter.Name))
+                        );
+                    }
+                }
+            );
             builder.Conventions.AddMethodSchema(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.GetParents),
                 where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.ActionTemplate)),

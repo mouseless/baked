@@ -99,7 +99,22 @@
                             "submit": {
                               "label": "Update"
                             },
-                            "inputs": [],
+                            "inputs": [
+                              {
+                                "name": "name",
+                                "required": true,
+                                "default": {
+                                  "type": "Inline",
+                                  "value": null
+                                },
+                                "component": {
+                                  "type": "InputText",
+                                  "schema": {
+                                    "label": "Name"
+                                  }
+                                }
+                              }
+                            ],
                             "dialogOptions": {
                               "open": {
                                 "icon": "pi pi-pencil",
