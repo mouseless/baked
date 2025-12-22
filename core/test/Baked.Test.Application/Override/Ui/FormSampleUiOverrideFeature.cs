@@ -123,27 +123,24 @@ public class FormSampleUiOverrideFeature : IFeature
                     }
                 )
             );
+            builder.Conventions.AddMethodSchema(
+                when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.Update),
+                where: cc => cc.Path.Contains(nameof(DataTable), nameof(DataTable.ActionTemplate)),
+                schema: (c, cc) => MethodSimpleFormDialog(c.Method, cc)
+            );
             builder.Conventions.AddMethodComponent(
                 when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.Update),
                 where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.ActionTemplate)),
-                component: (c, cc) => MethodSimpleForm(c.Method, cc,
-                    options: sf =>
-                    {
-                        var (_, l) = cc;
-
-                        sf.DialogOptions = B.SimpleFormDialog(
-                            B.Button(string.Empty,
-                                options: b =>
-                                {
-                                    b.Icon = "pi pi-pencil";
-                                    b.Variant = "text";
-                                    b.Rounded = true;
-                                }
-                            ).Schema,
-                            B.Button(l("Cancel")).Schema
-                        );
-                    }
-                )
+                component: (c, cc) => MethodSimpleForm(c.Method, cc)
+            );
+            builder.Conventions.AddMethodSchemaConfiguration<SimpleForm.Dialog>(
+                when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.Update),
+                schema: d =>
+                {
+                    d.Open.Icon = "pi pi-pencil";
+                    d.Open.Variant = "text";
+                    d.Open.Rounded = true;
+                }
             );
             builder.Conventions.AddMethodSchema(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.GetParents),

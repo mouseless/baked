@@ -103,7 +103,7 @@
                             "dialogOptions": {
                               "open": {
                                 "icon": "pi pi-pencil",
-                                "label": "",
+                                "label": "Submit",
                                 "variant": "text",
                                 "rounded": true
                               },

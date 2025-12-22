@@ -312,7 +312,26 @@ public static class DomainComponents
 
         return B.SimpleForm(l(method.Name.Titleize()), submit.Schema,
             action: method.GetSchema<RemoteAction>(context.Drill(nameof(IComponentDescriptor.Action))),
-            options: options
+            options: sf =>
+            {
+                sf.DialogOptions = method.GetSchema<SimpleForm.Dialog>(context.Drill(nameof(SimpleForm.DialogOptions)));
+
+                options.Apply(sf);
+            }
         );
+    }
+
+    public static SimpleForm.Dialog MethodSimpleFormDialog(MethodModel method, ComponentContext context,
+        Action<SimpleForm.Dialog>? options = default
+    )
+    {
+        var (_, l) = context;
+
+        var cancel = method.GetSchema<Button>(context.Drill(nameof(SimpleForm.DialogOptions.Cancel))) ??
+            B.Button(l("Cancel")).Schema;
+        var open = method.GetSchema<Button>(context.Drill(nameof(SimpleForm.DialogOptions.Open))) ??
+            B.Button(l("Submit")).Schema;
+
+        return B.SimpleFormDialog(open, cancel, options: options);
     }
 }
