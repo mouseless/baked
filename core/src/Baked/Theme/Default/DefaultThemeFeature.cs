@@ -71,6 +71,19 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 where: cc => cc.Path.EndsWith(nameof(PageTitle.Actions), "*"),
                 component: (c, cc) => MethodButton(c.Method, cc)
             );
+            builder.Conventions.AddMethodSchema(
+                when: c => c.Method.Has<ActionModelAttribute>(),
+                schema: (c, cc) => DomainActions.MethodRemote(c.Method)
+            );
+            builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
+                when: c => c.Method.Has<ActionModelAttribute>(),
+                where: cc => cc.Path.Contains(nameof(DataTable), nameof(DataTable.ActionTemplate)),
+                schema: ra => ra.Params = Context.Parent(options: o => o.Prop = "row")
+            );
+            builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
+                when: c => c.Method.DefaultOverload.Parameters.Any() && c.Method.DefaultOverload.AllParametersAreApiInput(),
+                schema: ra => ra.Body = Context.Model()
+            );
 
             // Parameter Defaults
             builder.Conventions.AddParameterSchema(

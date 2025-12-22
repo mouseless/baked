@@ -110,19 +110,6 @@ public class FormSampleUiOverrideFeature : IFeature
                 where: cc => cc.Path.StartsWith(nameof(Page), "*", "*", nameof(FormPage)),
                 schema: ra => ra.PostAction = Actions.Local.UseRedirect("/form-sample")
             );
-
-            builder.Conventions.AddMethodSchema(
-                when: c => c.Type.Is<Parent>() && (c.Method.Name == nameof(Parent.Delete) || c.Method.Name == nameof(Parent.Update)),
-                schema: (c, cc) => MethodRemote(c.Method)
-            );
-            builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
-                when: c => c.Type.Is<Parent>() && (c.Method.Name == nameof(Parent.Delete) || c.Method.Name == nameof(Parent.Update)),
-                schema: ra => ra.Params = Context.Parent(options: o => o.Prop = "row")
-            );
-            builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
-                when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.Update),
-                schema: ra => ra.Body = Context.Model()
-            );
             builder.Conventions.AddMethodComponent(
                 when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.Delete),
                 where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.ActionTemplate)),
@@ -145,13 +132,15 @@ public class FormSampleUiOverrideFeature : IFeature
                         var (_, l) = cc;
 
                         sf.DialogOptions = B.SimpleFormDialog(
-                            new(string.Empty)
-                            {
-                                Icon = "pi pi-pencil",
-                                Variant = "text",
-                                Rounded = true
-                            },
-                            new(l("Cancel"))
+                            B.Button(string.Empty,
+                                options: b =>
+                                {
+                                    b.Icon = "pi pi-pencil";
+                                    b.Variant = "text";
+                                    b.Rounded = true;
+                                }
+                            ).Schema,
+                            B.Button(l("Cancel")).Schema
                         );
                     }
                 )
