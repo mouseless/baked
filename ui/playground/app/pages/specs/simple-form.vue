@@ -68,10 +68,10 @@ const variants = [
           })
         })
       ]),
-      dialogOptions: {
-        open: giveMe.aButton({ label: "Spec: Open" }).schema,
+      dialogOptions: giveMe.aSimpleFormDialog({
+        open: giveMe.aButton({ label: "Spec: Simple Form" }).schema,
         cancel: giveMe.aButton({ label: "Spec: Cancel" }).schema
-      },
+      }),
       inputs: [
         giveMe.anInput({
           name: "text",

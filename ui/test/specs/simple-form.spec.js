@@ -99,7 +99,7 @@ test.describe("Dialog", () => {
     const button = component.locator(primevue.button.base);
 
     await expect(button).toBeAttached();
-    await expect(button).toHaveText("Open");
+    await expect(button).toHaveText("Simple Form");
   });
 
   test("header", async({ page }) => {

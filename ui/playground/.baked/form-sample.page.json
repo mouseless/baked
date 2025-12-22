@@ -97,7 +97,8 @@
                           "schema": {
                             "title": "Update",
                             "submit": {
-                              "label": "Update"
+                              "label": "Update",
+                              "severity": "primary"
                             },
                             "inputs": [
                               {

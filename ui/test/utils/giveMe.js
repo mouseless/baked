@@ -716,7 +716,7 @@ export default {
   aSimpleForm({ dialogOptions, inputs, submit, title, action }) {
     inputs = $(inputs, []);
     title = $(title, "Simple Form");
-    submit = $(submit, this.aButton({ label: "Submit" }).schema);
+    submit = $(submit, this.aButton({ label: "Spec: Submit" }).schema);
 
     return {
       type: "SimpleForm",
@@ -727,6 +727,16 @@ export default {
         title
       },
       action
+    };
+  },
+
+  aSimpleFormDialog({ open, cancel }) {
+    open= $(open, this.aButton({ label: "Spec: Open" }).schema);
+    cancel= $(cancel, this.aButton({ label: "Spec: Cancel" }).schema);
+
+    return {
+      open,
+      cancel
     };
   },
 

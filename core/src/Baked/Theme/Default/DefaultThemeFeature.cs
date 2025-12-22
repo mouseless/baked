@@ -71,6 +71,20 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 where: cc => cc.Path.EndsWith(nameof(PageTitle.Actions), "*"),
                 component: (c, cc) => MethodButton(c.Method, cc)
             );
+            builder.Conventions.AddMethodComponent(
+                when: c => c.Method.Has<ActionModelAttribute>(),
+                where: cc => cc.Path.EndsWith(nameof(SimpleForm), nameof(SimpleForm.Submit)),
+                component: (c, cc) =>
+                {
+                    var (_, l) = cc;
+
+                    return B.Button(l(c.Method.Name.Titleize()));
+                }
+            );
+            builder.Conventions.AddMethodComponentConfiguration<Button>(
+                where: cc => cc.Path.EndsWith(nameof(SimpleForm), nameof(SimpleForm.Submit)),
+                component: b => b.Schema.Severity = "primary"
+            );
             builder.Conventions.AddMethodSchema(
                 when: c => c.Method.Has<ActionModelAttribute>(),
                 schema: (c, cc) => DomainActions.MethodRemote(c.Method)

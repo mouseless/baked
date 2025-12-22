@@ -306,11 +306,9 @@ public static class DomainComponents
         context = context.Drill(nameof(SimpleForm));
         var (_, l) = context;
 
-        var submit =
-            method.GetComponent<Button>(context.Drill(nameof(SimpleForm.Submit))) as ComponentDescriptor<Button> ??
-            MethodButton(method, context.Drill(nameof(SimpleForm.Submit)));
+        var submit = (Button)method.GetRequiredComponent<Button>(context.Drill(nameof(SimpleForm.Submit))).Schema;
 
-        return B.SimpleForm(l(method.Name.Titleize()), submit.Schema,
+        return B.SimpleForm(l(method.Name.Titleize()), submit,
             action: method.GetSchema<RemoteAction>(context.Drill(nameof(IComponentDescriptor.Action))),
             options: sf =>
             {
