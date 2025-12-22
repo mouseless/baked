@@ -3,6 +3,7 @@ using Baked.Business;
 using Baked.RestApi.Model;
 using Baked.Test.Orm;
 using Baked.Test.Theme;
+using Baked.Test.Ui;
 using Baked.Theme;
 using Baked.Ui;
 using Humanizer;
@@ -112,7 +113,7 @@ public class FormSampleUiOverrideFeature : IFeature
             );
             builder.Conventions.AddMethodComponent(
                 when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.Delete),
-                where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.ActionTemplate)),
+                where: cc => cc.Path.EndsWith(nameof(DataTable.ActionTemplate), "**"),
                 component: (c, cc) => MethodButton(c.Method, cc,
                     options: b =>
                     {
@@ -123,25 +124,10 @@ public class FormSampleUiOverrideFeature : IFeature
                     }
                 )
             );
-            builder.Conventions.AddMethodSchema(
-                when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.Update),
-                where: cc => cc.Path.Contains(nameof(DataTable), nameof(DataTable.ActionTemplate)),
-                schema: (c, cc) => MethodSimpleFormDialog(c.Method, cc)
-            );
             builder.Conventions.AddMethodComponent(
                 when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.Update),
-                where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.ActionTemplate)),
+                where: cc => cc.Path.EndsWith(nameof(DataTable.ActionTemplate), "**"),
                 component: (c, cc) => MethodSimpleForm(c.Method, cc)
-            );
-            builder.Conventions.AddMethodSchemaConfiguration<SimpleForm.Dialog>(
-                when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.Update),
-                schema: d =>
-                {
-                    d.Open.Label = string.Empty;
-                    d.Open.Icon = "pi pi-pencil";
-                    d.Open.Variant = "text";
-                    d.Open.Rounded = true;
-                }
             );
             builder.Conventions.AddMethodComponentConfiguration<SimpleForm>(
                 component: (sf, c, cc) =>
@@ -157,6 +143,21 @@ public class FormSampleUiOverrideFeature : IFeature
                 }
             );
             builder.Conventions.AddMethodSchema(
+                when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.Update),
+                where: cc => cc.Path.EndsWith(nameof(DataTable.ActionTemplate), "**"),
+                schema: (c, cc) => MethodSimpleFormDialog(c.Method, cc)
+            );
+            builder.Conventions.AddMethodSchemaConfiguration<SimpleForm.Dialog>(
+                when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.Update),
+                schema: d =>
+                {
+                    d.Open.Label = string.Empty;
+                    d.Open.Icon = "pi pi-pencil";
+                    d.Open.Variant = "text";
+                    d.Open.Rounded = true;
+                }
+            );
+            builder.Conventions.AddMethodSchema(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.GetParents),
                 where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.ActionTemplate)),
                 schema: (c, cc) => B.DataTableColumn("Actions")
@@ -168,11 +169,13 @@ public class FormSampleUiOverrideFeature : IFeature
                 {
                     if (!c.Method.DefaultOverload.ReturnType.TryGetGenerics(out var generics)) { return; }
 
+                    cc = cc.Drill(nameof(Container), nameof(Container.Contents));
+
                     var returnType = generics.GenericTypeArguments.First().Model;
                     var rowActions = new List<IComponentDescriptor>();
                     foreach (var method in returnType.GetMembers().Methods)
                     {
-                        var component = method.GetComponent(cc);
+                        var component = method.GetComponent(cc.Drill(method.Name));
                         if (component is null) { continue; }
 
                         rowActions.Add(component);
