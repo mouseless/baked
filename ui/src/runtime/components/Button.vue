@@ -18,13 +18,12 @@ const context = useContext();
 const { localize: l } = useLocalization();
 
 const { schema } = defineProps({
-  schema: { type: null, required: true }
+  schema: { type: null, required: true },
+  ready: { type: Boolean, default: true }
 });
-const ready = defineModel("ready", { type: Boolean, default: true });
-
 defineEmits(["submit"]);
 
-const { icon, label, rounded, severity, variant } = schema;
+const { icon, label, rounded, severity = "secondary", variant } = schema;
 
 const executing = context.injectExecuting();
 </script>

@@ -243,6 +243,12 @@
             "title": "Header",
             "parentRoute": "/specs"
           },
+          "/specs/dialog": {
+            "route": "/specs/dialog",
+            "icon": "pi pi-microchip",
+            "title": "Dialog",
+            "parentRoute": "/specs"
+          },
           "/specs/page-title": {
             "route": "/specs/page-title",
             "icon": "pi pi-microchip",

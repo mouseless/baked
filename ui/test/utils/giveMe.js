@@ -28,13 +28,13 @@ export default {
     return { sample: "response" };
   },
 
-  aButton({ action, icon, label, variant, rounded } = {}) {
+  aButton({ action, icon, label, variant, severity, rounded } = {}) {
     label = $(label, "Button");
     action = $(action, this.aLocalAction({ showMessage: `${label} clicked` }));
 
     return {
       type: "Button",
-      schema: { icon, label, variant, rounded },
+      schema: { icon, label, variant, severity, rounded },
       action
     };
   },
@@ -233,6 +233,23 @@ export default {
       formatter,
       buttonIcon,
       buttonLabel
+    };
+  },
+
+  aDialog({ action, content, header, open, submit }) {
+    header = $(header, "Dialog Header");
+    content = $(content, this.aText({ label: "Dialog Header" }));
+    open = $(open, { label: "Spec: Show" });
+
+    return {
+      type: "Dialog",
+      schema: {
+        content,
+        header,
+        open,
+        submit
+      },
+      action
     };
   },
 
@@ -696,19 +713,30 @@ export default {
     return { route, icon, title, disabled };
   },
 
-  aSimpleForm({ buttonIcon, buttonLabel, inputs, action }) {
-    buttonIcon = $(buttonIcon, "pi pi-save");
-    buttonLabel = $(buttonLabel, "Test Submit");
+  aSimpleForm({ dialogOptions, inputs, submit, title, action }) {
     inputs = $(inputs, []);
+    title = $(title, "Simple Form");
+    submit = $(submit, this.aButton({ label: "Spec: Submit" }).schema);
 
     return {
       type: "SimpleForm",
       schema: {
-        buttonIcon,
-        buttonLabel,
-        inputs
+        dialogOptions,
+        inputs,
+        submit,
+        title
       },
       action
+    };
+  },
+
+  aSimpleFormDialog({ open, cancel }) {
+    open= $(open, this.aButton({ label: "Spec: Open" }).schema);
+    cancel= $(cancel, this.aButton({ label: "Spec: Cancel" }).schema);
+
+    return {
+      open,
+      cancel
     };
   },
 

@@ -71,6 +71,33 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 where: cc => cc.Path.EndsWith(nameof(PageTitle.Actions), "*"),
                 component: (c, cc) => MethodButton(c.Method, cc)
             );
+            builder.Conventions.AddMethodComponent(
+                when: c => c.Method.Has<ActionModelAttribute>(),
+                where: cc => cc.Path.EndsWith(nameof(SimpleForm), nameof(SimpleForm.Submit)),
+                component: (c, cc) =>
+                {
+                    var (_, l) = cc;
+
+                    return B.Button(l(c.Method.Name.Titleize()));
+                }
+            );
+            builder.Conventions.AddMethodComponentConfiguration<Button>(
+                where: cc => cc.Path.EndsWith(nameof(SimpleForm), nameof(SimpleForm.Submit)),
+                component: b => b.Schema.Severity = "primary"
+            );
+            builder.Conventions.AddMethodSchema(
+                when: c => c.Method.Has<ActionModelAttribute>(),
+                schema: (c, cc) => DomainActions.MethodRemote(c.Method)
+            );
+            builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
+                when: c => c.Method.Has<ActionModelAttribute>(),
+                where: cc => cc.Path.Contains(nameof(DataTable), nameof(DataTable.ActionTemplate)),
+                schema: ra => ra.Params = Context.Parent(options: o => o.Prop = "row")
+            );
+            builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
+                when: c => c.Method.DefaultOverload.Parameters.Any(),
+                schema: ra => ra.Body = Context.Model()
+            );
 
             // Parameter Defaults
             builder.Conventions.AddParameterSchema(
@@ -138,6 +165,43 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     dtc.Component.Data ??= Context.Parent(options: o => o.Prop = $"{rootProp}.{data.Prop}");
                 },
                 order: UiLayer.MaxConventionOrder - 10
+            );
+
+            // Simple Form
+            builder.Conventions.AddMethodComponentConfiguration<SimpleForm>(
+                component: (sf, c, cc) =>
+                {
+                    cc = cc.Drill(nameof(SimpleForm.Inputs));
+
+                    foreach (var parameter in c.Method.DefaultOverload.Parameters)
+                    {
+                        sf.Schema.Inputs.Add(
+                            parameter.GetRequiredSchema<Input>(cc.Drill(parameter.Name))
+                        );
+                    }
+                }
+            );
+            builder.Conventions.AddMethodComponent(
+                where: cc => cc.Path.EndsWith(nameof(SimpleForm.DialogOptions), nameof(SimpleForm.DialogOptions.Cancel)),
+                component: (_, cc) =>
+                {
+                    var (_, l) = cc;
+
+                    return B.Button(l("Cancel"));
+                }
+            );
+            builder.Conventions.AddMethodComponentConfiguration<Button>(
+                where: cc => cc.Path.EndsWith(nameof(SimpleForm.DialogOptions), nameof(SimpleForm.DialogOptions.Cancel)),
+                component: b => b.Schema.Variant = "text"
+            );
+            builder.Conventions.AddMethodComponent(
+                where: cc => cc.Path.EndsWith(nameof(SimpleForm.DialogOptions), nameof(SimpleForm.DialogOptions.Open)),
+                component: (c, cc) =>
+                {
+                    var (_, l) = cc;
+
+                    return B.Button(l(c.Method.Name.Titleize()));
+                }
             );
 
             // Pages

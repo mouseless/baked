@@ -16,7 +16,8 @@
 - `useActionExecuter` composable is now added to execute `Composite`, `Local`,
   `Publish` and `Remote` actions with given configuration
   - `Page` component now provides an event bus to publish page-wide events
-- `SimpleForm` component is now added for rendering a basic form with inputs
+- `SimpleForm` component is now added for rendering a basic form with inputs 
+  with dialog support
 - `DataTable` now supports row based actions via `ActionTemplate` property
 - `Bake` now supports reload and show/hide reactions
   - Use `ReloadOn` and `ShowOn` to bind them to an event
@@ -33,6 +34,8 @@
   - `ActionsAsDataPanelsUxFeature` is modified to add data panel to any content
     in any page, expect `Get` methods to be rendered as data panel under any
     page's content list
+- `Dialog` component is now added which displays given content in dialog
+  with action support
 
 ## Breaking Changes
 

@@ -3,6 +3,7 @@ using Baked.Business;
 using Baked.RestApi.Model;
 using Baked.Test.Orm;
 using Baked.Test.Theme;
+using Baked.Test.Ui;
 using Baked.Theme;
 using Baked.Ui;
 using Humanizer;
@@ -12,10 +13,10 @@ using static Baked.Theme.Default.DomainComponents;
 using static Baked.Ui.Datas;
 
 using B = Baked.Ui.Components;
+using C = Baked.Test.Ui.Components;
 
 namespace Baked.Test.Override.Ui;
 
-// TODO - extract conventions and simplify this
 public class FormSampleUiOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
@@ -47,6 +48,7 @@ public class FormSampleUiOverrideFeature : IFeature
                 {
                     dp.Schema.Content.ReloadOn(nameof(FormSample.ClearParents).Kebaberize());
                     dp.Schema.Content.ReloadOn(nameof(Parent.Delete).Kebaberize());
+                    dp.Schema.Content.ReloadOn(nameof(Parent.Update).Kebaberize());
                 }
             );
 
@@ -108,18 +110,9 @@ public class FormSampleUiOverrideFeature : IFeature
                 where: cc => cc.Path.StartsWith(nameof(Page), "*", "*", nameof(FormPage)),
                 schema: ra => ra.PostAction = Actions.Local.UseRedirect("/form-sample")
             );
-
-            builder.Conventions.AddMethodSchema(
-                when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.Delete),
-                schema: (c, cc) => MethodRemote(c.Method)
-            );
-            builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
-                when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.Delete),
-                schema: ra => ra.Params = Context.Parent(options: o => o.Prop = "row")
-            );
             builder.Conventions.AddMethodComponent(
                 when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.Delete),
-                where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.ActionTemplate)),
+                where: cc => cc.Path.EndsWith(nameof(DataTable.ActionTemplate), "**"),
                 component: (c, cc) => MethodButton(c.Method, cc,
                     options: b =>
                     {
@@ -127,8 +120,30 @@ public class FormSampleUiOverrideFeature : IFeature
                         b.Label = string.Empty;
                         b.Variant = "text";
                         b.Rounded = true;
+                        b.Severity = "danger";
                     }
                 )
+            );
+            builder.Conventions.AddMethodComponent(
+                when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.Update),
+                where: cc => cc.Path.EndsWith(nameof(DataTable.ActionTemplate), "**"),
+                component: (c, cc) => MethodSimpleForm(c.Method, cc)
+            );
+            builder.Conventions.AddMethodSchema(
+                when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.Update),
+                where: cc => cc.Path.EndsWith(nameof(DataTable.ActionTemplate), "**"),
+                schema: (c, cc) => MethodSimpleFormDialog(c.Method, cc)
+            );
+            builder.Conventions.AddMethodComponentConfiguration<Button>(
+                when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.Update),
+                where: cc => cc.Path.EndsWith(nameof(SimpleForm), nameof(SimpleForm.DialogOptions), nameof(SimpleForm.Dialog.Open)),
+                component: b =>
+                {
+                    b.Schema.Label = string.Empty;
+                    b.Schema.Icon = "pi pi-pencil";
+                    b.Schema.Variant = "text";
+                    b.Schema.Rounded = true;
+                }
             );
             builder.Conventions.AddMethodSchema(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.GetParents),
@@ -137,16 +152,18 @@ public class FormSampleUiOverrideFeature : IFeature
             );
             builder.Conventions.AddMethodSchemaConfiguration<DataTable.Column>(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.GetParents),
+                where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.ActionTemplate)),
                 schema: (col, c, cc) =>
                 {
-                    cc = cc.Drill(nameof(DataTable), nameof(DataTable.ActionTemplate));
                     if (!c.Method.DefaultOverload.ReturnType.TryGetGenerics(out var generics)) { return; }
+
+                    cc = cc.Drill(nameof(Container), nameof(Container.Contents));
 
                     var returnType = generics.GenericTypeArguments.First().Model;
                     var rowActions = new List<IComponentDescriptor>();
                     foreach (var method in returnType.GetMembers().Methods)
                     {
-                        var component = method.GetComponent(cc);
+                        var component = method.GetComponent(cc.Drill(method.Name));
                         if (component is null) { continue; }
 
                         rowActions.Add(component);
@@ -155,8 +172,7 @@ public class FormSampleUiOverrideFeature : IFeature
                     col.Frozen = true;
                     col.AlignRight = true;
                     col.Exportable = false;
-                    // temporarily add first action
-                    col.Component = rowActions.First();
+                    col.Component = C.Container(options: c => c.Contents.AddRange(rowActions));
                 }
             );
         });

@@ -23,14 +23,15 @@ const variants = [
           })
         })
       ]),
-      buttonLabel: "Spec: Submit",
       inputs: [
         giveMe.anInput({
           name: "text",
           component: giveMe.anExpectedInput({ testId: "input" }),
           required: true
         })
-      ]
+      ],
+      submit: giveMe.aButton({ label: "Spec: Submit" }).schema,
+      title: "Spec: Simple Form"
     })
   },
   {
@@ -51,6 +52,35 @@ const variants = [
           component: giveMe.anExpectedInput()
         })
       ]
+    })
+  },
+  {
+    name: "Dialog",
+    descriptor: giveMe.aSimpleForm({
+      action: giveMe.aCompositeAction([
+        giveMe.aLocalAction({ delay: 100 }),
+        giveMe.aLocalAction({
+          composable: "useShowMessage",
+          options: giveMe.aContextData({
+            key: "model",
+            prop: "text",
+            targetProp: "message"
+          })
+        })
+      ]),
+      dialogOptions: giveMe.aSimpleFormDialog({
+        open: giveMe.aButton({ label: "Spec: Simple Form" }).schema,
+        cancel: giveMe.aButton({ label: "Spec: Cancel" }).schema
+      }),
+      inputs: [
+        giveMe.anInput({
+          name: "text",
+          component: giveMe.anExpectedInput({ testId: "input" }),
+          required: true
+        })
+      ],
+      submit: giveMe.aButton({ label: "Spec: Submit" }).schema,
+      title: "Spec: Simple Form"
     })
   }
 ];

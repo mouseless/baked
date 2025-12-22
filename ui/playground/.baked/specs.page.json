@@ -374,6 +374,18 @@
             }
           },
           {
+            "title": "Dialog",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/dialog",
+                "icon": "pi pi-microchip",
+                "title": "Dialog",
+                "description": "Renders a dialog with given contents and a button if given an action"
+              }
+            }
+          },
+          {
             "title": "Page Title",
             "component": {
               "type": "CardLink",

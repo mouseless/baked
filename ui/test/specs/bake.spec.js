@@ -98,7 +98,9 @@ test.describe("Model", () => {
 test.describe("Action", () =>{
   const id = "Action";
 
-  test("Execute given composite action", async({ page }) => {
+  test("execute given composite action", async({ goto, page }) => {
+    await goto("/specs/bake?val=2", { waitUntil: "load" });
+
     const component = page.getByTestId(id);
     const button = component.locator(primevue.button.base);
 
@@ -115,7 +117,7 @@ test.describe("Action", () =>{
     expect(request.postDataJSON()).toEqual({ text: "text" });
   });
 
-  test("Execute given remote post action using response", async({ page }) => {
+  test("execute given remote post action using response", async({ page }) => {
     const component = page.getByTestId(id);
     const button = component.locator(primevue.button.base);
 
@@ -141,7 +143,7 @@ test.describe("Reaction", () => {
   // });
   // ```
 
-  test("Reload reaction with composite and publish triggers", async({ page }) => {
+  test("reload reaction with composite and publish triggers", async({ page }) => {
     let reloaded = false;
     page.on("request", req => {
       if(req.url().includes("method-samples/async")) {
@@ -157,7 +159,7 @@ test.describe("Reaction", () => {
     expect(reloaded).toBe(true);
   });
 
-  test("Reaction is filtered out when published event value doesn't match constraint", async({ page }) => {
+  test("reaction is filtered out when published event value doesn't match constraint", async({ page }) => {
     let reloaded = false;
     page.on("request", req => {
       if(req.url().includes("method-samples/async")) {
@@ -173,7 +175,7 @@ test.describe("Reaction", () => {
     expect(reloaded).toBe(false);
   });
 
-  test("Reaction occurs when published event value matches constraint", async({ page }) => {
+  test("reaction occurs when published event value matches constraint", async({ page }) => {
     let reloaded = false;
     page.on("request", req => {
       if(req.url().includes("method-samples/async")) {
@@ -189,7 +191,7 @@ test.describe("Reaction", () => {
     expect(reloaded).toBe(true);
   });
 
-  test("Page context action and trigger", async({ page }) => {
+  test("page context action and trigger", async({ page }) => {
     let reloaded = false;
     page.on("request", req => {
       if(req.url().includes("method-samples/async")) {
@@ -205,7 +207,7 @@ test.describe("Reaction", () => {
     expect(reloaded).toBe(true);
   });
 
-  test("Composable constraint", async({ page }) => {
+  test("composable constraint", async({ page }) => {
     let reloaded = false;
     page.on("request", req => {
       if(req.url().includes("method-samples/async")) {
@@ -221,7 +223,7 @@ test.describe("Reaction", () => {
     expect(reloaded).toBe(true);
   });
 
-  test("Show/hide reaction with isNot constraint", async({ page }) => {
+  test("show/hide reaction with isNot constraint", async({ page }) => {
     const component = page.getByTestId(id);
     const input = component.getByTestId("input");
     await expect(component.getByTestId("output")).toBeAttached();

@@ -6,8 +6,8 @@
         #actions
       >
         <Button
-          v-model:ready="ready"
           :schema="button"
+          :ready
           @submit="onSubmit"
         />
       </template>
