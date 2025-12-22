@@ -238,7 +238,7 @@ export default {
 
   aDialog({ action, content, header, open, submit }) {
     header = $(header, "Dialog Header");
-    open = $(open, { label: "Show" });
+    open = $(open, { label: "Spec: Show" });
 
     return {
       type: "Dialog",
