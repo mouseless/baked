@@ -117,6 +117,12 @@
             "title": "Inputs - Query Bound",
             "parentRoute": "/specs"
           },
+          "/specs/layout": {
+            "route": "/specs/layout",
+            "icon": "pi pi-microchip",
+            "title": "Layout",
+            "parentRoute": "/specs"
+          },
           "/specs/routing": {
             "route": "/specs/routing",
             "icon": "pi pi-microchip",

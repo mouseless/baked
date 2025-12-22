@@ -94,11 +94,11 @@ function Computed({ parentFetch }) {
       return composable.computeSync(options);
     }
 
-    if(composable.computeAsync) {
-      return await composable.computeAsync(options);
+    if(composable.compute) {
+      return await composable.compute(options);
     }
 
-    throw new Error("Data composable should have either `computeSync` or `computeAsync`");
+    throw new Error("Data composable should have either `computeSync` or `compute`");
   }
 
   async function fetchParameters({ data }) {

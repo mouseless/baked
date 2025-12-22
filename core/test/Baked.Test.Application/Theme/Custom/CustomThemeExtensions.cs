@@ -26,6 +26,7 @@ public static class CustomThemeExtensions
             r => r.Child("/specs/custom-css", "Custom CSS", "/specs") with { Icon = "pi pi-microchip", Description = "Allows custom configuration to define custom css and more", Section = "Behavior" },
             r => r.Child("/specs/inputs", "Inputs", "/specs") with { Icon = "pi pi-microchip", Description = "Manages inputs through emits", Section = "Behavior" },
             r => r.Child("/specs/inputs--query-bound", "Inputs - Query Bound", "/specs") with { Icon = "pi pi-microchip", Description = "Manages inputs in sync with query string", Section = "Behavior" },
+            r => r.Child("/specs/layout", "Layout", "/specs") with { Icon = "pi pi-microchip", Description = "Manages layouts for pages", Section = "Behavior" },
             r => r.Child("/specs/routing", "Routing", "/specs") with { Icon = "pi pi-microchip", Description = "Uses page descriptors as route template and extract parameters", Section = "Behavior" },
             r => r.Child("/specs/toast", "Toast", "/specs") with { Icon = "pi pi-microchip", Description = "Renders alert messages", Section = "Behavior" },
 

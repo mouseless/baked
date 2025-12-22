@@ -76,6 +76,7 @@
   "Locale": "Dil",
   "Manages inputs in sync with query string": "Kullanıcı girdilerini sorgu dizisi ile senkronize yönetir",
   "Manages inputs through emits": "Kullanıcı girdilerini sayfa çaplı yayınlarla yönetir",
+  "Manages layouts for pages": "Manages layouts for pages",
   "Menu Page": "Menü Sayfası",
   "Message": "Mesaj",
   "Missing Component": "Eksik Bileşen",
