@@ -26,7 +26,7 @@ const variants = [
       inputs: [
         giveMe.anInput({
           name: "text",
-          component: giveMe.anInputText(),
+          component: giveMe.anExpectedInput({ testId: "input" }),
           required: true
         })
       ],

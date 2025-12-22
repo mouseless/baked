@@ -16,7 +16,7 @@
       :descriptor="content"
     />
     <template
-      v-if="actionButton"
+      v-if="submit"
       #footer
     >
       <Button

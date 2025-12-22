@@ -26,7 +26,7 @@ const variants = [
       ]),
       content: giveMe.aText( { value: "Dialog Content" }),
       header: "Spec: Dialog Header",
-      submit: giveMe.aButton({ label: "Spec: Dialog Action" })
+      submit: giveMe.aButton({ label: "Spec: Submit" }).schema
     })
   }
 ];

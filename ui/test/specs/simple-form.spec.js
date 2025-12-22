@@ -110,7 +110,7 @@ test.describe("Dialog", () => {
     await button.click();
 
     await expect(dialog.locator(primevue.dialog.header)).toHaveText("Simple Form");
-    await expect(dialog.locator(primevue.dialog.content).locator(".b-component--InputText")).toBeAttached();
+    await expect(dialog.locator(primevue.dialog.content).getByTestId("input")).toBeAttached();
     await expect(dialog.locator(primevue.dialog.footer).locator(primevue.button.base).nth(0)).toHaveText("Cancel");
     await expect(dialog.locator(primevue.dialog.footer).locator(primevue.button.base).nth(1)).toHaveText("Submit");
   });
@@ -120,7 +120,7 @@ test.describe("Dialog", () => {
     const button = component.locator(primevue.button.base);
     const dialog = page.locator(primevue.dialog.base);
     const submitButton = dialog.locator(primevue.dialog.footer).locator(primevue.button.base).nth(1);
-    const text = dialog.locator(primevue.dialog.content).locator(".b-component--InputText");
+    const text = dialog.locator(primevue.dialog.content).getByTestId("input");
 
     await button.click();
     await text.fill("text");

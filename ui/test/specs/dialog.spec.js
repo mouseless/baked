@@ -9,7 +9,7 @@ test.beforeEach(async({ goto }) => {
 test.describe("Base", () => {
   const id = "Base";
 
-  test("A button with given label is rendered", async({ page }) => {
+  test("button", async({ page }) => {
     const component = page.getByTestId(id);
     const button = component.locator(primevue.button.base);
 
@@ -17,7 +17,7 @@ test.describe("Base", () => {
     await expect(button).toHaveText("Dialog Button");
   });
 
-  test("Button click shows dialog", async({ page }) => {
+  test("show dialog", async({ page }) => {
     const component = page.getByTestId(id);
     const button = component.locator(primevue.button.base);
     const dialog = page.locator(primevue.dialog.base);
@@ -27,7 +27,7 @@ test.describe("Base", () => {
     await expect(dialog).toBeAttached();
   });
 
-  test("Dialog contains given header and content", async({ page }) => {
+  test("header and content", async({ page }) => {
     const component = page.getByTestId(id);
     const button = component.locator(primevue.button.base);
     const dialog = page.locator(primevue.dialog.base);
@@ -46,7 +46,7 @@ test.describe("Base", () => {
 test.describe("Action", () => {
   const id = "Action";
 
-  test("Renders button when action label is defined", async({ page }) => {
+  test("submit button", async({ page }) => {
     const component = page.getByTestId(id);
     const button = component.locator(primevue.button.base);
     const dialog = page.locator(primevue.dialog.base);
@@ -55,10 +55,10 @@ test.describe("Action", () => {
 
     await expect(dialog.locator(primevue.dialog.footer)).toBeAttached();
     await expect(dialog.locator(primevue.dialog.footer).locator(primevue.button.base)).toBeAttached();
-    await expect(dialog.locator(primevue.dialog.footer).locator(primevue.button.base)).toHaveText("Dialog Action");
+    await expect(dialog.locator(primevue.dialog.footer).locator(primevue.button.base)).toHaveText("Submit");
   });
 
-  test("Executes given action and hides dialog", async({ page }) => {
+  test("execute action", async({ page }) => {
     const component = page.getByTestId(id);
     const button = component.locator(primevue.button.base);
     const dialog = page.locator(primevue.dialog.base);
@@ -72,7 +72,7 @@ test.describe("Action", () => {
     await expect(dialog).not.toBeAttached();
   });
 
-  test("Does not execute action when closed", async({ page }) => {
+  test("does not execute action when closed", async({ page }) => {
     const component = page.getByTestId(id);
     const button = component.locator(primevue.button.base);
     const dialog = page.locator(primevue.dialog.base);

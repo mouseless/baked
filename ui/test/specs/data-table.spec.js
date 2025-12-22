@@ -158,7 +158,7 @@ test.describe("No Virtual Scroll", () => {
 test.describe("No Record Found", () => {
   const id = "No Record Found";
 
-  test("No records found message is displayed when no records are present", async({ page }) => {
+  test("no records found message is displayed when no records are present", async({ page }) => {
     const component = page.getByTestId(id);
     const rows = component.locator("td");
 
@@ -169,7 +169,7 @@ test.describe("No Record Found", () => {
 test.describe("Row Actions", () => {
   const id = "Row Actions";
 
-  test("Displays given action component in last column", async({ page }) => {
+  test("displays given action component in last column", async({ page }) => {
     const component = page.getByTestId(id);
     const cells = component.locator("td");
     const cellNo = (x, y) => (x - 1) * 3 + y - 1;
@@ -179,7 +179,7 @@ test.describe("Row Actions", () => {
     await expect(button).toHaveText("Action");
   });
 
-  test("Provides row data to action", async({ page }) => {
+  test("provides row data to action", async({ page }) => {
     const component = page.getByTestId(id);
     const cells = component.locator("td");
     const cellNo = (x, y) => (x - 1) * 3 + y - 1;
