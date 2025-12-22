@@ -238,6 +238,7 @@ export default {
 
   aDialog({ action, content, header, open, submit }) {
     header = $(header, "Dialog Header");
+    content = $(content, this.aText({ label: "Dialog Header" }));
     open = $(open, { label: "Spec: Show" });
 
     return {

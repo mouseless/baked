@@ -101,8 +101,8 @@ test.describe("Dialog", () => {
     await expect(button).toBeAttached();
     await expect(button).toHaveText("Open");
   });
-  // TODO split this test for inputs and buttons
-  test("dialog with inputs as content with submit and cancel button", async({ page }) => {
+
+  test("header", async({ page }) => {
     const component = page.getByTestId(id);
     const button = component.locator(primevue.button.base);
     const dialog = page.locator(primevue.dialog.base);
@@ -110,7 +110,25 @@ test.describe("Dialog", () => {
     await button.click();
 
     await expect(dialog.locator(primevue.dialog.header)).toHaveText("Simple Form");
+  });
+
+  test("input", async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base);
+    const dialog = page.locator(primevue.dialog.base);
+
+    await button.click();
+
     await expect(dialog.locator(primevue.dialog.content).getByTestId("input")).toBeAttached();
+  });
+
+  test("buttons", async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base);
+    const dialog = page.locator(primevue.dialog.base);
+
+    await button.click();
+
     await expect(dialog.locator(primevue.dialog.footer).locator(primevue.button.base).nth(0)).toHaveText("Cancel");
     await expect(dialog.locator(primevue.dialog.footer).locator(primevue.button.base).nth(1)).toHaveText("Submit");
   });

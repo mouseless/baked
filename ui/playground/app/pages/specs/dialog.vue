@@ -24,9 +24,6 @@ const variants = [
         giveMe.aLocalAction({ delay: 100 }),
         giveMe.aLocalAction({ showMessage: "Execute Action" })
       ]),
-      content: giveMe.aText( { value: "Dialog Content" }),
-      open: giveMe.aButton({ label: "Spec: Show" }).schema,
-      header: "Spec: Dialog Header",
       submit: giveMe.aButton({ label: "Spec: Submit" }).schema
     })
   }

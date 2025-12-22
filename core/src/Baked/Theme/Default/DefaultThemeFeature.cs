@@ -81,7 +81,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 schema: ra => ra.Params = Context.Parent(options: o => o.Prop = "row")
             );
             builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
-                when: c => c.Method.DefaultOverload.Parameters.Any() && c.Method.DefaultOverload.AllParametersAreApiInput(),
+                when: c => c.Method.DefaultOverload.Parameters.Any(),
                 schema: ra => ra.Body = Context.Model()
             );
 
