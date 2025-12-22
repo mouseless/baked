@@ -1,5 +1,4 @@
 import { expect, test } from "@nuxt/test-utils/playwright";
-import baked from "../utils/locators/baked";
 import primevue from "../utils/locators/primevue";
 
 test.beforeEach(async({ goto }) => {
@@ -38,8 +37,8 @@ test.describe("Base", () => {
     await expect(dialog.locator(primevue.dialog.header)).toHaveText("Dialog Header");
 
     await expect(dialog.locator(primevue.dialog.content)).toBeAttached();
-    await expect(dialog.locator(primevue.dialog.content).locator(baked.string.text)).toBeAttached();
-    await expect(dialog.locator(primevue.dialog.content).locator(baked.string.text)).toHaveText("Dialog Content");
+    await expect(dialog.locator(primevue.dialog.content).getByTestId("content")).toBeAttached();
+    await expect(dialog.locator(primevue.dialog.content).getByTestId("content")).toHaveText("Dialog Content");
   });
 });
 

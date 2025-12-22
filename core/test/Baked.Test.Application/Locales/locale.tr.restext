@@ -155,6 +155,7 @@ Select=Seç
 Select Button=Seçim Butonu
 Shortens and renders money values with the full value shown as tooltip=Para değerlerini kısaltır ve tam değeri ipucu olarak gösterir
 Shortens and renders numbers with the full value shown as tooltip=Sayıları kısaltır ve tam değeri ipucu olarak gösterir
+Show=Göster
 Showcases a report layout with tabs and data panels=Sekmeler ve veri panelleriyle bir rapor düzeni sunar
 Showcases action, form components and events=Aksiyon, form ve olayları gösterir
 Showcases interactions using button component=Buton ile yapılabilecek eylemleri gösterir

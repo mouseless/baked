@@ -2,7 +2,6 @@
   <div>
     <template v-if="dialogOptions">
       <Button
-        :disabled="executing"
         :schema="dialogOptions.open"
         @click="visible = true"
       />
@@ -25,13 +24,12 @@
         </div>
         <template #footer>
           <Button
-            :disabled="executing"
             :schema="dialogOptions.cancel"
             @submit="() => visible = false"
           />
           <Button
-            :disabled="!ready"
             :schema="submit"
+            :ready
             @submit="execute"
           />
         </template>
@@ -52,8 +50,8 @@
           />
         </div>
         <Button
-          :disabled="!ready || executing"
           :schema="submit"
+          :ready
           @submit="$emit('submit', formData)"
         />
       </div>
@@ -63,10 +61,9 @@
 <script setup>
 import { ref } from "vue";
 import { Dialog } from "primevue";
-import { useContext, useLocalization } from "#imports";
+import { useLocalization } from "#imports";
 import { Button, Inputs } from "#components";
 
-const context = useContext();
 const { localize: l } = useLocalization();
 
 const { schema } = defineProps({
@@ -76,7 +73,6 @@ const emit = defineEmits(["submit"]);
 
 const { dialogOptions, inputs, submit, title } = schema;
 
-const executing = context.injectExecuting();
 const formData = ref({});
 const ready = ref(inputs.length === 0);
 const submitted = ref(false);
