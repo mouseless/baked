@@ -190,6 +190,10 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     return B.Button(l("Cancel"));
                 }
             );
+            builder.Conventions.AddMethodComponentConfiguration<Button>(
+                where: cc => cc.Path.EndsWith(nameof(SimpleForm.DialogOptions), nameof(SimpleForm.DialogOptions.Cancel)),
+                component: b => b.Schema.Variant = "text"
+            );
             builder.Conventions.AddMethodComponent(
                 where: cc => cc.Path.EndsWith(nameof(SimpleForm.DialogOptions), nameof(SimpleForm.DialogOptions.Open)),
                 component: (c, cc) =>

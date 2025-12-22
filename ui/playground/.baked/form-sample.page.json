@@ -124,7 +124,8 @@
                                 "rounded": true
                               },
                               "cancel": {
-                                "label": "Cancel"
+                                "label": "Cancel",
+                                "variant": "text"
                               }
                             }
                           },
