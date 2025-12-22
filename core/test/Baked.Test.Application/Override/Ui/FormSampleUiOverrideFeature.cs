@@ -17,7 +17,6 @@ using C = Baked.Test.Ui.Components;
 
 namespace Baked.Test.Override.Ui;
 
-// TODO - extract conventions and simplify this
 public class FormSampleUiOverrideFeature : IFeature
 {
     public void Configure(LayerConfigurator configurator)
@@ -135,14 +134,15 @@ public class FormSampleUiOverrideFeature : IFeature
                 where: cc => cc.Path.EndsWith(nameof(DataTable.ActionTemplate), "**"),
                 schema: (c, cc) => MethodSimpleFormDialog(c.Method, cc)
             );
-            builder.Conventions.AddMethodSchemaConfiguration<SimpleForm.Dialog>(
+            builder.Conventions.AddMethodComponentConfiguration<Button>(
                 when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.Update),
-                schema: d =>
+                where: cc => cc.Path.EndsWith(nameof(SimpleForm), nameof(SimpleForm.DialogOptions), nameof(SimpleForm.Dialog.Open)),
+                component: b =>
                 {
-                    d.Open.Label = string.Empty;
-                    d.Open.Icon = "pi pi-pencil";
-                    d.Open.Variant = "text";
-                    d.Open.Rounded = true;
+                    b.Schema.Label = string.Empty;
+                    b.Schema.Icon = "pi pi-pencil";
+                    b.Schema.Variant = "text";
+                    b.Schema.Rounded = true;
                 }
             );
             builder.Conventions.AddMethodSchema(
