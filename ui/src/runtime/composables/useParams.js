@@ -3,11 +3,11 @@ import { useRoute } from "#app";
 export default function() {
   const route = useRoute();
 
-  function compute() {
+  function computeSync() {
     return route.params;
   }
 
   return {
-    compute
+    computeSync
   };
 }

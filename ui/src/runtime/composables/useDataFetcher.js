@@ -90,15 +90,15 @@ function Computed({ parentFetch }) {
     const composable = (await composableResolver.resolve(data.composable)).default();
     const options = data.options ? unref.deepUnref(await parentFetch({ data: data.options, contextData })) : { };
 
-    if(composable.compute) {
-      return composable.compute(options);
+    if(composable.computeSync) {
+      return composable.computeSync(options);
     }
 
     if(composable.computeAsync) {
       return await composable.computeAsync(options);
     }
 
-    throw new Error("Data composable should have either `compute` or `computeAsync`");
+    throw new Error("Data composable should have either `computeSync` or `computeAsync`");
   }
 
   async function fetchParameters({ data }) {
