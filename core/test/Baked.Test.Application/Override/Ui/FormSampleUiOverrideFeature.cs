@@ -121,6 +121,7 @@ public class FormSampleUiOverrideFeature : IFeature
                         b.Label = string.Empty;
                         b.Variant = "text";
                         b.Rounded = true;
+                        b.Severity = "danger";
                     }
                 )
             );
@@ -128,19 +129,6 @@ public class FormSampleUiOverrideFeature : IFeature
                 when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.Update),
                 where: cc => cc.Path.EndsWith(nameof(DataTable.ActionTemplate), "**"),
                 component: (c, cc) => MethodSimpleForm(c.Method, cc)
-            );
-            builder.Conventions.AddMethodComponentConfiguration<SimpleForm>(
-                component: (sf, c, cc) =>
-                {
-                    cc = cc.Drill(nameof(SimpleForm.Inputs));
-
-                    foreach (var parameter in c.Method.DefaultOverload.Parameters)
-                    {
-                        sf.Schema.Inputs.Add(
-                            parameter.GetRequiredSchema<Input>(cc.Drill(parameter.Name))
-                        );
-                    }
-                }
             );
             builder.Conventions.AddMethodSchema(
                 when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.Update),

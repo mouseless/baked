@@ -153,6 +153,39 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 order: UiLayer.MaxConventionOrder - 10
             );
 
+            // Simple Form
+            builder.Conventions.AddMethodComponentConfiguration<SimpleForm>(
+                component: (sf, c, cc) =>
+                {
+                    cc = cc.Drill(nameof(SimpleForm.Inputs));
+
+                    foreach (var parameter in c.Method.DefaultOverload.Parameters)
+                    {
+                        sf.Schema.Inputs.Add(
+                            parameter.GetRequiredSchema<Input>(cc.Drill(parameter.Name))
+                        );
+                    }
+                }
+            );
+            builder.Conventions.AddMethodComponent(
+                where: cc => cc.Path.EndsWith(nameof(SimpleForm.DialogOptions), nameof(SimpleForm.DialogOptions.Cancel)),
+                component: (_, cc) =>
+                {
+                    var (_, l) = cc;
+
+                    return B.Button(l("Cancel"));
+                }
+            );
+            builder.Conventions.AddMethodComponent(
+                where: cc => cc.Path.EndsWith(nameof(SimpleForm.DialogOptions), nameof(SimpleForm.DialogOptions.Open)),
+                component: (c, cc) =>
+                {
+                    var (_, l) = cc;
+
+                    return B.Button(l(c.Method.Name.Titleize()));
+                }
+            );
+
             // Pages
             builder.Conventions.AddTypeComponent(
                 where: cc => cc.Path.Is(nameof(Page), "*"),

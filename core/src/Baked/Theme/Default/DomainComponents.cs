@@ -327,10 +327,8 @@ public static class DomainComponents
     {
         var (_, l) = context;
 
-        var cancel = method.GetSchema<Button>(context.Drill(nameof(SimpleForm.DialogOptions.Cancel))) ??
-            B.Button(l("Cancel")).Schema;
-        var open = method.GetSchema<Button>(context.Drill(nameof(SimpleForm.DialogOptions.Open))) ??
-            B.Button(l("Submit")).Schema;
+        var cancel = (Button)method.GetRequiredComponent<Button>(context.Drill(nameof(SimpleForm.DialogOptions.Cancel))).Schema;
+        var open = (Button)method.GetRequiredComponent<Button>(context.Drill(nameof(SimpleForm.DialogOptions.Open))).Schema;
 
         return B.SimpleFormDialog(open, cancel, options: options);
     }

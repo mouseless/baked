@@ -152,6 +152,7 @@
                             "icon": "pi pi-trash",
                             "label": "",
                             "variant": "text",
+                            "severity": "danger",
                             "rounded": true
                           },
                           "action": {
