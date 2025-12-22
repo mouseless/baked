@@ -16,7 +16,7 @@
 - `useActionExecuter` composable is now added to execute `Composite`, `Local`,
   `Publish` and `Remote` actions with given configuration
   - `Page` component now provides an event bus to publish page-wide events
-- `SimpleForm` component is now added for rendering a basic form with inputs 
+- `SimpleForm` component is now added for rendering a basic form with inputs
   with dialog support
 - `DataTable` now supports row based actions via `ActionTemplate` property
 - `Bake` now supports reload and show/hide reactions
@@ -26,9 +26,9 @@
   that reactions can happen only on certain conditions
 - `InputText` and `InputNumber` components are now introduced along with their
   basic conventions
-- `SimplePage` is now added to render simple pages with title and contents
-  - Default theme includes necessary conventions to render any type using
-    `SimplePage`
+- `SimplePage` is now added to render simple pages with title and contents along
+  with its basic conventions
+- `FormPage` is now added to render action methods as full pages
 - `Contents` utility component is now added that renders `List<Content>` with
   responsive styling
   - `ActionsAsDataPanelsUxFeature` is modified to add data panel to any content
@@ -36,6 +36,8 @@
     page's content list
 - `Dialog` component is now added which displays given content in dialog
   with action support
+- `ActionsAsFormsUxFeature` is added to render an action method as button,
+  form dialog or form page according to the signature and placement of method
 
 ## Breaking Changes
 
