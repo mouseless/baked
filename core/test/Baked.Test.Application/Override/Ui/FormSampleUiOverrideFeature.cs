@@ -137,6 +137,7 @@ public class FormSampleUiOverrideFeature : IFeature
                 when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.Update),
                 schema: d =>
                 {
+                    d.Open.Label = string.Empty;
                     d.Open.Icon = "pi pi-pencil";
                     d.Open.Variant = "text";
                     d.Open.Rounded = true;
