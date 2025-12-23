@@ -36,8 +36,6 @@
     page's content list
 - `Dialog` component is now added which displays given content in dialog
   with action support
-- `ActionsAsFormsUxFeature` is added to render an action method as button,
-  form dialog or form page according to the signature and placement of method
 
 ## Breaking Changes
 
