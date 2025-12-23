@@ -30,9 +30,7 @@ public static class DomainComponents
         var (_, l) = context;
 
         var path = context.Route.Path.Trim('/');
-        var title =
-            type.GetComponent(context.Drill(nameof(SimplePage.Title))) ??
-            TypePageTitle(type, context.Drill(nameof(SimplePage.Title)));
+        var title = type.GetRequiredComponent(context.Drill(nameof(SimplePage.Title)));
 
         return B.SimplePage(path, title, options: options);
     }
@@ -64,12 +62,8 @@ public static class DomainComponents
         var (_, l) = context;
 
         var path = context.Route.Path.Trim('/');
-        var title =
-            method.GetComponent<PageTitle>(context.Drill(nameof(FormPage.Title))) as ComponentDescriptor<PageTitle> ??
-            MethodPageTitle(method, context.Drill(nameof(FormPage.Title)));
-        var button =
-            method.GetComponent<Button>(context.Drill(nameof(FormPage.Button))) as ComponentDescriptor<Button> ??
-            B.Button(l("Save"));
+        var title = method.GetRequiredComponent<PageTitle>(context.Drill(nameof(FormPage.Title))).Schema;
+        var button = method.GetRequiredComponent<Button>(context.Drill(nameof(FormPage.Submit))).Schema;
 
         return B.FormPage(path, title, button,
             action: method.GetSchema<RemoteAction>(context.Drill(nameof(IComponentDescriptor.Action))),
@@ -104,9 +98,7 @@ public static class DomainComponents
         var (_, l) = context;
 
         var path = context.Route.Path.Trim('/');
-        var title =
-            type.GetComponent<PageTitle>(context.Drill(nameof(TabbedPage.Title))) as ComponentDescriptor<PageTitle> ??
-            TypePageTitle(type, context.Drill(nameof(TabbedPage.Title)));
+        var title = type.GetRequiredComponent<PageTitle>(context.Drill(nameof(TabbedPage.Title))).Schema;
 
         return B.TabbedPage(path, title, options: options);
     }
@@ -222,7 +214,7 @@ public static class DomainComponents
                 dt.ExportOptions = method.GetSchema<DataTable.Export>(context.Drill(nameof(DataTable.ExportOptions)));
                 dt.FooterTemplate = method.GetSchema<DataTable.Footer>(context.Drill(nameof(DataTable.FooterTemplate)));
                 dt.VirtualScrollerOptions = method.GetSchema<DataTable.VirtualScroller>(context.Drill(nameof(DataTable.VirtualScrollerOptions)));
-                dt.ActionTemplate = method.GetSchema<DataTable.Column>(context.Drill(nameof(DataTable.ActionTemplate)));
+                dt.Actions = method.GetSchema<DataTable.Column>(context.Drill(nameof(DataTable.Actions)));
 
                 options.Apply(dt);
             },
@@ -290,8 +282,8 @@ public static class DomainComponents
         Action<Button>? options = default
     )
     {
-        var (_, l) = context;
         context = context.Drill(nameof(Button));
+        var (_, l) = context;
 
         return B.Button(l(method.Name.Humanize().Titleize()),
             action: method.GetSchema<RemoteAction>(context.Drill(nameof(IComponentDescriptor.Action))),
@@ -306,7 +298,7 @@ public static class DomainComponents
         context = context.Drill(nameof(SimpleForm));
         var (_, l) = context;
 
-        var submit = (Button)method.GetRequiredComponent<Button>(context.Drill(nameof(SimpleForm.Submit))).Schema;
+        var submit = method.GetRequiredComponent<Button>(context.Drill(nameof(SimpleForm.Submit))).Schema;
 
         return B.SimpleForm(l(method.Name.Titleize()), submit,
             action: method.GetSchema<RemoteAction>(context.Drill(nameof(IComponentDescriptor.Action))),
@@ -325,8 +317,8 @@ public static class DomainComponents
     {
         var (_, l) = context;
 
-        var cancel = (Button)method.GetRequiredComponent<Button>(context.Drill(nameof(SimpleForm.Dialog.Cancel))).Schema;
-        var open = (Button)method.GetRequiredComponent<Button>(context.Drill(nameof(SimpleForm.Dialog.Open))).Schema;
+        var cancel = method.GetRequiredComponent<Button>(context.Drill(nameof(SimpleForm.Dialog.Cancel))).Schema;
+        var open = method.GetRequiredComponent<Button>(context.Drill(nameof(SimpleForm.Dialog.Open))).Schema;
 
         return B.SimpleFormDialog(open, cancel, options: options);
     }

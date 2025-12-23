@@ -86,7 +86,7 @@
                   "parameterSeparator": "_",
                   "parameterFormatter": "useLocaleParameterFormatter"
                 },
-                "actionTemplate": {
+                "actions": {
                   "key": "Actions",
                   "component": {
                     "type": "Container",

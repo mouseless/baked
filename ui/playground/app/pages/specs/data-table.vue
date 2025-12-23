@@ -215,7 +215,7 @@ const variants = [
         giveMe.aDataTableColumn({ title: "Spec: Label", key: "label" }),
         giveMe.aDataTableColumn({ title: "Spec: Data 1", key: "data1" })
       ],
-      actionTemplate: giveMe.aDataTableColumn({
+      actions: giveMe.aDataTableColumn({
         component: giveMe.aButton({
           label: "Spec: Action",
           action: giveMe.aLocalAction({

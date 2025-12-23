@@ -15,7 +15,6 @@ public static class OverrideExtensions
         features.Add(new Test.Override.Ui.CacheSamplesUiOverrideFeature());
         features.Add(new Test.Override.Ui.FormSampleUiOverrideFeature());
         features.Add(new Test.Override.Ui.ReportPageSampleUiOverrideFeature());
-        features.Add(new Test.Override.Ui.RouteParametersSampleUiOverrideFeature());
         features.Add(new Test.Override.Ui.TestPageUiOverrideFeature());
     }
 }

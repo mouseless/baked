@@ -90,10 +90,10 @@ public static class Components
         Action<Filterable>? options = default
     ) => options.Apply(new(component));
 
-    public static ComponentDescriptor<FormPage> FormPage(string path, ComponentDescriptor<PageTitle> title, ComponentDescriptor<Button> button,
+    public static ComponentDescriptor<FormPage> FormPage(string path, PageTitle title, Button submit,
         IAction? action = default,
         Action<FormPage>? options = default
-    ) => new(options.Apply(new(path, title.Schema, button.Schema))) { Action = action };
+    ) => new(options.Apply(new(path, title, submit))) { Action = action };
 
     public static ComponentDescriptor<Header> Header(
         Action<Header>? options = default,
@@ -224,9 +224,9 @@ public static class Components
         Action<Tab>? options = default
     ) => options.Apply(new(id));
 
-    public static ComponentDescriptor<TabbedPage> TabbedPage(string path, ComponentDescriptor<PageTitle> title,
+    public static ComponentDescriptor<TabbedPage> TabbedPage(string path, PageTitle title,
         Action<TabbedPage>? options = default
-    ) => new(options.Apply(new(path, title.Schema)));
+    ) => new(options.Apply(new(path, title)));
 
     public static ComponentDescriptor<Text> Text(
         Action<Text>? options = default,

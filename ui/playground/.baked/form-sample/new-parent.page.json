@@ -9,8 +9,7 @@
           "type": "Button",
           "schema": {
             "label": "Back",
-            "variant": "text",
-            "severity": "secondary"
+            "variant": "text"
           },
           "action": {
             "type": "Local",
@@ -25,8 +24,9 @@
         }
       ]
     },
-    "button": {
-      "label": "Save"
+    "submit": {
+      "label": "Save",
+      "severity": "primary"
     },
     "inputs": [
       {

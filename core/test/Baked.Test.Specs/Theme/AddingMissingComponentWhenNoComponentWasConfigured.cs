@@ -117,17 +117,4 @@ public class AddingMissingComponentWhenNoComponentWasConfigured : TestSpec
         missingComponent.Schema.Source?.Type.ShouldBe(nameof(ParameterModel));
         missingComponent.Schema.Source?.Path.ShouldBe([nameof(TestPage), nameof(TestPage.GetData), "panel"]);
     }
-
-    [Test]
-    public void When_specific_component_was_required__MissingComponent_includes_component_info()
-    {
-        var type = GiveMe.TheTypeModel<TestPage>().GetMetadata();
-        var componentContext = GiveMe.AComponentContext(paths: ["page", "with-no-config"]);
-
-        var component = type.GetRequiredComponent<Text>(componentContext);
-
-        var missingComponent = component.ShouldBeOfType<ComponentDescriptor<MissingComponent>>();
-        missingComponent.Schema.Component.ShouldNotBeNull();
-        missingComponent.Schema.Component.ShouldBe(nameof(Text));
-    }
 }

@@ -25,7 +25,7 @@ const variants = [
       ]),
       title: "Spec: Title",
       description: "Spec: Description",
-      button: giveMe.aButton({ label: "Spec: Submit" }),
+      submit: giveMe.aButton({ label: "Spec: Submit" }).schema,
       inputs: [
         giveMe.anInput({
           name: "text",

@@ -12,7 +12,7 @@ public record DataTable : IComponentSchema
     public VirtualScroller? VirtualScrollerOptions { get; set; }
     public Footer? FooterTemplate { get; set; }
     public Export? ExportOptions { get; set; }
-    public Column? ActionTemplate { get; set; }
+    public Column? Actions { get; set; }
 
     public record Column(string Key)
     {

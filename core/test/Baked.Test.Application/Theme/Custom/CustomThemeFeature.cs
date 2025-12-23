@@ -1,4 +1,6 @@
 ﻿using Baked.Architecture;
+using Baked.Business;
+using Baked.RestApi.Model;
 using Baked.Test.Caching;
 using Baked.Theme;
 using Baked.Theme.Default;
@@ -49,6 +51,37 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
             builder.Conventions.AddTypeSchema(
                 schema: (c, cc) => EnumInline(c.Type, cc, requireLocalization: false),
                 when: c => c.Type.Is<CacheKey>() || c.Type.Is<RowCount>()
+            );
+
+            // TODO move to UX
+            // Row Actions
+            builder.Conventions.AddMethodSchemaConfiguration<DataTable.Column>(
+                when: c =>
+                    c.Method.DefaultOverload.ReturnsList() &&
+                    c.Method.DefaultOverload.ReturnType.TryGetElementType(out var itemType) &&
+                    itemType.TryGetMembers(out var itemMembers) &&
+                    itemMembers.Methods.Having<ActionModelAttribute>().Any(),
+                where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Actions)),
+                schema: (col, c, cc) =>
+                {
+                    var itemMembers = c.Method.DefaultOverload.ReturnType.GetElementType().GetMembers();
+                    var rowActions = new List<IComponentDescriptor>();
+                    foreach (var method in itemMembers.Methods.Having<ActionAttribute>())
+                    {
+                        if (method.Has<InitializerAttribute>()) { continue; }
+                        if (method.GetAction().Method == HttpMethod.Get) { continue; }
+
+                        var component = method.GetComponent(cc.Drill(method.Name));
+                        if (component is null) { continue; }
+
+                        rowActions.Add(component);
+                    }
+
+                    col.Frozen = true;
+                    col.AlignRight = true;
+                    col.Exportable = false;
+                    col.Component = C.Container(options: c => c.Contents.AddRange(rowActions));
+                }
             );
         });
 

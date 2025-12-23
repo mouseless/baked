@@ -127,6 +127,7 @@ public static class ThemeExtensions
         {
             Route = new(path, title),
             Sitemap = [],
+            Routes = new HashSet<string>(),
             Domain = giveMe.TheDomainModel(),
             NewLocaleKey = s => s
         };
@@ -593,8 +594,9 @@ public static class ThemeExtensions
 
     static bool WarnForMissingComponent => Environment.GetCommandLineArgs().Contains("--warn-for-missing-component");
 
-    public static IComponentDescriptor GetRequiredComponent<T>(this ICustomAttributesModel metadata, ComponentContext context) where T : IComponentSchema =>
-        metadata.GetRequiredComponent(context, componentType: typeof(T));
+    public static ComponentDescriptor<T> GetRequiredComponent<T>(this ICustomAttributesModel metadata, ComponentContext context) where T : IComponentSchema =>
+        metadata.GetRequiredComponent(context, componentType: typeof(T)) as ComponentDescriptor<T> ??
+        throw new($"`{metadata.CustomAttributes.Name}` doesn't have a component descriptor of type `{typeof(T).Name}` at path `{context.Path}`");
 
     public static IComponentDescriptor GetRequiredComponent(this ICustomAttributesModel metadata, ComponentContext context,
         Type? componentType = default
@@ -609,8 +611,8 @@ public static class ThemeExtensions
         return DomainComponents.CustomAttributesMissingComponent(metadata, context, options: mc => mc.Component = componentType?.Name);
     }
 
-    public static IComponentDescriptor? GetComponent<T>(this ICustomAttributesModel metadata, ComponentContext context) where T : IComponentSchema =>
-        metadata.GetComponent(context, componentType: typeof(T));
+    public static ComponentDescriptor<T>? GetComponent<T>(this ICustomAttributesModel metadata, ComponentContext context) where T : IComponentSchema =>
+        metadata.GetComponent(context, componentType: typeof(T)) as ComponentDescriptor<T>;
 
     public static IComponentDescriptor? GetComponent(this ICustomAttributesModel metadata, ComponentContext context,
         Type? componentType = default
@@ -791,10 +793,22 @@ public static class ThemeExtensions
         Func<MethodModelContext, bool>? when = default,
         Func<ComponentContext, bool>? where = default,
         int order = default
+    ) where TSchema : IComponentSchema =>
+        conventions.AddMethodComponent(
+            component: (c, cc) => component(c, cc),
+            when: when,
+            where: where is not null ? (cc, _) => where(cc) : null,
+            order: order
+        );
+
+    public static void AddMethodComponent<TSchema>(this IDomainModelConventionCollection conventions, Func<MethodModelContext, ComponentContext, ComponentDescriptor<TSchema>> component,
+        Func<MethodModelContext, bool>? when = default,
+        Func<ComponentContext, MethodModelContext, bool>? where = default,
+        int order = default
     ) where TSchema : IComponentSchema
     {
         when ??= c => true;
-        where ??= c => true;
+        where ??= (cc, c) => true;
         order += RestApiLayer.MaxConventionOrder + LayerBase.ConventionOrderLimit;
 
         conventions.AddMethodAttribute(
@@ -803,11 +817,11 @@ public static class ThemeExtensions
                 add(c.Method, new ComponentDescriptorBuilderAttribute<TSchema>()
                 {
                     Builder = cc => component(c, cc),
-                    Filter = where
+                    Filter = cc => where(cc, c)
                 });
                 add(c.Method, new ContextBasedComponentAttribute(typeof(TSchema))
                 {
-                    Filter = where
+                    Filter = cc => where(cc, c)
                 });
             },
             when: c => when(c),

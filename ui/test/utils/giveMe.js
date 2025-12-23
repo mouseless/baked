@@ -174,7 +174,7 @@ export default {
     };
   },
 
-  aDataTable({ actionTemplate, columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions, data } = {}) {
+  aDataTable({ actions, columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions, data } = {}) {
     columns = $(columns, [
       this.aDataTableColumn({ prop: "test" })
     ]);
@@ -191,7 +191,7 @@ export default {
 
     return {
       type: "DataTable",
-      schema: { actionTemplate, columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions },
+      schema: { actions, columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions },
       data: this.anInlineData(data)
     };
   },
@@ -337,16 +337,16 @@ export default {
     };
   },
 
-  aFormPage({ action, title, description, button, inputs } = {}) {
+  aFormPage({ action, title, description, submit, inputs } = {}) {
     title = this.aPageTitle({ title, description }).schema;
-    button = $(button, this.aButton({ label: "Test Submit" }));
+    submit = $(submit, this.aButton({ label: "Test Submit" }).schema);
     inputs = $(inputs, []);
 
     return {
       type: "FormPage",
       schema: {
         title,
-        button: button.schema,
+        submit,
         inputs
       },
       action
@@ -731,8 +731,8 @@ export default {
   },
 
   aSimpleFormDialog({ open, cancel }) {
-    open= $(open, this.aButton({ label: "Spec: Open" }).schema);
-    cancel= $(cancel, this.aButton({ label: "Spec: Cancel" }).schema);
+    open = $(open, this.aButton({ label: "Spec: Open" }).schema);
+    cancel = $(cancel, this.aButton({ label: "Spec: Cancel" }).schema);
 
     return {
       open,

@@ -18,7 +18,7 @@
   - `Page` component now provides an event bus to publish page-wide events
 - `SimpleForm` component is now added for rendering a basic form with inputs
   with dialog support
-- `DataTable` now supports row based actions via `ActionTemplate` property
+- `DataTable` now supports row based actions via `Actions` property
 - `Bake` now supports reload and show/hide reactions
   - Use `ReloadOn` and `ShowOn` to bind them to an event
   - Use `ReloadWhen` and `ShowWhen` to bind them to a page context value
@@ -145,11 +145,14 @@
 - `EnumSelect` and `EnumSelectButton` in `DomainComponents` are renamed to
   `ParameterSelect` and `ParameterSelectButton`
   - They still require an `InlineData` schema on the parameter type
+- `PageContext.Sitemap` is now `IReadOnlyCollection`
 
 ## Improvements
 
 - `Parameters` now accept parameter class attribute for each parameter
 - `RemoveComponent` and `RemoveSchema` helper extensions are now added
+- `GetRequiredComponent<T>(...)` and `GetComponent<T>(...)` extensions are now
+  added to query a specific component type at a given path
 - `AwaitLoading` utility component is now added which contains slots to help
   rendering skeleton and content according to `loading` state
 - `ContextData`, former `InjectedData`, now has `TargetProp` property to map
@@ -175,3 +178,8 @@
   ```
 - `Inputs` has become a pure utility component after removing wrapper div and
   `flex` styling
+- `PageContext` now has `Routes` hash set to check if a route exists while
+  building a component
+- All component and schema convention extensions now has an overload that
+  accepts `where: (cc, c) => ...` to allow access to the domain model while
+  filtering
