@@ -61,15 +61,30 @@
 - `QueryParameters` property of `TabbedPage` (former `ReportPage`) is renamed to
   `Inputs`
 - `Parameters.vue` is renamed to `Inputs.vue`
-- `QueryParameters.vue` is renamed to `QueryBoundInputs.vue`
+- `QueryParameters.vue` is now removed, use `Inputs` with all of its inputs'
+  `queryBound` set to `true` to get the same behavior
+  - Unlike `QueryParameters`, `Inputs` pass an event object `{ uniqueKey, values
+    }` to its `onChanged` event
 - `TypeWithOnlyGetIsReportPage` UX feature is removed, and adding `TabbedPage`
   (former `ReportPage`) component to a type is moved to `DefaultThemeFeature`
 - `InjectedData` is renamed to `ContextData`
   - `Injected()` is now removed, use `Context` property
     - Use `Context.Model(...)` to access model data during actions
-    - `Parent` injected data now has `data` and `parameters` properties
+    - Parent data access has changed
       ```csharp
-      Context.Parent(options: cd => cd.Prop = "parameters")
+      Injected(options: i => i.DataKey = InjectedData.DataKey.ParentData) // old usage
+      Context.Parent(options: cd => cd.Prop = "data") // new usage
+      ```
+    - Custom injected data is now removed, `DataPanel` provides `"parameters"`
+      key in parent context to provide its parameter options
+      ```csharp
+      Injected(options: i => i.DataKey = InjectedData.DataKey.Custom) // old usage
+      Context.Parent(options: cd => cd.Prop = "parameters") // new usage
+      ```
+    - `DataTable` now injects row data using parent context under `"row"` key
+      ```csharp
+      // previously data table was injecting row data in an hard-coded way
+      Context.Parent(options: cd => cd.Prop  = "row") // new usage
       ```
     - Use `Context.Page(...)` to access to page context values
     - Use `Context.Response(...)` to access to remote action's response which is
@@ -84,7 +99,7 @@
 - `Composables` now provide helpers instead of ui composable file keys
   ```csharp
   data: Computed(Composables.UseError) // old usage
-  data: Composables.UseError() // new usage
+  data: Computed.UseError() // new usage
   ```
 - `useRoute` composable now accepts property name as parameter to access
   `params`, `query`
@@ -127,10 +142,6 @@
   `injectPageContext` and `providePageContext` respectively
 - `Inputs` now doesn't have a layout styling, any component that uses it should
   wrap it and introduce `flex` styling
-- `QueryBoundInputs` is now removed, use `Inputs` with all of its inputs'
-  `queryBound` set to `true` to get the same behavior
-  - `QueryBoundInputs` was passing `uniqueKey` to `onChanged` event, but
-    `Inputs` pass an event object `{ uniqueKey, values }`
 - `EnumSelect` and `EnumSelectButton` in `DomainComponents` are renamed to
   `ParameterSelect` and `ParameterSelectButton`
   - They still require an `InlineData` schema on the parameter type
@@ -141,8 +152,8 @@
 - `RemoveComponent` and `RemoveSchema` helper extensions are now added
 - `AwaitLoading` utility component is now added which contains slots to help
   rendering skeleton and content according to `loading` state
-- `InjectedData`, now `ContextData`, now has `TargetProp` property to map give
-  `Prop` key value to corresponding property
+- `ContextData`, former `InjectedData`, now has `TargetProp` property to map
+  given `Prop` key value to the corresponding property
 - `UiLayer` now has `MinConventionOrder` and `MaxConventionOrder` to allow
   inserting conventions before or after all conventions
 - `MissingComponent` component is now added when a component is required but

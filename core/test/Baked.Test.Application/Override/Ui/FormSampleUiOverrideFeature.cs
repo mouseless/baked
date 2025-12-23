@@ -1,5 +1,4 @@
 ﻿using Baked.Architecture;
-using Baked.Business;
 using Baked.RestApi.Model;
 using Baked.Test.Orm;
 using Baked.Test.Theme;
@@ -24,24 +23,6 @@ public class FormSampleUiOverrideFeature : IFeature
         configurator.ConfigureDomainModelBuilder(builder =>
         {
             // contents
-            builder.Conventions.AddTypeComponentConfiguration<SimplePage>(
-                when: c => c.Type.Is<FormSample>(),
-                component: (sp, c, cc) =>
-                {
-                    cc = cc.Drill(nameof(SimplePage.Contents));
-
-                    foreach (var method in c.Type.GetMembers().Methods.Having<ActionModelAttribute>())
-                    {
-                        if (method.Has<InitializerAttribute>()) { continue; }
-                        if (method.GetAction().Method != HttpMethod.Get) { continue; }
-
-                        var content = method.GetSchema<Content>(cc.Drill(sp.Schema.Contents.Count));
-                        if (content is null) { continue; }
-
-                        sp.Schema.Contents.Add(content);
-                    }
-                }
-            );
             builder.Conventions.AddMethodComponentConfiguration<DataPanel>(
                 when: c => c.Type.Is<FormSample>(),
                 component: dp =>
@@ -123,16 +104,6 @@ public class FormSampleUiOverrideFeature : IFeature
                         b.Severity = "danger";
                     }
                 )
-            );
-            builder.Conventions.AddMethodComponent(
-                when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.Update),
-                where: cc => cc.Path.EndsWith(nameof(DataTable.ActionTemplate), "**"),
-                component: (c, cc) => MethodSimpleForm(c.Method, cc)
-            );
-            builder.Conventions.AddMethodSchema(
-                when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.Update),
-                where: cc => cc.Path.EndsWith(nameof(DataTable.ActionTemplate), "**"),
-                schema: (c, cc) => MethodSimpleFormDialog(c.Method, cc)
             );
             builder.Conventions.AddMethodComponentConfiguration<Button>(
                 when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.Update),

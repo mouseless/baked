@@ -66,25 +66,6 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 when: c => c.Method.Has<ActionModelAttribute>(),
                 schema: (c, cc) => MethodContent(c.Method, cc)
             );
-            builder.Conventions.AddMethodComponent(
-                when: c => c.Method.Has<ActionModelAttribute>(),
-                where: cc => cc.Path.EndsWith(nameof(PageTitle.Actions), "*"),
-                component: (c, cc) => MethodButton(c.Method, cc)
-            );
-            builder.Conventions.AddMethodComponent(
-                when: c => c.Method.Has<ActionModelAttribute>(),
-                where: cc => cc.Path.EndsWith(nameof(SimpleForm), nameof(SimpleForm.Submit)),
-                component: (c, cc) =>
-                {
-                    var (_, l) = cc;
-
-                    return B.Button(l(c.Method.Name.Titleize()));
-                }
-            );
-            builder.Conventions.AddMethodComponentConfiguration<Button>(
-                where: cc => cc.Path.EndsWith(nameof(SimpleForm), nameof(SimpleForm.Submit)),
-                component: b => b.Schema.Severity = "primary"
-            );
             builder.Conventions.AddMethodSchema(
                 when: c => c.Method.Has<ActionModelAttribute>(),
                 schema: (c, cc) => DomainActions.MethodRemote(c.Method)
@@ -115,11 +96,12 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 }
             );
             builder.Conventions.AddParameterComponent(
+                when: c => c.Parameter.ParameterType.Is<string>(),
                 component: (c, cc) => ParameterInputText(c.Parameter, cc),
                 order: UiLayer.MinConventionOrder + 10
             );
             builder.Conventions.AddParameterComponent(
-                when: c => c.Parameter.ParameterType.Is<int>(),
+                when: c => c.Parameter.ParameterType.SkipNullable().Is<int>(),
                 component: (c, cc) => ParameterInputNumber(c.Parameter, cc),
                 order: UiLayer.MinConventionOrder + 10
             );
@@ -168,6 +150,63 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
 
             // Simple Form
+            builder.Conventions.AddMethodComponent(
+                where: cc => cc.Path.EndsWith(nameof(SimpleForm.DialogOptions), nameof(SimpleForm.DialogOptions.Cancel)),
+                component: (_, cc) => LocalizedButton("Cancel", cc)
+            );
+            builder.Conventions.AddMethodComponent(
+                where: cc => cc.Path.EndsWith(nameof(SimpleForm.DialogOptions), nameof(SimpleForm.DialogOptions.Open)),
+                component: (c, cc) => LocalizedButton(c.Method.Name.Titleize(), cc)
+            );
+
+            // `TabbedPage`
+            builder.Conventions.AddTypeComponent(
+                where: cc => cc.Path.Is(nameof(Page), "*"),
+                component: (c, cc) => TypeTabbedPage(c.Type, cc)
+            );
+
+            // `SimplePage`
+            builder.Conventions.AddTypeComponent(
+                where: cc => cc.Path.Is(nameof(Page), "*"),
+                component: (c, cc) => TypeSimplePage(c.Type, cc)
+            );
+            builder.Conventions.AddTypeComponent(
+                where: cc => cc.Path.EndsWith(nameof(SimplePage), nameof(SimplePage.Title)),
+                component: (c, cc) => TypePageTitle(c.Type, cc)
+            );
+
+            // `FormPage`
+            builder.Conventions.AddMethodComponent(
+                where: cc => cc.Path.Is(nameof(Page), "*", "*"),
+                component: (c, cc) => MethodFormPage(c.Method, cc)
+            );
+
+            // TODO Move to UX
+
+            // actions as buttons ux feature
+            builder.Conventions.AddMethodComponent(
+                when: c => c.Method.Has<ActionModelAttribute>(),
+                where: cc => cc.Path.EndsWith(nameof(PageTitle.Actions), "*"),
+                component: (c, cc) => MethodButton(c.Method, cc)
+            );
+            builder.Conventions.AddMethodComponent(
+                when: c => c.Method.Has<ActionModelAttribute>(),
+                where: cc => cc.Path.EndsWith(nameof(SimpleForm), nameof(SimpleForm.Submit)),
+                component: (c, cc) => LocalizedButton(c.Method.Name.Titleize(), cc)
+            );
+            builder.Conventions.AddMethodComponentConfiguration<Button>(
+                where: cc => cc.Path.EndsWith(nameof(SimpleForm), nameof(SimpleForm.Submit)),
+                component: b => b.Schema.Severity = "primary"
+            );
+            builder.Conventions.AddMethodComponent(
+                when: c => c.Method.Has<ActionModelAttribute>(),
+                where: cc => cc.Path.EndsWith(nameof(DataTable.ActionTemplate), "**"),
+                component: (c, cc) => MethodSimpleForm(c.Method, cc)
+            );
+            builder.Conventions.AddMethodSchema(
+                where: cc => cc.Path.EndsWith(nameof(DataTable.ActionTemplate), "**"),
+                schema: (c, cc) => MethodSimpleFormDialog(c.Method, cc)
+            );
             builder.Conventions.AddMethodComponentConfiguration<SimpleForm>(
                 component: (sf, c, cc) =>
                 {
@@ -181,60 +220,24 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     }
                 }
             );
-            builder.Conventions.AddMethodComponent(
-                where: cc => cc.Path.EndsWith(nameof(SimpleForm.DialogOptions), nameof(SimpleForm.DialogOptions.Cancel)),
-                component: (_, cc) =>
-                {
-                    var (_, l) = cc;
 
-                    return B.Button(l("Cancel"));
+            // other
+            builder.Conventions.AddMethodComponentConfiguration<FormPage>(
+                component: (fp, c, cc) =>
+                {
+                    var back = c.Method.GetComponent<Button>(cc.Drill(nameof(FormPage), nameof(FormPage.Title), nameof(FormPage.Title.Actions), "Back"));
+                    if (back is null) { return; }
+
+                    fp.Schema.Title.Actions.Add(back);
                 }
+            );
+            builder.Conventions.AddMethodComponent(
+                where: cc => cc.Path.EndsWith(nameof(FormPage), nameof(FormPage.Title), nameof(FormPage.Title.Actions), "Back"),
+                component: (_, cc) => LocalizedButton("Back", cc, action: Local.UseRedirectBack())
             );
             builder.Conventions.AddMethodComponentConfiguration<Button>(
-                where: cc => cc.Path.EndsWith(nameof(SimpleForm.DialogOptions), nameof(SimpleForm.DialogOptions.Cancel)),
+                where: cc => cc.Path.EndsWith("Cancel") || cc.Path.EndsWith("Back"),
                 component: b => b.Schema.Variant = "text"
-            );
-            builder.Conventions.AddMethodComponent(
-                where: cc => cc.Path.EndsWith(nameof(SimpleForm.DialogOptions), nameof(SimpleForm.DialogOptions.Open)),
-                component: (c, cc) =>
-                {
-                    var (_, l) = cc;
-
-                    return B.Button(l(c.Method.Name.Titleize()));
-                }
-            );
-
-            // Pages
-            builder.Conventions.AddTypeComponent(
-                where: cc => cc.Path.Is(nameof(Page), "*"),
-                component: (c, cc) => TypeTabbedPage(c.Type, cc)
-            );
-            builder.Conventions.AddTypeComponent(
-                where: cc => cc.Path.Is(nameof(Page), "*"),
-                component: (c, cc) => TypeSimplePage(c.Type, cc)
-            );
-            builder.Conventions.AddTypeComponent(
-                where: cc => cc.Path.EndsWith(nameof(SimplePage), nameof(SimplePage.Title)),
-                component: (c, cc) => TypePageTitle(c.Type, cc)
-            );
-            builder.Conventions.AddMethodComponent(
-                where: cc => cc.Path.Is(nameof(Page), "*", "*"),
-                component: (c, cc) => MethodFormPage(c.Method, cc)
-            );
-            builder.Conventions.AddMethodComponentConfiguration<FormPage>(
-                component: (fp, _, cc) =>
-                {
-                    var (_, l) = cc;
-
-                    fp.Schema.Title.Actions.Add(B.Button(l("Back"),
-                        action: Local.UseRedirectBack(),
-                        options: b =>
-                        {
-                            b.Severity = "secondary";
-                            b.Variant = "text";
-                        })
-                    );
-                }
             );
         });
 

@@ -13,7 +13,5 @@ const { data, dataKey } = defineProps({
 
 const parentContext = context.injectParentContext();
 
-const providedData = { ...parentContext };
-providedData[dataKey] = data;
-context.provideParentContext(providedData);
+context.provideParentContext({ ...parentContext, [dataKey]: data });
 </script>

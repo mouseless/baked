@@ -330,4 +330,17 @@ public static class DomainComponents
 
         return B.SimpleFormDialog(open, cancel, options: options);
     }
+
+    public static ComponentDescriptor<Button> LocalizedButton(string label, ComponentContext context,
+        IAction? action = default,
+        Action<Button>? options = default
+    )
+    {
+        var (_, l) = context;
+
+        return B.Button(l(label),
+            action: action,
+            options: options
+        );
+    }
 }
