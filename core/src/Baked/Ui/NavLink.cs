@@ -6,4 +6,5 @@ public class NavLink(string Path, string IdProp, string TextProp)
     public string Path { get; set; } = Path;
     public string IdProp { get; set; } = IdProp;
     public string TextProp { get; set; } = TextProp;
+    public string? Icon { get; set; }
 }

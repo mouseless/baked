@@ -67,6 +67,10 @@
             "title": "New Parent",
             "parentRoute": "/form-sample"
           },
+          "/parents/[id]": {
+            "route": "/parents/[id]",
+            "title": "Parent"
+          },
           "/report-page-sample": {
             "route": "/report-page-sample",
             "icon": "pi pi-file",

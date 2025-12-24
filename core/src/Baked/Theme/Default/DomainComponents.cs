@@ -330,4 +330,17 @@ public static class DomainComponents
 
         return B.SimpleFormDialog(open, cancel, options: options);
     }
+
+    public static Content PropertyContent(PropertyModel property, ComponentContext context,
+        Action<Content>? options = default
+    )
+    {
+        var key = property.Get<DataAttribute>().Prop.Kebaberize();
+
+        context = context.Drill(key);
+
+        return B.Content(property.GetRequiredComponent(context.Drill(nameof(Content.Component))), key,
+            options: options
+        );
+    }
 }

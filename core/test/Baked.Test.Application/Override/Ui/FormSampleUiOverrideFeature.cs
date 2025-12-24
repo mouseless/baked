@@ -5,6 +5,7 @@ using Baked.Test.Orm;
 using Baked.Test.Theme;
 using Baked.Test.Ui;
 using Baked.Theme;
+using Baked.Theme.Default;
 using Baked.Ui;
 using Humanizer;
 
@@ -42,6 +43,52 @@ public class FormSampleUiOverrideFeature : IFeature
                     }
                 }
             );
+            // TODO review in conventions
+            builder.Conventions.AddTypeComponentConfiguration<SimplePage>(
+                when: c => c.Type.Is<Parent>(),
+                component: (sp) => sp.Data = Remote("/parents/{id}", o => o.Params = Computed.UseRoute("params"))
+            );
+            builder.Conventions.AddTypeComponentConfiguration<SimplePage>(
+                when: c => c.Type.Is<Parent>(),
+                component: (sp, c, cc) =>
+                {
+                    cc = cc.Drill(nameof(SimplePage.Contents));
+
+                    foreach (var property in c.Type.GetMembers().Properties)
+                    {
+                        var content = property.GetSchema<Content>(cc.Drill(sp.Schema.Contents.Count));
+                        if (content is null) { continue; }
+
+                        sp.Schema.Contents.Add(content);
+                    }
+                }
+            );
+            builder.Conventions.AddPropertySchema(
+                when: c => c.Type.Is<Parent>(),
+                where: cc => cc.Path.EndsWith(nameof(Page), "*", nameof(SimplePage.Contents), "*"),
+                schema: (c, cc) => PropertyContent(c.Property, cc)
+            );
+            builder.Conventions.AddPropertyComponentConfiguration<Text>(
+                when: c => c.Type.Is<Parent>(),
+                where: cc => cc.Path.EndsWith(nameof(Page), "*", nameof(SimplePage.Contents), "*", "*", nameof(Content.Component)),
+                component: (t, c) => t.Data = Context.Parent(o => o.Prop = $"data.{c.Property.Get<DataAttribute>().Prop}")
+            );
+            builder.Conventions.AddTypeComponent(
+                when: c => c.Type.Has<LocatableAttribute>(),
+                where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.ActionTemplate), nameof(Container), nameof(Container.Contents)),
+                component: (c) => B.NavLink($"/{c.Type.Name.Pluralize().Kebaberize()}/{{id}}", "id", "name")
+            );
+            builder.Conventions.AddTypeComponentConfiguration<NavLink>(
+                where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.ActionTemplate), nameof(Container), nameof(Container.Contents)),
+                component: link =>
+                {
+                    link.Schema.TextProp = string.Empty;
+                    link.Schema.Icon = "pi pi-eye";
+                    link.Data = Context.Parent(options: o => o.Prop = "row");
+                }
+            );
+            // END TODO
+
             builder.Conventions.AddMethodComponentConfiguration<DataPanel>(
                 when: c => c.Type.Is<FormSample>(),
                 component: dp =>
@@ -167,6 +214,13 @@ public class FormSampleUiOverrideFeature : IFeature
                         if (component is null) { continue; }
 
                         rowActions.Add(component);
+                    }
+
+                    // TODO review in conventions
+                    var link = returnType.GetMetadata().GetComponent<NavLink>(cc);
+                    if (link is not null)
+                    {
+                        rowActions.Insert(0, link);
                     }
 
                     col.Frozen = true;

@@ -8,6 +8,12 @@ test.beforeEach(async({ goto }) => {
 test.describe("Base", () => {
   const id = "Base";
 
+  test("icon", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.locator(primevue.button.base).locator(primevue.button.icon)).toHaveClass(/pi-eye/);
+  });
+
   test("address", async({ page }) => {
     const component = page.getByTestId(id);
 

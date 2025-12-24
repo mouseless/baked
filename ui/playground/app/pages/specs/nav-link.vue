@@ -11,7 +11,8 @@ const variants = [
   {
     name: "Base",
     descriptor: giveMe.aNavLink({
-      path: "/test-path/{0}",
+      icon: "pi pi-eye",
+      path: "/test-path/{id}",
       idProp: "id",
       textProp: "name",
       data: {

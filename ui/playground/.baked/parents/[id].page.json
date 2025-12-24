@@ -1,0 +1,53 @@
+{
+  "type": "SimplePage",
+  "schema": {
+    "title": {
+      "type": "PageTitle",
+      "schema": {
+        "title": "Parent",
+        "actions": []
+      }
+    },
+    "contents": [
+      {
+        "component": {
+          "type": "Text",
+          "schema": {},
+          "data": {
+            "type": "Context",
+            "key": "parent",
+            "prop": "data.id"
+          }
+        },
+        "key": "id"
+      },
+      {
+        "component": {
+          "type": "Text",
+          "schema": {},
+          "data": {
+            "type": "Context",
+            "key": "parent",
+            "prop": "data.name"
+          }
+        },
+        "key": "name"
+      }
+    ],
+    "path": "parents/[id]"
+  },
+  "data": {
+    "type": "Remote",
+    "path": "/parents/{id}",
+    "params": {
+      "type": "Computed",
+      "composable": "useNuxtRoute",
+      "options": {
+        "type": "Inline",
+        "value": {
+          "property": "params"
+        }
+      }
+    }
+  }
+}
