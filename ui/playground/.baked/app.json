@@ -5,7 +5,7 @@
       "anonymousApiRoutes": [
         {
           "method": "POST",
-          "path": "form-sample/new-parent"
+          "path": "form-sample/parents"
         },
         {
           "method": "DELETE",

@@ -78,11 +78,6 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 schema: (c, cc) => DomainActions.MethodRemote(c.Method)
             );
             builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
-                when: c => c.Method.Has<ActionModelAttribute>(),
-                where: cc => cc.Path.Contains(nameof(DataTable), nameof(DataTable.Actions)),
-                schema: ra => ra.Params = Context.Parent(options: o => o.Prop = "row")
-            );
-            builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
                 when: c => c.Method.DefaultOverload.Parameters.Any(),
                 schema: ra => ra.Body = Context.Model()
             );
@@ -258,6 +253,23 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 }
             );
 
+            builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
+                when: c => c.Method.Has<ActionModelAttribute>(),
+                where: cc => cc.Path.Contains(nameof(DataTable), nameof(DataTable.Actions)),
+                schema: ra => ra.Params = Context.Parent(options: o => o.Prop = "row")
+            );
+            builder.Conventions.AddMethodComponentConfiguration<Button>(
+                where: cc =>
+                    cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Actions), "*") ||
+                    cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Actions), "**", nameof(SimpleForm.DialogOptions.Open)),
+                component: b =>
+                {
+                    b.Schema.Label = string.Empty;
+                    b.Schema.Variant = "text";
+                    b.Schema.Rounded = true;
+                }
+            );
+
             // other
             builder.Conventions.AddMethodComponentConfiguration<FormPage>(
                 component: (fp, c, cc) =>
@@ -279,6 +291,31 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             builder.Conventions.AddMethodComponentConfiguration<Button>(
                 where: cc => cc.Path.EndsWith("Cancel") || cc.Path.EndsWith("Back"),
                 component: b => b.Schema.Variant = "text"
+            );
+
+            // button icons
+            builder.Conventions.AddMethodComponentConfiguration<Button>(
+                when: c => c.Method.Has<ActionAttribute>(),
+                where: cc =>
+                    !cc.Path.Contains(nameof(FormPage)) &&
+                    (
+                        cc.Path.EndsWith("Actions", "*") ||
+                        cc.Path.EndsWith("*Dialog*", "Open")
+                    ),
+                component: (b, c) =>
+                {
+                    var action = c.Method.GetAction();
+
+                    b.Schema.Icon = action.Method switch
+                    {
+                        var m when m == HttpMethod.Delete => "pi pi-trash",
+                        var m when m == HttpMethod.Patch => "pi pi-pencil",
+                        var m when m == HttpMethod.Put => "pi pi-pencil",
+                        var m when m == HttpMethod.Post && Regexes.StartsWithAddCreateOrNew.IsMatch(c.Method.Name) => "pi pi-plus",
+                        _ => b.Schema.Icon
+                    };
+                    b.Schema.Severity = action.Method == HttpMethod.Delete ? "danger" : b.Schema.Severity;
+                }
             );
 
             // parameters as inputs

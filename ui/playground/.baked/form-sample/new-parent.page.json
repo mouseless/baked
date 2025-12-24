@@ -48,7 +48,7 @@
   },
   "action": {
     "type": "Remote",
-    "path": "form-sample/new-parent",
+    "path": "form-sample/parents",
     "method": "POST",
     "body": {
       "type": "Context",

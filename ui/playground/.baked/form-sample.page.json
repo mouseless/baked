@@ -10,6 +10,7 @@
           {
             "type": "Button",
             "schema": {
+              "icon": "pi pi-plus",
               "label": "New Parent"
             },
             "action": {
@@ -26,7 +27,9 @@
           {
             "type": "Button",
             "schema": {
-              "label": "Clear Parents"
+              "icon": "pi pi-trash",
+              "label": "Clear Parents",
+              "severity": "danger"
             },
             "action": {
               "type": "Remote",

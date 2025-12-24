@@ -181,3 +181,5 @@
 - All component and schema convention extensions now has an overload that
   accepts `where: (cc, c) => ...` to allow access to the domain model while
   filtering
+- `AddRemoveChildCodingStyleFeature` now removes `New` prefix in addition to
+  `Add` and `Create`
