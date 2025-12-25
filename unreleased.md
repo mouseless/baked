@@ -147,7 +147,6 @@
 - `EnumSelect` and `EnumSelectButton` in `DomainComponents` are renamed to
   `ParameterSelect` and `ParameterSelectButton`
   - They still require an `InlineData` schema on the parameter type
-- `PageContext.Sitemap` is now `IReadOnlyCollection`
 
 ## Improvements
 
@@ -181,6 +180,7 @@
   ```
 - `Inputs` has become a pure utility component after removing wrapper div and
   `flex` styling
+- `PageContext.Sitemap` is now `IReadOnlyCollection`
 - `AddRemoveChildCodingStyleFeature` now removes `New` prefix in addition to
   `Add` and `Create`
 - `Add/Remove...Attribute` conventions now provide `requiresIndex:` parameter to
