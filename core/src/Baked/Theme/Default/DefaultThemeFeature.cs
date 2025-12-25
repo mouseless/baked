@@ -148,6 +148,15 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 },
                 order: UiLayer.MaxConventionOrder - 10
             );
+            builder.Conventions.AddMethodSchemaConfiguration<DataTable.Column>(
+                where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Actions)),
+                schema: (col, c, cc) =>
+                {
+                    col.Frozen = true;
+                    col.AlignRight = true;
+                    col.Exportable = false;
+                }
+            );
 
             // Simple Form
             builder.Conventions.AddMethodComponent(

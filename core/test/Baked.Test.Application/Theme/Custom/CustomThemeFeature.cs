@@ -1,6 +1,7 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
 using Baked.Test.Caching;
+using Baked.Test.Ui;
 using Baked.Theme;
 using Baked.Theme.Default;
 using Baked.Ui;
@@ -58,28 +59,43 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
                 when: c =>
                     c.Method.DefaultOverload.ReturnsList() &&
                     c.Method.DefaultOverload.ReturnType.TryGetElementType(out var itemType) &&
-                    itemType.TryGetMembers(out var itemMembers) &&
-                    itemMembers.Methods.Having<ActionAttribute>().Any(),
+                    itemType.TryGetMembers(out var itemMembers),
                 where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Actions)),
                 schema: (col, c, cc) =>
                 {
                     var itemMembers = c.Method.DefaultOverload.ReturnType.GetElementType().GetMembers();
-                    var rowActions = new List<IComponentDescriptor>();
+                    var actions = new List<IComponentDescriptor>();
                     foreach (var method in itemMembers.Methods.Having<ActionAttribute>())
                     {
+                        if (method.Get<ActionAttribute>().HideInLists) { continue; }
                         if (method.Has<InitializerAttribute>()) { continue; }
                         if (method.GetAction().Method == HttpMethod.Get) { continue; }
 
                         var component = method.GetComponent(cc.Drill(method.Name));
                         if (component is null) { continue; }
 
-                        rowActions.Add(component);
+                        actions.Add(component);
                     }
 
-                    col.Frozen = true;
-                    col.AlignRight = true;
-                    col.Exportable = false;
-                    col.Component = C.Container(options: c => c.Contents.AddRange(rowActions));
+                    if (!actions.Any()) { return; }
+
+                    col.Component = C.Container(options: c => c.Contents.AddRange(actions));
+                }
+            );
+            builder.Conventions.AddMethodComponentConfiguration<DataTable>(
+                component: dt =>
+                {
+                    if (dt.Schema.Actions is null) { return; }
+                    if (dt.Schema.Actions.Component is not ComponentDescriptor<Container> container) { return; }
+
+                    foreach (var component in container.Schema.Contents)
+                    {
+                        if (component.Action is not RemoteAction remote) { continue; }
+                        if (remote.PostAction is not PublishAction publish) { continue; }
+                        if (publish.Event is null) { continue; }
+
+                        dt.ReloadOn(publish.Event);
+                    }
                 }
             );
         });

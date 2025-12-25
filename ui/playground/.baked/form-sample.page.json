@@ -203,7 +203,7 @@
                   "parts": [
                     {
                       "type": "On",
-                      "on": "clear-parents"
+                      "on": "update"
                     },
                     {
                       "type": "On",
@@ -211,7 +211,7 @@
                     },
                     {
                       "type": "On",
-                      "on": "update"
+                      "on": "clear-parents"
                     }
                   ]
                 }
