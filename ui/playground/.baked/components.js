@@ -1,6 +1,7 @@
 import {
     Button,
 	CardLink,
+	Composite,
 	Conditional,
 	Container,
 	DataPanel,
@@ -40,6 +41,7 @@ import {
 export {
     Button,
 	CardLink,
+	Composite,
 	Conditional,
 	Container,
 	DataPanel,

@@ -1,10 +1,9 @@
 ﻿using Baked.Architecture;
+using Baked.Business;
 using Baked.Theme.Default;
 using Baked.Ui;
 
 using static Baked.Theme.Default.DomainComponents;
-
-using B = Baked.Ui.Components;
 
 namespace Baked.Ux.ListIsDataTable;
 
@@ -51,7 +50,29 @@ public class ListIsDataTableUxFeature : IFeature<UxConfigurator>
                     elementType.TryGetMembers(out var elementMembers) &&
                     elementMembers.Methods.Having<ActionAttribute>().Any(m => !m.Get<ActionAttribute>().HideInLists),
                 where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Actions)),
-                schema: (c, cc) => B.DataTableColumn(nameof(DataTable.Actions))
+                schema: () => ActionsDataTableColumn()
+            );
+            builder.Conventions.AddMethodSchemaConfiguration<DataTable.Column>(
+                when: c =>
+                    c.Method.DefaultOverload.ReturnsList() &&
+                    c.Method.DefaultOverload.ReturnType.TryGetElementType(out var itemType) &&
+                    itemType.HasMembers(),
+                where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Actions)),
+                schema: (col, c, cc) =>
+                {
+                    var itemMembers = c.Method.DefaultOverload.ReturnType.GetElementType().GetMembers();
+                    foreach (var method in itemMembers.Methods.Having<ActionAttribute>())
+                    {
+                        if (method.Get<ActionAttribute>().HideInLists) { continue; }
+                        if (method.Has<InitializerAttribute>()) { continue; }
+                        if (method.GetAction().Method == HttpMethod.Get) { continue; }
+
+                        var component = method.GetComponent(cc.Drill(method.Name));
+                        if (component is null) { continue; }
+
+                        col.Component += component;
+                    }
+                }
             );
         });
     }

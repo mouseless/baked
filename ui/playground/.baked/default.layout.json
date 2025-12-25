@@ -87,6 +87,12 @@
             "title": "Bake",
             "parentRoute": "/specs"
           },
+          "/specs/composite": {
+            "route": "/specs/composite",
+            "icon": "pi pi-microchip",
+            "title": "Composite",
+            "parentRoute": "/specs"
+          },
           "/specs/conditional": {
             "route": "/specs/conditional",
             "icon": "pi pi-microchip",

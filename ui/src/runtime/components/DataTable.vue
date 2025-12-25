@@ -58,7 +58,8 @@
       v-if="exportOptions || actions"
       :pt="{
         bodyCell: { class: 'max-xs:!inset-auto' },
-        headerCell: { class: 'max-xs:!inset-auto' }
+        headerCell: { class: 'max-xs:!inset-auto' },
+        columnHeaderContent: 'justify-end'
       }"
       :exportable="false"
       class="w-0 py-0"
@@ -93,10 +94,12 @@
             :data="row.$getRow()"
             data-key="row"
           >
-            <Bake
-              :name="`rows/${index}/actions`"
-              :descriptor="actions.component"
-            />
+            <div class="flex">
+              <Bake
+                :name="`rows/${index}/actions`"
+                :descriptor="actions.component"
+              />
+            </div>
           </ProvideParentContext>
         </AwaitLoading>
       </template>

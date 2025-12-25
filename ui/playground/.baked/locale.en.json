@@ -1,6 +1,7 @@
 {
   "A component to display message": "A component to display message",
   "A component to give a link to a domain object": "A component to give a link to a domain object",
+  "A renderless component that renders multiple components": "A renderless component that renders multiple components",
   "Access Denied": "Access Denied",
   "All UI Specs are listed here": "All UI Specs are listed here",
   "Allows change site language": "Allows change site language",
@@ -27,6 +28,7 @@
   "Column 1": "Column 1",
   "Column 2": "Column 2",
   "Column 3": "Column 3",
+  "Composite": "Composite",
   "Conditional": "Conditional",
   "Contents": "Contents",
   "Count": "Count",

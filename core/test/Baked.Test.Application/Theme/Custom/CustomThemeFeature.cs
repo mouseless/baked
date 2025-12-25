@@ -1,7 +1,5 @@
 ﻿using Baked.Architecture;
-using Baked.Business;
 using Baked.Test.Caching;
-using Baked.Test.Ui;
 using Baked.Theme;
 using Baked.Theme.Default;
 using Baked.Ui;
@@ -51,52 +49,6 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
             builder.Conventions.AddTypeSchema(
                 schema: (c, cc) => EnumInline(c.Type, cc, requireLocalization: false),
                 when: c => c.Type.Is<CacheKey>() || c.Type.Is<RowCount>()
-            );
-
-            // TODO move to UX
-            // Row Actions
-            builder.Conventions.AddMethodSchemaConfiguration<DataTable.Column>(
-                when: c =>
-                    c.Method.DefaultOverload.ReturnsList() &&
-                    c.Method.DefaultOverload.ReturnType.TryGetElementType(out var itemType) &&
-                    itemType.TryGetMembers(out var itemMembers),
-                where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Actions)),
-                schema: (col, c, cc) =>
-                {
-                    var itemMembers = c.Method.DefaultOverload.ReturnType.GetElementType().GetMembers();
-                    var actions = new List<IComponentDescriptor>();
-                    foreach (var method in itemMembers.Methods.Having<ActionAttribute>())
-                    {
-                        if (method.Get<ActionAttribute>().HideInLists) { continue; }
-                        if (method.Has<InitializerAttribute>()) { continue; }
-                        if (method.GetAction().Method == HttpMethod.Get) { continue; }
-
-                        var component = method.GetComponent(cc.Drill(method.Name));
-                        if (component is null) { continue; }
-
-                        actions.Add(component);
-                    }
-
-                    if (!actions.Any()) { return; }
-
-                    col.Component = C.Container(options: c => c.Contents.AddRange(actions));
-                }
-            );
-            builder.Conventions.AddMethodComponentConfiguration<DataTable>(
-                component: dt =>
-                {
-                    if (dt.Schema.Actions is null) { return; }
-                    if (dt.Schema.Actions.Component is not ComponentDescriptor<Container> container) { return; }
-
-                    foreach (var component in container.Schema.Contents)
-                    {
-                        if (component.Action is not RemoteAction remote) { continue; }
-                        if (remote.PostAction is not PublishAction publish) { continue; }
-                        if (publish.Event is null) { continue; }
-
-                        dt.ReloadOn(publish.Event);
-                    }
-                }
             );
         });
 

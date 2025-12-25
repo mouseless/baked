@@ -53,6 +53,15 @@ export default {
     };
   },
 
+  aComposite(parts) {
+    parts = $(parts, []);
+
+    return {
+      type: "Composite",
+      schema: { parts }
+    };
+  },
+
   aCompositeAction(parts) {
     parts = $(parts, []);
 

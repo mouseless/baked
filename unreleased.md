@@ -19,6 +19,8 @@
 - `SimpleForm` component is now added for rendering a basic form with inputs
   with dialog support
 - `DataTable` now supports row based actions via `Actions` property
+  - `ListIsDataTableUxFeature` and `ObjectWithListIsDataTableUxFeature` both now
+    add and fill actions column automatically
 - `Bake` now supports reload and show/hide reactions
   - Use `ReloadOn` and `ShowOn` to bind them to an event
   - Use `ReloadWhen` and `ShowWhen` to bind them to a page context value
@@ -36,6 +38,8 @@
     page's content list
 - `Dialog` component is now added which displays given content in dialog
   with action support
+- `Composite` component is now added to add multiple components to a single
+  component slot
 
 ## Breaking Changes
 
@@ -169,8 +173,9 @@
   data using `useDataFetcher`
 - `Layout` now supports app-wide `pageContext` and `events` that are different
   from those coming from `Page` which are page-wide
-- `IAction` and `IData` now implement `+` operator to easily convert them into a
-  `CompositeAction` and `CompositeData`
+- `IAction`, `IData` and `IComponentDescriptor` now implement `+` operator to
+  easily convert them into a `CompositeAction`, `CompositeData` and
+  `CompontentDescriptor<Composite>`
   ```csharp
   component.Data += Context.Parent(options: cd => cd.Prop = "parameters");
   ```

@@ -92,9 +92,9 @@
                 "actions": {
                   "key": "Actions",
                   "component": {
-                    "type": "Container",
+                    "type": "Composite",
                     "schema": {
-                      "contents": [
+                      "parts": [
                         {
                           "type": "SimpleForm",
                           "schema": {

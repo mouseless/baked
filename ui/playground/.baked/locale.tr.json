@@ -1,6 +1,7 @@
 {
   "A component to display message": "Mesaj göstermek için bir bileşen",
   "A component to give a link to a domain object": "Bir alan nesnesine bağlantı vermek için bir bileşen",
+  "A renderless component that renders multiple components": "Birden fazla bileşenin bir yere çizilmesini sağlayan yardımcı bir bileşen",
   "Access Denied": "Erişim Reddedildi",
   "All UI Specs are listed here": "Tüm arayüz spesifikasyonları burada listelenir",
   "Allows change site language": "Site dilini değiştirmeye izin verir",
@@ -27,6 +28,7 @@
   "Column 1": "Kolon 1",
   "Column 2": "Kolon 2",
   "Column 3": "Kolon 3",
+  "Composite": "Bileşik",
   "Conditional": "Koşullu",
   "Contents": "İçerikler",
   "Count": "Adet",

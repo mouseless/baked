@@ -157,6 +157,22 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     col.Exportable = false;
                 }
             );
+            builder.Conventions.AddMethodComponentConfiguration<DataTable>(
+                component: dt =>
+                {
+                    if (dt.Schema.Actions is null) { return; }
+                    if (dt.Schema.Actions.Component is not ComponentDescriptor<Composite> composite) { return; }
+
+                    foreach (var component in composite.Schema.Parts)
+                    {
+                        if (component.Action is not RemoteAction remote) { continue; }
+                        if (remote.PostAction is not PublishAction publish) { continue; }
+                        if (publish.Event is null) { continue; }
+
+                        dt.ReloadOn(publish.Event);
+                    }
+                }
+            );
 
             // Simple Form
             builder.Conventions.AddMethodComponent(
@@ -197,7 +213,6 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
 
             // TODO Move to UX
-
             // actions as buttons ux feature
             builder.Conventions.AddTypeComponentConfiguration<PageTitle>(
                 component: (pt, c, cc) =>
@@ -228,7 +243,6 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 where: cc => cc.Path.EndsWith("Actions", "*", nameof(SimpleForm), nameof(SimpleForm.DialogOptions)),
                 schema: (c, cc) => MethodSimpleFormDialog(c.Method, cc)
             );
-
             builder.Conventions.AddMethodComponent(
                 when: c => c.Method.Has<ActionAttribute>(),
                 where: cc => cc.Path.EndsWith("Submit"),

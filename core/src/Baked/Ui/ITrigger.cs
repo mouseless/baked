@@ -9,7 +9,7 @@ public interface ITrigger
         if (left is null) { return right; }
         if (left is not CompositeTrigger composite)
         {
-            composite = new CompositeTrigger { Parts = [left] };
+            composite = new() { Parts = [left] };
         }
 
         composite.Parts.Add(right);

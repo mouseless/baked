@@ -262,6 +262,20 @@ public static class DomainComponents
         );
     }
 
+    public static DataTable.Column ActionsDataTableColumn(
+        Action<DataTable.Column>? options = default
+    )
+    {
+        return B.DataTableColumn(nameof(DataTable.Actions),
+            options: dtc =>
+            {
+                dtc.Component = B.Composite();
+
+                options.Apply(dtc);
+            }
+        );
+    }
+
     public static ComponentDescriptor<Conditional> PropertyConditional(PropertyModel property, ComponentContext context,
         Action<Conditional>? options = default
     )

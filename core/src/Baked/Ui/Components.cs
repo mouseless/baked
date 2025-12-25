@@ -11,6 +11,10 @@ public static class Components
         Action<CardLink>? options = default
     ) => new(options.Apply(new(route, title)));
 
+    public static ComponentDescriptor<Composite> Composite(
+        Action<Composite>? options = default
+    ) => new(options.Apply(new()));
+
     public static ComponentDescriptor<Conditional> Conditional(
         Action<Conditional>? options = default
     ) => new(options.Apply(new()));

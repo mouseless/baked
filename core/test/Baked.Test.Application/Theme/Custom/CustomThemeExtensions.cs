@@ -21,6 +21,7 @@ public static class CustomThemeExtensions
 
             // Behavior
             r => r.Child("/specs/bake", "Bake", "/specs") with { Icon = "pi pi-microchip", Description = "The core component that renders a dynamic component using given descriptor", Section = "Behavior" },
+            r => r.Child("/specs/composite", "Composite", "/specs") with { Icon = "pi pi-microchip", Description = "A renderless component that renders multiple components", Section = "Behavior" },
             r => r.Child("/specs/conditional", "Conditional", "/specs") with { Icon = "pi pi-microchip", Description = "Allows rendering component based on configured condition", Section = "Behavior" },
             r => r.Child("/specs/contents", "Contents", "/specs") with { Icon = "pi pi-microchip", Description = "Allows multiple components to be rendered in a simple grid", Section = "Behavior" },
             r => r.Child("/specs/custom-css", "Custom CSS", "/specs") with { Icon = "pi pi-microchip", Description = "Allows custom configuration to define custom css and more", Section = "Behavior" },

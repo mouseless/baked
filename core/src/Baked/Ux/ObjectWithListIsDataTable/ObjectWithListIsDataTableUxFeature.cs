@@ -1,11 +1,10 @@
 ﻿using Baked.Architecture;
+using Baked.Business;
 using Baked.Theme.Default;
 using Baked.Ui;
 using Humanizer;
 
 using static Baked.Theme.Default.DomainComponents;
-
-using B = Baked.Ui.Components;
 
 namespace Baked.Ux.ObjectWithListIsDataTable;
 
@@ -86,9 +85,8 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                     var returnMembers = c.Method.DefaultOverload.ReturnType.SkipTask().GetMembers();
                     var listPropertyName = returnMembers.Get<ObjectWithListAttribute>().ListPropertyName;
                     var elementType = returnMembers.Properties[listPropertyName].PropertyType.GetElementType();
-
-                    var members = elementType.GetMembers();
-                    foreach (var property in members.Properties.GetDataProperties())
+                    var elementMembers = elementType.GetMembers();
+                    foreach (var property in elementMembers.Properties.GetDataProperties())
                     {
                         var column = property.GetSchema<DataTable.Column>(cc.Drill(nameof(DataTable.Columns)));
                         if (column is null) { continue; }
@@ -96,9 +94,9 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                         dt.Schema.Columns.Add(column);
                     }
 
-                    if (dt.Schema.DataKey is null && members.Properties.Having<IdAttribute>().Any())
+                    if (dt.Schema.DataKey is null && elementMembers.Properties.Having<IdAttribute>().Any())
                     {
-                        dt.Schema.DataKey = members.Properties.Having<IdAttribute>().Single().Get<DataAttribute>().Prop;
+                        dt.Schema.DataKey = elementMembers.Properties.Having<IdAttribute>().Single().Get<DataAttribute>().Prop;
                     }
                 },
                 order: -10
@@ -113,7 +111,35 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                     elementType.TryGetMembers(out var elementMembers) &&
                     elementMembers.Methods.Having<ActionAttribute>().Any(m => !m.Get<ActionAttribute>().HideInLists),
                 where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Actions)),
-                schema: (c, cc) => B.DataTableColumn(nameof(DataTable.Actions))
+                schema: () => ActionsDataTableColumn()
+            );
+            builder.Conventions.AddMethodSchemaConfiguration<DataTable.Column>(
+                when: c =>
+                    c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMembers(out var returnMembers) &&
+                    returnMembers.TryGet<ObjectWithListAttribute>(out var objectWithList) &&
+                    returnMembers
+                        .Properties[objectWithList.ListPropertyName]
+                        .PropertyType.TryGetElementType(out var elementType) &&
+                    elementType.HasMembers(),
+                where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Actions)),
+                schema: (col, c, cc) =>
+                {
+                    var returnMembers = c.Method.DefaultOverload.ReturnType.SkipTask().GetMembers();
+                    var listPropertyName = returnMembers.Get<ObjectWithListAttribute>().ListPropertyName;
+                    var elementType = returnMembers.Properties[listPropertyName].PropertyType.GetElementType();
+                    var elementMembers = elementType.GetMembers();
+                    foreach (var method in elementMembers.Methods.Having<ActionAttribute>())
+                    {
+                        if (method.Get<ActionAttribute>().HideInLists) { continue; }
+                        if (method.Has<InitializerAttribute>()) { continue; }
+                        if (method.GetAction().Method == HttpMethod.Get) { continue; }
+
+                        var component = method.GetComponent(cc.Drill(method.Name));
+                        if (component is null) { continue; }
+
+                        col.Component += component;
+                    }
+                }
             );
 
             builder.Conventions.AddMethodSchema(
