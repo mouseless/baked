@@ -5,6 +5,7 @@
       "type": "PageTitle",
       "schema": {
         "title": "Parent",
+        "description": "Showcase a locatable entity page",
         "actions": []
       }
     },
