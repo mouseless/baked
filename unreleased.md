@@ -176,10 +176,12 @@
   ```
 - `Inputs` has become a pure utility component after removing wrapper div and
   `flex` styling
-- `PageContext` now has `Routes` hash set to check if a route exists while
-  building a component
-- All component and schema convention extensions now has an overload that
-  accepts `where: (cc, c) => ...` to allow access to the domain model while
-  filtering
 - `AddRemoveChildCodingStyleFeature` now removes `New` prefix in addition to
   `Add` and `Create`
+- `Add/Remove...Attribute` conventions now provide `requiresIndex:` parameter to
+  allow postponing add/remove attribute conventions that won't require index
+  (such as UI component and schema attributes) after building indices
+- UI conventions are now added after all API attributes get configured and are
+  safe to use API configurations such as HTTP method of `ActionModelAttribute`
+- Unlike schema conventions, UI component conventions were allowed to be added
+  to non API method and parameters, fixed

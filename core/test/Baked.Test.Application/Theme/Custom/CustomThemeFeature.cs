@@ -1,6 +1,5 @@
 ﻿using Baked.Architecture;
 using Baked.Business;
-using Baked.RestApi.Model;
 using Baked.Test.Caching;
 using Baked.Theme;
 using Baked.Theme.Default;
@@ -60,7 +59,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
                     c.Method.DefaultOverload.ReturnsList() &&
                     c.Method.DefaultOverload.ReturnType.TryGetElementType(out var itemType) &&
                     itemType.TryGetMembers(out var itemMembers) &&
-                    itemMembers.Methods.Having<ActionModelAttribute>().Any(),
+                    itemMembers.Methods.Having<ActionAttribute>().Any(),
                 where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Actions)),
                 schema: (col, c, cc) =>
                 {

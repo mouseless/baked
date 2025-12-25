@@ -19,7 +19,7 @@
               "options": {
                 "type": "Inline",
                 "value": {
-                  "route": "/form-sample/new-parent"
+                  "route": "/form-sample/parents/new"
                 }
               }
             }

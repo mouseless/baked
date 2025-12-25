@@ -62,7 +62,6 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 order: RestApiLayer.MaxConventionOrder + 10
             );
             builder.Conventions.AddMethodSchema(
-                when: c => c.Method.Has<ActionModelAttribute>(),
                 schema: c => MethodRemote(c.Method)
             );
             builder.Conventions.AddMethodSchemaConfiguration<RemoteData>(
@@ -70,11 +69,10 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 schema: rd => rd.Params = Computed.UseRoute("params")
             );
             builder.Conventions.AddMethodSchema(
-                when: c => c.Method.Has<ActionModelAttribute>(),
                 schema: (c, cc) => MethodContent(c.Method, cc)
             );
             builder.Conventions.AddMethodSchema(
-                when: c => c.Method.Has<ActionModelAttribute>(),
+                when: c => c.Method.Has<ActionAttribute>(),
                 schema: (c, cc) => DomainActions.MethodRemote(c.Method)
             );
             builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
@@ -208,25 +206,13 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 }
             );
             builder.Conventions.AddMethodComponent(
-                when: c => c.Method.Has<ActionModelAttribute>() && !c.Method.DefaultOverload.Parameters.Any(),
+                when: c => c.Method.Has<ActionAttribute>() && !c.Method.DefaultOverload.Parameters.Any(),
                 where: cc => cc.Path.EndsWith("Actions", "*"),
                 component: (c, cc) => MethodButton(c.Method, cc)
             );
             builder.Conventions.AddMethodComponent(
-                when: c => c.Method.Has<ActionModelAttribute>() && c.Method.DefaultOverload.Parameters.Any(),
-                where: (cc, c) =>
-                    cc.Path.EndsWith("Actions", "*") &&
-                    cc.Routes.Contains($"{cc.Route.Path}/{c.Method.Name.Kebaberize()}"),
-                component: (c, cc) =>
-                    LocalizedButton(c.Method.Name.Titleize(), cc,
-                        action: Local.UseRedirect($"{cc.Route.Path}/{c.Method.Name.Kebaberize()}")
-                    )
-            );
-            builder.Conventions.AddMethodComponent(
-                when: c => c.Method.Has<ActionModelAttribute>() && c.Method.DefaultOverload.Parameters.Any(),
-                where: (cc, c) =>
-                    cc.Path.EndsWith("Actions", "*") &&
-                    !cc.Routes.Contains($"{cc.Route.Path}/{c.Method.Name.Kebaberize()}"),
+                when: c => c.Method.Has<ActionAttribute>() && c.Method.DefaultOverload.Parameters.Any(),
+                where: cc => cc.Path.EndsWith("Actions", "*"),
                 component: (c, cc) => MethodSimpleForm(c.Method, cc)
             );
             builder.Conventions.AddMethodSchema(
@@ -235,13 +221,50 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
 
             builder.Conventions.AddMethodComponent(
-                when: c => c.Method.Has<ActionModelAttribute>(),
+                when: c => c.Method.Has<ActionAttribute>(),
                 where: cc => cc.Path.EndsWith("Submit"),
                 component: (c, cc) => LocalizedButton(c.Method.Name.Titleize(), cc)
             );
             builder.Conventions.AddMethodComponentConfiguration<Button>(
                 where: cc => cc.Path.EndsWith("Submit"),
                 component: b => b.Schema.Severity = "primary"
+            );
+            builder.Conventions.AddMethodComponentConfiguration<SimpleForm>(
+                component: (sf, c, cc) =>
+                {
+                    cc = cc.Drill(nameof(SimpleForm.Inputs));
+
+                    foreach (var parameter in c.Method.DefaultOverload.Parameters)
+                    {
+                        sf.Schema.Inputs.Add(
+                            parameter.GetRequiredSchema<Input>(cc.Drill(parameter.Name))
+                        );
+                    }
+                }
+            );
+
+            // form page ux feature
+            builder.Conventions.AddMethodComponent(
+                when: c => c.Method.TryGet<ActionAttribute>(out var action) && action?.RoutePath is not null,
+                where: cc => cc.Path.EndsWith("Actions", "*"),
+                component: (c, cc) =>
+                {
+                    var route = c.Method.Get<ActionAttribute>().RoutePath ?? throw new("`RoutePath` can't be null here");
+
+                    return LocalizedButton(c.Method.Name.Titleize(), cc,
+                        action: Local.UseRedirect(route)
+                    );
+                }
+            );
+            builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
+                when: c => c.Method.TryGet<ActionAttribute>(out var action) && action.RoutePathBack is not null,
+                where: cc => cc.Path.StartsWith(nameof(Page), "*", "*", nameof(FormPage)),
+                schema: (ra, c) =>
+                {
+                    var routeBack = c.Method.Get<ActionAttribute>().RoutePathBack ?? throw new("`RoutePathBack` can't be null here");
+
+                    ra.PostAction = Local.UseRedirect(routeBack);
+                }
             );
             builder.Conventions.AddMethodComponentConfiguration<Button>(
                 where: cc => cc.Path.EndsWith(nameof(FormPage), nameof(FormPage.Submit)),
@@ -252,25 +275,6 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     b.Schema.Label = l("Save");
                 }
             );
-
-            builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
-                when: c => c.Method.Has<ActionModelAttribute>(),
-                where: cc => cc.Path.Contains(nameof(DataTable), nameof(DataTable.Actions)),
-                schema: ra => ra.Params = Context.Parent(options: o => o.Prop = "row")
-            );
-            builder.Conventions.AddMethodComponentConfiguration<Button>(
-                where: cc =>
-                    cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Actions), "*") ||
-                    cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Actions), "**", nameof(SimpleForm.DialogOptions.Open)),
-                component: b =>
-                {
-                    b.Schema.Label = string.Empty;
-                    b.Schema.Variant = "text";
-                    b.Schema.Rounded = true;
-                }
-            );
-
-            // other
             builder.Conventions.AddMethodComponentConfiguration<FormPage>(
                 component: (fp, c, cc) =>
                 {
@@ -288,12 +292,39 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 where: cc => cc.Path.EndsWith("Back"),
                 component: b => b.Action = Local.UseRedirectBack()
             );
-            builder.Conventions.AddMethodComponentConfiguration<Button>(
-                where: cc => cc.Path.EndsWith("Cancel") || cc.Path.EndsWith("Back"),
-                component: b => b.Schema.Variant = "text"
+            builder.Conventions.AddMethodComponentConfiguration<FormPage>(
+                component: (sf, c, cc) =>
+                {
+                    cc = cc.Drill(nameof(FormPage.Inputs));
+
+                    foreach (var parameter in c.Method.DefaultOverload.Parameters)
+                    {
+                        sf.Schema.Inputs.Add(
+                            parameter.GetRequiredSchema<Input>(cc.Drill(parameter.Name))
+                        );
+                    }
+                }
             );
 
-            // button icons
+            // data table related ux
+            builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
+                when: c => c.Method.Has<ActionAttribute>(),
+                where: cc => cc.Path.Contains(nameof(DataTable), nameof(DataTable.Actions)),
+                schema: ra => ra.Params = Context.Parent(options: o => o.Prop = "row")
+            );
+            builder.Conventions.AddMethodComponentConfiguration<Button>(
+                where: cc =>
+                    cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Actions), "*") ||
+                    cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Actions), "**", nameof(SimpleForm.DialogOptions.Open)),
+                component: b =>
+                {
+                    b.Schema.Label = string.Empty;
+                    b.Schema.Variant = "text";
+                    b.Schema.Rounded = true;
+                }
+            );
+
+            // other button related ux
             builder.Conventions.AddMethodComponentConfiguration<Button>(
                 when: c => c.Method.Has<ActionAttribute>(),
                 where: cc =>
@@ -317,33 +348,9 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     b.Schema.Severity = action.Method == HttpMethod.Delete ? "danger" : b.Schema.Severity;
                 }
             );
-
-            // parameters as inputs
-            builder.Conventions.AddMethodComponentConfiguration<FormPage>(
-                component: (sf, c, cc) =>
-                {
-                    cc = cc.Drill(nameof(FormPage.Inputs));
-
-                    foreach (var parameter in c.Method.DefaultOverload.Parameters)
-                    {
-                        sf.Schema.Inputs.Add(
-                            parameter.GetRequiredSchema<Input>(cc.Drill(parameter.Name))
-                        );
-                    }
-                }
-            );
-            builder.Conventions.AddMethodComponentConfiguration<SimpleForm>(
-                component: (sf, c, cc) =>
-                {
-                    cc = cc.Drill(nameof(SimpleForm.Inputs));
-
-                    foreach (var parameter in c.Method.DefaultOverload.Parameters)
-                    {
-                        sf.Schema.Inputs.Add(
-                            parameter.GetRequiredSchema<Input>(cc.Drill(parameter.Name))
-                        );
-                    }
-                }
+            builder.Conventions.AddMethodComponentConfiguration<Button>(
+                where: cc => cc.Path.EndsWith("Cancel") || cc.Path.EndsWith("Back"),
+                component: b => b.Schema.Variant = "text"
             );
         });
 
@@ -410,14 +417,12 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 configurator.UsingLocalization(l =>
                 {
                     var sitemap = _routes.ToImmutableList();
-                    var routes = _routes.Select(r => r.Path).ToImmutableHashSet();
                     foreach (var route in _routes)
                     {
                         var page = route.BuildPage(new()
                         {
                             Route = route,
                             Sitemap = sitemap,
-                            Routes = routes,
                             Domain = domain,
                             NewLocaleKey = l
                         });

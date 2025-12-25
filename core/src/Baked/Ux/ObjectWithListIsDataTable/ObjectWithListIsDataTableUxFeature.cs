@@ -1,5 +1,4 @@
 ﻿using Baked.Architecture;
-using Baked.RestApi.Model;
 using Baked.Theme.Default;
 using Baked.Ui;
 using Humanizer;
@@ -52,7 +51,6 @@ public class ObjectWithListIsDataTableUxFeature : IFeature<UxConfigurator>
                         .Camelize();
                 }),
                 when: c =>
-                    c.Method.Has<ActionModelAttribute>() &&
                     c.Method.DefaultOverload.ReturnType.SkipTask().TryGetMetadata(out var returnMetadata) &&
                     returnMetadata.Has<ObjectWithListAttribute>(),
                 where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content))

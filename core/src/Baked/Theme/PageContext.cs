@@ -7,7 +7,6 @@ public record PageContext
 {
     public required Route Route { get; init; }
     public required IReadOnlyList<Route> Sitemap { get; init; }
-    public required IReadOnlySet<string> Routes { get; init; }
     public required DomainModel Domain { get; init; }
     public required NewLocaleKey NewLocaleKey { get; init; }
 
@@ -22,7 +21,6 @@ public record PageContext
         {
             Route = Route,
             Sitemap = Sitemap,
-            Routes = Routes,
             Domain = Domain,
             NewLocaleKey = NewLocaleKey,
             Path = new(paths)

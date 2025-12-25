@@ -1,5 +1,4 @@
 ﻿using Baked.Architecture;
-using Baked.RestApi.Model;
 using Baked.Theme.Default;
 using Baked.Ui;
 
@@ -15,7 +14,7 @@ public class ListIsDataTableUxFeature : IFeature<UxConfigurator>
         {
             builder.Conventions.AddMethodComponent(
                 component: (c, cc) => MethodDataTable(c.Method, cc),
-                when: c => c.Method.Has<ActionModelAttribute>() && c.Method.DefaultOverload.ReturnsList(),
+                when: c => c.Method.DefaultOverload.ReturnsList(),
                 where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Content))
             );
             builder.Conventions.AddMethodComponentConfiguration<DataTable>(

@@ -44,7 +44,7 @@
         }
       }
     ],
-    "path": "form-sample/new-parent"
+    "path": "form-sample/parents/new"
   },
   "action": {
     "type": "Remote",

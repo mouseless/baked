@@ -2,7 +2,6 @@
 using Baked.RestApi;
 using Baked.Test.Orm;
 using Baked.Test.Theme;
-using Baked.Theme;
 using Baked.Theme.Default;
 using Baked.Ui;
 using Humanizer;
@@ -17,7 +16,14 @@ public class FormSampleUiOverrideFeature : IFeature
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            // contents
+            builder.Conventions.AddMethodAttributeConfiguration<ActionAttribute>(
+                when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.NewParent),
+                attribute: (a, c) =>
+                {
+                    a.RoutePath = "/form-sample/parents/new";
+                    a.RoutePathBack = "/form-sample";
+                }
+            );
             builder.Conventions.AddMethodComponentConfiguration<DataPanel>(
                 when: c => c.Type.Is<FormSample>(),
                 component: dp =>
@@ -28,15 +34,9 @@ public class FormSampleUiOverrideFeature : IFeature
                 }
             );
 
-            // actions
             builder.Conventions.RemoveMethodAttribute<ActionAttribute>(
                 when: c => c.Type.Is<Parent>() && c.Method.Name.Contains("Child"),
                 order: RestApiLayer.MaxConventionOrder + 15
-            );
-            builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
-                when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.NewParent),
-                where: cc => cc.Path.StartsWith(nameof(Page), "*", "*", nameof(FormPage)),
-                schema: ra => ra.PostAction = Actions.Local.UseRedirect("/form-sample")
             );
             builder.Conventions.AddMethodSchema(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.GetParents),

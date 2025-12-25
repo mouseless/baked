@@ -62,8 +62,8 @@
             "icon": "pi pi-file-edit",
             "title": "Form"
           },
-          "/form-sample/new-parent": {
-            "route": "/form-sample/new-parent",
+          "/form-sample/parents/new": {
+            "route": "/form-sample/parents/new",
             "title": "New Parent",
             "parentRoute": "/form-sample"
           },
