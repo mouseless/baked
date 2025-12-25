@@ -15,7 +15,7 @@
       <Button
         data-testid="default"
         type="button"
-        label="Page with Modal Layout"
+        :label="l('Spec: Page with Default Layout')"
         class="m-4"
         @click="$router.push('/report-page-sample')"
       />
@@ -33,7 +33,7 @@
       <Button
         data-testid="modal"
         type="button"
-        label="Page with Modal Layout"
+        :label="l('Spec: Page with Modal Layout')"
         class="m-4"
         @click="$router.push(loginPath)"
       />
@@ -42,8 +42,10 @@
 </template>
 <script setup>
 import { Button, Divider, Message } from "primevue";
-import { useLoginRedirect } from "#imports";
+import { useLocalization, useLoginRedirect } from "#imports";
 
+const { localize: l } = useLocalization();
 const loginRedirect = useLoginRedirect();
+
 const loginPath = loginRedirect.computeSync();
 </script>

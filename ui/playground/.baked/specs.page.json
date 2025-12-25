@@ -109,7 +109,7 @@
                 "route": "/specs/layout",
                 "icon": "pi pi-microchip",
                 "title": "Layout",
-                "description": "Manages layouts for pages"
+                "description": "Selects specified layout for pages"
               }
             }
           },

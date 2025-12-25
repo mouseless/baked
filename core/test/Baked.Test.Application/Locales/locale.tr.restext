@@ -153,6 +153,7 @@ Routing=Yönlendirme
 Route Parameters=Yol Parametreleri
 Select=Seç
 Select Button=Seçim Butonu
+Selects specified layout for pages=Sayfalar için belirlenen yerleşimi seçer
 Shortens and renders money values with the full value shown as tooltip=Para değerlerini kısaltır ve tam değeri ipucu olarak gösterir
 Shortens and renders numbers with the full value shown as tooltip=Sayıları kısaltır ve tam değeri ipucu olarak gösterir
 Showcases a report layout with tabs and data panels=Sekmeler ve veri panelleriyle bir rapor düzeni sunar
