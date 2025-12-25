@@ -335,7 +335,7 @@ public static class DomainComponents
         Action<Content>? options = default
     )
     {
-        var key = property.Get<DataAttribute>().Prop.Kebaberize();
+        var key = property.Get<DataAttribute>().Prop;
 
         context = context.Drill(key);
 
