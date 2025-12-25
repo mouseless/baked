@@ -7,16 +7,18 @@ using Humanizer;
 
 using static Baked.Theme.Default.DomainComponents;
 
-namespace Baked.Ux.ActionsAreGroupedAsTabs;
+namespace Baked.Ux.ActionsAreContents;
 
-// TODO rename to match new content
-public class ActionsAreGroupedAsTabsUxFeature : IFeature<UxConfigurator>
+public class ActionsAreContentsUxFeature : IFeature<UxConfigurator>
 {
     public void Configure(LayerConfigurator configurator)
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.AddTypeComponentConfiguration<SimplePage>(
+                when: c =>
+                    c.Type.TryGetMembers(out var members) &&
+                    members.Methods.Having<ActionModelAttribute>().Any(m => m.GetAction().Method == HttpMethod.Get),
                 component: (sp, c, cc) =>
                 {
                     cc = cc.Drill(nameof(SimplePage), nameof(SimplePage.Contents));
@@ -24,7 +26,8 @@ public class ActionsAreGroupedAsTabsUxFeature : IFeature<UxConfigurator>
                     foreach (var method in c.Type.GetMembers().Methods.Having<ActionModelAttribute>())
                     {
                         if (method.Has<InitializerAttribute>()) { continue; }
-                        if (method.GetAction().Method != HttpMethod.Get) { continue; }
+                        if (!method.TryGet<ActionModelAttribute>(out var action)) { continue; }
+                        if (action.Method != HttpMethod.Get) { continue; }
 
                         var content = method.GetSchema<Content>(cc.Drill(sp.Schema.Contents.Count));
                         if (content is null) { continue; }
@@ -34,6 +37,9 @@ public class ActionsAreGroupedAsTabsUxFeature : IFeature<UxConfigurator>
                 }
             );
             builder.Conventions.AddTypeComponentConfiguration<TabbedPage>(
+                when: c =>
+                    c.Type.TryGetMembers(out var members) &&
+                    members.Methods.Having<ActionModelAttribute>().Any(m => m.GetAction().Method == HttpMethod.Get),
                 component: (tp, c, cc) =>
                 {
                     cc = cc.Drill(nameof(TabbedPage), nameof(TabbedPage.Tabs));
@@ -52,16 +58,14 @@ public class ActionsAreGroupedAsTabsUxFeature : IFeature<UxConfigurator>
                             tabs.Add(tabName.Value, t = TypeTab(c.Type, cc, tabName.Value));
                         }
 
-                        t.Contents.Add(
-                            method.GetRequiredSchema<Content>(
-                                cc.Drill(tabName.Value, nameof(Tab.Contents), t.Contents.Count)
-                            )
-                        );
+                        var content = method.GetSchema<Content>(cc.Drill(tabName.Value, nameof(Tab.Contents), t.Contents.Count));
+                        if (content is null) { continue; }
+
+                        t.Contents.Add(content);
                     }
 
                     tp.Schema.Tabs.AddRange(tabs.Values);
                 },
-                when: c => c.Type.HasMembers(),
                 order: -10
             );
             builder.Conventions.AddTypeComponentConfiguration<TabbedPage>(

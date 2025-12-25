@@ -32,10 +32,6 @@
       {
         "name": "name",
         "required": true,
-        "default": {
-          "type": "Inline",
-          "value": null
-        },
         "component": {
           "type": "InputText",
           "schema": {

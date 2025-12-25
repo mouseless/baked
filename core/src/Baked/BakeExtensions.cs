@@ -111,8 +111,10 @@ public static class BakeExtensions
 
                 app.Features.AddUx(
                 [
-                    c => c.ActionsAreGroupedAsTabs(),
+                    c => c.ActionsAsButtons(),
+                    c => c.ActionsAreContents(),
                     c => c.ActionsAsDataPanels(),
+                    c => c.DataTableDefaults(),
                     c => c.DesignatedStringPropertiesAreLabel(),
                     c => c.EnumParameterIsSelect(),
                     c => c.InitializerParametersAreInPageTitle(),

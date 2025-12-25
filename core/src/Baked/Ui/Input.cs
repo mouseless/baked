@@ -9,5 +9,5 @@ public record Input(string Name, IComponentDescriptor Component)
     public bool? QueryBound { get; set; }
     public IComponentDescriptor Component { get; set; } = Component;
 
-    public object? DefaultValue { set => Default = value is not null ? Datas.Inline(value) : null; }
+    public object? DefaultValue { set => Default = value is not null && value != DBNull.Value ? Datas.Inline(value) : null; }
 }

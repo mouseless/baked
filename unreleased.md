@@ -40,6 +40,10 @@
   with action support
 - `Composite` component is now added to add multiple components to a single
   component slot
+- New UX features are introduced in `Monolith` recipe
+  - **Actions as Buttons**: to render non-`GET` actions as buttons
+  - **Actions are Contents**: to render `GET` actions as contents
+  - **Data Table defaults**: to set defaults for all `DataTable` components
 
 ## Breaking Changes
 
@@ -147,6 +151,8 @@
 - `EnumSelect` and `EnumSelectButton` in `DomainComponents` are renamed to
   `ParameterSelect` and `ParameterSelectButton`
   - They still require an `InlineData` schema on the parameter type
+- `ActionsAreGroupedAsTabsUxFeature` is now removed
+  - `Monolith` recipe now uses `ActionsAreContentsUxFeature`
 
 ## Improvements
 
