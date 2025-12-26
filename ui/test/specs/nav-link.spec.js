@@ -17,18 +17,28 @@ test.describe("Base", () => {
   test("address", async({ page }) => {
     const component = page.getByTestId(id);
 
-    await expect(component.locator(primevue.button.base)).toHaveAttribute("href", "/test-path/test-id");
+    await expect(component.locator(primevue.button.base)).toHaveAttribute("href", "/specs");
   });
 
   test("text", async({ page }) => {
     const component = page.getByTestId(id);
 
-    await expect(component).toHaveText("Name");
+    await expect(component).toHaveText("Base");
   });
 
   test("visual", { tag: "@visual" }, async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component).toHaveScreenshot();
+  });
+});
+
+test.describe("Dynamic", () => {
+  const id = "Dynamic";
+
+  test("address", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.locator(primevue.button.base)).toHaveAttribute("href", "/test-path/test-id?query=value");
   });
 });

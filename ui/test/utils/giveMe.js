@@ -447,16 +447,14 @@ export default {
     };
   },
 
-  aNavLink({ icon, path, idProp, textProp, data } = {}) {
+  aNavLink({ icon, path, query, params, data } = {}) {
     path = $(path, "/some-object/{0}");
-    idProp = $(idProp, "id");
-    textProp = $(textProp, "name");
     data = $(data, { id: "test-id", name: "Test" });
 
     return {
       type: "NavLink",
-      schema: { icon, path, idProp, textProp },
-      data: this.anInlineData(data)
+      schema: { icon, path, query, params },
+      data: data
     };
   },
 
