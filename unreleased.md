@@ -166,5 +166,6 @@
   ```
 - `Inputs` has become a pure utility component after removing wrapper div and
   `flex` styling
-- `NavLink` now supports named route parameters which can be provided with data
+- `NavLink` now supports named route parameters and query which both can be 
+  provided from schema as `IData`
 - `NavLink` now has `Icon` property
