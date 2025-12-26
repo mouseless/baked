@@ -12,7 +12,7 @@ public class AddingAndRemovingChildren : TestNfr
         var parentResponse = await Client.PostAsync("/parents", JsonContent.Create(new { name = "test" }));
         dynamic? parent = JsonConvert.DeserializeObject(await parentResponse.Content.ReadAsStringAsync());
 
-        var response = await Client.PostAsync($"/parents/{parent?.id}/children", JsonContent.Create(new { }));
+        var response = await Client.PostAsync($"/parents/{parent?.id}/children", JsonContent.Create(new { name = "child" }));
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }
@@ -22,7 +22,7 @@ public class AddingAndRemovingChildren : TestNfr
     {
         var parentResponse = await Client.PostAsync("/parents", JsonContent.Create(new { name = "test" }));
         dynamic? parent = JsonConvert.DeserializeObject(await parentResponse.Content.ReadAsStringAsync());
-        await Client.PostAsync($"/parents/{parent?.id}/children", JsonContent.Create(new { }));
+        await Client.PostAsync($"/parents/{parent?.id}/children", JsonContent.Create(new { name = "child" }));
         var childrenResponse = await Client.GetAsync($"/parents/{parent?.id}/children");
         dynamic? children = JsonConvert.DeserializeObject(await childrenResponse.Content.ReadAsStringAsync());
 

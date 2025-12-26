@@ -8,15 +8,54 @@
         "description": "Showcase a locatable entity page",
         "actions": [
           {
-            "type": "Button",
+            "type": "SimpleForm",
             "schema": {
-              "icon": "pi pi-plus",
-              "label": "Add Child"
+              "title": "Add Child",
+              "submit": {
+                "label": "Add Child",
+                "severity": "primary"
+              },
+              "inputs": [
+                {
+                  "name": "name",
+                  "required": true,
+                  "component": {
+                    "type": "InputText",
+                    "schema": {
+                      "label": "Name"
+                    }
+                  }
+                }
+              ],
+              "dialogOptions": {
+                "open": {
+                  "icon": "pi pi-plus",
+                  "label": "Add Child"
+                },
+                "cancel": {
+                  "label": "Cancel",
+                  "variant": "text"
+                }
+              }
             },
             "action": {
               "type": "Remote",
               "path": "parents/{id:guid}/children",
               "method": "POST",
+              "params": {
+                "type": "Computed",
+                "composable": "useNuxtRoute",
+                "options": {
+                  "type": "Inline",
+                  "value": {
+                    "property": "params"
+                  }
+                }
+              },
+              "body": {
+                "type": "Context",
+                "key": "model"
+              },
               "postAction": {
                 "type": "Publish",
                 "event": "add-child"
@@ -58,6 +97,16 @@
               "type": "Remote",
               "path": "parents/{id:guid}/",
               "method": "PUT",
+              "params": {
+                "type": "Computed",
+                "composable": "useNuxtRoute",
+                "options": {
+                  "type": "Inline",
+                  "value": {
+                    "property": "params"
+                  }
+                }
+              },
               "body": {
                 "type": "Context",
                 "key": "model"
@@ -79,6 +128,16 @@
               "type": "Remote",
               "path": "parents/{id:guid}/",
               "method": "DELETE",
+              "params": {
+                "type": "Computed",
+                "composable": "useNuxtRoute",
+                "options": {
+                  "type": "Inline",
+                  "value": {
+                    "property": "params"
+                  }
+                }
+              },
               "postAction": {
                 "type": "Publish",
                 "event": "delete"
@@ -126,7 +185,24 @@
             "content": {
               "type": "DataTable",
               "schema": {
-                "columns": [],
+                "columns": [
+                  {
+                    "key": "name",
+                    "component": {
+                      "type": "Text",
+                      "schema": {},
+                      "data": {
+                        "type": "Context",
+                        "key": "parent",
+                        "prop": "row.name"
+                      }
+                    },
+                    "title": "Name",
+                    "minWidth": true,
+                    "exportable": true,
+                    "frozen": true
+                  }
+                ],
                 "dataKey": "id",
                 "paginator": true,
                 "rows": 5,
@@ -163,6 +239,12 @@
                       "property": "params"
                     }
                   }
+                }
+              },
+              "reactions": {
+                "reload": {
+                  "type": "On",
+                  "on": "add-child"
                 }
               }
             }

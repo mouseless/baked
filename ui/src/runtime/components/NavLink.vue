@@ -1,11 +1,12 @@
 <template>
   <AwaitLoading :skeleton="{ height: '1.5rem' }">
     <Button
-      as="router-link"
       :icon
-      link
       :label="data"
       :to
+      as="router-link"
+      link
+      class="m-0 p-0"
     />
   </AwaitLoading>
 </template>

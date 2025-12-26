@@ -22,9 +22,9 @@ public class Parent(IEntityContext<Parent> _context, Func<Child> _newChild, Chil
         return _childEntities.ByParent(this);
     }
 
-    public virtual void AddChild()
+    public virtual void AddChild(string name)
     {
-        _newChild().With(this);
+        _newChild().With(this, name);
     }
 
     public virtual async Task Update(string name)

@@ -15,7 +15,7 @@ public static class ParentExtensions
         var result = giveMe.A<Parent>().With(name);
         if (withChild)
         {
-            result.AddChild();
+            result.AddChild(giveMe.AString());
         }
 
         return result;

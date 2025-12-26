@@ -67,7 +67,9 @@ function findItem(route) {
   if(sitemap[route]) { return sitemap[route]; }
 
   for(const key in sitemap) {
-    const expression = key.replaceAll(/[{][\w\d\-:]*[}]/g, "[\\w\\d\\-]*");
+    // AI-GEN replace all route params in key so that it matches any value
+    // except '/'
+    const expression = key.replace(/\[[^\]]+\]/g, "[^/]+");
     const matcher = new RegExp(`^${expression}$`, "g");
 
     if(matcher.test(route)) {

@@ -4,6 +4,7 @@ using Baked.Test.Orm;
 using Baked.Theme;
 using Baked.Theme.Default;
 using Baked.Ui;
+using Humanizer;
 
 using static Baked.Theme.Default.DomainComponents;
 using static Baked.Ui.Datas;
@@ -31,8 +32,12 @@ public class ParentUiOverrideFeature : IFeature
             );
             builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
                 when: c => c.Type.Is<Parent>(),
-                where: cc => cc.Path.EndsWith(nameof(PageTitle), nameof(PageTitle.Actions)),
+                where: cc => cc.Path.EndsWith("Title", "Actions", "**", nameof(IComponentDescriptor.Action)),
                 schema: ra => ra.Params = Computed.UseRoute("params")
+            );
+            builder.Conventions.AddMethodComponentConfiguration<DataTable>(
+                when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.GetChildren),
+                component: dt => dt.ReloadOn(nameof(Parent.AddChild).Kebaberize())
             );
             builder.Conventions.AddTypeComponentConfiguration<SimplePage>(
                 when: c => c.Type.Is<Parent>(),

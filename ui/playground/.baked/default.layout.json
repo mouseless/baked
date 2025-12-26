@@ -69,7 +69,8 @@
           },
           "/parents/[id]": {
             "route": "/parents/[id]",
-            "title": "Parent"
+            "title": "Parent",
+            "parentRoute": "/form-sample"
           },
           "/report-page-sample": {
             "route": "/report-page-sample",
@@ -78,7 +79,8 @@
           },
           "/route-parameters-sample/[id]": {
             "route": "/route-parameters-sample/[id]",
-            "title": "Route Parameters"
+            "title": "Route Parameters",
+            "parentRoute": "/"
           },
           "/specs": {
             "route": "/specs",

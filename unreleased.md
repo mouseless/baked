@@ -3,8 +3,9 @@
 ## Features
 
 - Dynamic routing is now supported and can be used when;
-  - navigating through pages
-  - fetching data from backend
+  - navigating through pages, `r => r.ChildDynamic(...)`
+  - fetching data from backend, `rd.Params = Computed.UseRoute("params");`
+  - posting data to backend, `ra.Params = Computed.UseRoute("params");`
 - Two new page generator functions are implemented
   - `Type<TDomainType, TPageSchema>()`: Renders given domain type as a page
     using given page schema

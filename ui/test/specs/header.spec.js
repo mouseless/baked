@@ -56,7 +56,7 @@ test.describe("Multi Level", () => {
 test.describe("Wildcard", () => {
   const id = "Wildcard";
 
-  test("breadcrumb not attached", async({ page }) => {
+  test("wildcard resolution", async({ page }) => {
     const component = page.getByTestId(id);
 
     await expect(component.locator(primevue.breadcrumb.link).last()).toHaveText("Entity");

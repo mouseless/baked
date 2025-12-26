@@ -240,3 +240,8 @@ function exportFunction({ data, field }) {
   return formatter.format(data.value, { prop: field, row: data.$getRow() });
 }
 </script>
+<style>
+  .b-component--DataTable a {
+    @apply text-sm;
+  }
+</style>
