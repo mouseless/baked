@@ -739,13 +739,14 @@ export default {
     };
   },
 
-  aSimpleFormDialog({ open, cancel }) {
+  aSimpleFormDialog({ open, cancel, message }) {
     open = $(open, this.aButton({ label: "Spec: Open" }).schema);
     cancel = $(cancel, this.aButton({ label: "Spec: Cancel" }).schema);
 
     return {
       open,
-      cancel
+      cancel,
+      message
     };
   },
 

@@ -5,10 +5,11 @@
   />
   <Dialog
     v-model:visible="visible"
-    closable
     :header="l(header)"
-    modal
     :style="{ width: 'min(450px, 90vw)' }"
+    closable
+    modal
+    dismissable-mask
     @after-hide="emitSubmit"
   >
     <Bake

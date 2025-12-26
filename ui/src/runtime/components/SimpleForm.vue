@@ -7,12 +7,17 @@
       />
       <Dialog
         v-model:visible="visible"
-        closable
         :header="l(title)"
-        modal
         :style="{ width: 'min(700px, 90vw)' }"
+        :pt="{ content: 'flex flex-col gap-8' }"
+        closable
+        modal
+        dismissable-mask
         @after-hide="emitSubmit"
       >
+        <div v-if="dialogOptions.message">
+          {{ l(dialogOptions.message) }}
+        </div>
         <div class="flex flex-col gap-4">
           <Inputs
             v-if="inputs"

@@ -70,7 +70,8 @@ const variants = [
       ]),
       dialogOptions: giveMe.aSimpleFormDialog({
         open: giveMe.aButton({ label: "Spec: Simple Form" }).schema,
-        cancel: giveMe.aButton({ label: "Spec: Cancel" }).schema
+        cancel: giveMe.aButton({ label: "Spec: Cancel" }).schema,
+        message: "Spec: Message"
       }),
       inputs: [
         giveMe.anInput({
