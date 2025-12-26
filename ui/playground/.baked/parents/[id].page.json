@@ -118,11 +118,25 @@
             }
           },
           {
-            "type": "Button",
+            "type": "SimpleForm",
             "schema": {
-              "icon": "pi pi-trash",
-              "label": "Delete",
-              "severity": "danger"
+              "title": "Delete",
+              "submit": {
+                "label": "Delete",
+                "severity": "danger"
+              },
+              "inputs": [],
+              "dialogOptions": {
+                "open": {
+                  "icon": "pi pi-trash",
+                  "label": "Delete"
+                },
+                "cancel": {
+                  "label": "Cancel",
+                  "variant": "text"
+                },
+                "message": "Are you sure?"
+              }
             },
             "action": {
               "type": "Remote",

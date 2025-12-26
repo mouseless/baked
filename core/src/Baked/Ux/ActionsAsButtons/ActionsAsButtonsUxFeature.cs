@@ -25,13 +25,27 @@ public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
 
             // `SimpleForm` with dialog options
             builder.Conventions.AddMethodComponent(
-                when: c => c.Method.Has<ActionAttribute>() && c.Method.DefaultOverload.Parameters.Any(),
+                when: c =>
+                    c.Method.Has<ActionAttribute>() &&
+                    (
+                        c.Method.DefaultOverload.Parameters.Any() ||
+                        c.Method.GetAction().Method == HttpMethod.Delete
+                    ),
                 where: cc => cc.Path.EndsWith("Actions", "*"),
                 component: (c, cc) => MethodSimpleForm(c.Method, cc)
             );
             builder.Conventions.AddMethodSchema(
                 where: cc => cc.Path.EndsWith("Actions", "*", nameof(SimpleForm), nameof(SimpleForm.DialogOptions)),
                 schema: (c, cc) => MethodSimpleFormDialog(c.Method, cc)
+            );
+            builder.Conventions.AddMethodSchemaConfiguration<SimpleForm.Dialog>(
+                when: c => !c.Method.DefaultOverload.Parameters.Any(),
+                schema: (sfd, _, cc) =>
+                {
+                    var (_, l) = cc;
+
+                    sfd.Message = l("Are you sure?");
+                }
             );
 
             // `FormPage` button and routing back
@@ -103,6 +117,11 @@ public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
                 component: b => b.Schema.Severity = "primary"
             );
             builder.Conventions.AddMethodComponentConfiguration<Button>(
+                when: c => c.Method.GetAction().Method == HttpMethod.Delete,
+                where: cc => cc.Path.EndsWith("Submit"),
+                component: b => b.Schema.Severity = "danger"
+            );
+            builder.Conventions.AddMethodComponentConfiguration<Button>(
                 where: cc => cc.Path.EndsWith(nameof(FormPage), nameof(FormPage.Submit)),
                 component: (b, _, cc) =>
                 {
@@ -162,7 +181,6 @@ public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
                         var m when m == HttpMethod.Post && Regexes.StartsWithAddCreateOrNew.IsMatch(c.Method.Name) => "pi pi-plus",
                         _ => b.Schema.Icon
                     };
-                    b.Schema.Severity = action.Method == HttpMethod.Delete ? "danger" : b.Schema.Severity;
                 }
             );
         });

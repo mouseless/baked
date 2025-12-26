@@ -25,11 +25,25 @@
             }
           },
           {
-            "type": "Button",
+            "type": "SimpleForm",
             "schema": {
-              "icon": "pi pi-trash",
-              "label": "Clear Parents",
-              "severity": "danger"
+              "title": "Clear Parents",
+              "submit": {
+                "label": "Clear Parents",
+                "severity": "danger"
+              },
+              "inputs": [],
+              "dialogOptions": {
+                "open": {
+                  "icon": "pi pi-trash",
+                  "label": "Clear Parents"
+                },
+                "cancel": {
+                  "label": "Cancel",
+                  "variant": "text"
+                },
+                "message": "Are you sure?"
+              }
             },
             "action": {
               "type": "Remote",
@@ -156,13 +170,27 @@
                           }
                         },
                         {
-                          "type": "Button",
+                          "type": "SimpleForm",
                           "schema": {
-                            "icon": "pi pi-trash",
-                            "label": "",
-                            "variant": "text",
-                            "severity": "danger",
-                            "rounded": true
+                            "title": "Delete",
+                            "submit": {
+                              "label": "Delete",
+                              "severity": "danger"
+                            },
+                            "inputs": [],
+                            "dialogOptions": {
+                              "open": {
+                                "icon": "pi pi-trash",
+                                "label": "",
+                                "variant": "text",
+                                "rounded": true
+                              },
+                              "cancel": {
+                                "label": "Cancel",
+                                "variant": "text"
+                              },
+                              "message": "Are you sure?"
+                            }
                           },
                           "action": {
                             "type": "Remote",
