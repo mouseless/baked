@@ -59,8 +59,16 @@
                   {
                     "key": "name",
                     "component": {
-                      "type": "Text",
-                      "schema": {},
+                      "type": "NavLink",
+                      "schema": {
+                        "path": "/parents/{id}",
+                        "params": {
+                          "type": "Context",
+                          "key": "parent",
+                          "prop": "row.id",
+                          "targetProp": "id"
+                        }
+                      },
                       "data": {
                         "type": "Context",
                         "key": "parent",

@@ -15,13 +15,13 @@
       />
       <Button
         as="routerLink"
-        label="/parent/a6db0515-a885-4cf6-8343-c2c4a0510392"
-        to="/parent/a6db0515-a885-4cf6-8343-c2c4a0510392"
+        label="/first/1"
+        to="/first/1"
       />
       <Button
         as="routerLink"
-        label="/parent/1/children/2"
-        to="/parent/1/children/2"
+        label="/first/1/second/2"
+        to="/first/1/second/2"
       />
     </div>
   </UiSpec>

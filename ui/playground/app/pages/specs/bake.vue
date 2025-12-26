@@ -64,7 +64,7 @@ const variants = [
     descriptor: giveMe.aButton({
       action: giveMe.aCompositeAction([
         giveMe.aLocalAction({ showMessage: "Execute Action" }),
-        giveMe.aLocalAction({ delay: 100 }),
+        giveMe.aLocalAction({ delay: 300 }),
         giveMe.aRemoteAction({
           path: "/rich-transient-with-datas/{id}/method",
           method: "POST",

@@ -67,6 +67,10 @@
             "title": "New Parent",
             "parentRoute": "/form-sample"
           },
+          "/parents/[id]": {
+            "route": "/parents/[id]",
+            "title": "Parent"
+          },
           "/report-page-sample": {
             "route": "/report-page-sample",
             "icon": "pi pi-file",
@@ -115,6 +119,12 @@
             "route": "/specs/inputs--query-bound",
             "icon": "pi pi-microchip",
             "title": "Inputs - Query Bound",
+            "parentRoute": "/specs"
+          },
+          "/specs/layout": {
+            "route": "/specs/layout",
+            "icon": "pi pi-microchip",
+            "title": "Layout",
             "parentRoute": "/specs"
           },
           "/specs/routing": {

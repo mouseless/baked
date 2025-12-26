@@ -1,9 +1,10 @@
 ﻿namespace Baked.Ui;
 
-public class NavLink(string Path, string IdProp, string TextProp)
+public class NavLink(string Path)
     : IComponentSchema
 {
     public string Path { get; set; } = Path;
-    public string IdProp { get; set; } = IdProp;
-    public string TextProp { get; set; } = TextProp;
+    public string? Icon { get; set; }
+    public IData? Query { get; set; }
+    public IData? Params { get; set; }
 }

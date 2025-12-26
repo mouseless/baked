@@ -1,7 +1,7 @@
 {
   "type": "RoutedPage",
   "schema": {
-    "path": "parent/[id]",
+    "path": "first/[firstId]/second/[secondId]",
     "layout": "default"
   }
 }

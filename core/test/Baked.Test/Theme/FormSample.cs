@@ -3,7 +3,6 @@ using Baked.Test.Orm;
 
 namespace Baked.Test.Theme;
 
-// TODO - review this in form components
 [AllowAnonymous]
 public class FormSample(Parents _parents, Func<Parent> _newParent)
 {
