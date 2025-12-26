@@ -3,7 +3,8 @@
 ## Features
 
 - Dynamic routing is now supported and can be used when;
-  - navigating through pages, `r => r.ChildDynamic(...)`
+  - navigating through pages, `r => r.RootDynamic(...)` or `r =>
+    r.ChildDynamic(...)`
   - fetching data from backend, `rd.Params = Computed.UseRoute("params");`
   - posting data to backend, `ra.Params = Computed.UseRoute("params");`
 - Two new page generator functions are implemented

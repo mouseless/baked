@@ -67,25 +67,23 @@
             "title": "New Parent",
             "parentRoute": "/form-sample"
           },
-          "/parents/[id]": {
-            "route": "/parents/[id]",
-            "title": "Parent",
-            "parentRoute": "/form-sample"
-          },
           "/report-page-sample": {
             "route": "/report-page-sample",
             "icon": "pi pi-file",
             "title": "Report"
           },
-          "/route-parameters-sample/[id]": {
-            "route": "/route-parameters-sample/[id]",
-            "title": "Route Parameters",
-            "parentRoute": "/"
-          },
           "/specs": {
             "route": "/specs",
             "icon": "pi pi-list-check",
             "title": "Specs"
+          },
+          "/parents/[id]": {
+            "route": "/parents/[id]",
+            "title": "Parent"
+          },
+          "/route-parameters-sample/[id]": {
+            "route": "/route-parameters-sample/[id]",
+            "title": "Route Parameters"
           },
           "/specs/bake": {
             "route": "/specs/bake",

@@ -31,6 +31,9 @@ public static class ThemeExtensions
     public static Route Root(this Router router, string path, string title, string icon) =>
         router.Create(path, title) with { Icon = icon, SideMenu = true, ErrorSafeLink = true };
 
+    public static Route RootDynamic(this Router router, string path, string title) =>
+        router.Create(path, title) with { ErrorSafeLink = false, SideMenu = false };
+
     public static Route Child(this Router router, string path, string title, string parentPath) =>
         router.Create(path, title) with { ParentPath = parentPath };
 

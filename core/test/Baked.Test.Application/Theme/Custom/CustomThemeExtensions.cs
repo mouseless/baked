@@ -16,10 +16,11 @@ public static class CustomThemeExtensions
             r => r.Root("/cache-samples", "Cache", "pi pi-database") with { Page = p => p.Generated(g => g.Type<CacheSamples, TabbedPage>()), Description = "Showcases the cache behavior" },
             r => r.Root("/form-sample", "Form", "pi pi-file-edit") with { Page = p => p.Generated(g => g.Type<FormSample, SimplePage>()), Description = "Showcases action, form components and events" },
             r => r.Child("/form-sample/parents/new", "New Parent", "/form-sample") with { Page = p => p.Generated(g => g.Method<FormSample, FormPage>(nameof(FormSample.NewParent))), Description = "Fill out the form and hit save to create new parent" },
-            r => r.ChildDynamic("/parents/[id]", "Parent", "/form-sample") with { Page = p => p.Generated(g => g.Type<Parent, SimplePage>()), Description = "Showcase a locatable entity page" },
             r => r.Root("/report-page-sample", "Report", "pi pi-file") with { Page = p => p.Generated(g => g.Type<ReportPageSample, TabbedPage>()), Description = "Showcases a report layout with tabs and data panels"},
-            r => r.ChildDynamic("/route-parameters-sample/[id]", "Route Parameters", "/") with { Page = p => p.Generated(g => g.Type<RouteParametersSample, SimplePage>()), Description = "Showcases the route parameter support" },
             r => r.Root("/specs", "Specs", "pi pi-list-check") with { Page = p => p.Described(d => d.Menu()), Description = "All UI Specs are listed here" },
+
+            r => r.RootDynamic("/parents/[id]", "Parent") with { Page = p => p.Generated(g => g.Type<Parent, SimplePage>()), Description = "Showcase a locatable entity page" },
+            r => r.RootDynamic("/route-parameters-sample/[id]", "Route Parameters") with { Page = p => p.Generated(g => g.Type<RouteParametersSample, SimplePage>()), Description = "Showcases the route parameter support" },
 
             // Behavior
             r => r.Child("/specs/bake", "Bake", "/specs") with { Icon = "pi pi-microchip", Description = "The core component that renders a dynamic component using given descriptor", Section = "Behavior" },
