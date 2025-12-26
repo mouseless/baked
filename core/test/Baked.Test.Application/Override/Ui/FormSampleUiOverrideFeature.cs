@@ -42,7 +42,6 @@ public class FormSampleUiOverrideFeature : IFeature
                     }
                 }
             );
-
             builder.Conventions.AddMethodComponentConfiguration<DataPanel>(
                 when: c => c.Type.Is<FormSample>(),
                 component: dp =>
