@@ -11,18 +11,18 @@ test.describe("Base", () => {
   });
 
   test("parse dynamic route and extract route parameters", async({ goto, page }) => {
-    await goto("/parent/a6db0515-a885-4cf6-8343-c2c4a0510392", { waitUntil: "hydration" });
+    await goto("/first/1", { waitUntil: "hydration" });
 
     await expect(page.getByText(404).nth(0)).not.toBeAttached();
     await expect(page.getByText("Application Error").nth(0)).not.toBeAttached();
-    await expect(page.getByTestId("params")).toHaveText("{ \"id\": \"a6db0515-a885-4cf6-8343-c2c4a0510392\" }");
+    await expect(page.getByTestId("params")).toHaveText("{ \"id\": \"1\" }");
   });
 
   test("parse nested dynamic route and extract route parameters", async({ goto, page }) => {
-    await goto("/parent/1/children/2", { waitUntil: "hydration" });
+    await goto("/first/1/second/2", { waitUntil: "hydration" });
 
     await expect(page.getByText(404).nth(0)).not.toBeAttached();
     await expect(page.getByText("Application Error").nth(0)).not.toBeAttached();
-    await expect(page.getByTestId("params")).toHaveText("{ \"parentId\": \"1\", \"childId\": \"2\" }");
+    await expect(page.getByTestId("params")).toHaveText("{ \"firstId\": \"1\", \"secondId\": \"2\" }");
   });
 });

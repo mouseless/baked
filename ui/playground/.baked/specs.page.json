@@ -114,6 +114,18 @@
             }
           },
           {
+            "title": "Layout",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/layout",
+                "icon": "pi pi-microchip",
+                "title": "Layout",
+                "description": "Selects specified layout for pages"
+              }
+            }
+          },
+          {
             "title": "Routing",
             "component": {
               "type": "CardLink",

@@ -172,9 +172,9 @@ public static class Components
         IData? data = default
     ) => new(options.Apply(new())) { Data = data };
 
-    public static ComponentDescriptor<NavLink> NavLink(string path, string idProp, string textProp,
+    public static ComponentDescriptor<NavLink> NavLink(string path,
         Action<NavLink>? options = default
-    ) => new(options.Apply(new(path, idProp, textProp)));
+    ) => new(options.Apply(new(path)));
 
     public static ComponentDescriptor<Number> Number(
         Action<Number>? options = default,

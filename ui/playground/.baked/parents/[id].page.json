@@ -1,0 +1,190 @@
+{
+  "type": "SimplePage",
+  "schema": {
+    "title": {
+      "type": "PageTitle",
+      "schema": {
+        "title": "Parent",
+        "description": "Showcase a locatable entity page",
+        "actions": [
+          {
+            "type": "Button",
+            "schema": {
+              "icon": "pi pi-plus",
+              "label": "Add Child"
+            },
+            "action": {
+              "type": "Remote",
+              "path": "parents/{id:guid}/children",
+              "method": "POST",
+              "postAction": {
+                "type": "Publish",
+                "event": "add-child"
+              }
+            }
+          },
+          {
+            "type": "SimpleForm",
+            "schema": {
+              "title": "Update",
+              "submit": {
+                "label": "Update",
+                "severity": "primary"
+              },
+              "inputs": [
+                {
+                  "name": "name",
+                  "required": true,
+                  "component": {
+                    "type": "InputText",
+                    "schema": {
+                      "label": "Name"
+                    }
+                  }
+                }
+              ],
+              "dialogOptions": {
+                "open": {
+                  "icon": "pi pi-pencil",
+                  "label": "Update"
+                },
+                "cancel": {
+                  "label": "Cancel",
+                  "variant": "text"
+                }
+              }
+            },
+            "action": {
+              "type": "Remote",
+              "path": "parents/{id:guid}/",
+              "method": "PUT",
+              "body": {
+                "type": "Context",
+                "key": "model"
+              },
+              "postAction": {
+                "type": "Publish",
+                "event": "update"
+              }
+            }
+          },
+          {
+            "type": "Button",
+            "schema": {
+              "icon": "pi pi-trash",
+              "label": "Delete",
+              "severity": "danger"
+            },
+            "action": {
+              "type": "Remote",
+              "path": "parents/{id:guid}/",
+              "method": "DELETE",
+              "postAction": {
+                "type": "Publish",
+                "event": "delete"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "contents": [
+      {
+        "component": {
+          "type": "Text",
+          "schema": {},
+          "data": {
+            "type": "Context",
+            "key": "parent",
+            "prop": "data.id"
+          }
+        },
+        "key": "id"
+      },
+      {
+        "component": {
+          "type": "Text",
+          "schema": {},
+          "data": {
+            "type": "Context",
+            "key": "parent",
+            "prop": "data.name"
+          }
+        },
+        "key": "name"
+      },
+      {
+        "component": {
+          "type": "DataPanel",
+          "schema": {
+            "title": {
+              "type": "Inline",
+              "value": "GetChildren"
+            },
+            "localizeTitle": true,
+            "inputs": [],
+            "content": {
+              "type": "DataTable",
+              "schema": {
+                "columns": [],
+                "dataKey": "id",
+                "paginator": true,
+                "rows": 5,
+                "exportOptions": {
+                  "csvSeparator": ";",
+                  "fileName": "GetChildren.ExportFileName",
+                  "formatter": "useCsvFormatter",
+                  "buttonIcon": "pi pi-download",
+                  "buttonLabel": "Export as CSV",
+                  "appendParameters": true,
+                  "parameterSeparator": "_",
+                  "parameterFormatter": "useLocaleParameterFormatter"
+                }
+              },
+              "data": {
+                "type": "Remote",
+                "path": "parents/{id:guid}/children",
+                "query": {
+                  "type": "Computed",
+                  "composable": "useNuxtRoute",
+                  "options": {
+                    "type": "Inline",
+                    "value": {
+                      "property": "query"
+                    }
+                  }
+                },
+                "params": {
+                  "type": "Computed",
+                  "composable": "useNuxtRoute",
+                  "options": {
+                    "type": "Inline",
+                    "value": {
+                      "property": "params"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "key": "get-children"
+      }
+    ],
+    "path": "parents/[id]"
+  },
+  "data": {
+    "type": "Remote",
+    "path": "/parents/{id}",
+    "params": {
+      "type": "Computed",
+      "composable": "useNuxtRoute",
+      "options": {
+        "type": "Inline",
+        "value": {
+          "property": "params"
+        }
+      }
+    }
+  }
+}

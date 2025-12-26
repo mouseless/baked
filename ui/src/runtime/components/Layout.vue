@@ -27,9 +27,9 @@ const route = useRoute();
 context.provideEvents(events.create());
 context.providePageContext(reactive({}));
 
-const descriptor = ref(await findLayout(route.params.baked?.[0]));
+const descriptor = ref(await findLayout(route.matched[0].name));
 watch(
-  () => route.params.baked?.[0],
+  () => route.matched[0].name,
   async(newPageName, oldPageName) => {
     if(newPageName === oldPageName) { return; }
 

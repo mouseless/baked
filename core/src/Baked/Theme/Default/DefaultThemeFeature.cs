@@ -56,6 +56,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     {
                         var action = method.GetAction();
                         if (action.Method == HttpMethod.Get) { continue; }
+                        if (method.Has<InitializerAttribute>()) { continue; }
 
                         var actionComponent = method.GetComponent(cc.Drill(nameof(PageTitle.Actions), method.Name));
                         if (actionComponent is null) { continue; }

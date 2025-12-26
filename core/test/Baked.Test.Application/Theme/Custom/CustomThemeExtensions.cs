@@ -1,4 +1,5 @@
 ﻿using Baked.Test.Caching;
+using Baked.Test.Orm;
 using Baked.Test.Theme;
 using Baked.Test.Theme.Custom;
 using Baked.Theme;
@@ -15,6 +16,7 @@ public static class CustomThemeExtensions
             r => r.Root("/cache-samples", "Cache", "pi pi-database") with { Page = p => p.Generated(g => g.Type<CacheSamples, TabbedPage>()), Description = "Showcases the cache behavior" },
             r => r.Root("/form-sample", "Form", "pi pi-file-edit") with { Page = p => p.Generated(g => g.Type<FormSample, SimplePage>()), Description = "Showcases action, form components and events" },
             r => r.Child("/form-sample/parents/new", "New Parent", "/form-sample") with { Page = p => p.Generated(g => g.Method<FormSample, FormPage>(nameof(FormSample.NewParent))), Description = "Fill out the form and hit save to create new parent" },
+            r => r.Dynamic("/parents/[id]", "Parent") with { Page = p => p.Generated(g => g.Type<Parent, SimplePage>()), Description = "Showcase a locatable entity page" },
             r => r.Root("/report-page-sample", "Report", "pi pi-file") with { Page = p => p.Generated(g => g.Type<ReportPageSample, TabbedPage>()), Description = "Showcases a report layout with tabs and data panels"},
             r => r.Dynamic("/route-parameters-sample/[id]", "Route Parameters") with { Page = p => p.Generated(g => g.Type<RouteParametersSample, SimplePage>()), Description = "Showcases the route parameter support" },
             r => r.Root("/specs", "Specs", "pi pi-list-check") with { Page = p => p.Described(d => d.Menu()), Description = "All UI Specs are listed here" },
@@ -27,6 +29,7 @@ public static class CustomThemeExtensions
             r => r.Child("/specs/custom-css", "Custom CSS", "/specs") with { Icon = "pi pi-microchip", Description = "Allows custom configuration to define custom css and more", Section = "Behavior" },
             r => r.Child("/specs/inputs", "Inputs", "/specs") with { Icon = "pi pi-microchip", Description = "Manages inputs through emits", Section = "Behavior" },
             r => r.Child("/specs/inputs--query-bound", "Inputs - Query Bound", "/specs") with { Icon = "pi pi-microchip", Description = "Manages inputs in sync with query string", Section = "Behavior" },
+            r => r.Child("/specs/layout", "Layout", "/specs") with { Icon = "pi pi-microchip", Description = "Selects specified layout for pages", Section = "Behavior" },
             r => r.Child("/specs/routing", "Routing", "/specs") with { Icon = "pi pi-microchip", Description = "Uses page descriptors as route template and extract parameters", Section = "Behavior" },
             r => r.Child("/specs/toast", "Toast", "/specs") with { Icon = "pi pi-microchip", Description = "Renders alert messages", Section = "Behavior" },
 
