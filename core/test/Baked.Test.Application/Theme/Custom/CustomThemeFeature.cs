@@ -1,11 +1,15 @@
 ﻿using Baked.Architecture;
 using Baked.Test.Caching;
+using Baked.Test.Orm;
 using Baked.Theme;
 using Baked.Theme.Default;
 using Baked.Ui;
+using Baked.Ux.DesignatedStringPropertiesAreLabel;
 
 using static Baked.Test.Theme.Custom.DomainComponents;
+using static Baked.Theme.Default.DomainComponents;
 using static Baked.Theme.Default.DomainDatas;
+using static Baked.Ui.Datas;
 
 using B = Baked.Ui.Components;
 using C = Baked.Test.Ui.Components;
@@ -50,6 +54,37 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
                 schema: (c, cc) => EnumInline(c.Type, cc, requireLocalization: false),
                 when: c => c.Type.Is<CacheKey>() || c.Type.Is<RowCount>()
             );
+
+            // Custom routes
+            builder.Conventions.SetTypeAttribute(
+                when: c => c.Type.Is<Parent>(),
+                attribute: c => new RouteAttribute("/parents/{id}")
+                {
+                    Params = new() { { "id", c.Type.GetMembers().Properties[nameof(Parent.Id)].Get<DataAttribute>().Prop } }
+                }
+            );
+
+            // TODO review in conventions
+            builder.Conventions.AddPropertyComponent(
+                when: c => c.Type.Has<RouteAttribute>() && c.Property.Has<LabelAttribute>(),
+                where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Columns), "*", nameof(DataTable.Column.Component)),
+                component: (c, cc) => TypeNavLink(c.Type, cc)
+            );
+            builder.Conventions.AddPropertyComponentConfiguration<NavLink>(
+                when: c => c.Type.Has<RouteAttribute>(),
+                where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Columns), "*", nameof(DataTable.Column.Component)),
+                component: (link, c) =>
+                {
+                    foreach (var (param, prop) in c.Type.Get<RouteAttribute>().Params)
+                    {
+                        link.Schema.Params += Context.Parent(options: o =>
+                        {
+                            o.Prop = $"row.{prop}";
+                            o.TargetProp = param;
+                        });
+                    }
+                }
+            );
         });
 
         configurator.ConfigureComponentExports(c =>
@@ -61,8 +96,8 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
         {
             pages.Add(C.LoginPage("login", options: lp => lp.Layout = "modal"));
             pages.Add(C.RoutedPage("page/with/route/pageWithRoute", lp => lp.Layout = "default"));
-            pages.Add(C.RoutedPage("parent/[id]", lp => lp.Layout = "default"));
-            pages.Add(C.RoutedPage("parent/[parentId]/children/[childId]", lp => lp.Layout = "default"));
+            pages.Add(C.RoutedPage("first/[id]", lp => lp.Layout = "default"));
+            pages.Add(C.RoutedPage("first/[firstId]/second/[secondId]", lp => lp.Layout = "default"));
         });
     }
 }

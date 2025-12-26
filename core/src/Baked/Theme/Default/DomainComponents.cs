@@ -336,11 +336,25 @@ public static class DomainComponents
     )
     {
         var key = property.Get<DataAttribute>().Prop;
-
         context = context.Drill(key);
 
         return B.Content(property.GetRequiredComponent(context.Drill(nameof(Content.Component))), key,
             options: options
         );
+    }
+
+    public static ComponentDescriptor<NavLink> TypeNavLink(TypeModelMetadata type, ComponentContext context,
+        Action<NavLink>? options = default
+    )
+    {
+        context = context.Drill(nameof(NavLink));
+        var (_, l) = context;
+
+        if (!type.TryGet<RouteAttribute>(out var pageAttribute))
+        {
+            throw new($"`{nameof(RouteAttribute)}` is not found on type (`{type.Name}`) to render as `{nameof(NavLink)}`");
+        }
+
+        return B.NavLink(pageAttribute.Path, options: options);
     }
 }

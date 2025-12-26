@@ -59,8 +59,16 @@
                   {
                     "key": "name",
                     "component": {
-                      "type": "Text",
-                      "schema": {},
+                      "type": "NavLink",
+                      "schema": {
+                        "path": "/parents/{id}",
+                        "params": {
+                          "type": "Context",
+                          "key": "parent",
+                          "prop": "row.id",
+                          "targetProp": "id"
+                        }
+                      },
                       "data": {
                         "type": "Context",
                         "key": "parent",
@@ -92,20 +100,6 @@
                     "type": "Container",
                     "schema": {
                       "contents": [
-                        {
-                          "type": "NavLink",
-                          "schema": {
-                            "path": "/parents/{id}",
-                            "idProp": "id",
-                            "textProp": "",
-                            "icon": "pi pi-eye"
-                          },
-                          "data": {
-                            "type": "Context",
-                            "key": "parent",
-                            "prop": "row"
-                          }
-                        },
                         {
                           "type": "SimpleForm",
                           "schema": {

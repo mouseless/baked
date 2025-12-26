@@ -4,18 +4,16 @@
       as="router-link"
       :icon
       link
-      :label="l(text)"
+      :label="data.name"
       :to
     />
   </AwaitLoading>
 </template>
 <script setup>
-import { computed } from "vue";
 import { Button } from "primevue";
-import { useLocalization, usePathBuilder } from "#imports";
+import { usePathBuilder } from "#imports";
 import { AwaitLoading } from "#components";
 
-const { localize: l } = useLocalization();
 const pathBuilder = usePathBuilder();
 
 const { schema, data } = defineProps({
@@ -23,8 +21,7 @@ const { schema, data } = defineProps({
   data: { type: null, required: true }
 });
 
-const { icon, path, idProp, textProp } = schema;
+const { icon, path, params } = schema;
 
-const to = computed(() => pathBuilder.build(path, { [idProp]: data[idProp] }));
-const text = computed(() => data[textProp]);
+const to  = pathBuilder.build(path, data.params);
 </script>
