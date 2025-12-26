@@ -7,4 +7,3 @@ public class RouteAttribute(string _path)
     public string Path { get; set; } = _path;
     public Dictionary<string, string> Params { get; init; } = [];
 }
-
