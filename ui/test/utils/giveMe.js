@@ -158,9 +158,15 @@ export default {
     return { component, narrow, key };
   },
 
-  aContextData({ key, prop, targetProp } = {}) {
+  aContextData({ key, prop, targetProp, parent } = {}) {
     key = $(key, "parent");
-    prop = $(prop, key === "parent" ? "data" : undefined);
+    prop = $(prop,
+      parent
+        ? parent
+        : key === "parent"
+          ? "data"
+          : undefined
+    );
 
     return {
       type: "Context",
@@ -230,7 +236,7 @@ export default {
     };
   },
 
-  aDataTableExport({ csvSeparator, fileName, formatter, buttonIcon, buttonLabel }) {
+  aDataTableExport({ csvSeparator, fileName, formatter, buttonIcon, buttonLabel } = {}) {
     csvSeparator = $(csvSeparator, ";");
     fileName = $(fileName, `${Date.now()}`);
     buttonIcon = $(buttonIcon, "pi pi-external-link");
@@ -321,6 +327,30 @@ export default {
         number
       },
       action
+    };
+  },
+
+  aFieldset({ titleProp, fields, data } = {}) {
+    titleProp = $(titleProp, "title");
+    fields = $(fields, [this.aFieldsetField()]);
+    data = $(data, this.anInlineData({ title: "Test Title", data: "Value" }));
+
+    return {
+      type: "Fieldset",
+      schema: { titleProp, fields },
+      data
+    };
+  },
+
+  aFieldsetField({ name, key, component } = {}) {
+    name = $(name, "Spec: Data");
+    key = "data.data";
+    component = $(component, this.anExpected({ data: this.aContextData({ parent: key }) }));
+
+    return {
+      name,
+      key,
+      component
     };
   },
 

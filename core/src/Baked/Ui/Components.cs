@@ -85,6 +85,14 @@ public static class Components
         Action<ErrorPage.Info>? options = default
     ) => options.Apply(new(title, message));
 
+    public static ComponentDescriptor<Fieldset> Fieldset(
+        Action<Fieldset>? options = default
+    ) => new(options.Apply(new()));
+
+    public static Fieldset.Field FieldsetField(string name,
+        Action<Fieldset.Field>? options = default
+    ) => options.Apply(new(name));
+
     public static ComponentDescriptor<Filter> Filter(
         Action<Filter>? options = default,
         IAction? action = default

@@ -157,6 +157,12 @@
             "title": "Data Table",
             "parentRoute": "/specs"
           },
+          "/specs/fieldset": {
+            "route": "/specs/fieldset",
+            "icon": "pi pi-microchip",
+            "title": "Fieldset",
+            "parentRoute": "/specs"
+          },
           "/specs/icon": {
             "route": "/specs/icon",
             "icon": "pi pi-microchip",

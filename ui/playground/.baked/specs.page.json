@@ -179,6 +179,18 @@
             }
           },
           {
+            "title": "Fieldset",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/fieldset",
+                "icon": "pi pi-microchip",
+                "title": "Fieldset",
+                "description": "Shows object data in a fieldset"
+              }
+            }
+          },
+          {
             "title": "Icon",
             "component": {
               "type": "CardLink",

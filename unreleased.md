@@ -42,6 +42,7 @@
   with action support
 - `Composite` component is now added to add multiple components to a single
   component slot
+- `Fieldset` component is now added that renders an object in a field-set pane
 - New UX features are introduced in `Monolith` recipe
   - **Actions as Buttons**: to render non-`GET` actions as buttons
   - **Actions are Contents**: to render `GET` actions as contents

@@ -1,8 +1,8 @@
 <template>
   <UiSpec
     title="Data Panel"
-    :variants="variants"
-    :no-loading-variant="true"
+    :variants
+    no-loading-variant
   />
 </template>
 <script setup>

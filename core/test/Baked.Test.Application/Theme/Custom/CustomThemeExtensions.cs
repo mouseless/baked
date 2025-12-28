@@ -37,6 +37,7 @@ public static class CustomThemeExtensions
             // Display
             r => r.Child("/specs/card-link", "Card Link", "/specs") with { Icon = "pi pi-microchip", Description = "Renders a link as a big card-like button", Section = "Display" },
             r => r.Child("/specs/data-table", "Data Table", "/specs") with { Icon = "pi pi-microchip", Description = "Shows list data as a table", Section = "Display" },
+            r => r.Child("/specs/fieldset", "Fieldset", "/specs") with { Icon = "pi pi-microchip", Description = "Shows object data in a fieldset", Section = "Display" },
             r => r.Child("/specs/icon", "Icon", "/specs") with { Icon = "pi pi-microchip", Description = "Displays built-in icons", Section = "Display" },
             r => r.Child("/specs/message", "Message", "/specs") with { Icon = "pi pi-microchip", Description = "A component to display message", Section = "Display" },
             r => r.Child("/specs/missing-component", "Missing Component", "/specs") with { Icon = "pi pi-microchip", Description = "Renders a helper in a place where a component was expected", Section = "Display" },

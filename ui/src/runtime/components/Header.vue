@@ -3,7 +3,7 @@
     :class="{ 'mb-4': shown || loading }"
     class="mt-4"
   >
-    <AwaitLoading :skeleton="{ height: '1.28rem', width: '15rem' }">
+    <AwaitLoading :skeleton="{ height: '1.25em', width: '15em' }">
       <Breadcrumb
         v-if="data && shown"
         :home="sitemap['/']"
