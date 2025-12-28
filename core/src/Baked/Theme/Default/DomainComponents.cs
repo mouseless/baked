@@ -1,6 +1,7 @@
 ﻿using Baked.Domain.Model;
 using Baked.RestApi.Model;
 using Baked.Ui;
+using Baked.Ux.DesignatedStringPropertiesAreLabel;
 using Humanizer;
 
 using B = Baked.Ui.Components;
@@ -206,7 +207,6 @@ public static class DomainComponents
     )
     {
         context = context.Drill(nameof(DataTable));
-        var (_, l) = context;
 
         return B.DataTable(
             options: dt =>
@@ -329,23 +329,49 @@ public static class DomainComponents
         Action<SimpleForm.Dialog>? options = default
     )
     {
-        var (_, l) = context;
-
         var cancel = method.GetRequiredComponent<Button>(context.Drill(nameof(SimpleForm.Dialog.Cancel))).Schema;
         var open = method.GetRequiredComponent<Button>(context.Drill(nameof(SimpleForm.Dialog.Open))).Schema;
 
         return B.SimpleFormDialog(open, cancel, options: options);
     }
 
-    public static Content PropertyContent(PropertyModel property, ComponentContext context,
+    public static Content TypeContent(TypeModelMetadata type, ComponentContext context, string key,
         Action<Content>? options = default
     )
     {
-        var key = property.Get<DataAttribute>().Prop;
-        context = context.Drill(key);
+        var component = type.GetRequiredComponent(context.Drill(nameof(Content.Component)));
 
-        return B.Content(property.GetRequiredComponent(context.Drill(nameof(Content.Component))), key,
-            options: options
+        return B.Content(component, key, options: options);
+    }
+
+    public static ComponentDescriptor<Fieldset> TypeFieldset(TypeModelMembers type, ComponentContext context,
+        Action<Fieldset>? options = default
+    )
+    {
+        context = context.Drill(nameof(Fieldset));
+        var label = type.Properties.Having<LabelAttribute>().FirstOrDefault() ??
+            throw new($"`{type.Name}` should have a label property to render as a `{nameof(Fieldset)}`");
+        if (!label.TryGet<DataAttribute>(out var labelData)) { throw new($"`{label.Name}` should have a `{nameof(DataAttribute)}`"); }
+
+        var data = type.GetRequiredSchema<RemoteData>(context.Drill(nameof(IComponentDescriptor.Data)));
+
+        return B.Fieldset(labelData.Prop, options: options, data: data);
+    }
+
+    public static Field PropertyField(PropertyModel property, ComponentContext context,
+        Action<Field>? options = default
+    )
+    {
+        context = context.Drill(property.Name);
+        var (_, l) = context;
+
+        return B.Field(property.Name.Camelize(), l(property.Name.Titleize()),
+            options: f =>
+            {
+                f.Component = property.GetComponent(context.Drill(nameof(Field.Component))) ?? f.Component;
+
+                options.Apply(f);
+            }
         );
     }
 
@@ -354,7 +380,6 @@ public static class DomainComponents
     )
     {
         context = context.Drill(nameof(NavLink));
-        var (_, l) = context;
 
         if (!type.TryGet<RouteAttribute>(out var pageAttribute))
         {

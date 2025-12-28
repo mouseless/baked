@@ -85,13 +85,14 @@ public static class Components
         Action<ErrorPage.Info>? options = default
     ) => options.Apply(new(title, message));
 
-    public static ComponentDescriptor<Fieldset> Fieldset(
-        Action<Fieldset>? options = default
-    ) => new(options.Apply(new()));
+    public static Field Field(string key, string label,
+        Action<Field>? options = default
+    ) => options.Apply(new(key, label));
 
-    public static Fieldset.Field FieldsetField(string name,
-        Action<Fieldset.Field>? options = default
-    ) => options.Apply(new(name));
+    public static ComponentDescriptor<Fieldset> Fieldset(string titleProp,
+        Action<Fieldset>? options = default,
+        IData? data = default
+    ) => new(options.Apply(new(titleProp))) { Data = data };
 
     public static ComponentDescriptor<Filter> Filter(
         Action<Filter>? options = default,

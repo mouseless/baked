@@ -13,13 +13,13 @@ const variants = [
     descriptor: giveMe.aFieldset({
       titleProp: "label",
       fields: [
-        giveMe.aFieldsetField({
-          name: "Spec: Data 1",
+        giveMe.aField({
+          label: "Spec: Data 1",
           key: "data1",
           component: giveMe.anExpected({ testId: "prop-1", data: giveMe.aContextData({ parent: "data.data1" }) })
         }),
-        giveMe.aFieldsetField({
-          name: "Spec: Data 2",
+        giveMe.aField({
+          label: "Spec: Data 2",
           key: "data2",
           component: giveMe.anExpected({ testId: "prop-2", data: giveMe.aContextData({ parent: "data.data2" }) })
         })

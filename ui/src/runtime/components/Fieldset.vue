@@ -11,14 +11,13 @@
     <div class="grid grid-cols-2 gap-4 max-md:grid-cols-1">
       <div
         v-for="field in fields"
-        :key="field.name"
-        class="flex flex-col gap-2"
+        :key="field.key"
+        class="flex flex-col"
       >
-        <span class="font-bold">{{ l(field.name ) }}</span>
+        <span class="text-sm font-bold">{{ l(field.label ) }}</span>
         <Bake
-          :name="`fields/${field.name}`"
+          :name="`fields/${field.key}`"
           :descriptor="field.component"
-          class="text-lg"
         />
       </div>
     </div>

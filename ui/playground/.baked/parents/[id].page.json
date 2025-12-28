@@ -164,27 +164,47 @@
     "contents": [
       {
         "component": {
-          "type": "Text",
-          "schema": {},
+          "type": "Fieldset",
+          "schema": {
+            "titleProp": "name",
+            "fields": [
+              {
+                "key": "name",
+                "label": "Name",
+                "component": {
+                  "type": "Text",
+                  "schema": {},
+                  "data": {
+                    "type": "Context",
+                    "key": "parent",
+                    "prop": "data.name"
+                  }
+                }
+              }
+            ]
+          },
           "data": {
-            "type": "Context",
-            "key": "parent",
-            "prop": "data.id"
+            "type": "Remote",
+            "path": "/parents/{id}",
+            "params": {
+              "type": "Computed",
+              "composable": "useNuxtRoute",
+              "options": {
+                "type": "Inline",
+                "value": {
+                  "property": "params"
+                }
+              }
+            }
+          },
+          "reactions": {
+            "reload": {
+              "type": "On",
+              "on": "update"
+            }
           }
         },
-        "key": "id"
-      },
-      {
-        "component": {
-          "type": "Text",
-          "schema": {},
-          "data": {
-            "type": "Context",
-            "key": "parent",
-            "prop": "data.name"
-          }
-        },
-        "key": "name"
+        "key": "fields"
       },
       {
         "component": {
@@ -268,19 +288,5 @@
       }
     ],
     "path": "parents/[id]"
-  },
-  "data": {
-    "type": "Remote",
-    "path": "/parents/{id}",
-    "params": {
-      "type": "Computed",
-      "composable": "useNuxtRoute",
-      "options": {
-        "type": "Inline",
-        "value": {
-          "property": "params"
-        }
-      }
-    }
   }
 }

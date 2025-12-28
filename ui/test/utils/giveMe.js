@@ -330,27 +330,27 @@ export default {
     };
   },
 
+  aField({ key, label, component } = {}) {
+    key = "data";
+    label = $(label, "Spec: Data");
+    component = $(component, this.anExpected({ data: this.aContextData({ parent: `data.${key}` }) }));
+
+    return {
+      label,
+      key,
+      component
+    };
+  },
+
   aFieldset({ titleProp, fields, data } = {}) {
     titleProp = $(titleProp, "title");
-    fields = $(fields, [this.aFieldsetField()]);
+    fields = $(fields, [this.aField()]);
     data = $(data, this.anInlineData({ title: "Test Title", data: "Value" }));
 
     return {
       type: "Fieldset",
       schema: { titleProp, fields },
       data
-    };
-  },
-
-  aFieldsetField({ name, key, component } = {}) {
-    name = $(name, "Spec: Data");
-    key = "data.data";
-    component = $(component, this.anExpected({ data: this.aContextData({ parent: key }) }));
-
-    return {
-      name,
-      key,
-      component
     };
   },
 
