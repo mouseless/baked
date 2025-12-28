@@ -3,8 +3,8 @@
 public static class Components
 {
     public static ComponentDescriptor<Button> Button(string label,
-        IAction? action = default,
-        Action<Button>? options = default
+        Action<Button>? options = default,
+        IAction? action = default
     ) => new(options.Apply(new(label))) { Action = action };
 
     public static ComponentDescriptor<CardLink> CardLink(string route, string title,
@@ -104,8 +104,8 @@ public static class Components
     ) => options.Apply(new(component));
 
     public static ComponentDescriptor<FormPage> FormPage(string path, PageTitle title, Button submit,
-        IAction? action = default,
-        Action<FormPage>? options = default
+        Action<FormPage>? options = default,
+        IAction? action = default
     ) => new(options.Apply(new(path, title, submit))) { Action = action };
 
     public static ComponentDescriptor<Header> Header(
@@ -221,8 +221,8 @@ public static class Components
     ) => options.Apply(new(route, icon));
 
     public static ComponentDescriptor<SimpleForm> SimpleForm(string title, Button submit,
-        IAction? action = default,
-        Action<SimpleForm>? options = default
+        Action<SimpleForm>? options = default,
+        IAction? action = default
     ) => new(options.Apply(new(title, submit))) { Action = action };
 
     public static SimpleForm.Dialog SimpleFormDialog(Button open, Button cancel,

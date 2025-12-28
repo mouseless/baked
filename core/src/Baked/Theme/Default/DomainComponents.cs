@@ -390,15 +390,15 @@ public static class DomainComponents
     }
 
     public static ComponentDescriptor<Button> LocalizedButton(string label, ComponentContext context,
-        IAction? action = default,
-        Action<Button>? options = default
+        Action<Button>? options = default,
+        IAction? action = default
     )
     {
         var (_, l) = context;
 
         return B.Button(l(label),
-            action: action,
-            options: options
+            options: options,
+            action: action
         );
     }
 }
