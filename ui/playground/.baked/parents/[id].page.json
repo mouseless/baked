@@ -229,7 +229,7 @@
           },
           "data": {
             "type": "Remote",
-            "path": "/parents/{id}",
+            "path": "parents/{id:guid}",
             "params": {
               "type": "Computed",
               "composable": "useNuxtRoute",

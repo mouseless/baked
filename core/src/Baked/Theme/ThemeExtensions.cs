@@ -9,6 +9,8 @@ using Baked.Theme;
 using Baked.Theme.Default;
 using Baked.Ui;
 
+using static Baked.Ui.Datas;
+
 namespace Baked;
 
 public static class ThemeExtensions
@@ -39,6 +41,20 @@ public static class ThemeExtensions
 
     public static Route ChildDynamic(this Router router, string path, string title, string parentPath) =>
         router.Create(path, title) with { ParentPath = parentPath, ErrorSafeLink = false, SideMenu = false };
+
+    public static void AddEntityRemoteData<TEntity>(this IDomainModelConventionCollection conventions)
+    {
+        conventions.AddTypeSchema(
+            when: c => c.Type.Is<TEntity>(),
+            schema: (c, cc) =>
+            {
+                if (!c.Type.TryGetQueryType(c.Domain, out var queryType)) { throw new($"`{c.Type.Name}` should have a query type"); }
+                if (!queryType.GetControllerModel().Action.TryGetValue("SingleById", out var singleById)) { throw new($"`{queryType.Name}` should have `SingleById` action added"); }
+
+                return Remote(singleById.GetRoute(), o => o.Params = Computed.UseRoute("params"));
+            }
+        );
+    }
 
     public static MethodModel GetMethod(this TypeModel type, string name) =>
         type.GetMembers().Methods[name];

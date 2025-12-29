@@ -65,6 +65,11 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                     }
                 }
             );
+            builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
+                when: c => c.Type.Has<LocatableAttribute>(),
+                where: cc => cc.Path.EndsWith("Title", "Actions", "**", nameof(IComponentDescriptor.Action)),
+                schema: ra => ra.Params = Computed.UseRoute("params")
+            );
 
             // Property defaults
             builder.Index.Property.Add<IdAttribute>();

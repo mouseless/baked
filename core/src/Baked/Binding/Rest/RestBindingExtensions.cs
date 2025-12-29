@@ -19,7 +19,6 @@ public static class RestBindingExtensions
     public static bool TryGetInitializerActionModel(this TypeModel type, [NotNullWhen(true)] out ActionModelAttribute? action)
     {
         action = default;
-
         if (!type.TryGetMembers(out var members)) { return false; }
 
         var initializer = members.Methods.Having<InitializerAttribute>().SingleOrDefault();
@@ -32,6 +31,21 @@ public static class RestBindingExtensions
     public static ActionModelAttribute GetInitializerActionModel(this TypeModel type)
     {
         if (!type.TryGetInitializerActionModel(out var result)) { throw new($"{type.Name} does not have action model"); }
+
+        return result;
+    }
+
+    public static bool TryGetControllerModel(this TypeModel type, [NotNullWhen(true)] out ControllerModelAttribute? controller)
+    {
+        controller = default;
+        if (!type.TryGetMetadata(out var metadata)) { return false; }
+
+        return metadata.TryGet(out controller);
+    }
+
+    public static ControllerModelAttribute GetControllerModel(this TypeModel type)
+    {
+        if (!type.TryGetControllerModel(out var result)) { throw new($"{type.Name} does not have controller"); }
 
         return result;
     }
