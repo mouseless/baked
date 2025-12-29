@@ -58,7 +58,12 @@ public class TypeModel : IModel, IEquatable<TypeModel>
                 return $"{generics.GenericTypeArguments.First().Model.CSharpFriendlyFullName}?";
             }
 
-            return $"{Namespace}.{Name[..Name.IndexOf("`")]}<{string.Join(", ", generics.GenericTypeArguments.Select(t => t.Model.CSharpFriendlyFullName))}>";
+            if (Name.IndexOf("`") > 0)
+            {
+                return $"{Namespace}.{Name[..Name.IndexOf("`")]}<{string.Join(", ", generics.GenericTypeArguments.Select(t => t.Model.CSharpFriendlyFullName))}>";
+            }
+
+            return FullName ?? Name;
         }
 
         return Type.GetCSharpFriendlyFullName();
