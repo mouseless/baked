@@ -4,7 +4,7 @@ public class GenericClass<T>
 {
     internal async Task<GenericClass<T>> With()
     {
-        await Task.Delay(1000);
+        await Task.Delay(100);
 
         Method(new());
 
