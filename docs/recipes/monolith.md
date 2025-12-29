@@ -77,6 +77,7 @@ Bake.New
 |                    | Actions are Contents                     |                                    |
 |                    | Actions as Data Panels                   |                                    |
 |                    | Data Table defaults                      |                                    |
+|                    | Description Property                     |                                    |
 |                    | Designated String Properties are Label   |                                    |
 |                    | Enum Parameter is Select                 |                                    |
 |                    | Initializer Parameters are in Page Title |                                    |

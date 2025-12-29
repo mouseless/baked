@@ -76,6 +76,16 @@ c => c.DataTableDefaults()
 - Prepares action column to include item actions along with a reload reaction
 - Action and dialog buttons use `text` variant using rounded style
 
+## Description Property
+
+Marks properties that ends with `*Description` using `DescriptionAttribute` and
+treats properties with `DescriptionAttribute` special attention to allow more
+UI space when under a `DataTable` or a `Fieldset`.
+
+- Set `Field.Wide` to `true` to have a full width under a fieldset
+- Sets up a dialog button to show the content of description properties in a
+  dialog under data tables
+
 ## Designated String Properties are Label
 
 Marks selected string properties as labels to have a better display in

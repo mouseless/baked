@@ -115,6 +115,7 @@ public static class BakeExtensions
                     c => c.ActionsAreContents(),
                     c => c.ActionsAsDataPanels(),
                     c => c.DataTableDefaults(),
+                    c => c.DescriptionProperty(),
                     c => c.DesignatedStringPropertiesAreLabel(),
                     c => c.EnumParameterIsSelect(),
                     c => c.InitializerParametersAreInPageTitle(),

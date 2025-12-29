@@ -84,7 +84,8 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
             builder.Conventions.AddPropertyComponent(
                 when: c => c.Property.PropertyType.Is<string>() || c.Property.PropertyType.Is<Guid>(),
-                component: () => B.Text()
+                component: () => B.Text(),
+                order: -10
             );
 
             // Method defaults
