@@ -38,6 +38,16 @@
             "label": "Name"
           }
         }
+      },
+      {
+        "name": "surname",
+        "required": true,
+        "component": {
+          "type": "InputText",
+          "schema": {
+            "label": "Surname"
+          }
+        }
       }
     ],
     "path": "form-sample/parents/new"

@@ -1,6 +1,7 @@
 <template>
   <Button
     :schema="open"
+    v-bind="$attrs"
     @submit="visible = true"
   />
   <Dialog
@@ -10,6 +11,7 @@
     closable
     modal
     dismissable-mask
+    :draggable="false"
     @after-hide="emitSubmit"
   >
     <Bake
@@ -37,7 +39,7 @@ import { useLocalization } from "#imports";
 const { localize: l } = useLocalization();
 
 const { schema } = defineProps({
-  schema: { type: null, required: true }
+  schema: { type: Object, required: true }
 });
 const emit = defineEmits(["submit"]);
 

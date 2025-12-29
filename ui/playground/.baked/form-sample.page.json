@@ -96,6 +96,51 @@
                     "minWidth": true,
                     "exportable": true,
                     "frozen": true
+                  },
+                  {
+                    "key": "surname",
+                    "component": {
+                      "type": "Text",
+                      "schema": {},
+                      "data": {
+                        "type": "Context",
+                        "key": "parent",
+                        "prop": "row.surname"
+                      }
+                    },
+                    "title": "Surname",
+                    "exportable": true
+                  },
+                  {
+                    "key": "description",
+                    "component": {
+                      "type": "Dialog",
+                      "schema": {
+                        "content": {
+                          "type": "Text",
+                          "schema": {},
+                          "data": {
+                            "type": "Context",
+                            "key": "parent",
+                            "prop": "data"
+                          }
+                        },
+                        "open": {
+                          "icon": "pi pi-eye",
+                          "label": "",
+                          "variant": "text",
+                          "rounded": true
+                        },
+                        "header": "Description"
+                      },
+                      "data": {
+                        "type": "Context",
+                        "key": "parent",
+                        "prop": "row.description"
+                      }
+                    },
+                    "title": "Description",
+                    "exportable": true
                   }
                 ],
                 "dataKey": "id",
@@ -128,11 +173,28 @@
                             "inputs": [
                               {
                                 "name": "name",
-                                "required": true,
                                 "component": {
                                   "type": "InputText",
                                   "schema": {
                                     "label": "Name"
+                                  }
+                                }
+                              },
+                              {
+                                "name": "surname",
+                                "component": {
+                                  "type": "InputText",
+                                  "schema": {
+                                    "label": "Surname"
+                                  }
+                                }
+                              },
+                              {
+                                "name": "description",
+                                "component": {
+                                  "type": "InputText",
+                                  "schema": {
+                                    "label": "Description"
                                   }
                                 }
                               }

@@ -13,6 +13,7 @@
         v-for="field in fields"
         :key="field.key"
         class="flex flex-col"
+        :class="{ 'md:col-span-2': field.wide }"
       >
         <span class="text-sm font-bold">{{ l(field.label ) }}</span>
         <Bake

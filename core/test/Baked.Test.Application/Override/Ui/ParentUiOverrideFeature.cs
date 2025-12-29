@@ -29,12 +29,12 @@ public class ParentUiOverrideFeature : IFeature
                 when: c => c.Type.Is<Parent>() && c.Method.Name == nameof(Parent.GetChildren),
                 component: dt => dt.ReloadOn(nameof(Parent.AddChild).Kebaberize())
             );
-
-            // TODO review
             builder.Conventions.AddTypeComponentConfiguration<Fieldset>(
                 when: c => c.Type.Is<Parent>(),
                 component: dt => dt.ReloadOn(nameof(Parent.Update).Kebaberize())
             );
+
+            // TODO review
             builder.Conventions.AddTypeSchema(
                 when: c => c.Type.Is<Parent>(),
                 schema: () => Remote("/parents/{id}", o => o.Params = Computed.UseRoute("params"))
@@ -42,7 +42,7 @@ public class ParentUiOverrideFeature : IFeature
             // END TODO
 
             // TODO move to ux
-            // props as fieldset ux feature
+            // properties as fieldset ux feature
             builder.Conventions.AddTypeComponentConfiguration<SimplePage>(
                 when: c =>
                     c.Type.TryGetMembers(out var members) &&
@@ -97,6 +97,34 @@ public class ParentUiOverrideFeature : IFeature
 
                     f.Component.Data = Context.Parent(options: cd => cd.Prop = $"data.{prop}");
                 }
+            );
+
+            // description property ux feature
+            builder.Index.Property.Add<DescriptionAttribute>();
+            builder.Conventions.SetPropertyAttribute(
+                when: c => c.Property.Name.EndsWith("Description"),
+                attribute: () => new DescriptionAttribute()
+            );
+            builder.Conventions.AddPropertySchemaConfiguration<Field>(
+                when: c => c.Property.Has<DescriptionAttribute>(),
+                schema: f => f.Wide = true
+            );
+            builder.Conventions.AddPropertyComponent(
+                when: c => c.Property.Has<DescriptionAttribute>(),
+                where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Columns), "*", nameof(DataTable.Column.Component)),
+                component: (c, cc) => PropertyDialog(c.Property, cc)
+            );
+            builder.Conventions.AddPropertyComponent(
+                when: c => c.Property.Has<DescriptionAttribute>(),
+                where: cc => cc.Path.EndsWith(nameof(Dialog.Open)),
+                component: (c, cc) => LocalizedButton(c.Property.Name.Titleize(), cc)
+            );
+            builder.Conventions.AddPropertyComponentConfiguration<Button>(
+                where: cc => cc.Path.EndsWith(nameof(Dialog.Open)),
+                component: b => b.Schema.Icon = "pi pi-eye"
+            );
+            builder.Conventions.AddPropertyComponentConfiguration<Dialog>(
+                component: d => d.Schema.Content.Data ??= Context.Parent()
             );
 
             // other :thinking:

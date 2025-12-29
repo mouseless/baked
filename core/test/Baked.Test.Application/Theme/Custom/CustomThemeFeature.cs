@@ -4,7 +4,6 @@ using Baked.Test.Orm;
 using Baked.Theme;
 using Baked.Theme.Default;
 using Baked.Ui;
-using Baked.Ux.DesignatedStringPropertiesAreLabel;
 
 using static Baked.Test.Theme.Custom.DomainComponents;
 using static Baked.Theme.Default.DomainComponents;

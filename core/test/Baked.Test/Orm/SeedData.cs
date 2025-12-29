@@ -16,7 +16,7 @@ public class SeedData(Entities _entities, Func<Entity> _newEntity, Parents _pare
         {
             for (int i = 0; i < 10; i++)
             {
-                _newParent().With($"seed {i}");
+                _newParent().With(i % 2 == 0 ? "John" : "Jane", "Doe").Update(description: $"This is a seed data {i}");
             }
         }
     }

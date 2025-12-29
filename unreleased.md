@@ -48,6 +48,9 @@
   - **Actions as Buttons**: to render non-`GET` actions as buttons
   - **Actions are Contents**: to render `GET` actions as contents
   - **Data Table defaults**: to set defaults for all `DataTable` components
+  - **Description Property**: to configure description properties to allow them
+    occuply more space in UI
+  - **Properties as Fieldset**: to render properties of an object in a fieldset
 
 ## Breaking Changes
 
@@ -161,6 +164,7 @@
   `usePathBuilder` with named route params instead
 - `ActionsAreGroupedAsTabsUxFeature` is now removed
   - `Monolith` recipe now uses `ActionsAreContentsUxFeature`
+- `LabelAttribute` is moved to `Baked.Theme.Default` namespace
 
 ## Improvements
 

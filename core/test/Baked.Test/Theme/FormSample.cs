@@ -6,9 +6,9 @@ namespace Baked.Test.Theme;
 [AllowAnonymous]
 public class FormSample(Parents _parents, Func<Parent> _newParent)
 {
-    public void NewParent(string name)
+    public void NewParent(string name, string surname)
     {
-        _newParent().With(name);
+        _newParent().With(name, surname);
     }
 
     public void ClearParents()

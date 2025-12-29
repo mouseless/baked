@@ -74,7 +74,7 @@ c => c.DataTableDefaults()
 - Adds data properties as columns
 - Adds export action to header
 - Prepares action column to include item actions along with a reload reaction
-  - Action buttons use `text` variant using rounded style
+- Action and dialog buttons use `text` variant using rounded style
 
 ## Designated String Properties are Label
 

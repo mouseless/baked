@@ -9,10 +9,13 @@ public class Parent(IEntityContext<Parent> _context, Func<Child> _newChild, Chil
 
     public virtual Guid Id { get; protected set; } = default!;
     public virtual string Name { get; protected set; } = default!;
+    public virtual string Surname { get; protected set; } = default!;
+    public virtual string? Description { get; protected set; } = default!;
 
-    public virtual Parent With(string name)
+    public virtual Parent With(string name, string surname)
     {
         Name = name;
+        Surname = surname;
 
         return _context.Insert(this);
     }
@@ -27,11 +30,15 @@ public class Parent(IEntityContext<Parent> _context, Func<Child> _newChild, Chil
         _newChild().With(this, name);
     }
 
-    public virtual async Task Update(string name)
+    public virtual void Update(
+        string? name = default,
+        string? surname = default,
+        string? description = default
+    )
     {
-        await Task.Delay(2000);
-
-        Name = name;
+        Name = name ?? Name;
+        Surname = surname ?? Surname;
+        Description = description ?? Description;
     }
 
     public virtual void RemoveChild(Child child)

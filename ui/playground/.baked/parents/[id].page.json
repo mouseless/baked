@@ -73,11 +73,28 @@
               "inputs": [
                 {
                   "name": "name",
-                  "required": true,
                   "component": {
                     "type": "InputText",
                     "schema": {
                       "label": "Name"
+                    }
+                  }
+                },
+                {
+                  "name": "surname",
+                  "component": {
+                    "type": "InputText",
+                    "schema": {
+                      "label": "Surname"
+                    }
+                  }
+                },
+                {
+                  "name": "description",
+                  "component": {
+                    "type": "InputText",
+                    "schema": {
+                      "label": "Description"
                     }
                   }
                 }
@@ -180,6 +197,33 @@
                     "prop": "data.name"
                   }
                 }
+              },
+              {
+                "key": "surname",
+                "label": "Surname",
+                "component": {
+                  "type": "Text",
+                  "schema": {},
+                  "data": {
+                    "type": "Context",
+                    "key": "parent",
+                    "prop": "data.surname"
+                  }
+                }
+              },
+              {
+                "key": "description",
+                "label": "Description",
+                "component": {
+                  "type": "Text",
+                  "schema": {},
+                  "data": {
+                    "type": "Context",
+                    "key": "parent",
+                    "prop": "data.description"
+                  }
+                },
+                "wide": true
               }
             ]
           },

@@ -22,6 +22,12 @@ test.describe("Base", () => {
     await expect(component.getByTestId("prop-2")).toHaveText("Value 2");
   });
 
+  test("wide field", async({ page }) => {
+    const component = page.getByTestId(id);
+
+    await expect(component.locator(".md\\:col-span-2").getByTestId("prop-3")).toBeAttached();
+  });
+
   test("visual", { tag: "@visual" }, async({ page }) => {
     const component = page.getByTestId(id);
 

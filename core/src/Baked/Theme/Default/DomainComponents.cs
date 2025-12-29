@@ -1,7 +1,6 @@
 ﻿using Baked.Domain.Model;
 using Baked.RestApi.Model;
 using Baked.Ui;
-using Baked.Ux.DesignatedStringPropertiesAreLabel;
 using Humanizer;
 
 using B = Baked.Ui.Components;
@@ -372,6 +371,24 @@ public static class DomainComponents
 
                 options.Apply(f);
             }
+        );
+    }
+
+    public static ComponentDescriptor<Dialog> PropertyDialog(PropertyModel property, ComponentContext context,
+        Action<Dialog>? options = default
+    )
+    {
+        context = context.Drill(nameof(Dialog));
+        var (_, l) = context;
+
+        var open = property.GetRequiredComponent<Button>(context.Drill(nameof(Dialog.Open)));
+        var content = property.GetRequiredComponent(context.Drill(nameof(Dialog.Content)));
+
+        return B.Dialog(
+            open: open.Schema,
+            header: l(property.Name.Titleize()),
+            content: content,
+            options: options
         );
     }
 

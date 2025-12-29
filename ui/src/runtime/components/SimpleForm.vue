@@ -13,6 +13,7 @@
         closable
         modal
         dismissable-mask
+        :draggable="false"
         @after-hide="emitSubmit"
       >
         <div v-if="dialogOptions.message">

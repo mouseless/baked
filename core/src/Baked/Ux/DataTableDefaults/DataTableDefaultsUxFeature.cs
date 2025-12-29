@@ -89,22 +89,29 @@ public class DataTableDefaultsUxFeature : IFeature<UxConfigurator>
                 }
             );
 
+            // `Button` defaults
             builder.Conventions.AddMethodComponentConfiguration<Button>(
                 where: cc =>
                     cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Actions), "*") ||
                     cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Actions), "**", nameof(SimpleForm.DialogOptions.Open)),
-                component: b =>
-                {
-                    if (b.Schema.Icon is not null)
-                    {
-                        b.Schema.Label = string.Empty;
-                    }
-
-                    b.Schema.Variant = "text";
-                    b.Schema.Rounded = true;
-                },
+                component: ButtonDefaults,
                 order: 10
             );
+            builder.Conventions.AddPropertyComponentConfiguration<Button>(
+                where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Columns), "**", nameof(SimpleForm.DialogOptions.Open)),
+                component: ButtonDefaults,
+                order: 10
+            );
+            void ButtonDefaults(ComponentDescriptor<Button> button)
+            {
+                if (button.Schema.Icon is not null)
+                {
+                    button.Schema.Label = string.Empty;
+                }
+
+                button.Schema.Variant = "text";
+                button.Schema.Rounded = true;
+            }
         });
     }
 }

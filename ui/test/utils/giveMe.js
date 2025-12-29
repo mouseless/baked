@@ -330,14 +330,15 @@ export default {
     };
   },
 
-  aField({ key, label, component } = {}) {
+  aField({ key, label, wide, component } = {}) {
     key = "data";
     label = $(label, "Spec: Data");
     component = $(component, this.anExpected({ data: this.aContextData({ parent: `data.${key}` }) }));
 
     return {
-      label,
       key,
+      label,
+      wide,
       component
     };
   },
