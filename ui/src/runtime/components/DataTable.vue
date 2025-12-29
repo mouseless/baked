@@ -241,7 +241,11 @@ function exportFunction({ data, field }) {
 }
 </script>
 <style>
-  .b-component--DataTable a {
-    @apply text-sm;
-  }
+.b-component--DataTable a {
+  @apply text-sm;
+}
+
+.b-component--DataTable .p-button {
+  @apply -my-2;
+}
 </style>
