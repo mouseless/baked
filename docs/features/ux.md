@@ -186,3 +186,15 @@ c => c.PanelParametersAreStateful()
 > report or navigating to different pages __without__ refreshing. When a refresh
 > occurs, client app is reloaded and all panel states are reset to their
 > default.
+
+## Properties as Fieldset
+
+Allows to add properties as a `Fieldset` component under `SimplePage`.
+
+```csharp
+c => c.PropertiesAsFieldset()
+```
+
+- A content is created under `.../simple-page/contents/fields` path
+- Each data property is configured as one field under a `Fieldset` instance
+- Field components get their data from parent context

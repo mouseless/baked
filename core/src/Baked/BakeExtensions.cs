@@ -121,7 +121,8 @@ public static class BakeExtensions
                     c => c.ListIsDataTable(),
                     c => c.NumericValuesAreFormatted(),
                     c => c.ObjectWithListIsDataTable(),
-                    c => c.PanelParametersAreStateful()
+                    c => c.PanelParametersAreStateful(),
+                    c => c.PropertiesAsFieldset()
                 ]);
 
                 app.Features.AddTheme(theme);

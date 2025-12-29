@@ -84,6 +84,7 @@ Bake.New
 |                    | Numeric Values are Formatted             |                                    |
 |                    | Object with List is Data Table           |                                    |
 |                    | Panel Parameters are Stateful            |                                    |
+|                    | Properties as Fieldset                   |                                    |
 
 > [!NOTE]
 >
@@ -117,7 +118,7 @@ flowchart LR;
       CB -->|ConfigurationManager<br/>WebApplicationBuilder| BC
       BC -->|GeneratedContext| AS
       AS -->|IServiceCollection| B
-      B -->|IServiceProvider<br/>WebApplication|PB
+      B -->|IServiceProvider<br/>WebApplication| PB
       PB --> R
     end
 

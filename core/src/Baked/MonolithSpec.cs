@@ -103,7 +103,8 @@ public abstract class MonolithSpec : Spec
                     c => c.ListIsDataTable(),
                     c => c.NumericValuesAreFormatted(),
                     c => c.ObjectWithListIsDataTable(),
-                    c => c.PanelParametersAreStateful()
+                    c => c.PanelParametersAreStateful(),
+                    c => c.PropertiesAsFieldset()
                 ]);
 
                 app.Features.AddTheme(theme);
