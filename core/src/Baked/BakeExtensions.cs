@@ -123,7 +123,8 @@ public static class BakeExtensions
                     c => c.NumericValuesAreFormatted(),
                     c => c.ObjectWithListIsDataTable(),
                     c => c.PanelParametersAreStateful(),
-                    c => c.PropertiesAsFieldset()
+                    c => c.PropertiesAsFieldset(),
+                    c => c.RoutedTypesAsNavLinks()
                 ]);
 
                 app.Features.AddTheme(theme);

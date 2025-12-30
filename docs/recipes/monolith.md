@@ -86,6 +86,7 @@ Bake.New
 |                    | Object with List is Data Table           |                                    |
 |                    | Panel Parameters are Stateful            |                                    |
 |                    | Properties as Fieldset                   |                                    |
+|                    | Routed Types as NavLinks                 |                                    |
 
 > [!NOTE]
 >

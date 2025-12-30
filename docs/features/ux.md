@@ -208,3 +208,18 @@ c => c.PropertiesAsFieldset()
 - A content is created under `.../simple-page/contents/fields` path
 - Each data property is configured as one field under a `Fieldset` instance
 - Field components get their data from parent context
+
+## Routed Types as Nav Links
+
+Configures `NavLink` component for types that have `RouteAttribute` under data
+table columns.
+
+```csharp
+c => c.RoutedTypesAsNavLinks()
+```
+
+- Converts label properties to a `NavLink` using `RouteAttribute` route params
+
+> [!NOTE]
+>
+> This will support other paths than data table column in the upcoming releases.

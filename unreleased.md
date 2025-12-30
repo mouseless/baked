@@ -49,8 +49,10 @@
   - **Actions are Contents**: to render `GET` actions as contents
   - **Data Table defaults**: to set defaults for all `DataTable` components
   - **Description Property**: to configure description properties to allow them
-    occuply more space in UI
+    occupy more space in UI
   - **Properties as Fieldset**: to render properties of an object in a fieldset
+  - **Routed Types as Nav Links**: to render types as nav link under data table
+    columns
 
 ## Breaking Changes
 
