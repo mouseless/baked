@@ -72,34 +72,6 @@ public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
                 }
             );
 
-            // Inputs of forms
-            builder.Conventions.AddMethodComponentConfiguration<SimpleForm>(
-                component: (sf, c, cc) =>
-                {
-                    cc = cc.Drill(nameof(SimpleForm.Inputs));
-
-                    foreach (var parameter in c.Method.DefaultOverload.Parameters)
-                    {
-                        sf.Schema.Inputs.Add(
-                            parameter.GetRequiredSchema<Input>(cc.Drill(parameter.Name))
-                        );
-                    }
-                }
-            );
-            builder.Conventions.AddMethodComponentConfiguration<FormPage>(
-                component: (sf, c, cc) =>
-                {
-                    cc = cc.Drill(nameof(FormPage.Inputs));
-
-                    foreach (var parameter in c.Method.DefaultOverload.Parameters)
-                    {
-                        sf.Schema.Inputs.Add(
-                            parameter.GetRequiredSchema<Input>(cc.Drill(parameter.Name))
-                        );
-                    }
-                }
-            );
-
             // Open button (for dialog)
             builder.Conventions.AddMethodComponent(
                 where: cc => cc.Path.EndsWith(nameof(SimpleForm.DialogOptions), nameof(SimpleForm.DialogOptions.Open)),

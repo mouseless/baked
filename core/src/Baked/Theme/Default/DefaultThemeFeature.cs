@@ -137,6 +137,32 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
 
             // Parameter defaults
+            builder.Conventions.AddMethodComponentConfiguration<SimpleForm>(
+                component: (sf, c, cc) =>
+                {
+                    cc = cc.Drill(nameof(SimpleForm.Inputs));
+
+                    foreach (var parameter in c.Method.DefaultOverload.Parameters)
+                    {
+                        sf.Schema.Inputs.Add(
+                            parameter.GetRequiredSchema<Input>(cc.Drill(parameter.Name))
+                        );
+                    }
+                }
+            );
+            builder.Conventions.AddMethodComponentConfiguration<FormPage>(
+                component: (sf, c, cc) =>
+                {
+                    cc = cc.Drill(nameof(FormPage.Inputs));
+
+                    foreach (var parameter in c.Method.DefaultOverload.Parameters)
+                    {
+                        sf.Schema.Inputs.Add(
+                            parameter.GetRequiredSchema<Input>(cc.Drill(parameter.Name))
+                        );
+                    }
+                }
+            );
             builder.Conventions.AddParameterSchema(
                 when: c => c.Parameter.Has<ParameterModelAttribute>(),
                 schema: (c, cc) => ParameterInput(c.Parameter, cc)

@@ -40,7 +40,7 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
 
     public void PostBuild(DomainModel result)
     {
-        ApplyConventionsThatRequireIndex(result);
+        ApplyConventionsOfAttributesThatRequireIndex(result);
         BuildIndices(result);
         ApplyRestOfTheConventions(result);
     }
@@ -65,9 +65,9 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
         return _buildQueue.Enqueue(type);
     }
 
-    void ApplyConventionsThatRequireIndex(DomainModel model)
+    void ApplyConventionsOfAttributesThatRequireIndex(DomainModel model)
     {
-        foreach (var convention in _options.Conventions.OrderBy(c => c.Order).Select(c => c.Convention).OfType<IAddRemoveAttributeConvention>().Where(c => c.RequiresIndex))
+        foreach (var convention in _options.Conventions.OrderBy(c => c.Order).Select(c => c.Convention).OfType<IAddRemoveAttributeConvention>().Where(c => c.AttributeRequiresIndex))
         {
             Apply(model, convention);
         }
@@ -75,7 +75,7 @@ public class DomainModelBuilder(DomainModelBuilderOptions _options)
 
     void ApplyRestOfTheConventions(DomainModel model)
     {
-        foreach (var convention in _options.Conventions.OrderBy(c => c.Order).Select(c => c.Convention).Where(c => c is not IAddRemoveAttributeConvention || (c is IAddRemoveAttributeConvention addRemove && !addRemove.RequiresIndex)))
+        foreach (var convention in _options.Conventions.OrderBy(c => c.Order).Select(c => c.Convention).Where(c => c is not IAddRemoveAttributeConvention || (c is IAddRemoveAttributeConvention addRemove && !addRemove.AttributeRequiresIndex)))
         {
             Apply(model, convention);
         }

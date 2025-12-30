@@ -2,5 +2,5 @@
 
 public interface IAddRemoveAttributeConvention : IDomainModelConvention
 {
-    bool RequiresIndex { get; }
+    bool AttributeRequiresIndex { get; }
 }
