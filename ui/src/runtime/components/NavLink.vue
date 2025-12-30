@@ -1,11 +1,12 @@
 <template>
   <AwaitLoading :skeleton="{ height: '1.5rem' }">
     <Button
-      as="router-link"
       :icon
-      link
       :label="data"
       :to
+      as="router-link"
+      link
+      class="m-0 p-0"
     />
   </AwaitLoading>
 </template>
@@ -24,27 +25,25 @@ const { schema, data } = defineProps({
   data: { type: null, required: true }
 });
 
-const { icon, path, query, params } = schema;
+const { icon, path, query: queryData, params: paramsData } = schema;
 
 const contextData = context.injectContextData();
-const queryData = ref();
-const paramsData = ref();
-const to = computed(() => {
-  return {
-    path: paramsData.value ? pathBuilder.build(path, paramsData.value) : path,
-    query: queryData.value
-  };
-});
+const query = ref(queryData ? dataFetcher.get({ data: queryData, contextData }) : null);
+const shouldLoadQuery = queryData ? dataFetcher.shouldLoad(queryData.type) : false;
+const params = ref(paramsData ? dataFetcher.get({ data: paramsData, contextData }) : null);
+const shouldLoadParams = paramsData ? dataFetcher.shouldLoad(paramsData.type) : false;
+const to = computed(() => ({
+  path: params.value ? pathBuilder.build(path, params.value, { forRoute: true }) : path,
+  query: query.value
+}));
 
-// this could have been `shouldLoad` but query and params can be null
-// and `dataFetcher.shouldLoad` throws exception since no type prop exists
 onMounted(async() => {
-  if(query) {
-    queryData.value = await dataFetcher.fetch({ data: query, contextData });
+  if(shouldLoadQuery) {
+    query.value = await dataFetcher.fetch({ data: queryData, contextData });
   }
 
-  if(params) {
-    paramsData.value = await dataFetcher.fetch({ data: params, contextData });
+  if(shouldLoadParams) {
+    params.value = await dataFetcher.fetch({ data: paramsData, contextData });
   }
 });
 </script>

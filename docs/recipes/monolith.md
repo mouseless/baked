@@ -73,15 +73,20 @@ Bake.New
 | ORM                | :white_check_mark: Auto Map              | :white_check_mark:                 |
 | Theme              | :white_check_mark: (No Default)          | :white_check_mark:                 |
 | UX(s)              | :white_check_mark:                       | :white_check_mark:                 |
-|                    | Actions are Grouped as Tabs              |                                    |
+|                    | Actions as Buttons                       |                                    |
+|                    | Actions are Contents                     |                                    |
 |                    | Actions as Data Panels                   |                                    |
-|                    | Data Table Visualizes List               |                                    |
-|                    | Data Table Visualizes Object with List   |                                    |
+|                    | Data Table defaults                      |                                    |
+|                    | Description Property                     |                                    |
 |                    | Designated String Properties are Label   |                                    |
 |                    | Enum Parameter is Select                 |                                    |
 |                    | Initializer Parameters are in Page Title |                                    |
+|                    | List is Data Table                       |                                    |
 |                    | Numeric Values are Formatted             |                                    |
+|                    | Object with List is Data Table           |                                    |
 |                    | Panel Parameters are Stateful            |                                    |
+|                    | Properties as Fieldset                   |                                    |
+|                    | Routed Types as NavLinks                 |                                    |
 
 > [!NOTE]
 >
@@ -115,7 +120,7 @@ flowchart LR;
       CB -->|ConfigurationManager<br/>WebApplicationBuilder| BC
       BC -->|GeneratedContext| AS
       AS -->|IServiceCollection| B
-      B -->|IServiceProvider<br/>WebApplication|PB
+      B -->|IServiceProvider<br/>WebApplication| PB
       PB --> R
     end
 

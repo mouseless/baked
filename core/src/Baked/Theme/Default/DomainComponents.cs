@@ -30,9 +30,7 @@ public static class DomainComponents
         var (_, l) = context;
 
         var path = context.Route.Path.Trim('/');
-        var title =
-            type.GetComponent(context.Drill(nameof(SimplePage.Title))) ??
-            TypePageTitle(type, context.Drill(nameof(SimplePage.Title)));
+        var title = type.GetRequiredComponent(context.Drill(nameof(SimplePage.Title)));
 
         return B.SimplePage(path, title, options: options);
     }
@@ -64,12 +62,8 @@ public static class DomainComponents
         var (_, l) = context;
 
         var path = context.Route.Path.Trim('/');
-        var title =
-            method.GetComponent<PageTitle>(context.Drill(nameof(FormPage.Title))) as ComponentDescriptor<PageTitle> ??
-            MethodPageTitle(method, context.Drill(nameof(FormPage.Title)));
-        var button =
-            method.GetComponent<Button>(context.Drill(nameof(FormPage.Button))) as ComponentDescriptor<Button> ??
-            B.Button(l("Save"));
+        var title = method.GetRequiredComponent<PageTitle>(context.Drill(nameof(FormPage.Title))).Schema;
+        var button = method.GetRequiredComponent<Button>(context.Drill(nameof(FormPage.Submit))).Schema;
 
         return B.FormPage(path, title, button,
             action: method.GetSchema<RemoteAction>(context.Drill(nameof(IComponentDescriptor.Action))),
@@ -104,9 +98,7 @@ public static class DomainComponents
         var (_, l) = context;
 
         var path = context.Route.Path.Trim('/');
-        var title =
-            type.GetComponent<PageTitle>(context.Drill(nameof(TabbedPage.Title))) as ComponentDescriptor<PageTitle> ??
-            TypePageTitle(type, context.Drill(nameof(TabbedPage.Title)));
+        var title = type.GetRequiredComponent<PageTitle>(context.Drill(nameof(TabbedPage.Title))).Schema;
 
         return B.TabbedPage(path, title, options: options);
     }
@@ -214,7 +206,6 @@ public static class DomainComponents
     )
     {
         context = context.Drill(nameof(DataTable));
-        var (_, l) = context;
 
         return B.DataTable(
             options: dt =>
@@ -222,7 +213,7 @@ public static class DomainComponents
                 dt.ExportOptions = method.GetSchema<DataTable.Export>(context.Drill(nameof(DataTable.ExportOptions)));
                 dt.FooterTemplate = method.GetSchema<DataTable.Footer>(context.Drill(nameof(DataTable.FooterTemplate)));
                 dt.VirtualScrollerOptions = method.GetSchema<DataTable.VirtualScroller>(context.Drill(nameof(DataTable.VirtualScrollerOptions)));
-                dt.ActionTemplate = method.GetSchema<DataTable.Column>(context.Drill(nameof(DataTable.ActionTemplate)));
+                dt.Actions = method.GetSchema<DataTable.Column>(context.Drill(nameof(DataTable.Actions)));
 
                 options.Apply(dt);
             },
@@ -270,6 +261,20 @@ public static class DomainComponents
         );
     }
 
+    public static DataTable.Column ActionsDataTableColumn(
+        Action<DataTable.Column>? options = default
+    )
+    {
+        return B.DataTableColumn(nameof(DataTable.Actions),
+            options: dtc =>
+            {
+                dtc.Component = B.Composite();
+
+                options.Apply(dtc);
+            }
+        );
+    }
+
     public static ComponentDescriptor<Conditional> PropertyConditional(PropertyModel property, ComponentContext context,
         Action<Conditional>? options = default
     )
@@ -290,8 +295,8 @@ public static class DomainComponents
         Action<Button>? options = default
     )
     {
-        var (_, l) = context;
         context = context.Drill(nameof(Button));
+        var (_, l) = context;
 
         return B.Button(l(method.Name.Humanize().Titleize()),
             action: method.GetSchema<RemoteAction>(context.Drill(nameof(IComponentDescriptor.Action))),
@@ -306,7 +311,7 @@ public static class DomainComponents
         context = context.Drill(nameof(SimpleForm));
         var (_, l) = context;
 
-        var submit = (Button)method.GetRequiredComponent<Button>(context.Drill(nameof(SimpleForm.Submit))).Schema;
+        var submit = method.GetRequiredComponent<Button>(context.Drill(nameof(SimpleForm.Submit))).Schema;
 
         return B.SimpleForm(l(method.Name.Titleize()), submit,
             action: method.GetSchema<RemoteAction>(context.Drill(nameof(IComponentDescriptor.Action))),
@@ -323,22 +328,66 @@ public static class DomainComponents
         Action<SimpleForm.Dialog>? options = default
     )
     {
-        var (_, l) = context;
-
-        var cancel = (Button)method.GetRequiredComponent<Button>(context.Drill(nameof(SimpleForm.Dialog.Cancel))).Schema;
-        var open = (Button)method.GetRequiredComponent<Button>(context.Drill(nameof(SimpleForm.Dialog.Open))).Schema;
+        var cancel = method.GetRequiredComponent<Button>(context.Drill(nameof(SimpleForm.DialogOptions.Cancel))).Schema;
+        var open = method.GetRequiredComponent<Button>(context.Drill(nameof(SimpleForm.DialogOptions.Open))).Schema;
 
         return B.SimpleFormDialog(open, cancel, options: options);
     }
 
-    public static Content PropertyContent(PropertyModel property, ComponentContext context,
+    public static Content TypeContent(TypeModelMetadata type, ComponentContext context, string key,
         Action<Content>? options = default
     )
     {
-        var key = property.Get<DataAttribute>().Prop;
-        context = context.Drill(key);
+        var component = type.GetRequiredComponent(context.Drill(nameof(Content.Component)));
 
-        return B.Content(property.GetRequiredComponent(context.Drill(nameof(Content.Component))), key,
+        return B.Content(component, key, options: options);
+    }
+
+    public static ComponentDescriptor<Fieldset> TypeFieldset(TypeModelMembers type, ComponentContext context,
+        Action<Fieldset>? options = default
+    )
+    {
+        context = context.Drill(nameof(Fieldset));
+        var label = type.Properties.Having<LabelAttribute>().FirstOrDefault() ??
+            throw new($"`{type.Name}` should have a label property to render as a `{nameof(Fieldset)}`");
+        if (!label.TryGet<DataAttribute>(out var labelData)) { throw new($"`{label.Name}` should have a `{nameof(DataAttribute)}`"); }
+
+        var data = type.GetRequiredSchema<RemoteData>(context.Drill(nameof(IComponentDescriptor.Data)));
+
+        return B.Fieldset(labelData.Prop, options: options, data: data);
+    }
+
+    public static Field PropertyField(PropertyModel property, ComponentContext context,
+        Action<Field>? options = default
+    )
+    {
+        context = context.Drill(property.Name);
+        var (_, l) = context;
+
+        return B.Field(property.Name.Camelize(), l(property.Name.Titleize()),
+            options: f =>
+            {
+                f.Component = property.GetComponent(context.Drill(nameof(Field.Component))) ?? f.Component;
+
+                options.Apply(f);
+            }
+        );
+    }
+
+    public static ComponentDescriptor<Dialog> PropertyDialog(PropertyModel property, ComponentContext context,
+        Action<Dialog>? options = default
+    )
+    {
+        context = context.Drill(nameof(Dialog));
+        var (_, l) = context;
+
+        var open = property.GetRequiredComponent<Button>(context.Drill(nameof(Dialog.Open)));
+        var content = property.GetRequiredComponent(context.Drill(nameof(Dialog.Content)));
+
+        return B.Dialog(
+            open: open.Schema,
+            header: l(property.Name.Titleize()),
+            content: content,
             options: options
         );
     }
@@ -348,7 +397,6 @@ public static class DomainComponents
     )
     {
         context = context.Drill(nameof(NavLink));
-        var (_, l) = context;
 
         if (!type.TryGet<RouteAttribute>(out var pageAttribute))
         {
@@ -356,5 +404,18 @@ public static class DomainComponents
         }
 
         return B.NavLink(pageAttribute.Path, options: options);
+    }
+
+    public static ComponentDescriptor<Button> LocalizedButton(string label, ComponentContext context,
+        Action<Button>? options = default,
+        IAction? action = default
+    )
+    {
+        var (_, l) = context;
+
+        return B.Button(l(label),
+            options: options,
+            action: action
+        );
     }
 }

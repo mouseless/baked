@@ -13,21 +13,15 @@ const variants = [
     descriptor: giveMe.aNavLink({
       icon: "pi pi-eye",
       path: "/specs",
-      data: giveMe.anInlineData("Base")
+      data: giveMe.anInlineData("Link")
     })
   },
   {
     name: "Dynamic",
     descriptor: giveMe.aNavLink({
-      icon: "pi pi-eye",
-      path: "/test-path/{id}",
+      path: "/test-path/[id]",
       query: giveMe.anInlineData({ query: "value" }),
-      params: giveMe.aCompositeData(
-        [
-          giveMe.anInlineData({ id: "test-id" })
-        ]
-      ),
-      data: giveMe.anInlineData("Params")
+      params: giveMe.anInlineData({ id: "test-id" })
     })
   }
 ];

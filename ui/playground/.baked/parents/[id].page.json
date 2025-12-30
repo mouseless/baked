@@ -6,49 +6,331 @@
       "schema": {
         "title": "Parent",
         "description": "Showcase a locatable entity page",
-        "actions": []
+        "actions": [
+          {
+            "type": "SimpleForm",
+            "schema": {
+              "title": "Add Child",
+              "submit": {
+                "label": "Add Child",
+                "severity": "primary"
+              },
+              "inputs": [
+                {
+                  "name": "name",
+                  "required": true,
+                  "component": {
+                    "type": "InputText",
+                    "schema": {
+                      "label": "Name"
+                    }
+                  }
+                }
+              ],
+              "dialogOptions": {
+                "open": {
+                  "icon": "pi pi-plus",
+                  "label": "Add Child"
+                },
+                "cancel": {
+                  "label": "Cancel",
+                  "variant": "text"
+                }
+              }
+            },
+            "action": {
+              "type": "Remote",
+              "path": "parents/{id:guid}/children",
+              "method": "POST",
+              "params": {
+                "type": "Computed",
+                "composable": "useNuxtRoute",
+                "options": {
+                  "type": "Inline",
+                  "value": {
+                    "property": "params"
+                  }
+                }
+              },
+              "body": {
+                "type": "Context",
+                "key": "model"
+              },
+              "postAction": {
+                "type": "Publish",
+                "event": "add-child"
+              }
+            }
+          },
+          {
+            "type": "SimpleForm",
+            "schema": {
+              "title": "Update",
+              "submit": {
+                "label": "Update",
+                "severity": "primary"
+              },
+              "inputs": [
+                {
+                  "name": "name",
+                  "component": {
+                    "type": "InputText",
+                    "schema": {
+                      "label": "Name"
+                    }
+                  }
+                },
+                {
+                  "name": "surname",
+                  "component": {
+                    "type": "InputText",
+                    "schema": {
+                      "label": "Surname"
+                    }
+                  }
+                },
+                {
+                  "name": "description",
+                  "component": {
+                    "type": "InputText",
+                    "schema": {
+                      "label": "Description"
+                    }
+                  }
+                }
+              ],
+              "dialogOptions": {
+                "open": {
+                  "icon": "pi pi-pencil",
+                  "label": "Update"
+                },
+                "cancel": {
+                  "label": "Cancel",
+                  "variant": "text"
+                }
+              }
+            },
+            "action": {
+              "type": "Remote",
+              "path": "parents/{id:guid}/",
+              "method": "PUT",
+              "params": {
+                "type": "Computed",
+                "composable": "useNuxtRoute",
+                "options": {
+                  "type": "Inline",
+                  "value": {
+                    "property": "params"
+                  }
+                }
+              },
+              "body": {
+                "type": "Context",
+                "key": "model"
+              },
+              "postAction": {
+                "type": "Publish",
+                "event": "update"
+              }
+            }
+          },
+          {
+            "type": "SimpleForm",
+            "schema": {
+              "title": "Delete",
+              "submit": {
+                "label": "Delete",
+                "severity": "danger"
+              },
+              "inputs": [],
+              "dialogOptions": {
+                "open": {
+                  "icon": "pi pi-trash",
+                  "label": "Delete"
+                },
+                "cancel": {
+                  "label": "Cancel",
+                  "variant": "text"
+                },
+                "message": "Are you sure?"
+              }
+            },
+            "action": {
+              "type": "Remote",
+              "path": "parents/{id:guid}/",
+              "method": "DELETE",
+              "params": {
+                "type": "Computed",
+                "composable": "useNuxtRoute",
+                "options": {
+                  "type": "Inline",
+                  "value": {
+                    "property": "params"
+                  }
+                }
+              },
+              "postAction": {
+                "type": "Publish",
+                "event": "delete"
+              }
+            }
+          }
+        ]
       }
     },
     "contents": [
       {
         "component": {
-          "type": "Text",
-          "schema": {},
+          "type": "Fieldset",
+          "schema": {
+            "titleProp": "name",
+            "fields": [
+              {
+                "key": "name",
+                "label": "Name",
+                "component": {
+                  "type": "Text",
+                  "schema": {},
+                  "data": {
+                    "type": "Context",
+                    "key": "parent",
+                    "prop": "data.name"
+                  }
+                }
+              },
+              {
+                "key": "surname",
+                "label": "Surname",
+                "component": {
+                  "type": "Text",
+                  "schema": {},
+                  "data": {
+                    "type": "Context",
+                    "key": "parent",
+                    "prop": "data.surname"
+                  }
+                }
+              },
+              {
+                "key": "description",
+                "label": "Description",
+                "component": {
+                  "type": "Text",
+                  "schema": {},
+                  "data": {
+                    "type": "Context",
+                    "key": "parent",
+                    "prop": "data.description"
+                  }
+                },
+                "wide": true
+              }
+            ]
+          },
           "data": {
-            "type": "Context",
-            "key": "parent",
-            "prop": "data.id"
+            "type": "Remote",
+            "path": "parents/{id:guid}",
+            "params": {
+              "type": "Computed",
+              "composable": "useNuxtRoute",
+              "options": {
+                "type": "Inline",
+                "value": {
+                  "property": "params"
+                }
+              }
+            }
+          },
+          "reactions": {
+            "reload": {
+              "type": "On",
+              "on": "update"
+            }
           }
         },
-        "key": "id"
+        "key": "fields"
       },
       {
         "component": {
-          "type": "Text",
-          "schema": {},
-          "data": {
-            "type": "Context",
-            "key": "parent",
-            "prop": "data.name"
+          "type": "DataPanel",
+          "schema": {
+            "title": {
+              "type": "Inline",
+              "value": "GetChildren"
+            },
+            "localizeTitle": true,
+            "inputs": [],
+            "content": {
+              "type": "DataTable",
+              "schema": {
+                "columns": [
+                  {
+                    "key": "name",
+                    "component": {
+                      "type": "Text",
+                      "schema": {},
+                      "data": {
+                        "type": "Context",
+                        "key": "parent",
+                        "prop": "row.name"
+                      }
+                    },
+                    "title": "Name",
+                    "minWidth": true,
+                    "exportable": true,
+                    "frozen": true
+                  }
+                ],
+                "dataKey": "id",
+                "paginator": true,
+                "rows": 5,
+                "exportOptions": {
+                  "csvSeparator": ";",
+                  "fileName": "GetChildren.ExportFileName",
+                  "formatter": "useCsvFormatter",
+                  "buttonIcon": "pi pi-download",
+                  "buttonLabel": "Export as CSV",
+                  "appendParameters": true,
+                  "parameterSeparator": "_",
+                  "parameterFormatter": "useLocaleParameterFormatter"
+                }
+              },
+              "data": {
+                "type": "Remote",
+                "path": "parents/{id:guid}/children",
+                "query": {
+                  "type": "Computed",
+                  "composable": "useNuxtRoute",
+                  "options": {
+                    "type": "Inline",
+                    "value": {
+                      "property": "query"
+                    }
+                  }
+                },
+                "params": {
+                  "type": "Computed",
+                  "composable": "useNuxtRoute",
+                  "options": {
+                    "type": "Inline",
+                    "value": {
+                      "property": "params"
+                    }
+                  }
+                }
+              },
+              "reactions": {
+                "reload": {
+                  "type": "On",
+                  "on": "add-child"
+                }
+              }
+            }
           }
         },
-        "key": "name"
+        "key": "get-children"
       }
     ],
     "path": "parents/[id]"
-  },
-  "data": {
-    "type": "Remote",
-    "path": "/parents/{id}",
-    "params": {
-      "type": "Computed",
-      "composable": "useNuxtRoute",
-      "options": {
-        "type": "Inline",
-        "value": {
-          "property": "params"
-        }
-      }
-    }
   }
 }

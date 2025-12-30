@@ -4,12 +4,9 @@ using Baked.Test.Orm;
 using Baked.Theme;
 using Baked.Theme.Default;
 using Baked.Ui;
-using Baked.Ux.DesignatedStringPropertiesAreLabel;
 
 using static Baked.Test.Theme.Custom.DomainComponents;
-using static Baked.Theme.Default.DomainComponents;
 using static Baked.Theme.Default.DomainDatas;
-using static Baked.Ui.Datas;
 
 using B = Baked.Ui.Components;
 using C = Baked.Test.Ui.Components;
@@ -56,35 +53,8 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
             );
 
             // Custom routes
-            builder.Conventions.SetTypeAttribute(
-                when: c => c.Type.Is<Parent>(),
-                attribute: c => new RouteAttribute("/parents/{id}")
-                {
-                    Params = new() { { "id", c.Type.GetMembers().Properties[nameof(Parent.Id)].Get<DataAttribute>().Prop } }
-                }
-            );
-
-            // TODO review in conventions
-            builder.Conventions.AddPropertyComponent(
-                when: c => c.Type.Has<RouteAttribute>() && c.Property.Has<LabelAttribute>(),
-                where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Columns), "*", nameof(DataTable.Column.Component)),
-                component: (c, cc) => TypeNavLink(c.Type, cc)
-            );
-            builder.Conventions.AddPropertyComponentConfiguration<NavLink>(
-                when: c => c.Type.Has<RouteAttribute>(),
-                where: cc => cc.Path.EndsWith(nameof(DataTable), nameof(DataTable.Columns), "*", nameof(DataTable.Column.Component)),
-                component: (link, c) =>
-                {
-                    foreach (var (param, prop) in c.Type.Get<RouteAttribute>().Params)
-                    {
-                        link.Schema.Params += Context.Parent(options: o =>
-                        {
-                            o.Prop = $"row.{prop}";
-                            o.TargetProp = param;
-                        });
-                    }
-                }
-            );
+            builder.Conventions.SetTypeRoute<Parent>("/parents/[id]");
+            builder.Conventions.SetMethodRoute<FormSample>(nameof(FormSample.NewParent), "/form-sample/parents/new");
         });
 
         configurator.ConfigureComponentExports(c =>

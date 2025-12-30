@@ -15,14 +15,16 @@ public static class CustomThemeExtensions
             r => r.Index() with { Page = p => p.Described(d => d.Menu()) },
             r => r.Root("/cache-samples", "Cache", "pi pi-database") with { Page = p => p.Generated(g => g.Type<CacheSamples, TabbedPage>()), Description = "Showcases the cache behavior" },
             r => r.Root("/form-sample", "Form", "pi pi-file-edit") with { Page = p => p.Generated(g => g.Type<FormSample, SimplePage>()), Description = "Showcases action, form components and events" },
-            r => r.Child("/form-sample/new-parent", "New Parent", "/form-sample") with { Page = p => p.Generated(g => g.Method<FormSample, FormPage>(nameof(FormSample.NewParent))), Description = "Fill out the form and hit save to create new parent" },
-            r => r.Dynamic("/parents/[id]", "Parent") with { Page = p => p.Generated(g => g.Type<Parent, SimplePage>()), Description = "Showcase a locatable entity page" },
+            r => r.Child("/form-sample/parents/new", "New Parent", "/form-sample") with { Page = p => p.Generated(g => g.Method<FormSample, FormPage>(nameof(FormSample.NewParent))), Description = "Fill out the form and hit save to create new parent" },
             r => r.Root("/report-page-sample", "Report", "pi pi-file") with { Page = p => p.Generated(g => g.Type<ReportPageSample, TabbedPage>()), Description = "Showcases a report layout with tabs and data panels"},
-            r => r.Dynamic("/route-parameters-sample/[id]", "Route Parameters") with { Page = p => p.Generated(g => g.Type<RouteParametersSample, SimplePage>()), Description = "Showcases the route parameter support" },
             r => r.Root("/specs", "Specs", "pi pi-list-check") with { Page = p => p.Described(d => d.Menu()), Description = "All UI Specs are listed here" },
+
+            r => r.RootDynamic("/parents/[id]", "Parent") with { Page = p => p.Generated(g => g.Type<Parent, SimplePage>()), Description = "Showcase a locatable entity page" },
+            r => r.RootDynamic("/route-parameters-sample/[id]", "Route Parameters") with { Page = p => p.Generated(g => g.Type<RouteParametersSample, SimplePage>()), Description = "Showcases the route parameter support" },
 
             // Behavior
             r => r.Child("/specs/bake", "Bake", "/specs") with { Icon = "pi pi-microchip", Description = "The core component that renders a dynamic component using given descriptor", Section = "Behavior" },
+            r => r.Child("/specs/composite", "Composite", "/specs") with { Icon = "pi pi-microchip", Description = "A renderless component that renders multiple components", Section = "Behavior" },
             r => r.Child("/specs/conditional", "Conditional", "/specs") with { Icon = "pi pi-microchip", Description = "Allows rendering component based on configured condition", Section = "Behavior" },
             r => r.Child("/specs/contents", "Contents", "/specs") with { Icon = "pi pi-microchip", Description = "Allows multiple components to be rendered in a simple grid", Section = "Behavior" },
             r => r.Child("/specs/custom-css", "Custom CSS", "/specs") with { Icon = "pi pi-microchip", Description = "Allows custom configuration to define custom css and more", Section = "Behavior" },
@@ -35,6 +37,7 @@ public static class CustomThemeExtensions
             // Display
             r => r.Child("/specs/card-link", "Card Link", "/specs") with { Icon = "pi pi-microchip", Description = "Renders a link as a big card-like button", Section = "Display" },
             r => r.Child("/specs/data-table", "Data Table", "/specs") with { Icon = "pi pi-microchip", Description = "Shows list data as a table", Section = "Display" },
+            r => r.Child("/specs/fieldset", "Fieldset", "/specs") with { Icon = "pi pi-microchip", Description = "Shows object data in a fieldset", Section = "Display" },
             r => r.Child("/specs/icon", "Icon", "/specs") with { Icon = "pi pi-microchip", Description = "Displays built-in icons", Section = "Display" },
             r => r.Child("/specs/message", "Message", "/specs") with { Icon = "pi pi-microchip", Description = "A component to display message", Section = "Display" },
             r => r.Child("/specs/missing-component", "Missing Component", "/specs") with { Icon = "pi pi-microchip", Description = "Renders a helper in a place where a component was expected", Section = "Display" },

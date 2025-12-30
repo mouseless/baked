@@ -112,6 +112,16 @@ test.describe("Dialog", () => {
     await expect(dialog.locator(primevue.dialog.header)).toHaveText("Simple Form");
   });
 
+  test("message", async({ page }) => {
+    const component = page.getByTestId(id);
+    const button = component.locator(primevue.button.base);
+    const dialog = page.locator(primevue.dialog.base);
+
+    await button.click();
+
+    await expect(dialog.locator(primevue.dialog.content)).toHaveText(/Message/);
+  });
+
   test("input", async({ page }) => {
     const component = page.getByTestId(id);
     const button = component.locator(primevue.button.base);

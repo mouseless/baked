@@ -3,8 +3,10 @@
 ## Features
 
 - Dynamic routing is now supported and can be used when;
-  - navigating through pages
-  - fetching data from backend
+  - navigating through pages, `r => r.RootDynamic(...)` or `r =>
+    r.ChildDynamic(...)`
+  - fetching data from backend, `rd.Params = Computed.UseRoute("params");`
+  - posting data to backend, `ra.Params = Computed.UseRoute("params");`
 - Two new page generator functions are implemented
   - `Type<TDomainType, TPageSchema>()`: Renders given domain type as a page
     using given page schema
@@ -16,9 +18,11 @@
 - `useActionExecuter` composable is now added to execute `Composite`, `Local`,
   `Publish` and `Remote` actions with given configuration
   - `Page` component now provides an event bus to publish page-wide events
-- `SimpleForm` component is now added for rendering a basic form with inputs 
+- `SimpleForm` component is now added for rendering a basic form with inputs
   with dialog support
-- `DataTable` now supports row based actions via `ActionTemplate` property
+- `DataTable` now supports row based actions via `Actions` property
+  - `ListIsDataTableUxFeature` and `ObjectWithListIsDataTableUxFeature` both now
+    add and fill actions column automatically
 - `Bake` now supports reload and show/hide reactions
   - Use `ReloadOn` and `ShowOn` to bind them to an event
   - Use `ReloadWhen` and `ShowWhen` to bind them to a page context value
@@ -26,9 +30,9 @@
   that reactions can happen only on certain conditions
 - `InputText` and `InputNumber` components are now introduced along with their
   basic conventions
-- `SimplePage` is now added to render simple pages with title and contents
-  - Default theme includes necessary conventions to render any type using
-    `SimplePage`
+- `SimplePage` is now added to render simple pages with title and contents along
+  with its basic conventions
+- `FormPage` is now added to render action methods as full pages
 - `Contents` utility component is now added that renders `List<Content>` with
   responsive styling
   - `ActionsAsDataPanelsUxFeature` is modified to add data panel to any content
@@ -36,6 +40,25 @@
     page's content list
 - `Dialog` component is now added which displays given content in dialog
   with action support
+- `Composite` component is now added to add multiple components to a single
+  component slot
+- `Fieldset` component is now added that renders an object in a field-set pane
+  - `Field` schema is also added to represent a property with a label
+- `RouteAttribute` is added along with `.SetTypeRoute<T>(...)` and
+  `.SetMethodRoute<T>(...)` extensions to specify routes in domain metadata to
+  be used in conventions
+  - When path with id route parameter is added such as `/my-entity/{id}`, it's
+    route param will be automatically resolved from the first property that has
+    `IdAttribute`
+- New UX features are introduced in `Monolith` recipe
+  - **Actions as Buttons**: to render non-`GET` actions as buttons
+  - **Actions are Contents**: to render `GET` actions as contents
+  - **Data Table defaults**: to set defaults for all `DataTable` components
+  - **Description Property**: to configure description properties to allow them
+    occupy more space in UI
+  - **Properties as Fieldset**: to render properties of an object in a fieldset
+  - **Routed Types as Nav Links**: to render types as nav link under data table
+    columns
 
 ## Breaking Changes
 
@@ -59,15 +82,30 @@
 - `QueryParameters` property of `TabbedPage` (former `ReportPage`) is renamed to
   `Inputs`
 - `Parameters.vue` is renamed to `Inputs.vue`
-- `QueryParameters.vue` is renamed to `QueryBoundInputs.vue`
+- `QueryParameters.vue` is now removed, use `Inputs` with all of its inputs'
+  `queryBound` set to `true` to get the same behavior
+  - Unlike `QueryParameters`, `Inputs` pass an event object `{ uniqueKey, values
+    }` to its `onChanged` event
 - `TypeWithOnlyGetIsReportPage` UX feature is removed, and adding `TabbedPage`
   (former `ReportPage`) component to a type is moved to `DefaultThemeFeature`
 - `InjectedData` is renamed to `ContextData`
   - `Injected()` is now removed, use `Context` property
     - Use `Context.Model(...)` to access model data during actions
-    - `Parent` injected data now has `data` and `parameters` properties
+    - Parent data access has changed
       ```csharp
-      Context.Parent(options: cd => cd.Prop = "parameters")
+      Injected(options: i => i.DataKey = InjectedData.DataKey.ParentData) // old usage
+      Context.Parent(options: cd => cd.Prop = "data") // new usage
+      ```
+    - Custom injected data is now removed, `DataPanel` provides `"parameters"`
+      key in parent context to provide its parameter options
+      ```csharp
+      Injected(options: i => i.DataKey = InjectedData.DataKey.Custom) // old usage
+      Context.Parent(options: cd => cd.Prop = "parameters") // new usage
+      ```
+    - `DataTable` now injects row data using parent context under `"row"` key
+      ```csharp
+      // previously data table was injecting row data in an hard-coded way
+      Context.Parent(options: cd => cd.Prop  = "row") // new usage
       ```
     - Use `Context.Page(...)` to access to page context values
     - Use `Context.Response(...)` to access to remote action's response which is
@@ -82,7 +120,7 @@
 - `Composables` now provide helpers instead of ui composable file keys
   ```csharp
   data: Computed(Composables.UseError) // old usage
-  data: Composables.UseError() // new usage
+  data: Computed.UseError() // new usage
   ```
 - `useRoute` composable now accepts property name as parameter to access
   `params`, `query`
@@ -125,26 +163,27 @@
   `injectPageContext` and `providePageContext` respectively
 - `Inputs` now doesn't have a layout styling, any component that uses it should
   wrap it and introduce `flex` styling
-- `QueryBoundInputs` is now removed, use `Inputs` with all of its inputs'
-  `queryBound` set to `true` to get the same behavior
-  - `QueryBoundInputs` was passing `uniqueKey` to `onChanged` event, but
-    `Inputs` pass an event object `{ uniqueKey, values }`
 - `EnumSelect` and `EnumSelectButton` in `DomainComponents` are renamed to
   `ParameterSelect` and `ParameterSelectButton`
   - They still require an `InlineData` schema on the parameter type
 - Data composables `compute` is renamd to `computeSync`
   and `computeAsync` is renamed to `compute`
-- `useFormat.format()` is now removed, which was used for route building, use 
+- `useFormat.format()` is now removed, which was used for route building, use
   `usePathBuilder` with named route params instead
+- `ActionsAreGroupedAsTabsUxFeature` is now removed
+  - `Monolith` recipe now uses `ActionsAreContentsUxFeature`
+- `LabelAttribute` is moved to `Baked.Theme.Default` namespace
 
 ## Improvements
 
 - `Parameters` now accept parameter class attribute for each parameter
 - `RemoveComponent` and `RemoveSchema` helper extensions are now added
+- `GetRequiredComponent<T>(...)` and `GetComponent<T>(...)` extensions are now
+  added to query a specific component type at a given path
 - `AwaitLoading` utility component is now added which contains slots to help
   rendering skeleton and content according to `loading` state
-- `InjectedData`, now `ContextData`, now has `TargetProp` property to map give
-  `Prop` key value to corresponding property
+- `ContextData`, former `InjectedData`, now has `TargetProp` property to map
+  given `Prop` key value to the corresponding property
 - `UiLayer` now has `MinConventionOrder` and `MaxConventionOrder` to allow
   inserting conventions before or after all conventions
 - `MissingComponent` component is now added when a component is required but
@@ -159,13 +198,24 @@
   data using `useDataFetcher`
 - `Layout` now supports app-wide `pageContext` and `events` that are different
   from those coming from `Page` which are page-wide
-- `IAction` and `IData` now implement `+` operator to easily convert them into a
-  `CompositeAction` and `CompositeData`
+- `IAction`, `IData` and `IComponentDescriptor` now implement `+` operator to
+  easily convert them into a `CompositeAction`, `CompositeData` and
+  `CompontentDescriptor<Composite>`
   ```csharp
   component.Data += Context.Parent(options: cd => cd.Prop = "parameters");
   ```
 - `Inputs` has become a pure utility component after removing wrapper div and
   `flex` styling
-- `NavLink` now supports named route parameters and query which both can be 
+- `NavLink` now supports named route parameters and query which both can be
   provided from schema as `IData`
 - `NavLink` now has `Icon` property
+- `PageContext.Sitemap` is now `IReadOnlyCollection`
+- `AddRemoveChildCodingStyleFeature` now removes `New` prefix in addition to
+  `Add` and `Create`
+- `Add/Remove...Attribute` conventions now provide `requiresIndex:` parameter to
+  allow postponing add/remove attribute conventions that won't require index
+  (such as UI component and schema attributes) after building indices
+- UI conventions are now added after all API attributes get configured and are
+  safe to use API configurations such as HTTP method of `ActionModelAttribute`
+- Unlike schema conventions, UI component conventions were allowed to be added
+  to non API method and parameters, fixed

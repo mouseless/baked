@@ -1,5 +1,4 @@
 ﻿using Baked.Architecture;
-using Baked.RestApi.Model;
 using Baked.Ui;
 
 using static Baked.Theme.Default.DomainComponents;
@@ -14,12 +13,10 @@ public class ActionsAsDataPanelsUxFeature : IFeature<UxConfigurator>
         configurator.ConfigureDomainModelBuilder(builder =>
         {
             builder.Conventions.AddMethodComponent(
-                when: c => c.Method.Has<ActionModelAttribute>(),
                 where: cc => cc.Path.EndsWith("Contents", "*", "*", nameof(Content.Component)),
                 component: (c, cc) => MethodDataPanel(c.Method, cc)
             );
             builder.Conventions.AddMethodSchema(
-                when: c => c.Method.Has<ActionModelAttribute>(),
                 where: cc => cc.Path.EndsWith(nameof(DataPanel), nameof(DataPanel.Title)),
                 schema: (c, cc) => MethodNameInline(c.Method, cc)
             );

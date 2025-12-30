@@ -1,7 +1,7 @@
 <template>
   <UiSpec
     title="Data Table"
-    :variants="variants"
+    :variants
   />
 </template>
 <script setup>
@@ -15,11 +15,11 @@ const variants = [
     name: "Base",
     descriptor: giveMe.aDataTable({
       columns: [
-        giveMe.aDataTableColumn({ title: "Spec: Label", key: "label", minWidth: true, component: giveMe.anExpected({ testId: "label", data: giveMe.aContextData({ key: "parent", prop: "row.label" }) }) }),
-        giveMe.aDataTableColumn({ title: "Spec: Data 1", key: "data1", component: giveMe.anExpected({ testId: "prop-1", data: giveMe.aContextData({ key: "parent", prop: "row.data1" }) }) }),
-        giveMe.aDataTableColumn({ title: "Spec: Data 2", key: "data2", component: giveMe.anExpected({ testId: "prop-2", data: giveMe.aContextData({ key: "parent", prop: "row.data2" }) }) }),
-        giveMe.aDataTableColumn({ title: "Spec: Data 3", key: "data3", component: giveMe.anExpected({ testId: "prop-3", data: giveMe.aContextData({ key: "parent", prop: "row.data3" }) }) }),
-        giveMe.aDataTableColumn({ title: "Spec: Data 4", key: "data4", component: giveMe.anExpected({ testId: "prop-4", data: giveMe.aContextData({ key: "parent", prop: "row.data4" }) }) })
+        giveMe.aDataTableColumn({ title: "Spec: Label", key: "label", minWidth: true, component: giveMe.anExpected({ testId: "label", data: giveMe.aContextData({ parent: "row.label" }) }) }),
+        giveMe.aDataTableColumn({ title: "Spec: Data 1", key: "data1", component: giveMe.anExpected({ testId: "prop-1", data: giveMe.aContextData({ parent: "row.data1" }) }) }),
+        giveMe.aDataTableColumn({ title: "Spec: Data 2", key: "data2", component: giveMe.anExpected({ testId: "prop-2", data: giveMe.aContextData({ parent: "row.data2" }) }) }),
+        giveMe.aDataTableColumn({ title: "Spec: Data 3", key: "data3", component: giveMe.anExpected({ testId: "prop-3", data: giveMe.aContextData({ parent: "row.data3" }) }) }),
+        giveMe.aDataTableColumn({ title: "Spec: Data 4", key: "data4", component: giveMe.anExpected({ testId: "prop-4", data: giveMe.aContextData({ parent: "row.data4" }) }) })
       ],
       rowsWhenLoading: 3,
       data: [
@@ -38,7 +38,7 @@ const variants = [
       dataKey: "data",
       rows: 2,
       columns: [
-        giveMe.aDataTableColumn({ title: "Spec: Data", key: "data", component: giveMe.anExpected({ testId: "prop", data: giveMe.aContextData({ key: "parent", prop: "row.data" }) }) })
+        giveMe.aDataTableColumn({ title: "Spec: Data", key: "data", component: giveMe.anExpected({ testId: "prop", data: giveMe.aContextData({ parent: "row.data" }) }) })
       ],
       data: [
         { data: "Row 1" },
@@ -215,12 +215,12 @@ const variants = [
         giveMe.aDataTableColumn({ title: "Spec: Label", key: "label" }),
         giveMe.aDataTableColumn({ title: "Spec: Data 1", key: "data1" })
       ],
-      actionTemplate: giveMe.aDataTableColumn({
+      actions: giveMe.aDataTableColumn({
         component: giveMe.aButton({
           label: "Spec: Action",
           action: giveMe.aLocalAction({
             composable: "useShowMessage",
-            options: giveMe.aContextData({ key: "parent", prop: "row", targetProp: "message" })
+            options: giveMe.aContextData({ parent: "row", targetProp: "message" })
           }),
           variant: "text",
           rounded: true

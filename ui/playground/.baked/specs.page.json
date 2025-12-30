@@ -42,6 +42,18 @@
             }
           },
           {
+            "title": "Composite",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/composite",
+                "icon": "pi pi-microchip",
+                "title": "Composite",
+                "description": "A renderless component that renders multiple components"
+              }
+            }
+          },
+          {
             "title": "Conditional",
             "component": {
               "type": "CardLink",
@@ -163,6 +175,18 @@
                 "icon": "pi pi-microchip",
                 "title": "Data Table",
                 "description": "Shows list data as a table"
+              }
+            }
+          },
+          {
+            "title": "Fieldset",
+            "component": {
+              "type": "CardLink",
+              "schema": {
+                "route": "/specs/fieldset",
+                "icon": "pi pi-microchip",
+                "title": "Fieldset",
+                "description": "Shows object data in a fieldset"
               }
             }
           },

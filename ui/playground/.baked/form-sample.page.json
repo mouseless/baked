@@ -10,6 +10,7 @@
           {
             "type": "Button",
             "schema": {
+              "icon": "pi pi-plus",
               "label": "New Parent"
             },
             "action": {
@@ -18,15 +19,31 @@
               "options": {
                 "type": "Inline",
                 "value": {
-                  "route": "/form-sample/new-parent"
+                  "route": "/form-sample/parents/new"
                 }
               }
             }
           },
           {
-            "type": "Button",
+            "type": "SimpleForm",
             "schema": {
-              "label": "Clear Parents"
+              "title": "Clear Parents",
+              "submit": {
+                "label": "Clear Parents",
+                "severity": "danger"
+              },
+              "inputs": [],
+              "dialogOptions": {
+                "open": {
+                  "icon": "pi pi-trash",
+                  "label": "Clear Parents"
+                },
+                "cancel": {
+                  "label": "Cancel",
+                  "variant": "text"
+                },
+                "message": "Are you sure?"
+              }
             },
             "action": {
               "type": "Remote",
@@ -61,7 +78,7 @@
                     "component": {
                       "type": "NavLink",
                       "schema": {
-                        "path": "/parents/{id}",
+                        "path": "/parents/[id]",
                         "params": {
                           "type": "Context",
                           "key": "parent",
@@ -79,6 +96,51 @@
                     "minWidth": true,
                     "exportable": true,
                     "frozen": true
+                  },
+                  {
+                    "key": "surname",
+                    "component": {
+                      "type": "Text",
+                      "schema": {},
+                      "data": {
+                        "type": "Context",
+                        "key": "parent",
+                        "prop": "row.surname"
+                      }
+                    },
+                    "title": "Surname",
+                    "exportable": true
+                  },
+                  {
+                    "key": "description",
+                    "component": {
+                      "type": "Dialog",
+                      "schema": {
+                        "content": {
+                          "type": "Text",
+                          "schema": {},
+                          "data": {
+                            "type": "Context",
+                            "key": "parent",
+                            "prop": "data"
+                          }
+                        },
+                        "open": {
+                          "icon": "pi pi-eye",
+                          "label": "",
+                          "variant": "text",
+                          "rounded": true
+                        },
+                        "header": "Description"
+                      },
+                      "data": {
+                        "type": "Context",
+                        "key": "parent",
+                        "prop": "row.description"
+                      }
+                    },
+                    "title": "Description",
+                    "exportable": true
                   }
                 ],
                 "dataKey": "id",
@@ -94,12 +156,12 @@
                   "parameterSeparator": "_",
                   "parameterFormatter": "useLocaleParameterFormatter"
                 },
-                "actionTemplate": {
+                "actions": {
                   "key": "Actions",
                   "component": {
-                    "type": "Container",
+                    "type": "Composite",
                     "schema": {
-                      "contents": [
+                      "parts": [
                         {
                           "type": "SimpleForm",
                           "schema": {
@@ -111,15 +173,28 @@
                             "inputs": [
                               {
                                 "name": "name",
-                                "required": true,
-                                "default": {
-                                  "type": "Inline",
-                                  "value": null
-                                },
                                 "component": {
                                   "type": "InputText",
                                   "schema": {
                                     "label": "Name"
+                                  }
+                                }
+                              },
+                              {
+                                "name": "surname",
+                                "component": {
+                                  "type": "InputText",
+                                  "schema": {
+                                    "label": "Surname"
+                                  }
+                                }
+                              },
+                              {
+                                "name": "description",
+                                "component": {
+                                  "type": "InputText",
+                                  "schema": {
+                                    "label": "Description"
                                   }
                                 }
                               }
@@ -157,13 +232,27 @@
                           }
                         },
                         {
-                          "type": "Button",
+                          "type": "SimpleForm",
                           "schema": {
-                            "icon": "pi pi-trash",
-                            "label": "",
-                            "variant": "text",
-                            "severity": "danger",
-                            "rounded": true
+                            "title": "Delete",
+                            "submit": {
+                              "label": "Delete",
+                              "severity": "danger"
+                            },
+                            "inputs": [],
+                            "dialogOptions": {
+                              "open": {
+                                "icon": "pi pi-trash",
+                                "label": "",
+                                "variant": "text",
+                                "rounded": true
+                              },
+                              "cancel": {
+                                "label": "Cancel",
+                                "variant": "text"
+                              },
+                              "message": "Are you sure?"
+                            }
                           },
                           "action": {
                             "type": "Remote",
@@ -208,7 +297,7 @@
                   "parts": [
                     {
                       "type": "On",
-                      "on": "clear-parents"
+                      "on": "update"
                     },
                     {
                       "type": "On",
@@ -216,7 +305,7 @@
                     },
                     {
                       "type": "On",
-                      "on": "update"
+                      "on": "clear-parents"
                     }
                   ]
                 }

@@ -93,15 +93,20 @@ public abstract class MonolithSpec : Spec
             {
                 app.Features.AddUx(
                 [
-                    c => c.ActionsAreGroupedAsTabs(),
+                    c => c.ActionsAsButtons(),
+                    c => c.ActionsAreContents(),
                     c => c.ActionsAsDataPanels(),
+                    c => c.DataTableDefaults(),
+                    c => c.DescriptionProperty(),
                     c => c.DesignatedStringPropertiesAreLabel(),
                     c => c.EnumParameterIsSelect(),
                     c => c.InitializerParametersAreInPageTitle(),
                     c => c.ListIsDataTable(),
                     c => c.NumericValuesAreFormatted(),
                     c => c.ObjectWithListIsDataTable(),
-                    c => c.PanelParametersAreStateful()
+                    c => c.PanelParametersAreStateful(),
+                    c => c.PropertiesAsFieldset(),
+                    c => c.RoutedTypesAsNavLinks()
                 ]);
 
                 app.Features.AddTheme(theme);

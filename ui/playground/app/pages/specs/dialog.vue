@@ -1,7 +1,7 @@
 <template>
   <UiSpec
     title="Dialog"
-    :variants="variants"
+    :variants
     no-loading-variant
   />
 </template>

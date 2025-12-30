@@ -62,33 +62,39 @@
             "icon": "pi pi-file-edit",
             "title": "Form"
           },
-          "/form-sample/new-parent": {
-            "route": "/form-sample/new-parent",
+          "/form-sample/parents/new": {
+            "route": "/form-sample/parents/new",
             "title": "New Parent",
             "parentRoute": "/form-sample"
-          },
-          "/parents/[id]": {
-            "route": "/parents/[id]",
-            "title": "Parent"
           },
           "/report-page-sample": {
             "route": "/report-page-sample",
             "icon": "pi pi-file",
             "title": "Report"
           },
-          "/route-parameters-sample/[id]": {
-            "route": "/route-parameters-sample/[id]",
-            "title": "Route Parameters"
-          },
           "/specs": {
             "route": "/specs",
             "icon": "pi pi-list-check",
             "title": "Specs"
           },
+          "/parents/[id]": {
+            "route": "/parents/[id]",
+            "title": "Parent"
+          },
+          "/route-parameters-sample/[id]": {
+            "route": "/route-parameters-sample/[id]",
+            "title": "Route Parameters"
+          },
           "/specs/bake": {
             "route": "/specs/bake",
             "icon": "pi pi-microchip",
             "title": "Bake",
+            "parentRoute": "/specs"
+          },
+          "/specs/composite": {
+            "route": "/specs/composite",
+            "icon": "pi pi-microchip",
+            "title": "Composite",
             "parentRoute": "/specs"
           },
           "/specs/conditional": {
@@ -149,6 +155,12 @@
             "route": "/specs/data-table",
             "icon": "pi pi-microchip",
             "title": "Data Table",
+            "parentRoute": "/specs"
+          },
+          "/specs/fieldset": {
+            "route": "/specs/fieldset",
+            "icon": "pi pi-microchip",
+            "title": "Fieldset",
             "parentRoute": "/specs"
           },
           "/specs/icon": {

@@ -3,13 +3,17 @@
 public static class Components
 {
     public static ComponentDescriptor<Button> Button(string label,
-        IAction? action = default,
-        Action<Button>? options = default
+        Action<Button>? options = default,
+        IAction? action = default
     ) => new(options.Apply(new(label))) { Action = action };
 
     public static ComponentDescriptor<CardLink> CardLink(string route, string title,
         Action<CardLink>? options = default
     ) => new(options.Apply(new(route, title)));
+
+    public static ComponentDescriptor<Composite> Composite(
+        Action<Composite>? options = default
+    ) => new(options.Apply(new()));
 
     public static ComponentDescriptor<Conditional> Conditional(
         Action<Conditional>? options = default
@@ -81,6 +85,15 @@ public static class Components
         Action<ErrorPage.Info>? options = default
     ) => options.Apply(new(title, message));
 
+    public static Field Field(string key, string label,
+        Action<Field>? options = default
+    ) => options.Apply(new(key, label));
+
+    public static ComponentDescriptor<Fieldset> Fieldset(string titleProp,
+        Action<Fieldset>? options = default,
+        IData? data = default
+    ) => new(options.Apply(new(titleProp))) { Data = data };
+
     public static ComponentDescriptor<Filter> Filter(
         Action<Filter>? options = default,
         IAction? action = default
@@ -90,10 +103,10 @@ public static class Components
         Action<Filterable>? options = default
     ) => options.Apply(new(component));
 
-    public static ComponentDescriptor<FormPage> FormPage(string path, ComponentDescriptor<PageTitle> title, ComponentDescriptor<Button> button,
-        IAction? action = default,
-        Action<FormPage>? options = default
-    ) => new(options.Apply(new(path, title.Schema, button.Schema))) { Action = action };
+    public static ComponentDescriptor<FormPage> FormPage(string path, PageTitle title, Button submit,
+        Action<FormPage>? options = default,
+        IAction? action = default
+    ) => new(options.Apply(new(path, title, submit))) { Action = action };
 
     public static ComponentDescriptor<Header> Header(
         Action<Header>? options = default,
@@ -208,8 +221,8 @@ public static class Components
     ) => options.Apply(new(route, icon));
 
     public static ComponentDescriptor<SimpleForm> SimpleForm(string title, Button submit,
-        IAction? action = default,
-        Action<SimpleForm>? options = default
+        Action<SimpleForm>? options = default,
+        IAction? action = default
     ) => new(options.Apply(new(title, submit))) { Action = action };
 
     public static SimpleForm.Dialog SimpleFormDialog(Button open, Button cancel,
@@ -224,9 +237,9 @@ public static class Components
         Action<Tab>? options = default
     ) => options.Apply(new(id));
 
-    public static ComponentDescriptor<TabbedPage> TabbedPage(string path, ComponentDescriptor<PageTitle> title,
+    public static ComponentDescriptor<TabbedPage> TabbedPage(string path, PageTitle title,
         Action<TabbedPage>? options = default
-    ) => new(options.Apply(new(path, title.Schema)));
+    ) => new(options.Apply(new(path, title)));
 
     public static ComponentDescriptor<Text> Text(
         Action<Text>? options = default,

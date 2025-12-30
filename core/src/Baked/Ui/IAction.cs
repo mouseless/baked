@@ -9,7 +9,7 @@ public interface IAction
         if (left is null) { return right; }
         if (left is not CompositeAction composite)
         {
-            composite = new CompositeAction { Parts = [left] };
+            composite = new() { Parts = [left] };
         }
 
         composite.Parts.Add(right);

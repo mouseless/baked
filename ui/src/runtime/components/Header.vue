@@ -3,7 +3,7 @@
     :class="{ 'mb-4': shown || loading }"
     class="mt-4"
   >
-    <AwaitLoading :skeleton="{ height: '1.28rem', width: '15rem' }">
+    <AwaitLoading :skeleton="{ height: '1.25em', width: '15em' }">
       <Breadcrumb
         v-if="data && shown"
         :home="sitemap['/']"
@@ -67,7 +67,9 @@ function findItem(route) {
   if(sitemap[route]) { return sitemap[route]; }
 
   for(const key in sitemap) {
-    const expression = key.replaceAll(/[{][\w\d\-:]*[}]/g, "[\\w\\d\\-]*");
+    // AI-GEN replace all route params in key so that it matches any value
+    // except '/'
+    const expression = key.replace(/\[[^\]]+\]/g, "[^/]+");
     const matcher = new RegExp(`^${expression}$`, "g");
 
     if(matcher.test(route)) {

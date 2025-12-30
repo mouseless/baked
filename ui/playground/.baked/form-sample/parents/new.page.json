@@ -9,8 +9,7 @@
           "type": "Button",
           "schema": {
             "label": "Back",
-            "variant": "text",
-            "severity": "secondary"
+            "variant": "text"
           },
           "action": {
             "type": "Local",
@@ -25,30 +24,37 @@
         }
       ]
     },
-    "button": {
-      "label": "Save"
+    "submit": {
+      "label": "Save",
+      "severity": "primary"
     },
     "inputs": [
       {
         "name": "name",
         "required": true,
-        "default": {
-          "type": "Inline",
-          "value": null
-        },
         "component": {
           "type": "InputText",
           "schema": {
             "label": "Name"
           }
         }
+      },
+      {
+        "name": "surname",
+        "required": true,
+        "component": {
+          "type": "InputText",
+          "schema": {
+            "label": "Surname"
+          }
+        }
       }
     ],
-    "path": "form-sample/new-parent"
+    "path": "form-sample/parents/new"
   },
   "action": {
     "type": "Remote",
-    "path": "form-sample/new-parent",
+    "path": "form-sample/parents",
     "method": "POST",
     "body": {
       "type": "Context",

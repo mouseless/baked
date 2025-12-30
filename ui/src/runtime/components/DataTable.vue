@@ -55,10 +55,11 @@
       </template>
     </Column>
     <Column
-      v-if="exportOptions || actionTemplate"
+      v-if="exportOptions || actions"
       :pt="{
         bodyCell: { class: 'max-xs:!inset-auto' },
-        headerCell: { class: 'max-xs:!inset-auto' }
+        headerCell: { class: 'max-xs:!inset-auto' },
+        columnHeaderContent: 'justify-end'
       }"
       :exportable="false"
       class="w-0 py-0"
@@ -75,16 +76,16 @@
           severity="secondary"
           variant="text"
           size="small"
-          @click="toggleActionsMenu"
+          @click="toggleHeaderActionsMenu"
         />
         <Menu
-          ref="actionsMenu"
-          :model="actions"
+          ref="headerActionsMenu"
+          :model="headerActions"
           :popup="true"
         />
       </template>
       <template
-        v-if="actionTemplate"
+        v-if="actions"
         #body="{ data: row, index }"
       >
         <AwaitLoading :skeleton="{ class:'min-h-5' }">
@@ -93,10 +94,12 @@
             :data="row.$getRow()"
             data-key="row"
           >
-            <Bake
-              :name="`rows/${index}/row-actions`"
-              :descriptor="actionTemplate.component"
-            />
+            <div class="flex">
+              <Bake
+                :name="`rows/${index}/actions`"
+                :descriptor="actions.component"
+              />
+            </div>
           </ProvideParentContext>
         </AwaitLoading>
       </template>
@@ -128,7 +131,7 @@
           </template>
         </Column>
         <Column
-          v-if="exportOptions || actionTemplate"
+          v-if="exportOptions || actions"
           :exportable="false"
           class="w-0"
           frozen
@@ -158,14 +161,14 @@ const { schema, data } = defineProps({
   data: { type: null, required: true }
 });
 
-const { actionTemplate, columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions } = schema;
+const { actions, columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions } = schema;
 
 const contextData = context.injectContextData();
 const dataDescriptor = context.injectDataDescriptor();
 
 const dataTable = ref();
-const actionsMenu = ref();
-const actions = ref([ ]);
+const headerActionsMenu = ref();
+const headerActions = ref([ ]);
 const value = computed(() => {
   const items = data
     ? itemsProp
@@ -191,7 +194,7 @@ const exportFilename = ref(exportOptions?.fileName ? l(exportOptions.fileName) :
 let formatter = null;
 
 if(exportOptions) {
-  actions.value.push({
+  headerActions.value.push({
     label: l(exportOptions.buttonLabel),
     icon: exportOptions.buttonIcon,
     command: () => dataTable.value.exportCSV()
@@ -227,8 +230,8 @@ onMounted(async() => {
   }
 });
 
-function toggleActionsMenu(event) {
-  actionsMenu.value.toggle(event);
+function toggleHeaderActionsMenu(event) {
+  headerActionsMenu.value.toggle(event);
 }
 
 function exportFunction({ data, field }) {
@@ -237,3 +240,12 @@ function exportFunction({ data, field }) {
   return formatter.format(data.value, { prop: field, row: data.$getRow() });
 }
 </script>
+<style>
+.b-component--DataTable a {
+  @apply text-sm;
+}
+
+.b-component--DataTable .p-button {
+  @apply -my-2;
+}
+</style>

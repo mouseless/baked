@@ -5,9 +5,12 @@ namespace Baked.Domain.Conventions;
 
 public class RemoveAttributeConvention<TModelContext, TAttribute>(
     Action<TModelContext, Action<ICustomAttributesModel>> _apply,
-    Func<TModelContext, bool> _when
+    Func<TModelContext, bool> _when,
+    bool attributeRequiresIndex = true
 ) : IDomainModelConvention<TModelContext>, IAddRemoveAttributeConvention where TAttribute : Attribute
 {
+    bool IAddRemoveAttributeConvention.AttributeRequiresIndex => attributeRequiresIndex;
+
     public void Apply(TModelContext model)
     {
         if (!_when(model)) { return; }

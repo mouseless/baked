@@ -53,6 +53,15 @@ export default {
     };
   },
 
+  aComposite(parts) {
+    parts = $(parts, []);
+
+    return {
+      type: "Composite",
+      schema: { parts }
+    };
+  },
+
   aCompositeAction(parts) {
     parts = $(parts, []);
 
@@ -149,9 +158,15 @@ export default {
     return { component, narrow, key };
   },
 
-  aContextData({ key, prop, targetProp } = {}) {
+  aContextData({ key, prop, targetProp, parent } = {}) {
     key = $(key, "parent");
-    prop = $(prop, key === "parent" ? "data" : undefined);
+    prop = $(prop,
+      parent
+        ? parent
+        : key === "parent"
+          ? "data"
+          : undefined
+    );
 
     return {
       type: "Context",
@@ -174,7 +189,7 @@ export default {
     };
   },
 
-  aDataTable({ actionTemplate, columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions, data } = {}) {
+  aDataTable({ actions, columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions, data } = {}) {
     columns = $(columns, [
       this.aDataTableColumn({ prop: "test" })
     ]);
@@ -191,7 +206,7 @@ export default {
 
     return {
       type: "DataTable",
-      schema: { actionTemplate, columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions },
+      schema: { actions, columns, dataKey, exportOptions, footerTemplate, itemsProp, paginator, rows, rowsWhenLoading, scrollHeight, virtualScrollerOptions },
       data: this.anInlineData(data)
     };
   },
@@ -221,7 +236,7 @@ export default {
     };
   },
 
-  aDataTableExport({ csvSeparator, fileName, formatter, buttonIcon, buttonLabel }) {
+  aDataTableExport({ csvSeparator, fileName, formatter, buttonIcon, buttonLabel } = {}) {
     csvSeparator = $(csvSeparator, ";");
     fileName = $(fileName, `${Date.now()}`);
     buttonIcon = $(buttonIcon, "pi pi-external-link");
@@ -315,6 +330,31 @@ export default {
     };
   },
 
+  aField({ key, label, wide, component } = {}) {
+    key = "data";
+    label = $(label, "Spec: Data");
+    component = $(component, this.anExpected({ data: this.aContextData({ parent: `data.${key}` }) }));
+
+    return {
+      key,
+      label,
+      wide,
+      component
+    };
+  },
+
+  aFieldset({ titleProp, fields, data } = {}) {
+    titleProp = $(titleProp, "title");
+    fields = $(fields, [this.aField()]);
+    data = $(data, this.anInlineData({ title: "Test Title", data: "Value" }));
+
+    return {
+      type: "Fieldset",
+      schema: { titleProp, fields },
+      data
+    };
+  },
+
   aFilter({ placeholder, action } = {}) {
     placeholder = $(placeholder, "Filter");
 
@@ -337,16 +377,16 @@ export default {
     };
   },
 
-  aFormPage({ action, title, description, button, inputs } = {}) {
+  aFormPage({ action, title, description, submit, inputs } = {}) {
     title = this.aPageTitle({ title, description }).schema;
-    button = $(button, this.aButton({ label: "Test Submit" }));
+    submit = $(submit, this.aButton({ label: "Test Submit" }).schema);
     inputs = $(inputs, []);
 
     return {
       type: "FormPage",
       schema: {
         title,
-        button: button.schema,
+        submit,
         inputs
       },
       action
@@ -449,7 +489,7 @@ export default {
 
   aNavLink({ icon, path, query, params, data } = {}) {
     path = $(path, "/some-object/{0}");
-    data = $(data, { id: "test-id", name: "Test" });
+    data = $(data, this.anInlineData("Test"));
 
     return {
       type: "NavLink",
@@ -728,13 +768,14 @@ export default {
     };
   },
 
-  aSimpleFormDialog({ open, cancel }) {
-    open= $(open, this.aButton({ label: "Spec: Open" }).schema);
-    cancel= $(cancel, this.aButton({ label: "Spec: Cancel" }).schema);
+  aSimpleFormDialog({ open, cancel, message }) {
+    open = $(open, this.aButton({ label: "Spec: Open" }).schema);
+    cancel = $(cancel, this.aButton({ label: "Spec: Cancel" }).schema);
 
     return {
       open,
-      cancel
+      cancel,
+      message
     };
   },
 

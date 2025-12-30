@@ -10,7 +10,7 @@ public interface IData
         if (left is null) { return right; }
         if (left is not CompositeData composite)
         {
-            composite = new CompositeData { Parts = [left] };
+            composite = new() { Parts = [left] };
         }
 
         composite.Parts.Add(right);

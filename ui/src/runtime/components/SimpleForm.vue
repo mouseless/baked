@@ -1,62 +1,77 @@
 <template>
-  <div>
-    <template v-if="dialogOptions">
-      <Button
-        :schema="dialogOptions.open"
-        @click="visible = true"
-      />
-      <Dialog
-        v-model:visible="visible"
-        closable
-        :header="l(title)"
-        modal
-        :style="{ width: 'min(700px, 90vw)' }"
-        @after-hide="emitSubmit"
+  <template v-if="dialogOptions">
+    <Button
+      :schema="dialogOptions.open"
+      v-bind="$attrs"
+      @click="visible = true"
+    />
+    <Dialog
+      v-model:visible="visible"
+      :header="l(title)"
+      :style="{ width: 'min(700px, 90vw)' }"
+      :pt="{
+        header: !dialogOptions.message && inputs.length > 0 ? 'pb-0' : '',
+        content: 'flex flex-col gap-8'
+      }"
+      closable
+      modal
+      dismissable-mask
+      :draggable="false"
+      @after-hide="emitSubmit"
+    >
+      <div v-if="dialogOptions.message">
+        {{ l(dialogOptions.message) }}
+      </div>
+      <div
+        v-if="inputs.length > 0"
+        class="flex flex-col gap-4"
+        :class="{ 'pt-[--p-dialog-header-padding]': !dialogOptions.message }"
       >
-        <div class="flex flex-col gap-4">
-          <Inputs
-            v-if="inputs"
-            :inputs
-            input-class="w-full"
-            @ready="onReady"
-            @changed="onChanged"
-          />
-        </div>
-        <template #footer>
-          <Button
-            :schema="dialogOptions.cancel"
-            @submit="() => visible = false"
-          />
-          <Button
-            :schema="submit"
-            :ready
-            @submit="execute"
-          />
-        </template>
-      </Dialog>
-    </template>
-    <template v-else>
-      <div class="flex flex-col gap-8">
-        <h1 class="font-bold text-xl truncate">
-          {{ l(title) }}
-        </h1>
-        <div class="flex flex-col gap-4">
-          <Inputs
-            v-if="inputs"
-            :inputs
-            input-class="w-full"
-            @ready="onReady"
-            @changed="onChanged"
-          />
-        </div>
+        <Inputs
+          v-if="inputs"
+          :inputs
+          input-class="w-full"
+          @ready="onReady"
+          @changed="onChanged"
+        />
+      </div>
+      <template #footer>
+        <Button
+          :schema="dialogOptions.cancel"
+          @submit="() => visible = false"
+        />
         <Button
           :schema="submit"
           :ready
-          @submit="$emit('submit', formData)"
+          @submit="execute"
+        />
+      </template>
+    </Dialog>
+  </template>
+  <template v-else>
+    <div
+      v-bind="$attrs"
+      class="flex flex-col gap-8"
+    >
+      <h1 class="font-bold text-xl truncate">
+        {{ l(title) }}
+      </h1>
+      <div class="flex flex-col gap-4">
+        <Inputs
+          v-if="inputs"
+          :inputs
+          input-class="w-full"
+          @ready="onReady"
+          @changed="onChanged"
         />
       </div>
-    </template>
-  </div>
+      <Button
+        :schema="submit"
+        :ready
+        @submit="$emit('submit', formData)"
+      />
+    </div>
+  </template>
 </template>
 <script setup>
 import { ref } from "vue";

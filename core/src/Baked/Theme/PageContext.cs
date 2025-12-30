@@ -6,7 +6,7 @@ namespace Baked.Theme;
 public record PageContext
 {
     public required Route Route { get; init; }
-    public required List<Route> Sitemap { get; init; }
+    public required IReadOnlyList<Route> Sitemap { get; init; }
     public required DomainModel Domain { get; init; }
     public required NewLocaleKey NewLocaleKey { get; init; }
 

@@ -1,6 +1,7 @@
 import {
     Button,
 	CardLink,
+	Composite,
 	Conditional,
 	Container,
 	DataPanel,
@@ -10,6 +11,7 @@ import {
 	ErrorPage,
 	Expected,
 	ExpectedInput,
+	Fieldset,
 	Filter,
 	FormPage,
 	Header,
@@ -40,6 +42,7 @@ import {
 export {
     Button,
 	CardLink,
+	Composite,
 	Conditional,
 	Container,
 	DataPanel,
@@ -49,6 +52,7 @@ export {
 	ErrorPage,
 	Expected,
 	ExpectedInput,
+	Fieldset,
 	Filter,
 	FormPage,
 	Header,

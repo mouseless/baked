@@ -23,7 +23,7 @@ test.describe("Base", () => {
   test("text", async({ page }) => {
     const component = page.getByTestId(id);
 
-    await expect(component).toHaveText("Base");
+    await expect(component).toHaveText("Link");
   });
 
   test("visual", { tag: "@visual" }, async({ page }) => {

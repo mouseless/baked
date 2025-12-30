@@ -6,7 +6,7 @@
         #actions
       >
         <Button
-          :schema="button"
+          :schema="submit"
           :ready
           @submit="onSubmit"
         />
@@ -34,7 +34,7 @@ const { schema } = defineProps({
 });
 const emit = defineEmits(["submit"]);
 
-const { title, button, inputs } = schema;
+const { title, submit, inputs } = schema;
 
 const formData = ref({});
 const ready = ref(inputs.length === 0);

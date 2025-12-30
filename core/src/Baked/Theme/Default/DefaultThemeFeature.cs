@@ -5,11 +5,11 @@ using Baked.RestApi.Model;
 using Baked.Runtime;
 using Baked.Ui;
 using Humanizer;
+using System.Collections.Immutable;
 
 using static Baked.Theme.Default.DomainComponents;
 using static Baked.Theme.Default.DomainDatas;
 using static Baked.Ui.Datas;
-using static Baked.Ui.Actions;
 
 using B = Baked.Ui.Components;
 
@@ -26,7 +26,62 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
     {
         configurator.ConfigureDomainModelBuilder(builder =>
         {
-            // Property Defaults
+            // Pages
+            builder.Conventions.AddTypeComponent(
+                where: cc => cc.Path.Is(nameof(Page), "*"),
+                component: (c, cc) => TypeTabbedPage(c.Type, cc)
+            );
+            builder.Conventions.AddTypeComponent(
+                where: cc => cc.Path.Is(nameof(Page), "*"),
+                component: (c, cc) => TypeSimplePage(c.Type, cc)
+            );
+            builder.Conventions.AddMethodComponent(
+                where: cc => cc.Path.Is(nameof(Page), "*", "*"),
+                component: (c, cc) => MethodFormPage(c.Method, cc)
+            );
+
+            // `PageTitle` defaults
+            builder.Conventions.AddTypeComponent(
+                where: cc => cc.Path.Is(nameof(Page), "*", "*Page", "Title"),
+                component: (c, cc) => TypePageTitle(c.Type, cc)
+            );
+            builder.Conventions.AddMethodComponent(
+                where: cc => cc.Path.Is(nameof(Page), "*", "*", "*Page", "Title"),
+                component: (c, cc) => MethodPageTitle(c.Method, cc)
+            );
+            builder.Conventions.AddTypeComponentConfiguration<PageTitle>(
+                component: (pt, c, cc) =>
+                {
+                    foreach (var method in c.Type.GetMembers().Methods.Having<ActionAttribute>())
+                    {
+                        var action = method.GetAction();
+                        if (action.Method == HttpMethod.Get) { continue; }
+                        if (method.Has<InitializerAttribute>()) { continue; }
+
+                        var actionComponent = method.GetComponent(cc.Drill(nameof(PageTitle.Actions), method.Name));
+                        if (actionComponent is null) { continue; }
+
+                        pt.Schema.Actions.Add(actionComponent);
+                    }
+                }
+            );
+            builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
+                when: c => c.Type.Has<LocatableAttribute>(),
+                where: cc => cc.Path.EndsWith("Title", "Actions", "**", nameof(IComponentDescriptor.Action)),
+                schema: ra => ra.Params = Computed.UseRoute("params")
+            );
+
+            // Type defaults
+            builder.Index.Type.Add<RouteAttribute>();
+            builder.Conventions.AddTypeAttributeConfiguration<RouteAttribute>(
+                when: (c, r) =>
+                  r.Path.Contains("[id]") &&
+                  c.Type.TryGetMembers(out var members) &&
+                  members.Properties.Having<IdAttribute>().Any(),
+                attribute: (r, c) => r.Params["id"] = c.Type.GetMembers().Properties.Having<IdAttribute>().First().Get<DataAttribute>().Prop
+            );
+
+            // Property defaults
             builder.Index.Property.Add<IdAttribute>();
             builder.Index.Property.Add<DataAttribute>();
             builder.Conventions.SetPropertyAttribute(
@@ -44,18 +99,25 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             );
             builder.Conventions.AddPropertyComponent(
                 when: c => c.Property.PropertyType.Is<string>() || c.Property.PropertyType.Is<Guid>(),
-                component: () => B.Text()
+                component: () => B.Text(),
+                order: -10
             );
 
-            // Method Defaults
+            // Method defaults
+            builder.Index.Method.Add<ActionAttribute>();
             builder.Index.Method.Add<TabNameAttribute>();
+            builder.Index.Method.Add<RouteAttribute>();
+            builder.Conventions.SetMethodAttribute(
+                when: c => c.Method.Has<ActionModelAttribute>(),
+                attribute: () => new ActionAttribute(),
+                order: RestApiLayer.MaxConventionOrder + 10
+            );
             builder.Conventions.SetMethodAttribute(
                 when: c => c.Method.Has<ActionModelAttribute>(),
                 attribute: () => new TabNameAttribute(),
                 order: RestApiLayer.MaxConventionOrder + 10
             );
             builder.Conventions.AddMethodSchema(
-                when: c => c.Method.Has<ActionModelAttribute>(),
                 schema: c => MethodRemote(c.Method)
             );
             builder.Conventions.AddMethodSchemaConfiguration<RemoteData>(
@@ -63,43 +125,44 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 schema: rd => rd.Params = Computed.UseRoute("params")
             );
             builder.Conventions.AddMethodSchema(
-                when: c => c.Method.Has<ActionModelAttribute>(),
                 schema: (c, cc) => MethodContent(c.Method, cc)
             );
-            builder.Conventions.AddMethodComponent(
-                when: c => c.Method.Has<ActionModelAttribute>(),
-                where: cc => cc.Path.EndsWith(nameof(PageTitle.Actions), "*"),
-                component: (c, cc) => MethodButton(c.Method, cc)
-            );
-            builder.Conventions.AddMethodComponent(
-                when: c => c.Method.Has<ActionModelAttribute>(),
-                where: cc => cc.Path.EndsWith(nameof(SimpleForm), nameof(SimpleForm.Submit)),
-                component: (c, cc) =>
-                {
-                    var (_, l) = cc;
-
-                    return B.Button(l(c.Method.Name.Titleize()));
-                }
-            );
-            builder.Conventions.AddMethodComponentConfiguration<Button>(
-                where: cc => cc.Path.EndsWith(nameof(SimpleForm), nameof(SimpleForm.Submit)),
-                component: b => b.Schema.Severity = "primary"
-            );
             builder.Conventions.AddMethodSchema(
-                when: c => c.Method.Has<ActionModelAttribute>(),
+                when: c => c.Method.Has<ActionAttribute>(),
                 schema: (c, cc) => DomainActions.MethodRemote(c.Method)
-            );
-            builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
-                when: c => c.Method.Has<ActionModelAttribute>(),
-                where: cc => cc.Path.Contains(nameof(DataTable), nameof(DataTable.ActionTemplate)),
-                schema: ra => ra.Params = Context.Parent(options: o => o.Prop = "row")
             );
             builder.Conventions.AddMethodSchemaConfiguration<RemoteAction>(
                 when: c => c.Method.DefaultOverload.Parameters.Any(),
                 schema: ra => ra.Body = Context.Model()
             );
 
-            // Parameter Defaults
+            // Parameter defaults
+            builder.Conventions.AddMethodComponentConfiguration<SimpleForm>(
+                component: (sf, c, cc) =>
+                {
+                    cc = cc.Drill(nameof(SimpleForm.Inputs));
+
+                    foreach (var parameter in c.Method.DefaultOverload.Parameters)
+                    {
+                        sf.Schema.Inputs.Add(
+                            parameter.GetRequiredSchema<Input>(cc.Drill(parameter.Name))
+                        );
+                    }
+                }
+            );
+            builder.Conventions.AddMethodComponentConfiguration<FormPage>(
+                component: (sf, c, cc) =>
+                {
+                    cc = cc.Drill(nameof(FormPage.Inputs));
+
+                    foreach (var parameter in c.Method.DefaultOverload.Parameters)
+                    {
+                        sf.Schema.Inputs.Add(
+                            parameter.GetRequiredSchema<Input>(cc.Drill(parameter.Name))
+                        );
+                    }
+                }
+            );
             builder.Conventions.AddParameterSchema(
                 when: c => c.Parameter.Has<ParameterModelAttribute>(),
                 schema: (c, cc) => ParameterInput(c.Parameter, cc)
@@ -115,11 +178,12 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 }
             );
             builder.Conventions.AddParameterComponent(
+                when: c => c.Parameter.ParameterType.Is<string>(),
                 component: (c, cc) => ParameterInputText(c.Parameter, cc),
                 order: UiLayer.MinConventionOrder + 10
             );
             builder.Conventions.AddParameterComponent(
-                when: c => c.Parameter.ParameterType.Is<int>(),
+                when: c => c.Parameter.ParameterType.SkipNullable().Is<int>(),
                 component: (c, cc) => ParameterInputNumber(c.Parameter, cc),
                 order: UiLayer.MinConventionOrder + 10
             );
@@ -128,113 +192,6 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             builder.Conventions.AddTypeSchema(
                 when: c => c.Type.SkipNullable().IsEnum,
                 schema: (c, cc) => EnumInline(c.Type, cc)
-            );
-
-            // `DataTable` defaults
-            builder.Conventions.AddMethodComponentConfiguration<DataTable>(
-                component: dt =>
-                {
-                    dt.Schema.Rows = 5;
-                    dt.Schema.Paginator = true;
-                }
-            );
-            builder.Conventions.AddMethodSchema(
-                when: c => c.Method.Has<ComponentDescriptorBuilderAttribute<DataTable>>(),
-                schema: (c, cc) => MethodDataTableExport(c.Method, cc)
-            );
-            builder.Conventions.AddPropertySchema(
-                when: c => c.Property.Has<DataAttribute>(),
-                schema: (c, cc) => PropertyDataTableColumn(c.Property, cc)
-            );
-            builder.Conventions.AddPropertySchemaConfiguration<DataTable.Column>(
-                schema: (dtc, c, cc) =>
-                {
-                    var (_, l) = cc;
-                    var data = c.Property.Get<DataAttribute>();
-
-                    dtc.Title = data.Label is not null ? l(data.Label) : null;
-                    dtc.Exportable = true;
-                }
-            );
-            builder.Conventions.AddPropertySchemaConfiguration<DataTable.Column>(
-                schema: (dtc, c, cc) =>
-                {
-                    var data = c.Property.Get<DataAttribute>();
-
-                    var rootProp = cc.Path.Contains(nameof(DataTable.FooterTemplate)) ? "data" : "row";
-                    dtc.Component.Data ??= Context.Parent(options: o => o.Prop = $"{rootProp}.{data.Prop}");
-                },
-                order: UiLayer.MaxConventionOrder - 10
-            );
-
-            // Simple Form
-            builder.Conventions.AddMethodComponentConfiguration<SimpleForm>(
-                component: (sf, c, cc) =>
-                {
-                    cc = cc.Drill(nameof(SimpleForm.Inputs));
-
-                    foreach (var parameter in c.Method.DefaultOverload.Parameters)
-                    {
-                        sf.Schema.Inputs.Add(
-                            parameter.GetRequiredSchema<Input>(cc.Drill(parameter.Name))
-                        );
-                    }
-                }
-            );
-            builder.Conventions.AddMethodComponent(
-                where: cc => cc.Path.EndsWith(nameof(SimpleForm.DialogOptions), nameof(SimpleForm.DialogOptions.Cancel)),
-                component: (_, cc) =>
-                {
-                    var (_, l) = cc;
-
-                    return B.Button(l("Cancel"));
-                }
-            );
-            builder.Conventions.AddMethodComponentConfiguration<Button>(
-                where: cc => cc.Path.EndsWith(nameof(SimpleForm.DialogOptions), nameof(SimpleForm.DialogOptions.Cancel)),
-                component: b => b.Schema.Variant = "text"
-            );
-            builder.Conventions.AddMethodComponent(
-                where: cc => cc.Path.EndsWith(nameof(SimpleForm.DialogOptions), nameof(SimpleForm.DialogOptions.Open)),
-                component: (c, cc) =>
-                {
-                    var (_, l) = cc;
-
-                    return B.Button(l(c.Method.Name.Titleize()));
-                }
-            );
-
-            // Pages
-            builder.Conventions.AddTypeComponent(
-                where: cc => cc.Path.Is(nameof(Page), "*"),
-                component: (c, cc) => TypeTabbedPage(c.Type, cc)
-            );
-            builder.Conventions.AddTypeComponent(
-                where: cc => cc.Path.Is(nameof(Page), "*"),
-                component: (c, cc) => TypeSimplePage(c.Type, cc)
-            );
-            builder.Conventions.AddTypeComponent(
-                where: cc => cc.Path.EndsWith(nameof(SimplePage), nameof(SimplePage.Title)),
-                component: (c, cc) => TypePageTitle(c.Type, cc)
-            );
-            builder.Conventions.AddMethodComponent(
-                where: cc => cc.Path.Is(nameof(Page), "*", "*"),
-                component: (c, cc) => MethodFormPage(c.Method, cc)
-            );
-            builder.Conventions.AddMethodComponentConfiguration<FormPage>(
-                component: (fp, _, cc) =>
-                {
-                    var (_, l) = cc;
-
-                    fp.Schema.Title.Actions.Add(B.Button(l("Back"),
-                        action: Local.UseRedirectBack(),
-                        options: b =>
-                        {
-                            b.Severity = "secondary";
-                            b.Variant = "text";
-                        })
-                    );
-                }
             );
         });
 
@@ -300,12 +257,13 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             {
                 configurator.UsingLocalization(l =>
                 {
+                    var sitemap = _routes.ToImmutableList();
                     foreach (var route in _routes)
                     {
                         var page = route.BuildPage(new()
                         {
                             Route = route,
-                            Sitemap = [.. _routes],
+                            Sitemap = sitemap,
                             Domain = domain,
                             NewLocaleKey = l
                         });

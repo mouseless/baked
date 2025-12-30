@@ -142,120 +142,148 @@ public static class DomainExtensions
     #region Attribute Add/Set/Remove
 
     public static void SetTypeAttribute(this IDomainModelConventionCollection conventions, Func<Attribute> attribute, Func<TypeModelMetadataContext, bool> when,
+        bool requiresIndex = true,
         int order = default
-    ) => conventions.SetTypeAttribute((context, set) => set(context.Type, attribute()), when, order);
+    ) => conventions.SetTypeAttribute((context, set) => set(context.Type, attribute()), when, requiresIndex, order);
 
     public static void SetTypeAttribute(this IDomainModelConventionCollection conventions, Func<TypeModelMetadataContext, Attribute> attribute, Func<TypeModelMetadataContext, bool> when,
+        bool requiresIndex = true,
         int order = default
-    ) => conventions.SetTypeAttribute((context, set) => set(context.Type, attribute(context)), when, order);
+    ) => conventions.SetTypeAttribute((context, set) => set(context.Type, attribute(context)), when, requiresIndex, order);
 
     public static void SetTypeAttribute(this IDomainModelConventionCollection conventions, Action<TypeModelMetadataContext, Action<ICustomAttributesModel, Attribute>> apply, Func<TypeModelMetadataContext, bool> when,
+        bool requiresIndex = true,
         int order = default
-    ) => conventions.Add(new SetAttributeConvention<TypeModelMetadataContext>(apply, when), order);
+    ) => conventions.Add(new SetAttributeConvention<TypeModelMetadataContext>(apply, when, attributeRequiredIndex: requiresIndex), order);
 
     public static void AddTypeAttribute(this IDomainModelConventionCollection conventions, Func<Attribute> attribute, Func<TypeModelMetadataContext, bool> when,
+        bool requiresIndex = true,
         int order = default
-    ) => conventions.AddTypeAttribute((context, add) => add(context.Type, attribute()), when, order);
+    ) => conventions.AddTypeAttribute((context, add) => add(context.Type, attribute()), when, requiresIndex, order);
 
     public static void AddTypeAttribute(this IDomainModelConventionCollection conventions, Func<TypeModelMetadataContext, Attribute> attribute, Func<TypeModelMetadataContext, bool> when,
+        bool requiresIndex = true,
         int order = default
-    ) => conventions.AddTypeAttribute((context, add) => add(context.Type, attribute(context)), when, order);
+    ) => conventions.AddTypeAttribute((context, add) => add(context.Type, attribute(context)), when, requiresIndex, order);
 
     public static void AddTypeAttribute(this IDomainModelConventionCollection conventions, Action<TypeModelMetadataContext, Action<ICustomAttributesModel, Attribute>> apply, Func<TypeModelMetadataContext, bool> when,
+        bool requiresIndex = true,
         int order = default
-    ) => conventions.Add(new AddAttributeConvention<TypeModelMetadataContext>(apply, when), order);
+    ) => conventions.Add(new AddAttributeConvention<TypeModelMetadataContext>(apply, when, attributeRequiresIndex: requiresIndex), order);
 
     public static void RemoveTypeAttribute<TAttribute>(this IDomainModelConventionCollection conventions, Func<TypeModelMetadataContext, bool> when,
+        bool requiresIndex = true,
         int order = default
     ) where TAttribute : Attribute =>
-        conventions.Add(new RemoveAttributeConvention<TypeModelMetadataContext, TAttribute>((context, remove) => remove(context.Type), when), order);
+        conventions.Add(new RemoveAttributeConvention<TypeModelMetadataContext, TAttribute>((context, remove) => remove(context.Type), when, attributeRequiresIndex: requiresIndex), order);
 
     public static void SetPropertyAttribute(this IDomainModelConventionCollection conventions, Func<Attribute> attribute, Func<PropertyModelContext, bool> when,
+        bool requiresIndex = true,
         int order = default
-    ) => conventions.SetPropertyAttribute((context, set) => set(context.Property, attribute()), when, order);
+    ) => conventions.SetPropertyAttribute((context, set) => set(context.Property, attribute()), when, requiresIndex, order);
 
     public static void SetPropertyAttribute(this IDomainModelConventionCollection conventions, Func<PropertyModelContext, Attribute> attribute, Func<PropertyModelContext, bool> when,
+        bool requiresIndex = true,
         int order = default
-    ) => conventions.SetPropertyAttribute((context, set) => set(context.Property, attribute(context)), when, order);
+    ) => conventions.SetPropertyAttribute((context, set) => set(context.Property, attribute(context)), when, requiresIndex, order);
 
     public static void SetPropertyAttribute(this IDomainModelConventionCollection conventions, Action<PropertyModelContext, Action<ICustomAttributesModel, Attribute>> apply, Func<PropertyModelContext, bool> when,
+        bool requiresIndex = true,
         int order = default
-    ) => conventions.Add(new SetAttributeConvention<PropertyModelContext>(apply, when), order);
+    ) => conventions.Add(new SetAttributeConvention<PropertyModelContext>(apply, when, attributeRequiredIndex: requiresIndex), order);
 
     public static void AddPropertyAttribute(this IDomainModelConventionCollection conventions, Func<Attribute> attribute, Func<PropertyModelContext, bool> when,
+        bool requiresIndex = true,
         int order = default
-    ) => conventions.AddPropertyAttribute((context, add) => add(context.Property, attribute()), when, order);
+    ) => conventions.AddPropertyAttribute((context, add) => add(context.Property, attribute()), when, requiresIndex, order);
 
     public static void AddPropertyAttribute(this IDomainModelConventionCollection conventions, Func<PropertyModelContext, Attribute> attribute, Func<PropertyModelContext, bool> when,
+        bool requiresIndex = true,
         int order = default
-    ) => conventions.AddPropertyAttribute((context, add) => add(context.Property, attribute(context)), when, order);
+    ) => conventions.AddPropertyAttribute((context, add) => add(context.Property, attribute(context)), when, requiresIndex, order);
 
     public static void AddPropertyAttribute(this IDomainModelConventionCollection conventions, Action<PropertyModelContext, Action<ICustomAttributesModel, Attribute>> apply, Func<PropertyModelContext, bool> when,
+        bool requiresIndex = true,
         int order = default
-    ) => conventions.Add(new AddAttributeConvention<PropertyModelContext>(apply, when), order);
+    ) => conventions.Add(new AddAttributeConvention<PropertyModelContext>(apply, when, attributeRequiresIndex: requiresIndex), order);
 
     public static void RemovePropertyAttribute<TAttribute>(this IDomainModelConventionCollection conventions, Func<PropertyModelContext, bool> when,
+        bool requiresIndex = true,
         int order = default
     ) where TAttribute : Attribute =>
-        conventions.Add(new RemoveAttributeConvention<PropertyModelContext, TAttribute>((context, remove) => remove(context.Property), when), order);
+        conventions.Add(new RemoveAttributeConvention<PropertyModelContext, TAttribute>((context, remove) => remove(context.Property), when, attributeRequiresIndex: requiresIndex), order);
 
     public static void SetMethodAttribute(this IDomainModelConventionCollection conventions, Func<Attribute> attribute, Func<MethodModelContext, bool> when,
+        bool requiresIndex = true,
         int order = default
-    ) => conventions.SetMethodAttribute((context, set) => set(context.Method, attribute()), when, order);
+    ) => conventions.SetMethodAttribute((context, set) => set(context.Method, attribute()), when, requiresIndex, order);
 
     public static void SetMethodAttribute(this IDomainModelConventionCollection conventions, Func<MethodModelContext, Attribute> attribute, Func<MethodModelContext, bool> when,
+        bool requiresIndex = true,
         int order = default
-    ) => conventions.SetMethodAttribute((context, set) => set(context.Method, attribute(context)), when, order);
+    ) => conventions.SetMethodAttribute((context, set) => set(context.Method, attribute(context)), when, requiresIndex, order);
 
     public static void SetMethodAttribute(this IDomainModelConventionCollection conventions, Action<MethodModelContext, Action<ICustomAttributesModel, Attribute>> apply, Func<MethodModelContext, bool> when,
+        bool requiresIndex = true,
         int order = default
-    ) => conventions.Add(new SetAttributeConvention<MethodModelContext>(apply, when), order);
+    ) => conventions.Add(new SetAttributeConvention<MethodModelContext>(apply, when, attributeRequiredIndex: requiresIndex), order);
 
     public static void AddMethodAttribute(this IDomainModelConventionCollection conventions, Func<Attribute> attribute, Func<MethodModelContext, bool> when,
+        bool requiresIndex = true,
         int order = default
-    ) => conventions.AddMethodAttribute((context, add) => add(context.Method, attribute()), when, order);
+    ) => conventions.AddMethodAttribute((context, add) => add(context.Method, attribute()), when, requiresIndex, order);
 
     public static void AddMethodAttribute(this IDomainModelConventionCollection conventions, Func<MethodModelContext, Attribute> attribute, Func<MethodModelContext, bool> when,
+        bool requiresIndex = true,
         int order = default
-    ) => conventions.AddMethodAttribute((context, add) => add(context.Method, attribute(context)), when, order);
+    ) => conventions.AddMethodAttribute((context, add) => add(context.Method, attribute(context)), when, requiresIndex, order);
 
     public static void AddMethodAttribute(this IDomainModelConventionCollection conventions, Action<MethodModelContext, Action<ICustomAttributesModel, Attribute>> apply, Func<MethodModelContext, bool> when,
+        bool requiresIndex = true,
         int order = default
-    ) => conventions.Add(new AddAttributeConvention<MethodModelContext>(apply, when), order);
+    ) => conventions.Add(new AddAttributeConvention<MethodModelContext>(apply, when, attributeRequiresIndex: requiresIndex), order);
 
     public static void RemoveMethodAttribute<TAttribute>(this IDomainModelConventionCollection conventions, Func<MethodModelContext, bool> when,
+        bool requiresIndex = true,
         int order = default
     ) where TAttribute : Attribute =>
-        conventions.Add(new RemoveAttributeConvention<MethodModelContext, TAttribute>((context, remove) => remove(context.Method), when), order);
+        conventions.Add(new RemoveAttributeConvention<MethodModelContext, TAttribute>((context, remove) => remove(context.Method), when, attributeRequiresIndex: requiresIndex), order);
 
     public static void SetParameterAttribute(this IDomainModelConventionCollection conventions, Func<Attribute> attribute, Func<ParameterModelContext, bool> when,
+        bool requiresIndex = true,
         int order = default
-    ) => conventions.SetParameterAttribute((context, set) => set(context.Parameter, attribute()), when, order);
+    ) => conventions.SetParameterAttribute((context, set) => set(context.Parameter, attribute()), when, requiresIndex, order);
 
     public static void SetParameterAttribute(this IDomainModelConventionCollection conventions, Func<ParameterModelContext, Attribute> attribute, Func<ParameterModelContext, bool> when,
+        bool requiresIndex = true,
         int order = default
-    ) => conventions.SetParameterAttribute((context, set) => set(context.Parameter, attribute(context)), when, order);
+    ) => conventions.SetParameterAttribute((context, set) => set(context.Parameter, attribute(context)), when, requiresIndex, order);
 
     public static void SetParameterAttribute(this IDomainModelConventionCollection conventions, Action<ParameterModelContext, Action<ICustomAttributesModel, Attribute>> apply, Func<ParameterModelContext, bool> when,
+        bool requiresIndex = true,
         int order = default
-    ) => conventions.Add(new SetAttributeConvention<ParameterModelContext>(apply, when), order);
+    ) => conventions.Add(new SetAttributeConvention<ParameterModelContext>(apply, when, attributeRequiredIndex: requiresIndex), order);
 
     public static void AddParameterAttribute(this IDomainModelConventionCollection conventions, Func<Attribute> attribute, Func<ParameterModelContext, bool> when,
+        bool requiresIndex = true,
         int order = default
-    ) => conventions.AddParameterAttribute((context, add) => add(context.Parameter, attribute()), when, order);
+    ) => conventions.AddParameterAttribute((context, add) => add(context.Parameter, attribute()), when, requiresIndex, order);
 
     public static void AddParameterAttribute(this IDomainModelConventionCollection conventions, Func<ParameterModelContext, Attribute> attribute, Func<ParameterModelContext, bool> when,
+        bool requiresIndex = true,
         int order = default
-    ) => conventions.AddParameterAttribute((context, add) => add(context.Parameter, attribute(context)), when, order);
+    ) => conventions.AddParameterAttribute((context, add) => add(context.Parameter, attribute(context)), when, requiresIndex, order);
 
     public static void AddParameterAttribute(this IDomainModelConventionCollection conventions, Action<ParameterModelContext, Action<ICustomAttributesModel, Attribute>> apply, Func<ParameterModelContext, bool> when,
+        bool requiresIndex = true,
         int order = default
-    ) => conventions.Add(new AddAttributeConvention<ParameterModelContext>(apply, when), order);
+    ) => conventions.Add(new AddAttributeConvention<ParameterModelContext>(apply, when, attributeRequiresIndex: requiresIndex), order);
 
     public static void RemoveParameterAttribute<TAttribute>(this IDomainModelConventionCollection conventions, Func<ParameterModelContext, bool> when,
+        bool requiresIndex = true,
         int order = default
     ) where TAttribute : Attribute =>
-        conventions.Add(new RemoveAttributeConvention<ParameterModelContext, TAttribute>((context, remove) => remove(context.Parameter), when), order);
+        conventions.Add(new RemoveAttributeConvention<ParameterModelContext, TAttribute>((context, remove) => remove(context.Parameter), when, attributeRequiresIndex: requiresIndex), order);
 
     #endregion
 
