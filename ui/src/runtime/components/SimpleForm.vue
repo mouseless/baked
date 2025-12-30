@@ -10,7 +10,7 @@
       :header="l(title)"
       :style="{ width: 'min(700px, 90vw)' }"
       :pt="{
-        header: 'pb-0',
+        header: !dialogOptions.message && inputs.length > 0 ? 'pb-0' : '',
         content: 'flex flex-col gap-8'
       }"
       closable
@@ -24,10 +24,8 @@
       </div>
       <div
         v-if="inputs.length > 0"
-        class="
-          pt-[--p-dialog-header-padding]
-          flex flex-col gap-4
-        "
+        class="flex flex-col gap-4"
+        :class="{ 'pt-[--p-dialog-header-padding]': !dialogOptions.message }"
       >
         <Inputs
           v-if="inputs"
