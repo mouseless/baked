@@ -71,6 +71,16 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
                 schema: ra => ra.Params = Computed.UseRoute("params")
             );
 
+            // Type defaults
+            builder.Index.Type.Add<RouteAttribute>();
+            builder.Conventions.AddTypeAttributeConfiguration<RouteAttribute>(
+                when: (c, r) =>
+                  r.Path.Contains("{id}") &&
+                  c.Type.TryGetMembers(out var members) &&
+                  members.Properties.Having<IdAttribute>().Any(),
+                attribute: (r, c) => r.Params["id"] = c.Type.GetMembers().Properties.Having<IdAttribute>().First().Get<DataAttribute>().Prop
+            );
+
             // Property defaults
             builder.Index.Property.Add<IdAttribute>();
             builder.Index.Property.Add<DataAttribute>();
@@ -96,6 +106,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             // Method defaults
             builder.Index.Method.Add<ActionAttribute>();
             builder.Index.Method.Add<TabNameAttribute>();
+            builder.Index.Method.Add<RouteAttribute>();
             builder.Conventions.SetMethodAttribute(
                 when: c => c.Method.Has<ActionModelAttribute>(),
                 attribute: () => new ActionAttribute(),

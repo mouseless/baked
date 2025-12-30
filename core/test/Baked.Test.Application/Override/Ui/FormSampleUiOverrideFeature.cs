@@ -15,11 +15,7 @@ public class FormSampleUiOverrideFeature : IFeature
         {
             builder.Conventions.AddMethodAttributeConfiguration<ActionAttribute>(
                 when: c => c.Type.Is<FormSample>() && c.Method.Name == nameof(FormSample.NewParent),
-                attribute: (a, c) =>
-                {
-                    a.RoutePath = "/form-sample/parents/new";
-                    a.RoutePathBack = "/form-sample";
-                }
+                attribute: (a, c) => a.RoutePathBack = "/form-sample"
             );
             builder.Conventions.AddMethodAttributeConfiguration<ActionAttribute>(
                 when: c => c.Type.Is<Parent>() && c.Method.Name.Contains("Child"),

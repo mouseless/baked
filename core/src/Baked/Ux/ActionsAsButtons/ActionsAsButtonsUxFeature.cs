@@ -50,11 +50,11 @@ public class ActionsAsButtonsUxFeature : IFeature<UxConfigurator>
 
             // `FormPage` button and routing back
             builder.Conventions.AddMethodComponent(
-                when: c => c.Method.TryGet<ActionAttribute>(out var action) && action?.RoutePath is not null,
+                when: c => c.Method.Has<ActionAttribute>() && c.Method.Has<RouteAttribute>(),
                 where: cc => cc.Path.EndsWith("Actions", "*"),
                 component: (c, cc) =>
                 {
-                    var route = c.Method.Get<ActionAttribute>().RoutePath ?? throw new("`RoutePath` can't be null here");
+                    var route = c.Method.Get<RouteAttribute>().Path;
 
                     return LocalizedButton(c.Method.Name.Titleize(), cc,
                         action: Local.UseRedirect(route)

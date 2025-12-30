@@ -44,6 +44,12 @@
   component slot
 - `Fieldset` component is now added that renders an object in a field-set pane
   - `Field` schema is also added to represent a property with a label
+- `RouteAttribute` is added along with `.SetTypeRoute<T>(...)` and
+  `.SetMethodRoute<T>(...)` extensions to specify routes in domain metadata to
+  be used in conventions
+  - When path with id route parameter is added such as `/my-entity/{id}`, it's
+    route param will be automatically resolved from the first property that has
+    `IdAttribute`
 - New UX features are introduced in `Monolith` recipe
   - **Actions as Buttons**: to render non-`GET` actions as buttons
   - **Actions are Contents**: to render `GET` actions as contents

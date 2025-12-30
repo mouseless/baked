@@ -53,13 +53,8 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
             );
 
             // Custom routes
-            builder.Conventions.SetTypeAttribute(
-                when: c => c.Type.Is<Parent>(),
-                attribute: c => new RouteAttribute("/parents/{id}")
-                {
-                    Params = new() { { "id", c.Type.GetMembers().Properties[nameof(Parent.Id)].Get<DataAttribute>().Prop } }
-                }
-            );
+            builder.Conventions.SetTypeRoute<Parent>("/parents/{id}");
+            builder.Conventions.SetMethodRoute<FormSample>(nameof(FormSample.NewParent), "/form-sample/parents/new");
         });
 
         configurator.ConfigureComponentExports(c =>
