@@ -75,7 +75,7 @@ public class DefaultThemeFeature(IEnumerable<Route> _routes,
             builder.Index.Type.Add<RouteAttribute>();
             builder.Conventions.AddTypeAttributeConfiguration<RouteAttribute>(
                 when: (c, r) =>
-                  r.Path.Contains("{id}") &&
+                  r.Path.Contains("[id]") &&
                   c.Type.TryGetMembers(out var members) &&
                   members.Properties.Having<IdAttribute>().Any(),
                 attribute: (r, c) => r.Params["id"] = c.Type.GetMembers().Properties.Having<IdAttribute>().First().Get<DataAttribute>().Prop

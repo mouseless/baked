@@ -78,7 +78,7 @@
                     "component": {
                       "type": "NavLink",
                       "schema": {
-                        "path": "/parents/{id}",
+                        "path": "/parents/[id]",
                         "params": {
                           "type": "Context",
                           "key": "parent",

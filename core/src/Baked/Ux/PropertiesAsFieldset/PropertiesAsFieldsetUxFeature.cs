@@ -29,6 +29,9 @@ public class PropertiesAsFieldsetUxFeature : IFeature<UxConfigurator>
                 order: -10
             );
             builder.Conventions.AddTypeSchema(
+                when: c =>
+                    c.Type.TryGetMembers(out var members) &&
+                    members.Properties.GetDataProperties().Any(),
                 where: cc => cc.Path.EndsWith("Fields"),
                 schema: (c, cc) => TypeContent(c.Type, cc, "fields")
             );

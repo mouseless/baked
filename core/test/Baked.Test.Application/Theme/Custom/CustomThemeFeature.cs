@@ -53,7 +53,7 @@ public class CustomThemeFeature(IEnumerable<Func<Router, Route>> routes)
             );
 
             // Custom routes
-            builder.Conventions.SetTypeRoute<Parent>("/parents/{id}");
+            builder.Conventions.SetTypeRoute<Parent>("/parents/[id]");
             builder.Conventions.SetMethodRoute<FormSample>(nameof(FormSample.NewParent), "/form-sample/parents/new");
         });
 

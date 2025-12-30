@@ -19,7 +19,7 @@ const variants = [
   {
     name: "Dynamic",
     descriptor: giveMe.aNavLink({
-      path: "/test-path/{id}",
+      path: "/test-path/[id]",
       query: giveMe.anInlineData({ query: "value" }),
       params: giveMe.anInlineData({ id: "test-id" })
     })

@@ -33,7 +33,7 @@ const shouldLoadQuery = queryData ? dataFetcher.shouldLoad(queryData.type) : fal
 const params = ref(paramsData ? dataFetcher.get({ data: paramsData, contextData }) : null);
 const shouldLoadParams = paramsData ? dataFetcher.shouldLoad(paramsData.type) : false;
 const to = computed(() => ({
-  path: params.value ? pathBuilder.build(path, params.value) : path,
+  path: params.value ? pathBuilder.build(path, params.value, { forRoute: true }) : path,
   query: query.value
 }));
 
